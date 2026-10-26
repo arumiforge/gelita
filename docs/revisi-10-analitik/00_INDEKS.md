@@ -2,7 +2,7 @@
 
 Per 26 Oktober 2026 · Pintu masuk untuk setiap sesi baru di [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
-Folder ini sekitar 430 KB, kira-kira 200 ribu token kalau dibaca utuh. Satu sesi tidak perlu membaca semuanya. Aturan menjaga konteks ada di `.claude/rules/revisi-10.md` dan dimuat otomatis saat berkas di folder ini dibuka.
+Dokumen Markdown di folder ini sekitar 460 KB, kira-kira 200 ribu token kalau dibaca utuh. Satu sesi tidak perlu membaca semuanya. Aturan menjaga konteks ada di `.claude/rules/revisi-10.md` dan dimuat otomatis saat berkas di folder ini dibuka.
 
 ## Mulai sesi baru di sini
 
@@ -34,6 +34,7 @@ Dokumen lain dibaca per bagian sesuai tugas.
 | [15](15_TES_BAGIAN_DIGITAL.md) | Tes Bagian 2 Aman dan etis (D2) dan Bagian 3 Budaya digital (D3), bentuk A dan B | Draf, `needs_verification` | Cari per kode butir (misalnya `tes-ae-B03`) | — |
 | [16](16_ANGKET_AKSES_DIGITAL.md) | Angket akses digital: butir, kode jawaban, variabel, pelaksanaan, etika | Draf, menunggu keputusan pemilik proyek | Saat menyusun lembar L6, izin etik, atau variabel peserta | — |
 | `gambar/` | Peta bukti, lapis data, peta jalan, buklet, tangkapan layar telaah media | Rujukan | Saat dokumen yang memakainya diubah | — |
+| [dokumen-pendukung-peneliti/](dokumen-pendukung-peneliti/README.md) | Bacaan untuk peneliti dan tim, **bukan dokumen implementasi**: model penelitian dan pengembangan (PDF), dengan rujukan yang dicek ke sumber asli | Rujukan; model Plomp dan aturan I-CVI Lynn diputuskan 26 Oktober 2026 | Saat menulis Bab III atau bagian metodologi; tidak dibaca untuk implementasi | 390 KB (PDF dan sumbernya) |
 
 ## Tahap dokumen yang tersisa sebelum implementasi
 

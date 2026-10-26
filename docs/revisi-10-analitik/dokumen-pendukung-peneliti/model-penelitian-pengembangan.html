@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Model Penelitian dan Pengembangan GELITA</title>
+<style>
+  @page { size: A4; margin: 17mm 16mm 18mm 16mm; }
+  :root {
+    --ink: #1d232b;
+    --muted: #5a6573;
+    --rule: #d3d9e0;
+    --head: #eef2f6;
+    --accent: #1f5f8b;
+    --accent-soft: #e8f1f8;
+    --warn-soft: #fff6e0;
+    --warn: #8a5a00;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    margin: 0;
+    background: #fff;
+    color: var(--ink);
+    font-family: "Bitstream Charter", "Liberation Serif", serif;
+    font-size: 10.1pt;
+    line-height: 1.45;
+    hyphens: auto;
+  }
+  h1, h2, h3, .sans, table, .meta, .tag, .box-title {
+    font-family: "Inter", "Liberation Sans", sans-serif;
+  }
+  h1 { font-size: 19pt; line-height: 1.2; margin: 0 0 4pt; letter-spacing: -0.01em; }
+  .subtitle { font-family: "Inter", sans-serif; font-size: 10.5pt; color: var(--muted); margin: 0 0 10pt; }
+  .meta { font-size: 8.4pt; color: var(--muted); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 5pt 0; margin-bottom: 12pt; }
+  .meta b { color: var(--ink); font-weight: 600; }
+  h2 { font-size: 12.5pt; margin: 16pt 0 6pt; color: var(--accent); break-after: avoid; }
+  h3 { font-size: 10.4pt; margin: 11pt 0 4pt; break-after: avoid; }
+  p { margin: 0 0 6pt; }
+  ul, ol { margin: 0 0 6pt; padding-left: 16pt; }
+  li { margin: 0 0 2.5pt; }
+  em { font-style: italic; }
+  code { font-family: "JetBrains Mono", monospace; font-size: 8.3pt; background: #f2f4f7; padding: 0 2px; border-radius: 2px; }
+  .box { border-left: 3pt solid var(--accent); background: var(--accent-soft); padding: 8pt 10pt; margin: 8pt 0 10pt; break-inside: avoid; }
+  .box-title { font-weight: 700; font-size: 9.6pt; margin-bottom: 3pt; color: var(--accent); }
+  .box.warn { border-left-color: #c58a00; background: var(--warn-soft); }
+  .box.warn .box-title { color: var(--warn); }
+  blockquote { margin: 4pt 0 7pt 0; padding: 3pt 0 3pt 9pt; border-left: 2pt solid var(--rule); color: #39424d; font-size: 9.3pt; }
+  blockquote .src { font-family: "Inter", sans-serif; font-size: 7.8pt; color: var(--muted); font-style: normal; }
+  table { width: 100%; border-collapse: collapse; font-size: 7.9pt; line-height: 1.32; margin: 5pt 0 9pt; }
+  th { text-align: left; background: var(--head); font-weight: 600; padding: 4pt 5pt; border-bottom: 1px solid #aeb8c4; vertical-align: bottom; }
+  td { padding: 3.6pt 5pt; border-bottom: 0.6pt solid var(--rule); vertical-align: top; }
+  tr { break-inside: avoid; }
+  thead { display: table-header-group; }
+  td.k, th.k { white-space: nowrap; }
+  .tag { display: inline-block; text-indent: 0; text-align: center; min-width: 9pt; font-size: 6.9pt; font-weight: 700; line-height: 1; padding: 1.6pt 3.2pt; border-radius: 2.5pt; vertical-align: 1pt; color: #fff; }
+  .tA { background: #1d7a46; }
+  .tC { background: #2a7f8f; }
+  .tK { background: #4a5a6e; }
+  .tS { background: #b57600; }
+  .verdict { font-weight: 700; }
+  .yes { color: #1d7a46; }
+  .mid { color: #8a5a00; }
+  .no { color: #a33a2b; }
+  .refs p { font-size: 8.5pt; line-height: 1.36; margin: 0 0 3.4pt; padding-left: 14pt; text-indent: -14pt; }
+  .refs h3 { margin-top: 9pt; }
+  .small { font-size: 8.6pt; color: var(--muted); }
+  .note { font-size: 8.5pt; color: var(--muted); }
+  .pb { break-before: page; }
+  .nowrap { white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<h1>Model Penelitian dan Pengembangan untuk GELITA</h1>
+<p class="subtitle">Rekomendasi, alasan, pemetaan ke peta jalan Revisi 10, dan ringkasan teori — setiap rujukan dicek ke sumber asli</p>
+<div class="meta">
+  <b>Tanggal:</b> 26 Oktober 2026 &nbsp;·&nbsp; <b>Status:</b> diputuskan pemilik proyek 26 Oktober 2026 (model Plomp dan aturan I-CVI Lynn), tercatat di <code>04_CATATAN_KEPUTUSAN.md</code> &nbsp;·&nbsp; <b>Jenis:</b> bacaan pendukung untuk peneliti dan tim, bukan dokumen implementasi &nbsp;·&nbsp; <b>Disusun:</b> Claude, dari dokumen di repositori dan sumber asli<br>
+  <b>Judul penelitian:</b> <em>Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar</em>
+</div>
+
+<h2>1. Ringkasan</h2>
+<div class="box">
+  <div class="box-title">Keputusan (26 Oktober 2026)</div>
+  <p>Penelitian ini memakai <b>penelitian desain pendidikan (<em>educational design research</em>) model Plomp (2013), jenis studi pengembangan (<em>development study</em>)</b>. Di dalam model itu:</p>
+  <ul>
+    <li><b>Evidence-Centered Design (ECD)</b> menjadi metode merancang asesmennya (Mislevy, Steinberg, &amp; Almond, 2003);</li>
+    <li><b>lapis evaluasi formatif Tessmer (1993)</b> dan <b>tabel metode evaluasi formatif Nieveen &amp; Folmer (2013)</b> menentukan cara menguji setiap prototipe;</li>
+    <li><b>empat kriteria mutu</b>, yaitu relevansi, konsistensi, kepraktisan, dan keefektifan (Plomp, 2013, hlm. 29), menjadi ukuran mutu produk.</li>
+  </ul>
+  <p style="margin-bottom:0">Peta jalan enam tahap dan lima gerbang di dokumen 01 sudah mengikuti pola model ini; sebelum keputusan ini yang belum ada hanya namanya. Sebelumnya tidak ada dokumen di <code>docs/</code> yang menyebut model pengembangan apa pun (dicek: ADDIE, 4D, Borg &amp; Gall, Sugiyono, Plomp, McKenney, Nieveen, Tessmer, Richey, MDLC, GDLC).</p>
+</div>
+<p>Setiap rujukan dan klaim di dokumen ini dicek ke sumber aslinya, bukan ditulis dari ingatan. Bagian 11 merangkum 14 rincian yang mudah keliru dikutip. Bagian 12 mencatat rujukan di dokumen Revisi 10 yang dibetulkan berdasarkan pengecekan ini.</p>
+
+<h2>2. Cara pengecekan</h2>
+<p>Setiap rujukan dicek pada 26 Oktober 2026. Sumber yang dipakai berurutan dari yang paling kuat: teks lengkap aslinya (PDF terbuka, ERIC, salinan penulis, pindaian buku), lalu catatan penerbit, DOI di Crossref, atau katalog perpustakaan, dan terakhir sumber sekunder yang mengutipnya. Kutipan inti untuk rekomendasi, yaitu tahapan dan kriteria Plomp (2013) serta tabel metode Nieveen &amp; Folmer (2013), dicek dua kali langsung di PDF resmi SLO. Setiap rujukan di daftar pustaka diberi tanda tingkat pengecekan:</p>
+<table>
+  <thead><tr><th class="k">Tanda</th><th>Arti</th></tr></thead>
+  <tbody>
+    <tr><td class="k"><span class="tag tA">A</span></td><td>Teks asli dibaca: PDF lengkap, pindaian, atau versi laporan penulis dengan isi yang sama. Nomor halaman diambil dari sumber itu.</td></tr>
+    <tr><td class="k"><span class="tag tC">C</span></td><td>Cuplikan teks asli lewat pencarian teks penuh pada pindaian buku di archive.org. Kata-kata aslinya terlihat, tetapi nomor halaman diambil dari daftar isi, indeks, atau judul halaman buku.</td></tr>
+    <tr><td class="k"><span class="tag tK">K</span></td><td>Catatan penerbit, DOI/Crossref, atau katalog perpustakaan. Data bibliografinya pasti; isinya dicek lewat abstrak atau deskripsi penerbit.</td></tr>
+    <tr><td class="k"><span class="tag tS">S</span></td><td>Isi klaim hanya dari sumber sekunder yang mengutipnya. Di teks, klaim seperti ini selalu disebut sumber sekundernya.</td></tr>
+  </tbody>
+</table>
+
+<h2>3. GELITA sebagai penelitian pengembangan</h2>
+<p>Pilihan model ditentukan oleh sifat penelitiannya. Fakta berikut diambil dari dokumen Revisi 10 di repositori.</p>
+<ol>
+  <li><b>Produknya ganda.</b> GELITA adalah game sekaligus instrumen asesmen. Judulnya menyebut game itu "sebagai Model Asesmen Literasi Digital". Mutu produk harus mencakup mutu media dan mutu pengukuran.</li>
+  <li><b>Klaim utamanya soal pengukuran, bukan peningkatan hasil belajar.</b> Rencana analisis di 01 memakai model Rasch per dimensi, peta Wright, perbandingan model satu dimensi dan multidimensi, DIF antarvariasi a/b, κ, dan korelasi dengan tes awal–akhir. Tidak ada kelompok kontrol, dan tidak ada klaim bahwa game meningkatkan literasi.</li>
+  <li><b>Pekerjaannya sudah berjalan dalam putaran bergerbang:</b> dokumen desain (06, 08, 11, 12) → telaah pendahuluan berbantuan AI (09, 10) → validasi tujuh ahli (V Aiken, I-CVI, S-CVI/Ave, pelabelan buta dengan κ ≥ 0,70) dan uji keterbacaan dengan beberapa anak di luar sampel → implementasi → telaah ahli media langkah 2 → berpikir lantang 5–8 siswa dan uji coba satu kelas → pembekuan dan pra-registrasi di OSF (G4) → pengambilan data utama (target 300 siswa yang datanya bisa dianalisis, dari sekitar 360 yang direkrut) → analisis.</li>
+  <li><b>Ada batasan yang tetap:</b> sistem baru tidak diubah sebelum gerbang G2, termasuk persetujuan etik. Jadi prototipe yang dinilai ahli pertama kali berupa dokumen dan mock-up.</li>
+  <li><b>Guru tidak ikut dalam penelitian.</b> Semua pengamatan dilakukan peneliti lewat lembar L0–L7.</li>
+  <li><b>Setiap keputusan dicatat</b> di <code>04_CATATAN_KEPUTUSAN.md</code>, terbaru di atas.</li>
+</ol>
+
+<h2>4. Model yang dipakai: Plomp (2013)</h2>
+<p>Plomp (2013) membedakan penelitian desain sebagai <em>development studies</em> dan <em>validation studies</em> (hlm. 16; Tabel 1 di hlm. 23 menambahkan <em>implementation studies</em>). GELITA termasuk studi pengembangan. Untuk jenis ini Plomp menetapkan tiga fase (hlm. 19):</p>
+<ul>
+  <li><b>Penelitian pendahuluan</b> (<em>preliminary research</em>): analisis kebutuhan dan konteks, kajian pustaka, dan penyusunan kerangka konseptual atau teoretis.</li>
+  <li><b>Fase pengembangan atau pembuatan prototipe</b> (<em>development or prototyping phase</em>): beberapa iterasi. Setiap iterasi adalah siklus mikro penelitian, dengan evaluasi formatif sebagai kegiatan penelitian terpenting.</li>
+  <li><b>Fase penilaian</b> (<em>assessment phase</em>): evaluasi semi-sumatif untuk menyimpulkan apakah intervensi memenuhi spesifikasi yang ditetapkan sebelumnya.</li>
+</ul>
+<blockquote>"Throughout all these activities, the researcher or research group will do systematic reflection and documentation to produce the theories or design principles" <span class="src">— Plomp (2013, hlm. 19)</span></blockquote>
+<p><b>Kriteria mutu.</b> Plomp (2013, hlm. 29, Tabel 2, diadaptasi dari Nieveen, 1999) memakai empat kriteria. Pembedaan "diharapkan" dan "nyata" berasal dari Nieveen &amp; Folmer (2013, hlm. 160–161).</p>
+<table>
+  <thead><tr><th style="width:24%">Kriteria</th><th>Arti menurut Plomp (2013, hlm. 29)</th></tr></thead>
+  <tbody>
+    <tr><td><b>Relevansi</b> (validitas isi)</td><td>Intervensi memang dibutuhkan, dan rancangannya berdasar pengetahuan ilmiah terkini.</td></tr>
+    <tr><td><b>Konsistensi</b> (validitas konstruk)</td><td>Intervensi dirancang secara "logis".</td></tr>
+    <tr><td><b>Kepraktisan</b>: diharapkan / nyata</td><td>Intervensi diharapkan dapat dipakai / terbukti dapat dipakai di lingkungan yang menjadi sasarannya.</td></tr>
+    <tr><td><b>Keefektifan</b>: diharapkan / nyata</td><td>Pemakaian intervensi diharapkan / terbukti memberi hasil yang diinginkan.</td></tr>
+  </tbody>
+</table>
+<p>Kriteria ini bertingkat. Plomp bertanya: kalau intervensi tidak praktis, untuk apa meneliti keefektifannya? Kalau tidak konsisten, untuk apa meneliti kepraktisannya? (hlm. 29). Karena itu tiap fase menekankan kriteria yang berbeda (Tabel 3, hlm. 30). Penelitian pendahuluan menekankan relevansi. Fase prototipe mulai dari konsistensi dan kepraktisan, lalu bergeser ke keefektifan. Fase penilaian menekankan kepraktisan dan keefektifan.</p>
+<p><b>Metode evaluasi formatif.</b> Plomp mengambil lapis evaluasi formatif dari Tessmer (1993) (Gambar 5, hlm. 36). Tessmer menyebut empat jenis klasik: telaah ahli, satu-satu, kelompok kecil, dan uji lapangan. Evaluasi diri ia golongkan sebagai jenis telaah ahli; kelimanya digambar sebagai lapis (Tessmer, 1993, Gambar 2.3, hlm. 35). Nieveen &amp; Folmer (2013, hlm. 159–162) memasangkan metode dengan tahap prototipe:</p>
+<table>
+  <thead><tr><th style="width:21%">Kriteria</th><th>Usulan desain</th><th>Desain global</th><th>Sebagian rinci</th><th>Lengkap</th></tr></thead>
+  <tbody>
+    <tr><td>Relevansi, konsistensi</td><td>screening, focus group</td><td>screening, focus group</td><td>screening, focus group</td><td>screening, focus group</td></tr>
+    <tr><td>Kepraktisan/keefektifan diharapkan</td><td>screening, focus group</td><td>screening, focus group</td><td>focus group (+ walkthrough untuk kepraktisan)</td><td>focus group (+ walkthrough untuk kepraktisan)</td></tr>
+    <tr><td>Kepraktisan/keefektifan nyata</td><td>—</td><td>—</td><td>micro-evaluation</td><td>micro-evaluation, try-out</td></tr>
+  </tbody>
+</table>
+<p class="note">Sumber: Nieveen &amp; Folmer (2013), Tabel 2, hlm. 162. Arti metodenya (hlm. 161–162): <em>screening</em> = tim desain memeriksa rancangan dengan daftar periksa; <em>focus group</em> (juga disebut <em>expert appraisal</em>) = sekelompok responden menanggapi prototipe; <em>walkthrough</em> = tim desain dan wakil kelompok sasaran menelusuri prototipe bersama; <em>micro-evaluation</em> = sekelompok kecil pengguna memakai sebagian produk di luar situasi pemakaian normal; <em>try-out</em> = kelompok sasaran memakai produk dalam praktik.</p>
+
+<h2>5. Alasan memilih model Plomp</h2>
+<h3>5.1 Bentuknya sama dengan peta jalan GELITA</h3>
+<p>Tahap 1–4 di peta jalan adalah iterasi fase prototipe, tahap 5–6 adalah fase penilaian, gerbang G1–G5 adalah titik keputusan antariterasi, dan dokumen 04 adalah "refleksi dan dokumentasi sistematis" yang diminta Plomp (hlm. 19). Rencana tidak perlu diubah; yang berubah hanya label dan cara melaporkannya.</p>
+
+<h3>5.2 Kriterianya cocok untuk produk yang berupa alat ukur</h3>
+<p>Model R&amp;D yang berorientasi pembelajaran, seperti uji lapangan utama Borg &amp; Gall, menilai produk dari hasil belajar sebelum dan sesudah. GELITA tidak mengklaim itu. Di Plomp, keefektifan berarti "pemakaian intervensi memberi hasil yang diinginkan" (hlm. 29). Untuk model asesmen, hasil yang diinginkan adalah pengukuran yang sahih dan andal. Jadi keefektifan GELITA bisa diukur dengan jujur lewat kecocokan Rasch, reliabilitas, urutan wilayah di peta Wright, dan korelasi dengan tes luar (lihat bagian 8). Validitas juga sudah dipecah menjadi relevansi (isi) dan konsistensi (konstruk), sejalan dengan bukti validitas yang dikumpulkan GELITA.</p>
+
+<h3>5.3 Prototipe awal boleh berupa kertas, sesuai batasan "sistem diubah setelah G2"</h3>
+<blockquote>"Early prototypes can be just paper-based for which the formative evaluation takes place via expert judgments resulting in expected practicality" <span class="src">— Plomp (2013, Tabel 3, hlm. 30)</span></blockquote>
+<p>Inilah situasi tahap 2 GELITA: ahli menilai dokumen, game yang ada sekarang, dan mock-up layar baru sebelum ada perubahan sistem. Model lain tidak secara terang mengatur kasus ini.</p>
+
+<h3>5.4 ECD masuk wajar ke fase prototipe</h3>
+<p>ECD adalah cara merancang asesmen, bukan model R&amp;D, jadi ia membutuhkan "wadah". Model Plomp memberi wadah itu tanpa bertabrakan. Unsur ECD dan padanannya di GELITA:</p>
+<table>
+  <thead><tr><th style="width:33%">Unsur ECD</th><th style="width:23%">Sumber</th><th>Padanan di GELITA</th></tr></thead>
+  <tbody>
+    <tr><td>Model siswa (<em>student model</em>)</td><td>Mislevy dkk. (2003, hlm. 22)</td><td>Literasi digital tiga dimensi D1–D3 (01)</td></tr>
+    <tr><td>Model bukti: aturan bukti + model statistik</td><td>Mislevy dkk. (2003, hlm. 6)</td><td>10 analitik dan kamus data <code>kamus-1.0</code> (11); model Rasch multidimensi <em>between-item</em></td></tr>
+    <tr><td>Model tugas (<em>task model</em>)</td><td>Mislevy dkk. (2003, hlm. 22)</td><td>Lima jenis tantangan: Susun Gambar, Isi Rumpang, Benar atau Salah, Cari Objek, Skenario Digital</td></tr>
+    <tr><td>Model perakitan (<em>assembly model</em>)</td><td>Mislevy dkk. (2003, hlm. 22)</td><td>Variasi a/b, buklet, butir jangkar, lima pertemuan (06)</td></tr>
+    <tr><td>Model presentasi dan model penyampaian (<em>delivery model</em>)</td><td>Almond dkk. (2002, hlm. 12–13)</td><td>Layar game, token sesi, mode penelitian</td></tr>
+    <tr><td>Empat proses: pemilihan aktivitas, presentasi, pemrosesan respons, skor ringkasan</td><td>Almond dkk. (2002, hlm. 5); Mislevy dkk. (2003, hlm. 55–56)</td><td>Benar/salah dan bintang dihitung di server; kunci jawaban tidak pernah dikirim ke peramban</td></tr>
+    <tr><td>Lima lapis ECD: analisis ranah, pemodelan ranah, CAF, implementasi, penyampaian</td><td>Mislevy &amp; Haertel (2006, hlm. 7)</td><td>Penelitian pendahuluan → tahap 1 (CAF) → tahap 3 (implementasi) → tahap 5 (penyampaian)</td></tr>
+  </tbody>
+</table>
+<p>Pemakaian ECD di dalam game juga punya preseden. <em>Stealth assessment</em> Shute (2011) menjadikan ECD salah satu dari dua unsur kunci asesmen yang "dijalin langsung ke dalam lingkungan pembelajaran", dengan data kinerja dikumpulkan terus-menerus selama bermain (hlm. 504–505).</p>
+
+<h3>5.5 Setiap putaran uji punya nama dan dasar</h3>
+<p>Semua putaran yang sudah direncanakan GELITA punya padanan resmi di tabel Nieveen &amp; Folmer (2013). Telaah pendahuluan berbantuan AI adalah <em>screening</em>. Validasi tujuh ahli adalah <em>focus group/expert appraisal</em>. Telaah ahli media pada layar jadi adalah <em>walkthrough</em>. Uji keterbacaan dan berpikir lantang adalah <em>micro-evaluation</em>/evaluasi satu-satu. Uji coba satu kelas adalah <em>try-out</em>. Penguji bisa melihat alasan setiap putaran, dan pemetaan lengkapnya ada di bagian 7.</p>
+
+<h3>5.6 Keluarannya dua: produk dan prinsip desain</h3>
+<p>Plomp menyebut dua keluaran utama studi pengembangan: intervensi berbasis penelitian dan prinsip desain yang bisa dipakai ulang (Tabel 1, hlm. 23; hlm. 35). Inilah yang membuat kata "model" di judul bisa dipertanggungjawabkan sebagai sumbangan teoretis. Format prinsip desain dari van den Akker (1999, hlm. 9, dikutip Plomp, 2013, hlm. 24):</p>
+<blockquote>"If you want to design &lt;intervention X&gt; for the &lt;purpose/function Y&gt; in &lt;context Z&gt;, then you are best advised to give &lt;that intervention&gt; the &lt;characteristics A, B, and C&gt; [substantive emphasis], and to do that via &lt;procedures K, L, and M&gt; [procedural emphasis], because of &lt;arguments P, Q, and R&gt;." <span class="src">— van den Akker (1999), dalam Plomp (2013, hlm. 24)</span></blockquote>
+<p>Calon prinsip desain sudah ada di catatan keputusan, misalnya:</p>
+<ul>
+  <li>topik Skenario Digital sama di tiap wilayah dan kerumitannya yang naik, supaya topik tidak tercampur dengan tingkat kesulitan;</li>
+  <li>yang dinilai adalah percobaan pertama, sedangkan kesempatan berikutnya untuk belajar;</li>
+  <li>kunci jawaban dan penilaian tetap di server;</li>
+  <li>bacaan dan pernyataan D1 tidak dibacakan, supaya yang terukur tetap kemampuan membaca.</li>
+</ul>
+
+<h3>5.7 Sudah dikenal di Indonesia</h3>
+<p>Plomp (2013, hlm. 26) memakai penelitian desain Fauzan di Indonesia sebagai contoh. Lima artikel jurnal Indonesia yang halamannya dibuka menyebut model Plomp sebagai model pengembangannya: Ferita &amp; Retnawati (2016), Djidu &amp; Jailani (2018), Siregar dkk. (2021), Fitrianty dkk. (2022), dan Wardhani (2024). Sebagian besar di bidang pendidikan matematika. Ini cukup untuk menyebut model Plomp "sering dipakai", tetapi bukan hitungan sistematis. Catatan: sebagian penelitian Indonesia merujuk Plomp 2010 atau menyebut empat sampai lima fase. Rujuk Plomp (2013) secara langsung supaya fasenya jelas.</p>
+
+<h2>6. Mengapa bukan model lain</h2>
+<table>
+  <thead><tr><th style="width:17%">Model</th><th style="width:40%">Isi menurut sumber aslinya</th><th>Kecocokan dengan GELITA</th></tr></thead>
+  <tbody>
+    <tr><td><b>ADDIE</b><br>Branch (2009)</td><td>Analyze, Design, Develop, Implement, Evaluate. Branch menyebutnya "a product development paradigm and not a model per se" (hlm. 1), bersifat iteratif dan nonlinier, dengan uji rintis (<em>pilot test</em>) di fase Develop.</td><td>Bisa dipetakan, tetapi umum sekali. Tidak memberi kriteria mutu untuk instrumen asesmen atau bukti validitas, dan Implement menggabungkan uji coba dengan pengambilan data utama. Aman di mata penguji, tetapi tidak menambah apa pun pada argumen pengukuran.</td></tr>
+    <tr><td><b>4D</b><br>Thiagarajan dkk. (1974)</td><td>Define (analisis awal-akhir, peserta didik, tugas, konsep, perumusan tujuan; hlm. 6), Design (hlm. 7), Develop (telaah ahli dan uji pengembangan; hlm. 8), Disseminate (uji validasi, pengemasan, difusi dan adopsi; hlm. 9). Awalnya untuk bahan pelatihan guru anak berkebutuhan khusus.</td><td>Develop cocok dengan tahap 2–4, dan uji validasi di Disseminate bisa menampung pengambilan data utama. Namun pengemasan, difusi, dan adopsi di luar rencana; Define berorientasi tujuan pembelajaran; dan tidak ada kriteria mutu untuk alat ukur atau keluaran teoretis.</td></tr>
+    <tr><td><b>Borg &amp; Gall</b><br>(1983, hlm. 775–776)</td><td>Sepuluh langkah, dari pengumpulan informasi sampai diseminasi, dengan tiga uji lapangan (awal, utama, operasional). Uji lapangan utama mengumpulkan data kuantitatif sebelum dan sesudah, dan hasilnya dibandingkan dengan kelompok kontrol "when appropriate". Angka sekolah dan subjek (mis. 5–15 sekolah, 30–100 subjek) adalah praktik proyek <em>minicourse</em> Far West Laboratory, bukan aturan umum.</td><td>Paling dekat dengan rangkaian uji lapangan GELITA, tetapi GELITA hanya punya satu uji coba dan satu pengambilan data utama. Langkah 7–10 (revisi operasional, uji lapangan operasional, revisi akhir, diseminasi) tidak ada, jadi penelitian berhenti di langkah 6 dan harus dijelaskan. Bisa jadi cadangan kalau program studi mewajibkannya. Jangan rujuk edisi 2003 (Gall, Gall, &amp; Borg) untuk sepuluh langkah ini: edisi itu tampaknya memakai siklus berbasis Dick &amp; Carey.</td></tr>
+    <tr><td><b>Sugiyono</b><br>(2013, hlm. 298)</td><td>Sepuluh langkah: potensi dan masalah, pengumpulan data, desain produk, validasi desain, revisi desain, uji coba produk, revisi produk, uji coba pemakaian, revisi produk, produksi masal. Contoh di babnya dari bidang manajemen.</td><td>Diakhiri produksi masal, yang tidak relevan untuk GELITA, dan tidak mengatur bukti validitas alat ukur.</td></tr>
+    <tr><td><b>MDLC dan GDLC</b><br>Luther (1994); Ramadan &amp; Widyani (2013)</td><td>Luther: Concept, Design, Collecting Content Material, Assembly, Testing, Distribution; nama "MDLC" diberikan kemudian. GDLC: initiation, pre-production, production, testing, beta, release (fase dari sumber sekunder Aleem dkk., 2016).</td><td>Siklus produksi perangkat lunak, bukan desain penelitian. Paling jauh hanya menggambarkan kerja internal tahap 3.</td></tr>
+    <tr><td><b>McKenney &amp; Reeves</b><br>(2019)</td><td>Analisis dan eksplorasi, desain dan konstruksi, evaluasi dan refleksi, dikelilingi implementasi dan penyebaran; keluaran ganda (intervensi dan pengetahuan).</td><td>Satu keluarga dengan Plomp, tetapi kurang preskriptif. Cocok sebagai rujukan pendukung untuk keluaran ganda.</td></tr>
+    <tr><td><b>Richey &amp; Klein</b><br>(2007)</td><td>Dua jenis penelitian desain dan pengembangan: penelitian produk dan alat, dan penelitian model.</td><td>Label alternatif yang sah (GELITA masuk penelitian produk dan alat), tetapi kurang operasional untuk menyusun tahapan.</td></tr>
+  </tbody>
+</table>
+
+<h2>7. Pemetaan peta jalan GELITA ke model Plomp</h2>
+<table>
+  <thead><tr><th style="width:15%">Tahap GELITA (gerbang)</th><th style="width:11%">Fase Plomp</th><th style="width:17%">Prototipe (tahap Nieveen &amp; Folmer)</th><th style="width:20%">Metode evaluasi formatif</th><th style="width:14%">Kriteria utama</th><th>Bukti utama</th></tr></thead>
+  <tbody>
+    <tr><td>Sebelum tahap 1 (sudah ada di 01, 05, 10, dan game kelas 5 sekarang)</td><td>Penelitian pendahuluan</td><td>Menghasilkan usulan desain</td><td>Kajian pustaka, telaah produk lama</td><td>Relevansi</td><td>Konstruk D1–D3, peta bukti, telaah butir lama (05), telaah media pendahuluan (10)</td></tr>
+    <tr><td>1 Desain instrumen (G1)</td><td>Prototipe, iterasi 1</td><td>Prototipe I: usulan desain → desain global (06, 08, 11, 12, mock-up)</td><td><em>Screening</em> / evaluasi diri: telaah pendahuluan berbantuan AI (09, 10)</td><td>Relevansi, konsistensi</td><td>Daftar periksa; cacat jelas dibetulkan sebelum ke ahli</td></tr>
+    <tr><td>2 Validasi ahli dan izin etik (G2)</td><td>Prototipe, iterasi 2</td><td>Prototipe I (berbasis kertas dan mock-up)</td><td><em>Focus group/expert appraisal</em>: tujuh ahli; <em>micro-evaluation</em>: uji keterbacaan dengan beberapa anak di luar sampel</td><td>Relevansi, konsistensi, kepraktisan diharapkan</td><td>V Aiken, I-CVI, S-CVI/Ave; κ berbobot pelabelan buta ≥ 0,70</td></tr>
+    <tr><td>3 Dokumen implementasi dan perubahan sistem (G3)</td><td>Prototipe, iterasi 3</td><td>Prototipe II: sebagian rinci → lengkap (instalasi uji)</td><td><em>Walkthrough</em>: ahli media langkah 2; <em>screening</em>: tes otomatis</td><td>Konsistensi, kepraktisan diharapkan</td><td>Instrumen media, uji delapan perangkat</td></tr>
+    <tr><td>4 Uji coba satu kelas (G4)</td><td>Prototipe, iterasi 4</td><td>Prototipe III: lengkap</td><td><em>Micro-evaluation</em>/satu-satu: berpikir lantang 5–8 siswa; <em>try-out</em>: satu kelas dengan semua lembar</td><td>Kepraktisan nyata; keefektifan diharapkan</td><td>Protokol berpikir lantang, κ L4 ≥ 0,60, penetapan ambang waktu; pra-registrasi OSF</td></tr>
+    <tr><td>5 Pengambilan data utama (G5)</td><td>Penilaian (semi-sumatif)</td><td>Produk final</td><td><em>Try-out</em> skala penuh / uji lapangan</td><td>Kepraktisan dan keefektifan nyata</td><td>Log game dan lembar L0–L7, sekitar 300 siswa</td></tr>
+    <tr><td>6 Analisis dan pelaporan</td><td>Penilaian + refleksi</td><td>Produk dan prinsip desain</td><td>—</td><td>Semua</td><td>Rasch, DIF, pola kesalahan, validitas kriteria; prinsip desain</td></tr>
+  </tbody>
+</table>
+
+<h2>8. Kriteria mutu yang diterjemahkan untuk GELITA</h2>
+<table>
+  <thead><tr><th style="width:17%">Kriteria</th><th style="width:38%">Arti untuk GELITA sebagai model asesmen</th><th>Bukti yang sudah direncanakan</th></tr></thead>
+  <tbody>
+    <tr><td><b>Relevansi</b></td><td>Butir dan tugas mewakili konstruk literasi digital D1–D3 dan konteks budaya Kedu.</td><td>I-CVI, V Aiken, S-CVI/Ave dari panel ahli materi; ahli budaya Kedu; kisi-kisi 06</td></tr>
+    <tr><td><b>Konsistensi</b></td><td>Rantai klaim–bukti–tugas ECD utuh; label dimensi dan level AKM disepakati ahli.</td><td>Peta bukti, kamus data 11, κ berbobot pelabelan buta ≥ 0,70</td></tr>
+    <tr><td><b>Kepraktisan</b></td><td>Diharapkan: ahli menilai game bisa dipakai di perangkat dan kelas sasaran. Nyata: game berjalan di perangkat sekolah, sesi muat dalam waktu, dan siswa bisa bermain tanpa bantuan isi soal.</td><td>Uji delapan perangkat, telaah ahli media; log penyelesaian, "dilewati", waktu aktif; L1 (kondisi sesi), L3 (bantuan), L4 (keterlibatan)</td></tr>
+    <tr><td><b>Keefektifan</b></td><td>Skor game mengukur dengan baik.</td><td>Kecocokan Rasch (MNSQ 0,5–1,5 "productive for measurement"; Linacre, 2002); reliabilitas dan separasi; urutan wilayah di peta Wright; DIF antarvariasi; korelasi dengan tes awal–akhir</td></tr>
+  </tbody>
+</table>
+<div class="box warn">
+  <div class="box-title">Catatan tentang uji beda tes awal–akhir</div>
+  <p style="margin-bottom:0">Rencana analisis di 01 menyebut "uji beda tes awal dan akhir". Desain satu kelompok dengan tes awal dan akhir termasuk desain pra-eksperimen (Campbell &amp; Stanley, 1963). Perubahannya bisa disebabkan sejarah dan kematangan (hlm. 7), efek tes dan instrumentasi (hlm. 9), serta pada beberapa kasus regresi statistik (hlm. 10). Tanpa kelompok kontrol, uji ini tidak bisa menunjukkan bahwa game menyebabkan perubahan. Usulannya: pakai tes awal–akhir terutama sebagai bukti validitas kriteria (korelasi dengan kemampuan Rasch), dan laporkan uji bedanya sebagai temuan eksploratif.</p>
+</div>
+
+<h2>9. Yang perlu dilengkapi</h2>
+<ol>
+  <li><b>Sebut nama modelnya</b> di Bab III, berikut tabel pemetaan di bagian 7. Keputusannya sudah tercatat di 04.</li>
+  <li><b>Tulis penelitian pendahuluan sebagai fase tersendiri.</b> Plomp meminta analisis kebutuhan dan konteks, kajian pustaka, dan kerangka konseptual (hlm. 19). Bahannya sudah tersebar di 01, 05, 10, dan game kelas 5. Yang masih tipis adalah data konteks sekolah sasaran.</li>
+  <li><b>Definisikan kepraktisan secara eksplisit.</b> Karena guru tidak ikut, kepraktisan harus diambil dari log, L1, L3, dan L4. Perlu diputuskan apakah itu cukup, atau perlu beberapa pertanyaan untuk siswa setelah uji coba.</li>
+  <li><b>Definisikan keefektifan sebagai mutu pengukuran,</b> dan jadikan uji beda tes awal–akhir eksploratif (lihat catatan di bagian 8).</li>
+  <li><b>Beri nomor prototipe (I, II, III)</b> dan kaitkan setiap revisi dengan buktinya di 04, supaya iterasinya kelihatan.</li>
+  <li><b>Rumuskan prinsip desain</b> dengan format van den Akker di akhir penelitian.</li>
+  <li><b>Aturan I-CVI: aturan Lynn (diputuskan 26 Oktober 2026).</b> Dengan lima ahli atau kurang, butir hanya lolos kalau semua ahli setuju (I-CVI = 1,00), seperti dikutip Polit &amp; Beck (2006, hlm. 491). Aturan Polit, Beck, &amp; Owen (2007, hlm. 466–467) yang lebih longgar tidak dipakai. Aturan itu menuntut kesepakatan sempurna hanya untuk tiga atau empat ahli, dan menerima butir bila I-CVI ≥ 0,78 dan S-CVI/Ave ≥ 0,90, dengan kappa termodifikasi k*. Akibatnya bagi GELITA: dengan lima ahli, empat setuju (I-CVI 0,80) berarti butir direvisi atau dibuang, walaupun menurut Polit dkk. butir itu "sangat baik" (k* = 0,76). Instrumen v2.1 menulis aturan ini terang-terangan di D.6.</li>
+</ol>
+
+<h2>10. Tabel ringkasan</h2>
+<h3>A. Model penelitian dan pengembangan</h3>
+<table>
+  <thead><tr><th style="width:22%">Model</th><th style="width:36%">Fase</th><th style="width:26%">Kecocokan dengan GELITA</th><th>Putusan</th></tr></thead>
+  <tbody>
+    <tr><td>Plomp (2013), EDR studi pengembangan</td><td>Penelitian pendahuluan → prototipe (iteratif, formatif) → penilaian (semi-sumatif); refleksi dan dokumentasi sepanjang jalan</td><td>Cocok dengan gerbang, klaim pengukuran, prinsip desain</td><td class="verdict yes">Dipakai</td></tr>
+    <tr><td>McKenney &amp; Reeves (2019)</td><td>Analisis/eksplorasi → desain/konstruksi → evaluasi/refleksi; implementasi dan penyebaran</td><td>Satu keluarga, kurang preskriptif</td><td class="verdict mid">Rujukan pendukung</td></tr>
+    <tr><td>Richey &amp; Klein (2007)</td><td>Penelitian produk dan alat / penelitian model</td><td>Label sah, kurang operasional</td><td class="verdict mid">Alternatif</td></tr>
+    <tr><td>Borg &amp; Gall (1983)</td><td>Sepuluh langkah, tiga uji lapangan</td><td>Dekat, tetapi langkah 7–10 tidak dipakai</td><td class="verdict mid">Cadangan bila diwajibkan</td></tr>
+    <tr><td>Sugiyono (2013)</td><td>Sepuluh langkah, berakhir produksi masal</td><td>Tidak mengatur bukti validitas alat ukur</td><td class="verdict no">Tidak disarankan</td></tr>
+    <tr><td>4D, Thiagarajan dkk. (1974)</td><td>Define, Design, Develop, Disseminate</td><td>Develop cocok; pengemasan dan difusi kosong</td><td class="verdict no">Tidak disarankan</td></tr>
+    <tr><td>ADDIE, Branch (2009)</td><td>Analyze, Design, Develop, Implement, Evaluate</td><td>Umum, tanpa logika pengukuran</td><td class="verdict no">Tidak disarankan</td></tr>
+    <tr><td>Luther (1994); GDLC (2013)</td><td>Siklus produksi</td><td>Rekayasa saja</td><td class="verdict mid">Paling jauh di tahap 3</td></tr>
+  </tbody>
+</table>
+
+<h3>B. Metode dan analisis</h3>
+<table>
+  <thead><tr><th style="width:19%">Tujuan</th><th style="width:27%">Metode</th><th style="width:27%">Kriteria atau statistik</th><th>Rujukan</th></tr></thead>
+  <tbody>
+    <tr><td>Validitas isi</td><td>Penilaian ahli, skala relevansi 1–4</td><td>V Aiken; I-CVI; S-CVI/Ave ≥ 0,90; k*</td><td>Aiken (1985); Lynn (1986); Polit &amp; Beck (2006); Polit dkk. (2007)</td></tr>
+    <tr><td>Kesepakatan label</td><td>Pelabelan buta oleh dua ahli</td><td>κ berbobot ≥ 0,70</td><td>Cohen (1960, 1968)</td></tr>
+    <tr><td>Mutu media</td><td>Heuristik, skala keparahan 0–4, uji perangkat</td><td>Rerata skor, aturan veto</td><td>Nielsen (1994a, 1994b); Wahono (2006); Leacock &amp; Nesbit (2007)</td></tr>
+    <tr><td>Proses respons</td><td>Berpikir lantang; wawancara L5</td><td>Pengodean kualitatif</td><td>Ericsson &amp; Simon (1993); AERA dkk. (2014)</td></tr>
+    <tr><td>Pengamatan</td><td>L4 adaptasi BROMP</td><td>κ ≥ 0,60 per skema</td><td>Ocumpaugh dkk. (2015)</td></tr>
+    <tr><td>Struktur internal</td><td>Rasch per dimensi, satu vs multidimensi, DIF a/b, butir jangkar</td><td>MNSQ 0,5–1,5; reliabilitas dan separasi; peta Wright</td><td>Bond &amp; Fox (2015); Linacre (2002); Adams dkk. (1997)</td></tr>
+    <tr><td>Hubungan dengan variabel lain</td><td>Tes awal–akhir, metrik kata sandi</td><td>Korelasi</td><td>AERA dkk. (2014)</td></tr>
+    <tr><td>Kesempatan dan waktu</td><td>Model kejadian waktu-diskret dengan sensor; model campuran</td><td>—</td><td>Singer &amp; Willett (2003)</td></tr>
+    <tr><td>Kesungguhan</td><td>Tanda tebakan cepat</td><td><em>Response time effort</em></td><td>Wise &amp; Kong (2005)</td></tr>
+    <tr><td>Desain tes awal–akhir</td><td>Satu kelompok, tanpa kontrol</td><td>Eksploratif saja</td><td>Campbell &amp; Stanley (1963)</td></tr>
+    <tr><td>Keterbukaan</td><td>Pra-registrasi OSF di G4</td><td>—</td><td>Nosek dkk. (2018)</td></tr>
+  </tbody>
+</table>
+
+<h3>C. Teori dan kerangka</h3>
+<table>
+  <thead><tr><th style="width:17%">Bidang</th><th style="width:28%">Teori atau kerangka</th><th style="width:28%">Peran di GELITA</th><th>Rujukan</th></tr></thead>
+  <tbody>
+    <tr><td>Desain penelitian</td><td>EDR, kriteria mutu, evaluasi formatif, prinsip desain</td><td>Kerangka seluruh penelitian</td><td>Plomp (2013); Nieveen (1999); Nieveen &amp; Folmer (2013); Tessmer (1993); van den Akker (1999)</td></tr>
+    <tr><td>Desain asesmen</td><td>Evidence-Centered Design</td><td>Model siswa, bukti, tugas, perakitan, penyampaian</td><td>Mislevy dkk. (2003); Almond dkk. (2002); Mislevy &amp; Haertel (2006)</td></tr>
+    <tr><td>Asesmen dalam game</td><td><em>Stealth assessment</em></td><td>Bukti diambil dari permainan</td><td>Shute (2011); Shute &amp; Ventura (2013)</td></tr>
+    <tr><td>Penyusunan ukuran</td><td>Empat blok bangunan (BEAR)</td><td>Peta konstruk, desain butir, ruang hasil (kode kesalahan, skor 0–1–2), model Rasch</td><td>Wilson (2005)</td></tr>
+    <tr><td>Validitas</td><td>Validitas terpadu; argumen interpretasi/penggunaan; lima sumber bukti</td><td>Kerangka bab validitas</td><td>Messick (1995); Kane (2013); AERA dkk. (2014)</td></tr>
+    <tr><td>Literasi digital</td><td>Empat pilar; DigComp 3.0</td><td>Dimensi D1–D3</td><td>Kominfo &amp; Katadata (2023); Cosgrove &amp; Cachia (2025); Gilster (1997)</td></tr>
+    <tr><td>Literasi membaca</td><td>Level AKM; empat proses PIRLS 2026</td><td>Level untuk D1</td><td>von Davier &amp; Kennedy (2024)</td></tr>
+    <tr><td>Tingkat kognitif</td><td>Bloom revisi; DOK; SOLO</td><td>Label butir</td><td>Anderson &amp; Krathwohl (2001); Webb (1999); Biggs &amp; Collis (1982)</td></tr>
+    <tr><td>Etnopedagogi</td><td>Kearifan lokal sebagai sumber belajar; pengajaran responsif budaya</td><td>Isi budaya Kedu, D3</td><td>Alwasilah dkk. (2009); Gay (2018)</td></tr>
+    <tr><td>Pembelajaran berbasis game</td><td>Motivasi intrinsik; flow; prinsip belajar dalam game</td><td>Aturan tiga kesempatan, Serpihan Cahaya, cerita</td><td>Malone (1981); Malone &amp; Lepper (1987); Csikszentmihalyi (1990); Gee (2003)</td></tr>
+    <tr><td>Multimedia</td><td>Teori kognitif pembelajaran multimedia</td><td>Aturan narasi, tata letak layar</td><td>Mayer (2021)</td></tr>
+    <tr><td>Umpan balik</td><td>Umpan balik formatif</td><td>Umpan balik setelah percobaan salah; analitik 9</td><td>Shute (2008); Hattie &amp; Timperley (2007)</td></tr>
+    <tr><td>Analitik</td><td>Analitik pembelajaran untuk game</td><td>10 analitik, alur log</td><td>Freire dkk. (2016)</td></tr>
+  </tbody>
+</table>
+
+<h2>11. Rincian yang mudah keliru dikutip</h2>
+<p>Rumusan di kolom kiri sering ditulis dari ingatan, termasuk di draf awal dokumen ini. Kolom kanan adalah hasil cek ke sumber aslinya.</p>
+<table>
+  <thead><tr><th style="width:31%">Rumusan yang keliru atau kurang tepat</th><th>Hasil cek ke sumber asli</th></tr></thead>
+  <tbody>
+    <tr><td>Kriteria Nieveen: valid, praktis, efektif, masing-masing "diharapkan" lalu "nyata"</td><td>Tiga kriteria memang dari Nieveen (1999). Pembedaan diharapkan/nyata baru ada di Nieveen &amp; Folmer (2013, hlm. 160–161); di Nieveen (1999) tidak ditemukan. Plomp (2013, hlm. 29) memecah validitas jadi relevansi dan konsistensi.</td></tr>
+    <tr><td>ADDIE "tidak menjelaskan cara mengevaluasi prototipe"</td><td>Terlalu keras. Branch (2009) memuat uji rintis di fase Develop dan menyebut ADDIE iteratif dan nonlinier. Yang tetap benar: tidak ada kriteria mutu khusus alat ukur.</td></tr>
+    <tr><td>4D: "Disseminate akan kosong"</td><td>Sebagian. Langkah pertamanya, uji validasi, adalah evaluasi sumatif dan bisa menampung pengambilan data utama. Yang kosong adalah pengemasan serta difusi dan adopsi (Thiagarajan dkk., 1974, hlm. 9).</td></tr>
+    <tr><td>Borg &amp; Gall: uji lapangan utama "sering dengan kelompok kontrol"</td><td>Teksnya: dibandingkan dengan kelompok kontrol "when appropriate". Angka sekolah dan subjek adalah praktik proyek <em>minicourse</em> Far West Laboratory (Borg &amp; Gall, 1983, hlm. 775–776).</td></tr>
+    <tr><td>"Sugiyono (2015)" untuk sepuluh langkah</td><td>Sepuluh langkah ada di <em>Metode Penelitian Kuantitatif, Kualitatif, dan R&amp;D</em>, Bab 16, Gambar 16.1, hlm. 298 (dicek pada cetakan 2013). Buku R&amp;D 2015 belum terbukti memuat gambar itu.</td></tr>
+    <tr><td>"MDLC (Luther)"</td><td>Luther (1994) menulis enam langkah dengan nama "Collecting Content Material", bukan "material collecting". Nama MDLC diberikan kemudian.</td></tr>
+    <tr><td>ECD: "delivery model" dan lima lapis dari Mislevy dkk. (2003)</td><td>CAF di Mislevy dkk. (2003, hlm. 22) berisi lima model. Delivery Model ada di Almond dkk. (2002, hlm. 12–13). Lima lapis ECD dirumuskan di Mislevy &amp; Haertel (2006, hlm. 7).</td></tr>
+    <tr><td>Infit/outfit 0,5–1,5 dirujuk ke Bond &amp; Fox (2015)</td><td>Rujukan tepatnya Linacre (2002): "0.5 - 1.5 Productive for measurement".</td></tr>
+    <tr><td>Adams dkk. (1997) untuk model satu vs multidimensi</td><td>Rujukannya benar, tetapi istilah <em>between-item</em>/<em>within-item</em> hanya terkonfirmasi lewat sumber sekunder (Briggs &amp; Wilson, 2003, hlm. 98).</td></tr>
+    <tr><td>Kominfo &amp; Katadata (2022), pilar "Cakap/Etis/Aman/Budaya Bermedia Digital"</td><td>Diluncurkan Februari 2023. Laporannya memakai istilah Kecakapan Digital, Etika Digital, Keamanan Digital, dan Budaya Digital. Nama "… Bermedia Digital" adalah judul modul Kominfo tahun 2021.</td></tr>
+    <tr><td>Webb (1997) untuk level DOK</td><td>Webb (1997) hanya memuat kriteria "depth of knowledge consistency" (hlm. 15–17). Empat level bernomor (Recall, Skill/Concept, Strategic Thinking, Extended Thinking) ada di Webb (1999, hlm. 2).</td></tr>
+    <tr><td>Malone (1981) untuk motivasi intrinsik</td><td>Malone (1981) menyebut tiga: tantangan, fantasi, rasa ingin tahu. Kendali (<em>control</em>) ditambahkan Malone &amp; Lepper (1987, hlm. 224).</td></tr>
+    <tr><td>Model Plomp "banyak dipakai di disertasi Indonesia"</td><td>Yang terbukti: sering dipakai di artikel jurnal pengembangan Indonesia, terutama pendidikan matematika. Klaim tentang disertasi tidak dicek.</td></tr>
+    <tr><td>"I-CVI = 1,00 untuk 3–5 ahli"</td><td>Benar menurut Lynn (1986), seperti dikutip Polit &amp; Beck (2006, hlm. 491). Polit dkk. (2007) memakai aturan yang lebih longgar. GELITA memakai aturan Lynn (bagian 9, butir 7).</td></tr>
+  </tbody>
+</table>
+
+<h2>12. Koreksi rujukan di dokumen Revisi 10</h2>
+<p>Hal-hal ini ditemukan saat pengecekan dan sudah dibetulkan di dokumennya pada 26 Oktober 2026, kecuali baris terakhir yang memang sudah tepat.</p>
+<table>
+  <thead><tr><th style="width:17%">Dokumen</th><th style="width:33%">Sebelumnya</th><th>Sekarang</th></tr></thead>
+  <tbody>
+    <tr><td>01 (Cek fakta), 06 (rujukan)</td><td>von Davier, M., &amp; Kennedy, A. M. (Eds.) (2024)</td><td>von Davier, M., &amp; Kennedy, A. (Eds.) (2024), sesuai saran sitasi resminya, dengan DOI 10.6017/lse.tpisc.tr2103.kb4199</td></tr>
+    <tr><td>01, 05, 06 (rujukan)</td><td><em>DigComp 3.0: The European Digital Competence Framework</em></td><td><em>DigComp 3.0: European Digital Competence Framework</em> (tanpa "The", sesuai baris "How to cite" laporannya), dengan DOI 10.2760/0001149</td></tr>
+    <tr><td>05, 06, 07 (rujukan)</td><td>Kominfo &amp; Katadata Insight Center. (2022)</td><td>Tahun terbit 2023 (judulnya tetap "… 2022"), dengan istilah pilar dari laporannya: Kecakapan, Etika, Keamanan, Budaya Digital</td></tr>
+    <tr><td>01 (Pelevelan wilayah, rujukan)</td><td>"Depth of Knowledge Webb", dirujuk ke Webb (1997)</td><td>Webb (1997) tetap, dengan catatan; ditambah Webb (1999), Research Monograph No. 18, sebagai sumber level DOK. Judul rujukan "klasik, tidak dicek ulang" diganti menjadi "dicek ulang 26 Oktober 2026"</td></tr>
+    <tr><td>07 (Koreksi kecil)</td><td>Kriteria I-CVI "3–5 ahli: I-CVI = 1,00" (Lynn)</td><td>Keputusan memakai aturan Lynn ditambahkan; Polit dkk. (2007) masuk rujukan sebagai aturan yang tidak dipakai</td></tr>
+    <tr><td>07 (rujukan)</td><td>Cohen (1968): "Nominal scale agreement <b>with</b> provision for …"</td><td>"Nominal scale agreement provision for scaled disagreement or partial credit" (judul asli, tanpa "with"), dengan DOI</td></tr>
+    <tr><td>02 (L4)</td><td>"adaptasi BROMP", tanpa sertifikasi</td><td>Sudah sesuai. Manual BROMP hanya membolehkan data disebut "BROMP" bila pengamatnya bersertifikat (hlm. 34), jadi sebutan "adaptasi" sudah tepat</td></tr>
+  </tbody>
+</table>
+
+<h2>13. Daftar pustaka</h2>
+<div class="refs">
+<p class="small" style="padding-left:0;text-indent:0">Format APA 7. Tanda di depan setiap entri menunjukkan tingkat pengecekan (lihat bagian 2).</p>
+
+<h3>Model penelitian dan pengembangan</h3>
+<p><span class="tag tK">K</span> Branch, R. M. (2009). <em>Instructional design: The ADDIE approach</em>. Springer. https://doi.org/10.1007/978-0-387-09506-6 (isi: <span class="tag tC">C</span>)</p>
+<p><span class="tag tC">C</span> Borg, W. R., &amp; Gall, M. D. (1983). <em>Educational research: An introduction</em> (4th ed.). Longman.</p>
+<p><span class="tag tK">K</span> Gall, M. D., Gall, J. P., &amp; Borg, W. R. (2003). <em>Educational research: An introduction</em> (7th ed.). Allyn &amp; Bacon.</p>
+<p><span class="tag tC">C</span> Luther, A. C. (1994). <em>Authoring interactive multimedia</em>. AP Professional.</p>
+<p><span class="tag tK">K</span> McKenney, S., &amp; Reeves, T. C. (2019). <em>Conducting educational design research</em> (2nd ed.). Routledge. https://doi.org/10.4324/9781315105642</p>
+<p><span class="tag tC">C</span> Nieveen, N. (1999). Prototyping to reach product quality. In J. van den Akker, R. M. Branch, K. Gustafson, N. Nieveen, &amp; T. Plomp (Eds.), <em>Design approaches and tools in education and training</em> (pp. 125–135). Kluwer Academic. https://doi.org/10.1007/978-94-011-4255-7_10</p>
+<p><span class="tag tA">A</span> Nieveen, N., &amp; Folmer, E. (2013). Formative evaluation in educational design research. In T. Plomp &amp; N. Nieveen (Eds.), <em>Educational design research – Part A: An introduction</em> (pp. 152–169). SLO.</p>
+<p><span class="tag tA">A</span> Plomp, T. (2013). Educational design research: An introduction. In T. Plomp &amp; N. Nieveen (Eds.), <em>Educational design research – Part A: An introduction</em> (pp. 10–51). SLO. https://www.slo.nl/publish/pages/2904/educational-design-research-part-a.pdf</p>
+<p><span class="tag tK">K</span> Ramadan, R., &amp; Widyani, Y. (2013). Game development life cycle guidelines. In <em>2013 International Conference on Advanced Computer Science and Information Systems (ICACSIS)</em> (pp. 95–100). IEEE. https://doi.org/10.1109/ICACSIS.2013.6761558 (fase: <span class="tag tS">S</span> Aleem dkk., 2016)</p>
+<p><span class="tag tK">K</span> Richey, R. C., &amp; Klein, J. D. (2007). <em>Design and development research: Methods, strategies, and issues</em>. Lawrence Erlbaum Associates. https://doi.org/10.4324/9780203826034</p>
+<p><span class="tag tA">A</span> Sugiyono. (2013). <em>Metode penelitian kuantitatif, kualitatif, dan R&amp;D</em> (cet. ke-19). Alfabeta.</p>
+<p><span class="tag tK">K</span> Sugiyono. (2015). <em>Metode penelitian dan pengembangan (research and development): Untuk bidang pendidikan, manajemen, sosial, dan teknik</em>. Alfabeta.</p>
+<p><span class="tag tC">C</span> Tessmer, M. (1993). <em>Planning and conducting formative evaluations: Improving the quality of education and training</em>. Kogan Page. Terbitan ulang Routledge: https://doi.org/10.4324/9780203061978</p>
+<p><span class="tag tA">A</span> Thiagarajan, S., Semmel, D. S., &amp; Semmel, M. I. (1974). <em>Instructional development for training teachers of exceptional children: A sourcebook</em>. Center for Innovation in Teaching the Handicapped, Indiana University. https://eric.ed.gov/?id=ED090725</p>
+<p><span class="tag tC">C</span> van den Akker, J. (1999). Principles and methods of development research. In J. van den Akker, R. M. Branch, K. Gustafson, N. Nieveen, &amp; T. Plomp (Eds.), <em>Design approaches and tools in education and training</em> (pp. 1–14). Kluwer Academic. https://doi.org/10.1007/978-94-011-4255-7_1 (hlm. 9: <span class="tag tS">S</span> Plomp, 2013, hlm. 24)</p>
+
+<h3>Asesmen, validitas, dan analisis</h3>
+<p><span class="tag tK">K</span> Adams, R. J., Wilson, M., &amp; Wang, W.-C. (1997). The multidimensional random coefficients multinomial logit model. <em>Applied Psychological Measurement, 21</em>(1), 1–23. https://doi.org/10.1177/0146621697211001 (istilah <em>between/within-item</em>: <span class="tag tS">S</span> Briggs &amp; Wilson, 2003)</p>
+<p><span class="tag tA">A</span> Almond, R. G., Steinberg, L. S., &amp; Mislevy, R. J. (2002). Enhancing the design and delivery of assessment systems: A four-process architecture. <em>Journal of Technology, Learning, and Assessment, 1</em>(5). https://ejournals.bc.edu/index.php/jtla/article/view/1671</p>
+<p><span class="tag tA">A</span> American Educational Research Association, American Psychological Association, &amp; National Council on Measurement in Education. (2014). <em>Standards for educational and psychological testing</em>. American Educational Research Association.</p>
+<p><span class="tag tK">K</span> Bond, T. G., &amp; Fox, C. M. (2015). <em>Applying the Rasch model: Fundamental measurement in the human sciences</em> (3rd ed.). Routledge. https://doi.org/10.4324/9781315814698</p>
+<p><span class="tag tA">A</span> Campbell, D. T., &amp; Stanley, J. C. (1963). <em>Experimental and quasi-experimental designs for research</em>. Rand McNally.</p>
+<p><span class="tag tK">K</span> Kane, M. T. (2013). Validating the interpretations and uses of test scores. <em>Journal of Educational Measurement, 50</em>(1), 1–73. https://doi.org/10.1111/jedm.12000</p>
+<p><span class="tag tA">A</span> Linacre, J. M. (2002). What do infit and outfit, mean-square and standardized mean? <em>Rasch Measurement Transactions, 16</em>(2), 878. https://www.rasch.org/rmt/rmt162f.htm</p>
+<p><span class="tag tA">A</span> Messick, S. (1995). Validity of psychological assessment: Validation of inferences from persons' responses and performances as scientific inquiry into score meaning. <em>American Psychologist, 50</em>(9), 741–749. https://doi.org/10.1037/0003-066X.50.9.741 (isi dibaca dari versi laporan ETS RR-94-45)</p>
+<p><span class="tag tA">A</span> Mislevy, R. J., &amp; Haertel, G. D. (2006). Implications of evidence-centered design for educational testing. <em>Educational Measurement: Issues and Practice, 25</em>(4), 6–20. https://doi.org/10.1111/j.1745-3992.2006.00075.x</p>
+<p><span class="tag tA">A</span> Mislevy, R. J., Steinberg, L. S., &amp; Almond, R. G. (2003). On the structure of educational assessments. <em>Measurement: Interdisciplinary Research and Perspectives, 1</em>(1), 3–62. https://doi.org/10.1207/S15366359MEA0101_02 (halaman yang dikutip dari versi laporan CRESST CSE 597)</p>
+<p><span class="tag tA">A</span> Nosek, B. A., Ebersole, C. R., DeHaven, A. C., &amp; Mellor, D. T. (2018). The preregistration revolution. <em>Proceedings of the National Academy of Sciences, 115</em>(11), 2600–2606. https://doi.org/10.1073/pnas.1708274114</p>
+<p><span class="tag tK">K</span> Shadish, W. R., Cook, T. D., &amp; Campbell, D. T. (2002). <em>Experimental and quasi-experimental designs for generalized causal inference</em>. Houghton Mifflin.</p>
+<p><span class="tag tA">A</span> Shute, V. J. (2011). Stealth assessment in computer-based games to support learning. In S. Tobias &amp; J. D. Fletcher (Eds.), <em>Computer games and instruction</em> (pp. 503–524). Information Age Publishing.</p>
+<p><span class="tag tK">K</span> Shute, V. J., &amp; Ventura, M. (2013). <em>Stealth assessment: Measuring and supporting learning in video games</em>. MIT Press. https://doi.org/10.7551/mitpress/9589.001.0001</p>
+<p><span class="tag tK">K</span> Singer, J. D., &amp; Willett, J. B. (2003). <em>Applied longitudinal data analysis: Modeling change and event occurrence</em>. Oxford University Press. https://doi.org/10.1093/acprof:oso/9780195152968.001.0001</p>
+<p><span class="tag tK">K</span> Wilson, M. (2005). <em>Constructing measures: An item response modeling approach</em>. Lawrence Erlbaum Associates. https://doi.org/10.4324/9781410611697</p>
+<p><span class="tag tA">A</span> Wise, S. L., &amp; Kong, X. (2005). Response time effort: A new measure of examinee motivation in computer-based tests. <em>Applied Measurement in Education, 18</em>(2), 163–183. https://doi.org/10.1207/s15324818ame1802_2</p>
+
+<h3>Validasi ahli, pengamatan, dan media</h3>
+<p><span class="tag tK">K</span> Aiken, L. R. (1985). Three coefficients for analyzing the reliability and validity of ratings. <em>Educational and Psychological Measurement, 45</em>(1), 131–142. https://doi.org/10.1177/0013164485451012 (rumus V: <span class="tag tS">S</span> Merino &amp; Livia, 2009, hlm. 170)</p>
+<p><span class="tag tK">K</span> Cohen, J. (1960). A coefficient of agreement for nominal scales. <em>Educational and Psychological Measurement, 20</em>(1), 37–46. https://doi.org/10.1177/001316446002000104</p>
+<p><span class="tag tK">K</span> Cohen, J. (1968). Weighted kappa: Nominal scale agreement provision for scaled disagreement or partial credit. <em>Psychological Bulletin, 70</em>(4), 213–220. https://doi.org/10.1037/h0026256</p>
+<p><span class="tag tK">K</span> Ericsson, K. A., &amp; Simon, H. A. (1993). <em>Protocol analysis: Verbal reports as data</em> (Rev. ed.). MIT Press. https://doi.org/10.7551/mitpress/5657.001.0001</p>
+<p><span class="tag tA">A</span> Leacock, T. L., &amp; Nesbit, J. C. (2007). A framework for evaluating the quality of multimedia learning resources. <em>Educational Technology &amp; Society, 10</em>(2), 44–59.</p>
+<p><span class="tag tK">K</span> Lynn, M. R. (1986). Determination and quantification of content validity. <em>Nursing Research, 35</em>(6), 382–385. https://doi.org/10.1097/00006199-198611000-00017 (aturannya: <span class="tag tS">S</span> Polit &amp; Beck, 2006, hlm. 491)</p>
+<p><span class="tag tK">K</span> Nielsen, J. (1994a). Heuristic evaluation. In J. Nielsen &amp; R. L. Mack (Eds.), <em>Usability inspection methods</em> (pp. 25–62). John Wiley &amp; Sons.</p>
+<p><span class="tag tA">A</span> Nielsen, J. (1994b, November 1). <em>Severity ratings for usability problems</em>. Nielsen Norman Group. https://www.nngroup.com/articles/how-to-rate-the-severity-of-usability-problems/</p>
+<p><span class="tag tA">A</span> Ocumpaugh, J., Baker, R. S., &amp; Rodrigo, M. M. T. (2015). <em>Baker Rodrigo Ocumpaugh Monitoring Protocol (BROMP) 2.0 technical and training manual</em>. Teachers College, Columbia University; Ateneo Laboratory for the Learning Sciences.</p>
+<p><span class="tag tA">A</span> Polit, D. F., &amp; Beck, C. T. (2006). The content validity index: Are you sure you know what's being reported? Critique and recommendations. <em>Research in Nursing &amp; Health, 29</em>(5), 489–497. https://doi.org/10.1002/nur.20147</p>
+<p><span class="tag tA">A</span> Polit, D. F., Beck, C. T., &amp; Owen, S. V. (2007). Is the CVI an acceptable indicator of content validity? Appraisal and recommendations. <em>Research in Nursing &amp; Health, 30</em>(4), 459–467. https://doi.org/10.1002/nur.20199</p>
+<p><span class="tag tA">A</span> Wahono, R. S. (2006, 21 Juni). Aspek dan kriteria penilaian media pembelajaran. <em>RomiSatriaWahono.Net</em>. https://romisatriawahono.net/2006/06/21/aspek-dan-kriteria-penilaian-media-pembelajaran/</p>
+
+<h3>Teori dan kerangka</h3>
+<p><span class="tag tK">K</span> Alwasilah, A. C., Suryadi, K., &amp; Karyono, T. (2009). <em>Etnopedagogi: Landasan praktek pendidikan dan pendidikan guru</em>. Kiblat Buku Utama. (tahun 2009 dan definisinya: <span class="tag tS">S</span> Rahayu dkk., 2021, hlm. 137)</p>
+<p><span class="tag tK">K</span> Anderson, L. W., &amp; Krathwohl, D. R. (Eds.). (2001). <em>A taxonomy for learning, teaching, and assessing: A revision of Bloom's taxonomy of educational objectives</em>. Longman.</p>
+<p><span class="tag tK">K</span> Biggs, J. B., &amp; Collis, K. F. (1982). <em>Evaluating the quality of learning: The SOLO taxonomy (Structure of the Observed Learning Outcome)</em>. Academic Press. https://doi.org/10.1016/C2013-0-10375-3</p>
+<p><span class="tag tA">A</span> Cosgrove, J., &amp; Cachia, R. (2025). <em>DigComp 3.0: European digital competence framework</em> (5th ed.). Publications Office of the European Union. https://doi.org/10.2760/0001149</p>
+<p><span class="tag tK">K</span> Csikszentmihalyi, M. (1990). <em>Flow: The psychology of optimal experience</em>. Harper &amp; Row.</p>
+<p><span class="tag tK">K</span> Freire, M., Serrano-Laguna, Á., Manero Iglesias, B., Martínez-Ortiz, I., Moreno-Ger, P., &amp; Fernández-Manjón, B. (2016). Game learning analytics: Learning analytics for serious games. In J. M. Spector, B. B. Lockee, &amp; M. D. Childress (Eds.), <em>Learning, design, and technology: An international compendium of theory, research, practice, and policy</em> (pp. 1–29). Springer. https://doi.org/10.1007/978-3-319-17727-4_21-1</p>
+<p><span class="tag tK">K</span> Gay, G. (2018). <em>Culturally responsive teaching: Theory, research, and practice</em> (3rd ed.). Teachers College Press.</p>
+<p><span class="tag tK">K</span> Gee, J. P. (2003). <em>What video games have to teach us about learning and literacy</em>. Palgrave Macmillan.</p>
+<p><span class="tag tK">K</span> Gilster, P. (1997). <em>Digital literacy</em>. Wiley.</p>
+<p><span class="tag tK">K</span> Hattie, J., &amp; Timperley, H. (2007). The power of feedback. <em>Review of Educational Research, 77</em>(1), 81–112. https://doi.org/10.3102/003465430298487</p>
+<p><span class="tag tA">A</span> Kementerian Komunikasi dan Informatika &amp; Katadata Insight Center. (2023). <em>Status literasi digital di Indonesia 2022</em>. https://cdn1.katadata.co.id/media/microsites/litdik/ReportSurveiStatusLiterasiDigitalIndonesia2022.pdf</p>
+<p><span class="tag tK">K</span> Malone, T. W. (1981). Toward a theory of intrinsically motivating instruction. <em>Cognitive Science, 5</em>(4), 333–369. https://doi.org/10.1207/s15516709cog0504_2</p>
+<p><span class="tag tA">A</span> Malone, T. W., &amp; Lepper, M. R. (1987). Making learning fun: A taxonomy of intrinsic motivations for learning. In R. E. Snow &amp; M. J. Farr (Eds.), <em>Aptitude, learning, and instruction: Vol. 3. Conative and affective process analyses</em> (pp. 223–253). Lawrence Erlbaum Associates.</p>
+<p><span class="tag tK">K</span> Mayer, R. E. (2021). <em>Multimedia learning</em> (3rd ed.). Cambridge University Press. https://doi.org/10.1017/9781316941355 (penerbit mencatat terbit daring 2020)</p>
+<p><span class="tag tK">K</span> Shute, V. J. (2008). Focus on formative feedback. <em>Review of Educational Research, 78</em>(1), 153–189. https://doi.org/10.3102/0034654307313795</p>
+<p><span class="tag tA">A</span> von Davier, M., &amp; Kennedy, A. (Eds.). (2024). <em>PIRLS 2026 assessment frameworks</em>. TIMSS &amp; PIRLS International Study Center, Boston College. https://doi.org/10.6017/lse.tpisc.tr2103.kb4199</p>
+<p><span class="tag tA">A</span> Webb, N. L. (1997). <em>Criteria for alignment of expectations and assessments in mathematics and science education</em> (Research Monograph No. 6). National Institute for Science Education; Council of Chief State School Officers. https://eric.ed.gov/?id=ED414305</p>
+<p><span class="tag tA">A</span> Webb, N. L. (1999). <em>Alignment of science and mathematics standards and assessments in four states</em> (Research Monograph No. 18). https://eric.ed.gov/?id=ED440852</p>
+
+<h3>Sumber sekunder dan contoh pemakaian di Indonesia</h3>
+<p class="small" style="padding-left:0;text-indent:0">Dipakai hanya untuk klaim yang ditandai <span class="tag tS">S</span>, atau sebagai contoh pemakaian model Plomp. Halaman jurnalnya dibuka; data bibliografi di bawah adalah yang terlihat di halaman itu.</p>
+<p>Aleem, S., Capretz, L. F., &amp; Ahmed, F. (2016). <em>Journal of Software Engineering Research and Development, 4</em>(6). https://doi.org/10.1186/s40411-016-0032-7</p>
+<p>Briggs, D. C., &amp; Wilson, M. (2003). <em>Journal of Applied Measurement, 4</em>(1), hlm. 98, catatan 1–2.</p>
+<p>Merino, C., &amp; Livia, J. (2009). <em>Anales de Psicología</em>, hlm. 170. https://revistas.um.es/analesps/article/view/71631</p>
+<p>Rahayu dkk. (2021). <em>Jurnal Ilmiah P2M STKIP Siliwangi, 8</em>(2), hlm. 137. https://e-journal.stkipsiliwangi.ac.id/index.php/p2m/article/view/2963</p>
+<p>Ferita &amp; Retnawati (2016). <em>Pythagoras, 11</em>(1), 69–76. https://jurnal.uny.ac.id/index.php/pythagoras/article/view/9672</p>
+<p>Djidu &amp; Jailani (2018). <em>Jurnal Kependidikan, 2</em>(1), 68–84. https://jurnal.uny.ac.id/index.php/jk/article/view/12689</p>
+<p>Siregar dkk. (2021). <em>JKPM, 7</em>(1). https://journal.lppmunindra.ac.id/index.php/jkpm/article/view/11365</p>
+<p>Fitrianty dkk. (2022). <em>Lattice, 2</em>(1), 91–102. https://ejournal.uinbukittinggi.ac.id/lattice/article/view/5337</p>
+<p>Wardhani (2024). <em>Widyagogik</em>. https://journal.trunojoyo.ac.id/widyagogik/article/view/26052</p>
+</div>
+
+</body>
+</html>

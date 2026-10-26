@@ -161,6 +161,7 @@ Semuanya cocok.
 
 - r10 butir I5: di versi teks, ikon 💡 lepas dari kalimat "Bantuan (tombol )". Periksa di PDF sebelum dicetak.
 - r10 Tabel A2.4 menulis kriteria I-CVI "3–5 ahli: I-CVI = 1,00". Itu benar menurut Lynn (1986), tapi akibatnya satu skor 2 dari satu ahli langsung menggugurkan butir. Tulis ini terang-terangan di D.6, supaya peneliti tidak kaget, dan supaya alasan memilih lima ahli (T1) jelas.
+  - **Diputuskan pemilik proyek (26 Oktober 2026): aturan Lynn tetap dipakai.** Dengan lima ahli atau kurang, butir hanya lolos kalau semua ahli memberi skor 3 atau 4 (I-CVI = 1,00). Aturan Polit, Beck, & Owen (2007) yang lebih longgar (kesepakatan sempurna hanya untuk 3–4 ahli; I-CVI ≥ 0,78 dengan *modified kappa*) tidak dipakai. Akibatnya dengan lima ahli: empat setuju (I-CVI 0,80) berarti butir direvisi atau dibuang. Instrumen v2.1 menulis aturan ini di D.6. Alasan dan rujukannya ada di [dokumen pendukung peneliti](dokumen-pendukung-peneliti/README.md).
 - Kepmendikdasmen Nomor 56 Tahun 2026 masih bertanda "teks resmi perlu dicek". Biarkan tanda itu sampai teksnya dibaca langsung.
 - Modul literasi digital Komdigi masih "t.t.". Untuk definisi pilar, laporan *Status Literasi Digital di Indonesia 2022* (Kominfo & Katadata) sudah memuat definisi empat pilar dan indikatornya, dan bisa ditambahkan ke daftar pustaka.
 
@@ -173,6 +174,7 @@ Semuanya cocok.
 
 ## Rujukan tambahan
 
-- Cohen, J. (1968). Weighted kappa: Nominal scale agreement with provision for scaled disagreement or partial credit. *Psychological Bulletin, 70*(4), 213–220.
-- Kementerian Kominfo & Katadata Insight Center. (2022). *Status Literasi Digital di Indonesia 2022*: [PDF](https://cdn1.katadata.co.id/media/microsites/litdik/ReportSurveiStatusLiterasiDigitalIndonesia2022.pdf).
+- Cohen, J. (1968). Weighted kappa: Nominal scale agreement provision for scaled disagreement or partial credit. *Psychological Bulletin, 70*(4), 213–220: [DOI](https://doi.org/10.1037/h0026256).
+- Kementerian Kominfo & Katadata Insight Center. (2023). *Status Literasi Digital di Indonesia 2022* (diluncurkan Februari 2023): [PDF](https://cdn1.katadata.co.id/media/microsites/litdik/ReportSurveiStatusLiterasiDigitalIndonesia2022.pdf).
+- Polit, D. F., Beck, C. T., & Owen, S. V. (2007). Is the CVI an acceptable indicator of content validity? Appraisal and recommendations. *Research in Nursing & Health, 30*(4), 459–467: [DOI](https://doi.org/10.1002/nur.20199). Aturan yang lebih longgar; tidak dipakai, lihat *Koreksi kecil*.
 - Rujukan lain sama dengan daftar pustaka kedua instrumen dan [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md).

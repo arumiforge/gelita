@@ -5,7 +5,9 @@ paths:
 
 # Research revision sessions (`docs/revisi-10-analitik/`)
 
-The folder is about 430 KB, roughly 200k tokens. Reading it whole fills a session, so keep each session small.
+The Markdown documents total about 460 KB, roughly 200k tokens. Reading them whole fills a session, so keep each session small.
+
+`dokumen-pendukung-peneliti/` holds reading material for researchers and the team (methodology, theory, references checked against their sources). It is not an implementation source: do not read it up front, and do not plan system changes from it. Decisions that come out of it are recorded in `04`.
 
 ## Start
 - Read `00_INDEKS.md`, the newest entry in `04_CATATAN_KEPUTUSAN.md`, the *Pertanyaan yang masih terbuka* and *Peta jalan dan daftar kerja* sections of `01`, and the research-revision rows in `docs/PROGRESS.md`. Nothing else up front.
