@@ -2,7 +2,7 @@
 
 Per 26 Oktober 2026 · Pintu masuk untuk setiap sesi baru di [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
-Dokumen Markdown di folder ini sekitar 670 KB, kira-kira 290 ribu token kalau dibaca utuh. Satu sesi tidak perlu membaca semuanya. Aturan menjaga konteks ada di `.claude/rules/revisi-10.md` dan dimuat otomatis saat berkas di folder ini dibuka.
+Dokumen Markdown di folder ini sekitar 680 KB, kira-kira 300 ribu token kalau dibaca utuh. Satu sesi tidak perlu membaca semuanya. Aturan menjaga konteks ada di `.claude/rules/revisi-10.md` dan dimuat otomatis saat berkas di folder ini dibuka.
 
 ## Mulai sesi baru di sini
 
@@ -17,18 +17,18 @@ Dokumen lain dibaca per bagian sesuai tugas.
 
 | Berkas | Isi | Status | Kapan dibaca | Ukuran |
 | --- | --- | --- | --- | --- |
-| [01](01_REVISI_10_ANALITIK.md) | Dokumen utama: konstruk, 10 analitik, Skenario Digital, skema kesalahan, peran, log, token, kode peserta, peta jalan, pertanyaan terbuka, 22 perubahan sistem | Aktif | Selalu, per bagian | 56 KB |
-| [02](02_LEMBAR_LAPANGAN.md) | Lembar lapangan L0–L7 | Draf, difinalkan di tahap 1 (daftar kerja no. 11) | Saat menyusun lembar atau alur lapangan | 16 KB |
-| [03](03_KODE_DAN_ARTI.md) | Arti semua kode | Rujukan | Cari kode yang dibutuhkan saja | 11 KB |
-| [04](04_CATATAN_KEPUTUSAN.md) | Riwayat keputusan, terbaru di atas | Aktif | Selalu, entri teratas | 18 KB |
-| [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) | Telaah butir bank lama terhadap dimensi | Selesai; keputusannya masuk 06 | Hanya untuk menelusuri alasan | 40 KB |
-| [06](06_KISI_KISI_BANK_SOAL.md) | Kisi-kisi bank soal baru, buklet, jangkar, waktu bermain | Disetujui 25 Oktober 2026 | Per bagian, saat menulis butir, tes, atau dokumen implementasi | 41 KB |
-| [07](07_TELAAH_INSTRUMEN_VALIDASI.md) | Telaah instrumen validasi ahli | Diterima; instrumen v2.1 dan media v1.1 belum ditulis | Saat menulis ulang instrumen | 20 KB |
+| [01](01_REVISI_10_ANALITIK.md) | Dokumen utama: konstruk, 10 analitik, Skenario Digital, skema kesalahan, peran, log, token, kode peserta, peta jalan, pertanyaan terbuka, 22 perubahan sistem | Aktif | Selalu, per bagian | 62 KB |
+| [02](02_LEMBAR_LAPANGAN.md) | Lembar lapangan L0–L7 | Draf, difinalkan di tahap 1 (daftar kerja no. 11) | Saat menyusun lembar atau alur lapangan | 17 KB |
+| [03](03_KODE_DAN_ARTI.md) | Arti semua kode | Rujukan | Cari kode yang dibutuhkan saja | 13 KB |
+| [04](04_CATATAN_KEPUTUSAN.md) | Riwayat keputusan, terbaru di atas | Aktif | Selalu, entri teratas | 37 KB |
+| [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) | Telaah butir bank lama terhadap dimensi | Selesai; keputusannya masuk 06 | Hanya untuk menelusuri alasan | 39 KB |
+| [06](06_KISI_KISI_BANK_SOAL.md) | Kisi-kisi bank soal baru, buklet, jangkar, waktu bermain | Disetujui 25 Oktober 2026 | Per bagian, saat menulis butir, tes, atau dokumen implementasi | 42 KB |
+| [07](07_TELAAH_INSTRUMEN_VALIDASI.md) | Telaah instrumen validasi ahli | Diterima; instrumen v2.1 dan media v1.1 belum ditulis | Saat menulis ulang instrumen | 22 KB |
 | [08](08_DRAF_BANK_SOAL.md) | Draf bank soal baru: 116 butir variasi a/b, 6 jangkar, 12 PBK; pemeriksaan kebocoran keterangan Susun Gambar | Draf, `needs_verification`; variasi Susun Gambar diputuskan 26 Oktober 2026 (gambar baru Wayang Kedu dan Candi Pawon menyusul) | Cari per kode butir (misalnya `wnb-3-a02`) atau judul bagian | 95 KB |
 | [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md) | Telaah pendahuluan T6 atas draf 08 | Selesai; R1–R4 disetujui | Saat menyiapkan paket validasi | 20 KB |
-| [10](10_TELAAH_PENDAHULUAN_MEDIA.md) | Telaah pendahuluan media | Selesai; keputusan masuk 01 | Saat menyiapkan mock-up dan instrumen media | 19 KB |
+| [10](10_TELAAH_PENDAHULUAN_MEDIA.md) | Telaah pendahuluan media | Selesai; keputusan masuk 01 | Saat menyiapkan mock-up dan instrumen media | 18 KB |
 | [11](11_KAMUS_DATA.md) | Kamus data: peta bukti, definisi beku 10 analitik, data yang dinilai, "dilewati", waktu aktif, tersensor, tebakan cepat, kode, aturan gabung lembar | Disetujui 26 Oktober 2026 (`kamus-1.0`); ambang jeda dan tebakan cepat masih sementara | Saat menulis instrumen, lembar, pra-registrasi, atau dokumen implementasi; cari per analitik | 41 KB |
-| [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) | Cerita penghubung dan narasi tantangan kelima, penyesuaian cerita lama, kartu misi, daftar rekaman, hasil pemeriksaan kebocoran cerita | Disetujui 26 Oktober 2026 | Saat menyiapkan rekaman, menulis dokumen implementasi perubahan no. 2 dan no. 16, atau mengubah cerita | 52 KB |
+| [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) | Cerita penghubung dan narasi tantangan kelima, penyesuaian cerita lama, kartu misi, daftar rekaman, hasil pemeriksaan kebocoran cerita | Disetujui 26 Oktober 2026 | Saat menyiapkan rekaman, menulis dokumen implementasi perubahan no. 2 dan no. 16, atau mengubah cerita | 50 KB |
 | [13](13_TES_AWAL_AKHIR.md) | Rancangan tes awal–akhir: kisi-kisi tiga bagian (D1, D2, D3), kesetaraan bentuk A dan B, kode butir, modul tes GELITA, pelaksanaan di P1 dan P5, penskoran, analisis, validasi | Draf; keputusan pemilik proyek 26 Oktober 2026 (modul GELITA bertampilan Bootstrap, batas waktu longgar, topik di luar Kedu); menunggu validasi ahli | Saat menyusun paket validasi, lembar L6, jadwal pertemuan, atau dokumen implementasi perubahan no. 22 | 37 KB |
 | [14](14_TES_BAGIAN_MEMBACA.md) | Tes Bagian 1 Membaca (D1), bentuk A dan B: teks, butir, kunci, kode kesalahan, sumber adaptasi AKM/ANBK | Draf, `needs_verification` | Cari per kode butir (misalnya `tes-mb-A07`) | 63 KB |
 | [15](15_TES_BAGIAN_DIGITAL.md) | Tes Bagian 2 Aman dan etis (D2) dan Bagian 3 Budaya digital (D3), bentuk A dan B | Draf, `needs_verification` | Cari per kode butir (misalnya `tes-ae-B03`) | 66 KB |

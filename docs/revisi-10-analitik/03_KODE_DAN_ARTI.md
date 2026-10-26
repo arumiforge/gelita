@@ -137,6 +137,22 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 | R-SOS | Tekanan teman atau ingin disukai | — |
 | R-ACAK | Alasannya tidak nyambung | — |
 
+## Tes awal–akhir dan angket
+
+Dari [13](13_TES_AWAL_AKHIR.md#kode-butir) dan [16](16_ANGKET_AKSES_DIGITAL.md). Kode dibekukan setelah uji coba memakainya.
+
+| Kode | Arti | Catatan |
+| --- | --- | --- |
+| tes-mb-A07 | Butir tes: bagian, bentuk, nomor. Bagian `mb` Membaca (D1), `ae` Aman dan etis (D2), `bd` Budaya digital (D3); bentuk `A` atau `B` ditulis kapital supaya tidak tertukar dengan variasi game `a` dan `b` | 13 |
+| tes-mb-A-M1 | Teks Bagian 1 (M1–M4) | 14 |
+| tes-bd-A-G1 | Adegan Bagian 3 (G1–G2) | 15 |
+| tes-ct-01 | Contoh soal, tidak diskor, sama di kedua bentuk (01–05) | 14, 15 |
+| ang-01 … ang-17 | Butir angket akses digital di P1 | 16 |
+| ang-21 … ang-23 | Butir risiko daring di P5, hanya dengan izin terpisah; nomor 18–20 sengaja kosong | 16 |
+| `-` | Butir tes atau angket yang tidak dijawab | |
+| 9 / 8 / 7 | Jawaban angket: tidak tahu atau tidak ingat / tidak berlaku / tidak mau menjawab (7 hanya di ang-21 sampai ang-23) | 16 |
+| `not_reached` | Butir tes yang belum pernah tampil saat bagiannya ditutup batas waktu; data hilang di analisis Rasch | 13 |
+
 ## Lembar lapangan
 
 | Kode | Arti | Pengisi |
@@ -147,7 +163,7 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 | L3 | Log bantuan dan gangguan | P3 |
 | L4 | Observasi keterlibatan dan emosi (adaptasi BROMP) | P2 |
 | L5 | Protokol berpikir lantang dan wawancara kognitif | P3 |
-| L6 | Log tes awal–akhir dan angket akses digital | P1 |
+| L6 | Log tes awal–akhir dan angket akses digital: catatan pelaksanaan, karena jawaban tersimpan di modul tes | P1 |
 | L7 | Izin orang tua dan status peserta | P1 |
 
 ## Kode di L1: penyimpangan

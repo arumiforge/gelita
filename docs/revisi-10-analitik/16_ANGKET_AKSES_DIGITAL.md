@@ -467,7 +467,7 @@ Tidak ada pengetikan, jadi ketik ulang 10% tidak diperlukan. Sebagai gantinya, p
 
 ### Variabel untuk kamus data
 
-Ditambahkan ke [11, *Variabel peserta dan sesi*](11_KAMUS_DATA.md#variabel-peserta-dan-sesi) setelah dokumen ini disetujui:
+Masuk [11, *Variabel peserta dan sesi*](11_KAMUS_DATA.md#variabel-peserta-dan-sesi) di `kamus-1.1`, setelah uji coba (keputusan 26 Oktober 2026); `kamus-1.0` tidak diubah:
 
 | Satuan | Kolom | Isi |
 | --- | --- | --- |
@@ -491,7 +491,7 @@ Ditambahkan ke [11, *Variabel peserta dan sesi*](11_KAMUS_DATA.md#variabel-peser
 6. **Boleh tidak menjawab.** Setiap butir boleh dilewati, dan ini tertulis di petunjuk. Siswa yang ingin berhenti boleh berhenti tanpa akibat.
 7. **Kalau anak bercerita.** Angket P1 tidak menanyakan pengalaman buruk, jadi kecil kemungkinan anak bercerita hal yang mengkhawatirkan saat itu. Kalau itu terjadi, peneliti mengikuti protokol etik: koordinator melapor ke ketua peneliti, yang menjalankan langkah rujukan di protokol. Ceritanya tidak dicatat sebagai data angket.
 8. **Butir risiko daring di P5** (diputuskan 26 Oktober 2026). Syaratnya:
-   - Butir ini disebut di permohonan izin etik dan di surat izin orang tua. Siswa yang orang tuanya tidak setuju dengan butir ini tidak melihatnya.
+   - Butir ini disebut di permohonan izin etik dan di surat izin orang tua, dengan centang izin terpisah di surat itu dan di L7 (keputusan 26 Oktober 2026). Siswa tanpa centang itu tidak melihat butir ini, tetapi tetap ikut kegiatan lain.
    - Diisi sendiri di layar, tidak dibacakan, dan tidak ada orang lain yang melihat layar siswa. Denah papan catur dan jarak antarperangkat ikut menjaga privasi.
    - Setelah butir ini, semua siswa, apa pun jawabannya, melihat pesan yang sama tentang kepada siapa bisa bercerita (orang tua, guru, atau kakak peneliti). Dengan begitu, tidak ada siswa yang terlihat berbeda.
    - Prosedur rujukan ditulis di protokol etik: siapa yang melihat jawaban yang perlu ditindaklanjuti, kapan, dan bagaimana kode dihubungkan dengan nama di L7 (hanya oleh ketua peneliti). Penanda rujukan dan catatan tindak lanjut disimpan di luar data penelitian.
@@ -511,14 +511,14 @@ Usulan patokan uji coba: butir yang kosong pada lebih dari 10% siswa, atau dijaw
 
 ## Penyesuaian di dokumen lain
 
-Keputusan pemilik proyek 26 Oktober 2026 membuat penyesuaian ini bisa dikerjakan:
+Status per 26 Oktober 2026, setelah keputusan pemilik proyek:
 
-- **02, L6:** baris angket di tabel instrumen merujuk ke 16 (17 butir di modul, dibaca sendiri, ± 10 menit, ditambah butir risiko daring di P5); status angket dibaca dari modul. Bagian dari daftar kerja no. 11 (lembar final).
-- **02, L7, dan surat izin orang tua:** topik angket disebut, termasuk butir risiko daring di P5 dan persetujuan terpisahnya.
-- **11:** variabel angket di *Variabel peserta dan sesi*.
-- **03:** pola kode `ang-*` serta kode jawaban `8` dan `9`.
-- **07:** angket masuk paket validasi tahap 2 (telaah isi dan bahasa).
-- **01 dan 00:** status daftar kerja no. 10.
+- **02, L6:** selesai. Baris angket dan butir risiko daring di tabel instrumen merujuk ke 16; status angket disalin dari panel peneliti. Lembar finalnya tetap bagian daftar kerja no. 11.
+- **02, L7, dan surat izin orang tua:** selesai. Topik angket disebut, dan butir risiko daring di P5 punya centang izin terpisah.
+- **03:** selesai. Pola kode `ang-*` serta kode jawaban `7`, `8`, dan `9`.
+- **07:** selesai. Angket masuk paket validasi tahap 2 (telaah isi dan bahasa).
+- **01 dan 00:** selesai. Status daftar kerja no. 10.
+- **11:** menunggu `kamus-1.1` setelah uji coba (keputusan 26 Oktober 2026).
 
 ## Keputusan pemilik proyek
 

@@ -131,7 +131,7 @@ Bagian-bagian ini sebaiknya ditulis ulang **sekali**, setelah pemilik proyek mem
 | Butir D3 baru | B.6 (telaah skenario), C.5 (matriks objek) | Tambahkan lembar telaah *Periksa Unggahan* (12 butir), dan baris matriks untuk setiap unggahan tiruan dan sanggar atau pelaku budaya yang disebut |
 | Indikator sikap | G3 pengamat budaya | Diputuskan 25 Oktober 2026: dipakai sebagai skala pendamping sikap lewat Balai Refleksi. G3 menilai butir skala itu setelah disusun |
 | Aturan kesempatan Skenario Digital | Aspek E, B.6 | Diputuskan 25 Oktober 2026: tiga kesempatan seperti tantangan lain; yang dinilai tindakan dan alasan pertama; "kurang tepat" memakai satu kesempatan |
-| Butir jangkar, tes L6 | C5, aspek J ahli materi | Diisi TD sampai tersedia (sudah tertulis) |
+| Butir jangkar, tes awal–akhir | C5, aspek J ahli materi | Butir jangkar ada di draf 08. Butir tes ada di 14 dan 15 (26 Oktober 2026) dan ditelaah bersama bank: pelabelan buta, relevansi, dan butir telaah baru tentang kesetaraan pasangan A dan B ([13](13_TES_AWAL_AKHIR.md#validasi-dan-uji-coba)) |
 | Jumlah butir, bacaan, dan pengecoh per wilayah | Tabel B2–B3, C3 ahli materi, B.6 baris | Disalin dari kisi-kisi 06 |
 
 ## Instrumen ahli media: telaah
@@ -170,7 +170,8 @@ Semuanya cocok.
 1. ~~Pemilik proyek memutuskan T1–T6 dan ahli media.~~ Diterima seluruhnya pada 25 Oktober 2026.
 2. Setelah kisi-kisi 06 dan keputusan D3 selesai, instrumen r10 dan media ditulis ulang sekali sebagai versi 2.1 dan 1.1, dengan semua perubahan di dokumen ini.
 3. Setelah draf bank soal baru ada, Claude menjalankan telaah pendahuluan (T6) sebelum berkas dikirim ke ahli.
-4. Ahli media menilai dalam dua langkah (keputusan 25 Oktober 2026): di tahap 2, game sekarang ditambah mock-up layar baru; setelah tahap 3, telaah singkat layar jadi di instalasi uji sebelum uji coba. Instrumen media v1.1 perlu memuat bagian untuk mock-up.
+4. Ahli media menilai dalam dua langkah (keputusan 25 Oktober 2026): di tahap 2, game sekarang ditambah mock-up layar baru; setelah tahap 3, telaah singkat layar jadi di instalasi uji sebelum uji coba. Instrumen media v1.1 perlu memuat bagian untuk mock-up. Mock-up dan layar jadi itu juga mencakup modul tes dan angket (perubahan sistem no. 22), yang sengaja bertampilan Bootstrap, bukan tampilan game, jadi aspek game di instrumen media tidak berlaku untuknya.
+5. Angket akses digital ([16](16_ANGKET_AKSES_DIGITAL.md)) masuk paket validasi tahap 2: telaah isi oleh Ahli Literasi Digital 1 dan 2, dan telaah bahasa oleh Ahli Bahasa Anak 1 dan 2, termasuk kepekaan butir risiko daring di P5.
 
 ## Rujukan tambahan
 
