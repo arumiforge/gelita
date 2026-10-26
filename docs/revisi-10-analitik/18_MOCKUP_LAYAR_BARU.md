@@ -183,6 +183,8 @@ Usulan bagian mock-up di instrumen media v1.1 (ditulis di 07 → *Langkah beriku
 3. Untuk layar 4 (modul) dan `mk-tk-05` (panel peneliti), aspek game ditandai "tidak berlaku".
 4. Catatan di sampul: gambar adalah mock-up statis, jadi gerak, suara, waktu muat, dan papan ketik sentuh dinilai di langkah 2 (daftar kerja no. 21) pada layar jadi.
 
+**Selesai (26 Oktober 2026):** keempat poin masuk [Instrumen Validasi Ahli Media v1.1](dokumen-pdf/instrumen-validasi-ahli-media-v1.1.pdf), lembar B.8 *Telaah mock-up layar baru*. Layar 3 dipecah menjadi 3a (layar siswa) dan 3b (panel peneliti, aspek game tidak berlaku), dan ditambah baris 7 untuk bacaan bergenre digital. Selain A9 dan C10, butir H9 (tanpa jam selama studi) dan I6 (privasi layar butir risiko daring) juga dinilai dari mock-up.
+
 ## Celah yang ditemukan di dokumen lain
 
 Ditemukan saat menggambar; tidak diperbaiki di sini karena berkasnya milik dokumen lain.

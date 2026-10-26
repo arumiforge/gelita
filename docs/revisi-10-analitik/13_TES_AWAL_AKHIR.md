@@ -268,8 +268,8 @@ Teks untuk siswa (dijelaskan koordinator sesi):
 | 2 | Butir tes masuk paket validasi bersama bank: pelabelan buta dimensi dan level (B.5a di [07](07_TELAAH_INSTRUMEN_VALIDASI.md)), relevansi per butir (B.5b), butir telaah baru tentang kesetaraan pasangan A dan B, dan butir yang ditandai di 14 dan 15 ([hal terbuka](#hal-terbuka-dari-14-dan-15)) | Panel ahli materi: Ahli Bahasa Anak 1 dan 2, Ahli Literasi Digital 1 dan 2, Ahli Pengukuran |
 | 2 | Fakta budaya di teks dan adegan dicek dengan rujukannya | Peneliti |
 | 2 | Uji keterbacaan dengan 3–5 anak kelas 5, setelah izin etik terbit, bersama uji keterbacaan bank. Modul belum ada, jadi butir ditampilkan di mock-up layar modul (gambar atau halaman statis) di perangkat kelas | Peneliti |
-| 2 | Mock-up layar modul tes dan angket ikut ditelaah ahli media langkah 1 (daftar kerja no. 20 di 01) | Ahli Media Pembelajaran |
-| 3 | Modul dibangun; penskoran diuji otomatis dengan jawaban contoh untuk setiap butir; layar jadi ikut ditelaah ahli media langkah 2 sebelum uji coba (daftar kerja no. 21, G3) | Pengembang, Ahli Media Pembelajaran |
+| 2 | Mock-up layar modul tes dan angket ikut ditelaah ahli media langkah 1 (daftar kerja no. 20 di 01) | Ahli Media Pembelajaran 1–3 |
+| 3 | Modul dibangun; penskoran diuji otomatis dengan jawaban contoh untuk setiap butir; layar jadi ikut ditelaah ahli media langkah 2 sebelum uji coba (daftar kerja no. 21, G3) | Pengembang, Ahli Media Pembelajaran 1–3 |
 | 4 | Uji coba satu kelas dengan kedua bentuk di modul: waktu per bagian (untuk menetapkan batas waktu), tingkat kesukaran (proporsi benar 0,20–0,90), daya beda (korelasi butir–total ≥ 0,20), pengecoh yang tidak pernah dipilih, dan beda rata-rata bentuk A dan B | Peneliti |
 | G4 | Bentuk final dibekukan bersama pra-registrasi di OSF | Pemilik proyek |
 

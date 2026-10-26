@@ -16,7 +16,7 @@ Belum ada yang diubah di sistem; layarnya dibangun di tahap 3, setelah G2. Terje
 4. **Hanya di layar, tidak dibacakan.** Satu pernyataan per layar, boleh kembali sebelum dikirim, urutan tetap.
 5. **Di Balai Refleksi, sebelum kritik dan saran.** Formulir kritik dan saran yang ada sekarang tetap ada sesudahnya, dengan semua isian boleh dikosongkan.
 6. **± 5 menit.** Siswa yang tidak hadir di P5 mengisi di susulan paling lama 7 hari sesudahnya; lewat dari itu datanya kosong.
-7. **Validasi:** I-CVI aturan Lynn oleh empat ahli (Ahli Budaya Kedu, Ahli Pengukuran, Ahli Bahasa Anak 1 dan 2), uji keterbacaan dengan anak, lalu konsistensi internal di uji coba dan studi utama.
+7. **Validasi:** I-CVI aturan Lynn oleh empat ahli (Ahli Budaya Kedu 1, Ahli Pengukuran, Ahli Bahasa Anak 1 dan 2), uji keterbacaan dengan anak, lalu konsistensi internal di uji coba dan studi utama.
 
 ## Dasar yang sudah diputuskan
 
@@ -182,7 +182,7 @@ Semua bertanda "Peneliti" dan masuk ekspor peneliti, tidak masuk skor literasi d
 
 | Penilai | Yang dinilai | Dihitung di I-CVI? |
 | --- | --- | --- |
-| Ahli Budaya Kedu (G3, pengamat budaya) | Relevansi setiap butir dengan sikap menjaga warisan Kedu; ketepatan contoh budaya (candi, kesenian, acara budaya, bahasa daerah) | Ya |
+| Ahli Budaya Kedu 1 (G3, pengamat budaya) | Relevansi setiap butir dengan sikap menjaga warisan Kedu; ketepatan contoh budaya (candi, kesenian, acara budaya, bahasa daerah). Ahli Budaya Kedu 2 dan 3 ikut mengisi ketepatan contoh budaya untuk wilayahnya (26 Oktober 2026) | Ya (Ahli Budaya Kedu 1 saja) |
 | Ahli Pengukuran | Relevansi dengan konstruk dan indikatornya, arah butir negatif, pemisahan dari PBK dan D3, kecocokan format empat pilihan | Ya |
 | Ahli Bahasa Anak 1 dan 2 | Relevansi, ditambah telaah bahasa terpisah: kata sulit, panjang kalimat, ingkaran, nada, dan petunjuk | Ya |
 | Ahli Literasi Digital 1 dan 2 | Hanya catatan Ya/Tidak: "Butir ini tumpang tindih dengan D3 (perilaku di ruang digital)" | Tidak |
@@ -281,7 +281,7 @@ Diambil 26 Oktober 2026, dua putaran wawancara (sesi `r10-skala-sikap`). Semua u
 | Dibacakan? | Tidak; hanya di layar. P3 boleh menjelaskan satu kata, dicatat di L3 |
 | Kritik dan saran yang ada sekarang | Tetap, sesudah skala; semua isian boleh kosong selama penelitian |
 | Indikator | Menghargai (SK1), ingin tahu (SK2), mau ikut merawat (SK3), bangga (SK4); semua berlatar dunia nyata, tanpa ruang digital |
-| Penilai ahli | Ahli Budaya Kedu, Ahli Pengukuran, Ahli Bahasa Anak 1 dan 2 untuk I-CVI (aturan Lynn); Ahli Literasi Digital 1 dan 2 hanya catatan tumpang tindih D3 |
+| Penilai ahli | Ahli Budaya Kedu 1, Ahli Pengukuran, Ahli Bahasa Anak 1 dan 2 untuk I-CVI (aturan Lynn); Ahli Budaya Kedu 2 dan 3 hanya ketepatan contoh budaya; Ahli Literasi Digital 1 dan 2 hanya catatan tumpang tindih D3 |
 | Tidak hadir di P5 | Susulan paling lama 7 hari, ditandai; sesudahnya kosong, tanpa perkiraan |
 | Tampilan | Satu pernyataan per layar, boleh kembali sebelum kirim, urutan tetap, bilah kemajuan |
 

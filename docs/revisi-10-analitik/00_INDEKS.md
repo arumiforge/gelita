@@ -23,7 +23,7 @@ Dokumen lain dibaca per bagian sesuai tugas.
 | [04](04_CATATAN_KEPUTUSAN.md) | Riwayat keputusan, terbaru di atas | Aktif | Selalu, entri teratas | 37 KB |
 | [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) | Telaah butir bank lama terhadap dimensi | Selesai; keputusannya masuk 06 | Hanya untuk menelusuri alasan | 39 KB |
 | [06](06_KISI_KISI_BANK_SOAL.md) | Kisi-kisi bank soal baru, buklet, jangkar, waktu bermain | Disetujui 25 Oktober 2026 | Per bagian, saat menulis butir, tes, atau dokumen implementasi | 42 KB |
-| [07](07_TELAAH_INSTRUMEN_VALIDASI.md) | Telaah instrumen validasi ahli; lembar penilaian skala sikap B.8 siap tempel (26 Oktober 2026) | Diterima; instrumen v2.1 dan media v1.1 belum ditulis | Saat menulis ulang instrumen | 28 KB |
+| [07](07_TELAAH_INSTRUMEN_VALIDASI.md) | Telaah instrumen validasi ahli; lembar penilaian skala sikap B.8; ringkasan instrumen v2.1 dan v1.1 dan bedanya dari usulan telaah | Diterima; instrumen ahli materi v2.1, pengamat budaya v2.1, dan ahli media v1.1 ditulis 26 Oktober 2026 di `dokumen-pdf/`, menunggu persetujuan pemilik proyek | Saat menyusun paket validasi atau mengubah instrumen | 33 KB |
 | [08](08_DRAF_BANK_SOAL.md) | Draf bank soal baru: 116 butir variasi a/b, 6 jangkar, 12 PBK; pemeriksaan kebocoran keterangan Susun Gambar | Draf, `needs_verification`; variasi Susun Gambar diputuskan 26 Oktober 2026 (gambar baru Wayang Kedu dan Candi Pawon menyusul) | Cari per kode butir (misalnya `wnb-3-a02`) atau judul bagian | 95 KB |
 | [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md) | Telaah pendahuluan T6 atas draf 08 | Selesai; R1–R4 disetujui | Saat menyiapkan paket validasi | 20 KB |
 | [10](10_TELAAH_PENDAHULUAN_MEDIA.md) | Telaah pendahuluan media | Selesai; keputusan masuk 01 | Saat menyiapkan mock-up dan instrumen media | 18 KB |
@@ -37,6 +37,7 @@ Dokumen lain dibaca per bagian sesuai tugas.
 | [18](18_MOCKUP_LAYAR_BARU.md) | Mock-up layar baru untuk ahli media langkah 1: Skenario Digital, *Periksa Unggahan*, token, modul tes dan angket, skala sikap, cerita penghubung; keadaan per layar dan yang dinilai ahli | Disetujui 26 Oktober 2026; gambar skala sikap dari 17 | Saat menyusun instrumen media v1.1, paket validasi media, atau dokumen implementasi layar baru | 24 KB |
 | [19](19_TELAAH_LABEL_BLOOM.md) | Telaah label Bloom pengembang per butir (116 butir literasi digital, 12 PBK), pola sistematis, rentang wilayah baru | Selesai; keputusan pemilik proyek 26 Oktober 2026 masuk 08 dan 06 | Saat menelusuri alasan label Bloom atau menyiapkan B.5a | 25 KB |
 | `gambar/` | Peta bukti, lapis data, peta jalan, buklet, tangkapan layar telaah media, mock-up layar baru (`gambar/mockup/`, sumber HTML di `src/`) | Rujukan | Saat dokumen yang memakainya diubah | — |
+| [dokumen-pdf/](dokumen-pdf/README.md) | Dokumen PDF penting: tiga instrumen validasi ahli (ahli materi v2.1, pengamat budaya v2.1, ahli media v1.1), sumber HTML dan skrip pembuatnya di `src/`, dan draf asli pemilik proyek di `arsip/` | Draf, menunggu persetujuan pemilik proyek (26 Oktober 2026) | Saat menyusun paket validasi; PDF dibuat ulang dari HTML | 3,3 MB |
 | [dokumen-pendukung-peneliti/](dokumen-pendukung-peneliti/README.md) | Bacaan untuk peneliti dan tim, **bukan dokumen implementasi**: model penelitian dan pengembangan (PDF), dengan rujukan yang dicek ke sumber asli | Rujukan; model Plomp dan aturan I-CVI Lynn diputuskan 26 Oktober 2026 | Saat menulis Bab III atau bagian metodologi; tidak dibaca untuk implementasi | 390 KB (PDF dan sumbernya) |
 
 ## Tahap dokumen yang tersisa sebelum implementasi
@@ -54,7 +55,7 @@ Urutan kerja mengikuti peta jalan di 01, yang dikukuhkan pemilik proyek pada 25 
 | [19_TELAAH_LABEL_BLOOM.md](19_TELAAH_LABEL_BLOOM.md): telaah label Bloom | no. 4 | Claude (telaah), pemilik proyek | Selesai (26 Oktober 2026); 08 dan 06 diperbarui |
 | [18_MOCKUP_LAYAR_BARU.md](18_MOCKUP_LAYAR_BARU.md): mock-up layar baru untuk ahli media langkah 1 (27 gambar di `gambar/mockup/`) | no. 20 | Claude (draf), pemilik proyek | Selesai (disetujui 26 Oktober 2026; gambar skala sikap dari 17) |
 | [02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md): lembar L0–L7 final | no. 11 | Claude (draf), pemilik proyek | Selesai (disetujui 26 Oktober 2026) |
-| Instrumen validasi r10 v2.1 dan media v1.1 | [07](07_TELAAH_INSTRUMEN_VALIDASI.md#langkah-berikutnya) | | Belum mulai |
+| Instrumen validasi ahli materi v2.1, pengamat budaya v2.1, dan ahli media v1.1 ([dokumen-pdf/](dokumen-pdf/README.md)) | [07](07_TELAAH_INSTRUMEN_VALIDASI.md#instrumen-versi-21-dan-11) | Claude (draf), pemilik proyek | Draf selesai 26 Oktober 2026; menunggu persetujuan pemilik proyek |
 
 Gerbang G1: konstruk disetujui, dan semua dokumen tahap 1 selesai dan disetujui pemilik proyek.
 

@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **diterima pemilik proyek (25 Oktober 2026)**; instrumen ditulis ulang setelah kisi-kisi 06 disetujui
+Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **diterima pemilik proyek (25 Oktober 2026)**; instrumen ditulis ulang pada 26 Oktober 2026 sebagai tiga dokumen di [dokumen-pdf/](dokumen-pdf/README.md), menunggu persetujuan pemilik proyek (lihat [Instrumen versi 2.1 dan 1.1](#instrumen-versi-21-dan-11))
 
 Dokumen ini menelaah dua draf instrumen validasi ahli milik pemilik proyek, lalu mengusulkan perbaikannya. Perbaikan yang sudah pasti ditulis sebagai teks pengganti yang siap ditempel. Perbaikan yang masih bergantung pada keputusan atau kisi-kisi ditandai.
 
@@ -140,12 +140,12 @@ Teks ini siap ditempel ke instrumen r10 v2.1 sebagai lembar baru **B.8 Telaah sk
 
 ### Penilai dan bagian yang diisi
 
-| Kolom atau bagian | Ahli Budaya Kedu | Ahli Pengukuran | Ahli Bahasa Anak 1, 2 | Ahli Literasi Digital 1, 2 |
+| Kolom atau bagian | Ahli Budaya Kedu 1 | Ahli Pengukuran | Ahli Bahasa Anak 1, 2 | Ahli Literasi Digital 1, 2 |
 | --- | --- | --- | --- | --- |
 | B.8a Relevansi 1–4 (masuk I-CVI) | Wajib | Wajib | Wajib | — |
 | B.8a Indikator tepat (Y/T) | Wajib | Wajib | — | — |
 | B.8a Arah negatif terbaca jelas (Y/T) | — | Wajib | Wajib | — |
-| B.8a Contoh budaya tepat untuk Kedu (Y/T) | Wajib | — | — | — |
+| B.8a Contoh budaya tepat untuk Kedu (Y/T) | Wajib (juga Ahli Budaya Kedu 2 dan 3, masing-masing untuk wilayahnya) | — | — | — |
 | B.8a Telaah bahasa (kata sulit, kalimat terlalu panjang, usulan kalimat) | — | — | Wajib | — |
 | B.8a Tumpang tindih dengan D3 (Y/T) | — | — | — | Wajib |
 | B.8b Penilaian skala secara keseluruhan | Wajib | Wajib | Wajib | — |
@@ -207,7 +207,7 @@ Petunjuk kolom:
 
 - **I-CVI dengan aturan Lynn (1986):** empat penilai relevansi, jadi butir lolos hanya kalau keempatnya memberi skor 3 atau 4 (I-CVI = 1,00). Satu skor 1 atau 2 berarti butir direvisi atau diganti, lalu dinilai ulang oleh keempatnya.
 - **S-CVI/Ave** dilaporkan, sasaran ≥ 0,90.
-- **Indikator tepat:** dua T dari Ahli Budaya Kedu dan Ahli Pengukuran berarti butir dipindah indikator atau ditulis ulang.
+- **Indikator tepat:** dua T dari Ahli Budaya Kedu 1 dan Ahli Pengukuran berarti butir dipindah indikator atau ditulis ulang.
 - **Arah negatif jelas:** satu T berarti kalimat ditelaah ulang sebelum uji keterbacaan dengan anak.
 - **Tumpang tindih D3:** satu Y dari Ahli Literasi Digital berarti butir ditulis ulang tanpa latar digital.
 - **Batas akhir:** paling sedikit 10 butir, dua per indikator, dengan butir negatif di setidaknya tiga indikator. Kalau kurang, butir pengganti ditulis dan dinilai ulang.
@@ -247,11 +247,33 @@ Semuanya cocok.
 ## Langkah berikutnya
 
 1. ~~Pemilik proyek memutuskan T1–T6 dan ahli media.~~ Diterima seluruhnya pada 25 Oktober 2026.
-2. Setelah kisi-kisi 06 dan keputusan D3 selesai, instrumen r10 dan media ditulis ulang sekali sebagai versi 2.1 dan 1.1, dengan semua perubahan di dokumen ini.
+2. ~~Setelah kisi-kisi 06 dan keputusan D3 selesai, instrumen r10 dan media ditulis ulang sekali sebagai versi 2.1 dan 1.1, dengan semua perubahan di dokumen ini.~~ **Selesai (26 Oktober 2026)**, sebagai tiga dokumen: r10 dipecah menjadi ahli materi v2.1 dan pengamat budaya v2.1, ditambah ahli media v1.1. Lihat [Instrumen versi 2.1 dan 1.1](#instrumen-versi-21-dan-11).
 3. Setelah draf bank soal baru ada, Claude menjalankan telaah pendahuluan (T6) sebelum berkas dikirim ke ahli.
-4. Ahli media menilai dalam dua langkah (keputusan 25 Oktober 2026): di tahap 2, game sekarang ditambah mock-up layar baru; setelah tahap 3, telaah singkat layar jadi di instalasi uji sebelum uji coba. Instrumen media v1.1 perlu memuat bagian untuk mock-up. Mock-up dan layar jadi itu juga mencakup modul tes dan angket (perubahan sistem no. 22), yang sengaja bertampilan Bootstrap, bukan tampilan game, jadi aspek game di instrumen media tidak berlaku untuknya.
+4. Ahli media menilai dalam dua langkah (keputusan 25 Oktober 2026): di tahap 2, game sekarang ditambah mock-up layar baru; setelah tahap 3, telaah singkat layar jadi di instalasi uji sebelum uji coba. Instrumen media v1.1 perlu memuat bagian untuk mock-up. Mock-up dan layar jadi itu juga mencakup modul tes dan angket (perubahan sistem no. 22), yang sengaja bertampilan Bootstrap, bukan tampilan game, jadi aspek game di instrumen media tidak berlaku untuknya. **Selesai (26 Oktober 2026):** bagian mock-up ditulis di media v1.1 sebagai lembar B.8, satu baris per layar dari [18](18_MOCKUP_LAYAR_BARU.md#untuk-instrumen-media-v11).
 5. Angket akses digital ([16](16_ANGKET_AKSES_DIGITAL.md)) masuk paket validasi tahap 2: telaah isi oleh Ahli Literasi Digital 1 dan 2, dan telaah bahasa oleh Ahli Bahasa Anak 1 dan 2, termasuk kepekaan butir risiko daring di P5.
-6. Skala sikap ([17](17_SKALA_SIKAP.md)) masuk paket validasi tahap 2 sebagai lembar B.8 di instrumen r10 v2.1 (lihat [Lembar penilaian skala sikap](#lembar-penilaian-skala-sikap-b8)): relevansi oleh Ahli Budaya Kedu, Ahli Pengukuran, dan Ahli Bahasa Anak 1 dan 2; telaah bahasa oleh Ahli Bahasa Anak; catatan tumpang tindih D3 oleh Ahli Literasi Digital 1 dan 2.
+6. Skala sikap ([17](17_SKALA_SIKAP.md)) masuk paket validasi tahap 2 sebagai lembar B.8 di instrumen ahli materi v2.1 dan pengamat budaya v2.1 (lihat [Lembar penilaian skala sikap](#lembar-penilaian-skala-sikap-b8)): relevansi oleh Ahli Budaya Kedu 1, Ahli Pengukuran, dan Ahli Bahasa Anak 1 dan 2; telaah bahasa oleh Ahli Bahasa Anak; catatan tumpang tindih D3 oleh Ahli Literasi Digital 1 dan 2.
+
+## Instrumen versi 2.1 dan 1.1
+
+Ditulis 26 Oktober 2026 dari draf pemilik proyek (r10 v2.0 dan media v1.0, keduanya 23 Oktober 2026, kini di [dokumen-pdf/arsip/](dokumen-pdf/arsip/)). Status: draf, menunggu persetujuan pemilik proyek. PDF dan sumber HTML-nya ada di [dokumen-pdf/](dokumen-pdf/README.md).
+
+| Dokumen | Isi | Halaman |
+| --- | --- | --- |
+| [Instrumen Validasi Ahli Materi v2.1](dokumen-pdf/instrumen-validasi-ahli-materi-v2.1.pdf) | Panel lima orang. Lembar penilaian 66 butir (aspek A–J), B.5a pelabelan buta dan B.5b relevansi per butir (116 butir bank dan 64 butir tes), B.6 telaah 24 Skenario Digital, B.7 kode kesalahan, B.8 skala sikap, B.9 kesetaraan tes A–B dan angket, analisis dengan aturan Lynn dan κ berbobot | 42 |
+| [Instrumen Validasi Pengamat Budaya v2.1](dokumen-pdf/instrumen-validasi-pengamat-budaya-v2.1.pdf) | Panel tiga orang. Lembar penilaian 53 butir (aspek A–I), matriks 46 objek budaya, telaah 24 petunjuk *Periksa Unggahan* dan 12 butir PBK, konfirmasi cek fakta, B.8 skala sikap | 31 |
+| [Instrumen Validasi Ahli Media v1.1](dokumen-pdf/instrumen-validasi-ahli-media-v1.1.pdf) | Panel tiga orang. Lembar penilaian 67 butir (aspek A–I), uji tujuh perangkat tanpa ponsel, catatan temuan, telaah 24 layar game sekarang, B.8 telaah 27 gambar mock-up dari 18 | 29 |
+
+Semua perubahan di dokumen ini masuk. Yang berbeda dari tulisan di atas, atau yang ditambahkan:
+
+1. **r10 dipecah menjadi dua dokumen** (permintaan pemilik proyek, 26 Oktober 2026), masing-masing dengan panduan, analisis, dan lampiran sendiri. Penomoran berubah: analisis menjadi Bagian C dan lampiran Bagian D. Aturan Lynn yang di atas disebut "D.6" kini ada di C.3 dan C.6 ahli materi, dan C.2 dan C.5 pengamat budaya.
+2. **Panel pengamat budaya dan ahli media masing-masing tiga orang** (keputusan pemilik proyek, 26 Oktober 2026; lihat 04). Di media v1.1, butir H3 menjadi daftar periksa lulus/tidak karena hanya Ahli Media Pembelajaran 3 berlatar rekayasa perangkat lunak.
+3. **Lembar B.8 skala sikap:** relevansi tetap dinilai empat orang seperti keputusan 26 Oktober 2026, dengan Ahli Budaya Kedu 1 sebagai pengamat budaya; Ahli Budaya Kedu 2 dan 3 hanya mengisi kolom "contoh budaya tepat" untuk wilayahnya. Lembar ini muncul di dokumen ahli materi dan pengamat budaya, masing-masing dengan kolom untuk penilainya.
+4. **Telaah *Periksa Unggahan*** mencakup 24 petunjuk di bank (12 per siswa), bukan "12 butir" seperti tabel di atas. Pembagiannya: relevansi terhadap D3 dinilai ahli materi (B.5b), ketepatan dan kepantasan budaya dinilai pengamat budaya (B.6a); butir D3 harus lolos di kedua panel.
+5. **INF-BUD hanya untuk skala PBK**, sesuai 03 dan 06; tabel "menunggu keputusan" di atas masih menulis "D1 dan skala pendamping".
+6. **Butir PBK** (12) dinilai relevansinya oleh pengamat budaya (B.6b, aturan Lynn dengan tiga penilai), bukan di B.5a/B.5b ahli materi. Pengamat budaya mendapat aspek baru I untuk PBK, menggantikan F2 lama.
+7. **Butir baru di luar usulan di atas:** ahli materi A7 (pemisahan skala pendamping), B7 (umpan balik dan 24 kalimat penjelasan Skenario Digital), J5 (butir risiko daring), dan pertanyaan khusus R1–R5 (dari 09) serta T1–T5 (dari 13–15); pengamat budaya A8 (cerita bingkai fiktif) dan C10 (keterangan asal yang sengaja keliru), dan C7 tembakau diganti kabar bohong tentang tempat dan produk nyata; ahli media H9 (tanpa jam selama studi) dan I6 (privasi layar butir risiko daring).
+8. **Ahli media:** ponsel dihapus dari matriks perangkat sesuai keputusan media 25 Oktober 2026; ambang waktu mengikuti *kamus-1.0* (3 menit dan 3 detik), bukan 60 detik dan 1,5 detik di draf v1.0.
+9. **Ditanyakan ke ahli, belum diputuskan:** letak kompleks Candi Arjuna (gambar Susun Gambar Wonosobo, padahal tabel perubahan pasti di atas menyebutnya di sisi Banjarnegara) dan tahun kebun teh Tambi (1865 atau 1885), keduanya di lembar B.7 pengamat budaya.
 
 ## Rujukan tambahan
 

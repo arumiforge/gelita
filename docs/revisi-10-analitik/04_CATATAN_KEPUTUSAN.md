@@ -6,6 +6,34 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 26 Oktober 2026
 
+**Instrumen validasi ahli ditulis ulang: ahli materi v2.1, pengamat budaya v2.1, ahli media v1.1** (cabang `pbb/dazzling-feynman-r7tljf`, [07 → Langkah berikutnya](07_TELAAH_INSTRUMEN_VALIDASI.md#langkah-berikutnya) no. 2 dan 4)
+
+Pemilik proyek menyerahkan draf r10 v2.0 dan media v1.0 (23 Oktober 2026) dan meminta:
+
+1. **r10 dipecah menjadi dua dokumen**, satu per bidang validator: ahli materi dan pengamat budaya. Masing-masing punya panduan, analisis, dan lampiran sendiri.
+2. **PDF penting disimpan di subfolder khusus** [dokumen-pdf/](dokumen-pdf/README.md), dengan sumber HTML di `src/` dan draf asli di `arsip/`.
+
+Keputusan pemilik proyek saat penulisan (wawancara singkat, 26 Oktober 2026):
+
+3. **Panel pengamat budaya tiga orang** (Ahli Budaya Kedu 1–3), idealnya satu orang per wilayah. Sebelumnya hanya ada satu nama samaran, sehingga I-CVI dan Aiken's V tidak bisa dihitung untuk instrumen budaya.
+4. **Panel ahli media tiga orang** (Ahli Media Pembelajaran 1–3): teknologi pendidikan atau media pembelajaran, desain visual atau UX, dan rekayasa perangkat lunak atau pengembangan game.
+
+Jadi validatornya sebelas orang. Akibatnya, dicatat di instrumen dan di 03, 01, 13, 16, dan 17:
+
+- Aturan Lynn berlaku untuk panel tiga orang: butir lolos hanya bila ketiganya memberi 3 atau 4.
+- Butir teknis H3 di instrumen media menjadi daftar periksa lulus/tidak, karena hanya satu validator berlatar rekayasa perangkat lunak.
+- Relevansi skala sikap (B.8) tetap dinilai empat orang seperti keputusan sebelumnya, dengan Ahli Budaya Kedu 1 sebagai pengamat budaya; Ahli Budaya Kedu 2 dan 3 hanya mengisi kolom "contoh budaya tepat" untuk wilayahnya.
+
+Isi instrumen mengikuti semua perubahan di 07. Yang berbeda dari tulisan di 07, dan pilihan yang diambil saat menulis, dicatat di [07 → Instrumen versi 2.1 dan 1.1](07_TELAAH_INSTRUMEN_VALIDASI.md#instrumen-versi-21-dan-11). Yang terpenting:
+
+- Telaah *Periksa Unggahan* mencakup 24 petunjuk, bukan 12.
+- INF-BUD hanya untuk PBK.
+- Butir PBK dinilai relevansinya oleh pengamat budaya.
+- Ponsel dihapus dari matriks perangkat ahli media.
+- Letak kompleks Candi Arjuna dan tahun kebun teh Tambi ditanyakan ke pengamat budaya.
+
+Status: draf, menunggu persetujuan pemilik proyek. Kotak status di sampul dihapus sebelum dicetak untuk validator.
+
 **Keputusan pemilik proyek: baris penutup sebelum skala sikap** (sesi `r10-skala-sikap`, pemeriksaan cerita penutup di [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#penutup-ending) terhadap [17](17_SKALA_SIKAP.md))
 
 1. **`penutup-04` diubah.** "…saat membaca, saat memakai layar, dan saat bercerita tentang budaya Kedu" menjadi "…saat membaca, saat memakai layar, dan saat budaya Kedu tampil di layar" (EN: "…and when Kedu's culture appears on a screen"). Kalimat lama memperagakan butir `skp-07` ("Aku senang menceritakan budaya Kedu kepada teman") beberapa menit sebelum siswa menjawabnya; kalimat baru tetap mencakup tiga dimensi, dengan bagian ketiga merujuk D3. Tidak ada baris penutup lain yang memuji siswa; pujian Mbah Kedu di Balai Refleksi sudah dipindah ke sesudah skala.
