@@ -183,15 +183,15 @@ Urutan Temanggung (mudah), Magelang (sedang), Wonosobo (sulit) tetap dipakai. Be
 
 | Wilayah | Level AKM utama (D1) | Padanan PIRLS 2026 | Bloom (label kedua) | Skenario Digital (D2) |
 | --- | --- | --- | --- | --- |
-| Temanggung (mudah) | Menemukan informasi | Fokus dan mengambil informasi tersurat | C1–C2 | Tanda bahaya jelas, 3 pilihan |
+| Temanggung (mudah) | Menemukan informasi | Fokus dan mengambil informasi tersurat | C1–C3 | Tanda bahaya jelas, 3 pilihan |
 | Magelang (sedang) | Interpretasi dan integrasi | Membuat inferensi langsung; menafsirkan dan memadukan gagasan | C2–C4 | Tanda bahaya samar, 4 pilihan |
-| Wonosobo (sulit) | Evaluasi dan refleksi | Mengevaluasi dan mengkritisi isi teks | C3–C5 | Nilai yang bertentangan, dua langkah |
+| Wonosobo (sulit) | Evaluasi dan refleksi | Mengevaluasi dan mengkritisi isi teks | C2–C5 | Nilai yang bertentangan, dua langkah |
 
 **Kenapa AKM/PIRLS jadi acuan utama.** AKM adalah kerangka nasional untuk literasi membaca, jadi hasil kita gampang dibaca pemangku kepentingan di Indonesia. Sampai 2025, AKM diikuti sampel siswa kelas 5 lewat Asesmen Nasional. Mulai 2026 aturannya ada di Kepmendikdasmen Nomor 56 Tahun 2026. Beberapa sumber menyebut soal literasi membaca kini masuk ke TKA Bahasa Indonesia di kelas 6, artinya siswa kelas 5 kita akan menghadapinya setahun lagi. Teks resmi keputusan itu belum kita baca langsung, jadi perlu dicek. PIRLS 2026 memberi padanan internasional untuk jurnal. Bloom mengelompokkan tujuan belajar, bukan tingkat kesulitan nyata. Pembanding lain (SOLO, Depth of Knowledge Webb) kurang pas untuk soal pilihan tertutup.
 
 **Lima langkah supaya klaim tingkat kesulitan bisa dipertahankan:**
 
-1. Dua penilai ahli memberi label level AKM pada semua butir yang dinilai (116 butir literasi digital, lihat [06](06_KISI_KISI_BANK_SOAL.md) dan [08](08_DRAF_BANK_SOAL.md)) secara terpisah, dengan kesepakatan minimal κ = 0,70. Label Bloom diperiksa ulang. Misalnya, petunjuk Cari Objek berlabel C3 sebenarnya lebih dekat ke C1–C2, dan C5 di kartu Benar atau Salah sulit dipertahankan.
+1. Dua penilai ahli memberi label level AKM pada semua butir yang dinilai (116 butir literasi digital, lihat [06](06_KISI_KISI_BANK_SOAL.md) dan [08](08_DRAF_BANK_SOAL.md)) secara terpisah, dengan kesepakatan minimal κ = 0,70. Label Bloom pengembang sudah diperiksa ulang per butir ([19](19_TELAAH_LABEL_BLOOM.md), 26 Oktober 2026): petunjuk Cari Objek diberi label menurut prosesnya (PBK C1–C2, Periksa Unggahan C2–C4), Benar atau Salah paling tinggi C4 kecuali dua butir yang memeriksa simpulan terhadap bukti (C5), dan rentang Bloom wilayah menjadi C1–C3, C2–C4, dan C2–C5.
 2. Tambahkan **butir jangkar**: 6 pernyataan D1 (2 per wilayah) di kartu jangkar yang sama untuk variasi a dan b, supaya kedua variasi tersambung di satu skala. Diputuskan 25 Oktober 2026 menggantikan rencana awal (butir yang diulang di ketiga wilayah), karena siswa yang sama memainkan ketiga wilayah; lihat [06](06_KISI_KISI_BANK_SOAL.md#butir-jangkar-usulan).
 3. Catat beban permukaan sebagai variabel sendiri: jumlah rumpang, jumlah kata pengecoh, panjang bacaan (kata), jumlah benda pengecoh, dan ukuran kotak Susun Gambar.
 4. Setelah data terkumpul, jalankan model Rasch pada ketepatan percobaan pertama, per dimensi (atau model Rasch multidimensi). Periksa urutan kesulitan butir dibandingkan wilayah dan level AKM, kecocokan butir, dan kesetaraan variasi a dan b (DIF).
@@ -384,14 +384,14 @@ Ahli media menilai dalam dua langkah (diputuskan 25 Oktober 2026): di tahap 2, g
 | 1 | Setujui penyelarasan konstruk: literasi digital dengan tiga dimensi | 1 | Pemilik proyek | Selesai |
 | 2 | Bekukan peta bukti dan definisi 10 analitik di kamus data ([11](11_KAMUS_DATA.md)) | 1 | Claude (draf), pemilik proyek | Selesai: `kamus-1.0` disetujui 26 Oktober 2026 |
 | 3 | Pelabelan buta level AKM dan dimensi pada semua butir yang dinilai oleh dua ahli (B.5a di [07](07_TELAAH_INSTRUMEN_VALIDASI.md)); label pengembang sudah ada di 08 | 2 | | Belum mulai |
-| 4 | Periksa ulang label Bloom, terutama Cari Objek dan Benar atau Salah C5 | 1 | | Belum mulai |
+| 4 | Periksa ulang label Bloom, terutama Cari Objek dan Benar atau Salah C5 | 1 | Claude (telaah), pemilik proyek | Selesai: [19](19_TELAAH_LABEL_BLOOM.md); keputusan pemilik proyek 26 Oktober 2026 dimasukkan ke 08 dan 06 |
 | 5 | Beri kode kesalahan pada kata pengecoh, benda pengecoh, dan pernyataan | 1 | Claude | Selesai di draf 08, menunggu validasi |
 | 6 | Tulis Skenario Digital untuk tiga wilayah, lengkap dengan pilihan tindakan dan alasan berkode | 1 | Claude | Selesai di draf 08, menunggu validasi |
 | 7 | Tulis cerita penghubung dan narasi untuk tantangan kelima | 1 | Claude (draf), pemilik proyek (persetujuan) | Selesai: [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) disetujui 26 Oktober 2026 |
 | 8 | Tentukan 4–6 butir jangkar | 1 | Claude | Selesai di draf 08 (6 butir), menunggu validasi |
 | 9 | Susun tes literasi membaca dan tes literasi digital, bentuk A dan B: bagian membaca diadaptasi dari contoh soal AKM/ANBK yang terbuka untuk umum, bagian D2 dan D3 disusun sendiri dan tidak sama dengan butir game | 1 | Claude (draf), pemilik proyek | Draf di [13](13_TES_AWAL_AKHIR.md), [14](14_TES_BAGIAN_MEMBACA.md), dan [15](15_TES_BAGIAN_DIGITAL.md); keputusan pemilik proyek 26 Oktober 2026 (modul tes GELITA, batas waktu longgar, topik di luar Kedu); menunggu validasi |
 | 10 | Susun angket akses digital | 1 | Claude (draf), pemilik proyek | Draf di [16](16_ANGKET_AKSES_DIGITAL.md); keputusan pemilik proyek 26 Oktober 2026 (di modul, tidak dibacakan; butir risiko daring di P5); menunggu validasi |
-| 11 | Finalkan lembar L0–L7 | 1 | | Belum mulai |
+| 11 | Finalkan lembar L0–L7 | 1 | Claude (draf), pemilik proyek | Selesai: [02](02_LEMBAR_LAPANGAN.md) disetujui 26 Oktober 2026 |
 | 12 | Buat daftar kode sekolah penelitian (S01, S02, …) | 1 | | Belum mulai |
 | 13 | Tentukan siapa pemegang akun admin dan akun peneliti | 1 | | Belum mulai |
 | 14 | Validasi ahli: budaya Kedu, bahasa anak, literasi digital, pengukuran, media | 2 | | Belum mulai |
