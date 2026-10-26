@@ -78,6 +78,7 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 | U01-A03 | Kode peserta di sekolah uji coba (awalan `U`) | Disetujui 25 Oktober 2026 |
 | A, B | Rombel kelas 5 di satu sekolah | Disetujui 25 Oktober 2026 |
 | S03-A-P1 | Kode sesi lapangan: sekolah, rombel, pertemuan ke-1 | Disetujui 25 Oktober 2026 |
+| S03-A-P3-S | Kode sesi lapangan susulan: siswa yang absen di P3, dalam tiga hari | 02, 26 Oktober 2026 |
 | KD7RMA | Contoh token sesi: 6 huruf dan angka tanpa O, 0, I, 1 | Disetujui 25 Oktober 2026 |
 | GLT-000123 | Kode peserta lama | Diganti |
 | P01, P02, … | Nomor stiker perangkat | Lapangan |
@@ -173,7 +174,7 @@ Dari [17](17_SKALA_SIKAP.md). Usulan; dibekukan sebagai `sikap-1.0` di G4.
 | L2 | Peta tempat duduk, perangkat, dan kode peserta | P1 |
 | L3 | Log bantuan dan gangguan | P3 |
 | L4 | Observasi keterlibatan dan emosi (adaptasi BROMP) | P2 |
-| L5 | Protokol berpikir lantang dan wawancara kognitif | P3 |
+| L5 | Wawancara retrospektif (P2–P4, tiga siswa per pertemuan) dan berpikir lantang (uji coba) | P3 |
 | L6 | Log tes awal–akhir dan angket akses digital: catatan pelaksanaan, karena jawaban tersimpan di modul tes | P1 |
 | L7 | Izin orang tua dan status peserta | P1 |
 
@@ -185,6 +186,7 @@ Dari [17](17_SKALA_SIKAP.md). Usulan; dibekukan sebagai `sikap-1.0` di G4.
 | DEV-LIS | Listrik atau baterai bermasalah |
 | DEV-WKT | Waktu sesi dipotong |
 | DEV-PRT | Protokol dilanggar, misalnya guru menjelaskan soal |
+| DEV-TIM | Peneliti kurang dari tiga; P1 juga mengisi L3 dan L5 dipindah |
 | DEV-LAIN | Penyimpangan lain |
 
 ## Kode di L3: bantuan dan gangguan

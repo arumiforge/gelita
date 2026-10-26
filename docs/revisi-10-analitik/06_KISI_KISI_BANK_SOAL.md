@@ -37,7 +37,7 @@ Angka di tabel ini **per variasi**, kecuali disebut lain. "Bagian ketuk" di Cari
 
 ### Temanggung (mudah)
 
-Level utama: **menemukan informasi** · PIRLS 2026: *focus on and retrieve explicitly stated information* · Bloom C1–C2
+Level utama: **menemukan informasi** · PIRLS 2026: *focus on and retrieve explicitly stated information* · Bloom C1–C3
 
 | Tantangan | Engine | Dimensi | Sub-aspek | AKM / PIRLS | Bloom | Butir | Bacaan | Genre teks | Pilihan |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -45,9 +45,9 @@ Level utama: **menemukan informasi** · PIRLS 2026: *focus on and retrieve expli
 | `tmg-2` Isi Rumpang | `rumpang` | D1 | 4 D1a | L1 (1 rumpang boleh L2) / *retrieve* | C1–C2 | 4 rumpang | 1 bacaan, 55–70 kata | Teks informasi (artikel Pustaka) | Bank kata 6: 4 jawaban + **2 pengecoh (usulan)** |
 | `tmg-3` Benar atau Salah | `boleh` | D1 | 3 D1a, 1 D1b | L1 / *retrieve* | C1–C2 | 4 pernyataan (1 bergambar), kunci 2 benar : 2 salah | 1 paragraf, 50–70 kata | **Papan informasi digital** (layar info di tempat wisata, ada nama pengelola dan tanggal) | 2 (benar, salah) |
 | Kartu jangkar Temanggung | `boleh` | D1 | 2 D1a | L1 / *retrieve* | C1 | 2 pernyataan, kunci 1 : 1, sama di a dan b | 1 kartu, 30–40 kata | **Pesan pengumuman di grup kelas** | 2 |
-| `tmg-4` babak 1 *Temukan Benda* | `cari` | PBK (pendamping) | — | — | C1–C2 | 4 petunjuk, satu adegan untuk semua | — | — | 8 bagian ketuk (4 + 4 pengecoh) |
-| `tmg-4` babak 2 *Periksa Unggahan* (usulan) | `cari` | D3 | — | Tanda keliru jelas; padanan L1 | C2 | 4 petunjuk (ATR, REP, IZN, ETK) | 1 unggahan tiruan + 1 sumber pembanding, 25–40 kata | Unggahan media sosial tiruan | 8 bagian ketuk; 2 pengecoh utama per petunjuk |
-| `tmg-5` Skenario Digital | baru | D2 | — | Tanda bahaya jelas | C2–C3 | 4 skenario (satu per topik) | Situasi 30–50 kata | Pesan, unggahan, atau layar aplikasi tiruan | Tindakan 3 (1 tepat, 1 kurang tepat, 1 berisiko); alasan 3 |
+| `tmg-4` babak 1 *Temukan Benda* | `cari` | PBK (pendamping) | — | — | C1 | 4 petunjuk, satu adegan untuk semua | — | — | 8 bagian ketuk (4 + 4 pengecoh) |
+| `tmg-4` babak 2 *Periksa Unggahan* (usulan) | `cari` | D3 | — | Tanda keliru jelas; padanan L1 | C2–C3 | 4 petunjuk (ATR, REP, IZN, ETK) | 1 unggahan tiruan + 1 sumber pembanding, 25–40 kata | Unggahan media sosial tiruan | 8 bagian ketuk; 2 pengecoh utama per petunjuk |
+| `tmg-5` Skenario Digital | baru | D2 | — | Tanda bahaya jelas | C3 | 4 skenario (satu per topik) | Situasi 30–50 kata | Pesan, unggahan, atau layar aplikasi tiruan | Tindakan 3 (1 tepat, 1 kurang tepat, 1 berisiko); alasan 3 |
 
 Butir D1b di `tmg-3` tetap di level menemukan informasi: siswa menemukan **penanda sumber** yang tersurat, misalnya "Siapa yang memasang pengumuman ini?". Ini memberi butir D1b yang mudah, supaya skala D1b punya rentang kesulitan.
 
@@ -58,25 +58,25 @@ Level utama: **interpretasi dan integrasi** · PIRLS 2026: *make straightforward
 | Tantangan | Engine | Dimensi | Sub-aspek | AKM / PIRLS | Bloom | Butir | Bacaan | Genre teks | Pilihan |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `mgl-1` Susun Gambar | `puzzle` | — (pemanasan) | — | — | — | 1 papan 4 × 4 | — | — | — |
-| `mgl-2` Isi Rumpang | `rumpang` | D1 | 5 D1a | L2 / *inferences, integrate* | C2–C3 | 5 rumpang | 1 bacaan, 100–120 kata | Teks informasi (artikel majalah anak) | Bank kata 7: 5 jawaban + 2 pengecoh |
+| `mgl-2` Isi Rumpang | `rumpang` | D1 | 5 D1a | L2 / *inferences, integrate* | C2 | 5 rumpang | 1 bacaan, 100–120 kata | Teks informasi (artikel majalah anak) | Bank kata 7: 5 jawaban + 2 pengecoh |
 | `mgl-3` Benar atau Salah | `boleh` | D1 | 3 D1a, 3 D1b | D1a L2; D1b L3 sementara / *interpret*, *evaluate* | C2–C4 | 6 pernyataan, kunci 3 : 3 | 2 paragraf + 2–3 komentar, 110–140 kata | **Unggahan akun resmi pengelola dengan kolom komentar.** Unggahan memuat fakta; komentar memuat pendapat | 2 |
 | Kartu jangkar Magelang | `boleh` | D1 | 1 D1a, 1 D1b | L2, L3 | C2–C4 | 2 pernyataan, kunci 1 : 1 | 1 kartu, 40–50 kata | **Halaman hasil pencarian** (3 hasil: iklan, blog pribadi, situs resmi) | 2 |
-| `mgl-4` babak 1 *Temukan Benda* | `cari` | PBK | — | — | C2–C3 | 4 petunjuk | — | — | 10 bagian ketuk (4 + 6) |
-| `mgl-4` babak 2 *Periksa Unggahan* (usulan) | `cari` | D3 | — | Tanda keliru samar; padanan L2 | C3–C4 | 4 petunjuk | Unggahan + kartu informasi, 40–60 kata | Unggahan tiruan dengan kartu informasi museum atau desa | 10 bagian ketuk; 3 pengecoh utama per petunjuk |
-| `mgl-5` Skenario Digital | baru | D2 | — | Tanda bahaya samar | C3–C4 | 4 skenario | Situasi 40–60 kata | Pesan grup, pesan pribadi, layar unggah | Tindakan 4 (1 tepat, 1 kurang tepat, 2 berisiko); alasan 4 |
+| `mgl-4` babak 1 *Temukan Benda* | `cari` | PBK | — | — | C2 | 4 petunjuk | — | — | 10 bagian ketuk (4 + 6) |
+| `mgl-4` babak 2 *Periksa Unggahan* (usulan) | `cari` | D3 | — | Tanda keliru samar; padanan L2 | C2–C4 | 4 petunjuk | Unggahan + kartu informasi, 40–60 kata | Unggahan tiruan dengan kartu informasi museum atau desa | 10 bagian ketuk; 3 pengecoh utama per petunjuk |
+| `mgl-5` Skenario Digital | baru | D2 | — | Tanda bahaya samar | C3 | 4 skenario | Situasi 40–60 kata | Pesan grup, pesan pribadi, layar unggah | Tindakan 4 (1 tepat, 1 kurang tepat, 2 berisiko); alasan 4 |
 
 ### Wonosobo (sulit)
 
-Level utama: **evaluasi dan refleksi** (Benar atau Salah, kartu jangkar, D3) · PIRLS 2026: *evaluate and critique content and textual elements* · Bloom C3–C5
+Level utama: **evaluasi dan refleksi** (Benar atau Salah, kartu jangkar, D3) · PIRLS 2026: *evaluate and critique content and textual elements* · Bloom C2–C5
 
 | Tantangan | Engine | Dimensi | Sub-aspek | AKM / PIRLS | Bloom | Butir | Bacaan | Genre teks | Pilihan |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | `wnb-1` Susun Gambar | `puzzle` | — (pemanasan) | — | — | — | 1 papan 4 × 4 jigsaw | — | — | — |
-| `wnb-2` Isi Rumpang | `rumpang` | D1 | 6 D1a | **L2** / *interpret, integrate* | C3–C4 | 6 rumpang (turun dari 7) | 1 bacaan, 110–130 kata | **Artikel situs wisata** (judul, nama penulis, tanggal) | Bank kata 8: 6 jawaban + 2 pengecoh |
-| `wnb-3` Benar atau Salah | `boleh` | D1 | 2 D1a, 4 D1b | D1a L2; D1b L3 / *evaluate* | C4–C5 | 6 pernyataan, kunci 3 : 3 | 3 bagian, 90–150 kata | **Dua sumber digital bertentangan:** pesan berantai di grup dan pengumuman akun resmi lembaga | 2 |
-| Kartu jangkar Wonosobo | `boleh` | D1 | 2 D1b | L3 | C4–C5 | 2 pernyataan, kunci 1 : 1 | 1 kartu, 25–50 kata | **Unggahan bersponsor (iklan)** | 2 |
-| `wnb-4` babak 1 *Temukan Benda* | `cari` | PBK | — | — | C3–C4 | 4 petunjuk | — | — | 12 bagian ketuk (4 + 8) |
-| `wnb-4` babak 2 *Periksa Unggahan* (usulan) | `cari` | D3 | — | Nilai yang bertentangan; padanan L3 | C4–C5 | 4 petunjuk | Unggahan + papan museum, 50–70 kata | Unggahan video tiruan dengan komentar dan tombol Bagikan | 12 bagian ketuk; 3 pengecoh utama per petunjuk |
+| `wnb-2` Isi Rumpang | `rumpang` | D1 | 6 D1a | **L2** / *interpret, integrate* | C2–C4 | 6 rumpang (turun dari 7) | 1 bacaan, 110–130 kata | **Artikel situs wisata** (judul, nama penulis, tanggal) | Bank kata 8: 6 jawaban + 2 pengecoh |
+| `wnb-3` Benar atau Salah | `boleh` | D1 | 2 D1a, 4 D1b | D1a L2; D1b L3 / *evaluate* | C2–C5 | 6 pernyataan, kunci 3 : 3 | 3 bagian, 90–150 kata | **Dua sumber digital bertentangan:** pesan berantai di grup dan pengumuman akun resmi lembaga | 2 |
+| Kartu jangkar Wonosobo | `boleh` | D1 | 2 D1b | L3 | C2–C4 | 2 pernyataan, kunci 1 : 1 | 1 kartu, 25–50 kata | **Unggahan bersponsor (iklan)** | 2 |
+| `wnb-4` babak 1 *Temukan Benda* | `cari` | PBK | — | — | C2 | 4 petunjuk | — | — | 12 bagian ketuk (4 + 8) |
+| `wnb-4` babak 2 *Periksa Unggahan* (usulan) | `cari` | D3 | — | Nilai yang bertentangan; padanan L3 | C2–C4 | 4 petunjuk | Unggahan + papan museum, 50–70 kata | Unggahan video tiruan dengan komentar dan tombol Bagikan | 12 bagian ketuk; 3 pengecoh utama per petunjuk |
 | `wnb-5` Skenario Digital | baru | D2 | — | Situasi berkembang dua langkah | C4–C5 | 4 skenario | Situasi 50–70 kata, dua langkah | Pesan resmi palsu, grup, layar aplikasi | Tindakan 4 (1 tepat, 1 kurang tepat, 2 berisiko); alasan 5 |
 
 `wnb-2` sengaja diberi label **L2**, sesuai telaah: Isi Rumpang yang menguji kata penghubung adalah interpretasi dan integrasi. Klaim "Wonosobo = evaluasi dan refleksi" berlaku untuk Benar atau Salah, kartu jangkar, dan Periksa Unggahan, dan ditulis begitu di laporan.
@@ -179,12 +179,12 @@ Perkiraan dibuat untuk siswa kelas 5 (10–11 tahun) yang membaca **60–90 kata
 | Pertemuan | Isi |
 | --- | --- |
 | P1 | Daftar akun, tes awal di modul tes GELITA, angket akses digital (langsung di modul), cerita pembuka; lama mengikuti kebutuhan ([13](13_TES_AWAL_AKHIR.md#waktu-di-p1-dan-p5)) |
-| P2 | Wilayah Temanggung |
-| P3 | Wilayah Magelang |
-| P4 | Wilayah Wonosobo |
-| P5 | Menyelesaikan tantangan yang tertinggal (paling lama 20 menit), tes akhir di modul tes GELITA, butir risiko daring (hanya dengan izin terpisah), cerita penutup, skala sikap di Balai Refleksi, wawancara L5 (tes akhir sebelum cerita penutup: keputusan 26 Oktober 2026, [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#keputusan-pemilik-proyek)) |
+| P2 | Wilayah Temanggung; wawancara L5 (tiga siswa) setelah bermain |
+| P3 | Wilayah Magelang; wawancara L5 (tiga siswa) setelah bermain |
+| P4 | Wilayah Wonosobo; wawancara L5 (tiga siswa) setelah bermain |
+| P5 | Menyelesaikan tantangan yang tertinggal (paling lama 20 menit), tes akhir di modul tes GELITA, butir risiko daring (hanya dengan izin terpisah), cerita penutup, skala sikap di Balai Refleksi (tes akhir sebelum cerita penutup: keputusan 26 Oktober 2026, [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#keputusan-pemilik-proyek)) |
 
-Jeda peregangan singkat (2 menit) diberikan setelah tantangan ketiga di setiap pertemuan. Siswa yang belum selesai melanjutkan di pertemuan 5 (susulan), karena token hanya membuka wilayah pertemuan itu; jam lanjutnya dicatat di L1, dan nomor pertemuan dipakai sebagai kovariat.
+Jeda peregangan singkat (2 menit) diberikan setelah tantangan ketiga di setiap pertemuan. Siswa yang belum selesai melanjutkan di pertemuan 5 (susulan), karena token hanya membuka wilayah pertemuan itu; jam lanjutnya dicatat di L1, dan nomor pertemuan dipakai sebagai kovariat. Siswa yang absen di satu pertemuan ikut sesi susulan wilayah itu dalam tiga hari, dengan token sendiri (kode sesi `-S`, [02](02_LEMBAR_LAPANGAN.md#pertemuan-dan-lembar-yang-dipakai); diputuskan 26 Oktober 2026).
 
 ## Rencana Rasch dan apa artinya buat kisi-kisi
 
@@ -240,7 +240,7 @@ Usulannya **empat buklet**. Buklet menentukan variasi di setiap wilayah dan berl
 - Tetangga kiri–kanan selalu berbeda variasi di ketiga wilayah.
 - Setiap variasi ada di dua buklet, jadi tetap dikerjakan setengah sampel.
 - Setiap pasangan dimensi dan wilayah tersambung lewat buklet yang berbagi variasi (misalnya `tmg-5-a` dikerjakan B1 dan B3, `mgl-5-b` dikerjakan B2 dan B3). Jadi semua butir di setiap dimensi masuk satu skala, tanpa perlu butir jangkar D2 dan D3.
-- Buklet dibagikan P1 lewat denah L2 dan ikut tercatat di data sesi. Sesudah pertemuan P1, koordinator memasukkan buklet per kode peserta di panel peneliti dari L2, dan panel memeriksa keseimbangan B1–B4 per rombel. Siswa diminta duduk di kursi yang sama di P2–P4; buklet melekat pada siswa, jadi pindah kursi tidak mengubah variasinya dan cukup dicatat di L2 (diputuskan 25 Oktober 2026).
+- Buklet dibagikan P1 lewat denah L2 dan ikut tercatat di data sesi. Di P1, langsung setelah semua siswa mendaftar dan sebelum tes awal, koordinator memasukkan buklet, baris, dan kursi per kode peserta di panel peneliti dari L2 (diputuskan 26 Oktober 2026), dan panel memeriksa keseimbangan B1–B4 per rombel. Siswa diminta duduk di kursi yang sama di P2–P4; buklet melekat pada siswa, jadi pindah kursi tidak mengubah variasinya dan cukup dicatat di L2 (diputuskan 25 Oktober 2026).
 - Pengerjaan ulang tidak mengikuti buklet. Selama studi, pengerjaan ulang baru terbuka setelah kelima tantangan wilayah pertemuan itu tuntas, hanya di dalam sesi; datanya disimpan tapi tidak dinilai (diputuskan 25 Oktober 2026).
 - Karena urutan wilayah tetap, buklet tidak mengacak urutan. Ini tetap dicatat sebagai keterbatasan.
 
@@ -312,7 +312,7 @@ Aturan ini dipetik dari telaah 05 dan berlaku untuk semua butir baru.
 11. **Tokoh fiktif, tidak meniru anak nyata.** Nama tokoh dipilih umum dan beragam; foto wajah anak sungguhan tidak dipakai.
 12. **Satu butir, satu dimensi.** Kalau sebuah butir terasa mengukur dua dimensi, pecah atau pindahkan. Label sekunder (Bloom, kode kesalahan) hanya untuk diagnosis.
 13. **Bahasa sesuai kelas 5.** Kalimat pendek, satu gagasan per kalimat, kosakata sehari-hari. Kata serapan digital (*unggah*, *tautan*, *akun*) dipakai konsisten dan dijelaskan sekali di Pustaka.
-14. **Bloom sesuai rentang wilayah** dan ditulis sebagai label kedua; level AKM label pertama. Keduanya diberi oleh dua penilai terpisah (κ ≥ 0,70).
+14. **Bloom sesuai rentang wilayah** dan ditulis sebagai label kedua; level AKM label pertama. Keduanya diberi oleh dua penilai terpisah (κ ≥ 0,70). Bloom menggambarkan proses berpikir butir, bukan tingkat kesulitannya; kesulitan ditunjukkan level AKM dan data Rasch. Rentang wilayah direvisi 26 Oktober 2026 setelah telaah label per butir: Temanggung C1–C3, Magelang C2–C4, Wonosobo C2–C5 (lihat [19](19_TELAAH_LABEL_BLOOM.md)).
 15. **Status awal `needs_verification`** untuk semua butir baru dan butir yang diubah, sampai lolos validasi ahli.
 
 ## Pemetaan dimensi ke kerangka
