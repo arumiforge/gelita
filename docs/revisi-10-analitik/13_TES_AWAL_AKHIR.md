@@ -15,6 +15,8 @@ Dokumen ini merancang tes di luar game yang dikerjakan siswa sebelum dan sesudah
 
 Belum ada yang diubah di sistem. Tes ini bukan bagian game dan tidak masuk skor literasi digital game; menurut [kamus data](11_KAMUS_DATA.md#peta-bukti-beku), tes awal–akhir adalah bukti validitas.
 
+Di dokumen ini P1–P5 berarti pertemuan ke-1 sampai ke-5. Peran P1 di [01](01_REVISI_10_ANALITIK.md#kerja-lapangan-cara-kerjanya) ditulis "koordinator sesi".
+
 ## Ringkasan
 
 1. **Gunanya dua:** memeriksa apakah skor game sejalan dengan kemampuan siswa di luar game (validitas), dan menggambarkan perubahan dari tes awal ke tes akhir. Perubahan itu bukan bukti dampak game, karena desainnya satu kelompok tanpa kelompok pembanding.
@@ -177,21 +179,21 @@ Bentuk mengikuti nomor baris dan nomor kursi di denah L2 saat tes awal:
 - Tetangga kiri–kanan dan depan–belakang selalu berbeda bentuk, jadi sulit saling mencontek.
 - Urutan bentuk seimbang terhadap variasi game Temanggung dan Wonosobo: setiap kelompok berisi separuh variasi a dan separuh variasi b. Variasi Magelang tidak bisa ikut seimbang dengan pembagian per kursi apa pun yang juga memisahkan tetangga sebangku (kelompok A-dulu mendapat `mgl` variasi a). Ini dicatat sebagai keterbatasan kecil: analisis tes tidak memakai variasi game, dan semua variasi game ditaruh di satu skala Rasch.
 - Bentuk melekat pada siswa, bukan kursi. Bentuk tes akhir dibaca dari L6, bukan dari kursi di P5.
-- Sampul bentuk A dan B dibedakan warnanya supaya P1 mudah membagikan, dan bentuknya juga tercetak kecil di kaki setiap halaman.
+- Sampul bentuk A dan B dibedakan warnanya supaya koordinator sesi mudah membagikannya, dan bentuknya juga tercetak kecil di kaki setiap halaman.
 
 ### Aturan selama tes
 
-- Sampul buklet memuat kode peserta (disalin dari halaman Profil), nomor kursi, rombel, dan tanggal. Siswa tidak menulis nama. Kalau ada yang menulis nama, P1 menghitamkannya setelah dicocokkan dengan L2.
-- P1 membacakan petunjuk umum dan mengerjakan contoh soal bersama siswa (satu contoh untuk setiap bentuk butir). Butir tes tidak dibacakan, sejalan dengan aturan narasi D1 di game. Siswa boleh bertanya tentang petunjuk, tidak tentang arti kata di teks.
-- Waktu per bagian dijaga P1: Bagian 1 selama 22 menit, peregangan 2 menit, lalu Bagian 2 dan 3 selama 18 menit. Siswa yang selesai lebih dulu memeriksa jawabannya lalu menunggu dengan tenang.
+- Sampul buklet memuat kode peserta (disalin dari halaman Profil), nomor kursi, rombel, dan tanggal. Siswa tidak menulis nama. Kalau ada yang menulis nama, koordinator sesi menghitamkannya setelah dicocokkan dengan L2.
+- Koordinator sesi (peran P1 di [01](01_REVISI_10_ANALITIK.md#kerja-lapangan-cara-kerjanya)) membacakan petunjuk umum dan mengerjakan contoh soal bersama siswa (satu contoh untuk setiap bentuk butir). Butir tes tidak dibacakan, sejalan dengan aturan narasi D1 di game. Siswa boleh bertanya tentang petunjuk, tidak tentang arti kata di teks.
+- Waktu per bagian dijaga koordinator sesi: Bagian 1 selama 22 menit, peregangan 2 menit, lalu Bagian 2 dan 3 selama 18 menit. Siswa yang selesai lebih dulu memeriksa jawabannya lalu menunggu dengan tenang.
 - Guru boleh di kelas tapi tidak membantu isi soal. Bantuan dan gangguan dicatat P3 di kolom catatan L6, dengan kode L3 yang sama.
-- Buklet dikumpulkan dan disimpan P1; tidak dibawa pulang dan tidak difoto. Kunci disimpan terpisah dari buklet.
+- Buklet dikumpulkan dan disimpan koordinator sesi; tidak dibawa pulang dan tidak difoto. Kunci disimpan terpisah dari buklet.
 - Siswa yang absen ikut susulan dalam tiga hari dengan bentuk yang sudah ditetapkan dan batas waktu yang sama. Kalau tidak, dicatat "hilang" di L6.
 - **Tes awal dinilai sebelum P2**, karena pemilihan siswa wawancara L5 memakai kelompok nilai tes awal. Penilaian cukup dengan mengetik jawaban mentah ke templat.
 
 ### Petunjuk umum di sampul buklet
 
-Teks untuk siswa (dibacakan P1):
+Teks untuk siswa (dibacakan koordinator sesi):
 
 > Halo! Buku ini berisi soal membaca dan soal tentang memakai internet dengan baik. Jawabanmu tidak memengaruhi nilai rapor. Kerjakan sendiri dan sebaik-baiknya, ya.
 >
@@ -244,7 +246,7 @@ Satu kelas uji coba hanya memberi ± 14 siswa per bentuk, jadi angka butir di uj
 
 Dikerjakan setelah pemilik proyek memutuskan pertanyaan di bawah:
 
-- **02, L6:** tabel instrumen diganti dengan rujukan ke 13–16 dan jumlah butir baru; lembar jawaban per butir (`L6-jawaban`) ditambahkan; contoh skor diganti skor per bagian. Bagian dari daftar kerja no. 11 (lembar final).
+- **02, L6:** tabel instrumen diganti dengan rujukan ke 13–16 dan jumlah butir baru; "paling lambat sehari sebelum pertemuan game pertama" ditulis ulang menjadi "di P1, paling lambat sehari sebelum P2", karena P1 juga memuat daftar akun dan cerita pembuka; lembar jawaban per butir (`L6-jawaban`) ditambahkan; contoh skor diganti skor per bagian. Bagian dari daftar kerja no. 11 (lembar final).
 - **06, *Waktu bermain*:** isi dan lama P1 dan P5 sesuai pertanyaan 1.
 - **11:** variabel tes dan angket di *Variabel peserta dan sesi*; baris L6 di *Aturan gabung lembar lapangan*.
 - **03:** pola kode `tes-*` dan `ang-*`.
