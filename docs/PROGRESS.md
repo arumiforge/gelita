@@ -55,7 +55,7 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
   - [x] Owner decided two interview rounds (26 October 2026, `04`): 4-point words-and-dots format without a midpoint or faces, on screen only, one statement per screen with back allowed, scale before the existing feedback form (feedback all optional during the study), raters Ahli Budaya Kedu, Ahli Pengukuran, Ahli Bahasa Anak 1 and 2 (Lynn's I-CVI), make-up within 7 days
   - [x] Owner settled the scale's open questions (26 October 2026, `04`): the regional-language item stays, `skp-12` names merti desa and kirab, the feedback star rating counts as practicality data, students unfinished at the end of P5 keep their data as is (scale missing as `belum_tuntas`), and a moderate correlation with PBK and D3 is expected (exact band at G4)
   - [ ] Expert validation and child readability check (stage 2); knock-on changes in `01` (system change 21), `02`, `06`, `07`, `11`, `12`, `13`, and `18` listed in `17` → *Akibat ke dokumen lain*
-- [ ] Mock-ups of the new screens for media expert step 1 (`18_MOCKUP_LAYAR_BARU.md`, work item 20 in `01`), branch `r10-mockup-media`
+- [x] Mock-ups of the new screens for media expert step 1 (`18_MOCKUP_LAYAR_BARU.md`, work item 20 in `01`), PR #249
   - [x] 23 WebP mock-ups in `gambar/mockup/` from static HTML on the game's real CSS and UI pictures (sources in `gambar/mockup/src/`, `render.mjs`): Skenario Digital (5 states), *Periksa Unggahan* (4, incl. a tap-area check layer), token and research-mode screens (5, incl. the researcher panel), test and questionnaire module (6), attitude scale (placeholder), link scene and mission card; `03` gets the `mk-*` codes
   - [x] Owner decided two rounds (26 October 2026, `04`): real-game fidelity, all states and token screens, story screens included; pictures approved, the tap-area layer goes to the expert, draft copy accepted as starting text
   - [x] One explanation line per Skenario Digital scenario written in `08` for the tries-exhausted screen (24 lines, rule in *Cara membaca*; owner, 26 October 2026), `mk-sd-05` redrawn; the lines go to expert validation with the bank
@@ -109,4 +109,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `r10-mockup-media` | Claude session, research revision work item 20: `18_MOCKUP_LAYAR_BARU.md` and `gambar/mockup/` | PR open |
