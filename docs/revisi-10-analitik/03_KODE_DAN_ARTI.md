@@ -19,8 +19,8 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 | Ahli Bahasa Anak 1, 2 | Nama samaran validator: literasi membaca dan bahasa Indonesia SD (panel ahli materi) | Validasi, tahap 2 |
 | Ahli Literasi Digital 1, 2 | Nama samaran validator: literasi digital anak (panel ahli materi) | Validasi, tahap 2 |
 | Ahli Pengukuran | Nama samaran validator: evaluasi dan pengukuran (panel ahli materi) | Validasi, tahap 2 |
-| Ahli Budaya Kedu | Nama samaran validator: pengamat budaya | Validasi, tahap 2 |
-| Ahli Media Pembelajaran | Nama samaran validator: ahli media, dua langkah (mock-up, lalu layar jadi) | Validasi, tahap 2 dan 3 |
+| Ahli Budaya Kedu 1, 2, 3 | Nama samaran validator: pengamat budaya, idealnya satu orang per wilayah (panel tiga orang, keputusan 26 Oktober 2026). Ahli Budaya Kedu 1 juga menilai relevansi skala sikap (B.8) | Validasi, tahap 2 |
+| Ahli Media Pembelajaran 1, 2, 3 | Nama samaran validator: ahli media, dua langkah (mock-up, lalu layar jadi). Panel tiga orang (keputusan 26 Oktober 2026): 1 teknologi pendidikan atau media pembelajaran, 2 desain visual atau UX, 3 rekayasa perangkat lunak atau pengembangan game | Validasi, tahap 2 dan 3 |
 | Lembaga Komite Etik | Nama samaran komite etik penelitian; pengajuan minggu kedua–keempat November 2026, persetujuan paling lambat akhir September–minggu pertama November 2027 | Izin etik, tahap 2 |
 
 ## Dimensi literasi digital

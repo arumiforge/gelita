@@ -503,7 +503,7 @@ Masuk [11, *Variabel peserta dan sesi*](11_KAMUS_DATA.md#variabel-peserta-dan-se
 | 2 | Telaah isi: relevansi setiap butir dengan gunanya di analisis, butir yang kurang atau berlebih, butir yang bisa memancing jawaban D2 atau D3, dan kepekaan kalimat | Ahli Literasi Digital 1 dan 2 |
 | 2 | Telaah bahasa: kata yang sulit, panjang kalimat, pilihan yang tumpang tindih, dan nada yang menghakimi | Ahli Bahasa Anak 1 dan 2 |
 | 2 | Uji keterbacaan dengan 3–5 anak kelas 5 setelah izin etik terbit, bersama uji keterbacaan bank dan tes, di mock-up layar modul. Karena angket tidak dibacakan, anak membaca sendiri, lalu diminta menjelaskan dengan kata-katanya sendiri arti "akun sendiri", "menemanimu", "hari sekolah", dan "1 jam", dan butir risiko daring | Peneliti |
-| 2 | Mock-up layar angket ikut ditelaah ahli media langkah 1 | Ahli Media Pembelajaran |
+| 2 | Mock-up layar angket ikut ditelaah ahli media langkah 1 | Ahli Media Pembelajaran 1–3 |
 | 4 | Uji coba satu kelas di modul, dibaca sendiri seperti pelaksanaan sebenarnya. Yang dilihat: waktu total (sasaran ≤ 10 menit), butir yang sering dilewati, butir dengan banyak *Tidak tahu*, pilihan yang tidak pernah dipilih, pertanyaan yang sering ditanyakan siswa (catatan P3 di L6), dan isian yang bertentangan (`q_flags`) | Peneliti |
 | G4 | Angket final dan batas kelompok DIF dibekukan bersama pra-registrasi | Pemilik proyek |
 
