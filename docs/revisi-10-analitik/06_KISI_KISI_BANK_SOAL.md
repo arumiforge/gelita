@@ -179,12 +179,12 @@ Perkiraan dibuat untuk siswa kelas 5 (10–11 tahun) yang membaca **60–90 kata
 | Pertemuan | Isi |
 | --- | --- |
 | P1 | Daftar akun, tes awal di modul tes GELITA, angket akses digital (langsung di modul), cerita pembuka; lama mengikuti kebutuhan ([13](13_TES_AWAL_AKHIR.md#waktu-di-p1-dan-p5)) |
-| P2 | Wilayah Temanggung |
-| P3 | Wilayah Magelang |
-| P4 | Wilayah Wonosobo |
-| P5 | Menyelesaikan tantangan yang tertinggal (paling lama 20 menit), tes akhir di modul tes GELITA, butir risiko daring (hanya dengan izin terpisah), cerita penutup, skala sikap di Balai Refleksi, wawancara L5 (tes akhir sebelum cerita penutup: keputusan 26 Oktober 2026, [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#keputusan-pemilik-proyek)) |
+| P2 | Wilayah Temanggung; wawancara L5 (tiga siswa) setelah bermain |
+| P3 | Wilayah Magelang; wawancara L5 (tiga siswa) setelah bermain |
+| P4 | Wilayah Wonosobo; wawancara L5 (tiga siswa) setelah bermain |
+| P5 | Menyelesaikan tantangan yang tertinggal (paling lama 20 menit), tes akhir di modul tes GELITA, butir risiko daring (hanya dengan izin terpisah), cerita penutup, skala sikap di Balai Refleksi (tes akhir sebelum cerita penutup: keputusan 26 Oktober 2026, [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#keputusan-pemilik-proyek)) |
 
-Jeda peregangan singkat (2 menit) diberikan setelah tantangan ketiga di setiap pertemuan. Siswa yang belum selesai melanjutkan di pertemuan 5 (susulan), karena token hanya membuka wilayah pertemuan itu; jam lanjutnya dicatat di L1, dan nomor pertemuan dipakai sebagai kovariat.
+Jeda peregangan singkat (2 menit) diberikan setelah tantangan ketiga di setiap pertemuan. Siswa yang belum selesai melanjutkan di pertemuan 5 (susulan), karena token hanya membuka wilayah pertemuan itu; jam lanjutnya dicatat di L1, dan nomor pertemuan dipakai sebagai kovariat. Siswa yang absen di satu pertemuan ikut sesi susulan wilayah itu dalam tiga hari, dengan token sendiri (kode sesi `-S`, [02](02_LEMBAR_LAPANGAN.md#pertemuan-dan-lembar-yang-dipakai); diputuskan 26 Oktober 2026).
 
 ## Rencana Rasch dan apa artinya buat kisi-kisi
 
@@ -240,7 +240,7 @@ Usulannya **empat buklet**. Buklet menentukan variasi di setiap wilayah dan berl
 - Tetangga kiri–kanan selalu berbeda variasi di ketiga wilayah.
 - Setiap variasi ada di dua buklet, jadi tetap dikerjakan setengah sampel.
 - Setiap pasangan dimensi dan wilayah tersambung lewat buklet yang berbagi variasi (misalnya `tmg-5-a` dikerjakan B1 dan B3, `mgl-5-b` dikerjakan B2 dan B3). Jadi semua butir di setiap dimensi masuk satu skala, tanpa perlu butir jangkar D2 dan D3.
-- Buklet dibagikan P1 lewat denah L2 dan ikut tercatat di data sesi. Sesudah pertemuan P1, koordinator memasukkan buklet per kode peserta di panel peneliti dari L2, dan panel memeriksa keseimbangan B1–B4 per rombel. Siswa diminta duduk di kursi yang sama di P2–P4; buklet melekat pada siswa, jadi pindah kursi tidak mengubah variasinya dan cukup dicatat di L2 (diputuskan 25 Oktober 2026).
+- Buklet dibagikan P1 lewat denah L2 dan ikut tercatat di data sesi. Di P1, langsung setelah semua siswa mendaftar dan sebelum tes awal, koordinator memasukkan buklet, baris, dan kursi per kode peserta di panel peneliti dari L2 (diputuskan 26 Oktober 2026), dan panel memeriksa keseimbangan B1–B4 per rombel. Siswa diminta duduk di kursi yang sama di P2–P4; buklet melekat pada siswa, jadi pindah kursi tidak mengubah variasinya dan cukup dicatat di L2 (diputuskan 25 Oktober 2026).
 - Pengerjaan ulang tidak mengikuti buklet. Selama studi, pengerjaan ulang baru terbuka setelah kelima tantangan wilayah pertemuan itu tuntas, hanya di dalam sesi; datanya disimpan tapi tidak dinilai (diputuskan 25 Oktober 2026).
 - Karena urutan wilayah tetap, buklet tidak mengacak urutan. Ini tetap dicatat sebagai keterbatasan.
 

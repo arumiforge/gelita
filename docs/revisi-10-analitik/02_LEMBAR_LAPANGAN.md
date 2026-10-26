@@ -350,9 +350,9 @@ Dibandingkan draf 23 Oktober 2026 (yang sebagian diselaraskan 26 Oktober 2026):
 - **Cetak:** aturan A4, kepala halaman, baris kosong, dan cara membetulkan isian. Contoh tanggal fiktif dipindah ke setelah perkiraan persetujuan etik.
 - **Tempat kosong yang ditandai:** daftar kode sekolah (daftar kerja no. 12), pemegang akun peneliti (no. 13), dan nomor persetujuan etik.
 
-**Yang perlu disesuaikan di dokumen lain** (tidak diubah di sesi ini):
+**Penyesuaian di dokumen lain:** 01, 06, dan 13 sudah disesuaikan (26 Oktober 2026, sesudah persetujuan). Yang tersisa hanya 11.
 
-- **01**, *Kerja lapangan*: alur langkah 4 (kode disalin dari layar modul di P1; baris dan kursi dimasukkan sebelum tes awal) dan langkah 6 (L5 tiga siswa di P2–P4); siswa tanpa izin tanpa akun. Perubahan sistem no. 11 (sesi susulan dengan token sendiri, kode `-S`) dan no. 22 (bentuk tes menunggu baris dan kursi dari panel).
-- **06**, *Desain buklet* dan pembagian pertemuan: buklet dimasukkan di P1 langsung setelah pendaftaran, bukan sesudah pertemuan; wawancara L5 di P2–P4, bukan di P5; sesi susulan wilayah dalam tiga hari.
-- **13**, *Aturan selama tes*: bantuan dan gangguan dicatat di L3, bukan di catatan L6; *Waktu di P1 dan P5*: urutan P5 tanpa wawancara L5, dan P1 ditambah ± 5 menit untuk memasukkan baris dan kursi.
-- **11** (`kamus-1.1`): kode DEV-TIM; kode sesi susulan `-S`; L2 punya kolom baris dan kursi; L6 kini berisi status, bukan skor (skor dari modul).
+- **01**, *Kerja lapangan*: siswa tanpa izin tanpa akun, alur langkah 4 dan 6, siswa yang absen; perubahan sistem no. 11 dan no. 22. Selesai.
+- **06**: buklet dimasukkan di P1 langsung setelah pendaftaran; wawancara L5 di P2–P4; sesi susulan wilayah. Selesai.
+- **13**: bantuan saat tes di L3; P1 ditambah ± 5 menit (± 124 menit); urutan P5 tanpa wawancara L5. Selesai.
+- **11** (`kamus-1.1`, menunggu uji coba): kode DEV-TIM; kode sesi susulan `-S`; L2 punya kolom baris dan kursi; L6 kini berisi status, bukan skor (skor dari modul).

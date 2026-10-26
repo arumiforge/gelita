@@ -184,16 +184,17 @@ Lama P1 dan P5 mengikuti kebutuhan, tidak terikat JP sekolah: penelitian sudah m
 | --- | --- | --- |
 | Pembukaan | 5 | 5 |
 | Daftar akun (P1) atau masuk dan token (P5) | 10 | 5 |
+| Baris, kursi, dan buklet dimasukkan ke panel (L2) | ± 5 | — |
 | Tantangan susulan | — | paling lama 20 |
 | Tes: petunjuk dan lima contoh soal 7, Bagian 1 paling lama 40, peregangan 2, Bagian 2–3 paling lama 35 | paling lama 84 | paling lama 84 |
 | Angket akses digital (P1) atau butir risiko daring (P5), langsung di modul | ± 10 | ± 3 |
 | Cerita pembuka (P1) atau cerita penutup dan skala sikap (P5) | 5 | 12 |
 | Penutupan | 5 | 5 |
-| **Jumlah paling lama** | **± 119** | **± 134** |
+| **Jumlah paling lama** | **± 124** | **± 134** |
 
-Kebanyakan siswa selesai lebih cepat: dengan waktu kerja menurut perkiraan (45–58 menit), tes memakai ± 54–67 menit. Wawancara L5 di P5 berjalan sesudahnya. Kalau istirahat sekolah jatuh di tengah pertemuan, istirahat diambil di antara Bagian 1 dan Bagian 2–3 atau sesudah tes, tidak di tengah bagian, dan dicatat di L1.
+Kebanyakan siswa selesai lebih cepat: dengan waktu kerja menurut perkiraan (45–58 menit), tes memakai ± 54–67 menit. Kalau istirahat sekolah jatuh di tengah pertemuan, istirahat diambil di antara Bagian 1 dan Bagian 2–3 atau sesudah tes, tidak di tengah bagian, dan dicatat di L1.
 
-Urutan P1: pembukaan, daftar akun, tes awal, angket, cerita pembuka. Angket sesudah tes, supaya pertanyaan tentang kebiasaan digital tidak memengaruhi jawaban tes. Urutan P5: susulan, tes akhir, butir risiko daring, cerita penutup, skala sikap, wawancara L5. Siswa yang tidak punya tantangan susulan boleh membuka pengerjaan ulang di game sampai semua siap. Tes akhir dimulai bersama, supaya semua siswa mengerjakannya dalam kondisi yang sama.
+Urutan P1: pembukaan, daftar akun, baris dan kursi dimasukkan ke panel, tes awal, angket, cerita pembuka. Angket sesudah tes, supaya pertanyaan tentang kebiasaan digital tidak memengaruhi jawaban tes. Urutan P5: susulan, tes akhir, butir risiko daring, cerita penutup, skala sikap. Wawancara L5 berjalan di P2–P4, bukan di P5 (diputuskan 26 Oktober 2026). Siswa yang tidak punya tantangan susulan boleh membuka pengerjaan ulang di game sampai semua siap. Tes akhir dimulai bersama, supaya semua siswa mengerjakannya dalam kondisi yang sama.
 
 ### Pembagian bentuk: denah papan catur
 
@@ -206,13 +207,13 @@ Bentuk mengikuti nomor baris dan nomor kursi di denah L2 saat tes awal:
 
 - Tetangga kiri–kanan dan depan–belakang selalu berbeda bentuk, jadi melirik layar tetangga tidak menolong.
 - Urutan bentuk seimbang terhadap variasi game Temanggung dan Wonosobo: setiap kelompok berisi separuh variasi a dan separuh variasi b. Variasi Magelang tidak bisa ikut seimbang dengan pembagian per kursi apa pun yang juga memisahkan tetangga sebangku (kelompok A-dulu mendapat `mgl` variasi a). Ini dicatat sebagai keterbatasan kecil: analisis tes tidak memakai variasi game, dan semua variasi game ditaruh di satu skala Rasch.
-- Bentuk melekat pada siswa, bukan kursi. P1 memasukkan nomor baris dan kursi dari L2 ke panel peneliti setelah siswa mendaftar, bersama buklet game, dan panel menetapkan bentuk tes awal serta memeriksa keseimbangannya per rombel. Bentuk tes akhir otomatis kebalikannya.
+- Bentuk melekat pada siswa, bukan kursi. P1 memasukkan nomor baris dan kursi dari L2 ke panel peneliti langsung setelah semua siswa mendaftar, bersama buklet game, sementara siswa menunggu di layar pembuka modul; tes awal dimulai setelah semua siswa punya bentuk, dan panel menetapkan bentuk tes awal serta memeriksa keseimbangannya per rombel. Bentuk tes akhir otomatis kebalikannya.
 
 ### Aturan selama tes
 
 - Koordinator sesi (peran P1 di [01](01_REVISI_10_ANALITIK.md#kerja-lapangan-cara-kerjanya)) menjelaskan layar pembuka dan mengerjakan lima contoh soal bersama siswa: satu untuk setiap bentuk butir Bagian 1 (PG, PGK, menjodohkan), satu skenario Bagian 2, dan satu unggahan Bagian 3. Butir tes tidak dibacakan dan modul tidak bernarasi, sejalan dengan aturan narasi D1 di game. Siswa boleh bertanya tentang cara menjawab, tidak tentang arti kata di teks.
 - Waktu dijaga modul, bukan koordinator. Siswa yang selesai lebih dulu melihat layar selesai dan menunggu dengan tenang.
-- Guru boleh di kelas tapi tidak membantu isi soal. Bantuan dan gangguan dicatat P3 di kolom catatan L6, dengan kode L3 yang sama.
+- Guru boleh di kelas tapi tidak membantu isi soal. Bantuan dan gangguan dicatat P3 di L3, seperti saat bermain ([02](02_LEMBAR_LAPANGAN.md#l3-log-bantuan-dan-gangguan)).
 - Kalau perangkat bermasalah, siswa pindah ke perangkat cadangan dan melanjutkan dari soal terakhir. P1 mencatat jam dan lamanya di L1.
 - Siswa yang absen ikut susulan dalam tiga hari dengan bentuk yang sudah ditetapkan dan batas waktu yang sama; peneliti membuka modul untuk mereka. Kalau tidak, dicatat "hilang" di L6. Angket boleh menyusul sampai P5 dan ditandai `questionnaire_late` ([16](16_ANGKET_AKSES_DIGITAL.md#cara-pelaksanaan)); tes awal tidak, karena harus dikerjakan sebelum bermain.
 - **Tes awal dinilai sebelum P2**, karena pemilihan siswa wawancara L5 memakai kelompok nilai tes awal. Modul menilainya langsung.

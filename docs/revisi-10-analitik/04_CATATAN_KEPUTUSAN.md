@@ -21,7 +21,7 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 - Kelompok nilai tes awal untuk L5 adalah sepertiga terbawah, tengah, dan teratas di rombel.
 - Contoh tanggal fiktif, sesudah perkiraan persetujuan etik.
 
-Akibatnya: 02 final; 03 mendapat kode sesi susulan, DEV-TIM, dan arti L5 yang baru. Yang perlu disesuaikan di dokumen lain dicatat di [02](02_LEMBAR_LAPANGAN.md#perubahan-dari-draf).
+Akibatnya: 02 final; 03 mendapat kode sesi susulan, DEV-TIM, dan arti L5 yang baru. Sesudah persetujuan, 01 (*Kerja lapangan*, perubahan sistem no. 11 dan no. 22), 06 (pembagian pertemuan, buklet), dan 13 (waktu P1 menjadi ± 124 menit, urutan P5, bantuan saat tes di L3) disesuaikan. Urutan P5 di catatan keputusan 12 dibiarkan sebagai riwayat. Yang tersisa: 11 di `kamus-1.1`. Yang perlu disesuaikan di dokumen lain dicatat di [02](02_LEMBAR_LAPANGAN.md#perubahan-dari-draf).
 
 **Keputusan pemilik proyek: penyelarasan dokumen bersama setelah keputusan tes** (sesi `pbb/magical-hamilton-4f6l98`, wawancara lanjutan)
 
