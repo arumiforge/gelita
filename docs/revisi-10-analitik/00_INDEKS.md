@@ -52,7 +52,7 @@ Urutan kerja mengikuti peta jalan di 01, yang dikukuhkan pemilik proyek pada 25 
 | [13](13_TES_AWAL_AKHIR.md)–[16](16_ANGKET_AKSES_DIGITAL.md): tes awal–akhir bentuk A dan B, dan angket akses digital | no. 9, 10 | Claude (draf), pemilik proyek | Draf; keputusan pemilik proyek diambil 26 Oktober 2026 ([13](13_TES_AWAL_AKHIR.md#keputusan-pemilik-proyek)); menunggu validasi ahli |
 | [17_SKALA_SIKAP.md](17_SKALA_SIKAP.md): skala sikap menjaga warisan untuk Balai Refleksi | no. 19 | Claude (draf), pemilik proyek | Draf; keputusan pemilik proyek diambil 26 Oktober 2026 ([17](17_SKALA_SIKAP.md#keputusan-pemilik-proyek)); menunggu validasi ahli |
 | [19_TELAAH_LABEL_BLOOM.md](19_TELAAH_LABEL_BLOOM.md): telaah label Bloom | no. 4 | Claude (telaah), pemilik proyek | Selesai (26 Oktober 2026); 08 dan 06 diperbarui |
-| [18_MOCKUP_LAYAR_BARU.md](18_MOCKUP_LAYAR_BARU.md): mock-up layar baru untuk ahli media langkah 1 (26 gambar di `gambar/mockup/`) | no. 20 | Claude (draf), pemilik proyek | Selesai (disetujui 26 Oktober 2026; gambar skala sikap dari 17) |
+| [18_MOCKUP_LAYAR_BARU.md](18_MOCKUP_LAYAR_BARU.md): mock-up layar baru untuk ahli media langkah 1 (27 gambar di `gambar/mockup/`) | no. 20 | Claude (draf), pemilik proyek | Selesai (disetujui 26 Oktober 2026; gambar skala sikap dari 17) |
 | [02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md): lembar L0–L7 final | no. 11 | Claude (draf), pemilik proyek | Selesai (disetujui 26 Oktober 2026) |
 | Instrumen validasi r10 v2.1 dan media v1.1 | [07](07_TELAAH_INSTRUMEN_VALIDASI.md#langkah-berikutnya) | | Belum mulai |
 

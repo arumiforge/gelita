@@ -218,30 +218,48 @@ Dengan ± 300 siswa: analisis faktor konfirmatori satu faktor untuk data ordinal
 
 ## Etika
 
-1. **Izin.** Skala diisi siswa yang punya izin orang tua dan persetujuan siswa di L7. Surat izin orang tua menyebut skala ini dalam satu kalimat ("pendapat anak tentang budaya daerah Kedu, 12 pertanyaan singkat"). Skala tidak sensitif, jadi tidak perlu centang izin terpisah seperti butir risiko daring.
+1. **Izin.** Skala diisi siswa yang punya izin orang tua dan persetujuan siswa di L7. Surat izin orang tua menyebut skala ini dalam satu kalimat ("pendapat anak tentang budaya daerah Kedu, 12 pernyataan singkat setuju–tidak setuju di akhir P5, tanpa jawaban benar atau salah dan tidak dinilai", di L7 [02](02_LEMBAR_LAPANGAN.md#l7-izin-orang-tua-dan-status-peserta)). Permohonan izin etik memuat teks di [bawah](#teks-untuk-permohonan-izin-etik). Skala tidak sensitif, jadi tidak perlu centang izin terpisah seperti butir risiko daring.
 2. **Tidak ada jawaban benar atau salah**, dan ini tertulis di petunjuk. Jawaban tidak memengaruhi bintang, serpihan, atau nilai sekolah.
 3. **Kerahasiaan.** Layar hanya menampilkan kode peserta. Jawaban per siswa hanya dibaca tim peneliti. Laporan ke sekolah hanya angka gabungan, tidak untuk kelompok kurang dari 5 siswa.
 4. **Boleh dilewati.** Setiap pernyataan boleh dilewati, dan siswa boleh berhenti tanpa akibat.
 5. **Tidak menyudutkan.** Butir tentang bahasa daerah (skp-10) tidak boleh membuat siswa yang tidak berbahasa Jawa merasa salah. Kalimatnya menyebut "bahasa daerah" secara umum, sehingga bahasa daerah apa pun yang dipakai siswa termasuk; pemilik proyek menilai butir ini adil (26 Oktober 2026). Ahli Bahasa Anak dan Ahli Budaya Kedu tetap menilainya seperti butir lain.
 6. **Tanpa tanggapan.** Koordinator dan pengamat tidak menanggapi jawaban, dan layar tidak memberi umpan balik setelah skala.
 
+### Teks untuk permohonan izin etik
+
+Permohonan izin etik ke *Lembaga Komite Etik* (daftar kerja no. 15) belum ditulis. Bagian ini siap ditempel ke permohonan itu, di bagian instrumen dan risiko bagi peserta. `needs_verification`: disesuaikan dengan formulir komite saat permohonan disusun.
+
+> **Skala sikap menjaga warisan.** Di pertemuan kelima (P5), setelah tes akhir dan cerita penutup, siswa mengisi 12 pernyataan singkat tentang budaya daerah Kedu, misalnya "Aku bangga pada budaya daerah Kedu." Siswa memilih salah satu dari empat jawaban (*Tidak setuju*, *Kurang setuju*, *Setuju*, *Sangat setuju*) di layar GELITA. Pengisian berlangsung sekitar 5 menit.
+>
+> **Tujuan.** Skala ini menggambarkan sikap siswa terhadap warisan budaya Kedu (menghargai, ingin tahu, mau ikut merawat, dan bangga) sebagai data pendamping. Skala ini tidak termasuk skor literasi digital, tidak dipakai untuk menilai siswa, dan tidak memengaruhi nilai sekolah atau hasil permainan.
+>
+> **Risiko dan perlindungan.**
+> - Tidak ada pertanyaan tentang pengalaman pribadi yang buruk, keluarga, agama, suku, atau keadaan ekonomi. Risikonya dinilai minimal.
+> - Petunjuk di layar menyebutkan bahwa tidak ada jawaban benar atau salah, jawaban tidak dinilai dan tidak dilihat guru, dan setiap pernyataan boleh dilewati.
+> - Satu pernyataan menyebut bahasa daerah ("Aku malu memakai bahasa daerah di depan teman."). Kalimatnya umum, tidak menyebut bahasa tertentu, dan ditelaah ahli bahasa anak serta ahli budaya agar tidak menyudutkan siswa dari latar mana pun.
+> - Pernyataan tidak dibacakan. Peneliti hanya boleh menjelaskan arti satu kata bila siswa bertanya, dan tidak menanggapi jawaban.
+> - Layar hanya menampilkan kode peserta. Jawaban per siswa hanya dibaca tim peneliti; laporan ke sekolah hanya berisi angka gabungan dan tidak untuk kelompok kurang dari 5 siswa.
+> - Skala diisi hanya oleh siswa yang punya izin orang tua dan menyatakan setuju. Skala ini disebut di surat izin orang tua dan tidak memerlukan izin terpisah.
+>
+> **Validasi.** Isi dan bahasa butir ditelaah empat ahli (budaya Kedu, pengukuran, dan dua ahli bahasa anak) sebelum dipakai, lalu diuji keterbacaannya dengan 3–5 anak setelah izin etik terbit.
+
 ## Akibat ke dokumen lain
 
-Dokumen-dokumen ini tidak diubah di sesi ini; penyesuaiannya dikerjakan pemilik masing-masing dokumen atau sesi berikutnya.
+Penyesuaian yang sudah dikerjakan ditandai di tabel; sisanya menunggu tahapnya.
 
 | Dokumen | Yang perlu diubah |
 | --- | --- |
 | [01](01_REVISI_10_ANALITIK.md), perubahan sistem no. 21 | **Sudah dikerjakan (26 Oktober 2026).** Lengkapi catatan pengembang: layar skala di Balai Refleksi sebelum kritik dan saran, satu pernyataan per layar dengan *Lewati* dan *Kembali*, contoh soal, urutan tetap, sekali kirim, jawaban per butir disimpan di server, waktu tampil per butir dan penggantian jawaban dicatat, pengantar Mbah Kedu yang memuji tampil setelah skala, aturan "minimal dua" kritik dan saran tidak dipakai selama penelitian, susulan paling lama 7 hari dibuka peneliti untuk siswa yang tidak hadir di P5, tanpa jalur khusus untuk siswa yang belum tuntas (data apa adanya), alasan skala kosong dan bintang kritik dan saran masuk ekspor peneliti |
-| [02](02_LEMBAR_LAPANGAN.md) (sesi `r10-lembar-lapangan`) | L1: catatan susulan skala dan tanggalnya. L3: bantuan membaca satu kata di skala sikap tercatat dengan kode yang ada (`PNL` + `BHS`). L7: surat izin orang tua menyebut skala sikap dalam satu kalimat |
+| [02](02_LEMBAR_LAPANGAN.md) (sesi `r10-lembar-lapangan`) | **Sudah dikerjakan (26 Oktober 2026).** L1: catatan susulan skala dan tanggalnya. L3: bantuan membaca satu kata di skala sikap tercatat dengan kode yang ada (`PNL` + `BHS`). L7: surat izin orang tua menyebut skala sikap dalam satu kalimat |
 | [03](03_KODE_DAN_ARTI.md) | Kode baru dari skala ini: `skp-01` … `skp-12`, `skp-ct-01`, SK1–SK4, kode jawaban 1–4 (sudah ditambahkan di sesi ini) |
 | [06](06_KISI_KISI_BANK_SOAL.md), baris P5 | **Sudah dikerjakan (26 Oktober 2026).** Skala sikap sebelum kritik dan saran; susulan skala paling lama 7 hari setelah P5 |
 | [07](07_TELAAH_INSTRUMEN_VALIDASI.md) (instrumen r10 v2.1) | **Sudah dikerjakan (26 Oktober 2026):** lembar B.8 di [07](07_TELAAH_INSTRUMEN_VALIDASI.md#lembar-penilaian-skala-sikap-b8). Lembar penilaian skala sikap: relevansi 1–4 untuk Ahli Budaya Kedu (G3), Ahli Pengukuran, Ahli Bahasa Anak 1 dan 2; telaah bahasa untuk Ahli Bahasa Anak; catatan Ya/Tidak tumpang tindih D3 untuk Ahli Literasi Digital 1 dan 2. Baris "Indikator sikap" di tabel *perubahan yang menunggu keputusan* diperbarui ke dokumen ini |
 | [11](11_KAMUS_DATA.md) | Di `kamus-1.1` setelah uji coba: variabel di [Variabel untuk kamus data](#variabel-untuk-kamus-data), termasuk `feedback_rating` sebagai data kepraktisan. `kamus-1.0` tidak diubah |
 | [Dokumen pendukung peneliti](dokumen-pendukung-peneliti/README.md) | **Sudah dikerjakan (26 Oktober 2026).** Usulan "kepraktisan diukur dari log dan lembar L1, L3, L4" yang belum diputuskan: tambahkan bintang 1–5 di kritik dan saran sebagai sumber kepraktisan dari siswa |
-| [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) | Periksa apakah baris terakhir cerita penutup memuji sikap siswa terhadap warisan Kedu tepat sebelum skala; kalau ya, pertimbangkan kalimat yang lebih netral. Pengantar Balai Refleksi (`Game.reflectionLead`) baru tampil setelah skala |
+| [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) | **Sudah dikerjakan (26 Oktober 2026):** tidak ada baris cerita penutup yang memuji siswa; `penutup-04` diubah karena menggemakan `skp-07` (keputusan pemilik proyek). Periksa apakah baris terakhir cerita penutup memuji sikap siswa terhadap warisan Kedu tepat sebelum skala; kalau ya, pertimbangkan kalimat yang lebih netral. Pengantar Balai Refleksi (`Game.reflectionLead`) baru tampil setelah skala |
 | [13](13_TES_AWAL_AKHIR.md), tabel waktu P5 | **Sudah dikerjakan (26 Oktober 2026).** Baris "cerita penutup dan skala sikap" (12 menit) belum memuat kritik dan saran (± 3–5 menit); jumlah paling lama P5 naik menjadi ± 139 menit |
-| 18 (mock-up, sesi `r10-mockup-media`) | Mock-up layar skala sikap (petunjuk, contoh, satu pernyataan dengan empat pilihan bertitik, layar kirim) untuk ahli media langkah 1 dan uji keterbacaan |
-| Permohonan izin etik | Sebut skala sikap dan tujuannya |
+| [18](18_MOCKUP_LAYAR_BARU.md) | **Sudah dikerjakan (26 Oktober 2026):** `mk-ss-01`–`mk-ss-04` dari sesi mock-up, ditambah `mk-ss-05` (Balai Refleksi dengan kritik dan saran setelah skala). Mock-up layar skala sikap (petunjuk, contoh, satu pernyataan dengan empat pilihan bertitik, layar kirim) untuk ahli media langkah 1 dan uji keterbacaan |
+| Permohonan izin etik | **Teks siap tempel (26 Oktober 2026)** di [Teks untuk permohonan izin etik](#teks-untuk-permohonan-izin-etik); dimasukkan saat permohonan disusun (daftar kerja no. 15) |
 
 ## Pertanyaan yang masih terbuka
 

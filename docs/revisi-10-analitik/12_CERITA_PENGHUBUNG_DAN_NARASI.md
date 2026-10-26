@@ -450,11 +450,11 @@ Penutup diputar di P5, setelah tes akhir dan sebelum skala sikap (keputusan 5). 
 **EN:** I feel strong again, my boy! But remember, this light does not belong to the lantern alone. It lives every time someone reads with care and shares wisely.
 
 #### `penutup-04` · Jaka · pose `bow`
-Janji Jaka kini mencakup ketiga dimensi, tanpa daftar tindakan.
+Janji Jaka kini mencakup ketiga dimensi, tanpa daftar tindakan. Bagian ketiganya menyebut budaya Kedu *di layar* (D3), bukan "bercerita tentang budaya Kedu", karena kalimat itu menggemakan butir skala sikap `skp-07` yang dijawab beberapa menit kemudian (keputusan pemilik proyek 26 Oktober 2026, [17](17_SKALA_SIKAP.md#akibat-ke-dokumen-lain)).
 
-**ID:** Aku akan terus menjaga cahaya ini, Mbah: saat membaca, saat memakai layar, dan saat bercerita tentang budaya Kedu. Supaya Kabut Lupa tidak pernah kembali.
+**ID:** Aku akan terus menjaga cahaya ini, Mbah: saat membaca, saat memakai layar, dan saat budaya Kedu tampil di layar. Supaya Kabut Lupa tidak pernah kembali.
 
-**EN:** I will keep this light safe, Mbah: when I read, when I use a screen, and when I talk about Kedu's culture. So that the Mist of Forgetting never comes back.
+**EN:** I will keep this light safe, Mbah: when I read, when I use a screen, and when Kedu's culture appears on a screen. So that the Mist of Forgetting never comes back.
 
 ### Peta Kedu setelah semua tuntas (`map_done`)
 
@@ -567,6 +567,7 @@ Pemilik proyek menyetujui semua usulan pada 26 Oktober 2026. Pilihan lain yang t
 3. **Kabar berantai Wonosobo menjadi ramalan gempa**, bukan "kawah akan meletus", karena `wnb-3-b` sudah memakai kawah, pesan berantai, dan akun resmi.
 4. **Yang dibacakan di Skenario Digital hanya situasinya**, lewat tombol ▶, sesuai keputusan media 25 Oktober 2026. Pilihan tindakan, pilihan alasan, dan umpan balik tidak dibacakan.
 5. **Urutan P5:** tantangan susulan (paling lama 20 menit), tes akhir, cerita penutup, skala sikap di Balai Refleksi, wawancara L5.
+6. **`penutup-04` diubah setelah pemeriksaan skala sikap** (26 Oktober 2026): "saat bercerita tentang budaya Kedu" menjadi "saat budaya Kedu tampil di layar", supaya baris terakhir sebelum skala tidak menggemakan butir `skp-07`. Baris ini direkam dengan teks baru di kedua bahasa.
 
 ## Rujukan
 
