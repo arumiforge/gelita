@@ -1,6 +1,6 @@
 # Indeks Revisi 10 Analitik
 
-Per 26 Oktober 2026 · Pintu masuk untuk setiap sesi baru di [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 27 Oktober 2026 · Pintu masuk untuk setiap sesi baru di [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Dokumen Markdown di folder ini sekitar 680 KB, kira-kira 300 ribu token kalau dibaca utuh. Satu sesi tidak perlu membaca semuanya. Aturan menjaga konteks ada di `.claude/rules/revisi-10.md` dan dimuat otomatis saat berkas di folder ini dibuka.
 
@@ -18,7 +18,7 @@ Dokumen lain dibaca per bagian sesuai tugas.
 | Berkas | Isi | Status | Kapan dibaca | Ukuran |
 | --- | --- | --- | --- | --- |
 | [01](01_REVISI_10_ANALITIK.md) | Dokumen utama: konstruk, 10 analitik, Skenario Digital, skema kesalahan, peran, log, token, kode peserta, peta jalan, pertanyaan terbuka, 22 perubahan sistem | Aktif | Selalu, per bagian | 62 KB |
-| [02](02_LEMBAR_LAPANGAN.md) | Lembar lapangan L0–L8 | L0–L7 final, disetujui 26 Oktober 2026 (daftar kerja no. 11); L8 Profil sekolah draf (26 Oktober 2026); daftar kode sekolah (no. 12) dan pemegang akun (no. 13) masih ditandai kosong | Saat menyusun lembar atau alur lapangan | 17 KB |
+| [02](02_LEMBAR_LAPANGAN.md) | Lembar lapangan L0–L8 | L0–L7 final, disetujui 26 Oktober 2026 (daftar kerja no. 11); L8 Profil sekolah draf (26 Oktober 2026); daftar kode sekolah (no. 12) masih ditandai kosong; akun P1 memakai nama samaran `koordinator` (no. 13, 27 Oktober 2026) | Saat menyusun lembar atau alur lapangan | 17 KB |
 | [03](03_KODE_DAN_ARTI.md) | Arti semua kode | Rujukan | Cari kode yang dibutuhkan saja | 13 KB |
 | [04](04_CATATAN_KEPUTUSAN.md) | Riwayat keputusan, terbaru di atas | Aktif | Selalu, entri teratas | 37 KB |
 | [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) | Telaah butir bank lama terhadap dimensi | Selesai; keputusannya masuk 06 | Hanya untuk menelusuri alasan | 39 KB |
@@ -36,6 +36,11 @@ Dokumen lain dibaca per bagian sesuai tugas.
 | [17](17_SKALA_SIKAP.md) | Skala sikap menjaga warisan (pendamping, Balai Refleksi P5): konstruk, kisi-kisi SK1–SK4, 12 butir, format empat pilihan, penskoran, pelaksanaan, validasi, etika, akibat ke dokumen lain | Draf, `needs_verification`; keputusan pemilik proyek 26 Oktober 2026; menunggu validasi ahli | Saat menyusun paket validasi, lembar L1/L3/L7, atau dokumen implementasi perubahan no. 21 | 24 KB |
 | [18](18_MOCKUP_LAYAR_BARU.md) | Mock-up layar baru untuk ahli media langkah 1: Skenario Digital, *Periksa Unggahan*, token, modul tes dan angket, skala sikap, cerita penghubung; keadaan per layar dan yang dinilai ahli | Disetujui 26 Oktober 2026; gambar skala sikap dari 17 | Saat menyusun instrumen media v1.1, paket validasi media, atau dokumen implementasi layar baru | 24 KB |
 | [19](19_TELAAH_LABEL_BLOOM.md) | Telaah label Bloom pengembang per butir (116 butir literasi digital, 12 PBK), pola sistematis, rentang wilayah baru | Selesai; keputusan pemilik proyek 26 Oktober 2026 masuk 08 dan 06 | Saat menelusuri alasan label Bloom atau menyiapkan B.5a | 25 KB |
+| `20_PAKET_VALIDASI.md` | Paket validasi untuk sebelas validator: siapa menerima apa dan kapan, surat permohonan, jadwal, pengembalian, matriks revisi, daftar periksa validasi di G2 | Sedang ditulis (sesi paralel, cabang `r10-paket-validasi`, 27 Oktober 2026) | Saat menyiapkan atau mengirim paket validasi | — |
+| `21_BERKAS_BUTIR_VALIDATOR.md` | Daftar butir dan lembar kerja untuk validator: daftar buta B.5a, daftar B.5b, lembar kerja per lembar instrumen, cara membuat ulang | Sedang ditulis (sesi paralel, cabang `r10-berkas-validator`, 27 Oktober 2026) | Saat menyiapkan berkas per butir | — |
+| `22_PERMOHONAN_IZIN_ETIK.md` | Draf permohonan izin etik ke *Lembaga Komite Etik*: protokol, peserta, persetujuan, risiko, pengelolaan data, lampiran | Sedang ditulis (sesi paralel, cabang `r10-izin-etik`, 27 Oktober 2026) | Saat menyusun atau mengajukan izin etik | — |
+| `23_SURAT_INFORMASI_DAN_PERSETUJUAN.md` | Surat informasi dan persetujuan: orang tua, persetujuan anak, sekolah, guru kelas, uji keterbacaan dan uji coba, permintaan hapus data | Sedang ditulis (sesi paralel, cabang `r10-surat-izin`, 27 Oktober 2026) | Saat menyiapkan izin etik, L7, atau rekrutmen sekolah | — |
+| `24_UJI_KETERBACAAN.md` | Protokol uji keterbacaan dengan 3–5 anak kelas 5: bahan, langkah, lembar catatan, aturan revisi | Sedang ditulis (sesi paralel, cabang `r10-uji-keterbacaan`, 27 Oktober 2026) | Saat menyiapkan uji keterbacaan atau izin etik | — |
 | `gambar/` | Peta bukti, lapis data, peta jalan, buklet, tangkapan layar telaah media, mock-up layar baru (`gambar/mockup/`, sumber HTML di `src/`) | Rujukan | Saat dokumen yang memakainya diubah | — |
 | [dokumen-pdf/](dokumen-pdf/README.md) | Dokumen PDF penting: tiga instrumen validasi ahli (ahli materi v2.1, pengamat budaya v2.1, ahli media v1.1), sumber HTML dan skrip pembuatnya di `src/`, dan draf asli pemilik proyek di `arsip/` | Draf, menunggu persetujuan pemilik proyek (26 Oktober 2026) | Saat menyusun paket validasi; PDF dibuat ulang dari HTML | 3,3 MB |
 | [dokumen-pendukung-peneliti/](dokumen-pendukung-peneliti/README.md) | Bacaan untuk peneliti dan tim, **bukan dokumen implementasi**: model penelitian dan pengembangan (PDF), dengan rujukan yang dicek ke sumber asli | Rujukan; model Plomp dan aturan I-CVI Lynn diputuskan 26 Oktober 2026 | Saat menulis Bab III atau bagian metodologi; tidak dibaca untuk implementasi | 390 KB (PDF dan sumbernya) |
@@ -61,7 +66,19 @@ Gerbang G1: konstruk disetujui, dan semua dokumen tahap 1 selesai dan disetujui 
 
 **Tahap dokumen 2: validasi ahli dan izin etik (sampai gerbang G2)**
 
-Pelabelan buta oleh dua ahli (B.5a di [07](07_TELAAH_INSTRUMEN_VALIDASI.md)), dengan kesepakatan κ ≥ 0,70 sebagai bagian gerbang G2. Paket validasi untuk tujuh validator (nama samaran sementara di [03](03_KODE_DAN_ARTI.md#peran)), permohonan izin etik ke *Lembaga Komite Etik* (nama samaran; diajukan minggu kedua–keempat November 2026), dan surat izin orang tua (L7). Setelah itu bank dan instrumen direvisi dari hasil validasi.
+Pelabelan buta oleh dua ahli (B.5a di [07](07_TELAAH_INSTRUMEN_VALIDASI.md)), dengan kesepakatan κ ≥ 0,70 sebagai bagian gerbang G2. Paket validasi untuk sebelas validator (nama samaran di [03](03_KODE_DAN_ARTI.md#peran)), permohonan izin etik ke *Lembaga Komite Etik* (nama samaran; diajukan minggu kedua–keempat November 2026), surat izin orang tua (L7), dan uji keterbacaan dengan anak setelah izin etik terbit. Setelah itu bank dan instrumen direvisi dari hasil validasi (Prototipe I).
+
+Dimulai 27 Oktober 2026 atas permintaan pemilik proyek, ditulis paralel di lima sesi, satu dokumen per sesi dan satu cabang per dokumen ([04](04_CATATAN_KEPUTUSAN.md), entri 27 Oktober 2026). Gerbang G1 belum resmi terpenuhi (daftar kode sekolah no. 12 ditunda, tiga instrumen validasi menunggu persetujuan), jadi dokumen tahap 2 boleh ditulis sekarang, tetapi yang dikirim ke luar (paket ke validator, permohonan ke komite etik) menunggu persetujuan dokumen yang dibutuhkannya.
+
+| Dokumen | Daftar kerja di 01 | Cabang | Penyusun | Status |
+| --- | --- | --- | --- | --- |
+| `20_PAKET_VALIDASI.md`: paket validasi sebelas validator, surat permohonan, jadwal, pengembalian, matriks revisi, daftar periksa validasi di G2 | no. 3, 14 | `r10-paket-validasi` | Claude (draf), pemilik proyek | Sedang ditulis |
+| `21_BERKAS_BUTIR_VALIDATOR.md`: daftar butir buta B.5a, daftar B.5b, dan lembar kerja per lembar instrumen, dibuat dari 08 dan 13–18 | no. 3, 14 | `r10-berkas-validator` | Claude (draf), pemilik proyek | Sedang ditulis |
+| `22_PERMOHONAN_IZIN_ETIK.md`: protokol dan permohonan izin etik | no. 15 | `r10-izin-etik` | Claude (draf), pemilik proyek | Sedang ditulis |
+| `23_SURAT_INFORMASI_DAN_PERSETUJUAN.md`: surat informasi dan persetujuan untuk orang tua, anak, sekolah, dan guru | no. 15 | `r10-surat-izin` | Claude (draf), pemilik proyek | Sedang ditulis |
+| `24_UJI_KETERBACAAN.md`: protokol uji keterbacaan dengan anak | no. 23 | `r10-uji-keterbacaan` | Claude (draf), pemilik proyek | Sedang ditulis |
+
+Setiap sesi hanya mengubah dokumennya sendiri, barisnya sendiri di berkas ini dan di `docs/PROGRESS.md`, dan entrinya sendiri di 04. Perubahan yang dibutuhkan di dokumen lain dicatat di bagian *Akibat ke dokumen lain* dokumen itu dan dibawa sesi koordinator setelah digabung ke `main`.
 
 **Tahap dokumen 3: dokumen implementasi (tahap 3, setelah gerbang G2)**
 

@@ -397,7 +397,7 @@ Ahli media menilai dalam dua langkah (diputuskan 25 Oktober 2026): di tahap 2, g
 | --- | --- | --- | --- | --- |
 | 1 | Setujui penyelarasan konstruk: literasi digital dengan tiga dimensi | 1 | Pemilik proyek | Selesai |
 | 2 | Bekukan peta bukti dan definisi 10 analitik di kamus data ([11](11_KAMUS_DATA.md)) | 1 | Claude (draf), pemilik proyek | Selesai: `kamus-1.0` disetujui 26 Oktober 2026 |
-| 3 | Pelabelan buta level AKM dan dimensi pada semua butir yang dinilai oleh dua ahli (B.5a di [07](07_TELAAH_INSTRUMEN_VALIDASI.md)); label pengembang sudah ada di 08 | 2 | | Belum mulai |
+| 3 | Pelabelan buta level AKM dan dimensi pada semua butir yang dinilai oleh dua ahli (B.5a di [07](07_TELAAH_INSTRUMEN_VALIDASI.md)); label pengembang sudah ada di 08 | 2 | Claude (berkas), pemilik proyek (menunjuk dua penilai), dua ahli | Berkasnya sedang disusun di `20_PAKET_VALIDASI.md` dan `21_BERKAS_BUTIR_VALIDATOR.md` (sesi paralel, 27 Oktober 2026) |
 | 4 | Periksa ulang label Bloom, terutama Cari Objek dan Benar atau Salah C5 | 1 | Claude (telaah), pemilik proyek | Selesai: [19](19_TELAAH_LABEL_BLOOM.md); keputusan pemilik proyek 26 Oktober 2026 dimasukkan ke 08 dan 06 |
 | 5 | Beri kode kesalahan pada kata pengecoh, benda pengecoh, dan pernyataan | 1 | Claude | Selesai di draf 08, menunggu validasi |
 | 6 | Tulis Skenario Digital untuk tiga wilayah, lengkap dengan pilihan tindakan dan alasan berkode | 1 | Claude | Selesai di draf 08, menunggu validasi |
@@ -406,10 +406,10 @@ Ahli media menilai dalam dua langkah (diputuskan 25 Oktober 2026): di tahap 2, g
 | 9 | Susun tes literasi membaca dan tes literasi digital, bentuk A dan B: bagian membaca diadaptasi dari contoh soal AKM/ANBK yang terbuka untuk umum, bagian D2 dan D3 disusun sendiri dan tidak sama dengan butir game | 1 | Claude (draf), pemilik proyek | Draf di [13](13_TES_AWAL_AKHIR.md), [14](14_TES_BAGIAN_MEMBACA.md), dan [15](15_TES_BAGIAN_DIGITAL.md); keputusan pemilik proyek 26 Oktober 2026 (modul tes GELITA, batas waktu longgar, topik di luar Kedu); menunggu validasi |
 | 10 | Susun angket akses digital | 1 | Claude (draf), pemilik proyek | Draf di [16](16_ANGKET_AKSES_DIGITAL.md); keputusan pemilik proyek 26 Oktober 2026 (di modul, tidak dibacakan; butir risiko daring di P5); menunggu validasi |
 | 11 | Finalkan lembar L0–L7 | 1 | Claude (draf), pemilik proyek | Selesai: [02](02_LEMBAR_LAPANGAN.md) disetujui 26 Oktober 2026 |
-| 12 | Buat daftar kode sekolah penelitian (S01, S02, …) | 1 | | Belum mulai |
-| 13 | Tentukan siapa pemegang akun admin dan akun peneliti | 1 | | Belum mulai |
-| 14 | Validasi ahli: budaya Kedu, bahasa anak, literasi digital, pengukuran, media | 2 | | Belum mulai |
-| 15 | Ajukan izin etik ke *Lembaga Komite Etik* (nama samaran) pada minggu kedua–keempat November 2026, dan siapkan surat izin orang tua | 2 | | Belum mulai |
+| 12 | Buat daftar kode sekolah penelitian (S01, S02, …) | 1 | Pemilik proyek | Ditunda (27 Oktober 2026): belum diputuskan, tahap 2 tetap dimulai. Dibutuhkan sebelum sekolah direkrut dan L8 diisi |
+| 13 | Tentukan siapa pemegang akun admin dan akun peneliti | 1 | Pemilik proyek | Sementara (27 Oktober 2026): nama samaran per peran, `admin` dan `koordinator` (P1), dan seterusnya ([03](03_KODE_DAN_ARTI.md#akun-staf)); pemegang sebenarnya belum ditetapkan |
+| 14 | Validasi ahli: budaya Kedu, bahasa anak, literasi digital, pengukuran, media | 2 | Claude (paket), pemilik proyek, sebelas validator | Paket sedang disusun di `20_PAKET_VALIDASI.md` dan `21_BERKAS_BUTIR_VALIDATOR.md` (27 Oktober 2026); dikirim setelah instrumen v2.1 dan v1.1 disetujui |
+| 15 | Ajukan izin etik ke *Lembaga Komite Etik* (nama samaran) pada minggu kedua–keempat November 2026, dan siapkan surat izin orang tua | 2 | Claude (draf), pemilik proyek | Sedang disusun di `22_PERMOHONAN_IZIN_ETIK.md` dan `23_SURAT_INFORMASI_DAN_PERSETUJUAN.md` (27 Oktober 2026) |
 | 16 | Latih pengamat L4 sampai κ ≥ 0,60 | 4 | | Belum mulai |
 | 17 | Uji coba satu kelas dengan semua lembar | 4 | | Belum mulai |
 | 18 | Pra-registrasi skema kesalahan dan rencana analisis di OSF, di gerbang G4 | 4 | | Belum mulai |
@@ -417,6 +417,7 @@ Ahli media menilai dalam dua langkah (diputuskan 25 Oktober 2026): di tahap 2, g
 | 20 | Buat papan cerita atau mock-up layar baru (Skenario Digital, *Periksa Unggahan*, token, modul tes dan angket) untuk ahli media langkah 1 | 1 | Claude (draf), pemilik proyek | Selesai: [18](18_MOCKUP_LAYAR_BARU.md) disetujui 26 Oktober 2026 (27 gambar, termasuk layar skala sikap dari [17](17_SKALA_SIKAP.md)) |
 | 21 | Telaah ahli media langkah 2 pada layar jadi di instalasi uji, sebelum uji coba (G3) | 3 | | Belum mulai |
 | 22 | Tulis penelitian pendahuluan sebagai fase tersendiri dari bahan yang ada, dan isi L8 Profil sekolah untuk setiap sekolah sasaran (draf lembar di [02](02_LEMBAR_LAPANGAN.md#l8-profil-sekolah)) | pendahuluan | Claude (draf), pemilik proyek; L8 diisi P1 | Lembar L8 draf (26 Oktober 2026); menunggu daftar kode sekolah (no. 12) |
+| 23 | Susun protokol uji keterbacaan dengan 3–5 anak kelas 5 (bank, tes, angket, skala sikap, salinan layar baru), dijalankan setelah izin etik terbit | 2 | Claude (draf), pemilik proyek | Sedang disusun di `24_UJI_KETERBACAAN.md` (27 Oktober 2026) |
 
 ## Pertanyaan yang masih terbuka
 
