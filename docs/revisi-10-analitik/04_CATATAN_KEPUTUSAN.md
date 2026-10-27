@@ -6,6 +6,37 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 27 Oktober 2026
 
+**Berkas butir untuk validator: draf 21 dan skrip pembuatnya** (cabang `r10-berkas-validator`, sesi paralel tahap 2; Prototipe I, belum merevisi produk) · **Status: draf, menunggu keputusan pemilik proyek**
+
+1. **Yang ditulis.** [21_BERKAS_BUTIR_VALIDATOR.md](21_BERKAS_BUTIR_VALIDATOR.md) dan skrip `dokumen-pdf/src/berkas-validator.php`. Skrip membaca 03, 08, 14–18 dan tabel ketiga instrumen (tanpa mengubahnya), lalu menulis berkas di `dokumen-pdf/berkas-validator/`:
+   - daftar buta B.5a (lembar kerja dan buklet PDF) dan kuncinya di `khusus-peneliti/`;
+   - daftar B.5b;
+   - lembar kerja B.6–B.9 ahli materi, dan B.7 versi pengodean buta;
+   - lembar kerja B.5–B.8 pengamat budaya;
+   - lembar kerja B.8 ahli media;
+   - laporan pemeriksaan `LAPORAN.md`.
+
+   Jumlahnya: 180 butir B.5a dan B.5b (116 bank, 64 tes), 24 skenario, 622 sel kode, 12 pernyataan sikap, 38 pasangan A–B, 20 butir angket, 46 objek budaya, 24 petunjuk, 12 butir PBK, 19 fakta, dan 27 gambar mock-up. Semua 68 pemeriksaan lolos.
+2. **Pilihan saat menulis**, semuanya pilihan yang disarankan di pertanyaan 21:
+   - ID netral `BT-…` dan `BH-…`, dengan bahan diacak dengan benih tetap;
+   - kunci jawaban dicantumkan di daftar buta, kode kesalahan dan label tidak;
+   - bagian ketuk dinamai "Bagian 1, 2, …";
+   - B.7 berisi semua 622 sel dengan kolom "Asal kode";
+   - level pengembang *Periksa Unggahan* dan Skenario Digital diturunkan dari baris *Tingkat* 08 per wilayah.
+3. **Temuan untuk pemilik proyek** (rinciannya di 21):
+   - paket awal di D.3 ahli materi membocorkan dimensi dan sub-aspek ke dua penilai B.5a lewat kode kesalahan dan beberapa bagian instrumen;
+   - level pengembang butir tes D2 dan D3 berupa rentang;
+   - B.7 lebih panjang dari perkiraan 2–3 jam;
+   - nama topik B.6 dan nama benda B.6b berbeda kata dengan 08;
+   - lembar kerja B.3–B.7 ahli media belum dibuat.
+4. **Pertanyaan terbuka** (empat, di 21):
+   - ID netral atau kode asli;
+   - urutan kirim ke dua penilai B.5a;
+   - kunci di daftar buta;
+   - cakupan B.7.
+
+Akibatnya: 00 (baris 21), `dokumen-pdf/README.md` (tabel *Isi* dan bagian *Membuat ulang berkas validator*), dan `docs/PROGRESS.md` diperbarui. Perubahan untuk 01, 03, 08, 13, 15, 20, dan ketiga instrumen dicatat di 21 → *Akibat ke dokumen lain* untuk sesi koordinator.
+
 **Keputusan pemilik proyek: daftar kerja no. 12 dan 13, dan dimulainya dokumen tahap 2** (cabang `sky/inspiring-ritchie-nex4qi`, sesi koordinator)
 
 1. **Daftar kode sekolah penelitian (no. 12) belum diputuskan; tahap 2 tetap dimulai.** Kode `S01`, `S02`, … di semua dokumen tetap contoh, dan tempat kosongnya di 02 tetap ditandai. Daftar ini baru dibutuhkan sebelum sekolah direkrut dan L8 diisi, jadi tidak menahan dokumen validasi dan izin etik.
