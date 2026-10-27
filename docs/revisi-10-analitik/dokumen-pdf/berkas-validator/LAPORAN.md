@@ -2,7 +2,7 @@
 
 Dibuat otomatis oleh `src/berkas-validator.php`. Jangan disunting; jalankan ulang skripnya.
 
-Versi berkas: `berkas-1.0 · sumber 1587fe23` (hash 8 karakter dari dokumen 03, 08, 14–18 dan tiga instrumen HTML) · benih acak B.5a: 20261027
+Versi berkas: `berkas-1.0 · sumber 733b9955` (hash 8 karakter dari dokumen 03, 08, 14–18 dan tiga instrumen HTML) · benih acak B.5a: 20261027
 
 ## Berkas dan jumlah baris
 
@@ -48,6 +48,7 @@ Versi berkas: `berkas-1.0 · sumber 1587fe23` (hash 8 karakter dari dokumen 03, 
 | B.5a rincian bank (jangkar, Periksa Unggahan, Skenario) | lolos | 6 jangkar, 24 petunjuk, 24 skenario |
 | 08 tabel Jumlah | lolos | Isi Rumpang 30, Benar atau Salah 32, jangkar 6, Periksa Unggahan 24, Skenario 24, PBK 12 |
 | B.9 susunan tes per bentuk | lolos | Membaca 16, Aman dan etis 8, Budaya digital 8 per bentuk |
+| Level pengembang butir tes D2 dan D3 | lolos | 32 dari 32 butir punya satu level (L1–L3); pasangan A dan B sama |
 | B.5a tata letak instrumen | lolos | No \| Kode butir \| Dimensi \| Sub-aspek D1 \| Level \| Bloom \| Catatan (mis. butir sulit dilabel, ragu antara dua label) |
 | B.5a definisi Dimensi sama dengan instrumen | lolos | Dimensi |
 | B.5a definisi Sub-aspek D1 sama dengan instrumen | lolos | Sub-aspek D1 |

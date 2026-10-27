@@ -530,7 +530,19 @@ final class Sources
         $topic = '';
         $buf = [];
         $bdItem = null;
-        $sceneLevel = '';
+        // One developer level per item, from the "Level pengembang" table (same level for forms A and B).
+        $levelByCode = [];
+        foreach ($blocks as $b) {
+            if ($b['type'] === 'table' && in_array('Butir A dan B', $b['head'], true) && in_array('Level', $b['head'], true)) {
+                foreach ($b['rows'] as $r) {
+                    preg_match_all('/tes-(?:ae|bd)-[AB]\d\d/u', $r[Markdown::col($b['head'], 'Butir A dan B')], $codes);
+                    foreach ($codes[0] as $c) {
+                        $levelByCode[$c] = Markdown::plain($r[Markdown::col($b['head'], 'Level')]);
+                    }
+                }
+            }
+        }
+        $levelOf = fn (string $code) => $levelByCode[$code] ?? throw new RuntimeException("15 {$code}: no row in Level pengembang");
         foreach ($blocks as $b) {
             if ($b['type'] === 'h') {
                 if (preg_match('/^Nomor (\d) · (.*?) · (.*)$/u', $b['text'], $m)) {
@@ -545,7 +557,6 @@ final class Sources
                     $code = null;
                     $buf = [];
                     $this->testPairs[$m[3]][$m[2]] = $m[4];
-                    $sceneLevel = $m[3] === 'G1' ? 'L1–L2' : 'L2–L3';
                 } elseif (preg_match('/^Adegan G\d/u', $b['text'])) {
                     $code = null;
                 }
@@ -578,8 +589,8 @@ final class Sources
                     $this->addItem([
                         'code' => $code, 'source' => $file, 'part' => 'tes', 'type' => 'tes-ae', 'block' => $code,
                         'text' => $question, 'options' => $options, 'key' => $key,
-                        'dim' => 'D2', 'level' => str_starts_with($tier, 'Jelas') ? 'L1–L2' : 'L2–L3',
-                        'levelNote' => "15 Kerumitan: {$tier} (padanan di 13)", 'line' => $b['line'],
+                        'dim' => 'D2', 'level' => $levelOf($code),
+                        'levelNote' => "15 Level pengembang; kerumitan: {$tier}", 'line' => $b['line'],
                     ]);
                     $code = null;
                 }
@@ -601,7 +612,7 @@ final class Sources
                     $this->addItem([
                         'code' => $bdItem['code'], 'source' => $file, 'part' => 'tes', 'type' => 'tes-bd', 'block' => $scene,
                         'text' => $bdItem['question'], 'options' => $options, 'key' => $key,
-                        'dim' => 'D3', 'level' => $sceneLevel, 'levelNote' => 'Kerumitan adegan ' . substr($scene, -2) . ' (padanan di 13)', 'line' => $b['line'],
+                        'dim' => 'D3', 'level' => $levelOf($bdItem['code']), 'levelNote' => '15 Level pengembang; adegan ' . substr($scene, -2), 'line' => $b['line'],
                     ]);
                     $bdItem = null;
                 }

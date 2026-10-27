@@ -6,6 +6,16 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 27 Oktober 2026
 
+**Keputusan pemilik proyek: satu level pengembang per butir tes D2 dan D3** (cabang `sky/inspiring-ritchie-nex4qi`, sesi koordinator; temuan no. 2 di [21](21_BERKAS_BUTIR_VALIDATOR.md)) · Prototipe I, belum merevisi butir
+
+1. **Usulan sesi koordinator disetujui apa adanya.** Setiap nomor tes D2 dan D3 punya satu level pengembang, sama di bentuk A dan B, dengan arti level B.5a (L1 tanda jelas, L2 tanda samar, L3 nilai bertentangan atau dua langkah), sama seperti kata *Tingkat* di 08:
+   - **D2:** nomor 1, 3, 5, 7 L1; nomor 2 dan 4 L2; nomor 6 (niat baik berhadapan dengan izin teman) dan 8 (pesan berantai dua langkah) L3.
+   - **D3:** butir 1–4 (adegan G1) L1; butir 5 (atribusi) dan 7 (izin) L2; butir 6 (keliru tapi populer) dan 8 (benar tapi kasar) L3.
+   - Sebarannya L1 empat, L2 dua, L3 dua di setiap bagian.
+2. Tidak dipilih: nomor 4 D2 dinaikkan ke L3 (kesetiakawanan sebagai nilai yang bertentangan), atau level dibiarkan usulan sampai label ahli kembali.
+
+Akibatnya: 15 mendapat bagian *Level pengembang* (alasan per nomor); 13 (tabel D2 dan D3) memakai level ini; skrip `berkas-validator.php` membaca level dari tabel itu dan memeriksanya (69 pemeriksaan lolos); berkas kunci B.5a tidak lagi berisi rentang; 21 (temuan no. 2) dan 00 diperbarui. Kelima sesi paralel tahap 2 diarsipkan atas permintaan pemilik proyek.
+
 **Keputusan pemilik proyek atas lima hal yang tersisa dari penyelarasan, dan pembaruan instrumen** (cabang `sky/inspiring-ritchie-nex4qi`, sesi koordinator, PR #268) · Prototipe I, belum merevisi produk
 
 Keputusan pemilik proyek (27 Oktober 2026):
