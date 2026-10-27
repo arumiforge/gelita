@@ -6,6 +6,53 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 27 Oktober 2026
 
+**Keputusan pemilik proyek: panduan klirens etik BRIN menjadi pedoman utama 22 dan 23** (cabang `r10-klirens-brin`) · Prototipe I, belum merevisi produk
+
+*Panduan Klirens Etik Riset Bidang Sosial Humaniora* (Komisi Etik Bidang Sosial Humaniora BRIN, kata pengantar 12 November 2025, Penerbit BRIN Maret 2026, DOI 10.55981/brin.2462) dibaca utuh, termasuk bagan alir dan contoh lampiran yang berupa gambar, lalu dibandingkan dengan 22 dan 23.
+
+Temuan pokok:
+
+1. **Cakupan.** Riset sosial dan humaniora oleh periset di dalam dan di luar BRIN, lewat Sistem Informasi Klirens Etik Riset, tanpa biaya. Anak disebut kelompok rentan, dan penelitian di SD dipakai sebagai contoh, jadi cocok untuk GELITA. Komite di lembaga lain bisa memakai formulirnya sendiri.
+2. **Prinsip:** tiga prinsip CIOMS 2016, ditambah keselamatan peneliti dan konflik kepentingan. Bahaya yang dicegah: fisik, psikis, sosial, dan hukum.
+3. **Telaah:** tanpa tingkat dikecualikan, dipercepat, atau lengkap. Setiap usulan dibaca sedikitnya tiga anggota, lalu diputuskan di sidang pleno (Rabu pekan pertama dan ketiga). Patokan bagan alir ± 1–2 bulan sejak berkas lengkap. Keputusannya disetujui, disetujui dengan catatan, revisi (10 hari kerja), atau ditolak (kalau data sudah diambil).
+4. **Masa berlaku 12 bulan;** perpanjangan dan perubahan lewat formulir amandemen. Periset melapor setelah pengumpulan data lapangan selesai.
+5. **Formulir empat bagian:** data diri (termasuk jenis kelamin, pendidikan, disiplin, kepakaran, dan alamat), deskripsi riset 2.1–2.11 (termasuk tautan instrumen daring dan lama dibuka, serta anggaran dan independensi), matriks etika 3.1–3.8, dan checklist lampiran.
+6. **Lampiran wajib:** proposal, instrumen, formulir, surat pengantar lembaga, pernyataan konflik kepentingan, dan *informed consent*; surat izin orang tua untuk peserta di bawah 18 tahun.
+7. **Isi lembar persetujuan** mencakup judul dan alamat komite.
+8. **Butir 3.5 merujuk UU No. 11 Tahun 2019 Pasal 40 ayat (5):** data primer dan keluaran penelitian wajib disimpan paling singkat 20 tahun. Teks pasalnya dicek 27 Oktober 2026.
+
+Yang sudah sesuai: persetujuan berlapis dan persetujuan anak, sukarela, tanpa penipuan, data berkode, mitigasi kelompok rentan, butir sensitif dengan prosedur rujukan, risiko bagi peneliti, hasil kembali ke sekolah, tidak ada kegiatan sebelum persetujuan, amandemen, dan isi pokok surat T1.
+
+Keputusan pemilik proyek (27 Oktober 2026):
+
+1. **Panduan BRIN menjadi pedoman utama** (pilihan B). PSEPPKN 2021 disimpan sebagai pedoman cadangan. Jawaban awal pemilik proyek adalah pilihan A (berdampingan), lalu diganti B dalam sesi yang sama. Tidak dipilih: berdampingan sampai komite dipilih (usulan), atau catatan saja.
+2. **Data penelitian berkode disimpan paling singkat 20 tahun** (sesuai usulan). Nama, L7, dan kunci kode tetap dimusnahkan saat studi ditutup, dan rekaman tetap dihapus setelah transkrip diperiksa. Ini menggantikan "5 tahun setelah studi ditutup" untuk data berkode. `needs_verification`: apakah data berkode tanpa kunci memenuhi kewajiban simpan "data mentah autentik". Tidak dipilih: tetap 5 tahun dengan alasan, atau 20 tahun hanya untuk komite BRIN.
+3. **Lokasi ditulis lengkap sampai desa/kelurahan dan dusun** di formulir butir 2.5 dan di usulan penelitian, mengikuti tabel panduan. Nama sekolah tetap tidak ditulis di judul, laporan, atau publikasi. Tidak dipilih: sampai kabupaten/kota atau kecamatan (usulan).
+4. **Pernyataan konflik kepentingan versi "tidak ada potensi konflik".** Pengembangan GELITA oleh tim sendiri dan pengamannya tetap diuraikan di 22 → *Konflik kepentingan* dan di isian 3.8. Tidak dipilih: versi "ada potensi konflik" (usulan).
+
+Akibatnya:
+- **22** mendapat:
+  - *Pedoman yang dirujuk* dengan BRIN sebagai pedoman utama dan PSEPPKN 2021 sebagai cadangan;
+  - *Pemetaan ke formulir klirens etik BRIN* (bagian 1–4, dengan tempat kosong untuk data tim, anggaran, tautan GELITA, dan lokasi) dan *Telaah dan masa berlaku menurut panduan BRIN*;
+  - catatan pedoman cadangan di format protokol dan daftar tilik;
+  - komitmen etik yang menyebut pedoman komite yang dipilih;
+  - kolom *BRIN* di lampiran, lampiran 15–17 (proposal, pernyataan tanpa potensi konflik dengan teksnya, formulir terisi), dan daftar lampiran BRIN yang tidak berlaku;
+  - keputusan no. 14–17 dan baris baru di *Akibat ke dokumen lain*.
+- **23** mendapat: baris judul penelitian di T1, T6, dan T8a; tempat kosong `[judul penelitian]`; `[kontak komite etik]` berisi alamat, situs, dan surel komite; keputusan no. 16–17.
+- **00** dan `docs/PROGRESS.md` diperbarui.
+
+Belum diubah karena dipegang sesi PP No. 33 Tahun 2026 (dicatat di 22 → *Akibat ke dokumen lain*):
+- masa simpan 20 tahun di 22 → *Masa simpan dan pemusnahan* dan *Isi surat orang tua*;
+- UU No. 11 Tahun 2019 di 22 → *Dasar hukum*;
+- masa simpan di 23 → T1 bagian 3 dan T8a *Kerahasiaan*; bagian 23 lain yang memuat "5 tahun" (*Dasar yang sudah diputuskan*, *Cek isi L7*) diubah bersamaan supaya 23 tidak saling bertentangan;
+- 02 → L5: wawancara tidak terdengar guru atau teman (panduan butir 3.1).
+
+Akibat lain yang belum dibawa:
+- masa simpan di 24;
+- target persetujuan di 01 ditinjau karena telaah BRIN jauh lebih cepat;
+- *Konflik kepentingan* dan status di kepala 22;
+- `retention_days` bawaan studi sebagai perubahan sistem tahap 3.
+
 **Keputusan pemilik proyek: 22 dan 23 diselaraskan dengan pedoman KEPPKN 2021** (cabang `sky/friendly-newton-jjuvj0`) · Prototipe I, belum merevisi produk
 
 Pemilik proyek memberi tautan *Pedoman dan Standar Etik Penelitian dan Pengembangan Kesehatan Nasional* (PSEPPKN) di situs KEPPKN. Isinya **edisi 2021** (KEPPKN periode 2021–2024, prakata 20 Juni 2021; berkasnya diunggah ulang Agustus 2025), sedangkan 22 masih merujuk edisi 2017. Naskah lengkapnya dibaca dan dibandingkan dengan 22, 23, dan 24.

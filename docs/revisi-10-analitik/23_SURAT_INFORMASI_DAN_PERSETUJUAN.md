@@ -77,7 +77,8 @@ Setelah itu: [tabel pembagian](#tabel-pembagian), [catatan keterbacaan](#catatan
 | `[nomor cadangan]` | Pemilik proyek: nomor anggota tim lain atau kantor lembaga, khusus penelitian | Sebelum dicetak |
 | `[sumber dana]` | Pemilik proyek, sama dengan [22 → Identitas dan tim](22_PERMOHONAN_IZIN_ETIK.md#identitas-dan-tim) | Sebelum permohonan etik dikirim |
 | `[jenis tanda terima kasih]` | [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi), misalnya satu set alat tulis | Sebelum dicetak |
-| `[kontak komite etik]` | Surat persetujuan komite | Setelah persetujuan terbit |
+| `[kontak komite etik]` | Surat persetujuan komite: alamat surat, situs, dan surel komite (panduan klirens etik BRIN meminta alamat komite di lembar persetujuan; untuk Komisi Etik Bidang Sosial Humaniora BRIN: Gedung B.J. Habibie, Jl. M.H. Thamrin No. 8, Jakarta Pusat, klirensetik.brin.go.id, klirensetik@brin.go.id, `needs_verification` saat surat dicetak) | Setelah persetujuan terbit |
+| `[judul penelitian]` | Judul resmi dari usulan penelitian, sama dengan [22 → Identitas dan tim](22_PERMOHONAN_IZIN_ETIK.md#identitas-dan-tim); tanpa nama sekolah atau lembaga subjek | Sebelum permohonan etik dikirim |
 | `[nama sekolah]`, `[nama kepala sekolah]`, `[rombel]` | Rekrutmen sekolah; kode sekolah **menunggu daftar kerja no. 12** | Per sekolah |
 | `[tanggal P1]` … `[tanggal P5]`, `[rentang minggu]` | Jadwal per kelas | Per kelas |
 | `[tanggal batas kembali]` | P1: H-3 sebelum P1 | Per kelas |
@@ -102,6 +103,7 @@ Tiga halaman A4 tegak, dicetak bolak-balik (dua lembar). Orang tua menyimpan sur
 > [nama sekolah]
 >
 > **Perihal: Permohonan izin anak ikut penelitian GELITA**
+> Judul penelitian: *[judul penelitian]*
 >
 > Dengan hormat,
 >
@@ -348,6 +350,7 @@ Dua halaman A4. Dikirim setelah persetujuan etik terbit, bersama salinan surat p
 >
 > Nomor: [nomor surat] · Lampiran: 4 berkas
 > Perihal: **Permohonan izin penelitian GELITA di kelas 5**
+> Judul penelitian: *[judul penelitian]*
 >
 > Kepada Yth.
 > [nama kepala sekolah]
@@ -478,6 +481,7 @@ Dua halaman A4 tegak (satu lembar bolak-balik), dikirim lewat guru dalam amplop 
 > [nama sekolah]
 >
 > **Perihal: Permohonan izin anak membantu menguji bacaan soal GELITA**
+> Judul penelitian: *[judul penelitian]*
 >
 > Dengan hormat,
 >
@@ -893,6 +897,11 @@ Keputusan pemilik proyek pada hari yang sama, setelah 22 dan 23 dibandingkan den
 13. **Isi surat ditambah menurut pedoman KEPPKN 2021:** batas pengamanan daring (T1 bagian 3, T8a), jumlah peserta, alasan anak diundang, dan sumber dana (T1 pembuka, T8a, T9), penghentian oleh peneliti demi keselamatan (T1 bagian 6, T8a), dan kontak cadangan (T1 bagian 8, T8a).
 14. **Tanda terima kasih disebut dalam satu kalimat netral** di T1 bagian 7 dan T8a: tanpa uang, tanpa biaya, sama untuk semua anak di kelas (ikut atau tidak), ditambah kudapan di P1 dan P5 untuk sampel utama. Tidak dipilih: tetap tidak disebut di surat dan hanya dijelaskan di 22.
 15. **Surat bisa dibacakan guru kelas atau peneliti**, dan formulir T2 dan T8b mendapat baris saksi yang diisi hanya dalam keadaan itu, oleh orang di luar tim peneliti; tanda tangan boleh diganti cap jempol. Tidak dipilih: tanpa perubahan.
+
+Keputusan pemilik proyek 27 Oktober 2026, setelah 22 dan 23 dibandingkan dengan *Panduan Klirens Etik Riset Bidang Sosial Humaniora* BRIN (November 2025) ([22 → Pemetaan ke formulir klirens etik BRIN](22_PERMOHONAN_IZIN_ETIK.md#pemetaan-ke-formulir-klirens-etik-brin), [04](04_CATATAN_KEPUTUSAN.md); cabang `r10-klirens-brin`):
+
+16. **Judul penelitian ditulis di surat** T1, T6, dan T8a, di bawah perihal, karena contoh *informed consent* panduan BRIN (Lampiran 2) memuat judul riset. Judulnya tanpa nama sekolah atau lembaga subjek (panduan BRIN, butir 2.1). Tempat kosong baru `[judul penelitian]`.
+17. **`[kontak komite etik]` berisi alamat surat, situs, dan surel komite**, karena panduan BRIN meminta alamat komite di lembar persetujuan. Isi lain yang diminta panduan (lembaga, tujuan, teknik dan lama pengumpulan data, kerahasiaan, hak menolak dan berhenti, alamat koordinator) sudah ada. Masa simpan data berkode (paling singkat 20 tahun, keputusan pemilik proyek di 22 no. 15) belum ditulis di T1 bagian 3 dan T8a *Kerahasiaan*, karena bagian itu dipegang sesi PP No. 33 Tahun 2026; dicatat di [22 → Akibat ke dokumen lain](22_PERMOHONAN_IZIN_ETIK.md#akibat-ke-dokumen-lain).
 
 ## Akibat ke dokumen lain
 

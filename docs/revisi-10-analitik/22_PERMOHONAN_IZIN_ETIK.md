@@ -44,7 +44,11 @@ Nama orang, sekolah, dan komite tidak ditulis di repo. Tempat kosong ditandai de
 
 ### Pedoman yang dirujuk
 
-Protokol ini mengikuti pedoman Komite Etik Penelitian dan Pengembangan Kesehatan Nasional (KEPPKN), *Pedoman dan Standar Etik Penelitian dan Pengembangan Kesehatan Nasional* (PSEPPKN), **edisi 2021**: Jakarta, Lembaga Penerbit Badan Penelitian dan Pengembangan Kesehatan; prakata 20 Juni 2021; disusun KEPPKN periode 2021–2024. Edisi ini menggantikan edisi 2017 dan mengacu pada standar WHO 2011 dan pedoman CIOMS 2016. Naskah lengkapnya ([PDF di situs KEPPKN](https://kepkn.kemkes.go.id/assets/img/keppkn/file/BUKU_PEDOMAN_DAN_STANDAR_ETIK_PENELITIAN_DAN_PENGEMBANGAN_KESEHATAN_NASIONAL%28KEPKN%29.pdf), diunggah ulang Agustus 2025, isinya tetap edisi 2021) sudah dibaca utuh dan dibandingkan dengan dokumen ini pada 27 Oktober 2026 ([04](04_CATATAN_KEPUTUSAN.md)). Rujukan bab dan lampiran di dokumen ini menunjuk ke edisi itu.
+**Pedoman utama: panduan klirens etik bidang sosial humaniora BRIN.** Penelitian ini adalah penelitian pendidikan dan sosial, bukan penelitian kesehatan. Karena itu protokol ini mengikuti *Panduan Klirens Etik Riset Bidang Sosial Humaniora* (Komisi Etik Bidang Sosial Humaniora BRIN; kata pengantar 12 November 2025; Penerbit BRIN, edisi pertama Maret 2026; DOI 10.55981/brin.2462; [PDF](https://penerbit.brin.go.id/others/catalog/download/2462/1376/35826?inline=1)). Dasarnya Peraturan BRIN No. 22 Tahun 2022 dan Keputusan Kepala BRIN No. 65/HK/2022 tentang Klirens Etik Riset. Naskahnya dibaca utuh dan dibandingkan dengan dokumen ini dan 23 pada 27 Oktober 2026 ([04](04_CATATAN_KEPUTUSAN.md)). Panduan ini berlaku untuk periset di dalam dan di luar BRIN, menyebut anak sebagai kelompok rentan, dan memakai penelitian di sekolah dasar sebagai contoh, jadi cocok untuk GELITA. Prinsipnya tiga prinsip CIOMS 2016 (menghormati individu dan komunitas, termasuk budaya lokal; kemanfaatan; keadilan), ditambah keselamatan peneliti dan konflik kepentingan. Bahaya yang harus dicegah: fisik, psikis, sosial, dan hukum. Panduan BRIN tidak punya daftar tilik indikator seperti PSEPPKN; formulirnya empat bagian dengan matriks etika 3.1–3.8 ([Pemetaan ke formulir klirens etik BRIN](#pemetaan-ke-formulir-klirens-etik-brin)). Telaah dan masa berlakunya di [Telaah dan masa berlaku menurut panduan BRIN](#telaah-dan-masa-berlaku-menurut-panduan-brin).
+
+Komite di lembaga lain diangkat menurut aturan lembaganya dan bisa memakai formulir sendiri (panduan BRIN, Bab II A). Pemilik proyek memutuskan panduan BRIN menjadi pedoman utama (keputusan 27 Oktober 2026, [no. 14](#keputusan-pemilik-proyek)). Pemetaan ke PSEPPKN 2021 di bawah tetap disimpan sebagai **pedoman cadangan**, dipakai kalau komite yang dipilih menelaah dengan pedoman KEPPKN. `needs_verification`: komite dan formulir yang akhirnya dipilih.
+
+**Pedoman cadangan: PSEPPKN 2021.** Sebelum putaran BRIN, protokol ini disusun mengikuti pedoman Komite Etik Penelitian dan Pengembangan Kesehatan Nasional (KEPPKN), *Pedoman dan Standar Etik Penelitian dan Pengembangan Kesehatan Nasional* (PSEPPKN), **edisi 2021**: Jakarta, Lembaga Penerbit Badan Penelitian dan Pengembangan Kesehatan; prakata 20 Juni 2021; disusun KEPPKN periode 2021–2024. Edisi ini menggantikan edisi 2017 dan mengacu pada standar WHO 2011 dan pedoman CIOMS 2016. Naskah lengkapnya ([PDF di situs KEPPKN](https://kepkn.kemkes.go.id/assets/img/keppkn/file/BUKU_PEDOMAN_DAN_STANDAR_ETIK_PENELITIAN_DAN_PENGEMBANGAN_KESEHATAN_NASIONAL%28KEPKN%29.pdf), diunggah ulang Agustus 2025, isinya tetap edisi 2021) sudah dibaca utuh dan dibandingkan dengan dokumen ini pada 27 Oktober 2026 ([04](04_CATATAN_KEPUTUSAN.md)). Rujukan bab dan lampiran di dokumen ini menunjuk ke edisi itu.
 
 Pedoman ini bertumpu pada tiga prinsip etik: menghormati harkat martabat manusia (*respect for persons*), berbuat baik dan tidak merugikan (*beneficence* dan *non-maleficence*), dan keadilan (*justice*). Dari ketiganya diturunkan standar kelaikan etik (PSEPPKN 2021, Bab III, Standar 7):
 
@@ -52,8 +56,6 @@ Pedoman ini bertumpu pada tiga prinsip etik: menghormati harkat martabat manusia
 - **Daftar tilik penelaah (Lampiran 3) dan format protokol (Lampiran 1) masih memakai tujuh standar.** Protokol dinyatakan laik etik kalau memenuhi ketujuhnya. Lampiran 1 bahkan masih menyebut "Pedoman KEPPKN 2017".
 
 Jadi komite kemungkinan tetap menilai dengan tujuh standar, tetapi pelindungan subjek rentan kini kriteria tersendiri. Karena pesertanya anak, tabel di bawah memberinya baris sendiri. Daftar tilik tujuh standar yang sudah diisi peneliti ada di [Daftar tilik tujuh standar](#daftar-tilik-tujuh-standar).
-
-`needs_verification`: komite yang dipilih bisa memakai formulir ilmu sosial atau pendidikan sendiri, misalnya *Panduan Klirens Etik Riset Bidang Sosial Humaniora* dari Komisi Etik Bidang Sosial Humaniora BRIN (November 2025; belum ditelaah, menunggu putaran tersendiri). Kalau begitu, tabel di bawah dipakai untuk memetakan bagian dokumen ini ke formulir itu.
 
 | Standar kelaikan etik PSEPPKN 2021 | Bagian dokumen ini |
 | --- | --- |
@@ -66,7 +68,68 @@ Jadi komite kemungkinan tetap menilai dengan tujuh standar, tetapi pelindungan s
 | 7. Persetujuan setelah penjelasan (PSP) | [Persetujuan](#persetujuan), lampiran 23 |
 | 8. Pelindungan subjek rentan (baru di teks 2021, belum ada di daftar tilik) | [Peserta](#peserta) (alasan melibatkan anak, kriteria dan penyesuaian), [Persetujuan](#persetujuan) (izin orang tua dan persetujuan anak), [Prosedur per pertemuan dan beban bagi anak](#prosedur-per-pertemuan-dan-beban-bagi-anak) (sesi dan jeda), [Risiko dan mitigasi](#risiko-dan-mitigasi), [Prosedur rujukan](#prosedur-rujukan-butir-risiko-daring), [Uji keterbacaan (KG1)](#uji-keterbacaan-kg1) (dua orang dewasa) |
 
+### Pemetaan ke formulir klirens etik BRIN
+
+Formulir Klirens Etik Riset BRIN (panduan, Bab III A) punya empat bagian. Panduan meminta isian yang ringkas dan menjawab pertanyaan, bukan salinan usulan penelitian, dan semua butir isian dan checklist dijawab. Tabel ini menunjukkan sumber isiannya; tempat kosong diisi pemilik proyek di luar repo.
+
+**Bagian 1: data diri pengusul**
+
+| Butir formulir | Isian atau sumbernya |
+| --- | --- |
+| 1.1 Penanggung jawab/koordinator: nama dan gelar, jenis kelamin, institusi, pendidikan terakhir, disiplin ilmu | Ketua peneliti di [Identitas dan tim](#identitas-dan-tim); `[jenis kelamin]`, `[pendidikan terakhir]`, `[disiplin ilmu]` |
+| 1.2 Kontak koordinator/penghubung: data yang sama, ditambah telepon kantor, HP, surel, alamat rumah, dan alamat kantor | `[penghubung: ketua peneliti atau pembimbing/promotor]`, `[telepon kantor]`, `[HP]`, `[surel]`, `[alamat rumah]`, `[alamat kantor]`. Catatan panduan "untuk pengusul di bawah 18 tahun, kontak diisi pembimbing riset" tidak berlaku. Untuk ketua peneliti mahasiswa, pembimbing/promotor menjadi penghubung kalau institusi memintanya ([Tingkat telaah dan masa berlaku persetujuan](#tingkat-telaah-dan-masa-berlaku-persetujuan)) |
+| 1.3 Data anggota riset: nomor, nama, telepon/surel, institusi, pendidikan terakhir, disiplin ilmu, kepakaran | Tabel tim di [Identitas dan tim](#identitas-dan-tim) (P1–P3, admin), dengan `[pendidikan terakhir]`, `[disiplin ilmu]`, dan `[kepakaran yang mendukung topik]` per orang. Validator ahli bukan anggota tim lapangan dan tidak dicantumkan |
+
+**Bagian 2: deskripsi riset**
+
+| Butir formulir | Isian atau sumbernya |
+| --- | --- |
+| 2.1 Judul riset | [Identitas dan tim](#identitas-dan-tim). Judul tidak memuat nama sekolah atau lembaga subjek (panduan: nama lembaga subjek di judul menjadi alasan revisi). "Kedu" adalah nama wilayah budaya, bukan lembaga |
+| 2.2 Permasalahan dan pertanyaan riset | [Latar belakang dan nilai sosial](#latar-belakang-dan-nilai-sosial); pertanyaan penelitian dari usulan penelitian `[lampiran usulan penelitian]` |
+| 2.3 Tujuan riset | [Tujuan](#tujuan) |
+| 2.4.a Pendekatan riset dan alasannya | [Desain penelitian](#desain-penelitian): penelitian desain pendidikan model Plomp, metode campuran; alasannya karena yang dikembangkan adalah alat ukur yang harus diuji bertahap |
+| 2.4.b Metode pengumpulan data, kuantitatif | Kriteria, jumlah, dan cara memilih peserta di [Peserta](#peserta) (semua siswa kelas 5 di sekolah yang ikut, bukan sampel acak). Pelaksanaan **daring di kelas, didampingi peneliti**, bukan survei mandiri: tautan GELITA `[alamat GELITA untuk penelitian]`, yang hanya terbuka selama sesi lapangan dengan token sesi, dari P1 sampai sesi susulan terakhir tiap kelas ([Prosedur per pertemuan dan beban bagi anak](#prosedur-per-pertemuan-dan-beban-bagi-anak); [01 → Token sesi](01_REVISI_10_ANALITIK.md#token-sesi-perlu-atau-tidak)). Tes awal–akhir, angket, dan skala sikap ada di modul tes GELITA. Pengamat P1–P3 adalah anggota tim yang dibekali protokol dan isi persetujuan etik sebelum lapangan; tidak ada enumerator dari luar tim |
+| 2.4.b Metode pengumpulan data, kualitatif | Wawancara retrospektif (KG4) dan berpikir lantang (KG2): siapa, berapa, dan cara memilih di [Peserta](#peserta) dan [02 → L5](02_LEMBAR_LAPANGAN.md#l5-wawancara-retrospektif-dan-berpikir-lantang). Observasi berjarak (pengamatan pasif) oleh P2 dan P3 (L3, L4); peneliti tidak ikut bermain. Uji keterbacaan (KG1) di [Uji keterbacaan (KG1)](#uji-keterbacaan-kg1). Tidak ada FGD |
+| 2.4.c Analisis data | [Desain penelitian](#desain-penelitian) (Rasch, model campuran, κ, pengodean dua pengode) |
+| 2.5 Lokasi riset | Lengkap sampai tingkat terendah, seperti tabel informasi usulan penelitian di panduan (keputusan pemilik proyek 27 Oktober 2026, [no. 16](#keputusan-pemilik-proyek)): Indonesia, Jawa Tengah, `[kabupaten/kota]`, `[kecamatan]`, `[desa/kelurahan]`, `[dusun, kalau ada]`, per sekolah penelitian, sekolah uji coba, dan sekolah uji keterbacaan. Nama sekolah tidak ditulis di judul; daftar lokasi ini hanya untuk komite dan tidak muncul di laporan atau publikasi ([Yang dibagikan di OSF dan yang tidak pernah](#yang-dibagikan-di-osf-dan-yang-tidak-pernah)) |
+| 2.6 Waktu pengumpulan data lapangan | Periode pengumpulan data, bukan periode penelitian: KG1 `[rentang tanggal]`, KG2–KG4 `[rentang tanggal]`, KG5 `[rentang tanggal]`, semuanya setelah persetujuan terbit ([Kegiatan yang dimintakan izin](#kegiatan-yang-dimintakan-izin), garis waktu) |
+| 2.7 Lembaga yang mendanai | `[sumber dana, atau "dana pribadi"]`, semua sumber kalau lebih dari satu ([Identitas dan tim](#identitas-dan-tim)) |
+| 2.8 Total anggaran | `[total anggaran]`, dan `[jumlah per sumber dana]` kalau lebih dari satu |
+| 2.9 Penggunaan dana | `[pos penggunaan dana]`, misalnya server, perangkat cadangan, cetak surat dan lembar, transport tim, kudapan dan tanda terima kasih ([Kompensasi](#kompensasi)), honorarium validator ([20](20_PAKET_VALIDASI.md)) |
+| 2.10 Kontrak menjamin kebebasan periset | `[ya/tidak; kutip klausulnya]`. Pemberi dana tidak berhak menahan atau mengubah hasil ([Yang dibagikan di OSF dan yang tidak pernah](#yang-dibagikan-di-osf-dan-yang-tidak-pernah), hak atas data) |
+| 2.11 Batasan dari pemberi dana | `[ada/tidak ada; jelaskan]` |
+
+**Bagian 3: matriks etika**
+
+| Butir formulir | Isian atau sumbernya |
+| --- | --- |
+| 3.1 Kelompok rentan | Ya, anak 10–11 tahun. Alasannya di [Populasi dan sampel](#populasi-dan-sampel); langkah meminimalkan akibat buruk di [Persetujuan](#persetujuan), [Prosedur per pertemuan dan beban bagi anak](#prosedur-per-pertemuan-dan-beban-bagi-anak), [Risiko dan mitigasi](#risiko-dan-mitigasi), dan [Prosedur rujukan](#prosedur-rujukan-butir-risiko-daring). Panduan mengingatkan bahwa kehadiran orang tua atau guru bisa membuat anak tidak leluasa menjawab: guru tidak melihat jawaban per anak, butir risiko diisi sendiri di layar tanpa orang yang melihat, dan wawancara L5 berlangsung di tempat yang terlihat guru atau peneliti lain, tetapi tidak terdengar guru atau teman (penyesuaian di 02 → L5 dicatat di [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)) |
+| 3.2 Pertanyaan sensitif | Ya: butir risiko daring ang-21–23 di P5. Izin terpisah, tanya ulang di layar, pilihan *Tidak mau menjawab*, pesan dukungan untuk semua anak, prosedur rujukan ([Risiko dan mitigasi](#risiko-dan-mitigasi)). Tidak ada penipuan; stimulus Skenario Digital tidak menakut-nakuti dan tidak memuat tautan sungguhan. **Risiko hukum** (salah satu jenis bahaya yang disebut panduan) tidak ada: tidak ada pertanyaan tentang perbuatan melanggar hukum, dan jawaban tidak pernah diserahkan kepada sekolah atau pihak berwenang. Satu-satunya pengecualian adalah rujukan ke layanan perlindungan anak demi keselamatan anak, yang disebut di surat orang tua |
+| 3.3 Instrumen riset | Ya; lampiran 3–8, dalam bahasa Indonesia ([Lampiran](#lampiran)) |
+| 3.4 Informasi untuk responden (sifat dan tujuan, lembaga, sukarela, kerahasiaan, identitas yang disebut tetap dijaga, boleh mundur tanpa akibat) | Ya; 23 → T1–T3, T8, T9 ([Persetujuan](#persetujuan), [Isi surat orang tua](#isi-surat-orang-tua)) |
+| 3.5 Penyimpanan dan pemusnahan data | [Penyimpanan dan enkripsi](#penyimpanan-dan-enkripsi), [Masa simpan dan pemusnahan](#masa-simpan-dan-pemusnahan). Panduan merujuk UU No. 11 Tahun 2019 Pasal 40 ayat (5): data primer dan keluaran hasil penelitian wajib disimpan paling singkat 20 tahun (teks pasal dicek 27 Oktober 2026). Keputusan pemilik proyek 27 Oktober 2026 ([no. 15](#keputusan-pemilik-proyek)): data penelitian berkode disimpan **paling singkat 20 tahun**; nama dan kunci kode tetap dimusnahkan saat studi ditutup. Tabel masa simpan belum diubah (dipegang sesi PP No. 33 Tahun 2026; lihat [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)) |
+| 3.6 Kerahasiaan saat pengolahan dan diseminasi | [Kode peserta dan pemisahan peran](#kode-peserta-dan-pemisahan-peran), [Di mana nama berada](#di-mana-nama-berada), [Yang dibagikan di OSF dan yang tidak pernah](#yang-dibagikan-di-osf-dan-yang-tidak-pernah): kode peserta, kutipan dengan kode samaran baru, nama sekolah tidak disebut |
+| 3.7 Hasil riset untuk responden | [Manfaat](#manfaat): ringkasan angka gabungan ke sekolah, orang tua bisa memintanya lewat sekolah, GELITA tetap bisa dipakai sekolah |
+| 3.8 Kepentingan lain para pihak | Pernyataan tidak ada potensi konflik kepentingan (keputusan pemilik proyek 27 Oktober 2026, [no. 17](#keputusan-pemilik-proyek); teks di [Lampiran](#lampiran), lampiran 16). Isian 3.8 tetap menyebut bahwa GELITA dikembangkan tim sendiri, tidak dijual, dan pengamannya ([Konflik kepentingan](#konflik-kepentingan)) |
+
+**Bagian 4: checklist lampiran** → [Lampiran](#lampiran), kolom *BRIN*.
+
+### Telaah dan masa berlaku menurut panduan BRIN
+
+Kalau komite yang dipilih adalah Komisi Etik Bidang Sosial Humaniora BRIN, atau komite lain yang memakai panduannya (*Panduan Klirens Etik Riset Bidang Sosial Humaniora*, November 2025, Bab I E, Bab II B, Bab IV):
+
+- **Pengajuan lewat Sistem Informasi Klirens Etik Riset** (klirensetik.brin.go.id), tanpa biaya. Peneliti memperbarui profil, lalu mengisi penilaian mandiri di sistem. Penilaian mandiri bisa berakhir dengan *Surat Keterangan Tidak Memerlukan Klirens Etik*; untuk penelitian ini hasil itu tidak diharapkan, karena pesertanya anak.
+- **Tidak ada tingkat dikecualikan, dipercepat, atau lengkap.** Setiap usulan dibaca sedikitnya tiga anggota komisi ("tim kecil"), lalu diputuskan di sidang pleno yang dihadiri paling sedikit separuh anggota ditambah satu.
+- **Jadwal:** sidang pleno reguler pada Rabu pekan pertama dan ketiga setiap bulan. Berkas harus sudah diverifikasi sekretariat paling lambat Jumat pukul 15.00 WIB sebelumnya. Bagan alir panduan memberi patokan pemeriksaan kelengkapan 3 hari, sidang ± 14 hari, perbaikan ± 14 hari, dan surat keputusan 3 hari, jadi ± 1–2 bulan sejak berkas lengkap. Ini jauh lebih cepat daripada perkiraan telaah lengkap PSEPPKN di bawah; garis waktu di [Kegiatan yang dimintakan izin](#kegiatan-yang-dimintakan-izin) tetap, karena komite belum dipilih.
+- **Keputusan sidang:** disetujui; disetujui dengan catatan (perbaikan diperiksa sekretariat); revisi (formulir diperbaiki dan dikirim kembali, sekretariat diberi tahu lewat surel, paling lambat 10 hari kerja, kalau tidak usulan ditolak); ditolak (kalau data lapangan sudah diambil, atau penelitiannya bukan bidang sosial humaniora). Alasan revisi yang disebut panduan: lampiran tidak lengkap atau instrumen tidak sesuai teknik, metodologi yang tidak jelas untuk pemilihan subjek, judul yang memuat nama lembaga subjek, dan penjelasan yang kurang meyakinkan untuk kelompok rentan.
+- **Masa berlaku: 12 bulan** sejak surat keputusan ditandatangani. Rentang KG1–KG5 lebih dari 12 bulan, jadi masa berlakunya diperpanjang lewat **formulir amandemen** (keterangan umum, kontak koordinator, judul dan nomor usulan, perubahan), diajukan paling lambat satu bulan sebelum masa berlaku habis (aturan pelaksanaan yang sama dengan [Tingkat telaah dan masa berlaku persetujuan](#tingkat-telaah-dan-masa-berlaku-persetujuan)). Amandemen juga diajukan untuk perubahan judul, metode, anggota tim, lokasi, atau waktu pengumpulan data.
+- **Kewajiban periset** menurut surat keputusan: mengajukan permohonan baru kalau rancangan atau subjek berubah; melapor setelah pengumpulan data lapangan selesai; memberi tahu kalau lokasi atau waktu berubah, atau penelitian dihentikan sebelum waktunya. Komisi berhak memantau dan mengevaluasi tim, selama dan sesudah pengumpulan data. Laporan di [Laporan berkala dan laporan akhir](#laporan-berkala-dan-laporan-akhir) memenuhi kewajiban ini; laporan selesai lapangan dikirim setelah KG5.
+
+`needs_verification`: alamat sistem, jadwal sidang, dan batas waktu dicek di laman komisi saat berkas disiapkan.
+
 ### Format protokol PSEPPKN 2021 → bagian dokumen ini
+
+Bagian ini dan bagian berikutnya berlaku kalau komite memakai PSEPPKN 2021 (pedoman cadangan).
 
 Lampiran 1 PSEPPKN 2021 memberi format protokol untuk penelitian dengan manusia (bagian A sampai AB, nomor CIOMS 2016 di dalam kurung). Bagian yang khusus untuk uji klinik atau intervensi medis ditulis "tidak relevan" di formulir. Kalau komite memakai formulirnya sendiri, urutannya biasanya mirip (`needs_verification` terhadap formulir komite yang dipilih).
 
@@ -691,6 +754,8 @@ Mengikuti format protokol PSEPPKN 2021 bagian J. Yang memutuskan adalah ketua pe
 
 PSEPPKN 2021 (Lampiran 3) meminta peneliti mengisi daftar tilik ini sebelum protokol diajukan; komite lalu menelaahnya dan yang memutuskan. Isian di bawah adalah isian peneliti. Indikator yang khusus untuk uji klinik atau intervensi medis diisi N/A. Standar 8 (pelindungan subjek rentan) belum punya indikator di daftar tilik; buktinya di baris 8 tabel [Pedoman yang dirujuk](#pedoman-yang-dirujuk).
 
+Daftar tilik ini milik pedoman cadangan. Panduan klirens etik BRIN, pedoman utama, tidak punya daftar tilik indikator; padanannya adalah matriks etika 3.1–3.8 di [Pemetaan ke formulir klirens etik BRIN](#pemetaan-ke-formulir-klirens-etik-brin), dan daftar tilik ini hanya dilampirkan kalau komite memakai PSEPPKN 2021.
+
 **Ringkasan**
 
 | Standar | Ya / Tidak / N/A | Catatan |
@@ -771,11 +836,11 @@ PSEPPKN 2021 (Lampiran 3) meminta peneliti mengisi daftar tilik ini sebelum prot
 
 ## Komitmen etik
 
-Format protokol PSEPPKN 2021 bagian Z meminta pernyataan peneliti utama. Teks usulannya di bawah; ditandatangani ketua peneliti di luar repo, diketahui pembimbing, dan dilampirkan (lampiran 13).
+Format protokol PSEPPKN 2021 bagian Z meminta pernyataan peneliti utama. Panduan klirens etik BRIN tidak meminta pernyataan ini, tetapi teksnya tetap boleh dilampirkan; butir 1 menyebut pedoman komite yang dipilih. Teks usulannya di bawah; ditandatangani ketua peneliti di luar repo, diketahui pembimbing, dan dilampirkan (lampiran 13).
 
 > Saya, `[nama ketua peneliti]`, menyatakan bahwa:
 >
-> 1. penelitian ini akan dilaksanakan sesuai protokol yang disetujui `[nama komite etik]` dan prinsip *Pedoman dan Standar Etik Penelitian dan Pengembangan Kesehatan Nasional* (KEPPKN, 2021);
+> 1. penelitian ini akan dilaksanakan sesuai protokol yang disetujui `[nama komite etik]` dan prinsip `[pedoman komite yang dipilih: Panduan Klirens Etik Riset Bidang Sosial Humaniora (BRIN, 2025), atau Pedoman dan Standar Etik Penelitian dan Pengembangan Kesehatan Nasional (KEPPKN, 2021)]`;
 > 2. tidak ada kegiatan dengan anak yang dimulai sebelum persetujuan etik terbit, dan setiap perubahan protokol diajukan sebagai amandemen atau notifikasi;
 > 3. kalau ditemukan bukti pemalsuan atau manipulasi data, saya menghentikan pemakaian data itu, melapor kepada `[nama komite etik]` dan `[nama institusi]`, dan menanganinya sesuai aturan integritas akademik `[nama institusi]`;
 > 4. riwayat telaah etik saya sebelumnya: `[judul, tanggal, komite, dan hasil telaah; atau "belum pernah"]`.
@@ -789,24 +854,39 @@ Format protokol PSEPPKN 2021 bagian Z meminta pernyataan peneliti utama. Teks us
 
 ## Lampiran
 
-| No | Lampiran | Berkas | Status per 27 Oktober 2026 |
-| --- | --- | --- | --- |
-| 1 | Surat informasi, persetujuan, dan teks untuk anak, 23 → T1–T13: T1 surat informasi orang tua; T2 formulir persetujuan orang tua (dengan dua centang terpisah); T3 naskah persetujuan anak di P1; T4 teks centang di halaman daftar; T5 pengingat di awal P2–P5 dan sebelum wawancara L5; T6 surat kepala sekolah; T7 lembar guru kelas; T8 varian uji keterbacaan (T8a surat, T8b formulir, T8c naskah anak); T9 varian kelas uji coba dan berpikir lantang; T10 formulir pengunduran diri dan permintaan hapus data; T11 layar tanya ulang sebelum butir risiko daring; T12 pesan dukungan sesudah butir risiko; T13 selebaran "tempat bercerita" | [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) | Draf; keputusan pemilik proyek 27 Oktober 2026 dimasukkan; T11–T13 ditambahkan saat penyelarasan 27 Oktober 2026 (nomor layanan `needs_verification`); isi tambahan dari PSEPPKN 2021 dimasukkan 27 Oktober 2026 ([Isi surat orang tua](#isi-surat-orang-tua)), termasuk baris saksi di T2 dan T8b |
-| 2 | Protokol uji keterbacaan (KG1) | [24](24_UJI_KETERBACAAN.md) | Draf; keputusan pemilik proyek 27 Oktober 2026 dimasukkan |
-| 3 | Bank soal game: butir, kisi-kisi, cerita dan narasi | [08](08_DRAF_BANK_SOAL.md), [06](06_KISI_KISI_BANK_SOAL.md), [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) | Draf, menunggu validasi |
-| 4 | Tes awal–akhir bentuk A dan B | [13](13_TES_AWAL_AKHIR.md), [14](14_TES_BAGIAN_MEMBACA.md), [15](15_TES_BAGIAN_DIGITAL.md) | Draf, menunggu validasi |
-| 5 | Angket akses digital dan butir risiko daring | [16](16_ANGKET_AKSES_DIGITAL.md) | Draf, menunggu validasi |
-| 6 | Skala sikap menjaga warisan | [17](17_SKALA_SIKAP.md) | Draf, menunggu validasi |
-| 7 | Lembar lapangan L0–L8 | [02](02_LEMBAR_LAPANGAN.md) | L0–L7 final; L8 draf |
-| 8 | Mock-up layar baru (Skenario Digital, *Periksa Unggahan*, token, modul tes dan angket, skala sikap) | [18](18_MOCKUP_LAYAR_BARU.md), `gambar/mockup/` | Disetujui 26 Oktober 2026 |
-| 9 | Instrumen validasi ahli (untuk menunjukkan proses validasi) | [dokumen-pdf/](dokumen-pdf/README.md) | Disetujui pemilik proyek 27 Oktober 2026 |
-| 10 | Prosedur rujukan butir risiko daring (bagian dokumen ini, dicetak terpisah untuk lapangan, bersama 23 → T11–T13) | [bagian ini](#prosedur-rujukan-butir-risiko-daring) | Draf |
-| 11 | Surat izin penelitian dari institusi dan surat kesediaan sekolah | `[diisi pemilik proyek]` | — |
-| 12 | CV dan sertifikat pelatihan etik tim, pernyataan kerahasiaan | `[diisi pemilik proyek]` | — |
-| 13 | Pernyataan komitmen etik ketua peneliti, diketahui pembimbing (format protokol bagian Z) | [Komitmen etik](#komitmen-etik); ditandatangani di luar repo | Teks usulan |
-| 14 | Daftar tilik tujuh standar yang diisi peneliti (PSEPPKN 2021, Lampiran 3) | [Daftar tilik tujuh standar](#daftar-tilik-tujuh-standar) | Isian peneliti, 27 Oktober 2026 |
+| No | Lampiran | Berkas | Status per 27 Oktober 2026 | BRIN |
+| --- | --- | --- | --- | --- |
+| 1 | Surat informasi, persetujuan, dan teks untuk anak, 23 → T1–T13: T1 surat informasi orang tua; T2 formulir persetujuan orang tua (dengan dua centang terpisah); T3 naskah persetujuan anak di P1; T4 teks centang di halaman daftar; T5 pengingat di awal P2–P5 dan sebelum wawancara L5; T6 surat kepala sekolah; T7 lembar guru kelas; T8 varian uji keterbacaan (T8a surat, T8b formulir, T8c naskah anak); T9 varian kelas uji coba dan berpikir lantang; T10 formulir pengunduran diri dan permintaan hapus data; T11 layar tanya ulang sebelum butir risiko daring; T12 pesan dukungan sesudah butir risiko; T13 selebaran "tempat bercerita" | [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) | Draf; keputusan pemilik proyek 27 Oktober 2026 dimasukkan; T11–T13 ditambahkan saat penyelarasan 27 Oktober 2026 (nomor layanan `needs_verification`); isi tambahan dari PSEPPKN 2021 dimasukkan 27 Oktober 2026 ([Isi surat orang tua](#isi-surat-orang-tua)), termasuk baris saksi di T2 dan T8b | *Informed Consent*\* dan Surat Izin Orang Tua/Wali (peserta di bawah 18 tahun) |
+| 2 | Protokol uji keterbacaan (KG1) | [24](24_UJI_KETERBACAAN.md) | Draf; keputusan pemilik proyek 27 Oktober 2026 dimasukkan | Instrumen Riset\* |
+| 3 | Bank soal game: butir, kisi-kisi, cerita dan narasi | [08](08_DRAF_BANK_SOAL.md), [06](06_KISI_KISI_BANK_SOAL.md), [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) | Draf, menunggu validasi | Instrumen Riset\* |
+| 4 | Tes awal–akhir bentuk A dan B | [13](13_TES_AWAL_AKHIR.md), [14](14_TES_BAGIAN_MEMBACA.md), [15](15_TES_BAGIAN_DIGITAL.md) | Draf, menunggu validasi | Instrumen Riset\* |
+| 5 | Angket akses digital dan butir risiko daring | [16](16_ANGKET_AKSES_DIGITAL.md) | Draf, menunggu validasi | Instrumen Riset\* |
+| 6 | Skala sikap menjaga warisan | [17](17_SKALA_SIKAP.md) | Draf, menunggu validasi | Instrumen Riset\* |
+| 7 | Lembar lapangan L0–L8 | [02](02_LEMBAR_LAPANGAN.md) | L0–L7 final; L8 draf | Instrumen Riset\* |
+| 8 | Mock-up layar baru (Skenario Digital, *Periksa Unggahan*, token, modul tes dan angket, skala sikap) | [18](18_MOCKUP_LAYAR_BARU.md), `gambar/mockup/` | Disetujui 26 Oktober 2026 | Instrumen Riset\* |
+| 9 | Instrumen validasi ahli (untuk menunjukkan proses validasi) | [dokumen-pdf/](dokumen-pdf/README.md) | Disetujui pemilik proyek 27 Oktober 2026 | Tidak diminta; boleh dilampirkan |
+| 10 | Prosedur rujukan butir risiko daring (bagian dokumen ini, dicetak terpisah untuk lapangan, bersama 23 → T11–T13) | [bagian ini](#prosedur-rujukan-butir-risiko-daring) | Draf | Tidak diminta; isinya menjawab matriks 3.1–3.2 |
+| 11 | Surat izin penelitian dari institusi dan surat kesediaan sekolah | `[diisi pemilik proyek]` | — | Surat Pengantar Lembaga\* (dari institusi, ditandatangani pejabat berwenang); surat kesediaan sekolah tidak diminta |
+| 12 | CV dan sertifikat pelatihan etik tim, pernyataan kerahasiaan | `[diisi pemilik proyek]` | — | Tidak diminta (data tim masuk formulir bagian 1) |
+| 13 | Pernyataan komitmen etik ketua peneliti, diketahui pembimbing (format protokol bagian Z) | [Komitmen etik](#komitmen-etik); ditandatangani di luar repo | Teks usulan | Tidak diminta; boleh dilampirkan |
+| 14 | Daftar tilik tujuh standar yang diisi peneliti (PSEPPKN 2021, Lampiran 3) | [Daftar tilik tujuh standar](#daftar-tilik-tujuh-standar) | Isian peneliti, 27 Oktober 2026 | Tidak dipakai (panduan BRIN tidak punya daftar tilik; dilampirkan hanya untuk pedoman cadangan) |
+| 15 | Usulan penelitian (proposal): judul, latar belakang, metodologi, luaran, daftar periset, sumber dana, lokasi, perencanaan manajemen data, dan waktu pengumpulan data (panduan BRIN, Tabel 1) | `[lampiran usulan penelitian]` | Diisi pemilik proyek; perencanaan manajemen data memakai masa simpan paling singkat 20 tahun ([keputusan no. 15](#keputusan-pemilik-proyek)), dan waktu pengumpulan data sesudah persetujuan terbit | Proposal Riset\* |
+| 16 | Pernyataan terkait konflik kepentingan, versi tidak ada potensi konflik ([keputusan no. 17](#keputusan-pemilik-proyek)) | Teks di bawah tabel; ditandatangani ketua peneliti di luar repo | Teks usulan | Pernyataan Konflik Kepentingan\* |
+| 17 | Formulir klirens etik riset sosial humaniora yang sudah diisi | Isian dari [Pemetaan ke formulir klirens etik BRIN](#pemetaan-ke-formulir-klirens-etik-brin) | Pemetaan siap; isian ringkas ditulis pemilik proyek | Formulir Klirens Etik\* |
 
 Lampiran 3–8 diserahkan dalam versi yang dibekukan untuk validasi ahli ([20_PAKET_VALIDASI.md](20_PAKET_VALIDASI.md)). Komite diberi tahu bahwa versi yang dipakai di lapangan adalah versi setelah validasi, dan setiap revisi yang mengubah bahan anak diajukan sebagai amandemen sesuai [Perubahan protokol](#perubahan-protokol). Kunci jawaban tes dan bank boleh dilampirkan terpisah kalau komite memintanya.
+
+Kolom *BRIN* menunjuk ke daftar lampiran panduan klirens etik BRIN (Bab IV); tanda \* berarti wajib diunggah. Lampiran BRIN yang tidak berlaku untuk penelitian ini: naskah kerja sama, paspor periset asing, surat jaminan mitra Indonesia, dan formulir izin riset untuk pihak asing (tidak ada periset asing); surat persetujuan penggunaan data digital (tidak memakai data media sosial peserta); surat guru penanggung jawab (hanya kalau periset masih pelajar; ketua peneliti mahasiswa S2/S3, dan pembimbingnya sudah di [Identitas dan tim](#identitas-dan-tim)). Contoh di pengantar Bab IV panduan menyebut penelitian di SD dengan responden anak wajib mengunggah surat guru penanggung jawab; `needs_verification` dengan sekretariat komisi apakah yang dimaksud surat dari guru kelas sekolah peserta. Formulir amandemen diajukan nanti untuk perpanjangan dan perubahan ([Telaah dan masa berlaku menurut panduan BRIN](#telaah-dan-masa-berlaku-menurut-panduan-brin)).
+
+**Teks lampiran 16** (mengikuti contoh Lampiran 1 panduan BRIN, versi tidak ada potensi konflik):
+
+> **PERNYATAAN TERKAIT KONFLIK KEPENTINGAN (TIDAK ADA POTENSI KONFLIK)**
+>
+> Sebagai koordinator (nama: `[nama ketua peneliti]`) dalam riset (judul: `[judul penelitian]`) menyatakan bahwa sepengetahuan saya, tidak ada potensi konflik kepentingan yang dapat memengaruhi riset ini.
+>
+> Tanda tangan: `[tanda tangan]` · Tanggal: `[tanggal]`
+
+Pernyataan ini dibaca bersama [Konflik kepentingan](#konflik-kepentingan): GELITA dikembangkan tim sendiri, tidak dijual, tidak dibiayai pihak yang menjual produk terkait, dan pengamannya (validasi ahli luar, pelabelan buta, pra-registrasi, hasil diterbitkan apa pun hasilnya) tetap diuraikan di formulir butir 3.8.
 
 ## Keputusan pemilik proyek
 
@@ -842,6 +922,13 @@ Keputusan pemilik proyek pada hari yang sama, setelah dokumen ini dan 23 dibandi
 12. **Orang tua yang lebih nyaman surat dibacakan:** guru kelas atau peneliti membacakannya, dan formulir 23 → T2 dan T8b mendapat baris saksi yang diisi hanya dalam keadaan itu, oleh orang di luar tim peneliti. Tanda tangan boleh diganti cap jempol. Tidak dipilih: tanpa perubahan. Lihat [Lapis persetujuan](#lapis-persetujuan).
 13. **Ketua peneliti mahasiswa (S2/S3).** [Identitas dan tim](#identitas-dan-tim) mendapat baris pembimbing/promotor; pembimbing mengirim permohonan dan mendampingi ketua peneliti saat telaah lengkap ([Tingkat telaah dan masa berlaku persetujuan](#tingkat-telaah-dan-masa-berlaku-persetujuan)).
 
+Keputusan pemilik proyek 27 Oktober 2026, setelah dokumen ini dan 23 dibandingkan dengan *Panduan Klirens Etik Riset Bidang Sosial Humaniora* BRIN (November 2025) (cabang `r10-klirens-brin`, [04](04_CATATAN_KEPUTUSAN.md)):
+
+14. **Panduan BRIN menjadi pedoman utama**; PSEPPKN 2021 disimpan sebagai pedoman cadangan, dipakai kalau komite yang dipilih menelaah dengan pedoman KEPPKN. Dokumen ini mendapat [Pemetaan ke formulir klirens etik BRIN](#pemetaan-ke-formulir-klirens-etik-brin) dan [Telaah dan masa berlaku menurut panduan BRIN](#telaah-dan-masa-berlaku-menurut-panduan-brin), kolom *BRIN* di [Lampiran](#lampiran), dan lampiran 15–17. Tidak dipilih: kedua pemetaan berdampingan sampai komite dipilih (usulan), atau catatan saja.
+15. **Data penelitian berkode disimpan paling singkat 20 tahun**, mengikuti UU No. 11 Tahun 2019 Pasal 40 ayat (5) yang dirujuk panduan BRIN (butir 3.5), di penyimpanan terbatas dan terenkripsi atau repositori institusi. Nama, L7, dan kunci kode tetap dimusnahkan saat studi ditutup, dan rekaman suara tetap dihapus setelah transkrip diperiksa. Ini menggantikan "5 tahun setelah studi ditutup" dari keputusan no. 1 untuk data berkode. `needs_verification`: apakah data berkode yang kuncinya sudah dimusnahkan memenuhi kewajiban simpan "data mentah autentik". Tabel di [Masa simpan dan pemusnahan](#masa-simpan-dan-pemusnahan) dan kalimat surat orang tua dipegang sesi PP No. 33 Tahun 2026, jadi belum diubah ([Akibat ke dokumen lain](#akibat-ke-dokumen-lain)). Tidak dipilih: tetap 5 tahun dengan alasan, atau 20 tahun hanya untuk komite BRIN.
+16. **Lokasi ditulis lengkap sampai tingkat terendah** (negara, provinsi, kabupaten/kota, kecamatan, desa/kelurahan, dusun), seperti tabel informasi usulan penelitian di panduan BRIN, di formulir butir 2.5 dan di usulan penelitian. Nama sekolah tetap tidak ditulis di judul, laporan, atau publikasi. Tidak dipilih: hanya sampai kabupaten/kota atau kecamatan (usulan).
+17. **Pernyataan konflik kepentingan memakai versi "tidak ada potensi konflik"** (contoh Lampiran 1 panduan BRIN), lampiran 16. Pengembangan GELITA oleh tim sendiri dan pengamannya tetap diuraikan di [Konflik kepentingan](#konflik-kepentingan) dan di isian butir 3.8. Tidak dipilih: versi "ada potensi konflik" (usulan).
+
 Kode kegiatan `K1`–`K5` di draf sebelumnya diganti `KG1`–`KG5` (sesi koordinator, 27 Oktober 2026), supaya tidak tertukar dengan kode anak uji keterbacaan.
 
 ## Akibat ke dokumen lain
@@ -867,3 +954,10 @@ Dicatat untuk sesi koordinator. Baris bertanda **Sudah** diperiksa di dokumen tu
 | 23 | T1, T2, T8, T8a, T8b, T9, *Cek isi L7*, *Catatan keterbacaan* (perbandingan dengan PSEPPKN 2021, 27 Oktober 2026) | **Sudah.** Isi tambahan dari [Isi surat orang tua](#isi-surat-orang-tua), kalimat tanda terima kasih dari [Kompensasi](#kompensasi), dan baris saksi dari [Lapis persetujuan](#lapis-persetujuan) dimasukkan di cabang yang sama |
 | 24 | Seluruh protokol uji keterbacaan (perbandingan dengan PSEPPKN 2021) | Tidak ada perubahan. KG1 sudah sesuai: dua orang dewasa, sesi ± 60 menit dengan jeda, tanpa data di sistem, butir risiko hanya diparafrasekan. Surat dan formulirnya (23 → T8a, T8b) yang diperbarui |
 | 24 | *Yang dibutuhkan dari dokumen lain → Dari 22* | **Sudah di 22.** Kegiatan tersendiri, lama, tempat, dua orang dewasa, rekaman, risiko, rujukan, masa simpan, dan tanda terima kasih ada di [Kegiatan yang dimintakan izin](#kegiatan-yang-dimintakan-izin), [Uji keterbacaan (KG1)](#uji-keterbacaan-kg1), [Risiko dan mitigasi](#risiko-dan-mitigasi), [Masa simpan dan pemusnahan](#masa-simpan-dan-pemusnahan), dan [Kompensasi](#kompensasi). 22 memakai kode sesi `K01-1` dan aturan bahwa sekolah uji keterbacaan tidak masuk sampel kemudian |
+| 22 | *Masa simpan dan pemusnahan*, *Isi surat orang tua* (masa simpan), *Dasar hukum* (dipegang sesi PP No. 33 Tahun 2026) | Data penelitian berkode, termasuk data uji keterbacaan berkode: **paling singkat 20 tahun** (UU No. 11 Tahun 2019 Pasal 40 ayat (5)), menggantikan "5 tahun setelah studi ditutup"; nama, L7, dan kunci kode tetap sampai studi ditutup; rekaman tetap sampai transkrip diperiksa. UU No. 11 Tahun 2019 ditambahkan ke *Dasar hukum* ([keputusan no. 15](#keputusan-pemilik-proyek); cabang `r10-klirens-brin`) |
+| 23 | T1 bagian 3, T8a *Kerahasiaan* (dipegang sesi PP No. 33 Tahun 2026); *Dasar yang sudah diputuskan*; *Cek isi L7* (baris masa simpan) | "5 tahun setelah penelitian ditutup" diganti "paling singkat 20 tahun", dengan kalimat awam bahwa data berkode wajib disimpan menurut undang-undang, tanpa nama ([keputusan no. 15](#keputusan-pemilik-proyek)). Dibawa setelah sesi PP No. 33 Tahun 2026 digabung, supaya T1 dan tabel di 23 berubah bersamaan |
+| 24 | *Pengelolaan data* dan ringkasan masa simpan (baris 30, 454, 480, 550 per 27 Oktober 2026) | Masa simpan data berkode uji keterbacaan: paling singkat 20 tahun ([keputusan no. 15](#keputusan-pemilik-proyek)) |
+| 02 | L5 (dipegang sesi PP No. 33 Tahun 2026 di putaran ini) | Wawancara di tempat yang terlihat guru atau peneliti lain, **tetapi tidak terdengar guru atau teman**, karena panduan BRIN (butir 3.1) mengingatkan kehadiran guru atau orang tua bisa membuat anak tidak leluasa; teks yang sama perlu di [Prosedur per pertemuan dan beban bagi anak](#prosedur-per-pertemuan-dan-beban-bagi-anak) |
+| 01 | *Peta jalan dan daftar kerja*, no. 15; garis waktu di [Kegiatan yang dimintakan izin](#kegiatan-yang-dimintakan-izin) | Panduan BRIN menjadi pedoman utama. Patokan telaahnya ± 1–2 bulan sejak berkas lengkap ([Telaah dan masa berlaku menurut panduan BRIN](#telaah-dan-masa-berlaku-menurut-panduan-brin)), jauh lebih cepat daripada target persetujuan akhir September–minggu pertama November 2027. Target itu ditinjau pemilik proyek setelah komite dipilih; persetujuan lebih awal tidak mengubah urutan gerbang |
+| 22 | Kepala dokumen (status), *Identitas dan tim* (baris komite tujuan, tim dengan pendidikan, disiplin, dan kepakaran), *Konflik kepentingan* | Sebut panduan BRIN sebagai pedoman utama di status; tambahkan kolom isian formulir bagian 1 kalau formulir BRIN dipakai; di *Konflik kepentingan* sebut bahwa pernyataan yang dilampirkan adalah versi tidak ada potensi konflik ([keputusan no. 17](#keputusan-pemilik-proyek)) dan bahwa uraian konflik intelektual di bagian itu tetap sebagai pengungkapan |
+| 01_DATABASE (sistem) | *Retensi dan penghapusan data*, `retention_days` bawaan studi (1825) | Untuk studi penelitian GELITA, masa simpan data berkode paling singkat 20 tahun (± 7300 hari); dicatat sebagai perubahan sistem tahap 3, tidak diubah sekarang |
