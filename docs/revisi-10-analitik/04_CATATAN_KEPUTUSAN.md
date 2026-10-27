@@ -37,8 +37,8 @@ Akibatnya:
   - catatan pedoman cadangan di format protokol dan daftar tilik;
   - komitmen etik yang menyebut pedoman komite yang dipilih;
   - kolom *BRIN* di lampiran, lampiran 15–17 (proposal, pernyataan tanpa potensi konflik dengan teksnya, formulir terisi), dan daftar lampiran BRIN yang tidak berlaku;
-  - keputusan no. 14–17 dan baris baru di *Akibat ke dokumen lain*.
-- **23** mendapat: baris judul penelitian di T1, T6, dan T8a; tempat kosong `[judul penelitian]`; `[kontak komite etik]` berisi alamat, situs, dan surel komite; keputusan no. 16–17.
+  - keputusan no. 18–21 dan baris baru di *Akibat ke dokumen lain*.
+- **23** mendapat: baris judul penelitian di T1, T6, dan T8a; tempat kosong `[judul penelitian]`; `[kontak komite etik]` berisi alamat, situs, dan surel komite; keputusan no. 20–21.
 - **00** dan `docs/PROGRESS.md` diperbarui.
 
 Belum diubah karena dipegang sesi PP No. 33 Tahun 2026 (dicatat di 22 → *Akibat ke dokumen lain*):
@@ -52,6 +52,38 @@ Akibat lain yang belum dibawa:
 - target persetujuan di 01 ditinjau karena telaah BRIN jauh lebih cepat;
 - *Konflik kepentingan* dan status di kepala 22;
 - `retention_days` bawaan studi sebagai perubahan sistem tahap 3.
+
+**Keputusan pemilik proyek: 22 dan 23 dibandingkan dengan PP No. 33 Tahun 2026** (cabang `r10-pp-pdp`) · Prototipe I, belum merevisi produk
+
+PP No. 33 Tahun 2026 adalah peraturan pelaksana UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi: diundangkan 16 Juli 2026 (LN 2026 No. 88), berlaku 16 Januari 2027 (Pasal 225), jadi berlaku penuh untuk KG1–KG5. Naskah resmi belum bisa diperoleh (peraturan.go.id dan JDIH belum memuat berkasnya). Yang dibaca utuh adalah naskah terkonsolidasi tidak resmi di datahukum.com (12 bab, berakhir di Pasal 225), dicocokkan dengan ringkasan beberapa kantor hukum. Ada sumber yang menyebut 15 Juli 2026 dan 224 pasal. **Semua nomor pasal `needs_verification`.** Ini pemeriksaan dokumen, bukan nasihat hukum.
+
+Temuan pokok:
+
+1. **Data anak** (di bawah 18 tahun) adalah data pribadi spesifik (Pasal 6). Pengolahannya wajib dengan persetujuan orang tua atau wali, yang diverifikasi "dengan mempertimbangkan teknologi yang tersedia" (Pasal 38). Bukti persetujuan wajib disimpan (Pasal 36).
+2. **Pengecualian untuk penelitian ilmiah** (Pasal 148 ayat (1) huruf e, Pasal 154) hanya membatasi hak hapus, tarik persetujuan, keberatan atas keputusan otomatis, penundaan, dan portabilitas; tidak membatasi akses dan pembetulan, dan tidak membebaskan kewajiban pengendali (Pasal 149).
+3. **Batas 3 × 24 jam** untuk akses, pembetulan, penghentian setelah tarik persetujuan, dan pemberitahuan setelah penghapusan (Pasal 71, 77, 87, 92). Persetujuan yang ditarik mewajibkan penghapusan (Pasal 82 ayat (1) huruf b), termasuk salinan cadangan.
+4. **Kebocoran:** pemberitahuan tertulis paling lambat 3 × 24 jam kepada subjek data dan lembaga pelindungan data pribadi, dengan isi minimum dan kontak PPDP atau narahubung (Pasal 114–118). Sebelumnya 22 hanya menyebut sekolah, orang tua, dan komite.
+5. **Penilaian dampak** wajib sebelum pengolahan (data spesifik; evaluasi dan penskoran sistematis; Pasal 120–121). Juga perjanjian prosesor dengan penyedia server (Pasal 14), PPDP atau narahubung (Pasal 142), catatan kegiatan pengolahan (Pasal 74), dan kebijakan masa simpan (Pasal 75). Server atau penyimpanan di luar negeri memicu aturan transfer Bab V.
+6. **Informasi sebelum persetujuan** (Pasal 62): identitas pengendali dan kontak PPDP, dasar pengolahan, prosesor, dan hak akses, salinan, dan pembetulan belum ada di surat.
+
+Yang sudah sesuai: centang terpisah per izin, surat sebelum formulir, mundur tanpa akibat, minimisasi data, kode dengan kunci terpisah, enkripsi, kalimat batas pengamanan daring, kegiatan pengganti bagi anak tanpa izin, dan masa simpan.
+
+Keputusan pemilik proyek (27 Oktober 2026), keempatnya pilihan yang diusulkan:
+
+1. **Server, salinan cadangan, dan penyimpanan terenkripsi peneliti di Indonesia**; tidak ada transfer ke luar negeri. Tidak dipilih: boleh di luar negeri dengan penilaian transfer Bab V.
+2. **Bukti persetujuan setelah studi ditutup: daftar izin berkode tanpa nama**, disimpan selama data berkode disimpan. Tidak dipilih: formulir bertanda tangan disimpan 5 tahun, atau tanpa perubahan.
+3. **Ringkasan penilaian dampak ditulis di 22**, penilaian lengkap dilampirkan. Tidak dipilih: dokumen terpisah nanti.
+4. **Pengecualian untuk penelitian tidak dipakai**: semua hak dijalankan sampai studi ditutup, pilihan A di T10 berarti persetujuan untuk data yang sudah ada tetap berlaku, dan batas 3 × 24 jam dipakai. Tidak dipilih: memakai Pasal 148 ayat (1) huruf e.
+
+Diterapkan: 22 → *Isi surat orang tua*, *Mengundurkan diri dan hapus data*, *Kerahasiaan dan pengelolaan data* (subbagian baru *Pengendali, prosesor, dan narahubung data* dan *Penilaian dampak pelindungan data*, tempat data di Indonesia, daftar izin berkode, *Dasar hukum* ditulis ulang), *Pelaporan kejadian tak diinginkan* (langkah kebocoran), *Keputusan pemilik proyek* no. 14–17; 23 → T1 bagian 3 dan 6, T2, T8a, T10 (pilihan D), tempat kosong (`[kontak PPDP atau narahubung]`, `[nama dan lokasi penyedia server]`; `[jumlah hari kerja]` dihapus), *Keputusan pemilik proyek* no. 16–19; 02 → L7 (butir batas pengamanan daring yang sudah disetujui sebelumnya, isi surat dari PP 33/2026, verifikasi izin, daftar izin berkode).
+
+Akibat yang belum dibawa (bagian sesi BRIN `r10-klirens-brin` atau dokumen lain; tercatat di [22 → Akibat ke dokumen lain](22_PERMOHONAN_IZIN_ETIK.md#akibat-ke-dokumen-lain)):
+- 22 → *Lampiran*: penilaian dampak lengkap sebagai lampiran; 22 → *Daftar tilik tujuh standar*, standar 6: rujukan ke subbagian baru.
+- 23 → *Cek isi L7 dan jalur persetujuan*: baris untuk butir L7 yang baru; 23 → T1 bagian 8: kontak PPDP boleh dipindah ke sana (tidak wajib).
+- 01 → *Catatan perubahan sistem*: ambil data satu anak untuk permintaan akses, pembetulan data pendaftaran, penghapusan termasuk salinan cadangan, ekspor daftar izin berkode.
+- 11 → *L7*: daftar izin berkode menjadi sumber `consent_ok` setelah L7 dimusnahkan.
+
+Yang masih harus dicek sebelum permohonan diajukan: nomor pasal terhadap naskah resmi PP 33/2026 dan UU 27/2022, Peraturan Lembaga yang sudah terbit (PPDP, penilaian dampak, kebocoran, penghapusan), apakah lembaga pelindungan data pribadi sudah berjalan, dan apakah 3 × 24 jam dihitung dengan hari libur.
 
 **Keputusan pemilik proyek: 22 dan 23 diselaraskan dengan pedoman KEPPKN 2021** (cabang `sky/friendly-newton-jjuvj0`) · Prototipe I, belum merevisi produk
 

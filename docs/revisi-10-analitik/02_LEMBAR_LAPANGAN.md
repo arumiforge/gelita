@@ -322,11 +322,14 @@ L7 menentukan data siapa yang boleh dianalisis (`consent_ok`). Ini satu-satunya 
 - batas kerahasiaan: kalau anak dalam bahaya serius, ketua peneliti boleh menghubungi orang tua, kepala sekolah, atau layanan perlindungan anak;
 - data berkode boleh dibagikan atas permintaan dengan persetujuan komite etik, tanpa nama dan tanpa jawaban butir risiko daring;
 - kontak komite etik untuk keluhan;
+- **batas pengamanan daring**: cara data dijaga, bahwa tidak ada sistem daring yang sepenuhnya bebas risiko kebocoran, dan bahwa orang tua diberi tahu kalau data anaknya terdampak (23 → T1 bagian 3; PSEPPKN 2021 Lampiran 2 huruf i, keputusan pemilik proyek 27 Oktober 2026);
+- **dari PP No. 33 Tahun 2026** (keputusan pemilik proyek 27 Oktober 2026, [22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum)): siapa pengendali data dan kontak urusan data, bahwa dasar pengolahan data adalah persetujuan orang tua, penyedia server dan letaknya di Indonesia, pemberitahuan kebocoran paling lambat 3 × 24 jam, hak melihat, meminta salinan, dan membetulkan data anak, dan hak mengadu ke lembaga pelindungan data pribadi (23 → T1 bagian 3 dan 6);
 - kontak peneliti dan nomor persetujuan etik (**menunggu persetujuan *Lembaga Komite Etik***).
 
 **Cara mengisi**
 
 - Diisi P1 dari surat yang kembali, sebelum P1. Kode peserta ditambahkan setelah siswa mendaftar di P1, dari L2.
+- Sebelum izin dicatat Ya, P1 memverifikasinya: formulir kembali lewat guru kelas dalam amplop tertutup, nama anak cocok dengan daftar kelas, dan tanda tangan (atau cap jempol dengan saksi) ada. Kalau ragu, P1 menelepon nomor di formulir. P1 mencentang kotak verifikasi di T2 (PP No. 33 Tahun 2026 Pasal 38 ayat (4), `needs_verification`; [22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum)).
 - Persetujuan siswa: Ya kalau siswa menyatakan setuju secara lisan saat pembukaan P1 **dan** mencentang persetujuan di halaman daftar.
 - Status: `Aktif`; `Tanpa izin` (kegiatan pengganti, tanpa akun); `Mengundurkan diri (data tetap)` dengan tanggal (anak berhenti, data sampai tanggal itu tetap dipakai); `Mengundurkan diri (hapus data)` dengan tanggal (peneliti mengajukan permintaan hapus data, admin menjalankannya). Formulirnya [23 → T10](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t10-formulir-pengunduran-diri-dan-permintaan-hapus-data); anak yang menolak sendiri di pembukaan P1 dicatat `Tanpa izin` dengan catatan "anak menolak"; `Keluar` dengan tanggal (pindah sekolah atau tidak lagi hadir; datanya tetap kecuali diminta dihapus).
 - `consent_ok = 1` hanya kalau izin orang tua Ya, persetujuan siswa Ya, dan status `Aktif` atau `Keluar` ([11](11_KAMUS_DATA.md#penanda-untuk-analisis)). Mulai `kamus-1.1`, `Mengundurkan diri (data tetap)` juga `consent_ok = 1` untuk data sampai tanggal mundur (keputusan pemilik proyek, 27 Oktober 2026).
@@ -341,7 +344,7 @@ Sekolah: ______ (kode sekolah: **menunggu daftar kerja no. 12**) · Rombel: ___ 
 | 3 | (nama) | 5A | Ya, 2 Nov 2027 | Tidak | Tidak | Ya | S03-A12 | Aktif |
 | 4 | (nama) | 5A | Ya, 1 Nov 2027 | Ya | Ya | Ya | S03-A04 | Mengundurkan diri (hapus data) 18 Nov 2027; permintaan hapus diajukan |
 
-**Penyimpanan:** lembar kertas disimpan di lemari terkunci, terpisah dari lembar lain, bersama pemetaan NPSN ke kode sekolah. Salinan digitalnya dienkripsi dan hanya bisa dibuka P1 dan ketua peneliti. Lembar dimusnahkan saat studi ditutup, sesuai [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan). Situs statis revisi ini menyimpan isian di peramban perangkat yang dipakai, jadi L7 hanya diisi di laptop yang aman dan terkunci.
+**Penyimpanan:** lembar kertas disimpan di lemari terkunci, terpisah dari lembar lain, bersama pemetaan NPSN ke kode sekolah. Salinan digitalnya dienkripsi dan hanya bisa dibuka P1 dan ketua peneliti. Lembar dimusnahkan saat studi ditutup, sesuai [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan). Sebelum dimusnahkan, ketua peneliti menyalin **daftar izin berkode** dari L7: kode peserta, ketiga kolom izin dengan tanggalnya, persetujuan siswa, dan status, tanpa nama dan rombel. Daftar ini bukti persetujuan dan disimpan selama data berkode disimpan (keputusan pemilik proyek 27 Oktober 2026; PP No. 33 Tahun 2026 Pasal 36). Situs statis revisi ini menyimpan isian di peramban perangkat yang dipakai, jadi L7 hanya diisi di laptop yang aman dan terkunci.
 
 ## L8 Profil sekolah
 
