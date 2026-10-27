@@ -23,6 +23,7 @@ Ringkasan isi instrumen dan bedanya dari usulan telaah ada di [07 → Instrumen 
 2. Hapus kotak *STATUS* di sampul setiap HTML, lalu buat ulang PDF-nya.
 3. Lampiran "Perubahan dari versi sebelumnya" (D.4) untuk peneliti; tidak perlu dicetak untuk validator.
 4. Lembar kerja (*spreadsheet*) untuk lembar per butir disiapkan dari kode butir di bank soal, tes, dan angket.
+5. Ikuti prasyarat dan urutan kirim di [20](../20_PAKET_VALIDASI.md).
 
 ## Membuat ulang PDF
 

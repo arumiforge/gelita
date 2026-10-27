@@ -19,13 +19,13 @@ Belum ada yang diubah di sistem, dan uji ini juga tidak memakai sistem. Modul te
 7. **Lembar catatan LK1–LK3**, bergaya lembar di [02](02_LEMBAR_LAPANGAN.md), dengan kode kesulitan `KB-*` (usulan untuk 03).
 8. **Aturan keputusan** membedakan kesulitan bahasa dari kesulitan yang memang diukur. Bacaan D1 boleh sulit dipahami, karena itu yang diukur. Petunjuk, pokok soal, pilihan, angket, dan skala harus bisa dipahami semua anak.
 9. **Waktu yang diukur** dibandingkan dengan perkiraan di [06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain), [13](13_TES_AWAL_AKHIR.md#kisi-kisi-tes-sama-untuk-bentuk-a-dan-b), dan [15](15_TES_BAGIAN_DIGITAL.md#perkiraan-waktu-kerja). Waktu ini hanya pemeriksaan kasar; batas waktu akhirnya tetap ditetapkan dari uji coba tahap 4.
-10. **Tanpa nama di data uji ini.** Nama hanya ada di formulir izin dan di daftar nama–kode, yang disimpan terkunci oleh ketua peneliti, terpisah dari data. Rekaman suara hanya dengan izin terpisah, dan tidak ada data yang masuk sistem GELITA.
+10. **Tanpa nama di data uji ini.** Nama hanya ada di formulir izin dan di daftar nama–kode, yang disimpan terkunci, terpisah dari data; daftar nama–kode hanya dipegang ketua peneliti. Rekaman suara hanya dengan izin terpisah, dan tidak ada data yang masuk sistem GELITA.
 
 ## Dasar yang sudah diputuskan
 
 | Keputusan | Sumber | Akibatnya di sini |
 | --- | --- | --- |
-| Uji keterbacaan dengan anak kelas 5 di tahap 2, setelah izin etik terbit, sebagai bagian Prototipe I; empat anak, ditambah satu anak di putaran kedua (semula "3–5 anak") | [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja), daftar kerja no. 23; [04](04_CATATAN_KEPUTUSAN.md), 25 dan 27 Oktober 2026 | Jadwal dan jumlah anak |
+| Uji keterbacaan dengan anak kelas 5 di tahap 2, setelah izin etik terbit, sebagai bagian Prototipe I; empat anak, ditambah satu anak di putaran kedua (jumlah dari 01 dipertegas 27 Oktober 2026) | [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja), daftar kerja no. 23; [04](04_CATATAN_KEPUTUSAN.md), 25 dan 27 Oktober 2026 | Jadwal dan jumlah anak |
 | Satu permohonan etik untuk lima kegiatan dengan anak, KG1–KG5; uji ini KG1. Bahan anak yang dilampirkan adalah versi yang dibekukan untuk validasi ahli, dan setiap revisi bahan anak diajukan ke komite sebagai amandemen protokol | [22 → Kegiatan yang dimintakan izin](22_PERMOHONAN_IZIN_ETIK.md#kegiatan-yang-dimintakan-izin), [22 → Perubahan protokol](22_PERMOHONAN_IZIN_ETIK.md#perubahan-protokol); [04](04_CATATAN_KEPUTUSAN.md), 27 Oktober 2026 | Revisi dari validasi ahli dan dari uji ini diajukan sebagai amandemen (lihat [Persiapan](#persiapan-sebelum-sesi-pertama) dan [Yang kembali ke ahli](#yang-kembali-ke-ahli)) |
 | Nama, formulir izin, dan daftar yang menghubungkan kode dengan nama disimpan sampai studi ditutup; data berkode 5 tahun setelah studi ditutup; rekaman sampai transkrip diperiksa; permintaan hapus diterima sampai studi ditutup | [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan); [04](04_CATATAN_KEPUTUSAN.md), 27 Oktober 2026 | [Pengelolaan data](#pengelolaan-data) |
 | Tanda terima kasih kecil yang sama, tanpa uang, dan tidak disebut hadiah; anak uji keterbacaan menerimanya setelah sesi terakhirnya | [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi); [04](04_CATATAN_KEPUTUSAN.md), 27 Oktober 2026 | [Jadwal empat sesi](#jadwal-empat-sesi) |
@@ -279,7 +279,7 @@ Berpikir lantang selama membaca membuat waktu baca tidak bisa dipakai, dan anak 
 | Penanggung jawab | Ketua peneliti (`ketua`) | Mengurus izin sekolah dan persetujuan; menerima formulir izin dari guru; memilih anak dan memberi kode; memegang daftar nama–kode dan formulir izin dalam keadaan terkunci; memeriksa lembar setiap hari; menjalankan aturan keputusan; menulis hasil; menangani rujukan dan permintaan hapus kalau ada; menyerahkan tanda terima kasih |
 | Pemandu | P3 (`pewawancara`) | Memimpin semua sesi supaya cara bertanya sama untuk semua anak; menanyakan persetujuan anak di awal setiap sesi; mengucapkan pancingan baku; menjaga suasana dan jeda |
 | Pencatat | P2 (`pengamat`) | Mengisi LK1 dan LK2 selama sesi; memegang stopwatch; menyalakan dan mematikan rekaman kalau ada izin |
-| Persiapan dan cadangan | P1 (`koordinator`) | Menyiapkan laptop, salinan layar, dan kartu cetak; mengecek izin sebelum sesi dengan kode anak; menggantikan pencatat kalau P2 berhalangan |
+| Persiapan dan cadangan | P1 (`koordinator`) | Menyiapkan laptop, salinan layar, dan kartu cetak; mengecek izin di T8b sebelum setiap sesi; menggantikan pencatat kalau P2 berhalangan |
 
 Selama sesi selalu ada dua orang dewasa dari tim bersama anak, dan anak tidak pernah sendirian dengan satu orang dewasa. Pemandu dan pencatat tidak berganti peran di antara anak, supaya catatan setara. Kalau peneliti hanya dua, ketua peneliti menjadi pencatat dan menyiapkan perangkat; P3 tetap pemandu.
 
@@ -435,7 +435,7 @@ Waktu di uji ini lebih panjang daripada di kelas, karena anak membaca di ruang a
 ## Pengelolaan data
 
 - **Nama anak tidak pernah ada di data uji ini.** LK1–LK3, kartu cetak, rekaman, transkrip, dan ketikan lembar hanya memakai kode anak `K01`–`K05` dan kode sesi `K01-1`–`K05-4`. Nama anak hanya ada di berkas izin yang disimpan terkunci, terpisah dari data: **formulir izin** ([23 → T8b](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t8b-formulir-persetujuan-uji-keterbacaan)), dipegang ketua peneliti dan P1 seperti L7; dan berkas terpisah yang dikunci ketua peneliti (`ketua`): **daftar nama–kode** (nama, kode, sekolah, kelompok membaca, status izin), formulir pengunduran diri, dan catatan rujukan kalau ada. Semua berkas ini tidak pernah masuk repo. Sekolah asal anak juga tidak disebut di repo. Nama yang disebut anak dalam rekaman diganti `[nama]` saat transkripsi.
-- **Izin dan persetujuan:** sebelum setiap sesi, P1 mengecek izin dari daftar izin per kode yang disiapkan ketua peneliti (ikut, rekaman, butir risiko daring), tanpa nama. Persetujuan anak ditanyakan secara lisan di awal setiap sesi (lihat [Jadwal empat sesi](#jadwal-empat-sesi)) dan dicatat di LK1.
+- **Izin dan persetujuan:** sebelum setiap sesi, P1 mengecek izin anak itu di formulir T8b (ikut, rekaman, butir risiko daring) dan menuliskannya di LK1 dengan kode anak. Persetujuan anak ditanyakan secara lisan di awal setiap sesi (lihat [Jadwal empat sesi](#jadwal-empat-sesi)) dan dicatat di LK1.
 - **Rekaman suara hanya dengan izin terpisah** dari orang tua dan kalau anak setuju saat itu. Yang direkam suara saja, tidak ada video atau foto anak. Rekaman disimpan di perangkat penelitian yang terkunci, ditranskrip tanpa nama, dan dihapus setelah transkripnya diperiksa, sama seperti L5 ([02](02_LEMBAR_LAPANGAN.md#l5-wawancara-retrospektif-dan-berpikir-lantang)). Tanpa izin rekaman, pencatat menulis kutipan pendek saja.
 - **Tidak ada data di sistem GELITA.** Salinan layar tidak menyimpan jawaban. Anak tidak membuat akun dan tidak mendapat kode peserta `S…` atau `U…`. Data uji ini tidak digabung dengan data sampel atau uji coba.
 - **Penyimpanan:** lembar kertas di map terkunci yang dipegang ketua peneliti; ketikan lembar di folder penelitian yang hanya bisa dibuka tim.
@@ -471,9 +471,9 @@ Status diperiksa 27 Oktober 2026, saat 20, 22, dan 23 sedang diselaraskan di ses
 | Prosedur rujukan yang juga berlaku di uji ini (tanpa penanda sistem; jalur anak yang bercerita sendiri) | **Ada**: [22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring), bagian KG1, langkah 4–6 |
 | Dua orang dewasa selalu hadir bersama anak; rekaman suara saja, dengan izin terpisah, dihapus setelah transkrip diperiksa | **Ada**: 22 → *Uji keterbacaan (KG1)* |
 | Persetujuan anak di awal setiap sesi; butir risiko hanya diparafrasekan, dengan izin terpisah | **Ada**: 22 → *Persetujuan* dan *Uji keterbacaan (KG1)* |
-| Masa simpan LK1–LK3, kartu cetak, dan transkrip (5 tahun setelah studi ditutup), dan daftar nama–kode dan formulir T8b (sampai studi ditutup) | **Belum** di tabel [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan); 22 → *Uji keterbacaan (KG1)* sudah merujuk ke tabel itu |
-| Daftar nama–kode sebagai tempat nama ketiga, disimpan terkunci oleh `ketua`, terpisah dari data | Ada di 22 → *Uji keterbacaan (KG1)*; **belum** di 22 → *Di mana nama berada* |
-| Tanda terima kasih kecil yang sama untuk anak uji keterbacaan, setelah sesi terakhirnya, bukan sebagai hadiah | **Belum** di [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi) |
+| Masa simpan LK1–LK3, kartu cetak, dan transkrip (5 tahun setelah studi ditutup), dan daftar nama–kode dan formulir T8b (sampai studi ditutup) | **Ada**: [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan) |
+| Daftar nama–kode sebagai tempat nama, disimpan terkunci oleh `ketua`, terpisah dari data | **Ada**: 22 → *Di mana nama berada* dan *Uji keterbacaan (KG1)* |
+| Tanda terima kasih kecil yang sama untuk anak uji keterbacaan, setelah sesi terakhirnya, bukan sebagai hadiah | **Ada**: [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi) |
 | Hapus data di KG1 sesuai keputusan 27 Oktober 2026: pilihan A, B, C; diterima sampai studi ditutup; hasil gabungan yang sudah diterbitkan tidak ditarik | **Sebagian**: 22 → *Mengundurkan diri dan hapus data* masih memakai kalimat lama 24 ("kecuali ringkasan per butir yang sudah tidak bisa dikenali") |
 
 ### Dari 23 (surat informasi dan persetujuan)
@@ -483,9 +483,9 @@ Status diperiksa 27 Oktober 2026, saat 20, 22, dan 23 sedang diselaraskan di ses
 | Surat informasi orang tua uji keterbacaan: tujuan (memperbaiki soal, bukan menilai anak), empat sesi ± 60 menit dengan jeda, di sekolah anak, dua orang dewasa, apa yang dibaca anak, tanpa nama di catatan, hasil tidak masuk rapor, batas kerahasiaan, kontak komite | **Ada**: [23 → T8a](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t8a-surat-informasi-orang-tua-uji-keterbacaan) |
 | Centang terpisah: izin ikut; izin rekaman suara; izin membaca butir risiko daring (parafrase saja, tanpa menjawab tentang diri sendiri) | **Ada**: [23 → T8b](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t8b-formulir-persetujuan-uji-keterbacaan) |
 | Persetujuan anak (*assent*) dengan bahasa anak; kalimat tanya ulang di awal sesi 2–4; kalimat lisan sebelum butir risiko | **Ada**: [23 → T8c](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t8c-naskah-persetujuan-anak-uji-keterbacaan) |
-| Guru yang membagikan T8a–T8b dan mengumpulkan amplopnya; nama baru sampai ke peneliti setelah izin kembali | **Ada** di 23 → T8; **belum** di baris T8a + T8b [23 → Tabel pembagian](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#tabel-pembagian) (masih "± 7 hari sebelum sesi", dibagikan "ketua peneliti … langsung", "[masa simpan]") |
+| Guru yang membagikan T8a, T8b, dan T10 dalam amplop dan mengumpulkan amplop tertutupnya untuk ketua peneliti; kelompok membaca hanya untuk anak berizin; masa simpan formulir | **Ada**: 23 → T8 dan [23 → Tabel pembagian](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#tabel-pembagian) |
 | Formulir pengunduran diri dan permintaan hapus data (pilihan A, B, C) yang juga berlaku untuk uji ini | Ada: [23 → T10](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t10-formulir-pengunduran-diri-dan-permintaan-hapus-data), dirujuk di T8a |
-| Layar sebelum butir risiko (T11), pesan dukungan (T12), dan selebaran tempat bercerita (T13), sebagai bahan uji dan untuk rujukan | **Belum** ada di 23 per pemeriksaan ini (T8 sudah merujuk ke T12) |
+| Layar sebelum butir risiko (T11), pesan dukungan (T12), dan selebaran tempat bercerita (T13), sebagai bahan uji dan untuk rujukan | **Ada**: [23 → T11](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t11-layar-sebelum-butir-risiko-daring), [T12](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t12-pesan-dukungan-sesudah-butir-risiko-daring), [T13](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t13-selebaran-tempat-bercerita). T12 menyebut uji keterbacaan; T11 belum menyebut bahwa layarnya juga diuji di sini |
 | Kalimat hapus data di T8a sesuai keputusan 27 Oktober 2026 | **Sebagian**: T8a menulis "ringkasan gabungan yang tidak memuat kode anak … tidak bisa ditarik"; keputusan pemilik proyek menyebut hasil gabungan yang **sudah diterbitkan** |
 
 ### Dari 20 (paket validasi)
@@ -494,7 +494,7 @@ Status diperiksa 27 Oktober 2026, saat 20, 22, dan 23 sedang diselaraskan di ses
 | --- | --- |
 | Matriks revisi Prototipe I menampung temuan dari anak, dengan "uji keterbacaan", kode anak, dan kode `KB-*` di kolom *Sumber validator* | **Ada**: [20 → Matriks revisi Prototipe I](20_PAKET_VALIDASI.md#matriks-revisi-prototipe-i) |
 | Jadwal: uji keterbacaan setelah revisi dari validasi ahli, putaran kedua dengan K05, lalu penilaian ulang ahli (`pk`) | **Ada** di 20 |
-| "3–5 anak" di daftar periksa G2 menjadi "empat anak, ditambah satu anak di putaran kedua" | **Belum** di 20 → *Uji keterbacaan* (daftar periksa) |
+| Jumlah anak di daftar periksa G2: "empat anak, ditambah satu anak di putaran kedua" | **Ada**: 20 → *Uji keterbacaan* (daftar periksa) |
 
 ## Persiapan sebelum sesi pertama
 
@@ -509,7 +509,7 @@ Status diperiksa 27 Oktober 2026, saat 20, 22, dan 23 sedang diselaraskan di ses
 | 7 | Laptop diisi salinan layar, dicoba tanpa internet, layar penuh | P1 |
 | 8 | Uji coba protokol dengan satu orang dewasa (bukan anak) untuk melatih pancingan baku dan waktu | P3 dan P2 |
 | 9 | Rentang tanggal sesi dan batas kembali formulir disepakati dengan sekolah, lalu diisi di T8a (`[rentang tanggal uji keterbacaan]`, `[tanggal batas kembali uji keterbacaan]`); guru membagikan T8a–T8b dan formulir pengunduran diri | Ketua peneliti, guru kelas |
-| 10 | Formulir izin kembali; guru memberi tahu kelompok membaca hanya untuk anak berizin; anak dipilih dan diberi kode; daftar izin per kode untuk P1 dibuat; jadwal empat sesi disepakati | Ketua peneliti, P1 |
+| 10 | Formulir izin kembali; guru memberi tahu kelompok membaca hanya untuk anak berizin; anak dipilih dan diberi kode; jadwal empat sesi disepakati | Ketua peneliti, P1 |
 | 11 | Tanda terima kasih kecil disiapkan, sama dengan untuk kelas penelitian ([22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi)) | P1 |
 
 ## Keputusan pemilik proyek
@@ -538,9 +538,9 @@ Setelah 20–24 digabung, pemilik proyek memutuskan beberapa hal yang berlaku di
 
 1. **Uji ini kegiatan KG1** dalam satu permohonan etik untuk KG1–KG5 ([03 → Kegiatan dengan anak](03_KODE_DAN_ARTI.md#kegiatan-dengan-anak)). Revisi bahan anak, dari validasi ahli maupun dari uji ini, diajukan ke komite sebagai amandemen protokol ([Dasar yang sudah diputuskan](#dasar-yang-sudah-diputuskan), [Persiapan](#persiapan-sebelum-sesi-pertama), [Yang kembali ke ahli](#yang-kembali-ke-ahli)).
 2. **Kode sesi `K01-1`** (anak K01, sesi 1), tanpa huruf S, karena huruf S dengan angka terbaca seperti kode sekolah. Kode anak `K01`–`K05` tetap ([Lembar catatan](#lembar-catatan)).
-3. **Rancangan uji dikukuhkan:** empat anak ditambah K05 di putaran kedua; inti untuk semua dan bank dalam enam blok, setiap blok dibaca dua anak; sekolah di wilayah Kedu di luar sampel dan uji coba yang **tidak masuk sampel sesudahnya** (kalimat lama "kelas 5 di sekolah itu tetap boleh ikut" dihapus); butir risiko daring hanya diparafrasekan dengan centang terpisah; empat sesi ± 60 menit dengan jeda, di sekolah anak, dengan dua orang dewasa; bahan versi setelah validasi ahli; rekaman hanya dengan izin.
+3. **Rancangan uji dikukuhkan:** empat anak ditambah K05 di putaran kedua; inti untuk semua dan bank dalam enam blok, setiap blok dibaca dua anak; sekolah di wilayah Kedu di luar sampel dan uji coba yang **tidak masuk sampel sesudahnya**, juga bukan kelas 5-nya saja; butir risiko daring hanya diparafrasekan dengan centang terpisah; empat sesi ± 60 menit dengan jeda, di sekolah anak, dengan dua orang dewasa; bahan versi setelah validasi ahli; rekaman hanya dengan izin.
 4. **Pemilihan anak:** tidak ada nama atau kelompok membaca yang sampai ke peneliti sebelum izin orang tua kembali. Guru membagikan surat T8, dan hanya untuk anak yang izinnya kembali guru memberi tahu kelompok membacanya ([Cara guru membantu memilih](#cara-guru-membantu-memilih-tanpa-memberi-nilai)).
-5. **Tempat nama:** nama tidak pernah ada di data uji ini; nama hanya di formulir izin dan daftar nama–kode yang disimpan terkunci oleh ketua peneliti (`ketua`), terpisah dari data ([Pengelolaan data](#pengelolaan-data)).
+5. **Tempat nama:** nama tidak pernah ada di data uji ini; nama hanya di formulir izin (dipegang ketua peneliti dan P1, seperti L7) dan di daftar nama–kode yang disimpan terkunci oleh ketua peneliti (`ketua`), terpisah dari data ([Pengelolaan data](#pengelolaan-data)).
 6. **Masa simpan dan hapus data:** daftar nama–kode dan formulir sampai studi ditutup; data berkode 5 tahun setelah studi ditutup; rekaman sampai transkrip diperiksa; permintaan hapus diterima sampai studi ditutup, dengan pilihan A, B, dan C seperti di 23 → T10; hasil gabungan yang sudah diterbitkan tidak ditarik.
 7. **Tanda terima kasih:** anak uji keterbacaan menerima tanda terima kasih kecil yang sama dengan anak di kelas penelitian, setelah sesi terakhirnya, tanpa uang dan tidak disebut hadiah ([Jadwal empat sesi](#jadwal-empat-sesi)).
 8. **Teks untuk anak dan orang tua** memakai 23 → T8a–T8c. Layar sebelum butir risiko (23 → T11) dan pesan dukungan (23 → T12) ikut diuji bersama ang-21–ang-23 ([Butir risiko daring](#butir-risiko-daring)).
@@ -548,18 +548,23 @@ Setelah 20–24 digabung, pemilik proyek memutuskan beberapa hal yang berlaku di
 
 ## Akibat ke dokumen lain
 
-Tidak diubah di cabang ini. Dibawa sesi koordinator setelah dokumen ini digabung.
+Dibawa sesi koordinator dan sesi penyelarasan 20–23. Status diperiksa 27 Oktober 2026.
 
-| Dokumen | Bagian | Perubahan |
-| --- | --- | --- |
-| [03](03_KODE_DAN_ARTI.md) | Bagian baru *Uji keterbacaan* (setelah *Kode di L4*) | Tambah kode anak `K01`–`K05`, kode sesi `K01-S1`, lembar LK1–LK3, kode kesulitan `KB-KTA`, `KB-KLM`, `KB-MKS`, `KB-PTJ`, `KB-PIL`, `KB-ARH`, `KB-TPL`, `KB-LMA`, `KB-LTS`, `KB-RSA`, `KB-LAIN`, dan pancingan `PB-1`–`PB-9`, semuanya bertanda usulan |
-| [01](01_REVISI_10_ANALITIK.md) | *Peta jalan dan daftar kerja*, no. 23 | Status menjadi "Draf di [24](24_UJI_KETERBACAAN.md); keputusan pemilik proyek 27 Oktober 2026 (empat anak ditambah satu, inti dan blok bank, sekolah Kedu di luar sampel, butir risiko daring diparafrasekan saja)" |
-| [13](13_TES_AWAL_AKHIR.md) | *Validasi dan uji coba*, baris tahap 2 uji keterbacaan | Tautan ke 24; "3–5 anak" menjadi "empat anak ditambah satu untuk putaran kedua" (diputuskan 27 Oktober 2026) |
-| [14](14_TES_BAGIAN_MEMBACA.md) | *Catatan untuk peneliti dan validator*, **Keterbacaan** | Tautan ke 24 (kartu kata dan aturan keputusan) |
-| [15](15_TES_BAGIAN_DIGITAL.md) | *Hal yang diminta dinilai ahli* no. 5, *Perkiraan waktu kerja* | Tautan ke 24 untuk kartu kata dan cara angka waktu diperbarui |
-| [16](16_ANGKET_AKSES_DIGITAL.md) | *Validasi dan uji coba*, baris tahap 2 | Tautan ke 24; ang-21–ang-23 diuji dengan parafrase saja, tanpa jawaban tentang diri sendiri |
-| [17](17_SKALA_SIKAP.md) | *Tahap 2: uji keterbacaan dengan anak* | Tautan ke 24 (pancingan PB-7, aturan KB-ARH) |
-| [18](18_MOCKUP_LAYAR_BARU.md) | *Celah yang ditemukan di dokumen lain* no. 3; *Keputusan pemilik proyek* putaran 2 no. 4 | Tautan ke 24: draf salinan layar diuji di sana |
-| [06](06_KISI_KISI_BANK_SOAL.md) | *Waktu bermain* | Satu kalimat: angka pertama dari anak datang dari uji keterbacaan (24), angka akhir dari uji coba |
-| [20](20_PAKET_VALIDASI.md) | *Matriks revisi Prototipe I*, jadwal | Satu kalimat: temuan uji keterbacaan masuk matriks yang sama, dengan "uji keterbacaan", kode anak, dan kode `KB-*` di kolom *Sumber validator*; uji keterbacaan sesudah revisi ahli, lalu penilaian ulang |
-| [22](22_PERMOHONAN_IZIN_ETIK.md), [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) | Kegiatan, risiko, izin | Isi yang dibutuhkan di [Yang dibutuhkan dari dokumen lain](#yang-dibutuhkan-dari-dokumen-lain), kalau belum tertulis |
+| Dokumen | Bagian | Perubahan | Status |
+| --- | --- | --- | --- |
+| [03](03_KODE_DAN_ARTI.md) | *Kegiatan dengan anak*; *Uji keterbacaan (KG1)* | Kode kegiatan KG1–KG5; kode anak `K01`–`K05`, kode sesi `K01-1`–`K05-4`, lembar LK1–LK3, kode kesulitan `KB-*`, dan pancingan `PB-1`–`PB-9`, semuanya bertanda usulan | Sudah |
+| [01](01_REVISI_10_ANALITIK.md) | *Peta jalan dan daftar kerja*, no. 23 | Status "Draf di 24", dengan keputusan pemilik proyek 27 Oktober 2026 | Sudah |
+| [13](13_TES_AWAL_AKHIR.md) | *Validasi dan uji coba*, baris tahap 2 | Tautan ke 24; jumlah anak ditulis "empat anak, ditambah satu anak di putaran kedua" | Sudah |
+| [14](14_TES_BAGIAN_MEMBACA.md) | *Catatan untuk peneliti dan validator*, **Keterbacaan** | Tautan ke 24 (kartu kata dan aturan keputusan) | Sudah |
+| [15](15_TES_BAGIAN_DIGITAL.md) | *Hal yang diminta dinilai ahli* no. 5, *Perkiraan waktu kerja* | Tautan ke 24 untuk kartu kata dan cara angka waktu diperbarui | Sudah |
+| [16](16_ANGKET_AKSES_DIGITAL.md) | *Validasi dan uji coba*, baris tahap 2 | Tautan ke 24; ang-21–ang-23 diuji dengan parafrase saja, tanpa jawaban tentang diri sendiri | Sudah |
+| [17](17_SKALA_SIKAP.md) | *Tahap 2: uji keterbacaan dengan anak* | Tautan ke 24 (pancingan PB-7, aturan KB-ARH); jumlah anak | Sudah |
+| [18](18_MOCKUP_LAYAR_BARU.md) | *Celah yang ditemukan di dokumen lain* no. 3; *Keputusan pemilik proyek* putaran 2 no. 4 | Tautan ke 24: draf salinan layar diuji di sana | Sudah |
+| [06](06_KISI_KISI_BANK_SOAL.md) | *Waktu bermain* | Satu kalimat: angka pertama dari anak datang dari uji keterbacaan (24), angka akhir dari uji coba | Sudah |
+| [20](20_PAKET_VALIDASI.md) | *Matriks revisi Prototipe I*, jadwal, daftar periksa G2 | Temuan uji keterbacaan masuk matriks yang sama ("uji keterbacaan", kode anak, `KB-*`); uji keterbacaan sesudah revisi ahli, lalu K05, lalu penilaian ulang (`pk`); jumlah anak | Sudah |
+| [22](22_PERMOHONAN_IZIN_ETIK.md) | KG1 di *Kegiatan*, *Peserta*, *Rekrutmen*, *Persetujuan*, *Prosedur per pertemuan*, *Risiko*, *Prosedur rujukan*, *Di mana nama berada*, *Masa simpan*, *Kompensasi* | Isi yang dibutuhkan di [Yang dibutuhkan dari dokumen lain](#dari-22-permohonan-izin-etik) | Sudah, kecuali satu baris di bawah |
+| 22 | *Mengundurkan diri dan hapus data*, butir *Di uji keterbacaan (KG1)* | Kalimat "kecuali ringkasan per butir yang sudah tidak bisa dikenali" diganti dengan aturan di [Pengelolaan data](#pengelolaan-data): pilihan A, B, C; diterima sampai studi ditutup; hasil gabungan yang **sudah diterbitkan** tidak ditarik | Belum |
+| [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) | T8, T8a–T8c, T10–T13, *Tabel pembagian* | Isi yang dibutuhkan di [Yang dibutuhkan dari dokumen lain](#dari-23-surat-informasi-dan-persetujuan); tempat kosong `[rentang tanggal uji keterbacaan]` dan `[tanggal batas kembali uji keterbacaan]` diisi menurut [Persiapan](#persiapan-sebelum-sesi-pertama) no. 9 | Sudah, kecuali dua baris di bawah |
+| 23 | T8a, *Berhenti kapan saja* | "ringkasan gabungan yang tidak memuat kode anak … tidak bisa ditarik" disesuaikan dengan keputusan pemilik proyek: hasil gabungan yang **sudah diterbitkan** | Belum |
+| 23 | T11 | Satu kalimat: layar ini juga dibaca dan diparafrasekan di uji keterbacaan, tanpa tombol dipilih ([Butir risiko daring](#butir-risiko-daring)) | Belum |
+| 23 | *Akibat ke dokumen lain*, baris 24 | Usulan uji baca T1 oleh dua–tiga orang tua di luar sampel tidak dimasukkan ke protokol ini, karena bukan kegiatan dengan anak; kalau dipakai, tempatnya di 22 atau 23 dan butuh keputusan pemilik proyek | Belum diputuskan |

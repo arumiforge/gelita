@@ -1,6 +1,6 @@
 # Paket Validasi Ahli
 
-Per 27 Oktober 2026 · **Status: draf**; pertanyaan pemilik proyek dijawab 27 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 27 Oktober 2026 · **Status: draf**; pertanyaan pemilik proyek dijawab 27 Oktober 2026; diselaraskan dengan 21–24 pada hari yang sama · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Dokumen ini mengubah tiga instrumen validasi ahli menjadi paket yang siap dikirim ke sebelas validator. Isinya: siapa menerima apa dan kapan, surat permohonan, akses ke instalasi uji, cara hasil dikembalikan dan dicatat, apa yang terjadi setelah hasil kembali, dan daftar periksa validasi untuk gerbang G2. Daftar kerja no. 3 dan no. 14 di [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja). Pekerjaan ini bagian dari **Prototipe I**.
 
@@ -140,7 +140,7 @@ Halaman petunjuk B.5a di paket B.5a bukan berkas 21: halaman itu dicetak dari IM
 
 ## Urutan pengiriman dan jadwal
 
-### Putaran kirim
+### Kiriman dan putaran
 
 1. **Minggu 0, kesediaan.** Ketua peneliti menghubungi calon validator (telepon atau pesan) untuk menanyakan kesediaan, waktu, dan perangkat. Kepada dua penilai B.5a juga disebut urutan kerjanya: B.5a dulu, lalu semua lembar lain dalam tiga minggu (lihat [Beban dua penilai B.5a](#beban-dua-penilai-b5a-di-minggu-35)). Baru setelah bersedia, surat resmi dikirim. Nama dan kontak dicatat di daftar padanan.
 2. **Kiriman awal (minggu 1).** Kesebelas validator menerima surat permohonan. Sembilan validator menerima berkas kiriman awal panelnya; dua penilai B.5a menerima paket B.5a saja. Pengarahan daring per panel, terpisah supaya validator tidak saling memengaruhi (IM A.4 "Independen"): ahli materi 45 menit untuk tiga ahli materi lain, pengamat budaya 30–45 menit, ahli media 30 menit. Dua penilai B.5a tidak ikut pengarahan panel di minggu ini, karena pengarahan itu membahas kode; mereka mendapat pengarahan B.5a tersendiri, ± 15 menit, tentang cara melabel tanpa membuka bahan lain.
@@ -179,7 +179,7 @@ Dengan urutan kirim yang baru, Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1 me
 | Ahli Bahasa Anak 1 | ± 9–14 jam (± 12–19 bila B.7 diisi) | ± 3–6 jam | Ahli Bahasa Anak 2: ± 9–14 jam dalam lima minggu, ± 2–3 jam per minggu |
 | Ahli Literasi Digital 1 | ± 12–18 jam, termasuk B.7 3–5 jam | ± 4–6 jam | Ahli Literasi Digital 2: ± 12–18 jam dalam lima minggu, ± 2,5–3,5 jam per minggu |
 
-Usulan untuk meringankannya (diputuskan ketua peneliti):
+Usulan untuk meringankannya (keputusannya di tangan ketua peneliti):
 
 1. Beban per minggu ini disebut saat menanyakan kesediaan di minggu 0, supaya calon penilai B.5a bisa menolak atau memilih jadwal.
 2. Kiriman setelah B.5a dikirim begitu lembar B.5a kedua diarsipkan. Bila B.5a kembali lebih cepat dari batasnya, waktu untuk sisa lembar ikut bertambah.
@@ -437,7 +437,7 @@ Claude boleh membantu menghitung indeks dari rekap yang sudah bersih, tetapi sko
 
 ### Daftar padanan di luar repo
 
-- Satu baris per validator: nama samaran, nama asli dan gelar, instansi, bidang, wilayah yang dikuasai (pengamat budaya), kontak, tanggal kesediaan, tanggal kirim dan terima per putaran, honorarium dibayar, izin disebut namanya di laporan (ya/tidak).
+- Satu baris per validator: nama samaran, nama asli dan gelar, instansi, bidang, wilayah yang dikuasai (pengamat budaya), kontak, tanggal kesediaan, tanggal kirim dan terima per kiriman dan putaran, honorarium dibayar, izin disebut namanya di laporan (ya/tidak).
 - Dipegang ketua peneliti, sama seperti pemegang akun staf ([03 → Akun staf](03_KODE_DAN_ARTI.md#akun-staf)).
 - Tidak pernah disalin ke repo, ke tangkapan layar, ke percakapan dengan Claude, atau ke pesan grup.
 - Di repo, di 04, di PR, dan di matriks revisi hanya nama samaran yang dipakai.
@@ -571,7 +571,7 @@ Pertanyaan di draf ini dijawab pemilik proyek pada 27 Oktober 2026 ([04](04_CATA
 
 Keputusan pemilik proyek di dokumen tahap 2 lain yang juga mengatur dokumen ini (27 Oktober 2026, dicatat di 04), dan sudah diterapkan di atas:
 
-- **Urutan kirim B.5a** ([21](21_BERKAS_BUTIR_VALIDATOR.md#pertanyaan-untuk-pemilik-proyek), pertanyaan 1, 2, dan 4). Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1 menerima paket B.5a saja dulu, dengan ID netral `BT-001` … `BT-180` dan `BH-01` … `BH-73`. Instrumen lengkap, bank berkode, kisi-kisi, B.5b, dan lembar B.6–B.9 menyusul setelah B.5a kembali. Tiga ahli materi lain menerima kiriman awal seperti biasa, tanpa label pengembang dan kisi-kisi sampai B.5a kembali. B.7 mencakup semua 622 sel, jadi perkiraan waktunya naik (3–5 jam di dokumen ini). Diterapkan di *Siapa menerima apa*, *Putaran kirim*, *Jadwal relatif*, surat 1, dan surat lanjutan.
+- **Urutan kirim B.5a** ([21](21_BERKAS_BUTIR_VALIDATOR.md#pertanyaan-untuk-pemilik-proyek), pertanyaan 1, 2, dan 4). Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1 menerima paket B.5a saja dulu, dengan ID netral `BT-001` … `BT-180` dan `BH-01` … `BH-73`. Instrumen lengkap, bank berkode, kisi-kisi, B.5b, dan lembar B.6–B.9 menyusul setelah B.5a kembali. Tiga ahli materi lain menerima kiriman awal seperti biasa, tanpa label pengembang dan kisi-kisi sampai B.5a kembali. B.7 mencakup semua 622 sel, jadi perkiraan waktunya naik (3–5 jam di dokumen ini). Diterapkan di *Siapa menerima apa*, *Kiriman dan putaran*, *Jadwal relatif*, surat 1, dan surat lanjutan.
 - **Izin etik** (22). Satu permohonan untuk semua kegiatan dengan anak (KG1–KG5); revisi instrumen dilaporkan ke komite sebagai amandemen protokol, dan bahan untuk anak yang dilampirkan adalah versi yang dibekukan untuk validasi ahli.
 - **Uji keterbacaan** (24). Empat anak, ditambah satu anak (K05) di putaran kedua, pada bahan Prototipe I setelah revisi dari validasi ahli. Temuan dari anak masuk matriks revisi induk, dan butir yang direvisi kembali ke ahli di penilaian ulang setelah uji keterbacaan.
 - **Akun staf** (03). `admin` dan `ketua`, yang disebut di dokumen ini, termasuk akun staf yang sudah disetujui; tidak ada lagi yang berstatus usulan.

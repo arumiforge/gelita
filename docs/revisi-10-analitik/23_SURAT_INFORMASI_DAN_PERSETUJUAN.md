@@ -84,7 +84,7 @@ Setelah itu: [tabel pembagian](#tabel-pembagian), [catatan keterbacaan](#catatan
 
 ## T1 Surat informasi untuk orang tua/wali
 
-Dua halaman A4 tegak, dicetak bolak-balik. Orang tua menyimpan surat ini. Yang dikembalikan hanya formulir T2.
+Tiga halaman A4 tegak, dicetak bolak-balik (dua lembar). Orang tua menyimpan surat ini. Yang dikembalikan hanya formulir T2.
 
 ---
 
@@ -446,6 +446,8 @@ Bedanya dengan T1–T3: empat sesi pendek, tanpa akun dan catatan permainan, cat
 
 ### T8a Surat informasi orang tua (uji keterbacaan)
 
+Dua halaman A4 tegak (satu lembar bolak-balik), dikirim lewat guru dalam amplop bersama T8b dan T10.
+
 ---
 
 > **[nama lembaga peneliti]**
@@ -474,7 +476,7 @@ Bedanya dengan T1–T3: empat sesi pendek, tanpa akun dan catatan permainan, cat
 >
 > **Berhenti kapan saja.** Anak boleh berhenti kapan saja tanpa akibat. Kalau Bapak/Ibu minta, catatan dan rekaman anak kami hapus. Caranya: isi formulir pengunduran diri yang terlampir, atau hubungi kami. Permintaan hapus bisa diajukan sampai penelitian ditutup, sekitar [tanggal studi ditutup]. Perbaikan soal yang sudah dibuat, dan ringkasan gabungan yang tidak memuat kode anak, tidak bisa ditarik.
 >
-> **Kerahasiaan.** Nama anak tidak pernah ada di catatan penelitian. Nama hanya ada di formulir izin dan di satu daftar yang menghubungkan nama dengan kode. Keduanya disimpan terkunci oleh ketua peneliti, terpisah dari catatan, lalu dimusnahkan saat penelitian ditutup. Catatan berkode disimpan 5 tahun setelah penelitian ditutup. Hasilnya ditulis tanpa nama anak dan sekolah.
+> **Kerahasiaan.** Nama anak tidak pernah ada di catatan penelitian. Nama hanya ada di berkas izin dan daftar kode yang disimpan terkunci oleh ketua peneliti, terpisah dari catatan. Berkas ini dimusnahkan saat penelitian ditutup. Catatan berkode disimpan 5 tahun setelah penelitian ditutup. Hasilnya ditulis tanpa nama anak dan sekolah.
 >
 > Ada satu batas. Kalau anak menunjukkan bahwa ia sedang dalam bahaya serius, ketua peneliti akan mencari bantuan. Ketua peneliti bisa menghubungi Bapak/Ibu (kecuali orang tua diduga ikut terlibat), kepala sekolah, dan layanan perlindungan anak resmi dari pemerintah, seperti SAPA 129.
 >
@@ -774,19 +776,24 @@ Siswa tidak membawa formulir yang sudah diisi dalam keadaan terbuka: T2 dan T10 
 
 Rata-rata panjang kalimat dihitung dengan skrip sederhana dari teks di dalam blok kutipan, 27 Oktober 2026: kata dibagi kalimat; tempat kosong dihitung satu kata; kepala surat, isian bergaris, dan arahan dalam kurung tidak dihitung; di formulir, kalimat di kolom pernyataan ikut dihitung. Butir daftar dihitung sebagai kalimat sendiri. Hitungan ini kasar; keterbacaan yang sebenarnya diuji dengan pembaca.
 
+Setelah penyelarasan 27 Oktober 2026, hitungan diulang dengan skrip kedua yang angkanya sedikit lebih rendah daripada skrip pertama. Untuk teks yang berubah, angka lama ditambah selisih hitungan skrip kedua sebelum dan sesudah perubahan. T11–T13 dihitung langsung dengan skrip kedua.
+
 | Teks | Pembaca | Rata-rata kata per kalimat | Kalimat terpanjang | Catatan |
 | --- | --- | --- | --- | --- |
-| T1 | Orang tua, beragam pendidikan | 12,1 | 34 kata (bagian 7, risiko pertanyaan pengalaman tidak nyaman) | Istilah teknis diganti: "catatan permainan", "kode". Bisa dibaca ± 7 menit. Kalimat terpanjang bisa dipecah dua kalau uji baca orang tua menemukan kesulitan |
+| T1 | Orang tua, beragam pendidikan | 12,7 | 34 kata (bagian 7, risiko pertanyaan pengalaman tidak nyaman) | Istilah teknis diganti: "catatan permainan", "kode". Bisa dibaca ± 9 menit. Bagian 3 lebih panjang karena batas kerahasiaan, masa simpan, dan pembagian data; masa simpan ditulis sebagai daftar. Kalimat terpanjang bisa dipecah dua kalau uji baca orang tua menemukan kesulitan |
 | T2 | Orang tua | 12,2 | 27 kata (pilihan 1) | Tiga baris Ya/Tidak; isian nama dan tanda tangan tidak dihitung |
-| T3 | Siswa kelas 5, didengar | 6,7 | 15 kata | Diucapkan, jadi kalimat dibuat lebih pendek dari teks tertulis. ± 2,5 menit dibaca santai |
+| T3 | Siswa kelas 5, didengar | 6,8 | 15 kata | Diucapkan, jadi kalimat dibuat lebih pendek dari teks tertulis. ± 2,5 menit dibaca santai |
 | T4 | Siswa kelas 5, dibaca sendiri | 7,7 | 13 kata | Tiga kalimat pendek di samping kotak centang |
 | T5 | Siswa kelas 5, didengar | 8,0 | 16 kata | ± 15 detik (pembukaan) dan ± 30 detik (wawancara) |
-| T6 | Kepala sekolah | 11,1 | 26 kata (tujuan penelitian) | Ragam surat dinas, tetap tanpa istilah statistik. "Literasi digital" dijelaskan dalam kalimat yang sama |
-| T7 | Guru kelas | 9,1 | 21 kata (catatan bantuan guru) | Disusun sebagai daftar "diminta" dan "mohon tidak" supaya cepat dibaca |
-| T8a, T8b | Orang tua | 9,2 dan 10,5 | 25 kata | Lebih pendek dari T1 (satu halaman) |
-| T8c | Anak, didengar | 5,4 | 9 kata | "Yang diuji soalnya, bukan kamu" diulang di surat dan naskah |
+| T6 | Kepala sekolah | 11,5 | 26 kata (tujuan penelitian) | Ragam surat dinas, tetap tanpa istilah statistik. "Literasi digital" dijelaskan dalam kalimat yang sama |
+| T7 | Guru kelas | 9,0 | 21 kata (catatan bantuan guru) | Disusun sebagai daftar "diminta" dan "mohon tidak" supaya cepat dibaca |
+| T8a, T8b | Orang tua | 10,4 dan 11,2 | 25 kata (T8a) | T8a dua halaman, lebih pendek dari T1 |
+| T8c | Anak, didengar | 5,8 | 10 kata | "Yang diuji soalnya, bukan kamu" diulang di surat, naskah sesi 1, dan pengingat sesi 2–4 |
 | T9 | Sama dengan teks aslinya | — | — | Hanya kalimat pengganti |
 | T10 | Orang tua | 12,6 | 33 kata (pilihan C dengan dua kotaknya) | Tiga pilihan A/B/C; tanpa alasan wajib |
+| T11 | Siswa kelas 5, dibaca sendiri | 7,4 | 14 kata (kalimat batas kerahasiaan) | Satu layar; dua tombol |
+| T12 | Siswa kelas 5, dibaca sendiri | 7,4 | 13 kata | Satu layar, empat kalimat inti |
+| T13 | Anak kelas 5 dan orang tua | 6,7 | 14 kata (tips pertama) | Daftar pendek; bagian untuk orang tua dua kalimat |
 
 Cara menghitung ulang tanpa skrip: salin teks blok, buang kepala surat dan isian bergaris, lalu bagi jumlah kata dengan jumlah tanda akhir kalimat (`.`, `?`, `!`) ditambah jumlah butir daftar. Teks T1 sebaiknya juga dibaca dua–tiga orang tua di luar sampel sebelum permohonan etik dikirim (lihat [Akibat ke dokumen lain](#akibat-ke-dokumen-lain), baris 24).
 
