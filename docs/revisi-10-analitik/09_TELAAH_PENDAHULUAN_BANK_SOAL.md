@@ -11,9 +11,9 @@ Telaah ini adalah **penyaringan awal berbantuan AI oleh tim pengembang**, bukan 
 1. **116 butir literasi digital ditelaah** dengan empat lembar: B.5b (relevansi dan kejelasan per butir), B.6 (Skenario Digital), B.7 (kode kesalahan), dan C.5 (cek fakta).
 2. **Satu cacat sistematis ditemukan dan dibetulkan:** di **24 dari 24** skenario, pilihan tindakan yang tepat adalah pilihan yang paling panjang. Anak yang jeli bisa menebak tanpa memahami situasinya. Setelah diperbaiki, pilihan tepat menjadi yang terpanjang hanya di 3 dari 24 skenario. Pola yang sama ada di pilihan alasan (alasan yang diharapkan paling panjang di 23 dari 24 set) dan juga sudah dibetulkan (sekarang 11 dari 24).
 3. **13 temuan per butir lain dibetulkan langsung di 08:** jawaban bocor lewat petunjuk atau judul (5), rumpang yang hanya bisa diisi satu kata menurut bentuk katanya (3), penanda pendapat yang membuat butir terlalu mudah (1), label level yang tidak cocok (2), butir D1b yang hanya menemukan informasi (1), dan pilihan "kurang tepat" yang sebenarnya tidak etis (1).
-4. **Hasil B.5b setelah perbaikan:** 65 butir relevansi 4, 49 butir relevansi 3, **2 butir relevansi 2**. Kedua butir relevansi 2 adalah rumpang yang masih bisa diisi dari bentuk kata (sisa temuan R1, butuh keputusan pemilik proyek).
+4. **Hasil B.5b setelah perbaikan:** 65 butir relevansi 4, 49 butir relevansi 3, **2 butir relevansi 2**. Kedua butir relevansi 2 adalah rumpang yang masih bisa diisi dari bentuk kata (sisa temuan R1, butuh keputusan pengembang).
 5. **Semua fakta dari bank lama didukung sumber.** Satu catatan: tahun berdirinya perkebunan teh Tambi tertulis 1865 di sebagian besar sumber, tapi 1885 di satu sumber.
-6. **Empat sisa temuan (R1–R4) sudah diputuskan pemilik proyek pada 25 Oktober 2026**: semuanya mengikuti usulan (bagian *Sisa temuan*).
+6. **Empat sisa temuan (R1–R4) sudah diputuskan pengembang pada 25 Oktober 2026**: semuanya mengikuti usulan (bagian *Sisa temuan*).
 
 ## Cara menelaah
 
@@ -46,9 +46,9 @@ Untuk butir D1b, "bisa ditebak dari pengetahuan umum tentang sumber" (misalnya a
 | 14 | `tmg-3-a03`, `tmg-3-b03` | Butir D1b hanya menanyakan siapa pemasang layar. Instrumen D8 menolak butir seperti ini sebagai D1b | B.5b sub-aspek | Pernyataan dikaitkan dengan kepercayaan: "Layar ini tidak menyebutkan siapa pemasangnya, jadi kita tidak tahu siapa yang bisa ditanya kalau isinya keliru." (salah). Bloom C1 → C2 |
 | 15 | `mgl-5-a02`, `mgl-5-b02` | Pilihan "kurang tepat" berupa memutus pertemanan; itu tidak berada di antara tepat dan berisiko pada sumbu etis | B.6 | Diganti "Tolak tanpa menjelaskan apa pun", kode DIG-PSF |
 
-## Sisa temuan untuk pemilik proyek dan ahli
+## Sisa temuan untuk pengembang dan ahli
 
-**Keputusan pemilik proyek (25 Oktober 2026): R1–R4 disetujui sesuai usulan.** Rinciannya ada di bawah tabel.
+**Keputusan pengembang (25 Oktober 2026): R1–R4 disetujui sesuai usulan.** Rinciannya ada di bawah tabel.
 
 | No | Temuan | Butir | Usulan |
 | --- | --- | --- | --- |
@@ -235,5 +235,5 @@ Butir D1a diberi 3 karena menuntut proses membaca yang menjadi dasar D1, tapi be
 - Cacat sistematis "pilihan tepat selalu paling panjang" di Skenario Digital dibetulkan (24 dari 24 → 3 dari 24), begitu juga panjang alasan (23 dari 24 → 11 dari 24).
 - 2 temuan sistematis dan 13 temuan per butir dibetulkan langsung di 08; daftarnya di bagian *Temuan yang sudah dibetulkan*.
 - Pilihan "kurang tepat" di skenario kata sandi Magelang diganti dari "memutus pertemanan" (DIG-ETK) menjadi "menolak tanpa menjelaskan" (DIG-PSF).
-- **Disetujui pemilik proyek (25 Oktober 2026):** R1–R4 sesuai usulan. R1: rumpang yang hanya punya satu calon dibiarkan dan dipantau di uji coba, jumlah pengecoh tidak berubah. R2: label D1b Temanggung diputuskan ahli. R3: pola kalimat "kurang tepat" dinilai ahli bahasa anak. R4: kunci Periksa Unggahan Wonosobo dipertahankan, ahli memastikan.
+- **Disetujui pengembang (25 Oktober 2026):** R1–R4 sesuai usulan. R1: rumpang yang hanya punya satu calon dibiarkan dan dipantau di uji coba, jumlah pengecoh tidak berubah. R2: label D1b Temanggung diputuskan ahli. R3: pola kalimat "kurang tepat" dinilai ahli bahasa anak. R4: kunci Periksa Unggahan Wonosobo dipertahankan, ahli memastikan.
 - Cek fakta C.5: semua fakta bank lama didukung sumber; tahun perkebunan Tambi (1865 atau 1885) diserahkan ke ahli budaya.

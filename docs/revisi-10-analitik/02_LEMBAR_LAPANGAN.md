@@ -2,11 +2,11 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 27 Oktober 2026 · **Status: L0–L7 final, disetujui pemilik proyek 26 Oktober 2026** (daftar kerja no. 11; L5 dan L7 disesuaikan dengan dokumen tahap 2 pada 27 Oktober 2026, lihat *Perubahan setelah persetujuan*); **L8 Profil sekolah draf** (ditambahkan 26 Oktober 2026, keputusan pemilik proyek tentang penelitian pendahuluan di [04](04_CATATAN_KEPUTUSAN.md)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 27 Oktober 2026 · **Status: L0–L7 final, disetujui pengembang 26 Oktober 2026** (daftar kerja no. 11; L5 dan L7 disesuaikan dengan dokumen tahap 2 pada 27 Oktober 2026, lihat *Perubahan setelah persetujuan*); **L8 Profil sekolah draf** (ditambahkan 26 Oktober 2026, keputusan pengembang tentang penelitian pendahuluan di [04](04_CATATAN_KEPUTUSAN.md)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Lembar lapangan mengisi yang tidak terlihat oleh log game dan modul tes: siapa yang dibantu, perangkat yang dipakai bareng, kondisi kelas, emosi siswa, dan alasan di balik jawaban. Semua lembar diisi **peneliti**, bukan guru. Setiap lembar memakai kunci yang sama dengan log, sesuai [aturan gabung di kamus data](11_KAMUS_DATA.md#aturan-gabung-lembar-lapangan) (`kamus-1.0`): **kode peserta** (misalnya S03-A07), **kode sesi lapangan** (misalnya S03-A-P2), dan **jam WIB** sampai detik. Cara kerja di lapangan dan peran P1–P3 ada di dokumen utama, bagian *Kerja lapangan*.
 
-Kode sekolah di semua contoh (`S03`) hanya contoh. Daftar kode sekolah penelitian belum diputuskan (**menunggu daftar kerja no. 12**, ditunda pemilik proyek 27 Oktober 2026). Akun peneliti untuk P1 sementara memakai nama samaran `koordinator` ([03 → Akun staf](03_KODE_DAN_ARTI.md#akun-staf), daftar kerja no. 13); siapa pemegangnya ditetapkan nanti. Semua tanggal di contoh fiktif.
+Kode sekolah di semua contoh (`S03`) hanya contoh. Daftar kode sekolah penelitian belum diputuskan (**menunggu daftar kerja no. 12**, ditunda pengembang 27 Oktober 2026). Akun peneliti untuk P1 sementara memakai nama samaran `koordinator` ([03 → Akun staf](03_KODE_DAN_ARTI.md#akun-staf), daftar kerja no. 13); siapa pemegangnya ditetapkan nanti. Semua tanggal di contoh fiktif.
 
 ## Daftar lembar
 
@@ -322,9 +322,9 @@ L7 menentukan data siapa yang boleh dianalisis (`consent_ok`). Ini satu-satunya 
 - batas kerahasiaan: kalau anak dalam bahaya serius, ketua peneliti boleh menghubungi orang tua, kepala sekolah, atau layanan perlindungan anak;
 - data berkode boleh dibagikan atas permintaan dengan persetujuan komite etik, tanpa nama dan tanpa jawaban butir risiko daring;
 - kontak komite etik untuk keluhan;
-- **batas pengamanan daring**: cara data dijaga, bahwa tidak ada sistem daring yang sepenuhnya bebas risiko kebocoran, dan bahwa orang tua diberi tahu kalau data anaknya terdampak (23 → T1 bagian 3; PSEPPKN 2021 Lampiran 2 huruf i, keputusan pemilik proyek 27 Oktober 2026);
-- **dari PP No. 33 Tahun 2026** (keputusan pemilik proyek 27 Oktober 2026, [22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum)): siapa pengendali data dan kontak urusan data, bahwa dasar pengolahan data adalah persetujuan orang tua, penyedia server dan letaknya di Indonesia, pemberitahuan kebocoran paling lambat 3 × 24 jam, hak melihat, meminta salinan, dan membetulkan data anak, dan hak mengadu ke lembaga pelindungan data pribadi (23 → T1 bagian 3 dan 6);
-- **dari panduan klirens etik BRIN** (keputusan pemilik proyek 27 Oktober 2026, [22 → Pemetaan ke formulir klirens etik BRIN](22_PERMOHONAN_IZIN_ETIK.md#pemetaan-ke-formulir-klirens-etik-brin)): judul penelitian, alamat komite etik, dan masa simpan data berkode tanpa nama paling singkat 20 tahun karena diwajibkan undang-undang (23 → T1 bagian 3 dan 8);
+- **batas pengamanan daring**: cara data dijaga, bahwa tidak ada sistem daring yang sepenuhnya bebas risiko kebocoran, dan bahwa orang tua diberi tahu kalau data anaknya terdampak (23 → T1 bagian 3; PSEPPKN 2021 Lampiran 2 huruf i, keputusan pengembang 27 Oktober 2026);
+- **dari PP No. 33 Tahun 2026** (keputusan pengembang 27 Oktober 2026, [22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum)): siapa pengendali data dan kontak urusan data, bahwa dasar pengolahan data adalah persetujuan orang tua, penyedia server dan letaknya di Indonesia, pemberitahuan kebocoran paling lambat 3 × 24 jam, hak melihat, meminta salinan, dan membetulkan data anak, dan hak mengadu ke lembaga pelindungan data pribadi (23 → T1 bagian 3 dan 6);
+- **dari panduan klirens etik BRIN** (keputusan pengembang 27 Oktober 2026, [22 → Pemetaan ke formulir klirens etik BRIN](22_PERMOHONAN_IZIN_ETIK.md#pemetaan-ke-formulir-klirens-etik-brin)): judul penelitian, alamat komite etik, dan masa simpan data berkode tanpa nama paling singkat 20 tahun karena diwajibkan undang-undang (23 → T1 bagian 3 dan 8);
 - kontak peneliti dan nomor persetujuan etik (**menunggu persetujuan *Lembaga Komite Etik***).
 
 **Cara mengisi**
@@ -333,7 +333,7 @@ L7 menentukan data siapa yang boleh dianalisis (`consent_ok`). Ini satu-satunya 
 - Sebelum izin dicatat Ya, P1 memverifikasinya: formulir kembali lewat guru kelas dalam amplop tertutup, nama anak cocok dengan daftar kelas, dan tanda tangan (atau cap jempol dengan saksi) ada. Kalau ragu, P1 menelepon nomor di formulir. P1 mencentang kotak verifikasi di T2 (PP No. 33 Tahun 2026 Pasal 38 ayat (4), `needs_verification`; [22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum)).
 - Persetujuan siswa: Ya kalau siswa menyatakan setuju secara lisan saat pembukaan P1 **dan** mencentang persetujuan di halaman daftar.
 - Status: `Aktif`; `Tanpa izin` (kegiatan pengganti, tanpa akun); `Mengundurkan diri (data tetap)` dengan tanggal (anak berhenti, data sampai tanggal itu tetap dipakai); `Mengundurkan diri (hapus data)` dengan tanggal (peneliti mengajukan permintaan hapus data, admin menjalankannya). Formulirnya [23 → T10](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t10-formulir-pengunduran-diri-dan-permintaan-hapus-data); anak yang menolak sendiri di pembukaan P1 dicatat `Tanpa izin` dengan catatan "anak menolak"; `Keluar` dengan tanggal (pindah sekolah atau tidak lagi hadir; datanya tetap kecuali diminta dihapus).
-- `consent_ok = 1` hanya kalau izin orang tua Ya, persetujuan siswa Ya, dan status `Aktif` atau `Keluar` ([11](11_KAMUS_DATA.md#penanda-untuk-analisis)). Mulai `kamus-1.1`, `Mengundurkan diri (data tetap)` juga `consent_ok = 1` untuk data sampai tanggal mundur (keputusan pemilik proyek, 27 Oktober 2026).
+- `consent_ok = 1` hanya kalau izin orang tua Ya, persetujuan siswa Ya, dan status `Aktif` atau `Keluar` ([11](11_KAMUS_DATA.md#penanda-untuk-analisis)). Mulai `kamus-1.1`, `Mengundurkan diri (data tetap)` juga `consent_ok = 1` untuk data sampai tanggal mundur (keputusan pengembang, 27 Oktober 2026).
 
 Sekolah: ______ (kode sekolah: **menunggu daftar kerja no. 12**) · Rombel: ___ · Halaman __ dari __
 
@@ -345,7 +345,7 @@ Sekolah: ______ (kode sekolah: **menunggu daftar kerja no. 12**) · Rombel: ___ 
 | 3 | (nama) | 5A | Ya, 2 Nov 2027 | Tidak | Tidak | Ya | S03-A12 | Aktif |
 | 4 | (nama) | 5A | Ya, 1 Nov 2027 | Ya | Ya | Ya | S03-A04 | Mengundurkan diri (hapus data) 18 Nov 2027; permintaan hapus diajukan |
 
-**Penyimpanan:** lembar kertas disimpan di lemari terkunci, terpisah dari lembar lain, bersama pemetaan NPSN ke kode sekolah. Salinan digitalnya dienkripsi dan hanya bisa dibuka P1 dan ketua peneliti. Lembar dimusnahkan saat studi ditutup, sesuai [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan). Sebelum dimusnahkan, ketua peneliti menyalin **daftar izin berkode** dari L7: kode peserta, ketiga kolom izin dengan tanggalnya, persetujuan siswa, dan status, tanpa nama dan rombel. Daftar ini bukti persetujuan dan disimpan selama data berkode disimpan (keputusan pemilik proyek 27 Oktober 2026; PP No. 33 Tahun 2026 Pasal 36). Situs statis revisi ini menyimpan isian di peramban perangkat yang dipakai, jadi L7 hanya diisi di laptop yang aman dan terkunci.
+**Penyimpanan:** lembar kertas disimpan di lemari terkunci, terpisah dari lembar lain, bersama pemetaan NPSN ke kode sekolah. Salinan digitalnya dienkripsi dan hanya bisa dibuka P1 dan ketua peneliti. Lembar dimusnahkan saat studi ditutup, sesuai [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan). Sebelum dimusnahkan, ketua peneliti menyalin **daftar izin berkode** dari L7: kode peserta, ketiga kolom izin dengan tanggalnya, persetujuan siswa, dan status, tanpa nama dan rombel. Daftar ini bukti persetujuan dan disimpan selama data berkode disimpan (keputusan pengembang 27 Oktober 2026; PP No. 33 Tahun 2026 Pasal 36). Situs statis revisi ini menyimpan isian di peramban perangkat yang dipakai, jadi L7 hanya diisi di laptop yang aman dan terkunci.
 
 ## L8 Profil sekolah
 
@@ -375,7 +375,7 @@ Kode sekolah: ______ (**menunggu daftar kerja no. 12**) · Tanggal: __________ �
 | Pelajaran digital | Ada atau tidak pelajaran atau ekstrakurikuler komputer dan internet di kelas 4–5 | Ekstrakurikuler komputer, kelas 5 |
 | Catatan | Hal lain yang memengaruhi jalannya sesi (jadwal sekolah, ruang, kebiasaan memakai gawai) | Ruang kelas dipakai bergantian dengan kelas 4 |
 
-**Pemakaian datanya:** ringkasan per sekolah (tanpa NPSN dan nama sekolah) masuk penelitian pendahuluan di Bab III dan deskripsi sampel di bab hasil. Variabelnya masuk kamus data di `kamus-1.1`, bersama variabel tes dan angket; `kamus-1.0` tidak diubah. Butir lembar ini dicek pemilik proyek, lalu dibaca Ahli Media Pembelajaran di paket validasi tahap 2 (bagian perangkat dan internet).
+**Pemakaian datanya:** ringkasan per sekolah (tanpa NPSN dan nama sekolah) masuk penelitian pendahuluan di Bab III dan deskripsi sampel di bab hasil. Variabelnya masuk kamus data di `kamus-1.1`, bersama variabel tes dan angket; `kamus-1.0` tidak diubah. Butir lembar ini dicek pengembang, lalu dibaca Ahli Media Pembelajaran di paket validasi tahap 2 (bagian perangkat dan internet).
 
 ## Perubahan dari draf
 
@@ -403,7 +403,7 @@ Dibandingkan draf 23 Oktober 2026 (yang sebagian diselaraskan 26 Oktober 2026):
 
 ## Perubahan setelah persetujuan
 
-27 Oktober 2026, dari dokumen tahap 2 ([22](22_PERMOHONAN_IZIN_ETIK.md), [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md)) dan keputusan pemilik proyek di [04](04_CATATAN_KEPUTUSAN.md):
+27 Oktober 2026, dari dokumen tahap 2 ([22](22_PERMOHONAN_IZIN_ETIK.md), [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md)) dan keputusan pengembang di [04](04_CATATAN_KEPUTUSAN.md):
 
 - **L0:** amplop formulir izin dan pengingat H-5 sebelum P1; tautan ke prosedur rujukan di 22.
 - **L5:** tempat yang terlihat, persetujuan ulang singkat sebelum wawancara, dan penolakan rekaman oleh anak didahulukan dari izin orang tua. Setelah perbandingan dengan panduan klirens etik BRIN (sesi koordinator, 27 Oktober 2026): tempat itu juga tidak terdengar guru atau teman.

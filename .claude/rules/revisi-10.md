@@ -22,3 +22,7 @@ The Markdown documents total about 1.2 MB, roughly 500k tokens (27 October 2026)
 - Record each decision in `04` (newest first) as soon as the round ends, tick the matching open question in `01`, update this branch's rows in `docs/PROGRESS.md`, then commit and push. A restarted or new session only knows what is in the repo.
 - Update the status column in `00_INDEKS.md` when a document changes status.
 - Files in this folder stay Indonesian (owner's request); this rule file, commits, and PRs stay English.
+
+## Roles and naming (27 October 2026)
+- In these files the owner is *pengembang* (never "pemilik proyek"), and AI help is written as *AI* (never a product or assistant name). The paths `.claude/rules/…` are the only exception.
+- Follow `01` → *Peran pengembang, peneliti, dan ahli*: developer work (including AI-assisted scores and labels) is provisional, never counted as expert validation, and never shown to experts before they rate. Every new decision in `04` names its origin and status with the labels in `00` → *Label asal dan status*.

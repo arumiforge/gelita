@@ -112,7 +112,7 @@ Versi berkas: `berkas-1.0 · sumber eb36aa06` (hash 8 karakter dari dokumen 03, 
 | Lembar kerja B.5a yang ditulis: tidak ada label atau kode | lolos | semua sel isi di lembar Bahan dan B.5a |
 | Lembar kerja B.5a: tidak ada lembar kunci | lolos | Petunjuk, Bahan, B.5a |
 
-## Catatan untuk pemilik proyek
+## Catatan untuk pengembang
 
 - B.6b tmg-4-x01: benda sasaran di instrumen "Kuda kepang anyaman bambu", kunci di 08 "kuda kepang bambu" (beda kata, isi sama).
 - B.6b wnb-4-x03: benda sasaran di instrumen "Mi ongklok", kunci di 08 "ongklok" (beda kata, isi sama).

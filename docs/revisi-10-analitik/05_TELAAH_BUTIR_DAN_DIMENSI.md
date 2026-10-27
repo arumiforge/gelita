@@ -2,13 +2,13 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **rumusan keputusan berlaku** sejak kisi-kisi [06](06_KISI_KISI_BANK_SOAL.md) disetujui pemilik proyek (25 Oktober 2026); perbaikan butir sudah dimasukkan ke draf bank soal [08](08_DRAF_BANK_SOAL.md)
+Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **rumusan keputusan berlaku** sejak kisi-kisi [06](06_KISI_KISI_BANK_SOAL.md) disetujui pengembang (25 Oktober 2026); perbaikan butir sudah dimasukkan ke draf bank soal [08](08_DRAF_BANK_SOAL.md)
 
-Dokumen ini menelaah usulan keputusan pemilik proyek tentang tiga dimensi dan penskoran (25 Oktober 2026), lalu menilai keterkaitan setiap butir bank soal dengan dimensi utamanya. Telaah ini berperan sebagai penyaringan awal sebelum validasi ahli. Telaah ini **tidak** menggantikan penilaian dua ahli dan tidak mengubah sistem apa pun.
+Dokumen ini menelaah usulan keputusan pengembang tentang tiga dimensi dan penskoran (25 Oktober 2026), lalu menilai keterkaitan setiap butir bank soal dengan dimensi utamanya. Telaah ini berperan sebagai penyaringan awal sebelum validasi ahli. Telaah ini **tidak** menggantikan penilaian dua ahli dan tidak mengubah sistem apa pun.
 
 ## Ringkasan
 
-1. **Usulan pemilik proyek layak disetujui**, dengan enam penajaman: batas D2 dan D3 dipertegas, D3 dibangun sebagai babak baru di Cari Objek, butir Skenario Digital diskor 0–1–2, bacaan diperlakukan sebagai testlet, tebakan cepat ditangani, dan jumlah sampel ditetapkan lebih dulu. Rinciannya di *Telaah atas usulan keputusan*.
+1. **Usulan pengembang layak disetujui**, dengan enam penajaman: batas D2 dan D3 dipertegas, D3 dibangun sebagai babak baru di Cari Objek, butir Skenario Digital diskor 0–1–2, bacaan diperlakukan sebagai testlet, tebakan cepat ditangani, dan jumlah sampel ditetapkan lebih dulu. Rinciannya di *Telaah atas usulan keputusan*.
 2. **Bank soal yang sekarang memuat 99 butir dinilai**, bukan 129. Angka 129 ikut menghitung 30 keping Susun Gambar, padahal Susun Gambar hanya pemanasan dan tidak dinilai. Tiap siswa mengerjakan **41 butir** di pengerjaan pertama: 29 butir D1 dan 12 petunjuk Cari Objek.
 3. **D1 kuat sebagai literasi membaca, tapi bukti "digital"-nya tipis.** Dari 29 butir D1 yang dikerjakan seorang siswa, rata-rata hanya sekitar 5 yang benar-benar menilai sumber atau memilah fakta dan pendapat. Sisanya pemahaman bacaan biasa yang kebetulan dibaca di layar.
 4. **Tidak satu pun dari 12 petunjuk Cari Objek memenuhi definisi D3 yang baru.** Semuanya mengukur pengenalan benda budaya. Artinya D3 harus dibangun dari butir baru. Usulan kami: Cari Objek jadi dua babak. Babak 1 tetap seperti sekarang dan menjadi skala pendamping *Pengetahuan Budaya Kedu*; babak 2, *Periksa Unggahan*, memuat 4 butir D3 per wilayah.
@@ -17,7 +17,7 @@ Dokumen ini menelaah usulan keputusan pemilik proyek tentang tiga dimensi dan pe
 
 ## Telaah atas usulan keputusan
 
-Usulan pemilik proyek dikutip per bagian, lalu diberi tanggapan.
+Usulan pengembang dikutip per bagian, lalu diberi tanggapan.
 
 ### 1. Satu dimensi utama per butir
 
@@ -57,7 +57,7 @@ Metrik kata sandi saat daftar tetap dipakai, tapi sebagai **bukti validitas ekst
 
 ### 4. D3 menjadi Partisipasi dan Representasi Budaya Kedu di Ruang Digital
 
-**Setuju, dan ini penajaman paling penting dari usulan pemilik proyek.** Rumusan baru ini sejalan dengan cara Komdigi sendiri mengukur pilar Budaya Digital. Indikator pilar itu di survei *Status Literasi Digital Indonesia 2022* antara lain:
+**Setuju, dan ini penajaman paling penting dari usulan pengembang.** Rumusan baru ini sejalan dengan cara Komdigi sendiri mengukur pilar Budaya Digital. Indikator pilar itu di survei *Status Literasi Digital Indonesia 2022* antara lain:
 - "Saya mencantumkan nama penulis saat repost"
 - "Saya berbagi seni budaya tradisional dan kontemporer Indonesia secara digital"
 - "Saya selalu mempertimbangkan dan menyadari keragaman budaya di media sosial saat membagikan pesan"
@@ -135,7 +135,7 @@ Kalau sampel di bawah sekitar 300, ada dua pilihan, masing-masing dengan hargany
 
 ## Usulan rumusan keputusan
 
-Rumusan pemilik proyek, disesuaikan dengan telaah di atas. Kalau disetujui, teks ini masuk [04_CATATAN_KEPUTUSAN.md](04_CATATAN_KEPUTUSAN.md) dan dokumen utama diperbarui.
+Rumusan pengembang, disesuaikan dengan telaah di atas. Kalau disetujui, teks ini masuk [04_CATATAN_KEPUTUSAN.md](04_CATATAN_KEPUTUSAN.md) dan dokumen utama diperbarui.
 
 > **Keputusan desain dimensi dan penskoran asesmen GELITA.** Rancangan tiga dimensi literasi digital disetujui. Setiap butir punya satu dimensi utama yang menjadi dasar skor; kode kesalahan dan label sekunder hanya untuk analisis diagnostik.
 >

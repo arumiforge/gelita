@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **disetujui pemilik proyek (25 Oktober 2026)**, termasuk semua bagian yang semula bertanda "usulan". Variasi Susun Gambar disesuaikan dengan keputusan 26 Oktober 2026 di [08](08_DRAF_BANK_SOAL.md#susun-gambar-selama-studi). Isi bank yang mengikuti kisi-kisi ini ada di [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md).
+Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **disetujui pengembang (25 Oktober 2026)**, termasuk semua bagian yang semula bertanda "usulan". Variasi Susun Gambar disesuaikan dengan keputusan 26 Oktober 2026 di [08](08_DRAF_BANK_SOAL.md#susun-gambar-selama-studi). Isi bank yang mengikuti kisi-kisi ini ada di [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md).
 
 Kisi-kisi ini jadi cetak biru bank soal baru: berapa butir, di tantangan mana, mengukur dimensi apa, di level apa, dengan bacaan seperti apa, dan kode kesalahan apa yang dibawa setiap pilihan. Dokumen ini meneruskan [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md) dan tidak mengulang telaahnya. Belum ada yang diubah di sistem atau di [`docs/bank-soal/`](../bank-soal/README.md).
 
@@ -18,7 +18,7 @@ Kisi-kisi ini jadi cetak biru bank soal baru: berapa butir, di tantangan mana, m
 
 ## Dasar yang sudah diputuskan
 
-Keputusan pemilik proyek per 25 Oktober 2026 berikut dianggap tetap di kisi-kisi ini:
+Keputusan pengembang per 25 Oktober 2026 berikut dianggap tetap di kisi-kisi ini:
 
 | Keputusan | Akibatnya di kisi-kisi |
 | --- | --- |
@@ -29,7 +29,7 @@ Keputusan pemilik proyek per 25 Oktober 2026 berikut dianggap tetap di kisi-kisi
 | Sebagian bacaan bergenre digital | Genre ditetapkan per tantangan, sama di variasi a dan b |
 | Skenario Digital tantangan kelima, Susun Gambar pemanasan | 15 tantangan, 12 dinilai; Susun Gambar tidak dikode dan tidak diskor |
 
-Yang **masih terbuka** ditandai *usulan* di setiap tabel dan dikumpulkan di *Pertanyaan untuk pemilik proyek*.
+Yang **masih terbuka** ditandai *usulan* di setiap tabel dan dikumpulkan di *Pertanyaan untuk pengembang*.
 
 ## Kisi-kisi per wilayah dan tantangan
 
@@ -182,7 +182,7 @@ Perkiraan dibuat untuk siswa kelas 5 (10–11 tahun) yang membaca **60–90 kata
 | P2 | Wilayah Temanggung; wawancara L5 (tiga siswa) setelah bermain |
 | P3 | Wilayah Magelang; wawancara L5 (tiga siswa) setelah bermain |
 | P4 | Wilayah Wonosobo; wawancara L5 (tiga siswa) setelah bermain |
-| P5 | Menyelesaikan tantangan yang tertinggal (paling lama 20 menit), tes akhir di modul tes GELITA, butir risiko daring (hanya dengan izin terpisah), cerita penutup, skala sikap lalu kritik dan saran di Balai Refleksi; lama mengikuti kebutuhan, paling lama ± 139 menit ([13](13_TES_AWAL_AKHIR.md#waktu-di-p1-dan-p5)). Tes akhir sebelum cerita penutup (keputusan 26 Oktober 2026, [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#keputusan-pemilik-proyek)). Siswa yang tantangannya belum tuntas di akhir susulan tidak membuka Balai Refleksi, jadi skala sikapnya kosong (data apa adanya); siswa yang tidak hadir di P5 mengisi skala di susulan paling lama 7 hari ([17](17_SKALA_SIKAP.md#pelaksanaan-di-p5)) |
+| P5 | Menyelesaikan tantangan yang tertinggal (paling lama 20 menit), tes akhir di modul tes GELITA, butir risiko daring (hanya dengan izin terpisah), cerita penutup, skala sikap lalu kritik dan saran di Balai Refleksi; lama mengikuti kebutuhan, paling lama ± 139 menit ([13](13_TES_AWAL_AKHIR.md#waktu-di-p1-dan-p5)). Tes akhir sebelum cerita penutup (keputusan 26 Oktober 2026, [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#keputusan-pengembang)). Siswa yang tantangannya belum tuntas di akhir susulan tidak membuka Balai Refleksi, jadi skala sikapnya kosong (data apa adanya); siswa yang tidak hadir di P5 mengisi skala di susulan paling lama 7 hari ([17](17_SKALA_SIKAP.md#pelaksanaan-di-p5)) |
 
 Jeda peregangan singkat (2 menit) diberikan setelah tantangan ketiga di setiap pertemuan. Siswa yang belum selesai melanjutkan di pertemuan 5 (susulan), karena token hanya membuka wilayah pertemuan itu; jam lanjutnya dicatat di L1, dan nomor pertemuan dipakai sebagai kovariat. Siswa yang absen di satu pertemuan ikut sesi susulan wilayah itu dalam tiga hari, dengan token sendiri (kode sesi `-S`, [02](02_LEMBAR_LAPANGAN.md#pertemuan-dan-lembar-yang-dipakai); diputuskan 26 Oktober 2026).
 
@@ -291,7 +291,7 @@ Setiap pilihan salah membawa **tepat satu kode** sebelum data diambil. Kode `*-L
 
 Dengan pembagian ini, label ganda di [03](03_KODE_DAN_ARTI.md) tidak diperlukan lagi: INF-BUD hanya untuk PBK, DIG-IZN dan DIG-ETK hanya untuk D2.
 
-**Sebaran kode yang dituju.** Supaya analitik 6 (pola kesalahan) punya isi, setiap kode INF yang cocok dengan level wilayah muncul paling sedikit sekali di wilayah itu, dan setiap kode INF muncul di minimal dua wilayah, kecuali INF-FOP yang khusus Magelang. Setiap kode BUD dan kode DIG berisiko utama (PRI, SAN, IZN, HOX) muncul di ketiga wilayah; DIG-ASG cukup di Wonosobo. (Diubah 25 Oktober 2026 atas persetujuan pemilik proyek; aturan awal "dua kali per wilayah per variasi" tidak cocok untuk semua kode.)
+**Sebaran kode yang dituju.** Supaya analitik 6 (pola kesalahan) punya isi, setiap kode INF yang cocok dengan level wilayah muncul paling sedikit sekali di wilayah itu, dan setiap kode INF muncul di minimal dua wilayah, kecuali INF-FOP yang khusus Magelang. Setiap kode BUD dan kode DIG berisiko utama (PRI, SAN, IZN, HOX) muncul di ketiga wilayah; DIG-ASG cukup di Wonosobo. (Diubah 25 Oktober 2026 atas persetujuan pengembang; aturan awal "dua kali per wilayah per variasi" tidak cocok untuk semua kode.)
 
 **Pertanyaan alasan.** Kalimat tanya alasan netral terhadap tindakan, misalnya "Yang paling penting kupikirkan di sini adalah …". Setiap set alasan memuat R-RISK atau R-ETIK (yang diharapkan), R-ATUR, dan minimal satu R-SOS atau R-ACAK. Di Wonosobo, kelima kode muncul.
 
@@ -336,7 +336,7 @@ Karena belum ada data siswa sungguhan, bank baru boleh memakai set kode baru den
 | Butir variasi | `a`, `b` | `mgl-3-a04`, `wnb-5-b02` |
 | Butir yang dipakai bersama semua buklet | `x` | Kartu jangkar `tmg-3-x01`; Temukan Benda `wnb-4-x03` |
 | Periksa Unggahan | `a`, `b` di tantangan 4 | `mgl-4-a02` |
-| Susun Gambar | `a`, `b` = dua variasi bersih untuk pengerjaan pertama; huruf berikutnya untuk pengerjaan ulang ([08](08_DRAF_BANK_SOAL.md#keputusan-pemilik-proyek-26-oktober-2026)) | `tmg-1-a01`, `tmg-1-k01` |
+| Susun Gambar | `a`, `b` = dua variasi bersih untuk pengerjaan pertama; huruf berikutnya untuk pengerjaan ulang ([08](08_DRAF_BANK_SOAL.md#keputusan-pengembang-26-oktober-2026)) | `tmg-1-a01`, `tmg-1-k01` |
 
 Setelah uji coba memakai suatu kode, kode itu dibekukan dan tidak dipakai untuk isi yang berbeda.
 
@@ -349,7 +349,7 @@ Daftar ini hanya catatan untuk dokumen implementasi; belum ada yang dikerjakan.
 | 1 | Engine Skenario Digital | Dua langkah (tindakan, alasan), skor 0–1–2 di server, simpan `reason_code`; pilihan diacak per pengerjaan |
 | 2 | Cari Objek dua babak | Babak 2 dengan adegan per variasi; satu tantangan, dua kelompok butir; babak 1 tanpa variasi |
 | 3 | Kartu jangkar di Benar atau Salah | Bacaan kedua di satu tantangan; butir `x` dipakai semua variasi |
-| 4 | Variasi dari buklet | Pengerjaan pertama memakai variasi dari buklet siswa (dimasukkan P1 di panel peneliti dari L2), bukan acak; `BankRules::FIRST_ATTEMPT_GROUPS` jadi `a`, `b`. Susun Gambar tidak mengikuti buklet: pengerjaan pertama diacak dari `a` dan `b`, dua variasi yang keterangannya bersih dari kunci ([08](08_DRAF_BANK_SOAL.md#keputusan-pemilik-proyek-26-oktober-2026)) |
+| 4 | Variasi dari buklet | Pengerjaan pertama memakai variasi dari buklet siswa (dimasukkan P1 di panel peneliti dari L2), bukan acak; `BankRules::FIRST_ATTEMPT_GROUPS` jadi `a`, `b`. Susun Gambar tidak mengikuti buklet: pengerjaan pertama diacak dari `a` dan `b`, dua variasi yang keterangannya bersih dari kunci ([08](08_DRAF_BANK_SOAL.md#keputusan-pengembang-26-oktober-2026)) |
 | 5 | `DifficultyRules` baru | Isi Rumpang 4/5/6 rumpang, pengecoh 2/2/2; Benar atau Salah 4/6/6 pernyataan dan genre baru; Cari Objek babak 2 (petunjuk, bagian ketuk); Skenario Digital (skenario, jumlah tindakan 3/4/4, alasan 3/4/5); variasi tepat 2 |
 | 6 | Keterampilan Benar atau Salah | Tambah kode keterampilan D1b, misalnya `mengenali_penanda_sumber`, `menilai_kredibilitas`, `mengenali_iklan` |
 | 7 | Kolom workbook baru | `dimension` (D1, D2, D3, PBK), `subaspect` (D1a, D1b), `akm_level`, `pirls_process`, `text_genre`, `testlet_key`, `booklet_shared` (butir `x`), `error_code` per pengecoh dan per sel rumpang × kata, `reason_code` per alasan, `score` per tindakan, `reference_source` wajib |
@@ -357,9 +357,9 @@ Daftar ini hanya catatan untuk dokumen implementasi; belum ada yang dikerjakan.
 | 9 | Pemeriksaan bank | Keseimbangan kunci, setara a/b (panjang, sub-aspek, level), satu kode per pilihan salah, domain `.example`, tidak ada `*-LAIN` di bank |
 | 10 | Ekspor butir | Kolom dimensi, sub-aspek, level, genre, testlet, buklet, beban permukaan |
 
-## Pertanyaan untuk pemilik proyek
+## Pertanyaan untuk pengembang
 
-**Semua usulan di bawah disetujui pemilik proyek pada 25 Oktober 2026**, termasuk butir 9 (tiga pilihan untuk D1b Wonosobo ditunda sampai setelah uji coba).
+**Semua usulan di bawah disetujui pengembang pada 25 Oktober 2026**, termasuk butir 9 (tiga pilihan untuk D1b Wonosobo ditunda sampai setelah uji coba).
 
 1. **Di mana D3?** Usulan: Cari Objek babak 2 *Periksa Unggahan*; babak 1 jadi skala pendamping PBK. Pilihan lain: D3 masuk Skenario Digital (tantangan kelima jadi 8 skenario per wilayah, terlalu panjang).
 2. **Pengecoh kedua di bank kata Temanggung?** Usulan: ya, 2 pengecoh, supaya rumpang terakhir tidak tinggal satu pilihan.
@@ -373,7 +373,7 @@ Daftar ini hanya catatan untuk dokumen implementasi; belum ada yang dikerjakan.
 
 ## Untuk dicatat di catatan keputusan
 
-Usulan yang perlu masuk [04_CATATAN_KEPUTUSAN.md](04_CATATAN_KEPUTUSAN.md) setelah pemilik proyek memutuskan (sesi koordinator yang mencatat):
+Usulan yang perlu masuk [04_CATATAN_KEPUTUSAN.md](04_CATATAN_KEPUTUSAN.md) setelah pengembang memutuskan (sesi koordinator yang mencatat):
 
 - Kisi-kisi bank soal disusun di `06_KISI_KISI_BANK_SOAL.md`: 61 butir literasi digital per siswa (37 D1, 12 D2, 12 D3) dan 12 butir PBK; 116 butir literasi digital ditulis dalam dua variasi plus 6 butir jangkar.
 - D1: 26 D1a dan 11 D1b per siswa; tujuh dari sembilan teks seorang siswa bergenre digital; genre ditetapkan per tantangan, sama di variasi a dan b.

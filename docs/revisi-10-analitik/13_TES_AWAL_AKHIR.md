@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 9 · Status: **draf**, diselaraskan dengan draf 14–16; keempat pertanyaan pemilik proyek sudah diputuskan 26 Oktober 2026 ([bagian akhir](#keputusan-pemilik-proyek)); menunggu validasi ahli di tahap 2
+Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 9 · Status: **draf**, diselaraskan dengan draf 14–16; keempat pertanyaan pengembang sudah diputuskan 26 Oktober 2026 ([bagian akhir](#keputusan-pengembang)); menunggu validasi ahli di tahap 2
 
 Dokumen ini merancang tes di luar game yang dikerjakan siswa sebelum dan sesudah bermain: apa yang diukur, kisi-kisinya, aturan kesetaraan bentuk A dan B, pelaksanaan di kelas, penskoran, dan analisisnya. Butir tesnya ada di dua dokumen pendamping, dan angket akses digital (daftar kerja no. 10) di dokumen tersendiri:
 
@@ -35,13 +35,13 @@ Di dokumen ini P1–P5 berarti pertemuan ke-1 sampai ke-5. Peran P1 di [01](01_R
 | --- | --- |
 | Bagian literasi membaca diadaptasi dari contoh soal AKM/ANBK terbuka; bagian D2 dan D3 disusun sendiri, sejajar dengan kisi-kisi tapi tidak sama dengan butir game; divalidasi bersama bank di tahap 2 ([01](01_REVISI_10_ANALITIK.md#pertanyaan-yang-masih-terbuka), 25 Oktober 2026) | Tiga bagian; setiap teks Bagian 1 mencatat sumber adaptasinya; semua butir diperiksa terhadap bank 08 |
 | Literasi digital tiga dimensi, Rasch multidimensi *between-item* (25 Oktober 2026) | Setiap butir tes punya tepat satu dimensi; skor dilaporkan per bagian |
-| Lima pertemuan; tes awal di P1; tes akhir di P5 setelah tantangan susulan dan sebelum cerita penutup ([12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#keputusan-pemilik-proyek), 26 Oktober 2026) | Urutan pelaksanaan; tes akhir tidak terpengaruh cerita penutup |
+| Lima pertemuan; tes awal di P1; tes akhir di P5 setelah tantangan susulan dan sebelum cerita penutup ([12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#keputusan-pengembang), 26 Oktober 2026) | Urutan pelaksanaan; tes akhir tidak terpengaruh cerita penutup |
 | L6: separuh kelas bentuk A di tes awal, separuh B; siswa absen ikut susulan dalam tiga hari, kalau tidak ditandai "hilang" ([02](02_LEMBAR_LAPANGAN.md#l6-log-tes-awalakhir-dan-angket-akses-digital)) | Denah papan catur; aturan susulan |
 | L5: siswa yang diwawancarai dipilih dari kelompok nilai tes awal ([02](02_LEMBAR_LAPANGAN.md)) | Tes awal sudah dinilai sebelum P2; modul menilainya langsung |
 | Aturan menulis butir di [06](06_KISI_KISI_BANK_SOAL.md#aturan-menulis-butir) | Berlaku juga untuk tes, ditambah aturan khusus tes di bawah |
 | Satu kode kesalahan untuk setiap pilihan salah ([06](06_KISI_KISI_BANK_SOAL.md#kode-kesalahan-di-setiap-pilihan), [03](03_KODE_DAN_ARTI.md)) | Berlaku di tes. Modul mencatat waktu per butir, jadi penanda tebakan cepat dari [11](11_KAMUS_DATA.md) bisa dipakai; kode NON tidak mengubah skor |
 | Nama siswa hanya di L7 ([01](01_REVISI_10_ANALITIK.md#kerja-lapangan-cara-kerjanya)) | Layar tes hanya menampilkan kode peserta |
-| Keputusan pemilik proyek 26 Oktober 2026 ([bagian akhir](#keputusan-pemilik-proyek)) | Modul tes GELITA bertampilan Bootstrap; batas waktu longgar tanpa jam di layar; lama pertemuan mengikuti kebutuhan; topik di luar Kedu; angket di modul yang sama |
+| Keputusan pengembang 26 Oktober 2026 ([bagian akhir](#keputusan-pengembang)) | Modul tes GELITA bertampilan Bootstrap; batas waktu longgar tanpa jam di layar; lama pertemuan mengikuti kebutuhan; topik di luar Kedu; angket di modul yang sama |
 
 ## Apa yang diukur
 
@@ -97,7 +97,7 @@ Skor sebagian (misalnya PGK dua dari tiga tepat) tidak dipakai di analisis utama
 
 ### Bagian 2 Aman dan etis (D2)
 
-Empat topik D2 di [06](06_KISI_KISI_BANK_SOAL.md#topik-skenario-digital-d2), dua skenario per topik: satu dengan tanda bahaya jelas dan satu dengan tanda bahaya samar atau menggoda. Setiap nomor punya satu level pengembang, sama di bentuk A dan B: tanda jelas L1, tanda samar L2, nilai bertentangan atau dua langkah L3 (disetujui pemilik proyek 27 Oktober 2026; alasannya di [15 → Level pengembang](15_TES_BAGIAN_DIGITAL.md#level-pengembang)).
+Empat topik D2 di [06](06_KISI_KISI_BANK_SOAL.md#topik-skenario-digital-d2), dua skenario per topik: satu dengan tanda bahaya jelas dan satu dengan tanda bahaya samar atau menggoda. Setiap nomor punya satu level pengembang, sama di bentuk A dan B: tanda jelas L1, tanda samar L2, nilai bertentangan atau dua langkah L3 (disetujui pengembang 27 Oktober 2026; alasannya di [15 → Level pengembang](15_TES_BAGIAN_DIGITAL.md#level-pengembang)).
 
 | No | Topik | Kerumitan | Level | Kode berisiko utama |
 | --- | --- | --- | --- | --- |
@@ -178,7 +178,7 @@ Modul baru ada di tahap 3, jadi uji keterbacaan di tahap 2 memakai mock-up layar
 
 ### Waktu di P1 dan P5
 
-Lama P1 dan P5 mengikuti kebutuhan, tidak terikat JP sekolah: penelitian sudah mendapat izin memakai seluruh JP, bahkan sampai setelah jam sekolah (diputuskan 26 Oktober 2026). Hitungan menit paling lama, memakai angka di [06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain) dan [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#keputusan-pemilik-proyek):
+Lama P1 dan P5 mengikuti kebutuhan, tidak terikat JP sekolah: penelitian sudah mendapat izin memakai seluruh JP, bahkan sampai setelah jam sekolah (diputuskan 26 Oktober 2026). Hitungan menit paling lama, memakai angka di [06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain) dan [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#keputusan-pengembang):
 
 | Kegiatan | P1 | P5 |
 | --- | --- | --- |
@@ -257,7 +257,7 @@ Teks untuk siswa (dijelaskan koordinator sesi):
 - **Kalibrasi.** Model Rasch per bagian: dikotomus untuk D1 dan D3, *partial credit* untuk D2. Kedua bentuk dikalibrasi dengan data tes awal. Karena denah papan catur membagi siswa di setiap kelas secara seimbang, kelompok bentuk A dan bentuk B di tes awal dianggap setara (desain kelompok setara). Rata-rata kemampuan kedua kelompok disamakan, sehingga butir kedua bentuk berada di satu skala. Parameter butir itu dipakai lagi untuk tes akhir.
 - **Mengapa tanpa butir bersama.** Butir yang sama di kedua bentuk akan dikerjakan dua kali oleh setiap siswa dengan jarak sekitar dua minggu, dan teks bacaan mudah diingat. Desain kelompok setara menghindari itu, dengan syarat pembagian bentuk benar-benar seimbang per kelas. Keseimbangannya dicek: proporsi bentuk A per rombel dan beda rata-rata skor game per kelompok.
 - **Reliabilitas** per bagian: KR-20 atau alfa, dan reliabilitas orang Rasch. Sasaran D1 ≥ 0,70. D2 dan D3 kemungkinan lebih rendah, jadi dilaporkan di tingkat kelompok, seperti di game ([06](06_KISI_KISI_BANK_SOAL.md#batas-reliabilitas-d2-dan-d3)). Korelasi dilaporkan apa adanya dan setelah koreksi atenuasi.
-- **Validitas (kegunaan utama tes).** Tes awal–akhir terutama menjadi bukti validitas kriteria skor game (keputusan pemilik proyek 26 Oktober 2026, [04](04_CATATAN_KEPUTUSAN.md)). Korelasi skor tes awal per bagian dengan kemampuan Rasch game per dimensi. Polanya diharapkan: D1 tes paling dekat dengan D1 game, D2 dengan D2, D3 dengan D3, dan semuanya rendah dengan PBK. Yang dilaporkan adalah pola matriksnya, bukan satu angka korelasi.
+- **Validitas (kegunaan utama tes).** Tes awal–akhir terutama menjadi bukti validitas kriteria skor game (keputusan pengembang 26 Oktober 2026, [04](04_CATATAN_KEPUTUSAN.md)). Korelasi skor tes awal per bagian dengan kemampuan Rasch game per dimensi. Polanya diharapkan: D1 tes paling dekat dengan D1 game, D2 dengan D2, D3 dengan D3, dan semuanya rendah dengan PBK. Yang dilaporkan adalah pola matriksnya, bukan satu angka korelasi.
 - **Perubahan.** Selisih tes akhir dan tes awal per bagian, dengan uji berpasangan dan ukuran efek, lalu model campuran dengan efek acak siswa dan rombel serta urutan bentuk sebagai kovariat. Desainnya satu kelompok tanpa pembanding, jadi perubahan bisa juga datang dari kebiasaan mengerjakan tes, pelajaran sekolah, atau kematangan. Laporan menyebutnya "perubahan", bukan "pengaruh game", dan menempatkannya sebagai **temuan eksploratif**: desain satu kelompok dengan tes awal dan akhir adalah desain pra-eksperimen (Campbell & Stanley, 1963), jadi tidak bisa menunjukkan sebab-akibat. Uji berpasangan, ukuran efek, dan model campuran tetap dijalankan dan dilaporkan lengkap, tapi tidak menjawab pertanyaan penelitian utama.
 - **Siapa yang masuk.** Siswa yang datanya bisa dianalisis menurut [11](11_KAMUS_DATA.md#data-siswa-yang-bisa-dianalisis). Analisis perubahan memakai siswa dengan `test_status` = `lengkap`; siswa dengan satu tes saja dilaporkan jumlahnya.
 
@@ -271,13 +271,13 @@ Teks untuk siswa (dijelaskan koordinator sesi):
 | 2 | Mock-up layar modul tes dan angket ikut ditelaah ahli media langkah 1 (daftar kerja no. 20 di 01) | Ahli Media Pembelajaran 1–3 |
 | 3 | Modul dibangun; penskoran diuji otomatis dengan jawaban contoh untuk setiap butir; layar jadi ikut ditelaah ahli media langkah 2 sebelum uji coba (daftar kerja no. 21, G3) | Pengembang, Ahli Media Pembelajaran 1–3 |
 | 4 | Uji coba satu kelas dengan kedua bentuk di modul: waktu per bagian (untuk menetapkan batas waktu), tingkat kesukaran (proporsi benar 0,20–0,90), daya beda (korelasi butir–total ≥ 0,20), pengecoh yang tidak pernah dipilih, dan beda rata-rata bentuk A dan B | Peneliti |
-| G4 | Bentuk final dibekukan bersama pra-registrasi di OSF | Pemilik proyek |
+| G4 | Bentuk final dibekukan bersama pra-registrasi di OSF | Pengembang |
 
 Satu kelas uji coba hanya memberi ± 14 siswa per bentuk, jadi angka butir di uji coba hanya petunjuk kasar. Kesetaraan bentuk terutama dijaga lewat kisi-kisi dan telaah ahli, lalu skornya disetarakan dengan data utama.
 
 ## Penyesuaian di dokumen lain
 
-Status per 26 Oktober 2026, setelah keputusan pemilik proyek:
+Status per 26 Oktober 2026, setelah keputusan pengembang:
 
 - **01:** selesai. Perubahan sistem no. 22 (modul tes dan angket), daftar kerja no. 9, 10, dan 20, dan baris "Apakah skor game sejalan dengan kemampuan nyata?" di *Rencana analisis singkat*.
 - **02, L6 dan L7:** selesai. L6 menjadi catatan pelaksanaan, karena jawaban tersimpan di modul; L7 dan surat izin orang tua mendapat izin terpisah untuk butir risiko daring. Lembar finalnya tetap bagian daftar kerja no. 11.
@@ -286,14 +286,14 @@ Status per 26 Oktober 2026, setelah keputusan pemilik proyek:
 - **07:** selesai. Butir tes dan butir telaah kesetaraan A dan B masuk paket validasi; mock-up modul masuk telaah ahli media. Instrumen r10 v2.1 dan media v1.1 sendiri belum ditulis.
 - **11:** menunggu `kamus-1.1` setelah uji coba (keputusan 26 Oktober 2026): variabel tes dan angket di *Variabel peserta dan sesi*, termasuk `error_codes` berupa daftar kode, dan jawaban dari modul di *Aturan gabung lembar lapangan*.
 
-## Keputusan pemilik proyek
+## Keputusan pengembang
 
-Empat pertanyaan di draf dokumen ini diputuskan pemilik proyek pada 26 Oktober 2026, dengan satu putaran wawancara lanjutan. Rinciannya di [04](04_CATATAN_KEPUTUSAN.md).
+Empat pertanyaan di draf dokumen ini diputuskan pengembang pada 26 Oktober 2026, dengan satu putaran wawancara lanjutan. Rinciannya di [04](04_CATATAN_KEPUTUSAN.md).
 
 1. **Waktu tes.** Lama P1 dan P5 mengikuti kebutuhan, tidak terikat JP sekolah, karena penelitian sudah mendapat izin memakai seluruh JP, bahkan sampai setelah jam sekolah. Setiap bagian diberi batas longgar tanpa jam di layar (Bagian 1 ± 40 menit, Bagian 2 dan 3 ± 35 menit), dan batas akhirnya ditetapkan dari uji coba. Pilihan 3 JP, 4 JP, enam pertemuan, dan tes 26 butir di draf sebelumnya tidak dipakai.
 2. **Media tes.** Modul tes di GELITA, dengan tampilan Bootstrap yang tidak dibuat seperti game ([Modul tes di GELITA](#modul-tes-di-gelita)). Kertas dan formulir daring tidak dipakai.
 3. **Topik.** Budaya Nusantara di luar Kedu, seperti draf 14 dan 15.
-4. **Angket.** Angket akses digital masuk modul yang sama, langsung setelah tes awal, hanya di layar dan tidak dibacakan. Dua–tiga butir pengalaman risiko daring diisi sendiri di layar di P5 setelah tes akhir ([16](16_ANGKET_AKSES_DIGITAL.md#keputusan-pemilik-proyek)).
+4. **Angket.** Angket akses digital masuk modul yang sama, langsung setelah tes awal, hanya di layar dan tidak dibacakan. Dua–tiga butir pengalaman risiko daring diisi sendiri di layar di P5 setelah tes akhir ([16](16_ANGKET_AKSES_DIGITAL.md#keputusan-pengembang)).
 
 Keputusan lanjutan di hari yang sama: variabel tes dan angket masuk kamus data di `kamus-1.1` setelah uji coba; pertemuan wilayah P2–P4 memberi waktu bermain ± 90 menit, tidak terikat JP, dengan sisa tantangan tetap di susulan P5; dan butir risiko daring memakai izin orang tua terpisah.
 
@@ -301,7 +301,7 @@ Keputusan berikutnya di hari yang sama, dari usulan dokumen model penelitian ([0
 
 ## Hal terbuka dari 14 dan 15
 
-Tidak perlu diputuskan pemilik proyek sekarang. Semuanya dinilai ahli di tahap 2 atau dicek di uji coba.
+Tidak perlu diputuskan pengembang sekarang. Semuanya dinilai ahli di tahap 2 atau dicek di uji coba.
 
 1. **Kunci D2 nomor 2 segagasan dengan game.** Kunci "nama panggilan saja" di `tes-ae-A02` dan `tes-ae-B02` memakai gagasan yang sama dengan kunci `mgl-5-b01`, jadi bisa melanggar aturan tes no. 2. Kunci pengganti sudah disiapkan di [15](15_TES_BAGIAN_DIGITAL.md#hal-yang-diminta-dinilai-ahli).
 2. **Tabel Fakta/Pendapat (nomor 11) belum punya contoh soal.** Bisa ditambah contoh `tes-ct-06`, atau nomor 11 diubah menjadi tabel Benar/Salah tanpa mengubah isi dan kodenya ([14](14_TES_BAGIAN_MEMBACA.md#catatan-untuk-peneliti-dan-validator), butir yang perlu ditelaah no. 7).

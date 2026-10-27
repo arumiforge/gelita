@@ -823,7 +823,7 @@ $md = "# Laporan pemeriksaan berkas validator\n\nDibuat otomatis oleh `src/berka
     . "\n\n## Butir B.5a dan B.5b per jenis\n\n| Jenis | Butir |\n| --- | --- |\n" . implode("\n", $byType) . "\n| **Jumlah** | **" . count($labelled) . "** |\n"
     . "\n## Hasil pemeriksaan\n\n| Pemeriksaan | Hasil | Rincian |\n| --- | --- | --- |\n"
     . implode("\n", array_map(fn ($r) => "| {$r[0]} | {$r[1]} | " . str_replace('|', '\|', $r[2]) . ' |', $report))
-    . "\n\n## Catatan untuk pemilik proyek\n\n" . ($notes === [] ? "Tidak ada.\n" : implode("\n", array_map(fn ($x) => "- {$x}", $notes)) . "\n");
+    . "\n\n## Catatan untuk pengembang\n\n" . ($notes === [] ? "Tidak ada.\n" : implode("\n", array_map(fn ($x) => "- {$x}", $notes)) . "\n");
 file_put_contents("{$out}/LAPORAN.md", $md);
 
 echo count($report) . " pemeriksaan lolos. Versi {$version}\n";

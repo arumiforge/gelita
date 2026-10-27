@@ -2,9 +2,9 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **diterima pemilik proyek (25 Oktober 2026)**; instrumen ditulis ulang pada 26 Oktober 2026 sebagai tiga dokumen di [dokumen-pdf/](dokumen-pdf/README.md) dan **disetujui pemilik proyek pada 27 Oktober 2026** (lihat [Instrumen versi 2.1 dan 1.1](#instrumen-versi-21-dan-11))
+Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **diterima pengembang (25 Oktober 2026)**; instrumen ditulis ulang pada 26 Oktober 2026 sebagai tiga dokumen di [dokumen-pdf/](dokumen-pdf/README.md) dan **disetujui pengembang pada 27 Oktober 2026** (lihat [Instrumen versi 2.1 dan 1.1](#instrumen-versi-21-dan-11))
 
-Dokumen ini menelaah dua draf instrumen validasi ahli milik pemilik proyek, lalu mengusulkan perbaikannya. Perbaikan yang sudah pasti ditulis sebagai teks pengganti yang siap ditempel. Perbaikan yang masih bergantung pada keputusan atau kisi-kisi ditandai.
+Dokumen ini menelaah dua draf instrumen validasi ahli milik pengembang, lalu mengusulkan perbaikannya. Perbaikan yang sudah pasti ditulis sebagai teks pengganti yang siap ditempel. Perbaikan yang masih bergantung pada keputusan atau kisi-kisi ditandai.
 
 | Berkas | Versi | Isi |
 | --- | --- | --- |
@@ -78,18 +78,18 @@ B.5a (sekitar 100 butir atau lebih) dan B.7 (kode pada setiap pengecoh, ratusan 
 
 ### T6. Penelaah pendahuluan berbantuan AI
 
-Pemilik proyek meminta Claude ikut "menjadi ahli". Aturan yang kami usulkan:
-- **Claude bukan validator.** Skornya tidak ikut dihitung dalam Aiken's V, CVI, κ, atau ICC, dan tidak dilaporkan sebagai validasi ahli.
-- **Claude tidak bisa melakukan pelabelan buta**, karena Claude sendiri ikut menyusun label pengembang (05, kisi-kisi). Labelnya pasti tidak buta.
-- Yang bisa dan berguna dikerjakan Claude **sebelum** berkas dikirim ke ahli:
+Pengembang meminta AI ikut "menjadi ahli". Aturan yang kami usulkan:
+- **AI bukan validator.** Skornya tidak ikut dihitung dalam Aiken's V, CVI, κ, atau ICC, dan tidak dilaporkan sebagai validasi ahli.
+- **AI tidak bisa melakukan pelabelan buta**, karena AI sendiri ikut menyusun label pengembang (05, kisi-kisi). Labelnya pasti tidak buta.
+- Yang bisa dan berguna dikerjakan AI **sebelum** berkas dikirim ke ahli:
   - Menjalankan B.5b dan B.7 pada draf bank soal sebagai penyaringan awal, supaya cacat yang jelas (kunci ganda, jawaban bocor, butir tanpa teks) sudah dibetulkan dan waktu ahli dipakai untuk hal yang substansial.
   - Cek fakta untuk matriks C.5, dengan sumber.
-  - Evaluasi heuristik dan uji perangkat pada instalasi uji untuk instrumen media (B.5–B.7). Claude bisa memainkan game di Chromium pada beberapa ukuran layar dan mencatat temuan dengan tangkapan layar.
+  - Evaluasi heuristik dan uji perangkat pada instalasi uji untuk instrumen media (B.5–B.7). AI bisa memainkan game di Chromium pada beberapa ukuran layar dan mencatat temuan dengan tangkapan layar.
 - Di naskah penelitian, ini ditulis terbuka sebagai *telaah pendahuluan berbantuan AI oleh tim pengembang*, bagian dari tahap pengembangan, bukan bagian dari validasi ahli.
 
 ## Instrumen ahli materi dan pengamat budaya (r10): perubahan yang sudah pasti
 
-Perubahan berikut mengikuti keputusan pemilik proyek per 25 Oktober 2026 dan temuan telaah butir. Kolom "Ganti dengan" siap ditempel.
+Perubahan berikut mengikuti keputusan pengembang per 25 Oktober 2026 dan temuan telaah butir. Kolom "Ganti dengan" siap ditempel.
 
 | Lokasi | Sekarang | Ganti dengan |
 | --- | --- | --- |
@@ -121,7 +121,7 @@ Perubahan berikut mengikuti keputusan pemilik proyek per 25 Oktober 2026 dan tem
 
 ## Instrumen ahli materi dan pengamat budaya (r10): perubahan yang menunggu keputusan
 
-Bagian-bagian ini sebaiknya ditulis ulang **sekali**, setelah pemilik proyek memutuskan dan kisi-kisi (06) disetujui.
+Bagian-bagian ini sebaiknya ditulis ulang **sekali**, setelah pengembang memutuskan dan kisi-kisi (06) disetujui.
 
 | Keputusan atau masukan | Bagian instrumen yang terdampak | Arah perubahan bila usulan 05 disetujui |
 | --- | --- | --- |
@@ -227,7 +227,7 @@ Semuanya cocok.
 
 | Lokasi | Perubahan |
 | --- | --- |
-| Sampul, catatan status | Hapus "Ahli media belum tercantum ... tambahkan bila disetujui tim" setelah pemilik proyek menyetujui ahli media masuk daftar kerja no. 14 (usulan kami: setujui) |
+| Sampul, catatan status | Hapus "Ahli media belum tercantum ... tambahkan bila disetujui tim" setelah pengembang menyetujui ahli media masuk daftar kerja no. 14 (usulan kami: setujui) |
 | B.2, tabel perubahan Revisi 10 | Tambahkan baris: "Dua variasi (a/b) per tantangan"; "Bacaan bergenre digital (unggahan, pesan grup, papan informasi) di dalam tantangan"; dan, bila D3 disetujui, "Cari Objek babak 2 *Periksa Unggahan*: mengetuk bagian unggahan tiruan" |
 | Aspek A, butir baru **A9** | "Teks bergenre digital (unggahan, pesan, papan informasi) terbaca jelas di ukuran layar sebenarnya, dikenali anak sebagai unggahan atau pesan, dan tidak memakai logo atau tampilan merek platform nyata." Petunjuk: tiruan merek nyata berisiko secara hukum dan bisa membingungkan anak |
 | Aspek C, butir baru **C10** | "Target ketuk di *Periksa Unggahan* (nama akun, keterangan, komentar, tombol) cukup besar dan terpisah, sehingga ketukan salah mencerminkan pilihan, bukan ketangkasan." Tandai RANCANGAN REVISI 10 |
@@ -240,24 +240,24 @@ Semuanya cocok.
 
 - r10 butir I5: di versi teks, ikon 💡 lepas dari kalimat "Bantuan (tombol )". Periksa di PDF sebelum dicetak.
 - r10 Tabel A2.4 menulis kriteria I-CVI "3–5 ahli: I-CVI = 1,00". Itu benar menurut Lynn (1986), tapi akibatnya satu skor 2 dari satu ahli langsung menggugurkan butir. Tulis ini terang-terangan di D.6, supaya peneliti tidak kaget, dan supaya alasan memilih lima ahli (T1) jelas.
-  - **Diputuskan pemilik proyek (26 Oktober 2026): aturan Lynn tetap dipakai.** Dengan lima ahli atau kurang, butir hanya lolos kalau semua ahli memberi skor 3 atau 4 (I-CVI = 1,00). Aturan Polit, Beck, & Owen (2007) yang lebih longgar (kesepakatan sempurna hanya untuk 3–4 ahli; I-CVI ≥ 0,78 dengan *modified kappa*) tidak dipakai. Akibatnya dengan lima ahli: empat setuju (I-CVI 0,80) berarti butir direvisi atau dibuang. Instrumen v2.1 menulis aturan ini di D.6. Alasan dan rujukannya ada di [dokumen pendukung peneliti](dokumen-pendukung-peneliti/README.md).
+  - **Diputuskan pengembang (26 Oktober 2026): aturan Lynn tetap dipakai.** Dengan lima ahli atau kurang, butir hanya lolos kalau semua ahli memberi skor 3 atau 4 (I-CVI = 1,00). Aturan Polit, Beck, & Owen (2007) yang lebih longgar (kesepakatan sempurna hanya untuk 3–4 ahli; I-CVI ≥ 0,78 dengan *modified kappa*) tidak dipakai. Akibatnya dengan lima ahli: empat setuju (I-CVI 0,80) berarti butir direvisi atau dibuang. Instrumen v2.1 menulis aturan ini di D.6. Alasan dan rujukannya ada di [dokumen pendukung peneliti](dokumen-pendukung-peneliti/README.md).
 - Kepmendikdasmen Nomor 56 Tahun 2026 masih bertanda "teks resmi perlu dicek". Biarkan tanda itu sampai teksnya dibaca langsung.
 - Modul literasi digital Komdigi masih "t.t.". Untuk definisi pilar, laporan *Status Literasi Digital di Indonesia 2022* (Kominfo & Katadata) sudah memuat definisi empat pilar dan indikatornya, dan bisa ditambahkan ke daftar pustaka.
 
 ## Langkah berikutnya
 
-1. ~~Pemilik proyek memutuskan T1–T6 dan ahli media.~~ Diterima seluruhnya pada 25 Oktober 2026.
+1. ~~Pengembang memutuskan T1–T6 dan ahli media.~~ Diterima seluruhnya pada 25 Oktober 2026.
 2. ~~Setelah kisi-kisi 06 dan keputusan D3 selesai, instrumen r10 dan media ditulis ulang sekali sebagai versi 2.1 dan 1.1, dengan semua perubahan di dokumen ini.~~ **Selesai (26 Oktober 2026)**, sebagai tiga dokumen: r10 dipecah menjadi ahli materi v2.1 dan pengamat budaya v2.1, ditambah ahli media v1.1. Lihat [Instrumen versi 2.1 dan 1.1](#instrumen-versi-21-dan-11).
-3. Setelah draf bank soal baru ada, Claude menjalankan telaah pendahuluan (T6) sebelum berkas dikirim ke ahli.
+3. Setelah draf bank soal baru ada, AI menjalankan telaah pendahuluan (T6) sebelum berkas dikirim ke ahli.
 4. Ahli media menilai dalam dua langkah (keputusan 25 Oktober 2026): di tahap 2, game sekarang ditambah mock-up layar baru; setelah tahap 3, telaah singkat layar jadi di instalasi uji sebelum uji coba. Instrumen media v1.1 perlu memuat bagian untuk mock-up. Mock-up dan layar jadi itu juga mencakup modul tes dan angket (perubahan sistem no. 22), yang sengaja bertampilan Bootstrap, bukan tampilan game, jadi aspek game di instrumen media tidak berlaku untuknya. **Selesai (26 Oktober 2026):** bagian mock-up ditulis di media v1.1 sebagai lembar B.8, satu baris per layar dari [18](18_MOCKUP_LAYAR_BARU.md#untuk-instrumen-media-v11).
 5. Angket akses digital ([16](16_ANGKET_AKSES_DIGITAL.md)) masuk paket validasi tahap 2: telaah isi oleh Ahli Literasi Digital 1 dan 2, dan telaah bahasa oleh Ahli Bahasa Anak 1 dan 2, termasuk kepekaan butir risiko daring di P5.
 6. Skala sikap ([17](17_SKALA_SIKAP.md)) masuk paket validasi tahap 2 sebagai lembar B.8 di instrumen ahli materi v2.1 dan pengamat budaya v2.1 (lihat [Lembar penilaian skala sikap](#lembar-penilaian-skala-sikap-b8)): relevansi oleh Ahli Budaya Kedu 1, Ahli Pengukuran, dan Ahli Bahasa Anak 1 dan 2; telaah bahasa oleh Ahli Bahasa Anak; catatan tumpang tindih D3 oleh Ahli Literasi Digital 1 dan 2.
-7. Paket validasi untuk sebelas validator disusun di [20](20_PAKET_VALIDASI.md) (draf, 27 Oktober 2026): prasyarat dan urutan kirim, surat permohonan, akun uji, pengembalian, matriks revisi, dan daftar periksa validasi di G2. Penilai B.5a: Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1 (keputusan pemilik proyek, 27 Oktober 2026).
+7. Paket validasi untuk sebelas validator disusun di [20](20_PAKET_VALIDASI.md) (draf, 27 Oktober 2026): prasyarat dan urutan kirim, surat permohonan, akun uji, pengembalian, matriks revisi, dan daftar periksa validasi di G2. Penilai B.5a: Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1 (keputusan pengembang, 27 Oktober 2026).
 8. Ketiga instrumen diselaraskan dengan paket validasi dan berkas per butir ([21](21_BERKAS_BUTIR_VALIDATOR.md)) pada 27 Oktober 2026: penilai B.5a dan urutan kirimnya, ID butir netral di B.5a, nama berkas lembar kerja di D.3, B.7 3–5 jam, dan kalimat honorarium "sesuai ketentuan yang berlaku". Perubahannya dicatat di D.4 setiap instrumen; PDF dibuat ulang.
 
 ## Instrumen versi 2.1 dan 1.1
 
-Ditulis 26 Oktober 2026 dari draf pemilik proyek (r10 v2.0 dan media v1.0, keduanya 23 Oktober 2026, kini di [dokumen-pdf/arsip/](dokumen-pdf/arsip/)). Status: **disetujui pemilik proyek, 27 Oktober 2026** (setelah diselaraskan dengan paket validasi 20 dan 21); kotak status di sampul sudah dihapus. PDF dan sumber HTML-nya ada di [dokumen-pdf/](dokumen-pdf/README.md).
+Ditulis 26 Oktober 2026 dari draf pengembang (r10 v2.0 dan media v1.0, keduanya 23 Oktober 2026, kini di [dokumen-pdf/arsip/](dokumen-pdf/arsip/)). Status: **disetujui pengembang, 27 Oktober 2026** (setelah diselaraskan dengan paket validasi 20 dan 21); kotak status di sampul sudah dihapus. PDF dan sumber HTML-nya ada di [dokumen-pdf/](dokumen-pdf/README.md).
 
 | Dokumen | Isi | Halaman |
 | --- | --- | --- |
@@ -267,8 +267,8 @@ Ditulis 26 Oktober 2026 dari draf pemilik proyek (r10 v2.0 dan media v1.0, kedua
 
 Semua perubahan di dokumen ini masuk. Yang berbeda dari tulisan di atas, atau yang ditambahkan:
 
-1. **r10 dipecah menjadi dua dokumen** (permintaan pemilik proyek, 26 Oktober 2026), masing-masing dengan panduan, analisis, dan lampiran sendiri. Penomoran berubah: analisis menjadi Bagian C dan lampiran Bagian D. Aturan Lynn yang di atas disebut "D.6" kini ada di C.3 dan C.6 ahli materi, dan C.2 dan C.5 pengamat budaya.
-2. **Panel pengamat budaya dan ahli media masing-masing tiga orang** (keputusan pemilik proyek, 26 Oktober 2026; lihat 04). Di media v1.1, butir H3 menjadi daftar periksa lulus/tidak karena hanya Ahli Media Pembelajaran 3 berlatar rekayasa perangkat lunak.
+1. **r10 dipecah menjadi dua dokumen** (permintaan pengembang, 26 Oktober 2026), masing-masing dengan panduan, analisis, dan lampiran sendiri. Penomoran berubah: analisis menjadi Bagian C dan lampiran Bagian D. Aturan Lynn yang di atas disebut "D.6" kini ada di C.3 dan C.6 ahli materi, dan C.2 dan C.5 pengamat budaya.
+2. **Panel pengamat budaya dan ahli media masing-masing tiga orang** (keputusan pengembang, 26 Oktober 2026; lihat 04). Di media v1.1, butir H3 menjadi daftar periksa lulus/tidak karena hanya Ahli Media Pembelajaran 3 berlatar rekayasa perangkat lunak.
 3. **Lembar B.8 skala sikap:** relevansi tetap dinilai empat orang seperti keputusan 26 Oktober 2026, dengan Ahli Budaya Kedu 1 sebagai pengamat budaya; Ahli Budaya Kedu 2 dan 3 hanya mengisi kolom "contoh budaya tepat" untuk wilayahnya. Lembar ini muncul di dokumen ahli materi dan pengamat budaya, masing-masing dengan kolom untuk penilainya.
 4. **Telaah *Periksa Unggahan*** mencakup 24 petunjuk di bank (12 per siswa), bukan "12 butir" seperti tabel di atas. Pembagiannya: relevansi terhadap D3 dinilai ahli materi (B.5b), ketepatan dan kepantasan budaya dinilai pengamat budaya (B.6a); butir D3 harus lolos di kedua panel.
 5. **INF-BUD hanya untuk skala PBK**, sesuai 03 dan 06; tabel "menunggu keputusan" di atas masih menulis "D1 dan skala pendamping".

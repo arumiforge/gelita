@@ -2,9 +2,9 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 7 · **Disetujui pemilik proyek 26 Oktober 2026**
+Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 7 · **Disetujui pengembang 26 Oktober 2026**
 
-Dokumen ini berisi cerita penghubung dan narasi untuk tantangan kelima, Skenario Digital (`tmg-5`, `mgl-5`, `wnb-5`), beserta penyesuaian cerita lama yang ikut diperlukan. Skenarionya sendiri sudah ada di [08](08_DRAF_BANK_SOAL.md). Pemilik proyek membuka cerita lama untuk diubah bila perlu, jadi setiap baris lama yang diubah di sini punya alasan: jumlah serpihan, jawaban yang bocor lewat cerita, atau kesinambungan dengan tantangan kelima.
+Dokumen ini berisi cerita penghubung dan narasi untuk tantangan kelima, Skenario Digital (`tmg-5`, `mgl-5`, `wnb-5`), beserta penyesuaian cerita lama yang ikut diperlukan. Skenarionya sendiri sudah ada di [08](08_DRAF_BANK_SOAL.md). Pengembang membuka cerita lama untuk diubah bila perlu, jadi setiap baris lama yang diubah di sini punya alasan: jumlah serpihan, jawaban yang bocor lewat cerita, atau kesinambungan dengan tantangan kelima.
 
 Naskah aktif ([`docs/naskah-cerita.md`](../naskah-cerita.md)) dan `app/Database/Seeds/data/story.php` **belum diubah**. Isi dokumen ini dipasang di tahap 3 bersama perubahan sistem no. 2. Format setiap baris sama dengan naskah aktif: kode berkas audio · tokoh · pose · efek, lalu teks Indonesia dan Inggris.
 
@@ -17,14 +17,14 @@ Naskah aktif ([`docs/naskah-cerita.md`](../naskah-cerita.md)) dan `app/Database/
 5. **Kabar berantai Wonosobo berganti** dari "kawah akan meletus" menjadi ramalan gempa, karena `wnb-3-b` sudah memakai kawah, pesan berantai, dan akun resmi.
 6. **Naskah menjadi 112 baris per bahasa** (dulu 91): 21 baris baru dan 31 baris diubah. Ditambah situasi Skenario Digital (24, Narator) dan petunjuk *Periksa Unggahan* (24, Mbah Kedu), yang teksnya dari bank dan hanya diputar lewat tombol ▶, serta narasi instruksi. Totalnya ± 187 rekaman per bahasa.
 7. **Waktu cerita per pertemuan wilayah naik sekitar satu menit**, dari ± 3 menjadi ± 4 menit. Sebagian tertutup karena dialog masuk Magelang dan Wonosobo jadi lebih pendek setelah kalimat yang bocor dihapus.
-8. **Pemilik proyek menyetujui semua usulan** (26 Oktober 2026), termasuk tes akhir sebelum cerita penutup di P5. Keputusannya ada di bagian akhir.
+8. **Pengembang menyetujui semua usulan** (26 Oktober 2026), termasuk tes akhir sebelum cerita penutup di P5. Keputusannya ada di bagian akhir.
 
 ## Dasar yang sudah diputuskan
 
 | Keputusan | Akibatnya untuk cerita |
 | --- | --- |
 | Skenario Digital tantangan kelima di tiap wilayah ([01](01_REVISI_10_ANALITIK.md#skenario-digital-tantangan-kelima)) | 15 tantangan, 15 Serpihan Cahaya; cerita tuntas pindah ke setelah tantangan kelima |
-| Cerita penghubung didraf Claude, disetujui pemilik proyek, direkam pengisi suara yang sama di sesi yang sama ([04](04_CATATAN_KEPUTUSAN.md), 25 Oktober 2026) | Hanya tiga suara yang sudah ada: Narator, Jaka, Mbah Kedu |
+| Cerita penghubung didraf AI, disetujui pengembang, direkam pengisi suara yang sama di sesi yang sama ([04](04_CATATAN_KEPUTUSAN.md), 25 Oktober 2026) | Hanya tiga suara yang sudah ada: Narator, Jaka, Mbah Kedu |
 | Satu wilayah per pertemuan lewat token: P1 cerita pembuka, P2–P4 satu wilayah, P5 susulan dan cerita penutup | Cerita tidak boleh mengajak langsung ke wilayah berikutnya; wilayah itu baru terbuka di pertemuan berikutnya |
 | Aturan narasi (keputusan media, 25 Oktober 2026) | Bacaan dan pernyataan D1 tidak pernah dibacakan; situasi Skenario Digital dan petunjuk *Periksa Unggahan* hanya lewat tombol ▶ dan tercatat |
 | Tidak ada jawaban yang bocor lewat narasi (06, aturan menulis butir no. 2) | Cerita yang diputar sebelum tantangan diperiksa terhadap semua butir yang dinilai |
@@ -247,7 +247,7 @@ Lima serpihan per wilayah. "Lentera di bagian atas layar" diganti papan Serpihan
 
 Kenali bisa didengar kapan saja, juga sebelum wilayah mana pun dimasuki. Isinya memuat fakta yang diuji butir D1 dan, yang lebih sulit dihindari, fakta budaya yang menjadi kunci *Periksa Unggahan* dan Temukan Benda. Contohnya asal bundengan dan mi ongklok, yang justru dikelirukan keterangan unggahan di `wnb-4-a02` dan `b02`. Menghapus semua fakta itu akan mengosongkan Kenali. Karena itu **selama studi, Kenali sebuah wilayah baru terbuka setelah wilayah itu tuntas**, seperti Pustaka (keputusan 2). Di luar studi, Kenali tetap terbuka seperti sekarang.
 
-Dengan keputusan itu, teks Kenali hanya dibetulkan di satu fakta yang bertentangan dengan 08. Sebelas baris lain tetap. Asal Topeng Lengger di `kenal-wonosobo-04` sempat dianggap diperdebatkan, tapi pemilik proyek mengonfirmasi asalnya dari Wonosobo (26 Oktober 2026, [08](08_DRAF_BANK_SOAL.md#susun-gambar-selama-studi)), jadi baris itu tetap.
+Dengan keputusan itu, teks Kenali hanya dibetulkan di satu fakta yang bertentangan dengan 08. Sebelas baris lain tetap. Asal Topeng Lengger di `kenal-wonosobo-04` sempat dianggap diperdebatkan, tapi pengembang mengonfirmasi asalnya dari Wonosobo (26 Oktober 2026, [08](08_DRAF_BANK_SOAL.md#susun-gambar-selama-studi)), jadi baris itu tetap.
 
 #### `kenal-magelang-02` · Mbah Kedu · pose `idle`
 "Setiap panel adalah bagian dari sebuah cerita" bertentangan dengan 08: dari 2.672 panel, 1.460 bercerita dan sisanya hiasan.
@@ -450,7 +450,7 @@ Penutup diputar di P5, setelah tes akhir dan sebelum skala sikap (keputusan 5). 
 **EN:** I feel strong again, my boy! But remember, this light does not belong to the lantern alone. It lives every time someone reads with care and shares wisely.
 
 #### `penutup-04` · Jaka · pose `bow`
-Janji Jaka kini mencakup ketiga dimensi, tanpa daftar tindakan. Bagian ketiganya menyebut budaya Kedu *di layar* (D3), bukan "bercerita tentang budaya Kedu", karena kalimat itu menggemakan butir skala sikap `skp-07` yang dijawab beberapa menit kemudian (keputusan pemilik proyek 26 Oktober 2026, [17](17_SKALA_SIKAP.md#akibat-ke-dokumen-lain)).
+Janji Jaka kini mencakup ketiga dimensi, tanpa daftar tindakan. Bagian ketiganya menyebut budaya Kedu *di layar* (D3), bukan "bercerita tentang budaya Kedu", karena kalimat itu menggemakan butir skala sikap `skp-07` yang dijawab beberapa menit kemudian (keputusan pengembang 26 Oktober 2026, [17](17_SKALA_SIKAP.md#akibat-ke-dokumen-lain)).
 
 **ID:** Aku akan terus menjaga cahaya ini, Mbah: saat membaca, saat memakai layar, dan saat budaya Kedu tampil di layar. Supaya Kabut Lupa tidak pernah kembali.
 
@@ -524,7 +524,7 @@ Naskah aktif diperiksa baris demi baris terhadap semua butir yang dinilai di 08,
 | --- | --- | --- | --- |
 | Fakta yang diuji D1 disebut di Kenali | `kenal-temanggung-01`, `-02`, `-03`; `kenal-magelang-03`, `-04`; `kenal-wonosobo-02` | `tmg-2-a03`, `b02`, `b03`; `tmg-3-a02`, `b02`, `b04`; `mgl-2-b01`; `wnb-3-a04`, `a06` | Kenali baru terbuka setelah wilayah tuntas selama studi (keputusan 2) |
 | Asal ikon budaya yang dikelirukan unggahan D3, dan kalimat petunjuk PBK, disebut di Kenali | `kenal-temanggung-02`, `-04`; `kenal-magelang-04`; `kenal-wonosobo-03`, `-04` | `tmg-4-b02`; `mgl-4-a02`; `wnb-4-a02`, `b02`, `a04`, `b04`; 9 dari 12 petunjuk PBK | Sama |
-| Fakta Kenali bertentangan dengan 08 | `kenal-magelang-02` | `mgl-3-a02` | Dibetulkan. Asal Lengger di `kenal-wonosobo-04` dikonfirmasi pemilik proyek, jadi baris itu tetap |
+| Fakta Kenali bertentangan dengan 08 | `kenal-magelang-02` | `mgl-3-a02` | Dibetulkan. Asal Lengger di `kenal-wonosobo-04` dikonfirmasi pengembang, jadi baris itu tetap |
 | Contoh fakta dan pendapat sepola dengan butir | `dialog-magelang-08` | `mgl-3-a04`, `a05`, `b04`, `b05` | Contoh dihapus; definisinya tetap, sama dengan instruksi `mgl-3` |
 | Penanda jebakan "katanya" dan alasan kunci perbandingan sumber | `dialog-magelang-06`, `tuntas-magelang-01`; `dialog-wonosobo-04` | `mgl-3-a06`, `b06`, `x01`; `wnb-3-a02`, `a04`, `b03`, `b04`; `wnb-5-b01` | Kata "katanya" dan kalimat penilaiannya dihapus |
 | Tindakan kunci D2 disebut sebelum tantangan | `dialog-wonosobo-12`, `-13` | `wnb-5-a01`, `a02`, `b01`, `b02`, `b04`; `wnb-3-a05`, `b05` | Dipindah ke `tuntas-wonosobo-03` |
@@ -558,9 +558,9 @@ Temuan yang menyangkut dokumen lain, dicatat supaya tidak hilang:
 - **Narasi petunjuk Temukan Benda** (`petunjuk-*`): naskah aktif memetakannya ke butir `a01`–`a04`, yang benar untuk bank yang terpasang sekarang. Dengan bank baru, pemetaannya menjadi `x01`–`x04`, karena `a01`–`a04` milik *Periksa Unggahan*. Dibetulkan di tahap 3 (butir 3 di atas).
 - **Urutan P5 (keputusan 5).** Cerita penutup dan narasi Peta Kedu setelah semua tuntas merangkum pelajaran, jadi tes akhir dikerjakan lebih dulu, supaya tes akhir tidak ikut mengukur pengingat yang baru saja didengar. Skala sikap tetap setelah cerita penutup, sesuai keputusan 25 Oktober 2026. Urutan P5 di [06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain) dan aturan tes di [02](02_LEMBAR_LAPANGAN.md) sudah disesuaikan.
 
-## Keputusan pemilik proyek
+## Keputusan pengembang
 
-Pemilik proyek menyetujui semua usulan pada 26 Oktober 2026. Pilihan lain yang tidak dipilih ada di versi draf dokumen ini (riwayat git).
+Pengembang menyetujui semua usulan pada 26 Oktober 2026. Pilihan lain yang tidak dipilih ada di versi draf dokumen ini (riwayat git).
 
 1. **Cerita penghubung diputar sekali, saat tantangan kelima pertama kali dibuka**, sebelum kartu misinya, seperti dialog masuk wilayah. Siswa yang baru sampai di tantangan kelima pada P5 tetap melihatnya; pengerjaan ulang tidak memutarnya lagi.
 2. **Selama studi, Kenali wilayah baru terbuka setelah wilayahnya tuntas**, seperti Pustaka. Di luar studi, Kenali tetap terbuka sebelum wilayah. Masuk perubahan sistem no. 16 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti).
