@@ -6,6 +6,34 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 27 Oktober 2026
 
+**Prasyarat paket validasi: nama asli, instalasi uji dan akun `uji.*`, honorarium, dan prosedur pembekuan** (cabang `r10-prasyarat-validasi`, berangkat dari `sky/dazzling-planck-6cl9vy`, PR #275) · `asal: pengembang` · `disetujui pengembang` · Prototipe I, belum merevisi produk
+
+Cara memenuhi prasyarat no. 9, 8, 10, dan 4 di [20 → Ringkasan](20_PAKET_VALIDASI.md#ringkasan) ditulis di bagian baru [20 → Cara memenuhi prasyarat yang tersisa](20_PAKET_VALIDASI.md#cara-memenuhi-prasyarat-yang-tersisa). Prasyarat no. 6 (cek fakta budaya) dipegang sesi lain. Tidak ada kode atau sistem yang diubah.
+
+Keputusan pengembang (dua putaran tanya, 20 → *Keputusan pengembang* no. 5–11):
+
+1. **Instalasi uji di komputer lab kampus** (Jalur W di `docs/08_DEPLOYMENT.md`), terpisah dari produksi. Tidak dipilih: VPS kecil terpisah (usulan), laptop pengembang dengan terowongan.
+2. **Dibuka dari luar lewat subdomain kampus dengan HTTPS** (usulan). Tidak dipilih: layanan terowongan, hanya di jaringan kampus.
+3. **Kesediaan validator ditanyakan ketua peneliti**, dengan pesan yang disiapkan pengembang (usulan). Tidak dipilih: pengembang.
+4. **Akun `uji.*` dibuat pengembang**, pemegang `admin` instalasi uji, lewat pendaftaran biasa; sandi diserahkan ke ketua peneliti (usulan). Tidak dipilih: ketua peneliti, validator mendaftar sendiri.
+5. **Besaran honorarium tidak pernah masuk repo** (usulan). Tidak dipilih: besaran per panel di 20.
+6. **Pembekuan sebagai langkah terakhir:** setelah cek fakta budaya, PR #275, dan PR ini digabung, dan setelah no. 8–10 selesai (usulan). Tidak dipilih: bekukan sekarang lalu bekukan ulang.
+7. **Semua wilayah terbuka** di instalasi uji (`unlock_mode` = `free`) (usulan). Tidak dipilih: berurutan.
+
+Yang ditulis di 20:
+- **No. 9:** templat daftar padanan di luar repo (samaran, nama asli, instansi, kontak, kesediaan dengan tanggal dan saluran, akun uji, honorarium, izin disebut nama) dengan kesebelas baris samaran, dan pesan kesediaan dari ketua peneliti. Di repo hanya "selesai" dan tanggal.
+- **No. 8:** langkah memasang instalasi uji dari *commit* beku, membuka semua wilayah di `/admin/studi`, membuat akun lewat `/daftar` (isian per langkah sesuai `RegisterController` dan `GelitaRules`: nama samaran tanpa angka, umur 11, "Sekolahku tidak ada di daftar" dengan `Sekolah Uji Validator`, sandi kuat 8–64 karakter), cek per akun, reset sandi lewat `/admin/peserta`, dan cara mereset kemajuan.
+- **No. 10:** yang harus diketahui ketua peneliti (besaran, sumber dana yang sama dengan 22 dan 23, ketentuan dan pajak, waktu bayar, bukti bayar) dan tempat mencatatnya di luar repo.
+- **No. 4:** sepuluh langkah pembekuan (membuat ulang berkas validator per [21 → Cara membuat ulang](21_BERKAS_BUTIR_VALIDATOR.md#cara-membuat-ulang), *commit* beku, pasang di instalasi uji, persetujuan ketua menjadi `disetujui peneliti`, isi entri 04, teks "versi/tanggal" di D.1) dan tabel kapan `berkas-validator.php` dijalankan lagi.
+
+Temuan dari kode (dicek 27 Oktober 2026):
+- Tidak ada panel atau perintah untuk membuat akun siswa; `/admin/peserta` hanya menampilkan dan mereset sandi. Jadi akun dibuat lewat `/daftar`.
+- Tidak ada reset kemajuan per akun. Akun cadangan tidak dipakai ulang (03 → *Akun uji validator* diperbarui); reset menyeluruh hanya `gelita:reset` di komputer lab, yang menghapus semua akun siswa dan mengembalikan studi ke `sequential`.
+- Pustaka satu wilayah terbuka setelah keempat tantangannya selesai, juga di mode `free`. Validator yang perlu Pustaka menyelesaikan satu wilayah dulu.
+- Usulan alat bantu `gelita:uji:akun` (membuat akun `uji.*`, mereset kemajuan satu akun, menolak berjalan bila ada siswa non-`uji.*`) dicatat di 20 untuk tahap 3, tidak dibuat sekarang.
+
+Status prasyarat setelah sesi ini: no. 4, 8, 9, 10 masih "Belum", masing-masing dengan prosedur tertulis. Yang ditunggu: subdomain dari TI kampus (no. 8), jawaban kesediaan (no. 9), dan pernyataan ketua peneliti soal honorarium (no. 10).
+
 **Peran pengembang, peneliti, dan ahli; "pemilik proyek" menjadi "pengembang", nama asisten menjadi "AI"** (cabang `sky/dazzling-planck-6cl9vy`) · `asal: pengembang` · Prototipe I, belum merevisi produk
 
 Pengembang menetapkan cara kerja revisi ini. Pengembang, dibantu AI, boleh mengerjakan hal yang nantinya diserahkan ke ahli, komite, atau pihak lain: memberi label, skor, telaah, dan validasi latihan, misalnya memberi skor pada butir instrumen validasi. Kerja itu ditandai jelas sebagai kerja pengembang. Peneliti menerima semuanya, menindaklanjutinya, menetapkannya, dan menyerahkannya ke ahli, komite, dan pihak terkait. Judul penelitian dan 10 analitik tetap berasal dari peneliti. Sebelum diputuskan final, tidak ada yang beku penuh: perubahan mendadak atau nanti tetap boleh, asalkan jelas berasal dari pengembang atau dari peneliti bersama ahli.
