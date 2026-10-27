@@ -6,6 +6,39 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 27 Oktober 2026
 
+**Berkas butir untuk validator: draf 21 dan skrip pembuatnya** (cabang `r10-berkas-validator`, sesi paralel tahap 2; Prototipe I, belum merevisi produk) · **Status: draf; keputusan pemilik proyek diambil 27 Oktober 2026**
+
+1. **Yang ditulis.** [21_BERKAS_BUTIR_VALIDATOR.md](21_BERKAS_BUTIR_VALIDATOR.md) dan skrip `dokumen-pdf/src/berkas-validator.php`. Skrip membaca 03, 08, 14–18 dan tabel ketiga instrumen (tanpa mengubahnya), lalu menulis berkas di `dokumen-pdf/berkas-validator/`:
+   - daftar buta B.5a (lembar kerja dan buklet PDF) dan kuncinya di `khusus-peneliti/`;
+   - daftar B.5b;
+   - lembar kerja B.6–B.9 ahli materi, dan B.7 versi pengodean buta;
+   - lembar kerja B.5–B.8 pengamat budaya;
+   - lembar kerja B.8 ahli media;
+   - laporan pemeriksaan `LAPORAN.md`.
+
+   Jumlahnya: 180 butir B.5a dan B.5b (116 bank, 64 tes), 24 skenario, 622 sel kode, 12 pernyataan sikap, 38 pasangan A–B, 20 butir angket, 46 objek budaya, 24 petunjuk, 12 butir PBK, 19 fakta, dan 27 gambar mock-up. Semua 68 pemeriksaan lolos.
+2. **Pilihan saat menulis**, semuanya pilihan yang disarankan di pertanyaan 21:
+   - ID netral `BT-…` dan `BH-…`, dengan bahan diacak dengan benih tetap;
+   - kunci jawaban dicantumkan di daftar buta, kode kesalahan dan label tidak;
+   - bagian ketuk dinamai "Bagian 1, 2, …";
+   - B.7 berisi semua 622 sel dengan kolom "Asal kode";
+   - level pengembang *Periksa Unggahan* dan Skenario Digital diturunkan dari baris *Tingkat* 08 per wilayah.
+3. **Temuan untuk pemilik proyek** (rinciannya di 21):
+   - paket awal di D.3 ahli materi membocorkan dimensi dan sub-aspek ke dua penilai B.5a lewat kode kesalahan dan beberapa bagian instrumen;
+   - level pengembang butir tes D2 dan D3 berupa rentang;
+   - B.7 lebih panjang dari perkiraan 2–3 jam;
+   - nama topik B.6 dan nama benda B.6b berbeda kata dengan 08;
+   - lembar kerja B.3–B.7 ahli media belum dibuat.
+4. **Keputusan pemilik proyek (27 Oktober 2026), keempatnya pilihan yang disarankan:**
+   - daftar B.5a memakai ID netral yang diacak, dengan berkas kunci khusus peneliti;
+   - dua penilai B.5a menerima paket B.5a saja dulu; instrumen lengkap, bank berkode, kisi-kisi, B.5b, dan lembar B.6–B.9 dikirim setelah B.5a kembali;
+   - kunci jawaban dicantumkan di daftar buta;
+   - B.7 mencakup semua 622 sel, dan perkiraan waktunya dinaikkan.
+
+   Berkas sudah memakai pilihan ini, jadi tidak dibuat ulang. Urutan kirim dan waktu B.7 masuk ke 20 dan instrumen ahli materi lewat sesi koordinator.
+
+Akibatnya: 00 (baris 21), `dokumen-pdf/README.md` (tabel *Isi* dan bagian *Membuat ulang berkas validator*), dan `docs/PROGRESS.md` diperbarui. Perubahan untuk 01, 03, 08, 13, 15, 20, dan ketiga instrumen dicatat di 21 → *Akibat ke dokumen lain* untuk sesi koordinator.
+
 **Draf paket validasi ahli: [20_PAKET_VALIDASI.md](20_PAKET_VALIDASI.md)** (cabang `r10-paket-validasi`, sesi paralel tahap 2; daftar kerja no. 3 dan 14) · Prototipe I · Status: draf; empat pertanyaan dijawab pemilik proyek pada hari yang sama (lihat akhir entri)
 
 Yang ditulis: prasyarat kirim, tabel siapa menerima apa per nama samaran (lembar dari matriks penugasan, nomor berkas dari D.3 ketiga instrumen, perkiraan jam, putaran kirim), jadwal relatif dua belas minggu dengan usulan tanggal mulai 9 November 2026, tiga surat permohonan, surat lanjutan setelah B.5a, pengingat dan surat putaran 2, usulan akun siswa uji validator, cara pengembalian dan pencatatan, templat matriks revisi induk, aturan kapan butir kembali ke validator, cara mencatat revisi di 04, dan daftar periksa validasi untuk G2.
