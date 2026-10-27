@@ -60,7 +60,7 @@ Level utama: menemukan informasi (L1) · Bloom C1–C3 · Skenario: tanda bahaya
 
 ### Variasi a: Dua Gunung Temanggung
 
-> Kabupaten Temanggung di Jawa Tengah diapit dua gunung api, yaitu Gunung Sindoro dan Gunung Sumbing. Orang menyebut keduanya gunung kembar karena bentuknya mirip. Tinggi Gunung Sindoro 3.136 meter, sedangkan Gunung **(1)** tingginya 3.371 meter. Dahulu kedua gunung itu pernah meletus dan menyebarkan **(2)**. Abu itu membuat tanah di lerengnya subur. Di tanah yang **(3)** itu, petani menanam kopi arabika. Kopi itu tumbuh di ketinggian lebih dari 900 meter. Jadi, kebun kopinya berada di tempat yang **(4)**.
+> Kabupaten Temanggung di Jawa Tengah diapit dua gunung api, yaitu Gunung Sindoro dan Gunung Sumbing. Orang menyebut keduanya gunung kembar karena bentuknya mirip. Tinggi Gunung Sindoro sekitar 3.150 meter, sedangkan Gunung **(1)** tingginya sekitar 3.370 meter. Dahulu kedua gunung itu pernah meletus dan menyebarkan **(2)**. Abu itu membuat tanah di lerengnya subur. Di tanah yang **(3)** itu, petani menanam kopi arabika. Kopi itu tumbuh di ketinggian lebih dari 900 meter. Jadi, kebun kopinya berada di tempat yang **(4)**.
 
 Panjang ± 75 kata · Pengecoh bank kata: *Sindoro*, *pasir*
 
@@ -112,12 +112,12 @@ Panjang ± 80 kata · Pengecoh bank kata: *hujan*, *penuh*
 > **LAYAR INFORMASI · Pameran Budaya Temanggung**
 > Dipasang oleh: Panitia Pameran Budaya SD Lereng Sindoro · Diperbarui Sabtu, 12 Juli
 >
-> Candi Pringapus adalah candi Hindu peninggalan abad ke-9 di Temanggung. Di dalam ruang candinya ada arca Nandi, yaitu arca lembu yang dihormati umat Hindu. Temanggung juga punya Prasasti Gondosuli yang dibuat pada tahun 832 Masehi. Prasasti adalah tulisan pada batu atau logam yang mencatat peristiwa penting.
+> Candi Pringapus adalah candi Hindu peninggalan abad ke-9 di Temanggung. Di dalam ruang candinya ada arca Nandi, yaitu arca lembu yang dihormati umat Hindu. Temanggung juga punya Prasasti Gondosuli yang diperkirakan dibuat sekitar tahun 832 Masehi. Prasasti adalah tulisan pada batu atau logam yang mencatat peristiwa penting.
 
 | Kode | Pernyataan | Kunci | Sub | AKM | Bloom | Kode salah |
 | --- | --- | --- | --- | --- | --- | --- |
 | tmg-3-b01 | Candi Pringapus adalah candi Buddha. | salah | D1a | L1 | C1 | INF-LIT |
-| tmg-3-b02 | Prasasti Gondosuli dibuat pada tahun 832 Masehi. | benar | D1a | L1 | C1 | INF-LIT |
+| tmg-3-b02 | Prasasti Gondosuli diperkirakan dibuat sekitar tahun 832 Masehi. | benar | D1a | L1 | C1 | INF-LIT |
 | tmg-3-b03 | Layar ini dipasang tanpa nama pemasang, jadi isinya tidak bisa ditanyakan kepada siapa pun. | salah | D1b | L1 | C2 | INF-SUM |
 | tmg-3-b04 | [Gambar: arca lembu duduk dari batu] Gambar ini menunjukkan arca yang ada di dalam ruang Candi Pringapus. | benar | D1a | L1 | C2 | INF-LIT |
 
@@ -372,21 +372,21 @@ Fakta relief sudah dibetulkan sesuai 05: 2.672 panel, 1.460 bercerita, 1.212 hia
 
 ### Variasi b: Tari Topeng Ireng
 
-> Topeng Ireng adalah tari rakyat dari Kabupaten Magelang. Tarian ini mulai tumbuh sekitar tahun 1950-an di Desa Tuksongo, Kecamatan Borobudur. Penarinya memakai kuluk, yaitu hiasan kepala dari bulu yang berwarna-warni. Saat penari melompat, bulu-bulu pada **(1)** itu ikut bergoyang. Di pergelangan kaki penari terpasang lonceng kecil. Setiap kali kaki dihentakkan, lonceng itu **(2)**. Satu kelompok bisa berisi puluhan penari yang bergerak serempak. Kalau ada satu penari yang bergerak lebih cepat daripada teman-temannya, tarian mereka menjadi tidak **(3)**. Tarian ini lahir di desa lereng gunung yang warganya banyak bertani. Gerakannya yang tegas menggambarkan semangat para **(4)** itu. Dalam pertunjukan di lapangan desa, panitia memasang tali pembatas karena penari melompat ke segala arah. Penonton yang duduk di belakang tali tetap **(5)** dari lompatan penari.
+> Topeng Ireng adalah tari rakyat dari Kabupaten Magelang. Tarian ini mulai tumbuh sekitar tahun 1950-an di Desa Tuksongo, Kecamatan Borobudur. Penarinya memakai kuluk, yaitu hiasan kepala dari bulu yang berwarna-warni. Saat penari melompat, bulu-bulu pada **(1)** itu ikut bergoyang. Di pergelangan kaki penari terpasang lonceng kecil. Setiap kali kaki dihentakkan, lonceng itu **(2)**. Satu kelompok bisa berisi banyak penari yang bergerak serempak. Kalau ada satu penari yang bergerak lebih cepat daripada teman-temannya, tarian mereka menjadi tidak **(3)**. Konon, tarian ini lahir dari kisah warga desa yang dahulu berjuang mengusir penjajah. Karena itu, gerakannya tegas dan bersemangat, seperti barisan **(4)** yang siap bertempur. Dalam pertunjukan di lapangan desa, panitia memasang tali pembatas karena penari melompat ke segala arah. Penonton yang duduk di belakang tali tetap **(5)** dari lompatan penari.
 
-Panjang ± 120 kata · Pengecoh bank kata: *diam*, *nelayan*
+Panjang ± 120 kata · Pengecoh bank kata: *diam*, *penjajah*
 
 | Kode | Rumpang | Kunci | Sub | AKM | Bloom | Pengecoh sasaran | Catatan |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | mgl-2-b01 | (1) | kuluk | D1a | L1 | C2 | — | Istilah didefinisikan di kalimat sebelumnya |
 | mgl-2-b02 | (2) | berbunyi | D1a | L2 | C2 | *diam* → INF-HUB | Sebab–akibat |
 | mgl-2-b03 | (3) | kompak | D1a | L2 | C2 | — | Menyimpulkan dari "bergerak serempak" |
-| mgl-2-b04 | (4) | petani | D1a | L2 | C2 | *nelayan* → INF-LIT | Dari "warganya banyak bertani" |
+| mgl-2-b04 | (4) | prajurit | D1a | L2 | C2 | *penjajah* → INF-LIT | Dari "berjuang mengusir penjajah" dan "siap bertempur"; *penjajah* ada di kalimat yang sama, tetapi tarian menggambarkan pihak yang melawannya. Ditulis ulang 27 Oktober 2026 dari cek fakta ([25](25_CEK_FAKTA_BUDAYA.md)): kunci lama *petani* tidak didukung sumber |
 | mgl-2-b05 | (5) | aman | D1a | L2 | C2 | — | Sebab–akibat dari tali pembatas; *diam* dan *kompak* tetap bersaing secara bentuk kata. Mengganti mgl-2-b05 lama ("mengganggu") yang terjawab dari norma |
 
 Pertunjukan di lapangan desa adalah contoh situasi, bukan klaim tentang setiap pertunjukan Topeng Ireng.
 
-**Rujukan:** variasi a: UNESCO World Heritage Centre (No. 592); Wikipedia *Borobudur* (jumlah relief, dicek di 05). Variasi b: detikEdu (2022) *Tari Topeng Ireng*; GNFI (2024) (Tuksongo, 1950-an; dicek di 05).
+**Rujukan:** variasi a: UNESCO World Heritage Centre (No. 592); Wikipedia *Borobudur* (jumlah relief, dicek di 05). Variasi b: detikEdu (2022) *Tari Topeng Ireng*; GNFI (2024) (Tuksongo, 1950-an; dicek di 05); Sulistiyarini & Handayani (2023), *Metahumaniora* 13(2), dan Kuncoro dkk. (2022), *STRUKTURAL* (makna keprajuritan; dicek di 25).
 
 ## `mgl-3` Benar atau Salah
 
@@ -399,7 +399,7 @@ Pertunjukan di lapangan desa adalah contoh situasi, bukan klaim tentang setiap p
 >
 > Candi Borobudur adalah candi Buddha terbesar di dunia. Candi ini dibangun pada abad ke-8 dan ke-9 tanpa semen; batu-batunya disusun saling mengunci. Dindingnya dihiasi 2.672 panel relief. Sebanyak 1.460 panel bercerita, sedangkan sisanya hiasan. Pada tahun 1991, UNESCO menetapkan Borobudur sebagai Warisan Dunia.
 >
-> Mari jaga Borobudur bersama. Ikuti rute dan aturan dari pengelola. Jangan memanjat stupa dan jangan menyentuh relief, sebab minyak dan keringat tangan dapat merusak batu. Jangan mencoret dinding dan jangan membuang sampah sembarangan.
+> Mari jaga Borobudur bersama. Ikuti rute dan aturan dari pengelola. Jangan memanjat stupa dan jangan menyentuh relief, sebab sentuhan tangan yang terus-menerus dapat membuat batu aus dan rusak. Jangan mencoret dinding dan jangan membuang sampah sembarangan.
 >
 > 💬 **Dimas:** Borobudur candi paling indah di dunia! 😍
 > 💬 **Bu Rina:** Borobudur ditetapkan sebagai Warisan Dunia pada tahun 1991.
@@ -416,7 +416,7 @@ Panjang ± 125 kata
 | mgl-3-a05 | Komentar Bu Rina berisi pendapat. | salah | D1b | L3 | C2 | INF-FOP |
 | mgl-3-a06 | Tentang boleh tidaknya menyentuh relief, unggahan akun resmi lebih dapat dipercaya daripada komentar Nanda. | benar | D1b | L3 | C4 | INF-SUM |
 
-`mgl-3-a03` menggantikan butir lama "membawa pulang sampah" (terjawab dari norma). Kuncinya *salah* karena larangan di unggahan berlaku tanpa syarat ("jangan menyentuh relief"), dan alasannya minyak serta keringat tangan, bukan kotoran. Siswa yang menambahkan syarat sendiri terjebak.
+`mgl-3-a03` menggantikan butir lama "membawa pulang sampah" (terjawab dari norma). Kuncinya *salah* karena larangan di unggahan berlaku tanpa syarat ("jangan menyentuh relief"), dan alasannya sentuhan tangan itu sendiri, bukan kotoran. Siswa yang menambahkan syarat sendiri terjebak.
 
 ### Variasi b: Gunung Tidar
 
@@ -477,7 +477,7 @@ Diambil dari bank lama tanpa perubahan isi: adegan *Galeri Budaya Magelang*.
 | --- | --- | --- | --- |
 | mgl-4-x01 | Temukan bangunan kecil berbentuk lonceng yang berlubang-lubang. Di teras bundar Borobudur ada 72 bangunan seperti ini. | stupa berlubang | C2 |
 | mgl-4-x02 | Temukan hiasan kepala dari bulu warna-warni yang dipakai penari tari rakyat dari Desa Tuksongo, Magelang. | kuluk Topeng Ireng | C2 |
-| mgl-4-x03 | Temukan jajanan dari singkong yang dikukus, ditumbuk, lalu diberi gula. Jajanan ini membuat Magelang punya julukan khusus. | getuk | C2 |
+| mgl-4-x03 | Temukan jajanan dari singkong yang dimasak, ditumbuk, lalu diberi gula. Jajanan ini membuat Magelang punya julukan khusus. | getuk | C2 |
 | mgl-4-x04 | Temukan benda dari tanah liat yang dibentuk lalu dibakar, buatan warga Dusun Klipoh. | kendil gerabah | C2 |
 
 Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia, panci logam, semuanya **INF-BUD**.
@@ -493,7 +493,7 @@ Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia,
 | --- | --- | --- |
 | C1 | Nama akun pengunggah | `@vlog.arka` |
 | C2 | Tulisan kecil di pojok video | "Video: Sanggar Cahya Kuluk" |
-| C3 | Keterangan unggahan | "Tari Topeng Ireng, kesenian khas Temanggung! 🔥" |
+| C3 | Keterangan unggahan | "Tari Topeng Ireng, tarian asli dari Temanggung! 🔥" |
 | C4 | Kartu informasi | "Topeng Ireng: tari rakyat yang tumbuh sekitar tahun 1950-an di Desa Tuksongo, Kecamatan Borobudur, Magelang." |
 | C5 | Jumlah suka | "540 suka" |
 | C6 | Komentar 1 | **Salsa**: "Bukan dari Temanggung, Kak. Di kartu info tertulis dari Tuksongo, Magelang 🙏" |
@@ -703,7 +703,7 @@ Level utama: evaluasi dan refleksi (L3) untuk Benar atau Salah, kartu jangkar, d
 > **Negeri di Atas Awan**
 > Ditulis oleh Tim Redaksi · 3 Agustus
 >
-> Sebagian Dataran Tinggi Dieng berada di Kabupaten Wonosobo. Dataran tinggi ini terletak lebih dari 2.000 meter di atas permukaan laut. Dieng sering tertutup kabut **(1)** dijuluki negeri di atas awan. Pada musim kemarau, embun pagi bisa membeku menjadi es **(2)** suhunya turun di bawah 0 °C. Wisatawan yang datang pada musim itu sebaiknya membawa pakaian hangat.
+> Sebagian Dataran Tinggi Dieng berada di Kabupaten Wonosobo. Dataran tinggi ini terletak lebih dari 2.000 meter di atas permukaan laut. Dieng sering tertutup kabut **(1)** dijuluki negeri di atas awan. Pada musim kemarau, embun pagi bisa membeku menjadi es **(2)** suhu di dekat tanah turun di bawah 0 °C. Wisatawan yang datang pada musim itu sebaiknya membawa pakaian hangat.
 >
 > Dieng juga cocok untuk carica, yaitu pepaya gunung. Carica tumbuh baik di ketinggian 1.400–2.400 meter, **(3)** sulit tumbuh di dataran rendah yang panas. Desa Sembungan berada di ketinggian sekitar 2.300 meter, jadi carica **(4)** tumbuh di desa itu. Daerah pantai termasuk dataran rendah yang panas, jadi carica **(5)** tumbuh di sana. Dari semua keterangan itu, kita tahu bahwa carica membutuhkan udara yang **(6)**.
 
@@ -726,7 +726,7 @@ Rumpang "hangat" di bank lama tidak dipakai (7 → 6 rumpang); kalimatnya tetap 
 > **Embun Upas di Dieng**
 > Ditulis oleh Kak Laras, pemandu wisata · 20 Juli
 >
-> Pada musim kemarau, langit Dataran Tinggi Dieng sering sangat cerah. Pada malam hari, panas bumi cepat lepas ke angkasa **(1)** tidak ada awan yang menahannya. Udara dingin **(2)** turun dan terkumpul di cekungan dataran tinggi. Suhu di dekat tanah bisa turun di bawah 0 °C, **(3)** embun pagi membeku menjadi es tipis. Warga Dieng menyebut es tipis itu embun upas.
+> Pada musim kemarau, langit Dataran Tinggi Dieng sering sangat cerah. Pada malam hari, panas dari permukaan bumi cepat lepas ke angkasa **(1)** tidak ada awan yang menahannya. Udara dingin **(2)** turun dan terkumpul di cekungan dataran tinggi. Suhu di dekat tanah bisa turun di bawah 0 °C, **(3)** embun pagi membeku menjadi es tipis. Warga Dieng menyebut es tipis itu embun upas.
 >
 > Bagi wisatawan, embun upas tampak indah, **(4)** bagi petani es itu bisa merusak daun kentang. Wisatawan yang ingin melihat embun upas harus datang pada **(5)** hari, karena es itu cepat mencair saat matahari mulai terik. Dari semua keterangan itu, embun upas paling mudah terbentuk setelah malam yang **(6)**.
 
@@ -828,9 +828,9 @@ Diambil dari bank lama tanpa perubahan isi: adegan *Pasar Oleh-oleh Dieng*.
 | wnb-4-x01 | Temukan alat musik berbentuk tudung lengkung dari anyaman bambu. Dulu tudung itu melindungi penggembala bebek dari panas dan hujan, lalu diberi senar untuk dipetik. | bundengan | C2 |
 | wnb-4-x02 | Temukan buah pegunungan yang mirip pepaya, tetapi ukurannya kecil. Buah ini tumbuh baik di udara sejuk dan sering dibuat manisan. | carica | C2 |
 | wnb-4-x03 | Temukan keranjang bambu kecil yang dicelup-celupkan ke air mendidih. Nama alat ini dipakai untuk menamai mi khas Wonosobo. | ongklok | C2 |
-| wnb-4-x04 | Temukan daun yang diseduh menjadi minuman hangat. Daun ini dipetik di perkebunan Tambi yang sudah ada sejak tahun 1865. | daun teh | C2 |
+| wnb-4-x04 | Temukan daun yang diseduh menjadi minuman hangat. Daun ini dipetik di perkebunan Tambi yang sudah ada sejak zaman Belanda. | daun teh | C2 |
 
-Pengecoh: pepaya biasa, rigen, semangkuk mi ongklok, angklung, sasando, biji kopi, kuluk Topeng Ireng, getuk, semuanya **INF-BUD**. Fakta "Tambi sejak 1865" tetap perlu dicek ahli (05).
+Pengecoh: pepaya biasa, rigen, semangkuk mi ongklok, angklung, sasando, biji kopi, kuluk Topeng Ireng, getuk, semuanya **INF-BUD**. Tahun Tambi diganti "sejak zaman Belanda" (27 Oktober 2026): 1865 adalah awal sewa swasta, kebunnya sudah ada sejak 1838 ([25](25_CEK_FAKTA_BUDAYA.md)).
 
 ### Babak 2: Periksa Unggahan (D3)
 
@@ -1114,7 +1114,7 @@ Ketiga puluh keterangan di [`docs/bank-soal/data/`](../bank-soal/data/) (`*-1`, 
 | `tmg-1-b` Candi Pringapus | Pertama | `tmg-3-b01` (candi Hindu), `tmg-3-b04` (arca Nandi, arca lembu di ruang candi), PBK `tmg-4-x03` | — |
 | `tmg-1-c` Kuda Lumping | Pertama | PBK `tmg-4-x01` (kuda-kudaan dari anyaman bambu) | D3 `tmg-4-a02` (unggahan menulis "kayu jati"); gambarnya `tmg-1-04` juga dipakai untuk foto unggahan `tmg-4` babak 2 a |
 | `tmg-1-d` Situs Liyangan | Ulang | `tmg-3-a01` (2008), `tmg-3-a02` (letusan Sindoro, bukan Merapi), `tmg-3-a04` (padi hangus) | — |
-| `tmg-1-e` Prasasti Gondosuli | Ulang | `tmg-3-b02` (832 Masehi) | — |
+| `tmg-1-e` Prasasti Gondosuli | Ulang | `tmg-3-b02` (sekitar 832 Masehi) | — |
 | `tmg-1-f` Umbul Jumprit | Ulang | `tmg-2-b03` ("air suci") | `tmg-2-b02` (nama mata air), `tmg-2-b04` ("tidak pernah kering") |
 | `tmg-1-g` Panen Kopi | Ulang | PBK `tmg-4-x02` (kopi di lereng Sindoro–Sumbing) | `tmg-2-a04` ("di ketinggian lebih dari 900 meter") |
 | `tmg-1-h` Ikan Uceng | Ulang | PBK `tmg-4-x04` | D3 `tmg-4-b02` (ikan sungai; unggahan menulis "ikan laut") |
@@ -1229,6 +1229,8 @@ Sesudahnya pengembang mengonfirmasi asal Wayang Kedu Temanggungan dan asal Topen
 Sebelum pengambilan data, satu orang tim tetap disarankan mengetik setiap nama akun di kolom cari Instagram dan TikTok. Kalau ada akun nyata yang aktif dengan nama sama persis, namanya diganti.
 
 **Fakta yang dipakai ulang dari bank lama** sudah dicek di telaah pendahuluan T6 ([09_TELAAH_PENDAHULUAN_BANK_SOAL.md](09_TELAAH_PENDAHULUAN_BANK_SOAL.md), bagian C.5): semuanya didukung sumber. Satu catatan: tahun berdirinya perkebunan teh Tambi umumnya ditulis 1865, tapi ada sumber yang menulis 1885; ahli budaya memutuskan apakah angka tahun tetap dipakai di petunjuk `wnb-4-x04`.
+
+**Cek fakta budaya (27 Oktober 2026, `asal: pengembang`).** Semua klaim budaya di draf ini, keterangan Susun Gambar, dan cerita dicek ke sumber di [25_CEK_FAKTA_BUDAYA.md](25_CEK_FAKTA_BUDAYA.md). Atas keputusan pengembang, yang diubah di draf ini: `mgl-2-b04` ditulis ulang ke makna keprajuritan (kunci *prajurit*, pengecoh *penjajah*), karena gerak Topeng Ireng menurut sumber menggambarkan prajurit, bukan petani; "puluhan penari" menjadi "banyak penari"; tinggi Sindoro dan Sumbing ditulis "sekitar"; Gondosuli "diperkirakan sekitar 832"; alasan larangan menyentuh relief menjadi "sentuhan tangan … aus"; keterangan keliru `mgl-4-a` menjadi "tarian asli dari Temanggung"; getuk "dimasak"; embun upas "suhu di dekat tanah"; "panas dari permukaan bumi"; Tambi "sejak zaman Belanda". Kompleks Candi Arjuna tetap menjadi variasi `a` Susun Gambar Wonosobo, tetapi keterangannya menyebut letaknya di Desa Dieng Kulon, Banjarnegara (teks baru di 25). Perubahan keterangan Susun Gambar dan baris Kenali di berkas data dibawa di tahap 3.
 
 **Fakta yang sengaja tidak dipakai** karena sumbernya belum meyakinkan: apakah penari Topeng Ireng memakai topeng (sumber tidak menyebutnya), dan asal tari lengger (sebagian sumber menyebut Wonosobo, sebagian Banyumas). Karena itu Periksa Unggahan Wonosobo memakai bundengan dan mi ongklok, bukan lengger. (Asal lengger dari Wonosobo dikonfirmasi pengembang pada 26 Oktober 2026 untuk keterangan Susun Gambar `wnb-1-i`; Periksa Unggahan tetap seperti ini.)
 
