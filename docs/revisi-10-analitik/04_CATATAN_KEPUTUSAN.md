@@ -6,6 +6,38 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 27 Oktober 2026
 
+**Akibat sesi PP No. 33 Tahun 2026 dan sesi BRIN dibawa ke 01, 02, 22, 23, dan 24** (cabang `sky/vigilant-wozniak-12kyni`, sesi koordinator) · Prototipe I, belum merevisi produk
+
+Kedua sesi berjalan bersamaan, dan masing-masing menyerahkan sebagian akibatnya kepada sesi yang lain. Setelah keduanya digabung (#272, #273), akibat itu tidak dipegang siapa pun, dan dokumen yang akan dikirim saling bertentangan: keputusan no. 19 di 22 menetapkan data berkode disimpan paling singkat 20 tahun, sedangkan tabel masa simpan 22, surat orang tua T1 dan T8a, dan 24 masih menulis 5 tahun. Atas permintaan pemilik proyek, akibat itu dibawa sekarang, sebelum versi bahan dibekukan untuk validasi ([20 → Ringkasan](20_PAKET_VALIDASI.md#ringkasan)). Tidak ada keputusan baru; semuanya menjalankan keputusan no. 10–21 di 22.
+
+Yang diubah:
+- **Masa simpan data berkode paling singkat 20 tahun** (22 no. 19) di 22 (*Isi surat orang tua*, tabel *Masa simpan dan pemusnahan*, butir 3.5), 23 (T1 bagian 3, T8a *Kerahasiaan*, *Dasar yang sudah diputuskan*, *Tabel pembagian*, tabel masa simpan), dan 24 (*Dasar yang sudah diputuskan*, *Pengelolaan data*, *Yang dibutuhkan dari dokumen lain*). Kalimat untuk orang tua: data berkode disimpan paling sedikit 20 tahun karena undang-undang mewajibkannya, tanpa nama, dan setelah penelitian ditutup tidak bisa lagi dihubungkan dengan anak. Keputusan lama yang menyebut 5 tahun (22 no. 1, 23 no. 1, 24 no. 6) diberi catatan "diganti no. 19", tidak ditulis ulang.
+- **UU No. 11 Tahun 2019 Pasal 40 ayat (5)** ditambahkan ke 22 → *Dasar hukum*.
+- **22** juga mendapat:
+  - status di kepala yang menyebut PP No. 33 Tahun 2026 dan panduan BRIN sebagai pedoman utama;
+  - catatan patokan telaah BRIN di pembuka;
+  - catatan formulir BRIN bagian 1 di *Identitas dan tim*;
+  - butir pernyataan versi tidak ada potensi konflik di *Konflik kepentingan*;
+  - lampiran 18 (penilaian dampak lengkap, belum ditulis) dan daftar dokumen pengendali yang diperlihatkan kalau diminta;
+  - rujukan PP 33/2026 di standar 6 daftar tilik.
+- **02 → L5** dan 22 → *Prosedur per pertemuan*: wawancara tidak terdengar guru atau teman (panduan BRIN butir 3.1). **02 → L7** mendapat butir surat dari panduan BRIN.
+- **23 → *Cek isi L7*** mendapat baris tanpa foto dan video, lima baris PP No. 33 Tahun 2026, dan dua baris panduan BRIN; tabel masa simpan mendapat baris daftar izin berkode.
+- **01:**
+  - *Kerja lapangan* langkah 1 memakai waktu surat H-14 sampai H-10, pengingat H-5, batas kembali H-3 (22 no. 7), menggantikan "H-7 sampai H-1".
+  - Daftar kerja no. 15 menyebut pedoman BRIN dan patokan telaahnya.
+  - Perubahan sistem no. 23 mendapat empat perubahan dari PP No. 33 Tahun 2026 dan `retention_days` ± 7300 hari. Digabung ke no. 23, bukan nomor baru, supaya jumlah perubahan sistem tetap 23.
+
+Yang sengaja tidak dibawa:
+- 11 (`consent_ok` untuk `data tetap`, daftar izin berkode sebagai sumber `consent_ok`) menunggu `kamus-1.1`, karena `kamus-1.0` tidak diubah.
+- Kontak PPDP tidak dipindah ke T1 bagian 8, karena tidak wajib.
+- Target persetujuan etik di 01 tetap, dan ditinjau pemilik proyek setelah komite dipilih.
+
+Masih harus dikerjakan sebelum permohonan diajukan (minggu kedua–keempat November 2026):
+- menulis penilaian dampak lengkap (lampiran 18);
+- mengecek nomor pasal PP 33/2026 dan UU 27/2022 ke naskah resmi, dan Peraturan Lembaga yang sudah terbit;
+- mengisi tempat kosong seperti `[nama dan lokasi penyedia server]` dan `[kontak PPDP atau narahubung]`;
+- menyesuaikan 22 dan 23 dengan formulir komite yang dipilih.
+
 **Keputusan pemilik proyek: panduan klirens etik BRIN menjadi pedoman utama 22 dan 23** (cabang `r10-klirens-brin`) · Prototipe I, belum merevisi produk
 
 *Panduan Klirens Etik Riset Bidang Sosial Humaniora* (Komisi Etik Bidang Sosial Humaniora BRIN, kata pengantar 12 November 2025, Penerbit BRIN Maret 2026, DOI 10.55981/brin.2462) dibaca utuh, termasuk bagan alir dan contoh lampiran yang berupa gambar, lalu dibandingkan dengan 22 dan 23.
