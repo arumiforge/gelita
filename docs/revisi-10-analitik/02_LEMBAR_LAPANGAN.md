@@ -6,7 +6,7 @@ Per 26 Oktober 2026 · **Status: L0–L7 final, disetujui pemilik proyek 26 Okto
 
 Lembar lapangan mengisi yang tidak terlihat oleh log game dan modul tes: siapa yang dibantu, perangkat yang dipakai bareng, kondisi kelas, emosi siswa, dan alasan di balik jawaban. Semua lembar diisi **peneliti**, bukan guru. Setiap lembar memakai kunci yang sama dengan log, sesuai [aturan gabung di kamus data](11_KAMUS_DATA.md#aturan-gabung-lembar-lapangan) (`kamus-1.0`): **kode peserta** (misalnya S03-A07), **kode sesi lapangan** (misalnya S03-A-P2), dan **jam WIB** sampai detik. Cara kerja di lapangan dan peran P1–P3 ada di dokumen utama, bagian *Kerja lapangan*.
 
-Kode sekolah di semua contoh (`S03`) hanya contoh. Daftar kode sekolah penelitian belum dibuat (**menunggu daftar kerja no. 12**), dan pemegang akun peneliti untuk P1 belum ditetapkan (**menunggu daftar kerja no. 13**). Semua tanggal di contoh fiktif.
+Kode sekolah di semua contoh (`S03`) hanya contoh. Daftar kode sekolah penelitian belum diputuskan (**menunggu daftar kerja no. 12**, ditunda pemilik proyek 27 Oktober 2026). Akun peneliti untuk P1 sementara memakai nama samaran `koordinator` ([03 → Akun staf](03_KODE_DAN_ARTI.md#akun-staf), daftar kerja no. 13); siapa pemegangnya ditetapkan nanti. Semua tanggal di contoh fiktif.
 
 ## Daftar lembar
 
@@ -72,7 +72,7 @@ Kode sesi lapangan: __________ · Tanggal: __________ · Inisial P1: ______
 
 - P1:
   - [ ] Modul tes dan angket terbuka untuk sesi ini; contoh soal siap ditayangkan
-  - [ ] Akun peneliti P1 bisa memasukkan baris, kursi, dan buklet di panel (pemegang akun: **menunggu daftar kerja no. 12–13**)
+  - [ ] Akun peneliti P1 bisa memasukkan baris, kursi, dan buklet di panel (akun `koordinator`; kode sekolah **menunggu daftar kerja no. 12**)
 - P2–P4:
   - [ ] Buklet dan baris-kursi semua siswa sudah ada di panel, dan panel menunjukkan B1–B4 seimbang di rombel ini
   - [ ] Tes awal sudah dinilai; daftar kelompok nilai tes awal (rendah, sedang, tinggi) siap untuk memilih siswa L5

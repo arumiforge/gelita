@@ -1,8 +1,52 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 27 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
+
+## 27 Oktober 2026
+
+**Draf paket validasi ahli: [20_PAKET_VALIDASI.md](20_PAKET_VALIDASI.md)** (cabang `r10-paket-validasi`, sesi paralel tahap 2; daftar kerja no. 3 dan 14) · Prototipe I · Status: draf; empat pertanyaan dijawab pemilik proyek pada hari yang sama (lihat akhir entri)
+
+Yang ditulis: prasyarat kirim, tabel siapa menerima apa per nama samaran (lembar dari matriks penugasan, nomor berkas dari D.3 ketiga instrumen, perkiraan jam, putaran kirim), jadwal relatif dua belas minggu dengan usulan tanggal mulai 9 November 2026, tiga surat permohonan, surat lanjutan setelah B.5a, pengingat dan surat putaran 2, usulan akun siswa uji validator, cara pengembalian dan pencatatan, templat matriks revisi induk, aturan kapan butir kembali ke validator, cara mencatat revisi di 04, dan daftar periksa validasi untuk G2.
+
+Pilihan yang diambil saat menulis (semua bisa diubah pemilik proyek):
+
+1. **Penilai B.5a dalam draf: Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1**, mengikuti saran IM A.3. Ditanyakan ke pemilik proyek.
+2. **Label pengembang dan kisi-kisi ditahan untuk kelima ahli materi** sampai B.5a dikumpulkan, bukan hanya untuk dua penilainya, sesuai IM D.3 no. 4–6 dan supaya tidak ada salinan berlabel di panel. Lembar yang sudah selesai di putaran awal diminta tidak diubah setelah label dibuka.
+3. **Akun validator adalah akun siswa uji**, bukan akun staf: `uji.bahasa1`–`2`, `uji.digital1`–`2`, `uji.ukur`, `uji.budaya1`–`3`, `uji.media1`–`3`, dan dua cadangan, dibuat `admin`. Titik dipakai karena aturan nama pengguna siswa tidak mengizinkan tanda hubung.
+4. **Daftar padanan nama samaran ↔ nama asli dan surat pernyataan disimpan di luar repo**, dipegang ketua peneliti; lembar kertas diketik dua kali oleh dua orang, lembar kerja digital dicek 10% baris acak.
+5. **Satu matriks revisi induk** untuk ketiga instrumen; D.2 tiap instrumen adalah potongannya untuk putaran 2. Matriks induk menjadi dokumen baru saat hasil pertama kembali.
+6. **Media langkah 2 belum punya instrumen**; disusun di tahap 3 untuk G3.
+
+**Keputusan pemilik proyek atas pertanyaan di 20** (27 Oktober 2026):
+
+1. **Penilai B.5a: Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1** (sesuai usulan).
+2. **Honorarium di surat ditulis "sesuai ketentuan yang berlaku", tanpa angka** (bukan usulan draf, yang menyebut besaran per panel). Besarannya dicatat ketua peneliti di luar repo.
+3. **Paket dikirim digital**: folder bersama yang dibatasi per validator, surat pernyataan dipindai, kertas hanya atas permintaan (sesuai usulan).
+4. **Ahli media langkah 1 tidak menunggu L8**: dikirim bersama panel lain begitu instrumen disetujui, dengan daftar jenis perangkat sebagai pengganti L8 (sesuai usulan).
+
+20 diperbarui: bagian *Pertanyaan untuk pemilik proyek* menjadi *Keputusan pemilik proyek*, dan teks surat memakai kalimat honorarium yang baru. Perubahan yang dibutuhkan di 01, 03, 07, README `dokumen-pdf/`, 22, dan 24 ada di bagian *Akibat ke dokumen lain* di 20, dibawa sesi koordinator setelah digabung. Entri ini tidak merevisi isi prototipe; ia menyiapkan validasi Prototipe I.
+
+**Keputusan pemilik proyek: daftar kerja no. 12 dan 13, dan dimulainya dokumen tahap 2** (cabang `sky/inspiring-ritchie-nex4qi`, sesi koordinator)
+
+1. **Daftar kode sekolah penelitian (no. 12) belum diputuskan; tahap 2 tetap dimulai.** Kode `S01`, `S02`, … di semua dokumen tetap contoh, dan tempat kosongnya di 02 tetap ditandai. Daftar ini baru dibutuhkan sebelum sekolah direkrut dan L8 diisi, jadi tidak menahan dokumen validasi dan izin etik.
+2. **Pemegang akun admin dan akun peneliti (no. 13) sementara memakai nama samaran sesuai perannya:** akun admin `admin`, akun peneliti untuk koordinator sesi (P1) `koordinator`, dan seterusnya. `pengamat` (P2), `pewawancara` (P3), dan `ketua` (ketua peneliti) adalah usulan sesi koordinator untuk "dan seterusnya", dibuat kalau perannya butuh akun ([03 → Akun staf](03_KODE_DAN_ARTI.md#akun-staf)). Siapa orangnya ditetapkan nanti dan dicatat ketua peneliti di luar repo, sama seperti nama asli validator.
+3. **Dokumen tahap 2 ditulis paralel di beberapa sesi.** Sesi koordinator membaginya menjadi lima dokumen, satu sesi dan satu cabang masing-masing:
+
+   | Dokumen | Cabang | Isi |
+   | --- | --- | --- |
+   | `20_PAKET_VALIDASI.md` | `r10-paket-validasi` | Siapa menerima apa dan kapan, surat permohonan, jadwal, pengembalian, matriks revisi, daftar periksa validasi di G2 |
+   | `21_BERKAS_BUTIR_VALIDATOR.md` | `r10-berkas-validator` | Daftar butir buta B.5a, daftar B.5b, lembar kerja per lembar instrumen |
+   | `22_PERMOHONAN_IZIN_ETIK.md` | `r10-izin-etik` | Protokol dan permohonan izin etik |
+   | `23_SURAT_INFORMASI_DAN_PERSETUJUAN.md` | `r10-surat-izin` | Surat informasi dan persetujuan untuk orang tua, anak, sekolah, dan guru |
+   | `24_UJI_KETERBACAAN.md` | `r10-uji-keterbacaan` | Protokol uji keterbacaan dengan 3–5 anak kelas 5 |
+
+   Uji keterbacaan menjadi daftar kerja baru no. 23 di 01, karena sudah ada di peta jalan (tahap 2, Prototipe I) tetapi belum punya baris sendiri.
+
+Gerbang G1 belum resmi terpenuhi: no. 12 masih terbuka, dan instrumen ahli materi v2.1, pengamat budaya v2.1, dan ahli media v1.1 masih menunggu persetujuan. Pemilik proyek memilih tetap memulai tahap 2. Jadi dokumen tahap 2 boleh ditulis sekarang, tetapi yang dikirim ke luar (paket ke validator, permohonan ke *Lembaga Komite Etik*) tetap menunggu persetujuan dokumen yang dibutuhkannya.
+
+Akibatnya: 00 (tahap dokumen 2, baris 02, baris dokumen 20–24, "sebelas validator" menggantikan "tujuh validator"), 01 (daftar kerja no. 3, 12, 13, 14, 15, dan no. 23 baru), 02 (tempat kosong akun P1), dan 03 (bagian *Akun staf*) diperbarui. Entri ini tidak merevisi prototipe.
 
 ## 26 Oktober 2026
 

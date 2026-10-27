@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 27 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian dikumpulkan di sini. Aturan memakai kode di data dan nilai kolom data turunan (misalnya status penyelesaian dan jenis "dilewati") ada di [kamus data](11_KAMUS_DATA.md). Kode yang sudah tersimpan di data game (misalnya `tmg-2-a01` atau `bintang-1`) tidak diganti; kode baru di revisi ini ditandai "usulan" sampai disetujui tim.
 
@@ -22,6 +22,18 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 | Ahli Budaya Kedu 1, 2, 3 | Nama samaran validator: pengamat budaya, idealnya satu orang per wilayah (panel tiga orang, keputusan 26 Oktober 2026). Ahli Budaya Kedu 1 juga menilai relevansi skala sikap (B.8) | Validasi, tahap 2 |
 | Ahli Media Pembelajaran 1, 2, 3 | Nama samaran validator: ahli media, dua langkah (mock-up, lalu layar jadi). Panel tiga orang (keputusan 26 Oktober 2026): 1 teknologi pendidikan atau media pembelajaran, 2 desain visual atau UX, 3 rekayasa perangkat lunak atau pengembangan game | Validasi, tahap 2 dan 3 |
 | Lembaga Komite Etik | Nama samaran komite etik penelitian; pengajuan minggu kedua–keempat November 2026, persetujuan paling lambat akhir September–minggu pertama November 2027 | Izin etik, tahap 2 |
+
+### Akun staf
+
+Pemegang akun admin dan akun peneliti sementara memakai nama samaran sesuai perannya (keputusan pemilik proyek, 27 Oktober 2026; daftar kerja no. 13 di [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja)). Siapa orangnya ditetapkan nanti dan dicatat ketua peneliti di luar repo, sama seperti nama asli validator.
+
+| Akun | Peran di sistem | Dipegang | Catatan |
+| --- | --- | --- | --- |
+| `admin` | Admin | Pengelola sistem | Akun, identitas, konten, rilis, log teknis; tidak mengunduh data penelitian |
+| `koordinator` | Peneliti | P1, koordinator sesi | Sesi lapangan, token, baris-kursi-buklet dari L2, reset kata sandi lewat kode peserta |
+| `pengamat`, `pewawancara`, `ketua` | Peneliti | P2, P3, ketua peneliti | Usulan penerapan pola yang sama ("dan seterusnya"), dibuat kalau perannya butuh akun |
+
+Satu orang yang memegang dua peran tetap memakai dua akun terpisah ([01](01_REVISI_10_ANALITIK.md#admin-dan-peneliti-dua-peran-berbeda)).
 
 ## Dimensi literasi digital
 
