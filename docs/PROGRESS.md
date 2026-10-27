@@ -72,7 +72,7 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
   - [ ] `21_BERKAS_BUTIR_VALIDATOR.md`: blind item list for B.5a, B.5b list, and per-sheet workbooks for the three instruments, generated from `08` and `13`–`18`, branch `r10-berkas-validator`
   - [ ] `22_PERMOHONAN_IZIN_ETIK.md`: ethics protocol and application to *Lembaga Komite Etik*, branch `r10-izin-etik`
   - [ ] `23_SURAT_INFORMASI_DAN_PERSETUJUAN.md`: information and consent letters (parents, child assent, school, class teacher, readability test and pilot, data-deletion request), branch `r10-surat-izin`
-  - [ ] `24_UJI_KETERBACAAN.md`: child readability-test protocol (work item 23 in `01`), branch `r10-uji-keterbacaan`
+  - [ ] `24_UJI_KETERBACAAN.md`: child readability-test protocol (work item 23 in `01`), branch `r10-uji-keterbacaan`. Draft written 27 October 2026 (four children plus one for a second round, shared core plus bank split into six blocks, sheets LK1–LK3, `KB-*` codes); waiting for the owner's decisions
   - [ ] Coordinator carries each document's *Akibat ke dokumen lain* into the shared documents after its PR merges
 - [ ] Complete implementation document, after the revision documents are final and gate G2 (expert validation and ethics approval) is passed
 - [ ] Implementation of the system changes listed in `01` (22 so far), one short-lived branch each, after the implementation document is approved
@@ -128,4 +128,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | `r10-berkas-validator` | Research revision stage 2: `21_BERKAS_BUTIR_VALIDATOR.md` and validator workbooks | In progress |
 | `r10-izin-etik` | Research revision stage 2: `22_PERMOHONAN_IZIN_ETIK.md` | In progress |
 | `r10-surat-izin` | Research revision stage 2: `23_SURAT_INFORMASI_DAN_PERSETUJUAN.md` | In progress |
-| `r10-uji-keterbacaan` | Research revision stage 2: `24_UJI_KETERBACAAN.md` | In progress |
+| `r10-uji-keterbacaan` | Research revision stage 2: `24_UJI_KETERBACAAN.md` | Draft done, PR open |

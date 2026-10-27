@@ -6,6 +6,23 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 27 Oktober 2026
 
+**Draf protokol uji keterbacaan, daftar kerja no. 23** (cabang `r10-uji-keterbacaan`, sesi paralel tahap 2; Prototipe I)
+
+Status: **draf, menunggu keputusan pemilik proyek.** Dokumen baru [24_UJI_KETERBACAAN.md](24_UJI_KETERBACAAN.md) berisi protokol uji keterbacaan dengan anak kelas 5, yang dijalankan setelah izin etik terbit dan setelah bahan direvisi dari validasi ahli. Entri ini tidak merevisi prototipe; revisi dari hasil uji nanti dicatat sebagai "Prototipe I, revisi dari uji keterbacaan".
+
+Yang ditulis: tujuan dan arti "terbaca"; syarat dan cara memilih anak (guru hanya mengelompokkan kelancaran membaca, tanpa nilai); daftar bahan dari 08 dan 12–18, dengan alasan bahan yang tidak diuji (Temukan Benda, keterangan Susun Gambar, cerita penghubung yang dibacakan, panel peneliti); pembagian bahan; perangkat (laptop, salinan layar statis dari sumber mock-up 18, tanpa ponsel, tanpa suara); empat sesi per anak dengan langkah baca sendiri, parafrase, pancingan baku `PB-1`–`PB-9`, menandai kata, dan kartu kata; peran (P3 pemandu, P2 pencatat, P1 persiapan, ketua peneliti penanggung jawab); lembar LK1–LK3 dan kode kesulitan `KB-*`; aturan keputusan dan yang kembali ke ahli; cara waktu yang diukur dibandingkan dengan 06, 13, dan 15; pengelolaan data; yang dibutuhkan dari 20, 22, dan 23.
+
+Pilihan yang diambil saat menulis (diusulkan, belum diputuskan):
+1. **Empat anak di putaran pertama, satu anak lagi untuk putaran kedua** bahan yang direvisi.
+2. **Inti untuk semua anak** (satu bentuk tes lengkap, angket, skala sikap, kartu jangkar, kartu kata, salinan layar), **bank dibagi enam blok** wilayah × variasi, setiap blok dibaca dua anak.
+3. **Parafrase sesudah membaca, bukan berpikir lantang selama membaca**, supaya waktu baca bisa dipakai; berpikir lantang tetap di uji coba tahap 4 (L5).
+4. **Ambang keputusan dibedakan:** bacaan D1 hanya direvisi untuk kata di luar sasaran butir, pokok soal, pilihan, dan petunjuk; petunjuk direvisi kalau satu anak saja tidak paham; butir negatif skala direvisi kalau satu anak menjawab berlawanan.
+5. **Batas waktu tes tidak diubah dari uji ini**; angka waktunya hanya memberi catatan ke 06, 13, dan 15 sampai uji coba.
+6. **Butir risiko daring diuji dengan parafrase saja**, tanpa jawaban tentang diri sendiri, dan hanya dengan izin terpisah.
+7. Ambang berhenti lama (± 10 detik) dan lama membaca sebelum jeda ditandai `needs_verification`.
+
+Pertanyaan terbuka untuk pemilik proyek (di [24](24_UJI_KETERBACAAN.md#pertanyaan-untuk-pemilik-proyek)): cara membagi bahan, jumlah anak, asal sekolah anak, dan butir risiko daring. Perubahan yang dibutuhkan di 01, 03, 06, 13–18, 20, 22, dan 23 didaftar di [24, Akibat ke dokumen lain](24_UJI_KETERBACAAN.md#akibat-ke-dokumen-lain) dan dibawa sesi koordinator.
+
 **Keputusan pemilik proyek: daftar kerja no. 12 dan 13, dan dimulainya dokumen tahap 2** (cabang `sky/inspiring-ritchie-nex4qi`, sesi koordinator)
 
 1. **Daftar kode sekolah penelitian (no. 12) belum diputuskan; tahap 2 tetap dimulai.** Kode `S01`, `S02`, … di semua dokumen tetap contoh, dan tempat kosongnya di 02 tetap ditandai. Daftar ini baru dibutuhkan sebelum sekolah direkrut dan L8 diisi, jadi tidak menahan dokumen validasi dan izin etik.
