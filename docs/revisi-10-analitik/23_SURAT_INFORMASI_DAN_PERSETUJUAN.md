@@ -1,6 +1,6 @@
 # Surat Informasi dan Persetujuan
 
-Per 27 Oktober 2026 · **Status: draf**; empat pertanyaan pemilik proyek dijawab 27 Oktober 2026, lalu diselaraskan dengan [22](22_PERMOHONAN_IZIN_ETIK.md), [24](24_UJI_KETERBACAAN.md), dan keputusan pemilik proyek pada hari yang sama ([Keputusan pemilik proyek](#keputusan-pemilik-proyek)); daftar kerja no. 15 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 27 Oktober 2026 · **Status: draf**; empat pertanyaan pemilik proyek dijawab 27 Oktober 2026, lalu diselaraskan dengan [22](22_PERMOHONAN_IZIN_ETIK.md), [24](24_UJI_KETERBACAAN.md), dan keputusan pemilik proyek pada hari yang sama ([Keputusan pemilik proyek](#keputusan-pemilik-proyek)), lalu dengan pedoman KEPPKN 2021 pada 27 Oktober 2026 ([22 → Pedoman yang dirujuk](22_PERMOHONAN_IZIN_ETIK.md#pedoman-yang-dirujuk)); daftar kerja no. 15 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Dokumen ini berisi teks yang dikirim bersama permohonan izin etik ke *Lembaga Komite Etik* dan yang dibagikan ke sekolah: surat informasi, formulir persetujuan, naskah persetujuan anak, formulir pengunduran diri, dan teks untuk butir risiko daring (layar sebelum dan sesudahnya, dan selebaran tempat bercerita). Setiap teks berupa blok siap cetak. Tempat kosong ditulis dalam kurung siku, misalnya `[nama sekolah]`, dan diisi sebelum dicetak.
 
@@ -54,7 +54,8 @@ Setelah itu: [tabel pembagian](#tabel-pembagian), [catatan keterbacaan](#catatan
 | Uji keterbacaan dengan empat anak kelas 5, ditambah satu anak di putaran kedua, setelah izin etik terbit, memakai salinan layar mock-up dari bahan Prototipe I yang sudah direvisi ahli. Anak dari sekolah di wilayah Kedu di luar sampel dan uji coba; sekolah itu tidak masuk sampel nanti. Empat sesi ± 60 menit dengan jeda, di sekolah anak, selalu dengan dua orang dewasa. Butir risiko daring hanya diparafrasekan, dengan centang terpisah. Rekaman suara hanya dengan izin. Surat lewat sekolah. Tanda terima kasih kecil yang sama setelah sesi terakhir, bukan imbalan | [01 → Peta jalan](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja) no. 23, [24](24_UJI_KETERBACAAN.md), [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi); keputusan pemilik proyek 27 Oktober 2026 | T8 |
 | Laporan ke sekolah hanya angka gabungan, tidak per siswa dan tidak untuk kelompok kurang dari 5 siswa. Ringkasan diserahkan ke sekolah, dan orang tua bisa memintanya lewat sekolah; tidak ada centang ringkasan hasil di formulir | 16 → Etika no. 2; 17 → Etika no. 3; keputusan pemilik proyek 27 Oktober 2026 | T1, T6, T7 |
 | Surat orang tua dalam amplop tertutup dibagikan H-14 sampai H-10, pengingat di H-5, batas kembali H-3; formulir yang tidak kembali berarti tidak mengizinkan | Keputusan pemilik proyek 27 Oktober 2026 | T1, T2, [Tabel pembagian](#tabel-pembagian) |
-| Tanda terima kasih kecil yang sama untuk semua anak di kelas, termasuk yang tidak ikut, ditambah kudapan di P1 dan P5; tanpa uang; tidak pernah disebut sebagai imbalan | [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi); keputusan pemilik proyek 27 Oktober 2026 | Tidak disebut di surat sebagai imbalan; catatan pelaksanaan di T8 |
+| Tanda terima kasih kecil yang sama untuk semua anak di kelas, termasuk yang tidak ikut, ditambah kudapan di P1 dan P5; tanpa uang; tidak pernah disebut sebagai imbalan | [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi); keputusan pemilik proyek 27 Oktober 2026 | Disebut dalam satu kalimat netral di T1 bagian 7 dan T8a, tidak sebagai imbalan; tidak di naskah anak; catatan pelaksanaan di T8 |
+| Isi tambahan dari pedoman KEPPKN 2021 (PSEPPKN, Lampiran 2 dan daftar tilik standar 7): batas pengamanan daring dan risiko yang tersisa; jumlah peserta dan alasan anak diundang; kontak cadangan; sumber dana dan GELITA tidak dijual; tanpa biaya dan tanpa uang, dengan tanda terima kasih dan kudapan yang sama untuk semua anak di kelas; peneliti bisa menghentikan keikutsertaan demi keselamatan anak; surat bisa dibacakan, dengan saksi di luar tim | [22 → Isi surat orang tua](22_PERMOHONAN_IZIN_ETIK.md#isi-surat-orang-tua), [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi); keputusan pemilik proyek 27 Oktober 2026 | T1, T2, T8a, T8b, T9 |
 | Penyimpanan L7: lemari terkunci, terpisah, bersama pemetaan NPSN; salinan digital terenkripsi untuk P1 dan ketua peneliti; dimusnahkan saat studi ditutup | 02 → L7 *Penyimpanan*; [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan) | [Tabel pembagian](#tabel-pembagian) |
 
 ## Aturan menulis teks ini
@@ -73,6 +74,9 @@ Setelah itu: [tabel pembagian](#tabel-pembagian), [catatan keterbacaan](#catatan
 | `[nama lembaga peneliti]`, `[alamat lembaga]` | Pemilik proyek | Sama |
 | `[nama komite etik]`, `[nomor persetujuan etik]`, `[tanggal persetujuan etik]` | Surat persetujuan *Lembaga Komite Etik* | Setelah persetujuan terbit; **menunggu persetujuan etik** |
 | `[nomor HP/WA peneliti]`, `[surel peneliti]` | Pemilik proyek (nomor khusus penelitian, bukan nomor pribadi) | Sebelum dicetak |
+| `[nomor cadangan]` | Pemilik proyek: nomor anggota tim lain atau kantor lembaga, khusus penelitian | Sebelum dicetak |
+| `[sumber dana]` | Pemilik proyek, sama dengan [22 → Identitas dan tim](22_PERMOHONAN_IZIN_ETIK.md#identitas-dan-tim) | Sebelum permohonan etik dikirim |
+| `[jenis tanda terima kasih]` | [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi), misalnya satu set alat tulis | Sebelum dicetak |
 | `[kontak komite etik]` | Surat persetujuan komite | Setelah persetujuan terbit |
 | `[nama sekolah]`, `[nama kepala sekolah]`, `[rombel]` | Rekrutmen sekolah; kode sekolah **menunggu daftar kerja no. 12** | Per sekolah |
 | `[tanggal P1]` … `[tanggal P5]`, `[rentang minggu]` | Jadwal per kelas | Per kelas |
@@ -102,6 +106,8 @@ Tiga halaman A4 tegak, dicetak bolak-balik (dua lembar). Orang tua menyimpan sur
 > Dengan hormat,
 >
 > Kami tim peneliti dari [nama lembaga peneliti], dipimpin oleh [nama ketua peneliti]. Kami mengembangkan GELITA, sebuah game belajar tentang budaya daerah Kedu (Temanggung, Magelang, dan Wonosobo). Kami ingin tahu apakah game ini bisa mengukur kemampuan anak membaca dan memakai internet dengan baik. Kami mohon izin Bapak/Ibu agar anak Bapak/Ibu boleh ikut.
+>
+> Penelitian ini mengundang sekitar 360 siswa kelas 5 dari sekitar 13 kelas. Di [nama sekolah], semua siswa kelas 5 diundang. Penelitian ini dibiayai oleh [sumber dana]. GELITA dibuat oleh tim kami sendiri dan tidak dijual.
 >
 > Ikut atau tidak ikut, keputusannya ada di tangan Bapak/Ibu. Tidak ikut tidak berakibat apa pun pada nilai atau perlakuan terhadap anak di sekolah.
 >
@@ -136,6 +142,8 @@ Tiga halaman A4 tegak, dicetak bolak-balik (dua lembar). Orang tua menyimpan sur
 >
 > Ada satu batas. Kalau anak menunjukkan bahwa ia sedang dalam bahaya serius, misalnya diancam atau diajak bertemu orang asing, ketua peneliti akan mencari bantuan. Ketua peneliti bisa menghubungi Bapak/Ibu (kecuali orang tua diduga ikut terlibat), kepala sekolah, dan layanan perlindungan anak resmi dari pemerintah, seperti SAPA 129.
 >
+> GELITA berjalan lewat internet. Kami menjaga datanya dengan akun berkata sandi untuk setiap peran, memisahkan nama dari data, dan menyimpan salinan data di tempat terenkripsi. Meski begitu, tidak ada sistem daring yang sepenuhnya bebas risiko kebocoran. Kalau terjadi kebocoran yang menyangkut data anak Bapak/Ibu, kami akan memberi tahu Bapak/Ibu dan sekolah.
+>
 > Formulir izin disimpan di lemari terkunci. Salinan digitalnya dikunci dengan kata sandi dan hanya bisa dibuka dua orang peneliti. Nomor HP yang Bapak/Ibu tulis di formulir hanya dipakai untuk urusan penelitian ini. Lama penyimpanan:
 > - **Nama anak, formulir izin, dan nomor HP:** sampai penelitian ditutup, yaitu setelah semua data selesai diolah, sekitar [tanggal studi ditutup]. Setelah itu kertasnya dicacah, berkas digitalnya dihapus, dan nama di akun GELITA diganti kode.
 > - **Rekaman suara:** sampai tulisan ulangnya selesai diperiksa, lalu dihapus.
@@ -165,11 +173,15 @@ Tiga halaman A4 tegak, dicetak bolak-balik (dua lembar). Orang tua menyimpan sur
 >
 > Anak juga boleh tidak menjawab pertanyaan tertentu, atau berhenti di tengah kegiatan. Peneliti tidak akan memaksa.
 >
-> **7. Risiko dan manfaat**
+> Peneliti juga bisa menghentikan keikutsertaan anak, atau menghentikan sementara penelitian, kalau itu perlu demi keselamatan anak. Kalau itu terjadi pada anak Bapak/Ibu, kami memberi tahu Bapak/Ibu.
+>
+> **7. Risiko, manfaat, dan biaya**
 >
 > Risikonya kecil. Anak mungkin lelah karena pertemuan cukup panjang; anak boleh beristirahat sebentar. Pertanyaan tentang pengalaman tidak nyaman di internet mungkin membuat anak teringat hal yang kurang enak; karena itu pertanyaan ini hanya untuk anak yang diizinkan, boleh dilewati, dan diikuti pesan tentang kepada siapa bisa bercerita.
 >
 > Anak bermain game tentang budaya Kedu dan tentang memakai internet dengan aman. Kami tidak menjanjikan manfaat langsung lain. Hasil penelitian ini akan membantu kami memperbaiki GELITA untuk anak sekolah dasar.
+>
+> Tidak ada biaya apa pun bagi Bapak/Ibu, dan kami tidak memberi uang untuk ikut penelitian. Di pertemuan pertama dan kelima, semua anak di kelas mendapat kudapan ringan. Di akhir pertemuan kelima, semua anak di kelas, ikut penelitian atau tidak, mendapat tanda terima kasih kecil yang sama, berupa [jenis tanda terima kasih]. Kalau anak punya alergi makanan, mohon beri tahu guru kelas.
 >
 > **8. Persetujuan komite etik dan kontak**
 >
@@ -177,7 +189,10 @@ Tiga halaman A4 tegak, dicetak bolak-balik (dua lembar). Orang tua menyimpan sur
 >
 > Kalau ada pertanyaan, silakan hubungi:
 > - [nama ketua peneliti], [nomor HP/WA peneliti], [surel peneliti]
+> - Nomor cadangan, kalau nomor di atas tidak bisa dihubungi: [nomor cadangan]
 > - Untuk pertanyaan atau keluhan tentang hak anak sebagai peserta, Bapak/Ibu juga bisa langsung menghubungi komite etik, tanpa lewat kami: [nama komite etik], [kontak komite etik]
+>
+> Kalau Bapak/Ibu lebih nyaman surat ini dibacakan, guru kelas atau peneliti bisa membacakannya dan menjawab pertanyaan Bapak/Ibu. Setelah itu formulir diisi di depan seorang saksi yang bukan anggota tim peneliti, misalnya anggota keluarga atau tetangga, dan saksi ikut menandatangani.
 >
 > Mohon isi formulir terlampir dan kembalikan dalam amplop tertutup paling lambat [tanggal batas kembali]. Formulir yang tidak kembali kami anggap **tidak mengizinkan**.
 >
@@ -191,7 +206,7 @@ Tiga halaman A4 tegak, dicetak bolak-balik (dua lembar). Orang tua menyimpan sur
 
 ---
 
-**Catatan untuk tim.** Bagian 3 memuat batas kerahasiaan dari [22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) langkah 5; `needs_verification`: nama layanan SAPA 129 dicek sebelum dicetak, sama seperti di [T13](#t13-selebaran-tempat-bercerita). Masa simpan di bagian 3 dan batas hapus di bagian 6 mengikuti [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan); kalau 22 berubah, kedua bagian ini ikut diubah.
+**Catatan untuk tim.** Bagian 3 memuat batas kerahasiaan dari [22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) langkah 5; `needs_verification`: nama layanan SAPA 129 dicek sebelum dicetak, sama seperti di [T13](#t13-selebaran-tempat-bercerita). Masa simpan di bagian 3 dan batas hapus di bagian 6 mengikuti [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan); kalau 22 berubah, kedua bagian ini ikut diubah. Bagian 3 juga memuat batas pengamanan daring (pedoman KEPPKN 2021, Lampiran 2 huruf i; CIOMS 2016 pedoman 22), dan bagian 7 kalimat tanda terima kasih dari [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi); keduanya juga ikut diubah kalau 22 berubah.
 
 ## T2 Formulir persetujuan orang tua/wali
 
@@ -209,7 +224,7 @@ Satu halaman A4 tegak, dikembalikan dalam amplop tertutup. Satu formulir untuk s
 > Hubungan dengan anak: ayah / ibu / wali lain: ____________
 > Nama anak: ________________________________ Kelas: ______
 >
-> Saya sudah membaca surat informasi penelitian GELITA. Saya sudah diberi kesempatan bertanya. Saya tahu saya dan anak saya boleh berhenti kapan saja tanpa akibat.
+> Saya sudah membaca surat informasi penelitian GELITA, atau surat itu sudah dibacakan kepada saya. Saya sudah diberi kesempatan bertanya. Saya tahu saya dan anak saya boleh berhenti kapan saja tanpa akibat.
 >
 > Beri tanda ✓ pada **satu** kotak di setiap baris.
 >
@@ -225,8 +240,12 @@ Satu halaman A4 tegak, dikembalikan dalam amplop tertutup. Satu formulir untuk s
 >
 > [tempat], tanggal ____________
 >
-> Tanda tangan: ______________________
+> Tanda tangan (atau cap jempol): ______________________
 > Nama jelas: ________________________
+>
+> *Diisi hanya kalau surat dan formulir ini dibacakan:* Saya menyaksikan bahwa surat dan formulir ini dibacakan kepada orang tua/wali di atas, dan ia memilih sendiri jawabannya. Saya bukan anggota tim peneliti.
+>
+> Nama saksi: ________________ Hubungan dengan orang tua/wali: ____________ Tanda tangan saksi: ____________
 >
 > ---
 > *Diisi peneliti:* diterima tanggal ________ · paraf P1 ______ · dicatat di L7 ☐
@@ -242,6 +261,8 @@ Satu halaman A4 tegak, dikembalikan dalam amplop tertutup. Satu formulir untuk s
 | Pilihan 2 Ya / Tidak / kosong | Izin rekaman suara: Ya / Tidak / Tidak (kosong dibaca Tidak) |
 | Pilihan 3 Ya / Tidak / kosong | Izin butir risiko daring: Ya / Tidak / Tidak (kosong dibaca Tidak) |
 | Pilihan 1 kosong, tapi formulir ditandatangani | Belum dianggap izin. P1 menghubungi orang tua lewat nomor HP di formulir atau lewat surat susulan; kalau sampai H-1 tetap tidak jelas, status `Tanpa izin` |
+| Tanda tangan atau cap jempol, dan baris saksi terisi | Sah seperti tanda tangan biasa |
+| Cap jempol tanpa baris saksi | Belum dianggap izin. P1 menghubungi orang tua seperti pada pilihan 1 kosong; kalau sampai H-1 tetap tidak jelas, status `Tanpa izin` |
 
 ## T3 Naskah persetujuan anak di pembukaan P1
 
@@ -440,7 +461,7 @@ Uji keterbacaan (kegiatan KG1 di [22 → Kegiatan yang dimintakan izin](22_PERMO
 - **Butir risiko daring** (ang-21–ang-23) hanya dengan centang terpisah, dan hanya diparafrasekan: anak menjelaskan arti pertanyaannya dan tidak pernah menjawab tentang pengalamannya sendiri ([24 → Butir risiko daring](24_UJI_KETERBACAAN.md#butir-risiko-daring)). Setelah butir itu, anak melihat pesan yang sama dengan [T12](#t12-pesan-dukungan-sesudah-butir-risiko-daring).
 - **Rekaman suara** hanya dengan izin orang tua dan kalau anak setuju saat itu.
 - **Surat lewat sekolah.** Guru kelas membagikan T8a–T8b dalam amplop kepada orang tua calon dan mengumpulkan amplop tertutupnya. Nama anak dan kelompok membacanya baru diberikan kepada peneliti untuk anak yang izinnya sudah kembali ([24 → Cara guru membantu memilih](24_UJI_KETERBACAAN.md#cara-guru-membantu-memilih-tanpa-memberi-nilai)). Karena itu surat tidak memuat nama anak.
-- **Tanda terima kasih.** Setelah sesi terakhirnya, setiap anak menerima tanda terima kasih kecil yang sama dengan anak di kelas sampel ([22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi)), juga kalau anak berhenti lebih awal. Tanda ini tidak disebut di surat dan naskah, tidak dijanjikan kepada anak sebelum sesi, dan tidak diberikan sebagai imbalan.
+- **Tanda terima kasih.** Setelah sesi terakhirnya, setiap anak menerima tanda terima kasih kecil yang sama dengan anak di kelas sampel ([22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi)), juga kalau anak berhenti lebih awal. Tanda ini disebut dalam satu kalimat netral di T8a, seperti di T1 (pedoman KEPPKN 2021 meminta jenis pemberian disebut; keputusan pemilik proyek 27 Oktober 2026), tetapi tidak disebut di naskah anak T8c, tidak dijanjikan kepada anak sebelum sesi, dan tidak diberikan sebagai imbalan.
 
 Bedanya dengan T1–T3: empat sesi pendek, tanpa akun dan catatan permainan, catatan peneliti per anak, persetujuan anak ditanyakan lagi di awal setiap sesi, rekaman suara sebagai pilihan, dan butir risiko daring sebagai pilihan terpisah (karena 16 menguji keterbacaannya juga).
 
@@ -464,6 +485,8 @@ Dua halaman A4 tegak (satu lembar bolak-balik), dikirim lewat guru dalam amplop 
 >
 > Guru kelas membantu kami memilih beberapa anak yang cara membacanya berbeda-beda. Guru tidak memberi kami nilai anak. Nama anak baru kami terima kalau Bapak/Ibu mengizinkan. Ikut atau tidak ikut, keputusannya ada di tangan Bapak/Ibu, dan tidak berakibat apa pun bagi anak di sekolah.
 >
+> Seluruhnya hanya empat atau lima anak yang ikut. Penelitian ini dibiayai oleh [sumber dana]. GELITA dibuat oleh tim kami sendiri dan tidak dijual.
+>
 > **Apa yang dilakukan anak?** Empat kali pertemuan, masing-masing sekitar 60 menit dengan satu kali istirahat. Pertemuan diadakan di sekolah anak sendiri, pada hari yang berbeda, antara [rentang tanggal uji keterbacaan]. Waktunya disepakati dengan sekolah dan Bapak/Ibu. Selama pertemuan selalu ada dua kakak peneliti bersama anak, di ruang yang terbuka atau berjendela, dan guru tahu anak ada di sana.
 >
 > Anak membaca contoh soal dan pertanyaan di laptop, memilih jawaban, lalu menceritakan apa arti kalimat itu menurutnya. Soalnya sudah diperiksa para ahli. Yang kami uji kalimatnya, **bukan anaknya**. Tidak ada nilai, dan tidak ada jawaban yang salah. Anak dan sekolahnya tidak ikut penelitian utama nanti.
@@ -474,14 +497,18 @@ Dua halaman A4 tegak (satu lembar bolak-balik), dikirim lewat guru dalam amplop 
 > - **Rekaman suara**, supaya penjelasan anak tercatat tepat. Rekaman dihapus setelah tulisan ulangnya selesai diperiksa.
 > - **Membaca 2–3 pertanyaan tentang pengalaman tidak nyaman di internet.** Misalnya: "Dalam setahun ini, pernahkah ada sesuatu di internet atau HP yang membuatmu tidak nyaman, takut, atau sedih?" Kami hanya bertanya apakah kalimatnya mudah dipahami. Anak **tidak menjawab** pertanyaan itu tentang dirinya sendiri, dan tidak ada jawaban yang dicatat. Anak hanya menjelaskan apa yang ditanyakan. Kalau anak tetap bercerita tentang hal yang mengkhawatirkan, ketua peneliti mengikuti langkah yang sudah disetujui komite etik.
 >
-> **Berhenti kapan saja.** Anak boleh berhenti kapan saja tanpa akibat. Kalau Bapak/Ibu minta, catatan dan rekaman anak kami hapus. Caranya: isi formulir pengunduran diri yang terlampir, atau hubungi kami. Permintaan hapus bisa diajukan sampai penelitian ditutup, sekitar [tanggal studi ditutup]. Perbaikan soal yang sudah dibuat dan hasil gabungan yang sudah diterbitkan tidak bisa ditarik.
+> **Berhenti kapan saja.** Anak boleh berhenti kapan saja tanpa akibat. Kami juga bisa menghentikan pertemuan, atau keikutsertaan anak, kalau itu perlu demi keselamatan anak; Bapak/Ibu akan kami beri tahu. Kalau Bapak/Ibu minta, catatan dan rekaman anak kami hapus. Caranya: isi formulir pengunduran diri yang terlampir, atau hubungi kami. Permintaan hapus bisa diajukan sampai penelitian ditutup, sekitar [tanggal studi ditutup]. Perbaikan soal yang sudah dibuat dan hasil gabungan yang sudah diterbitkan tidak bisa ditarik.
 >
-> **Kerahasiaan.** Nama anak tidak pernah ada di catatan penelitian. Nama hanya ada di berkas izin dan daftar kode yang disimpan terkunci oleh ketua peneliti, terpisah dari catatan. Berkas ini dimusnahkan saat penelitian ditutup. Catatan berkode disimpan 5 tahun setelah penelitian ditutup. Hasilnya ditulis tanpa nama anak dan sekolah.
+> **Kerahasiaan.** Nama anak tidak pernah ada di catatan penelitian. Nama hanya ada di berkas izin dan daftar kode yang disimpan terkunci oleh ketua peneliti, terpisah dari catatan. Berkas ini dimusnahkan saat penelitian ditutup. Catatan berkode disimpan 5 tahun setelah penelitian ditutup. Hasilnya ditulis tanpa nama anak dan sekolah. Rekaman suara kami simpan di tempat terenkripsi, dan catatan ketikan di folder yang hanya bisa dibuka tim. Meski begitu, tidak ada penyimpanan digital yang sepenuhnya bebas risiko kebocoran. Kalau terjadi kebocoran yang menyangkut catatan anak Bapak/Ibu, kami akan memberi tahu Bapak/Ibu dan sekolah.
 >
 > Ada satu batas. Kalau anak menunjukkan bahwa ia sedang dalam bahaya serius, ketua peneliti akan mencari bantuan. Ketua peneliti bisa menghubungi Bapak/Ibu (kecuali orang tua diduga ikut terlibat), kepala sekolah, dan layanan perlindungan anak resmi dari pemerintah, seperti SAPA 129.
 >
+> **Biaya dan tanda terima kasih.** Tidak ada biaya apa pun bagi Bapak/Ibu, dan kami tidak memberi uang. Setelah pertemuan terakhir yang diikuti anak, setiap anak mendapat tanda terima kasih kecil yang sama, berupa [jenis tanda terima kasih].
+>
 > Persetujuan etik: [nama komite etik], nomor [nomor persetujuan etik], tanggal [tanggal persetujuan etik].
-> Kontak: [nama ketua peneliti], [nomor HP/WA peneliti], [surel peneliti]. Pertanyaan atau keluhan tentang hak anak, langsung ke komite etik: [nama komite etik], [kontak komite etik].
+> Kontak: [nama ketua peneliti], [nomor HP/WA peneliti], [surel peneliti]. Nomor cadangan: [nomor cadangan]. Pertanyaan atau keluhan tentang hak anak, langsung ke komite etik: [nama komite etik], [kontak komite etik].
+>
+> Kalau Bapak/Ibu lebih nyaman surat ini dibacakan, guru kelas atau peneliti bisa membacakannya dan menjawab pertanyaan Bapak/Ibu. Setelah itu formulir diisi di depan seorang saksi yang bukan anggota tim peneliti, misalnya anggota keluarga atau tetangga, dan saksi ikut menandatangani.
 >
 > Mohon isi formulir terlampir dan kembalikan dalam amplop tertutup lewat guru kelas paling lambat [tanggal batas kembali uji keterbacaan]. Formulir yang tidak kembali kami anggap **tidak mengizinkan**.
 >
@@ -498,7 +525,7 @@ Dua halaman A4 tegak (satu lembar bolak-balik), dikirim lewat guru dalam amplop 
 >
 > Nama orang tua/wali: __________________ Nama anak: __________________ Kelas: ____
 >
-> Saya sudah membaca surat informasi dan diberi kesempatan bertanya.
+> Saya sudah membaca surat informasi, atau surat itu sudah dibacakan kepada saya, dan saya diberi kesempatan bertanya.
 >
 > | No | Pernyataan | Ya | Tidak |
 > | --- | --- | --- | --- |
@@ -510,7 +537,11 @@ Dua halaman A4 tegak (satu lembar bolak-balik), dikirim lewat guru dalam amplop 
 >
 > Nomor HP untuk mengatur jadwal (tidak wajib): ________________
 >
-> Tanggal: ________ Tanda tangan: __________________ Nama jelas: __________________
+> Tanggal: ________ Tanda tangan (atau cap jempol): __________________ Nama jelas: __________________
+>
+> *Diisi hanya kalau surat dan formulir ini dibacakan:* Saya menyaksikan bahwa surat dan formulir ini dibacakan kepada orang tua/wali di atas, dan ia memilih sendiri jawabannya. Saya bukan anggota tim peneliti.
+>
+> Nama saksi: ________________ Hubungan dengan orang tua/wali: ____________ Tanda tangan saksi: ____________
 >
 > ---
 > *Diisi peneliti:* diterima tanggal ________ · kode anak ______ · paraf ______
@@ -554,6 +585,7 @@ T1, T2, T3, T6, T7, dan T10 dipakai untuk kelas uji coba **dengan perubahan beri
 | Teks | Bagian | Ganti dengan |
 | --- | --- | --- |
 | T1 | Paragraf pembuka, kalimat ketiga | "Sebelum GELITA dipakai di banyak sekolah, kami mencobanya dulu di satu kelas. Hasil percobaan ini dipakai untuk memperbaiki game, soal, dan cara pelaksanaannya." |
+| T1 | Paragraf jumlah peserta (sesudah paragraf pembuka) | "Percobaan ini mengundang semua siswa di satu kelas 5 di [nama sekolah], sekitar 28 anak. Penelitian ini dibiayai oleh [sumber dana]. GELITA dibuat oleh tim kami sendiri dan tidak dijual." |
 | T1 | Bagian 2, butir *Wawancara singkat* | "**Wawancara singkat dan bermain sambil bercerita:** sebagian anak diajak mengobrol ± 10 menit tentang cara mereka menjawab beberapa soal. Selain itu, 5–8 anak diajak bermain sambil mengucapkan apa yang mereka pikirkan, ± 30 menit, ditemani satu peneliti. Setiap anak paling banyak ikut sekali." |
 | T1 | Bagian 3, kalimat terakhir paragraf kedua | "Hasil percobaan ini dipakai untuk memperbaiki GELITA dan tidak digabung dengan hasil penelitian utama. Hasilnya ditulis tanpa nama anak, guru, dan sekolah." |
 | T1 | Bagian 4, butir *Rekaman suara* | "**Rekaman suara wawancara atau bermain sambil bercerita.** Kalau anak terpilih, …" (sisanya sama) |
@@ -751,12 +783,18 @@ Siswa tidak membawa formulir yang sudah diisi dalam keadaan terbuka: T2 dan T10 
 | *Tambahan dari [22](22_PERMOHONAN_IZIN_ETIK.md#isi-surat-orang-tua):* batas kerahasiaan | T1 bagian 3 |
 | *Tambahan dari 22:* kontak komite etik untuk keluhan | T1 bagian 8 |
 | *Tambahan dari 22:* masa simpan dan pembagian data berkode atas permintaan | T1 bagian 3 |
+| *Tambahan dari pedoman KEPPKN 2021 ([22 → Isi surat orang tua](22_PERMOHONAN_IZIN_ETIK.md#isi-surat-orang-tua)):* batas pengamanan daring dan risiko yang tersisa | T1 bagian 3; T8a *Kerahasiaan* |
+| *Tambahan dari pedoman KEPPKN 2021:* jumlah peserta, alasan anak diundang, sumber dana | T1 pembuka; T8a |
+| *Tambahan dari pedoman KEPPKN 2021:* kontak cadangan | T1 bagian 8; T8a |
+| *Tambahan dari pedoman KEPPKN 2021:* biaya, tanpa uang, tanda terima kasih dan kudapan | T1 bagian 7; T8a |
+| *Tambahan dari pedoman KEPPKN 2021:* penghentian oleh peneliti demi keselamatan | T1 bagian 6; T8a *Berhenti kapan saja* |
+| *Tambahan dari pedoman KEPPKN 2021:* surat dibacakan, dengan saksi di luar tim | T1 bagian 8; T2 dan T8b baris saksi |
 
 ### Jalur persetujuan → teksnya
 
 | Jalur | Sumber | Teks |
 | --- | --- | --- |
-| Izin orang tua, sampel utama | 02 → L7; 01 → Kerja lapangan langkah 1 | T1, T2 |
+| Izin orang tua, sampel utama | 02 → L7; 01 → Kerja lapangan langkah 1 | T1, T2; kalau dibacakan, dengan saksi (T2) |
 | Izin rekaman suara (L5) | 02 → L5, L7 | T1 bagian 4, T2 pilihan 2, T5 |
 | Izin butir risiko daring (ang-21 sampai ang-23) | 16 → Etika no. 8 | T1 bagian 4, T2 pilihan 3 |
 | Persetujuan siswa: lisan di pembukaan P1 | 02 → L7 | T3 |
@@ -776,18 +814,18 @@ Siswa tidak membawa formulir yang sudah diisi dalam keadaan terbuka: T2 dan T10 
 
 Rata-rata panjang kalimat dihitung dengan skrip sederhana dari teks di dalam blok kutipan, 27 Oktober 2026: kata dibagi kalimat; tempat kosong dihitung satu kata; kepala surat, isian bergaris, dan arahan dalam kurung tidak dihitung; di formulir, kalimat di kolom pernyataan ikut dihitung. Butir daftar dihitung sebagai kalimat sendiri. Hitungan ini kasar; keterbacaan yang sebenarnya diuji dengan pembaca.
 
-Setelah penyelarasan 27 Oktober 2026, hitungan diulang dengan skrip kedua yang angkanya sedikit lebih rendah daripada skrip pertama. Untuk teks yang berubah, angka lama ditambah selisih hitungan skrip kedua sebelum dan sesudah perubahan. T11–T13 dihitung langsung dengan skrip kedua.
+Setelah penyelarasan 27 Oktober 2026, hitungan diulang dengan skrip kedua yang angkanya sedikit lebih rendah daripada skrip pertama. Untuk teks yang berubah, angka lama ditambah selisih hitungan skrip kedua sebelum dan sesudah perubahan. T11–T13 dihitung langsung dengan skrip kedua. Setelah tambahan dari pedoman KEPPKN 2021 (27 Oktober 2026), T1, T2, T8a, dan T8b dihitung ulang dengan cara yang sama: angka sebelumnya ditambah selisih hitungan sebelum dan sesudah tambahan.
 
 | Teks | Pembaca | Rata-rata kata per kalimat | Kalimat terpanjang | Catatan |
 | --- | --- | --- | --- | --- |
-| T1 | Orang tua, beragam pendidikan | 12,7 | 34 kata (bagian 7, risiko pertanyaan pengalaman tidak nyaman) | Istilah teknis diganti: "catatan permainan", "kode". Bisa dibaca ± 9 menit. Bagian 3 lebih panjang karena batas kerahasiaan, masa simpan, dan pembagian data; masa simpan ditulis sebagai daftar. Kalimat terpanjang bisa dipecah dua kalau uji baca orang tua menemukan kesulitan |
-| T2 | Orang tua | 12,2 | 27 kata (pilihan 1) | Tiga baris Ya/Tidak; isian nama dan tanda tangan tidak dihitung |
+| T1 | Orang tua, beragam pendidikan | 13,0 | 34 kata (bagian 7, risiko pertanyaan pengalaman tidak nyaman) | Istilah teknis diganti: "catatan permainan", "kode". Bisa dibaca ± 11 menit; tambahan dari pedoman KEPPKN 2021 (jumlah peserta, batas pengamanan daring, penghentian, biaya, kontak cadangan, dibacakan) menambah ± 220 kata. Bagian 3 lebih panjang karena batas kerahasiaan, masa simpan, dan pembagian data; masa simpan ditulis sebagai daftar. Kalimat terpanjang bisa dipecah dua kalau uji baca orang tua menemukan kesulitan |
+| T2 | Orang tua | 13,0 | 27 kata (pilihan 1) | Tiga baris Ya/Tidak; isian nama, tanda tangan, dan saksi tidak dihitung, tetapi kalimat pernyataan saksi dihitung |
 | T3 | Siswa kelas 5, didengar | 6,8 | 15 kata | Diucapkan, jadi kalimat dibuat lebih pendek dari teks tertulis. ± 2,5 menit dibaca santai |
 | T4 | Siswa kelas 5, dibaca sendiri | 7,7 | 13 kata | Tiga kalimat pendek di samping kotak centang |
 | T5 | Siswa kelas 5, didengar | 8,0 | 16 kata | ± 15 detik (pembukaan) dan ± 30 detik (wawancara) |
 | T6 | Kepala sekolah | 11,5 | 26 kata (tujuan penelitian) | Ragam surat dinas, tetap tanpa istilah statistik. "Literasi digital" dijelaskan dalam kalimat yang sama |
 | T7 | Guru kelas | 9,0 | 21 kata (catatan bantuan guru) | Disusun sebagai daftar "diminta" dan "mohon tidak" supaya cepat dibaca |
-| T8a, T8b | Orang tua | 10,4 dan 11,2 | 25 kata (T8a) | T8a dua halaman, lebih pendek dari T1 |
+| T8a, T8b | Orang tua | 10,9 dan 12,2 | 25 kata (T8a) | T8a dua halaman, lebih pendek dari T1 |
 | T8c | Anak, didengar | 5,8 | 10 kata | "Yang diuji soalnya, bukan kamu" diulang di surat, naskah sesi 1, dan pengingat sesi 2–4 |
 | T9 | Sama dengan teks aslinya | — | — | Hanya kalimat pengganti |
 | T10 | Orang tua | 12,6 | 33 kata (pilihan C dengan dua kotaknya) | Tiga pilihan A/B/C; tanpa alasan wajib |
@@ -812,7 +850,7 @@ Pilihan ini tidak diputuskan di dokumen lain. Semuanya bisa diubah pemilik proye
 9. **Pilihan A di T10 (berhenti, data tetap dipakai).** Sudah dikukuhkan pemilik proyek 27 Oktober 2026 bersama pilihan B dan C, dengan dua status L7 ([Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 5).
 10. **`[tanggal studi ditutup]` diisi tanggal rencana**, karena surat dicetak sebelum analisis. Surat menulis "sekitar", dan permintaan hapus tetap diterima sampai studi benar-benar ditutup kalau tanggalnya mundur.
 11. **Surat uji keterbacaan tidak memuat nama anak.** Guru membagikannya kepada orang tua calon, dan peneliti baru menerima nama anak yang izinnya kembali ([24 → Cara guru membantu memilih](24_UJI_KETERBACAAN.md#cara-guru-membantu-memilih-tanpa-memberi-nilai)).
-12. **Tanda terima kasih tidak disebut di surat dan naskah anak**, baik di sampel utama maupun di uji keterbacaan, supaya tidak dibaca sebagai imbalan. Bentuknya disebut di protokol etik ([22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi)).
+12. **Tanda terima kasih disebut dalam satu kalimat netral di surat orang tua** (T1 bagian 7, T8a), tidak di naskah anak, supaya tidak dibaca sebagai imbalan. Sampai 27 Oktober 2026 tanda ini tidak disebut di surat sama sekali; setelah perbandingan dengan pedoman KEPPKN 2021, yang meminta jenis pemberian disebut, pemilik proyek memilih kalimat netral ([Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 14). Bentuknya di [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi).
 13. **T11 tidak menjanjikan rahasia mutlak.** Kalimatnya menyebut siapa yang tidak melihat jawaban (guru, orang tua, teman), lalu batasnya: kakak peneliti bisa mengajak bicara, dan orang dewasa dimintai bantuan kalau anak dalam bahaya.
 
 ## Pertanyaan untuk pemilik proyek
@@ -840,7 +878,7 @@ Keempat pertanyaan ini dijawab pemilik proyek pada 27 Oktober 2026, semuanya den
 1. **Batas permintaan hapus data: sampai studi ditutup** (menggantikan jawaban awal "sampai analisis utama dimulai"). Nama, L7, formulir izin, dan formulir pengunduran diri dimusnahkan saat studi ditutup. Data penelitian berkode disimpan 5 tahun setelah studi ditutup, rekaman sampai transkrip diperiksa ([22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan)). Hasil gabungan yang sudah terbit tidak bisa ditarik. Tempat kosong `[tanggal studi ditutup]` menggantikan `[tanggal batas penarikan]`, dan `[masa simpan]` diganti masa simpan yang ditulis langsung. Diterapkan di T1 bagian 3 dan 6, T8a, T10, dan [Tabel pembagian](#tabel-pembagian). Kalimat lama "angka gabungan yang sudah dihitung … tidak berubah" dihapus.
 2. **Anak uji keterbacaan membaca butir risiko daring, dengan centang terpisah** (T8b pilihan 3). Anak hanya menjelaskan arti kalimatnya dan tidak pernah menjawab tentang pengalamannya sendiri. Tidak dipilih: butir risiko hanya ditelaah ahli.
 3. **Tanpa centang ringkasan hasil di formulir orang tua.** Ringkasan angka gabungan diserahkan ke sekolah, dan orang tua bisa memintanya lewat sekolah (T1 bagian 3, T6). Dikukuhkan lagi 27 Oktober 2026. Tidak dipilih: centang keempat di T2.
-4. **Tanda terima kasih kecil yang sama untuk semua anak di kelas,** termasuk yang tidak ikut, diberikan di akhir P5, ditambah kudapan di P1 dan P5. Tanpa uang, dan tidak pernah disebut sebagai imbalan. **Anak uji keterbacaan mendapat tanda yang sama setelah sesi terakhirnya,** juga tidak sebagai imbalan (catatan pelaksanaan di [T8](#t8-varian-uji-keterbacaan)). Bentuk dan nilainya di [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi). Tidak dipilih: tanpa kenang-kenangan, atau hanya untuk peserta.
+4. **Tanda terima kasih kecil yang sama untuk semua anak di kelas,** termasuk yang tidak ikut, diberikan di akhir P5, ditambah kudapan di P1 dan P5. Tanpa uang, dan tidak pernah disebut sebagai imbalan. **Anak uji keterbacaan mendapat tanda yang sama setelah sesi terakhirnya,** juga tidak sebagai imbalan (catatan pelaksanaan di [T8](#t8-varian-uji-keterbacaan)). Bentuk dan nilainya di [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi). Tidak dipilih: tanpa kenang-kenangan, atau hanya untuk peserta. Sejak no. 14, tanda ini disebut netral di T1 dan T8a.
 5. **Pilihan pengunduran diri di T10 tetap A, B, dan C.** A: berhenti, data yang sudah terkumpul tetap dipakai. B: berhenti, semua data dihapus. C: tetap ikut, tetapi rekaman dan/atau jawaban butir risiko ditarik dan dihapus. L7 punya dua status, `Mengundurkan diri (data tetap)` dan `Mengundurkan diri (hapus data)`. `consent_ok = 1` juga untuk "data tetap", untuk data sampai tanggal mundur (`kamus-1.1`). Hapus sebagian (pilihan C) menjadi catatan perubahan sistem untuk tahap 3. Diterapkan di T1 bagian 6, T3, dan T10.
 6. **Uji keterbacaan:** empat anak, ditambah satu anak di putaran kedua; dari sekolah di wilayah Kedu di luar sampel dan uji coba, yang tidak masuk sampel nanti; empat sesi ± 60 menit dengan jeda, di sekolah anak, dengan dua orang dewasa; bahan setelah revisi ahli; butir risiko hanya diparafrasekan dengan centang terpisah; rekaman hanya dengan izin; surat lewat sekolah. Diterapkan di T8 (pengantar, T8a–T8c, dengan kalimat persetujuan ulang di setiap sesi).
 7. **Waktu surat sampel utama dikukuhkan:** amplop tertutup H-14 sampai H-10, pengingat H-5, batas kembali H-3; formulir yang tidak kembali berarti tidak mengizinkan (T1, T2, [Tabel pembagian](#tabel-pembagian)).
@@ -849,6 +887,12 @@ Keempat pertanyaan ini dijawab pemilik proyek pada 27 Oktober 2026, semuanya den
 10. **T12 untuk semua siswa di P5** (27 Oktober 2026), juga yang tanpa izin butir risiko, di titik yang sama.
 11. **T13 dibagikan kepada semua anak di kelas di akhir P5**, bersama tanda terima kasih (27 Oktober 2026).
 12. **T1 tidak diuji baca oleh orang tua** di luar sampel sebelum permohonan etik dikirim (27 Oktober 2026).
+
+Keputusan pemilik proyek pada hari yang sama, setelah 22 dan 23 dibandingkan dengan pedoman KEPPKN 2021 ([22 → Pedoman yang dirujuk](22_PERMOHONAN_IZIN_ETIK.md#pedoman-yang-dirujuk), [04](04_CATATAN_KEPUTUSAN.md)):
+
+13. **Isi surat ditambah menurut pedoman KEPPKN 2021:** batas pengamanan daring (T1 bagian 3, T8a), jumlah peserta, alasan anak diundang, dan sumber dana (T1 pembuka, T8a, T9), penghentian oleh peneliti demi keselamatan (T1 bagian 6, T8a), dan kontak cadangan (T1 bagian 8, T8a).
+14. **Tanda terima kasih disebut dalam satu kalimat netral** di T1 bagian 7 dan T8a: tanpa uang, tanpa biaya, sama untuk semua anak di kelas (ikut atau tidak), ditambah kudapan di P1 dan P5 untuk sampel utama. Tidak dipilih: tetap tidak disebut di surat dan hanya dijelaskan di 22.
+15. **Surat bisa dibacakan guru kelas atau peneliti**, dan formulir T2 dan T8b mendapat baris saksi yang diisi hanya dalam keadaan itu, oleh orang di luar tim peneliti; tanda tangan boleh diganti cap jempol. Tidak dipilih: tanpa perubahan.
 
 ## Akibat ke dokumen lain
 

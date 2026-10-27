@@ -1,6 +1,6 @@
 # Permohonan Izin Etik: Protokol Penelitian GELITA
 
-Per 27 Oktober 2026 · **Status: draf; keputusan pemilik proyek 27 Oktober 2026 dimasukkan dan diselaraskan dengan dokumen 20, 21, 23, dan 24** · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 15
+Per 27 Oktober 2026 · **Status: draf; keputusan pemilik proyek 27 Oktober 2026 dimasukkan, diselaraskan dengan dokumen 20, 21, 23, dan 24, lalu dengan pedoman KEPPKN 2021** · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 15
 
 Dokumen ini adalah draf protokol dan permohonan izin etik ke *Lembaga Komite Etik* (nama samaran). Formulir komite yang sebenarnya belum diketahui, jadi isinya disusun per bagian yang biasa ada di formulir komite etik di Indonesia. Pemilik proyek menyalin bagian-bagian ini ke formulir komite, lalu mengajukannya pada **minggu kedua sampai keempat November 2026**. Persetujuan ditargetkan paling lambat **akhir September sampai minggu pertama November 2027** ([01 → Peta jalan](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja)).
 
@@ -32,68 +32,99 @@ Nama orang, sekolah, dan komite tidak ditulis di repo. Tempat kosong ditandai de
 16. [Kompensasi](#kompensasi)
 17. [Konflik kepentingan](#konflik-kepentingan)
 18. [Pelaporan kejadian tak diinginkan](#pelaporan-kejadian-tak-diinginkan)
-19. [Perubahan protokol](#perubahan-protokol)
-20. [Lampiran](#lampiran)
-21. [Keputusan pemilik proyek](#keputusan-pemilik-proyek)
-22. [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)
+19. [Penghentian kegiatan dan penelitian](#penghentian-kegiatan-dan-penelitian)
+20. [Perubahan protokol](#perubahan-protokol)
+21. [Daftar tilik tujuh standar](#daftar-tilik-tujuh-standar)
+22. [Komitmen etik](#komitmen-etik)
+23. [Lampiran](#lampiran)
+24. [Keputusan pemilik proyek](#keputusan-pemilik-proyek)
+25. [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)
 
 ## Cara memakai dokumen ini
 
 ### Pedoman yang dirujuk
 
-Banyak komite etik di Indonesia menelaah protokol dengan **tujuh standar** dari pedoman Komisi Etik Penelitian dan Pengembangan Kesehatan Nasional (KEPPKN), *Pedoman dan Standar Etik Penelitian dan Pengembangan Kesehatan Nasional* (2017). Ketujuh standar itu, sesuai daftar periksa KEPPKN yang beredar, adalah nilai sosial, desain ilmiah, pemerataan beban dan manfaat, risiko dan manfaat, bujukan dan kompensasi, privasi dan kerahasiaan, serta persetujuan setelah penjelasan (PSP). Protokol dinyatakan layak etik kalau memenuhi ketujuhnya.
+Protokol ini mengikuti pedoman Komite Etik Penelitian dan Pengembangan Kesehatan Nasional (KEPPKN), *Pedoman dan Standar Etik Penelitian dan Pengembangan Kesehatan Nasional* (PSEPPKN), **edisi 2021**: Jakarta, Lembaga Penerbit Badan Penelitian dan Pengembangan Kesehatan; prakata 20 Juni 2021; disusun KEPPKN periode 2021–2024. Edisi ini menggantikan edisi 2017 dan mengacu pada standar WHO 2011 dan pedoman CIOMS 2016. Naskah lengkapnya ([PDF di situs KEPPKN](https://kepkn.kemkes.go.id/assets/img/keppkn/file/BUKU_PEDOMAN_DAN_STANDAR_ETIK_PENELITIAN_DAN_PENGEMBANGAN_KESEHATAN_NASIONAL%28KEPKN%29.pdf), diunggah ulang Agustus 2025, isinya tetap edisi 2021) sudah dibaca utuh dan dibandingkan dengan dokumen ini pada 27 Oktober 2026 ([04](04_CATATAN_KEPUTUSAN.md)). Rujukan bab dan lampiran di dokumen ini menunjuk ke edisi itu.
 
-`needs_verification`:
-- Rumusan tiap standar dan versi pedoman yang berlaku (2017 atau revisi sesudahnya) belum dicek ke naskah lengkap.
-- Komite yang dipilih bisa memakai formulir ilmu sosial atau pendidikan sendiri. Kalau begitu, tabel di bawah dipakai untuk memetakan bagian dokumen ini ke formulir itu.
+Pedoman ini bertumpu pada tiga prinsip etik: menghormati harkat martabat manusia (*respect for persons*), berbuat baik dan tidak merugikan (*beneficence* dan *non-maleficence*), dan keadilan (*justice*). Dari ketiganya diturunkan standar kelaikan etik (PSEPPKN 2021, Bab III, Standar 7):
 
-| Standar KEPPKN | Bagian dokumen ini |
+- **Teks pedoman memuat delapan kriteria**: tujuh standar lama ditambah **8. Pelindungan subjek rentan**.
+- **Daftar tilik penelaah (Lampiran 3) dan format protokol (Lampiran 1) masih memakai tujuh standar.** Protokol dinyatakan laik etik kalau memenuhi ketujuhnya. Lampiran 1 bahkan masih menyebut "Pedoman KEPPKN 2017".
+
+Jadi komite kemungkinan tetap menilai dengan tujuh standar, tetapi pelindungan subjek rentan kini kriteria tersendiri. Karena pesertanya anak, tabel di bawah memberinya baris sendiri. Daftar tilik tujuh standar yang sudah diisi peneliti ada di [Daftar tilik tujuh standar](#daftar-tilik-tujuh-standar).
+
+`needs_verification`: komite yang dipilih bisa memakai formulir ilmu sosial atau pendidikan sendiri, misalnya *Panduan Klirens Etik Riset Bidang Sosial Humaniora* dari Komisi Etik Bidang Sosial Humaniora BRIN (November 2025; belum ditelaah, menunggu putaran tersendiri). Kalau begitu, tabel di bawah dipakai untuk memetakan bagian dokumen ini ke formulir itu.
+
+| Standar kelaikan etik PSEPPKN 2021 | Bagian dokumen ini |
 | --- | --- |
-| 1. Nilai sosial | [Latar belakang dan nilai sosial](#latar-belakang-dan-nilai-sosial), [Manfaat](#manfaat) |
-| 2. Desain ilmiah | [Desain penelitian](#desain-penelitian), [Peserta](#peserta) (besar sampel) |
+| 1. Nilai sosial dan/atau nilai klinis | [Latar belakang dan nilai sosial](#latar-belakang-dan-nilai-sosial), [Manfaat](#manfaat) |
+| 2. Nilai ilmiah (desain ilmiah) | [Desain penelitian](#desain-penelitian), [Peserta](#peserta) (besar sampel) |
 | 3. Pemerataan beban dan manfaat | [Peserta](#peserta), [Prosedur per pertemuan dan beban bagi anak](#prosedur-per-pertemuan-dan-beban-bagi-anak), [Manfaat](#manfaat) |
-| 4. Risiko dan manfaat | [Risiko dan mitigasi](#risiko-dan-mitigasi), [Prosedur rujukan](#prosedur-rujukan-butir-risiko-daring) |
-| 5. Bujukan dan kompensasi | [Kompensasi](#kompensasi) |
-| 6. Privasi dan kerahasiaan | [Kerahasiaan dan pengelolaan data](#kerahasiaan-dan-pengelolaan-data) |
-| 7. Persetujuan setelah penjelasan | [Persetujuan](#persetujuan), lampiran 23 |
+| 4. Potensi risiko dan manfaat | [Risiko dan mitigasi](#risiko-dan-mitigasi) (dengan simpulan risiko dan manfaat), [Prosedur rujukan](#prosedur-rujukan-butir-risiko-daring) |
+| 5. Bujukan, keuntungan finansial, dan biaya pengganti | [Kompensasi](#kompensasi) |
+| 6. Pelindungan privasi dan kerahasiaan | [Kerahasiaan dan pengelolaan data](#kerahasiaan-dan-pengelolaan-data) |
+| 7. Persetujuan setelah penjelasan (PSP) | [Persetujuan](#persetujuan), lampiran 23 |
+| 8. Pelindungan subjek rentan (baru di teks 2021, belum ada di daftar tilik) | [Peserta](#peserta) (alasan melibatkan anak, kriteria dan penyesuaian), [Persetujuan](#persetujuan) (izin orang tua dan persetujuan anak), [Prosedur per pertemuan dan beban bagi anak](#prosedur-per-pertemuan-dan-beban-bagi-anak) (sesi dan jeda), [Risiko dan mitigasi](#risiko-dan-mitigasi), [Prosedur rujukan](#prosedur-rujukan-butir-risiko-daring), [Uji keterbacaan (KG1)](#uji-keterbacaan-kg1) (dua orang dewasa) |
 
-### Bagian formulir umum → bagian dokumen ini
+### Format protokol PSEPPKN 2021 → bagian dokumen ini
 
-Urutan formulir protokol biasanya mirip, meski nomornya berbeda-beda (`needs_verification` terhadap formulir komite yang dipilih).
+Lampiran 1 PSEPPKN 2021 memberi format protokol untuk penelitian dengan manusia (bagian A sampai AB, nomor CIOMS 2016 di dalam kurung). Bagian yang khusus untuk uji klinik atau intervensi medis ditulis "tidak relevan" di formulir. Kalau komite memakai formulirnya sendiri, urutannya biasanya mirip (`needs_verification` terhadap formulir komite yang dipilih).
 
-| Bagian formulir umum | Bagian dokumen ini |
+| Bagian format protokol | Bagian dokumen ini |
 | --- | --- |
-| Judul, peneliti utama, institusi, anggota tim | [Identitas dan tim](#identitas-dan-tim) |
-| Ringkasan protokol (abstrak) | [Ringkasan](#ringkasan) |
-| Isu etik yang mungkin dihadapi | [Ringkasan](#ringkasan) (isu etik utama), [Risiko dan mitigasi](#risiko-dan-mitigasi) |
-| Latar belakang, kajian pustaka, justifikasi | [Latar belakang dan nilai sosial](#latar-belakang-dan-nilai-sosial) |
-| Tujuan dan pertanyaan penelitian | [Tujuan](#tujuan) |
-| Desain dan metode, jadwal | [Desain penelitian](#desain-penelitian), [Kegiatan yang dimintakan izin](#kegiatan-yang-dimintakan-izin) |
-| Populasi, sampel, kriteria inklusi dan eksklusi | [Peserta](#peserta) |
-| Rekrutmen | [Rekrutmen](#rekrutmen) |
-| Prosedur pada subjek, intervensi | [Prosedur per pertemuan dan beban bagi anak](#prosedur-per-pertemuan-dan-beban-bagi-anak) |
-| Kelompok rentan (anak) | [Peserta](#peserta), [Persetujuan](#persetujuan), [Risiko dan mitigasi](#risiko-dan-mitigasi) |
-| Risiko, ketidaknyamanan, dan cara mengatasinya | [Risiko dan mitigasi](#risiko-dan-mitigasi), [Prosedur rujukan](#prosedur-rujukan-butir-risiko-daring) |
-| Manfaat bagi subjek dan masyarakat | [Manfaat](#manfaat) |
-| Persetujuan setelah penjelasan (PSP), *assent* anak | [Persetujuan](#persetujuan), lampiran 23 |
-| Kerahasiaan, penyimpanan, dan pemusnahan data | [Kerahasiaan dan pengelolaan data](#kerahasiaan-dan-pengelolaan-data) |
-| Kompensasi, insentif, biaya | [Kompensasi](#kompensasi) |
-| Pendanaan dan konflik kepentingan | [Konflik kepentingan](#konflik-kepentingan) |
-| Kejadian tak diinginkan (KTD) | [Pelaporan kejadian tak diinginkan](#pelaporan-kejadian-tak-diinginkan) |
-| Amandemen protokol | [Perubahan protokol](#perubahan-protokol) |
-| Publikasi dan berbagi data | [Kerahasiaan dan pengelolaan data](#yang-dibagikan-di-osf-dan-yang-tidak-pernah) |
-| Lampiran (instrumen, PSP, CV peneliti, surat izin) | [Lampiran](#lampiran) |
+| A. Judul penelitian: lokasi, waktu, multisenter | [Identitas dan tim](#identitas-dan-tim); lokasi di [Peserta](#peserta); waktu di [Kegiatan yang dimintakan izin](#kegiatan-yang-dimintakan-izin) (garis waktu). Beberapa sekolah menjadi tempat pengambilan data, tetapi tim, institusi, dan permohonannya satu |
+| Identifikasi: peneliti utama, anggota, institusi, sponsor | [Identitas dan tim](#identitas-dan-tim) |
+| B. Ringkasan usulan (200–400 kata, bahasa awam) | [Ringkasan](#ringkasan) (± 300 kata; saat disalin ke formulir, istilah teknis seperti Plomp dan KG1–KG5 diganti kata awam) |
+| Justifikasi penelitian | [Latar belakang dan nilai sosial](#latar-belakang-dan-nilai-sosial) |
+| C. Isu etik yang mungkin dihadapi, dipetakan ke standar dan pedoman CIOMS | [Ringkasan](#ringkasan) (isu etik utama, dengan nomor standar dan pedoman), [Daftar tilik tujuh standar](#daftar-tilik-tujuh-standar) |
+| D. Ringkasan daftar pustaka (paling banyak satu halaman) | [Latar belakang dan nilai sosial](#latar-belakang-dan-nilai-sosial); kajian lengkap di usulan penelitian `[lampiran usulan penelitian]` |
+| E. Kondisi lapangan | [Peserta](#peserta) (populasi), [Prosedur per pertemuan dan beban bagi anak](#prosedur-per-pertemuan-dan-beban-bagi-anak); profil sekolah di L8 ([02 → L8](02_LEMBAR_LAPANGAN.md#l8-profil-sekolah)) |
+| F. Desain penelitian | [Tujuan](#tujuan), [Desain penelitian](#desain-penelitian) |
+| G. Sampling, termasuk alasan melibatkan anak | [Peserta](#peserta) |
+| H. Intervensi | Tidak relevan untuk intervensi medis; yang dikerjakan anak ada di [Prosedur per pertemuan dan beban bagi anak](#prosedur-per-pertemuan-dan-beban-bagi-anak) |
+| I. Monitor hasil (formulir laporan kasus) | Tidak relevan; padanannya lembar lapangan L0–L8 (lampiran 7) |
+| J. Penghentian penelitian dan alasannya | [Penghentian kegiatan dan penelitian](#penghentian-kegiatan-dan-penelitian) |
+| K. Kejadian yang tidak diharapkan | [Pelaporan kejadian tak diinginkan](#pelaporan-kejadian-tak-diinginkan) |
+| L. Penanganan komplikasi (asuransi, pengobatan, kompensasi cedera) | Tidak relevan: tidak ada risiko cedera fisik di atas minimal; kecelakaan kecil di kelas ada di [Risiko dan mitigasi](#risiko-dan-mitigasi) |
+| M. Manfaat | [Manfaat](#manfaat) |
+| N. Jaminan keberlanjutan manfaat | [Manfaat](#manfaat) (sekolah tetap bisa memakai GELITA setelah penelitian) |
+| O. Persetujuan setelah penjelasan | [Persetujuan](#persetujuan), lampiran 23 |
+| P. Wali | [Persetujuan](#persetujuan) (izin orang tua atau wali) |
+| Q. Bujukan; rencana menyampaikan hasil kepada subjek | [Kompensasi](#kompensasi); [Manfaat](#manfaat) (ringkasan hasil untuk sekolah) |
+| R. Penjagaan kerahasiaan: rekrutmen, kode, siapa membuka kode | [Rekrutmen](#rekrutmen), [Kode peserta dan pemisahan peran](#kode-peserta-dan-pemisahan-peran) |
+| S. Rencana analisis | [Desain penelitian](#desain-penelitian); [01 → Rencana analisis singkat](01_REVISI_10_ANALITIK.md#rencana-analisis-singkat) |
+| T. Monitor keamanan | [Pelaporan kejadian tak diinginkan](#pelaporan-kejadian-tak-diinginkan) (diskusi tim 24 jam setelah sesi), [Penghentian kegiatan dan penelitian](#penghentian-kegiatan-dan-penelitian) |
+| U. Konflik kepentingan | [Konflik kepentingan](#konflik-kepentingan) |
+| V. Manfaat sosial dan rencana pelibatan masyarakat | [Latar belakang dan nilai sosial](#latar-belakang-dan-nilai-sosial) (pelibatan sekolah dan masyarakat) |
+| W. Hak atas data | [Yang dibagikan di OSF dan yang tidak pernah](#yang-dibagikan-di-osf-dan-yang-tidak-pernah) |
+| X. Publikasi | [Yang dibagikan di OSF dan yang tidak pernah](#yang-dibagikan-di-osf-dan-yang-tidak-pernah) |
+| Y. Pendanaan | [Identitas dan tim](#identitas-dan-tim), [Konflik kepentingan](#konflik-kepentingan) |
+| Z. Komitmen etik | [Komitmen etik](#komitmen-etik) |
+| AA. Daftar pustaka | Usulan penelitian `[lampiran usulan penelitian]` |
+| AB. Lampiran: CV peneliti utama, formulir laporan kasus | [Lampiran](#lampiran) |
+
+### Tingkat telaah dan masa berlaku persetujuan
+
+Menurut PSEPPKN 2021 (Bab III B dan Bab IV B):
+
+- **Tingkat telaah yang diperkirakan: telaah lengkap (*full board*).** Protokol yang melibatkan kelompok rentan, termasuk anak, dibahas dalam rapat komite lengkap. Penelitian ini juga tidak memenuhi syarat dikecualikan (*exempted*): data penelitian berkode dan masih bisa dihubungkan ke nama lewat L7, dan ada butir yang sensitif (butir risiko daring). Pengembangan tes memang termasuk daftar telaah dipercepat, tetapi keterlibatan anak membuat protokol ini dibahas lengkap. Telaah lengkap bisa makan waktu berbulan-bulan; garis waktu di [Kegiatan yang dimintakan izin](#kegiatan-yang-dimintakan-izin) memberi waktu sampai akhir September–minggu pertama November 2027.
+- **Peneliti mahasiswa.** Ketua peneliti adalah mahasiswa, jadi pengisian dan pengiriman permohonan menjadi tanggung jawab pembimbing (`[nama pembimbing/promotor]`, [Identitas dan tim](#identitas-dan-tim)). Kalau komite mengundang, ketua peneliti mempresentasikan protokol didampingi pembimbing, lalu keduanya meninggalkan ruang saat komite memutuskan.
+- **Masa berlaku: satu tahun** sejak surat persetujuan terbit. Rentang KG1 sampai KG5 lebih dari setahun, karena sistem baru dibangun di antara G2 dan G3. Jadi ketua peneliti mengajukan **perpanjangan setiap tahun**, bersama laporan kemajuan ([Laporan berkala dan laporan akhir](#laporan-berkala-dan-laporan-akhir)), paling lambat satu bulan sebelum masa berlaku habis. Selama persetujuan tidak berlaku, tidak ada kegiatan dengan anak.
+- **Hanya penelitian yang belum dimulai** yang bisa ditelaah. Tidak ada kegiatan dengan anak, termasuk uji keterbacaan, sebelum persetujuan terbit (aturan pokok di atas).
+
+`needs_verification`: tingkat telaah, masa berlaku, dan batas waktu pengajuan perpanjangan ditetapkan komite yang dipilih; yang ditulis di atas mengikuti PSEPPKN 2021.
 
 ## Identitas dan tim
 
 | Hal | Isian |
 | --- | --- |
 | Judul | *GELITA: model asesmen literasi digital berbasis game dengan konteks budaya Kedu untuk siswa kelas 5 SD* (`needs_verification`: judul resmi disalin pemilik proyek dari usulan penelitian; konstruknya di [01 → Judul penelitian dan konstruk](01_REVISI_10_ANALITIK.md#judul-penelitian-dan-konstruk)) |
-| Ketua peneliti | `[nama ketua peneliti]`, `[gelar]`, `[institusi]`, `[kontak]` |
+| Ketua peneliti | `[nama ketua peneliti]`, `[gelar]`, `[institusi]`, `[kontak]`; mahasiswa `[jenjang S2/S3 dan program studi]` |
+| Pembimbing/promotor | `[nama pembimbing/promotor]`, `[gelar]`, `[institusi]`, `[kontak]`. Karena ketua peneliti mahasiswa, pembimbing bertanggung jawab atas pengisian dan pengiriman permohonan, dan mendampingi ketua peneliti saat telaah lengkap (PSEPPKN 2021, Bab III B.1 dan B.2c, Bab IV B.1c). Pembimbing tidak bertemu anak |
 | Institusi pengusul | `[nama institusi]` |
 | Komite tujuan | *Lembaga Komite Etik* (nama samaran; nama sebenarnya ditetapkan pemilik proyek) |
 | Pendanaan | `[sumber dana, atau "dana pribadi"]` |
-| Lama penelitian yang dimintakan izin | Dari terbitnya persetujuan sampai pengambilan data utama selesai; tanggal tiap tahap diisi tim ([01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja): tanggal belum ditetapkan) |
+| Lama penelitian yang dimintakan izin | Dari terbitnya persetujuan sampai pengambilan data utama selesai; tanggal tiap tahap diisi tim ([01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja): tanggal belum ditetapkan). Persetujuan berlaku satu tahun dan diperpanjang setiap tahun ([Tingkat telaah dan masa berlaku persetujuan](#tingkat-telaah-dan-masa-berlaku-persetujuan)) |
 
 **Tim lapangan dan peran** (peran di [03 → Peran](03_KODE_DAN_ARTI.md#peran)):
 
@@ -125,13 +156,13 @@ Izin diminta untuk lima kegiatan dengan anak (KG1–KG5), dalam satu permohonan:
 
 Anak memainkan GELITA di kelas, mengerjakan tes awal dan akhir, mengisi angket akses digital dan skala sikap di layar, dan diamati tiga peneliti. Di uji keterbacaan, anak hanya membaca bahan di laptop dan menjelaskan artinya dengan kata-katanya sendiri. Tidak ada intervensi medis, pengambilan bahan biologis, atau penipuan (*deception*).
 
-**Isu etik utama:**
-- pesertanya anak 10–11 tahun, jadi butuh izin orang tua dan persetujuan anak;
-- dua sampai tiga butir pengalaman risiko daring di P5, dengan izin terpisah dan prosedur rujukan; di uji keterbacaan butir ini hanya diparafrasekan, dan anak tidak menjawab tentang dirinya sendiri;
-- rekaman suara wawancara, dengan izin terpisah;
-- waktu layar dan kelelahan;
-- data pribadi anak di sistem daring;
-- anak yang tidak ikut tidak boleh merasa dikucilkan.
+**Isu etik utama** (di dalam kurung: nomor standar kelaikan etik PSEPPKN 2021 dan nomor pedoman CIOMS 2016, seperti diminta format protokol bagian C):
+- pesertanya anak 10–11 tahun, jadi butuh izin orang tua dan persetujuan anak (standar 7 dan 8; CIOMS 9 dan 17);
+- dua sampai tiga butir pengalaman risiko daring di P5, dengan izin terpisah dan prosedur rujukan; di uji keterbacaan butir ini hanya diparafrasekan, dan anak tidak menjawab tentang dirinya sendiri (standar 4, 6, dan 8; CIOMS 4 dan 17);
+- rekaman suara wawancara, dengan izin terpisah (standar 6 dan 7; CIOMS 9 dan 12);
+- waktu layar dan kelelahan (standar 3 dan 4; CIOMS 4);
+- data pribadi anak di sistem daring (standar 6; CIOMS 12 dan 22);
+- anak yang tidak ikut tidak boleh merasa dikucilkan (standar 3 dan 8; CIOMS 3).
 
 Penilaian risiko yang diusulkan: **risiko minimal**, kecuali butir risiko daring, yang **sedikit di atas minimal** karena bisa memunculkan pengalaman tidak menyenangkan dan memerlukan rujukan.
 
@@ -142,6 +173,12 @@ Penilaian risiko yang diusulkan: **risiko minimal**, kecuali butir risiko daring
 - **Kerangkanya.** Empat pilar literasi digital Komdigi dan Siberkreasi, dengan DigComp 3.0 sebagai padanan internasional; level D1 mengikuti AKM dan PIRLS 2026 ([01](01_REVISI_10_ANALITIK.md#judul-penelitian-dan-konstruk)).
 - **Konteks budaya.** Cerita dan soal memakai budaya Kedu, sehingga anak belajar mengenali representasi budaya daerahnya di ruang digital: atribusi, keterangan yang akurat, dan izin pemilik karya (D3).
 - **Nilai sosial.** Hasilnya berupa alat asesmen yang divalidasi, prinsip desain asesmen berbasis game untuk anak, dan gambaran kesalahan literasi digital yang sering terjadi pada siswa kelas 5. Semua ini bisa dipakai sekolah dan pengembang materi literasi digital. Penelitian ini tidak menilai siswa, guru, atau sekolah.
+- **Pelibatan sekolah dan masyarakat** (PSEPPKN 2021 Standar 1; format protokol bagian V; CIOMS 7). Standar 1 meminta penelitian melibatkan masyarakat dalam desain dan pelaksanaan, termasuk cara meminta persetujuan dan hal yang peka terhadap budaya, serta mencegah stigmatisasi dan hilangnya identitas lokal. Di GELITA:
+  - kepala sekolah menyetujui secara tertulis; jadwal, ruang, perangkat, dan kegiatan pengganti disepakati dengan sekolah saat rekrutmen; profil sekolah (L8) dikumpulkan tanpa data anak ([Rekrutmen](#rekrutmen));
+  - guru kelas membantu menyiapkan perangkat dan kegiatan pengganti, dan di uji keterbacaan membantu memilih calon tanpa memberi nilai;
+  - tiga Ahli Budaya Kedu menelaah cerita dan soal sebelum dipakai, supaya budaya Kedu tidak tergambar keliru atau buruk; dua Ahli Bahasa Anak menelaah bahasanya ([20](20_PAKET_VALIDASI.md));
+  - anak kelas 5 ikut memperbaiki kalimat soal lewat uji keterbacaan (KG1) sebelum bahan dipakai di kelas;
+  - hasil kembali ke sekolah sebagai ringkasan angka gabungan, dan sekolah tetap bisa memakai GELITA ([Manfaat](#manfaat)).
 
 Kajian pustaka lengkap ada di usulan penelitian `[lampiran usulan penelitian]` dan di [dokumen pendukung peneliti](dokumen-pendukung-peneliti/README.md).
 
@@ -200,15 +237,18 @@ Kegiatan tanpa anak (validasi ahli, ahli media langkah 1 dan 2, uji perangkat, L
 | Setelah G2 | Tahap 3: sistem baru dibangun (Prototipe II) → G3 |
 | Setelah G3 | KG2, KG3, KG4 di sekolah uji coba (Prototipe III) → pra-registrasi OSF → G4 |
 | Setelah G4 | KG5 dan KG4 di sekolah penelitian |
+| Setiap tahun sejak persetujuan, paling lambat satu bulan sebelum masa berlaku habis | Laporan kemajuan dan permohonan perpanjangan ke komite |
 | `[tanggal diisi tim]` | Laporan akhir ke komite |
 
-Kalau masa berlaku persetujuan dari komite lebih pendek dari rentang ini, ketua peneliti mengajukan perpanjangan sebelum masa itu habis (lihat [Perubahan protokol](#perubahan-protokol)).
+Persetujuan etik berlaku satu tahun (PSEPPKN 2021), sedangkan rentang ini lebih dari setahun. Ketua peneliti mengajukan perpanjangan setiap tahun bersama laporan kemajuan ([Tingkat telaah dan masa berlaku persetujuan](#tingkat-telaah-dan-masa-berlaku-persetujuan), [Laporan berkala dan laporan akhir](#laporan-berkala-dan-laporan-akhir)).
 
 ## Peserta
 
 ### Populasi dan sampel
 
 Siswa kelas 5 SD (umumnya 10–11 tahun) di sekolah-sekolah di wilayah Kedu atau sekitarnya, `[wilayah sekolah sasaran diisi pemilik proyek]`. Jumlah sekolah mengikuti ketersediaan kelas (keputusan 25 Oktober 2026, 01).
+
+**Alasan melibatkan anak** (format protokol bagian G; CIOMS 17). GELITA dibuat untuk mengukur literasi digital siswa kelas 5, jadi keterbacaan, kepraktisan, dan validitas skornya hanya bisa diuji dengan anak seusia itu. Bagian yang bisa dikerjakan tanpa anak dikerjakan lebih dulu: validasi ahli, ahli media, dan uji perangkat. Anak baru terlibat setelah bahannya ditelaah ahli.
 
 | Kegiatan | Besar sampel | Alasannya |
 | --- | --- | --- |
@@ -276,7 +316,7 @@ Teks lengkap ada di `23_SURAT_INFORMASI_DAN_PERSETUJUAN.md`. Bagian ini menjelas
 | Lapis | Siapa | Kapan | Bentuk | Dicatat di |
 | --- | --- | --- | --- | --- |
 | Izin sekolah | Kepala sekolah | Saat rekrutmen | Surat tertulis | Arsip ketua peneliti |
-| Izin orang tua | Orang tua atau wali | Dibagikan H-14 sampai H-10, pengingat H-5, kembali paling lambat H-3 sebelum P1; formulir yang tidak kembali berarti tidak ada izin | Surat dan formulir tertulis (23 → T1, T2) | L7 |
+| Izin orang tua | Orang tua atau wali | Dibagikan H-14 sampai H-10, pengingat H-5, kembali paling lambat H-3 sebelum P1; formulir yang tidak kembali berarti tidak ada izin | Surat dan formulir tertulis (23 → T1, T2). Kalau orang tua lebih nyaman surat dibacakan, guru kelas atau peneliti membacakannya, dan formulir diisi di depan saksi yang bukan anggota tim, dengan tanda tangan atau cap jempol (PSEPPKN 2021, daftar tilik indikator 7.3o; Lampiran 4 butir 17n) | L7 |
 | Izin rekaman suara wawancara | Orang tua | Sama, **centang terpisah** | Centang Ya/Tidak | L7 kolom *Izin rekaman suara* |
 | Izin butir risiko daring di P5 | Orang tua | Sama, **centang terpisah** | Centang Ya/Tidak | L7 kolom *Izin butir risiko daring* |
 | Persetujuan lisan anak | Anak | Pembukaan P1 | Penjelasan lisan dengan kalimat anak (23 → T3), lalu anak menyatakan mau atau tidak | L7 kolom *Persetujuan siswa* |
@@ -310,6 +350,16 @@ Dokumen ini menambah hal yang perlu ada di surat orang tua (23 → T1, dan untuk
 - **berbagi data**: data per anak berkode bisa dibagikan ke peneliti lain atas permintaan, dengan persetujuan komite, setelah dibersihkan; tidak ada unggahan publik ([Yang dibagikan](#yang-dibagikan-di-osf-dan-yang-tidak-pernah));
 - **ringkasan hasil**: angka gabungan diserahkan ke sekolah, dan orang tua bisa memintanya lewat sekolah; tidak ada centang hasil di formulir;
 - **tanpa foto dan video**.
+
+Dari perbandingan dengan PSEPPKN 2021 (Lampiran 2 dan daftar tilik standar 7), surat orang tua juga memuat (23 → T1, T2; untuk KG1 23 → T8a, T8b; keputusan pemilik proyek 27 Oktober 2026):
+
+- **batas pengamanan daring**: cara data dijaga, bahwa tidak ada sistem daring yang sepenuhnya bebas risiko kebocoran, dan bahwa orang tua diberi tahu kalau data anaknya terdampak (Lampiran 2 huruf i dan butir 26; CIOMS 22);
+- **jumlah peserta dan alasan anak diundang**: semua siswa kelas 5 di sekolah itu diundang, sekitar 360 siswa dari sekitar 13 kelas (indikator 7.3e dan 7.3f);
+- **sumber dana**, dan bahwa GELITA dibuat tim sendiri dan tidak dijual (Lampiran 2 butir 19);
+- **kontak cadangan** selain nomor ketua peneliti (indikator 7.3k);
+- **biaya dan tanda terima kasih**: tanpa biaya, tanpa uang, dan tanda terima kasih serta kudapan yang sama untuk semua anak di kelas, dalam satu kalimat netral ([Kompensasi](#kompensasi); Lampiran 2 butir 5);
+- **penghentian oleh peneliti**: peneliti bisa menghentikan keikutsertaan anak atau menghentikan sementara penelitian demi keselamatan anak ([Penghentian kegiatan dan penelitian](#penghentian-kegiatan-dan-penelitian); Lampiran 2 butir 4);
+- **dibacakan dengan saksi**: surat bisa dibacakan guru kelas atau peneliti, dan formulir punya baris saksi di luar tim yang diisi hanya dalam keadaan itu ([Lapis persetujuan](#lapis-persetujuan)).
 
 ### Persetujuan lisan anak di P1
 
@@ -398,6 +448,10 @@ Uji keterbacaan berjalan dengan prosedurnya sendiri di [24](24_UJI_KETERBACAAN.m
 | Akun anak dipakai orang lain, atau anak lupa kata sandi | Kecil | P1 me-reset kata sandi lewat kode peserta tanpa melihat nama; reset dicatat di log audit (01) |
 | Konten budaya keliru atau menyinggung | Kecil | Ditelaah tiga Ahli Budaya Kedu dan dua Ahli Bahasa Anak sebelum dipakai; butir bahasa daerah di skala sikap ditulis umum ([17 → Etika](17_SKALA_SIKAP.md#etika)) |
 | Kecelakaan kecil di kelas (kabel, perangkat jatuh) | Kecil | L0: kabel dan stopkontak diperiksa sebelum siswa masuk; perangkat cadangan; dicatat di L1 |
+| **Risiko bagi kelompok** (indikator 4.6): sekolah, kelas, atau masyarakat Kedu tampak buruk dari hasil penelitian, misalnya dicap lemah literasi digitalnya, atau budaya Kedu tergambar keliru | Kecil | Nama sekolah tidak pernah disebut di laporan dan publikasi; hasil hanya angka gabungan, tidak untuk kelompok kurang dari 5 siswa; penelitian ini tidak menilai siswa, guru, atau sekolah; hasil ditulis sebagai pola kesalahan yang umum pada anak kelas 5; konten budaya ditelaah tiga Ahli Budaya Kedu ([Pelibatan sekolah dan masyarakat](#latar-belakang-dan-nilai-sosial)) |
+| **Risiko bagi peneliti** (indikator 4.5): beban emosional saat mendengar cerita anak tentang bahaya serius; dituduh berbuat tidak pantas saat bersama anak; lelah karena sesi panjang | Kecil | Pengarahan cara menanggapi cerita anak ([Prosedur rujukan](#prosedur-rujukan-butir-risiko-daring), *Persiapan*); ketua peneliti menjadi tempat melapor hari itu juga; diskusi tim 24 jam setelah sesi; anak tidak pernah berdua saja dengan satu orang dewasa, wawancara di tempat yang terlihat, dan uji keterbacaan selalu dengan dua orang dewasa; tiga peneliti per kelas berbagi tugas |
+
+**Simpulan risiko dan manfaat** (indikator 4.7). Secara keseluruhan, risiko bagi anak **minimal**: kegiatannya sebanding dengan pelajaran, ulangan, dan pengisian angket biasa di kelas, ditambah bermain game. Satu-satunya bagian yang **sedikit di atas minimal** adalah butir risiko daring di P5. Bagian itu dibatasi izin terpisah, tanya ulang di layar, pilihan *Tidak mau menjawab*, pesan dukungan untuk semua anak, dan prosedur rujukan. Risiko bagi kelompok dan bagi peneliti kecil dan ditangani di tabel di atas. Manfaat langsung bagi anak kecil ([Manfaat](#manfaat)). Pengetahuan yang dihasilkan, yaitu alat ukur literasi digital anak yang tervalidasi dan gambaran kesalahan yang sering terjadi, bermanfaat bagi sekolah dan anak kelas 5 lain. Karena risikonya kecil dan bisa dikendalikan, manfaat itu sepadan dengan risikonya.
 
 ## Prosedur rujukan butir risiko daring
 
@@ -455,7 +509,8 @@ Rasa tidak nyaman ringan di internet cukup umum, jadi jumlah anak bertanda bisa 
 **Bagi masyarakat dan ilmu:**
 - alat asesmen literasi digital anak yang tervalidasi;
 - prinsip desain asesmen berbasis game;
-- gambaran kesalahan literasi digital siswa kelas 5 yang bisa dipakai untuk materi pembelajaran.
+- gambaran kesalahan literasi digital siswa kelas 5 yang bisa dipakai untuk materi pembelajaran;
+- dasar untuk penelitian lanjutan: bank soal, skema kesalahan, dan rencana analisis yang dipra-registrasi bisa diuji ulang di sekolah dan kelas lain (indikator 2.3).
 
 ## Kerahasiaan dan pengelolaan data
 
@@ -485,6 +540,7 @@ Tidak dikumpulkan: foto, video, lokasi, nomor HP anak, data penghasilan, pekerja
   - satu orang dengan dua peran memakai dua akun.
 - **Akun staf memakai nama samaran per peran**: `admin`, `koordinator` (P1), `pengamat` (P2), `pewawancara` (P3), dan `ketua` (ketua peneliti), dikukuhkan pemilik proyek 27 Oktober 2026 ([03 → Akun staf](03_KODE_DAN_ARTI.md#akun-staf)). Siapa pemegangnya dicatat ketua peneliti di luar repo.
 - **Peran `guru` dihapus**, jadi guru tidak punya akses ke data anak.
+- **Membuka kode** (PSEPPKN 2021, indikator 6e; format protokol bagian R). Kode dibuat sistem saat anak mendaftar, supaya nama terpisah dari data. Kunci yang menghubungkan kode dengan nama adalah L7 dan akun yang dikelola admin, disimpan seperti di [Penyimpanan dan enkripsi](#penyimpanan-dan-enkripsi). Hanya ketua peneliti yang membuka kode, untuk tiga keperluan: rujukan butir risiko daring atau keadaan darurat lain yang menyangkut keselamatan anak, permintaan mundur atau hapus data, dan pemberitahuan kebocoran data kepada orang tua yang anaknya terdampak. Setiap kali kode dibuka, tanggal dan alasannya dicatat di catatan ketua peneliti, tanpa ditulis di data penelitian.
 
 ### Di mana nama berada
 
@@ -535,6 +591,10 @@ Diputuskan pemilik proyek 27 Oktober 2026 ([Keputusan pemilik proyek](#keputusan
 
 Laporan dan publikasi tidak menyebut nama sekolah atau anak. Kutipan ucapan anak diberi kode samaran baru (bukan kode peserta).
 
+**Hasil diterbitkan apa pun hasilnya**, termasuk kalau butir atau skor GELITA ternyata tidak bekerja seperti yang diharapkan. Rencana analisisnya sudah dipra-registrasi di G4 (PSEPPKN 2021, Bab IV C.2: hasil negatif dan positif dipublikasikan atau sekurang-kurangnya terbuka bagi publik).
+
+**Hak atas data dan publikasi** (format protokol bagian W): `[pemegang hak data dan publikasi, misalnya institusi pengusul dan ketua peneliti]`. Pemberi dana tidak berhak menahan atau mengubah hasil (`[konfirmasi bersama sumber dana]`, [Konflik kepentingan](#konflik-kepentingan)).
+
 ### Dasar hukum
 
 Pengolahan data pribadi anak memerlukan persetujuan orang tua atau wali menurut UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi (`needs_verification`: pasal tentang data anak dan kewajiban pemberitahuan kebocoran dicek sebelum diajukan).
@@ -549,6 +609,7 @@ Diputuskan pemilik proyek 27 Oktober 2026 ([Keputusan pemilik proyek](#keputusan
 - **Anak uji keterbacaan (KG1)**, termasuk K05, mendapat tanda terima kasih kecil yang sama setelah sesi terakhir yang diikutinya. Tanda ini juga tidak disebut sebagai imbalan dan tidak dijanjikan sebagai alasan untuk ikut.
 - **Sekolah**: ringkasan hasil gabungan (orang tua bisa memintanya lewat sekolah) dan kesempatan memakai GELITA setelah penelitian.
 - **Tidak ada biaya** bagi anak, orang tua, atau sekolah. Perangkat tambahan dibawa peneliti kalau perangkat sekolah kurang (L8).
+- **Disebut di surat orang tua dalam satu kalimat netral** (23 → T1 bagian 7; untuk KG1 23 → T8a): tanpa biaya, tanpa uang, dan semua anak di kelas, ikut atau tidak, mendapat kudapan dan tanda terima kasih kecil yang sama, berupa `[jenis tanda terima kasih]`. PSEPPKN 2021 meminta jenis dan jumlah pemberian disebut (Lampiran 2 butir 5; daftar tilik indikator 5.4). Kalimat itu tidak menyebutnya hadiah atau imbalan, dan naskah anak tidak menyebutnya sama sekali (keputusan pemilik proyek 27 Oktober 2026, [no. 11](#keputusan-pemilik-proyek)).
 
 ## Konflik kepentingan
 
@@ -557,7 +618,8 @@ Diputuskan pemilik proyek 27 Oktober 2026 ([Keputusan pemilik proyek](#keputusan
   - validasi isi oleh sebelas ahli dari luar tim;
   - pelabelan buta oleh dua ahli (Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1, yang menerima paket buta B.5a lebih dulu, sebelum melihat label pengembang, [20](20_PAKET_VALIDASI.md)) dengan syarat kesepakatan κ ≥ 0,70 (G2);
   - pra-registrasi skema kesalahan dan rencana analisis di OSF sebelum data utama (G4);
-  - setiap analisis utama dijalankan dua kali, dengan dan tanpa data yang dibantu.
+  - setiap analisis utama dijalankan dua kali, dengan dan tanpa data yang dibantu;
+  - hasil diterbitkan apa pun hasilnya, juga kalau GELITA ternyata tidak mengukur dengan baik ([Yang dibagikan di OSF dan yang tidak pernah](#yang-dibagikan-di-osf-dan-yang-tidak-pernah)).
 - Penelitian ini tidak dibiayai pihak yang menjual produk terkait `[konfirmasi sumber dana]`. GELITA tidak dijual ke sekolah peserta.
 - Peneliti tidak mengajar di kelas peserta dan tidak menilai siswa. Kalau ada anggota tim yang mengajar di sekolah sasaran, `[diisi]`, ia tidak bertugas di kelas yang diajarnya.
 
@@ -567,7 +629,7 @@ Diputuskan pemilik proyek 27 Oktober 2026 ([Keputusan pemilik proyek](#keputusan
 
 | Jenis | Contoh | Ke ketua peneliti | Ke *Lembaga Komite Etik* |
 | --- | --- | --- | --- |
-| Serius | Anak mengungkap bahaya serius yang memerlukan rujukan ke layanan perlindungan anak; cedera di sesi; kebocoran data yang memuat nama | Segera, hari itu | Paling lambat `[batas komite, mis. 7 hari kalender]` (`needs_verification`) |
+| Serius | Anak mengungkap bahaya serius yang memerlukan rujukan ke layanan perlindungan anak; cedera di sesi; kebocoran data yang memuat nama | Segera, hari itu | Secepat mungkin (PSEPPKN 2021 tidak memberi batas hari di luar uji klinik), paling lambat `[batas komite, mis. 7 hari kalender]` (`needs_verification`) |
 | Tidak serius | Anak menangis atau sangat cemas dan berhenti; keluhan orang tua; guru membantu isi soal berulang kali; L7 terlambat kembali sehingga anak bermain tanpa izin lengkap | Dalam 24 jam | Dalam laporan berkala atau laporan akhir |
 | Penyimpangan protokol | Kegiatan dengan anak sebelum izin lengkap; butir risiko tampil ke anak tanpa centang izin; peneliti kurang dari tiga (`DEV-TIM`); di KG1, anak bersama hanya satu orang dewasa, atau anak diminta menjawab butir risiko tentang dirinya | Dalam 24 jam, dicatat di L1 | Kalau menyangkut izin atau keselamatan anak: sama seperti serius; selain itu di laporan berkala |
 
@@ -580,7 +642,32 @@ Diputuskan pemilik proyek 27 Oktober 2026 ([Keputusan pemilik proyek](#keputusan
 
 **Kebocoran data:** ketua peneliti dan admin mengamankan akses (ganti kata sandi, tutup akun, cabut token), menilai data apa yang bocor, lalu memberi tahu sekolah, orang tua yang anaknya terdampak, dan komite. Batas waktu pemberitahuan mengikuti UU No. 27 Tahun 2022 (`needs_verification`; yang sering dikutip 3 × 24 jam).
 
-**Kegiatan dihentikan sementara** kalau terjadi kejadian serius yang mungkin terulang pada anak lain, sampai komite memberi tanggapan.
+**Kegiatan dihentikan sementara** kalau terjadi kejadian serius yang mungkin terulang pada anak lain, sampai komite memberi tanggapan. Aturan penghentian selengkapnya ada di [Penghentian kegiatan dan penelitian](#penghentian-kegiatan-dan-penelitian).
+
+### Laporan berkala dan laporan akhir
+
+Kewajiban setelah persetujuan terbit, menurut PSEPPKN 2021 (Bab III B.3d, Bab IV B.6 dan C.1):
+
+| Laporan | Kapan | Isi |
+| --- | --- | --- |
+| Laporan kemajuan | Paling sedikit sekali setahun, bersama permohonan perpanjangan ([Tingkat telaah dan masa berlaku persetujuan](#tingkat-telaah-dan-masa-berlaku-persetujuan)), atau lebih sering kalau komite meminta | Kegiatan yang sudah berjalan; jumlah anak yang ikut, mundur, dan datanya dihapus; kejadian tidak serius dan penyimpangan protokol; amandemen dan notifikasi; rencana tahun berikutnya |
+| Laporan kejadian serius dan penyimpangan yang menyangkut izin atau keselamatan anak | Sesuai tabel [Kejadian yang dilaporkan](#kejadian-yang-dilaporkan) | Uraian tanpa nama dan tindak lanjutnya |
+| Laporan penghentian | Kalau penelitian dihentikan lebih awal ([Penghentian kegiatan dan penelitian](#penghentian-kegiatan-dan-penelitian)) | Alasan penghentian, data yang sudah terkumpul, dan cara sekolah dan orang tua diberi tahu |
+| Laporan akhir | Setelah pengambilan data utama dan analisis selesai, `[tanggal diisi tim]` | Ringkasan pelaksanaan, jumlah peserta, kejadian selama penelitian, cara hasil disampaikan ke sekolah, rencana publikasi, dan status data (pemusnahan nama saat studi ditutup) |
+| Pemberitahuan kepada peserta | Saat penelitian selesai | Sekolah diberi tahu bahwa penelitian selesai dan menerima ringkasan hasil; orang tua bisa memintanya lewat sekolah ([Manfaat](#manfaat)) |
+
+## Penghentian kegiatan dan penelitian
+
+Mengikuti format protokol PSEPPKN 2021 bagian J. Yang memutuskan adalah ketua peneliti, kecuali disebut lain. Setiap penghentian dicatat di L1 dan dilaporkan sesuai [Pelaporan kejadian tak diinginkan](#pelaporan-kejadian-tak-diinginkan).
+
+| Tingkat | Kapan dihentikan | Yang terjadi |
+| --- | --- | --- |
+| Satu anak, hari itu | Anak ingin berhenti; anak menangis, sangat cemas, sakit, atau sangat lelah | Kegiatan anak itu dihentikan; anak ditemani orang dewasa yang ia kenal. Ia boleh melanjutkan di susulan kalau mau, atau berhenti seterusnya |
+| Satu anak, seterusnya | Anak atau orang tua mengundurkan diri; izin orang tua ternyata tidak lengkap; anak mengalami kejadian serius yang membuat ikut lebih lama tidak baik baginya | Akun dinonaktifkan dan anak ikut kegiatan pengganti; data mengikuti pilihan A, B, atau C ([Mengundurkan diri dan hapus data](#mengundurkan-diri-dan-hapus-data)); orang tua diberi tahu lewat kontak di formulir izin |
+| Satu sesi kelas | Sesi tidak bisa berjalan aman: listrik, perangkat, atau internet tidak memungkinkan, atau kurang dari dua peneliti hadir. Kalau hanya dua peneliti, sesi tetap berjalan sesuai L0 dan dicatat `DEV-TIM` ([02 → L0](02_LEMBAR_LAPANGAN.md#l0-daftar-periksa-persiapan-sesi)) | Sesi ditunda dan dijadwalkan ulang bersama sekolah |
+| Satu kelas atau sekolah | Guru berulang kali membantu isi soal setelah diingatkan (`DEV-PRT`); sekolah menarik izin | Kalau guru: ketua peneliti membicarakannya dengan kepala sekolah sebelum sesi berikutnya. Kalau sekolah menarik izin: kegiatan di sekolah itu berhenti, orang tua diberi tahu lewat sekolah, dan data yang sudah terkumpul mengikuti pilihan tiap orang tua di 23 → T10 |
+| Seluruh penelitian, sementara | Kejadian serius yang mungkin terulang pada anak lain; kebocoran data yang memuat nama; komite memintanya; masa berlaku persetujuan habis sebelum perpanjangan terbit | Semua kegiatan dengan anak berhenti sampai komite memberi tanggapan atau perpanjangan terbit; sekolah diberi tahu |
+| Seluruh penelitian, seterusnya | Komite mencabut persetujuan; risiko ternyata lebih besar dari manfaat dan tidak bisa dikurangi | Ketua peneliti memberi tahu komite (dengan alasannya), institusi, dan sekolah; orang tua diberi tahu lewat sekolah; laporan penghentian dibuat dari data yang sudah ada (PSEPPKN 2021, Bab IV B.6) |
 
 ## Perubahan protokol
 
@@ -595,14 +682,116 @@ Diputuskan pemilik proyek 27 Oktober 2026 ([Keputusan pemilik proyek](#keputusan
   - perubahan beban (jumlah atau lama pertemuan bertambah lebih dari 15 menit per pertemuan);
   - perubahan besar sampel lebih dari 20%;
   - rekaman video atau foto.
-- Perpanjangan masa berlaku persetujuan diajukan sebelum masa itu habis.
-- Setiap amandemen dicatat di 04 dengan nomor amandemen dan tanggal persetujuannya.
+- **Notifikasi, tanpa menunggu persetujuan:** perubahan yang tidak menambah risiko atau ketidaknyamanan anak, misalnya nomor kontak peneliti atau jadwal sesi yang bergeser, cukup diberitahukan ke komite (PSEPPKN 2021, Bab IV B.3). Apakah pergantian anggota tim lapangan cukup dengan notifikasi dicek dengan aturan komite (`needs_verification`).
+- **Penyimpangan tanpa persetujuan** hanya boleh untuk menghindari bahaya langsung bagi anak. Penyimpangan itu segera dilaporkan ke komite dengan alasannya (Bab IV B.3).
+- **Perpanjangan masa berlaku** (satu tahun) diajukan setiap tahun bersama laporan kemajuan, paling lambat satu bulan sebelum masa berlaku habis ([Tingkat telaah dan masa berlaku persetujuan](#tingkat-telaah-dan-masa-berlaku-persetujuan)).
+- Setiap amandemen dan notifikasi dicatat di 04 dengan nomor dan tanggalnya; amandemen juga dengan tanggal persetujuannya.
+
+## Daftar tilik tujuh standar
+
+PSEPPKN 2021 (Lampiran 3) meminta peneliti mengisi daftar tilik ini sebelum protokol diajukan; komite lalu menelaahnya dan yang memutuskan. Isian di bawah adalah isian peneliti. Indikator yang khusus untuk uji klinik atau intervensi medis diisi N/A. Standar 8 (pelindungan subjek rentan) belum punya indikator di daftar tilik; buktinya di baris 8 tabel [Pedoman yang dirujuk](#pedoman-yang-dirujuk).
+
+**Ringkasan**
+
+| Standar | Ya / Tidak / N/A | Catatan |
+| --- | --- | --- |
+| 1. Nilai sosial/klinis | Ya | Nilai sosial; tidak ada nilai klinis |
+| 2. Nilai ilmiah | Ya | — |
+| 3. Pemerataan beban dan manfaat | Ya | — |
+| 4. Potensi manfaat dan risiko | Ya | Risiko minimal (≤ standar risiko minimal), kecuali butir risiko daring yang sedikit di atas minimal; risiko kecil bagi peneliti |
+| 5. Bujukan/eksploitasi | Ya | Tanpa uang; tanda terima kasih dan kudapan yang sama untuk semua anak di kelas |
+| 6. Rahasia dan privasi | Ya | — |
+| 7. Persetujuan setelah penjelasan | Ya | Izin orang tua dan persetujuan anak |
+
+**Indikator per standar**
+
+| No | Indikator (diringkas) | Isian | Buktinya |
+| --- | --- | --- | --- |
+| 1.1 | Kebaruan: informasi valid, relevan, berkontribusi pada evaluasi intervensi atau kebijakan | Ya | [Latar belakang dan nilai sosial](#latar-belakang-dan-nilai-sosial): alat ukur literasi digital berbasis tindakan untuk kelas 5 masih sedikit |
+| 1.2 | Rencana diseminasi hasil | Ya | [Manfaat](#manfaat), [Yang dibagikan di OSF dan yang tidak pernah](#yang-dibagikan-di-osf-dan-yang-tidak-pernah) |
+| 1.3 | Informasi yang dihasilkan penting | Ya | [Latar belakang dan nilai sosial](#latar-belakang-dan-nilai-sosial) |
+| 1.4 | Mempromosikan kesehatan individu atau masyarakat | Sebagian | Keselamatan anak di internet (D2); bukan kesehatan klinis |
+| 1.5 | Alternatif cara mengatasi masalah, atau bisa mengubah keputusan pembuat kebijakan | Ya | Gambaran kesalahan untuk materi pembelajaran ([Manfaat](#manfaat)) |
+| 1.6 | Data untuk keputusan klinis/sosial | Ya | Alat asesmen tervalidasi untuk sekolah ([Manfaat](#manfaat)) |
+| 2.1 | Desain menurut kaidah ilmiah: desain, tempat dan waktu, sampel dan kriteria, variabel, instrumen, prosedur, cara pengumpulan data, pencatatan, rencana analisis | Ya | [Desain penelitian](#desain-penelitian), [Kegiatan yang dimintakan izin](#kegiatan-yang-dimintakan-izin), [Peserta](#peserta), [Prosedur per pertemuan dan beban bagi anak](#prosedur-per-pertemuan-dan-beban-bagi-anak); variabel di [11](11_KAMUS_DATA.md); instrumen di lampiran 3–7 |
+| 2.2 | Informasi valid dan andal sesuai tujuan | Ya | [Tujuan](#tujuan), [Desain penelitian](#desain-penelitian) (Rasch, κ, pra-registrasi) |
+| 2.3 | Penelitian lanjutan | Ya | [Manfaat](#manfaat) |
+| 2.4 | Data untuk keputusan klinis/sosial | Ya | [Manfaat](#manfaat) |
+| 2.5 | Relevan dengan masalah kesehatan | Sebagian | Keselamatan dan kesejahteraan anak di internet; masalah utamanya pendidikan |
+| 2.6 | Penelitian intervensi (a–n: studi sebelumnya, intervensi dan dosis, terapi, laporan kasus, KTD, analisis interim, dana, konflik kepentingan, hasil negatif) | N/A untuk a–k | Bukan penelitian intervensi. Yang tetap berlaku: dana (l) di [Identitas dan tim](#identitas-dan-tim), konflik kepentingan (m) di [Konflik kepentingan](#konflik-kepentingan), hasil negatif (n) di [Yang dibagikan di OSF dan yang tidak pernah](#yang-dibagikan-di-osf-dan-yang-tidak-pernah) |
+| 3.1 | Beban dan manfaat dibagi merata | Ya | [Pemerataan beban dan manfaat](#pemerataan-beban-dan-manfaat) |
+| 3.2 | Rekrutmen berdasar pertimbangan ilmiah, bukan status sosial ekonomi atau mudahnya dipengaruhi; kriteria jelas | Ya | [Peserta](#peserta), [Rekrutmen](#rekrutmen): semua kelas 5 di sekolah yang ikut ditawari, tanpa memilih berdasarkan nilai |
+| 3.3 | Subjek yang perlu pelindungan khusus dipertimbangkan | Ya | [Kriteria eksklusi dan penyesuaian](#kriteria-eksklusi-dan-penyesuaian) |
+| 3.4 | Kelompok yang tidak mungkin mendapat manfaat dipisahkan | N/A | Semua peserta dari populasi sasaran (kelas 5) |
+| 3.5 | Kelompok yang kurang terwakili diberi akses | Ya | Anak dengan kebutuhan khusus boleh ikut dengan penyesuaian |
+| 3.6 | Distribusi menurut lokasi | Ya | Sekolah di wilayah Kedu dan sekitarnya ([Peserta](#peserta)) |
+| 3.7 | Kelompok terpinggirkan terwakili seimbang | Sebagian | Semua anak kelas 5 di sekolah yang ikut ditawari; sebaran sekolah mengikuti ketersediaan kelas, konteksnya dicatat di L8 |
+| 3.8 | Beban subjek lebih besar daripada peluang manfaatnya | Tidak | Beban paling lama ± 10 jam dalam lima pertemuan; hasil kembali ke sekolah ([Manfaat](#manfaat)) |
+| 3.9 | Kelompok rentan tidak dikeluarkan | Ya | Anak ikut karena alat ukurnya untuk anak ([Populasi dan sampel](#populasi-dan-sampel)); kebutuhan khusus tidak ditolak |
+| 3.10 | Subjek tidak dimanfaatkan berlebihan karena mudah didapat | Ya | Peneliti tidak mengajar di kelas peserta ([Konflik kepentingan](#konflik-kepentingan)); tanpa bujukan |
+| 3a, 3b, 3c | Pentingnya penelitian bagi komunitas; kriteria subjek; alasan melibatkan anak dan cara memaksimalkan manfaat bagi mereka | Ya | [Latar belakang dan nilai sosial](#latar-belakang-dan-nilai-sosial), [Peserta](#peserta) (alasan melibatkan anak), [Manfaat](#manfaat) |
+| 3d–3g, 3j, 3k | Terapi, pemeriksaan klinis, laporan kasus, keberlanjutan pengobatan, ibu hamil | N/A | — |
+| 3h, 3i | Manfaat pribadi bagi subjek dan bagi penduduk | Ya | [Manfaat](#manfaat) |
+| 4.1 | Manfaat bagi subjek lebih besar daripada risiko | Tidak | Manfaat langsung kecil; kelaikan bersandar pada risiko minimal (4.2, 4.8) dan manfaat sosial dan ilmiah (4.9) |
+| 4.2 | Risiko sama atau lebih kecil dari minimal | Ya, kecuali butir risiko daring | [Ringkasan](#ringkasan), simpulan di [Risiko dan mitigasi](#risiko-dan-mitigasi) |
+| 4.3 | Intervensi efektif bagi kelompok intervensi dan kontrol | N/A | Tanpa kelompok kontrol |
+| 4.4 | Kerugian sedikit di atas risiko minimal diuraikan | Ya | Butir risiko daring ([Risiko dan mitigasi](#risiko-dan-mitigasi), [Prosedur rujukan](#prosedur-rujukan-butir-risiko-daring)) |
+| 4.5 | Risiko bagi peneliti | Ya | [Risiko dan mitigasi](#risiko-dan-mitigasi) |
+| 4.6 | Risiko bagi kelompok atau masyarakat | Ya | [Risiko dan mitigasi](#risiko-dan-mitigasi) |
+| 4.7 | Simpulan agregat risiko dan manfaat | Ya | Simpulan di [Risiko dan mitigasi](#risiko-dan-mitigasi) |
+| 4.8 | Risiko fisik, psikis, dan sosial yang minimal diuraikan | Ya | [Risiko dan mitigasi](#risiko-dan-mitigasi) |
+| 4.9 | Keuntungan sosial dan ilmiah dibandingkan dengan risiko | Ya | Simpulan di [Risiko dan mitigasi](#risiko-dan-mitigasi), [Manfaat](#manfaat) |
+| 4.10 | Pertimbangan penelaah | — | Diisi komite |
+| 5.1 | Penjelasan insentif yang wajar | Ya | [Kompensasi](#kompensasi); disebut di 23 → T1 bagian 7 dan T8a |
+| 5.2 | Insentif dan kompensasi untuk penelitian berisiko luka fisik | N/A | Tidak ada risiko luka fisik di atas minimal |
+| 5.3 | Ada indikasi eksploitasi atau bujukan yang tidak semestinya | Tidak | Tanpa uang; sama untuk semua anak di kelas, ikut atau tidak |
+| 5.4 | Jenis, jumlah, waktu, media, dan prasyarat kompensasi wajar | Ya | [Kompensasi](#kompensasi): `[jenis tanda terima kasih]` senilai `[nilai]` di akhir P5 tanpa prasyarat; kudapan di P1 dan P5 |
+| 6.1–6.3 | Persetujuan baru dan konsultasi kalau muncul masalah kesehatan baru; peneliti netral terhadap temuan | N/A | Tidak ada temuan kesehatan; padanannya cerita anak tentang bahaya, ditangani di [Prosedur rujukan](#prosedur-rujukan-butir-risiko-daring) |
+| 6.4 | Rahasia dibuka hanya kalau terpaksa, setelah dijelaskan kepada subjek | Ya | [Prosedur rujukan](#prosedur-rujukan-butir-risiko-daring) langkah 5: anak diberi tahu sebelum orang dewasa dihubungi |
+| 6a | Kerahasiaan sejak rekrutmen sampai selesai, juga bagi yang batal ikut | Ya | [Rekrutmen](#rekrutmen) (nama baru diberikan setelah izin kembali), [Di mana nama berada](#di-mana-nama-berada); anak tanpa izin tidak punya data |
+| 6b | Privasi saat menjelaskan prosedur | Ya | Amplop tertutup; anak yang menolak tidak perlu mengangkat tangan ([Persetujuan lisan anak di P1](#persetujuan-lisan-anak-di-p1)) |
+| 6c | Kerahasiaan saat subjek diwakili | Ya | Guru dan orang tua tidak melihat jawaban per anak |
+| 6d | Data yang mutlak rahasia dijaga khusus | Ya | Jawaban butir risiko daring dan catatan rujukan ([Prosedur rujukan](#prosedur-rujukan-butir-risiko-daring) langkah 6, [Yang dibagikan di OSF dan yang tidak pernah](#yang-dibagikan-di-osf-dan-yang-tidak-pernah)) |
+| 6e | Cara kode dibuat, alasannya, tempat simpan, dan siapa membukanya dalam keadaan darurat | Ya | [Kode peserta dan pemisahan peran](#kode-peserta-dan-pemisahan-peran) |
+| 6f | Kemungkinan pemakaian data untuk penelitian lain | Ya | [Yang dibagikan di OSF dan yang tidak pernah](#yang-dibagikan-di-osf-dan-yang-tidak-pernah) |
+| 6g | Hasil negatif tersedia lewat publikasi | Ya | [Yang dibagikan di OSF dan yang tidak pernah](#yang-dibagikan-di-osf-dan-yang-tidak-pernah) |
+| 7.1 | Lembar PSP dengan naskah penjelasan | Ya | 23 → T1, T2; untuk KG1 T8a, T8b |
+| 7.2 | Proses mendapatkan persetujuan yang laik | Ya | [Lapis persetujuan](#lapis-persetujuan) |
+| 7.3a–c | Bahasa mudah dipahami; manfaat dipahami; perlakuan jelas, tidak ada yang disembunyikan | Ya | 23 → *Catatan keterbacaan*; T1 bagian 1, 2, dan 7; tanpa penipuan |
+| 7.3d–f | Lama keikutsertaan; karakteristik subjek; jumlah subjek | Ya | T1 pembuka dan bagian 1 |
+| 7.3g–i | Risiko; jaminan kerahasiaan; tanpa paksaan | Ya | T1 bagian 3 (termasuk batas pengamanan daring), 5, 6, dan 7 |
+| 7.3j | Pengobatan dan ganti rugi | N/A | Tidak ada risiko cedera fisik di atas minimal |
+| 7.3k | Nama dan telepon penanggung jawab, nomor cadangan, alamat | Ya | T1 kepala surat dan bagian 8 |
+| 7.3l | Penanggung jawab medis; komite yang memberi persetujuan | Sebagian | Tidak ada penanggung jawab medis (bukan penelitian medis); komite di T1 bagian 8 |
+| 7.3m | Hak mengundurkan diri kapan saja tanpa sanksi | Ya | T1 bagian 6, T10 |
+| 7.3n | Tanda tangan subjek atau wali | Ya | T2 (orang tua); persetujuan anak lisan dan centang ([Lapis persetujuan](#lapis-persetujuan)) |
+| 7.3o | Tanda tangan saksi | Ya, kalau surat dibacakan | T2 dan T8b baris saksi |
+| 7.3p | Pilihan perlakuan lain di luar penelitian | N/A | Anak tanpa izin ikut kegiatan pengganti ([Kegiatan pengganti](#kegiatan-pengganti)) |
+| 7.4 | Kalimat memudahkan subjek | Ya | 23 → *Aturan menulis teks ini* dan *Catatan keterbacaan* |
+
+## Komitmen etik
+
+Format protokol PSEPPKN 2021 bagian Z meminta pernyataan peneliti utama. Teks usulannya di bawah; ditandatangani ketua peneliti di luar repo, diketahui pembimbing, dan dilampirkan (lampiran 13).
+
+> Saya, `[nama ketua peneliti]`, menyatakan bahwa:
+>
+> 1. penelitian ini akan dilaksanakan sesuai protokol yang disetujui `[nama komite etik]` dan prinsip *Pedoman dan Standar Etik Penelitian dan Pengembangan Kesehatan Nasional* (KEPPKN, 2021);
+> 2. tidak ada kegiatan dengan anak yang dimulai sebelum persetujuan etik terbit, dan setiap perubahan protokol diajukan sebagai amandemen atau notifikasi;
+> 3. kalau ditemukan bukti pemalsuan atau manipulasi data, saya menghentikan pemakaian data itu, melapor kepada `[nama komite etik]` dan `[nama institusi]`, dan menanganinya sesuai aturan integritas akademik `[nama institusi]`;
+> 4. riwayat telaah etik saya sebelumnya: `[judul, tanggal, komite, dan hasil telaah; atau "belum pernah"]`.
+>
+> `[tempat]`, `[tanggal]`
+>
+> `[tanda tangan]`
+> `[nama ketua peneliti]`
+>
+> Mengetahui, pembimbing/promotor: `[tanda tangan]` `[nama pembimbing/promotor]`
 
 ## Lampiran
 
 | No | Lampiran | Berkas | Status per 27 Oktober 2026 |
 | --- | --- | --- | --- |
-| 1 | Surat informasi, persetujuan, dan teks untuk anak, 23 → T1–T13: T1 surat informasi orang tua; T2 formulir persetujuan orang tua (dengan dua centang terpisah); T3 naskah persetujuan anak di P1; T4 teks centang di halaman daftar; T5 pengingat di awal P2–P5 dan sebelum wawancara L5; T6 surat kepala sekolah; T7 lembar guru kelas; T8 varian uji keterbacaan (T8a surat, T8b formulir, T8c naskah anak); T9 varian kelas uji coba dan berpikir lantang; T10 formulir pengunduran diri dan permintaan hapus data; T11 layar tanya ulang sebelum butir risiko daring; T12 pesan dukungan sesudah butir risiko; T13 selebaran "tempat bercerita" | [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) | Draf; keputusan pemilik proyek 27 Oktober 2026 dimasukkan; T11–T13 ditambahkan saat penyelarasan 27 Oktober 2026 (nomor layanan `needs_verification`) |
+| 1 | Surat informasi, persetujuan, dan teks untuk anak, 23 → T1–T13: T1 surat informasi orang tua; T2 formulir persetujuan orang tua (dengan dua centang terpisah); T3 naskah persetujuan anak di P1; T4 teks centang di halaman daftar; T5 pengingat di awal P2–P5 dan sebelum wawancara L5; T6 surat kepala sekolah; T7 lembar guru kelas; T8 varian uji keterbacaan (T8a surat, T8b formulir, T8c naskah anak); T9 varian kelas uji coba dan berpikir lantang; T10 formulir pengunduran diri dan permintaan hapus data; T11 layar tanya ulang sebelum butir risiko daring; T12 pesan dukungan sesudah butir risiko; T13 selebaran "tempat bercerita" | [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) | Draf; keputusan pemilik proyek 27 Oktober 2026 dimasukkan; T11–T13 ditambahkan saat penyelarasan 27 Oktober 2026 (nomor layanan `needs_verification`); isi tambahan dari PSEPPKN 2021 dimasukkan 27 Oktober 2026 ([Isi surat orang tua](#isi-surat-orang-tua)), termasuk baris saksi di T2 dan T8b |
 | 2 | Protokol uji keterbacaan (KG1) | [24](24_UJI_KETERBACAAN.md) | Draf; keputusan pemilik proyek 27 Oktober 2026 dimasukkan |
 | 3 | Bank soal game: butir, kisi-kisi, cerita dan narasi | [08](08_DRAF_BANK_SOAL.md), [06](06_KISI_KISI_BANK_SOAL.md), [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) | Draf, menunggu validasi |
 | 4 | Tes awal–akhir bentuk A dan B | [13](13_TES_AWAL_AKHIR.md), [14](14_TES_BAGIAN_MEMBACA.md), [15](15_TES_BAGIAN_DIGITAL.md) | Draf, menunggu validasi |
@@ -610,10 +799,12 @@ Diputuskan pemilik proyek 27 Oktober 2026 ([Keputusan pemilik proyek](#keputusan
 | 6 | Skala sikap menjaga warisan | [17](17_SKALA_SIKAP.md) | Draf, menunggu validasi |
 | 7 | Lembar lapangan L0–L8 | [02](02_LEMBAR_LAPANGAN.md) | L0–L7 final; L8 draf |
 | 8 | Mock-up layar baru (Skenario Digital, *Periksa Unggahan*, token, modul tes dan angket, skala sikap) | [18](18_MOCKUP_LAYAR_BARU.md), `gambar/mockup/` | Disetujui 26 Oktober 2026 |
-| 9 | Instrumen validasi ahli (untuk menunjukkan proses validasi) | [dokumen-pdf/](dokumen-pdf/README.md) | Menunggu persetujuan pemilik proyek |
+| 9 | Instrumen validasi ahli (untuk menunjukkan proses validasi) | [dokumen-pdf/](dokumen-pdf/README.md) | Disetujui pemilik proyek 27 Oktober 2026 |
 | 10 | Prosedur rujukan butir risiko daring (bagian dokumen ini, dicetak terpisah untuk lapangan, bersama 23 → T11–T13) | [bagian ini](#prosedur-rujukan-butir-risiko-daring) | Draf |
 | 11 | Surat izin penelitian dari institusi dan surat kesediaan sekolah | `[diisi pemilik proyek]` | — |
 | 12 | CV dan sertifikat pelatihan etik tim, pernyataan kerahasiaan | `[diisi pemilik proyek]` | — |
+| 13 | Pernyataan komitmen etik ketua peneliti, diketahui pembimbing (format protokol bagian Z) | [Komitmen etik](#komitmen-etik); ditandatangani di luar repo | Teks usulan |
+| 14 | Daftar tilik tujuh standar yang diisi peneliti (PSEPPKN 2021, Lampiran 3) | [Daftar tilik tujuh standar](#daftar-tilik-tujuh-standar) | Isian peneliti, 27 Oktober 2026 |
 
 Lampiran 3–8 diserahkan dalam versi yang dibekukan untuk validasi ahli ([20_PAKET_VALIDASI.md](20_PAKET_VALIDASI.md)). Komite diberi tahu bahwa versi yang dipakai di lapangan adalah versi setelah validasi, dan setiap revisi yang mengubah bahan anak diajukan sebagai amandemen sesuai [Perubahan protokol](#perubahan-protokol). Kunci jawaban tes dan bank boleh dilampirkan terpisah kalau komite memintanya.
 
@@ -634,6 +825,23 @@ Keputusan lanjutan pemilik proyek pada hari yang sama, saat dokumen 20–24 dise
 8. **Ringkasan hasil** angka gabungan diserahkan ke sekolah, dan orang tua bisa memintanya lewat sekolah; tidak ada centang hasil di formulir. Lihat [Manfaat](#manfaat).
 9. **Akun staf** `admin`, `koordinator` (P1), `pengamat` (P2), `pewawancara` (P3), dan `ketua` (ketua peneliti) disetujui semuanya, tanpa tanda usulan. Lihat [Kode peserta dan pemisahan peran](#kode-peserta-dan-pemisahan-peran).
 
+Keputusan pemilik proyek pada hari yang sama, setelah dokumen ini dan 23 dibandingkan dengan pedoman KEPPKN 2021 ([Pedoman yang dirujuk](#pedoman-yang-dirujuk), [04](04_CATATAN_KEPUTUSAN.md)):
+
+10. **Dokumen ini mengikuti PSEPPKN 2021.** Semua usulan perbandingan diterapkan:
+    - rujukan edisi 2021 dan nama "Komite";
+    - baris standar 8 (pelindungan subjek rentan) dan nama standar menurut edisi 2021;
+    - format protokol resmi (Lampiran 1);
+    - tingkat telaah lengkap dan masa berlaku satu tahun dengan perpanjangan tahunan;
+    - laporan berkala, laporan akhir, dan notifikasi;
+    - aturan penghentian;
+    - risiko bagi peneliti dan bagi kelompok, dengan simpulan risiko dan manfaat;
+    - pelibatan sekolah dan masyarakat, dan alasan melibatkan anak;
+    - hasil diterbitkan apa pun hasilnya, dan hak atas data;
+    - komitmen etik dan daftar tilik tujuh standar.
+11. **Tanda terima kasih disebut di surat orang tua dalam satu kalimat netral** (23 → T1 bagian 7, T8a): tanpa uang, tanpa biaya, dan semua anak di kelas, ikut atau tidak, mendapat tanda terima kasih kecil yang sama dan kudapan di P1 dan P5. Tidak dipilih: tetap tidak disebut di surat dan hanya dijelaskan di sini. Lihat [Kompensasi](#kompensasi).
+12. **Orang tua yang lebih nyaman surat dibacakan:** guru kelas atau peneliti membacakannya, dan formulir 23 → T2 dan T8b mendapat baris saksi yang diisi hanya dalam keadaan itu, oleh orang di luar tim peneliti. Tanda tangan boleh diganti cap jempol. Tidak dipilih: tanpa perubahan. Lihat [Lapis persetujuan](#lapis-persetujuan).
+13. **Ketua peneliti mahasiswa (S2/S3).** [Identitas dan tim](#identitas-dan-tim) mendapat baris pembimbing/promotor; pembimbing mengirim permohonan dan mendampingi ketua peneliti saat telaah lengkap ([Tingkat telaah dan masa berlaku persetujuan](#tingkat-telaah-dan-masa-berlaku-persetujuan)).
+
 Kode kegiatan `K1`–`K5` di draf sebelumnya diganti `KG1`–`KG5` (sesi koordinator, 27 Oktober 2026), supaya tidak tertukar dengan kode anak uji keterbacaan.
 
 ## Akibat ke dokumen lain
@@ -649,10 +857,13 @@ Dicatat untuk sesi koordinator. Baris bertanda **Sudah** diperiksa di dokumen tu
 | 02 | L7, isi surat izin orang tua, status, `consent_ok`, penyimpanan | **Sudah.** Batas kerahasiaan, kontak komite, berbagi data berkode, batas hapus sampai studi ditutup, dua status mundur, `consent_ok` untuk `data tetap` mulai `kamus-1.1`, pemusnahan saat studi ditutup |
 | 02 | L0 P5 | **Sudah.** "Prosedur rujukan … dari protokol etik" ditautkan ke [22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) |
 | 02 | L5 | **Sudah.** Wawancara di tempat yang terlihat guru atau peneliti lain, tidak di ruang tertutup berdua; persetujuan ulang singkat anak sebelum wawancara |
+| 02 | L7, *Isi surat izin orang tua* | Tambah butir **batas pengamanan daring**: cara data dijaga, bahwa tidak ada sistem daring yang sepenuhnya bebas risiko kebocoran, dan bahwa orang tua diberi tahu kalau data anaknya terdampak (23 → T1 bagian 3), dari PSEPPKN 2021 Lampiran 2 huruf i (keputusan pemilik proyek 27 Oktober 2026, [no. 10](#keputusan-pemilik-proyek)) |
 | 03 | *Peran* | **Sudah.** Baris *Ketua peneliti*: satu-satunya yang menghubungkan kode dengan nama untuk rujukan dan permintaan hapus; menerima laporan KTD |
 | 03 | *Kegiatan dengan anak* | **Sudah.** Kode `KG1`–`KG5` |
 | 11 | *Penanda untuk analisis*, `consent_ok`; *L7* | Mulai `kamus-1.1`, `consent_ok = 1` juga untuk `Mengundurkan diri (data tetap)`, untuk data sampai tanggal mundur (sekarang tertulis "siswa tidak mengundurkan diri"). "Nama hanya ada di L7" disamakan dengan [Di mana nama berada](#di-mana-nama-berada) |
 | 16 | *Etika* no. 8, *Petunjuk untuk siswa* | **Sudah.** Prosedur rujukan merujuk ke 22; penanda tindak lanjut masuk telaah Ahli Literasi Digital; layar tanya ulang dengan kalimat batas kerahasiaan yang jujur sebelum ang-21 |
 | 17 | *Teks untuk permohonan izin etik* | **Sudah.** Teksnya dipakai di 22 dan lampiran 6 |
 | 23 | Seluruh teks (sesi paralel penyelarasan, 27 Oktober 2026) | **Sudah** menurut pengecekan 27 Oktober 2026; koordinator mengecek ulang setelah sesi paralel selesai. Lampiran 1 di sini memakai T1–T13. Yang harus sama dengan 22: `[tanggal studi ditutup]` menggantikan `[tanggal batas penarikan]`, tanpa batas "sampai analisis utama dimulai"; `[jumlah hari kerja]` di T10, sama dengan [Mengundurkan diri](#mengundurkan-diri-dan-hapus-data); masa simpan dari [Masa simpan dan pemusnahan](#masa-simpan-dan-pemusnahan) menggantikan `[masa simpan]`; batas kerahasiaan dan kontak komite di T1 dan T8a; kalimat tempat nama sesuai [Di mana nama berada](#di-mana-nama-berada); T11–T13 dari [Prosedur rujukan](#prosedur-rujukan-butir-risiko-daring); T8 sesuai [Uji keterbacaan (KG1)](#uji-keterbacaan-kg1): empat sesi ± 60 menit di sekolah anak, bukan "satu kali pertemuan"; batas kembali formulir H-3, bukan H-1 (T2, *Cara membaca formulir*) |
+| 23 | T1, T2, T8, T8a, T8b, T9, *Cek isi L7*, *Catatan keterbacaan* (perbandingan dengan PSEPPKN 2021, 27 Oktober 2026) | **Sudah.** Isi tambahan dari [Isi surat orang tua](#isi-surat-orang-tua), kalimat tanda terima kasih dari [Kompensasi](#kompensasi), dan baris saksi dari [Lapis persetujuan](#lapis-persetujuan) dimasukkan di cabang yang sama |
+| 24 | Seluruh protokol uji keterbacaan (perbandingan dengan PSEPPKN 2021) | Tidak ada perubahan. KG1 sudah sesuai: dua orang dewasa, sesi ± 60 menit dengan jeda, tanpa data di sistem, butir risiko hanya diparafrasekan. Surat dan formulirnya (23 → T8a, T8b) yang diperbarui |
 | 24 | *Yang dibutuhkan dari dokumen lain → Dari 22* | **Sudah di 22.** Kegiatan tersendiri, lama, tempat, dua orang dewasa, rekaman, risiko, rujukan, masa simpan, dan tanda terima kasih ada di [Kegiatan yang dimintakan izin](#kegiatan-yang-dimintakan-izin), [Uji keterbacaan (KG1)](#uji-keterbacaan-kg1), [Risiko dan mitigasi](#risiko-dan-mitigasi), [Masa simpan dan pemusnahan](#masa-simpan-dan-pemusnahan), dan [Kompensasi](#kompensasi). 22 memakai kode sesi `K01-1` dan aturan bahwa sekolah uji keterbacaan tidak masuk sampel kemudian |
