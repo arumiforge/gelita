@@ -108,7 +108,7 @@ php docs/revisi-10-analitik/dokumen-pdf/src/berkas-validator.php --no-pdf   # ta
 
 ## Hasil pemeriksaan
 
-Rincian lengkap ada di [`LAPORAN.md`](dokumen-pdf/berkas-validator/LAPORAN.md), yang ditulis ulang setiap kali skrip dijalankan. Per 27 Oktober 2026 (`berkas-1.0 · sumber 3a48dbfe`), 68 dari 68 pemeriksaan lolos.
+Rincian lengkap ada di [`LAPORAN.md`](dokumen-pdf/berkas-validator/LAPORAN.md), yang ditulis ulang setiap kali skrip dijalankan. Per 27 Oktober 2026 (`berkas-1.0 · sumber fb707413`, dibuat ulang setelah penyelarasan dokumen tahap 2), 68 dari 68 pemeriksaan lolos.
 
 | Kelompok | Yang dicek | Hasil |
 | --- | --- | --- |

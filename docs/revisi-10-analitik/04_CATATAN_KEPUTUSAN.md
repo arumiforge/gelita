@@ -30,6 +30,8 @@ Diselaraskan sesi koordinator tanpa keputusan baru:
 
 Yang menyusul di PR koordinator berikutnya: perubahan HTML ketiga instrumen dari 21 (ID netral di B.5a, nama berkas dan urutan kirim di D.3, waktu B.7), level tunggal untuk butir tes D2 dan D3 di 13 dan 15, dan nama topik B.6 dan benda B.6b yang berbeda dengan 08.
 
+Menunggu konfirmasi pemilik proyek: perkiraan waktu B.7 3–5 jam (dulu 2–3 jam) di 20; cara menjaga pengodean buta B.7 oleh Ahli Literasi Digital 2, yang menerima bank berkode di kiriman awal; uji baca T1 oleh dua–tiga orang tua di luar sampel (usulan 23); dan dua usulan di 23, yaitu T12 juga untuk anak tanpa izin butir risiko, dan T13 dibagikan ke semua anak di akhir P5 supaya tidak ada yang tampak berbeda. Kamus data `kamus-1.0` tidak diubah; `consent_ok` untuk `data tetap` dan aturan letak nama masuk `kamus-1.1`.
+
 **Draf protokol uji keterbacaan, daftar kerja no. 23** (cabang `r10-uji-keterbacaan`, sesi paralel tahap 2; Prototipe I)
 
 Status: **draf; keempat pertanyaan diputuskan pemilik proyek di hari yang sama** (lihat di bawah). Dokumen baru [24_UJI_KETERBACAAN.md](24_UJI_KETERBACAAN.md) berisi protokol uji keterbacaan dengan anak kelas 5, yang dijalankan setelah izin etik terbit dan setelah bahan direvisi dari validasi ahli. Entri ini tidak merevisi prototipe; revisi dari hasil uji nanti dicatat sebagai "Prototipe I, revisi dari uji keterbacaan".
