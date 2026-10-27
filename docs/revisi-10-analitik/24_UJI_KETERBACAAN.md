@@ -2,9 +2,9 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 27 Oktober 2026 · **Status: draf**; keputusan pemilik proyek diambil 27 Oktober 2026 ([bagian akhir](#keputusan-pemilik-proyek)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 23 · Tahap 2, Prototipe I
+Per 27 Oktober 2026 · **Status: draf**; keputusan pemilik proyek diambil 27 Oktober 2026 dan diselaraskan dengan 20–23 di hari yang sama ([bagian akhir](#keputusan-pemilik-proyek)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 23 · Tahap 2, Prototipe I · Kegiatan **KG1** di [22 → Kegiatan yang dimintakan izin](22_PERMOHONAN_IZIN_ETIK.md#kegiatan-yang-dimintakan-izin)
 
-Dokumen ini protokol uji keterbacaan dengan 3–5 anak kelas 5: tujuan, peserta, bahan dan cara membaginya, perangkat, langkah per anak, peran, lembar catatan, aturan keputusan, cara hasil waktu dipakai, dan pengelolaan data. Protokol ini siap dijalankan begitu izin etik terbit.
+Dokumen ini protokol uji keterbacaan dengan empat anak kelas 5, ditambah satu anak di putaran kedua: tujuan, peserta, bahan dan cara membaginya, perangkat, langkah per anak, peran, lembar catatan, aturan keputusan, cara hasil waktu dipakai, dan pengelolaan data. Di permohonan izin etik ([22](22_PERMOHONAN_IZIN_ETIK.md)), uji ini adalah kegiatan KG1, satu dari lima kegiatan dengan anak dalam satu permohonan ([03 → Kegiatan dengan anak](03_KODE_DAN_ARTI.md#kegiatan-dengan-anak)). Protokol ini siap dijalankan begitu izin etik terbit.
 
 Belum ada yang diubah di sistem, dan uji ini juga tidak memakai sistem. Modul tes dan layar baru baru dibangun di tahap 3, jadi semua bahan tampil sebagai salinan layar statis dari mock-up [18](18_MOCKUP_LAYAR_BARU.md).
 
@@ -12,9 +12,9 @@ Belum ada yang diubah di sistem, dan uji ini juga tidak memakai sistem. Modul te
 
 1. **Gunanya:** memastikan anak kelas 5 bisa membaca sendiri dan memahami kata, kalimat, petunjuk, dan pilihan jawaban di bahan Prototipe I. Yang diuji bahasanya, bukan kemampuan anak.
 2. **Kapan:** setelah izin etik dari *Lembaga Komite Etik* terbit ([01, peta jalan](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja)) dan setelah bahan direvisi dari validasi ahli. Jadi bahannya bahan Prototipe I yang sudah direvisi ahli.
-3. **Peserta:** usulan empat anak kelas 5 (paling sedikit tiga, paling banyak lima). Mereka tidak dari sekolah sampel dan tidak dari kelas uji coba. Kemampuan membacanya bercampur, dan guru membantu memilih tanpa memberi nilai.
+3. **Peserta:** empat anak kelas 5 (`K01`–`K04`), ditambah satu anak (`K05`) di putaran kedua pada bahan yang sudah direvisi. Mereka dari sekolah di wilayah Kedu yang tidak masuk sampel dan bukan sekolah uji coba, dan sekolah itu juga tidak masuk sampel sesudahnya. Kemampuan membacanya bercampur. Guru membantu memilih tanpa memberi nilai, dan tidak ada nama atau kelompok membaca yang sampai ke peneliti sebelum izin orang tua kembali.
 4. **Bahan dibagi.** Empat anak tidak mungkin membaca 116 butir bank, 64 butir tes, angket, dan 12 butir skala. Usulannya: setiap anak mengerjakan satu bentuk tes lengkap, angket, skala sikap, kartu kata, dan salinan layar baru. Bank dibagi per blok wilayah dan variasi, sehingga setiap blok dibaca dua anak ([Bahan dan pembagiannya](#bahan-dan-pembagiannya)).
-5. **Empat sesi per anak**, masing-masing ± 50–60 menit dengan satu jeda, di hari yang berbeda dalam dua minggu.
+5. **Empat sesi per anak**, masing-masing ± 60 menit dengan satu jeda, di hari yang berbeda dalam dua minggu, di sekolah anak, dan selalu dengan dua orang dewasa dari tim. Setelah sesi terakhirnya, anak menerima tanda terima kasih kecil, bukan sebagai hadiah.
 6. **Cara kerja per bahan:** anak membaca sendiri dalam hati dan menjawab sambil diukur waktunya. Sesudah itu anak menjelaskan dengan kata-katanya sendiri (parafrase), menjawab pertanyaan pancingan baku, dan menandai kata yang sulit di kartu cetak.
 7. **Lembar catatan LK1–LK3**, bergaya lembar di [02](02_LEMBAR_LAPANGAN.md), dengan kode kesulitan `KB-*` (usulan untuk 03).
 8. **Aturan keputusan** membedakan kesulitan bahasa dari kesulitan yang memang diukur. Bacaan D1 boleh sulit dipahami, karena itu yang diukur. Petunjuk, pokok soal, pilihan, angket, dan skala harus bisa dipahami semua anak.

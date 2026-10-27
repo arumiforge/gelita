@@ -1,12 +1,14 @@
 # Permohonan Izin Etik: Protokol Penelitian GELITA
 
-Per 27 Oktober 2026 · **Status: draf; keputusan pemilik proyek 27 Oktober 2026 dimasukkan** · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 15
+Per 27 Oktober 2026 · **Status: draf; keputusan pemilik proyek 27 Oktober 2026 dimasukkan dan diselaraskan dengan dokumen 20, 21, 23, dan 24** · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 15
 
 Dokumen ini adalah draf protokol dan permohonan izin etik ke *Lembaga Komite Etik* (nama samaran). Formulir komite yang sebenarnya belum diketahui, jadi isinya disusun per bagian yang biasa ada di formulir komite etik di Indonesia. Pemilik proyek menyalin bagian-bagian ini ke formulir komite, lalu mengajukannya pada **minggu kedua sampai keempat November 2026**. Persetujuan ditargetkan paling lambat **akhir September sampai minggu pertama November 2027** ([01 → Peta jalan](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja)).
 
 **Aturan pokok: tidak ada kegiatan dengan anak yang dimulai sebelum persetujuan etik terbit** (01, *Peta jalan*). Ini berlaku untuk uji keterbacaan, uji coba, berpikir lantang, wawancara, dan pengambilan data utama.
 
-Teks surat informasi dan persetujuan ada di `23_SURAT_INFORMASI_DAN_PERSETUJUAN.md`, dan protokol uji keterbacaan di `24_UJI_KETERBACAAN.md`. Dokumen ini hanya menjelaskan prosedurnya dan melampirkan keduanya.
+Teks surat informasi, persetujuan, dan teks untuk anak ada di [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) (T1–T13, dirujuk sebagai "23 → T1"), dan protokol uji keterbacaan di [24](24_UJI_KETERBACAAN.md). Dokumen ini hanya menjelaskan prosedurnya dan melampirkan keduanya.
+
+Kegiatan dengan anak diberi kode `KG1`–`KG5` (*Kegiatan dengan anak*, [03](03_KODE_DAN_ARTI.md#kegiatan-dengan-anak)), supaya tidak tertukar dengan kode anak uji keterbacaan `K01`–`K05`.
 
 Nama orang, sekolah, dan komite tidak ditulis di repo. Tempat kosong ditandai dengan kurung siku, misalnya `[nama ketua peneliti]`, dan diisi pemilik proyek di luar repo.
 
@@ -113,18 +115,19 @@ Lampiran CV dan sertifikat pelatihan etik peneliti: `[diisi pemilik proyek]`.
 
 GELITA adalah game web untuk siswa kelas 5 SD yang mengukur literasi digital dalam tiga dimensi: D1 literasi informasi, D2 aman dan etis, dan D3 partisipasi dan representasi budaya Kedu di ruang digital ([01](01_REVISI_10_ANALITIK.md#judul-penelitian-dan-konstruk)). Budaya Kedu (Temanggung, Magelang, Wonosobo) menjadi konteks ceritanya. Penelitian ini mengembangkan dan menguji GELITA sebagai model asesmen dengan penelitian desain pendidikan model Plomp.
 
-Izin diminta untuk empat kegiatan dengan anak:
+Izin diminta untuk lima kegiatan dengan anak (KG1–KG5), dalam satu permohonan:
 
-1. uji keterbacaan dengan 3–5 anak kelas 5 (tahap 2);
-2. uji coba satu kelas di sekolah uji coba, termasuk berpikir lantang dengan 5–8 anak (tahap 4);
-3. wawancara retrospektif singkat, tiga anak per pertemuan wilayah (tahap 4 dan 5);
-4. pengambilan data utama: sekitar 13 kelas, sekitar 360 siswa direkrut, target 300 siswa yang datanya bisa dianalisis, lima pertemuan per kelas (tahap 5).
+1. **KG1** uji keterbacaan dengan empat anak kelas 5, ditambah satu anak di putaran kedua, dari sekolah di luar sampel dan uji coba (tahap 2);
+2. **KG2** berpikir lantang dengan 5–8 anak di sekolah uji coba (tahap 4);
+3. **KG3** uji coba satu kelas di sekolah uji coba (tahap 4);
+4. **KG4** wawancara retrospektif singkat, tiga anak per pertemuan wilayah (tahap 4 dan 5);
+5. **KG5** pengambilan data utama: sekitar 13 kelas, sekitar 360 siswa direkrut, target 300 siswa yang datanya bisa dianalisis, lima pertemuan per kelas (tahap 5).
 
-Anak memainkan GELITA di kelas, mengerjakan tes awal dan akhir, mengisi angket akses digital dan skala sikap di layar, dan diamati tiga peneliti. Tidak ada intervensi medis, pengambilan bahan biologis, atau penipuan (*deception*).
+Anak memainkan GELITA di kelas, mengerjakan tes awal dan akhir, mengisi angket akses digital dan skala sikap di layar, dan diamati tiga peneliti. Di uji keterbacaan, anak hanya membaca bahan di laptop dan menjelaskan artinya dengan kata-katanya sendiri. Tidak ada intervensi medis, pengambilan bahan biologis, atau penipuan (*deception*).
 
 **Isu etik utama:**
 - pesertanya anak 10–11 tahun, jadi butuh izin orang tua dan persetujuan anak;
-- dua sampai tiga butir pengalaman risiko daring di P5, dengan izin terpisah dan prosedur rujukan;
+- dua sampai tiga butir pengalaman risiko daring di P5, dengan izin terpisah dan prosedur rujukan; di uji keterbacaan butir ini hanya diparafrasekan, dan anak tidak menjawab tentang dirinya sendiri;
 - rekaman suara wawancara, dengan izin terpisah;
 - waktu layar dan kelelahan;
 - data pribadi anak di sistem daring;
