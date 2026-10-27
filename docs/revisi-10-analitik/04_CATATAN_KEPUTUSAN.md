@@ -6,7 +6,7 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 27 Oktober 2026
 
-**Draf permohonan izin etik: [22_PERMOHONAN_IZIN_ETIK.md](22_PERMOHONAN_IZIN_ETIK.md)** (cabang `r10-izin-etik`, sesi paralel tahap 2; daftar kerja no. 15) · **Status: draf, menunggu keputusan pemilik proyek**
+**Draf permohonan izin etik: [22_PERMOHONAN_IZIN_ETIK.md](22_PERMOHONAN_IZIN_ETIK.md)** (cabang `r10-izin-etik`, sesi paralel tahap 2; daftar kerja no. 15) · **Status: draf; keputusan pemilik proyek atas empat pertanyaannya diambil hari yang sama**
 
 Prototipe I: dokumen ini tidak merevisi bank, instrumen, atau mock-up; ia menjelaskan bagaimana Prototipe I sampai III dan data utama akan dijalankan dengan anak.
 
@@ -17,7 +17,13 @@ Prototipe I: dokumen ini tidak merevisi bank, instrumen, atau mock-up; ia menjel
    - Penolakan anak didahulukan dari izin orang tua; persetujuan ulang singkat sebelum wawancara dan butir risiko; wawancara di tempat yang terlihat.
    - Usulan satu pertemuan per hari; data penelitian disimpan 5 tahun sesuai `retention_days` bawaan sistem.
    - Rujukan luar yang belum dicek ditandai `needs_verification`: rumusan dan versi pedoman KEPPKN, UU No. 27 Tahun 2022 (data anak, pemberitahuan kebocoran), layanan SAPA 129 dan UPTD PPA, batas waktu laporan KTD dan aturan amandemen komite.
-3. **Pertanyaan terbuka untuk pemilik proyek** (di 22, bagian *Pertanyaan untuk pemilik proyek*): kapan nama dan L7 dimusnahkan (usulan 12 bulan setelah P5 terakhir); apakah data per anak berkode dibagikan (usulan tidak); kompensasi (usulan tanda terima kasih sama untuk semua anak di kelas, tanpa uang); satu permohonan atau bertahap (usulan satu).
+3. **Keputusan pemilik proyek atas empat pertanyaan draf (27 Oktober 2026, wawancara satu putaran):**
+   - **Nama dan L7 dimusnahkan saat studi ditutup** (usulan draf: 12 bulan setelah P5 terakhir). Permintaan hapus diterima sampai studi ditutup; data berkode disimpan 5 tahun.
+   - **Data per anak berkode dibagikan atas permintaan, dengan persetujuan komite** (usulan draf: tidak dibagikan). Tidak ada unggahan publik; sebelum dibagikan kode diganti kode acak baru, kode sekolah dan rombel dihapus, dan jawaban butir risiko serta transkrip tidak ikut. Surat orang tua (23) harus menyebutnya.
+   - **Tanda terima kasih kecil yang sama untuk semua anak di kelas**, termasuk yang tidak ikut, plus kudapan di P1 dan P5; tanpa uang (sesuai usulan).
+   - **Satu permohonan untuk K1–K5**, revisi instrumen dilaporkan sebagai perubahan protokol (sesuai usulan).
+
+   Status 22 tetap draf: diajukan setelah dokumen tahap 1 yang dilampirkan disetujui dan formulir komite sebenarnya diketahui.
 
 Akibat ke dokumen lain (01, 02, 03, 16, 17, 23, 24) dicatat di 22, bagian *Akibat ke dokumen lain*, dan dibawa sesi koordinator setelah digabung.
 

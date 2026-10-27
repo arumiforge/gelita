@@ -1,6 +1,6 @@
 # Permohonan Izin Etik: Protokol Penelitian GELITA
 
-Per 27 Oktober 2026 · **Status: draf** · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 15
+Per 27 Oktober 2026 · **Status: draf; keputusan pemilik proyek 27 Oktober 2026 dimasukkan** · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 15
 
 Dokumen ini adalah draf protokol dan permohonan izin etik ke *Lembaga Komite Etik* (nama samaran). Formulir komite yang sebenarnya belum diketahui, jadi isinya disusun per bagian yang biasa ada di formulir komite etik di Indonesia. Pemilik proyek menyalin bagian-bagian ini ke formulir komite, lalu mengajukannya pada **minggu kedua sampai keempat November 2026**. Persetujuan ditargetkan paling lambat **akhir September sampai minggu pertama November 2027** ([01 → Peta jalan](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja)).
 
@@ -32,7 +32,7 @@ Nama orang, sekolah, dan komite tidak ditulis di repo. Tempat kosong ditandai de
 18. [Pelaporan kejadian tak diinginkan](#pelaporan-kejadian-tak-diinginkan)
 19. [Perubahan protokol](#perubahan-protokol)
 20. [Lampiran](#lampiran)
-21. [Pertanyaan untuk pemilik proyek](#pertanyaan-untuk-pemilik-proyek)
+21. [Keputusan pemilik proyek](#keputusan-pemilik-proyek)
 22. [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)
 
 ## Cara memakai dokumen ini
@@ -307,7 +307,7 @@ Anak yang tidak mau ikut tidak mendaftar akun dan bergabung dengan kegiatan peng
 - **Orang tua** boleh menarik izin kapan saja lewat sekolah atau kontak peneliti, dengan formulir permintaan hapus data (23) atau cukup pesan tertulis.
 - **Jalurnya:** P1 mencatat status `Mengundurkan diri` dan tanggalnya di L7. Peneliti mengajukan permintaan hapus lewat kode peserta; admin menjalankannya ([01 → Admin dan peneliti](01_REVISI_10_ANALITIK.md#admin-dan-peneliti-dua-peran-berbeda)). Sistem sudah menghapus data satu siswa dalam dua langkah, pratinjau lalu eksekusi yang dikonfirmasi admin, dari semua tabel data penelitian ([../01_DATABASE.md → Retensi dan penghapusan data](../01_DATABASE.md#retensi-dan-penghapusan-data)).
 - **Yang ikut dihapus:** data game, tes, angket, skala, kritik dan saran, akun, baris lembar lapangan dengan kode itu (L2–L6 di templat spreadsheet), rekaman dan transkrip L5. Data yang sudah masuk hasil gabungan yang terbit (misalnya rata-rata kelas di laporan) tidak bisa ditarik, dan ini disebut di surat.
-- **Batas waktu permintaan hapus:** sampai nama dan L7 dimusnahkan. Setelah itu data tidak bisa lagi dihubungkan dengan anak tertentu (lihat [Masa simpan dan pemusnahan](#masa-simpan-dan-pemusnahan) dan [Pertanyaan 1](#pertanyaan-untuk-pemilik-proyek)).
+- **Batas waktu permintaan hapus:** sampai nama dan L7 dimusnahkan. Setelah itu data tidak bisa lagi dihubungkan dengan anak tertentu Nama dan L7 dimusnahkan saat studi ditutup (keputusan pemilik proyek 27 Oktober 2026, [Masa simpan dan pemusnahan](#masa-simpan-dan-pemusnahan)), jadi permintaan hapus diterima sampai studi ditutup.
 - Siswa yang pindah sekolah atau tidak lagi hadir berstatus `Keluar`; datanya tetap dipakai kecuali diminta dihapus ([02 → L7](02_LEMBAR_LAPANGAN.md#l7-izin-orang-tua-dan-status-peserta)).
 
 ## Prosedur per pertemuan dan beban bagi anak
@@ -459,12 +459,12 @@ Setiap anggota tim menandatangani pernyataan menjaga kerahasiaan sebelum lapanga
 
 ### Masa simpan dan pemusnahan
 
-Usulan (lihat [Pertanyaan 1](#pertanyaan-untuk-pemilik-proyek)):
+Diputuskan pemilik proyek 27 Oktober 2026 ([Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 1):
 
 | Data | Masa simpan | Cara pemusnahan |
 | --- | --- | --- |
 | Rekaman suara | Sampai transkrip diperiksa | Dihapus |
-| L7, pemetaan NPSN–kode, catatan rujukan, dan nama di akun anak | **12 bulan setelah P5 terakhir di kelas itu**; setelah itu permintaan hapus tidak bisa lagi dihubungkan ke anak | Kertas dicacah; berkas digital dihapus aman; nama di akun diganti kode oleh admin |
+| L7, pemetaan NPSN–kode, catatan rujukan, dan nama di akun anak | **Sampai studi ditutup** (status studi penelitian ditutup setelah analisis selesai); sampai saat itu permintaan hapus diterima, sesudahnya data tidak bisa lagi dihubungkan ke anak | Kertas dicacah; berkas digital dihapus aman; nama di akun diganti kode oleh admin |
 | Data penelitian dengan kode (game, tes, angket, skala, lembar, transkrip) | **5 tahun** setelah studi ditutup, sama dengan masa simpan bawaan studi di sistem (`retention_days` = 1825, [../01_DATABASE.md](../01_DATABASE.md#retensi-dan-penghapusan-data)) | Dihapus lewat penghapusan dua langkah oleh admin; salinan peneliti dihapus |
 | Data uji coba (awalan `U`) | Sama dengan data penelitian | Sama |
 
@@ -476,7 +476,7 @@ Usulan (lihat [Pertanyaan 1](#pertanyaan-untuk-pemilik-proyek)):
 | --- | --- | --- |
 | Di G4 (sebelum data utama) | Pra-registrasi: skema kesalahan, rencana analisis, bentuk final tes (01 no. 18, [13](13_TES_AWAL_AKHIR.md#validasi-dan-uji-coba)). Tidak ada data anak | — |
 | Setelah analisis | Hasil gabungan, tabel parameter butir, kode analisis | Nama, nama pengguna, L7, NPSN dan nama sekolah, rekaman, transkrip mentah, jawaban butir risiko daring per anak, catatan rujukan, log teknis perangkat |
-| Data per anak berkode | Tidak diunggah ke publik (usulan, [Pertanyaan 2](#pertanyaan-untuk-pemilik-proyek)) | — |
+| Setelah analisis, atas permintaan | Data per anak berkode, tidak diunggah ke publik. Dibagikan ke peneliti lain, dengan persetujuan *Lembaga Komite Etik* dan perjanjian pemakaian data (keputusan pemilik proyek 27 Oktober 2026, [no. 2](#keputusan-pemilik-proyek)). Sebelum dibagikan: kode peserta diganti kode acak baru, kode sekolah dan rombel dihapus, umur dikelompokkan, kelompok berisi kurang dari 5 siswa digabung, dan jawaban butir risiko daring serta transkrip tidak ikut | Nama, L7, NPSN, rekaman, jawaban risiko per anak, catatan rujukan |
 
 Laporan dan publikasi tidak menyebut nama sekolah atau anak. Kutipan ucapan anak diberi kode samaran baru (bukan kode peserta).
 
@@ -486,7 +486,7 @@ Pengolahan data pribadi anak memerlukan persetujuan orang tua atau wali menurut 
 
 ## Kompensasi
 
-Usulan (lihat [Pertanyaan 3](#pertanyaan-untuk-pemilik-proyek)):
+Diputuskan pemilik proyek 27 Oktober 2026 ([Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 3):
 
 - **Tidak ada uang untuk anak atau orang tua**, supaya izin tidak dipengaruhi bujukan.
 - **Tanda terima kasih kecil yang sama untuk semua anak di kelas**, termasuk anak tanpa izin, misalnya alat tulis senilai `[nilai]`, diberikan di akhir P5 dan tidak bergantung pada ikut atau selesainya anak. Dengan begitu, tidak ada anak yang ikut demi hadiah, dan tidak ada yang merasa dibedakan.
@@ -559,20 +559,14 @@ Usulan (lihat [Pertanyaan 3](#pertanyaan-untuk-pemilik-proyek)):
 
 Lampiran 3–6 diserahkan dalam versi terbaru saat pengajuan. Kalau validasi ahli belum selesai saat itu, komite diberi tahu bahwa versi yang dipakai di lapangan adalah versi setelah validasi, dan perubahannya dilaporkan sesuai [Perubahan protokol](#perubahan-protokol). Kunci jawaban tes dan bank boleh dilampirkan terpisah kalau komite memintanya.
 
-## Pertanyaan untuk pemilik proyek
+## Keputusan pemilik proyek
 
-1. **Kapan nama dan L7 dimusnahkan, dan sampai kapan permintaan hapus diterima?**
-   - *Usulan (dipakai di draf): 12 bulan setelah P5 terakhir di kelas itu.* Ini memberi waktu untuk permintaan hapus dan pemeriksaan data, lalu data menjadi tidak bisa dihubungkan ke anak.
-   - Pilihan lain: sampai studi ditutup (lebih lama memegang nama); atau segera setelah analisis dikunci (bisa lebih cepat atau lebih lambat, tergantung jadwal).
-2. **Apakah data per anak berkode dibagikan setelah penelitian?**
-   - *Usulan (dipakai di draf): tidak diunggah ke publik; OSF hanya memuat pra-registrasi, hasil gabungan, dan kode analisis.* Data anak dari kelas kecil sulit dijamin tidak bisa dikenali.
-   - Pilihan lain: data berkode yang sudah dibersihkan dibagikan atas permintaan dengan persetujuan komite. Kalau dipilih, surat orang tua di 23 harus menyebutnya.
-3. **Kompensasi untuk anak?**
-   - *Usulan (dipakai di draf): tanda terima kasih kecil yang sama untuk semua anak di kelas, termasuk yang tidak ikut, plus kudapan di P1 dan P5; tanpa uang.* Tidak membujuk dan tidak membedakan.
-   - Pilihan lain: hanya untuk peserta; atau tanpa tanda terima kasih sama sekali.
-4. **Satu permohonan untuk semua kegiatan, atau bertahap?**
-   - *Usulan (dipakai di draf): satu protokol untuk K1–K5, dengan revisi instrumen dilaporkan sebagai perubahan protokol.* Persetujuan hanya ditunggu sekali, sesuai target 2027 di 01.
-   - Pilihan lain: permohonan pertama untuk uji keterbacaan saja, lalu permohonan kedua untuk uji coba dan data utama dengan instrumen final. Lebih bersih untuk komite, tetapi menambah satu masa tunggu.
+Empat pertanyaan di draf ini dijawab pemilik proyek pada 27 Oktober 2026 ([04](04_CATATAN_KEPUTUSAN.md)):
+
+1. **Nama dan L7 dimusnahkan saat studi ditutup**, bukan 12 bulan setelah P5 seperti usulan draf. Permintaan hapus diterima sampai studi ditutup. Pemetaan NPSN–kode, catatan rujukan, dan nama di akun anak ikut dimusnahkan atau diganti kode saat itu. Data penelitian berkode tetap disimpan 5 tahun.
+2. **Data per anak berkode dibagikan atas permintaan, dengan persetujuan komite**, bukan "tidak dibagikan" seperti usulan draf. Tidak ada unggahan publik; OSF tetap memuat pra-registrasi, hasil gabungan, dan kode analisis. Surat orang tua (23) harus menyebut kemungkinan ini. Cara membersihkan datanya ada di [Yang dibagikan di OSF dan yang tidak pernah](#yang-dibagikan-di-osf-dan-yang-tidak-pernah).
+3. **Tanda terima kasih kecil yang sama untuk semua anak di kelas**, termasuk yang tidak ikut, ditambah kudapan di P1 dan P5; tanpa uang (sesuai usulan).
+4. **Satu permohonan untuk K1–K5**; revisi instrumen dilaporkan sebagai perubahan protokol (sesuai usulan).
 
 ## Akibat ke dokumen lain
 
@@ -591,5 +585,5 @@ Dicatat untuk sesi koordinator, dibawa setelah PR ini digabung.
 | 16 | *Petunjuk untuk siswa* | Kalimat "Guru dan orang tuamu tidak akan melihat jawabanmu" tetap untuk angket P1; layar pembuka butir risiko P5 butuh kalimat batas kerahasiaan yang jujur (teksnya di 23) |
 | 17 | *Teks untuk permohonan izin etik* | "Permohonan … belum ditulis" diganti: teksnya dipakai di 22 dan lampiran 6 |
 | 01 | *Catatan perubahan sistem untuk tahap nanti* | Kandidat untuk tahap 3: penanda tindak lanjut butir risiko dihitung sistem dan hanya terlihat akun `ketua`, tidak masuk ekspor; layar izin ulang sebelum butir risiko; pesan dukungan yang sama untuk semua anak; nama di akun bisa diganti kode saat L7 dimusnahkan |
-| 23 | (sesi paralel) | Memuat: batas kerahasiaan dan kontak komite di surat orang tua; kalimat anak sebelum butir risiko; pesan dukungan di layar; selebaran tempat bercerita dan tips aman; penjelasan lisan P1; batas waktu permintaan hapus sesuai keputusan pertanyaan 1 |
+| 23 | (sesi paralel) | Memuat: batas kerahasiaan dan kontak komite di surat orang tua; kalimat anak sebelum butir risiko; pesan dukungan di layar; selebaran tempat bercerita dan tips aman; penjelasan lisan P1; permintaan hapus diterima sampai studi ditutup; data berkode bisa dibagikan ke peneliti lain atas permintaan dengan persetujuan komite ([Keputusan pemilik proyek](#keputusan-pemilik-proyek)) |
 | 24 | (sesi paralel) | Lama per anak dan tempat uji keterbacaan disalin ke tabel [Kegiatan yang dimintakan izin](#kegiatan-yang-dimintakan-izin) setelah 24 digabung |
