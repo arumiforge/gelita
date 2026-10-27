@@ -1,8 +1,8 @@
 # Surat Informasi dan Persetujuan
 
-Per 27 Oktober 2026 · **Status: draf**; empat pertanyaan pemilik proyek dijawab 27 Oktober 2026 ([Keputusan pemilik proyek](#keputusan-pemilik-proyek)); daftar kerja no. 15 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 27 Oktober 2026 · **Status: draf**; empat pertanyaan pemilik proyek dijawab 27 Oktober 2026, lalu diselaraskan dengan [22](22_PERMOHONAN_IZIN_ETIK.md), [24](24_UJI_KETERBACAAN.md), dan keputusan pemilik proyek pada hari yang sama ([Keputusan pemilik proyek](#keputusan-pemilik-proyek)); daftar kerja no. 15 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
-Dokumen ini berisi teks yang dikirim bersama permohonan izin etik ke *Lembaga Komite Etik* dan yang dibagikan ke sekolah: surat informasi, formulir persetujuan, naskah persetujuan anak, dan formulir pengunduran diri. Setiap teks berupa blok siap cetak. Tempat kosong ditulis dalam kurung siku, misalnya `[nama sekolah]`, dan diisi sebelum dicetak.
+Dokumen ini berisi teks yang dikirim bersama permohonan izin etik ke *Lembaga Komite Etik* dan yang dibagikan ke sekolah: surat informasi, formulir persetujuan, naskah persetujuan anak, formulir pengunduran diri, dan teks untuk butir risiko daring (layar sebelum dan sesudahnya, dan selebaran tempat bercerita). Setiap teks berupa blok siap cetak. Tempat kosong ditulis dalam kurung siku, misalnya `[nama sekolah]`, dan diisi sebelum dicetak.
 
 Protokol etiknya sendiri ditulis di `22_PERMOHONAN_IZIN_ETIK.md` (sesi `r10-izin-etik`), dan protokol uji keterbacaan di `24_UJI_KETERBACAAN.md` (sesi `r10-uji-keterbacaan`). Teks di sini mengikuti fakta di [01](01_REVISI_10_ANALITIK.md), [02](02_LEMBAR_LAPANGAN.md), [16](16_ANGKET_AKSES_DIGITAL.md), dan [17](17_SKALA_SIKAP.md), yang juga menjadi sumber kedua dokumen itu.
 
@@ -22,6 +22,9 @@ Semua teks dikirim ke luar hanya setelah permohonan izin etik disetujui pemilik 
 | T8 | Varian uji keterbacaan (surat, formulir, naskah anak) | Orang tua dan anak uji keterbacaan | [T8](#t8-varian-uji-keterbacaan) |
 | T9 | Varian kelas uji coba | Orang tua kelas uji coba (awalan `U`) | [T9](#t9-varian-kelas-uji-coba) |
 | T10 | Formulir pengunduran diri dan permintaan hapus data | Orang tua, kapan saja | [T10](#t10-formulir-pengunduran-diri-dan-permintaan-hapus-data) |
+| T11 | Layar sebelum butir risiko daring di P5 | Siswa dengan izin butir risiko, di layar modul | [T11](#t11-layar-sebelum-butir-risiko-daring) |
+| T12 | Pesan dukungan sesudah butir risiko daring | Siswa, di layar modul, pesan yang sama untuk semua | [T12](#t12-pesan-dukungan-sesudah-butir-risiko-daring) |
+| T13 | Selebaran tempat bercerita | Anak yang disapa ketua peneliti saat rujukan, dan orang tuanya | [T13](#t13-selebaran-tempat-bercerita) |
 
 Setelah itu: [tabel pembagian](#tabel-pembagian), [catatan keterbacaan](#catatan-keterbacaan), [cek isi L7](#cek-isi-l7-dan-jalur-persetujuan), [pertanyaan untuk pemilik proyek](#pertanyaan-untuk-pemilik-proyek), dan [akibat ke dokumen lain](#akibat-ke-dokumen-lain).
 

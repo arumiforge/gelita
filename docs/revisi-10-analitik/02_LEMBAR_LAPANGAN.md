@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 · **Status: L0–L7 final, disetujui pemilik proyek 26 Oktober 2026** (daftar kerja no. 11); **L8 Profil sekolah draf** (ditambahkan 26 Oktober 2026, keputusan pemilik proyek tentang penelitian pendahuluan di [04](04_CATATAN_KEPUTUSAN.md)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 27 Oktober 2026 · **Status: L0–L7 final, disetujui pemilik proyek 26 Oktober 2026** (daftar kerja no. 11; L5 dan L7 disesuaikan dengan dokumen tahap 2 pada 27 Oktober 2026, lihat *Perubahan setelah persetujuan*); **L8 Profil sekolah draf** (ditambahkan 26 Oktober 2026, keputusan pemilik proyek tentang penelitian pendahuluan di [04](04_CATATAN_KEPUTUSAN.md)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Lembar lapangan mengisi yang tidak terlihat oleh log game dan modul tes: siapa yang dibantu, perangkat yang dipakai bareng, kondisi kelas, emosi siswa, dan alasan di balik jawaban. Semua lembar diisi **peneliti**, bukan guru. Setiap lembar memakai kunci yang sama dengan log, sesuai [aturan gabung di kamus data](11_KAMUS_DATA.md#aturan-gabung-lembar-lapangan) (`kamus-1.0`): **kode peserta** (misalnya S03-A07), **kode sesi lapangan** (misalnya S03-A-P2), dan **jam WIB** sampai detik. Cara kerja di lapangan dan peran P1–P3 ada di dokumen utama, bagian *Kerja lapangan*.
 
@@ -71,6 +71,7 @@ Kode sesi lapangan: __________ · Tanggal: __________ · Inisial P1: ______
 **H-1, tambahan per pertemuan**
 
 - P1:
+  - [ ] Sebelum P1: amplop formulir izin ([23 → T2](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t2-formulir-persetujuan-orang-tuawali)) sudah dikumpulkan, pengingat H-5 sudah dikirim, dan L7 diisi dari formulir yang kembali
   - [ ] Modul tes dan angket terbuka untuk sesi ini; contoh soal siap ditayangkan
   - [ ] Akun peneliti P1 bisa memasukkan baris, kursi, dan buklet di panel (akun `koordinator`; kode sekolah **menunggu daftar kerja no. 12**)
 - P2–P4:
@@ -80,7 +81,7 @@ Kode sesi lapangan: __________ · Tanggal: __________ · Inisial P1: ______
 - P5:
   - [ ] Daftar tantangan susulan per siswa dari panel pemantauan
   - [ ] Daftar siswa dengan izin butir risiko daring (L7) cocok dengan pengaturan di panel
-  - [ ] Prosedur rujukan butir risiko daring dari protokol etik dibawa; ketua peneliti bisa dihubungi selama sesi
+  - [ ] Prosedur rujukan butir risiko daring dari protokol etik ([22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring)) dibawa; ketua peneliti bisa dihubungi selama sesi
   - [ ] Skala sikap terbuka di Balai Refleksi
 - Susulan:
   - [ ] Sesi susulan dibuat dengan kode berakhiran `-S` dan hanya untuk siswa yang absen
@@ -239,6 +240,8 @@ L5 menguji apakah kode kesalahan dan pilihan alasan cocok dengan cara anak berpi
 
 **Persiapan:** P3 membuka data jawaban siswa itu di panel peneliti (dengan kode peserta, tanpa nama), lalu memilih 3 butir dari wilayah pertemuan itu: 2 yang salah di percobaan pertama dan 1 skenario dari Skenario Digital. Rekaman suara hanya dibuat kalau L7 mencatat izin rekaman.
 
+**Tempat dan persetujuan ulang:** wawancara di tempat yang terlihat guru atau peneliti lain, tidak di ruang tertutup berdua. Sebelum mulai, P3 membacakan naskah singkat [23 → T5](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t5-pengingat-di-awal-p2p5-dan-sebelum-wawancara-l5) (berpikir lantang: [23 → T9](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t9-varian-kelas-uji-coba)). Kalau anak tidak mau direkam, tidak direkam, walaupun orang tuanya mengizinkan; kalau anak tidak mau diwawancarai, P3 memilih siswa lain dari kelompok yang sama.
+
 **Pertanyaan (dibaca apa adanya, dengan nada netral):**
 
 1. "Kita lihat soal ini lagi, ya. Ceritakan gimana kamu memilih jawaban ini."
@@ -306,7 +309,7 @@ Status disalin dari panel peneliti setelah P1, setelah P5, dan setelah setiap su
 
 L7 menentukan data siapa yang boleh dianalisis (`consent_ok`). Ini satu-satunya lembar yang memuat nama siswa. Centang persetujuan di halaman daftar GELITA merekam persetujuan siswa, tapi izin orang tua tetap dikumpulkan tertulis sebelum P1.
 
-**Isi surat izin orang tua (dokumen terpisah, bagian permohonan izin etik):**
+**Isi surat izin orang tua** (dokumen terpisah, bagian permohonan izin etik; teks siap cetaknya di [23 → T1 dan T2](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t1-surat-informasi-untuk-orang-tuawali)):
 
 - tujuan penelitian, lima pertemuan, dan siapa penelitinya;
 - data yang dikumpulkan: catatan permainan, tes awal dan akhir, angket akses digital (topik: HP dan internet di rumah, media sosial, game, pendampingan orang tua, bahasa dan buku di rumah), skala sikap (pendapat anak tentang budaya daerah Kedu, 12 pernyataan singkat setuju–tidak setuju di akhir P5, tanpa jawaban benar atau salah dan tidak dinilai), pengamatan peneliti, dan wawancara singkat;
@@ -314,15 +317,19 @@ L7 menentukan data siapa yang boleh dianalisis (`consent_ok`). Ini satu-satunya 
 - **pilihan terpisah** untuk rekaman suara wawancara;
 - **pilihan terpisah** untuk butir pengalaman risiko daring di P5: 2–3 pertanyaan yang diisi sendiri di layar, dengan prosedur rujukan;
 - anak tanpa izin ikut kegiatan pengganti di kelas, tanpa akun GELITA;
-- hak mengundurkan diri kapan saja tanpa akibat, dan data anak dihapus kalau diminta;
+- hak mengundurkan diri kapan saja tanpa akibat, dengan pilihan data yang sudah ada tetap dipakai atau dihapus; permintaan hapus diterima sampai studi ditutup ([22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan));
+- tanpa foto atau video anak;
+- batas kerahasiaan: kalau anak dalam bahaya serius, ketua peneliti boleh menghubungi orang tua, kepala sekolah, atau layanan perlindungan anak;
+- data berkode boleh dibagikan atas permintaan dengan persetujuan komite etik, tanpa nama dan tanpa jawaban butir risiko daring;
+- kontak komite etik untuk keluhan;
 - kontak peneliti dan nomor persetujuan etik (**menunggu persetujuan *Lembaga Komite Etik***).
 
 **Cara mengisi**
 
 - Diisi P1 dari surat yang kembali, sebelum P1. Kode peserta ditambahkan setelah siswa mendaftar di P1, dari L2.
 - Persetujuan siswa: Ya kalau siswa menyatakan setuju secara lisan saat pembukaan P1 **dan** mencentang persetujuan di halaman daftar.
-- Status: `Aktif`; `Tanpa izin` (kegiatan pengganti, tanpa akun); `Mengundurkan diri` dengan tanggal (peneliti mengajukan permintaan hapus data, admin menjalankannya); `Keluar` dengan tanggal (pindah sekolah atau tidak lagi hadir; datanya tetap kecuali diminta dihapus).
-- `consent_ok = 1` hanya kalau izin orang tua Ya, persetujuan siswa Ya, dan status `Aktif` atau `Keluar` ([11](11_KAMUS_DATA.md#penanda-untuk-analisis)).
+- Status: `Aktif`; `Tanpa izin` (kegiatan pengganti, tanpa akun); `Mengundurkan diri (data tetap)` dengan tanggal (anak berhenti, data sampai tanggal itu tetap dipakai); `Mengundurkan diri (hapus data)` dengan tanggal (peneliti mengajukan permintaan hapus data, admin menjalankannya). Formulirnya [23 → T10](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t10-formulir-pengunduran-diri-dan-permintaan-hapus-data); anak yang menolak sendiri di pembukaan P1 dicatat `Tanpa izin` dengan catatan "anak menolak"; `Keluar` dengan tanggal (pindah sekolah atau tidak lagi hadir; datanya tetap kecuali diminta dihapus).
+- `consent_ok = 1` hanya kalau izin orang tua Ya, persetujuan siswa Ya, dan status `Aktif` atau `Keluar` ([11](11_KAMUS_DATA.md#penanda-untuk-analisis)). Mulai `kamus-1.1`, `Mengundurkan diri (data tetap)` juga `consent_ok = 1` untuk data sampai tanggal mundur (keputusan pemilik proyek, 27 Oktober 2026).
 
 Sekolah: ______ (kode sekolah: **menunggu daftar kerja no. 12**) · Rombel: ___ · Halaman __ dari __
 
@@ -332,9 +339,9 @@ Sekolah: ______ (kode sekolah: **menunggu daftar kerja no. 12**) · Rombel: ___ 
 | 1 | (nama) | 5A | Ya, 1 Nov 2027 | Ya | Ya | Ya | S03-A07 | Aktif |
 | 2 | (nama) | 5A | Belum kembali | — | — | — | — | Tanpa izin |
 | 3 | (nama) | 5A | Ya, 2 Nov 2027 | Tidak | Tidak | Ya | S03-A12 | Aktif |
-| 4 | (nama) | 5A | Ya, 1 Nov 2027 | Ya | Ya | Ya | S03-A04 | Mengundurkan diri 18 Nov 2027; permintaan hapus diajukan |
+| 4 | (nama) | 5A | Ya, 1 Nov 2027 | Ya | Ya | Ya | S03-A04 | Mengundurkan diri (hapus data) 18 Nov 2027; permintaan hapus diajukan |
 
-**Penyimpanan:** lembar kertas disimpan di lemari terkunci, terpisah dari lembar lain, bersama pemetaan NPSN ke kode sekolah. Salinan digitalnya dienkripsi dan hanya bisa dibuka P1 dan ketua peneliti. Lembar dimusnahkan sesuai masa simpan di protokol etik. Situs statis revisi ini menyimpan isian di peramban perangkat yang dipakai, jadi L7 hanya diisi di laptop yang aman dan terkunci.
+**Penyimpanan:** lembar kertas disimpan di lemari terkunci, terpisah dari lembar lain, bersama pemetaan NPSN ke kode sekolah. Salinan digitalnya dienkripsi dan hanya bisa dibuka P1 dan ketua peneliti. Lembar dimusnahkan saat studi ditutup, sesuai [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan). Situs statis revisi ini menyimpan isian di peramban perangkat yang dipakai, jadi L7 hanya diisi di laptop yang aman dan terkunci.
 
 ## L8 Profil sekolah
 
@@ -389,3 +396,11 @@ Dibandingkan draf 23 Oktober 2026 (yang sebagian diselaraskan 26 Oktober 2026):
 - **06**: buklet dimasukkan di P1 langsung setelah pendaftaran; wawancara L5 di P2–P4; sesi susulan wilayah. Selesai.
 - **13**: bantuan saat tes di L3; P1 ditambah ± 5 menit (± 124 menit); urutan P5 tanpa wawancara L5. Selesai.
 - **11** (`kamus-1.1`, menunggu uji coba): kode DEV-TIM; kode sesi susulan `-S`; L2 punya kolom baris dan kursi; L6 kini berisi status, bukan skor (skor dari modul).
+
+## Perubahan setelah persetujuan
+
+27 Oktober 2026, dari dokumen tahap 2 ([22](22_PERMOHONAN_IZIN_ETIK.md), [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md)) dan keputusan pemilik proyek di [04](04_CATATAN_KEPUTUSAN.md):
+
+- **L0:** amplop formulir izin dan pengingat H-5 sebelum P1; tautan ke prosedur rujukan di 22.
+- **L5:** tempat yang terlihat, persetujuan ulang singkat sebelum wawancara, dan penolakan rekaman oleh anak didahulukan dari izin orang tua.
+- **L7:** tautan ke teks surat di 23; butir surat baru (tanpa foto dan video, batas kerahasiaan, berbagi data berkode atas persetujuan komite, kontak komite, batas hapus sampai studi ditutup); dua status mundur, `data tetap` dan `hapus data`; `consent_ok` untuk `data tetap` mulai `kamus-1.1`; pemusnahan lembar saat studi ditutup.

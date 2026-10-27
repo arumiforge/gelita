@@ -75,7 +75,7 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
   - [ ] `24_UJI_KETERBACAAN.md`: child readability-test protocol (work item 23 in `01`), branch `r10-uji-keterbacaan`. Draft written 27 October 2026 (four children plus one for a second round, shared core plus bank split into six blocks, sheets LK1–LK3, `KB-*` codes); owner decided all four questions the same day (recommended options)
   - [ ] Coordinator carries each document's *Akibat ke dokumen lain* into the shared documents after its PR merges. Done for `20`: `01` (items 3, 14), `03` (validator abbreviations, test accounts), `07` (next steps); the `dokumen-pdf/` README step waits for `21`, and the notes for `22` and `24` went to those sessions
 - [ ] Complete implementation document, after the revision documents are final and gate G2 (expert validation and ethics approval) is passed
-- [ ] Implementation of the system changes listed in `01` (22 so far), one short-lived branch each, after the implementation document is approved
+- [ ] Implementation of the system changes listed in `01` (23 so far), one short-lived branch each, after the implementation document is approved
 
 ## Before the research starts
 

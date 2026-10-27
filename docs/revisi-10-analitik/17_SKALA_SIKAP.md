@@ -197,8 +197,8 @@ Lembar penilaiannya adalah B.8 di instrumen r10 v2.1, siap ditempel dari [07](07
 
 ### Tahap 2: uji keterbacaan dengan anak
 
-Setelah izin etik terbit, bersama uji keterbacaan bank, tes, dan angket: 3–5 anak kelas 5 membaca sendiri setiap pernyataan di mock-up layar, memilih jawaban, lalu menjelaskan dengan kata-katanya sendiri arti pernyataan dan alasan pilihannya (wawancara kognitif singkat). Yang paling diperhatikan:
-- butir negatif (skp-03, skp-06, skp-08, skp-10): apakah anak yang setuju dengan isi butir positif memilih *Tidak setuju* di butir negatif, sesuai maksudnya;
+Setelah izin etik terbit, bersama uji keterbacaan bank, tes, dan angket ([24](24_UJI_KETERBACAAN.md)): empat anak, ditambah satu anak di putaran kedua (kelas 5, dari sekolah di luar sampel), membaca sendiri setiap pernyataan di mock-up layar, memilih jawaban, lalu menjelaskan dengan kata-katanya sendiri arti pernyataan dan alasan pilihannya (wawancara kognitif singkat). Yang paling diperhatikan:
+- butir negatif (skp-03, skp-06, skp-08, skp-10): apakah anak yang setuju dengan isi butir positif memilih *Tidak setuju* di butir negatif, sesuai maksudnya (pancingan [PB-7](24_UJI_KETERBACAAN.md#pancingan-baku); jawaban berlawanan dicatat `KB-ARH` dan ditindaklanjuti menurut [24 → Tabel keputusan](24_UJI_KETERBACAAN.md#tabel-keputusan));
 - kata "warisan", "tradisi", "kuno", dan "acara budaya";
 - beda *Kurang setuju* dan *Tidak setuju*.
 
@@ -227,7 +227,7 @@ Dengan ± 300 siswa: analisis faktor konfirmatori satu faktor untuk data ordinal
 
 ### Teks untuk permohonan izin etik
 
-Permohonan izin etik ke *Lembaga Komite Etik* (daftar kerja no. 15) belum ditulis. Bagian ini siap ditempel ke permohonan itu, di bagian instrumen dan risiko bagi peserta. `needs_verification`: disesuaikan dengan formulir komite saat permohonan disusun.
+**Sudah dipakai (27 Oktober 2026)** di permohonan izin etik [22](22_PERMOHONAN_IZIN_ETIK.md) dan lampiran 6-nya ([22 → Lampiran](22_PERMOHONAN_IZIN_ETIK.md#lampiran)). Teks di bawah tetap di sini sebagai sumbernya; kalau diubah, 22 ikut disesuaikan. `needs_verification`: disesuaikan dengan formulir komite saat permohonan diajukan.
 
 > **Skala sikap menjaga warisan.** Di pertemuan kelima (P5), setelah tes akhir dan cerita penutup, siswa mengisi 12 pernyataan singkat tentang budaya daerah Kedu, misalnya "Aku bangga pada budaya daerah Kedu." Siswa memilih salah satu dari empat jawaban (*Tidak setuju*, *Kurang setuju*, *Setuju*, *Sangat setuju*) di layar GELITA. Pengisian berlangsung sekitar 5 menit.
 >
@@ -241,7 +241,7 @@ Permohonan izin etik ke *Lembaga Komite Etik* (daftar kerja no. 15) belum dituli
 > - Layar hanya menampilkan kode peserta. Jawaban per siswa hanya dibaca tim peneliti; laporan ke sekolah hanya berisi angka gabungan dan tidak untuk kelompok kurang dari 5 siswa.
 > - Skala diisi hanya oleh siswa yang punya izin orang tua dan menyatakan setuju. Skala ini disebut di surat izin orang tua dan tidak memerlukan izin terpisah.
 >
-> **Validasi.** Isi dan bahasa butir ditelaah empat ahli (budaya Kedu, pengukuran, dan dua ahli bahasa anak) sebelum dipakai, lalu diuji keterbacaannya dengan 3–5 anak setelah izin etik terbit.
+> **Validasi.** Isi dan bahasa butir ditelaah empat ahli (budaya Kedu, pengukuran, dan dua ahli bahasa anak) sebelum dipakai, lalu diuji keterbacaannya dengan empat anak, ditambah satu anak di putaran kedua, setelah izin etik terbit.
 
 ## Akibat ke dokumen lain
 
@@ -259,7 +259,7 @@ Penyesuaian yang sudah dikerjakan ditandai di tabel; sisanya menunggu tahapnya.
 | [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) | **Sudah dikerjakan (26 Oktober 2026):** tidak ada baris cerita penutup yang memuji siswa; `penutup-04` diubah karena menggemakan `skp-07` (keputusan pemilik proyek). Periksa apakah baris terakhir cerita penutup memuji sikap siswa terhadap warisan Kedu tepat sebelum skala; kalau ya, pertimbangkan kalimat yang lebih netral. Pengantar Balai Refleksi (`Game.reflectionLead`) baru tampil setelah skala |
 | [13](13_TES_AWAL_AKHIR.md), tabel waktu P5 | **Sudah dikerjakan (26 Oktober 2026).** Baris "cerita penutup dan skala sikap" (12 menit) belum memuat kritik dan saran (± 3–5 menit); jumlah paling lama P5 naik menjadi ± 139 menit |
 | [18](18_MOCKUP_LAYAR_BARU.md) | **Sudah dikerjakan (26 Oktober 2026):** `mk-ss-01`–`mk-ss-04` dari sesi mock-up, ditambah `mk-ss-05` (Balai Refleksi dengan kritik dan saran setelah skala). Mock-up layar skala sikap (petunjuk, contoh, satu pernyataan dengan empat pilihan bertitik, layar kirim) untuk ahli media langkah 1 dan uji keterbacaan |
-| Permohonan izin etik | **Teks siap tempel (26 Oktober 2026)** di [Teks untuk permohonan izin etik](#teks-untuk-permohonan-izin-etik); dimasukkan saat permohonan disusun (daftar kerja no. 15) |
+| Permohonan izin etik ([22](22_PERMOHONAN_IZIN_ETIK.md)) | **Sudah dikerjakan (27 Oktober 2026).** Teks di [Teks untuk permohonan izin etik](#teks-untuk-permohonan-izin-etik) dipakai di 22 dan lampiran 6 (daftar kerja no. 15) |
 
 ## Pertanyaan yang masih terbuka
 

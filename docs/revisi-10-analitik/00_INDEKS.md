@@ -17,7 +17,7 @@ Dokumen lain dibaca per bagian sesuai tugas.
 
 | Berkas | Isi | Status | Kapan dibaca | Ukuran |
 | --- | --- | --- | --- | --- |
-| [01](01_REVISI_10_ANALITIK.md) | Dokumen utama: konstruk, 10 analitik, Skenario Digital, skema kesalahan, peran, log, token, kode peserta, peta jalan, pertanyaan terbuka, 22 perubahan sistem | Aktif | Selalu, per bagian | 62 KB |
+| [01](01_REVISI_10_ANALITIK.md) | Dokumen utama: konstruk, 10 analitik, Skenario Digital, skema kesalahan, peran, log, token, kode peserta, peta jalan, pertanyaan terbuka, 23 perubahan sistem | Aktif | Selalu, per bagian | 62 KB |
 | [02](02_LEMBAR_LAPANGAN.md) | Lembar lapangan L0–L8 | L0–L7 final, disetujui 26 Oktober 2026 (daftar kerja no. 11); L8 Profil sekolah draf (26 Oktober 2026); daftar kode sekolah (no. 12) masih ditandai kosong; akun P1 memakai nama samaran `koordinator` (no. 13, 27 Oktober 2026) | Saat menyusun lembar atau alur lapangan | 17 KB |
 | [03](03_KODE_DAN_ARTI.md) | Arti semua kode | Rujukan | Cari kode yang dibutuhkan saja | 13 KB |
 | [04](04_CATATAN_KEPUTUSAN.md) | Riwayat keputusan, terbaru di atas | Aktif | Selalu, entri teratas | 37 KB |
@@ -82,4 +82,4 @@ Setiap sesi hanya mengubah dokumennya sendiri, barisnya sendiri di berkas ini da
 
 **Tahap dokumen 3: dokumen implementasi (tahap 3, setelah gerbang G2)**
 
-Dokumen implementasi lengkap dari 22 perubahan sistem di 01, dibagi per bagian seperti Dok 1–3 perombakan kelas 5. Tahap ini menunggu persetujuan etik, yang ditargetkan paling lambat akhir September sampai minggu pertama November 2027. Implementasi baru dimulai setelah dokumen ini disetujui.
+Dokumen implementasi lengkap dari 23 perubahan sistem di 01, dibagi per bagian seperti Dok 1–3 perombakan kelas 5. Tahap ini menunggu persetujuan etik, yang ditargetkan paling lambat akhir September sampai minggu pertama November 2027. Implementasi baru dimulai setelah dokumen ini disetujui.

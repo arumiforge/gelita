@@ -6,6 +6,30 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 27 Oktober 2026
 
+**Penyelarasan dokumen tahap 2 (20–24) dan keputusan pemilik proyek** (cabang `sky/inspiring-ritchie-nex4qi`, sesi koordinator, PR #268) · Prototipe I, belum merevisi produk
+
+Kelima sesi paralel selesai pada hari yang sama, masing-masing dengan jawaban pemilik proyek sendiri. Sesi koordinator memeriksa kelima dokumen bersama-sama dan menemukan satu keputusan yang bertentangan, beberapa keputusan yang belum terbawa ke dokumen lain, dan kode yang bertabrakan.
+
+Keputusan pemilik proyek (27 Oktober 2026):
+
+1. **Batas permintaan hapus data: sampai studi ditutup**, mengikuti 22. Nama, L7, dan formulir dimusnahkan saat studi ditutup; hasil gabungan yang sudah terbit tidak bisa ditarik. Aturan di 23 ("sampai analisis utama dimulai") diganti. Tidak dipilih: gabungan dua aturan (permintaan sesudah analisis utama dimulai tetap menghapus data mentah), dan aturan 23.
+2. **Formulir mundur T10 tetap tiga pilihan:** A berhenti dan data tetap dipakai, B berhenti dan data dihapus, C tetap ikut tetapi menarik rekaman atau jawaban butir risiko. L7 di 02 mendapat dua status, `Mengundurkan diri (data tetap)` dan `Mengundurkan diri (hapus data)`; mulai `kamus-1.1`, status `data tetap` dihitung `consent_ok = 1` untuk data sampai tanggal mundur. Hapus sebagian menjadi perubahan sistem no. 23. Tidak dipilih: hanya B dan C (seperti L7 lama), atau hanya A dan B.
+3. **Anak uji keterbacaan mendapat tanda terima kasih kecil yang sama** dengan anak di kelas, setelah sesi terakhirnya, tidak disebut sebagai hadiah. Tidak dipilih: ditambah kudapan setiap sesi, atau tanpa hadiah.
+4. **Akun `pengamat`, `pewawancara`, dan `ketua` disetujui** (sudah dicatat di entri koordinator di bawah).
+5. **Keempat PR dokumen 21–24 digabung lewat satu PR koordinator** (#268), supaya konflik di 00, 04, dan PROGRESS diselesaikan sekali dan dokumen diselaraskan sebelum masuk `main`. Tidak dipilih: menggabung satu per satu.
+
+Diselaraskan sesi koordinator tanpa keputusan baru:
+
+- **Kode:** kegiatan dengan anak di 22 menjadi `KG1`–`KG5` (dulu `K1`–`K5`, bertabrakan dengan kode anak `K01`–`K05` di 24); kode sesi uji keterbacaan menjadi `K01-1` (dulu `K01-S1`, terbaca seperti kode sekolah). Label `T1`–`T13` di 23 dan `PB-*` di 24 tetap label di dalam dokumennya.
+- **Keputusan 22 dibawa ke 23:** berbagi data berkode atas persetujuan komite, masa simpan, batas kerahasiaan, kontak komite, dan tiga teks baru untuk anak (T11 layar izin ulang sebelum butir risiko, T12 pesan dukungan, T13 selebaran tempat bercerita).
+- **Keputusan 24 dibawa ke 22 dan 23:** empat anak ditambah satu, empat sesi ± 60 menit di sekolah anak, butir risiko daring diparafrasekan saja, dan sekolah uji keterbacaan tidak ikut sampel nanti. Nama dan tingkat membaca anak baru sampai ke peneliti setelah izin orang tua kembali.
+- **Keputusan 21 dibawa ke 20:** dua penilai B.5a menerima paket B.5a saja lebih dulu; nama berkas dari 21; perkiraan waktu B.7 dinaikkan.
+- **Keputusan 23 dibawa ke 22:** amplop H-14 sampai H-10, pengingat H-5, batas kembali H-3; ringkasan hasil lewat sekolah; pengingat persetujuan di P2–P5.
+- **Janji "nama hanya di dua tempat"** di 22 dan 23 diganti aturan yang benar: nama tidak pernah ada di data penelitian; nama hanya di akun (admin) dan di berkas izin, mundur, dan rujukan yang disimpan terkunci terpisah.
+- **Dokumen bersama:** 01 (daftar kerja no. 3, 14, 15, 23, pertanyaan izin etik, perubahan sistem no. 23 baru), 02 (L0, L5, L7; bagian *Perubahan setelah persetujuan*), 03 (ketua peneliti, *Kegiatan dengan anak*, ID netral B.5a, *Uji keterbacaan*), 06, 13–18 (tautan ke 24 dan 22; kalimat 16 "namamu tidak ditulis di mana pun" diganti "Jawabanmu disimpan dengan kode, bukan dengan namamu"), dan README `dokumen-pdf/`.
+
+Yang menyusul di PR koordinator berikutnya: perubahan HTML ketiga instrumen dari 21 (ID netral di B.5a, nama berkas dan urutan kirim di D.3, waktu B.7), level tunggal untuk butir tes D2 dan D3 di 13 dan 15, dan nama topik B.6 dan benda B.6b yang berbeda dengan 08.
+
 **Draf protokol uji keterbacaan, daftar kerja no. 23** (cabang `r10-uji-keterbacaan`, sesi paralel tahap 2; Prototipe I)
 
 Status: **draf; keempat pertanyaan diputuskan pemilik proyek di hari yang sama** (lihat di bawah). Dokumen baru [24_UJI_KETERBACAAN.md](24_UJI_KETERBACAAN.md) berisi protokol uji keterbacaan dengan anak kelas 5, yang dijalankan setelah izin etik terbit dan setelah bahan direvisi dari validasi ahli. Entri ini tidak merevisi prototipe; revisi dari hasil uji nanti dicatat sebagai "Prototipe I, revisi dari uji keterbacaan".
@@ -35,7 +59,7 @@ Status: draf; empat pertanyaan pemilik proyek dijawab (di bawah). Yang ditulis, 
 Pilihan yang diambil saat menulis (rinciannya di [23 → Pilihan yang diambil saat menulis](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#pilihan-yang-diambil-saat-menulis)): formulir yang tidak kembali dibaca tidak mengizinkan; kotak tambahan yang kosong dibaca Tidak; amplop tertutup H-14 sampai H-10 dengan batas kembali H-3; tanpa foto dan video; persetujuan anak diulang singkat di P2–P5; anak yang menolak di P1 dicatat `Tanpa izin`; T10 memberi pilihan berhenti tanpa menghapus data, yang butuh penyesuaian `consent_ok`.
 
 Keputusan pemilik proyek (wawancara singkat, 27 Oktober 2026; semuanya usulan, rinciannya di [23 → Keputusan pemilik proyek](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#keputusan-pemilik-proyek)):
-1. **Permintaan hapus data boleh diajukan sampai analisis utama dimulai.** Sesudahnya data anak tetap dihapus, tetapi angka gabungan yang sudah dihitung atau terbit tidak berubah. Tidak dipilih: kapan saja tanpa batas.
+1. **Permintaan hapus data boleh diajukan sampai analisis utama dimulai.** *(Diganti pada hari yang sama: sampai studi ditutup, lihat entri penyelarasan di atas.)* Sesudahnya data anak tetap dihapus, tetapi angka gabungan yang sudah dihitung atau terbit tidak berubah. Tidak dipilih: kapan saja tanpa batas.
 2. **Anak uji keterbacaan ikut membaca butir risiko daring, dengan centang terpisah**, dan hanya menilai kalimatnya. Tidak dipilih: hanya telaah ahli.
 3. **Tanpa centang ringkasan hasil untuk orang tua;** ringkasan angka gabungan ke sekolah, dan orang tua memintanya lewat sekolah. Tidak dipilih: centang keempat.
 4. **Kenang-kenangan kecil yang sama untuk seluruh kelas**, termasuk yang tidak ikut, di akhir P5, tidak disebut sebagai imbalan. Tidak dipilih: tanpa kenang-kenangan, atau hanya untuk peserta.

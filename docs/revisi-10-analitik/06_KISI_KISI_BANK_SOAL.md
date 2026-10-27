@@ -159,7 +159,7 @@ Semua tampilan digital adalah **tiruan**: nama akun, alamat situs, dan nomor dib
 
 ## Waktu bermain
 
-Perkiraan dibuat untuk siswa kelas 5 (10–11 tahun) yang membaca **60–90 kata per menit** di layar. Penelitian kelas 5 di Indonesia melaporkan angka yang sangat beragam: sekitar 136 kata per menit di satu sekolah, dan 41 kata per menit di sekolah lain sebelum ada perlakuan. Kami memakai rentang tengah yang hati-hati, karena teks di game juga diselingi gambar dan tombol. Setiap angka harus dicek ulang dengan waktu aktif saat uji coba.
+Perkiraan dibuat untuk siswa kelas 5 (10–11 tahun) yang membaca **60–90 kata per menit** di layar. Penelitian kelas 5 di Indonesia melaporkan angka yang sangat beragam: sekitar 136 kata per menit di satu sekolah, dan 41 kata per menit di sekolah lain sebelum ada perlakuan. Kami memakai rentang tengah yang hati-hati, karena teks di game juga diselingi gambar dan tombol. Setiap angka harus dicek ulang dengan waktu aktif saat uji coba. Angka pertama dari anak datang dari uji keterbacaan ([24](24_UJI_KETERBACAAN.md#waktu-dari-uji-ini-ke-perkiraan-di-06-13-dan-15)); angka akhir dari uji coba.
 
 | Bagian | Temanggung | Magelang | Wonosobo | Dasar hitungan |
 | --- | --- | --- | --- | --- |
