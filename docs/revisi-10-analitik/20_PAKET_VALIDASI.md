@@ -1,6 +1,6 @@
 # Paket Validasi Ahli
 
-Per 27 Oktober 2026 · **Status: draf** · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 27 Oktober 2026 · **Status: draf**; pertanyaan pemilik proyek dijawab 27 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Dokumen ini mengubah tiga instrumen validasi ahli menjadi paket yang siap dikirim ke sebelas validator. Isinya: siapa menerima apa dan kapan, surat permohonan, akses ke instalasi uji, cara hasil dikembalikan dan dicatat, apa yang terjadi setelah hasil kembali, dan daftar periksa validasi untuk gerbang G2. Daftar kerja no. 3 dan no. 14 di [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja). Pekerjaan ini bagian dari **Prototipe I**.
 
@@ -35,7 +35,7 @@ Nomor berkas di dokumen ini selalu nomor di tabel D.3 instrumennya, misalnya "IM
 | Pengamat budaya (3) | Ahli Budaya Kedu 1, 2, 3 | IB |
 | Ahli media (3) | Ahli Media Pembelajaran 1, 2, 3 | IMd (langkah 1) |
 
-Dua dari lima ahli materi juga menjadi penilai B.5a. IM A.3 menyarankan satu ahli bahasa anak dan satu ahli literasi digital. Draf ini memakai **Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1**; penetapannya ada di [Pertanyaan untuk pemilik proyek](#pertanyaan-untuk-pemilik-proyek).
+Dua dari lima ahli materi juga menjadi penilai B.5a. IM A.3 menyarankan satu ahli bahasa anak dan satu ahli literasi digital. Pemilik proyek menetapkan **Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1** (27 Oktober 2026, [Keputusan pemilik proyek](#keputusan-pemilik-proyek)).
 
 **Kapan boleh dikirim.** Validator tidak bekerja dengan anak, jadi validasi tidak menunggu izin etik. Uji keterbacaan dengan anak (24) tetap menunggu izin etik. Paket baru boleh dikirim setelah semua prasyarat ini terpenuhi:
 
@@ -50,7 +50,7 @@ Dua dari lima ahli materi juga menjadi penilai B.5a. IM A.3 menyarankan satu ahl
 | 7 | Daftar butir buta B.5a, daftar B.5b, dan lembar kerja per lembar siap | IM D.3 no. 2, 5; IB D.3 no. 11; IMd D.3 no. 9; dibuat di 21 | Sedang ditulis (cabang `r10-berkas-validator`) |
 | 8 | Instalasi uji siap, dengan akun uji validator | IM D.3 no. 12, IB D.3 no. 8, IMd D.3 no. 2–3; [Akses untuk validator](#akses-untuk-validator) | Belum |
 | 9 | Nama asli validator ditetapkan, kesediaannya didapat lisan atau lewat pesan, dan tercatat di daftar padanan di luar repo | [Pengembalian dan pencatatan](#pengembalian-dan-pencatatan) | Belum (pertanyaan terbuka di 01) |
-| 10 | Besaran honorarium dan sumber dananya diketahui | IM A.4, IB A.4 ("dicantumkan di surat permohonan") | Belum |
+| 10 | Besaran honorarium dan sumber dananya diketahui ketua peneliti; di surat ditulis "sesuai ketentuan yang berlaku" | IM A.4, IB A.4; [Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 2 | Belum |
 
 Daftar kode sekolah (no. 12) **tidak** menahan paket ini ([04](04_CATATAN_KEPUTUSAN.md), 27 Oktober 2026). Yang tersentuh hanya IMd D.3 no. 7, dan berkas itu punya pengganti (daftar jenis perangkat).
 
@@ -68,9 +68,9 @@ Perkiraan jam dijumlahkan dari tabel waktu instrumen (IM A.4 "Perkiraan waktu da
 
 | Validator | Lembar yang diisi | Berkas IM D.3: awal | Berkas IM D.3: setelah B.5a | Perkiraan jam |
 | --- | --- | --- | --- | --- |
-| Ahli Bahasa Anak 1 *(penilai B.5a, usulan)* | **B.5a**; B.3 aspek A, B, D, G, H, J (W), C, I (○), E, F (○); B.5b (W); B.6 (W); B.7 (○); B.8a relevansi, arah negatif, telaah bahasa, dan B.8b (W); B.9a Bagian 1 (W); B.9b bahasa (W) | 1, **2**, 3, 4 (tanpa label), 7, 8 (tes tanpa label), 9, 10, 11, 12 | 4 (label pengembang), 5, 6 | B.5a 6–8 + lainnya 9–14 = **± 15–22 jam** (B.7 bila diisi: + 2–3) |
+| Ahli Bahasa Anak 1 *(penilai B.5a)* | **B.5a**; B.3 aspek A, B, D, G, H, J (W), C, I (○), E, F (○); B.5b (W); B.6 (W); B.7 (○); B.8a relevansi, arah negatif, telaah bahasa, dan B.8b (W); B.9a Bagian 1 (W); B.9b bahasa (W) | 1, **2**, 3, 4 (tanpa label), 7, 8 (tes tanpa label), 9, 10, 11, 12 | 4 (label pengembang), 5, 6 | B.5a 6–8 + lainnya 9–14 = **± 15–22 jam** (B.7 bila diisi: + 2–3) |
 | Ahli Bahasa Anak 2 | B.3 seperti Ahli Bahasa Anak 1; B.5b (W); B.6 (W); B.7 (○); B.8 seperti Ahli Bahasa Anak 1; B.9a Bagian 1 (W); B.9b bahasa (W) | 1, 3, 4 (tanpa label), 7, 8, 9, 10, 11, 12 | 4 (label pengembang), 5, 6 | **± 9–14 jam** (B.7 bila diisi: + 2–3) |
-| Ahli Literasi Digital 1 *(penilai B.5a, usulan)* | **B.5a**; B.3 aspek A, B, D, E, F, H, J (W), C, I, G (○); B.5b (W); B.6 (W); B.7 (W); B.8a tumpang tindih D3 saja (W); B.9a Bagian 2–3 (W); B.9b isi (W) | 1, **2**, 3, 4 (tanpa label), 7, 8 (tes tanpa label), 9, 10, 11, 12 | 4 (label pengembang), 5, 6 | B.5a 6–8 + lainnya 11–16 = **± 17–24 jam** |
+| Ahli Literasi Digital 1 *(penilai B.5a)* | **B.5a**; B.3 aspek A, B, D, E, F, H, J (W), C, I, G (○); B.5b (W); B.6 (W); B.7 (W); B.8a tumpang tindih D3 saja (W); B.9a Bagian 2–3 (W); B.9b isi (W) | 1, **2**, 3, 4 (tanpa label), 7, 8 (tes tanpa label), 9, 10, 11, 12 | 4 (label pengembang), 5, 6 | B.5a 6–8 + lainnya 11–16 = **± 17–24 jam** |
 | Ahli Literasi Digital 2 | B.3 seperti Ahli Literasi Digital 1; B.5b (W); B.6 (W); B.7 (W); B.8a tumpang tindih D3 saja (W); B.9a Bagian 2–3 (W); B.9b isi (W) | 1, 3, 4 (tanpa label), 7, 8, 9, 10, 11, 12 | 4 (label pengembang), 5, 6 | **± 11–16 jam** |
 | Ahli Pengukuran | B.3 aspek A, B, C, H, I, J (W), D, E, F, G (○); B.5b (W); B.6 (○); B.7 (○); B.8a relevansi, indikator tepat, arah negatif, dan B.8b (W); B.9a (W); B.9b (○) | 1, 3, 4 (tanpa label), 7, 8, 9, 10, 11, 12 | 4 (label pengembang), 5, 6 | **± 7,5–12 jam** (B.6 dan B.7 bila diminta: + 3,5–5) |
 
@@ -179,7 +179,7 @@ Tempat isian yang dipakai di ketiga surat:
 | `[nama validator]`, `[gelar]`, `[instansi validator]` | Dari daftar padanan |
 | `[nama ketua peneliti]`, `[NIM/NIP]`, `[program studi]`, `[nama perguruan tinggi]` | Identitas peneliti |
 | `[nama pembimbing/promotor]` | Bila surat perlu diketahui pembimbing |
-| `[besaran honorarium]`, `[cara pembayaran]` | Lihat [Pertanyaan untuk pemilik proyek](#pertanyaan-untuk-pemilik-proyek) |
+| `[cara pembayaran]` | Honorarium ditulis "sesuai ketentuan yang berlaku", tanpa angka ([Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 2) |
 | `[tanggal pengarahan]`, `[tanggal batas]`, `[tanggal batas B.5a]` | Dari jadwal |
 | `[alamat instalasi uji]`, `[nama akun uji]` | Dikirim terpisah dari surat (lihat [Akses untuk validator](#akses-untuk-validator)) |
 | `[nomor telepon/WhatsApp]`, `[surel peneliti]` | Kontak ketua peneliti |
@@ -211,7 +211,7 @@ Tempat isian yang dipakai di ketiga surat:
 > 5. **Kerahasiaan.** Bank soal, kunci jawaban, butir tes, dan skema kode mohon tidak disebarkan, karena kunci yang bocor ke calon peserta merusak data. Bapak/Ibu tidak akan menerima data siswa apa pun.
 > 6. **Mandiri.** Mohon tidak berdiskusi dengan validator lain sampai lembar Bapak/Ibu selesai. Pertanyaan tentang bahan silakan diajukan kepada saya; kami akan menjawab dengan informasi faktual.
 > 7. **Nama.** Di dokumen penelitian, nama Bapak/Ibu diganti nama samaran. Nama asli hanya tercantum di surat pernyataan dan arsip peneliti, dan disebut di laporan hanya dengan izin Bapak/Ibu.
-> 8. **Honorarium.** Sebagai penghargaan, kami menyediakan honorarium sebesar [besaran honorarium], dibayarkan [cara pembayaran] setelah lembar dan surat pernyataan kami terima.
+> 8. **Honorarium.** Sebagai penghargaan, kami menyediakan honorarium sesuai ketentuan yang berlaku, dibayarkan [cara pembayaran] setelah lembar dan surat pernyataan kami terima.
 >
 > Bila bersedia, mohon konfirmasi melalui [nomor telepon/WhatsApp] atau [surel peneliti]. Berkas dapat dibuka di [tautan folder].
 >
@@ -473,12 +473,16 @@ Gerbang G2 butuh dua separuh: **validasi** (di sini) dan **izin etik** (di 22). 
 - [ ] Entri 04 untuk setiap putaran per panel, dengan versi sebelum dan sesudah revisi.
 - [ ] Hasil validasi ditulis untuk laporan mengikuti IM C.9, IB C.8, dan IMd C.6.
 
-## Pertanyaan untuk pemilik proyek
+## Keputusan pemilik proyek
 
-1. **Siapa dua penilai pelabelan buta (B.5a)?** Usulan: Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1. Alasan: saran IM A.3, supaya sisi membaca dan sisi digital konstruk sama-sama terwakili. Pilihan lain: Ahli Pengukuran dan satu ahli literasi digital (lebih kuat di level dan Bloom, lebih lemah di D1).
-2. **Bagaimana honorarium ditulis di surat?** Usulan: besaran disebut terang per panel di surat (`[besaran honorarium]`), karena instrumen meminta honorarium "dicantumkan di surat permohonan" dan beban ahli materi (± 7,5–24 jam) jauh lebih besar dari ahli media (± 4–5,5 jam). Pilihan lain: "sesuai ketentuan yang berlaku" tanpa angka.
-3. **Paket dikirim kertas atau digital?** Usulan: digital. PDF instrumen dan lembar kerja lewat folder bersama yang dibatasi per validator; surat pernyataan ditandatangani lalu dipindai (aslinya menyusul lewat pos bila lembaga meminta). Alasan: lembar per butir memang dirancang sebagai lembar kerja, dan pengembalian digital mengurangi entri ulang. Kertas tetap disediakan bagi validator yang memintanya.
-4. **Apakah ahli media langkah 1 menunggu sesuatu?** Usulan: tidak menunggu L8; dikirim bersama panel lain begitu instrumen disetujui, memakai daftar jenis perangkat sekolah sampel sebagai pengganti L8 (IMd D.3 no. 7 membolehkannya). Alasan: L8 menunggu daftar kode sekolah (no. 12) yang masih ditunda. Pilihan lain: menunggu sampai satu sekolah setuju dan L8 terisi.
+Pertanyaan di draf ini dijawab pemilik proyek pada 27 Oktober 2026 ([04](04_CATATAN_KEPUTUSAN.md), entri 27 Oktober 2026):
+
+| No | Pertanyaan | Keputusan |
+| --- | --- | --- |
+| 1 | Siapa dua penilai pelabelan buta (B.5a)? | **Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1**, sesuai saran IM A.3: sisi membaca dan sisi digital konstruk sama-sama terwakili |
+| 2 | Bagaimana honorarium ditulis di surat? | **"Sesuai ketentuan yang berlaku", tanpa angka.** Besarannya dicatat ketua peneliti di luar repo dan bisa disampaikan saat menanyakan kesediaan |
+| 3 | Paket dikirim kertas atau digital? | **Digital.** PDF instrumen dan lembar kerja lewat folder bersama yang dibatasi per validator; surat pernyataan ditandatangani lalu dipindai; salinan kertas hanya bila validator memintanya |
+| 4 | Apakah ahli media langkah 1 menunggu sesuatu? | **Tidak.** Dikirim bersama panel lain begitu instrumen disetujui, memakai daftar jenis perangkat sekolah sampel sebagai pengganti L8 (IMd D.3 no. 7) |
 
 ## Akibat ke dokumen lain
 
@@ -486,7 +490,7 @@ Gerbang G2 butuh dua separuh: **validasi** (di sini) dan **izin etik** (di 22). 
 | --- | --- | --- |
 | [03](03_KODE_DAN_ARTI.md) | *Akun staf* atau bagian baru sesudahnya | Tambah baris akun siswa uji validator `uji.bahasa1`–`2`, `uji.digital1`–`2`, `uji.ukur`, `uji.budaya1`–`3`, `uji.media1`–`3`, `uji.cadangan1`–`2`: akun siswa di instalasi uji, dibuat `admin`, bukan akun staf |
 | [03](03_KODE_DAN_ARTI.md) | *Peran* | Tambah singkatan samaran untuk nama berkas: `ABA1`, `ABA2`, `ALD1`, `ALD2`, `AP`, `ABK1`–`ABK3`, `AMP1`–`AMP3` |
-| [01](01_REVISI_10_ANALITIK.md) | *Peta jalan dan daftar kerja*, no. 3 dan 14 | Status: draf paket di 20; penilai B.5a mengikuti jawaban pertanyaan 1 |
+| [01](01_REVISI_10_ANALITIK.md) | *Peta jalan dan daftar kerja*, no. 3 dan 14 | Status: draf paket di 20; penilai B.5a ditetapkan: Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1 (27 Oktober 2026) |
 | [dokumen-pdf/README.md](dokumen-pdf/README.md) | *Sebelum dikirim ke validator* | Tambah langkah 5: "Ikuti prasyarat dan urutan kirim di [20](../20_PAKET_VALIDASI.md)" |
 | [07](07_TELAAH_INSTRUMEN_VALIDASI.md) | *Langkah berikutnya* | Tambah butir: paket validasi disusun di 20 |
 | Instrumen IM, IB, IMd (`dokumen-pdf/src/*.html`) | D.3 | Tidak wajib. Bila pemilik proyek setuju, IB D.3 dan IMd D.3 diberi kolom "Kapan dikirim" seperti IM D.3, supaya cocok dengan tabel *Siapa menerima apa* (IMd no. 10 setelah B.6; IB no. 6 gambar baru menyusul) |

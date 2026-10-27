@@ -6,7 +6,7 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 27 Oktober 2026
 
-**Draf paket validasi ahli: [20_PAKET_VALIDASI.md](20_PAKET_VALIDASI.md)** (cabang `r10-paket-validasi`, sesi paralel tahap 2; daftar kerja no. 3 dan 14) · Prototipe I · Status: draf, menunggu keputusan pemilik proyek
+**Draf paket validasi ahli: [20_PAKET_VALIDASI.md](20_PAKET_VALIDASI.md)** (cabang `r10-paket-validasi`, sesi paralel tahap 2; daftar kerja no. 3 dan 14) · Prototipe I · Status: draf; empat pertanyaan dijawab pemilik proyek pada hari yang sama (lihat akhir entri)
 
 Yang ditulis: prasyarat kirim, tabel siapa menerima apa per nama samaran (lembar dari matriks penugasan, nomor berkas dari D.3 ketiga instrumen, perkiraan jam, putaran kirim), jadwal relatif dua belas minggu dengan usulan tanggal mulai 9 November 2026, tiga surat permohonan, surat lanjutan setelah B.5a, pengingat dan surat putaran 2, usulan akun siswa uji validator, cara pengembalian dan pencatatan, templat matriks revisi induk, aturan kapan butir kembali ke validator, cara mencatat revisi di 04, dan daftar periksa validasi untuk G2.
 
@@ -19,7 +19,14 @@ Pilihan yang diambil saat menulis (semua bisa diubah pemilik proyek):
 5. **Satu matriks revisi induk** untuk ketiga instrumen; D.2 tiap instrumen adalah potongannya untuk putaran 2. Matriks induk menjadi dokumen baru saat hasil pertama kembali.
 6. **Media langkah 2 belum punya instrumen**; disusun di tahap 3 untuk G3.
 
-Pertanyaan untuk pemilik proyek (di 20): dua penilai B.5a, cara menulis honorarium, kirim digital atau kertas, dan apakah ahli media langkah 1 menunggu L8. Perubahan yang dibutuhkan di 01, 03, 07, README `dokumen-pdf/`, 22, dan 24 ada di bagian *Akibat ke dokumen lain* di 20, dibawa sesi koordinator setelah digabung. Entri ini tidak merevisi isi prototipe; ia menyiapkan validasi Prototipe I.
+**Keputusan pemilik proyek atas pertanyaan di 20** (27 Oktober 2026):
+
+1. **Penilai B.5a: Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1** (sesuai usulan).
+2. **Honorarium di surat ditulis "sesuai ketentuan yang berlaku", tanpa angka** (bukan usulan draf, yang menyebut besaran per panel). Besarannya dicatat ketua peneliti di luar repo.
+3. **Paket dikirim digital**: folder bersama yang dibatasi per validator, surat pernyataan dipindai, kertas hanya atas permintaan (sesuai usulan).
+4. **Ahli media langkah 1 tidak menunggu L8**: dikirim bersama panel lain begitu instrumen disetujui, dengan daftar jenis perangkat sebagai pengganti L8 (sesuai usulan).
+
+20 diperbarui: bagian *Pertanyaan untuk pemilik proyek* menjadi *Keputusan pemilik proyek*, dan teks surat memakai kalimat honorarium yang baru. Perubahan yang dibutuhkan di 01, 03, 07, README `dokumen-pdf/`, 22, dan 24 ada di bagian *Akibat ke dokumen lain* di 20, dibawa sesi koordinator setelah digabung. Entri ini tidak merevisi isi prototipe; ia menyiapkan validasi Prototipe I.
 
 **Keputusan pemilik proyek: daftar kerja no. 12 dan 13, dan dimulainya dokumen tahap 2** (cabang `sky/inspiring-ritchie-nex4qi`, sesi koordinator)
 

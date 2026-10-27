@@ -68,7 +68,7 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
   - [x] Attitude-scale placeholder replaced once `17` merged (PR #253): `mk-ss-01`–`04` (instructions, practice item, `skp-03`, send screen) in the format from `17`; 26 pictures in all
 - [x] Owner settled work items 12 and 13 for now (27 October 2026, `04`): the school-code list is deferred and stage 2 starts anyway; staff accounts use role pseudonyms (`admin`, `koordinator` for P1, and so on; `03` → *Akun staf*); `01`, `02`, `00` aligned
 - [ ] Stage-2 documents (expert validation and ethics, up to gate G2), five parallel sessions started 27 October 2026; plan in `00` → *Tahap dokumen 2*. Anything sent outside (validator packages, the ethics application) waits for the owner's approval of the stage-1 documents it needs
-  - [ ] `20_PAKET_VALIDASI.md`: validation package for the eleven validators (who gets what and when, request letters, schedule, returns, revision matrix, validation checklist for G2), branch `r10-paket-validasi`. Draft written 27 October 2026; waiting on the owner (B.5a raters, honorarium wording, digital or paper, media step 1 timing)
+  - [ ] `20_PAKET_VALIDASI.md`: validation package for the eleven validators (who gets what and when, request letters, schedule, returns, revision matrix, validation checklist for G2), branch `r10-paket-validasi`. Draft written 27 October 2026; owner answered the four questions the same day (B.5a raters ABA 1 + ALD 1, honorarium "sesuai ketentuan", digital mailing, media step 1 does not wait for L8)
   - [ ] `21_BERKAS_BUTIR_VALIDATOR.md`: blind item list for B.5a, B.5b list, and per-sheet workbooks for the three instruments, generated from `08` and `13`–`18`, branch `r10-berkas-validator`
   - [ ] `22_PERMOHONAN_IZIN_ETIK.md`: ethics protocol and application to *Lembaga Komite Etik*, branch `r10-izin-etik`
   - [ ] `23_SURAT_INFORMASI_DAN_PERSETUJUAN.md`: information and consent letters (parents, child assent, school, class teacher, readability test and pilot, data-deletion request), branch `r10-surat-izin`
@@ -124,7 +124,7 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | Branch | Owner / scope | Status |
 |---|---|---|
 | `sky/inspiring-ritchie-nex4qi` | Research revision coordinator: owner decisions on work items 12–13, stage-2 plan | PR open |
-| `r10-paket-validasi` | Research revision stage 2: `20_PAKET_VALIDASI.md` | Draft done, PR open; waiting on owner decisions |
+| `r10-paket-validasi` | Research revision stage 2: `20_PAKET_VALIDASI.md` | Draft done with owner decisions, PR #263 open |
 | `r10-berkas-validator` | Research revision stage 2: `21_BERKAS_BUTIR_VALIDATOR.md` and validator workbooks | In progress |
 | `r10-izin-etik` | Research revision stage 2: `22_PERMOHONAN_IZIN_ETIK.md` | In progress |
 | `r10-surat-izin` | Research revision stage 2: `23_SURAT_INFORMASI_DAN_PERSETUJUAN.md` | In progress |
