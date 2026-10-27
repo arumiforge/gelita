@@ -631,6 +631,33 @@ Kamu ingin membetulkan keterangan video itu lewat komentar. Komentar mana yang b
 | **C** | **"Kak, papan festival menyebut ini tari syukur panen 🙏"** | kunci |
 | D | "Wkwk, gerakannya kayak senam pagi" | BUD-ETK |
 
+## Level pengembang
+
+Satu level pengembang per nomor, sama di bentuk A dan B ([13 → Aturan kesetaraan](13_TES_AWAL_AKHIR.md#aturan-kesetaraan-bentuk-a-dan-b) no. 1). Arti level mengikuti lembar B.5a instrumen ahli materi: **L1** tanda yang jelas, **L2** tanda yang samar, **L3** nilai yang bertentangan atau situasi dua langkah. Ini sama dengan kata *Tingkat* di bank soal ([08](08_DRAF_BANK_SOAL.md)): Temanggung jelas, Magelang samar, Wonosobo nilai bertentangan atau dua langkah. Level ini menjadi label pengembang di berkas kunci B.5a ([21](21_BERKAS_BUTIR_VALIDATOR.md)), yang dibandingkan dengan label akhir ahli di C.4.
+
+**Status: disetujui pemilik proyek, 27 Oktober 2026** (usulan sesi koordinator, disetujui apa adanya). Sebelumnya 13 hanya memberi rentang padanan (L1–L2 untuk "jelas", L2–L3 untuk "samar"), jadi butir ini belum punya satu label pengembang.
+
+| Nomor | Bagian | Butir A dan B | Level | Alasan |
+| --- | --- | --- | --- | --- |
+| 1 | D2 | `tes-ae-A01`, `tes-ae-B01` | L1 | Tanda bahaya jelas: situs tak dikenal meminta data yang tidak dibutuhkan, dan semua kolom wajib |
+| 2 | D2 | `tes-ae-A02`, `tes-ae-B02` | L2 | Tanda samar: pembawa acara ramah, penonton lain sudah menulis data, dan ada umpan disapa; tidak ada dua nilai yang ditimbang |
+| 3 | D2 | `tes-ae-A03`, `tes-ae-B03` | L1 | Tanda jelas: akun tak dikenal langsung meminta kata sandi, dengan umpan pengakuan dan desakan waktu |
+| 4 | D2 | `tes-ae-A04`, `tes-ae-B04` | L2 | Tanda samar: peminta teman les dengan alasan masuk akal, dan yang diminta "hanya" kode masuk. Bisa juga L3 kalau kesetiakawanan dianggap nilai yang bertentangan; dipilih L2 karena tindakan tepatnya satu langkah begitu tandanya dikenali |
+| 5 | D2 | `tes-ae-A05`, `tes-ae-B05` | L1 | Tanda jelas: teman sudah berkata jangan diunggah |
+| 6 | D2 | `tes-ae-A06`, `tes-ae-B06` | L3 | Nilai bertentangan: niat baik (supaya teman dipuji) berhadapan dengan hak teman memutuskan sendiri; tidak ada tanda bahaya, yang ditimbang dua nilai |
+| 7 | D2 | `tes-ae-A07`, `tes-ae-B07` | L1 | Tanda bahaya jelas: akun asing memuji, menanyakan kelas atau umur, mengajak pindah saluran, dan meminta dirahasiakan |
+| 8 | D2 | `tes-ae-A08`, `tes-ae-B08` | L3 | Dua langkah: pesan berantai, lalu teman sudah meneruskannya dan yang lain menyetujui |
+| 1 | D3, G1 | `tes-bd-A01`, `tes-bd-B01` | L1 | Atribusi: nama pembuat tertulis besar di foto |
+| 2 | D3, G1 | `tes-bd-A02`, `tes-bd-B02` | L1 | Representasi: keterangan jelas bertentangan dengan kartu keterangan |
+| 3 | D3, G1 | `tes-bd-A03`, `tes-bd-B03` | L1 | Izin: tombol "Kirim pesan ke galeri" tersedia |
+| 4 | D3, G1 | `tes-bd-A04`, `tes-bd-B04` | L1 | Menghargai tradisi: ejekan terang-terangan di komentar |
+| 5 | D3, G2 | `tes-bd-A05`, `tes-bd-B05` | L2 | Atribusi: nama pembuat kecil di pojok, dan pengunggah mengaku merekam sendiri (tanda samar) |
+| 6 | D3, G2 | `tes-bd-A06`, `tes-bd-B06` | L3 | Representasi: keterangan keliru tapi disukai ribuan orang dan dibenarkan komentar; "keliru tapi populer" adalah kata *Tingkat* L3 di 08 |
+| 7 | D3, G2 | `tes-bd-A07`, `tes-bd-B07` | L2 | Izin: tidak ada tombol ke pembuat, dan tugas dikumpulkan besok pagi; jalan meminta izinnya samar, dan desakan waktu bukan nilai yang bertentangan |
+| 8 | D3, G2 | `tes-bd-A08`, `tes-bd-B08` | L3 | Menghargai tradisi: komentar yang benar isinya tapi kasar caranya; "benar tapi kasar" adalah kata *Tingkat* L3 di 08 |
+
+Sebaran per bentuk: Bagian 2 dan Bagian 3 masing-masing L1 empat butir, L2 dua, L3 dua. Adegan G1 seluruhnya L1; adegan G2 L2 dan L3.
+
 ## Kesetaraan pasangan
 
 Semua angka dihitung dengan skrip dari teks di atas.

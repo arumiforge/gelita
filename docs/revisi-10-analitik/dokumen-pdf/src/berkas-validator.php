@@ -125,6 +125,16 @@ $per = fn ($t) => count(array_filter($tests, fn ($i) => $i['type'] === $t)) / 2;
 $check('B.9 susunan tes per bentuk', [$per('tes-mb'), $per('tes-ae'), $per('tes-bd')] == [(int) ($m[2] ?? -1), (int) ($m[3] ?? -1), (int) ($m[4] ?? -1)],
     "Membaca {$per('tes-mb')}, Aman dan etis {$per('tes-ae')}, Budaya digital {$per('tes-bd')} per bentuk");
 
+$d23 = array_values(array_filter($tests, fn ($i) => in_array($i['type'], ['tes-ae', 'tes-bd'], true)));
+$single = array_filter($d23, fn ($i) => in_array($i['level'], ['L1', 'L2', 'L3'], true));
+$pairOk = true;
+foreach ($d23 as $i) {
+    $twin = substr_replace($i['code'], substr($i['code'], 7, 1) === 'A' ? 'B' : 'A', 7, 1);
+    $pairOk = $pairOk && ($src->items[$twin]['level'] ?? null) === $i['level'];
+}
+$check('Level pengembang butir tes D2 dan D3', count($d23) === 32 && count($single) === 32 && $pairOk,
+    count($single) . ' dari ' . count($d23) . ' butir punya satu level (L1–L3); pasangan A dan B ' . ($pairOk ? 'sama' : 'BERBEDA'));
+
 // ------------------------------------------------------------ B.5a blind workbook
 
 $b5aHead = $materi->table('B.5a', 1)['head'];
@@ -199,7 +209,7 @@ $key->guide('Petunjuk', [
     '## Khusus peneliti. Jangan dikirim ke validator.',
     'Berkas ini memetakan ID netral di daftar buta B.5a (BT-…, BH-…) ke kode butir dan label pengembang, untuk menghitung κ di C.4 setelah kedua lembar B.5a kembali.',
     "Pengacakan: urutan bahan diacak dengan benih tetap " . SEED . " (PHP mt_rand, MT19937); butir di dalam satu bahan tetap urut. Benih yang sama dan sumber yang sama selalu menghasilkan ID yang sama.",
-    'Level butir Periksa Unggahan dan Skenario Digital diturunkan dari baris "Tingkat" 08 per wilayah (jelas = L1, samar = L2, nilai bertentangan atau dua langkah = L3), mengikuti arti Level di B.5a. Level butir tes D2 dan D3 di 13 berupa rentang padanan (L1–L2 atau L2–L3), jadi κ berbobot dengan label pengembang belum bisa dihitung untuk butir itu.',
+    'Level butir Periksa Unggahan dan Skenario Digital diturunkan dari baris "Tingkat" 08 per wilayah (jelas = L1, samar = L2, nilai bertentangan atau dua langkah = L3), mengikuti arti Level di B.5a. Level butir tes D2 dan D3 diambil dari 15 → Level pengembang: satu level per nomor, sama di bentuk A dan B.',
 ]);
 $rows = [];
 foreach ($blind as [$id, $bid, $it]) {

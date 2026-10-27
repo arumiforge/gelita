@@ -97,18 +97,18 @@ Skor sebagian (misalnya PGK dua dari tiga tepat) tidak dipakai di analisis utama
 
 ### Bagian 2 Aman dan etis (D2)
 
-Empat topik D2 di [06](06_KISI_KISI_BANK_SOAL.md#topik-skenario-digital-d2), dua skenario per topik: satu dengan tanda bahaya jelas (padanan L1–L2) dan satu dengan tanda bahaya samar atau menggoda (padanan L2–L3).
+Empat topik D2 di [06](06_KISI_KISI_BANK_SOAL.md#topik-skenario-digital-d2), dua skenario per topik: satu dengan tanda bahaya jelas dan satu dengan tanda bahaya samar atau menggoda. Setiap nomor punya satu level pengembang, sama di bentuk A dan B: tanda jelas L1, tanda samar L2, nilai bertentangan atau dua langkah L3 (disetujui pemilik proyek 27 Oktober 2026; alasannya di [15 → Level pengembang](15_TES_BAGIAN_DIGITAL.md#level-pengembang)).
 
-| No | Topik | Kerumitan | Kode berisiko utama |
-| --- | --- | --- | --- |
-| 1 | Data pribadi | Jelas | DIG-PRI |
-| 2 | Data pribadi | Samar atau menggoda | DIG-PRI |
-| 3 | Kata sandi dan kode OTP | Jelas | DIG-SAN |
-| 4 | Kata sandi dan kode OTP | Samar: diminta teman, atau tampak resmi | DIG-SAN |
-| 5 | Izin membagikan foto atau obrolan | Jelas | DIG-IZN |
-| 6 | Izin membagikan foto atau obrolan | Samar | DIG-IZN, DIG-ETK |
-| 7 | Orang asing | Jelas | DIG-ASG |
-| 8 | Kabar bohong | Samar: pesan berantai atau situasi dua langkah | DIG-HOX |
+| No | Topik | Kerumitan | Level | Kode berisiko utama |
+| --- | --- | --- | --- | --- |
+| 1 | Data pribadi | Jelas | L1 | DIG-PRI |
+| 2 | Data pribadi | Samar atau menggoda | L2 | DIG-PRI |
+| 3 | Kata sandi dan kode OTP | Jelas | L1 | DIG-SAN |
+| 4 | Kata sandi dan kode OTP | Samar: diminta teman, atau tampak resmi | L2 | DIG-SAN |
+| 5 | Izin membagikan foto atau obrolan | Jelas | L1 | DIG-IZN |
+| 6 | Izin membagikan foto atau obrolan | Samar: niat baik berhadapan dengan izin teman | L3 | DIG-IZN, DIG-ETK |
+| 7 | Orang asing | Jelas | L1 | DIG-ASG |
+| 8 | Kabar bohong | Samar: pesan berantai atau situasi dua langkah | L3 | DIG-HOX |
 
 Setiap skenario berisi situasi 40–70 kata yang tampil sebagai layar pesan atau aplikasi tiruan, lalu pertanyaan "Apa yang sebaiknya kamu lakukan?" dengan **4 pilihan tindakan**: 1 tepat (skor 2, tanpa kode), 1 kurang tepat (skor 1, DIG-PSF atau kode DIG lain yang sesuai), dan 2 berisiko (skor 0, masing-masing satu kode DIG). Tes tidak menanyakan alasan. Alasan sudah dikumpulkan game (analitik 10), dan pertanyaan alasan menambah sekitar 4 menit.
 
@@ -118,10 +118,10 @@ Di [15](15_TES_BAGIAN_DIGITAL.md), nomor 5–6 memakai foto teman di bentuk A da
 
 Dua adegan, empat butir per adegan, satu dari setiap jenis D3 di [06](06_KISI_KISI_BANK_SOAL.md#periksa-unggahan-d3-usulan).
 
-| Adegan | Kerumitan | Isi | Butir |
-| --- | --- | --- | --- |
-| G1 | Tanda keliru jelas (padanan L1–L2) | Unggahan tiruan di aplikasi fiktif *Kedugram* (gambar, keterangan, nama akun, 2–3 komentar) dan satu sumber pembanding (papan informasi atau kartu keterangan), 50–80 kata | ATR, REP, IZN, ETK, masing-masing PG 4 pilihan |
-| G2 | Tanda keliru samar atau nilai bertentangan (padanan L2–L3) | Sama, 60–90 kata | ATR, REP, IZN, ETK |
+| Adegan | Kerumitan | Level | Isi | Butir |
+| --- | --- | --- | --- | --- |
+| G1 | Tanda keliru jelas | L1 untuk keempat butir | Unggahan tiruan di aplikasi fiktif *Kedugram* (gambar, keterangan, nama akun, 2–3 komentar) dan satu sumber pembanding (papan informasi atau kartu keterangan), 50–80 kata | ATR, REP, IZN, ETK, masing-masing PG 4 pilihan |
+| G2 | Tanda keliru samar atau nilai bertentangan | L2 untuk atribusi dan izin; L3 untuk representasi (keliru tapi populer) dan menghargai tradisi (benar tapi kasar) | Sama, 60–90 kata | ATR, REP, IZN, ETK |
 
 Fakta budaya yang dibutuhkan untuk menjawab ada di adegan, sesuai aturan 06 no. 8, jadi yang diukur memeriksa dan merepresentasikan, bukan mengingat. Setiap pilihan salah membawa satu kode BUD: biasanya kode jenis butirnya, atau kode jenis lain kalau pilihan itu memang memancing kesalahan jenis lain (misalnya pilihan yang menyalin keterangan keliru di butir atribusi diberi BUD-REP).
 
