@@ -6,6 +6,71 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 27 Oktober 2026
 
+**Keputusan pemilik proyek: 22 dan 23 diselaraskan dengan pedoman KEPPKN 2021** (cabang `sky/friendly-newton-jjuvj0`) · Prototipe I, belum merevisi produk
+
+Pemilik proyek memberi tautan *Pedoman dan Standar Etik Penelitian dan Pengembangan Kesehatan Nasional* (PSEPPKN) di situs KEPPKN. Isinya **edisi 2021** (KEPPKN periode 2021–2024, prakata 20 Juni 2021; berkasnya diunggah ulang Agustus 2025), sedangkan 22 masih merujuk edisi 2017. Naskah lengkapnya dibaca dan dibandingkan dengan 22, 23, dan 24.
+
+Temuan pokok:
+
+1. **Edisi dan nama.** Edisi 2021 ditulis *Komite* (bukan *Komisi*) Etik Penelitian dan Pengembangan Kesehatan Nasional. Tanda `needs_verification` tentang versi pedoman di 22 ditutup.
+2. **Delapan kriteria di teks, tujuh di penilaian.** Bab III Standar 7 menambah *8. Pelindungan subjek rentan*. Daftar tilik (Lampiran 3) dan format protokol (Lampiran 1) masih memakai tujuh standar, dan Lampiran 1 masih menyebut "Pedoman KEPPKN 2017".
+3. **Tingkat telaah.** Protokol dengan anak dibahas lengkap (*full board*). Data berkode yang bisa dihubungkan ke nama membuat penelitian ini tidak bisa dikecualikan.
+4. **Masa berlaku satu tahun.** Rentang KG1–KG5 lebih dari setahun, jadi perpanjangan diajukan setiap tahun bersama laporan kemajuan.
+5. **Kewajiban laporan:** laporan kemajuan paling sedikit sekali setahun, laporan akhir, KTD, dan penyimpangan; notifikasi cukup untuk perubahan yang tidak menambah risiko.
+6. **Format protokol resmi dan daftar tilik.** Dibandingkan dengan Lampiran 1, 22 belum memuat aturan penghentian, rencana pelibatan masyarakat, hak atas data, komitmen etik, risiko bagi peneliti dan kelompok, dan simpulan risiko dan manfaat. Daftar tilik Lampiran 3 diisi peneliti sebelum protokol diajukan.
+7. **Peneliti mahasiswa:** pembimbing yang mengirim permohonan dan mendampingi saat telaah lengkap.
+8. **Surat orang tua** (Lampiran 2 dan indikator 7.3):
+   - penelitian dengan alat daring yang melibatkan kelompok rentan harus menyebut upaya pengamanan dan batasnya (Lampiran 2 huruf i, CIOMS pedoman 22);
+   - jenis pemberian harus disebut;
+   - jumlah peserta, kontak cadangan, sumber dana, dan saksi juga diminta.
+
+Yang sudah sesuai dan tidak diubah:
+- persetujuan berlapis dan persetujuan ulang di P2–P5;
+- tanpa penipuan, dan mundur tanpa sanksi;
+- data berkode dengan kunci terpisah, serta penyimpanan terkunci dan terenkripsi;
+- tanpa uang sebagai bujukan;
+- dua orang dewasa dan tempat yang terlihat;
+- prosedur rujukan dengan batas kerahasiaan;
+- hasil kembali ke sekolah;
+- protokol uji keterbacaan (24).
+
+Pedoman tidak menetapkan masa simpan minimum dan menyebut komite tidak mengharuskan data dimusnahkan, jadi masa simpan di 22 tetap.
+
+Keputusan pemilik proyek (27 Oktober 2026):
+
+1. **Semua usulan diterapkan:** sebelas perubahan di 22 dan empat di 23, dengan T8a dan T8b ikut di bagian yang berlaku.
+2. **Tanda terima kasih disebut dalam satu kalimat netral** di 23 → T1 bagian 7 dan T8a: tanpa uang, tanpa biaya, dan sama untuk semua anak di kelas, ikut atau tidak, ditambah kudapan di P1 dan P5. Tidak dipilih: tetap tidak disebut di surat.
+3. **Surat bisa dibacakan guru kelas atau peneliti.** Formulir T2 dan T8b mendapat baris saksi yang diisi hanya dalam keadaan itu, oleh orang di luar tim peneliti, dan tanda tangan boleh diganti cap jempol. Tidak dipilih: tanpa perubahan.
+4. **Ketua peneliti mahasiswa (S2/S3).** 22 mendapat baris pembimbing/promotor; pembimbing mengirim permohonan dan mendampingi ketua peneliti saat telaah lengkap.
+5. **Putaran tersendiri nanti:** panduan klirens etik bidang sosial humaniora BRIN (November 2025), kalau komite yang dipilih menelaah penelitian sosial atau pendidikan, dan PP No. 33 Tahun 2026 (peraturan pelaksana UU PDP, diundangkan 16 Juli 2026, berlaku 16 Januari 2027) untuk *Dasar hukum* dan batas pemberitahuan kebocoran di 22.
+
+Aturan pelaksanaan yang ditulis sesi ini, bukan dari pedoman (bisa diubah pemilik proyek):
+- perpanjangan diajukan paling lambat satu bulan sebelum masa berlaku habis;
+- sesi kelas ditunda kalau kurang dari dua peneliti hadir;
+- setiap pembukaan kode oleh ketua peneliti dicatat tanggal dan alasannya;
+- kalau sekolah menarik izin, data yang sudah terkumpul mengikuti pilihan tiap orang tua di 23 → T10.
+
+Akibatnya:
+- **22** mendapat:
+  - rujukan edisi 2021 dan baris standar 8;
+  - format protokol resmi;
+  - *Tingkat telaah dan masa berlaku persetujuan*, *Laporan berkala dan laporan akhir*, dan *Penghentian kegiatan dan penelitian*;
+  - notifikasi di *Perubahan protokol*;
+  - risiko bagi kelompok dan peneliti, dengan simpulan;
+  - pelibatan sekolah dan masyarakat, dan alasan melibatkan anak;
+  - aturan membuka kode;
+  - hasil diterbitkan apa pun hasilnya, dan hak atas data;
+  - *Daftar tilik tujuh standar* dan *Komitmen etik* (lampiran 13 dan 14);
+  - baris pembimbing;
+  - nomor standar dan pedoman CIOMS di isu etik.
+- **23** mendapat:
+  - tambahan di T1, T2, T8, T8a, T8b, dan T9;
+  - tempat kosong `[nomor cadangan]`, `[sumber dana]`, dan `[jenis tanda terima kasih]`;
+  - baris baru di *Cek isi L7*;
+  - hitung ulang keterbacaan: T1 13,0 kata per kalimat dan ± 11 menit; T2 13,0; T8a 10,9; T8b 12,2.
+- **00** dan `docs/PROGRESS.md` diperbarui.
+- **02 → L7** perlu butir isi surat *batas pengamanan daring*; ini dicatat di *Akibat ke dokumen lain* di 22 dan belum diubah.
+
 **Keputusan pemilik proyek: ketiga instrumen validasi ahli disetujui** (cabang `sky/inspiring-ritchie-nex4qi`, sesi koordinator) · Prototipe I, belum merevisi produk
 
 1. **Instrumen ahli materi v2.1, pengamat budaya v2.1, dan ahli media v1.1 disetujui** apa adanya, dalam versi yang sudah diselaraskan dengan 20 dan 21 (entri di bawah).

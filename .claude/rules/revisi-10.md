@@ -11,7 +11,7 @@ The Markdown documents total about 1.2 MB, roughly 500k tokens (27 October 2026)
 
 ## Start
 - Read `00_INDEKS.md`, the newest entry in `04_CATATAN_KEPUTUSAN.md`, the *Pertanyaan yang masih terbuka* and *Peta jalan dan daftar kerja* sections of `01`, and the research-revision rows in `docs/PROGRESS.md`. Nothing else up front.
-- Never read `05`, `06`, `08`, or `09` whole. Grep by item code (`wnb-3-a02`), error code (`BUD-ATR`), or heading, then read that range. The stage-2 documents `20`, `22`, `23`, and `24` (60–85 KB each) are read by section too.
+- Never read `05`, `06`, `08`, or `09` whole. Grep by item code (`wnb-3-a02`), error code (`BUD-ATR`), or heading, then read that range. The stage-2 documents `20`, `22`, `23`, and `24` (60–115 KB each) are read by section too.
 - For a sweep across several documents (consistency checks, "where is X mentioned"), use a subagent and keep only its conclusions.
 
 ## Scope
