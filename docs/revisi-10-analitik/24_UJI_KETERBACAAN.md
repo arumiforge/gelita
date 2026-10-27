@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 27 Oktober 2026 · **Status: draf** · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 23 · Tahap 2, Prototipe I
+Per 27 Oktober 2026 · **Status: draf**; keputusan pemilik proyek diambil 27 Oktober 2026 ([bagian akhir](#keputusan-pemilik-proyek)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 23 · Tahap 2, Prototipe I
 
 Dokumen ini protokol uji keterbacaan dengan 3–5 anak kelas 5: tujuan, peserta, bahan dan cara membaginya, perangkat, langkah per anak, peran, lembar catatan, aturan keputusan, cara hasil waktu dipakai, dan pengelolaan data. Protokol ini siap dijalankan begitu izin etik terbit.
 
@@ -463,20 +463,23 @@ Waktu di uji ini lebih panjang daripada di kelas, karena anak membaca di ruang a
 | 7 | Uji coba protokol dengan satu orang dewasa (bukan anak) untuk melatih pancingan baku dan waktu | P3 dan P2 |
 | 8 | Izin orang tua dan persetujuan anak lengkap; jadwal empat sesi disepakati | Ketua peneliti, P1 |
 
-## Pertanyaan untuk pemilik proyek
+## Keputusan pemilik proyek
 
-1. **Bagaimana bahan dibagi di antara anak?**
+Keempat pertanyaan dijawab pemilik proyek pada 27 Oktober 2026; semuanya memilih usulan. Protokol di atas sudah ditulis sesuai pilihan ini.
+
+
+1. **Bagaimana bahan dibagi di antara anak?** **Diputuskan: inti untuk semua, bank dibagi per blok.**
    - **(Disarankan) Inti untuk semua, bank dibagi per blok:** setiap anak satu bentuk tes lengkap, angket, skala sikap, kartu kata, dan salinan layar; bank dibagi enam blok, setiap blok dibaca dua anak; empat sesi per anak. Semua bahan terbaca setidaknya dua anak, dan bahan yang dibaca sendiri di kelas (tes, angket, skala) mendapat pembaca terbanyak.
    - Bank hanya sebagian: semua skenario D2 dan teks D1 Wonosobo, sisanya tidak; tiga sesi per anak. Lebih ringan, tetapi sebagian bank tidak pernah dibaca anak sebelum uji coba.
    - Semua anak membaca semua bahan: tidak muat dalam sesi yang wajar untuk anak 10–11 tahun.
-2. **Berapa anak?**
+2. **Berapa anak?** **Diputuskan: empat anak, ditambah satu untuk putaran kedua.**
    - **(Disarankan) Empat anak di putaran pertama, ditambah satu anak untuk putaran kedua bahan yang direvisi.** Empat cocok dengan pembagian blok, dan anak kelima memeriksa revisi sebelum kembali ke ahli.
    - Lima anak sekaligus di putaran pertama: lebih banyak pembaca, tetapi revisi tidak dicek ke anak.
    - Tiga anak: paling ringan, tetapi bentuk B Bagian 2–3 hanya dibaca satu anak.
-3. **Dari mana anaknya?**
+3. **Dari mana anaknya?** **Diputuskan: sekolah di wilayah Kedu di luar sampel dan bukan sekolah uji coba.**
    - **(Disarankan) Sekolah di wilayah Kedu yang tidak masuk sampel dan bukan sekolah uji coba.** Contoh budaya Kedu di bank dan skala sikap dikenal anak setempat, jadi kesulitannya memang dari bahasa.
    - Sekolah di luar Kedu: lebih mudah dipisahkan dari sampel, tetapi anak bisa tersandung karena tidak kenal budaya Kedu.
-4. **Butir risiko daring (ang-21–ang-23) ikut diuji?**
+4. **Butir risiko daring (ang-21–ang-23) ikut diuji?** **Diputuskan: ya, parafrase saja, dengan izin terpisah.**
    - **(Disarankan) Ya, parafrase saja dan hanya dengan izin terpisah:** anak tidak menjawab tentang dirinya. Kalimat butir yang paling peka dicek ke anak sebelum dipakai di P5.
    - Tidak diuji dengan anak; cukup telaah ahli dan uji coba tahap 4.
 
@@ -487,8 +490,8 @@ Tidak diubah di cabang ini. Dibawa sesi koordinator setelah dokumen ini digabung
 | Dokumen | Bagian | Perubahan |
 | --- | --- | --- |
 | [03](03_KODE_DAN_ARTI.md) | Bagian baru *Uji keterbacaan* (setelah *Kode di L4*) | Tambah kode anak `K01`–`K05`, kode sesi `K01-S1`, lembar LK1–LK3, kode kesulitan `KB-KTA`, `KB-KLM`, `KB-MKS`, `KB-PTJ`, `KB-PIL`, `KB-ARH`, `KB-TPL`, `KB-LMA`, `KB-LTS`, `KB-RSA`, `KB-LAIN`, dan pancingan `PB-1`–`PB-9`, semuanya bertanda usulan |
-| [01](01_REVISI_10_ANALITIK.md) | *Peta jalan dan daftar kerja*, no. 23 | Status menjadi "Draf di [24](24_UJI_KETERBACAAN.md)"; setelah pemilik proyek menjawab, keputusannya disebut |
-| [13](13_TES_AWAL_AKHIR.md) | *Validasi dan uji coba*, baris tahap 2 uji keterbacaan | Tautan ke 24; "3–5 anak" menjadi "empat anak ditambah satu untuk putaran kedua" kalau disetujui |
+| [01](01_REVISI_10_ANALITIK.md) | *Peta jalan dan daftar kerja*, no. 23 | Status menjadi "Draf di [24](24_UJI_KETERBACAAN.md); keputusan pemilik proyek 27 Oktober 2026 (empat anak ditambah satu, inti dan blok bank, sekolah Kedu di luar sampel, butir risiko daring diparafrasekan saja)" |
+| [13](13_TES_AWAL_AKHIR.md) | *Validasi dan uji coba*, baris tahap 2 uji keterbacaan | Tautan ke 24; "3–5 anak" menjadi "empat anak ditambah satu untuk putaran kedua" (diputuskan 27 Oktober 2026) |
 | [14](14_TES_BAGIAN_MEMBACA.md) | *Catatan untuk peneliti dan validator*, **Keterbacaan** | Tautan ke 24 (kartu kata dan aturan keputusan) |
 | [15](15_TES_BAGIAN_DIGITAL.md) | *Hal yang diminta dinilai ahli* no. 5, *Perkiraan waktu kerja* | Tautan ke 24 untuk kartu kata dan cara angka waktu diperbarui |
 | [16](16_ANGKET_AKSES_DIGITAL.md) | *Validasi dan uji coba*, baris tahap 2 | Tautan ke 24; ang-21–ang-23 diuji dengan parafrase saja, tanpa jawaban tentang diri sendiri |
