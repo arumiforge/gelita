@@ -1,6 +1,6 @@
 # Surat Informasi dan Persetujuan
 
-Per 27 Oktober 2026 · **Status: draf** (menunggu keputusan pemilik proyek; daftar kerja no. 15) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 27 Oktober 2026 · **Status: draf**; empat pertanyaan pemilik proyek dijawab 27 Oktober 2026 ([Keputusan pemilik proyek](#keputusan-pemilik-proyek)); daftar kerja no. 15 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Dokumen ini berisi teks yang dikirim bersama permohonan izin etik ke *Lembaga Komite Etik* dan yang dibagikan ke sekolah: surat informasi, formulir persetujuan, naskah persetujuan anak, dan formulir pengunduran diri. Setiap teks berupa blok siap cetak. Tempat kosong ditulis dalam kurung siku, misalnya `[nama sekolah]`, dan diisi sebelum dicetak.
 
@@ -67,7 +67,7 @@ Setelah itu: [tabel pembagian](#tabel-pembagian), [catatan keterbacaan](#catatan
 | `[nama sekolah]`, `[nama kepala sekolah]`, `[rombel]` | Rekrutmen sekolah; kode sekolah **menunggu daftar kerja no. 12** | Per sekolah |
 | `[tanggal P1]` … `[tanggal P5]`, `[rentang minggu]` | Jadwal per kelas | Per kelas |
 | `[tanggal batas kembali]` | P1: H-3 sebelum P1 | Per kelas |
-| `[tanggal batas penarikan]` | Rencana analisis (lihat [Pertanyaan](#pertanyaan-untuk-pemilik-proyek) no. 1) | Sebelum dicetak |
+| `[tanggal batas penarikan]` | Tanggal analisis utama dimulai, dari rencana analisis ([Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 1) | Sebelum dicetak |
 | `[masa simpan]` | Protokol etik di `22_PERMOHONAN_IZIN_ETIK.md` | Sebelum dicetak |
 | `[lama sesi uji keterbacaan]`, `[tempat uji keterbacaan]` | `24_UJI_KETERBACAAN.md` | Sebelum dicetak |
 
@@ -121,7 +121,7 @@ Dua halaman A4 tegak, dicetak bolak-balik. Orang tua menyimpan surat ini. Yang d
 >
 > Nama anak hanya ada di dua tempat: di formulir izin ini dan di akun GELITA. Akun hanya bisa dilihat pengelola sistem. Untuk penelitian, setiap anak diberi **kode**, misalnya S03-A07. Kode ini dipakai sebagai pengganti nama, sehingga tim peneliti yang mengolah data tidak tahu nama anak.
 >
-> Guru dan orang tua tidak melihat jawaban per anak. Laporan untuk sekolah hanya berisi angka gabungan satu kelas, tidak per anak. Hasil penelitian ditulis tanpa nama anak, guru, dan sekolah.
+> Guru dan orang tua tidak melihat jawaban per anak. Laporan untuk sekolah hanya berisi angka gabungan satu kelas, tidak per anak. Ringkasan hasil itu bisa Bapak/Ibu minta lewat sekolah. Hasil penelitian ditulis tanpa nama anak, guru, dan sekolah.
 >
 > Formulir izin disimpan di lemari terkunci. Salinan digitalnya dikunci dengan kata sandi dan hanya bisa dibuka dua orang peneliti. Semua data disimpan selama [masa simpan], lalu dimusnahkan.
 >
@@ -640,6 +640,8 @@ Pilihan ini tidak diputuskan di dokumen lain. Semuanya bisa diubah pemilik proye
 
 ## Pertanyaan untuk pemilik proyek
 
+Keempat pertanyaan ini dijawab pemilik proyek pada 27 Oktober 2026, semuanya dengan usulan; lihat [Keputusan pemilik proyek](#keputusan-pemilik-proyek). Pertanyaannya disimpan di sini sebagai riwayat.
+
 1. **Sampai kapan orang tua boleh meminta data anak dihapus?**
    - **Usulan: sampai analisis utama dimulai (`[tanggal batas penarikan]`); sesudah itu data anak tetap dihapus, tetapi angka gabungan yang sudah dihitung atau terbit tidak berubah.** Ini jujur kepada orang tua dan lazim di surat persetujuan penelitian.
    - Kapan saja, tanpa batas: lebih sederhana di surat, tetapi tidak bisa ditepati untuk hasil yang sudah terbit.
@@ -653,6 +655,15 @@ Pilihan ini tidak diputuskan di dokumen lain. Semuanya bisa diubah pemilik proye
    - **Usulan: kenang-kenangan kecil yang sama untuk semua siswa di kelas, termasuk yang tidak ikut, diberikan di akhir P5, dan tidak disebut di surat sebagai imbalan.** Dengan begitu, kenang-kenangan tidak menjadi alasan ikut dan tidak ada siswa yang terlihat berbeda.
    - Tidak ada kenang-kenangan.
    - Hanya untuk peserta.
+
+## Keputusan pemilik proyek
+
+27 Oktober 2026, satu putaran wawancara. Keempat usulan dipilih.
+
+1. **Batas permintaan hapus data: sampai analisis utama dimulai.** Sesudah `[tanggal batas penarikan]`, data anak tetap dihapus kalau diminta, tetapi angka gabungan yang sudah dihitung atau terbit tidak berubah. Kalimat ini sudah ada di T1 bagian 6 dan T10. Tanggalnya diisi dari rencana analisis sebelum surat dicetak. Tidak dipilih: kapan saja tanpa batas.
+2. **Anak uji keterbacaan membaca butir risiko daring, dengan centang terpisah** (T8b pilihan 3). Anak hanya menilai kalimatnya dan tidak diminta menceritakan pengalamannya. Tidak dipilih: butir risiko hanya ditelaah ahli.
+3. **Tanpa centang ringkasan hasil di formulir orang tua.** Ringkasan angka gabungan diserahkan ke sekolah, dan orang tua bisa memintanya lewat sekolah (kalimat ditambahkan di T1 bagian 3). Tidak dipilih: centang keempat di T2.
+4. **Kenang-kenangan kecil yang sama untuk semua siswa di kelas,** termasuk yang tidak ikut, diberikan di akhir P5. Kenang-kenangan tidak disebut di surat orang tua sebagai imbalan. Bentuk dan biayanya ditetapkan nanti, dan disebut di protokol etik (`22_PERMOHONAN_IZIN_ETIK.md`). Tidak dipilih: tanpa kenang-kenangan, atau hanya untuk peserta.
 
 ## Akibat ke dokumen lain
 
@@ -668,8 +679,8 @@ Tidak diubah di cabang ini. Dibawa sesi koordinator setelah PR digabung.
 | 02 | L0, H-1 | Butir "amplop T2 sudah dikumpulkan; pengingat H-5 sudah dikirim" |
 | 01 | Daftar kerja no. 15 | Status: draf surat di 23 |
 | 01 | *Catatan perubahan sistem untuk tahap nanti* | Teks centang persetujuan mode penelitian (T4) di `Game.assentLabel`, `assentName`, `assentRequired` (id dan en); hapus sebagian (hanya jawaban butir risiko) di permintaan hapus data |
-| 22 | Lampiran dan bagian persetujuan | Lampirkan T1–T10; samakan: tanpa foto/video, batas penarikan, masa simpan, lama hari kerja konfirmasi hapus, langkah rujukan butir risiko yang disebut di T1 bagian 4, kenang-kenangan |
-| 24 | Persetujuan dan pencatatan | Pakai T8a–T8c; isi `[lama sesi uji keterbacaan]` dan `[tempat uji keterbacaan]`; kode anak (`K01`–`K05` usulan); kolom persetujuan anak dan rekaman di lembar catatan |
+| 22 | Lampiran dan bagian persetujuan | Lampirkan T1–T10; samakan: tanpa foto/video, batas penarikan sampai analisis utama dimulai, masa simpan, lama hari kerja konfirmasi hapus, langkah rujukan butir risiko yang disebut di T1 bagian 4, kenang-kenangan yang sama untuk seluruh kelas di akhir P5 (bukan imbalan), ringkasan hasil lewat sekolah |
+| 24 | Persetujuan dan pencatatan | Pakai T8a–T8c; butir risiko daring ikut diuji dengan centang terpisah (keputusan no. 2); isi `[lama sesi uji keterbacaan]` dan `[tempat uji keterbacaan]`; kode anak (`K01`–`K05` usulan); kolom persetujuan anak dan rekaman di lembar catatan |
 | 24 | Bahan uji | Usulan: T1 dibaca dua–tiga orang tua di luar sampel sebelum permohonan etik dikirim (uji baca surat, bukan uji keterbacaan anak) |
 | 03 | *Peserta, sekolah, dan sesi* | Kode anak uji keterbacaan, kalau 24 memakai `K01`–`K05` |
 | 20 | — | Tidak ada; surat validator ada di 20 sendiri |

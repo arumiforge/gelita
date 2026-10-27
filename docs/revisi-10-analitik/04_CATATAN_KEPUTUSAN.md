@@ -8,7 +8,7 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 **Surat informasi dan persetujuan ditulis (draf)** (cabang `r10-surat-izin`, daftar kerja no. 15, [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md); Prototipe I, dokumen tahap 2)
 
-Status: draf, menunggu keputusan pemilik proyek. Yang ditulis, semua sebagai blok siap cetak dengan tempat kosong bertanda:
+Status: draf; empat pertanyaan pemilik proyek dijawab (di bawah). Yang ditulis, semua sebagai blok siap cetak dengan tempat kosong bertanda:
 - T1–T2 surat informasi dan formulir orang tua, dengan kotak Ya/Tidak terpisah untuk ikut, rekaman suara, dan butir risiko daring. Semua isi wajib surat di 02 → L7 ada di T1–T2 (tabel cek di 23).
 - T3 naskah persetujuan anak di pembukaan P1, T4 usulan teks centang persetujuan di halaman daftar untuk mode penelitian (file bahasa tidak diubah), T5 pengingat singkat di P2–P5 dan sebelum wawancara L5.
 - T6 surat kepala sekolah dengan permintaan data L8, T7 lembar guru kelas.
@@ -17,7 +17,11 @@ Status: draf, menunggu keputusan pemilik proyek. Yang ditulis, semua sebagai blo
 
 Pilihan yang diambil saat menulis (rinciannya di [23 → Pilihan yang diambil saat menulis](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#pilihan-yang-diambil-saat-menulis)): formulir yang tidak kembali dibaca tidak mengizinkan; kotak tambahan yang kosong dibaca Tidak; amplop tertutup H-14 sampai H-10 dengan batas kembali H-3; tanpa foto dan video; persetujuan anak diulang singkat di P2–P5; anak yang menolak di P1 dicatat `Tanpa izin`; T10 memberi pilihan berhenti tanpa menghapus data, yang butuh penyesuaian `consent_ok`.
 
-Pertanyaan untuk pemilik proyek ([23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#pertanyaan-untuk-pemilik-proyek)): batas waktu permintaan hapus data, butir risiko daring di uji keterbacaan, ringkasan hasil untuk orang tua, dan kenang-kenangan untuk siswa.
+Keputusan pemilik proyek (wawancara singkat, 27 Oktober 2026; semuanya usulan, rinciannya di [23 → Keputusan pemilik proyek](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#keputusan-pemilik-proyek)):
+1. **Permintaan hapus data boleh diajukan sampai analisis utama dimulai.** Sesudahnya data anak tetap dihapus, tetapi angka gabungan yang sudah dihitung atau terbit tidak berubah. Tidak dipilih: kapan saja tanpa batas.
+2. **Anak uji keterbacaan ikut membaca butir risiko daring, dengan centang terpisah**, dan hanya menilai kalimatnya. Tidak dipilih: hanya telaah ahli.
+3. **Tanpa centang ringkasan hasil untuk orang tua;** ringkasan angka gabungan ke sekolah, dan orang tua memintanya lewat sekolah. Tidak dipilih: centang keempat.
+4. **Kenang-kenangan kecil yang sama untuk seluruh kelas**, termasuk yang tidak ikut, di akhir P5, tidak disebut sebagai imbalan. Tidak dipilih: tanpa kenang-kenangan, atau hanya untuk peserta.
 
 Akibat ke 01, 02, 11, 22, 24, dan 03 dicatat di [23 → Akibat ke dokumen lain](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#akibat-ke-dokumen-lain) dan dibawa sesi koordinator setelah PR digabung. Entri ini tidak merevisi bank, instrumen, atau sistem.
 
