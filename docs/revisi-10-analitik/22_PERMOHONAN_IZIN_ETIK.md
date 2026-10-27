@@ -361,6 +361,15 @@ Dari perbandingan dengan PSEPPKN 2021 (Lampiran 2 dan daftar tilik standar 7), s
 - **penghentian oleh peneliti**: peneliti bisa menghentikan keikutsertaan anak atau menghentikan sementara penelitian demi keselamatan anak ([Penghentian kegiatan dan penelitian](#penghentian-kegiatan-dan-penelitian); Lampiran 2 butir 4);
 - **dibacakan dengan saksi**: surat bisa dibacakan guru kelas atau peneliti, dan formulir punya baris saksi di luar tim yang diisi hanya dalam keadaan itu ([Lapis persetujuan](#lapis-persetujuan)).
 
+Dari perbandingan dengan PP No. 33 Tahun 2026 (Pasal 33 dan 62; keputusan pemilik proyek 27 Oktober 2026, [no. 14–17](#keputusan-pemilik-proyek)), surat orang tua juga memuat (23 → T1 bagian 3 dan 6; untuk KG1 23 → T8a; `needs_verification` terhadap naskah resmi):
+
+- **pengendali data dan kontak urusan data**: `[nama lembaga peneliti]` sebagai pengendali, dan `[kontak PPDP atau narahubung]` ([Pengendali, prosesor, dan narahubung data](#pengendali-prosesor-dan-narahubung-data));
+- **dasar pengolahan data**: persetujuan orang tua di formulir T2; tanpa persetujuan itu tidak ada data anak yang diolah;
+- **penyedia server**: data permainan dan tes disimpan di server `[nama dan lokasi penyedia server]` di Indonesia, yang mengolah data hanya atas perintah tim ([Penyimpanan dan enkripsi](#penyimpanan-dan-enkripsi));
+- **pemberitahuan kebocoran paling lambat 3 × 24 jam** setelah kebocoran diketahui pasti ([Pelaporan kejadian tak diinginkan](#pelaporan-kejadian-tak-diinginkan));
+- **hak melihat, meminta salinan, dan membetulkan data anak**, selain hak mundur dan hapus, dengan batas waktu jawaban ([Mengundurkan diri](#mengundurkan-diri-dan-hapus-data));
+- **hak mengadu ke lembaga pelindungan data pribadi** kalau permintaan tidak dijalankan (PP 33/2026 Pasal 27).
+
 ### Persetujuan lisan anak di P1
 
 P1 menjelaskan dengan kalimat sederhana, di depan kelas, sebelum daftar akun:
@@ -381,14 +390,20 @@ Anak yang tidak mau ikut tidak perlu mengangkat tangan di depan kelas. Ia cukup 
 
   | Pilihan | Artinya | Status di L7 | Yang terjadi |
   | --- | --- | --- | --- |
-  | A | Berhenti mulai hari itu; data yang sudah dikumpulkan tetap dipakai | `Mengundurkan diri (data tetap)` dengan tanggal | Akun dinonaktifkan admin; anak ikut kegiatan pengganti. Data sampai tanggal mundur tetap dianalisis (`consent_ok = 1` untuk data itu, mulai `kamus-1.1`) |
+  | A | Berhenti mulai hari itu; persetujuan untuk data yang sudah dikumpulkan tetap berlaku, hanya pengumpulan data baru yang dihentikan | `Mengundurkan diri (data tetap)` dengan tanggal | Akun dinonaktifkan admin; anak ikut kegiatan pengganti. Data sampai tanggal mundur tetap dianalisis (`consent_ok = 1` untuk data itu, mulai `kamus-1.1`). Pilihan ini bukan penarikan persetujuan atas data yang sudah ada; kalau orang tua menarik persetujuan itu, permintaannya dijalankan sebagai pilihan B (PP 33/2026 Pasal 82 ayat (1) huruf b) |
   | B | Berhenti dan semua data dihapus | `Mengundurkan diri (hapus data)` dengan tanggal | Permintaan hapus seluruh data anak, lewat jalur di bawah |
   | C | Tetap ikut, tetapi menarik izin rekaman suara dan/atau izin butir risiko daring | Tetap `Aktif`; kolom izin yang ditarik menjadi Tidak dengan tanggal | Rekaman yang sudah ada dan/atau jawaban butir risiko yang sudah ada dihapus. Penghapusan sebagian ini belum ada di sistem dan dicatat sebagai perubahan sistem tahap 3 |
 
 - **Jalurnya:** P1 mencatat status dan tanggalnya di L7. Peneliti mengajukan permintaan hapus lewat kode peserta; admin menjalankannya ([01 → Admin dan peneliti](01_REVISI_10_ANALITIK.md#admin-dan-peneliti-dua-peran-berbeda)). Sistem sudah menghapus data satu siswa dalam dua langkah, pratinjau lalu eksekusi yang dikonfirmasi admin, dari semua tabel data penelitian ([../01_DATABASE.md → Retensi dan penghapusan data](../01_DATABASE.md#retensi-dan-penghapusan-data)).
 - **Yang ikut dihapus (pilihan B):** data game, tes, angket, skala, kritik dan saran, akun, baris lembar lapangan dengan kode itu (L2–L6 di templat spreadsheet), rekaman dan transkrip L5. Data yang sudah masuk hasil gabungan yang terbit (misalnya rata-rata kelas di laporan) tidak bisa ditarik, dan ini disebut di surat.
-- **Konfirmasi ke orang tua:** setelah permintaan dijalankan, orang tua diberi tahu lewat kontak di formulir izin paling lambat `[jumlah hari kerja]` hari kerja. Angkanya diisi pemilik proyek, sama di surat 23 → T10 dan di dokumen ini (`needs_verification` terhadap aturan komite).
-- **Batas waktu permintaan hapus:** permintaan hapus diterima **sampai studi ditutup** (`[tanggal studi ditutup]` di surat). Saat itu nama, L7, dan formulir izin dan pengunduran diri dimusnahkan (keputusan pemilik proyek 27 Oktober 2026, [Masa simpan dan pemusnahan](#masa-simpan-dan-pemusnahan)). Setelah itu data tidak bisa lagi dihubungkan dengan anak tertentu.
+- **Batas waktu** (PP No. 33 Tahun 2026; keputusan pemilik proyek 27 Oktober 2026, [no. 17](#keputusan-pemilik-proyek); `needs_verification` terhadap naskah resmi, termasuk apakah 3 × 24 jam dihitung dengan hari libur):
+  - permintaan diperiksa dulu: identitas pemohon dicocokkan dengan formulir izin T2 (orang tua atau wali yang sama, atau anak sendiri untuk pilihan A), dicatat di kotak peneliti T10 (Pasal 24–25 dan 38);
+  - pengumpulan data anak dihentikan (akun dinonaktifkan) **paling lambat 3 × 24 jam** setelah permintaan terverifikasi (Pasal 92);
+  - untuk pilihan B dan C, data dihapus dari sistem, ekspor yang masih ada, salinan peneliti, dan **salinan cadangan server**; penyedia server diberi tahu dan diperintahkan lebih dulu, sebelum orang tua diberi tahu (Pasal 82 ayat (4), 88); penghapusan dicatat dalam berita acara di catatan ketua peneliti (Pasal 86);
+  - **orang tua diberi tahu paling lambat 3 × 24 jam setelah penghapusan** lewat kontak di formulir izin, dengan jenis data yang dihapus dan tanggalnya (Pasal 87). Ini menggantikan tempat kosong `[jumlah hari kerja]` di versi sebelumnya.
+- **Melihat, meminta salinan, dan membetulkan data.** Orang tua (atau anak, dengan persetujuan orang tua) boleh meminta melihat data anaknya, meminta salinannya, atau membetulkan data yang salah, misalnya umur atau kelas, lewat kontak peneliti atau P1 (PP 33/2026 Pasal 38 ayat (5)–(7), 69–71, 76–78; hak ini tidak dikecualikan untuk penelitian). Ketua peneliti membuka kode seperti di [Kode peserta dan pemisahan peran](#kode-peserta-dan-pemisahan-peran), memeriksa identitas pemohon seperti di atas, lalu menjawab **paling lambat 3 × 24 jam**: akses dan pembetulan diberikan dalam waktu itu, dan untuk salinan dikonfirmasi berapa lama penyiapannya. Salinan hanya memuat data anak itu, tanpa data anak lain (Pasal 76 ayat (2)), dan berisi jawaban dan hasil anak, bukan kunci jawaban soal. Cara teknis mengambil data satu anak dicatat sebagai perubahan sistem tahap 3 ([Akibat ke dokumen lain](#akibat-ke-dokumen-lain)).
+- **Pengecualian untuk penelitian tidak dipakai.** PP 33/2026 Pasal 148 ayat (1) huruf e dan Pasal 154 membolehkan hak hapus dan tarik persetujuan dibatasi untuk penelitian ilmiah dengan syarat tertentu. Penelitian ini tidak memakainya: semua hak dijalankan sampai studi ditutup (keputusan pemilik proyek 27 Oktober 2026, [no. 17](#keputusan-pemilik-proyek)).
+- **Batas waktu permintaan hapus:** permintaan hapus diterima **sampai studi ditutup** (`[tanggal studi ditutup]` di surat). Saat itu nama, L7, dan formulir izin dan pengunduran diri dimusnahkan (keputusan pemilik proyek 27 Oktober 2026, [Masa simpan dan pemusnahan](#masa-simpan-dan-pemusnahan)). Setelah itu data tidak bisa lagi dihubungkan dengan anak tertentu, jadi permintaan hapus, akses, atau pembetulan tidak bisa lagi dijalankan; yang tersisa hanya daftar izin berkode tanpa nama sebagai bukti persetujuan.
 - **Di uji keterbacaan (KG1):** pilihan A, B, dan C berlaku sama. Kalau orang tua memilih B, lembar LK1–LK3, kartu cetak, rekaman, dan transkrip anak itu dimusnahkan. Permintaan diterima sampai studi ditutup; hanya hasil gabungan yang sudah diterbitkan dan perbaikan soal yang sudah dibuat yang tidak bisa ditarik ([24 → Pengelolaan data](24_UJI_KETERBACAAN.md#pengelolaan-data)).
 - Siswa yang pindah sekolah atau tidak lagi hadir berstatus `Keluar`; datanya tetap dipakai kecuali diminta dihapus ([02 → L7](02_LEMBAR_LAPANGAN.md#l7-izin-orang-tua-dan-status-peserta)).
 
@@ -556,8 +571,8 @@ Semua lembar lain, ekspor, transkrip, dan berkas analisis hanya memakai kode pes
 
 | Data | Tempat | Perlindungan |
 | --- | --- | --- |
-| Data game dan modul tes | Server GELITA `[lokasi server dan penyedia diisi pemilik proyek]` | Akses lewat akun dengan peran; kunci jawaban tidak dikirim ke peramban; jejak audit untuk login, reset sandi, ekspor, dan penghapusan |
-| Ekspor data penelitian | Diunduh peneliti | Berkas ekspor di server terhapus otomatis setelah 7 hari ([../01_DATABASE.md](../01_DATABASE.md#retensi-dan-penghapusan-data)); salinan peneliti disimpan di penyimpanan terenkripsi `[alat enkripsi diisi tim]` |
+| Data game dan modul tes | Server GELITA `[nama dan lokasi penyedia server]`, **di Indonesia** (keputusan pemilik proyek 27 Oktober 2026, [no. 14](#keputusan-pemilik-proyek)) | Akses lewat akun dengan peran; kunci jawaban tidak dikirim ke peramban; jejak audit untuk login, reset sandi, ekspor, dan penghapusan; salinan cadangan ikut dihapus saat data anak dihapus ([Mengundurkan diri](#mengundurkan-diri-dan-hapus-data)) |
+| Ekspor data penelitian | Diunduh peneliti | Berkas ekspor di server terhapus otomatis setelah 7 hari ([../01_DATABASE.md](../01_DATABASE.md#retensi-dan-penghapusan-data)); salinan peneliti disimpan di penyimpanan terenkripsi `[alat enkripsi diisi tim]`, di perangkat tim atau layanan penyimpanan yang datanya berada **di Indonesia** |
 | L7 kertas, formulir izin bertanda tangan (T2, T8b), dan pemetaan NPSN–kode | Lemari terkunci, terpisah dari lembar lain | Hanya P1 dan ketua peneliti ([02 → L7](02_LEMBAR_LAPANGAN.md#l7-izin-orang-tua-dan-status-peserta)) |
 | Salinan digital L7 | Laptop aman dan terkunci | Terenkripsi; hanya P1 dan ketua peneliti |
 | Lembar L0–L6 | Kertas, lalu templat spreadsheet atau situs statis dalam 24 jam | Hanya kode peserta; kertas di lemari terkunci |
@@ -566,6 +581,37 @@ Semua lembar lain, ekspor, transkrip, dan berkas analisis hanya memakai kode pes
 | LK1–LK3 dan kartu cetak KG1 | Kertas di map terkunci yang dipegang ketua peneliti; ketikannya dalam 24 jam di folder penelitian yang hanya bisa dibuka tim | Hanya kode `K01`–`K05` ([24 → Pengelolaan data](24_UJI_KETERBACAAN.md#pengelolaan-data)) |
 
 Setiap anggota tim menandatangani pernyataan menjaga kerahasiaan sebelum lapangan (`[lampiran]`).
+
+**Tempat data di Indonesia** (keputusan pemilik proyek 27 Oktober 2026, [no. 14](#keputusan-pemilik-proyek)). Server GELITA, salinan cadangannya, dan penyimpanan terenkripsi peneliti berada di Indonesia, supaya tidak ada transfer data pribadi ke luar negeri (PP No. 33 Tahun 2026 Bab V, Pasal 160–162). Layanan awan yang menyimpan data di luar negeri tidak dipakai untuk data anak, termasuk folder ketikan KG1 dan rekaman. OSF hanya menerima bahan tanpa data anak ([Yang dibagikan](#yang-dibagikan-di-osf-dan-yang-tidak-pernah)). Kalau kelak ternyata tidak ada pilihan di Indonesia, ini perubahan protokol: penilaian transfer menurut Bab V dibuat dulu, orang tua diberi tahu, dan komite diminta persetujuan.
+
+### Pengendali, prosesor, dan narahubung data
+
+Peran menurut PP No. 33 Tahun 2026 (`needs_verification` terhadap naskah resmi; keputusan pemilik proyek 27 Oktober 2026, [no. 14–17](#keputusan-pemilik-proyek)):
+
+| Peran | Siapa | Kewajiban utama |
+| --- | --- | --- |
+| Pengendali data (Pasal 1 angka 4) | `[nama lembaga peneliti]`, diwakili ketua peneliti | Dasar pengolahan dan bukti persetujuan, informasi kepada orang tua, hak orang tua dan anak, penilaian dampak, keamanan, catatan kegiatan pengolahan, kebijakan masa simpan, pemberitahuan kebocoran |
+| Prosesor data (Pasal 13–15) | Penyedia server `[nama dan lokasi penyedia server]` | Mengolah hanya atas perintah pengendali, berdasarkan **perjanjian tertulis** yang memuat paling sedikit sebelas hal di Pasal 14 (cakupan, cara, jenis dan tujuan pengolahan, jenis data, kategori subjek, jangka waktu, hak dan kewajiban, pengawasan dan audit, sengketa, pelibatan prosesor lain, narahubung); prosesor lain hanya dengan persetujuan tertulis; melapor kebocoran kepada pengendali pada kesempatan pertama (Pasal 118); ikut menghapus saat diperintahkan (Pasal 88) |
+| Pejabat atau petugas pelindungan data (PPDP, Pasal 142–146) | PPDP `[nama lembaga peneliti]` kalau lembaga sudah menunjuknya; kalau belum, ketua peneliti sebagai narahubung: `[kontak PPDP atau narahubung]` | Narahubung untuk orang tua dan lembaga pelindungan data, memberi saran saat penilaian dampak, dicantumkan di surat dan di pemberitahuan kebocoran. Apakah penelitian ini wajib menunjuk PPDP sendiri menunggu Peraturan Lembaga (`needs_verification`) |
+| Sekolah | Bukan pengendali bersama | Hanya membagikan dan mengumpulkan amplop; tidak menentukan tujuan atau cara pengolahan dan tidak menerima data per anak |
+
+Dokumen yang disiapkan pengendali sebelum KG1 dan disimpan ketua peneliti (dirujuk di lampiran dan diperlihatkan kalau komite atau lembaga memintanya):
+
+- **catatan kegiatan pengolahan** (Pasal 74): isinya mengikuti tabel [Data yang dikumpulkan](#data-yang-dikumpulkan) dan [Penyimpanan dan enkripsi](#penyimpanan-dan-enkripsi), ditambah aliran data dan pihak yang bisa mengakses;
+- **kebijakan masa simpan** (Pasal 75): tabel [Masa simpan dan pemusnahan](#masa-simpan-dan-pemusnahan), cara pemusnahan, dan aturan penghilangan identitas untuk penelitian (kode diganti, nama dimusnahkan saat studi ditutup);
+- **perjanjian dengan penyedia server** (Pasal 14);
+- **penilaian dampak pelindungan data** ([di bawah](#penilaian-dampak-pelindungan-data)).
+
+### Penilaian dampak pelindungan data
+
+PP No. 33 Tahun 2026 Pasal 120–121 mewajibkan penilaian dampak **sebelum** pengolahan kalau risikonya tinggi. Dua pemicunya berlaku di sini: data anak termasuk data pribadi yang bersifat spesifik (Pasal 6 ayat (1) huruf e), dan tes, skor permainan, serta pengamatan adalah evaluasi dan penskoran yang sistematis (Pasal 120 ayat (2) huruf b dan d). Ringkasannya di bawah; penilaian lengkapnya dilampirkan pada permohonan (keputusan pemilik proyek 27 Oktober 2026, [no. 16](#keputusan-pemilik-proyek)), dibuat sebelum KG1, memuat saran PPDP atau narahubung, dan ditinjau ulang kalau risikonya berubah, misalnya lewat amandemen protokol (Pasal 121 ayat (5)–(6)).
+
+| Isi minimum (Pasal 121 ayat (2)) | Ringkasan |
+| --- | --- |
+| Uraian kegiatan dan tujuan | Sekitar 360 anak kelas 5 bermain GELITA dan mengerjakan tes, angket, dan skala sikap dalam lima pertemuan; KG1 dengan empat atau lima anak. Tujuannya menilai apakah butir dan catatan permainan GELITA mengukur literasi membaca dan literasi digital dengan baik ([Tujuan](#tujuan), [Data yang dikumpulkan](#data-yang-dikumpulkan)) |
+| Kebutuhan dan proporsionalitas | Hanya data yang dipakai analisis yang dikumpulkan; tanpa foto, video, lokasi, nomor HP anak, agama, suku, atau penghasilan; data permainan disimpan dengan kode; butir risiko daring dan rekaman suara hanya dengan centang izin terpisah. Skor tidak dipakai untuk menilai atau memutuskan apa pun tentang anak, termasuk rapor |
+| Risiko terhadap hak anak | Kebocoran yang mengungkap nama bersama jawaban; anak dikenali dari kombinasi sekolah, rombel, umur, dan nomor kursi; jawaban butir risiko daring terbaca orang lain; data dipakai di luar tujuan; permintaan hapus atau akses tidak dijalankan tepat waktu |
+| Langkah perlindungan | Nama terpisah dari data dan kode dibuka hanya oleh ketua peneliti ([Kode peserta](#kode-peserta-dan-pemisahan-peran)); admin dan peneliti dipisah; server dan penyimpanan di Indonesia dengan perjanjian prosesor; enkripsi salinan; data berkode yang dibagikan dibersihkan lebih dulu ([Yang dibagikan](#yang-dibagikan-di-osf-dan-yang-tidak-pernah)); butir risiko hanya angka gabungan; batas waktu 3 × 24 jam untuk permintaan orang tua dan pemberitahuan kebocoran; nama dimusnahkan saat studi ditutup |
 
 ### Masa simpan dan pemusnahan
 
@@ -578,8 +624,9 @@ Diputuskan pemilik proyek 27 Oktober 2026 ([Keputusan pemilik proyek](#keputusan
 | Data penelitian dengan kode (game, tes, angket, skala, lembar, transkrip) | **5 tahun** setelah studi ditutup, sama dengan masa simpan bawaan studi di sistem (`retention_days` = 1825, [../01_DATABASE.md](../01_DATABASE.md#retensi-dan-penghapusan-data)) | Dihapus lewat penghapusan dua langkah oleh admin; salinan peneliti dihapus |
 | Data uji coba (awalan `U`) | Sama dengan data penelitian | Sama |
 | Data uji keterbacaan berkode (LK1–LK3, kartu cetak, ketikan lembar, transkrip; kode `K01`–`K05`) | Sama dengan data penelitian berkode: **5 tahun** setelah studi ditutup | Kertas dicacah; ketikan dan transkrip dihapus |
+| **Daftar izin berkode** (bukti persetujuan): kode peserta, kolom izin orang tua, izin rekaman suara, izin butir risiko daring dengan tanggalnya, persetujuan siswa, dan status, disalin dari L7 tanpa nama dan rombel sebelum L7 dimusnahkan; untuk KG1 kode `K01`–`K05` dengan izinnya | Selama data berkode disimpan (keputusan pemilik proyek 27 Oktober 2026, [no. 15](#keputusan-pemilik-proyek); PP No. 33 Tahun 2026 Pasal 36) | Dihapus bersama data berkode |
 
-`needs_verification`: masa simpan minimum yang disyaratkan komite atau institusi.
+`needs_verification`: masa simpan minimum yang disyaratkan komite atau institusi; dan apakah data berkode yang kuncinya sudah dimusnahkan masih termasuk data pribadi menurut PP 33/2026 (Pasal 7 ayat (2) menyebut identifikasi lewat gabungan data, misalnya triangulasi). Sampai jelas, data berkode yang disimpan diperlakukan sebagai data pribadi: tetap terenkripsi, aksesnya terbatas, dan diatur kebijakan masa simpan ([Pengendali, prosesor, dan narahubung data](#pengendali-prosesor-dan-narahubung-data)). Setiap pemusnahan dicatat dalam berita acara di catatan ketua peneliti (PP 33/2026 Pasal 86).
 
 ### Yang dibagikan di OSF dan yang tidak pernah
 
@@ -591,13 +638,26 @@ Diputuskan pemilik proyek 27 Oktober 2026 ([Keputusan pemilik proyek](#keputusan
 
 Laporan dan publikasi tidak menyebut nama sekolah atau anak. Kutipan ucapan anak diberi kode samaran baru (bukan kode peserta).
 
+**Penerima data berkode** menjadi pengendali data tersendiri untuk salinannya. Perjanjian pemakaian data juga memuat kewajiban pelindungan data pribadi: hanya untuk tujuan penelitian yang disetujui komite, tidak mencoba mengenali anak, keamanan, dan pemusnahan setelah selesai. Kalau penerima berada di luar negeri, berlaku aturan transfer PP No. 33 Tahun 2026 Bab V, dan permintaan itu diajukan sebagai amandemen ([Tempat data di Indonesia](#penyimpanan-dan-enkripsi)).
+
 **Hasil diterbitkan apa pun hasilnya**, termasuk kalau butir atau skor GELITA ternyata tidak bekerja seperti yang diharapkan. Rencana analisisnya sudah dipra-registrasi di G4 (PSEPPKN 2021, Bab IV C.2: hasil negatif dan positif dipublikasikan atau sekurang-kurangnya terbuka bagi publik).
 
 **Hak atas data dan publikasi** (format protokol bagian W): `[pemegang hak data dan publikasi, misalnya institusi pengusul dan ketua peneliti]`. Pemberi dana tidak berhak menahan atau mengubah hasil (`[konfirmasi bersama sumber dana]`, [Konflik kepentingan](#konflik-kepentingan)).
 
 ### Dasar hukum
 
-Pengolahan data pribadi anak memerlukan persetujuan orang tua atau wali menurut UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi (`needs_verification`: pasal tentang data anak dan kewajiban pemberitahuan kebocoran dicek sebelum diajukan).
+Dibandingkan 27 Oktober 2026 (keputusan pemilik proyek, [no. 14–17](#keputusan-pemilik-proyek); [04](04_CATATAN_KEPUTUSAN.md)). Ini pemeriksaan dokumen, bukan nasihat hukum.
+
+- **Peraturan:** UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi, dan **PP No. 33 Tahun 2026** tentang Peraturan Pelaksanaan UU No. 27 Tahun 2022 (diundangkan 16 Juli 2026, LN 2026 No. 88; berlaku enam bulan kemudian, **16 Januari 2027**, Pasal 225). Semua kegiatan dengan anak (KG1–KG5) dimulai setelah persetujuan etik terbit, ditargetkan akhir 2027, jadi PP ini berlaku penuh.
+- **Sumber yang dibaca:** naskah resmi belum diperoleh (peraturan.go.id dan JDIH belum memuat berkasnya per 27 Oktober 2026). Yang dibaca utuh adalah naskah terkonsolidasi tidak resmi di datahukum.com, dicocokkan dengan ringkasan beberapa kantor hukum. Ada sumber yang menyebut tanggal 15 Juli 2026 dan berlaku 15 Januari 2027, dan ada yang menyebut 224 pasal (naskah yang dibaca berakhir di Pasal 225). **Semua nomor pasal PP di dokumen ini `needs_verification`** terhadap naskah resmi, begitu juga nomor pasal UU 27/2022 (pasal 4, 15, 25, 34, 46, 53, dan 56).
+- **Data anak** (di bawah 18 tahun) termasuk data pribadi yang bersifat spesifik (PP Pasal 1 angka 21, Pasal 6 ayat (1) huruf e).
+- **Dasar pengolahan:** persetujuan yang sah secara eksplisit (PP Pasal 30 ayat (3) huruf a, Pasal 32), yang untuk anak **wajib dari orang tua atau wali** (Pasal 38 ayat (2)). Informasi disampaikan sebelum persetujuan (Pasal 33, 62: surat T1 sebelum formulir T2); pilihan terpisah untuk rekaman suara dan butir risiko daring menjaga persetujuan tetap spesifik dan tidak ambigu; bukti persetujuan disimpan (Pasal 36: formulir T2, lalu daftar izin berkode). Persetujuan lisan anak dan centang di halaman daftar adalah persetujuan etik anak, bukan dasar hukum pengolahan. Anak tanpa izin tetap mendapat kegiatan pengganti yang setara (Pasal 35 ayat (1)).
+- **Verifikasi persetujuan orang tua** (Pasal 38 ayat (4), "dengan mempertimbangkan teknologi yang tersedia"): formulir kembali lewat guru kelas dalam amplop tertutup; P1 mencocokkan nama anak dengan daftar kelas dan memeriksa tanda tangan, atau cap jempol dengan saksi; kalau ragu, P1 menelepon nomor di formulir. Hasilnya dicentang di kotak peneliti T2 dan dicatat di L7 ([02 → L7](02_LEMBAR_LAPANGAN.md#l7-izin-orang-tua-dan-status-peserta)).
+- **Hak orang tua dan anak:** informasi, akses dan salinan, pembetulan, tarik persetujuan, hapus, dan mengadu ke lembaga pelindungan data pribadi, dengan batas 3 × 24 jam ([Mengundurkan diri dan hapus data](#mengundurkan-diri-dan-hapus-data)). Anak boleh mengajukan sendiri; pemenuhannya mempertimbangkan kemampuan anak memahami akibatnya dan memerlukan persetujuan orang tua (Pasal 38 ayat (5)–(7)).
+- **Pengecualian untuk penelitian ilmiah** (PP Pasal 148 ayat (1) huruf e, Pasal 154) hanya membatasi sebagian hak (hapus, tarik persetujuan, keberatan atas keputusan otomatis, penundaan, portabilitas), tidak membatasi akses dan pembetulan, dan tidak membebaskan kewajiban pengendali sama sekali (Pasal 149). Penjelasan Pasal 148 ayat (2) juga mensyaratkan kepentingan penelitian itu diatur undang-undang. **Penelitian ini tidak memakai pengecualian itu** (keputusan pemilik proyek 27 Oktober 2026, [no. 17](#keputusan-pemilik-proyek)).
+- **Kewajiban pengendali** yang dipenuhi: penilaian dampak sebelum pengolahan, perjanjian prosesor, PPDP atau narahubung, catatan kegiatan pengolahan, kebijakan masa simpan ([Pengendali, prosesor, dan narahubung data](#pengendali-prosesor-dan-narahubung-data), [Penilaian dampak pelindungan data](#penilaian-dampak-pelindungan-data)); tidak ada transfer ke luar negeri ([Penyimpanan dan enkripsi](#penyimpanan-dan-enkripsi)); pemberitahuan kebocoran 3 × 24 jam ([Pelaporan kejadian tak diinginkan](#pelaporan-kejadian-tak-diinginkan)).
+- **Peraturan Lembaga** yang diamanatkan PP (antara lain tentang PPDP, penilaian dampak, pemberitahuan kebocoran, dan penghapusan) belum diperiksa. Sampai terbit, pengolahan mengikuti PP (Pasal 223). Dicek ulang sebelum permohonan diajukan dan sebelum KG1 (`needs_verification`), termasuk apakah lembaga pelindungan data pribadi sudah berjalan dan bagaimana menghubunginya.
+- **Satuan waktu:** "Hari" di PP berarti hari kerja (Pasal 1 angka 19); batas "3 × 24 jam" ditulis dalam jam.
 
 ## Kompensasi
 
@@ -640,7 +700,14 @@ Diputuskan pemilik proyek 27 Oktober 2026 ([Keputusan pemilik proyek](#keputusan
 3. Ketua peneliti memutuskan tindak lanjut (rujukan, menghubungi orang tua dan sekolah, menghentikan sementara kegiatan) dan melapor ke komite sesuai tabel.
 4. Kejadian dibahas di diskusi tim 24 jam setelah sesi (01, *Kerja lapangan*), dan perubahan prosedur yang perlu diajukan sebagai amandemen.
 
-**Kebocoran data:** ketua peneliti dan admin mengamankan akses (ganti kata sandi, tutup akun, cabut token), menilai data apa yang bocor, lalu memberi tahu sekolah, orang tua yang anaknya terdampak, dan komite. Batas waktu pemberitahuan mengikuti UU No. 27 Tahun 2022 (`needs_verification`; yang sering dikutip 3 × 24 jam).
+**Kebocoran data** (kegagalan pelindungan data pribadi: data anak bocor, hilang, rusak, berubah, atau diakses tanpa hak; PP No. 33 Tahun 2026 Pasal 1 angka 18 dan Pasal 114–118, `needs_verification` terhadap naskah resmi):
+
+1. Ketua peneliti dan admin mengamankan akses (ganti kata sandi, tutup akun, cabut token) dan mendokumentasikan kejadiannya: data apa yang terdampak, kapan dan bagaimana, dampaknya bagi anak, dan langkah penanganan dan pemulihan (Pasal 116). Penyedia server wajib melapor kebocoran di pihaknya kepada ketua peneliti pada kesempatan pertama (Pasal 118, perjanjian prosesor).
+2. **Paling lambat 3 × 24 jam** sejak kebocoran diketahui secara pasti, patut, dan wajar (dihitung dari kesimpulan dokumentasi di langkah 1), ketua peneliti mengirim **pemberitahuan tertulis** kepada **orang tua anak yang terdampak** (atas nama anak sebagai subjek data) dan kepada **lembaga pelindungan data pribadi** (Pasal 114 ayat (1)–(2)). Isinya paling sedikit: data yang terungkap, kapan dan bagaimana terungkapnya, upaya penanganan dan pemulihan, dan kontak PPDP atau narahubung `[kontak PPDP atau narahubung]` (Pasal 114 ayat (3)–(4)). Kode dibuka hanya untuk menemukan orang tua yang anaknya terdampak ([Kode peserta](#kode-peserta-dan-pemisahan-peran)).
+3. Pada waktu yang sama, sekolah dan *Lembaga Komite Etik* diberi tahu; bagi komite, kebocoran yang memuat nama adalah kejadian serius ([tabel di atas](#kejadian-yang-dilaporkan)). Dokumentasi kejadian dikirim ke lembaga pelindungan data pribadi (Pasal 116 ayat (2)).
+4. Prosedur ini adalah kebijakan penanganan kebocoran internal penelitian (Pasal 117): perannya di ketua peneliti dan admin, dokumentasinya di catatan ketua peneliti, dan prosedurnya ditinjau di laporan kemajuan tahunan.
+
+Pemberitahuan kepada masyarakat (Pasal 115) tidak diperkirakan perlu, karena kebocoran di penelitian ini tidak mengganggu layanan publik; kalau keadaannya berbeda, ketua peneliti meminta saran lembaga.
 
 **Kegiatan dihentikan sementara** kalau terjadi kejadian serius yang mungkin terulang pada anak lain, sampai komite memberi tanggapan. Aturan penghentian selengkapnya ada di [Penghentian kegiatan dan penelitian](#penghentian-kegiatan-dan-penelitian).
 
@@ -844,6 +911,13 @@ Keputusan pemilik proyek pada hari yang sama, setelah dokumen ini dan 23 dibandi
 
 Kode kegiatan `K1`–`K5` di draf sebelumnya diganti `KG1`–`KG5` (sesi koordinator, 27 Oktober 2026), supaya tidak tertukar dengan kode anak uji keterbacaan.
 
+Keputusan pemilik proyek pada hari yang sama, setelah dokumen ini dan 23 dibandingkan dengan PP No. 33 Tahun 2026 (cabang `r10-pp-pdp`, [Dasar hukum](#dasar-hukum), [04](04_CATATAN_KEPUTUSAN.md)). Semua usulan perbandingan diterapkan, dengan empat pilihan ini:
+
+14. **Server, salinan cadangannya, dan penyimpanan terenkripsi peneliti berada di Indonesia**, jadi tidak ada transfer data pribadi ke luar negeri. Tidak dipilih: boleh di luar negeri dengan penilaian transfer menurut Bab V dan pemberitahuan kepada orang tua. Lihat [Penyimpanan dan enkripsi](#penyimpanan-dan-enkripsi).
+15. **Bukti persetujuan setelah studi ditutup berupa daftar izin berkode tanpa nama**, disimpan selama data berkode disimpan. Tidak dipilih: formulir bertanda tangan disimpan 5 tahun (bertentangan dengan no. 1), atau tanpa perubahan. Lihat [Masa simpan dan pemusnahan](#masa-simpan-dan-pemusnahan).
+16. **Ringkasan penilaian dampak pelindungan data ditulis di dokumen ini**, dan penilaian lengkapnya dilampirkan pada permohonan. Tidak dipilih: dokumen terpisah nanti sebelum KG1. Lihat [Penilaian dampak pelindungan data](#penilaian-dampak-pelindungan-data).
+17. **Pengecualian hak untuk penelitian ilmiah tidak dipakai.** Semua hak dijalankan sampai studi ditutup; pilihan A di T10 berarti persetujuan untuk data yang sudah ada tetap berlaku; batas 3 × 24 jam dipakai untuk menghentikan pengumpulan data, memberi tahu setelah penghapusan, menjawab permintaan akses dan pembetulan, dan memberi tahu kebocoran. Tidak dipilih: memakai Pasal 148 ayat (1) huruf e untuk membatasi hapus dan tarik persetujuan. Lihat [Mengundurkan diri](#mengundurkan-diri-dan-hapus-data).
+
 ## Akibat ke dokumen lain
 
 Dicatat untuk sesi koordinator. Baris bertanda **Sudah** diperiksa di dokumen tujuannya per 27 Oktober 2026; baris lain masih harus dibawa.
@@ -857,7 +931,7 @@ Dicatat untuk sesi koordinator. Baris bertanda **Sudah** diperiksa di dokumen tu
 | 02 | L7, isi surat izin orang tua, status, `consent_ok`, penyimpanan | **Sudah.** Batas kerahasiaan, kontak komite, berbagi data berkode, batas hapus sampai studi ditutup, dua status mundur, `consent_ok` untuk `data tetap` mulai `kamus-1.1`, pemusnahan saat studi ditutup |
 | 02 | L0 P5 | **Sudah.** "Prosedur rujukan … dari protokol etik" ditautkan ke [22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) |
 | 02 | L5 | **Sudah.** Wawancara di tempat yang terlihat guru atau peneliti lain, tidak di ruang tertutup berdua; persetujuan ulang singkat anak sebelum wawancara |
-| 02 | L7, *Isi surat izin orang tua* | Tambah butir **batas pengamanan daring**: cara data dijaga, bahwa tidak ada sistem daring yang sepenuhnya bebas risiko kebocoran, dan bahwa orang tua diberi tahu kalau data anaknya terdampak (23 → T1 bagian 3), dari PSEPPKN 2021 Lampiran 2 huruf i (keputusan pemilik proyek 27 Oktober 2026, [no. 10](#keputusan-pemilik-proyek)) |
+| 02 | L7, *Isi surat izin orang tua* | **Sudah** (cabang `r10-pp-pdp`). Tambah butir **batas pengamanan daring**: cara data dijaga, bahwa tidak ada sistem daring yang sepenuhnya bebas risiko kebocoran, dan bahwa orang tua diberi tahu kalau data anaknya terdampak (23 → T1 bagian 3), dari PSEPPKN 2021 Lampiran 2 huruf i (keputusan pemilik proyek 27 Oktober 2026, [no. 10](#keputusan-pemilik-proyek)) |
 | 03 | *Peran* | **Sudah.** Baris *Ketua peneliti*: satu-satunya yang menghubungkan kode dengan nama untuk rujukan dan permintaan hapus; menerima laporan KTD |
 | 03 | *Kegiatan dengan anak* | **Sudah.** Kode `KG1`–`KG5` |
 | 11 | *Penanda untuk analisis*, `consent_ok`; *L7* | Mulai `kamus-1.1`, `consent_ok = 1` juga untuk `Mengundurkan diri (data tetap)`, untuk data sampai tanggal mundur (sekarang tertulis "siswa tidak mengundurkan diri"). "Nama hanya ada di L7" disamakan dengan [Di mana nama berada](#di-mana-nama-berada) |
@@ -867,3 +941,11 @@ Dicatat untuk sesi koordinator. Baris bertanda **Sudah** diperiksa di dokumen tu
 | 23 | T1, T2, T8, T8a, T8b, T9, *Cek isi L7*, *Catatan keterbacaan* (perbandingan dengan PSEPPKN 2021, 27 Oktober 2026) | **Sudah.** Isi tambahan dari [Isi surat orang tua](#isi-surat-orang-tua), kalimat tanda terima kasih dari [Kompensasi](#kompensasi), dan baris saksi dari [Lapis persetujuan](#lapis-persetujuan) dimasukkan di cabang yang sama |
 | 24 | Seluruh protokol uji keterbacaan (perbandingan dengan PSEPPKN 2021) | Tidak ada perubahan. KG1 sudah sesuai: dua orang dewasa, sesi ± 60 menit dengan jeda, tanpa data di sistem, butir risiko hanya diparafrasekan. Surat dan formulirnya (23 → T8a, T8b) yang diperbarui |
 | 24 | *Yang dibutuhkan dari dokumen lain → Dari 22* | **Sudah di 22.** Kegiatan tersendiri, lama, tempat, dua orang dewasa, rekaman, risiko, rujukan, masa simpan, dan tanda terima kasih ada di [Kegiatan yang dimintakan izin](#kegiatan-yang-dimintakan-izin), [Uji keterbacaan (KG1)](#uji-keterbacaan-kg1), [Risiko dan mitigasi](#risiko-dan-mitigasi), [Masa simpan dan pemusnahan](#masa-simpan-dan-pemusnahan), dan [Kompensasi](#kompensasi). 22 memakai kode sesi `K01-1` dan aturan bahwa sekolah uji keterbacaan tidak masuk sampel kemudian |
+| 02 | L7, isi surat, cara mengisi, penyimpanan (perbandingan dengan PP No. 33 Tahun 2026) | **Sudah** (cabang `r10-pp-pdp`). Butir isi surat dari PP 33/2026, verifikasi izin oleh P1, dan daftar izin berkode yang disalin sebelum L7 dimusnahkan |
+| 23 | T1 bagian 3 dan 6, T2, T8a, T10, tempat kosong (perbandingan dengan PP No. 33 Tahun 2026) | **Sudah** (cabang `r10-pp-pdp`). Pengendali dan narahubung data, dasar pengolahan, server di Indonesia, batas 3 × 24 jam, hak akses dan pembetulan, aduan ke lembaga, kotak verifikasi di T2 dan T10; `[jumlah hari kerja]` dihapus |
+| 22 | *Lampiran* (bagian sesi BRIN) | Belum. Tambah lampiran **penilaian dampak pelindungan data** lengkap ([Penilaian dampak pelindungan data](#penilaian-dampak-pelindungan-data)), dan sebut perjanjian dengan penyedia server, catatan kegiatan pengolahan, dan kebijakan masa simpan sebagai dokumen yang bisa diperlihatkan kalau diminta ([Pengendali, prosesor, dan narahubung data](#pengendali-prosesor-dan-narahubung-data)); keputusan pemilik proyek [no. 16](#keputusan-pemilik-proyek) |
+| 22 | *Daftar tilik tujuh standar*, standar 6 (bagian sesi BRIN) | Belum. Rujuk juga [Dasar hukum](#dasar-hukum), [Pengendali, prosesor, dan narahubung data](#pengendali-prosesor-dan-narahubung-data), dan [Penilaian dampak pelindungan data](#penilaian-dampak-pelindungan-data) |
+| 23 | *Cek isi L7 dan jalur persetujuan* (bagian sesi BRIN) | Belum. Tambah baris untuk butir L7 yang baru: batas pengamanan daring dan isi dari PP No. 33 Tahun 2026 → T1 bagian 3 dan 6 ([02 → L7](02_LEMBAR_LAPANGAN.md#l7-izin-orang-tua-dan-status-peserta)) |
+| 23 | T1 bagian 8 (bagian sesi BRIN) | Belum, dan tidak wajib: kontak PPDP atau narahubung sudah ada di T1 bagian 3. Kalau sesi BRIN merapikan bagian 8, kontak itu boleh dipindah ke daftar kontak di sana |
+| 01 | *Catatan perubahan sistem untuk tahap nanti* | Belum. Dari PP No. 33 Tahun 2026: (a) ambil data satu anak lewat kode untuk permintaan akses dan salinan orang tua, tanpa data anak lain dan tanpa kunci jawaban; (b) pembetulan data pendaftaran (umur, jenis kelamin, kelas) oleh admin dengan jejak audit; (c) penghapusan juga mencakup salinan cadangan server dan ekspor yang masih ada, dengan catatan tanggal untuk berita acara; (d) ekspor daftar izin berkode tanpa nama sebelum nama di akun diganti kode |
+| 11 | *L7*, aturan gabung lembar | Belum. Daftar izin berkode (kode, kolom izin, persetujuan siswa, status) menjadi sumber `consent_ok` setelah L7 dimusnahkan |
