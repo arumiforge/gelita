@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **diterima pemilik proyek (25 Oktober 2026)**; instrumen ditulis ulang pada 26 Oktober 2026 sebagai tiga dokumen di [dokumen-pdf/](dokumen-pdf/README.md), menunggu persetujuan pemilik proyek (lihat [Instrumen versi 2.1 dan 1.1](#instrumen-versi-21-dan-11))
+Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **diterima pemilik proyek (25 Oktober 2026)**; instrumen ditulis ulang pada 26 Oktober 2026 sebagai tiga dokumen di [dokumen-pdf/](dokumen-pdf/README.md) dan **disetujui pemilik proyek pada 27 Oktober 2026** (lihat [Instrumen versi 2.1 dan 1.1](#instrumen-versi-21-dan-11))
 
 Dokumen ini menelaah dua draf instrumen validasi ahli milik pemilik proyek, lalu mengusulkan perbaikannya. Perbaikan yang sudah pasti ditulis sebagai teks pengganti yang siap ditempel. Perbaikan yang masih bergantung pada keputusan atau kisi-kisi ditandai.
 
@@ -257,7 +257,7 @@ Semuanya cocok.
 
 ## Instrumen versi 2.1 dan 1.1
 
-Ditulis 26 Oktober 2026 dari draf pemilik proyek (r10 v2.0 dan media v1.0, keduanya 23 Oktober 2026, kini di [dokumen-pdf/arsip/](dokumen-pdf/arsip/)). Status: draf, menunggu persetujuan pemilik proyek. PDF dan sumber HTML-nya ada di [dokumen-pdf/](dokumen-pdf/README.md).
+Ditulis 26 Oktober 2026 dari draf pemilik proyek (r10 v2.0 dan media v1.0, keduanya 23 Oktober 2026, kini di [dokumen-pdf/arsip/](dokumen-pdf/arsip/)). Status: **disetujui pemilik proyek, 27 Oktober 2026** (setelah diselaraskan dengan paket validasi 20 dan 21); kotak status di sampul sudah dihapus. PDF dan sumber HTML-nya ada di [dokumen-pdf/](dokumen-pdf/README.md).
 
 | Dokumen | Isi | Halaman |
 | --- | --- | --- |

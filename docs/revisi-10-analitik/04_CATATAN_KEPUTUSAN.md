@@ -6,6 +6,13 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 27 Oktober 2026
 
+**Keputusan pemilik proyek: ketiga instrumen validasi ahli disetujui** (cabang `sky/inspiring-ritchie-nex4qi`, sesi koordinator) · Prototipe I, belum merevisi produk
+
+1. **Instrumen ahli materi v2.1, pengamat budaya v2.1, dan ahli media v1.1 disetujui** apa adanya, dalam versi yang sudah diselaraskan dengan 20 dan 21 (entri di bawah).
+2. Kotak status draf di sampul ketiganya dihapus (langkah 2 di `dokumen-pdf/README.md`), perubahannya dicatat di D.4 masing-masing, PDF dibuat ulang (43, 31, dan 29 halaman), dan berkas validator dibuat ulang karena HTML instrumen termasuk sumbernya (69 pemeriksaan lolos).
+
+Akibatnya: prasyarat no. 1 dan 2 di 20 terpenuhi; 07, 00, README `dokumen-pdf/`, dan `docs/PROGRESS.md` diperbarui. 00 mendapat *Langkah berikutnya di tahap 2* sebagai pintu masuk sesi baru. Gerbang G1 tinggal menunggu daftar kode sekolah (no. 12), yang tidak menahan validasi maupun izin etik.
+
 **Keputusan pemilik proyek: satu level pengembang per butir tes D2 dan D3** (cabang `sky/inspiring-ritchie-nex4qi`, sesi koordinator; temuan no. 2 di [21](21_BERKAS_BUTIR_VALIDATOR.md)) · Prototipe I, belum merevisi butir
 
 1. **Usulan sesi koordinator disetujui apa adanya.** Setiap nomor tes D2 dan D3 punya satu level pengembang, sama di bentuk A dan B, dengan arti level B.5a (L1 tanda jelas, L2 tanda samar, L3 nilai bertentangan atau dua langkah), sama seperti kata *Tingkat* di 08:
