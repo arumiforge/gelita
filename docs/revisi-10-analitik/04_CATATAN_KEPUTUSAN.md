@@ -31,7 +31,7 @@ Pilihan yang diambil saat menulis (semua bisa diubah pemilik proyek):
 **Keputusan pemilik proyek: daftar kerja no. 12 dan 13, dan dimulainya dokumen tahap 2** (cabang `sky/inspiring-ritchie-nex4qi`, sesi koordinator)
 
 1. **Daftar kode sekolah penelitian (no. 12) belum diputuskan; tahap 2 tetap dimulai.** Kode `S01`, `S02`, … di semua dokumen tetap contoh, dan tempat kosongnya di 02 tetap ditandai. Daftar ini baru dibutuhkan sebelum sekolah direkrut dan L8 diisi, jadi tidak menahan dokumen validasi dan izin etik.
-2. **Pemegang akun admin dan akun peneliti (no. 13) sementara memakai nama samaran sesuai perannya:** akun admin `admin`, akun peneliti untuk koordinator sesi (P1) `koordinator`, dan seterusnya. `pengamat` (P2), `pewawancara` (P3), dan `ketua` (ketua peneliti) adalah usulan sesi koordinator untuk "dan seterusnya", dibuat kalau perannya butuh akun ([03 → Akun staf](03_KODE_DAN_ARTI.md#akun-staf)). Siapa orangnya ditetapkan nanti dan dicatat ketua peneliti di luar repo, sama seperti nama asli validator.
+2. **Pemegang akun admin dan akun peneliti (no. 13) sementara memakai nama samaran sesuai perannya:** akun admin `admin`, akun peneliti untuk koordinator sesi (P1) `koordinator`, dan seterusnya. `pengamat` (P2), `pewawancara` (P3), dan `ketua` (ketua peneliti) diusulkan sesi koordinator untuk "dan seterusnya" dan **disetujui pemilik proyek pada hari yang sama**; akunnya dibuat kalau perannya butuh akun ([03 → Akun staf](03_KODE_DAN_ARTI.md#akun-staf)). Siapa orangnya ditetapkan nanti dan dicatat ketua peneliti di luar repo, sama seperti nama asli validator.
 3. **Dokumen tahap 2 ditulis paralel di beberapa sesi.** Sesi koordinator membaginya menjadi lima dokumen, satu sesi dan satu cabang masing-masing:
 
    | Dokumen | Cabang | Isi |

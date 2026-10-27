@@ -16,11 +16,11 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 | P1 | Koordinator sesi: membuka sesi, token, L0, L1, L2, L7 | Lapangan |
 | P2 | Pengamat keterlibatan: L4 | Lapangan |
 | P3 | Pengamat bantuan dan pewawancara: L3, L5 | Lapangan |
-| Ahli Bahasa Anak 1, 2 | Nama samaran validator: literasi membaca dan bahasa Indonesia SD (panel ahli materi) | Validasi, tahap 2 |
-| Ahli Literasi Digital 1, 2 | Nama samaran validator: literasi digital anak (panel ahli materi) | Validasi, tahap 2 |
-| Ahli Pengukuran | Nama samaran validator: evaluasi dan pengukuran (panel ahli materi) | Validasi, tahap 2 |
-| Ahli Budaya Kedu 1, 2, 3 | Nama samaran validator: pengamat budaya, idealnya satu orang per wilayah (panel tiga orang, keputusan 26 Oktober 2026). Ahli Budaya Kedu 1 juga menilai relevansi skala sikap (B.8) | Validasi, tahap 2 |
-| Ahli Media Pembelajaran 1, 2, 3 | Nama samaran validator: ahli media, dua langkah (mock-up, lalu layar jadi). Panel tiga orang (keputusan 26 Oktober 2026): 1 teknologi pendidikan atau media pembelajaran, 2 desain visual atau UX, 3 rekayasa perangkat lunak atau pengembangan game | Validasi, tahap 2 dan 3 |
+| Ahli Bahasa Anak 1, 2 | Nama samaran validator: literasi membaca dan bahasa Indonesia SD (panel ahli materi). Singkatan di nama berkas: `ABA1`, `ABA2` | Validasi, tahap 2 |
+| Ahli Literasi Digital 1, 2 | Nama samaran validator: literasi digital anak (panel ahli materi). Singkatan di nama berkas: `ALD1`, `ALD2` | Validasi, tahap 2 |
+| Ahli Pengukuran | Nama samaran validator: evaluasi dan pengukuran (panel ahli materi). Singkatan di nama berkas: `AP` | Validasi, tahap 2 |
+| Ahli Budaya Kedu 1, 2, 3 | Nama samaran validator: pengamat budaya, idealnya satu orang per wilayah (panel tiga orang, keputusan 26 Oktober 2026). Ahli Budaya Kedu 1 juga menilai relevansi skala sikap (B.8). Singkatan di nama berkas: `ABK1`–`ABK3` | Validasi, tahap 2 |
+| Ahli Media Pembelajaran 1, 2, 3 | Nama samaran validator: ahli media, dua langkah (mock-up, lalu layar jadi). Panel tiga orang (keputusan 26 Oktober 2026): 1 teknologi pendidikan atau media pembelajaran, 2 desain visual atau UX, 3 rekayasa perangkat lunak atau pengembangan game. Singkatan di nama berkas: `AMP1`–`AMP3` | Validasi, tahap 2 dan 3 |
 | Lembaga Komite Etik | Nama samaran komite etik penelitian; pengajuan minggu kedua–keempat November 2026, persetujuan paling lambat akhir September–minggu pertama November 2027 | Izin etik, tahap 2 |
 
 ### Akun staf
@@ -31,9 +31,22 @@ Pemegang akun admin dan akun peneliti sementara memakai nama samaran sesuai pera
 | --- | --- | --- | --- |
 | `admin` | Admin | Pengelola sistem | Akun, identitas, konten, rilis, log teknis; tidak mengunduh data penelitian |
 | `koordinator` | Peneliti | P1, koordinator sesi | Sesi lapangan, token, baris-kursi-buklet dari L2, reset kata sandi lewat kode peserta |
-| `pengamat`, `pewawancara`, `ketua` | Peneliti | P2, P3, ketua peneliti | Usulan penerapan pola yang sama ("dan seterusnya"), dibuat kalau perannya butuh akun |
+| `pengamat`, `pewawancara`, `ketua` | Peneliti | P2, P3, ketua peneliti | Pola yang sama ("dan seterusnya"), disetujui pemilik proyek 27 Oktober 2026; dibuat kalau perannya butuh akun |
 
 Satu orang yang memegang dua peran tetap memakai dua akun terpisah ([01](01_REVISI_10_ANALITIK.md#admin-dan-peneliti-dua-peran-berbeda)).
+
+### Akun uji validator
+
+Akun **siswa** di instalasi uji untuk validator, bukan akun staf, dibuat `admin` sebelum paket dikirim ([20 → Akses untuk validator](20_PAKET_VALIDASI.md#akses-untuk-validator), 27 Oktober 2026). Titik dipakai karena aturan nama pengguna siswa tidak mengizinkan tanda hubung.
+
+| Akun | Untuk |
+| --- | --- |
+| `uji.bahasa1`, `uji.bahasa2` | Ahli Bahasa Anak 1, 2 |
+| `uji.digital1`, `uji.digital2` | Ahli Literasi Digital 1, 2 |
+| `uji.ukur` | Ahli Pengukuran |
+| `uji.budaya1`–`uji.budaya3` | Ahli Budaya Kedu 1–3 |
+| `uji.media1`–`uji.media3` | Ahli Media Pembelajaran 1–3 |
+| `uji.cadangan1`, `uji.cadangan2` | Cadangan, kalau akun terkunci atau validator diganti |
 
 ## Dimensi literasi digital
 
