@@ -110,7 +110,7 @@ Anak tidak diberi tahu kelompok membacanya, dan pemandu serta pencatat juga tida
 
 ### Bahan yang menunggu uji keterbacaan
 
-Semua bahan diambil **setelah revisi dari validasi ahli** (Prototipe I yang sudah direvisi). Kalau bahan berubah lagi setelah salinan layar dibuat, salinan layar dibuat ulang.
+Yang diuji adalah **bahan setelah revisi dari validasi ahli** (Prototipe I setelah validasi), bukan versi yang sekarang tertulis di 08 dan 13–17. Bahan diambil setelah perubahan di matriks revisi Prototipe I ([20](20_PAKET_VALIDASI.md#matriks-revisi-prototipe-i)) masuk ke dokumen sumbernya. Jumlah butir dan kata di tabel ini memakai draf sekarang dan bisa berubah setelah revisi. Kalau bahan berubah lagi setelah salinan layar dibuat, salinan layar dibuat ulang.
 
 | Dokumen | Bahan | Jumlah | Masuk uji? |
 | --- | --- | --- | --- |
@@ -373,7 +373,7 @@ Kalau pembacanya hanya tiga (lihat [Kalau anaknya tiga](#kalau-anaknya-tiga)), "
 
 ### Yang kembali ke ahli
 
-Setiap revisi masuk matriks revisi di [20](20_PAKET_VALIDASI.md), dengan kode butir, temuan (kode `KB-*` dan jumlah anak), kalimat lama, kalimat baru, dan alasan.
+Setiap revisi masuk matriks revisi Prototipe I ([20](20_PAKET_VALIDASI.md#matriks-revisi-prototipe-i)), satu temuan per baris. Di kolom *Sumber validator* ditulis "uji keterbacaan", kode anak, dan kode `KB-*` (misalnya `uji keterbacaan K01, K03; KB-KTA`); kolom lainnya diisi seperti temuan validator. Aturan kembali ke validator di 20 (*Kapan butir yang direvisi kembali ke validator*) tetap berlaku; tabel di bawah merinci untuk temuan dari anak.
 
 | Jenis revisi | Kembali ke |
 | --- | --- |
@@ -447,7 +447,7 @@ Waktu di uji ini lebih panjang daripada di kelas, karena anak membaca di ruang a
 
 ### Dari 20 (paket validasi)
 
-- Matriks revisi yang punya kolom sumber temuan "uji keterbacaan" dan kode `KB-*`, supaya revisi dari ahli dan dari anak tercatat di satu tempat.
+- Matriks revisi Prototipe I ([20](20_PAKET_VALIDASI.md#matriks-revisi-prototipe-i)) juga menampung temuan dari anak, lewat kolom *Sumber validator*, supaya revisi dari ahli dan dari anak tercatat di satu tempat.
 - Jadwal yang menempatkan uji keterbacaan setelah revisi dari validasi ahli, dan putaran penilaian ulang ahli setelahnya.
 
 ## Persiapan sebelum sesi pertama
@@ -498,5 +498,5 @@ Tidak diubah di cabang ini. Dibawa sesi koordinator setelah dokumen ini digabung
 | [17](17_SKALA_SIKAP.md) | *Tahap 2: uji keterbacaan dengan anak* | Tautan ke 24 (pancingan PB-7, aturan KB-ARH) |
 | [18](18_MOCKUP_LAYAR_BARU.md) | *Celah yang ditemukan di dokumen lain* no. 3; *Keputusan pemilik proyek* putaran 2 no. 4 | Tautan ke 24: draf salinan layar diuji di sana |
 | [06](06_KISI_KISI_BANK_SOAL.md) | *Waktu bermain* | Satu kalimat: angka pertama dari anak datang dari uji keterbacaan (24), angka akhir dari uji coba |
-| [20](20_PAKET_VALIDASI.md) | Matriks revisi, jadwal | Kolom sumber temuan "uji keterbacaan" dan kode `KB-*`; uji keterbacaan setelah revisi ahli, lalu penilaian ulang |
+| [20](20_PAKET_VALIDASI.md) | *Matriks revisi Prototipe I*, jadwal | Satu kalimat: temuan uji keterbacaan masuk matriks yang sama, dengan "uji keterbacaan", kode anak, dan kode `KB-*` di kolom *Sumber validator*; uji keterbacaan sesudah revisi ahli, lalu penilaian ulang |
 | [22](22_PERMOHONAN_IZIN_ETIK.md), [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) | Kegiatan, risiko, izin | Isi yang dibutuhkan di [Yang dibutuhkan dari dokumen lain](#yang-dibutuhkan-dari-dokumen-lain), kalau belum tertulis |
