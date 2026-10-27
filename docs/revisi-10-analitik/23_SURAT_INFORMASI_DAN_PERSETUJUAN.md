@@ -51,9 +51,11 @@ Setelah itu: [tabel pembagian](#tabel-pembagian), [catatan keterbacaan](#catatan
 | Guru tidak punya akun, cukup membantu perangkat dan internet, tidak membantu isi soal, tidak membacakan teks, tidak berkeliling melihat layar saat tes dan angket; bantuan guru dicatat di L3 dengan kode `GRU` tanpa nama | [03 → Peran](03_KODE_DAN_ARTI.md#peran), [02 → L0](02_LEMBAR_LAPANGAN.md#l0-daftar-periksa-persiapan-sesi), 02 → L3 | T7 |
 | L8 Profil sekolah: fakta sekolah dari operator atau kepala sekolah, tanpa nama guru atau siswa; Rapor Pendidikan hanya kalau sekolah bersedia | [02 → L8](02_LEMBAR_LAPANGAN.md#l8-profil-sekolah) | T6 |
 | Sekolah uji coba memakai awalan `U` (`U01-A03`); datanya tidak tercampur dengan data utama | 01 → Kode peserta baru | T9 |
-| Uji keterbacaan dengan 3–5 anak kelas 5, setelah izin etik terbit, memakai mock-up, bukan sampel utama | [01 → Peta jalan](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja) no. 23, [13 → Validasi](13_TES_AWAL_AKHIR.md#validasi-dan-uji-coba), [16 → Validasi](16_ANGKET_AKSES_DIGITAL.md#validasi-dan-uji-coba), [17 → Uji keterbacaan](17_SKALA_SIKAP.md#tahap-2-uji-keterbacaan-dengan-anak) | T8 |
-| Laporan ke sekolah hanya angka gabungan, tidak per siswa dan tidak untuk kelompok kurang dari 5 siswa | 16 → Etika no. 2; 17 → Etika no. 3 | T1, T6, T7 |
-| Penyimpanan L7: lemari terkunci, terpisah, bersama pemetaan NPSN; salinan digital terenkripsi untuk P1 dan ketua peneliti; dimusnahkan sesuai masa simpan di protokol etik | 02 → L7 *Penyimpanan* | [Tabel pembagian](#tabel-pembagian) |
+| Uji keterbacaan dengan empat anak kelas 5, ditambah satu anak di putaran kedua, setelah izin etik terbit, memakai salinan layar mock-up dari bahan Prototipe I yang sudah direvisi ahli. Anak dari sekolah di wilayah Kedu di luar sampel dan uji coba; sekolah itu tidak masuk sampel nanti. Empat sesi ± 60 menit dengan jeda, di sekolah anak, selalu dengan dua orang dewasa. Butir risiko daring hanya diparafrasekan, dengan centang terpisah. Rekaman suara hanya dengan izin. Surat lewat sekolah. Tanda terima kasih kecil yang sama setelah sesi terakhir, bukan imbalan | [01 → Peta jalan](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja) no. 23, [24](24_UJI_KETERBACAAN.md), [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi); keputusan pemilik proyek 27 Oktober 2026 | T8 |
+| Laporan ke sekolah hanya angka gabungan, tidak per siswa dan tidak untuk kelompok kurang dari 5 siswa. Ringkasan diserahkan ke sekolah, dan orang tua bisa memintanya lewat sekolah; tidak ada centang ringkasan hasil di formulir | 16 → Etika no. 2; 17 → Etika no. 3; keputusan pemilik proyek 27 Oktober 2026 | T1, T6, T7 |
+| Surat orang tua dalam amplop tertutup dibagikan H-14 sampai H-10, pengingat di H-5, batas kembali H-3; formulir yang tidak kembali berarti tidak mengizinkan | Keputusan pemilik proyek 27 Oktober 2026 | T1, T2, [Tabel pembagian](#tabel-pembagian) |
+| Tanda terima kasih kecil yang sama untuk semua anak di kelas, termasuk yang tidak ikut, ditambah kudapan di P1 dan P5; tanpa uang; tidak pernah disebut sebagai imbalan | [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi); keputusan pemilik proyek 27 Oktober 2026 | Tidak disebut di surat sebagai imbalan; catatan pelaksanaan di T8 |
+| Penyimpanan L7: lemari terkunci, terpisah, bersama pemetaan NPSN; salinan digital terenkripsi untuk P1 dan ketua peneliti; dimusnahkan saat studi ditutup | 02 → L7 *Penyimpanan*; [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan) | [Tabel pembagian](#tabel-pembagian) |
 
 ## Aturan menulis teks ini
 
@@ -75,9 +77,10 @@ Setelah itu: [tabel pembagian](#tabel-pembagian), [catatan keterbacaan](#catatan
 | `[nama sekolah]`, `[nama kepala sekolah]`, `[rombel]` | Rekrutmen sekolah; kode sekolah **menunggu daftar kerja no. 12** | Per sekolah |
 | `[tanggal P1]` … `[tanggal P5]`, `[rentang minggu]` | Jadwal per kelas | Per kelas |
 | `[tanggal batas kembali]` | P1: H-3 sebelum P1 | Per kelas |
-| `[tanggal batas penarikan]` | Tanggal analisis utama dimulai, dari rencana analisis ([Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 1) | Sebelum dicetak |
-| `[masa simpan]` | Protokol etik di `22_PERMOHONAN_IZIN_ETIK.md` | Sebelum dicetak |
-| `[lama sesi uji keterbacaan]`, `[tempat uji keterbacaan]` | `24_UJI_KETERBACAAN.md` | Sebelum dicetak |
+| `[tanggal studi ditutup]` | Rencana tanggal studi ditutup (setelah analisis selesai, [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan)), dari jadwal ketua peneliti. Kalau studi ternyata ditutup lebih lambat, permintaan hapus tetap diterima sampai studi benar-benar ditutup ([Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 1) | Sebelum dicetak |
+| `[jumlah hari kerja]` | Protokol etik ([22 → Mengundurkan diri dan hapus data](22_PERMOHONAN_IZIN_ETIK.md#mengundurkan-diri-dan-hapus-data)); tempat kosong yang sama di 22 dan 23 | Sebelum dicetak |
+| `[rentang tanggal uji keterbacaan]`, `[tanggal batas kembali uji keterbacaan]` | Jadwal uji keterbacaan ([24 → Jadwal empat sesi](24_UJI_KETERBACAAN.md#jadwal-empat-sesi)), disepakati dengan sekolah asal anak | Sebelum dicetak |
+| `[nomor WA SAPA 129]`, `[kabupaten/kota]`, `[kontak UPTD PPA]` | Layanan resmi perlindungan anak di wilayah sasaran ([22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) langkah 5); `needs_verification`: nama dan nomor dicek sebelum lapangan | Sebelum T13 dicetak |
 
 ## T1 Surat informasi untuk orang tua/wali
 

@@ -19,13 +19,16 @@ Belum ada yang diubah di sistem, dan uji ini juga tidak memakai sistem. Modul te
 7. **Lembar catatan LK1–LK3**, bergaya lembar di [02](02_LEMBAR_LAPANGAN.md), dengan kode kesulitan `KB-*` (usulan untuk 03).
 8. **Aturan keputusan** membedakan kesulitan bahasa dari kesulitan yang memang diukur. Bacaan D1 boleh sulit dipahami, karena itu yang diukur. Petunjuk, pokok soal, pilihan, angket, dan skala harus bisa dipahami semua anak.
 9. **Waktu yang diukur** dibandingkan dengan perkiraan di [06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain), [13](13_TES_AWAL_AKHIR.md#kisi-kisi-tes-sama-untuk-bentuk-a-dan-b), dan [15](15_TES_BAGIAN_DIGITAL.md#perkiraan-waktu-kerja). Waktu ini hanya pemeriksaan kasar; batas waktu akhirnya tetap ditetapkan dari uji coba tahap 4.
-10. **Tanpa nama di lembar**, rekaman suara hanya dengan izin terpisah, dan tidak ada data yang masuk sistem GELITA.
+10. **Tanpa nama di data uji ini.** Nama hanya ada di formulir izin dan di daftar nama–kode, yang disimpan terkunci oleh ketua peneliti, terpisah dari data. Rekaman suara hanya dengan izin terpisah, dan tidak ada data yang masuk sistem GELITA.
 
 ## Dasar yang sudah diputuskan
 
 | Keputusan | Sumber | Akibatnya di sini |
 | --- | --- | --- |
-| Uji keterbacaan dengan 3–5 anak kelas 5 di tahap 2, setelah izin etik terbit, sebagai bagian Prototipe I | [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja), daftar kerja no. 23; [04](04_CATATAN_KEPUTUSAN.md), 25 dan 27 Oktober 2026 | Jadwal dan jumlah anak |
+| Uji keterbacaan dengan anak kelas 5 di tahap 2, setelah izin etik terbit, sebagai bagian Prototipe I; empat anak, ditambah satu anak di putaran kedua (semula "3–5 anak") | [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja), daftar kerja no. 23; [04](04_CATATAN_KEPUTUSAN.md), 25 dan 27 Oktober 2026 | Jadwal dan jumlah anak |
+| Satu permohonan etik untuk lima kegiatan dengan anak, KG1–KG5; uji ini KG1. Bahan anak yang dilampirkan adalah versi yang dibekukan untuk validasi ahli, dan setiap revisi bahan anak diajukan ke komite sebagai amandemen protokol | [22 → Kegiatan yang dimintakan izin](22_PERMOHONAN_IZIN_ETIK.md#kegiatan-yang-dimintakan-izin), [22 → Perubahan protokol](22_PERMOHONAN_IZIN_ETIK.md#perubahan-protokol); [04](04_CATATAN_KEPUTUSAN.md), 27 Oktober 2026 | Revisi dari validasi ahli dan dari uji ini diajukan sebagai amandemen (lihat [Persiapan](#persiapan-sebelum-sesi-pertama) dan [Yang kembali ke ahli](#yang-kembali-ke-ahli)) |
+| Nama, formulir izin, dan daftar yang menghubungkan kode dengan nama disimpan sampai studi ditutup; data berkode 5 tahun setelah studi ditutup; rekaman sampai transkrip diperiksa; permintaan hapus diterima sampai studi ditutup | [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan); [04](04_CATATAN_KEPUTUSAN.md), 27 Oktober 2026 | [Pengelolaan data](#pengelolaan-data) |
+| Tanda terima kasih kecil yang sama, tanpa uang, dan tidak disebut hadiah; anak uji keterbacaan menerimanya setelah sesi terakhirnya | [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi); [04](04_CATATAN_KEPUTUSAN.md), 27 Oktober 2026 | [Jadwal empat sesi](#jadwal-empat-sesi) |
 | Satu uji gabungan untuk bank, tes, angket, dan skala sikap | [13](13_TES_AWAL_AKHIR.md#validasi-dan-uji-coba), [16](16_ANGKET_AKSES_DIGITAL.md#validasi-dan-uji-coba), [17](17_SKALA_SIKAP.md#tahap-2-uji-keterbacaan-dengan-anak) | Satu protokol, empat sesi per anak |
 | Modul tes baru ada di tahap 3, jadi butir tampil di mock-up layar modul (gambar atau halaman statis) di perangkat kelas | [13](13_TES_AWAL_AKHIR.md#validasi-dan-uji-coba), baris tahap 2 | Salinan layar statis dari [18](18_MOCKUP_LAYAR_BARU.md) |
 | Tes, angket, dan skala sikap tidak dibacakan; siswa membaca sendiri | [13](13_TES_AWAL_AKHIR.md#aturan-selama-tes), [16](16_ANGKET_AKSES_DIGITAL.md#cara-pelaksanaan) no. 4, [17](17_SKALA_SIKAP.md#tahap-2-uji-keterbacaan-dengan-anak) | Anak membaca sendiri dalam hati; pemandu tidak membacakan |
@@ -64,10 +67,10 @@ Untuk bacaan D1, anak boleh salah menjawab dan boleh belum memahami seluruh baca
 
 ### Jumlah
 
-Usulan **empat anak** (`K01`–`K04`). Paling sedikit tiga, paling banyak lima ([01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja)).
+**Empat anak** (`K01`–`K04`) di putaran pertama, **ditambah satu anak** (`K05`) di putaran kedua (keputusan pemilik proyek 27 Oktober 2026).
 - Dengan empat anak, setiap bentuk tes dan setiap blok bank dibaca tepat dua anak (lihat [pembagian](#bahan-dan-pembagiannya)).
-- Anak kelima (`K05`), kalau ada, tidak ditambahkan ke putaran pertama. K05 membaca **putaran kedua**: bahan yang sudah direvisi dari temuan K01–K04, supaya revisinya dicek ke anak sebelum dikirim kembali ke ahli.
-- Kalau hanya tiga anak yang bisa ikut, pembagiannya di [Kalau anaknya tiga](#kalau-anaknya-tiga).
+- Anak kelima (`K05`) tidak ditambahkan ke putaran pertama. K05 membaca **putaran kedua**: bahan yang sudah direvisi dari temuan K01–K04, supaya revisinya dicek ke anak sebelum dikirim kembali ke ahli.
+- Kalau izin yang kembali hanya cukup untuk tiga anak di putaran pertama, pembagiannya di [Kalau anaknya tiga](#kalau-anaknya-tiga). Ini cadangan kalau izin kurang, bukan rencana.
 
 ### Syarat
 
@@ -78,10 +81,10 @@ Usulan **empat anak** (`K01`–`K04`). Paling sedikit tiga, paling banyak lima (
 | Sekolahnya di wilayah Kedu (Temanggung, Magelang, atau Wonosobo) | Skala sikap dan bank memakai budaya Kedu, misalnya *merti desa* dan *kirab* di skp-12; anak dari luar Kedu bisa tersandung karena belum kenal, bukan karena kalimatnya |
 | Sudah bisa membaca sendiri kalimat sederhana | Uji ini memeriksa bahan yang dibaca sendiri; anak yang masih belajar membaca permulaan tidak bisa memberi informasi tentang kalimat |
 | Kemampuan membaca bercampur (lihat di bawah) | Bahan harus terbaca juga untuk pembaca yang kurang lancar |
-| Orang tua memberi izin tertulis dan anak setuju sendiri | [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md), [22](22_PERMOHONAN_IZIN_ETIK.md) |
+| Orang tua memberi izin tertulis dan anak setuju sendiri | [23 → T8](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t8-varian-uji-keterbacaan) (T8a surat, T8b formulir, T8c naskah anak), [22 → KG1](22_PERMOHONAN_IZIN_ETIK.md#kegiatan-yang-dimintakan-izin) |
 | Sebaiknya laki-laki dan perempuan, dan bahasa di rumah yang berbeda (misalnya bahasa Jawa dan bahasa Indonesia) | Kata dan contoh budaya bisa dipahami berbeda |
 
-Sekolah asal anak dipilih setelah daftar sekolah penelitian (daftar kerja no. 12) ada, supaya sekolah itu pasti tidak masuk sampel. Kalau sekolah asal anak ternyata dibutuhkan untuk sampel, kelas 5 di sekolah itu tetap boleh ikut, asalkan anak yang ikut uji keterbacaan tidak ikut sebagai peserta.
+Sekolah asal anak dipilih setelah daftar sekolah penelitian (daftar kerja no. 12) ada, supaya sekolah itu pasti tidak masuk sampel. **Sekolah asal anak tidak masuk sampel dan tidak menjadi sekolah uji coba, juga sesudah uji ini** (keputusan pemilik proyek 27 Oktober 2026). Kalau daftar sekolah penelitian berubah kemudian, sekolah asal anak tidak dipakai, dan sekolah lain yang dipilih.
 
 ### Campuran kemampuan membaca
 

@@ -11,7 +11,7 @@ Dokumen tahap 2 lain yang dirujuk:
 | `21_BERKAS_BUTIR_VALIDATOR.md` dan `dokumen-pdf/berkas-validator/` | Daftar butir buta B.5a, daftar B.5b, lembar kerja per lembar instrumen |
 | `22_PERMOHONAN_IZIN_ETIK.md` | Protokol dan permohonan izin etik; separuh etik gerbang G2 |
 | `23_SURAT_INFORMASI_DAN_PERSETUJUAN.md` | Surat informasi dan persetujuan orang tua, anak, sekolah, guru |
-| `24_UJI_KETERBACAAN.md` | Protokol uji keterbacaan dengan 3–5 anak kelas 5 |
+| `24_UJI_KETERBACAAN.md` | Protokol uji keterbacaan dengan empat anak kelas 5, ditambah satu anak di putaran kedua |
 
 Ketiga instrumen ada di [dokumen-pdf/](dokumen-pdf/README.md), sumbernya di `dokumen-pdf/src/*.html`. Di dokumen ini disingkat:
 
@@ -25,7 +25,9 @@ Nomor berkas di dokumen ini selalu nomor di tabel D.3 instrumennya, misalnya "IM
 
 ## Ringkasan
 
-**Apa paketnya.** Satu kiriman per validator: surat permohonan, instrumen yang sesuai panelnya, berkas bahan dari tabel D.3 instrumen itu, lembar kerja dari 21, dan akses ke instalasi uji. Ahli materi menerima paketnya dalam dua putaran kirim, karena pelabelan buta (B.5a) harus selesai sebelum label pengembang dibuka.
+**Apa paketnya.** Satu paket per validator: surat permohonan, instrumen yang sesuai panelnya, berkas bahan dari tabel D.3 instrumen itu, lembar kerja dari 21, dan akses ke instalasi uji. Ahli materi menerima paketnya dalam dua kiriman, karena pelabelan buta (B.5a) harus selesai sebelum label pengembang dibuka. Dua penilai B.5a menerima **paket B.5a saja** di kiriman awal; instrumen lengkap dan semua bahan lain baru dikirim setelah lembar B.5a mereka kembali.
+
+Di dokumen ini, **kiriman** berarti pengiriman bahan (kiriman awal, kiriman setelah B.5a, kiriman setelah B.6 media), sedangkan **putaran** hanya dipakai untuk putaran validasi: putaran 1 adalah penilaian pertama, putaran 2 penilaian ulang butir yang direvisi. 21 memakai istilah yang sama.
 
 **Siapa.** Sebelas validator, semuanya dengan nama samaran dari [03 → Peran](03_KODE_DAN_ARTI.md#peran):
 
@@ -35,7 +37,7 @@ Nomor berkas di dokumen ini selalu nomor di tabel D.3 instrumennya, misalnya "IM
 | Pengamat budaya (3) | Ahli Budaya Kedu 1, 2, 3 | IB |
 | Ahli media (3) | Ahli Media Pembelajaran 1, 2, 3 | IMd (langkah 1) |
 
-Dua dari lima ahli materi juga menjadi penilai B.5a. IM A.3 menyarankan satu ahli bahasa anak dan satu ahli literasi digital. Pemilik proyek menetapkan **Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1** (27 Oktober 2026, [Keputusan pemilik proyek](#keputusan-pemilik-proyek)).
+Dua dari lima ahli materi juga menjadi penilai B.5a. IM A.3 menyarankan satu ahli bahasa anak dan satu ahli literasi digital. Pemilik proyek menetapkan **Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1** (ABA1 dan ALD1; 27 Oktober 2026, [Keputusan pemilik proyek](#keputusan-pemilik-proyek)).
 
 **Kapan boleh dikirim.** Validator tidak bekerja dengan anak, jadi validasi tidak menunggu izin etik. Uji keterbacaan dengan anak (24) tetap menunggu izin etik. Paket baru boleh dikirim setelah semua prasyarat ini terpenuhi:
 
@@ -47,10 +49,11 @@ Dua dari lima ahli materi juga menjadi penilai B.5a. IM A.3 menyarankan satu ahl
 | 4 | Versi bahan dibekukan: tanggal dan *commit* `main` yang dinilai dicatat di 04, dan ditulis di surat pernyataan (D.1, "versi/tanggal") | IM A.4, IB A.4 | Belum |
 | 5 | Telaah pendahuluan bank soal selesai | IM A.4, [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md) | Selesai (R1–R4 disetujui) |
 | 6 | Cek fakta budaya oleh tim selesai dan tercatat di lembar B.7 IB | IB A.4, IB D.3 no. 9 | Belum diperiksa sesi ini |
-| 7 | Daftar butir buta B.5a, daftar B.5b, dan lembar kerja per lembar siap | IM D.3 no. 2, 5; IB D.3 no. 11; IMd D.3 no. 9; dibuat di 21 | Sedang ditulis (cabang `r10-berkas-validator`) |
+| 7 | Daftar butir buta B.5a, daftar B.5b, dan lembar kerja per lembar siap | IM D.3 no. 2, 5; IB D.3 no. 11; IMd D.3 no. 9; dibuat di 21 | Dibuat (`berkas-1.0`, [21](21_BERKAS_BUTIR_VALIDATOR.md)); dibuat ulang sekali lagi tepat sebelum kirim, dan versi berkasnya dicatat |
 | 8 | Instalasi uji siap, dengan akun uji validator | IM D.3 no. 12, IB D.3 no. 8, IMd D.3 no. 2–3; [Akses untuk validator](#akses-untuk-validator) | Belum |
 | 9 | Nama asli validator ditetapkan, kesediaannya didapat lisan atau lewat pesan, dan tercatat di daftar padanan di luar repo | [Pengembalian dan pencatatan](#pengembalian-dan-pencatatan) | Belum (pertanyaan terbuka di 01) |
 | 10 | Besaran honorarium dan sumber dananya diketahui ketua peneliti; di surat ditulis "sesuai ketentuan yang berlaku" | IM A.4, IB A.4; [Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 2 | Belum |
+| 11 | IM disesuaikan dengan urutan kirim di dokumen ini: pembuka B.5a menyebut ID butir netral, D.3 menyebut nama berkas dari 21 dan urutan kirim untuk dua penilai B.5a, tabel waktu A.4 memakai perkiraan B.7 yang baru | [21 → Akibat ke dokumen lain](21_BERKAS_BUTIR_VALIDATOR.md#akibat-ke-dokumen-lain), [Akibat ke dokumen lain](#akibat-ke-dokumen-lain) | Belum (PR koordinator) |
 
 Daftar kode sekolah (no. 12) **tidak** menahan paket ini ([04](04_CATATAN_KEPUTUSAN.md), 27 Oktober 2026). Yang tersentuh hanya IMd D.3 no. 7, dan berkas itu punya pengganti (daftar jenis perangkat).
 
