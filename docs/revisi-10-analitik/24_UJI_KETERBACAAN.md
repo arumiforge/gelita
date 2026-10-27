@@ -77,7 +77,7 @@ Untuk bacaan D1, anak boleh salah menjawab dan boleh belum memahami seluruh baca
 | Syarat | Alasan |
 | --- | --- |
 | Duduk di kelas 5 SD saat uji, usia 10–11 tahun | Sama dengan sasaran game dan tes |
-| **Bukan dari sekolah sampel dan bukan dari kelas uji coba** (sekolah berawalan `U` di [03](03_KODE_DAN_ARTI.md#peserta-sekolah-dan-sesi)) | Anak yang sudah membaca butir tidak boleh ikut pengambilan data atau uji coba, karena butir dan teks bisa diingat |
+| **Bukan dari sekolah sampel dan bukan dari sekolah uji coba** (sekolah berawalan `U` di [03](03_KODE_DAN_ARTI.md#peserta-sekolah-dan-sesi)) | Anak yang sudah membaca butir tidak boleh ikut pengambilan data atau uji coba, karena butir dan teks bisa diingat |
 | Sekolahnya di wilayah Kedu (Temanggung, Magelang, atau Wonosobo) | Skala sikap dan bank memakai budaya Kedu, misalnya *merti desa* dan *kirab* di skp-12; anak dari luar Kedu bisa tersandung karena belum kenal, bukan karena kalimatnya |
 | Sudah bisa membaca sendiri kalimat sederhana | Uji ini memeriksa bahan yang dibaca sendiri; anak yang masih belajar membaca permulaan tidak bisa memberi informasi tentang kalimat |
 | Kemampuan membaca bercampur (lihat di bawah) | Bahan harus terbaca juga untuk pembaca yang kurang lancar |
