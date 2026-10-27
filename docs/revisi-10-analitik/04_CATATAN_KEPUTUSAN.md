@@ -6,6 +6,21 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 27 Oktober 2026
 
+**Draf permohonan izin etik: [22_PERMOHONAN_IZIN_ETIK.md](22_PERMOHONAN_IZIN_ETIK.md)** (cabang `r10-izin-etik`, sesi paralel tahap 2; daftar kerja no. 15) · **Status: draf, menunggu keputusan pemilik proyek**
+
+Prototipe I: dokumen ini tidak merevisi bank, instrumen, atau mock-up; ia menjelaskan bagaimana Prototipe I sampai III dan data utama akan dijalankan dengan anak.
+
+1. **Yang ditulis.** Protokol lengkap untuk *Lembaga Komite Etik*: identitas dan tim (nama samaran dan tempat kosong), ringkasan, nilai sosial, tujuan, desain Plomp dengan Prototipe I–III, lima kegiatan dengan anak (K1 uji keterbacaan, K2 berpikir lantang, K3 uji coba satu kelas `U`, K4 wawancara retrospektif, K5 data utama ± 360 siswa, ± 13 kelas, target 300), peserta, rekrutmen, lapis persetujuan, prosedur per pertemuan dan beban anak (paling lama ± 10 jam dalam lima pertemuan, dari 06 dan 13), risiko dan mitigasi, prosedur rujukan butir risiko daring, manfaat, kerahasiaan dan pengelolaan data, kompensasi, konflik kepentingan, KTD, perubahan protokol, lampiran, dan pemetaan ke tujuh standar KEPPKN dan ke bagian formulir umum.
+2. **Pilihan yang dibuat saat menulis** (usulan, bisa diubah pemilik proyek):
+   - Penanda rujukan mengikuti keputusan 26 Oktober 2026: setiap anak yang menjawab *Pernah* di ang-21. Sapaan pribadi oleh ketua peneliti paling lambat hari sekolah berikutnya, didahulukan untuk *Beberapa kali atau lebih* atau yang tidak bercerita kepada siapa pun. Orang tua hanya dihubungi dengan persetujuan anak, kecuali ada bahaya serius. Penanda dan catatan rujukan di luar data penelitian, hanya terlihat ketua peneliti.
+   - Batas kerahasiaan disebut jujur di surat orang tua dan kalimat anak sebelum butir risiko (akibat ke 02, 16, dan 23).
+   - Penolakan anak didahulukan dari izin orang tua; persetujuan ulang singkat sebelum wawancara dan butir risiko; wawancara di tempat yang terlihat.
+   - Usulan satu pertemuan per hari; data penelitian disimpan 5 tahun sesuai `retention_days` bawaan sistem.
+   - Rujukan luar yang belum dicek ditandai `needs_verification`: rumusan dan versi pedoman KEPPKN, UU No. 27 Tahun 2022 (data anak, pemberitahuan kebocoran), layanan SAPA 129 dan UPTD PPA, batas waktu laporan KTD dan aturan amandemen komite.
+3. **Pertanyaan terbuka untuk pemilik proyek** (di 22, bagian *Pertanyaan untuk pemilik proyek*): kapan nama dan L7 dimusnahkan (usulan 12 bulan setelah P5 terakhir); apakah data per anak berkode dibagikan (usulan tidak); kompensasi (usulan tanda terima kasih sama untuk semua anak di kelas, tanpa uang); satu permohonan atau bertahap (usulan satu).
+
+Akibat ke dokumen lain (01, 02, 03, 16, 17, 23, 24) dicatat di 22, bagian *Akibat ke dokumen lain*, dan dibawa sesi koordinator setelah digabung.
+
 **Keputusan pemilik proyek: daftar kerja no. 12 dan 13, dan dimulainya dokumen tahap 2** (cabang `sky/inspiring-ritchie-nex4qi`, sesi koordinator)
 
 1. **Daftar kode sekolah penelitian (no. 12) belum diputuskan; tahap 2 tetap dimulai.** Kode `S01`, `S02`, … di semua dokumen tetap contoh, dan tempat kosongnya di 02 tetap ditandai. Daftar ini baru dibutuhkan sebelum sekolah direkrut dan L8 diisi, jadi tidak menahan dokumen validasi dan izin etik.
