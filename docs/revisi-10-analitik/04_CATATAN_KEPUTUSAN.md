@@ -6,7 +6,7 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 27 Oktober 2026
 
-**Berkas butir untuk validator: draf 21 dan skrip pembuatnya** (cabang `r10-berkas-validator`, sesi paralel tahap 2; Prototipe I, belum merevisi produk) · **Status: draf, menunggu keputusan pemilik proyek**
+**Berkas butir untuk validator: draf 21 dan skrip pembuatnya** (cabang `r10-berkas-validator`, sesi paralel tahap 2; Prototipe I, belum merevisi produk) · **Status: draf; keputusan pemilik proyek diambil 27 Oktober 2026**
 
 1. **Yang ditulis.** [21_BERKAS_BUTIR_VALIDATOR.md](21_BERKAS_BUTIR_VALIDATOR.md) dan skrip `dokumen-pdf/src/berkas-validator.php`. Skrip membaca 03, 08, 14–18 dan tabel ketiga instrumen (tanpa mengubahnya), lalu menulis berkas di `dokumen-pdf/berkas-validator/`:
    - daftar buta B.5a (lembar kerja dan buklet PDF) dan kuncinya di `khusus-peneliti/`;
@@ -29,11 +29,13 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
    - B.7 lebih panjang dari perkiraan 2–3 jam;
    - nama topik B.6 dan nama benda B.6b berbeda kata dengan 08;
    - lembar kerja B.3–B.7 ahli media belum dibuat.
-4. **Pertanyaan terbuka** (empat, di 21):
-   - ID netral atau kode asli;
-   - urutan kirim ke dua penilai B.5a;
-   - kunci di daftar buta;
-   - cakupan B.7.
+4. **Keputusan pemilik proyek (27 Oktober 2026), keempatnya pilihan yang disarankan:**
+   - daftar B.5a memakai ID netral yang diacak, dengan berkas kunci khusus peneliti;
+   - dua penilai B.5a menerima paket B.5a saja dulu; instrumen lengkap, bank berkode, kisi-kisi, B.5b, dan lembar B.6–B.9 dikirim setelah B.5a kembali;
+   - kunci jawaban dicantumkan di daftar buta;
+   - B.7 mencakup semua 622 sel, dan perkiraan waktunya dinaikkan.
+
+   Berkas sudah memakai pilihan ini, jadi tidak dibuat ulang. Urutan kirim dan waktu B.7 masuk ke 20 dan instrumen ahli materi lewat sesi koordinator.
 
 Akibatnya: 00 (baris 21), `dokumen-pdf/README.md` (tabel *Isi* dan bagian *Membuat ulang berkas validator*), dan `docs/PROGRESS.md` diperbarui. Perubahan untuk 01, 03, 08, 13, 15, 20, dan ketiga instrumen dicatat di 21 → *Akibat ke dokumen lain* untuk sesi koordinator.
 
