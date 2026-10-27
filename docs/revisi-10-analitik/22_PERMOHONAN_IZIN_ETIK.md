@@ -97,10 +97,10 @@ Urutan formulir protokol biasanya mirip, meski nomornya berbeda-beda (`needs_ver
 
 | Peran | Tugas yang menyentuh anak atau data | Akun sistem ([03 → Akun staf](03_KODE_DAN_ARTI.md#akun-staf)) | Orangnya |
 | --- | --- | --- | --- |
-| Ketua peneliti | Penanggung jawab protokol; satu-satunya yang boleh menghubungkan kode peserta dengan nama untuk rujukan dan permintaan hapus; menerima laporan KTD | `ketua` (usulan) | `[nama ketua peneliti]` |
+| Ketua peneliti | Penanggung jawab protokol; satu-satunya yang boleh menghubungkan kode peserta dengan nama untuk rujukan dan permintaan hapus; menerima laporan KTD | `ketua` | `[nama ketua peneliti]` |
 | P1 Koordinator sesi | Membuka sesi, memberi arahan, membantu teknis saja, mengisi L0, L1, L2, L7; memegang L7 | `koordinator` | `[nama P1]` |
-| P2 Pengamat keterlibatan | Mengamati bergiliran (L4) | `pengamat` (usulan) | `[nama P2]` |
-| P3 Pengamat bantuan dan pewawancara | Mencatat bantuan dan gangguan (L3), wawancara singkat dan berpikir lantang (L5) | `pewawancara` (usulan) | `[nama P3]` |
+| P2 Pengamat keterlibatan | Mengamati bergiliran (L4) | `pengamat` | `[nama P2]` |
+| P3 Pengamat bantuan dan pewawancara | Mencatat bantuan dan gangguan (L3), wawancara singkat dan berpikir lantang (L5) | `pewawancara` | `[nama P3]` |
 | Admin sistem | Mengelola akun dan identitas; tidak mengunduh data penelitian; menjalankan permintaan hapus | `admin` | `[nama admin]` |
 
 Satu orang boleh memegang dua peran, tetapi lewat dua akun terpisah ([01 → Admin dan peneliti](01_REVISI_10_ANALITIK.md#admin-dan-peneliti-dua-peran-berbeda)). Siapa memegang akun mana dicatat ketua peneliti di luar repo (keputusan 27 Oktober 2026, [04](04_CATATAN_KEPUTUSAN.md)).
@@ -431,7 +431,7 @@ Tidak dikumpulkan: foto, video, lokasi, nomor HP anak, data penghasilan, pekerja
   - peneliti tidak pernah melihat nama atau nama pengguna anak di sistem;
   - admin tidak mengunduh data penelitian;
   - satu orang dengan dua peran memakai dua akun.
-- **Akun staf memakai nama samaran per peran**: `admin`, `koordinator` (P1), dan usulan `pengamat`, `pewawancara`, `ketua` ([03 → Akun staf](03_KODE_DAN_ARTI.md#akun-staf)). Siapa pemegangnya dicatat ketua peneliti di luar repo.
+- **Akun staf memakai nama samaran per peran**: `admin`, `koordinator` (P1), `pengamat` (P2), `pewawancara` (P3), dan `ketua` (ketua peneliti), dikukuhkan pemilik proyek 27 Oktober 2026 ([03 → Akun staf](03_KODE_DAN_ARTI.md#akun-staf)). Siapa pemegangnya dicatat ketua peneliti di luar repo.
 - **Peran `guru` dihapus**, jadi guru tidak punya akses ke data anak.
 
 ### Di mana nama berada
@@ -528,7 +528,8 @@ Diputuskan pemilik proyek 27 Oktober 2026 ([Keputusan pemilik proyek](#keputusan
 
 ## Perubahan protokol
 
-- Instrumen akan direvisi setelah validasi ahli dan uji keterbacaan (Prototipe I) dan setelah uji coba (Prototipe III). **Revisi kecil** (kata, urutan butir, gambar, butir dibuang) dicatat di 04 dengan prototipe yang direvisi dan dilaporkan ke komite di laporan berkala. Usulan ini perlu dicek dengan aturan komite (`needs_verification`).
+- Instrumen dan bahan untuk anak yang dilampirkan adalah **versi yang dibekukan untuk validasi ahli** ([20_PAKET_VALIDASI.md](20_PAKET_VALIDASI.md)). Bahan ini akan direvisi setelah validasi ahli dan uji keterbacaan (Prototipe I) dan setelah uji coba (Prototipe III).
+- **Setiap revisi yang mengubah bahan yang dilihat atau dikerjakan anak** (butir, teks, pilihan, gambar, layar, petunjuk, urutan, atau butir dibuang) diajukan ke *Lembaga Komite Etik* sebagai **amandemen protokol**, dengan daftar perubahan dan versi barunya, dan dicatat di 04 dengan prototipe yang direvisi. Revisi yang tidak menyentuh bahan anak (misalnya kunci, label dimensi, atau kode kesalahan) dilaporkan di laporan berkala. Apakah komite menerima amandemen sekaligus per gelombang revisi dicek dengan aturan komite (`needs_verification`).
 - **Amandemen yang diajukan dan menunggu persetujuan sebelum dipakai:**
   - kegiatan baru dengan anak;
   - butir baru yang menanyakan pengalaman pribadi atau hal sensitif;
@@ -557,7 +558,7 @@ Diputuskan pemilik proyek 27 Oktober 2026 ([Keputusan pemilik proyek](#keputusan
 | 11 | Surat izin penelitian dari institusi dan surat kesediaan sekolah | `[diisi pemilik proyek]` | — |
 | 12 | CV dan sertifikat pelatihan etik tim, pernyataan kerahasiaan | `[diisi pemilik proyek]` | — |
 
-Lampiran 3–6 diserahkan dalam versi terbaru saat pengajuan. Kalau validasi ahli belum selesai saat itu, komite diberi tahu bahwa versi yang dipakai di lapangan adalah versi setelah validasi, dan perubahannya dilaporkan sesuai [Perubahan protokol](#perubahan-protokol). Kunci jawaban tes dan bank boleh dilampirkan terpisah kalau komite memintanya.
+Lampiran 3–8 diserahkan dalam versi yang dibekukan untuk validasi ahli ([20_PAKET_VALIDASI.md](20_PAKET_VALIDASI.md)). Komite diberi tahu bahwa versi yang dipakai di lapangan adalah versi setelah validasi, dan setiap revisi yang mengubah bahan anak diajukan sebagai amandemen sesuai [Perubahan protokol](#perubahan-protokol). Kunci jawaban tes dan bank boleh dilampirkan terpisah kalau komite memintanya.
 
 ## Keputusan pemilik proyek
 
