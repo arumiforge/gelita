@@ -6,6 +6,21 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 27 Oktober 2026
 
+**Draf paket validasi ahli: [20_PAKET_VALIDASI.md](20_PAKET_VALIDASI.md)** (cabang `r10-paket-validasi`, sesi paralel tahap 2; daftar kerja no. 3 dan 14) · Prototipe I · Status: draf, menunggu keputusan pemilik proyek
+
+Yang ditulis: prasyarat kirim, tabel siapa menerima apa per nama samaran (lembar dari matriks penugasan, nomor berkas dari D.3 ketiga instrumen, perkiraan jam, putaran kirim), jadwal relatif dua belas minggu dengan usulan tanggal mulai 9 November 2026, tiga surat permohonan, surat lanjutan setelah B.5a, pengingat dan surat putaran 2, usulan akun siswa uji validator, cara pengembalian dan pencatatan, templat matriks revisi induk, aturan kapan butir kembali ke validator, cara mencatat revisi di 04, dan daftar periksa validasi untuk G2.
+
+Pilihan yang diambil saat menulis (semua bisa diubah pemilik proyek):
+
+1. **Penilai B.5a dalam draf: Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1**, mengikuti saran IM A.3. Ditanyakan ke pemilik proyek.
+2. **Label pengembang dan kisi-kisi ditahan untuk kelima ahli materi** sampai B.5a dikumpulkan, bukan hanya untuk dua penilainya, sesuai IM D.3 no. 4–6 dan supaya tidak ada salinan berlabel di panel. Lembar yang sudah selesai di putaran awal diminta tidak diubah setelah label dibuka.
+3. **Akun validator adalah akun siswa uji**, bukan akun staf: `uji.bahasa1`–`2`, `uji.digital1`–`2`, `uji.ukur`, `uji.budaya1`–`3`, `uji.media1`–`3`, dan dua cadangan, dibuat `admin`. Titik dipakai karena aturan nama pengguna siswa tidak mengizinkan tanda hubung.
+4. **Daftar padanan nama samaran ↔ nama asli dan surat pernyataan disimpan di luar repo**, dipegang ketua peneliti; lembar kertas diketik dua kali oleh dua orang, lembar kerja digital dicek 10% baris acak.
+5. **Satu matriks revisi induk** untuk ketiga instrumen; D.2 tiap instrumen adalah potongannya untuk putaran 2. Matriks induk menjadi dokumen baru saat hasil pertama kembali.
+6. **Media langkah 2 belum punya instrumen**; disusun di tahap 3 untuk G3.
+
+Pertanyaan untuk pemilik proyek (di 20): dua penilai B.5a, cara menulis honorarium, kirim digital atau kertas, dan apakah ahli media langkah 1 menunggu L8. Perubahan yang dibutuhkan di 01, 03, 07, README `dokumen-pdf/`, 22, dan 24 ada di bagian *Akibat ke dokumen lain* di 20, dibawa sesi koordinator setelah digabung. Entri ini tidak merevisi isi prototipe; ia menyiapkan validasi Prototipe I.
+
 **Keputusan pemilik proyek: daftar kerja no. 12 dan 13, dan dimulainya dokumen tahap 2** (cabang `sky/inspiring-ritchie-nex4qi`, sesi koordinator)
 
 1. **Daftar kode sekolah penelitian (no. 12) belum diputuskan; tahap 2 tetap dimulai.** Kode `S01`, `S02`, … di semua dokumen tetap contoh, dan tempat kosongnya di 02 tetap ditandai. Daftar ini baru dibutuhkan sebelum sekolah direkrut dan L8 diisi, jadi tidak menahan dokumen validasi dan izin etik.
