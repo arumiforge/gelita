@@ -43,8 +43,8 @@ Dua dari lima ahli materi juga menjadi penilai B.5a. IM A.3 menyarankan satu ahl
 
 | No | Prasyarat | Sumber | Status per 27 Oktober 2026 |
 | --- | --- | --- | --- |
-| 1 | Pemilik proyek menyetujui ketiga instrumen | [dokumen-pdf/README.md → Sebelum dikirim ke validator](dokumen-pdf/README.md#sebelum-dikirim-ke-validator), [00](00_INDEKS.md) | Belum |
-| 2 | Kotak *STATUS* di sampul HTML dihapus, PDF dibuat ulang; lampiran D.4 tidak dicetak untuk validator | README yang sama, langkah 2–3 | Belum |
+| 1 | Pemilik proyek menyetujui ketiga instrumen | [dokumen-pdf/README.md → Sebelum dikirim ke validator](dokumen-pdf/README.md#sebelum-dikirim-ke-validator), [00](00_INDEKS.md) | Sudah (27 Oktober 2026) |
+| 2 | Kotak *STATUS* di sampul HTML dihapus, PDF dibuat ulang; lampiran D.4 tidak dicetak untuk validator | README yang sama, langkah 2–3 | Sudah (27 Oktober 2026) |
 | 3 | Dokumen bahan yang dinilai sudah disetujui pemilik proyek (keputusan diambil): 08, 12–18, kamus-1.0 di 11 | IM A.4 "Prasyarat", [00 → Tahap dokumen 1](00_INDEKS.md#tahap-dokumen-yang-tersisa-sebelum-implementasi) | Keputusan sudah diambil; 13–17 berstatus draf menunggu validasi, dan memang itu yang divalidasi |
 | 4 | Versi bahan dibekukan: tanggal dan *commit* `main` yang dinilai dicatat di 04, dan ditulis di surat pernyataan (D.1, "versi/tanggal") | IM A.4, IB A.4 | Belum |
 | 5 | Telaah pendahuluan bank soal selesai | IM A.4, [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md) | Selesai (R1–R4 disetujui) |

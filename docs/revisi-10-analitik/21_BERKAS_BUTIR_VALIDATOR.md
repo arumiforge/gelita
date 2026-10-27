@@ -108,7 +108,7 @@ php docs/revisi-10-analitik/dokumen-pdf/src/berkas-validator.php --no-pdf   # ta
 
 ## Hasil pemeriksaan
 
-Rincian lengkap ada di [`LAPORAN.md`](dokumen-pdf/berkas-validator/LAPORAN.md), yang ditulis ulang setiap kali skrip dijalankan. Per 27 Oktober 2026 (`berkas-1.0 · sumber 733b9955`, dibuat ulang setelah level pengembang butir tes D2 dan D3 ditetapkan), 69 dari 69 pemeriksaan lolos.
+Rincian lengkap ada di [`LAPORAN.md`](dokumen-pdf/berkas-validator/LAPORAN.md), yang ditulis ulang setiap kali skrip dijalankan. Per 27 Oktober 2026 (`berkas-1.0 · sumber eb36aa06`, dibuat ulang setelah level pengembang butir tes D2 dan D3 ditetapkan), 69 dari 69 pemeriksaan lolos.
 
 | Kelompok | Yang dicek | Hasil |
 | --- | --- | --- |

@@ -23,7 +23,7 @@ Dokumen lain dibaca per bagian sesuai tugas.
 | [04](04_CATATAN_KEPUTUSAN.md) | Riwayat keputusan, terbaru di atas | Aktif | Selalu, entri teratas | 37 KB |
 | [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) | Telaah butir bank lama terhadap dimensi | Selesai; keputusannya masuk 06 | Hanya untuk menelusuri alasan | 39 KB |
 | [06](06_KISI_KISI_BANK_SOAL.md) | Kisi-kisi bank soal baru, buklet, jangkar, waktu bermain | Disetujui 25 Oktober 2026 | Per bagian, saat menulis butir, tes, atau dokumen implementasi | 42 KB |
-| [07](07_TELAAH_INSTRUMEN_VALIDASI.md) | Telaah instrumen validasi ahli; lembar penilaian skala sikap B.8; ringkasan instrumen v2.1 dan v1.1 dan bedanya dari usulan telaah | Diterima; instrumen ahli materi v2.1, pengamat budaya v2.1, dan ahli media v1.1 ditulis 26 Oktober 2026 di `dokumen-pdf/`, menunggu persetujuan pemilik proyek | Saat menyusun paket validasi atau mengubah instrumen | 33 KB |
+| [07](07_TELAAH_INSTRUMEN_VALIDASI.md) | Telaah instrumen validasi ahli; lembar penilaian skala sikap B.8; ringkasan instrumen v2.1 dan v1.1 dan bedanya dari usulan telaah | Diterima; instrumen ahli materi v2.1, pengamat budaya v2.1, dan ahli media v1.1 ditulis 26 Oktober 2026 di `dokumen-pdf/`, disetujui pemilik proyek 27 Oktober 2026 | Saat menyusun paket validasi atau mengubah instrumen | 33 KB |
 | [08](08_DRAF_BANK_SOAL.md) | Draf bank soal baru: 116 butir variasi a/b, 6 jangkar, 12 PBK; pemeriksaan kebocoran keterangan Susun Gambar | Draf, `needs_verification`; variasi Susun Gambar diputuskan 26 Oktober 2026 (gambar baru Wayang Kedu dan Candi Pawon menyusul) | Cari per kode butir (misalnya `wnb-3-a02`) atau judul bagian | 95 KB |
 | [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md) | Telaah pendahuluan T6 atas draf 08 | Selesai; R1–R4 disetujui | Saat menyiapkan paket validasi | 20 KB |
 | [10](10_TELAAH_PENDAHULUAN_MEDIA.md) | Telaah pendahuluan media | Selesai; keputusan masuk 01 | Saat menyiapkan mock-up dan instrumen media | 18 KB |
@@ -42,7 +42,7 @@ Dokumen lain dibaca per bagian sesuai tugas.
 | [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) | Surat informasi dan persetujuan T1–T13: surat dan formulir orang tua (centang terpisah rekaman suara dan butir risiko daring), naskah persetujuan anak dan usulan teks centang daftar, surat kepala sekolah dengan data L8, lembar guru kelas, varian uji keterbacaan dan kelas uji coba, formulir pengunduran diri dan hapus data, layar sebelum butir risiko, pesan dukungan, selebaran tempat bercerita, tabel pembagian | Draf (27 Oktober 2026); empat keputusan pemilik proyek diambil 27 Oktober 2026 ([23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#keputusan-pemilik-proyek)) | Saat menyiapkan izin etik, L7, atau rekrutmen sekolah | 84 KB |
 | [24](24_UJI_KETERBACAAN.md) | Protokol uji keterbacaan dengan empat anak kelas 5 ditambah satu di putaran kedua: peserta, pembagian bahan, langkah per anak, lembar LK1–LK3 dan kode `KB-*`, aturan revisi, waktu, pengelolaan data | Draf; keputusan pemilik proyek 27 Oktober 2026 (empat anak ditambah satu, inti dan blok bank, sekolah Kedu di luar sampel, butir risiko daring diparafrasekan saja), diselaraskan dengan 22 dan 23 | Saat menyiapkan uji keterbacaan, izin etik, atau matriks revisi | 68 KB |
 | `gambar/` | Peta bukti, lapis data, peta jalan, buklet, tangkapan layar telaah media, mock-up layar baru (`gambar/mockup/`, sumber HTML di `src/`) | Rujukan | Saat dokumen yang memakainya diubah | — |
-| [dokumen-pdf/](dokumen-pdf/README.md) | Dokumen PDF penting: tiga instrumen validasi ahli (ahli materi v2.1, pengamat budaya v2.1, ahli media v1.1), sumber HTML dan skrip pembuatnya di `src/`, dan draf asli pemilik proyek di `arsip/`; lembar kerja validator di `berkas-validator/` ([21](21_BERKAS_BUTIR_VALIDATOR.md)) | Draf, menunggu persetujuan pemilik proyek (26 Oktober 2026; diselaraskan dengan paket validasi 27 Oktober 2026) | Saat menyusun paket validasi; PDF dibuat ulang dari HTML | 3,3 MB |
+| [dokumen-pdf/](dokumen-pdf/README.md) | Dokumen PDF penting: tiga instrumen validasi ahli (ahli materi v2.1, pengamat budaya v2.1, ahli media v1.1), sumber HTML dan skrip pembuatnya di `src/`, dan draf asli pemilik proyek di `arsip/`; lembar kerja validator di `berkas-validator/` ([21](21_BERKAS_BUTIR_VALIDATOR.md)) | Disetujui pemilik proyek 27 Oktober 2026 (setelah diselaraskan dengan paket validasi) | Saat menyusun paket validasi; PDF dibuat ulang dari HTML | 3,3 MB |
 | [dokumen-pendukung-peneliti/](dokumen-pendukung-peneliti/README.md) | Bacaan untuk peneliti dan tim, **bukan dokumen implementasi**: model penelitian dan pengembangan (PDF), dengan rujukan yang dicek ke sumber asli | Rujukan; model Plomp dan aturan I-CVI Lynn diputuskan 26 Oktober 2026 | Saat menulis Bab III atau bagian metodologi; tidak dibaca untuk implementasi | 390 KB (PDF dan sumbernya) |
 
 ## Tahap dokumen yang tersisa sebelum implementasi
@@ -60,7 +60,7 @@ Urutan kerja mengikuti peta jalan di 01, yang dikukuhkan pemilik proyek pada 25 
 | [19_TELAAH_LABEL_BLOOM.md](19_TELAAH_LABEL_BLOOM.md): telaah label Bloom | no. 4 | Claude (telaah), pemilik proyek | Selesai (26 Oktober 2026); 08 dan 06 diperbarui |
 | [18_MOCKUP_LAYAR_BARU.md](18_MOCKUP_LAYAR_BARU.md): mock-up layar baru untuk ahli media langkah 1 (27 gambar di `gambar/mockup/`) | no. 20 | Claude (draf), pemilik proyek | Selesai (disetujui 26 Oktober 2026; gambar skala sikap dari 17) |
 | [02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md): lembar L0–L7 final (L8 Profil sekolah menyusul sebagai draf) | no. 11 | Claude (draf), pemilik proyek | Selesai (disetujui 26 Oktober 2026) |
-| Instrumen validasi ahli materi v2.1, pengamat budaya v2.1, dan ahli media v1.1 ([dokumen-pdf/](dokumen-pdf/README.md)) | [07](07_TELAAH_INSTRUMEN_VALIDASI.md#instrumen-versi-21-dan-11) | Claude (draf), pemilik proyek | Draf selesai 26 Oktober 2026; menunggu persetujuan pemilik proyek |
+| Instrumen validasi ahli materi v2.1, pengamat budaya v2.1, dan ahli media v1.1 ([dokumen-pdf/](dokumen-pdf/README.md)) | [07](07_TELAAH_INSTRUMEN_VALIDASI.md#instrumen-versi-21-dan-11) | Claude (draf), pemilik proyek | Selesai (disetujui 27 Oktober 2026) |
 
 Gerbang G1: konstruk disetujui, dan semua dokumen tahap 1 selesai dan disetujui pemilik proyek.
 
@@ -79,6 +79,13 @@ Dimulai 27 Oktober 2026 atas permintaan pemilik proyek, ditulis paralel di lima 
 | [24_UJI_KETERBACAAN.md](24_UJI_KETERBACAAN.md): protokol uji keterbacaan dengan anak | no. 23 | `r10-uji-keterbacaan` | Claude (draf), pemilik proyek | Draf; keputusan pemilik proyek diambil 27 Oktober 2026 ([24](24_UJI_KETERBACAAN.md#keputusan-pemilik-proyek)) |
 
 Setiap sesi hanya mengubah dokumennya sendiri, barisnya sendiri di berkas ini dan di `docs/PROGRESS.md`, dan entrinya sendiri di 04. Perubahan yang dibutuhkan di dokumen lain dicatat di bagian *Akibat ke dokumen lain* dokumen itu dan dibawa sesi koordinator setelah digabung ke `main`.
+
+**Langkah berikutnya di tahap 2** (per 27 Oktober 2026; kelima dokumen tahap 2 dan ketiga instrumen sudah disetujui):
+
+1. **Paket validasi:** penuhi prasyarat yang tersisa di [20 → Ringkasan](20_PAKET_VALIDASI.md#ringkasan) (bekukan versi bahan dan catat *commit*-nya di 04, cek fakta budaya, instalasi uji dan akun `uji.*`, nama asli dan kesediaan validator, honorarium), buat ulang berkas validator ([21](21_BERKAS_BUTIR_VALIDATOR.md)), lalu kirim sesuai urutan di 20.
+2. **Izin etik:** sesuaikan [22](22_PERMOHONAN_IZIN_ETIK.md) dan [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) dengan formulir *Lembaga Komite Etik* yang sebenarnya, cek rujukan bertanda `needs_verification`, lalu ajukan pada minggu kedua–keempat November 2026.
+3. **Gerbang G1:** tinggal daftar kode sekolah (daftar kerja no. 12), yang ditunda pemilik proyek dan tidak menahan validasi maupun izin etik.
+4. **Setelah hasil validasi kembali:** matriks revisi induk (20), revisi Prototipe I, lalu uji keterbacaan ([24](24_UJI_KETERBACAAN.md)) setelah izin etik terbit.
 
 **Tahap dokumen 3: dokumen implementasi (tahap 3, setelah gerbang G2)**
 
