@@ -240,7 +240,7 @@ L5 menguji apakah kode kesalahan dan pilihan alasan cocok dengan cara anak berpi
 
 **Persiapan:** P3 membuka data jawaban siswa itu di panel peneliti (dengan kode peserta, tanpa nama), lalu memilih 3 butir dari wilayah pertemuan itu: 2 yang salah di percobaan pertama dan 1 skenario dari Skenario Digital. Rekaman suara hanya dibuat kalau L7 mencatat izin rekaman.
 
-**Tempat dan persetujuan ulang:** wawancara di tempat yang terlihat guru atau peneliti lain, tidak di ruang tertutup berdua. Sebelum mulai, P3 membacakan naskah singkat [23 → T5](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t5-pengingat-di-awal-p2p5-dan-sebelum-wawancara-l5) (berpikir lantang: [23 → T9](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t9-varian-kelas-uji-coba)). Kalau anak tidak mau direkam, tidak direkam, walaupun orang tuanya mengizinkan; kalau anak tidak mau diwawancarai, P3 memilih siswa lain dari kelompok yang sama.
+**Tempat dan persetujuan ulang:** wawancara di tempat yang terlihat guru atau peneliti lain, tidak di ruang tertutup berdua, tetapi tidak terdengar guru atau teman, supaya anak leluasa menjawab ([22 → Prosedur per pertemuan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-per-pertemuan-dan-beban-bagi-anak); panduan klirens etik BRIN butir 3.1). Sebelum mulai, P3 membacakan naskah singkat [23 → T5](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t5-pengingat-di-awal-p2p5-dan-sebelum-wawancara-l5) (berpikir lantang: [23 → T9](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t9-varian-kelas-uji-coba)). Kalau anak tidak mau direkam, tidak direkam, walaupun orang tuanya mengizinkan; kalau anak tidak mau diwawancarai, P3 memilih siswa lain dari kelompok yang sama.
 
 **Pertanyaan (dibaca apa adanya, dengan nada netral):**
 
@@ -324,6 +324,7 @@ L7 menentukan data siapa yang boleh dianalisis (`consent_ok`). Ini satu-satunya 
 - kontak komite etik untuk keluhan;
 - **batas pengamanan daring**: cara data dijaga, bahwa tidak ada sistem daring yang sepenuhnya bebas risiko kebocoran, dan bahwa orang tua diberi tahu kalau data anaknya terdampak (23 → T1 bagian 3; PSEPPKN 2021 Lampiran 2 huruf i, keputusan pemilik proyek 27 Oktober 2026);
 - **dari PP No. 33 Tahun 2026** (keputusan pemilik proyek 27 Oktober 2026, [22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum)): siapa pengendali data dan kontak urusan data, bahwa dasar pengolahan data adalah persetujuan orang tua, penyedia server dan letaknya di Indonesia, pemberitahuan kebocoran paling lambat 3 × 24 jam, hak melihat, meminta salinan, dan membetulkan data anak, dan hak mengadu ke lembaga pelindungan data pribadi (23 → T1 bagian 3 dan 6);
+- **dari panduan klirens etik BRIN** (keputusan pemilik proyek 27 Oktober 2026, [22 → Pemetaan ke formulir klirens etik BRIN](22_PERMOHONAN_IZIN_ETIK.md#pemetaan-ke-formulir-klirens-etik-brin)): judul penelitian, alamat komite etik, dan masa simpan data berkode tanpa nama paling singkat 20 tahun karena diwajibkan undang-undang (23 → T1 bagian 3 dan 8);
 - kontak peneliti dan nomor persetujuan etik (**menunggu persetujuan *Lembaga Komite Etik***).
 
 **Cara mengisi**
@@ -405,5 +406,5 @@ Dibandingkan draf 23 Oktober 2026 (yang sebagian diselaraskan 26 Oktober 2026):
 27 Oktober 2026, dari dokumen tahap 2 ([22](22_PERMOHONAN_IZIN_ETIK.md), [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md)) dan keputusan pemilik proyek di [04](04_CATATAN_KEPUTUSAN.md):
 
 - **L0:** amplop formulir izin dan pengingat H-5 sebelum P1; tautan ke prosedur rujukan di 22.
-- **L5:** tempat yang terlihat, persetujuan ulang singkat sebelum wawancara, dan penolakan rekaman oleh anak didahulukan dari izin orang tua.
-- **L7:** tautan ke teks surat di 23; butir surat baru (tanpa foto dan video, batas kerahasiaan, berbagi data berkode atas persetujuan komite, kontak komite, batas hapus sampai studi ditutup); dua status mundur, `data tetap` dan `hapus data`; `consent_ok` untuk `data tetap` mulai `kamus-1.1`; pemusnahan lembar saat studi ditutup.
+- **L5:** tempat yang terlihat, persetujuan ulang singkat sebelum wawancara, dan penolakan rekaman oleh anak didahulukan dari izin orang tua. Setelah perbandingan dengan panduan klirens etik BRIN (sesi koordinator, 27 Oktober 2026): tempat itu juga tidak terdengar guru atau teman.
+- **L7:** tautan ke teks surat di 23; butir surat baru (tanpa foto dan video, batas kerahasiaan, berbagi data berkode atas persetujuan komite, kontak komite, batas hapus sampai studi ditutup); dua status mundur, `data tetap` dan `hapus data`; `consent_ok` untuk `data tetap` mulai `kamus-1.1`; pemusnahan lembar saat studi ditutup. Setelah perbandingan dengan panduan klirens etik BRIN (sesi koordinator, 27 Oktober 2026): butir surat judul penelitian, alamat komite, dan masa simpan data berkode paling singkat 20 tahun.
