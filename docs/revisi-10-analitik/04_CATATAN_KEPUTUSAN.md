@@ -6,6 +6,22 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 27 Oktober 2026
 
+**Keputusan pemilik proyek atas lima hal yang tersisa dari penyelarasan, dan pembaruan instrumen** (cabang `sky/inspiring-ritchie-nex4qi`, sesi koordinator, PR #268) · Prototipe I, belum merevisi produk
+
+Keputusan pemilik proyek (27 Oktober 2026):
+
+1. **Perkiraan waktu B.7 3–5 jam** (622 sel kode) disetujui.
+2. **T1 tidak diuji baca oleh orang tua** di luar sampel sebelum permohonan etik dikirim.
+3. **Pesan dukungan (23 → T12) untuk semua siswa di P5**, juga yang tanpa izin butir risiko daring, di titik yang sama.
+4. **Selebaran tempat bercerita (23 → T13) dibagikan kepada semua anak di kelas di akhir P5**, bersama tanda terima kasih.
+5. **Pengodean buta B.7 oleh Ahli Literasi Digital 2 diterima apa adanya**: bank berkode tetap ada di kiriman awalnya, jadi versi buta B.7 tidak sepenuhnya buta bagi validator itu. Kiriman tidak diubah.
+
+Akibatnya: 16, 20, 22, 23, 24, dan 01 (perubahan sistem no. 23) diperbarui.
+
+Pembaruan instrumen (atas permintaan pemilik proyek, dari *Akibat ke dokumen lain* di 20 dan 21): instrumen ahli materi v2.1 (A.3 dan A.4: penilai B.5a, paket B.5a lebih dulu, pengarahan B.5a ± 15 menit, B.7 3–5 jam; B.5a: ID butir dan ID bahan netral yang diacak; D.3: nama berkas lembar kerja dan urutan kirim), pengamat budaya v2.1 (D.3 no. 11), dan ahli media v1.1 (D.3 no. 9: lembar kerja hanya B.8). Ketiganya memakai kalimat honorarium "sesuai ketentuan yang berlaku" dan menyebut uji keterbacaan empat anak ditambah satu. Nama topik B.6 dan benda sasaran B.6b di instrumen dipertahankan karena isinya sama dengan 08 (pilihan sesi koordinator; dicatat di D.4 pengamat budaya). Perubahan dicatat di D.4 setiap instrumen, PDF dibuat ulang (ahli materi kini 43 halaman), dan lembar kerja validator dibuat ulang (68 pemeriksaan lolos). Status ketiga instrumen tetap draf, menunggu persetujuan pemilik proyek.
+
+Masih terbuka: satu level pengembang untuk setiap butir tes D2 dan D3 di 13 dan 15 (sekarang rentang L1–L2 atau L2–L3), yang dibutuhkan analisis C.4 ahli materi.
+
 **Penyelarasan dokumen tahap 2 (20–24) dan keputusan pemilik proyek** (cabang `sky/inspiring-ritchie-nex4qi`, sesi koordinator, PR #268) · Prototipe I, belum merevisi produk
 
 Kelima sesi paralel selesai pada hari yang sama, masing-masing dengan jawaban pemilik proyek sendiri. Sesi koordinator memeriksa kelima dokumen bersama-sama dan menemukan satu keputusan yang bertentangan, beberapa keputusan yang belum terbawa ke dokumen lain, dan kode yang bertabrakan.

@@ -24,7 +24,7 @@ Semua teks dikirim ke luar hanya setelah permohonan izin etik disetujui pemilik 
 | T10 | Formulir pengunduran diri dan permintaan hapus data | Orang tua, kapan saja | [T10](#t10-formulir-pengunduran-diri-dan-permintaan-hapus-data) |
 | T11 | Layar sebelum butir risiko daring di P5 | Siswa dengan izin butir risiko, di layar modul | [T11](#t11-layar-sebelum-butir-risiko-daring) |
 | T12 | Pesan dukungan sesudah butir risiko daring | Siswa, di layar modul, pesan yang sama untuk semua | [T12](#t12-pesan-dukungan-sesudah-butir-risiko-daring) |
-| T13 | Selebaran tempat bercerita | Anak yang disapa ketua peneliti saat rujukan, dan orang tuanya | [T13](#t13-selebaran-tempat-bercerita) |
+| T13 | Selebaran tempat bercerita | Semua anak di kelas di akhir P5; anak yang disapa ketua peneliti saat rujukan, dan orang tuanya | [T13](#t13-selebaran-tempat-bercerita) |
 
 Setelah itu: [tabel pembagian](#tabel-pembagian), [catatan keterbacaan](#catatan-keterbacaan), [cek isi L7](#cek-isi-l7-dan-jalur-persetujuan), [pertanyaan untuk pemilik proyek](#pertanyaan-untuk-pemilik-proyek), dan [akibat ke dokumen lain](#akibat-ke-dokumen-lain).
 
@@ -649,7 +649,7 @@ Satu layar di modul tes P5, sesudah tes akhir, hanya untuk siswa yang L7-nya men
 
 ## T12 Pesan dukungan sesudah butir risiko daring
 
-Satu layar di modul tes P5, sesudah butir risiko daring terakhir. Pesannya sama untuk setiap anak yang melihat T11, apa pun jawabannya, juga kalau ia memilih melewati. Dengan begitu tidak ada anak yang terlihat berbeda ([22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) langkah 1). Layar yang sama ditunjukkan di uji keterbacaan setelah butir risiko daring ([T8c](#t8c-naskah-persetujuan-anak-uji-keterbacaan)).
+Satu layar di modul tes P5, sesudah butir risiko daring terakhir. Pesannya sama untuk semua siswa di P5: yang melihat T11, apa pun jawabannya, juga kalau ia memilih melewati, dan siswa tanpa izin butir risiko, di titik yang sama (keputusan pemilik proyek, 27 Oktober 2026). Dengan begitu tidak ada anak yang terlihat berbeda ([22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) langkah 1). Layar yang sama ditunjukkan di uji keterbacaan setelah butir risiko daring ([T8c](#t8c-naskah-persetujuan-anak-uji-keterbacaan)).
 
 ---
 
@@ -665,7 +665,7 @@ Satu layar di modul tes P5, sesudah butir risiko daring terakhir. Pesannya sama 
 
 ---
 
-Usulan (belum diputuskan): layar ini juga ditunjukkan kepada siswa tanpa izin butir risiko, di tempat yang sama di P5, supaya pesan ini sampai ke semua anak seperti diminta [16 → Etika](16_ANGKET_AKSES_DIGITAL.md#etika) no. 8. Teks en dibuat di tahap 3.
+Diputuskan pemilik proyek (27 Oktober 2026): layar ini juga ditunjukkan kepada siswa tanpa izin butir risiko, di tempat yang sama di P5, supaya pesan ini sampai ke semua anak seperti diminta [16 → Etika](16_ANGKET_AKSES_DIGITAL.md#etika) no. 8. Teks en dibuat di tahap 3.
 
 ## T13 Selebaran tempat bercerita
 
@@ -699,7 +699,7 @@ Setengah halaman A4, dilipat dua sehingga teman tidak melihat isinya. Diberikan 
 
 `needs_verification`: nama layanan SAPA 129, nomor teleponnya, nomor WA-nya, dan UPTD PPA di kabupaten/kota sasaran dicek sebelum dicetak ([22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) langkah 5).
 
-Usulan (belum diputuskan): selebaran juga dibagikan kepada semua anak di kelas di akhir P5, bersama tanda terima kasih, supaya anak yang menerimanya saat rujukan tidak tampak berbeda.
+Diputuskan pemilik proyek (27 Oktober 2026): selebaran juga dibagikan kepada semua anak di kelas di akhir P5, bersama tanda terima kasih, supaya anak yang menerimanya saat rujukan tidak tampak berbeda.
 
 ## Tabel pembagian
 
@@ -717,8 +717,8 @@ Usulan (belum diputuskan): selebaran juga dibagikan kepada semua anak di kelas d
 | T9 (T1, T2, T3, T6, T7, T10 versi uji coba) | Sekolah, guru, orang tua, dan siswa kelas uji coba | Sama dengan baris aslinya, sebelum uji coba (tahap 4) | Sama | Sama | Sama dengan L7 kelas uji coba, terpisah dari berkas sekolah utama |
 | T10 | Orang tua | Bersama T1 dan T8a; kapan saja dari P1 | P1 | P1, lalu diserahkan ke `ketua` | `ketua`: berkas terpisah yang dikunci, tidak bersama data; catatan tindak lanjut di bagian bawah formulir; dimusnahkan saat studi ditutup |
 | T11 | Siswa dengan izin butir risiko daring | P5, sesudah tes akhir | Sistem (modul tes, tahap 3) | Sistem (persetujuan ulang) | Pilihan anak di modul; tidak terlihat P1–P3 |
-| T12 | Siswa yang melihat T11; anak uji keterbacaan sesudah butir risiko | Sesudah butir risiko daring terakhir, atau sesudah memilih melewati | Sistem; di uji keterbacaan, pemandu menampilkan salinan layarnya | — | — |
-| T13 | Anak yang disapa saat rujukan; orang tuanya kalau anak setuju | Saat sapaan pribadi, paling lambat hari sekolah berikutnya sesudah P5 (atau sesudah sesi uji keterbacaan) | Ketua peneliti, langsung, dilipat | — | Hanya dicatat di catatan rujukan `ketua` (tanggal dan langkah), di luar data penelitian, dimusnahkan saat studi ditutup |
+| T12 | Semua siswa di P5, juga yang tanpa izin butir risiko; anak uji keterbacaan sesudah butir risiko | Sesudah butir risiko daring terakhir, sesudah memilih melewati, atau di titik yang sama bagi siswa tanpa izin | Sistem; di uji keterbacaan, pemandu menampilkan salinan layarnya | — | — |
+| T13 | Semua anak di kelas, bersama tanda terima kasih; anak yang disapa saat rujukan; orang tuanya kalau anak setuju | Akhir P5 untuk semua anak; saat sapaan pribadi, paling lambat hari sekolah berikutnya sesudah P5 (atau sesudah sesi uji keterbacaan) | Ketua peneliti, langsung, dilipat | — | Hanya dicatat di catatan rujukan `ketua` (tanggal dan langkah), di luar data penelitian, dimusnahkan saat studi ditutup |
 
 Siswa tidak membawa formulir yang sudah diisi dalam keadaan terbuka: T2 dan T10 dikembalikan dalam amplop tertutup, supaya guru dan teman tidak melihat pilihan orang tua. Guru tidak membuka amplop.
 
@@ -846,6 +846,9 @@ Keempat pertanyaan ini dijawab pemilik proyek pada 27 Oktober 2026, semuanya den
 7. **Waktu surat sampel utama dikukuhkan:** amplop tertutup H-14 sampai H-10, pengingat H-5, batas kembali H-3; formulir yang tidak kembali berarti tidak mengizinkan (T1, T2, [Tabel pembagian](#tabel-pembagian)).
 8. **Data per anak berkode boleh dibagikan atas permintaan,** dengan persetujuan komite, setelah dibersihkan (kode acak baru; kode sekolah dan kelas dihapus; jawaban butir risiko dan transkrip tidak pernah ikut). Tidak ada unggahan untuk umum. Diterapkan di T1 bagian 3 dan T6.
 9. **Akun staf dikukuhkan:** `admin`, `koordinator` (P1), `pengamat` (P2), `pewawancara` (P3), dan `ketua`. Dipakai di catatan pelaksanaan T10 dan [Tabel pembagian](#tabel-pembagian); surat untuk orang tua tetap memakai "pengelola sistem" dan "ketua peneliti".
+10. **T12 untuk semua siswa di P5** (27 Oktober 2026), juga yang tanpa izin butir risiko, di titik yang sama.
+11. **T13 dibagikan kepada semua anak di kelas di akhir P5**, bersama tanda terima kasih (27 Oktober 2026).
+12. **T1 tidak diuji baca oleh orang tua** di luar sampel sebelum permohonan etik dikirim (27 Oktober 2026).
 
 ## Akibat ke dokumen lain
 
@@ -864,6 +867,6 @@ Tidak diubah di cabang ini. Dibawa sesi koordinator setelah PR digabung.
 | 16 | *Etika* no. 8, *Petunjuk untuk siswa* | Tautkan teks layar sebelum butir risiko ([T11](#t11-layar-sebelum-butir-risiko-daring)) dan pesan dukungan ([T12](#t12-pesan-dukungan-sesudah-butir-risiko-daring)) |
 | 22 | Lampiran, bagian persetujuan, dan prosedur rujukan | Lampirkan T1–T13. Teks di 23 sudah mengikuti 22: batas kerahasiaan dan kontak komite (T1, T8a), permintaan hapus sampai studi ditutup, masa simpan, pembagian data berkode, `[jumlah hari kerja]`. Yang perlu ditulis di 22: tanpa foto/video; T11–T13 disebut di *Lapis persetujuan* dan *Prosedur rujukan* langkah 1 dan 5; tanda terima kasih untuk anak uji keterbacaan; T8 lewat sekolah tanpa nama anak; T10 juga berlaku untuk uji keterbacaan |
 | 24 | Persetujuan dan pencatatan | Pakai T8a–T8c dan T10 (catatan *Untuk uji keterbacaan* di T10); butir risiko daring diparafrasekan dengan centang terpisah dan diikuti T12; rujukan memakai T13; kolom persetujuan anak dan rekaman per sesi di LK1. Sudah diterapkan di 23: lama dan tempat sesi (empat sesi ± 60 menit di sekolah anak), kode `K01`–`K05` dan `K01-1` |
-| 24 | Bahan uji | Usulan: T1 dibaca dua–tiga orang tua di luar sampel sebelum permohonan etik dikirim (uji baca surat, bukan uji keterbacaan anak) |
+| 24 | Bahan uji | Tidak dipakai: T1 tidak diuji baca oleh orang tua di luar sampel (keputusan pemilik proyek, 27 Oktober 2026) |
 | 03 | *Peserta, sekolah, dan sesi* | Kode anak uji keterbacaan `K01`–`K05` dan kode sesi `K01-1` (juga diminta 24) |
 | 20 | — | Tidak ada; surat validator ada di 20 sendiri |

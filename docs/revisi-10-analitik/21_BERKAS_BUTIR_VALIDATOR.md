@@ -108,7 +108,7 @@ php docs/revisi-10-analitik/dokumen-pdf/src/berkas-validator.php --no-pdf   # ta
 
 ## Hasil pemeriksaan
 
-Rincian lengkap ada di [`LAPORAN.md`](dokumen-pdf/berkas-validator/LAPORAN.md), yang ditulis ulang setiap kali skrip dijalankan. Per 27 Oktober 2026 (`berkas-1.0 · sumber fb707413`, dibuat ulang setelah penyelarasan dokumen tahap 2), 68 dari 68 pemeriksaan lolos.
+Rincian lengkap ada di [`LAPORAN.md`](dokumen-pdf/berkas-validator/LAPORAN.md), yang ditulis ulang setiap kali skrip dijalankan. Per 27 Oktober 2026 (`berkas-1.0 · sumber 1587fe23`, dibuat ulang setelah penyelarasan dokumen tahap 2 dan pembaruan instrumen), 68 dari 68 pemeriksaan lolos.
 
 | Kelompok | Yang dicek | Hasil |
 | --- | --- | --- |
@@ -151,16 +151,16 @@ Keputusan lain yang berlaku untuk berkas ini, dari [20 → Keputusan pemilik pro
 
 ## Akibat ke dokumen lain
 
-Sesi pembuat dokumen ini hanya mengubah dokumen ini, berkas di `dokumen-pdf/berkas-validator/`, skrip di `dokumen-pdf/src/`, `dokumen-pdf/README.md` (tabel *Isi* dan bagian baru), baris 21 di [00](00_INDEKS.md) dan `docs/PROGRESS.md`, dan entrinya di [04](04_CATATAN_KEPUTUSAN.md). Status di bawah per 27 Oktober 2026, setelah penyelarasan dokumen tahap 2. Perubahan di instrumen HTML dibawa dalam satu PR koordinator berikutnya ([20 → Ringkasan](20_PAKET_VALIDASI.md#ringkasan), prasyarat no. 11).
+Sesi pembuat dokumen ini hanya mengubah dokumen ini, berkas di `dokumen-pdf/berkas-validator/`, skrip di `dokumen-pdf/src/`, `dokumen-pdf/README.md` (tabel *Isi* dan bagian baru), baris 21 di [00](00_INDEKS.md) dan `docs/PROGRESS.md`, dan entrinya di [04](04_CATATAN_KEPUTUSAN.md). Status di bawah per 27 Oktober 2026, setelah penyelarasan dokumen tahap 2. Perubahan di instrumen HTML sudah dibawa sesi koordinator (PR #268) ([20 → Ringkasan](20_PAKET_VALIDASI.md#ringkasan), prasyarat no. 11).
 
 | Dokumen | Bagian | Perubahan | Status |
 | --- | --- | --- | --- |
 | [20_PAKET_VALIDASI.md](20_PAKET_VALIDASI.md) | Siapa menerima apa dan kapan | Pakai nama berkas dan kiriman di [Daftar berkas](#daftar-berkas). Sesuai pertanyaan 2 (a), yang disetujui: dua penilai B.5a (ABA1, ALD1) menerima paket B.5a saja dulu, sisanya setelah B.5a kembali; berkas `khusus-peneliti/` tidak pernah dilampirkan. Waktu B.7 dinaikkan (pertanyaan 4) | Sudah: 20 → *Berkas dari 21 per penerima*, tabel panel ahli materi, *Kiriman dan putaran*, surat 1, surat lanjutan, *Apa yang kembali* |
-| Instrumen ahli materi v2.1 (`dokumen-pdf/src/`) | B.5a, paragraf pembuka | "lembar kerja yang sudah berisi kode butir" → "berisi ID butir netral" (`BT-…`, bahan `BH-…`; pertanyaan 1 (a), disetujui) | Belum (PR koordinator) |
-| Instrumen ahli materi v2.1 | D.3 no. 1, 2, 4, 5, dan tabel waktu di A.4 | Sebut nama berkas dari dokumen ini. Urutan kirim untuk dua penilai B.5a mengikuti 20: hanya surat, no. 2, dan halaman petunjuk B.5a di awal; instrumen lengkap, no. 3–12 (no. 4 berlabel), dan lembar kerja B.5b dan B.6–B.9 setelah B.5a kembali (pertanyaan 2). Perkiraan waktu B.7 menjadi 3–5 jam untuk 622 sel, seperti di 20 (pertanyaan 4) | Belum (PR koordinator) |
-| Instrumen pengamat budaya v2.1 | D.3 no. 11 | Sebut `budaya-b5-b8-lembar-kerja.xlsx` | Belum (PR koordinator) |
-| Instrumen ahli media v1.1 | D.3 no. 9 | Sebut `media-b8-mockup.xlsx`; lembar kerja B.3, B.5, B.6, dan B.7 belum dibuat (temuan no. 7) | Belum (PR koordinator) |
-| Instrumen ahli materi v2.1 | B.6, kolom skenario; B.6b pengamat budaya | Samakan nama topik dan nama benda sasaran dengan 08, atau catat bahwa instrumen sengaja memakai nama ringkas (temuan no. 5 dan 6) | Belum (perlu keputusan tim) |
+| Instrumen ahli materi v2.1 (`dokumen-pdf/src/`) | B.5a, paragraf pembuka | "lembar kerja yang sudah berisi kode butir" → "berisi ID butir netral" (`BT-…`, bahan `BH-…`; pertanyaan 1 (a), disetujui) | Sudah (PR #268) |
+| Instrumen ahli materi v2.1 | D.3 no. 1, 2, 4, 5, dan tabel waktu di A.4 | Sebut nama berkas dari dokumen ini. Urutan kirim untuk dua penilai B.5a mengikuti 20: hanya surat, no. 2, dan halaman petunjuk B.5a di awal; instrumen lengkap, no. 3–12 (no. 4 berlabel), dan lembar kerja B.5b dan B.6–B.9 setelah B.5a kembali (pertanyaan 2). Perkiraan waktu B.7 menjadi 3–5 jam untuk 622 sel, seperti di 20 (pertanyaan 4) | Sudah (PR #268) |
+| Instrumen pengamat budaya v2.1 | D.3 no. 11 | Sebut `budaya-b5-b8-lembar-kerja.xlsx` | Sudah (PR #268) |
+| Instrumen ahli media v1.1 | D.3 no. 9 | Sebut `media-b8-mockup.xlsx`; lembar kerja B.3, B.5, B.6, dan B.7 belum dibuat (temuan no. 7) | Sudah (PR #268) |
+| Instrumen ahli materi v2.1 | B.6, kolom skenario; B.6b pengamat budaya | Samakan nama topik dan nama benda sasaran dengan 08, atau catat bahwa instrumen sengaja memakai nama ringkas (temuan no. 5 dan 6) | Sudah: nama di instrumen dipertahankan, isinya sama; dicatat di D.4 pengamat budaya (PR #268) |
 | [13](13_TES_AWAL_AKHIR.md), [15](15_TES_BAGIAN_DIGITAL.md) | Kerumitan Bagian 2 dan 3 | Tetapkan satu level pengembang per butir tes D2 dan D3 untuk perbandingan di C.4 (temuan no. 2) | Belum (perlu keputusan tim) |
 | [08](08_DRAF_BANK_SOAL.md) | *Periksa Unggahan* dan Skenario Digital | Bila level per butir dimaksudkan lain dari baris *Tingkat* per wilayah, tulis levelnya per butir (temuan no. 3) | Belum (perlu keputusan tim) |
 | [03](03_KODE_DAN_ARTI.md) | Bagian baru atau *Tes awal–akhir dan angket* | Tambah `BT-001` … `BT-180` (ID butir netral B.5a) dan `BH-01` … `BH-73` (ID bahan netral B.5a), dipetakan di berkas kunci khusus peneliti; berlaku untuk `berkas-1.0` | Sudah |

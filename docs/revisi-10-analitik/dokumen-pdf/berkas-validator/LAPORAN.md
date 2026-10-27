@@ -2,7 +2,7 @@
 
 Dibuat otomatis oleh `src/berkas-validator.php`. Jangan disunting; jalankan ulang skripnya.
 
-Versi berkas: `berkas-1.0 · sumber fb707413` (hash 8 karakter dari dokumen 03, 08, 14–18 dan tiga instrumen HTML) · benih acak B.5a: 20261027
+Versi berkas: `berkas-1.0 · sumber 1587fe23` (hash 8 karakter dari dokumen 03, 08, 14–18 dan tiga instrumen HTML) · benih acak B.5a: 20261027
 
 ## Berkas dan jumlah baris
 

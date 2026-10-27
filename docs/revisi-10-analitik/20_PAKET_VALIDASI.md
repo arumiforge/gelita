@@ -53,7 +53,7 @@ Dua dari lima ahli materi juga menjadi penilai B.5a. IM A.3 menyarankan satu ahl
 | 8 | Instalasi uji siap, dengan akun uji validator | IM D.3 no. 12, IB D.3 no. 8, IMd D.3 no. 2–3; [Akses untuk validator](#akses-untuk-validator) | Belum |
 | 9 | Nama asli validator ditetapkan, kesediaannya didapat lisan atau lewat pesan, dan tercatat di daftar padanan di luar repo | [Pengembalian dan pencatatan](#pengembalian-dan-pencatatan) | Belum (pertanyaan terbuka di 01) |
 | 10 | Besaran honorarium dan sumber dananya diketahui ketua peneliti; di surat ditulis "sesuai ketentuan yang berlaku" | IM A.4, IB A.4; [Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 2 | Belum |
-| 11 | IM disesuaikan dengan urutan kirim di dokumen ini: pembuka B.5a menyebut ID butir netral, D.3 menyebut nama berkas dari 21 dan urutan kirim untuk dua penilai B.5a, tabel waktu A.4 memakai perkiraan B.7 yang baru | [21 → Akibat ke dokumen lain](21_BERKAS_BUTIR_VALIDATOR.md#akibat-ke-dokumen-lain), [Akibat ke dokumen lain](#akibat-ke-dokumen-lain) | Belum (PR koordinator) |
+| 11 | IM disesuaikan dengan urutan kirim di dokumen ini: pembuka B.5a menyebut ID butir netral, D.3 menyebut nama berkas dari 21 dan urutan kirim untuk dua penilai B.5a, tabel waktu A.4 memakai perkiraan B.7 yang baru | [21 → Akibat ke dokumen lain](21_BERKAS_BUTIR_VALIDATOR.md#akibat-ke-dokumen-lain), [Akibat ke dokumen lain](#akibat-ke-dokumen-lain) | Sudah (27 Oktober 2026, PR #268) |
 
 Daftar kode sekolah (no. 12) **tidak** menahan paket ini ([04](04_CATATAN_KEPUTUSAN.md), 27 Oktober 2026). Yang tersentuh hanya IMd D.3 no. 7, dan berkas itu punya pengganti (daftar jenis perangkat).
 
@@ -67,7 +67,7 @@ Kiriman: **awal**; **setelah B.5a** (setelah kedua lembar B.5a dikumpulkan); **s
 
 Perkiraan jam dijumlahkan dari tabel waktu instrumen (IM A.4 "Perkiraan waktu dan cara mengisi", IB A.4, IMd A.4). Belum termasuk pengarahan (IM 45 menit, IB 30–45 menit, IMd 30 menit). IM tidak memberi angka untuk bermain satu wilayah, jadi itu juga belum termasuk.
 
-**Waktu B.7 dinaikkan.** Lembar B.7 mencakup semua 622 sel kode (keputusan pemilik proyek di [21](21_BERKAS_BUTIR_VALIDATOR.md#pertanyaan-untuk-pemilik-proyek), pertanyaan 4): 300 kode yang tertulis di tabel 08 dan 322 kode dari aturan tetap. Perkiraan IM A.4 (2–3 jam) dipakai untuk 300 kode tertulis, ditambah 1–2 jam untuk 322 sel aturan tetap, yang bisa disaring lewat kolom "Asal kode" dan dinilai per aturan. Jadi B.7 diperkirakan **3–5 jam** untuk setiap validator yang mengisinya (Ahli Literasi Digital 1 dan 2 wajib; Ahli Bahasa Anak 1, 2 dan Ahli Pengukuran bila diisi atau diminta). Versi pengodean buta (`materi-b7-kode-kesalahan-buta.xlsx`) lebih lama, karena setiap sel diberi kode sendiri tanpa kolom "Asal kode"; waktunya disepakati dengan validator bila versi itu diminta. Angka di tabel di bawah sudah memakai perkiraan baru ini.
+**Waktu B.7 dinaikkan.** Lembar B.7 mencakup semua 622 sel kode (keputusan pemilik proyek di [21](21_BERKAS_BUTIR_VALIDATOR.md#pertanyaan-untuk-pemilik-proyek), pertanyaan 4): 300 kode yang tertulis di tabel 08 dan 322 kode dari aturan tetap. Perkiraan IM A.4 (2–3 jam) dipakai untuk 300 kode tertulis, ditambah 1–2 jam untuk 322 sel aturan tetap, yang bisa disaring lewat kolom "Asal kode" dan dinilai per aturan. Jadi B.7 diperkirakan **3–5 jam** (dikonfirmasi pemilik proyek, 27 Oktober 2026) untuk setiap validator yang mengisinya (Ahli Literasi Digital 1 dan 2 wajib; Ahli Bahasa Anak 1, 2 dan Ahli Pengukuran bila diisi atau diminta). Versi pengodean buta (`materi-b7-kode-kesalahan-buta.xlsx`) lebih lama, karena setiap sel diberi kode sendiri tanpa kolom "Asal kode"; waktunya disepakati dengan validator bila versi itu diminta. Angka di tabel di bawah sudah memakai perkiraan baru ini.
 
 ### Panel ahli materi (IM)
 
@@ -122,7 +122,7 @@ Nama berkas di folder [`dokumen-pdf/berkas-validator/`](dokumen-pdf/berkas-valid
 | `materi-b5a-buklet-buta.pdf` | IM no. 2 | Sama, bila lebih suka membaca atau mengisi di kertas | Awal, bersama lembar kerjanya |
 | `materi-b5b-relevansi-kejelasan.xlsx` | IM no. 5 | Kelima ahli materi | Setelah B.5a |
 | `materi-b6-b9-lembar-kerja.xlsx` | Lembar kerja IM B.6–B.9 (bahannya no. 4, 8, 9, 10) | Kelima ahli materi; B.7 wajib untuk Ahli Literasi Digital 1 dan 2; B.8 menurut tabel penilai B.8 | Awal ke Ahli Bahasa Anak 2, Ahli Literasi Digital 2, Ahli Pengukuran; setelah B.5a ke dua penilai B.5a |
-| `materi-b7-kode-kesalahan-buta.xlsx` | Pengganti lembar B.7 di berkas di atas | Ahli Literasi Digital 1 dan 2, hanya bila peneliti meminta pengodean buta | Bersama lembar kerja B.6–B.9 penerimanya: Ahli Literasi Digital 2 awal, Ahli Literasi Digital 1 setelah B.5a |
+| `materi-b7-kode-kesalahan-buta.xlsx` | Pengganti lembar B.7 di berkas di atas | Ahli Literasi Digital 1 dan 2, hanya bila peneliti meminta pengodean buta | Bersama lembar kerja B.6–B.9 penerimanya: Ahli Literasi Digital 2 awal, Ahli Literasi Digital 1 setelah B.5a. Bagi Ahli Literasi Digital 2 pengodean ini tidak sepenuhnya buta, karena bank berkode (no. 4) ada di kiriman awal; pemilik proyek menerima keadaan ini (27 Oktober 2026) |
 | `budaya-b5-b8-lembar-kerja.xlsx` | IB no. 11 | Ahli Budaya Kedu 1–3 | Awal |
 | `media-b8-mockup.xlsx` | IMd no. 9 (lembar B.8 saja) | Ahli Media Pembelajaran 1–3 | Awal |
 | `khusus-peneliti/materi-b5a-kunci-peneliti.xlsx` | — | Ketua peneliti saja; **tidak pernah dikirim atau dilampirkan** | Dibuka setelah kedua lembar B.5a kembali |
@@ -578,7 +578,7 @@ Keputusan pemilik proyek di dokumen tahap 2 lain yang juga mengatur dokumen ini 
 
 ## Akibat ke dokumen lain
 
-Status per 27 Oktober 2026, setelah penyelarasan dokumen tahap 2. Perubahan di instrumen HTML dibawa dalam satu PR koordinator berikutnya (prasyarat no. 11).
+Status per 27 Oktober 2026, setelah penyelarasan dokumen tahap 2. Perubahan di instrumen HTML sudah dibawa sesi koordinator (prasyarat no. 11, PR #268).
 
 | Dokumen | Bagian | Perubahan | Status |
 | --- | --- | --- | --- |
@@ -587,10 +587,10 @@ Status per 27 Oktober 2026, setelah penyelarasan dokumen tahap 2. Perubahan di i
 | [01](01_REVISI_10_ANALITIK.md) | *Peta jalan dan daftar kerja*, no. 3 dan 14 | Status: draf paket di 20; penilai B.5a ditetapkan: Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1 (27 Oktober 2026), dan keduanya menerima paket B.5a saja dulu | Sudah |
 | [dokumen-pdf/README.md](dokumen-pdf/README.md) | *Sebelum dikirim ke validator* | Tambah langkah 5: "Ikuti prasyarat dan urutan kirim di 20" | Sudah |
 | [07](07_TELAAH_INSTRUMEN_VALIDASI.md) | *Langkah berikutnya* | Tambah butir: paket validasi disusun di 20 | Sudah |
-| Instrumen ahli materi v2.1 (`dokumen-pdf/src/instrumen-validasi-ahli-materi-v2.1.html`) | B.5a, paragraf pembuka | "lembar kerja yang sudah berisi kode butir" → berisi ID butir netral (`BT-…`) dan ID bahan netral (`BH-…`) | Belum (PR koordinator) |
-| Instrumen ahli materi v2.1 | D.3 | Sebut nama berkas dari 21: no. 2 `materi-b5a-daftar-butir-buta.xlsx` dan `materi-b5a-buklet-buta.pdf`, no. 5 `materi-b5b-relevansi-kejelasan.xlsx`, lembar kerja B.6–B.9 `materi-b6-b9-lembar-kerja.xlsx`. Kolom "Kapan dikirim" mengikuti [Siapa menerima apa](#siapa-menerima-apa): ke dua penilai B.5a hanya surat, no. 2, dan halaman petunjuk B.5a di awal; instrumen lengkap dan no. 3–12 setelah B.5a | Belum (PR koordinator) |
-| Instrumen ahli materi v2.1 | A.4, tabel waktu dan pengarahan | B.7 3–5 jam (622 sel kode), bukan 2–3 jam. Dua penilai B.5a: pengarahan B.5a ± 15 menit di awal, pengarahan 45 menit setelah B.5a | Belum (PR koordinator) |
-| Instrumen pengamat budaya v2.1 dan ahli media v1.1 | D.3 | Sebut `budaya-b5-b8-lembar-kerja.xlsx` (IB no. 11) dan `media-b8-mockup.xlsx` (IMd no. 9, lembar B.8 saja). Tidak wajib: kolom "Kapan dikirim" seperti IM D.3, supaya cocok dengan tabel *Siapa menerima apa* (IMd no. 10 setelah B.6; IB no. 6 gambar baru menyusul) | Belum (PR koordinator) |
+| Instrumen ahli materi v2.1 (`dokumen-pdf/src/instrumen-validasi-ahli-materi-v2.1.html`) | B.5a, paragraf pembuka | "lembar kerja yang sudah berisi kode butir" → berisi ID butir netral (`BT-…`) dan ID bahan netral (`BH-…`) | Sudah (PR #268) |
+| Instrumen ahli materi v2.1 | D.3 | Sebut nama berkas dari 21: no. 2 `materi-b5a-daftar-butir-buta.xlsx` dan `materi-b5a-buklet-buta.pdf`, no. 5 `materi-b5b-relevansi-kejelasan.xlsx`, lembar kerja B.6–B.9 `materi-b6-b9-lembar-kerja.xlsx`. Kolom "Kapan dikirim" mengikuti [Siapa menerima apa](#siapa-menerima-apa): ke dua penilai B.5a hanya surat, no. 2, dan halaman petunjuk B.5a di awal; instrumen lengkap dan no. 3–12 setelah B.5a | Sudah (PR #268) |
+| Instrumen ahli materi v2.1 | A.4, tabel waktu dan pengarahan | B.7 3–5 jam (622 sel kode), bukan 2–3 jam. Dua penilai B.5a: pengarahan B.5a ± 15 menit di awal, pengarahan 45 menit setelah B.5a | Sudah (PR #268) |
+| Instrumen pengamat budaya v2.1 dan ahli media v1.1 | D.3 | Sebut `budaya-b5-b8-lembar-kerja.xlsx` (IB no. 11) dan `media-b8-mockup.xlsx` (IMd no. 9, lembar B.8 saja). Tidak wajib: kolom "Kapan dikirim" seperti IM D.3, supaya cocok dengan tabel *Siapa menerima apa* (IMd no. 10 setelah B.6; IB no. 6 gambar baru menyusul) | Sudah (PR #268) |
 | [22](22_PERMOHONAN_IZIN_ETIK.md) | Lampiran dan *Perubahan protokol* | Sebut bahwa instrumen untuk anak yang dilampirkan adalah versi yang dibekukan untuk validasi, dan revisi Prototipe I yang mengubah bahan untuk anak diajukan ke *Lembaga Komite Etik* sebagai amandemen protokol | Sudah |
 | [24](24_UJI_KETERBACAAN.md) | *Bahan yang menunggu uji keterbacaan* | Bahan yang diuji adalah versi setelah revisi validasi ahli | Sudah |
 | [24](24_UJI_KETERBACAAN.md) | *Yang dibutuhkan dari dokumen lain → Dari 20* | Dipenuhi di 20: matriks revisi induk menampung temuan anak (sumber "uji keterbacaan", kode anak, `KB-*`), dan jadwal punya penilaian ulang setelah uji keterbacaan. Tidak ada yang perlu diubah di 24 | Sudah (di 20) |
