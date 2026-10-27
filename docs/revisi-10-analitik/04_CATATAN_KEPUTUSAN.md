@@ -6,6 +6,28 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 27 Oktober 2026
 
+**Draf permohonan izin etik: [22_PERMOHONAN_IZIN_ETIK.md](22_PERMOHONAN_IZIN_ETIK.md)** (cabang `r10-izin-etik`, sesi paralel tahap 2; daftar kerja no. 15) · **Status: draf; keputusan pemilik proyek atas empat pertanyaannya diambil hari yang sama**
+
+Prototipe I: dokumen ini tidak merevisi bank, instrumen, atau mock-up; ia menjelaskan bagaimana Prototipe I sampai III dan data utama akan dijalankan dengan anak.
+
+1. **Yang ditulis.** Protokol lengkap untuk *Lembaga Komite Etik*: identitas dan tim (nama samaran dan tempat kosong), ringkasan, nilai sosial, tujuan, desain Plomp dengan Prototipe I–III, lima kegiatan dengan anak (K1 uji keterbacaan, K2 berpikir lantang, K3 uji coba satu kelas `U`, K4 wawancara retrospektif, K5 data utama ± 360 siswa, ± 13 kelas, target 300), peserta, rekrutmen, lapis persetujuan, prosedur per pertemuan dan beban anak (paling lama ± 10 jam dalam lima pertemuan, dari 06 dan 13), risiko dan mitigasi, prosedur rujukan butir risiko daring, manfaat, kerahasiaan dan pengelolaan data, kompensasi, konflik kepentingan, KTD, perubahan protokol, lampiran, dan pemetaan ke tujuh standar KEPPKN dan ke bagian formulir umum.
+2. **Pilihan yang dibuat saat menulis** (usulan, bisa diubah pemilik proyek):
+   - Penanda rujukan mengikuti keputusan 26 Oktober 2026: setiap anak yang menjawab *Pernah* di ang-21. Sapaan pribadi oleh ketua peneliti paling lambat hari sekolah berikutnya, didahulukan untuk *Beberapa kali atau lebih* atau yang tidak bercerita kepada siapa pun. Orang tua hanya dihubungi dengan persetujuan anak, kecuali ada bahaya serius. Penanda dan catatan rujukan di luar data penelitian, hanya terlihat ketua peneliti.
+   - Batas kerahasiaan disebut jujur di surat orang tua dan kalimat anak sebelum butir risiko (akibat ke 02, 16, dan 23).
+   - Penolakan anak didahulukan dari izin orang tua; persetujuan ulang singkat sebelum wawancara dan butir risiko; wawancara di tempat yang terlihat.
+   - Usulan satu pertemuan per hari; data penelitian disimpan 5 tahun sesuai `retention_days` bawaan sistem.
+   - Rujukan luar yang belum dicek ditandai `needs_verification`: rumusan dan versi pedoman KEPPKN, UU No. 27 Tahun 2022 (data anak, pemberitahuan kebocoran), layanan SAPA 129 dan UPTD PPA, batas waktu laporan KTD dan aturan amandemen komite.
+3. **Keputusan pemilik proyek atas empat pertanyaan draf (27 Oktober 2026, wawancara satu putaran):**
+   - **Nama dan L7 dimusnahkan saat studi ditutup** (usulan draf: 12 bulan setelah P5 terakhir). Permintaan hapus diterima sampai studi ditutup; data berkode disimpan 5 tahun.
+   - **Data per anak berkode dibagikan atas permintaan, dengan persetujuan komite** (usulan draf: tidak dibagikan). Tidak ada unggahan publik; sebelum dibagikan kode diganti kode acak baru, kode sekolah dan rombel dihapus, dan jawaban butir risiko serta transkrip tidak ikut. Surat orang tua (23) harus menyebutnya.
+   - **Tanda terima kasih kecil yang sama untuk semua anak di kelas**, termasuk yang tidak ikut, plus kudapan di P1 dan P5; tanpa uang (sesuai usulan).
+   - **Satu permohonan untuk K1–K5**, revisi instrumen dilaporkan sebagai perubahan protokol (sesuai usulan).
+
+   Status 22 tetap draf: diajukan setelah dokumen tahap 1 yang dilampirkan disetujui dan formulir komite sebenarnya diketahui.
+4. **Disesuaikan dengan 20 (PR #263, catatan sesi koordinator):** bahan untuk anak yang dilampirkan adalah versi yang dibekukan untuk validasi ahli, dan setiap revisi Prototipe I (atau sesudahnya) yang mengubah bahan anak diajukan ke *Lembaga Komite Etik* sebagai amandemen protokol. Nama samaran akun staf `pengamat`, `pewawancara`, dan `ketua` tidak lagi ditandai usulan.
+
+Akibat ke dokumen lain (01, 02, 03, 16, 17, 23, 24) dicatat di 22, bagian *Akibat ke dokumen lain*, dan dibawa sesi koordinator setelah digabung.
+
 **Berkas butir untuk validator: draf 21 dan skrip pembuatnya** (cabang `r10-berkas-validator`, sesi paralel tahap 2; Prototipe I, belum merevisi produk) · **Status: draf; keputusan pemilik proyek diambil 27 Oktober 2026**
 
 1. **Yang ditulis.** [21_BERKAS_BUTIR_VALIDATOR.md](21_BERKAS_BUTIR_VALIDATOR.md) dan skrip `dokumen-pdf/src/berkas-validator.php`. Skrip membaca 03, 08, 14–18 dan tabel ketiga instrumen (tanpa mengubahnya), lalu menulis berkas di `dokumen-pdf/berkas-validator/`:
