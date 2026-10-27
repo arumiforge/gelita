@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 27 Oktober 2026 · **Status: draf**; keempat pertanyaan dijawab pemilik proyek 27 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 3 dan 14 · Prototipe I
+Per 27 Oktober 2026 · **Status: draf**; keempat pertanyaan dijawab pemilik proyek 27 Oktober 2026; diselaraskan dengan 20 pada hari yang sama · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 3 dan 14 · Prototipe I
 
 Dokumen ini menjelaskan berkas per butir yang diisi validator di tahap 2: daftar butir buta untuk pelabelan B.5a, daftar B.5b, dan lembar kerja (*spreadsheet*) untuk lembar per butir di ketiga instrumen. Semua berkas dibuat oleh satu skrip langsung dari dokumen butir (03, 08, 14–18) dan dari tabel di ketiga instrumen, jadi bisa dibuat ulang setiap kali bank, tes, atau instrumen berubah.
 
@@ -13,23 +13,27 @@ Siapa menerima paket apa, surat permohonan, dan jadwal ada di [20_PAKET_VALIDASI
 1. **Berkas di [`dokumen-pdf/berkas-validator/`](dokumen-pdf/berkas-validator/):** enam lembar kerja `.xlsx` untuk validator, satu buklet B.5a (PDF dan sumber HTML-nya), satu berkas kunci khusus peneliti, dan laporan pemeriksaan. Isinya: 180 butir untuk B.5a dan B.5b (116 bank, 64 tes), 24 skenario (B.6), 622 sel kode kesalahan (B.7), 12 pernyataan sikap (B.8), 38 pasangan bentuk A–B dan 20 butir angket (B.9), 46 objek budaya, 24 petunjuk *Periksa Unggahan*, 12 butir PBK, 19 fakta, dan 27 gambar mock-up.
 2. **B.5a dibuat buta.** Kode butir diganti ID netral (`BT-001` … `BT-180`), bahan bacaan diberi ID netral (`BH-01` … `BH-73`) dan urutannya diacak dengan benih tetap. Label pengembang, kode kesalahan, dan kode butir tidak ada di berkas. Pemetaan ID ke kode hanya ada di berkas kunci khusus peneliti.
 3. **Skrip memeriksa dirinya sendiri.** 68 pemeriksaan (jumlah butir per lembar terhadap instrumen, kebutaan B.5a, dan keberadaan setiap kode di 03, 08, 14–18) lolos semua. Satu pemeriksaan gagal berarti tidak ada berkas yang ditulis.
-4. **Empat pertanyaan** untuk pemilik proyek (ID netral, urutan kirim ke dua penilai B.5a, kunci di daftar buta, cakupan B.7) sudah dijawab 27 Oktober 2026: semuanya memakai pilihan yang disarankan, yang sudah dipakai berkas ini ([bagian akhir](#pertanyaan-untuk-pemilik-proyek)).
+4. **Empat pertanyaan** untuk pemilik proyek (ID netral, urutan kirim ke dua penilai B.5a, kunci di daftar buta, cakupan B.7) sudah dijawab 27 Oktober 2026: semuanya memakai pilihan yang disarankan, yang sudah dipakai berkas ini ([bagian akhir](#pertanyaan-untuk-pemilik-proyek)). Dua penilai B.5a, Ahli Bahasa Anak 1 (ABA1) dan Ahli Literasi Digital 1 (ALD1), menerima paket B.5a saja dulu; urutan kirimnya ada di [20 → Siapa menerima apa](20_PAKET_VALIDASI.md#siapa-menerima-apa).
 
 ## Daftar berkas
 
-Kolom "Kapan" mengikuti tabel D.3 di setiap instrumen. Putaran 1 = paket awal; putaran 2 = setelah lembar B.5a kedua penilai kembali.
+Kolom "Kapan" mengikuti urutan kirim di [20 → Siapa menerima apa](20_PAKET_VALIDASI.md#siapa-menerima-apa), yang untuk dua penilai B.5a berbeda dari tabel D.3 instrumen ahli materi ([pertanyaan 2](#pertanyaan-untuk-pemilik-proyek)). **Kiriman awal** = paket pertama; **kiriman setelah B.5a** = setelah lembar B.5a kedua penilai kembali. Kata "putaran" tidak dipakai di sini, karena 20 memakainya untuk putaran validasi (putaran 2 = penilaian ulang butir yang direvisi). Nama berkas dan judul lembar yang dibuat skrip tidak memuat kata "putaran", jadi tidak ada yang perlu dibuat ulang.
+
+Penilai B.5a ditetapkan pemilik proyek ([20 → Keputusan pemilik proyek](20_PAKET_VALIDASI.md#keputusan-pemilik-proyek)): **Ahli Bahasa Anak 1 (ABA1) dan Ahli Literasi Digital 1 (ALD1)**.
 
 | Berkas | Lembar instrumen | Penerima | Kapan | Sumber isi |
 | --- | --- | --- | --- | --- |
-| `materi-b5a-daftar-butir-buta.xlsx` | Ahli materi B.5a | Dua penilai B.5a yang ditunjuk pemilik proyek (dari panel ahli materi) | Putaran 1, hanya ke dua penilai itu (D.3 no. 2) | 08, 14, 15 |
-| `materi-b5a-buklet-buta.pdf` (dari `.html`) | Ahli materi B.5a | Sama, kalau penilai lebih suka membaca atau mengisi di kertas | Putaran 1, bersama lembar kerjanya | 08, 14, 15 |
+| `materi-b5a-daftar-butir-buta.xlsx` | Ahli materi B.5a | Dua penilai B.5a: ABA1 dan ALD1 | Kiriman awal, sebagai paket B.5a, hanya ke dua penilai itu (D.3 no. 2) | 08, 14, 15 |
+| `materi-b5a-buklet-buta.pdf` (dari `.html`) | Ahli materi B.5a | ABA1 dan ALD1, kalau lebih suka membaca atau mengisi di kertas | Kiriman awal, bersama lembar kerjanya | 08, 14, 15 |
 | `khusus-peneliti/materi-b5a-kunci-peneliti.xlsx` | Ahli materi C.4 | Ketua peneliti saja; **tidak dikirim** | Dipakai setelah kedua lembar B.5a kembali | 08, 13, 14, 15 |
-| `materi-b5b-relevansi-kejelasan.xlsx` | Ahli materi B.5b dan pertanyaan khusus R1–R5 | Kelima ahli materi | Putaran 2 (D.3 no. 5) | 03, 08, 14, 15, instrumen |
-| `materi-b6-b9-lembar-kerja.xlsx` | Ahli materi B.6, B.7, B.8a–b, B.9a (dan T1–T5), B.9b | Kelima ahli materi; B.7 wajib untuk Ahli Literasi Digital 1–2; B.8 menurut tabel penilai B.8 | Putaran 1, kecuali untuk dua penilai B.5a (lihat [pertanyaan 2](#pertanyaan-untuk-pemilik-proyek)) | 08, 14–17, instrumen |
-| `materi-b7-kode-kesalahan-buta.xlsx` | Ahli materi B.7, versi pengodean buta | Ahli Literasi Digital 1–2, hanya bila peneliti meminta pengodean buta | Sebagai ganti lembar B.7 biasa | 08 |
-| `budaya-b5-b8-lembar-kerja.xlsx` | Pengamat budaya B.5, B.6a, B.6b, B.7, B.8a–b | Ahli Budaya Kedu 1–3 | Putaran 1 (D.3 no. 11) | 08, 17, 18, instrumen |
-| `media-b8-mockup.xlsx` | Ahli media B.8 | Ahli Media Pembelajaran 1–3 | Putaran 1 (D.3 no. 9) | 18, 03, instrumen |
+| `materi-b5b-relevansi-kejelasan.xlsx` | Ahli materi B.5b dan pertanyaan khusus R1–R5 | Kelima ahli materi | Kiriman setelah B.5a (D.3 no. 5) | 03, 08, 14, 15, instrumen |
+| `materi-b6-b9-lembar-kerja.xlsx` | Ahli materi B.6, B.7, B.8a–b, B.9a (dan T1–T5), B.9b | Kelima ahli materi; B.7 wajib untuk ALD1 dan ALD2; B.8 menurut tabel penilai B.8 | Kiriman awal ke Ahli Bahasa Anak 2, Ahli Literasi Digital 2, dan Ahli Pengukuran; kiriman setelah B.5a ke ABA1 dan ALD1 ([pertanyaan 2](#pertanyaan-untuk-pemilik-proyek)) | 08, 14–17, instrumen |
+| `materi-b7-kode-kesalahan-buta.xlsx` | Ahli materi B.7, versi pengodean buta | ALD1 dan ALD2, hanya bila peneliti meminta pengodean buta | Sebagai ganti lembar B.7 biasa, bersama lembar kerja B.6–B.9 penerimanya: ALD2 di kiriman awal, ALD1 di kiriman setelah B.5a | 08 |
+| `budaya-b5-b8-lembar-kerja.xlsx` | Pengamat budaya B.5, B.6a, B.6b, B.7, B.8a–b | Ahli Budaya Kedu 1–3 | Kiriman awal (D.3 no. 11) | 08, 17, 18, instrumen |
+| `media-b8-mockup.xlsx` | Ahli media B.8 | Ahli Media Pembelajaran 1–3 | Kiriman awal (D.3 no. 9) | 18, 03, instrumen |
 | `LAPORAN.md` | — | Tim | Dibaca sebelum berkas dikirim | Dibuat skrip |
+
+Paket B.5a untuk ABA1 dan ALD1 juga berisi halaman petunjuk B.5a dari instrumen ahli materi, yang bukan berkas skrip ini; halaman itu baru dikirim setelah pembukanya menyebut ID netral (lihat [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)). Berkas instrumen lain (surat, bank, kisi-kisi, tes, akses game) dan kapan dikirim ada di 20.
 
 ### Isi setiap lembar kerja
 
@@ -118,10 +122,10 @@ Rincian lengkap ada di [`LAPORAN.md`](dokumen-pdf/berkas-validator/LAPORAN.md), 
 
 Temuan ini ketidakcocokan atau celah antara instrumen dan dokumen butir. Dokumen lain tidak diubah di sesi ini; usulan perubahannya ada di [Akibat ke dokumen lain](#akibat-ke-dokumen-lain).
 
-1. **Paket awal membocorkan label ke dua penilai B.5a.** D.3 no. 4 instrumen ahli materi mengirim bank lengkap dengan "pengecoh berkode" di putaran awal ke semua ahli materi, dan B.6 dan B.7 juga dikirim di awal. Kode kesalahan menunjukkan dimensi (INF = D1, DIG = D2, BUD = D3), dan INF-SUM dan INF-FOP menunjukkan D1b. Instrumen sendiri juga memuat label: R2 menyebut `tmg-3-a03` dan `tmg-3-b03` sebagai D1b, B.9 menyebut dimensi tiap bagian tes, dan B.5b ada di dokumen yang sama. Diputuskan: dua penilai B.5a menerima paket B.5a saja dulu ([pertanyaan 2](#pertanyaan-untuk-pemilik-proyek)).
+1. **Paket awal membocorkan label ke dua penilai B.5a.** D.3 no. 4 instrumen ahli materi mengirim bank lengkap dengan "pengecoh berkode" di kiriman awal ke semua ahli materi, dan B.6 dan B.7 juga dikirim di awal. Kode kesalahan menunjukkan dimensi (INF = D1, DIG = D2, BUD = D3), dan INF-SUM dan INF-FOP menunjukkan D1b. Instrumen sendiri juga memuat label: R2 menyebut `tmg-3-a03` dan `tmg-3-b03` sebagai D1b, B.9 menyebut dimensi tiap bagian tes, dan B.5b ada di dokumen yang sama. Diputuskan: dua penilai B.5a (ABA1 dan ALD1) menerima paket B.5a saja dulu ([pertanyaan 2](#pertanyaan-untuk-pemilik-proyek)); urutan kirimnya di [20](20_PAKET_VALIDASI.md#siapa-menerima-apa).
 2. **Level pengembang butir tes D2 dan D3 berupa rentang.** 13 dan 15 memberi kerumitan dengan padanan "L1–L2" atau "L2–L3", bukan satu level. κ antara dua penilai tetap bisa dihitung, tetapi C.4 juga meminta label akhir dibandingkan dengan label pengembang. Untuk 32 butir itu perlu satu level pengembang per butir.
 3. **Level pengembang *Periksa Unggahan* dan Skenario Digital tidak tertulis per butir.** Berkas kunci menurunkannya dari baris *Tingkat* 08 per wilayah (jelas = L1, samar = L2, nilai bertentangan atau dua langkah = L3), sesuai arti Level di B.5a. Kalau tim memaksudkan lain, label ini perlu ditulis di 08.
-4. **B.7 lebih panjang dari perkiraan waktunya.** "Semua sel kode" menurut aturan 08 berjumlah 622: 300 kode tertulis di tabel 08 dan 322 kode dari aturan tetap (jawaban rumpang lain → INF-REL, pengecoh di rumpang lain → INF-LIT, bagian ketuk lain → kode jenis petunjuk). Instrumen memperkirakan B.7 2–3 jam ([pertanyaan 4](#pertanyaan-untuk-pemilik-proyek)).
+4. **B.7 lebih panjang dari perkiraan waktunya.** "Semua sel kode" menurut aturan 08 berjumlah 622: 300 kode tertulis di tabel 08 dan 322 kode dari aturan tetap (jawaban rumpang lain → INF-REL, pengecoh di rumpang lain → INF-LIT, bagian ketuk lain → kode jenis petunjuk). Instrumen memperkirakan B.7 2–3 jam. Diputuskan: semua 622 sel dinilai, dan perkiraannya dinaikkan ([pertanyaan 4](#pertanyaan-untuk-pemilik-proyek)); 20 memakai 3–5 jam untuk setiap validator yang mengisi B.7.
 5. **Nama topik Skenario Digital berbeda.** Kolom B.6 instrumen memakai empat nama topik ("Kata sandi dan OTP", "Kabar bohong"), sedangkan 08 memakai nama per skenario ("Kata sandi", "Pesan berantai" di Magelang, "Kabar bohong, dua langkah" di Wonosobo). Lembar kerja memakai nama di instrumen. Kodenya sama semua.
 6. **Nama benda sasaran B.6b berbeda kata dengan kunci 08** di tiga butir: `tmg-4-x01` "Kuda kepang anyaman bambu" / "kuda kepang bambu", `wnb-4-x03` "Mi ongklok" / "ongklok", `wnb-4-x04` "Daun teh Tambi" / "daun teh". Isinya sama; lembar kerja memakai kata di instrumen dan menampilkan petunjuk 08 sebagai rujukan.
 7. **Lembar kerja yang belum dibuat.** D.3 ahli media no. 9 juga meminta lembar kerja untuk B.3, B.5 (uji perangkat), B.6 (catatan temuan), dan B.7 (24 layar game sekarang). Ahli materi B.3 dan pengamat budaya B.3 (lembar penilaian umum) juga belum. Lembar-lembar itu tidak per butir, jadi di luar cakupan dokumen ini. Bisa ditambahkan ke skrip yang sama kalau dibutuhkan; untuk sekarang validator mengisinya di PDF instrumen.
@@ -129,6 +133,8 @@ Temuan ini ketidakcocokan atau celah antara instrumen dan dokumen butir. Dokumen
 ## Pertanyaan untuk pemilik proyek
 
 **Dijawab pemilik proyek, 27 Oktober 2026: pilihan (a) untuk keempat pertanyaan.** Berkas di atas sudah memakainya, jadi tidak ada yang dibuat ulang. Perubahan yang mengikutinya di dokumen lain (20, instrumen ahli materi D.3 dan A.4) ada di [Akibat ke dokumen lain](#akibat-ke-dokumen-lain).
+
+Keputusan lain yang berlaku untuk berkas ini, dari [20 → Keputusan pemilik proyek](20_PAKET_VALIDASI.md#keputusan-pemilik-proyek): penilai B.5a adalah **Ahli Bahasa Anak 1 (ABA1) dan Ahli Literasi Digital 1 (ALD1)**, dan paket dikirim **digital** lewat folder bersama yang dibatasi per validator, jadi lembar kerja dikirim sebagai `.xlsx` dan buklet sebagai PDF. Tiga ahli materi lain tidak menerima label pengembang dan kisi-kisi sebelum B.5a kembali.
 
 1. **ID butir di daftar B.5a.**
    - (a) ID netral `BT-001` … dengan bahan diacak, dan berkas kunci khusus peneliti *(disarankan)*: kode asli menunjukkan wilayah, dan wilayah naik level, jadi kode asli bisa membocorkan label level.
@@ -145,17 +151,17 @@ Temuan ini ketidakcocokan atau celah antara instrumen dan dokumen butir. Dokumen
 
 ## Akibat ke dokumen lain
 
-Sesi ini hanya mengubah dokumen ini, berkas di `dokumen-pdf/berkas-validator/`, skrip di `dokumen-pdf/src/`, `dokumen-pdf/README.md` (tabel *Isi* dan bagian baru), baris 21 di [00](00_INDEKS.md) dan `docs/PROGRESS.md`, dan entrinya di [04](04_CATATAN_KEPUTUSAN.md). Perubahan berikut dibawa sesi koordinator setelah digabung.
+Sesi pembuat dokumen ini hanya mengubah dokumen ini, berkas di `dokumen-pdf/berkas-validator/`, skrip di `dokumen-pdf/src/`, `dokumen-pdf/README.md` (tabel *Isi* dan bagian baru), baris 21 di [00](00_INDEKS.md) dan `docs/PROGRESS.md`, dan entrinya di [04](04_CATATAN_KEPUTUSAN.md). Status di bawah per 27 Oktober 2026, setelah penyelarasan dokumen tahap 2. Perubahan di instrumen HTML dibawa dalam satu PR koordinator berikutnya ([20](20_PAKET_VALIDASI.md#kapan-boleh-dikirim), prasyarat no. 11).
 
-| Dokumen | Bagian | Perubahan |
-| --- | --- | --- |
-| [20_PAKET_VALIDASI.md](20_PAKET_VALIDASI.md) | Siapa menerima apa dan kapan | Pakai nama berkas dan putaran di [Daftar berkas](#daftar-berkas). Sesuai pertanyaan 2 (a), yang disetujui: dua penilai B.5a menerima paket B.5a saja dulu, sisanya setelah B.5a kembali; berkas `khusus-peneliti/` tidak pernah dilampirkan |
-| Instrumen ahli materi v2.1 (`dokumen-pdf/src/`) | B.5a, paragraf pembuka | "lembar kerja yang sudah berisi kode butir" → "berisi ID butir netral" (pertanyaan 1 (a), disetujui) |
-| Instrumen ahli materi v2.1 | D.3 no. 2, 4, 5, dan tabel waktu di A.4 | Sebut nama berkas dari dokumen ini. No. 4: bank berkode untuk dua penilai B.5a dikirim setelah B.5a kembali (pertanyaan 2). Perkiraan waktu B.7 disesuaikan dengan 622 sel (pertanyaan 4) |
-| Instrumen pengamat budaya v2.1 | D.3 no. 11 | Sebut `budaya-b5-b8-lembar-kerja.xlsx` |
-| Instrumen ahli media v1.1 | D.3 no. 9 | Sebut `media-b8-mockup.xlsx`; lembar kerja B.3, B.5, B.6, dan B.7 belum dibuat (temuan no. 7) |
-| Instrumen ahli materi v2.1 | B.6, kolom skenario; B.6b pengamat budaya | Samakan nama topik dan nama benda sasaran dengan 08, atau catat bahwa instrumen sengaja memakai nama ringkas (temuan no. 5 dan 6) |
-| [13](13_TES_AWAL_AKHIR.md), [15](15_TES_BAGIAN_DIGITAL.md) | Kerumitan Bagian 2 dan 3 | Tetapkan satu level pengembang per butir tes D2 dan D3 untuk perbandingan di C.4 (temuan no. 2) |
-| [08](08_DRAF_BANK_SOAL.md) | *Periksa Unggahan* dan Skenario Digital | Bila level per butir dimaksudkan lain dari baris *Tingkat* per wilayah, tulis levelnya per butir (temuan no. 3) |
-| [03](03_KODE_DAN_ARTI.md) | Bagian baru atau *Tes awal–akhir dan angket* | Tambah `BT-001` … `BT-180` (ID butir netral B.5a) dan `BH-01` … `BH-73` (ID bahan netral B.5a), dipetakan di berkas kunci khusus peneliti; berlaku untuk `berkas-1.0` |
-| [01](01_REVISI_10_ANALITIK.md) | Daftar kerja no. 3 dan 14 | Status: berkas per butir selesai di draf ([21](21_BERKAS_BUTIR_VALIDATOR.md)), menunggu persetujuan pemilik proyek |
+| Dokumen | Bagian | Perubahan | Status |
+| --- | --- | --- | --- |
+| [20_PAKET_VALIDASI.md](20_PAKET_VALIDASI.md) | Siapa menerima apa dan kapan | Pakai nama berkas dan kiriman di [Daftar berkas](#daftar-berkas). Sesuai pertanyaan 2 (a), yang disetujui: dua penilai B.5a (ABA1, ALD1) menerima paket B.5a saja dulu, sisanya setelah B.5a kembali; berkas `khusus-peneliti/` tidak pernah dilampirkan. Waktu B.7 dinaikkan (pertanyaan 4) | Sudah: 20 → *Berkas dari 21 per penerima*, tabel panel ahli materi, *Putaran kirim*, surat 1, surat lanjutan, *Apa yang kembali* |
+| Instrumen ahli materi v2.1 (`dokumen-pdf/src/`) | B.5a, paragraf pembuka | "lembar kerja yang sudah berisi kode butir" → "berisi ID butir netral" (`BT-…`, bahan `BH-…`; pertanyaan 1 (a), disetujui) | Belum (PR koordinator) |
+| Instrumen ahli materi v2.1 | D.3 no. 1, 2, 4, 5, dan tabel waktu di A.4 | Sebut nama berkas dari dokumen ini. Urutan kirim untuk dua penilai B.5a mengikuti 20: hanya surat, no. 2, dan halaman petunjuk B.5a di awal; instrumen lengkap, no. 3–12 (no. 4 berlabel), dan lembar kerja B.5b dan B.6–B.9 setelah B.5a kembali (pertanyaan 2). Perkiraan waktu B.7 menjadi 3–5 jam untuk 622 sel, seperti di 20 (pertanyaan 4) | Belum (PR koordinator) |
+| Instrumen pengamat budaya v2.1 | D.3 no. 11 | Sebut `budaya-b5-b8-lembar-kerja.xlsx` | Belum (PR koordinator) |
+| Instrumen ahli media v1.1 | D.3 no. 9 | Sebut `media-b8-mockup.xlsx`; lembar kerja B.3, B.5, B.6, dan B.7 belum dibuat (temuan no. 7) | Belum (PR koordinator) |
+| Instrumen ahli materi v2.1 | B.6, kolom skenario; B.6b pengamat budaya | Samakan nama topik dan nama benda sasaran dengan 08, atau catat bahwa instrumen sengaja memakai nama ringkas (temuan no. 5 dan 6) | Belum (perlu keputusan tim) |
+| [13](13_TES_AWAL_AKHIR.md), [15](15_TES_BAGIAN_DIGITAL.md) | Kerumitan Bagian 2 dan 3 | Tetapkan satu level pengembang per butir tes D2 dan D3 untuk perbandingan di C.4 (temuan no. 2) | Belum (perlu keputusan tim) |
+| [08](08_DRAF_BANK_SOAL.md) | *Periksa Unggahan* dan Skenario Digital | Bila level per butir dimaksudkan lain dari baris *Tingkat* per wilayah, tulis levelnya per butir (temuan no. 3) | Belum (perlu keputusan tim) |
+| [03](03_KODE_DAN_ARTI.md) | Bagian baru atau *Tes awal–akhir dan angket* | Tambah `BT-001` … `BT-180` (ID butir netral B.5a) dan `BH-01` … `BH-73` (ID bahan netral B.5a), dipetakan di berkas kunci khusus peneliti; berlaku untuk `berkas-1.0` | Sudah |
+| [01](01_REVISI_10_ANALITIK.md) | Daftar kerja no. 3 dan 14 | Status: berkas per butir selesai di draf ([21](21_BERKAS_BUTIR_VALIDATOR.md)), menunggu persetujuan pemilik proyek | Sudah |

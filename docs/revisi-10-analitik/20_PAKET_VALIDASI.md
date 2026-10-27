@@ -63,31 +63,34 @@ Dua hal boleh menyusul setelah paket dikirim, karena instrumennya sendiri sudah 
 
 Lembar yang diisi diambil dari matriks penugasan setiap instrumen: IM Tabel A1 dan tabel penilai B.8; IB A.3, A.4, dan tabel penilai B.8; IMd A.3. Tanda: **W** = wajib, tanpa TD; **○** = diisi bila sesuai keahlian (TD boleh). Semua validator juga mengisi lembar identitas (B.1), kesimpulan (IM B.10, IB B.9, IMd B.9), dan surat pernyataan (D.1).
 
-Putaran kirim: **awal**; **setelah B.5a** (setelah kedua lembar B.5a dikumpulkan); **setelah B.6 media** (setelah lembar B.6 ahli media dikumpulkan, masih langkah 1); **media langkah 2** (setelah tahap 3, untuk gerbang G3).
+Kiriman: **awal**; **setelah B.5a** (setelah kedua lembar B.5a dikumpulkan); **setelah B.6 media** (setelah lembar B.6 ahli media dikumpulkan, masih langkah 1); **media langkah 2** (setelah tahap 3, untuk gerbang G3).
 
 Perkiraan jam dijumlahkan dari tabel waktu instrumen (IM A.4 "Perkiraan waktu dan cara mengisi", IB A.4, IMd A.4). Belum termasuk pengarahan (IM 45 menit, IB 30–45 menit, IMd 30 menit). IM tidak memberi angka untuk bermain satu wilayah, jadi itu juga belum termasuk.
 
+**Waktu B.7 dinaikkan.** Lembar B.7 mencakup semua 622 sel kode (keputusan pemilik proyek di [21](21_BERKAS_BUTIR_VALIDATOR.md#pertanyaan-untuk-pemilik-proyek), pertanyaan 4): 300 kode yang tertulis di tabel 08 dan 322 kode dari aturan tetap. Perkiraan IM A.4 (2–3 jam) dipakai untuk 300 kode tertulis, ditambah 1–2 jam untuk 322 sel aturan tetap, yang bisa disaring lewat kolom "Asal kode" dan dinilai per aturan. Jadi B.7 diperkirakan **3–5 jam** untuk setiap validator yang mengisinya (Ahli Literasi Digital 1 dan 2 wajib; Ahli Bahasa Anak 1, 2 dan Ahli Pengukuran bila diisi atau diminta). Versi pengodean buta (`materi-b7-kode-kesalahan-buta.xlsx`) lebih lama, karena setiap sel diberi kode sendiri tanpa kolom "Asal kode"; waktunya disepakati dengan validator bila versi itu diminta. Angka di tabel di bawah sudah memakai perkiraan baru ini.
+
 ### Panel ahli materi (IM)
 
-| Validator | Lembar yang diisi | Berkas IM D.3: awal | Berkas IM D.3: setelah B.5a | Perkiraan jam |
+| Validator | Lembar yang diisi | Berkas IM D.3: kiriman awal | Berkas IM D.3: kiriman setelah B.5a | Perkiraan jam |
 | --- | --- | --- | --- | --- |
-| Ahli Bahasa Anak 1 *(penilai B.5a)* | **B.5a**; B.3 aspek A, B, D, G, H, J (W), C, I (○), E, F (○); B.5b (W); B.6 (W); B.7 (○); B.8a relevansi, arah negatif, telaah bahasa, dan B.8b (W); B.9a Bagian 1 (W); B.9b bahasa (W) | 1, **2**, 3, 4 (tanpa label), 7, 8 (tes tanpa label), 9, 10, 11, 12 | 4 (label pengembang), 5, 6 | B.5a 6–8 + lainnya 9–14 = **± 15–22 jam** (B.7 bila diisi: + 2–3) |
-| Ahli Bahasa Anak 2 | B.3 seperti Ahli Bahasa Anak 1; B.5b (W); B.6 (W); B.7 (○); B.8 seperti Ahli Bahasa Anak 1; B.9a Bagian 1 (W); B.9b bahasa (W) | 1, 3, 4 (tanpa label), 7, 8, 9, 10, 11, 12 | 4 (label pengembang), 5, 6 | **± 9–14 jam** (B.7 bila diisi: + 2–3) |
-| Ahli Literasi Digital 1 *(penilai B.5a)* | **B.5a**; B.3 aspek A, B, D, E, F, H, J (W), C, I, G (○); B.5b (W); B.6 (W); B.7 (W); B.8a tumpang tindih D3 saja (W); B.9a Bagian 2–3 (W); B.9b isi (W) | 1, **2**, 3, 4 (tanpa label), 7, 8 (tes tanpa label), 9, 10, 11, 12 | 4 (label pengembang), 5, 6 | B.5a 6–8 + lainnya 11–16 = **± 17–24 jam** |
-| Ahli Literasi Digital 2 | B.3 seperti Ahli Literasi Digital 1; B.5b (W); B.6 (W); B.7 (W); B.8a tumpang tindih D3 saja (W); B.9a Bagian 2–3 (W); B.9b isi (W) | 1, 3, 4 (tanpa label), 7, 8, 9, 10, 11, 12 | 4 (label pengembang), 5, 6 | **± 11–16 jam** |
-| Ahli Pengukuran | B.3 aspek A, B, C, H, I, J (W), D, E, F, G (○); B.5b (W); B.6 (○); B.7 (○); B.8a relevansi, indikator tepat, arah negatif, dan B.8b (W); B.9a (W); B.9b (○) | 1, 3, 4 (tanpa label), 7, 8, 9, 10, 11, 12 | 4 (label pengembang), 5, 6 | **± 7,5–12 jam** (B.6 dan B.7 bila diminta: + 3,5–5) |
+| Ahli Bahasa Anak 1 *(penilai B.5a)* | **B.5a**; B.3 aspek A, B, D, G, H, J (W), C, I (○), E, F (○); B.5b (W); B.6 (W); B.7 (○); B.8a relevansi, arah negatif, telaah bahasa, dan B.8b (W); B.9a Bagian 1 (W); B.9b bahasa (W) | **Paket B.5a saja:** 1 (surat saja), **2**, halaman petunjuk B.5a | 1 (instrumen lengkap), 3, 4 (dengan label pengembang), 5, 6, 7, 8, 9, 10, 11, 12 | B.5a 6–8 (minggu 1–2) + lainnya 9–14 (minggu 3–5) = **± 15–22 jam** (B.7 bila diisi: + 3–5) |
+| Ahli Bahasa Anak 2 | B.3 seperti Ahli Bahasa Anak 1; B.5b (W); B.6 (W); B.7 (○); B.8 seperti Ahli Bahasa Anak 1; B.9a Bagian 1 (W); B.9b bahasa (W) | 1, 3, 4 (tanpa label), 7, 8 (tanpa label), 9, 10, 11, 12 | 4 (label pengembang), 5, 6 | **± 9–14 jam** (B.7 bila diisi: + 3–5) |
+| Ahli Literasi Digital 1 *(penilai B.5a)* | **B.5a**; B.3 aspek A, B, D, E, F, H, J (W), C, I, G (○); B.5b (W); B.6 (W); B.7 (W); B.8a tumpang tindih D3 saja (W); B.9a Bagian 2–3 (W); B.9b isi (W) | **Paket B.5a saja:** 1 (surat saja), **2**, halaman petunjuk B.5a | 1 (instrumen lengkap), 3, 4 (dengan label pengembang), 5, 6, 7, 8, 9, 10, 11, 12 | B.5a 6–8 (minggu 1–2) + lainnya 12–18 (minggu 3–5) = **± 18–26 jam** |
+| Ahli Literasi Digital 2 | B.3 seperti Ahli Literasi Digital 1; B.5b (W); B.6 (W); B.7 (W); B.8a tumpang tindih D3 saja (W); B.9a Bagian 2–3 (W); B.9b isi (W) | 1, 3, 4 (tanpa label), 7, 8 (tanpa label), 9, 10, 11, 12 | 4 (label pengembang), 5, 6 | **± 12–18 jam** |
+| Ahli Pengukuran | B.3 aspek A, B, C, H, I, J (W), D, E, F, G (○); B.5b (W); B.6 (○); B.7 (○); B.8a relevansi, indikator tepat, arah negatif, dan B.8b (W); B.9a (W); B.9b (○) | 1, 3, 4 (tanpa label), 7, 8 (tanpa label), 9, 10, 11, 12 | 4 (label pengembang), 5, 6 | **± 7,5–12 jam** (B.6 dan B.7 bila diminta: + 4,5–7) |
 
 Catatan untuk panel ini:
 
-- **Berkas no. 2 hanya ke dua penilai B.5a** (IM D.3). Berkas no. 4 dan no. 8 untuk semua dikirim awal **tanpa** kolom dimensi, sub-aspek, level, dan Bloom. Label pengembang dan kisi-kisi (no. 6) baru dikirim setelah B.5a dikumpulkan (IM A.4 "Pelabelan buta lebih dulu", IM D.3 no. 4–6). Aturan ini berlaku untuk kelima ahli, supaya tidak ada salinan berlabel yang beredar di panel sebelum B.5a selesai.
-- Lembar yang bisa dikerjakan di putaran awal: B.6, B.7, B.8, B.9, dan B.3 kecuali bagian yang butuh kisi-kisi. B.5b dan sisa B.3 dikerjakan setelah putaran kedua.
+- **Dua penilai B.5a menerima paket B.5a saja dulu** (keputusan pemilik proyek di [21](21_BERKAS_BUTIR_VALIDATOR.md#pertanyaan-untuk-pemilik-proyek), pertanyaan 2): surat permohonan, berkas no. 2 (lembar kerja `materi-b5a-daftar-butir-buta.xlsx` dan buklet `materi-b5a-buklet-buta.pdf`), dan halaman petunjuk B.5a dari IM, tanpa bagian instrumen lain. Butir diberi ID netral `BT-001` … `BT-180` dan bahan bacaan `BH-01` … `BH-73`, bukan kode butir. Instrumen lengkap, bank berkode, kisi-kisi, daftar B.5b, lembar kerja B.6–B.9, dan berkas lain baru dikirim setelah kedua lembar B.5a kembali, karena kode kesalahan dan beberapa bagian instrumen menunjukkan dimensi dan sub-aspek (21, temuan no. 1). Ini mengubah kolom "Kapan dikirim" IM D.3 untuk kedua penilai itu; IM disesuaikan lewat prasyarat no. 11.
+- **Tiga ahli materi lain** (Ahli Bahasa Anak 2, Ahli Literasi Digital 2, Ahli Pengukuran) menerima kiriman awal seperti di IM D.3. Berkas no. 4 dan no. 8 dikirim **tanpa** kolom dimensi, sub-aspek, level, dan Bloom. Label pengembang dan kisi-kisi (no. 6) baru dikirim setelah B.5a dikumpulkan (IM A.4 "Pelabelan buta lebih dulu", IM D.3 no. 4–6), supaya tidak ada salinan berlabel yang beredar di panel sebelum B.5a selesai.
+- Lembar yang dikerjakan tiga ahli materi lain setelah kiriman awal: B.6, B.7, B.8, B.9, dan B.3 kecuali bagian yang butuh kisi-kisi. B.5b dan sisa B.3 dikerjakan begitu kiriman setelah B.5a diterima. Dua penilai B.5a mengerjakan B.5a saja di minggu 1–2, lalu semua lembar lain di minggu 3–5 (lihat [Beban dua penilai B.5a](#beban-dua-penilai-b5a-di-minggu-35)).
 - Bila sebuah butir B.3 atau B.5b punya kurang dari tiga penilaian non-TD, peneliti meminta ahli bertanda ○ mengisinya (IM catatan di bawah Tabel A1). Jadi jam Ahli Pengukuran bisa bertambah.
 
 ### Panel pengamat budaya (IB)
 
-IB tidak punya tabel penugasan per orang. Ketiga pengamat budaya menilai semua butir B.3 dan semua butir PBK (IB A.3 "Alasan tiga orang"), mengisi B.5–B.7, dan di matriks objek B.5 menilai objek yang dikuasainya (IB A.3 "Etika validator"). Yang berbeda hanya B.8. Semua berkas IB D.3 dikirim di putaran awal (tabel D.3 IB tidak punya kolom "Kapan dikirim"); berkas no. 3 tanpa label level dan Bloom, dan label itu memang tidak dikirim ke panel ini.
+IB tidak punya tabel penugasan per orang. Ketiga pengamat budaya menilai semua butir B.3 dan semua butir PBK (IB A.3 "Alasan tiga orang"), mengisi B.5–B.7, dan di matriks objek B.5 menilai objek yang dikuasainya (IB A.3 "Etika validator"). Yang berbeda hanya B.8. Semua berkas IB D.3 dikirim di kiriman awal (tabel D.3 IB tidak punya kolom "Kapan dikirim"); berkas no. 3 tanpa label level dan Bloom, dan label itu memang tidak dikirim ke panel ini. Berkas no. 11 adalah `budaya-b5-b8-lembar-kerja.xlsx` dari 21.
 
-| Validator | Lembar yang diisi | Berkas IB D.3: awal | Menyusul | Perkiraan jam |
+| Validator | Lembar yang diisi | Berkas IB D.3: kiriman awal | Menyusul | Perkiraan jam |
 | --- | --- | --- | --- | --- |
 | Ahli Budaya Kedu 1 | B.3 (semua butir); B.5 matriks objek; B.6a *Periksa Unggahan* dan B.6b PBK; B.7 cek fakta; B.8 relevansi 1–4, indikator tepat, contoh budaya, B.8b (semua wajib) | 1–11 | Gambar Wayang Kedu Temanggungan dan Candi Pawon (bagian berkas no. 6) | bahan dan bermain 3–4, B.5 2–3, B.6 1,5–2, B.7 1, B.8 0,5–0,75, B.3 1–2 = **± 9–13 jam** |
 | Ahli Budaya Kedu 2 | B.3; B.5; B.6a, B.6b; B.7; B.8 contoh budaya untuk wilayahnya (wajib), B.8b (boleh) | 1–11 | Sama | **± 8,5–12 jam** (B.8 10 menit) |
@@ -97,9 +100,9 @@ Idealnya satu orang paling mengenal Temanggung, satu Magelang, satu Wonosobo (IB
 
 ### Panel ahli media (IMd)
 
-Ketiga ahli media mengisi lembar yang sama. Satu pengecualian: butir teknis H3 hanya diisi Ahli Media Pembelajaran 3, sebagai daftar periksa lulus/tidak; yang lain mengisi TD (IMd A.3).
+Ketiga ahli media mengisi lembar yang sama. Satu pengecualian: butir teknis H3 hanya diisi Ahli Media Pembelajaran 3, sebagai daftar periksa lulus/tidak; yang lain mengisi TD (IMd A.3). Dari berkas no. 9, hanya lembar B.8 (`media-b8-mockup.xlsx`) yang tersedia sebagai lembar kerja; B.3 dan B.5–B.7 diisi di PDF instrumen atau di kertas, karena 21 tidak membuat lembar kerjanya (21, temuan no. 7).
 
-| Validator | Lembar yang diisi | Berkas IMd D.3: awal | Setelah B.6 media | Media langkah 2 | Perkiraan jam |
+| Validator | Lembar yang diisi | Berkas IMd D.3: kiriman awal | Kiriman setelah B.6 media | Media langkah 2 | Perkiraan jam |
 | --- | --- | --- | --- | --- | --- |
 | Ahli Media Pembelajaran 1 (teknologi pendidikan) | B.3 (H3 diisi TD); B.5 uji perangkat; B.6 temuan; B.7 per layar; B.8 mock-up | 1–9 | 10 | Paket langkah 2 (lihat bawah) | bermain 2–3, mock-up 1–1,5, B.3 1 = **± 4–5,5 jam** |
 | Ahli Media Pembelajaran 2 (desain visual atau UX) | Sama dengan Ahli Media Pembelajaran 1 | 1–9 | 10 | Sama | **± 4–5,5 jam** |
@@ -109,11 +112,29 @@ Setiap ahli media menguji minimal tiga perangkat: laptop atau Chromebook, tablet
 
 **Media langkah 2** belum punya instrumen sendiri. IMd A.1 hanya menyebut isinya: telaah singkat layar jadi di instalasi uji (gerak, suara, waktu muat, papan ketik sentuh, dan semua butir bertanda mock-up dinilai ulang). Instrumen dan paketnya disusun di tahap 3 dan masuk gerbang G3 (daftar kerja no. 21), bukan G2.
 
+### Berkas dari 21 per penerima
+
+Nama berkas di folder [`dokumen-pdf/berkas-validator/`](dokumen-pdf/berkas-validator/), sama dengan [21 → Daftar berkas](21_BERKAS_BUTIR_VALIDATOR.md#daftar-berkas).
+
+| Berkas | Nomor D.3 | Penerima | Kiriman |
+| --- | --- | --- | --- |
+| `materi-b5a-daftar-butir-buta.xlsx` | IM no. 2 | Ahli Bahasa Anak 1, Ahli Literasi Digital 1 (penilai B.5a) | Awal, sebagai paket B.5a |
+| `materi-b5a-buklet-buta.pdf` | IM no. 2 | Sama, bila lebih suka membaca atau mengisi di kertas | Awal, bersama lembar kerjanya |
+| `materi-b5b-relevansi-kejelasan.xlsx` | IM no. 5 | Kelima ahli materi | Setelah B.5a |
+| `materi-b6-b9-lembar-kerja.xlsx` | Lembar kerja IM B.6–B.9 (bahannya no. 4, 8, 9, 10) | Kelima ahli materi; B.7 wajib untuk Ahli Literasi Digital 1 dan 2; B.8 menurut tabel penilai B.8 | Awal ke Ahli Bahasa Anak 2, Ahli Literasi Digital 2, Ahli Pengukuran; setelah B.5a ke dua penilai B.5a |
+| `materi-b7-kode-kesalahan-buta.xlsx` | Pengganti lembar B.7 di berkas di atas | Ahli Literasi Digital 1 dan 2, hanya bila peneliti meminta pengodean buta | Bersama lembar kerja B.6–B.9 penerimanya: Ahli Literasi Digital 2 awal, Ahli Literasi Digital 1 setelah B.5a |
+| `budaya-b5-b8-lembar-kerja.xlsx` | IB no. 11 | Ahli Budaya Kedu 1–3 | Awal |
+| `media-b8-mockup.xlsx` | IMd no. 9 (lembar B.8 saja) | Ahli Media Pembelajaran 1–3 | Awal |
+| `khusus-peneliti/materi-b5a-kunci-peneliti.xlsx` | — | Ketua peneliti saja; **tidak pernah dikirim atau dilampirkan** | Dibuka setelah kedua lembar B.5a kembali |
+| `LAPORAN.md`, `materi-b5a-buklet-buta.html` | — | Tim; tidak dikirim | Laporan dibaca sebelum paket dikirim; HTML hanya sumber buklet |
+
+Halaman petunjuk B.5a di paket B.5a bukan berkas 21: halaman itu dicetak dari IM (bagian B.5a saja) setelah pembukanya menyebut ID netral (prasyarat no. 11). Lembar kerja dan buklet sendiri sudah memuat petunjuk dan definisi label yang sama kata demi kata dengan IM.
+
 ### Cek silang ke tabel D.3
 
 | Instrumen | Nomor di D.3 | Masuk tabel di atas |
 | --- | --- | --- |
-| IM | 1–12 | 1, 3, 7, 9, 10, 11, 12 awal ke semua; 2 awal ke dua penilai B.5a; 4 dan 8 awal tanpa label; 4 (label), 5, 6 setelah B.5a |
+| IM | 1–12 | Ke dua penilai B.5a: 1 (surat) dan 2 awal, sebagai paket B.5a; 1 (instrumen lengkap), 3–12 (no. 4 berlabel) setelah B.5a. Ke tiga ahli materi lain: 1, 3, 7, 9, 10, 11, 12 awal; 4 dan 8 awal tanpa label; 4 (label), 5, 6 setelah B.5a |
 | IB | 1–11 | Semua awal ke ketiga pengamat budaya; gambar baru di no. 6 menyusul |
 | IMd | 1–10 | 1–9 awal ke ketiga ahli media; 10 setelah B.6 media |
 
@@ -121,12 +142,13 @@ Setiap ahli media menguji minimal tiga perangkat: laptop atau Chromebook, tablet
 
 ### Putaran kirim
 
-1. **Minggu 0, kesediaan.** Ketua peneliti menghubungi calon validator (telepon atau pesan) untuk menanyakan kesediaan, waktu, dan perangkat. Baru setelah bersedia, surat resmi dikirim. Nama dan kontak dicatat di daftar padanan.
-2. **Putaran awal (minggu 1).** Kesebelas validator menerima surat permohonan dan berkas putaran awal. Pengarahan daring per panel, terpisah supaya validator tidak saling memengaruhi (IM A.4 "Independen"): ahli materi 45 menit (penilai B.5a ditambah 15 menit tentang cara melabel tanpa membuka bahan lain), pengamat budaya 30–45 menit, ahli media 30 menit.
-3. **Setelah B.5a (minggu 3).** Setelah kedua lembar B.5a masuk dan diarsipkan, kelima ahli materi menerima surat lanjutan dan berkas IM D.3 no. 4 berlabel, no. 5, dan no. 6.
-4. **Setelah B.6 media (minggu 3–4).** Setiap ahli media yang sudah mengumpulkan B.6 menerima IMd D.3 no. 10.
+1. **Minggu 0, kesediaan.** Ketua peneliti menghubungi calon validator (telepon atau pesan) untuk menanyakan kesediaan, waktu, dan perangkat. Kepada dua penilai B.5a juga disebut urutan kerjanya: B.5a dulu, lalu semua lembar lain dalam tiga minggu (lihat [Beban dua penilai B.5a](#beban-dua-penilai-b5a-di-minggu-35)). Baru setelah bersedia, surat resmi dikirim. Nama dan kontak dicatat di daftar padanan.
+2. **Kiriman awal (minggu 1).** Kesebelas validator menerima surat permohonan. Sembilan validator menerima berkas kiriman awal panelnya; dua penilai B.5a menerima paket B.5a saja. Pengarahan daring per panel, terpisah supaya validator tidak saling memengaruhi (IM A.4 "Independen"): ahli materi 45 menit untuk tiga ahli materi lain, pengamat budaya 30–45 menit, ahli media 30 menit. Dua penilai B.5a tidak ikut pengarahan panel di minggu ini, karena pengarahan itu membahas kode; mereka mendapat pengarahan B.5a tersendiri, ± 15 menit, tentang cara melabel tanpa membuka bahan lain.
+3. **Kiriman setelah B.5a (minggu 3).** Setelah kedua lembar B.5a masuk dan diarsipkan, kelima ahli materi menerima surat lanjutan. Tiga ahli materi lain menerima berkas IM D.3 no. 4 berlabel, no. 5 (`materi-b5b-relevansi-kejelasan.xlsx`), dan no. 6. Dua penilai B.5a menerima instrumen lengkap dan semua berkas IM D.3 lain (no. 3–12, no. 4 langsung berlabel), lembar kerja `materi-b5b-relevansi-kejelasan.xlsx` dan `materi-b6-b9-lembar-kerja.xlsx`, dan akses ke instalasi uji, lalu ikut pengarahan ahli materi 45 menit. Kiriman ini dikirim begitu lembar B.5a kedua diarsipkan, tanpa menunggu awal minggu 3.
+4. **Kiriman setelah B.6 media (minggu 3–4).** Setiap ahli media yang sudah mengumpulkan B.6 menerima IMd D.3 no. 10.
 5. **Putaran 2 validasi (minggu 10–11).** Hanya butir atau bagian yang direvisi, dengan matriks tindak lanjut D.2 (lihat [Setelah hasil kembali](#setelah-hasil-kembali)).
-6. **Media langkah 2.** Setelah tahap 3, sebelum uji coba (G3).
+6. **Penilaian ulang setelah uji keterbacaan.** Setelah izin etik terbit dan uji keterbacaan (24) selesai, butir yang direvisi dari temuan anak, dan sudah dibaca ulang anak K05 di putaran kedua uji itu, dikirim ke penilai yang ditunjuk [24 → Yang kembali ke ahli](24_UJI_KETERBACAAN.md#yang-kembali-ke-ahli), dengan surat dan matriks seperti putaran 2.
+7. **Media langkah 2.** Setelah tahap 3, sebelum uji coba (G3).
 
 ### Jadwal relatif
 
@@ -134,18 +156,35 @@ Batas waktu mengikuti saran instrumen: pengisian boleh dicicil 2–3 minggu (IM 
 
 | Minggu | Kegiatan | Pengingat | Batas |
 | --- | --- | --- | --- |
-| 0 | Prasyarat 1–10 dipenuhi; kesediaan validator; akun uji dibuat | — | — |
-| 1 | Kirim putaran awal ke 11 validator; pengarahan per panel | Hari ke-3: cek semua validator bisa masuk instalasi uji dan membuka berkas | — |
-| 2 | Validator mengisi | Pengingat 1 ke semua (singkat, sekaligus tawaran bantuan) | Akhir minggu 2: **B.5a** dari dua penilai |
-| 3 | Kirim putaran setelah B.5a ke 5 ahli materi; peneliti mulai menghitung κ | — | Akhir minggu 3: **B.6 media** |
+| 0 | Prasyarat 1–11 dipenuhi; kesediaan validator; akun uji dibuat | — | — |
+| 1 | Kiriman awal ke 11 validator (ke dua penilai B.5a: paket B.5a saja); pengarahan per panel, dan pengarahan B.5a untuk dua penilainya | Hari ke-3: cek semua validator bisa membuka berkas, dan sembilan validator selain penilai B.5a bisa masuk instalasi uji | — |
+| 2 | Validator mengisi; dua penilai B.5a mengisi B.5a saja | Pengingat 1 ke semua (singkat, sekaligus tawaran bantuan) | Akhir minggu 2: **B.5a** dari dua penilai |
+| 3 | Kiriman setelah B.5a ke 5 ahli materi (ke dua penilai B.5a: semua bahan lain dan akses); pengarahan ahli materi untuk dua penilai B.5a; peneliti mulai menghitung κ | — | Akhir minggu 3: **B.6 media** |
 | 4 | Kirim IMd D.3 no. 10; bila κ < 0,70, pedoman pelabelan dipertajam dan sampel dilabel ulang (IM C.6) | Pengingat 2 ke semua yang belum selesai | Akhir minggu 4: **semua lembar ahli media dan pengamat budaya** |
-| 5 | Ahli materi menyelesaikan B.5b dan sisa B.3 | Pengingat 3, dua hari sebelum batas | Akhir minggu 5: **semua lembar ahli materi** |
+| 5 | Tiga ahli materi lain menyelesaikan B.5b dan sisa B.3; dua penilai B.5a menyelesaikan semua lembar selain B.5a | Pengingat 3, dua hari sebelum batas | Akhir minggu 5: **semua lembar ahli materi** |
 | 6–7 | Entri, pemeriksaan ganda, analisis per instrumen, matriks revisi | — | — |
 | 8–9 | Revisi Prototipe I; dicatat di 04 | — | — |
 | 10–11 | Putaran 2: butir yang direvisi dikirim ke penilainya | Satu pengingat di minggu 11 | Akhir minggu 11 |
 | 12 | Daftar periksa validasi G2 diisi (kecuali uji keterbacaan, yang menunggu izin etik) | — | — |
+| Setelah izin etik | Uji keterbacaan (24) pada bahan setelah revisi; revisi dari temuan anak; anak K05 membaca bahan yang direvisi; penilaian ulang ahli untuk butir yang kembali ([24 → Yang kembali ke ahli](24_UJI_KETERBACAAN.md#yang-kembali-ke-ahli)) | Satu pengingat | Ditetapkan saat jadwal uji keterbacaan diketahui |
 
 Bila validator terlambat lebih dari satu minggu, ketua peneliti menelepon. Bila tetap tidak bisa, peneliti meminta penilai pengganti dari bidang yang sama, karena butir dengan kurang dari tiga penilaian non-TD belum boleh dinyatakan lolos (IM C.6, IB C.5).
+
+#### Beban dua penilai B.5a di minggu 3–5
+
+Dengan urutan kirim yang baru, Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1 mengerjakan B.5a (6–8 jam) di minggu 1–2, lalu menerima semua bahan lain di minggu 3. Batas akhir lembar ahli materi tetap akhir minggu 5, jadi sisa lembar mereka harus selesai dalam tiga minggu:
+
+| Validator | Sisa lembar di minggu 3–5 | Per minggu | Bandingkan |
+| --- | --- | --- | --- |
+| Ahli Bahasa Anak 1 | ± 9–14 jam (± 12–19 bila B.7 diisi) | ± 3–6 jam | Ahli Bahasa Anak 2: ± 9–14 jam dalam lima minggu, ± 2–3 jam per minggu |
+| Ahli Literasi Digital 1 | ± 12–18 jam, termasuk B.7 3–5 jam | ± 4–6 jam | Ahli Literasi Digital 2: ± 12–18 jam dalam lima minggu, ± 2,5–3,5 jam per minggu |
+
+Usulan untuk meringankannya (diputuskan ketua peneliti):
+
+1. Beban per minggu ini disebut saat menanyakan kesediaan di minggu 0, supaya calon penilai B.5a bisa menolak atau memilih jadwal.
+2. Kiriman setelah B.5a dikirim begitu lembar B.5a kedua diarsipkan. Bila B.5a kembali lebih cepat dari batasnya, waktu untuk sisa lembar ikut bertambah.
+3. Bila perlu, batas kedua penilai B.5a diundur sampai akhir minggu 6. Entri lembar ahli materi lain sudah bisa dimulai, dan κ B.5a tidak bergantung pada lembar itu, jadi analisis di minggu 6–7 tidak tertunda lebih dari beberapa hari.
+4. B.7 (○) sebaiknya tidak diminta dari Ahli Bahasa Anak 1, kecuali peneliti membutuhkan penilai B.7 tambahan.
 
 ### Usulan tanggal (perlu persetujuan)
 
@@ -167,7 +206,7 @@ Tanggal ini **usulan**, dengan anggapan ketiga instrumen disetujui paling lambat
 
 - Permohonan izin etik diajukan minggu kedua–keempat November 2026 ([01 → Peta jalan](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja)). Dengan usulan di atas, itu sama dengan minggu 1–3 validasi. Ketua peneliti mengurus keduanya, jadi pengiriman paket sebaiknya selesai sebelum berkas etik difinalkan.
 - Validasi tidak menunggu izin etik, karena validator tidak bekerja dengan anak dan tidak menerima data siswa (IM A.3, IB A.3 "Kerahasiaan").
-- Permohonan etik melampirkan instrumen untuk anak (tes, angket, skala sikap) dalam versi yang dibekukan untuk validasi. Bila revisi Prototipe I mengubah bahan yang dilihat anak, perubahannya dilaporkan ke *Lembaga Komite Etik* sesuai aturan komite itu (`needs_verification`: cara melapor perubahan tergantung komite; diatur di 22).
+- Satu permohonan izin etik mencakup semua kegiatan dengan anak, KG1–KG5 (22). Permohonan itu melampirkan instrumen untuk anak (tes, angket, skala sikap) dalam versi yang dibekukan untuk validasi. Bila revisi Prototipe I mengubah bahan yang dilihat anak, perubahannya diajukan ke *Lembaga Komite Etik* sebagai amandemen protokol (22 → *Perubahan protokol*; tata caranya tergantung komite, `needs_verification`).
 - Uji keterbacaan (24) baru berjalan setelah izin etik terbit (paling lambat akhir September–minggu pertama November 2027). Bahan yang diuji adalah versi **setelah** revisi validasi ahli, jadi revisi Prototipe I sudah selesai jauh sebelum uji itu.
 
 ## Surat permohonan validasi
@@ -183,7 +222,7 @@ Tempat isian yang dipakai di ketiga surat:
 | `[nama ketua peneliti]`, `[NIM/NIP]`, `[program studi]`, `[nama perguruan tinggi]` | Identitas peneliti |
 | `[nama pembimbing/promotor]` | Bila surat perlu diketahui pembimbing |
 | `[cara pembayaran]` | Honorarium ditulis "sesuai ketentuan yang berlaku", tanpa angka ([Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 2) |
-| `[tanggal pengarahan]`, `[tanggal batas]`, `[tanggal batas B.5a]` | Dari jadwal |
+| `[tanggal pengarahan]`, `[tanggal batas]`, `[tanggal batas B.5a]`, `[tanggal kiriman kedua]`, `[tanggal pengarahan kedua]` | Dari jadwal; dua yang terakhir untuk kiriman setelah B.5a |
 | `[alamat instalasi uji]`, `[nama akun uji]` | Dikirim terpisah dari surat (lihat [Akses untuk validator](#akses-untuk-validator)) |
 | `[nomor telepon/WhatsApp]`, `[surel peneliti]` | Kontak ketua peneliti |
 | `[tautan folder]` | Folder bersama per validator |
@@ -203,13 +242,13 @@ Tempat isian yang dipakai di ketiga surat:
 >
 > Mengingat keahlian Bapak/Ibu di bidang [bidang keahlian], saya memohon kesediaan Bapak/Ibu menjadi **validator ahli materi**. Bapak/Ibu diminta menilai kesesuaian isi dengan konstruk literasi digital, ketepatan kunci, kebahasaan, dan relevansi setiap butir, mengikuti Instrumen Validasi Ahli Materi v2.1 terlampir. Lembar yang menjadi tugas Bapak/Ibu ditandai di Tabel A1 instrumen.
 >
-> [Hanya untuk dua penilai B.5a:] Bapak/Ibu juga kami mohon menjadi salah satu dari dua **penilai pelabelan buta** (lembar B.5a). Lembar ini dikerjakan lebih dulu, sebelum Bapak/Ibu membaca label pengembang atau kisi-kisi. Karena itu, label dan kisi-kisi baru kami kirim setelah lembar B.5a Bapak/Ibu terima, paling lambat [tanggal batas B.5a].
+> [Hanya untuk dua penilai B.5a:] Bapak/Ibu juga kami mohon menjadi salah satu dari dua **penilai pelabelan buta** (lembar B.5a). Lembar ini dikerjakan lebih dulu, sebelum Bapak/Ibu membaca bahan lain. Karena itu, kiriman pertama untuk Bapak/Ibu hanya berisi paket B.5a: daftar butir dalam lembar kerja dan buklet, beserta petunjuk pelabelan. Setiap butir diberi ID netral (BT-001 sampai BT-180) dan setiap bahan bacaan diberi ID netral (BH-01 sampai BH-73), bukan kode butir, supaya pelabelan tetap buta. Instrumen lengkap, bank soal, kisi-kisi, dan lembar lainnya kami kirim setelah lembar B.5a Bapak/Ibu kami terima, paling lambat [tanggal batas B.5a].
 >
 > Beberapa hal yang perlu Bapak/Ibu ketahui:
 >
 > 1. **Waktu.** Perkiraan seluruh pengisian sekitar [perkiraan jam dari tabel] jam, boleh dicicil. Batas pengumpulan [tanggal batas]. Pengarahan daring sekitar 45 menit pada [tanggal pengarahan].
 > 2. **Dua kiriman.** Sebagian bahan kami kirim sekarang. Label pengembang, kisi-kisi bank soal, dan daftar relevansi per butir (B.5b) menyusul setelah pelabelan buta selesai, sekitar [tanggal kiriman kedua].
-> 3. **Cara mengisi.** Lembar per butir tersedia sebagai lembar kerja (*spreadsheet*) yang sudah berisi kode butir. Lembar lain boleh diisi di berkas atau di kertas.
+> 3. **Cara mengisi.** Lembar per butir tersedia sebagai lembar kerja (*spreadsheet*) yang sudah berisi daftar butirnya: B.5b dan B.6–B.9 dengan kode butir. Lembar lain boleh diisi di berkas atau di kertas.
 > 4. **Akses game.** Bapak/Ibu akan menerima alamat instalasi uji dan akun uji secara terpisah, untuk memainkan minimal satu wilayah. Mohon tidak memakai akun itu di luar keperluan validasi.
 > 5. **Kerahasiaan.** Bank soal, kunci jawaban, butir tes, dan skema kode mohon tidak disebarkan, karena kunci yang bocor ke calon peserta merusak data. Bapak/Ibu tidak akan menerima data siswa apa pun.
 > 6. **Mandiri.** Mohon tidak berdiskusi dengan validator lain sampai lembar Bapak/Ibu selesai. Pertanyaan tentang bahan silakan diajukan kepada saya; kami akan menjawab dengan informasi faktual.
@@ -225,6 +264,16 @@ Tempat isian yang dipakai di ketiga surat:
 >
 > Mengetahui,
 > [nama pembimbing/promotor]
+
+**Untuk dua penilai B.5a** (Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1), surat 1 diubah begini, karena kiriman awal mereka hanya paket B.5a:
+
+- **Lampiran:** "1 berkas (paket pelabelan buta B.5a)".
+- **Paragraf tugas:** kalimat "mengikuti Instrumen Validasi Ahli Materi v2.1 terlampir. Lembar yang menjadi tugas Bapak/Ibu ditandai di Tabel A1 instrumen." diganti dengan "mengikuti Instrumen Validasi Ahli Materi v2.1, yang kami kirim bersama bahan lain setelah pelabelan buta selesai. Lembar yang menjadi tugas Bapak/Ibu ditandai di Tabel A1 instrumen itu."
+- **Butir 1 (waktu):** "Perkiraan pelabelan buta sekitar 6–8 jam, dengan batas [tanggal batas B.5a]; lembar lain sekitar [perkiraan jam dari tabel] jam, dengan batas [tanggal batas]. Semuanya boleh dicicil. Pengarahan daring pelabelan buta sekitar 15 menit pada [tanggal pengarahan], dan pengarahan ahli materi sekitar 45 menit pada [tanggal pengarahan kedua]."
+- **Butir 2 (dua kiriman):** "Kiriman pertama hanya berisi paket B.5a. Instrumen lengkap, bank soal dengan label pengembang, kisi-kisi, daftar relevansi per butir (B.5b), lembar kerja B.6–B.9, dan bahan lainnya kami kirim begitu lembar B.5a Bapak/Ibu kembali, sekitar [tanggal kiriman kedua]."
+- **Butir 3 (cara mengisi):** "Lembar B.5a tersedia sebagai lembar kerja (*spreadsheet*) dan sebagai buklet untuk diisi di kertas. Keduanya memakai ID netral, bukan kode butir. Lembar per butir lainnya menyusul sebagai lembar kerja berkode butir."
+- **Butir 4 (akses game):** "Alamat instalasi uji dan akun uji kami kirim terpisah setelah lembar B.5a kembali. Mohon tidak memakai akun itu di luar keperluan validasi."
+- **Butir 5 (kerahasiaan):** tambahkan "Mohon daftar butir B.5a juga tidak disebarkan."
 
 ### Surat 2: pengamat budaya
 
@@ -245,6 +294,7 @@ Sama dengan surat 1, dengan perubahan ini:
 - **Hal:** Permohonan menjadi validator ahli media.
 - **Paragraf tugas:** "Mengingat keahlian Bapak/Ibu di bidang [teknologi pendidikan/desain visual atau UX/rekayasa perangkat lunak atau pengembangan game], saya memohon kesediaan Bapak/Ibu menjadi **validator ahli media**. Bapak/Ibu diminta menilai tampilan, audio, interaksi, alur permainan, dan keandalan GELITA di beberapa perangkat, serta 27 gambar rancangan layar baru, mengikuti Instrumen Validasi Ahli Media v1.1 terlampir."
 - Ganti butir 2 dengan: "**Dua langkah.** Penilaian sekarang adalah langkah 1: game yang ada di instalasi uji dan gambar rancangan layar baru. Setelah layar baru selesai dibuat, kami akan memohon telaah singkat langkah 2 pada layar jadi, sebelum uji coba. Permohonan itu kami kirim terpisah."
+- Ganti butir 3 dengan: "**Cara mengisi.** Lembar B.8 (gambar rancangan layar) tersedia sebagai lembar kerja (*spreadsheet*). Lembar lain diisi di berkas instrumen atau di kertas."
 - Tambahkan butir: "**Perangkat.** Mohon menguji minimal tiga perangkat: laptop atau Chromebook, tablet mendatar 10 inci atau lebih, dan satu perangkat seperti milik sekolah. Bila Bapak/Ibu tidak memiliki salah satunya, kami dapat meminjamkannya."
 - Ganti butir 4 dengan: "**Akses.** Alamat instalasi uji dan akun uji kami kirim terpisah. Mohon hanya memakai instalasi uji, tidak masuk ke server produksi, dan tidak menjalankan uji beban, uji penetrasi, atau percobaan masuk ke akun lain (IMd A.3)."
 - **Kerahasiaan:** "Isi game, akses, rancangan, mock-up, dan tangkapan layar mohon tidak disebarkan."
@@ -252,6 +302,10 @@ Sama dengan surat 1, dengan perubahan ini:
 - [Hanya untuk Ahli Media Pembelajaran 3:] "Butir teknis H3 hanya diisi Bapak/Ibu, sebagai daftar periksa lulus/tidak."
 
 ### Surat lanjutan setelah B.5a (ke lima ahli materi)
+
+Ada dua versi: versi A untuk tiga ahli materi lain, yang sudah menerima kiriman awal lengkap, dan versi B untuk dua penilai B.5a, yang baru menerima paket B.5a.
+
+**Versi A** (Ahli Bahasa Anak 2, Ahli Literasi Digital 2, Ahli Pengukuran):
 
 > Hal: **Kiriman kedua bahan validasi ahli materi**
 >
@@ -270,7 +324,29 @@ Sama dengan surat 1, dengan perubahan ini:
 > Hormat saya,
 > [nama ketua peneliti]
 
-Kalimat "mohon lembar yang sudah selesai tidak diubah" menjaga lembar yang dikerjakan di putaran awal tetap tidak dipengaruhi label. Untuk penilai B.5a, lembar B.5a sudah dikumpulkan dan diarsipkan, jadi tidak bisa berubah.
+**Versi B** (Ahli Bahasa Anak 1, Ahli Literasi Digital 1):
+
+> Hal: **Kiriman kedua bahan validasi ahli materi**
+>
+> Yth. [nama validator],
+>
+> Terima kasih, lembar pelabelan buta (B.5a) Bapak/Ibu sudah kami terima dan arsipkan. Sekarang kami kirim bahan untuk lembar lainnya:
+>
+> 1. Instrumen Validasi Ahli Materi v2.1 lengkap; lembar yang menjadi tugas Bapak/Ibu ditandai di Tabel A1;
+> 2. Bank soal dengan label pengembang (dimensi, sub-aspek, level AKM, dan Bloom) dan pengecoh berkode;
+> 3. Daftar relevansi per butir (B.5b) dalam lembar kerja, berisi dimensi utama dan definisinya;
+> 4. Kisi-kisi bank soal: butir per tantangan, buklet, jangkar, dan waktu bermain;
+> 5. Lembar kerja B.6–B.9 dan bahan lainnya: ringkasan konstruk, cerita penghubung, tes awal–akhir dan angket, skala sikap, gambar rancangan layar, serta kutipan kurikulum dan kerangka AKM;
+> 6. Alamat instalasi uji dan akun uji, yang kami kirim terpisah.
+>
+> Dengan bahan ini Bapak/Ibu dapat mengisi lembar lain yang menjadi tugas Bapak/Ibu. Batas pengumpulannya [tanggal batas]. Pengarahan daring sekitar 45 menit pada [tanggal pengarahan kedua]. Lembar B.5a yang sudah dikumpulkan tidak perlu diubah.
+>
+> Berkas ada di [tautan folder]. Bila ada pertanyaan, silakan hubungi saya di [nomor telepon/WhatsApp].
+>
+> Hormat saya,
+> [nama ketua peneliti]
+
+Kalimat "mohon lembar yang sudah selesai tidak diubah" di versi A menjaga lembar yang dikerjakan setelah kiriman awal tetap tidak dipengaruhi label. Untuk penilai B.5a, lembar B.5a sudah dikumpulkan dan diarsipkan sebelum bahan lain dikirim, jadi tidak bisa berubah.
 
 ### Pengingat singkat
 
@@ -289,7 +365,7 @@ Kalimat "mohon lembar yang sudah selesai tidak diubah" menjaga lembar yang diker
 
 ## Akses untuk validator
 
-Ahli materi dan pengamat budaya memainkan game yang ada dengan akun uji, minimal satu wilayah (IM A.4 "Kenali konteks", IB A.4). Ahli media bermain satu wilayah penuh per perangkat, mendaftar akun baru, membuka Pustaka, dan keluar akun (IMd A.4). Kebutuhan dari D.3:
+Ahli materi dan pengamat budaya memainkan game yang ada dengan akun uji, minimal satu wilayah (IM A.4 "Kenali konteks", IB A.4). Dua penilai B.5a baru menerima alamat dan akun uji di kiriman setelah B.5a, karena game memperlihatkan wilayah setiap butir. Ahli media bermain satu wilayah penuh per perangkat, mendaftar akun baru, membuka Pustaka, dan keluar akun (IMd A.4). Kebutuhan dari D.3:
 
 | Kebutuhan | IM | IB | IMd |
 | --- | --- | --- | --- |
@@ -328,11 +404,14 @@ Cara teknis membuat akun siswa oleh `admin` (lewat pendaftaran biasa atau panel 
 
 | Dari | Yang kembali |
 | --- | --- |
-| Penilai B.5a (2) | Lembar kerja B.5a, di putaran awal |
-| Ahli materi (5) | Lembar kerja B.5b, B.7, B.9 (dan B.5a dari penilainya); lembar B.1, B.3, B.6, B.8, B.10 (berkas atau kertas); surat pernyataan D.1 bertanda tangan |
-| Pengamat budaya (3) | Lembar kerja B.5–B.8; lembar B.1, B.3, B.9; surat pernyataan D.1 |
-| Ahli media (3) | Lembar kerja B.3, B.5–B.8 atau kertasnya; tangkapan layar temuan; kesimpulan B.9; surat pernyataan D.1 (dengan daftar perangkat yang dipakai) |
+| Penilai B.5a (2) | Lembar kerja B.5a (`materi-b5a-daftar-butir-buta.xlsx`) atau buklet yang diisi di kertas, paling lambat akhir minggu 2 |
+| Ahli materi (5) | Lembar kerja B.5b (`materi-b5b-relevansi-kejelasan.xlsx`) dan B.6–B.9 (`materi-b6-b9-lembar-kerja.xlsx`: B.6, B.7, B.8a–b, B.9a–b; B.7 dari `materi-b7-kode-kesalahan-buta.xlsx` bila pengodean buta diminta); lembar B.1, B.3, B.10 (berkas atau kertas); surat pernyataan D.1 bertanda tangan |
+| Pengamat budaya (3) | Lembar kerja B.5–B.8 (`budaya-b5-b8-lembar-kerja.xlsx`); lembar B.1, B.3, B.9; surat pernyataan D.1 |
+| Ahli media (3) | Lembar kerja B.8 (`media-b8-mockup.xlsx`); lembar B.3 dan B.5–B.7 di berkas instrumen atau kertas, karena 21 tidak membuat lembar kerjanya; tangkapan layar temuan; kesimpulan B.9; surat pernyataan D.1 (dengan daftar perangkat yang dipakai) |
 | Putaran 2 | Lembar nilai ulang dan matriks D.2 yang diparaf |
+| Penilaian ulang setelah uji keterbacaan | Sama dengan putaran 2 |
+
+Setiap lembar kerja yang kembali dicek dulu *Versi berkas*-nya di kepala lembar (misalnya `berkas-1.0 · sumber 3a48dbfe`): harus sama dengan versi yang dikirim ke validator itu ([21 → Cara membuat ulang](21_BERKAS_BUTIR_VALIDATOR.md#cara-membuat-ulang)).
 
 Surat pernyataan memuat nama asli dan tanda tangan. Karena itu surat pernyataan **tidak pernah** masuk repo.
 
@@ -344,13 +423,13 @@ Surat pernyataan memuat nama asli dan tanda tangan. Karena itu surat pernyataan 
 | Daftar padanan nama samaran ↔ nama asli | Satu berkas terenkripsi di luar repo, terpisah dari folder lembar | Ketua peneliti saja |
 | Rekap hasil (skor per butir per nama samaran), hasil analisis, matriks revisi | Repo, setelah dibersihkan dari nama asli dan identitas | Tim |
 
-Nama berkas yang diusulkan: `<samaran>_<lembar>_<putaran>_<tanggal terima>`, misalnya `ABA1_B5b_p1_2026-12-10.xlsx`. Singkatan samaran: `ABA1`, `ABA2`, `ALD1`, `ALD2`, `AP`, `ABK1`–`ABK3`, `AMP1`–`AMP3`.
+Nama berkas yang diusulkan: `<samaran>_<lembar>_<putaran>_<tanggal terima>`, misalnya `ABA1_B5b_p1_2026-12-10.xlsx` (`p1` putaran 1, `p2` putaran 2, `pk` penilaian ulang setelah uji keterbacaan). Singkatan samaran: `ABA1`, `ABA2`, `ALD1`, `ALD2`, `AP`, `ABK1`–`ABK3`, `AMP1`–`AMP3`.
 
 ### Siapa memasukkan dan siapa memeriksa
 
 1. **Penerimaan.** Ketua peneliti mencatat setiap kiriman masuk di daftar penerimaan (samaran, lembar, tanggal, lengkap/tidak) dan menyimpan salinan aslinya **sebelum** dibuka atau diolah. Salinan asli tidak diubah.
 2. **Pemeriksaan kelengkapan.** Dalam dua hari kerja: semua lembar W terisi, skor 1–2 punya catatan, TD punya alasan. Bila kurang, validator dihubungi sekali.
-3. **Entri.** Lembar kerja digital digabung lewat lembar rekap dari 21 (tanpa ketik ulang). Lembar kertas diketik oleh `[petugas entri]`, anggota tim yang bukan validator.
+3. **Entri.** 21 tidak membuat lembar rekap. Peneliti menyusun rekap dari lembar kerja yang kembali: baris setiap lembar kerja disalin ke rekap tanpa ketik ulang, karena semua lembar kerja dari versi berkas yang sama punya baris dan kolom yang sama. ID netral B.5a dipetakan ke kode butir oleh ketua peneliti dengan `khusus-peneliti/materi-b5a-kunci-peneliti.xlsx`, setelah kedua lembar B.5a kembali. Lembar kertas diketik oleh `[petugas entri]`, anggota tim yang bukan validator.
 4. **Pemeriksaan ganda.** Lembar kertas diketik dua kali oleh dua orang berbeda dan dibandingkan; setiap beda dicek ke lembar asli. Untuk lembar kerja digital, ketua peneliti mencocokkan 10% baris acak dengan berkas asli validator.
 5. **Kunci data.** Setelah cocok, rekap dikunci (salinan baca saja bertanggal) dan baru dianalisis.
 
@@ -379,13 +458,14 @@ Urutan kerja: κ B.5a lebih dulu (minggu 3–4), karena label akhir menentukan a
 
 ### Matriks revisi Prototipe I
 
-Satu matriks induk untuk ketiga instrumen. Matriks D.2 di setiap instrumen adalah potongan matriks induk ini yang dikirim ke validator pada putaran 2. Matriks induk ditulis sebagai dokumen baru di folder ini saat hasil pertama kembali; nomor dan namanya ditetapkan sesi koordinator dan dicatat di 00.
+Satu matriks induk untuk ketiga instrumen, dan juga untuk temuan uji keterbacaan (24), supaya revisi dari ahli dan dari anak tercatat di satu tempat. Matriks D.2 di setiap instrumen adalah potongan matriks induk ini yang dikirim ke validator pada putaran 2 dan pada penilaian ulang setelah uji keterbacaan. Matriks induk ditulis sebagai dokumen baru di folder ini saat hasil pertama kembali; nomor dan namanya ditetapkan sesi koordinator dan dicatat di 00.
 
 | No | Butir/bagian | Temuan | Sumber validator | Keputusan | Perubahan | Dokumen yang diubah | Perlu ditelaah ulang? |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | `wnb-3-a02` (contoh) | [ringkas temuan; kutip catatan validator bila perlu] | ABA1, ALD2 (B.5b skor 2) | Direvisi | [apa yang diubah] | 08 | Ya: semua penilai B.5b butir ini |
 | 2 | IB B.5 objek no. [n] (contoh) | [temuan] | ABK2 (veto) | Direvisi | [apa yang diubah] | 08, 12 | Ya: ABK1–3 |
 | 3 | mk-sd-03 (contoh) | [temuan] | AMP2 (B.8 skor 2) | Ditunda ke tahap 3 | Dicatat untuk dokumen implementasi | — | Ya: di media langkah 2 |
+| 4 | `mgl-2-a03` (contoh) | [kata yang tidak dikenal anak] | uji keterbacaan K01, K03; KB-KTA | Revisi kecil | [kata diganti sinonim; dibaca ulang K05] | 08 | Ya, setelah uji keterbacaan: cek singkat ABA1, ABA2 ([24 → Yang kembali ke ahli](24_UJI_KETERBACAAN.md#yang-kembali-ke-ahli)) |
 
 Isi kolom:
 
@@ -393,11 +473,11 @@ Isi kolom:
 | --- | --- |
 | Butir/bagian | Kode butir (`wnb-3-a02`, `tes-mb-A07`, `skp-03`), kode lembar dan butir instrumen (IM B.3 D4), nomor objek, atau kode mock-up |
 | Temuan | Satu temuan per baris; gabungkan temuan yang sama dari beberapa validator |
-| Sumber validator | Nama samaran singkat dan lembarnya; tandai **veto** bila termasuk catatan kritis (IM C.6, IB C.5) atau keparahan 4 / V/R ≥ 3 (IMd C.5) |
+| Sumber validator | Nama samaran singkat dan lembarnya; tandai **veto** bila termasuk catatan kritis (IM C.6, IB C.5) atau keparahan 4 / V/R ≥ 3 (IMd C.5). Untuk temuan dari anak: "uji keterbacaan", kode anak (`K01`–`K05`), dan kode kesulitan `KB-*` dari [24 → Kode kesulitan](24_UJI_KETERBACAAN.md#kode-kesulitan-kb--usulan) |
 | Keputusan | Dipertahankan · revisi kecil · revisi besar · diganti · dihapus · dipindah (label atau kisi-kisi) · ditunda ke tahap 3 · tidak diikuti (alasan wajib) |
 | Perubahan | Apa yang diubah, cukup untuk dibandingkan dengan versi sebelumnya |
 | Dokumen yang diubah | Nomor dokumen repo (08, 12–18, 06, 11) atau instrumen |
-| Perlu ditelaah ulang? | Ya (siapa) / tidak (mengapa); lihat aturan di bawah |
+| Perlu ditelaah ulang? | Ya (siapa, dan kapan: putaran 2, setelah uji keterbacaan, atau media langkah 2) / tidak (mengapa); lihat aturan di bawah |
 
 Kode butir lama tidak dipakai ulang untuk isi baru (IM C.6, IB C.5). Butir pengganti mendapat kode baru.
 
@@ -417,12 +497,13 @@ Kode butir lama tidak dipakai ulang untuk isi baru (IM C.6, IB C.5). Butir pengg
 | Skor 1–2 pada mock-up (B.8 IMd) | Media langkah 2, pada layar jadi | IMd C.5 |
 | Revisi kecil (skor 3, catatan kecil) | Tidak dikirim ulang; cukup tercatat di matriks | IM A.5 Tabel A2 |
 | Perbedaan versi budaya yang sah | Tidak dikirim ulang; dicatat sebagai versi | IB C.5 |
+| Butir direvisi dari temuan uji keterbacaan | Penilai menurut jenis revisinya, di penilaian ulang setelah uji keterbacaan; bahan dibaca ulang anak K05 lebih dulu | [24 → Yang kembali ke ahli](24_UJI_KETERBACAAN.md#yang-kembali-ke-ahli) |
 
 Putaran 2 dikirim dengan matriks D.2 instrumen yang bersangkutan, hanya berisi baris untuk validator itu. Kalau butir masih gagal di putaran 2, butir diganti atau dihapus, dan butir pengganti dinilai lagi oleh semua penilainya.
 
 ### Pencatatan di 04
 
-- **Satu entri per putaran per panel** setelah keputusan revisi diambil, misalnya "Prototipe I, revisi dari validasi ahli materi putaran 1". Isinya: jumlah butir dipertahankan, direvisi, diganti, dan dihapus; κ yang dicapai; veto yang ditindaklanjuti; tautan ke matriks induk; dokumen yang diubah.
+- **Satu entri per putaran per panel** setelah keputusan revisi diambil, misalnya "Prototipe I, revisi dari validasi ahli materi putaran 1". Revisi dari anak dicatat sebagai "Prototipe I, revisi dari uji keterbacaan" (24). Isinya: jumlah butir dipertahankan, direvisi, diganti, dan dihapus; κ yang dicapai; veto yang ditindaklanjuti; tautan ke matriks induk; dokumen yang diubah.
 - **Entri tersendiri** untuk keputusan yang mengubah rancangan, bukan hanya butir: label akhir yang memindah butir di kisi-kisi 06, jumlah akhir butir risiko daring (dua atau tiga, setelah B.9b), tahun kebun teh Tambi dan letak kompleks Candi Arjuna (dari B.7 IB), perubahan skala sikap di bawah batas akhir 10 butir.
 - Setiap entri menyebut versi bahan yang dinilai (tanggal dan *commit*) dan versi sesudah revisi.
 - Nama asli validator tidak pernah ditulis di 04.
@@ -466,7 +547,8 @@ Gerbang G2 butuh dua separuh: **validasi** (di sini) dan **izin etik** (di 22). 
 
 ### Uji keterbacaan
 
-- [ ] Uji keterbacaan dengan 3–5 anak kelas 5 selesai pada bahan versi setelah revisi validasi ahli, dan revisinya dicatat di 04 (24; daftar kerja no. 23). Butir ini baru bisa dicentang setelah izin etik terbit.
+- [ ] Uji keterbacaan dengan empat anak kelas 5, ditambah satu anak di putaran kedua, selesai pada bahan versi setelah revisi validasi ahli, dan revisinya dicatat di 04 (24; daftar kerja no. 23). Butir ini baru bisa dicentang setelah izin etik terbit.
+- [ ] Butir yang direvisi dari uji keterbacaan sudah dinilai ulang atau dicek penilai yang ditunjuk [24 → Yang kembali ke ahli](24_UJI_KETERBACAAN.md#yang-kembali-ke-ahli), dan barisnya di matriks revisi induk tertutup.
 
 ### Dokumentasi
 
@@ -487,16 +569,29 @@ Pertanyaan di draf ini dijawab pemilik proyek pada 27 Oktober 2026 ([04](04_CATA
 | 3 | Paket dikirim kertas atau digital? | **Digital.** PDF instrumen dan lembar kerja lewat folder bersama yang dibatasi per validator; surat pernyataan ditandatangani lalu dipindai; salinan kertas hanya bila validator memintanya |
 | 4 | Apakah ahli media langkah 1 menunggu sesuatu? | **Tidak.** Dikirim bersama panel lain begitu instrumen disetujui, memakai daftar jenis perangkat sekolah sampel sebagai pengganti L8 (IMd D.3 no. 7) |
 
+Keputusan pemilik proyek di dokumen tahap 2 lain yang juga mengatur dokumen ini (27 Oktober 2026, dicatat di 04), dan sudah diterapkan di atas:
+
+- **Urutan kirim B.5a** ([21](21_BERKAS_BUTIR_VALIDATOR.md#pertanyaan-untuk-pemilik-proyek), pertanyaan 1, 2, dan 4). Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1 menerima paket B.5a saja dulu, dengan ID netral `BT-001` … `BT-180` dan `BH-01` … `BH-73`. Instrumen lengkap, bank berkode, kisi-kisi, B.5b, dan lembar B.6–B.9 menyusul setelah B.5a kembali. Tiga ahli materi lain menerima kiriman awal seperti biasa, tanpa label pengembang dan kisi-kisi sampai B.5a kembali. B.7 mencakup semua 622 sel, jadi perkiraan waktunya naik (3–5 jam di dokumen ini). Diterapkan di *Siapa menerima apa*, *Putaran kirim*, *Jadwal relatif*, surat 1, dan surat lanjutan.
+- **Izin etik** (22). Satu permohonan untuk semua kegiatan dengan anak (KG1–KG5); revisi instrumen dilaporkan ke komite sebagai amandemen protokol, dan bahan untuk anak yang dilampirkan adalah versi yang dibekukan untuk validasi ahli.
+- **Uji keterbacaan** (24). Empat anak, ditambah satu anak (K05) di putaran kedua, pada bahan Prototipe I setelah revisi dari validasi ahli. Temuan dari anak masuk matriks revisi induk, dan butir yang direvisi kembali ke ahli di penilaian ulang setelah uji keterbacaan.
+- **Akun staf** (03). `admin` dan `ketua`, yang disebut di dokumen ini, termasuk akun staf yang sudah disetujui; tidak ada lagi yang berstatus usulan.
+
 ## Akibat ke dokumen lain
 
-| Dokumen | Bagian | Perubahan |
-| --- | --- | --- |
-| [03](03_KODE_DAN_ARTI.md) | *Akun staf* atau bagian baru sesudahnya | Tambah baris akun siswa uji validator `uji.bahasa1`–`2`, `uji.digital1`–`2`, `uji.ukur`, `uji.budaya1`–`3`, `uji.media1`–`3`, `uji.cadangan1`–`2`: akun siswa di instalasi uji, dibuat `admin`, bukan akun staf |
-| [03](03_KODE_DAN_ARTI.md) | *Peran* | Tambah singkatan samaran untuk nama berkas: `ABA1`, `ABA2`, `ALD1`, `ALD2`, `AP`, `ABK1`–`ABK3`, `AMP1`–`AMP3` |
-| [01](01_REVISI_10_ANALITIK.md) | *Peta jalan dan daftar kerja*, no. 3 dan 14 | Status: draf paket di 20; penilai B.5a ditetapkan: Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1 (27 Oktober 2026) |
-| [dokumen-pdf/README.md](dokumen-pdf/README.md) | *Sebelum dikirim ke validator* | Tambah langkah 5: "Ikuti prasyarat dan urutan kirim di [20](../20_PAKET_VALIDASI.md)" |
-| [07](07_TELAAH_INSTRUMEN_VALIDASI.md) | *Langkah berikutnya* | Tambah butir: paket validasi disusun di 20 |
-| Instrumen IM, IB, IMd (`dokumen-pdf/src/*.html`) | D.3 | Tidak wajib. Bila pemilik proyek setuju, IB D.3 dan IMd D.3 diberi kolom "Kapan dikirim" seperti IM D.3, supaya cocok dengan tabel *Siapa menerima apa* (IMd no. 10 setelah B.6; IB no. 6 gambar baru menyusul) |
-| 22 | Lampiran dan perubahan bahan | Sebut bahwa instrumen untuk anak yang dilampirkan adalah versi yang dibekukan untuk validasi, dan revisi Prototipe I yang mengubah bahan untuk anak dilaporkan ke *Lembaga Komite Etik* |
-| 24 | Bahan uji | Bahan yang diuji adalah versi setelah revisi validasi ahli |
-| Matriks revisi induk (dokumen baru) | — | Dibuat saat hasil pertama kembali; nomor ditetapkan sesi koordinator dan dicatat di 00 |
+Status per 27 Oktober 2026, setelah penyelarasan dokumen tahap 2. Perubahan di instrumen HTML dibawa dalam satu PR koordinator berikutnya (prasyarat no. 11).
+
+| Dokumen | Bagian | Perubahan | Status |
+| --- | --- | --- | --- |
+| [03](03_KODE_DAN_ARTI.md) | *Akun staf* atau bagian baru sesudahnya | Tambah baris akun siswa uji validator `uji.bahasa1`–`2`, `uji.digital1`–`2`, `uji.ukur`, `uji.budaya1`–`3`, `uji.media1`–`3`, `uji.cadangan1`–`2`: akun siswa di instalasi uji, dibuat `admin`, bukan akun staf | Sudah |
+| [03](03_KODE_DAN_ARTI.md) | *Peran* | Tambah singkatan samaran untuk nama berkas: `ABA1`, `ABA2`, `ALD1`, `ALD2`, `AP`, `ABK1`–`ABK3`, `AMP1`–`AMP3` | Sudah |
+| [01](01_REVISI_10_ANALITIK.md) | *Peta jalan dan daftar kerja*, no. 3 dan 14 | Status: draf paket di 20; penilai B.5a ditetapkan: Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1 (27 Oktober 2026), dan keduanya menerima paket B.5a saja dulu | Sudah |
+| [dokumen-pdf/README.md](dokumen-pdf/README.md) | *Sebelum dikirim ke validator* | Tambah langkah 5: "Ikuti prasyarat dan urutan kirim di [20](../20_PAKET_VALIDASI.md)" | Sudah |
+| [07](07_TELAAH_INSTRUMEN_VALIDASI.md) | *Langkah berikutnya* | Tambah butir: paket validasi disusun di 20 | Sudah |
+| Instrumen ahli materi v2.1 (`dokumen-pdf/src/instrumen-validasi-ahli-materi-v2.1.html`) | B.5a, paragraf pembuka | "lembar kerja yang sudah berisi kode butir" → berisi ID butir netral (`BT-…`) dan ID bahan netral (`BH-…`) | Belum (PR koordinator) |
+| Instrumen ahli materi v2.1 | D.3 | Sebut nama berkas dari 21: no. 2 `materi-b5a-daftar-butir-buta.xlsx` dan `materi-b5a-buklet-buta.pdf`, no. 5 `materi-b5b-relevansi-kejelasan.xlsx`, lembar kerja B.6–B.9 `materi-b6-b9-lembar-kerja.xlsx`. Kolom "Kapan dikirim" mengikuti [Siapa menerima apa](#siapa-menerima-apa): ke dua penilai B.5a hanya surat, no. 2, dan halaman petunjuk B.5a di awal; instrumen lengkap dan no. 3–12 setelah B.5a | Belum (PR koordinator) |
+| Instrumen ahli materi v2.1 | A.4, tabel waktu dan pengarahan | B.7 3–5 jam (622 sel kode), bukan 2–3 jam. Dua penilai B.5a: pengarahan B.5a ± 15 menit di awal, pengarahan 45 menit setelah B.5a | Belum (PR koordinator) |
+| Instrumen pengamat budaya v2.1 dan ahli media v1.1 | D.3 | Sebut `budaya-b5-b8-lembar-kerja.xlsx` (IB no. 11) dan `media-b8-mockup.xlsx` (IMd no. 9, lembar B.8 saja). Tidak wajib: kolom "Kapan dikirim" seperti IM D.3, supaya cocok dengan tabel *Siapa menerima apa* (IMd no. 10 setelah B.6; IB no. 6 gambar baru menyusul) | Belum (PR koordinator) |
+| [22](22_PERMOHONAN_IZIN_ETIK.md) | Lampiran dan *Perubahan protokol* | Sebut bahwa instrumen untuk anak yang dilampirkan adalah versi yang dibekukan untuk validasi, dan revisi Prototipe I yang mengubah bahan untuk anak diajukan ke *Lembaga Komite Etik* sebagai amandemen protokol | Sudah |
+| [24](24_UJI_KETERBACAAN.md) | *Bahan yang menunggu uji keterbacaan* | Bahan yang diuji adalah versi setelah revisi validasi ahli | Sudah |
+| [24](24_UJI_KETERBACAAN.md) | *Yang dibutuhkan dari dokumen lain → Dari 20* | Dipenuhi di 20: matriks revisi induk menampung temuan anak (sumber "uji keterbacaan", kode anak, `KB-*`), dan jadwal punya penilaian ulang setelah uji keterbacaan. Tidak ada yang perlu diubah di 24 | Sudah (di 20) |
+| Matriks revisi induk (dokumen baru) | — | Dibuat saat hasil pertama kembali; nomor ditetapkan sesi koordinator dan dicatat di 00 | Belum (menunggu hasil validasi) |
