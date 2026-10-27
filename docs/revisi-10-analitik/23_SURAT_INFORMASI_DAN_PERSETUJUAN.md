@@ -82,7 +82,8 @@ Setelah itu: [tabel pembagian](#tabel-pembagian), [catatan keterbacaan](#catatan
 | `[tanggal P1]` … `[tanggal P5]`, `[rentang minggu]` | Jadwal per kelas | Per kelas |
 | `[tanggal batas kembali]` | P1: H-3 sebelum P1 | Per kelas |
 | `[tanggal studi ditutup]` | Rencana tanggal studi ditutup (setelah analisis selesai, [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan)), dari jadwal ketua peneliti. Kalau studi ternyata ditutup lebih lambat, permintaan hapus tetap diterima sampai studi benar-benar ditutup ([Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 1) | Sebelum dicetak |
-| `[jumlah hari kerja]` | Protokol etik ([22 → Mengundurkan diri dan hapus data](22_PERMOHONAN_IZIN_ETIK.md#mengundurkan-diri-dan-hapus-data)); tempat kosong yang sama di 22 dan 23 | Sebelum dicetak |
+| `[kontak PPDP atau narahubung]` | PPDP lembaga peneliti kalau sudah ditunjuk, kalau belum ketua peneliti sebagai narahubung ([22 → Pengendali, prosesor, dan narahubung data](22_PERMOHONAN_IZIN_ETIK.md#pengendali-prosesor-dan-narahubung-data)) | Sebelum permohonan etik dikirim |
+| `[nama dan lokasi penyedia server]` | Pemilik proyek; server di Indonesia, dengan perjanjian prosesor ([22 → Penyimpanan dan enkripsi](22_PERMOHONAN_IZIN_ETIK.md#penyimpanan-dan-enkripsi)) | Sebelum permohonan etik dikirim |
 | `[rentang tanggal uji keterbacaan]`, `[tanggal batas kembali uji keterbacaan]` | Jadwal uji keterbacaan ([24 → Jadwal empat sesi](24_UJI_KETERBACAAN.md#jadwal-empat-sesi)), disepakati dengan sekolah asal anak | Sebelum dicetak |
 | `[nomor WA SAPA 129]`, `[kabupaten/kota]`, `[kontak UPTD PPA]` | Layanan resmi perlindungan anak di wilayah sasaran ([22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) langkah 5); `needs_verification`: nama dan nomor dicek sebelum lapangan | Sebelum T13 dicetak |
 
@@ -142,7 +143,9 @@ Tiga halaman A4 tegak, dicetak bolak-balik (dua lembar). Orang tua menyimpan sur
 >
 > Ada satu batas. Kalau anak menunjukkan bahwa ia sedang dalam bahaya serius, misalnya diancam atau diajak bertemu orang asing, ketua peneliti akan mencari bantuan. Ketua peneliti bisa menghubungi Bapak/Ibu (kecuali orang tua diduga ikut terlibat), kepala sekolah, dan layanan perlindungan anak resmi dari pemerintah, seperti SAPA 129.
 >
-> GELITA berjalan lewat internet. Kami menjaga datanya dengan akun berkata sandi untuk setiap peran, memisahkan nama dari data, dan menyimpan salinan data di tempat terenkripsi. Meski begitu, tidak ada sistem daring yang sepenuhnya bebas risiko kebocoran. Kalau terjadi kebocoran yang menyangkut data anak Bapak/Ibu, kami akan memberi tahu Bapak/Ibu dan sekolah.
+> Yang bertanggung jawab atas data anak adalah [nama lembaga peneliti]. Kami hanya mengolah data anak kalau Bapak/Ibu memberi izin di formulir. Untuk urusan data, Bapak/Ibu bisa menghubungi [kontak PPDP atau narahubung].
+>
+> GELITA berjalan lewat internet. Datanya disimpan di server [nama dan lokasi penyedia server] di Indonesia. Penyedia server hanya menyimpan data atas perintah kami, dengan perjanjian tertulis. Data anak tidak dikirim ke luar negeri. Kami menjaga datanya dengan akun berkata sandi untuk setiap peran, memisahkan nama dari data, dan menyimpan salinan data di tempat terenkripsi. Meski begitu, tidak ada sistem daring yang sepenuhnya bebas risiko kebocoran. Kalau terjadi kebocoran yang menyangkut data anak Bapak/Ibu, kami memberi tahu Bapak/Ibu secara tertulis paling lambat 3 × 24 jam setelah kami mengetahuinya, dan juga memberi tahu sekolah.
 >
 > Formulir izin disimpan di lemari terkunci. Salinan digitalnya dikunci dengan kata sandi dan hanya bisa dibuka dua orang peneliti. Nomor HP yang Bapak/Ibu tulis di formulir hanya dipakai untuk urusan penelitian ini. Lama penyimpanan:
 > - **Nama anak, formulir izin, dan nomor HP:** sampai penelitian ditutup, yaitu setelah semua data selesai diolah, sekitar [tanggal studi ditutup]. Setelah itu kertasnya dicacah, berkas digitalnya dihapus, dan nama di akun GELITA diganti kode.
@@ -165,11 +168,17 @@ Tiga halaman A4 tegak, dicetak bolak-balik (dua lembar). Orang tua menyimpan sur
 > **6. Berhenti kapan saja**
 >
 > Bapak/Ibu dan anak boleh berhenti kapan saja tanpa alasan dan tanpa akibat apa pun. Caranya: isi formulir pengunduran diri yang terlampir, atau hubungi kami lewat nomor di bawah. Di formulir itu Bapak/Ibu bisa memilih:
-> - anak berhenti, dan data yang sudah terkumpul tetap dipakai;
+> - anak berhenti, dan data yang sudah terkumpul tetap boleh dipakai;
 > - anak berhenti, dan semua data anak dihapus; atau
 > - anak tetap ikut, tetapi rekaman suara atau jawaban pertanyaan tentang pengalaman tidak nyaman di internet dihapus.
 >
-> Permintaan hapus bisa diajukan sampai penelitian ditutup, sekitar [tanggal studi ditutup]. Setelah itu nama anak sudah dimusnahkan, jadi data tidak bisa lagi dihubungkan dengan anak. Hasil gabungan yang sudah diterbitkan, misalnya rata-rata satu kelas di laporan, tidak bisa ditarik kembali.
+> Paling lambat 3 × 24 jam setelah permintaan Bapak/Ibu kami terima dan cocokkan, kami berhenti mengumpulkan data anak. Kalau Bapak/Ibu minta data dihapus, kami memberi tahu Bapak/Ibu paling lambat 3 × 24 jam setelah datanya dihapus.
+>
+> Bapak/Ibu juga boleh meminta melihat data anak, meminta salinannya, atau membetulkan data yang salah, misalnya umur atau kelas. Hubungi kami lewat nomor di bawah. Kami menjawab paling lambat 3 × 24 jam.
+>
+> Permintaan hapus, melihat, atau membetulkan data bisa diajukan sampai penelitian ditutup, sekitar [tanggal studi ditutup]. Setelah itu nama anak sudah dimusnahkan, jadi data tidak bisa lagi dihubungkan dengan anak. Hasil gabungan yang sudah diterbitkan, misalnya rata-rata satu kelas di laporan, tidak bisa ditarik kembali.
+>
+> Kalau permintaan Bapak/Ibu tentang data tidak kami jalankan, Bapak/Ibu bisa mengadu ke lembaga pelindungan data pribadi milik pemerintah.
 >
 > Anak juga boleh tidak menjawab pertanyaan tertentu, atau berhenti di tengah kegiatan. Peneliti tidak akan memaksa.
 >
@@ -248,7 +257,7 @@ Satu halaman A4 tegak, dikembalikan dalam amplop tertutup. Satu formulir untuk s
 > Nama saksi: ________________ Hubungan dengan orang tua/wali: ____________ Tanda tangan saksi: ____________
 >
 > ---
-> *Diisi peneliti:* diterima tanggal ________ · paraf P1 ______ · dicatat di L7 ☐
+> *Diisi peneliti:* diterima tanggal ________ · paraf P1 ______ · nama anak cocok dengan daftar kelas ☐ · dikonfirmasi lewat telepon (kalau ragu) ☐ · dicatat di L7 ☐
 
 ---
 
@@ -497,9 +506,9 @@ Dua halaman A4 tegak (satu lembar bolak-balik), dikirim lewat guru dalam amplop 
 > - **Rekaman suara**, supaya penjelasan anak tercatat tepat. Rekaman dihapus setelah tulisan ulangnya selesai diperiksa.
 > - **Membaca 2–3 pertanyaan tentang pengalaman tidak nyaman di internet.** Misalnya: "Dalam setahun ini, pernahkah ada sesuatu di internet atau HP yang membuatmu tidak nyaman, takut, atau sedih?" Kami hanya bertanya apakah kalimatnya mudah dipahami. Anak **tidak menjawab** pertanyaan itu tentang dirinya sendiri, dan tidak ada jawaban yang dicatat. Anak hanya menjelaskan apa yang ditanyakan. Kalau anak tetap bercerita tentang hal yang mengkhawatirkan, ketua peneliti mengikuti langkah yang sudah disetujui komite etik.
 >
-> **Berhenti kapan saja.** Anak boleh berhenti kapan saja tanpa akibat. Kami juga bisa menghentikan pertemuan, atau keikutsertaan anak, kalau itu perlu demi keselamatan anak; Bapak/Ibu akan kami beri tahu. Kalau Bapak/Ibu minta, catatan dan rekaman anak kami hapus. Caranya: isi formulir pengunduran diri yang terlampir, atau hubungi kami. Permintaan hapus bisa diajukan sampai penelitian ditutup, sekitar [tanggal studi ditutup]. Perbaikan soal yang sudah dibuat dan hasil gabungan yang sudah diterbitkan tidak bisa ditarik.
+> **Berhenti kapan saja.** Anak boleh berhenti kapan saja tanpa akibat. Kami juga bisa menghentikan pertemuan, atau keikutsertaan anak, kalau itu perlu demi keselamatan anak; Bapak/Ibu akan kami beri tahu. Kalau Bapak/Ibu minta, catatan dan rekaman anak kami hapus, dan Bapak/Ibu kami beri tahu paling lambat 3 × 24 jam setelah dihapus. Caranya: isi formulir pengunduran diri yang terlampir, atau hubungi kami. Bapak/Ibu juga boleh meminta melihat atau membetulkan catatan anak; kami menjawab paling lambat 3 × 24 jam. Permintaan bisa diajukan sampai penelitian ditutup, sekitar [tanggal studi ditutup]. Perbaikan soal yang sudah dibuat dan hasil gabungan yang sudah diterbitkan tidak bisa ditarik. Kalau permintaan tentang data tidak kami jalankan, Bapak/Ibu bisa mengadu ke lembaga pelindungan data pribadi milik pemerintah.
 >
-> **Kerahasiaan.** Nama anak tidak pernah ada di catatan penelitian. Nama hanya ada di berkas izin dan daftar kode yang disimpan terkunci oleh ketua peneliti, terpisah dari catatan. Berkas ini dimusnahkan saat penelitian ditutup. Catatan berkode disimpan 5 tahun setelah penelitian ditutup. Hasilnya ditulis tanpa nama anak dan sekolah. Rekaman suara kami simpan di tempat terenkripsi, dan catatan ketikan di folder yang hanya bisa dibuka tim. Meski begitu, tidak ada penyimpanan digital yang sepenuhnya bebas risiko kebocoran. Kalau terjadi kebocoran yang menyangkut catatan anak Bapak/Ibu, kami akan memberi tahu Bapak/Ibu dan sekolah.
+> **Kerahasiaan.** Yang bertanggung jawab atas data anak adalah [nama lembaga peneliti]; kami hanya mencatat data anak kalau Bapak/Ibu memberi izin. Untuk urusan data, hubungi [kontak PPDP atau narahubung]. Nama anak tidak pernah ada di catatan penelitian. Nama hanya ada di berkas izin dan daftar kode yang disimpan terkunci oleh ketua peneliti, terpisah dari catatan. Berkas ini dimusnahkan saat penelitian ditutup. Catatan berkode disimpan 5 tahun setelah penelitian ditutup. Hasilnya ditulis tanpa nama anak dan sekolah. Rekaman suara kami simpan di tempat terenkripsi, dan catatan ketikan di folder yang hanya bisa dibuka tim; keduanya disimpan di Indonesia. Meski begitu, tidak ada penyimpanan digital yang sepenuhnya bebas risiko kebocoran. Kalau terjadi kebocoran yang menyangkut catatan anak Bapak/Ibu, kami memberi tahu Bapak/Ibu secara tertulis paling lambat 3 × 24 jam setelah kami mengetahuinya, dan juga memberi tahu sekolah.
 >
 > Ada satu batas. Kalau anak menunjukkan bahwa ia sedang dalam bahaya serius, ketua peneliti akan mencari bantuan. Ketua peneliti bisa menghubungi Bapak/Ibu (kecuali orang tua diduga ikut terlibat), kepala sekolah, dan layanan perlindungan anak resmi dari pemerintah, seperti SAPA 129.
 >
@@ -614,7 +623,7 @@ Satu halaman A4, dilampirkan di belakang T1 dan T8a (orang tua menyimpannya) dan
 >
 > Beri tanda ✓ pada yang Bapak/Ibu pilih.
 >
-> ☐ **A. Anak saya berhenti ikut penelitian mulai hari ini. Data yang sudah dikumpulkan boleh tetap dipakai.**
+> ☐ **A. Anak saya berhenti ikut penelitian mulai hari ini. Izin saya untuk data yang sudah dikumpulkan tetap berlaku, jadi data itu boleh tetap dipakai.**
 >
 > ☐ **B. Anak saya berhenti ikut penelitian mulai hari ini, dan saya minta semua data anak saya dihapus.**
 >
@@ -622,9 +631,13 @@ Satu halaman A4, dilampirkan di belakang T1 dan T8a (orang tua menyimpannya) dan
 > ☐ rekaman suara (rekaman yang sudah ada dihapus)
 > ☐ pertanyaan tentang pengalaman tidak nyaman di internet (jawaban yang sudah ada dihapus)
 >
+> ☐ **D. Saya ingin melihat data anak saya, meminta salinannya, atau membetulkan data yang salah:** ______________________
+>
 > Bapak/Ibu tidak perlu memberi alasan. Tidak ada akibat apa pun bagi anak.
 >
-> Permintaan hapus bisa diajukan sampai penelitian ditutup, sekitar [tanggal studi ditutup]. Hasil gabungan yang sudah diterbitkan, misalnya rata-rata satu kelas di laporan, tidak bisa ditarik kembali.
+> Paling lambat 3 × 24 jam setelah permintaan ini kami terima dan cocokkan dengan formulir izin, kami berhenti mengumpulkan data anak (pilihan A dan B) atau menjawab permintaan Bapak/Ibu (pilihan D). Kalau data dihapus, Bapak/Ibu kami beri tahu paling lambat 3 × 24 jam setelah penghapusan.
+>
+> Permintaan bisa diajukan sampai penelitian ditutup, sekitar [tanggal studi ditutup]. Hasil gabungan yang sudah diterbitkan, misalnya rata-rata satu kelas di laporan, tidak bisa ditarik kembali.
 >
 > [tempat], tanggal ____________
 > Tanda tangan: ______________________ Nama jelas: ______________________
@@ -632,7 +645,7 @@ Satu halaman A4, dilampirkan di belakang T1 dan T8a (orang tua menyimpannya) dan
 > Serahkan formulir ini kepada kakak peneliti, atau kirim fotonya ke [nomor HP/WA peneliti].
 >
 > ---
-> *Diisi peneliti:* diterima tanggal ________ lewat kertas / WA / surel · paraf P1 ______ · kode peserta ________ · L7 diperbarui ☐ · permintaan hapus diajukan ke admin tanggal ________ · admin menjalankan tanggal ________ · konfirmasi ke orang tua tanggal ________
+> *Diisi peneliti:* diterima tanggal dan jam ________ lewat kertas / WA / surel · identitas pemohon cocok dengan formulir izin T2 ☐ (tanggal dan jam ________) · paraf P1 ______ · kode peserta ________ · L7 diperbarui ☐ · akun dinonaktifkan tanggal ________ · permintaan hapus diajukan ke admin tanggal ________ · admin menjalankan, termasuk salinan cadangan, tanggal ________ · konfirmasi ke orang tua tanggal ________ · pilihan D dijawab tanggal ________
 
 ---
 
@@ -643,6 +656,7 @@ Satu halaman A4, dilampirkan di belakang T1 dan T8a (orang tua menyimpannya) dan
 | A | `Mengundurkan diri (data tetap)` dengan tanggal | Akun dinonaktifkan `admin`; anak tidak ikut pertemuan berikutnya dan bergabung dengan kegiatan pengganti. Data sampai tanggal itu tetap dipakai: `consent_ok = 1` juga untuk status ini, untuk data sampai tanggal mundur (`kamus-1.1`, [11 → Penanda untuk analisis](11_KAMUS_DATA.md#penanda-untuk-analisis)) |
 | B | `Mengundurkan diri (hapus data)` dengan tanggal; "permintaan hapus diajukan" | P1 (`koordinator`) mengajukan permintaan hapus lewat kode peserta di panel peneliti; `admin` menjalankannya ([01 → Admin dan peneliti](01_REVISI_10_ANALITIK.md#admin-dan-peneliti-dua-peran-berbeda)). Rekaman dan transkrip L5, dan baris di L2–L6 dengan kode itu, ikut dihapus oleh peneliti. Nama di L7 dicoret dan diberi catatan "data dihapus [tanggal]" |
 | C | Tetap `Aktif`; kolom izin yang ditarik diubah ke Tidak dengan tanggal | Rekaman suara dihapus peneliti; jawaban butir risiko dihapus lewat permintaan hapus sebagian. Pengaturan butir risiko di panel disesuaikan sebelum P5. Hapus sebagian belum ada di sistem; ini catatan perubahan sistem untuk tahap 3 (lihat [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)) |
+| D | Tidak berubah | `ketua` membuka kode, lalu memperlihatkan data anak itu, menyiapkan salinannya tanpa data anak lain dan tanpa kunci jawaban, atau meminta `admin` membetulkan data pendaftaran. Jawaban paling lambat 3 × 24 jam; untuk salinan, dalam waktu itu dikonfirmasi berapa lama penyiapannya ([22 → Mengundurkan diri dan hapus data](22_PERMOHONAN_IZIN_ETIK.md#mengundurkan-diri-dan-hapus-data)) |
 
 Anak yang menyatakan sendiri ingin berhenti, tanpa formulir dari orang tua, dicatat sebagai pilihan A, `Mengundurkan diri (data tetap)`, pada hari itu. P1 lalu memberi tahu orang tua lewat kontak di T2 dan menawarkan pilihan B.
 
@@ -650,7 +664,7 @@ Formulir T10 yang sudah diisi disimpan `ketua` di berkas terpisah yang dikunci, 
 
 **Untuk uji keterbacaan (T8)** formulir yang sama dipakai. Tidak ada L7 dan akun: pilihan A berarti anak berhenti dan catatannya tetap dipakai; pilihan B berarti LK1–LK3, kartu cetak, rekaman, dan transkrip anak itu dimusnahkan; pilihan C berarti rekaman, atau catatan parafrase butir risiko daring, dihapus. `ketua` mencatat tindak lanjutnya di daftar nama–kode ([24 → Pengelolaan data](24_UJI_KETERBACAAN.md#pengelolaan-data)).
 
-Orang tua diberi tahu lewat kontak di T2 (atau T8b) setelah permintaan dijalankan, paling lambat [jumlah hari kerja] hari kerja (tempat kosong yang sama dengan [22 → Mengundurkan diri dan hapus data](22_PERMOHONAN_IZIN_ETIK.md#mengundurkan-diri-dan-hapus-data)). `needs_verification`: cara teknis hapus data (termasuk salinan cadangan dan berkas ekspor yang sudah dibuat) ditulis di dokumen implementasi tahap 3; teks ini hanya menjanjikan bahwa data dihapus dari sistem dan dari data penelitian.
+Batas waktunya mengikuti PP No. 33 Tahun 2026 dan [22 → Mengundurkan diri dan hapus data](22_PERMOHONAN_IZIN_ETIK.md#mengundurkan-diri-dan-hapus-data) (keputusan pemilik proyek 27 Oktober 2026; `needs_verification` terhadap naskah resmi): pengumpulan data dihentikan paling lambat 3 × 24 jam setelah permintaan terverifikasi, dan orang tua diberi tahu lewat kontak di T2 (atau T8b) paling lambat 3 × 24 jam setelah penghapusan. Ini menggantikan tempat kosong `[jumlah hari kerja]`. Penghapusan mencakup sistem, ekspor yang masih ada, salinan peneliti, dan salinan cadangan server; penyedia server diperintahkan lebih dulu. Cara teknisnya ditulis di dokumen implementasi tahap 3. Anak yang memintanya sendiri dicatat sebagai pilihan A, dan untuk pilihan D anak perlu persetujuan orang tua.
 
 ## T11 Layar sebelum butir risiko daring
 
@@ -893,6 +907,13 @@ Keputusan pemilik proyek pada hari yang sama, setelah 22 dan 23 dibandingkan den
 13. **Isi surat ditambah menurut pedoman KEPPKN 2021:** batas pengamanan daring (T1 bagian 3, T8a), jumlah peserta, alasan anak diundang, dan sumber dana (T1 pembuka, T8a, T9), penghentian oleh peneliti demi keselamatan (T1 bagian 6, T8a), dan kontak cadangan (T1 bagian 8, T8a).
 14. **Tanda terima kasih disebut dalam satu kalimat netral** di T1 bagian 7 dan T8a: tanpa uang, tanpa biaya, sama untuk semua anak di kelas (ikut atau tidak), ditambah kudapan di P1 dan P5 untuk sampel utama. Tidak dipilih: tetap tidak disebut di surat dan hanya dijelaskan di 22.
 15. **Surat bisa dibacakan guru kelas atau peneliti**, dan formulir T2 dan T8b mendapat baris saksi yang diisi hanya dalam keadaan itu, oleh orang di luar tim peneliti; tanda tangan boleh diganti cap jempol. Tidak dipilih: tanpa perubahan.
+
+Keputusan pemilik proyek pada hari yang sama, setelah 22 dan 23 dibandingkan dengan PP No. 33 Tahun 2026 (cabang `r10-pp-pdp`; [22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum), [22 → Keputusan pemilik proyek](22_PERMOHONAN_IZIN_ETIK.md#keputusan-pemilik-proyek) no. 14–17, [04](04_CATATAN_KEPUTUSAN.md); nomor pasal `needs_verification` terhadap naskah resmi):
+
+16. **Server dan penyimpanan di Indonesia.** T1 bagian 3 menyebut `[nama dan lokasi penyedia server]` di Indonesia, bahwa penyedia hanya menyimpan atas perintah tim dengan perjanjian tertulis, dan bahwa data tidak dikirim ke luar negeri; T8a menyebut catatan disimpan di Indonesia.
+17. **Isi surat dari PP 33/2026:** pengendali data `[nama lembaga peneliti]`, dasar pengolahan (izin orang tua), dan `[kontak PPDP atau narahubung]` (T1 bagian 3, T8a *Kerahasiaan*); pemberitahuan kebocoran tertulis paling lambat 3 × 24 jam (T1 bagian 3, T8a); hak melihat, meminta salinan, dan membetulkan data, dengan jawaban paling lambat 3 × 24 jam, dan aduan ke lembaga pelindungan data pribadi (T1 bagian 6, T8a *Berhenti kapan saja*).
+18. **Pengecualian untuk penelitian tidak dipakai.** Pilihan A di T1 bagian 6 dan T10 ditulis sebagai izin untuk data yang sudah ada tetap berlaku; T10 mendapat pilihan D (melihat, salinan, pembetulan), batas 3 × 24 jam menggantikan `[jumlah hari kerja]`, dan kotak peneliti mencatat pencocokan identitas pemohon, penonaktifan akun, dan penghapusan salinan cadangan.
+19. **Verifikasi izin orang tua dan bukti persetujuan.** Kotak peneliti T2 mendapat centang "nama anak cocok dengan daftar kelas" dan "dikonfirmasi lewat telepon (kalau ragu)". Bukti persetujuan setelah studi ditutup berupa daftar izin berkode tanpa nama ([22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan)); surat tidak berubah karenanya.
 
 ## Akibat ke dokumen lain
 
