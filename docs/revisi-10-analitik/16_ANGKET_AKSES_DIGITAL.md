@@ -394,7 +394,7 @@ Teks di layar pembuka angket. Siswa membacanya sendiri; koordinator sesi tidak m
 
 > Halo! Bagian ini berisi pertanyaan tentang kebiasaanmu memakai HP, komputer, dan internet. Ini bukan tes. Tidak ada jawaban yang benar atau salah, dan tidak ada nilainya.
 >
-> Guru dan orang tuamu tidak akan melihat jawabanmu. Jawabanmu hanya dibaca tim peneliti, dan namamu tidak ditulis di mana pun.
+> Guru dan orang tuamu tidak akan melihat jawabanmu. Jawabanmu hanya dibaca tim peneliti. Jawabanmu disimpan dengan kode, bukan dengan namamu.
 >
 > Jawablah sesuai keadaanmu yang sebenarnya, ya. Kalau ada pertanyaan yang tidak ingin kamu jawab, lewati saja. Tidak apa-apa.
 >
@@ -489,20 +489,23 @@ Masuk [11, *Variabel peserta dan sesi*](11_KAMUS_DATA.md#variabel-peserta-dan-se
    - Koordinator tidak menanggapi jawaban siswa, dan tidak ada tindak lanjut ke guru atau orang tua.
 5. **Tidak mengajarkan jawaban game.** Angket diisi sebelum game dan sebelum tes akhir, jadi tidak ada butir yang menyebut topik atau tindakan kunci D2 dan D3: data pribadi (DIG-PRI), kata sandi dan kode OTP (DIG-SAN), izin membagikan foto atau obrolan (DIG-IZN, DIG-ETK), orang asing (DIG-ASG), kabar bohong (DIG-HOX), atribusi (BUD-ATR), keterangan budaya yang keliru (BUD-REP), izin pelaku dan pemilik karya (BUD-IZN), dan menghargai tradisi (BUD-ETK). Butir seperti "Pernahkah kamu memberikan kode OTP?" atau "Apakah kamu memeriksa kebenaran berita?" tidak dipakai. Satu-satunya rujukan ke keamanan adalah frasa umum "memakai internet dengan aman" di ang-12, yang juga sudah ada di layar pembuka tes.
 6. **Boleh tidak menjawab.** Setiap butir boleh dilewati, dan ini tertulis di petunjuk. Siswa yang ingin berhenti boleh berhenti tanpa akibat.
-7. **Kalau anak bercerita.** Angket P1 tidak menanyakan pengalaman buruk, jadi kecil kemungkinan anak bercerita hal yang mengkhawatirkan saat itu. Kalau itu terjadi, peneliti mengikuti protokol etik: koordinator melapor ke ketua peneliti, yang menjalankan langkah rujukan di protokol. Ceritanya tidak dicatat sebagai data angket.
+7. **Kalau anak bercerita.** Angket P1 tidak menanyakan pengalaman buruk, jadi kecil kemungkinan anak bercerita hal yang mengkhawatirkan saat itu. Kalau itu terjadi, peneliti mengikuti protokol etik: koordinator melapor ke ketua peneliti, yang menjalankan langkah rujukan di protokol ([22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring)). Ceritanya tidak dicatat sebagai data angket.
 8. **Butir risiko daring di P5** (diputuskan 26 Oktober 2026). Syaratnya:
    - Butir ini disebut di permohonan izin etik dan di surat izin orang tua, dengan centang izin terpisah di surat itu dan di L7 (keputusan 26 Oktober 2026). Siswa tanpa centang itu tidak melihat butir ini, tetapi tetap ikut kegiatan lain.
    - Diisi sendiri di layar, tidak dibacakan, dan tidak ada orang lain yang melihat layar siswa. Denah papan catur dan jarak antarperangkat ikut menjaga privasi.
-   - Setelah butir ini, semua siswa, apa pun jawabannya, melihat pesan yang sama tentang kepada siapa bisa bercerita (orang tua, guru, atau kakak peneliti). Dengan begitu, tidak ada siswa yang terlihat berbeda.
-   - Prosedur rujukan ditulis di protokol etik: siapa yang melihat jawaban yang perlu ditindaklanjuti, kapan, dan bagaimana kode dihubungkan dengan nama di L7 (hanya oleh ketua peneliti). Penanda rujukan dan catatan tindak lanjut disimpan di luar data penelitian.
+   - Setelah butir ini, semua siswa, apa pun jawabannya, juga siswa tanpa izin butir risiko, melihat pesan yang sama tentang kepada siapa bisa bercerita (orang tua, guru, atau kakak peneliti); teksnya di 23 → T12. Di akhir P5 semua anak di kelas menerima selebaran tempat bercerita (23 → T13). Dengan begitu, tidak ada siswa yang terlihat berbeda (keputusan pemilik proyek, 27 Oktober 2026).
+   - Prosedur rujukan ditulis di protokol etik ([22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring)): siapa yang melihat jawaban yang perlu ditindaklanjuti, kapan, dan bagaimana kode dihubungkan dengan nama di L7 (hanya oleh ketua peneliti). Penanda rujukan dan catatan tindak lanjut disimpan di luar data penelitian.
+   - Penanda tindak lanjut (ang-21 *Pernah, sekali atau dua kali* atau lebih; didahulukan *Beberapa kali atau lebih*, atau ang-23 *Aku tidak bercerita kepada siapa pun*) ikut ditelaah Ahli Literasi Digital, yang menilai apakah penanda ini terlalu lebar ([Validasi dan uji coba](#validasi-dan-uji-coba)). Penyempitannya butuh keputusan pemilik proyek.
+   - Sebelum ang-21, layar menanyakan ulang apakah anak mau menjawab dan memuat kalimat batas kerahasiaan yang jujur ([Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 2; teks lengkapnya di 23 → T11).
+   - Jawaban butir ini tidak pernah dibagikan, juga tidak di data berkode yang dibagikan atas permintaan. Anak atau orang tua boleh meminta jawaban butir ini saja dihapus tanpa berhenti dari penelitian (23 → T10 pilihan C).
 
 ## Validasi dan uji coba
 
 | Tahap | Yang dilakukan | Oleh |
 | --- | --- | --- |
-| 2 | Telaah isi: relevansi setiap butir dengan gunanya di analisis, butir yang kurang atau berlebih, butir yang bisa memancing jawaban D2 atau D3, dan kepekaan kalimat | Ahli Literasi Digital 1 dan 2 |
+| 2 | Telaah isi: relevansi setiap butir dengan gunanya di analisis, butir yang kurang atau berlebih, butir yang bisa memancing jawaban D2 atau D3, kepekaan kalimat, dan lebar penanda tindak lanjut butir risiko daring ([Etika](#etika) no. 8) | Ahli Literasi Digital 1 dan 2 |
 | 2 | Telaah bahasa: kata yang sulit, panjang kalimat, pilihan yang tumpang tindih, dan nada yang menghakimi | Ahli Bahasa Anak 1 dan 2 |
-| 2 | Uji keterbacaan dengan 3–5 anak kelas 5 setelah izin etik terbit, bersama uji keterbacaan bank dan tes, di mock-up layar modul. Karena angket tidak dibacakan, anak membaca sendiri, lalu diminta menjelaskan dengan kata-katanya sendiri arti "akun sendiri", "menemanimu", "hari sekolah", dan "1 jam", dan butir risiko daring | Peneliti |
+| 2 | Uji keterbacaan dengan empat anak, ditambah satu anak di putaran kedua (kelas 5, dari sekolah di luar sampel), setelah izin etik terbit, bersama uji keterbacaan bank dan tes, di mock-up layar modul ([24](24_UJI_KETERBACAAN.md)). Karena angket tidak dibacakan, anak membaca sendiri, lalu diminta menjelaskan dengan kata-katanya sendiri arti "akun sendiri", "menemanimu", "hari sekolah", dan "1 jam". Butir risiko daring ang-21–ang-23 diuji dengan parafrase saja, dengan centang izin terpisah: anak menjelaskan arti pertanyaannya, tetapi tidak pernah menjawab tentang pengalamannya sendiri ([24 → Butir risiko daring](24_UJI_KETERBACAAN.md#butir-risiko-daring)) | Peneliti |
 | 2 | Mock-up layar angket ikut ditelaah ahli media langkah 1 | Ahli Media Pembelajaran 1–3 |
 | 4 | Uji coba satu kelas di modul, dibaca sendiri seperti pelaksanaan sebenarnya. Yang dilihat: waktu total (sasaran ≤ 10 menit), butir yang sering dilewati, butir dengan banyak *Tidak tahu*, pilihan yang tidak pernah dipilih, pertanyaan yang sering ditanyakan siswa (catatan P3 di L6), dan isian yang bertentangan (`q_flags`) | Peneliti |
 | G4 | Angket final dan batas kelompok DIF dibekukan bersama pra-registrasi | Pemilik proyek |
@@ -528,6 +531,8 @@ Pertanyaan 4 di draf ini (pengalaman risiko daring) dan media angket diputuskan 
 2. **Dua–tiga butir pengalaman risiko daring diisi di P5 setelah tes akhir**, sendiri di layar. Di P5 tes dan game sudah selesai, jadi butir ini tidak memancing D2. Syarat etiknya ada di [Etika](#etika) no. 8. Butirnya ang-21 sampai ang-23 di bawah; jumlah akhirnya (dua atau tiga) ditetapkan setelah telaah ahli dan uji keterbacaan. Tambahannya ± 3 menit di P5.
 
 Pertimbangan yang dicatat sebelum keputusan, dan yang masih berlaku: anak 10–11 tahun bisa merasa sedih atau malu, jadi butir harus diisi secara privat; jawaban "pernah" mewajibkan tindak lanjut; angka pengalaman buruk kemungkinan kurang dilaporkan, sehingga hasilnya hanya deskriptif.
+
+Sebelum butir ini, layar menanyakan ulang apakah anak mau menjawab, lalu memberi kalimat batas kerahasiaan yang jujur, misalnya: *"Jawabanmu disimpan dengan kode dan hanya dibaca tim peneliti. Kalau jawabanmu menunjukkan ada hal yang mengganggumu, ketua tim peneliti mungkin mengajakmu bicara sebentar. Kalau kamu dalam bahaya, ia akan meminta bantuan orang dewasa supaya kamu aman."* Teks lengkapnya di 23 → T11. Kalimat "Guru dan orang tuamu tidak akan melihat jawabanmu" di [Petunjuk untuk siswa](#petunjuk-untuk-siswa) hanya untuk angket P1.
 
 > *Pertanyaan berikut tentang hal-hal yang bisa terjadi di internet. Kalau tidak ingin menjawab, pilih "Tidak mau menjawab" atau lewati saja.*
 

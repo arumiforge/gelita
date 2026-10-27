@@ -16,11 +16,12 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 | P1 | Koordinator sesi: membuka sesi, token, L0, L1, L2, L7 | Lapangan |
 | P2 | Pengamat keterlibatan: L4 | Lapangan |
 | P3 | Pengamat bantuan dan pewawancara: L3, L5 | Lapangan |
-| Ahli Bahasa Anak 1, 2 | Nama samaran validator: literasi membaca dan bahasa Indonesia SD (panel ahli materi) | Validasi, tahap 2 |
-| Ahli Literasi Digital 1, 2 | Nama samaran validator: literasi digital anak (panel ahli materi) | Validasi, tahap 2 |
-| Ahli Pengukuran | Nama samaran validator: evaluasi dan pengukuran (panel ahli materi) | Validasi, tahap 2 |
-| Ahli Budaya Kedu 1, 2, 3 | Nama samaran validator: pengamat budaya, idealnya satu orang per wilayah (panel tiga orang, keputusan 26 Oktober 2026). Ahli Budaya Kedu 1 juga menilai relevansi skala sikap (B.8) | Validasi, tahap 2 |
-| Ahli Media Pembelajaran 1, 2, 3 | Nama samaran validator: ahli media, dua langkah (mock-up, lalu layar jadi). Panel tiga orang (keputusan 26 Oktober 2026): 1 teknologi pendidikan atau media pembelajaran, 2 desain visual atau UX, 3 rekayasa perangkat lunak atau pengembangan game | Validasi, tahap 2 dan 3 |
+| Ketua peneliti | Memegang L7 bersama P1. Satu-satunya yang menghubungkan kode peserta dengan nama, untuk rujukan butir risiko daring dan permintaan hapus; menerima laporan kejadian tak diinginkan (KTD). Akun `ketua` | Lapangan, izin etik ([22](22_PERMOHONAN_IZIN_ETIK.md)) |
+| Ahli Bahasa Anak 1, 2 | Nama samaran validator: literasi membaca dan bahasa Indonesia SD (panel ahli materi). Singkatan di nama berkas: `ABA1`, `ABA2` | Validasi, tahap 2 |
+| Ahli Literasi Digital 1, 2 | Nama samaran validator: literasi digital anak (panel ahli materi). Singkatan di nama berkas: `ALD1`, `ALD2` | Validasi, tahap 2 |
+| Ahli Pengukuran | Nama samaran validator: evaluasi dan pengukuran (panel ahli materi). Singkatan di nama berkas: `AP` | Validasi, tahap 2 |
+| Ahli Budaya Kedu 1, 2, 3 | Nama samaran validator: pengamat budaya, idealnya satu orang per wilayah (panel tiga orang, keputusan 26 Oktober 2026). Ahli Budaya Kedu 1 juga menilai relevansi skala sikap (B.8). Singkatan di nama berkas: `ABK1`–`ABK3` | Validasi, tahap 2 |
+| Ahli Media Pembelajaran 1, 2, 3 | Nama samaran validator: ahli media, dua langkah (mock-up, lalu layar jadi). Panel tiga orang (keputusan 26 Oktober 2026): 1 teknologi pendidikan atau media pembelajaran, 2 desain visual atau UX, 3 rekayasa perangkat lunak atau pengembangan game. Singkatan di nama berkas: `AMP1`–`AMP3` | Validasi, tahap 2 dan 3 |
 | Lembaga Komite Etik | Nama samaran komite etik penelitian; pengajuan minggu kedua–keempat November 2026, persetujuan paling lambat akhir September–minggu pertama November 2027 | Izin etik, tahap 2 |
 
 ### Akun staf
@@ -31,9 +32,22 @@ Pemegang akun admin dan akun peneliti sementara memakai nama samaran sesuai pera
 | --- | --- | --- | --- |
 | `admin` | Admin | Pengelola sistem | Akun, identitas, konten, rilis, log teknis; tidak mengunduh data penelitian |
 | `koordinator` | Peneliti | P1, koordinator sesi | Sesi lapangan, token, baris-kursi-buklet dari L2, reset kata sandi lewat kode peserta |
-| `pengamat`, `pewawancara`, `ketua` | Peneliti | P2, P3, ketua peneliti | Usulan penerapan pola yang sama ("dan seterusnya"), dibuat kalau perannya butuh akun |
+| `pengamat`, `pewawancara`, `ketua` | Peneliti | P2, P3, ketua peneliti | Pola yang sama ("dan seterusnya"), disetujui pemilik proyek 27 Oktober 2026; dibuat kalau perannya butuh akun |
 
 Satu orang yang memegang dua peran tetap memakai dua akun terpisah ([01](01_REVISI_10_ANALITIK.md#admin-dan-peneliti-dua-peran-berbeda)).
+
+### Akun uji validator
+
+Akun **siswa** di instalasi uji untuk validator, bukan akun staf, dibuat `admin` sebelum paket dikirim ([20 → Akses untuk validator](20_PAKET_VALIDASI.md#akses-untuk-validator), 27 Oktober 2026). Titik dipakai karena aturan nama pengguna siswa tidak mengizinkan tanda hubung.
+
+| Akun | Untuk |
+| --- | --- |
+| `uji.bahasa1`, `uji.bahasa2` | Ahli Bahasa Anak 1, 2 |
+| `uji.digital1`, `uji.digital2` | Ahli Literasi Digital 1, 2 |
+| `uji.ukur` | Ahli Pengukuran |
+| `uji.budaya1`–`uji.budaya3` | Ahli Budaya Kedu 1–3 |
+| `uji.media1`–`uji.media3` | Ahli Media Pembelajaran 1–3 |
+| `uji.cadangan1`, `uji.cadangan2` | Cadangan, kalau akun terkunci atau validator diganti |
 
 ## Dimensi literasi digital
 
@@ -94,6 +108,18 @@ Satu orang yang memegang dua peran tetap memakai dua akun terpisah ([01](01_REVI
 | KD7RMA | Contoh token sesi: 6 huruf dan angka tanpa O, 0, I, 1 | Disetujui 25 Oktober 2026 |
 | GLT-000123 | Kode peserta lama | Diganti |
 | P01, P02, … | Nomor stiker perangkat | Lapangan |
+
+## Kegiatan dengan anak
+
+Kegiatan yang dimintakan izin etik dalam satu permohonan ([22 → Kegiatan yang dimintakan izin](22_PERMOHONAN_IZIN_ETIK.md#kegiatan-yang-dimintakan-izin), 27 Oktober 2026). Awalan `KG` dipakai supaya tidak tertukar dengan kode anak uji keterbacaan `K01`–`K05`.
+
+| Kode | Arti | Tahap |
+| --- | --- | --- |
+| KG1 | Uji keterbacaan dengan anak ([24](24_UJI_KETERBACAAN.md)) | 2 |
+| KG2 | Berpikir lantang (L5) | 4 |
+| KG3 | Uji coba satu kelas, sekolah berawalan `U` | 4 |
+| KG4 | Wawancara retrospektif di P2–P4 (L5) | 4 dan 5 |
+| KG5 | Pengambilan data utama, P1–P5 dan sesi susulan | 5 |
 
 ## Kode kesalahan: salah memilih informasi (INF)
 
@@ -179,6 +205,15 @@ Dari [18](18_MOCKUP_LAYAR_BARU.md). Kode gambar mock-up untuk ahli media langkah
 | mk-ss-01 … 05 | Skala sikap di Balai Refleksi: petunjuk, contoh soal, satu pernyataan, layar kirim; lalu Balai Refleksi dengan kritik dan saran | 18 |
 | mk-cr-01 … 02 | Cerita penghubung *Kabut di Layar* dan kartu misi tantangan kelima | 18 |
 
+## ID netral pelabelan buta (B.5a)
+
+Dipakai di daftar buta B.5a supaya kode butir (yang menyebut wilayah dan tantangan) tidak memberi isyarat level ([21](21_BERKAS_BUTIR_VALIDATOR.md), keputusan pemilik proyek 27 Oktober 2026). Padanannya dengan kode butir hanya ada di berkas kunci khusus peneliti.
+
+| Kode | Arti | Catatan |
+| --- | --- | --- |
+| BT-001 … BT-180 | ID butir netral: 116 butir bank dan 64 butir tes | Diacak dengan benih tetap; berlaku untuk `berkas-1.0` |
+| BH-01 … BH-73 | ID bahan (bacaan, unggahan, situasi) netral | Butir tetap berurutan di dalam satu bahan |
+
 ## Skala sikap menjaga warisan
 
 Dari [17](17_SKALA_SIKAP.md). Usulan; dibekukan sebagai `sikap-1.0` di G4.
@@ -247,6 +282,29 @@ Dari [17](17_SKALA_SIKAP.md). Usulan; dibekukan sebagai `sikap-1.0` di G4.
 | SNG | Senang | Emosi |
 | NTR | Netral | Emosi |
 | ? | Tidak jelas, sedang dibantu, atau tidak di kursi | Perilaku dan emosi |
+
+## Uji keterbacaan (KG1)
+
+Kode di protokol [24](24_UJI_KETERBACAAN.md), semuanya usulan sampai uji keterbacaan dijalankan.
+
+| Kode | Arti | Catatan |
+| --- | --- | --- |
+| K01–K04 | Anak uji keterbacaan putaran pertama | Dari sekolah di wilayah Kedu di luar sampel dan uji coba; tanpa nama di lembar |
+| K05 | Anak uji keterbacaan putaran kedua, membaca bahan yang sudah direvisi | |
+| K01-1 … K05-4 | Kode sesi: anak dan sesi ke-1 sampai ke-4 | Bukan `S…`, supaya tidak tertukar dengan kode sekolah |
+| LK1, LK2, LK3 | Lembar ringkasan sesi, catatan per butir, kartu kata | |
+| KB-KTA | Kata tidak dikenal atau artinya keliru | Kode kesulitan |
+| KB-KLM | Kalimat sulit dipahami | Kode kesulitan |
+| KB-MKS | Maksud soal disalahpahami | Kode kesulitan |
+| KB-PTJ | Petunjuk atau cara menjawab tidak dipahami | Kode kesulitan |
+| KB-PIL | Pilihan jawaban sulit dibedakan | Kode kesulitan |
+| KB-ARH | Butir negatif dijawab berlawanan dengan maksud anak | Kode kesulitan |
+| KB-TPL | Masalah tampilan | Kode kesulitan |
+| KB-LMA | Berhenti lama atau membaca ulang | Kode kesulitan |
+| KB-LTS | Menjawab dari pengetahuan sendiri, bukan dari teks | Kode kesulitan |
+| KB-RSA | Kalimat membuat anak tidak nyaman | Kode kesulitan |
+| KB-LAIN | Kesulitan lain | Kode kesulitan |
+| PB-1 … PB-9 | Pancingan baku (parafrase soal, kalimat, cara menjawab, pilihan, kata, petunjuk, arah, rasa, penutup) | Label di dalam 24 saja |
 
 ## Level dan taksonomi
 

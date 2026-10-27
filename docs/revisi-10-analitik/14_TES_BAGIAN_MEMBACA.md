@@ -542,9 +542,9 @@ Diperiksa 26 Oktober 2026 dengan grep, tanpa membaca dokumen sumber secara utuh.
 6. **A04 dan B04.** Paragraf 4 (manfaat dan alasan dijaga) ada di nomor yang sama di kedua bentuk. Siswa yang ingat bentuk A bisa menebak satu dari tiga pasangan di bentuk B, tetapi skor butir hanya 1 kalau ketiganya tepat. Huruf pasangan 2 semula sama di kedua bentuk (D), sehingga menyalin tetangga yang berbeda bentuk menolong; sejak 26 Oktober 2026 pilihan C dan D bentuk B ditukar, dan kunci B04 menjadi `1A 2C 3B`.
 7. **PGK F/P (11).** Kalau pemilik proyek ingin semua PGK berupa tabel Benar/Salah, nomor 11 bisa diubah menjadi "Kalimat ini berisi pendapat. Benar atau Salah?" untuk setiap kalimat, tanpa mengubah isi dan kode.
 
-**Keterbacaan (dicek di uji keterbacaan bersama bank)**
+**Keterbacaan (dicek di uji keterbacaan bersama bank, [24](24_UJI_KETERBACAAN.md))**
 
-1. Kata yang mungkin asing: *silek*, *galembong*, *ceh*, *syair*, *forna*, *kapurung*, *dipipil*, *disangrai*, *kenari*, *jelujur*, *sulam*, *cucuk*, *kolope*. Yang ditanyakan butir (anak randai, ceh, sirang, cucuk) sudah dijelaskan di teks; sisanya cukup dipahami dari kalimatnya. Catat kata yang membuat anak berhenti lama.
+1. Kata yang mungkin asing: *silek*, *galembong*, *ceh*, *syair*, *forna*, *kapurung*, *dipipil*, *disangrai*, *kenari*, *jelujur*, *sulam*, *cucuk*, *kolope*. Yang ditanyakan butir (anak randai, ceh, sirang, cucuk) sudah dijelaskan di teks; sisanya cukup dipahami dari kalimatnya. Catat kata yang membuat anak berhenti lama di [kartu kata LK3](24_UJI_KETERBACAAN.md#lk3-kartu-kata); tindak lanjutnya mengikuti [aturan keputusan](24_UJI_KETERBACAAN.md#aturan-keputusan) di 24.
 2. Teks M1 paling panjang (152–160 kata) dan paling padat istilah. Kalau batas Bagian 1 (± 40 menit) tidak cukup di uji coba, M1 adalah kandidat pertama untuk dipendekkan, tetap di atas 150 kata sesuai 13.
 3. Tabel M2 dan kaki infografik perlu dicek terbaca di layar perangkat kelas yang paling kecil, terutama ukuran huruf kaki.
 4. Ucapan anak di M4 memakai ragam lisan ("tentu benar", "tidak usah dipercaya"). Itu disengaja, tetapi tetap dicek apakah anak paham bahwa ucapan itu pendapat tokoh, bukan petunjuk soal.

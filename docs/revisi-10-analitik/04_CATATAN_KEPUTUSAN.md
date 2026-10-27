@@ -6,6 +6,139 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 27 Oktober 2026
 
+**Keputusan pemilik proyek atas lima hal yang tersisa dari penyelarasan, dan pembaruan instrumen** (cabang `sky/inspiring-ritchie-nex4qi`, sesi koordinator, PR #268) · Prototipe I, belum merevisi produk
+
+Keputusan pemilik proyek (27 Oktober 2026):
+
+1. **Perkiraan waktu B.7 3–5 jam** (622 sel kode) disetujui.
+2. **T1 tidak diuji baca oleh orang tua** di luar sampel sebelum permohonan etik dikirim.
+3. **Pesan dukungan (23 → T12) untuk semua siswa di P5**, juga yang tanpa izin butir risiko daring, di titik yang sama.
+4. **Selebaran tempat bercerita (23 → T13) dibagikan kepada semua anak di kelas di akhir P5**, bersama tanda terima kasih.
+5. **Pengodean buta B.7 oleh Ahli Literasi Digital 2 diterima apa adanya**: bank berkode tetap ada di kiriman awalnya, jadi versi buta B.7 tidak sepenuhnya buta bagi validator itu. Kiriman tidak diubah.
+
+Akibatnya: 16, 20, 22, 23, 24, dan 01 (perubahan sistem no. 23) diperbarui.
+
+Pembaruan instrumen (atas permintaan pemilik proyek, dari *Akibat ke dokumen lain* di 20 dan 21): instrumen ahli materi v2.1 (A.3 dan A.4: penilai B.5a, paket B.5a lebih dulu, pengarahan B.5a ± 15 menit, B.7 3–5 jam; B.5a: ID butir dan ID bahan netral yang diacak; D.3: nama berkas lembar kerja dan urutan kirim), pengamat budaya v2.1 (D.3 no. 11), dan ahli media v1.1 (D.3 no. 9: lembar kerja hanya B.8). Ketiganya memakai kalimat honorarium "sesuai ketentuan yang berlaku" dan menyebut uji keterbacaan empat anak ditambah satu. Nama topik B.6 dan benda sasaran B.6b di instrumen dipertahankan karena isinya sama dengan 08 (pilihan sesi koordinator; dicatat di D.4 pengamat budaya). Perubahan dicatat di D.4 setiap instrumen, PDF dibuat ulang (ahli materi kini 43 halaman), dan lembar kerja validator dibuat ulang (68 pemeriksaan lolos). Status ketiga instrumen tetap draf, menunggu persetujuan pemilik proyek.
+
+Masih terbuka: satu level pengembang untuk setiap butir tes D2 dan D3 di 13 dan 15 (sekarang rentang L1–L2 atau L2–L3), yang dibutuhkan analisis C.4 ahli materi.
+
+**Penyelarasan dokumen tahap 2 (20–24) dan keputusan pemilik proyek** (cabang `sky/inspiring-ritchie-nex4qi`, sesi koordinator, PR #268) · Prototipe I, belum merevisi produk
+
+Kelima sesi paralel selesai pada hari yang sama, masing-masing dengan jawaban pemilik proyek sendiri. Sesi koordinator memeriksa kelima dokumen bersama-sama dan menemukan satu keputusan yang bertentangan, beberapa keputusan yang belum terbawa ke dokumen lain, dan kode yang bertabrakan.
+
+Keputusan pemilik proyek (27 Oktober 2026):
+
+1. **Batas permintaan hapus data: sampai studi ditutup**, mengikuti 22. Nama, L7, dan formulir dimusnahkan saat studi ditutup; hasil gabungan yang sudah terbit tidak bisa ditarik. Aturan di 23 ("sampai analisis utama dimulai") diganti. Tidak dipilih: gabungan dua aturan (permintaan sesudah analisis utama dimulai tetap menghapus data mentah), dan aturan 23.
+2. **Formulir mundur T10 tetap tiga pilihan:** A berhenti dan data tetap dipakai, B berhenti dan data dihapus, C tetap ikut tetapi menarik rekaman atau jawaban butir risiko. L7 di 02 mendapat dua status, `Mengundurkan diri (data tetap)` dan `Mengundurkan diri (hapus data)`; mulai `kamus-1.1`, status `data tetap` dihitung `consent_ok = 1` untuk data sampai tanggal mundur. Hapus sebagian menjadi perubahan sistem no. 23. Tidak dipilih: hanya B dan C (seperti L7 lama), atau hanya A dan B.
+3. **Anak uji keterbacaan mendapat tanda terima kasih kecil yang sama** dengan anak di kelas, setelah sesi terakhirnya, tidak disebut sebagai hadiah. Tidak dipilih: ditambah kudapan setiap sesi, atau tanpa hadiah.
+4. **Akun `pengamat`, `pewawancara`, dan `ketua` disetujui** (sudah dicatat di entri koordinator di bawah).
+5. **Keempat PR dokumen 21–24 digabung lewat satu PR koordinator** (#268), supaya konflik di 00, 04, dan PROGRESS diselesaikan sekali dan dokumen diselaraskan sebelum masuk `main`. Tidak dipilih: menggabung satu per satu.
+
+Diselaraskan sesi koordinator tanpa keputusan baru:
+
+- **Kode:** kegiatan dengan anak di 22 menjadi `KG1`–`KG5` (dulu `K1`–`K5`, bertabrakan dengan kode anak `K01`–`K05` di 24); kode sesi uji keterbacaan menjadi `K01-1` (dulu `K01-S1`, terbaca seperti kode sekolah). Label `T1`–`T13` di 23 dan `PB-*` di 24 tetap label di dalam dokumennya.
+- **Keputusan 22 dibawa ke 23:** berbagi data berkode atas persetujuan komite, masa simpan, batas kerahasiaan, kontak komite, dan tiga teks baru untuk anak (T11 layar izin ulang sebelum butir risiko, T12 pesan dukungan, T13 selebaran tempat bercerita).
+- **Keputusan 24 dibawa ke 22 dan 23:** empat anak ditambah satu, empat sesi ± 60 menit di sekolah anak, butir risiko daring diparafrasekan saja, dan sekolah uji keterbacaan tidak ikut sampel nanti. Nama dan tingkat membaca anak baru sampai ke peneliti setelah izin orang tua kembali.
+- **Keputusan 21 dibawa ke 20:** dua penilai B.5a menerima paket B.5a saja lebih dulu; nama berkas dari 21; perkiraan waktu B.7 dinaikkan.
+- **Keputusan 23 dibawa ke 22:** amplop H-14 sampai H-10, pengingat H-5, batas kembali H-3; ringkasan hasil lewat sekolah; pengingat persetujuan di P2–P5.
+- **Janji "nama hanya di dua tempat"** di 22 dan 23 diganti aturan yang benar: nama tidak pernah ada di data penelitian; nama hanya di akun (admin) dan di berkas izin, mundur, dan rujukan yang disimpan terkunci terpisah.
+- **Dokumen bersama:** 01 (daftar kerja no. 3, 14, 15, 23, pertanyaan izin etik, perubahan sistem no. 23 baru), 02 (L0, L5, L7; bagian *Perubahan setelah persetujuan*), 03 (ketua peneliti, *Kegiatan dengan anak*, ID netral B.5a, *Uji keterbacaan*), 06, 13–18 (tautan ke 24 dan 22; kalimat 16 "namamu tidak ditulis di mana pun" diganti "Jawabanmu disimpan dengan kode, bukan dengan namamu"), dan README `dokumen-pdf/`.
+
+Yang menyusul di PR koordinator berikutnya: perubahan HTML ketiga instrumen dari 21 (ID netral di B.5a, nama berkas dan urutan kirim di D.3, waktu B.7), level tunggal untuk butir tes D2 dan D3 di 13 dan 15, dan nama topik B.6 dan benda B.6b yang berbeda dengan 08.
+
+Menunggu konfirmasi pemilik proyek: perkiraan waktu B.7 3–5 jam (dulu 2–3 jam) di 20; cara menjaga pengodean buta B.7 oleh Ahli Literasi Digital 2, yang menerima bank berkode di kiriman awal; uji baca T1 oleh dua–tiga orang tua di luar sampel (usulan 23); dan dua usulan di 23, yaitu T12 juga untuk anak tanpa izin butir risiko, dan T13 dibagikan ke semua anak di akhir P5 supaya tidak ada yang tampak berbeda. Kamus data `kamus-1.0` tidak diubah; `consent_ok` untuk `data tetap` dan aturan letak nama masuk `kamus-1.1`.
+
+**Draf protokol uji keterbacaan, daftar kerja no. 23** (cabang `r10-uji-keterbacaan`, sesi paralel tahap 2; Prototipe I)
+
+Status: **draf; keempat pertanyaan diputuskan pemilik proyek di hari yang sama** (lihat di bawah). Dokumen baru [24_UJI_KETERBACAAN.md](24_UJI_KETERBACAAN.md) berisi protokol uji keterbacaan dengan anak kelas 5, yang dijalankan setelah izin etik terbit dan setelah bahan direvisi dari validasi ahli. Entri ini tidak merevisi prototipe; revisi dari hasil uji nanti dicatat sebagai "Prototipe I, revisi dari uji keterbacaan".
+
+Yang ditulis: tujuan dan arti "terbaca"; syarat dan cara memilih anak (guru hanya mengelompokkan kelancaran membaca, tanpa nilai); daftar bahan dari 08 dan 12–18, dengan alasan bahan yang tidak diuji (Temukan Benda, keterangan Susun Gambar, cerita penghubung yang dibacakan, panel peneliti); pembagian bahan; perangkat (laptop, salinan layar statis dari sumber mock-up 18, tanpa ponsel, tanpa suara); empat sesi per anak dengan langkah baca sendiri, parafrase, pancingan baku `PB-1`–`PB-9`, menandai kata, dan kartu kata; peran (P3 pemandu, P2 pencatat, P1 persiapan, ketua peneliti penanggung jawab); lembar LK1–LK3 dan kode kesulitan `KB-*`; aturan keputusan dan yang kembali ke ahli; cara waktu yang diukur dibandingkan dengan 06, 13, dan 15; pengelolaan data; yang dibutuhkan dari 20, 22, dan 23.
+
+Pilihan yang diambil saat menulis:
+1. **Empat anak di putaran pertama, satu anak lagi untuk putaran kedua** bahan yang direvisi.
+2. **Inti untuk semua anak** (satu bentuk tes lengkap, angket, skala sikap, kartu jangkar, kartu kata, salinan layar), **bank dibagi enam blok** wilayah × variasi, setiap blok dibaca dua anak.
+3. **Parafrase sesudah membaca, bukan berpikir lantang selama membaca**, supaya waktu baca bisa dipakai; berpikir lantang tetap di uji coba tahap 4 (L5).
+4. **Ambang keputusan dibedakan:** bacaan D1 hanya direvisi untuk kata di luar sasaran butir, pokok soal, pilihan, dan petunjuk; petunjuk direvisi kalau satu anak saja tidak paham; butir negatif skala direvisi kalau satu anak menjawab berlawanan.
+5. **Batas waktu tes tidak diubah dari uji ini**; angka waktunya hanya memberi catatan ke 06, 13, dan 15 sampai uji coba.
+6. **Butir risiko daring diuji dengan parafrase saja**, tanpa jawaban tentang diri sendiri, dan hanya dengan izin terpisah.
+7. Ambang berhenti lama (± 10 detik) dan lama membaca sebelum jeda ditandai `needs_verification`.
+
+**Keputusan pemilik proyek (27 Oktober 2026, satu putaran, semuanya usulan):** (1) inti untuk semua anak dan bank dibagi enam blok, empat sesi per anak; (2) empat anak, ditambah satu anak untuk putaran kedua bahan yang direvisi; (3) anak dari sekolah di wilayah Kedu yang tidak masuk sampel dan bukan sekolah uji coba; (4) butir risiko daring diuji dengan parafrase saja, dengan izin terpisah. Dicatat di [24, Keputusan pemilik proyek](24_UJI_KETERBACAAN.md#keputusan-pemilik-proyek). Perubahan yang dibutuhkan di 01, 03, 06, 13–18, 20, 22, dan 23 didaftar di [24, Akibat ke dokumen lain](24_UJI_KETERBACAAN.md#akibat-ke-dokumen-lain) dan dibawa sesi koordinator.
+
+**Surat informasi dan persetujuan ditulis (draf)** (cabang `r10-surat-izin`, daftar kerja no. 15, [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md); Prototipe I, dokumen tahap 2)
+
+Status: draf; empat pertanyaan pemilik proyek dijawab (di bawah). Yang ditulis, semua sebagai blok siap cetak dengan tempat kosong bertanda:
+- T1–T2 surat informasi dan formulir orang tua, dengan kotak Ya/Tidak terpisah untuk ikut, rekaman suara, dan butir risiko daring. Semua isi wajib surat di 02 → L7 ada di T1–T2 (tabel cek di 23).
+- T3 naskah persetujuan anak di pembukaan P1, T4 usulan teks centang persetujuan di halaman daftar untuk mode penelitian (file bahasa tidak diubah), T5 pengingat singkat di P2–P5 dan sebelum wawancara L5.
+- T6 surat kepala sekolah dengan permintaan data L8, T7 lembar guru kelas.
+- T8 varian uji keterbacaan, T9 varian kelas uji coba (awalan `U`, berpikir lantang), T10 formulir pengunduran diri dan hapus data.
+- Tabel pembagian (siapa, kapan, disimpan di mana, mengikuti aturan simpan L7), catatan keterbacaan per teks.
+
+Pilihan yang diambil saat menulis (rinciannya di [23 → Pilihan yang diambil saat menulis](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#pilihan-yang-diambil-saat-menulis)): formulir yang tidak kembali dibaca tidak mengizinkan; kotak tambahan yang kosong dibaca Tidak; amplop tertutup H-14 sampai H-10 dengan batas kembali H-3; tanpa foto dan video; persetujuan anak diulang singkat di P2–P5; anak yang menolak di P1 dicatat `Tanpa izin`; T10 memberi pilihan berhenti tanpa menghapus data, yang butuh penyesuaian `consent_ok`.
+
+Keputusan pemilik proyek (wawancara singkat, 27 Oktober 2026; semuanya usulan, rinciannya di [23 → Keputusan pemilik proyek](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#keputusan-pemilik-proyek)):
+1. **Permintaan hapus data boleh diajukan sampai analisis utama dimulai.** *(Diganti pada hari yang sama: sampai studi ditutup, lihat entri penyelarasan di atas.)* Sesudahnya data anak tetap dihapus, tetapi angka gabungan yang sudah dihitung atau terbit tidak berubah. Tidak dipilih: kapan saja tanpa batas.
+2. **Anak uji keterbacaan ikut membaca butir risiko daring, dengan centang terpisah**, dan hanya menilai kalimatnya. Tidak dipilih: hanya telaah ahli.
+3. **Tanpa centang ringkasan hasil untuk orang tua;** ringkasan angka gabungan ke sekolah, dan orang tua memintanya lewat sekolah. Tidak dipilih: centang keempat.
+4. **Kenang-kenangan kecil yang sama untuk seluruh kelas**, termasuk yang tidak ikut, di akhir P5, tidak disebut sebagai imbalan. Tidak dipilih: tanpa kenang-kenangan, atau hanya untuk peserta.
+
+Akibat ke 01, 02, 11, 22, 24, dan 03 dicatat di [23 → Akibat ke dokumen lain](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#akibat-ke-dokumen-lain) dan dibawa sesi koordinator setelah PR digabung. Entri ini tidak merevisi bank, instrumen, atau sistem.
+
+**Draf permohonan izin etik: [22_PERMOHONAN_IZIN_ETIK.md](22_PERMOHONAN_IZIN_ETIK.md)** (cabang `r10-izin-etik`, sesi paralel tahap 2; daftar kerja no. 15) · **Status: draf; keputusan pemilik proyek atas empat pertanyaannya diambil hari yang sama**
+
+Prototipe I: dokumen ini tidak merevisi bank, instrumen, atau mock-up; ia menjelaskan bagaimana Prototipe I sampai III dan data utama akan dijalankan dengan anak.
+
+1. **Yang ditulis.** Protokol lengkap untuk *Lembaga Komite Etik*: identitas dan tim (nama samaran dan tempat kosong), ringkasan, nilai sosial, tujuan, desain Plomp dengan Prototipe I–III, lima kegiatan dengan anak (K1 uji keterbacaan, K2 berpikir lantang, K3 uji coba satu kelas `U`, K4 wawancara retrospektif, K5 data utama ± 360 siswa, ± 13 kelas, target 300), peserta, rekrutmen, lapis persetujuan, prosedur per pertemuan dan beban anak (paling lama ± 10 jam dalam lima pertemuan, dari 06 dan 13), risiko dan mitigasi, prosedur rujukan butir risiko daring, manfaat, kerahasiaan dan pengelolaan data, kompensasi, konflik kepentingan, KTD, perubahan protokol, lampiran, dan pemetaan ke tujuh standar KEPPKN dan ke bagian formulir umum.
+2. **Pilihan yang dibuat saat menulis** (usulan, bisa diubah pemilik proyek):
+   - Penanda rujukan mengikuti keputusan 26 Oktober 2026: setiap anak yang menjawab *Pernah* di ang-21. Sapaan pribadi oleh ketua peneliti paling lambat hari sekolah berikutnya, didahulukan untuk *Beberapa kali atau lebih* atau yang tidak bercerita kepada siapa pun. Orang tua hanya dihubungi dengan persetujuan anak, kecuali ada bahaya serius. Penanda dan catatan rujukan di luar data penelitian, hanya terlihat ketua peneliti.
+   - Batas kerahasiaan disebut jujur di surat orang tua dan kalimat anak sebelum butir risiko (akibat ke 02, 16, dan 23).
+   - Penolakan anak didahulukan dari izin orang tua; persetujuan ulang singkat sebelum wawancara dan butir risiko; wawancara di tempat yang terlihat.
+   - Usulan satu pertemuan per hari; data penelitian disimpan 5 tahun sesuai `retention_days` bawaan sistem.
+   - Rujukan luar yang belum dicek ditandai `needs_verification`: rumusan dan versi pedoman KEPPKN, UU No. 27 Tahun 2022 (data anak, pemberitahuan kebocoran), layanan SAPA 129 dan UPTD PPA, batas waktu laporan KTD dan aturan amandemen komite.
+3. **Keputusan pemilik proyek atas empat pertanyaan draf (27 Oktober 2026, wawancara satu putaran):**
+   - **Nama dan L7 dimusnahkan saat studi ditutup** (usulan draf: 12 bulan setelah P5 terakhir). Permintaan hapus diterima sampai studi ditutup; data berkode disimpan 5 tahun.
+   - **Data per anak berkode dibagikan atas permintaan, dengan persetujuan komite** (usulan draf: tidak dibagikan). Tidak ada unggahan publik; sebelum dibagikan kode diganti kode acak baru, kode sekolah dan rombel dihapus, dan jawaban butir risiko serta transkrip tidak ikut. Surat orang tua (23) harus menyebutnya.
+   - **Tanda terima kasih kecil yang sama untuk semua anak di kelas**, termasuk yang tidak ikut, plus kudapan di P1 dan P5; tanpa uang (sesuai usulan).
+   - **Satu permohonan untuk K1–K5**, revisi instrumen dilaporkan sebagai perubahan protokol (sesuai usulan).
+
+   Status 22 tetap draf: diajukan setelah dokumen tahap 1 yang dilampirkan disetujui dan formulir komite sebenarnya diketahui.
+4. **Disesuaikan dengan 20 (PR #263, catatan sesi koordinator):** bahan untuk anak yang dilampirkan adalah versi yang dibekukan untuk validasi ahli, dan setiap revisi Prototipe I (atau sesudahnya) yang mengubah bahan anak diajukan ke *Lembaga Komite Etik* sebagai amandemen protokol. Nama samaran akun staf `pengamat`, `pewawancara`, dan `ketua` tidak lagi ditandai usulan.
+
+Akibat ke dokumen lain (01, 02, 03, 16, 17, 23, 24) dicatat di 22, bagian *Akibat ke dokumen lain*, dan dibawa sesi koordinator setelah digabung.
+
+**Berkas butir untuk validator: draf 21 dan skrip pembuatnya** (cabang `r10-berkas-validator`, sesi paralel tahap 2; Prototipe I, belum merevisi produk) · **Status: draf; keputusan pemilik proyek diambil 27 Oktober 2026**
+
+1. **Yang ditulis.** [21_BERKAS_BUTIR_VALIDATOR.md](21_BERKAS_BUTIR_VALIDATOR.md) dan skrip `dokumen-pdf/src/berkas-validator.php`. Skrip membaca 03, 08, 14–18 dan tabel ketiga instrumen (tanpa mengubahnya), lalu menulis berkas di `dokumen-pdf/berkas-validator/`:
+   - daftar buta B.5a (lembar kerja dan buklet PDF) dan kuncinya di `khusus-peneliti/`;
+   - daftar B.5b;
+   - lembar kerja B.6–B.9 ahli materi, dan B.7 versi pengodean buta;
+   - lembar kerja B.5–B.8 pengamat budaya;
+   - lembar kerja B.8 ahli media;
+   - laporan pemeriksaan `LAPORAN.md`.
+
+   Jumlahnya: 180 butir B.5a dan B.5b (116 bank, 64 tes), 24 skenario, 622 sel kode, 12 pernyataan sikap, 38 pasangan A–B, 20 butir angket, 46 objek budaya, 24 petunjuk, 12 butir PBK, 19 fakta, dan 27 gambar mock-up. Semua 68 pemeriksaan lolos.
+2. **Pilihan saat menulis**, semuanya pilihan yang disarankan di pertanyaan 21:
+   - ID netral `BT-…` dan `BH-…`, dengan bahan diacak dengan benih tetap;
+   - kunci jawaban dicantumkan di daftar buta, kode kesalahan dan label tidak;
+   - bagian ketuk dinamai "Bagian 1, 2, …";
+   - B.7 berisi semua 622 sel dengan kolom "Asal kode";
+   - level pengembang *Periksa Unggahan* dan Skenario Digital diturunkan dari baris *Tingkat* 08 per wilayah.
+3. **Temuan untuk pemilik proyek** (rinciannya di 21):
+   - paket awal di D.3 ahli materi membocorkan dimensi dan sub-aspek ke dua penilai B.5a lewat kode kesalahan dan beberapa bagian instrumen;
+   - level pengembang butir tes D2 dan D3 berupa rentang;
+   - B.7 lebih panjang dari perkiraan 2–3 jam;
+   - nama topik B.6 dan nama benda B.6b berbeda kata dengan 08;
+   - lembar kerja B.3–B.7 ahli media belum dibuat.
+4. **Keputusan pemilik proyek (27 Oktober 2026), keempatnya pilihan yang disarankan:**
+   - daftar B.5a memakai ID netral yang diacak, dengan berkas kunci khusus peneliti;
+   - dua penilai B.5a menerima paket B.5a saja dulu; instrumen lengkap, bank berkode, kisi-kisi, B.5b, dan lembar B.6–B.9 dikirim setelah B.5a kembali;
+   - kunci jawaban dicantumkan di daftar buta;
+   - B.7 mencakup semua 622 sel, dan perkiraan waktunya dinaikkan.
+
+   Berkas sudah memakai pilihan ini, jadi tidak dibuat ulang. Urutan kirim dan waktu B.7 masuk ke 20 dan instrumen ahli materi lewat sesi koordinator.
+
+Akibatnya: 00 (baris 21), `dokumen-pdf/README.md` (tabel *Isi* dan bagian *Membuat ulang berkas validator*), dan `docs/PROGRESS.md` diperbarui. Perubahan untuk 01, 03, 08, 13, 15, 20, dan ketiga instrumen dicatat di 21 → *Akibat ke dokumen lain* untuk sesi koordinator.
+
 **Draf paket validasi ahli: [20_PAKET_VALIDASI.md](20_PAKET_VALIDASI.md)** (cabang `r10-paket-validasi`, sesi paralel tahap 2; daftar kerja no. 3 dan 14) · Prototipe I · Status: draf; empat pertanyaan dijawab pemilik proyek pada hari yang sama (lihat akhir entri)
 
 Yang ditulis: prasyarat kirim, tabel siapa menerima apa per nama samaran (lembar dari matriks penugasan, nomor berkas dari D.3 ketiga instrumen, perkiraan jam, putaran kirim), jadwal relatif dua belas minggu dengan usulan tanggal mulai 9 November 2026, tiga surat permohonan, surat lanjutan setelah B.5a, pengingat dan surat putaran 2, usulan akun siswa uji validator, cara pengembalian dan pencatatan, templat matriks revisi induk, aturan kapan butir kembali ke validator, cara mencatat revisi di 04, dan daftar periksa validasi untuk G2.
@@ -31,7 +164,7 @@ Pilihan yang diambil saat menulis (semua bisa diubah pemilik proyek):
 **Keputusan pemilik proyek: daftar kerja no. 12 dan 13, dan dimulainya dokumen tahap 2** (cabang `sky/inspiring-ritchie-nex4qi`, sesi koordinator)
 
 1. **Daftar kode sekolah penelitian (no. 12) belum diputuskan; tahap 2 tetap dimulai.** Kode `S01`, `S02`, … di semua dokumen tetap contoh, dan tempat kosongnya di 02 tetap ditandai. Daftar ini baru dibutuhkan sebelum sekolah direkrut dan L8 diisi, jadi tidak menahan dokumen validasi dan izin etik.
-2. **Pemegang akun admin dan akun peneliti (no. 13) sementara memakai nama samaran sesuai perannya:** akun admin `admin`, akun peneliti untuk koordinator sesi (P1) `koordinator`, dan seterusnya. `pengamat` (P2), `pewawancara` (P3), dan `ketua` (ketua peneliti) adalah usulan sesi koordinator untuk "dan seterusnya", dibuat kalau perannya butuh akun ([03 → Akun staf](03_KODE_DAN_ARTI.md#akun-staf)). Siapa orangnya ditetapkan nanti dan dicatat ketua peneliti di luar repo, sama seperti nama asli validator.
+2. **Pemegang akun admin dan akun peneliti (no. 13) sementara memakai nama samaran sesuai perannya:** akun admin `admin`, akun peneliti untuk koordinator sesi (P1) `koordinator`, dan seterusnya. `pengamat` (P2), `pewawancara` (P3), dan `ketua` (ketua peneliti) diusulkan sesi koordinator untuk "dan seterusnya" dan **disetujui pemilik proyek pada hari yang sama**; akunnya dibuat kalau perannya butuh akun ([03 → Akun staf](03_KODE_DAN_ARTI.md#akun-staf)). Siapa orangnya ditetapkan nanti dan dicatat ketua peneliti di luar repo, sama seperti nama asli validator.
 3. **Dokumen tahap 2 ditulis paralel di beberapa sesi.** Sesi koordinator membaginya menjadi lima dokumen, satu sesi dan satu cabang masing-masing:
 
    | Dokumen | Cabang | Isi |

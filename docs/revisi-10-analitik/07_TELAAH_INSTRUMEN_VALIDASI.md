@@ -252,6 +252,8 @@ Semuanya cocok.
 4. Ahli media menilai dalam dua langkah (keputusan 25 Oktober 2026): di tahap 2, game sekarang ditambah mock-up layar baru; setelah tahap 3, telaah singkat layar jadi di instalasi uji sebelum uji coba. Instrumen media v1.1 perlu memuat bagian untuk mock-up. Mock-up dan layar jadi itu juga mencakup modul tes dan angket (perubahan sistem no. 22), yang sengaja bertampilan Bootstrap, bukan tampilan game, jadi aspek game di instrumen media tidak berlaku untuknya. **Selesai (26 Oktober 2026):** bagian mock-up ditulis di media v1.1 sebagai lembar B.8, satu baris per layar dari [18](18_MOCKUP_LAYAR_BARU.md#untuk-instrumen-media-v11).
 5. Angket akses digital ([16](16_ANGKET_AKSES_DIGITAL.md)) masuk paket validasi tahap 2: telaah isi oleh Ahli Literasi Digital 1 dan 2, dan telaah bahasa oleh Ahli Bahasa Anak 1 dan 2, termasuk kepekaan butir risiko daring di P5.
 6. Skala sikap ([17](17_SKALA_SIKAP.md)) masuk paket validasi tahap 2 sebagai lembar B.8 di instrumen ahli materi v2.1 dan pengamat budaya v2.1 (lihat [Lembar penilaian skala sikap](#lembar-penilaian-skala-sikap-b8)): relevansi oleh Ahli Budaya Kedu 1, Ahli Pengukuran, dan Ahli Bahasa Anak 1 dan 2; telaah bahasa oleh Ahli Bahasa Anak; catatan tumpang tindih D3 oleh Ahli Literasi Digital 1 dan 2.
+7. Paket validasi untuk sebelas validator disusun di [20](20_PAKET_VALIDASI.md) (draf, 27 Oktober 2026): prasyarat dan urutan kirim, surat permohonan, akun uji, pengembalian, matriks revisi, dan daftar periksa validasi di G2. Penilai B.5a: Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1 (keputusan pemilik proyek, 27 Oktober 2026).
+8. Ketiga instrumen diselaraskan dengan paket validasi dan berkas per butir ([21](21_BERKAS_BUTIR_VALIDATOR.md)) pada 27 Oktober 2026: penilai B.5a dan urutan kirimnya, ID butir netral di B.5a, nama berkas lembar kerja di D.3, B.7 3–5 jam, dan kalimat honorarium "sesuai ketentuan yang berlaku". Perubahannya dicatat di D.4 setiap instrumen; PDF dibuat ulang.
 
 ## Instrumen versi 2.1 dan 1.1
 
@@ -259,7 +261,7 @@ Ditulis 26 Oktober 2026 dari draf pemilik proyek (r10 v2.0 dan media v1.0, kedua
 
 | Dokumen | Isi | Halaman |
 | --- | --- | --- |
-| [Instrumen Validasi Ahli Materi v2.1](dokumen-pdf/instrumen-validasi-ahli-materi-v2.1.pdf) | Panel lima orang. Lembar penilaian 66 butir (aspek A–J), B.5a pelabelan buta dan B.5b relevansi per butir (116 butir bank dan 64 butir tes), B.6 telaah 24 Skenario Digital, B.7 kode kesalahan, B.8 skala sikap, B.9 kesetaraan tes A–B dan angket, analisis dengan aturan Lynn dan κ berbobot | 42 |
+| [Instrumen Validasi Ahli Materi v2.1](dokumen-pdf/instrumen-validasi-ahli-materi-v2.1.pdf) | Panel lima orang. Lembar penilaian 66 butir (aspek A–J), B.5a pelabelan buta dan B.5b relevansi per butir (116 butir bank dan 64 butir tes), B.6 telaah 24 Skenario Digital, B.7 kode kesalahan, B.8 skala sikap, B.9 kesetaraan tes A–B dan angket, analisis dengan aturan Lynn dan κ berbobot | 43 |
 | [Instrumen Validasi Pengamat Budaya v2.1](dokumen-pdf/instrumen-validasi-pengamat-budaya-v2.1.pdf) | Panel tiga orang. Lembar penilaian 53 butir (aspek A–I), matriks 46 objek budaya, telaah 24 petunjuk *Periksa Unggahan* dan 12 butir PBK, konfirmasi cek fakta, B.8 skala sikap | 31 |
 | [Instrumen Validasi Ahli Media v1.1](dokumen-pdf/instrumen-validasi-ahli-media-v1.1.pdf) | Panel tiga orang. Lembar penilaian 67 butir (aspek A–I), uji tujuh perangkat tanpa ponsel, catatan temuan, telaah 24 layar game sekarang, B.8 telaah 27 gambar mock-up dari 18 | 29 |
 
