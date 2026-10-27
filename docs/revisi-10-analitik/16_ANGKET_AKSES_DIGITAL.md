@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 10 · Status: **draf**; keputusan pemilik proyek diambil 26 Oktober 2026 ([bagian akhir](#keputusan-pemilik-proyek)); menunggu validasi ahli
+Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 10 · Status: **draf**; keputusan pengembang diambil 26 Oktober 2026 ([bagian akhir](#keputusan-pengembang)); menunggu validasi ahli
 
 Dokumen ini berisi angket akses digital yang diisi siswa kelas 5 di layar modul tes GELITA, langsung setelah tes awal, ditambah dua–tiga butir pengalaman risiko daring yang diisi di P5 setelah tes akhir: butir, kode jawaban, nama variabel, gunanya, sumber, pelaksanaan, pemasukan data, etika, dan validasinya. Rancangan tesnya ada di [13](13_TES_AWAL_AKHIR.md).
 
@@ -27,7 +27,7 @@ Belum ada yang diubah di sistem; modulnya dibangun di tahap 3 (perubahan sistem 
 | Usia, jenis kelamin, dan kelas sudah direkam saat daftar ([11](11_KAMUS_DATA.md#variabel-peserta-dan-sesi)) | Angket tidak menanyakannya lagi |
 | Nama siswa hanya di L7 ([01](01_REVISI_10_ANALITIK.md#kerja-lapangan-cara-kerjanya)) | Layar angket hanya menampilkan kode peserta |
 | Surat izin orang tua menyebut angket sebagai data yang dikumpulkan ([02, L7](02_LEMBAR_LAPANGAN.md#l7-izin-orang-tua-dan-status-peserta)) | Hanya siswa yang punya izin yang mengisi; yang lain ikut kegiatan pengganti |
-| Keputusan pemilik proyek 26 Oktober 2026: angket di modul tes GELITA, langsung setelah tes awal, hanya di layar dan tidak dibacakan; dua–tiga butir risiko daring di P5 setelah tes akhir ([13](13_TES_AWAL_AKHIR.md#keputusan-pemilik-proyek)) | Pelaksanaan dan pemasukan data mengikuti modul; kode `ang-{nn}` tetap |
+| Keputusan pengembang 26 Oktober 2026: angket di modul tes GELITA, langsung setelah tes awal, hanya di layar dan tidak dibacakan; dua–tiga butir risiko daring di P5 setelah tes akhir ([13](13_TES_AWAL_AKHIR.md#keputusan-pengembang)) | Pelaksanaan dan pemasukan data mengikuti modul; kode `ang-{nn}` tetap |
 | Tes dan game tidak boleh saling menjawab ([13](13_TES_AWAL_AKHIR.md#aturan-menulis-butir-tes)) | Angket tidak memuat topik dan tindakan kunci D2 dan D3 (lihat [Etika](#etika)) |
 | Data yang bisa dianalisis ditentukan izin dan percobaan pertama, bukan angket ([11](11_KAMUS_DATA.md#data-siswa-yang-bisa-dianalisis)) | Siswa tanpa angket tetap masuk analisis utama; ia hanya hilang di analisis yang memakai variabel angket |
 
@@ -384,7 +384,7 @@ Kebiasaan membaca di layar juga tercatat di ang-07 baris f.
 | Pekerjaan dan pendidikan orang tua, penghasilan, barang mewah di rumah | ICILS 2023 Q9–Q14; Framework Survei Lingkungan Belajar | Sensitif, dan anak kelas 5 sering tidak tahu jawabannya. Diganti ang-17 |
 | Agama, suku, siapa saja yang tinggal di rumah | — | Sensitif dan tidak dibutuhkan analisis |
 | Keterampilan digital menurut diri sendiri (misalnya "Aku tahu cara mengatur privasi", "Mudah bagiku memeriksa apakah informasi benar") | Global Kids Online Q6Skills; EU Kids Online 2017 QE | Tumpang tindih dengan yang diukur game dan tes, dan bisa memancing jawaban D1b dan D2 |
-| Pengalaman risiko daring | Global Kids Online Q7Harm dan Q8Risks | Tidak di angket P1, supaya tidak memancing D2 sebelum game; dua–tiga butirnya diisi di P5 ([Keputusan pemilik proyek](#keputusan-pemilik-proyek)) |
+| Pengalaman risiko daring | Global Kids Online Q7Harm dan Q8Risks | Tidak di angket P1, supaya tidak memancing D2 sebelum game; dua–tiga butirnya diisi di P5 ([Keputusan pengembang](#keputusan-pengembang)) |
 | Hambatan memakai internet (biaya, sinyal) | Global Kids Online Q2Barriers | Biaya menyentuh keadaan ekonomi keluarga; ang-03 sudah cukup |
 | Aplikasi yang paling sering dipakai (isian) | EU Kids Online 2017 QD1 | Isian sulit ditulis anak dan sulit dikode; ang-08 sudah cukup |
 
@@ -493,10 +493,10 @@ Masuk [11, *Variabel peserta dan sesi*](11_KAMUS_DATA.md#variabel-peserta-dan-se
 8. **Butir risiko daring di P5** (diputuskan 26 Oktober 2026). Syaratnya:
    - Butir ini disebut di permohonan izin etik dan di surat izin orang tua, dengan centang izin terpisah di surat itu dan di L7 (keputusan 26 Oktober 2026). Siswa tanpa centang itu tidak melihat butir ini, tetapi tetap ikut kegiatan lain.
    - Diisi sendiri di layar, tidak dibacakan, dan tidak ada orang lain yang melihat layar siswa. Denah papan catur dan jarak antarperangkat ikut menjaga privasi.
-   - Setelah butir ini, semua siswa, apa pun jawabannya, juga siswa tanpa izin butir risiko, melihat pesan yang sama tentang kepada siapa bisa bercerita (orang tua, guru, atau kakak peneliti); teksnya di 23 → T12. Di akhir P5 semua anak di kelas menerima selebaran tempat bercerita (23 → T13). Dengan begitu, tidak ada siswa yang terlihat berbeda (keputusan pemilik proyek, 27 Oktober 2026).
+   - Setelah butir ini, semua siswa, apa pun jawabannya, juga siswa tanpa izin butir risiko, melihat pesan yang sama tentang kepada siapa bisa bercerita (orang tua, guru, atau kakak peneliti); teksnya di 23 → T12. Di akhir P5 semua anak di kelas menerima selebaran tempat bercerita (23 → T13). Dengan begitu, tidak ada siswa yang terlihat berbeda (keputusan pengembang, 27 Oktober 2026).
    - Prosedur rujukan ditulis di protokol etik ([22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring)): siapa yang melihat jawaban yang perlu ditindaklanjuti, kapan, dan bagaimana kode dihubungkan dengan nama di L7 (hanya oleh ketua peneliti). Penanda rujukan dan catatan tindak lanjut disimpan di luar data penelitian.
-   - Penanda tindak lanjut (ang-21 *Pernah, sekali atau dua kali* atau lebih; didahulukan *Beberapa kali atau lebih*, atau ang-23 *Aku tidak bercerita kepada siapa pun*) ikut ditelaah Ahli Literasi Digital, yang menilai apakah penanda ini terlalu lebar ([Validasi dan uji coba](#validasi-dan-uji-coba)). Penyempitannya butuh keputusan pemilik proyek.
-   - Sebelum ang-21, layar menanyakan ulang apakah anak mau menjawab dan memuat kalimat batas kerahasiaan yang jujur ([Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 2; teks lengkapnya di 23 → T11).
+   - Penanda tindak lanjut (ang-21 *Pernah, sekali atau dua kali* atau lebih; didahulukan *Beberapa kali atau lebih*, atau ang-23 *Aku tidak bercerita kepada siapa pun*) ikut ditelaah Ahli Literasi Digital, yang menilai apakah penanda ini terlalu lebar ([Validasi dan uji coba](#validasi-dan-uji-coba)). Penyempitannya butuh keputusan pengembang.
+   - Sebelum ang-21, layar menanyakan ulang apakah anak mau menjawab dan memuat kalimat batas kerahasiaan yang jujur ([Keputusan pengembang](#keputusan-pengembang) no. 2; teks lengkapnya di 23 → T11).
    - Jawaban butir ini tidak pernah dibagikan, juga tidak di data berkode yang dibagikan atas permintaan. Anak atau orang tua boleh meminta jawaban butir ini saja dihapus tanpa berhenti dari penelitian (23 → T10 pilihan C).
 
 ## Validasi dan uji coba
@@ -508,13 +508,13 @@ Masuk [11, *Variabel peserta dan sesi*](11_KAMUS_DATA.md#variabel-peserta-dan-se
 | 2 | Uji keterbacaan dengan empat anak, ditambah satu anak di putaran kedua (kelas 5, dari sekolah di luar sampel), setelah izin etik terbit, bersama uji keterbacaan bank dan tes, di mock-up layar modul ([24](24_UJI_KETERBACAAN.md)). Karena angket tidak dibacakan, anak membaca sendiri, lalu diminta menjelaskan dengan kata-katanya sendiri arti "akun sendiri", "menemanimu", "hari sekolah", dan "1 jam". Butir risiko daring ang-21–ang-23 diuji dengan parafrase saja, dengan centang izin terpisah: anak menjelaskan arti pertanyaannya, tetapi tidak pernah menjawab tentang pengalamannya sendiri ([24 → Butir risiko daring](24_UJI_KETERBACAAN.md#butir-risiko-daring)) | Peneliti |
 | 2 | Mock-up layar angket ikut ditelaah ahli media langkah 1 | Ahli Media Pembelajaran 1–3 |
 | 4 | Uji coba satu kelas di modul, dibaca sendiri seperti pelaksanaan sebenarnya. Yang dilihat: waktu total (sasaran ≤ 10 menit), butir yang sering dilewati, butir dengan banyak *Tidak tahu*, pilihan yang tidak pernah dipilih, pertanyaan yang sering ditanyakan siswa (catatan P3 di L6), dan isian yang bertentangan (`q_flags`) | Peneliti |
-| G4 | Angket final dan batas kelompok DIF dibekukan bersama pra-registrasi | Pemilik proyek |
+| G4 | Angket final dan batas kelompok DIF dibekukan bersama pra-registrasi | Pengembang |
 
 Usulan patokan uji coba: butir yang kosong pada lebih dari 10% siswa, atau dijawab *Tidak tahu* oleh lebih dari 20% siswa, ditulis ulang atau dibuang. Satu kelas uji coba hanya berisi ± 28 siswa, jadi angka ini hanya petunjuk kasar.
 
 ## Penyesuaian di dokumen lain
 
-Status per 26 Oktober 2026, setelah keputusan pemilik proyek:
+Status per 26 Oktober 2026, setelah keputusan pengembang:
 
 - **02, L6:** selesai. Baris angket dan butir risiko daring di tabel instrumen merujuk ke 16; status angket disalin dari panel peneliti. Lembar finalnya tetap bagian daftar kerja no. 11.
 - **02, L7, dan surat izin orang tua:** selesai. Topik angket disebut, dan butir risiko daring di P5 punya centang izin terpisah.
@@ -523,9 +523,9 @@ Status per 26 Oktober 2026, setelah keputusan pemilik proyek:
 - **01 dan 00:** selesai. Status daftar kerja no. 10.
 - **11:** menunggu `kamus-1.1` setelah uji coba (keputusan 26 Oktober 2026).
 
-## Keputusan pemilik proyek
+## Keputusan pengembang
 
-Pertanyaan 4 di draf ini (pengalaman risiko daring) dan media angket diputuskan pemilik proyek pada 26 Oktober 2026, bersama pertanyaan 1–3 di [13](13_TES_AWAL_AKHIR.md#keputusan-pemilik-proyek). Rinciannya di [04](04_CATATAN_KEPUTUSAN.md).
+Pertanyaan 4 di draf ini (pengalaman risiko daring) dan media angket diputuskan pengembang pada 26 Oktober 2026, bersama pertanyaan 1–3 di [13](13_TES_AWAL_AKHIR.md#keputusan-pengembang). Rinciannya di [04](04_CATATAN_KEPUTUSAN.md).
 
 1. **Angket di modul tes GELITA**, langsung setelah tes awal, hanya di layar dan tidak dibacakan koordinator sesi.
 2. **Dua–tiga butir pengalaman risiko daring diisi di P5 setelah tes akhir**, sendiri di layar. Di P5 tes dan game sudah selesai, jadi butir ini tidak memancing D2. Syarat etiknya ada di [Etika](#etika) no. 8. Butirnya ang-21 sampai ang-23 di bawah; jumlah akhirnya (dua atau tiga) ditetapkan setelah telaah ahli dan uji keterbacaan. Tambahannya ± 3 menit di P5.

@@ -10,7 +10,7 @@ Dokumen ini belum mengubah sistem apa pun. Isinya rencana kerja tim; dokumen imp
 
 ## Keputusan yang sudah diambil
 
-Ada sepuluh keputusan dari pemilik proyek. Semuanya berlaku mulai dokumen ini.
+Ada sepuluh keputusan awal, dicatat pengembang. Semuanya berlaku mulai dokumen ini. Judul penelitian dan 10 analitik berasal dari peneliti (lihat *Peran pengembang, peneliti, dan ahli*).
 
 | Keputusan | Artinya buat penelitian |
 | --- | --- |
@@ -27,9 +27,37 @@ Ada sepuluh keputusan dari pemilik proyek. Semuanya berlaku mulai dokumen ini.
 
 Karena guru tidak ikut, bantuan guru pada isi soal harus dicegah lewat arahan sebelum sesi. Kalau tetap terjadi, kita catat di lembar L3.
 
+## Peran pengembang, peneliti, dan ahli
+
+Ditetapkan 27 Oktober 2026 ([04](04_CATATAN_KEPUTUSAN.md)). Bagian ini berlaku untuk semua dokumen di folder revisi 10 analitik.
+
+Revisi ini dikerjakan di dua jalur. Setiap isi, keputusan, dan perubahan menyebut jalur asalnya, supaya jelas mana yang masih usulan pengembang dan mana yang sudah ditetapkan peneliti bersama ahli.
+
+| Jalur | Siapa | Yang dikerjakan | Kedudukannya |
+| --- | --- | --- | --- |
+| **Pengembang** (berbantuan AI) | Pengembang GELITA, dibantu AI | Draf, label, skor, telaah, cek fakta, usulan revisi, dan berkas siap kirim. Pengembang boleh berperan sebagai ahli, komite, atau pihak lain untuk latihan dan penyaringan awal, misalnya memberi skor pada butir instrumen validasi | Sementara. Ditandai sebagai kerja pengembang |
+| **Peneliti** | Ketua peneliti dan tim peneliti | Menerima kerja pengembang, menindaklanjutinya, menyerahkannya ke ahli, komite, dan pihak terkait, lalu menetapkannya | Sah setelah disetujui peneliti |
+| **Peneliti bersama ahli dan komite** | Peneliti dengan validator ([03](03_KODE_DAN_ARTI.md#peran)), *Lembaga Komite Etik*, sekolah, dan pihak lain yang terlibat | Validasi ahli, izin etik, izin sekolah | Final, setelah ditetapkan peneliti |
+
+**Judul penelitian dan 10 analitik berasal dari peneliti.** Pengembang menurunkannya menjadi rancangan, instrumen, dan berkas.
+
+Aturannya:
+
+1. **Kerja pengembang bukan validasi ahli.** Skor dan label pengembang, termasuk yang dibuat dengan bantuan AI, tidak ikut dihitung dalam V Aiken, I-CVI, S-CVI, κ, atau ICC, dan tidak dilaporkan sebagai penilaian ahli (T6 di [07](07_TELAAH_INSTRUMEN_VALIDASI.md#t6-penelaah-pendahuluan-berbantuan-ai)).
+2. **Ahli menilai tanpa melihat skor atau label pengembang.** Pelabelan buta B.5a tetap buta, dan lembar lain juga dikirim tanpa skor pengembang supaya penilaian ahli tidak terpengaruh. Skor pengembang baru dibandingkan sesudahnya, di matriks revisi ([20](20_PAKET_VALIDASI.md)).
+3. **Tidak ada yang beku penuh sebelum final.** "Dibekukan" berarti versinya dicatat (tanggal dan *commit* di [04](04_CATATAN_KEPUTUSAN.md)), bukan tidak boleh diubah. Perubahan sesudahnya tetap boleh, mendadak atau nanti, asalkan dicatat di 04 dengan asal dan akibatnya: perlu dinilai ulang ahli, perlu amandemen ke komite etik, atau tidak perlu apa-apa. Versi yang mengikat pihak lain:
+   - bahan paket validasi, karena ahli menilai versi itu ([20 → Ringkasan](20_PAKET_VALIDASI.md#ringkasan), prasyarat no. 4);
+   - bahan untuk anak yang dilampirkan ke izin etik, karena perubahannya diajukan sebagai amandemen protokol ([22](22_PERMOHONAN_IZIN_ETIK.md));
+   - skema kode kesalahan setelah uji coba (*Skema kategori kesalahan* di bawah);
+   - kamus data sebelum data diambil ([11](11_KAMUS_DATA.md)).
+4. **Satu orang yang memegang dua peran menandai keputusannya per peran.** Keputusan yang diambil sebagai pengembang tetap kerja pengembang sampai disetujui sebagai peneliti.
+5. **Keputusan yang dicatat sebelum 27 Oktober 2026** sebagai keputusan "pemilik proyek" sekarang ditulis sebagai keputusan pengembang. Kedudukannya *disetujui pengembang*; peneliti mengukuhkannya saat menindaklanjuti ([00 → Label asal dan status](00_INDEKS.md#label-asal-dan-status)).
+6. **Kerja pengembang yang sudah lengkap mempercepat tindak lanjut.** Peneliti tidak mulai dari nol: ia menyetujui, menolak, atau merevisi bahan yang sudah siap, lalu membawanya ke ahli atau komite. Peneliti tetap bertanggung jawab atas setiap keputusan final.
+7. **Di naskah penelitian, bantuan AI ditulis terbuka** sebagai *telaah pendahuluan berbantuan AI oleh tim pengembang*, bagian dari tahap pengembangan, bukan bagian dari validasi ahli.
+
 ## Judul penelitian dan konstruk
 
-Judulnya menyebut GELITA sebagai **model asesmen literasi digital**. Jadi yang kita ukur adalah literasi digital siswa, dan Kedu adalah konteks budayanya. Literasi membaca dan pengetahuan budaya tidak lagi berdiri sebagai konstruk sendiri; keduanya jadi dimensi literasi digital. Penyelarasan ini sudah disetujui pemilik proyek (25 Oktober 2026), bersama rumusan dimensi di [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) dan kisi-kisi di [06](06_KISI_KISI_BANK_SOAL.md).
+Judulnya menyebut GELITA sebagai **model asesmen literasi digital**. Jadi yang kita ukur adalah literasi digital siswa, dan Kedu adalah konteks budayanya. Literasi membaca dan pengetahuan budaya tidak lagi berdiri sebagai konstruk sendiri; keduanya jadi dimensi literasi digital. Penyelarasan ini sudah disetujui pengembang (25 Oktober 2026), bersama rumusan dimensi di [05](05_TELAAH_BUTIR_DAN_DIMENSI.md) dan kisi-kisi di [06](06_KISI_KISI_BANK_SOAL.md).
 
 | Dimensi | Artinya | Pilar Komdigi | Area DigComp 3.0 | Diukur lewat | Kode kesalahan | Acuan level |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -298,7 +326,7 @@ Saran kita: **dua-duanya, dengan batas yang jelas.** Sistem tetap menghasilkan d
 
 Usulan kode peserta yang memuat sekolah dan nomor urut bisa dipakai, dengan satu tambahan: huruf rombel. Satu sekolah bisa punya dua kelas 5, masing-masing sampai 50 siswa, jadi nomor urut per sekolah saja bisa lewat dari 99.
 
-**Format: `S03-A07`** (disetujui pemilik proyek, 25 Oktober 2026)
+**Format: `S03-A07`** (disetujui pengembang, 25 Oktober 2026)
 
 | Bagian | Arti | Contoh |
 | --- | --- | --- |
@@ -333,7 +361,7 @@ Pengambilan data utama memakai **tiga peneliti per kelas** (diputuskan 25 Oktobe
 
 **Alur satu pertemuan:**
 
-1. **Sebelum pertemuan.** Izin orang tua (L7) dikumpulkan sebelum P1: amplop tertutup dibagikan H-14 sampai H-10, pengingat H-5, batas kembali H-3; formulir yang tidak kembali sampai batas itu berarti tidak ada izin ([22 → Rekrutmen](22_PERMOHONAN_IZIN_ETIK.md#rekrutmen), keputusan pemilik proyek 27 Oktober 2026). Siswa tanpa izin tidak dibuatkan akun GELITA dan ikut kegiatan pengganti di ruang yang sama, jadi tidak ada data tentang mereka (diputuskan 26 Oktober 2026). Di H-1: tempel stiker nomor di setiap perangkat, cetak lembar, dan jalankan daftar periksa L0. Buat sesi lapangannya di panel peneliti, termasuk wilayah yang dibuka.
+1. **Sebelum pertemuan.** Izin orang tua (L7) dikumpulkan sebelum P1: amplop tertutup dibagikan H-14 sampai H-10, pengingat H-5, batas kembali H-3; formulir yang tidak kembali sampai batas itu berarti tidak ada izin ([22 → Rekrutmen](22_PERMOHONAN_IZIN_ETIK.md#rekrutmen), keputusan pengembang 27 Oktober 2026). Siswa tanpa izin tidak dibuatkan akun GELITA dan ikut kegiatan pengganti di ruang yang sama, jadi tidak ada data tentang mereka (diputuskan 26 Oktober 2026). Di H-1: tempel stiker nomor di setiap perangkat, cetak lembar, dan jalankan daftar periksa L0. Buat sesi lapangannya di panel peneliti, termasuk wilayah yang dibuka.
 2. **Sebelum siswa masuk.** Samakan jam: semua pengamat memakai jam ponsel yang diatur otomatis dari jaringan (WIB), dicatat sampai detik. Uji internet dan isi bagian atas L1.
 3. **Pembukaan (5 menit).** P1 memberi arahan ke siswa dan guru, lalu menulis token di papan tulis.
 4. **Masuk atau daftar.** Setelah siswa masuk, P1 menyalin kode peserta ("kode penelitian", misalnya S03-A07) ke L2, di samping nomor kursi, baris, kursi di baris, dan nomor perangkat. Di P1 kode disalin dari bagian atas layar modul tes, di pertemuan lain dari halaman Profil. Di P1, langsung setelah semua siswa mendaftar, P1 memasukkan kode peserta, baris, kursi, dan buklet ke panel peneliti (± 5 menit), dan tes awal baru dimulai setelah semua siswa punya bentuk tes (diputuskan 26 Oktober 2026).
@@ -371,7 +399,7 @@ Data inti analisis adalah ketepatan percobaan pertama. Lembar lapangan dipakai s
 
 ## Peta jalan dan daftar kerja
 
-Pekerjaan berjalan dalam enam tahap. Tahap berikutnya baru dimulai setelah gerbangnya terpenuhi. Sistem baru diubah di tahap 3, setelah instrumen lolos validasi ahli dan izin etik. Urutan ini dikukuhkan pemilik proyek pada 25 Oktober 2026: dokumen implementasi dan perubahan sistem tidak dimulai sebelum gerbang G2, termasuk persetujuan etik. Izin etik diajukan minggu kedua–keempat November 2026 dan persetujuannya ditargetkan paling lambat akhir September sampai minggu pertama November 2027, jadi tahap 3 bisa baru dimulai sekitar waktu itu. Pemilik proyek memilih tetap menunggu persetujuan (25 Oktober 2026). Uji keterbacaan dengan anak di tahap 2, uji coba, dan pengambilan data juga baru boleh berjalan setelah persetujuan terbit.
+Pekerjaan berjalan dalam enam tahap. Tahap berikutnya baru dimulai setelah gerbangnya terpenuhi. Sistem baru diubah di tahap 3, setelah instrumen lolos validasi ahli dan izin etik. Urutan ini dikukuhkan pengembang pada 25 Oktober 2026: dokumen implementasi dan perubahan sistem tidak dimulai sebelum gerbang G2, termasuk persetujuan etik. Izin etik diajukan minggu kedua–keempat November 2026 dan persetujuannya ditargetkan paling lambat akhir September sampai minggu pertama November 2027, jadi tahap 3 bisa baru dimulai sekitar waktu itu. Pengembang memilih tetap menunggu persetujuan (25 Oktober 2026). Uji keterbacaan dengan anak di tahap 2, uji coba, dan pengambilan data juga baru boleh berjalan setelah persetujuan terbit.
 
 ![Peta jalan: enam tahap, lima gerbang](gambar/peta-jalan.svg)
 
@@ -389,35 +417,35 @@ Setiap entri di 04 yang merevisi produk menyebut prototipe yang direvisinya (mis
 
 Tanggal tiap tahap belum ditetapkan dan perlu diisi tim. Daftar kerja di bawah memuat pekerjaan tahap 1 sampai 4, kecuali perubahan sistem (lihat bagian terakhir).
 
-Gerbang G1 berarti konstruk disetujui dan semua dokumen tahap 1 selesai dan disetujui pemilik proyek. Kesepakatan dua penilai pada label (κ ≥ 0,70) diperiksa sekali saja, pada pelabelan buta dua ahli di tahap 2, dan menjadi bagian gerbang G2 (diputuskan 25 Oktober 2026).
+Gerbang G1 berarti konstruk disetujui dan semua dokumen tahap 1 selesai dan disetujui pengembang. Kesepakatan dua penilai pada label (κ ≥ 0,70) diperiksa sekali saja, pada pelabelan buta dua ahli di tahap 2, dan menjadi bagian gerbang G2 (diputuskan 25 Oktober 2026).
 
 Ahli media menilai dalam dua langkah (diputuskan 25 Oktober 2026): di tahap 2, game yang ada sekarang ditambah rancangan layar baru (Skenario Digital, *Periksa Unggahan*, token) berupa papan cerita atau mock-up; setelah tahap 3, telaah singkat layar yang sudah jadi di instalasi uji sebelum uji coba, sebagai bagian gerbang G3.
 
 | No | Pekerjaan | Tahap | Penanggung jawab | Status |
 | --- | --- | --- | --- | --- |
-| 1 | Setujui penyelarasan konstruk: literasi digital dengan tiga dimensi | 1 | Pemilik proyek | Selesai |
-| 2 | Bekukan peta bukti dan definisi 10 analitik di kamus data ([11](11_KAMUS_DATA.md)) | 1 | Claude (draf), pemilik proyek | Selesai: `kamus-1.0` disetujui 26 Oktober 2026 |
-| 3 | Pelabelan buta level AKM dan dimensi pada semua butir yang dinilai oleh dua ahli (B.5a di [07](07_TELAAH_INSTRUMEN_VALIDASI.md)); label pengembang sudah ada di 08 | 2 | Claude (berkas), Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1 | Penilai ditetapkan pemilik proyek (27 Oktober 2026): Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1; keduanya menerima paket B.5a saja lebih dulu. Urutan kirim di [20](20_PAKET_VALIDASI.md), daftar buta ber-ID netral dan lembar kerja di [21](21_BERKAS_BUTIR_VALIDATOR.md) (draf) |
-| 4 | Periksa ulang label Bloom, terutama Cari Objek dan Benar atau Salah C5 | 1 | Claude (telaah), pemilik proyek | Selesai: [19](19_TELAAH_LABEL_BLOOM.md); keputusan pemilik proyek 26 Oktober 2026 dimasukkan ke 08 dan 06 |
-| 5 | Beri kode kesalahan pada kata pengecoh, benda pengecoh, dan pernyataan | 1 | Claude | Selesai di draf 08, menunggu validasi |
-| 6 | Tulis Skenario Digital untuk tiga wilayah, lengkap dengan pilihan tindakan dan alasan berkode | 1 | Claude | Selesai di draf 08, menunggu validasi |
-| 7 | Tulis cerita penghubung dan narasi untuk tantangan kelima | 1 | Claude (draf), pemilik proyek (persetujuan) | Selesai: [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) disetujui 26 Oktober 2026 |
-| 8 | Tentukan 4–6 butir jangkar | 1 | Claude | Selesai di draf 08 (6 butir), menunggu validasi |
-| 9 | Susun tes literasi membaca dan tes literasi digital, bentuk A dan B: bagian membaca diadaptasi dari contoh soal AKM/ANBK yang terbuka untuk umum, bagian D2 dan D3 disusun sendiri dan tidak sama dengan butir game | 1 | Claude (draf), pemilik proyek | Draf di [13](13_TES_AWAL_AKHIR.md), [14](14_TES_BAGIAN_MEMBACA.md), dan [15](15_TES_BAGIAN_DIGITAL.md); keputusan pemilik proyek 26 Oktober 2026 (modul tes GELITA, batas waktu longgar, topik di luar Kedu); menunggu validasi |
-| 10 | Susun angket akses digital | 1 | Claude (draf), pemilik proyek | Draf di [16](16_ANGKET_AKSES_DIGITAL.md); keputusan pemilik proyek 26 Oktober 2026 (di modul, tidak dibacakan; butir risiko daring di P5); menunggu validasi |
-| 11 | Finalkan lembar L0–L7 | 1 | Claude (draf), pemilik proyek | Selesai: [02](02_LEMBAR_LAPANGAN.md) disetujui 26 Oktober 2026 |
-| 12 | Buat daftar kode sekolah penelitian (S01, S02, …) | 1 | Pemilik proyek | Ditunda (27 Oktober 2026): belum diputuskan, tahap 2 tetap dimulai. Dibutuhkan sebelum sekolah direkrut dan L8 diisi |
-| 13 | Tentukan siapa pemegang akun admin dan akun peneliti | 1 | Pemilik proyek | Sementara (27 Oktober 2026): nama samaran per peran, `admin`, `koordinator` (P1), `pengamat` (P2), `pewawancara` (P3), dan `ketua` (ketua peneliti) ([03](03_KODE_DAN_ARTI.md#akun-staf)); pemegang sebenarnya belum ditetapkan |
-| 14 | Validasi ahli: budaya Kedu, bahasa anak, literasi digital, pengukuran, media | 2 | Claude (paket), pemilik proyek, sebelas validator | Paket di [20](20_PAKET_VALIDASI.md) dan berkas per butir di [21](21_BERKAS_BUTIR_VALIDATOR.md) (draf; keputusan pemilik proyek 27 Oktober 2026: dikirim digital, honorarium "sesuai ketentuan yang berlaku", ahli media langkah 1 tidak menunggu L8, ID netral untuk B.5a); dikirim setelah instrumen v2.1 dan v1.1 disetujui |
-| 15 | Ajukan izin etik ke *Lembaga Komite Etik* (nama samaran) pada minggu kedua–keempat November 2026, dan siapkan surat izin orang tua | 2 | Claude (draf), pemilik proyek | Draf protokol di [22](22_PERMOHONAN_IZIN_ETIK.md) dan surat di [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) (27 Oktober 2026; keputusan pemilik proyek diambil hari itu). Diajukan setelah dokumen tahap 1 yang dilampirkan disetujui dan formulir komite sebenarnya diketahui. Panduan klirens etik BRIN menjadi pedoman utama, PSEPPKN 2021 cadangan (27 Oktober 2026). Patokan telaah BRIN ± 1–2 bulan sejak berkas lengkap, jauh lebih cepat daripada target persetujuan di awal bagian ini (akhir September sampai minggu pertama November 2027); target itu ditinjau pemilik proyek setelah komite dipilih, dan persetujuan yang lebih awal tidak mengubah urutan gerbang |
+| 1 | Setujui penyelarasan konstruk: literasi digital dengan tiga dimensi | 1 | Pengembang | Selesai |
+| 2 | Bekukan peta bukti dan definisi 10 analitik di kamus data ([11](11_KAMUS_DATA.md)) | 1 | AI (draf), pengembang | Selesai: `kamus-1.0` disetujui 26 Oktober 2026 |
+| 3 | Pelabelan buta level AKM dan dimensi pada semua butir yang dinilai oleh dua ahli (B.5a di [07](07_TELAAH_INSTRUMEN_VALIDASI.md)); label pengembang sudah ada di 08 | 2 | AI (berkas), Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1 | Penilai ditetapkan pengembang (27 Oktober 2026): Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1; keduanya menerima paket B.5a saja lebih dulu. Urutan kirim di [20](20_PAKET_VALIDASI.md), daftar buta ber-ID netral dan lembar kerja di [21](21_BERKAS_BUTIR_VALIDATOR.md) (draf) |
+| 4 | Periksa ulang label Bloom, terutama Cari Objek dan Benar atau Salah C5 | 1 | AI (telaah), pengembang | Selesai: [19](19_TELAAH_LABEL_BLOOM.md); keputusan pengembang 26 Oktober 2026 dimasukkan ke 08 dan 06 |
+| 5 | Beri kode kesalahan pada kata pengecoh, benda pengecoh, dan pernyataan | 1 | AI | Selesai di draf 08, menunggu validasi |
+| 6 | Tulis Skenario Digital untuk tiga wilayah, lengkap dengan pilihan tindakan dan alasan berkode | 1 | AI | Selesai di draf 08, menunggu validasi |
+| 7 | Tulis cerita penghubung dan narasi untuk tantangan kelima | 1 | AI (draf), pengembang (persetujuan) | Selesai: [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) disetujui 26 Oktober 2026 |
+| 8 | Tentukan 4–6 butir jangkar | 1 | AI | Selesai di draf 08 (6 butir), menunggu validasi |
+| 9 | Susun tes literasi membaca dan tes literasi digital, bentuk A dan B: bagian membaca diadaptasi dari contoh soal AKM/ANBK yang terbuka untuk umum, bagian D2 dan D3 disusun sendiri dan tidak sama dengan butir game | 1 | AI (draf), pengembang | Draf di [13](13_TES_AWAL_AKHIR.md), [14](14_TES_BAGIAN_MEMBACA.md), dan [15](15_TES_BAGIAN_DIGITAL.md); keputusan pengembang 26 Oktober 2026 (modul tes GELITA, batas waktu longgar, topik di luar Kedu); menunggu validasi |
+| 10 | Susun angket akses digital | 1 | AI (draf), pengembang | Draf di [16](16_ANGKET_AKSES_DIGITAL.md); keputusan pengembang 26 Oktober 2026 (di modul, tidak dibacakan; butir risiko daring di P5); menunggu validasi |
+| 11 | Finalkan lembar L0–L7 | 1 | AI (draf), pengembang | Selesai: [02](02_LEMBAR_LAPANGAN.md) disetujui 26 Oktober 2026 |
+| 12 | Buat daftar kode sekolah penelitian (S01, S02, …) | 1 | Pengembang | Ditunda (27 Oktober 2026): belum diputuskan, tahap 2 tetap dimulai. Dibutuhkan sebelum sekolah direkrut dan L8 diisi |
+| 13 | Tentukan siapa pemegang akun admin dan akun peneliti | 1 | Pengembang | Sementara (27 Oktober 2026): nama samaran per peran, `admin`, `koordinator` (P1), `pengamat` (P2), `pewawancara` (P3), dan `ketua` (ketua peneliti) ([03](03_KODE_DAN_ARTI.md#akun-staf)); pemegang sebenarnya belum ditetapkan |
+| 14 | Validasi ahli: budaya Kedu, bahasa anak, literasi digital, pengukuran, media | 2 | AI (paket), pengembang, sebelas validator | Paket di [20](20_PAKET_VALIDASI.md) dan berkas per butir di [21](21_BERKAS_BUTIR_VALIDATOR.md) (draf; keputusan pengembang 27 Oktober 2026: dikirim digital, honorarium "sesuai ketentuan yang berlaku", ahli media langkah 1 tidak menunggu L8, ID netral untuk B.5a); dikirim setelah instrumen v2.1 dan v1.1 disetujui |
+| 15 | Ajukan izin etik ke *Lembaga Komite Etik* (nama samaran) pada minggu kedua–keempat November 2026, dan siapkan surat izin orang tua | 2 | AI (draf), pengembang | Draf protokol di [22](22_PERMOHONAN_IZIN_ETIK.md) dan surat di [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) (27 Oktober 2026; keputusan pengembang diambil hari itu). Diajukan setelah dokumen tahap 1 yang dilampirkan disetujui dan formulir komite sebenarnya diketahui. Panduan klirens etik BRIN menjadi pedoman utama, PSEPPKN 2021 cadangan (27 Oktober 2026). Patokan telaah BRIN ± 1–2 bulan sejak berkas lengkap, jauh lebih cepat daripada target persetujuan di awal bagian ini (akhir September sampai minggu pertama November 2027); target itu ditinjau pengembang setelah komite dipilih, dan persetujuan yang lebih awal tidak mengubah urutan gerbang |
 | 16 | Latih pengamat L4 sampai κ ≥ 0,60 | 4 | | Belum mulai |
 | 17 | Uji coba satu kelas dengan semua lembar | 4 | | Belum mulai |
 | 18 | Pra-registrasi skema kesalahan dan rencana analisis di OSF, di gerbang G4 | 4 | | Belum mulai |
-| 19 | Susun skala pendamping sikap menjaga warisan untuk Balai Refleksi, lalu masukkan ke validasi ahli (no. 14) | 1 | Claude (draf), pemilik proyek | Draf di [17](17_SKALA_SIKAP.md); keputusan pemilik proyek 26 Oktober 2026 (12 butir empat pilihan tanpa titik tengah, 4 butir dibalik, hanya di layar, sebelum kritik dan saran); menunggu validasi |
-| 20 | Buat papan cerita atau mock-up layar baru (Skenario Digital, *Periksa Unggahan*, token, modul tes dan angket) untuk ahli media langkah 1 | 1 | Claude (draf), pemilik proyek | Selesai: [18](18_MOCKUP_LAYAR_BARU.md) disetujui 26 Oktober 2026 (27 gambar, termasuk layar skala sikap dari [17](17_SKALA_SIKAP.md)) |
+| 19 | Susun skala pendamping sikap menjaga warisan untuk Balai Refleksi, lalu masukkan ke validasi ahli (no. 14) | 1 | AI (draf), pengembang | Draf di [17](17_SKALA_SIKAP.md); keputusan pengembang 26 Oktober 2026 (12 butir empat pilihan tanpa titik tengah, 4 butir dibalik, hanya di layar, sebelum kritik dan saran); menunggu validasi |
+| 20 | Buat papan cerita atau mock-up layar baru (Skenario Digital, *Periksa Unggahan*, token, modul tes dan angket) untuk ahli media langkah 1 | 1 | AI (draf), pengembang | Selesai: [18](18_MOCKUP_LAYAR_BARU.md) disetujui 26 Oktober 2026 (27 gambar, termasuk layar skala sikap dari [17](17_SKALA_SIKAP.md)) |
 | 21 | Telaah ahli media langkah 2 pada layar jadi di instalasi uji, sebelum uji coba (G3) | 3 | | Belum mulai |
-| 22 | Tulis penelitian pendahuluan sebagai fase tersendiri dari bahan yang ada, dan isi L8 Profil sekolah untuk setiap sekolah sasaran (draf lembar di [02](02_LEMBAR_LAPANGAN.md#l8-profil-sekolah)) | pendahuluan | Claude (draf), pemilik proyek; L8 diisi P1 | Lembar L8 draf (26 Oktober 2026); menunggu daftar kode sekolah (no. 12) |
-| 23 | Susun protokol uji keterbacaan dengan anak kelas 5 (bank, tes, angket, skala sikap, salinan layar baru), dijalankan setelah izin etik terbit dan revisi validasi ahli | 2 | Claude (draf), pemilik proyek | Draf di [24](24_UJI_KETERBACAAN.md) (27 Oktober 2026); keputusan pemilik proyek: empat anak ditambah satu di putaran kedua, inti untuk semua dan bank dalam enam blok, sekolah di wilayah Kedu di luar sampel dan uji coba, butir risiko daring diparafrasekan saja |
+| 22 | Tulis penelitian pendahuluan sebagai fase tersendiri dari bahan yang ada, dan isi L8 Profil sekolah untuk setiap sekolah sasaran (draf lembar di [02](02_LEMBAR_LAPANGAN.md#l8-profil-sekolah)) | pendahuluan | AI (draf), pengembang; L8 diisi P1 | Lembar L8 draf (26 Oktober 2026); menunggu daftar kode sekolah (no. 12) |
+| 23 | Susun protokol uji keterbacaan dengan anak kelas 5 (bank, tes, angket, skala sikap, salinan layar baru), dijalankan setelah izin etik terbit dan revisi validasi ahli | 2 | AI (draf), pengembang | Draf di [24](24_UJI_KETERBACAAN.md) (27 Oktober 2026); keputusan pengembang: empat anak ditambah satu di putaran kedua, inti untuk semua dan bank dalam enam blok, sekolah di wilayah Kedu di luar sampel dan uji coba, butir risiko daring diparafrasekan saja |
 
 ## Pertanyaan yang masih terbuka
 
@@ -434,10 +462,10 @@ Pertanyaan ini perlu dijawab sebelum desain instrumen dibekukan. Centang kalau t
 - [x] Di luar sesi, apakah Pustaka dan Profil tetap boleh dibuka, atau semuanya tertutup? **Diputuskan (25 Oktober 2026): semuanya tertutup sampai penelitian selesai.**
 - [x] Format kode peserta `S03-A07` disetujui? **Diputuskan (25 Oktober 2026): ya.**
 - [x] Berapa pertemuan per kelas, dan tantangan mana yang dibuka di tiap pertemuan? **Diputuskan (25 Oktober 2026): lima pertemuan; satu wilayah per pertemuan (lihat [06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain)).**
-- [x] Siapa yang menulis skenario dan cerita penghubungnya (Mbah Kedu dan Jaka), dan siapa yang mengisi suara narasinya? **Diputuskan (25 Oktober 2026): skenario sudah ada di draf 08; cerita penghubung dan narasinya didraf Claude dan disetujui pemilik proyek; suaranya direkam pengisi suara yang sama dengan narasi lain, di sesi rekaman yang sama.**
-- [ ] Siapa validator ahlinya: isi budaya Kedu, bahasa anak, literasi digital, pengukuran, dan media? (Panel ahli materi lima orang, lihat [07](07_TELAAH_INSTRUMEN_VALIDASI.md).) **Sementara (25 Oktober 2026): tujuh orang dengan nama samaran sampai pemilik proyek menetapkan orangnya: Ahli Bahasa Anak 1 dan 2, Ahli Literasi Digital 1 dan 2, dan Ahli Pengukuran (panel ahli materi lima orang), Ahli Budaya Kedu (pengamat budaya), dan Ahli Media Pembelajaran.** **Diputuskan (26 Oktober 2026): panel pengamat budaya dan panel ahli media masing-masing tiga orang (Ahli Budaya Kedu 1–3, Ahli Media Pembelajaran 1–3), jadi validatornya sebelas orang. Nama aslinya belum ditetapkan.**
+- [x] Siapa yang menulis skenario dan cerita penghubungnya (Mbah Kedu dan Jaka), dan siapa yang mengisi suara narasinya? **Diputuskan (25 Oktober 2026): skenario sudah ada di draf 08; cerita penghubung dan narasinya didraf AI dan disetujui pengembang; suaranya direkam pengisi suara yang sama dengan narasi lain, di sesi rekaman yang sama.**
+- [ ] Siapa validator ahlinya: isi budaya Kedu, bahasa anak, literasi digital, pengukuran, dan media? (Panel ahli materi lima orang, lihat [07](07_TELAAH_INSTRUMEN_VALIDASI.md).) **Sementara (25 Oktober 2026): tujuh orang dengan nama samaran sampai pengembang menetapkan orangnya: Ahli Bahasa Anak 1 dan 2, Ahli Literasi Digital 1 dan 2, dan Ahli Pengukuran (panel ahli materi lima orang), Ahli Budaya Kedu (pengamat budaya), dan Ahli Media Pembelajaran.** **Diputuskan (26 Oktober 2026): panel pengamat budaya dan panel ahli media masing-masing tiga orang (Ahli Budaya Kedu 1–3, Ahli Media Pembelajaran 1–3), jadi validatornya sebelas orang. Nama aslinya belum ditetapkan.**
 - [x] Tes awal dan akhir disusun sendiri atau mengadaptasi contoh soal AKM/TKA yang terbuka untuk umum? **Diputuskan (25 Oktober 2026): bagian literasi membaca diadaptasi dari contoh soal AKM/ANBK yang terbuka; bagian D2 dan D3 disusun sendiri, sejajar dengan kisi-kisi tapi tidak sama dengan butir game; divalidasi bersama bank di tahap 2.**
-- [x] Berapa lama tes awal–akhir, dan di media apa? **Diputuskan (26 Oktober 2026): lama P1 dan P5 mengikuti kebutuhan, tidak terikat JP sekolah, karena izin penelitian mencakup seluruh JP sampai setelah jam sekolah. Setiap bagian tes diberi batas longgar tanpa jam di layar (Bagian 1 ± 40 menit, Bagian 2 dan 3 ± 35 menit). Tes dikerjakan di modul tes GELITA dengan tampilan Bootstrap yang tidak seperti game (perubahan sistem no. 22). Lihat [13](13_TES_AWAL_AKHIR.md#keputusan-pemilik-proyek).**
+- [x] Berapa lama tes awal–akhir, dan di media apa? **Diputuskan (26 Oktober 2026): lama P1 dan P5 mengikuti kebutuhan, tidak terikat JP sekolah, karena izin penelitian mencakup seluruh JP sampai setelah jam sekolah. Setiap bagian tes diberi batas longgar tanpa jam di layar (Bagian 1 ± 40 menit, Bagian 2 dan 3 ± 35 menit). Tes dikerjakan di modul tes GELITA dengan tampilan Bootstrap yang tidak seperti game (perubahan sistem no. 22). Lihat [13](13_TES_AWAL_AKHIR.md#keputusan-pengembang).**
 - [x] Topik teks dan adegan tes? **Diputuskan (26 Oktober 2026): budaya Nusantara di luar Kedu.**
 - [x] Angket akses digital: media, dan perlu butir pengalaman risiko daring? **Diputuskan (26 Oktober 2026): angket di modul yang sama, langsung setelah tes awal, hanya di layar dan tidak dibacakan; 2–3 butir risiko daring diisi sendiri di layar di P5 setelah tes akhir, dengan prosedur rujukan dan disebut di izin etik ([16](16_ANGKET_AKSES_DIGITAL.md)).**
 - [x] Kapan variabel tes dan angket masuk kamus data? **Diputuskan (26 Oktober 2026): di `kamus-1.1`, setelah uji coba; `kamus-1.0` tidak diubah.**
@@ -477,7 +505,7 @@ Belum ada yang dikerjakan sekarang. Daftar ini jadi bahan dokumen implementasi d
 | 13 | Panel pemantauan lapangan | 1 | Siapa belum selesai, sesi aktif, event hilang; hanya untuk operasional |
 | 14 | Kamus data dan ekspor penelitian | semua | Ekspor hanya berisi data bertanda "Peneliti"; kamus data memuat definisi "dilewati", waktu aktif, dimensi, dan kode; event dan kolom mentah baru yang dibutuhkan kamus ada di [11](11_KAMUS_DATA.md#yang-harus-disediakan-sistem-di-tahap-3) |
 | 15 | Templat spreadsheet lembar lapangan L1–L7 | semua | Kolomnya sama dengan [02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md), kuncinya kode peserta, jam WIB, dan kode sesi |
-| 16 | Mode penelitian: jam disembunyikan, sesi penelitian di layar kecil ditolak dengan pesan ramah (di luar studi cukup peringatan), pengerjaan ulang baru terbuka setelah kelima tantangan wilayah pertemuan itu tuntas, Kenali wilayah baru terbuka setelah wilayahnya tuntas ([12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#keputusan-pemilik-proyek), 26 Oktober 2026) | 5, semua | Sakelar di konfigurasi studi; data pengerjaan ulang disimpan tapi tidak dinilai; waktu tetap direkam server; ambang layar kecil ditetapkan dari ukuran panggung (keputusan media, 25 Oktober 2026) |
+| 16 | Mode penelitian: jam disembunyikan, sesi penelitian di layar kecil ditolak dengan pesan ramah (di luar studi cukup peringatan), pengerjaan ulang baru terbuka setelah kelima tantangan wilayah pertemuan itu tuntas, Kenali wilayah baru terbuka setelah wilayahnya tuntas ([12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#keputusan-pengembang), 26 Oktober 2026) | 5, semua | Sakelar di konfigurasi studi; data pengerjaan ulang disimpan tapi tidak dinilai; waktu tetap direkam server; ambang layar kecil ditetapkan dari ukuran panggung (keputusan media, 25 Oktober 2026) |
 | 17 | Pemeriksaan otomatis area ketuk Cari Objek | 2, 6 | Area ketuk tidak boleh bersentuhan (jarak minimal setara 24 dp) di aturan bank soal, untuk babak 1 dan *Periksa Unggahan*; adegan Magelang dan Wonosobo ditata ulang |
 | 18 | Aturan narasi | 7 | Bacaan dan pernyataan D1 tidak pernah dibacakan; situasi Skenario Digital dan petunjuk *Periksa Unggahan* hanya lewat tombol ▶ dan tercatat |
 | 19 | Perbaikan media lain dari telaah pendahuluan | semua | Temuan M-04 sampai M-11 di [10_TELAAH_PENDAHULUAN_MEDIA.md](10_TELAAH_PENDAHULUAN_MEDIA.md): nama berkas gambar benda yang acak, antrean event saat keluar, ukuran petunjuk, dua pelanggaran axe, kode penelitian di Profil, data pendaftaran |
@@ -528,5 +556,5 @@ Semua sumber di bawah dibuka atau dicari ulang pada 23 Oktober 2026. Yang belum 
 
 **Dokumen internal**
 
-- Analitik Game Gelita Terbaru (dokumen 10 analitik dari pemilik proyek).
+- Analitik Game Gelita Terbaru (dokumen 10 analitik dari pengembang).
 - [`docs/bank-soal/README.md`](../bank-soal/README.md) (bank soal kelas 5) dan [`docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md`](../perombakan-kelas5/CATATAN_IMPLEMENTASI.md) (catatan keputusan perombakan kelas 5).

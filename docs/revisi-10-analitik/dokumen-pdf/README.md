@@ -8,18 +8,18 @@ Folder ini menyimpan dokumen PDF yang dibagikan ke luar tim: instrumen validasi 
 
 | Berkas | Isi | Status |
 | --- | --- | --- |
-| [instrumen-validasi-ahli-materi-v2.1.pdf](instrumen-validasi-ahli-materi-v2.1.pdf) | Instrumen Validasi Ahli Materi v2.1, 43 halaman (diperbarui 27 Oktober 2026): panduan dan teori ukur, lembar penilaian 66 butir, pelabelan buta (B.5a), relevansi per butir (B.5b), telaah Skenario Digital, kode kesalahan, skala sikap, tes awal–akhir dan angket, analisis, lampiran | Disetujui pemilik proyek 27 Oktober 2026; kotak status di sampul dihapus |
-| [instrumen-validasi-pengamat-budaya-v2.1.pdf](instrumen-validasi-pengamat-budaya-v2.1.pdf) | Instrumen Validasi Pengamat Budaya v2.1, 31 halaman: panduan, lembar penilaian 53 butir, matriks 46 objek budaya, telaah *Periksa Unggahan* dan butir PBK, konfirmasi cek fakta, skala sikap, analisis, lampiran | Disetujui pemilik proyek 27 Oktober 2026; kotak status di sampul dihapus |
-| [instrumen-validasi-ahli-media-v1.1.pdf](instrumen-validasi-ahli-media-v1.1.pdf) | Instrumen Validasi Ahli Media v1.1 (langkah 1), 29 halaman: panduan, lembar penilaian 67 butir, uji perangkat, catatan temuan, telaah layar game sekarang, telaah 27 mock-up layar baru, analisis, lampiran | Disetujui pemilik proyek 27 Oktober 2026; kotak status di sampul dihapus |
+| [instrumen-validasi-ahli-materi-v2.1.pdf](instrumen-validasi-ahli-materi-v2.1.pdf) | Instrumen Validasi Ahli Materi v2.1, 43 halaman (diperbarui 27 Oktober 2026): panduan dan teori ukur, lembar penilaian 66 butir, pelabelan buta (B.5a), relevansi per butir (B.5b), telaah Skenario Digital, kode kesalahan, skala sikap, tes awal–akhir dan angket, analisis, lampiran | Disetujui pengembang 27 Oktober 2026; kotak status di sampul dihapus |
+| [instrumen-validasi-pengamat-budaya-v2.1.pdf](instrumen-validasi-pengamat-budaya-v2.1.pdf) | Instrumen Validasi Pengamat Budaya v2.1, 31 halaman: panduan, lembar penilaian 53 butir, matriks 46 objek budaya, telaah *Periksa Unggahan* dan butir PBK, konfirmasi cek fakta, skala sikap, analisis, lampiran | Disetujui pengembang 27 Oktober 2026; kotak status di sampul dihapus |
+| [instrumen-validasi-ahli-media-v1.1.pdf](instrumen-validasi-ahli-media-v1.1.pdf) | Instrumen Validasi Ahli Media v1.1 (langkah 1), 29 halaman: panduan, lembar penilaian 67 butir, uji perangkat, catatan temuan, telaah layar game sekarang, telaah 27 mock-up layar baru, analisis, lampiran | Disetujui pengembang 27 Oktober 2026; kotak status di sampul dihapus |
 | [`berkas-validator/`](berkas-validator/) | Berkas per butir untuk validator, dibuat skrip dari 03, 08, 14–18 dan tabel instrumen: daftar buta B.5a (lembar kerja dan buklet PDF), daftar B.5b, lembar kerja B.6–B.9 ahli materi, B.7 versi buta, lembar kerja B.5–B.8 pengamat budaya, lembar kerja B.8 ahli media, `LAPORAN.md`; kunci B.5a di `khusus-peneliti/` (tidak dikirim). Penjelasannya di [21](../21_BERKAS_BUTIR_VALIDATOR.md) | Dibuat ulang 27 Oktober 2026 dari instrumen yang disetujui; dibuat ulang sekali lagi tepat sebelum dikirim ([20](../20_PAKET_VALIDASI.md), prasyarat no. 7) |
 | `src/` | Sumber HTML ketiga instrumen, gaya cetak bersama `_instrumen.css`, skrip `render.mjs`, dan skrip berkas validator `berkas-validator.php` (dengan folder `berkas-validator/` dan `berkas-validator-pdf.mjs`) | — |
-| `arsip/` | Draf asli pemilik proyek yang menjadi dasar instrumen di atas: `instrumen-validasi-ahli-gelita-r10-v2.0-draf.pdf` (ahli materi dan pengamat budaya dalam satu berkas, 23 Oktober 2026) dan `instrumen-validasi-ahli-media-gelita-v1.0-draf.pdf` (23 Oktober 2026) | Arsip, tidak diubah |
+| `arsip/` | Draf asli pengembang yang menjadi dasar instrumen di atas: `instrumen-validasi-ahli-gelita-r10-v2.0-draf.pdf` (ahli materi dan pengamat budaya dalam satu berkas, 23 Oktober 2026) dan `instrumen-validasi-ahli-media-gelita-v1.0-draf.pdf` (23 Oktober 2026) | Arsip, tidak diubah |
 
 Ringkasan isi instrumen dan bedanya dari usulan telaah ada di [07 → Instrumen versi 2.1 dan 1.1](../07_TELAAH_INSTRUMEN_VALIDASI.md#instrumen-versi-21-dan-11).
 
 ## Sebelum dikirim ke validator
 
-1. ~~Pemilik proyek menyetujui isi instrumen.~~ Sudah (27 Oktober 2026).
+1. ~~Pengembang menyetujui isi instrumen.~~ Sudah (27 Oktober 2026).
 2. ~~Hapus kotak *STATUS* di sampul setiap HTML, lalu buat ulang PDF-nya.~~ Sudah (27 Oktober 2026).
 3. Lampiran "Perubahan dari versi sebelumnya" (D.4) untuk peneliti; tidak perlu dicetak untuk validator.
 4. Lembar kerja (*spreadsheet*) untuk lembar per butir disiapkan dari kode butir di bank soal, tes, dan angket.

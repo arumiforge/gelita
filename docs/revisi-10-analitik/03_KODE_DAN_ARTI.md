@@ -11,7 +11,8 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 | Kode | Arti | Dipakai di |
 | --- | --- | --- |
 | Admin | Pengelola sistem: akun, identitas, konten, rilis, log teknis. Tidak mengunduh data penelitian | Sistem, panel admin |
-| Peneliti | Pemegang data penelitian pseudonim: sesi lapangan, token, ekspor, data turunan | Sistem, panel peneliti (usulan) |
+| Pengembang (berbantuan AI) | Pengembang GELITA, dibantu AI. Menyusun draf, label pengembang, skor dan telaah pendahuluan, cek fakta, dan berkas siap kirim; boleh berperan sebagai ahli atau komite untuk latihan dan penyaringan awal. Bukan validator: skornya tidak dihitung dalam validasi dan tidak dilihat ahli sebelum menilai. Keputusannya berkedudukan *disetujui pengembang* sampai disetujui peneliti ([01 → Peran pengembang, peneliti, dan ahli](01_REVISI_10_ANALITIK.md#peran-pengembang-peneliti-dan-ahli)) | Semua dokumen revisi, telaah pendahuluan (T6 di [07](07_TELAAH_INSTRUMEN_VALIDASI.md)) |
+| Peneliti | Pemegang data penelitian pseudonim: sesi lapangan, token, ekspor, data turunan. Di dokumen revisi: sumber judul penelitian dan 10 analitik; menerima kerja pengembang, menindaklanjutinya bersama ahli dan komite, dan menetapkan final | Sistem, panel peneliti (usulan), dokumen revisi |
 | Guru | Guru kelas. Tidak punya akun; peran `guru` di sistem dihapus (keputusan 25 Oktober 2026). Cukup membantu perangkat dan internet | Lapangan |
 | P1 | Koordinator sesi: membuka sesi, token, L0, L1, L2, L7 | Lapangan |
 | P2 | Pengamat keterlibatan: L4 | Lapangan |
@@ -26,13 +27,13 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 
 ### Akun staf
 
-Pemegang akun admin dan akun peneliti sementara memakai nama samaran sesuai perannya (keputusan pemilik proyek, 27 Oktober 2026; daftar kerja no. 13 di [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja)). Siapa orangnya ditetapkan nanti dan dicatat ketua peneliti di luar repo, sama seperti nama asli validator.
+Pemegang akun admin dan akun peneliti sementara memakai nama samaran sesuai perannya (keputusan pengembang, 27 Oktober 2026; daftar kerja no. 13 di [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja)). Siapa orangnya ditetapkan nanti dan dicatat ketua peneliti di luar repo, sama seperti nama asli validator.
 
 | Akun | Peran di sistem | Dipegang | Catatan |
 | --- | --- | --- | --- |
 | `admin` | Admin | Pengelola sistem | Akun, identitas, konten, rilis, log teknis; tidak mengunduh data penelitian |
 | `koordinator` | Peneliti | P1, koordinator sesi | Sesi lapangan, token, baris-kursi-buklet dari L2, reset kata sandi lewat kode peserta |
-| `pengamat`, `pewawancara`, `ketua` | Peneliti | P2, P3, ketua peneliti | Pola yang sama ("dan seterusnya"), disetujui pemilik proyek 27 Oktober 2026; dibuat kalau perannya butuh akun |
+| `pengamat`, `pewawancara`, `ketua` | Peneliti | P2, P3, ketua peneliti | Pola yang sama ("dan seterusnya"), disetujui pengembang 27 Oktober 2026; dibuat kalau perannya butuh akun |
 
 Satu orang yang memegang dua peran tetap memakai dua akun terpisah ([01](01_REVISI_10_ANALITIK.md#admin-dan-peneliti-dua-peran-berbeda)).
 
@@ -207,7 +208,7 @@ Dari [18](18_MOCKUP_LAYAR_BARU.md). Kode gambar mock-up untuk ahli media langkah
 
 ## ID netral pelabelan buta (B.5a)
 
-Dipakai di daftar buta B.5a supaya kode butir (yang menyebut wilayah dan tantangan) tidak memberi isyarat level ([21](21_BERKAS_BUTIR_VALIDATOR.md), keputusan pemilik proyek 27 Oktober 2026). Padanannya dengan kode butir hanya ada di berkas kunci khusus peneliti.
+Dipakai di daftar buta B.5a supaya kode butir (yang menyebut wilayah dan tantangan) tidak memberi isyarat level ([21](21_BERKAS_BUTIR_VALIDATOR.md), keputusan pengembang 27 Oktober 2026). Padanannya dengan kode butir hanya ada di berkas kunci khusus peneliti.
 
 | Kode | Arti | Catatan |
 | --- | --- | --- |

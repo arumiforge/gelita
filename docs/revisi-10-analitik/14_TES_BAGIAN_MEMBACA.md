@@ -6,7 +6,7 @@ Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 Dokumen ini memuat Bagian 1 Membaca tes awal–akhir, bentuk A dan B: empat pasang teks, 16 butir per bentuk, kunci, kode kesalahan, dan sumber adaptasinya. Kisi-kisi, aturan kesetaraan, pelaksanaan, penskoran, dan analisis ada di [13](13_TES_AWAL_AKHIR.md); dokumen ini mengikutinya dan tidak mengubahnya.
 
-Topik teks memakai budaya Nusantara di luar Kedu, sesuai keputusan pemilik proyek 26 Oktober 2026 ([13](13_TES_AWAL_AKHIR.md#keputusan-pemilik-proyek)). Tes dikerjakan di modul tes GELITA, jadi petunjuk di bawah ditulis untuk layar. Belum ada yang diubah di sistem.
+Topik teks memakai budaya Nusantara di luar Kedu, sesuai keputusan pengembang 26 Oktober 2026 ([13](13_TES_AWAL_AKHIR.md#keputusan-pengembang)). Tes dikerjakan di modul tes GELITA, jadi petunjuk di bawah ditulis untuk layar. Belum ada yang diubah di sistem.
 
 ## Ringkasan
 
@@ -540,7 +540,7 @@ Diperiksa 26 Oktober 2026 dengan grep, tanpa membaca dokumen sumber secara utuh.
 4. **A05 dan B05** bisa sebagian ditebak tanpa teks, karena bekal memang biasanya awet atau ringan. Pilihan lain dibuat masuk akal supaya tebakan tidak mudah.
 5. **Butir D1b L3 (12, 14, 15, 16)** sebagian bisa dijawab dari norma umum ("akun resmi lebih bisa dipercaya"). Uji tutup teks 06 no. 1 lebih lemah untuk butir evaluasi; ini sama dengan butir D1b di `wnb-3`. Butir 14 dan 16 juga saling berkaitan (keduanya mengarah ke akun resmi), jadi perlu dicek ketergantungan lokalnya di analisis Rasch, sama seperti testlet di game.
 6. **A04 dan B04.** Paragraf 4 (manfaat dan alasan dijaga) ada di nomor yang sama di kedua bentuk. Siswa yang ingat bentuk A bisa menebak satu dari tiga pasangan di bentuk B, tetapi skor butir hanya 1 kalau ketiganya tepat. Huruf pasangan 2 semula sama di kedua bentuk (D), sehingga menyalin tetangga yang berbeda bentuk menolong; sejak 26 Oktober 2026 pilihan C dan D bentuk B ditukar, dan kunci B04 menjadi `1A 2C 3B`.
-7. **PGK F/P (11).** Kalau pemilik proyek ingin semua PGK berupa tabel Benar/Salah, nomor 11 bisa diubah menjadi "Kalimat ini berisi pendapat. Benar atau Salah?" untuk setiap kalimat, tanpa mengubah isi dan kode.
+7. **PGK F/P (11).** Kalau pengembang ingin semua PGK berupa tabel Benar/Salah, nomor 11 bisa diubah menjadi "Kalimat ini berisi pendapat. Benar atau Salah?" untuk setiap kalimat, tanpa mengubah isi dan kode.
 
 **Keterbacaan (dicek di uji keterbacaan bersama bank, [24](24_UJI_KETERBACAAN.md))**
 

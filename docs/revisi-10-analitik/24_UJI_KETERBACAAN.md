@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 27 Oktober 2026 · **Status: draf**; keputusan pemilik proyek diambil 27 Oktober 2026 dan diselaraskan dengan 20–23 di hari yang sama ([bagian akhir](#keputusan-pemilik-proyek)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 23 · Tahap 2, Prototipe I · Kegiatan **KG1** di [22 → Kegiatan yang dimintakan izin](22_PERMOHONAN_IZIN_ETIK.md#kegiatan-yang-dimintakan-izin)
+Per 27 Oktober 2026 · **Status: draf**; keputusan pengembang diambil 27 Oktober 2026 dan diselaraskan dengan 20–23 di hari yang sama ([bagian akhir](#keputusan-pengembang)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 23 · Tahap 2, Prototipe I · Kegiatan **KG1** di [22 → Kegiatan yang dimintakan izin](22_PERMOHONAN_IZIN_ETIK.md#kegiatan-yang-dimintakan-izin)
 
 Dokumen ini protokol uji keterbacaan dengan empat anak kelas 5, ditambah satu anak di putaran kedua: tujuan, peserta, bahan dan cara membaginya, perangkat, langkah per anak, peran, lembar catatan, aturan keputusan, cara hasil waktu dipakai, dan pengelolaan data. Di permohonan izin etik ([22](22_PERMOHONAN_IZIN_ETIK.md)), uji ini adalah kegiatan KG1, satu dari lima kegiatan dengan anak dalam satu permohonan ([03 → Kegiatan dengan anak](03_KODE_DAN_ARTI.md#kegiatan-dengan-anak)). Protokol ini siap dijalankan begitu izin etik terbit.
 
@@ -25,7 +25,7 @@ Belum ada yang diubah di sistem, dan uji ini juga tidak memakai sistem. Modul te
 
 | Keputusan | Sumber | Akibatnya di sini |
 | --- | --- | --- |
-| Uji keterbacaan dengan anak kelas 5 di tahap 2, setelah izin etik terbit, sebagai bagian Prototipe I; empat anak, ditambah satu anak di putaran kedua (keputusan pemilik proyek 27 Oktober 2026) | [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja), daftar kerja no. 23; [04](04_CATATAN_KEPUTUSAN.md), 25 dan 27 Oktober 2026 | Jadwal dan jumlah anak |
+| Uji keterbacaan dengan anak kelas 5 di tahap 2, setelah izin etik terbit, sebagai bagian Prototipe I; empat anak, ditambah satu anak di putaran kedua (keputusan pengembang 27 Oktober 2026) | [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja), daftar kerja no. 23; [04](04_CATATAN_KEPUTUSAN.md), 25 dan 27 Oktober 2026 | Jadwal dan jumlah anak |
 | Satu permohonan etik untuk lima kegiatan dengan anak, KG1–KG5; uji ini KG1. Bahan anak yang dilampirkan adalah versi yang dibekukan untuk validasi ahli, dan setiap revisi bahan anak diajukan ke komite sebagai amandemen protokol | [22 → Kegiatan yang dimintakan izin](22_PERMOHONAN_IZIN_ETIK.md#kegiatan-yang-dimintakan-izin), [22 → Perubahan protokol](22_PERMOHONAN_IZIN_ETIK.md#perubahan-protokol); [04](04_CATATAN_KEPUTUSAN.md), 27 Oktober 2026 | Revisi dari validasi ahli dan dari uji ini diajukan sebagai amandemen (lihat [Persiapan](#persiapan-sebelum-sesi-pertama) dan [Yang kembali ke ahli](#yang-kembali-ke-ahli)) |
 | Nama, formulir izin, dan daftar yang menghubungkan kode dengan nama disimpan sampai studi ditutup; data berkode paling singkat 20 tahun setelah studi ditutup (UU No. 11 Tahun 2019 Pasal 40 ayat (5); 22 → keputusan no. 19); rekaman sampai transkrip diperiksa; permintaan hapus diterima sampai studi ditutup | [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan); [04](04_CATATAN_KEPUTUSAN.md), 27 Oktober 2026 | [Pengelolaan data](#pengelolaan-data) |
 | Tanda terima kasih kecil yang sama, tanpa uang, dan tidak disebut hadiah; anak uji keterbacaan menerimanya setelah sesi terakhirnya | [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi); [04](04_CATATAN_KEPUTUSAN.md), 27 Oktober 2026 | [Jadwal empat sesi](#jadwal-empat-sesi) |
@@ -36,7 +36,7 @@ Belum ada yang diubah di sistem, dan uji ini juga tidak memakai sistem. Modul te
 | Ponsel tidak dipakai untuk pengambilan data | Perubahan sistem no. 16; [18](18_MOCKUP_LAYAR_BARU.md#keputusan-yang-dipakai-di-semua-layar) | Laptop seperti perangkat lapangan, tanpa ponsel |
 | Kata yang tidak dipahami di tes diganti, bukan dijelaskan saat tes | [15](15_TES_BAGIAN_DIGITAL.md#hal-yang-diminta-dinilai-ahli) no. 5 | Aturan keputusan untuk kata |
 | Satu T di "Arah negatif jelas" (B.8) berarti kalimat ditelaah ulang sebelum uji keterbacaan; kalimat baru dikirim ulang ke empat penilai relevansi | [07](07_TELAAH_INSTRUMEN_VALIDASI.md#aturan-keputusan) | Butir skala yang lolos ke sini sudah ditelaah ulang; perubahan dari sini kembali ke empat penilai |
-| Draf salinan layar baru diterima sebagai teks awal; kalimat akhirnya ditetapkan setelah telaah ahli media dan uji keterbacaan | [18](18_MOCKUP_LAYAR_BARU.md#keputusan-pemilik-proyek), putaran 2 no. 4 | Salinan layar ikut diuji |
+| Draf salinan layar baru diterima sebagai teks awal; kalimat akhirnya ditetapkan setelah telaah ahli media dan uji keterbacaan | [18](18_MOCKUP_LAYAR_BARU.md#keputusan-pengembang), putaran 2 no. 4 | Salinan layar ikut diuji |
 | Berpikir lantang sambil bermain hanya di uji coba tahap 4, dengan 5–8 siswa di luar sampel (L5) | [02](02_LEMBAR_LAPANGAN.md#l5-wawancara-retrospektif-dan-berpikir-lantang) | Di sini dipakai parafrase sesudah membaca, bukan berpikir lantang selama membaca |
 
 ## Tujuan
@@ -67,7 +67,7 @@ Untuk bacaan D1, anak boleh salah menjawab dan boleh belum memahami seluruh baca
 
 ### Jumlah
 
-**Empat anak** (`K01`–`K04`) di putaran pertama, **ditambah satu anak** (`K05`) di putaran kedua (keputusan pemilik proyek 27 Oktober 2026).
+**Empat anak** (`K01`–`K04`) di putaran pertama, **ditambah satu anak** (`K05`) di putaran kedua (keputusan pengembang 27 Oktober 2026).
 - Dengan empat anak, setiap bentuk tes dan setiap blok bank dibaca tepat dua anak (lihat [pembagian](#bahan-dan-pembagiannya)).
 - Anak kelima (`K05`) tidak ditambahkan ke putaran pertama. K05 membaca **putaran kedua**: bahan yang sudah direvisi dari temuan K01–K04, supaya revisinya dicek ke anak sebelum dikirim kembali ke ahli.
 - Kalau izin yang kembali hanya cukup untuk tiga anak di putaran pertama, pembagiannya di [Kalau anaknya tiga](#kalau-anaknya-tiga). Ini cadangan kalau izin kurang, bukan rencana.
@@ -84,7 +84,7 @@ Untuk bacaan D1, anak boleh salah menjawab dan boleh belum memahami seluruh baca
 | Orang tua memberi izin tertulis dan anak setuju sendiri | [23 → T8](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t8-varian-uji-keterbacaan) (T8a surat, T8b formulir, T8c naskah anak), [22 → KG1](22_PERMOHONAN_IZIN_ETIK.md#kegiatan-yang-dimintakan-izin) |
 | Sebaiknya laki-laki dan perempuan, dan bahasa di rumah yang berbeda (misalnya bahasa Jawa dan bahasa Indonesia) | Kata dan contoh budaya bisa dipahami berbeda |
 
-Sekolah asal anak dipilih setelah daftar sekolah penelitian (daftar kerja no. 12) ada, supaya sekolah itu pasti tidak masuk sampel. **Sekolah asal anak tidak masuk sampel dan tidak menjadi sekolah uji coba, juga sesudah uji ini** (keputusan pemilik proyek 27 Oktober 2026). Kalau daftar sekolah penelitian berubah kemudian, sekolah asal anak tidak dipakai, dan sekolah lain yang dipilih.
+Sekolah asal anak dipilih setelah daftar sekolah penelitian (daftar kerja no. 12) ada, supaya sekolah itu pasti tidak masuk sampel. **Sekolah asal anak tidak masuk sampel dan tidak menjadi sekolah uji coba, juga sesudah uji ini** (keputusan pengembang 27 Oktober 2026). Kalau daftar sekolah penelitian berubah kemudian, sekolah asal anak tidak dipakai, dan sekolah lain yang dipilih.
 
 ### Campuran kemampuan membaca
 
@@ -383,7 +383,7 @@ Kode anak: ______ · Pencatat: ______
 | Kata yang ditanyakan butir tidak dipahami walaupun sudah dijelaskan di teks | ≥ 3 dari 4 | 2 dari 2 | **Telaah**: penjelasan di teks diperjelas; jangan ganti katanya |
 | Maksud soal atau kalimat disalahpahami (KB-MKS, KB-KLM; parafrase *Tidak*) | ≥ 2 dari 4 | ≥ 1 dari 2 | **Revisi** pokok soal atau kalimat |
 | Petunjuk, contoh soal, atau cara menjawab tidak dipahami (KB-PTJ) | ≥ 1 | ≥ 1 | **Revisi**: petunjuk harus jalan untuk semua anak |
-| Pilihan sulit dibedakan (KB-PIL) | ≥ 2 dari 4 | ≥ 1 dari 2 | **Revisi** pilihan; di skala sikap, pilihan jawaban tidak diubah tanpa keputusan pemilik proyek (format sudah diputuskan di 17) |
+| Pilihan sulit dibedakan (KB-PIL) | ≥ 2 dari 4 | ≥ 1 dari 2 | **Revisi** pilihan; di skala sikap, pilihan jawaban tidak diubah tanpa keputusan pengembang (format sudah diputuskan di 17) |
 | Butir negatif skala dijawab berlawanan (KB-ARH) | ≥ 1 dari 4 | — | **Revisi** kalimat, lalu kembali ke empat penilai relevansi |
 | Masalah tampilan (KB-TPL) | ≥ 1 | ≥ 1 | Catat untuk **dokumen implementasi** dan ahli media langkah 2; bukan revisi butir |
 | Isi membuat tidak nyaman (KB-RSA) | ≥ 1 | ≥ 1 | **Telaah** bersama Ahli Bahasa Anak; kalau penyebabnya kalimat, revisi |
@@ -430,7 +430,7 @@ Perkiraan waktu sekarang dihitung dari jumlah kata dengan kecepatan baca 60–90
    | Skala sikap | — | ≤ 5 menit | 17 |
    | Blok bank TMG, MGL, WNB | ± 17–21, 22–27, 28–33 menit | ± 90 menit waktu bermain per pertemuan | 06 |
 
-4. **Tanda yang dilaporkan ke pemilik proyek:**
+4. **Tanda yang dilaporkan ke pengembang:**
    - waktu satu anak melewati batas waktu suatu bagian tes;
    - nilai tengah kecepatan baca di bawah 60 kata per menit;
    - waktu anak yang tersendat lebih dari 1,5 kali angka atas perkiraan.
@@ -507,7 +507,7 @@ Status diperiksa 27 Oktober 2026, saat 20, 22, dan 23 sedang diselaraskan di ses
 | No | Pekerjaan | Oleh |
 | --- | --- | --- |
 | 1 | Izin etik terbit; izin sekolah asal anak; sekolah itu dicatat di luar daftar sekolah penelitian dan uji coba, juga untuk seterusnya | Ketua peneliti |
-| 2 | Bahan Prototipe I sudah direvisi dari validasi ahli dan disetujui pemilik proyek | Pemilik proyek |
+| 2 | Bahan Prototipe I sudah direvisi dari validasi ahli dan disetujui pengembang | Pengembang |
 | 3 | Revisi bahan anak dari validasi ahli diajukan ke komite sebagai amandemen protokol; revisi yang harus menunggu persetujuan sebelum dipakai (misalnya perubahan butir risiko daring) sudah disetujui ([22 → Perubahan protokol](22_PERMOHONAN_IZIN_ETIK.md#perubahan-protokol)) | Ketua peneliti |
 | 4 | Kartu kata disusun ulang dari bahan yang sudah direvisi | Ketua peneliti |
 | 5 | Salinan layar statis dibuat dari sumber mock-up dengan teks revisi, lalu dicek kata demi kata dengan dokumen sumber | P1, dicek ketua peneliti |
@@ -518,9 +518,9 @@ Status diperiksa 27 Oktober 2026, saat 20, 22, dan 23 sedang diselaraskan di ses
 | 10 | Formulir izin kembali; guru memberi tahu kelompok membaca hanya untuk anak berizin; anak dipilih dan diberi kode; jadwal empat sesi disepakati | Ketua peneliti, P1 |
 | 11 | Tanda terima kasih kecil disiapkan, sama dengan untuk kelas penelitian ([22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi)) | P1 |
 
-## Keputusan pemilik proyek
+## Keputusan pengembang
 
-Keempat pertanyaan dijawab pemilik proyek pada 27 Oktober 2026; semuanya memilih usulan. Protokol di atas sudah ditulis sesuai pilihan ini.
+Keempat pertanyaan dijawab pengembang pada 27 Oktober 2026; semuanya memilih usulan. Protokol di atas sudah ditulis sesuai pilihan ini.
 
 
 1. **Bagaimana bahan dibagi di antara anak?** **Diputuskan: inti untuk semua, bank dibagi per blok.**
@@ -540,7 +540,7 @@ Keempat pertanyaan dijawab pemilik proyek pada 27 Oktober 2026; semuanya memilih
 
 ### Penyelarasan dengan 20–23 (27 Oktober 2026)
 
-Setelah 20–24 digabung, pemilik proyek memutuskan beberapa hal yang berlaku di semua dokumen tahap 2 ([04](04_CATATAN_KEPUTUSAN.md), 27 Oktober 2026). Yang menyangkut dokumen ini, dan sudah ditulis di atas:
+Setelah 20–24 digabung, pengembang memutuskan beberapa hal yang berlaku di semua dokumen tahap 2 ([04](04_CATATAN_KEPUTUSAN.md), 27 Oktober 2026). Yang menyangkut dokumen ini, dan sudah ditulis di atas:
 
 1. **Uji ini kegiatan KG1** dalam satu permohonan etik untuk KG1–KG5 ([03 → Kegiatan dengan anak](03_KODE_DAN_ARTI.md#kegiatan-dengan-anak)). Revisi bahan anak, dari validasi ahli maupun dari uji ini, diajukan ke komite sebagai amandemen protokol ([Dasar yang sudah diputuskan](#dasar-yang-sudah-diputuskan), [Persiapan](#persiapan-sebelum-sesi-pertama), [Yang kembali ke ahli](#yang-kembali-ke-ahli)).
 2. **Kode sesi `K01-1`** (anak K01, sesi 1), tanpa huruf S, karena huruf S dengan angka terbaca seperti kode sekolah. Kode anak `K01`–`K05` tetap ([Lembar catatan](#lembar-catatan)).
@@ -559,18 +559,18 @@ Dibawa sesi koordinator dan sesi penyelarasan 20–23. Status diperiksa 27 Oktob
 | Dokumen | Bagian | Perubahan | Status |
 | --- | --- | --- | --- |
 | [03](03_KODE_DAN_ARTI.md) | *Kegiatan dengan anak*; *Uji keterbacaan (KG1)* | Kode kegiatan KG1–KG5; kode anak `K01`–`K05`, kode sesi `K01-1`–`K05-4`, lembar LK1–LK3, kode kesulitan `KB-*`, dan pancingan `PB-1`–`PB-9`, semuanya bertanda usulan | Sudah |
-| [01](01_REVISI_10_ANALITIK.md) | *Peta jalan dan daftar kerja*, no. 23 | Status "Draf di 24", dengan keputusan pemilik proyek 27 Oktober 2026 | Sudah |
+| [01](01_REVISI_10_ANALITIK.md) | *Peta jalan dan daftar kerja*, no. 23 | Status "Draf di 24", dengan keputusan pengembang 27 Oktober 2026 | Sudah |
 | [13](13_TES_AWAL_AKHIR.md) | *Validasi dan uji coba*, baris tahap 2 | Tautan ke 24; jumlah anak ditulis "empat anak, ditambah satu anak di putaran kedua" | Sudah |
 | [14](14_TES_BAGIAN_MEMBACA.md) | *Catatan untuk peneliti dan validator*, **Keterbacaan** | Tautan ke 24 (kartu kata dan aturan keputusan) | Sudah |
 | [15](15_TES_BAGIAN_DIGITAL.md) | *Hal yang diminta dinilai ahli* no. 5, *Perkiraan waktu kerja* | Tautan ke 24 untuk kartu kata dan cara angka waktu diperbarui | Sudah |
 | [16](16_ANGKET_AKSES_DIGITAL.md) | *Validasi dan uji coba*, baris tahap 2 | Tautan ke 24; ang-21–ang-23 diuji dengan parafrase saja, tanpa jawaban tentang diri sendiri | Sudah |
 | [17](17_SKALA_SIKAP.md) | *Tahap 2: uji keterbacaan dengan anak* | Tautan ke 24 (pancingan PB-7, aturan KB-ARH); jumlah anak | Sudah |
-| [18](18_MOCKUP_LAYAR_BARU.md) | *Celah yang ditemukan di dokumen lain* no. 3; *Keputusan pemilik proyek* putaran 2 no. 4 | Tautan ke 24: draf salinan layar diuji di sana | Sudah |
+| [18](18_MOCKUP_LAYAR_BARU.md) | *Celah yang ditemukan di dokumen lain* no. 3; *Keputusan pengembang* putaran 2 no. 4 | Tautan ke 24: draf salinan layar diuji di sana | Sudah |
 | [06](06_KISI_KISI_BANK_SOAL.md) | *Waktu bermain* | Satu kalimat: angka pertama dari anak datang dari uji keterbacaan (24), angka akhir dari uji coba | Sudah |
 | [20](20_PAKET_VALIDASI.md) | *Matriks revisi Prototipe I*, jadwal, daftar periksa G2 | Temuan uji keterbacaan masuk matriks yang sama ("uji keterbacaan", kode anak, `KB-*`); uji keterbacaan sesudah revisi ahli, lalu K05, lalu penilaian ulang (`pk`); jumlah anak | Sudah |
 | [22](22_PERMOHONAN_IZIN_ETIK.md) | KG1 di *Kegiatan*, *Peserta*, *Rekrutmen*, *Persetujuan*, *Prosedur per pertemuan*, *Risiko*, *Prosedur rujukan*, *Di mana nama berada*, *Masa simpan*, *Kompensasi* | Isi yang dibutuhkan di [Yang dibutuhkan dari dokumen lain](#dari-22-permohonan-izin-etik) | Sudah, kecuali satu baris di bawah |
 | 22 | *Mengundurkan diri dan hapus data*, butir *Di uji keterbacaan (KG1)* | Kalimat "kecuali ringkasan per butir yang sudah tidak bisa dikenali" diganti dengan aturan di [Pengelolaan data](#pengelolaan-data): pilihan A, B, C; diterima sampai studi ditutup; hasil gabungan yang **sudah diterbitkan** tidak ditarik | Sudah |
 | [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) | T8, T8a–T8c, T10–T13, *Tabel pembagian* | Isi yang dibutuhkan di [Yang dibutuhkan dari dokumen lain](#dari-23-surat-informasi-dan-persetujuan); tempat kosong `[rentang tanggal uji keterbacaan]` dan `[tanggal batas kembali uji keterbacaan]` diisi menurut [Persiapan](#persiapan-sebelum-sesi-pertama) no. 9 | Sudah, kecuali dua baris di bawah |
-| 23 | T8a, *Berhenti kapan saja* | "ringkasan gabungan yang tidak memuat kode anak … tidak bisa ditarik" disesuaikan dengan keputusan pemilik proyek: hasil gabungan yang **sudah diterbitkan** | Sudah |
+| 23 | T8a, *Berhenti kapan saja* | "ringkasan gabungan yang tidak memuat kode anak … tidak bisa ditarik" disesuaikan dengan keputusan pengembang: hasil gabungan yang **sudah diterbitkan** | Sudah |
 | 23 | T11 | Satu kalimat: layar ini juga dibaca dan diparafrasekan di uji keterbacaan, tanpa tombol dipilih ([Butir risiko daring](#butir-risiko-daring)) | Sudah |
-| 23 | *Akibat ke dokumen lain*, baris 24 | Usulan uji baca T1 oleh dua–tiga orang tua di luar sampel tidak dimasukkan ke protokol ini, karena bukan kegiatan dengan anak; kalau dipakai, tempatnya di 22 atau 23 dan butuh keputusan pemilik proyek | Diputuskan 27 Oktober 2026: tidak dipakai |
+| 23 | *Akibat ke dokumen lain*, baris 24 | Usulan uji baca T1 oleh dua–tiga orang tua di luar sampel tidak dimasukkan ke protokol ini, karena bukan kegiatan dengan anak; kalau dipakai, tempatnya di 22 atau 23 dan butuh keputusan pengembang | Diputuskan 27 Oktober 2026: tidak dipakai |

@@ -4,7 +4,7 @@ Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 Telaah ini memeriksa ulang label Bloom pengembang untuk semua butir yang dinilai di [08](08_DRAF_BANK_SOAL.md): 116 butir literasi digital (termasuk 6 kartu jangkar) dan 12 butir PBK. Level AKM tetap label pertama. Bloom adalah label kedua dan hanya dipakai untuk diagnosis ([06](06_KISI_KISI_BANK_SOAL.md#aturan-menulis-butir), aturan no. 12 dan 14). Ini label pengembang. Di tahap 2, dua ahli memberi label secara buta (B.5a di [07](07_TELAAH_INSTRUMEN_VALIDASI.md)), dan label ahli itulah yang dipakai sesudahnya.
 
-Keputusan pemilik proyek atas pola sistematis di telaah ini dicatat di [04](04_CATATAN_KEPUTUSAN.md) (26 Oktober 2026). Semua usulan disetujui, dan perubahannya sudah dimasukkan ke 08 dan 06.
+Keputusan pengembang atas pola sistematis di telaah ini dicatat di [04](04_CATATAN_KEPUTUSAN.md) (26 Oktober 2026). Semua usulan disetujui, dan perubahannya sudah dimasukkan ke 08 dan 06.
 
 ## Ringkasan
 
@@ -66,7 +66,7 @@ Tidak ada butir Periksa Unggahan C5: semua kriteria sudah diberikan di petunjuk,
 Tiga aturan, ditambah satu pengecualian:
 
 1. **Membandingkan isi dua teks atau dua angka → C2** (Anderson & Krathwohl: *comparing*). Contoh: `wnb-3-a01`, `wnb-3-a03`, `wnb-3-b01`, `mgl-3-b02`. Sebelumnya C4.
-2. **Menggolongkan komentar sebagai fakta atau pendapat → C2** (*classifying*). Contoh: `mgl-3-a04`, `a05`, `b04`, `b05`. Daftar kata kerja operasional yang beredar di Indonesia sering memasukkan "membedakan" ke C4. Di Anderson & Krathwohl, menempatkan contoh ke dalam kategori yang sudah diberikan adalah C2, sedangkan *differentiating* (C4) berarti memilah yang relevan dari yang tidak relevan. Pemilik proyek memilih mengikuti Anderson & Krathwohl.
+2. **Menggolongkan komentar sebagai fakta atau pendapat → C2** (*classifying*). Contoh: `mgl-3-a04`, `a05`, `b04`, `b05`. Daftar kata kerja operasional yang beredar di Indonesia sering memasukkan "membedakan" ke C4. Di Anderson & Krathwohl, menempatkan contoh ke dalam kategori yang sudah diberikan adalah C2, sedangkan *differentiating* (C4) berarti memilah yang relevan dari yang tidak relevan. Pengembang memilih mengikuti Anderson & Krathwohl.
 3. **Menilai kepercayaan sumber dari penanda yang ada di teks (pembuat, tanggal, akun resmi) atau menolak alasan popularitas dan posisi → C4** (*attributing*, menemukan sudut pandang dan maksud sumber). Contoh: `mgl-3-a06`, `mgl-3-x02`, `wnb-3-a02`, `a04`, `a05`, `b03`–`b05`, `wnb-3-x02`. Sebelumnya C5 di Wonosobo. Kriterianya (pembuat jelas, tanggal jelas) diberikan di bacaan atau di pernyataan, jadi siswa tidak menyusun dan menerapkan kriteria sendiri.
 4. **Pengecualian C5:** `wnb-3-a06` dan `wnb-3-b06`. Pernyataannya dimulai "Berdasarkan bukti dalam bacaan, …", dan siswa harus memeriksa apakah simpulan itu didukung bukti (*checking*). Pengecohnya simpulan yang terdengar masuk akal (air tampak jernih; pengumuman melarang datang) tetapi melampaui bukti.
 
@@ -74,7 +74,7 @@ Hasilnya: tidak ada C5 lain di Benar atau Salah. C5 sebelumnya ada di 9 kartu Wo
 
 ### Isi Rumpang
 
-Sebagian besar label lama sudah tepat. Perubahan hanya untuk menyamakan proses yang sama di wilayah berbeda. Kelima perubahan ini tidak termasuk pertanyaan wawancara; pemilik proyek menyetujuinya sesudahnya (26 Oktober 2026):
+Sebagian besar label lama sudah tepat. Perubahan hanya untuk menyamakan proses yang sama di wilayah berbeda. Kelima perubahan ini tidak termasuk pertanyaan wawancara; pengembang menyetujuinya sesudahnya (26 Oktober 2026):
 
 - Membandingkan dua angka atau sebab–akibat langsung → C2, sama dengan `tmg-2-a04` dan `mgl-2-a05`: `mgl-2-a04` (C3 → C2), `mgl-2-b05` (C3 → C2), `wnb-2-b05` (C4 → C2).
 - Menerapkan keterangan rentang ketinggian pada desa atau pantai → C3 (*implementing*): `wnb-2-a04`, `wnb-2-a05` (C4 → C3).
@@ -98,7 +98,7 @@ Setelah pelabelan, sebagian butir keluar dari rentang lama di 06:
 - Temanggung (C1–C2): petunjuk izin `tmg-4-a03` dan `tmg-4-b03` (C3), serta kedelapan skenario (C3).
 - Wonosobo (C3–C5): empat kartu D1a (`wnb-3-a01`, `a03`, `b01`, `b02`), jangkar "Bersponsor" `wnb-3-x01`, rumpang `wnb-2-b05`, petunjuk atribusi `wnb-4-a01` dan `b01`, dan keempat petunjuk PBK (semua C2).
 
-Pemilik proyek memilih merevisi rentang (bukan menulis ulang butir): **Temanggung C1–C3, Magelang C2–C4, Wonosobo C2–C5**. Aturan no. 14 di 06 kini menyebut bahwa Bloom menggambarkan proses berpikir, bukan tingkat kesulitan. Puncak rentang tetap naik dari wilayah ke wilayah (C3 → C4 → C5), sedangkan urutan kesulitan dibuktikan dengan level AKM dan data Rasch.
+Pengembang memilih merevisi rentang (bukan menulis ulang butir): **Temanggung C1–C3, Magelang C2–C4, Wonosobo C2–C5**. Aturan no. 14 di 06 kini menyebut bahwa Bloom menggambarkan proses berpikir, bukan tingkat kesulitan. Puncak rentang tetap naik dari wilayah ke wilayah (C3 → C4 → C5), sedangkan urutan kesulitan dibuktikan dengan level AKM dan data Rasch.
 
 Sebaran label sesudah telaah (128 butir):
 
@@ -271,7 +271,7 @@ Kolom: kode, engine, label lama, label baru, proses kognitif yang dilakukan sisw
 
 Hal di 08 yang terlihat selama telaah, tetapi di luar wewenang sesi ini:
 
-- `wnb-3-b02` berlevel AKM L2, padahal jawabannya tersurat ("gas yang berbahaya bagi kesehatan"); lebih dekat ke L1. **Diputuskan pemilik proyek (26 Oktober 2026):** level AKM tetap L2, pernyataannya ditulis ulang supaya siswa perlu menyimpulkan. Sudah ditulis ulang di hari yang sama: "Menurut bacaan, petugas memasang pagar pembatas karena kawah di Dieng terlalu panas untuk didekati." (salah, INF-HUB). Label Bloom-nya diperiksa lagi dan tetap C2 (catatan di 08, *Yang harus dicek sebelum validasi ahli*).
+- `wnb-3-b02` berlevel AKM L2, padahal jawabannya tersurat ("gas yang berbahaya bagi kesehatan"); lebih dekat ke L1. **Diputuskan pengembang (26 Oktober 2026):** level AKM tetap L2, pernyataannya ditulis ulang supaya siswa perlu menyimpulkan. Sudah ditulis ulang di hari yang sama: "Menurut bacaan, petugas memasang pagar pembatas karena kawah di Dieng terlalu panas untuk didekati." (salah, INF-HUB). Label Bloom-nya diperiksa lagi dan tetap C2 (catatan di 08, *Yang harus dicek sebelum validasi ahli*).
 - `mgl-2-a02` dan `mgl-2-b01` berlevel AKM L1 tetapi berlabel Bloom C2. Ini tidak bertentangan, karena siswa mengaitkan definisi dengan istilah. Ahli bisa memeriksanya di B.5a.
 
 ## Rujukan

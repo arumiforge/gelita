@@ -1,12 +1,12 @@
 # Surat Informasi dan Persetujuan
 
-Per 27 Oktober 2026 · **Status: draf**; empat pertanyaan pemilik proyek dijawab 27 Oktober 2026, lalu diselaraskan dengan [22](22_PERMOHONAN_IZIN_ETIK.md), [24](24_UJI_KETERBACAAN.md), dan keputusan pemilik proyek pada hari yang sama ([Keputusan pemilik proyek](#keputusan-pemilik-proyek)), lalu dengan pedoman KEPPKN 2021 pada 27 Oktober 2026 ([22 → Pedoman yang dirujuk](22_PERMOHONAN_IZIN_ETIK.md#pedoman-yang-dirujuk)); daftar kerja no. 15 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 27 Oktober 2026 · **Status: draf**; empat pertanyaan pengembang dijawab 27 Oktober 2026, lalu diselaraskan dengan [22](22_PERMOHONAN_IZIN_ETIK.md), [24](24_UJI_KETERBACAAN.md), dan keputusan pengembang pada hari yang sama ([Keputusan pengembang](#keputusan-pengembang)), lalu dengan pedoman KEPPKN 2021 pada 27 Oktober 2026 ([22 → Pedoman yang dirujuk](22_PERMOHONAN_IZIN_ETIK.md#pedoman-yang-dirujuk)); daftar kerja no. 15 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Dokumen ini berisi teks yang dikirim bersama permohonan izin etik ke *Lembaga Komite Etik* dan yang dibagikan ke sekolah: surat informasi, formulir persetujuan, naskah persetujuan anak, formulir pengunduran diri, dan teks untuk butir risiko daring (layar sebelum dan sesudahnya, dan selebaran tempat bercerita). Setiap teks berupa blok siap cetak. Tempat kosong ditulis dalam kurung siku, misalnya `[nama sekolah]`, dan diisi sebelum dicetak.
 
 Protokol etiknya sendiri ditulis di `22_PERMOHONAN_IZIN_ETIK.md` (sesi `r10-izin-etik`), dan protokol uji keterbacaan di `24_UJI_KETERBACAAN.md` (sesi `r10-uji-keterbacaan`). Teks di sini mengikuti fakta di [01](01_REVISI_10_ANALITIK.md), [02](02_LEMBAR_LAPANGAN.md), [16](16_ANGKET_AKSES_DIGITAL.md), dan [17](17_SKALA_SIKAP.md), yang juga menjadi sumber kedua dokumen itu.
 
-Semua teks dikirim ke luar hanya setelah permohonan izin etik disetujui pemilik proyek. Surat untuk orang tua, anak, dan guru baru dibagikan setelah persetujuan etik terbit dan nomornya diisi.
+Semua teks dikirim ke luar hanya setelah permohonan izin etik disetujui pengembang. Surat untuk orang tua, anak, dan guru baru dibagikan setelah persetujuan etik terbit dan nomornya diisi.
 
 ## Daftar isi
 
@@ -26,7 +26,7 @@ Semua teks dikirim ke luar hanya setelah permohonan izin etik disetujui pemilik 
 | T12 | Pesan dukungan sesudah butir risiko daring | Siswa, di layar modul, pesan yang sama untuk semua | [T12](#t12-pesan-dukungan-sesudah-butir-risiko-daring) |
 | T13 | Selebaran tempat bercerita | Semua anak di kelas di akhir P5; anak yang disapa ketua peneliti saat rujukan, dan orang tuanya | [T13](#t13-selebaran-tempat-bercerita) |
 
-Setelah itu: [tabel pembagian](#tabel-pembagian), [catatan keterbacaan](#catatan-keterbacaan), [cek isi L7](#cek-isi-l7-dan-jalur-persetujuan), [pertanyaan untuk pemilik proyek](#pertanyaan-untuk-pemilik-proyek), dan [akibat ke dokumen lain](#akibat-ke-dokumen-lain).
+Setelah itu: [tabel pembagian](#tabel-pembagian), [catatan keterbacaan](#catatan-keterbacaan), [cek isi L7](#cek-isi-l7-dan-jalur-persetujuan), [pertanyaan untuk pengembang](#pertanyaan-untuk-pengembang), dan [akibat ke dokumen lain](#akibat-ke-dokumen-lain).
 
 ## Dasar yang sudah diputuskan
 
@@ -36,11 +36,11 @@ Setelah itu: [tabel pembagian](#tabel-pembagian), [catatan keterbacaan](#catatan
 | Izin orang tua dikumpulkan tertulis sebelum P1; persetujuan siswa = setuju lisan di pembukaan P1 **dan** centang di halaman daftar | 02 → L7 | T3 dan T4 |
 | Siswa tanpa izin tidak punya akun GELITA dan ikut kegiatan pengganti yang setara di ruang yang sama, disiapkan guru (misalnya membaca buku) | [04](04_CATATAN_KEPUTUSAN.md), 26 Oktober 2026; [01 → Kerja lapangan](01_REVISI_10_ANALITIK.md#kerja-lapangan-cara-kerjanya) | T1, T3, T7 |
 | Nama siswa tidak pernah ada di data penelitian. Nama hanya ada di akun (dilihat akun `admin` saja), di L7 dan formulir bertanda tangan (P1 dan `ketua`), dan di berkas terpisah yang dikunci `ketua`: formulir T10, catatan rujukan, dan daftar nama–kode uji keterbacaan. Peneliti memakai kode peserta (`S03-A07`) | [01 → Admin dan peneliti](01_REVISI_10_ANALITIK.md#admin-dan-peneliti-dua-peran-berbeda), [01 → Kode peserta baru](01_REVISI_10_ANALITIK.md#kode-peserta-baru), [22 → Di mana nama berada](22_PERMOHONAN_IZIN_ETIK.md#di-mana-nama-berada); penyelarasan 27 Oktober 2026 | T1, T3, T6, T8a tidak menjanjikan "nama hanya di dua tempat"; T1 menjelaskan "kode" tanpa kata "pseudonim" |
-| Akun staf: `admin`, `koordinator` (P1), `pengamat` (P2), `pewawancara` (P3), dan `ketua` (ketua peneliti), dikukuhkan pemilik proyek | [22 → Kode peserta dan pemisahan peran](22_PERMOHONAN_IZIN_ETIK.md#kode-peserta-dan-pemisahan-peran), 27 Oktober 2026 | Catatan pelaksanaan di T10; surat untuk orang tua memakai "pengelola sistem" dan "ketua peneliti" |
+| Akun staf: `admin`, `koordinator` (P1), `pengamat` (P2), `pewawancara` (P3), dan `ketua` (ketua peneliti), dikukuhkan pengembang | [22 → Kode peserta dan pemisahan peran](22_PERMOHONAN_IZIN_ETIK.md#kode-peserta-dan-pemisahan-peran), 27 Oktober 2026 | Catatan pelaksanaan di T10; surat untuk orang tua memakai "pengelola sistem" dan "ketua peneliti" |
 | Permintaan hapus data: peneliti mengajukan, admin menjalankan | 01 → Admin dan peneliti; 02 → L7 | T10 |
-| Permintaan hapus diterima **sampai studi ditutup**. Nama, L7, formulir izin, dan formulir pengunduran diri dimusnahkan saat studi ditutup; data berkode disimpan paling singkat 20 tahun setelah studi ditutup (UU No. 11 Tahun 2019 Pasal 40 ayat (5)); rekaman sampai transkrip diperiksa; hasil gabungan yang sudah terbit tidak bisa ditarik | [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan), [22 → Mengundurkan diri](22_PERMOHONAN_IZIN_ETIK.md#mengundurkan-diri-dan-hapus-data); keputusan pemilik proyek 27 Oktober 2026 (masa simpan data berkode: 22 no. 19) | T1 bagian 3 dan 6, T8a, T10, [Tabel pembagian](#tabel-pembagian) |
-| Pengunduran diri: pilihan A (berhenti, data tetap), B (berhenti, semua data dihapus), C (tetap ikut, rekaman dan/atau jawaban butir risiko ditarik dan dihapus). L7 punya dua status, `Mengundurkan diri (data tetap)` dan `Mengundurkan diri (hapus data)` | Keputusan pemilik proyek 27 Oktober 2026 | T1 bagian 6, T3, T10 |
-| Data per anak berkode boleh dibagikan atas permintaan, dengan persetujuan komite, setelah dibersihkan (kode acak baru; kode sekolah dan kelas dihapus; jawaban butir risiko dan transkrip tidak pernah ikut). Tidak ada unggahan untuk umum | [22 → Yang dibagikan di OSF](22_PERMOHONAN_IZIN_ETIK.md#yang-dibagikan-di-osf-dan-yang-tidak-pernah); keputusan pemilik proyek 27 Oktober 2026 | T1 bagian 3, T6 |
+| Permintaan hapus diterima **sampai studi ditutup**. Nama, L7, formulir izin, dan formulir pengunduran diri dimusnahkan saat studi ditutup; data berkode disimpan paling singkat 20 tahun setelah studi ditutup (UU No. 11 Tahun 2019 Pasal 40 ayat (5)); rekaman sampai transkrip diperiksa; hasil gabungan yang sudah terbit tidak bisa ditarik | [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan), [22 → Mengundurkan diri](22_PERMOHONAN_IZIN_ETIK.md#mengundurkan-diri-dan-hapus-data); keputusan pengembang 27 Oktober 2026 (masa simpan data berkode: 22 no. 19) | T1 bagian 3 dan 6, T8a, T10, [Tabel pembagian](#tabel-pembagian) |
+| Pengunduran diri: pilihan A (berhenti, data tetap), B (berhenti, semua data dihapus), C (tetap ikut, rekaman dan/atau jawaban butir risiko ditarik dan dihapus). L7 punya dua status, `Mengundurkan diri (data tetap)` dan `Mengundurkan diri (hapus data)` | Keputusan pengembang 27 Oktober 2026 | T1 bagian 6, T3, T10 |
+| Data per anak berkode boleh dibagikan atas permintaan, dengan persetujuan komite, setelah dibersihkan (kode acak baru; kode sekolah dan kelas dihapus; jawaban butir risiko dan transkrip tidak pernah ikut). Tidak ada unggahan untuk umum | [22 → Yang dibagikan di OSF](22_PERMOHONAN_IZIN_ETIK.md#yang-dibagikan-di-osf-dan-yang-tidak-pernah); keputusan pengembang 27 Oktober 2026 | T1 bagian 3, T6 |
 | Batas kerahasiaan: kalau anak dalam bahaya serius, ketua peneliti bisa menghubungi orang tua (kecuali orang tua diduga terlibat), kepala sekolah, dan layanan perlindungan anak. Kontak komite etik untuk keluhan | [22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) langkah 5; [22 → Isi surat orang tua](22_PERMOHONAN_IZIN_ETIK.md#isi-surat-orang-tua) | T1 bagian 3 dan 8, T6, T8a, T11 |
 | Lima pertemuan: P1 sampai ± 124 menit, P2–P4 bermain ± 90 menit ditambah pembukaan, masuk, dan penutupan, P5 sampai ± 139 menit; susulan dalam tiga hari | [02 → Pertemuan](02_LEMBAR_LAPANGAN.md#pertemuan-dan-lembar-yang-dipakai), [06 → Waktu bermain](06_KISI_KISI_BANK_SOAL.md#waktu-bermain) | T1, T6 |
 | Angket akses digital: topik HP dan internet di rumah, media sosial, game, pendampingan orang tua, bahasa dan buku di rumah; tidak ada pertanyaan penghasilan, pekerjaan orang tua, agama, suku | [16 → Etika](16_ANGKET_AKSES_DIGITAL.md#etika) | T1 |
@@ -51,11 +51,11 @@ Setelah itu: [tabel pembagian](#tabel-pembagian), [catatan keterbacaan](#catatan
 | Guru tidak punya akun, cukup membantu perangkat dan internet, tidak membantu isi soal, tidak membacakan teks, tidak berkeliling melihat layar saat tes dan angket; bantuan guru dicatat di L3 dengan kode `GRU` tanpa nama | [03 → Peran](03_KODE_DAN_ARTI.md#peran), [02 → L0](02_LEMBAR_LAPANGAN.md#l0-daftar-periksa-persiapan-sesi), 02 → L3 | T7 |
 | L8 Profil sekolah: fakta sekolah dari operator atau kepala sekolah, tanpa nama guru atau siswa; Rapor Pendidikan hanya kalau sekolah bersedia | [02 → L8](02_LEMBAR_LAPANGAN.md#l8-profil-sekolah) | T6 |
 | Sekolah uji coba memakai awalan `U` (`U01-A03`); datanya tidak tercampur dengan data utama | 01 → Kode peserta baru | T9 |
-| Uji keterbacaan dengan empat anak kelas 5, ditambah satu anak di putaran kedua, setelah izin etik terbit, memakai salinan layar mock-up dari bahan Prototipe I yang sudah direvisi ahli. Anak dari sekolah di wilayah Kedu di luar sampel dan uji coba; sekolah itu tidak masuk sampel nanti. Empat sesi ± 60 menit dengan jeda, di sekolah anak, selalu dengan dua orang dewasa. Butir risiko daring hanya diparafrasekan, dengan centang terpisah. Rekaman suara hanya dengan izin. Surat lewat sekolah. Tanda terima kasih kecil yang sama setelah sesi terakhir, bukan imbalan | [01 → Peta jalan](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja) no. 23, [24](24_UJI_KETERBACAAN.md), [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi); keputusan pemilik proyek 27 Oktober 2026 | T8 |
-| Laporan ke sekolah hanya angka gabungan, tidak per siswa dan tidak untuk kelompok kurang dari 5 siswa. Ringkasan diserahkan ke sekolah, dan orang tua bisa memintanya lewat sekolah; tidak ada centang ringkasan hasil di formulir | 16 → Etika no. 2; 17 → Etika no. 3; keputusan pemilik proyek 27 Oktober 2026 | T1, T6, T7 |
-| Surat orang tua dalam amplop tertutup dibagikan H-14 sampai H-10, pengingat di H-5, batas kembali H-3; formulir yang tidak kembali berarti tidak mengizinkan | Keputusan pemilik proyek 27 Oktober 2026 | T1, T2, [Tabel pembagian](#tabel-pembagian) |
-| Tanda terima kasih kecil yang sama untuk semua anak di kelas, termasuk yang tidak ikut, ditambah kudapan di P1 dan P5; tanpa uang; tidak pernah disebut sebagai imbalan | [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi); keputusan pemilik proyek 27 Oktober 2026 | Disebut dalam satu kalimat netral di T1 bagian 7 dan T8a, tidak sebagai imbalan; tidak di naskah anak; catatan pelaksanaan di T8 |
-| Isi tambahan dari pedoman KEPPKN 2021 (PSEPPKN, Lampiran 2 dan daftar tilik standar 7): batas pengamanan daring dan risiko yang tersisa; jumlah peserta dan alasan anak diundang; kontak cadangan; sumber dana dan GELITA tidak dijual; tanpa biaya dan tanpa uang, dengan tanda terima kasih dan kudapan yang sama untuk semua anak di kelas; peneliti bisa menghentikan keikutsertaan demi keselamatan anak; surat bisa dibacakan, dengan saksi di luar tim | [22 → Isi surat orang tua](22_PERMOHONAN_IZIN_ETIK.md#isi-surat-orang-tua), [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi); keputusan pemilik proyek 27 Oktober 2026 | T1, T2, T8a, T8b, T9 |
+| Uji keterbacaan dengan empat anak kelas 5, ditambah satu anak di putaran kedua, setelah izin etik terbit, memakai salinan layar mock-up dari bahan Prototipe I yang sudah direvisi ahli. Anak dari sekolah di wilayah Kedu di luar sampel dan uji coba; sekolah itu tidak masuk sampel nanti. Empat sesi ± 60 menit dengan jeda, di sekolah anak, selalu dengan dua orang dewasa. Butir risiko daring hanya diparafrasekan, dengan centang terpisah. Rekaman suara hanya dengan izin. Surat lewat sekolah. Tanda terima kasih kecil yang sama setelah sesi terakhir, bukan imbalan | [01 → Peta jalan](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja) no. 23, [24](24_UJI_KETERBACAAN.md), [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi); keputusan pengembang 27 Oktober 2026 | T8 |
+| Laporan ke sekolah hanya angka gabungan, tidak per siswa dan tidak untuk kelompok kurang dari 5 siswa. Ringkasan diserahkan ke sekolah, dan orang tua bisa memintanya lewat sekolah; tidak ada centang ringkasan hasil di formulir | 16 → Etika no. 2; 17 → Etika no. 3; keputusan pengembang 27 Oktober 2026 | T1, T6, T7 |
+| Surat orang tua dalam amplop tertutup dibagikan H-14 sampai H-10, pengingat di H-5, batas kembali H-3; formulir yang tidak kembali berarti tidak mengizinkan | Keputusan pengembang 27 Oktober 2026 | T1, T2, [Tabel pembagian](#tabel-pembagian) |
+| Tanda terima kasih kecil yang sama untuk semua anak di kelas, termasuk yang tidak ikut, ditambah kudapan di P1 dan P5; tanpa uang; tidak pernah disebut sebagai imbalan | [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi); keputusan pengembang 27 Oktober 2026 | Disebut dalam satu kalimat netral di T1 bagian 7 dan T8a, tidak sebagai imbalan; tidak di naskah anak; catatan pelaksanaan di T8 |
+| Isi tambahan dari pedoman KEPPKN 2021 (PSEPPKN, Lampiran 2 dan daftar tilik standar 7): batas pengamanan daring dan risiko yang tersisa; jumlah peserta dan alasan anak diundang; kontak cadangan; sumber dana dan GELITA tidak dijual; tanpa biaya dan tanpa uang, dengan tanda terima kasih dan kudapan yang sama untuk semua anak di kelas; peneliti bisa menghentikan keikutsertaan demi keselamatan anak; surat bisa dibacakan, dengan saksi di luar tim | [22 → Isi surat orang tua](22_PERMOHONAN_IZIN_ETIK.md#isi-surat-orang-tua), [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi); keputusan pengembang 27 Oktober 2026 | T1, T2, T8a, T8b, T9 |
 | Penyimpanan L7: lemari terkunci, terpisah, bersama pemetaan NPSN; salinan digital terenkripsi untuk P1 dan ketua peneliti; dimusnahkan saat studi ditutup | 02 → L7 *Penyimpanan*; [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan) | [Tabel pembagian](#tabel-pembagian) |
 
 ## Aturan menulis teks ini
@@ -70,21 +70,21 @@ Setelah itu: [tabel pembagian](#tabel-pembagian), [catatan keterbacaan](#catatan
 
 | Tempat kosong | Diisi dari | Kapan |
 | --- | --- | --- |
-| `[nama ketua peneliti]`, `[jabatan dan lembaga ketua peneliti]` | Pemilik proyek, di luar repo | Sebelum permohonan etik dikirim |
-| `[nama lembaga peneliti]`, `[alamat lembaga]` | Pemilik proyek | Sama |
+| `[nama ketua peneliti]`, `[jabatan dan lembaga ketua peneliti]` | Pengembang, di luar repo | Sebelum permohonan etik dikirim |
+| `[nama lembaga peneliti]`, `[alamat lembaga]` | Pengembang | Sama |
 | `[nama komite etik]`, `[nomor persetujuan etik]`, `[tanggal persetujuan etik]` | Surat persetujuan *Lembaga Komite Etik* | Setelah persetujuan terbit; **menunggu persetujuan etik** |
-| `[nomor HP/WA peneliti]`, `[surel peneliti]` | Pemilik proyek (nomor khusus penelitian, bukan nomor pribadi) | Sebelum dicetak |
-| `[nomor cadangan]` | Pemilik proyek: nomor anggota tim lain atau kantor lembaga, khusus penelitian | Sebelum dicetak |
-| `[sumber dana]` | Pemilik proyek, sama dengan [22 → Identitas dan tim](22_PERMOHONAN_IZIN_ETIK.md#identitas-dan-tim) | Sebelum permohonan etik dikirim |
+| `[nomor HP/WA peneliti]`, `[surel peneliti]` | Pengembang (nomor khusus penelitian, bukan nomor pribadi) | Sebelum dicetak |
+| `[nomor cadangan]` | Pengembang: nomor anggota tim lain atau kantor lembaga, khusus penelitian | Sebelum dicetak |
+| `[sumber dana]` | Pengembang, sama dengan [22 → Identitas dan tim](22_PERMOHONAN_IZIN_ETIK.md#identitas-dan-tim) | Sebelum permohonan etik dikirim |
 | `[jenis tanda terima kasih]` | [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi), misalnya satu set alat tulis | Sebelum dicetak |
 | `[kontak komite etik]` | Surat persetujuan komite: alamat surat, situs, dan surel komite (panduan klirens etik BRIN meminta alamat komite di lembar persetujuan; untuk Komisi Etik Bidang Sosial Humaniora BRIN: Gedung B.J. Habibie, Jl. M.H. Thamrin No. 8, Jakarta Pusat, klirensetik.brin.go.id, klirensetik@brin.go.id, `needs_verification` saat surat dicetak) | Setelah persetujuan terbit |
 | `[judul penelitian]` | Judul resmi dari usulan penelitian, sama dengan [22 → Identitas dan tim](22_PERMOHONAN_IZIN_ETIK.md#identitas-dan-tim); tanpa nama sekolah atau lembaga subjek | Sebelum permohonan etik dikirim |
 | `[nama sekolah]`, `[nama kepala sekolah]`, `[rombel]` | Rekrutmen sekolah; kode sekolah **menunggu daftar kerja no. 12** | Per sekolah |
 | `[tanggal P1]` … `[tanggal P5]`, `[rentang minggu]` | Jadwal per kelas | Per kelas |
 | `[tanggal batas kembali]` | P1: H-3 sebelum P1 | Per kelas |
-| `[tanggal studi ditutup]` | Rencana tanggal studi ditutup (setelah analisis selesai, [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan)), dari jadwal ketua peneliti. Kalau studi ternyata ditutup lebih lambat, permintaan hapus tetap diterima sampai studi benar-benar ditutup ([Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 1) | Sebelum dicetak |
+| `[tanggal studi ditutup]` | Rencana tanggal studi ditutup (setelah analisis selesai, [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan)), dari jadwal ketua peneliti. Kalau studi ternyata ditutup lebih lambat, permintaan hapus tetap diterima sampai studi benar-benar ditutup ([Keputusan pengembang](#keputusan-pengembang) no. 1) | Sebelum dicetak |
 | `[kontak PPDP atau narahubung]` | PPDP lembaga peneliti kalau sudah ditunjuk, kalau belum ketua peneliti sebagai narahubung ([22 → Pengendali, prosesor, dan narahubung data](22_PERMOHONAN_IZIN_ETIK.md#pengendali-prosesor-dan-narahubung-data)) | Sebelum permohonan etik dikirim |
-| `[nama dan lokasi penyedia server]` | Pemilik proyek; server di Indonesia, dengan perjanjian prosesor ([22 → Penyimpanan dan enkripsi](22_PERMOHONAN_IZIN_ETIK.md#penyimpanan-dan-enkripsi)) | Sebelum permohonan etik dikirim |
+| `[nama dan lokasi penyedia server]` | Pengembang; server di Indonesia, dengan perjanjian prosesor ([22 → Penyimpanan dan enkripsi](22_PERMOHONAN_IZIN_ETIK.md#penyimpanan-dan-enkripsi)) | Sebelum permohonan etik dikirim |
 | `[rentang tanggal uji keterbacaan]`, `[tanggal batas kembali uji keterbacaan]` | Jadwal uji keterbacaan ([24 → Jadwal empat sesi](24_UJI_KETERBACAAN.md#jadwal-empat-sesi)), disepakati dengan sekolah asal anak | Sebelum dicetak |
 | `[nomor WA SAPA 129]`, `[kabupaten/kota]`, `[kontak UPTD PPA]` | Layanan resmi perlindungan anak di wilayah sasaran ([22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) langkah 5); `needs_verification`: nama dan nomor dicek sebelum lapangan | Sebelum T13 dicetak |
 
@@ -473,7 +473,7 @@ Uji keterbacaan (kegiatan KG1 di [22 → Kegiatan yang dimintakan izin](22_PERMO
 - **Butir risiko daring** (ang-21–ang-23) hanya dengan centang terpisah, dan hanya diparafrasekan: anak menjelaskan arti pertanyaannya dan tidak pernah menjawab tentang pengalamannya sendiri ([24 → Butir risiko daring](24_UJI_KETERBACAAN.md#butir-risiko-daring)). Setelah butir itu, anak melihat pesan yang sama dengan [T12](#t12-pesan-dukungan-sesudah-butir-risiko-daring).
 - **Rekaman suara** hanya dengan izin orang tua dan kalau anak setuju saat itu.
 - **Surat lewat sekolah.** Guru kelas membagikan T8a–T8b dalam amplop kepada orang tua calon dan mengumpulkan amplop tertutupnya. Nama anak dan kelompok membacanya baru diberikan kepada peneliti untuk anak yang izinnya sudah kembali ([24 → Cara guru membantu memilih](24_UJI_KETERBACAAN.md#cara-guru-membantu-memilih-tanpa-memberi-nilai)). Karena itu surat tidak memuat nama anak.
-- **Tanda terima kasih.** Setelah sesi terakhirnya, setiap anak menerima tanda terima kasih kecil yang sama dengan anak di kelas sampel ([22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi)), juga kalau anak berhenti lebih awal. Tanda ini disebut dalam satu kalimat netral di T8a, seperti di T1 (pedoman KEPPKN 2021 meminta jenis pemberian disebut; keputusan pemilik proyek 27 Oktober 2026), tetapi tidak disebut di naskah anak T8c, tidak dijanjikan kepada anak sebelum sesi, dan tidak diberikan sebagai imbalan.
+- **Tanda terima kasih.** Setelah sesi terakhirnya, setiap anak menerima tanda terima kasih kecil yang sama dengan anak di kelas sampel ([22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi)), juga kalau anak berhenti lebih awal. Tanda ini disebut dalam satu kalimat netral di T8a, seperti di T1 (pedoman KEPPKN 2021 meminta jenis pemberian disebut; keputusan pengembang 27 Oktober 2026), tetapi tidak disebut di naskah anak T8c, tidak dijanjikan kepada anak sebelum sesi, dan tidak diberikan sebagai imbalan.
 
 Bedanya dengan T1–T3: empat sesi pendek, tanpa akun dan catatan permainan, catatan peneliti per anak, persetujuan anak ditanyakan lagi di awal setiap sesi, rekaman suara sebagai pilihan, dan butir risiko daring sebagai pilihan terpisah (karena 16 menguji keterbacaannya juga).
 
@@ -615,7 +615,7 @@ T1, T2, T3, T6, T7, dan T10 dipakai untuk kelas uji coba **dengan perubahan beri
 
 ## T10 Formulir pengunduran diri dan permintaan hapus data
 
-Satu halaman A4, dilampirkan di belakang T1 dan T8a (orang tua menyimpannya) dan tersedia dari P1 kapan saja. Boleh juga diganti pesan WA atau surel ke kontak peneliti yang memuat isi yang sama; P1 lalu mengisi formulir ini atas nama orang tua dan mencatat cara permintaan itu masuk. Pilihan A, B, dan C dikukuhkan pemilik proyek 27 Oktober 2026 ([Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 5).
+Satu halaman A4, dilampirkan di belakang T1 dan T8a (orang tua menyimpannya) dan tersedia dari P1 kapan saja. Boleh juga diganti pesan WA atau surel ke kontak peneliti yang memuat isi yang sama; P1 lalu mengisi formulir ini atas nama orang tua dan mencatat cara permintaan itu masuk. Pilihan A, B, dan C dikukuhkan pengembang 27 Oktober 2026 ([Keputusan pengembang](#keputusan-pengembang) no. 5).
 
 ---
 
@@ -668,7 +668,7 @@ Formulir T10 yang sudah diisi disimpan `ketua` di berkas terpisah yang dikunci, 
 
 **Untuk uji keterbacaan (T8)** formulir yang sama dipakai. Tidak ada L7 dan akun: pilihan A berarti anak berhenti dan catatannya tetap dipakai; pilihan B berarti LK1–LK3, kartu cetak, rekaman, dan transkrip anak itu dimusnahkan; pilihan C berarti rekaman, atau catatan parafrase butir risiko daring, dihapus. `ketua` mencatat tindak lanjutnya di daftar nama–kode ([24 → Pengelolaan data](24_UJI_KETERBACAAN.md#pengelolaan-data)).
 
-Batas waktunya mengikuti PP No. 33 Tahun 2026 dan [22 → Mengundurkan diri dan hapus data](22_PERMOHONAN_IZIN_ETIK.md#mengundurkan-diri-dan-hapus-data) (keputusan pemilik proyek 27 Oktober 2026; `needs_verification` terhadap naskah resmi): pengumpulan data dihentikan paling lambat 3 × 24 jam setelah permintaan terverifikasi, dan orang tua diberi tahu lewat kontak di T2 (atau T8b) paling lambat 3 × 24 jam setelah penghapusan. Ini menggantikan tempat kosong `[jumlah hari kerja]`. Penghapusan mencakup sistem, ekspor yang masih ada, salinan peneliti, dan salinan cadangan server; penyedia server diperintahkan lebih dulu. Cara teknisnya ditulis di dokumen implementasi tahap 3. Anak yang memintanya sendiri dicatat sebagai pilihan A, dan untuk pilihan D anak perlu persetujuan orang tua.
+Batas waktunya mengikuti PP No. 33 Tahun 2026 dan [22 → Mengundurkan diri dan hapus data](22_PERMOHONAN_IZIN_ETIK.md#mengundurkan-diri-dan-hapus-data) (keputusan pengembang 27 Oktober 2026; `needs_verification` terhadap naskah resmi): pengumpulan data dihentikan paling lambat 3 × 24 jam setelah permintaan terverifikasi, dan orang tua diberi tahu lewat kontak di T2 (atau T8b) paling lambat 3 × 24 jam setelah penghapusan. Ini menggantikan tempat kosong `[jumlah hari kerja]`. Penghapusan mencakup sistem, ekspor yang masih ada, salinan peneliti, dan salinan cadangan server; penyedia server diperintahkan lebih dulu. Cara teknisnya ditulis di dokumen implementasi tahap 3. Anak yang memintanya sendiri dicatat sebagai pilihan A, dan untuk pilihan D anak perlu persetujuan orang tua.
 
 ## T11 Layar sebelum butir risiko daring
 
@@ -699,7 +699,7 @@ Satu layar di modul tes P5, sesudah tes akhir, hanya untuk siswa yang L7-nya men
 
 ## T12 Pesan dukungan sesudah butir risiko daring
 
-Satu layar di modul tes P5, sesudah butir risiko daring terakhir. Pesannya sama untuk semua siswa di P5: yang melihat T11, apa pun jawabannya, juga kalau ia memilih melewati, dan siswa tanpa izin butir risiko, di titik yang sama (keputusan pemilik proyek, 27 Oktober 2026). Dengan begitu tidak ada anak yang terlihat berbeda ([22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) langkah 1). Layar yang sama ditunjukkan di uji keterbacaan setelah butir risiko daring ([T8c](#t8c-naskah-persetujuan-anak-uji-keterbacaan)).
+Satu layar di modul tes P5, sesudah butir risiko daring terakhir. Pesannya sama untuk semua siswa di P5: yang melihat T11, apa pun jawabannya, juga kalau ia memilih melewati, dan siswa tanpa izin butir risiko, di titik yang sama (keputusan pengembang, 27 Oktober 2026). Dengan begitu tidak ada anak yang terlihat berbeda ([22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) langkah 1). Layar yang sama ditunjukkan di uji keterbacaan setelah butir risiko daring ([T8c](#t8c-naskah-persetujuan-anak-uji-keterbacaan)).
 
 ---
 
@@ -715,7 +715,7 @@ Satu layar di modul tes P5, sesudah butir risiko daring terakhir. Pesannya sama 
 
 ---
 
-Diputuskan pemilik proyek (27 Oktober 2026): layar ini juga ditunjukkan kepada siswa tanpa izin butir risiko, di tempat yang sama di P5, supaya pesan ini sampai ke semua anak seperti diminta [16 → Etika](16_ANGKET_AKSES_DIGITAL.md#etika) no. 8. Teks en dibuat di tahap 3.
+Diputuskan pengembang (27 Oktober 2026): layar ini juga ditunjukkan kepada siswa tanpa izin butir risiko, di tempat yang sama di P5, supaya pesan ini sampai ke semua anak seperti diminta [16 → Etika](16_ANGKET_AKSES_DIGITAL.md#etika) no. 8. Teks en dibuat di tahap 3.
 
 ## T13 Selebaran tempat bercerita
 
@@ -749,7 +749,7 @@ Setengah halaman A4, dilipat dua sehingga teman tidak melihat isinya. Diberikan 
 
 `needs_verification`: nama layanan SAPA 129, nomor teleponnya, nomor WA-nya, dan UPTD PPA di kabupaten/kota sasaran dicek sebelum dicetak ([22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) langkah 5).
 
-Diputuskan pemilik proyek (27 Oktober 2026): selebaran juga dibagikan kepada semua anak di kelas di akhir P5, bersama tanda terima kasih, supaya anak yang menerimanya saat rujukan tidak tampak berbeda.
+Diputuskan pengembang (27 Oktober 2026): selebaran juga dibagikan kepada semua anak di kelas di akhir P5, bersama tanda terima kasih, supaya anak yang menerimanya saat rujukan tidak tampak berbeda.
 
 ## Tabel pembagian
 
@@ -864,25 +864,25 @@ Cara menghitung ulang tanpa skrip: salin teks blok, buang kepala surat dan isian
 
 ## Pilihan yang diambil saat menulis
 
-Pilihan ini tidak diputuskan di dokumen lain. Semuanya bisa diubah pemilik proyek tanpa mengubah dokumen lain, kecuali yang dicatat di *Akibat ke dokumen lain*.
+Pilihan ini tidak diputuskan di dokumen lain. Semuanya bisa diubah pengembang tanpa mengubah dokumen lain, kecuali yang dicatat di *Akibat ke dokumen lain*.
 
 1. **Formulir yang tidak kembali dibaca "tidak mengizinkan"** (izin aktif, bukan izin pasif). Ini mengikuti 02 → L7, yang menulis "Belum kembali" sebagai `Tanpa izin`.
 2. **Kotak kosong pada pilihan tambahan dibaca Tidak.** Pilihan 1 yang kosong tidak dianggap izin; P1 menghubungi orang tua.
-3. **Amplop tertutup dan kotak di kelas**, supaya guru dan teman tidak melihat pilihan orang tua. Dibagikan H-14 sampai H-10, pengingat sekali di H-5, batas kembali H-3, sehingga L7 lengkap sebelum H-1 (L0). Waktu ini dikukuhkan pemilik proyek 27 Oktober 2026 ([Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 7).
+3. **Amplop tertutup dan kotak di kelas**, supaya guru dan teman tidak melihat pilihan orang tua. Dibagikan H-14 sampai H-10, pengingat sekali di H-5, batas kembali H-3, sehingga L7 lengkap sebelum H-1 (L0). Waktu ini dikukuhkan pengembang 27 Oktober 2026 ([Keputusan pengembang](#keputusan-pengembang) no. 7).
 4. **Tanpa foto dan video.** Tidak ada dokumen yang merencanakan foto atau video anak, jadi surat menjanjikannya secara tegas.
 5. **Persetujuan anak juga diulang singkat di P2–P5 dan sebelum wawancara L5** (T5). 02 hanya mewajibkan persetujuan di P1; pengingat ini tidak menambah lembar baru.
 6. **Siswa yang menolak di pembukaan P1** dicatat `Tanpa izin` dengan catatan "anak menolak". Ini memakai status yang sudah ada di L7, tanpa status baru.
 7. **Contoh butir risiko daring di surat orang tua** memakai kalimat ang-21 apa adanya, supaya orang tua tahu persis yang ditanyakan.
 8. **Kode anak uji keterbacaan `K01`–`K05`** di surat T8a, dan kode sesi `K01-1`, mengikuti [24](24_UJI_KETERBACAAN.md).
-9. **Pilihan A di T10 (berhenti, data tetap dipakai).** Sudah dikukuhkan pemilik proyek 27 Oktober 2026 bersama pilihan B dan C, dengan dua status L7 ([Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 5).
+9. **Pilihan A di T10 (berhenti, data tetap dipakai).** Sudah dikukuhkan pengembang 27 Oktober 2026 bersama pilihan B dan C, dengan dua status L7 ([Keputusan pengembang](#keputusan-pengembang) no. 5).
 10. **`[tanggal studi ditutup]` diisi tanggal rencana**, karena surat dicetak sebelum analisis. Surat menulis "sekitar", dan permintaan hapus tetap diterima sampai studi benar-benar ditutup kalau tanggalnya mundur.
 11. **Surat uji keterbacaan tidak memuat nama anak.** Guru membagikannya kepada orang tua calon, dan peneliti baru menerima nama anak yang izinnya kembali ([24 → Cara guru membantu memilih](24_UJI_KETERBACAAN.md#cara-guru-membantu-memilih-tanpa-memberi-nilai)).
-12. **Tanda terima kasih disebut dalam satu kalimat netral di surat orang tua** (T1 bagian 7, T8a), tidak di naskah anak, supaya tidak dibaca sebagai imbalan. Sampai 27 Oktober 2026 tanda ini tidak disebut di surat sama sekali; setelah perbandingan dengan pedoman KEPPKN 2021, yang meminta jenis pemberian disebut, pemilik proyek memilih kalimat netral ([Keputusan pemilik proyek](#keputusan-pemilik-proyek) no. 14). Bentuknya di [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi).
+12. **Tanda terima kasih disebut dalam satu kalimat netral di surat orang tua** (T1 bagian 7, T8a), tidak di naskah anak, supaya tidak dibaca sebagai imbalan. Sampai 27 Oktober 2026 tanda ini tidak disebut di surat sama sekali; setelah perbandingan dengan pedoman KEPPKN 2021, yang meminta jenis pemberian disebut, pengembang memilih kalimat netral ([Keputusan pengembang](#keputusan-pengembang) no. 14). Bentuknya di [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi).
 13. **T11 tidak menjanjikan rahasia mutlak.** Kalimatnya menyebut siapa yang tidak melihat jawaban (guru, orang tua, teman), lalu batasnya: kakak peneliti bisa mengajak bicara, dan orang dewasa dimintai bantuan kalau anak dalam bahaya.
 
-## Pertanyaan untuk pemilik proyek
+## Pertanyaan untuk pengembang
 
-Keempat pertanyaan ini dijawab pemilik proyek pada 27 Oktober 2026, semuanya dengan usulan; lihat [Keputusan pemilik proyek](#keputusan-pemilik-proyek). Pada hari yang sama, saat dokumen tahap 2 diselaraskan, jawaban no. 1 diganti: permintaan hapus diterima sampai studi ditutup. Pertanyaannya disimpan di sini sebagai riwayat.
+Keempat pertanyaan ini dijawab pengembang pada 27 Oktober 2026, semuanya dengan usulan; lihat [Keputusan pengembang](#keputusan-pengembang). Pada hari yang sama, saat dokumen tahap 2 diselaraskan, jawaban no. 1 diganti: permintaan hapus diterima sampai studi ditutup. Pertanyaannya disimpan di sini sebagai riwayat.
 
 1. **Sampai kapan orang tua boleh meminta data anak dihapus?**
    - **Usulan: sampai analisis utama dimulai (`[tanggal batas penarikan]`); sesudah itu data anak tetap dihapus, tetapi angka gabungan yang sudah dihitung atau terbit tidak berubah.** Ini jujur kepada orang tua dan lazim di surat persetujuan penelitian.
@@ -898,9 +898,9 @@ Keempat pertanyaan ini dijawab pemilik proyek pada 27 Oktober 2026, semuanya den
    - Tidak ada kenang-kenangan.
    - Hanya untuk peserta.
 
-## Keputusan pemilik proyek
+## Keputusan pengembang
 
-27 Oktober 2026, satu putaran wawancara; keempat usulan dipilih. Pada hari yang sama, saat dokumen 20–24 diselaraskan, pemilik proyek mengganti jawaban no. 1 dan memutuskan no. 5–9. Semuanya sudah diterapkan di teks dokumen ini.
+27 Oktober 2026, satu putaran wawancara; keempat usulan dipilih. Pada hari yang sama, saat dokumen 20–24 diselaraskan, pengembang mengganti jawaban no. 1 dan memutuskan no. 5–9. Semuanya sudah diterapkan di teks dokumen ini.
 
 1. **Batas permintaan hapus data: sampai studi ditutup** (menggantikan jawaban awal "sampai analisis utama dimulai"). Nama, L7, formulir izin, dan formulir pengunduran diri dimusnahkan saat studi ditutup. Data penelitian berkode disimpan 5 tahun setelah studi ditutup (diganti 22 → keputusan no. 19: paling singkat 20 tahun), rekaman sampai transkrip diperiksa ([22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan)). Hasil gabungan yang sudah terbit tidak bisa ditarik. Tempat kosong `[tanggal studi ditutup]` menggantikan `[tanggal batas penarikan]`, dan `[masa simpan]` diganti masa simpan yang ditulis langsung. Diterapkan di T1 bagian 3 dan 6, T8a, T10, dan [Tabel pembagian](#tabel-pembagian). Kalimat lama "angka gabungan yang sudah dihitung … tidak berubah" dihapus.
 2. **Anak uji keterbacaan membaca butir risiko daring, dengan centang terpisah** (T8b pilihan 3). Anak hanya menjelaskan arti kalimatnya dan tidak pernah menjawab tentang pengalamannya sendiri. Tidak dipilih: butir risiko hanya ditelaah ahli.
@@ -915,23 +915,23 @@ Keempat pertanyaan ini dijawab pemilik proyek pada 27 Oktober 2026, semuanya den
 11. **T13 dibagikan kepada semua anak di kelas di akhir P5**, bersama tanda terima kasih (27 Oktober 2026).
 12. **T1 tidak diuji baca oleh orang tua** di luar sampel sebelum permohonan etik dikirim (27 Oktober 2026).
 
-Keputusan pemilik proyek pada hari yang sama, setelah 22 dan 23 dibandingkan dengan pedoman KEPPKN 2021 ([22 → Pedoman yang dirujuk](22_PERMOHONAN_IZIN_ETIK.md#pedoman-yang-dirujuk), [04](04_CATATAN_KEPUTUSAN.md)):
+Keputusan pengembang pada hari yang sama, setelah 22 dan 23 dibandingkan dengan pedoman KEPPKN 2021 ([22 → Pedoman yang dirujuk](22_PERMOHONAN_IZIN_ETIK.md#pedoman-yang-dirujuk), [04](04_CATATAN_KEPUTUSAN.md)):
 
 13. **Isi surat ditambah menurut pedoman KEPPKN 2021:** batas pengamanan daring (T1 bagian 3, T8a), jumlah peserta, alasan anak diundang, dan sumber dana (T1 pembuka, T8a, T9), penghentian oleh peneliti demi keselamatan (T1 bagian 6, T8a), dan kontak cadangan (T1 bagian 8, T8a).
 14. **Tanda terima kasih disebut dalam satu kalimat netral** di T1 bagian 7 dan T8a: tanpa uang, tanpa biaya, sama untuk semua anak di kelas (ikut atau tidak), ditambah kudapan di P1 dan P5 untuk sampel utama. Tidak dipilih: tetap tidak disebut di surat dan hanya dijelaskan di 22.
 15. **Surat bisa dibacakan guru kelas atau peneliti**, dan formulir T2 dan T8b mendapat baris saksi yang diisi hanya dalam keadaan itu, oleh orang di luar tim peneliti; tanda tangan boleh diganti cap jempol. Tidak dipilih: tanpa perubahan.
 
-Keputusan pemilik proyek pada hari yang sama, setelah 22 dan 23 dibandingkan dengan PP No. 33 Tahun 2026 (cabang `r10-pp-pdp`; [22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum), [22 → Keputusan pemilik proyek](22_PERMOHONAN_IZIN_ETIK.md#keputusan-pemilik-proyek) no. 14–17, [04](04_CATATAN_KEPUTUSAN.md); nomor pasal `needs_verification` terhadap naskah resmi):
+Keputusan pengembang pada hari yang sama, setelah 22 dan 23 dibandingkan dengan PP No. 33 Tahun 2026 (cabang `r10-pp-pdp`; [22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum), [22 → Keputusan pengembang](22_PERMOHONAN_IZIN_ETIK.md#keputusan-pengembang) no. 14–17, [04](04_CATATAN_KEPUTUSAN.md); nomor pasal `needs_verification` terhadap naskah resmi):
 
 16. **Server dan penyimpanan di Indonesia.** T1 bagian 3 menyebut `[nama dan lokasi penyedia server]` di Indonesia, bahwa penyedia hanya menyimpan atas perintah tim dengan perjanjian tertulis, dan bahwa data tidak dikirim ke luar negeri; T8a menyebut catatan disimpan di Indonesia.
 17. **Isi surat dari PP 33/2026:** pengendali data `[nama lembaga peneliti]`, dasar pengolahan (izin orang tua), dan `[kontak PPDP atau narahubung]` (T1 bagian 3, T8a *Kerahasiaan*); pemberitahuan kebocoran tertulis paling lambat 3 × 24 jam (T1 bagian 3, T8a); hak melihat, meminta salinan, dan membetulkan data, dengan jawaban paling lambat 3 × 24 jam, dan aduan ke lembaga pelindungan data pribadi (T1 bagian 6, T8a *Berhenti kapan saja*).
 18. **Pengecualian untuk penelitian tidak dipakai.** Pilihan A di T1 bagian 6 dan T10 ditulis sebagai izin untuk data yang sudah ada tetap berlaku; T10 mendapat pilihan D (melihat, salinan, pembetulan), batas 3 × 24 jam menggantikan `[jumlah hari kerja]`, dan kotak peneliti mencatat pencocokan identitas pemohon, penonaktifan akun, dan penghapusan salinan cadangan.
 19. **Verifikasi izin orang tua dan bukti persetujuan.** Kotak peneliti T2 mendapat centang "nama anak cocok dengan daftar kelas" dan "dikonfirmasi lewat telepon (kalau ragu)". Bukti persetujuan setelah studi ditutup berupa daftar izin berkode tanpa nama ([22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan)); surat tidak berubah karenanya.
 
-Keputusan pemilik proyek 27 Oktober 2026, setelah 22 dan 23 dibandingkan dengan *Panduan Klirens Etik Riset Bidang Sosial Humaniora* BRIN (November 2025) ([22 → Pemetaan ke formulir klirens etik BRIN](22_PERMOHONAN_IZIN_ETIK.md#pemetaan-ke-formulir-klirens-etik-brin), [04](04_CATATAN_KEPUTUSAN.md); cabang `r10-klirens-brin`):
+Keputusan pengembang 27 Oktober 2026, setelah 22 dan 23 dibandingkan dengan *Panduan Klirens Etik Riset Bidang Sosial Humaniora* BRIN (November 2025) ([22 → Pemetaan ke formulir klirens etik BRIN](22_PERMOHONAN_IZIN_ETIK.md#pemetaan-ke-formulir-klirens-etik-brin), [04](04_CATATAN_KEPUTUSAN.md); cabang `r10-klirens-brin`):
 
 20. **Judul penelitian ditulis di surat** T1, T6, dan T8a, di bawah perihal, karena contoh *informed consent* panduan BRIN (Lampiran 2) memuat judul riset. Judulnya tanpa nama sekolah atau lembaga subjek (panduan BRIN, butir 2.1). Tempat kosong baru `[judul penelitian]`.
-21. **`[kontak komite etik]` berisi alamat surat, situs, dan surel komite**, karena panduan BRIN meminta alamat komite di lembar persetujuan. Isi lain yang diminta panduan (lembaga, tujuan, teknik dan lama pengumpulan data, kerahasiaan, hak menolak dan berhenti, alamat koordinator) sudah ada. Masa simpan data berkode (paling singkat 20 tahun, keputusan pemilik proyek di 22 no. 19) dibawa sesi koordinator 27 Oktober 2026, setelah sesi PP No. 33 Tahun 2026 digabung, ke T1 bagian 3, T8a *Kerahasiaan*, [Dasar yang sudah diputuskan](#dasar-yang-sudah-diputuskan), [Tabel pembagian](#tabel-pembagian), dan [Cek isi L7](#cek-isi-l7-dan-jalur-persetujuan), dengan kalimat awam bahwa undang-undang mewajibkan data penelitian disimpan selama itu dan bahwa data berkode tidak memuat nama.
+21. **`[kontak komite etik]` berisi alamat surat, situs, dan surel komite**, karena panduan BRIN meminta alamat komite di lembar persetujuan. Isi lain yang diminta panduan (lembaga, tujuan, teknik dan lama pengumpulan data, kerahasiaan, hak menolak dan berhenti, alamat koordinator) sudah ada. Masa simpan data berkode (paling singkat 20 tahun, keputusan pengembang di 22 no. 19) dibawa sesi koordinator 27 Oktober 2026, setelah sesi PP No. 33 Tahun 2026 digabung, ke T1 bagian 3, T8a *Kerahasiaan*, [Dasar yang sudah diputuskan](#dasar-yang-sudah-diputuskan), [Tabel pembagian](#tabel-pembagian), dan [Cek isi L7](#cek-isi-l7-dan-jalur-persetujuan), dengan kalimat awam bahwa undang-undang mewajibkan data penelitian disimpan selama itu dan bahwa data berkode tidak memuat nama.
 
 ## Akibat ke dokumen lain
 
@@ -941,7 +941,7 @@ Tidak diubah di cabang ini. Dibawa sesi koordinator setelah PR digabung.
 | --- | --- | --- |
 | 02 | L7, kalimat "Isi surat izin orang tua (dokumen terpisah, bagian permohonan izin etik)" | Tautkan ke [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t1-surat-informasi-untuk-orang-tuawali) |
 | 02 | L7, daftar isi surat | Tambah butir: "tanpa foto atau video anak" dan "permintaan hapus diterima sampai studi ditutup ([tanggal studi ditutup])"; "nama hanya di lembar izin dan di akun" diganti "nama tidak ada di data penelitian; hanya di akun (admin) dan di berkas izin yang terkunci" |
-| 02 | L7, *Cara mengisi*, status `Mengundurkan diri` | Dua status: `Mengundurkan diri (data tetap)` (T10 pilihan A) dan `Mengundurkan diri (hapus data)` (pilihan B), keputusan pemilik proyek 27 Oktober 2026; siswa yang menolak di P1 dicatat `Tanpa izin`, catatan "anak menolak" |
+| 02 | L7, *Cara mengisi*, status `Mengundurkan diri` | Dua status: `Mengundurkan diri (data tetap)` (T10 pilihan A) dan `Mengundurkan diri (hapus data)` (pilihan B), keputusan pengembang 27 Oktober 2026; siswa yang menolak di P1 dicatat `Tanpa izin`, catatan "anak menolak" |
 | 02 / 11 | L7 aturan `consent_ok`; [11 → Penanda untuk analisis](11_KAMUS_DATA.md#penanda-untuk-analisis) di `kamus-1.1` | `consent_ok = 1` juga untuk `Mengundurkan diri (data tetap)`, untuk data sampai tanggal mundur (disetujui 27 Oktober 2026) |
 | 02 | L5, *Persiapan* | Rujuk naskah lisan T5 (wawancara) dan T9 (berpikir lantang); penolakan rekaman oleh anak menang atas izin orang tua |
 | 02 | L0, H-1 | Butir "amplop T2 dibagikan H-14 sampai H-10 dan sudah dikumpulkan sampai batas H-3; pengingat H-5 sudah dikirim" |
@@ -950,6 +950,6 @@ Tidak diubah di cabang ini. Dibawa sesi koordinator setelah PR digabung.
 | 16 | *Etika* no. 8, *Petunjuk untuk siswa* | Tautkan teks layar sebelum butir risiko ([T11](#t11-layar-sebelum-butir-risiko-daring)) dan pesan dukungan ([T12](#t12-pesan-dukungan-sesudah-butir-risiko-daring)) |
 | 22 | Lampiran, bagian persetujuan, dan prosedur rujukan | Lampirkan T1–T13. Teks di 23 sudah mengikuti 22: batas kerahasiaan dan kontak komite (T1, T8a), permintaan hapus sampai studi ditutup, masa simpan, pembagian data berkode, `[jumlah hari kerja]`. Yang perlu ditulis di 22: tanpa foto/video; T11–T13 disebut di *Lapis persetujuan* dan *Prosedur rujukan* langkah 1 dan 5; tanda terima kasih untuk anak uji keterbacaan; T8 lewat sekolah tanpa nama anak; T10 juga berlaku untuk uji keterbacaan |
 | 24 | Persetujuan dan pencatatan | Pakai T8a–T8c dan T10 (catatan *Untuk uji keterbacaan* di T10); butir risiko daring diparafrasekan dengan centang terpisah dan diikuti T12; rujukan memakai T13; kolom persetujuan anak dan rekaman per sesi di LK1. Sudah diterapkan di 23: lama dan tempat sesi (empat sesi ± 60 menit di sekolah anak), kode `K01`–`K05` dan `K01-1` |
-| 24 | Bahan uji | Tidak dipakai: T1 tidak diuji baca oleh orang tua di luar sampel (keputusan pemilik proyek, 27 Oktober 2026) |
+| 24 | Bahan uji | Tidak dipakai: T1 tidak diuji baca oleh orang tua di luar sampel (keputusan pengembang, 27 Oktober 2026) |
 | 03 | *Peserta, sekolah, dan sesi* | Kode anak uji keterbacaan `K01`–`K05` dan kode sesi `K01-1` (juga diminta 24) |
 | 20 | — | Tidak ada; surat validator ada di 20 sendiri |

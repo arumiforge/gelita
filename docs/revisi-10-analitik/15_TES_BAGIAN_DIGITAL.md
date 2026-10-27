@@ -6,7 +6,7 @@ Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 Dokumen ini berisi butir lengkap Bagian 2 *Aman dan etis* (D2) dan Bagian 3 *Budaya digital* (D3) untuk tes awal–akhir, bentuk A dan B, beserta kunci, skor, dan kode kesalahan. Kisi-kisi, aturan kesetaraan, kode butir, pelaksanaan, dan penskoran ada di [13](13_TES_AWAL_AKHIR.md); dokumen ini mengikutinya sel demi sel. Bagian 1 Membaca ada di [14](14_TES_BAGIAN_MEMBACA.md).
 
-Belum ada yang diubah di sistem. Topik budaya D3 memakai **budaya Nusantara di luar Kedu**, sesuai keputusan pemilik proyek 26 Oktober 2026 ([13](13_TES_AWAL_AKHIR.md#keputusan-pemilik-proyek)); skenario D2 tidak memakai topik budaya. Tes dikerjakan di modul tes GELITA, jadi petunjuk di bawah ditulis untuk layar.
+Belum ada yang diubah di sistem. Topik budaya D3 memakai **budaya Nusantara di luar Kedu**, sesuai keputusan pengembang 26 Oktober 2026 ([13](13_TES_AWAL_AKHIR.md#keputusan-pengembang)); skenario D2 tidak memakai topik budaya. Tes dikerjakan di modul tes GELITA, jadi petunjuk di bawah ditulis untuk layar.
 
 ## Ringkasan
 
@@ -635,7 +635,7 @@ Kamu ingin membetulkan keterangan video itu lewat komentar. Komentar mana yang b
 
 Satu level pengembang per nomor, sama di bentuk A dan B ([13 → Aturan kesetaraan](13_TES_AWAL_AKHIR.md#aturan-kesetaraan-bentuk-a-dan-b) no. 1). Arti level mengikuti lembar B.5a instrumen ahli materi: **L1** tanda yang jelas, **L2** tanda yang samar, **L3** nilai yang bertentangan atau situasi dua langkah. Ini sama dengan kata *Tingkat* di bank soal ([08](08_DRAF_BANK_SOAL.md)): Temanggung jelas, Magelang samar, Wonosobo nilai bertentangan atau dua langkah. Level ini menjadi label pengembang di berkas kunci B.5a ([21](21_BERKAS_BUTIR_VALIDATOR.md)), yang dibandingkan dengan label akhir ahli di C.4.
 
-**Status: disetujui pemilik proyek, 27 Oktober 2026** (usulan sesi koordinator, disetujui apa adanya). Sebelumnya 13 hanya memberi rentang padanan (L1–L2 untuk "jelas", L2–L3 untuk "samar"), jadi butir ini belum punya satu label pengembang.
+**Status: disetujui pengembang, 27 Oktober 2026** (usulan sesi koordinator, disetujui apa adanya). Sebelumnya 13 hanya memberi rentang padanan (L1–L2 untuk "jelas", L2–L3 untuk "samar"), jadi butir ini belum punya satu label pengembang.
 
 | Nomor | Bagian | Butir A dan B | Level | Alasan |
 | --- | --- | --- | --- | --- |
@@ -814,9 +814,9 @@ Dengan aturan hitung waktu di 13 (60–90 kata per menit, ± 30 detik per piliha
 | 3 (D3) | ± 460 (adegan ± 136, kalimat soal ± 108, pilihan ± 218) | 10,5–13 menit | 8 menit |
 | **Jumlah** | | **22–28 menit** | **18 menit** |
 
-Kalau hanya situasi dan adegan yang dihitung, hasilnya 8–10 menit dan 7–8 menit, sama dengan angka di draf pertama 13. Jadi kemungkinan pilihan dan kalimat soal belum ikut dihitung. Situasi D2 di sini sudah di batas bawah (41–48 dari 40–70 kata), jadi waktu tidak bisa banyak dihemat dari teks. Pilihannya untuk pemilik proyek dan penulis 13: menambah waktu Bagian 2–3 menjadi ± 25 menit (cocok dengan usulan P1 dan P5 3 JP), atau mengurangi skenario D2. Angka akhirnya diambil dari uji keterbacaan dan uji coba; cara angka waktu dari uji keterbacaan memperbarui perkiraan ini ada di [24](24_UJI_KETERBACAAN.md#waktu-dari-uji-ini-ke-perkiraan-di-06-13-dan-15).
+Kalau hanya situasi dan adegan yang dihitung, hasilnya 8–10 menit dan 7–8 menit, sama dengan angka di draf pertama 13. Jadi kemungkinan pilihan dan kalimat soal belum ikut dihitung. Situasi D2 di sini sudah di batas bawah (41–48 dari 40–70 kata), jadi waktu tidak bisa banyak dihemat dari teks. Pilihannya untuk pengembang dan penulis 13: menambah waktu Bagian 2–3 menjadi ± 25 menit (cocok dengan usulan P1 dan P5 3 JP), atau mengurangi skenario D2. Angka akhirnya diambil dari uji keterbacaan dan uji coba; cara angka waktu dari uji keterbacaan memperbarui perkiraan ini ada di [24](24_UJI_KETERBACAAN.md#waktu-dari-uji-ini-ke-perkiraan-di-06-13-dan-15).
 
-**Tindak lanjut di 13 (26 Oktober 2026).** 13 memakai perkiraan ini dan menghitung ulang Bagian 1 dengan cara yang sama. Pemilik proyek memutuskan batas longgar tanpa jam di layar (Bagian 2 dan 3 ± 35 menit) dan lama pertemuan yang mengikuti kebutuhan, tidak terikat JP ([13](13_TES_AWAL_AKHIR.md#keputusan-pemilik-proyek)). Skenario D2 tidak perlu dikurangi.
+**Tindak lanjut di 13 (26 Oktober 2026).** 13 memakai perkiraan ini dan menghitung ulang Bagian 1 dengan cara yang sama. Pengembang memutuskan batas longgar tanpa jam di layar (Bagian 2 dan 3 ± 35 menit) dan lama pertemuan yang mengikuti kebutuhan, tidak terikat JP ([13](13_TES_AWAL_AKHIR.md#keputusan-pengembang)). Skenario D2 tidak perlu dikurangi.
 
 ## Rujukan
 

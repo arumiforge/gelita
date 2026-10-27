@@ -2,11 +2,11 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · `kamus-1.0`, disetujui pemilik proyek 26 Oktober 2026 (daftar kerja no. 2); ambang jeda dan tebakan cepat masih sementara
+Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · `kamus-1.0`, disetujui pengembang 26 Oktober 2026 (daftar kerja no. 2); ambang jeda dan tebakan cepat masih sementara
 
 Kamus ini membekukan **cara menghitung** setiap data penelitian: peta bukti, 10 analitik, butir yang dinilai, "dilewati", waktu aktif, data tersensor, tebakan cepat, kode, dan aturan menggabungkan log dengan lembar lapangan. Dokumen [01](01_REVISI_10_ANALITIK.md) menjelaskan *apa* yang diukur dan *kenapa*; kamus ini menjelaskan *bagaimana* angkanya didapat, sampai bisa dihitung ulang orang lain dari data mentah. Arti setiap kode tetap di [03](03_KODE_DAN_ARTI.md); di sini hanya aturan memakainya.
 
-Kamus ini belum mengubah sistem. Nama kolom ditulis dalam bahasa Inggris karena nanti menjadi nama kolom di lapis data turunan dan ekspor peneliti (tahap 3, perubahan sistem no. 9 dan 14). Kolom yang **sudah ada** di sistem sekarang ditandai *(ada)*; sisanya baru. Keputusan pemilik proyek atas draf kamus ini dikumpulkan di [Keputusan pemilik proyek](#keputusan-pemilik-proyek).
+Kamus ini belum mengubah sistem. Nama kolom ditulis dalam bahasa Inggris karena nanti menjadi nama kolom di lapis data turunan dan ekspor peneliti (tahap 3, perubahan sistem no. 9 dan 14). Kolom yang **sudah ada** di sistem sekarang ditandai *(ada)*; sisanya baru. Keputusan pengembang atas draf kamus ini dikumpulkan di [Keputusan pengembang](#keputusan-pengembang).
 
 ## Ringkasan
 
@@ -21,8 +21,8 @@ Kamus ini belum mengubah sistem. Nama kolom ditulis dalam bahasa Inggris karena 
 
 | Versi | Kapan | Isi |
 | --- | --- | --- |
-| Draf | 25 Oktober 2026 | Disusun Claude, dengan empat pertanyaan untuk pemilik proyek |
-| `kamus-1.0` | 26 Oktober 2026, disetujui pemilik proyek | Semua definisi beku. Ambang jeda (3 menit) dan tebakan cepat (3 detik) masih sementara |
+| Draf | 25 Oktober 2026 | Disusun AI, dengan empat pertanyaan untuk pengembang |
+| `kamus-1.0` | 26 Oktober 2026, disetujui pengembang | Semua definisi beku. Ambang jeda (3 menit) dan tebakan cepat (3 detik) masih sementara |
 | `kamus-1.1` | Setelah uji coba (tahap 4), sebelum G4 | Ambang jeda dan tebakan cepat ditetapkan ulang, dan urutan alasan ditetapkan, dari data uji coba |
 | Beku | Sejak G4 sampai analisis selesai | Tidak diubah selama pengambilan data utama. Kesalahan yang ketahuan kemudian dicatat sebagai penyimpangan, dan analisisnya dijalankan dengan aturan lama dan baru |
 
@@ -447,7 +447,7 @@ Perubahan yang ikut dikerjakan bersama kamus ini:
 - **08:** aturan kode *Periksa Unggahan* di *Cara membaca* tidak lagi memakai INF-REL: bagian ketuk lain diberi kode jenis petunjuknya, dan ketukan di tempat kosong dekat kunci = NON-SEN tanpa memakai kesempatan (keputusan 26 Oktober 2026).
 - **01 dan 03:** ambang sementara jeda 3 menit dan tebakan cepat di bawah 3 detik (keputusan 26 Oktober 2026).
 
-Penegasan yang menafsirkan dokumen sebelumnya. Tafsiran ini tidak dikoreksi pemilik proyek saat menyetujui kamus, jadi ikut berlaku:
+Penegasan yang menafsirkan dokumen sebelumnya. Tafsiran ini tidak dikoreksi pengembang saat menyetujui kamus, jadi ikut berlaku:
 
 - "Dilewati" jenis (a) juga mencakup skenario yang ditutup setelah kesempatan ketiga, karena aturan tiga kesempatannya sama dengan petunjuk Cari Objek (keputusan 25 Oktober 2026).
 - "Dibantu" untuk analisis utama hanya bantuan isi (ISI, STR, BHS). Bantuan teknis, semangat, dan gangguan dicatat terpisah sebagai kovariat.
@@ -456,9 +456,9 @@ Penegasan yang menafsirkan dokumen sebelumnya. Tafsiran ini tidak dikoreksi pemi
 - NON-TEB tidak dihitung untuk Isi Rumpang (01 dan 03 tidak menyebut pengecualian), karena kata-kata satu bacaan diseret berturut-turut dan selang antarseretan bukan waktu memutuskan. `rapid_guess` di Isi Rumpang dibiarkan kosong.
 - Token yang membuka wilayah sebuah pertemuan juga melewati aturan buka berurutan antarwilayah, supaya siswa yang belum menuntaskan wilayah sebelumnya tetap bisa bermain bersama kelasnya; sisanya dikerjakan di pertemuan 5.
 
-## Keputusan pemilik proyek
+## Keputusan pengembang
 
-Empat pertanyaan di draf diputuskan pemilik proyek pada 26 Oktober 2026:
+Empat pertanyaan di draf diputuskan pengembang pada 26 Oktober 2026:
 
 1. **Kode bagian lain di *Periksa Unggahan*: setuju dengan usulan.** Mengetuk bagian ketuk yang bukan kunci dan bukan pengecoh utama (termasuk kunci petunjuk lain) diberi kode jenis petunjuk itu: atribusi BUD-ATR, representasi BUD-REP, izin BUD-IZN, menghargai tradisi BUD-ETK. Mengetuk di luar bagian ketuk mana pun = NON-SEN dan tidak memakai kesempatan. 08 sudah disesuaikan.
 2. **Jeda tanpa masukan: ambang sementara 3 menit.** Hanya bagian jeda yang melebihi ambang yang dipotong dari waktu aktif. Ambangnya harus mudah diubah, jadi disimpan sebagai pengaturan dan ditetapkan ulang setelah uji coba.

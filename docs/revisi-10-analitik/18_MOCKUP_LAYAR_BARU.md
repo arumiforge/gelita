@@ -1,6 +1,6 @@
 # Mock-up Layar Baru untuk Ahli Media Langkah 1
 
-Per 26 Oktober 2026 · Daftar kerja no. 20 di [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja) · Disusun Claude, disetujui pemilik proyek 26 Oktober 2026; gambar skala sikap digambar ulang dari 17 di hari yang sama
+Per 26 Oktober 2026 · Daftar kerja no. 20 di [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja) · Disusun AI, disetujui pengembang 26 Oktober 2026; gambar skala sikap digambar ulang dari 17 di hari yang sama
 
 Dokumen ini menjelaskan 27 gambar mock-up layar baru Revisi 10 di folder [`gambar/mockup/`](gambar/mockup/). Gambar ini bahan ahli media langkah 1 di tahap 2: ahli menilai game yang ada sekarang ditambah rancangan layar baru, karena sistem baru diubah di tahap 3, setelah gerbang G2 (keputusan 25 Oktober 2026). Langkah 2, telaah singkat layar jadi di instalasi uji sebelum uji coba, adalah daftar kerja no. 21 dan bagian gerbang G3.
 
@@ -21,7 +21,7 @@ Ukuran gambar 27–111 KB (WebP, jumlah ± 1,8 MB). Semua layar game digambar di
 
 ## Cara mock-up dibuat
 
-- **Tampilan game sungguhan** (keputusan pemilik proyek, 26 Oktober 2026). Sumbernya halaman HTML statis di [`gambar/mockup/src/`](gambar/mockup/src/) yang memakai CSS, huruf, dan gambar UI game yang sebenarnya dari `public/assets/` dan `gelita-katalog/assets/`, dengan susunan markup yang sama dengan view game (`_frame`, `boleh`, `cari`, `login`, `mission-brief`, `reflection`). Bagian yang belum ada di game ditulis di `src/_mock.css`. HUD dan label mock-up dibuat `src/_mock.js`.
+- **Tampilan game sungguhan** (keputusan pengembang, 26 Oktober 2026). Sumbernya halaman HTML statis di [`gambar/mockup/src/`](gambar/mockup/src/) yang memakai CSS, huruf, dan gambar UI game yang sebenarnya dari `public/assets/` dan `gelita-katalog/assets/`, dengan susunan markup yang sama dengan view game (`_frame`, `boleh`, `cari`, `login`, `mission-brief`, `reflection`). Bagian yang belum ada di game ditulis di `src/_mock.css`. HUD dan label mock-up dibuat `src/_mock.js`.
 - **Isi kata demi kata dari dokumen sumber.** Satu butir nyata per layar diambil dari draf 08, 12, 13, 14, 16, dan 17 tanpa diubah. Teks yang belum ada di dokumen mana pun (pesan galat, pengingat waktu, dan sebagainya) ditandai *draf salinan* di bawah dan didaftar di [Celah yang ditemukan](#celah-yang-ditemukan-di-dokumen-lain).
 - **Gambar ulang.** Jalankan dari akar repo: `node docs/revisi-10-analitik/gambar/mockup/src/render.mjs` (semua) atau dengan nama berkas, misalnya `… render.mjs mk-sd-01`. Skrip memakai Playwright Chromium yang sudah terpasang (jangan `playwright install`) dan Pillow untuk WebP. Sumber ini bisa dipakai lagi di tahap 3 sebagai rujukan tata letak.
 - **Tanpa CDN.** Modul tes meniru gaya bawaan Bootstrap 5 dengan beberapa aturan di `src/_modul.css`. Repo belum punya salinan Bootstrap; perubahan sistem no. 22 menyimpannya lokal di `public/assets/vendor/` saat modul dibangun di tahap 3.
@@ -139,7 +139,7 @@ Ukuran gambar 27–111 KB (WebP, jumlah ± 1,8 MB). Semua layar game digambar di
 
 ### 5. Skala sikap di Balai Refleksi (`mk-ss-01` … `mk-ss-05`)
 
-**Tujuannya.** Skala pendamping sikap menjaga warisan diisi sekali di P5, di Balai Refleksi, sebelum kritik dan saran, di luar skor literasi digital (perubahan sistem no. 21). Format dan tampilannya mengikuti keputusan pemilik proyek di [17](17_SKALA_SIKAP.md#format-jawaban-dan-tampilan): empat pilihan tanpa titik tengah (*Tidak setuju · Kurang setuju · Setuju · Sangat setuju*), kata dengan titik emas yang makin besar, tanpa wajah; satu pernyataan per layar; urutan tetap; boleh kembali dan melewati sebelum dikirim; bilah kemajuan perunggu; tidak dibacakan.
+**Tujuannya.** Skala pendamping sikap menjaga warisan diisi sekali di P5, di Balai Refleksi, sebelum kritik dan saran, di luar skor literasi digital (perubahan sistem no. 21). Format dan tampilannya mengikuti keputusan pengembang di [17](17_SKALA_SIKAP.md#format-jawaban-dan-tampilan): empat pilihan tanpa titik tengah (*Tidak setuju · Kurang setuju · Setuju · Sangat setuju*), kata dengan titik emas yang makin besar, tanpa wajah; satu pernyataan per layar; urutan tetap; boleh kembali dan melewati sebelum dikirim; bilah kemajuan perunggu; tidak dibacakan.
 
 **Isi.** Petunjuk layar pertama, contoh soal `skp-ct-01`, dan butir `skp-03` dari 17 kata demi kata. `skp-03` dipilih karena butir negatif (dibalik): di sinilah format tanpa wajah diuji, karena wajah senang di *Setuju* akan memberi isyarat yang keliru.
 
@@ -198,7 +198,7 @@ Ditemukan saat menggambar; tidak diperbaiki di sini karena berkasnya milik dokum
 7. **Penghitung ✓/✗ di kepala Skenario Digital.** Kerangka tantangan menghitung butir benar dan salah, tetapi di Skenario Digital belum ditetapkan apakah "kurang tepat" dihitung salah. Mock-up menghitung skenario yang sudah selesai dengan tepat.
 8. **Kolom bintang per wilayah di Balai Refleksi terlalu sempit untuk 15 tantangan.** "13 dari 15" bertumpuk dengan bilahnya di lebar kolom sekarang (`.reflection-side .bar-row`, 5,75rem); `mk-ss-05` melebarkannya hanya di halaman mock-up. Perlu dicatat di dokumen implementasi perubahan sistem no. 2 (lima belas tantangan) atau no. 21.
 
-## Keputusan pemilik proyek
+## Keputusan pengembang
 
 Putaran 1 (26 Oktober 2026), sebelum menggambar:
 
