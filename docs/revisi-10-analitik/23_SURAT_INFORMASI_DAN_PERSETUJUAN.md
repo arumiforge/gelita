@@ -63,7 +63,7 @@ Setelah itu: [tabel pembagian](#tabel-pembagian), [catatan keterbacaan](#catatan
 - **Bahasa sehari-hari.** Kata "analitik", "Rasch", "pseudonim", "data turunan", dan "log" tidak dipakai. Gantinya: "catatan permainan", "kode", "data jawaban".
 - **Kalimat pendek.** Sasaran rata-rata 10–15 kata per kalimat untuk orang tua dan guru, 6–10 kata untuk anak. Hasil hitungnya di [Catatan keterbacaan](#catatan-keterbacaan).
 - **Satu hal, satu kalimat.** Pilihan yang terpisah diberi kotak Ya dan Tidak sendiri, supaya kotak kosong tidak dibaca sebagai "ya".
-- **Nama asli tidak ditulis di repo.** Peneliti, sekolah, lembaga, dan komite etik ditulis sebagai tempat kosong. Nama samaran *Lembaga Komite Etik* hanya untuk repo; di surat yang dicetak diganti nama komite sebenarnya: `[nama komite etik]`.
+- **Nama asli orang dan sekolah tidak ditulis di repo.** Peneliti, sekolah, dan lembaga peneliti ditulis sebagai tempat kosong. Komite etik sudah dipilih pengembang 27 Oktober 2026: Komisi Etik Bidang Sosial Humaniora BRIN ([Keputusan pengembang](#keputusan-pengembang) no. 22), dan namanya ditulis langsung di surat. Nama rujukan *Lembaga Komite Etik* tetap dipakai di dokumen lain.
 - **Sapaan.** Orang tua: "Bapak/Ibu". Anak: "kamu" dan "kakak peneliti", seperti petunjuk angket di [16](16_ANGKET_AKSES_DIGITAL.md#petunjuk-untuk-siswa).
 
 ### Tempat kosong yang dipakai
@@ -72,21 +72,21 @@ Setelah itu: [tabel pembagian](#tabel-pembagian), [catatan keterbacaan](#catatan
 | --- | --- | --- |
 | `[nama ketua peneliti]`, `[jabatan dan lembaga ketua peneliti]` | Pengembang, di luar repo | Sebelum permohonan etik dikirim |
 | `[nama lembaga peneliti]`, `[alamat lembaga]` | Pengembang | Sama |
-| `[nama komite etik]`, `[nomor persetujuan etik]`, `[tanggal persetujuan etik]` | Surat persetujuan *Lembaga Komite Etik* | Setelah persetujuan terbit; **menunggu persetujuan etik** |
+| `[nomor persetujuan etik]`, `[tanggal persetujuan etik]` | Surat keputusan Komisi Etik Bidang Sosial Humaniora BRIN (nama komite sudah ditulis langsung, 27 Oktober 2026) | Setelah persetujuan terbit; **menunggu persetujuan etik** |
 | `[nomor HP/WA peneliti]`, `[surel peneliti]` | Pengembang (nomor khusus penelitian, bukan nomor pribadi) | Sebelum dicetak |
 | `[nomor cadangan]` | Pengembang: nomor anggota tim lain atau kantor lembaga, khusus penelitian | Sebelum dicetak |
 | `[sumber dana]` | Pengembang, sama dengan [22 → Identitas dan tim](22_PERMOHONAN_IZIN_ETIK.md#identitas-dan-tim) | Sebelum permohonan etik dikirim |
 | `[jenis tanda terima kasih]` | [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi), misalnya satu set alat tulis | Sebelum dicetak |
-| `[kontak komite etik]` | Surat persetujuan komite: alamat surat, situs, dan surel komite (panduan klirens etik BRIN meminta alamat komite di lembar persetujuan; untuk Komisi Etik Bidang Sosial Humaniora BRIN: Gedung B.J. Habibie, Jl. M.H. Thamrin No. 8, Jakarta Pusat, klirensetik.brin.go.id, klirensetik@brin.go.id, `needs_verification` saat surat dicetak) | Setelah persetujuan terbit |
 | `[judul penelitian]` | Judul resmi dari usulan penelitian, sama dengan [22 → Identitas dan tim](22_PERMOHONAN_IZIN_ETIK.md#identitas-dan-tim); tanpa nama sekolah atau lembaga subjek | Sebelum permohonan etik dikirim |
 | `[nama sekolah]`, `[nama kepala sekolah]`, `[rombel]` | Rekrutmen sekolah; kode sekolah **menunggu daftar kerja no. 12** | Per sekolah |
 | `[tanggal P1]` … `[tanggal P5]`, `[rentang minggu]` | Jadwal per kelas | Per kelas |
 | `[tanggal batas kembali]` | P1: H-3 sebelum P1 | Per kelas |
 | `[tanggal studi ditutup]` | Rencana tanggal studi ditutup (setelah analisis selesai, [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan)), dari jadwal ketua peneliti. Kalau studi ternyata ditutup lebih lambat, permintaan hapus tetap diterima sampai studi benar-benar ditutup ([Keputusan pengembang](#keputusan-pengembang) no. 1) | Sebelum dicetak |
 | `[kontak PPDP atau narahubung]` | PPDP lembaga peneliti kalau sudah ditunjuk, kalau belum ketua peneliti sebagai narahubung ([22 → Pengendali, prosesor, dan narahubung data](22_PERMOHONAN_IZIN_ETIK.md#pengendali-prosesor-dan-narahubung-data)) | Sebelum permohonan etik dikirim |
-| `[nama dan lokasi penyedia server]` | Pengembang; server di Indonesia, dengan perjanjian prosesor ([22 → Penyimpanan dan enkripsi](22_PERMOHONAN_IZIN_ETIK.md#penyimpanan-dan-enkripsi)) | Sebelum permohonan etik dikirim |
 | `[rentang tanggal uji keterbacaan]`, `[tanggal batas kembali uji keterbacaan]` | Jadwal uji keterbacaan ([24 → Jadwal empat sesi](24_UJI_KETERBACAAN.md#jadwal-empat-sesi)), disepakati dengan sekolah asal anak | Sebelum dicetak |
-| `[nomor WA SAPA 129]`, `[kabupaten/kota]`, `[kontak UPTD PPA]` | Layanan resmi perlindungan anak di wilayah sasaran ([22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) langkah 5); `needs_verification`: nama dan nomor dicek sebelum lapangan | Sebelum T13 dicetak |
+| `[kabupaten/kota]`, `[kontak UPTD PPA]` | Layanan resmi perlindungan anak di wilayah sasaran ([22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) langkah 5); `needs_verification`: nama dan nomor dicek sebelum lapangan | Sebelum T13 dicetak |
+
+Sudah diisi 27 Oktober 2026 (cabang `r10-formulir-etik`; daftar lengkap tempat kosong 22 dan 23 di [22 → Daftar isian sebelum diajukan](22_PERMOHONAN_IZIN_ETIK.md#daftar-isian-sebelum-diajukan)): nama komite (Komisi Etik Bidang Sosial Humaniora BRIN); kontak komite (Gd. B.J. Habibie Lt. 8, Jl. M.H. Thamrin No. 8, Jakarta Pusat 10340, klirensetik.brin.go.id, klirensetik@brin.go.id; dari laman komisi, dibuka 27 Oktober 2026); penyedia server (IDCloudHost (PT Cloud Hosting Indonesia), pusat data di Jakarta Pusat); nomor WA SAPA 129 (08111-129-129, dari pernyataan Kementerian PPPA 23 Februari 2026; dicek ulang sebelum T13 dicetak).
 
 ## T1 Surat informasi untuk orang tua/wali
 
@@ -147,7 +147,7 @@ Tiga halaman A4 tegak, dicetak bolak-balik (dua lembar). Orang tua menyimpan sur
 >
 > Yang bertanggung jawab atas data anak adalah [nama lembaga peneliti]. Kami hanya mengolah data anak kalau Bapak/Ibu memberi izin di formulir. Untuk urusan data, Bapak/Ibu bisa menghubungi [kontak PPDP atau narahubung].
 >
-> GELITA berjalan lewat internet. Datanya disimpan di server [nama dan lokasi penyedia server] di Indonesia. Penyedia server hanya menyimpan data atas perintah kami, dengan perjanjian tertulis. Data anak tidak dikirim ke luar negeri. Kami menjaga datanya dengan akun berkata sandi untuk setiap peran, memisahkan nama dari data, dan menyimpan salinan data di tempat terenkripsi. Meski begitu, tidak ada sistem daring yang sepenuhnya bebas risiko kebocoran. Kalau terjadi kebocoran yang menyangkut data anak Bapak/Ibu, kami memberi tahu Bapak/Ibu secara tertulis paling lambat 3 × 24 jam setelah kami mengetahuinya, dan juga memberi tahu sekolah.
+> GELITA berjalan lewat internet. Datanya disimpan di server IDCloudHost (PT Cloud Hosting Indonesia) di Jakarta Pusat, Indonesia. Penyedia server hanya menyimpan data atas perintah kami, dengan perjanjian tertulis. Data anak tidak dikirim ke luar negeri. Kami menjaga datanya dengan akun berkata sandi untuk setiap peran, memisahkan nama dari data, dan menyimpan salinan data di tempat terenkripsi. Meski begitu, tidak ada sistem daring yang sepenuhnya bebas risiko kebocoran. Kalau terjadi kebocoran yang menyangkut data anak Bapak/Ibu, kami memberi tahu Bapak/Ibu secara tertulis paling lambat 3 × 24 jam setelah kami mengetahuinya, dan juga memberi tahu sekolah.
 >
 > Formulir izin disimpan di lemari terkunci. Salinan digitalnya dikunci dengan kata sandi dan hanya bisa dibuka dua orang peneliti. Nomor HP yang Bapak/Ibu tulis di formulir hanya dipakai untuk urusan penelitian ini. Lama penyimpanan:
 > - **Nama anak, formulir izin, dan nomor HP:** sampai penelitian ditutup, yaitu setelah semua data selesai diolah, sekitar [tanggal studi ditutup]. Setelah itu kertasnya dicacah, berkas digitalnya dihapus, dan nama di akun GELITA diganti kode.
@@ -174,7 +174,7 @@ Tiga halaman A4 tegak, dicetak bolak-balik (dua lembar). Orang tua menyimpan sur
 > - anak berhenti, dan semua data anak dihapus; atau
 > - anak tetap ikut, tetapi rekaman suara atau jawaban pertanyaan tentang pengalaman tidak nyaman di internet dihapus.
 >
-> Paling lambat 3 × 24 jam setelah permintaan Bapak/Ibu kami terima dan cocokkan, kami berhenti mengumpulkan data anak. Kalau Bapak/Ibu minta data dihapus, kami memberi tahu Bapak/Ibu paling lambat 3 × 24 jam setelah datanya dihapus.
+> Paling lambat 3 × 24 jam setelah permintaan Bapak/Ibu kami terima, kami mencocokkannya dengan formulir izin dan berhenti mengumpulkan data anak. Kalau Bapak/Ibu minta data dihapus, kami memberi tahu Bapak/Ibu paling lambat 3 × 24 jam setelah datanya dihapus.
 >
 > Bapak/Ibu juga boleh meminta melihat data anak, meminta salinannya, atau membetulkan data yang salah, misalnya umur atau kelas. Hubungi kami lewat nomor di bawah. Kami menjawab paling lambat 3 × 24 jam.
 >
@@ -196,12 +196,12 @@ Tiga halaman A4 tegak, dicetak bolak-balik (dua lembar). Orang tua menyimpan sur
 >
 > **8. Persetujuan komite etik dan kontak**
 >
-> Penelitian ini sudah disetujui oleh [nama komite etik], nomor [nomor persetujuan etik], tanggal [tanggal persetujuan etik].
+> Penelitian ini sudah disetujui oleh Komisi Etik Bidang Sosial Humaniora BRIN, nomor [nomor persetujuan etik], tanggal [tanggal persetujuan etik].
 >
 > Kalau ada pertanyaan, silakan hubungi:
 > - [nama ketua peneliti], [nomor HP/WA peneliti], [surel peneliti]
 > - Nomor cadangan, kalau nomor di atas tidak bisa dihubungi: [nomor cadangan]
-> - Untuk pertanyaan atau keluhan tentang hak anak sebagai peserta, Bapak/Ibu juga bisa langsung menghubungi komite etik, tanpa lewat kami: [nama komite etik], [kontak komite etik]
+> - Untuk pertanyaan atau keluhan tentang hak anak sebagai peserta, Bapak/Ibu juga bisa langsung menghubungi komite etik, tanpa lewat kami: Komisi Etik Bidang Sosial Humaniora BRIN, Gd. B.J. Habibie Lt. 8, Jl. M.H. Thamrin No. 8, Jakarta Pusat 10340, klirensetik.brin.go.id, klirensetik@brin.go.id
 >
 > Kalau Bapak/Ibu lebih nyaman surat ini dibacakan, guru kelas atau peneliti bisa membacakannya dan menjawab pertanyaan Bapak/Ibu. Setelah itu formulir diisi di depan seorang saksi yang bukan anggota tim peneliti, misalnya anggota keluarga atau tetangga, dan saksi ikut menandatangani.
 >
@@ -227,7 +227,7 @@ Satu halaman A4 tegak, dikembalikan dalam amplop tertutup. Satu formulir untuk s
 
 > **FORMULIR PERSETUJUAN ORANG TUA/WALI**
 > Penelitian GELITA · [nama sekolah] · Kelas [rombel]
-> Persetujuan etik: [nama komite etik], nomor [nomor persetujuan etik]
+> Persetujuan etik: Komisi Etik Bidang Sosial Humaniora BRIN, nomor [nomor persetujuan etik]
 >
 > Saya yang bertanda tangan di bawah ini:
 >
@@ -370,7 +370,7 @@ Dua halaman A4. Dikirim setelah persetujuan etik terbit, bersama salinan surat p
 >
 > Kami tim peneliti dari [nama lembaga peneliti], dipimpin oleh [nama ketua peneliti], sedang mengembangkan GELITA. GELITA adalah game belajar tentang budaya daerah Kedu untuk siswa sekolah dasar. Penelitian ini menguji apakah game tersebut bisa mengukur kemampuan literasi digital siswa: membaca dan menilai informasi, memakai internet dengan aman, dan menghargai budaya di dunia digital.
 >
-> Penelitian ini sudah disetujui oleh [nama komite etik], nomor [nomor persetujuan etik], tanggal [tanggal persetujuan etik].
+> Penelitian ini sudah disetujui oleh Komisi Etik Bidang Sosial Humaniora BRIN, nomor [nomor persetujuan etik], tanggal [tanggal persetujuan etik].
 >
 > Dengan surat ini kami mohon izin Bapak/Ibu untuk hal-hal berikut.
 >
@@ -404,7 +404,7 @@ Dua halaman A4. Dikirim setelah persetujuan etik terbit, bersama salinan surat p
 >
 > **Kerahasiaan.** Nama sekolah tidak ditulis di hasil penelitian. Sekolah diberi kode, dan NPSN hanya tersimpan di lembar terpisah yang dikunci. Nama siswa tidak pernah ada di data penelitian. Nama hanya ada di akun GELITA yang dikelola pengelola sistem dan di berkas izin yang disimpan terkunci, terpisah dari data. Data penelitian memakai kode siswa. Guru dan orang tua tidak menerima jawaban per siswa. Ada satu batas: kalau siswa menunjukkan ia dalam bahaya serius, ketua peneliti mencari bantuan sesuai prosedur yang disetujui komite etik. Ketua peneliti dapat menghubungi orang tuanya (kecuali orang tua diduga terlibat), Bapak/Ibu, dan layanan perlindungan anak resmi.
 >
-> **Pembagian data.** Data per siswa yang hanya memakai kode dapat dibagikan kepada peneliti lain atas permintaan, dengan persetujuan [nama komite etik]. Sebelum dibagikan, kode siswa diganti kode acak baru, dan kode sekolah dan kelas dihapus. Jawaban tentang pengalaman tidak nyaman di internet dan tulisan ulang wawancara tidak pernah dibagikan. Data tidak diunggah untuk umum.
+> **Pembagian data.** Data per siswa yang hanya memakai kode dapat dibagikan kepada peneliti lain atas permintaan, dengan persetujuan Komisi Etik Bidang Sosial Humaniora BRIN. Sebelum dibagikan, kode siswa diganti kode acak baru, dan kode sekolah dan kelas dihapus. Jawaban tentang pengalaman tidak nyaman di internet dan tulisan ulang wawancara tidak pernah dibagikan. Data tidak diunggah untuk umum.
 >
 > **Yang sekolah terima.** Setelah penelitian selesai, kami menyerahkan ringkasan hasil untuk sekolah. Ringkasan ini hanya berisi angka gabungan, tidak per siswa, dan tidak untuk kelompok yang berisi kurang dari 5 siswa. Orang tua dapat meminta ringkasan ini lewat sekolah.
 >
@@ -419,7 +419,7 @@ Dua halaman A4. Dikirim setelah persetujuan etik terbit, bersama salinan surat p
 > [jabatan dan lembaga ketua peneliti]
 >
 > Lampiran:
-> 1. Salinan surat persetujuan etik [nama komite etik]
+> 1. Salinan surat persetujuan etik Komisi Etik Bidang Sosial Humaniora BRIN
 > 2. Contoh surat informasi dan formulir persetujuan orang tua
 > 3. Lembar informasi untuk guru kelas
 > 4. Lembar isian data profil sekolah
@@ -458,7 +458,7 @@ Satu halaman A4, diserahkan P1 langsung kepada guru kelas 5 saat kunjungan perta
 >
 > **Hasil.** Bapak/Ibu tidak menerima jawaban atau nilai per siswa, karena kami sudah berjanji begitu kepada orang tua. Sekolah menerima ringkasan angka gabungan setelah penelitian selesai.
 >
-> Persetujuan etik: [nama komite etik], nomor [nomor persetujuan etik].
+> Persetujuan etik: Komisi Etik Bidang Sosial Humaniora BRIN, nomor [nomor persetujuan etik].
 > Kontak: [nama ketua peneliti], [nomor HP/WA peneliti].
 
 ---
@@ -518,8 +518,8 @@ Dua halaman A4 tegak (satu lembar bolak-balik), dikirim lewat guru dalam amplop 
 >
 > **Biaya dan tanda terima kasih.** Tidak ada biaya apa pun bagi Bapak/Ibu, dan kami tidak memberi uang. Setelah pertemuan terakhir yang diikuti anak, setiap anak mendapat tanda terima kasih kecil yang sama, berupa [jenis tanda terima kasih].
 >
-> Persetujuan etik: [nama komite etik], nomor [nomor persetujuan etik], tanggal [tanggal persetujuan etik].
-> Kontak: [nama ketua peneliti], [nomor HP/WA peneliti], [surel peneliti]. Nomor cadangan: [nomor cadangan]. Pertanyaan atau keluhan tentang hak anak, langsung ke komite etik: [nama komite etik], [kontak komite etik].
+> Persetujuan etik: Komisi Etik Bidang Sosial Humaniora BRIN, nomor [nomor persetujuan etik], tanggal [tanggal persetujuan etik].
+> Kontak: [nama ketua peneliti], [nomor HP/WA peneliti], [surel peneliti]. Nomor cadangan: [nomor cadangan]. Pertanyaan atau keluhan tentang hak anak, langsung ke komite etik: Komisi Etik Bidang Sosial Humaniora BRIN, Gd. B.J. Habibie Lt. 8, Jl. M.H. Thamrin No. 8, Jakarta Pusat 10340, klirensetik.brin.go.id, klirensetik@brin.go.id.
 >
 > Kalau Bapak/Ibu lebih nyaman surat ini dibacakan, guru kelas atau peneliti bisa membacakannya dan menjawab pertanyaan Bapak/Ibu. Setelah itu formulir diisi di depan seorang saksi yang bukan anggota tim peneliti, misalnya anggota keluarga atau tetangga, dan saksi ikut menandatangani.
 >
@@ -639,7 +639,7 @@ Satu halaman A4, dilampirkan di belakang T1 dan T8a (orang tua menyimpannya) dan
 >
 > Bapak/Ibu tidak perlu memberi alasan. Tidak ada akibat apa pun bagi anak.
 >
-> Paling lambat 3 × 24 jam setelah permintaan ini kami terima dan cocokkan dengan formulir izin, kami berhenti mengumpulkan data anak (pilihan A dan B) atau menjawab permintaan Bapak/Ibu (pilihan D). Kalau data dihapus, Bapak/Ibu kami beri tahu paling lambat 3 × 24 jam setelah penghapusan.
+> Paling lambat 3 × 24 jam setelah permintaan ini kami terima, kami mencocokkannya dengan formulir izin dan berhenti mengumpulkan data anak (pilihan A dan B) atau menjawab permintaan Bapak/Ibu (pilihan D). Kalau data dihapus, Bapak/Ibu kami beri tahu paling lambat 3 × 24 jam setelah penghapusan.
 >
 > Permintaan bisa diajukan sampai penelitian ditutup, sekitar [tanggal studi ditutup]. Hasil gabungan yang sudah diterbitkan, misalnya rata-rata satu kelas di laporan, tidak bisa ditarik kembali.
 >
@@ -668,7 +668,7 @@ Formulir T10 yang sudah diisi disimpan `ketua` di berkas terpisah yang dikunci, 
 
 **Untuk uji keterbacaan (T8)** formulir yang sama dipakai. Tidak ada L7 dan akun: pilihan A berarti anak berhenti dan catatannya tetap dipakai; pilihan B berarti LK1–LK3, kartu cetak, rekaman, dan transkrip anak itu dimusnahkan; pilihan C berarti rekaman, atau catatan parafrase butir risiko daring, dihapus. `ketua` mencatat tindak lanjutnya di daftar nama–kode ([24 → Pengelolaan data](24_UJI_KETERBACAAN.md#pengelolaan-data)).
 
-Batas waktunya mengikuti PP No. 33 Tahun 2026 dan [22 → Mengundurkan diri dan hapus data](22_PERMOHONAN_IZIN_ETIK.md#mengundurkan-diri-dan-hapus-data) (keputusan pengembang 27 Oktober 2026; `needs_verification` terhadap naskah resmi): pengumpulan data dihentikan paling lambat 3 × 24 jam setelah permintaan terverifikasi, dan orang tua diberi tahu lewat kontak di T2 (atau T8b) paling lambat 3 × 24 jam setelah penghapusan. Ini menggantikan tempat kosong `[jumlah hari kerja]`. Penghapusan mencakup sistem, ekspor yang masih ada, salinan peneliti, dan salinan cadangan server; penyedia server diperintahkan lebih dulu. Cara teknisnya ditulis di dokumen implementasi tahap 3. Anak yang memintanya sendiri dicatat sebagai pilihan A, dan untuk pilihan D anak perlu persetujuan orang tua.
+Batas waktunya mengikuti PP No. 33 Tahun 2026 dan [22 → Mengundurkan diri dan hapus data](22_PERMOHONAN_IZIN_ETIK.md#mengundurkan-diri-dan-hapus-data) (keputusan pengembang 27 Oktober 2026; nomor pasal dicek ke salinan naskah 27 Oktober 2026): pengumpulan data dihentikan paling lambat 3 × 24 jam sejak permintaan diterima, dengan pencocokan identitas di dalam waktu itu (Pasal 92 ayat (2)–(3)), dan orang tua diberi tahu lewat kontak di T2 (atau T8b) paling lambat 3 × 24 jam setelah penghapusan. Ini menggantikan tempat kosong `[jumlah hari kerja]`. Penghapusan mencakup sistem, ekspor yang masih ada, salinan peneliti, dan salinan cadangan server; penyedia server diperintahkan lebih dulu. Cara teknisnya ditulis di dokumen implementasi tahap 3. Anak yang memintanya sendiri dicatat sebagai pilihan A, dan untuk pilihan D anak perlu persetujuan orang tua.
 
 ## T11 Layar sebelum butir risiko daring
 
@@ -740,14 +740,14 @@ Setengah halaman A4, dilipat dua sehingga teman tidak melihat isinya. Diberikan 
 > - Kamu boleh tidak membalas, dan boleh memblokir orang yang membuatmu tidak nyaman.
 >
 > **Layanan bantuan untuk anak:**
-> - SAPA 129: telepon 129, atau WA [nomor WA SAPA 129]
+> - SAPA 129: telepon 129, atau WA 08111-129-129
 > - UPTD PPA [kabupaten/kota]: [kontak UPTD PPA]
 >
 > **Untuk Bapak/Ibu orang tua:** kalau Bapak/Ibu khawatir, dengarkan anak tanpa memarahinya. Bapak/Ibu bisa menghubungi layanan di atas, atau [nama ketua peneliti] di [nomor HP/WA peneliti].
 
 ---
 
-`needs_verification`: nama layanan SAPA 129, nomor teleponnya, nomor WA-nya, dan UPTD PPA di kabupaten/kota sasaran dicek sebelum dicetak ([22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) langkah 5).
+`needs_verification`: nama layanan SAPA 129, nomor teleponnya, nomor WA-nya (diisi 08111-129-129 dari pernyataan Kementerian PPPA 23 Februari 2026), dan UPTD PPA di kabupaten/kota sasaran dicek sebelum dicetak ([22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) langkah 5).
 
 Diputuskan pengembang (27 Oktober 2026): selebaran juga dibagikan kepada semua anak di kelas di akhir P5, bersama tanda terima kasih, supaya anak yang menerimanya saat rujukan tidak tampak berbeda.
 
@@ -814,7 +814,7 @@ Siswa tidak membawa formulir yang sudah diisi dalam keadaan terbuka: T2 dan T10 
 | *Tambahan dari PP No. 33 Tahun 2026:* penyedia server dan letaknya di Indonesia | T1 bagian 3; T8a *Kerahasiaan* (catatan disimpan di Indonesia) |
 | *Tambahan dari PP No. 33 Tahun 2026:* pemberitahuan kebocoran paling lambat 3 × 24 jam | T1 bagian 3; T8a *Kerahasiaan* |
 | *Tambahan dari PP No. 33 Tahun 2026:* hak melihat, meminta salinan, dan membetulkan data anak, dan hak mengadu ke lembaga pelindungan data pribadi | T1 bagian 6; T8a *Berhenti kapan saja*; T10 pilihan D |
-| *Tambahan dari panduan klirens etik BRIN ([22 → Pemetaan ke formulir klirens etik BRIN](22_PERMOHONAN_IZIN_ETIK.md#pemetaan-ke-formulir-klirens-etik-brin)):* judul penelitian dan alamat komite | T1, T6, dan T8a di bawah perihal (judul); T1 bagian 8 dan T8a (`[kontak komite etik]`) |
+| *Tambahan dari panduan klirens etik BRIN ([22 → Pemetaan ke formulir klirens etik BRIN](22_PERMOHONAN_IZIN_ETIK.md#pemetaan-ke-formulir-klirens-etik-brin)):* judul penelitian dan alamat komite | T1, T6, dan T8a di bawah perihal (judul); T1 bagian 8 dan T8a (kontak komite) |
 | *Tambahan dari panduan klirens etik BRIN:* data berkode disimpan paling singkat 20 tahun karena undang-undang (22 → keputusan no. 19) | T1 bagian 3; T8a *Kerahasiaan* |
 
 ### Jalur persetujuan → teksnya
@@ -923,7 +923,7 @@ Keputusan pengembang pada hari yang sama, setelah 22 dan 23 dibandingkan dengan 
 
 Keputusan pengembang pada hari yang sama, setelah 22 dan 23 dibandingkan dengan PP No. 33 Tahun 2026 (cabang `r10-pp-pdp`; [22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum), [22 → Keputusan pengembang](22_PERMOHONAN_IZIN_ETIK.md#keputusan-pengembang) no. 14–17, [04](04_CATATAN_KEPUTUSAN.md); nomor pasal `needs_verification` terhadap naskah resmi):
 
-16. **Server dan penyimpanan di Indonesia.** T1 bagian 3 menyebut `[nama dan lokasi penyedia server]` di Indonesia, bahwa penyedia hanya menyimpan atas perintah tim dengan perjanjian tertulis, dan bahwa data tidak dikirim ke luar negeri; T8a menyebut catatan disimpan di Indonesia.
+16. **Server dan penyimpanan di Indonesia.** T1 bagian 3 menyebut IDCloudHost (PT Cloud Hosting Indonesia), pusat data di Jakarta Pusat di Indonesia, bahwa penyedia hanya menyimpan atas perintah tim dengan perjanjian tertulis, dan bahwa data tidak dikirim ke luar negeri; T8a menyebut catatan disimpan di Indonesia.
 17. **Isi surat dari PP 33/2026:** pengendali data `[nama lembaga peneliti]`, dasar pengolahan (izin orang tua), dan `[kontak PPDP atau narahubung]` (T1 bagian 3, T8a *Kerahasiaan*); pemberitahuan kebocoran tertulis paling lambat 3 × 24 jam (T1 bagian 3, T8a); hak melihat, meminta salinan, dan membetulkan data, dengan jawaban paling lambat 3 × 24 jam, dan aduan ke lembaga pelindungan data pribadi (T1 bagian 6, T8a *Berhenti kapan saja*).
 18. **Pengecualian untuk penelitian tidak dipakai.** Pilihan A di T1 bagian 6 dan T10 ditulis sebagai izin untuk data yang sudah ada tetap berlaku; T10 mendapat pilihan D (melihat, salinan, pembetulan), batas 3 × 24 jam menggantikan `[jumlah hari kerja]`, dan kotak peneliti mencatat pencocokan identitas pemohon, penonaktifan akun, dan penghapusan salinan cadangan.
 19. **Verifikasi izin orang tua dan bukti persetujuan.** Kotak peneliti T2 mendapat centang "nama anak cocok dengan daftar kelas" dan "dikonfirmasi lewat telepon (kalau ragu)". Bukti persetujuan setelah studi ditutup berupa daftar izin berkode tanpa nama ([22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan)); surat tidak berubah karenanya.
@@ -932,6 +932,10 @@ Keputusan pengembang 27 Oktober 2026, setelah 22 dan 23 dibandingkan dengan *Pan
 
 20. **Judul penelitian ditulis di surat** T1, T6, dan T8a, di bawah perihal, karena contoh *informed consent* panduan BRIN (Lampiran 2) memuat judul riset. Judulnya tanpa nama sekolah atau lembaga subjek (panduan BRIN, butir 2.1). Tempat kosong baru `[judul penelitian]`.
 21. **`[kontak komite etik]` berisi alamat surat, situs, dan surel komite**, karena panduan BRIN meminta alamat komite di lembar persetujuan. Isi lain yang diminta panduan (lembaga, tujuan, teknik dan lama pengumpulan data, kerahasiaan, hak menolak dan berhenti, alamat koordinator) sudah ada. Masa simpan data berkode (paling singkat 20 tahun, keputusan pengembang di 22 no. 19) dibawa sesi koordinator 27 Oktober 2026, setelah sesi PP No. 33 Tahun 2026 digabung, ke T1 bagian 3, T8a *Kerahasiaan*, [Dasar yang sudah diputuskan](#dasar-yang-sudah-diputuskan), [Tabel pembagian](#tabel-pembagian), dan [Cek isi L7](#cek-isi-l7-dan-jalur-persetujuan), dengan kalimat awam bahwa undang-undang mewajibkan data penelitian disimpan selama itu dan bahwa data berkode tidak memuat nama.
+
+Keputusan pengembang 27 Oktober 2026, saat 22 dan 23 disiapkan untuk diajukan (cabang `r10-formulir-etik`; `asal: pengembang`, status `draf pengembang`; [22 → Keputusan pengembang](22_PERMOHONAN_IZIN_ETIK.md#keputusan-pengembang) no. 22–24):
+
+22. **Komite, server, dan nomor layanan ditulis langsung di surat.** Komite tujuan Komisi Etik Bidang Sosial Humaniora BRIN dengan formulir BRIN; nama dan alamatnya menggantikan `[nama komite etik]` dan `[kontak komite etik]` di T1, T2, T6, T7, T8a, dan T8b. Server IDCloudHost (PT Cloud Hosting Indonesia) di Jakarta Pusat menggantikan `[nama dan lokasi penyedia server]` di T1 bagian 3. Nomor WA SAPA 129 di T13 diisi 08111-129-129. Nama, kontak, dan data diri ketua peneliti dan narahubung data tetap tempat kosong dan diisi di luar repo. Bersamaan dengan pengecekan PP No. 33 Tahun 2026 ke salinan naskahnya, kalimat batas waktu di T1 bagian 6 dan T10 kini menghitung 3 × 24 jam **sejak permintaan diterima**, dengan pencocokan identitas di dalam waktu itu (Pasal 92 ayat (2)–(3)), bukan sejak permintaan dicocokkan.
 
 ## Akibat ke dokumen lain
 
@@ -953,3 +957,4 @@ Tidak diubah di cabang ini. Dibawa sesi koordinator setelah PR digabung.
 | 24 | Bahan uji | Tidak dipakai: T1 tidak diuji baca oleh orang tua di luar sampel (keputusan pengembang, 27 Oktober 2026) |
 | 03 | *Peserta, sekolah, dan sesi* | Kode anak uji keterbacaan `K01`–`K05` dan kode sesi `K01-1` (juga diminta 24) |
 | 20 | — | Tidak ada; surat validator ada di 20 sendiri |
+| 02 | L7, isi surat | Tidak perlu diubah (cabang `r10-formulir-etik`): butir L7 menyebut isi surat secara umum (penyedia server, kontak komite, batas 3 × 24 jam), tidak menyebut nama atau awal hitungan |
