@@ -12,7 +12,7 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 | --- | --- | --- |
 | Admin | Pengelola sistem: akun, identitas, konten, rilis, log teknis. Tidak mengunduh data penelitian | Sistem, panel admin |
 | Pengembang (berbantuan AI) | Pengembang GELITA, dibantu AI. Menyusun draf, label pengembang, skor dan telaah pendahuluan, cek fakta, dan berkas siap kirim; boleh berperan sebagai ahli atau komite untuk latihan dan penyaringan awal. Bukan validator: skornya tidak dihitung dalam validasi dan tidak dilihat ahli sebelum menilai. Keputusannya berkedudukan *disetujui pengembang* sampai disetujui peneliti ([01 → Peran pengembang, peneliti, dan ahli](01_REVISI_10_ANALITIK.md#peran-pengembang-peneliti-dan-ahli)) | Semua dokumen revisi, telaah pendahuluan (T6 di [07](07_TELAAH_INSTRUMEN_VALIDASI.md)) |
-| Peneliti | Pemegang data penelitian pseudonim: sesi lapangan, token, ekspor, data turunan. Di dokumen revisi: sumber judul penelitian dan 10 analitik; menerima kerja pengembang, menindaklanjutinya bersama ahli dan komite, dan menetapkan final | Sistem, panel peneliti (usulan), dokumen revisi |
+| Peneliti | Pemegang data penelitian pseudonim: sesi lapangan, token, ekspor, data turunan. Di sistem dua peran: `peneliti` (P1–P3, kerja lapangan) dan `ketua` (ketua peneliti, juga unduh data dan studi), lihat [Akun staf](#akun-staf). Di dokumen revisi: sumber judul penelitian dan 10 analitik; menerima kerja pengembang, menindaklanjutinya bersama ahli dan komite, dan menetapkan final | Sistem, panel peneliti ([27 → Panel peneliti](27_IMPLEMENTASI_PERAN_PENELITI.md#8-panel-peneliti)), dokumen revisi |
 | Guru | Guru kelas. Tidak punya akun; peran `guru` di sistem dihapus (keputusan 25 Oktober 2026). Cukup membantu perangkat dan internet | Lapangan |
 | P1 | Koordinator sesi: membuka sesi, token, L0, L1, L2, L7 | Lapangan |
 | P2 | Pengamat keterlibatan: L4 | Lapangan |
@@ -32,14 +32,17 @@ Pemegang akun admin dan akun peneliti sementara memakai nama samaran sesuai pera
 | Akun | Peran di sistem | Dipegang | Catatan |
 | --- | --- | --- | --- |
 | `admin` | Admin | Pengelola sistem | Akun, identitas, konten, rilis, log teknis; tidak mengunduh data penelitian |
-| `koordinator` | Peneliti | P1, koordinator sesi | Sesi lapangan, token, baris-kursi-buklet dari L2, reset kata sandi lewat kode peserta |
-| `pengamat`, `pewawancara`, `ketua` | Peneliti | P2, P3, ketua peneliti | Pola yang sama ("dan seterusnya"), disetujui pengembang 27 Oktober 2026; dibuat kalau perannya butuh akun |
+| `koordinator` | `peneliti` | P1, koordinator sesi | Sesi lapangan, token, baris dan kursi dari L2 (buklet dihitung panel), izin berkode dari L7, reset kata sandi lewat kode peserta, mengajukan permintaan hapus data; tidak mengunduh data |
+| `pengamat`, `pewawancara` | `peneliti` | P2, P3 | Pola yang sama ("dan seterusnya"), disetujui pengembang 27 Oktober 2026; dibuat kalau perannya butuh akun |
+| `ketua` | `ketua` | Ketua peneliti | Semua hak `peneliti`, ditambah data semua siswa, unduh data, pengaturan studi dan mode penelitian, konfirmasi permintaan hapus dari `peneliti`, daftar izin berkode, dan penanda tindak lanjut butir risiko daring |
 
 Satu orang yang memegang dua peran tetap memakai dua akun terpisah ([01](01_REVISI_10_ANALITIK.md#admin-dan-peneliti-dua-peran-berbeda)).
 
+Peran sistem `ketua` adalah peran sendiri, bukan akun `peneliti` dengan hak tambahan (keputusan pengembang 30 Oktober 2026). Hak per halaman ada di [27 → Hak akses per peran](27_IMPLEMENTASI_PERAN_PENELITI.md#4-hak-akses-per-peran); diselaraskan sesi koordinator, 30 Oktober 2026.
+
 ### Akun uji validator
 
-Akun **siswa** di instalasi uji untuk validator, bukan akun staf ([20 → Akses untuk validator](20_PAKET_VALIDASI.md#akses-untuk-validator), 27 Oktober 2026). Dibuat pengembang, pemegang `admin` instalasi uji, lewat pendaftaran biasa `/daftar` sebelum paket dikirim, dengan nama lengkap samaran tanpa angka dan sekolah `Sekolah Uji Validator` ([20 → Prasyarat no. 8](20_PAKET_VALIDASI.md#prasyarat-no-8-instalasi-uji-dan-akun-uji), 27 Oktober 2026). Titik dipakai karena aturan nama pengguna siswa tidak mengizinkan tanda hubung. Akun cadangan tidak dipakai ulang, karena kemajuan bermain belum bisa direset per akun; akun tambahan diberi nama `uji.cadangan3` dan seterusnya.
+Akun **siswa** di instalasi uji untuk validator, bukan akun staf ([20 → Akses untuk validator](20_PAKET_VALIDASI.md#akses-untuk-validator), 27 Oktober 2026). Dibuat pengembang, pemegang `admin` instalasi uji, lewat pendaftaran biasa `/daftar` sebelum paket dikirim, dengan nama lengkap samaran tanpa angka dan sekolah `Sekolah Uji Validator` ([20 → Prasyarat no. 8](20_PAKET_VALIDASI.md#prasyarat-no-8-instalasi-uji-dan-akun-uji), 27 Oktober 2026). Titik dipakai karena aturan nama pengguna siswa tidak mengizinkan tanda hubung. Akun cadangan tidak dipakai ulang, karena kemajuan bermain belum bisa direset per akun; akun tambahan diberi nama `uji.cadangan3` dan seterusnya. Di instalasi uji tahap 3 (G3), akun yang sama dibuat `gelita:uji:akun` dengan kode `UJI-01`, `UJI-02`, … dan sekolah berkode `V01`, dan kemajuannya bisa direset per akun ([28 → Alat bantu `gelita:uji:akun`](28_IMPLEMENTASI_SESI_LAPANGAN.md#13-alat-bantu-gelitaujiakun-perubahan-no-24)).
 
 | Akun | Untuk |
 | --- | --- |
@@ -103,10 +106,13 @@ Akun **siswa** di instalasi uji untuk validator, bukan akun staf ([20 → Akses 
 | S03-A07 | Kode peserta: sekolah penelitian `S03`, rombel `A`, siswa ke-`07` | Disetujui 25 Oktober 2026, mengganti `GLT-000123` |
 | S03 | Kode sekolah penelitian, dari daftar peneliti (bukan NPSN) | Disetujui 25 Oktober 2026 |
 | U01-A03 | Kode peserta di sekolah uji coba (awalan `U`) | Disetujui 25 Oktober 2026 |
+| V01 | Kode sekolah `Sekolah Uji Validator`, hanya di instalasi uji (awalan `V`) | [28](28_IMPLEMENTASI_SESI_LAPANGAN.md#101-kode-sekolah-penelitian), 30 Oktober 2026 |
+| UJI-01, UJI-02, … | Kode akun uji validator dari `gelita:uji:akun`, sengaja bukan pola kode peserta | [28](28_IMPLEMENTASI_SESI_LAPANGAN.md#13-alat-bantu-gelitaujiakun-perubahan-no-24), 30 Oktober 2026 |
 | A, B | Rombel kelas 5 di satu sekolah | Disetujui 25 Oktober 2026 |
 | S03-A-P1 | Kode sesi lapangan: sekolah, rombel, pertemuan ke-1 | Disetujui 25 Oktober 2026 |
 | S03-A-P3-S | Kode sesi lapangan susulan: siswa yang absen di P3, dalam tiga hari | 02, 26 Oktober 2026 |
-| KD7RMA | Contoh token sesi: 6 huruf dan angka tanpa O, 0, I, 1 | Disetujui 25 Oktober 2026 |
+| S03-A-P3-S2 | Susulan kedua untuk pertemuan yang sama; berikutnya `-S3` | [28](28_IMPLEMENTASI_SESI_LAPANGAN.md#62-kode-sesi), 30 Oktober 2026 |
+| KD7RMA | Contoh token sesi: 6 huruf dan angka tanpa O, 0, I, 1, L; huruf besar dan kecil tidak dibedakan | Disetujui 25 Oktober 2026; L ditambahkan di [28](28_IMPLEMENTASI_SESI_LAPANGAN.md#63-token), 30 Oktober 2026 |
 | GLT-000123 | Kode peserta lama | Diganti |
 | P01, P02, … | Nomor stiker perangkat | Lapangan |
 
@@ -336,3 +342,33 @@ Kode di protokol [24](24_UJI_KETERBACAAN.md), semuanya usulan sampai uji keterba
 | Dihapus | Log berhenti direkam | Log: dihapus atau dipisah |
 | Admin | Log hanya untuk admin, tidak masuk ekspor penelitian | Log: dihapus atau dipisah |
 | Peneliti | Log untuk data penelitian, dengan kode peserta | Log: dihapus atau dipisah |
+
+## Event yang berubah di pembersihan log
+
+Ditambahkan sesi koordinator, 30 Oktober 2026, dari [29 → Katalog event](29_IMPLEMENTASI_DATA_PENELITIAN.md#4-katalog-event) (keputusan pengembang 30 Oktober 2026). Daftar lengkap jenis event dan pemiliknya ada di 29; di sini hanya yang baru dan yang dihapus.
+
+| Kode | Arti | Keputusan log |
+| --- | --- | --- |
+| `dialogue_completed` | Slide terakhir sebuah cerita tercapai, sekali per cerita; payload `context`, `total` | Peneliti (baru) |
+| `passage_reopened` | Bacaan dibuka lagi setelah masukan pertama; payload `via` (`panel`, `label`), `passage`, `t_ms` | Peneliti (baru) |
+| `empty_tap` | Ketukan Cari Objek di luar bagian ketuk; payload `x_pct`, `y_pct`, `round`, `t_ms` | Peneliti (baru) |
+| `answer_selected` | Pilihan diganti sebelum Cek | Dihapus |
+| `audio_pause` | Narasi dijeda; tidak lagi event mentah, baris `pause` di tabel audio tetap | Dihapus |
+| `dialogue_advanced` | Setiap geser slide cerita | Dihapus, diganti `dialogue_completed` |
+| `answer_changed` | Kiriman Cari Objek yang dinilai dan berbeda dari kiriman sebelumnya | Dihapus, digabung ke `answer_submitted` (`changed` di payload) |
+
+## Persetujuan dan hak atas data
+
+Ditambahkan sesi koordinator, 30 Oktober 2026, dari [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) (keputusan pengembang 30 Oktober 2026). Kode yang tersimpan berbahasa Inggris; label di panel berbahasa Indonesia.
+
+| Kode | Arti | Dipakai di |
+| --- | --- | --- |
+| `active` | Status izin *Aktif* | Izin berkode per siswa, dari L7 ([30 → Izin berkode per siswa](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#52-izin-berkode-per-siswa)) |
+| `left` | *Keluar*: pindah sekolah atau tidak lagi hadir; akun tetap aktif, data tetap | Sama |
+| `withdrawn_keep` | *Mengundurkan diri (data tetap)*, pilihan A di [23 → T10](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t10-formulir-pengunduran-diri-dan-permintaan-hapus-data); akun nonaktif saat status disimpan | Sama |
+| `withdrawn_delete` | *Mengundurkan diri (hapus data)*, pilihan B; akun nonaktif saat status disimpan, lalu permintaan hapus `all` | Sama |
+| `all` | Jenis permintaan hapus: semua data anak (pilihan B) | Permintaan hapus data ([30 → Jenis permintaan](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#72-jenis-permintaan)) |
+| `risk_items` | Jenis permintaan hapus: jawaban butir risiko daring saja (pilihan C) | Sama |
+| `recording` | Jenis permintaan hapus: rekaman suara (pilihan C); tidak ada yang dihapus di sistem, hanya daftar periksa | Sama |
+| `tl-1` | Versi aturan penanda tindak lanjut butir risiko daring, hanya dilihat `ketua` dan tidak disimpan | [30 → Penanda tindak lanjut](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#6-penanda-tindak-lanjut-butir-risiko-daring) |
+| `t4-1`, `umum-1` | `assent_version`: versi teks centang persetujuan anak yang dicentang, `t4-1` untuk mode penelitian (23 → T4), `umum-1` untuk teks lama | Daftar izin berkode ([30 → Centang persetujuan anak](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#51-centang-persetujuan-anak-t4)) |
