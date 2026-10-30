@@ -2,7 +2,7 @@
 
 Dibuat otomatis oleh `src/berkas-validator.php`. Jangan disunting; jalankan ulang skripnya.
 
-Versi berkas: `berkas-1.0 · sumber c6776f08` (hash 8 karakter dari dokumen 03, 08, 14–18 dan tiga instrumen HTML) · benih acak B.5a: 20261027
+Versi berkas: `berkas-1.0 · sumber 761fe930` (hash 8 karakter dari dokumen 03, 08, 14–18 dan tiga instrumen HTML) · benih acak B.5a: 20261027
 
 ## Berkas dan jumlah baris
 
@@ -20,7 +20,7 @@ Versi berkas: `berkas-1.0 · sumber c6776f08` (hash 8 karakter dari dokumen 03, 
 | `materi-b7-kode-kesalahan-buta.xlsx` | B.7 (buta) | 622 sel kode tanpa kode pengembang |
 | `budaya-b5-b8-lembar-kerja.xlsx` | B.5 | 46 objek + 3 baris usulan |
 |  | B.6a, B.6b | 24 petunjuk, 12 butir PBK |
-|  | B.7 | 19 fakta |
+|  | B.7 | 44 fakta |
 |  | B.8a, B.8b | 12 pernyataan, 6 pertanyaan |
 | `media-b8-mockup.xlsx` | B.8 | 8 baris layar, 27 gambar |
 

@@ -34,6 +34,42 @@ Temuan dari kode (dicek 27 Oktober 2026):
 
 Status prasyarat setelah sesi ini: no. 4, 8, 9, 10 masih "Belum", masing-masing dengan prosedur tertulis. Yang ditunggu: subdomain dari TI kampus (no. 8), jawaban kesediaan (no. 9), dan pernyataan ketua peneliti soal honorarium (no. 10).
 
+**Cek fakta budaya tim: 135 klaim dicek, B.7 IB diperbarui, perbaikan 08 dan 12 diputuskan** (cabang `r10-cek-fakta-budaya`, bergantung pada PR #275) · `asal: pengembang` · `draf pengembang`, keputusan perbaikan `disetujui pengembang` · Prototipe I, belum merevisi produk
+
+Prasyarat no. 6 di [20 → Ringkasan](20_PAKET_VALIDASI.md#ringkasan) dipenuhi di [25_CEK_FAKTA_BUDAYA.md](25_CEK_FAKTA_BUDAYA.md). Klaim budaya dikumpulkan dari:
+- matriks 46 objek IB;
+- isi budaya 08;
+- keterangan Susun Gambar;
+- cerita 12.
+
+Setiap klaim dicek ke sumber dengan bantuan AI, dan hanya sumber yang benar-benar dibuka yang dikutip. Hasilnya: 103 dikonfirmasi, 20 varian, 2 keliru, 10 `needs_verification`. Ini kerja pengembang, bukan validasi ahli; pengamat budaya mengonfirmasinya di B.7.
+
+Yang diputuskan pengembang (dua putaran, empat pertanyaan per putaran):
+1. **Topeng Ireng `mgl-2-b04`.** Bacaan lama keliru: menurut dua kajian, gerak tari ini menggambarkan prajurit, bukan petani. Bacaan ditulis ulang ke makna keprajuritan dengan kunci *prajurit* dan pengecoh *penjajah* (INF-LIT); AKM L2 dan Bloom C2 tetap. Pengembang memilih ini, bukan usulan yang direkomendasikan (kunci *petani* tetap dengan kalimat baru).
+2. **Kompleks Candi Arjuna** ada di Desa Dieng Kulon, Kecamatan Batur, Banjarnegara. Gambarnya tetap menjadi variasi `a` Susun Gambar Wonosobo, tetapi keterangannya menyebut letak itu, dan deskripsi tantangan menjadi "lukisan Wonosobo dan Dieng".
+3. **Prasasti Gondosuli** ditulis "diperkirakan dibuat sekitar tahun 832 Masehi". Prasastinya tidak bertanggal, dan 832 adalah tafsiran de Casparis. Kunci `tmg-3-b02` tetap *benar*.
+4. **Petunjuk teh Tambi** ditulis "sejak zaman Belanda": kebunnya sudah ada sejak 1838, dan baru disewa swasta pada 1865. Pertanyaan terbuka 1865 atau 1885 ditutup.
+5. **Enam rumusan kecil di 08**, tanpa mengubah kunci:
+   - tinggi Sindoro dan Sumbing ditulis "sekitar";
+   - alasan larangan menyentuh relief menjadi "aus";
+   - keterangan keliru `mgl-4-a` menjadi "tarian asli dari Temanggung";
+   - getuk "dimasak";
+   - embun upas "suhu di dekat tanah";
+   - "panas dari permukaan bumi".
+
+   "Puluhan penari" juga menjadi "banyak penari".
+6. **"Dataran Kedu" menjadi "tanah Kedu"** di 12, pada baris yang mencakup Wonosobo (*Benang merah baru*, `penutup-01`).
+7. **Perbaikan di berkas data** (keterangan Susun Gambar dan baris Kenali) dicatat di 25 → *Akibat ke dokumen lain* dan diterapkan di tahap 3.
+
+Yang diubah:
+- 25 baru;
+- 08 dan 12 sesuai keputusan;
+- IB: B.7 menjadi 44 fakta berkode, nama objek B.5 no. 6, 15, 26, 31, 42, dan 46, catatan di C.3, D.3, dan D.4;
+- PDF IB dan lembar kerja validator, dibuat ulang;
+- baris 25 di 00.
+
+Yang dibawa sesi lain: di 20, prasyarat no. 6 dan daftar periksa pengamat budaya; di 21, "19 fakta" menjadi "44 fakta" (daftar di 25).
+
 **Peran pengembang, peneliti, dan ahli; "pemilik proyek" menjadi "pengembang", nama asisten menjadi "AI"** (cabang `sky/dazzling-planck-6cl9vy`) · `asal: pengembang` · Prototipe I, belum merevisi produk
 
 Pengembang menetapkan cara kerja revisi ini. Pengembang, dibantu AI, boleh mengerjakan hal yang nantinya diserahkan ke ahli, komite, atau pihak lain: memberi label, skor, telaah, dan validasi latihan, misalnya memberi skor pada butir instrumen validasi. Kerja itu ditandai jelas sebagai kerja pengembang. Peneliti menerima semuanya, menindaklanjutinya, menetapkannya, dan menyerahkannya ke ahli, komite, dan pihak terkait. Judul penelitian dan 10 analitik tetap berasal dari peneliti. Sebelum diputuskan final, tidak ada yang beku penuh: perubahan mendadak atau nanti tetap boleh, asalkan jelas berasal dari pengembang atau dari peneliti bersama ahli.
