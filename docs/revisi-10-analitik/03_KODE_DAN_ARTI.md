@@ -39,7 +39,7 @@ Satu orang yang memegang dua peran tetap memakai dua akun terpisah ([01](01_REVI
 
 ### Akun uji validator
 
-Akun **siswa** di instalasi uji untuk validator, bukan akun staf, dibuat `admin` sebelum paket dikirim ([20 → Akses untuk validator](20_PAKET_VALIDASI.md#akses-untuk-validator), 27 Oktober 2026). Titik dipakai karena aturan nama pengguna siswa tidak mengizinkan tanda hubung.
+Akun **siswa** di instalasi uji untuk validator, bukan akun staf ([20 → Akses untuk validator](20_PAKET_VALIDASI.md#akses-untuk-validator), 27 Oktober 2026). Dibuat pengembang, pemegang `admin` instalasi uji, lewat pendaftaran biasa `/daftar` sebelum paket dikirim, dengan nama lengkap samaran tanpa angka dan sekolah `Sekolah Uji Validator` ([20 → Prasyarat no. 8](20_PAKET_VALIDASI.md#prasyarat-no-8-instalasi-uji-dan-akun-uji), 27 Oktober 2026). Titik dipakai karena aturan nama pengguna siswa tidak mengizinkan tanda hubung. Akun cadangan tidak dipakai ulang, karena kemajuan bermain belum bisa direset per akun; akun tambahan diberi nama `uji.cadangan3` dan seterusnya.
 
 | Akun | Untuk |
 | --- | --- |
