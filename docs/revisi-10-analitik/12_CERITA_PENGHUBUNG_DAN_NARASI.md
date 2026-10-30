@@ -48,7 +48,7 @@ Aturan ini dipakai untuk semua baris di dokumen ini dan untuk perubahan cerita b
 
 ## Benang merah baru
 
-Dataran Kedu dahulu diterangi Cahaya Kedu, yang disimpan di Lentera Kedu. Ketika orang mulai membaca dengan terburu-buru, memercayai kabar tanpa memeriksanya, **membagikan apa saja tanpa berpikir**, dan melupakan cerita leluhur, naiklah Kabut Lupa. Lentera retak, dan cahayanya pecah menjadi **15 Serpihan Cahaya**, lima di setiap wilayah. Empat jatuh di tanah wilayah itu. Yang kelima disembunyikan Kabut Lupa di tempat yang lebih licik: **di dalam layar** ponsel dan tablet warga, di antara pesan, foto, dan kabar. Hal ini baru terungkap di cerita penghubung Temanggung.
+Tanah Kedu dahulu diterangi Cahaya Kedu, yang disimpan di Lentera Kedu. Ketika orang mulai membaca dengan terburu-buru, memercayai kabar tanpa memeriksanya, **membagikan apa saja tanpa berpikir**, dan melupakan cerita leluhur, naiklah Kabut Lupa. Lentera retak, dan cahayanya pecah menjadi **15 Serpihan Cahaya**, lima di setiap wilayah. Empat jatuh di tanah wilayah itu. Yang kelima disembunyikan Kabut Lupa di tempat yang lebih licik: **di dalam layar** ponsel dan tablet warga, di antara pesan, foto, dan kabar. Hal ini baru terungkap di cerita penghubung Temanggung.
 
 | Urutan | Wilayah | Tantangan 1–3 (D1) | Tantangan 4 (PBK, lalu D3) | Tantangan 5 (D2): Kabut di Layar | Taruhan cerita |
 | ---: | --- | --- | --- | --- | --- |
@@ -256,7 +256,7 @@ Dengan keputusan itu, teks Kenali hanya dibetulkan di satu fakta yang bertentang
 
 **EN:** Borobudur's walls are decorated with 2,672 relief panels, and more than half of them tell stories. Reading those reliefs is like reading a giant book made of stone: the order must be right for the story to make sense.
 
-**Kalau kelak Kenali dibuka sebelum wilayah selama studi** (pilihan yang tidak dipilih di keputusan 2), sebagian besar baris Kenali harus ditulis ulang: tanpa fakta D1 (Umbul Jumprit sebagai hulu Sungai Progo, tanah yang subur, letusan Sindoro di Situs Liyangan, Prasasti Gondosuli tahun 832, arca Nandi, kuluk, air suci Waisak, warna Telaga Warna karena belerang), tanpa asal ikon budaya yang dikelirukan di *Periksa Unggahan* (ikan uceng dari sungai, Topeng Ireng dari Magelang, bundengan dan mi ongklok dari Wonosobo), dan tanpa kalimat yang sama dengan petunjuk Temukan Benda. Yang tersisa kira-kira hanya geografi dan pesan keterampilan tiap wilayah.
+**Kalau kelak Kenali dibuka sebelum wilayah selama studi** (pilihan yang tidak dipilih di keputusan 2), sebagian besar baris Kenali harus ditulis ulang: tanpa fakta D1 (Umbul Jumprit sebagai hulu Sungai Progo, tanah yang subur, letusan Sindoro di Situs Liyangan, Prasasti Gondosuli sekitar tahun 832, arca Nandi, kuluk, air suci Waisak, warna Telaga Warna karena belerang), tanpa asal ikon budaya yang dikelirukan di *Periksa Unggahan* (ikan uceng dari sungai, Topeng Ireng dari Magelang, bundengan dan mi ongklok dari Wonosobo), dan tanpa kalimat yang sama dengan petunjuk Temukan Benda. Yang tersisa kira-kira hanya geografi dan pesan keterampilan tiap wilayah.
 
 ### Dialog masuk wilayah (`level_open`)
 
@@ -435,9 +435,9 @@ Nasihat dari `dialog-wonosobo-12` lama, kini setelah semua tantangan Wonosobo se
 Penutup diputar di P5, setelah tes akhir dan sebelum skala sikap (keputusan 5). Isinya hanya merangkum sikap yang sudah muncul di umpan balik dan cerita tuntas, tanpa fakta atau tindakan baru.
 
 #### `penutup-01` · Narator · efek `glow`
-**ID:** Di puncak bukit, Jaka mengangkat lenteranya tinggi-tinggi. Kelima belas serpihan menyatu, dan cahaya keemasan memancar ke seluruh Dataran Kedu.
+**ID:** Di puncak bukit, Jaka mengangkat lenteranya tinggi-tinggi. Kelima belas serpihan menyatu, dan cahaya keemasan memancar ke seluruh tanah Kedu.
 
-**EN:** On top of the hill, Jaka lifted his lantern high. All fifteen shards joined together, and a golden light poured out across the whole Kedu Plain.
+**EN:** On top of the hill, Jaka lifted his lantern high. All fifteen shards joined together, and a golden light poured out across all the lands of Kedu.
 
 #### `penutup-02` · Narator · efek `fog-lift`
 **ID:** Kabut Lupa tersibak dari Temanggung, Magelang, sampai Wonosobo. Papan petunjuk terbaca jelas, relief bercerita dengan urutan yang benar, dan layar-layar di rumah warga tidak lagi berkabut. Pesan berantai tidak lagi langsung dipercaya dan dibagikan begitu saja.
