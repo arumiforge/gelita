@@ -1,6 +1,6 @@
 # Penilaian Dampak Pelindungan Data Pribadi: Penelitian GELITA
 
-Per 27 Oktober 2026 · **Status: `draf pengembang`** (`asal: pengembang`, disusun dengan bantuan AI; belum disetujui pengembang, peneliti, atau PPDP) · Lampiran 18 [permohonan izin etik](22_PERMOHONAN_IZIN_ETIK.md#lampiran) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 27 Oktober 2026 · **Status: `draf pengembang`** (`asal: pengembang`, disusun dengan bantuan AI; belum disetujui pengembang, peneliti, atau PPDP); nomor KG di *Kegiatan* disamakan dengan 03 dan 22, dan akibat dokumen implementasi bagian 1, 3, dan 4 (27, 29, 30) dibawa sesi koordinator 30 Oktober 2026 (`asal: pengembang`, [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)) · Lampiran 18 [permohonan izin etik](22_PERMOHONAN_IZIN_ETIK.md#lampiran) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Dokumen ini adalah penilaian dampak pelindungan data pribadi (selanjutnya *penilaian dampak*) yang lengkap untuk penelitian GELITA. Ringkasannya ada di [22 → Penilaian dampak pelindungan data](22_PERMOHONAN_IZIN_ETIK.md#penilaian-dampak-pelindungan-data); dokumen ini menguraikannya untuk pembaca *Lembaga Komite Etik* dan untuk PPDP atau narahubung data. Isinya mengikuti 22 dan tidak membuat aturan baru tentang data. Kalau ada yang berbeda, 22 yang berlaku, dan bedanya dicatat di [Akibat ke dokumen lain](#akibat-ke-dokumen-lain).
 
@@ -28,7 +28,7 @@ Ini pemeriksaan dokumen, bukan nasihat hukum. Semua nomor pasal PP No. 33 Tahun 
 
 ## Ringkasan untuk komite
 
-- **Apa yang diolah.** Data sekitar 360 anak kelas 5 SD/MI (umur ± 10–11 tahun) yang bermain GELITA dan mengerjakan tes, angket, dan skala sikap dalam lima pertemuan (KG2–KG5), ditambah empat atau lima anak di uji keterbacaan (KG1). Juga data orang tua (nama, tanda tangan, nomor HP di formulir izin), sekolah, dan tim.
+- **Apa yang diolah.** Data sekitar 360 anak kelas 5 SD/MI (umur ± 10–11 tahun) yang bermain GELITA dan mengerjakan tes, angket, dan skala sikap dalam lima pertemuan (pengambilan data utama KG5, dengan wawancara KG4), didahului berpikir lantang (KG2) dan uji coba satu kelas (KG3) di luar sampel, ditambah empat atau lima anak di uji keterbacaan (KG1). Juga data orang tua (nama, tanda tangan, nomor HP di formulir izin), sekolah, dan tim.
 - **Untuk apa.** Menilai apakah butir dan catatan permainan GELITA mengukur literasi membaca dan literasi digital anak dengan baik ([22 → Tujuan](22_PERMOHONAN_IZIN_ETIK.md#tujuan)). Data tidak dipakai untuk menilai, memberi nilai rapor, atau memutuskan apa pun tentang anak.
 - **Mengapa berisiko tinggi.** Data anak termasuk data pribadi yang bersifat spesifik, dan tes, skor permainan, serta pengamatan adalah evaluasi dan penskoran yang sistematis. Dua pemicu itu mewajibkan penilaian dampak sebelum pengolahan ([Mengapa penilaian dampak diperlukan](#mengapa-penilaian-dampak-diperlukan)).
 - **Risiko terbesar sebelum perlindungan:** kebocoran yang mengungkap nama anak bersama jawabannya; anak dikenali dari gabungan data walaupun namanya tidak ada; jawaban butir risiko daring (ang-21 sampai ang-23) terbaca orang lain. Ketiganya dinilai **tinggi** sebelum perlindungan ([Penilaian risiko](#penilaian-risiko)).
@@ -71,12 +71,12 @@ Karena dua pemicu pertama berlaku, penilaian dampak ini wajib. Isinya memuat isi
 | Kode | Kegiatan | Peserta | Data yang timbul |
 | --- | --- | --- | --- |
 | KG1 | Uji keterbacaan bahan anak ([24](24_UJI_KETERBACAAN.md)) | 4 anak, ditambah 1 di putaran kedua, dari sekolah Kedu di luar sampel | Lembar LK1–LK3, kartu cetak yang ditandai, waktu baca, rekaman suara (dengan izin), kode `K01`–`K05`; tidak ada akun GELITA |
-| KG2 | Tes awal dan angket akses digital (P1) | ± 360 anak | Akun dan pendaftaran, jawaban tes, angket |
-| KG3 | Bermain GELITA, tiga wilayah (P2–P4) | Sama | Data permainan, lembar L1–L4, wawancara L5 dengan tiga anak per pertemuan (rekaman dengan izin) |
-| KG4 | Tes akhir, skala sikap, kritik dan saran, butir risiko daring (P5) | Sama; butir risiko hanya dengan izin terpisah | Jawaban tes, skala, kritik dan saran, jawaban ang-21–23 |
-| KG5 | Kelas uji coba dan berpikir lantang | Sekolah uji coba berawalan `U` | Sama dengan KG2–KG4, rekaman berpikir lantang dengan izin |
+| KG2 | Berpikir lantang: anak bermain sambil mengucapkan pikirannya (L5), tahap 4 | 5–8 anak di luar sampel utama | Akun GELITA dan data permainan, rekaman berpikir lantang (dengan izin terpisah), transkrip |
+| KG3 | Uji coba satu kelas dengan semua lembar, lima pertemuan, tahap 4 | Satu kelas (± 28 siswa), sekolah berawalan `U` | Sama dengan KG5 |
+| KG4 | Wawancara retrospektif L5 di P2–P4, bersama KG3 dan KG5 | 3 siswa per pertemuan wilayah, paling banyak sekali per siswa | Catatan wawancara L5, rekaman (dengan izin terpisah), transkrip |
+| KG5 | Pengambilan data utama, P1–P5 dan sesi susulan, tahap 5 | ± 360 anak | P1: akun dan pendaftaran, tes awal, angket; P2–P4: data permainan tiga wilayah, lembar L1–L4; P5: tes akhir, skala sikap, kritik dan saran, butir risiko daring (hanya dengan izin terpisah, jawaban ang-21–23); lembar L6 |
 
-Rinciannya ada di [22 → Prosedur per pertemuan dan beban bagi anak](22_PERMOHONAN_IZIN_ETIK.md#prosedur-per-pertemuan-dan-beban-bagi-anak).
+Nomornya sama dengan [03 → Kegiatan dengan anak](03_KODE_DAN_ARTI.md#kegiatan-dengan-anak) dan [22 → Kegiatan yang dimintakan izin](22_PERMOHONAN_IZIN_ETIK.md#kegiatan-yang-dimintakan-izin) (disamakan sesi koordinator 30 Oktober 2026; draf sebelumnya memakai KG2–KG5 untuk P1, P2–P4, P5, dan uji coba, [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#4-tenggat-sebelum-akun-gelita-anak-pertama-kali-dipakai) §4). Kegiatan pertama yang memakai akun GELITA anak adalah KG2 atau KG3, mana yang lebih dulu; keduanya setelah G3. KG1 tidak memakai akun. Rinciannya ada di [22 → Prosedur per pertemuan dan beban bagi anak](22_PERMOHONAN_IZIN_ETIK.md#prosedur-per-pertemuan-dan-beban-bagi-anak).
 
 ### Tujuan pengolahan
 
@@ -95,9 +95,9 @@ Yang **tidak** menjadi tujuan: menilai atau memeringkat anak, guru, atau sekolah
 
 | Pihak | Kedudukan | Yang dipegangnya |
 | --- | --- | --- |
-| Ketua peneliti | Mewakili pengendali; satu-satunya yang membuka kode | L7, formulir izin dan pengunduran diri, catatan rujukan, daftar nama–kode KG1, penanda tindak lanjut butir risiko (akun `ketua`) |
-| Tim peneliti P1–P3 (akun `koordinator`, `pengamat`, `pewawancara`) | Bagian dari pengendali, terikat pernyataan kerahasiaan | Data berkode; P1 juga L7 dan formulir izin |
-| Pengembang dan admin (akun `admin`) | **Bagian dari tim pengendali**, terikat pernyataan kerahasiaan, bukan prosesor terpisah ([keputusan no. 1](#keputusan-pengembang)) | Akun GELITA (nama, nama pengguna), log teknis, jejak audit; tidak mengunduh data penelitian |
+| Ketua peneliti | Mewakili pengendali; satu-satunya yang membuka kode | L7, formulir izin dan pengunduran diri, catatan rujukan, daftar nama–kode KG1; lewat akun `ketua`: data penelitian semua siswa, satu-satunya unduhan data penelitian (berkode), penanda tindak lanjut butir risiko, konfirmasi permintaan hapus |
+| Tim peneliti P1–P3 (akun `koordinator`, `pengamat`, `pewawancara`, peran sistem `peneliti`) | Bagian dari pengendali, terikat pernyataan kerahasiaan | Data satu siswa lewat kodenya di panel, tanpa mengunduh; P1 juga L7, formulir izin, dan izin berkode di panel |
+| Pengembang dan admin (akun `admin`) | **Bagian dari tim pengendali**, terikat pernyataan kerahasiaan, bukan prosesor terpisah ([keputusan no. 1](#keputusan-pengembang)) | Akun GELITA (nama, nama pengguna), log teknis, jejak audit; tidak melihat dan tidak mengunduh data penelitian |
 | Pengode transkrip | Bagian dari tim, terikat pernyataan kerahasiaan | Rekaman dan transkrip berkode |
 | Penyedia server | Prosesor (PP Pasal 13–15) | Server dan salinan cadangan, tanpa akses ke isi data kecuali untuk menjalankan layanan |
 | Sekolah dan guru kelas | Bukan pengendali bersama | Membagikan dan mengumpulkan amplop; tidak menerima data per anak |
@@ -142,14 +142,14 @@ Semua data di bawah ini diambil dari [22 → Data yang dikumpulkan](22_PERMOHONA
 | A4 | Kata sandi | Hash kata sandi | Pendaftaran | Server | Tidak ada orang (hanya sistem) | T | Bersama akun |
 | A5 | Data permainan | Jawaban, percobaan, kode kesalahan, alasan di Skenario Digital, bantuan, navigasi, waktu, `page_hidden`/`page_visible` | Sistem | Server | Peneliti, dengan kode | R | ≥ 20 tahun |
 | A6 | Tes awal–akhir, angket akses digital (ang-1–20), skala sikap, kritik dan saran | Jawaban di modul tes dan Balai Refleksi | Sistem | Server | Peneliti, dengan kode | S (angket akses menyangkut keadaan rumah) | ≥ 20 tahun |
-| A7 | **Butir risiko daring** (ang-21–23) | Pengalaman tidak menyenangkan di internet | Sistem, hanya dengan izin terpisah | Server | Peneliti: angka gabungan saja; penanda tindak lanjut hanya akun `ketua`, tidak masuk ekspor | **T** | Jawaban: ≥ 20 tahun berkode, tidak pernah dibagikan; penanda: sampai studi ditutup |
-| A8 | Lembar lapangan L1–L6 | Kursi, perangkat, bantuan, perilaku, kondisi sesi, catatan wawancara | Peneliti | Kertas, lalu templat dalam 24 jam | Peneliti, dengan kode | S | ≥ 20 tahun |
+| A7 | **Butir risiko daring** (ang-21–23) | Pengalaman tidak menyenangkan di internet | Sistem, hanya dengan izin terpisah | Server | Peneliti: angka gabungan saja; penanda tindak lanjut hanya akun `ketua`, tidak masuk ekspor | **T** | Jawaban: ≥ 20 tahun berkode, tidak pernah dibagikan; penanda: tidak disimpan, dihitung saat halaman `ketua` dibuka sampai studi ditutup ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#6-penanda-tindak-lanjut-butir-risiko-daring) §6, K7) |
+| A8 | Lembar lapangan L1–L6 | Kursi, perangkat, bantuan, perilaku, kondisi sesi, catatan wawancara (tanpa kutipan ucapan L5 dan kolom token L1) | Peneliti | Kertas, lalu templat dalam 24 jam, lalu diunggah ke server (berkode, tanpa nama; [29](29_IMPLEMENTASI_DATA_PENELITIAN.md#104-mengunggah-lembar-yang-sudah-diketik) §10.4) | Peneliti, dengan kode; isi yang tersimpan di server hanya lewat unduhan `ketua`, tidak dilihat admin | S | ≥ 20 tahun |
 | A9 | Rekaman suara | Wawancara L5, berpikir lantang, KG1 | Perekam atau ponsel, dengan izin terpisah | Penyimpanan terenkripsi hari itu juga | P3, dua pengode; di KG1 pemandu, pencatat, ketua peneliti | **T** (suara bisa mengenali) | Sampai transkrip diperiksa, lalu dihapus |
 | A10 | Transkrip | Ucapan anak, nama diganti `[nama]` | Pengode | Folder terenkripsi | Sama dengan A9 | S | ≥ 20 tahun berkode; tidak pernah dibagikan |
 | A11 | Uji keterbacaan (KG1) | LK1–LK3, kartu cetak, waktu baca, kutipan parafrase; kode `K01`–`K05`; tanpa jawaban tentang diri sendiri | Pemandu, pencatat | Map terkunci; ketikan di folder tim | Pemandu, pencatat, ketua peneliti | S | ≥ 20 tahun berkode |
-| A12 | Catatan perangkat sesi | Jenis perangkat, ukuran layar (peneliti); nama dan versi OS dan peramban (admin) | Sistem | Server | Lihat kolom contoh | R | Bersama data sesi |
+| A12 | Catatan perangkat sesi | Jenis perangkat, ukuran layar (peneliti); nama dan versi OS dan peramban, ukuran jendela, orientasi (admin, halaman *Log teknis*). Tanpa user agent, client hints, merek, model, rasio piksel, titik sentuh, zona waktu, dan bahasa peramban; data lama ikut dihapus di migrasi ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md#55-rincian-perangkat) §5.5, K3) | Sistem | Server | Lihat kolom contoh | R | Bersama data sesi |
 | A13 | Catatan rujukan | Tindak lanjut butir risiko atau cerita anak yang mengkhawatirkan | Ketua peneliti | Berkas terpisah, terkunci atau terenkripsi | Ketua peneliti | **T** | Sampai studi ditutup |
-| A14 | Status persetujuan | Izin orang tua, izin rekaman, izin butir risiko (dengan tanggal), persetujuan anak, status mundur | L7 | L7; lalu daftar izin berkode | P1, ketua peneliti | S | L7 sampai studi ditutup; daftar berkode selama data berkode disimpan |
+| A14 | Status persetujuan | Izin orang tua, izin rekaman, izin butir risiko (dengan tanggal), persetujuan anak, status mundur | L7 | L7; izin berkode di server (diisi P1 dari L7, tanpa nama; [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#52-izin-berkode-per-siswa) §5.2); daftar izin berkode yang diunduh dari sistem | P1 dan ketua peneliti (L7); P1–P3 dan ketua peneliti (izin berkode di panel, 30 §14); admin hanya melihat akun aktif atau nonaktif | S | L7 sampai studi ditutup; izin berkode di server dan daftar berkode selama data berkode disimpan |
 
 ### Orang tua atau wali
 
@@ -171,15 +171,15 @@ Semua data di bawah ini diambil dari [22 → Data yang dikumpulkan](22_PERMOHONA
 
 | No | Data | Tempat | Yang bisa melihat | Kepekaan | Masa simpan |
 | --- | --- | --- | --- | --- | --- |
-| S1 | Akun staf: nama pengguna peran (`admin`, `koordinator`, `pengamat`, `pewawancara`, `ketua`), surel, nama tampilan, hash kata sandi, waktu masuk terakhir | Server (`staff_users`) | Admin | S | Akun dinonaktifkan, bukan dihapus; siapa pemegangnya dicatat ketua peneliti di luar repo |
-| S2 | Jejak audit: siapa melakukan apa di panel (masuk, reset sandi, ekspor, penghapusan), dengan `ip_hash` (SHA-256 IP + garam) | Server (`audit_logs`) | Admin; peneliti melihat riwayat unduhannya sendiri | S | Bersama data studi |
+| S1 | Akun staf: nama pengguna peran (`admin`, `koordinator`, `pengamat`, `pewawancara`, `ketua`) dengan tiga peran sistem (`admin`; `peneliti` untuk P1–P3; `ketua`, [27](27_IMPLEMENTASI_PERAN_PENELITI.md#2-keputusan-yang-dikunci) K1), surel, nama tampilan, hash kata sandi, waktu masuk terakhir | Server (`staff_users`) | Admin | S | Akun dinonaktifkan, bukan dihapus; siapa pemegangnya dicatat ketua peneliti di luar repo |
+| S2 | Jejak audit: siapa melakukan apa di panel (masuk, reset sandi, ekspor, penghapusan), dengan `ip_hash` (SHA-256 IP + garam) | Server (`audit_logs`) | Admin; `ketua` melihat riwayat unduhan (hanya `ketua` yang mengunduh) | S | Bersama data studi |
 | S3 | Identitas tim untuk formulir etik (nama, pendidikan, kepakaran, CV, sertifikat pelatihan etik, pernyataan kerahasiaan) | Berkas permohonan | Komite, ketua peneliti | S | Mengikuti aturan komite |
 
 ### Log teknis dan sesi
 
 | No | Data | Tempat | Yang bisa melihat | Kepekaan | Catatan |
 | --- | --- | --- | --- | --- | --- |
-| L1 | Log teknis: `viewport_changed`, `package_changed`, `clock_offset_ms`, `events_dropped`, `password_changed` | Server | Admin; jumlah event hilang tampil di panel peneliti | R | [01 → Log](01_REVISI_10_ANALITIK.md#log-dihapus-atau-dipisah) |
+| L1 | Log teknis: `viewport_changed`, `package_changed`, `clock_offset_ms`, `events_dropped`, `password_changed`, waktu mentah, dan kolom perangkat bertanda Admin (A12), tanpa rincian perangkat yang dihapus (L4) | Server | Admin, di halaman *Log teknis* tanpa jawaban, skor, atau event penelitian; jumlah event hilang tampil di panel peneliti | R | [01 → Log](01_REVISI_10_ANALITIK.md#log-dihapus-atau-dipisah), [29](29_IMPLEMENTASI_DATA_PENELITIAN.md#56-data-bertanda-admin-dan-halaman-log-teknis) §5.6 |
 | L2 | `ip_hash` di sesi dan log perangkat | Server | Admin | S | IP mentah tidak disimpan di tabel domain |
 | L3 | **IP mentah di tabel sesi peramban** (`ci_sessions.ip_address`) | Server | Admin, sampai sesi kedaluwarsa dibersihkan | S | Penangan IP berhash sudah ada tetapi belum dipasang; diperbaiki sebelum KG2 ([keputusan no. 2](#keputusan-pengembang)) |
 | L4 | Log yang dihapus di revisi: `answer_changed`, `answer_selected`, `audio_pause`, `dialogue_advanced`, rincian perangkat (merek, model, user agent, client hints, rasio piksel, titik sentuh, zona waktu, bahasa peramban) | — | — | — | Dihapus, bukan disembunyikan (01 → *Log*); perubahan sistem tahap 3 |
@@ -209,8 +209,8 @@ Gambaran dari formulir sampai pemusnahan. Garis putus memisahkan **sisi identita
                     game, tes, angket, skala ─────┤──> server di Indonesia
                     (P1–P5, token sesi)           │    [nama dan lokasi penyedia server]
                                                   │        │ cadangan (di Indonesia)
-                    lembar L1–L6 (kode, kursi) ───┤        ▼
-                    rekaman L5 → transkrip ───────┤    ekspor peneliti (dihapus di server
+                    lembar L1–L6 (diunggah) ──────┤        ▼
+                    rekaman L5 → transkrip ───────┤    unduhan ketua (dihapus di server
                                                   │    setelah 7 hari) → penyimpanan
                                                   │    terenkripsi tim (di Indonesia)
                                                   ▼
@@ -219,7 +219,8 @@ Gambaran dari formulir sampai pemusnahan. Garis putus memisahkan **sisi identita
                                     (atas permintaan, persetujuan komite)
 
  Studi ditutup: nama, L7, formulir, pemetaan NPSN–kode, catatan rujukan
- dimusnahkan; nama di akun diganti kode; tersisa daftar izin berkode
+ dimusnahkan; nama dan sekolah di akun diganti kode; cadangan diganti;
+ tersisa daftar izin berkode
  dan data berkode (paling singkat 20 tahun).
 ```
 
@@ -229,10 +230,10 @@ Gambaran dari formulir sampai pemusnahan. Garis putus memisahkan **sisi identita
 | 2 | L7 | P1 | Kertas, lalu salinan digital | Lemari terkunci; laptop terenkripsi; hanya P1 dan ketua peneliti |
 | 3 | Pendaftaran | Anak → server | HTTPS | Nama hanya terlihat admin; persetujuan anak (T4) dicatat `assented_at` |
 | 4 | Data game, tes, angket, skala | Perangkat → server | HTTPS, token sesi lapangan | Game tertutup di luar sesi; kunci jawaban tidak dikirim ke peramban; butir risiko hanya tampil untuk anak dengan izin |
-| 5 | Lembar L1–L6 | Peneliti → templat | Kertas, diketik dalam 24 jam | Hanya kode dan nomor kursi |
+| 5 | Lembar L1–L6 | Peneliti → templat → server | Kertas, diketik ke templat terisi per sesi dalam 24 jam, lalu diunggah lewat panel (HTTPS) | Hanya kode dan nomor kursi; kutipan L5 dan token L1 tidak diunggah; peringatan bila isian memuat kata yang sama dengan nama siswa rombel itu, dikonfirmasi pengunggah sebelum disimpan (29 K13); isinya hanya di unduhan `ketua` |
 | 6 | Rekaman L5, berpikir lantang, KG1 | Perekam → penyimpanan terenkripsi | Dipindah hari itu juga | Dihapus setelah transkrip diperiksa; nama di transkrip jadi `[nama]` |
-| 7 | Ekspor | Server → peneliti | Unduhan lewat akun peneliti, tercatat di jejak audit | Berkas di server terhapus otomatis setelah 7 hari; salinan di penyimpanan terenkripsi di Indonesia |
-| 8 | Cadangan | Server → tempat cadangan | Diatur prosesor | Di Indonesia; ikut dihapus saat data anak dihapus |
+| 7 | Ekspor | Server → ketua peneliti | Unduhan lewat akun `ketua` saja, selalu berkode, tercatat di jejak audit dan riwayat unduhan (27 K14) | Berkas di server terhapus otomatis setelah 7 hari; salinan di penyimpanan terenkripsi di Indonesia |
+| 8 | Cadangan | Server → tempat cadangan (dua lokasi) | Skrip cadangan; perjanjian prosesor untuk snapshot penyedia | Di Indonesia; 30 hari di kedua lokasi; diganti setelah setiap penghapusan dan saat studi ditutup, sebelum orang tua diberi tahu ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#75-salinan-cadangan) §7.5, K3) |
 | 9 | Hasil | Peneliti → sekolah, publikasi, OSF | Laporan | Angka gabungan, tidak untuk kelompok < 5 siswa; tanpa nama sekolah |
 | 10 | Data berkode atas permintaan | Peneliti → penerima | Perjanjian pemakaian data | Kode acak baru, tanpa kode sekolah dan rombel, umur dikelompokkan, tanpa butir risiko dan transkrip |
 | 11 | Pemusnahan | — | Saat studi ditutup; ≥ 20 tahun untuk data berkode | Berita acara (PP Pasal 86) |
@@ -269,16 +270,16 @@ Sama dengan [22 → Mengundurkan diri dan hapus data](22_PERMOHONAN_IZIN_ETIK.md
 | Hak | Cara | Batas waktu | Siap di sistem? |
 | --- | --- | --- | --- |
 | Informasi | Surat T1 (dan T8a untuk KG1) sebelum formulir | Sebelum persetujuan | Ya (kertas) |
-| Menarik persetujuan, berhenti | Formulir T10 pilihan A, B, atau C, atau pesan tertulis | Pengumpulan dihentikan ≤ 3 × 24 jam setelah terverifikasi | Akun dinonaktifkan: ya |
-| Hapus | T10 pilihan B (semua) atau C (rekaman dan/atau butir risiko) | Orang tua diberi tahu ≤ 3 × 24 jam setelah penghapusan | B: ya, penghapusan dua langkah; C (sebagian): perubahan sistem tahap 3 |
-| Akses dan salinan | Lewat kontak peneliti atau P1 | Dijawab ≤ 3 × 24 jam | Ambil data satu anak lewat kode: perubahan sistem tahap 3 |
-| Pembetulan | Sama | Dijawab ≤ 3 × 24 jam | Pembetulan oleh admin dengan jejak audit: perubahan sistem tahap 3 |
+| Menarik persetujuan, berhenti | Formulir T10 pilihan A, B, atau C, atau pesan tertulis | Pengumpulan dihentikan ≤ 3 × 24 jam setelah terverifikasi | Akun dinonaktifkan: ya; di bagian 4 akun langsung nonaktif saat P1 menyimpan status mundur ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#53-status-mundur-dan-akun-nonaktif) §5.3) |
+| Hapus | T10 pilihan B (semua) atau C (rekaman dan/atau butir risiko) | Orang tua diberi tahu ≤ 3 × 24 jam setelah penghapusan | B: ya, penghapusan dua langkah; C (sebagian): tahap 3, dirancang di 30 §7.2. Permintaan dari peneliti dikonfirmasi `ketua` sebelum admin menjalankan; cadangan diganti (30 §7.1, §7.5). Transkrip pada pilihan C belum diputuskan (30 §21 no. 2) |
+| Akses dan salinan | Lewat kontak peneliti atau P1 | Dijawab ≤ 3 × 24 jam | Ambil data satu anak lewat kode: tahap 3, dirancang di 30 §8; tanpa jawaban butir risiko kecuali anak setuju (dasar pasalnya `needs_verification`, 30 §21 no. 1) |
+| Pembetulan | Sama | Dijawab ≤ 3 × 24 jam | Pembetulan oleh admin dengan jejak audit: tahap 3, dirancang di 30 §9 |
 | Mengadu | Ke lembaga pelindungan data pribadi; ke komite | — | Kontak di T1 |
 | Diberi tahu kalau ada kebocoran | Pemberitahuan tertulis | ≤ 3 × 24 jam | Prosedur di 22 |
 
 Anak boleh mengajukan sendiri; pemenuhannya mempertimbangkan kemampuan anak memahami akibatnya dan memerlukan persetujuan orang tua (PP Pasal 38 ayat (5)–(7)). Anak yang menyatakan ingin berhenti dicatat sebagai pilihan A hari itu. Setelah studi ditutup, data tidak bisa lagi dihubungkan dengan anak, jadi hak hapus, akses, dan pembetulan tidak bisa lagi dijalankan; ini disebut di surat T1.
 
-Tiga fungsi yang belum ada di sistem (hapus sebagian, ambil data satu anak, pembetulan dengan jejak audit) harus selesai di tahap 3, **sebelum KG2**. Kalau belum selesai, admin menjalankannya secara manual dengan berita acara, dan ini dicatat sebagai risiko R8 di bawah.
+Tiga fungsi yang belum ada di sistem (hapus sebagian, ambil data satu anak, pembetulan dengan jejak audit) harus selesai di tahap 3, **sebelum KG2**, yaitu sebelum kegiatan pertama yang memakai akun GELITA anak (KG2 atau KG3, mana yang lebih dulu; [Kegiatan](#kegiatan)). Rancangannya di [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) §7–§9. Kalau belum selesai, admin menjalankannya secara manual dengan berita acara, dan ini dicatat sebagai risiko R8 di bawah.
 
 ## Penilaian risiko
 
@@ -315,13 +316,13 @@ Risiko dinilai dari sudut **anak dan orang tua** sebagai subjek data, bukan dari
 | R5 | **Data dipakai di luar tujuan**: skor dipakai guru untuk menilai atau menghukum anak; sekolah dibandingkan; data dipakai untuk memasarkan GELITA | Sedang | Sedang | Sedang | P2, P9, P11 | Kecil | Rendah |
 | R6 | **Rekaman suara** tersimpan lebih lama dari perlu, atau suara anak dikenali | Sedang | Sedang | Sedang | P7, P13 | Kecil | Rendah |
 | R7 | Data berkode yang dibagikan ke peneliti lain dipakai untuk mengenali anak, atau dipindah ke luar negeri | Kecil | Berat | Sedang | P10, P6 | Kecil | Rendah |
-| R8 | **Permintaan orang tua tidak dijalankan tepat waktu** (hapus, hapus sebagian, akses, pembetulan), termasuk karena fungsi sistemnya belum ada atau cadangan lupa dihapus | Sedang | Sedang | Sedang | P14, P15 | Kecil | Rendah |
+| R8 | **Permintaan orang tua tidak dijalankan tepat waktu** (hapus, hapus sebagian, akses, pembetulan), termasuk karena fungsi sistemnya belum ada atau cadangan lupa dihapus (dikurangi penggantian cadangan di P14) | Sedang | Sedang | Sedang | P14, P15 | Kecil | Rendah |
 | R9 | Kebocoran tidak diketahui atau tidak diberitahukan dalam 3 × 24 jam | Sedang | Sedang | Sedang | P12, P4 | Kecil | Rendah |
 | R10 | Persetujuan tidak sah: tanda tangan dipalsukan anak, formulir tertukar, atau anak bermain sebelum izin lengkap | Sedang | Sedang | Sedang | P16 | Kecil | Rendah |
 | R11 | Akun anak dipakai orang lain, atau anak bermain di luar sesi dan datanya tercampur | Kecil | Ringan | Rendah | P17 | Kecil | Rendah |
 | R12 | Prosesor (penyedia server) mengolah di luar perintah, memakai subprosesor tanpa izin, atau menyimpan cadangan di luar negeri | Kecil | Berat | Sedang | P6 | Kecil | Rendah |
 | R13 | IP mentah di tabel sesi peramban dipakai untuk menebak sekolah atau rumah anak | Sedang | Ringan | Rendah | P18 | Kecil | Rendah |
-| R14 | Data disimpan lebih lama dari perlu (nama tidak dimusnahkan saat studi ditutup) atau dimusnahkan terlalu cepat (melanggar kewajiban simpan 20 tahun) | Sedang | Sedang | Sedang | P13, P15 | Kecil | Rendah |
+| R14 | Data disimpan lebih lama dari perlu (nama tidak dimusnahkan saat studi ditutup, atau tetap ada di cadangan lama) atau dimusnahkan terlalu cepat (melanggar kewajiban simpan 20 tahun) | Sedang | Sedang | Sedang | P13, P14, P15 | Kecil | Rendah |
 
 **Risiko yang dinilai tinggi sebelum perlindungan: R1, R2, dan R3.** Ketiganya berasal dari hal yang sama: data penelitian anak menyangkut kemampuan dan, untuk sebagian anak, pengalaman pribadi di internet, sehingga kalau terhubung kembali dengan nama, akibatnya bagi anak bisa berat dan lama. Karena itu ketiganya mendapat perlindungan berlapis.
 
@@ -331,24 +332,24 @@ Semua langkah di bawah sudah diputuskan di 22 atau dokumen yang dirujuknya, kecu
 
 | No | Langkah | Mengurangi | Rujukan | Siap |
 | --- | --- | --- | --- | --- |
-| P1 | **Kode peserta (pseudonim).** Kode `S03-A07` dibuat sistem saat anak mendaftar; nama tidak pernah ada di data penelitian; kunci kode adalah L7 dan akun yang dikelola admin; kode hanya dibuka ketua peneliti untuk tiga keperluan, dengan tanggal dan alasan dicatat | R1, R2 | [22 → Kode peserta](22_PERMOHONAN_IZIN_ETIK.md#kode-peserta-dan-pemisahan-peran), [01 → Kode peserta baru](01_REVISI_10_ANALITIK.md#kode-peserta-baru) | Tahap 3 (kode baru); prosedur ada |
-| P2 | **Pemisahan peran.** Admin memegang identitas dan tidak mengunduh data penelitian; peneliti memegang data berkode dan tidak pernah melihat nama; satu orang dengan dua peran memakai dua akun; peran `guru` dihapus; akun staf dengan nama samaran per peran | R1, R3, R5 | [01 → Admin dan peneliti](01_REVISI_10_ANALITIK.md#admin-dan-peneliti-dua-peran-berbeda) | Tahap 3 |
+| P1 | **Kode peserta (pseudonim).** Kode `S03-A07` dibuat sistem saat anak mendaftar; nama tidak pernah ada di data penelitian; kunci kode adalah L7 dan akun yang dikelola admin; kode hanya dibuka ketua peneliti untuk tiga keperluan, dengan tanggal dan alasan dicatat. Ini pembatasan prosedur: secara teknis P1 memegang L7 dan admin memegang akun, jadi yang menjaganya pernyataan kerahasiaan dan larangan tertulis ([27](27_IMPLEMENTASI_PERAN_PENELITI.md#16-pertanyaan-terbuka) no. 6). Lembar lapangan yang diunggah diperiksa: kata yang sama dengan nama siswa rombel itu memberi peringatan yang harus dikonfirmasi pengunggah sebelum disimpan ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md#104-mengunggah-lembar-yang-sudah-diketik) K13) | R1, R2 | [22 → Kode peserta](22_PERMOHONAN_IZIN_ETIK.md#kode-peserta-dan-pemisahan-peran), [01 → Kode peserta baru](01_REVISI_10_ANALITIK.md#kode-peserta-baru) | Tahap 3 (kode baru, peringatan nama); prosedur ada |
+| P2 | **Pemisahan peran.** Tiga peran staf: `admin` memegang identitas dan tidak melihat atau mengunduh data penelitian; `peneliti` (P1–P3) melihat data satu siswa lewat kodenya dan tidak mengunduh; `ketua` satu-satunya yang mengunduh data penelitian, selalu berkode; peneliti dan `ketua` tidak pernah melihat nama; satu orang dengan dua peran memakai dua akun; peran `guru` dihapus; akun staf dengan nama samaran per peran | R1, R3, R5 | [01 → Admin dan peneliti](01_REVISI_10_ANALITIK.md#admin-dan-peneliti-dua-peran-berbeda), [27](27_IMPLEMENTASI_PERAN_PENELITI.md#2-keputusan-yang-dikunci) K1–K3, K14 | Tahap 3 (27) |
 | P3 | **Enkripsi dan penyimpanan terkunci.** Salinan ekspor, salinan digital L7, rekaman, dan ketikan KG1 di penyimpanan terenkripsi `[alat enkripsi diisi tim]`; kertas di lemari atau map terkunci, terpisah dari lembar lain | R1, R4 | [22 → Penyimpanan dan enkripsi](22_PERMOHONAN_IZIN_ETIK.md#penyimpanan-dan-enkripsi) | Sebelum KG1 |
 | P4 | **Keamanan server dan akun.** HTTPS; kata sandi berhash; akun staf terkunci 15 menit setelah 5 kali gagal; jejak audit untuk masuk, reset sandi, ekspor, dan penghapusan; kunci jawaban tidak dikirim ke peramban; ekspor di server terhapus otomatis setelah 7 hari | R1, R9 | `docs/01_DATABASE.md`, [22](22_PERMOHONAN_IZIN_ETIK.md#penyimpanan-dan-enkripsi) | Ada |
 | P5 | **Pernyataan kerahasiaan** ditandatangani setiap anggota tim, termasuk pengembang, admin, dan pengode, sebelum lapangan | R1, R4 | 22 lampiran 12 | Sebelum KG1 |
 | P6 | **Server, cadangan, dan penyimpanan di Indonesia**, dengan **perjanjian prosesor tertulis** yang memuat sebelas hal di PP Pasal 14, larangan subprosesor tanpa persetujuan tertulis, kewajiban lapor kebocoran pada kesempatan pertama, dan ikut menghapus cadangan saat diperintahkan | R1, R7, R12 | [22 → Pengendali, prosesor, dan narahubung data](22_PERMOHONAN_IZIN_ETIK.md#pengendali-prosesor-dan-narahubung-data) | Sebelum KG1 |
 | P7 | **Izin terpisah** untuk rekaman suara dan butir risiko daring; butir risiko ditanyakan ulang di layar (T11), diisi sendiri tanpa dibacakan dan tanpa orang yang melihat layar, dengan *Tidak mau menjawab*; pesan dukungan yang sama untuk semua anak (T12) | R3, R6 | [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md), [16 → Etika](16_ANGKET_AKSES_DIGITAL.md#etika) | Tahap 3 (layar); surat ada |
-| P8 | **Butir risiko daring hanya angka gabungan** untuk peneliti; penanda tindak lanjut hanya terlihat akun `ketua` dan tidak masuk ekspor; jawabannya tidak pernah dibagikan | R2, R3 | 22, 01 perubahan no. 23 | Tahap 3 |
+| P8 | **Butir risiko daring hanya angka gabungan** untuk peneliti (sel di bawah 5 siswa ditulis `<5`); penanda tindak lanjut hanya terlihat akun `ketua`, tidak disimpan, dan tidak masuk ekspor; jawabannya tidak pernah dibagikan dan tidak masuk salinan untuk orang tua kecuali anak setuju | R2, R3 | 22, 01 perubahan no. 23, [29](29_IMPLEMENTASI_DATA_PENELITIAN.md#76-butir-risiko-daring) §7.6, [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#6-penanda-tindak-lanjut-butir-risiko-daring) §6, §8 | Tahap 3 (29, 30) |
 | P9 | **Pelaporan gabungan**: tidak ada nilai per anak untuk guru atau orang tua; laporan sekolah tidak untuk kelompok < 5 siswa; nama sekolah dan anak tidak pernah di laporan atau publikasi; kutipan diberi kode samaran baru | R2, R5 | [22 → Risiko dan mitigasi](22_PERMOHONAN_IZIN_ETIK.md#risiko-dan-mitigasi) | Prosedur ada |
 | P10 | **Pembersihan sebelum berbagi**: kode acak baru, tanpa kode sekolah dan rombel, umur dikelompokkan, kelompok < 5 siswa digabung, tanpa butir risiko dan transkrip; perjanjian pemakaian data; persetujuan komite; penerima di luar negeri hanya lewat amandemen dan penilaian transfer Bab V | R2, R7 | [22 → Yang dibagikan](22_PERMOHONAN_IZIN_ETIK.md#yang-dibagikan-di-osf-dan-yang-tidak-pernah) | Prosedur ada |
 | P11 | **Pembatasan tujuan** tertulis di surat dan di catatan kegiatan pengolahan; pemakaian lain adalah amandemen | R5 | [Tujuan pengolahan](#tujuan-pengolahan) | Sebelum KG1 |
 | P12 | **Prosedur kebocoran**: amankan akses, dokumentasikan, pemberitahuan tertulis ke orang tua yang anaknya terdampak dan ke lembaga pelindungan data pribadi **≤ 3 × 24 jam**, sekolah dan komite diberi tahu bersamaan; ditinjau di laporan kemajuan tahunan | R1, R9 | [22 → Langkah saat kejadian](22_PERMOHONAN_IZIN_ETIK.md#langkah-saat-kejadian) | Prosedur ada |
-| P13 | **Masa simpan dan pemusnahan**: rekaman dihapus setelah transkrip diperiksa; nama, L7, formulir, pemetaan NPSN–kode, dan catatan rujukan dimusnahkan **saat studi ditutup**, nama di akun diganti kode; data berkode disimpan **paling singkat 20 tahun** terenkripsi; setiap pemusnahan dengan berita acara | R6, R14 | [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan) | Prosedur ada; `retention_days` ± 7300 dan penggantian nama di tahap 3 |
-| P14 | **Batas 3 × 24 jam untuk permintaan orang tua**, dengan verifikasi pemohon terhadap T2, penghapusan termasuk cadangan dan ekspor, dan pemberitahuan setelahnya | R8 | [22 → Mengundurkan diri](22_PERMOHONAN_IZIN_ETIK.md#mengundurkan-diri-dan-hapus-data) | Penghapusan seluruhnya ada; sebagian, akses, pembetulan di tahap 3 |
-| P15 | **Jalan manual sementara** (*baru di 26*): selama fungsi tahap 3 belum ada, admin menjalankan hapus sebagian, ambil data satu anak, dan pembetulan langsung di basis data atas perintah ketua peneliti, dengan berita acara; KG2 tidak dimulai sebelum fungsi itu ada atau jalan manualnya diuji sekali di instalasi uji | R8, R14 | [Hak orang tua dan anak](#hak-orang-tua-dan-anak) | Sebelum KG2 |
+| P13 | **Masa simpan dan pemusnahan**: rekaman dihapus setelah transkrip diperiksa; nama, L7, formulir, pemetaan NPSN–kode, dan catatan rujukan dimusnahkan **saat studi ditutup**, nama dan sekolah di akun diganti kode, lalu cadangan diganti; data berkode disimpan **paling singkat 20 tahun** terenkripsi; setiap pemusnahan dengan berita acara | R6, R14 | [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan), [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#10-penutupan-studi) §10–§11 | Prosedur ada; `retention_days` 7305 sejak studi ditutup dan penggantian nama dan sekolah di tahap 3 (30) |
+| P14 | **Batas 3 × 24 jam untuk permintaan orang tua**, dengan verifikasi pemohon terhadap T2; akun nonaktif saat status mundur disimpan; permintaan dari peneliti dikonfirmasi `ketua` sebelum admin menjalankan; penghapusan termasuk ekspor dan salinan peneliti; **cadangan diganti** (cadangan baru, yang lama dihapus di kedua lokasi) sebelum orang tua diberi tahu, juga saat studi ditutup; daftar periksa, batas waktu di panel, dan berita acara; pemberitahuan setelahnya | R8, R14 | [22 → Mengundurkan diri](22_PERMOHONAN_IZIN_ETIK.md#mengundurkan-diri-dan-hapus-data), [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#7-permintaan-hapus-data) §5.3, §7 | Penghapusan seluruhnya ada; konfirmasi `ketua`, sebagian, akses, pembetulan, dan penggantian cadangan di tahap 3 (30) |
+| P15 | **Jalan manual sementara** (*baru di 26*): selama fungsi tahap 3 belum ada, admin menjalankan hapus sebagian, ambil data satu anak, dan pembetulan langsung di basis data atas perintah ketua peneliti, dengan berita acara; KG2 tidak dimulai sebelum fungsi itu ada atau jalan manualnya diuji sekali di instalasi uji | R8, R14 | [Hak orang tua dan anak](#hak-orang-tua-dan-anak), [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#13-jalan-manual-sementara) §13 | Sebelum KG2 (kegiatan pertama yang memakai akun anak) |
 | P16 | **Verifikasi persetujuan**: amplop tertutup lewat guru kelas, pencocokan nama dengan daftar kelas dan tanda tangan oleh P1, telepon kalau ragu; anak tanpa izin lengkap tidak bermain dan mendapat kegiatan pengganti | R10 | [22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum), [02 → L7](02_LEMBAR_LAPANGAN.md#l7-izin-orang-tua-dan-status-peserta) | Prosedur ada |
 | P17 | **Token sesi**: game tertutup di luar sesi lapangan; data di luar sesi ditandai `outside_session` dan tidak dianalisis; reset kata sandi lewat kode tanpa melihat nama, tercatat di audit | R11 | [01 → Token sesi](01_REVISI_10_ANALITIK.md#token-sesi-perlu-atau-tidak) | Tahap 3 |
-| P18 | **IP berhash di tabel sesi peramban** (*baru di 26*): penangan IP berhash dipasang di konfigurasi sesi dan sesi kedaluwarsa dibersihkan rutin, sebelum KG2 | R13 | [keputusan no. 2](#keputusan-pengembang) | Tahap 3 |
+| P18 | **IP berhash di tabel sesi peramban** (*baru di 26*): penangan IP berhash dipasang di konfigurasi sesi dan sesi kedaluwarsa dibersihkan rutin, sebelum KG2 | R13 | [keputusan no. 2](#keputusan-pengembang), [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#12-ip-berhash-di-sesi-peramban) §12 | Tahap 3 (30) |
 
 ## Risiko sisa dan simpulan
 
@@ -368,14 +369,14 @@ Semua langkah di bawah sudah diputuskan di 22 atau dokumen yang dirujuknya, kecu
 | --- | --- |
 | Permohonan diajukan | Dokumen ini disetujui pengembang dan peneliti; saran PPDP atau narahubung dicatat; nomor pasal dicek ke naskah resmi (bersama 22) |
 | KG1 | Perjanjian prosesor (P6); pernyataan kerahasiaan (P5); penyimpanan terenkripsi siap (P3); catatan kegiatan pengolahan dan kebijakan masa simpan disimpan ketua peneliti |
-| KG2 | Perubahan sistem tahap 3 untuk P1, P2, P7, P8, P13, P17, P18 selesai dan diuji; fungsi hak orang tua atau jalan manualnya (P14, P15) diuji sekali; ringkasan penilaian dampak diperlihatkan ke kepala sekolah ([Konsultasi](#konsultasi)) |
+| KG2 (kegiatan pertama yang memakai akun GELITA anak; kalau KG3 lebih dulu, sebelum KG3) | Perubahan sistem tahap 3 untuk P1, P2, P7, P8, P13, P17, P18 selesai dan diuji; fungsi hak orang tua atau jalan manualnya (P14, P15) diuji sekali; ringkasan penilaian dampak diperlihatkan ke kepala sekolah ([Konsultasi](#konsultasi)) |
 
 ## Konsultasi
 
 | Dengan siapa | Bagaimana | Kapan | Hasil |
 | --- | --- | --- | --- |
 | PPDP `[nama lembaga peneliti]` atau narahubung `[kontak PPDP atau narahubung]` (PP Pasal 121 ayat (3), Pasal 145) | Membaca draf ini dan memberi saran tertulis | Sebelum permohonan diajukan | `[saran PPDP atau narahubung]` |
-| Kepala sekolah setiap sekolah sampel dan uji coba | Ringkasan satu halaman ([Ringkasan untuk komite](#ringkasan-untuk-komite), ditulis ulang untuk sekolah) diperlihatkan bersama surat T6 saat sekolah setuju ikut; tanggapan dicatat ([keputusan no. 3](#keputusan-pengembang)) | Saat sekolah setuju ikut, sebelum KG1 (sekolah KG1) atau KG2 | `[tanggapan sekolah]` |
+| Kepala sekolah setiap sekolah sampel dan uji coba | Ringkasan satu halaman ([Ringkasan untuk komite](#ringkasan-untuk-komite), ditulis ulang untuk sekolah) diperlihatkan bersama surat T6 saat sekolah setuju ikut; tanggapan dicatat ([keputusan no. 3](#keputusan-pengembang)) | Saat sekolah setuju ikut, sebelum kegiatan pertama dengan anak di sekolah itu: KG1 (sekolah uji keterbacaan), KG2 atau KG3 (sekolah uji coba), atau KG5 (sekolah sampel) | `[tanggapan sekolah]` |
 | Orang tua | Tidak dikonsultasikan tersendiri; isi pokoknya disampaikan lewat surat T1 (cara data dijaga, batas pengamanan daring, hak, kontak) | H-14 sebelum P1 | — |
 | *Lembaga Komite Etik* | Lampiran 18 permohonan | Saat pengajuan | Tanggapan komite dicatat dengan `asal: komite etik` |
 | Pengembang dan admin | Menyusun draf, memeriksa inventaris terhadap skema basis data | 27 Oktober 2026 | Dokumen ini; keputusan no. 1–4 |
@@ -416,6 +417,8 @@ Empat pertanyaan dijawab pengembang pada 27 Oktober 2026 (`asal: pengembang`, `d
 ## Akibat ke dokumen lain
 
 Dicatat untuk sesi yang memegang dokumen itu atau sesi koordinator. Dokumen ini tidak mengubah dokumen lain.
+
+**Masuk ke dokumen ini** (sesi koordinator, 30 Oktober 2026; `asal: pengembang`): nomor KG di [Kegiatan](#kegiatan) disamakan dengan 03 dan 22, dan setiap sebutan KG2–KG5 diperiksa; akibat 27 §18 (tiga peran staf, unduhan lewat `ketua`, pembatasan prosedur membuka kode) di *Pihak yang terlibat*, *Tim dan staf*, *Aliran data*, P1, dan P2; akibat 29 §20 (lembar L1–L6 di server, log teknis, rincian perangkat, peringatan nama) di A8, A12, L1, *Aliran data* baris 5, dan P1; akibat 30 §23 (konfirmasi `ketua`, akun nonaktif, salinan tanpa jawaban butir risiko, penggantian cadangan, izin berkode di server, sekolah diganti kode, 7305 hari) di *Hak orang tua dan anak*, A7, A14, *Aliran data* baris 8, P8, P13, P14, P15, P18, R8, dan R14. Tidak ada keputusan baru; dua pertanyaan 30 §21 (no. 1 dasar pasal, `needs_verification`; no. 2 transkrip pada pilihan C) tetap terbuka.
 
 **Status per 30 Oktober 2026:** semua baris di bawah sudah dibawa. Tautan lampiran 18 di 22 dibawa sesi `r10-formulir-etik`; sisanya oleh sesi koordinator (cabang `sky/dazzling-planck-6cl9vy`), termasuk penyelarasan nomor pasal di *Dasar hukum* dokumen ini.
 

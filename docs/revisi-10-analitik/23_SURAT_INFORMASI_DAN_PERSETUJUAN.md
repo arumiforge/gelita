@@ -1,6 +1,6 @@
 # Surat Informasi dan Persetujuan
 
-Per 27 Oktober 2026 · **Status: draf**; empat pertanyaan pengembang dijawab 27 Oktober 2026, lalu diselaraskan dengan [22](22_PERMOHONAN_IZIN_ETIK.md), [24](24_UJI_KETERBACAAN.md), dan keputusan pengembang pada hari yang sama ([Keputusan pengembang](#keputusan-pengembang)), lalu dengan pedoman KEPPKN 2021 pada 27 Oktober 2026 ([22 → Pedoman yang dirujuk](22_PERMOHONAN_IZIN_ETIK.md#pedoman-yang-dirujuk)); daftar kerja no. 15 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 27 Oktober 2026 · **Status: draf**; empat pertanyaan pengembang dijawab 27 Oktober 2026, lalu diselaraskan dengan [22](22_PERMOHONAN_IZIN_ETIK.md), [24](24_UJI_KETERBACAAN.md), dan keputusan pengembang pada hari yang sama ([Keputusan pengembang](#keputusan-pengembang)), lalu dengan pedoman KEPPKN 2021 pada 27 Oktober 2026 ([22 → Pedoman yang dirujuk](22_PERMOHONAN_IZIN_ETIK.md#pedoman-yang-dirujuk)); T10 *Cara menjalankan* dan kotak peneliti diselaraskan dengan dokumen implementasi bagian 4 ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md)) oleh sesi koordinator 30 Oktober 2026 (`asal: pengembang`; teks untuk orang tua dan anak tidak berubah); daftar kerja no. 15 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Dokumen ini berisi teks yang dikirim bersama permohonan izin etik ke *Lembaga Komite Etik* dan yang dibagikan ke sekolah: surat informasi, formulir persetujuan, naskah persetujuan anak, formulir pengunduran diri, dan teks untuk butir risiko daring (layar sebelum dan sesudahnya, dan selebaran tempat bercerita). Setiap teks berupa blok siap cetak. Tempat kosong ditulis dalam kurung siku, misalnya `[nama sekolah]`, dan diisi sebelum dicetak.
 
@@ -330,7 +330,7 @@ Teks sekarang hanya menyebut permainan. Penelitian juga memakai soal, pertanyaan
 | `assentName` | "Persetujuan ikut penelitian" | "Agreement to take part" |
 | `assentRequired` | "Centang dulu kalau kamu mau ikut, ya. Kalau tidak mau, tidak apa-apa. Bilang pelan-pelan ke kakak peneliti." | "Tick the box first if you want to take part. If you don't want to, that's fine. Quietly tell a researcher." |
 
-Ini usulan saja. File bahasa tidak diubah sekarang; perubahannya masuk dokumen implementasi tahap 3 (lihat [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)).
+Ini usulan saja. File bahasa tidak diubah sekarang; perubahannya masuk dokumen implementasi tahap 3 (lihat [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)). Dokumen implementasi bagian 4 memakai teks id dan en di atas apa adanya, dengan kunci `assentLabelStudy`, `assentNameStudy`, dan `assentRequiredStudy` ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#17-teks-layar-dan-panel) §17; sesi koordinator, 30 Oktober 2026).
 
 ## T5 Pengingat di awal P2–P5 dan sebelum wawancara L5
 
@@ -662,7 +662,7 @@ Satu halaman A4, dilampirkan di belakang T1 dan T8a (orang tua menyimpannya) dan
 > Serahkan formulir ini kepada kakak peneliti, atau kirim fotonya ke [nomor HP/WA peneliti].
 >
 > ---
-> *Diisi peneliti:* diterima tanggal dan jam ________ lewat kertas / WA / surel · identitas pemohon cocok dengan formulir izin T2 ☐ (tanggal dan jam ________) · paraf P1 ______ · kode peserta ________ · L7 diperbarui ☐ · akun dinonaktifkan tanggal ________ · permintaan hapus diajukan ke admin tanggal ________ · admin menjalankan, termasuk salinan cadangan, tanggal ________ · konfirmasi ke orang tua tanggal ________ · pilihan D dijawab tanggal ________
+> *Diisi peneliti:* diterima tanggal dan jam ________ lewat kertas / WA / surel · identitas pemohon cocok dengan formulir izin T2 ☐ (tanggal dan jam ________) · paraf P1 ______ · kode peserta ________ · L7 diperbarui ☐ · akun dinonaktifkan tanggal ________ · permintaan hapus diajukan tanggal ________ · dikonfirmasi ketua tanggal ________ · admin menjalankan, termasuk salinan cadangan, tanggal ________ · konfirmasi ke orang tua tanggal ________ · pilihan D dijawab tanggal ________
 
 ---
 
@@ -670,10 +670,10 @@ Satu halaman A4, dilampirkan di belakang T1 dan T8a (orang tua menyimpannya) dan
 
 | Pilihan | Status L7 | Yang terjadi |
 | --- | --- | --- |
-| A | `Mengundurkan diri (data tetap)` dengan tanggal | Akun dinonaktifkan `admin`; anak tidak ikut pertemuan berikutnya dan bergabung dengan kegiatan pengganti. Data sampai tanggal itu tetap dipakai: `consent_ok = 1` juga untuk status ini, untuk data sampai tanggal mundur (`kamus-1.1`, [11 → Penanda untuk analisis](11_KAMUS_DATA.md#penanda-untuk-analisis)) |
-| B | `Mengundurkan diri (hapus data)` dengan tanggal; "permintaan hapus diajukan" | P1 (`koordinator`) mengajukan permintaan hapus lewat kode peserta di panel peneliti; `admin` menjalankannya ([01 → Admin dan peneliti](01_REVISI_10_ANALITIK.md#admin-dan-peneliti-dua-peran-berbeda)). Rekaman dan transkrip L5, dan baris di L2–L6 dengan kode itu, ikut dihapus oleh peneliti. Nama di L7 dicoret dan diberi catatan "data dihapus [tanggal]" |
-| C | Tetap `Aktif`; kolom izin yang ditarik diubah ke Tidak dengan tanggal | Rekaman suara dihapus peneliti; jawaban butir risiko dihapus lewat permintaan hapus sebagian. Pengaturan butir risiko di panel disesuaikan sebelum P5. Hapus sebagian belum ada di sistem; ini catatan perubahan sistem untuk tahap 3 (lihat [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)) |
-| D | Tidak berubah | `ketua` membuka kode, lalu memperlihatkan data anak itu, menyiapkan salinannya tanpa data anak lain dan tanpa kunci jawaban, atau meminta `admin` membetulkan data pendaftaran. Jawaban paling lambat 3 × 24 jam; untuk salinan, dalam waktu itu dikonfirmasi berapa lama penyiapannya ([22 → Mengundurkan diri dan hapus data](22_PERMOHONAN_IZIN_ETIK.md#mengundurkan-diri-dan-hapus-data)) |
+| A | `Mengundurkan diri (data tetap)` dengan tanggal | Akun langsung nonaktif saat P1 menyimpan status itu di panel, tanpa menunggu `admin`; tanggal simpan itu yang ditulis di kotak "akun dinonaktifkan tanggal" ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#53-status-mundur-dan-akun-nonaktif) §5.3). Anak tidak ikut pertemuan berikutnya dan bergabung dengan kegiatan pengganti. Data sampai tanggal itu tetap dipakai: `consent_ok = 1` juga untuk status ini, untuk data sampai tanggal mundur (`kamus-1.1`, [11 → Penanda untuk analisis](11_KAMUS_DATA.md#penanda-untuk-analisis)) |
+| B | `Mengundurkan diri (hapus data)` dengan tanggal; "permintaan hapus diajukan" | Akun nonaktif saat status disimpan. P1 (`koordinator`) mengajukan permintaan hapus lewat kode peserta di panel peneliti; `ketua` mengonfirmasinya dengan mencocokkan kode dengan L7; baru sesudah itu `admin` menjalankannya ([01 → Admin dan peneliti](01_REVISI_10_ANALITIK.md#admin-dan-peneliti-dua-peran-berbeda); [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#71-alur-dan-status) §7.1). Admin lalu mengganti salinan cadangan sebelum orang tua diberi tahu (30 §7.5). Rekaman dan transkrip L5, dan baris di L2–L6 dengan kode itu, ikut dihapus oleh peneliti. Nama di L7 dicoret dan diberi catatan "data dihapus [tanggal]" |
+| C | Tetap `Aktif`; kolom izin yang ditarik diubah ke Tidak dengan tanggal | Rekaman suara dihapus peneliti; jawaban butir risiko dihapus lewat permintaan hapus sebagian. Permintaan dari P1 dikonfirmasi `ketua` sebelum `admin` menjalankannya, sama dengan pilihan B. Izin di panel diubah ke Tidak saat itu juga, sehingga anak tidak melihat butir risiko di P5. Hapus sebagian dirancang di [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#72-jenis-permintaan) §7.2 dan dibangun di tahap 3. Apakah transkrip berkode dari rekaman itu ikut dihapus belum diputuskan (30 §21 no. 2; usulan: ikut dihapus, dengan kalimat tambahan di formulir ini); sampai diputuskan, teks formulir tidak diubah |
+| D | Tidak berubah | `ketua` membuka kode, lalu memperlihatkan data anak itu, menyiapkan salinannya tanpa data anak lain dan tanpa kunci jawaban, atau meminta `admin` membetulkan data pendaftaran. Salinan tidak memuat jawaban butir risiko daring, kecuali anak setuju; salinan menyebut bahwa bagian itu tidak disertakan ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#8-salinan-data-satu-anak) §8; dasar pasalnya `needs_verification`, 30 §21 no. 1). Jawaban paling lambat 3 × 24 jam; untuk salinan, dalam waktu itu dikonfirmasi berapa lama penyiapannya ([22 → Mengundurkan diri dan hapus data](22_PERMOHONAN_IZIN_ETIK.md#mengundurkan-diri-dan-hapus-data)) |
 
 Anak yang menyatakan sendiri ingin berhenti, tanpa formulir dari orang tua, dicatat sebagai pilihan A, `Mengundurkan diri (data tetap)`, pada hari itu. P1 lalu memberi tahu orang tua lewat kontak di T2 dan menawarkan pilihan B.
 
@@ -681,7 +681,7 @@ Formulir T10 yang sudah diisi disimpan `ketua` di berkas terpisah yang dikunci, 
 
 **Untuk uji keterbacaan (T8)** formulir yang sama dipakai. Tidak ada L7 dan akun: pilihan A berarti anak berhenti dan catatannya tetap dipakai; pilihan B berarti LK1–LK3, kartu cetak, rekaman, dan transkrip anak itu dimusnahkan; pilihan C berarti rekaman, atau catatan parafrase butir risiko daring, dihapus. `ketua` mencatat tindak lanjutnya di daftar nama–kode ([24 → Pengelolaan data](24_UJI_KETERBACAAN.md#pengelolaan-data)).
 
-Batas waktunya mengikuti PP No. 33 Tahun 2026 dan [22 → Mengundurkan diri dan hapus data](22_PERMOHONAN_IZIN_ETIK.md#mengundurkan-diri-dan-hapus-data) (keputusan pengembang 27 Oktober 2026; nomor pasal dicek ke salinan naskah 27 Oktober 2026): pengumpulan data dihentikan paling lambat 3 × 24 jam sejak permintaan diterima, dengan pencocokan identitas di dalam waktu itu (Pasal 92 ayat (2)–(3)), dan orang tua diberi tahu lewat kontak di T2 (atau T8b) paling lambat 3 × 24 jam setelah penghapusan. Ini menggantikan tempat kosong `[jumlah hari kerja]`. Penghapusan mencakup sistem, ekspor yang masih ada, salinan peneliti, dan salinan cadangan server; penyedia server diperintahkan lebih dulu. Cara teknisnya ditulis di dokumen implementasi tahap 3. Anak yang memintanya sendiri dicatat sebagai pilihan A, dan untuk pilihan D anak perlu persetujuan orang tua.
+Batas waktunya mengikuti PP No. 33 Tahun 2026 dan [22 → Mengundurkan diri dan hapus data](22_PERMOHONAN_IZIN_ETIK.md#mengundurkan-diri-dan-hapus-data) (keputusan pengembang 27 Oktober 2026; nomor pasal dicek ke salinan naskah 27 Oktober 2026): pengumpulan data dihentikan paling lambat 3 × 24 jam sejak permintaan diterima, dengan pencocokan identitas di dalam waktu itu (Pasal 92 ayat (2)–(3)), dan orang tua diberi tahu lewat kontak di T2 (atau T8b) paling lambat 3 × 24 jam setelah penghapusan. Ini menggantikan tempat kosong `[jumlah hari kerja]`. Penghapusan mencakup sistem, ekspor yang masih ada, salinan peneliti, dan salinan cadangan server; penyedia server diperintahkan lebih dulu. Cara teknisnya ditulis di dokumen implementasi bagian 4 ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#7-permintaan-hapus-data) §7). Anak yang memintanya sendiri dicatat sebagai pilihan A, dan untuk pilihan D anak perlu persetujuan orang tua.
 
 ## T11 Layar sebelum butir risiko daring
 
@@ -708,7 +708,7 @@ Satu layar di modul tes P5, sesudah tes akhir, hanya untuk siswa yang L7-nya men
 - Kedua tombol sama besar dan sama warnanya, supaya tidak ada pilihan yang tampak "benar".
 - *Tidak* langsung membuka [T12](#t12-pesan-dukungan-sesudah-butir-risiko-daring), sama seperti sesudah butir terakhir, sehingga dari luar layar anak yang mengisi dan yang melewati tampak sama.
 - Pilihan anak tercatat di modul sebagai persetujuan ulang. Pilihan ini tidak ditampilkan kepada P1–P3.
-- Teks en dibuat di tahap 3 bersama file bahasa, seperti [T4](#t4-usulan-teks-centang-persetujuan-di-halaman-daftar).
+- Teks en dibuat di tahap 3 bersama file bahasa, seperti [T4](#t4-usulan-teks-centang-persetujuan-di-halaman-daftar). Usulannya ada di [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#17-teks-layar-dan-panel) §17; aturan siapa melihat layar ini di 30 §5.4. Teks id di atas tidak berubah.
 
 ## T12 Pesan dukungan sesudah butir risiko daring
 
@@ -728,7 +728,7 @@ Satu layar di modul tes P5, sesudah butir risiko daring terakhir. Pesannya sama 
 
 ---
 
-Diputuskan pengembang (27 Oktober 2026): layar ini juga ditunjukkan kepada siswa tanpa izin butir risiko, di tempat yang sama di P5, supaya pesan ini sampai ke semua anak seperti diminta [16 → Etika](16_ANGKET_AKSES_DIGITAL.md#etika) no. 8. Teks en dibuat di tahap 3.
+Diputuskan pengembang (27 Oktober 2026): layar ini juga ditunjukkan kepada siswa tanpa izin butir risiko, di tempat yang sama di P5, supaya pesan ini sampai ke semua anak seperti diminta [16 → Etika](16_ANGKET_AKSES_DIGITAL.md#etika) no. 8. Teks en dibuat di tahap 3; usulannya ada di [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#17-teks-layar-dan-panel) §17. Teks id di atas tidak berubah.
 
 ## T13 Selebaran tempat bercerita
 
