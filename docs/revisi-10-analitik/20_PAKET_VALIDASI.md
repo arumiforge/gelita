@@ -48,7 +48,7 @@ Dua dari lima ahli materi juga menjadi penilai B.5a. IM A.3 menyarankan satu ahl
 | 3 | Dokumen bahan yang dinilai sudah disetujui pengembang (keputusan diambil): 08, 12–18, kamus-1.0 di 11 | IM A.4 "Prasyarat", [00 → Tahap dokumen 1](00_INDEKS.md#tahap-dokumen-yang-tersisa-sebelum-implementasi) | Keputusan sudah diambil; 13–17 berstatus draf menunggu validasi, dan memang itu yang divalidasi |
 | 4 | Versi bahan dibekukan: tanggal dan *commit* `main` yang dinilai dicatat di 04, dan ditulis di surat pernyataan (D.1, "versi/tanggal") | IM A.4, IB A.4; [Prasyarat no. 4](#prasyarat-no-4-membekukan-versi-bahan) | Belum; prosedur ditulis 27 Oktober 2026, dijalankan setelah no. 6, 8, 9, dan 10 selesai |
 | 5 | Telaah pendahuluan bank soal selesai | IM A.4, [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md) | Selesai (R1–R4 disetujui) |
-| 6 | Cek fakta budaya oleh tim selesai dan tercatat di lembar B.7 IB | IB A.4, IB D.3 no. 9 | Belum diperiksa sesi ini |
+| 6 | Cek fakta budaya oleh tim selesai dan tercatat di lembar B.7 IB | IB A.4, IB D.3 no. 9; [25](25_CEK_FAKTA_BUDAYA.md) | Sudah (27 Oktober 2026): 135 klaim dicek, 44 fakta tercatat di lembar B.7 IB dengan kode sumber dari 25; pengamat budaya mengonfirmasinya di B.7 |
 | 7 | Daftar butir buta B.5a, daftar B.5b, dan lembar kerja per lembar siap | IM D.3 no. 2, 5; IB D.3 no. 11; IMd D.3 no. 9; dibuat di 21 | Dibuat (`berkas-1.0`, [21](21_BERKAS_BUTIR_VALIDATOR.md)); dibuat ulang sekali lagi tepat sebelum kirim, dan versi berkasnya dicatat |
 | 8 | Instalasi uji siap, dengan akun uji validator | IM D.3 no. 12, IB D.3 no. 8, IMd D.3 no. 2–3; [Akses untuk validator](#akses-untuk-validator), [Prasyarat no. 8](#prasyarat-no-8-instalasi-uji-dan-akun-uji) | Belum; prosedur ditulis 27 Oktober 2026 (komputer lab kampus, subdomain HTTPS, akun dibuat pengembang lewat `/daftar`, semua wilayah terbuka); menunggu subdomain dari TI kampus |
 | 9 | Nama asli validator ditetapkan, kesediaannya didapat lisan atau lewat pesan, dan tercatat di daftar padanan di luar repo | [Pengembalian dan pencatatan](#pengembalian-dan-pencatatan), [Prasyarat no. 9](#prasyarat-no-9-nama-asli-dan-kesediaan-validator) | Belum; templat daftar padanan dan pesan kesediaan siap 27 Oktober 2026, ditanyakan ketua peneliti (pertanyaan terbuka di 01) |
@@ -92,9 +92,9 @@ IB tidak punya tabel penugasan per orang. Ketiga pengamat budaya menilai semua b
 
 | Validator | Lembar yang diisi | Berkas IB D.3: kiriman awal | Menyusul | Perkiraan jam |
 | --- | --- | --- | --- | --- |
-| Ahli Budaya Kedu 1 | B.3 (semua butir); B.5 matriks objek; B.6a *Periksa Unggahan* dan B.6b PBK; B.7 cek fakta; B.8 relevansi 1–4, indikator tepat, contoh budaya, B.8b (semua wajib) | 1–11 | Gambar Wayang Kedu Temanggungan dan Candi Pawon (bagian berkas no. 6) | bahan dan bermain 3–4, B.5 2–3, B.6 1,5–2, B.7 1, B.8 0,5–0,75, B.3 1–2 = **± 9–13 jam** |
-| Ahli Budaya Kedu 2 | B.3; B.5; B.6a, B.6b; B.7; B.8 contoh budaya untuk wilayahnya (wajib), B.8b (boleh) | 1–11 | Sama | **± 8,5–12 jam** (B.8 10 menit) |
-| Ahli Budaya Kedu 3 | Sama dengan Ahli Budaya Kedu 2 | 1–11 | Sama | **± 8,5–12 jam** |
+| Ahli Budaya Kedu 1 | B.3 (semua butir); B.5 matriks objek; B.6a *Periksa Unggahan* dan B.6b PBK; B.7 cek fakta; B.8 relevansi 1–4, indikator tepat, contoh budaya, B.8b (semua wajib) | 1–11 | Gambar Wayang Kedu Temanggungan dan Candi Pawon (bagian berkas no. 6) | bahan dan bermain 3–4, B.5 2–3, B.6 1,5–2, B.7 1–1,5 (44 fakta), B.8 0,5–0,75, B.3 1–2 = **± 9–13,5 jam** |
+| Ahli Budaya Kedu 2 | B.3; B.5; B.6a, B.6b; B.7; B.8 contoh budaya untuk wilayahnya (wajib), B.8b (boleh) | 1–11 | Sama | **± 8,5–12,5 jam** (B.8 10 menit) |
+| Ahli Budaya Kedu 3 | Sama dengan Ahli Budaya Kedu 2 | 1–11 | Sama | **± 8,5–12,5 jam** |
 
 Idealnya satu orang paling mengenal Temanggung, satu Magelang, satu Wonosobo (IB A.3). Pembagian wilayah ini dicatat di daftar padanan di luar repo, bukan di sini.
 
@@ -529,7 +529,7 @@ Gerbang G2 butuh dua separuh: **validasi** (di sini) dan **izin etik** (di 22). 
 - [ ] Rerata keseluruhan lembar B.3 minimal "valid" (IB C.5 syarat a).
 - [ ] Semua butir B.3 dan butir PBK memenuhi aturan Lynn setelah revisi (IB C.5 syarat b).
 - [ ] Semua petunjuk *Periksa Unggahan* lolos dari sisi budaya, dan butir D3 lolos juga di B.5b ahli materi ([07 → Instrumen versi 2.1 dan 1.1](07_TELAAH_INSTRUMEN_VALIDASI.md#instrumen-versi-21-dan-11), no. 4; IB C.5 syarat c).
-- [ ] Semua catatan kritis dan semua "Tidak" di cek fakta B.7 ditindaklanjuti, termasuk tahun kebun teh Tambi dan letak kompleks Candi Arjuna (IB C.5 syarat d).
+- [ ] Semua catatan kritis dan semua "Tidak" di cek fakta B.7 ditindaklanjuti, termasuk baris B.7 yang masih terbuka ([25](25_CEK_FAKTA_BUDAYA.md)) (IB C.5 syarat d).
 - [ ] Gambar baru Wayang Kedu Temanggungan dan Candi Pawon sudah dinilai di B.5 (IB D.3).
 
 ### Skala sikap (B.8)
@@ -790,4 +790,4 @@ Status per 27 Oktober 2026, setelah penyelarasan dokumen tahap 2. Perubahan di i
 | [24](24_UJI_KETERBACAAN.md) | *Yang dibutuhkan dari dokumen lain → Dari 20* | Dipenuhi di 20: matriks revisi induk menampung temuan anak (sumber "uji keterbacaan", kode anak, `KB-*`), dan jadwal punya penilaian ulang setelah uji keterbacaan. Tidak ada yang perlu diubah di 24 | Sudah (di 20) |
 | Matriks revisi induk (dokumen baru) | — | Dibuat saat hasil pertama kembali; nomor ditetapkan sesi koordinator dan dicatat di 00 | Belum (menunggu hasil validasi) |
 | [03](03_KODE_DAN_ARTI.md) | *Akun uji validator* | Akun dibuat pengembang lewat `/daftar`, sekolah `Sekolah Uji Validator`, akun cadangan tidak dipakai ulang (27 Oktober 2026, cabang `r10-prasyarat-validasi`) | Sudah |
-| [01](01_REVISI_10_ANALITIK.md) | *Catatan perubahan sistem untuk tahap nanti* | Usulan alat bantu `gelita:uji:akun` (membuat akun `uji.*` dan mereset kemajuan satu akun) dari [Prasyarat no. 8](#prasyarat-no-8-instalasi-uji-dan-akun-uji), langkah 6; dipertimbangkan bersama dokumen implementasi tahap 3 | Belum (dibawa sesi koordinator; bukan nomor perubahan sistem baru sampai pengembang memutuskan) |
+| [01](01_REVISI_10_ANALITIK.md) | *Catatan perubahan sistem untuk tahap nanti* | Usulan alat bantu `gelita:uji:akun` (membuat akun `uji.*` dan mereset kemajuan satu akun) dari [Prasyarat no. 8](#prasyarat-no-8-instalasi-uji-dan-akun-uji), langkah 6; dipertimbangkan bersama dokumen implementasi tahap 3 | Sudah (sesi koordinator, 30 Oktober 2026): dicatat di 01 sebagai usulan belum bernomor di bawah tabel *Catatan perubahan sistem untuk tahap nanti*; nomornya menunggu keputusan pengembang |

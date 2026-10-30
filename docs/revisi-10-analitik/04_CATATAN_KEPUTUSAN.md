@@ -1,8 +1,33 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 27 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 30 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
+
+## 30 Oktober 2026
+
+**Akibat 25 dan 26 dibawa ke 01, 20, 21, 22, 23, dan 26** (cabang `sky/dazzling-planck-6cl9vy`, sesi koordinator) · `asal: pengembang` · `disetujui pengembang` · Prototipe I, belum merevisi produk
+
+Keempat sesi paralel (PR #276–#279) hanya mengubah dokumennya sendiri, dan menitipkan akibatnya ke dokumen lain di bagian *Akibat ke dokumen lain*. Atas permintaan pengembang, akibat itu dibawa sekarang, sebelum versi bahan dibekukan untuk validasi. Tidak ada keputusan baru; semuanya menjalankan keputusan di 25 dan 26.
+
+Yang diubah:
+- **20.** Prasyarat no. 6 (cek fakta budaya) ditandai sudah. Daftar periksa G2 pengamat budaya menyebut "baris B.7 yang masih terbuka (25)", karena tahun Tambi dan letak Candi Arjuna sudah dijawab tim. Perkiraan waktu B.7 menjadi 1–1,5 jam untuk 44 fakta, sehingga Ahli Budaya Kedu 1 ± 9–13,5 jam dan Ahli Budaya Kedu 2 dan 3 ± 8,5–12,5 jam. Baris akibat alat bantu `gelita:uji:akun` ditandai sudah.
+- **Instrumen pengamat budaya v2.1.** A.4: konfirmasi cek fakta 1–1,5 jam; catatan di D.4. PDF dan berkas validator dibuat ulang.
+- **21.** "19 fakta" menjadi "44 fakta".
+- **22.** Empat tambahan:
+  - pengembang dan admin adalah bagian dari tim pengendali, bukan prosesor (26 keputusan no. 1);
+  - baris *Log teknis* menyebut data akun staf dan `ip_hash`;
+  - ringkasan risiko menyebut R1–R3 tinggi sebelum perlindungan dan tidak ada yang tinggi sesudahnya;
+  - jalan manual sementara dengan berita acara (26 → P15), dan KG2 tidak dimulai sebelum jalan itu diuji.
+- **23 → T6.** Lampiran 5 berisi ringkasan penilaian dampak satu halaman untuk kepala sekolah (26 keputusan no. 3), dengan teksnya.
+- **26.** Nomor pasal diselaraskan dengan hasil cek di 22: hak subjek data Pasal 70–71, PPDP Pasal 142–147, Peraturan Lembaga belum terbit, 3 × 24 jam kalender. `needs_verification` yang tersisa hanya pencocokan dengan PDF resmi sebelum berkas diunggah.
+- **01.** Tiga tambahan:
+  - perubahan sistem no. 23 mendapat `HashedIpSessionHandler`, pembersihan `ci_sessions`, dan jalan manual sementara;
+  - `gelita:uji:akun` dicatat sebagai usulan belum bernomor, karena nomornya menunggu keputusan pengembang;
+  - daftar kerja no. 15 menyebut 26 sebagai lampiran 18.
+- **25 dan 26** → *Akibat ke dokumen lain*: butir yang dibawa ditandai sudah.
+
+Yang tetap untuk pengembang: target persetujuan etik di 01 (patokan BRIN ± 1–2 bulan sejak berkas lengkap), nomor perubahan sistem untuk `gelita:uji:akun`, dan teks ringkasan sekolah di 23 → T6 sebelum dicetak.
 
 ## 27 Oktober 2026
 

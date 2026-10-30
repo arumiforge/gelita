@@ -350,14 +350,14 @@ Kalau siswa menolak diwawancarai, P3 memilih siswa lain dari kelompok nilai yang
 
 ## T6 Surat permohonan izin kepada kepala sekolah
 
-Dua halaman A4. Dikirim setelah persetujuan etik terbit, bersama salinan surat persetujuan etik, contoh T1–T2, dan T7. Lampiran L8 (daftar data profil sekolah) disertakan sebagai satu halaman isian.
+Dua halaman A4. Dikirim setelah persetujuan etik terbit, bersama salinan surat persetujuan etik, contoh T1–T2, dan T7. Lampiran L8 (daftar data profil sekolah) disertakan sebagai satu halaman isian. Ringkasan penilaian dampak satu halaman (lampiran 5, teksnya di bawah surat) diperlihatkan bersama surat ini.
 
 ---
 
 > **[nama lembaga peneliti]**
 > [alamat lembaga] · [nomor HP/WA peneliti] · [surel peneliti]
 >
-> Nomor: [nomor surat] · Lampiran: 4 berkas
+> Nomor: [nomor surat] · Lampiran: 5 berkas
 > Perihal: **Permohonan izin penelitian GELITA di kelas 5**
 > Judul penelitian: *[judul penelitian]*
 >
@@ -423,8 +423,21 @@ Dua halaman A4. Dikirim setelah persetujuan etik terbit, bersama salinan surat p
 > 2. Contoh surat informasi dan formulir persetujuan orang tua
 > 3. Lembar informasi untuk guru kelas
 > 4. Lembar isian data profil sekolah
+> 5. Ringkasan penilaian dampak pelindungan data pribadi (satu halaman)
 
 ---
+
+**Lampiran 5: ringkasan penilaian dampak untuk sekolah** (satu halaman, dibuat dari [26 → Ringkasan untuk komite](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md#ringkasan-untuk-komite); [26 → Keputusan pengembang](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md#keputusan-pengembang) no. 3). Teks yang dicetak:
+
+> **Ringkasan penilaian dampak pelindungan data pribadi: penelitian GELITA**
+>
+> - **Data apa.** Data permainan, soal awal dan akhir, pertanyaan kebiasaan digital, dan pendapat tentang budaya Kedu dari siswa kelas 5 yang diizinkan orang tuanya; nama, tanda tangan, dan nomor HP orang tua di formulir izin; data profil sekolah.
+> - **Untuk apa.** Menilai apakah GELITA bisa mengukur kemampuan membaca dan kemampuan digital siswa dengan baik. Data tidak dipakai untuk nilai rapor atau memutuskan apa pun tentang siswa.
+> - **Mengapa kami menilai dampaknya.** Data anak termasuk data pribadi yang dilindungi khusus oleh undang-undang, jadi kami menilai risikonya sebelum data dikumpulkan.
+> - **Risiko terbesar.** Nama siswa terbaca bersama jawabannya kalau data bocor; siswa dikenali dari gabungan data walaupun namanya tidak ada; jawaban pertanyaan tentang pengalaman di internet terbaca orang lain.
+> - **Cara kami melindunginya.** Nama dipisah dari data dan diganti kode; pengelola sistem dan peneliti memegang data yang berbeda; server dan cadangan di Indonesia; salinan data dienkripsi; pertanyaan tentang pengalaman di internet dan rekaman suara hanya dengan izin terpisah; sekolah dan guru hanya menerima angka gabungan; nama dimusnahkan saat penelitian ditutup.
+> - **Risiko yang tersisa.** Rendah, kecuali kebocoran data dan pengenalan dari gabungan data yang tetap sedang, karena tidak ada sistem daring yang sepenuhnya bebas kebocoran. Kalau terjadi kebocoran, orang tua yang anaknya terdampak dan sekolah diberi tahu paling lambat 3 × 24 jam.
+> - **Kontak data pribadi:** `[kontak PPDP atau narahubung]`.
 
 **Balasan sekolah.** Persetujuan kepala sekolah dibuat sebagai surat balasan sekolah dengan kop dan stempel sekolah, mengikuti kebiasaan sekolah. Kalau sekolah meminta contoh, peneliti memberi satu kalimat: "Kepala [nama sekolah] mengizinkan tim peneliti [nama lembaga peneliti] melaksanakan penelitian GELITA di kelas 5 pada [rentang minggu]." Lembar isian L8 diisi P1 sesuai [02 → L8](02_LEMBAR_LAPANGAN.md#l8-profil-sekolah).
 
