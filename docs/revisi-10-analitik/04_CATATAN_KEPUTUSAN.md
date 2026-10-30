@@ -6,6 +6,26 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 30 Oktober 2026
 
+**Sesi koordinator bagian 1–4: bagian diselaraskan, akibatnya dibawa ke 01, 02, 03, 18, 20, 22, 23, dan 26** (tiga sesi paralel, PR #285, #286, #287; penutupan di cabang `pbb/pensive-ramanujan-d8nu9h`) · `asal: pengembang` · `draf pengembang` · Prototipe I, belum merevisi produk
+
+Atas permintaan pengembang, sesi koordinator yang direncanakan di entri keputusan empat bagian (di bawah, keputusan no. 2) dijalankan dalam tiga sesi paralel, dibagi per pemilik berkas. Berkas bersama (00, 04, `docs/PROGRESS.md`) dipegang sesi yang memulainya. Tidak ada keputusan baru; semuanya menjalankan keputusan di 27–30.
+
+| Sesi | Berkas | PR | Yang dikerjakan |
+| --- | --- | --- | --- |
+| A | 27, 28, 29, 30 | #287 | Akibat antarbagian dibawa. Urutan migrasi ditulis sekali di 27 §6.1 (`003400` → `003500` → `003600`, `003700` → `003800`; `REQUIRED_MIGRATION` akhirnya `003800`). Peta kemampuan 27 §5.1 memuat semua kemampuan bagian 2–4, termasuk `deletion.confirm` dan `identities.replace`. Tabel rute tanpa jalur ganda. Kunci asing ke `participants` memakai `ON DELETE CASCADE` di 28 dan 29. Pertanyaan terbuka yang sudah dijawab bagian lain dicoret dengan rujukan (27 §16 no. 2 dan 5, 28 §21 no. 5) |
+| B | 22, 23, 26 | #286 | Akibat 27, 29, dan 30 dibawa. Tabel *Kegiatan* di 26 memakai nomor KG dari 03 dan 22, dan setiap "KG2"–"KG5" di 26 diperiksa ulang. 26 → A7 dibetulkan: penanda tindak lanjut tidak disimpan (30 K7). 30 §21 no. 1 ditandai `needs_verification` dan no. 2 "belum diputuskan" di ketiga dokumen |
+| C | 01, 02, 03, 18, 20 | #285 | Akibat 27–30 dibawa. 03 mendapat bagian *Event yang berubah di pembersihan log* dan *Persetujuan dan hak atas data*. Baris untuk 11 tetap menunggu `kamus-1.1` |
+
+Penutupan di cabang ini: status setiap baris *Akibat ke dokumen lain* di 27–30 yang sudah dibawa B dan C diubah menjadi "Sudah"; yang tersisa hanya baris untuk 11 (`kamus-1.1`) dan `.claude/rules/glossary.md` (saat implementasi). 00 dan `docs/PROGRESS.md` diperbarui.
+
+**Untuk pengembang** (dari laporan ketiga sesi; tidak menahan apa pun):
+1. [28 → Pertanyaan terbuka](28_IMPLEMENTASI_SESI_LAPANGAN.md#21-pertanyaan-terbuka) no. 7: apakah admin melihat angka "izin belum diisi" di panel pemantauan; no. 8: teks "lupa kata sandi" setelah studi ditutup.
+2. Gambar mock-up `gambar/mockup/mk-tk-01.webp` (sudah disetujui) masih memakai petunjuk token lama ("Ketik enam huruf token…"); 18 mencatatnya. Sumber HTML dan PDF instrumen ahli media v1.1 masih menulis token "6 huruf (tanpa O, 0, I, 1)", padahal token kini huruf dan angka tanpa O, 0, I, 1, L. Keduanya belum dibuat ulang; perlu diputuskan sebelum paket ahli media dikirim.
+3. Kalimat L7 di 02: sesi C menulis "L7 bernama tidak pernah diunggah; hanya izin berkode yang ada di server", untuk menyatukan 29 (L7 tidak pernah di server) dan 30 (kolom berkode L7 di panel). Perlu dibaca pengembang.
+4. Angka 7305 hari di 22 berasal dari 30 K10, yang masih temuan kode untuk ditinjau; 22 menyebutnya.
+
+Langkah berikutnya: pengembang meninjau 27–30 dan butir di atas. Setelah itu, dokumen implementasi bagian 1–4 boleh dinaikkan ke `disetujui pengembang`.
+
 **Bagian 4 dokumen implementasi didraf: persetujuan, hak atas data, masa simpan, dan IP berhash** (cabang `pbb/pensive-ramanujan-d8nu9h`) · `asal: pengembang` · `draf pengembang` · Prototipe I, belum merevisi produk
 
 [30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) ditulis untuk perubahan sistem no. 23. Isinya:
