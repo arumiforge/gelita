@@ -6,6 +6,36 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 30 Oktober 2026
 
+**Bagian 3 dokumen implementasi didraf: pembersihan log, unduhan data penelitian, kamus data, dan lembar lapangan** (cabang `pbb/sharp-feynman-xsm6ky`) · `asal: pengembang` · `draf pengembang` · Prototipe I, belum merevisi produk
+
+[29_IMPLEMENTASI_DATA_PENELITIAN.md](29_IMPLEMENTASI_DATA_PENELITIAN.md) ditulis untuk perubahan sistem no. 7, 14, dan 15. Isinya:
+- satu katalog event dengan pemilik setiap jenis (peneliti, admin, dihapus);
+- event dan rincian perangkat yang dihapus, dan halaman *Log teknis* untuk admin;
+- data mentah baru yang diminta kamus: `item_tries.ready_ms`, event `empty_tap` dan `passage_reopened`;
+- isi unduhan `ketua`, waktu terkoreksi, dan butir risiko daring hanya sebagai angka gabungan (dari 26 → P8);
+- lembar *Kamus Data* dari `ResearchDictionary` dengan `dictionary_version`, dan riwayat unduhan;
+- templat lembar lapangan per sesi dan impor L1–L6, dengan kolom dari tabel bertanda di 02;
+- skema, rute, teks panel, tes, dan titik sambung ke no. 1, 2, 5, 6, 9, 21, 22, dan bagian 4.
+
+Tidak ada kode yang diubah.
+
+**Temuan kode, untuk ditinjau pengembang.** Tiga hal di kode membuat 01 tidak bisa diterapkan apa adanya:
+1. `dialogue_advanced` (ditandai dihapus) dipakai game untuk lencana "Belum didengar" di peta wilayah. Penggantinya satu event `dialogue_completed` di slide terakhir, dibuat juga dari data lama di migrasi ([29 → §5.3](29_IMPLEMENTASI_DATA_PENELITIAN.md#53-dialogue_advanced-diganti-dialogue_completed)).
+2. `audio_pause` (ditandai dihapus) adalah satu-satunya pembawa lama mendengar narasi yang belum selesai. Event mentahnya tidak ditulis lagi, tetapi baris `pause` di tabel audio tetap, dan klien juga mengirim lama mendengar saat narasi diulang atau ditinggal ([29 → §5.4](29_IMPLEMENTASI_DATA_PENELITIAN.md#54-audio_pause-dan-lama-mendengar)).
+3. `last_input_ms` Cari Objek memakai rujukan waktu yang berbeda dari tantangan lain; `ready_ms` menyamakannya ([29 → §6.1](29_IMPLEMENTASI_DATA_PENELITIAN.md#61-saat-butir-bisa-dijawab-ready_ms)).
+
+Satu putaran tanya, empat pertanyaan; pengembang memilih usulan di tiga pertanyaan pertama ([29 → Keputusan pengembang](29_IMPLEMENTASI_DATA_PENELITIAN.md#19-keputusan-pengembang)):
+1. **`ketua` mendapat lembar `event` dan kolom `answer_key`.** Lembar `event` hanya berisi event bertanda Peneliti, dengan kode sebagai pengganti id internal. Ini menjawab [27 → Data yang terlihat per peran](27_IMPLEMENTASI_PERAN_PENELITI.md#9-data-yang-terlihat-per-peran). Tidak dipilih: lembar `event` saja; tidak keduanya.
+2. **`answer_changed` digabung ke `answer_submitted`**, dengan `changed` di payload. Di kode, `answer_changed` ditulis server untuk kiriman Cari Objek yang dinilai, bukan perubahan sebelum Cek seperti tertulis di 01. Tidak dipilih: dihapus seperti tertulis di 01.
+3. **Data lama dihapus di migrasi** setelah `gelita:log:hitung` mencetak jumlahnya, dengan satu baris audit. Tidak dipilih: hanya berhenti menulis.
+4. **Templat terisi per sesi lapangan, ditambah impor L1–L6 ke sistem sekarang.** Usulan AI adalah templat terisi tanpa impor; pengembang memilih impor. Akibatnya lembar yang diketik kini juga tersimpan di server, berkode dan tanpa nama, dan masuk unduhan `ketua`. Pengaman yang diturunkan dari 02 dan 26: kutipan ucapan siswa L5 dan token L1 tidak diimpor, L7 tidak pernah di server, dan isian teks yang memuat kata nama siswa rombel itu memberi peringatan yang harus dikonfirmasi. Tidak dipilih: satu templat kosong; templat terisi tanpa impor.
+
+Lima pertanyaan terbuka di [29 → Pertanyaan terbuka](29_IMPLEMENTASI_DATA_PENELITIAN.md#18-pertanyaan-terbuka) tidak menahan draf, antara lain situs statis lembar lapangan dan `is_touch`. Pertanyaan terbuka [28](28_IMPLEMENTASI_SESI_LAPANGAN.md#21-pertanyaan-terbuka) no. 5 dijawab: `markStale()` menulis `session_paused {via: idle}`.
+
+Akibat ke 01, 02, 03, 11, 22, 26, 27, dan 28 dicatat di [29 → Akibat ke dokumen lain](29_IMPLEMENTASI_DATA_PENELITIAN.md#20-akibat-ke-dokumen-lain) dan dibawa sesi koordinator. Yang paling penting: 22 dan 26 (A8) masih menulis lembar lapangan hanya sebagai kertas lalu templat, padahal kini lembar juga diunggah ke server.
+
+Langkah berikutnya: pengembang meninjau 29. Bagian 4 (`30`) boleh ditulis; nomor migrasi `003600` mungkin bertabrakan dengan bagian 4 dan diselaraskan sesi koordinator.
+
 **Bagian 2 dokumen implementasi didraf: sesi lapangan, token, kode peserta, pemantauan, dan `gelita:uji:akun`** (cabang `sky/practical-knuth-x5vyu0`, PR #282) · `asal: pengembang` · `draf pengembang` · Prototipe I, belum merevisi produk
 
 [28_IMPLEMENTASI_SESI_LAPANGAN.md](28_IMPLEMENTASI_SESI_LAPANGAN.md) ditulis untuk perubahan sistem no. 11, 12, 13, dan 24. Bagian 2 ditulis sebelum PR #282 digabung, atas permintaan pengembang, di cabang yang sama dengan bagian 1. Isinya:
