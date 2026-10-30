@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 27 Oktober 2026 · **Status: L0–L7 final, disetujui pengembang 26 Oktober 2026** (daftar kerja no. 11; L5 dan L7 disesuaikan dengan dokumen tahap 2 pada 27 Oktober 2026, lihat *Perubahan setelah persetujuan*); **L8 Profil sekolah draf** (ditambahkan 26 Oktober 2026, keputusan pengembang tentang penelitian pendahuluan di [04](04_CATATAN_KEPUTUSAN.md)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 30 Oktober 2026 · **Status: L0–L7 final, disetujui pengembang 26 Oktober 2026** (daftar kerja no. 11; L5 dan L7 disesuaikan dengan dokumen tahap 2 pada 27 Oktober 2026, dan L1, L2, L7, dan cara mengisi dengan dokumen implementasi 28–30 pada 30 Oktober 2026, lihat *Perubahan setelah persetujuan*); **L8 Profil sekolah draf** (ditambahkan 26 Oktober 2026, keputusan pengembang tentang penelitian pendahuluan di [04](04_CATATAN_KEPUTUSAN.md)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Lembar lapangan mengisi yang tidak terlihat oleh log game dan modul tes: siapa yang dibantu, perangkat yang dipakai bareng, kondisi kelas, emosi siswa, dan alasan di balik jawaban. Semua lembar diisi **peneliti**, bukan guru. Setiap lembar memakai kunci yang sama dengan log, sesuai [aturan gabung di kamus data](11_KAMUS_DATA.md#aturan-gabung-lembar-lapangan) (`kamus-1.0`): **kode peserta** (misalnya S03-A07), **kode sesi lapangan** (misalnya S03-A-P2), dan **jam WIB** sampai detik. Cara kerja di lapangan dan peran P1–P3 ada di dokumen utama, bagian *Kerja lapangan*.
 
@@ -46,7 +46,12 @@ Siswa tanpa izin orang tua tidak punya akun GELITA dan ikut kegiatan pengganti d
 - **Jumlah baris kosong per halaman:** L1 penyimpangan 12, L2 30 (satu kelas), L3 15, L4 30 (satu putaran per halaman), L5 6, L6 30, L7 30.
 - **Menulis:** huruf cetak, pulpen bertinta hitam. Jam ditulis `JJ:MM:SS` dari ponsel yang sudah disamakan. Isian yang tidak ada ditulis "—", bukan dikosongkan. Salah tulis dicoret satu garis, ditulis yang benar di sampingnya, dan diparaf; tidak memakai penghapus cair.
 - **Nama siswa hanya di L7.** Lembar lain memakai kode peserta dan nomor kursi.
-- **Paling lambat 24 jam setelah sesi**, lembar diketik ke templat spreadsheet atau ke situs statis revisi ini (kolomnya sama dengan tabel di bawah). 10% baris diketik ulang orang lain untuk mengecek salah ketik. Di situs statis, setiap lembar bisa diisi, diunduh sebagai CSV, Excel, atau PDF, dan dicetak kosong.
+- **Templat per sesi.** Templat ketik diunduh per sesi lapangan dari panel peneliti (*Unduh templat lembar*). Isinya sudah terisi kode sesi, isi pertemuan, tanggal, dan kode peserta rombel itu dengan bukletnya, tanpa nama. Templat yang sama bisa dicetak sebagai lembar kosong.
+- **Paling lambat 24 jam setelah sesi**, lembar diketik ke templat itu atau ke situs statis revisi ini (kolomnya sama dengan tabel di bawah), lalu **diunggah ke panel** (*Unggah lembar yang sudah diketik*). Panel menampilkan pratinjau dan menolak baris yang salah (kode sesi, jam, kode peserta, atau kode isian yang tidak dikenal). Kalau isian teks memuat kata yang sama dengan nama siswa rombel itu, panel memberi peringatan; ganti nama dengan kode peserta, lalu centang *Sudah saya periksa, tidak ada nama siswa*. Lembar yang terlambat diunggah ditandai di panel. Unggah ulang menggantikan lembar yang sama.
+- **Ketikan kedua.** 10% baris diketik ulang orang lain untuk mengecek salah ketik, lalu diunggah dengan pilihan *Ketikan kedua (cek)*. Panel menampilkan sel yang berbeda untuk diperbaiki di ketikan pertama.
+- **Yang tidak diunggah:** kolom *Kutipan ucapan siswa* di L5 (tetap di folder transkrip terenkripsi) dan kolom *Token* di L1 (riwayat token sudah ada di panel). L7 tidak pernah diunggah; kolom berkodenya diisi langsung di panel (lihat L7).
+- **Isian gabungan di templat.** Di kertas tetap seperti tabel di bawah. Di templat, *Headset* (L1), *Pakai bareng* dan *Pindah perangkat* (L2), dan *Menit tersedia dan dipakai* (L1) masing-masing sudah dua kolom ([29 → Kode kolom per lembar](29_IMPLEMENTASI_DATA_PENELITIAN.md#107-kode-kolom-per-lembar)).
+- Di situs statis, setiap lembar bisa diisi, diunduh sebagai CSV, Excel, atau PDF, dan dicetak kosong. CSV dari situs statis bisa diunggah per lembar.
 
 ## L0 Daftar periksa persiapan sesi
 
@@ -73,9 +78,9 @@ Kode sesi lapangan: __________ · Tanggal: __________ · Inisial P1: ______
 - P1:
   - [ ] Sebelum P1: amplop formulir izin ([23 → T2](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t2-formulir-persetujuan-orang-tuawali)) sudah dikumpulkan, pengingat H-5 sudah dikirim, dan L7 diisi dari formulir yang kembali
   - [ ] Modul tes dan angket terbuka untuk sesi ini; contoh soal siap ditayangkan
-  - [ ] Akun peneliti P1 bisa memasukkan baris, kursi, dan buklet di panel (akun `koordinator`; kode sekolah **menunggu daftar kerja no. 12**)
+  - [ ] Akun peneliti P1 bisa memasukkan baris, kursi, dan izin berkode dari L7 di panel (akun `koordinator`; kode sekolah **menunggu daftar kerja no. 12**)
 - P2–P4:
-  - [ ] Buklet dan baris-kursi semua siswa sudah ada di panel, dan panel menunjukkan B1–B4 seimbang di rombel ini
+  - [ ] Baris dan kursi semua siswa sudah ada di panel, panel menunjukkan "Semua siswa sudah punya bentuk tes", dan peringatan buklet B1–B4 yang belum seimbang (kalau ada) sudah diperiksa
   - [ ] Tes awal sudah dinilai; daftar kelompok nilai tes awal (rendah, sedang, tinggi) siap untuk memilih siswa L5
   - [ ] Daftar siswa yang absen di pertemuan sebelumnya, untuk sesi susulan
 - P5:
@@ -103,10 +108,10 @@ L1 menjelaskan konteks di balik angka log. Misalnya, waktu yang lama bisa karena
 <!-- lembar: L1-kondisi -->
 | Isian | Cara mengisi | Contoh | Isi di sini |
 | --- | --- | --- | --- |
-| Kode sesi lapangan | Sekolah-rombel-pertemuan, sama dengan sesi di panel peneliti; susulan berakhiran `-S` | S03-A-P2 | |
+| Kode sesi lapangan | Sekolah-rombel-pertemuan, sama dengan sesi di panel peneliti; susulan berakhiran `-S`, susulan kedua `-S2` | S03-A-P2 | |
 | Isi pertemuan | Wilayah, atau tes dan angket (lihat *Pertemuan dan lembar*). Untuk susulan P5, tulis juga "skala sikap" kalau siswa mengisinya di sesi ini | Temanggung | |
 | Tanggal P5 (hanya susulan skala sikap) | Tanggal P5 rombel ini; susulan skala sikap paling lama 7 hari sesudahnya. Lewat 7 hari, skala tidak dibuka dan siswa tercatat `absen` | 22 Nov 2027 | |
-| Token | Token yang ditulis di papan tulis; kalau diganti, tulis keduanya dan jamnya | KD7RMA | |
+| Token | Token yang ditulis di papan tulis; kalau diganti, tulis keduanya dan jamnya. Riwayat token juga tersimpan di panel, jadi kolom ini tidak diunggah | KD7RMA | |
 | Tanggal; jam mulai dan selesai | Jam WIB sampai detik | 15 Nov 2027; 07:32:15–09:28:40 | |
 | Peneliti | Inisial dan peran | AR (P1), DS (P2), MN (P3) | |
 | Siswa hadir / berizin / bermain | Tiga angka. "Bermain" = siswa yang masuk dengan token | 28 / 26 / 26 | |
@@ -140,7 +145,7 @@ L2 adalah kunci penggabungan: tanpa L2, catatan L1, L3, dan L4 tidak bisa dipasa
 
 1. Gambar denah di balik lembar: papan tulis, pintu, dan kursi. Baris dihitung dari depan (baris 1), kursi dihitung dari kiri dilihat dari papan tulis (kursi 1). Nomor kursi di kolom pertama berjalan terus (01, 02, …) dan dipakai L1, L3, dan L4.
 2. Setelah siswa masuk, salin kode penelitian dari layar siswa: di P1 dari bagian atas layar modul tes, di pertemuan lain dari halaman Profil. Jangan menyalin nama atau nama pengguna.
-3. **Buklet dan bentuk tes ditetapkan di P1** dari letak kursi ([06](06_KISI_KISI_BANK_SOAL.md#desain-buklet-usulan), [13](13_TES_AWAL_AKHIR.md#pembagian-bentuk-denah-papan-catur)):
+3. **Buklet dan bentuk tes ditetapkan di P1** dari letak kursi ([06](06_KISI_KISI_BANK_SOAL.md#desain-buklet-usulan), [13](13_TES_AWAL_AKHIR.md#pembagian-bentuk-denah-papan-catur)). Panel peneliti yang menghitungnya dengan aturan ini; tabel di bawah untuk mengecek:
 
    | Baris | Kursi | Buklet | Bentuk tes awal (tes akhir kebalikannya) |
    | --- | --- | --- | --- |
@@ -149,7 +154,7 @@ L2 adalah kunci penggabungan: tanpa L2, catatan L1, L3, dan L4 tidak bisa dipasa
    | genap | ganjil | B3 | B |
    | genap | genap | B4 | A |
 
-4. **Di P1, langsung setelah semua siswa mendaftar**, P1 memasukkan kode peserta, baris, kursi, dan buklet ke panel peneliti, sementara siswa menunggu di layar pembuka modul tes (± 5 menit). P3 mencocokkan kode di layar dengan L2. Tes awal baru dimulai setelah panel menunjukkan semua siswa punya bentuk, dan buklet B1–B4 seimbang di rombel itu (keputusan 26 Oktober 2026).
+4. **Di P1, langsung setelah semua siswa mendaftar**, P1 memasukkan kode peserta, baris, dan kursi ke panel peneliti, sementara siswa menunggu di layar pembuka modul tes (± 5 menit). Panel menghitung buklet dan bentuk tes, lalu P1 menyalinnya ke kolom *Buklet* dan *Bentuk tes awal* di L2. P3 mencocokkan kode di layar dengan L2. Tes awal baru dimulai setelah panel menunjukkan semua siswa punya bentuk (keputusan 26 Oktober 2026). Kalau buklet B1–B4 belum seimbang di rombel itu, panel memberi peringatan tanpa menahan; periksa lagi baris dan kursi (keputusan pengembang 30 Oktober 2026, [28 → Isian L2](28_IMPLEMENTASI_SESI_LAPANGAN.md#11-isian-l2-kursi-buklet-dan-bentuk-tes)).
 5. Di P2–P5, buklet disalin dari L2 P1. Buklet dan bentuk melekat pada siswa: kalau siswa duduk di kursi lain, tulis baris dan kursinya yang baru, tetapi buklet tetap.
 6. Kalau satu perangkat dipakai dua siswa, tulis dua baris dengan nomor perangkat yang sama, dan "Ya" serta kode siswa lainnya di kolom *Pakai bareng*. Kalau siswa pindah perangkat, tulis jam dan nomor perangkat barunya.
 7. Siswa yang lupa kata sandi di-reset P1 dari panel peneliti lewat kode pesertanya (kode dicari di L2 pertemuan sebelumnya), lalu dicatat di kolom catatan.
@@ -163,7 +168,7 @@ L2 adalah kunci penggabungan: tanpa L2, catatan L1, L3, dan L4 tidak bisa dipasa
 | 03 | 1 | 3 | P03 | S03-A16 | B1 | A | 07:42:30 | Ya, S03-A15 | — | Bergantian dengan S03-A15 |
 | 04 | 2 | 1 | P04 | S03-A04 | B3 | B | 07:44:05 | Tidak | — | Lupa kata sandi; di-reset P1 lewat kode |
 
-Kolom *Bentuk tes awal* hanya diisi di P1. Panel peneliti yang menetapkan bentuk; kolom ini untuk mengecek.
+Kolom *Bentuk tes awal* hanya diisi di P1. Panel peneliti yang menetapkan buklet dan bentuk; kedua kolom disalin dari panel dan dipakai untuk mengecek. Kalau buklet di L2 yang diunggah berbeda dari panel, yang berlaku panel.
 
 ## L3 Log bantuan dan gangguan
 
@@ -333,6 +338,8 @@ L7 menentukan data siapa yang boleh dianalisis (`consent_ok`). Ini satu-satunya 
 - Sebelum izin dicatat Ya, P1 memverifikasinya: formulir kembali lewat guru kelas dalam amplop tertutup, nama anak cocok dengan daftar kelas, dan tanda tangan (atau cap jempol dengan saksi) ada. Kalau ragu, P1 menelepon nomor di formulir. P1 mencentang kotak verifikasi di T2 (PP No. 33 Tahun 2026 Pasal 38 ayat (4), `needs_verification`; [22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum)).
 - Persetujuan siswa: Ya kalau siswa menyatakan setuju secara lisan saat pembukaan P1 **dan** mencentang persetujuan di halaman daftar.
 - Status: `Aktif`; `Tanpa izin` (kegiatan pengganti, tanpa akun); `Mengundurkan diri (data tetap)` dengan tanggal (anak berhenti, data sampai tanggal itu tetap dipakai); `Mengundurkan diri (hapus data)` dengan tanggal (peneliti mengajukan permintaan hapus data, admin menjalankannya). Formulirnya [23 → T10](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t10-formulir-pengunduran-diri-dan-permintaan-hapus-data); anak yang menolak sendiri di pembukaan P1 dicatat `Tanpa izin` dengan catatan "anak menolak"; `Keluar` dengan tanggal (pindah sekolah atau tidak lagi hadir; datanya tetap kecuali diminta dihapus).
+- **Kolom berkode masuk panel.** Di P1, langsung setelah pendaftaran dan bersama baris dan kursi L2, P1 memasukkan kolom L7 yang berkode ke panel peneliti (halaman izin sesi lapangan): tanggal izin orang tua, izin rekaman suara, izin butir risiko daring, dan status dengan tanggalnya. Nama tidak pernah dimasukkan. Izin yang belum diisi dibaca Tidak. Setiap perubahan di L7 sesudahnya (izin ditarik, status berubah) juga dimasukkan ke panel hari itu, dengan tanggalnya (keputusan pengembang 30 Oktober 2026, [30 → Izin berkode per siswa](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#52-izin-berkode-per-siswa)).
+- **Status mundur menonaktifkan akun saat disimpan.** Begitu P1 menyimpan `Mengundurkan diri (data tetap)` atau `Mengundurkan diri (hapus data)` di panel, akun siswa langsung nonaktif, tanpa menunggu admin. Tanggal simpan itu yang ditulis di kotak "akun dinonaktifkan tanggal" di T10. Untuk `hapus data`, P1 lalu mengajukan permintaan hapus, dan `ketua` mengonfirmasinya sebelum admin menjalankan ([30 → Status mundur dan akun nonaktif](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#53-status-mundur-dan-akun-nonaktif)). `Keluar` tidak menonaktifkan akun.
 - `consent_ok = 1` hanya kalau izin orang tua Ya, persetujuan siswa Ya, dan status `Aktif` atau `Keluar` ([11](11_KAMUS_DATA.md#penanda-untuk-analisis)). Mulai `kamus-1.1`, `Mengundurkan diri (data tetap)` juga `consent_ok = 1` untuk data sampai tanggal mundur (keputusan pengembang, 27 Oktober 2026).
 
 Sekolah: ______ (kode sekolah: **menunggu daftar kerja no. 12**) · Rombel: ___ · Halaman __ dari __
@@ -345,7 +352,7 @@ Sekolah: ______ (kode sekolah: **menunggu daftar kerja no. 12**) · Rombel: ___ 
 | 3 | (nama) | 5A | Ya, 2 Nov 2027 | Tidak | Tidak | Ya | S03-A12 | Aktif |
 | 4 | (nama) | 5A | Ya, 1 Nov 2027 | Ya | Ya | Ya | S03-A04 | Mengundurkan diri (hapus data) 18 Nov 2027; permintaan hapus diajukan |
 
-**Penyimpanan:** lembar kertas disimpan di lemari terkunci, terpisah dari lembar lain, bersama pemetaan NPSN ke kode sekolah. Salinan digitalnya dienkripsi dan hanya bisa dibuka P1 dan ketua peneliti. Lembar dimusnahkan saat studi ditutup, sesuai [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan). Sebelum dimusnahkan, ketua peneliti menyalin **daftar izin berkode** dari L7: kode peserta, ketiga kolom izin dengan tanggalnya, persetujuan siswa, dan status, tanpa nama dan rombel. Daftar ini bukti persetujuan dan disimpan selama data berkode disimpan (keputusan pengembang 27 Oktober 2026; PP No. 33 Tahun 2026 Pasal 36). Situs statis revisi ini menyimpan isian di peramban perangkat yang dipakai, jadi L7 hanya diisi di laptop yang aman dan terkunci.
+**Penyimpanan:** lembar kertas disimpan di lemari terkunci, terpisah dari lembar lain, bersama pemetaan NPSN ke kode sekolah. Salinan digitalnya dienkripsi dan hanya bisa dibuka P1 dan ketua peneliti. Lembar dimusnahkan saat studi ditutup, sesuai [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan). Sebelum dimusnahkan, ketua peneliti mengunduh **daftar izin berkode** dari sistem (akun `ketua`): kode peserta, ketiga kolom izin dengan tanggalnya, waktu dan versi persetujuan siswa, dan status, tanpa nama dan rombel. Daftar itu dicocokkan baris demi baris dengan L7, bukan disalin tangan; selisih dibetulkan dulu di panel, lalu daftar diunduh lagi ([30 → Daftar izin berkode](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#101-daftar-izin-berkode)). Daftar ini bukti persetujuan dan disimpan selama data berkode disimpan (keputusan pengembang 27 Oktober 2026; PP No. 33 Tahun 2026 Pasal 36). Situs statis revisi ini menyimpan isian di peramban perangkat yang dipakai, jadi L7 hanya diisi di laptop yang aman dan terkunci. L7 bernama tidak pernah diunggah ke server dan templatnya tidak ada di panel; yang ada di server hanya izin berkode tanpa nama.
 
 ## L8 Profil sekolah
 
@@ -408,3 +415,10 @@ Dibandingkan draf 23 Oktober 2026 (yang sebagian diselaraskan 26 Oktober 2026):
 - **L0:** amplop formulir izin dan pengingat H-5 sebelum P1; tautan ke prosedur rujukan di 22.
 - **L5:** tempat yang terlihat, persetujuan ulang singkat sebelum wawancara, dan penolakan rekaman oleh anak didahulukan dari izin orang tua. Setelah perbandingan dengan panduan klirens etik BRIN (sesi koordinator, 27 Oktober 2026): tempat itu juga tidak terdengar guru atau teman.
 - **L7:** tautan ke teks surat di 23; butir surat baru (tanpa foto dan video, batas kerahasiaan, berbagi data berkode atas persetujuan komite, kontak komite, batas hapus sampai studi ditutup); dua status mundur, `data tetap` dan `hapus data`; `consent_ok` untuk `data tetap` mulai `kamus-1.1`; pemusnahan lembar saat studi ditutup. Setelah perbandingan dengan panduan klirens etik BRIN (sesi koordinator, 27 Oktober 2026): butir surat judul penelitian, alamat komite, dan masa simpan data berkode paling singkat 20 tahun.
+
+30 Oktober 2026, dari dokumen implementasi [28](28_IMPLEMENTASI_SESI_LAPANGAN.md), [29](29_IMPLEMENTASI_DATA_PENELITIAN.md), dan [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) dan keputusan pengembang di [04](04_CATATAN_KEPUTUSAN.md) (sesi koordinator, `asal: pengembang`). Judul kolom tabel tidak berubah:
+
+- **Cara mencetak dan mengisi:** templat diunduh per sesi dari panel; lembar diunggah ke panel paling lambat 24 jam; ketikan kedua lewat unggah cek; kutipan L5 dan token L1 tidak diunggah; isian gabungan menjadi dua kolom di templat.
+- **L1:** kode susulan kedua `-S2`; riwayat token juga dari panel.
+- **L2:** P1 memasukkan kode, baris, dan kursi; buklet dan bentuk tes awal dihitung panel lalu disalin ke L2; buklet yang tidak seimbang memberi peringatan tanpa menahan tes awal (mengubah "buklet dimasukkan P1" dari 26 Oktober 2026); butir L0 yang sama ikut diselaraskan.
+- **L7:** kolom berkode dimasukkan P1 ke panel; status mundur menonaktifkan akun saat disimpan; daftar izin berkode diunduh dari sistem dan dicocokkan `ketua` dengan L7, bukan disalin tangan.

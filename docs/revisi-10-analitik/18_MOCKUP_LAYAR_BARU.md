@@ -91,7 +91,7 @@ Ukuran gambar 27–111 KB (WebP, jumlah ± 1,8 MB). Semua layar game digambar di
 
 ### 3. Token sesi dan layar penelitian (`mk-tk-01` … `mk-tk-05`)
 
-**Tujuannya.** Token 6 huruf membuka satu sesi lapangan dan wilayah atau modul tes pertemuan itu; di luar sesi seluruh game tertutup sampai studi selesai (01 *Token sesi*, perubahan sistem no. 11). Siswa mengetik token sekali per sesi setelah masuk atau saat daftar; P1 membuat sesi di panel peneliti (perubahan sistem no. 10 dan 11). Sesi penelitian di layar kecil ditolak (no. 16).
+**Tujuannya.** Token 6 huruf dan angka membuka satu sesi lapangan dan wilayah atau modul tes pertemuan itu; di luar sesi seluruh game tertutup sampai studi selesai (01 *Token sesi*, perubahan sistem no. 11). Siswa mengetik token sekali per sesi setelah masuk atau saat daftar; P1 membuat sesi di panel peneliti (perubahan sistem no. 10 dan 11). Sesi penelitian di layar kecil ditolak (no. 16).
 
 **Tata letak.** Layar siswa memakai halaman Masuk sekarang (`logo-centre`, Jaka melambai, panel kanan). Token diketik di enam kotak besar berhuruf mono, supaya huruf yang mirip mudah dibedakan. Kode penelitian siswa tampil di atas kotak.
 
@@ -104,6 +104,13 @@ Ukuran gambar 27–111 KB (WebP, jumlah ± 1,8 MB). Semua layar game digambar di
 | [`mk-tk-05`](gambar/mockup/mk-tk-05.webp) | Panel peneliti (tampilan panel admin, bukan game): formulir sesi baru (sekolah, rombel, pertemuan, tanggal, jam buka–tutup) dan sesi berjalan dengan token `KD7RMA` dari 01, jumlah siswa yang sudah masuk, *Buat token baru*, dan *Tutup sesi sekarang*. Tanggalnya contoh |
 
 *Draf salinan:* judul "Token Sesi", petunjuk "Ketik enam huruf token yang ditulis kakak peneliti di papan tulis, ya.", galat "Token belum cocok. Periksa lagi huruf di papan tulis, ya. Kalau masih belum bisa, angkat tangan.", judul "Sampai jumpa di sesi berikutnya!", pesan layar kecil "Sesi penelitian perlu layar yang lebih besar. Pakai tablet atau laptop yang sudah disiapkan kakak peneliti, ya.", dan semua teks panel peneliti. Pesan untuk token yang sudah lewat jamnya belum digambar; usulannya "Sesi ini sudah ditutup. Tanyakan token baru ke kakak peneliti, ya." (celah no. 4).
+
+*Teks awal setelah dokumen implementasi* (sesi koordinator, 30 Oktober 2026, dari [28 → Layar dan teks](28_IMPLEMENTASI_SESI_LAPANGAN.md#16-layar-dan-teks); `asal: pengembang`, `draf pengembang`). Token terdiri dari huruf dan angka (tanpa O, 0, I, 1, L), jadi petunjuknya menjadi "Ketik enam huruf dan angka token yang ditulis kakak peneliti di papan tulis, ya." Tiga pesan penolakan ditambahkan:
+- token sesi yang belum dibuka (`tokenNotOpenYet`): "Sesi ini belum dibuka. Tunggu aba-aba kakak peneliti, ya.";
+- token kelas lain (`tokenOtherClass`): "Token ini untuk kelas lain. Periksa lagi token di papan tulis kelasmu, ya.";
+- token susulan untuk siswa yang bukan anggotanya (`tokenNotMember`): "Token ini untuk sesi susulan teman lain. Tanyakan ke kakak peneliti, ya."
+
+Gambar `mk-tk-01` tetap memuat petunjuk lama ("enam huruf") karena sudah disetujui dan dikirim untuk langkah 1; tidak digambar ulang. Kalimat akhir semua pesan token ditetapkan di 28 setelah telaah ahli media dan uji keterbacaan.
 
 **Yang dinilai ahli media.**
 - Apakah layar token mudah dipahami tanpa penjelasan panjang, dan kotak huruf cukup besar untuk anak?
@@ -192,8 +199,8 @@ Ditemukan saat menggambar; tidak diperbaiki di sini karena berkasnya milik dokum
 1. **Penjelasan setelah kesempatan Skenario Digital habis.** 01 menulis "tindakan yang aman ditampilkan dan dijelaskan", tetapi 08 hanya punya umpan balik per pilihan. Umpan balik pilihan tepat diawali "Tepat sekali." atau "Tepat.", yang janggal kalau siswa tidak memilihnya. **Diputuskan (26 Oktober 2026): satu kalimat penjelasan per skenario ditulis di 08** (24 kalimat, kolom atau baris baru), divalidasi bersama bank. **Selesai:** 24 baris *Penjelasan setelah kesempatan habis* ditulis di 08, dengan aturannya di *Cara membaca*, dan `mk-sd-05` digambar ulang.
 2. **Pesan ketukan keliru di *Periksa Unggahan*.** Pesan Cari Objek sekarang menyebut *benda*. Babak 2 butuh kalimat sendiri; usulan di layar 2.
 3. **Salinan modul tes.** 13 menetapkan pengingat lima menit dan daftar nomor soal, tetapi tidak menulis kalimatnya. Usulan di layar 4 perlu masuk 13 atau dokumen implementasi, lalu ikut uji keterbacaan; draf salinan layar baru diuji di [24](24_UJI_KETERBACAAN.md#bahan-yang-menunggu-uji-keterbacaan).
-4. **Salinan token dan layar penelitian.** 01 hanya menulis pesan di luar sesi. Pesan token keliru, token lewat jam, dan layar kecil belum ada; usulan di layar 3.
-5. **Urutan token saat daftar di P1.** 01 menulis "Siswa masuk atau daftar, lalu mengetik token", tetapi juga "Saat siswa mendaftar dengan token, sekolah dan kelasnya terisi sendiri". Artinya di P1 token diketik sebelum akun ada (di awal pendaftaran), sedangkan P2–P5 sesudah masuk. Mock-up menggambar yang kedua. Urutan di P1 perlu ditulis tegas di dokumen implementasi perubahan no. 11 dan 12.
+4. **Salinan token dan layar penelitian.** 01 hanya menulis pesan di luar sesi. Pesan token keliru, token lewat jam, dan layar kecil belum ada; usulan di layar 3. **Dibawa (30 Oktober 2026):** pesan token masuk [28 → Layar dan teks](28_IMPLEMENTASI_SESI_LAPANGAN.md#16-layar-dan-teks), ditambah tiga pesan penolakan baru (layar 3). Pesan layar kecil tetap di perubahan no. 16.
+5. **Urutan token saat daftar di P1.** 01 menulis "Siswa masuk atau daftar, lalu mengetik token", tetapi juga "Saat siswa mendaftar dengan token, sekolah dan kelasnya terisi sendiri". Artinya di P1 token diketik sebelum akun ada (di awal pendaftaran), sedangkan P2–P5 sesudah masuk. Mock-up menggambar yang kedua. Urutan di P1 perlu ditulis tegas di dokumen implementasi perubahan no. 11 dan 12. **Dijawab (30 Oktober 2026):** pendaftaran di P1 dimulai dengan token ([28 → Pendaftaran dengan token](28_IMPLEMENTASI_SESI_LAPANGAN.md#65-pendaftaran-dengan-token-p1)).
 6. **Bantuan (💡) di Skenario Digital.** Tidak ada dokumen yang menyebut apakah tantangan kelima punya tombol Bantuan. Mock-up tidak menampilkannya.
 7. **Penghitung ✓/✗ di kepala Skenario Digital.** Kerangka tantangan menghitung butir benar dan salah, tetapi di Skenario Digital belum ditetapkan apakah "kurang tepat" dihitung salah. Mock-up menghitung skenario yang sudah selesai dengan tepat.
 8. **Kolom bintang per wilayah di Balai Refleksi terlalu sempit untuk 15 tantangan.** "13 dari 15" bertumpuk dengan bilahnya di lebar kolom sekarang (`.reflection-side .bar-row`, 5,75rem); `mk-ss-05` melebarkannya hanya di halaman mock-up. Perlu dicatat di dokumen implementasi perubahan sistem no. 2 (lima belas tantangan) atau no. 21.
