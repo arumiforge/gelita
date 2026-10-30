@@ -139,7 +139,7 @@ Keputusan ini tidak perlu ditanyakan ulang saat implementasi. K1, K2, K11, K12, 
 | Studi (`/admin/studi`, `POST`) | — | — | Ya | `studies.manage` | Keputusan no. 3 |
 | Rilis dan paket aset (`/admin/studi/rilis…`) | Ya | — | — | `releases.manage` | Jalurnya tidak diganti |
 | Pratinjau paket (`?paket=`) | Ya | — | — | `releases.manage` | K13 |
-| Tata kelola: hapus data (`/admin/tata-kelola`, `…/hapus/…`) | Ya | — | — | `deletion.execute` | Pengajuan dari peneliti: bagian 4 |
+| Tata kelola: hapus data (`/admin/tata-kelola`, `…/hapus/…`) | Ya | — | — | `deletion.execute` | Pengajuan dan konfirmasi di halaman *Permintaan data* bagian 4 ([30 → Permintaan hapus data](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#7-permintaan-hapus-data)) |
 | Tata kelola: log audit (`/admin/tata-kelola/audit`) | Ya | — | — | `audit.view` | Ketua melihat riwayat unduhannya sendiri di halaman unduh data |
 | Tata kelola: retensi (`/admin/tata-kelola/retensi`) | Ya | — | — | `retention.run` | |
 | Sekolah (`/admin/sekolah…`) | Ya | — | — | `schools.manage` | Pemetaan NPSN ke kode hanya admin |
@@ -154,14 +154,21 @@ Keputusan ini tidak perlu ditanyakan ulang saat implementasi. K1, K2, K11, K12, 
 | --- | --- | --- | --- | --- | --- |
 | Sesi lapangan dan token | — | Ya | Ya | `field_sessions.manage` | 2 (`28`) |
 | Isian L2 (kode, baris, kursi, buklet) | — | Ya | Ya | `field_sessions.manage` | 2 (`28`) |
+| Templat lembar lapangan per sesi, unggah lembar, ketikan kedua | — | Ya | Ya | `field_sessions.manage` | 3 (`29`), di halaman sesi lapangan |
+| Izin berkode per siswa (kolom berkode L7) | — | Ya | Ya | `field_sessions.manage` | 4 (`30`), di halaman sesi lapangan |
 | Panel pemantauan lapangan | Lihat angka saja, tanpa kode peserta ([28 → Panel pemantauan](28_IMPLEMENTASI_SESI_LAPANGAN.md#12-panel-pemantauan)) | Ya | Ya | `monitoring.view` | 2 (`28`) |
 | Log teknis (perangkat, paket, event hilang) | Ya | — | — | `tech_logs.view` | 3 (`29`) |
-| Lembar *Kamus Data* dan isi unduhan berkode | — | — | Ya | `research.export` | 3 (`29`) |
+| Lembar *Kamus Data* dan isi unduhan berkode, termasuk lembar `event` dan kolom `answer_key` | — | — | Ya | `research.export` | 3 (`29`) |
 | Mengajukan permintaan hapus data (semua atau sebagian) | — | Ya | Ya | `deletion.request` | 4 (`30`) |
+| Mengonfirmasi atau menolak permintaan dari `peneliti` | — | — | Ya | `deletion.confirm` | 4 (`30`, K1) |
 | Menjalankan permintaan hapus data | Ya | — | — | `deletion.execute` | 4 (`30`) |
 | Penanda tindak lanjut butir risiko daring | — | — | Ya | `risk_flags.view` | 4 (`30`) |
 | Ambil data satu anak untuk permintaan orang tua | — | — | Ya | `research.export` | 4 (`30`), 23 → T10 pilihan D |
-| Pembetulan data pendaftaran dengan jejak audit | Ya | — | — | `participants.accounts` | 4 (`30`) |
+| Daftar izin berkode untuk penutupan studi | — | — | Ya | `research.export` | 4 (`30`) |
+| Pembetulan data pendaftaran dengan jejak audit, aktifkan lagi akun | Ya | — | — | `participants.accounts` | 4 (`30`) |
+| Penutupan studi: nama dan sekolah diganti kode | Ya (menjalankan) | — | Lihat | `identities.replace`, `studies.view` | 4 (`30`) |
+
+Halaman milik bagian 2–4, rute, dan menu yang lengkap ada di [28 → Rute](28_IMPLEMENTASI_SESI_LAPANGAN.md#15-rute), [29 → Rute dan perintah spark](29_IMPLEMENTASI_DATA_PENELITIAN.md#13-rute-dan-perintah-spark), dan [30 → Hak akses dan menu](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#14-hak-akses-dan-menu).
 
 ---
 
@@ -194,14 +201,18 @@ private const CAPABILITIES = [
     'audit.view'                  => ['admin'],
     'retention.run'               => ['admin'],
     'deletion.request'            => ['peneliti', 'ketua'],
+    'deletion.confirm'            => ['ketua'],   // part 4 (30, K1)
     'deletion.execute'            => ['admin'],
     // Hooks for parts 2-4.
     'field_sessions.manage'       => ['peneliti', 'ketua'],
     'monitoring.view'             => ['admin', 'peneliti', 'ketua'],
     'tech_logs.view'              => ['admin'],
     'risk_flags.view'             => ['ketua'],
+    'identities.replace'          => ['admin'],   // part 4 (30 §10.2)
 ];
 ```
+
+Peta ini lengkap untuk bagian 1–4: bagian 2 (`28`) dan bagian 3 (`29`) tidak menambah kemampuan; bagian 4 (`30`) menambah `deletion.confirm` dan `identities.replace` ([30 → Hak akses dan menu](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#14-hak-akses-dan-menu)).
 
 `StaffAccess::allows(string $role, string $capability): bool` mengembalikan `false` untuk peran atau kemampuan yang tidak dikenal, jadi salah ketik menutup akses, bukan membukanya.
 
@@ -263,7 +274,19 @@ Setiap cabang di bawah diganti dengan `can(...)` atau dengan cakupan [§5.5](#55
 
 ### 6.1 Migrasi `2026-01-01-003400_ReplaceTeacherWithResearcherRoles`
 
-Nomor sesudah migrasi terakhir (`003300_AddPackageCodeToResearchStudies`). Bagian 2–4 memakai nomor sesudahnya; sesi koordinator menyelaraskannya.
+Nomor sesudah migrasi terakhir (`003300_AddPackageCodeToResearchStudies`).
+
+**Urutan migrasi bagian 1–4** (diselaraskan sesi koordinator, 30 Oktober 2026). Setiap bagian diimplementasikan berurutan dan menaikkan `SystemResetService::REQUIRED_MIGRATION` ke migrasi terakhirnya; setelah keempat bagian, nilainya `2026-01-01-003800`.
+
+| Migrasi | Bagian |
+| --- | --- |
+| `2026-01-01-003400_ReplaceTeacherWithResearcherRoles` | 1 (dokumen ini) |
+| `2026-01-01-003500_CreateFieldSessions` | 2 ([28 → Skema database](28_IMPLEMENTASI_SESI_LAPANGAN.md#14-skema-database)) |
+| `2026-01-01-003600_CleanResearchLogs` | 3 ([29 → Skema database](29_IMPLEMENTASI_DATA_PENELITIAN.md#12-skema-database)) |
+| `2026-01-01-003700_CreateFieldSheets` | 3 |
+| `2026-01-01-003800_AddConsentAndDataRights` | 4 ([30 → Skema database](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#15-skema-database)) |
+
+Bila ada migrasi lain yang masuk `main` sebelum implementasi, seluruh urutan digeser bersama dan tabel ini diperbarui.
 
 **`up()`** dalam satu transaksi:
 
@@ -287,7 +310,7 @@ Sebelum menulis migrasi, periksa ulang setiap kunci asing ke `staff_users` (`gre
 | `app/Models/StaffUserModel.php` | `role` → `required\|in_list[admin,peneliti,ketua]`, dari `StaffAccess::ROLES`; `school_id` keluar dari `allowedFields` |
 | `app/Entities/StaffUser.php` | `can()` baru; `schoolScope()` dihapus; `toSafeArray()` tanpa `school_id` |
 | `app/Controllers/Admin/StaffController.php` | Aturan peran dari `StaffAccess::ROLES`; aturan "guru wajib punya sekolah" dan `postedSchool()` dihapus |
-| `app/Services/SystemResetService.php` | `REQUIRED_MIGRATION` menjadi `2026-01-01-003400` |
+| `app/Services/SystemResetService.php` | `REQUIRED_MIGRATION` menjadi `2026-01-01-003400`; bagian 2–4 menaikkannya sampai `2026-01-01-003800` ([§6.1](#61-migrasi-2026-01-01-003400_replaceteacherwithresearcherroles)) |
 
 ---
 
@@ -329,7 +352,7 @@ $routes->group('', ['filter' => 'staffAuth'], static function ($routes): void {
 ```
 
 Catatan:
-- `peserta/reset-sandi` tidak bertabrakan dengan `peserta/(:num)`, karena `(:num)` hanya angka. Tetap daftarkan rute tetap sebelum rute berpola, supaya urutannya jelas.
+- `peserta/reset-sandi` dan `peserta/salinan` (bagian 4) tidak bertabrakan dengan `peserta/(:num)`, karena `(:num)` hanya angka. Begitu juga `sesi-lapangan/baru` (bagian 2) dengan `sesi-lapangan/(:num)`. Tetap daftarkan rute tetap sebelum rute berpola, supaya urutannya jelas.
 - Halaman impor bank (`konten/impor-bank`, termasuk `GET` pratinjau dan templat) masuk `content.edit`, karena isinya alur mengubah.
 - Rute `api/admin/*` mendapat filter per rute sesuai [§4](#4-hak-akses-per-peran).
 - Harapan di `tests/unit/RouteWiringTest.php` (sekarang `['staffAuth','staffRole:admin']`) ditulis ulang per kelompok.
@@ -356,6 +379,8 @@ Panel peneliti adalah panel staf yang sama dengan menu yang berbeda, bertampilan
 | Data | Sesi bermain, Data mentah, Kritik dan saran | — | — | Ya |
 | Data | Unduh data | — | — | Ya |
 | Data | Log teknis (bagian 3) | Ya | — | — |
+| Data | Permintaan data (bagian 4) | Ya | Ya (miliknya) | Ya |
+| Data | Tindak lanjut (bagian 4) | — | — | Ya |
 | Konten | Konten, Impor bank soal, Narasi, Media, Kelengkapan aset | Ya | Lihat (tanpa Impor bank soal) | Lihat (tanpa Impor bank soal) |
 | Pengaturan | Studi | Lihat | — | Ya |
 | Pengaturan | Rilis, Sekolah, Akun staf, Tata kelola | Ya | — | — |
@@ -366,7 +391,7 @@ Panel peneliti adalah panel staf yang sama dengan menu yang berbeda, bertampilan
 - Daftar "20 event terakhir" dan "10 siswa terakhir" di ringkasan sekarang memakai nama sekolah (`DashboardController.php:130`). Untuk peneliti dan ketua diganti kode sekolah; untuk admin daftar event dihapus, karena event adalah data penelitian.
 
 **Pencarian cepat**
-- Peneliti dan ketua mencari dengan kode siswa saja.
+- Peneliti dan ketua mencari dengan kode peserta saja.
 - Admin mencari dengan kode, nama pengguna, atau nama.
 
 **Kode sekolah.** Sampai bagian 2 menyediakan kode sekolah penelitian, sekolah tampil sebagai `SCH-000123`. Bagian 2 mengganti tampilannya ke `S03` di satu tempat (`RawDataService::schoolRef()` atau penggantinya).
@@ -389,6 +414,7 @@ Panel peneliti adalah panel staf yang sama dengan menu yang berbeda, bertampilan
 | Jenis perangkat dan ukuran layar | — | Ya | Ya |
 | Log audit staf | Ya | — | Riwayat unduhannya sendiri |
 | Unduhan data | — | — | Ya, berkode |
+| Penanda tindak lanjut butir risiko daring (bagian 4) | — | — | Ya, di layar saja |
 
 **Halaman siswa dibelah.**
 - **Admin** melihat kartu akun: kode, nama pengguna, nama, sekolah, status, tombol atur ulang kata sandi. Tab data penelitian tidak ada.
@@ -399,7 +425,9 @@ Panel peneliti adalah panel staf yang sama dengan menu yang berbeda, bertampilan
 - Peneliti dan ketua: kolom kode dan kemajuan.
 - CSV daftar siswa ikut kolom tampilannya dan dicatat sebagai `list_csv`. Lihat [§16](#16-pertanyaan-terbuka) no. 4 untuk CSV admin.
 
-**Lembar `event` dan kolom `answer_key`.** Sekarang hanya untuk admin. Sesudah bagian 1, admin tidak lagi melihat data penelitian, jadi untuk sementara keduanya tidak tersedia bagi siapa pun. Bagian 3 memutuskan apakah `ketua` mendapatkannya.
+**Lembar `event` dan kolom `answer_key`.** Sekarang hanya untuk admin. Sesudah bagian 1, admin tidak lagi melihat data penelitian. Bagian 3 memberi keduanya ke `ketua` ([29 → Keputusan yang dikunci](29_IMPLEMENTASI_DATA_PENELITIAN.md#2-keputusan-yang-dikunci), K1): lembar `event` hanya event bertanda Peneliti dengan kode sebagai pengganti id internal, `answer_key` di lembar `butir` dan `jawaban`. Admin tidak mendapat keduanya.
+
+**Jawaban butir risiko daring (ang-21–ang-23).** Tidak pernah per baris di unduhan; `ketua` hanya mendapat lembar angka gabungan, dengan sel di bawah 5 siswa ditulis `<5` ([29 → Butir risiko daring](29_IMPLEMENTASI_DATA_PENELITIAN.md#76-butir-risiko-daring), K9).
 
 ---
 
@@ -491,7 +519,7 @@ Mengikuti `.claude/rules/ui-copy.md`: kalimat panel sopan dan polos, kalimat sis
 | `resetByCodeHelp` (baru) | — | Ketik kode peserta dari L2. Kata sandi sementara hanya tampil sekali. |
 | `resetCodeNotFound` (baru) | — | Kode peserta tidak ditemukan. Periksa lagi kodenya di L2. |
 | `roleHelpPeneliti` (baru) | — | Kerja lapangan: sesi, isian L2, atur ulang kata sandi lewat kode. Tidak bisa mengunduh data. |
-| `roleHelpKetua` (baru) | — | Semua hak peneliti, ditambah data semua siswa, unduh data, dan pengaturan studi. |
+| `roleHelpKetua` (baru) | — | Semua hak peneliti, ditambah data semua siswa, unduh data, pengaturan studi, konfirmasi permintaan hapus data, dan penanda tindak lanjut. |
 | `roleHelpAdmin` (baru) | — | Sistem, akun, konten, rilis, sekolah, dan log audit. Tidak melihat data penelitian. |
 | Label audit yang menyebut "akun guru/admin" | — | "akun staf" |
 | `staffIdleLogout` (baru) | — | Sesi berakhir karena tidak ada aktivitas selama 2 jam. Silakan masuk lagi. |
@@ -578,10 +606,10 @@ Di mesin pengembangan, masuk sebagai tiap peran:
 Tidak menahan draf ini; dijawab pengembang atau di bagian yang disebut.
 
 1. ~~**Keamanan masuk staf.**~~ **Diputuskan pengembang 30 Oktober 2026:** aturan kata sandi kuat yang sama dengan siswa, sesi staf berakhir setelah 2 jam tanpa aktivitas, tanpa verifikasi dua langkah ([§11.1](#111-keamanan-masuk-staf), K15).
-2. **Siapa mengajukan permintaan hapus data.** 01 menyebut "peneliti", 23 → T10 menyebut `koordinator`, dan 22 serta 26 mengaitkannya dengan ketua peneliti. Draf ini memberi `deletion.request` ke `peneliti` dan `ketua`. Apakah ketua harus menyetujui sebelum admin menjalankan, diputuskan di bagian 4.
+2. ~~**Siapa mengajukan permintaan hapus data.**~~ **Diputuskan pengembang 30 Oktober 2026 di bagian 4:** `peneliti` dan `ketua` mengajukan (`deletion.request`); permintaan dari `peneliti` dikonfirmasi `ketua` lebih dulu (`deletion.confirm`); admin tetap satu-satunya yang menjalankan ([30 → Keputusan yang dikunci](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#2-keputusan-yang-dikunci), K1; [30 → Keputusan pengembang](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#22-keputusan-pengembang) no. 1).
 3. ~~**Admin dan panel pemantauan.**~~ **Diputuskan pengembang 30 Oktober 2026 di bagian 2:** admin melihat angka saja per sesi lapangan, tanpa kode peserta dan tanpa token ([28 → Panel pemantauan](28_IMPLEMENTASI_SESI_LAPANGAN.md#12-panel-pemantauan), K2).
-4. **CSV daftar siswa untuk admin.** Sekarang admin bisa mengunduh daftar dengan nama. Usulan: CSV admin dihapus, nama hanya di layar, untuk meminimalkan salinan identitas. Daftar izin berkode untuk penutupan studi ditetapkan di bagian 4.
-5. **Jawaban butir risiko daring per baris.** 01 memasukkan semua jawaban ke unduhan peneliti, sedangkan 26 dan 22 menyebut peneliti hanya melihat angka gabungan. Diputuskan di bagian 3 dan 4. Sampai itu, `research.export` tidak memuat jawaban `ang-21`–`ang-23` per baris.
+4. **CSV daftar siswa untuk admin.** Sekarang admin bisa mengunduh daftar dengan nama. Usulan: CSV admin dihapus, nama hanya di layar, untuk meminimalkan salinan identitas. Daftar izin berkode untuk penutupan studi ditetapkan di bagian 4 ([30 → Daftar izin berkode](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#101-daftar-izin-berkode)); pertanyaan CSV admin tetap terbuka.
+5. ~~**Jawaban butir risiko daring per baris.**~~ **Diputuskan di bagian 3:** jawaban ang-21–ang-23 tidak pernah per baris di unduhan; hanya lembar angka gabungan, sel di bawah 5 siswa ditulis `<5` ([29 → Butir risiko daring](29_IMPLEMENTASI_DATA_PENELITIAN.md#76-butir-risiko-daring), K9). Penanda tindak lanjut dihitung di layar `ketua` dan tidak diekspor ([30 → Penanda tindak lanjut](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#6-penanda-tindak-lanjut-butir-risiko-daring), K7).
 6. **"Hanya ketua yang menyambungkan kode ke nama"** (03, 22, 26) hanya berlaku sebagai prosedur. Secara teknis P1 memegang L7 dan admin memegang akun. Dokumen ini tidak bisa menutupnya di sistem; cukup dicatat di 22 dan 26 sebagai pembatasan prosedur.
 7. **Akun `pengamat` dan `pewawancara`.** P2 tidak punya tindakan di sistem menurut 02; P3 membuka jawaban satu siswa untuk wawancara L5. Keduanya tetap `peneliti` dan dibuat hanya bila perlu.
 
