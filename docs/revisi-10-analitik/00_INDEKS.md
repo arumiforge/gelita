@@ -1,6 +1,6 @@
 # Indeks Revisi 10 Analitik
 
-Per 27 Oktober 2026 · Pintu masuk untuk setiap sesi baru di [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 30 Oktober 2026 · Pintu masuk untuk setiap sesi baru di [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Dokumen Markdown di folder ini sekitar 1,2 MB, kira-kira 500 ribu token kalau dibaca utuh (per 27 Oktober 2026). Satu sesi tidak perlu membaca semuanya. Aturan menjaga konteks ada di `.claude/rules/revisi-10.md` dan dimuat otomatis saat berkas di folder ini dibuka.
 
@@ -43,7 +43,7 @@ Penanda `needs_verification` tetap dipakai terpisah untuk fakta atau rujukan yan
 
 | Berkas | Isi | Status | Kapan dibaca | Ukuran |
 | --- | --- | --- | --- | --- |
-| [01](01_REVISI_10_ANALITIK.md) | Dokumen utama: konstruk, 10 analitik, Skenario Digital, skema kesalahan, peran, log, token, kode peserta, peta jalan, pertanyaan terbuka, 23 perubahan sistem | Aktif | Selalu, per bagian | 72 KB |
+| [01](01_REVISI_10_ANALITIK.md) | Dokumen utama: konstruk, 10 analitik, Skenario Digital, skema kesalahan, peran, log, token, kode peserta, peta jalan, pertanyaan terbuka, 24 perubahan sistem | Aktif | Selalu, per bagian | 72 KB |
 | [02](02_LEMBAR_LAPANGAN.md) | Lembar lapangan L0–L8 | L0–L7 final, disetujui 26 Oktober 2026 (daftar kerja no. 11); L8 Profil sekolah draf (26 Oktober 2026); daftar kode sekolah (no. 12) masih ditandai kosong; akun P1 memakai nama samaran `koordinator` (no. 13, 27 Oktober 2026); L7 ditambah batas pengamanan daring, isi surat dari PP No. 33 Tahun 2026, verifikasi izin, dan daftar izin berkode (27 Oktober 2026); L5 tidak terdengar guru atau teman dan butir surat L7 dari panduan BRIN (sesi koordinator, 27 Oktober 2026) | Saat menyusun lembar atau alur lapangan | 41 KB |
 | [03](03_KODE_DAN_ARTI.md) | Arti semua kode | Rujukan | Cari kode yang dibutuhkan saja | 13 KB |
 | [04](04_CATATAN_KEPUTUSAN.md) | Riwayat keputusan, terbaru di atas | Aktif | Selalu, entri teratas | 100 KB |
@@ -125,12 +125,21 @@ Setiap sesi hanya mengubah dokumennya sendiri, barisnya sendiri di berkas ini da
    - baca ringkasan penilaian dampak untuk sekolah di [23 → T6](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t6-surat-permohonan-izin-kepada-kepala-sekolah) sebelum dicetak.
 
    Pedoman yang sudah diterapkan: panduan klirens etik BRIN (pedoman utama), PSEPPKN/KEPPKN 2021 (cadangan), PP No. 33 Tahun 2026, dan masa simpan data berkode paling singkat 20 tahun.
-3. **Keputusan pengembang yang masih terbuka:**
-   - target persetujuan etik di [01 → Peta jalan dan daftar kerja](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja) no. 15 (patokan BRIN ± 1–2 bulan sejak berkas lengkap, kira-kira Januari–Februari 2027);
-   - nomor perubahan sistem untuk usulan `gelita:uji:akun` (01 → *Catatan perubahan sistem untuk tahap nanti*).
+3. **Keputusan pengembang yang masih terbuka:** target persetujuan etik di [01 → Peta jalan dan daftar kerja](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja) no. 15 (patokan BRIN ± 1–2 bulan sejak berkas lengkap, kira-kira Januari–Februari 2027). Nomor untuk `gelita:uji:akun` sudah diputuskan 30 Oktober 2026: perubahan sistem no. 24.
 4. **Gerbang G1:** tinggal daftar kode sekolah (daftar kerja no. 12). Ditunda pengembang dan tidak menahan validasi maupun izin etik, tetapi dibutuhkan sebelum sekolah direkrut dan L8 diisi.
 5. **Setelah hasil validasi kembali:** matriks revisi induk (20), revisi Prototipe I, lalu uji keterbacaan ([24](24_UJI_KETERBACAAN.md)) setelah izin etik terbit.
+6. **Dokumen implementasi bagian 1–4** (tahap dokumen 3, boleh didraf sekarang; keputusan 30 Oktober 2026): bagian 1 (`27`) lebih dulu, lalu bagian 2–4 (`28`–`30`) paralel. Lihat *Tahap dokumen 3* di bawah.
 
-**Tahap dokumen 3: dokumen implementasi (tahap 3, setelah gerbang G2)**
+**Tahap dokumen 3: dokumen implementasi (sebagian didraf sekarang; implementasi setelah gerbang G2)**
 
-Dokumen implementasi lengkap dari 23 perubahan sistem di 01, dibagi per bagian seperti Dok 1–3 perombakan kelas 5. Tahap ini menunggu persetujuan etik, yang ditargetkan paling lambat akhir September sampai minggu pertama November 2027. Implementasi baru dimulai setelah dokumen ini disetujui.
+Dokumen implementasi lengkap dari 24 perubahan sistem di 01, dibagi per bagian seperti Dok 1–3 perombakan kelas 5. Implementasi baru dimulai setelah gerbang G2, termasuk persetujuan etik (target paling lambat akhir September sampai minggu pertama November 2027), dan setelah dokumen ini disetujui.
+
+Sejak 30 Oktober 2026 ([04](04_CATATAN_KEPUTUSAN.md), entri 30 Oktober 2026), bagian untuk perubahan yang tidak bergantung pada hasil validasi didraf sekarang sebagai `draf pengembang` dan boleh naik sampai `disetujui pengembang`. Sebelum dokumen lengkap disetujui, setiap bagian dicek ulang sekali terhadap matriks revisi induk dan keputusan komite etik. Bagian 1 ditulis lebih dulu. Bagian 2–4 ditulis paralel setelah bagian 1 digabung, lalu diselaraskan satu sesi koordinator. Perubahan yang masih menunggu hanya disentuh sebagai titik sambung. Isi pokok dan sumber setiap bagian ada di entri 04 itu.
+
+| Bagian | Dokumen | Perubahan di 01 | Urutan | Status |
+| --- | --- | --- | --- | --- |
+| 1 | `27_IMPLEMENTASI_PERAN_PENELITI.md`: peran `peneliti`, peran `guru` dihapus, panel peneliti | no. 10 | Pertama | Belum mulai |
+| 2 | `28_IMPLEMENTASI_SESI_LAPANGAN.md`: sesi lapangan dan token, kode peserta, panel pemantauan, `gelita:uji:akun` | no. 11, 12, 13, 24 | Setelah bagian 1, paralel | Belum mulai |
+| 3 | `29_IMPLEMENTASI_DATA_PENELITIAN.md`: pembersihan log, ekspor dan kamus data, templat lembar lapangan | no. 7, 14, 15 | Setelah bagian 1, paralel | Belum mulai |
+| 4 | `30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md`: persetujuan dan hak atas data, `HashedIpSessionHandler`, masa simpan | no. 23 | Setelah bagian 1, paralel | Belum mulai |
+| Sisanya | Dibagi setelah matriks revisi induk ([20](20_PAKET_VALIDASI.md)) | no. 1–6, 8, 9, 16–22 | Setelah hasil validasi | Menunggu |
