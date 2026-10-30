@@ -1,6 +1,6 @@
 # Paket Validasi Ahli
 
-Per 27 Oktober 2026 · **Status: draf**; pertanyaan pengembang dijawab 27 Oktober 2026; diselaraskan dengan 21–24 pada hari yang sama · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 27 Oktober 2026 · **Status: draf**; pertanyaan pengembang dijawab 27 Oktober 2026; diselaraskan dengan 21–24 pada hari yang sama; cara memenuhi prasyarat no. 4, 8, 9, dan 10 ditulis 27 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Dokumen ini mengubah tiga instrumen validasi ahli menjadi paket yang siap dikirim ke sebelas validator. Isinya: siapa menerima apa dan kapan, surat permohonan, akses ke instalasi uji, cara hasil dikembalikan dan dicatat, apa yang terjadi setelah hasil kembali, dan daftar periksa validasi untuk gerbang G2. Daftar kerja no. 3 dan no. 14 di [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja). Pekerjaan ini bagian dari **Prototipe I**.
 
@@ -46,13 +46,13 @@ Dua dari lima ahli materi juga menjadi penilai B.5a. IM A.3 menyarankan satu ahl
 | 1 | Pengembang menyetujui ketiga instrumen | [dokumen-pdf/README.md → Sebelum dikirim ke validator](dokumen-pdf/README.md#sebelum-dikirim-ke-validator), [00](00_INDEKS.md) | Sudah (27 Oktober 2026) |
 | 2 | Kotak *STATUS* di sampul HTML dihapus, PDF dibuat ulang; lampiran D.4 tidak dicetak untuk validator | README yang sama, langkah 2–3 | Sudah (27 Oktober 2026) |
 | 3 | Dokumen bahan yang dinilai sudah disetujui pengembang (keputusan diambil): 08, 12–18, kamus-1.0 di 11 | IM A.4 "Prasyarat", [00 → Tahap dokumen 1](00_INDEKS.md#tahap-dokumen-yang-tersisa-sebelum-implementasi) | Keputusan sudah diambil; 13–17 berstatus draf menunggu validasi, dan memang itu yang divalidasi |
-| 4 | Versi bahan dibekukan: tanggal dan *commit* `main` yang dinilai dicatat di 04, dan ditulis di surat pernyataan (D.1, "versi/tanggal") | IM A.4, IB A.4 | Belum |
+| 4 | Versi bahan dibekukan: tanggal dan *commit* `main` yang dinilai dicatat di 04, dan ditulis di surat pernyataan (D.1, "versi/tanggal") | IM A.4, IB A.4; [Prasyarat no. 4](#prasyarat-no-4-membekukan-versi-bahan) | Belum; prosedur ditulis 27 Oktober 2026, dijalankan setelah no. 6, 8, 9, dan 10 selesai |
 | 5 | Telaah pendahuluan bank soal selesai | IM A.4, [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md) | Selesai (R1–R4 disetujui) |
 | 6 | Cek fakta budaya oleh tim selesai dan tercatat di lembar B.7 IB | IB A.4, IB D.3 no. 9 | Belum diperiksa sesi ini |
 | 7 | Daftar butir buta B.5a, daftar B.5b, dan lembar kerja per lembar siap | IM D.3 no. 2, 5; IB D.3 no. 11; IMd D.3 no. 9; dibuat di 21 | Dibuat (`berkas-1.0`, [21](21_BERKAS_BUTIR_VALIDATOR.md)); dibuat ulang sekali lagi tepat sebelum kirim, dan versi berkasnya dicatat |
-| 8 | Instalasi uji siap, dengan akun uji validator | IM D.3 no. 12, IB D.3 no. 8, IMd D.3 no. 2–3; [Akses untuk validator](#akses-untuk-validator) | Belum |
-| 9 | Nama asli validator ditetapkan, kesediaannya didapat lisan atau lewat pesan, dan tercatat di daftar padanan di luar repo | [Pengembalian dan pencatatan](#pengembalian-dan-pencatatan) | Belum (pertanyaan terbuka di 01) |
-| 10 | Besaran honorarium dan sumber dananya diketahui ketua peneliti; di surat ditulis "sesuai ketentuan yang berlaku" | IM A.4, IB A.4; [Keputusan pengembang](#keputusan-pengembang) no. 2 | Belum |
+| 8 | Instalasi uji siap, dengan akun uji validator | IM D.3 no. 12, IB D.3 no. 8, IMd D.3 no. 2–3; [Akses untuk validator](#akses-untuk-validator), [Prasyarat no. 8](#prasyarat-no-8-instalasi-uji-dan-akun-uji) | Belum; prosedur ditulis 27 Oktober 2026 (komputer lab kampus, subdomain HTTPS, akun dibuat pengembang lewat `/daftar`, semua wilayah terbuka); menunggu subdomain dari TI kampus |
+| 9 | Nama asli validator ditetapkan, kesediaannya didapat lisan atau lewat pesan, dan tercatat di daftar padanan di luar repo | [Pengembalian dan pencatatan](#pengembalian-dan-pencatatan), [Prasyarat no. 9](#prasyarat-no-9-nama-asli-dan-kesediaan-validator) | Belum; templat daftar padanan dan pesan kesediaan siap 27 Oktober 2026, ditanyakan ketua peneliti (pertanyaan terbuka di 01) |
+| 10 | Besaran honorarium dan sumber dananya diketahui ketua peneliti; di surat ditulis "sesuai ketentuan yang berlaku" | IM A.4, IB A.4; [Keputusan pengembang](#keputusan-pengembang) no. 2; [Prasyarat no. 10](#prasyarat-no-10-honorarium) | Belum; yang perlu diketahui ketua peneliti ditulis 27 Oktober 2026, besaran tidak pernah masuk repo |
 | 11 | IM disesuaikan dengan urutan kirim di dokumen ini: pembuka B.5a menyebut ID butir netral, D.3 menyebut nama berkas dari 21 dan urutan kirim untuk dua penilai B.5a, tabel waktu A.4 memakai perkiraan B.7 yang baru | [21 → Akibat ke dokumen lain](21_BERKAS_BUTIR_VALIDATOR.md#akibat-ke-dokumen-lain), [Akibat ke dokumen lain](#akibat-ke-dokumen-lain) | Sudah (27 Oktober 2026, PR #268) |
 
 Daftar kode sekolah (no. 12) **tidak** menahan paket ini ([04](04_CATATAN_KEPUTUSAN.md), 27 Oktober 2026). Yang tersentuh hanya IMd D.3 no. 7, dan berkas itu punya pengganti (daftar jenis perangkat).
@@ -389,14 +389,14 @@ Akun validator adalah **akun siswa uji** di instalasi uji, bukan akun staf. Vali
 
 Aturan akun:
 
-- **Dibuat oleh `admin`** di instalasi uji, sebelum minggu 1. Nama pengguna mengikuti aturan nama pengguna siswa yang ada sekarang: huruf kecil, angka, titik, garis bawah, 3–30 karakter (`valid_username` di `app/Validation/GelitaRules.php`). Karena itu dipakai titik, bukan tanda hubung.
-- **Nama lengkap di akun** juga nama samaran tanpa angka, misalnya "Uji Bahasa Satu", karena nama lengkap siswa hanya boleh berisi huruf (`valid_person_name`). Sekolah yang dipilih adalah sekolah contoh di instalasi uji, bukan sekolah sampel.
+- **Dibuat pengembang** di instalasi uji lewat pendaftaran biasa (`/daftar`), sebelum minggu 1; pengembang juga memegang akun `admin` instalasi uji (27 Oktober 2026, [Prasyarat no. 8](#prasyarat-no-8-instalasi-uji-dan-akun-uji)). Nama pengguna mengikuti aturan nama pengguna siswa yang ada sekarang: huruf kecil, angka, titik, garis bawah, 3–30 karakter (`valid_username` di `app/Validation/GelitaRules.php`). Karena itu dipakai titik, bukan tanda hubung.
+- **Nama lengkap di akun** juga nama samaran tanpa angka, misalnya "Uji Bahasa Satu", karena nama lengkap siswa hanya boleh berisi huruf (`valid_person_name`). Sekolah ditulis sendiri lewat pilihan "Sekolahku tidak ada di daftar" sebagai `Sekolah Uji Validator`, supaya akun tidak tertaut ke sekolah resmi mana pun, termasuk sekolah sampel.
 - **Tidak memakai awalan `sim_`**, karena awalan itu dipakai siswa simulasi `gelita:simulasi`, dan **tidak memakai pola kode peserta** (`S03-A07`, `U01-A03`), supaya akun validator tidak tercampur dengan peserta penelitian atau uji coba.
-- **Kata sandi** dibuat `admin`, dikirim lewat saluran terpisah dari alamat instalasi uji (misalnya alamat lewat surel, kata sandi lewat pesan), dan validator diminta menggantinya saat pertama masuk bila sistem memintanya.
-- **Kemajuan bermain** boleh direset `admin` di antara validator bila akun cadangan dipakai ulang.
+- **Kata sandi** dibuat pengembang, dikirim lewat saluran terpisah dari alamat instalasi uji (misalnya alamat lewat surel, kata sandi lewat pesan), dan validator diminta menggantinya saat pertama masuk bila sistem memintanya.
+- **Kemajuan bermain** tidak bisa direset per akun dengan sistem sekarang. Akun cadangan tidak dipakai ulang; bila perlu akun bersih, dipakai akun cadangan berikutnya atau dibuat akun `uji.cadangan3` dan seterusnya ([Prasyarat no. 8](#prasyarat-no-8-instalasi-uji-dan-akun-uji), langkah 6).
 - Akun dinonaktifkan atau dihapus setelah validasi langkah 1 selesai. Untuk media langkah 2, akun dibuat ulang di instalasi uji versi tahap 3.
 
-Cara teknis membuat akun siswa oleh `admin` (lewat pendaftaran biasa atau panel admin) diputuskan saat instalasi uji disiapkan. Dokumen ini tidak mengubah sistem.
+Cara teknis memasang instalasi uji dan membuat akunnya ada di [Prasyarat no. 8](#prasyarat-no-8-instalasi-uji-dan-akun-uji). Dokumen ini tidak mengubah sistem.
 
 ## Pengembalian dan pencatatan
 
@@ -558,6 +558,188 @@ Gerbang G2 butuh dua separuh: **validasi** (di sini) dan **izin etik** (di 22). 
 - [ ] Entri 04 untuk setiap putaran per panel, dengan versi sebelum dan sesudah revisi.
 - [ ] Hasil validasi ditulis untuk laporan mengikuti IM C.9, IB C.8, dan IMd C.6.
 
+## Cara memenuhi prasyarat yang tersisa
+
+Ditulis 27 Oktober 2026 (cabang `r10-prasyarat-validasi`) untuk prasyarat no. 9, 8, 10, dan 4 di [Ringkasan](#ringkasan). Prasyarat no. 6 (cek fakta budaya) dipegang sesi lain. Semua yang di bawah ini `asal: pengembang`, berstatus `draf pengembang` sampai ketua peneliti menjalankannya; keputusan pengembang hari itu ada di [Keputusan pengembang](#keputusan-pengembang) no. 5–11.
+
+Urutannya: no. 9 dan no. 10 boleh dikerjakan sekarang, bersamaan. No. 8 dikerjakan setelah alamat kampus didapat. No. 4 paling akhir, setelah no. 6, 8, 9, dan 10 selesai, karena *commit* yang dibekukan harus sama dengan yang terpasang di instalasi uji dan yang tertulis di surat.
+
+### Prasyarat no. 9: nama asli dan kesediaan validator
+
+**Yang tidak pernah masuk repo:** nama asli, gelar, instansi, kontak, dan jawaban validator. Di repo hanya tertulis "selesai" dan tanggalnya, di tabel *Ringkasan* dan di [04](04_CATATAN_KEPUTUSAN.md). Daftar padanan dipegang ketua peneliti ([Daftar padanan di luar repo](#daftar-padanan-di-luar-repo)).
+
+**Siapa menanyakan.** Ketua peneliti (keputusan no. 7), karena permohonan atas nama peneliti dan daftar padanannya milik ketua. Pengembang menyiapkan teks pesan di bawah.
+
+**Langkah:**
+
+1. Ketua peneliti menyalin templat daftar padanan di bawah ke berkas terenkripsi di luar repo (misalnya lembar kerja di folder penelitian yang hanya bisa dibuka ketua), lalu mengisi calon per baris.
+2. Ketua mengirim pesan kesediaan ke setiap calon, satu per satu (bukan di grup), lewat pesan atau surel. Besaran honorarium boleh disebut di percakapan pribadi ini bila ditanya ([Keputusan pengembang](#keputusan-pengembang) no. 2), setelah no. 10 diketahui.
+3. Jawaban "bersedia" dicatat di daftar padanan: tanggal, saluran (lisan, WhatsApp, surel), dan siapa yang menerima jawaban. Tangkapan layar jawaban, kalau disimpan, masuk folder validator itu di luar repo, bukan ke percakapan dengan AI.
+4. Bila calon menolak atau tidak menjawab dalam satu minggu, ketua mencari pengganti untuk nama samaran yang sama. Nama samaran tidak berubah, jadi dokumen di repo tidak perlu diubah.
+5. Untuk pengamat budaya, catat wilayah yang paling dikuasai (Temanggung, Magelang, Wonosobo), supaya ketiganya tersebar (IB A.3). Untuk ahli media, catat perangkat yang dimiliki, supaya tim tahu siapa yang perlu dipinjami tablet atau perangkat seperti milik sekolah.
+6. Setelah kesebelas baris berisi "bersedia", ketua (atau pengembang atas kabar dari ketua) menulis di tabel *Ringkasan* no. 9: "Selesai (*tanggal*), tercatat di daftar padanan di luar repo", dan mencatatnya di 04 tanpa nama.
+
+**Templat daftar padanan** (disalin ke luar repo; jangan diisi di sini):
+
+| Samaran | Singkatan | Nama asli dan gelar | Instansi | Bidang | Wilayah dikuasai / perangkat | Surel dan telepon | Ditanya (tanggal, saluran) | Bersedia (tanggal, saluran) | Akun uji | Honorarium (besaran, tanggal bayar, bukti) | Boleh disebut di laporan | Catatan |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Ahli Bahasa Anak 1 *(penilai B.5a)* | ABA1 | | | | — | | | | `uji.bahasa1` | | ya / tidak | |
+| Ahli Bahasa Anak 2 | ABA2 | | | | — | | | | `uji.bahasa2` | | | |
+| Ahli Literasi Digital 1 *(penilai B.5a)* | ALD1 | | | | — | | | | `uji.digital1` | | | |
+| Ahli Literasi Digital 2 | ALD2 | | | | — | | | | `uji.digital2` | | | |
+| Ahli Pengukuran | AP | | | | — | | | | `uji.ukur` | | | |
+| Ahli Budaya Kedu 1 | ABK1 | | | | wilayah: | | | | `uji.budaya1` | | | |
+| Ahli Budaya Kedu 2 | ABK2 | | | | wilayah: | | | | `uji.budaya2` | | | |
+| Ahli Budaya Kedu 3 | ABK3 | | | | wilayah: | | | | `uji.budaya3` | | | |
+| Ahli Media Pembelajaran 1 (teknologi pendidikan) | AMP1 | | | | perangkat: | | | | `uji.media1` | | | |
+| Ahli Media Pembelajaran 2 (desain visual atau UX) | AMP2 | | | | perangkat: | | | | `uji.media2` | | | |
+| Ahli Media Pembelajaran 3 (rekayasa perangkat lunak atau game) | AMP3 | | | | perangkat: | | | | `uji.media3` | | | |
+
+Kolom tanggal kirim dan terima per kiriman dan putaran ditambahkan di berkas yang sama saat paket dikirim ([Daftar padanan di luar repo](#daftar-padanan-di-luar-repo)).
+
+**Pesan kesediaan** (dikirim ketua peneliti; isi tanda kurung siku sebelum dikirim):
+
+> Yth. Bapak/Ibu [nama],
+>
+> Saya [nama ketua peneliti], [jabatan/program studi] di [instansi]. Saya sedang meneliti *[judul penelitian]*, dengan media permainan GELITA untuk siswa kelas 5 SD tentang literasi digital dan budaya Kedu.
+>
+> Saya ingin memohon kesediaan Bapak/Ibu menjadi validator **[ahli materi / pengamat budaya / ahli media]** di bidang [bidang]. Validasi dikerjakan dari jarak jauh, dengan instrumen dan lembar kerja digital serta akses ke versi uji permainan. Perkiraan waktunya sekitar [jam dari tabel *Siapa menerima apa*] jam, tersebar dalam [minggu 1–5 / minggu 1–2 lalu 3–5], mulai [tanggal minggu 1]. Honorarium diberikan sesuai ketentuan yang berlaku.
+>
+> Nama Bapak/Ibu hanya dicatat oleh saya. Di dokumen kerja tim dipakai nama samaran, dan nama Bapak/Ibu baru disebut di laporan bila Bapak/Ibu mengizinkan.
+>
+> Bila Bapak/Ibu bersedia, mohon balas pesan ini. Surat permohonan resmi dan bahannya akan saya kirim sebelum [tanggal minggu 1]. Bila belum bisa, tidak apa-apa, dan terima kasih atas waktunya.
+>
+> Hormat saya,
+> [nama ketua peneliti]
+
+Untuk dua penilai B.5a, tambahkan satu kalimat setelah perkiraan waktu: "Bagian pertama (sekitar 6–8 jam di minggu 1–2) adalah pelabelan butir; bahan lainnya saya kirim setelah bagian itu selesai."
+
+### Prasyarat no. 8: instalasi uji dan akun uji
+
+**Keputusan pengembang** (no. 5, 6, 8, 11): instalasi uji dipasang di **komputer lab kampus** (Jalur W di `docs/08_DEPLOYMENT.md`), dibuka dari luar lewat **subdomain kampus dengan HTTPS**; **pengembang** memasangnya, memegang akun `admin`-nya, dan membuat ketiga belas akun `uji.*`; semua wilayah dibuka sejak awal (`unlock_mode` = `free`).
+
+**Batas yang tidak boleh dilanggar.** Instalasi uji adalah mesin dan database sendiri, terpisah dari server produksi. Tidak ada perintah yang dijalankan di server produksi, dan `gelita:reset` hanya dijalankan di komputer lab ini. Tidak ada perubahan kode: yang dipasang adalah *commit* `main` yang dibekukan (no. 4), dan tahap 2 tidak mengubah sistem.
+
+**Langkah 1. Menyiapkan komputer dan alamat**
+
+1. Pilih satu PC lab yang bisa menyala terus dari minggu 1 sampai putaran 2 selesai (usulan tanggal: 9 November 2026 sampai akhir Januari 2027, termasuk jeda libur). Matikan tidur otomatis dan pembaruan Windows yang memulai ulang sendiri; bila ada, pasang UPS.
+2. Minta bagian TI kampus: satu subdomain (misalnya `[gelita-uji.kampus.ac.id]`), penerusan port 443 (dan 80 untuk sertifikat) ke PC itu atau *reverse proxy* kampus ke PC itu, dan sertifikat HTTPS. HTTPS wajib, karena pemasangan sebagai aplikasi dan paket aset hanya jalan di HTTPS (IMd D.3 no. 2).
+3. Server, database, dan data akun tetap di kampus, jadi tetap di Indonesia (sama dengan keputusan di 22).
+
+**Langkah 2. Memasang GELITA**
+
+Ikuti `docs/08_DEPLOYMENT.md` → *Instalasi — Jalur W*, lalu *Langkah terakhir*, dengan perbedaan ini:
+
+| Bagian 08 | Di instalasi uji |
+| --- | --- |
+| Kode | `git checkout <commit beku>` dari no. 4, bukan ujung `main` terbaru. Commit yang sama dicatat di 04 |
+| `.env` | `app.baseURL` = alamat subdomain uji; sandi database dan sandi `admin` **baru**, tidak pernah sama dengan produksi |
+| `db:seed DatabaseSeeder` | Seperti 08. Hasilnya: 28.487 sekolah resmi Jawa Tengah, akun `admin`, studi aktif `STUDI-KEDU-KELAS5-2026`, tiga wilayah, 12 tantangan, Pustaka Kedu, bank soal kelas 5 |
+| Gambar dan narasi | Sama dengan yang akan dinilai: gambar tim lewat `php spark gelita:katalog:impor`, narasi lewat `php spark gelita:narration:import` lalu disetujui di panel. Bila produksi masih memakai gambar contoh, instalasi uji juga, dan itu disebut ke validator |
+| Akun guru | Tidak dibuat. Validator tidak memerlukan panel |
+| Cron (Task Scheduler) | `php spark gelita:retention:run` sekali sehari, seperti 08 → *Tugas Terjadwal*. Sesi yang tidak disentuh 30 hari ditandai ditinggalkan (`sessionAbandonDays`), jadi validator yang lama tidak masuk mulai dari awal lagi; ini disebut di surat akses |
+| Cadangan | Tidak wajib, karena tidak ada data penelitian. Lembar validator kembali lewat folder bersama, bukan lewat instalasi uji |
+
+Lalu:
+
+1. Jalankan `php spark gelita:content:verify` (harus 0 galat) dan 08 → *Verifikasi Setelah Deploy*. Baris `http2` Jalur W belum pernah diuji di Windows sungguhan, jadi uji ini wajib.
+2. Masuk `/admin/login` sebagai `admin`, ganti sandi (`/admin/akun/sandi`).
+3. **Buka semua wilayah.** Di **Studi** (`/admin/studi`), ubah *Cara wilayah terbuka* studi aktif menjadi **Bebas — semua langsung terbuka (untuk uji coba)**. Pustaka satu wilayah tetap baru terbuka setelah keempat tantangannya diselesaikan, juga di mode bebas (`GameProgress::libraryStatus()`); validator yang perlu membaca Pustaka (IM D.3 no. 12, IB D.3 no. 8) menyelesaikan satu wilayah dulu, dan ini ditulis di surat akses.
+
+**Langkah 3. Membuat akun `uji.*`**
+
+Sistem sekarang tidak punya panel atau perintah untuk membuat akun siswa: `/admin/peserta` hanya menampilkan siswa dan mereset sandi, dan `gelita:simulasi` membuat siswa `sim_*` dengan riwayat palsu (tidak cocok). Jadi akun dibuat lewat **pendaftaran biasa**, satu per satu, di jendela peramban privat (supaya tidak ada sesi siswa lain yang terbawa), lalu keluar akun sebelum akun berikutnya. Isian per langkah, sesuai aturan di `app/Controllers/Game/RegisterController.php` dan `app/Validation/GelitaRules.php`:
+
+| Langkah `/daftar` | Isian | Aturan yang harus dipenuhi |
+| --- | --- | --- |
+| 1 Identitas | Nama lengkap: nama samaran tanpa angka, misalnya `Uji Bahasa Satu`, `Uji Digital Dua`, `Uji Ukur`, `Uji Budaya Tiga`, `Uji Media Satu`, `Uji Cadangan Satu`. Umur: `11`. Jenis kelamin: bebas | Nama 2–150 karakter, huruf, spasi, dan apostrof saja, tanpa titik (`valid_person_name`, `no_name_period`); umur 8–15 (`registrationAge`) |
+| 2 Sekolah | Negara Indonesia, provinsi Jawa Tengah, kabupaten mana saja di Kedu, centang **Sekolahku tidak ada di daftar**, nama sekolah `Sekolah Uji Validator` | Tanpa centang itu, provinsi Jawa Tengah meminta NPSN sekolah resmi (`known_npsn`), dan akun akan tertaut ke sekolah sungguhan. Nama sekolah 3–200 karakter |
+| 3 Akun | Nama pengguna dari [Usulan akun uji](#usulan-akun-uji), kata sandi, centang persetujuan | Nama pengguna `[a-z0-9._]{3,30}` (`valid_username`), bukan `admin`, `guru`, `gelita`, `root`, `system`, `test` (`reservedUsernames`), belum dipakai. Kata sandi 8–64 karakter dengan huruf besar, huruf kecil, angka, dan simbol, dan tidak memuat nama pengguna (`passwordPolicy`, harus "kuat") |
+
+Kata sandi dibuat acak per akun di pengelola sandi pengembang. Daftar akun dan sandinya diserahkan ke ketua peneliti lewat saluran pribadi, lalu ketua mengirim alamat dan sandi ke validator lewat dua saluran berbeda ([Usulan akun uji](#usulan-akun-uji)). Sandi tidak pernah ditulis di repo, di surat, atau di percakapan dengan AI.
+
+Ahli media yang mendaftar sendiri (IMd A.4) diberi tahu tiga hal di surat akses: pilih "Sekolahku tidak ada di daftar", tulis `Sekolah Uji Validator`, dan pakai nama pengguna yang diawali `uji.media`.
+
+**Langkah 4. Cek setiap akun** (dicentang pengembang, hasilnya dicatat di 04 tanpa sandi)
+
+Untuk setiap akun, di peramban privat:
+
+1. Masuk di `/masuk` dengan nama pengguna dan sandinya; layar masuk ke permainan tanpa galat.
+2. Di Peta Kedu (`/peta`), ketiga wilayah terbuka (tidak ada gembok). Di peta setiap wilayah, keempat tantangan berstatus terbuka.
+3. Buka satu tantangan di setiap wilayah sampai layar tantangan muncul, lalu kembali tanpa menjawab. Untuk satu akun cadangan saja, selesaikan keempat tantangan satu wilayah, lalu pastikan Pustaka wilayah itu terbuka; akun ini sesudahnya tidak dipakai validator.
+4. Keluar akun.
+5. Di `/admin/peserta`, akun muncul dengan sekolah `Sekolah Uji Validator`, dan tidak ada akun lain selain `uji.*`.
+
+Karena langkah 3 membuka tantangan, setiap akun sudah punya satu sesi bermain dengan pengerjaan yang belum selesai. Pengerjaan itu ditandai ditinggalkan oleh retensi setelah 24 jam (`attemptAbandonHours`) dan tidak mengunci apa pun; validator tetap bisa membuka tantangan itu lagi.
+
+**Langkah 5. Kalau akun bermasalah**
+
+- **Lupa sandi atau terkunci:** `admin` membuka `/admin/peserta/{id}`, mengetik `RESET`, dan mendapat sandi sementara. Validator wajib menggantinya saat masuk berikutnya (`/ganti-sandi`).
+- **Validator diganti:** validator baru memakai `uji.cadangan1` atau `uji.cadangan2`, dan padanannya dicatat di daftar padanan di luar repo.
+
+**Langkah 6. Mereset kemajuan bermain**
+
+Sistem sekarang tidak punya reset kemajuan per akun. Yang ada:
+
+| Keadaan | Cara |
+| --- | --- |
+| Satu validator butuh mulai dari awal | Beri akun cadangan yang belum dipakai, atau buat akun baru `uji.cadangan3` dan seterusnya lewat langkah 3. Akun lama dibiarkan |
+| Validator menuntaskan ketiga wilayah | Sesinya selesai, dan masuk berikutnya otomatis membuka sesi baru dari awal (`SessionService::login()`, `GameSessionModel::resumable()`). Ini disebut di surat akses supaya tidak dikira galat |
+| Semua akun perlu bersih, misalnya sebelum putaran 2 atau sebelum media langkah 2 | Di **komputer lab ini saja**: `php spark gelita:reset --dry-run`, periksa rencananya, lalu `php spark gelita:reset`. Semua akun siswa terhapus dan studi kembali ke bawaan (`sequential`), jadi langkah 2 butir 3 dan langkah 3–4 diulang. Akun `admin` tetap |
+
+**Usulan alat bantu untuk tahap 3** (tidak dibuat sekarang; `asal: pengembang`, `draf pengembang`): satu perintah spark, misalnya `gelita:uji:akun`, yang (a) membuat akun `uji.*` dari daftar nama samaran dengan sandi acak yang ditampilkan sekali dan sekolah `Sekolah Uji Validator`, dan (b) dengan `--reset=<nama pengguna>` menutup sesi bermain akun itu sehingga masuk berikutnya mulai dari awal. Perintah ini menolak berjalan bila instalasi berisi siswa yang bukan `uji.*`, supaya tidak pernah terpakai di produksi. Gunanya terasa di media langkah 2 (G3), saat akun dibuat ulang di instalasi uji tahap 3. Dicatat di [Akibat ke dokumen lain](#akibat-ke-dokumen-lain) untuk *Catatan perubahan sistem* di 01.
+
+**Selesai bila:** alamat uji terbuka lewat HTTPS dari luar kampus, ketiga belas akun lolos cek langkah 4, dan 04 mencatat tanggal, *commit* yang terpasang, dan hasil cek (tanpa sandi dan tanpa alamat IP).
+
+### Prasyarat no. 10: honorarium
+
+Surat tetap menulis "sesuai ketentuan yang berlaku" ([Keputusan pengembang](#keputusan-pengembang) no. 2). Besaran **tidak pernah** ditulis di repo (keputusan no. 9).
+
+Yang harus diketahui ketua peneliti sebelum paket dikirim:
+
+| Hal | Isi yang perlu jelas | Dicatat di |
+| --- | --- | --- |
+| Besaran | Per validator, atau per panel bila bebannya beda jauh (lihat perkiraan jam di [Siapa menerima apa](#siapa-menerima-apa): ± 4–5,5 jam ahli media sampai ± 18–26 jam penilai B.5a). Termasuk apakah putaran 2 dan penilaian ulang setelah uji keterbacaan dibayar terpisah | Daftar padanan di luar repo, kolom honorarium |
+| Sumber dana | Hibah, dana pribadi, atau dana lembaga; harus sama dengan sumber dana yang ditulis di 22 dan 23, supaya pernyataan konflik kepentingan tetap benar | Catatan keuangan penelitian di luar repo; di 22 hanya jenis sumbernya |
+| Ketentuan yang diacu | Standar biaya yang berlaku di lembaga pemberi dana, dan potongan pajak (PPh) bila ada | Catatan keuangan penelitian |
+| Waktu dan cara bayar | Misalnya setelah surat pernyataan D.1 dan semua lembar putaran 1 kembali; transfer atau tunai | Daftar padanan, kolom honorarium |
+| Bukti bayar | Kuitansi bertanda tangan atau bukti transfer, disimpan di folder validator di luar repo. Berisi nama asli, jadi tidak pernah masuk repo | Folder penelitian di luar repo |
+
+**Selesai bila** ketua peneliti menyatakan besaran dan sumber dana sudah ditetapkan. Di tabel *Ringkasan* no. 10 dan di 04 hanya ditulis "Selesai (*tanggal*), dicatat ketua peneliti di luar repo".
+
+### Prasyarat no. 4: membekukan versi bahan
+
+"Dibekukan" berarti versinya dicatat, bukan tidak boleh diubah ([01 → Peran pengembang, peneliti, dan ahli](01_REVISI_10_ANALITIK.md#peran-pengembang-peneliti-dan-ahli), aturan 3). Pembekuan dilakukan **setelah** cek fakta budaya (no. 6), PR #275, dan PR cabang ini digabung ke `main`, dan setelah no. 8, 9, dan 10 selesai (keputusan no. 10). Pembekuan adalah langkah terakhir sebelum kirim.
+
+**Langkah:**
+
+1. **Pastikan tidak ada PR terbuka** yang mengubah bahan yang dinilai: 08, 11 (`kamus-1.0`), 12–18, tiga instrumen di `dokumen-pdf/src/`, atau 21. Bila ada, tunggu digabung atau tunda.
+2. **Ambil `main` terbaru** di salinan bersih: `git fetch origin main && git checkout -B r10-beku-validasi origin/main`, lalu `composer install`.
+3. **Buat ulang berkas validator** sesuai [21 → Cara membuat ulang](21_BERKAS_BUTIR_VALIDATOR.md#cara-membuat-ulang): `php docs/revisi-10-analitik/dokumen-pdf/src/berkas-validator.php` (dengan buklet PDF). Semua pemeriksaan di `dokumen-pdf/berkas-validator/LAPORAN.md` harus lolos. Catat *Versi berkas* di kepala lembar (misalnya `berkas-1.0 · sumber 3a48dbfe`).
+4. **Bila `git status` menunjukkan berkas berubah** (selain tanggal di buklet PDF), commit di cabang `r10-beku-validasi`, buka PR ke `main`, dan gabungkan. Bila tidak ada perubahan isi, cabang dibuang.
+5. **Tetapkan *commit* beku:** *commit* `main` sesudah langkah 4 (`git rev-parse origin/main`). Hash lengkap ini yang dipakai di semua tempat.
+6. **Pasang *commit* yang sama di instalasi uji** (`git checkout <hash>` di komputer lab, lalu ulangi langkah 4 cek akun di no. 8 untuk satu akun).
+7. **Ketua peneliti menyetujui** bahan versi ini untuk dikirim. Dengan itu, bahan yang dibekukan naik dari `disetujui pengembang` ke `disetujui peneliti` ([00 → Label asal dan status](00_INDEKS.md#label-asal-dan-status)), karena hanya bahan `disetujui peneliti` yang dikirim ke ahli.
+8. **Catat di 04**, entri baru di atas, dengan isi:
+   - judul "Versi bahan dibekukan untuk validasi putaran 1", tanggal, `asal: peneliti` (pembekuan dan persetujuan oleh ketua; disiapkan pengembang), status `disetujui peneliti`;
+   - hash *commit* lengkap dan tujuh karakter pertamanya;
+   - *Versi berkas* dari langkah 3;
+   - daftar bahan yang dibekukan dengan statusnya: 08, 11 (`kamus-1.0`), 12–18, ketiga instrumen (IM v2.1, IB v2.1, IMd v1.1, dengan nama PDF-nya), dan berkas validator dari 21;
+   - tanggal dan *commit* yang terpasang di instalasi uji (harus sama);
+   - aturan sesudahnya (di bawah).
+9. **Tulis versi di surat dan D.1:** "versi/tanggal" diisi `<tanggal beku> · commit <7 karakter> · <versi berkas>`, misalnya `9 November 2026 · commit 1a2b3c4 · berkas-1.0 · sumber 3a48dbfe`. Teks yang sama dipakai di IMd D.3 no. 2 (versi yang dinilai) dan di surat akses.
+10. **Ubah tabel *Ringkasan* no. 4** menjadi "Selesai (*tanggal*, *commit* 7 karakter, lihat 04)".
+
+**Kapan `berkas-validator.php` dijalankan lagi:**
+
+| Keadaan | Yang dilakukan |
+| --- | --- |
+| Sumber berubah **sebelum** paket dikirim | Ulangi langkah 2–10. *Commit* beku yang lama diganti, dan entri 04 yang baru menyebut penggantinya |
+| Sumber berubah **setelah** paket dikirim | Jangan buat ulang berkas yang sudah dikirim. Catat perubahan di 04 dengan asal dan akibatnya (dinilai ulang ahli di putaran 2, amandemen ke komite etik, atau tidak perlu apa-apa), sesuai 01 aturan 3 |
+| B.5a sudah dikirim ke penilai | Jangan membuat ulang B.5a, kecuali kedua penilai menerima berkas baru dan berkas kunci ikut diganti ([21 → Cara membuat ulang](21_BERKAS_BUTIR_VALIDATOR.md#cara-membuat-ulang)) |
+| Putaran 2 | Butir yang direvisi dibekukan lagi dengan langkah yang sama sebelum dikirim, dan entri 04-nya menyebut *commit* putaran 1 sebagai pembanding |
+| Lembar kembali dari validator | Tidak dibuat ulang. *Versi berkas* di kepala lembar dicocokkan dengan versi yang dicatat di 04 ([Apa yang kembali](#apa-yang-kembali)) |
+
 ## Keputusan pengembang
 
 Pertanyaan di draf ini dijawab pengembang pada 27 Oktober 2026 ([04](04_CATATAN_KEPUTUSAN.md), entri 27 Oktober 2026):
@@ -568,6 +750,18 @@ Pertanyaan di draf ini dijawab pengembang pada 27 Oktober 2026 ([04](04_CATATAN_
 | 2 | Bagaimana honorarium ditulis di surat? | **"Sesuai ketentuan yang berlaku", tanpa angka.** Besarannya dicatat ketua peneliti di luar repo dan bisa disampaikan saat menanyakan kesediaan |
 | 3 | Paket dikirim kertas atau digital? | **Digital.** PDF instrumen dan lembar kerja lewat folder bersama yang dibatasi per validator; surat pernyataan ditandatangani lalu dipindai; salinan kertas hanya bila validator memintanya |
 | 4 | Apakah ahli media langkah 1 menunggu sesuatu? | **Tidak.** Dikirim bersama panel lain begitu instrumen disetujui, memakai daftar jenis perangkat sekolah sampel sebagai pengganti L8 (IMd D.3 no. 7) |
+
+Putaran kedua, untuk prasyarat no. 4, 8, 9, dan 10 (27 Oktober 2026, cabang `r10-prasyarat-validasi`; semuanya `asal: pengembang`, `disetujui pengembang`; [Cara memenuhi prasyarat yang tersisa](#cara-memenuhi-prasyarat-yang-tersisa)):
+
+| No | Pertanyaan | Keputusan |
+| --- | --- | --- |
+| 5 | Di mana instalasi uji dipasang? | **Komputer lab kampus** (Jalur W di `docs/08_DEPLOYMENT.md`). Tidak dipilih: VPS kecil terpisah (usulan), laptop pengembang dengan terowongan |
+| 6 | Bagaimana validator membukanya dari rumah? | **Subdomain kampus dengan HTTPS**, lewat penerusan port atau *reverse proxy* dari bagian TI kampus (usulan). Tidak dipilih: layanan terowongan, hanya di jaringan kampus |
+| 7 | Siapa menanyakan kesediaan validator? | **Ketua peneliti**, dengan teks pesan dari pengembang (usulan). Tidak dipilih: pengembang |
+| 8 | Siapa membuat akun `uji.*` dan memegang sandinya? | **Pengembang**, sebagai pemegang `admin` instalasi uji, lewat pendaftaran biasa sebelum minggu 1; daftar sandi diserahkan ke ketua peneliti (usulan). Tidak dipilih: ketua peneliti, validator mendaftar sendiri |
+| 9 | Apakah besaran honorarium pernah ditulis di repo? | **Tidak pernah;** dicatat ketua peneliti di luar repo (usulan). Tidak dipilih: besaran per panel di 20 |
+| 10 | Kapan versi bahan dibekukan? | **Setelah cek fakta budaya, PR #275, dan PR prasyarat ini digabung, dan setelah no. 8–10 selesai**, sebagai langkah terakhir sebelum kirim (usulan). Tidak dipilih: bekukan sekarang lalu bekukan ulang bila berubah |
+| 11 | Bagaimana wilayah terbuka di instalasi uji? | **Semua terbuka** (`unlock_mode` = `free` di `/admin/studi`) (usulan). Tidak dipilih: berurutan seperti siswa |
 
 Keputusan pengembang di dokumen tahap 2 lain yang juga mengatur dokumen ini (27 Oktober 2026, dicatat di 04), dan sudah diterapkan di atas:
 
@@ -595,3 +789,5 @@ Status per 27 Oktober 2026, setelah penyelarasan dokumen tahap 2. Perubahan di i
 | [24](24_UJI_KETERBACAAN.md) | *Bahan yang menunggu uji keterbacaan* | Bahan yang diuji adalah versi setelah revisi validasi ahli | Sudah |
 | [24](24_UJI_KETERBACAAN.md) | *Yang dibutuhkan dari dokumen lain → Dari 20* | Dipenuhi di 20: matriks revisi induk menampung temuan anak (sumber "uji keterbacaan", kode anak, `KB-*`), dan jadwal punya penilaian ulang setelah uji keterbacaan. Tidak ada yang perlu diubah di 24 | Sudah (di 20) |
 | Matriks revisi induk (dokumen baru) | — | Dibuat saat hasil pertama kembali; nomor ditetapkan sesi koordinator dan dicatat di 00 | Belum (menunggu hasil validasi) |
+| [03](03_KODE_DAN_ARTI.md) | *Akun uji validator* | Akun dibuat pengembang lewat `/daftar`, sekolah `Sekolah Uji Validator`, akun cadangan tidak dipakai ulang (27 Oktober 2026, cabang `r10-prasyarat-validasi`) | Sudah |
+| [01](01_REVISI_10_ANALITIK.md) | *Catatan perubahan sistem untuk tahap nanti* | Usulan alat bantu `gelita:uji:akun` (membuat akun `uji.*` dan mereset kemajuan satu akun) dari [Prasyarat no. 8](#prasyarat-no-8-instalasi-uji-dan-akun-uji), langkah 6; dipertimbangkan bersama dokumen implementasi tahap 3 | Belum (dibawa sesi koordinator; bukan nomor perubahan sistem baru sampai pengembang memutuskan) |
