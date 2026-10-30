@@ -6,6 +6,33 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 30 Oktober 2026
 
+**Bagian 1 dokumen implementasi didraf: peran `peneliti` dan `ketua`, peran `guru` dihapus, panel peneliti** (cabang `sky/practical-knuth-x5vyu0`, PR #282) · `asal: pengembang` · `draf pengembang` · Prototipe I, belum merevisi produk
+
+[27_IMPLEMENTASI_PERAN_PENELITI.md](27_IMPLEMENTASI_PERAN_PENELITI.md) ditulis untuk perubahan sistem no. 10. Isinya:
+- tabel hak akses per halaman untuk tiga peran;
+- peta kemampuan di kode, yang menggantikan cabang "admin atau bukan";
+- migrasi yang menghapus akun `guru`;
+- mengatur ulang kata sandi lewat kode peserta;
+- menu panel per peran, tes, dan kriteria selesai.
+
+Halaman bagian 2–4 disebut sebagai titik sambung dengan haknya sudah ditetapkan. Pencarian kode menunjukkan hampir semua pemeriksaan sekarang berbentuk `role === 'admin'`, sehingga akun `peneliti` baru akan diperlakukan sebagai guru tanpa sekolah dan tidak melihat apa pun. Karena itu peta kemampuan menjadi inti bagian ini. Tidak ada kode yang diubah.
+
+Satu putaran tanya, empat pertanyaan; pengembang memilih usulan di keempatnya ([27 → Keputusan pengembang](27_IMPLEMENTASI_PERAN_PENELITI.md#17-keputusan-pengembang)):
+1. **Dua peran peneliti.**
+   - `peneliti` (akun `koordinator`, `pengamat`, `pewawancara`): kerja lapangan, mengatur ulang kata sandi lewat kode, data satu siswa lewat kodenya, dan mengajukan permintaan hapus data; tidak boleh mengunduh data.
+   - `ketua`: semua hak `peneliti`, ditambah data semua siswa, unduh data, pengaturan studi, dan penanda tindak lanjut butir risiko daring.
+
+   Tidak dipilih: satu peran untuk semua dengan penanda ketua, atau centang hak per akun.
+2. **Akun `guru` dihapus di migrasi**, bersama berkas unduhan dan permintaan hapus datanya, dan `staff_users.school_id` dibuang. Tidak dipilih: akun guru dibiarkan terkunci.
+3. **Studi diubah `ketua` dan dilihat `admin`**; rilis dan paket aset tetap milik admin. Tidak dipilih: tetap di admin, atau keduanya boleh mengubah.
+4. **Ditulis di cabang yang sama dengan keputusan empat bagian** (PR #282). Tidak dipilih: menggabung PR #282 dulu.
+
+Tujuh pertanyaan terbuka dicatat di [27 → Pertanyaan terbuka](27_IMPLEMENTASI_PERAN_PENELITI.md#16-pertanyaan-terbuka). Satu di antaranya menunggu pengembang sebelum 27 disetujui: keamanan masuk staf (aturan kata sandi, batas waktu sesi, verifikasi dua langkah). Sisanya diserahkan ke bagian 2–4.
+
+Akibat ke 01, 03, 20, 22, dan 26 dicatat di [27 → Akibat ke dokumen lain](27_IMPLEMENTASI_PERAN_PENELITI.md#18-akibat-ke-dokumen-lain) dan dibawa sesi koordinator setelah bagian 2–4.
+
+Langkah berikutnya: pengembang meninjau 27. Setelah PR #282 digabung, bagian 2–4 (`28`–`30`) boleh ditulis paralel.
+
 **Dokumen implementasi untuk perubahan yang tidak bergantung pada hasil validasi didraf sekarang, dalam empat bagian** (cabang `sky/practical-knuth-x5vyu0`) · `asal: pengembang` · `disetujui pengembang` · Prototipe I, belum merevisi produk
 
 Banyak dari 23 perubahan sistem di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti) tidak bergantung pada hasil validasi ahli, jadi dokumen implementasinya bisa didraf sekarang sebagai `draf pengembang`. Ini mengubah sebagian keputusan 25 Oktober 2026 (*Urutan kerja tetap seperti peta jalan di 01*): yang ditunda sampai G2 kini hanya **perubahan sistemnya**, bukan lagi seluruh dokumen implementasi. Menyusun draf adalah kerja dokumen, jadi urutan penelitian tetap utuh: tidak ada kode, migrasi, atau instalasi yang diubah sebelum G2. Satu putaran tanya, empat pertanyaan; pengembang memilih usulan di keempatnya.
