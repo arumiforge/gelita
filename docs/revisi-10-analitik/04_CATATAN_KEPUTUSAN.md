@@ -6,6 +6,41 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 30 Oktober 2026
 
+**Bagian 4 dokumen implementasi didraf: persetujuan, hak atas data, masa simpan, dan IP berhash** (cabang `pbb/pensive-ramanujan-d8nu9h`) · `asal: pengembang` · `draf pengembang` · Prototipe I, belum merevisi produk
+
+[30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) ditulis untuk perubahan sistem no. 23. Isinya:
+- teks centang T4 untuk mode penelitian dengan `assent_version`;
+- izin berkode per siswa dari L7, status mundur yang langsung menonaktifkan akun, dan aturan tampil T11/T12 (layarnya tetap di no. 22);
+- penanda tindak lanjut butir risiko untuk `ketua`, dihitung saat dibuka dan tidak disimpan;
+- permintaan hapus (semua, jawaban butir risiko, rekaman) dengan konfirmasi ketua, unduhan di server, salinan peneliti, penggantian cadangan, daftar periksa, batas 3 × 24 jam di panel, dan berita acara;
+- salinan satu anak, pembetulan umur, jenis kelamin, dan kelas;
+- penutupan studi: daftar izin berkode, lalu nama, nama pengguna, dan sekolah diganti kode;
+- masa simpan 7305 hari sejak studi ditutup, `HashedIpSessionHandler`, pembersihan `ci_sessions`, dan jalan manual sementara (26 → P15);
+- skema (`003800`), rute, teks id dan en, tes, dan titik sambung ke no. 21, 22, dan bagian 2–3.
+
+Tidak ada kode yang diubah.
+
+**Tenggat "sebelum KG2" diselesaikan.** Temuan untuk bagian 4 di entri keputusan empat bagian (di bawah) benar: tabel *Kegiatan* di 26 memberi nomor KG2–KG5 yang berbeda dari 03 dan 22. Bagian 4 menulis tenggatnya sebagai "sebelum kegiatan pertama yang memakai akun GELITA anak", yaitu KG2 atau KG3 menurut 03 dan 22 ([30 → Tenggat](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#4-tenggat-sebelum-akun-gelita-anak-pertama-kali-dipakai)). Tabel 26 dibetulkan sesi koordinator; "sebelum KG2" di 01, 22, dan 26 tetap benar sesudahnya.
+
+**Temuan kode, untuk ditinjau pengembang.**
+1. **Cadangan di lokasi kedua tidak pernah dihapus.** Skrip cadangan hanya menambah berkas di lokasi kedua, jadi data yang dihapus atas permintaan orang tua, dan nama setelah studi ditutup, tetap ada di sana tanpa batas. Keputusan no. 3 di bawah menutupnya.
+2. **Retensi menghitung dari mulai sesi, bukan dari studi ditutup** (`RetentionService::flagExpiredStudyData()`), dan 7300 hari kurang lima hari dari 20 tahun. Bagian 4 memakai 7305 hari sejak `closed_at` untuk studi `field_mode`.
+3. **Sekolah tetap tersambung ke nama dan NPSN** lewat `school_id` setelah nama anak diganti kode. Bagian 4 memindahkan rujukan ke baris sekolah berkode saat studi ditutup.
+4. **Akun langsung nonaktif saat P1 menyimpan status mundur**, bukan menunggu admin seperti tertulis di 22 dan 23 → T10, supaya batas 3 × 24 jam selalu terpenuhi.
+5. **Pembersih sesi bawaan PHP tidak berjalan di PHP paket Debian/Ubuntu** (`session.gc_probability = 0`), jadi `gelita:retention:run` menghapus baris `ci_sessions` yang kedaluwarsa.
+
+Satu putaran tanya, empat pertanyaan; pengembang memilih usulan di keempatnya ([30 → Keputusan pengembang](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#22-keputusan-pengembang)):
+1. **Permintaan hapus dari `peneliti` dikonfirmasi `ketua` lebih dulu**; permintaan dari `ketua` langsung ke admin. Kemampuan baru `deletion.confirm`. Ini menjawab [27 → Pertanyaan terbuka](27_IMPLEMENTASI_PERAN_PENELITI.md#16-pertanyaan-terbuka) no. 2. Tidak dipilih: tanpa konfirmasi; hanya `ketua` yang mengajukan.
+2. **Salinan untuk orang tua tidak memuat jawaban ang-21–ang-23, kecuali anak setuju**, dengan centang di log audit, supaya janji di T11 ("orang tua tidak melihat jawabanmu") tetap terpenuhi. Dasar hukumnya `needs_verification`. Tidak dipilih: selalu disertakan dengan T11 diubah; selalu ditahan.
+3. **Cadangan diganti** setelah penghapusan dan saat studi ditutup: cadangan baru, lalu cadangan lama di kedua lokasi dihapus, sebelum orang tua diberi tahu; lokasi kedua juga 30 hari. Tidak dipilih: daftar hapus yang diterapkan ulang saat pulih; diserahkan ke penyedia server.
+4. **Semua kolom L7 yang berkode masuk panel**: tanggal izin orang tua, izin rekaman, izin butir risiko, status dan tanggalnya. Daftar izin berkode diunduh dari sistem dan dicocokkan `ketua` dengan L7. Tidak dipilih: hanya izin butir risiko di panel, daftar izin disalin tangan.
+
+Enam pertanyaan terbuka di [30 → Pertanyaan terbuka](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#21-pertanyaan-terbuka) tidak menahan draf, antara lain dasar hukum menahan jawaban butir risiko, transkrip pada pilihan C, dan kritik dan saran yang memuat nama.
+
+Akibat ke 01, 02, 03, 11, 22, 23, 26, 27, 28, dan 29 dicatat di [30 → Akibat ke dokumen lain](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#23-akibat-ke-dokumen-lain) dan dibawa sesi koordinator. Yang paling penting: 22 dan 23 → T10 (konfirmasi ketua, akun nonaktif saat status disimpan, salinan tanpa jawaban butir risiko, penggantian cadangan) dan tabel *Kegiatan* di 26.
+
+Langkah berikutnya: pengembang meninjau 30. Lalu satu sesi koordinator menyelaraskan bagian 1–4: nomor migrasi `003400`–`003800`, kemampuan baru, rute, dan *Akibat ke dokumen lain* keempat bagian.
+
 **Bagian 3 dokumen implementasi didraf: pembersihan log, unduhan data penelitian, kamus data, dan lembar lapangan** (cabang `pbb/sharp-feynman-xsm6ky`) · `asal: pengembang` · `draf pengembang` · Prototipe I, belum merevisi produk
 
 [29_IMPLEMENTASI_DATA_PENELITIAN.md](29_IMPLEMENTASI_DATA_PENELITIAN.md) ditulis untuk perubahan sistem no. 7, 14, dan 15. Isinya:
