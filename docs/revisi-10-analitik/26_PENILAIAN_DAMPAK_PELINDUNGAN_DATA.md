@@ -4,7 +4,7 @@ Per 27 Oktober 2026 · **Status: `draf pengembang`** (`asal: pengembang`, disusu
 
 Dokumen ini adalah penilaian dampak pelindungan data pribadi (selanjutnya *penilaian dampak*) yang lengkap untuk penelitian GELITA. Ringkasannya ada di [22 → Penilaian dampak pelindungan data](22_PERMOHONAN_IZIN_ETIK.md#penilaian-dampak-pelindungan-data); dokumen ini menguraikannya untuk pembaca *Lembaga Komite Etik* dan untuk PPDP atau narahubung data. Isinya mengikuti 22 dan tidak membuat aturan baru tentang data. Kalau ada yang berbeda, 22 yang berlaku, dan bedanya dicatat di [Akibat ke dokumen lain](#akibat-ke-dokumen-lain).
 
-Ini pemeriksaan dokumen, bukan nasihat hukum. Semua nomor pasal PP No. 33 Tahun 2026 dan UU No. 27 Tahun 2022 di dokumen ini sama dengan di 22 dan **`needs_verification`** terhadap naskah resmi ([Dasar hukum](#dasar-hukum)).
+Ini pemeriksaan dokumen, bukan nasihat hukum. Semua nomor pasal PP No. 33 Tahun 2026 dan UU No. 27 Tahun 2022 di dokumen ini sama dengan di 22 dan sudah dicek ke salinan naskah ([Dasar hukum](#dasar-hukum)); sebelum berkas diunggah, nomornya dicocokkan sekali lagi dengan PDF resmi (`needs_verification`).
 
 ## Daftar isi
 
@@ -50,7 +50,7 @@ Ini pemeriksaan dokumen, bukan nasihat hukum. Semua nomor pasal PP No. 33 Tahun 
 
 ## Mengapa penilaian dampak diperlukan
 
-UU No. 27 Tahun 2022 Pasal 34 dan PP No. 33 Tahun 2026 Pasal 120–121 mewajibkan pengendali membuat penilaian dampak **sebelum** pengolahan yang berpotensi berisiko tinggi bagi subjek data (`needs_verification`). Pemicu yang berlaku di penelitian ini:
+UU No. 27 Tahun 2022 Pasal 34 dan PP No. 33 Tahun 2026 Pasal 120–121 mewajibkan pengendali membuat penilaian dampak **sebelum** pengolahan yang berpotensi berisiko tinggi bagi subjek data. Pemicu yang berlaku di penelitian ini:
 
 | Pemicu | Berlaku? | Alasannya |
 | --- | --- | --- |
@@ -62,7 +62,7 @@ UU No. 27 Tahun 2022 Pasal 34 dan PP No. 33 Tahun 2026 Pasal 120–121 mewajibka
 | Teknologi baru | Sebagian | Game berbasis web yang mencatat setiap percobaan dan waktu; bukan teknologi pemantauan, pengenalan wajah, atau lokasi |
 | Pemindahan ke luar negeri | Tidak | Server, cadangan, dan penyimpanan di Indonesia ([22 no. 14](22_PERMOHONAN_IZIN_ETIK.md#keputusan-pengembang)) |
 
-Karena dua pemicu pertama berlaku, penilaian dampak ini wajib. Isinya memuat isi minimum PP Pasal 121 ayat (2): uraian kegiatan dan tujuan, kebutuhan dan proporsionalitas, risiko terhadap hak subjek data, dan langkah perlindungan, ditambah saran PPDP atau narahubung (Pasal 121 ayat (3)) dan rencana tinjauan ulang (Pasal 121 ayat (5)–(6)). Peraturan Lembaga tentang tata cara penilaian dampak belum diperiksa; sampai terbit, dokumen ini mengikuti PP (Pasal 223, `needs_verification`).
+Karena dua pemicu pertama berlaku, penilaian dampak ini wajib. Isinya memuat isi minimum PP Pasal 121 ayat (2): uraian kegiatan dan tujuan, kebutuhan dan proporsionalitas, risiko terhadap hak subjek data, dan langkah perlindungan, ditambah saran PPDP atau narahubung (Pasal 121 ayat (3)) dan rencana tinjauan ulang (Pasal 121 ayat (5)–(6)). Peraturan Lembaga tentang tata cara penilaian dampak (PP Pasal 122 ayat (2)) belum terbit per 27 Oktober 2026 ([22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum)); sampai terbit, dokumen ini mengikuti PP (Pasal 223).
 
 ## Uraian pengolahan dan tujuannya
 
@@ -105,7 +105,7 @@ Yang **tidak** menjadi tujuan: menilai atau memeringkat anak, guru, atau sekolah
 
 ## Dasar hukum
 
-Sama dengan [22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum). Nomor pasal **`needs_verification`**: naskah resmi PP 33/2026 belum diperoleh per 27 Oktober 2026, dan yang dibaca adalah naskah terkonsolidasi tidak resmi. Sesi yang memegang 22 mengecek nomornya; dokumen ini memakai nomor yang sama dan diperbarui bersama 22.
+Sama dengan [22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum). Nomor pasal PP 33/2026 dicek ke transkripsi salinan naskah, dan nomor pasal UU 27/2022 (termasuk Pasal 4 ayat (2) huruf e dan Pasal 25) ke naskah anotasi Mahkamah Konstitusi, pada 27 Oktober 2026 di 22; dokumen ini memakai nomor yang sama (diselaraskan sesi koordinator 30 Oktober 2026). Yang tersisa **`needs_verification`**: pencocokan sekali lagi dengan PDF resmi JDIH atau peraturan.go.id sebelum berkas diunggah.
 
 | Hal | Rujukan | Penerapan |
 | --- | --- | --- |
@@ -116,17 +116,17 @@ Sama dengan [22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum). Nomor 
 | Informasi sebelum persetujuan | PP Pasal 33, 62 | Surat T1 sebelum formulir T2 |
 | Bukti persetujuan | PP Pasal 36 | Formulir T2, lalu daftar izin berkode setelah L7 dimusnahkan |
 | Verifikasi persetujuan orang tua | PP Pasal 38 ayat (4) | Amplop lewat guru kelas, pencocokan nama dan tanda tangan oleh P1, telepon kalau ragu |
-| Hak subjek data | PP Pasal 38 ayat (5)–(7), 69–71, 76–78, 82, 87, 92 | [Hak orang tua dan anak](#hak-orang-tua-dan-anak) |
+| Hak subjek data | PP Pasal 38 ayat (5)–(7), 70–71, 76–78, 82, 87, 92 | [Hak orang tua dan anak](#hak-orang-tua-dan-anak) |
 | Pengecualian untuk penelitian | PP Pasal 148 ayat (1) huruf e, 149, 154; UU Pasal 15 | **Tidak dipakai** ([22 no. 17](22_PERMOHONAN_IZIN_ETIK.md#keputusan-pengembang)) |
 | Prosesor | PP Pasal 13–15, 88, 118 | Perjanjian tertulis dengan penyedia server |
 | Catatan kegiatan pengolahan, kebijakan masa simpan | PP Pasal 74, 75 | Disimpan ketua peneliti, diperlihatkan kalau diminta |
 | Penilaian dampak | UU Pasal 34; PP Pasal 120–121 | Dokumen ini |
 | Kebocoran | UU Pasal 46; PP Pasal 1 angka 18, 114–118 | Pemberitahuan tertulis 3 × 24 jam ([22 → Langkah saat kejadian](22_PERMOHONAN_IZIN_ETIK.md#langkah-saat-kejadian)) |
-| PPDP | UU Pasal 53; PP Pasal 142–146 | `[kontak PPDP atau narahubung]`; kewajiban menunjuk PPDP sendiri menunggu Peraturan Lembaga (`needs_verification`) |
+| PPDP | UU Pasal 53; PP Pasal 142–147 | `[kontak PPDP atau narahubung]`; kewajiban menunjuk PPDP sendiri menunggu Peraturan Lembaga, yang belum terbit per 27 Oktober 2026 |
 | Pemindahan ke luar negeri | UU Pasal 56; PP Bab V, Pasal 160–162 | Tidak ada |
 | Pemusnahan | PP Pasal 86 | Berita acara di catatan ketua peneliti |
 | Masa simpan data penelitian | UU No. 11 Tahun 2019 Pasal 40 ayat (5) (teks dicek 27 Oktober 2026) | Data berkode paling singkat 20 tahun |
-| Satuan waktu | PP Pasal 1 angka 19 ("hari" = hari kerja) | Batas "3 × 24 jam" ditulis dalam jam; apakah dihitung dengan hari libur `needs_verification` |
+| Satuan waktu | PP Pasal 1 angka 19 ("hari" = hari kerja) | Batas "3 × 24 jam" ditulis dalam jam, jadi definisi hari kerja tidak berlaku untuknya; dihitung 3 × 24 jam kalender, tafsiran paling aman, sama dengan 22 |
 
 ## Inventaris data
 
@@ -416,6 +416,8 @@ Empat pertanyaan dijawab pengembang pada 27 Oktober 2026 (`asal: pengembang`, `d
 ## Akibat ke dokumen lain
 
 Dicatat untuk sesi yang memegang dokumen itu atau sesi koordinator. Dokumen ini tidak mengubah dokumen lain.
+
+**Status per 30 Oktober 2026:** semua baris di bawah sudah dibawa. Tautan lampiran 18 di 22 dibawa sesi `r10-formulir-etik`; sisanya oleh sesi koordinator (cabang `sky/dazzling-planck-6cl9vy`), termasuk penyelarasan nomor pasal di *Dasar hukum* dokumen ini.
 
 | Dokumen | Bagian | Perubahan |
 | --- | --- | --- |

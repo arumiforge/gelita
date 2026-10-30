@@ -10,7 +10,7 @@ Siapa menerima paket apa, surat permohonan, dan jadwal ada di [20_PAKET_VALIDASI
 
 ## Ringkasan
 
-1. **Berkas di [`dokumen-pdf/berkas-validator/`](dokumen-pdf/berkas-validator/):** enam lembar kerja `.xlsx` untuk validator, satu buklet B.5a (PDF dan sumber HTML-nya), satu berkas kunci khusus peneliti, dan laporan pemeriksaan. Isinya: 180 butir untuk B.5a dan B.5b (116 bank, 64 tes), 24 skenario (B.6), 622 sel kode kesalahan (B.7), 12 pernyataan sikap (B.8), 38 pasangan bentuk A–B dan 20 butir angket (B.9), 46 objek budaya, 24 petunjuk *Periksa Unggahan*, 12 butir PBK, 19 fakta, dan 27 gambar mock-up.
+1. **Berkas di [`dokumen-pdf/berkas-validator/`](dokumen-pdf/berkas-validator/):** enam lembar kerja `.xlsx` untuk validator, satu buklet B.5a (PDF dan sumber HTML-nya), satu berkas kunci khusus peneliti, dan laporan pemeriksaan. Isinya: 180 butir untuk B.5a dan B.5b (116 bank, 64 tes), 24 skenario (B.6), 622 sel kode kesalahan (B.7), 12 pernyataan sikap (B.8), 38 pasangan bentuk A–B dan 20 butir angket (B.9), 46 objek budaya, 24 petunjuk *Periksa Unggahan*, 12 butir PBK, 44 fakta, dan 27 gambar mock-up.
 2. **B.5a dibuat buta.** Kode butir diganti ID netral (`BT-001` … `BT-180`), bahan bacaan diberi ID netral (`BH-01` … `BH-73`) dan urutannya diacak dengan benih tetap. Label pengembang, kode kesalahan, dan kode butir tidak ada di berkas. Pemetaan ID ke kode hanya ada di berkas kunci khusus peneliti.
 3. **Skrip memeriksa dirinya sendiri.** 69 pemeriksaan (jumlah butir per lembar terhadap instrumen, kebutaan B.5a, keberadaan setiap kode di 03, 08, 14–18, dan satu level pengembang per butir tes D2 dan D3) lolos semua. Satu pemeriksaan gagal berarti tidak ada berkas yang ditulis.
 4. **Empat pertanyaan** untuk pengembang (ID netral, urutan kirim ke dua penilai B.5a, kunci di daftar buta, cakupan B.7) sudah dijawab 27 Oktober 2026: semuanya memakai pilihan yang disarankan, yang sudah dipakai berkas ini ([bagian akhir](#pertanyaan-untuk-pengembang)). Dua penilai B.5a, Ahli Bahasa Anak 1 (ABA1) dan Ahli Literasi Digital 1 (ALD1), menerima paket B.5a saja dulu; urutan kirimnya ada di [20 → Siapa menerima apa](20_PAKET_VALIDASI.md#siapa-menerima-apa).
@@ -49,7 +49,7 @@ Paket B.5a untuk ABA1 dan ALD1 juga berisi halaman petunjuk B.5a dari instrumen 
 | B.7 buta | B.7 Kode | 622 sel kode | Kode usulan, Alasan (kode pengembang dikosongkan) |
 | Pengamat budaya | B.5 Matriks | 46 objek dan 3 baris usulan, per wilayah | Akurasi, Otentisitas, Kepantasan (1–4, TD), Sensitif? (Y/T) |
 | | B.6a Periksa Unggahan, B.6b PBK | 24 petunjuk, 12 butir | Skor 1–4 dan kolom Y/T menurut instrumen |
-| | B.7 Cek fakta | 19 fakta | Konfirmasi (Ya/Tidak), catatan |
+| | B.7 Cek fakta | 44 fakta | Konfirmasi (Ya/Tidak), catatan |
 | | B.8a Sikap, B.8b Sikap | 12 pernyataan, 6 pertanyaan | Menurut tabel pengamat budaya ("Contoh dikenal di wilayah saya?") |
 | Ahli media | B.8 Mock-up, B.8 Per gambar | 8 baris layar; 27 gambar | Lima skor 1–4 (TD bila tidak bisa dinilai dari gambar); catatan per gambar opsional |
 

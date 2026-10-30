@@ -291,11 +291,11 @@ Skor dan putusan di dokumen ini hanya muncul di B.7, yang memang lembar konfirma
 
 **Belum diubah; dibawa sesi lain atau tahap 3:**
 
-1. **[20](20_PAKET_VALIDASI.md):**
+1. **[20](20_PAKET_VALIDASI.md):** **Sudah** (sesi koordinator, 30 Oktober 2026), juga perkiraan waktu B.7 di IB A.4.
    - *Ringkasan* prasyarat no. 6 bisa ditandai selesai, dengan rujukan ke dokumen ini.
    - Daftar periksa *Pengamat budaya* menyebut "tahun kebun teh Tambi dan letak kompleks Candi Arjuna" sebagai hal yang harus ditindaklanjuti. Keduanya sekarang sudah dijawab tim; ganti dengan "baris terbuka B.7 (lihat 25)".
    - Perkiraan waktu B.7 (1 jam) untuk 44 fakta mungkin perlu dinaikkan menjadi 1–1,5 jam, juga di IB A.4 (oleh pemilik 20 dan instrumen).
-2. **[21](21_BERKAS_BUTIR_VALIDATOR.md):** "19 fakta" menjadi "44 fakta" (pembuka dan tabel lembar kerja). Berkasnya sudah dibuat ulang di cabang ini.
+2. **[21](21_BERKAS_BUTIR_VALIDATOR.md):** "19 fakta" menjadi "44 fakta" (pembuka dan tabel lembar kerja). Berkasnya sudah dibuat ulang di cabang ini. **Sudah** (sesi koordinator, 30 Oktober 2026).
 3. **[05](05_TELAAH_BUTIR_DAN_DIMENSI.md) dan [19](19_TELAAH_LABEL_BLOOM.md):** menyebut `mgl-2-b04` dengan kunci *petani* sebagai catatan sejarah telaah. Tidak perlu diubah; 08 yang berlaku.
 4. **Berkas data bank soal** (`docs/bank-soal/data/*.php`), diterapkan saat bank baru diimpor di tahap 3. Teks baru:
    - `temanggung.php` SG `tmg-1-a`: "Gunung Sindoro (sekitar 3.150 m) dan Gunung Sumbing (sekitar 3.370 m) disebut gunung kembar." (EN "about 3,150 m … about 3,370 m"); rujukan `$ref['geo']` menjadi Global Volcanism Program dan Pemkab Temanggung.
