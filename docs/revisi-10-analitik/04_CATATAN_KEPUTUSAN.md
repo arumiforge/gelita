@@ -6,6 +6,15 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 30 Oktober 2026
 
+**Keamanan masuk staf disetujui** (cabang `sky/practical-knuth-x5vyu0`, PR #282) · `asal: pengembang` · `disetujui pengembang` · Prototipe I, belum merevisi produk
+
+Pengembang menyetujui usulan di [27 → Pertanyaan terbuka](27_IMPLEMENTASI_PERAN_PENELITI.md#16-pertanyaan-terbuka) no. 1:
+- kata sandi staf memakai aturan kata sandi kuat yang sama dengan siswa (`PasswordPolicy`: huruf besar, huruf kecil, angka, simbol, tanpa nama pengguna), ditambah panjang minimal 12 yang sudah ada;
+- sesi staf berakhir setelah 2 jam tanpa aktivitas (`Config\Gelita::$staffIdleSeconds = 7200`, dicatat `staff_idle_logout`);
+- tanpa verifikasi dua langkah.
+
+Rinciannya di [27 → Keamanan masuk staf](27_IMPLEMENTASI_PERAN_PENELITI.md#111-keamanan-masuk-staf) (K15, keputusan no. 5). Status 27 tetap `draf pengembang`.
+
 **Bagian 1 dokumen implementasi didraf: peran `peneliti` dan `ketua`, peran `guru` dihapus, panel peneliti** (cabang `sky/practical-knuth-x5vyu0`, PR #282) · `asal: pengembang` · `draf pengembang` · Prototipe I, belum merevisi produk
 
 [27_IMPLEMENTASI_PERAN_PENELITI.md](27_IMPLEMENTASI_PERAN_PENELITI.md) ditulis untuk perubahan sistem no. 10. Isinya:

@@ -78,7 +78,7 @@ Per 30 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 ## 2. Keputusan yang dikunci
 
-Keputusan ini tidak perlu ditanyakan ulang saat implementasi. K1, K2, K11, dan K12 diputuskan pengembang ([§17](#17-keputusan-pengembang)); sisanya menurunkan 01, 03, 22, dan 26.
+Keputusan ini tidak perlu ditanyakan ulang saat implementasi. K1, K2, K11, K12, dan K15 diputuskan pengembang ([§17](#17-keputusan-pengembang)); sisanya menurunkan 01, 03, 22, dan 26.
 
 | Kode | Keputusan |
 | --- | --- |
@@ -96,6 +96,7 @@ Keputusan ini tidak perlu ditanyakan ulang saat implementasi. K1, K2, K11, dan K
 | K12 | **Studi diubah oleh `ketua`; `admin` melihat saja.** Rilis dan paket aset tetap milik `admin`, walaupun halamannya di bawah `/admin/studi/rilis`. |
 | K13 | **Pratinjau paket aset (`?paket=`) hanya untuk `admin`.** Sekarang semua staf boleh (`AssetPackageService.php:198-208`). |
 | K14 | **Unduh data hanya untuk `ketua` dan selalu berkode.** Mode unduh dengan identitas dihapus. Lembar dan kolom apa saja yang masuk ditetapkan bagian 3. |
+| K15 | **Keamanan masuk staf** ([§11.1](#111-keamanan-masuk-staf)): kata sandi staf memakai aturan kata sandi kuat yang sama dengan siswa, ditambah panjang minimal 12 yang sudah ada. Sesi staf berakhir setelah 2 jam tanpa aktivitas. Tanpa verifikasi dua langkah. |
 
 ---
 
@@ -449,6 +450,28 @@ Siapa orangnya dicatat ketua peneliti di luar repo, sama seperti sekarang.
 
 **Instalasi uji** ([20 → Prasyarat no. 8](20_PAKET_VALIDASI.md#prasyarat-no-8-instalasi-uji-dan-akun-uji)). Di tahap 2 cukup akun `admin` pengembang. Di G3 (ahli media langkah 2), pengembang memegang dua akun, `admin` dan `ketua`, sesuai K9. Validator tidak pernah mendapat akun staf.
 
+### 11.1 Keamanan masuk staf
+
+Diputuskan pengembang 30 Oktober 2026 (K15, [§17](#17-keputusan-pengembang) no. 5).
+
+**Aturan kata sandi**
+- Kata sandi staf memakai aturan `strong_password[username]` yang sudah dipakai siswa (`GelitaRules::strong_password()`, di `RegisterController` dan `LoginController`).
+- Panjang minimal 12 karakter yang sekarang berlaku untuk staf tetap dipakai.
+- Aturan ini berlaku di semua tempat yang menetapkan kata sandi staf:
+  - `AccountController::changePassword()` (ganti sendiri);
+  - `StaffController` (kata sandi awal dan atur ulang oleh admin);
+  - `gelita:staff:password`.
+- Kata sandi lama yang tidak memenuhi aturan tidak ditolak saat masuk. Aturannya dipakai saat kata sandi dibuat atau diganti berikutnya.
+
+**Batas waktu sesi staf**
+- Sesi staf berakhir setelah 2 jam tanpa aktivitas.
+- `StaffAuthFilter` menyimpan waktu permintaan terakhir di sesi (`staff_last_seen`). Bila selisihnya lebih dari batas, sesi staf diakhiri, log audit mencatat `staff_idle_logout`, dan halaman masuk menampilkan: "Sesi berakhir karena tidak ada aktivitas selama 2 jam. Silakan masuk lagi."
+- Batasnya pengaturan `Config\Gelita::$staffIdleSeconds = 7200`.
+- Sesi siswa tidak terpengaruh. `Config\Session::$expiration` (4 jam) tetap.
+- Permintaan API latar (`/api/admin/summary` yang diperbarui otomatis, pemantauan bagian 2) tidak dihitung sebagai aktivitas, supaya tab yang dibiarkan terbuka tetap berakhir.
+
+**Tanpa verifikasi dua langkah.** Yang sudah ada tetap: kunci 15 menit setelah 5 kali gagal, kata sandi berhash, HTTPS, dan log audit masuk.
+
 ---
 
 ## 12. Teks antarmuka
@@ -471,6 +494,8 @@ Mengikuti `.claude/rules/ui-copy.md`: kalimat panel sopan dan polos, kalimat sis
 | `roleHelpKetua` (baru) | — | Semua hak peneliti, ditambah data semua siswa, unduh data, dan pengaturan studi. |
 | `roleHelpAdmin` (baru) | — | Sistem, akun, konten, rilis, sekolah, dan log audit. Tidak melihat data penelitian. |
 | Label audit yang menyebut "akun guru/admin" | — | "akun staf" |
+| `staffIdleLogout` (baru) | — | Sesi berakhir karena tidak ada aktivitas selama 2 jam. Silakan masuk lagi. |
+| `staffPasswordWeak` (baru) | — | Kata sandi belum cukup kuat. Pakai minimal 12 karakter dengan huruf besar, huruf kecil, angka, dan simbol, dan jangan memuat nama pengguna. |
 
 **Game (siswa), `id` dan `en`**
 
@@ -512,6 +537,7 @@ Mengikuti `.claude/rules/ui-copy.md`: kalimat panel sopan dan polos, kalimat sis
 | `StudyAccessTest` | Ketua mengubah studi; admin melihat formulir terkunci dan `POST`-nya 404; peneliti 404 |
 | `ReplaceTeacherMigrationTest` | Akun guru, unduhannya beserta berkas, dan permintaannya terhapus; baris audit tetap dengan pelaku kosong; `school_id` hilang; peran wajib diisi |
 | `StaffRolesTest` | Membuat dan mengubah akun dengan tiga peran; peran `guru` atau kosong ditolak; admin tidak bisa menurunkan perannya sendiri. Belum ada tes untuk ini sekarang. |
+| `StaffLoginSecurityTest` | Kata sandi staf yang lemah atau memuat nama pengguna ditolak di ganti sendiri, akun baru, dan `gelita:staff:password`. Sesi staf yang diam lebih dari `staffIdleSeconds` diakhiri dengan audit `staff_idle_logout`. Permintaan API latar tidak memperpanjang sesi. Sesi siswa tidak terpengaruh. |
 
 ### 14.2 Tes yang ditulis ulang
 
@@ -551,7 +577,7 @@ Di mesin pengembangan, masuk sebagai tiap peran:
 
 Tidak menahan draf ini; dijawab pengembang atau di bagian yang disebut.
 
-1. **Keamanan masuk staf.** Tidak ada dokumen yang menyebut verifikasi dua langkah, aturan kata sandi staf, atau batas waktu sesi staf. Usulan: aturan kata sandi kuat yang sama dengan siswa, batas waktu sesi staf 2 jam tanpa aktivitas, tanpa verifikasi dua langkah. Diputuskan pengembang sebelum dokumen ini disetujui.
+1. ~~**Keamanan masuk staf.**~~ **Diputuskan pengembang 30 Oktober 2026:** aturan kata sandi kuat yang sama dengan siswa, sesi staf berakhir setelah 2 jam tanpa aktivitas, tanpa verifikasi dua langkah ([§11.1](#111-keamanan-masuk-staf), K15).
 2. **Siapa mengajukan permintaan hapus data.** 01 menyebut "peneliti", 23 → T10 menyebut `koordinator`, dan 22 serta 26 mengaitkannya dengan ketua peneliti. Draf ini memberi `deletion.request` ke `peneliti` dan `ketua`. Apakah ketua harus menyetujui sebelum admin menjalankan, diputuskan di bagian 4.
 3. **Admin dan panel pemantauan.** 01 memberi admin hak "Lihat", tetapi bila pemantauan menampilkan kode, admin bisa menyambungkan kode ke nama lewat akun. Bentuk tampilan admin (misalnya hanya angka per sesi, tanpa kode) diputuskan di bagian 2.
 4. **CSV daftar siswa untuk admin.** Sekarang admin bisa mengunduh daftar dengan nama. Usulan: CSV admin dihapus, nama hanya di layar, untuk meminimalkan salinan identitas. Daftar izin berkode untuk penutupan studi ditetapkan di bagian 4.
@@ -571,6 +597,10 @@ Satu putaran tanya, empat pertanyaan (30 Oktober 2026); pengembang memilih usula
 2. **Akun `guru` dihapus di migrasi**, bersama berkas unduhan dan permintaan hapus datanya; baris audit tetap dengan pelaku kosong; `staff_users.school_id` dibuang (K11). Tidak dipilih: akun guru dibiarkan terkunci dengan nilai peran lama dan kolom sekolah tetap.
 3. **Studi diubah `ketua`, dilihat `admin`** (K12). Rilis dan paket aset tetap milik admin. Di instalasi uji, pengembang memegang dua akun. Tidak dipilih: studi tetap di tangan admin dengan peneliti hanya melihat; admin dan ketua sama-sama boleh mengubah.
 4. **Draf ini ditulis di cabang yang sama dengan keputusan empat bagian** (`sky/practical-knuth-x5vyu0`, PR #282). Tidak dipilih: menggabung PR #282 dulu lalu membuka cabang baru.
+5. **Keamanan masuk staf** (K15, [§11.1](#111-keamanan-masuk-staf)). Usulan di pertanyaan terbuka no. 1 disetujui pengembang 30 Oktober 2026 dalam pesan terpisah:
+   - aturan kata sandi kuat yang sama dengan siswa;
+   - sesi staf berakhir setelah 2 jam tanpa aktivitas;
+   - tanpa verifikasi dua langkah.
 
 ---
 
