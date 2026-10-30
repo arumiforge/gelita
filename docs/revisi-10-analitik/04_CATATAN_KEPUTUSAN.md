@@ -6,6 +6,112 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 30 Oktober 2026
 
+**Bagian 2 dokumen implementasi didraf: sesi lapangan, token, kode peserta, pemantauan, dan `gelita:uji:akun`** (cabang `sky/practical-knuth-x5vyu0`, PR #282) · `asal: pengembang` · `draf pengembang` · Prototipe I, belum merevisi produk
+
+[28_IMPLEMENTASI_SESI_LAPANGAN.md](28_IMPLEMENTASI_SESI_LAPANGAN.md) ditulis untuk perubahan sistem no. 11, 12, 13, dan 24. Bagian 2 ditulis sebelum PR #282 digabung, atas permintaan pengembang, di cabang yang sama dengan bagian 1. Isinya:
+- sakelar mode penelitian per studi dan rencana pertemuan P1–P5;
+- sesi lapangan dengan kode `S03-A-P2` dan susulan `-S`, `-S2`;
+- token 6 karakter (huruf dan angka tanpa O, 0, I, 1, L), pendaftaran P1 yang dimulai dengan token, dan game tertutup di luar sesi;
+- kode sekolah penelitian `schools.research_code` dan kode peserta `S03-A07` dengan penghitung yang dinaikkan lewat UPDATE bersyarat;
+- isian L2, panel pemantauan, dan alat bantu `gelita:uji:akun`;
+- skema, rute, teks layar, tes, dan titik sambung ke no. 16, 20, 21, 22, dan bagian 3–4.
+
+Tidak ada kode yang diubah.
+
+**Akibat dari kamus yang sudah disetujui, untuk ditinjau pengembang.** `kamus-1.0` menetapkan satu sesi game milik tepat satu sesi lapangan. Kode sekarang menyimpan kemajuan per sesi game (`session_progress`, `completedForSession()`), sehingga siswa akan mulai dari kosong di setiap pertemuan. Bagian 2 memindahkan kemajuan ke siswa per studi (`participant_progress`) dan membuang `session_progress` ([28 → Kemajuan mengikuti siswa](28_IMPLEMENTASI_SESI_LAPANGAN.md#8-kemajuan-mengikuti-siswa-bukan-sesi-game)). Ini perubahan terbesar di bagian 2.
+
+Satu putaran tanya, empat pertanyaan; pengembang memilih usulan di keempatnya ([28 → Keputusan pengembang](28_IMPLEMENTASI_SESI_LAPANGAN.md#22-keputusan-pengembang)):
+1. **Buklet dan bentuk tes dihitung panel dari baris dan kursi**, dengan peringatan bila buklet tidak seimbang, tanpa menahan. Ini mengubah keputusan 25 Oktober 2026 "buklet dimasukkan P1 dari L2": P1 kini memasukkan baris dan kursi. Tidak dipilih: buklet diketik P1, atau ketidakseimbangan menahan tes awal.
+2. **`gelita:uji:akun` di luar alur token**:
+   - akun `uji.*` dibuat langsung dengan sekolah `Sekolah Uji Validator` (`V01`) dan kode `UJI-01`, …;
+   - `--reset` menghapus data permainan akun itu;
+   - di G3 satu sesi lapangan panjang untuk validator.
+
+   Tidak dipilih: lewat alur token dengan kode seperti `V01-A01`.
+3. **Admin melihat panel pemantauan sebagai angka saja**, tanpa kode peserta dan token. Ini menjawab [27 → Pertanyaan terbuka](27_IMPLEMENTASI_PERAN_PENELITI.md#16-pertanyaan-terbuka) no. 3. Tidak dipilih: sama dengan peneliti; tidak ada akses.
+4. **Token susulan hanya untuk siswa yang dicentang P1**, dengan centang awal untuk yang tidak hadir. Tidak dipilih: semua siswa rombel itu.
+
+Enam pertanyaan terbuka di [28 → Pertanyaan terbuka](28_IMPLEMENTASI_SESI_LAPANGAN.md#21-pertanyaan-terbuka) tidak menahan draf, antara lain teks "enam huruf dan angka" dan batas 20 menit di P5.
+
+Akibat ke 01, 02, 03, 11, 18, dan 20 dicatat di [28 → Akibat ke dokumen lain](28_IMPLEMENTASI_SESI_LAPANGAN.md#23-akibat-ke-dokumen-lain) dan dibawa sesi koordinator. 27 sudah diselaraskan di cabang ini (admin di pemantauan, nama berkas aturan repo).
+
+Langkah berikutnya: pengembang meninjau 28. Bagian 3 (`29`) dan bagian 4 (`30`) boleh ditulis.
+
+**Keamanan masuk staf disetujui** (cabang `sky/practical-knuth-x5vyu0`, PR #282) · `asal: pengembang` · `disetujui pengembang` · Prototipe I, belum merevisi produk
+
+Pengembang menyetujui usulan di [27 → Pertanyaan terbuka](27_IMPLEMENTASI_PERAN_PENELITI.md#16-pertanyaan-terbuka) no. 1:
+- kata sandi staf memakai aturan kata sandi kuat yang sama dengan siswa (`PasswordPolicy`: huruf besar, huruf kecil, angka, simbol, tanpa nama pengguna), ditambah panjang minimal 12 yang sudah ada;
+- sesi staf berakhir setelah 2 jam tanpa aktivitas (`Config\Gelita::$staffIdleSeconds = 7200`, dicatat `staff_idle_logout`);
+- tanpa verifikasi dua langkah.
+
+Rinciannya di [27 → Keamanan masuk staf](27_IMPLEMENTASI_PERAN_PENELITI.md#111-keamanan-masuk-staf) (K15, keputusan no. 5). Status 27 tetap `draf pengembang`.
+
+**Bagian 1 dokumen implementasi didraf: peran `peneliti` dan `ketua`, peran `guru` dihapus, panel peneliti** (cabang `sky/practical-knuth-x5vyu0`, PR #282) · `asal: pengembang` · `draf pengembang` · Prototipe I, belum merevisi produk
+
+[27_IMPLEMENTASI_PERAN_PENELITI.md](27_IMPLEMENTASI_PERAN_PENELITI.md) ditulis untuk perubahan sistem no. 10. Isinya:
+- tabel hak akses per halaman untuk tiga peran;
+- peta kemampuan di kode, yang menggantikan cabang "admin atau bukan";
+- migrasi yang menghapus akun `guru`;
+- mengatur ulang kata sandi lewat kode peserta;
+- menu panel per peran, tes, dan kriteria selesai.
+
+Halaman bagian 2–4 disebut sebagai titik sambung dengan haknya sudah ditetapkan. Pencarian kode menunjukkan hampir semua pemeriksaan sekarang berbentuk `role === 'admin'`, sehingga akun `peneliti` baru akan diperlakukan sebagai guru tanpa sekolah dan tidak melihat apa pun. Karena itu peta kemampuan menjadi inti bagian ini. Tidak ada kode yang diubah.
+
+Satu putaran tanya, empat pertanyaan; pengembang memilih usulan di keempatnya ([27 → Keputusan pengembang](27_IMPLEMENTASI_PERAN_PENELITI.md#17-keputusan-pengembang)):
+1. **Dua peran peneliti.**
+   - `peneliti` (akun `koordinator`, `pengamat`, `pewawancara`): kerja lapangan, mengatur ulang kata sandi lewat kode, data satu siswa lewat kodenya, dan mengajukan permintaan hapus data; tidak boleh mengunduh data.
+   - `ketua`: semua hak `peneliti`, ditambah data semua siswa, unduh data, pengaturan studi, dan penanda tindak lanjut butir risiko daring.
+
+   Tidak dipilih: satu peran untuk semua dengan penanda ketua, atau centang hak per akun.
+2. **Akun `guru` dihapus di migrasi**, bersama berkas unduhan dan permintaan hapus datanya, dan `staff_users.school_id` dibuang. Tidak dipilih: akun guru dibiarkan terkunci.
+3. **Studi diubah `ketua` dan dilihat `admin`**; rilis dan paket aset tetap milik admin. Tidak dipilih: tetap di admin, atau keduanya boleh mengubah.
+4. **Ditulis di cabang yang sama dengan keputusan empat bagian** (PR #282). Tidak dipilih: menggabung PR #282 dulu.
+
+Tujuh pertanyaan terbuka dicatat di [27 → Pertanyaan terbuka](27_IMPLEMENTASI_PERAN_PENELITI.md#16-pertanyaan-terbuka). Satu di antaranya menunggu pengembang sebelum 27 disetujui: keamanan masuk staf (aturan kata sandi, batas waktu sesi, verifikasi dua langkah). Sisanya diserahkan ke bagian 2–4.
+
+Akibat ke 01, 03, 20, 22, dan 26 dicatat di [27 → Akibat ke dokumen lain](27_IMPLEMENTASI_PERAN_PENELITI.md#18-akibat-ke-dokumen-lain) dan dibawa sesi koordinator setelah bagian 2–4.
+
+Langkah berikutnya: pengembang meninjau 27. Setelah PR #282 digabung, bagian 2–4 (`28`–`30`) boleh ditulis paralel.
+
+**Dokumen implementasi untuk perubahan yang tidak bergantung pada hasil validasi didraf sekarang, dalam empat bagian** (cabang `sky/practical-knuth-x5vyu0`) · `asal: pengembang` · `disetujui pengembang` · Prototipe I, belum merevisi produk
+
+Banyak dari 23 perubahan sistem di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti) tidak bergantung pada hasil validasi ahli, jadi dokumen implementasinya bisa didraf sekarang sebagai `draf pengembang`. Ini mengubah sebagian keputusan 25 Oktober 2026 (*Urutan kerja tetap seperti peta jalan di 01*): yang ditunda sampai G2 kini hanya **perubahan sistemnya**, bukan lagi seluruh dokumen implementasi. Menyusun draf adalah kerja dokumen, jadi urutan penelitian tetap utuh: tidak ada kode, migrasi, atau instalasi yang diubah sebelum G2. Satu putaran tanya, empat pertanyaan; pengembang memilih usulan di keempatnya.
+
+Yang didraf sekarang: no. 7, 10, 11, 12, 13, 14, 15, dan 23, ditambah no. 24 (keputusan no. 4 di bawah). Yang menunggu matriks revisi induk ([20](20_PAKET_VALIDASI.md)): no. 1–6, 8, 9, dan 16–22. Isinya bergantung pada bank, instrumen, layar, atau aturan yang bisa berubah karena hasil validasi, jadi baru didraf setelah matriks itu ada, supaya tidak ditulis dua kali.
+
+Yang diputuskan:
+
+1. **Empat bagian**, masing-masing satu dokumen, satu sesi, dan satu cabang dari `main`. Nomor berkasnya melanjutkan folder ini (27–30). Bagian diberi nomor 1–4, bukan kode huruf, supaya tidak tertukar dengan risiko R1–R14 di [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md).
+
+   | Bagian | Berkas | Perubahan | Isi pokok | Sumber utama |
+   | --- | --- | --- | --- | --- |
+   | 1 | `27_IMPLEMENTASI_PERAN_PENELITI.md` | 10 | Peran `peneliti` di samping `admin`; peran `guru` dihapus seluruhnya (halaman, hak akses, baris yang tersimpan); tabel hak akses; akun bernama samaran per peran, termasuk apakah `ketua` peran sendiri atau hak tambahan (dibutuhkan bagian 4); kerangka panel peneliti dan slug rutenya, tempat bagian 2–4 menambah halaman; reset kata sandi lewat kode peserta dengan sandi sementara dan jejak audit | 01 → *Admin dan peneliti*; 03 → *Akun staf*; 26 (tim pengendali) |
+   | 2 | `28_IMPLEMENTASI_SESI_LAPANGAN.md` | 11, 12, 13, 24 | Sesi lapangan dan token 6 huruf; wilayah per pertemuan; susulan `-S`; isian L2 (buklet, baris, kursi) dengan cek keseimbangan per rombel; game tertutup di luar sesi; pendaftaran dari token; kode `S03-A07` dengan nomor urut yang aman saat banyak siswa mendaftar bersamaan; daftar kode sekolah (pemetaan NPSN hanya untuk admin) dan awalan `U`; `field_session_code` di sesi game; panel pemantauan; alat bantu `gelita:uji:akun` | 01 → *Token sesi*, *Kode peserta baru*, *Kerja lapangan*; 02 → L1, L2; 11 → syarat untuk no. 11; 18 (layar token); 20 → prasyarat no. 8 langkah 6 |
+   | 3 | `29_IMPLEMENTASI_DATA_PENELITIAN.md` | 7, 14, 15 | Event dan kolom bertanda "Dihapus" dihapus; data bertanda "Admin" keluar dari ekspor penelitian; ekspor peneliti hanya dengan kode peserta; lembar *Kamus Data* diturunkan dari `kamus-1.0` (`dictionary_version`); event dari kamus yang masuk no. 14; riwayat unduhan; templat spreadsheet L1–L7 dengan kolom yang sama dengan 02 (L7 tetap di luar server dan disimpan terpisah) | 01 → *Log: dihapus atau dipisah*, *Olah data*; 11 → *Kunci penggabungan dan waktu*, *Variabel butir*, *Variabel peserta dan sesi*, *Aturan gabung lembar lapangan*, *Yang harus disediakan sistem di tahap 3*; 02 |
+   | 4 | `30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md` | 23 | Teks centang persetujuan (id dan en); layar izin ulang T11 dan pesan dukungan T12; penanda tindak lanjut butir risiko hanya untuk `ketua` dan tidak pernah diekspor; status mundur, hapus sebagian, ambil data satu anak, pembetulan dengan jejak audit, penghapusan termasuk cadangan dan ekspor, daftar izin berkode, nama diganti kode saat studi ditutup; `retention_days` ± 7300 (bawaan migrasi sekarang 1825); `HashedIpSessionHandler` (sudah ada di `app/Libraries/`, belum dipasang) di `Config\Session` dan pembersihan rutin `ci_sessions`; jalan manual P15 selama fungsinya belum ada | 01 → no. 23; 22 → *Dasar hukum*, *Masa simpan dan pemusnahan*; 23 → T4, T10–T12; 26 → L3, P15, P18 |
+
+2. **Urutan: bagian 1 lebih dulu**, karena bagian itu menetapkan nama peran dan panel peneliti yang dipakai bagian lain. Setelah bagian 1 digabung ke `main`, bagian 2–4 ditulis paralel di tiga sesi. Lalu satu sesi koordinator menyelaraskan nomor migrasi, rute, nama peran, dan *Akibat ke dokumen lain*, seperti tahap 2 pada 27 Oktober 2026.
+3. **Status paling tinggi sebelum G2: `disetujui pengembang`**, seperti dokumen lain. Setelah matriks revisi induk dan keputusan komite etik ada, setiap bagian dicek ulang sekali terhadap keduanya sebelum dokumen implementasi lengkap disetujui. Perubahan yang diminta komite ditandai `asal: komite etik`. Implementasi tetap baru dimulai setelah G2 dan setelah dokumen implementasi lengkap disetujui.
+4. **`gelita:uji:akun` menjadi perubahan sistem no. 24** dan didraf di bagian 2. Alat ini membuat akun siswa, jadi harus mengikuti alur pendaftaran baru (token, kode peserta). Ini menjawab keputusan terbuka di [00 → Langkah berikutnya di tahap 2](00_INDEKS.md).
+
+**Batas antarbagian.** Keempat bagian menyentuh perubahan yang menunggu matriks revisi hanya sebagai **titik sambung**, tanpa merancangnya. Contohnya:
+- token yang membuka modul tes (no. 22);
+- bentuk A/B yang ditetapkan dari baris dan kursi L2;
+- layar T11 sebelum butir risiko daring di modul no. 22;
+- kolom ekspor dari no. 1, 5, 9, 21, dan 22, yang ditambahkan nanti ke spesifikasi ekspor yang sama.
+
+`kamus-1.0` tidak diubah; variabel tes, angket, dan sikap tetap menunggu `kamus-1.1`. Perubahan yang dibutuhkan dokumen lain dicatat di bagian *Akibat ke dokumen lain* setiap bagian.
+
+Tidak dipilih:
+- tiga bagian (no. 10–13 digabung) atau delapan bagian (satu per perubahan);
+- ditulis satu per satu, atau keempatnya paralel sekarang;
+- tetap `draf pengembang` sampai G2;
+- `gelita:uji:akun` tetap belum bernomor, atau dibuang.
+
+**Temuan untuk bagian 4** (tidak diubah di cabang ini). Tabel di [26 → Kegiatan](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md#kegiatan) memberi nomor KG2–KG5 berbeda dari [03 → Kegiatan dengan anak](03_KODE_DAN_ARTI.md#kegiatan-dengan-anak) dan 22: di 26, KG2 adalah tes awal P1; di 03 dan 22, KG2 adalah berpikir lantang (tahap 4). Jadi tenggat "sebelum KG2" di 26 (IP berhash, P15, P18), di 22, dan di 01 no. 23 bisa dibaca berbeda. Bagian 4 menulis tenggatnya sebagai "sebelum kegiatan pertama yang memakai akun GELITA anak", lalu membetulkan tabel di 26 atau menitipkannya ke sesi koordinator.
+
+Langkah berikutnya: satu sesi untuk bagian 1 (`27`), di cabangnya sendiri dari `main`, mulai dari 00 → *Tahap dokumen 3*.
+
 **Akibat 25 dan 26 dibawa ke 01, 20, 21, 22, 23, dan 26** (cabang `sky/dazzling-planck-6cl9vy`, sesi koordinator) · `asal: pengembang` · `disetujui pengembang` · Prototipe I, belum merevisi produk
 
 Keempat sesi paralel (PR #276–#279) hanya mengubah dokumennya sendiri, dan menitipkan akibatnya ke dokumen lain di bagian *Akibat ke dokumen lain*. Atas permintaan pengembang, akibat itu dibawa sekarang, sebelum versi bahan dibekukan untuk validasi. Tidak ada keputusan baru; semuanya menjalankan keputusan di 25 dan 26.
