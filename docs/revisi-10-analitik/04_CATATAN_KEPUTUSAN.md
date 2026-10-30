@@ -6,6 +6,30 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 27 Oktober 2026
 
+**Penilaian dampak pelindungan data lengkap ditulis di 26 (lampiran 18 izin etik)** (cabang `r10-penilaian-dampak`) · `asal: pengembang` · status dokumen `draf pengembang` · Prototipe I, belum merevisi produk
+
+[26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) menguraikan ringkasan di [22 → Penilaian dampak pelindungan data](22_PERMOHONAN_IZIN_ETIK.md#penilaian-dampak-pelindungan-data) menjadi penilaian lengkap untuk komite dan PPDP: uraian dan tujuan pengolahan, dasar hukum (nomor pasal sama dengan 22, `needs_verification`), inventaris data anak, orang tua, sekolah, staf, dan log dengan tingkat kepekaan, aliran data, kebutuhan dan proporsionalitas, hak, 14 risiko dengan kemungkinan dan keparahan sebelum dan sesudah perlindungan, 18 langkah perlindungan, risiko sisa, konsultasi, tanda tangan, dan tinjauan ulang. Tidak ada aturan data baru; isinya mengikuti 22.
+
+Temuan pokok:
+- **Tiga risiko tinggi sebelum perlindungan:** kebocoran yang mengungkap nama bersama jawaban (R1), pengenalan kembali dari gabungan data (R2), dan jawaban butir risiko daring terbaca orang lain (R3). Sesudah perlindungan tidak ada risiko tinggi; R1 dan R2 tetap sedang, yang lain rendah. Karena itu konsultasi lebih dulu dengan lembaga pelindungan data pribadi tidak diperkirakan perlu.
+- **Temuan dari skema basis data:** tabel sesi peramban `ci_sessions` menyimpan IP mentah sampai sesi kedaluwarsa dibersihkan, karena `HashedIpSessionHandler` belum dipasang (`docs/01_DATABASE.md`).
+- **Tiga fungsi hak orang tua** (hapus sebagian, ambil data satu anak, pembetulan dengan jejak audit) baru ada di tahap 3. 26 menambah jalan manual sementara dengan berita acara, dan KG2 tidak dimulai sebelum fungsi atau jalan manual itu diuji (langkah P15).
+
+Keputusan pengembang (27 Oktober 2026, `disetujui pengembang`; semuanya pilihan yang diusulkan):
+
+1. **Pengembang dan admin adalah bagian dari tim pengendali**, terikat pernyataan kerahasiaan; prosesor hanya penyedia server. Tidak dipilih: pengembang/admin sebagai prosesor tersendiri dengan perjanjian kedua.
+2. **IP mentah di `ci_sessions` diperbaiki sebelum KG2** (pasang `HashedIpSessionHandler`, bersihkan sesi kedaluwarsa rutin), sebagai perubahan sistem tahap 3. Tidak dipilih: diterima sebagai risiko sisa.
+3. **Konsultasi dengan PPDP atau narahubung** (saran tertulis sebelum permohonan diajukan) **dan kepala sekolah** (ringkasan satu halaman bersama T6). Tidak dipilih: ditambah wakil orang tua per sekolah; atau PPDP saja.
+4. **Tinjauan ulang tahunan dan saat ada perubahan**: bersama laporan kemajuan, sebelum amandemen yang mengubah data, setelah kebocoran, saat Peraturan Lembaga terbit, dan saat studi ditutup. Tidak dipilih: hanya saat ada perubahan.
+
+Akibatnya (dibawa sesi yang memegang 22, 23, dan 01; daftar lengkap di [26 → Akibat ke dokumen lain](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md#akibat-ke-dokumen-lain)):
+- **22:** lampiran 18 ditautkan ke 26 dengan status `draf pengembang`; tautan di *Penilaian dampak*; kalimat kedudukan pengembang dan admin di *Pengendali*; jalan manual sementara di *Mengundurkan diri*; hasil cek pasal dibawa ke 26, termasuk UU Pasal 4 ayat (2) huruf e dan Pasal 25 yang dipakai 26.
+- **01:** perubahan sistem no. 23 mendapat `HashedIpSessionHandler`; daftar kerja no. 15 menyebut 26.
+- **23:** T6 menyebut ringkasan penilaian dampak satu halaman.
+- Tempat kosong baru khusus 26: `[tanggal tinjauan pertama]`, `[tanggal penandatanganan]`, `[nama pengembang]`, `[nama pembimbing]`, `[saran PPDP atau narahubung]`, `[tanggapan sekolah]`. Tempat kosong bersama 22 dan 23 dipakai dengan teks yang sama.
+
+Bergantung pada PR #275 (cabang `sky/dazzling-planck-6cl9vy`, penamaan "pengembang" dan "AI"); `main` digabung ke cabang ini setelah #275 masuk.
+
 **Cek fakta budaya tim: 135 klaim dicek, B.7 IB diperbarui, perbaikan 08 dan 12 diputuskan** (cabang `r10-cek-fakta-budaya`, bergantung pada PR #275) · `asal: pengembang` · `draf pengembang`, keputusan perbaikan `disetujui pengembang` · Prototipe I, belum merevisi produk
 
 Prasyarat no. 6 di [20 → Ringkasan](20_PAKET_VALIDASI.md#ringkasan) dipenuhi di [25_CEK_FAKTA_BUDAYA.md](25_CEK_FAKTA_BUDAYA.md). Klaim budaya dikumpulkan dari:
