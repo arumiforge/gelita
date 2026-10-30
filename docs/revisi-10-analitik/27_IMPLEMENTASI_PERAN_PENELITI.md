@@ -43,7 +43,7 @@ Per 30 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 **Saat implementasi:**
 - Kerjakan di satu cabang pendek dari `main`. Commit berbahasa Inggris (`.claude/rules/language.md`).
 - `vendor/bin/phpunit --no-coverage` harus hijau sebelum push.
-- Jangan menjalankan migrasi, `gelita:reset`, atau skrip rilis di server produksi (CLAUDE.md).
+- Jangan menjalankan migrasi, `gelita:reset`, atau skrip rilis di server produksi (aturan kerja repo).
 
 **Prinsip yang tetap berlaku:**
 - Server satu-satunya sumber kebenaran.
@@ -154,7 +154,7 @@ Keputusan ini tidak perlu ditanyakan ulang saat implementasi. K1, K2, K11, K12, 
 | --- | --- | --- | --- | --- | --- |
 | Sesi lapangan dan token | — | Ya | Ya | `field_sessions.manage` | 2 (`28`) |
 | Isian L2 (kode, baris, kursi, buklet) | — | Ya | Ya | `field_sessions.manage` | 2 (`28`) |
-| Panel pemantauan lapangan | Lihat, bentuknya diputuskan di 28 | Ya | Ya | `monitoring.view` | 2 (`28`); lihat [§16](#16-pertanyaan-terbuka) no. 3 |
+| Panel pemantauan lapangan | Lihat angka saja, tanpa kode peserta ([28 → Panel pemantauan](28_IMPLEMENTASI_SESI_LAPANGAN.md#12-panel-pemantauan)) | Ya | Ya | `monitoring.view` | 2 (`28`) |
 | Log teknis (perangkat, paket, event hilang) | Ya | — | — | `tech_logs.view` | 3 (`29`) |
 | Lembar *Kamus Data* dan isi unduhan berkode | — | — | Ya | `research.export` | 3 (`29`) |
 | Mengajukan permintaan hapus data (semua atau sebagian) | — | Ya | Ya | `deletion.request` | 4 (`30`) |
@@ -579,7 +579,7 @@ Tidak menahan draf ini; dijawab pengembang atau di bagian yang disebut.
 
 1. ~~**Keamanan masuk staf.**~~ **Diputuskan pengembang 30 Oktober 2026:** aturan kata sandi kuat yang sama dengan siswa, sesi staf berakhir setelah 2 jam tanpa aktivitas, tanpa verifikasi dua langkah ([§11.1](#111-keamanan-masuk-staf), K15).
 2. **Siapa mengajukan permintaan hapus data.** 01 menyebut "peneliti", 23 → T10 menyebut `koordinator`, dan 22 serta 26 mengaitkannya dengan ketua peneliti. Draf ini memberi `deletion.request` ke `peneliti` dan `ketua`. Apakah ketua harus menyetujui sebelum admin menjalankan, diputuskan di bagian 4.
-3. **Admin dan panel pemantauan.** 01 memberi admin hak "Lihat", tetapi bila pemantauan menampilkan kode, admin bisa menyambungkan kode ke nama lewat akun. Bentuk tampilan admin (misalnya hanya angka per sesi, tanpa kode) diputuskan di bagian 2.
+3. ~~**Admin dan panel pemantauan.**~~ **Diputuskan pengembang 30 Oktober 2026 di bagian 2:** admin melihat angka saja per sesi lapangan, tanpa kode peserta dan tanpa token ([28 → Panel pemantauan](28_IMPLEMENTASI_SESI_LAPANGAN.md#12-panel-pemantauan), K2).
 4. **CSV daftar siswa untuk admin.** Sekarang admin bisa mengunduh daftar dengan nama. Usulan: CSV admin dihapus, nama hanya di layar, untuk meminimalkan salinan identitas. Daftar izin berkode untuk penutupan studi ditetapkan di bagian 4.
 5. **Jawaban butir risiko daring per baris.** 01 memasukkan semua jawaban ke unduhan peneliti, sedangkan 26 dan 22 menyebut peneliti hanya melihat angka gabungan. Diputuskan di bagian 3 dan 4. Sampai itu, `research.export` tidak memuat jawaban `ang-21`–`ang-23` per baris.
 6. **"Hanya ketua yang menyambungkan kode ke nama"** (03, 22, 26) hanya berlaku sebagai prosedur. Secara teknis P1 memegang L7 dan admin memegang akun. Dokumen ini tidak bisa menutupnya di sistem; cukup dicatat di 22 dan 26 sebagai pembatasan prosedur.

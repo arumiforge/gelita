@@ -6,6 +6,37 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 30 Oktober 2026
 
+**Bagian 2 dokumen implementasi didraf: sesi lapangan, token, kode peserta, pemantauan, dan `gelita:uji:akun`** (cabang `sky/practical-knuth-x5vyu0`, PR #282) · `asal: pengembang` · `draf pengembang` · Prototipe I, belum merevisi produk
+
+[28_IMPLEMENTASI_SESI_LAPANGAN.md](28_IMPLEMENTASI_SESI_LAPANGAN.md) ditulis untuk perubahan sistem no. 11, 12, 13, dan 24. Bagian 2 ditulis sebelum PR #282 digabung, atas permintaan pengembang, di cabang yang sama dengan bagian 1. Isinya:
+- sakelar mode penelitian per studi dan rencana pertemuan P1–P5;
+- sesi lapangan dengan kode `S03-A-P2` dan susulan `-S`, `-S2`;
+- token 6 karakter (huruf dan angka tanpa O, 0, I, 1, L), pendaftaran P1 yang dimulai dengan token, dan game tertutup di luar sesi;
+- kode sekolah penelitian `schools.research_code` dan kode peserta `S03-A07` dengan penghitung yang dinaikkan lewat UPDATE bersyarat;
+- isian L2, panel pemantauan, dan alat bantu `gelita:uji:akun`;
+- skema, rute, teks layar, tes, dan titik sambung ke no. 16, 20, 21, 22, dan bagian 3–4.
+
+Tidak ada kode yang diubah.
+
+**Akibat dari kamus yang sudah disetujui, untuk ditinjau pengembang.** `kamus-1.0` menetapkan satu sesi game milik tepat satu sesi lapangan. Kode sekarang menyimpan kemajuan per sesi game (`session_progress`, `completedForSession()`), sehingga siswa akan mulai dari kosong di setiap pertemuan. Bagian 2 memindahkan kemajuan ke siswa per studi (`participant_progress`) dan membuang `session_progress` ([28 → Kemajuan mengikuti siswa](28_IMPLEMENTASI_SESI_LAPANGAN.md#8-kemajuan-mengikuti-siswa-bukan-sesi-game)). Ini perubahan terbesar di bagian 2.
+
+Satu putaran tanya, empat pertanyaan; pengembang memilih usulan di keempatnya ([28 → Keputusan pengembang](28_IMPLEMENTASI_SESI_LAPANGAN.md#22-keputusan-pengembang)):
+1. **Buklet dan bentuk tes dihitung panel dari baris dan kursi**, dengan peringatan bila buklet tidak seimbang, tanpa menahan. Ini mengubah keputusan 25 Oktober 2026 "buklet dimasukkan P1 dari L2": P1 kini memasukkan baris dan kursi. Tidak dipilih: buklet diketik P1, atau ketidakseimbangan menahan tes awal.
+2. **`gelita:uji:akun` di luar alur token**:
+   - akun `uji.*` dibuat langsung dengan sekolah `Sekolah Uji Validator` (`V01`) dan kode `UJI-01`, …;
+   - `--reset` menghapus data permainan akun itu;
+   - di G3 satu sesi lapangan panjang untuk validator.
+
+   Tidak dipilih: lewat alur token dengan kode seperti `V01-A01`.
+3. **Admin melihat panel pemantauan sebagai angka saja**, tanpa kode peserta dan token. Ini menjawab [27 → Pertanyaan terbuka](27_IMPLEMENTASI_PERAN_PENELITI.md#16-pertanyaan-terbuka) no. 3. Tidak dipilih: sama dengan peneliti; tidak ada akses.
+4. **Token susulan hanya untuk siswa yang dicentang P1**, dengan centang awal untuk yang tidak hadir. Tidak dipilih: semua siswa rombel itu.
+
+Enam pertanyaan terbuka di [28 → Pertanyaan terbuka](28_IMPLEMENTASI_SESI_LAPANGAN.md#21-pertanyaan-terbuka) tidak menahan draf, antara lain teks "enam huruf dan angka" dan batas 20 menit di P5.
+
+Akibat ke 01, 02, 03, 11, 18, dan 20 dicatat di [28 → Akibat ke dokumen lain](28_IMPLEMENTASI_SESI_LAPANGAN.md#23-akibat-ke-dokumen-lain) dan dibawa sesi koordinator. 27 sudah diselaraskan di cabang ini (admin di pemantauan, nama berkas aturan repo).
+
+Langkah berikutnya: pengembang meninjau 28. Bagian 3 (`29`) dan bagian 4 (`30`) boleh ditulis.
+
 **Keamanan masuk staf disetujui** (cabang `sky/practical-knuth-x5vyu0`, PR #282) · `asal: pengembang` · `disetujui pengembang` · Prototipe I, belum merevisi produk
 
 Pengembang menyetujui usulan di [27 → Pertanyaan terbuka](27_IMPLEMENTASI_PERAN_PENELITI.md#16-pertanyaan-terbuka) no. 1:
