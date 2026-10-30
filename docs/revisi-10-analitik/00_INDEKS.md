@@ -109,12 +109,27 @@ Dimulai 27 Oktober 2026 atas permintaan pengembang, ditulis paralel di lima sesi
 
 Setiap sesi hanya mengubah dokumennya sendiri, barisnya sendiri di berkas ini dan di `docs/PROGRESS.md`, dan entrinya sendiri di 04. Perubahan yang dibutuhkan di dokumen lain dicatat di bagian *Akibat ke dokumen lain* dokumen itu dan dibawa sesi koordinator setelah digabung ke `main`.
 
-**Langkah berikutnya di tahap 2** (per 27 Oktober 2026; kelima dokumen tahap 2 dan ketiga instrumen sudah disetujui):
+**Langkah berikutnya di tahap 2** (per 30 Oktober 2026; kelima dokumen tahap 2, ketiga instrumen, cek fakta budaya [25](25_CEK_FAKTA_BUDAYA.md), dan penilaian dampak [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) sudah ada di `main`, semuanya `disetujui pengembang`; belum ada yang `disetujui peneliti`):
 
-1. **Paket validasi:** penuhi prasyarat yang tersisa di [20 → Ringkasan](20_PAKET_VALIDASI.md#ringkasan) (bekukan versi bahan dan catat *commit*-nya di 04, cek fakta budaya, instalasi uji dan akun `uji.*`, nama asli dan kesediaan validator, honorarium), buat ulang berkas validator ([21](21_BERKAS_BUTIR_VALIDATOR.md)), lalu kirim sesuai urutan di 20.
-2. **Izin etik:** komite dan formulir sudah dipilih (Komisi Etik Bidang Sosial Humaniora BRIN, 27 Oktober 2026); isi [22 → Daftar isian sebelum diajukan](22_PERMOHONAN_IZIN_ETIK.md#daftar-isian-sebelum-diajukan) di luar repo, ikuti [22 → Pengajuan lewat sistem klirens etik BRIN](22_PERMOHONAN_IZIN_ETIK.md#pengajuan-lewat-sistem-klirens-etik-brin), lalu ajukan pada minggu kedua–keempat November 2026. Pedoman KEPPKN 2021 sudah dibandingkan dan diterapkan (27 Oktober 2026, [22 → Pedoman yang dirujuk](22_PERMOHONAN_IZIN_ETIK.md#pedoman-yang-dirujuk)). Panduan klirens etik bidang sosial humaniora BRIN (November 2025) sudah dibandingkan dan menjadi pedoman utama (27 Oktober 2026, [22 → Pemetaan ke formulir klirens etik BRIN](22_PERMOHONAN_IZIN_ETIK.md#pemetaan-ke-formulir-klirens-etik-brin)), dengan PSEPPKN 2021 sebagai cadangan; masa simpan data berkode paling singkat 20 tahun sudah dibawa ke 22, 23, dan 24 (27 Oktober 2026). PP No. 33 Tahun 2026 (peraturan pelaksana UU PDP, berlaku 16 Januari 2027) sudah dibandingkan dan diterapkan (27 Oktober 2026, [22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum)); nomor pasalnya sudah dicek ke salinan naskah (27 Oktober 2026; satu pencocokan lagi dengan PDF resmi sebelum diunggah), Peraturan Lembaga belum terbit, dan server sudah diisi; `[kontak PPDP atau narahubung]` diisi di luar repo. Penilaian dampak pelindungan data lengkap (22 → lampiran 18) ditulis di [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) oleh sesi lain.
-3. **Gerbang G1:** tinggal daftar kode sekolah (daftar kerja no. 12), yang ditunda pengembang dan tidak menahan validasi maupun izin etik.
-4. **Setelah hasil validasi kembali:** matriks revisi induk (20), revisi Prototipe I, lalu uji keterbacaan ([24](24_UJI_KETERBACAAN.md)) setelah izin etik terbit.
+1. **Paket validasi.** Prasyarat no. 6 (cek fakta budaya) sudah selesai. Yang tersisa ada di [20 → Ringkasan](20_PAKET_VALIDASI.md#ringkasan), dan cara memenuhinya sudah ditulis di 20:
+   - no. 9: nama asli dan kesediaan validator, dicatat di daftar padanan di luar repo;
+   - no. 8: instalasi uji di subdomain kampus dengan akun `uji.*`;
+   - no. 10: honorarium dikonfirmasi ketua peneliti;
+   - no. 4, pada hari kirim: versi bahan dibekukan dan *commit*-nya dicatat di 04, lalu berkas validator ([21](21_BERKAS_BUTIR_VALIDATOR.md)) dibuat ulang.
+
+   Setelah itu paket dikirim sesuai urutan di 20. Gambar baru Wayang Kedu Temanggungan dan Candi Pawon boleh menyusul.
+2. **Izin etik** ke Komisi Etik Bidang Sosial Humaniora BRIN dengan formulir BRIN (dipilih 27 Oktober 2026), diajukan minggu kedua–keempat November 2026 lewat [22 → Pengajuan lewat sistem klirens etik BRIN](22_PERMOHONAN_IZIN_ETIK.md#pengajuan-lewat-sistem-klirens-etik-brin). Sebelum diajukan:
+   - isi [22 → Daftar isian sebelum diajukan](22_PERMOHONAN_IZIN_ETIK.md#daftar-isian-sebelum-diajukan) di luar repo, termasuk judul resmi dan `[kontak PPDP atau narahubung]`;
+   - cocokkan nomor pasal PP No. 33 Tahun 2026 sekali lagi dengan PDF resmi;
+   - minta saran PPDP atau narahubung, lalu persetujuan peneliti atas penilaian dampak [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) (lampiran 18);
+   - baca ringkasan penilaian dampak untuk sekolah di [23 → T6](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t6-surat-permohonan-izin-kepada-kepala-sekolah) sebelum dicetak.
+
+   Pedoman yang sudah diterapkan: panduan klirens etik BRIN (pedoman utama), PSEPPKN/KEPPKN 2021 (cadangan), PP No. 33 Tahun 2026, dan masa simpan data berkode paling singkat 20 tahun.
+3. **Keputusan pengembang yang masih terbuka:**
+   - target persetujuan etik di [01 → Peta jalan dan daftar kerja](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja) no. 15 (patokan BRIN ± 1–2 bulan sejak berkas lengkap, kira-kira Januari–Februari 2027);
+   - nomor perubahan sistem untuk usulan `gelita:uji:akun` (01 → *Catatan perubahan sistem untuk tahap nanti*).
+4. **Gerbang G1:** tinggal daftar kode sekolah (daftar kerja no. 12). Ditunda pengembang dan tidak menahan validasi maupun izin etik, tetapi dibutuhkan sebelum sekolah direkrut dan L8 diisi.
+5. **Setelah hasil validasi kembali:** matriks revisi induk (20), revisi Prototipe I, lalu uji keterbacaan ([24](24_UJI_KETERBACAAN.md)) setelah izin etik terbit.
 
 **Tahap dokumen 3: dokumen implementasi (tahap 3, setelah gerbang G2)**
 
