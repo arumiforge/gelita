@@ -557,7 +557,7 @@ Dua kemampuan baru di peta [27 §5.1](27_IMPLEMENTASI_PERAN_PENELITI.md#51-peta-
 
 ## 15. Skema database
 
-**Migrasi `2026-01-01-003800_AddConsentAndDataRights`.** Nomor sesudah bagian 3 (`003700`); sesi koordinator menyelaraskan nomornya.
+**Migrasi `2026-01-01-003800_AddConsentAndDataRights`.** Nomor sesudah bagian 3 (`003700`) dan migrasi terakhir bagian 1–4; urutan lengkapnya ada di [27 → Migrasi](27_IMPLEMENTASI_PERAN_PENELITI.md#61-migrasi-2026-01-01-003400_replaceteacherwithresearcherroles).
 
 | Tabel atau kolom | Isi |
 | --- | --- |
@@ -574,7 +574,7 @@ Semua kunci asing ke `staff_users` memakai `ON DELETE SET NULL`. Kunci asing ke 
 
 **Ikut diperbarui:**
 - `tests/_support/Database/ResetTables.php` (skema SQLite).
-- `SystemResetService`: `REQUIRED_MIGRATION` menjadi `003800`; `participant_consents` di kelompok A (dikosongkan).
+- `SystemResetService`: `REQUIRED_MIGRATION` menjadi `2026-01-01-003800`, nilai akhir setelah bagian 1–4; `participant_consents` di kelompok A (dikosongkan).
 - `RetentionService`: `HARD_ORDER`, `scopedBuilder()`, `normalizeScope()` (`kind`), `flagExpiredStudyData()`, `purgeExpiredBrowserSessions()`, perpindahan status bersyarat.
 - `ResearchStudySeeder`: `retention_days` 7305.
 - Model baru `ParticipantConsentModel`; `ParticipantModel`, `ResearchStudyModel`, `DataDeletionRequestModel`, `DataExportModel`: `allowedFields` dan aturan status.
@@ -829,8 +829,8 @@ Dicatat di sini dan dibawa sesi koordinator setelah bagian 1–4 diselaraskan.
 | [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) | T4, T11, T12 | Teks en diusulkan di [§17](#17-teks-layar-dan-panel); tidak ada perubahan teks id | Belum |
 | [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) | *Kegiatan* | Nomor KG disamakan dengan 03 dan 22 (KG2 berpikir lantang, KG3 uji coba, KG4 wawancara, KG5 data utama); periksa setiap "KG2"–"KG5" di 26 setelahnya, termasuk *Konsultasi* dan *Syarat sebelum kegiatan dengan anak* ([§4](#4-tenggat-sebelum-akun-gelita-anak-pertama-kali-dipakai)) | Belum |
 | [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) | *Hak orang tua dan anak*, *Langkah perlindungan* (P8, P13, P14, P15, P18), inventaris A14 | Kolom *Siap di sistem* menunjuk bagian 4; A14 tempatnya juga server (izin berkode); P14 menyebut konfirmasi ketua dan penggantian cadangan; risiko R8 dan R14 mendapat langkah K3 | Belum |
-| [27](27_IMPLEMENTASI_PERAN_PENELITI.md) | §5.1, §16 no. 2 | Kemampuan `deletion.confirm` (ketua) dan `identities.replace` (admin); pertanyaan no. 2 dijawab | Belum |
-| [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) | §6.5, §13, §14 | Baris `participant_consents` dibuat saat mendaftar; token menolak siswa nonaktif; `gelita:uji:akun` mengisi izin butir risiko Ya; kunci asing ke `participants` `ON DELETE CASCADE` | Belum |
-| [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) | §12, §15 | Kunci asing `field_sheet_rows.participant_id` `ON DELETE CASCADE`; `data_exports.purged_by_request_id`; lembar `izin` ([§21](#21-pertanyaan-terbuka) no. 4) | Belum |
+| [27](27_IMPLEMENTASI_PERAN_PENELITI.md) | §5.1, §16 no. 2 | Kemampuan `deletion.confirm` (ketua) dan `identities.replace` (admin); pertanyaan no. 2 dijawab | Sudah (sesi koordinator, 30 Oktober 2026) |
+| [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) | §6.5, §13, §14 | Baris `participant_consents` dibuat saat mendaftar; token menolak siswa nonaktif; `gelita:uji:akun` mengisi izin butir risiko Ya; kunci asing ke `participants` `ON DELETE CASCADE` | Sudah (sesi koordinator, 30 Oktober 2026) |
+| [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) | §12, §15 | Kunci asing `field_sheet_rows.participant_id` `ON DELETE CASCADE`; `data_exports.purged_by_request_id`; lembar `izin` ([§21](#21-pertanyaan-terbuka) no. 4) | Sudah (sesi koordinator, 30 Oktober 2026) |
 | [03](03_KODE_DAN_ARTI.md) | Kode baru | Status izin (`active`, `left`, `withdrawn_keep`, `withdrawn_delete`), jenis permintaan (`all`, `risk_items`, `recording`), aturan penanda `tl-1`, `assent_version` | Belum |
 | [00](00_INDEKS.md) | *Daftar dokumen*, *Tahap dokumen 3* | Baris bagian 4 | Sudah (cabang ini) |

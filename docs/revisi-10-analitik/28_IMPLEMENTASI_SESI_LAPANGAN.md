@@ -61,6 +61,8 @@ Modul tes (no. 22), layar skala sikap (no. 21), mode penelitian lainnya (no. 16)
 - Jangan menjalankan migrasi, `gelita:reset`, atau skrip rilis di server produksi.
 - Setiap tulisan yang bisa bersaing (token, nomor urut, penutupan sesi) memakai UPDATE bersyarat, bukan `SELECT … FOR UPDATE` (aturan kerja repo, bagian *Concurrency*).
 
+**Istilah.** *Sesi game* di dokumen ini adalah satu baris `game_sessions`, yang di panel dan di 27 disebut *sesi bermain* (glosarium: `game session`). *Sesi lapangan* adalah `field_sessions` dari bagian 2.
+
 **Rujukan kode.** Ditulis per berkas dan metode, dengan nomor baris per 30 Oktober 2026. Nomor baris bisa bergeser.
 
 ---
@@ -232,8 +234,9 @@ Pemeriksaan token sekaligus memeriksa sekolah dan rombel siswa (K8) dan keanggot
 | Sesi sudah tutup | `closed` |
 | Token untuk kelas lain | `other_class` |
 | Susulan untuk teman lain | `not_member` |
+| Siswa nonaktif karena status mundur ([30 → Status mundur dan akun nonaktif](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#53-status-mundur-dan-akun-nonaktif)) | `inactive` |
 
-Setiap penolakan punya pesannya sendiri ([§16](#16-layar-dan-teks)).
+Setiap penolakan punya pesannya sendiri ([§16](#16-layar-dan-teks)). Penolakan `inactive` memakai pesan `Game.loginInactive` dari bagian 4; biasanya sesi siswa itu sudah berakhir lebih dulu lewat `ParticipantCheck`, jadi pemeriksaan token adalah pengaman kedua.
 
 ### 6.4 Siswa mengetik token (P2–P5)
 
@@ -257,7 +260,7 @@ Setiap penolakan punya pesannya sendiri ([§16](#16-layar-dan-teks)).
 4. Langkah 1 (nama, umur, jenis kelamin, avatar) tetap.
 5. Langkah 2 (negara, provinsi, kabupaten, sekolah) dilewati. Data perangkat tetap direkam (M-11).
 6. Langkah 3 (nama pengguna, kata sandi, persetujuan) tetap.
-7. `SessionService::registerAndStart()` membuat siswa dengan `school_id` dan `rombel` dari sesi lapangan, membuat kode peserta ([§10.2](#102-kode-peserta)), dan membuat sesi game yang terikat ke sesi lapangan, semuanya dalam satu transaksi.
+7. `SessionService::registerAndStart()` membuat siswa dengan `school_id` dan `rombel` dari sesi lapangan, membuat kode peserta ([§10.2](#102-kode-peserta)), menyisipkan satu baris `participant_consents` berisi bawaan (izin rekaman dan butir risiko Tidak, [30 → Izin berkode per siswa](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#52-izin-berkode-per-siswa)), dan membuat sesi game yang terikat ke sesi lapangan, semuanya dalam satu transaksi.
 8. Halaman berikutnya (`/intro`, atau pembuka modul tes di no. 22) menampilkan kartu besar "Kode penelitian" ([10](10_TELAAH_PENDAHULUAN_MEDIA.md), M-11).
 
 ### 6.6 Sesi ditutup saat siswa sedang bermain
@@ -425,6 +428,7 @@ Dalam mode penelitian, aturan buka dibaca dari rencana pertemuan sesi lapangan y
 | Kemajuan wilayah pertemuan (tantangan tuntas dari 5) | Per kode | Jumlah tuntas semua |
 | Tantangan tertinggal untuk susulan P5 | Per kode | — |
 | Event hilang (jumlah `dropped` dari `events_dropped` sesi game di sesi ini) | Jumlah per kode | Jumlah |
+| Izin belum diisi (siswa rombel tanpa tanggal izin orang tua, [30 → Izin berkode per siswa](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#52-izin-berkode-per-siswa)) | Jumlah | — (isian izin tidak terlihat admin) |
 | Status tes awal/akhir (`selesai`, `susulan`, `hilang`) | Titik sambung no. 22 | — |
 
 **Penyegaran:**
@@ -466,11 +470,12 @@ Polanya `Simulation::refusal()`.
 - **Kode** `UJI-01`, `UJI-02`, … (bukan pola kode peserta, 20).
 - **Kata sandi** acak yang memenuhi `PasswordPolicy`, ditampilkan sekali di layar dan tidak disimpan di berkas.
 - **Akun yang sudah ada** dilewati dengan pesan.
+- **Izin** satu baris `participant_consents` dengan tanggal izin orang tua hari itu dan izin butir risiko Ya, supaya validator bisa melihat T11 ([30 → Izin berkode per siswa](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#52-izin-berkode-per-siswa)).
 - **Log audit** `test_account_created` dengan pelaku kosong (`via: cli`).
 
 **Mengatur ulang (`--reset`):**
 - Menghapus data permainan akun itu: sesi game, pengerjaan, percobaan, jawaban, event, `participant_progress`, kursi. Caranya lewat cakupan penghapusan `RetentionService` (`HARD_ORDER`, `scopedBuilder()`), yang dibuka untuk satu siswa.
-- Akunnya tetap. Masuk berikutnya mulai dari awal.
+- Akunnya tetap, begitu juga baris `participant_consents`-nya. Masuk berikutnya mulai dari awal.
 - Log audit `test_account_reset`.
 
 **Di G3 (ahli media langkah 2):**
@@ -482,7 +487,7 @@ Polanya `Simulation::refusal()`.
 
 ## 14. Skema database
 
-**Migrasi `2026-01-01-003500_CreateFieldSessions`.** Nomor sesudah migrasi bagian 1 (`003400`); sesi koordinator menyelaraskan nomor bagian 3 dan 4.
+**Migrasi `2026-01-01-003500_CreateFieldSessions`.** Nomor sesudah migrasi bagian 1 (`003400`). Urutan akhir migrasi bagian 1–4 ada di [27 → Migrasi](27_IMPLEMENTASI_PERAN_PENELITI.md#61-migrasi-2026-01-01-003400_replaceteacherwithresearcherroles).
 
 | Tabel atau kolom | Isi |
 | --- | --- |
@@ -497,12 +502,12 @@ Polanya `Simulation::refusal()`.
 | `schools` | Kolom baru `research_code` VARCHAR(3) unik (null) |
 | `research_studies` | Kolom baru `field_mode` TINYINT(1) bawaan 0 |
 
-Semua kunci asing ke `staff_users` memakai `ON DELETE SET NULL`. Kunci asing ke `participants` ikut aturan hapus bagian 4.
+Semua kunci asing ke `staff_users` memakai `ON DELETE SET NULL`. Kunci asing ke `participants` (`field_session_members`, `participant_seats`, `participant_progress`) memakai `ON DELETE CASCADE`, sesuai aturan hapus bagian 4 ([30 → Yang dihapus sistem](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#73-yang-dihapus-sistem)); `RetentionService::HARD_ORDER` tetap menghapusnya satu per satu, supaya jumlah barisnya masuk pratinjau.
 
 **Ikut diperbarui:**
 - `tests/_support/Database/ResetTables.php` (skema SQLite).
-- `SystemResetService`: `GROUP_A`, `CLEAR_ORDER`, `REQUIRED_MIGRATION` menjadi `003500`, `nextParticipantCode()`.
-- `RetentionService`: `HARD_ORDER`, `scopedBuilder()`.
+- `SystemResetService`: `GROUP_A`, `CLEAR_ORDER`, `REQUIRED_MIGRATION` menjadi `003500` (nilai akhir setelah bagian 4: `003800`), `nextParticipantCode()`.
+- `RetentionService`: `HARD_ORDER` mendapat `participant_progress` (menggantikan `session_progress`), `participant_seats`, dan `field_session_members`; `scopedBuilder()`.
 - Model baru: `FieldSessionModel`, `FieldSessionTokenModel`, `FieldSessionMemberModel`, `ParticipantSeatModel`, `ParticipantProgressModel`. `SessionProgressModel` dihapus.
 - `GameSessionModel` dan `ParticipantModel`: `allowedFields`.
 
@@ -536,12 +541,15 @@ Keduanya didaftarkan di `app/Config/Services.php`.
 | `POST /admin/sesi-lapangan/{id}/tutup` | `::close` | `field_sessions.manage` |
 | `GET`, `POST /admin/sesi-lapangan/{id}/kursi` | `::seats`, `::saveSeats` | `field_sessions.manage` |
 | `GET`, `POST /admin/sesi-lapangan/{id}/susulan` | `::makeupForm`, `::storeMakeup` | `field_sessions.manage` |
+| `GET /admin/sesi-lapangan/{id}/lembar`, `GET`, `POST …/lembar/unggah`, `POST …/lembar/simpan` | `FieldSheetController` (bagian 3, [29 → Rute dan perintah spark](29_IMPLEMENTASI_DATA_PENELITIAN.md#13-rute-dan-perintah-spark)) | `field_sessions.manage` |
+| `GET`, `POST /admin/sesi-lapangan/{id}/izin` | `ConsentController` (bagian 4, [30 → Rute, perintah, dan skrip](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#16-rute-perintah-dan-skrip)) | `field_sessions.manage` |
 | `GET /admin/pemantauan` | `MonitoringController::index` | `monitoring.view` |
 | `GET /api/admin/monitoring` | `AdminApiController::monitoring` | `monitoring.view` |
 
 **Lain-lain:**
 - Studi (`field_mode`) memakai rute studi bagian 1 (`studies.manage`).
 - Kode sekolah penelitian memakai rute sekolah (`schools.manage`).
+- Daftarkan `sesi-lapangan/baru` sebelum `sesi-lapangan/(:num)`, seperti `peserta/reset-sandi` di 27 §7.
 - `ScreenViewFilter::ROUTES` mendapat kode layar untuk `/token` dan `/sampai-jumpa` (`ScreenViewFilterTest`).
 - Menu panel mendapat **Sesi lapangan** dan **Pemantauan** di kelompok Data, sesuai slot yang sudah dipesan di [27 → Panel peneliti](27_IMPLEMENTASI_PERAN_PENELITI.md#8-panel-peneliti).
 
@@ -616,8 +624,8 @@ Kunci gabung dengan lembar lapangan: kode peserta, `field_session_code`, dan jam
 | No. 20 bank baru | `participant_seats.booklet` | Buklet menentukan variasi pengerjaan pertama |
 | No. 21 skala sikap | Susulan P5 dengan jam buka panjang | Layar skala dan `sikap_makeup` |
 | No. 22 modul tes | Token P1 dan P5 membuka modul; bentuk A/B dan `locked_at` dari `participant_seats`; "semua siswa punya bentuk" | Modul tes, mulai tes bersama, susulan tes, angket |
-| No. 23 (bagian 4) | Kode peserta dan sesi lapangan | Izin butir risiko per siswa di panel, penanda tindak lanjut |
-| Bagian 3 | Data di §17, `events_dropped` per sesi | Lembar unduhan, kamus, log teknis admin, penanda `outside_session` |
+| No. 23 (bagian 4, [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md)) | Kode peserta, sesi lapangan, halaman kursi, angka "izin belum diisi" di pemantauan | Izin berkode per siswa di `/admin/sesi-lapangan/{id}/izin`, baris izin saat mendaftar, token menolak siswa nonaktif, penanda tindak lanjut |
+| Bagian 3 ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md)) | Data di §17, `events_dropped` per sesi | Lembar unduhan, kamus, log teknis admin, templat dan unggah lembar di `/admin/sesi-lapangan/{id}/lembar`, `session_paused {via: idle}` dari `markStale`, penanda `outside_session` |
 
 ---
 
@@ -684,8 +692,10 @@ Tidak menahan draf ini.
 2. **Batas 20 menit tantangan tertinggal di P5.** Dijaga P1 dengan jam, atau ditutup sistem? Usulan: dijaga P1, karena modul tes P5 (no. 22) yang menentukan urutan. Diputuskan di dokumen no. 22.
 3. **Angket yang terlambat** (dibuka sampai P5, `questionnaire_late`) bergantung pada modul no. 22.
 4. **Daftar kode sekolah** (daftar kerja no. 12) belum ada. Sistem tidak bergantung pada isinya, tetapi sekolah tidak bisa dipakai untuk sesi lapangan sebelum admin mengisi `research_code`.
-5. **`GameSessionModel::markStale()`** mengubah sesi menjadi `paused` tanpa event. Dalam mode penelitian, penutupan sesi memakai §6.6. Apakah `markStale` perlu event dibahas di bagian 3 (log).
+5. ~~**`GameSessionModel::markStale()`**~~ **Diputuskan di bagian 3:** `markStale()` menulis `session_paused` dengan `via: idle`, satu per sesi yang benar-benar diubahnya ([29 → Sesi yang diam](29_IMPLEMENTASI_DATA_PENELITIAN.md#57-sesi-yang-diam-markstale), K14). Dalam mode penelitian, penutupan sesi lapangan tetap memakai §6.6 (`via: field_session_closed`).
 6. **Satu siswa, dua perangkat bersamaan** dalam satu sesi lapangan. Sekarang sesi game yang sama dilanjutkan di perangkat kedua. Tetap begitu, dan dicatat di L2 sebagai pindah perangkat.
+7. **Angka "izin belum diisi" untuk admin** (dari sesi koordinator, 30 Oktober 2026). K2 memberi admin angka di pemantauan, sedangkan [30 → Izin berkode per siswa](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#52-izin-berkode-per-siswa) menyebut isian izin tidak terlihat admin. [§12](#12-panel-pemantauan) sementara memberi angka itu hanya ke peneliti dan ketua. Usulan: tetap begitu, karena admin tidak memegang `field_sessions.manage` dan tidak menindaklanjuti izin.
+8. **Kalimat "lupa kata sandi" setelah studi ditutup.** [27 → Teks antarmuka](27_IMPLEMENTASI_PERAN_PENELITI.md#12-teks-antarmuka) menyerahkannya ke bagian ini, tetapi draf ini belum menetapkannya. Setelah studi ditutup game terbuka seperti biasa (K1) dan yang mengatur ulang kata sandi adalah admin. Diputuskan bersama teks akhir setelah uji keterbacaan.
 
 ---
 

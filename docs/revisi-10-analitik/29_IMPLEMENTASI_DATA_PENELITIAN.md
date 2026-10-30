@@ -59,6 +59,8 @@ Lapis data turunan (no. 9), tantangan Skenario Digital (no. 2), waktu aktif (no.
 - Jangan menjalankan migrasi, `gelita:reset`, atau skrip rilis di server produksi. Migrasi bagian ini menghapus data secara permanen ([§5.8](#58-data-yang-sudah-tersimpan)), jadi pengembang menjalankannya sendiri, setelah `gelita:log:hitung`.
 - Setiap tulisan yang bisa bersaing (penandaan sesi diam, impor yang menggantikan impor lama) memakai UPDATE bersyarat, bukan `SELECT … FOR UPDATE` (aturan kerja repo, bagian *Concurrency*).
 
+**Istilah.** *Sesi game* di dokumen ini adalah satu baris `game_sessions`, yang di panel dan di 27 disebut *sesi bermain* (glosarium: `game session`). *Sesi lapangan* adalah `field_sessions` dari bagian 2.
+
 **Rujukan kode.** Ditulis per berkas dan metode, dengan nomor baris per 30 Oktober 2026. Nomor baris bisa bergeser.
 
 ---
@@ -617,7 +619,7 @@ Semua kemampuan sudah ada di peta [27 §5.1](27_IMPLEMENTASI_PERAN_PENELITI.md#5
 
 ## 12. Skema database
 
-**Migrasi `2026-01-01-003600_CleanResearchLogs`** ([§5.8](#58-data-yang-sudah-tersimpan)) dan **`2026-01-01-003700_CreateFieldSheets`**. Nomor sesudah bagian 2 (`003500`); bagian 4 juga mungkin memakai `003600`, jadi sesi koordinator menyelaraskan nomornya.
+**Migrasi `2026-01-01-003600_CleanResearchLogs`** ([§5.8](#58-data-yang-sudah-tersimpan)) dan **`2026-01-01-003700_CreateFieldSheets`**. Nomor sesudah bagian 2 (`003500`); bagian 4 memakai `003800`. Urutan akhir migrasi bagian 1–4 ada di [27 → Migrasi](27_IMPLEMENTASI_PERAN_PENELITI.md#61-migrasi-2026-01-01-003400_replaceteacherwithresearcherroles).
 
 | Tabel atau kolom | Isi | Migrasi |
 | --- | --- | --- |
@@ -626,14 +628,14 @@ Semua kemampuan sudah ada di peta [27 §5.1](27_IMPLEMENTASI_PERAN_PENELITI.md#5
 | `item_tries` | Kolom baru `ready_ms` INT UNSIGNED (null) | `003600` |
 | `data_exports` | Kolom baru `dictionary_version` VARCHAR(20) (null), `participant_count` INT UNSIGNED (null) | `003600` |
 | `field_sheet_imports` (baru) | `id`, `field_session_id` FK, `sheet` VARCHAR(30), `spec_version` VARCHAR(20), `purpose` VARCHAR(10) (`main`, `check`), `file_sha256` CHAR(64), `row_count`, `warning_count`, `names_confirmed` TINYINT(1), `uploaded_by` FK staf, `created_at`, `superseded_at` (null), `superseded_by` FK diri sendiri (null). Indeks (`field_session_id`, `sheet`, `purpose`, `superseded_at`) | `003700` |
-| `field_sheet_rows` (baru) | `id`, `import_id` FK (`ON DELETE CASCADE`), `row_no`, `participant_id` FK (null), `seat_no` TINYINT (null), `started_at` DATETIME(3) (null), `ended_at` DATETIME(3) (null), `values_json`. Indeks (`import_id`, `row_no`), (`participant_id`, `started_at`) | `003700` |
+| `field_sheet_rows` (baru) | `id`, `import_id` FK (`ON DELETE CASCADE`), `row_no`, `participant_id` FK (null, `ON DELETE CASCADE`), `seat_no` TINYINT (null), `started_at` DATETIME(3) (null), `ended_at` DATETIME(3) (null), `values_json`. Indeks (`import_id`, `row_no`), (`participant_id`, `started_at`) | `003700` |
 
-Semua kunci asing ke `staff_users` memakai `ON DELETE SET NULL`. Kunci asing ke `participants` ikut aturan hapus bagian 4. Berkas yang diunggah tidak disimpan; hanya SHA-256-nya.
+Semua kunci asing ke `staff_users` memakai `ON DELETE SET NULL`. Kunci asing `field_sheet_rows.participant_id` memakai `ON DELETE CASCADE`, sesuai aturan hapus bagian 4 ([30 → Yang dihapus sistem](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#73-yang-dihapus-sistem)); `RetentionService::HARD_ORDER` tetap menghapus barisnya lebih dulu, supaya jumlahnya masuk pratinjau. Bagian 4 juga menambah `data_exports.purged_by_request_id` di migrasi `003800` ([30 → Skema database](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#15-skema-database)). Berkas yang diunggah tidak disimpan; hanya SHA-256-nya.
 
 **Ikut diperbarui:**
 - `tests/_support/Database/ResetTables.php` (skema SQLite).
-- `SystemResetService`: `REQUIRED_MIGRATION` menjadi `003700`; tabel baru di daftar yang dikosongkan.
-- `RetentionService`: `field_sheet_rows` per `participant_id` di cakupan hapus satu siswa (bagian 4), `field_sheet_imports` di pembersihan studi.
+- `SystemResetService`: `REQUIRED_MIGRATION` menjadi `003700` (nilai akhir setelah bagian 4: `003800`); tabel baru di daftar yang dikosongkan.
+- `RetentionService`: `HARD_ORDER` mendapat `field_sheet_rows` (per `participant_id`, cakupan hapus satu siswa, [30 §7.3](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#73-yang-dihapus-sistem)); `field_sheet_imports` di pembersihan studi.
 - Model baru: `FieldSheetImportModel`, `FieldSheetRowModel`. `ItemTryModel`, `DataExportModel`, `DeviceLogModel`: `allowedFields`.
 
 **Layanan dan kelas baru:** `EventCatalog`, `ResearchDictionary`, `FieldSheetSpec` (di `app/Libraries/`); `TechLogService`, `FieldSheetService` (templat, pratinjau, simpan, cek) di `app/Services/`, didaftarkan di `app/Config/Services.php`.
@@ -715,7 +717,7 @@ Pesan pemeriksaan per kolom ("jam harus berbentuk JJ:MM:SS", "kode tidak dikenal
 | No. 9 lapis turunan | Data mentah §6, lembar lapangan yang diimpor, `ResearchDictionary::VERSION` | `decision_ms`, `rapid_guess`, `near_miss_count`, `material_returns`, penanda dari L1–L4, `outside_session` |
 | No. 21 skala sikap | Daftar lembar dan kamus | Lembar `sikap`, `feedback_rating` |
 | No. 22 modul tes | Lembar `risiko_gabungan` ([§7.6](#76-butir-risiko-daring)), templat L6 tes | Jawaban tes dan angket, status L6 |
-| Bagian 4 (`30`) | `data_exports.participant_count`, riwayat unduhan, `field_sheet_rows.participant_id` | Penghapusan termasuk ekspor dan lembar, ambil data satu anak, penanda tindak lanjut |
+| Bagian 4 ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md)) | `data_exports.participant_count`, riwayat unduhan, `field_sheet_rows.participant_id` (`ON DELETE CASCADE`) | Penghapusan termasuk ekspor dan lembar, `data_exports.purged_by_request_id`, ambil data satu anak, daftar izin berkode sebagai unduhan terpisah (`/admin/ekspor/izin`), penanda tindak lanjut. Lembar `izin` di unduhan utama masih terbuka ([30 → Pertanyaan terbuka](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#21-pertanyaan-terbuka) no. 4) |
 
 ---
 
@@ -828,7 +830,7 @@ Dicatat di sini dan dibawa sesi koordinator setelah bagian 4 selesai.
 | [11](11_KAMUS_DATA.md) | Analitik 5, 6, 8; *Kunci penggabungan dan waktu*; *Yang harus disediakan sistem* | `ready_ms` sebagai sumber waktu putus; `last_input_ms` Cari Objek sebelum perubahan memakai rujukan lama; `empty_tap` mencatat koordinat, jaraknya diturunkan; `passage_reopened` untuk bagian (b); `offset_known`; lembar lapangan yang diimpor sebagai sumber penanda; `is_touch` (pertanyaan no. 3) | Saat `kamus-1.1` |
 | [22](22_PERMOHONAN_IZIN_ETIK.md) | *Kerahasiaan dan pengelolaan data*, tabel data | Lembar L1–L6 yang diketik disimpan di server, berkode dan tanpa nama, dan diunduh lewat akun `ketua`; kutipan L5 tetap di folder transkrip; rincian perangkat dikurangi (tanpa user agent, merek, model) | Belum |
 | [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) | A8, *Aliran data* baris 5, L1 log teknis, inventaris perangkat | A8: "Kertas, lalu templat dalam 24 jam, lalu diunggah ke server"; tempat penyimpanan server; log teknis tanpa rincian perangkat yang dihapus; peringatan nama di impor sebagai langkah perlindungan untuk R2 | Belum |
-| [27](27_IMPLEMENTASI_PERAN_PENELITI.md) | §9 (lembar `event`, `answer_key`), §16 no. 5 | Ketua mendapat keduanya; butir risiko daring sebagai angka gabungan | Belum |
-| [27](27_IMPLEMENTASI_PERAN_PENELITI.md) | §4 titik sambung | Templat dan unggah lembar di bawah `field_sessions.manage` | Belum |
-| [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) | §15 rute, §21 no. 5 | Rute lembar di bawah `/admin/sesi-lapangan/{id}/lembar`; `markStale` menulis `session_paused {via: idle}` | Belum |
+| [27](27_IMPLEMENTASI_PERAN_PENELITI.md) | §9 (lembar `event`, `answer_key`), §16 no. 5 | Ketua mendapat keduanya; butir risiko daring sebagai angka gabungan | Sudah (sesi koordinator, 30 Oktober 2026) |
+| [27](27_IMPLEMENTASI_PERAN_PENELITI.md) | §4 titik sambung | Templat dan unggah lembar di bawah `field_sessions.manage` | Sudah (sesi koordinator, 30 Oktober 2026) |
+| [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) | §15 rute, §21 no. 5 | Rute lembar di bawah `/admin/sesi-lapangan/{id}/lembar`; `markStale` menulis `session_paused {via: idle}` | Sudah (sesi koordinator, 30 Oktober 2026) |
 | [00](00_INDEKS.md) | *Tahap dokumen 3* | Baris bagian 3 | Sudah (cabang ini) |
