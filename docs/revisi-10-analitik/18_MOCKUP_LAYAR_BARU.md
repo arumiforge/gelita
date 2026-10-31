@@ -97,7 +97,7 @@ Ukuran gambar 27–111 KB (WebP, jumlah ± 1,8 MB). Semua layar game digambar di
 
 | Gambar | Keadaan |
 | --- | --- |
-| [`mk-tk-01`](gambar/mockup/mk-tk-01.webp) | Siswa sudah masuk dan sedang mengetik token (4 dari 6 huruf), tombol *Mulai*, tombol *Keluar* di pojok |
+| [`mk-tk-01`](gambar/mockup/mk-tk-01.webp) | Siswa sudah masuk dan sedang mengetik token (4 dari 6 huruf dan angka), tombol *Mulai*, tombol *Keluar* di pojok |
 | [`mk-tk-02`](gambar/mockup/mk-tk-02.webp) | Token belum cocok: kotak berbingkai jingga dan pesan ramah di atasnya |
 | [`mk-tk-03`](gambar/mockup/mk-tk-03.webp) | Di luar sesi: permainan tertutup, dengan kalimat dari 01 kata demi kata: "Permainan dibuka waktu sesi bersama kakak peneliti, ya." |
 | [`mk-tk-04`](gambar/mockup/mk-tk-04.webp) | Sesi penelitian dibuka di layar ponsel (844 × 390): pesan ramah bahwa layarnya terlalu kecil |
@@ -110,7 +110,7 @@ Ukuran gambar 27–111 KB (WebP, jumlah ± 1,8 MB). Semua layar game digambar di
 - token kelas lain (`tokenOtherClass`): "Token ini untuk kelas lain. Periksa lagi token di papan tulis kelasmu, ya.";
 - token susulan untuk siswa yang bukan anggotanya (`tokenNotMember`): "Token ini untuk sesi susulan teman lain. Tanyakan ke kakak peneliti, ya."
 
-Gambar `mk-tk-01` tetap memuat petunjuk lama ("enam huruf") karena sudah disetujui dan dikirim untuk langkah 1; tidak digambar ulang. Kalimat akhir semua pesan token ditetapkan di 28 setelah telaah ahli media dan uji keterbacaan.
+Gambar `mk-tk-01` dan `mk-tk-02` digambar ulang dengan petunjuk baru atas permintaan pengembang (30 Oktober 2026, `asal: pengembang`), sebelum paket ahli media dikirim; galat di `mk-tk-02` tetap mengikuti `tokenUnknown` di 28. Kalimat akhir semua pesan token ditetapkan di 28 setelah telaah ahli media dan uji keterbacaan.
 
 **Yang dinilai ahli media.**
 - Apakah layar token mudah dipahami tanpa penjelasan panjang, dan kotak huruf cukup besar untuk anak?

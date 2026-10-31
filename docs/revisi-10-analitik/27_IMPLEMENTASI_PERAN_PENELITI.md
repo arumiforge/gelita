@@ -533,7 +533,7 @@ Mengikuti `.claude/rules/ui-copy.md`: kalimat panel sopan dan polos, kalimat sis
 | `Auth.currentHelp` | Pakai kata sandi sementara dari gurumu, atau kata sandimu yang sekarang. | Pakai kata sandi sementara dari kakak peneliti, atau kata sandimu yang sekarang. | Use the temporary password from the research team, or your current password. |
 | `Game.forgotPassword` | Lupa kata sandi? Minta gurumu mengatur ulang. | Lupa kata sandi? Minta kakak peneliti mengatur ulang, ya. | Forgot your password? Ask the research team to reset it. |
 
-"Kakak peneliti" mengikuti pesan game tertutup di [01 → Token sesi](01_REVISI_10_ANALITIK.md#token-sesi-perlu-atau-tidak). Setelah studi ditutup, yang mengatur ulang adalah admin; kalimat untuk keadaan itu diputuskan bersama bagian 2 (mode penelitian).
+"Kakak peneliti" mengikuti pesan game tertutup di [01 → Token sesi](01_REVISI_10_ANALITIK.md#token-sesi-perlu-atau-tidak). Setelah studi ditutup, yang mengatur ulang adalah admin; kalimatnya `Game.forgotPasswordOpen` ("Lupa kata sandi? Bilang ke gurumu, ya. Gurumu bisa meminta admin GELITA mengatur ulang."), dipilih menurut mode penelitian ([28 → Layar dan teks](28_IMPLEMENTASI_SESI_LAPANGAN.md#16-layar-dan-teks), keputusan pengembang 30 Oktober 2026).
 
 ---
 

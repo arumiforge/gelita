@@ -97,7 +97,7 @@ K1–K4 diputuskan pengembang ([§22](#22-keputusan-pengembang)). K5, K10, dan K
 | Kode | Keputusan |
 | --- | --- |
 | K1 | **Permintaan hapus dari `peneliti` dikonfirmasi `ketua` lebih dulu.** `ketua` mencocokkan kode dengan L7, lalu sistem menghitung pratinjau untuk admin. Permintaan yang diajukan `ketua` langsung dihitung. Kemampuan baru `deletion.confirm` untuk `ketua`. Admin tetap satu-satunya yang menjalankan. |
-| K2 | **Salinan untuk orang tua tidak memuat jawaban ang-21–ang-23**, kecuali anak setuju. `ketua` mencentang "anak sudah setuju" dan centang itu tercatat di log audit. Salinan menyebut dengan kalimat biasa bahwa bagian itu tidak disertakan. |
+| K2 | **Jawaban ang-21–ang-23 tidak masuk salinan untuk orang tua secara bawaan; anak ditanya lebih dulu.** Bila anak setuju, jawaban disertakan. Bila tidak, `ketua` menjelaskannya kepada orang tua, dan bila orang tua tetap meminta, jawaban disertakan, kecuali `ketua` menilai pemberiannya membahayakan anak ([§8](#8-salinan-data-satu-anak)). Alasannya tercatat di log audit, dan salinan tanpa jawaban itu menyebutnya dengan kalimat biasa. Dasarnya hak akses dan salinan di UU No. 27 Tahun 2022 Pasal 7 dan 32, yang tidak dikecualikan untuk penelitian (Pasal 15) (keputusan no. 2, diubah oleh no. 6). |
 | K3 | **Cadangan diganti setelah penghapusan dan saat studi ditutup.** Admin membuat cadangan baru, lalu menghapus semua cadangan yang lebih lama di kedua lokasi, sebelum orang tua diberi tahu. Lokasi kedua juga hanya menyimpan 30 hari. |
 | K4 | **P1 memasukkan semua kolom L7 yang berkode ke panel:** tanggal izin orang tua, izin rekaman suara, izin butir risiko daring, dan status dengan tanggal. Nama tidak pernah. Data ini menentukan siapa melihat T11, menonaktifkan akun saat mundur, dan menjadi daftar izin berkode. |
 | K5 | **Akun langsung nonaktif saat status mundur disimpan** (`participants.deactivated_at`), di transaksi yang sama, tanpa menunggu admin. Game menolak masuk dan mengakhiri sesi pada permintaan berikutnya. Hanya admin yang bisa mengaktifkan lagi, dengan alasan. Ini lebih cepat dari 22 dan 23 → T10 ("akun dinonaktifkan admin"), supaya batas 3 × 24 jam selalu terpenuhi. |
@@ -297,11 +297,11 @@ ketua mengajukan ─────────────────────
 | --- | --- | --- | --- | --- |
 | `all` | B | Status `withdrawn_delete`, akun nonaktif | Semua data anak ([§7.3](#73-yang-dihapus-sistem)) | Rekaman dan transkrip L5, baris berkode di lembar kertas L2–L6, salinan peneliti, cadangan |
 | `risk_items` | C, butir risiko | Izin butir risiko Tidak, dengan tanggal ditarik | Jawaban ang-21–ang-23 dan `risk_reconsent` anak itu | Salinan peneliti, cadangan |
-| `recording` | C, rekaman | Izin rekaman Tidak, dengan tanggal ditarik | Tidak ada; rekaman tidak pernah di server | Rekaman yang sudah ada |
+| `recording` | C, rekaman | Izin rekaman Tidak, dengan tanggal ditarik | Tidak ada; rekaman tidak pernah di server | Rekaman yang sudah ada dan transkripnya |
 
 - Bila anak belum punya jawaban butir risiko (misalnya izin ditarik sebelum P5), formulir hanya mengubah izinnya dan berkata "Belum ada jawaban yang perlu dihapus. Izinnya sudah diubah." Tidak ada permintaan yang dibuat.
 - Permintaan `recording` dari `peneliti` tetap dikonfirmasi `ketua`, lalu langsung `executed` dengan nol baris, karena tidak ada yang dijalankan admin.
-- Transkrip pada pilihan C rekaman: lihat [§21](#21-pertanyaan-terbuka) no. 2.
+- Pada pilihan C rekaman, transkrip berkode yang dibuat dari rekaman itu ikut dihapus (keputusan no. 5). Catatan tertulis P3 di L5 bukan rekaman dan tetap.
 
 ### 7.3 Yang dihapus sistem
 
@@ -354,7 +354,7 @@ Cadangan dibuat skrip sendiri ([../08_DEPLOYMENT.md → Backup](../08_DEPLOYMENT
 | `server_exports`: unduhan di server dihapus | ✓ | ✓ | — | Otomatis |
 | `researcher_copies`: salinan di perangkat tim | ✓ | ✓ | — | `ketua` |
 | `backups`: cadangan diganti | ✓ | ✓ | — | Admin |
-| `recordings`: rekaman (dan transkrip untuk `all`) | ✓ | — | ✓ | `peneliti` atau `ketua` |
+| `recordings`: rekaman dan transkripnya | ✓ | — | ✓ | `peneliti` atau `ketua` |
 | `paper_sheets`: baris berkode di lembar kertas L2–L6 dihitamkan | ✓ | — | — | `peneliti` |
 | `parent_notified`: orang tua diberi tahu | ✓ | ✓ | ✓ | `ketua`, setelah semua butir lain |
 
@@ -385,7 +385,7 @@ Untuk 23 → T10 pilihan D (melihat atau meminta salinan). `ketua` membuka kode 
 
 **Halaman** `/admin/peserta/salinan` (kemampuan `research.export`, hanya `ketua`):
 - isian: kode peserta, keperluan (*Melihat* atau *Salinan*);
-- centang "Sertakan jawaban pertanyaan tentang pengalaman tidak nyaman di internet. Anak sudah setuju." Centang ini hanya muncul bila anak punya jawaban ang-21–ang-23, dan bawaannya kosong (K2);
+- pilihan untuk jawaban ang-21–ang-23: *Tidak disertakan* (bawaan), *Disertakan: anak setuju*, atau *Disertakan: orang tua tetap meminta setelah dijelaskan*. Pilihan ini hanya muncul bila anak punya jawaban ang-21–ang-23 (K2);
 - hasil: satu ZIP `salinan-{kode}-{tanggal}.zip`, langsung diunduh, tidak disimpan di server, `Cache-Control: no-store`.
 
 **Isi ZIP:**
@@ -401,9 +401,16 @@ Untuk 23 → T10 pilihan D (melihat atau meminta salinan). `ketua` membuka kode 
 - jawaban ang-21–ang-23 dan `risk_reconsent`, kecuali centang anak setuju diisi;
 - penanda tindak lanjut, karena tidak disimpan (K7).
 
-Kalimat di PDF bila jawaban butir risiko tidak disertakan: "Jawaban anak untuk beberapa pertanyaan tentang pengalaman tidak nyaman di internet tidak disertakan. Sebelum menjawab, anak diberi tahu bahwa orang tua tidak melihat jawaban itu. Bapak/Ibu bisa membicarakannya dengan ketua peneliti."
+**Jawaban butir risiko daring** (K2, keputusan no. 6). Di T11, anak diberi tahu bahwa kalau orang tuanya meminta jawaban itu, kakak peneliti bicara dengannya dulu. Karena itu:
+1. `ketua` (atau peneliti terlatih yang ditunjuknya) bertanya kepada anak, sendiri, di tempat yang terlihat tetapi tidak terdengar teman, seperti sapaan di [22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) langkah 4: apakah jawabannya boleh diperlihatkan kepada orang tuanya.
+2. Bila anak setuju, jawaban disertakan (*Disertakan: anak setuju*).
+3. Bila anak tidak setuju, `ketua` memberi tahu orang tua bahwa anak lebih suka jawabannya tidak dibuka, dan menawarkan membicarakannya secara umum. Bila orang tua tetap meminta, jawaban disertakan (*Disertakan: orang tua tetap meminta setelah dijelaskan*), dan `ketua` memberi tahu anak sebelum salinan diberikan.
+4. **Pengecualian:** bila ada tanda bahwa pemberian itu membahayakan anak, misalnya orang tua diduga terlibat dalam hal yang diceritakan anak, `ketua` tidak menyertakannya, menjalankan prosedur rujukan langkah 5, dan melaporkannya ke komite. Rujukannya UU No. 27 Tahun 2022 Pasal 33 huruf a sebagai analogi: pasal itu mewajibkan pengendali menolak akses *perubahan* data yang membahayakan keselamatan atau kesehatan mental subjek data atau orang lain. Pasal yang sejenis di PP 33/2026 belum dicek (`needs_verification`).
+5. Bila anak tidak bisa ditemui dalam 3 × 24 jam, salinan bagian lain diberikan lebih dulu, dan bagian ini menyusul pada kesempatan pertama (22: salinan pada kesempatan pertama).
 
-**Log audit** `participant_copy` dengan `{participant_code, purpose, include_risk}`. Batas jawabnya (3 × 24 jam) dicatat `ketua` di kotak peneliti T10.
+Kalimat di PDF bila jawaban butir risiko tidak disertakan: "Jawaban anak untuk beberapa pertanyaan tentang pengalaman tidak nyaman di internet belum disertakan. Sebelum menjawab, anak diberi tahu bahwa kakak peneliti akan bicara dengannya dulu kalau orang tuanya meminta jawaban itu. Bapak/Ibu bisa memintanya kepada ketua peneliti."
+
+**Log audit** `participant_copy` dengan `{participant_code, purpose, risk_answers}`, dengan `risk_answers` = `none`, `child_agreed`, atau `parent_insisted`. Batas jawabnya (3 × 24 jam) dicatat `ketua` di kotak peneliti T10.
 
 ---
 
@@ -517,7 +524,7 @@ Untuk [26 → P15](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md#langkah-perlindungan)
 | --- | --- | --- |
 | Hapus semua data (B) | Sudah ada: Tata kelola, cakupan nomor siswa, mode `hard` | Admin, atas perintah `ketua` |
 | Hapus jawaban butir risiko (C) | `DELETE` baris ang-21–ang-23 anak itu di tabel jawaban modul (no. 22) dengan id peserta, setelah `SELECT COUNT(*)` yang sama dicatat | Admin, atas perintah `ketua` |
-| Salinan satu anak (D) | `SELECT` per tabel dengan id peserta, disimpan sebagai CSV di penyimpanan terenkripsi admin; `ketua` menyusun salinan tanpa kunci jawaban dan, kecuali anak setuju, tanpa jawaban butir risiko | Admin dan `ketua` |
+| Salinan satu anak (D) | `SELECT` per tabel dengan id peserta, disimpan sebagai CSV di penyimpanan terenkripsi admin; `ketua` menyusun salinan tanpa kunci jawaban; jawaban butir risiko mengikuti [§8](#8-salinan-data-satu-anak) | Admin dan `ketua` |
 | Pembetulan (D) | `UPDATE participants SET {kolom} = … WHERE participant_code = …` | Admin, atas perintah `ketua` |
 | Cadangan | Cadangan baru, lalu berkas lama di kedua lokasi dihapus dengan tangan | Admin |
 
@@ -638,14 +645,14 @@ Mengikuti `.claude/rules/ui-copy.md`. Teks game di `Game.php` (id dan en, `Langu
 | `assentRequiredStudy` | Centang dulu kalau kamu mau ikut, ya. Kalau tidak mau, tidak apa-apa. Bilang pelan-pelan ke kakak peneliti. | Tick the box first if you want to take part. If you don't want to, that's fine. Quietly tell a researcher. |
 | `loginInactive` | Akun ini sudah tidak dipakai lagi. Kalau ada pertanyaan, bicara dengan kakak peneliti, ya. | This account is no longer in use. If you have a question, talk to a researcher. |
 
-**Modul tes: T11** (id dari 23 → T11 apa adanya; en usulan)
+**Modul tes: T11** (id dari 23 → T11 apa adanya, paragraf 3 diubah 30 Oktober 2026, keputusan no. 6; en usulan)
 
 | Bagian | en (usulan) |
 | --- | --- |
 | Judul | A few questions about the internet |
 | Paragraf 1 | There are a few more questions. They are about things on the internet or a phone that may have made you feel uncomfortable. |
 | Paragraf 2 | You don't have to answer them. That's okay. Every question also has the choice *I don't want to answer*. |
-| Paragraf 3 | Your answers are saved with your code, not your name. Your teachers, parents, and friends do not see your answers. |
+| Paragraf 3 | Your answers are saved with your code, not your name. Your teachers and friends do not see your answers. If your parents ask to see your answers, a researcher will talk with you first. |
 | Paragraf 4 | But there is one thing you should know. The researchers want every child to be safe. If your answers show you might need help, a researcher may ask you for a short chat. If you are in danger, the researcher will ask a grown-up to help keep you safe. |
 | Pertanyaan | Do you want to answer these questions? |
 | Tombol | Yes, I'll answer · No, skip them |
@@ -691,8 +698,9 @@ Label pilihan *Tidak mau menjawab* di en mengikuti teks en butir ang-21–ang-23
 | `riskIntro` | Daftar ini hanya untuk prosedur rujukan. Catatan tindak lanjut ditulis di berkas terpisah, tidak di sini. |
 | `riskPriority` | Didahulukan |
 | `riskStudyClosed` | Studi sudah ditutup. Penanda tidak ditampilkan lagi. |
-| `copyIncludeRisk` | Sertakan jawaban pertanyaan tentang pengalaman tidak nyaman di internet. Anak sudah setuju. |
-| `copyRiskLeftOut` | Jawaban anak untuk beberapa pertanyaan tentang pengalaman tidak nyaman di internet tidak disertakan. Sebelum menjawab, anak diberi tahu bahwa orang tua tidak melihat jawaban itu. Bapak/Ibu bisa membicarakannya dengan ketua peneliti. |
+| `copyRiskNone`, `copyRiskChildAgreed`, `copyRiskParentInsisted` | Tidak disertakan · Disertakan: anak setuju · Disertakan: orang tua tetap meminta setelah dijelaskan |
+| `copyRiskHelp` | Tanya anak dulu. Kalau anak tidak setuju, jelaskan kepada orang tua. Jangan sertakan kalau pemberiannya bisa membahayakan anak; jalankan prosedur rujukan. |
+| `copyRiskLeftOut` | Jawaban anak untuk beberapa pertanyaan tentang pengalaman tidak nyaman di internet belum disertakan. Sebelum menjawab, anak diberi tahu bahwa kakak peneliti akan bicara dengannya dulu kalau orang tuanya meminta jawaban itu. Bapak/Ibu bisa memintanya kepada ketua peneliti. |
 | `correctTitle` | Betulkan data pendaftaran |
 | `correctReason` | Alasan (tanpa nama) |
 | `reactivate` | Aktifkan lagi |
@@ -732,7 +740,7 @@ Label pilihan *Tidak mau menjawab* di en mengikuti teks en butir ang-21–ang-23
 | `DataRequestExportPurgeTest` | Berkas unduhan sejak anak mendaftar terhapus, `purged_by_request_id` terisi; unduhan yang lebih lama tetap |
 | `DataRequestChecklistTest` | Butir per jenis; `parent_notified` terkunci sampai butir lain lengkap; `completed` setelah semua; batas waktu dan warnanya; hak centang per peran |
 | `DeletionMinutesTest` | Berita acara berisi kode, jenis, tanggal, jumlah baris, dan centang; tanpa nama anak atau orang tua |
-| `ParticipantCopyTest` | ZIP tanpa disimpan di server; hanya anak itu; tanpa `answer_key`, teks soal, id internal, perangkat; jawaban risiko hanya bila dicentang, dengan audit `include_risk`; kalimat "tidak disertakan" ada di PDF |
+| `ParticipantCopyTest` | ZIP tanpa disimpan di server; hanya anak itu; tanpa `answer_key`, teks soal, id internal, perangkat; jawaban risiko hanya dengan pilihan *anak setuju* atau *orang tua tetap meminta*, dengan `risk_answers` di audit; kalimat "belum disertakan" ada di PDF bila tidak disertakan |
 | `RegistrationCorrectionTest` | Hanya `age`, `gender`, `class_level`; validasi pendaftaran; alasan wajib; audit lama dan baru; `corrected_at`; kode, sekolah, dan rombel tidak bisa diubah |
 | `ConsentRegisterExportTest` | Kolom §10.1; tanpa nama, sekolah, NPSN, nama pengguna; `consent_register_exported_at` terisi; hanya `ketua` |
 | `StudyClosureTest` | Syarat menahan tombol; `GANTI` mengganti nama, nama pengguna, sandi, dan sekolah ke baris berkode; baris sekolah asli tanpa `research_code`; audit; permintaan, salinan, dan pembetulan ditolak setelahnya |
@@ -786,8 +794,8 @@ Di instalasi uji dengan akun `uji.*` dan data simulasi:
 
 Tidak menahan draf ini.
 
-1. **Dasar menahan jawaban butir risiko dari salinan orang tua** (K2). PP 33/2026 memberi orang tua hak akses atas data anak; keputusan ini memakai janji di T11 dan kepentingan terbaik anak. Pasal yang membolehkan pembatasan akses demi keselamatan subjek data belum dicek (`needs_verification`). Usulan: dicek bersama nomor pasal lain sebelum berkas etik diunggah, dan disebut di 22 supaya komite bisa menilainya.
-2. **Transkrip pada pilihan C rekaman.** T10 hanya menyebut "rekaman yang sudah ada dihapus". Transkrip berkode yang dibuat dari rekaman itu ikut dihapus atau tidak? Usulan: ikut dihapus, karena izinnya untuk rekaman wawancara itu; perlu kalimat di 22 dan T10.
+1. ~~**Dasar menahan jawaban butir risiko dari salinan orang tua**~~ **Diputuskan pengembang 30 Oktober 2026** (keputusan no. 6). Dicek ke naskah resmi UU No. 27 Tahun 2022 (anotasi Mahkamah Konstitusi 2025): hak akses dan salinan ada di Pasal 7 dan 32, pengecualian penelitian di Pasal 15 tidak mencakupnya, dan Pasal 33 hanya mewajibkan menolak akses *perubahan* data yang membahayakan. Karena itu jawaban diberikan bila orang tua tetap meminta, dengan anak ditanya lebih dulu, kecuali pemberiannya membahayakan anak ([§8](#8-salinan-data-satu-anak)). Yang tersisa `needs_verification`: pasal sejenis di PP 33/2026, yang naskahnya belum bisa dibuka.
+2. ~~**Transkrip pada pilihan C rekaman.**~~ **Diputuskan pengembang 30 Oktober 2026** (keputusan no. 5): transkrip berkode dari rekaman itu ikut dihapus; catatan tertulis P3 di L5 tetap.
 3. **Provinsi dan kabupaten setelah studi ditutup.** §10.2 membiarkannya. Bila komite atau peneliti menilai kabupaten bersama kode sekolah masih terlalu sempit, keduanya ikut dikosongkan; analisis memakai L8 untuk konteks sekolah.
 4. **Lembar `izin` di unduhan utama `ketua`.** §10.1 membuat unduhan terpisah. Bila lapis 3 lebih mudah dengan lembar `izin` di unduhan utama, lembar itu ditambahkan ke daftar lembar 29 §7.2.
 5. **Kritik dan saran yang memuat nama.** Isian bebas anak bisa memuat nama sendiri atau teman. Penggantian nama §10.2 tidak menyentuhnya. Usulan: `ketua` memeriksanya sekali sebelum studi ditutup, dengan pemeriksaan kata nama seperti impor lembar (29 K13), lalu mengganti nama dengan `[nama]`.
@@ -800,9 +808,14 @@ Tidak menahan draf ini.
 Satu putaran tanya, empat pertanyaan (30 Oktober 2026). Pengembang memilih usulan di keempatnya. `asal: pengembang`.
 
 1. **Permintaan hapus dari `peneliti` dikonfirmasi `ketua` lebih dulu** (K1). Permintaan dari `ketua` langsung ke admin. Ini menjawab [27 → Pertanyaan terbuka](27_IMPLEMENTASI_PERAN_PENELITI.md#16-pertanyaan-terbuka) no. 2. Tidak dipilih: tanpa konfirmasi, seperti tertulis di 22 dan 23 → T10; hanya `ketua` yang boleh mengajukan.
-2. **Jawaban ang-21–ang-23 tidak masuk salinan orang tua, kecuali anak setuju** (K2), dengan centang di log audit dan kalimat di salinan. Tidak dipilih: selalu disertakan (dengan kalimat T11 diubah); selalu ditahan tanpa pengecualian.
+2. **Jawaban ang-21–ang-23 tidak masuk salinan orang tua, kecuali anak setuju** (K2; diubah oleh keputusan no. 6), dengan centang di log audit dan kalimat di salinan. Tidak dipilih: selalu disertakan (dengan kalimat T11 diubah); selalu ditahan tanpa pengecualian.
 3. **Cadangan diganti** (K3): setelah penghapusan dan saat studi ditutup, cadangan baru dibuat lalu cadangan lama di kedua lokasi dihapus, sebelum orang tua diberi tahu; lokasi kedua juga 30 hari. Tidak dipilih: daftar hapus yang diterapkan ulang saat pulih, dengan cadangan habis sendiri dalam 30 hari; diserahkan ke penyedia server.
 4. **Semua kolom L7 yang berkode masuk panel** (K4): tanggal izin orang tua, izin rekaman, izin butir risiko, status dan tanggalnya. Tidak dipilih: hanya izin butir risiko di panel, dengan daftar izin berkode disalin tangan dari L7.
+
+**Putaran kedua** (30 Oktober 2026, setelah sesi koordinator): dua pertanyaan untuk dokumen ini, bersama dua untuk [28](28_IMPLEMENTASI_SESI_LAPANGAN.md#22-keputusan-pengembang). Pengembang memilih usulan di keduanya. `asal: pengembang`.
+
+5. **Transkrip ikut dihapus pada pilihan C rekaman** ([§7.2](#72-jenis-permintaan)). Catatan tertulis P3 di L5 tetap. Ini menjawab [§21](#21-pertanyaan-terbuka) no. 2. Tidak dipilih: transkrip berkode tetap disimpan; centang tambahan di T10.
+6. **Jawaban butir risiko: anak ditanya dulu, diberikan bila orang tua tetap meminta** (K2, [§8](#8-salinan-data-satu-anak)). Ini mengubah keputusan no. 2, setelah naskah resmi UU No. 27 Tahun 2022 dicek: hak akses dan salinan (Pasal 7, 32) tidak dikecualikan untuk penelitian (Pasal 15), dan Pasal 33 hanya menyangkut akses *perubahan*. Pengecualian tetap ada bila pemberiannya membahayakan anak. Kalimat T11 diubah supaya jujur: guru dan teman tidak melihat jawaban; kalau orang tua meminta, kakak peneliti bicara dengan anak dulu. Kalimat yang sama dibetulkan di T1, T3, 16, dan 22. Ini menjawab [§21](#21-pertanyaan-terbuka) no. 1. Tidak dipilih: tetap ditahan kecuali anak setuju dan diserahkan ke komite; selalu disertakan dengan T11 diubah.
 
 **Temuan kode untuk ditinjau pengembang** (bukan pertanyaan baru; dicatat di 04):
 - Lokasi kedua cadangan tidak pernah menghapus berkas, jadi data yang dihapus dan nama tetap ada di sana tanpa batas ([§7.5](#75-salinan-cadangan)).
@@ -836,3 +849,7 @@ Dicatat di sini dan dibawa sesi koordinator setelah bagian 1–4 diselaraskan.
 | [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) | §12, §15 | Kunci asing `field_sheet_rows.participant_id` `ON DELETE CASCADE`; `data_exports.purged_by_request_id`; lembar `izin` ([§21](#21-pertanyaan-terbuka) no. 4) | Sudah (sesi koordinator, 30 Oktober 2026) |
 | [03](03_KODE_DAN_ARTI.md) | Kode baru | Status izin (`active`, `left`, `withdrawn_keep`, `withdrawn_delete`), jenis permintaan (`all`, `risk_items`, `recording`), aturan penanda `tl-1`, `assent_version` | Sudah (sesi koordinator, 30 Oktober 2026, PR #285) |
 | [00](00_INDEKS.md) | *Daftar dokumen*, *Tahap dokumen 3* | Baris bagian 4 | Sudah (cabang ini) |
+| [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) | T1 bagian 3, T3, T10 (formulir dan *Cara menjalankan* C, D; varian uji keterbacaan), T11 paragraf 3, *Pilihan yang diambil* no. 13 | Keputusan no. 5 dan 6 | Sudah (putaran kedua, 30 Oktober 2026) |
+| [22](22_PERMOHONAN_IZIN_ETIK.md) | *Mengundurkan diri dan hapus data* (C, melihat dan salinan), *Dasar hukum*, daftar tilik 6c | Keputusan no. 5 dan 6; UU No. 27 Tahun 2022 Pasal 7, 32, 33 | Sudah (putaran kedua, 30 Oktober 2026) |
+| [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) | *Hak orang tua dan anak*, P8 | Keputusan no. 5 dan 6 | Sudah (putaran kedua, 30 Oktober 2026) |
+| [16](16_ANGKET_AKSES_DIGITAL.md) | *Etika* no. 2 | Orang tua hanya melihat data anaknya sendiri atas permintaan | Sudah (putaran kedua, 30 Oktober 2026) |
