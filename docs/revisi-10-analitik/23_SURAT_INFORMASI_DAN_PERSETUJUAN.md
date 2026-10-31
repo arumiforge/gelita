@@ -70,12 +70,12 @@ Setelah itu: [tabel pembagian](#tabel-pembagian), [catatan keterbacaan](#catatan
 
 | Tempat kosong | Diisi dari | Kapan |
 | --- | --- | --- |
-| `[nama ketua peneliti]`, `[jabatan dan lembaga ketua peneliti]` | Pengembang, di luar repo | Sebelum permohonan etik dikirim |
-| `[nama lembaga peneliti]`, `[alamat lembaga]` | Pengembang | Sama |
+| `[nama ketua peneliti]`, `[jabatan dan lembaga ketua peneliti]` | Ketua peneliti, di luar repo ([22 → Daftar isian sebelum diajukan](22_PERMOHONAN_IZIN_ETIK.md#daftar-isian-sebelum-diajukan), kelompok A) | Sebelum permohonan etik dikirim |
+| `[nama lembaga peneliti]`, `[alamat lembaga]` | Pengembang bersama ketua peneliti (22, kelompok B) | Sama |
 | `[nomor persetujuan etik]`, `[tanggal persetujuan etik]` | Surat keputusan Komisi Etik Bidang Sosial Humaniora BRIN (nama komite sudah ditulis langsung, 27 Oktober 2026) | Setelah persetujuan terbit; **menunggu persetujuan etik** |
-| `[nomor HP/WA peneliti]`, `[surel peneliti]` | Pengembang (nomor khusus penelitian, bukan nomor pribadi) | Sebelum dicetak |
-| `[nomor cadangan]` | Pengembang: nomor anggota tim lain atau kantor lembaga, khusus penelitian | Sebelum dicetak |
-| `[sumber dana]` | Pengembang, sama dengan [22 → Identitas dan tim](22_PERMOHONAN_IZIN_ETIK.md#identitas-dan-tim) | Sebelum permohonan etik dikirim |
+| `[nomor HP/WA peneliti]`, `[surel peneliti]` | Ketua peneliti (nomor khusus penelitian, bukan nomor pribadi; 22, kelompok A) | Sebelum dicetak |
+| `[nomor cadangan]` | Ketua peneliti: nomor anggota tim lain atau kantor lembaga, khusus penelitian (22, kelompok A) | Sebelum dicetak |
+| `[sumber dana]` | Pengembang bersama ketua peneliti, sama dengan [22 → Identitas dan tim](22_PERMOHONAN_IZIN_ETIK.md#identitas-dan-tim) (kelompok B) | Sebelum permohonan etik dikirim |
 | `[jenis tanda terima kasih]` | [22 → Kompensasi](22_PERMOHONAN_IZIN_ETIK.md#kompensasi), misalnya satu set alat tulis | Sebelum dicetak |
 | `[judul penelitian]` | Judul resmi dari usulan penelitian, sama dengan [22 → Identitas dan tim](22_PERMOHONAN_IZIN_ETIK.md#identitas-dan-tim); tanpa nama sekolah atau lembaga subjek | Sebelum permohonan etik dikirim |
 | `[nama sekolah]`, `[nama kepala sekolah]`, `[rombel]` | Rekrutmen sekolah; kode sekolah **menunggu daftar kerja no. 12** | Per sekolah |

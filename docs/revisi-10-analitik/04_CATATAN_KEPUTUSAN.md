@@ -1,10 +1,40 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 30 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 31 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
 
 ## 31 Oktober 2026
+
+**Tujuh ketidaksesuaian dibetulkan; 25 dan 26 disetujui pengembang** (cabang `sky/elegant-brown-3vnbv9`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Atas permintaan pengembang, ketujuh ketidaksesuaian di entri berkas serah terima (di bawah) dibetulkan di dokumen sumbernya. Satu keputusan diambil pengembang dalam wawancara singkat: 25 dan 26 dinaikkan menjadi `disetujui pengembang` (opsi yang direkomendasikan; pilihan lain menyetujui 25 saja atau membiarkan keduanya draf).
+
+1. **Siapa mengajukan izin etik.** Kalimat pembuka [22](22_PERMOHONAN_IZIN_ETIK.md) kini sama dengan tabel langkah: ketua peneliti mengajukan dari akunnya di sistem klirens etik BRIN, didampingi pembimbing; pengembang menyiapkan isian dan lampiran. Baris pembimbing di *Identitas dan tim* dan keputusan no. 13 diberi catatan: pembimbing mengirim sendiri hanya bila komite memakai format PSEPPKN.
+2. **Siapa mengisi data ketua.** [23 → Tempat kosong yang dipakai](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#tempat-kosong-yang-dipakai) disamakan dengan 22 → *Daftar isian*: data pribadi dan kontak penelitian diisi ketua peneliti (kelompok A); lembaga, alamat, dan sumber dana oleh pengembang bersama ketua peneliti (kelompok B).
+3. **Judul.** 22 → *Identitas dan tim* memakai judul penelitian di 01 (dari peneliti), menggantikan draf judul pengembang; tetap `needs_verification` sampai dicocokkan dengan usulan penelitian resmi.
+4. **Server di 26.** `[nama dan lokasi penyedia server]` di *Identitas penilaian* dan diagram aliran data diisi IDCloudHost, Jakarta Pusat (22 → no. 23).
+5. **Status 25 dan 26.** Keduanya `disetujui pengembang` 31 Oktober 2026; 26 menjadi versi 1.0 dan baris pengembang di *Persetujuan dan tanda tangan* diisi. Saran PPDP dan penetapan ketua peneliti atas 26 tetap menyusul. Baris 25 dan 26 di 00 dan baris no. 15 di 01 diperbarui.
+6. **Baris lama di 30 §23.** Baris untuk 22 dan 23 → T10 D memuat aturan putaran kedua (anak ditanya dulu; jawaban butir risiko diberikan bila orang tua tetap meminta, kecuali membahayakan anak). Isi 22 dan 23 sendiri sudah benar; yang diperbarui hanya baris catatan di 30.
+7. **`gelita:uji:akun`.** Baris perubahan no. 24 di 01 mengikuti keputusan 28 → K15 (di luar alur token, sekolah `V01`, kode `UJI-…`); alasan lama "mengikuti alur pendaftaran baru" diganti. 03 dan 20 sudah sesuai. Entri bagian 1–4 tanggal 30 Oktober 2026 di bawah tidak diubah, karena catatan riwayat.
+
+Berkas serah terima dibuat ulang (versi 1.1): F.2 kini mencatat ketujuh temuan sebagai sudah dibetulkan, dan status 25 dan 26 di B.3 dan B.4, judul di C.2, serta C.3 no. 1 disesuaikan. Diubah: 00, 01, 22, 23, 25, 26, 30, `dokumen-pdf/serah-terima-peneliti.pdf` dan sumbernya.
+
+**Berkas serah terima ke peneliti (PDF)** (cabang `sky/elegant-brown-3vnbv9`) · `asal: pengembang` · `draf pengembang` · tidak merevisi produk
+
+Atas permintaan pengembang, disusun [dokumen-pdf/serah-terima-peneliti.pdf](dokumen-pdf/serah-terima-peneliti.pdf) (32 halaman, sumber `dokumen-pdf/src/serah-terima-peneliti.html`, dibuat dengan `render.mjs`) sebagai pegangan pengembang saat bertemu peneliti. Isinya diringkas dari 00–30, 04 (23–31 Oktober 2026), dan dokumen pendukung peneliti; tidak ada keputusan baru. Bagian-bagiannya: posisi pekerjaan, daftar periksa enam paket dokumen, yang tidak diserahkan ke ahli, isian dan tanda tangan yang hanya bisa diberikan peneliti, sepuluh keputusan terbuka untuk peneliti, keputusan yang sudah diterapkan beserta alasannya (D.1–D.10), 19 tanya jawab, keterbatasan, agenda, dan lembar catatan keputusan. Berkas ini dokumen internal, tidak dikirim ke ahli atau komite.
+
+- **Alasan bertanda †.** Banyak keputusan di 04 tercatat tanpa alasan (misalnya sampel 300/360, tiga peneliti per kelas, variasi a/b, model *between-item*, pra-registrasi OSF, akun `guru` dihapus). Alasan untuk keputusan seperti itu disimpulkan saat menyusun berkas dan ditandai †; pengembang dan peneliti mengukuhkannya atau memberi rujukan sebelum dipakai di depan validator, komite, atau penguji (berkas → F.1).
+- **Ketidaksesuaian yang ditemukan** (berkas → F.2; semuanya dibetulkan hari yang sama, lihat entri di atas):
+  1. Kalimat pembuka [22](22_PERMOHONAN_IZIN_ETIK.md) menyebut pengembang yang mengajukan permohonan, sedangkan tabel *Pengajuan lewat sistem klirens etik BRIN* memberikan langkah 1–8 kepada ketua peneliti didampingi pembimbing.
+  2. [23 → Tempat kosong yang dipakai](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#tempat-kosong-yang-dipakai) menyebut data ketua diisi pengembang, sedangkan 22 kelompok A menyebut ketua peneliti.
+  3. Draf judul di 22 → *Identitas dan tim* berbeda dengan judul penelitian di 01, 20, 21, dan 24.
+  4. [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) masih memuat `[nama dan lokasi penyedia server]` di *Identitas penilaian* dan diagram aliran data, padahal 22 sudah mengisinya (IDCloudHost, Jakarta Pusat).
+  5. 00 menyebut 26 `disetujui pengembang`, sedangkan kepala 26 masih `draf pengembang` v0.1.
+  6. Baris penyelarasan putaran pertama di 30 §23 untuk 22 dan 23 → T10 D masih memuat aturan lama soal jawaban butir risiko; perlu satu cek konsistensi.
+  7. 28 → keputusan no. 2 (`gelita:uji:akun` di luar alur token) bertentangan dengan alasan memberi nomor perubahan no. 24 ("harus mengikuti alur pendaftaran baru").
+
+Diubah: `dokumen-pdf/` (PDF dan sumber HTML baru, README), 00 (baris `dokumen-pdf/` dan petunjuk di *Mulai sesi baru di sini*). Langkah berikutnya: pengembang membaca berkas, lalu bertemu peneliti; keputusan peneliti dicatat di 04 dengan `asal: peneliti`.
 
 **28 §21 no. 7 dan 8: jawaban putaran kedua berlaku** (cabang `pbb/pensive-ramanujan-d8nu9h`) · `asal: pengembang` · `disetujui pengembang` · Prototipe I, belum merevisi produk
 
