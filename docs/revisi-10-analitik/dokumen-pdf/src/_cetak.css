@@ -1,0 +1,62 @@
+/* Print style for the Markdown documents built by cetak.mjs, layered on _instrumen.css. */
+body.cetak { font-size: 10pt; }
+
+body.cetak h1 {
+  font-size: 19pt;
+  line-height: 1.2;
+  color: var(--navy);
+  margin: 0 0 8px;
+  padding-bottom: 8px;
+  border-bottom: 3px solid var(--navy);
+}
+body.cetak h1 + p { font-family: Inter, sans-serif; font-size: 8.5pt; color: var(--muted); text-align: left; }
+body.cetak h1:not(:first-child) { break-before: page; }
+body.cetak h5, body.cetak h6 { font-family: Inter, sans-serif; font-size: 9pt; color: var(--ink); margin: 8px 0 4px; break-after: avoid; }
+
+body.cetak ul, body.cetak ol { margin: 0 0 .6em; padding-left: 1.4em; }
+body.cetak li { margin: 0 0 .25em; }
+body.cetak li > p { margin: 0 0 .3em; }
+body.cetak ul.task-list { list-style: none; padding-left: .2em; }
+body.cetak ul.task-list input { margin: 0 .4em 0 0; vertical-align: -1px; }
+
+body.cetak code {
+  font-family: "JetBrains Mono", "Liberation Mono", monospace;
+  font-size: .84em;
+  background: var(--row);
+  border-radius: 3px;
+  padding: 0 .2em;
+  overflow-wrap: anywhere;
+}
+body.cetak pre {
+  font-size: 8pt;
+  line-height: 1.45;
+  background: var(--row);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 8px 10px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+body.cetak pre code { background: none; padding: 0; font-size: inherit; }
+
+body.cetak blockquote {
+  margin: 6px 0 12px;
+  padding: 6px 12px;
+  border-left: 3px solid var(--gold);
+  background: #fbf8f1;
+}
+body.cetak blockquote p:last-child { margin-bottom: 0; }
+
+body.cetak table { font-size: 8.5pt; }
+body.cetak th, body.cetak td { padding: 4px 6px; }
+body.cetak td p { margin: 0; }
+/* Still too wide on a landscape page: let every cell break inside words. */
+body.cetak table.squeeze { font-size: 7.5pt; }
+body.cetak table.squeeze th, body.cetak table.squeeze td { overflow-wrap: anywhere; }
+/* A wide table and the heading just above it share a landscape page. */
+body.cetak .wide > h2:first-child, body.cetak .wide > h3:first-child, body.cetak .wide > h4:first-child { margin-top: 0; }
+
+body.cetak img { display: block; max-width: 100%; max-height: 230mm; height: auto; margin: 8px auto; break-inside: avoid; }
+body.cetak a { color: var(--navy-2); text-decoration: none; }
+body.cetak hr { border: 0; border-top: 1px solid var(--line); margin: 14px 0; }

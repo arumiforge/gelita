@@ -6,6 +6,12 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 31 Oktober 2026
 
+**Versi PDF siap cetak untuk setiap dokumen** (cabang `sky/elegant-galileo-kok1fx`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Pengembang meminta versi PDF siap cetak dari setiap dokumen dan memilih menyimpannya di repo (pilihan lain: hanya dibuat saat dibutuhkan). Skrip `dokumen-pdf/src/cetak.mjs` mengubah setiap dokumen bernomor 00–30 menjadi PDF A4 di `dokumen-pdf/cetak/` lewat pandoc dan Chromium, dengan gaya cetak instrumen (`_instrumen.css`) ditambah `_cetak.css`. Kaki halaman menyebut *commit* terakhir yang mengubah dokumen itu beserta tanggalnya, jadi dokumen dengan perubahan yang belum di-*commit* tidak dibuat. Tabel yang tidak muat di halaman tegak pindah ke halaman mendatar (per 31 Oktober 2026 hanya satu tabel di 14 dan satu di 20). `cetak/manifest.json` mencatat sumber, *commit*, dan jumlah halaman setiap PDF, sehingga yang tidak berubah tidak dibuat ulang. Hasil pertama: 31 PDF, sekitar 600 halaman, sekitar 14 MB. Aturan sesi (`.claude/rules/revisi-10.md`) kini meminta skrip dijalankan setelah perubahan dokumen di-*commit*, lalu PDF-nya ikut di-*commit*.
+
+Diubah: `dokumen-pdf/` (skrip, gaya, README, folder `cetak/`), 00 (petunjuk *Mulai sesi baru di sini* dan baris `dokumen-pdf/`), aturan sesi.
+
 **Tiga ketidaksesuaian lagi dibetulkan; tanda alasan yang disimpulkan diganti ◆** (cabang `sky/elegant-galileo-kok1fx`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
 
 Saat memeriksa sisa pekerjaan pengembang sebelum bertemu peneliti, ditemukan tiga ketidaksesuaian tentang siapa memegang pekerjaan. Dua diputuskan pengembang dalam wawancara singkat (keduanya opsi yang direkomendasikan); yang ketiga cukup disamakan dengan 22.
