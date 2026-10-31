@@ -1,6 +1,6 @@
 # Cek Fakta Budaya
 
-Per 27 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · `asal: pengembang` · `draf pengembang`; keputusan perbaikan disetujui pengembang 27 Oktober 2026 · cabang `r10-cek-fakta-budaya`
+Per 27 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · `asal: pengembang` · `disetujui pengembang` (31 Oktober 2026); keputusan perbaikan disetujui pengembang 27 Oktober 2026 · cabang `r10-cek-fakta-budaya`
 
 Dokumen ini memenuhi prasyarat no. 6 di [20 → Ringkasan](20_PAKET_VALIDASI.md#ringkasan): tim mengecek fakta budaya sebelum bahan validasi dibekukan, lalu mencatat hasilnya di lembar B.7 instrumen pengamat budaya (IB). Ini **kerja pengembang dengan bantuan AI**, bukan validasi ahli ([01 → Peran pengembang, peneliti, dan ahli](01_REVISI_10_ANALITIK.md#peran-pengembang-peneliti-dan-ahli)). Pengamat budaya mengonfirmasi atau membantahnya di B.7, dan hasil itu yang menentukan.
 

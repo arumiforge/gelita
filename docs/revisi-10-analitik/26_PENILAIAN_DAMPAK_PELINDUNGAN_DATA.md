@@ -1,6 +1,6 @@
 # Penilaian Dampak Pelindungan Data Pribadi: Penelitian GELITA
 
-Per 27 Oktober 2026 · **Status: `draf pengembang`** (`asal: pengembang`, disusun dengan bantuan AI; belum disetujui pengembang, peneliti, atau PPDP); nomor KG di *Kegiatan* disamakan dengan 03 dan 22, dan akibat dokumen implementasi bagian 1, 3, dan 4 (27, 29, 30) dibawa sesi koordinator 30 Oktober 2026 (`asal: pengembang`, [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)) · Lampiran 18 [permohonan izin etik](22_PERMOHONAN_IZIN_ETIK.md#lampiran) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 27 Oktober 2026 · **Status: `disetujui pengembang`** (31 Oktober 2026; `asal: pengembang`, disusun dengan bantuan AI; belum disetujui peneliti dan belum diberi saran PPDP); nomor KG di *Kegiatan* disamakan dengan 03 dan 22, dan akibat dokumen implementasi bagian 1, 3, dan 4 (27, 29, 30) dibawa sesi koordinator 30 Oktober 2026 (`asal: pengembang`, [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)) · Lampiran 18 [permohonan izin etik](22_PERMOHONAN_IZIN_ETIK.md#lampiran) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Dokumen ini adalah penilaian dampak pelindungan data pribadi (selanjutnya *penilaian dampak*) yang lengkap untuk penelitian GELITA. Ringkasannya ada di [22 → Penilaian dampak pelindungan data](22_PERMOHONAN_IZIN_ETIK.md#penilaian-dampak-pelindungan-data); dokumen ini menguraikannya untuk pembaca *Lembaga Komite Etik* dan untuk PPDP atau narahubung data. Isinya mengikuti 22 dan tidak membuat aturan baru tentang data. Kalau ada yang berbeda, 22 yang berlaku, dan bedanya dicatat di [Akibat ke dokumen lain](#akibat-ke-dokumen-lain).
 
@@ -41,10 +41,10 @@ Ini pemeriksaan dokumen, bukan nasihat hukum. Semua nomor pasal PP No. 33 Tahun 
 | --- | --- |
 | Nama kegiatan | Penelitian `[judul penelitian]` (GELITA), kegiatan KG1–KG5 ([22 → Kegiatan yang dimintakan izin](22_PERMOHONAN_IZIN_ETIK.md#kegiatan-yang-dimintakan-izin)) |
 | Pengendali data | `[nama lembaga peneliti]`, diwakili ketua peneliti `[nama ketua peneliti]` |
-| Prosesor data | Penyedia server `[nama dan lokasi penyedia server]`, dengan perjanjian tertulis (PP 33/2026 Pasal 14) |
+| Prosesor data | Penyedia server IDCloudHost (PT Cloud Hosting Indonesia), pusat data di Jakarta Pusat ([22 → Keputusan pengembang](22_PERMOHONAN_IZIN_ETIK.md#keputusan-pengembang) no. 23), dengan perjanjian tertulis (PP 33/2026 Pasal 14) |
 | PPDP atau narahubung | `[kontak PPDP atau narahubung]` |
 | Penyusun draf | Pengembang GELITA, dibantu AI (`asal: pengembang`), 27 Oktober 2026 |
-| Versi | 0.1 (`draf pengembang`) |
+| Versi | 1.0 (`disetujui pengembang`, 31 Oktober 2026; v0.1 `draf pengembang`, 27 Oktober 2026) |
 | Kapan dibuat | Sebelum permohonan diajukan (minggu kedua–keempat November 2026), jadi sebelum KG1 dan sebelum data anak pertama dikumpulkan (PP 33/2026 Pasal 120 ayat (1)) |
 | Tinjauan ulang berikutnya | Bersama laporan kemajuan tahunan pertama, `[tanggal tinjauan pertama]`; selengkapnya di [Tinjauan ulang](#tinjauan-ulang) |
 
@@ -207,7 +207,7 @@ Gambaran dari formulir sampai pemusnahan. Garis putus memisahkan **sisi identita
  Anak daftar di GELITA ──> akun (nama, admin) ═══> kode peserta S03-A07
                                                   │
                     game, tes, angket, skala ─────┤──> server di Indonesia
-                    (P1–P5, token sesi)           │    [nama dan lokasi penyedia server]
+                    (P1–P5, token sesi)           │    IDCloudHost, Jakarta Pusat
                                                   │        │ cadangan (di Indonesia)
                     lembar L1–L6 (diunggah) ──────┤        ▼
                     rekaman L5 → transkrip ───────┤    unduhan ketua (dihapus di server
@@ -388,7 +388,7 @@ Ditandatangani di luar repo; yang dicatat di sini hanya statusnya.
 | Peran | Nama | Keputusan | Tanggal |
 | --- | --- | --- | --- |
 | Disusun: pengembang (berbantuan AI) | `[nama pengembang]` | Draf | 27 Oktober 2026 |
-| Disetujui: pengembang | `[nama pengembang]` | `[disetujui / direvisi]` | `[tanggal]` |
+| Disetujui: pengembang | `[nama pengembang]` | Disetujui | 31 Oktober 2026 |
 | Saran: PPDP atau narahubung | `[kontak PPDP atau narahubung]` | `[saran]` | `[tanggal]` |
 | Ditetapkan: ketua peneliti, mewakili pengendali `[nama lembaga peneliti]` | `[nama ketua peneliti]` | `[ditetapkan / direvisi]`; risiko sisa sedang R1 dan R2 diterima | `[tanggal penandatanganan]` |
 | Diketahui: pembimbing/promotor | `[nama pembimbing]` | — | `[tanggal]` |
