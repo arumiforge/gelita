@@ -187,7 +187,7 @@ Tiga kunci baru di `app/Language/id/Game.php` dan `en/Game.php`, berisi usulan [
 - Tanggal tidak boleh di masa depan atau sebelum tanggal izin orang tua.
 - Setiap perubahan setelah simpan pertama dicatat `consent_updated` dengan metadata `{participant_code, field, from, to, on}`.
 - Simpan memakai UPDATE bersyarat pada `updated_at`. Yang kalah mendapat pesan "Data izin ini baru saja diubah orang lain. Muat ulang halaman, lalu periksa lagi."
-- Halaman menampilkan peringatan "Izin belum diisi untuk {n} siswa" sampai semua baris punya tanggal izin orang tua. Peringatan yang sama tampil di panel pemantauan bagian 2, sebagai angka.
+- Halaman menampilkan peringatan "Izin belum diisi untuk {n} siswa" sampai semua baris punya tanggal izin orang tua. Peringatan yang sama tampil di panel pemantauan bagian 2, sebagai angka, juga untuk admin ([28 → Pertanyaan terbuka](28_IMPLEMENTASI_SESI_LAPANGAN.md#21-pertanyaan-terbuka) no. 7).
 - Isian izin tidak terlihat admin (admin tidak memegang `field_sessions.manage`).
 
 **Kode yang disimpan** (baru, bahasa Inggris; label panel berbahasa Indonesia):
@@ -812,7 +812,7 @@ Satu putaran tanya, empat pertanyaan (30 Oktober 2026). Pengembang memilih usula
 3. **Cadangan diganti** (K3): setelah penghapusan dan saat studi ditutup, cadangan baru dibuat lalu cadangan lama di kedua lokasi dihapus, sebelum orang tua diberi tahu; lokasi kedua juga 30 hari. Tidak dipilih: daftar hapus yang diterapkan ulang saat pulih, dengan cadangan habis sendiri dalam 30 hari; diserahkan ke penyedia server.
 4. **Semua kolom L7 yang berkode masuk panel** (K4): tanggal izin orang tua, izin rekaman, izin butir risiko, status dan tanggalnya. Tidak dipilih: hanya izin butir risiko di panel, dengan daftar izin berkode disalin tangan dari L7.
 
-**Putaran kedua** (30 Oktober 2026, setelah sesi koordinator): dua pertanyaan untuk dokumen ini, bersama dua untuk [28](28_IMPLEMENTASI_SESI_LAPANGAN.md#22-keputusan-pengembang). Pengembang memilih usulan di keduanya. `asal: pengembang`.
+**Putaran kedua** (30 Oktober 2026, setelah sesi koordinator): dua pertanyaan untuk dokumen ini. Pengembang memilih usulan di keduanya. `asal: pengembang`.
 
 5. **Transkrip ikut dihapus pada pilihan C rekaman** ([§7.2](#72-jenis-permintaan)). Catatan tertulis P3 di L5 tetap. Ini menjawab [§21](#21-pertanyaan-terbuka) no. 2. Tidak dipilih: transkrip berkode tetap disimpan; centang tambahan di T10.
 6. **Jawaban butir risiko: anak ditanya dulu, diberikan bila orang tua tetap meminta** (K2, [§8](#8-salinan-data-satu-anak)). Ini mengubah keputusan no. 2, setelah naskah resmi UU No. 27 Tahun 2022 dicek: hak akses dan salinan (Pasal 7, 32) tidak dikecualikan untuk penelitian (Pasal 15), dan Pasal 33 hanya menyangkut akses *perubahan*. Pengecualian tetap ada bila pemberiannya membahayakan anak. Kalimat T11 diubah supaya jujur: guru dan teman tidak melihat jawaban; kalau orang tua meminta, kakak peneliti bicara dengan anak dulu. Kalimat yang sama dibetulkan di T1, T3, 16, dan 22. Ini menjawab [§21](#21-pertanyaan-terbuka) no. 1. Tidak dipilih: tetap ditahan kecuali anak setuju dan diserahkan ke komite; selalu disertakan dengan T11 diubah.

@@ -532,8 +532,11 @@ Mengikuti `.claude/rules/ui-copy.md`: kalimat panel sopan dan polos, kalimat sis
 | `Auth.mustChange` | Gurumu sudah mengatur ulang kata sandimu. Buat kata sandi baru yang kuat, ya. | Kakak peneliti sudah mengatur ulang kata sandimu. Buat kata sandi baru yang kuat, ya. | The research team has reset your password. Make a new strong password. |
 | `Auth.currentHelp` | Pakai kata sandi sementara dari gurumu, atau kata sandimu yang sekarang. | Pakai kata sandi sementara dari kakak peneliti, atau kata sandimu yang sekarang. | Use the temporary password from the research team, or your current password. |
 | `Game.forgotPassword` | Lupa kata sandi? Minta gurumu mengatur ulang. | Lupa kata sandi? Minta kakak peneliti mengatur ulang, ya. | Forgot your password? Ask the research team to reset it. |
+| `Auth.mustChangeAdmin` (baru) | — | Admin GELITA sudah mengatur ulang kata sandimu. Buat kata sandi baru yang kuat, ya. | The GELITA admin has reset your password. Make a new strong password. |
+| `Auth.currentHelpAdmin` (baru) | — | Pakai kata sandi sementara dari admin GELITA, atau kata sandimu yang sekarang. | Use the temporary password from the GELITA admin, or your current password. |
+| `Game.forgotPasswordAdmin` (baru) | — | Lupa kata sandi? Minta tolong admin GELITA mengatur ulang, ya. | Forgot your password? Ask the GELITA admin to reset it. |
 
-"Kakak peneliti" mengikuti pesan game tertutup di [01 → Token sesi](01_REVISI_10_ANALITIK.md#token-sesi-perlu-atau-tidak). Setelah studi ditutup, yang mengatur ulang adalah admin; kalimatnya `Game.forgotPasswordOpen` ("Lupa kata sandi? Bilang ke gurumu, ya. Gurumu bisa meminta admin GELITA mengatur ulang."), dipilih menurut mode penelitian ([28 → Layar dan teks](28_IMPLEMENTASI_SESI_LAPANGAN.md#16-layar-dan-teks), keputusan pengembang 30 Oktober 2026).
+"Kakak peneliti" mengikuti pesan game tertutup di [01 → Token sesi](01_REVISI_10_ANALITIK.md#token-sesi-perlu-atau-tidak). Tiga kunci pertama dipakai selama mode penelitian berjalan (`field_mode` menyala dan studi `active`, [28 → Mode penelitian](28_IMPLEMENTASI_SESI_LAPANGAN.md#51-sakelar-field_mode)). Di luar itu, termasuk setelah studi ditutup, yang mengatur ulang adalah admin, dan server memilih kunci `…Admin` (diputuskan pengembang 30 Oktober 2026, [28 → Pertanyaan terbuka](28_IMPLEMENTASI_SESI_LAPANGAN.md#21-pertanyaan-terbuka) no. 8). "Admin GELITA" dipakai, bukan "admin" saja, supaya anak tahu admin yang mana; kalimat akhir mengikuti uji keterbacaan.
 
 ---
 
