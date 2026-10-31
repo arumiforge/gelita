@@ -4,6 +4,16 @@ Per 30 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
 
+## 31 Oktober 2026
+
+**28 §21 no. 7 dan 8: jawaban putaran kedua berlaku** (cabang `pbb/pensive-ramanujan-d8nu9h`) · `asal: pengembang` · `disetujui pengembang` · Prototipe I, belum merevisi produk
+
+Konflik yang dicatat di entri putaran kedua (di bawah) diputuskan pengembang: jawaban putaran kedua yang berlaku, dan catatan PR #288 diganti.
+- **No. 7:** angka "izin belum diisi" di panel pemantauan hanya untuk peneliti dan ketua; admin tidak melihatnya ([28 → Panel pemantauan](28_IMPLEMENTASI_SESI_LAPANGAN.md#12-panel-pemantauan), [30 → Izin berkode per siswa](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#52-izin-berkode-per-siswa)).
+- **No. 8:** di luar mode penelitian, `Game.forgotPasswordAdmin` berbunyi "Lupa kata sandi? Bilang ke gurumu, ya. Gurumu bisa meminta admin GELITA mengatur ulang." (en: "Forgot your password? Tell your teacher. Your teacher can ask the GELITA admin to reset it."). Selama mode penelitian tetap "Minta kakak peneliti mengatur ulang, ya." Nama kunci `…Admin` dari #288 dipertahankan, begitu juga `Auth.mustChangeAdmin` dan `Auth.currentHelpAdmin`, karena yang mengatur ulang di luar studi memang admin ([27 → Teks antarmuka](27_IMPLEMENTASI_PERAN_PENELITI.md#12-teks-antarmuka)).
+
+Diubah: 27 §12, 28 §12, §21 no. 7–8, dan §22 no. 5–6, 30 §5.2. Tidak ada butir sesi koordinator yang tersisa; langkah berikutnya pengembang meninjau 27–30.
+
 ## 30 Oktober 2026
 
 **Putaran kedua setelah sesi koordinator: empat pertanyaan terbuka diputuskan, teks token disamakan, janji kerahasiaan dibetulkan** (cabang `pbb/pensive-ramanujan-d8nu9h`) · `asal: pengembang` · `draf pengembang` (27–30) dan `disetujui pengembang` (perbaikan teks di 16, 18, 22, 23, 26, instrumen ahli media) · Prototipe I, revisi atas permintaan pengembang

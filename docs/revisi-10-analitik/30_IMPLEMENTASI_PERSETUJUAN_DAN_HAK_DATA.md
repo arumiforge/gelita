@@ -187,7 +187,7 @@ Tiga kunci baru di `app/Language/id/Game.php` dan `en/Game.php`, berisi usulan [
 - Tanggal tidak boleh di masa depan atau sebelum tanggal izin orang tua.
 - Setiap perubahan setelah simpan pertama dicatat `consent_updated` dengan metadata `{participant_code, field, from, to, on}`.
 - Simpan memakai UPDATE bersyarat pada `updated_at`. Yang kalah mendapat pesan "Data izin ini baru saja diubah orang lain. Muat ulang halaman, lalu periksa lagi."
-- Halaman menampilkan peringatan "Izin belum diisi untuk {n} siswa" sampai semua baris punya tanggal izin orang tua. Peringatan yang sama tampil di panel pemantauan bagian 2, sebagai angka, juga untuk admin ([28 → Pertanyaan terbuka](28_IMPLEMENTASI_SESI_LAPANGAN.md#21-pertanyaan-terbuka) no. 7).
+- Halaman menampilkan peringatan "Izin belum diisi untuk {n} siswa" sampai semua baris punya tanggal izin orang tua. Peringatan yang sama tampil di panel pemantauan bagian 2, sebagai angka, hanya untuk peneliti dan ketua ([28 → Pertanyaan terbuka](28_IMPLEMENTASI_SESI_LAPANGAN.md#21-pertanyaan-terbuka) no. 7, dikonfirmasi pengembang 31 Oktober 2026).
 - Isian izin tidak terlihat admin (admin tidak memegang `field_sessions.manage`).
 
 **Kode yang disimpan** (baru, bahasa Inggris; label panel berbahasa Indonesia):
