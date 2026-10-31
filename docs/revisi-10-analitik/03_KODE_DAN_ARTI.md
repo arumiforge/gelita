@@ -27,7 +27,7 @@ Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian 
 
 ### Akun staf
 
-Pemegang akun admin dan akun peneliti sementara memakai nama samaran sesuai perannya (keputusan pengembang, 27 Oktober 2026; daftar kerja no. 13 di [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja)). Siapa orangnya ditetapkan nanti dan dicatat ketua peneliti di luar repo, sama seperti nama asli validator.
+Pemegang akun admin dan akun peneliti sementara memakai nama samaran sesuai perannya (keputusan pengembang, 27 Oktober 2026; daftar kerja no. 13 di [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja)). Siapa orangnya ditetapkan nanti: pemegang `admin` oleh pengembang, pemegang akun peneliti (`koordinator`, `pengamat`, `pewawancara`, `ketua`) oleh ketua peneliti (keputusan pengembang, 31 Oktober 2026). Semua nama dicatat ketua peneliti di luar repo, sama seperti nama asli validator.
 
 | Akun | Peran di sistem | Dipegang | Catatan |
 | --- | --- | --- | --- |
