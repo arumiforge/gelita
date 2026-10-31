@@ -723,14 +723,16 @@ Satu putaran tanya, empat pertanyaan (30 Oktober 2026). Pengembang memilih usula
 
 Dicatat di sini dan dibawa sesi koordinator setelah bagian 3 dan 4 selesai.
 
+**Status per 30 Oktober 2026:** semua baris sudah dibawa sesi koordinator (PR #285, #286, #287), kecuali yang menunggu `kamus-1.1` atau implementasi.
+
 | Dokumen | Bagian | Perubahan | Status |
 | --- | --- | --- | --- |
-| [01](01_REVISI_10_ANALITIK.md) | *Token sesi* langkah 2; no. 11, 12 | Token huruf dan angka (abjad K5); `region_opened` diturunkan dari rencana pertemuan; buklet dihitung panel dari baris dan kursi | Belum |
-| [02](02_LEMBAR_LAPANGAN.md) | L2 | Kolom Buklet dan Bentuk tes awal disalin dari panel setelah baris dan kursi dimasukkan; P1 memasukkan kode, baris, kursi | Belum |
-| [02](02_LEMBAR_LAPANGAN.md) | L1 | Kode sesi susulan kedua `-S2`; riwayat token dari panel | Belum |
-| [03](03_KODE_DAN_ARTI.md) | Kode sesi, sekolah, akun uji | `-S2`, awalan `V` untuk instalasi uji, kode `UJI-01` | Belum |
+| [01](01_REVISI_10_ANALITIK.md) | *Token sesi* langkah 2; no. 11, 12 | Token huruf dan angka (abjad K5); `region_opened` diturunkan dari rencana pertemuan; buklet dihitung panel dari baris dan kursi | Sudah (sesi koordinator, 30 Oktober 2026, PR #285) |
+| [02](02_LEMBAR_LAPANGAN.md) | L2 | Kolom Buklet dan Bentuk tes awal disalin dari panel setelah baris dan kursi dimasukkan; P1 memasukkan kode, baris, kursi | Sudah (sesi koordinator, 30 Oktober 2026, PR #285) |
+| [02](02_LEMBAR_LAPANGAN.md) | L1 | Kode sesi susulan kedua `-S2`; riwayat token dari panel | Sudah (sesi koordinator, 30 Oktober 2026, PR #285) |
+| [03](03_KODE_DAN_ARTI.md) | Kode sesi, sekolah, akun uji | `-S2`, awalan `V` untuk instalasi uji, kode `UJI-01` | Sudah (sesi koordinator, 30 Oktober 2026, PR #285) |
 | [04](04_CATATAN_KEPUTUSAN.md) | Entri 25 Oktober 2026 (buklet) | Tidak diubah (riwayat); keputusan baru di entri 30 Oktober | Tidak perlu diubah |
 | [11](11_KAMUS_DATA.md) | Variabel peserta dan sesi | `is_makeup`, `makeup_no`, bentuk tes; masuk `kamus-1.1` | Saat `kamus-1.1` |
-| [18](18_MOCKUP_LAYAR_BARU.md) | Teks layar token | "enam huruf dan angka"; pesan `tokenNotOpenYet`, `tokenOtherClass`, `tokenNotMember` | Belum |
-| [20](20_PAKET_VALIDASI.md) | Prasyarat no. 8 | Di G3: mode penelitian menyala dan satu sesi lapangan `V01` untuk validator; akun dari `gelita:uji:akun` | Belum |
+| [18](18_MOCKUP_LAYAR_BARU.md) | Teks layar token | "enam huruf dan angka"; pesan `tokenNotOpenYet`, `tokenOtherClass`, `tokenNotMember` | Sudah (sesi koordinator, 30 Oktober 2026, PR #285) |
+| [20](20_PAKET_VALIDASI.md) | Prasyarat no. 8 | Di G3: mode penelitian menyala dan satu sesi lapangan `V01` untuk validator; akun dari `gelita:uji:akun` | Sudah (sesi koordinator, 30 Oktober 2026, PR #285) |
 | [27](27_IMPLEMENTASI_PERAN_PENELITI.md) | §4, §16 no. 3 | Admin melihat pemantauan sebagai angka saja | Sudah (cabang ini) |

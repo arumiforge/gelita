@@ -639,12 +639,14 @@ Satu putaran tanya, empat pertanyaan (30 Oktober 2026); pengembang memilih usula
 
 Dicatat di sini dan dibawa sesi koordinator setelah bagian 2–4 selesai, supaya dokumen lain tidak diubah dua kali.
 
+**Status per 30 Oktober 2026:** semua baris sudah dibawa sesi koordinator (PR #285, #286, #287), kecuali yang menunggu `kamus-1.1` atau implementasi.
+
 | Dokumen | Bagian | Perubahan | Status |
 | --- | --- | --- | --- |
-| [01](01_REVISI_10_ANALITIK.md) | *Admin dan peneliti: dua peran berbeda* | Tabel hak akses mendapat kolom `ketua` (unduh data, studi, data semua siswa, penanda tindak lanjut). Baris "Data penelitian dan ekspornya: Peneliti Ya" menjadi "Ketua". Kalimat "peran guru makin sedikit" di *Token sesi* diganti. | Belum |
-| [03](03_KODE_DAN_ARTI.md) | *Akun staf* | `ketua` berperan sistem `ketua` (bukan Peneliti); "panel peneliti (usulan)" menjadi panel yang ditetapkan di 27 | Belum |
-| [22](22_PERMOHONAN_IZIN_ETIK.md) | *Kerahasiaan dan pengelolaan data*, *Identitas dan tim* | Unduh data hanya lewat akun `ketua`; pembatasan "hanya ketua menyambungkan kode ke nama" ditulis sebagai prosedur ([§16](#16-pertanyaan-terbuka) no. 6) | Belum |
-| [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) | *Tim dan staf*, *Aliran data*, langkah P2 | Sama dengan 22: unduhan lewat akun `ketua`; tiga peran staf | Belum |
-| [20](20_PAKET_VALIDASI.md) | *Prasyarat no. 8* | Di G3, pengembang memegang akun `admin` dan `ketua` di instalasi uji | Belum |
+| [01](01_REVISI_10_ANALITIK.md) | *Admin dan peneliti: dua peran berbeda* | Tabel hak akses mendapat kolom `ketua` (unduh data, studi, data semua siswa, penanda tindak lanjut). Baris "Data penelitian dan ekspornya: Peneliti Ya" menjadi "Ketua". Kalimat "peran guru makin sedikit" di *Token sesi* diganti. | Sudah (sesi koordinator, 30 Oktober 2026, PR #285) |
+| [03](03_KODE_DAN_ARTI.md) | *Akun staf* | `ketua` berperan sistem `ketua` (bukan Peneliti); "panel peneliti (usulan)" menjadi panel yang ditetapkan di 27 | Sudah (sesi koordinator, 30 Oktober 2026, PR #285) |
+| [22](22_PERMOHONAN_IZIN_ETIK.md) | *Kerahasiaan dan pengelolaan data*, *Identitas dan tim* | Unduh data hanya lewat akun `ketua`; pembatasan "hanya ketua menyambungkan kode ke nama" ditulis sebagai prosedur ([§16](#16-pertanyaan-terbuka) no. 6) | Sudah (sesi koordinator, 30 Oktober 2026, PR #286) |
+| [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) | *Tim dan staf*, *Aliran data*, langkah P2 | Sama dengan 22: unduhan lewat akun `ketua`; tiga peran staf | Sudah (sesi koordinator, 30 Oktober 2026, PR #286) |
+| [20](20_PAKET_VALIDASI.md) | *Prasyarat no. 8* | Di G3, pengembang memegang akun `admin` dan `ketua` di instalasi uji | Sudah (sesi koordinator, 30 Oktober 2026, PR #285) |
 | [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) | T10, pilihan D | "`ketua` membuka kode" sesuai hak `ketua` di 27; tidak ada perubahan teks surat | Tidak perlu diubah |
 | `.claude/rules/glossary.md` | *People, data, and the panel* | Baris peran staf, saat implementasi ([§15](#15-dokumen-yang-ikut-diperbarui-saat-implementasi)) | Saat implementasi |
