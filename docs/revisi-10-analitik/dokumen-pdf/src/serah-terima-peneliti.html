@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Berkas Serah Terima ke Peneliti</title>
+<meta name="pdf-footer" content="Berkas Serah Terima ke Peneliti · GELITA Revisi 10 Analitik · per 31 Oktober 2026 · draf pengembang">
+<link rel="stylesheet" href="_instrumen.css">
+<style>
+/* Handover checklist specifics on top of the shared instrument style. */
+table.check { table-layout: fixed; }
+table.check th { background: var(--navy); color: #fff; }
+table.check th:first-child { width: 24px; }
+table.check td, table.check code { overflow-wrap: anywhere; }
+table.check td.box { width: 24px; text-align: center; vertical-align: top; padding-top: 7px; }
+table.check td.box::before { content: ""; display: inline-block; width: 11px; height: 11px; border: 1.2px solid var(--navy-2); border-radius: 2px; }
+table.sheet td { height: 23px; }
+table.check tr.group td { background: var(--gold-soft); font-family: Inter, sans-serif; font-weight: 700; font-size: 8.5pt; color: var(--navy); }
+table.check td.file { width: 23%; font-family: Inter, sans-serif; font-size: 8.4pt; font-weight: 600; color: var(--navy); }
+table.dec td:first-child { width: 31%; }
+table.dec td.why { width: 45%; }
+table.dec td.src { width: 24%; font-family: Inter, sans-serif; font-size: 7.8pt; color: var(--muted); }
+.tag.ok { color: #1f6b3a; border: 1px solid #3d8b57; background: #e8f4ec; }
+.tag.ask { color: var(--warn); border: 1px solid var(--warn); background: #fdf1e6; }
+.tag.info { color: var(--navy); border: 1px solid var(--navy-2); background: #e7edf6; }
+.tag.off { color: #6b4fa0; border: 1px solid #8a72bd; background: #f1ecf8; }
+.qa { break-inside: avoid; margin: 0 0 10px; padding: 8px 12px 4px; border: 1px solid var(--line); border-radius: 6px; }
+.qa .q { font-family: Inter, sans-serif; font-weight: 700; font-size: 9pt; color: var(--navy); margin-bottom: 4px; text-align: left; }
+.qa .q::before { content: "T: "; color: var(--gold); }
+.qa .a { font-size: 9.6pt; }
+.qa .a::before { content: "J: "; font-family: Inter, sans-serif; font-weight: 700; color: var(--gold); }
+.qa .ref { font-family: Inter, sans-serif; font-size: 7.6pt; color: var(--muted); margin: 2px 0 4px; text-align: left; }
+.keys { display: flex; gap: 10px; margin: 8px 0 14px; }
+.keys > div { flex: 1; border: 1px solid var(--line); border-top: 4px solid var(--gold); border-radius: 6px; padding: 10px 12px 6px; font-size: 9.2pt; break-inside: avoid; }
+.keys b.h { display: block; font-family: Inter, sans-serif; color: var(--navy); font-size: 9.5pt; margin-bottom: 4px; text-align: left; }
+</style>
+</head>
+<body>
+
+<!-- ============================ SAMPUL ============================ -->
+<section class="cover">
+<div class="cover-bar"></div>
+<div class="kicker">Revisi 10 Analitik · Untuk pengembang · Per 31 Oktober 2026</div>
+<h1>Berkas Serah Terima<br>ke Peneliti</h1>
+<p class="lead">Daftar periksa dokumen yang diserahkan, keputusan yang sudah diterapkan beserta alasannya, dan bahan argumen, supaya pengembang datang ke pertemuan dengan peneliti dalam keadaan siap</p>
+<p class="study">Penelitian: Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar</p>
+<div class="cover-cards">
+<div class="cover-card"><b>Isi</b>Posisi pekerjaan, daftar periksa enam paket dokumen, isian dan keputusan yang hanya bisa diberikan peneliti, keputusan yang sudah diterapkan dan alasannya, tanya jawab yang mungkin muncul, keterbatasan yang perlu disampaikan terbuka, dan usulan agenda.</div>
+<div class="cover-card"><b>Cara pakai</b>Baca bagian A dan C sebelum pertemuan. Centang bagian B saat menyiapkan berkas. Bawa bagian D dan E sebagai pegangan saat diskusi. Isi lembar G.3 selama pertemuan, lalu catat hasilnya di 04.</div>
+</div>
+<div class="status"><b>DOKUMEN INTERNAL PENGEMBANG.</b> <code>asal: pengembang</code> · <code>draf pengembang</code>. Berkas ini pegangan pengembang, bukan bahan yang dikirim ke ahli atau komite etik. Semua keputusan di dalamnya masih keputusan pengembang (berbantuan AI) dan baru sah setelah ditetapkan peneliti (00 → <i>Label asal dan status</i>). Isinya diringkas dari dokumen 00–30 di folder <code>docs/revisi-10-analitik/</code>; bila ada perbedaan, dokumen sumbernya yang berlaku.</div>
+<div class="meta">
+<p>Disusun dari: 00 Indeks, 01 Revisi 10 Analitik, 04 Catatan Keputusan (23–31 Oktober 2026), 20–26 dokumen tahap 2, 27–30 dokumen implementasi bagian 1–4, dan dokumen pendukung peneliti (model penelitian dan pengembangan).</p>
+<p>Versi: 1.0 · 31 Oktober 2026 · dibuat ulang dari sumber HTML di <code>dokumen-pdf/src/serah-terima-peneliti.html</code> dengan <code>render.mjs</code>.</p>
+</div>
+</section>
+
+<!-- ============================ DAFTAR ISI ============================ -->
+<section class="page-break">
+<h2 style="border:0;font-size:15pt;margin-top:0">Daftar isi</h2>
+<table class="toc">
+<tr><td>A</td><td>Sebelum pertemuan</td></tr>
+<tr><td></td><td class="sub">A.1 Tujuan pertemuan · A.2 Posisi pekerjaan per 31 Oktober 2026 · A.3 Tiga pesan utama · A.4 Aturan main pengembang–peneliti</td></tr>
+<tr><td>B</td><td>Daftar periksa dokumen yang diserahkan</td></tr>
+<tr><td></td><td class="sub">B.1 Paket 1 Fondasi · B.2 Paket 2 Instrumen ukur · B.3 Paket 3 Validasi ahli · B.4 Paket 4 Izin etik dan pelindungan data · B.5 Paket 5 Lapangan · B.6 Paket 6 Dokumen implementasi · B.7 Yang tidak diserahkan atau disimpan di luar repo · B.8 Perlengkapan yang dibawa</td></tr>
+<tr><td>C</td><td>Yang diminta dari peneliti</td></tr>
+<tr><td></td><td class="sub">C.1 Persetujuan per dokumen · C.2 Isian yang hanya bisa diberikan peneliti · C.3 Keputusan terbuka · C.4 Tanda tangan</td></tr>
+<tr><td>D</td><td>Keputusan yang sudah diterapkan dan alasannya</td></tr>
+<tr><td></td><td class="sub">D.1 Konstruk · D.2 Model penelitian dan statistik validasi · D.3 Desain game · D.4 Bank soal, tes, angket, skala sikap · D.5 Data dan analisis · D.6 Lapangan · D.7 Validasi ahli · D.8 Izin etik dan pelindungan data · D.9 Peran dan sistem · D.10 Cara kerja</td></tr>
+<tr><td>E</td><td>Bahan argumen: pertanyaan yang mungkin diajukan peneliti</td></tr>
+<tr><td>F</td><td>Yang perlu disampaikan terbuka: keterbatasan, risiko, dan fakta yang belum dicek</td></tr>
+<tr><td>G</td><td>Agenda dan catatan pertemuan</td></tr>
+<tr><td></td><td class="sub">G.1 Usulan agenda · G.2 Setelah pertemuan · G.3 Lembar catatan keputusan peneliti</td></tr>
+</table>
+
+<div class="box gold" style="margin-top:22px">
+<div class="box-title">Ringkasan satu paragraf</div>
+<p>Semua dokumen tahap 1 dan tahap 2 sudah <b>disetujui pengembang</b>, dan dokumen implementasi bagian 1–4 sudah didraf. Belum ada satu pun yang <b>disetujui peneliti</b>. Pertemuan ini memindahkan bahan dari jalur pengembang ke jalur peneliti: peneliti menyetujui, merevisi, atau menolak bahan yang sudah siap, mengisi data yang hanya ia pegang (nama asli validator, honorarium, judul resmi, kontak PPDP, daftar kode sekolah), lalu membawa paket validasi ke sebelas validator dan permohonan izin etik ke Komisi Etik Bidang Sosial Humaniora BRIN pada minggu kedua–keempat November 2026.</p>
+</div>
+</section>
+
+<!-- ============================ BAGIAN A ============================ -->
+<section class="page-break">
+<div class="part"><div class="kicker">Bagian A</div><h1>Sebelum pertemuan</h1></div>
+
+<h2>A.1 Tujuan pertemuan</h2>
+<ol>
+<li><b>Menyerahkan bahan.</b> Peneliti menerima enam paket dokumen (bagian B) dan tahu status serta kegunaan masing-masing.</li>
+<li><b>Mendapat keputusan.</b> Peneliti menyetujui dokumen yang siap naik ke <code>disetujui peneliti</code>, terutama yang menahan langkah keluar: instrumen validasi, paket validasi, dan permohonan izin etik (bagian C.1).</li>
+<li><b>Mendapat isian.</b> Peneliti mengisi atau berjanji mengisi data yang tidak boleh atau tidak bisa disimpan di repo (bagian C.2).</li>
+<li><b>Menyamakan alasan.</b> Peneliti memahami alasan di balik keputusan pengembang, supaya bisa mempertahankannya di depan validator, komite etik, pembimbing, dan penguji (bagian D dan E).</li>
+<li><b>Menyepakati jadwal.</b> Tanggal kirim paket validasi, tanggal unggah izin etik, dan target persetujuan etik.</li>
+</ol>
+
+<h2>A.2 Posisi pekerjaan per 31 Oktober 2026</h2>
+<p>Peta jalan punya enam tahap dan lima gerbang (G1–G5). Sistem baru diubah di tahap 3, setelah instrumen lolos validasi ahli dan izin etik terbit (gerbang G2). Urutan ini dikukuhkan pengembang pada 25 Oktober 2026.</p>
+<table>
+<thead><tr><th style="width:17%">Tahap</th><th style="width:20%">Fase Plomp (prototipe)</th><th>Isi</th><th style="width:25%">Posisi sekarang</th></tr></thead>
+<tbody>
+<tr><td>Penelitian pendahuluan</td><td>Penelitian pendahuluan</td><td>Analisis kebutuhan dan konteks, telaah butir lama (05), telaah media (10), L8 Profil sekolah</td><td>Bahan ada; L8 menunggu daftar kode sekolah</td></tr>
+<tr><td>1 Desain instrumen (G1)</td><td>Prototipe I</td><td>Kamus data, cerita penghubung, tes, angket, skala sikap, mock-up, lembar lapangan, instrumen validasi</td><td><span class="tag ok">selesai</span> semua dokumen disetujui pengembang; G1 tinggal daftar kode sekolah (no. 12, ditunda)</td></tr>
+<tr><td>2 Validasi ahli dan izin etik (G2)</td><td>Prototipe I, lanjutan</td><td>Paket sebelas validator, pelabelan buta, izin etik, surat izin, uji keterbacaan, penilaian dampak</td><td><span class="tag ask">siap diserahkan</span> semua draf ada dan disetujui pengembang; menunggu peneliti</td></tr>
+<tr><td>3 Implementasi (G3)</td><td>Prototipe II</td><td>Dokumen implementasi dan perubahan sistem, ahli media langkah 2, uji perangkat</td><td>Bagian 1–4 (27–30) didraf; sistem belum diubah</td></tr>
+<tr><td>4 Uji coba (G4)</td><td>Prototipe III</td><td>Berpikir lantang, uji coba satu kelas, pelatihan pengamat, pra-registrasi OSF</td><td>Belum mulai</td></tr>
+<tr><td>5–6 Data utama dan analisis</td><td>Penilaian</td><td>±300 siswa yang datanya bisa dianalisis, Rasch, prinsip desain</td><td>Belum mulai</td></tr>
+</tbody>
+</table>
+
+<div class="keys">
+<div><b class="h">Sudah ada di tangan</b>31 dokumen Markdown (00–30), 3 instrumen validasi PDF (ahli materi v2.1, pengamat budaya v2.1, ahli media v1.1), berkas validator per butir, 27 gambar mock-up, model penelitian dan pengembangan PDF.</div>
+<div><b class="h">Belum ada</b>Persetujuan peneliti, nama asli validator, konfirmasi honorarium, instalasi uji di subdomain kampus, daftar kode sekolah, isian formulir BRIN di luar repo.</div>
+<div><b class="h">Tenggat terdekat</b>Unggah izin etik minggu kedua–keempat November 2026 (sekitar 9–27 November). Paket validasi dikirim setelah instrumen disetujui dan prasyarat no. 4, 8, 9, 10 terpenuhi.</div>
+</div>
+
+<h2>A.3 Tiga pesan utama</h2>
+<p>Kalau waktu pertemuan pendek, pastikan tiga hal ini tersampaikan.</p>
+<ol>
+<li><b>Bahan sudah lengkap, peneliti tinggal menetapkan.</b> Peneliti tidak mulai dari nol. Setiap dokumen punya status, sumber, dan alasan keputusan yang tercatat di 04. Peneliti cukup menyetujui, merevisi, atau menolak (01 → aturan no. 6).</li>
+<li><b>Kerja pengembang bukan validasi.</b> Skor dan label pengembang, termasuk yang dibantu AI, tidak dihitung dalam V Aiken, I-CVI, κ, atau ICC, dan tidak ditunjukkan ke ahli sebelum mereka menilai. Ini justru melindungi peneliti di depan penguji (01 → aturan no. 1–2, 7).</li>
+<li><b>Yang menahan langkah berikutnya ada di tangan peneliti.</b> Paket validasi menunggu nama asli dan kesediaan validator serta konfirmasi honorarium. Izin etik menunggu judul resmi, data peneliti dan pembimbing, kontak PPDP, dan persetujuan atas penilaian dampak.</li>
+</ol>
+
+<h2>A.4 Aturan main pengembang–peneliti</h2>
+<p>Ditetapkan 27 Oktober 2026 (01 → <i>Peran pengembang, peneliti, dan ahli</i>). Jelaskan ini di awal pertemuan supaya peneliti tahu apa yang ia setujui.</p>
+<table>
+<thead><tr><th style="width:20%">Status</th><th>Artinya</th><th style="width:30%">Siapa menaikkan</th></tr></thead>
+<tbody>
+<tr><td><code>draf pengembang</code></td><td>Disusun pengembang (berbantuan AI), belum disetujui</td><td>Pengembang</td></tr>
+<tr><td><code>disetujui pengembang</code></td><td>Siap diserahkan ke peneliti. Semua dokumen 01–26 ada di sini</td><td>Pengembang</td></tr>
+<tr><td><code>disetujui peneliti</code></td><td>Ditetapkan peneliti; siap dikirim ke ahli atau komite</td><td><b>Peneliti, di pertemuan ini</b></td></tr>
+<tr><td><code>tervalidasi ahli</code></td><td>Sudah dinilai ahli dan direvisi (atau disetujui komite etik)</td><td>Peneliti bersama ahli atau komite</td></tr>
+<tr><td><code>final</code></td><td>Ditetapkan peneliti setelah validasi dan izin etik</td><td>Peneliti</td></tr>
+</tbody>
+</table>
+<ul>
+<li><b>Asal setiap keputusan disebut:</b> <code>asal: pengembang</code>, <code>asal: peneliti</code>, <code>asal: peneliti + ahli</code>, atau <code>asal: komite etik</code>.</li>
+<li><b>"Dibekukan" berarti versinya dicatat</b> (tanggal dan <i>commit</i> di 04), bukan tidak boleh diubah. Perubahan sesudahnya tetap boleh asal dicatat dengan akibatnya: dinilai ulang ahli, amandemen ke komite, atau tidak perlu apa-apa.</li>
+<li><b>Satu orang dengan dua peran</b> menandai keputusannya per peran. Keputusan sebagai pengembang tetap kerja pengembang sampai disetujui sebagai peneliti.</li>
+<li><b>Keputusan sebelum 27 Oktober 2026</b> yang dulu ditulis "pemilik proyek" sekarang dibaca sebagai keputusan pengembang dan menunggu dikukuhkan peneliti.</li>
+</ul>
+</section>
+
+<!-- ============================ BAGIAN B ============================ -->
+<section class="page-break">
+<div class="part"><div class="kicker">Bagian B</div><h1>Daftar periksa dokumen yang diserahkan</h1></div>
+<p>Dokumen dikelompokkan menjadi enam paket menurut kegunaannya bagi peneliti. Centang kolom kiri saat berkas sudah disiapkan (cetak atau salinan digital di folder bersama yang terbatas). Semua berkas Markdown ada di <code>docs/revisi-10-analitik/</code>; PDF ada di <code>dokumen-pdf/</code>. Untuk peneliti yang tidak membuka repo, Markdown bisa dicetak ke PDF dari pratinjau GitHub.</p>
+<p class="fine">Tanda status: <span class="tag ok">disetujui pengembang</span> siap ditetapkan peneliti · <span class="tag ask">draf</span> masih draf pengembang, perlu dibaca lebih teliti · <span class="tag info">rujukan</span> bahan telusur, tidak perlu disetujui · <span class="tag off">hanya peneliti</span> tidak pernah dikirim ke ahli.</p>
+
+<h2>B.1 Paket 1: Fondasi penelitian</h2>
+<p>Yang perlu dipahami peneliti lebih dulu: konstruk, 10 analitik, peran, peta jalan, dan model penelitian.</p>
+<table class="check">
+<thead><tr><th></th><th style="width:22%">Berkas</th><th>Isi</th><th style="width:15%">Status</th><th style="width:26%">Yang diminta dari peneliti</th></tr></thead>
+<tbody>
+<tr><td class="box"></td><td class="file">00_INDEKS.md</td><td>Peta semua dokumen, label asal dan status, tahap dokumen yang tersisa</td><td><span class="tag info">rujukan</span></td><td>Baca <i>Label asal dan status</i></td></tr>
+<tr><td class="box"></td><td class="file">01_REVISI_10_ANALITIK.md</td><td>Dokumen utama: konstruk D1–D3, 10 analitik, Skenario Digital, skema kesalahan, pelevelan wilayah, peran admin dan peneliti, log, token, kode peserta, kerja lapangan, rencana analisis, peta jalan, pertanyaan terbuka, 24 perubahan sistem</td><td><span class="tag ok">disetujui pengembang</span></td><td>Kukuhkan konstruk dan turunan 10 analitik; isi tanggal tiap tahap di peta jalan</td></tr>
+<tr><td class="box"></td><td class="file">dokumen-pendukung-peneliti/ model-penelitian-pengembangan.pdf</td><td>12 halaman: model Plomp (2013), ECD, kriteria mutu, alasan memilih dan perbandingan dengan model lain, pemetaan ke enam tahap, daftar pustaka yang dicek ke sumber</td><td><span class="tag ok">disetujui pengembang</span></td><td>Setujui model dan aturan I-CVI Lynn; cocokkan dengan ketentuan program studi dan pembimbing (bahan Bab III)</td></tr>
+<tr><td class="box"></td><td class="file">11_KAMUS_DATA.md</td><td>Kamus data <code>kamus-1.0</code>: peta bukti, definisi beku 10 analitik, "dilewati", waktu aktif, tersensor, tebakan cepat, aturan gabung lembar</td><td><span class="tag ok">disetujui pengembang</span> 26 Okt</td><td>Setujui <code>kamus-1.0</code> (versi yang mengikat sebelum data diambil); terima ambang sementara 3 menit dan 3 detik</td></tr>
+<tr><td class="box"></td><td class="file">03_KODE_DAN_ARTI.md</td><td>Arti semua kode: dimensi, kesalahan, peran, akun staf, validator, KG</td><td><span class="tag info">rujukan</span></td><td>—</td></tr>
+<tr><td class="box"></td><td class="file">04_CATATAN_KEPUTUSAN.md</td><td>Riwayat keputusan 23–31 Oktober 2026, terbaru di atas</td><td><span class="tag info">rujukan</span></td><td>Dasar untuk mengukuhkan; keputusan peneliti dicatat di sini sesudah pertemuan</td></tr>
+<tr><td class="box"></td><td class="file">gambar/peta-bukti.svg, lapis-data.svg, peta-jalan.svg</td><td>Tiga diagram untuk menjelaskan konstruk, lapis data, dan peta jalan</td><td><span class="tag info">rujukan</span></td><td>Dipakai saat presentasi</td></tr>
+</tbody>
+</table>
+
+<h2>B.2 Paket 2: Instrumen ukur (Prototipe I)</h2>
+<p>Bahan yang akan dinilai ahli. Versinya dibekukan (tanggal dan <i>commit</i> di 04) pada hari paket validasi dikirim.</p>
+<table class="check">
+<thead><tr><th></th><th style="width:22%">Berkas</th><th>Isi</th><th style="width:15%">Status</th><th style="width:26%">Yang diminta dari peneliti</th></tr></thead>
+<tbody>
+<tr><td class="box"></td><td class="file">06_KISI_KISI_BANK_SOAL.md</td><td>Kisi-kisi bank baru, buklet B1–B4, butir jangkar, waktu bermain per pertemuan</td><td><span class="tag ok">disetujui pengembang</span> 25 Okt</td><td>Setujui</td></tr>
+<tr><td class="box"></td><td class="file">08_DRAF_BANK_SOAL.md</td><td>116 butir literasi digital variasi a/b, 6 butir jangkar, 12 butir PBK, kode kesalahan per pengecoh, pemeriksaan kebocoran keterangan Susun Gambar</td><td><span class="tag ask">draf</span> <code>needs_verification</code></td><td>Tinjau isi sebelum dibekukan; putuskan level per butir <i>Periksa Unggahan</i> dan Skenario Digital (21, temuan no. 3)</td></tr>
+<tr><td class="box"></td><td class="file">12_CERITA_PENGHUBUNG_DAN_NARASI.md</td><td>Cerita penghubung dan narasi tantangan kelima, kartu misi, daftar rekaman, cek kebocoran cerita</td><td><span class="tag ok">disetujui pengembang</span> 26 Okt</td><td>Setujui</td></tr>
+<tr><td class="box"></td><td class="file">13_TES_AWAL_AKHIR.md</td><td>Rancangan tes awal–akhir bentuk A dan B: kisi-kisi D1–D3, modul tes, pelaksanaan P1 dan P5, penskoran, analisis</td><td><span class="tag ask">draf</span></td><td>Setujui untuk validasi</td></tr>
+<tr><td class="box"></td><td class="file">14_TES_BAGIAN_MEMBACA.md · 15_TES_BAGIAN_DIGITAL.md</td><td>Butir tes Bagian 1 (diadaptasi dari contoh AKM/ANBK) dan Bagian 2–3 (disusun sendiri), kunci, kode kesalahan, level pengembang per nomor</td><td><span class="tag ask">draf</span> <code>needs_verification</code></td><td>Setujui untuk validasi</td></tr>
+<tr><td class="box"></td><td class="file">16_ANGKET_AKSES_DIGITAL.md</td><td>Angket akses digital dan 2–3 butir risiko daring P5 dengan prosedur rujukan</td><td><span class="tag ask">draf</span></td><td>Setujui; perhatikan butir risiko daring dan janji kerahasiaannya</td></tr>
+<tr><td class="box"></td><td class="file">17_SKALA_SIKAP.md</td><td>Skala pendamping sikap menjaga warisan: 12 butir SK1–SK4, format, penskoran, pelaksanaan</td><td><span class="tag ask">draf</span> <code>needs_verification</code></td><td>Setujui untuk validasi</td></tr>
+<tr><td class="box"></td><td class="file">18_MOCKUP_LAYAR_BARU.md + gambar/mockup/ (27 gambar)</td><td>Mock-up layar baru untuk ahli media langkah 1: Skenario Digital, <i>Periksa Unggahan</i>, token, modul tes dan angket, skala sikap</td><td><span class="tag ok">disetujui pengembang</span> 26 Okt</td><td>Setujui</td></tr>
+<tr><td class="box"></td><td class="file">05, 09, 10, 19</td><td>Telaah butir lama, telaah pendahuluan berbantuan AI atas bank dan media, telaah label Bloom</td><td><span class="tag info">rujukan</span></td><td>Tahu bahwa ini penyaringan pengembang; <b>tidak</b> dikirim ke ahli</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>B.3 Paket 3: Validasi ahli</h2>
+<table class="check">
+<thead><tr><th></th><th style="width:22%">Berkas</th><th>Isi</th><th style="width:15%">Status</th><th style="width:26%">Yang diminta dari peneliti</th></tr></thead>
+<tbody>
+<tr><td class="box"></td><td class="file">instrumen-validasi-ahli-materi-v2.1.pdf</td><td>43 halaman: 66 butir penilaian, pelabelan buta B.5a, relevansi per butir B.5b, telaah Skenario Digital, kode kesalahan, skala sikap, tes dan angket, analisis, lampiran</td><td><span class="tag ok">disetujui pengembang</span> 27 Okt</td><td rowspan="3">Setujui ketiga instrumen. Ini prasyarat paket validasi. Lampiran D.4 (perubahan versi) untuk peneliti, tidak dicetak untuk validator</td></tr>
+<tr><td class="box"></td><td class="file">instrumen-validasi-pengamat-budaya-v2.1.pdf</td><td>34 halaman: 53 butir, matriks 46 objek budaya, <i>Periksa Unggahan</i> dan PBK, konfirmasi 44 fakta (B.7), skala sikap</td><td><span class="tag ok">disetujui pengembang</span> 27 Okt</td></tr>
+<tr><td class="box"></td><td class="file">instrumen-validasi-ahli-media-v1.1.pdf</td><td>29 halaman: 67 butir, uji perangkat, catatan temuan, telaah layar sekarang dan 27 mock-up</td><td><span class="tag ok">disetujui pengembang</span> 27 Okt, dibuat ulang 30 Okt</td></tr>
+<tr><td class="box"></td><td class="file">07_TELAAH_INSTRUMEN_VALIDASI.md</td><td>Telaah instrumen (T1–T6, termasuk aturan AI bukan validator), lembar B.8 skala sikap, ringkasan v2.1 dan v1.1</td><td><span class="tag info">rujukan</span></td><td>Baca T6 (AI bukan validator)</td></tr>
+<tr><td class="box"></td><td class="file">20_PAKET_VALIDASI.md</td><td>Siapa menerima apa dan kapan, surat permohonan, jadwal 12 minggu, akses dan akun uji, pengembalian, matriks revisi, daftar periksa validasi G2, cara memenuhi prasyarat no. 4, 8, 9, 10</td><td><span class="tag ask">draf</span></td><td>Setujui jadwal; jalankan prasyarat no. 9 dan 10; setujui versi beku (no. 4, langkah 7); pilih cara meringankan beban penilai B.5a; putuskan perlu tidaknya B.7 buta</td></tr>
+<tr><td class="box"></td><td class="file">Templat daftar padanan dan pesan kesediaan (di 20)</td><td>13 kolom × 11 validator; pesan WhatsApp/surel berkurung siku</td><td><span class="tag ask">draf</span></td><td>Salin ke berkas terenkripsi <b>di luar repo</b>, isi nama asli, kirim satu per satu</td></tr>
+<tr><td class="box"></td><td class="file">Surat permohonan (di 20)</td><td>Surat 1 ahli materi (dan varian penilai B.5a), Surat 2 pengamat budaya, Surat 3 ahli media, surat susulan sesudah B.5a (versi A dan B), pengingat, surat putaran 2</td><td><span class="tag ask">draf</span></td><td>Isi pada kop, tanda tangan ketua, "Mengetahui" pembimbing bila perlu</td></tr>
+<tr><td class="box"></td><td class="file">21_BERKAS_BUTIR_VALIDATOR.md + berkas-validator/</td><td>Daftar buta B.5a (xlsx dan buklet PDF), B.5b, lembar kerja B.6–B.9, B.7 buta, lembar budaya dan media, <code>LAPORAN.md</code> (69 pemeriksaan lolos)</td><td><span class="tag ask">draf</span></td><td>Terima; berkas dibuat ulang sekali lagi tepat sebelum dikirim, dan B.5a tidak pernah dibuat ulang sesudah terkirim</td></tr>
+<tr><td class="box"></td><td class="file">berkas-validator/khusus-peneliti/ materi-b5a-kunci-peneliti.xlsx</td><td>Pemetaan ID netral B.5a ke kode butir dan label pengembang</td><td><span class="tag off">hanya peneliti</span></td><td>Pegang sendiri; buka hanya setelah <b>kedua</b> lembar B.5a kembali</td></tr>
+<tr><td class="box"></td><td class="file">25_CEK_FAKTA_BUDAYA.md</td><td>135 klaim budaya: 103 benar, 20 varian, 2 keliru, 10 <code>needs_verification</code>; hasilnya 44 fakta di B.7 pengamat budaya</td><td><span class="tag ask">draf</span></td><td>Buka sendiri tiga sumber yang tidak terjangkau tim (WBTb Topeng Lengger, UNESCO No. 592, BPK Jateng Prasasti Gondosuli) sebelum berkas dikirim</td></tr>
+</tbody>
+</table>
+
+<h2>B.4 Paket 4: Izin etik dan pelindungan data</h2>
+<table class="check">
+<thead><tr><th></th><th style="width:22%">Berkas</th><th>Isi</th><th style="width:15%">Status</th><th style="width:26%">Yang diminta dari peneliti</th></tr></thead>
+<tbody>
+<tr><td class="box"></td><td class="file">22_PERMOHONAN_IZIN_ETIK.md</td><td>Protokol dan permohonan ke Komisi Etik Bidang Sosial Humaniora BRIN: kegiatan KG1–KG5, peserta, persetujuan, risiko, rujukan, data, pemetaan ke formulir BRIN, urutan unggah delapan langkah, daftar lampiran 1–18, daftar isian kelompok A–F</td><td><span class="tag ask">draf</span></td><td>Isi kelompok A, C, E; setujui protokol; tanda tangan lampiran 13 dan 16; unggah lewat sistem klirens etik BRIN bersama pembimbing</td></tr>
+<tr><td class="box"></td><td class="file">23_SURAT_INFORMASI_DAN_PERSETUJUAN.md</td><td>Teks T1–T13: surat dan formulir orang tua, persetujuan anak, surat kepala sekolah, lembar guru, uji keterbacaan, formulir mundur dan hapus data, layar sebelum butir risiko, pesan dukungan, selebaran, tabel pembagian</td><td><span class="tag ask">draf</span></td><td>Setujui teks; tanda tangan T1 dan T6; isi tempat kosong sebelum dicetak (nomor persetujuan etik baru diisi setelah terbit)</td></tr>
+<tr><td class="box"></td><td class="file">24_UJI_KETERBACAAN.md</td><td>Protokol uji keterbacaan 4 + 1 anak, lembar LK1–LK3, kode <code>KB-*</code>, aturan revisi</td><td><span class="tag ask">draf</span></td><td>Setujui; pilih sekolah di wilayah Kedu di luar sampel dan uji coba (dikeluarkan dari sampel untuk seterusnya)</td></tr>
+<tr><td class="box"></td><td class="file">26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md</td><td>Lampiran 18: inventaris data, aliran data, 14 risiko, 18 langkah perlindungan, risiko sisa R1 dan R2 sedang, konsultasi, lembar pengesahan</td><td><span class="tag ask">draf pengembang</span> v0.1</td><td>Minta saran tertulis PPDP atau narahubung; tetapkan dan terima risiko sisa R1–R2; pembimbing "mengetahui"</td></tr>
+<tr><td class="box"></td><td class="file">Dokumen pengendali (belum ada)</td><td>Catatan kegiatan pengolahan (PP 33/2026 Pasal 74), kebijakan masa simpan (Pasal 75), perjanjian prosesor dengan IDCloudHost (Pasal 14, 11 butir), pernyataan kerahasiaan tim</td><td><span class="tag ask">belum disusun</span></td><td>Disepakati siapa menyusun; harus ada sebelum KG1</td></tr>
+</tbody>
+</table>
+
+<h2>B.5 Paket 5: Lapangan</h2>
+<table class="check">
+<thead><tr><th></th><th style="width:22%">Berkas</th><th>Isi</th><th style="width:15%">Status</th><th style="width:26%">Yang diminta dari peneliti</th></tr></thead>
+<tbody>
+<tr><td class="box"></td><td class="file">02_LEMBAR_LAPANGAN.md</td><td>L0 daftar periksa, L1 sesi, L2 kursi dan perangkat, L3 bantuan, L4 keterlibatan, L5 wawancara, L6, L7 izin (bernama, kertas), L8 Profil sekolah</td><td><span class="tag ok">L0–L7 final</span> L8 draf</td><td>Setujui; tentukan daftar kode sekolah (no. 12) dan siapa P1, P2, P3</td></tr>
+</tbody>
+</table>
+
+<h2>B.6 Paket 6: Dokumen implementasi (untuk diketahui)</h2>
+<p>Bagian 1–4 dari 24 perubahan sistem, didraf sebelum G2 untuk perubahan yang tidak bergantung pada hasil validasi. Bukan bahan untuk ahli atau komite, tetapi menetapkan <b>tugas baru ketua dan P1</b> yang perlu disetujui peneliti.</p>
+<table class="check">
+<thead><tr><th></th><th style="width:22%">Berkas</th><th>Isi</th><th style="width:15%">Status</th><th style="width:26%">Yang diminta dari peneliti</th></tr></thead>
+<tbody>
+<tr><td class="box"></td><td class="file">27_IMPLEMENTASI_PERAN_PENELITI.md</td><td>Peran <code>admin</code>, <code>peneliti</code>, <code>ketua</code>; peran <code>guru</code> dihapus; tabel hak akses per halaman; keamanan masuk staf</td><td><span class="tag ask">draf pengembang</span></td><td>Tinjau tabel hak akses dan tugas ketua (D.9)</td></tr>
+<tr><td class="box"></td><td class="file">28_IMPLEMENTASI_SESI_LAPANGAN.md</td><td>Sesi lapangan dan token, kode peserta, isian L2, panel pemantauan, <code>gelita:uji:akun</code></td><td><span class="tag ask">draf pengembang</span></td><td>Tinjau tugas P1 (baris dan kursi, tanda susulan)</td></tr>
+<tr><td class="box"></td><td class="file">29_IMPLEMENTASI_DATA_PENELITIAN.md</td><td>Katalog event, unduhan <code>ketua</code>, kamus berversi, templat dan impor lembar L1–L6</td><td><span class="tag ask">draf pengembang</span></td><td>Putuskan perlu tidaknya <code>is_touch</code> sebagai kovariat; setujui impor L1–L6 ke server</td></tr>
+<tr><td class="box"></td><td class="file">30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md</td><td>Izin berkode per siswa, status mundur, permintaan hapus dengan konfirmasi ketua, salinan untuk orang tua, cadangan, masa simpan 7305 hari, IP berhash</td><td><span class="tag ask">draf pengembang</span></td><td>Setujui tugas ketua; putuskan nasib kabupaten setelah studi ditutup dan pemeriksaan nama di kritik dan saran</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>B.7 Yang tidak diserahkan, atau disimpan di luar repo</h2>
+<table>
+<thead><tr><th style="width:32%">Bahan</th><th>Aturannya</th></tr></thead>
+<tbody>
+<tr><td>Skor dan label pengembang (08, 09, 15, 19, kunci B.5a)</td><td>Tidak pernah ditunjukkan ke ahli sebelum mereka menilai. Label pengembang dan kisi-kisi ditahan dari kelima ahli materi sampai kedua lembar B.5a terkumpul. Dibandingkan sesudahnya di matriks revisi</td></tr>
+<tr><td>Kunci B.5a (<code>khusus-peneliti/</code>)</td><td>Hanya dipegang ketua peneliti, tidak dilampirkan atau dikirim</td></tr>
+<tr><td>Nama asli validator, kontak, kesediaan, honorarium</td><td>Daftar padanan terenkripsi milik ketua. Repo hanya mencatat "Selesai (tanggal)"</td></tr>
+<tr><td>Sandi akun uji <code>uji.*</code></td><td>Dari pengembang ke ketua lewat saluran pribadi; ketua mengirim alamat dan sandi ke validator lewat <b>dua saluran berbeda</b>. Tidak pernah di repo, surat, atau percakapan AI</td></tr>
+<tr><td>Data pribadi tim (daftar isian 22, kelompok A)</td><td>Diisi langsung di sistem BRIN dan salinan cetak, bukan di repo</td></tr>
+<tr><td>L7 bernama, formulir izin, daftar nama–kode uji keterbacaan</td><td>Kertas di lemari terkunci; salinan digital terenkripsi untuk P1 dan ketua; dimusnahkan saat studi ditutup</td></tr>
+<tr><td>Draf asli pengembang (<code>dokumen-pdf/arsip/</code>)</td><td>Arsip, tidak dikirim dan tidak diubah</td></tr>
+<tr><td>Tautan repo di lampiran izin etik</td><td>Lampiran dicetak ke PDF dari versi beku dan tautan repo ("22 → T1") dihapus, karena komisi tidak membuka repo</td></tr>
+</tbody>
+</table>
+
+<h2>B.8 Perlengkapan yang dibawa ke pertemuan</h2>
+<table class="check">
+<thead><tr><th></th><th style="width:26%">Barang</th><th>Keterangan</th></tr></thead>
+<tbody>
+<tr><td class="box"></td><td class="file">Berkas ini, tercetak</td><td>Dua salinan: untuk pengembang dan untuk peneliti; lembar G.3 diisi selama pertemuan</td></tr>
+<tr><td class="box"></td><td class="file">Tiga instrumen validasi, tercetak</td><td>Supaya peneliti bisa menandai langsung</td></tr>
+<tr><td class="box"></td><td class="file">Cetak bagian kunci</td><td>20 → <i>Ringkasan</i> (prasyarat) dan jadwal; 22 → <i>Daftar isian sebelum diajukan</i> dan <i>Lampiran</i>; 26 → <i>Ringkasan untuk komite</i> dan lembar pengesahan; 23 → tabel pembagian</td></tr>
+<tr><td class="box"></td><td class="file">Laptop</td><td>Repo dan semua PDF terbuka luring; game kelas 5 yang ada sekarang untuk diperagakan; 27 mock-up</td></tr>
+<tr><td class="box"></td><td class="file">Folder bersama terbatas</td><td>Siapkan tautan untuk peneliti; jangan taruh kunci B.5a atau data pribadi di folder yang juga dibuka orang lain</td></tr>
+<tr><td class="box"></td><td class="file">Kalender November 2026 – Februari 2027</td><td>Untuk menyepakati minggu 1 validasi (usulan Senin 9 November 2026) dan tanggal unggah izin etik</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ============================ BAGIAN C ============================ -->
+<section class="page-break">
+<div class="part"><div class="kicker">Bagian C</div><h1>Yang diminta dari peneliti</h1></div>
+
+<h2>C.1 Persetujuan per dokumen, menurut urutan mendesak</h2>
+<table>
+<thead><tr><th style="width:15%">Urutan</th><th>Dokumen</th><th style="width:36%">Kenapa mendesak</th></tr></thead>
+<tbody>
+<tr><td><b>1</b> sebelum ± 9 Nov</td><td>Tiga instrumen validasi; bahan yang dinilai ahli (06, 08, 12–18); 20 dan 21; 01 (konstruk); 11; model penelitian</td><td>Paket validasi baru boleh dikirim setelah instrumen dan bahannya <code>disetujui peneliti</code> dan versinya dibekukan</td></tr>
+<tr><td><b>2</b> sebelum unggah izin etik</td><td>22, 23, 24, 26, dan 02 (L7)</td><td>Izin etik diunggah minggu kedua–keempat November 2026; lampirannya harus versi yang disetujui dan dibekukan</td></tr>
+<tr><td><b>3</b> sebelum rekrutmen sekolah</td><td>Daftar kode sekolah (no. 12), L8</td><td>Tidak menahan validasi atau izin etik, tetapi dibutuhkan untuk L8, kode peserta, dan sekolah uji keterbacaan</td></tr>
+<tr><td><b>4</b> sebelum implementasi</td><td>27–30</td><td>Implementasi baru setelah G2; cukup dibaca sekarang dan disetujui sebelum tahap 3</td></tr>
+</tbody>
+</table>
+
+<h2>C.2 Isian yang hanya bisa diberikan peneliti</h2>
+<p>Tidak ada satu pun yang ditulis di repo. Di pertemuan, cukup sepakati siapa mengisi dan kapan.</p>
+<table class="check">
+<thead><tr><th></th><th style="width:26%">Isian</th><th>Rincian</th><th style="width:22%">Untuk</th></tr></thead>
+<tbody>
+<tr class="group"><td colspan="4">Prasyarat paket validasi (20 → Ringkasan)</td></tr>
+<tr><td class="box"></td><td>No. 9: nama asli dan kesediaan sebelas validator</td><td>Ketua menelepon atau mengirim pesan satu per satu; yang menolak atau tidak menjawab dalam seminggu diganti dengan nama samaran yang sama. Kalau semua setuju, ditulis "Selesai (tanggal)" di 20 dan 04</td><td>Semua surat validator</td></tr>
+<tr><td class="box"></td><td>No. 10: honorarium</td><td>Besaran (per validator atau per panel; putaran 2 dan penilaian ulang dibayar terpisah atau tidak), sumber dana (harus sama dengan 22/23 untuk pernyataan konflik kepentingan), aturan dan pajak (PPh), waktu dan cara bayar, bukti terima</td><td>Surat validator, 22 kelompok B</td></tr>
+<tr><td class="box"></td><td>No. 8: subdomain kampus dengan HTTPS</td><td>Instalasi uji di PC lab kampus menunggu subdomain dari TI kampus. Peneliti membantu lewat jalur institusi</td><td>Akses validator</td></tr>
+<tr><td class="box"></td><td>No. 4: persetujuan versi beku</td><td>Pada hari kirim: ketua menyetujui versi bahan; 04 mencatat <code>asal: peneliti</code>, <i>commit</i>, versi berkas</td><td>Semua surat, D.1, D.3</td></tr>
+<tr class="group"><td colspan="4">Izin etik (22 → Daftar isian sebelum diajukan)</td></tr>
+<tr><td class="box"></td><td>Kelompok A: data ketua, pembimbing, tim</td><td>Nama, gelar, institusi, jenjang S2/S3 dan prodi, disiplin ilmu, kepakaran, kontak, alamat, nama P1–P3 dan admin, tanda tangan</td><td>Sistem BRIN, T1, T6, 26</td></tr>
+<tr><td class="box"></td><td>Narahubung data</td><td><code>[kontak PPDP atau narahubung]</code>: PPDP lembaga kalau sudah ditunjuk, kalau belum ketua peneliti. Sekaligus pastikan apakah lembaga sudah menunjuk PPDP</td><td>22, 23 (T1, T8a, T6), 26</td></tr>
+<tr><td class="box"></td><td>Judul resmi penelitian</td><td>Disalin dari usulan penelitian. Draf judul di 22 (<i>GELITA: model asesmen literasi digital berbasis game …</i>) berbeda dengan judul di 01; pilih satu</td><td>T1, T6, T8a, lampiran 16, formulir BRIN</td></tr>
+<tr><td class="box"></td><td>Kelompok B bersama pengembang</td><td>Nama dan alamat lembaga, sumber dana dan anggaran, pemegang hak data dan publikasi, surat pengantar institusi (lampiran 11, ditandatangani pejabat), CV dan sertifikat etik tim (lampiran 12), usulan penelitian (lampiran 15), riwayat telaah etik atau "belum pernah"</td><td>Lampiran wajib BRIN</td></tr>
+<tr><td class="box"></td><td>Kelompok C: tanya sekretariat</td><td>Batas laporan kejadian serius; perlu tidaknya "surat guru penanggung jawab" untuk responden SD; jadwal sidang dan batas amandemen. Lewat klirensetik@brin.go.id</td><td>22</td></tr>
+<tr><td class="box"></td><td>Kelompok D: lokasi</td><td>Wilayah sekolah sasaran sampai kabupaten, kecamatan, desa, dusun (formulir 2.5). Nama sekolah tidak pernah di judul atau laporan</td><td>Formulir BRIN 2.5</td></tr>
+<tr><td class="box"></td><td>Kelompok E: jadwal</td><td>Rentang bulan KG1, KG2–KG4, KG5; tanggal studi ditutup (perkiraan); jarak antarpertemuan</td><td>Formulir BRIN 2.6, T1</td></tr>
+<tr class="group"><td colspan="4">Lain-lain</td></tr>
+<tr><td class="box"></td><td>Pemegang akun staf</td><td>Siapa memegang <code>koordinator</code>, <code>pengamat</code>, <code>pewawancara</code>, <code>ketua</code>; dicatat ketua di luar repo</td><td>01 daftar kerja no. 13</td></tr>
+<tr><td class="box"></td><td>Daftar kode sekolah</td><td><code>S01</code>, <code>S02</code>, …; dibuat peneliti, bukan NPSN</td><td>L8, kode peserta, 28</td></tr>
+<tr><td class="box"></td><td>Kontak UPTD PPA dan SAPA 129</td><td>Nama dan nomor per kabupaten, dicek ulang sebelum T1 dan T13 dicetak</td><td>23 → T13</td></tr>
+</tbody>
+</table>
+
+<h2>C.3 Keputusan terbuka yang perlu dijawab peneliti</h2>
+<table>
+<thead><tr><th style="width:4%">No</th><th style="width:30%">Pertanyaan</th><th>Usulan pengembang dan alasannya</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Siapa mengunggah permohonan izin etik?</td><td>Ketua peneliti, didampingi pembimbing. Akun sistem BRIN memakai profil ketua, dan tabel langkah di 22 sudah menulis begitu. Kalimat pembuka 22 ("Pengembang menyalin isian ini ke sistem, lalu mengajukannya") perlu dibetulkan setelah pertemuan</td></tr>
+<tr><td>2</td><td>Target persetujuan etik</td><td>01 menulis akhir September sampai minggu pertama November 2027; patokan BRIN ± 1–2 bulan sejak berkas lengkap, jadi sekitar Januari–Februari 2027. Usulan: pakai Februari 2027 sebagai target kerja, tanpa mengubah urutan gerbang</td></tr>
+<tr><td>3</td><td>Jadwal validasi 12 minggu</td><td>Minggu 1 Senin 9 November 2026, batas B.5a 20 November, semua lembar 11 Desember, revisi 4–15 Januari 2027, putaran 2 18–29 Januari, daftar periksa G2 awal Februari 2027. Pengiriman paket validasi diselesaikan sebelum berkas etik difinalkan, karena keduanya berjalan bersamaan di November</td></tr>
+<tr><td>4</td><td>Beban penilai B.5a (Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1)</td><td>Empat pilihan di 20: sebut beban saat meminta kesediaan; kirim paket berikutnya begitu B.5a kedua diarsipkan; perpanjang batas mereka sampai akhir minggu 6; tidak meminta B.7 dari Ahli Bahasa Anak 1. Usulan: keempatnya dipakai</td></tr>
+<tr><td>5</td><td>Perlu B.7 buta dari Ahli Literasi Digital?</td><td>Berkas sudah disiapkan. Untuk Ahli Literasi Digital 2 tidak sepenuhnya buta karena bank berkode ada di kiriman awal; pengembang menerima ini (27 Oktober 2026)</td></tr>
+<tr><td>6</td><td>Level per butir <i>Periksa Unggahan</i> dan Skenario Digital</td><td>Sekarang diturunkan dari baris tingkat per wilayah (jelas = L1, samar = L2, nilai bertentangan atau dua langkah = L3). Kalau tim memaksudkan lain, ditulis per butir di 08 sebelum dibekukan</td></tr>
+<tr><td>7</td><td>Pilihan pengembang yang mungkin ingin ditinjau ulang</td><td>Masa simpan data berkode 20 tahun; berbagi data per anak dengan persetujuan komite; tidak memakai pengecualian penelitian PP 33/2026; T1 tidak diuji baca oleh orang tua; Topeng Ireng ditulis ulang ke makna keprajuritan (pengembang memilih bukan opsi yang direkomendasikan); lokasi sampai dusun; panduan BRIN sebagai pedoman utama; jawaban butir risiko diberikan ke orang tua yang tetap meminta. Alasan masing-masing di D.8</td></tr>
+<tr><td>8</td><td>Tugas baru ketua peneliti</td><td>Mengonfirmasi permintaan hapus dari peneliti dengan mencocokkan L7; mencocokkan daftar izin berkode dengan L7; menilai "membahayakan anak" sebelum memberi jawaban butir risiko ke orang tua; menyapa anak yang ditandai butir risiko paling lambat hari sekolah berikutnya; satu-satunya pengunduh data; mencatat setiap pembukaan kode. Pastikan ketua bersedia</td></tr>
+<tr><td>9</td><td>Kabupaten dan nama di kritik dan saran setelah studi ditutup</td><td>Provinsi dan kabupaten tetap disimpan; bila kabupaten ditambah kode sekolah dinilai terlalu sempit, dikosongkan dan L8 dipakai untuk konteks. Kritik dan saran yang memuat nama diperiksa ketua sekali sebelum ditutup dan diganti <code>[nama]</code></td></tr>
+<tr><td>10</td><td><code>is_touch</code> sebagai kovariat</td><td>Sekarang dipindah ke data admin. Kalau peneliti butuh, dikembalikan ke lembar <code>sesi</code> lewat <code>kamus-1.1</code></td></tr>
+</tbody>
+</table>
+
+<h2>C.4 Tanda tangan</h2>
+<table class="check">
+<thead><tr><th></th><th style="width:34%">Berkas</th><th>Siapa menandatangani</th></tr></thead>
+<tbody>
+<tr><td class="box"></td><td>23 → T1 surat orang tua, T6 surat kepala sekolah</td><td>Ketua peneliti</td></tr>
+<tr><td class="box"></td><td>Surat permohonan validator (20)</td><td>Ketua peneliti di kop lembaga; "Mengetahui" pembimbing bila diperlukan</td></tr>
+<tr><td class="box"></td><td>22 lampiran 11: surat pengantar institusi</td><td>Pejabat institusi yang berwenang</td></tr>
+<tr><td class="box"></td><td>22 lampiran 12: pernyataan kerahasiaan tim</td><td>Semua anggota tim, termasuk pengembang dan admin (bagian tim pengendali)</td></tr>
+<tr><td class="box"></td><td>22 lampiran 13: komitmen etik</td><td>Ketua peneliti, "Mengetahui" pembimbing</td></tr>
+<tr><td class="box"></td><td>22 lampiran 16: pernyataan tanpa potensi konflik kepentingan</td><td>Ketua peneliti</td></tr>
+<tr><td class="box"></td><td>26 lembar pengesahan penilaian dampak</td><td>Pengembang (menyetujui), PPDP atau narahubung (saran), ketua (menetapkan atas nama pengendali dan menerima risiko sisa R1–R2), pembimbing (mengetahui)</td></tr>
+<tr><td class="box"></td><td>D.1 surat pernyataan validator</td><td>Setiap validator; aslinya diarsipkan ketua di luar repo</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ============================ BAGIAN D ============================ -->
+<section class="page-break">
+<div class="part"><div class="kicker">Bagian D</div><h1>Keputusan yang sudah diterapkan dan alasannya</h1></div>
+<p>Semua keputusan di bagian ini berstatus <code>disetujui pengembang</code> dengan <code>asal: pengembang</code>, kecuali judul penelitian dan 10 analitik yang berasal dari peneliti. Kolom kanan menunjuk dokumen dan tanggal keputusan; riwayat lengkapnya di 04. Saat pertemuan, peneliti boleh mengukuhkan, mengubah, atau menolak setiap baris; perubahan dicatat sebagai <code>asal: peneliti</code>.</p>
+<div class="box gold"><div class="box-title">Tanda †</div><p>Alasan bertanda <sup>†</sup> tidak tertulis di 04 atau di dokumen sumber; alasan itu disimpulkan saat menyusun berkas ini supaya pengembang punya argumen. Sebelum dipakai di depan validator, komite, atau penguji, alasan bertanda † dikukuhkan pengembang dan peneliti, atau diberi rujukan (lihat F.1). Alasan tanpa tanda diambil dari dokumen yang disebut di kolom kanan.</p></div>
+
+<h2>D.1 Konstruk dan kerangka</h2>
+<table class="dec">
+<thead><tr><th>Keputusan</th><th>Alasan</th><th>Sumber</th></tr></thead>
+<tbody>
+<tr><td>Literasi digital menjadi konstruk utama dengan tiga dimensi: D1 Literasi informasi, D2 Aman dan etis, D3 Partisipasi dan representasi budaya Kedu di ruang digital</td><td class="why">Judul penelitian (dari peneliti) menyebut GELITA sebagai <i>model asesmen literasi digital</i>. Jadi yang diukur literasi digital siswa, dan Kedu adalah konteks budayanya. Literasi membaca dan pengetahuan budaya tidak lagi berdiri sebagai konstruk sendiri</td><td class="src">01 → Judul penelitian dan konstruk; 05, 06; 25 Okt</td></tr>
+<tr><td>Model multidimensi <i>between-item</i>: setiap butir punya satu dimensi utama; D1 dipecah sub-aspek D1a memahami informasi dan D1b menilai informasi dan sumber</td><td class="why">Label dimensi per butir jadi tegas, dan pertanyaan "apakah tiga dimensi terbukti terpisah?" bisa diuji dengan membandingkan model Rasch satu dimensi dan multidimensi<sup>†</sup></td><td class="src">01 → Pertanyaan terbuka; 07 → B.5; 25 Okt</td></tr>
+<tr><td>Kerangka payung: empat pilar literasi digital Komdigi dan Siberkreasi, dengan DigComp 3.0 (JRC, 2025) sebagai padanan internasional</td><td class="why">Pilar Komdigi dikenal pemangku kepentingan di Indonesia; DigComp memberi bahasa yang dipahami jurnal internasional. Nama area dipakai sesuai DigComp 3.0, bukan DigComp 2.x<sup>†</sup></td><td class="src">01; 07 → perubahan Tabel B1</td></tr>
+<tr><td>D1 memakai level kognitif AKM Literasi Membaca sebagai acuan utama, PIRLS 2026 sebagai padanan, Bloom sebagai label kedua</td><td class="why">AKM kerangka nasional, sudah diikuti siswa kelas 5 lewat Asesmen Nasional. PIRLS memberi padanan internasional. Bloom mengelompokkan tujuan belajar, bukan tingkat kesulitan nyata; SOLO dan DOK Webb kurang pas untuk soal pilihan tertutup</td><td class="src">01 → Pelevelan wilayah</td></tr>
+<tr><td>D3 diukur lewat Cari Objek babak 2 <i>Periksa Unggahan</i>; babak 1 <i>Temukan Benda</i> menjadi skala pendamping Pengetahuan Budaya Kedu (PBK)</td><td class="why">Mengenali benda budaya adalah pengetahuan, bukan literasi digital. Perilaku digital terhadap budaya (atribusi, representasi akurat, izin pelaku dan pemilik karya, sikap menghormati) itulah yang termasuk literasi digital<sup>†</sup></td><td class="src">01; 05; 06; 25 Okt</td></tr>
+<tr><td>Evidence-Centered Design: klaim → bukti → tugas (peta bukti)</td><td class="why">Setiap analitik harus bisa ditelusuri ke minimal satu dimensi. Data yang tidak tersambung ke dimensi mana pun dihapus dari log</td><td class="src">01 → Kerangka: peta bukti</td></tr>
+<tr><td>Klaim tingkat kesulitan wilayah dibuktikan dengan data, lewat lima langkah: pelabelan buta AKM oleh dua ahli (κ ≥ 0,70), butir jangkar, variabel beban permukaan, Rasch per dimensi, dan keterbatasan urutan wilayah</td><td class="why">Label Bloom saja tidak cukup untuk mempertahankan klaim "Temanggung mudah, Magelang sedang, Wonosobo sulit" di depan penguji</td><td class="src">01 → Pelevelan wilayah</td></tr>
+</tbody>
+</table>
+
+<h2>D.2 Model penelitian dan statistik validasi</h2>
+<table class="dec">
+<thead><tr><th>Keputusan</th><th>Alasan</th><th>Sumber</th></tr></thead>
+<tbody>
+<tr><td>Penelitian desain pendidikan model Plomp (2013), jenis studi pengembangan: penelitian pendahuluan, fase prototipe, fase penilaian</td><td class="why">Bentuknya sama dengan peta jalan (tahap 1–4 iterasi prototipe, G1–G5 titik keputusan, 04 sebagai dokumentasi sistematis). Keefektifan diartikan "pemakaian memberi hasil yang diinginkan", dan untuk model asesmen itu berarti pengukuran yang sahih dan andal, bukan kenaikan hasil belajar. Prototipe awal boleh berupa kertas yang dinilai ahli, cocok dengan "sistem diubah setelah G2". ECD masuk wajar sebagai isi fase prototipe. Keluarannya dua: produk dan prinsip desain, yang membuat kata "model" di judul bisa dipertanggungjawabkan</td><td class="src">Dokumen pendukung peneliti §5; 26 Okt</td></tr>
+<tr><td>Bukan ADDIE, 4D, Borg &amp; Gall, Sugiyono, MDLC/GDLC</td><td class="why">ADDIE terlalu umum dan tidak memberi kriteria mutu alat ukur. 4D berakhir di difusi dan adopsi. Borg &amp; Gall menuntut uji lapangan berlapis yang tidak ada di rencana (penelitian berhenti di langkah 6). Sugiyono berakhir di produksi masal. MDLC/GDLC siklus perangkat lunak, bukan desain penelitian. Borg &amp; Gall bisa jadi cadangan bila program studi mewajibkannya</td><td class="src">Dokumen pendukung peneliti §6</td></tr>
+<tr><td>Prototipe diberi nomor: I (tahap 1–2, kertas dan mock-up), II (tahap 3, instalasi uji), III (tahap 4, uji coba)</td><td class="why">Setiap revisi produk di 04 menyebut prototipe yang direvisinya, jadi iterasi bisa ditelusuri ke buktinya</td><td class="src">01 → Peta jalan; 26 Okt</td></tr>
+<tr><td>Aturan I-CVI Lynn: dengan lima ahli atau kurang, butir lolos hanya bila semua setuju (I-CVI = 1,00)</td><td class="why">Aturan yang lebih ketat untuk panel kecil, dikutip Polit &amp; Beck (2006). Aturan Polit, Beck &amp; Owen (2007) yang lebih longgar tidak dipakai. Akibatnya: dengan lima ahli, empat setuju (0,80) berarti butir direvisi atau dibuang. Ditulis terang-terangan di instrumen v2.1 (D.6)</td><td class="src">Dokumen pendukung peneliti §9; 26 Okt</td></tr>
+<tr><td>Pelabelan buta level AKM dan dimensi oleh dua ahli, kesepakatan κ berbobot ≥ 0,70, diperiksa sekali di tahap 2 sebagai bagian G2</td><td class="why">Level AKM data ordinal, jadi κ berbobot. Label pengembang tidak bisa dihitung sebagai label buta karena pengembang (dan AI) ikut menyusunnya</td><td class="src">01; 07 → T3, T6; 25 Okt</td></tr>
+<tr><td>Kriteria mutu Nieveen &amp; Folmer: relevansi, konsistensi, kepraktisan, keefektifan, masing-masing dengan bukti yang sudah direncanakan</td><td class="why">Setiap putaran uji punya nama resmi: telaah berbantuan AI = <i>screening</i>, validasi ahli = <i>expert appraisal</i>, ahli media langkah 2 = <i>walkthrough</i>, uji keterbacaan dan berpikir lantang = <i>micro-evaluation</i>, uji coba satu kelas = <i>try-out</i></td><td class="src">Dokumen pendukung peneliti §5.5, §7–8</td></tr>
+<tr><td>Kepraktisan diambil dari log, L1, L3, L4, dan bintang 1–5 di kritik dan saran (<code>feedback_rating</code>)</td><td class="why">Guru tidak ikut, jadi tidak ada penilaian kepraktisan oleh guru. Pertanyaan tambahan untuk siswa ditimbang setelah uji coba, dengan data berpikir lantang (L5)</td><td class="src">01 → Pertanyaan terbuka; 26 Okt</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>D.3 Desain game</h2>
+<table class="dec">
+<thead><tr><th>Keputusan</th><th>Alasan</th><th>Sumber</th></tr></thead>
+<tbody>
+<tr><td>Skenario Digital menjadi tantangan kelima di setiap wilayah (bukan pengganti Susun Gambar): 15 tantangan, 15 Serpihan Cahaya</td><td class="why">Literasi digital wajib ada, dan analitik 10 butuh tugas tentang keamanan dan etika digital. Tantangan literasi digital lama sudah dihapus saat perombakan kelas 5; yang tersisa hanya metrik kata sandi saat daftar</td><td class="src">01 → Keputusan; Skenario Digital</td></tr>
+<tr><td>Topik Skenario Digital sama di ketiga wilayah (data pribadi, kata sandi dan OTP, izin berbagi, pesan orang asing dan kabar bohong); yang naik kerumitannya (3/4/4 pilihan tindakan, 3/4/5 pilihan alasan)</td><td class="why">Supaya topik tidak tercampur dengan tingkat kesulitan. Bila topik berbeda per wilayah, perbedaan skor tidak bisa dipisahkan antara "topiknya lebih sulit" dan "skenarionya lebih rumit"</td><td class="src">01; 06 → Topik Skenario Digital D2</td></tr>
+<tr><td>Dua langkah: pilih tindakan, lalu pilih alasan, apa pun tindakannya</td><td class="why">Supaya "tindakannya benar, alasannya keliru" kelihatan (misalnya aman karena takut dimarahi, R-ATUR, bukan karena paham risiko, R-RISK)</td><td class="src">01 → Alur satu skenario</td></tr>
+<tr><td>Tiga kesempatan seperti tantangan lain; yang dinilai tindakan dan alasan pertama</td><td class="why">Aturan seragam untuk semua tantangan. Percobaan pertama terjadi sebelum ada umpan balik, jadi itulah ukuran kemampuan; kesempatan berikutnya untuk belajar</td><td class="src">01; 25 Okt</td></tr>
+<tr><td>Izin atas karya dan tradisi budaya pindah ke D3 (BUD-IZN); izin di D2 cukup foto dan obrolan diri sendiri atau teman</td><td class="why">Menghindari tumpang tindih dimensi; satu perilaku hanya diukur di satu dimensi<sup>†</sup></td><td class="src">06 → Topik Skenario Digital D2</td></tr>
+<tr><td>Umpan balik ramah tanpa kata "salah" atau "gagal"; skenario tidak menakut-nakuti dan tidak memuat tautan sungguhan</td><td class="why">Pengguna anak 10–11 tahun; risiko etik minimal<sup>†</sup></td><td class="src">01; aturan teks antarmuka</td></tr>
+<tr><td>Susun Gambar dipakai sebagai pemanasan, tidak dinilai dan tidak dikode. Bintang dan Serpihan Cahaya tetap ada sebagai hadiah, tetapi tidak dianalisis</td><td class="why">Bintang dihitung dari jumlah percobaan, jadi menganalisisnya sama dengan menghitung data yang sama dua kali. Susun Gambar tidak mengukur dimensi mana pun</td><td class="src">01 → Log; Skema kesalahan</td></tr>
+<tr><td>Bacaan dan pernyataan D1 tidak pernah dibacakan; situasi Skenario Digital dan petunjuk <i>Periksa Unggahan</i> hanya lewat tombol ▶ yang tercatat</td><td class="why">Supaya yang terukur di D1 tetap kemampuan membaca, bukan menyimak; pemakaian narasi tercatat sebagai bantuan (analitik 7)</td><td class="src">01 → Perubahan sistem no. 18</td></tr>
+<tr><td>Kunci jawaban, benar/salah, bintang, dan buka-kunci dihitung di server; kunci tidak pernah dikirim ke peramban</td><td class="why">Integritas data asesmen; sudah berlaku di sistem sekarang dan menjadi batas perombakan</td><td class="src">01 → Keputusan</td></tr>
+<tr><td>Dua variasi per tantangan (a/b) dalam buklet B1–B4, dengan 6 butir jangkar D1 (2 per wilayah) di kartu jangkar yang sama untuk kedua variasi</td><td class="why">Butir jangkar menyambung kedua variasi di satu skala. Rencana awal (butir yang diulang di ketiga wilayah) diganti karena siswa yang sama memainkan ketiga wilayah</td><td class="src">01; 06 → Butir jangkar; 25 Okt</td></tr>
+<tr><td>Area ketuk Cari Objek tidak boleh bersentuhan (jarak minimal setara 24 dp), diperiksa otomatis di aturan bank soal</td><td class="why">Salah ketuk karena area terlalu dekat akan tercatat sebagai kesalahan informasi atau budaya: variasi skor dari media, bukan dari kemampuan (<i>construct-irrelevant variance</i>)</td><td class="src">01 → Perubahan sistem no. 17; 10</td></tr>
+<tr><td>Mode penelitian: jam disembunyikan, layar kecil ditolak dengan pesan ramah, pengerjaan ulang baru terbuka setelah kelima tantangan wilayah pertemuan itu tuntas, Kenali wilayah baru terbuka setelah wilayahnya tuntas</td><td class="why">Mengurangi tekanan waktu yang tidak relevan dengan konstruk, menjaga tampilan butir setara antarperangkat, dan menjaga data percobaan pertama tetap bersih<sup>†</sup></td><td class="src">01 → Perubahan sistem no. 16; 12; 26 Okt</td></tr>
+<tr><td>Urutan wilayah tidak diacak</td><td class="why">Mengikuti cerita. Ditulis sebagai keterbatasan, dengan waktu aktif kumulatif dan nomor pertemuan sebagai kovariat</td><td class="src">01 → Pelevelan wilayah, langkah 5</td></tr>
+</tbody>
+</table>
+
+<h2>D.4 Bank soal, tes, angket, dan skala sikap</h2>
+<table class="dec">
+<thead><tr><th>Keputusan</th><th>Alasan</th><th>Sumber</th></tr></thead>
+<tbody>
+<tr><td>Bank soal baru disusun dari kisi-kisi: 116 butir literasi digital dalam variasi a/b, 6 butir jangkar, 12 butir PBK</td><td class="why">Kisi-kisi 06 memastikan setiap dimensi, wilayah, dan level AKM terwakili seimbang. Bank lama ditelaah dulu terhadap dimensi (05)<sup>†</sup></td><td class="src">06 (disetujui 25 Okt); 08 (draf, <code>needs_verification</code>)</td></tr>
+<tr><td>Setiap pilihan salah diberi satu kode kesalahan <b>sebelum</b> data diambil (INF, DIG, BUD, NON, alasan R); skema dibekukan setelah uji coba</td><td class="why">Analitik 6 (pola kesalahan) hanya sahih kalau kodenya ditetapkan sebelum melihat data. Divalidasi dua pengode pada 20% jawaban, κ ≥ 0,70, lalu dipra-registrasi di OSF<sup>†</sup></td><td class="src">01 → Skema kategori kesalahan</td></tr>
+<tr><td>Tes awal–akhir bentuk A dan B, tiga bagian (D1, D2, D3). Bagian membaca diadaptasi dari contoh soal AKM/ANBK yang terbuka; bagian D2 dan D3 disusun sendiri, sejajar kisi-kisi tetapi tidak sama dengan butir game</td><td class="why">Tes luar dipakai sebagai pembanding kemampuan game; kalau butirnya sama dengan game, korelasinya tidak berarti. Contoh soal terbuka menghindari masalah hak cipta dan kerahasiaan soal resmi<sup>†</sup></td><td class="src">13–15; 25 Okt</td></tr>
+<tr><td>Topik teks dan adegan tes: budaya Nusantara di luar Kedu</td><td class="why">Supaya tes tidak menguji isi yang sama dengan game, dan pengetahuan tentang Kedu tidak memberi keuntungan di tes<sup>†</sup></td><td class="src">13 → Keputusan pengembang; 26 Okt</td></tr>
+<tr><td>Tes dikerjakan di modul tes GELITA bertampilan Bootstrap yang tidak seperti game; batas waktu longgar tanpa jam di layar (Bagian 1 ± 40 menit, Bagian 2 dan 3 ± 35 menit)</td><td class="why">Kertas dan formulir daring tidak dipakai supaya jawaban tersimpan per butir dengan kode yang sama. Tampilan polos membedakan tes dari game. Izin penelitian mencakup seluruh JP sampai setelah jam sekolah, jadi tes tidak perlu dipadatkan<sup>†</sup></td><td class="src">13; 01 → Perubahan sistem no. 22; 26 Okt</td></tr>
+<tr><td>Tes awal–akhir terutama bukti validitas kriteria; uji bedanya dilaporkan sebagai perubahan eksploratif dengan ukuran efek</td><td class="why">Satu kelompok dengan tes awal dan akhir adalah desain pra-eksperimen (Campbell &amp; Stanley, 1963): perubahan bisa karena sejarah, kematangan, efek tes, atau regresi. Tanpa kelompok kontrol tidak bisa diklaim game menyebabkan perubahan</td><td class="src">13 → Analisis; dokumen pendukung §8; 26 Okt</td></tr>
+<tr><td>Angket akses digital di modul yang sama, langsung setelah tes awal, hanya di layar dan tidak dibacakan</td><td class="why">Jawaban tentang perangkat dan kebiasaan di rumah lebih jujur bila tidak terdengar teman<sup>†</sup></td><td class="src">16 → Keputusan pengembang</td></tr>
+<tr><td>Dua–tiga butir pengalaman risiko daring diisi sendiri di layar di P5 setelah tes akhir, dengan izin orang tua terpisah, izin ulang anak di layar, dan prosedur rujukan</td><td class="why">Di P5 tes dan game sudah selesai, jadi butir ini tidak memancing D2. Anak bisa merasa sedih atau malu, jadi diisi privat; jawaban "pernah" mewajibkan tindak lanjut; hasilnya hanya deskriptif karena kemungkinan kurang dilaporkan</td><td class="src">16; 23 → T11; 26 Okt</td></tr>
+<tr><td>Skala pendamping sikap menjaga warisan: 12 butir (SK1 menghargai, SK2 ingin tahu, SK3 mau ikut merawat, SK4 bangga), empat pilihan tanpa titik tengah, satu butir negatif per indikator tanpa kata "tidak"/"bukan", satu pernyataan per layar, tidak dibacakan, hanya di P5 setelah cerita penutup dan sebelum kritik dan saran</td><td class="why">Indikator <code>sikap</code> di bank lama tidak cocok sebagai butir benar/salah, jadi dijadikan skala pendamping di luar skor literasi digital. Tanpa titik tengah supaya anak memilih arah; butir negatif mendeteksi asal setuju tanpa membingungkan anak dengan kalimat ingkar. Ditempatkan sebelum pujian Mbah Kedu supaya jawaban tidak terpengaruh<sup>†</sup></td><td class="src">17 → Keputusan pengembang; 25–26 Okt</td></tr>
+<tr><td>Cerita penghubung dan narasi tantangan kelima didraf AI, disetujui pengembang, direkam pengisi suara yang sama</td><td class="why">Konsistensi suara dan cerita (Mbah Kedu dan Jaka); hasil cek kebocoran cerita dicatat di 12<sup>†</sup></td><td class="src">12; 25–26 Okt</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>D.5 Data dan analisis</h2>
+<table class="dec">
+<thead><tr><th>Keputusan</th><th>Alasan</th><th>Sumber</th></tr></thead>
+<tbody>
+<tr><td>Definisi 10 analitik dibekukan di kamus data <code>kamus-1.0</code>; variabel tes, angket, dan skala sikap masuk <code>kamus-1.1</code> setelah uji coba</td><td class="why">Kamus data termasuk versi yang mengikat: harus beku sebelum data diambil. Variabel tes baru ditetapkan setelah uji coba memberi bukti</td><td class="src">11; 26 Okt</td></tr>
+<tr><td>Data inti analisis adalah ketepatan percobaan pertama, dianalisis dengan model Rasch per dimensi (dan multidimensi)</td><td class="why">Percobaan pertama terjadi sebelum umpan balik, jadi paling murni mengukur kemampuan</td><td class="src">01 → 10 analitik no. 3; Rencana analisis</td></tr>
+<tr><td>"Belum berhasil setelah 3 kesempatan" diperlakukan sebagai data tersensor, bukan angka 3</td><td class="why">Siswa itu mungkin butuh 4 atau lebih; mengisinya 3 meremehkan kesulitan butir<sup>†</sup></td><td class="src">01 → analitik no. 4; 11</td></tr>
+<tr><td>"Dilewati" dipecah tiga: petunjuk Cari Objek gagal 3 kali, pengerjaan ditinggal, tantangan terbuka tapi tidak pernah dimulai</td><td class="why">Tiga perilaku itu berbeda maknanya untuk ketekunan dan kelengkapan data<sup>†</sup></td><td class="src">01 → analitik no. 1; 11</td></tr>
+<tr><td>Waktu aktif = waktu total dikurangi layar tersembunyi dan jeda tanpa masukan lebih dari 3 menit; tebakan cepat = menjawab kurang dari 3 detik. Keduanya ambang sementara</td><td class="why">Usulan awal 60 detik dan 1,5 detik diganti ambang yang lebih longgar sebagai pengaturan yang mudah diubah dan ditetapkan ulang setelah uji coba. Waktu total dan waktu aktif dilaporkan berdampingan<sup>†</sup></td><td class="src">01; 11; 26 Okt</td></tr>
+<tr><td>Tiga lapis data: data mentah (hanya ditambah, tidak pernah diubah) dan data turunan dihitung sistem; analisis statistik di R, jamovi, Winsteps, atau Python</td><td class="why">Aturan turunan bergantung pada logika game, jadi dihitung sekali di sistem, sama untuk semua peneliti, dan diuji otomatis. Penguji jurnal mengharapkan perangkat lunak statistik standar dan skrip yang bisa diulang; membangun statistik di dalam game mahal dan rawan salah</td><td class="src">01 → Olah data</td></tr>
+<tr><td>Log yang tidak menjawab 10 analitik dihapus, bukan disembunyikan; log sistem hanya untuk admin; sisanya untuk peneliti. Rincian perangkat (merek, model, <i>user agent</i>) dihapus</td><td class="why">Minimalisasi data anak sesuai UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi. Rincian perangkat tidak dipakai dan menambah risiko identifikasi</td><td class="src">01 → Log; 29 → Katalog event</td></tr>
+<tr><td>Setiap analisis utama dijalankan dua kali: dengan dan tanpa percobaan yang dibantu (L3) atau perangkat yang dipakai bersama (L2)</td><td class="why">Analisis sensitivitas: menunjukkan hasil tidak bergantung pada bantuan orang atau perangkat bersama<sup>†</sup></td><td class="src">01 → Rencana analisis</td></tr>
+<tr><td>Skema kesalahan dan rencana analisis dipra-registrasi di OSF pada gerbang G4, setelah uji coba dan sebelum data utama</td><td class="why">Mencegah tuduhan memilih analisis setelah melihat data; skema sudah teruji di uji coba<sup>†</sup></td><td class="src">01; 25 Okt</td></tr>
+</tbody>
+</table>
+
+<h2>D.6 Lapangan</h2>
+<table class="dec">
+<thead><tr><th>Keputusan</th><th>Alasan</th><th>Sumber</th></tr></thead>
+<tbody>
+<tr><td>Guru tidak ikut dalam penelitian; guru hanya menyiapkan perangkat dan internet. Semua lembar diisi peneliti. Laporan kelas untuk guru hanya gagasan di luar penelitian</td><td class="why">Mencegah bantuan guru pada isi soal dan menjaga pengamatan seragam. Bantuan yang tetap terjadi dicatat di L3<sup>†</sup></td><td class="src">01 → Keputusan; Kerja lapangan</td></tr>
+<tr><td>Tiga peneliti per kelas: P1 koordinator (L0, L1, L2, L7), P2 pengamat keterlibatan (L4), P3 pengamat bantuan dan pewawancara (L3, L5)</td><td class="why">Satu orang tidak bisa sekaligus mengatur sesi, mengamati keterlibatan bergiliran, dan mencatat setiap bantuan. Bila satu berhalangan, P1 mengisi L3 dan wawancara dipindah<sup>†</sup></td><td class="src">01; 25 Okt</td></tr>
+<tr><td>Lima pertemuan per kelas: P1 pendaftaran, cerita pembuka, tes awal, angket; P2 Temanggung; P3 Magelang; P4 Wonosobo; P5 sisa tantangan (≤ 20 menit), cerita penutup, tes akhir, butir risiko daring, skala sikap. Waktu bermain ± 90 menit per pertemuan, tidak terikat JP</td><td class="why">Satu wilayah per pertemuan menyamakan laju bermain antarkelas, sehingga waktu aktif dan urutan bisa dibandingkan</td><td class="src">01; 06 → Waktu bermain; 25–26 Okt</td></tr>
+<tr><td>Token sesi versi ringan (6 huruf dan angka, tanpa O, 0, I, 1, L), sekaligus mengatur wilayah yang dibuka. Di luar sesi seluruh game tertutup sampai studi ditutup, termasuk Pustaka dan Profil</td><td class="why">Data hanya bersih kalau siswa bermain di sesi yang diamati: tidak ada data dari rumah yang dibantu orang tua. Setiap sesi game tersambung otomatis ke sesi lapangan. Token membawa sekolah dan rombel sehingga pendaftaran tidak perlu NPSN atau bantuan guru. Bukan sistem ujian seperti ANBK, karena itu berlebihan untuk penelitian ini</td><td class="src">01 → Token sesi; 28; 25 Okt</td></tr>
+<tr><td>Kode peserta <code>S03-A07</code>: kode sekolah penelitian, huruf rombel, nomor urut; sekolah uji coba berawalan <code>U</code>; awalan <code>GLT-</code> dihapus</td><td class="why">Kode sekolah dibuat peneliti (bukan NPSN) supaya tetap samaran dan pendek. Huruf rombel perlu karena satu sekolah bisa punya dua kelas 5 dan nomor urut per sekolah bisa lewat 99; rombel juga satu tingkat dalam model campuran. Kode tidak pernah diubah setelah ada data</td><td class="src">01 → Kode peserta baru; 25 Okt</td></tr>
+<tr><td>Sampel: target 300 siswa yang datanya bisa dianalisis, merekrut sekitar 360 (± 13 kelas)</td><td class="why">Cadangan untuk siswa tanpa izin, absen, mundur, atau data tidak lengkap, supaya ukuran sampel untuk Rasch tetap terpenuhi<sup>†</sup></td><td class="src">01 → Pertanyaan terbuka; 25 Okt</td></tr>
+<tr><td>Izin orang tua (L7) dalam amplop tertutup H-14 sampai H-10, pengingat H-5, batas kembali H-3; formulir yang tidak kembali berarti tidak ada izin. Siswa tanpa izin tidak dibuatkan akun dan ikut kegiatan pengganti di ruang yang sama</td><td class="why">Persetujuan harus aktif, bukan diam dianggap setuju. Tanpa akun berarti tidak ada data apa pun tentang anak itu, dan anak tidak dipermalukan karena tetap di kelas<sup>†</sup></td><td class="src">01; 22 → Rekrutmen; 26–27 Okt</td></tr>
+<tr><td>Semua lembar memakai dua kunci yang sama dengan log: kode peserta dan jam WIB (jam ponsel otomatis, sampai detik). Kejadian L3 menandai percobaan dari 1 menit sebelum sampai 2 menit sesudahnya sebagai "dibantu"</td><td class="why">Supaya lembar dan log bisa digabung lewat skrip, bukan dicocokkan manual</td><td class="src">01 → Cara menyatukan lembar dengan log</td></tr>
+<tr><td>Lembar diketik paling lambat 24 jam setelah sesi; 10% baris diketik ulang orang lain. L1–L6 berkode diunggah ke sistem; kutipan ucapan di L5, token di L1, dan L7 bernama tidak pernah masuk server</td><td class="why">Mutu data (cek salah ketik) dan minimalisasi data: nama hanya ada di L7 kertas yang dikunci terpisah</td><td class="src">01; 29 → Templat dan impor; 30 Okt</td></tr>
+<tr><td>Wawancara L5 di P2–P4: tiga siswa per pertemuan, satu dari setiap kelompok nilai tes awal, setiap siswa paling banyak sekali, di luar jangkauan dengar guru dan teman</td><td class="why">Mewakili rentang kemampuan tanpa membebani anak yang sama; privasi jawaban<sup>†</sup></td><td class="src">01; 02 → L5; 26–27 Okt</td></tr>
+<tr><td>Siswa absen ikut sesi susulan dalam tiga hari dengan token sendiri (kode <code>-S</code>), diamati sedikitnya satu peneliti</td><td class="why">Menjaga kelengkapan data tanpa melonggarkan aturan "hanya bermain di sesi yang diamati"<sup>†</sup></td><td class="src">01; 28; 26 Okt</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>D.7 Validasi ahli</h2>
+<table class="dec">
+<thead><tr><th>Keputusan</th><th>Alasan</th><th>Sumber</th></tr></thead>
+<tbody>
+<tr><td>Sebelas validator dengan nama samaran: panel ahli materi lima orang (Ahli Bahasa Anak 1–2, Ahli Literasi Digital 1–2, Ahli Pengukuran), pengamat budaya tiga orang (Ahli Budaya Kedu 1–3, idealnya satu per wilayah), ahli media tiga orang (teknologi pendidikan, desain visual/UX, rekayasa perangkat lunak/game)</td><td class="why">Dengan satu pengamat budaya, I-CVI dan V Aiken tidak bisa dihitung untuk instrumen budaya; begitu juga untuk media. Akibatnya, aturan Lynn berlaku penuh di panel tiga orang: butir lolos hanya bila ketiganya memberi 3 atau 4</td><td class="src">07 → v2.1 dan v1.1; 03 → Peran; 26 Okt</td></tr>
+<tr><td>Penilai buta B.5a: Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1</td><td class="why">Sisi membaca dan sisi digital dari konstruk sama-sama terwakili (saran instrumen A.3)</td><td class="src">20 → Keputusan no. 1; 27 Okt</td></tr>
+<tr><td>Kedua penilai B.5a hanya menerima paket B.5a lebih dulu; label pengembang dan kisi-kisi ditahan dari kelima ahli materi sampai B.5a terkumpul</td><td class="why">Kode kesalahan (INF = D1, DIG = D2, BUD = D3) dan bagian instrumen lain membocorkan dimensi; tidak boleh ada salinan berlabel di panel</td><td class="src">21 → pertanyaan no. 2; 20</td></tr>
+<tr><td>Daftar buta memakai ID netral (<code>BT-001…</code>, <code>BH-01…</code>) yang diacak dengan benih tetap; kunci jawaban ikut di daftar</td><td class="why">Kode butir asli membocorkan wilayah, dan wilayah naik bersama level. Kunci tetap diberikan karena label Bloom dan level menilai proses siswa menuju jawaban benar</td><td class="src">21 → pertanyaan no. 1 dan 3</td></tr>
+<tr><td>B.7 mencakup semua 622 sel kode, dengan kolom "Asal kode"</td><td class="why">Sesuai bunyi "semua sel kode" di instrumen; perkiraan waktu dinaikkan (3–5 jam)</td><td class="src">21 → pertanyaan no. 4</td></tr>
+<tr><td>Paket dikirim digital lewat folder bersama yang dibatasi per validator; surat pernyataan ditandatangani lalu dipindai; kertas hanya bila diminta</td><td class="why">Lebih cepat dan bisa dilacak; lembar kerja per butir berupa <i>spreadsheet</i><sup>†</sup></td><td class="src">20 → no. 3</td></tr>
+<tr><td>Honorarium ditulis "sesuai ketentuan yang berlaku" tanpa angka; angkanya dicatat ketua di luar repo</td><td class="why">Repo tidak memuat data keuangan atau pribadi; besaran boleh disampaikan pribadi saat meminta kesediaan</td><td class="src">20 → no. 2, 9</td></tr>
+<tr><td>Ketua yang meminta kesediaan validator, memakai teks pesan dari pengembang</td><td class="why">Permintaan atas nama peneliti, dan daftar padanan nama milik ketua</td><td class="src">20 → no. 7</td></tr>
+<tr><td>Instalasi uji di PC lab kampus, dibuka lewat subdomain kampus ber-HTTPS; semua wilayah terbuka; akun <code>uji.*</code> dibuat pengembang lewat <code>/daftar</code>; akun cadangan tidak dipakai ulang</td><td class="why">HTTPS wajib untuk memasang sebagai aplikasi dan untuk paket aset. VPS terpisah dan laptop pengembang dengan terowongan ditolak. Wilayah terbuka supaya validator tidak harus bermain berurutan seperti siswa</td><td class="src">20 → no. 5, 6, 8, 11</td></tr>
+<tr><td>Versi bahan dibekukan paling akhir; <i>commit</i>-nya dicatat di 04 dan ditulis di surat</td><td class="why"><i>Commit</i> yang dibekukan harus sama dengan yang terpasang di instalasi uji dan yang disebut di surat validator</td><td class="src">20 → no. 10</td></tr>
+<tr><td>Ahli media menilai dua langkah: di tahap 2 game sekarang ditambah 27 mock-up, setelah tahap 3 telaah singkat layar jadi (G3). Langkah 1 tidak menunggu L8; tanpa ponsel, minimal tiga perangkat</td><td class="why">Layar baru belum ada di tahap 2 karena sistem baru diubah setelah G2. Daftar jenis perangkat di sekolah sampel cukup untuk langkah 1</td><td class="src">01; 20 → no. 4; 25 Okt</td></tr>
+<tr><td>Cek fakta budaya tim atas 135 klaim sebelum paket dikirim; hasilnya dikonfirmasi pengamat budaya di B.7 (44 fakta)</td><td class="why">Penyaringan supaya waktu ahli dipakai untuk hal substansial. Ini kerja pengembang, bukan validasi; pengamat budaya yang mengonfirmasi atau menolak</td><td class="src">25; 27 Okt</td></tr>
+<tr><td>Kriteria lolos di G2: I-CVI = 1,00 (Lynn) dan S-CVI/Ave ≥ 0,90; minimal tiga penilaian non-TD per butir; κ berbobot ≥ 0,70 untuk B.5a; ahli media minimal "layak" tanpa temuan keparahan 3–4 yang terbuka; skala sikap akhir ≥ 10 butir</td><td class="why">Kriteria ditulis sebelum hasil kembali supaya keputusan revisi tidak diatur sesudah melihat skor<sup>†</sup></td><td class="src">20 → Daftar periksa validasi di G2</td></tr>
+</tbody>
+</table>
+
+<h2>D.8 Izin etik dan pelindungan data</h2>
+<table class="dec">
+<thead><tr><th>Keputusan</th><th>Alasan</th><th>Sumber</th></tr></thead>
+<tbody>
+<tr><td>Komite tujuan: Komisi Etik Bidang Sosial Humaniora BRIN dengan formulir BRIN. Panduan klirens etik BRIN pedoman utama; PSEPPKN/KEPPKN 2021 cadangan</td><td class="why">Panduan BRIN mencakup penelitian sosial humaniora di dalam dan di luar BRIN tanpa biaya, menyebut anak sebagai kelompok rentan, dan memakai penelitian di SD sebagai contoh. Komite etik institusi sendiri ditolak</td><td class="src">22 → no. 18, 22; 27 Okt</td></tr>
+<tr><td>Satu permohonan untuk semua kegiatan dengan anak (KG1–KG5); revisi bahan anak diajukan sebagai amandemen; masa berlaku 12 bulan, diperpanjang tiap tahun dengan laporan kemajuan</td><td class="why">Rentang KG1–KG5 lebih dari setahun karena sistem baru dibangun antara G2 dan G3. Peserta anak dan data berkode yang bisa ditautkan ke nama membuat telaah tidak bisa dibebaskan</td><td class="src">22 → no. 4, 10</td></tr>
+<tr><td>Persetujuan berlapis dan aktif: kepala sekolah (T6), orang tua (T1–T2), anak (T3 lisan di P1, T4 centang di layar, T5 diulang tiap pertemuan). Penolakan anak didahulukan dari izin orang tua. Centang terpisah untuk rekaman suara dan butir risiko daring</td><td class="why">Anak 10–11 tahun kelompok rentan; persetujuan orang tua tidak menggantikan kemauan anak. Rekaman dan butir risiko lebih sensitif, jadi bisa ditolak tanpa menolak seluruh penelitian<sup>†</sup></td><td class="src">22; 23; 26 Okt</td></tr>
+<tr><td>Surat boleh dibacakan dengan baris saksi dari luar tim; cap jempol boleh</td><td class="why">Untuk orang tua yang kesulitan membaca (KEPPKN 2021)<sup>†</sup></td><td class="src">22 → no. 12</td></tr>
+<tr><td>Tanda terima kasih kecil yang sama untuk semua anak di kelas, ikut atau tidak, di akhir P5; bukan uang; disebut dalam satu kalimat netral di surat. Kudapan di P1 dan P5</td><td class="why">Mencegah bujukan, dan supaya tidak ada anak yang tampak berbeda. KEPPKN meminta jenis tanda terima kasih disebutkan</td><td class="src">22 → no. 3, 11</td></tr>
+<tr><td>Pilihan mundur di T10: A berhenti, data tetap; B berhenti, data dihapus; C tetap ikut, tarik rekaman atau jawaban butir risiko; ditambah D melihat, menyalin, membetulkan data. Permintaan hapus diterima sampai studi ditutup</td><td class="why">Hak subjek data berlaku penuh. Hasil agregat yang sudah terbit tidak bisa ditarik</td><td class="src">22 → no. 1, 5, 17; 23</td></tr>
+<tr><td>Nama, L7, dan kunci kode dimusnahkan saat studi ditutup; data berkode disimpan paling singkat 20 tahun; rekaman dihapus setelah transkrip dicek</td><td class="why">UU No. 11 Tahun 2019 Pasal 40 ayat (5) mewajibkan data primer dan keluaran riset disimpan paling singkat 20 tahun (dirujuk panduan BRIN butir 3.5). Sebelumnya rencananya 5 tahun</td><td class="src">22 → no. 19; 27 Okt</td></tr>
+<tr><td>Server, cadangan, dan penyimpanan terenkripsi peneliti di Indonesia: IDCloudHost, pusat data Jakarta Pusat</td><td class="why">Penyimpanan di luar negeri memicu aturan transfer data lintas negara (PP 33/2026 Bab V). Perjanjian prosesor memuat 11 butir Pasal 14</td><td class="src">22 → no. 14, 23</td></tr>
+<tr><td>Pengecualian penelitian di PP 33/2026 (Pasal 148 ayat (1) huruf e) tidak dipakai; semua hak berlaku sampai studi ditutup, dengan batas 3 × 24 jam sejak permintaan diterima</td><td class="why">Pengecualian itu hanya membatasi penghapusan, penarikan, keberatan, penundaan, dan portabilitas; tidak membatasi akses dan pembetulan, dan tidak membebaskan pengendali dari kewajibannya (Pasal 149)</td><td class="src">22 → no. 17; Dasar hukum</td></tr>
+<tr><td>Kebocoran data diberitahukan tertulis ke subjek data dan lembaga PDP dalam 3 × 24 jam; selama masa transisi ke Kementerian Komunikasi dan Digital</td><td class="why">PP 33/2026 Pasal 114–118. Peraturan Lembaga belum terbit dan Badan PDP belum terbentuk</td><td class="src">22 → Dasar hukum</td></tr>
+<tr><td>Pengembang dan admin bagian dari tim pengendali, terikat pernyataan kerahasiaan; satu-satunya prosesor adalah penyedia server</td><td class="why">Mereka bekerja di bawah arahan ketua untuk penelitian ini; perjanjian prosesor kedua dengan pengembang ditolak<sup>†</sup></td><td class="src">26 → no. 1</td></tr>
+<tr><td>Penilaian dampak lengkap (26) dilampirkan: 14 risiko, 18 langkah; risiko sisa R1 (nama bocor bersama jawaban) dan R2 (identifikasi ulang dari data gabungan) tetap sedang, sisanya rendah; konsultasi lewat saran tertulis PPDP dan ringkasan satu halaman untuk kepala sekolah; ditinjau tiap tahun dan saat ada perubahan</td><td class="why">Data anak adalah data pribadi spesifik (PP 33/2026 Pasal 6). Perwakilan orang tua tidak dipakai sebagai jalur konsultasi; isinya sampai lewat T1</td><td class="src">26 → no. 3, 4</td></tr>
+<tr><td>IP mentah di <code>ci_sessions</code> diperbaiki (IP berhash dan pembersihan rutin) sebelum kegiatan pertama yang memakai akun GELITA anak</td><td class="why">Temuan penilaian dampak; menerimanya sebagai risiko sisa ditolak</td><td class="src">26 → no. 2; 30</td></tr>
+<tr><td>Bukti persetujuan setelah studi ditutup berupa daftar izin berkode tanpa nama, disimpan selama data berkode disimpan</td><td class="why">PP 33/2026 Pasal 36 mewajibkan bukti persetujuan disimpan, sementara formulir bernama dimusnahkan saat studi ditutup</td><td class="src">22 → no. 15</td></tr>
+<tr><td>Butir risiko daring: setiap jawaban "pernah" memicu penanda; ketua menyapa anak paling lambat hari sekolah berikutnya; orang tua dihubungi hanya dengan persetujuan anak, kecuali bahaya serius. Pesan dukungan (T12) dan selebaran (T13) untuk semua siswa</td><td class="why">Jawaban "pernah" mewajibkan tindak lanjut. Pesan yang sama untuk semua anak supaya tidak ada yang tampak ditandai</td><td class="src">16; 22; 23 → T11–T13</td></tr>
+<tr><td>Janji kerahasiaan dibuat jujur: "orang tua tidak melihat jawaban" dibetulkan. Bila orang tua meminta jawaban butir risiko, anak ditanya dulu, lalu jawaban diberikan bila orang tua tetap meminta, kecuali membahayakan anak (dinilai ketua, dicatat di log audit)</td><td class="why">Orang tua punya hak akses dan salinan (UU No. 27 Tahun 2022 Pasal 7 dan 32); pengecualian penelitian Pasal 15 tidak mencakupnya. Pasal 33 huruf a dipakai sebagai analogi pengecualian keselamatan, dan <b>komite diminta menilainya</b></td><td class="src">30 → no. 6; 04 30 Okt</td></tr>
+<tr><td>Data berkode per anak dibagikan hanya atas permintaan dengan persetujuan komite, setelah dikode ulang dan tanpa kode sekolah dan kelas; jawaban butir risiko dan transkrip tidak pernah dibagikan; tidak ada unggahan publik</td><td class="why">Keseimbangan antara keterbukaan data penelitian dan perlindungan anak. Usulan awal (tidak dibagikan sama sekali) diganti<sup>†</sup></td><td class="src">22 → no. 2</td></tr>
+<tr><td>Lokasi ditulis sampai desa dan dusun di formulir 2.5; nama sekolah tidak pernah di judul, laporan, atau publikasi</td><td class="why">Mengikuti tabel panduan BRIN; usulan berhenti di kabupaten atau kecamatan ditolak</td><td class="src">22 → no. 20</td></tr>
+<tr><td>Pernyataan konflik kepentingan versi "tidak ada potensi konflik"; GELITA dikembangkan tim sendiri tetap diungkap di teks dan butir 3.8</td><td class="why">Konflik intelektual diungkap terbuka tanpa mengubah versi pernyataan</td><td class="src">22 → no. 21</td></tr>
+<tr><td>Ketua peneliti mahasiswa S2/S3, jadi ada baris pembimbing; pembimbing mendampingi pengajuan dan telaah</td><td class="why">KEPPKN 2021 untuk peneliti mahasiswa</td><td class="src">22 → no. 13</td></tr>
+<tr><td>Uji keterbacaan: 4 anak ditambah 1 di putaran kedua, dari sekolah di Kedu di luar sampel dan uji coba (sekolah itu tidak pernah masuk sampel); bahan inti untuk semua, bank dalam enam blok; butir risiko daring hanya diparafrasekan dengan izin terpisah</td><td class="why">Setiap butir dibaca minimal dua anak. Anak di luar Kedu bisa tersandung budaya Kedu, bukan bahasanya. Anak kelima memeriksa revisi sebelum kembali ke ahli. Butir paling sensitif dicek dengan anak sebelum P5</td><td class="src">24 → no. 1–4; 27 Okt</td></tr>
+<tr><td>Tidak ada data pribadi orang sungguhan di repo</td><td class="why">Repo dibaca banyak sesi dan alat; data pribadi diisi langsung di sistem BRIN, salinan cetak, atau berkas terenkripsi ketua<sup>†</sup></td><td class="src">22 → no. 24</td></tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<h2>D.9 Peran dan sistem</h2>
+<table class="dec">
+<thead><tr><th>Keputusan</th><th>Alasan</th><th>Sumber</th></tr></thead>
+<tbody>
+<tr><td>Admin dan peneliti dua peran berbeda. Peran staf: <code>admin</code> (sistem dan identitas), <code>peneliti</code> (kerja lapangan: <code>koordinator</code>, <code>pengamat</code>, <code>pewawancara</code>), <code>ketua</code> (semua data berkode, unduhan, pengaturan studi, penanda butir risiko)</td><td class="why">Admin memegang identitas, peneliti memegang data yang sudah disamarkan. Hanya satu orang yang mengunduh mengurangi jalur kebocoran<sup>†</sup></td><td class="src">01 → Admin dan peneliti; 27; 25 dan 30 Okt</td></tr>
+<tr><td>Peran <code>guru</code> dihapus seluruhnya, termasuk halaman dan hak aksesnya</td><td class="why">Guru tidak ikut dalam penelitian. Kalau laporan untuk guru dibuat nanti, perannya dibangun ulang dengan hak yang baru. Usulan menonaktifkan selama penelitian ditolak</td><td class="src">01; 27 → no. 2; 25 Okt</td></tr>
+<tr><td>Peneliti tidak pernah melihat nama, nama pengguna, nama sekolah, atau NPSN; admin tidak pernah melihat atau mengunduh data penelitian; satu orang dengan dua peran memakai dua akun</td><td class="why">Pemisahan identitas dan data penelitian, dengan jejak audit yang jelas per peran</td><td class="src">27 → K3, K5, K9</td></tr>
+<tr><td>Siswa lupa kata sandi di lapangan: P1 me-reset lewat kode peserta dari L2; sistem memberi kata sandi sementara dan mencatatnya di log audit</td><td class="why">Peneliti tetap tidak melihat nama</td><td class="src">01; 27</td></tr>
+<tr><td>Permintaan hapus: <code>peneliti</code> mengajukan, <code>ketua</code> mengonfirmasi dengan mencocokkan ke L7, <code>admin</code> menjalankan. Akun langsung nonaktif saat P1 menyimpan status mundur</td><td class="why">Ketua yang memegang L7; menonaktifkan seketika menjamin batas 3 × 24 jam</td><td class="src">30 → no. 1; K5</td></tr>
+<tr><td>Penanda tindak lanjut butir risiko dihitung saat dibuka, hanya terlihat <code>ketua</code>, tidak pernah disimpan atau diunduh</td><td class="why">Data paling sensitif tidak boleh menetap di sistem atau ekspor<sup>†</sup></td><td class="src">30 → K7</td></tr>
+<tr><td>Keamanan masuk staf: kata sandi kuat (minimal 12, aturan sama dengan siswa), sesi berakhir setelah 2 jam diam, tanpa verifikasi dua langkah</td><td class="why">Tidak tercatat alasan khusus; dipilih sebagai tingkat yang cukup untuk panel kecil<sup>†</sup></td><td class="src">27 → §11.1; 30 Okt</td></tr>
+<tr><td>Sistem baru diubah di tahap 3, setelah G2 (validasi ahli dan persetujuan etik); dokumen implementasi untuk perubahan yang tidak bergantung pada hasil validasi (no. 7, 10–15, 23, 24) boleh didraf sekarang</td><td class="why">Sistem dibangun untuk instrumen yang sudah divalidasi, supaya tidak dibangun dua kali. Perubahan yang bergantung pada bank, instrumen, atau layar yang bisa diubah ahli ditunda supaya dokumennya tidak ditulis dua kali</td><td class="src">01 → Peta jalan; 25 dan 30 Okt</td></tr>
+<tr><td>Kemajuan disimpan per siswa per studi, bukan per sesi game <i>(untuk ditinjau)</i></td><td class="why">Satu sesi game hanya milik satu sesi lapangan; kalau kemajuan per sesi, siswa mulai dari nol di setiap pertemuan</td><td class="src">28 → §8; 30 Okt</td></tr>
+<tr><td>Buklet dan bentuk tes dihitung panel dari baris dan kursi yang dimasukkan P1; ketidakseimbangan hanya peringatan</td><td class="why">P1 cukup menyalin baris dan kursi; perhitungan buklet tidak bergantung ketelitian mengetik di lapangan<sup>†</sup></td><td class="src">28 → no. 1</td></tr>
+<tr><td><code>ketua</code> mendapat lembar <code>event</code> dan kolom kunci jawaban di unduhan; admin tidak</td><td class="why">Ketua butuh urutan kejadian dan kunci untuk menghitung ulang di lapis analisis<sup>†</sup></td><td class="src">29 → no. 1</td></tr>
+<tr><td>Lembar L1–L6 yang diketik diimpor ke sistem (berkode, tanpa nama), dengan peringatan kata mirip nama. Pengembang memilih ini, bukan usulan AI (templat tanpa impor)</td><td class="why">Supaya lembar bisa digabung dengan log di server. Akibatnya 22 dan 26 diubah: lembar lapangan berkode kini tersimpan di server</td><td class="src">29 → no. 4</td></tr>
+<tr><td>Masa simpan bawaan studi 7305 hari dihitung sejak studi ditutup; cadangan diganti setelah penghapusan dan saat studi ditutup; nama, nama pengguna, dan sekolah diganti kode saat studi ditutup</td><td class="why">Temuan kode: sekarang 1825 hari dihitung sejak mulai sesi, cadangan lokasi kedua tidak pernah dihapus, dan sekolah tetap tersambung ke nama setelah nama anak diganti</td><td class="src">30 → no. 3; K10, K11</td></tr>
+</tbody>
+</table>
+
+<h2>D.10 Cara kerja</h2>
+<table class="dec">
+<thead><tr><th>Keputusan</th><th>Alasan</th><th>Sumber</th></tr></thead>
+<tbody>
+<tr><td>Dua jalur kerja: pengembang (berbantuan AI) menyusun draf, label, skor, telaah, cek fakta, dan berkas siap kirim; peneliti menetapkan dan membawanya ke ahli dan komite. Setiap keputusan menyebut asal dan status</td><td class="why">Jelas mana yang masih usulan dan mana yang sudah ditetapkan peneliti bersama ahli; peneliti tidak mulai dari nol</td><td class="src">01 → Peran; 00 → Label; 27 Okt</td></tr>
+<tr><td>AI dipakai untuk penyaringan sebelum berkas sampai ke ahli (telaah pendahuluan bank dan media, cek fakta, evaluasi heuristik); AI bukan validator dan tidak bisa melabel buta; ditulis terbuka di naskah</td><td class="why">Cacat yang jelas (kunci ganda, jawaban bocor, fakta keliru) dibetulkan lebih dulu, supaya waktu ahli dipakai untuk hal yang substansial. AI ikut menyusun label pengembang, jadi labelnya pasti tidak buta</td><td class="src">07 → T6; 01 aturan 7</td></tr>
+<tr><td>"Dibekukan" berarti versinya dicatat. Empat versi yang mengikat pihak lain: bahan paket validasi, bahan anak yang dilampirkan ke izin etik, skema kode kesalahan setelah uji coba, kamus data sebelum data diambil</td><td class="why">Perubahan tetap mungkin, tetapi akibatnya jelas: dinilai ulang ahli, amandemen ke komite, atau tidak perlu apa-apa</td><td class="src">01 aturan 3</td></tr>
+<tr><td>Fakta atau rujukan yang belum dicek ke sumbernya ditandai <code>needs_verification</code>, di status mana pun</td><td class="why">Supaya tidak ada fakta yang lolos ke ahli, komite, atau naskah tanpa dicek</td><td class="src">00 → Label</td></tr>
+<tr><td>Satu dokumen atau satu putaran wawancara per sesi kerja, di cabang tersendiri; setiap keputusan langsung dicatat di 04; dokumen revisi berbahasa Indonesia</td><td class="why">Repo menjadi satu-satunya ingatan proyek; sesi baru hanya tahu yang ada di repo</td><td class="src">00; aturan sesi revisi</td></tr>
+</tbody>
+</table>
+</section>
+
+<!-- ============================ BAGIAN E ============================ -->
+<section class="page-break">
+<div class="part"><div class="kicker">Bagian E</div><h1>Bahan argumen: pertanyaan yang mungkin diajukan peneliti</h1></div>
+<p>Jawaban di bawah adalah posisi pengembang beserta dasarnya. Kalau peneliti tidak setuju, catat di lembar G.3; jangan dipaksakan. Peneliti yang menanggung keputusan final.</p>
+
+<div class="qa"><div class="q">Kenapa literasi digital yang jadi konstruk utama? Judulnya juga menyebut etnopedagogi Kedu.</div><div class="a">Judulnya menyebut GELITA sebagai <i>model asesmen literasi digital</i>, jadi yang diukur literasi digital. Etnopedagogi Kedu tetap hadir di tiga tempat: sebagai konteks semua tugas, sebagai dimensi D3 (perilaku digital terhadap budaya Kedu: atribusi, representasi, izin, sikap), dan sebagai dua skala pendamping, Pengetahuan Budaya Kedu (Cari Objek babak 1) dan sikap menjaga warisan (Balai Refleksi).</div><div class="ref">01 → Judul penelitian dan konstruk; D.1</div></div>
+
+<div class="qa"><div class="q">Prodi biasanya memakai ADDIE atau Borg &amp; Gall. Kenapa Plomp?</div><div class="a">Karena GELITA adalah alat ukur, dan Plomp mengartikan keefektifan sebagai "hasil yang diinginkan tercapai", yaitu pengukuran yang sahih dan andal, bukan kenaikan hasil belajar. Plomp juga mengizinkan prototipe kertas yang dinilai ahli, cocok dengan "sistem diubah setelah G2", dan memberi dua keluaran (produk dan prinsip desain) yang membuat kata "model" di judul bisa dipertanggungjawabkan. Sudah dipakai di jurnal Indonesia. Kalau program studi mewajibkan, Borg &amp; Gall bisa jadi cadangan, dengan catatan penelitian berhenti di langkah 6.</div><div class="ref">Dokumen pendukung peneliti §5–6</div></div>
+
+<div class="qa"><div class="q">Apakah tes awal–akhir membuktikan game ini efektif?</div><div class="a">Tidak, dan sebaiknya tidak diklaim. Satu kelompok tanpa kontrol adalah desain pra-eksperimen; perubahan skor bisa karena kematangan, efek tes, atau regresi. Tes dipakai terutama sebagai bukti validitas kriteria (korelasi dengan kemampuan Rasch game per dimensi). Uji bedanya tetap dilaporkan lengkap dengan ukuran efek, sebagai temuan eksploratif. Ini justru mengamankan peneliti dari kritik penguji.</div><div class="ref">13 → Analisis; dokumen pendukung §8</div></div>
+
+<div class="qa"><div class="q">Banyak bahan disusun dengan bantuan AI. Apakah sah?</div><div class="a">Sah selama kedudukannya jelas. AI hanya menyusun draf dan menyaring (telaah pendahuluan, cek fakta, evaluasi heuristik). Skornya tidak dihitung dalam V Aiken, I-CVI, κ, atau ICC, tidak ditunjukkan ke ahli sebelum mereka menilai, dan di naskah ditulis terbuka sebagai <i>telaah pendahuluan berbantuan AI oleh tim pengembang</i>, padanan tahap <i>screening</i> di Nieveen &amp; Folmer. Validasi tetap oleh sebelas ahli.</div><div class="ref">07 → T6; 01 → Peran, aturan 1, 2, 7</div></div>
+
+<div class="qa"><div class="q">Kenapa guru tidak dilibatkan? Bukankah kepraktisan biasanya dinilai guru?</div><div class="a">Guru tidak ikut supaya tidak ada bantuan pada isi soal dan pengamatan seragam oleh peneliti terlatih; guru tetap menyiapkan perangkat dan internet. Kepraktisan diambil dari bukti yang lebih langsung: log penyelesaian dan waktu aktif, L1 kondisi sesi, L3 bantuan, L4 keterlibatan, dan bintang 1–5 dari siswa. Pertanyaan kepraktisan tambahan ditimbang setelah uji coba.</div><div class="ref">01 → Keputusan; dokumen pendukung §8–9</div></div>
+
+<div class="qa"><div class="q">Kenapa game ditutup di luar sesi? Anak pasti ingin main di rumah.</div><div class="a">Data hanya bersih kalau siswa bermain di sesi yang diamati. Main di rumah bisa dibantu orang tua atau kakak dan tidak tercatat di lembar lapangan. Setelah studi ditutup, game terbuka seperti biasa. Token juga menyamakan laju antarkelas dan mengisi sekolah serta rombel otomatis.</div><div class="ref">01 → Token sesi</div></div>
+
+<div class="qa"><div class="q">Tiga peneliti per kelas itu mahal. Bisa dua?</div><div class="a">Bisa sebagai cadangan, tidak sebagai rencana. Peran P1, P2, P3 tidak bisa dirangkap tanpa kehilangan data: P2 mengamati keterlibatan bergiliran dan P3 mencatat setiap bantuan terus-menerus. Kalau satu berhalangan, P1 mengisi L3, wawancara dipindah, dan penyimpangan dicatat (DEV-TIM). Sesi ditunda bila kurang dari dua peneliti.</div><div class="ref">01 → Kerja lapangan; 22</div></div>
+
+<div class="qa"><div class="q">Kenapa aturan I-CVI Lynn yang ketat? Butir dengan 4 dari 5 setuju jadi gugur.</div><div class="a">Dengan panel lima orang atau kurang, Lynn menuntut kesepakatan penuh (dikutip Polit &amp; Beck, 2006). Aturan Polit dkk. (2007) lebih longgar dan sengaja tidak dipakai. Akibatnya ditulis terang di instrumen (D.6), dan butir yang gagal direvisi lalu dinilai di putaran 2, bukan langsung dibuang.</div><div class="ref">Dokumen pendukung §9; 20</div></div>
+
+<div class="qa"><div class="q">Apakah 300 siswa cukup untuk Rasch dan model campuran?</div><div class="a">Targetnya 300 siswa yang datanya bisa dianalisis, dengan merekrut sekitar 360 (± 13 kelas) sebagai cadangan untuk siswa tanpa izin, absen, atau mundur. Alasan angka 300 belum tertulis di 04, jadi sebaiknya peneliti dan Ahli Pengukuran memberi rujukan ukuran sampel Rasch untuk Bab III (lihat F.1).</div><div class="ref">01 → Pertanyaan terbuka; 25 Okt</div></div>
+
+<div class="qa"><div class="q">Kenapa data disimpan 20 tahun? Orang tua bisa keberatan.</div><div class="a">Itu kewajiban UU No. 11 Tahun 2019 Pasal 40 ayat (5) untuk data primer riset, dirujuk panduan BRIN. Yang disimpan hanya data berkode; nama, L7, dan kunci dimusnahkan saat studi ditutup, sehingga setelah itu data tidak bisa ditautkan ke anak. Surat orang tua menjelaskan ini dengan bahasa sederhana. Satu hal masih <code>needs_verification</code>: apakah data berkode tanpa kunci tetap memenuhi kewajiban "data primer".</div><div class="ref">22 → no. 19</div></div>
+
+<div class="qa"><div class="q">Kenapa ke komite BRIN, bukan komite etik kampus?</div><div class="a">Panduan BRIN untuk sosial humaniora berlaku untuk peneliti di dalam dan di luar BRIN, tanpa biaya, menyebut anak sebagai kelompok rentan, dan memakai penelitian di SD sebagai contoh. Patokan telaahnya ± 1–2 bulan sejak berkas lengkap. Kalau program studi mewajibkan komite kampus, protokolnya sudah disiapkan juga dalam format PSEPPKN 2021 sebagai cadangan.</div><div class="ref">22 → Pedoman yang dirujuk</div></div>
+
+<div class="qa"><div class="q">Butir pengalaman risiko daring bukankah berisiko bagi anak?</div><div class="a">Risikonya diatur berlapis: centang terpisah di izin orang tua, izin ulang anak di layar dengan kalimat batas kerahasiaan yang jujur, diisi privat di layar, hanya 2–3 butir di P5 setelah tes dan game selesai, pilihan "tidak mau menjawab", tindak lanjut oleh ketua untuk setiap "pernah", pesan dukungan dan selebaran untuk semua anak. Hasilnya hanya dilaporkan deskriptif. Butir ini juga diuji keterbacaan dengan parafrase saja.</div><div class="ref">16; 22; 23 → T11–T13; 24 → no. 4</div></div>
+
+<div class="qa"><div class="q">Kenapa orang tua boleh melihat jawaban butir risiko anaknya?</div><div class="a">Karena orang tua punya hak akses dan salinan atas data anaknya menurut UU PDP (Pasal 7 dan 32), dan pengecualian penelitian tidak mencakup hak itu. Jalan tengahnya: anak ditanya dulu; jawaban diberikan bila orang tua tetap meminta, kecuali membahayakan anak (dinilai ketua). Analogi Pasal 33 huruf a untuk pengecualian keselamatan diserahkan ke komite untuk dinilai. Janji di surat anak sudah dibetulkan supaya tidak menjanjikan yang tidak bisa ditepati.</div><div class="ref">30 → no. 6; 23 → T11</div></div>
+
+<div class="qa"><div class="q">Pengembang dan admin bisa melihat nama. Bukankah itu risiko?</div><div class="a">Ya, dan itu tercatat sebagai risiko di penilaian dampak. Pengembang dan admin ditetapkan sebagai bagian tim pengendali yang terikat pernyataan kerahasiaan. Admin tidak pernah melihat atau mengunduh data penelitian; peneliti tidak pernah melihat nama. Risiko sisa R1 dan R2 tetap sedang, dan ketua yang menerimanya secara tertulis.</div><div class="ref">26 → no. 1; 27 → K3, K5</div></div>
+
+<div class="qa"><div class="q">Dari mana angka 3 menit (jeda) dan 3 detik (tebakan cepat)?</div><div class="a">Ambang sementara yang sengaja longgar (usulan awal 60 detik dan 1,5 detik), diputuskan 26 Oktober 2026. Keduanya pengaturan yang mudah diubah dan ditetapkan ulang dari data uji coba sebelum pra-registrasi OSF. Waktu total dan waktu aktif selalu dilaporkan berdampingan.</div><div class="ref">01; 11</div></div>
+
+<div class="qa"><div class="q">Urutan wilayah selalu Temanggung, Magelang, Wonosobo. Bukankah kesulitan tercampur dengan efek latihan?</div><div class="a">Ya, ini keterbatasan yang diakui. Urutan mengikuti cerita sehingga tidak bisa diacak. Pengendaliannya: waktu aktif kumulatif dan nomor pertemuan sebagai kovariat, butir jangkar, label AKM dari pelabelan buta dua ahli, dan pemeriksaan urutan kesulitan butir di peta Wright.</div><div class="ref">01 → Pelevelan wilayah</div></div>
+
+<div class="qa"><div class="q">Benar atau Salah punya peluang tebak 50%. Apakah datanya layak?</div><div class="a">Yang dianalisis percobaan pertama dengan model Rasch, ditambah penanda tebakan cepat. Butir level tinggi sebaiknya punya tiga pilihan atau lebih; hal ini menjadi perhatian ahli materi di B.5b dan analisis kecocokan butir.</div><div class="ref">01 → 10 analitik no. 3</div></div>
+
+<div class="qa"><div class="q">Kenapa sistem belum diubah, padahal waktunya panjang?</div><div class="a">Supaya sistem dibangun untuk instrumen yang sudah divalidasi dan protokol yang sudah disetujui komite, tidak dua kali. Dokumen implementasi untuk perubahan yang tidak bergantung pada validasi (peran, token, log, persetujuan) sudah didraf, jadi tahap 3 bisa langsung mulai setelah G2.</div><div class="ref">01 → Peta jalan; 27–30</div></div>
+
+<div class="qa"><div class="q">Bagaimana kalau ahli menolak banyak butir?</div><div class="a">Sudah diantisipasi: matriks revisi induk, revisi Prototipe I pada minggu 8–9, putaran 2 pada minggu 10–11, dan bank punya dua variasi per tantangan. Kriteria lolos ditulis sebelum hasil kembali (D.7), jadi keputusan revisi tidak diatur sesudah melihat skor.</div><div class="ref">20 → Jadwal; Daftar periksa G2</div></div>
+</section>
+
+<!-- ============================ BAGIAN F ============================ -->
+<section class="page-break">
+<div class="part"><div class="kicker">Bagian F</div><h1>Yang perlu disampaikan terbuka</h1></div>
+<p>Lebih baik peneliti mendengarnya dari pengembang di pertemuan ini daripada dari validator atau komite.</p>
+
+<h2>F.1 Alasan yang belum tertulis</h2>
+<p>Beberapa keputusan di 04 tercatat tanpa alasan. Alasan yang ditulis di bagian D untuk keputusan itu disusun saat membuat berkas ini, dan ditandai <sup>†</sup> bila sepenuhnya disimpulkan. Yang terpenting untuk dikukuhkan atau diberi rujukan oleh peneliti:</p>
+<ul>
+<li><b>Ukuran sampel 300/360</b>: belum ada rujukan ukuran sampel untuk Rasch dan model campuran.</li>
+<li><b>Tiga peneliti per kelas</b>, <b>dua variasi a/b</b>, <b>model <i>between-item</i></b>, dan <b>pra-registrasi OSF</b>: diputuskan 25 Oktober 2026 tanpa alasan tertulis.</li>
+<li><b>Hapus akun <code>guru</code></b> (bukan dikunci) dan <b>keamanan masuk staf</b>: tanpa alasan tertulis.</li>
+</ul>
+
+<h2>F.2 Ketidaksesuaian antardokumen yang harus dibereskan sebelum diajukan</h2>
+<table>
+<thead><tr><th style="width:4%">No</th><th>Temuan</th><th style="width:34%">Usulan</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>22 pembuka: "Pengembang menyalin isian ini ke sistem, lalu mengajukannya", sedangkan tabel langkah di 22 memberikan langkah 1–8 kepada ketua peneliti didampingi pembimbing</td><td>Ketua yang mengajukan (C.3 no. 1); kalimat pembuka dibetulkan</td></tr>
+<tr><td>2</td><td>23 → <i>Tempat kosong yang dipakai</i>: <code>[nama ketua peneliti]</code> dan kontak diisi "Pengembang, di luar repo", sedangkan 22 kelompok A: diisi ketua peneliti</td><td>Samakan: ketua mengisi data pribadinya sendiri</td></tr>
+<tr><td>3</td><td>Judul di 22 (<i>GELITA: model asesmen literasi digital berbasis game …</i>, <code>needs_verification</code>) berbeda dengan judul di 01, 20, 21, 24</td><td>Peneliti menetapkan judul resmi dari usulan penelitian</td></tr>
+<tr><td>4</td><td>26 masih memuat <code>[nama dan lokasi penyedia server]</code> (identitas penilaian dan diagram aliran data), padahal 22 sudah mengisinya: IDCloudHost, Jakarta Pusat</td><td>Isi di 26 sebelum diserahkan ke PPDP</td></tr>
+<tr><td>5</td><td>00 menyebut 26 "disetujui pengembang", sedangkan kepala 26 sendiri masih <code>draf pengembang</code> v0.1, "belum disetujui pengembang, peneliti, atau PPDP"</td><td>Pengembang menyetujui 26 lebih dulu, lalu kepala dokumen diperbarui</td></tr>
+<tr><td>6</td><td>Butir penyelarasan lama di 30 §23 untuk 22 dan 23 → T10 D masih menulis "tanpa jawaban butir risiko kecuali anak setuju" (diganti putaran kedua 30 Oktober)</td><td>Cek konsistensi 22 dan 23 sekali lagi</td></tr>
+<tr><td>7</td><td>28 no. 2 (<code>gelita:uji:akun</code> di luar alur token) bertentangan dengan alasan memberi nomor no. 24 ("harus mengikuti alur pendaftaran baru")</td><td>Pengembang memilih satu saat meninjau 28</td></tr>
+</tbody>
+</table>
+
+<h2>F.3 Fakta dan rujukan yang belum dicek (<code>needs_verification</code>)</h2>
+<ul>
+<li>Seluruh draf bank soal (08), butir tes (14, 15), dan skala sikap (17) sampai divalidasi.</li>
+<li>Nomor pasal PP No. 33 Tahun 2026: dicek ke salinan transkripsi, dicocokkan sekali lagi dengan PDF resmi sebelum diunggah. Pasal pembanding untuk memberi jawaban butir risiko ke orang tua belum ditemukan.</li>
+<li>Apakah data berkode tanpa kunci memenuhi kewajiban UU No. 11 Tahun 2019, dan apakah masih data pribadi menurut PP 33/2026 Pasal 7 ayat (2).</li>
+<li>Apakah PPDP wajib (Peraturan Lembaga belum terbit; dicek ulang sebelum KG1).</li>
+<li>Jadwal sidang dan batas di laman komisi, batas laporan kejadian serius, "surat guru penanggung jawab", izin dinas pendidikan setempat.</li>
+<li>Nama dan nomor SAPA 129 dan UPTD PPA per kabupaten, sebelum T1 dan T13 dicetak.</li>
+<li>Sepuluh klaim budaya di 25 (antara lain status WBTb Wayang Kedu, Topeng Ireng, getuk, gerabah Klipoh; Mbah Kedu dan Ki Ageng Makukuhan; Lentera Kedu dan Kabut Lupa dibanding legenda setempat), sebagian ditanyakan ke pengamat budaya di B.7.</li>
+<li>Teks resmi Kepmendikdasmen No. 56 Tahun 2026 (AKM dan TKA) belum dibaca langsung.</li>
+<li>Rentang perhatian ± 25–30 menit dan ambang jeda ± 10 detik di uji keterbacaan.</li>
+</ul>
+
+<h2>F.4 Keterbatasan desain</h2>
+<ul>
+<li>Urutan wilayah tetap; kesulitan bisa tercampur dengan efek latihan (dikendalikan dengan kovariat, tidak dihilangkan).</li>
+<li>Desain satu kelompok tanpa kontrol; perubahan tes awal–akhir hanya eksploratif.</li>
+<li>Sekolah dipilih menurut ketersediaan kelas, bukan acak; generalisasi terbatas pada konteks Kedu.</li>
+<li>Guru tidak ikut, jadi tidak ada data kepraktisan dari guru.</li>
+<li>Waktu per butir di tantangan yang dicek bersamaan (Isi Rumpang, Benar atau Salah) hanya perkiraan.</li>
+<li>Peluang tebak 50% di Benar atau Salah.</li>
+<li>Pengalaman risiko daring kemungkinan kurang dilaporkan; hanya deskriptif.</li>
+<li>Ambang waktu aktif dan tebakan cepat masih sementara sampai uji coba.</li>
+</ul>
+
+<h2>F.5 Risiko jadwal dan teknis</h2>
+<ul>
+<li>Validasi dan izin etik berjalan bersamaan di November 2026; libur akhir tahun memotong minggu 6–7.</li>
+<li>Prasyarat yang belum terpenuhi: subdomain kampus, kesediaan validator, honorarium, pembekuan versi.</li>
+<li>Uji keterbacaan, uji coba, dan pengambilan data baru boleh setelah persetujuan etik terbit; tahap 3 baru mulai setelah G2.</li>
+<li>Temuan kode yang harus diperbaiki sebelum akun anak dipakai: IP mentah di sesi, cadangan lokasi kedua tidak pernah dihapus, masa simpan dihitung dari mulai sesi, sekolah tetap tersambung ke nama, pembersihan sesi PHP mati di Debian. Sampai fungsi hak subjek data jadi, dipakai jalan manual dengan berita acara.</li>
+<li>Penyedia server mungkin menyimpan <i>snapshot</i> otomatis yang tidak bisa dihapus pengguna; ditanyakan saat menyusun perjanjian prosesor.</li>
+</ul>
+</section>
+
+<!-- ============================ BAGIAN G ============================ -->
+<section class="page-break">
+<div class="part"><div class="kicker">Bagian G</div><h1>Agenda dan catatan pertemuan</h1></div>
+
+<h2>G.1 Usulan agenda (± 2 jam)</h2>
+<table>
+<thead><tr><th style="width:9%">Menit</th><th style="width:30%">Topik</th><th>Bahan dan hasil yang dicari</th></tr></thead>
+<tbody>
+<tr><td>10</td><td>Pembukaan dan aturan main</td><td>A.1, A.4: dua jalur, label status, apa artinya "disetujui peneliti"</td></tr>
+<tr><td>15</td><td>Posisi pekerjaan dan peta jalan</td><td>A.2, <code>gambar/peta-jalan.svg</code>: sepakat tahap dan gerbang</td></tr>
+<tr><td>20</td><td>Konstruk dan keputusan inti</td><td>D.1–D.5, peta bukti: kukuhkan konstruk, Skenario Digital, kamus data, model penelitian</td></tr>
+<tr><td>25</td><td>Paket validasi</td><td>B.3, C.2 (no. 4, 8, 9, 10), C.3 no. 3–6, D.7: setujui instrumen dan jadwal, sepakati honorarium dan siapa menghubungi validator</td></tr>
+<tr><td>25</td><td>Izin etik dan pelindungan data</td><td>B.4, C.2 (kelompok A–E), C.3 no. 1–2 dan 7, C.4, D.8, F.2: siapa mengunggah, tanggal unggah, PPDP, tanda tangan, pilihan yang ditinjau ulang</td></tr>
+<tr><td>10</td><td>Lapangan</td><td>B.5, D.6: daftar kode sekolah, pemegang akun staf, sekolah uji keterbacaan</td></tr>
+<tr><td>10</td><td>Dokumen implementasi</td><td>B.6, C.3 no. 8–10, D.9: tugas baru ketua dan P1</td></tr>
+<tr><td>5</td><td>Penutup</td><td>Baca ulang lembar G.3, sepakati tenggat dan pertemuan berikutnya</td></tr>
+</tbody>
+</table>
+
+<h2>G.2 Setelah pertemuan</h2>
+<ol>
+<li><b>Catat di 04 pada hari yang sama.</b> Satu entri untuk pertemuan ini: setiap keputusan dengan <code>asal: peneliti</code>, status barunya (<code>disetujui peneliti</code> atau revisi), dan versi atau <i>commit</i> dokumen yang disetujui.</li>
+<li><b>Perbarui status</b> di kolom 00 → <i>Daftar dokumen</i>, centang pertanyaan yang terjawab di 01, dan perbarui baris revisi di <code>docs/PROGRESS.md</code>.</li>
+<li><b>Bawa revisi peneliti ke dokumen sumber</b>, lalu buat ulang PDF instrumen (<code>render.mjs</code>) dan berkas validator (<code>berkas-validator.php</code>). Betulkan temuan F.2.</li>
+<li><b>Data pribadi yang diterima tidak masuk repo</b>: nama dan kontak validator, honorarium, data tim. Repo hanya mencatat "Selesai (tanggal)".</li>
+<li><b>Langkah keluar</b>: bekukan versi bahan (20 → prasyarat no. 4), kirim paket validasi sesuai urutan di 20, siapkan lampiran izin etik dari versi beku, unggah lewat sistem klirens etik BRIN.</li>
+</ol>
+</section>
+
+<section class="page-break">
+<h2 style="margin-top:0">G.3 Lembar catatan keputusan peneliti</h2>
+<p class="fine">Kode keputusan: S = disetujui · R = disetujui dengan revisi · T = ditolak · D = ditunda. Setiap baris menjadi satu butir di entri 04 dengan <code>asal: peneliti</code>.</p>
+<table class="sheet" style="font-size:8.6pt">
+<thead><tr><th style="width:30%">Butir</th><th style="width:10%">S / R / T / D</th><th>Catatan atau revisi</th><th style="width:20%">Tindak lanjut, siapa, kapan</th></tr></thead>
+<tbody>
+<tr><td>01 konstruk dan 10 analitik</td><td></td><td></td><td></td></tr>
+<tr><td>Model Plomp dan aturan Lynn</td><td></td><td></td><td></td></tr>
+<tr><td>11 kamus data <code>kamus-1.0</code></td><td></td><td></td><td></td></tr>
+<tr><td>06 kisi-kisi · 08 bank soal</td><td></td><td></td><td></td></tr>
+<tr><td>12 cerita penghubung</td><td></td><td></td><td></td></tr>
+<tr><td>13–15 tes · 16 angket · 17 skala sikap</td><td></td><td></td><td></td></tr>
+<tr><td>18 mock-up</td><td></td><td></td><td></td></tr>
+<tr><td>Instrumen ahli materi v2.1</td><td></td><td></td><td></td></tr>
+<tr><td>Instrumen pengamat budaya v2.1</td><td></td><td></td><td></td></tr>
+<tr><td>Instrumen ahli media v1.1</td><td></td><td></td><td></td></tr>
+<tr><td>20 paket validasi dan jadwal</td><td></td><td></td><td></td></tr>
+<tr><td>21 berkas validator</td><td></td><td></td><td></td></tr>
+<tr><td>25 cek fakta budaya</td><td></td><td></td><td></td></tr>
+<tr><td>02 lembar lapangan L0–L8</td><td></td><td></td><td></td></tr>
+<tr><td>22 permohonan izin etik</td><td></td><td></td><td></td></tr>
+<tr><td>23 surat T1–T13</td><td></td><td></td><td></td></tr>
+<tr><td>24 uji keterbacaan</td><td></td><td></td><td></td></tr>
+<tr><td>26 penilaian dampak</td><td></td><td></td><td></td></tr>
+<tr><td>27–30 dokumen implementasi</td><td></td><td></td><td></td></tr>
+<tr><td>C.3 no. 1 siapa mengunggah izin etik</td><td></td><td></td><td></td></tr>
+<tr><td>C.3 no. 2 target persetujuan etik</td><td></td><td></td><td></td></tr>
+<tr><td>C.3 no. 3 jadwal validasi</td><td></td><td></td><td></td></tr>
+<tr><td>C.3 no. 4–6 B.5a, B.7, level per butir</td><td></td><td></td><td></td></tr>
+<tr><td>C.3 no. 7 pilihan yang ditinjau ulang</td><td></td><td></td><td></td></tr>
+<tr><td>C.3 no. 8–10 tugas ketua, kabupaten, <code>is_touch</code></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+</tbody>
+</table>
+
+
+</section>
+
+</body>
+</html>

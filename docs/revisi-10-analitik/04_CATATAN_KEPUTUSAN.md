@@ -1,10 +1,26 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 30 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 31 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
 
 ## 31 Oktober 2026
+
+**Berkas serah terima ke peneliti (PDF)** (cabang `sky/elegant-brown-3vnbv9`) · `asal: pengembang` · `draf pengembang` · tidak merevisi produk
+
+Atas permintaan pengembang, disusun [dokumen-pdf/serah-terima-peneliti.pdf](dokumen-pdf/serah-terima-peneliti.pdf) (32 halaman, sumber `dokumen-pdf/src/serah-terima-peneliti.html`, dibuat dengan `render.mjs`) sebagai pegangan pengembang saat bertemu peneliti. Isinya diringkas dari 00–30, 04 (23–31 Oktober 2026), dan dokumen pendukung peneliti; tidak ada keputusan baru. Bagian-bagiannya: posisi pekerjaan, daftar periksa enam paket dokumen, yang tidak diserahkan ke ahli, isian dan tanda tangan yang hanya bisa diberikan peneliti, sepuluh keputusan terbuka untuk peneliti, keputusan yang sudah diterapkan beserta alasannya (D.1–D.10), 19 tanya jawab, keterbatasan, agenda, dan lembar catatan keputusan. Berkas ini dokumen internal, tidak dikirim ke ahli atau komite.
+
+- **Alasan bertanda †.** Banyak keputusan di 04 tercatat tanpa alasan (misalnya sampel 300/360, tiga peneliti per kelas, variasi a/b, model *between-item*, pra-registrasi OSF, akun `guru` dihapus). Alasan untuk keputusan seperti itu disimpulkan saat menyusun berkas dan ditandai †; pengembang dan peneliti mengukuhkannya atau memberi rujukan sebelum dipakai di depan validator, komite, atau penguji (berkas → F.1).
+- **Ketidaksesuaian yang ditemukan** (berkas → F.2), belum dibetulkan di dokumen sumbernya karena menunggu pertemuan dengan peneliti:
+  1. Kalimat pembuka [22](22_PERMOHONAN_IZIN_ETIK.md) menyebut pengembang yang mengajukan permohonan, sedangkan tabel *Pengajuan lewat sistem klirens etik BRIN* memberikan langkah 1–8 kepada ketua peneliti didampingi pembimbing.
+  2. [23 → Tempat kosong yang dipakai](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#tempat-kosong-yang-dipakai) menyebut data ketua diisi pengembang, sedangkan 22 kelompok A menyebut ketua peneliti.
+  3. Draf judul di 22 → *Identitas dan tim* berbeda dengan judul penelitian di 01, 20, 21, dan 24.
+  4. [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) masih memuat `[nama dan lokasi penyedia server]` di *Identitas penilaian* dan diagram aliran data, padahal 22 sudah mengisinya (IDCloudHost, Jakarta Pusat).
+  5. 00 menyebut 26 `disetujui pengembang`, sedangkan kepala 26 masih `draf pengembang` v0.1.
+  6. Baris penyelarasan putaran pertama di 30 §23 untuk 22 dan 23 → T10 D masih memuat aturan lama soal jawaban butir risiko; perlu satu cek konsistensi.
+  7. 28 → keputusan no. 2 (`gelita:uji:akun` di luar alur token) bertentangan dengan alasan memberi nomor perubahan no. 24 ("harus mengikuti alur pendaftaran baru").
+
+Diubah: `dokumen-pdf/` (PDF dan sumber HTML baru, README), 00 (baris `dokumen-pdf/` dan petunjuk di *Mulai sesi baru di sini*). Langkah berikutnya: pengembang membaca berkas, lalu bertemu peneliti; keputusan peneliti dicatat di 04 dengan `asal: peneliti`.
 
 **28 §21 no. 7 dan 8: jawaban putaran kedua berlaku** (cabang `pbb/pensive-ramanujan-d8nu9h`) · `asal: pengembang` · `disetujui pengembang` · Prototipe I, belum merevisi produk
 
