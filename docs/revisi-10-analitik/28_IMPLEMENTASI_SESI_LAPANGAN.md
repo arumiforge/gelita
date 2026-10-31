@@ -428,7 +428,7 @@ Dalam mode penelitian, aturan buka dibaca dari rencana pertemuan sesi lapangan y
 | Kemajuan wilayah pertemuan (tantangan tuntas dari 5) | Per kode | Jumlah tuntas semua |
 | Tantangan tertinggal untuk susulan P5 | Per kode | — |
 | Event hilang (jumlah `dropped` dari `events_dropped` sesi game di sesi ini) | Jumlah per kode | Jumlah |
-| Izin belum diisi (siswa rombel tanpa tanggal izin orang tua, [30 → Izin berkode per siswa](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#52-izin-berkode-per-siswa)) | Jumlah | — (isian izin tidak terlihat admin) |
+| Izin belum diisi (siswa rombel tanpa tanggal izin orang tua, [30 → Izin berkode per siswa](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#52-izin-berkode-per-siswa)) | Jumlah | Jumlah ([§21](#21-pertanyaan-terbuka) no. 7) |
 | Status tes awal/akhir (`selesai`, `susulan`, `hilang`) | Titik sambung no. 22 | — |
 
 **Penyegaran:**
@@ -694,8 +694,8 @@ Tidak menahan draf ini.
 4. **Daftar kode sekolah** (daftar kerja no. 12) belum ada. Sistem tidak bergantung pada isinya, tetapi sekolah tidak bisa dipakai untuk sesi lapangan sebelum admin mengisi `research_code`.
 5. ~~**`GameSessionModel::markStale()`**~~ **Diputuskan di bagian 3:** `markStale()` menulis `session_paused` dengan `via: idle`, satu per sesi yang benar-benar diubahnya ([29 → Sesi yang diam](29_IMPLEMENTASI_DATA_PENELITIAN.md#57-sesi-yang-diam-markstale), K14). Dalam mode penelitian, penutupan sesi lapangan tetap memakai §6.6 (`via: field_session_closed`).
 6. **Satu siswa, dua perangkat bersamaan** dalam satu sesi lapangan. Sekarang sesi game yang sama dilanjutkan di perangkat kedua. Tetap begitu, dan dicatat di L2 sebagai pindah perangkat.
-7. **Angka "izin belum diisi" untuk admin** (dari sesi koordinator, 30 Oktober 2026). K2 memberi admin angka di pemantauan, sedangkan [30 → Izin berkode per siswa](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#52-izin-berkode-per-siswa) menyebut isian izin tidak terlihat admin. [§12](#12-panel-pemantauan) sementara memberi angka itu hanya ke peneliti dan ketua. Usulan: tetap begitu, karena admin tidak memegang `field_sessions.manage` dan tidak menindaklanjuti izin.
-8. **Kalimat "lupa kata sandi" setelah studi ditutup.** [27 → Teks antarmuka](27_IMPLEMENTASI_PERAN_PENELITI.md#12-teks-antarmuka) menyerahkannya ke bagian ini, tetapi draf ini belum menetapkannya. Setelah studi ditutup game terbuka seperti biasa (K1) dan yang mengatur ulang kata sandi adalah admin. Diputuskan bersama teks akhir setelah uji keterbacaan.
+7. ~~**Angka "izin belum diisi" untuk admin.**~~ **Diputuskan pengembang 30 Oktober 2026:** admin juga melihat angka itu di pemantauan, sesuai K2 (angka saja). Isian izin per siswa tetap tidak terlihat admin ([30 → Izin berkode per siswa](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#52-izin-berkode-per-siswa)). Usulan sesi koordinator (angka hanya untuk peneliti dan ketua) tidak dipilih.
+8. ~~**Kalimat "lupa kata sandi" setelah studi ditutup.**~~ **Diputuskan pengembang 30 Oktober 2026:** di luar mode penelitian, kalimat siswa mengarahkan ke admin GELITA, bukan kakak peneliti. Usulan teksnya di [27 → Teks antarmuka](27_IMPLEMENTASI_PERAN_PENELITI.md#12-teks-antarmuka); kalimat akhir tetap mengikuti uji keterbacaan.
 
 ---
 
@@ -709,6 +709,11 @@ Satu putaran tanya, empat pertanyaan (30 Oktober 2026). Pengembang memilih usula
 2. **`gelita:uji:akun` di luar alur token** (K15): akun dibuat langsung dengan kode `UJI-…` dan sekolah `V01`; `--reset` menghapus data permainan; di G3 satu sesi lapangan panjang untuk validator. Tidak dipilih: lewat alur token dengan kode seperti `V01-A01` dan reset yang hanya menutup sesi.
 3. **Admin melihat panel pemantauan sebagai angka saja** (K2). Tidak dipilih: sama dengan peneliti; tidak ada akses.
 4. **Token susulan hanya untuk siswa yang dicentang P1** (K12), dengan centang awal untuk yang tidak hadir. Tidak dipilih: semua siswa rombel itu boleh.
+
+**Tambahan, 30 Oktober 2026** (pesan terpisah setelah sesi koordinator, `asal: pengembang`):
+
+5. **Admin melihat angka "izin belum diisi" di pemantauan** ([§21](#21-pertanyaan-terbuka) no. 7). Tidak dipilih: angka hanya untuk peneliti dan ketua.
+6. **Kalimat lupa kata sandi di luar mode penelitian mengarahkan ke admin** ([§21](#21-pertanyaan-terbuka) no. 8; teks di [27 → Teks antarmuka](27_IMPLEMENTASI_PERAN_PENELITI.md#12-teks-antarmuka)). Pengembang menulis "hubungi admin atau parafrase yang lebih sesuai".
 
 **Akibat dari kamus yang sudah disetujui** (bukan pertanyaan baru). Karena satu sesi game milik tepat satu sesi lapangan (11), kemajuan pindah dari sesi game ke siswa ([§8](#8-kemajuan-mengikuti-siswa-bukan-sesi-game)). Ini perubahan terbesar di bagian ini dan disebut di [04](04_CATATAN_KEPUTUSAN.md) untuk ditinjau pengembang.
 
