@@ -6,6 +6,10 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 1 November 2026
 
+**Contoh pemakaian ADDIE di jurnal Indonesia ditangani peneliti** · `asal: pengembang` (menyampaikan pembagian kerja dengan peneliti) · `disetujui pengembang` · tidak merevisi produk
+
+Pengembang menyampaikan bahwa contoh pemakaian ADDIE di jurnal Indonesia untuk Bab III dicari dan dirujuk langsung oleh peneliti, tanpa pengembang. Dokumen pendukung peneliti tidak perlu menambah daftar contoh itu; catatan "belum dicek di dokumen ini" di bagian *Pembaruan 1 November 2026 → Untuk Bab III* diganti keterangan itu, dan PDF-nya dibuat ulang. Sesi berikutnya tidak perlu mengusulkan pengecekan sumber ini.
+
 **Sisa akibat model ADDIE: 06, 13, 16, dan dokumen pendukung peneliti** (cabang `sky/cool-fermi-rv44sj`, bersama PR #299) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
 
 Atas permintaan pengembang, sisa dokumen yang masih memuat rencana lama diselaraskan. Tidak ada keputusan baru.
