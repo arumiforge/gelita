@@ -408,7 +408,15 @@ Data inti analisis adalah ketepatan percobaan pertama. Lembar lapangan dipakai s
 
 ## Peta jalan dan daftar kerja
 
-Pekerjaan berjalan dalam enam tahap. Tahap berikutnya baru dimulai setelah gerbangnya terpenuhi. Sistem baru diubah di tahap 3, setelah instrumen lolos validasi ahli dan izin etik. Urutan ini dikukuhkan pengembang pada 25 Oktober 2026: dokumen implementasi dan perubahan sistem tidak dimulai sebelum gerbang G2, termasuk persetujuan etik. Pengecualian sejak 30 Oktober 2026: dokumen implementasi untuk perubahan sistem yang tidak bergantung pada hasil validasi (no. 7, 10–15, 23, dan 24) boleh didraf sekarang dalam empat bagian ([00 → Tahap dokumen 3](00_INDEKS.md), [04](04_CATATAN_KEPUTUSAN.md)); sistemnya tetap baru diubah di tahap 3, setelah G2. Izin etik diajukan minggu kedua–keempat November 2026 dan persetujuannya ditargetkan paling lambat akhir September sampai minggu pertama November 2027, jadi tahap 3 bisa baru dimulai sekitar waktu itu. Pengembang memilih tetap menunggu persetujuan (25 Oktober 2026). Uji keterbacaan dengan anak di tahap 2, uji coba, dan pengambilan data juga baru boleh berjalan setelah persetujuan terbit.
+Pekerjaan berjalan dalam enam tahap. Tahap berikutnya baru dimulai setelah gerbangnya terpenuhi. Urutan ini dikukuhkan pengembang pada 25 Oktober 2026.
+
+**Pekerjaan sistem (sejak 1 November 2026).** Semula sistem baru diubah di tahap 3, setelah G2 (25 Oktober 2026), dengan pengecualian 30 Oktober 2026 untuk mendraf dokumen implementasi no. 7, 10–15, 23, dan 24. Sejak 1 November 2026 peneliti menangani validasi dan izin etik, dan pengembang memutuskan membangun **semua** perubahan sistem sekarang, termasuk yang bergantung pada hasil validasi ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026; urutan bagian di [00 → Tahap dokumen 3](00_INDEKS.md)). Yang tetap:
+- tidak ada kegiatan dengan anak, dan sistem baru tidak dipakai dengan anak, sebelum persetujuan etik terbit;
+- G3 dinilai setelah G2, pada Prototipe II yang sudah memuat revisi dari validasi ahli;
+- versi dikunci di G4;
+- instalasi uji validator memakai versi yang dibekukan di [20](20_PAKET_VALIDASI.md) prasyarat no. 4, bukan versi yang sedang dibangun.
+
+Izin etik diajukan minggu kedua–keempat November 2026, dan persetujuannya ditargetkan paling lambat akhir September sampai minggu pertama November 2027. Uji keterbacaan dengan anak di tahap 2, uji coba, dan pengambilan data baru boleh berjalan setelah persetujuan terbit.
 
 ![Peta jalan: enam tahap, lima gerbang](gambar/peta-jalan.svg)
 
@@ -500,9 +508,18 @@ Pertanyaan ini perlu dijawab sebelum desain instrumen dibekukan. Centang kalau t
 
 ## Catatan perubahan sistem untuk tahap nanti
 
-Belum ada yang dikerjakan sekarang. Daftar ini jadi bahan dokumen implementasi dan tahap 3, setelah desain instrumen disetujui. Karena semua bagian game boleh dirombak, daftar ini bukan batas; ini yang wajib ada untuk penelitian.
+Per 1 November 2026 belum ada yang dikerjakan di kode. Daftar ini menjadi bahan dokumen implementasi. Karena semua bagian game boleh dirombak, daftar ini bukan batas; ini yang wajib ada untuk penelitian.
 
-Dokumen implementasi no. 7, 10–15, 23, dan 24 didraf lebih dulu dalam empat bagian (keputusan pengembang 30 Oktober 2026, [04](04_CATATAN_KEPUTUSAN.md)): no. 10 di `27`, no. 11–13 dan 24 di `28`, no. 7, 14, dan 15 di `29`, no. 23 di `30`. Sisanya didraf setelah matriks revisi induk ([20](20_PAKET_VALIDASI.md)). Sistemnya tetap baru diubah di tahap 3. Baris no. 7, 10–15, dan 23 diselaraskan dengan keputusan pengembang di 27–30 (sesi koordinator, 30 Oktober 2026, `asal: pengembang`); rinciannya tetap di dokumen implementasi masing-masing.
+Dokumen implementasi no. 7, 10–15, 23, dan 24 didraf lebih dulu dalam empat bagian (keputusan pengembang 30 Oktober 2026, [04](04_CATATAN_KEPUTUSAN.md)): no. 10 di `27`, no. 11–13 dan 24 di `28`, no. 7, 14, dan 15 di `29`, dan no. 23 di `30`. Baris no. 7, 10–15, dan 23 diselaraskan dengan keputusan pengembang di 27–30 (sesi koordinator, 30 Oktober 2026, `asal: pengembang`); rinciannya tetap di dokumen implementasi masing-masing.
+
+Sejak 1 November 2026 semua perubahan dibangun sekarang, tanpa menunggu matriks revisi induk ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026). Sisanya dibagi ke lima dokumen implementasi baru:
+- no. 1, 3, 4, 8, 17, dan 20: bagian 5, bank soal baru;
+- no. 2, 6, dan 18: bagian 6, Skenario Digital;
+- no. 5, 16, dan 19: bagian 7, mode penelitian;
+- no. 21 dan 22: bagian 8, modul tes dan skala sikap;
+- no. 9: bagian 9, lapis data turunan.
+
+Hasil validasi ahli kembali sebagai revisi isi (workbook, cerita, teks) dan, bila perlu, revisi dokumen implementasi.
 
 | No | Perubahan | Analitik | Catatan untuk pengembang |
 | --- | --- | --- | --- |

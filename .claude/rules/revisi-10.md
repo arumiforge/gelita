@@ -17,6 +17,10 @@ The Markdown documents total about 1.2 MB, roughly 500k tokens (27 October 2026)
 ## Scope
 - One interview round or one document per session, on its own short-lived branch cut from `main`.
 - Interviews: at most four questions per round, recommended option first.
+- An implementation session (parts `27`–`35`, or code for one part) reads its own part document and the source sections that document names; nothing else up front. Code is built now but never used with children before ethics approval (`04`, 1 November 2026).
+
+## Researcher changes (1 November 2026)
+- The researcher handles validation and ethics. The repo stays the master copy of `22`, `23`, `24`, and `26`: researcher edits come in through the owner, are applied with `asal: peneliti` (or `asal: komite etik`), and the rebuilt PDFs from `dokumen-pdf/cetak/` go back to the researcher. The researcher receives PDFs only.
 
 ## End of each round or document
 - Record each decision in `04` (newest first) as soon as the round ends, tick the matching open question in `01`, update this branch's rows in `docs/PROGRESS.md`, then commit and push. A restarted or new session only knows what is in the repo.
