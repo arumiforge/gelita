@@ -6,6 +6,36 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 1 November 2026
 
+**Pembagian kerja baru: peneliti menangani validasi dan izin etik, pengembang menyerahkan berkas awal lalu mengimplementasikan** (cabang `sky/sweet-allen-0md2pw`) · `asal: peneliti` (pembagian kerja, disampaikan lewat pengembang) dan `asal: pengembang` (empat keputusan lanjutan) · `disetujui pengembang` · merevisi rencana kerja, belum merevisi produk
+
+Peneliti meminta dokumen permohonan izin etik ([22](22_PERMOHONAN_IZIN_ETIK.md)) serta surat informasi dan persetujuan ([23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md)). Semua validasi (validasi ahli, izin etik, uji keterbacaan, uji dengan siswa) ditangani peneliti. Pengembang cukup menyerahkan berkas awal, lalu fokus mengimplementasikan perubahan terbaru ke sistem. Pengembang tetap menyediakan bahan teknis yang diminta peneliti, misalnya isian kelompok B di 22 atau instalasi uji dan akun `uji.*` di [20](20_PAKET_VALIDASI.md). Empat keputusan lanjutan diambil pengembang dalam wawancara singkat:
+
+1. **Semua perubahan sistem dibangun sekarang** (no. 1–24 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)), termasuk yang bergantung pada hasil validasi (no. 1–6, 8, 9, 16–22). Pengerjaan ulang setelah hasil validasi kembali diterima. Tidak dipilih: hanya perubahan yang tidak bergantung pada validasi (no. 7, 10–15, 23, 24; usulan AI), atau tetap menunggu G2.
+2. **Cek kemutakhiran hanya untuk 22, 23, 27, 28, 29, dan 30.** 22 dan 23 diserahkan sekarang; 27–30 menjadi dasar implementasi. Lima belas dokumen lain yang belum dicek (01, 02, 03, 06, 07, 08, 11, 14–18, 20, 21, 24) adalah bahan validasi dan penelitian. Dokumen itu diperbarui dari hasil validasi, atau saat dokumen implementasi merujuknya. Tidak dipilih: ke-21 dokumen dalam gelombang enam sesi, atau hanya 27–30.
+3. **Repo tetap salinan induk** 22, 23, 24, dan 26. Peneliti mengirim perubahan lewat pengembang. Sesi pengembang menerapkannya dengan label `asal: peneliti` (atau `asal: komite etik`), membuat ulang PDF siap cetak, lalu mengirimkannya kembali. Tidak dipilih: repo dibekukan saat diserahkan dan peneliti menyunting di luar repo (usulan AI).
+4. **Peneliti menerima PDF saja:** PDF siap cetak 22, 23, 24, dan 26 di `dokumen-pdf/cetak/`, ditambah berkas serah terima v1.4. Tidak dipilih: PDF ditambah Word (usulan AI), atau Word saja.
+
+**Aturan baru untuk pekerjaan sistem.** Aturan ini menggantikan "sistem baru diubah di tahap 3, setelah G2" (urutan tahap yang dikukuhkan 25 Oktober 2026, dan dipertahankan peneliti dalam entri model ADDIE di bawah). Urutan tahap lainnya tetap.
+- Kode boleh dibangun sekarang, di cabang pendek dari `main`. Perilaku penelitian ada di balik sakelar studi yang mati secara bawaan (misalnya `field_mode`), jadi `main` tetap bisa dirilis.
+- Tidak ada kegiatan dengan anak (KG1–KG5), dan sistem baru tidak dipakai dengan anak, sebelum persetujuan etik terbit. Urutan gerbang tidak berubah: G3 tetap dinilai setelah G2, pada Prototipe II yang sudah memuat revisi dari validasi ahli. Versi tetap dikunci di G4.
+- Instalasi uji validator tetap memakai *commit* yang dibekukan di [20](20_PAKET_VALIDASI.md) prasyarat no. 4, bukan `main`. Dengan begitu validator menilai satu versi yang tetap dan tidak melihat label pengembang.
+- Migrasi yang menghapus data (`003400` menghapus akun `guru`, `003600` menghapus baris log) baru dijalankan di server produksi bila pengembang memutuskannya.
+- Isi (bank soal, cerita, teks) disimpan di berkas data (workbook, `story.php`, berkas bahasa), supaya revisi dari validasi cukup diubah di data lalu diimpor ulang, tanpa mengubah kode. Teks persetujuan T4, T11, dan T12 diambil dari 23 apa adanya. Bila peneliti atau komite etik mengubahnya, 23 diubah lebih dulu, baru berkas bahasa.
+
+**Urutan kerja.** Rinciannya di [00 → Tahap dokumen 3](00_INDEKS.md) dan `docs/PROGRESS.md`.
+- **Gelombang A:** enam sesi paralel, satu dokumen per sesi, masing-masing di cabangnya sendiri dari `main`. 22 dan 23 dicek kemutakhirannya lalu diserahkan sebagai PDF. 27–30 dicek kemutakhirannya dan ditinjau pengembang sampai `disetujui pengembang`.
+- **Gelombang B,** bersamaan dengan A: lima dokumen implementasi baru untuk perubahan yang bergantung pada validasi. Nomor berkas 31–35; nomor migrasi mulai `003900`, mengikuti urutan digabung.
+  - bagian 5: bank soal baru (no. 1, 3, 4, 8, 17, 20);
+  - bagian 6: Skenario Digital (no. 2, 6, 18);
+  - bagian 7: mode penelitian (no. 5, 16, 19);
+  - bagian 8: modul tes dan skala sikap (no. 21, 22);
+  - bagian 9: lapis data turunan (no. 9 dan `kamus-1.1`).
+- **Kode:** bagian 1 dikerjakan sendirian → bagian 2 ∥ 5 → bagian 3 ∥ 4 ∥ 6 → bagian 7 ∥ 8 → bagian 9 terakhir. Bagian 1 lebih dulu karena semua bagian lain memakai peta kemampuannya ([27 → Model hak akses di kode](27_IMPLEMENTASI_PERAN_PENELITI.md#5-model-hak-akses-di-kode)).
+
+**Kalimat lama yang belum diubah.** Sudah diketahui, dan diubah saat dokumennya disentuh: 11 (*Yang harus disediakan sistem di tahap 3*), pembuka 17 dan 18, kolom *Siap* di 26 (*tahap 3* = "setelah gerbang G2"), dan `gambar/peta-jalan.svg` (tahap 3). Kalimat di 22 dan 27–30 diubah di gelombang A. Baris lama `docs/PROGRESS.md` dibiarkan sebagai riwayat.
+
+Diubah: 04, 01 (*Peta jalan dan daftar kerja*, *Catatan perubahan sistem untuk tahap nanti*), 00 (*Tahap dokumen 2* langkah berikutnya, *Tahap dokumen 3*), `docs/PROGRESS.md`, `.claude/rules/revisi-10.md`, PDF siap cetak 00, 01, dan 04.
+
 **26 diselaraskan dengan keadaan terbaru** (cabang `sky/upbeat-heisenberg-gxyw3p`, setelah PR #304) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 26 tetap `disetujui pengembang` v1.0 · tidak merevisi produk
 
 Atas permintaan pengembang, [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) dicek terhadap keputusan sesudah perubahan terakhirnya (cek pasal PP 33/2026, entri di bawah), terhadap 22, 23, 24, dan 30, dan terhadap kode. Tidak ada keputusan baru; risiko, langkah perlindungan, dan simpulan tidak berubah, jadi versi tetap 1.0.
