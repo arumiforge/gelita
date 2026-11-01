@@ -6,6 +6,20 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 1 November 2026
 
+**Instrumen validasi dan paket validasi diperbarui: model ADDIE dan putaran penilaian ulang tanpa batas** (cabang `sky/cool-fermi-rv44sj`, setelah PR #297) · `asal: peneliti` (model) dan `asal: pengembang` (putaran) · `disetujui pengembang` · belum merevisi produk; isi dan nomor butir instrumen tidak berubah
+
+Atas permintaan pengembang, ketiga instrumen validasi diperbarui sebelum paket validasi dikirim. Tidak ada keputusan baru; yang diterapkan keputusan peneliti tentang ADDIE dan keputusan pengembang "putaran penilaian ulang tanpa batas" (keduanya di entri pertama hari ini, di bawah).
+
+1. **Pengantar A.1 ketiga instrumen.** "Model penelitian desain pendidikan Plomp (2013), jenis studi pengembangan" diganti "model penelitian dan pengembangan ADDIE (Branch, 2009)": setiap fase diuji, dan temuan dikembalikan ke fase pengembangan sampai produknya final. Validasi ahli kini disebut telaah ahli di fase pengembangan (Nieveen & Folmer, 2013, tetap dirujuk). Instrumen ahli materi tetap menyebut empat kriteria mutu dengan rujukan Plomp (2013) sebagai sumber kriterianya, sesuai keputusan "empat kriteria tetap"; di instrumen pengamat budaya dan ahli media, Plomp (2013) dihapus dari daftar pustaka karena tidak dirujuk lagi. Branch (2009) ditambahkan di ketiga daftar pustaka. A.2 ahli materi: "uji coba satu kelas" menjadi "uji kelompok kecil dan menengah".
+2. **Putaran penilaian ulang.** Di ringkasan cara pakai, A.4, aturan keputusan (C.6 ahli materi, C.5 pengamat budaya dan ahli media), pelaporan, dan D.2, "putaran 2" menjadi "putaran kedua dan berikutnya" atau "putaran berikutnya", dengan kalimat bahwa jumlah putaran tidak dibatasi dan putaran diulang sampai butir memenuhi aturan.
+3. **Versi dan catatan perubahan.** Nomor versi tetap (v2.1, v2.1, v1.1), karena paket belum dikirim dan nomor itu dirujuk di 07, 20, dan 21; baris versi di sampul dan tabel D.4 mencatat perubahan 1 November 2026. PDF dibuat ulang: ahli materi 43 halaman, pengamat budaya 34, ahli media 30 (sebelumnya 29).
+4. **Paket validasi (20).** Aturan lama "kalau butir masih gagal di putaran 2, butir diganti atau dihapus" diganti: butir direvisi lagi dan dinilai di putaran berikutnya sampai memenuhi aturan; mengganti atau menghapus tetap bisa diputuskan peneliti, tetapi tidak diwajibkan oleh jumlah putaran. Jadwal mendapat baris "putaran 3 dan seterusnya" (dua minggu per putaran, tanggal G2 bergeser), nama berkas `p3`, …, aturan honorarium per putaran perlu ditetapkan, dan surat permohonan butir 1 memberi tahu validator bahwa penilaian ulang bisa lebih dari satu putaran.
+5. **Berkas validator (21) tidak dibuat ulang**, karena tabel butir di instrumen tidak berubah; yang diubah hanya teks pengantar, aturan, dan daftar pustaka.
+
+Belum diubah: **berkas serah terima ke peneliti** (v1.2) masih memuat tabel fase Plomp, tanya jawab "Kenapa Plomp?", dan baris lembar keputusan "Model Plomp dan aturan Lynn". Berkas ini tidak dikirim ke validator; apakah diperbarui menjadi v1.3 atau dibiarkan sebagai catatan keadaan sebelum pertemuan diputuskan pengembang.
+
+Diubah: `dokumen-pdf/src/` ketiga HTML instrumen dan PDF-nya, README `dokumen-pdf/`, 20, 00.
+
 **Paket izin etik diperbarui untuk model ADDIE dan tiga uji dengan siswa** (cabang `sky/cool-fermi-rv44sj`, setelah PR #296) · `asal: peneliti` (model, uji, sampel) dan `asal: pengembang` (kode, rincian) · `draf pengembang` · merevisi rancangan penelitian, belum merevisi produk
 
 Pengembang meminta paket izin etik diperbarui sebelum diajukan. Empat keputusan diambil pengembang dalam wawancara singkat; semuanya opsi yang direkomendasikan:

@@ -1,6 +1,6 @@
 # Paket Validasi Ahli
 
-Per 27 Oktober 2026 · **Status: draf**; pertanyaan pengembang dijawab 27 Oktober 2026; diselaraskan dengan 21–24 pada hari yang sama; cara memenuhi prasyarat no. 4, 8, 9, dan 10 ditulis 27 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 1 November 2026 · **Status: draf**; pertanyaan pengembang dijawab 27 Oktober 2026; diselaraskan dengan 21–24 pada hari yang sama; cara memenuhi prasyarat no. 4, 8, 9, dan 10 ditulis 27 Oktober 2026; putaran penilaian ulang tanpa batas sejak 1 November 2026 ([Keputusan pengembang](#keputusan-pengembang)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Dokumen ini mengubah tiga instrumen validasi ahli menjadi paket yang siap dikirim ke sebelas validator. Isinya: siapa menerima apa dan kapan, surat permohonan, akses ke instalasi uji, cara hasil dikembalikan dan dicatat, apa yang terjadi setelah hasil kembali, dan daftar periksa validasi untuk gerbang G2. Daftar kerja no. 3 dan no. 14 di [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja). Pekerjaan ini bagian dari **Prototipe I**.
 
@@ -27,7 +27,7 @@ Nomor berkas di dokumen ini selalu nomor di tabel D.3 instrumennya, misalnya "IM
 
 **Apa paketnya.** Satu paket per validator: surat permohonan, instrumen yang sesuai panelnya, berkas bahan dari tabel D.3 instrumen itu, lembar kerja dari 21, dan akses ke instalasi uji. Ahli materi menerima paketnya dalam dua kiriman, karena pelabelan buta (B.5a) harus selesai sebelum label pengembang dibuka. Dua penilai B.5a menerima **paket B.5a saja** di kiriman awal; instrumen lengkap dan semua bahan lain baru dikirim setelah lembar B.5a mereka kembali.
 
-Di dokumen ini, **kiriman** berarti pengiriman bahan (kiriman awal, kiriman setelah B.5a, kiriman setelah B.6 media), sedangkan **putaran** hanya dipakai untuk putaran validasi: putaran 1 adalah penilaian pertama, putaran 2 penilaian ulang butir yang direvisi. 21 memakai istilah yang sama.
+Di dokumen ini, **kiriman** berarti pengiriman bahan (kiriman awal, kiriman setelah B.5a, kiriman setelah B.6 media), sedangkan **putaran** hanya dipakai untuk putaran validasi: putaran 1 adalah penilaian pertama, putaran 2 dan seterusnya penilaian ulang butir yang direvisi. Jumlah putaran tidak dibatasi (keputusan pengembang 1 November 2026). 21 memakai istilah yang sama.
 
 **Siapa.** Sebelas validator, semuanya dengan nama samaran dari [03 → Peran](03_KODE_DAN_ARTI.md#peran):
 
@@ -146,7 +146,7 @@ Halaman petunjuk B.5a di paket B.5a bukan berkas 21: halaman itu dicetak dari IM
 2. **Kiriman awal (minggu 1).** Kesebelas validator menerima surat permohonan. Sembilan validator menerima berkas kiriman awal panelnya; dua penilai B.5a menerima paket B.5a saja. Pengarahan daring per panel, terpisah supaya validator tidak saling memengaruhi (IM A.4 "Independen"): ahli materi 45 menit untuk tiga ahli materi lain, pengamat budaya 30–45 menit, ahli media 30 menit. Dua penilai B.5a tidak ikut pengarahan panel di minggu ini, karena pengarahan itu membahas kode; mereka mendapat pengarahan B.5a tersendiri, ± 15 menit, tentang cara melabel tanpa membuka bahan lain.
 3. **Kiriman setelah B.5a (minggu 3).** Setelah kedua lembar B.5a masuk dan diarsipkan, kelima ahli materi menerima surat lanjutan. Tiga ahli materi lain menerima berkas IM D.3 no. 4 berlabel, no. 5 (`materi-b5b-relevansi-kejelasan.xlsx`), dan no. 6. Dua penilai B.5a menerima instrumen lengkap dan semua berkas IM D.3 lain (no. 3–12, no. 4 langsung berlabel), lembar kerja `materi-b5b-relevansi-kejelasan.xlsx` dan `materi-b6-b9-lembar-kerja.xlsx`, dan akses ke instalasi uji, lalu ikut pengarahan ahli materi 45 menit. Kiriman ini dikirim begitu lembar B.5a kedua diarsipkan, tanpa menunggu awal minggu 3.
 4. **Kiriman setelah B.6 media (minggu 3–4).** Setiap ahli media yang sudah mengumpulkan B.6 menerima IMd D.3 no. 10.
-5. **Putaran 2 validasi (minggu 10–11).** Hanya butir atau bagian yang direvisi, dengan matriks tindak lanjut D.2 (lihat [Setelah hasil kembali](#setelah-hasil-kembali)).
+5. **Putaran 2 validasi (minggu 10–11).** Hanya butir atau bagian yang direvisi, dengan matriks tindak lanjut D.2 (lihat [Setelah hasil kembali](#setelah-hasil-kembali)). Butir yang masih gagal direvisi lagi dan dinilai di putaran 3, dan seterusnya, masing-masing dengan pola dua minggu yang sama; tanggal G2 bergeser sesuai jumlah putaran.
 6. **Penilaian ulang setelah uji keterbacaan.** Setelah izin etik terbit dan uji keterbacaan (24) selesai, butir yang direvisi dari temuan anak, dan sudah dibaca ulang anak K05 di putaran kedua uji itu, dikirim ke penilai yang ditunjuk [24 → Yang kembali ke ahli](24_UJI_KETERBACAAN.md#yang-kembali-ke-ahli), dengan surat dan matriks seperti putaran 2.
 7. **Media langkah 2.** Setelah tahap 3, sebelum uji coba (G3).
 
@@ -165,6 +165,7 @@ Batas waktu mengikuti saran instrumen: pengisian boleh dicicil 2–3 minggu (IM 
 | 6–7 | Entri, pemeriksaan ganda, analisis per instrumen, matriks revisi | — | — |
 | 8–9 | Revisi Prototipe I; dicatat di 04 | — | — |
 | 10–11 | Putaran 2: butir yang direvisi dikirim ke penilainya | Satu pengingat di minggu 11 | Akhir minggu 11 |
+| Bila perlu | Putaran 3 dan seterusnya untuk butir yang masih gagal, dua minggu per putaran; minggu 12 bergeser | Satu pengingat per putaran | Akhir minggu kedua setiap putaran |
 | 12 | Daftar periksa validasi G2 diisi (kecuali uji keterbacaan, yang menunggu izin etik) | — | — |
 | Setelah izin etik | Uji keterbacaan (24) pada bahan setelah revisi; revisi dari temuan anak; anak K05 membaca bahan yang direvisi; penilaian ulang ahli untuk butir yang kembali ([24 → Yang kembali ke ahli](24_UJI_KETERBACAAN.md#yang-kembali-ke-ahli)) | Satu pengingat | Ditetapkan saat jadwal uji keterbacaan diketahui |
 
@@ -200,6 +201,7 @@ Tanggal ini **usulan**, dengan anggapan ketiga instrumen disetujui paling lambat
 | 6–7 | 14–24 Desember 2026, lalu jeda libur akhir tahun sampai 1 Januari 2027 |
 | 8–9 | 4–15 Januari 2027 |
 | 10–11 (putaran 2) | 18–29 Januari 2027 |
+| Putaran 3 dan seterusnya (bila perlu) | Dua minggu per putaran sesudah 29 Januari 2027 |
 | 12 | Minggu 1 Februari 2027 |
 
 ### Hubungannya dengan izin etik
@@ -246,7 +248,7 @@ Tempat isian yang dipakai di ketiga surat:
 >
 > Beberapa hal yang perlu Bapak/Ibu ketahui:
 >
-> 1. **Waktu.** Perkiraan seluruh pengisian sekitar [perkiraan jam dari tabel] jam, boleh dicicil. Batas pengumpulan [tanggal batas]. Pengarahan daring sekitar 45 menit pada [tanggal pengarahan].
+> 1. **Waktu.** Perkiraan seluruh pengisian sekitar [perkiraan jam dari tabel] jam, boleh dicicil. Batas pengumpulan [tanggal batas]. Pengarahan daring sekitar 45 menit pada [tanggal pengarahan]. Bila ada butir yang kami revisi, Bapak/Ibu mungkin kami mohon menilai ulang butir itu, satu putaran atau lebih, dengan rubrik yang sama dan waktu yang jauh lebih singkat.
 > 2. **Dua kiriman.** Sebagian bahan kami kirim sekarang. Label pengembang, kisi-kisi bank soal, dan daftar relevansi per butir (B.5b) menyusul setelah pelabelan buta selesai, sekitar [tanggal kiriman kedua].
 > 3. **Cara mengisi.** Lembar per butir tersedia sebagai lembar kerja (*spreadsheet*) yang sudah berisi daftar butirnya: B.5b dan B.6–B.9 dengan kode butir. Lembar lain boleh diisi di berkas atau di kertas.
 > 4. **Akses game.** Bapak/Ibu akan menerima alamat instalasi uji dan akun uji secara terpisah, untuk memainkan minimal satu wilayah. Mohon tidak memakai akun itu di luar keperluan validasi.
@@ -354,6 +356,8 @@ Kalimat "mohon lembar yang sudah selesai tidak diubah" di versi A menjaga lembar
 
 ### Surat putaran 2 validasi
 
+Dipakai juga untuk putaran 3 dan seterusnya, dengan jumlah butir dan batas waktu putaran itu.
+
 > Hal: **Penilaian ulang butir yang telah direvisi**
 >
 > Yth. [nama validator],
@@ -423,7 +427,7 @@ Surat pernyataan memuat nama asli dan tanda tangan. Karena itu surat pernyataan 
 | Daftar padanan nama samaran ↔ nama asli | Satu berkas terenkripsi di luar repo, terpisah dari folder lembar | Ketua peneliti saja |
 | Rekap hasil (skor per butir per nama samaran), hasil analisis, matriks revisi | Repo, setelah dibersihkan dari nama asli dan identitas | Tim |
 
-Nama berkas yang diusulkan: `<samaran>_<lembar>_<putaran>_<tanggal terima>`, misalnya `ABA1_B5b_p1_2026-12-10.xlsx` (`p1` putaran 1, `p2` putaran 2, `pk` penilaian ulang setelah uji keterbacaan). Singkatan samaran: `ABA1`, `ABA2`, `ALD1`, `ALD2`, `AP`, `ABK1`–`ABK3`, `AMP1`–`AMP3`.
+Nama berkas yang diusulkan: `<samaran>_<lembar>_<putaran>_<tanggal terima>`, misalnya `ABA1_B5b_p1_2026-12-10.xlsx` (`p1` putaran 1, `p2`, `p3`, … putaran 2 dan seterusnya, `pk` penilaian ulang setelah uji keterbacaan). Singkatan samaran: `ABA1`, `ABA2`, `ALD1`, `ALD2`, `AP`, `ABK1`–`ABK3`, `AMP1`–`AMP3`.
 
 ### Siapa memasukkan dan siapa memeriksa
 
@@ -477,7 +481,7 @@ Isi kolom:
 | Keputusan | Dipertahankan · revisi kecil · revisi besar · diganti · dihapus · dipindah (label atau kisi-kisi) · ditunda ke tahap 3 · tidak diikuti (alasan wajib) |
 | Perubahan | Apa yang diubah, cukup untuk dibandingkan dengan versi sebelumnya |
 | Dokumen yang diubah | Nomor dokumen repo (08, 12–18, 06, 11) atau instrumen |
-| Perlu ditelaah ulang? | Ya (siapa, dan kapan: putaran 2, setelah uji keterbacaan, atau media langkah 2) / tidak (mengapa); lihat aturan di bawah |
+| Perlu ditelaah ulang? | Ya (siapa, dan kapan: putaran berikutnya, setelah uji keterbacaan, atau media langkah 2) / tidak (mengapa); lihat aturan di bawah |
 
 Kode butir lama tidak dipakai ulang untuk isi baru (IM C.6, IB C.5). Butir pengganti mendapat kode baru.
 
@@ -485,7 +489,7 @@ Kode butir lama tidak dipakai ulang untuk isi baru (IM C.6, IB C.5). Butir pengg
 
 | Keadaan | Kembali ke | Dasar |
 | --- | --- | --- |
-| Butir soal I-CVI < 1,00 atau V < 0,80, lalu direvisi | Semua penilai butir itu di putaran 2 | IM C.6, IB C.5 |
+| Butir soal I-CVI < 1,00 atau V < 0,80, lalu direvisi | Semua penilai butir itu di putaran berikutnya, sampai memenuhi aturan | IM C.6, IB C.5 |
 | Butir B.3 (mutu rancangan) V < 0,80 atau ada skor 1–2 | Semua penilai B.3 panel itu, untuk bagian yang diperbaiki | IM C.6 |
 | Catatan kritis (veto) | Validator yang memberi catatan **dan** semua penilai butir itu | IM C.6, IB C.5 |
 | Butir dengan kurang dari tiga penilaian non-TD | Penilai tambahan dari panel; butir belum lolos | IM C.6, IB C.5, IMd A.3 |
@@ -499,7 +503,7 @@ Kode butir lama tidak dipakai ulang untuk isi baru (IM C.6, IB C.5). Butir pengg
 | Perbedaan versi budaya yang sah | Tidak dikirim ulang; dicatat sebagai versi | IB C.5 |
 | Butir direvisi dari temuan uji keterbacaan | Penilai menurut jenis revisinya, di penilaian ulang setelah uji keterbacaan; bahan dibaca ulang anak K05 lebih dulu | [24 → Yang kembali ke ahli](24_UJI_KETERBACAAN.md#yang-kembali-ke-ahli) |
 
-Putaran 2 dikirim dengan matriks D.2 instrumen yang bersangkutan, hanya berisi baris untuk validator itu. Kalau butir masih gagal di putaran 2, butir diganti atau dihapus, dan butir pengganti dinilai lagi oleh semua penilainya.
+Putaran 2 dikirim dengan matriks D.2 instrumen yang bersangkutan, hanya berisi baris untuk validator itu. Kalau butir masih gagal di putaran 2, butir direvisi lagi dan dinilai di putaran berikutnya oleh semua penilainya, sampai memenuhi aturan; jumlah putaran tidak dibatasi (keputusan pengembang 1 November 2026). Mengganti atau menghapus butir tetap bisa diputuskan peneliti, tetapi tidak diwajibkan oleh jumlah putaran; butir pengganti dinilai oleh semua penilainya.
 
 ### Pencatatan di 04
 
@@ -622,7 +626,7 @@ Untuk dua penilai B.5a, tambahkan satu kalimat setelah perkiraan waktu: "Bagian 
 
 **Langkah 1. Menyiapkan komputer dan alamat**
 
-1. Pilih satu PC lab yang bisa menyala terus dari minggu 1 sampai putaran 2 selesai (usulan tanggal: 9 November 2026 sampai akhir Januari 2027, termasuk jeda libur). Matikan tidur otomatis dan pembaruan Windows yang memulai ulang sendiri; bila ada, pasang UPS.
+1. Pilih satu PC lab yang bisa menyala terus dari minggu 1 sampai putaran penilaian ulang terakhir selesai (usulan tanggal: 9 November 2026 sampai akhir Januari 2027, lebih lama bila ada putaran 3 dan seterusnya, termasuk jeda libur). Matikan tidur otomatis dan pembaruan Windows yang memulai ulang sendiri; bila ada, pasang UPS.
 2. Minta bagian TI kampus: satu subdomain (misalnya `[gelita-uji.kampus.ac.id]`), penerusan port 443 (dan 80 untuk sertifikat) ke PC itu atau *reverse proxy* kampus ke PC itu, dan sertifikat HTTPS. HTTPS wajib, karena pemasangan sebagai aplikasi dan paket aset hanya jalan di HTTPS (IMd D.3 no. 2).
 3. Server, database, dan data akun tetap di kampus, jadi tetap di Indonesia (sama dengan keputusan di 22).
 
@@ -685,7 +689,7 @@ Sistem sekarang tidak punya reset kemajuan per akun. Yang ada:
 | --- | --- |
 | Satu validator butuh mulai dari awal | Beri akun cadangan yang belum dipakai, atau buat akun baru `uji.cadangan3` dan seterusnya lewat langkah 3. Akun lama dibiarkan |
 | Validator menuntaskan ketiga wilayah | Sesinya selesai, dan masuk berikutnya otomatis membuka sesi baru dari awal (`SessionService::login()`, `GameSessionModel::resumable()`). Ini disebut di surat akses supaya tidak dikira galat |
-| Semua akun perlu bersih, misalnya sebelum putaran 2 atau sebelum media langkah 2 | Di **komputer lab ini saja**: `php spark gelita:reset --dry-run`, periksa rencananya, lalu `php spark gelita:reset`. Semua akun siswa terhapus dan studi kembali ke bawaan (`sequential`), jadi langkah 2 butir 3 dan langkah 3–4 diulang. Akun `admin` tetap |
+| Semua akun perlu bersih, misalnya sebelum putaran penilaian ulang atau sebelum media langkah 2 | Di **komputer lab ini saja**: `php spark gelita:reset --dry-run`, periksa rencananya, lalu `php spark gelita:reset`. Semua akun siswa terhapus dan studi kembali ke bawaan (`sequential`), jadi langkah 2 butir 3 dan langkah 3–4 diulang. Akun `admin` tetap |
 
 **Usulan alat bantu untuk tahap 3** (tidak dibuat sekarang; `asal: pengembang`, `draf pengembang`): satu perintah spark, misalnya `gelita:uji:akun`, yang (a) membuat akun `uji.*` dari daftar nama samaran dengan sandi acak yang ditampilkan sekali dan sekolah `Sekolah Uji Validator`, dan (b) dengan `--reset=<nama pengguna>` menutup sesi bermain akun itu sehingga masuk berikutnya mulai dari awal. Perintah ini menolak berjalan bila instalasi berisi siswa yang bukan `uji.*`, supaya tidak pernah terpakai di produksi. Gunanya terasa di media langkah 2 (G3), saat akun dibuat ulang di instalasi uji tahap 3. Dicatat di [Akibat ke dokumen lain](#akibat-ke-dokumen-lain) untuk *Catatan perubahan sistem* di 01. Sejak 30 Oktober 2026 menjadi perubahan sistem no. 24 di 01 dan didraf di 28 ([04](04_CATATAN_KEPUTUSAN.md)).
 
@@ -704,7 +708,7 @@ Yang harus diketahui ketua peneliti sebelum paket dikirim:
 
 | Hal | Isi yang perlu jelas | Dicatat di |
 | --- | --- | --- |
-| Besaran | Per validator, atau per panel bila bebannya beda jauh (lihat perkiraan jam di [Siapa menerima apa](#siapa-menerima-apa): ± 4–5,5 jam ahli media sampai ± 18–26 jam penilai B.5a). Termasuk apakah putaran 2 dan penilaian ulang setelah uji keterbacaan dibayar terpisah | Daftar padanan di luar repo, kolom honorarium |
+| Besaran | Per validator, atau per panel bila bebannya beda jauh (lihat perkiraan jam di [Siapa menerima apa](#siapa-menerima-apa): ± 4–5,5 jam ahli media sampai ± 18–26 jam penilai B.5a). Termasuk apakah putaran 2 dan seterusnya, dan penilaian ulang setelah uji keterbacaan, dibayar terpisah; karena jumlah putaran tidak dibatasi, aturan honorarium per putaran perlu ditetapkan | Daftar padanan di luar repo, kolom honorarium |
 | Sumber dana | Hibah, dana pribadi, atau dana lembaga; harus sama dengan sumber dana yang ditulis di 22 dan 23, supaya pernyataan konflik kepentingan tetap benar | Catatan keuangan penelitian di luar repo; di 22 hanya jenis sumbernya |
 | Ketentuan yang diacu | Standar biaya yang berlaku di lembaga pemberi dana, dan potongan pajak (PPh) bila ada | Catatan keuangan penelitian |
 | Waktu dan cara bayar | Misalnya setelah surat pernyataan D.1 dan semua lembar putaran 1 kembali; transfer atau tunai | Daftar padanan, kolom honorarium |
@@ -742,7 +746,7 @@ Yang harus diketahui ketua peneliti sebelum paket dikirim:
 | Sumber berubah **sebelum** paket dikirim | Ulangi langkah 2–10. *Commit* beku yang lama diganti, dan entri 04 yang baru menyebut penggantinya |
 | Sumber berubah **setelah** paket dikirim | Jangan buat ulang berkas yang sudah dikirim. Catat perubahan di 04 dengan asal dan akibatnya (dinilai ulang ahli di putaran 2, amandemen ke komite etik, atau tidak perlu apa-apa), sesuai 01 aturan 3 |
 | B.5a sudah dikirim ke penilai | Jangan membuat ulang B.5a, kecuali kedua penilai menerima berkas baru dan berkas kunci ikut diganti ([21 → Cara membuat ulang](21_BERKAS_BUTIR_VALIDATOR.md#cara-membuat-ulang)) |
-| Putaran 2 | Butir yang direvisi dibekukan lagi dengan langkah yang sama sebelum dikirim, dan entri 04-nya menyebut *commit* putaran 1 sebagai pembanding |
+| Putaran 2 dan seterusnya | Butir yang direvisi dibekukan lagi dengan langkah yang sama sebelum dikirim, dan entri 04-nya menyebut *commit* putaran sebelumnya sebagai pembanding |
 | Lembar kembali dari validator | Tidak dibuat ulang. *Versi berkas* di kepala lembar dicocokkan dengan versi yang dicatat di 04 ([Apa yang kembali](#apa-yang-kembali)) |
 
 ## Keputusan pengembang
@@ -774,6 +778,11 @@ Keputusan pengembang di dokumen tahap 2 lain yang juga mengatur dokumen ini (27 
 - **Izin etik** (22). Satu permohonan untuk semua kegiatan dengan anak (KG1–KG5); revisi instrumen dilaporkan ke komite sebagai amandemen protokol, dan bahan untuk anak yang dilampirkan adalah versi yang dibekukan untuk validasi ahli.
 - **Uji keterbacaan** (24). Empat anak, ditambah satu anak (K05) di putaran kedua, pada bahan Prototipe I setelah revisi dari validasi ahli. Temuan dari anak masuk matriks revisi induk, dan butir yang direvisi kembali ke ahli di penilaian ulang setelah uji keterbacaan.
 - **Akun staf** (03). `admin` dan `ketua`, yang disebut di dokumen ini, termasuk akun staf yang sudah disetujui; tidak ada lagi yang berstatus usulan.
+
+Keputusan 1 November 2026 (cabang `sky/cool-fermi-rv44sj`, [04](04_CATATAN_KEPUTUSAN.md)), sudah diterapkan di atas:
+
+- **Putaran penilaian ulang tanpa batas** (`asal: pengembang`). Butir yang masih gagal di putaran 2 direvisi lagi dan dinilai di putaran berikutnya sampai memenuhi aturan, bukan langsung diganti atau dihapus. Akibatnya jadwal punya baris "putaran 3 dan seterusnya", tanggal G2 bergantung pada jumlah putaran, nama berkas memakai `p3`, …, dan aturan honorarium per putaran perlu ditetapkan. Pilihan lain: paling banyak dua putaran (direkomendasikan) atau tiga putaran, lalu butir dibuang atau diganti.
+- **Model ADDIE** (`asal: peneliti`). Pengantar ketiga instrumen (A.1) kini menyebut ADDIE (Branch, 2009) dan validasi ahli sebagai telaah ahli di fase pengembangan; isi dan nomor butir instrumen tidak berubah, jadi berkas validator ([21](21_BERKAS_BUTIR_VALIDATOR.md)) tidak perlu dibuat ulang.
 
 ## Akibat ke dokumen lain
 
