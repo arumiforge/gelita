@@ -6,6 +6,20 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 1 November 2026
 
+**13 diselaraskan dengan dokumen implementasi bagian 2–4** (cabang `sky/amazing-cerf-j3jjzk`, setelah PR #302) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 13 tetap draf · tidak merevisi produk
+
+Atas permintaan pengembang, [13](13_TES_AWAL_AKHIR.md) dicek terhadap keputusan sesudah 26 Oktober 2026. Model ADDIE dan KG3a/KG3b sudah masuk 1 November 2026 (PR #299); yang tertinggal datang dari 28–30 (30 Oktober 2026). Tidak ada keputusan baru.
+
+- **Buklet dan bentuk tes dihitung panel** dari baris dan kursi, disimpan di `participant_seats` (`pre_form`, `post_form`, `locked_at`), dengan peringatan keseimbangan yang tidak menahan tes ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md#11-isian-l2-kursi-buklet-dan-bentuk-tes), K10). 13 masih menulis "buklet dimasukkan ke panel" di tabel waktu P1 dan di *Pembagian bentuk*.
+- **Butir risiko daring:** layar tanya ulang T11 untuk siswa yang izinnya ada, pesan dukungan T12 untuk semua siswa di titik yang sama, dan `risk_reconsent` ([30 §5.4](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#54-layar-t11-dan-t12)) ditulis di *Modul tes di GELITA* dan tabel waktu P5.
+- **Status tes** berasal dari modul; L6 tidak diimpor ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md), K12).
+- **Siapa yang masuk analisis:** siswa `Mengundurkan diri (data tetap)` ikut dengan data sampai tanggal mundur mulai `kamus-1.1` (`consent_ok`, 22).
+- **Dicatat sebagai hal terbuka untuk dokumen implementasi no. 22:** batas 20 menit susulan di P5 dijaga P1 atau sistem (28 §21 no. 2).
+- **Fakta budaya tes:** cek fakta budaya [25](25_CEK_FAKTA_BUDAYA.md) tidak mencakup topik budaya di 14 dan 15; baris validasi menyebutnya masih perlu dicek peneliti.
+- ***Penyesuaian di dokumen lain*:** baris 07 tidak lagi menyebut instrumen "belum ditulis"; baris 28, 29, dan 30 ditambahkan. Status ditulis dengan label `draf pengembang`.
+
+Diubah: 13, 00 (baris 13), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 13.
+
 **25 diselaraskan dengan keadaan terbaru** (cabang `sky/upbeat-heisenberg-gxyw3p`) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 25 tetap `disetujui pengembang` · tidak merevisi produk
 
 Atas permintaan pengembang, [25](25_CEK_FAKTA_BUDAYA.md) (terakhir diubah 31 Oktober 2026) dicek terhadap keputusan sesudahnya, terhadap dokumen yang dirujuknya, dan terhadap kode. Tidak ada keputusan baru; putusan, sumber, dan hitungan klaim (135; 103 dikonfirmasi, 20 varian, 2 keliru, 10 `needs_verification`) tidak berubah.
