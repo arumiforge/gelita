@@ -92,7 +92,7 @@ Urutan kerja mengikuti peta jalan di 01, yang dikukuhkan pengembang pada 25 Okto
 | [19_TELAAH_LABEL_BLOOM.md](19_TELAAH_LABEL_BLOOM.md): telaah label Bloom | no. 4 | AI (telaah), pengembang | Selesai (26 Oktober 2026); 08 dan 06 diperbarui |
 | [18_MOCKUP_LAYAR_BARU.md](18_MOCKUP_LAYAR_BARU.md): mock-up layar baru untuk ahli media langkah 1 (27 gambar di `gambar/mockup/`) | no. 20 | AI (draf), pengembang | Selesai (disetujui 26 Oktober 2026; gambar skala sikap dari 17) |
 | [02_LEMBAR_LAPANGAN.md](02_LEMBAR_LAPANGAN.md): lembar L0–L7 final (L8 Profil sekolah menyusul sebagai draf) | no. 11 | AI (draf), pengembang | Selesai (disetujui 26 Oktober 2026) |
-| Instrumen validasi ahli materi v2.1, pengamat budaya v2.1, dan ahli media v1.1 ([dokumen-pdf/](dokumen-pdf/README.md)) | [07](07_TELAAH_INSTRUMEN_VALIDASI.md#instrumen-versi-21-dan-11) | AI (draf), pengembang | Selesai (disetujui 27 Oktober 2026) |
+| Instrumen validasi ahli materi v2.1, pengamat budaya v2.1, dan ahli media v1.1 ([dokumen-pdf/](dokumen-pdf/README.md)) | [07](07_TELAAH_INSTRUMEN_VALIDASI.md#instrumen-versi-21-dan-11) | AI (draf), pengembang | Selesai (disetujui 27 Oktober 2026); model ADDIE dan putaran penilaian ulang tanpa batas dimasukkan 1 November 2026 |
 
 Gerbang G1: konstruk disetujui, dan semua dokumen tahap 1 selesai dan disetujui pengembang.
 
@@ -115,7 +115,7 @@ Setiap sesi hanya mengubah dokumennya sendiri, barisnya sendiri di berkas ini da
 
 **Langkah berikutnya di tahap 2** (per 30 Oktober 2026; kelima dokumen tahap 2, ketiga instrumen, cek fakta budaya [25](25_CEK_FAKTA_BUDAYA.md), dan penilaian dampak [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) sudah ada di `main`, semuanya `disetujui pengembang`, dengan 25 dan 26 dinaikkan pengembang pada 31 Oktober 2026; belum ada yang `disetujui peneliti`):
 
-**Model ADDIE dan tiga uji dengan siswa (1 November 2026).** Peneliti mengganti model Plomp dengan ADDIE dan menetapkan uji kelompok kecil (KG3a, 8–12 anak), uji kelompok menengah (KG3b, ± 80 siswa), dan uji besar (300 siswa yang datanya bisa dianalisis) ([04](04_CATATAN_KEPUTUSAN.md), 1 November 2026). Paket izin etik sudah diperbarui (22, 23, 26, 03, 30, 01, ditambah 02 dan 24 untuk baris yang ikut berubah). Yang tersisa: pengantar ketiga instrumen validasi dan berkas serah terima, sebelum paket validasi dikirim; lalu 06, 13, 16, dan dokumen pendukung peneliti.
+**Model ADDIE dan tiga uji dengan siswa (1 November 2026).** Peneliti mengganti model Plomp dengan ADDIE dan menetapkan uji kelompok kecil (KG3a, 8–12 anak), uji kelompok menengah (KG3b, ± 80 siswa), dan uji besar (300 siswa yang datanya bisa dianalisis) ([04](04_CATATAN_KEPUTUSAN.md), 1 November 2026). Paket izin etik sudah diperbarui (22, 23, 26, 03, 30, 01, ditambah 02 dan 24 untuk baris yang ikut berubah). Pengantar ketiga instrumen validasi dan paket validasi (20) juga sudah diperbarui, termasuk putaran penilaian ulang tanpa batas. Yang tersisa: berkas serah terima (menunggu keputusan pengembang), 06, 13, 16, dan dokumen pendukung peneliti.
 
 1. **Paket validasi.** Prasyarat no. 6 (cek fakta budaya) sudah selesai. Yang tersisa ada di [20 → Ringkasan](20_PAKET_VALIDASI.md#ringkasan), dan cara memenuhinya sudah ditulis di 20:
    - no. 9: nama asli dan kesediaan validator, dicatat di daftar padanan di luar repo;

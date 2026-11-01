@@ -1,8 +1,8 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "15fc800ff92f85ff2378ca9c2480e4c953d75a2ec85a4161215c403f1a4a6696",
-      "commit": "8b46ca2",
+      "source": "91601fea85cf6cca2c9dac99dbf01c79e3be785be95cad0879390c18e57fbff3",
+      "commit": "da90bef",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
       "pages": 11,
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "7f1f99cb2d4cff460133f50752d01e569098163f0b7cddda94cf1ad726391ac5",
-      "commit": "8b46ca2",
+      "source": "64428445c3dfacbd8675043ed0887ad992353ef89ae873d71f8738d6c89fd7e1",
+      "commit": "da90bef",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
-      "pages": 45,
+      "pages": 46,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -161,11 +161,11 @@
       "landscapeTables": 0
     },
     "20_PAKET_VALIDASI.md": {
-      "source": "88b04f773ee0e70664b5b75c8251b2e919a517b84371e2728fba090bf02fc82b",
-      "commit": "3200477",
+      "source": "f2a122deb534cab64e7b9a85cee5ecc987465387765b3eedf0fb40af19e62632",
+      "commit": "da90bef",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-30",
-      "pages": 26,
+      "date": "2026-11-01",
+      "pages": 28,
       "landscapeTables": 1
     },
     "21_BERKAS_BUTIR_VALIDATOR.md": {
