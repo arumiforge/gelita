@@ -1,11 +1,11 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "de9b0faba8a74b77ca515715e962a22dd1abf33efa7e0752fb4e2597a6b0fb6e",
-      "commit": "d05a02b",
+      "source": "84a6678d5fcab0d9cc32731dec6416abb13d54c0e2d4c9187c9fdb43da056856",
+      "commit": "93acb11",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
-      "pages": 11,
+      "pages": 12,
       "landscapeTables": 0
     },
     "01_REVISI_10_ANALITIK.md": {
@@ -33,8 +33,8 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "636ad20dd92233df6afb3022538dec897e5b31d40fe296ad90ff56b632882327",
-      "commit": "d05a02b",
+      "source": "610e1bede777e2f1258fb6ed9111dc61470fd4aee56497bbfd78295c44e99fa4",
+      "commit": "93acb11",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
       "pages": 50,
@@ -209,8 +209,8 @@
       "landscapeTables": 0
     },
     "26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md": {
-      "source": "60384180774a01856fb15cd2aa31d1f15ede67627fe887a70f4aef54968ce2d0",
-      "commit": "1557694",
+      "source": "342b787f1c511d934c2ad0dc43ef4eb4710e4592c049dfecbb0ef6f4ff5c4ce1",
+      "commit": "0618b8b",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
       "pages": 19,
