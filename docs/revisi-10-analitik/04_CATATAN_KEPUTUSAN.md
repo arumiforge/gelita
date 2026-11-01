@@ -6,6 +6,25 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 1 November 2026
 
+**Target persetujuan etik dipertahankan** (cabang `r10-cek-pasal-pp33`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Pengembang memilih tetap memakai target di 01 → *Peta jalan dan daftar kerja* no. 15: persetujuan etik **paling lambat akhir September sampai minggu pertama November 2027**. Patokan panduan BRIN (± 1–2 bulan sejak berkas lengkap, kira-kira Januari–Februari 2027) tetap ditulis di garis waktu 22 sebagai perkiraan, bukan target. Persetujuan yang lebih awal tidak mengubah urutan gerbang: kegiatan dengan anak dan tahap 3 tetap menunggu G2. Tidak dipilih: target Januari–Februari 2027 dengan atau tanpa cadangan sampai Maret 2027 (usulan AI). Berkas serah terima C.3 no. 2 sekarang menyebut keputusan ini dan meminta peneliti mengonfirmasi atau menetapkan target lain.
+
+Diubah: 01 (no. 15 dan pertanyaan terbuka komisi etik), 22 (*Akibat ke dokumen lain*, baris 01), 00, berkas serah terima.
+
+**Nomor pasal PP No. 33 Tahun 2026 dicocokkan dengan PDF salinan resmi** (cabang `r10-cek-pasal-pp33`) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 22 dan 26 tidak berubah · tidak merevisi produk
+
+Butir "cocokkan nomor pasal sekali lagi dengan PDF resmi" di 00 → *Langkah berikutnya di tahap 2* no. 2 dikerjakan, dipilih pengembang dari empat calon langkah. Sumbernya PDF hasil pindai salinan PP No. 33 Tahun 2026 dengan blok "Salinan sesuai dengan aslinya" Kementerian Sekretariat Negara, diunggah laman resmi Pemerintah Kabupaten Banyumas (120 halaman, batang tubuh Pasal 1–225, tanpa Penjelasan; ditetapkan dan diundangkan 16 Juli 2026, LN 2026 No. 88, berlaku enam bulan kemudian menurut Pasal 225). Teksnya dibaca lewat lapisan teks hasil pengenalan karakter dan setiap pasal yang dirujuk dibaca utuh. Semua rujukan pasal PP di 22 dan 26 diperiksa (Pasal 1 angka 4, 18, 19, 21; 6; 7; 13–15; 23–25; 27; 30; 32–33; 35–36; 38; 62; 70–71; 73–78; 82–89; 92; 114–122; 142–149; 154; Bab V, 160–162; 223; 225); rujukan di 23, 30, 02, dan berkas serah terima memakai nomor yang sama. Ini pemeriksaan dokumen, bukan nasihat hukum.
+
+- **Satu nomor salah, dibetulkan di 26:** saran PPDP pada penilaian dampak ada di Pasal 121 **ayat (6)**, bukan ayat (3) (ayat (3) mengatur langkah perlindungan dijalankan selama pengolahan). Dibetulkan di *Mengapa penilaian dampak diperlukan*, *Konsultasi*, dan *Tinjauan ulang* (tinjauan ulang = ayat (5)). 22 sudah memakai ayat (5)–(6) dengan benar.
+- **Dipertajam di 22 → *Mengundurkan diri dan hapus data*:** pemberitahuan penghapusan memuat juga alasannya dan dikirim setelah penghapusan untuk permintaan subjek data, paling lambat 3 × 24 jam (Pasal 87 ayat (2), (4)–(5)); konfirmasi lama penyiapan salinan dihitung sejak permohonan diterima **dan terverifikasi** (Pasal 78 ayat (2)).
+- **`needs_verification` yang selesai:** pasal pembanding di PP untuk menahan jawaban butir risiko daring dari orang tua yang membahayakan anak ditemukan, yaitu **Pasal 77 ayat (4) huruf a** (wajib menolak akses perubahan yang membahayakan keamanan, kesehatan fisik, atau kesehatan mental subjek data atau orang lain). Seperti UU No. 27 Tahun 2022 Pasal 33 huruf a, pasal ini hanya menyebut akses *perubahan*, jadi pengecualian di 22 tetap analogi yang diminta dinilai komite.
+- **Penjelasan Pasal 148 ayat (2)** tidak ada di PDF yang dibaca; batang tubuh Pasal 148 ayat (2) ("hanya dalam rangka pelaksanaan ketentuan Undang-Undang") mendukung kalimat di 22. Isi Penjelasan tetap bersumber dari transkripsi salinan naskah (sisa `needs_verification` yang kecil).
+- `needs_verification` untuk nomor pasal PP dicabut di 22 (*Dasar hukum*, pembuka) dan 26 (pembuka, *Dasar hukum*, status). Peraturan Lembaga dan pembentukan lembaga pelindungan data tetap dicek ulang sebelum KG1, seperti sebelumnya.
+- **Daftar isian sebelum diajukan (22):** tidak ada lagi isian yang bisa diselesaikan di repo tanpa data pribadi atau fakta dari pengembang dan ketua peneliti. Kelompok B yang dipegang pengembang masih menunggu fakta di luar repo: judul resmi dari usulan penelitian, nama institusi dan lembaga, dana, `[alamat GELITA untuk penelitian]`, `[alat enkripsi diisi tim]`, jenis dan nilai tanda terima kasih, lampiran pernyataan kerahasiaan tim, dan riwayat telaah etik.
+
+Diubah: 22, 26, 01 (no. 15), 00 (baris 22 dan 26, langkah berikutnya no. 2–3), berkas serah terima v1.4 (C.3 no. 2, F.3) dan README `dokumen-pdf/`.
+
 **Contoh pemakaian ADDIE di jurnal Indonesia ditangani peneliti** · `asal: pengembang` (menyampaikan pembagian kerja dengan peneliti) · `disetujui pengembang` · tidak merevisi produk
 
 Pengembang menyampaikan bahwa contoh pemakaian ADDIE di jurnal Indonesia untuk Bab III dicari dan dirujuk langsung oleh peneliti, tanpa pengembang. Dokumen pendukung peneliti tidak perlu menambah daftar contoh itu; catatan "belum dicek di dokumen ini" di bagian *Pembaruan 1 November 2026 → Untuk Bab III* diganti keterangan itu, dan PDF-nya dibuat ulang. Sesi berikutnya tidak perlu mengusulkan pengecekan sumber ini.
