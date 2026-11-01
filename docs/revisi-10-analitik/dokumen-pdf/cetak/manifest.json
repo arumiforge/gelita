@@ -1,11 +1,11 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "89c2559e6ed9d3e58c40eb560c22c2d11117c7714b9b40d3e7e9a48b209605ed",
-      "commit": "fb47e1d",
+      "source": "eeb1716ebdc79185c3dd2b60ded491afdadf83b4d69d3e888237e863b3cc3f7c",
+      "commit": "0618b8b",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
-      "pages": 11,
+      "pages": 12,
       "landscapeTables": 0
     },
     "01_REVISI_10_ANALITIK.md": {
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "e6eb2a7bfedd2d6ab974a64394015467fc821f0a88a40f58729a148e373627b1",
-      "commit": "fb47e1d",
+      "source": "d39b4ac2f3542eb88e4548303eb98a4a4b7b0d83e58aa686976a1cbd32f43b63",
+      "commit": "0618b8b",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
-      "pages": 49,
+      "pages": 50,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -209,8 +209,8 @@
       "landscapeTables": 0
     },
     "26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md": {
-      "source": "60384180774a01856fb15cd2aa31d1f15ede67627fe887a70f4aef54968ce2d0",
-      "commit": "1557694",
+      "source": "342b787f1c511d934c2ad0dc43ef4eb4710e4592c049dfecbb0ef6f4ff5c4ce1",
+      "commit": "0618b8b",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
       "pages": 19,
