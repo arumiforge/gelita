@@ -1,8 +1,47 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 31 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 1 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
+
+## 1 November 2026
+
+**Keputusan peneliti: model ADDIE menggantikan Plomp; tiga uji dengan siswa** (cabang `sky/cool-fermi-rv44sj`) · `asal: peneliti` · `disetujui peneliti` (disampaikan lisan lewat pengembang; dikukuhkan peneliti saat membaca dokumen yang diperbarui) · merevisi rancangan penelitian, belum merevisi produk
+
+Peneliti memutuskan model penelitian dan pengembangan **ADDIE** (*Analyze, Design, Develop, Implement, Evaluate*), menggantikan model Plomp (2013) yang diputuskan pengembang 26 Oktober 2026 (entri *model penelitian dan pengembangan, dan aturan I-CVI*, no. 1). Alasannya, seperti disampaikan pengembang: setiap fase pengembangan diuji, dan perubahan dari saran ahli atau hasil uji masuk kembali ke fase pengembangan sampai produknya benar-benar final. Rujukannya Branch (2009), yang menyebut ADDIE iteratif dan nonlinier dengan uji rintis di fase *Develop*. Dokumen pendukung peneliti sudah mencatat bahwa kritik "ADDIE tidak menjelaskan cara mengevaluasi prototipe" terlalu keras; yang tetap benar hanya bahwa ADDIE tidak punya kriteria mutu khusus alat ukur.
+
+1. **Tiga uji dengan siswa** (rinciannya dijawab pengembang dalam wawancara singkat hari yang sama):
+   - **Uji kelompok kecil** (kegiatan baru): beberapa siswa memainkan game yang sudah berjalan di instalasi uji. Tidak masuk data utama.
+   - **Uji kelompok menengah**: ± 80 siswa, menggantikan uji coba satu kelas (± 28 siswa, KG3). Tidak masuk data utama.
+   - **Uji besar = pengambilan data utama (KG5)**: target **300 siswa yang datanya bisa dianalisis**; jumlah akhirnya boleh lebih atau kurang, dan perkiraan rekrut ± 360 tetap. Sekolahnya **sekitar enam sekolah utama** di wilayah Kedu, boleh lebih. Nama sekolah tidak ditulis di repo; kode dan pemetaan NPSN dipegang ketua peneliti (keputusan 31 Oktober 2026). Ini menggantikan "jumlah sekolah mengikuti ketersediaan kelas" (25 Oktober 2026) sebagai perkiraan, bukan batas.
+   - Uji kelompok kecil dan menengah ada di fase *Develop* dan boleh memicu revisi. Sekolahnya di wilayah Kedu, di luar sekolah utama; jumlah sekolahnya bebas.
+2. **Yang tetap:** ECD sebagai metode merancang asesmen; aturan I-CVI Lynn (1986), V Aiken, κ, dan model Rasch; tes awal–akhir sebagai bukti validitas kriteria; peta jalan enam tahap dan lima gerbang; aturan "sistem diubah setelah G2". Semuanya metode di dalam fase ADDIE dan tidak bergantung pada Plomp, dan menutup kekurangan ADDIE soal kriteria mutu alat ukur.
+3. **Pemetaan ke fase ADDIE** (usulan pengembang, dibakukan saat 01 diperbarui):
+
+   | Fase ADDIE | Tahap GELITA | Isi dan uji |
+   | --- | --- | --- |
+   | *Analyze* | Penelitian pendahuluan | Analisis kebutuhan dan konteks, L8, telaah butir lama, telaah media pendahuluan |
+   | *Design* | Tahap 1 (G1) | Kisi-kisi, draf bank, tes, angket, skala sikap, mock-up |
+   | *Develop* | Tahap 2–4 (G2–G4) | Validasi ahli dan uji keterbacaan (KG1) → sistem di instalasi uji dan ahli media langkah 2 (G3) → berpikir lantang (KG2) → uji kelompok kecil → uji kelompok menengah. Setiap uji boleh mengembalikan revisi ke *Develop* |
+   | *Implement* | Tahap 5 | Uji besar: pengambilan data utama pada versi yang dikunci |
+   | *Evaluate* | Formatif di setiap fase; sumatif di tahap 6 | Analisis dan laporan akhir |
+
+**Empat keputusan lanjutan tentang uji dan validasi** (cabang `sky/cool-fermi-rv44sj`) · `asal: pengembang` · `disetujui pengembang` · belum merevisi produk; dikukuhkan peneliti saat dokumen diperbarui
+
+Wawancara singkat setelah keputusan peneliti di atas. Pengembang memilih opsi yang direkomendasikan untuk no. 1, 2, dan 4, dan opsi lain untuk no. 3.
+
+1. **Kode sekolah uji: satu awalan `U`.** Semua sekolah uji kelompok kecil dan menengah memakai `U01`, `U02`, … dalam satu urutan. Uji mana yang diikuti dicatat lewat studi: satu baris `research_studies` per uji (uji kelompok kecil, uji kelompok menengah, pengambilan data utama). Rancangan di [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) sudah menyimpan sesi lapangan, kursi, dan kemajuan per siswa per studi, dan unduhan selalu terikat satu studi ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md)). `is_pilot` tetap 1 untuk kode berawalan `U` ([11](11_KAMUS_DATA.md#penanda-untuk-analisis)), format kode tetap seperti `S01`, dan satu sekolah boleh menjadi tempat kedua uji. Pilihan lain: nomor uji di dalam kode (`U11`, `U12`, … untuk uji kecil; `U21`, `U22`, … untuk uji menengah), yang membatasi sembilan sekolah per uji dan memberi dua kode untuk sekolah yang ikut keduanya.
+2. **Versi dikunci di G4.** Pengambilan data utama berjalan pada satu versi yang dikunci. Selama uji besar hanya perbaikan kerusakan teknis yang boleh, dan setiap perbaikan dicatat; butir dan isi tidak diubah. Temuan selama uji besar masuk laporan sebagai revisi akhir atau rekomendasi, dan datanya tidak diambil ulang. Ini sejalan dengan pra-registrasi OSF di G4. Pilihan lain: uji besar juga boleh kembali ke *Develop*, sehingga data utama bercampur versi dan kalibrasi Rasch (150 siswa per butir variasi) melemah.
+3. **Putaran penilaian ulang ahli: tanpa batas.** Butir direvisi dan dinilai ulang sampai memenuhi aturan Lynn (dengan lima ahli atau kurang, I-CVI = 1,00). Akibatnya tanggal G2 bergantung pada jumlah putaran, dan honorarium setiap putaran mengikuti ketentuan yang berlaku. Pilihan lain: paling banyak dua putaran (direkomendasikan) atau tiga putaran, lalu butir dibuang atau diganti butir cadangan.
+4. **Uji kelompok kecil 8–12 anak, setelah berpikir lantang.** Berpikir lantang (KG2, 5–8 anak, satu per satu) tetap kegiatan tersendiri. Sesudahnya uji kelompok kecil dengan 8–12 anak dari satu sekolah, lalu uji kelompok menengah ± 80 siswa: urutan satu per satu → kelompok kecil → lapangan (Tessmer, 1993). Anak yang sudah ikut satu uji tidak ikut uji berikutnya atau pengambilan data utama. Pilihan lain: 5–8 anak dengan berpikir lantang di dalam uji kecil, atau jumlahnya ditetapkan peneliti nanti.
+
+**Akibat ke dokumen lain** (dikerjakan di sesi berikutnya, satu dokumen atau satu paket per sesi):
+
+1. **Paket izin etik, sebelum diajukan minggu kedua–keempat November 2026:** 22 (desain, tujuan, tabel kegiatan, garis waktu, ringkasan), 23 (varian surat uji coba T9, dan varian uji kelompok kecil bila perlu), 26 (tabel kegiatan dan jumlah anak), 03 dan 30 (tabel KG), 01 (*Model penelitian dan fasenya*, tabel peta jalan, daftar kerja no. 17 dan 22). Kode KG untuk uji kelompok kecil ditetapkan di sesi itu.
+2. **Sebelum paket validasi dikirim:** pengantar ketiga instrumen (ahli materi v2.1, pengamat budaya v2.1, ahli media v1.1) menyebut model Plomp dan kriteria mutunya; berkas serah terima ke peneliti juga.
+3. **Sesudahnya:** 02 (L8), 06 (sampel), 13 dan 16 (uji coba satu kelas), 24 (sekolah uji keterbacaan di luar sekolah uji), dokumen pendukung peneliti (bagian ADDIE menurut Branch, 2009), lalu PDF siap cetak. Dua hal diputuskan saat 01 diperbarui: kriteria mutu (tiga kriteria Nieveen atau empat kriteria Plomp) dan prinsip desain, yang bukan keluaran ADDIE.
+
+Diubah: 04, 01 (penanda di *Model penelitian dan fasenya*, daftar kerja no. 17, pertanyaan sampel, pertanyaan baru tentang model), 00 (*Langkah berikutnya di tahap 2*, baris dokumen pendukung peneliti), `docs/PROGRESS.md`.
 
 ## 31 Oktober 2026
 
