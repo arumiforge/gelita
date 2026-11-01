@@ -1,10 +1,10 @@
 # Penilaian Dampak Pelindungan Data Pribadi: Penelitian GELITA
 
-Per 1 November 2026 · **Status: `disetujui pengembang`** (31 Oktober 2026; `asal: pengembang`, disusun dengan bantuan AI; belum disetujui peneliti dan belum diberi saran PPDP); nomor KG di *Kegiatan* disamakan dengan 03 dan 22, dan akibat dokumen implementasi bagian 1, 3, dan 4 (27, 29, 30) dibawa sesi koordinator 30 Oktober 2026 (`asal: pengembang`, [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)); kegiatan uji coba KG3a dan KG3b dari keputusan peneliti 1 November 2026 dimasukkan (`asal: peneliti`) · Lampiran 18 [permohonan izin etik](22_PERMOHONAN_IZIN_ETIK.md#lampiran) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 1 November 2026 · **Status: `disetujui pengembang`** (31 Oktober 2026; `asal: pengembang`, disusun dengan bantuan AI; belum disetujui peneliti dan belum diberi saran PPDP); nomor KG di *Kegiatan* disamakan dengan 03 dan 22, dan akibat dokumen implementasi bagian 1, 3, dan 4 (27, 29, 30) dibawa sesi koordinator 30 Oktober 2026 (`asal: pengembang`, [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)); kegiatan uji coba KG3a dan KG3b dari keputusan peneliti 1 November 2026 dimasukkan (`asal: peneliti`); nomor pasal PP dicocokkan dengan PDF salinan resmi dan satu nomor dibetulkan (1 November 2026, `asal: pengembang`; status tidak berubah) · Lampiran 18 [permohonan izin etik](22_PERMOHONAN_IZIN_ETIK.md#lampiran) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Dokumen ini adalah penilaian dampak pelindungan data pribadi (selanjutnya *penilaian dampak*) yang lengkap untuk penelitian GELITA. Ringkasannya ada di [22 → Penilaian dampak pelindungan data](22_PERMOHONAN_IZIN_ETIK.md#penilaian-dampak-pelindungan-data); dokumen ini menguraikannya untuk pembaca *Lembaga Komite Etik* dan untuk PPDP atau narahubung data. Isinya mengikuti 22 dan tidak membuat aturan baru tentang data. Kalau ada yang berbeda, 22 yang berlaku, dan bedanya dicatat di [Akibat ke dokumen lain](#akibat-ke-dokumen-lain).
 
-Ini pemeriksaan dokumen, bukan nasihat hukum. Semua nomor pasal PP No. 33 Tahun 2026 dan UU No. 27 Tahun 2022 di dokumen ini sama dengan di 22 dan sudah dicek ke salinan naskah ([Dasar hukum](#dasar-hukum)); sebelum berkas diunggah, nomornya dicocokkan sekali lagi dengan PDF resmi (`needs_verification`).
+Ini pemeriksaan dokumen, bukan nasihat hukum. Semua nomor pasal PP No. 33 Tahun 2026 dan UU No. 27 Tahun 2022 di dokumen ini sama dengan di 22 dan sudah dicek ke salinan naskah ([Dasar hukum](#dasar-hukum)); nomor pasal PP dicocokkan dengan PDF salinan resmi pada 1 November 2026, dan satu nomor dibetulkan (saran PPDP: Pasal 121 ayat (6)).
 
 ## Daftar isi
 
@@ -62,7 +62,7 @@ UU No. 27 Tahun 2022 Pasal 34 dan PP No. 33 Tahun 2026 Pasal 120–121 mewajibka
 | Teknologi baru | Sebagian | Game berbasis web yang mencatat setiap percobaan dan waktu; bukan teknologi pemantauan, pengenalan wajah, atau lokasi |
 | Pemindahan ke luar negeri | Tidak | Server, cadangan, dan penyimpanan di Indonesia ([22 no. 14](22_PERMOHONAN_IZIN_ETIK.md#keputusan-pengembang)) |
 
-Karena dua pemicu pertama berlaku, penilaian dampak ini wajib. Isinya memuat isi minimum PP Pasal 121 ayat (2): uraian kegiatan dan tujuan, kebutuhan dan proporsionalitas, risiko terhadap hak subjek data, dan langkah perlindungan, ditambah saran PPDP atau narahubung (Pasal 121 ayat (3)) dan rencana tinjauan ulang (Pasal 121 ayat (5)–(6)). Peraturan Lembaga tentang tata cara penilaian dampak (PP Pasal 122 ayat (2)) belum terbit per 27 Oktober 2026 ([22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum)); sampai terbit, dokumen ini mengikuti PP (Pasal 223).
+Karena dua pemicu pertama berlaku, penilaian dampak ini wajib. Isinya memuat isi minimum PP Pasal 121 ayat (2): uraian kegiatan dan tujuan, kebutuhan dan proporsionalitas, risiko terhadap hak subjek data, dan langkah perlindungan, ditambah saran PPDP atau narahubung (Pasal 121 ayat (6); Pasal 145 ayat (1) huruf c) dan rencana tinjauan ulang (Pasal 121 ayat (5)). Langkah perlindungan dijalankan selama pengolahan (Pasal 121 ayat (3)). Peraturan Lembaga tentang tata cara penilaian dampak (PP Pasal 122 ayat (2)) belum terbit per 27 Oktober 2026 ([22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum)); sampai terbit, dokumen ini mengikuti PP (Pasal 223).
 
 ## Uraian pengolahan dan tujuannya
 
@@ -106,7 +106,7 @@ Yang **tidak** menjadi tujuan: menilai atau memeringkat anak, guru, atau sekolah
 
 ## Dasar hukum
 
-Sama dengan [22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum). Nomor pasal PP 33/2026 dicek ke transkripsi salinan naskah, dan nomor pasal UU 27/2022 (termasuk Pasal 4 ayat (2) huruf e dan Pasal 25) ke naskah anotasi Mahkamah Konstitusi, pada 27 Oktober 2026 di 22; dokumen ini memakai nomor yang sama (diselaraskan sesi koordinator 30 Oktober 2026). Yang tersisa **`needs_verification`**: pencocokan sekali lagi dengan PDF resmi JDIH atau peraturan.go.id sebelum berkas diunggah.
+Sama dengan [22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum). Nomor pasal PP 33/2026 dicek ke transkripsi salinan naskah, dan nomor pasal UU 27/2022 (termasuk Pasal 4 ayat (2) huruf e dan Pasal 25) ke naskah anotasi Mahkamah Konstitusi, pada 27 Oktober 2026 di 22; dokumen ini memakai nomor yang sama (diselaraskan sesi koordinator 30 Oktober 2026). Pada 1 November 2026 nomor pasal PP dicocokkan dengan PDF salinan resmi ([22 → Dasar hukum](22_PERMOHONAN_IZIN_ETIK.md#dasar-hukum), cabang `r10-cek-pasal-pp33`): semuanya cocok kecuali saran PPDP pada penilaian dampak, yang ada di Pasal 121 ayat (6), bukan ayat (3); nomornya dibetulkan di dokumen ini. `needs_verification` untuk nomor pasal PP dicabut.
 
 | Hal | Rujukan | Penerapan |
 | --- | --- | --- |
@@ -376,7 +376,7 @@ Semua langkah di bawah sudah diputuskan di 22 atau dokumen yang dirujuknya, kecu
 
 | Dengan siapa | Bagaimana | Kapan | Hasil |
 | --- | --- | --- | --- |
-| PPDP `[nama lembaga peneliti]` atau narahubung `[kontak PPDP atau narahubung]` (PP Pasal 121 ayat (3), Pasal 145) | Membaca draf ini dan memberi saran tertulis | Sebelum permohonan diajukan | `[saran PPDP atau narahubung]` |
+| PPDP `[nama lembaga peneliti]` atau narahubung `[kontak PPDP atau narahubung]` (PP Pasal 121 ayat (6), Pasal 145) | Membaca draf ini dan memberi saran tertulis | Sebelum permohonan diajukan | `[saran PPDP atau narahubung]` |
 | Kepala sekolah setiap sekolah sampel dan uji coba | Ringkasan satu halaman ([Ringkasan untuk komite](#ringkasan-untuk-komite), ditulis ulang untuk sekolah) diperlihatkan bersama surat T6 saat sekolah setuju ikut; tanggapan dicatat ([keputusan no. 3](#keputusan-pengembang)) | Saat sekolah setuju ikut, sebelum kegiatan pertama dengan anak di sekolah itu: KG1 (sekolah uji keterbacaan), KG2 atau KG3 (sekolah uji coba), atau KG5 (sekolah sampel) | `[tanggapan sekolah]` |
 | Orang tua | Tidak dikonsultasikan tersendiri; isi pokoknya disampaikan lewat surat T1 (cara data dijaga, batas pengamanan daring, hak, kontak) | H-14 sebelum P1 | — |
 | *Lembaga Komite Etik* | Lampiran 18 permohonan | Saat pengajuan | Tanggapan komite dicatat dengan `asal: komite etik` |
@@ -396,7 +396,7 @@ Ditandatangani di luar repo; yang dicatat di sini hanya statusnya.
 
 ## Tinjauan ulang
 
-Ditinjau ulang ([keputusan no. 4](#keputusan-pengembang); PP Pasal 121 ayat (5)–(6)):
+Ditinjau ulang ([keputusan no. 4](#keputusan-pengembang); PP Pasal 121 ayat (5); saran PPDP ikut didokumentasikan, ayat (6)):
 
 1. **setiap tahun**, bersama laporan kemajuan dan permohonan perpanjangan ke komite (masa berlaku persetujuan 12 bulan), pertama kali `[tanggal tinjauan pertama]`;
 2. **sebelum setiap amandemen** yang mengubah data, tempat penyimpanan, penerima, atau peserta;
