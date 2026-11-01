@@ -1,8 +1,8 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "89c2559e6ed9d3e58c40eb560c22c2d11117c7714b9b40d3e7e9a48b209605ed",
-      "commit": "fb47e1d",
+      "source": "de9b0faba8a74b77ca515715e962a22dd1abf33efa7e0752fb4e2597a6b0fb6e",
+      "commit": "d05a02b",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
       "pages": 11,
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "e6eb2a7bfedd2d6ab974a64394015467fc821f0a88a40f58729a148e373627b1",
-      "commit": "fb47e1d",
+      "source": "636ad20dd92233df6afb3022538dec897e5b31d40fe296ad90ff56b632882327",
+      "commit": "d05a02b",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
-      "pages": 49,
+      "pages": 50,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -105,11 +105,11 @@
       "landscapeTables": 0
     },
     "13_TES_AWAL_AKHIR.md": {
-      "source": "7b5a8a570fa323d12b78688233ae62b3b7fb65bd88d9bbb82577eb5967099574",
-      "commit": "c16af67",
+      "source": "3842568f2173da8a8e332544aa384f6f880c7b1ce20f3b85e65330cff9b11bcc",
+      "commit": "2e01a6d",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
-      "pages": 11,
+      "pages": 12,
       "landscapeTables": 0
     },
     "14_TES_BAGIAN_MEMBACA.md": {
