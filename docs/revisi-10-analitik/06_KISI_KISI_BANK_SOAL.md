@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **disetujui pengembang (25 Oktober 2026)**, termasuk semua bagian yang semula bertanda "usulan". Variasi Susun Gambar disesuaikan dengan keputusan 26 Oktober 2026 di [08](08_DRAF_BANK_SOAL.md#susun-gambar-selama-studi). Isi bank yang mengikuti kisi-kisi ini ada di [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md).
+Per 1 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Status: **disetujui pengembang (25 Oktober 2026)**, termasuk semua bagian yang semula bertanda "usulan". Variasi Susun Gambar disesuaikan dengan keputusan 26 Oktober 2026 di [08](08_DRAF_BANK_SOAL.md#susun-gambar-selama-studi). Isi bank yang mengikuti kisi-kisi ini ada di [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md).
 
 Kisi-kisi ini jadi cetak biru bank soal baru: berapa butir, di tantangan mana, mengukur dimensi apa, di level apa, dengan bacaan seperti apa, dan kode kesalahan apa yang dibawa setiap pilihan. Dokumen ini meneruskan [05_TELAAH_BUTIR_DAN_DIMENSI.md](05_TELAAH_BUTIR_DAN_DIMENSI.md) dan tidak mengulang telaahnya. Belum ada yang diubah di sistem atau di [`docs/bank-soal/`](../bank-soal/README.md).
 
@@ -14,7 +14,7 @@ Kisi-kisi ini jadi cetak biru bank soal baru: berapa butir, di tantangan mana, m
 4. **Tujuh dari sembilan teks D1 seorang siswa bergenre digital:** papan informasi digital, unggahan akun resmi dengan komentar, halaman situs, pesan grup, hasil pencarian, dan unggahan bersponsor. Bentuk teks selalu sama di variasi a dan b.
 5. **Waktu bermain: sekitar 29–36 menit (Temanggung), 36–44 menit (Magelang), dan 43–52 menit (Wonosobo).** Satu wilayah muat di satu pertemuan, yang kini memberi waktu bermain ± 90 menit dan tidak terikat JP sekolah (keputusan 26 Oktober 2026); sisa tantangan dilanjutkan di P5. Usulan: lima pertemuan per kelas.
 6. **Desain empat buklet (usulan).** Tetangga sebangku selalu mendapat variasi berbeda, tapi semua buklet tetap tersambung, jadi seluruh butir bisa ditaruh di satu skala Rasch. Setiap butir variasi dikerjakan setengah sampel; butir jangkar dikerjakan semuanya.
-7. **Sampel minimal usulan: 300 siswa yang datanya bisa dianalisis** (150 per butir variasi), artinya merekrut sekitar 360 siswa.
+7. **Sampel minimal usulan: 300 siswa yang datanya bisa dianalisis** (150 per butir variasi), artinya merekrut sekitar 360 siswa. Dikukuhkan peneliti 1 November 2026: target 300, boleh lebih atau kurang, dari sekitar enam sekolah utama ([04](04_CATATAN_KEPUTUSAN.md)).
 
 ## Dasar yang sudah diputuskan
 
@@ -220,7 +220,7 @@ Dengan dua variasi, setiap butir variasi dikerjakan **n/2** siswa. Patokan Linac
 | **300 (usulan)** | **150** | **± ½ logit, keyakinan 99%** | Memenuhi patokan "pasti" (250) |
 | 500 | 250 | Patokan untuk keputusan penting | Sangat stabil |
 
-Untuk butir D2 bertingkat, setiap kategori skor butuh paling sedikit 10 jawaban. Kategori "kurang tepat" (skor 1) bisa jarang dipilih, jadi sebarannya dicek di uji coba. Linacre juga menyarankan menambah sampel 10–40% kalau kondisi pengambilan data tidak seragam, seperti di sekolah yang berbeda-beda. Karena itu **usulan kami: target 300 siswa yang datanya bisa dianalisis, dengan merekrut sekitar 360** (± 13 kelas berisi 28 siswa), untuk menutup izin orang tua yang tidak kembali, siswa absen, dan perangkat bersama.
+Untuk butir D2 bertingkat, setiap kategori skor butuh paling sedikit 10 jawaban. Kategori "kurang tepat" (skor 1) bisa jarang dipilih, jadi sebarannya dicek di uji coba. Linacre juga menyarankan menambah sampel 10–40% kalau kondisi pengambilan data tidak seragam, seperti di sekolah yang berbeda-beda. Karena itu **usulan kami: target 300 siswa yang datanya bisa dianalisis, dengan merekrut sekitar 360** (± 13 kelas berisi 28 siswa), untuk menutup izin orang tua yang tidak kembali, siswa absen, dan perangkat bersama. Peneliti mengukuhkan target ini pada 1 November 2026, dengan data dari sekitar enam sekolah utama (boleh lebih); uji kelompok kecil dan menengah di sekolah uji coba tidak dihitung ([04](04_CATATAN_KEPUTUSAN.md)).
 
 ### Desain buklet (usulan)
 

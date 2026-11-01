@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 10 · Status: **draf**; keputusan pengembang diambil 26 Oktober 2026 ([bagian akhir](#keputusan-pengembang)); menunggu validasi ahli
+Per 1 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 10 · Status: **draf**; keputusan pengembang diambil 26 Oktober 2026 ([bagian akhir](#keputusan-pengembang)); menunggu validasi ahli
 
 Dokumen ini berisi angket akses digital yang diisi siswa kelas 5 di layar modul tes GELITA, langsung setelah tes awal, ditambah dua–tiga butir pengalaman risiko daring yang diisi di P5 setelah tes akhir: butir, kode jawaban, nama variabel, gunanya, sumber, pelaksanaan, pemasukan data, etika, dan validasinya. Rancangan tesnya ada di [13](13_TES_AWAL_AKHIR.md).
 
@@ -507,10 +507,10 @@ Masuk [11, *Variabel peserta dan sesi*](11_KAMUS_DATA.md#variabel-peserta-dan-se
 | 2 | Telaah bahasa: kata yang sulit, panjang kalimat, pilihan yang tumpang tindih, dan nada yang menghakimi | Ahli Bahasa Anak 1 dan 2 |
 | 2 | Uji keterbacaan dengan empat anak, ditambah satu anak di putaran kedua (kelas 5, dari sekolah di luar sampel), setelah izin etik terbit, bersama uji keterbacaan bank dan tes, di mock-up layar modul ([24](24_UJI_KETERBACAAN.md)). Karena angket tidak dibacakan, anak membaca sendiri, lalu diminta menjelaskan dengan kata-katanya sendiri arti "akun sendiri", "menemanimu", "hari sekolah", dan "1 jam". Butir risiko daring ang-21–ang-23 diuji dengan parafrase saja, dengan centang izin terpisah: anak menjelaskan arti pertanyaannya, tetapi tidak pernah menjawab tentang pengalamannya sendiri ([24 → Butir risiko daring](24_UJI_KETERBACAAN.md#butir-risiko-daring)) | Peneliti |
 | 2 | Mock-up layar angket ikut ditelaah ahli media langkah 1 | Ahli Media Pembelajaran 1–3 |
-| 4 | Uji coba satu kelas di modul, dibaca sendiri seperti pelaksanaan sebenarnya. Yang dilihat: waktu total (sasaran ≤ 10 menit), butir yang sering dilewati, butir dengan banyak *Tidak tahu*, pilihan yang tidak pernah dipilih, pertanyaan yang sering ditanyakan siswa (catatan P3 di L6), dan isian yang bertentangan (`q_flags`) | Peneliti |
+| 4 | Uji kelompok kecil (KG3a, 8–12 anak), lalu uji kelompok menengah (KG3b, ± 80 siswa) di modul, dibaca sendiri seperti pelaksanaan sebenarnya (sejak 1 November 2026, menggantikan uji coba satu kelas). Yang dilihat: waktu total (sasaran ≤ 10 menit), butir yang sering dilewati, butir dengan banyak *Tidak tahu*, pilihan yang tidak pernah dipilih, pertanyaan yang sering ditanyakan siswa (catatan P3 di L6), dan isian yang bertentangan (`q_flags`) | Peneliti |
 | G4 | Angket final dan batas kelompok DIF dibekukan bersama pra-registrasi | Pengembang |
 
-Usulan patokan uji coba: butir yang kosong pada lebih dari 10% siswa, atau dijawab *Tidak tahu* oleh lebih dari 20% siswa, ditulis ulang atau dibuang. Satu kelas uji coba hanya berisi ± 28 siswa, jadi angka ini hanya petunjuk kasar.
+Usulan patokan uji coba: butir yang kosong pada lebih dari 10% siswa, atau dijawab *Tidak tahu* oleh lebih dari 20% siswa, ditulis ulang atau dibuang. Patokan ini dihitung dari uji kelompok menengah (± 80 siswa); di uji kelompok kecil (8–12 anak) angkanya hanya petunjuk kasar.
 
 ## Penyesuaian di dokumen lain
 

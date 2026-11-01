@@ -6,6 +6,18 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 1 November 2026
 
+**Sisa akibat model ADDIE: 06, 13, 16, dan dokumen pendukung peneliti** (cabang `sky/cool-fermi-rv44sj`, bersama PR #299) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Atas permintaan pengembang, sisa dokumen yang masih memuat rencana lama diselaraskan. Tidak ada keputusan baru.
+
+- **06:** target 300 siswa yang datanya bisa dianalisis (150 per butir variasi) dikukuhkan peneliti, dari sekitar enam sekolah utama; uji kelompok kecil dan menengah tidak dihitung.
+- **13 → Validasi dan uji coba:** langkah 4 menjadi uji kelompok kecil (alur, petunjuk, waktu) lalu uji kelompok menengah dengan kedua bentuk; ± 40 siswa per bentuk, jadi angka butir masih petunjuk revisi, belum kalibrasi (sebelumnya ± 14 siswa per bentuk dari satu kelas).
+- **16 → Validasi dan uji coba:** langkah 4 menjadi uji kelompok kecil lalu uji kelompok menengah; patokan butir kosong dan *Tidak tahu* dihitung dari ± 80 siswa uji kelompok menengah.
+- **Dokumen pendukung peneliti:** bagian baru *Pembaruan 1 November 2026: model ADDIE* di awal dokumen: keputusan peneliti, apa kata Branch (2009) (hanya klaim yang sudah dicek di bagian 6 dan 11), cara menutup kekurangan ADDIE (ECD, Tessmer, Nieveen & Folmer, empat kriteria mutu, aturan Lynn, Rasch; uji coba dipisah dari data utama), tabel pemetaan peta jalan ke ADDIE yang menggantikan bagian 7, dan catatan untuk Bab III. Bagian 1, 4, 5, dan 7 dipertahankan sebagai catatan analisis 26 Oktober 2026, dan tidak ada bagian yang dinomori ulang, supaya rujukan "§6", "§9" di dokumen lain tetap benar. Contoh pemakaian ADDIE di jurnal Indonesia belum dicek. PDF dibuat ulang dengan Chromium: 14 halaman (sebelumnya 12).
+- **Berkas serah terima v1.3:** baris dokumen pendukung peneliti dan baris terakhir A.5 disesuaikan; PDF dibuat ulang.
+
+Diubah: 06, 13, 16, `dokumen-pendukung-peneliti/` (HTML, PDF, README), `dokumen-pdf/src/serah-terima-peneliti.html` dan PDF-nya, 00.
+
 **Berkas serah terima ke peneliti v1.3** (cabang `sky/cool-fermi-rv44sj`, setelah PR #298) · `asal: pengembang` · `draf pengembang` (dokumen internal) · tidak merevisi produk
 
 Pengembang memilih memperbarui berkas serah terima ke versi terbaru, bukan membiarkannya sebagai catatan keadaan sebelum pertemuan. Tidak ada keputusan baru; isinya diselaraskan dengan entri 1 November 2026 di bawah.
