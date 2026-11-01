@@ -6,6 +6,34 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 1 November 2026
 
+**Sisa akibat model ADDIE: 06, 13, 16, dan dokumen pendukung peneliti** (cabang `sky/cool-fermi-rv44sj`, bersama PR #299) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Atas permintaan pengembang, sisa dokumen yang masih memuat rencana lama diselaraskan. Tidak ada keputusan baru.
+
+- **06:** target 300 siswa yang datanya bisa dianalisis (150 per butir variasi) dikukuhkan peneliti, dari sekitar enam sekolah utama; uji kelompok kecil dan menengah tidak dihitung.
+- **13 → Validasi dan uji coba:** langkah 4 menjadi uji kelompok kecil (alur, petunjuk, waktu) lalu uji kelompok menengah dengan kedua bentuk; ± 40 siswa per bentuk, jadi angka butir masih petunjuk revisi, belum kalibrasi (sebelumnya ± 14 siswa per bentuk dari satu kelas).
+- **16 → Validasi dan uji coba:** langkah 4 menjadi uji kelompok kecil lalu uji kelompok menengah; patokan butir kosong dan *Tidak tahu* dihitung dari ± 80 siswa uji kelompok menengah.
+- **Dokumen pendukung peneliti:** bagian baru *Pembaruan 1 November 2026: model ADDIE* di awal dokumen: keputusan peneliti, apa kata Branch (2009) (hanya klaim yang sudah dicek di bagian 6 dan 11), cara menutup kekurangan ADDIE (ECD, Tessmer, Nieveen & Folmer, empat kriteria mutu, aturan Lynn, Rasch; uji coba dipisah dari data utama), tabel pemetaan peta jalan ke ADDIE yang menggantikan bagian 7, dan catatan untuk Bab III. Bagian 1, 4, 5, dan 7 dipertahankan sebagai catatan analisis 26 Oktober 2026, dan tidak ada bagian yang dinomori ulang, supaya rujukan "§6", "§9" di dokumen lain tetap benar. Contoh pemakaian ADDIE di jurnal Indonesia belum dicek. PDF dibuat ulang dengan Chromium: 14 halaman (sebelumnya 12).
+- **Berkas serah terima v1.3:** baris dokumen pendukung peneliti dan baris terakhir A.5 disesuaikan; PDF dibuat ulang.
+
+Diubah: 06, 13, 16, `dokumen-pendukung-peneliti/` (HTML, PDF, README), `dokumen-pdf/src/serah-terima-peneliti.html` dan PDF-nya, 00.
+
+**Berkas serah terima ke peneliti v1.3** (cabang `sky/cool-fermi-rv44sj`, setelah PR #298) · `asal: pengembang` · `draf pengembang` (dokumen internal) · tidak merevisi produk
+
+Pengembang memilih memperbarui berkas serah terima ke versi terbaru, bukan membiarkannya sebagai catatan keadaan sebelum pertemuan. Tidak ada keputusan baru; isinya diselaraskan dengan entri 1 November 2026 di bawah.
+
+- **Sampul dan meta:** per 1 November 2026, versi 1.3, sumber 04 sampai 1 November 2026; kotak status menyebut bahwa model ADDIE dan tiga uji dengan siswa berasal dari peneliti.
+- **A.5 baru, *Yang berubah sejak v1.2*:** model ADDIE, tiga uji dengan siswa, data utama dari sekitar enam sekolah, versi dikunci di G4, putaran penilaian ulang tanpa batas, satu anak satu uji, istilah, dan dokumen yang sudah dan belum diperbarui.
+- **A.2:** kolom fase menjadi ADDIE (*Analyze* sampai *Evaluate*), tahap 4 menjadi uji coba bertahap, tahap 5–6 menyebut sekitar enam sekolah dan rekomendasi pengembangan.
+- **B:** dokumen pendukung peneliti ditandai *perlu diperbarui*; ketiga instrumen ditandai diperbarui 1 November (ahli media 30 halaman); surat putaran 2 juga untuk putaran berikutnya; 22 dan 23 menyebut ADDIE, KG3a/KG3b, dan T9.
+- **C:** honorarium mencakup putaran tanpa batas; jadwal KG di kelompok E; kode `U01`, `U02`, … di daftar kode sekolah; jadwal validasi menyebut putaran 3 dan seterusnya; **dua keputusan terbuka baru untuk peneliti**: no. 11 rincian uji coba dari pengembang (anak KG2 terpisah dengan surat sendiri, undian, ± 465 anak) dan no. 12 aturan honorarium per putaran (usulan: satu besaran tetap per putaran yang diikuti).
+- **D.2:** baris Plomp diganti baris ADDIE (`asal: peneliti`) dan baris "Plomp tidak dipakai lagi"; prototipe III, aturan Lynn dengan putaran tanpa batas, dan empat kriteria mutu diselaraskan. Rujukan "instrumen D.6" untuk aturan Lynn dibetulkan menjadi C.6, karena instrumen ahli materi tidak punya bagian D.6. **D.6:** baris sampel menyebut sekitar enam sekolah utama.
+- **E:** tanya jawab "Kenapa Plomp?" diganti "Kenapa ADDIE?", ditambah tanya jawab baru tentang tiga uji dan alasan uji kecil dan menengah tidak masuk data utama; jawaban aturan Lynn, ukuran sampel, dan "ahli menolak banyak butir" diselaraskan.
+- **F.4 dan F.5:** keterbatasan angka butir dari uji yang versinya masih berubah, dan risiko tanggal G2 yang tidak pasti karena putaran tanpa batas.
+- **G:** agenda dan lembar catatan keputusan menyebut model ADDIE yang sudah diputuskan, serta baris C.3 no. 11 dan 12.
+
+PDF dibuat ulang dengan `render.mjs`: 36 halaman (v1.2: 32). Diubah: `dokumen-pdf/src/serah-terima-peneliti.html`, `dokumen-pdf/serah-terima-peneliti.pdf`, README `dokumen-pdf/`, 00.
+
 **Instrumen validasi dan paket validasi diperbarui: model ADDIE dan putaran penilaian ulang tanpa batas** (cabang `sky/cool-fermi-rv44sj`, setelah PR #297) · `asal: peneliti` (model) dan `asal: pengembang` (putaran) · `disetujui pengembang` · belum merevisi produk; isi dan nomor butir instrumen tidak berubah
 
 Atas permintaan pengembang, ketiga instrumen validasi diperbarui sebelum paket validasi dikirim. Tidak ada keputusan baru; yang diterapkan keputusan peneliti tentang ADDIE dan keputusan pengembang "putaran penilaian ulang tanpa batas" (keduanya di entri pertama hari ini, di bawah).

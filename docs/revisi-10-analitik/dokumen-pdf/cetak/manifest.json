@@ -1,8 +1,8 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "91601fea85cf6cca2c9dac99dbf01c79e3be785be95cad0879390c18e57fbff3",
-      "commit": "da90bef",
+      "source": "896b90dab305898f9714121469afc4f77c4dc2fa5b3755ae572ffa26499b01f4",
+      "commit": "c16af67",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
       "pages": 11,
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "64428445c3dfacbd8675043ed0887ad992353ef89ae873d71f8738d6c89fd7e1",
-      "commit": "da90bef",
+      "source": "7356fce5cc4b4fd19f4c697ecd103b300e899c57bc935a4bdbeb92209b88d2f9",
+      "commit": "c16af67",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
-      "pages": 46,
+      "pages": 47,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -49,10 +49,10 @@
       "landscapeTables": 0
     },
     "06_KISI_KISI_BANK_SOAL.md": {
-      "source": "9aae7a3555d6a53a4e2f1413813314da6f9ca63b51086aa83a2705b7858925fa",
-      "commit": "751522a",
+      "source": "f769e2f4764b4524be1f303fd0a575bedc19eeb6db007fd9c0659ed1ca207d55",
+      "commit": "c16af67",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-27",
+      "date": "2026-11-01",
       "pages": 15,
       "landscapeTables": 0
     },
@@ -105,10 +105,10 @@
       "landscapeTables": 0
     },
     "13_TES_AWAL_AKHIR.md": {
-      "source": "790e84d8315c389a78103b9164754826a864653a456618b734d4ceae68606cea",
-      "commit": "751522a",
+      "source": "7b5a8a570fa323d12b78688233ae62b3b7fb65bd88d9bbb82577eb5967099574",
+      "commit": "c16af67",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-27",
+      "date": "2026-11-01",
       "pages": 11,
       "landscapeTables": 0
     },
@@ -129,10 +129,10 @@
       "landscapeTables": 0
     },
     "16_ANGKET_AKSES_DIGITAL.md": {
-      "source": "a3b0b06a49e8268bd2603d4082795c7f25ac32cf44ff292201dc528cec5901cf",
-      "commit": "a645e1d",
+      "source": "d0893b8149d4a79ba014c85d04354bb0de515be769ab50c5455596f3c0a29867",
+      "commit": "c16af67",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-31",
+      "date": "2026-11-01",
       "pages": 17,
       "landscapeTables": 0
     },

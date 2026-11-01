@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 9 · Status: **draf**, diselaraskan dengan draf 14–16; keempat pertanyaan pengembang sudah diputuskan 26 Oktober 2026 ([bagian akhir](#keputusan-pengembang)); menunggu validasi ahli di tahap 2
+Per 1 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 9 · Status: **draf**, diselaraskan dengan draf 14–16; keempat pertanyaan pengembang sudah diputuskan 26 Oktober 2026 ([bagian akhir](#keputusan-pengembang)); menunggu validasi ahli di tahap 2
 
 Dokumen ini merancang tes di luar game yang dikerjakan siswa sebelum dan sesudah bermain: apa yang diukur, kisi-kisinya, aturan kesetaraan bentuk A dan B, pelaksanaan di kelas, penskoran, dan analisisnya. Butir tesnya ada di dua dokumen pendamping, dan angket akses digital (daftar kerja no. 10) di dokumen tersendiri:
 
@@ -270,10 +270,10 @@ Teks untuk siswa (dijelaskan koordinator sesi):
 | 2 | Uji keterbacaan dengan empat anak, ditambah satu anak di putaran kedua (kelas 5, dari sekolah di luar sampel), setelah izin etik terbit, bersama uji keterbacaan bank; rinciannya di [24](24_UJI_KETERBACAAN.md). Modul belum ada, jadi butir ditampilkan di mock-up layar modul (gambar atau halaman statis) di perangkat kelas | Peneliti |
 | 2 | Mock-up layar modul tes dan angket ikut ditelaah ahli media langkah 1 (daftar kerja no. 20 di 01) | Ahli Media Pembelajaran 1–3 |
 | 3 | Modul dibangun; penskoran diuji otomatis dengan jawaban contoh untuk setiap butir; layar jadi ikut ditelaah ahli media langkah 2 sebelum uji coba (daftar kerja no. 21, G3) | Pengembang, Ahli Media Pembelajaran 1–3 |
-| 4 | Uji coba satu kelas dengan kedua bentuk di modul: waktu per bagian (untuk menetapkan batas waktu), tingkat kesukaran (proporsi benar 0,20–0,90), daya beda (korelasi butir–total ≥ 0,20), pengecoh yang tidak pernah dipilih, dan beda rata-rata bentuk A dan B | Peneliti |
+| 4 | Uji kelompok kecil (KG3a, 8–12 anak) untuk alur, petunjuk, dan waktu, lalu uji kelompok menengah (KG3b, ± 80 siswa) dengan kedua bentuk di modul (sejak 1 November 2026, menggantikan uji coba satu kelas): waktu per bagian (untuk menetapkan batas waktu), tingkat kesukaran (proporsi benar 0,20–0,90), daya beda (korelasi butir–total ≥ 0,20), pengecoh yang tidak pernah dipilih, dan beda rata-rata bentuk A dan B | Peneliti |
 | G4 | Bentuk final dibekukan bersama pra-registrasi di OSF | Pengembang |
 
-Satu kelas uji coba hanya memberi ± 14 siswa per bentuk, jadi angka butir di uji coba hanya petunjuk kasar. Kesetaraan bentuk terutama dijaga lewat kisi-kisi dan telaah ahli, lalu skornya disetarakan dengan data utama.
+Uji kelompok menengah memberi ± 40 siswa per bentuk, jadi angka butir di uji coba masih petunjuk untuk revisi, belum kalibrasi; uji kelompok kecil hanya dipakai untuk alur, petunjuk, dan waktu. Kesetaraan bentuk terutama dijaga lewat kisi-kisi dan telaah ahli, lalu skornya disetarakan dengan data utama.
 
 ## Penyesuaian di dokumen lain
 
