@@ -1,8 +1,8 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "0a0afcfc3fc3e140971189ee444c427744546123f6c7f91e0015e536ff9b32d5",
-      "commit": "1557694",
+      "source": "4b79a4376adfe2b9231087cc0c41b8809e90b20d61ef406fecc18b5a9099d423",
+      "commit": "b8f4611",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
       "pages": 11,
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "fa3564932dab29ce0258d071f555c01c23bba1ea8718e24dc29a5a8d39446134",
-      "commit": "1557694",
+      "source": "9027c9a74555ccca0b73ca868b20ebbbe5207e48505fa8a8c42b6f467e11b3a9",
+      "commit": "b8f4611",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
-      "pages": 48,
+      "pages": 49,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -97,11 +97,11 @@
       "landscapeTables": 0
     },
     "12_CERITA_PENGHUBUNG_DAN_NARASI.md": {
-      "source": "d5b17d84206d168d6c5a63beb082e513eabf958e54102dcc50f169a4c9df166e",
-      "commit": "4384161",
+      "source": "6211810980674df882efd81ef2f2a1f5b6dfdc8fd4ed1933f062ce11c327fe1b",
+      "commit": "b8f4611",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-27",
-      "pages": 16,
+      "date": "2026-11-01",
+      "pages": 17,
       "landscapeTables": 0
     },
     "13_TES_AWAL_AKHIR.md": {

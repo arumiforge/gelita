@@ -6,6 +6,18 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 1 November 2026
 
+**12 diselaraskan dengan keadaan terbaru** (cabang `sky/amazing-cerf-j3jjzk`) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 12 tetap `disetujui pengembang` · tidak merevisi produk
+
+Atas permintaan pengembang, [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) (terakhir diubah 27 Oktober 2026) dicek terhadap keputusan sesudahnya dan terhadap kode. Tidak ada keputusan baru; yang diubah hanya hal yang sudah diputuskan di dokumen lain.
+
+- **Dua baris dari cek fakta budaya [25](25_CEK_FAKTA_BUDAYA.md#akibat-ke-dokumen-lain) no. 5 dimasukkan**, supaya 12 tetap satu-satunya sumber teks cerita untuk tahap 3: `kenal-temanggung-03` (Gondosuli "diperkirakan dibuat sekitar tahun 832") dan `peta-tuntas-01` ("Dataran Kedu" menjadi "tanah Kedu"). Hitungan naskah: 21 baru, 33 diubah, 58 tetap (dulu 31 dan 60); jumlah 112 baris dan ± 187 rekaman tidak berubah. Usulan opsional 25 untuk `kenal-temanggung-02` dicatat sebagai pilihan yang belum dipilih; barisnya tetap.
+- **Urutan P5:** butir risiko daring (dengan izin terpisah) setelah tes akhir dan kritik dan saran setelah skala sikap ditulis di bagian *Penutup* dan keputusan no. 5, sama dengan 02, 06, dan 17.
+- **Waktu cerita:** 12 masih memakai patokan lama 50 menit bermain; diganti ± 90 menit per pertemuan wilayah (06, keputusan 26 Oktober 2026). Pengecekan waktu aktif kini di uji keterbacaan, lalu uji kelompok kecil dan menengah (KG3a, KG3b), sesuai model ADDIE.
+- **Catatan tahap 3:** no. 1 menyebut "sekali" dihitung per siswa per studi lewat `participant_progress` ([28 §8](28_IMPLEMENTASI_SESI_LAPANGAN.md#8-kemajuan-mengikuti-siswa-bukan-sesi-game)); no. 3 menyebut kedua baris dari 25; no. 7 menunjuk pengganti `dialogue_advanced` yang sudah dirancang, `dialogue_completed` ([29 §5.3](29_IMPLEMENTASI_DATA_PENELITIAN.md#53-dialogue_advanced-diganti-dialogue_completed)).
+- **Yang dicek dan tetap benar:** `story.php` dan naskah aktif belum berubah sejak 26 Oktober 2026 (91 baris, hitungan per konteks cocok dengan tabel di 12); narasi belum direkam (`docs/PROGRESS.md`); kode butir, mock-up `mk-cr-01`/`mk-cr-02` di 18, dan rujukan 12 di 20, 22, dan 24 tidak perlu diubah.
+
+Diubah: 12, 00 (baris 12 di daftar dokumen dan tahap 1), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 12.
+
 **Target persetujuan etik dipertahankan** (cabang `r10-cek-pasal-pp33`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
 
 Pengembang memilih tetap memakai target di 01 → *Peta jalan dan daftar kerja* no. 15: persetujuan etik **paling lambat akhir September sampai minggu pertama November 2027**. Patokan panduan BRIN (± 1–2 bulan sejak berkas lengkap, kira-kira Januari–Februari 2027) tetap ditulis di garis waktu 22 sebagai perkiraan, bukan target. Persetujuan yang lebih awal tidak mengubah urutan gerbang: kegiatan dengan anak dan tahap 3 tetap menunggu G2. Tidak dipilih: target Januari–Februari 2027 dengan atau tanpa cadangan sampai Maret 2027 (usulan AI). Berkas serah terima C.3 no. 2 sekarang menyebut keputusan ini dan meminta peneliti mengonfirmasi atau menetapkan target lain.
