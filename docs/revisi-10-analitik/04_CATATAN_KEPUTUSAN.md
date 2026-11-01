@@ -20,6 +20,18 @@ Atas permintaan pengembang, [13](13_TES_AWAL_AKHIR.md) dicek terhadap keputusan 
 
 Diubah: 13, 00 (baris 13), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 13.
 
+**25 diselaraskan dengan keadaan terbaru** (cabang `sky/upbeat-heisenberg-gxyw3p`) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 25 tetap `disetujui pengembang` · tidak merevisi produk
+
+Atas permintaan pengembang, [25](25_CEK_FAKTA_BUDAYA.md) (terakhir diubah 31 Oktober 2026) dicek terhadap keputusan sesudahnya, terhadap dokumen yang dirujuknya, dan terhadap kode. Tidak ada keputusan baru; putusan, sumber, dan hitungan klaim (135; 103 dikonfirmasi, 20 varian, 2 keliru, 10 `needs_verification`) tidak berubah.
+
+- **Akibat no. 5 dan keputusan no. 7:** kedua baris cerita (`kenal-temanggung-03`, `peta-tuntas-01`) sudah tertulis di [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) sejak entri di bawah; 25 tidak lagi menyebut `peta-tuntas-01` "tidak di 12". Naskah aktif dan `story.php` tetap diubah di tahap 3. Usulan `kenal-temanggung-02` tetap pilihan yang belum dipilih.
+- **Nomor baris:** rujukan "12 baris …" dan "IB B.7 (baris …)" tidak cocok lagi (12 diubah 1 November 2026; B.7 ditulis ulang saat cek dibuat), jadi diganti nama bagian. Dua nomor baris 08 yang bergeser dua baris oleh perubahan cek itu sendiri dibetulkan (1277 → 1279, 1285 → 1287). Nomor baris 08, berkas data bank soal, dan naskah aktif lainnya masih cocok, karena berkas itu belum berubah sejak 27 Oktober 2026.
+- **Jadwal Pasar Papringan (akibat no. 7):** "sebelum pengambilan data, cek jadwal 2026" menjadi "sebelum versi dikunci di G4, cek jadwal yang berlaku". Ini mengikuti keputusan *versi dikunci di G4* (entri ADDIE di bawah): keterangan `tmg-1-i` menyebut Minggu Wage dan Minggu Pon dan tidak boleh diubah selama pengambilan data utama, yang kini paling cepat 2027.
+- **Dicari lagi di web (1 November 2026), tanpa sumber baru yang dikutip:** surat penetapan Warisan Budaya Takbenda Wayang Kedu Temanggung (TMG-31) belum ditemukan, berita yang ada tetap menyebut usulannya "lolos"; jadwal Pasar Papringan 2026 juga belum ditemukan. Kedua baris tetap seperti semula.
+- **Yang dicek dan tetap benar:** B.7 IB v2.1 tetap 44 fakta (pembaruan ADDIE 1 November 2026 hanya mengubah pengantar); prasyarat no. 6 di 20 dan "44 fakta" di 21 sudah ditandai; 08, berkas data bank soal, naskah aktif, dan `story.php` belum berubah sejak cek, jadi daftar *Akibat ke dokumen lain* no. 4 masih berlaku utuh untuk tahap 3; model ADDIE dan tiga uji dengan siswa tidak menyentuh isi 25.
+
+Diubah: 25, 00 (baris 25), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 25.
+
 **12 diselaraskan dengan keadaan terbaru** (cabang `sky/amazing-cerf-j3jjzk`) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 12 tetap `disetujui pengembang` · tidak merevisi produk
 
 Atas permintaan pengembang, [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) (terakhir diubah 27 Oktober 2026) dicek terhadap keputusan sesudahnya dan terhadap kode. Tidak ada keputusan baru; yang diubah hanya hal yang sudah diputuskan di dokumen lain.

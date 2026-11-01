@@ -1,8 +1,8 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "a2e3124c05b893b27f360ae84f40c0f227c4902dbc80bdd3736ecd05ce64f753",
-      "commit": "2e01a6d",
+      "source": "89c2559e6ed9d3e58c40eb560c22c2d11117c7714b9b40d3e7e9a48b209605ed",
+      "commit": "fb47e1d",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
       "pages": 11,
@@ -33,8 +33,8 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "385e741ed1bc5b33a70b81aaa993970b9765b2bfb459ce10d86e4a908f8e45a3",
-      "commit": "2e01a6d",
+      "source": "e6eb2a7bfedd2d6ab974a64394015467fc821f0a88a40f58729a148e373627b1",
+      "commit": "fb47e1d",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
       "pages": 49,
@@ -105,11 +105,11 @@
       "landscapeTables": 0
     },
     "13_TES_AWAL_AKHIR.md": {
-      "source": "3842568f2173da8a8e332544aa384f6f880c7b1ce20f3b85e65330cff9b11bcc",
-      "commit": "2e01a6d",
+      "source": "7b5a8a570fa323d12b78688233ae62b3b7fb65bd88d9bbb82577eb5967099574",
+      "commit": "c16af67",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
-      "pages": 12,
+      "pages": 11,
       "landscapeTables": 0
     },
     "14_TES_BAGIAN_MEMBACA.md": {
@@ -201,10 +201,10 @@
       "landscapeTables": 0
     },
     "25_CEK_FAKTA_BUDAYA.md": {
-      "source": "bd775c7788687bb235254f4178efdd97c4c114fbd2741ad133a419b009a1507c",
-      "commit": "32ac550",
+      "source": "c8d9faeb64098291481afadba7b1227f4b8a497ea10d28d0db36cf6260470944",
+      "commit": "fb47e1d",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-31",
+      "date": "2026-11-01",
       "pages": 27,
       "landscapeTables": 0
     },
