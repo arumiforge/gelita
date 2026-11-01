@@ -238,14 +238,14 @@ L5 menguji apakah kode kesalahan dan pilihan alasan cocok dengan cara anak berpi
 
 | Bentuk | Kapan | Siapa | Lama |
 | --- | --- | --- | --- |
-| Berpikir lantang: siswa bermain sambil mengucapkan pikirannya | Hanya saat uji coba, dengan 5–8 siswa di luar sampel utama | P3 | 30 menit per siswa |
+| Berpikir lantang: siswa bermain sambil mengucapkan pikirannya | Hanya saat uji coba (KG2), dengan 5–8 siswa sekolah uji coba yang tidak ikut uji kelompok kecil, uji kelompok menengah, atau data utama (1 November 2026) | P3 | 30 menit per siswa |
 | Wawancara retrospektif: siswa menjelaskan jawaban yang baru dibuatnya | Setelah waktu bermain di P2, P3, dan P4, tiga siswa per pertemuan (keputusan 26 Oktober 2026) | P3 | 10 menit per siswa |
 
 **Memilih siswa:** di setiap pertemuan wilayah, satu siswa dari setiap kelompok nilai tes awal (rendah, sedang, tinggi; sepertiga terbawah, tengah, dan teratas di rombel itu), dipilih acak dari siswa berizin yang belum pernah diwawancarai. Setiap siswa paling banyak sekali, jadi ± 9 siswa per kelas. Di dalam kelompoknya, P3 boleh mendahulukan siswa dengan pola mencolok, misalnya sering menebak cepat. Pemilihan memakai nilai tes awal dari modul, bukan penilaian guru.
 
 **Persiapan:** P3 membuka data jawaban siswa itu di panel peneliti (dengan kode peserta, tanpa nama), lalu memilih 3 butir dari wilayah pertemuan itu: 2 yang salah di percobaan pertama dan 1 skenario dari Skenario Digital. Rekaman suara hanya dibuat kalau L7 mencatat izin rekaman.
 
-**Tempat dan persetujuan ulang:** wawancara di tempat yang terlihat guru atau peneliti lain, tidak di ruang tertutup berdua, tetapi tidak terdengar guru atau teman, supaya anak leluasa menjawab ([22 → Prosedur per pertemuan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-per-pertemuan-dan-beban-bagi-anak); panduan klirens etik BRIN butir 3.1). Sebelum mulai, P3 membacakan naskah singkat [23 → T5](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t5-pengingat-di-awal-p2p5-dan-sebelum-wawancara-l5) (berpikir lantang: [23 → T9](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t9-varian-kelas-uji-coba)). Kalau anak tidak mau direkam, tidak direkam, walaupun orang tuanya mengizinkan; kalau anak tidak mau diwawancarai, P3 memilih siswa lain dari kelompok yang sama.
+**Tempat dan persetujuan ulang:** wawancara di tempat yang terlihat guru atau peneliti lain, tidak di ruang tertutup berdua, tetapi tidak terdengar guru atau teman, supaya anak leluasa menjawab ([22 → Prosedur per pertemuan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-per-pertemuan-dan-beban-bagi-anak); panduan klirens etik BRIN butir 3.1). Sebelum mulai, P3 membacakan naskah singkat [23 → T5](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t5-pengingat-di-awal-p2p5-dan-sebelum-wawancara-l5) (berpikir lantang: [23 → T9](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#t9-varian-uji-coba)). Kalau anak tidak mau direkam, tidak direkam, walaupun orang tuanya mengizinkan; kalau anak tidak mau diwawancarai, P3 memilih siswa lain dari kelompok yang sama.
 
 **Pertanyaan (dibaca apa adanya, dengan nada netral):**
 

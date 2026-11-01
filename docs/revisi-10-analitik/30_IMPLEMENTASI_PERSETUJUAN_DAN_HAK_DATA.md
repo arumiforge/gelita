@@ -136,18 +136,18 @@ K1–K4 diputuskan pengembang ([§22](#22-keputusan-pengembang)). K5, K10, dan K
 | Kode | 03 dan 22 (berlaku) | 26 (keliru) |
 | --- | --- | --- |
 | KG2 | Berpikir lantang, tahap 4 | Tes awal dan angket (P1) |
-| KG3 | Uji coba satu kelas, sekolah `U`, tahap 4 | Bermain P2–P4 |
+| KG3 | Uji coba di sekolah `U`, tahap 4 (sejak 1 November 2026 dipecah: KG3a uji kelompok kecil, KG3b uji kelompok menengah) | Bermain P2–P4 |
 | KG4 | Wawancara L5 di P2–P4 | P5 |
 | KG5 | Pengambilan data utama P1–P5 | Kelas uji coba dan berpikir lantang |
 
 Dengan nomor 26, "sebelum KG2" berarti sebelum P1 data utama, sehingga uji coba (KG5 di 26) bisa berjalan tanpa fungsi ini. Itu bukan maksudnya.
 
-**Tenggat yang dipakai di sini:** *sebelum kegiatan pertama yang memakai akun GELITA anak*. Dengan nomor 03 dan 22 itu KG2 (berpikir lantang) atau KG3 (uji coba), mana yang lebih dulu; keduanya setelah G3. KG1 (uji keterbacaan) tidak memakai akun. Jadi "sebelum KG2" di 01, 22, dan 26 tetap benar setelah tabel 26 dibetulkan ([§23](#23-akibat-ke-dokumen-lain)).
+**Tenggat yang dipakai di sini:** *sebelum kegiatan pertama yang memakai akun GELITA anak*. Dengan nomor 03 dan 22 itu KG2 (berpikir lantang), setelah G3; sejak 1 November 2026 KG2 selalu mendahului KG3a dan KG3b ([04](04_CATATAN_KEPUTUSAN.md)). KG1 (uji keterbacaan) tidak memakai akun. Jadi "sebelum KG2" di 01, 22, dan 26 tetap benar setelah tabel 26 dibetulkan ([§23](#23-akibat-ke-dokumen-lain)).
 
 | Bagian | Harus siap |
 | --- | --- |
 | §5 persetujuan, §11 masa simpan, §12 IP berhash | Sebelum akun anak pertama kali dipakai |
-| §6 penanda tindak lanjut, §5.4 T11/T12 | Sebelum P5 pertama yang memakai akun (P5 uji coba), bersama modul no. 22 |
+| §6 penanda tindak lanjut, §5.4 T11/T12 | Sebelum P5 pertama yang memakai akun (P5 uji kelompok kecil KG3a), bersama modul no. 22 |
 | §7 hapus, §8 salinan, §9 pembetulan | Sebelum akun anak pertama kali dipakai; kalau belum siap, jalan manual §13 diuji sekali di instalasi uji |
 | §10 penutupan studi | Sebelum studi ditutup; boleh dibangun setelah data utama |
 

@@ -1,6 +1,6 @@
 # Penilaian Dampak Pelindungan Data Pribadi: Penelitian GELITA
 
-Per 27 Oktober 2026 · **Status: `disetujui pengembang`** (31 Oktober 2026; `asal: pengembang`, disusun dengan bantuan AI; belum disetujui peneliti dan belum diberi saran PPDP); nomor KG di *Kegiatan* disamakan dengan 03 dan 22, dan akibat dokumen implementasi bagian 1, 3, dan 4 (27, 29, 30) dibawa sesi koordinator 30 Oktober 2026 (`asal: pengembang`, [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)) · Lampiran 18 [permohonan izin etik](22_PERMOHONAN_IZIN_ETIK.md#lampiran) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 1 November 2026 · **Status: `disetujui pengembang`** (31 Oktober 2026; `asal: pengembang`, disusun dengan bantuan AI; belum disetujui peneliti dan belum diberi saran PPDP); nomor KG di *Kegiatan* disamakan dengan 03 dan 22, dan akibat dokumen implementasi bagian 1, 3, dan 4 (27, 29, 30) dibawa sesi koordinator 30 Oktober 2026 (`asal: pengembang`, [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)); kegiatan uji coba KG3a dan KG3b dari keputusan peneliti 1 November 2026 dimasukkan (`asal: peneliti`) · Lampiran 18 [permohonan izin etik](22_PERMOHONAN_IZIN_ETIK.md#lampiran) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Dokumen ini adalah penilaian dampak pelindungan data pribadi (selanjutnya *penilaian dampak*) yang lengkap untuk penelitian GELITA. Ringkasannya ada di [22 → Penilaian dampak pelindungan data](22_PERMOHONAN_IZIN_ETIK.md#penilaian-dampak-pelindungan-data); dokumen ini menguraikannya untuk pembaca *Lembaga Komite Etik* dan untuk PPDP atau narahubung data. Isinya mengikuti 22 dan tidak membuat aturan baru tentang data. Kalau ada yang berbeda, 22 yang berlaku, dan bedanya dicatat di [Akibat ke dokumen lain](#akibat-ke-dokumen-lain).
 
@@ -28,7 +28,7 @@ Ini pemeriksaan dokumen, bukan nasihat hukum. Semua nomor pasal PP No. 33 Tahun 
 
 ## Ringkasan untuk komite
 
-- **Apa yang diolah.** Data sekitar 360 anak kelas 5 SD/MI (umur ± 10–11 tahun) yang bermain GELITA dan mengerjakan tes, angket, dan skala sikap dalam lima pertemuan (pengambilan data utama KG5, dengan wawancara KG4), didahului berpikir lantang (KG2) dan uji coba satu kelas (KG3) di luar sampel, ditambah empat atau lima anak di uji keterbacaan (KG1). Juga data orang tua (nama, tanda tangan, nomor HP di formulir izin), sekolah, dan tim.
+- **Apa yang diolah.** Data sekitar 360 anak kelas 5 SD/MI (umur ± 10–11 tahun) yang bermain GELITA dan mengerjakan tes, angket, dan skala sikap dalam lima pertemuan (pengambilan data utama KG5, dengan wawancara KG4), dari sekitar enam sekolah utama, didahului di sekolah uji coba di luar sampel oleh berpikir lantang (KG2, 5–8 anak), uji kelompok kecil (KG3a, 8–12 anak), dan uji kelompok menengah (KG3b, ± 80 anak), ditambah empat atau lima anak di uji keterbacaan (KG1). Seluruhnya paling banyak sekitar 465 anak, masing-masing hanya di satu kegiatan. Juga data orang tua (nama, tanda tangan, nomor HP di formulir izin), sekolah, dan tim.
 - **Untuk apa.** Menilai apakah butir dan catatan permainan GELITA mengukur literasi membaca dan literasi digital anak dengan baik ([22 → Tujuan](22_PERMOHONAN_IZIN_ETIK.md#tujuan)). Data tidak dipakai untuk menilai, memberi nilai rapor, atau memutuskan apa pun tentang anak.
 - **Mengapa berisiko tinggi.** Data anak termasuk data pribadi yang bersifat spesifik, dan tes, skor permainan, serta pengamatan adalah evaluasi dan penskoran yang sistematis. Dua pemicu itu mewajibkan penilaian dampak sebelum pengolahan ([Mengapa penilaian dampak diperlukan](#mengapa-penilaian-dampak-diperlukan)).
 - **Risiko terbesar sebelum perlindungan:** kebocoran yang mengungkap nama anak bersama jawabannya; anak dikenali dari gabungan data walaupun namanya tidak ada; jawaban butir risiko daring (ang-21 sampai ang-23) terbaca orang lain. Ketiganya dinilai **tinggi** sebelum perlindungan ([Penilaian risiko](#penilaian-risiko)).
@@ -71,12 +71,13 @@ Karena dua pemicu pertama berlaku, penilaian dampak ini wajib. Isinya memuat isi
 | Kode | Kegiatan | Peserta | Data yang timbul |
 | --- | --- | --- | --- |
 | KG1 | Uji keterbacaan bahan anak ([24](24_UJI_KETERBACAAN.md)) | 4 anak, ditambah 1 di putaran kedua, dari sekolah Kedu di luar sampel | Lembar LK1–LK3, kartu cetak yang ditandai, waktu baca, rekaman suara (dengan izin), kode `K01`–`K05`; tidak ada akun GELITA |
-| KG2 | Berpikir lantang: anak bermain sambil mengucapkan pikirannya (L5), tahap 4 | 5–8 anak di luar sampel utama | Akun GELITA dan data permainan, rekaman berpikir lantang (dengan izin terpisah), transkrip |
-| KG3 | Uji coba satu kelas dengan semua lembar, lima pertemuan, tahap 4 | Satu kelas (± 28 siswa), sekolah berawalan `U` | Sama dengan KG5 |
-| KG4 | Wawancara retrospektif L5 di P2–P4, bersama KG3 dan KG5 | 3 siswa per pertemuan wilayah, paling banyak sekali per siswa | Catatan wawancara L5, rekaman (dengan izin terpisah), transkrip |
-| KG5 | Pengambilan data utama, P1–P5 dan sesi susulan, tahap 5 | ± 360 anak | P1: akun dan pendaftaran, tes awal, angket; P2–P4: data permainan tiga wilayah, lembar L1–L4; P5: tes akhir, skala sikap, kritik dan saran, butir risiko daring (hanya dengan izin terpisah, jawaban ang-21–23); lembar L6 |
+| KG2 | Berpikir lantang: anak bermain sambil mengucapkan pikirannya (L5), satu sesi ± 40 menit, tahap 4 | 5–8 anak sekolah uji coba, tidak ikut KG3a, KG3b, atau KG5 | Akun GELITA dan data permainan, rekaman berpikir lantang (dengan izin terpisah), transkrip |
+| KG3a | Uji kelompok kecil dengan semua lembar, lima pertemuan, tahap 4 | 8–12 anak dari satu sekolah berawalan `U` | Sama dengan KG5 |
+| KG3b | Uji kelompok menengah dengan semua lembar, lima pertemuan per kelas, tahap 4 | ± 80 anak, sekolah berawalan `U` | Sama dengan KG5 |
+| KG4 | Wawancara retrospektif L5 di P2–P4, bersama KG3a, KG3b, dan KG5 | 3 siswa per pertemuan wilayah, paling banyak sekali per siswa | Catatan wawancara L5, rekaman (dengan izin terpisah), transkrip |
+| KG5 | Pengambilan data utama, P1–P5 dan sesi susulan, tahap 5 | ± 360 anak dari sekitar enam sekolah utama | P1: akun dan pendaftaran, tes awal, angket; P2–P4: data permainan tiga wilayah, lembar L1–L4; P5: tes akhir, skala sikap, kritik dan saran, butir risiko daring (hanya dengan izin terpisah, jawaban ang-21–23); lembar L6 |
 
-Nomornya sama dengan [03 → Kegiatan dengan anak](03_KODE_DAN_ARTI.md#kegiatan-dengan-anak) dan [22 → Kegiatan yang dimintakan izin](22_PERMOHONAN_IZIN_ETIK.md#kegiatan-yang-dimintakan-izin) (disamakan sesi koordinator 30 Oktober 2026; draf sebelumnya memakai KG2–KG5 untuk P1, P2–P4, P5, dan uji coba, [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#4-tenggat-sebelum-akun-gelita-anak-pertama-kali-dipakai) §4). Kegiatan pertama yang memakai akun GELITA anak adalah KG2 atau KG3, mana yang lebih dulu; keduanya setelah G3. KG1 tidak memakai akun. Rinciannya ada di [22 → Prosedur per pertemuan dan beban bagi anak](22_PERMOHONAN_IZIN_ETIK.md#prosedur-per-pertemuan-dan-beban-bagi-anak).
+Nomornya sama dengan [03 → Kegiatan dengan anak](03_KODE_DAN_ARTI.md#kegiatan-dengan-anak) dan [22 → Kegiatan yang dimintakan izin](22_PERMOHONAN_IZIN_ETIK.md#kegiatan-yang-dimintakan-izin) (disamakan sesi koordinator 30 Oktober 2026; draf sebelumnya memakai KG2–KG5 untuk P1, P2–P4, P5, dan uji coba, [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#4-tenggat-sebelum-akun-gelita-anak-pertama-kali-dipakai) §4). Kegiatan pertama yang memakai akun GELITA anak adalah KG2, setelah G3; KG3a dan KG3b menyusul sesudahnya (urutan sejak 1 November 2026). KG1 tidak memakai akun. Rinciannya ada di [22 → Prosedur per pertemuan dan beban bagi anak](22_PERMOHONAN_IZIN_ETIK.md#prosedur-per-pertemuan-dan-beban-bagi-anak).
 
 ### Tujuan pengolahan
 
@@ -279,7 +280,7 @@ Sama dengan [22 → Mengundurkan diri dan hapus data](22_PERMOHONAN_IZIN_ETIK.md
 
 Anak boleh mengajukan sendiri; pemenuhannya mempertimbangkan kemampuan anak memahami akibatnya dan memerlukan persetujuan orang tua (PP Pasal 38 ayat (5)–(7)). Anak yang menyatakan ingin berhenti dicatat sebagai pilihan A hari itu. Setelah studi ditutup, data tidak bisa lagi dihubungkan dengan anak, jadi hak hapus, akses, dan pembetulan tidak bisa lagi dijalankan; ini disebut di surat T1.
 
-Tiga fungsi yang belum ada di sistem (hapus sebagian, ambil data satu anak, pembetulan dengan jejak audit) harus selesai di tahap 3, **sebelum KG2**, yaitu sebelum kegiatan pertama yang memakai akun GELITA anak (KG2 atau KG3, mana yang lebih dulu; [Kegiatan](#kegiatan)). Rancangannya di [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) §7–§9. Kalau belum selesai, admin menjalankannya secara manual dengan berita acara, dan ini dicatat sebagai risiko R8 di bawah.
+Tiga fungsi yang belum ada di sistem (hapus sebagian, ambil data satu anak, pembetulan dengan jejak audit) harus selesai di tahap 3, **sebelum KG2**, yaitu sebelum kegiatan pertama yang memakai akun GELITA anak (KG2; [Kegiatan](#kegiatan)). Rancangannya di [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) §7–§9. Kalau belum selesai, admin menjalankannya secara manual dengan berita acara, dan ini dicatat sebagai risiko R8 di bawah.
 
 ## Penilaian risiko
 
@@ -369,7 +370,7 @@ Semua langkah di bawah sudah diputuskan di 22 atau dokumen yang dirujuknya, kecu
 | --- | --- |
 | Permohonan diajukan | Dokumen ini disetujui pengembang dan peneliti; saran PPDP atau narahubung dicatat; nomor pasal dicek ke naskah resmi (bersama 22) |
 | KG1 | Perjanjian prosesor (P6); pernyataan kerahasiaan (P5); penyimpanan terenkripsi siap (P3); catatan kegiatan pengolahan dan kebijakan masa simpan disimpan ketua peneliti |
-| KG2 (kegiatan pertama yang memakai akun GELITA anak; kalau KG3 lebih dulu, sebelum KG3) | Perubahan sistem tahap 3 untuk P1, P2, P7, P8, P13, P17, P18 selesai dan diuji; fungsi hak orang tua atau jalan manualnya (P14, P15) diuji sekali; ringkasan penilaian dampak diperlihatkan ke kepala sekolah ([Konsultasi](#konsultasi)) |
+| KG2 (kegiatan pertama yang memakai akun GELITA anak) | Perubahan sistem tahap 3 untuk P1, P2, P7, P8, P13, P17, P18 selesai dan diuji; fungsi hak orang tua atau jalan manualnya (P14, P15) diuji sekali; ringkasan penilaian dampak diperlihatkan ke kepala sekolah ([Konsultasi](#konsultasi)) |
 
 ## Konsultasi
 
@@ -419,6 +420,8 @@ Empat pertanyaan dijawab pengembang pada 27 Oktober 2026 (`asal: pengembang`, `d
 Dicatat untuk sesi yang memegang dokumen itu atau sesi koordinator. Dokumen ini tidak mengubah dokumen lain.
 
 **Masuk ke dokumen ini** (sesi koordinator, 30 Oktober 2026; `asal: pengembang`): nomor KG di [Kegiatan](#kegiatan) disamakan dengan 03 dan 22, dan setiap sebutan KG2–KG5 diperiksa; akibat 27 §18 (tiga peran staf, unduhan lewat `ketua`, pembatasan prosedur membuka kode) di *Pihak yang terlibat*, *Tim dan staf*, *Aliran data*, P1, dan P2; akibat 29 §20 (lembar L1–L6 di server, log teknis, rincian perangkat, peringatan nama) di A8, A12, L1, *Aliran data* baris 5, dan P1; akibat 30 §23 (konfirmasi `ketua`, akun nonaktif, salinan tanpa jawaban butir risiko, penggantian cadangan, izin berkode di server, sekolah diganti kode, 7305 hari) di *Hak orang tua dan anak*, A7, A14, *Aliran data* baris 8, P8, P13, P14, P15, P18, R8, dan R14. Tidak ada keputusan baru; dua pertanyaan 30 §21 (no. 1 dasar pasal, `needs_verification`; no. 2 transkrip pada pilihan C) tetap terbuka.
+
+**Masuk ke dokumen ini** (1 November 2026, cabang `sky/cool-fermi-rv44sj`; `asal: peneliti`, [04](04_CATATAN_KEPUTUSAN.md)): uji coba dipecah menjadi KG3a (uji kelompok kecil, 8–12 anak) dan KG3b (uji kelompok menengah, ± 80 anak) di [Kegiatan](#kegiatan) dan *Ringkasan untuk komite*; KG2 kini anak tersendiri dan selalu menjadi kegiatan pertama yang memakai akun, sehingga tenggat "sebelum KG2" tidak lagi bersyarat; data utama dari sekitar enam sekolah utama. Tidak ada risiko atau langkah perlindungan baru: data dan alirannya sama untuk ketiga uji coba.
 
 **Status per 30 Oktober 2026:** semua baris di bawah sudah dibawa. Tautan lampiran 18 di 22 dibawa sesi `r10-formulir-etik`; sisanya oleh sesi koordinator (cabang `sky/dazzling-planck-6cl9vy`), termasuk penyelarasan nomor pasal di *Dasar hukum* dokumen ini.
 

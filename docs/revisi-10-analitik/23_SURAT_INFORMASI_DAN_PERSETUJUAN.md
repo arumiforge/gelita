@@ -1,6 +1,6 @@
 # Surat Informasi dan Persetujuan
 
-Per 27 Oktober 2026 · **Status: draf**; empat pertanyaan pengembang dijawab 27 Oktober 2026, lalu diselaraskan dengan [22](22_PERMOHONAN_IZIN_ETIK.md), [24](24_UJI_KETERBACAAN.md), dan keputusan pengembang pada hari yang sama ([Keputusan pengembang](#keputusan-pengembang)), lalu dengan pedoman KEPPKN 2021 pada 27 Oktober 2026 ([22 → Pedoman yang dirujuk](22_PERMOHONAN_IZIN_ETIK.md#pedoman-yang-dirujuk)); T10 *Cara menjalankan* dan kotak peneliti diselaraskan dengan dokumen implementasi bagian 4 ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md)) oleh sesi koordinator 30 Oktober 2026 (`asal: pengembang`; teks untuk orang tua dan anak tidak berubah); daftar kerja no. 15 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 1 November 2026 · **Status: draf**; empat pertanyaan pengembang dijawab 27 Oktober 2026, lalu diselaraskan dengan [22](22_PERMOHONAN_IZIN_ETIK.md), [24](24_UJI_KETERBACAAN.md), dan keputusan pengembang pada hari yang sama ([Keputusan pengembang](#keputusan-pengembang)), lalu dengan pedoman KEPPKN 2021 pada 27 Oktober 2026 ([22 → Pedoman yang dirujuk](22_PERMOHONAN_IZIN_ETIK.md#pedoman-yang-dirujuk)); T10 *Cara menjalankan* dan kotak peneliti diselaraskan dengan dokumen implementasi bagian 4 ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md)) oleh sesi koordinator 30 Oktober 2026 (`asal: pengembang`; teks untuk orang tua dan anak tidak berubah); T9 ditulis ulang untuk KG2, KG3a, dan KG3b setelah keputusan peneliti 1 November 2026 (`asal: peneliti`, [Keputusan pengembang](#keputusan-pengembang) no. 23–24); daftar kerja no. 15 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Dokumen ini berisi teks yang dikirim bersama permohonan izin etik ke *Lembaga Komite Etik* dan yang dibagikan ke sekolah: surat informasi, formulir persetujuan, naskah persetujuan anak, formulir pengunduran diri, dan teks untuk butir risiko daring (layar sebelum dan sesudahnya, dan selebaran tempat bercerita). Setiap teks berupa blok siap cetak. Tempat kosong ditulis dalam kurung siku, misalnya `[nama sekolah]`, dan diisi sebelum dicetak.
 
@@ -20,7 +20,7 @@ Semua teks dikirim ke luar hanya setelah permohonan izin etik disetujui pengemba
 | T6 | Surat permohonan izin kepada kepala sekolah | Kepala sekolah | [T6](#t6-surat-permohonan-izin-kepada-kepala-sekolah) |
 | T7 | Lembar informasi untuk guru kelas | Guru kelas 5 | [T7](#t7-lembar-informasi-untuk-guru-kelas) |
 | T8 | Varian uji keterbacaan (surat, formulir, naskah anak) | Orang tua dan anak uji keterbacaan | [T8](#t8-varian-uji-keterbacaan) |
-| T9 | Varian kelas uji coba | Orang tua kelas uji coba (awalan `U`) | [T9](#t9-varian-kelas-uji-coba) |
+| T9 | Varian uji coba (KG2, KG3a, KG3b) | Sekolah, guru, orang tua, dan siswa sekolah uji coba (awalan `U`) | [T9](#t9-varian-uji-coba) |
 | T10 | Formulir pengunduran diri dan permintaan hapus data | Orang tua, kapan saja | [T10](#t10-formulir-pengunduran-diri-dan-permintaan-hapus-data) |
 | T11 | Layar sebelum butir risiko daring di P5 | Siswa dengan izin butir risiko, di layar modul | [T11](#t11-layar-sebelum-butir-risiko-daring) |
 | T12 | Pesan dukungan sesudah butir risiko daring | Siswa, di layar modul, pesan yang sama untuk semua | [T12](#t12-pesan-dukungan-sesudah-butir-risiko-daring) |
@@ -81,6 +81,7 @@ Setelah itu: [tabel pembagian](#tabel-pembagian), [catatan keterbacaan](#catatan
 | `[nama sekolah]`, `[nama kepala sekolah]`, `[rombel]` | Rekrutmen sekolah; kode sekolah **menunggu daftar kerja no. 12** | Per sekolah |
 | `[tanggal P1]` … `[tanggal P5]`, `[rentang minggu]` | Jadwal per kelas | Per kelas |
 | `[tanggal batas kembali]` | P1: H-3 sebelum P1 | Per kelas |
+| `[tanggal sesi]` | Jadwal berpikir lantang (KG2) per anak, [T9](#t9-varian-uji-coba) | Per anak |
 | `[tanggal studi ditutup]` | Rencana tanggal studi ditutup (setelah analisis selesai, [22 → Masa simpan dan pemusnahan](22_PERMOHONAN_IZIN_ETIK.md#masa-simpan-dan-pemusnahan)), dari jadwal ketua peneliti. Kalau studi ternyata ditutup lebih lambat, permintaan hapus tetap diterima sampai studi benar-benar ditutup ([Keputusan pengembang](#keputusan-pengembang) no. 1) | Sebelum dicetak |
 | `[kontak PPDP atau narahubung]` | PPDP lembaga peneliti kalau sudah ditunjuk, kalau belum ketua peneliti sebagai narahubung ([22 → Pengendali, prosesor, dan narahubung data](22_PERMOHONAN_IZIN_ETIK.md#pengendali-prosesor-dan-narahubung-data)) | Sebelum permohonan etik dikirim |
 | `[rentang tanggal uji keterbacaan]`, `[tanggal batas kembali uji keterbacaan]` | Jadwal uji keterbacaan ([24 → Jadwal empat sesi](24_UJI_KETERBACAAN.md#jadwal-empat-sesi)), disepakati dengan sekolah asal anak | Sebelum dicetak |
@@ -110,7 +111,7 @@ Tiga halaman A4 tegak, dicetak bolak-balik (dua lembar). Orang tua menyimpan sur
 >
 > Kami tim peneliti dari [nama lembaga peneliti], dipimpin oleh [nama ketua peneliti]. Kami mengembangkan GELITA, sebuah game belajar tentang budaya daerah Kedu (Temanggung, Magelang, dan Wonosobo). Kami ingin tahu apakah game ini bisa mengukur kemampuan anak membaca dan memakai internet dengan baik. Kami mohon izin Bapak/Ibu agar anak Bapak/Ibu boleh ikut.
 >
-> Penelitian ini mengundang sekitar 360 siswa kelas 5 dari sekitar 13 kelas. Di [nama sekolah], semua siswa kelas 5 diundang. Penelitian ini dibiayai oleh [sumber dana]. GELITA dibuat oleh tim kami sendiri dan tidak dijual.
+> Penelitian ini mengundang sekitar 360 siswa kelas 5 dari sekitar 13 kelas di sekitar enam sekolah. Di [nama sekolah], semua siswa kelas 5 diundang. Penelitian ini dibiayai oleh [sumber dana]. GELITA dibuat oleh tim kami sendiri dan tidak dijual.
 >
 > Ikut atau tidak ikut, keputusannya ada di tangan Bapak/Ibu. Tidak ikut tidak berakibat apa pun pada nilai atau perlakuan terhadap anak di sekolah.
 >
@@ -602,25 +603,58 @@ Dua halaman A4 tegak (satu lembar bolak-balik), dikirim lewat guru dalam amplop 
 
 Anak yang tidak mau, atau tampak ragu, tidak dipaksa. Persetujuan anak di setiap sesi (Ya/Tidak, rekaman Ya/Tidak) dicatat pencatat di LK1 sesi itu ([24 → LK1](24_UJI_KETERBACAAN.md#lk1-ringkasan-sesi)). Setelah butir risiko daring, anak melihat pesan [T12](#t12-pesan-dukungan-sesudah-butir-risiko-daring), juga kalau ia memilih melewatinya.
 
-## T9 Varian kelas uji coba
+## T9 Varian uji coba
 
-Uji coba memakai satu kelas di sekolah uji coba (tahap 4, Prototipe III), dengan semua lembar ([01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja) no. 17). Kode peserta memakai awalan `U` (misalnya `U01-A03`), dan datanya tidak dicampur dengan data utama ([01 → Kode peserta baru](01_REVISI_10_ANALITIK.md#kode-peserta-baru)). Berpikir lantang hanya di uji coba, dengan 5–8 siswa di luar sampel utama, 30 menit per siswa ([02 → L5](02_LEMBAR_LAPANGAN.md#l5-wawancara-retrospektif-dan-berpikir-lantang)).
+Uji coba berlangsung di tahap 4 pada Prototipe III, di sekolah uji coba di wilayah Kedu di luar sekolah utama ([01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja) no. 17; [04](04_CATATAN_KEPUTUSAN.md), 1 November 2026). Kode peserta memakai awalan `U` (misalnya `U01-A03`), dan datanya tidak dicampur dengan data utama ([01 → Kode peserta baru](01_REVISI_10_ANALITIK.md#kode-peserta-baru)). Ada tiga kegiatan berurutan, masing-masing dengan anak yang berbeda: anak yang sudah ikut satu kegiatan tidak ikut kegiatan berikutnya atau pengambilan data utama ([22 → Kegiatan yang dimintakan izin](22_PERMOHONAN_IZIN_ETIK.md#kegiatan-yang-dimintakan-izin)).
 
-T1, T2, T3, T6, T7, dan T10 dipakai untuk kelas uji coba **dengan perubahan berikut saja**:
+| Kegiatan | Anak | Isi | Perubahan yang dipakai |
+| --- | --- | --- | --- |
+| KG2 berpikir lantang | 5–8 anak, diundi dari anak yang diizinkan | Satu sesi ± 40 menit per anak: membuat akun, lalu bermain sambil mengucapkan pikirannya ([02 → L5](02_LEMBAR_LAPANGAN.md#l5-wawancara-retrospektif-dan-berpikir-lantang)) | [Semua uji coba](#semua-uji-coba) dan [KG2](#kg2-berpikir-lantang) |
+| KG3a uji kelompok kecil | 8–12 anak dari satu sekolah, diundi dari anak yang diizinkan | Lima pertemuan seperti data utama, di ruang yang disediakan sekolah, dengan wawancara KG4 | [Semua uji coba](#semua-uji-coba) dan [KG3a dan KG3b](#kg3a-dan-kg3b) |
+| KG3b uji kelompok menengah | ± 80 siswa kelas 5 dari beberapa kelas | Lima pertemuan per kelas seperti data utama, dengan wawancara KG4 | [Semua uji coba](#semua-uji-coba) dan [KG3a dan KG3b](#kg3a-dan-kg3b) |
+
+T1, T2, T3, T6, T7, dan T10 dipakai untuk uji coba **dengan perubahan berikut saja**.
+
+### Semua uji coba
 
 | Teks | Bagian | Ganti dengan |
 | --- | --- | --- |
-| T1 | Paragraf pembuka, kalimat ketiga | "Sebelum GELITA dipakai di banyak sekolah, kami mencobanya dulu di satu kelas. Hasil percobaan ini dipakai untuk memperbaiki game, soal, dan cara pelaksanaannya." |
-| T1 | Paragraf jumlah peserta (sesudah paragraf pembuka) | "Percobaan ini mengundang semua siswa di satu kelas 5 di [nama sekolah], sekitar 28 anak. Penelitian ini dibiayai oleh [sumber dana]. GELITA dibuat oleh tim kami sendiri dan tidak dijual." |
-| T1 | Bagian 2, butir *Wawancara singkat* | "**Wawancara singkat dan bermain sambil bercerita:** sebagian anak diajak mengobrol ± 10 menit tentang cara mereka menjawab beberapa soal. Selain itu, 5–8 anak diajak bermain sambil mengucapkan apa yang mereka pikirkan, ± 30 menit, ditemani satu peneliti. Setiap anak paling banyak ikut sekali." |
+| T1 | Paragraf pembuka, kalimat ketiga | "Sebelum GELITA dipakai di banyak sekolah, kami mencobanya dulu dengan sebagian anak. Hasil percobaan ini dipakai untuk memperbaiki game, soal, dan cara pelaksanaannya." |
 | T1 | Bagian 3, kalimat terakhir paragraf kedua | "Hasil percobaan ini dipakai untuk memperbaiki GELITA dan tidak digabung dengan hasil penelitian utama. Hasilnya ditulis tanpa nama anak, guru, dan sekolah." |
-| T1 | Bagian 4, butir *Rekaman suara* | "**Rekaman suara wawancara atau bermain sambil bercerita.** Kalau anak terpilih, …" (sisanya sama) |
-| T2 | Pilihan 1 | Tambah "bermain sambil bercerita" setelah "wawancara singkat" |
-| T2 | Pilihan 2 | "Kalau anak saya diwawancarai atau diajak bermain sambil bercerita, suaranya **boleh direkam**. …" |
-| T3 | Kalimat "Kami ingin tahu, apakah game ini cocok untuk anak kelas 5." | "Kalian kelas pertama yang mencobanya. Kami ingin tahu bagian mana yang masih perlu diperbaiki." |
-| T6 | Paragraf pembuka | Tambah: "Kelas di sekolah Bapak/Ibu menjadi kelas uji coba, sebelum penelitian utama di sekolah lain." |
+| T6 | Paragraf pembuka | Tambah: "Sekolah Bapak/Ibu menjadi sekolah uji coba, sebelum penelitian utama di sekolah lain." |
 
-**Naskah lisan sebelum berpikir lantang** (P3 kepada satu siswa, menggantikan naskah wawancara di T5):
+### KG3a dan KG3b
+
+| Teks | Bagian | Ganti dengan |
+| --- | --- | --- |
+| T1 | Paragraf jumlah peserta (sesudah paragraf pembuka) | KG3a: "Percobaan ini mengundang 8–12 siswa kelas 5 di [nama sekolah]. Surat ini kami bagikan kepada orang tua semua siswa kelas 5. Kalau yang diizinkan lebih dari 12 anak, kami mengundi siapa yang ikut, tanpa melihat nilai. Penelitian ini dibiayai oleh [sumber dana]. GELITA dibuat oleh tim kami sendiri dan tidak dijual." KG3b: "Percobaan ini mengundang semua siswa kelas 5 di [nama sekolah]; seluruhnya sekitar 80 anak kelas 5 di sekolah uji coba. Penelitian ini dibiayai oleh [sumber dana]. GELITA dibuat oleh tim kami sendiri dan tidak dijual." |
+| T3 | Kalimat "Kami ingin tahu, apakah game ini cocok untuk anak kelas 5." | "Kalian termasuk anak pertama yang mencobanya. Kami ingin tahu bagian mana yang masih perlu diperbaiki." |
+| T1 | Bagian 1, kalimat pertama (KG3a saja) | "Anak ikut lima pertemuan di sekolah bersama 8–12 anak lain, di ruang yang disediakan sekolah, pada jam sekolah, dari [tanggal P1] sampai [tanggal P5]." |
+| T1 | Bagian 2, butir *Wawancara singkat* (KG3a saja) | "**Wawancara singkat:** sebagian anak (paling banyak tiga anak di setiap pertemuan kedua sampai keempat) diajak mengobrol ± 10 menit tentang cara mereka menjawab beberapa soal. Setiap anak paling banyak sekali." |
+| T1 | Bagian 5 (KG3a saja) | "Anak tetap belajar seperti biasa di kelasnya. Anak tidak dibuatkan akun GELITA, dan tidak ada data penelitian apa pun tentang anak. Ini juga berlaku untuk anak yang diizinkan tetapi tidak terundi." |
+| T1 | Bagian 7, kalimat kedua dan ketiga paragraf ketiga (KG3a saja) | "Di pertemuan pertama dan kelima, anak yang ikut mendapat kudapan ringan. Setelah pertemuan kelima, anak yang ikut mendapat tanda terima kasih kecil berupa [jenis tanda terima kasih], bukan sebagai imbalan." |
+| T6 | Bagian 1, judul (KG3a saja) | "**1. Melaksanakan uji coba dengan 8–12 siswa kelas 5**, yang diundi dari siswa yang diizinkan orang tuanya, dalam lima pertemuan selama [rentang minggu], di ruang yang disediakan sekolah:" |
+| T6 | Bagian 2, kalimat terakhir (KG3a saja) | "Siswa lain tetap belajar seperti biasa, dan tidak ada data tentang mereka." |
+
+### KG2 berpikir lantang
+
+| Teks | Bagian | Ganti dengan |
+| --- | --- | --- |
+| T1 | Paragraf jumlah peserta (sesudah paragraf pembuka) | "Kami mengundang 5–8 siswa kelas 5 di [nama sekolah]. Surat ini kami bagikan kepada orang tua semua siswa kelas 5. Kalau yang diizinkan lebih dari 8 anak, kami mengundi siapa yang ikut, tanpa melihat nilai. Penelitian ini dibiayai oleh [sumber dana]. GELITA dibuat oleh tim kami sendiri dan tidak dijual." |
+| T1 | Bagian 1, seluruhnya | "Anak ikut **satu sesi** di sekolah, pada jam sekolah, pada [tanggal sesi], paling lama ± 40 menit. Anak membuat akun GELITA (± 10 menit), lalu bermain GELITA ± 30 menit sambil mengucapkan apa yang ia pikirkan, misalnya 'Aku pilih ini karena…'. Satu peneliti duduk di sebelahnya dan mencatat, di tempat yang terlihat guru atau peneliti lain. Anak memakai laptop atau tablet dari sekolah atau dari kami, dengan headset." |
+| T1 | Bagian 2, daftar butir | Hanya tiga butir: "**Catatan permainan:** jawaban anak di game, berapa kali mencoba, bantuan yang dipakai, dan lamanya." · "**Catatan peneliti:** apa yang anak ucapkan saat bermain, dan bagian yang membuatnya bingung." · "**Rekaman suara**, hanya kalau Bapak/Ibu mengizinkan (bagian 4)." Kalimat penutup bagian 2 tetap |
+| T1 | Bagian 4 | Judul "**4. Satu pilihan tambahan**". Kalimat pembuka: "Di formulir, ada satu pilihan yang terpisah. Bapak/Ibu boleh mengizinkan anak ikut tetapi menolak pilihan ini." Butir *Rekaman suara*: "**Rekaman suara bermain sambil bercerita.** Suara anak boleh kami rekam supaya catatan kami tepat. Rekaman hanya didengar tim peneliti dan dihapus setelah tulisan ulangnya selesai diperiksa. Tanpa izin ini, anak tetap boleh ikut, dan peneliti hanya mencatat dengan tangan." Butir *Pertanyaan tentang pengalaman tidak nyaman di internet* dihapus, karena KG2 tidak memuat butir itu |
+| T1 | Bagian 5 | "Anak tetap belajar seperti biasa di kelasnya. Anak tidak dibuatkan akun GELITA, dan tidak ada data penelitian apa pun tentang anak. Ini juga berlaku untuk anak yang diizinkan tetapi tidak terundi." |
+| T1 | Bagian 6, pilihan ketiga | "anak tetap ikut, tetapi rekaman suaranya dihapus." |
+| T1 | Bagian 7 | Paragraf pertama: "Risikonya kecil. Sesinya singkat, dan anak boleh beristirahat atau berhenti kapan saja." Paragraf ketiga, kalimat kedua dan ketiga: "Setelah sesi, anak mendapat tanda terima kasih kecil berupa [jenis tanda terima kasih], bukan sebagai imbalan." |
+| T2 | Pilihan 1 | "Saya **mengizinkan** anak saya ikut satu sesi bermain GELITA sambil bercerita (± 40 menit), dengan catatan permainan dan catatan peneliti." |
+| T2 | Pilihan 2 | "Kalau anak saya bermain sambil bercerita, suaranya **boleh direkam**. Rekaman dihapus setelah tulisan ulangnya diperiksa." |
+| T2 | Pilihan 3, dan kalimat "Pilihan 2 dan 3 hanya berlaku …" | Pilihan 3 dihapus; kalimatnya menjadi "Pilihan 2 hanya berlaku kalau pilihan 1 dijawab Ya." Di L7, kolom izin butir risiko daring diisi "—" |
+| T3, T5 | Seluruhnya | Diganti naskah lisan sebelum berpikir lantang (di bawah) |
+| T6 | Bagian 1, seluruhnya | "**1. Melaksanakan kegiatan bermain sambil bercerita dengan 5–8 siswa kelas 5**, yang diundi dari siswa yang diizinkan orang tuanya. Setiap anak ikut satu sesi ± 40 menit, ditemani satu peneliti, di tempat yang terlihat guru atau peneliti lain, selama [rentang minggu]." |
+| T6 | Bagian 2, kalimat terakhir | "Siswa lain tetap belajar seperti biasa, dan tidak ada data tentang mereka." |
+
+**Naskah lisan sebelum berpikir lantang** (P3 kepada satu siswa KG2, menggantikan T3 dan T5):
 
 > Hai, [panggilan siswa]. Boleh kakak minta bantuanmu sekitar setengah jam? Kamu bermain GELITA seperti biasa, tapi sambil bilang apa yang kamu pikirkan, misalnya "Aku pilih ini karena…". Kakak duduk di sebelahmu dan mencatat. Ini bukan ulangan, dan tidak ada jawaban yang salah. Kamu boleh berhenti kapan saja. Kamu boleh juga tidak mau.
 >
@@ -777,7 +811,7 @@ Diputuskan pengembang (27 Oktober 2026): selebaran juga dibagikan kepada semua a
 | T5 | Siswa | Pembukaan P2–P5; sebelum setiap wawancara L5 | P1; P3 | — | Penolakan rekaman ditulis di L5 (Rekaman: Tidak) |
 | T8a + T8b + T10 dalam amplop | Orang tua semua calon anak uji keterbacaan | Setelah persetujuan etik terbit dan izin sekolah asal anak, sedikitnya 7 hari sebelum sesi pertama | Guru kelas 5 sekolah asal anak, lewat siswa | Guru, dalam amplop tertutup yang tidak dibuka, diserahkan ke ketua peneliti; nama dan kelompok membaca hanya untuk anak yang izinnya kembali ([24 → Cara guru membantu memilih](24_UJI_KETERBACAAN.md#cara-guru-membantu-memilih-tanpa-memberi-nilai)) | P1 dan `ketua`: lemari terkunci, terpisah dari lembar lain seperti L7, bersama daftar nama–kode; dimusnahkan saat studi ditutup. LK1–LK3 berkode disimpan paling singkat 20 tahun setelah studi ditutup; rekaman sampai transkrip diperiksa ([24 → Pengelolaan data](24_UJI_KETERBACAAN.md#pengelolaan-data)) |
 | T8c | Anak uji keterbacaan | Awal sesi 1; pengingat di awal sesi 2–4; sebelum butir risiko daring | Pemandu (P3), lisan | — | Dicatat di LK1 setiap sesi ([24 → LK1](24_UJI_KETERBACAAN.md#lk1-ringkasan-sesi)) |
-| T9 (T1, T2, T3, T6, T7, T10 versi uji coba) | Sekolah, guru, orang tua, dan siswa kelas uji coba | Sama dengan baris aslinya, sebelum uji coba (tahap 4) | Sama | Sama | Sama dengan L7 kelas uji coba, terpisah dari berkas sekolah utama |
+| T9 (T1, T2, T3, T6, T7, T10 versi uji coba) | Sekolah, guru, orang tua, dan siswa sekolah uji coba (KG2, KG3a, KG3b) | Sama dengan baris aslinya, sebelum kegiatan itu (tahap 4); untuk KG2 dan KG3a surat dibagikan kepada orang tua semua siswa kelas 5, lalu anak diundi dari yang diizinkan | Sama | Sama | Sama dengan L7 sekolah uji coba, terpisah dari berkas sekolah utama |
 | T10 | Orang tua | Bersama T1 dan T8a; kapan saja dari P1 | P1 | P1, lalu diserahkan ke `ketua` | `ketua`: berkas terpisah yang dikunci, tidak bersama data; catatan tindak lanjut di bagian bawah formulir; dimusnahkan saat studi ditutup |
 | T11 | Siswa dengan izin butir risiko daring | P5, sesudah tes akhir | Sistem (modul tes, tahap 3) | Sistem (persetujuan ulang) | Pilihan anak di modul; tidak terlihat P1–P3 |
 | T12 | Semua siswa di P5, juga yang tanpa izin butir risiko; anak uji keterbacaan sesudah butir risiko | Sesudah butir risiko daring terakhir, sesudah memilih melewati, atau di titik yang sama bagi siswa tanpa izin | Sistem; di uji keterbacaan, pemandu menampilkan salinan layarnya | — | — |
@@ -949,6 +983,11 @@ Keputusan pengembang 27 Oktober 2026, setelah 22 dan 23 dibandingkan dengan *Pan
 Keputusan pengembang 27 Oktober 2026, saat 22 dan 23 disiapkan untuk diajukan (cabang `r10-formulir-etik`; `asal: pengembang`, status `draf pengembang`; [22 → Keputusan pengembang](22_PERMOHONAN_IZIN_ETIK.md#keputusan-pengembang) no. 22–24):
 
 22. **Komite, server, dan nomor layanan ditulis langsung di surat.** Komite tujuan Komisi Etik Bidang Sosial Humaniora BRIN dengan formulir BRIN; nama dan alamatnya menggantikan `[nama komite etik]` dan `[kontak komite etik]` di T1, T2, T6, T7, T8a, dan T8b. Server IDCloudHost (PT Cloud Hosting Indonesia) di Jakarta Pusat menggantikan `[nama dan lokasi penyedia server]` di T1 bagian 3. Nomor WA SAPA 129 di T13 diisi 08111-129-129. Nama, kontak, dan data diri ketua peneliti dan narahubung data tetap tempat kosong dan diisi di luar repo. Bersamaan dengan pengecekan PP No. 33 Tahun 2026 ke salinan naskahnya, kalimat batas waktu di T1 bagian 6 dan T10 kini menghitung 3 × 24 jam **sejak permintaan diterima**, dengan pencocokan identitas di dalam waktu itu (Pasal 92 ayat (2)–(3)), bukan sejak permintaan dicocokkan.
+
+Keputusan 1 November 2026, setelah peneliti memilih model ADDIE dengan tiga uji dengan siswa (cabang `sky/cool-fermi-rv44sj`, [04](04_CATATAN_KEPUTUSAN.md); [22 → Keputusan pengembang](22_PERMOHONAN_IZIN_ETIK.md#keputusan-pengembang) no. 25–30):
+
+23. **T9 menjadi varian untuk tiga kegiatan uji coba** (`asal: peneliti`; teksnya dari pengembang): KG2 berpikir lantang, KG3a uji kelompok kecil (8–12 anak), dan KG3b uji kelompok menengah (± 80 siswa, menggantikan "satu kelas, sekitar 28 anak"). Judulnya menjadi *T9 Varian uji coba*. Satu anak hanya ikut satu kegiatan, jadi anak KG2 tidak lagi diambil dari kelas uji coba dan mendapat surat sendiri: satu sesi ± 40 menit, tanpa tes, angket, skala sikap, dan butir risiko daring, dengan satu pilihan tambahan (rekaman suara).
+24. **Anak KG2 dan KG3a diundi dari anak yang diizinkan**, tanpa melihat nilai; anak yang tidak terundi tetap belajar seperti biasa dan tidak ada datanya. Anak yang ikut mendapat tanda terima kasih setelah sesi terakhirnya, bukan sebagai imbalan, sama dengan anak uji keterbacaan (no. 3). T1 menyebut "sekitar enam sekolah" untuk data utama. Usulan pengembang, dikukuhkan bersama peneliti.
 
 ## Akibat ke dokumen lain
 

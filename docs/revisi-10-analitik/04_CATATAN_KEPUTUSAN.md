@@ -6,6 +6,25 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 1 November 2026
 
+**Paket izin etik diperbarui untuk model ADDIE dan tiga uji dengan siswa** (cabang `sky/cool-fermi-rv44sj`, setelah PR #296) · `asal: peneliti` (model, uji, sampel) dan `asal: pengembang` (kode, rincian) · `draf pengembang` · merevisi rancangan penelitian, belum merevisi produk
+
+Pengembang meminta paket izin etik diperbarui sebelum diajukan. Empat keputusan diambil pengembang dalam wawancara singkat; semuanya opsi yang direkomendasikan:
+
+1. **Kode kegiatan: KG3a dan KG3b.** KG3 tetap berarti uji coba di sekolah berawalan `U`; KG3a uji kelompok kecil, KG3b uji kelompok menengah. Urutan waktu tetap dan setiap sebutan KG4 dan KG5 tetap berlaku. Pilihan lain: nomor baru KG1–KG6, atau KG6 untuk uji kelompok kecil.
+2. **Uji kelompok kecil memakai lima pertemuan penuh** seperti data utama (P1 tes dan angket, P2–P4 game, P5 tes akhir, skala sikap, penutup), dengan semua lembar, supaya modul tes dan angket sudah dicoba sebelum dipakai 80 siswa. Pilihan lain: game saja dalam tiga pertemuan.
+3. **Empat kriteria mutu tetap:** relevansi, konsistensi, kepraktisan, keefektifan, sebagai kriteria mutu produk yang tidak bergantung pada model pengembangan. Pengantar instrumen validasi cukup kehilangan kalimat "model Plomp". Pilihan lain: tiga kriteria Nieveen (valid, praktis, efektif).
+4. **"Prinsip desain" menjadi "rekomendasi pengembangan asesmen berbasis game untuk anak"**, keluaran yang wajar dari fase *Evaluate*. Pilihan lain: tetap memakai istilah itu, atau menghapusnya.
+
+Rincian yang mengikuti dari keputusan itu dan dari aturan "satu anak hanya ikut satu uji" (`asal: pengembang`, dikukuhkan bersama peneliti):
+- **Anak berpikir lantang (KG2) bukan lagi bagian dari kelas uji coba.** KG2 mendapat surat varian sendiri (23 → T9): satu sesi ± 40 menit, termasuk membuat akun (± 10 menit), tanpa tes, angket, skala sikap, dan butir risiko daring, dengan satu pilihan tambahan (rekaman suara). KG2 selalu menjadi kegiatan pertama yang memakai akun GELITA anak, jadi tenggat "sebelum KG2" di 26 dan 30 tidak lagi bersyarat.
+- **Anak KG2 dan KG3a diundi dari anak yang diizinkan**, tanpa melihat nilai; anak yang tidak terundi tetap belajar seperti biasa dan tidak ada datanya. KG3a berlangsung di ruang yang disediakan sekolah, dan anaknya mendapat tanda terima kasih setelah pertemuan terakhir, bukan sebagai imbalan (sama dengan KG1). KG3b mengundang semua siswa kelas 5 di kelas yang ikut, seperti KG5.
+- **Wawancara retrospektif (KG4) juga berlaku di KG3a**, selain KG3b dan KG5.
+- **Jumlah anak seluruhnya** paling banyak sekitar 465 (KG1 5, KG2 8, KG3a 12, KG3b 80, KG5 360), masing-masing hanya di satu kegiatan (26 → *Ringkasan untuk komite*).
+
+Diubah: 22 (status, pemetaan formulir 2.4.a dan 2.6, *Ringkasan*, nilai sosial, *Tujuan*, *Desain penelitian* dengan tabel fase ADDIE, tabel kegiatan, garis waktu, populasi dan besar sampel, inklusi dan eksklusi, *Rekrutmen* no. 2 dan no. 7 baru, persetujuan, prosedur, *Manfaat*, ringkasan penilaian dampak, *Perubahan protokol*, lampiran, isian jadwal, keputusan no. 25–30, *Akibat ke dokumen lain*); 23 (T9 ditulis ulang menjadi *T9 Varian uji coba*, jumlah sekolah di T1, tabel pembagian, tempat kosong `[tanggal sesi]`, keputusan no. 23–24); 26 (ringkasan, tabel *Kegiatan*, tenggat); 03 (KG3a, KG3b, kode `U01`); 30 §4; 01 (*Model penelitian dan fasenya* ditulis ulang dengan tabel fase ADDIE, daftar kerja no. 17 dan 22); `gambar/peta-jalan.svg` (tahap 4 dan G4); 02 (L5 dan tautan T9); 24 (baris KG1–KG5, rujukan uji coba); 00.
+
+Yang belum: pengantar ketiga instrumen validasi (ahli materi v2.1, pengamat budaya v2.1, ahli media v1.1) dan berkas serah terima masih menyebut Plomp, dan harus diperbarui sebelum paket validasi dikirim; 06, 13, dan 16 masih menyebut uji coba satu kelas; dokumen pendukung peneliti belum punya bagian ADDIE.
+
 **Keputusan peneliti: model ADDIE menggantikan Plomp; tiga uji dengan siswa** (cabang `sky/cool-fermi-rv44sj`) · `asal: peneliti` · `disetujui peneliti` (disampaikan lisan lewat pengembang; dikukuhkan peneliti saat membaca dokumen yang diperbarui) · merevisi rancangan penelitian, belum merevisi produk
 
 Peneliti memutuskan model penelitian dan pengembangan **ADDIE** (*Analyze, Design, Develop, Implement, Evaluate*), menggantikan model Plomp (2013) yang diputuskan pengembang 26 Oktober 2026 (entri *model penelitian dan pengembangan, dan aturan I-CVI*, no. 1). Alasannya, seperti disampaikan pengembang: setiap fase pengembangan diuji, dan perubahan dari saran ahli atau hasil uji masuk kembali ke fase pengembangan sampai produknya benar-benar final. Rujukannya Branch (2009), yang menyebut ADDIE iteratif dan nonlinier dengan uji rintis di fase *Develop*. Dokumen pendukung peneliti sudah mencatat bahwa kritik "ADDIE tidak menjelaskan cara mengevaluasi prototipe" terlalu keras; yang tetap benar hanya bahwa ADDIE tidak punya kriteria mutu khusus alat ukur.

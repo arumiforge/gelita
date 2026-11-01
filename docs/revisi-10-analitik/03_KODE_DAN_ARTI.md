@@ -105,7 +105,7 @@ Akun **siswa** di instalasi uji untuk validator, bukan akun staf ([20 → Akses 
 | --- | --- | --- |
 | S03-A07 | Kode peserta: sekolah penelitian `S03`, rombel `A`, siswa ke-`07` | Disetujui 25 Oktober 2026, mengganti `GLT-000123` |
 | S03 | Kode sekolah penelitian, dari daftar peneliti (bukan NPSN) | Disetujui 25 Oktober 2026 |
-| U01-A03 | Kode peserta di sekolah uji coba (awalan `U`) | Disetujui 25 Oktober 2026 |
+| U01-A03 | Kode peserta di sekolah uji coba (awalan `U`). Semua sekolah uji coba memakai satu urutan `U01`, `U02`, …; uji yang diikuti (KG2, KG3a, KG3b) dicatat sebagai studi tersendiri, bukan di kode | Disetujui 25 Oktober 2026; satu urutan 1 November 2026 |
 | V01 | Kode sekolah `Sekolah Uji Validator`, hanya di instalasi uji (awalan `V`) | [28](28_IMPLEMENTASI_SESI_LAPANGAN.md#101-kode-sekolah-penelitian), 30 Oktober 2026 |
 | UJI-01, UJI-02, … | Kode akun uji validator dari `gelita:uji:akun`, sengaja bukan pola kode peserta | [28](28_IMPLEMENTASI_SESI_LAPANGAN.md#13-alat-bantu-gelitaujiakun-perubahan-no-24), 30 Oktober 2026 |
 | A, B | Rombel kelas 5 di satu sekolah | Disetujui 25 Oktober 2026 |
@@ -124,7 +124,8 @@ Kegiatan yang dimintakan izin etik dalam satu permohonan ([22 → Kegiatan yang 
 | --- | --- | --- |
 | KG1 | Uji keterbacaan dengan anak ([24](24_UJI_KETERBACAAN.md)) | 2 |
 | KG2 | Berpikir lantang (L5) | 4 |
-| KG3 | Uji coba satu kelas, sekolah berawalan `U` | 4 |
+| KG3a | Uji kelompok kecil: 8–12 anak dari satu sekolah berawalan `U`, lima pertemuan (sejak 1 November 2026) | 4 |
+| KG3b | Uji kelompok menengah: ± 80 siswa, sekolah berawalan `U`, lima pertemuan per kelas; menggantikan uji coba satu kelas (sejak 1 November 2026) | 4 |
 | KG4 | Wawancara retrospektif di P2–P4 (L5) | 4 dan 5 |
 | KG5 | Pengambilan data utama, P1–P5 dan sesi susulan | 5 |
 
