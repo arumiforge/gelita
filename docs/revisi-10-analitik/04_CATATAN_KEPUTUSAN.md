@@ -6,6 +6,20 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 1 November 2026
 
+**26 diselaraskan dengan keadaan terbaru** (cabang `sky/upbeat-heisenberg-gxyw3p`, setelah PR #304) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 26 tetap `disetujui pengembang` v1.0 · tidak merevisi produk
+
+Atas permintaan pengembang, [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) dicek terhadap keputusan sesudah perubahan terakhirnya (cek pasal PP 33/2026, entri di bawah), terhadap 22, 23, 24, dan 30, dan terhadap kode. Tidak ada keputusan baru; risiko, langkah perlindungan, dan simpulan tidak berubah, jadi versi tetap 1.0.
+
+- **Pasal PP pembanding untuk pengecualian jawaban butir risiko.** *Hak orang tua dan anak* → *Akses dan salinan* masih menulis "pasal sejenis di PP 33/2026 `needs_verification`", padahal cek pasal PP menemukan Pasal 77 ayat (4) huruf a dan 22 sudah memakainya. Kini sama dengan 22: hak dari UU Pasal 7 dan 32; pengecualian dari UU Pasal 33 huruf a dan PP Pasal 77 ayat (4) huruf a sebagai analogi (keduanya hanya menyebut akses perubahan), dinilai komite. Catatan sesi koordinator 30 Oktober 2026 di *Akibat ke dokumen lain* yang menyebut 30 §21 no. 1–2 "tetap terbuka" diberi catatan bahwa keduanya sudah diputuskan di 30 §22 no. 5–6.
+- **Pemicu skala besar:** "± 365 anak" (angka sebelum uji coba dipecah) menjadi "paling banyak ± 465 anak di semua kegiatan (± 360 di pengambilan data utama)", sama dengan *Ringkasan untuk komite* dan 22.
+- **Sekolah KG1:** "di luar sampel" menjadi "di luar sampel dan bukan sekolah uji coba", sama dengan 22 dan [24](24_UJI_KETERBACAAN.md).
+- **Konsultasi kepala sekolah:** "KG2 atau KG3 (sekolah uji coba)" menjadi "KG2, KG3a, atau KG3b".
+- **Syarat sebelum permohonan diajukan:** cek nomor pasal ke naskah resmi ditandai selesai 1 November 2026.
+- **00:** baris 26 di daftar dokumen masih menyebut nomor pasal `needs_verification`; diganti hasil cek 1 November 2026, dan ukurannya dibetulkan (61 KB).
+- **Yang dicek dan tetap benar:** `HashedIpSessionHandler` ada di kode tetapi `Config\Session` masih memakai `DatabaseHandler` (L3, P18 tetap tahap 3); akun staf terkunci 15 menit setelah 5 kali gagal dan ekspor kedaluwarsa setelah 7 hari (P4 "ada"); ringkasan untuk sekolah di 23 → T6 lampiran 5 tetap cocok dengan *Ringkasan untuk komite*; target persetujuan etik "akhir 2027" sama dengan 22 → *Dasar hukum*. Pencarian web 1 November 2026 belum menemukan Peraturan Presiden pembentukan Badan Pelindungan Data Pribadi atau Peraturan Lembaga, jadi kalimat "belum terbit per 27 Oktober 2026" tetap; dicek ulang sebelum KG1 seperti sebelumnya.
+
+Diubah: 26, 00 (dua baris 26), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 26.
+
 **13 diselaraskan dengan dokumen implementasi bagian 2–4** (cabang `sky/amazing-cerf-j3jjzk`, setelah PR #302) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 13 tetap draf · tidak merevisi produk
 
 Atas permintaan pengembang, [13](13_TES_AWAL_AKHIR.md) dicek terhadap keputusan sesudah 26 Oktober 2026. Model ADDIE dan KG3a/KG3b sudah masuk 1 November 2026 (PR #299); yang tertinggal datang dari 28–30 (30 Oktober 2026). Tidak ada keputusan baru.
