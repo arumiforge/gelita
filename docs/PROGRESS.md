@@ -2,7 +2,7 @@
 
 The single checklist of what is done and what is open. Decisions and their reasons go in `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md` (and, for the research revision, `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`); this file only tracks state. Each session updates only its own rows, and ticks an item only once its PR is merged into `main`. Finished work is summed up in one line per area under *Done*; the details live in the PRs, the git history, and the decision log.
 
-Last updated: 26 October 2026.
+Last updated: 1 November 2026.
 
 ## Research revision: 10 analytics (owner, 23 October 2026)
 
@@ -38,7 +38,7 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
     - [ ] Catalogue team makes the new Wayang Kedu picture and the replacement Candi Pawon picture (briefs in `08`), then both are re-checked against `08`
     - [ ] Researcher checks the facts of Papringan, Pawon, and Arjuna, and Lengger's 2020 listing year
     - [x] Outdated `petunjuk-*` narration mapping: moved to stage 3 (`12`, stage-3 list item 3), because the current mapping is right for the bank installed today
-- [x] Research and development model decided by the owner (26 October 2026): Plomp's educational design research (2013), development-study type, with ECD inside it; Lynn's I-CVI rule kept (`04`, `07`). The supporting brief, with every reference checked against its source, is in `dokumen-pendukung-peneliti/` (reading for researchers and the team, not an implementation document). Reference errors found by that check fixed in `01`, `05`, `06`, `07`
+- [x] Research and development model decided by the owner (26 October 2026): Plomp's educational design research (2013), development-study type, with ECD inside it; Lynn's I-CVI rule kept (`04`, `07`). The supporting brief, with every reference checked against its source, is in `dokumen-pendukung-peneliti/` (reading for researchers and the team, not an implementation document). Reference errors found by that check fixed in `01`, `05`, `06`, `07`. Superseded on 1 November 2026: the researcher chose ADDIE (row further down)
   - [x] Owner decided the brief's four open proposals (26 October 2026, `04`, PR #259): pre/post test mainly criterion-validity evidence, difference test reported as exploratory change; practicality from logs, L1/L3/L4, and the star rating, extra student questions decided after the stage-4 pilot; preliminary research as its own phase with the draft school-profile sheet L8 (`02`, work item 22 in `01`); prototypes numbered I–III. "L0–L8" carried into `00`, the `07` media package (PR #260), and the two diagrams
     - [ ] L8 variables enter the data dictionary at `kamus-1.1`, after the pilot
     - [ ] Also at `kamus-1.1`: `consent_ok = 1` for `Mengundurkan diri (data tetap)` up to the withdrawal date, and replace `11`'s "names only in L7" line with the rule in `22` → *Di mana nama berada* (owner decision and stage-2 alignment, 27 October 2026; `kamus-1.0` stays frozen)
@@ -96,6 +96,10 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
 - [x] Three more ownership mismatches fixed before the researcher meeting (owner, 31 October 2026, branch `sky/elegant-galileo-kok1fx`, `04`, PR #293): the owner chose the recommended option on both questions. The lead researcher makes the school-code list (`01` item 12) for the recruited schools, keeps the NPSN mapping with L7, and fills the target region on BRIN form 2.5 (`22` group D); admin enters the codes. Staff account holders (`01` item 13) are split: the developer picks who holds `admin`, the lead researcher picks the researcher accounts; names stay off-repo. The brief now follows `22` on the PPDP contact (developer asks the institution, lead researcher fills it in). Brief re-rendered as v1.2 (32 pages) with F.2 rows 8–10, and its inferred-reason mark changed from † to ◆ at the owner's request
 - [x] Print-ready PDF of every research-revision document (owner, 31 October 2026, branch `sky/elegant-galileo-kok1fx`, `04`, PR #293): `docs/revisi-10-analitik/dokumen-pdf/src/cetak.mjs` builds A4 PDFs of `00`–`30` into `dokumen-pdf/cetak/` (pandoc + Chromium with the instruments' print style, footer naming the document's last commit, overwide tables on landscape pages, `manifest.json` so only changed documents rebuild); the owner chose to commit the PDFs. First build: 31 PDFs, about 600 pages, 14 MB. Sessions rerun it after committing document changes (`.claude/rules/revisi-10.md`)
 - [ ] Complete implementation document, after the revision documents are final and gate G2 (expert validation and ethics approval) is passed; parts `27`–`30` above are drafted before G2, the other parts after the revision matrix
+- [ ] Research model changed to ADDIE by the researcher (1 November 2026, branch `sky/cool-fermi-rv44sj`, `04`): replaces Plomp; ECD, Lynn's I-CVI rule, Rasch, and the six stages and five gates stay. Three student trials: a new small-group trial on the working game (8–12 children, after think-aloud) and a medium trial (about 80 students, replacing the one-class trial) in Develop, outside the main data, at `U` schools; the big trial is the main data collection (target 300 analysable students, more or fewer allowed, about six main schools in Kedu, more allowed). Owner follow-ups the same day: one `U` prefix with one `research_studies` row per trial, version locked at G4 (only logged technical fixes during the big trial), no limit on expert re-rating rounds, no child takes part in two trials. Only `04` plus pointers in `01`/`00` so far
+  - [ ] Update the ethics package before submission: `22`, `23`, `26`, `03`, `30`, and `01` (model section, roadmap table, work items 17 and 22); choose the KG code for the small-group trial
+  - [ ] Before the validation packet goes out: the Plomp paragraphs in the three validator instruments (subject v2.1, cultural observer v2.1, media v1.1) and the researcher handover brief
+  - [ ] Afterwards: `02`, `06`, `13`, `16`, `24`, the supporting brief (ADDIE per Branch 2009), print-ready PDFs; decide quality criteria (Nieveen's three or Plomp's four) and whether design principles stay
 - [ ] Implementation of the system changes listed in `01` (24 so far), one short-lived branch each, after the implementation document is approved
 
 ## Before the research starts
@@ -144,3 +148,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `sky/cool-fermi-rv44sj` | Owner / research revision: ADDIE decision recorded in `04` | PR open |
