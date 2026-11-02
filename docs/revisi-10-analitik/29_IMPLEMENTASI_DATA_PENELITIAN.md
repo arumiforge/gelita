@@ -4,7 +4,7 @@ Per 2 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 > **Status: `disetujui pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 30 Oktober 2026; dicek kemutakhirannya dan ditinjau pengembang 2 November 2026, [§19](#19-keputusan-pengembang) no. 5–12). Ini dokumen, bukan perubahan sistem.
 >
-> **Kapan dibangun** (aturan baru, [04](04_CATATAN_KEPUTUSAN.md), 1 November 2026, menggantikan "diubah di tahap 3, setelah G2"): kode bagian ini dibangun sekarang di gelombang kode E, setelah bagian 1 dan 2, di cabang pendek dari `main`. Perilaku penelitian ada di balik sakelar studi yang mati secara bawaan (`field_mode`, [28 §5.1](28_IMPLEMENTASI_SESI_LAPANGAN.md#51-sakelar-field_mode)), jadi `main` tetap bisa dirilis. Sistem baru tidak dipakai dengan anak sebelum persetujuan etik terbit; G3 tetap dinilai setelah G2, dan versi dikunci di G4. Instalasi uji validator tetap memakai *commit* yang dibekukan di [20](20_PAKET_VALIDASI.md) prasyarat no. 4. Pengerjaan ulang setelah hasil validasi (matriks revisi induk di 20, keputusan komite etik) diterima.
+> **Kapan dibangun** (aturan baru, [04](04_CATATAN_KEPUTUSAN.md), 1 November 2026, menggantikan "diubah di tahap 3, setelah G2"): kode bagian ini dibangun sekarang di gelombang kode E, setelah bagian 1 dan 2, di cabang pendek dari `main`. Perilaku penelitian ada di balik sakelar studi yang mati secara bawaan (`field_mode`, [28 §5.1](28_IMPLEMENTASI_SESI_LAPANGAN.md#51-sakelar-field_mode)), jadi `main` tetap bisa dirilis. Sistem baru tidak dipakai dengan anak sebelum persetujuan etik terbit; G3 tetap dinilai setelah G2, dan versi dikunci di G4. Instalasi uji validator tetap memakai *commit* yang dibekukan di [20](20_PAKET_VALIDASI.md) prasyarat no. 4. Pengerjaan ulang setelah hasil validasi (matriks revisi induk di 20, keputusan komite etik) diterima. Bagian 4 ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md)) dibangun paralel dan digabung **sesudah** bagian ini; baris milik bagian ini di berkas bersama (`field_sheet_rows` di `RetentionService::HARD_ORDER`, `participant_count` dan daftar lembar di `ExportService`, `REQUIRED_MIGRATION` `003700`) ditulis di sini dan dibiarkan bagian 4 ([30 §0](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#0-cara-memakai-dokumen-ini), keputusan no. 7).
 >
 > **Migrasi `003600` menghapus data secara permanen** ([§5.8](#58-data-yang-sudah-tersimpan)). Migrasi ini, seperti `003400` dari bagian 1, baru dijalankan di server produksi bila pengembang memutuskannya.
 >
@@ -392,6 +392,7 @@ Urutan resmi sesudah bagian ini. `ExportService::SHEETS` dan `RawDataService::DI
 | `event` | Semua event bertanda Peneliti (K1) | `game_event_logs` | Diubah: sekarang untuk `ketua` |
 | `masukan` | Kritik dan saran | `participant_feedback` | Tetap |
 | `butir` | Satu baris per butir | `challenge_items` | Diubah |
+| `izin` | Satu baris per siswa di unduhan itu: kolom daftar izin berkode ([30 §10.1](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#101-daftar-izin-berkode)), disaring ke siswa unduhan itu; hanya studi `field_mode = 1` | `participant_consents` (30) | **Baru** (30, keputusan no. 9); kodenya ditulis bagian 4 |
 | `l1_kondisi`, `l1_penyimpangan`, `l2_kursi`, `l3_bantuan`, `l4_bromp`, `l5_wawancara`, `l6_sesi` | Lembar lapangan yang diimpor ([§10](#10-templat-dan-impor-lembar-lapangan-perubahan-no-15)) | `field_sheet_rows` | **Baru** |
 | `perangkat` | — | — | **Keluar** dari unduhan; pindah ke log teknis ([§5.6](#56-data-bertanda-admin-dan-halaman-log-teknis)) |
 
@@ -591,7 +592,7 @@ Lembar tetap diisi di kertas selama sesi (02). Sistem menyediakan berkas ketik y
 - Templat L7 **tidak ada** di panel dan tidak pernah dibuat oleh server web.
 - `php spark gelita:lembar:templat --l7 --keluar=<folder>` menulis templat L7 kosong di mesin yang menjalankan perintah (laptop P1 atau pengembang), bersama templat kosong L0–L8 untuk dicetak. Perintah menolak berjalan bila `ENVIRONMENT === 'production'`.
 - L7 yang terisi disimpan seperti di 02: kertas di lemari terkunci, salinan digital terenkripsi, hanya P1 dan ketua peneliti.
-- `consent_ok` tetap ditentukan dari L7 di lapis 3. Daftar izin berkode untuk penutupan studi diatur bagian 4.
+- `consent_ok` di lapis 3 dihitung dari lembar `izin` (izin berkode yang diisi P1 dari L7, [§7.2](#72-lembar)), dicocokkan dengan L7 sampai studi ditutup. Daftar izin berkode untuk penutupan studi tetap unduhan terpisah di bagian 4 ([30 §10.1](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#101-daftar-izin-berkode)).
 
 ### 10.7 Kode kolom per lembar
 
@@ -729,7 +730,7 @@ Pesan pemeriksaan per kolom ("jam harus berbentuk JJ:MM:SS", "kode tidak dikenal
 | No. 9 lapis turunan | Data mentah §6, lembar lapangan yang diimpor, `ResearchDictionary::VERSION` | `decision_ms`, `rapid_guess`, `near_miss_count`, `material_returns`, penanda dari L1–L4, `outside_session` |
 | No. 21 skala sikap | Daftar lembar dan kamus | Lembar `sikap`, `feedback_rating` |
 | No. 22 modul tes | Lembar `risiko_gabungan` ([§7.6](#76-butir-risiko-daring)), templat L6 tes | Jawaban tes dan angket, status L6 |
-| Bagian 4 ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md)) | `data_exports.participant_count`, riwayat unduhan, `field_sheet_rows.participant_id` (`ON DELETE CASCADE`) | Penghapusan termasuk ekspor dan lembar, `data_exports.purged_by_request_id`, ambil data satu anak, daftar izin berkode sebagai unduhan terpisah (`/admin/ekspor/izin`), penanda tindak lanjut. Lembar `izin` di unduhan utama masih terbuka ([30 → Pertanyaan terbuka](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#21-pertanyaan-terbuka) no. 4) |
+| Bagian 4 ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md)) | `data_exports.participant_count`, riwayat unduhan, `field_sheet_rows.participant_id` (`ON DELETE CASCADE`) | Penghapusan termasuk ekspor dan lembar, `data_exports.purged_by_request_id`, ambil data satu anak, daftar izin berkode sebagai unduhan terpisah (`/admin/ekspor/izin`), penanda tindak lanjut; lembar `izin` di unduhan utama (30 keputusan no. 9, kodenya di bagian 4); pemeriksaan nama K13 dipakai ulang untuk kritik dan saran sebelum studi ditutup (30 §10.2, keputusan no. 10). Bagian 4 digabung sesudah bagian ini (keputusan no. 7) |
 
 ---
 
