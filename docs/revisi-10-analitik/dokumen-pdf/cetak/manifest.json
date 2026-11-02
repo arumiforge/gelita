@@ -1,8 +1,8 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "82395bb990d1451f32cc75c80000737eafa4756f0eed50e1f15c9ab2959e3593",
-      "commit": "ffb33ff",
+      "source": "c43dd9c876fd16069185ae8aa32a09b8f5650c1a0067f1c06d8598127acf4f24",
+      "commit": "45f8b08",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 15,
@@ -33,8 +33,8 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "c51f0307da166042e7d7babbec7acef138cd26709fe6de9ea1877b79858b7a94",
-      "commit": "ffb33ff",
+      "source": "77d55fcd2a06d0c52208e2484e17f8f31d15f5775ef15f67906a4ee65d530f02",
+      "commit": "45f8b08",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 58,
