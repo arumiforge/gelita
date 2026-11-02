@@ -1,10 +1,10 @@
 # Dokumen Implementasi Bagian 1 — Peran Peneliti dan Panel Peneliti
 
-Per 30 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 10 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
+Per 2 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 10 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
 
-> **Status: `draf pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 30 Oktober 2026). Ini dokumen, bukan perubahan sistem. Kode, migrasi, dan instalasi baru diubah di tahap 3, setelah gerbang G2 dan setelah dokumen implementasi lengkap disetujui ([04](04_CATATAN_KEPUTUSAN.md), entri 30 Oktober 2026).
+> **Status: `disetujui pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 30 Oktober 2026; dicek kemutakhirannya dan disetujui pengembang 2 November 2026, [§17](#17-keputusan-pengembang) no. 6–9). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 kodenya dibangun sekarang, di cabang pendek dari `main`, sebagai gelombang C (bagian 1 sendirian, sebelum bagian lain), tanpa menunggu G2 ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026 *Pembagian kerja baru*). Sistem baru tidak dipakai dengan anak sebelum persetujuan etik terbit.
 >
-> Draf ini boleh naik sampai `disetujui pengembang`. Sebelum dokumen implementasi lengkap disetujui, isinya dicek ulang sekali terhadap matriks revisi induk ([20](20_PAKET_VALIDASI.md)) dan keputusan komite etik.
+> Setelah hasil validasi kembali, isinya dicek ulang sekali terhadap matriks revisi induk ([20](20_PAKET_VALIDASI.md)) dan keputusan komite etik.
 >
 > **Bagian 1 dari 4.** Bagian 2 (`28`, sesi lapangan, token, kode peserta, pemantauan), bagian 3 (`29`, log, ekspor, kamus data, templat lembar), dan bagian 4 (`30`, persetujuan dan hak atas data) memakai peran, hak, dan panel yang ditetapkan di sini.
 
@@ -36,7 +36,7 @@ Per 30 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 ## 0. Cara memakai dokumen ini
 
-**Urutan.** Bagian 1 dikerjakan lebih dulu, baik sebagai dokumen maupun nanti sebagai implementasi di tahap 3, karena bagian 2–4 menambah halaman ke panel ini dan memakai peta hak aksesnya ([§5](#5-model-hak-akses-di-kode)).
+**Urutan.** Bagian 1 dikerjakan lebih dulu, baik sebagai dokumen maupun sebagai kode (gelombang C di [00 → Tahap dokumen 3](00_INDEKS.md)), karena semua bagian lain (2–9) menambah halaman ke panel ini dan memakai peta hak akses dan filter `staffCan`-nya ([§5](#5-model-hak-akses-di-kode)).
 
 **Batas.** Dokumen ini hanya mengatur peran staf, hak aksesnya, dan kerangka panel. Halaman baru milik bagian lain hanya disebut sebagai **titik sambung**: hak aksesnya ditetapkan di sini, isinya di bagian masing-masing.
 
@@ -44,6 +44,9 @@ Per 30 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 - Kerjakan di satu cabang pendek dari `main`. Commit berbahasa Inggris (`.claude/rules/language.md`).
 - `vendor/bin/phpunit --no-coverage` harus hijau sebelum push.
 - Jangan menjalankan migrasi, `gelita:reset`, atau skrip rilis di server produksi (aturan kerja repo).
+- Perilaku penelitian ada di balik sakelar studi yang mati secara bawaan (misalnya `field_mode`, [28 → Sakelar `field_mode`](28_IMPLEMENTASI_SESI_LAPANGAN.md#51-sakelar-field_mode)), jadi `main` tetap bisa dirilis. Di bagian 1 ini berlaku untuk teks "kakak peneliti" ([§12](#12-teks-antarmuka)); peran dan hak akses sendiri bukan perilaku penelitian dan tidak bersakelar.
+- Migrasi `003400` menghapus data (akun `guru` dan unduhannya). Migrasi ini baru dijalankan di server produksi bila pengembang memutuskannya, dan dijaga di kodenya sendiri ([§6.1](#61-migrasi-2026-01-01-003400_replaceteacherwithresearcherroles), K16).
+- Instalasi uji validator tetap memakai *commit* yang dibekukan di [20 → Prasyarat no. 4](20_PAKET_VALIDASI.md#prasyarat-no-4-membekukan-versi-bahan), bukan `main` ([§11](#11-akun-staf-dan-perintah-spark)).
 
 **Prinsip yang tetap berlaku:**
 - Server satu-satunya sumber kebenaran.
@@ -52,7 +55,7 @@ Per 30 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 - Tanpa CDN.
 - `Admin.php` hanya berbahasa Indonesia; teks yang dilihat siswa selalu punya pasangan bahasa Inggris.
 
-**Rujukan kode.** Ditulis per berkas dan metode, dengan nomor baris per 30 Oktober 2026. Nomor baris bisa bergeser, jadi cari nama metodenya.
+**Rujukan kode.** Ditulis per berkas dan metode, dengan nomor baris per 30 Oktober 2026, dicek ulang 2 November 2026 (kode belum berubah sejak 30 Oktober 2026). Nomor baris bisa bergeser, jadi cari nama metodenya.
 
 ---
 
@@ -78,7 +81,7 @@ Per 30 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 ## 2. Keputusan yang dikunci
 
-Keputusan ini tidak perlu ditanyakan ulang saat implementasi. K1, K2, K11, K12, dan K15 diputuskan pengembang ([§17](#17-keputusan-pengembang)); sisanya menurunkan 01, 03, 22, dan 26.
+Keputusan ini tidak perlu ditanyakan ulang saat implementasi. K1, K2, K11, K12, K15, K16, dan K17 diputuskan pengembang ([§17](#17-keputusan-pengembang)); sisanya menurunkan 01, 03, 22, dan 26.
 
 | Kode | Keputusan |
 | --- | --- |
@@ -86,17 +89,19 @@ Keputusan ini tidak perlu ditanyakan ulang saat implementasi. K1, K2, K11, K12, 
 | K2 | **`peneliti`** (akun `koordinator`, `pengamat`, `pewawancara`) memegang kerja lapangan: sesi lapangan (bagian 2), isian L2, mengatur ulang kata sandi lewat kode peserta, pemantauan, data satu siswa lewat kodenya, dan mengajukan permintaan hapus data. Tidak boleh mengunduh data. **`ketua`** memegang semua hak `peneliti`, ditambah data penelitian semua siswa (sesi, data mentah, kritik dan saran), unduh data dan riwayat unduhannya, pengaturan studi, dan penanda tindak lanjut butir risiko daring (bagian 4). |
 | K3 | **`admin`** memegang sistem dan identitas: akun siswa (nama, nama pengguna, status), konten, rilis dan paket aset, sekolah, akun staf, log audit, retensi, dan menjalankan permintaan hapus data. Admin tidak melihat dan tidak mengunduh data penelitian, dan melihat pengaturan studi tanpa bisa mengubahnya. |
 | K4 | **Satu panel staf di `/admin`** dengan menu per peran. Tidak ada awalan rute baru. `/admin/login`, `/admin/logout`, dan `/admin/dashboard` tetap (pengecualian lama di `.claude/rules/language.md`). |
-| K5 | **`peneliti` dan `ketua` tidak pernah melihat** nama, nama pengguna, nama sekolah, atau NPSN, di layar maupun di unduhan. Sekolah tampil sebagai kode: `SCH-000123` dari `RawDataService::schoolRef()` sampai bagian 2 menyediakan kode sekolah penelitian (`S01`, `S02`, …). |
+| K5 | **`peneliti` dan `ketua` tidak pernah melihat** nama, nama pengguna, nama sekolah, atau NPSN, di layar maupun di unduhan. Sekolah tampil sebagai kode: `SCH-000123` dari `RawDataService::schoolRef()` sampai bagian 2 menyediakan kode sekolah penelitian (`S01`, `S02`, … untuk sekolah utama; `U01`, `U02`, … untuk sekolah uji, satu awalan untuk uji kelompok kecil dan menengah). |
 | K6 | **Hak diatur oleh satu peta kemampuan** di kode ([§5](#5-model-hak-akses-di-kode)), bukan oleh cabang "admin atau bukan". Rute, menu, tampilan, dan layanan data membaca peta yang sama. |
 | K7 | **Konten, bank soal, media, dan narasi** dilihat saja oleh `peneliti` dan `ketua` (permintaan `GET`). Semua permintaan yang mengubah (`POST`), impor bank, unggah, dan setujui hanya untuk `admin`. |
 | K8 | **Kata sandi siswa diatur ulang oleh `peneliti` atau `ketua` lewat kode peserta**, tanpa nama. Siswa wajib membuat kata sandi baru saat masuk berikutnya, sama dengan alur sekarang. |
 | K9 | **Satu orang yang memegang dua peran memakai dua akun** dengan nama pengguna berbeda, supaya jejak audit jelas. |
 | K10 | **Akun staf dinonaktifkan, tidak dihapus.** Satu-satunya penghapusan adalah akun `guru` di migrasi [§6](#6-skema-database). |
 | K11 | **Akun `guru` dihapus di migrasi**, bersama berkas unduhan dan permintaan hapus data yang diajukannya. Kolom `staff_users.school_id` dibuang. |
-| K12 | **Studi diubah oleh `ketua`; `admin` melihat saja.** Rilis dan paket aset tetap milik `admin`, walaupun halamannya di bawah `/admin/studi/rilis`. |
+| K12 | **Studi diubah oleh `ketua`; `admin` melihat saja.** Rilis dan paket aset tetap milik `admin`, walaupun halamannya di bawah `/admin/studi/rilis`. Ketua membuat satu baris `research_studies` per uji (uji kelompok kecil, uji kelompok menengah, pengambilan data utama; [04](04_CATATAN_KEPUTUSAN.md), 1 November 2026). |
 | K13 | **Pratinjau paket aset (`?paket=`) hanya untuk `admin`.** Sekarang semua staf boleh (`AssetPackageService.php:198-208`). |
 | K14 | **Unduh data hanya untuk `ketua` dan selalu berkode.** Mode unduh dengan identitas dihapus. Lembar dan kolom apa saja yang masuk ditetapkan bagian 3. |
 | K15 | **Keamanan masuk staf** ([§11.1](#111-keamanan-masuk-staf)): kata sandi staf memakai aturan kata sandi kuat yang sama dengan siswa, ditambah panjang minimal 12 yang sudah ada. Sesi staf berakhir setelah 2 jam tanpa aktivitas. Tanpa verifikasi dua langkah. |
+| K16 | **Migrasi `003400` dijaga di kodenya** ([§6.1](#61-migrasi-2026-01-01-003400_replaceteacherwithresearcherroles)): berhenti dengan pesan jelas bila masih ada akun `guru` atau unduhan milik akun itu, kecuali `.env` memuat `gelita.allowTeacherRemoval = true`. Instalasi baru dan instalasi tanpa akun guru berjalan bebas. |
+| K17 | **CSV daftar siswa untuk admin dihapus.** Nama hanya tampil di layar admin; tidak ada salinan berkas berisi nama. CSV berkode untuk `peneliti` dan `ketua` tetap ([§9](#9-data-yang-terlihat-per-peran)). |
 
 ---
 
@@ -274,7 +279,7 @@ Setiap cabang di bawah diganti dengan `can(...)` atau dengan cakupan [§5.5](#55
 
 ### 6.1 Migrasi `2026-01-01-003400_ReplaceTeacherWithResearcherRoles`
 
-Nomor sesudah migrasi terakhir (`003300_AddPackageCodeToResearchStudies`).
+Nomor sesudah migrasi terakhir (`003300_AddPackageCodeToResearchStudies`, masih yang terakhir per 2 November 2026).
 
 **Urutan migrasi bagian 1–4** (diselaraskan sesi koordinator, 30 Oktober 2026). Setiap bagian diimplementasikan berurutan dan menaikkan `SystemResetService::REQUIRED_MIGRATION` ke migrasi terakhirnya; setelah keempat bagian, nilainya `2026-01-01-003800`.
 
@@ -286,7 +291,15 @@ Nomor sesudah migrasi terakhir (`003300_AddPackageCodeToResearchStudies`).
 | `2026-01-01-003700_CreateFieldSheets` | 3 |
 | `2026-01-01-003800_AddConsentAndDataRights` | 4 ([30 → Skema database](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#15-skema-database)) |
 
-Bila ada migrasi lain yang masuk `main` sebelum implementasi, seluruh urutan digeser bersama dan tabel ini diperbarui.
+Bila ada migrasi lain yang masuk `main` sebelum implementasi, seluruh urutan digeser bersama dan tabel ini diperbarui. Bagian 5–9 (31–35) memakai nomor mulai `003900`, mengikuti urutan digabung ([04](04_CATATAN_KEPUTUSAN.md), 1 November 2026).
+
+**Penjaga migrasi yang menghapus data (K16).** Skrip pembaruan di `docs/08_DEPLOYMENT.md` menjalankan `php spark migrate` otomatis, jadi tanpa penjaga, memperbarui server produksi ke *commit* mana pun sesudah bagian 1 langsung menghapus akun `guru`. Padahal `003400` baru boleh dijalankan di produksi bila pengembang memutuskannya ([04](04_CATATAN_KEPUTUSAN.md), 1 November 2026). Karena itu, sebelum langkah 1 di bawah:
+- `up()` menghitung akun `role = 'guru'` dan baris `data_exports` milik akun itu.
+- Bila keduanya nol, migrasi berjalan (instalasi baru, tes, instalasi uji tanpa akun guru).
+- Bila ada, migrasi berjalan hanya bila `.env` memuat `gelita.allowTeacherRemoval = true` (`Config\Gelita::$allowTeacherRemoval`, bawaan `false`). Tanpa itu, migrasi melempar pengecualian dengan pesan berbahasa Indonesia: berapa akun guru dan berkas unduhan yang akan dihapus, dan cara mengizinkannya. Tidak ada yang terhapus.
+- Pola yang sama dipakai `003600` (bagian 3, [29](29_IMPLEMENTASI_DATA_PENELITIAN.md#12-skema-database)) bila sesinya memutuskannya; itu dicatat di [§18](#18-akibat-ke-dokumen-lain).
+
+Selama migrasi tertahan, kode bagian 1 bisa saja sudah terpasang sementara akun `guru` masih ada. `StaffAuthFilter` mengakhiri sesi akun yang perannya di luar `StaffAccess::ROLES` (sama dengan akun nonaktif), jadi `StaffScope::fromStaff()` tidak pernah dipanggil dengan peran `guru`.
 
 **`up()`** dalam satu transaksi:
 
@@ -388,13 +401,13 @@ Panel peneliti adalah panel staf yang sama dengan menu yang berbeda, bertampilan
 **Ringkasan per peran**
 - **Admin:** kesiapan sistem, peringatan retensi, ringkasan teknis. Tanpa angka partisipasi per siswa.
 - **Peneliti dan ketua:** angka partisipasi berkode per kode sekolah, tanpa nama sekolah. Kartu dari bagian 2 (sesi lapangan aktif) menyusul.
-- Daftar "20 event terakhir" dan "10 siswa terakhir" di ringkasan sekarang memakai nama sekolah (`DashboardController.php:130`). Untuk peneliti dan ketua diganti kode sekolah; untuk admin daftar event dihapus, karena event adalah data penelitian.
+- Daftar "10 siswa terakhir" di ringkasan sekarang memakai nama sekolah (`DashboardController::recentProgress()`, kolom di baris 130); untuk peneliti dan ketua diganti kode sekolah. Daftar "20 event terakhir" (`recentEvents()`) sudah hanya memakai kode siswa; untuk admin daftar event dihapus, karena event adalah data penelitian.
 
 **Pencarian cepat**
 - Peneliti dan ketua mencari dengan kode peserta saja.
 - Admin mencari dengan kode, nama pengguna, atau nama.
 
-**Kode sekolah.** Sampai bagian 2 menyediakan kode sekolah penelitian, sekolah tampil sebagai `SCH-000123`. Bagian 2 mengganti tampilannya ke `S03` di satu tempat (`RawDataService::schoolRef()` atau penggantinya).
+**Kode sekolah.** Sampai bagian 2 menyediakan kode sekolah penelitian, sekolah tampil sebagai `SCH-000123`. Bagian 2 mengganti tampilannya ke `S03` atau `U01` di satu tempat (`RawDataService::schoolRef()` atau penggantinya).
 
 ---
 
@@ -423,7 +436,7 @@ Panel peneliti adalah panel staf yang sama dengan menu yang berbeda, bertampilan
 **Daftar siswa.**
 - Admin: kolom akun.
 - Peneliti dan ketua: kolom kode dan kemajuan.
-- CSV daftar siswa ikut kolom tampilannya dan dicatat sebagai `list_csv`. Lihat [§16](#16-pertanyaan-terbuka) no. 4 untuk CSV admin.
+- CSV daftar siswa hanya untuk peneliti dan ketua, berkode, dan dicatat sebagai `list_csv`. Admin tidak punya CSV daftar siswa (K17, [§16](#16-pertanyaan-terbuka) no. 4); tombolnya tidak dirender dan rutenya 404 untuk admin.
 
 **Lembar `event` dan kolom `answer_key`.** Sekarang hanya untuk admin. Sesudah bagian 1, admin tidak lagi melihat data penelitian. Bagian 3 memberi keduanya ke `ketua` ([29 → Keputusan yang dikunci](29_IMPLEMENTASI_DATA_PENELITIAN.md#2-keputusan-yang-dikunci), K1): lembar `event` hanya event bertanda Peneliti dengan kode sebagai pengganti id internal, `answer_key` di lembar `butir` dan `jawaban`. Admin tidak mendapat keduanya.
 
@@ -472,11 +485,11 @@ Siapa orangnya dicatat ketua peneliti di luar repo, sama seperti sekarang.
 **Perintah spark**
 - `gelita:reset`: opsi `--hapus-guru` dan hitungan guru dihapus (`app/Commands/SystemReset.php`, `SystemResetService`). Rencana reset mencetak jumlah akun staf per peran (`admin`, `peneliti`, `ketua`). Semua akun staf tetap.
 - `gelita:staff:password`: tidak berubah, berlaku untuk semua peran.
-- Pencarian "admin aktif pertama" (`RetentionService`, `SystemResetService`, `BankImport`, `KontenKelas5Seeder`) tidak berubah. `Simulator.php` yang mengambil staf pertama dari peran apa pun diubah ke admin aktif pertama.
+- Pencarian "admin aktif pertama" (`RetentionService`, `SystemResetService`, `BankImport`, `KontenKelas5Seeder`) tidak berubah. `app/Libraries/Simulation/Simulator.php` (sekitar baris 924), yang mengambil staf pertama dari peran apa pun, diubah ke admin aktif pertama.
 
 **Nama pengguna siswa yang dicadangkan.** `Config\Gelita::$reservedUsernames` tetap memuat `guru`, ditambah `peneliti` dan `ketua`, supaya siswa tidak memakai nama yang mirip peran staf.
 
-**Instalasi uji** ([20 → Prasyarat no. 8](20_PAKET_VALIDASI.md#prasyarat-no-8-instalasi-uji-dan-akun-uji)). Di tahap 2 cukup akun `admin` pengembang. Di G3 (ahli media langkah 2), pengembang memegang dua akun, `admin` dan `ketua`, sesuai K9. Validator tidak pernah mendapat akun staf.
+**Instalasi uji** ([20 → Prasyarat no. 8](20_PAKET_VALIDASI.md#prasyarat-no-8-instalasi-uji-dan-akun-uji)). Selama validasi ahli, instalasi uji tetap memakai *commit* yang dibekukan di 20 prasyarat no. 4, yaitu kode sebelum bagian 1; cukup akun `admin` pengembang. Di G3 (ahli media langkah 2), instalasi uji diperbarui ke Prototipe II yang sudah memuat bagian 1 dan revisi dari validasi; pengembang memegang dua akun, `admin` dan `ketua`, sesuai K9. Validator tidak pernah mendapat akun staf.
 
 ### 11.1 Keamanan masuk staf
 
@@ -545,12 +558,13 @@ Mengikuti `.claude/rules/ui-copy.md`: kalimat panel sopan dan polos, kalimat sis
 | Yang dihapus | Tempat |
 | --- | --- |
 | Cakupan guru | `Services\StaffScope::teacher()`, `withAnonymous()`; `Concerns\StaffScope::schoolScope()`, cabang `dataScope()` untuk guru |
-| Sekolah milik staf | `StaffUser::schoolScope()`; aturan sekolah di `StaffController` (`postedSchool()`); penanganan `staff_users.school_id` di `SchoolModel`, `SchoolDirectory` (gabung sekolah), `SchoolController` |
+| Sekolah milik staf | `StaffUser::schoolScope()`; aturan sekolah di `StaffController` (`postedSchool()`); penanganan `staff_users.school_id` di `SchoolModel` (daftar sekolah yang dipakai staf), `SchoolDirectory` (gabung sekolah, baris 388), `SchoolController` (hitungan staf yang dipindah), dan `SystemResetService` (baris 288, `school_id` staf dikosongkan) |
 | Filter sekolah terkunci | Cabang "sekolah sendiri" di `BaseAdminController` dan `components/admin-filter-bar.php` |
 | Peran di rute | Alias `staffRole` dan `StaffRoleFilter` (diganti `staffCan`) |
-| Reset guru | Opsi `--hapus-guru` dan hitungan guru di `SystemReset`/`SystemResetService` |
-| Teks | `Admin.roleGuru`; komentar yang menyebut guru (sekitar 40, `grep -rn guru app/`) ditulis ulang dalam bahasa Inggris saat bloknya disentuh |
+| Reset guru | Opsi `--hapus-guru` dan hitungan guru di `SystemReset`/`SystemResetService` (hitungan per peran di baris 160–161, penghapusan di baris 308–309) |
+| Teks | `Admin.roleGuru`; komentar yang menyebut guru (`grep -rn guru app/` menemukan 120 baris per 2 November 2026, kira-kira separuhnya komentar) ditulis ulang dalam bahasa Inggris saat bloknya disentuh |
 | Unduh dengan identitas | Mode non-anonim di `ExportController`/`ExportService` |
+| CSV daftar siswa admin | Cabang CSV admin di `ParticipantController` dan tombolnya (K17) |
 
 ---
 
@@ -563,10 +577,10 @@ Mengikuti `.claude/rules/ui-copy.md`: kalimat panel sopan dan polos, kalimat sis
 | `StaffAccessTest` | Setiap kemampuan hanya memuat peran dari `ROLES`; peran atau kemampuan tak dikenal ditolak; admin tidak memegang kemampuan `research.*`; peneliti tidak memegang `research.export` dan `studies.manage` |
 | `StaffRouteMatrixTest` | Untuk setiap kelompok rute di [§4](#4-hak-akses-per-peran) dan setiap peran: 200 bila berhak, 404 untuk halaman dan 403 untuk API bila tidak |
 | `ResearcherNeverSeesIdentityTest` | Daftar siswa, halaman siswa, sesi, kritik dan saran, data mentah, CSV, dan unduhan untuk peneliti dan ketua tidak memuat nama, nama pengguna, nama sekolah, atau NPSN siswa contoh |
-| `AdminHasNoResearchDataTest` | Admin mendapat 404 di sesi, data mentah, kritik dan saran, dan unduh data; halaman siswa admin tanpa tab data penelitian |
+| `AdminHasNoResearchDataTest` | Admin mendapat 404 di sesi, data mentah, kritik dan saran, unduh data, dan CSV daftar siswa (K17); halaman siswa admin tanpa tab data penelitian |
 | `ResetByCodeTest` | Kode benar memberi kata sandi sementara, `must_change_password`, `no-store`, dan baris audit `via: kode`; kode salah memberi pesan ramah tanpa perubahan; halaman hasil tanpa nama pengguna; admin mendapat 404 |
 | `StudyAccessTest` | Ketua mengubah studi; admin melihat formulir terkunci dan `POST`-nya 404; peneliti 404 |
-| `ReplaceTeacherMigrationTest` | Akun guru, unduhannya beserta berkas, dan permintaannya terhapus; baris audit tetap dengan pelaku kosong; `school_id` hilang; peran wajib diisi |
+| `ReplaceTeacherMigrationTest` | Akun guru, unduhannya beserta berkas, dan permintaannya terhapus; baris audit tetap dengan pelaku kosong; `school_id` hilang; peran wajib diisi. Penjaga K16: dengan akun guru dan tanpa `allowTeacherRemoval`, migrasi berhenti dan tidak ada yang terhapus; tanpa akun guru, migrasi berjalan tanpa pengaturan itu. Akun berperan `guru` yang masih ada keluar di permintaan berikutnya |
 | `StaffRolesTest` | Membuat dan mengubah akun dengan tiga peran; peran `guru` atau kosong ditolak; admin tidak bisa menurunkan perannya sendiri. Belum ada tes untuk ini sekarang. |
 | `StaffLoginSecurityTest` | Kata sandi staf yang lemah atau memuat nama pengguna ditolak di ganti sendiri, akun baru, dan `gelita:staff:password`. Sesi staf yang diam lebih dari `staffIdleSeconds` diakhiri dengan audit `staff_idle_logout`. Permintaan API latar tidak memperpanjang sesi. Sesi siswa tidak terpengaruh. |
 
@@ -574,7 +588,8 @@ Mengikuti `.claude/rules/ui-copy.md`: kalimat panel sopan dan polos, kalimat sis
 
 Semua tes yang sekarang memakai akun guru beralih ke `peneliti` atau `ketua`, sesuai apa yang diuji:
 - `AdminTableViewTest`, `ParticipantPanelTest`, `RawExportTest`, `ExportRulesTest`, `AdminTableTest`;
-- `NarrationPagesTest`, `PackageSwitchTest`, `SystemResetTest`, `StaffPasswordGateTest`, `SchoolDirectoryTest`, `DebugToolbarRedactionTest`, `TelemetryBatchTest`, `RouteWiringTest`;
+- `NarrationPagesTest`, `PackageSwitchTest`, `SystemResetTest`, `StaffPasswordGateTest`, `SchoolDirectoryTest`, `DebugToolbarRedactionTest`, `RouteWiringTest`;
+- `TelemetryBatchTest` (tanpa akun guru, tetapi merender `admin/dashboard` dengan `isAdmin`, yang diganti pemeriksa kemampuan);
 - perlengkapan tes `tests/_support/Database/ResetTables.php` (bawaan `guru`), `RawDataWorld.php` (`guru_alpha`), `GradeFiveWorld.php`, `SchoolTables.php`;
 - skrip QA `tools/qa/admin-check.mjs` (opsi `--guru` menjadi `--peneliti` dan `--ketua`).
 
@@ -596,6 +611,7 @@ Di mesin pengembangan, masuk sebagai tiap peran:
 
 ## 15. Dokumen yang ikut diperbarui saat implementasi
 
+- `docs/08_DEPLOYMENT.md`: langkah pembaruan menyebut penjaga `003400` dan `gelita.allowTeacherRemoval` (K16), dan bahwa pengaturan itu dihapus lagi dari `.env` setelah migrasi berjalan.
 - `docs/07_FEATURE_INTEGRATION.md`: FITUR 2a (*Reset oleh Guru*), FITUR 10 dan 10a–10c (panel staf, akun, studi dan rilis, sekolah), FITUR 14–18 (ekspor, PDF, tata kelola, retensi, `gelita:reset`), aturan sistem.
 - `docs/01_DATABASE.md`, `docs/02_PROJECT_FOUNDATION.md`, `docs/03_MODEL_ENTITY.md`, `docs/04_CONTROLLER_ROUTE.md`, `docs/05_VIEW_UI.md`, `docs/08_DEPLOYMENT.md`, `README.md`: setiap penyebutan peran `guru`.
 - `docs/perombakan-kelas5/03_TAMPILAN_16x9_DAN_ADMIN.md` §8.3–8.4 dan §12.1: diberi catatan bahwa menu dan cakupan guru diganti dokumen ini.
@@ -611,10 +627,11 @@ Tidak menahan draf ini; dijawab pengembang atau di bagian yang disebut.
 1. ~~**Keamanan masuk staf.**~~ **Diputuskan pengembang 30 Oktober 2026:** aturan kata sandi kuat yang sama dengan siswa, sesi staf berakhir setelah 2 jam tanpa aktivitas, tanpa verifikasi dua langkah ([§11.1](#111-keamanan-masuk-staf), K15).
 2. ~~**Siapa mengajukan permintaan hapus data.**~~ **Diputuskan pengembang 30 Oktober 2026 di bagian 4:** `peneliti` dan `ketua` mengajukan (`deletion.request`); permintaan dari `peneliti` dikonfirmasi `ketua` lebih dulu (`deletion.confirm`); admin tetap satu-satunya yang menjalankan ([30 → Keputusan yang dikunci](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#2-keputusan-yang-dikunci), K1; [30 → Keputusan pengembang](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#22-keputusan-pengembang) no. 1).
 3. ~~**Admin dan panel pemantauan.**~~ **Diputuskan pengembang 30 Oktober 2026 di bagian 2:** admin melihat angka saja per sesi lapangan, tanpa kode peserta dan tanpa token ([28 → Panel pemantauan](28_IMPLEMENTASI_SESI_LAPANGAN.md#12-panel-pemantauan), K2).
-4. **CSV daftar siswa untuk admin.** Sekarang admin bisa mengunduh daftar dengan nama. Usulan: CSV admin dihapus, nama hanya di layar, untuk meminimalkan salinan identitas. Daftar izin berkode untuk penutupan studi ditetapkan di bagian 4 ([30 → Daftar izin berkode](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#101-daftar-izin-berkode)); pertanyaan CSV admin tetap terbuka.
+4. ~~**CSV daftar siswa untuk admin.**~~ **Diputuskan pengembang 2 November 2026:** CSV admin dihapus, nama hanya di layar (K17, [§17](#17-keputusan-pengembang) no. 6). Daftar izin berkode untuk penutupan studi tetap di bagian 4 ([30 → Daftar izin berkode](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#101-daftar-izin-berkode)).
 5. ~~**Jawaban butir risiko daring per baris.**~~ **Diputuskan di bagian 3:** jawaban ang-21–ang-23 tidak pernah per baris di unduhan; hanya lembar angka gabungan, sel di bawah 5 siswa ditulis `<5` ([29 → Butir risiko daring](29_IMPLEMENTASI_DATA_PENELITIAN.md#76-butir-risiko-daring), K9). Penanda tindak lanjut dihitung di layar `ketua` dan tidak diekspor ([30 → Penanda tindak lanjut](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#6-penanda-tindak-lanjut-butir-risiko-daring), K7).
-6. **"Hanya ketua yang menyambungkan kode ke nama"** (03, 22, 26) hanya berlaku sebagai prosedur. Secara teknis P1 memegang L7 dan admin memegang akun. Dokumen ini tidak bisa menutupnya di sistem; cukup dicatat di 22 dan 26 sebagai pembatasan prosedur.
-7. **Akun `pengamat` dan `pewawancara`.** P2 tidak punya tindakan di sistem menurut 02; P3 membuka jawaban satu siswa untuk wawancara L5. Keduanya tetap `peneliti` dan dibuat hanya bila perlu.
+6. ~~**"Hanya ketua yang menyambungkan kode ke nama"** (03, 22, 26) hanya berlaku sebagai prosedur.~~ **Diputuskan pengembang 2 November 2026:** tetap pembatasan prosedur, seperti yang sudah tertulis di 22 dan 26; tidak ada perubahan sistem ([§17](#17-keputusan-pengembang) no. 7). Secara teknis P1 memegang L7 dan admin memegang akun.
+7. ~~**Akun `pengamat` dan `pewawancara`.**~~ **Diputuskan pengembang 2 November 2026:** keduanya tetap berperan `peneliti` dan dibuat hanya bila orangnya memang butuh panel ([§17](#17-keputusan-pengembang) no. 8). P2 tidak punya tindakan di sistem menurut 02; P3 membuka jawaban satu siswa untuk wawancara L5.
+8. ~~**Migrasi `003400` di server produksi.**~~ Muncul dari cek kemutakhiran 2 November 2026: skrip pembaruan menjalankan `php spark migrate` otomatis. **Diputuskan pengembang hari itu:** penjaga di migrasi (K16, [§6.1](#61-migrasi-2026-01-01-003400_replaceteacherwithresearcherroles), [§17](#17-keputusan-pengembang) no. 9).
 
 ---
 
@@ -633,13 +650,27 @@ Satu putaran tanya, empat pertanyaan (30 Oktober 2026); pengembang memilih usula
    - sesi staf berakhir setelah 2 jam tanpa aktivitas;
    - tanpa verifikasi dua langkah.
 
+**Cek kemutakhiran dan tinjauan pengembang, 2 November 2026** (gelombang A, cabang `r10-cek-27`). Satu putaran tanya, empat pertanyaan; pengembang memilih usulan di keempatnya. `asal: pengembang`.
+
+6. **CSV daftar siswa untuk admin dihapus** (K17, [§16](#16-pertanyaan-terbuka) no. 4). Nama hanya tampil di layar admin, supaya tidak ada salinan berkas berisi nama. Tidak dipilih: CSV admin tanpa nama (kode, sekolah, status akun); CSV admin dengan nama seperti sekarang, setiap unduhan dicatat di log audit.
+7. **"Hanya ketua yang menyambungkan kode ke nama" tetap pembatasan prosedur** ([§16](#16-pertanyaan-terbuka) no. 6), seperti yang sudah tertulis di 22 dan 26. Tidak dipilih: halaman siswa admin tanpa kode peserta, sehingga admin tidak bisa lagi membantu lewat kode.
+8. **Akun `pengamat` dan `pewawancara` tetap berperan `peneliti`, dibuat hanya bila perlu** ([§16](#16-pertanyaan-terbuka) no. 7). Tidak dipilih: hanya akun `pewawancara`; peran keempat yang hanya melihat.
+9. **Penjaga di migrasi `003400`** (K16, [§6.1](#61-migrasi-2026-01-01-003400_replaceteacherwithresearcherroles)): berhenti bila masih ada akun `guru` atau unduhannya, kecuali `.env` memuat `gelita.allowTeacherRemoval = true`. Ini menjalankan aturan 1 November 2026 bahwa migrasi yang menghapus data baru dijalankan di produksi bila pengembang memutuskannya. Tidak dipilih: prosedur saja, tanpa penjaga di kode.
+10. **Status `disetujui pengembang`** (2 November 2026), setelah cek kemutakhiran: pengembang menyetujui dokumen ini sebagai dasar kode gelombang C.
+
+Yang diselaraskan tanpa keputusan baru, dari entri 04 sesudah 31 Oktober 2026 dan dari kode:
+- aturan kerja 1 November 2026 menggantikan "kode diubah di tahap 3, setelah G2" (status dan §0), ditambah sakelar studi yang mati secara bawaan, migrasi yang menghapus data, dan instalasi uji pada *commit* beku (§0, §11);
+- satu awalan `U` untuk sekolah uji dan satu baris `research_studies` per uji (K5, K12, §8);
+- nomor migrasi: `003300` masih yang terakhir; urutan `003400`→`003800` tetap; bagian 5–9 mulai `003900` (§6.1);
+- rujukan kode yang dibetulkan: daftar "20 event terakhir" di ringkasan tidak memakai nama sekolah (§8); jalur `Simulator.php` (§11); `SystemResetService` dan `SchoolController` juga memegang `staff_users.school_id`, dan jumlah baris `guru` di `app/` (§13); `TelemetryBatchTest` tidak memakai akun guru (§14.2). Rujukan lain (berkas, metode, nomor baris, tes, kunci bahasa, anker dokumen) dicek dan tetap benar.
+
 ---
 
 ## 18. Akibat ke dokumen lain
 
 Dicatat di sini dan dibawa sesi koordinator setelah bagian 2–4 selesai, supaya dokumen lain tidak diubah dua kali.
 
-**Status per 30 Oktober 2026:** semua baris sudah dibawa sesi koordinator (PR #285, #286, #287), kecuali yang menunggu `kamus-1.1` atau implementasi.
+**Status per 2 November 2026:** baris 30 Oktober 2026 sudah dibawa sesi koordinator (PR #285, #286, #287), kecuali yang menunggu `kamus-1.1` atau implementasi. Dua baris terakhir berasal dari cek kemutakhiran 2 November 2026.
 
 | Dokumen | Bagian | Perubahan | Status |
 | --- | --- | --- | --- |
@@ -650,3 +681,5 @@ Dicatat di sini dan dibawa sesi koordinator setelah bagian 2–4 selesai, supaya
 | [20](20_PAKET_VALIDASI.md) | *Prasyarat no. 8* | Di G3, pengembang memegang akun `admin` dan `ketua` di instalasi uji | Sudah (sesi koordinator, 30 Oktober 2026, PR #285) |
 | [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) | T10, pilihan D | "`ketua` membuka kode" sesuai hak `ketua` di 27; tidak ada perubahan teks surat | Tidak perlu diubah |
 | `.claude/rules/glossary.md` | *People, data, and the panel* | Baris peran staf, saat implementasi ([§15](#15-dokumen-yang-ikut-diperbarui-saat-implementasi)) | Saat implementasi |
+| [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) | *Skema database* (`003600`) | Pertimbangkan penjaga yang sama dengan K16 untuk `003600` (menghapus baris log), supaya aturan "baru dijalankan di produksi bila pengembang memutuskannya" juga dijaga di kode | Untuk sesi koordinator (2 November 2026) |
+| `docs/08_DEPLOYMENT.md` | Langkah pembaruan | Penjaga `003400` dan `gelita.allowTeacherRemoval` (K16) | Saat implementasi |
