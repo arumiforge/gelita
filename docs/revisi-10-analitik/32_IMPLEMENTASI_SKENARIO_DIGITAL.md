@@ -40,7 +40,7 @@ Per 2 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 **Urutan.** Kode dibangun di gelombang E. Prasyaratnya:
 - bagian 1 sudah digabung (peta kemampuan; bagian ini tidak menambah kemampuan baru);
 - bagian 2 sudah digabung (`participant_progress`, dipakai gerbang cerita penghubung);
-- bagian 5 sudah digabung (sheet `scenarios` dan `scenario_options` di workbook, `BankRules::ENGINES` berisi lima tantangan, kolom `item_tries.error_code`).
+- bagian 5 sudah digabung (sheet dan tabel `scenario_options`, kolom `challenge_items.d2_topic` dan `explanation_*`, kolom `item_tries.error_code`, `ErrorCodeResolver`; dokumennya [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) digabung 2 November 2026).
 
 Bagian 3 dikerjakan bersamaan. Bila bagian 3 belum digabung saat bagian ini mulai, kolom `ready_ms` dan `EventCatalog` dibuat lebih dulu oleh bagian yang digabung pertama; yang kedua menyesuaikan ([§14](#14-titik-sambung-ke-perubahan-lain)).
 
@@ -96,7 +96,7 @@ Keputusan ini tidak perlu ditanyakan ulang saat implementasi. K1, K7, K8, dan K1
 | K3 | **Satu percobaan = satu tindakan dan satu alasan**, dikirim bersama sesudah langkah 2. Alasan tidak dikirim sendiri dan tidak pernah dinilai benar atau salah. |
 | K4 | **Kesempatan dihitung per skenario** (3), seperti petunjuk Cari Objek. Skenario tertutup **benar** saat tindakan berskor 2 dipilih, atau tertutup **tidak benar** setelah percobaan ketiga. Tindakan berskor 1 ("kurang tepat") memakai satu kesempatan. Pengerjaan tertutup saat keempat skenario tertutup. |
 | K5 | **Bintang tetap `bintang-1`** dan `ScoringService` tidak berubah: butir benar = tindakan berskor 2 di akhir; benar di percobaan pertama = tindakan pertama berskor 2. Skor 0–1–2 hanya data penelitian, tidak mengubah bintang atau serpihan. |
-| K6 | **Kunci tidak pernah ke peramban.** Pilihan dikirim dengan rujukan buram per pengerjaan (HMAC, seperti `objectRef()` Cari Objek). Skor, kode DIG-\*, kode R-\*, dan umpan balik hanya ada di `answer_key_json`; umpan balik pilihan yang dikirim dan penjelasan tindakan aman baru dikirim di respons `/responses`. |
+| K6 | **Kunci tidak pernah ke peramban.** Pilihan dikirim dengan rujukan buram per pengerjaan (HMAC, seperti `objectRef()` Cari Objek). Skor, kode DIG-\*, kode R-\*, dan umpan balik hanya ada di tabel `scenario_options` (bagian 5); umpan balik pilihan yang dikirim dan penjelasan tindakan aman baru dikirim di respons `/responses`. |
 | K7 | **Urutan pilihan diacak sekali per pengerjaan**, dengan benih dari id pengerjaan dan id butir, jadi tetap sama di ketiga kesempatan dan setelah muat ulang. Urutan yang tampil disimpan di `answer_json` setiap percobaan. |
 | K8 | **Tanpa sakelar studi.** Engine selalu ada di kode. Tantangan kelima muncul bila bank yang diimpor memuatnya; total Serpihan Cahaya dihitung dari jumlah node aktif, jadi 12 menjadi 15 tanpa angka tertulis di kode. Aturan narasi (§9) berlaku juga di luar studi. |
 | K9 | **Cerita penghubung `scenario_open` sekali per siswa per studi**, diputar sebagai gerbang sebelum kartu misi tantangan kelima selama siswa belum punya pengerjaan di tantangan itu. Pengerjaan ulang tidak memutarnya lagi; siswa boleh menontonnya ulang dari peta wilayah. |
@@ -135,27 +135,27 @@ Keputusan ini tidak perlu ditanyakan ulang saat implementasi. K1, K7, K8, dan K1
 
 ## 5. Engine `skenario` di server
 
-### 5.1 Bentuk butir di database
+### 5.1 Data skenario dari bagian 5
 
-Butir `scenario_choice` memakai kolom `challenge_items` yang sudah ada (`2026-01-01-001200_CreateChallengeItems`); tidak ada kolom butir baru.
+Data skenario milik bagian 5 ([31 → K4](31_IMPLEMENTASI_BANK_SOAL_BARU.md#2-keputusan-yang-dikunci), §6.3, §15): sheet `scenarios` dan `scenario_options`, tabel `scenario_options`, impornya, dan aturan bank skenario. Bagian ini hanya membacanya.
 
-| Kolom | Isi |
-| --- | --- |
-| `item_key` | Kode butir dari bank, misalnya `tmg-5-a02` |
-| `variant_group` | `a` atau `b` |
-| `prompt_id`, `prompt_en` | Teks situasi |
-| `media_asset_id` | Gambar situasi (opsional, §7.5) |
-| `audio_prompt_id`, `audio_prompt_en_id` | Rekaman situasi `skenario-{kode butir}` (§9.3) |
-| `config_json` (aman, dikirim) | `actions`: daftar `{key, text_id, text_en}`; `reasons`: daftar `{key, text_id, text_en}`; `topic` (kode topik, misalnya `data_pribadi`) |
-| `answer_key_json` (rahasia) | `actions`: peta `key → {score, error_code, feedback_id, feedback_en}`; `reasons`: peta `key → {reason_code}`; `explanation_id`, `explanation_en` (penjelasan setelah kesempatan habis) |
-| `scorable` | 1 |
-| `bloom_level` | Label Bloom pengembang dari 08 |
+| Tempat | Isi | Ke peramban? |
+| --- | --- | --- |
+| `challenge_items.item_key`, `variant_group` | Kode butir (`tmg-5-a02`) dan variasi (`a`, `b`) | Hanya id butir |
+| `challenge_items.prompt_id`, `prompt_en` | Teks situasi | Ya |
+| `challenge_items.media_asset_id` | Gambar situasi (opsional, §7.5) | Ya |
+| `challenge_items.audio_prompt_id`, `audio_prompt_en_id` | Rekaman situasi `skenario-{kode butir}` (§9.3) | Ya, hanya yang disetujui |
+| `challenge_items.d2_topic` | `PRI`, `SAN`, `IZN`, `ASG` | Tidak |
+| `challenge_items.config_json.steps` | 1 atau 2 (situasi berkembang Wonosobo); hanya untuk tampilan | Ya |
+| `challenge_items.explanation_id`, `explanation_en` | Penjelasan setelah kesempatan habis | Hanya di respons yang menutup skenario tanpa tindakan tepat |
+| `scenario_options` `kind = action` | `option_key`, `sequence`, `text_*`, `score` 0/1/2, `code` DIG-\* (kosong untuk skor 2), `feedback_*` | Hanya teks, lewat rujukan buram; `feedback_*` hanya di respons |
+| `scenario_options` `kind = reason` | `option_key`, `sequence`, `text_*`, `code` R-\* | Hanya teks, lewat rujukan buram |
 
-`key` pilihan adalah kunci tetap dari bank (misalnya `t1`…`t4`, `r1`…`r5`), dipakai untuk `first_action_key` di kamus. Kunci ini tidak pernah dikirim mentah ke peramban (K6, §5.2).
+`option_key` adalah kunci tetap dari bank, dipakai untuk `first_action_key` di kamus. Kunci, skor, kode, dan umpan balik tidak pernah ada di payload pembuka (K6, §5.2); `NoSecretsInPayloadTest` bagian 5 sudah memeriksanya untuk semua engine.
 
-- `ChallengeItem::SAFE_CONFIG_KEYS` (`app/Entities/ChallengeItem.php:14`, sekarang `x`, `y`, `w`, `grid`, `shape`; dipakai `safeConfig()` baris 111–124) **tidak** memuat `actions` dan `reasons`, supaya kunci tetap tidak terkirim lewat `toPlayerArray()` (baris 126–141). Pilihan dikirim lewat bagian payload sendiri (§5.2).
-- Metode baru di `ChallengeItem`: `scenarioActions()`, `scenarioReasons()`, `actionKey(string $key): ?array` (dari `answer_key_json`), `reasonCode(string $key): ?string`, `scenarioExplanation(string $locale): ?string`, `safeAction(): ?array` (tindakan berskor 2).
-- Aturan bentuk bank (satu tindakan berskor 2, satu berskor 1, sisanya 0; setiap tindakan tidak tepat berkode DIG-\*; setiap alasan berkode R-\*; jumlah 3/4/4 tindakan dan 3/4/5 alasan per tingkat) diperiksa `BankRules` dan `DifficultyRules` milik bagian 5 (`31`). Bagian ini hanya membaca hasil impornya.
+- Pilihan dibaca lewat `ContentRepository::scenarioOptions(int $itemId)` (bagian 5, ikut `flush()`), bukan lewat `config_json`, jadi `ChallengeItem::SAFE_CONFIG_KEYS` (`app/Entities/ChallengeItem.php:14`) tidak berubah dan `toPlayerArray()` (baris 126–141) tidak membawa pilihan.
+- Metode baru di `ChallengeService` (privat): `scenarioOutcome()` (§5.3), `safeAction(int $itemId): ?array` (pilihan berskor 2).
+- Aturan bentuk bank (tepat satu tindakan berskor 2 dan satu berskor 1; sebaran kode alasan; jumlah 3/4/4 tindakan dan 3/4/5 alasan per tingkat) diperiksa `BankRules` dan `DifficultyRules` bagian 5. Bagian ini menambah `BankRules::ENGINES[5] = 'skenario'` dan `BankRules::INTERACTION['skenario'] = 'scenario_choice'` (31 §8.2, §18).
 
 ### 5.2 Payload untuk peramban
 
@@ -173,13 +173,13 @@ if ($node->engine_type === 'skenario') {
 - `actions` dan `reasons`: daftar `{ref, text}` **dalam urutan acak pengerjaan** (K7);
 - `state`: `tries` (percobaan terpakai), `closed` (bool), dan bila sudah tertutup: `outcome` (`safe` atau `exhausted`), `chosen` (ref tindakan dan alasan terakhir), `feedback`, dan untuk `exhausted` juga `safe_action` dan `explanation`. Skenario yang masih terbuka tidak membawa skor, kode, atau umpan balik.
 
-**Rujukan buram.** `optionRef(int $attemptId, int $itemId, string $kind, string $key)` = 20 karakter pertama `hash_hmac('sha256', 'skenario-option|…', encryption.key)`, mengikuti `objectRef()` (baris 1295–1304). `resolveScenarioAnswer()` (baru) menerjemahkan ref kiriman kembali ke kunci di server; ref yang tidak dikenal → `\InvalidArgumentException` (400), seperti `resolveObjectAnswer()` (baris 1315 dan seterusnya).
+**Rujukan buram.** `optionRef(int $attemptId, int $itemId, string $kind, string $key)` = 20 karakter pertama `hash_hmac('sha256', 'skenario-option|…', encryption.key)`, mengikuti `objectRef()` (baris 1295–1304). `resolveScenarioAnswer()` (baru) menerjemahkan ref kiriman kembali ke `option_key` di server; ref yang tidak dikenal → `\InvalidArgumentException` (400), seperti `resolveObjectAnswer()` (baris 1315 dan seterusnya).
 
 **Acak sekali per pengerjaan (K7).** Urutan dihitung dari `crc32($attemptId . ':' . $itemId . ':' . $kind)` sebagai benih `mt_srand()` lokal di `scenarioOrder()`, lalu `shuffle()`; benih global dikembalikan sesudahnya. Hasilnya sama di setiap muat ulang dan di ketiga kesempatan, dan berbeda antarpengerjaan. Tidak perlu kolom baru. Bila tindakan tepat jatuh di urutan pertama, urutan **tidak** diubah: keseimbangan posisi diperiksa di data, bukan dipaksa (pemaksaan justru membuat posisi pertama tidak pernah tepat).
 
 ### 5.3 Penilaian
 
-`ChallengeService::grade()` (baris 749–758) mendapat lengan `'scenario_choice' => $this->gradeScenario($item, $answer)`. `gradeScenario()` mengembalikan benar bila skor tindakan 2. Skor dan kode dibaca oleh `scenarioOutcome()` (baru), yang mengembalikan `['score' => 0|1|2, 'error_code' => ?string, 'reason_code' => string, 'feedback' => ?string]`.
+`ChallengeService::grade()` (baris 749–758) mendapat lengan `'scenario_choice' => $this->gradeScenario($item, $answer)`. `gradeScenario()` mengembalikan benar bila skor tindakan 2. Skor dan kode dibaca oleh `scenarioOutcome()` (baru) dari `scenario_options`; `error_code` tindakan diambil lewat `ErrorCodeResolver` bagian 5 (31 §10.1, `scenario_options.code`), sama seperti engine lain, yang mengembalikan `['score' => 0|1|2, 'error_code' => ?string, 'reason_code' => string, 'feedback' => ?string]`.
 
 Alasan tidak memengaruhi benar atau tidak (K3). `reason_level` 0–2 tidak dihitung sistem; bila nanti dipakai setelah uji coba, ia diturunkan lapis data turunan (bagian 9) dari `reason_code`.
 
@@ -231,7 +231,7 @@ Event server baru, ditulis di `submitScenario()` saat skenario tertutup tanpa ti
 ### 5.7 Simulasi dan pemeriksaan konten
 
 - `Simulator` (`app/Libraries/Simulation/Simulator.php`, cabang engine sekitar baris 444) mendapat cabang `skenario`: memilih ref tindakan dan alasan dari payload menurut profil siswa simulasi, lalu memanggil `submitAnswer()`. Siswa `sim_*` tetap hanya untuk pengembangan.
-- `ContentImportService` mengimpor sheet `scenarios` dan `scenario_options` ke bentuk §5.1 (rinciannya milik bagian 5). `ContentVerifier` melaporkan skenario tanpa rekaman situasi sebagai **peringatan**, bukan galat, karena situasi tetap terbaca tanpa suara.
+- `ContentImportService::writeScenarios()` (bagian 5, 31 §7.1) mengimpor sheet `scenarios` dan `scenario_options`. `ContentVerifier` melaporkan skenario tanpa rekaman situasi sebagai **peringatan**, bukan galat, karena situasi tetap terbaca tanpa suara.
 - `Admin\ContentController` (peta engine → jenis butir, baris 37) mendapat `'skenario' => ['scenario_choice']`; halaman butir menampilkan tindakan, skor, kode, alasan, dan umpan balik sebagai tabel baca (`content.view`) dan sunting (`content.edit`).
 
 ---
@@ -371,12 +371,12 @@ Sekarang tidak ada narasi instruksi. Kartu misi memutar `challenge_nodes.audio_i
 | --- | --- | --- | --- |
 | `layar-{wilayah}-NN` | `dialogues` konteks `scenario_open` | `dialogues` audio (seperti `dialog-`) | Jaka, Mbah Kedu |
 | `skenario-{kode butir}` | `challenge_items.prompt_*` butir `scenario_choice` | `audio_prompt_id`/`audio_prompt_en_id` | Narator |
-| `unggahan-{kode butir}` | `prompt_*` butir petunjuk *Periksa Unggahan* | `audio_prompt_id`/`audio_prompt_en_id` | Mbah Kedu |
+| `unggahan-{kode butir}` | `prompt_*` butir petunjuk *Periksa Unggahan* (`find_part`, `round` 2) | `audio_prompt_id`/`audio_prompt_en_id` | Mbah Kedu |
 | `instruksi-{tantangan}` | `challenge_nodes.instruction_*` | `audio_instruction_id`/`audio_instruction_en_id` | Narator |
 
 - `PREFIXES` (baris 76–85) mendapat `'scenario_open' => 'layar'`.
 - Berkas butir memakai **kode butir**, bukan nomor urut, supaya variasi a dan b tidak tertukar (12).
-- Nomor `petunjuk-{tantangan}-NN` dihitung hanya dari butir Temukan Benda (`x01`–`x04`), bukan semua butir `find_object` di node. Kalau tidak, rekaman Mbah Kedu bisa terpasang ke butir *Periksa Unggahan*. Pemisahan babak milik bagian 5; importer membaca penanda babaknya (`config_json.round`).
+- Nomor `petunjuk-{tantangan}-NN` dihitung hanya dari butir Temukan Benda (`x01`–`x04`), bukan semua butir `find_object` di node. Kalau tidak, rekaman Mbah Kedu bisa terpasang ke butir *Periksa Unggahan*. Pemisahan babak milik bagian 5; importer membaca kolom `challenge_items.round` (31 §15) dan jenis butir (`find_object` babak 1, `find_part` babak 2).
 
 ### 9.4 Arahan suara
 
@@ -409,7 +409,7 @@ Satu migrasi, `2026-01-01-004000_AddScenarioEngineColumns` (nomor sementara, K14
 
 | Tabel | Perubahan |
 | --- | --- |
-| `item_tries` | Kolom baru `action_key` VARCHAR(20) null, `action_score` TINYINT UNSIGNED null, `reason_key` VARCHAR(20) null, `reason_code` VARCHAR(20) null, `reason_ready_ms` INT UNSIGNED null. Indeks `(reason_code)` |
+| `item_tries` | Kolom baru `action_key` VARCHAR(10) null, `action_score` TINYINT UNSIGNED null, `reason_key` VARCHAR(10) null, `reason_code` VARCHAR(12) null (panjang sama dengan `scenario_options.option_key` dan `code` di 31 §15), `reason_ready_ms` INT UNSIGNED null. Indeks `(reason_code)` |
 | `challenge_nodes` | Kolom baru `audio_instruction_id`, `audio_instruction_en_id` (rujukan `audio_assets`, `ON DELETE SET NULL`), seperti `audio_intro_*` di `2026-01-01-001100_CreateChallengeNodes` baris 30–31, 49–50 |
 
 Yang **tidak** perlu kolom baru:
@@ -469,7 +469,7 @@ Teks yang menyebut jumlah serpihan ("12 serpihan", "dua belas") dicari di `app/L
 
 | Perubahan | Yang disediakan bagian ini | Yang dirancang di sana |
 | --- | --- | --- |
-| Bagian 5 (`31`): no. 1, 3, 4, 8, 17, 20 | Bentuk butir `scenario_choice` di database (§5.1), engine dan payload | Sheet `scenarios` dan `scenario_options`, impor, `BankRules::ENGINES` (lima tantangan), `DifficultyRules` (3/4/4 tindakan, 3/4/5 alasan), kolom `item_tries.error_code`, variasi dari buklet, babak Cari Objek (`config_json.round`), label AKM dan dimensi |
+| Bagian 5 ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md)): no. 1, 3, 4, 8, 17, 20 | Engine, payload, dan penilaian skenario; `BankRules::ENGINES[5]`; `reason_code` dan skor di `item_tries`; kalimat tanya alasan di berkas bahasa; tombol ▶ petunjuk babak 2 | Sheet dan tabel `scenario_options`, kolom `d2_topic` dan `explanation_*`, impor (`writeScenarios()`), aturan bank skenario, `ErrorCodeResolver`, `item_tries.error_code`, variasi dari buklet, babak Cari Objek (`round`, `find_part`), label AKM dan dimensi |
 | Bagian 2 ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md)) | Gerbang `scenarioGate()` memakai kemajuan per siswa | `participant_progress`, `ChallengeAttemptModel::completedForParticipant()`, wilayah per pertemuan |
 | Bagian 3 ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md)) | `reason_ready_ms`, `scenario_failed`, kolom lembar `percobaan` dan `bantuan` | `item_tries.ready_ms`, `EventCatalog`, `dialogue_completed`, lembar unduhan, kunci jawaban |
 | Bagian 7 (`33`): no. 5, 16, 19 | Engine tanpa jam (memakai sakelar jam bagian 7) | Jam disembunyikan, pengerjaan ulang setelah kelima tantangan tuntas, waktu aktif dari selang narasi |
@@ -566,7 +566,7 @@ Untuk sesi koordinator berikutnya; dokumen lain tidak diubah di cabang ini.
 4. **[12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) → Yang dibacakan:** baris instruksi menjadi "Ya, hanya lewat tombol ▶"; *Yang perlu disiapkan di tahap 3* no. 1–4 merujuk §7.2, §8.3, dan §9.3.
 5. **[18](18_MOCKUP_LAYAR_BARU.md):** mock-up tantangan perlu tombol ▶ instruksi (layar `mk-sd-*`, `mk-pu-*`), bila ahli media menilainya; tidak mengubah keputusan yang sudah ada.
 6. **[29](29_IMPLEMENTASI_DATA_PENELITIAN.md):** katalog event mendapat `scenario_failed` (riset, hanya server); §6.1 baris Skenario Digital merujuk §6.4 dokumen ini; lembar `percobaan` dan `bantuan` mendapat kolom §10.
-7. **`31` (bagian 5):** butir `scenario_choice` mengikuti bentuk §5.1 (`config_json.actions`/`reasons` dengan kunci tetap; skor, kode, umpan balik, dan penjelasan di `answer_key_json`); penanda babak Cari Objek di `config_json.round` dibaca importer narasi.
+7. **[31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) (bagian 5):** tidak ada perubahan; 32 mengikuti format data skenario 31 (§5.1) setelah 31 digabung. Catatan saja: 31 §8.2 menulis `5 => '{engine skenario}'`, yang kini bernama `skenario` (K1).
 8. **`33` (bagian 7):** sakelar jam berlaku juga untuk engine `skenario`; aturan pengerjaan ulang berlaku juga untuk tantangan kelima.
 9. **`35` (bagian 9):** turunan `action_reason_pattern`, `skipped_failed_count` dari `scenario_failed`, `instruction_replays`, `item_narration_before` dari §10.
 10. **[06](06_KISI_KISI_BANK_SOAL.md) → Yang perlu disiapkan sistem nanti** no. 1: "pilihan diacak per pengerjaan" diperjelas "sekali per pengerjaan, tetap di ketiga kesempatan".

@@ -6,6 +6,19 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 2 November 2026
 
+**32 diselaraskan dengan format data skenario bagian 5** (cabang `r10-dok-32-skenario-digital`, setelah PR #317) · `asal: pengembang` (penyelarasan berbantuan AI) · status 32 tetap `draf pengembang` · tidak merevisi produk
+
+PR #317 digabung sebelum penyelarasan ini masuk. [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) (PR #314) menetapkan bahwa data skenario milik bagian 5. 32 kini membacanya dari sana, tanpa keputusan baru:
+- pilihan, skor, kode, dan umpan balik dari tabel `scenario_options`, bukan `config_json`/`answer_key_json`;
+- `d2_topic` dan `explanation_*` dari `challenge_items`;
+- kode tindakan lewat `ErrorCodeResolver`;
+- babak *Periksa Unggahan* dari `round` dan `find_part`;
+- panjang kolom kode di `item_tries` sama dengan 31.
+
+32 menambah `BankRules::ENGINES[5] = 'skenario'`, yang di 31 §8.2 masih tertulis `{engine skenario}`. Nomor migrasi 32 (`004000`) tidak bertabrakan dengan 31 (`0039xx`), 33 (`0041xx`), atau 35 (`0043xx`).
+
+Diubah: 32, 04, PDF siap cetak 04 dan 32.
+
 **22 dicek kemutakhirannya dan siap diserahkan ke peneliti sebagai PDF** (gelombang A, cabang `r10-cek-22`, 1–2 November 2026) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 22 tetap draf · tidak merevisi produk
 
 [22](22_PERMOHONAN_IZIN_ETIK.md) dicek terhadap entri 04 sesudah *commit* terakhirnya (cek pasal PP 33/2026), terutama *Pembagian kerja baru* di bawah, terhadap 23, 24, 26, 30, 03, dan 01, dan terhadap kode. Tidak ada keputusan baru; yang diubah hanya yang sudah diputuskan. Nomor pasal PP No. 33 Tahun 2026 dan pemetaan formulir BRIN tidak disentuh.
