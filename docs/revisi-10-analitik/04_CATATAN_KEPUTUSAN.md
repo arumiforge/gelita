@@ -4,6 +4,31 @@ Per 1 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
 
+## 2 November 2026
+
+**29 dicek kemutakhirannya dan disetujui pengembang** (cabang `r10-cek-29`, gelombang A sesi 5) · `asal: pengembang` (pemeriksaan berbantuan AI, delapan keputusan pengembang) · `disetujui pengembang` · tidak merevisi produk
+
+[29](29_IMPLEMENTASI_DATA_PENELITIAN.md) (bagian 3: pembersihan log, halaman log teknis admin, data mentah baru untuk kamus, unduhan `ketua` dengan lembar *Kamus Data* berversi, templat dan impor L1–L6) dicek terhadap entri 04 sesudah 30 Oktober 2026, terhadap 11, 26, 27, 28, dan 30, dan terhadap kode (`app/` dan `public/assets/js/` tidak berubah sejak 26 Oktober 2026).
+
+- **Aturan baru:** kotak status tidak lagi menulis "diubah di tahap 3, setelah gerbang G2"; kini dibangun di gelombang kode E, perilaku penelitian di balik `field_mode`, tidak dipakai dengan anak sebelum persetujuan etik, versi dikunci di G4, instalasi uji validator tetap di *commit* beku 20.
+- **Migrasi `003600` menghapus data:** ditulis di kotak status, §0, dan §5.8 bahwa di server produksi migrasi itu hanya dijalankan bila pengembang memutuskannya. Urutan `003600`/`003700` cocok dengan 27 §6.1.
+- **Temuan kode:** `dialogue_advanced` tetap benar (daftar berkas yang hanya berubah komentarnya dilengkapi). `audio_pause` tetap benar, tetapi satu celah dicoret: saat narasi lain mulai, `stopAllNarration()` memanggil `pause()` pemutar lain, jadi lama mendengarnya sudah terkirim; yang tersisa hanya pemutaran diulang dan halaman ditinggal. Nomor baris yang meleset dibetulkan; `ExportService::ADMIN_ONLY_SHEETS` dan `Simulator` baris 467 ditambah.
+- **Diselaraskan tanpa keputusan baru:** "uji coba" menjadi KG3a dan KG3b; salinan untuk orang tua (putaran kedua, 30 no. 6) disebut sebagai jalur terpisah dari lembar `risiko_gabungan`.
+
+Dua putaran tanya, delapan pertanyaan; pengembang memilih usulan di semuanya ([29 §19](29_IMPLEMENTASI_DATA_PENELITIAN.md#19-keputusan-pengembang) no. 5–12):
+1. Penghapusan tetap di migrasi `003600` (K3), tidak dipisah menjadi perintah, karena `003400` sudah menahan server produksi. Tidak dipilih: migrasi hanya menambah kolom, penghapusan lewat perintah spark.
+2. Situs statis memakai `kolom.json`; dicocokkan sekali sebelum KG3a bila dibuat di luar repo. Tidak dipilih: situs statis dihapus.
+3. Pemeriksaan nama cukup untuk siswa rombel itu, ditambah aturan menulis dan pelatihan. Tidak dipilih: daftar kata tambahan.
+4. `is_touch` tetap untuk admin; kembali lewat `kamus-1.1` bila peneliti memintanya. Tidak dipilih: lembar peneliti sejak awal.
+5. Batas `empty_tap` tetap 30, angka konfigurasi yang dicek di KG3a dan KG3b. Tidak dipilih: tanpa batas.
+6. Tanpa arsip data lama sebelum `003600` di server produksi (belum ada data studi). Tidak dipilih: salinan database dulu.
+7. Unduhan selalu terikat satu studi (K16 baru), juga saat mode penelitian mati. Tidak dipilih: hanya dalam mode penelitian.
+8. Versi kamus dan spesifikasi lembar dikunci di G4 (K17 baru). Tidak dipilih: kamus boleh naik versi selama KG5.
+
+*Akibat ke dokumen lain* mendapat baris untuk 11 (`kamus-1.1` dikunci di G4), 02 (situs statis, spesifikasi dikunci), 27 (unduhan memerlukan studi), dan 35 (gelombang B sesi 9: data mentah §6, `ResearchDictionary::VERSION`, `field_sheet_rows`, waktu terkoreksi, satu studi), untuk sesi koordinator berikutnya.
+
+Diubah: 29, 00 (dua baris 29), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 29.
+
 ## 1 November 2026
 
 **Pembagian kerja baru: peneliti menangani validasi dan izin etik, pengembang menyerahkan berkas awal lalu mengimplementasikan** (cabang `sky/sweet-allen-0md2pw`) · `asal: peneliti` (pembagian kerja, disampaikan lewat pengembang) dan `asal: pengembang` (empat keputusan lanjutan) · `disetujui pengembang` · merevisi rencana kerja, belum merevisi produk
