@@ -1,8 +1,8 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "bf874fa6cf4aeb2f761e5e4bb935bb62a217ffae480d00cd49633cd0f2ec53d4",
-      "commit": "cce99d0",
+      "source": "1c47026513d393abefd634edd5cfb3cb73a7ce5c08841c927d00d0f66ea0e344",
+      "commit": "1388b56",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 14,
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "6b2be544e488d240e3cd45a8c6c199b1ed949c5de7b3d248291eaedb4c1cf39e",
-      "commit": "e92f1da",
+      "source": "b20c6b36a23daf2f5ba31b49045a014cfa9f629cb2b2e00e0345505d65b32be2",
+      "commit": "1388b56",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 54,
+      "pages": 56,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -233,24 +233,24 @@
       "landscapeTables": 0
     },
     "29_IMPLEMENTASI_DATA_PENELITIAN.md": {
-      "source": "b73d0b8170e227815fcc31a9c8f0b1db93dd97db9465eb7432f071467a0db03f",
-      "commit": "a537f88",
+      "source": "50a27b65e66f9f5c7c94d0870d56043bc1899239613479ae5852d95130fb438b",
+      "commit": "5e8839f",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-30",
-      "pages": 24,
+      "date": "2026-11-02",
+      "pages": 27,
       "landscapeTables": 0
     },
     "30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md": {
-      "source": "738285ed2efe930259b0698f0d18841fe73d581b414309e64d26279c9e112917",
-      "commit": "8b46ca2",
+      "source": "44a18c80bc396c47e6b4c4331eb84d22a366746cecb09ec8e66d2e746debffaa",
+      "commit": "11181e4",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
-      "pages": 25,
+      "date": "2026-11-02",
+      "pages": 28,
       "landscapeTables": 0
     },
-    "35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md": {
-      "source": "974cc37ef2285deb415a0ac29b398bd7dadb4004ab543a60bfd910d8d07aa0e2",
-      "commit": "3a294a4",
+    "31_IMPLEMENTASI_BANK_SOAL_BARU.md": {
+      "source": "bd6c06d948b2676893c36133cc91f4ff6f7dfbb427380625dd393baadb47014e",
+      "commit": "379e336",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 20,

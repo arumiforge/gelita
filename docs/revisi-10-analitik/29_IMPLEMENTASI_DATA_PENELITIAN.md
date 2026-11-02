@@ -1,10 +1,12 @@
 # Dokumen Implementasi Bagian 3 — Pembersihan Log, Unduhan Data Penelitian, Kamus Data, dan Lembar Lapangan
 
-Per 30 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 7, 14, dan 15 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
+Per 2 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 7, 14, dan 15 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
 
-> **Status: `draf pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 30 Oktober 2026). Ini dokumen, bukan perubahan sistem. Kode, migrasi, dan instalasi baru diubah di tahap 3, setelah gerbang G2 dan setelah dokumen implementasi lengkap disetujui ([04](04_CATATAN_KEPUTUSAN.md), entri 30 Oktober 2026).
+> **Status: `disetujui pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 30 Oktober 2026; dicek kemutakhirannya dan ditinjau pengembang 2 November 2026, [§19](#19-keputusan-pengembang) no. 5–12). Ini dokumen, bukan perubahan sistem.
 >
-> Draf ini boleh naik sampai `disetujui pengembang`. Sebelum dokumen implementasi lengkap disetujui, isinya dicek ulang sekali terhadap matriks revisi induk ([20](20_PAKET_VALIDASI.md)) dan keputusan komite etik.
+> **Kapan dibangun** (aturan baru, [04](04_CATATAN_KEPUTUSAN.md), 1 November 2026, menggantikan "diubah di tahap 3, setelah G2"): kode bagian ini dibangun sekarang di gelombang kode E, setelah bagian 1 dan 2, di cabang pendek dari `main`. Perilaku penelitian ada di balik sakelar studi yang mati secara bawaan (`field_mode`, [28 §5.1](28_IMPLEMENTASI_SESI_LAPANGAN.md#51-sakelar-field_mode)), jadi `main` tetap bisa dirilis. Sistem baru tidak dipakai dengan anak sebelum persetujuan etik terbit; G3 tetap dinilai setelah G2, dan versi dikunci di G4. Instalasi uji validator tetap memakai *commit* yang dibekukan di [20](20_PAKET_VALIDASI.md) prasyarat no. 4. Pengerjaan ulang setelah hasil validasi (matriks revisi induk di 20, keputusan komite etik) diterima.
+>
+> **Migrasi `003600` menghapus data secara permanen** ([§5.8](#58-data-yang-sudah-tersimpan)). Migrasi ini, seperti `003400` dari bagian 1, baru dijalankan di server produksi bila pengembang memutuskannya.
 >
 > **Bagian 3 dari 4.** Bagian ini memakai peran dan peta kemampuan dari [27](27_IMPLEMENTASI_PERAN_PENELITI.md) (`research.export`, `tech_logs.view`, `field_sessions.manage`), serta sesi lapangan, kode peserta, dan kemajuan per siswa dari [28](28_IMPLEMENTASI_SESI_LAPANGAN.md). Bagian 4 (`30`) memakai riwayat unduhan dan tabel lembar lapangan dari sini untuk penghapusan dan permintaan orang tua.
 
@@ -56,12 +58,12 @@ Lapis data turunan (no. 9), tantangan Skenario Digital (no. 2), waktu aktif (no.
 **Saat implementasi:**
 - Satu cabang pendek dari `main`, commit berbahasa Inggris.
 - `vendor/bin/phpunit --no-coverage` hijau sebelum push.
-- Jangan menjalankan migrasi, `gelita:reset`, atau skrip rilis di server produksi. Migrasi bagian ini menghapus data secara permanen ([§5.8](#58-data-yang-sudah-tersimpan)), jadi pengembang menjalankannya sendiri, setelah `gelita:log:hitung`.
+- Jangan menjalankan migrasi, `gelita:reset`, atau skrip rilis di server produksi. Migrasi `003600` menghapus data secara permanen ([§5.8](#58-data-yang-sudah-tersimpan)): di server produksi migrasi ini hanya dijalankan bila pengembang memutuskannya, oleh pengembang sendiri, setelah `gelita:log:hitung`.
 - Setiap tulisan yang bisa bersaing (penandaan sesi diam, impor yang menggantikan impor lama) memakai UPDATE bersyarat, bukan `SELECT … FOR UPDATE` (aturan kerja repo, bagian *Concurrency*).
 
 **Istilah.** *Sesi game* di dokumen ini adalah satu baris `game_sessions`, yang di panel dan di 27 disebut *sesi bermain* (glosarium: `game session`). *Sesi lapangan* adalah `field_sessions` dari bagian 2.
 
-**Rujukan kode.** Ditulis per berkas dan metode, dengan nomor baris per 30 Oktober 2026. Nomor baris bisa bergeser.
+**Rujukan kode.** Ditulis per berkas dan metode, dengan nomor baris per 30 Oktober 2026, dicek ulang 2 November 2026 (kode `app/` dan `public/assets/js/` tidak berubah sejak 26 Oktober 2026; nomor yang meleset dibetulkan). Nomor baris bisa bergeser.
 
 ---
 
@@ -88,7 +90,7 @@ Lapis data turunan (no. 9), tantangan Skenario Digital (no. 2), waktu aktif (no.
 
 ## 2. Keputusan yang dikunci
 
-K1–K4 diputuskan pengembang ([§19](#19-keputusan-pengembang)). K9 menurunkan penilaian dampak yang sudah disetujui pengembang (26). K5, K6, dan K7 berasal dari pencarian kode dan dicatat di [04](04_CATATAN_KEPUTUSAN.md) untuk ditinjau. Sisanya menurunkan 01, 02, 11, 27, dan 28.
+K1–K4, K16, dan K17 diputuskan pengembang ([§19](#19-keputusan-pengembang)). K9 menurunkan penilaian dampak yang sudah disetujui pengembang (26). K5, K6, dan K7 berasal dari pencarian kode dan dicatat di [04](04_CATATAN_KEPUTUSAN.md) untuk ditinjau. Sisanya menurunkan 01, 02, 11, 27, dan 28.
 
 | Kode | Keputusan |
 | --- | --- |
@@ -107,6 +109,8 @@ K1–K4 diputuskan pengembang ([§19](#19-keputusan-pengembang)). K9 menurunkan 
 | K13 | **Impor memeriksa nama.** Isian teks yang memuat kata yang sama dengan nama siswa rombel itu memberi peringatan per baris dan kolom, tanpa menampilkan namanya. Pengunggah memeriksa lalu mencentang konfirmasi sebelum menyimpan. |
 | K14 | **`markStale()` menulis `session_paused` dengan `via: idle`**, satu per sesi game yang benar-benar diubahnya. |
 | K15 | **Halaman *Log teknis* baru untuk admin** (`/admin/log-teknis`, kemampuan `tech_logs.view`): perangkat, event teknis, kolom teknis sesi, dan waktu mentah. Tanpa jawaban, skor, atau event penelitian. |
+| K16 | **Unduhan selalu terikat satu studi** (`study_id` wajib), mode penelitian menyala atau mati. Satu baris `research_studies` per uji (KG3a, KG3b, KG5; [04](04_CATATAN_KEPUTUSAN.md), 1 November 2026), jadi data uji coba dan data utama tidak pernah ada di satu berkas ([§7.1](#71-siapa-cakupan-dan-format)). |
+| K17 | **Versi kamus dan spesifikasi lembar dikunci di G4**, bersama versi game. `kamus-1.1` dan `lembar-*` selesai sebelum G4; selama KG5 keduanya tidak berubah ([§8](#8-lembar-kamus-data-dan-dictionary_version), [§10.1](#101-satu-sumber-kolom-tabel-bertanda-di-02)). |
 
 ---
 
@@ -128,7 +132,7 @@ K1–K4 diputuskan pengembang ([§19](#19-keputusan-pengembang)). K9 menurunkan 
 
 ## 4. Katalog event
 
-Kelas baru `App\Libraries\EventCatalog` menggantikan daftar `Config\Gelita::$eventTypes` (`app/Config/Gelita.php:96-112`) dan dua daftar di `RawDataService` (`NAVIGATION_EVENTS`, `COMPLETION_EVENTS`, baris 80–95). Setiap jenis event punya satu pemilik.
+Kelas baru `App\Libraries\EventCatalog` menggantikan daftar `Config\Gelita::$eventTypes` (`app/Config/Gelita.php:96-112`) dan dua daftar di `RawDataService` (`NAVIGATION_EVENTS`, `COMPLETION_EVENTS`, baris 86–95). Setiap jenis event punya satu pemilik.
 
 | Event | Pemilik | Ditulis | Dipakai |
 | --- | --- | --- | --- |
@@ -166,7 +170,7 @@ public static function isAdmin(string $type): bool;
 
 - `EventService::SERVER_ONLY` pindah ke katalog; `EventService` membacanya dari sana.
 - Kiriman klien lama yang masih membawa jenis yang dihapus (antrean perangkat sebelum pembaruan) ditolak dengan alasan `event_type_unknown`, seperti jenis tak dikenal sekarang. Penolakan ini tidak dihitung sebagai `events_dropped`.
-- `Admin.php` (label jenis event, baris 360 dan sekitarnya) mengikuti katalog: label jenis yang dihapus dibuang, label tiga jenis baru ditambah.
+- `Admin.php` (label jenis event, baris 360–380: `dialogue_advanced` 360, `answer_selected` 368, `audio_pause` 380) mengikuti katalog: label jenis yang dihapus dibuang, label tiga jenis baru ditambah.
 
 ---
 
@@ -183,7 +187,7 @@ public static function isAdmin(string $type): bool;
 
 Hitungan perubahan jawaban per butir tetap ada di `item_responses.change_count` dan `challenge_attempts.answer_change_count` (01: "cukup hitungan perubahan per butir").
 
-`Simulation\Simulator` (baris 36 dan 995–1010) berhenti membuat `answer_selected` dan `dialogue_advanced`. Simulator membuat `dialogue_completed` di slide terakhir.
+`Simulation\Simulator` (baris 36, 467 untuk `answer_selected`, dan 995–1010) berhenti membuat `answer_selected` dan `dialogue_advanced`. Simulator membuat `dialogue_completed` di slide terakhir.
 
 ### 5.2 `answer_changed` digabung ke `answer_submitted`
 
@@ -199,22 +203,24 @@ Temuan kode: lencana "Belum didengar" di peta wilayah dihitung dari `dialogue_ad
 
 Sesudah (K5):
 - **Event baru `dialogue_completed`**, dikirim klien **sekali** saat slide terakhir sebuah cerita tercapai. Payload: `context` (kode konteks dialog, misalnya `region_intro`, `ending`, `map_done`) dan `total` (banyak slide). `level_id` diisi bila ceritanya milik satu wilayah.
-- Pengirimnya satu tempat, `game/narrator.js`, yang sekarang mengirim `dialogue_advanced` di setiap perpindahan slide. `dialogue.js`, `intro.js`, dan `map.js` hanya diperbarui komentarnya.
+- Pengirimnya satu tempat, `game/narrator.js` (baris 104), yang sekarang mengirim `dialogue_advanced` di setiap perpindahan slide. Yang hanya diperbarui komentar atau labelnya (dicek 2 November 2026): `game/dialogue.js`, `game/intro.js`, `game/map.js`, `core/events.js` (baris 19), `core/curtain.js` (baris 353), `Game\DialogueController`, `Game\MapController` (baris 87), `partials/dialogue-scene.php`, `game/ending.php`, dan deskripsi `event_type` di `ExportLabels` (baris 200).
 - `heardRegionIntros()` membaca `dialogue_completed` dengan `context = region_intro`. `reachedLastSlide()` dihapus, karena event baru sudah berarti "sampai slide terakhir".
 - Kembali ke slide sebelumnya atau membuka cerita lagi tidak mengirim apa pun sampai slide terakhir tercapai lagi. Membuka cerita yang sama sampai akhir dua kali menghasilkan dua event; analitik 8 boleh menghitungnya.
 - Migrasi membuat satu `dialogue_completed` untuk setiap pasangan sesi game, konteks, dan wilayah yang pernah mencapai slide terakhir, sebelum menghapus `dialogue_advanced` ([§5.8](#58-data-yang-sudah-tersimpan)).
 
 ### 5.4 `audio_pause` dan lama mendengar
 
-Temuan kode: lama mendengar pemutaran yang belum selesai hanya terkirim lewat aksi `pause` (`core/audio.js:413-419`). Pemutaran yang selesai mengirim `complete`. Pemutaran yang dihentikan tanpa jeda, misalnya karena diulang (`restart()`, baris 426–436, mengosongkan `listenedMs` sebelum terkirim), karena narasi lain mulai, atau karena halaman ditinggal, tidak mengirim lama mendengarnya sama sekali. Alasan di 01 ("lama mendengar sudah tercatat di `listened_ms`") hanya benar kalau baris `pause` tetap ada.
+Temuan kode: lama mendengar pemutaran yang belum selesai hanya terkirim lewat aksi `pause` (`core/audio.js:414-419`). Pemutaran yang selesai mengirim `complete`. Pemutaran yang dihentikan tanpa jeda, yaitu karena diulang (`restart()`, baris 427–437, mengosongkan `listenedMs` sebelum terkirim) atau karena halaman ditinggal, tidak mengirim lama mendengarnya sama sekali. Alasan di 01 ("lama mendengar sudah tercatat di `listened_ms`") hanya benar kalau baris `pause` tetap ada.
+
+Dibetulkan 2 November 2026: saat narasi lain mulai, `stopAllNarration()` (baris 228–232) memanggil `pause()` pada pemutar lain, jadi lama mendengarnya **sudah** terkirim. Draf 30 Oktober 2026 keliru memasukkannya ke celah. Temuan dan K6 tetap berlaku.
 
 Sesudah (K6):
-- `EventService::AUDIO_EVENT_TYPES` tidak lagi memetakan `pause` ke event mentah. Aksi `pause` tetap menulis baris `audio_usage_events` dengan `listened_ms`, tanpa baris `game_event_logs`.
+- `EventService::AUDIO_EVENT_TYPES` (baris 35–38) tidak lagi memetakan `pause` ke event mentah. Aksi `pause` tetap menulis baris `audio_usage_events` dengan `listened_ms`, tanpa baris `game_event_logs`.
 - `audio_usage_events.action` tetap memakai lima nilai yang tersimpan sekarang; tidak ada nilai baru.
 - Klien mengirim `pause` dengan lama mendengar yang sudah terkumpul juga saat:
   - pemutaran diulang, sebelum `listenedMs` dikosongkan;
-  - narasi lain mulai (`stopAllNarration()`);
-  - halaman disembunyikan atau ditinggal (`pagehide`), lewat antrean yang sama.
+  - halaman disembunyikan atau ditinggal (`pagehide`), lewat antrean yang sama (`core/events.js:413` sudah mengirim antrean di `pagehide`).
+- Narasi lain mulai: tidak perlu diubah (lihat di atas).
 - Lembar unduhan `bantuan` menampilkan **satu baris per pemutaran** (`play_index`): aksi pembuka (`play`, `autoplay`, `replay`), `listened_ms` terbesar, dan `completed`. Baris `pause` tidak tampil sendiri.
 - Perubahan no. 5 (waktu aktif) membutuhkan selang narasi diputar. Baris `audio_usage_events` itu sumbernya; rancangannya di sana.
 
@@ -282,6 +288,8 @@ Dua pemanggil bersamaan tidak menulis event ganda, karena hanya satu yang mengub
 
 Pengembang mencatat angkanya, lalu menjalankan migrasi.
 
+**Server produksi.** Migrasi ini menghapus data secara permanen dan tidak bisa dibatalkan. Di server produksi migrasi ini **hanya dijalankan bila pengembang memutuskannya** ([04](04_CATATAN_KEPUTUSAN.md), 1 November 2026), sama dengan `003400`. Karena `003400` ada lebih dulu di urutan migrasi, server produksi memang tidak bisa menerima kode bagian 2–4 tanpa keputusan itu; penghapusan tetap di migrasi, tidak dipisah menjadi perintah sendiri ([§19](#19-keputusan-pengembang) no. 5). Arsip di luar sistem sebelum migrasi tidak dibuat: server produksi belum memuat data studi, karena belum ada kegiatan dengan anak sebelum persetujuan etik (no. 10). Jumlahnya tercatat lewat `gelita:log:hitung` dan baris audit.
+
 **Migrasi `2026-01-01-003600_CleanResearchLogs`** (K3), dalam potongan 2.000 baris per id supaya tabel tidak terkunci lama:
 1. Buat `dialogue_completed` dari `dialogue_advanced` yang mencapai slide terakhir: satu baris per sesi game, `context`, dan `level_id`. `occurred_at` dan `sequence_no` dari baris slide terakhir yang pertama, `client_event_id` = `mig-dc-{session_id}-{context}-{level_id}`, payload `{context, total, via: 'migration'}`.
 2. Ganti `answer_changed` menjadi `answer_submitted` dan tambahkan `changed: true` ke payload. Payload diubah di PHP, bukan dengan fungsi JSON SQL, supaya sama di MariaDB dan SQLite.
@@ -333,7 +341,7 @@ Yang **tidak** dilakukan klien:
 
 Jarak ke bagian ketuk kunci petunjuk aktif (24 dp) dihitung lapis turunan dari data adegan di bank (`near_miss_count`, `empty_tap_count`). Ini tafsiran kalimat 11 "dicatat dengan jaraknya": yang dicatat koordinatnya, jaraknya diturunkan.
 
-Batas: paling banyak 30 `empty_tap` per petunjuk per pengerjaan dikirim; selebihnya dihitung di klien dan dikirim sebagai satu `empty_tap` dengan `overflow` = banyaknya. Ini mencegah antrean penuh karena anak mengetuk berulang-ulang.
+Batas: paling banyak 30 `empty_tap` per petunjuk per pengerjaan dikirim (angka di konfigurasi, dicek di KG3a dan KG3b dan ditetapkan sebelum versi dikunci di G4; [§19](#19-keputusan-pengembang) no. 9); selebihnya dihitung di klien dan dikirim sebagai satu `empty_tap` dengan `overflow` = banyaknya. Ini mencegah antrean penuh karena anak mengetuk berulang-ulang.
 
 ### 6.3 Membuka lagi bacaan (`passage_reopened`)
 
@@ -364,7 +372,7 @@ Isi Rumpang menampilkan bacaannya terus di layar, jadi tidak mengirim event ini.
 - **Hanya `ketua`** (`research.export`, 27 K14), selalu berkode, dengan cakupan `StaffScope::research()`.
 - **Format** tetap XLSX dan CSV-ZIP, berlabel atau berkode, dengan filter studi, wilayah, tantangan, sekolah, bahasa, dan tanggal (`ExportService::FILTER_KEYS`). Filter `province_code` dibuang, karena provinsi adalah data admin.
 - **Filter baru:** `field_session_code` dan `meeting_no` (28).
-- **Studi.** Unduhan dalam mode penelitian selalu terikat satu studi (`study_id` wajib). Data akun uji `uji.*` dan simulasi `sim_*` tidak pernah ikut (sekolah `V01` dan nama pengguna berawalan `sim_` dikeluarkan di `research()`).
+- **Studi (K16).** Unduhan selalu terikat satu studi (`study_id` wajib), mode penelitian menyala atau mati. Setiap uji punya baris `research_studies` sendiri (uji kelompok kecil KG3a, uji kelompok menengah KG3b, pengambilan data utama KG5), jadi data uji coba di sekolah `U` dan data utama tidak pernah ada di satu berkas. Bila belum ada studi, halaman unduh menampilkan pesan untuk membuat studi dulu (`exportNeedsStudy`, [§14](#14-teks-panel)). Data akun uji `uji.*` dan simulasi `sim_*` tidak pernah ikut (sekolah `V01` dan nama pengguna berawalan `sim_` dikeluarkan di `research()`).
 
 ### 7.2 Lembar
 
@@ -391,7 +399,7 @@ Lembar dari perubahan lain ditambahkan ke daftar yang sama nanti: data turunan (
 
 ### 7.3 Kolom yang berubah per lembar
 
-Hanya yang berubah. Kolom lain tetap seperti `RawDataService::COLUMNS` (baris 101–243).
+Hanya yang berubah. Kolom lain tetap seperti `RawDataService::COLUMNS` (baris 107–240).
 
 | Lembar | Keluar | Masuk |
 | --- | --- | --- |
@@ -419,16 +427,16 @@ Hanya yang berubah. Kolom lain tetap seperti `RawDataService::COLUMNS` (baris 10
 
 ### 7.5 Lembar `event` dan kunci jawaban
 
-**Lembar `event` (K1).** Sekarang lembar ini hanya untuk admin (`RawDataService::ADMIN_ONLY_DIMENSIONS`, baris 63). Sesudah bagian 1, admin tidak melihat data penelitian, jadi lembar ini pindah ke `ketua`:
+**Lembar `event` (K1).** Sekarang lembar ini hanya untuk admin (`RawDataService::ADMIN_ONLY_DIMENSIONS`, baris 67; `ExportService::ADMIN_ONLY_SHEETS`, baris 33, membacanya). Sesudah bagian 1, admin tidak melihat data penelitian, jadi lembar ini pindah ke `ketua`:
 - hanya jenis bertanda Peneliti di katalog ([§4](#4-katalog-event));
 - id internal diganti kode: `session_code`, `participant_code`, `field_session_code`, `level` (kode wilayah), `node_ref`, `item_key`; `attempt_id` tetap;
 - `event_uuid` dan `client_event_id` tidak ikut, karena hanya untuk mencegah event ganda;
 - `payload` tetap utuh. Payload event peneliti tidak memuat data perangkat atau identitas (dicek di [§16](#16-pengujian-dan-kriteria-selesai));
 - baris yang sudah dihapus lewat permintaan hapus data (`deleted_at` terisi) tidak pernah ikut, seperti sekarang.
 
-`ADMIN_ONLY_DIMENSIONS` dihapus. Admin tidak punya dimensi data mentah lagi; log teknisnya di [§5.6](#56-data-bertanda-admin-dan-halaman-log-teknis).
+`ADMIN_ONLY_DIMENSIONS` dan `ADMIN_ONLY_SHEETS` dihapus. Admin tidak punya dimensi data mentah lagi; log teknisnya di [§5.6](#56-data-bertanda-admin-dan-halaman-log-teknis).
 
-**Kunci jawaban (K1).** `answer_key` ada di lembar `butir` dan `jawaban` untuk `ketua`, juga di layar `/admin/data`. `RawDataService::ADMIN_ONLY_COLUMNS` dihapus. Kunci tetap hanya dibaca server dan tidak pernah dikirim ke peramban siswa (aturan kerja repo).
+**Kunci jawaban (K1).** `answer_key` ada di lembar `butir` dan `jawaban` untuk `ketua`, juga di layar `/admin/data`. `RawDataService::ADMIN_ONLY_COLUMNS` (baris 76) dihapus. Kunci tetap hanya dibaca server dan tidak pernah dikirim ke peramban siswa (aturan kerja repo).
 
 ### 7.6 Butir risiko daring
 
@@ -437,6 +445,7 @@ Penilaian dampak menetapkan bahwa peneliti hanya melihat angka gabungan butir ri
 - Unduhan memuat lembar **`risiko_gabungan`**: satu baris per butir dan pilihan jawaban, dengan banyak siswa untuk seluruh studi, lalu per kode sekolah. Sel dengan kurang dari 5 siswa ditulis `<5`, mengikuti batas laporan di 26 → P9. *Tidak mau menjawab* dan *tidak diberi butir* (tanpa izin) dihitung sebagai pilihan sendiri.
 - Penanda tindak lanjut hanya di bagian 4, untuk `ketua`, dan tidak diekspor.
 - Isi lembarnya baru ada setelah modul no. 22 menyimpan jawaban. Bagian ini hanya menetapkan bentuknya.
+- Aturan ini hanya untuk unduhan peneliti. Salinan data satu anak untuk orang tua adalah jalur lain di bagian 4: jawaban butir risiko diberikan bila orang tua tetap meminta setelah anak ditanya, kecuali membahayakan anak ([30 → Salinan data satu anak](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#8-salinan-data-satu-anak); putaran kedua 30–31 Oktober 2026 di 04).
 
 ---
 
@@ -465,7 +474,8 @@ private const ENTRIES = [
 - **Baris kepala berkas** di awal lembar `kamus` (dan di `kamus.csv`): versi kamus, tanggal dan jam unduhan WIB, kode studi, ringkasan filter, dan kalimat "Definisi lengkap: 11_KAMUS_DATA.md, versi yang sama".
 - **`data_exports.dictionary_version`** (kolom baru) menyimpan versi yang dipakai setiap unduhan.
 - **Tes** ([§16](#16-pengujian-dan-kriteria-selesai)): setiap kolom setiap lembar peneliti punya entri di `ResearchDictionary` dan di `ExportLabels`; tidak ada entri untuk kolom yang tidak diunduh; jangkar `ref` ada di 11.
-- **Berubah ke `kamus-1.1`.** Setelah uji coba, `VERSION` dan entri diubah di cabang yang sama dengan perubahan 11, dengan entri di 04. Lapis turunan (no. 9) menyimpan `dictionary_version` di setiap tabelnya dan membaca konstanta yang sama.
+- **Berubah ke `kamus-1.1`.** Setelah uji kelompok kecil dan menengah (KG3a, KG3b), `VERSION` dan entri diubah di cabang yang sama dengan perubahan 11, dengan entri di 04. Lapis turunan (no. 9) menyimpan `dictionary_version` di setiap tabelnya dan membaca konstanta yang sama.
+- **Dikunci di G4 (K17).** Versi kamus dikunci bersama versi game di G4. Selama pengambilan data utama (KG5) `VERSION` dan entri tidak berubah; temuan sesudahnya masuk laporan. Studi KG5 dan setiap unduhannya mencatat versi yang dipakai (`data_exports.dictionary_version`).
 
 ---
 
@@ -493,7 +503,8 @@ Lembar tetap diisi di kertas selama sesi (02). Sistem menyediakan berkas ketik y
 
 **Kelas baru `App\Libraries\FieldSheetSpec`** (K11):
 - Memuat, per lembar: kode lembar, judul, kolom (kode Inggris, judul persis seperti 02, jenis isian, daftar kode yang boleh), kunci baris, dan apakah lembar diimpor.
-- **Versi spesifikasi** `lembar-1.0`, dari 02 yang disetujui 26 Oktober 2026. Setiap perubahan tabel 02 menaikkan versi.
+- **Versi spesifikasi** `lembar-1.0`, dari 02 yang disetujui 26 Oktober 2026. Setiap perubahan tabel 02 menaikkan versi. Versinya dikunci di G4 bersama kamus (K17): perubahan dari KG3a dan KG3b masuk sebelum G4, selama KG5 tidak ada.
+- **Situs statis** (02) memakai `kolom.json` dari spesifikasi yang sama. Bila situs dibuat di luar repo ini, pengembang mencocokkannya sekali dengan spesifikasi sebelum KG3a ([§19](#19-keputusan-pengembang) no. 6).
 - **Tes `FieldSheetSpecTest`** membaca `docs/revisi-10-analitik/02_LEMBAR_LAPANGAN.md`, mengambil baris judul tabel di bawah setiap penanda, dan membandingkannya dengan judul kolom di spesifikasi. Bila 02 berubah tanpa spesifikasi (atau sebaliknya), tes gagal.
 - `php spark gelita:lembar:templat --kolom=…` menulis spesifikasi sebagai JSON, supaya situs statis bisa memakai kode kolom yang sama.
 
@@ -555,7 +566,7 @@ Lembar tetap diisi di kertas selama sesi (02). Sistem menyediakan berkas ketik y
 - buklet atau bentuk tes di L2 berbeda dari panel (panel yang berlaku);
 - siswa rombel yang tidak ada di L2;
 - lembar diunggah lebih dari 24 jam setelah sesi tutup (02);
-- **kata yang sama dengan nama siswa rombel itu** di isian teks bebas (*Kejadian*, *Tindakan*, *Uraian singkat*, *Catatan*, pertanyaan siswa di L6). Server membandingkan kata isian dengan kata dari `display_name` dan `username` siswa rombel itu (tanpa huruf besar-kecil, kata utuh, minimal 3 huruf). Pesan hanya menyebut nomor baris dan kolom, tidak menyebut namanya. Banyak nama juga kata biasa (Bintang, Cahaya), jadi ini peringatan, bukan penolakan. Pengunggah memeriksa, mengganti nama dengan kode peserta bila perlu, lalu mencentang *Sudah saya periksa, tidak ada nama siswa* (K13).
+- **kata yang sama dengan nama siswa rombel itu** di isian teks bebas (*Kejadian*, *Tindakan*, *Uraian singkat*, *Catatan*, pertanyaan siswa di L6). Server membandingkan kata isian dengan kata dari `display_name` dan `username` siswa rombel itu (tanpa huruf besar-kecil, kata utuh, minimal 3 huruf). Pesan hanya menyebut nomor baris dan kolom, tidak menyebut namanya. Banyak nama juga kata biasa (Bintang, Cahaya), jadi ini peringatan, bukan penolakan. Nama di luar rombel itu (guru, siswa kelas lain, panggilan) tidak diperiksa; itu dijaga aturan menulis di 02 dan pelatihan tim, tanpa daftar kata tambahan ([§19](#19-keputusan-pengembang) no. 7). Pengunggah memeriksa, mengganti nama dengan kode peserta bila perlu, lalu mencentang *Sudah saya periksa, tidak ada nama siswa* (K13).
 
 **Penyimpanan:**
 - Satu baris `field_sheet_imports` per lembar per unggahan, dan barisnya di `field_sheet_rows` ([§12](#12-skema-database)).
@@ -687,6 +698,7 @@ Semua di `app/Language/id/Admin.php` (panel hanya berbahasa Indonesia). Game tid
 | `exportDictionaryVersion` | Versi kamus data |
 | `exportParticipantCount` | Jumlah siswa |
 | `exportFileGone` | Berkas sudah dihapus otomatis. Buat unduhan baru bila masih diperlukan. |
+| `exportNeedsStudy` | Belum ada studi. Buat studi dulu di halaman Studi, lalu kembali ke sini untuk mengunduh. |
 | `fieldSheetTemplate` | Unduh templat lembar |
 | `fieldSheetUpload` | Unggah lembar yang sudah diketik |
 | `fieldSheetUploadHelp` | Pilih berkas templat yang sudah diisi, atau berkas CSV dari situs lembar lapangan. L7 tidak pernah diunggah. |
@@ -738,7 +750,7 @@ Pesan pemeriksaan per kolom ("jam harus berbentuk JJ:MM:SS", "kode tidak dikenal
 | `ReadyMsTest` | `/check` dan `/responses` menyimpan `ready_ms`; Isi Rumpang kosong; nilai di luar batas atau lebih besar dari `last_input_ms` disimpan kosong |
 | `NewClientEventsTest` | `empty_tap` dan `passage_reopened` diterima dengan referensi dan payloadnya |
 | `TechLogPageTest` | Admin melihat tiga tab dan CSV-nya dengan audit; peneliti dan ketua 404; tidak ada event penelitian atau jawaban |
-| `ResearchExportColumnsTest` | Tidak ada kolom Admin atau dibuang di lembar peneliti; tanpa `perangkat`; `event` hanya jenis Peneliti tanpa id internal; `answer_key` ada untuk ketua; akun `uji.*` dan `sim_*` tidak ikut |
+| `ResearchExportColumnsTest` | Tidak ada kolom Admin atau dibuang di lembar peneliti; tanpa `perangkat`; `event` hanya jenis Peneliti tanpa id internal; `answer_key` ada untuk ketua; akun `uji.*` dan `sim_*` tidak ikut; unduhan tanpa `study_id` ditolak, juga saat mode penelitian mati (K16) |
 | `ExportTimeCorrectionTest` | `occurred_at_corrected` = waktu + selisih; `offset_known` 0 bila selisih kosong |
 | `DictionarySheetTest` | Setiap kolom peneliti punya entri `ResearchDictionary` dan `ExportLabels`; jangkar ada di 11; versi di lembar dan di `data_exports` |
 | `ExportHistoryTest` | Ketua melihat unduhannya sendiri dengan versi kamus, jumlah siswa, dan jumlah unduh; tidak melihat unduhan staf lain |
@@ -786,13 +798,13 @@ Di mesin pengembangan, dengan salinan database berisi data simulasi (`gelita:sim
 
 ## 18. Pertanyaan terbuka
 
-Tidak menahan draf ini.
+Semua dijawab pengembang 2 November 2026 ([§19](#19-keputusan-pengembang) no. 6–10). Tidak ada pertanyaan terbuka yang tersisa.
 
-1. **Situs statis revisi.** 02 menyebut situs statis tempat lembar bisa diisi dan diunduh sebagai CSV. Situs itu tidak ada di repo ini. Usulan: situs memakai `kolom.json` dari `gelita:lembar:templat --kolom` supaya kode kolomnya sama. Bila situs dibuat terpisah dari repo, pengembang mencocokkannya sekali sebelum uji coba.
-2. **Isian teks bebas yang menyebut anak lain.** Pemeriksaan nama hanya membandingkan dengan siswa rombel itu. Nama guru, teman dari kelas lain, atau panggilan tidak terdeteksi. Cukup aturan menulis di 02 dan pelatihan tim, atau perlu daftar kata tambahan? Usulan: cukup aturan dan pelatihan.
-3. **`is_touch`** dipindah ke admin sebagai tafsiran, karena 01 tidak menyebutnya; 11 hanya menyebut jenis perangkat dan ukuran layar. Bila peneliti membutuhkannya sebagai kovariat (misalnya laptop layar sentuh), dikembalikan ke lembar `sesi` lewat `kamus-1.1`.
-4. **`empty_tap` per petunjuk paling banyak 30.** Angka ini usulan; uji coba memeriksa apakah ada anak yang melampauinya.
-5. **Data lama di server produksi.** Migrasi `003600` menghapus data yang sudah tersimpan (K3). Bila server produksi masih memuat data dari sebelum studi yang ingin disimpan sebagai arsip, arsipnya dibuat pengembang sebelum migrasi, di luar sistem, dengan aturan simpan 26.
+1. ~~**Situs statis revisi.** 02 menyebut situs statis tempat lembar bisa diisi dan diunduh sebagai CSV. Situs itu tidak ada di repo ini. Usulan: situs memakai `kolom.json` dari `gelita:lembar:templat --kolom` supaya kode kolomnya sama. Bila situs dibuat terpisah dari repo, pengembang mencocokkannya sekali sebelum uji coba.~~ Dijawab: usulan dipakai, dicocokkan sebelum KG3a (§19 no. 6).
+2. ~~**Isian teks bebas yang menyebut anak lain.** Pemeriksaan nama hanya membandingkan dengan siswa rombel itu. Nama guru, teman dari kelas lain, atau panggilan tidak terdeteksi. Cukup aturan menulis di 02 dan pelatihan tim, atau perlu daftar kata tambahan? Usulan: cukup aturan dan pelatihan.~~ Dijawab: cukup aturan dan pelatihan (§19 no. 7).
+3. ~~**`is_touch`** dipindah ke admin sebagai tafsiran, karena 01 tidak menyebutnya; 11 hanya menyebut jenis perangkat dan ukuran layar. Bila peneliti membutuhkannya sebagai kovariat (misalnya laptop layar sentuh), dikembalikan ke lembar `sesi` lewat `kamus-1.1`.~~ Dijawab: tetap admin; dikembalikan lewat `kamus-1.1` bila peneliti memintanya (§19 no. 8).
+4. ~~**`empty_tap` per petunjuk paling banyak 30.** Angka ini usulan; uji coba memeriksa apakah ada anak yang melampauinya.~~ Dijawab: tetap 30, dicek di KG3a dan KG3b (§19 no. 9).
+5. ~~**Data lama di server produksi.** Migrasi `003600` menghapus data yang sudah tersimpan (K3). Bila server produksi masih memuat data dari sebelum studi yang ingin disimpan sebagai arsip, arsipnya dibuat pengembang sebelum migrasi, di luar sistem, dengan aturan simpan 26.~~ Dijawab: tanpa arsip (§19 no. 10).
 
 ---
 
@@ -815,13 +827,28 @@ Satu putaran tanya, empat pertanyaan (30 Oktober 2026). Pengembang memilih usula
 - `audio_pause` adalah satu-satunya pembawa lama mendengar yang belum selesai (K6).
 - `last_input_ms` Cari Objek memakai rujukan waktu berbeda dari tantangan lain ([§6.1](#61-saat-butir-bisa-dijawab-ready_ms)).
 
+**Cek kemutakhiran dan tinjauan pengembang, 2 November 2026** (gelombang A, sesi 5; `asal: pengembang`, pemeriksaan berbantuan AI). Dicek terhadap entri 04 sesudah 30 Oktober 2026 (putaran kedua 30–31 Oktober; 1 November: ADDIE dengan KG3a dan KG3b, satu studi per uji, versi dikunci di G4, aturan "dibangun sekarang"), terhadap 11, 26, 27, 28, dan 30, dan terhadap kode. Urutan migrasi `003600` dan `003700` cocok dengan [27 §6.1](27_IMPLEMENTASI_PERAN_PENELITI.md#61-migrasi-2026-01-01-003400_replaceteacherwithresearcherroles). Temuan K5 tetap benar. Temuan K6 tetap benar, tetapi satu celah dicoret: narasi lain yang mulai sudah mengirim `pause` ([§5.4](#54-audio_pause-dan-lama-mendengar)). Nomor baris yang meleset dibetulkan (`RawDataService` baris 67, 86–95, 107–240; `core/audio.js` 414–419, 427–437), dan rujukan yang terlewat ditambah (`ExportService::ADMIN_ONLY_SHEETS`, `Simulator` baris 467, komentar `dialogue_advanced` di tujuh berkas lain).
+
+Dua putaran tanya, delapan pertanyaan; pengembang memilih usulan di semuanya:
+
+5. **Penghapusan tetap di migrasi `003600`** (K3 tetap), dan di server produksi migrasi itu hanya dijalankan bila pengembang memutuskannya. Karena `003400` sudah lebih dulu menahan server produksi, memisah penghapusan tidak memberi apa-apa. Tidak dipilih: `003600` hanya menambah kolom, dan penghapusan menjadi perintah spark terpisah.
+6. **Situs statis memakai `kolom.json`** dari `gelita:lembar:templat --kolom`; bila dibuat di luar repo, pengembang mencocokkannya sekali sebelum KG3a (§18 no. 1). Tidak dipilih: situs statis dihapus dan hanya templat XLSX yang dipakai.
+7. **Pemeriksaan nama cukup untuk rombel itu**; nama lain dijaga aturan menulis di 02 dan pelatihan tim (§18 no. 2). Tidak dipilih: daftar kata tambahan di halaman studi (data pribadi di server, harus diisi terus).
+8. **`is_touch` tetap untuk admin**; dikembalikan ke lembar `sesi` lewat `kamus-1.1` bila peneliti memintanya (§18 no. 3). Tidak dipilih: masuk lembar peneliti sejak awal.
+9. **Batas `empty_tap` tetap 30** per petunjuk per pengerjaan, sebagai angka konfigurasi yang dicek di KG3a dan KG3b dan ditetapkan sebelum G4 (§18 no. 4). Tidak dipilih: tanpa batas.
+10. **Tanpa arsip data lama** sebelum `003600` dijalankan di server produksi, karena server belum memuat data studi; jumlahnya tercatat lewat `gelita:log:hitung` dan baris audit (§18 no. 5). Tidak dipilih: pengembang membuat salinan database di luar sistem dulu.
+11. **Unduhan selalu terikat satu studi** (K16), mode penelitian menyala atau mati, mengikuti "satu baris `research_studies` per uji" (04, 1 November 2026). Tidak dipilih: hanya dalam mode penelitian, sehingga satu berkas bisa mencampur studi.
+12. **Versi kamus dan spesifikasi lembar dikunci di G4** bersama versi game (K17). Tidak dipilih: kamus masih boleh naik versi selama KG5.
+
+Dengan keputusan ini 29 `disetujui pengembang` (2 November 2026).
+
 ---
 
 ## 20. Akibat ke dokumen lain
 
 Dicatat di sini dan dibawa sesi koordinator setelah bagian 4 selesai.
 
-**Status per 30 Oktober 2026:** semua baris sudah dibawa sesi koordinator (PR #285, #286, #287), kecuali yang menunggu `kamus-1.1` atau implementasi.
+**Status per 30 Oktober 2026:** semua baris sudah dibawa sesi koordinator (PR #285, #286, #287), kecuali yang menunggu `kamus-1.1` atau implementasi. Baris bertanggal 2 November 2026 (cek kemutakhiran) belum dibawa.
 
 | Dokumen | Bagian | Perubahan | Status |
 | --- | --- | --- | --- |
@@ -836,3 +863,7 @@ Dicatat di sini dan dibawa sesi koordinator setelah bagian 4 selesai.
 | [27](27_IMPLEMENTASI_PERAN_PENELITI.md) | §4 titik sambung | Templat dan unggah lembar di bawah `field_sessions.manage` | Sudah (sesi koordinator, 30 Oktober 2026) |
 | [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) | §15 rute, §21 no. 5 | Rute lembar di bawah `/admin/sesi-lapangan/{id}/lembar`; `markStale` menulis `session_paused {via: idle}` | Sudah (sesi koordinator, 30 Oktober 2026) |
 | [00](00_INDEKS.md) | *Tahap dokumen 3* | Baris bagian 3 | Sudah (cabang ini) |
+| [11](11_KAMUS_DATA.md) | *Versi dan cara berubah* | `kamus-1.1` selesai sebelum G4 dan dikunci bersama versi game; selama KG5 versi tidak berubah (K17). Catatan "setelah uji coba" berarti setelah KG3a dan KG3b | Saat `kamus-1.1` (cek kemutakhiran 2 November 2026) |
+| [02](02_LEMBAR_LAPANGAN.md) | *Cara mencetak dan mengisi* | Situs statis memakai `kolom.json` dari spesifikasi; spesifikasi lembar dikunci di G4 (K17) | Untuk sesi koordinator berikutnya (2 November 2026) |
+| [27](27_IMPLEMENTASI_PERAN_PENELITI.md) | §9 atau halaman studi | Unduhan `ketua` selalu memerlukan satu studi (K16), juga saat mode penelitian mati; tanpa studi, halaman unduh meminta studi dibuat dulu | Untuk sesi koordinator berikutnya (2 November 2026) |
+| `35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md` (gelombang B, sesi 9) | Seluruhnya | Yang perlu diketahui dari bagian ini: (1) data mentah §6: `item_tries.ready_ms` dengan rujukan waktu sejak tantangan dibuka, kosong untuk Isi Rumpang dan Susun Gambar dan bila lebih besar dari `last_input_ms`; `last_input_ms` Cari Objek sebelum perubahan ini memakai rujukan lama (sejak petunjuk tampil); `empty_tap` mencatat `x_pct`, `y_pct`, `round`, `t_ms`, dan `overflow` (batas 30), jaraknya diturunkan dari data adegan di bank; `passage_reopened` hanya setelah masukan pertama. (2) Lembar *Kamus Data* (§8): `ResearchDictionary::VERSION` adalah satu-satunya konstanta versi; lapis turunan menyimpan `dictionary_version` di setiap tabelnya, dan versi dikunci di G4 (K17). (3) Titik sambung no. 9 (§15): lembar lapangan yang diimpor ada di `field_sheet_rows` (hanya impor `purpose = main` yang belum `superseded_at`), dengan `participant_id`, `seat_no`, `started_at`, `ended_at` sebagai kolom dan isian lain di `values_json` dengan kode kolom §10.7; penanda `helped_content`, `deviation_code`, `shared_device` dihitung lapis turunan. (4) Waktu event di unduhan adalah `occurred_at_corrected` dengan `offset_known` (§7.4); waktu `item_tries` adalah waktu server. (5) Unduhan selalu satu studi (K16), jadi tabel turunan juga dihitung per studi | Untuk sesi 9 (2 November 2026) |
