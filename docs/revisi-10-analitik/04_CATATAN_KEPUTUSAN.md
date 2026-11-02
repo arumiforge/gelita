@@ -52,6 +52,23 @@ Diubah: 27, 00 (dua baris 27), 04, `docs/PROGRESS.md`, PDF siap cetak.
 
 ## 1 November 2026
 
+**30 dicek kemutakhirannya dan disetujui pengembang** (gelombang A, sesi 6 dari 6, cabang `r10-cek-30`; pertanyaan dijawab 2 November 2026) · `asal: pengembang` (pemeriksaan berbantuan AI, enam keputusan pengembang) · `disetujui pengembang` · tidak merevisi produk
+
+[30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) dicek terhadap entri 04 sesudah *commit* terakhirnya (putaran kedua 30–31 Oktober; entri 1 November: ADDIE dengan KG3a/KG3b, versi dikunci di G4, aturan bangun sekarang, cek pasal PP), terhadap 22, 23, 26, 03, 27, 29, dan kode.
+
+- **Diselaraskan tanpa keputusan baru:** kalimat "diubah di tahap 3, setelah gerbang G2" diganti aturan bangun sekarang (gelombang kode E, di balik sakelar studi, tidak dipakai dengan anak sebelum persetujuan etik); tenggat §4 tetap "sebelum akun anak pertama kali dipakai" (KG2, tidak bersyarat) dan ditegaskan tidak bergantung G2; temuan nomor KG di 26 ditandai sudah dibetulkan; §8 memakai PP 33/2026 Pasal 77 ayat (4) huruf a sebagai pasal pembanding (`needs_verification` dicabut); isi pemberitahuan kepada orang tua (Pasal 87) dan konfirmasi lama penyiapan salinan (Pasal 78 ayat (2)) diambil dari 22; uji manual di instalasi uji pengembang, bukan instalasi validator yang dibekukan; `REQUIRED_MIGRATION` `003800` dinaikkan lagi oleh bagian 5–9.
+- **Yang dicek dan tetap benar:** kode `app/` tidak berubah sejak 26 Oktober 2026; nomor baris rujukan cocok (satu dipertajam: hitungan retensi disaring di `RetentionService.php` baris 117–121); `HashedIpSessionHandler` ada, `Config\Session` masih `DatabaseHandler` (baris 29); lokasi kedua `backup.sh` tetap tanpa batas (`rsync -a`); migrasi `003800` ada di urutan 27 §6.1; peta kemampuan 27 §5.1 sama dengan 30 §14; teks id dan en T4, T11, T12 di 30 §17 sama dengan 23.
+- **Keputusan pengembang** (30 §22 no. 7–12; usulan dipilih kecuali no. 8):
+  7. bagian 3 dan 4 dibangun paralel, bagian 4 digabung sesudah bagian 3;
+  8. semua isi bagian 4 di balik mode penelitian, termasuk IP berhash (sakelar `gelita.researchPrivacy`) dan batas 30 hari lokasi kedua cadangan (`KEDUA_HARI`); bawaan `retention_days` tetap 1825, 7305 hanya untuk studi `field_mode = 1`, migrasi `003800` tidak mengosongkan `ci_sessions` (usulan AI: perbaikan privasi langsung berlaku di `main`);
+  9. lembar `izin` ditambahkan ke unduhan utama `ketua`, unduhan terpisah tetap (30 §21 no. 4);
+  10. kritik dan saran diperiksa nama oleh `ketua` sebelum studi ditutup, sebagai syarat penutupan (no. 5);
+  11. provinsi dan kabupaten tetap disimpan setelah studi ditutup; komite diminta menilainya (no. 3);
+  12. 30 dinaikkan ke `disetujui pengembang`; §21 no. 6 (snapshot cadangan penyedia) tetap terbuka.
+- **Akibat ke dokumen lain** (30 §23, baris bertanggal 2 November 2026, untuk sesi koordinator): 29 §7.2 lembar `izin`; 27 §6.1 "berurutan"; 22 dan 26 pertanyaan kabupaten untuk komite; 26 L3/P18 lewat sakelar; 23 kalimat "tahap 3" di T4, T11, T12; `docs/08_DEPLOYMENT.md` saat implementasi.
+
+Diubah: 30, 00 (baris 30 di *Daftar dokumen* dan *Tahap dokumen 3*), `docs/PROGRESS.md` (baris sendiri di gelombang A), PDF siap cetak 30.
+
 **28 dicek kemutakhirannya dan disetujui pengembang** (gelombang A, cabang `r10-cek-28`) · `asal: pengembang` (pemeriksaan berbantuan AI; enam keputusan pengembang) · `disetujui pengembang` · belum merevisi produk
 
 [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) (terakhir diubah 31 Oktober 2026) dicek terhadap entri 04 sesudahnya (putaran kedua 30–31 Oktober 2026; model ADDIE, KG3a/KG3b, satu awalan `U` dengan satu baris `research_studies` per uji, satu anak satu uji, versi dikunci di G4, aturan dibangun sekarang), terhadap 03, 20, dan 27 §6.1, dan terhadap kode (terakhir berubah 26 Oktober 2026). Dua putaran tanya, enam pertanyaan ([28 → Keputusan pengembang](28_IMPLEMENTASI_SESI_LAPANGAN.md#22-keputusan-pengembang) no. 7–12):

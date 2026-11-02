@@ -1,8 +1,8 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "c5340cedd3febb40c1691fbbf031537b6ff62e432c46a53ec2a722e3858928c2",
-      "commit": "73d3fcc",
+      "source": "e7e7c1a3c4eaf62e7c1b4123cd9ff103176bbcc93a96359ee55a41066116da3c",
+      "commit": "a099ea7",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 13,
@@ -33,8 +33,8 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "25c8614d7c1684fadc3388bf9d042e3b783be3cc9aed902f21984e3b279c659a",
-      "commit": "73d3fcc",
+      "source": "e889e3cab3d6b03d52c8bb2efe8b62c397793d16ccd2d0f77b0cc9bda53a29e8",
+      "commit": "a099ea7",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 55,
@@ -241,11 +241,11 @@
       "landscapeTables": 0
     },
     "30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md": {
-      "source": "738285ed2efe930259b0698f0d18841fe73d581b414309e64d26279c9e112917",
-      "commit": "8b46ca2",
+      "source": "44a18c80bc396c47e6b4c4331eb84d22a366746cecb09ec8e66d2e746debffaa",
+      "commit": "11181e4",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
-      "pages": 25,
+      "date": "2026-11-02",
+      "pages": 28,
       "landscapeTables": 0
     }
   }
