@@ -1,8 +1,8 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "7c9ddb8ef86360969b5533aba1106d829c713a6d1e53d13a0c05827a4bb4d951",
-      "commit": "4282476",
+      "source": "5cf7b307d020eca472f5a390547ffdf720384468d2766f6f09f3fd339cc52234",
+      "commit": "127965c",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 17,
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "c71ff61c57ef4f975d76701807a2057226b37f2ca1e43b7228c72cfeddd52ad7",
-      "commit": "4282476",
+      "source": "afc863dde1e3030813a3ac88ab6e6e16f1b789d1938b65b93a26c13ec10c5774",
+      "commit": "127965c",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 59,
+      "pages": 60,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -273,8 +273,8 @@
       "landscapeTables": 0
     },
     "34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md": {
-      "source": "64cefc23004e988398fde819040b2775096bc8b872cf19e4bd22130e102aeb5d",
-      "commit": "50e9060",
+      "source": "2128dd9cb723268e153dc7d1e77b67463408ae2d55115bcbb7cf30aaf5e88e3c",
+      "commit": "127965c",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 22,
