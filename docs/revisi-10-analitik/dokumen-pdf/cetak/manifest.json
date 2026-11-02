@@ -1,8 +1,8 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "c2845a8d8adb5d895522b91972e0894f5032cab56a7cc417c3e6555410b7866a",
-      "commit": "7a6d569",
+      "source": "a7b5006176807ed350e4085d6757b96f78d875102523cc3ddc07a2cfd8266651",
+      "commit": "dbe015e",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 13,
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "df30ca20c682658506defbaac547ffa9ab6e80047e680a00d80345694fa79187",
-      "commit": "7a6d569",
+      "source": "2a7c5571d4d08efb4f8ed68935ec0908ed7a866759972e7ee8e3375a0f6085d8",
+      "commit": "52541ed",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 53,
+      "pages": 52,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -185,11 +185,11 @@
       "landscapeTables": 0
     },
     "23_SURAT_INFORMASI_DAN_PERSETUJUAN.md": {
-      "source": "ea615dd533e8da33b2349966f5a3ebebdd892d1a18d89afbf385b241d5238405",
-      "commit": "8b46ca2",
+      "source": "a0b1acae331082bcb50abadabe74d9c504426d6f71c71b5d64175e4ff17e3bc8",
+      "commit": "52541ed",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
-      "pages": 32,
+      "date": "2026-11-02",
+      "pages": 33,
       "landscapeTables": 0
     },
     "24_UJI_KETERBACAAN.md": {
@@ -217,11 +217,11 @@
       "landscapeTables": 0
     },
     "27_IMPLEMENTASI_PERAN_PENELITI.md": {
-      "source": "55c8ecce7b036b056356f3662675dc26a3e42507a5e6a4dcac61db95e45d1909",
-      "commit": "7a6d569",
+      "source": "235d01be2c9629225308ccf738695b93f1badbf5cecbe428015b76d3cfb03881",
+      "commit": "1313e3f",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-02",
-      "pages": 20,
+      "date": "2026-10-31",
+      "pages": 18,
       "landscapeTables": 0
     },
     "28_IMPLEMENTASI_SESI_LAPANGAN.md": {
