@@ -108,7 +108,7 @@ K1–K4 diputuskan pengembang ([§19](#19-keputusan-pengembang)). Sisanya menuru
 | --- | --- |
 | Data mentah | `challenge_attempts`, `item_responses`, `item_tries`, `game_event_logs`, `audio_usage_events`, `field_sheet_rows`, tabel modul tes: hanya ditambah, tidak pernah diubah lapis turunan (01, lapis 1). Lapis turunan hanya membaca |
 | Penilaian di game | Benar atau salah, bintang, dan Serpihan Cahaya tetap dihitung `ChallengeService` dan `ScoringService` saat bermain. Lapis turunan tidak mengubah apa yang dilihat siswa |
-| Kode kesalahan mentah | `error_code` disimpan bagian 5 di setiap percobaan saat dinilai. Lapis turunan tidak menurunkan ulang kode dari pilihan; ia membaca kode yang tersimpan dan hanya menambah `error_code_analysis` |
+| Kode kesalahan mentah | `error_code` disimpan bagian 5 di setiap percobaan saat dinilai dan tidak ditulis ulang. Untuk analisis, lapis turunan memakai kode bank terbaru: bila matriks kode pilihan di bank berubah setelah percobaan, kode diturunkan ulang dari pilihan yang tersimpan dengan `ErrorCodeResolver` bagian 5 ([§19](#19-keputusan-pengembang) no. 5, 2 November 2026) |
 | Pembuatan berkas unduhan | `ExportService::build()` (`app/Services/ExportService.php:58`), XLSX dan CSV-ZIP, SHA-256, retensi 7 hari, riwayat unduhan 29 §9 |
 | Lembar mentah | Lembar `peserta` … `butir` dan lembar lapangan 29 §7.2 tetap ada dan tetap mentah |
 | Kamus | `kamus-1.0` di 11 tidak diubah dokumen ini |
@@ -203,7 +203,7 @@ Setiap aturan di bawah adalah aturan di 11; kolom kanan menyebut bagian 11 yang 
 | `is_scored_attempt`, `is_retake` | Dari `derived_attempts` (§6.3) | Pengerjaan pertama |
 | `scored_try_no` | Nomor percobaan butir itu di pengerjaan pertama setelah aturan cadangan: percobaan butir yang sama diurutkan menurut waktu lintas pengerjaan sebelum tantangan tertutup pertama kali; hanya tiga yang pertama diberi nomor | Pengerjaan pertama, aturan cadangan |
 | `anomaly` | `extra_try` untuk percobaan sesudah yang ketiga; selain itu kosong | Sama |
-| `error_code` | Disalin dari `item_tries.error_code` (bagian 5); kosong untuk percobaan benar dan Susun Gambar | Analitik 6 |
+| `error_code` | Kode dari bank terbaru untuk pilihan percobaan itu (`ErrorCodeResolver` bagian 5); kosong untuk percobaan benar dan Susun Gambar. Kode saat percobaan tetap di `item_tries.error_code` dan masuk lembar sebagai `error_code_at_try` | Analitik 6 |
 | `decision_ms` | `last_input_ms − ready_ms` (29 §6.1) untuk Benar atau Salah, kartu jangkar, dan Cari Objek; untuk tindakan Skenario Digital dari kolom bagian 6. Kosong bila salah satu kosong, bila hasilnya negatif, atau untuk Isi Rumpang dan Susun Gambar | Analitik 6, waktu putus |
 | `rapid_guess` | 1 bila `decision_ms < rapid_guess_ms`, 0 bila tidak, kosong bila `decision_ms` kosong | Analitik 6, NON-TEB |
 | `reason_decision_ms`, `reason_rapid` | Sama untuk alasan Skenario Digital | Analitik 6 |
@@ -619,9 +619,9 @@ Di mesin pengembangan, dengan `gelita:simulasi` di studi `field_mode` menyala:
 
 Tidak menahan draf ini.
 
-1. **Kapan 11 diubah ke `kamus-1.1`.** Usulan: satu sesi setelah uji coba KG3b, bersama penetapan ulang ambang, dengan `asal: peneliti` bila peneliti yang menetapkan angkanya. Sampai itu, unduhan menulis `kamus-1.1-usulan`.
+1. ~~**Kapan 11 diubah ke `kamus-1.1`.**~~ Usulan: satu sesi setelah uji coba KG3b, bersama penetapan ulang ambang, dengan `asal: peneliti` bila peneliti yang menetapkan angkanya. Sampai itu, unduhan menulis `kamus-1.1-usulan`. **Diputuskan pengembang 2 November 2026** (sesi koordinator, [04](04_CATATAN_KEPUTUSAN.md)): `kamus-1.1` ditulis ke 11 sekarang sebagai `draf pengembang` ([§19](#19-keputusan-pengembang) no. 6); angka ambang ditetapkan ulang setelah KG3b.
 2. **Ambang tebakan cepat tes.** 13 menulis ambang untuk tes ditinjau tersendiri karena waktu membaca teks jatuh ke butir pertama. Sementara memakai T_teb studi. Bila uji coba menunjukkan perlu, ditambah kolom studi `test_rapid_guess_ms`.
-3. **"Pengambilan data selesai" sebelum studi ditutup.** Dibaca sebagai jam putaran (§6.4). Alternatif: tanggal akhir pengambilan data di studi, sehingga `not_started` tidak berubah setelah tanggal itu. Usulan: cukup jam putaran, karena game tertutup di luar sesi lapangan.
+3. ~~**"Pengambilan data selesai" sebelum studi ditutup.**~~ Dibaca sebagai jam putaran (§6.4). Alternatif: tanggal akhir pengambilan data di studi, sehingga `not_started` tidak berubah setelah tanggal itu. Usulan: cukup jam putaran, karena game tertutup di luar sesi lapangan. **Diputuskan pengembang 2 November 2026** (sesi koordinator, [04](04_CATATAN_KEPUTUSAN.md)): jam putaran.
 4. **Lama hitung.** Bila cek manual menunjukkan lebih dari 10 menit untuk ± 360 anak, putaran pindah ke pekerjaan latar dan tombol menjadi antrean. Diputuskan saat implementasi dari angka cek manual.
 5. **Data lama tanpa `ready_ms` atau `empty_tap`.** Pengerjaan dari sebelum bagian 3 tidak punya keduanya; `decision_ms`, `rapid_guess`, dan `near_miss_count` kosong, bukan 0. Data itu memang tidak masuk studi (diuji di instalasi uji), jadi tidak ada aturan khusus.
 
@@ -635,6 +635,12 @@ Satu putaran tanya, empat pertanyaan (2 November 2026). Pengembang memilih usula
 2. **Ambang di kolom studi** (K2): `idle_threshold_ms` dan `rapid_guess_ms`, bawaan dari `Config\Gelita`, diubah `ketua` dengan log audit, dan terkunci di G4. Tidak dipilih: hanya di `Config\Gelita`, yang tidak bisa diubah peneliti dan sama untuk semua studi.
 3. **Dihitung ulang saat unduhan bila basi, ditambah tombol dan perintah** (K3). Tidak dipilih: hanya manual (unduhan bisa membawa putaran lama); dijalankan setiap malam.
 4. **Data mentah tetap, lapis turunan dipotong pada saat mundur** (K4), dengan `consent_ok = 1` dan `withdrawn_on` terisi. Tidak dipilih: hanya penanda `after_withdrawal` di lembar turunan, dibuang skrip analisis.
+
+Putaran kedua, 2 November 2026 (sesi koordinator, `asal: pengembang`, [04](04_CATATAN_KEPUTUSAN.md)):
+
+5. **Analisis memakai kode bank terbaru** (dari [31 → Pertanyaan terbuka](31_IMPLEMENTASI_BANK_SOAL_BARU.md#21-pertanyaan-terbuka) no. 3): `error_code` di lembar turunan diturunkan dari matriks kode bank yang berlaku saat putaran hitung; kode saat percobaan tetap di data mentah dan di kolom `error_code_at_try`. Tidak dipilih: kode saat percobaan.
+6. **`kamus-1.1` ditulis ke 11 sekarang sebagai `draf pengembang`**, lalu direvisi setelah uji coba (angka ambang, `asal: peneliti` bila peneliti yang menetapkannya), dan dikunci di G4. Tidak dipilih: satu sesi setelah KG3b bersama peneliti (usulan AI).
+7. **"Pengambilan data selesai" = jam putaran hitung**, tanpa kolom tanggal akhir di studi. Tidak dipilih: tanggal akhir pengambilan data yang diisi `ketua`.
 
 ---
 

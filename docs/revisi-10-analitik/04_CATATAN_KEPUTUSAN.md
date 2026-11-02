@@ -6,6 +6,35 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 2 November 2026
 
+**Gelombang A dan B digabung; pertanyaan terbuka yang bisa diputuskan sekarang dijawab** (sesi koordinator, cabang `sky/sweet-allen-0md2pw`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Kesebelas PR gelombang A (22, 23, 27–30) dan B (31–35) sudah digabung ke `main`. Sebelum digabung, `main` dimasukkan ke setiap cabang. Konflik di 04, 00, `docs/PROGRESS.md`, dan PDF siap cetak diselesaikan dengan menyimpan kedua sisi, lalu PDF dibuat ulang. Satu salah tempat dibetulkan saat itu: status 29 sempat tertulis di baris bagian 1 tabel *Tahap dokumen 3*.
+
+*Commit* serah terima ke peneliti tetap **`f45d274`**, seperti dicatat atas permintaan pengembang di entri *Commit serah terima ke peneliti* di bawah. PDF 22, 23, 24, dan 26 tidak berubah sesudahnya. Perubahan dari peneliti masuk lewat pengembang dengan label `asal: peneliti` (entri 1 November 2026).
+
+Pertanyaan terbuka di 27–35 diperiksa. Sebagian besar menunggu pihak lain (peneliti, ahli media, tim katalog, penyedia server) atau angka uji coba, jadi tetap terbuka. Tujuh bisa diputuskan sekarang; pengembang menjawabnya dalam dua putaran:
+
+1. **Jumlah kisi-kisi tetap di kode** (`DifficultyRules`; [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) §21 no. 1, §22 no. 5). Tidak dipilih: sheet `rules` di workbook.
+2. **Kartu jangkar bertumpuk dengan satu Cek** (31 §21 no. 2, §22 no. 6); ahli media memeriksanya di langkah 2. Tidak dipilih: kartu kedua muncul setelah pernyataan pertama dijawab.
+3. **Analisis memakai kode kesalahan dari bank terbaru** (31 §21 no. 3, §22 no. 7; [35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) §19 no. 5). Kode saat percobaan tetap di `item_tries.error_code` dan masuk lembar turunan sebagai `error_code_at_try`. Baris *Kode kesalahan mentah* dan kolom `error_code` di 35 disesuaikan. Tidak dipilih: kode saat percobaan.
+4. **Pengerjaan ulang tetap terbuka di P2–P4** setelah kelima tantangan wilayah pertemuan itu tuntas ([33](33_IMPLEMENTASI_MODE_PENELITIAN.md) §15 no. 4, §17 no. 5). Tidak dipilih: hanya di P5.
+5. **`kamus-1.1` ditulis ke 11 sekarang sebagai `draf pengembang`** (35 §18 no. 1, §19 no. 6), lalu direvisi setelah uji coba, dan dikunci di G4. Tidak dipilih: satu sesi setelah KG3b bersama peneliti (usulan AI).
+6. **"Pengambilan data selesai" = jam putaran hitung**, tanpa kolom tanggal akhir di studi (35 §18 no. 3, §19 no. 7). Tidak dipilih: tanggal akhir yang diisi `ketua`.
+7. **Terjemahan bahasa Inggris bank baru didraf AI sekarang** dan disetujui pengembang; butir yang direvisi dari validasi diterjemahkan ulang (31 §21 no. 4, §22 no. 8). Tidak dipilih: diterjemahkan sekali setelah matriks revisi, sebelum G3 (usulan AI), atau studi hanya berbahasa Indonesia.
+
+**Ditutup tanpa keputusan baru**, karena sudah dijawab dokumen lain:
+- 28 §21 no. 2–3 (batas 20 menit di P5 dan angket yang terlambat) dijawab di 34;
+- 33 §15 no. 1: 33 dan 35 sama-sama memakai `research_studies.idle_threshold_ms` dan `rapid_guess_ms`;
+- 32 §17 no. 4: blok migrasi bagian 5–9 tidak bertabrakan, jadi tidak ada penomoran ulang.
+
+**Pekerjaan berikutnya** (baris di `docs/PROGRESS.md`):
+- sesi koordinator membawa *Akibat ke dokumen lain* dari 22, 23, dan 27–35 ke dokumen lain;
+- `kamus-1.1` ditulis ke 11;
+- draf terjemahan bahasa Inggris bank baru;
+- gelombang kode C (bagian 1, 27).
+
+Diubah: 28, 31, 32, 33, 35, 00 (tabel gelombang), 04, `docs/PROGRESS.md`, dan PDF siap cetak.
+
 **32 diselaraskan dengan format data skenario bagian 5** (cabang `r10-dok-32-skenario-digital`, setelah PR #317) · `asal: pengembang` (penyelarasan berbantuan AI) · status 32 tetap `draf pengembang` · tidak merevisi produk
 
 PR #317 digabung sebelum penyelarasan ini masuk. [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) (PR #314) menetapkan bahwa data skenario milik bagian 5. 32 kini membacanya dari sana, tanpa keputusan baru:
