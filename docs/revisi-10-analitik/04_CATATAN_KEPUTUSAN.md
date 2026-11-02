@@ -10,6 +10,51 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 28 K19 (rencana pertemuan per studi, digabung saat 34 ditulis) meminta 34 menulis bahwa rencana `satu_sesi` (KG2) tidak membuka modul tes, angket, butir risiko daring, dan skala sikap. Ditulis di 34 §5.1 dan K12; baris 28 di 34 §19 kini juga mencoret 28 §21 no. 3 (angket terlambat, diatur di 34 §10.2). Tidak ada keputusan baru.
 
+**22 dicek kemutakhirannya dan siap diserahkan ke peneliti sebagai PDF** (gelombang A, cabang `r10-cek-22`, 1–2 November 2026) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 22 tetap draf · tidak merevisi produk
+
+[22](22_PERMOHONAN_IZIN_ETIK.md) dicek terhadap entri 04 sesudah *commit* terakhirnya (cek pasal PP 33/2026), terutama *Pembagian kerja baru* di bawah, terhadap 23, 24, 26, 30, 03, dan 01, dan terhadap kode. Tidak ada keputusan baru; yang diubah hanya yang sudah diputuskan. Nomor pasal PP No. 33 Tahun 2026 dan pemetaan formulir BRIN tidak disentuh.
+
+- **Aturan lama "sistem baru diubah setelah G2" diganti** di daftar gerbang (*Desain penelitian*), baris *Develop* 3 tabel ADDIE, garis waktu (baris baru "Sejak November 2026, bersamaan dengan tahap 2"; baris "Setelah G2" kini berisi revisi validasi, ahli media langkah 2, dan uji perangkat menuju G3), dan alasan perpanjangan masa berlaku. Aturan baru: Prototipe II dibangun bersamaan dengan tahap 2 dan tidak dipakai dengan anak sebelum persetujuan etik terbit; G3 setelah G2; versi dikunci di G4; validator menilai versi yang dibekukan di 20 prasyarat no. 4. Dicatat sebagai keputusan no. 31 di 22.
+- **"Dibangun di tahap 3"** untuk hapus sebagian, salinan dan pembetulan data satu anak, masa simpan 7305 hari, dan teks centang T4 diganti "dibangun sebelum sistem dipakai dengan anak"; keputusan no. 5 (27 Oktober 2026) diberi catatan.
+- **Teks centang sekarang:** `assentLabel` ternyata sudah menyebut pencatatan untuk penelitian (bukan "hanya permainan"), dan tidak diganti: 30 §5.1 menambah kunci `assentLabelStudy` untuk studi dengan mode lapangan.
+- ***Akibat ke dokumen lain*:** baris 01_DATABASE memakai 7305 hari (bukan ± 7300) dan mencatat temuan kode untuk 30 §11: formulir studi admin membatasi `retention_days` sampai 3650; baris 26 menjadi "sebagian sudah" (nama lembaga masa peralihan belum disebut di 26); baris model Plomp dan uji coba satu kelas ditandai sudah; baris baru untuk berkas serah terima v1.4 (empat kalimat aturan lama), 01 baris *Develop* 3 (opsional), dan kolom *Siap* 26.
+- **Yang dicek dan tetap benar:** semua tautan jangkar di 22; nama T1–T13 dan varian T8/T9 di 23; KG1 di 24 (K01–K05, empat sesi ± 60 menit, LK1–LK3, masa simpan 20 tahun); P15 di 26; rujukan 30 §4–§11 dan §22; kode `KG`, `U01-A03`, `S03-A07` di 03; daftar kerja no. 12, 15, 17, 18, 22 dan perubahan no. 23 di 01; di kode: `retention_days` bawaan 1825, `Config\Session` masih `DatabaseHandler` dengan `HashedIpSessionHandler` belum dipasang, akun staf terkunci 15 menit setelah 5 kali gagal, ekspor kedaluwarsa 7 hari.
+
+**Putaran kedua (2 November 2026, atas permintaan pengembang: "kerjakan update dokumen").** Hal yang semula hanya dicatat di *Akibat ke dokumen lain* 22 dikerjakan di cabang yang sama, tanpa keputusan baru:
+- **Berkas serah terima v1.5:** enam kalimat aturan lama diganti aturan 1 November 2026 (pembuka peta jalan, tabel dokumen tahap 4, alasan dua langkah ahli media, tabel keputusan, tanya jawab "Kenapa sistem belum diubah" yang kini berbunyi "Apakah sistem dibangun sebelum validasi dan izin etik selesai?", dan butir pengingat agenda); PDF dibuat ulang dengan `render.mjs` (37 halaman). Rujukan versi di 00 dan `dokumen-pdf/README.md` ikut diubah.
+- **26:** keterangan kolom *Siap* kini mengartikan *tahap 3* sebagai perubahan yang dibangun sekarang dan siap sebelum KG2, berlaku juga untuk tabel hak; nilai kolom tidak berubah. Nama lembaga masa peralihan (Kementerian Komunikasi dan Digital) disebut di hak mengadu dan P12, sama dengan 22. Status dan versi 26 tidak berubah.
+- **01:** baris *Develop* 3 tabel ADDIE sama dengan 22.
+- **Tetap terbuka:** batas `retention_days` 3650 di formulir studi admin adalah kode bagian 4 (30 §11), dikerjakan saat bagian 4 diimplementasikan.
+- Dengan ini kalimat aturan lama di 26 (dari daftar *Kalimat lama yang belum diubah* di entri *Pembagian kerja baru*) sudah diubah; yang tersisa di daftar itu: 11, pembuka 17 dan 18, `gambar/peta-jalan.svg`, dan 27–30 (gelombang A).
+
+Diubah: 22, 26, 01 (satu baris tabel ADDIE), berkas serah terima (sumber HTML dan PDF v1.5), `dokumen-pdf/README.md`, 00 (dua baris 22, dua baris 26, rujukan versi berkas serah terima; ukuran 22 dibetulkan menjadi 203 KB), `docs/PROGRESS.md`, PDF siap cetak 00, 01, 04, 22, dan 26. *Commit* serah terima dicatat koordinator setelah PR digabung.
+
+**Dokumen implementasi bagian 9 didraf: lapis data turunan dan `kamus-1.1` usulan** (cabang `r10-dok-35-lapis-turunan`, gelombang B; wawancara 2 November 2026) · `asal: pengembang` (draf berbantuan AI, empat keputusan pengembang) · [35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) `draf pengembang` · tidak merevisi produk
+
+35 menulis perubahan sistem no. 9: satu kalkulator berversi (`App\Libraries\Derived\*`, fungsi murni yang diuji dengan contoh data hitungan tangan) yang menghitung semua data turunan 11 per putaran hitung satu studi, ditambah usulan `kamus-1.1`. `kamus-1.0` tidak diubah; sampai 11 diubah setelah uji coba, sistem menandai hasilnya `kamus-1.1-usulan`. Empat keputusan pengembang, semuanya usulan AI:
+
+1. **Lapis turunan disimpan di tabel** `derived_*` (migrasi sementara `2026-01-01-004300_CreateDerivedLayer`), setiap baris membawa `run_id` dan `dictionary_version`; hasil yang berlaku diganti sekaligus lewat `research_studies.derived_run_id`. Tidak dipilih: dihitung saat unduhan dibuat.
+2. **Ambang di kolom studi** (`idle_threshold_ms` 180000, `rapid_guess_ms` 3000, bawaan dari `Config\Gelita`), diubah `ketua` dengan log audit dan dikunci di G4. Tidak dipilih: hanya di `Config\Gelita`.
+3. **Dihitung ulang saat unduhan bila basi** (sidik jari data mentah, lembar lapangan, izin, ambang, dan versi kamus), ditambah tombol *Hitung ulang* dan `gelita:turunan:hitung`. Tidak dipilih: hanya manual; setiap malam.
+4. **Data mentah tetap, lapis turunan dipotong pada saat mundur** (`deactivated_at`, atau akhir `status_on`); peserta `withdrawn_keep` tetap `consent_ok = 1` dengan `withdrawn_on`. Tidak dipilih: hanya penanda di lembar turunan.
+
+Keputusan turunan untuk ditinjau (K5–K14 di 35): variabel turunan angket dan skala sikap dihitung lapis turunan, bukan modul bagian 8; `*_theta` tes tetap di lapis 3; jarak ketukan kosong dihitung server; lembar turunan tanpa jawaban, kunci, butir risiko per siswa, atau id internal; lapis turunan hanya untuk studi `field_mode`; tanpa kemampuan baru. Temuan untuk sesi koordinator: 16 masih mendaftar `risk_*`/`support_*` sebagai variabel peserta, padahal 29 K9 hanya mengizinkan angka gabungan; `sikap_missing_reason = tanpa_izin` (17) tidak pernah terjadi di sistem. Nama data bagian 5–8 adalah anggapan, didaftar di 35 §15 dan §20.
+
+Diubah: 35 (baru), 00 (*Daftar dokumen*, baris bagian 9 di *Tahap dokumen 3*), 04, `docs/PROGRESS.md`, PDF siap cetak.
+
+**Dokumen implementasi bagian 6 (32, Skenario Digital) didraf** (cabang `r10-dok-32-skenario-digital`, gelombang B) · `asal: pengembang` (disusun dengan bantuan AI; empat keputusan pengembang) · `draf pengembang` · tidak merevisi produk
+
+[32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md) mengatur perubahan sistem no. 2, 6, dan 18: engine dua langkah (tindakan, lalu alasan), tantangan kelima di tiga wilayah, cerita penghubung `scenario_open`, 15 Serpihan Cahaya, narasi instruksi, dan aturan narasi. Empat keputusan pengembang dalam wawancara 2 November 2026:
+
+1. **Kode engine tersimpan `skenario`**, jenis butir `scenario_choice`. Tidak dipilih: `scenario`, `pilih`.
+2. **Narasi instruksi hanya lewat tombol ▶**, di kelima belas tantangan, tidak pernah otomatis; kode konteks audio `challenge_instruction`. Tidak dipilih: sekali otomatis ditambah ▶ (usulan AI), atau di kartu misi.
+3. **Tanpa sakelar studi:** engine selalu ada, tantangan kelima muncul bila bank memuatnya, total serpihan dihitung dari node aktif (12 menjadi 15), aturan narasi berlaku juga di luar studi. Tidak dipilih: di balik `field_mode`.
+4. **Urutan pilihan diacak sekali per pengerjaan**, tetap di ketiga kesempatan, dan disimpan di `answer_json` setiap percobaan. Tidak dipilih: diacak ulang setiap kesempatan.
+
+Rancangan yang menurunkan sumber (tidak ditanyakan): kesempatan per skenario seperti petunjuk Cari Objek, lewat `submitAnswer()` dan `/responses`; bintang `bintang-1` tidak berubah (benar = tindakan berskor 2); pilihan dikirim dengan rujukan HMAC seperti `objectRef()`; kolom baru `item_tries.action_key`, `action_score`, `reason_key`, `reason_code`, `reason_ready_ms` dan `challenge_nodes.audio_instruction_*` di migrasi sementara `2026-01-01-004000`; event server `scenario_failed` setara `clue_failed`; rute `/penghubung/{wilayah}`; butir dan bacaan D1 tidak pernah membawa audio. Hal yang perlu diubah di dokumen lain (01, 06, 11, 12, 18, 29, 31, 33, 35, glosarium) dicatat di 32 → *Akibat ke dokumen lain* untuk sesi koordinator.
+
+Diubah: 32 (baru), 00 (baris 32 di *Daftar dokumen* dan *Tahap dokumen 3*), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 32.
+
 **Bagian 8 dokumen implementasi didraf: modul tes, angket, dan skala sikap** (cabang `r10-dok-34-modul-tes-sikap`) · `asal: pengembang` (disusun dengan bantuan AI; empat keputusan pengembang) · `draf pengembang` · Prototipe I, belum merevisi produk
 
 [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) merancang perubahan sistem no. 21 dan 22 dari [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), memakai 13–18, 28 §6 dan §11, 29 §7.6, dan 30 §5.4. Isi instrumen tetap `needs_verification` dan disimpan di berkas data, jadi revisi dari validasi cukup berupa suntingan data lalu impor ulang. Empat pilihan diputuskan pengembang dalam satu putaran, semuanya opsi yang disarankan:
