@@ -1,8 +1,25 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 1 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 2 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
+
+## 2 November 2026
+
+**Dokumen implementasi bagian 5: bank soal baru ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md))** (cabang `r10-dok-31-bank-soal`, gelombang B) · `asal: pengembang` (draf berbantuan AI dan empat keputusan pengembang) · `draf pengembang` · merancang sistem, tidak merevisi produk
+
+Dokumen implementasi untuk perubahan sistem no. 1, 3, 4, 8, 17, dan 20 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), dari 06, 08, 11, 19, 25, dan kode per 2 November 2026 (`main` `97f82d5`). Isinya: bank 08 di berkas data dan workbook dengan kolom dan sheet baru; impor; `DifficultyRules` dan `BankRules` baru; area ketuk kedua babak Cari Objek berjarak paling sedikit 24 dp (menggantikan batas tumpuk 20%); kode kesalahan diturunkan server ke `item_tries.error_code` dari matriks kode eksplisit di bank; variasi pengerjaan pertama dari buklet dan butir jangkar `x`; Cari Objek dua babak; label AKM dan dimensi dengan asalnya (`developer`/`expert`); variabel beban permukaan dihitung saat impor; pemetaan huruf Susun Gambar selama studi. Migrasi sementara `003900` dan `003910`. Kemajuan di `ChallengeService` tetap milik bagian 2 ([28 §8](28_IMPLEMENTASI_SESI_LAPANGAN.md#8-kemajuan-mengikuti-siswa-bukan-sesi-game)); engine Skenario Digital milik bagian 6.
+
+Empat keputusan pengembang (wawancara satu putaran):
+
+1. **Data skenario dirancang di bagian 5** (sheet `scenarios`/`scenario_options`, tabel, impor, aturan bank); bagian 6 merancang engine, layar, skor, dan narasi. Tidak dipilih: data skenario di bagian 6; sheet di bagian 5 dan tabel di bagian 6.
+2. **Bagian ketuk *Periksa Unggahan* berupa kotak di workbook** (x, y, w, h dalam persen adegan), unggahan digambar dari kotak sebagai teks; satu geometri untuk aturan jarak dan jarak ketukan di lapis turunan. Tidak dipilih: templat CSS dengan pemeriksaan Playwright; gambar unggahan dengan titik ketuk.
+3. **Bank baru menggantikan bank lama di `main`**; bank lama di riwayat git dan `docs/arsip/bank-soal-lama/`; server produksi mendapat bank baru hanya saat pengembang menjalankan impor. Tidak dipilih: dua bank di balik sakelar; bank baru di cabang sampai G2.
+4. **Di mode penelitian, siswa tanpa buklet tidak bisa membuka tantangan yang dinilai** (`BOOKLET_MISSING`, pesan ramah); Susun Gambar tetap terbuka. Usulan AI adalah variasi acak `a`/`b` dengan penanda; pengembang memilih menahan supaya pengerjaan pertama selalu mengikuti desain buklet. Tidak dipilih: acak dengan penanda (usulan AI); buklet B1 sebagai bawaan.
+
+Pertanyaan terbuka di [31 → Pertanyaan terbuka](31_IMPLEMENTASI_BANK_SOAL_BARU.md#21-pertanyaan-terbuka): jumlah kisi-kisi tetap di kode (usulan) atau di data, tata letak kartu jangkar, kode bank yang direvisi setelah ada percobaan, terjemahan bahasa Inggris bank baru, penanda baris bacaan digital, dan ukuran adegan `HUNT_SCENE_DP`. Akibat ke 01, 03, 08, 11, 20, 21, 28, 29, bagian 6, dan glosarium dicatat di [31 → Akibat ke dokumen lain](31_IMPLEMENTASI_BANK_SOAL_BARU.md#23-akibat-ke-dokumen-lain) untuk sesi koordinator.
+
+Diubah: 31 (baru), 00 (daftar dokumen dan *Tahap dokumen 3*), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 31.
 
 ## 1 November 2026
 
