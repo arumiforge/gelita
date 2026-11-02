@@ -1,18 +1,18 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "63c0645ad6cd2587e2d4c1561d239204633915ab0c716440fe8fe66eb042b09a",
-      "commit": "553f579",
+      "source": "5d2fc04626e7fd099af158bd32b9ef13a1a2781c2a20c20b095cdc62f94cce56",
+      "commit": "4ef8b57",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 13,
+      "pages": 14,
       "landscapeTables": 0
     },
     "01_REVISI_10_ANALITIK.md": {
-      "source": "7fadc10cbcbacf5f19cb11c5759dd783cc5421e9fdaa8dd70ba2fe5881819833",
-      "commit": "e16ff02",
+      "source": "54f9617a7eab5c8a2bfe49f83b65a0c76a96afd807ff05e7049c69fe726f8e97",
+      "commit": "81647d8",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
+      "date": "2026-11-02",
       "pages": 28,
       "landscapeTables": 0
     },
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "a10e2ad637372b6ce418b74489728da5e7a523b494afcea2887320e438c37cda",
-      "commit": "553f579",
+      "source": "7a9a48e3bab1557701095e880b3a5bee9bfddd8205f8a10fef4df6c34a7cd173",
+      "commit": "4ef8b57",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 54,
+      "pages": 55,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -177,11 +177,11 @@
       "landscapeTables": 0
     },
     "22_PERMOHONAN_IZIN_ETIK.md": {
-      "source": "b1125fb4d0a03965ac002e14fa5ccb111634077a1b9d2396198de44bbdcac4c6",
-      "commit": "1557694",
+      "source": "72783ac1588e32bcefac7f2088eb5d387f555ef3b264aaf93ededf6720d1da91",
+      "commit": "81647d8",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
-      "pages": 50,
+      "date": "2026-11-02",
+      "pages": 51,
       "landscapeTables": 0
     },
     "23_SURAT_INFORMASI_DAN_PERSETUJUAN.md": {
@@ -209,10 +209,10 @@
       "landscapeTables": 0
     },
     "26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md": {
-      "source": "342b787f1c511d934c2ad0dc43ef4eb4710e4592c049dfecbb0ef6f4ff5c4ce1",
-      "commit": "0618b8b",
+      "source": "b704bdea2b5c2067b0e2721b1aec774c472ba326bfc18854afd7083f4dd113b7",
+      "commit": "81647d8",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
+      "date": "2026-11-02",
       "pages": 19,
       "landscapeTables": 0
     },
