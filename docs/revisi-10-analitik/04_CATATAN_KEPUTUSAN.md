@@ -22,6 +22,19 @@ Yang belum dibawa, karena menunggu: 16 *Cara pelaksanaan* no. 9 (konfirmasi pene
 
 Diubah: 01, 13, 17, 18, 27, 28, 29, 30, 34 (§19 status), 04, `docs/PROGRESS.md`, PDF siap cetak.
 
+**32 diselaraskan dengan format data skenario bagian 5** (cabang `r10-dok-32-skenario-digital`, setelah PR #317) · `asal: pengembang` (penyelarasan berbantuan AI) · status 32 tetap `draf pengembang` · tidak merevisi produk
+
+PR #317 digabung sebelum penyelarasan ini masuk. [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) (PR #314) menetapkan bahwa data skenario milik bagian 5. 32 kini membacanya dari sana, tanpa keputusan baru:
+- pilihan, skor, kode, dan umpan balik dari tabel `scenario_options`, bukan `config_json`/`answer_key_json`;
+- `d2_topic` dan `explanation_*` dari `challenge_items`;
+- kode tindakan lewat `ErrorCodeResolver`;
+- babak *Periksa Unggahan* dari `round` dan `find_part`;
+- panjang kolom kode di `item_tries` sama dengan 31.
+
+32 menambah `BankRules::ENGINES[5] = 'skenario'`, yang di 31 §8.2 masih tertulis `{engine skenario}`. Nomor migrasi 32 (`004000`) tidak bertabrakan dengan 31 (`0039xx`), 33 (`0041xx`), atau 35 (`0043xx`).
+
+Diubah: 32, 04, PDF siap cetak 04 dan 32.
+
 **34 disetujui pengembang** (cabang `r10-dok-34-modul-tes-sikap`, setelah PR #319) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
 
 Pengembang menyetujui [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) apa adanya, termasuk keputusan rancangan K5–K15 dan catatan rencana `satu_sesi`. Persetujuan ini untuk rancangan sistem; butir tes, angket, dan skala sikap tetap `needs_verification` sampai validasi ahli dan uji keterbacaan. Pertanyaan terbuka di 34 §17 tetap untuk peneliti. Akibat ke dokumen lain di 34 §19 menunggu sesi koordinator.
