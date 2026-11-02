@@ -717,6 +717,8 @@ Satu putaran wawancara, 2 November 2026 (`asal: pengembang`). Pengembang memilih
 
 Untuk sesi koordinator; tidak diubah di sini.
 
+**Status per 2 November 2026** (sesi koordinator bagian 8, cabang `r10-dok-34-modul-tes-sikap`): baris 28, 13, 29, 30, 27, 17, 18, dan 01 sudah dibawa. Yang belum, karena menunggu: 16 no. 9 (konfirmasi peneliti, §17 no. 4), 11 (`kamus-1.1`, bersama bagian 9 setelah uji coba), glosarium (saat implementasi, §16), dan berkas serah terima (bila dibuat versi baru).
+
 | Dokumen | Bagian | Yang perlu diubah |
 | --- | --- | --- |
 | [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) | §21 no. 2 dan 3 | Dicoret: no. 2 diputuskan di 34 K1 (tombol P1 menutup tantangan); no. 3 diatur di 34 §10.2 (angket terlambat di susulan P1 sampai P5 utama dibuka). Rencana `satu_sesi` tanpa modul tes dan skala sikap tertulis di 34 §5.1 dan K12 |

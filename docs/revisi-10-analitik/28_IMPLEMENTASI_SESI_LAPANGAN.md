@@ -276,7 +276,7 @@ Setiap penolakan punya pesannya sendiri ([§16](#16-layar-dan-teks)). Penolakan 
 5. Langkah 2 (negara, provinsi, kabupaten, sekolah) dilewati. Data perangkat tetap direkam (M-11).
 6. Langkah 3 (nama pengguna, kata sandi, persetujuan) tetap.
 7. `SessionService::registerAndStart()` membuat siswa dengan `school_id` dan `rombel` dari sesi lapangan, membuat kode peserta ([§10.2](#102-kode-peserta)), menyisipkan satu baris `participant_consents` berisi bawaan (izin rekaman dan butir risiko Tidak, [30 → Izin berkode per siswa](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#52-izin-berkode-per-siswa)), dan membuat sesi game yang terikat ke sesi lapangan, semuanya dalam satu transaksi.
-8. Halaman berikutnya (`/intro`, atau pembuka modul tes di no. 22) menampilkan kartu besar "Kode penelitian" ([10](10_TELAAH_PENDAHULUAN_MEDIA.md), M-11).
+8. Halaman berikutnya (pembuka modul tes `/tes` bila modul terbuka, [34 → Arah setelah masuk](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#52-arah-setelah-masuk); selain itu `/intro`) menampilkan kartu besar "Kode penelitian" ([10](10_TELAAH_PENDAHULUAN_MEDIA.md), M-11).
 
 ### 6.6 Sesi ditutup saat siswa sedang bermain
 
@@ -449,7 +449,8 @@ Dalam mode penelitian, aturan buka dibaca dari rencana pertemuan sesi lapangan y
 | Tantangan tertinggal untuk susulan P5 | Per kode | — |
 | Event hilang (jumlah `dropped` dari `events_dropped` sesi game di sesi ini) | Jumlah per kode | Jumlah |
 | Izin belum diisi (siswa rombel tanpa tanggal izin orang tua, [30 → Izin berkode per siswa](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#52-izin-berkode-per-siswa)) | Jumlah | — (isian izin dan angkanya tidak terlihat admin, [§21](#21-pertanyaan-terbuka) no. 7) |
-| Status tes awal/akhir (`selesai`, `susulan`, `hilang`) | Titik sambung no. 22 | — |
+| Status tes awal/akhir per kode (`belum`, `sedang`, `selesai`, `susulan`, `hilang`), tanpa jawaban, skor, atau tanda butir risiko; tombol *Tambah waktu* per kode ([34 → Batas waktu tersembunyi](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#74-batas-waktu-tersembunyi)) | Ya | — |
+| Tombol *Mulai tes awal* / *Mulai tes akhir* di halaman sesi lapangan P1 dan P5 ([34 → Mulai tes bersama](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#53-mulai-tes-bersama)) | Ya | — |
 
 **Penyegaran:**
 - Data dari `GET /api/admin/monitoring?session={id}` setiap 30 detik.
@@ -513,7 +514,7 @@ Polanya `Simulation::refusal()`.
 
 | Tabel atau kolom | Isi |
 | --- | --- |
-| `field_sessions` (baru) | `id`, `study_id` FK, `code` VARCHAR(20), `school_id` FK, `rombel` CHAR(1), `meeting_no` TINYINT, `makeup_no` TINYINT bawaan 0, `main_session_id` FK diri sendiri (null untuk sesi utama), `session_date` DATE, `opens_at`, `closes_at`, `closed_at` (null), `region_code` VARCHAR(20) (null; hanya untuk `satu_sesi`), `created_by` FK staf, `closed_by` FK staf, `created_at`, `updated_at`. Unik (`study_id`, `code`) |
+| `field_sessions` (baru) | `id`, `study_id` FK, `code` VARCHAR(20), `school_id` FK, `rombel` CHAR(1), `meeting_no` TINYINT, `makeup_no` TINYINT bawaan 0, `main_session_id` FK diri sendiri (null untuk sesi utama), `session_date` DATE, `opens_at`, `closes_at`, `closed_at` (null), `region_code` VARCHAR(20) (null; hanya untuk `satu_sesi`), `created_by` FK staf, `closed_by` FK staf, `created_at`, `updated_at`. Unik (`study_id`, `code`). Kolom `test_started_at` DATETIME (null) dan `test_started_by` FK staf ditambahkan migrasi bagian 8 ([34 → Tabel yang diubah](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#112-tabel-yang-diubah)) |
 | `field_session_tokens` (baru) | `id`, `field_session_id` FK, `token` CHAR(6) unik, `created_by`, `created_at`, `revoked_at` (null) |
 | `field_session_members` (baru) | `field_session_id` FK, `participant_id` FK, `added_by`, `created_at`. Unik pasangan. Hanya untuk susulan |
 | `participant_seats` (baru) | `id`, `participant_id` FK, `study_id` FK, `row_no` TINYINT, `seat_no` TINYINT, `booklet` CHAR(2), `pre_form` CHAR(1), `post_form` CHAR(1), `entered_by`, `entered_at`, `updated_at`, `locked_at` (null). Unik (`participant_id`, `study_id`) |
@@ -645,8 +646,8 @@ Kunci gabung dengan lembar lapangan: kode peserta, `field_session_code`, dan jam
 | --- | --- | --- |
 | No. 16 mode penelitian (bagian 7, `33`) | Sakelar `field_mode`, rencana pertemuan, pengerjaan terbuka saat sesi tutup | Melanjutkan pengerjaan pertama yang terputus, pengerjaan ulang, Kenali, layar kecil, jam disembunyikan |
 | No. 20 bank baru (bagian 5, `31`) | `participant_seats.booklet` | Buklet menentukan variasi pengerjaan pertama |
-| No. 21 skala sikap (bagian 8, `34`) | Susulan P5 dengan jam buka panjang | Layar skala dan `sikap_makeup` |
-| No. 22 modul tes (bagian 8, `34`) | Token P1 dan P5 membuka modul; bentuk A/B dan `locked_at` dari `participant_seats`; "semua siswa punya bentuk" | Modul tes, mulai tes bersama, susulan tes, angket; batas 20 menit di P5 dan angket terlambat ([§21](#21-pertanyaan-terbuka) no. 2–3); rencana `satu_sesi` tanpa modul tes |
+| No. 21 skala sikap (bagian 8, `34`) | Susulan P5 dengan jam buka panjang | Layar skala dan `sikap_makeup`; Balai Refleksi hanya di sesi P5 dan susulannya dalam mode penelitian ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) K12) |
+| No. 22 modul tes (bagian 8, `34`) | Token P1 dan P5 membuka modul; bentuk A/B dan `locked_at` dari `participant_seats`; "semua siswa punya bentuk" | Modul tes, mulai tes bersama (`field_sessions.test_started_at`), susulan tes, angket; batas 20 menit di P5 dan angket terlambat ([§21](#21-pertanyaan-terbuka) no. 2–3, diputuskan di [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) K1 dan §10.2); rencana `satu_sesi` tanpa modul tes (34 §5.1) |
 | No. 23 (bagian 4, [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md)) | Kode peserta, sesi lapangan, halaman kursi, angka "izin belum diisi" di pemantauan | Izin berkode per siswa di `/admin/sesi-lapangan/{id}/izin`, baris izin saat mendaftar, token menolak siswa nonaktif, penanda tindak lanjut |
 | Bagian 3 ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md)) | Data di §17, `events_dropped` per sesi | Lembar unduhan, kamus, log teknis admin, templat dan unggah lembar di `/admin/sesi-lapangan/{id}/lembar`, `session_paused {via: idle}` dari `markStale`, penanda `outside_session` |
 
@@ -713,8 +714,8 @@ Di mesin pengembangan, dengan mode penelitian menyala:
 Tidak menahan draf ini. Dicek ulang 1 November 2026: no. 1 dan 6 selesai, no. 2 dan 3 pindah ke bagian 8 (`34`), no. 4 dipegang ketua peneliti.
 
 1. ~~**Teks token.**~~ **Sudah diselaraskan (putaran kedua, 30 Oktober 2026):** "enam huruf dan angka" dipakai di mock-up `mk-tk-01`/`mk-tk-02` dan instrumen ahli media v1.1 ([04](04_CATATAN_KEPUTUSAN.md)). Kalimat akhirnya tetap mengikuti telaah ahli media dan uji keterbacaan, seperti semua teks di [§16](#16-layar-dan-teks); tidak perlu keputusan lagi di sini.
-2. **Batas 20 menit tantangan tertinggal di P5.** Dijaga P1 dengan jam, atau ditutup sistem? Usulan: dijaga P1, karena modul tes P5 yang menentukan urutan. **Diputuskan di bagian 8** (`34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md`, perubahan no. 21–22), yang ditulis di gelombang B.
-3. **Angket yang terlambat** (dibuka sampai P5, `questionnaire_late`) bergantung pada modul tes; **diatur di bagian 8** (`34`).
+2. ~~**Batas 20 menit tantangan tertinggal di P5.**~~ **Diputuskan pengembang di bagian 8, 2 November 2026** ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) K1): P1 menjaga 20 menit dengan jam, lalu menekan *Mulai tes akhir*; tantangan di sesi lapangan itu tertutup dan semua siswa diarahkan ke modul, pengerjaan yang terbuka dibiarkan (K14).
+3. ~~**Angket yang terlambat.**~~ **Diatur di bagian 8** ([34 → Angket terlambat](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#102-angket-terlambat)): angket diisi di sesi susulan P1 sampai P5 utama dibuka, dengan `questionnaire_late` bila siswa sudah bermain. Batas "sebelum P5 utama dibuka" menunggu konfirmasi peneliti (34 §17 no. 4).
 4. **Daftar kode sekolah** (daftar kerja no. 12) belum ada. Disusun ketua peneliti dari sekolah yang direkrut, dan admin memasukkan kodenya ke `schools.research_code` ([04](04_CATATAN_KEPUTUSAN.md), 31 Oktober 2026). Sistem tidak bergantung pada isinya, tetapi sekolah tidak bisa dipakai untuk sesi lapangan sebelum kodenya diisi.
 5. ~~**`GameSessionModel::markStale()`**~~ **Diputuskan di bagian 3:** `markStale()` menulis `session_paused` dengan `via: idle`, satu per sesi yang benar-benar diubahnya ([29 → Sesi yang diam](29_IMPLEMENTASI_DATA_PENELITIAN.md#57-sesi-yang-diam-markstale), K14). Dalam mode penelitian, penutupan sesi lapangan tetap memakai §6.6 (`via: field_session_closed`).
 6. ~~**Satu siswa, dua perangkat bersamaan** dalam satu sesi lapangan.~~ **Diputuskan pengembang 1 November 2026** ([§22](#22-keputusan-pengembang) no. 10): tetap seperti sekarang. Sesi game yang sama dilanjutkan di perangkat kedua, dan perpindahannya dicatat di L2 sebagai pindah perangkat. Tidak ada kode baru.
@@ -778,5 +779,5 @@ Dicatat di sini dan dibawa sesi koordinator setelah bagian 3 dan 4 selesai.
 | [03](03_KODE_DAN_ARTI.md) | Kode sesi; *Kegiatan dengan anak* | Kode sesi KG2 `U01-A-P1` (rencana `satu_sesi`); satu akun hanya di satu studi (K20) | Belum (1 November 2026) |
 | [18](18_MOCKUP_LAYAR_BARU.md) | Teks layar token | Pesan baru `tokenOtherStudy` | Belum (1 November 2026) |
 | `33` (bagian 7) | Mode penelitian | Memakai `field_mode` dan `meeting_plan` per studi dari sini; rencana `satu_sesi` tidak memakai Kenali dan pengerjaan ulang | Untuk sesi gelombang B (1 November 2026) |
-| `34` (bagian 8) | Modul tes dan skala sikap | Memutuskan 28 §21 no. 2 (batas 20 menit P5) dan no. 3 (angket terlambat); rencana `satu_sesi` (KG2) tanpa modul tes, angket, dan skala sikap | Untuk sesi gelombang B (1 November 2026) |
+| `34` (bagian 8) | Modul tes dan skala sikap | Memutuskan 28 §21 no. 2 (batas 20 menit P5) dan no. 3 (angket terlambat); rencana `satu_sesi` (KG2) tanpa modul tes, angket, dan skala sikap | Sudah (34 K1, §5.1, §10.2, K12; dibawa ke 28 oleh sesi koordinator bagian 8, 2 November 2026) |
 | [11](11_KAMUS_DATA.md) | Variabel sesi | `meeting_plan` studi dan `region_code` sesi lapangan KG2 menurunkan `region_opened`; masuk `kamus-1.1` | Saat `kamus-1.1` |

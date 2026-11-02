@@ -395,7 +395,17 @@ Urutan resmi sesudah bagian ini. `ExportService::SHEETS` dan `RawDataService::DI
 | `l1_kondisi`, `l1_penyimpangan`, `l2_kursi`, `l3_bantuan`, `l4_bromp`, `l5_wawancara`, `l6_sesi` | Lembar lapangan yang diimpor ([§10](#10-templat-dan-impor-lembar-lapangan-perubahan-no-15)) | `field_sheet_rows` | **Baru** |
 | `perangkat` | — | — | **Keluar** dari unduhan; pindah ke log teknis ([§5.6](#56-data-bertanda-admin-dan-halaman-log-teknis)) |
 
-Lembar dari perubahan lain ditambahkan ke daftar yang sama nanti: data turunan (no. 9), tes dan angket (no. 22), angka gabungan butir risiko daring ([§7.6](#76-butir-risiko-daring)), skala sikap (no. 21).
+Lembar dari perubahan lain ditambahkan ke daftar yang sama nanti: data turunan (no. 9) dan angka gabungan butir risiko daring ([§7.6](#76-butir-risiko-daring)). Tes, angket, dan skala sikap (no. 21, 22) menambah empat lembar dan kolom `peserta`, dari [34 → Data untuk kamus dan unduhan](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#114-data-untuk-kamus-dan-unduhan):
+
+| Lembar | Isi | Sumber | Status |
+| --- | --- | --- | --- |
+| `tes_jawaban` | Satu baris per satuan jawaban per siswa per tes (`pre`/`post`): jawaban mentah, skor, kode kesalahan, `not_reached`, waktu tampil, penggantian jawaban, versi isi | `instrument_responses` (34) | **Baru** |
+| `tes_bagian` | Satu baris per bagian tes per siswa: jam mulai dan kirim, ditutup batas waktu, menit tambahan, skor mentah | `instrument_parts`, `instrument_blocks` (34) | **Baru** |
+| `angket` | Satu baris per siswa: status pengisian dan 41 kolom ang-01–ang-17 | `instrument_responses` (34) | **Baru** |
+| `sikap` | Satu baris per siswa: `skp_*`, waktu per butir, `feedback_rating` | `instrument_responses` (34), `participant_feedback` | **Baru** |
+| `peserta` (tambahan) | `pre_form` … `post_capped` dari 13 | `participant_seats`, `instrument_parts` (34) | Diubah |
+
+Sesi pratinjau validator (`is_preview`) dan sesi jenis `risk` tidak pernah masuk lembar per siswa.
 
 ### 7.3 Kolom yang berubah per lembar
 
@@ -444,7 +454,7 @@ Penilaian dampak menetapkan bahwa peneliti hanya melihat angka gabungan butir ri
 - Jawaban ang-21–ang-23 **tidak pernah** masuk lembar per siswa, lembar `event`, atau layar data mentah.
 - Unduhan memuat lembar **`risiko_gabungan`**: satu baris per butir dan pilihan jawaban, dengan banyak siswa untuk seluruh studi, lalu per kode sekolah. Sel dengan kurang dari 5 siswa ditulis `<5`, mengikuti batas laporan di 26 → P9. *Tidak mau menjawab* dan *tidak diberi butir* (tanpa izin) dihitung sebagai pilihan sendiri.
 - Penanda tindak lanjut hanya di bagian 4, untuk `ketua`, dan tidak diekspor.
-- Isi lembarnya baru ada setelah modul no. 22 menyimpan jawaban. Bagian ini hanya menetapkan bentuknya.
+- Isi lembarnya baru ada setelah modul no. 22 menyimpan jawaban. Bagian ini hanya menetapkan bentuknya. Sumbernya sesi modul jenis `risk` (`instrument_sittings.kind = 'risk'`, tanpa pratinjau): `risk_offered = 0` dihitung *tidak diberi butir*, `risk_reconsent = 0` *tidak mau mengisi*, kode `7` *tidak mau menjawab* ([34 → Data](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#83-data)).
 - Aturan ini hanya untuk unduhan peneliti. Salinan data satu anak untuk orang tua adalah jalur lain di bagian 4: jawaban butir risiko diberikan bila orang tua tetap meminta setelah anak ditanya, kecuali membahayakan anak ([30 → Salinan data satu anak](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#8-salinan-data-satu-anak); putaran kedua 30–31 Oktober 2026 di 04).
 
 ---
