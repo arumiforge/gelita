@@ -18,6 +18,7 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 Keputusan turunan untuk ditinjau (K5–K14 di 35): variabel turunan angket dan skala sikap dihitung lapis turunan, bukan modul bagian 8; `*_theta` tes tetap di lapis 3; jarak ketukan kosong dihitung server; lembar turunan tanpa jawaban, kunci, butir risiko per siswa, atau id internal; lapis turunan hanya untuk studi `field_mode`; tanpa kemampuan baru. Temuan untuk sesi koordinator: 16 masih mendaftar `risk_*`/`support_*` sebagai variabel peserta, padahal 29 K9 hanya mengizinkan angka gabungan; `sikap_missing_reason = tanpa_izin` (17) tidak pernah terjadi di sistem. Nama data bagian 5–8 adalah anggapan, didaftar di 35 §15 dan §20.
 
 Diubah: 35 (baru), 00 (*Daftar dokumen*, baris bagian 9 di *Tahap dokumen 3*), 04, `docs/PROGRESS.md`, PDF siap cetak.
+
 **23 dicek kemutakhirannya dan siap diserahkan ke peneliti sebagai PDF** (cabang `r10-cek-23`, gelombang A sesi 2) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 23 tetap draf · tidak merevisi produk
 
 Atas permintaan pengembang, [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) (terakhir diubah 1 November 2026 pukul 14.12, pembaruan ADDIE) dicek terhadap entri 04 sesudahnya, terhadap 22, 24, 26, 30, 02 → L7, dan 03, dan terhadap kode. Tidak ada keputusan baru dan tidak ada pertanyaan untuk pengembang. Teks untuk orang tua, sekolah, guru, dan anak (T1–T3, T5–T10, T13) tidak berubah; T9 dari 1 November 2026 tetap.

@@ -1,11 +1,11 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "a7b5006176807ed350e4085d6757b96f78d875102523cc3ddc07a2cfd8266651",
-      "commit": "dbe015e",
+      "source": "575315ab19f5f7c8b519da2999f94f1109364bfcc9a331fc825e84b3aa0b0e0c",
+      "commit": "bca0fb7",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 13,
+      "pages": 14,
       "landscapeTables": 0
     },
     "01_REVISI_10_ANALITIK.md": {
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "2a7c5571d4d08efb4f8ed68935ec0908ed7a866759972e7ee8e3375a0f6085d8",
-      "commit": "52541ed",
+      "source": "e2541150fc67c261343b4bfc406ffb19b2d7366e54091b7cc9b3f03c3e4b58f3",
+      "commit": "bca0fb7",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 52,
+      "pages": 53,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -246,6 +246,14 @@
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
       "pages": 25,
+      "landscapeTables": 0
+    },
+    "35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md": {
+      "source": "974cc37ef2285deb415a0ac29b398bd7dadb4004ab543a60bfd910d8d07aa0e2",
+      "commit": "3a294a4",
+      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
+      "date": "2026-11-02",
+      "pages": 20,
       "landscapeTables": 0
     }
   }
