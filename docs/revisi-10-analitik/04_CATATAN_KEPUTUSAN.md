@@ -6,6 +6,21 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 2 November 2026
 
+**Akibat 30 dibawa ke 22, 26, 27, dan 29; konfirmasi IDCloudHost dari peneliti** (sesi koordinator untuk 30, cabang `r10-cek-30`, setelah PR #324) · `asal: pengembang` (penyelarasan) dan `asal: peneliti` (konfirmasi penyedia server) · status dokumen tidak berubah · tidak merevisi produk
+
+Atas permintaan pengembang, baris *Akibat ke dokumen lain* di [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#23-akibat-ke-dokumen-lain) yang bertanggal 2 November 2026 dibawa ke dokumen tujuannya, tanpa keputusan baru:
+- **29:** lembar `izin` di unduhan utama (§7.2), `consent_ok` dihitung dari lembar itu (§10.6), baris bagian 4 di titik sambung, dan catatan di kepala dokumen bahwa bagian 4 digabung sesudah bagian 3 dan tidak mengubah baris milik bagian 3 di berkas bersama (30 keputusan no. 7, 9, 10).
+- **27 §6.1:** "setiap bagian diimplementasikan berurutan" diganti: bagian 3 dan 4 paralel di gelombang E, bagian 4 digabung kedua; `003800` nilai akhir bagian 1–4, dinaikkan lagi bagian 5–9.
+- **22 dan 26:** provinsi dan kabupaten tetap disimpan setelah studi ditutup dan komite diminta menilainya (22 *Masa simpan dan pemusnahan*, 26 catatan R2; 30 keputusan no. 11). 26 L3, P18, dan syarat KG2 menyebut sakelar `gelita.researchPrivacy` dan `KEDUA_HARI` (30 keputusan no. 8).
+- **23:** kalimat "tahap 3" di T4, T11, dan T12 sudah dibetulkan sesi cek 23 (PR #320); tidak ada yang diubah.
+- **`docs/08_DEPLOYMENT.md`:** tetap diubah saat implementasi (30 §20).
+
+**Konfirmasi IDCloudHost** (diperoleh peneliti, disampaikan pengembang 2 November 2026; `asal: peneliti`). Cadangan bisa dihapus pelanggan (kendali penuh); IDCloudHost tidak membuat cadangan otomatis kecuali pelanggan mengaturnya; data di database utama dihapus atau dianonimkan sesuai prosedur dan dasar penghapusannya; cadangan yang memuat data itu dihapus saat masa simpannya berakhir (bawaan 30 hari), sehingga cadangan lama tidak disimpan tanpa batas; IDCloudHost memberi informasi atau bukti bahwa cadangan sudah dihapus, termasuk di infrastruktur internal penyedia. Ini menjawab 30 §21 no. 6: langkah 5 penggantian cadangan (30 §7.5) bisa dijalankan, dan buktinya disimpan `ketua` bersama berita acara. Dimasukkan ke 30 §7.5 dan §21–§23, 22 (*Penyimpanan dan enkripsi*, peran prosesor), dan 26 (aliran data no. 8, P6). Isinya ditulis di perjanjian prosesor.
+
+22 dan 26 berubah sesudah *commit* serah terima `f45d274`, jadi PDF siap cetak keduanya dibuat ulang dan dikirim kembali ke peneliti.
+
+Diubah: 22, 26, 27, 29, 30, 04, `docs/PROGRESS.md`, PDF siap cetak.
+
 **Gelombang A dan B digabung; pertanyaan terbuka yang bisa diputuskan sekarang dijawab** (sesi koordinator, cabang `sky/sweet-allen-0md2pw`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
 
 Kesebelas PR gelombang A (22, 23, 27–30) dan B (31–35) sudah digabung ke `main`. Sebelum digabung, `main` dimasukkan ke setiap cabang. Konflik di 04, 00, `docs/PROGRESS.md`, dan PDF siap cetak diselesaikan dengan menyimpan kedua sisi, lalu PDF dibuat ulang. Satu salah tempat dibetulkan saat itu: status 29 sempat tertulis di baris bagian 1 tabel *Tahap dokumen 3*.
