@@ -1,10 +1,10 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "762a6dc0fe90de6eaf08da70367d0e5a5b4a5c38e458e3faf1bf8cf0c76a8287",
-      "commit": "e16ff02",
+      "source": "541242f04322a19ceeeb3aab00b7b264bd9d79efd58d18003f79f653269b9195",
+      "commit": "379e336",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
+      "date": "2026-11-02",
       "pages": 13,
       "landscapeTables": 0
     },
@@ -33,10 +33,10 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "2f38ea0b40fb141aae152414f4c0071505a19145dedd8b749bd0bf9beff870ff",
-      "commit": "e16ff02",
+      "source": "2208734e8ef3be36c677cf1b774be4133ba0f7b9b409a9b94b69cc16bea3b66d",
+      "commit": "379e336",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
+      "date": "2026-11-02",
       "pages": 52,
       "landscapeTables": 0
     },
@@ -246,6 +246,14 @@
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
       "pages": 25,
+      "landscapeTables": 0
+    },
+    "31_IMPLEMENTASI_BANK_SOAL_BARU.md": {
+      "source": "bd6c06d948b2676893c36133cc91f4ff6f7dfbb427380625dd393baadb47014e",
+      "commit": "379e336",
+      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
+      "date": "2026-11-02",
+      "pages": 20,
       "landscapeTables": 0
     }
   }
