@@ -6,6 +6,21 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 1 November 2026
 
+**28 dicek kemutakhirannya dan disetujui pengembang** (gelombang A, cabang `r10-cek-28`) · `asal: pengembang` (pemeriksaan berbantuan AI; enam keputusan pengembang) · `disetujui pengembang` · belum merevisi produk
+
+[28](28_IMPLEMENTASI_SESI_LAPANGAN.md) (terakhir diubah 31 Oktober 2026) dicek terhadap entri 04 sesudahnya (putaran kedua 30–31 Oktober 2026; model ADDIE, KG3a/KG3b, satu awalan `U` dengan satu baris `research_studies` per uji, satu anak satu uji, versi dikunci di G4, aturan dibangun sekarang), terhadap 03, 20, dan 27 §6.1, dan terhadap kode (terakhir berubah 26 Oktober 2026). Dua putaran tanya, enam pertanyaan ([28 → Keputusan pengembang](28_IMPLEMENTASI_SESI_LAPANGAN.md#22-keputusan-pengembang) no. 7–12):
+
+1. **`gelita:uji:akun` tetap di gelombang kode D.** Alat ini bisa dibangun sendiri lebih awal, tetapi pengembang memilih membangunnya bersama bagian 2; instalasi uji tahap 2 (*commit* yang dibekukan) tetap memakai cara manual di 20 → Prasyarat no. 8, dan alat ini pertama dipakai di G3. Tidak dipilih: cabang tersendiri sebelum pembekuan (usulan AI).
+2. **Rencana pertemuan per studi** (`research_studies.meeting_plan`, 28 K19): `lima_pertemuan` untuk KG3a, KG3b, KG5; `satu_sesi` untuk KG2 (daftar lalu satu wilayah yang dipilih saat sesi lapangan dibuat). Tidak dipilih: KG2 dengan `field_mode` mati; KG2 di instalasi terpisah.
+3. **Token menolak akun yang sudah punya sesi game di studi lain** (`other_study`, 28 K20), pelengkap aturan satu anak satu uji. Tidak dipilih: hanya prosedur lapangan.
+4. **Satu siswa di dua perangkat** tetap melanjutkan sesi game yang sama (28 §21 no. 6). Tidak dipilih: perangkat terbaru menutup yang lama.
+5. **Migrasi `003500` mengisi `participant_progress`** dari pengerjaan tuntas sebelum membuang `session_progress`, jadi tidak termasuk migrasi yang menghapus data. Tidak dipilih: diperlakukan seperti `003400` dan `003600`.
+6. **28 naik menjadi `disetujui pengembang`.**
+
+Diselaraskan tanpa keputusan baru: "tahap 3, setelah G2" diganti aturan dibangun sekarang (gelombang D); `field_mode` mati secara bawaan dan satu studi per uji; satu urutan `U` dan penghitung kode yang tidak per studi; rujukan kode dibetulkan (`GameSessionModel::resumable()`, `ParticipantAuthFilter` tidak menolak status `CLOSED`, `keepForLater()` juga membuang antrean pada 422, urutan tantangan sekarang hanya diperiksa di `ChallengeController`, `TryLimitTest` dan `RawDataWorld` ikut membaca `session_progress`); 28 §21 no. 1 selesai (teks token sudah disamakan), no. 2–3 pindah ke bagian 8 (`34`), no. 4 dipegang ketua peneliti. Urutan migrasi 27 §6.1 tetap cocok (kode masih di `003300`). Akibat ke 20, 03, 18, 33, 34, dan 11 dicatat di 28 §23 untuk sesi koordinator.
+
+Diubah: 28, 00 (dua baris 28), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 28.
+
 **Pembagian kerja baru: peneliti menangani validasi dan izin etik, pengembang menyerahkan berkas awal lalu mengimplementasikan** (cabang `sky/sweet-allen-0md2pw`) · `asal: peneliti` (pembagian kerja, disampaikan lewat pengembang) dan `asal: pengembang` (empat keputusan lanjutan) · `disetujui pengembang` · merevisi rencana kerja, belum merevisi produk
 
 Peneliti meminta dokumen permohonan izin etik ([22](22_PERMOHONAN_IZIN_ETIK.md)) serta surat informasi dan persetujuan ([23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md)). Semua validasi (validasi ahli, izin etik, uji keterbacaan, uji dengan siswa) ditangani peneliti. Pengembang cukup menyerahkan berkas awal, lalu fokus mengimplementasikan perubahan terbaru ke sistem. Pengembang tetap menyediakan bahan teknis yang diminta peneliti, misalnya isian kelompok B di 22 atau instalasi uji dan akun `uji.*` di [20](20_PAKET_VALIDASI.md). Empat keputusan lanjutan diambil pengembang dalam wawancara singkat:
