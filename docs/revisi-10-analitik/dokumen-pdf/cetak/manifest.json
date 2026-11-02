@@ -1,8 +1,8 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "a7b5006176807ed350e4085d6757b96f78d875102523cc3ddc07a2cfd8266651",
-      "commit": "dbe015e",
+      "source": "9b634a6bf9adf8e9d200d378ebc72ccd3e35513117f962d8c361b86dbfd5c786",
+      "commit": "6c3d963",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 13,
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "2a7c5571d4d08efb4f8ed68935ec0908ed7a866759972e7ee8e3375a0f6085d8",
-      "commit": "52541ed",
+      "source": "a860790acb4856b85cd554e6f38b2db771f375f1411c25c596b2d586873830c3",
+      "commit": "6c3d963",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 52,
+      "pages": 53,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -217,11 +217,11 @@
       "landscapeTables": 0
     },
     "27_IMPLEMENTASI_PERAN_PENELITI.md": {
-      "source": "235d01be2c9629225308ccf738695b93f1badbf5cecbe428015b76d3cfb03881",
-      "commit": "1313e3f",
+      "source": "55c8ecce7b036b056356f3662675dc26a3e42507a5e6a4dcac61db95e45d1909",
+      "commit": "7a6d569",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-31",
-      "pages": 18,
+      "date": "2026-11-02",
+      "pages": 20,
       "landscapeTables": 0
     },
     "28_IMPLEMENTASI_SESI_LAPANGAN.md": {
