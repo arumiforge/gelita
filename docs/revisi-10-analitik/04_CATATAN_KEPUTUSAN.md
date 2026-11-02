@@ -4,6 +4,29 @@ Per 1 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
 
+## 2 November 2026
+
+**27 dicek kemutakhirannya dan disetujui pengembang; empat keputusan baru** (gelombang A, cabang `r10-cek-27`) · `asal: pengembang` (pemeriksaan berbantuan AI dan wawancara singkat) · 27 naik ke `disetujui pengembang` · belum merevisi produk
+
+Dokumen implementasi bagian 1 ([27](27_IMPLEMENTASI_PERAN_PENELITI.md)) dicek terhadap entri 04 sesudah *commit* terakhirnya (putaran kedua 30–31 Oktober 2026 dan semua entri 1 November 2026), dokumen yang dirujuknya, dan kode. Satu putaran tanya, empat pertanyaan; pengembang memilih usulan di keempatnya, lalu menyetujui dokumennya.
+
+1. **CSV daftar siswa untuk admin dihapus** (27 §16 no. 4, K17). Nama hanya tampil di layar admin. Tidak dipilih: CSV admin tanpa nama; CSV admin dengan nama dan setiap unduhan dicatat.
+2. **"Hanya ketua yang menyambungkan kode ke nama" tetap pembatasan prosedur** (27 §16 no. 6), seperti di 22 dan 26. Tidak dipilih: halaman siswa admin tanpa kode peserta.
+3. **Akun `pengamat` dan `pewawancara` tetap berperan `peneliti`, dibuat hanya bila perlu** (27 §16 no. 7). Tidak dipilih: hanya `pewawancara`; peran keempat yang hanya melihat.
+4. **Penjaga di migrasi `003400`** (temuan baru, K16). Skrip pembaruan di `docs/08_DEPLOYMENT.md` menjalankan `php spark migrate` otomatis, jadi tanpa penjaga, memperbarui produksi langsung menghapus akun `guru`. `003400` kini berhenti bila masih ada akun `guru` atau unduhannya, kecuali `.env` memuat `gelita.allowTeacherRemoval = true`; instalasi tanpa akun guru berjalan bebas. `StaffAuthFilter` mengakhiri sesi akun berperan di luar `StaffAccess::ROLES`. Tidak dipilih: prosedur saja.
+5. **27 `disetujui pengembang`**, dasar kode gelombang C.
+
+**Yang diselaraskan tanpa keputusan baru:**
+- Status dan §0: "kode diubah di tahap 3, setelah G2" diganti aturan 1 November 2026 (bangun sekarang, tidak dipakai dengan anak sebelum persetujuan etik); §0 menambah sakelar studi yang mati secara bawaan, migrasi yang menghapus data, dan instalasi uji pada *commit* beku.
+- K5, K12, §8: kode sekolah uji `U01`, …; ketua membuat satu baris `research_studies` per uji.
+- §6.1: `003300` masih migrasi terakhir; urutan `003400`→`003800` tetap; bagian 5–9 mulai `003900`.
+- §11: instalasi uji validator memakai *commit* beku (kode sebelum bagian 1, cukup akun `admin`); di G3 diperbarui ke Prototipe II, pengembang memegang `admin` dan `ketua`.
+- Rujukan kode yang dibetulkan: daftar "20 event terakhir" di ringkasan tidak memakai nama sekolah (hanya "10 siswa terakhir"); jalur `app/Libraries/Simulation/Simulator.php`; `SystemResetService` (baris 288) dan `SchoolController` juga memegang `staff_users.school_id`; `grep guru app/` 120 baris, bukan sekitar 40 komentar; `TelemetryBatchTest` merender `isAdmin`, tanpa akun guru. Rujukan lain (berkas, metode, nomor baris, tes, kunci bahasa, anker) tetap benar; kode belum berubah sejak 30 Oktober 2026.
+
+**Akibat ke dokumen lain** (27 §18, untuk sesi koordinator): penjaga yang sama untuk `003600` di [29](29_IMPLEMENTASI_DATA_PENELITIAN.md); `docs/08_DEPLOYMENT.md` menyebut penjaga `003400` saat implementasi.
+
+Diubah: 27, 00 (dua baris 27), 04, `docs/PROGRESS.md`, PDF siap cetak.
+
 ## 1 November 2026
 
 **28 dicek kemutakhirannya dan disetujui pengembang** (gelombang A, cabang `r10-cek-28`) · `asal: pengembang` (pemeriksaan berbantuan AI; enam keputusan pengembang) · `disetujui pengembang` · belum merevisi produk
