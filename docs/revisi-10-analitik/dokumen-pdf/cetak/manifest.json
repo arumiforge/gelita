@@ -1,11 +1,11 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "575315ab19f5f7c8b519da2999f94f1109364bfcc9a331fc825e84b3aa0b0e0c",
-      "commit": "bca0fb7",
+      "source": "63c0645ad6cd2587e2d4c1561d239204633915ab0c716440fe8fe66eb042b09a",
+      "commit": "553f579",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 14,
+      "pages": 13,
       "landscapeTables": 0
     },
     "01_REVISI_10_ANALITIK.md": {
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "de529c15bc4b11b0d52b7e1d127bd635aeba88f51dbfba678dc8702c743ea62f",
-      "commit": "ecbc792",
+      "source": "a10e2ad637372b6ce418b74489728da5e7a523b494afcea2887320e438c37cda",
+      "commit": "553f579",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 53,
+      "pages": 54,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -217,19 +217,19 @@
       "landscapeTables": 0
     },
     "27_IMPLEMENTASI_PERAN_PENELITI.md": {
-      "source": "235d01be2c9629225308ccf738695b93f1badbf5cecbe428015b76d3cfb03881",
-      "commit": "1313e3f",
+      "source": "55c8ecce7b036b056356f3662675dc26a3e42507a5e6a4dcac61db95e45d1909",
+      "commit": "7a6d569",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-31",
-      "pages": 18,
+      "date": "2026-11-02",
+      "pages": 20,
       "landscapeTables": 0
     },
     "28_IMPLEMENTASI_SESI_LAPANGAN.md": {
-      "source": "8af2b2add7e5b1ec604cb9f1b8db95176e102e34c2b66f059bfcbd9e93ba2ebe",
-      "commit": "1313e3f",
+      "source": "8b84ff97688ffd73a6ded421114fb5699c9e735e22144c5011f49bb5dd36747b",
+      "commit": "fd61ece",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-31",
-      "pages": 20,
+      "date": "2026-11-02",
+      "pages": 22,
       "landscapeTables": 0
     },
     "29_IMPLEMENTASI_DATA_PENELITIAN.md": {
@@ -246,14 +246,6 @@
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
       "pages": 25,
-      "landscapeTables": 0
-    },
-    "35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md": {
-      "source": "974cc37ef2285deb415a0ac29b398bd7dadb4004ab543a60bfd910d8d07aa0e2",
-      "commit": "3a294a4",
-      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-02",
-      "pages": 20,
       "landscapeTables": 0
     }
   }
