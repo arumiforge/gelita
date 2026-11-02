@@ -19,6 +19,34 @@ PR #317 digabung sebelum penyelarasan ini masuk. [31](31_IMPLEMENTASI_BANK_SOAL_
 
 Diubah: 32, 04, PDF siap cetak 04 dan 32.
 
+**34 disetujui pengembang** (cabang `r10-dok-34-modul-tes-sikap`, setelah PR #319) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Pengembang menyetujui [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) apa adanya, termasuk keputusan rancangan K5–K15 dan catatan rencana `satu_sesi`. Persetujuan ini untuk rancangan sistem; butir tes, angket, dan skala sikap tetap `needs_verification` sampai validasi ahli dan uji keterbacaan. Pertanyaan terbuka di 34 §17 tetap untuk peneliti. Akibat ke dokumen lain di 34 §19 menunggu sesi koordinator.
+
+Diubah: 34 (status, §18 no. 5), 00 (dua baris 34), 04, `docs/PROGRESS.md`, PDF siap cetak.
+
+**Commit serah terima ke peneliti: `f45d274`** (cabang `r10-cek-22`, dari `main` setelah PR #312) · `asal: pengembang` · `disetujui pengembang` (diminta pengembang 2 November 2026) · tidak merevisi produk
+
+Gelombang A untuk 22 dan 23 selesai: cek kemutakhiran 23 (PR #311) dan 22 (PR #312) sudah digabung. Paket untuk peneliti (keputusan no. 4 di entri *Pembagian kerja baru*, 1 November 2026) diambil dari *commit* **`f45d274`** (`f45d27447b30f35d692f0ced422471ef8625fce9`, gabungan PR #312 ke `main`, 2 November 2026). Di *commit* itu `cetak.mjs` tidak membangun ulang apa pun (36 dokumen tidak berubah), jadi semua PDF di bawah sesuai dengan Markdown-nya.
+
+| Berkas | Isi dari *commit* (kaki halaman PDF) | Halaman |
+| --- | --- | --- |
+| `dokumen-pdf/cetak/22_PERMOHONAN_IZIN_ETIK.pdf` | `81647d8` (2 November 2026) | 51 |
+| `dokumen-pdf/cetak/23_SURAT_INFORMASI_DAN_PERSETUJUAN.pdf` | `52541ed` (2 November 2026) | 33 |
+| `dokumen-pdf/cetak/24_UJI_KETERBACAAN.pdf` | `8b46ca2` (1 November 2026) | 20 |
+| `dokumen-pdf/cetak/26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.pdf` | `81647d8` (2 November 2026) | 19 |
+| `dokumen-pdf/serah-terima-peneliti.pdf` (berkas serah terima v1.5) | sumber HTML di `f45d274` | 37 |
+
+- Pengembang mengirim kelima berkas ini ke peneliti, PDF saja. Tanggal kirim dicatat di sini bila berbeda dari 2 November 2026.
+- Perubahan dari peneliti atau komite etik masuk lewat pengembang dengan `asal: peneliti` atau `asal: komite etik` (keputusan no. 3). Setiap kiriman PDF berikutnya dicatat di 04 dengan *commit*-nya, supaya selalu jelas versi mana yang dipegang peneliti.
+- Yang masih terbuka dan tidak menahan penyerahan: batas `retention_days` 3650 di formulir studi admin (kode bagian 4, 30 §11); isian di [22 → Daftar isian sebelum diajukan](22_PERMOHONAN_IZIN_ETIK.md#daftar-isian-sebelum-diajukan) diisi peneliti di luar repo.
+
+Diubah: 04, 00 (baris 22 dan 23 di daftar dokumen dan tahap 2, catatan *Peneliti menerima PDF saja*), `docs/PROGRESS.md`, PDF siap cetak 00 dan 04. *Commit* serah terima sendiri tidak berubah: perubahan ini hanya mencatatnya.
+
+**34 diselaraskan dengan rencana `satu_sesi` di 28** (cabang `r10-dok-34-modul-tes-sikap`, setelah PR #315) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 34 tetap `draf pengembang` · tidak merevisi produk
+
+28 K19 (rencana pertemuan per studi, digabung saat 34 ditulis) meminta 34 menulis bahwa rencana `satu_sesi` (KG2) tidak membuka modul tes, angket, butir risiko daring, dan skala sikap. Ditulis di 34 §5.1 dan K12; baris 28 di 34 §19 kini juga mencoret 28 §21 no. 3 (angket terlambat, diatur di 34 §10.2). Tidak ada keputusan baru.
+
 **22 dicek kemutakhirannya dan siap diserahkan ke peneliti sebagai PDF** (gelombang A, cabang `r10-cek-22`, 1–2 November 2026) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 22 tetap draf · tidak merevisi produk
 
 [22](22_PERMOHONAN_IZIN_ETIK.md) dicek terhadap entri 04 sesudah *commit* terakhirnya (cek pasal PP 33/2026), terutama *Pembagian kerja baru* di bawah, terhadap 23, 24, 26, 30, 03, dan 01, dan terhadap kode. Tidak ada keputusan baru; yang diubah hanya yang sudah diputuskan. Nomor pasal PP No. 33 Tahun 2026 dan pemetaan formulir BRIN tidak disentuh.
