@@ -1,11 +1,11 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "aefc0c56ee0ff7c117ec0aac72858bcb9e57376c291170fe7f27acb77f39a896",
-      "commit": "37ebdff",
+      "source": "07325c3b28efc36e6e2dbd068ce140a205342e3529d6d616e4158914b4319b62",
+      "commit": "e768cd6",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 14,
+      "pages": 15,
       "landscapeTables": 0
     },
     "01_REVISI_10_ANALITIK.md": {
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "fa6fb368708daf8f02df3c878f09f8db824458d373447f9715ffb068ffc58128",
-      "commit": "37ebdff",
+      "source": "b3e496e6fb8d4065c8282ece2ec683c676351eeb01730742d574659aed548dd6",
+      "commit": "e768cd6",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 56,
+      "pages": 57,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -262,6 +262,14 @@
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 15,
+      "landscapeTables": 0
+    },
+    "34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md": {
+      "source": "64cefc23004e988398fde819040b2775096bc8b872cf19e4bd22130e102aeb5d",
+      "commit": "50e9060",
+      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
+      "date": "2026-11-02",
+      "pages": 22,
       "landscapeTables": 0
     }
   }
