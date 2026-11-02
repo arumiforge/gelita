@@ -6,6 +6,26 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 2 November 2026
 
+**Dokumen implementasi bagian 7: mode penelitian, waktu aktif, dan perbaikan media** (cabang `r10-dok-33-mode-penelitian`, gelombang B) · `asal: pengembang` (draf berbantuan AI, empat keputusan pengembang) · [33](33_IMPLEMENTASI_MODE_PENELITIAN.md) `draf pengembang` · tidak merevisi produk
+
+[33](33_IMPLEMENTASI_MODE_PENELITIAN.md) ditulis untuk perubahan sistem no. 5, 16, dan 19 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), dari 10, 11, 12, 28 §5 dan §9, 29 §5.4 dan §15, dan kode per *commit* `97f82d5`. Bagian ini hanya menyimpan data mentah; angka turunan (waktu aktif, dilewati, tersensor, tebakan cepat) dihitung bagian 9 (35), dengan batas yang ditulis di 33 §4. Semua perilaku game ada di balik `field_mode`; data mentah direkam di semua mode. Migrasi memakai blok `0041xx` (sementara).
+
+Empat keputusan pengembang, semuanya usulan AI:
+1. **Pengerjaan pertama yang terputus pindah ke sesi game baru** lewat UPDATE bersyarat, dan setiap potongannya dicatat di tabel baru `challenge_attempt_segments`. Tidak dipilih: pindah tanpa tabel potongan; pengerjaan tetap di sesi lama dengan pemeriksaan kepemilikan per siswa.
+2. **Pengerjaan ulang tetap memberi bintang seperti sekarang**; analisis mengabaikannya lewat `is_retake`. Tidak dipilih: pengerjaan ulang tidak mengubah bintang selama studi.
+3. **Layar kecil ditolak bila lebar panggung di bawah 960 px**, sebagai pengaturan studi `min_stage_px`. Tidak dipilih: di bawah 1024 px; ponsel menurut jenis perangkat.
+4. **Keluar mengirim antrean event dulu** (paling lama 5 detik); sisa antrean tetap berpenanda sesi dan dibuang setelah 14 hari. Tidak dipilih: kirim lalu hapus semua sisa; tetap seperti sekarang.
+
+Temuan kode yang dicatat untuk ditinjau:
+- `audio_usage_events` menyimpan jam perangkat tanpa offset, dan sejak 29 K6 baris `pause` tidak punya event mentah yang membawa offset. 33 menambah `audio_usage_events.clock_offset_ms` (K10); 29 perlu menyebutnya.
+- Token objek Cari Objek sudah acak per pengerjaan, tetapi gambar benda tetap dikirim dengan jalur berkas yang memuat kode butir (M-04). 33 mengirim gambar lewat rute API bertoken.
+- Antrean event sudah berpenanda sesi, jadi M-05 tinggal soal *Keluar* yang tidak menunggu antrean terkirim.
+- M-11 sudah tertutup oleh 28 K9 dan 29 §5.5.
+
+Pertanyaan terbuka di 33 §15, termasuk tempat T_idle dan T_teb yang dipilih bersama 35. Perubahan yang dibutuhkan 01, 11, 12, 28, 29, 30, 32, dan 35 ada di 33 §16, untuk sesi koordinator.
+
+Diubah: 33 (baru), 00 (dua baris 33), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 33.
+
 **Dokumen implementasi bagian 5: bank soal baru ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md))** (cabang `r10-dok-31-bank-soal`, gelombang B) · `asal: pengembang` (draf berbantuan AI dan empat keputusan pengembang) · `draf pengembang` · merancang sistem, tidak merevisi produk
 
 Dokumen implementasi untuk perubahan sistem no. 1, 3, 4, 8, 17, dan 20 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), dari 06, 08, 11, 19, 25, dan kode per 2 November 2026 (`main` `97f82d5`). Isinya: bank 08 di berkas data dan workbook dengan kolom dan sheet baru; impor; `DifficultyRules` dan `BankRules` baru; area ketuk kedua babak Cari Objek berjarak paling sedikit 24 dp (menggantikan batas tumpuk 20%); kode kesalahan diturunkan server ke `item_tries.error_code` dari matriks kode eksplisit di bank; variasi pengerjaan pertama dari buklet dan butir jangkar `x`; Cari Objek dua babak; label AKM dan dimensi dengan asalnya (`developer`/`expert`); variabel beban permukaan dihitung saat impor; pemetaan huruf Susun Gambar selama studi. Migrasi sementara `003900` dan `003910`. Kemajuan di `ChallengeService` tetap milik bagian 2 ([28 §8](28_IMPLEMENTASI_SESI_LAPANGAN.md#8-kemajuan-mengikuti-siswa-bukan-sesi-game)); engine Skenario Digital milik bagian 6.

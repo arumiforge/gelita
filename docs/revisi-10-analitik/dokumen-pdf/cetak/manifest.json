@@ -1,8 +1,8 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "1c47026513d393abefd634edd5cfb3cb73a7ce5c08841c927d00d0f66ea0e344",
-      "commit": "1388b56",
+      "source": "aefc0c56ee0ff7c117ec0aac72858bcb9e57376c291170fe7f27acb77f39a896",
+      "commit": "37ebdff",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 14,
@@ -33,8 +33,8 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "b20c6b36a23daf2f5ba31b49045a014cfa9f629cb2b2e00e0345505d65b32be2",
-      "commit": "1388b56",
+      "source": "fa6fb368708daf8f02df3c878f09f8db824458d373447f9715ffb068ffc58128",
+      "commit": "37ebdff",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 56,
@@ -254,6 +254,14 @@
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 20,
+      "landscapeTables": 0
+    },
+    "33_IMPLEMENTASI_MODE_PENELITIAN.md": {
+      "source": "2f56df14d37c9d7ec83912351de4f5a4f1f8cf411b99da9783782921c3aa1ce5",
+      "commit": "bb90d4d",
+      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
+      "date": "2026-11-02",
+      "pages": 15,
       "landscapeTables": 0
     }
   }
