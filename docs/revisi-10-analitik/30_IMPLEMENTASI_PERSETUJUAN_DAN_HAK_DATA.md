@@ -1,10 +1,10 @@
 # Dokumen Implementasi Bagian 4 — Persetujuan, Hak atas Data, Masa Simpan, dan IP Berhash
 
-Per 30 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 23 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
+Per 1 November 2026 (cek kemutakhiran; draf 30 Oktober 2026) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 23 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
 
-> **Status: `draf pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 30 Oktober 2026). Ini dokumen, bukan perubahan sistem. Kode, migrasi, skrip cadangan, dan instalasi baru diubah di tahap 3, setelah gerbang G2 dan setelah dokumen implementasi lengkap disetujui ([04](04_CATATAN_KEPUTUSAN.md), entri 30 Oktober 2026).
+> **Status: `disetujui pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 30 Oktober 2026; dicek kemutakhirannya dan disetujui pengembang 2 November 2026, [§22](#22-keputusan-pengembang) no. 7–11). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 kodenya **dibangun sekarang**, tidak lagi menunggu gerbang G2 ([04](04_CATATAN_KEPUTUSAN.md), entri *Pembagian kerja baru*, 1 November 2026; [00 → Tahap dokumen 3](00_INDEKS.md#tahap-dokumen-yang-tersisa-sebelum-implementasi)): gelombang kode E, setelah bagian 1 dan 2, paralel dengan bagian 3 dan 6. Perilaku penelitian ada di balik sakelar studi yang mati secara bawaan ([§0.1](#01-sakelar-studi-dan-yang-langsung-berlaku)), jadi `main` tetap bisa dirilis. Sistem baru tidak dipakai dengan anak sebelum persetujuan etik terbit, dan instalasi uji validator tetap memakai *commit* yang dibekukan di [20](20_PAKET_VALIDASI.md) prasyarat no. 4.
 >
-> Draf ini boleh naik sampai `disetujui pengembang`. Sebelum dokumen implementasi lengkap disetujui, isinya dicek ulang sekali terhadap matriks revisi induk ([20](20_PAKET_VALIDASI.md)) dan keputusan komite etik. Bagian ini paling mungkin berubah karena komite, jadi setiap perubahan dari komite ditandai `asal: komite etik`.
+> Setelah hasil validasi dan keputusan komite etik kembali, isinya dicek ulang sekali terhadap matriks revisi induk ([20](20_PAKET_VALIDASI.md)) dan keputusan komite; teks T4, T11, dan T12 diubah di 23 lebih dulu, baru di berkas bahasa. Bagian ini paling mungkin berubah karena komite, jadi setiap perubahan dari komite ditandai `asal: komite etik`.
 >
 > **Bagian 4 dari 4.** Bagian ini memakai peran dan peta kemampuan dari [27](27_IMPLEMENTASI_PERAN_PENELITI.md) (`deletion.request`, `deletion.execute`, `risk_flags.view`, `research.export`, `participants.accounts`), sesi lapangan, rombel, dan kode peserta dari [28](28_IMPLEMENTASI_SESI_LAPANGAN.md), serta riwayat unduhan, `data_exports.participant_count`, dan `field_sheet_rows` dari [29](29_IMPLEMENTASI_DATA_PENELITIAN.md).
 
@@ -13,6 +13,7 @@ Per 30 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 ## Daftar isi
 
 0. [Cara memakai dokumen ini](#0-cara-memakai-dokumen-ini)
+   - [0.1 Sakelar studi dan yang langsung berlaku](#01-sakelar-studi-dan-yang-langsung-berlaku)
 1. [Kebutuhan, sumber, dan tempatnya](#1-kebutuhan-sumber-dan-tempatnya)
 2. [Keputusan yang dikunci](#2-keputusan-yang-dikunci)
 3. [Yang tidak berubah](#3-yang-tidak-berubah)
@@ -41,10 +42,25 @@ Per 30 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 ## 0. Cara memakai dokumen ini
 
-**Urutan.** Implementasinya dikerjakan setelah bagian 1–3:
+**Urutan** (gelombang kode E, [00 → Tahap dokumen 3](00_INDEKS.md#tahap-dokumen-yang-tersisa-sebelum-implementasi)). Dimulai setelah bagian 1 dan 2 digabung, paralel dengan bagian 3 (29) dan 6 (32):
 - peran `peneliti` dan `ketua`, peta kemampuan, dan cakupan `research()` berasal dari bagian 1;
 - sesi lapangan, rombel, kode peserta `S03-A07`, `field_mode`, dan `participant_progress` berasal dari bagian 2;
-- katalog event, isi unduhan `ketua`, riwayat unduhan, dan `field_sheet_rows` berasal dari bagian 3.
+- katalog event, isi unduhan `ketua`, riwayat unduhan, `data_exports.participant_count`, dan `field_sheet_rows` berasal dari bagian 3.
+
+**Bagian 3 dan 4 paralel; bagian 4 digabung sesudah bagian 3** (keputusan no. 7). Kedua cabang mulai bersamaan. Cabang bagian 4 digabung kedua: sebelum PR-nya, `main` digabung masuk (bukan *rebase*), dan baris milik bagian 3 di berkas bersama dibiarkan seperti ditulis bagian 3: `field_sheet_rows` di `RetentionService::HARD_ORDER`, `participant_count` dan daftar lembar di `ExportService`, dan `REQUIRED_MIGRATION` `003700` (bagian 4 menaikkannya ke `003800`). Bagian yang memakai tabel bagian 3 (§7.3 baris `field_sheet_rows`, §7.4 salinan peneliti, lembar `izin` §10.1) ditulis terakhir di cabang ini, dan tesnya dijalankan setelah `main` yang berisi bagian 3 digabung masuk. Urutan migrasi tetap `003700` → `003800`.
+
+### 0.1 Sakelar studi dan yang langsung berlaku
+
+Sejak 1 November 2026 kode dibangun sekarang, dan perilaku penelitian ada di balik sakelar studi yang mati secara bawaan, supaya `main` tetap bisa dirilis ([04](04_CATATAN_KEPUTUSAN.md)). Pengembang memutuskan **semua isi bagian ini di balik mode penelitian**, termasuk IP berhash dan cadangan (keputusan no. 8). Tidak ada yang berubah di server produksi sebelum ada studi `field_mode = 1`, kecuali tabel dan kolom baru dari migrasi `003800`.
+
+| Isi | Sakelar | Bila mati (bawaan) |
+| --- | --- | --- |
+| Teks T4 (§5.1), izin berkode (§5.2), status mundur dan akun nonaktif (§5.3), T11/T12 (§5.4), penanda (§6), permintaan hapus orang tua (§7), salinan (§8), pembetulan (§9), penutupan (§10) | Studi aktif `field_mode = 1` (28 §5.1); halaman per studi memeriksa `field_mode` studinya | Teks dan pendaftaran lama; halaman panel bagian ini tidak tampil di menu; Tata kelola tetap seperti sekarang |
+| Masa simpan 7305 hari dari `closed_at` (§11) | `field_mode = 1` di studi itu | Studi lain tetap dari mulai sesi dengan `retention_days`-nya sendiri; bawaan kolom tetap 1825 |
+| IP berhash dan pembersihan `ci_sessions` (§12) | `Config\Gelita::$researchPrivacy` (`.env` `gelita.researchPrivacy`), bawaan `false` | `DatabaseHandler` seperti sekarang |
+| Lokasi kedua cadangan 30 hari (§7.5) | Variabel skrip `KEDUA_HARI` (Jalur L) dan `KeduaHari` (Jalur W), kosong bawaan | Lokasi kedua menyimpan tanpa batas seperti sekarang; pilihan `--ganti`/`-Ganti` tetap ada tetapi hanya dijalankan untuk permintaan |
+
+**Pengaman supaya sakelar tidak tertinggal:** `StudyController` menolak menyimpan atau mengaktifkan studi `field_mode = 1` bila `researchPrivacy` mati, dengan pesan "Nyalakan pengaman data penelitian (`gelita.researchPrivacy`) di server sebelum studi penelitian diaktifkan." Halaman tata kelola menampilkan peringatan bila studi `field_mode = 1` ada tetapi `KEDUA_HARI` tidak diisi (dibaca dari berkas status yang ditulis skrip cadangan, `writable/backup-status.json`). Keduanya dinyalakan sebelum akun anak pertama kali dipakai ([§4](#4-tenggat-sebelum-akun-gelita-anak-pertama-kali-dipakai)), dan dicek di daftar periksa instalasi penelitian di `docs/08_DEPLOYMENT.md`.
 
 **Batas.** Dokumen ini mengatur:
 - persetujuan di sistem: teks centang anak (23 → T4), izin berkode per siswa dari L7, status mundur, dan akun nonaktif;
@@ -63,7 +79,7 @@ Layar T11 dan T12 berada di modul tes (no. 22), jadi di sini hanya teks, aturan 
 - Jangan menjalankan migrasi, `gelita:reset`, atau skrip rilis di server produksi. Penghapusan, penggantian nama, dan penggantian cadangan tidak bisa dibatalkan; urutannya diuji dulu di instalasi uji.
 - Setiap tulisan yang bisa bersaing (perubahan izin, perpindahan status permintaan, pembetulan) memakai UPDATE bersyarat, bukan `SELECT … FOR UPDATE` (aturan kerja repo, bagian *Concurrency*).
 
-**Rujukan kode.** Ditulis per berkas dan metode, dengan nomor baris per 30 Oktober 2026. Nomor baris bisa bergeser.
+**Rujukan kode.** Ditulis per berkas dan metode, dengan nomor baris per 30 Oktober 2026, dicek ulang 1 November 2026 (kode `app/` belum berubah sejak 26 Oktober 2026). Nomor baris bisa bergeser.
 
 ---
 
@@ -105,9 +121,9 @@ K1–K4 diputuskan pengembang ([§22](#22-keputusan-pengembang)). K5, K10, dan K
 | K7 | **Penanda tindak lanjut tidak disimpan.** Penanda dihitung saat halaman `ketua` dibuka, dari jawaban ang-21 dan ang-23. Tidak ada kolom "sudah dihubungi", tidak ada CSV, tidak di unduhan, tidak di pemantauan, dan log audit hanya mencatat jumlahnya. |
 | K8 | **Permintaan hapus dari orang tua selalu `hard`.** Mode `soft` hanya tersisa di formulir admin untuk cakupan sesi dan studi. |
 | K9 | **`RetentionService` tetap satu-satunya jalur yang menghapus data penelitian.** Cakupan baru: jawaban butir risiko satu siswa. Cakupan "rekaman" tidak menghapus apa pun di sistem; isinya hanya daftar periksa, karena rekaman tidak pernah ada di server. |
-| K10 | **Masa simpan studi penelitian 7305 hari (20 × 365,25), dihitung sejak studi ditutup** (`research_studies.closed_at`). "± 7300" di 01 kurang lima hari dari 20 tahun. Sekarang retensi menghitung dari mulai sesi (`RetentionService::flagExpiredStudyData()`, baris 429–482), jadi pratinjau hapus bisa muncul sebelum 20 tahun sejak studi ditutup. |
+| K10 | **Masa simpan studi penelitian 7305 hari (20 × 365,25), dihitung sejak studi ditutup** (`research_studies.closed_at`). "± 7300" di 01 kurang lima hari dari 20 tahun. Sekarang retensi menghitung dari mulai sesi (`RetentionService::flagExpiredStudyData()`, baris 429–482), jadi pratinjau hapus bisa muncul sebelum 20 tahun sejak studi ditutup. Hanya untuk studi `field_mode = 1`; bawaan kolom dan studi yang sudah ada tetap 1825 (keputusan no. 8, [§0.1](#01-sakelar-studi-dan-yang-langsung-berlaku)). |
 | K11 | **Saat studi ditutup, sekolah ikut diganti kode.** Mengganti nama di akun tidak cukup: `participants.school_id` dan `field_sessions.school_id` masih menunjuk baris sekolah bernama dan ber-NPSN. Sistem membuat satu baris sekolah berkode per kode sekolah penelitian dan memindahkan semua rujukan ke sana. |
-| K12 | **IP sesi peramban di-hash.** `Config\Session::$driver = HashedIpSessionHandler::class`. Migrasi mengosongkan `ci_sessions`. `gelita:retention:run` menghapus baris sesi yang kedaluwarsa, karena pembersih sesi bawaan PHP bisa tidak pernah berjalan. |
+| K12 | **IP sesi peramban di-hash saat sakelar `researchPrivacy` menyala** ([§0.1](#01-sakelar-studi-dan-yang-langsung-berlaku)). `Config\Session` memilih `HashedIpSessionHandler` bila sakelar menyala. Baris `ci_sessions` lama yang masih berisi IP mentah dihapus retensi pertama setelah sakelar menyala, bukan oleh migrasi. `gelita:retention:run` menghapus baris sesi yang kedaluwarsa, karena pembersih sesi bawaan PHP bisa tidak pernah berjalan. |
 | K13 | **Pembetulan hanya umur, jenis kelamin, dan kelas**, oleh admin, dengan alasan, nilai lama dan baru di log audit, dan `participants.corrected_at`. |
 | K14 | **Salinan satu anak dibuat saat diminta dan langsung diunduh**, tidak disimpan di server: satu ZIP berisi PDF ringkas dan XLSX. Berkode, tanpa kunci jawaban, tanpa teks soal, tanpa id internal, tanpa data anak lain. |
 | K15 | **Yang di luar sistem hanya dicatat sebagai centang bertanggal**: rekaman dan transkrip, lembar kertas, salinan peneliti, dan cadangan. Sistem tidak menyimpan nama berkas atau nama orang. |
@@ -131,18 +147,20 @@ K1–K4 diputuskan pengembang ([§22](#22-keputusan-pengembang)). K5, K10, dan K
 
 ## 4. Tenggat: sebelum akun GELITA anak pertama kali dipakai
 
-**Temuan.** Tabel kegiatan di [26 → Kegiatan](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md#kegiatan) memberi nomor KG2–KG5 yang berbeda dari [03 → Kegiatan dengan anak](03_KODE_DAN_ARTI.md#kegiatan-dengan-anak) dan [22 → Kegiatan yang dimintakan izin](22_PERMOHONAN_IZIN_ETIK.md#kegiatan-yang-dimintakan-izin):
+**Temuan (30 Oktober 2026, sudah dibetulkan di 26 lewat PR #286 dan diselaraskan dengan KG3a/KG3b 1 November 2026).** Tabel kegiatan di [26 → Kegiatan](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md#kegiatan) semula memberi nomor KG2–KG5 yang berbeda dari [03 → Kegiatan dengan anak](03_KODE_DAN_ARTI.md#kegiatan-dengan-anak) dan [22 → Kegiatan yang dimintakan izin](22_PERMOHONAN_IZIN_ETIK.md#kegiatan-yang-dimintakan-izin):
 
-| Kode | 03 dan 22 (berlaku) | 26 (keliru) |
+| Kode | 03 dan 22 (berlaku) | 26 sebelum dibetulkan |
 | --- | --- | --- |
 | KG2 | Berpikir lantang, tahap 4 | Tes awal dan angket (P1) |
 | KG3 | Uji coba di sekolah `U`, tahap 4 (sejak 1 November 2026 dipecah: KG3a uji kelompok kecil, KG3b uji kelompok menengah) | Bermain P2–P4 |
 | KG4 | Wawancara L5 di P2–P4 | P5 |
 | KG5 | Pengambilan data utama P1–P5 | Kelas uji coba dan berpikir lantang |
 
-Dengan nomor 26, "sebelum KG2" berarti sebelum P1 data utama, sehingga uji coba (KG5 di 26) bisa berjalan tanpa fungsi ini. Itu bukan maksudnya.
+Dengan nomor 26 yang lama, "sebelum KG2" berarti sebelum P1 data utama, sehingga uji coba (KG5 di 26) bisa berjalan tanpa fungsi ini. Itu bukan maksudnya.
 
-**Tenggat yang dipakai di sini:** *sebelum kegiatan pertama yang memakai akun GELITA anak*. Dengan nomor 03 dan 22 itu KG2 (berpikir lantang), setelah G3; sejak 1 November 2026 KG2 selalu mendahului KG3a dan KG3b ([04](04_CATATAN_KEPUTUSAN.md)). KG1 (uji keterbacaan) tidak memakai akun. Jadi "sebelum KG2" di 01, 22, dan 26 tetap benar setelah tabel 26 dibetulkan ([§23](#23-akibat-ke-dokumen-lain)).
+**Tenggat yang dipakai di sini:** *sebelum kegiatan pertama yang memakai akun GELITA anak*. Dengan nomor 03 dan 22 itu KG2 (berpikir lantang), setelah G3; sejak 1 November 2026 KG2 selalu mendahului KG3a dan KG3b ([04](04_CATATAN_KEPUTUSAN.md)). KG1 (uji keterbacaan) tidak memakai akun. Jadi "sebelum KG2" di 01, 22, dan 26 benar dan tidak bersyarat.
+
+**Tenggat ini tidak bergantung pada G2.** Sejak 1 November 2026 kodenya dibangun sekarang ([04](04_CATATAN_KEPUTUSAN.md)), jadi yang menentukan hanya kapan akun anak pertama kali dipakai: KG2, yang baru boleh berjalan setelah persetujuan etik terbit dan G3 dinilai. Bila kodenya selesai lebih awal, tenggat ini terpenuhi lebih awal; bila belum, jalan manual [§13](#13-jalan-manual-sementara) berlaku.
 
 | Bagian | Harus siap |
 | --- | --- |
@@ -340,7 +358,7 @@ Cadangan dibuat skrip sendiri ([../08_DEPLOYMENT.md → Backup](../08_DEPLOYMENT
 5. Bila penyedia server juga membuat snapshot atau cadangan sendiri, admin menghapusnya lewat panel penyedia atau memastikan fitur itu tidak dipakai. Perjanjian prosesor (26 → P6) memuat kewajiban ini.
 6. Admin mencentang `backups` dengan tanggal.
 
-**Lokasi kedua dibatasi 30 hari**, sama dengan lokasi pertama (`find "$KEDUA" -mtime +30 -delete`; padanannya di `backup.ps1`). Lokasi kedua tetap tidak ikut terhapus bila lokasi pertama kosong, karena batas itu dihitung dari umur berkasnya sendiri.
+**Lokasi kedua dibatasi 30 hari** di instalasi penelitian, sama dengan lokasi pertama: bila `KEDUA_HARI=30` diisi, skrip menjalankan `find "$KEDUA" -mtime +$KEDUA_HARI -delete` (padanannya `KeduaHari` di `backup.ps1`); bila kosong, lokasi kedua tetap tanpa batas seperti sekarang ([§0.1](#01-sakelar-studi-dan-yang-langsung-berlaku)). Skrip menulis tanggal jalan dan nilai `KEDUA_HARI` ke `writable/backup-status.json` untuk peringatan di Tata kelola. Lokasi kedua tetap tidak ikut terhapus bila lokasi pertama kosong, karena batas itu dihitung dari umur berkasnya sendiri.
 
 **Akibatnya:** setiap penggantian membuang titik pulih yang lebih lama. Permintaan hapus jarang (beberapa per studi), jadi ini diterima. Penggantian dijalankan di luar jam sesi, tetapi tetap di dalam 3 × 24 jam sejak penghapusan.
 
@@ -358,7 +376,7 @@ Cadangan dibuat skrip sendiri ([../08_DEPLOYMENT.md → Backup](../08_DEPLOYMENT
 | `paper_sheets`: baris berkode di lembar kertas L2–L6 dihitamkan | ✓ | — | — | `peneliti` |
 | `parent_notified`: orang tua diberi tahu | ✓ | ✓ | ✓ | `ketua`, setelah semua butir lain |
 
-`parent_notified` baru bisa dicentang setelah butir lain jenis itu lengkap, karena 22 meminta penyedia server dan salinan dibereskan sebelum orang tua diberi tahu.
+`parent_notified` baru bisa dicentang setelah butir lain jenis itu lengkap, karena 22 meminta penyedia server dan salinan dibereskan sebelum orang tua diberi tahu. Pemberitahuannya memuat jenis data yang dihapus, alasannya (permintaan orang tua), dan tanggalnya (22 → *Mengundurkan diri dan hapus data*, PP 33/2026 Pasal 87 ayat (2) dan (4)–(5)); berita acara mencatat waktu pemberitahuan itu.
 
 **Berita acara** (`/admin/permintaan-data/{id}/berita-acara`, PDF lewat mPDF seperti `ReportService`):
 - isi: nomor permintaan, kode peserta, jenis, waktu diterima, waktu identitas dicocokkan, siapa mengajukan dan mengonfirmasi (nama akun peran, misalnya `koordinator`), waktu dijalankan, jumlah baris per tabel, setiap butir daftar periksa dengan tanggalnya, waktu orang tua diberi tahu;
@@ -405,8 +423,8 @@ Untuk 23 → T10 pilihan D (melihat atau meminta salinan). `ketua` membuka kode 
 1. `ketua` (atau peneliti terlatih yang ditunjuknya) bertanya kepada anak, sendiri, di tempat yang terlihat tetapi tidak terdengar teman, seperti sapaan di [22 → Prosedur rujukan](22_PERMOHONAN_IZIN_ETIK.md#prosedur-rujukan-butir-risiko-daring) langkah 4: apakah jawabannya boleh diperlihatkan kepada orang tuanya.
 2. Bila anak setuju, jawaban disertakan (*Disertakan: anak setuju*).
 3. Bila anak tidak setuju, `ketua` memberi tahu orang tua bahwa anak lebih suka jawabannya tidak dibuka, dan menawarkan membicarakannya secara umum. Bila orang tua tetap meminta, jawaban disertakan (*Disertakan: orang tua tetap meminta setelah dijelaskan*), dan `ketua` memberi tahu anak sebelum salinan diberikan.
-4. **Pengecualian:** bila ada tanda bahwa pemberian itu membahayakan anak, misalnya orang tua diduga terlibat dalam hal yang diceritakan anak, `ketua` tidak menyertakannya, menjalankan prosedur rujukan langkah 5, dan melaporkannya ke komite. Rujukannya UU No. 27 Tahun 2022 Pasal 33 huruf a sebagai analogi: pasal itu mewajibkan pengendali menolak akses *perubahan* data yang membahayakan keselamatan atau kesehatan mental subjek data atau orang lain. Pasal yang sejenis di PP 33/2026 belum dicek (`needs_verification`).
-5. Bila anak tidak bisa ditemui dalam 3 × 24 jam, salinan bagian lain diberikan lebih dulu, dan bagian ini menyusul pada kesempatan pertama (22: salinan pada kesempatan pertama).
+4. **Pengecualian:** bila ada tanda bahwa pemberian itu membahayakan anak, misalnya orang tua diduga terlibat dalam hal yang diceritakan anak, `ketua` tidak menyertakannya, menjalankan prosedur rujukan langkah 5, dan melaporkannya ke komite. Rujukannya UU No. 27 Tahun 2022 Pasal 33 huruf a dan PP No. 33 Tahun 2026 Pasal 77 ayat (4) huruf a sebagai analogi: keduanya mewajibkan pengendali menolak akses *perubahan* data yang membahayakan keamanan, kesehatan fisik, atau kesehatan mental subjek data atau orang lain (pasal PP dicocokkan dengan PDF salinan resmi 1 November 2026, [04](04_CATATAN_KEPUTUSAN.md)). Karena keduanya hanya menyebut akses perubahan, pengecualian ini tetap analogi yang diminta dinilai komite.
+5. Bila anak tidak bisa ditemui dalam 3 × 24 jam, salinan bagian lain diberikan lebih dulu, dan bagian ini menyusul pada kesempatan pertama (22: salinan pada kesempatan pertama; lama penyiapannya dikonfirmasi kepada orang tua paling lambat 3 × 24 jam sejak permohonan diterima dan terverifikasi, PP 33/2026 Pasal 78 ayat (1)–(2)).
 
 Kalimat di PDF bila jawaban butir risiko tidak disertakan: "Jawaban anak untuk beberapa pertanyaan tentang pengalaman tidak nyaman di internet belum disertakan. Sebelum menjawab, anak diberi tahu bahwa kakak peneliti akan bicara dengannya dulu kalau orang tuanya meminta jawaban itu. Bapak/Ibu bisa memintanya kepada ketua peneliti."
 
@@ -451,6 +469,7 @@ Kalimat di PDF bila jawaban butir risiko tidak disertakan: "Jawaban anak untuk b
 - Sebelum L7 dimusnahkan, `ketua` mencocokkan setiap baris dengan L7. Selisih dibetulkan dulu di halaman izin, lalu daftar diunduh lagi.
 - Disimpan bersama data berkode selama data itu disimpan (22 → Masa simpan, PP 33/2026 Pasal 36).
 - Lembar yang sama dipakai untuk menghitung `consent_ok` di lapis 3 (`kamus-1.1`), dengan L7 sebagai pembanding sampai studi ditutup.
+- **Lembar `izin` di unduhan utama** (keputusan no. 9): unduhan `ketua` ([29 §7.2](29_IMPLEMENTASI_DATA_PENELITIAN.md#72-lembar)) mendapat lembar `izin` dengan kolom yang sama, disaring ke siswa di unduhan itu, supaya lapis 3 bisa menghitung `consent_ok` dari satu berkas. Unduhan terpisah di atas tetap dokumen penutupan studi; hanya unduhan terpisah yang mengisi `consent_register_exported_at`.
 
 Anak yang datanya dihapus (pilihan B) tidak ada di daftar, karena baris izinnya ikut terhapus; buktinya permintaan hapus dan berita acaranya.
 
@@ -462,6 +481,9 @@ Anak yang datanya dihapus (pilihan B) tidak ada di daftar, karena baris izinnya 
 1. Studi berstatus `closed` (diubah `ketua`); `research_studies.closed_at` terisi.
 2. Tidak ada permintaan hapus studi itu yang belum `completed` atau `cancelled`.
 3. Daftar izin berkode sudah diunduh setelah perubahan izin terakhir (`consent_register_exported_at` ≥ `participant_consents.updated_at` terbaru).
+4. Kritik dan saran studi itu sudah diperiksa nama (keputusan no. 10; `research_studies.feedback_names_checked_at` terisi).
+
+**Pemeriksaan nama di kritik dan saran** (`/admin/studi/{id}/penutupan/nama`, `ketua`, kemampuan `research.export`). Isian bebas anak bisa memuat nama sendiri atau teman, dan penggantian di bawah tidak menyentuhnya. Server membandingkan kata di `participant_feedback` studi itu dengan kata dari `display_name` dan `username` siswa studi itu, dengan aturan yang sama seperti impor lembar ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md), K13: tanpa huruf besar-kecil, kata utuh, minimal 3 huruf). Halaman menampilkan kode peserta dan isian dengan kata yang cocok sudah diganti `[nama]`, tanpa menampilkan namanya. `ketua` juga bisa mengganti kata lain yang dikenalinya sebagai nama, lalu menekan *Simpan pemeriksaan*: isian diganti dengan teks yang sudah disamarkan, `feedback_names_checked_at` diisi, dan log audit `feedback_names_masked` mencatat `{study_code, rows}`.
 
 **Dua langkah**, seperti penghapusan: *Hitung* menampilkan jumlah akun dan sekolah yang akan diubah; admin mengetik `GANTI`; `StudyClosureService::replaceIdentities(int $studyId)` berjalan dalam satu transaksi.
 
@@ -474,7 +496,7 @@ Anak yang datanya dihapus (pilihan B) tidak ada di daftar, karena baris izinnya 
 | Sekolah bernama (`schools`) | Untuk setiap kode sekolah penelitian di studi itu: satu baris sekolah baru bernama kode itu (`S03`), tanpa NPSN dan alamat. `research_code` pindah ke baris baru. `participants.school_id`, `field_sessions.school_id`, dan `participant_code_counters.school_id` dipindah ke baris baru (K11). Baris sekolah asli tetap di direktori tanpa `research_code` |
 
 - Cakupannya siswa yang punya baris `participant_consents` di studi itu.
-- Provinsi dan kabupaten di `participants` tetap, karena tidak cukup untuk mengenali sekolah ([§21](#21-pertanyaan-terbuka) no. 3).
+- Provinsi dan kabupaten di `participants` tetap, karena sendirian tidak cukup untuk mengenali sekolah; komite diminta menilainya (keputusan no. 11). Bila komite memintanya, keduanya ikut dikosongkan di langkah ini.
 - Log audit `study_identities_replaced` dengan `{study_code, participants, schools}`; `research_studies.identities_replaced_at` diisi.
 - Setelah itu studi tidak bisa dibuka lagi. Permintaan hapus, salinan satu anak, dan pembetulan untuk studi itu ditolak dengan pesan "Studi sudah ditutup dan nama sudah diganti kode. Data tidak bisa lagi dihubungkan dengan anak."
 
@@ -488,9 +510,9 @@ Anak yang ingin tetap bermain GELITA setelah studi memakai akun baru di luar mod
 
 | Bagian | Sekarang | Sesudah |
 | --- | --- | --- |
-| Bawaan `research_studies.retention_days` | 1825 (`2026-01-01-000300_CreateResearchStudies.php`, `ResearchStudySeeder`) | 7305 (K10); baris yang masih 1825 diubah di migrasi |
-| Studi `field_mode = 1` | — | `StudyController` menolak `retention_days` < 7305 dengan pesan "Masa simpan studi penelitian paling singkat 7305 hari (20 tahun)." |
-| Awal hitungan, studi `field_mode = 1` | Mulai sesi (`game_sessions.started_at`, `RetentionService.php:437-438`) | `research_studies.closed_at`. Studi yang belum ditutup tidak pernah mendapat pratinjau retensi |
+| Bawaan `research_studies.retention_days` | 1825 (`2026-01-01-000300_CreateResearchStudies.php`, `ResearchStudySeeder`) | Tetap 1825; baris yang ada tidak diubah (keputusan no. 8). Formulir studi mengisi 7305 saat `field_mode` dicentang |
+| Studi `field_mode = 1` | — | 7305 (K10); `StudyController` menolak `retention_days` < 7305 dengan pesan "Masa simpan studi penelitian paling singkat 7305 hari (20 tahun)." |
+| Awal hitungan, studi `field_mode = 1` | Mulai sesi (`date_to` dibentuk di `RetentionService.php:437-438`, lalu disaring pada `game_sessions.started_at` di baris 117–121) | `research_studies.closed_at`. Studi yang belum ditutup tidak pernah mendapat pratinjau retensi |
 | Awal hitungan, studi lain | Mulai sesi | Tetap |
 | Cakupan pratinjau setelah masa simpan habis | Sesi studi itu, tanpa `participants` | Seluruh studi, termasuk `participants` dan `participant_consents` siswa studi itu (yang namanya sudah diganti kode) |
 
@@ -505,10 +527,10 @@ Anak yang ingin tetap bermain GELITA setelah studi memakai akun baru di luar mod
 **Sekarang.** `Config\Session::$driver` = `DatabaseHandler` (`app/Config/Session.php:29`), yang menulis IP mentah ke `ci_sessions.ip_address`. `App\Libraries\HashedIpSessionHandler` sudah ada (turunan `MySQLiHandler`, IP di-hash `hash_ip()` di konstruktor) tetapi belum dipasang. Kolom `ip_address` VARCHAR(64) sudah cukup untuk SHA-256 (`2026-01-01-002900_CreateCiSessions.php`).
 
 **Perubahan:**
-1. `Config\Session::$driver = HashedIpSessionHandler::class`. CodeIgniter 4.7 hanya mengganti `DatabaseHandler` dengan turunan per platform; kelas lain dibuat langsung dengan `($config, $request->getIPAddress())` (`system/Config/Services.php`, `session()`). Penangan ini hanya untuk MySQL/MariaDB, sama dengan server produksi.
+1. Konstruktor `Config\Session` memilih `$driver = HashedIpSessionHandler::class` bila `config('Gelita')->researchPrivacy` menyala; bila mati, tetap `DatabaseHandler` ([§0.1](#01-sakelar-studi-dan-yang-langsung-berlaku)). CodeIgniter 4.7 hanya mengganti `DatabaseHandler` dengan turunan per platform; kelas lain dibuat langsung dengan `($config, $request->getIPAddress())` (`system/Config/Services.php`, `session()`). Penangan ini hanya untuk MySQL/MariaDB, sama dengan server produksi.
 2. `matchIP` tetap `false`. Bila kelak dinyalakan, perbandingannya tetap benar karena nilai yang disimpan dan dibandingkan sama-sama hash.
-3. Migrasi bagian ini mengosongkan `ci_sessions`, supaya IP mentah yang sudah tersimpan hilang. Semua pengguna masuk ulang, jadi migrasi dijalankan di luar jam sesi.
-4. `RetentionService::run()` mendapat langkah `purgeExpiredBrowserSessions()`: hapus baris `ci_sessions` yang `timestamp`-nya lebih tua dari `Config\Session::$expiration` (14400 detik). Batasnya dihitung di PHP, supaya kueri yang sama berjalan di SQLite (tes). Jumlahnya masuk ringkasan `retention_run` sebagai `expired_browser_sessions`.
+3. Migrasi tidak mengosongkan `ci_sessions`. Saat sakelar menyala, langkah 4 juga menghapus baris yang `ip_address`-nya bukan hash 64 karakter heksadesimal (IP mentah dari `DatabaseHandler`), sehingga IP mentah hilang pada retensi pertama sesudahnya. Pengguna dengan baris itu masuk ulang, jadi sakelar dinyalakan di luar jam sesi, lalu `gelita:retention:run` dijalankan sekali.
+4. Bila sakelar menyala, `RetentionService::run()` menjalankan langkah `purgeExpiredBrowserSessions()`: hapus baris `ci_sessions` yang `timestamp`-nya lebih tua dari `Config\Session::$expiration` (14400 detik). Batasnya dihitung di PHP, supaya kueri yang sama berjalan di SQLite (tes). Jumlahnya masuk ringkasan `retention_run` sebagai `expired_browser_sessions`.
 
 **Mengapa langkah 4 perlu.** CodeIgniter hanya menyetel `session.gc_maxlifetime` (`system/Session/Session.php:172`); kapan pembersih sesi berjalan diatur `session.gc_probability` di php.ini. PHP paket Debian/Ubuntu menyetelnya 0 (terlihat juga di mesin pengembangan cloud, 30 Oktober 2026), jadi di Jalur L baris sesi lama bisa tidak pernah terhapus. Periksa sekali di server: `php -i | grep gc_probability`.
 
@@ -518,7 +540,7 @@ Anak yang ingin tetap bermain GELITA setelah studi memakai akun baru di luar mod
 
 ## 13. Jalan manual sementara
 
-Untuk [26 → P15](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md#langkah-perlindungan): dipakai hanya bila §7–§9 belum selesai saat akun anak pertama kali akan dipakai. Jalan ini diuji sekali di instalasi uji dengan akun `uji.*`, dan hasil ujinya dicatat di 04.
+Untuk [26 → P15](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md#langkah-perlindungan): dipakai hanya bila §7–§9 belum selesai saat akun anak pertama kali akan dipakai. Jalan ini diuji sekali di instalasi uji pengembang (bukan instalasi validator yang dibekukan) dengan akun `uji.*`, dan hasil ujinya dicatat di 04.
 
 | Kebutuhan | Jalan manual | Siapa |
 | --- | --- | --- |
@@ -570,20 +592,21 @@ Dua kemampuan baru di peta [27 §5.1](27_IMPLEMENTASI_PERAN_PENELITI.md#51-peta-
 | --- | --- |
 | `participant_consents` (baru) | `participant_id` PK, FK `participants` `ON DELETE CASCADE`; `study_id` FK; `parent_consent_on` DATE (null); `recording_consent` TINYINT(1) bawaan 0; `recording_withdrawn_on` DATE (null); `risk_items_consent` TINYINT(1) bawaan 0; `risk_items_withdrawn_on` DATE (null); `status` VARCHAR(20) bawaan `active`; `status_on` DATE (null); `entered_by`, `updated_by` FK staf; `created_at`, `updated_at`. Indeks (`study_id`, `status`) |
 | `participants` | Kolom baru `deactivated_at` DATETIME (null), `assent_version` VARCHAR(20) (null), `corrected_at` DATETIME (null) |
-| `research_studies` | `retention_days` bawaan 7305 (baris 1825 diubah); kolom baru `closed_at`, `consent_register_exported_at`, `identities_replaced_at` DATETIME (null) |
+| `research_studies` | `retention_days` bawaan tetap 1825, baris yang ada tidak diubah (keputusan no. 8); kolom baru `closed_at`, `consent_register_exported_at`, `feedback_names_checked_at`, `identities_replaced_at` DATETIME (null) |
 | `data_deletion_requests` | Kolom baru `kind` VARCHAR(20) (null untuk permintaan admin dan retensi), `participant_code` VARCHAR(40) (null), `received_at`, `verified_at` DATETIME (null), `received_via` VARCHAR(10) (null: `paper`, `whatsapp`, `email`, `oral`), `confirmed_by` FK staf (null), `confirmed_at`, `completed_at` DATETIME (null), `checklist_json` JSON (null). Status baru `requested` dan `completed` di samping `preview`, `executed`, `cancelled` |
 | `data_exports` | Kolom baru `purged_by_request_id` FK `data_deletion_requests` (null) |
-| `ci_sessions` | Dikosongkan; struktur tetap |
+| `ci_sessions` | Tidak diubah migrasi; baris ber-IP mentah dihapus retensi setelah `researchPrivacy` menyala (§12) |
 
 Semua kunci asing ke `staff_users` memakai `ON DELETE SET NULL`. Kunci asing ke `participants` dari bagian 2–4 memakai `ON DELETE CASCADE` ([§7.3](#73-yang-dihapus-sistem)).
 
-**`down()`** membuang tabel dan kolom baru dan mengembalikan bawaan `retention_days` ke 1825. Isi `ci_sessions` dan data yang terhapus tidak kembali; ini ditulis di komentar migrasi.
+**`down()`** membuang tabel dan kolom baru. Data yang sudah terhapus lewat permintaan tidak kembali; ini ditulis di komentar migrasi.
 
 **Ikut diperbarui:**
 - `tests/_support/Database/ResetTables.php` (skema SQLite).
-- `SystemResetService`: `REQUIRED_MIGRATION` menjadi `2026-01-01-003800`, nilai akhir setelah bagian 1–4; `participant_consents` di kelompok A (dikosongkan).
+- `SystemResetService`: `REQUIRED_MIGRATION` menjadi `2026-01-01-003800`, nilai akhir bagian 1–4 (bagian 5–9 memakai nomor mulai `003900` dan menaikkannya lagi); `participant_consents` di kelompok A (dikosongkan).
 - `RetentionService`: `HARD_ORDER`, `scopedBuilder()`, `normalizeScope()` (`kind`), `flagExpiredStudyData()`, `purgeExpiredBrowserSessions()`, perpindahan status bersyarat.
-- `ResearchStudySeeder`: `retention_days` 7305.
+- `ResearchStudySeeder`: tetap 1825 (studi bawaan bukan `field_mode`).
+- `Config\Gelita`: `$researchPrivacy = false` (dari `.env` `gelita.researchPrivacy`); `Config\Session`: pilihan penangan di konstruktor.
 - Model baru `ParticipantConsentModel`; `ParticipantModel`, `ResearchStudyModel`, `DataDeletionRequestModel`, `DataExportModel`: `allowedFields` dan aturan status.
 
 **Layanan baru** di `app/Services/`, didaftarkan di `app/Config/Services.php`:
@@ -616,6 +639,7 @@ Semua kunci asing ke `staff_users` memakai `ON DELETE SET NULL`. Kunci asing ke 
 | `GET /admin/ekspor/izin` | `ExportController::consentRegister` | `research.export` |
 | `GET /admin/studi/{id}/penutupan` | `StudyClosureController::show` | `studies.view` |
 | `POST /admin/studi/{id}/penutupan/hitung`, `…/jalankan` | `::preview`, `::run` | `identities.replace` |
+| `GET`, `POST /admin/studi/{id}/penutupan/nama` | `::feedbackNames`, `::saveFeedbackNames` | `research.export` |
 
 **Game dan API.** Tidak ada rute baru. `/masuk` mendapat status `inactive`. Modul tes (no. 22) membaca izin dan menyimpan `risk_reconsent` lewat `ConsentService`.
 
@@ -628,7 +652,7 @@ bash deploy/linux/backup.sh --ganti        # fresh backup, verify, then delete o
 powershell -File deploy\windows\backup.ps1 -Config … -Ganti
 ```
 
-Kedua skrip juga menghapus berkas lebih dari 30 hari di lokasi kedua pada setiap jalan biasa.
+Bila `KEDUA_HARI`/`KeduaHari` diisi, kedua skrip juga menghapus berkas yang lebih tua dari batas itu di lokasi kedua pada setiap jalan biasa.
 
 ---
 
@@ -718,7 +742,7 @@ Label pilihan *Tidak mau menjawab* di en mengikuti teks en butir ang-21–ang-23
 | No. 22 modul tes | `ConsentService::riskItemsAllowed()`, aturan T11/T12 dan teksnya, `risk_reconsent`, cakupan hapus `risk_items`, `RiskFollowUpService` | Layar, tabel jawaban, kode pilihan ang-21–ang-23 |
 | No. 9 lapis turunan | Daftar izin berkode, `status_on`, `registration_corrected` | `consent_ok`, data sampai tanggal mundur (`kamus-1.1`) |
 | Bagian 2 (`28`) | Baris izin dibuat saat mendaftar; nonaktif ditolak token; `gelita:uji:akun` mengisi izin butir risiko Ya | Halaman kursi di sebelah halaman izin; angka "izin belum diisi" di pemantauan |
-| Bagian 3 (`29`) | `purged_by_request_id`, salinan satu anak dari lembar unduhan | Lembar `izin` bila `ketua` membutuhkannya di unduhan utama ([§21](#21-pertanyaan-terbuka) no. 4) |
+| Bagian 3 (`29`) | `purged_by_request_id`, salinan satu anak dari lembar unduhan, isi lembar `izin` (§10.1) | Lembar `izin` di daftar lembar unduhan utama (keputusan no. 9); pemeriksaan nama impor (K13) dipakai ulang untuk kritik dan saran |
 
 ---
 
@@ -742,12 +766,13 @@ Label pilihan *Tidak mau menjawab* di en mengikuti teks en butir ang-21–ang-23
 | `DeletionMinutesTest` | Berita acara berisi kode, jenis, tanggal, jumlah baris, dan centang; tanpa nama anak atau orang tua |
 | `ParticipantCopyTest` | ZIP tanpa disimpan di server; hanya anak itu; tanpa `answer_key`, teks soal, id internal, perangkat; jawaban risiko hanya dengan pilihan *anak setuju* atau *orang tua tetap meminta*, dengan `risk_answers` di audit; kalimat "belum disertakan" ada di PDF bila tidak disertakan |
 | `RegistrationCorrectionTest` | Hanya `age`, `gender`, `class_level`; validasi pendaftaran; alasan wajib; audit lama dan baru; `corrected_at`; kode, sekolah, dan rombel tidak bisa diubah |
-| `ConsentRegisterExportTest` | Kolom §10.1; tanpa nama, sekolah, NPSN, nama pengguna; `consent_register_exported_at` terisi; hanya `ketua` |
-| `StudyClosureTest` | Syarat menahan tombol; `GANTI` mengganti nama, nama pengguna, sandi, dan sekolah ke baris berkode; baris sekolah asli tanpa `research_code`; audit; permintaan, salinan, dan pembetulan ditolak setelahnya |
-| `StudyRetentionTest` | Bawaan 7305; studi `field_mode` < 7305 ditolak; hitungan dari `closed_at`; studi belum ditutup tanpa pratinjau; studi lain tetap dari mulai sesi |
-| `HashedIpSessionTest` | `Config\Session::$driver` = `HashedIpSessionHandler`; konstruktor menyimpan `hash_ip()` dari IP, bukan IP mentah |
-| `BrowserSessionPurgeTest` | Retensi menghapus baris `ci_sessions` yang kedaluwarsa dan membiarkan yang masih hidup; jumlahnya di ringkasan |
-| `ConsentDataRightsMigrationTest` | Tabel dan kolom baru; `retention_days` 1825 → 7305; `ci_sessions` kosong; `down()` berjalan |
+| `ConsentRegisterExportTest` | Kolom §10.1; lembar `izin` di unduhan utama dengan kolom yang sama dan tanpa mengisi `consent_register_exported_at`; tanpa nama, sekolah, NPSN, nama pengguna; `consent_register_exported_at` terisi; hanya `ketua` |
+| `StudyClosureTest` | Syarat menahan tombol, termasuk pemeriksaan nama kritik dan saran; pemeriksaan nama mengganti kata yang cocok dengan `[nama]` tanpa menampilkan nama; `GANTI` mengganti nama, nama pengguna, sandi, dan sekolah ke baris berkode; baris sekolah asli tanpa `research_code`; audit; permintaan, salinan, dan pembetulan ditolak setelahnya |
+| `StudyRetentionTest` | Bawaan tetap 1825 dan baris lama tidak berubah; formulir `field_mode` mengisi 7305; studi `field_mode` < 7305 ditolak; studi `field_mode` ditolak bila `researchPrivacy` mati; hitungan dari `closed_at`; studi belum ditutup tanpa pratinjau; studi lain tetap dari mulai sesi |
+| `HashedIpSessionTest` | Sakelar mati: `DatabaseHandler`; menyala: `HashedIpSessionHandler`, dan konstruktor menyimpan `hash_ip()` dari IP, bukan IP mentah |
+| `BrowserSessionPurgeTest` | Sakelar menyala: retensi menghapus baris `ci_sessions` yang kedaluwarsa atau ber-IP mentah dan membiarkan yang masih hidup dan berhash; jumlahnya di ringkasan. Sakelar mati: tidak menyentuh `ci_sessions` |
+| `ConsentDataRightsMigrationTest` | Tabel dan kolom baru; `retention_days` dan `ci_sessions` tidak berubah; `down()` berjalan |
+| `FieldModeSwitchOffTest` | Tanpa studi `field_mode = 1`: pendaftaran, masuk, menu panel, Tata kelola, dan retensi sama dengan sebelum bagian ini |
 
 ### 19.2 Tes yang ditulis ulang
 
@@ -758,7 +783,7 @@ Label pilihan *Tidak mau menjawab* di en mengikuti teks en butir ang-21–ang-23
 
 ### 19.3 Cek manual
 
-Di instalasi uji dengan akun `uji.*` dan data simulasi:
+Di instalasi uji pengembang dengan akun `uji.*` dan data simulasi, dengan `gelita.researchPrivacy` dan `KEDUA_HARI` menyala. Ini bukan instalasi uji validator, yang tetap memakai *commit* yang dibekukan di [20](20_PAKET_VALIDASI.md) prasyarat no. 4:
 1. Daftar satu siswa dalam mode penelitian; periksa teks centang dan `assent_version`. Isi izin di panel sebagai `koordinator`.
 2. Ubah status ke *Mengundurkan diri (data tetap)* saat siswa sedang bermain; pastikan sesinya berakhir dan masuk ditolak.
 3. Ajukan permintaan B sebagai `koordinator`, konfirmasi sebagai `ketua`, jalankan sebagai admin. Jalankan `backup.sh --ganti` di Jalur L dan `backup.ps1 -Ganti` di Jalur W, termasuk sekali dengan lokasi kedua terputus. Isi semua centang dan cetak berita acaranya.
@@ -772,7 +797,7 @@ Di instalasi uji dengan akun `uji.*` dan data simulasi:
 
 - `vendor/bin/phpunit --no-coverage` hijau, termasuk tes di 19.1 (tes yang bergantung pada no. 22 dilewati dengan alasan sampai modul itu ada).
 - Cek manual 19.3 lolos di kedua jalur.
-- `grep -rn "DatabaseHandler::class" app/Config/Session.php` tidak menemukan apa pun.
+- Dengan `gelita.researchPrivacy = true`, sesi baru di MariaDB menyimpan hash 64 karakter di `ci_sessions.ip_address`; dengan nilai bawaan, perilakunya sama dengan sekarang.
 - Dokumen di [§20](#20-dokumen-yang-ikut-diperbarui-saat-implementasi) diperbarui di cabang yang sama.
 
 ---
@@ -792,13 +817,13 @@ Di instalasi uji dengan akun `uji.*` dan data simulasi:
 
 ## 21. Pertanyaan terbuka
 
-Tidak menahan draf ini.
+Tidak menahan dokumen ini. No. 6 tetap terbuka sampai penyedia server menjawab.
 
-1. ~~**Dasar menahan jawaban butir risiko dari salinan orang tua**~~ **Diputuskan pengembang 30 Oktober 2026** (keputusan no. 6). Dicek ke naskah resmi UU No. 27 Tahun 2022 (anotasi Mahkamah Konstitusi 2025): hak akses dan salinan ada di Pasal 7 dan 32, pengecualian penelitian di Pasal 15 tidak mencakupnya, dan Pasal 33 hanya mewajibkan menolak akses *perubahan* data yang membahayakan. Karena itu jawaban diberikan bila orang tua tetap meminta, dengan anak ditanya lebih dulu, kecuali pemberiannya membahayakan anak ([§8](#8-salinan-data-satu-anak)). Yang tersisa `needs_verification`: pasal sejenis di PP 33/2026, yang naskahnya belum bisa dibuka.
+1. ~~**Dasar menahan jawaban butir risiko dari salinan orang tua**~~ **Diputuskan pengembang 30 Oktober 2026** (keputusan no. 6). Dicek ke naskah resmi UU No. 27 Tahun 2022 (anotasi Mahkamah Konstitusi 2025): hak akses dan salinan ada di Pasal 7 dan 32, pengecualian penelitian di Pasal 15 tidak mencakupnya, dan Pasal 33 hanya mewajibkan menolak akses *perubahan* data yang membahayakan. Karena itu jawaban diberikan bila orang tua tetap meminta, dengan anak ditanya lebih dulu, kecuali pemberiannya membahayakan anak ([§8](#8-salinan-data-satu-anak)). `needs_verification` yang tersisa sudah selesai 1 November 2026: pasal sejenis di PP 33/2026 adalah Pasal 77 ayat (4) huruf a, juga hanya tentang akses perubahan ([§8](#8-salinan-data-satu-anak) langkah 4).
 2. ~~**Transkrip pada pilihan C rekaman.**~~ **Diputuskan pengembang 30 Oktober 2026** (keputusan no. 5): transkrip berkode dari rekaman itu ikut dihapus; catatan tertulis P3 di L5 tetap.
-3. **Provinsi dan kabupaten setelah studi ditutup.** §10.2 membiarkannya. Bila komite atau peneliti menilai kabupaten bersama kode sekolah masih terlalu sempit, keduanya ikut dikosongkan; analisis memakai L8 untuk konteks sekolah.
-4. **Lembar `izin` di unduhan utama `ketua`.** §10.1 membuat unduhan terpisah. Bila lapis 3 lebih mudah dengan lembar `izin` di unduhan utama, lembar itu ditambahkan ke daftar lembar 29 §7.2.
-5. **Kritik dan saran yang memuat nama.** Isian bebas anak bisa memuat nama sendiri atau teman. Penggantian nama §10.2 tidak menyentuhnya. Usulan: `ketua` memeriksanya sekali sebelum studi ditutup, dengan pemeriksaan kata nama seperti impor lembar (29 K13), lalu mengganti nama dengan `[nama]`.
+3. ~~**Provinsi dan kabupaten setelah studi ditutup.**~~ **Diputuskan pengembang 2 November 2026** (keputusan no. 11): tetap disimpan; peneliti menanyakannya ke komite lewat 22 dan 26 ([§23](#23-akibat-ke-dokumen-lain)). Bila komite menilai kabupaten bersama kode sekolah terlalu sempit, keduanya ikut dikosongkan di §10.2 dan analisis memakai L8.
+4. ~~**Lembar `izin` di unduhan utama `ketua`.**~~ **Diputuskan pengembang 2 November 2026** (keputusan no. 9): lembar `izin` ditambahkan ke unduhan utama; unduhan terpisah §10.1 tetap.
+5. ~~**Kritik dan saran yang memuat nama.**~~ **Diputuskan pengembang 2 November 2026** (keputusan no. 10): `ketua` memeriksanya sekali sebelum studi ditutup, sebagai syarat penutupan ([§10.2](#102-nama-dan-sekolah-diganti-kode)).
 6. **Snapshot cadangan penyedia server.** Bila paket server IDCloudHost menyertakan cadangan otomatis yang tidak bisa dihapus pengguna, langkah 5 di §7.5 tidak bisa dijalankan. Ditanyakan ke penyedia saat perjanjian prosesor disusun (26 → P6).
 
 ---
@@ -817,7 +842,18 @@ Satu putaran tanya, empat pertanyaan (30 Oktober 2026). Pengembang memilih usula
 5. **Transkrip ikut dihapus pada pilihan C rekaman** ([§7.2](#72-jenis-permintaan)). Catatan tertulis P3 di L5 tetap. Ini menjawab [§21](#21-pertanyaan-terbuka) no. 2. Tidak dipilih: transkrip berkode tetap disimpan; centang tambahan di T10.
 6. **Jawaban butir risiko: anak ditanya dulu, diberikan bila orang tua tetap meminta** (K2, [§8](#8-salinan-data-satu-anak)). Ini mengubah keputusan no. 2, setelah naskah resmi UU No. 27 Tahun 2022 dicek: hak akses dan salinan (Pasal 7, 32) tidak dikecualikan untuk penelitian (Pasal 15), dan Pasal 33 hanya menyangkut akses *perubahan*. Pengecualian tetap ada bila pemberiannya membahayakan anak. Kalimat T11 diubah supaya jujur: guru dan teman tidak melihat jawaban; kalau orang tua meminta, kakak peneliti bicara dengan anak dulu. Kalimat yang sama dibetulkan di T1, T3, 16, dan 22. Ini menjawab [§21](#21-pertanyaan-terbuka) no. 1. Tidak dipilih: tetap ditahan kecuali anak setuju dan diserahkan ke komite; selalu disertakan dengan T11 diubah.
 
-**Temuan kode untuk ditinjau pengembang** (bukan pertanyaan baru; dicatat di 04):
+**Putaran ketiga: cek kemutakhiran dan tinjauan** (2 November 2026, gelombang A, cabang `r10-cek-30`): dua putaran tanya, enam pertanyaan. `asal: pengembang`.
+
+7. **Bagian 3 dan 4 dibangun paralel; bagian 4 digabung sesudah bagian 3** ([§0](#0-cara-memakai-dokumen-ini)). Baris milik bagian 3 di berkas bersama dibiarkan seperti ditulis bagian 3. Tidak dipilih: bagian 4 baru dimulai setelah bagian 3 digabung; urutan gabung bebas.
+8. **Semua isi bagian ini di balik mode penelitian** ([§0.1](#01-sakelar-studi-dan-yang-langsung-berlaku)), termasuk IP berhash (sakelar `gelita.researchPrivacy`) dan batas 30 hari lokasi kedua cadangan (`KEDUA_HARI`). Bawaan `retention_days` tetap 1825 dan studi yang sudah ada tidak diubah; 7305 hanya untuk studi `field_mode = 1`. Migrasi `003800` tidak mengosongkan `ci_sessions`. Tidak dipilih (usulan AI): IP berhash, pembersihan sesi, dan cadangan 30 hari langsung berlaku di `main`; atau bawaan dan baris lama juga diubah ke 7305.
+9. **Lembar `izin` ditambahkan ke unduhan utama `ketua`**, dan unduhan terpisah §10.1 tetap sebagai dokumen penutupan. Ini menjawab [§21](#21-pertanyaan-terbuka) no. 4. Tidak dipilih: unduhan terpisah saja.
+10. **Kritik dan saran diperiksa nama oleh `ketua` sebelum studi ditutup**, sebagai syarat penutupan ([§10.2](#102-nama-dan-sekolah-diganti-kode)). Ini menjawab §21 no. 5. Tidak dipilih: diperiksa juga di setiap unduhan; tidak diperiksa.
+11. **Provinsi dan kabupaten tetap disimpan setelah studi ditutup; komite diminta menilainya.** Ini menjawab §21 no. 3. Tidak dipilih: dikosongkan saat penutupan; tetap tanpa ditanyakan.
+12. **Dokumen ini dinaikkan ke `disetujui pengembang`.** §21 no. 6 tetap terbuka untuk penyedia server.
+
+Yang diselaraskan tanpa keputusan baru di putaran ini: kalimat "diubah di tahap 3, setelah G2" diganti aturan bangun sekarang; tenggat §4 ditegaskan tidak bergantung G2; temuan nomor KG di 26 ditandai sudah dibetulkan; pasal PP pembanding untuk pengecualian salinan (Pasal 77 ayat (4) huruf a); isi pemberitahuan kepada orang tua (Pasal 87) dan konfirmasi lama penyiapan salinan (Pasal 78 ayat (2)) dari 22; uji manual di instalasi uji pengembang, bukan instalasi validator yang dibekukan; `REQUIRED_MIGRATION` naik lagi di bagian 5–9; rujukan kode dicek ulang (kode `app/` tidak berubah sejak 26 Oktober 2026, `HashedIpSessionHandler` ada tetapi `Config\Session` masih `DatabaseHandler`, migrasi `003800` ada di urutan 27 §6.1). Teks T4, T11, dan T12 di §17 sama dengan 23.
+
+**Temuan kode untuk ditinjau pengembang** (putaran pertama, 30 Oktober 2026; dicatat di 04):
 - Lokasi kedua cadangan tidak pernah menghapus berkas, jadi data yang dihapus dan nama tetap ada di sana tanpa batas ([§7.5](#75-salinan-cadangan)).
 - Retensi menghitung dari mulai sesi, bukan dari studi ditutup, dan 7300 hari kurang dari 20 tahun (K10).
 - Sekolah tetap tersambung ke nama dan NPSN lewat `school_id` setelah nama anak diganti kode (K11).
@@ -831,7 +867,7 @@ Satu putaran tanya, empat pertanyaan (30 Oktober 2026). Pengembang memilih usula
 
 Dicatat di sini dan dibawa sesi koordinator setelah bagian 1–4 diselaraskan.
 
-**Status per 30 Oktober 2026:** semua baris sudah dibawa sesi koordinator (PR #285, #286, #287), kecuali yang menunggu `kamus-1.1` atau implementasi.
+**Status per 30 Oktober 2026:** semua baris sudah dibawa sesi koordinator (PR #285, #286, #287), kecuali yang menunggu `kamus-1.1` atau implementasi. Baris bertanggal 2 November 2026 di akhir tabel berasal dari cek kemutakhiran dan menunggu sesi koordinator berikutnya.
 
 | Dokumen | Bagian | Perubahan | Status |
 | --- | --- | --- | --- |
@@ -853,3 +889,9 @@ Dicatat di sini dan dibawa sesi koordinator setelah bagian 1–4 diselaraskan.
 | [22](22_PERMOHONAN_IZIN_ETIK.md) | *Mengundurkan diri dan hapus data* (C, melihat dan salinan), *Dasar hukum*, daftar tilik 6c | Keputusan no. 5 dan 6; UU No. 27 Tahun 2022 Pasal 7, 32, 33 | Sudah (putaran kedua, 30 Oktober 2026) |
 | [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) | *Hak orang tua dan anak*, P8 | Keputusan no. 5 dan 6 | Sudah (putaran kedua, 30 Oktober 2026) |
 | [16](16_ANGKET_AKSES_DIGITAL.md) | *Etika* no. 2 | Orang tua hanya melihat data anaknya sendiri atas permintaan | Sudah (putaran kedua, 30 Oktober 2026) |
+| [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) | §7.2 *Lembar*, §18 titik sambung | Lembar `izin` di unduhan utama `ketua` (kolom 30 §10.1, disaring ke siswa unduhan itu; keputusan no. 9); bagian 4 digabung sesudah bagian 3 dan memakai ulang pemeriksaan nama K13 untuk kritik dan saran (keputusan no. 7, 10) | Belum (2 November 2026) |
+| [27](27_IMPLEMENTASI_PERAN_PENELITI.md) | §6.1 *Urutan migrasi* | "Setiap bagian diimplementasikan berurutan" tidak lagi tepat: bagian 3 dan 4 paralel di gelombang E, bagian 4 digabung kedua (keputusan no. 7); `REQUIRED_MIGRATION` `003800` adalah nilai akhir bagian 1–4, lalu dinaikkan bagian 5–9 | Belum (2 November 2026) |
+| [22](22_PERMOHONAN_IZIN_ETIK.md), [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) | 22 *Masa simpan dan pemusnahan*; 26 inventaris anak dan *Risiko* (identifikasi ulang) | Provinsi dan kabupaten tetap disimpan setelah nama dan sekolah diganti kode; komite diminta menilai apakah keduanya ikut dikosongkan (keputusan no. 11) | Belum (2 November 2026); untuk peneliti, `asal: pengembang` |
+| [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) | L3, P18, kolom *Siap di sistem* | IP berhash dan pembersihan `ci_sessions` berlaku lewat sakelar `gelita.researchPrivacy`, dinyalakan sebelum akun anak pertama kali dipakai; lokasi kedua cadangan 30 hari lewat `KEDUA_HARI`; kolom *Siap* tidak lagi "tahap 3, setelah G2" (keputusan no. 8) | Belum (2 November 2026) |
+| [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) | T4, T11, T12 | Kalimat "perubahannya masuk dokumen implementasi tahap 3" dan "teks en dibuat di tahap 3" diganti aturan bangun sekarang (1 November 2026); teks id dan en sendiri sudah sama dengan 30 §17 | Belum (2 November 2026); sesi cek 23 mungkin sudah membawanya |
+| `docs/08_DEPLOYMENT.md` | *Backup*, daftar periksa instalasi penelitian | `gelita.researchPrivacy`, `KEDUA_HARI`/`KeduaHari`, dan pengaman di `StudyController` (keputusan no. 8); bagian dari §20 | Saat implementasi |
