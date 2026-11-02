@@ -1,18 +1,18 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "c9a6d39a237f704e65658345cdf16d33e347b50c897dfe19b8eba3df6ed25106",
-      "commit": "dc4c1f5",
+      "source": "bfae51952cbd21c99234a524c75f8a288c937adf9e4fa86c1af4bd68bf1bdec0",
+      "commit": "ab3e347",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 15,
+      "pages": 16,
       "landscapeTables": 0
     },
     "01_REVISI_10_ANALITIK.md": {
-      "source": "54f9617a7eab5c8a2bfe49f83b65a0c76a96afd807ff05e7049c69fe726f8e97",
-      "commit": "81647d8",
+      "source": "7fadc10cbcbacf5f19cb11c5759dd783cc5421e9fdaa8dd70ba2fe5881819833",
+      "commit": "e16ff02",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-02",
+      "date": "2026-11-01",
       "pages": 28,
       "landscapeTables": 0
     },
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "f47da0240c3c1d219fd0487fc88dbc3cf546eb4a0d0d592e2abcdd17c5b93e58",
-      "commit": "dc4c1f5",
+      "source": "923b5f1859e8d4f33dc667ad6e73cdbb63317f178831aeb1cb279f344d207a74",
+      "commit": "ab3e347",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 57,
+      "pages": 58,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -177,11 +177,11 @@
       "landscapeTables": 0
     },
     "22_PERMOHONAN_IZIN_ETIK.md": {
-      "source": "72783ac1588e32bcefac7f2088eb5d387f555ef3b264aaf93ededf6720d1da91",
-      "commit": "81647d8",
+      "source": "b1125fb4d0a03965ac002e14fa5ccb111634077a1b9d2396198de44bbdcac4c6",
+      "commit": "1557694",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-02",
-      "pages": 51,
+      "date": "2026-11-01",
+      "pages": 50,
       "landscapeTables": 0
     },
     "23_SURAT_INFORMASI_DAN_PERSETUJUAN.md": {
@@ -209,10 +209,10 @@
       "landscapeTables": 0
     },
     "26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md": {
-      "source": "b704bdea2b5c2067b0e2721b1aec774c472ba326bfc18854afd7083f4dd113b7",
-      "commit": "81647d8",
+      "source": "342b787f1c511d934c2ad0dc43ef4eb4710e4592c049dfecbb0ef6f4ff5c4ce1",
+      "commit": "0618b8b",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-02",
+      "date": "2026-11-01",
       "pages": 19,
       "landscapeTables": 0
     },
@@ -251,6 +251,38 @@
     "31_IMPLEMENTASI_BANK_SOAL_BARU.md": {
       "source": "bd6c06d948b2676893c36133cc91f4ff6f7dfbb427380625dd393baadb47014e",
       "commit": "379e336",
+      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
+      "date": "2026-11-02",
+      "pages": 20,
+      "landscapeTables": 0
+    },
+    "32_IMPLEMENTASI_SKENARIO_DIGITAL.md": {
+      "source": "674618d9920432292eae0f3e528cd8b534bc1b1fb67a2e96ac02b05acc669e95",
+      "commit": "af3ac76",
+      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
+      "date": "2026-11-02",
+      "pages": 17,
+      "landscapeTables": 0
+    },
+    "33_IMPLEMENTASI_MODE_PENELITIAN.md": {
+      "source": "2f56df14d37c9d7ec83912351de4f5a4f1f8cf411b99da9783782921c3aa1ce5",
+      "commit": "bb90d4d",
+      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
+      "date": "2026-11-02",
+      "pages": 15,
+      "landscapeTables": 0
+    },
+    "34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md": {
+      "source": "64cefc23004e988398fde819040b2775096bc8b872cf19e4bd22130e102aeb5d",
+      "commit": "50e9060",
+      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
+      "date": "2026-11-02",
+      "pages": 22,
+      "landscapeTables": 0
+    },
+    "35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md": {
+      "source": "974cc37ef2285deb415a0ac29b398bd7dadb4004ab543a60bfd910d8d07aa0e2",
+      "commit": "3a294a4",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 20,

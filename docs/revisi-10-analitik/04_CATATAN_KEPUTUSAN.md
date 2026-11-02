@@ -25,6 +25,69 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 Diubah: 22, 26, 01 (satu baris tabel ADDIE), berkas serah terima (sumber HTML dan PDF v1.5), `dokumen-pdf/README.md`, 00 (dua baris 22, dua baris 26, rujukan versi berkas serah terima; ukuran 22 dibetulkan menjadi 203 KB), `docs/PROGRESS.md`, PDF siap cetak 00, 01, 04, 22, dan 26. *Commit* serah terima dicatat koordinator setelah PR digabung.
 
+**Dokumen implementasi bagian 9 didraf: lapis data turunan dan `kamus-1.1` usulan** (cabang `r10-dok-35-lapis-turunan`, gelombang B; wawancara 2 November 2026) · `asal: pengembang` (draf berbantuan AI, empat keputusan pengembang) · [35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) `draf pengembang` · tidak merevisi produk
+
+35 menulis perubahan sistem no. 9: satu kalkulator berversi (`App\Libraries\Derived\*`, fungsi murni yang diuji dengan contoh data hitungan tangan) yang menghitung semua data turunan 11 per putaran hitung satu studi, ditambah usulan `kamus-1.1`. `kamus-1.0` tidak diubah; sampai 11 diubah setelah uji coba, sistem menandai hasilnya `kamus-1.1-usulan`. Empat keputusan pengembang, semuanya usulan AI:
+
+1. **Lapis turunan disimpan di tabel** `derived_*` (migrasi sementara `2026-01-01-004300_CreateDerivedLayer`), setiap baris membawa `run_id` dan `dictionary_version`; hasil yang berlaku diganti sekaligus lewat `research_studies.derived_run_id`. Tidak dipilih: dihitung saat unduhan dibuat.
+2. **Ambang di kolom studi** (`idle_threshold_ms` 180000, `rapid_guess_ms` 3000, bawaan dari `Config\Gelita`), diubah `ketua` dengan log audit dan dikunci di G4. Tidak dipilih: hanya di `Config\Gelita`.
+3. **Dihitung ulang saat unduhan bila basi** (sidik jari data mentah, lembar lapangan, izin, ambang, dan versi kamus), ditambah tombol *Hitung ulang* dan `gelita:turunan:hitung`. Tidak dipilih: hanya manual; setiap malam.
+4. **Data mentah tetap, lapis turunan dipotong pada saat mundur** (`deactivated_at`, atau akhir `status_on`); peserta `withdrawn_keep` tetap `consent_ok = 1` dengan `withdrawn_on`. Tidak dipilih: hanya penanda di lembar turunan.
+
+Keputusan turunan untuk ditinjau (K5–K14 di 35): variabel turunan angket dan skala sikap dihitung lapis turunan, bukan modul bagian 8; `*_theta` tes tetap di lapis 3; jarak ketukan kosong dihitung server; lembar turunan tanpa jawaban, kunci, butir risiko per siswa, atau id internal; lapis turunan hanya untuk studi `field_mode`; tanpa kemampuan baru. Temuan untuk sesi koordinator: 16 masih mendaftar `risk_*`/`support_*` sebagai variabel peserta, padahal 29 K9 hanya mengizinkan angka gabungan; `sikap_missing_reason = tanpa_izin` (17) tidak pernah terjadi di sistem. Nama data bagian 5–8 adalah anggapan, didaftar di 35 §15 dan §20.
+
+Diubah: 35 (baru), 00 (*Daftar dokumen*, baris bagian 9 di *Tahap dokumen 3*), 04, `docs/PROGRESS.md`, PDF siap cetak.
+
+**Dokumen implementasi bagian 6 (32, Skenario Digital) didraf** (cabang `r10-dok-32-skenario-digital`, gelombang B) · `asal: pengembang` (disusun dengan bantuan AI; empat keputusan pengembang) · `draf pengembang` · tidak merevisi produk
+
+[32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md) mengatur perubahan sistem no. 2, 6, dan 18: engine dua langkah (tindakan, lalu alasan), tantangan kelima di tiga wilayah, cerita penghubung `scenario_open`, 15 Serpihan Cahaya, narasi instruksi, dan aturan narasi. Empat keputusan pengembang dalam wawancara 2 November 2026:
+
+1. **Kode engine tersimpan `skenario`**, jenis butir `scenario_choice`. Tidak dipilih: `scenario`, `pilih`.
+2. **Narasi instruksi hanya lewat tombol ▶**, di kelima belas tantangan, tidak pernah otomatis; kode konteks audio `challenge_instruction`. Tidak dipilih: sekali otomatis ditambah ▶ (usulan AI), atau di kartu misi.
+3. **Tanpa sakelar studi:** engine selalu ada, tantangan kelima muncul bila bank memuatnya, total serpihan dihitung dari node aktif (12 menjadi 15), aturan narasi berlaku juga di luar studi. Tidak dipilih: di balik `field_mode`.
+4. **Urutan pilihan diacak sekali per pengerjaan**, tetap di ketiga kesempatan, dan disimpan di `answer_json` setiap percobaan. Tidak dipilih: diacak ulang setiap kesempatan.
+
+Rancangan yang menurunkan sumber (tidak ditanyakan): kesempatan per skenario seperti petunjuk Cari Objek, lewat `submitAnswer()` dan `/responses`; bintang `bintang-1` tidak berubah (benar = tindakan berskor 2); pilihan dikirim dengan rujukan HMAC seperti `objectRef()`; kolom baru `item_tries.action_key`, `action_score`, `reason_key`, `reason_code`, `reason_ready_ms` dan `challenge_nodes.audio_instruction_*` di migrasi sementara `2026-01-01-004000`; event server `scenario_failed` setara `clue_failed`; rute `/penghubung/{wilayah}`; butir dan bacaan D1 tidak pernah membawa audio. Hal yang perlu diubah di dokumen lain (01, 06, 11, 12, 18, 29, 31, 33, 35, glosarium) dicatat di 32 → *Akibat ke dokumen lain* untuk sesi koordinator.
+
+Diubah: 32 (baru), 00 (baris 32 di *Daftar dokumen* dan *Tahap dokumen 3*), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 32.
+
+**Bagian 8 dokumen implementasi didraf: modul tes, angket, dan skala sikap** (cabang `r10-dok-34-modul-tes-sikap`) · `asal: pengembang` (disusun dengan bantuan AI; empat keputusan pengembang) · `draf pengembang` · Prototipe I, belum merevisi produk
+
+[34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) merancang perubahan sistem no. 21 dan 22 dari [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), memakai 13–18, 28 §6 dan §11, 29 §7.6, dan 30 §5.4. Isi instrumen tetap `needs_verification` dan disimpan di berkas data, jadi revisi dari validasi cukup berupa suntingan data lalu impor ulang. Empat pilihan diputuskan pengembang dalam satu putaran, semuanya opsi yang disarankan:
+
+1. **Batas 20 menit tantangan tertinggal di P5: tombol P1 menutup tantangan.** P1 menjaga waktu dengan jam lalu menekan *Mulai tes akhir*; tantangan di sesi lapangan itu tertutup dan semua siswa diarahkan ke modul, pengerjaan terbuka dibiarkan. Tes awal memakai tombol *Mulai tes awal*. Menjawab [28 → Pertanyaan terbuka](28_IMPLEMENTASI_SESI_LAPANGAN.md#21-pertanyaan-terbuka) no. 2. Tidak dipilih: jam P1 saja tanpa penegakan sistem; ditutup otomatis 20 menit setelah sesi buka.
+2. **Isi tes, angket, dan skala di berkas PHP** `data/instrumen/{tes,angket,sikap}.php`, seperti `data/story.php`, diimpor berversi oleh `gelita:instrumen:impor`. Tidak dipilih: lembar workbook baru; berkas JSON.
+3. **Perangkat bermasalah: P1 menambah menit** untuk siswa itu, dengan alasan dan log audit; tambahannya masuk unduhan. Tidak dipilih: jam berhenti saat diam; tanpa tambahan.
+4. **Modul tes dan skala sikap mengikuti `field_mode`.** Saat mati, `/tes` tertutup dan Balai Refleksi tetap seperti sekarang. Instalasi uji validator melihat layarnya lewat sakelar pratinjau `instrumentPreview` untuk akun `uji.*`, dengan jawaban yang tidak pernah diekspor. Tidak dipilih: dua sakelar studi tersendiri; skala selalu menyala.
+
+**Keputusan rancangan lain di 34** (dari sumber dan pencarian kode, untuk ditinjau pengembang): satu mesin dan satu set tabel untuk keempat instrumen (K5); halaman dirender server satu butir per permintaan, waktu tampil dari jam server, modul berjalan tanpa JavaScript (K6); satu baris jawaban per kolom data (K7); skor dan kode kesalahan dihitung saat bagian ditutup, variabel turunan di bagian 9 (K8); blok waktu `p1` dan `p23` (K9); tes awal ditolak setelah siswa bermain (K11); Balai Refleksi dalam mode penelitian hanya di sesi P5 dan susulannya (K12); isi instrumen hanya berbahasa Indonesia (K13); modul tidak menulis event game (K14); tidak ada kemampuan baru (K15). Migrasi `2026-01-01-004200_CreateInstrumentModule` (nomor sementara).
+
+**Pertanyaan untuk peneliti** (34 §17): ambang tebakan cepat untuk tes; uji keterbacaan dengan tata letak teks selama gambar layar tiruan belum ada; angket terlambat ditutup saat P5 utama dibuka.
+
+**Akibat ke dokumen lain** dicatat di [34 → Akibat ke dokumen lain](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#19-akibat-ke-dokumen-lain) untuk sesi koordinator: 28 (§21 no. 2 dicoret, `test_started_at`, status tes di pemantauan), 13, 16, 17, 18, 27, 29 (lembar tes, angket, sikap), 30 (nama tabel untuk hapus), 11, dan glosarium.
+
+Diubah: 34 (baru), 04, 00 (*Daftar dokumen*, *Tahap dokumen 3*), `docs/PROGRESS.md`, PDF siap cetak.
+
+**Dokumen implementasi bagian 7: mode penelitian, waktu aktif, dan perbaikan media** (cabang `r10-dok-33-mode-penelitian`, gelombang B) · `asal: pengembang` (draf berbantuan AI, empat keputusan pengembang) · [33](33_IMPLEMENTASI_MODE_PENELITIAN.md) `draf pengembang` · tidak merevisi produk
+
+[33](33_IMPLEMENTASI_MODE_PENELITIAN.md) ditulis untuk perubahan sistem no. 5, 16, dan 19 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), dari 10, 11, 12, 28 §5 dan §9, 29 §5.4 dan §15, dan kode per *commit* `97f82d5`. Bagian ini hanya menyimpan data mentah; angka turunan (waktu aktif, dilewati, tersensor, tebakan cepat) dihitung bagian 9 (35), dengan batas yang ditulis di 33 §4. Semua perilaku game ada di balik `field_mode`; data mentah direkam di semua mode. Migrasi memakai blok `0041xx` (sementara).
+
+Empat keputusan pengembang, semuanya usulan AI:
+1. **Pengerjaan pertama yang terputus pindah ke sesi game baru** lewat UPDATE bersyarat, dan setiap potongannya dicatat di tabel baru `challenge_attempt_segments`. Tidak dipilih: pindah tanpa tabel potongan; pengerjaan tetap di sesi lama dengan pemeriksaan kepemilikan per siswa.
+2. **Pengerjaan ulang tetap memberi bintang seperti sekarang**; analisis mengabaikannya lewat `is_retake`. Tidak dipilih: pengerjaan ulang tidak mengubah bintang selama studi.
+3. **Layar kecil ditolak bila lebar panggung di bawah 960 px**, sebagai pengaturan studi `min_stage_px`. Tidak dipilih: di bawah 1024 px; ponsel menurut jenis perangkat.
+4. **Keluar mengirim antrean event dulu** (paling lama 5 detik); sisa antrean tetap berpenanda sesi dan dibuang setelah 14 hari. Tidak dipilih: kirim lalu hapus semua sisa; tetap seperti sekarang.
+
+Temuan kode yang dicatat untuk ditinjau:
+- `audio_usage_events` menyimpan jam perangkat tanpa offset, dan sejak 29 K6 baris `pause` tidak punya event mentah yang membawa offset. 33 menambah `audio_usage_events.clock_offset_ms` (K10); 29 perlu menyebutnya.
+- Token objek Cari Objek sudah acak per pengerjaan, tetapi gambar benda tetap dikirim dengan jalur berkas yang memuat kode butir (M-04). 33 mengirim gambar lewat rute API bertoken.
+- Antrean event sudah berpenanda sesi, jadi M-05 tinggal soal *Keluar* yang tidak menunggu antrean terkirim.
+- M-11 sudah tertutup oleh 28 K9 dan 29 §5.5.
+
+Pertanyaan terbuka di 33 §15, termasuk tempat T_idle dan T_teb yang dipilih bersama 35. Perubahan yang dibutuhkan 01, 11, 12, 28, 29, 30, 32, dan 35 ada di 33 §16, untuk sesi koordinator.
+
+Diubah: 33 (baru), 00 (dua baris 33), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 33.
+
 **Dokumen implementasi bagian 5: bank soal baru ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md))** (cabang `r10-dok-31-bank-soal`, gelombang B) · `asal: pengembang` (draf berbantuan AI dan empat keputusan pengembang) · `draf pengembang` · merancang sistem, tidak merevisi produk
 
 Dokumen implementasi untuk perubahan sistem no. 1, 3, 4, 8, 17, dan 20 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), dari 06, 08, 11, 19, 25, dan kode per 2 November 2026 (`main` `97f82d5`). Isinya: bank 08 di berkas data dan workbook dengan kolom dan sheet baru; impor; `DifficultyRules` dan `BankRules` baru; area ketuk kedua babak Cari Objek berjarak paling sedikit 24 dp (menggantikan batas tumpuk 20%); kode kesalahan diturunkan server ke `item_tries.error_code` dari matriks kode eksplisit di bank; variasi pengerjaan pertama dari buklet dan butir jangkar `x`; Cari Objek dua babak; label AKM dan dimensi dengan asalnya (`developer`/`expert`); variabel beban permukaan dihitung saat impor; pemetaan huruf Susun Gambar selama studi. Migrasi sementara `003900` dan `003910`. Kemajuan di `ChallengeService` tetap milik bagian 2 ([28 §8](28_IMPLEMENTASI_SESI_LAPANGAN.md#8-kemajuan-mengikuti-siswa-bukan-sesi-game)); engine Skenario Digital milik bagian 6.
