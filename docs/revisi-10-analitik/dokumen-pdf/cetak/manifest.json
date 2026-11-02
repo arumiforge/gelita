@@ -1,11 +1,11 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "762a6dc0fe90de6eaf08da70367d0e5a5b4a5c38e458e3faf1bf8cf0c76a8287",
-      "commit": "e16ff02",
+      "source": "5a172e19ba1469dd3c0b8860ccf0ec678dc3cd1f30245918256a1ff6c0e42352",
+      "commit": "af3ac76",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
-      "pages": 13,
+      "date": "2026-11-02",
+      "pages": 14,
       "landscapeTables": 0
     },
     "01_REVISI_10_ANALITIK.md": {
@@ -33,10 +33,10 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "2f38ea0b40fb141aae152414f4c0071505a19145dedd8b749bd0bf9beff870ff",
-      "commit": "e16ff02",
+      "source": "c8ae9a56943568f93340c5c6112b51f8d34a264a03ace4e2673772a98f844b3f",
+      "commit": "af3ac76",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
+      "date": "2026-11-02",
       "pages": 52,
       "landscapeTables": 0
     },
@@ -246,6 +246,14 @@
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-01",
       "pages": 25,
+      "landscapeTables": 0
+    },
+    "32_IMPLEMENTASI_SKENARIO_DIGITAL.md": {
+      "source": "674618d9920432292eae0f3e528cd8b534bc1b1fb67a2e96ac02b05acc669e95",
+      "commit": "af3ac76",
+      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
+      "date": "2026-11-02",
+      "pages": 17,
       "landscapeTables": 0
     }
   }
