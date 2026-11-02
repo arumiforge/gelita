@@ -6,6 +6,19 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 2 November 2026
 
+**Dokumen implementasi bagian 9 didraf: lapis data turunan dan `kamus-1.1` usulan** (cabang `r10-dok-35-lapis-turunan`, gelombang B; wawancara 2 November 2026) · `asal: pengembang` (draf berbantuan AI, empat keputusan pengembang) · [35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) `draf pengembang` · tidak merevisi produk
+
+35 menulis perubahan sistem no. 9: satu kalkulator berversi (`App\Libraries\Derived\*`, fungsi murni yang diuji dengan contoh data hitungan tangan) yang menghitung semua data turunan 11 per putaran hitung satu studi, ditambah usulan `kamus-1.1`. `kamus-1.0` tidak diubah; sampai 11 diubah setelah uji coba, sistem menandai hasilnya `kamus-1.1-usulan`. Empat keputusan pengembang, semuanya usulan AI:
+
+1. **Lapis turunan disimpan di tabel** `derived_*` (migrasi sementara `2026-01-01-004300_CreateDerivedLayer`), setiap baris membawa `run_id` dan `dictionary_version`; hasil yang berlaku diganti sekaligus lewat `research_studies.derived_run_id`. Tidak dipilih: dihitung saat unduhan dibuat.
+2. **Ambang di kolom studi** (`idle_threshold_ms` 180000, `rapid_guess_ms` 3000, bawaan dari `Config\Gelita`), diubah `ketua` dengan log audit dan dikunci di G4. Tidak dipilih: hanya di `Config\Gelita`.
+3. **Dihitung ulang saat unduhan bila basi** (sidik jari data mentah, lembar lapangan, izin, ambang, dan versi kamus), ditambah tombol *Hitung ulang* dan `gelita:turunan:hitung`. Tidak dipilih: hanya manual; setiap malam.
+4. **Data mentah tetap, lapis turunan dipotong pada saat mundur** (`deactivated_at`, atau akhir `status_on`); peserta `withdrawn_keep` tetap `consent_ok = 1` dengan `withdrawn_on`. Tidak dipilih: hanya penanda di lembar turunan.
+
+Keputusan turunan untuk ditinjau (K5–K14 di 35): variabel turunan angket dan skala sikap dihitung lapis turunan, bukan modul bagian 8; `*_theta` tes tetap di lapis 3; jarak ketukan kosong dihitung server; lembar turunan tanpa jawaban, kunci, butir risiko per siswa, atau id internal; lapis turunan hanya untuk studi `field_mode`; tanpa kemampuan baru. Temuan untuk sesi koordinator: 16 masih mendaftar `risk_*`/`support_*` sebagai variabel peserta, padahal 29 K9 hanya mengizinkan angka gabungan; `sikap_missing_reason = tanpa_izin` (17) tidak pernah terjadi di sistem. Nama data bagian 5–8 adalah anggapan, didaftar di 35 §15 dan §20.
+
+Diubah: 35 (baru), 00 (*Daftar dokumen*, baris bagian 9 di *Tahap dokumen 3*), 04, `docs/PROGRESS.md`, PDF siap cetak.
+
 **27 dicek kemutakhirannya dan disetujui pengembang; empat keputusan baru** (gelombang A, cabang `r10-cek-27`) · `asal: pengembang` (pemeriksaan berbantuan AI dan wawancara singkat) · 27 naik ke `disetujui pengembang` · belum merevisi produk
 
 Dokumen implementasi bagian 1 ([27](27_IMPLEMENTASI_PERAN_PENELITI.md)) dicek terhadap entri 04 sesudah *commit* terakhirnya (putaran kedua 30–31 Oktober 2026 dan semua entri 1 November 2026), dokumen yang dirujuknya, dan kode. Satu putaran tanya, empat pertanyaan; pengembang memilih usulan di keempatnya, lalu menyetujui dokumennya.
@@ -28,19 +41,6 @@ Dokumen implementasi bagian 1 ([27](27_IMPLEMENTASI_PERAN_PENELITI.md)) dicek te
 Diubah: 27, 00 (dua baris 27), 04, `docs/PROGRESS.md`, PDF siap cetak.
 
 ## 1 November 2026
-
-**Dokumen implementasi bagian 9 didraf: lapis data turunan dan `kamus-1.1` usulan** (cabang `r10-dok-35-lapis-turunan`, gelombang B; wawancara selesai 2 November 2026) · `asal: pengembang` (draf berbantuan AI, empat keputusan pengembang) · [35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) `draf pengembang` · tidak merevisi produk
-
-35 menulis perubahan sistem no. 9: satu kalkulator berversi (`App\Libraries\Derived\*`, fungsi murni yang diuji dengan contoh data hitungan tangan) yang menghitung semua data turunan 11 per putaran hitung satu studi, ditambah usulan `kamus-1.1`. `kamus-1.0` tidak diubah; sampai 11 diubah setelah uji coba, sistem menandai hasilnya `kamus-1.1-usulan`. Empat keputusan pengembang, semuanya usulan AI:
-
-1. **Lapis turunan disimpan di tabel** `derived_*` (migrasi sementara `2026-01-01-004300_CreateDerivedLayer`), setiap baris membawa `run_id` dan `dictionary_version`; hasil yang berlaku diganti sekaligus lewat `research_studies.derived_run_id`. Tidak dipilih: dihitung saat unduhan dibuat.
-2. **Ambang di kolom studi** (`idle_threshold_ms` 180000, `rapid_guess_ms` 3000, bawaan dari `Config\Gelita`), diubah `ketua` dengan log audit dan dikunci di G4. Tidak dipilih: hanya di `Config\Gelita`.
-3. **Dihitung ulang saat unduhan bila basi** (sidik jari data mentah, lembar lapangan, izin, ambang, dan versi kamus), ditambah tombol *Hitung ulang* dan `gelita:turunan:hitung`. Tidak dipilih: hanya manual; setiap malam.
-4. **Data mentah tetap, lapis turunan dipotong pada saat mundur** (`deactivated_at`, atau akhir `status_on`); peserta `withdrawn_keep` tetap `consent_ok = 1` dengan `withdrawn_on`. Tidak dipilih: hanya penanda di lembar turunan.
-
-Keputusan turunan untuk ditinjau (K5–K14 di 35): variabel turunan angket dan skala sikap dihitung lapis turunan, bukan modul bagian 8; `*_theta` tes tetap di lapis 3; jarak ketukan kosong dihitung server; lembar turunan tanpa jawaban, kunci, butir risiko per siswa, atau id internal; lapis turunan hanya untuk studi `field_mode`; tanpa kemampuan baru. Temuan untuk sesi koordinator: 16 masih mendaftar `risk_*`/`support_*` sebagai variabel peserta, padahal 29 K9 hanya mengizinkan angka gabungan; `sikap_missing_reason = tanpa_izin` (17) tidak pernah terjadi di sistem. Nama data bagian 5–8 adalah anggapan, didaftar di 35 §15 dan §20.
-
-Diubah: 35 (baru), 00 (*Daftar dokumen*, baris bagian 9 di *Tahap dokumen 3*), 04, `docs/PROGRESS.md`, PDF siap cetak.
 
 **28 dicek kemutakhirannya dan disetujui pengembang** (gelombang A, cabang `r10-cek-28`) · `asal: pengembang` (pemeriksaan berbantuan AI; enam keputusan pengembang) · `disetujui pengembang` · belum merevisi produk
 
