@@ -1,8 +1,8 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "07325c3b28efc36e6e2dbd068ce140a205342e3529d6d616e4158914b4319b62",
-      "commit": "e768cd6",
+      "source": "82395bb990d1451f32cc75c80000737eafa4756f0eed50e1f15c9ab2959e3593",
+      "commit": "ffb33ff",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 15,
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "b3e496e6fb8d4065c8282ece2ec683c676351eeb01730742d574659aed548dd6",
-      "commit": "e768cd6",
+      "source": "c51f0307da166042e7d7babbec7acef138cd26709fe6de9ea1877b79858b7a94",
+      "commit": "ffb33ff",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 57,
+      "pages": 58,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -254,6 +254,14 @@
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 20,
+      "landscapeTables": 0
+    },
+    "32_IMPLEMENTASI_SKENARIO_DIGITAL.md": {
+      "source": "674618d9920432292eae0f3e528cd8b534bc1b1fb67a2e96ac02b05acc669e95",
+      "commit": "af3ac76",
+      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
+      "date": "2026-11-02",
+      "pages": 17,
       "landscapeTables": 0
     },
     "33_IMPLEMENTASI_MODE_PENELITIAN.md": {

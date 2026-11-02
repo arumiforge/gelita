@@ -6,6 +6,19 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 2 November 2026
 
+**Dokumen implementasi bagian 6 (32, Skenario Digital) didraf** (cabang `r10-dok-32-skenario-digital`, gelombang B) · `asal: pengembang` (disusun dengan bantuan AI; empat keputusan pengembang) · `draf pengembang` · tidak merevisi produk
+
+[32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md) mengatur perubahan sistem no. 2, 6, dan 18: engine dua langkah (tindakan, lalu alasan), tantangan kelima di tiga wilayah, cerita penghubung `scenario_open`, 15 Serpihan Cahaya, narasi instruksi, dan aturan narasi. Empat keputusan pengembang dalam wawancara 2 November 2026:
+
+1. **Kode engine tersimpan `skenario`**, jenis butir `scenario_choice`. Tidak dipilih: `scenario`, `pilih`.
+2. **Narasi instruksi hanya lewat tombol ▶**, di kelima belas tantangan, tidak pernah otomatis; kode konteks audio `challenge_instruction`. Tidak dipilih: sekali otomatis ditambah ▶ (usulan AI), atau di kartu misi.
+3. **Tanpa sakelar studi:** engine selalu ada, tantangan kelima muncul bila bank memuatnya, total serpihan dihitung dari node aktif (12 menjadi 15), aturan narasi berlaku juga di luar studi. Tidak dipilih: di balik `field_mode`.
+4. **Urutan pilihan diacak sekali per pengerjaan**, tetap di ketiga kesempatan, dan disimpan di `answer_json` setiap percobaan. Tidak dipilih: diacak ulang setiap kesempatan.
+
+Rancangan yang menurunkan sumber (tidak ditanyakan): kesempatan per skenario seperti petunjuk Cari Objek, lewat `submitAnswer()` dan `/responses`; bintang `bintang-1` tidak berubah (benar = tindakan berskor 2); pilihan dikirim dengan rujukan HMAC seperti `objectRef()`; kolom baru `item_tries.action_key`, `action_score`, `reason_key`, `reason_code`, `reason_ready_ms` dan `challenge_nodes.audio_instruction_*` di migrasi sementara `2026-01-01-004000`; event server `scenario_failed` setara `clue_failed`; rute `/penghubung/{wilayah}`; butir dan bacaan D1 tidak pernah membawa audio. Hal yang perlu diubah di dokumen lain (01, 06, 11, 12, 18, 29, 31, 33, 35, glosarium) dicatat di 32 → *Akibat ke dokumen lain* untuk sesi koordinator.
+
+Diubah: 32 (baru), 00 (baris 32 di *Daftar dokumen* dan *Tahap dokumen 3*), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 32.
+
 **Bagian 8 dokumen implementasi didraf: modul tes, angket, dan skala sikap** (cabang `r10-dok-34-modul-tes-sikap`) · `asal: pengembang` (disusun dengan bantuan AI; empat keputusan pengembang) · `draf pengembang` · Prototipe I, belum merevisi produk
 
 [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) merancang perubahan sistem no. 21 dan 22 dari [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), memakai 13–18, 28 §6 dan §11, 29 §7.6, dan 30 §5.4. Isi instrumen tetap `needs_verification` dan disimpan di berkas data, jadi revisi dari validasi cukup berupa suntingan data lalu impor ulang. Empat pilihan diputuskan pengembang dalam satu putaran, semuanya opsi yang disarankan:
