@@ -1,10 +1,10 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "762a6dc0fe90de6eaf08da70367d0e5a5b4a5c38e458e3faf1bf8cf0c76a8287",
-      "commit": "e16ff02",
+      "source": "512b3fb15a55b3ac111b421361dff4329cca0718e443d2a166d3d9f64e2bb330",
+      "commit": "fd61ece",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
+      "date": "2026-11-02",
       "pages": 13,
       "landscapeTables": 0
     },
@@ -33,10 +33,10 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "2f38ea0b40fb141aae152414f4c0071505a19145dedd8b749bd0bf9beff870ff",
-      "commit": "e16ff02",
+      "source": "c61312debcb0f03144e2d8e1f5e828df52a2f9762bcd3d3206f27e736af54c36",
+      "commit": "fd61ece",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
+      "date": "2026-11-02",
       "pages": 52,
       "landscapeTables": 0
     },
@@ -225,11 +225,11 @@
       "landscapeTables": 0
     },
     "28_IMPLEMENTASI_SESI_LAPANGAN.md": {
-      "source": "8af2b2add7e5b1ec604cb9f1b8db95176e102e34c2b66f059bfcbd9e93ba2ebe",
-      "commit": "1313e3f",
+      "source": "8b84ff97688ffd73a6ded421114fb5699c9e735e22144c5011f49bb5dd36747b",
+      "commit": "fd61ece",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-31",
-      "pages": 20,
+      "date": "2026-11-02",
+      "pages": 22,
       "landscapeTables": 0
     },
     "29_IMPLEMENTASI_DATA_PENELITIAN.md": {
