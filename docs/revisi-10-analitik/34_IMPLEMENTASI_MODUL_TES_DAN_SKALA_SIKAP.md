@@ -2,7 +2,7 @@
 
 Per 2 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 21 dan 22 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
 
-> **Status: `draf pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 1–2 November 2026). Empat pilihan rancangan diputuskan pengembang dalam satu putaran wawancara ([§17](#17-keputusan-pengembang)).
+> **Status: `disetujui pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 1–2 November 2026; disetujui pengembang 2 November 2026, [§18](#18-keputusan-pengembang) no. 5). Empat pilihan rancangan diputuskan pengembang dalam satu putaran wawancara ([§18](#18-keputusan-pengembang)). Isi instrumen tetap `needs_verification`; persetujuan ini untuk rancangan sistem, bukan untuk butir.
 >
 > Sejak 1 November 2026 kode dibangun sekarang ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026), di gelombang kode F, setelah bagian 2 (token, [28](28_IMPLEMENTASI_SESI_LAPANGAN.md)) dan bagian 4 (izin, [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md)). Modul ini tidak dipakai dengan anak sebelum persetujuan etik terbit. Semua perilakunya ada di balik sakelar `field_mode` yang mati secara bawaan, jadi `main` tetap bisa dirilis.
 >
@@ -709,6 +709,7 @@ Satu putaran wawancara, 2 November 2026 (`asal: pengembang`). Pengembang memilih
 2. **Isi di berkas data PHP** `data/instrumen/*.php` seperti `data/story.php` (K2). Tidak dipilih: lembar workbook baru (bacaan panjang dan layar tiruan sulit di sel); berkas JSON.
 3. **Perangkat bermasalah: P1 menambah menit** dengan alasan dan log audit; tambahannya masuk unduhan (K3). Tidak dipilih: jam berhenti saat diam (siswa yang diam ikut mendapat waktu tanpa terlihat); tanpa tambahan.
 4. **Mengikuti `field_mode`, dengan pratinjau untuk akun `uji.*`** (K4). Tidak dipilih: dua sakelar studi tersendiri (lebih banyak kombinasi); skala selalu menyala (mengumpulkan data tanpa dasar izin di luar penelitian).
+5. **Dokumen disetujui pengembang** (2 November 2026), bersama keputusan rancangan K5–K15 dan penyelarasan dengan rencana `satu_sesi` (PR #319). Pertanyaan terbuka di [§17](#17-pertanyaan-terbuka) tetap untuk peneliti dan tidak menahan persetujuan ini.
 
 ---
 

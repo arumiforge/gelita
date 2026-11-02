@@ -6,6 +6,12 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 2 November 2026
 
+**34 disetujui pengembang** (cabang `r10-dok-34-modul-tes-sikap`, setelah PR #319) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Pengembang menyetujui [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) apa adanya, termasuk keputusan rancangan K5–K15 dan catatan rencana `satu_sesi`. Persetujuan ini untuk rancangan sistem; butir tes, angket, dan skala sikap tetap `needs_verification` sampai validasi ahli dan uji keterbacaan. Pertanyaan terbuka di 34 §17 tetap untuk peneliti. Akibat ke dokumen lain di 34 §19 menunggu sesi koordinator.
+
+Diubah: 34 (status, §18 no. 5), 00 (dua baris 34), 04, `docs/PROGRESS.md`, PDF siap cetak.
+
 **Commit serah terima ke peneliti: `f45d274`** (cabang `r10-cek-22`, dari `main` setelah PR #312) · `asal: pengembang` · `disetujui pengembang` (diminta pengembang 2 November 2026) · tidak merevisi produk
 
 Gelombang A untuk 22 dan 23 selesai: cek kemutakhiran 23 (PR #311) dan 22 (PR #312) sudah digabung. Paket untuk peneliti (keputusan no. 4 di entri *Pembagian kerja baru*, 1 November 2026) diambil dari *commit* **`f45d274`** (`f45d27447b30f35d692f0ced422471ef8625fce9`, gabungan PR #312 ke `main`, 2 November 2026). Di *commit* itu `cetak.mjs` tidak membangun ulang apa pun (36 dokumen tidak berubah), jadi semua PDF di bawah sesuai dengan Markdown-nya.
