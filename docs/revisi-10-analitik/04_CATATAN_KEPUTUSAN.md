@@ -6,6 +6,23 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 2 November 2026
 
+**Bagian 8 dokumen implementasi didraf: modul tes, angket, dan skala sikap** (cabang `r10-dok-34-modul-tes-sikap`) · `asal: pengembang` (disusun dengan bantuan AI; empat keputusan pengembang) · `draf pengembang` · Prototipe I, belum merevisi produk
+
+[34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) merancang perubahan sistem no. 21 dan 22 dari [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), memakai 13–18, 28 §6 dan §11, 29 §7.6, dan 30 §5.4. Isi instrumen tetap `needs_verification` dan disimpan di berkas data, jadi revisi dari validasi cukup berupa suntingan data lalu impor ulang. Empat pilihan diputuskan pengembang dalam satu putaran, semuanya opsi yang disarankan:
+
+1. **Batas 20 menit tantangan tertinggal di P5: tombol P1 menutup tantangan.** P1 menjaga waktu dengan jam lalu menekan *Mulai tes akhir*; tantangan di sesi lapangan itu tertutup dan semua siswa diarahkan ke modul, pengerjaan terbuka dibiarkan. Tes awal memakai tombol *Mulai tes awal*. Menjawab [28 → Pertanyaan terbuka](28_IMPLEMENTASI_SESI_LAPANGAN.md#21-pertanyaan-terbuka) no. 2. Tidak dipilih: jam P1 saja tanpa penegakan sistem; ditutup otomatis 20 menit setelah sesi buka.
+2. **Isi tes, angket, dan skala di berkas PHP** `data/instrumen/{tes,angket,sikap}.php`, seperti `data/story.php`, diimpor berversi oleh `gelita:instrumen:impor`. Tidak dipilih: lembar workbook baru; berkas JSON.
+3. **Perangkat bermasalah: P1 menambah menit** untuk siswa itu, dengan alasan dan log audit; tambahannya masuk unduhan. Tidak dipilih: jam berhenti saat diam; tanpa tambahan.
+4. **Modul tes dan skala sikap mengikuti `field_mode`.** Saat mati, `/tes` tertutup dan Balai Refleksi tetap seperti sekarang. Instalasi uji validator melihat layarnya lewat sakelar pratinjau `instrumentPreview` untuk akun `uji.*`, dengan jawaban yang tidak pernah diekspor. Tidak dipilih: dua sakelar studi tersendiri; skala selalu menyala.
+
+**Keputusan rancangan lain di 34** (dari sumber dan pencarian kode, untuk ditinjau pengembang): satu mesin dan satu set tabel untuk keempat instrumen (K5); halaman dirender server satu butir per permintaan, waktu tampil dari jam server, modul berjalan tanpa JavaScript (K6); satu baris jawaban per kolom data (K7); skor dan kode kesalahan dihitung saat bagian ditutup, variabel turunan di bagian 9 (K8); blok waktu `p1` dan `p23` (K9); tes awal ditolak setelah siswa bermain (K11); Balai Refleksi dalam mode penelitian hanya di sesi P5 dan susulannya (K12); isi instrumen hanya berbahasa Indonesia (K13); modul tidak menulis event game (K14); tidak ada kemampuan baru (K15). Migrasi `2026-01-01-004200_CreateInstrumentModule` (nomor sementara).
+
+**Pertanyaan untuk peneliti** (34 §17): ambang tebakan cepat untuk tes; uji keterbacaan dengan tata letak teks selama gambar layar tiruan belum ada; angket terlambat ditutup saat P5 utama dibuka.
+
+**Akibat ke dokumen lain** dicatat di [34 → Akibat ke dokumen lain](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#19-akibat-ke-dokumen-lain) untuk sesi koordinator: 28 (§21 no. 2 dicoret, `test_started_at`, status tes di pemantauan), 13, 16, 17, 18, 27, 29 (lembar tes, angket, sikap), 30 (nama tabel untuk hapus), 11, dan glosarium.
+
+Diubah: 34 (baru), 04, 00 (*Daftar dokumen*, *Tahap dokumen 3*), `docs/PROGRESS.md`, PDF siap cetak.
+
 **Dokumen implementasi bagian 7: mode penelitian, waktu aktif, dan perbaikan media** (cabang `r10-dok-33-mode-penelitian`, gelombang B) · `asal: pengembang` (draf berbantuan AI, empat keputusan pengembang) · [33](33_IMPLEMENTASI_MODE_PENELITIAN.md) `draf pengembang` · tidak merevisi produk
 
 [33](33_IMPLEMENTASI_MODE_PENELITIAN.md) ditulis untuk perubahan sistem no. 5, 16, dan 19 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), dari 10, 11, 12, 28 §5 dan §9, 29 §5.4 dan §15, dan kode per *commit* `97f82d5`. Bagian ini hanya menyimpan data mentah; angka turunan (waktu aktif, dilewati, tersensor, tebakan cepat) dihitung bagian 9 (35), dengan batas yang ditulis di 33 §4. Semua perilaku game ada di balik `field_mode`; data mentah direkam di semua mode. Migrasi memakai blok `0041xx` (sementara).
