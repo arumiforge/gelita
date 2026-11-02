@@ -6,6 +6,12 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 2 November 2026
 
+**Commit serah terima 23 dicatat** (cabang `r10-cek-23`, sesudah PR #311) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Versi [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) yang diserahkan ke peneliti adalah hasil cek kemutakhiran 1 November 2026 (entri di bawah), digabung ke `main` lewat PR #311 di *commit* `e9f288b` (2 November 2026). PDF-nya `dokumen-pdf/cetak/23_SURAT_INFORMASI_DAN_PERSETUJUAN.pdf`, 33 halaman. Kaki halamannya menyebut *commit* terakhir dokumen, `52541ed`, sama dengan `manifest.json`. 23 tidak berubah di `main` sesudah `e9f288b`. Perubahan berikutnya dari peneliti atau komite etik masuk dengan `asal: peneliti` atau `asal: komite etik` dan dibandingkan dengan versi ini. *Commit* serah terima 22, 24, dan 26 dicatat sesi yang menyerahkannya.
+
+Diubah: 04, 00 (dua baris 23), `docs/PROGRESS.md`, PDF siap cetak 00 dan 04.
+
 **Dokumen implementasi bagian 6 (32, Skenario Digital) didraf** (cabang `r10-dok-32-skenario-digital`, gelombang B) · `asal: pengembang` (disusun dengan bantuan AI; empat keputusan pengembang) · `draf pengembang` · tidak merevisi produk
 
 [32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md) mengatur perubahan sistem no. 2, 6, dan 18: engine dua langkah (tindakan, lalu alasan), tantangan kelima di tiga wilayah, cerita penghubung `scenario_open`, 15 Serpihan Cahaya, narasi instruksi, dan aturan narasi. Empat keputusan pengembang dalam wawancara 2 November 2026:
