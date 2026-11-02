@@ -665,10 +665,10 @@ Instruksi tantangan dan petunjuk babak 2 dari 08 ada di workbook, bukan berkas b
 
 ## 21. Pertanyaan terbuka
 
-1. **Jumlah kisi-kisi di kode atau di data?** K2 menyimpan jumlah (rumpang, pernyataan, petunjuk, bagian, skenario, pilihan) di `DifficultyRules`. Bila matriks revisi mengubah kisi-kisi (misalnya petunjuk kelima per adegan bila reliabilitas D3 < 0,60, [06](06_KISI_KISI_BANK_SOAL.md#batas-reliabilitas-d2-dan-d3)), satu konstanta diubah. Pilihan lain: sheet `rules` di workbook. Usulan: tetap di kode, karena jumlah adalah desain yang diuji Rasch, bukan isi.
-2. **Tata letak kartu jangkar.** Dua kartu bertumpuk dengan satu Cek, atau kartu kedua muncul setelah semua pernyataan pertama dijawab? Belum ada mock-up di 18. Usulan: bertumpuk, satu Cek; diperiksa ahli media.
-3. **Kode bank yang direvisi setelah ada percobaan.** Kode tersimpan tidak ditulis ulang (§7.1). Lapis turunan (bagian 9) memilih: kode saat percobaan atau kode bank terbaru. Usulan untuk bagian 9: kode bank terbaru, dengan kode saat percobaan tetap di data mentah.
-4. **Terjemahan bahasa Inggris** bank baru belum ada (08 → *Langkah berikutnya* no. 5). Siapa menerjemahkan dan kapan, sebelum G3?
+1. ~~**Jumlah kisi-kisi di kode atau di data?**~~ K2 menyimpan jumlah (rumpang, pernyataan, petunjuk, bagian, skenario, pilihan) di `DifficultyRules`. Bila matriks revisi mengubah kisi-kisi (misalnya petunjuk kelima per adegan bila reliabilitas D3 < 0,60, [06](06_KISI_KISI_BANK_SOAL.md#batas-reliabilitas-d2-dan-d3)), satu konstanta diubah. Pilihan lain: sheet `rules` di workbook. Usulan: tetap di kode, karena jumlah adalah desain yang diuji Rasch, bukan isi. **Diputuskan pengembang 2 November 2026** (sesi koordinator, [04](04_CATATAN_KEPUTUSAN.md)): tetap di kode (`DifficultyRules`), seperti K2.
+2. ~~**Tata letak kartu jangkar.**~~ Dua kartu bertumpuk dengan satu Cek, atau kartu kedua muncul setelah semua pernyataan pertama dijawab? Belum ada mock-up di 18. Usulan: bertumpuk, satu Cek; diperiksa ahli media. **Diputuskan pengembang 2 November 2026** (sesi koordinator, [04](04_CATATAN_KEPUTUSAN.md)): bertumpuk dengan satu Cek; ahli media memeriksanya di langkah 2.
+3. ~~**Kode bank yang direvisi setelah ada percobaan.**~~ Kode tersimpan tidak ditulis ulang (§7.1). Lapis turunan (bagian 9) memilih: kode saat percobaan atau kode bank terbaru. Usulan untuk bagian 9: kode bank terbaru, dengan kode saat percobaan tetap di data mentah. **Diputuskan pengembang 2 November 2026** (sesi koordinator, [04](04_CATATAN_KEPUTUSAN.md)): kode bank terbaru untuk analisis; `item_tries.error_code` tetap kode saat percobaan ([35 → Keputusan pengembang](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#19-keputusan-pengembang) no. 5).
+4. ~~**Terjemahan bahasa Inggris** bank baru belum ada (08 → *Langkah berikutnya* no. 5).~~ **Diputuskan pengembang 2 November 2026** (sesi koordinator, [04](04_CATATAN_KEPUTUSAN.md)): AI mendraf terjemahan bahasa Inggris sekarang, disetujui pengembang, lalu butir yang direvisi dari validasi diterjemahkan ulang. Tidak dipilih: diterjemahkan sekali setelah matriks revisi, sebelum G3 (usulan AI); studi hanya berbahasa Indonesia.
 5. **Penanda baris di bacaan digital** (`layout`): bentuk penanda di `body_id` ditetapkan saat implementasi, bersama mock-up.
 6. **`HUNT_SCENE_DP`** diukur dari tata letak tantangan sekarang; bila tata letak tantangan berubah (misalnya dari bagian 7, layar kecil), angka dan adegan diperiksa ulang.
 
@@ -682,6 +682,14 @@ Wawancara 2 November 2026, satu putaran, empat pertanyaan · `asal: pengembang` 
 2. **Bagian ketuk *Periksa Unggahan* berupa kotak di workbook** (K8): x, y, w, h dalam persen adegan; unggahan digambar dari kotak itu sebagai teks. Tidak dipilih: templat CSS tetap dengan pemeriksaan Playwright; gambar unggahan dengan titik ketuk.
 3. **Bank baru menggantikan bank lama di `main`**, dipasang di server produksi hanya saat pengembang menjalankan impor (K3). Tidak dipilih: dua bank di balik sakelar; bank baru di cabang sampai G2.
 4. **Tanpa buklet di mode penelitian, tantangan dinilai tidak dibuka** dan siswa melihat pesan ramah (K10). Usulan AI adalah variasi acak `a`/`b` dengan penanda supaya bermain tidak tertahan; pengembang memilih menahan supaya data pengerjaan pertama selalu mengikuti desain buklet. Tidak dipilih: acak dengan penanda (usulan AI); buklet B1 sebagai bawaan.
+
+
+Putaran kedua, 2 November 2026 (sesi koordinator, `asal: pengembang`, [04](04_CATATAN_KEPUTUSAN.md)), menjawab [§21](#21-pertanyaan-terbuka) no. 1–4:
+
+5. **Jumlah kisi-kisi tetap di kode** (`DifficultyRules`, K2). Tidak dipilih: sheet `rules` di workbook.
+6. **Kartu jangkar bertumpuk dengan satu Cek.** Tidak dipilih: kartu kedua muncul setelah semua pernyataan pertama dijawab.
+7. **Analisis memakai kode bank terbaru**; kode saat percobaan tetap di `item_tries.error_code`. Tidak dipilih: kode saat percobaan.
+8. **Terjemahan bahasa Inggris bank baru didraf AI sekarang**, disetujui pengembang, dan butir yang direvisi dari validasi diterjemahkan ulang. Tidak dipilih: diterjemahkan sekali setelah matriks revisi (usulan AI); studi hanya berbahasa Indonesia.
 
 ---
 
