@@ -24,6 +24,10 @@ Gelombang A untuk 22 dan 23 selesai: cek kemutakhiran 23 (PR #311) dan 22 (PR #3
 
 Diubah: 04, 00 (baris 22 dan 23 di daftar dokumen dan tahap 2, catatan *Peneliti menerima PDF saja*), `docs/PROGRESS.md`, PDF siap cetak 00 dan 04. *Commit* serah terima sendiri tidak berubah: perubahan ini hanya mencatatnya.
 
+**34 diselaraskan dengan rencana `satu_sesi` di 28** (cabang `r10-dok-34-modul-tes-sikap`, setelah PR #315) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 34 tetap `draf pengembang` · tidak merevisi produk
+
+28 K19 (rencana pertemuan per studi, digabung saat 34 ditulis) meminta 34 menulis bahwa rencana `satu_sesi` (KG2) tidak membuka modul tes, angket, butir risiko daring, dan skala sikap. Ditulis di 34 §5.1 dan K12; baris 28 di 34 §19 kini juga mencoret 28 §21 no. 3 (angket terlambat, diatur di 34 §10.2). Tidak ada keputusan baru.
+
 **22 dicek kemutakhirannya dan siap diserahkan ke peneliti sebagai PDF** (gelombang A, cabang `r10-cek-22`, 1–2 November 2026) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 22 tetap draf · tidak merevisi produk
 
 [22](22_PERMOHONAN_IZIN_ETIK.md) dicek terhadap entri 04 sesudah *commit* terakhirnya (cek pasal PP 33/2026), terutama *Pembagian kerja baru* di bawah, terhadap 23, 24, 26, 30, 03, dan 01, dan terhadap kode. Tidak ada keputusan baru; yang diubah hanya yang sudah diputuskan. Nomor pasal PP No. 33 Tahun 2026 dan pemetaan formulir BRIN tidak disentuh.

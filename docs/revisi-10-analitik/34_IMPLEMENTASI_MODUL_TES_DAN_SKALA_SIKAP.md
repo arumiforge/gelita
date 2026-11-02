@@ -108,7 +108,7 @@ K1–K4 diputuskan pengembang ([§18](#18-keputusan-pengembang)). Sisanya menuru
 | K9 | **Bagian dan blok waktu.** Tes punya tiga bagian (`mb`, `ae`, `bd`) dan dua blok waktu (`p1` = Bagian 1, `p23` = Bagian 2 dan 3), mengikuti batas di 13 dan kolom `pre_capped` (`p1`, `p23`). Setiap bagian dikirim sendiri; batas waktu menutup blok. |
 | K10 | **Mulai tes awal menunggu bentuk.** Tombol *Mulai tes awal* aktif bila panel menampilkan "Semua siswa sudah punya bentuk tes" (28 §11). Siswa tanpa bentuk tetap di layar pembuka dengan pesan menunggu. Kursi siswa dikunci (`participant_seats.locked_at`) saat sesi tes awal siswa itu dibuat, dengan UPDATE bersyarat `locked_at IS NULL`. |
 | K11 | **Tes awal tidak boleh sesudah bermain.** Bila siswa sudah punya pengerjaan tantangan dalam studi itu, modul menolak tes awal dan statusnya kosong (`hilang` dihitung bagian 9). Angket tetap boleh, dengan `late = 1` (13, 16). |
-| K12 | **Balai Refleksi dalam mode penelitian hanya terbuka di sesi lapangan P5 dan susulannya**, setelah semua tantangan tuntas (aturan sekarang) dan setelah cerita penutup. Di P2–P4 siswa yang sudah tuntas melihat "Balai Refleksi dibuka di pertemuan terakhir." Diturunkan dari 17 (skala setelah cerita penutup) dan rencana pertemuan 28 §5.2 (`ending` hanya di P5). |
+| K12 | **Balai Refleksi dalam mode penelitian hanya terbuka di sesi lapangan P5 dan susulannya**, setelah semua tantangan tuntas (aturan sekarang) dan setelah cerita penutup. Di P2–P4 siswa yang sudah tuntas melihat "Balai Refleksi dibuka di pertemuan terakhir." Diturunkan dari 17 (skala setelah cerita penutup) dan rencana pertemuan 28 §5.2 (`ending` hanya di P5). Rencana `satu_sesi` (KG2) tidak punya P5, jadi skala sikap tidak pernah tampil di sana (28 K19). |
 | K13 | **Isi instrumen hanya berbahasa Indonesia.** Teks bingkai modul (tombol, petunjuk umum, pesan) punya pasangan en di berkas bahasa. Butir, bacaan, dan pilihan tidak diterjemahkan, karena instrumen divalidasi dalam bahasa Indonesia; bila bahasa game siswa en, modul tetap menampilkan isinya dalam bahasa Indonesia. *Kode.* |
 | K14 | **Tidak ada event game dari modul.** Jawaban dan waktu modul disimpan di tabelnya sendiri, bukan di `game_event_logs`, supaya tidak ada salinan kedua yang harus dibersihkan. Modul tidak menulis `screen_viewed`. Tindakan staf (mulai tes, tambah menit, pengaturan) masuk log audit. |
 | K15 | **Tidak ada kemampuan baru.** Mulai tes dan tambah menit memakai `field_sessions.manage`; pengaturan batas waktu memakai `studies.manage`; jawaban terlihat lewat `research.browse` dan `research.export` (`ketua`), kecuali jawaban butir risiko, yang tidak pernah per siswa (29 §7.6). |
@@ -150,7 +150,7 @@ Contoh soal tampil sebelum Bagian 1 (`tes-ct-01`–`03`), sebelum Bagian 2 (`tes
 
 `InstrumentGate::status(Participant $p, ?GameSession $s): string` menghitung keadaan modul. Modul terbuka bila semuanya benar:
 1. `field_mode = 1` dan studi `active` (28 §5.1), atau pratinjau validator menyala ([§5.5](#55-pratinjau-untuk-instalasi-uji-validator));
-2. sesi game siswa terikat ke sesi lapangan yang **buka**, dan rencana pertemuannya punya kunci `test` (`pre` di P1, `post` di P5; 28 §5.2), termasuk susulannya;
+2. sesi game siswa terikat ke sesi lapangan yang **buka**, dan rencana pertemuan studinya (`research_studies.meeting_plan`, 28 K19 dan §5.2) memberi pertemuan itu kunci `test` (`pre` di P1, `post` di P5), termasuk susulannya. Rencana `satu_sesi` (KG2) tidak punya kunci `test`, jadi modul tes, angket, dan butir risiko daring tidak pernah terbuka di sana;
 3. siswa aktif (`participants.deactivated_at IS NULL`, 30 §5.3);
 4. masih ada langkah modul yang belum selesai untuk siswa itu ([§4](#4-satu-siswa-dari-p1-sampai-p5)).
 
@@ -718,7 +718,7 @@ Untuk sesi koordinator; tidak diubah di sini.
 
 | Dokumen | Bagian | Yang perlu diubah |
 | --- | --- | --- |
-| [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) | §21 no. 2 | Dicoret: diputuskan di 34 K1 (tombol P1 menutup tantangan) |
+| [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) | §21 no. 2 dan 3 | Dicoret: no. 2 diputuskan di 34 K1 (tombol P1 menutup tantangan); no. 3 diatur di 34 §10.2 (angket terlambat di susulan P1 sampai P5 utama dibuka). Rencana `satu_sesi` tanpa modul tes dan skala sikap tertulis di 34 §5.1 dan K12 |
 | 28 | §6.5 langkah 8, §12, §14 | Arah ke `/tes` setelah daftar; status tes di pemantauan diisi dari 34 §14, ditambah tombol *Tambah waktu*; kolom `field_sessions.test_started_at`, `test_started_by` (dibuat migrasi 34) |
 | [13](13_TES_AWAL_AKHIR.md) | *Modul tes di GELITA* butir "Belum diputuskan" | Diputuskan di 34 K1; tombol *Mulai tes awal/akhir*; tambah menit oleh P1 (34 K3) di *Aturan selama tes* |
 | [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) | §7.2 | Lembar `tes_jawaban`, `tes_bagian`, `angket`, `sikap`, kolom `peserta` tambahan (34 §11.4); sumber `risiko_gabungan` = sesi jenis `risk` |
