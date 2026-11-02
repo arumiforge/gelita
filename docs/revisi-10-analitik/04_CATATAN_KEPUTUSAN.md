@@ -1,6 +1,6 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 1 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 2 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
 
@@ -19,7 +19,148 @@ Rancangan yang menurunkan sumber (tidak ditanyakan): kesempatan per skenario sep
 
 Diubah: 32 (baru), 00 (baris 32 di *Daftar dokumen* dan *Tahap dokumen 3*), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 32.
 
+**Bagian 8 dokumen implementasi didraf: modul tes, angket, dan skala sikap** (cabang `r10-dok-34-modul-tes-sikap`) · `asal: pengembang` (disusun dengan bantuan AI; empat keputusan pengembang) · `draf pengembang` · Prototipe I, belum merevisi produk
+
+[34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) merancang perubahan sistem no. 21 dan 22 dari [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), memakai 13–18, 28 §6 dan §11, 29 §7.6, dan 30 §5.4. Isi instrumen tetap `needs_verification` dan disimpan di berkas data, jadi revisi dari validasi cukup berupa suntingan data lalu impor ulang. Empat pilihan diputuskan pengembang dalam satu putaran, semuanya opsi yang disarankan:
+
+1. **Batas 20 menit tantangan tertinggal di P5: tombol P1 menutup tantangan.** P1 menjaga waktu dengan jam lalu menekan *Mulai tes akhir*; tantangan di sesi lapangan itu tertutup dan semua siswa diarahkan ke modul, pengerjaan terbuka dibiarkan. Tes awal memakai tombol *Mulai tes awal*. Menjawab [28 → Pertanyaan terbuka](28_IMPLEMENTASI_SESI_LAPANGAN.md#21-pertanyaan-terbuka) no. 2. Tidak dipilih: jam P1 saja tanpa penegakan sistem; ditutup otomatis 20 menit setelah sesi buka.
+2. **Isi tes, angket, dan skala di berkas PHP** `data/instrumen/{tes,angket,sikap}.php`, seperti `data/story.php`, diimpor berversi oleh `gelita:instrumen:impor`. Tidak dipilih: lembar workbook baru; berkas JSON.
+3. **Perangkat bermasalah: P1 menambah menit** untuk siswa itu, dengan alasan dan log audit; tambahannya masuk unduhan. Tidak dipilih: jam berhenti saat diam; tanpa tambahan.
+4. **Modul tes dan skala sikap mengikuti `field_mode`.** Saat mati, `/tes` tertutup dan Balai Refleksi tetap seperti sekarang. Instalasi uji validator melihat layarnya lewat sakelar pratinjau `instrumentPreview` untuk akun `uji.*`, dengan jawaban yang tidak pernah diekspor. Tidak dipilih: dua sakelar studi tersendiri; skala selalu menyala.
+
+**Keputusan rancangan lain di 34** (dari sumber dan pencarian kode, untuk ditinjau pengembang): satu mesin dan satu set tabel untuk keempat instrumen (K5); halaman dirender server satu butir per permintaan, waktu tampil dari jam server, modul berjalan tanpa JavaScript (K6); satu baris jawaban per kolom data (K7); skor dan kode kesalahan dihitung saat bagian ditutup, variabel turunan di bagian 9 (K8); blok waktu `p1` dan `p23` (K9); tes awal ditolak setelah siswa bermain (K11); Balai Refleksi dalam mode penelitian hanya di sesi P5 dan susulannya (K12); isi instrumen hanya berbahasa Indonesia (K13); modul tidak menulis event game (K14); tidak ada kemampuan baru (K15). Migrasi `2026-01-01-004200_CreateInstrumentModule` (nomor sementara).
+
+**Pertanyaan untuk peneliti** (34 §17): ambang tebakan cepat untuk tes; uji keterbacaan dengan tata letak teks selama gambar layar tiruan belum ada; angket terlambat ditutup saat P5 utama dibuka.
+
+**Akibat ke dokumen lain** dicatat di [34 → Akibat ke dokumen lain](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#19-akibat-ke-dokumen-lain) untuk sesi koordinator: 28 (§21 no. 2 dicoret, `test_started_at`, status tes di pemantauan), 13, 16, 17, 18, 27, 29 (lembar tes, angket, sikap), 30 (nama tabel untuk hapus), 11, dan glosarium.
+
+Diubah: 34 (baru), 04, 00 (*Daftar dokumen*, *Tahap dokumen 3*), `docs/PROGRESS.md`, PDF siap cetak.
+
+**Dokumen implementasi bagian 7: mode penelitian, waktu aktif, dan perbaikan media** (cabang `r10-dok-33-mode-penelitian`, gelombang B) · `asal: pengembang` (draf berbantuan AI, empat keputusan pengembang) · [33](33_IMPLEMENTASI_MODE_PENELITIAN.md) `draf pengembang` · tidak merevisi produk
+
+[33](33_IMPLEMENTASI_MODE_PENELITIAN.md) ditulis untuk perubahan sistem no. 5, 16, dan 19 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), dari 10, 11, 12, 28 §5 dan §9, 29 §5.4 dan §15, dan kode per *commit* `97f82d5`. Bagian ini hanya menyimpan data mentah; angka turunan (waktu aktif, dilewati, tersensor, tebakan cepat) dihitung bagian 9 (35), dengan batas yang ditulis di 33 §4. Semua perilaku game ada di balik `field_mode`; data mentah direkam di semua mode. Migrasi memakai blok `0041xx` (sementara).
+
+Empat keputusan pengembang, semuanya usulan AI:
+1. **Pengerjaan pertama yang terputus pindah ke sesi game baru** lewat UPDATE bersyarat, dan setiap potongannya dicatat di tabel baru `challenge_attempt_segments`. Tidak dipilih: pindah tanpa tabel potongan; pengerjaan tetap di sesi lama dengan pemeriksaan kepemilikan per siswa.
+2. **Pengerjaan ulang tetap memberi bintang seperti sekarang**; analisis mengabaikannya lewat `is_retake`. Tidak dipilih: pengerjaan ulang tidak mengubah bintang selama studi.
+3. **Layar kecil ditolak bila lebar panggung di bawah 960 px**, sebagai pengaturan studi `min_stage_px`. Tidak dipilih: di bawah 1024 px; ponsel menurut jenis perangkat.
+4. **Keluar mengirim antrean event dulu** (paling lama 5 detik); sisa antrean tetap berpenanda sesi dan dibuang setelah 14 hari. Tidak dipilih: kirim lalu hapus semua sisa; tetap seperti sekarang.
+
+Temuan kode yang dicatat untuk ditinjau:
+- `audio_usage_events` menyimpan jam perangkat tanpa offset, dan sejak 29 K6 baris `pause` tidak punya event mentah yang membawa offset. 33 menambah `audio_usage_events.clock_offset_ms` (K10); 29 perlu menyebutnya.
+- Token objek Cari Objek sudah acak per pengerjaan, tetapi gambar benda tetap dikirim dengan jalur berkas yang memuat kode butir (M-04). 33 mengirim gambar lewat rute API bertoken.
+- Antrean event sudah berpenanda sesi, jadi M-05 tinggal soal *Keluar* yang tidak menunggu antrean terkirim.
+- M-11 sudah tertutup oleh 28 K9 dan 29 §5.5.
+
+Pertanyaan terbuka di 33 §15, termasuk tempat T_idle dan T_teb yang dipilih bersama 35. Perubahan yang dibutuhkan 01, 11, 12, 28, 29, 30, 32, dan 35 ada di 33 §16, untuk sesi koordinator.
+
+Diubah: 33 (baru), 00 (dua baris 33), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 33.
+
+**Dokumen implementasi bagian 5: bank soal baru ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md))** (cabang `r10-dok-31-bank-soal`, gelombang B) · `asal: pengembang` (draf berbantuan AI dan empat keputusan pengembang) · `draf pengembang` · merancang sistem, tidak merevisi produk
+
+Dokumen implementasi untuk perubahan sistem no. 1, 3, 4, 8, 17, dan 20 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), dari 06, 08, 11, 19, 25, dan kode per 2 November 2026 (`main` `97f82d5`). Isinya: bank 08 di berkas data dan workbook dengan kolom dan sheet baru; impor; `DifficultyRules` dan `BankRules` baru; area ketuk kedua babak Cari Objek berjarak paling sedikit 24 dp (menggantikan batas tumpuk 20%); kode kesalahan diturunkan server ke `item_tries.error_code` dari matriks kode eksplisit di bank; variasi pengerjaan pertama dari buklet dan butir jangkar `x`; Cari Objek dua babak; label AKM dan dimensi dengan asalnya (`developer`/`expert`); variabel beban permukaan dihitung saat impor; pemetaan huruf Susun Gambar selama studi. Migrasi sementara `003900` dan `003910`. Kemajuan di `ChallengeService` tetap milik bagian 2 ([28 §8](28_IMPLEMENTASI_SESI_LAPANGAN.md#8-kemajuan-mengikuti-siswa-bukan-sesi-game)); engine Skenario Digital milik bagian 6.
+
+Empat keputusan pengembang (wawancara satu putaran):
+
+1. **Data skenario dirancang di bagian 5** (sheet `scenarios`/`scenario_options`, tabel, impor, aturan bank); bagian 6 merancang engine, layar, skor, dan narasi. Tidak dipilih: data skenario di bagian 6; sheet di bagian 5 dan tabel di bagian 6.
+2. **Bagian ketuk *Periksa Unggahan* berupa kotak di workbook** (x, y, w, h dalam persen adegan), unggahan digambar dari kotak sebagai teks; satu geometri untuk aturan jarak dan jarak ketukan di lapis turunan. Tidak dipilih: templat CSS dengan pemeriksaan Playwright; gambar unggahan dengan titik ketuk.
+3. **Bank baru menggantikan bank lama di `main`**; bank lama di riwayat git dan `docs/arsip/bank-soal-lama/`; server produksi mendapat bank baru hanya saat pengembang menjalankan impor. Tidak dipilih: dua bank di balik sakelar; bank baru di cabang sampai G2.
+4. **Di mode penelitian, siswa tanpa buklet tidak bisa membuka tantangan yang dinilai** (`BOOKLET_MISSING`, pesan ramah); Susun Gambar tetap terbuka. Usulan AI adalah variasi acak `a`/`b` dengan penanda; pengembang memilih menahan supaya pengerjaan pertama selalu mengikuti desain buklet. Tidak dipilih: acak dengan penanda (usulan AI); buklet B1 sebagai bawaan.
+
+Pertanyaan terbuka di [31 → Pertanyaan terbuka](31_IMPLEMENTASI_BANK_SOAL_BARU.md#21-pertanyaan-terbuka): jumlah kisi-kisi tetap di kode (usulan) atau di data, tata letak kartu jangkar, kode bank yang direvisi setelah ada percobaan, terjemahan bahasa Inggris bank baru, penanda baris bacaan digital, dan ukuran adegan `HUNT_SCENE_DP`. Akibat ke 01, 03, 08, 11, 20, 21, 28, 29, bagian 6, dan glosarium dicatat di [31 → Akibat ke dokumen lain](31_IMPLEMENTASI_BANK_SOAL_BARU.md#23-akibat-ke-dokumen-lain) untuk sesi koordinator.
+
+Diubah: 31 (baru), 00 (daftar dokumen dan *Tahap dokumen 3*), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 31.
+
+**29 dicek kemutakhirannya dan disetujui pengembang** (cabang `r10-cek-29`, gelombang A sesi 5) · `asal: pengembang` (pemeriksaan berbantuan AI, delapan keputusan pengembang) · `disetujui pengembang` · tidak merevisi produk
+
+[29](29_IMPLEMENTASI_DATA_PENELITIAN.md) (bagian 3: pembersihan log, halaman log teknis admin, data mentah baru untuk kamus, unduhan `ketua` dengan lembar *Kamus Data* berversi, templat dan impor L1–L6) dicek terhadap entri 04 sesudah 30 Oktober 2026, terhadap 11, 26, 27, 28, dan 30, dan terhadap kode (`app/` dan `public/assets/js/` tidak berubah sejak 26 Oktober 2026).
+
+- **Aturan baru:** kotak status tidak lagi menulis "diubah di tahap 3, setelah gerbang G2"; kini dibangun di gelombang kode E, perilaku penelitian di balik `field_mode`, tidak dipakai dengan anak sebelum persetujuan etik, versi dikunci di G4, instalasi uji validator tetap di *commit* beku 20.
+- **Migrasi `003600` menghapus data:** ditulis di kotak status, §0, dan §5.8 bahwa di server produksi migrasi itu hanya dijalankan bila pengembang memutuskannya. Urutan `003600`/`003700` cocok dengan 27 §6.1.
+- **Temuan kode:** `dialogue_advanced` tetap benar (daftar berkas yang hanya berubah komentarnya dilengkapi). `audio_pause` tetap benar, tetapi satu celah dicoret: saat narasi lain mulai, `stopAllNarration()` memanggil `pause()` pemutar lain, jadi lama mendengarnya sudah terkirim; yang tersisa hanya pemutaran diulang dan halaman ditinggal. Nomor baris yang meleset dibetulkan; `ExportService::ADMIN_ONLY_SHEETS` dan `Simulator` baris 467 ditambah.
+- **Diselaraskan tanpa keputusan baru:** "uji coba" menjadi KG3a dan KG3b; salinan untuk orang tua (putaran kedua, 30 no. 6) disebut sebagai jalur terpisah dari lembar `risiko_gabungan`.
+
+Dua putaran tanya, delapan pertanyaan; pengembang memilih usulan di semuanya ([29 §19](29_IMPLEMENTASI_DATA_PENELITIAN.md#19-keputusan-pengembang) no. 5–12):
+1. Penghapusan tetap di migrasi `003600` (K3), tidak dipisah menjadi perintah, karena `003400` sudah menahan server produksi. Tidak dipilih: migrasi hanya menambah kolom, penghapusan lewat perintah spark.
+2. Situs statis memakai `kolom.json`; dicocokkan sekali sebelum KG3a bila dibuat di luar repo. Tidak dipilih: situs statis dihapus.
+3. Pemeriksaan nama cukup untuk siswa rombel itu, ditambah aturan menulis dan pelatihan. Tidak dipilih: daftar kata tambahan.
+4. `is_touch` tetap untuk admin; kembali lewat `kamus-1.1` bila peneliti memintanya. Tidak dipilih: lembar peneliti sejak awal.
+5. Batas `empty_tap` tetap 30, angka konfigurasi yang dicek di KG3a dan KG3b. Tidak dipilih: tanpa batas.
+6. Tanpa arsip data lama sebelum `003600` di server produksi (belum ada data studi). Tidak dipilih: salinan database dulu.
+7. Unduhan selalu terikat satu studi (K16 baru), juga saat mode penelitian mati. Tidak dipilih: hanya dalam mode penelitian.
+8. Versi kamus dan spesifikasi lembar dikunci di G4 (K17 baru). Tidak dipilih: kamus boleh naik versi selama KG5.
+
+*Akibat ke dokumen lain* mendapat baris untuk 11 (`kamus-1.1` dikunci di G4), 02 (situs statis, spesifikasi dikunci), 27 (unduhan memerlukan studi), dan 35 (gelombang B sesi 9: data mentah §6, `ResearchDictionary::VERSION`, `field_sheet_rows`, waktu terkoreksi, satu studi), untuk sesi koordinator berikutnya.
+
+Diubah: 29, 00 (dua baris 29), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 29.
+
+**27 dicek kemutakhirannya dan disetujui pengembang; empat keputusan baru** (gelombang A, cabang `r10-cek-27`) · `asal: pengembang` (pemeriksaan berbantuan AI dan wawancara singkat) · 27 naik ke `disetujui pengembang` · belum merevisi produk
+
+Dokumen implementasi bagian 1 ([27](27_IMPLEMENTASI_PERAN_PENELITI.md)) dicek terhadap entri 04 sesudah *commit* terakhirnya (putaran kedua 30–31 Oktober 2026 dan semua entri 1 November 2026), dokumen yang dirujuknya, dan kode. Satu putaran tanya, empat pertanyaan; pengembang memilih usulan di keempatnya, lalu menyetujui dokumennya.
+
+1. **CSV daftar siswa untuk admin dihapus** (27 §16 no. 4, K17). Nama hanya tampil di layar admin. Tidak dipilih: CSV admin tanpa nama; CSV admin dengan nama dan setiap unduhan dicatat.
+2. **"Hanya ketua yang menyambungkan kode ke nama" tetap pembatasan prosedur** (27 §16 no. 6), seperti di 22 dan 26. Tidak dipilih: halaman siswa admin tanpa kode peserta.
+3. **Akun `pengamat` dan `pewawancara` tetap berperan `peneliti`, dibuat hanya bila perlu** (27 §16 no. 7). Tidak dipilih: hanya `pewawancara`; peran keempat yang hanya melihat.
+4. **Penjaga di migrasi `003400`** (temuan baru, K16). Skrip pembaruan di `docs/08_DEPLOYMENT.md` menjalankan `php spark migrate` otomatis, jadi tanpa penjaga, memperbarui produksi langsung menghapus akun `guru`. `003400` kini berhenti bila masih ada akun `guru` atau unduhannya, kecuali `.env` memuat `gelita.allowTeacherRemoval = true`; instalasi tanpa akun guru berjalan bebas. `StaffAuthFilter` mengakhiri sesi akun berperan di luar `StaffAccess::ROLES`. Tidak dipilih: prosedur saja.
+5. **27 `disetujui pengembang`**, dasar kode gelombang C.
+
+**Yang diselaraskan tanpa keputusan baru:**
+- Status dan §0: "kode diubah di tahap 3, setelah G2" diganti aturan 1 November 2026 (bangun sekarang, tidak dipakai dengan anak sebelum persetujuan etik); §0 menambah sakelar studi yang mati secara bawaan, migrasi yang menghapus data, dan instalasi uji pada *commit* beku.
+- K5, K12, §8: kode sekolah uji `U01`, …; ketua membuat satu baris `research_studies` per uji.
+- §6.1: `003300` masih migrasi terakhir; urutan `003400`→`003800` tetap; bagian 5–9 mulai `003900`.
+- §11: instalasi uji validator memakai *commit* beku (kode sebelum bagian 1, cukup akun `admin`); di G3 diperbarui ke Prototipe II, pengembang memegang `admin` dan `ketua`.
+- Rujukan kode yang dibetulkan: daftar "20 event terakhir" di ringkasan tidak memakai nama sekolah (hanya "10 siswa terakhir"); jalur `app/Libraries/Simulation/Simulator.php`; `SystemResetService` (baris 288) dan `SchoolController` juga memegang `staff_users.school_id`; `grep guru app/` 120 baris, bukan sekitar 40 komentar; `TelemetryBatchTest` merender `isAdmin`, tanpa akun guru. Rujukan lain (berkas, metode, nomor baris, tes, kunci bahasa, anker) tetap benar; kode belum berubah sejak 30 Oktober 2026.
+
+**Akibat ke dokumen lain** (27 §18, untuk sesi koordinator): penjaga yang sama untuk `003600` di [29](29_IMPLEMENTASI_DATA_PENELITIAN.md); `docs/08_DEPLOYMENT.md` menyebut penjaga `003400` saat implementasi.
+
+Diubah: 27, 00 (dua baris 27), 04, `docs/PROGRESS.md`, PDF siap cetak.
+
 ## 1 November 2026
+
+**30 dicek kemutakhirannya dan disetujui pengembang** (gelombang A, sesi 6 dari 6, cabang `r10-cek-30`; pertanyaan dijawab 2 November 2026) · `asal: pengembang` (pemeriksaan berbantuan AI, enam keputusan pengembang) · `disetujui pengembang` · tidak merevisi produk
+
+[30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) dicek terhadap entri 04 sesudah *commit* terakhirnya (putaran kedua 30–31 Oktober; entri 1 November: ADDIE dengan KG3a/KG3b, versi dikunci di G4, aturan bangun sekarang, cek pasal PP), terhadap 22, 23, 26, 03, 27, 29, dan kode.
+
+- **Diselaraskan tanpa keputusan baru:** kalimat "diubah di tahap 3, setelah gerbang G2" diganti aturan bangun sekarang (gelombang kode E, di balik sakelar studi, tidak dipakai dengan anak sebelum persetujuan etik); tenggat §4 tetap "sebelum akun anak pertama kali dipakai" (KG2, tidak bersyarat) dan ditegaskan tidak bergantung G2; temuan nomor KG di 26 ditandai sudah dibetulkan; §8 memakai PP 33/2026 Pasal 77 ayat (4) huruf a sebagai pasal pembanding (`needs_verification` dicabut); isi pemberitahuan kepada orang tua (Pasal 87) dan konfirmasi lama penyiapan salinan (Pasal 78 ayat (2)) diambil dari 22; uji manual di instalasi uji pengembang, bukan instalasi validator yang dibekukan; `REQUIRED_MIGRATION` `003800` dinaikkan lagi oleh bagian 5–9.
+- **Yang dicek dan tetap benar:** kode `app/` tidak berubah sejak 26 Oktober 2026; nomor baris rujukan cocok (satu dipertajam: hitungan retensi disaring di `RetentionService.php` baris 117–121); `HashedIpSessionHandler` ada, `Config\Session` masih `DatabaseHandler` (baris 29); lokasi kedua `backup.sh` tetap tanpa batas (`rsync -a`); migrasi `003800` ada di urutan 27 §6.1; peta kemampuan 27 §5.1 sama dengan 30 §14; teks id dan en T4, T11, T12 di 30 §17 sama dengan 23.
+- **Keputusan pengembang** (30 §22 no. 7–12; usulan dipilih kecuali no. 8):
+  7. bagian 3 dan 4 dibangun paralel, bagian 4 digabung sesudah bagian 3;
+  8. semua isi bagian 4 di balik mode penelitian, termasuk IP berhash (sakelar `gelita.researchPrivacy`) dan batas 30 hari lokasi kedua cadangan (`KEDUA_HARI`); bawaan `retention_days` tetap 1825, 7305 hanya untuk studi `field_mode = 1`, migrasi `003800` tidak mengosongkan `ci_sessions` (usulan AI: perbaikan privasi langsung berlaku di `main`);
+  9. lembar `izin` ditambahkan ke unduhan utama `ketua`, unduhan terpisah tetap (30 §21 no. 4);
+  10. kritik dan saran diperiksa nama oleh `ketua` sebelum studi ditutup, sebagai syarat penutupan (no. 5);
+  11. provinsi dan kabupaten tetap disimpan setelah studi ditutup; komite diminta menilainya (no. 3);
+  12. 30 dinaikkan ke `disetujui pengembang`; §21 no. 6 (snapshot cadangan penyedia) tetap terbuka.
+- **Akibat ke dokumen lain** (30 §23, baris bertanggal 2 November 2026, untuk sesi koordinator): 29 §7.2 lembar `izin`; 27 §6.1 "berurutan"; 22 dan 26 pertanyaan kabupaten untuk komite; 26 L3/P18 lewat sakelar; 23 kalimat "tahap 3" di T4, T11, T12; `docs/08_DEPLOYMENT.md` saat implementasi.
+
+Diubah: 30, 00 (baris 30 di *Daftar dokumen* dan *Tahap dokumen 3*), `docs/PROGRESS.md` (baris sendiri di gelombang A), PDF siap cetak 30.
+
+**28 dicek kemutakhirannya dan disetujui pengembang** (gelombang A, cabang `r10-cek-28`) · `asal: pengembang` (pemeriksaan berbantuan AI; enam keputusan pengembang) · `disetujui pengembang` · belum merevisi produk
+
+[28](28_IMPLEMENTASI_SESI_LAPANGAN.md) (terakhir diubah 31 Oktober 2026) dicek terhadap entri 04 sesudahnya (putaran kedua 30–31 Oktober 2026; model ADDIE, KG3a/KG3b, satu awalan `U` dengan satu baris `research_studies` per uji, satu anak satu uji, versi dikunci di G4, aturan dibangun sekarang), terhadap 03, 20, dan 27 §6.1, dan terhadap kode (terakhir berubah 26 Oktober 2026). Dua putaran tanya, enam pertanyaan ([28 → Keputusan pengembang](28_IMPLEMENTASI_SESI_LAPANGAN.md#22-keputusan-pengembang) no. 7–12):
+
+1. **`gelita:uji:akun` tetap di gelombang kode D.** Alat ini bisa dibangun sendiri lebih awal, tetapi pengembang memilih membangunnya bersama bagian 2; instalasi uji tahap 2 (*commit* yang dibekukan) tetap memakai cara manual di 20 → Prasyarat no. 8, dan alat ini pertama dipakai di G3. Tidak dipilih: cabang tersendiri sebelum pembekuan (usulan AI).
+2. **Rencana pertemuan per studi** (`research_studies.meeting_plan`, 28 K19): `lima_pertemuan` untuk KG3a, KG3b, KG5; `satu_sesi` untuk KG2 (daftar lalu satu wilayah yang dipilih saat sesi lapangan dibuat). Tidak dipilih: KG2 dengan `field_mode` mati; KG2 di instalasi terpisah.
+3. **Token menolak akun yang sudah punya sesi game di studi lain** (`other_study`, 28 K20), pelengkap aturan satu anak satu uji. Tidak dipilih: hanya prosedur lapangan.
+4. **Satu siswa di dua perangkat** tetap melanjutkan sesi game yang sama (28 §21 no. 6). Tidak dipilih: perangkat terbaru menutup yang lama.
+5. **Migrasi `003500` mengisi `participant_progress`** dari pengerjaan tuntas sebelum membuang `session_progress`, jadi tidak termasuk migrasi yang menghapus data. Tidak dipilih: diperlakukan seperti `003400` dan `003600`.
+6. **28 naik menjadi `disetujui pengembang`.**
+
+Diselaraskan tanpa keputusan baru: "tahap 3, setelah G2" diganti aturan dibangun sekarang (gelombang D); `field_mode` mati secara bawaan dan satu studi per uji; satu urutan `U` dan penghitung kode yang tidak per studi; rujukan kode dibetulkan (`GameSessionModel::resumable()`, `ParticipantAuthFilter` tidak menolak status `CLOSED`, `keepForLater()` juga membuang antrean pada 422, urutan tantangan sekarang hanya diperiksa di `ChallengeController`, `TryLimitTest` dan `RawDataWorld` ikut membaca `session_progress`); 28 §21 no. 1 selesai (teks token sudah disamakan), no. 2–3 pindah ke bagian 8 (`34`), no. 4 dipegang ketua peneliti. Urutan migrasi 27 §6.1 tetap cocok (kode masih di `003300`). Akibat ke 20, 03, 18, 33, 34, dan 11 dicatat di 28 §23 untuk sesi koordinator.
+
+Diubah: 28, 00 (dua baris 28), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 28.
+
+**23 dicek kemutakhirannya dan siap diserahkan ke peneliti sebagai PDF** (cabang `r10-cek-23`, gelombang A sesi 2) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 23 tetap draf · tidak merevisi produk
+
+Atas permintaan pengembang, [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) (terakhir diubah 1 November 2026 pukul 14.12, pembaruan ADDIE) dicek terhadap entri 04 sesudahnya, terhadap 22, 24, 26, 30, 02 → L7, dan 03, dan terhadap kode. Tidak ada keputusan baru dan tidak ada pertanyaan untuk pengembang. Teks untuk orang tua, sekolah, guru, dan anak (T1–T3, T5–T10, T13) tidak berubah; T9 dari 1 November 2026 tetap.
+
+- **T4, T11, dan T12 dengan 30:** T4 di 30 §5.1 dan §17 cocok kata per kata (id dan en). T11 dan T12 dirujuk 30 §5.4 dan §17 "apa adanya" tanpa disalin ulang, dan aturannya sama. Satu usulan kecil untuk 30 dicatat di *Akibat ke dokumen lain* 23: en T11 paragraf 1 "may have made you feel" menjadi "may make you feel", supaya sama dengan id. Teks T4 "sekarang" masih sama dengan `app/Language/id/Game.php` dan `en/Game.php`.
+- **Aturan 1 November 2026:** "file bahasa tidak diubah sekarang; masuk tahap 3" di T4, "teks en dibuat di tahap 3" di T11 dan T12, "dibangun di tahap 3" di T10 pilihan C, dan "modul tes, tahap 3" di tabel pembagian diganti: dibangun sekarang di balik sakelar studi, tidak dipakai dengan anak sebelum persetujuan etik, dengan bagian 4 (T4, hapus sebagian) dan bagian 8 (modul tes, T11 dan T12). Ditambahkan: bila teks T4, T11, atau T12 berubah, 23 diubah lebih dulu, baru berkas bahasa.
+- **Peneliti menangani izin etik:** "dikirim ke luar hanya setelah permohonan disetujui pengembang" menjadi "hanya sebagai lampiran permohonan, yang ditangani ketua peneliti"; repo tetap salinan induk, perubahan peneliti atau komite masuk dengan `asal: peneliti` atau `asal: komite etik`.
+- **Cek pasal PP 33/2026 (entri di bawah):** catatan T10 dan pengantar keputusan no. 16–19 kini menyebut PDF salinan resmi 1 November 2026, bukan `needs_verification`; catatan T10 menambah isi pemberitahuan hapus (jenis data, alasan, tanggal; Pasal 87 ayat (2), (4)–(5)) dan konfirmasi salinan sejak permintaan diterima dan terverifikasi (Pasal 78 ayat (1)–(2)), sama dengan 22. Kalimat untuk orang tua tidak berubah.
+- ***Akibat ke dokumen lain*:** keadaan setiap baris dicatat. Sudah diterapkan: 01, 02 (L0, L5, L7), 03, 22, 24. Masih terbuka: 11 (`consent_ok` untuk data tetap di `kamus-1.1`, bagian 9) dan 16 (tautan T11, T12).
+- **Yang dicek dan tetap benar:** semua tautan antardokumen di 23 menunjuk judul yang ada; tidak ada kalimat "sistem dibangun setelah G2"; angka peserta (± 360 di data utama) dan KG1–KG3b sama dengan 22 dan 03.
+
+Diubah: 23, 00 (dua baris 23), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 23.
 
 **Pembagian kerja baru: peneliti menangani validasi dan izin etik, pengembang menyerahkan berkas awal lalu mengimplementasikan** (cabang `sky/sweet-allen-0md2pw`) · `asal: peneliti` (pembagian kerja, disampaikan lewat pengembang) dan `asal: pengembang` (empat keputusan lanjutan) · `disetujui pengembang` · merevisi rencana kerja, belum merevisi produk
 
