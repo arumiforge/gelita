@@ -6,6 +6,19 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 1 November 2026
 
+**23 dicek kemutakhirannya dan siap diserahkan ke peneliti sebagai PDF** (cabang `r10-cek-23`, gelombang A sesi 2) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 23 tetap draf · tidak merevisi produk
+
+Atas permintaan pengembang, [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) (terakhir diubah 1 November 2026 pukul 14.12, pembaruan ADDIE) dicek terhadap entri 04 sesudahnya, terhadap 22, 24, 26, 30, 02 → L7, dan 03, dan terhadap kode. Tidak ada keputusan baru dan tidak ada pertanyaan untuk pengembang. Teks untuk orang tua, sekolah, guru, dan anak (T1–T3, T5–T10, T13) tidak berubah; T9 dari 1 November 2026 tetap.
+
+- **T4, T11, dan T12 dengan 30:** T4 di 30 §5.1 dan §17 cocok kata per kata (id dan en). T11 dan T12 dirujuk 30 §5.4 dan §17 "apa adanya" tanpa disalin ulang, dan aturannya sama. Satu usulan kecil untuk 30 dicatat di *Akibat ke dokumen lain* 23: en T11 paragraf 1 "may have made you feel" menjadi "may make you feel", supaya sama dengan id. Teks T4 "sekarang" masih sama dengan `app/Language/id/Game.php` dan `en/Game.php`.
+- **Aturan 1 November 2026:** "file bahasa tidak diubah sekarang; masuk tahap 3" di T4, "teks en dibuat di tahap 3" di T11 dan T12, "dibangun di tahap 3" di T10 pilihan C, dan "modul tes, tahap 3" di tabel pembagian diganti: dibangun sekarang di balik sakelar studi, tidak dipakai dengan anak sebelum persetujuan etik, dengan bagian 4 (T4, hapus sebagian) dan bagian 8 (modul tes, T11 dan T12). Ditambahkan: bila teks T4, T11, atau T12 berubah, 23 diubah lebih dulu, baru berkas bahasa.
+- **Peneliti menangani izin etik:** "dikirim ke luar hanya setelah permohonan disetujui pengembang" menjadi "hanya sebagai lampiran permohonan, yang ditangani ketua peneliti"; repo tetap salinan induk, perubahan peneliti atau komite masuk dengan `asal: peneliti` atau `asal: komite etik`.
+- **Cek pasal PP 33/2026 (entri di bawah):** catatan T10 dan pengantar keputusan no. 16–19 kini menyebut PDF salinan resmi 1 November 2026, bukan `needs_verification`; catatan T10 menambah isi pemberitahuan hapus (jenis data, alasan, tanggal; Pasal 87 ayat (2), (4)–(5)) dan konfirmasi salinan sejak permintaan diterima dan terverifikasi (Pasal 78 ayat (1)–(2)), sama dengan 22. Kalimat untuk orang tua tidak berubah.
+- ***Akibat ke dokumen lain*:** keadaan setiap baris dicatat. Sudah diterapkan: 01, 02 (L0, L5, L7), 03, 22, 24. Masih terbuka: 11 (`consent_ok` untuk data tetap di `kamus-1.1`, bagian 9) dan 16 (tautan T11, T12).
+- **Yang dicek dan tetap benar:** semua tautan antardokumen di 23 menunjuk judul yang ada; tidak ada kalimat "sistem dibangun setelah G2"; angka peserta (± 360 di data utama) dan KG1–KG3b sama dengan 22 dan 03.
+
+Diubah: 23, 00 (dua baris 23), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 23.
+
 **Pembagian kerja baru: peneliti menangani validasi dan izin etik, pengembang menyerahkan berkas awal lalu mengimplementasikan** (cabang `sky/sweet-allen-0md2pw`) · `asal: peneliti` (pembagian kerja, disampaikan lewat pengembang) dan `asal: pengembang` (empat keputusan lanjutan) · `disetujui pengembang` · merevisi rencana kerja, belum merevisi produk
 
 Peneliti meminta dokumen permohonan izin etik ([22](22_PERMOHONAN_IZIN_ETIK.md)) serta surat informasi dan persetujuan ([23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md)). Semua validasi (validasi ahli, izin etik, uji keterbacaan, uji dengan siswa) ditangani peneliti. Pengembang cukup menyerahkan berkas awal, lalu fokus mengimplementasikan perubahan terbaru ke sistem. Pengembang tetap menyediakan bahan teknis yang diminta peneliti, misalnya isian kelompok B di 22 atau instalasi uji dan akun `uji.*` di [20](20_PAKET_VALIDASI.md). Empat keputusan lanjutan diambil pengembang dalam wawancara singkat:
