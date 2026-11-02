@@ -10,7 +10,7 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 Kesebelas PR gelombang A (22, 23, 27–30) dan B (31–35) sudah digabung ke `main`. Sebelum digabung, `main` dimasukkan ke setiap cabang. Konflik di 04, 00, `docs/PROGRESS.md`, dan PDF siap cetak diselesaikan dengan menyimpan kedua sisi, lalu PDF dibuat ulang. Satu salah tempat dibetulkan saat itu: status 29 sempat tertulis di baris bagian 1 tabel *Tahap dokumen 3*.
 
-Versi yang diserahkan ke peneliti adalah PDF 22, 23, 24, dan 26 di `dokumen-pdf/cetak/`, dari `main` pada *commit* `17e9cf3`, ditambah berkas serah terima. Perubahan dari peneliti masuk lewat pengembang dengan label `asal: peneliti` (entri 1 November 2026).
+*Commit* serah terima ke peneliti tetap **`f45d274`**, seperti dicatat atas permintaan pengembang di entri *Commit serah terima ke peneliti* di bawah. PDF 22, 23, 24, dan 26 tidak berubah sesudahnya. Perubahan dari peneliti masuk lewat pengembang dengan label `asal: peneliti` (entri 1 November 2026).
 
 Pertanyaan terbuka di 27–35 diperiksa. Sebagian besar menunggu pihak lain (peneliti, ahli media, tim katalog, penyedia server) atau angka uji coba, jadi tetap terbuka. Tujuh bisa diputuskan sekarang; pengembang menjawabnya dalam dua putaran:
 
@@ -34,6 +34,19 @@ Pertanyaan terbuka di 27–35 diperiksa. Sebagian besar menunggu pihak lain (pen
 - gelombang kode C (bagian 1, 27).
 
 Diubah: 28, 31, 32, 33, 35, 00 (tabel gelombang), 04, `docs/PROGRESS.md`, dan PDF siap cetak.
+
+**32 diselaraskan dengan format data skenario bagian 5** (cabang `r10-dok-32-skenario-digital`, setelah PR #317) · `asal: pengembang` (penyelarasan berbantuan AI) · status 32 tetap `draf pengembang` · tidak merevisi produk
+
+PR #317 digabung sebelum penyelarasan ini masuk. [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) (PR #314) menetapkan bahwa data skenario milik bagian 5. 32 kini membacanya dari sana, tanpa keputusan baru:
+- pilihan, skor, kode, dan umpan balik dari tabel `scenario_options`, bukan `config_json`/`answer_key_json`;
+- `d2_topic` dan `explanation_*` dari `challenge_items`;
+- kode tindakan lewat `ErrorCodeResolver`;
+- babak *Periksa Unggahan* dari `round` dan `find_part`;
+- panjang kolom kode di `item_tries` sama dengan 31.
+
+32 menambah `BankRules::ENGINES[5] = 'skenario'`, yang di 31 §8.2 masih tertulis `{engine skenario}`. Nomor migrasi 32 (`004000`) tidak bertabrakan dengan 31 (`0039xx`), 33 (`0041xx`), atau 35 (`0043xx`).
+
+Diubah: 32, 04, PDF siap cetak 04 dan 32.
 
 **34 disetujui pengembang** (cabang `r10-dok-34-modul-tes-sikap`, setelah PR #319) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
 

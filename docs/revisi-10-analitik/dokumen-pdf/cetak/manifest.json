@@ -1,8 +1,8 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "06dab6ad02aa7efe2659451e94d9ad2c0f32e450c895d715e249814da66c93c3",
-      "commit": "4c89185",
+      "source": "f322c8db3abede89a6d164152c5f2f11ecf7eaff5a4ea37fff356c214671cfa0",
+      "commit": "e7b8fe3",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 17,
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "6ab3d96309f66c47313f3d5dd89ba2095dbe545ef751ebce25c09a7000f634b9",
-      "commit": "4c89185",
+      "source": "2bcac691eb907552cbd7503179dc7cd1131609a6aea7a67a2eae6856fa70a68b",
+      "commit": "9b34f04",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 61,
+      "pages": 60,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -225,8 +225,8 @@
       "landscapeTables": 0
     },
     "28_IMPLEMENTASI_SESI_LAPANGAN.md": {
-      "source": "d8b9a715f58007149da2383ab1a55fc4c94de50b748990ebf25f7a2cc808112b",
-      "commit": "4c89185",
+      "source": "8b84ff97688ffd73a6ded421114fb5699c9e735e22144c5011f49bb5dd36747b",
+      "commit": "fd61ece",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 22,
@@ -249,24 +249,24 @@
       "landscapeTables": 0
     },
     "31_IMPLEMENTASI_BANK_SOAL_BARU.md": {
-      "source": "39e0eb81447283df5b63af3f27aca4a3fe43509c4a4819c749e14aac196c4eaf",
-      "commit": "4c89185",
+      "source": "bd6c06d948b2676893c36133cc91f4ff6f7dfbb427380625dd393baadb47014e",
+      "commit": "379e336",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 21,
+      "pages": 20,
       "landscapeTables": 0
     },
     "32_IMPLEMENTASI_SKENARIO_DIGITAL.md": {
-      "source": "0201798975232861af634045e957e890252b7f24e715b3f4babb0986c13c0ed5",
-      "commit": "4c89185",
+      "source": "540b0b414a82cb28ac3d2f0716c7b77eb01f315062bb3529df13c1914c69f9c4",
+      "commit": "3c1e345",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 17,
       "landscapeTables": 0
     },
     "33_IMPLEMENTASI_MODE_PENELITIAN.md": {
-      "source": "33bcebdddda33462a7660780e395a074d461fb1bfbfb15af34474280d3c09c8d",
-      "commit": "4c89185",
+      "source": "2f56df14d37c9d7ec83912351de4f5a4f1f8cf411b99da9783782921c3aa1ce5",
+      "commit": "bb90d4d",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 15,
@@ -281,11 +281,11 @@
       "landscapeTables": 0
     },
     "35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md": {
-      "source": "c6664a09006a363c66c373675909a95457c2a874e661d3697c25ff1f78542186",
-      "commit": "4c89185",
+      "source": "974cc37ef2285deb415a0ac29b398bd7dadb4004ab543a60bfd910d8d07aa0e2",
+      "commit": "3a294a4",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 21,
+      "pages": 20,
       "landscapeTables": 0
     }
   }
