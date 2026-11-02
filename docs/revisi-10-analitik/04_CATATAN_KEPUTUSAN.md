@@ -4,6 +4,28 @@ Per 1 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
 
+## 2 November 2026
+
+**Dokumen implementasi bagian 7: mode penelitian, waktu aktif, dan perbaikan media** (cabang `r10-dok-33-mode-penelitian`, gelombang B) · `asal: pengembang` (draf berbantuan AI, empat keputusan pengembang) · [33](33_IMPLEMENTASI_MODE_PENELITIAN.md) `draf pengembang` · tidak merevisi produk
+
+[33](33_IMPLEMENTASI_MODE_PENELITIAN.md) ditulis untuk perubahan sistem no. 5, 16, dan 19 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), dari 10, 11, 12, 28 §5 dan §9, 29 §5.4 dan §15, dan kode per *commit* `97f82d5`. Bagian ini hanya menyimpan data mentah; angka turunan (waktu aktif, dilewati, tersensor, tebakan cepat) dihitung bagian 9 (35), dengan batas yang ditulis di 33 §4. Semua perilaku game ada di balik `field_mode`; data mentah direkam di semua mode. Migrasi memakai blok `0041xx` (sementara).
+
+Empat keputusan pengembang, semuanya usulan AI:
+1. **Pengerjaan pertama yang terputus pindah ke sesi game baru** lewat UPDATE bersyarat, dan setiap potongannya dicatat di tabel baru `challenge_attempt_segments`. Tidak dipilih: pindah tanpa tabel potongan; pengerjaan tetap di sesi lama dengan pemeriksaan kepemilikan per siswa.
+2. **Pengerjaan ulang tetap memberi bintang seperti sekarang**; analisis mengabaikannya lewat `is_retake`. Tidak dipilih: pengerjaan ulang tidak mengubah bintang selama studi.
+3. **Layar kecil ditolak bila lebar panggung di bawah 960 px**, sebagai pengaturan studi `min_stage_px`. Tidak dipilih: di bawah 1024 px; ponsel menurut jenis perangkat.
+4. **Keluar mengirim antrean event dulu** (paling lama 5 detik); sisa antrean tetap berpenanda sesi dan dibuang setelah 14 hari. Tidak dipilih: kirim lalu hapus semua sisa; tetap seperti sekarang.
+
+Temuan kode yang dicatat untuk ditinjau:
+- `audio_usage_events` menyimpan jam perangkat tanpa offset, dan sejak 29 K6 baris `pause` tidak punya event mentah yang membawa offset. 33 menambah `audio_usage_events.clock_offset_ms` (K10); 29 perlu menyebutnya.
+- Token objek Cari Objek sudah acak per pengerjaan, tetapi gambar benda tetap dikirim dengan jalur berkas yang memuat kode butir (M-04). 33 mengirim gambar lewat rute API bertoken.
+- Antrean event sudah berpenanda sesi, jadi M-05 tinggal soal *Keluar* yang tidak menunggu antrean terkirim.
+- M-11 sudah tertutup oleh 28 K9 dan 29 §5.5.
+
+Pertanyaan terbuka di 33 §15, termasuk tempat T_idle dan T_teb yang dipilih bersama 35. Perubahan yang dibutuhkan 01, 11, 12, 28, 29, 30, 32, dan 35 ada di 33 §16, untuk sesi koordinator.
+
+Diubah: 33 (baru), 00 (dua baris 33), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 33.
+
 ## 1 November 2026
 
 **Pembagian kerja baru: peneliti menangani validasi dan izin etik, pengembang menyerahkan berkas awal lalu mengimplementasikan** (cabang `sky/sweet-allen-0md2pw`) · `asal: peneliti` (pembagian kerja, disampaikan lewat pengembang) dan `asal: pengembang` (empat keputusan lanjutan) · `disetujui pengembang` · merevisi rencana kerja, belum merevisi produk
