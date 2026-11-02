@@ -1,8 +1,8 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "541242f04322a19ceeeb3aab00b7b264bd9d79efd58d18003f79f653269b9195",
-      "commit": "379e336",
+      "source": "e7e7c1a3c4eaf62e7c1b4123cd9ff103176bbcc93a96359ee55a41066116da3c",
+      "commit": "a099ea7",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 13,
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "2208734e8ef3be36c677cf1b774be4133ba0f7b9b409a9b94b69cc16bea3b66d",
-      "commit": "379e336",
+      "source": "e889e3cab3d6b03d52c8bb2efe8b62c397793d16ccd2d0f77b0cc9bda53a29e8",
+      "commit": "a099ea7",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 52,
+      "pages": 55,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -185,11 +185,11 @@
       "landscapeTables": 0
     },
     "23_SURAT_INFORMASI_DAN_PERSETUJUAN.md": {
-      "source": "ea615dd533e8da33b2349966f5a3ebebdd892d1a18d89afbf385b241d5238405",
-      "commit": "8b46ca2",
+      "source": "a0b1acae331082bcb50abadabe74d9c504426d6f71c71b5d64175e4ff17e3bc8",
+      "commit": "52541ed",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
-      "pages": 32,
+      "date": "2026-11-02",
+      "pages": 33,
       "landscapeTables": 0
     },
     "24_UJI_KETERBACAAN.md": {
@@ -217,43 +217,35 @@
       "landscapeTables": 0
     },
     "27_IMPLEMENTASI_PERAN_PENELITI.md": {
-      "source": "235d01be2c9629225308ccf738695b93f1badbf5cecbe428015b76d3cfb03881",
-      "commit": "1313e3f",
-      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-31",
-      "pages": 18,
-      "landscapeTables": 0
-    },
-    "28_IMPLEMENTASI_SESI_LAPANGAN.md": {
-      "source": "8af2b2add7e5b1ec604cb9f1b8db95176e102e34c2b66f059bfcbd9e93ba2ebe",
-      "commit": "1313e3f",
-      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-31",
-      "pages": 20,
-      "landscapeTables": 0
-    },
-    "29_IMPLEMENTASI_DATA_PENELITIAN.md": {
-      "source": "b73d0b8170e227815fcc31a9c8f0b1db93dd97db9465eb7432f071467a0db03f",
-      "commit": "a537f88",
-      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-30",
-      "pages": 24,
-      "landscapeTables": 0
-    },
-    "30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md": {
-      "source": "738285ed2efe930259b0698f0d18841fe73d581b414309e64d26279c9e112917",
-      "commit": "8b46ca2",
-      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
-      "pages": 25,
-      "landscapeTables": 0
-    },
-    "31_IMPLEMENTASI_BANK_SOAL_BARU.md": {
-      "source": "bd6c06d948b2676893c36133cc91f4ff6f7dfbb427380625dd393baadb47014e",
-      "commit": "379e336",
+      "source": "55c8ecce7b036b056356f3662675dc26a3e42507a5e6a4dcac61db95e45d1909",
+      "commit": "7a6d569",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 20,
+      "landscapeTables": 0
+    },
+    "28_IMPLEMENTASI_SESI_LAPANGAN.md": {
+      "source": "8b84ff97688ffd73a6ded421114fb5699c9e735e22144c5011f49bb5dd36747b",
+      "commit": "fd61ece",
+      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
+      "date": "2026-11-02",
+      "pages": 22,
+      "landscapeTables": 0
+    },
+    "29_IMPLEMENTASI_DATA_PENELITIAN.md": {
+      "source": "50a27b65e66f9f5c7c94d0870d56043bc1899239613479ae5852d95130fb438b",
+      "commit": "5e8839f",
+      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
+      "date": "2026-11-02",
+      "pages": 27,
+      "landscapeTables": 0
+    },
+    "30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md": {
+      "source": "44a18c80bc396c47e6b4c4331eb84d22a366746cecb09ec8e66d2e746debffaa",
+      "commit": "11181e4",
+      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
+      "date": "2026-11-02",
+      "pages": 28,
       "landscapeTables": 0
     }
   }
