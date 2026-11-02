@@ -6,6 +6,12 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 2 November 2026
 
+**Teks en T11 paragraf 1 di 30 disamakan dengan id** (cabang `r10-30-t11-en`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Pengembang meminta usulan di [23 → Akibat ke dokumen lain](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#akibat-ke-dokumen-lain) diterapkan: di [30 §17](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#17-teks-layar-dan-panel), paragraf 1 T11 en "that may have made you feel uncomfortable" menjadi "that may make you feel uncomfortable", sama dengan "yang mungkin membuatmu tidak nyaman" di T11 id. Teks id T11 dan isi 23 yang diserahkan ke peneliti (*commit* `f45d274`) tidak berubah, karena 23 tidak memuat teks en. Status 30 tetap `disetujui pengembang`. Baris 30 di *Akibat ke dokumen lain* 23 ditandai sudah.
+
+Diubah: 30 (§17), 23 (*Akibat ke dokumen lain*, satu baris), 04, PDF siap cetak 04, 23, dan 30.
+
 **Gelombang A dan B digabung; pertanyaan terbuka yang bisa diputuskan sekarang dijawab** (sesi koordinator, cabang `sky/sweet-allen-0md2pw`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
 
 Kesebelas PR gelombang A (22, 23, 27–30) dan B (31–35) sudah digabung ke `main`. Sebelum digabung, `main` dimasukkan ke setiap cabang. Konflik di 04, 00, `docs/PROGRESS.md`, dan PDF siap cetak diselesaikan dengan menyimpan kedua sisi, lalu PDF dibuat ulang. Satu salah tempat dibetulkan saat itu: status 29 sempat tertulis di baris bagian 1 tabel *Tahap dokumen 3*.
