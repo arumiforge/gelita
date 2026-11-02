@@ -1,18 +1,18 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "8aee544e2d9b02079361d738ee24b42bc18b33f5575339f081cbda9bc5db66bc",
-      "commit": "ae67370",
+      "source": "1d03a4bc420ea6c3ad6aa1f14f84a30644045bdc1454d0e1a2af7c028e94d7a3",
+      "commit": "81647d8",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 13,
+      "pages": 14,
       "landscapeTables": 0
     },
     "01_REVISI_10_ANALITIK.md": {
-      "source": "7fadc10cbcbacf5f19cb11c5759dd783cc5421e9fdaa8dd70ba2fe5881819833",
-      "commit": "e16ff02",
+      "source": "54f9617a7eab5c8a2bfe49f83b65a0c76a96afd807ff05e7049c69fe726f8e97",
+      "commit": "81647d8",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
+      "date": "2026-11-02",
       "pages": 28,
       "landscapeTables": 0
     },
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "c777b35155ce34680c5643682c97faee4f6f05ae4387b194f777585b911d8c39",
-      "commit": "ae67370",
+      "source": "f4593488868e3f83e66841d1803f7c339f94a39556afd84e7340645ea2223cbd",
+      "commit": "81647d8",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 52,
+      "pages": 53,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -177,8 +177,8 @@
       "landscapeTables": 0
     },
     "22_PERMOHONAN_IZIN_ETIK.md": {
-      "source": "eea3be7955079a444732afddefc2e350236a1235cdd54f21be8dd00b7a919687",
-      "commit": "ae67370",
+      "source": "72783ac1588e32bcefac7f2088eb5d387f555ef3b264aaf93ededf6720d1da91",
+      "commit": "81647d8",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 51,
@@ -209,10 +209,10 @@
       "landscapeTables": 0
     },
     "26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md": {
-      "source": "342b787f1c511d934c2ad0dc43ef4eb4710e4592c049dfecbb0ef6f4ff5c4ce1",
-      "commit": "0618b8b",
+      "source": "b704bdea2b5c2067b0e2721b1aec774c472ba326bfc18854afd7083f4dd113b7",
+      "commit": "81647d8",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
+      "date": "2026-11-02",
       "pages": 19,
       "landscapeTables": 0
     },
