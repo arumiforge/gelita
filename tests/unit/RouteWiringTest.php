@@ -194,7 +194,7 @@ final class RouteWiringTest extends CIUnitTestCase
         $this->assertFalse(method_exists(App\Models\ParticipantModel::class, 'digitalSecurityStats'));
     }
 
-    /** Ganti sandi sendiri: wajib login staf, tetapi terbuka untuk guru (bukan khusus admin). */
+    /** Ganti sandi sendiri: wajib login staf, open to every staff role (no capability). */
     public function testOwnPasswordChangeNeedsLoginButNotAdminRole(): void
     {
         $routes = $this->routes();
@@ -206,27 +206,55 @@ final class RouteWiringTest extends CIUnitTestCase
         }
     }
 
-    /** Tahap 5: narasi naskah dan kelengkapan aset hanya untuk admin. */
-    public function testNarrationAndChecklistAreAdminOnly(): void
+    /**
+     * Narration and the asset checklist: everyone with content.view reads,
+     * only content.edit (admin) uploads, imports, and approves (27 K7).
+     */
+    public function testNarrationAndChecklistReadForAllWritesForAdmin(): void
     {
         $routes = $this->routes();
         $paths  = [
-            'GET'  => ['admin/konten/narasi', 'admin/konten/narasi/unggah', 'admin/konten/narasi/daftar-rekaman', 'admin/media/kelengkapan'],
-            'POST' => ['admin/konten/narasi/unggah', 'admin/konten/narasi/impor-folder', 'admin/konten/narasi/setujui'],
+            'staffCan:content.view' => ['GET' => ['admin/konten/narasi', 'admin/konten/narasi/daftar-rekaman', 'admin/media/kelengkapan']],
+            'staffCan:content.edit' => [
+                'GET'  => ['admin/konten/narasi/unggah', 'admin/konten/impor-bank'],
+                'POST' => ['admin/konten/narasi/unggah', 'admin/konten/narasi/impor-folder', 'admin/konten/narasi/setujui'],
+            ],
         ];
 
-        foreach ($paths as $method => $list) {
-            $routes->setHTTPVerb($method);
+        foreach ($paths as $filter => $byMethod) {
+            foreach ($byMethod as $method => $list) {
+                $routes->setHTTPVerb($method);
 
-            foreach ($list as $path) {
-                $this->assertSame(['staffAuth', 'staffRole:admin'], $routes->getFiltersForRoute($path), $method . ' ' . $path);
+                foreach ($list as $path) {
+                    $this->assertSame(['staffAuth', $filter], $routes->getFiltersForRoute($path), $method . ' ' . $path);
+                }
             }
         }
     }
 
+    /** Research data and downloads: ketua only; students: one route for two capabilities (27 §7). */
+    public function testResearchRoutesNeedTheirCapability(): void
+    {
+        $routes = $this->routes();
+        $routes->setHTTPVerb('GET');
+
+        foreach (['admin/sesi', 'admin/data', 'admin/masukan'] as $path) {
+            $this->assertSame(['staffAuth', 'staffCan:research.browse'], $routes->getFiltersForRoute($path), $path);
+        }
+
+        $this->assertSame(['staffAuth', 'staffCan:research.export'], $routes->getFiltersForRoute('admin/ekspor'));
+        $this->assertSame(['staffAuth', 'staffCan:participants.accounts,participants.research'], $routes->getFiltersForRoute('admin/peserta'));
+        $this->assertSame(['staffAuth', 'staffCan:participants.reset_by_code'], $routes->getFiltersForRoute('admin/peserta/reset-sandi'));
+        $this->assertSame(['staffAuth', 'staffCan:studies.view'], $routes->getFiltersForRoute('admin/studi'));
+
+        $routes->setHTTPVerb('POST');
+        $this->assertSame(['staffAuth', 'staffCan:studies.manage'], $routes->getFiltersForRoute('admin/studi'));
+        $this->assertSame(['staffAuth', 'staffCan:participants.reset_by_id'], $routes->getFiltersForRoute('admin/peserta/([0-9]+)/reset-sandi'));
+    }
+
     /**
      * Asset package Stage 6: the package panel switches what students get,
-     * so it needs the same role as activating a release (admin only).
+     * so it needs the same capability as activating a release (admin only).
      */
     public function testPackagePanelIsAdminOnlyLikeReleases(): void
     {
@@ -244,7 +272,7 @@ final class RouteWiringTest extends CIUnitTestCase
             $routes->setHTTPVerb($method);
 
             foreach ($list as $path) {
-                $this->assertSame(['staffAuth', 'staffRole:admin'], $routes->getFiltersForRoute($path), $method . ' ' . $path);
+                $this->assertSame(['staffAuth', 'staffCan:releases.manage'], $routes->getFiltersForRoute($path), $method . ' ' . $path);
             }
         }
     }

@@ -15,8 +15,8 @@ use Tests\Support\Database\ResetTables;
  * Reset total untuk penelitian kelas 5 (`php spark gelita:reset`, Dok 1 §7)
  * di atas skema lengkap SQLite: data uji coba dan pengaturan dikosongkan,
  * 12 tantangan dan nilai bawaan dibangun ulang, Pustaka/cerita/level/media
- * tidak tersentuh, sekolah belum terverifikasi dan (opsional) akun guru
- * dibuang, dan setiap reset tercatat di audit_logs.
+ * tidak tersentuh, sekolah belum terverifikasi dibuang, every staff
+ * account stays, dan setiap reset tercatat di audit_logs.
  *
  * @internal
  */
@@ -69,7 +69,7 @@ final class SystemResetTest extends CIUnitTestCase
 
         $plan = (new SystemResetService($this->conn, $this->exportsDir))->plan();
         $this->assertSame(array_values(SystemResetService::GROUP_A), array_keys($plan['clear']));
-        $this->assertSame(['admin' => 1, 'guru' => 2], $plan['staff']);
+        $this->assertSame(['admin' => 1, 'peneliti' => 1, 'ketua' => 1], $plan['staff']);
         $this->assertSame(12, $plan['nodes_after']);
     }
 
@@ -166,16 +166,14 @@ final class SystemResetTest extends CIUnitTestCase
         $this->assertSame('skipped', $result['mockups']['status']);
         $this->assertSame('GLT-000001', $result['next_code']);
 
-        // Sekolah: resmi tetap, ketikan uji coba (dan aliasnya) hilang, rujukan staf di-NULL-kan
+        // Sekolah: resmi tetap, ketikan uji coba (dan aliasnya) hilang
         $this->assertSame(['SD Negeri Resmi 1', 'SD Negeri Resmi 2'], array_column($this->conn->table('schools')->orderBy('id')->get()->getResultArray(), 'name'));
         $this->assertSame(2, $result['schools_removed']);
-        $this->assertNull($this->staff('guru_ketik')['school_id']);
-        $this->assertSame(1, (int) $this->staff('guru_resmi')['school_id']);
 
-        // Akun staf tetap, kunci login dibuka
-        $this->assertSame(['admin_uji', 'guru_ketik', 'guru_resmi'], array_column($this->conn->table('staff_users')->orderBy('username')->get()->getResultArray(), 'username'));
+        // Every staff account stays (no role is removed by a reset), login locks are cleared
+        $this->assertSame(['admin_uji', 'ketua_uji', 'peneliti_uji'], array_column($this->conn->table('staff_users')->orderBy('username')->get()->getResultArray(), 'username'));
         $this->assertSame([0, null], [(int) $this->staff('admin_uji')['failed_login_count'], $this->staff('admin_uji')['locked_until']]);
-        $this->assertSame(0, $result['teachers_removed']);
+        $this->assertArrayNotHasKey('teachers_removed', $result);
 
         // Satu baris audit
         $audit = $this->conn->table('audit_logs')->get()->getRowArray();
@@ -193,14 +191,6 @@ final class SystemResetTest extends CIUnitTestCase
         $this->assertSame(1, $this->conn->table('research_studies')->countAllResults());
         $this->assertSame(1, $this->conn->table('audit_logs')->where('action', 'system_reset')->countAllResults(), 'audit lama ikut dikosongkan');
         $this->assertSame($kept, $this->keptHashes());
-    }
-
-    public function testRemoveTeachersKeepsEveryAdmin(): void
-    {
-        $result = $this->service()->run(['tanpa_bank' => true, 'tanpa_mockup' => true, 'hapus_guru' => true]);
-
-        $this->assertSame(2, $result['teachers_removed']);
-        $this->assertSame([['admin_uji', 'admin']], array_map('array_values', $this->conn->table('staff_users')->select('username, role')->get()->getResultArray()));
     }
 
     /**
@@ -372,7 +362,7 @@ final class SystemResetTest extends CIUnitTestCase
     /**
      * Keadaan sesudah uji coba: 3 wilayah dengan 4 tantangan, cerita,
      * Pustaka, media, siswa dan jejak bermainnya, pengaturan lama, sekolah
-     * resmi + ketikan, satu admin dan dua guru.
+     * resmi + ketikan, satu admin, satu peneliti, dan satu ketua.
      */
     private function seedTrial(): void
     {
@@ -426,9 +416,9 @@ final class SystemResetTest extends CIUnitTestCase
         ]);
 
         $db->table('staff_users')->insertBatch([
-            ['username' => 'admin_uji', 'password_hash' => 'x', 'role' => 'admin', 'display_name' => 'Admin', 'school_id' => null, 'failed_login_count' => 4, 'locked_until' => '2030-01-01 00:00:00'],
-            ['username' => 'guru_ketik', 'password_hash' => 'x', 'role' => 'guru', 'display_name' => 'Guru 1', 'school_id' => 3, 'failed_login_count' => 0, 'locked_until' => null],
-            ['username' => 'guru_resmi', 'password_hash' => 'x', 'role' => 'guru', 'display_name' => 'Guru 2', 'school_id' => 1, 'failed_login_count' => 0, 'locked_until' => null],
+            ['username' => 'admin_uji', 'password_hash' => 'x', 'role' => 'admin', 'display_name' => 'Admin', 'failed_login_count' => 4, 'locked_until' => '2030-01-01 00:00:00'],
+            ['username' => 'peneliti_uji', 'password_hash' => 'x', 'role' => 'peneliti', 'display_name' => 'Peneliti', 'failed_login_count' => 0, 'locked_until' => null],
+            ['username' => 'ketua_uji', 'password_hash' => 'x', 'role' => 'ketua', 'display_name' => 'Ketua', 'failed_login_count' => 0, 'locked_until' => null],
         ]);
 
         // Siswa uji coba dan jejak bermainnya
@@ -448,6 +438,6 @@ final class SystemResetTest extends CIUnitTestCase
         $db->table('data_exports')->insert(['requested_by' => 1, 'format' => 'xlsx', 'scope_json' => '{}']);
         $db->table('data_deletion_requests')->insert(['requested_by' => 1, 'scope_json' => '{}']);
         $db->table('audit_logs')->insert(['staff_user_id' => 1, 'action' => 'login']);
-        $db->table('ci_sessions')->insert(['id' => 'sesi-guru', 'ip_address' => '127.0.0.1', 'data' => 'x']);
+        $db->table('ci_sessions')->insert(['id' => 'sesi-staf', 'ip_address' => '127.0.0.1', 'data' => 'x']);
     }
 }

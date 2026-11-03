@@ -31,6 +31,9 @@ final class ReleasePackageLockTest extends CIUnitTestCase
     private const CSRF_HASH = '0123456789abcdef0123456789abcdef';
     private const CSRF      = ['gelita_csrf' => self::CSRF_HASH . '00000000000000000000000000000000'];
 
+    /** Signed-in role: releases are the admin's, studies the head researcher's (27 K12). */
+    private string $role = 'admin';
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -53,6 +56,10 @@ final class ReleasePackageLockTest extends CIUnitTestCase
     {
         $first = $this->build();
         $this->useRelease($first);
+
+        // Studies are changed by ketua (studies.manage)
+        $this->role = 'ketua';
+        $this->injectStaff();
 
         // Draft: nothing locked yet
         $this->post('admin/studi', $this->study('draft-a', 'draft'));
@@ -253,7 +260,7 @@ final class ReleasePackageLockTest extends CIUnitTestCase
 
     private function asAdmin(): self
     {
-        return $this->withSession(['staff_id' => 1, 'staff_role' => 'admin', 'gelita_csrf' => self::CSRF_HASH]);
+        return $this->withSession(['staff_id' => 1, 'staff_role' => $this->role, 'gelita_csrf' => self::CSRF_HASH]);
     }
 
     private function injectStaff(bool $on = true): void
@@ -265,8 +272,8 @@ final class ReleasePackageLockTest extends CIUnitTestCase
             unset($instances['staffcontext']);
         } else {
             $instances['staffcontext'] = (object) [
-                'id' => 1, 'username' => 'admin_uji', 'email' => null, 'role' => 'admin', 'display_name' => 'Admin Uji',
-                'school_id' => null, 'is_active' => 1, 'must_change_password' => 0, 'last_login_at' => null,
+                'id' => 1, 'username' => 'staf_uji', 'email' => null, 'role' => $this->role, 'display_name' => 'Staf Uji',
+                'is_active' => 1, 'must_change_password' => 0, 'last_login_at' => null,
             ];
         }
 

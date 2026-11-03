@@ -89,11 +89,10 @@ final class StaffPasswordGateTest extends CIUnitTestCase
     {
         return (object) [
             'id'                   => 7,
-            'username'             => 'guru_uji',
+            'username'             => 'peneliti_uji',
             'email'                => null,
-            'role'                 => 'guru',
-            'display_name'         => 'Guru Uji',
-            'school_id'            => 3,
+            'role'                 => 'peneliti',
+            'display_name'         => 'Peneliti Uji',
             'is_active'            => 1,
             'must_change_password' => $mustChange ? 1 : 0,
             'last_login_at'        => null,

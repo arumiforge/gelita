@@ -50,8 +50,7 @@ trait SchoolTables
 
         $forge->addField([
             'id'        => ['type' => 'INTEGER', 'auto_increment' => true],
-            'username'  => ['type' => 'VARCHAR', 'constraint' => 100],
-            'school_id' => ['type' => 'INTEGER', 'null' => true],
+            'username' => ['type' => 'VARCHAR', 'constraint' => 100],
         ])->addPrimaryKey('id')->createTable('staff_users');
 
         $forge->addField([

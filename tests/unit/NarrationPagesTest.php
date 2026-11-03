@@ -105,12 +105,16 @@ final class NarrationPagesTest extends CIUnitTestCase
         $this->assertStringContainsString('0/95 disetujui, 0 menunggu persetujuan, 95 belum ada', $checklist);
     }
 
-    public function testTeacherCannotOpenNarrationPages(): void
+    public function testResearcherReadsNarrationButCannotUpload(): void
     {
-        $this->injectStaff('guru');
-        $this->expectException(CodeIgniter\Exceptions\PageNotFoundException::class);
+        $this->injectStaff('peneliti');
+        $page = (string) $this->withSession(['staff_id' => 7, 'staff_role' => 'peneliti'])->call(Method::GET, 'admin/konten/narasi')->getBody();
 
-        $this->withSession(['staff_id' => 7, 'staff_role' => 'guru'])->call(Method::GET, 'admin/konten/narasi');
+        $this->assertStringNotContainsString('admin/konten/narasi/unggah', $page, 'no upload button (content.edit)');
+        $this->assertStringNotContainsString('admin/konten/narasi/setujui', $page, 'no approve-all form');
+
+        $this->expectException(CodeIgniter\Exceptions\PageNotFoundException::class);
+        $this->withSession(['staff_id' => 7, 'staff_role' => 'peneliti'])->call(Method::GET, 'admin/konten/narasi/unggah');
     }
 
     public function testRecordingListDownloadsAsXlsx(): void
@@ -402,7 +406,7 @@ final class NarrationPagesTest extends CIUnitTestCase
         } else {
             $instances['staffcontext'] = (object) [
                 'id' => 7, 'username' => 'admin_uji', 'email' => null, 'role' => $role, 'display_name' => 'Admin Uji',
-                'school_id' => null, 'is_active' => 1, 'must_change_password' => 0, 'last_login_at' => null,
+                'is_active' => 1, 'must_change_password' => 0, 'last_login_at' => null,
             ];
         }
 

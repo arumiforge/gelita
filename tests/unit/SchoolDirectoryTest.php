@@ -290,7 +290,7 @@ final class SchoolDirectoryTest extends CIUnitTestCase
         $this->assertSame(2, $directory->search('20318068')[0]['participant_count'], 'peserta terhapus tidak dihitung');
     }
 
-    public function testMergeMovesParticipantsAndStaff(): void
+    public function testMergeMovesParticipants(): void
     {
         $this->import();
         $directory = $this->directory();
@@ -301,16 +301,13 @@ final class SchoolDirectoryTest extends CIUnitTestCase
             ['username' => 'a', 'school_id' => $typed['id'], 'school_name_snapshot' => 'SD Cendono Satu'],
             ['username' => 'b', 'school_id' => $typed['id'], 'school_name_snapshot' => 'sd cendono satu'],
         ]);
-        $this->sqlite->table('staff_users')->insert(['username' => 'guru', 'school_id' => $typed['id']]);
-
         $moved = $directory->merge($typed['id'], $official);
 
-        $this->assertSame(['participants' => 2, 'staff' => 1], $moved);
+        $this->assertSame(['participants' => 2], $moved, 'staff accounts have no school since revision 10 part 1');
         $this->assertSame(['SD 1 CENDONO'], array_unique(array_column(
             $this->sqlite->table('participants')->where('school_id', $official)->get()->getResultArray(),
             'school_name_snapshot',
         )));
-        $this->assertSame((string) $official, (string) $this->sqlite->table('staff_users')->get()->getRow('school_id'));
 
         $source = $this->sqlite->table('schools')->where('id', $typed['id'])->get()->getRowArray();
         $this->assertSame(['0', (string) $official], [(string) $source['is_active'], (string) $source['merged_into_id']]);

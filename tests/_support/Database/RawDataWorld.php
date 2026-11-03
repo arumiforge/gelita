@@ -166,7 +166,8 @@ trait RawDataWorld
 
         $this->insertRows($db, 'staff_users', [
             ['username' => 'admin_uji', 'password_hash' => 'x', 'role' => 'admin', 'display_name' => 'Admin', 'is_active' => 1],
-            ['username' => 'guru_alpha', 'password_hash' => 'x', 'role' => 'guru', 'display_name' => 'Guru Alpha', 'school_id' => 1, 'is_active' => 1],
+            ['username' => 'ketua_uji', 'password_hash' => 'x', 'role' => 'ketua', 'display_name' => 'Ketua', 'is_active' => 1],
+            ['username' => 'peneliti_uji', 'password_hash' => 'x', 'role' => 'peneliti', 'display_name' => 'Peneliti', 'is_active' => 1],
         ]);
 
         foreach (['rawDataService', 'exportService', 'reportService'] as $name) {

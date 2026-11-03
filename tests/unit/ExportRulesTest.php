@@ -44,8 +44,8 @@ final class ExportRulesTest extends CIUnitTestCase
     public function testSecretsNeverExported(): void
     {
         foreach (ExportService::SHEETS as $sheet) {
-            foreach ([[true, true], [false, true], [true, false]] as [$anonymized, $isAdmin]) {
-                $columns = $this->export->columns($sheet, $anonymized, $isAdmin);
+            foreach ([[true, true], [false, true], [true, false]] as [$anonymized, $fullDetail]) {
+                $columns = $this->export->columns($sheet, $anonymized, $fullDetail);
 
                 foreach (['password_hash', 'password', 'failed_login_count', 'locked_until', 'guardian_name', 'ip_hash'] as $secret) {
                     $this->assertNotContains($secret, $columns, "{$sheet} tidak boleh memuat {$secret}");
@@ -54,7 +54,7 @@ final class ExportRulesTest extends CIUnitTestCase
         }
     }
 
-    public function testAnswerKeyOnlyForAdmin(): void
+    public function testAnswerKeyOnlyWithFullDetail(): void
     {
         foreach (['jawaban', 'butir'] as $sheet) {
             $this->assertContains('answer_key', $this->export->columns($sheet, true, true), $sheet);
@@ -95,7 +95,7 @@ final class ExportRulesTest extends CIUnitTestCase
         $this->assertSame(['Levels', 'Indicators', 'Demographic Summary', 'Audio Usage'], array_values(array_diff(['Levels', 'Indicators', 'Demographic Summary', 'Audio Usage'], ExportService::SHEETS)), 'lembar olahan lama dihapus (§9.2)');
     }
 
-    public function testTeacherNeverGetsRawEvents(): void
+    public function testResearchScopeNeverGetsRawEvents(): void
     {
         $this->assertSame(['kamus', 'peserta'], $this->export->allowedSheets(['event', 'peserta'], false), 'Kamus Data selalu ikut');
         $this->assertNotContains('event', $this->export->allowedSheets(['event'], false), 'pilihan terlarang saja → semua lembar yang boleh, tanpa event');
@@ -104,7 +104,7 @@ final class ExportRulesTest extends CIUnitTestCase
         $this->assertSame(['kamus', 'peserta', 'masukan'], $this->export->allowedSheets(['masukan', 'peserta', 'Bogus'], true), 'urutan resmi, nama asing dibuang');
     }
 
-    public function testSchoolScopeIsForcedAndFiltersSanitized(): void
+    public function testFiltersAreSanitized(): void
     {
         $filters = $this->export->sanitizeFilters([
             'school_id'   => '99',
@@ -116,9 +116,9 @@ final class ExportRulesTest extends CIUnitTestCase
             'node_id'     => '5',
             'password'    => 'x',
             'class_level' => '',
-        ], 7);
+        ]);
 
-        $this->assertSame(7, $filters['school_id'], 'school_id guru dari staff_users menang atas isi formulir');
+        $this->assertSame(99, $filters['school_id'], 'no school scope since part 1: the chosen school filters');
         $this->assertSame(1, $filters['study_id']);
         $this->assertSame('2026-01-01', $filters['date_from']);
         $this->assertArrayNotHasKey('date_to', $filters);
@@ -128,7 +128,6 @@ final class ExportRulesTest extends CIUnitTestCase
         $this->assertArrayNotHasKey('password', $filters);
         $this->assertArrayNotHasKey('class_level', $filters);
 
-        $this->assertSame(99, $this->export->sanitizeFilters(['school_id' => '99'], null)['school_id'], 'admin boleh memilih sekolah');
     }
 
     public function testDeletionScopeTakesExactlyOnePrimaryKey(): void
