@@ -110,6 +110,11 @@ Ukuran gambar 27–111 KB (WebP, jumlah ± 1,8 MB). Semua layar game digambar di
 - token kelas lain (`tokenOtherClass`): "Token ini untuk kelas lain. Periksa lagi token di papan tulis kelasmu, ya.";
 - token susulan untuk siswa yang bukan anggotanya (`tokenNotMember`): "Token ini untuk sesi susulan teman lain. Tanyakan ke kakak peneliti, ya."
 
+Pesan keempat ditambahkan 3 November 2026 (sesi tindak lanjut dokumen, dari [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) K20; `asal: pengembang`, `draf pengembang`). Satu akun hanya ikut satu studi, jadi token menolak akun yang sudah punya sesi game di studi lain:
+- akun yang sudah ikut kegiatan lain (`tokenOtherStudy`): "Akun ini sudah dipakai di kegiatan lain. Panggil kakak peneliti, ya."
+
+Pesan ini belum digambar di mock-up dan tidak mengubah gambar yang sudah ada.
+
 Gambar `mk-tk-01` dan `mk-tk-02` digambar ulang dengan petunjuk baru atas permintaan pengembang (30 Oktober 2026, `asal: pengembang`), sebelum paket ahli media dikirim; galat di `mk-tk-02` tetap mengikuti `tokenUnknown` di 28. Kalimat akhir semua pesan token ditetapkan di 28 setelah telaah ahli media dan uji keterbacaan.
 
 **Yang dinilai ahli media.**

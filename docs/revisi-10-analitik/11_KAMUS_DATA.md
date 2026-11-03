@@ -535,7 +535,7 @@ Perubahan yang ikut dikerjakan bersama kamus ini:
 - **08:** aturan kode *Periksa Unggahan* di *Cara membaca* tidak lagi memakai INF-REL: bagian ketuk lain diberi kode jenis petunjuknya, dan ketukan di tempat kosong dekat kunci = NON-SEN tanpa memakai kesempatan (keputusan 26 Oktober 2026).
 - **01 dan 03:** ambang sementara jeda 3 menit dan tebakan cepat di bawah 3 detik (keputusan 26 Oktober 2026).
 
-*(1.1)* **Untuk sesi koordinator** (belum dibawa; ditulis 3 November 2026):
+*(1.1)* **Untuk sesi koordinator** (ditulis 3 November 2026; **sudah dibawa** 3 November 2026: tiga butir pertama sudah ada di 13, 16, dan 17 sejak sesi koordinator 31–35, butir keempat dibawa sesi tindak lanjut dokumen):
 - **16** → *Variabel untuk kamus data*: baris `risk_status` … `support_na` menunjuk lembar `risiko_gabungan`, bukan variabel peserta (29 K9).
 - **17** → *Variabel untuk kamus data*: `sikap_missing_reason = tanpa_izin` hanya diisi di analisis dari L7.
 - **13** → *Penskoran*: `*_theta` dihitung di analisis, bukan sistem; ambang tebakan cepat tes menunggu uji coba.

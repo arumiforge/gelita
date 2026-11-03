@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 30 Oktober 2026 · **Status: L0–L7 final, disetujui pengembang 26 Oktober 2026** (daftar kerja no. 11; L5 dan L7 disesuaikan dengan dokumen tahap 2 pada 27 Oktober 2026, dan L1, L2, L7, dan cara mengisi dengan dokumen implementasi 28–30 pada 30 Oktober 2026, lihat *Perubahan setelah persetujuan*); **L8 Profil sekolah draf** (ditambahkan 26 Oktober 2026, keputusan pengembang tentang penelitian pendahuluan di [04](04_CATATAN_KEPUTUSAN.md)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 3 November 2026 · **Status: L0–L7 final, disetujui pengembang 26 Oktober 2026** (daftar kerja no. 11; L5 dan L7 disesuaikan dengan dokumen tahap 2 pada 27 Oktober 2026, dan L1, L2, L7, dan cara mengisi dengan dokumen implementasi 28–30 pada 30 Oktober 2026, lihat *Perubahan setelah persetujuan*); **L8 Profil sekolah draf** (ditambahkan 26 Oktober 2026, keputusan pengembang tentang penelitian pendahuluan di [04](04_CATATAN_KEPUTUSAN.md)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Lembar lapangan mengisi yang tidak terlihat oleh log game dan modul tes: siapa yang dibantu, perangkat yang dipakai bareng, kondisi kelas, emosi siswa, dan alasan di balik jawaban. Semua lembar diisi **peneliti**, bukan guru. Setiap lembar memakai kunci yang sama dengan log, sesuai [aturan gabung di kamus data](11_KAMUS_DATA.md#aturan-gabung-lembar-lapangan) (`kamus-1.0`): **kode peserta** (misalnya S03-A07), **kode sesi lapangan** (misalnya S03-A-P2), dan **jam WIB** sampai detik. Cara kerja di lapangan dan peran P1–P3 ada di dokumen utama, bagian *Kerja lapangan*.
 
@@ -51,7 +51,8 @@ Siswa tanpa izin orang tua tidak punya akun GELITA dan ikut kegiatan pengganti d
 - **Ketikan kedua.** 10% baris diketik ulang orang lain untuk mengecek salah ketik, lalu diunggah dengan pilihan *Ketikan kedua (cek)*. Panel menampilkan sel yang berbeda untuk diperbaiki di ketikan pertama.
 - **Yang tidak diunggah:** kolom *Kutipan ucapan siswa* di L5 (tetap di folder transkrip terenkripsi) dan kolom *Token* di L1 (riwayat token sudah ada di panel). L7 tidak pernah diunggah; kolom berkodenya diisi langsung di panel (lihat L7).
 - **Isian gabungan di templat.** Di kertas tetap seperti tabel di bawah. Di templat, *Headset* (L1), *Pakai bareng* dan *Pindah perangkat* (L2), dan *Menit tersedia dan dipakai* (L1) masing-masing sudah dua kolom ([29 → Kode kolom per lembar](29_IMPLEMENTASI_DATA_PENELITIAN.md#107-kode-kolom-per-lembar)).
-- Di situs statis, setiap lembar bisa diisi, diunduh sebagai CSV, Excel, atau PDF, dan dicetak kosong. CSV dari situs statis bisa diunggah per lembar.
+- Di situs statis, setiap lembar bisa diisi, diunduh sebagai CSV, Excel, atau PDF, dan dicetak kosong. CSV dari situs statis bisa diunggah per lembar. Kode kolom situs diambil dari `kolom.json` yang ditulis sistem dari spesifikasi lembar yang sama dengan templat (`gelita:lembar:templat --kolom`); bila situs dibuat di luar repo ini, pengembang mencocokkannya sekali dengan spesifikasi sebelum KG3a ([29 → Satu sumber kolom](29_IMPLEMENTASI_DATA_PENELITIAN.md#101-satu-sumber-kolom-tabel-bertanda-di-02)).
+- **Versi lembar dikunci di G4.** Tabel lembar di dokumen ini adalah spesifikasi lembar (`lembar-1.0`); setiap perubahan tabel menaikkan versinya. Perubahan dari KG3a dan KG3b masuk sebelum G4; versinya dikunci bersama versi game dan versi kamus di G4, dan selama KG5 tidak berubah ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md) K17).
 
 ## L0 Daftar periksa persiapan sesi
 
@@ -422,3 +423,7 @@ Dibandingkan draf 23 Oktober 2026 (yang sebagian diselaraskan 26 Oktober 2026):
 - **L1:** kode susulan kedua `-S2`; riwayat token juga dari panel.
 - **L2:** P1 memasukkan kode, baris, dan kursi; buklet dan bentuk tes awal dihitung panel lalu disalin ke L2; buklet yang tidak seimbang memberi peringatan tanpa menahan tes awal (mengubah "buklet dimasukkan P1" dari 26 Oktober 2026); butir L0 yang sama ikut diselaraskan.
 - **L7:** kolom berkode dimasukkan P1 ke panel; status mundur menonaktifkan akun saat disimpan; daftar izin berkode diunduh dari sistem dan dicocokkan `ketua` dengan L7, bukan disalin tangan.
+
+3 November 2026, dari [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) (sesi tindak lanjut dokumen, `asal: pengembang`, tanpa keputusan baru). Judul kolom tabel tidak berubah:
+
+- **Cara mencetak dan mengisi:** situs statis memakai `kolom.json` dari spesifikasi lembar (29 §19 no. 6); spesifikasi lembar dikunci di G4 bersama versi game dan kamus (K17).
