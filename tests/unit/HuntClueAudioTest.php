@@ -132,7 +132,7 @@ final class HuntClueAudioTest extends CIUnitTestCase
         $this->assertStringContainsString("import { Sfx, narrationPlayer, pauseNarration } from '../core/audio.js';", $js);
         $this->assertStringContainsString("narrationPlayer(node, { attemptId: ctx.attemptId, shared: true })", $js);
         $this->assertStringNotContainsString('autoplay', $code, 'no clue is read out without a tap');
-        $this->assertStringContainsString('if (next !== null) goTo(next);', $js, 'after a correct answer: next clue, button only');
+        $this->assertMatchesRegularExpression('/if \(next !== null\) \{\s*goTo\(next\);/', $js, 'after a correct answer: next clue, button only');
         $this->assertStringContainsString('goTo(Number(jump.dataset.clue))', $js, 'jumping does not play either');
         $this->assertStringContainsString('showVoice(current);', $js);
         $this->assertStringContainsString('pauseNarration();', $js, 'ganti petunjuk menghentikan narasi');
@@ -195,12 +195,12 @@ final class HuntClueAudioTest extends CIUnitTestCase
         $this->seedHuntNode($this->sqlite);
         $id = $this->audio('audio.narasi.id.petunjuk-tmg-4-01', 'id', 'approved');
         $en = $this->audio('audio.narasi.en.petunjuk-tmg-4-01', 'en', 'draft');
-        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a01')->update(['audio_prompt_id' => $id, 'audio_prompt_en_id' => $en]);
+        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-x01')->update(['audio_prompt_id' => $id, 'audio_prompt_en_id' => $en]);
 
         $uses = (new MediaUsage())->forAudio();
 
-        $this->assertSame(['Petunjuk soal tmg-4-a01 (Indonesia)'], $uses[$id]);
-        $this->assertSame(['Petunjuk soal tmg-4-a01 (Inggris)'], $uses[$en]);
+        $this->assertSame(['Petunjuk soal tmg-4-x01 (Indonesia)'], $uses[$id]);
+        $this->assertSame(['Petunjuk soal tmg-4-x01 (Inggris)'], $uses[$en]);
     }
 
     // ------------------------------------------------------------- bantuan

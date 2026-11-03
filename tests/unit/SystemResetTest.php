@@ -209,33 +209,45 @@ final class SystemResetTest extends CIUnitTestCase
         $this->assertSame(1, $this->conn->table('research_studies')->where('status', 'active')->countAllResults());
         $this->assertSame(1, $this->conn->table('research_studies')->countAllResults());
 
-        // Bank draft 2: 147 active items (129 scored + 18 decoys) and 4 retired, 9 passages, 36 hints
-        $this->assertSame(147, $this->conn->table('challenge_items')->where('is_active', 1)->countAllResults());
-        $this->assertSame(4, $this->conn->table('challenge_items')->where('is_active', 0)->countAllResults());
+        // New bank (31, from 08): 153 active items = 31 Susun Gambar + 92 literacy items
+        // + 12 PBK clues + 18 decoys; the 24 scenarios wait for tmg-5 … wnb-5 (part 6)
+        $this->assertSame(153, $this->conn->table('challenge_items')->where('is_active', 1)->countAllResults());
+        $this->assertSame(0, $this->conn->table('challenge_items')->where('is_active', 0)->countAllResults());
+        // Error codes (K6): 30 blanks, 12 round-1 clues, 24 round-2 clues; 324 rows = 184 + 108 … minus the pending scenarios
+        $this->assertSame(66, $this->conn->table('item_error_codes')->select('challenge_item_id')->distinct()->countAllResults());
+        $this->assertSame(184 + 108 + 216, $this->conn->table('item_error_codes')->countAllResults());
+        $this->assertSame(6, $this->conn->table('post_scenes')->countAllResults());
+        $this->assertSame(60, $this->conn->table('post_parts')->countAllResults());
+        $this->assertSame(0, $this->conn->table('scenario_options')->countAllResults(), 'scenarios wait for their challenge (part 6)');
+        $this->assertSame(['D1a', 'D1b', 'D2', 'D3', 'PBK'], array_column($this->conn->table('learning_indicators')->where('is_active', 1)->orderBy('code')->get()->getResultArray(), 'code'));
         $this->assertSame(18, $this->conn->table('challenge_items')->where('scorable', 0)->countAllResults());
         $this->assertSame(9, $this->conn->table('reading_passages')->countAllResults());
         $this->assertSame(36, $this->conn->table('hints')->countAllResults());
         $this->assertEqualsCanonicalizing(['needs_verification', 'verified'], array_column($this->conn->table('challenge_items')->select('review_status')->distinct()->get()->getResultArray(), 'review_status'));
 
         $rumpang = json_decode((string) $this->node('temanggung', 2)['config_json'], true);
-        $this->assertSame('Gunung Kembar', $rumpang['variants']['a']['title_id'] ?? null);
+        $this->assertSame('Dua Gunung Temanggung', $rumpang['variants']['a']['title_id'] ?? null);
         $this->assertTrue($rumpang['as_reading'] && $rumpang['use_word_bank']);
-        $this->assertSame(['a', 'b', 'c'], array_keys($rumpang['variants']));
+        $this->assertSame(['a', 'b'], array_keys($rumpang['variants']));
         $this->assertSame('Situs Liyangan', json_decode((string) $this->node('temanggung', 3)['config_json'], true)['variants']['a']['title_id'] ?? null);
         $this->assertSame(
-            [['text_id' => 'enam', 'text_en' => 'six'], ['text_id' => 'arca', 'text_en' => 'statues']],
+            [['text_id' => 'enam', 'text_en' => 'six'], ['text_id' => 'sedikit', 'text_en' => 'fewer']],
             json_decode((string) $this->node('magelang', 2)['config_json'], true)['variants']['a']['distractors'] ?? null,
         );
 
-        $statement = $this->conn->table('challenge_items')->where('item_key', 'wnb-3-c06')->get()->getRowArray();
+        $statement = $this->conn->table('challenge_items')->where('item_key', 'wnb-3-a06')->get()->getRowArray();
         $this->assertSame(['verdict' => 'salah'], json_decode((string) $statement['answer_key_json'], true));
-        $this->assertSame('menentukan_solusi', json_decode((string) $statement['config_json'], true)['skill'] ?? null);
-        $this->assertSame('C5', $statement['bloom_level']);
+        $this->assertSame(['INF-GEN', 'D1', 'D1b', 'L3', 'developer', 'evaluate', 'C5', 'developer', 'wnb-3-a'], [
+            $statement['error_code'], $statement['dimension'], $statement['subaspect'], $statement['akm_level'], $statement['akm_level_source'],
+            $statement['pirls_process'], $statement['bloom_level'], $statement['bloom_level_source'], $statement['testlet_key'],
+        ]);
+        $this->assertSame(['passage_words' => 94], array_intersect_key(json_decode((string) $statement['surface_json'], true), ['passage_words' => 1]));
 
-        // 66 slot gambar tantangan (45 + 21 for Susun Gambar d–j), masing-masing dengan nama dan isi gambar yang diharapkan
+        // 67 challenge image slots (DAFTAR_MEDIA): 31 Susun Gambar (with the new Wayang Kedu), 3 scenes,
+        // 30 objects, 2 statement pictures, 1 new post photo (the other posts reuse puzzle pictures)
         $slots = $this->conn->table('media_assets')->like('asset_key', 'challenge.', 'after')
             ->where('label IS NOT NULL', null, false)->where('description IS NOT NULL', null, false)->countAllResults();
-        $this->assertSame(66, $slots);
+        $this->assertSame(67, $slots);
         $this->assertSame('Kuda kepang bambu', $this->conn->table('media_assets')->where('asset_key', 'challenge.item.tmg-4-03')->get()->getRow('label'));
 
         $kept = $this->keptHashes();

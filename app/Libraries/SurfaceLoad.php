@@ -130,11 +130,15 @@ final class SurfaceLoad
         return $out;
     }
 
-    /** @param list<array{0: float, 1: float, 2: float, 3: float}> $others */
-    private static function minGap(array $box, array $others): ?float
+    /**
+     * Whole dp, rounded down like HuntGeometry::fmtDp() so 23.9 never reads as 24.
+     *
+     * @param list<array{0: float, 1: float, 2: float, 3: float}> $others
+     */
+    private static function minGap(array $box, array $others): ?int
     {
         $gap = HuntGeometry::nearestGapDp($box, array_values($others));
 
-        return $gap === null ? null : round($gap, 1);
+        return $gap === null ? null : (int) floor($gap + 1e-6);
     }
 }
