@@ -118,10 +118,10 @@ Panjang ± 80 kata · Pengecoh bank kata: *hujan*, *penuh*
 | --- | --- | --- | --- | --- | --- | --- |
 | tmg-3-b01 | Candi Pringapus adalah candi Buddha. | salah | D1a | L1 | C1 | INF-LIT |
 | tmg-3-b02 | Prasasti Gondosuli diperkirakan dibuat sekitar tahun 832 Masehi. | benar | D1a | L1 | C1 | INF-LIT |
-| tmg-3-b03 | Layar ini dipasang tanpa nama pemasang, jadi isinya tidak bisa ditanyakan kepada siapa pun. | salah | D1b | L1 | C2 | INF-SUM |
 | tmg-3-b04 | [Gambar: arca lembu duduk dari batu] Gambar ini menunjukkan arca yang ada di dalam ruang Candi Pringapus. | benar | D1a | L1 | C2 | INF-LIT |
+| tmg-3-b03 | Layar ini dipasang tanpa nama pemasang, jadi isinya tidak bisa ditanyakan kepada siapa pun. | salah | D1b | L1 | C2 | INF-SUM |
 
-Kedua variasi punya struktur yang sama: dua butir tersurat, satu butir penanda sumber yang kuncinya *salah*, satu butir gambar yang kuncinya *benar*. Urutan kunci: a = B S S B, b = S B S B.
+Kedua variasi punya isi yang sama: dua butir tersurat, satu butir penanda sumber yang kuncinya *salah*, satu butir gambar yang kuncinya *benar*. Urutan tampil: a = B S S B (a01–a04), b = S B B S (b01, b02, b04, b03). Di variasi b butir gambar tampil sebelum butir penanda sumber, supaya urutan kuncinya tidak berselang-seling penuh; kode butir tidak diubah agar rujukan di 05, 09, 19, dan 25 tetap cocok (pembetulan pengembang 3 November 2026: urutan lama S B S B bertentangan dengan pemeriksaan "tidak ada pola selang-seling penuh").
 
 **Rujukan:** Pemkab Temanggung (*Sejarah Temanggung*); Kompas.com (2023) *Situs Liyangan*; BPK Wilayah X Jawa Tengah. Panitia dan sekolah di layar informasi fiktif.
 
@@ -356,14 +356,14 @@ Level utama: interpretasi dan integrasi (L2) · Bloom C2–C4 · Skenario: tanda
 
 ### Variasi a: Candi Borobudur
 
-> Candi Borobudur berdiri di Kabupaten Magelang. Candi Buddha ini dibangun pada abad ke-8 dan ke-9. Di bagian bawah ada enam teras persegi, lalu di atasnya ada tiga teras bundar. Jadi, Borobudur memiliki **(1)** teras. Di teras bundar berdiri 72 stupa berlubang. Stupa adalah bangunan berbentuk lonceng. Bangunan berbentuk lonceng yang paling besar ada di puncak candi dan disebut **(2)** induk. Di dalam setiap stupa berlubang duduk sebuah arca Buddha. Jadi, di teras bundar ada **(3)** arca Buddha di dalam stupa. Dinding candi dihiasi 2.672 panel relief, yaitu pahatan gambar. Sebanyak 1.460 panel bercerita, sedangkan 1.212 panel hanya hiasan. Jadi, relief yang bercerita lebih **(4)** daripada relief hiasan. Batu-batu candi bisa rusak bila diinjak dan dipanjat. Oleh karena itu, pengunjung **(5)** memanjat stupa.
+> Candi Borobudur berdiri di Kabupaten Magelang. Candi Buddha ini dibangun pada abad ke-8 dan ke-9. Di bagian bawah ada enam teras persegi, lalu di atasnya ada tiga teras bundar. Jadi, Borobudur memiliki **(1)** teras. Di teras bundar berdiri 72 stupa berlubang. Stupa adalah bangunan berbentuk lonceng. Di puncak candi ada satu bangunan berbentuk lonceng yang paling besar. Bangunan itu disebut **(2)** induk. Di dalam setiap stupa berlubang duduk sebuah arca Buddha. Jadi, di teras bundar ada **(3)** arca Buddha di dalam stupa. Dinding candi dihiasi 2.672 panel relief, yaitu pahatan gambar. Sebanyak 1.460 panel bercerita, sedangkan 1.212 panel hanya hiasan. Jadi, relief yang bercerita lebih **(4)** daripada relief hiasan. Batu-batu candi bisa rusak bila diinjak dan dipanjat. Oleh karena itu, pengunjung **(5)** memanjat stupa.
 
 Panjang ± 120 kata · Pengecoh bank kata: *enam*, *sedikit*
 
 | Kode | Rumpang | Kunci | Sub | AKM | Bloom | Pengecoh sasaran | Catatan |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | mgl-2-a01 | (1) | sembilan | D1a | L2 | C2 | *enam* → INF-KAT | Memadukan dua angka; *enam* menangkap siswa yang hanya mencocokkan kata di kalimat sebelumnya |
-| mgl-2-a02 | (2) | stupa | D1a | L1 | C2 | — | Istilah didefinisikan di kalimat sebelumnya |
+| mgl-2-a02 | (2) | stupa | D1a | L2 | C2 | — | Memadukan dua kalimat: definisi "bangunan berbentuk lonceng" dengan bangunan di puncak. Ditulis ulang 3 November 2026 dari L1: rumpang tidak lagi tepat sesudah definisinya |
 | mgl-2-a03 | (3) | 72 | D1a | L2 | C2 | — | Satu arca di setiap stupa |
 | mgl-2-a04 | (4) | banyak | D1a | L2 | C2 | *sedikit* → INF-HUB | Membandingkan 1.460 dan 1.212; mengganti mgl-2-a03 lama ("relief") yang butuh kosakata awal |
 | mgl-2-a05 | (5) | dilarang | D1a | L2 | C2 | — | Sebab–akibat |
@@ -372,16 +372,16 @@ Fakta relief sudah dibetulkan sesuai 05: 2.672 panel, 1.460 bercerita, 1.212 hia
 
 ### Variasi b: Tari Topeng Ireng
 
-> Topeng Ireng adalah tari rakyat dari Kabupaten Magelang. Tarian ini mulai tumbuh sekitar tahun 1950-an di Desa Tuksongo, Kecamatan Borobudur. Penarinya memakai kuluk, yaitu hiasan kepala dari bulu yang berwarna-warni. Saat penari melompat, bulu-bulu pada **(1)** itu ikut bergoyang. Di pergelangan kaki penari terpasang lonceng kecil. Setiap kali kaki dihentakkan, lonceng itu **(2)**. Satu kelompok bisa berisi banyak penari yang bergerak serempak. Kalau ada satu penari yang bergerak lebih cepat daripada teman-temannya, tarian mereka menjadi tidak **(3)**. Konon, tarian ini lahir dari kisah warga desa yang dahulu berjuang mengusir penjajah. Karena itu, gerakannya tegas dan bersemangat, seperti barisan **(4)** yang siap bertempur. Dalam pertunjukan di lapangan desa, panitia memasang tali pembatas karena penari melompat ke segala arah. Penonton yang duduk di belakang tali tetap **(5)** dari lompatan penari.
+> Topeng Ireng adalah tari rakyat dari Kabupaten Magelang. Tarian ini mulai tumbuh sekitar tahun 1950-an di Desa Tuksongo, Kecamatan Borobudur. Penarinya memakai kuluk, yaitu hiasan kepala yang berwarna-warni. Hiasan itu dibuat dari banyak helai bulu. Saat penari melompat, bulu-bulu pada **(1)** itu ikut bergoyang. Di pergelangan kaki penari terpasang lonceng kecil. Setiap kali kaki dihentakkan, lonceng itu **(2)**. Satu kelompok bisa berisi banyak penari yang bergerak serempak. Kalau ada satu penari yang bergerak lebih cepat daripada teman-temannya, tarian mereka menjadi tidak **(3)**. Konon, tarian ini lahir dari kisah warga desa yang dahulu berjuang mengusir penjajah. Karena itu, gerakannya tegas dan bersemangat, seperti barisan **(4)** yang siap bertempur. Dalam pertunjukan di lapangan desa, panitia memasang tali pembatas karena penari melompat ke segala arah. Penonton yang duduk di belakang tali tetap **(5)** dari lompatan penari.
 
 Panjang ± 120 kata · Pengecoh bank kata: *diam*, *penjajah*
 
 | Kode | Rumpang | Kunci | Sub | AKM | Bloom | Pengecoh sasaran | Catatan |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| mgl-2-b01 | (1) | kuluk | D1a | L1 | C2 | — | Istilah didefinisikan di kalimat sebelumnya |
+| mgl-2-b01 | (1) | kuluk | D1a | L2 | C2 | — | Memadukan dua kalimat: hiasan dari bulu itu adalah kuluk. Ditulis ulang 3 November 2026 dari L1: bulu tidak lagi disebut di kalimat definisinya |
 | mgl-2-b02 | (2) | berbunyi | D1a | L2 | C2 | *diam* → INF-HUB | Sebab–akibat |
 | mgl-2-b03 | (3) | kompak | D1a | L2 | C2 | — | Menyimpulkan dari "bergerak serempak" |
-| mgl-2-b04 | (4) | prajurit | D1a | L2 | C2 | *penjajah* → INF-LIT | Dari "berjuang mengusir penjajah" dan "siap bertempur"; *penjajah* ada di kalimat yang sama, tetapi tarian menggambarkan pihak yang melawannya. Ditulis ulang 27 Oktober 2026 dari cek fakta ([25](25_CEK_FAKTA_BUDAYA.md)): kunci lama *petani* tidak didukung sumber |
+| mgl-2-b04 | (4) | prajurit | D1a | L2 | C2 | *penjajah* → INF-KAT | Dari "berjuang mengusir penjajah" dan "siap bertempur"; *penjajah* ada di kalimat yang sama, tetapi tarian menggambarkan pihak yang melawannya. Kode pengecoh diganti 3 November 2026 dari INF-LIT: siswa yang memilihnya terkecoh kata yang sama di bacaan, setara dengan *enam* di mgl-2-a01. Ditulis ulang 27 Oktober 2026 dari cek fakta ([25](25_CEK_FAKTA_BUDAYA.md)): kunci lama *petani* tidak didukung sumber |
 | mgl-2-b05 | (5) | aman | D1a | L2 | C2 | — | Sebab–akibat dari tali pembatas; *diam* dan *kompak* tetap bersaing secara bentuk kata. Mengganti mgl-2-b05 lama ("mengganggu") yang terjawab dari norma |
 
 Pertunjukan di lapangan desa adalah contoh situasi, bukan klaim tentang setiap pertunjukan Topeng Ireng.
@@ -436,10 +436,12 @@ Panjang ± 125 kata
 | --- | --- | --- | --- | --- | --- | --- |
 | mgl-3-b01 | Paragraf pertama unggahan terutama menceritakan Gunung Tidar. | benar | D1a | L2 | C2 | INF-REL |
 | mgl-3-b02 | Prasasti Mantyasih dibuat sesudah Akademi Militer berdiri. | salah | D1a | L2 | C2 | INF-HUB |
-| mgl-3-b03 | Menurut unggahan, Pulau Jawa benar-benar pernah bergoyang lalu dipaku di Gunung Tidar. | salah | D1a | L2 | C2 | INF-LIT |
+| mgl-3-b03 | Menurut unggahan, semua keterangan tentang Gunung Tidar adalah legenda. | salah | D1a | L2 | C2 | INF-GEN |
 | mgl-3-b04 | Komentar Kak Dewi berisi fakta. | salah | D1b | L3 | C2 | INF-FOP |
 | mgl-3-b05 | Komentar Pak Anton berisi fakta. | benar | D1b | L3 | C2 | INF-FOP |
 | mgl-3-b06 | Tentang jalur mendaki Gunung Tidar, unggahan akun resmi lebih dapat dipercaya daripada komentar Raffi. | benar | D1b | L3 | C4 | INF-SUM |
+
+`mgl-3-b03` ditulis ulang 3 November 2026 (dulu: "Pulau Jawa benar-benar pernah bergoyang lalu dipaku di Gunung Tidar", INF-LIT) supaya setara dengan `mgl-3-a02`: keduanya menggeneralisasi berlebihan (INF-GEN). Unggahan hanya menyebut cerita paku tanah Jawa sebagai legenda; tinggi bukit, Akademi Militer, dan Prasasti Mantyasih adalah keterangan lain. Kunci tetap *salah*.
 
 Kunci `mgl-3-b01` dirumuskan ulang sesuai 05 ("terutama menceritakan Gunung Tidar", tanpa "dan legendanya"). Pernyataan "berulang tahun 11 April = fakta" yang terlalu mudah diganti dengan komentar berisi fakta.
 
@@ -716,7 +718,7 @@ Panjang ± 125 kata · Pengecoh bank kata: *agar*, *panas* · Kode khusus: *agar
 | wnb-2-a03 | (3) | tetapi | D1a | L2 | C3 | — | Pertentangan |
 | wnb-2-a04 | (4) | dapat | D1a | L2 | C3 | — | Membandingkan 2.300 dengan rentang 1.400–2.400 |
 | wnb-2-a05 | (5) | sulit | D1a | L2 | C3 | — | Menerapkan keterangan dataran rendah |
-| wnb-2-a06 | (6) | sejuk | D1a | L2 | C4 | *panas* → INF-LIT | Simpulan dari seluruh teks |
+| wnb-2-a06 | (6) | sejuk | D1a | L2 | C4 | *panas* → INF-KAT | Simpulan dari seluruh teks; *panas* ada di bacaan ("dataran rendah yang panas"), jadi menangkap siswa yang mencocokkan kata. Kode diganti 3 November 2026 dari INF-LIT |
 
 Rumpang "hangat" di bank lama tidak dipakai (7 → 6 rumpang); kalimatnya tetap ada sebagai isi bacaan.
 
@@ -738,8 +740,8 @@ Panjang ± 120 kata · Pengecoh bank kata: *siang*, *berawan*
 | wnb-2-b02 | (2) | lalu | D1a | L2 | C3 | — | Urutan |
 | wnb-2-b03 | (3) | sehingga | D1a | L2 | C3 | — | Akibat. Mengganti rumpang "membeku", satu-satunya kata kerja di bank kata, yang bisa diisi tanpa membaca |
 | wnb-2-b04 | (4) | tetapi | D1a | L2 | C3 | — | Pertentangan |
-| wnb-2-b05 | (5) | pagi | D1a | L2 | C2 | *siang* → INF-LIT | Dari "cepat mencair saat matahari mulai terik" |
-| wnb-2-b06 | (6) | cerah | D1a | L2 | C4 | *berawan* → INF-HUB | Simpulan sebab–akibat dari paragraf pertama |
+| wnb-2-b05 | (5) | pagi | D1a | L2 | C2 | *siang* → INF-HUB | Dari "cepat mencair saat matahari mulai terik"; *siang* menangkap siswa yang tidak menghubungkan sebab dan akibat. Kode diganti 3 November 2026 dari INF-LIT |
+| wnb-2-b06 | (6) | cerah | D1a | L2 | C4 | *berawan* → INF-KAT | Simpulan sebab–akibat dari paragraf pertama; *berawan* mirip kata "awan" di bacaan. Kode diganti 3 November 2026 dari INF-HUB |
 
 Rumpang "layu" di bank lama tidak dipakai, karena sebagian bergantung pada pengetahuan tanaman (05).
 
@@ -769,10 +771,12 @@ Panjang ± 95 kata
 | --- | --- | --- | --- | --- | --- | --- |
 | wnb-3-a01 | Kedua kabar sama-sama membicarakan air Telaga Warna, tetapi isinya bertentangan. | benar | D1a | L2 | C2 | INF-LIT |
 | wnb-3-a02 | Pesan berantai itu pasti benar karena sudah diteruskan berkali-kali. | salah | D1b | L3 | C4 | INF-SUM |
-| wnb-3-a03 | Hanya satu dari dua kabar itu yang menyarankan orang meminum air telaga. | benar | D1a | L2 | C2 | INF-LIT |
+| wnb-3-a03 | Menurut unggahan pengelola, warna air Telaga Warna bisa tampak hijau, biru, atau kekuningan karena airnya mengandung belerang. | benar | D1a | L2 | C2 | INF-HUB |
 | wnb-3-a04 | Unggahan pengelola lebih dapat dipercaya daripada pesan berantai karena pembuat dan tanggalnya jelas. | benar | D1b | L3 | C4 | INF-SUM |
 | wnb-3-a05 | Bertanya kepada Dito sama membantunya dengan bertanya kepada guru. | salah | D1b | L3 | C4 | INF-SUM |
 | wnb-3-a06 | Berdasarkan bukti dalam bacaan, pengunjung yang haus boleh meminum air Telaga Warna asalkan airnya tampak jernih. | salah | D1b | L3 | C5 | INF-GEN |
+
+`wnb-3-a03` ditulis ulang 3 November 2026 (dulu: "Hanya satu dari dua kabar itu yang menyarankan orang meminum air telaga.", INF-LIT) supaya setara dengan `wnb-3-b02`: keduanya menanyakan sebab yang disebut bacaan (INF-HUB). Kunci tetap *benar*.
 
 `wnb-3-a05` dirumuskan ulang sesuai 05: yang dibandingkan sekarang guru dengan sepupu yang **juga hanya membaca pesan berantai itu**, jadi kuncinya tidak bisa diperdebatkan.
 

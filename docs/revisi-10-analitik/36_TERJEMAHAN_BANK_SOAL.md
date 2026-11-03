@@ -148,8 +148,8 @@ Pengecoh: *hujan* → *rainy*, *penuh* → *overflow*. Lihat [catatan no. 1](#ca
 | --- | --- |
 | tmg-3-b01 | Pringapus Temple is a Buddhist temple. |
 | tmg-3-b02 | The Gondosuli Inscription is thought to have been made around 832 CE. |
-| tmg-3-b03 | This screen was put up with no name on it, so there is no one to ask about what it says. |
 | tmg-3-b04 | [Picture: a seated stone bull statue] This picture shows the statue inside the chamber of Pringapus Temple. |
+| tmg-3-b03 | This screen was put up with no name on it, so there is no one to ask about what it says. |
 
 ### Kartu jangkar Temanggung (sama di variasi a dan b)
 
@@ -368,7 +368,7 @@ Pengecoh (label bank lama): *Angklung*, *Ondel-ondel*, *Pinisi boat*, *Sasando*.
 
 ### Variasi a: *Borobudur Temple*
 
-> Borobudur Temple stands in Magelang Regency. This Buddhist temple was built in the 8th and 9th centuries. At the bottom there are six square terraces, and above them there are three round terraces. So Borobudur has **(1)** terraces. On the round terraces stand 72 stupas with holes. A stupa is a bell-shaped building. The biggest bell-shaped building is at the top of the temple and is called the main **(2)**. Inside each stupa with holes sits a statue of the Buddha. So on the round terraces there are **(3)** Buddha statues inside stupas. The temple walls are decorated with 2,672 relief panels, which are carved pictures. Of these, 1,460 panels tell stories, while 1,212 panels are only decoration. So there are **(4)** story panels than decoration panels. The temple stones can be damaged if people step on them or climb them. That is why visitors are **(5)** to climb the stupas.
+> Borobudur Temple stands in Magelang Regency. This Buddhist temple was built in the 8th and 9th centuries. At the bottom there are six square terraces, and above them there are three round terraces. So Borobudur has **(1)** terraces. On the round terraces stand 72 stupas with holes. A stupa is a bell-shaped building. At the top of the temple there is one bell-shaped building that is the biggest. That building is called the main **(2)**. Inside each stupa with holes sits a statue of the Buddha. So on the round terraces there are **(3)** Buddha statues inside stupas. The temple walls are decorated with 2,672 relief panels, which are carved pictures. Of these, 1,460 panels tell stories, while 1,212 panels are only decoration. So there are **(4)** story panels than decoration panels. The temple stones can be damaged if people step on them or climb them. That is why visitors are **(5)** to climb the stupas.
 
 ± 135 kata
 
@@ -384,7 +384,7 @@ Pengecoh: *enam* → *six*, *sedikit* → *fewer*.
 
 ### Variasi b: *The Topeng Ireng Dance*
 
-> Topeng Ireng is a folk dance from Magelang Regency. The dance began to grow around the 1950s in Tuksongo Village, Borobudur District. The dancers wear a kuluk, a headdress made of colourful feathers. When a dancer jumps, the feathers on the **(1)** sway too. Small bells are tied around the dancers' ankles. Every time the feet stamp, the bells **(2)**. One group can have many dancers who move as one. If one dancer moves faster than the others, their dance is no longer **(3)**. It is said that the dance was born from the story of village people who once fought to drive out the colonisers. That is why its moves are firm and full of spirit, like a line of **(4)** ready for battle. At a show on the village field, the organisers put up a rope barrier because the dancers jump in every direction. The audience sitting behind the rope stays **(5)** from the dancers' leaps.
+> Topeng Ireng is a folk dance from Magelang Regency. The dance began to grow around the 1950s in Tuksongo Village, Borobudur District. The dancers wear a kuluk, a colourful headdress. It is made of many feathers. When a dancer jumps, the feathers on the **(1)** sway too. Small bells are tied around the dancers' ankles. Every time the feet stamp, the bells **(2)**. One group can have many dancers who move as one. If one dancer moves faster than the others, their dance is no longer **(3)**. It is said that the dance was born from the story of village people who once fought to drive out the colonisers. That is why its moves are firm and full of spirit, like a line of **(4)** ready for battle. At a show on the village field, the organisers put up a rope barrier because the dancers jump in every direction. The audience sitting behind the rope stays **(5)** from the dancers' leaps.
 
 ± 135 kata
 
@@ -443,7 +443,7 @@ Pengecoh: *diam* → *stop*, *penjajah* → *colonisers*. Lihat [catatan no. 2](
 | --- | --- |
 | mgl-3-b01 | The first paragraph of the post is mainly about Mount Tidar. |
 | mgl-3-b02 | The Mantyasih Inscription was made after the Military Academy was built. |
-| mgl-3-b03 | According to the post, the island of Java really did once wobble and was then nailed down at Mount Tidar. |
+| mgl-3-b03 | According to the post, everything it says about Mount Tidar is a legend. |
 | mgl-3-b04 | Kak Dewi's comment is a fact. |
 | mgl-3-b05 | Pak Anton's comment is a fact. |
 | mgl-3-b06 | On the path for climbing Mount Tidar, the official account's post is more trustworthy than Raffi's comment. |
@@ -758,7 +758,7 @@ Pengecoh: *siang* → *afternoon*, *berawan* → *cloudy*.
 | --- | --- |
 | wnb-3-a01 | Both messages talk about the water of Telaga Warna, but they say opposite things. |
 | wnb-3-a02 | The chain message must be true because it has been forwarded many times. |
-| wnb-3-a03 | Only one of the two messages suggests that people drink the lake water. |
+| wnb-3-a03 | According to the managers' post, the water of Telaga Warna can look green, blue, or yellowish because it contains sulphur. |
 | wnb-3-a04 | The managers' post is more trustworthy than the chain message because its maker and date are clear. |
 | wnb-3-a05 | Asking Dito is just as helpful as asking the teacher. |
 | wnb-3-a06 | Based on the evidence in the text, thirsty visitors may drink the water of Telaga Warna as long as it looks clear. |
