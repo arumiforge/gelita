@@ -394,7 +394,7 @@ Kode kesalahan, skor tindakan, kode alasan, `d3_clue_type`, `d2_topic`, label pe
 
 ### 10.4 `manual_code`
 
-`item_tries.manual_code` (VARCHAR 12, null) disediakan untuk pengodean manual (`*-LAIN`, transkrip L5) supaya kode bank tidak tertimpa (11 → Analitik 6). Bagian ini hanya membuat kolomnya. Pengisiannya lewat impor L5 milik bagian 3 ([29 §10.4, §10.7](29_IMPLEMENTASI_DATA_PENELITIAN.md#10-templat-dan-impor-lembar-lapangan-perubahan-no-15)): templat L5 punya kolom `manual_code` per percobaan butir, impor memeriksanya terhadap kode butir itu di `item_error_codes` (§15), lalu menulisnya ke `item_tries.manual_code` ([§22](#22-keputusan-pengembang) no. 9). Lapis turunan tidak mengisinya.
+`item_tries.manual_code` (VARCHAR 12, null) disediakan untuk pengodean manual (`*-LAIN`, transkrip L5) supaya kode bank tidak tertimpa (11 → Analitik 6). Bagian ini hanya membuat kolomnya. Pengisiannya lewat impor L5 milik bagian 3 ([29 §10.4, §10.7](29_IMPLEMENTASI_DATA_PENELITIAN.md#10-templat-dan-impor-lembar-lapangan-perubahan-no-15)): templat L5 punya kolom `manual_code` per percobaan butir, impor memeriksanya terhadap kode butir itu di `item_error_codes` (§15) ditambah kode `*-LAIN` dimensinya (29 §19 no. 15, 3 November 2026), lalu menulisnya ke `item_tries.manual_code` ([§22](#22-keputusan-pengembang) no. 9). Lapis turunan tidak mengisinya.
 
 ---
 
@@ -693,7 +693,7 @@ Putaran kedua, 2 November 2026 (sesi koordinator, `asal: pengembang`, [04](04_CA
 
 **Sesi koordinator 31–35, 3 November 2026** (cabang `r10-cek-30`, `asal: pengembang`, `disetujui pengembang`):
 
-9. **`manual_code` tetap, diisi impor L5** (§10.4): templat dan impor L5 di [29 §10](29_IMPLEMENTASI_DATA_PENELITIAN.md#10-templat-dan-impor-lembar-lapangan-perubahan-no-15) mendapat kolom `manual_code` per percobaan butir, diperiksa terhadap `item_error_codes` butir itu, dan ditulis ke `item_tries.manual_code`. Tidak dipilih: `manual_code` dibuang.
+9. **`manual_code` tetap, diisi impor L5** (§10.4): templat dan impor L5 di [29 §10](29_IMPLEMENTASI_DATA_PENELITIAN.md#10-templat-dan-impor-lembar-lapangan-perubahan-no-15) mendapat kolom `manual_code` per percobaan butir, diperiksa terhadap `item_error_codes` butir itu, dan ditulis ke `item_tries.manual_code`. Tidak dipilih: `manual_code` dibuang. *(3 November 2026: pemeriksaannya juga menerima kode `*-LAIN` dimensi butir itu, [29 §19](29_IMPLEMENTASI_DATA_PENELITIAN.md#19-keputusan-pengembang) no. 15.)*
 
 Putaran ketiga, 3 November 2026 (`asal: pengembang`, [04](04_CATATAN_KEPUTUSAN.md)): pengembang meninjau seluruh dokumen dan menyetujuinya, termasuk usulan di [§21](#21-pertanyaan-terbuka) no. 5–6. Status naik ke `disetujui pengembang`.
 
