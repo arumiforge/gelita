@@ -58,6 +58,7 @@ Setiap tabel data turunan menyimpan kolom `dictionary_version`, supaya angka di 
 | 16 | Variabel angket, **tanpa** jawaban butir risiko daring per siswa; butir risiko hanya lembar `risiko_gabungan` | 16; 29 K9, §7.6 | Sama |
 | 17 | Variabel skala sikap dan `feedback_rating`; `sikap_missing_reason = tanpa_izin` tidak pernah dari sistem | 17; 35 §20 | Sama |
 | 18 | Pengamatan L4 diberi `attempt_id` dan `item_key` yang aktif (`derived_observations`); status tes dari modul, L6 tidak diimpor | 35 §6.6; 29 K12 | [Aturan gabung lembar lapangan](#aturan-gabung-lembar-lapangan) |
+| 19 | L5 menunjuk percobaan dengan `try_no`; `manual_code` hanya kode kesalahan yang disepakati dan berbeda dari kode game, dari kode butir itu atau `*-LAIN` dimensinya; kode alasan R-\* yang dikode tangan (termasuk R-LAIN) tetap di lembar | 02 → L5; 29 §10.4, §19 no. 14; 04, 3 November 2026 | [Kode kesalahan](#analitik-6-pola-kesalahan), Aturan gabung lembar lapangan |
 | 19 | `is_touch` tetap di log teknis admin, tidak di data penelitian | 29 §18 no. 3 | Variabel peserta dan sesi |
 | 20 | Variabel sekolah dari L8; L2 baris dan kursi lewat panel; aturan nama dari 22 → *Di mana nama berada* menggantikan "nama hanya ada di L7" | 02 → L8; 28 §11; 22; `docs/PROGRESS.md` (keputusan 26 dan 27 Oktober 2026) | Variabel peserta dan sesi, Aturan gabung lembar lapangan |
 | 21 | Setiap tabel turunan menyimpan `dictionary_version` dan `run_id`; versi antara `kamus-1.1-usulan` | 35 §4, §8.1 | [Versi dan cara berubah](#versi-dan-cara-berubah) |
@@ -324,7 +325,7 @@ Jenis (b) tetap terhitung walaupun tantangannya kemudian dilanjutkan dan tuntas 
 | Skenario Digital, tindakan | Kode pilihan tindakan dengan skor 0 atau 1 | DIG-PRI, DIG-SAN, DIG-IZN, DIG-ASG, DIG-HOX, DIG-ETK, DIG-PSF |
 | Susun Gambar | Tidak dikode | — |
 
-Kode `*-LAIN` tidak pernah ada di bank. Kode itu hanya diberikan saat pengodean manual (misalnya transkrip L5), dan disimpan di kolom terpisah `manual_code` supaya kode bank tidak tertimpa.
+Kode `*-LAIN` tidak pernah ada di bank. Kode itu hanya diberikan saat pengodean manual (misalnya transkrip L5), dan disimpan di kolom terpisah `manual_code` supaya kode bank tidak tertimpa. *(1.1)* `manual_code` hanya berisi satu kode kesalahan untuk percobaan yang salah: salah satu kode butir itu di bank, atau kode `*-LAIN` dimensinya. Kode itu diisi dari L5 kalau kedua pengode sepakat dan kodenya berbeda dari kode game ([02 → L5](02_LEMBAR_LAPANGAN.md#l5-wawancara-retrospektif-dan-berpikir-lantang)). Kode alasan R-\* yang dikode tangan, termasuk R-LAIN, tetap di lembar L5 dan tidak masuk data percobaan.
 
 **Kode alasan** (`reason_code`): kode R-* dari pilihan alasan, dicatat di **setiap** percobaan Skenario Digital, termasuk yang tindakannya tepat.
 
@@ -497,7 +498,7 @@ Siswa `withdrawn_keep` ikut dengan data sampai saat mundur; tes akhir sesudah ta
 | L2 | Kode peserta, kode sesi lapangan | Menghubungkan kursi, perangkat, dan buklet; jam pindah perangkat memotong jendela. *(1.1)* Baris dan kursi dimasukkan P1 ke panel, yang menghitung buklet dan bentuk tes ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md) §11) | `booklet`, `shared_device` |
 | L3 | Kode peserta, jam | Percobaan siswa itu dari 1 menit sebelum jam kejadian sampai 2 menit sesudahnya. Kalau jam selesai ditulis (kejadian lebih dari 2 menit), jendelanya dari 1 menit sebelum jam mulai sampai 2 menit sesudah jam selesai. Baris untuk beberapa kursi berlaku untuk setiap siswa di kursi itu | `helped_content`, `helped_technical`, `encouraged`, `disturbed` |
 | L4 | Kode peserta, jam | Satu pengamatan menutup 20 detik sejak jamnya, dipasangkan dengan pengerjaan dan butir yang aktif di selang itu | Kode perilaku dan emosi per pengamatan; *(1.1)* dengan `attempt_id` dan `item_key` yang aktif (`derived_observations`, [35 §6.6](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#66-derived_field_sessions-satu-baris-per-peserta--sesi-lapangan)) |
-| L5 | Kode peserta, kode butir | Transkrip dikode dengan kode R-*, INF, DIG, atau BUD; `*-LAIN` untuk yang tidak cocok | `manual_code` |
+| L5 | Kode peserta, kode butir; *(1.1)* nomor percobaan (`try_no`, kosong = 1) | Transkrip dikode dengan kode R-*, INF, DIG, atau BUD; `*-LAIN` untuk yang tidak cocok. *(1.1)* Hanya kode kesalahan INF, DIG, atau BUD yang disepakati dan berbeda dari kode game yang masuk `manual_code`, dan hanya untuk percobaan yang salah; kodenya kode butir itu di bank atau `*-LAIN` dimensinya. Kode R-\* (termasuk R-LAIN) tetap di lembar, untuk kesepakatan pengode dan revisi skema | `manual_code` |
 | L6 | Kode peserta | Skor tes awal dan akhir, angket akses digital. *(1.1)* Datanya dari modul tes; L6 hanya catatan pelaksanaan dan tidak diimpor ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md) K12) | Variabel peserta |
 | L8 *(1.1)* | Kode sekolah | Satu baris per sekolah; tidak diimpor ke sistem, diketik tim di lapis analisis ([02 → L8](02_LEMBAR_LAPANGAN.md#l8-profil-sekolah)) | Variabel sekolah ([Variabel peserta dan sesi](#variabel-peserta-dan-sesi)) |
 | L7 | Kode peserta | Menentukan `consent_ok`. *(1.1)* Nama anak tidak pernah ada di data penelitian; nama hanya ada di akun GELITA (hanya terlihat admin), di L7 dan formulir izin bertanda tangan, dan di berkas terpisah yang disimpan terkunci ketua peneliti ([22 → Di mana nama berada](22_PERMOHONAN_IZIN_ETIK.md#di-mana-nama-berada)). Kolom berkode L7 dimasukkan P1 ke panel (daftar izin berkode); sistem menghitung `consent_ok` dari sana, dan `ketua` mencocokkannya dengan L7 kertas sampai studi ditutup ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) §10.1) | `consent_ok` |
@@ -571,3 +572,4 @@ Empat pertanyaan di draf diputuskan pengembang pada 26 Oktober 2026:
 6. Data mentah tetap; lapis turunan dipotong pada saat mundur (35 §19 no. 4).
 7. Jawaban butir risiko daring hanya sebagai angka gabungan (29 K9).
 8. Status tes berasal dari modul; L6 tidak diimpor (29 K12).
+9. `manual_code` dari L5: kode butir itu atau `*-LAIN` dimensinya, hanya bila disepakati dan berbeda dari kode game; kode alasan yang dikode tangan tetap di lembar (3 November 2026; 02 → L5, 29 §19 no. 15–17).

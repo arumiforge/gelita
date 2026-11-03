@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 27 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 3 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Semua kode yang dipakai di dokumen revisi, lembar lapangan, dan data penelitian dikumpulkan di sini. Aturan memakai kode di data dan nilai kolom data turunan (misalnya status penyelesaian dan jenis "dilewati") ada di [kamus data](11_KAMUS_DATA.md). Kode yang sudah tersimpan di data game (misalnya `tmg-2-a01` atau `bintang-1`) tidak diganti; kode baru di revisi ini ditandai "usulan" sampai disetujui tim.
 
@@ -202,6 +202,7 @@ Setiap uji (KG2, KG3a, KG3b) dan pengambilan data utama (KG5) adalah studi terse
 | R-ATUR | "Karena disuruh atau dilarang" | Tindakan bisa benar, alasan dangkal |
 | R-SOS | Tekanan teman atau ingin disukai | — |
 | R-ACAK | Alasannya tidak nyambung | — |
+| R-LAIN | Alasan yang tidak cocok dengan kode R lain; dikode manual | Hanya di kolom pengode lembar L5; tidak ada di bank, tidak dipilih siswa, dan tidak disimpan di `manual_code` (3 November 2026, [02 → L5](02_LEMBAR_LAPANGAN.md#l5-wawancara-retrospektif-dan-berpikir-lantang)) |
 
 ## Tes awal–akhir dan angket
 

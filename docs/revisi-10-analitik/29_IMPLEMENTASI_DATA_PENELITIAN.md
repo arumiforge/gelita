@@ -1,6 +1,6 @@
 # Dokumen Implementasi Bagian 3 — Pembersihan Log, Unduhan Data Penelitian, Kamus Data, dan Lembar Lapangan
 
-Per 2 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 7, 14, dan 15 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
+Per 3 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 7, 14, dan 15 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
 
 > **Status: `disetujui pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 30 Oktober 2026; dicek kemutakhirannya dan ditinjau pengembang 2 November 2026, [§19](#19-keputusan-pengembang) no. 5–12). Ini dokumen, bukan perubahan sistem.
 >
@@ -581,7 +581,7 @@ Lembar tetap diisi di kertas selama sesi (02). Sistem menyediakan berkas ketik y
 - kode (DEV-*, pemberi, jenis, perilaku, emosi) ada di daftar 02;
 - nomor kursi di L1, L3, L4 ada di L2 sesi itu, atau "semua", atau rentang (`05–08`);
 - isian "—" dibaca sebagai kosong, sesuai aturan menulis di 02;
-- L5: `manual_code` (bila diisi) harus salah satu kode kesalahan butir itu di `item_error_codes` ([31 §10](31_IMPLEMENTASI_BANK_SOAL_BARU.md#10-kode-kesalahan-di-setiap-percobaan-salah-perubahan-no-1)), dan percobaan yang ditunjuk (`item_key`, `try_no` di pengerjaan pertama siswa itu) harus ada dan salah.
+- L5: `manual_code` (bila diisi) harus salah satu kode kesalahan butir itu di `item_error_codes` ([31 §10](31_IMPLEMENTASI_BANK_SOAL_BARU.md#10-kode-kesalahan-di-setiap-percobaan-salah-perubahan-no-1)) **atau kode `*-LAIN` dimensi butir itu** (D1 `INF-LAIN`, D2 `DIG-LAIN`, D3 `BUD-LAIN`; `ErrorCodes::MANUAL`) ([§19](#19-keputusan-pengembang) no. 15), dan percobaan yang ditunjuk (`item_key`, `try_no` di pengerjaan pertama siswa itu) harus ada dan salah. Kode R-\*, `NON-*`, kode `*-LAIN` dimensi lain, dan gabungan dua kode ("DIG-PRI + R-LAIN") ditolak di kolom ini. `manual_code` yang sama dengan `error_code` percobaan itu memberi peringatan, tidak menahan (aturan mengisi di 02: hanya bila berbeda, no. 17).
 
 **Peringatan (tidak menahan):**
 - buklet atau bentuk tes di L2 berbeda dari panel (panel yang berlaku);
@@ -629,7 +629,7 @@ Judul kolom persis seperti 02; kode di bawah dipakai di `values_json`, CSV, dan 
 | `l5_wawancara` | Kepala: `participant_code`, `field_session_code`, `pretest_group`, `interviewer`, `start_time`, `end_time`, `recorded`. Baris: `item_key`, `try_no`, `first_answer`, `game_code`, `coder_1`, `coder_2`, `agree`, `manual_code` |
 | `l6_sesi` | `field_session_code`, `test`, `part1_start`, `part23_start`, `last_finish`, `spare_devices`, `frequent_questions` |
 
-**`try_no` dan `manual_code` L5** adalah kolom templat dan impor ([§19](#19-keputusan-pengembang) no. 14): satu baris per percobaan butir yang dikode manual (`try_no` kosong dibaca 1), dan `manual_code` adalah kode hasil pengodean manual (`*-LAIN`, transkrip). Di `FieldSheetSpec` keduanya ditandai kolom tambahan, sehingga `FieldSheetSpecTest` tidak mencarinya di tabel 02 sampai tabel L5 di 02 diperbarui.
+**`try_no` dan `manual_code` L5** adalah kolom templat dan impor ([§19](#19-keputusan-pengembang) no. 14): satu baris per percobaan butir yang dikode manual (`try_no` kosong dibaca 1), dan `manual_code` adalah kode hasil pengodean manual (kode butir itu atau `*-LAIN` dimensinya, no. 15). Sejak 3 November 2026 keduanya ada di tabel L5 02 dengan judul *Percobaan* dan *Kode manual*, jadi `FieldSheetSpec` membacanya seperti kolom lain, tanpa tanda kolom tambahan. Kolom `coder_1` dan `coder_2` boleh berisi kode tindakan dan kode alasan (misalnya `DIG-PRI + R-LAIN`) dan disimpan apa adanya di `values_json`; isinya tidak ditulis ke `item_tries` (no. 16).
 
 Isian gabungan di 02 dipecah saat impor: *Headset* "24 dari 26" → `headset_count`, `headset_of`; *Pakai bareng* "Ya, S03-A16" → `shared_device` 1 dan `shared_with`; *Pindah perangkat* "08:40:00 ke P15 (baterai habis)" → `switch_time`, `switch_device`, sisanya ke `note`; *Menit tersedia dan dipakai* "90 / 84" → dua kolom. Di templat, isian itu sudah dua kolom; di kertas tetap seperti 02.
 
@@ -784,7 +784,7 @@ Pesan pemeriksaan per kolom ("jam harus berbentuk JJ:MM:SS", "kode tidak dikenal
 | `RiskAggregateSheetTest` | Bentuk lembar `risiko_gabungan`; sel di bawah 5 menjadi `<5`; tidak ada jawaban per siswa di lembar mana pun (diaktifkan setelah no. 22) |
 | `FieldSheetSpecTest` | Judul kolom spesifikasi sama dengan tabel bertanda di 02 untuk setiap lembar yang diimpor |
 | `FieldSheetTemplateTest` | Berkas per jenis pertemuan berisi lembar yang benar, terisi kode dan buklet; tidak ada nama, nama pengguna, sekolah, NPSN, token, atau L7 |
-| `FieldSheetImportTest` | Pratinjau lalu simpan; kesalahan menahan dengan nomor baris dan kolom; kode rombel lain ditolak; kutipan L5 dan token L1 diabaikan; unggah ulang menggantikan (dua unggahan bersamaan, satu yang berlaku); peringatan nama wajib dikonfirmasi; admin 404 |
+| `FieldSheetImportTest` | Pratinjau lalu simpan; kesalahan menahan dengan nomor baris dan kolom; kode rombel lain ditolak; kutipan L5 dan token L1 diabaikan; L5 `manual_code`: kode butir itu dan `*-LAIN` dimensinya diterima, `*-LAIN` dimensi lain, `R-LAIN`, gabungan dua kode, dan percobaan yang benar ditolak, kode yang sama dengan `error_code` memberi peringatan ([§19](#19-keputusan-pengembang) no. 15–17); unggah ulang menggantikan (dua unggahan bersamaan, satu yang berlaku); peringatan nama wajib dikonfirmasi; admin 404 |
 | `FieldSheetCheckTest` | Ketikan kedua dicocokkan per kunci baris; selisih dilaporkan; impor cek tidak masuk unduhan |
 | `FieldSheetExportTest` | Lembar `l1_kondisi` … `l6_sesi` di unduhan ketua, hanya impor utama yang berlaku |
 
@@ -872,7 +872,13 @@ Dengan keputusan ini 29 `disetujui pengembang` (2 November 2026).
 **Sesi koordinator 31–35, 3 November 2026** (cabang `r10-cek-30`, `asal: pengembang`, `disetujui pengembang`):
 
 13. **Urutan lembar di §7.2 menjadi resmi**: … `butir`, `kode_pilihan`, lembar `turunan_*` (termasuk `turunan_tes` dari 35), `tes_jawaban`, `tes_bagian`, `angket`, `sikap`, `risiko_gabungan`, `izin`, lalu lembar lapangan `l1_…`–`l6_…`. Tidak dipilih: urutan dibiarkan terbuka sampai implementasi.
-14. **`manual_code` diisi lewat impor L5** (§10.4, §10.7): templat dan impor L5 mendapat kolom `manual_code` per percobaan butir (dengan `try_no`), diperiksa terhadap kode kesalahan butir itu di `item_error_codes` (31), lalu ditulis ke `item_tries.manual_code`. Tidak dipilih: `manual_code` dibuang.
+14. **`manual_code` diisi lewat impor L5** (§10.4, §10.7): templat dan impor L5 mendapat kolom `manual_code` per percobaan butir (dengan `try_no`), diperiksa terhadap kode kesalahan butir itu di `item_error_codes` (31), lalu ditulis ke `item_tries.manual_code`. Tidak dipilih: `manual_code` dibuang. *(Pemeriksaannya diperluas di no. 15.)*
+
+**Kolom L5 di 02, 3 November 2026** (cabang `sky/eloquent-maxwell-eiucbe`, `asal: pengembang`, `disetujui pengembang`). Saat tabel L5 di 02 diperbarui, pemeriksaan no. 14 ternyata menolak kode `*-LAIN`, padahal kode itu tidak pernah ada di bank (31 §8.2) dan menjadi alasan utama `manual_code` ada (11 → Analitik 6). Contoh L5 juga memakai `R-LAIN`, yang belum ada di 03, dan percobaan skenario dengan tindakan tepat dinilai benar walaupun alasannya dangkal (32 K3), jadi alasannya tidak bisa diberi `manual_code`. Satu putaran tanya, pengembang memilih usulan di ketiganya:
+
+15. **Pemeriksaan `manual_code`: kode butir itu ditambah `*-LAIN` dimensinya** (§10.4). D1 `INF-LAIN`, D2 `DIG-LAIN`, D3 `BUD-LAIN`. Kalau kode yang cocok bukan kode butir itu, pengode memakai `*-LAIN`. Tidak dipilih: semua kode dimensi itu di 03, juga yang tidak dipakai butir itu.
+16. **Kode alasan yang dikode tangan tetap di lembar L5** (§10.7). `R-LAIN` ditambahkan ke 03 sebagai kode khusus kolom pengode L5. `manual_code` hanya kode kesalahan INF, DIG, atau BUD, untuk percobaan yang salah; kolom pengode disimpan di `field_sheet_rows.values_json` dan dipakai untuk kesepakatan pengode dan revisi skema. Tidak ada kolom baru di `item_tries`. Tidak dipilih: `R-LAIN` ditambah kolom `item_tries.manual_reason_code` yang boleh diisi juga pada percobaan yang benar.
+17. **`manual_code` diisi hanya bila kedua pengode sepakat dan kodenya berbeda dari kode game** (aturan menulis di 02 → L5). Kosong pada baris lain. Tidak dipilih: diisi pada setiap baris yang sepakat, juga yang sama dengan kode game.
 
 ---
 

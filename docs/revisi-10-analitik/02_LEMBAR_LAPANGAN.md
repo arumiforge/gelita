@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 3 November 2026 · **Status: L0–L7 final, disetujui pengembang 26 Oktober 2026** (daftar kerja no. 11; L5 dan L7 disesuaikan dengan dokumen tahap 2 pada 27 Oktober 2026, dan L1, L2, L7, dan cara mengisi dengan dokumen implementasi 28–30 pada 30 Oktober 2026, lihat *Perubahan setelah persetujuan*); **L8 Profil sekolah draf** (ditambahkan 26 Oktober 2026, keputusan pengembang tentang penelitian pendahuluan di [04](04_CATATAN_KEPUTUSAN.md)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 3 November 2026 · **Status: L0–L7 final, disetujui pengembang 26 Oktober 2026** (daftar kerja no. 11; L5 dan L7 disesuaikan dengan dokumen tahap 2 pada 27 Oktober 2026, L1, L2, L7, dan cara mengisi dengan dokumen implementasi 28–30 pada 30 Oktober 2026, dan kolom L5 *Percobaan* dan *Kode manual* pada 3 November 2026, lihat *Perubahan setelah persetujuan*); **L8 Profil sekolah draf** (ditambahkan 26 Oktober 2026, keputusan pengembang tentang penelitian pendahuluan di [04](04_CATATAN_KEPUTUSAN.md)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Lembar lapangan mengisi yang tidak terlihat oleh log game dan modul tes: siapa yang dibantu, perangkat yang dipakai bareng, kondisi kelas, emosi siswa, dan alasan di balik jawaban. Semua lembar diisi **peneliti**, bukan guru. Setiap lembar memakai kunci yang sama dengan log, sesuai [aturan gabung di kamus data](11_KAMUS_DATA.md#aturan-gabung-lembar-lapangan) (`kamus-1.0`): **kode peserta** (misalnya S03-A07), **kode sesi lapangan** (misalnya S03-A-P2), dan **jam WIB** sampai detik. Cara kerja di lapangan dan peran P1–P3 ada di dokumen utama, bagian *Kerja lapangan*.
 
@@ -263,12 +263,20 @@ Jangan bilang jawaban siswa salah, dan jangan memberi tahu jawaban yang benar.
 Kode peserta: ______ · Kode sesi lapangan: __________ · Kelompok tes awal: rendah / sedang / tinggi · Pewawancara: ______ · Jam mulai–selesai: ______ · Rekaman: Ya / Tidak
 
 <!-- lembar: L5-wawancara -->
-| Kode peserta | Butir | Jawaban pertama siswa | Kode dari game | Kutipan ucapan siswa | Pengode 1 | Pengode 2 | Sepakat |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| S03-A07 | wnb-2-a01 | agar | INF-HUB | "Aku pilih agar, soalnya kabutnya bikin orang menjuluki" | INF-HUB | INF-HUB | Ya |
-| S03-A07 | wnb-5-a01 | Langsung kirim fotonya; alasan "Teman-temanku juga ikut mengirim datanya" | DIG-PRI + R-SOS | "Takut kehabisan hadiahnya" | DIG-PRI + R-LAIN | DIG-PRI + R-SOS | Tidak |
+| Kode peserta | Butir | Percobaan | Jawaban pertama siswa | Kode dari game | Kutipan ucapan siswa | Pengode 1 | Pengode 2 | Sepakat | Kode manual |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| S03-A07 | wnb-2-a01 | 1 | agar | INF-HUB | "Aku pilih agar, soalnya kabutnya bikin orang menjuluki" | INF-HUB | INF-HUB | Ya | — |
+| S03-A07 | wnb-5-a01 | 1 | Langsung kirim fotonya; alasan "Teman-temanku juga ikut mengirim datanya" | DIG-PRI + R-SOS | "Takut kehabisan hadiahnya" | DIG-PRI + R-LAIN | DIG-PRI + R-SOS | Tidak | — |
+| S03-A07 | wnb-3-a05 | 1 | benar | INF-SUM | "Kukira Dito itu gurunya Raka, jadi sama aja" | INF-LAIN | INF-LAIN | Ya | INF-LAIN |
 
-Kolom pengode diisi setelah transkrip selesai, oleh dua pengode terpisah, untuk semua transkrip L5 (κ ≥ 0,70, [11](11_KAMUS_DATA.md#analitik-6-pola-kesalahan)). Baris yang tidak sepakat dibahas bersama. Baris kedua di atas memperlihatkan alasan yang belum ada di skema, yaitu tergiur hadiah atau takut kehabisan; kode `*-LAIN` disimpan di `manual_code`. Kalau banyak ucapan yang tidak cocok dengan kode mana pun, skema kesalahan atau pilihan alasan direvisi sebelum pengambilan data utama. Rekaman suara dihapus setelah transkripnya diperiksa.
+Kolom pengode diisi setelah transkrip selesai, oleh dua pengode terpisah, untuk semua transkrip L5 (κ ≥ 0,70, [11](11_KAMUS_DATA.md#analitik-6-pola-kesalahan)). Baris yang tidak sepakat dibahas bersama. Baris kedua di atas memperlihatkan alasan yang belum ada di skema, yaitu tergiur hadiah atau takut kehabisan; alasan seperti itu diberi kode R-LAIN. Kalau banyak ucapan yang tidak cocok dengan kode mana pun, skema kesalahan atau pilihan alasan direvisi sebelum pengambilan data utama. Rekaman suara dihapus setelah transkripnya diperiksa.
+
+**Percobaan dan Kode manual** (3 November 2026, [04](04_CATATAN_KEPUTUSAN.md)):
+
+- *Percobaan* adalah nomor percobaan butir yang dibahas (1–3). Kosong dibaca 1. Satu baris per percobaan yang dikode.
+- *Kode manual* diisi hanya kalau kedua pengode sepakat (langsung atau setelah dibahas) dan kode kesalahan yang disepakati berbeda dari *Kode dari game*. Selain itu "—". Isinya satu kode kesalahan: salah satu kode butir itu di bank, atau kode `*-LAIN` dimensinya (D1 INF-LAIN, D2 DIG-LAIN, D3 BUD-LAIN) kalau tidak ada kode butir itu yang cocok. Baris ketiga di atas contohnya: ucapan siswa tidak cocok dengan INF-SUM, kode satu-satunya butir itu, jadi INF-LAIN.
+- Kode manual hanya untuk percobaan yang salah. Kode bank di game tidak diganti; kode manual disimpan terpisah di `manual_code`.
+- Kode alasan R-\* (termasuk R-LAIN) tetap di kolom pengode lembar ini dan tidak masuk *Kode manual*. Alasan yang dikode tangan dipakai untuk kesepakatan pengode dan revisi skema, tidak ditulis ke data percobaan; kode alasan dari game tetap yang dipakai di analisis. Karena itu baris kedua *Kode manual*-nya "—": kode tindakannya sama dengan game, walaupun alasannya belum sepakat.
 
 ## L6 Log tes awal–akhir dan angket akses digital
 
@@ -427,3 +435,7 @@ Dibandingkan draf 23 Oktober 2026 (yang sebagian diselaraskan 26 Oktober 2026):
 3 November 2026, dari [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) (sesi tindak lanjut dokumen, `asal: pengembang`, tanpa keputusan baru). Judul kolom tabel tidak berubah:
 
 - **Cara mencetak dan mengisi:** situs statis memakai `kolom.json` dari spesifikasi lembar (29 §19 no. 6); spesifikasi lembar dikunci di G4 bersama versi game dan kamus (K17).
+
+3 November 2026, keputusan pengembang di [04](04_CATATAN_KEPUTUSAN.md) (cabang `sky/eloquent-maxwell-eiucbe`, `asal: pengembang`, `disetujui pengembang`). **Judul kolom tabel L5 berubah:**
+
+- **L5:** kolom *Percobaan* (`try_no`) dan *Kode manual* (`manual_code`) ditambahkan, sesuai [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) §19 no. 14; aturan mengisinya di bawah tabel L5. Contoh baris kedua memakai kode R-LAIN, yang kini ada di [03](03_KODE_DAN_ARTI.md) sebagai kode khusus lembar L5; baris ketiga contoh INF-LAIN. Kode alasan yang dikode tangan tetap di lembar, tidak masuk `manual_code`.
