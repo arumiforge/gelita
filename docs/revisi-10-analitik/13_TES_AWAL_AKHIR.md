@@ -165,7 +165,7 @@ Butir angket memakai kode `ang-{nn}` (lihat [16](16_ANGKET_AKSES_DIGITAL.md)). K
 
 ### Modul tes di GELITA
 
-Tes dan angket dikerjakan di modul tes GELITA (diputuskan 26 Oktober 2026). Modul ini dibangun di tahap 3 sebagai perubahan sistem no. 22 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti); rinciannya ditulis di dokumen implementasi. Yang sudah ditetapkan untuk rancangan:
+Tes dan angket dikerjakan di modul tes GELITA (diputuskan 26 Oktober 2026). Modul ini perubahan sistem no. 22 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti); rinciannya ditulis di dokumen implementasi [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md). Sejak 1 November 2026 modul dibangun sekarang, di balik sakelar studi yang mati secara bawaan, dan tidak dipakai dengan anak sebelum izin etik ([04](04_CATATAN_KEPUTUSAN.md)). Yang sudah ditetapkan untuk rancangan:
 
 - **Tampilan Bootstrap, bukan tampilan game.** Latar polos, huruf besar dan mudah dibaca, tanpa HUD, musik, narasi, animasi, bintang, atau Serpihan Cahaya. Bootstrap disimpan sebagai salinan lokal berversi di `public/assets/vendor/`, seperti pustaka lain di proyek, supaya modul tetap jalan tanpa internet dan tanpa CDN.
 - **Dibuka lewat sesi lapangan.** Token sesi P1 dan P5 membuka modul tes, bukan wilayah game. Di luar sesi, modul tertutup seperti game. Siswa masuk dengan akunnya sendiri, dan layar hanya menampilkan kode peserta.
@@ -175,7 +175,7 @@ Tes dan angket dikerjakan di modul tes GELITA (diputuskan 26 Oktober 2026). Modu
 - **Jawaban tersimpan per butir di server**, jadi perangkat yang mati tidak menghapus jawaban; siswa melanjutkan di perangkat lain dari soal terakhir. Kunci dan skor tidak pernah dikirim ke browser, sama seperti aturan game.
 - **Yang dicatat:** jawaban mentah, waktu tampil per butir, berapa kali jawaban diganti, jam mulai dan selesai setiap bagian, dan bagian yang ditutup batas waktu.
 - **Angket di modul yang sama**, langsung setelah Bagian 3 tes awal, dan butir risiko daring langsung setelah Bagian 3 tes akhir ([16](16_ANGKET_AKSES_DIGITAL.md)). Butir risiko hanya untuk siswa yang izin terpisahnya ada di daftar izin berkode: modul menampilkan layar tanya ulang T11 lebih dulu, dan semua siswa, juga yang tanpa izin, melihat pesan dukungan T12 di titik yang sama, supaya peneliti dan teman tidak bisa menebak siapa yang mengisi ([30 → Layar T11 dan T12](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#54-layar-t11-dan-t12); teksnya di [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md)). Pilihan T11 disimpan sebagai `risk_reconsent`.
-- **Belum diputuskan, untuk dokumen implementasi no. 22:** apakah batas 20 menit tantangan susulan di P5 dijaga P1 dengan jam atau ditutup sistem sebelum modul tes dibuka ([28 → Pertanyaan terbuka](28_IMPLEMENTASI_SESI_LAPANGAN.md#21-pertanyaan-terbuka) no. 2; usulan di sana: dijaga P1).
+- **Mulai tes lewat tombol P1** (diputuskan pengembang 2 November 2026, [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) K1; menjawab [28 → Pertanyaan terbuka](28_IMPLEMENTASI_SESI_LAPANGAN.md#21-pertanyaan-terbuka) no. 2). P1 menjaga 20 menit tantangan tertinggal di P5 dengan jam, lalu menekan *Mulai tes akhir* di halaman sesi lapangan; sejak itu tantangan di sesi lapangan itu tertutup dan setiap siswa diarahkan ke modul. Tes awal di P1 memakai tombol yang sama (*Mulai tes awal*), yang aktif setelah semua siswa punya bentuk ([34 → Mulai tes bersama](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#53-mulai-tes-bersama)).
 
 Modul baru ada di tahap 3, jadi uji keterbacaan di tahap 2 memakai mock-up layar (lihat [Validasi dan uji coba](#validasi-dan-uji-coba)).
 
@@ -218,7 +218,7 @@ Bentuk mengikuti nomor baris dan nomor kursi di denah L2 saat tes awal:
 - Koordinator sesi (peran P1 di [01](01_REVISI_10_ANALITIK.md#kerja-lapangan-cara-kerjanya)) menjelaskan layar pembuka dan mengerjakan lima contoh soal bersama siswa: satu untuk setiap bentuk butir Bagian 1 (PG, PGK, menjodohkan), satu skenario Bagian 2, dan satu unggahan Bagian 3. Butir tes tidak dibacakan dan modul tidak bernarasi, sejalan dengan aturan narasi D1 di game. Siswa boleh bertanya tentang cara menjawab, tidak tentang arti kata di teks.
 - Waktu dijaga modul, bukan koordinator. Siswa yang selesai lebih dulu melihat layar selesai dan menunggu dengan tenang.
 - Guru boleh di kelas tapi tidak membantu isi soal. Bantuan dan gangguan dicatat P3 di L3, seperti saat bermain ([02](02_LEMBAR_LAPANGAN.md#l3-log-bantuan-dan-gangguan)).
-- Kalau perangkat bermasalah, siswa pindah ke perangkat cadangan dan melanjutkan dari soal terakhir. P1 mencatat jam dan lamanya di L1.
+- Kalau perangkat bermasalah, siswa pindah ke perangkat cadangan dan melanjutkan dari soal terakhir. P1 mencatat jam dan lamanya di L1, dan boleh menambah menit untuk siswa itu di panel dengan alasan; tambahan menit tersimpan, masuk log audit, dan masuk unduhan ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) K3, keputusan pengembang 2 November 2026).
 - Siswa yang absen ikut susulan dalam tiga hari dengan bentuk yang sudah ditetapkan dan batas waktu yang sama; peneliti membuka modul untuk mereka. Kalau tidak, status tesnya `hilang`. Status tes berasal dari modul; L6 hanya catatan pelaksanaan dan statusnya tidak diimpor ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md), K12). Angket boleh menyusul sampai P5 dan ditandai `questionnaire_late` ([16](16_ANGKET_AKSES_DIGITAL.md#cara-pelaksanaan)); tes awal tidak, karena harus dikerjakan sebelum bermain.
 - **Tes awal dinilai sebelum P2**, karena pemilihan siswa wawancara L5 memakai kelompok nilai tes awal. Modul menilainya langsung.
 
@@ -240,7 +240,7 @@ Teks untuk siswa (dijelaskan koordinator sesi):
 - **Modul menyimpan jawaban mentah**, bukan hanya skor: huruf pilihan untuk PG, pola huruf per pernyataan untuk PGK (misalnya `BSB` atau `PFF`), dan pasangan untuk menjodohkan (misalnya `1C 2A 3D`). Butir yang tidak dijawab disimpan `-`. Skor dihitung server dari kunci. Tidak ada pengetikan, jadi ketik ulang 10% tidak diperlukan; sebagai gantinya, penskoran diuji otomatis di tahap 3 dengan jawaban contoh untuk setiap butir.
 - **Aturan skor:** PG, PGK, menjodohkan, dan butir D3 bernilai 1 kalau tepat dan 0 kalau tidak; skenario D2 bernilai 2, 1, atau 0 sesuai pilihan. Butir yang dilewati bernilai 0 di skor mentah.
 - **Tidak sampai:** butir yang belum pernah tampil di layar siswa saat bagiannya ditutup batas waktu ditandai `not_reached`. Di analisis Rasch, butir yang tidak sampai dianggap data hilang, bukan salah. Butir yang sudah tampil tapi tidak dijawab dihitung dilewati.
-- **Tebakan cepat:** waktu tampil per butir di bawah ambang tebakan cepat di [11](11_KAMUS_DATA.md) ditandai `rapid_guess`. Jawabannya tetap dinilai apa adanya, sama seperti di game; penandanya dipakai di analisis kepekaan. Ambang untuk tes ditinjau setelah uji coba, karena beberapa butir tampil bersama satu teks dan waktu membaca teksnya jatuh ke butir pertama.
+- **Tebakan cepat:** waktu tampil per butir di bawah ambang tebakan cepat di [11](11_KAMUS_DATA.md) ditandai `rapid_guess`. Jawabannya tetap dinilai apa adanya, sama seperti di game; penandanya dipakai di analisis kepekaan. Ambang untuk tes ditinjau setelah uji coba, karena beberapa butir tampil bersama satu teks dan waktu membaca teksnya jatuh ke butir pertama. Penanda ini dihitung lapis data turunan, bukan modul; sementara memakai ambang tebakan cepat studi ([35 → Pertanyaan terbuka](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#18-pertanyaan-terbuka) no. 2).
 - **Skor mentah per bagian:** D1 0–16, D2 0–16, D3 0–8. Skor total 0–40 hanya untuk gambaran; analisis memakai skor per bagian.
 - **Variabel baru**, yang masuk [11](11_KAMUS_DATA.md#variabel-peserta-dan-sesi) di `kamus-1.1` setelah uji coba (keputusan 26 Oktober 2026); `kamus-1.0` tidak diubah:
 
@@ -249,7 +249,7 @@ Teks untuk siswa (dijelaskan koordinator sesi):
 | Peserta | `pre_form`, `post_form` | `A` atau `B` |
 | | `pre_date`, `post_date`, `pre_makeup`, `post_makeup` | Tanggal, dan apakah dikerjakan di susulan |
 | | `pre_d1`, `pre_d2`, `pre_d3`, `post_d1`, `post_d2`, `post_d3` | Skor mentah per bagian |
-| | `pre_d1_theta` … `post_d3_theta` | Kemampuan Rasch per bagian setelah penyetaraan |
+| | `pre_d1_theta` … `post_d3_theta` | Kemampuan Rasch per bagian setelah penyetaraan; dihitung di lapis 3 (analisis statistik di luar sistem), tidak oleh sistem ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) K10) |
 | | `pre_minutes_p1`, `pre_minutes_p23`, `post_minutes_p1`, `post_minutes_p23` | Lama kerja Bagian 1 dan Bagian 2–3, dalam menit |
 | | `pre_capped`, `post_capped` | Bagian yang ditutup batas waktu (`p1`, `p23`, atau kosong) |
 | | `test_status` | `lengkap`, `hanya_awal`, `hanya_akhir`, `hilang` |

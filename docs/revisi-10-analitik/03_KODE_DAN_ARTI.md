@@ -94,10 +94,23 @@ Akun **siswa** di instalasi uji untuk validator, bukan akun staf ([20 → Akses 
 | tmg-5, mgl-5, wnb-5 | Skenario Digital, tantangan kelima (D2) | Disetujui |
 | a, b | Variasi soal dalam tantangan yang dinilai; pengerjaan pertama memakai variasi dari buklet siswa | Disetujui 25 Oktober 2026 (dulu a–c) |
 | x | Butir yang dipakai semua buklet: kartu jangkar (mis. `tmg-3-x01`) dan Temukan Benda (mis. `wnb-4-x03`) | Disetujui |
-| c … j | Variasi Susun Gambar untuk pengerjaan ulang | Kode tersimpan |
+| c … k | Variasi Susun Gambar untuk pengerjaan ulang (Temanggung `a`–`k`, [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) K12) | Kode tersimpan |
 | B1–B4 | Buklet: kombinasi variasi per wilayah (B1 a-a-a, B2 b-b-b, B3 a-b-a, B4 b-a-b), dibagikan per kursi lewat denah L2 | Disetujui |
 | Kedugram | Aplikasi media sosial fiktif tempat semua unggahan di bacaan digital dan *Periksa Unggahan* tampil | Disetujui |
 | tmg-2-a01 | Kode butir: tantangan `tmg-2`, variasi `a`, butir ke-01 | Kode tersimpan |
+
+## Variasi, buklet, dan bacaan digital di sistem
+
+Kode di bank soal baru dan data pengerjaan ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md), keputusan pengembang 2 November 2026).
+
+| Kode | Arti | Catatan |
+| --- | --- | --- |
+| `booklet` | Nilai `variant_source`: variasi pengerjaan pertama diambil dari buklet siswa (mode penelitian, studi `active`, tantangan 2–5) | [31 → Memilih variasi](31_IMPLEMENTASI_BANK_SOAL_BARU.md#112-memilih-variasi-di-opennode) |
+| `random` | Nilai `variant_source`: variasi diacak dari `a`, `b` (mode penelitian mati atau studi tidak `active`, dan Susun Gambar selalu) | 31 §11.2 |
+| `retake` | Nilai `variant_source`: pengerjaan ulang, variasi yang belum didapat siswa | 31 §11.2 |
+| `BOOKLET_MISSING` | Aturan tantangan: di mode penelitian siswa belum punya kursi dan buklet, jadi tantangan 2–5 tidak dibuka; siswa melihat pesan ramah, Susun Gambar tetap terbuka | 31 K10 |
+| `artikel_pustaka`, `artikel_majalah`, `papan_info`, `unggahan_resmi`, `pesan_grup`, `hasil_pencarian`, `situs_wisata`, `dua_sumber`, `unggahan_bersponsor` | Kode genre bacaan (`text_genre`), dari [06 → Genre teks digital](06_KISI_KISI_BANK_SOAL.md#genre-teks-digital) | [31 → Kolom baru di sheet `passages`](31_IMPLEMENTASI_BANK_SOAL_BARU.md#62-kolom-baru-di-sheet-passages) |
+| `plain`, `info_screen`, `chat`, `search`, `post` | Bentuk tampilan bacaan (`layout`): teks biasa, layar info, grup pesan, hasil pencarian, unggahan; hanya memilih templat tampilan, isinya tetap teks | 31 §6.2; penanda baris ditetapkan saat implementasi (31 §21 no. 5) |
 
 ## Peserta, sekolah, dan sesi
 

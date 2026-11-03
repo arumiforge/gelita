@@ -35,6 +35,8 @@ Penilai B.5a ditetapkan pengembang ([20 → Keputusan pengembang](20_PAKET_VALID
 
 Paket B.5a untuk ABA1 dan ALD1 juga berisi halaman petunjuk B.5a dari instrumen ahli materi, yang bukan berkas skrip ini; halaman itu baru dikirim setelah pembukanya menyebut ID netral (lihat [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)). Berkas instrumen lain (surat, bank, kisi-kisi, tes, akses game) dan kapan dikirim ada di 20.
 
+**Bank soal baru di sistem ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md), 2 November 2026).** Workbook bank soal, berkas data, dan halaman panel konten memuat label pengembang, jadi tidak pernah menjadi sumber berkas ini dan tidak ikut paket validator. Berkas validator tetap dibuat dari 08 ([31 → Label pengembang dan label ahli](31_IMPLEMENTASI_BANK_SOAL_BARU.md#131-label-pengembang-dan-label-ahli); [20 → Prasyarat no. 4](20_PAKET_VALIDASI.md#prasyarat-no-4-membekukan-versi-bahan)).
+
 ### Isi setiap lembar kerja
 
 | Berkas | Lembar | Baris | Kolom yang diisi validator |

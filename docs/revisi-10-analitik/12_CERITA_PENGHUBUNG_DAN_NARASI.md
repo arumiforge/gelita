@@ -488,7 +488,7 @@ Dari cek fakta budaya [25](25_CEK_FAKTA_BUDAYA.md): "Dataran Kedu" menjadi "tana
 | Bagian | Dibacakan? | Tokoh | Kode berkas | Teks dari |
 | --- | --- | --- | --- | --- |
 | Cerita penghubung | Ya, otomatis seperti cerita lain | Jaka, Mbah Kedu | `layar-{wilayah}-NN` | Dokumen ini |
-| Instruksi | Ya (perubahan sistem no. 6) | Narator | `instruksi-{tantangan}`, misalnya `instruksi-tmg-5` | Bank (kolom instruksi) |
+| Instruksi | Ya, hanya lewat tombol ▶ (perubahan sistem no. 6; [32 → Aturan narasi](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#9-aturan-narasi-perubahan-no-18), K10) | Narator | `instruksi-{tantangan}`, misalnya `instruksi-tmg-5` | Bank (kolom instruksi) |
 | Situasi | Hanya lewat tombol ▶, tercatat | Narator | `skenario-{kode butir}`, misalnya `skenario-tmg-5-a01` | 08 |
 | Pilihan tindakan dan alasan | Tidak (keputusan 4) | — | — | — |
 | Umpan balik | Tidak (keputusan 4) | — | — | — |
@@ -555,7 +555,7 @@ Tidak ada baris yang menyebut memblokir, melapor, meminta izin pemilik, atau men
 
 ## Yang perlu disiapkan di tahap 3
 
-Catatan untuk dokumen implementasi, bagian dari perubahan sistem no. 2 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti):
+Catatan untuk dokumen implementasi, bagian dari perubahan sistem no. 2 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti). No. 1–4 dirancang di [32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md): cerita penghubung di §7.2 ([Cerita penghubung `scenario_open`](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#72-cerita-penghubung-scenario_open)), impor rekaman di §8.3 ([Impor narasi instruksi](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#83-impor)) dan §9.3 ([Impor aturan narasi](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#93-impor)). No. 7 dirancang di [33 → Kenali setelah wilayah tuntas](33_IMPLEMENTASI_MODE_PENELITIAN.md#75-kenali-setelah-wilayah-tuntas).
 
 1. **Konteks dialog baru `scenario_open`** per wilayah, berkas `layar-{wilayah}-NN`, diputar sekali sebagai gerbang saat tantangan kelima pertama kali dibuka (keputusan 1). "Sekali" dihitung per siswa per studi, bukan per sesi game: gerbang dialog sekarang membaca kemajuan sesi, yang di [28 → Kemajuan mengikuti siswa](28_IMPLEMENTASI_SESI_LAPANGAN.md#8-kemajuan-mengikuti-siswa-bukan-sesi-game) pindah ke `participant_progress`, jadi cerita ini tidak terulang di setiap pertemuan. Daftar konteks di `Config\Gelita`, editor dialog di panel, `ContentRepository`, latar slide `bg.story.scenario_open.{wilayah}.{n}`, dan musik adegan (cukup memakai lagu `dialog-{wilayah}`).
 2. **`level_done` dipicu tantangan kelima**, dan `map_done` setelah 15 tantangan.
