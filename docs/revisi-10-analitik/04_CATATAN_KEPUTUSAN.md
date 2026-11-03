@@ -22,6 +22,50 @@ Yang belum dibawa, karena menunggu: 16 *Cara pelaksanaan* no. 9 (konfirmasi pene
 
 Diubah: 01, 13, 17, 18, 27, 28, 29, 30, 34 (§19 status), 04, `docs/PROGRESS.md`, PDF siap cetak.
 
+**Akibat 30 dibawa ke 22, 26, 27, dan 29; konfirmasi IDCloudHost dari peneliti** (sesi koordinator untuk 30, cabang `r10-cek-30`, setelah PR #324) · `asal: pengembang` (penyelarasan) dan `asal: peneliti` (konfirmasi penyedia server) · status dokumen tidak berubah · tidak merevisi produk
+
+Atas permintaan pengembang, baris *Akibat ke dokumen lain* di [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#23-akibat-ke-dokumen-lain) yang bertanggal 2 November 2026 dibawa ke dokumen tujuannya, tanpa keputusan baru:
+- **29:** lembar `izin` di unduhan utama (§7.2), `consent_ok` dihitung dari lembar itu (§10.6), baris bagian 4 di titik sambung, dan catatan di kepala dokumen bahwa bagian 4 digabung sesudah bagian 3 dan tidak mengubah baris milik bagian 3 di berkas bersama (30 keputusan no. 7, 9, 10).
+- **27 §6.1:** "setiap bagian diimplementasikan berurutan" diganti: bagian 3 dan 4 paralel di gelombang E, bagian 4 digabung kedua; `003800` nilai akhir bagian 1–4, dinaikkan lagi bagian 5–9.
+- **22 dan 26:** provinsi dan kabupaten tetap disimpan setelah studi ditutup dan komite diminta menilainya (22 *Masa simpan dan pemusnahan*, 26 catatan R2; 30 keputusan no. 11). 26 L3, P18, dan syarat KG2 menyebut sakelar `gelita.researchPrivacy` dan `KEDUA_HARI` (30 keputusan no. 8).
+- **23:** kalimat "tahap 3" di T4, T11, dan T12 sudah dibetulkan sesi cek 23 (PR #320); tidak ada yang diubah.
+- **`docs/08_DEPLOYMENT.md`:** tetap diubah saat implementasi (30 §20).
+
+**Konfirmasi IDCloudHost** (diperoleh peneliti, disampaikan pengembang 2 November 2026; `asal: peneliti`). Cadangan bisa dihapus pelanggan (kendali penuh); IDCloudHost tidak membuat cadangan otomatis kecuali pelanggan mengaturnya; data di database utama dihapus atau dianonimkan sesuai prosedur dan dasar penghapusannya; cadangan yang memuat data itu dihapus saat masa simpannya berakhir (bawaan 30 hari), sehingga cadangan lama tidak disimpan tanpa batas; IDCloudHost memberi informasi atau bukti bahwa cadangan sudah dihapus, termasuk di infrastruktur internal penyedia. Ini menjawab 30 §21 no. 6: langkah 5 penggantian cadangan (30 §7.5) bisa dijalankan, dan buktinya disimpan `ketua` bersama berita acara. Dimasukkan ke 30 §7.5 dan §21–§23, 22 (*Penyimpanan dan enkripsi*, peran prosesor), dan 26 (aliran data no. 8, P6). Isinya ditulis di perjanjian prosesor.
+
+22 dan 26 berubah sesudah *commit* serah terima `f45d274`, jadi PDF siap cetak keduanya dibuat ulang dan dikirim kembali ke peneliti.
+
+Diubah: 22, 26, 27, 29, 30, 04, `docs/PROGRESS.md`, PDF siap cetak.
+
+**Gelombang A dan B digabung; pertanyaan terbuka yang bisa diputuskan sekarang dijawab** (sesi koordinator, cabang `sky/sweet-allen-0md2pw`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Kesebelas PR gelombang A (22, 23, 27–30) dan B (31–35) sudah digabung ke `main`. Sebelum digabung, `main` dimasukkan ke setiap cabang. Konflik di 04, 00, `docs/PROGRESS.md`, dan PDF siap cetak diselesaikan dengan menyimpan kedua sisi, lalu PDF dibuat ulang. Satu salah tempat dibetulkan saat itu: status 29 sempat tertulis di baris bagian 1 tabel *Tahap dokumen 3*.
+
+*Commit* serah terima ke peneliti tetap **`f45d274`**, seperti dicatat atas permintaan pengembang di entri *Commit serah terima ke peneliti* di bawah. PDF 22, 23, 24, dan 26 tidak berubah sesudahnya. Perubahan dari peneliti masuk lewat pengembang dengan label `asal: peneliti` (entri 1 November 2026).
+
+Pertanyaan terbuka di 27–35 diperiksa. Sebagian besar menunggu pihak lain (peneliti, ahli media, tim katalog, penyedia server) atau angka uji coba, jadi tetap terbuka. Tujuh bisa diputuskan sekarang; pengembang menjawabnya dalam dua putaran:
+
+1. **Jumlah kisi-kisi tetap di kode** (`DifficultyRules`; [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) §21 no. 1, §22 no. 5). Tidak dipilih: sheet `rules` di workbook.
+2. **Kartu jangkar bertumpuk dengan satu Cek** (31 §21 no. 2, §22 no. 6); ahli media memeriksanya di langkah 2. Tidak dipilih: kartu kedua muncul setelah pernyataan pertama dijawab.
+3. **Analisis memakai kode kesalahan dari bank terbaru** (31 §21 no. 3, §22 no. 7; [35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) §19 no. 5). Kode saat percobaan tetap di `item_tries.error_code` dan masuk lembar turunan sebagai `error_code_at_try`. Baris *Kode kesalahan mentah* dan kolom `error_code` di 35 disesuaikan. Tidak dipilih: kode saat percobaan.
+4. **Pengerjaan ulang tetap terbuka di P2–P4** setelah kelima tantangan wilayah pertemuan itu tuntas ([33](33_IMPLEMENTASI_MODE_PENELITIAN.md) §15 no. 4, §17 no. 5). Tidak dipilih: hanya di P5.
+5. **`kamus-1.1` ditulis ke 11 sekarang sebagai `draf pengembang`** (35 §18 no. 1, §19 no. 6), lalu direvisi setelah uji coba, dan dikunci di G4. Tidak dipilih: satu sesi setelah KG3b bersama peneliti (usulan AI).
+6. **"Pengambilan data selesai" = jam putaran hitung**, tanpa kolom tanggal akhir di studi (35 §18 no. 3, §19 no. 7). Tidak dipilih: tanggal akhir yang diisi `ketua`.
+7. **Terjemahan bahasa Inggris bank baru didraf AI sekarang** dan disetujui pengembang; butir yang direvisi dari validasi diterjemahkan ulang (31 §21 no. 4, §22 no. 8). Tidak dipilih: diterjemahkan sekali setelah matriks revisi, sebelum G3 (usulan AI), atau studi hanya berbahasa Indonesia.
+
+**Ditutup tanpa keputusan baru**, karena sudah dijawab dokumen lain:
+- 28 §21 no. 2–3 (batas 20 menit di P5 dan angket yang terlambat) dijawab di 34;
+- 33 §15 no. 1: 33 dan 35 sama-sama memakai `research_studies.idle_threshold_ms` dan `rapid_guess_ms`;
+- 32 §17 no. 4: blok migrasi bagian 5–9 tidak bertabrakan, jadi tidak ada penomoran ulang.
+
+**Pekerjaan berikutnya** (baris di `docs/PROGRESS.md`):
+- sesi koordinator membawa *Akibat ke dokumen lain* dari 22, 23, dan 27–35 ke dokumen lain;
+- `kamus-1.1` ditulis ke 11;
+- draf terjemahan bahasa Inggris bank baru;
+- gelombang kode C (bagian 1, 27).
+
+Diubah: 28, 31, 32, 33, 35, 00 (tabel gelombang), 04, `docs/PROGRESS.md`, dan PDF siap cetak.
+
 **32 diselaraskan dengan format data skenario bagian 5** (cabang `r10-dok-32-skenario-digital`, setelah PR #317) · `asal: pengembang` (penyelarasan berbantuan AI) · status 32 tetap `draf pengembang` · tidak merevisi produk
 
 PR #317 digabung sebelum penyelarasan ini masuk. [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) (PR #314) menetapkan bahwa data skenario milik bagian 5. 32 kini membacanya dari sana, tanpa keputusan baru:

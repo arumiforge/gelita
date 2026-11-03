@@ -281,7 +281,7 @@ Setiap cabang di bawah diganti dengan `can(...)` atau dengan cakupan [§5.5](#55
 
 Nomor sesudah migrasi terakhir (`003300_AddPackageCodeToResearchStudies`, masih yang terakhir per 2 November 2026).
 
-**Urutan migrasi bagian 1–4** (diselaraskan sesi koordinator, 30 Oktober 2026). Setiap bagian diimplementasikan berurutan dan menaikkan `SystemResetService::REQUIRED_MIGRATION` ke migrasi terakhirnya; setelah keempat bagian, nilainya `2026-01-01-003800`.
+**Urutan migrasi bagian 1–4** (diselaraskan sesi koordinator, 30 Oktober 2026; urutan gabung 2 November 2026). Bagian 1 dan 2 digabung berurutan; bagian 3 dan 4 dibangun paralel di gelombang kode E, dan bagian 4 digabung sesudah bagian 3 ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#0-cara-memakai-dokumen-ini) keputusan no. 7), sehingga nomor migrasi tetap urut. Setiap bagian menaikkan `SystemResetService::REQUIRED_MIGRATION` ke migrasi terakhirnya; setelah keempat bagian, nilainya `2026-01-01-003800`, lalu bagian 5–9 menaikkannya lagi.
 
 | Migrasi | Bagian |
 | --- | --- |

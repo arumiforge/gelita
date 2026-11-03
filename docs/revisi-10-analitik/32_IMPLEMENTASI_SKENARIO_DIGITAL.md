@@ -540,7 +540,7 @@ Teks yang menyebut jumlah serpihan ("12 serpihan", "dua belas") dicari di `app/L
 1. **Gambar situasi (24) dibuat atau tidak.** 08 mencatatnya opsional. Usulan AI: buat setelah validasi ahli media, karena isinya bisa berubah. Ditanyakan saat tim katalog siap.
 2. **Kalimat bingkai bertanda *draf*** di §13 menunggu tinjauan ahli media (instrumen media v1.1, mock-up `mk-sd-04` dan `mk-sd-05`).
 3. **Umpan balik skor 2.** Bank 08 menulis umpan balik untuk setiap tindakan, juga yang tepat; layar memakainya apa adanya. Bila ahli media meminta umpan balik tepat yang lebih pendek, cukup diubah di bank.
-4. **Nomor migrasi `004000`** dinomori ulang saat digabung, bila bagian 5 atau 7 memakai blok yang sama.
+4. ~~**Nomor migrasi `004000`** dinomori ulang saat digabung, bila bagian 5 atau 7 memakai blok yang sama.~~ **Selesai 2 November 2026** (sesi koordinator): blok tidak bertabrakan (bagian 5 `003900`/`003910`, bagian 6 `004000`, bagian 7 `0041xx`, bagian 8 `004200`, bagian 9 `004300`), jadi tidak ada penomoran ulang.
 5. **Keseimbangan posisi tindakan tepat.** Pengacakan per pengerjaan tidak memaksa posisi; bila uji coba menunjukkan tindakan tepat terlalu sering di satu posisi untuk sekelompok siswa, ditinjau ulang setelah KG3a.
 
 ---

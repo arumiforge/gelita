@@ -489,10 +489,10 @@ Teks siswa mengikuti `.claude/rules/ui-copy.md`; setiap kunci id punya pasangan 
 
 Tidak menahan draf ini.
 
-1. **Tempat T_idle dan T_teb.** Draf ini menaruhnya di `research_studies` (§6). Bagian 9 (`35`) ditulis paralel dan mungkin memilih tempat lain (misalnya tabel versi kamus). Dipilih satu saat sesi koordinator menyelaraskan 33 dan 35.
+1. ~~**Tempat T_idle dan T_teb.**~~ **Selesai 2 November 2026** (sesi koordinator): 33 dan [35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) (K2) sama-sama memakai kolom `research_studies.idle_threshold_ms` dan `rapid_guess_ms`; tidak ada yang perlu dipilih.
 2. **Layar dengan bacaan panjang** butuh ambang jeda lain? (11 → *Aturan jeda*). Data `input_idle` membawa `screen`, jadi bisa diputuskan setelah uji coba tanpa perubahan sistem.
 3. **Ambang 960 px** diperiksa di uji keterbacaan dan KG3a dengan perangkat sekolah yang sebenarnya; bila tablet 10 inci dengan bilah peramban lebar ternyata < 960, ambangnya diturunkan lewat pengaturan.
-4. **Pengerjaan ulang di P2–P4 setelah wilayah tuntas** memakai sisa waktu pertemuan dan bisa menambah waktu bermain. Bila peneliti ingin pengerjaan ulang hanya di P5, cukup ubah syarat "wilayah di rencana pertemuan" menjadi "pertemuan 5"; tidak ada perubahan data.
+4. ~~**Pengerjaan ulang di P2–P4 setelah wilayah tuntas**~~ memakai sisa waktu pertemuan dan bisa menambah waktu bermain. Bila peneliti ingin pengerjaan ulang hanya di P5, cukup ubah syarat "wilayah di rencana pertemuan" menjadi "pertemuan 5"; tidak ada perubahan data. **Diputuskan pengembang 2 November 2026** (sesi koordinator, [04](04_CATATAN_KEPUTUSAN.md)): tetap boleh di P2–P4 ([§17](#17-keputusan-pengembang) no. 5).
 
 ---
 
@@ -525,3 +525,4 @@ Satu putaran tanya, empat pertanyaan (1–2 November 2026). Pengembang memilih u
 2. **Pengerjaan ulang tetap memberi bintang seperti sekarang**; analisis mengabaikannya lewat `is_retake` (K5). Tidak dipilih: pengerjaan ulang tidak mengubah bintang dan serpihan selama studi.
 3. **Layar kecil: lebar panggung di bawah 960 px**, disimpan sebagai pengaturan studi (K7). Tidak dipilih: di bawah 1024 px; ponsel menurut jenis perangkat.
 4. **Keluar mengirim antrean dulu** (paling lama 5 detik), sisa antrean tetap berpenanda sesi dan dibuang setelah 14 hari (K11). Tidak dipilih: kirim lalu hapus semua sisa; tetap seperti sekarang dan hanya menambah L0.
+5. **Pengerjaan ulang tetap terbuka di P2–P4** setelah kelima tantangan wilayah pertemuan itu tuntas (2 November 2026, sesi koordinator, [04](04_CATATAN_KEPUTUSAN.md)). Tidak dipilih: pengerjaan ulang hanya di P5.
