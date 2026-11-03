@@ -14,6 +14,35 @@
  */
 $items    = $payload['items'] ?? [];
 $passages = $payload['passages'] ?? [];
+
+// The anchor card (`{node}-x`, 31 §12.2) is the second text, stacked under
+// the variant's text and checked with the same Cek
+$isAnchor = static fn (?array $passage): bool => $passage !== null && str_ends_with((string) ($passage['key'] ?? ''), '-x');
+$titleOf  = static fn (array $passage): string => $passage['title'] !== '' ? $passage['title'] : lang($isAnchor($passage) ? 'Game.anchorCardTitle' : 'Game.readingLabel');
+
+// Digital text as plain text (31 §6.2): blank line = block; line markers
+// `>> ` header, `~~ ` small meta line, `:: ` entry (comment, message, result)
+$digital = static function (string $body): string {
+    $html = '';
+
+    foreach (preg_split('/\R[ \t]*\R\s*/u', trim($body)) ?: [] as $block) {
+        $html .= '<div class="dt-block">';
+
+        foreach (preg_split('/\R/u', $block) ?: [] as $line) {
+            $class = match (substr($line, 0, 3)) {
+                '>> '   => 'dt-head',
+                '~~ '   => 'dt-meta',
+                ':: '   => 'dt-entry',
+                default => 'dt-line',
+            };
+            $html .= '<p class="' . $class . '">' . esc($class === 'dt-line' ? $line : substr($line, 3)) . '</p>';
+        }
+
+        $html .= '</div>';
+    }
+
+    return $html;
+};
 $verdicts = ['benar', 'salah'];
 $labels   = ['benar' => 'Game.verdictBenar', 'salah' => 'Game.verdictSalah'];
 ?>
@@ -29,12 +58,16 @@ $labels   = ['benar' => 'Game.verdictBenar', 'salah' => 'Game.verdictSalah'];
 <div class="boleh-passages stage-box stage-scroll" id="reading-panel">
 <?php foreach ($passages as $passage): ?>
   <details class="passage" data-passage="<?= esc($passage['id'], 'attr') ?>" id="passage-<?= esc($passage['id'], 'attr') ?>" open>
-    <summary class="passage-title"><?= icon('book') ?> <?= esc($passage['title'] !== '' ? $passage['title'] : lang('Game.readingLabel')) ?></summary>
+    <summary class="passage-title"><?= icon('book') ?> <?= esc($titleOf($passage)) ?></summary>
     <div class="passage-content">
       <?php if (! empty($passage['media'])): ?>
         <img class="passage-img" src="<?= esc($passage['media'], 'attr') ?>" alt="" loading="lazy">
       <?php endif ?>
-      <div class="passage-body"><?= nl2br(esc($passage['body'])) ?></div>
+      <?php if (($passage['layout'] ?? 'plain') === 'plain'): ?>
+        <div class="passage-body"><?= nl2br(esc($passage['body'])) ?></div>
+      <?php else: ?>
+        <div class="passage-body dt is-<?= esc($passage['layout'], 'attr') ?>"><?= $digital((string) $passage['body']) ?></div>
+      <?php endif ?>
     </div>
   </details>
 <?php endforeach ?>
@@ -43,14 +76,18 @@ $labels   = ['benar' => 'Game.verdictBenar', 'salah' => 'Game.verdictSalah'];
 <div class="boleh-cards stage-box stage-scroll">
 <h2 class="cards-heading"><?= icon('check') ?> <?= esc(lang('Game.statementsLabel')) ?></h2>
 <div class="card-grid<?= count($items) === 1 ? ' is-single' : '' ?>">
+  <?php $anchorShown = false; ?>
   <?php foreach ($items as $index => $item): ?>
     <?php $itemId = (string) $item['id']; ?>
+    <?php if (! $anchorShown && $isAnchor($passages[$item['passage_id'] ?? 0] ?? null)): $anchorShown = true; ?>
+      <h3 class="cards-subheading"><?= icon('book') ?> <?= esc(lang('Game.anchorCardTitle')) ?></h3>
+    <?php endif ?>
     <article class="verdict-card" data-item="<?= esc($itemId, 'attr') ?>" aria-labelledby="card-<?= esc($itemId, 'attr') ?>-text">
       <header class="card-head">
         <span class="card-no"><?= esc(lang('Game.cardN', [$index + 1])) ?></span>
         <?php if (! empty($item['passage_id']) && isset($passages[$item['passage_id']])): ?>
           <a class="chip card-passage" href="#passage-<?= esc($item['passage_id'], 'attr') ?>">
-            <?= icon('book') ?> <?= esc(lang('Game.basedOn', [$passages[$item['passage_id']]['title'] ?: lang('Game.passageLabel')])) ?>
+            <?= icon('book') ?> <?= esc(lang('Game.basedOn', [$isAnchor($passages[$item['passage_id']]) ? lang('Game.anchorCardTitle') : ($passages[$item['passage_id']]['title'] ?: lang('Game.passageLabel'))])) ?>
           </a>
         <?php endif ?>
       </header>

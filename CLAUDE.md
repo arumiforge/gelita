@@ -38,9 +38,9 @@ Overview in `README.md`, details in `docs/01`–`08`.
   - Closing an attempt is handled by `closeAttempt` and `closingReason`.
 
   The 3-tries rule and its errors live in `app/Exceptions/ChallengeRuleException.php`: `TRIES_EXHAUSTED`, `INCOMPLETE`, `CLUE_CLOSED`, `TRIES_REMAINING`, `ATTEMPT_CHANGED`. Stars come from `ScoringService` (rule `bintang-1`).
-- **Concurrency.** Writes that can race use conditional UPDATEs (`ChallengeService::updateIf()`/`updateOrStale()`), not `SELECT … FOR UPDATE`. The loser is rolled back via `rollback()` and answered from the latest state. Keep this pattern for new writes to `challenge_attempts`/`item_responses`.
+- **Concurrency.** Writes that can race use conditional UPDATEs (`updateIf()`/`updateOrStale()` from the trait `App\Models\Concerns\ConditionalUpdate`, used by `ChallengeService` and the field-session code), not `SELECT … FOR UPDATE`. The loser is rolled back via `rollback()` and answered from the latest state. Keep this pattern for new writes to `challenge_attempts`/`item_responses`/`participant_progress`.
 - **Game content comes from the database:**
-  - Question bank from the workbook `docs/bank-soal/gelita-bank-soal-kelas5.xlsx` (rebuilt with `build-workbook.php`, imported by `gelita:bank:import` or `gelita:reset`).
+  - Question bank from the workbook `docs/bank-soal/gelita-bank-soal-kelas5.xlsx` (rebuilt with `build-workbook.php`, imported by `gelita:bank:import` or `gelita:reset`). Since revision 10 (part 5, `31`) it is the research bank of `08`: variants `a`/`b` plus shared `x` items (anchor cards, Cari Objek round 1), error codes per wrong choice (`item_error_codes`, copied into `item_tries.error_code` by `ErrorCodeResolver`), labels with their source, and the first attempt from the student's booklet B1–B4 in research mode (`VariantPicker`, seam `BookletSource` to part 2). Counts live in `DifficultyRules`, checks in `BankRules`.
   - Library from `docs/pustaka/`.
   - Story via `ContentSeeder`.
   - Narration via `gelita:narration:import`.

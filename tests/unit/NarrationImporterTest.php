@@ -132,7 +132,7 @@ final class NarrationImporterTest extends CIUnitTestCase
         $this->assertCount(95, $lines);
         $clues = array_filter($lines, static fn (array $line): bool => $line['context_code'] === NarrationImporter::CLUE_CONTEXT);
         $this->assertSame(array_map(static fn (int $n): string => sprintf('petunjuk-tmg-4-%02d', $n), range(1, 4)), array_keys($clues));
-        $this->assertSame(array_map(static fn (int $n): string => sprintf('tmg-4-a%02d', $n), range(1, 4)), array_column($clues, 'item_key'));
+        $this->assertSame(array_map(static fn (int $n): string => sprintf('tmg-4-x%02d', $n), range(1, 4)), array_column($clues, 'item_key'));
         $this->assertSame('petunjuk-tmg-4-04', array_key_last($lines), 'petunjuk di akhir, sesudah naskah');
 
         $first = $lines['petunjuk-tmg-4-01'];
@@ -148,9 +148,9 @@ final class NarrationImporterTest extends CIUnitTestCase
         }
 
         // NN = urutan petunjuk target, bukan kode butir: butir nonaktif menggeser nomornya
-        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a02')->update(['is_active' => 0]);
+        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-x02')->update(['is_active' => 0]);
         $shifted = $this->importer()->lines();
-        $this->assertSame('tmg-4-a03', $shifted['petunjuk-tmg-4-02']['item_key']);
+        $this->assertSame('tmg-4-x03', $shifted['petunjuk-tmg-4-02']['item_key']);
         $this->assertArrayNotHasKey('petunjuk-tmg-4-04', $shifted);
     }
 
@@ -195,7 +195,7 @@ final class NarrationImporterTest extends CIUnitTestCase
         $this->assertCount(93, $id['missing']);
         $this->assertContains('petunjuk-tmg-4-02', $id['missing']);
 
-        $item    = $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a01')->get()->getRowArray();
+        $item    = $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-x01')->get()->getRowArray();
         $audioId = $this->audioByKey('audio.narasi.id.petunjuk-tmg-4-01');
         $audioEn = $this->audioByKey('audio.narasi.en.petunjuk-tmg-4-01');
 
@@ -237,8 +237,8 @@ final class NarrationImporterTest extends CIUnitTestCase
         $this->assertSame(3, $this->importer()->relinkClues());
         $this->assertSame(0, $this->importer()->relinkClues(), 'sudah tertaut');
 
-        $first  = $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a01')->get()->getRowArray();
-        $second = $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a02')->get()->getRowArray();
+        $first  = $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-x01')->get()->getRowArray();
+        $second = $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-x02')->get()->getRowArray();
 
         $this->assertSame((int) $this->audioByKey('audio.narasi.id.petunjuk-tmg-4-01')['id'], (int) $first['audio_prompt_id']);
         $this->assertSame((int) $this->audioByKey('audio.narasi.en.petunjuk-tmg-4-01')['id'], (int) $first['audio_prompt_en_id']);
@@ -254,7 +254,7 @@ final class NarrationImporterTest extends CIUnitTestCase
 
         // Audio yang dipilih manual di form butir juga ikut persetujuan massal
         $manual = $this->audioRow('audio.petunjuk-manual.id', 'hunt_clue', 'id');
-        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a03')->update(['audio_prompt_id' => $manual]);
+        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-x03')->update(['audio_prompt_id' => $manual]);
 
         $catalog  = new NarrationCatalog($this->sqlite, $this->importer());
         $rows     = $catalog->rows();

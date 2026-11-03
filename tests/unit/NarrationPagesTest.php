@@ -84,8 +84,8 @@ final class NarrationPagesTest extends CIUnitTestCase
     {
         $nodeId = $this->seedHuntNode($this->sqlite);
         $draft  = $this->audio('audio.narasi.id.petunjuk-tmg-4-01', 'id', 'draft', 'hunt_clue');
-        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a01')->update(['audio_prompt_id' => $draft]);
-        $itemId = (int) $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a01')->get()->getRow('id');
+        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-x01')->update(['audio_prompt_id' => $draft]);
+        $itemId = (int) $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-x01')->get()->getRow('id');
 
         $html = html_entity_decode((string) $this->asAdmin()->call(Method::GET, 'admin/konten/narasi')->getBody(), ENT_QUOTES | ENT_HTML5);
 
@@ -186,7 +186,7 @@ final class NarrationPagesTest extends CIUnitTestCase
         // Mission audio picked by hand for another line: unlinked only, it stays approved for its mission card
         $this->sqlite->table('dialogues')->where(['level_id' => null, 'context_code' => 'intro', 'sequence' => 2])
             ->update(['audio_id_asset_id' => $mission]);
-        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a01')->update(['audio_prompt_id' => $clue]);
+        $this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-x01')->update(['audio_prompt_id' => $clue]);
 
         // Real files (in the test upload folder): only the imported narration files of this language may go
         $file = FCPATH . MediaStore::uploadDir() . 'audio.narasi.id.intro-01.mp3';
@@ -215,7 +215,7 @@ final class NarrationPagesTest extends CIUnitTestCase
         $this->assertNull($line['audio_id_asset_id']);
         $this->assertNull($this->sqlite->table('dialogues')->where(['level_id' => null, 'context_code' => 'intro', 'sequence' => 2])->get()->getRow('audio_id_asset_id'));
         $this->assertSame($english, (int) $line['audio_en_asset_id']);
-        $this->assertNull($this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-a01')->get()->getRow('audio_prompt_id'));
+        $this->assertNull($this->sqlite->table('challenge_items')->where('item_key', 'tmg-4-x01')->get()->getRow('audio_prompt_id'));
 
         foreach ([$intro, $clue, $loose] as $id) {
             $this->assertSame('rejected', $this->approvalOf($id), 'bulk approval skips cancelled recordings');

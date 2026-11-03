@@ -69,7 +69,7 @@ final class MockupGeneratorTest extends CIUnitTestCase
 
         $this->assertCount(66, $slots);
         $this->assertSame(
-            ['object' => 30, 'puzzle' => 30, 'scene' => 3, 'statement' => 3],
+            ['object' => 30, 'puzzle' => 31, 'scene' => 3, 'statement' => 2],
             $this->tally(array_column($slots, 'kind')),
         );
         $this->assertSame(['empty'], array_values(array_unique(array_column($slots, 'status'))), 'slot impor belum berisi berkas');
@@ -164,8 +164,8 @@ final class MockupGeneratorTest extends CIUnitTestCase
         $this->assertStringContainsString('butir padi hangus kehitaman', $statement->textContent);
 
         // Catatan admin dalam kurung tidak ikut tertulis (membocorkan kunci pernyataan)
-        $this->assertStringContainsString('sengaja tidak sesuai bacaan', (string) $this->row('challenge.item.tmg-3-b03')['description']);
-        $this->assertStringNotContainsString('sengaja', $this->svgRoot(FCPATH . $this->path('challenge.item.tmg-3-b03'))->textContent);
+        $this->assertStringContainsString('(temuan arkeologi)', (string) $this->row('challenge.item.tmg-3-a03')['description']);
+        $this->assertStringNotContainsString('temuan arkeologi', $statement->textContent);
     }
 
     public function testRealImagesAreNeverOverwrittenEvenWithForce(): void

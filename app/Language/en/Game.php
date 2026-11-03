@@ -461,4 +461,14 @@ return [
     'researchCodeLabel'  => 'Research code',
     'researchCodeHelp'   => 'Show this code to the research team.',
     'codeFull'           => 'Your class has no codes left. Please call the research team.',
+
+    // Research revision part 5: new question bank (31)
+    'bookletMissing'    => 'Please wait a moment. The researcher is still setting up your seat. Try again when they tell you.',
+    'huntRoundTwoTitle' => 'Round 2: Check the Post',
+    'huntRoundTwoIntro' => 'Now check this post. Read the clue, then tap the right part of the post.',
+    'huntPartWrong'     => "Not this part. That part isn't what the clue means. Read the clue again.",
+    'anchorCardTitle'   => 'Second text',
+    'huntRoundTwoStart' => 'Start round 2',
+    'huntPartN'         => 'Part {0}',
+    'postSceneAlt'      => 'Photo in the post',
 ];

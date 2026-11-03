@@ -247,13 +247,14 @@ final class TryLimitTest extends CIUnitTestCase
         $second           = $this->service->submitCheck($this->reload($attempt), $answers);
 
         $this->assertTrue($second['results'][$ids[0]], 'soal terkunci tetap benar');
-        $this->assertSame([5, 5, true, 'solved', 2], [$second['correct_count'], $second['total'], $second['completed'], $second['completion_reason'], $second['stars']]);
+        // 6 statements + 2 anchor statements (31 §12.2): one Cek checks both cards
+        $this->assertSame([8, 8, true, 'solved', 2], [$second['correct_count'], $second['total'], $second['completed'], $second['completion_reason'], $second['stars']]);
 
         $responses = $this->responses($attempt->id);
         $this->assertSame([1, 1, 1], [(int) $responses[$ids[0]]['try_count'], (int) $responses[$ids[0]]['solved_on_try'], (int) $responses[$ids[0]]['first_pass_correct']]);
         $this->assertSame($right[$ids[0]], json_decode((string) $responses[$ids[0]]['final_answer_json'], true), 'jawaban benar tidak tertimpa');
         $this->assertSame([2, 2, 0], [(int) $responses[$ids[4]]['try_count'], (int) $responses[$ids[4]]['solved_on_try'], (int) $responses[$ids[4]]['first_pass_correct']]);
-        $this->assertCount(5 + 3, $this->tries($attempt->id), 'soal terkunci tidak menulis percobaan');
+        $this->assertCount(8 + 6, $this->tries($attempt->id), 'soal terkunci tidak menulis percobaan');
     }
 
     /** Soal yang belum benar wajib diisi: cek ditolak INCOMPLETE tanpa memakai kesempatan. */
@@ -290,7 +291,7 @@ final class TryLimitTest extends CIUnitTestCase
     public function testHuntClosesCluesAfterThreeWrongTaps(): void
     {
         $attempt = $this->open('wnb-4');
-        $targets = array_keys($this->expected($attempt));
+        $targets = array_keys($this->roundOne($attempt));
         $decoys  = $this->decoys($attempt);
 
         $this->assertCount(4, $targets);
@@ -336,17 +337,21 @@ final class TryLimitTest extends CIUnitTestCase
 
         $this->tap($attempt, $t4, $decoys[4]);
         $this->tap($attempt, $t4, $decoys[5]);
-        $last = $this->tap($attempt, $t4, $decoys[6]);
+        $closing = $this->tap($attempt, $t4, $decoys[6]);
+        $this->assertSame([true, false], [$closing['clue_closed'], $closing['completed']], 'round 2 is still open');
+
+        // Round 2 (31 §12.1): every clue found on the first tap closes the attempt
+        $last = $this->finishRoundTwo($attempt);
 
         $this->assertSame([true, true, 'tries_exhausted', 1], [$last['clue_closed'], $last['completed'], $last['completion_reason'], $last['stars']]);
         $this->assertSame(site_url('selesai/' . $attempt->id), $last['redirect']);
-        $this->assertSame(['completed', 'tries_exhausted', 1, 2], [
+        $this->assertSame(['completed', 'tries_exhausted', 1 + 4, 2 + 4], [
             $this->reload($attempt)->status, $this->reload($attempt)->completion_reason, (int) $this->reload($attempt)->first_pass_correct, (int) $this->reload($attempt)->final_correct,
         ]);
         $this->assertCount(2, $this->events('clue_failed'));
 
-        // item_tries: 3 + 1 + 3 + 3 ketukan, tanpa check_no
-        $tries = $this->tries($attempt->id);
+        // item_tries: 3 + 1 + 3 + 3 taps in round 1, then 4 in round 2, no check_no
+        $tries = array_slice($this->tries($attempt->id), 0, 10);
         $this->assertSame(
             [[$t1, 1], [$t1, 2], [$t1, 3], [$t2, 1], [$t3, 1], [$t3, 2], [$t3, 3], [$t4, 1], [$t4, 2], [$t4, 3]],
             array_map(static fn (array $t): array => [(int) $t['challenge_item_id'], (int) $t['try_no']], $tries),
@@ -363,13 +368,16 @@ final class TryLimitTest extends CIUnitTestCase
     public function testHuntSolvedOnFirstTaps(): void
     {
         $attempt = $this->open('tmg-4');
-        $targets = array_keys($this->expected($attempt));
+        $targets = array_keys($this->roundOne($attempt));
 
-        foreach ($targets as $n => $target) {
+        foreach ($targets as $target) {
             $result = $this->tap($attempt, $target, $target);
 
-            $this->assertSame([true, 1, $n === 3], [$result['correct'], $result['try_no'], $result['completed']]);
+            $this->assertSame([true, 1, false], [$result['correct'], $result['try_no'], $result['completed']]);
         }
+
+        $result = $this->finishRoundTwo($attempt);
+        $this->assertTrue($result['completed']);
 
         $this->assertSame(['solved', 3], [$result['completion_reason'], $result['stars']]);
         $this->assertSame([], $this->events('clue_failed'));
@@ -379,7 +387,7 @@ final class TryLimitTest extends CIUnitTestCase
     public function testHuntTapsOverHttp(): void
     {
         $attempt = $this->open('mgl-4');
-        $targets = array_keys($this->expected($attempt));
+        $targets = array_keys($this->roundOne($attempt));
         $decoy   = $this->decoys($attempt)[0];
 
         foreach ([1, 2, 3] as $n) {
@@ -394,6 +402,15 @@ final class TryLimitTest extends CIUnitTestCase
 
         foreach (array_slice($targets, 1) as $n => $target) {
             $data = $this->json($this->respond($attempt, $target, $target, 'hit-' . $n))['data'];
+        }
+
+        $this->assertFalse($data['completed'], 'round 2 is still open');
+
+        // Round 2 over HTTP: the same answer shape, a part ref instead of an object ref
+        foreach ($this->roundTwo($attempt) as $n => $clue) {
+            $data = $this->json($this->post('api/attempts/' . $attempt->id . '/responses', [
+                'item_id' => $clue->id, 'answer' => ['object' => $this->keyPartRef($attempt, $clue)], 'client_event_id' => 'part-' . $n, 'duration_ms' => 700,
+            ]))['data'];
         }
 
         $this->assertSame([true, 'tries_exhausted', site_url('selesai/' . $attempt->id)], [$data['completed'], $data['completion_reason'], $data['redirect']]);
@@ -532,7 +549,7 @@ final class TryLimitTest extends CIUnitTestCase
 
         $this->assertSame([null, site_url('selesai/' . $attempt->id)], [$opened['payload'], $opened['redirect'] ?? null]);
         $row = $this->reload($attempt);
-        $this->assertSame(['completed', 'solved', 3, 4, 4, 4], [
+        $this->assertSame(['completed', 'solved', 3, 7, 7, 7], [
             $row->status, $row->completion_reason, (int) $row->stars, (int) $row->first_pass_correct, (int) $row->final_correct, (int) $row->scorable_items,
         ]);
         $this->assertCount(1, $this->events('challenge_completed'));
@@ -546,13 +563,18 @@ final class TryLimitTest extends CIUnitTestCase
     public function testHuntWithDeactivatedLastClueIsClosedOnOpen(): void
     {
         $attempt = $this->open('wnb-4');
-        $targets = array_keys($this->expected($attempt));
 
-        foreach (array_slice($targets, 0, 3) as $target) {
+        foreach (array_keys($this->roundOne($attempt)) as $target) {
             $this->assertFalse($this->tap($attempt, $target, $target)['completed']);
         }
 
-        $this->deactivate($targets[3]);
+        $clues = $this->roundTwo($attempt);
+
+        foreach (array_slice($clues, 0, 3) as $clue) {
+            $this->assertFalse($this->service->submitAnswer($this->reload($attempt), $clue->id, ['object' => $this->keyPartRef($attempt, $clue)])['completed']);
+        }
+
+        $this->deactivate($clues[3]->id);
 
         $opened = $this->service->openNode($this->session(), $this->nodeId($this->conn, 'wnb-4'));
 
@@ -721,6 +743,42 @@ final class TryLimitTest extends CIUnitTestCase
      *
      * @return array<string, mixed>
      */
+    /** @return array<int, ChallengeItem> round-1 clues of the attempt */
+    private function roundOne(ChallengeAttempt $attempt): array
+    {
+        return array_filter($this->expected($attempt), static fn (ChallengeItem $i): bool => $i->interaction_type === 'find_object');
+    }
+
+    /** @return list<ChallengeItem> round-2 clues of the attempt */
+    private function roundTwo(ChallengeAttempt $attempt): array
+    {
+        return array_values(array_filter($this->expected($attempt), static fn (ChallengeItem $i): bool => $i->interaction_type === 'find_part'));
+    }
+
+    /** Opaque ref of the key part of one round-2 clue, as the server derives it. */
+    private function keyPartRef(ChallengeAttempt $attempt, ChallengeItem $clue): string
+    {
+        $post = service('contentRepository')->postScene($attempt->challenge_node_id, (string) $attempt->variant_group);
+
+        foreach ($post['parts'] as $part) {
+            if ($part['part_key'] === $clue->answerKey('part')) {
+                return (string) (new \ReflectionMethod(ChallengeService::class, 'partRef'))->invoke($this->service, $attempt->id, (int) $part['id']);
+            }
+        }
+
+        $this->fail('Key part not found.');
+    }
+
+    /** Every round-2 clue found on the first tap; returns the last result. */
+    private function finishRoundTwo(ChallengeAttempt $attempt): array
+    {
+        foreach ($this->roundTwo($attempt) as $clue) {
+            $result = $this->service->submitAnswer($this->reload($attempt), $clue->id, ['object' => $this->keyPartRef($attempt, $clue)], ['duration_ms' => 900]);
+        }
+
+        return $result;
+    }
+
     private function tap(ChallengeAttempt $attempt, int $clue, int $tapped): array
     {
         return $this->service->submitAnswer($this->reload($attempt), $clue, ['object' => $this->ref($attempt, $tapped)], ['duration_ms' => 900]);

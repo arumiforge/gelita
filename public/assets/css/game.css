@@ -2359,6 +2359,18 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .boleh-cards { display: grid; align-content: start; gap: var(--gap-3); padding-right: var(--gap-1); }
 .passage-img { max-height: 11.25rem; width: auto; border-radius: var(--radius); }
 .passage-body { font-size: var(--fs-reading); line-height: 1.6; }
+/* Digital texts of Benar atau Salah as plain text (31 §6.2): `>>` header, `~~` small meta line,
+   `::` entry (comment, message, search result); one block per blank line */
+.passage-body.dt { display: grid; gap: var(--gap-2); }
+.dt-block { display: grid; gap: .125rem; padding: var(--gap-2); border-radius: .5rem; background: rgba(11, 19, 32, .06); }
+.dt-block p { margin: 0; }
+.dt-head { font-weight: 700; }
+.dt-meta { font-size: var(--fs-caption); opacity: .8; }
+.dt-entry { padding-left: var(--gap-2); border-left: .1875rem solid var(--gold-500); }
+.passage-body.dt.is-info_screen .dt-block:first-child { background: rgba(27, 39, 64, .12); }
+.passage-body.dt.is-search .dt-head { color: var(--navy-600); text-decoration: underline; }
+.cards-subheading { display: flex; align-items: center; gap: var(--gap-2); margin: var(--gap-3) 0 0; color: var(--gold-300); font-size: var(--fs-body); }
+.mission-wait { margin: 0; max-width: 32rem; text-align: center; }
 
 .card-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap-3); }
 .verdict-card {
@@ -2537,6 +2549,38 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
   20%, 60% { transform: translateX(-.375rem); }
   40%, 80% { transform: translateX(.375rem); }
 }
+
+/* Cari Objek round 2, Periksa Unggahan (31 §12.1): the post is drawn from the bank's boxes in
+   percent of the 16:9 scene, each tap part a plain-text button that zooms with the scene. Boxes
+   keep 24 dp apart (BankRules), so the outlines never touch. */
+.hunt-scene.is-post { background: linear-gradient(160deg, #f6efe0, #eadfc8); }
+.hunt-scene.is-post .post-photo {
+  position: absolute; left: 3%; top: 13.5%; width: 38%; height: 38%;
+  object-fit: cover; border-radius: .375rem; pointer-events: none;
+}
+.post-part {
+  position: absolute;
+  display: flex; align-items: center;
+  overflow: hidden;
+  padding: .25rem .5rem;
+  border: .125rem solid rgba(27, 39, 64, .35);
+  border-radius: .5rem;
+  background: rgba(255, 255, 255, .92);
+  color: var(--navy-900);
+  font-size: .8125rem; line-height: 1.25; text-align: left;
+  transition: border-color .15s, transform .15s;
+}
+.post-part-text { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 4; }
+.post-part.is-account { font-weight: 700; }
+.post-part.is-credit { background: rgba(11, 19, 32, .72); color: #fff; font-size: .75rem; }
+.post-part.is-board { background: #fff7df; border-color: var(--gold-600); }
+.post-part.is-button { justify-content: center; background: var(--navy-700); color: var(--parchment); font-weight: 700; text-align: center; }
+.post-part.is-meta { font-size: .75rem; }
+@media (hover: hover) { .post-part:hover { border-color: var(--gold-500); } }
+.post-part:not(:disabled):active { transform: scale(.97); }
+.post-part.is-found { border: .1875rem solid var(--ok); }
+.post-part.is-shaking { animation: shake .7s; }
+.post-part:focus-visible { outline: .1875rem solid var(--gold-500); outline-offset: .125rem; }
 
 /* Clue list (owner, 21 October 2026): no border on the panel; each clue a row on the
    status medals of the region map (--medal-*, set by the view): navy with its number while

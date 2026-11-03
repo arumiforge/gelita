@@ -85,6 +85,15 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | koin kesempatan, koin serpihan | `try coin`, `shard coin` | `.tries-dot`, `.result-shards-bar i`: the round `blank` face (`--round-blank`) left/earned, the `neutral` face used/missing (since 22 Oct 2026) |
 | daftar pilihan (dropdown) | `dropdown`, `fancy select` | `core/select.js`, `select[data-fancy-select]`, `.fancy-select-*`; gold triangle `public/assets/ui/select-arrow.webp` (`--select-arrow`) |
 | salinan ringkas (JS/CSS) | `minified mirror`, `minified assets` | `public/assets/min/{version}/`; command `gelita:aset:minify`; `AssetMinifier`; switch `Config\Gelita::$minifyAssets` |
+| babak (Cari Objek) | `round` | `challenge_items.round` 1 = Temukan Benda (variant `x`), 2 = Periksa Unggahan (`a`, `b`); since 3 Nov 2026 (31) |
+| Periksa Unggahan | `post check`, `find_part` | item type `find_part`; tables `post_scenes`, `post_parts`; payload `round2`; UI "Babak 2: Periksa Unggahan" (`Game.huntRoundTwoTitle`) |
+| bagian ketuk (unggahan) | `tap part`, `part_key` | `post_parts.part_key` (A1, C10, …), box x/y/w/h in percent of the 16:9 scene; `button.post-part` in `engines/cari.js` |
+| kartu jangkar | `anchor card` | shared group `x` of Benar atau Salah (`BankRules::SHARED_GROUP`), passage `{node}-x`; UI "Bacaan kedua" (`Game.anchorCardTitle`) |
+| buklet | `booklet` | B1–B4, `participant_seats.booklet` (part 2); `BookletRules`, `VariantPicker`, seam `BookletSource`; `challenge_attempts.variant_source` (`booklet`, `random`, `retake`), `booklet_at_open`; `BOOKLET_MISSING` |
+| kode kesalahan | `error code` | `item_error_codes`, `challenge_items.error_code`, `item_tries.error_code` (server-derived, `ErrorCodeResolver`), `item_tries.manual_code` (L5); list in `ErrorCodes` (03) |
+| beban permukaan | `surface load` | `challenge_items.surface_json` (`SurfaceLoad`: `gap_count`, `passage_words`, `tap_min_dp`, …), frozen at import |
+| label pengembang / label ahli | `label source` | `akm_level_source`, `bloom_level_source` = `developer` or `expert`; workbook column `label_source` |
+| Skenario Digital (data) | `scenario`, `scenario_choice` | item type `scenario_choice`, table `scenario_options` (actions with score, reasons); engine `skenario` is part 6's |
 
 ## People, data, and the panel
 

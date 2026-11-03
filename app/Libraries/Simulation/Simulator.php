@@ -94,6 +94,7 @@ final class Simulator
     private readonly SimClock $clock;
     private readonly ChallengeService $challenges;
     private readonly \ReflectionMethod $objectRef;
+    private readonly \ReflectionMethod $partRef;
 
     /** Kode layar terakhir per sesi (session PHP `last_screen` di ScreenViewFilter). */
     private ?string $lastScreen = null;
@@ -125,6 +126,7 @@ final class Simulator
         $this->clock      = new SimClock($db, $start);
         $this->challenges = service('challengeService');
         $this->objectRef  = new \ReflectionMethod(ChallengeService::class, 'objectRef');
+        $this->partRef    = new \ReflectionMethod(ChallengeService::class, 'partRef');
 
         // Variasi soal berbenih (lihat SeededItemModel); dipulihkan di run()
         $items = new SeededItemModel();
@@ -522,17 +524,47 @@ final class Simulator
      */
     private function playHunt(Level $level, ChallengeAttempt $attempt, array $payload, float $skill, ?string $mode, bool $leaveOpen): void
     {
-        $clues   = (array) ($payload['clues'] ?? []);
-        $refs    = array_map(static fn (array $o): string => (string) $o['ref'], (array) ($payload['objects'] ?? []));
-        $ease    = ['temanggung' => 0.1, 'magelang' => 0.0, 'wonosobo' => -0.1][$level->code] ?? 0.0;
-        $total   = count($clues);
+        $ease  = ['temanggung' => 0.1, 'magelang' => 0.0, 'wonosobo' => -0.1][$level->code] ?? 0.0;
+        $clues = array_values((array) ($payload['clues'] ?? []));
+        $refs  = array_map(static fn (array $o): string => (string) $o['ref'], (array) ($payload['objects'] ?? []));
+        $total = count($clues) + count((array) ($payload['round2']['clues'] ?? []));
+
+        // Round 2 (Periksa Unggahan): the key part's ref, from the bank, as the server derives it
+        $round2 = (array) ($payload['round2'] ?? []);
+        $parts  = array_map(static fn (array $p): string => (string) $p['ref'], (array) ($round2['parts'] ?? []));
+        $post   = service('contentRepository')->postScene((int) $attempt->challenge_node_id, (string) $attempt->variant_group);
+        $keyRef = function (int $itemId) use ($attempt, $post): string {
+            $item = null;
+
+            foreach (service('contentRepository')->itemBank((int) $attempt->challenge_node_id) as $candidate) {
+                $item = $candidate->id === $itemId ? $candidate : $item;
+            }
+
+            foreach ((array) ($post['parts'] ?? []) as $part) {
+                if ($item !== null && strtoupper((string) $part['part_key']) === strtoupper((string) $item->answerKey('part'))) {
+                    return (string) $this->partRef->invoke($this->challenges, $attempt->id, (int) $part['id']);
+                }
+            }
+
+            return '';
+        };
 
         $this->maybeHint($level, $attempt, $payload, $skill);
 
-        foreach (array_values($clues) as $index => $clue) {
+        $rounds = [];
+
+        foreach ($clues as $clue) {
+            $rounds[] = [$clue, $refs, null];
+        }
+
+        foreach ((array) ($round2['clues'] ?? []) as $clue) {
+            $rounds[] = [$clue, $parts, $keyRef];
+        }
+
+        foreach ($rounds as $index => [$clue, $pool, $keyOf]) {
             $itemId  = (int) $clue['item_id'];
-            $correct = (string) $this->objectRef->invoke($this->challenges, $attempt->id, $itemId);
-            $others  = array_values(array_filter($refs, static fn (string $ref): bool => $ref !== $correct));
+            $correct = $keyOf === null ? (string) $this->objectRef->invoke($this->challenges, $attempt->id, $itemId) : $keyOf($itemId);
+            $others  = array_values(array_filter($pool, static fn (string $ref): bool => $ref !== $correct));
 
             // Clue narration plays only when the ▶ button is tapped (no autoplay since 12 October 2026)
             $this->clueAudio($attempt, $clue, 'play');

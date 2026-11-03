@@ -110,9 +110,15 @@ $engineName  = engine_label($engine, $node->variant_code);
 
     <div class="mission-actions">
       <svg class="mission-wing is-left" aria-hidden="true" focusable="false"><use href="#mission-flourish"/></svg>
+      <?php if (! empty($bookletMissing)): ?>
+        <?php // Research mode without a booklet (31 K10): no start button, a way back to the region map ?>
+        <p class="mission-wait" role="status"><?= esc(lang('Game.bookletMissing')) ?></p>
+        <a class="btn btn-primary btn-xl" href="<?= base_url('wilayah/' . $level->code) ?>"><?= icon('arrow-left') ?> <span><?= esc(lang('Game.backToRegion')) ?></span></a>
+      <?php else: ?>
       <a class="btn btn-primary btn-xl" href="<?= base_url('tantangan/' . $level->code . '/' . $sequence) ?>"<?= curtain_attrs('challenge', [], [$curtainBg, $bg, character_frame_src('jaka')], $curtainBg) ?>>
         <span><?= esc(lang('Game.startChallenge')) ?></span> <?= icon('arrow-right') ?>
       </a>
+      <?php endif ?>
       <svg class="mission-wing is-right" aria-hidden="true" focusable="false"><use href="#mission-flourish"/></svg>
     </div>
   </article>

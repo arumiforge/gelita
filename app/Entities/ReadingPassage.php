@@ -27,6 +27,9 @@ class ReadingPassage extends Entity
             'title' => $this->text('title', $locale),
             'body'  => $this->text('body', $locale),
             'media' => $this->media_asset_id ? media_src($this->media_asset_id) : null,
+            // Display template of a digital text and its genre (31 §6.2, §12.2)
+            'layout' => (string) ($this->layout ?? '') ?: 'plain',
+            'genre'  => (string) ($this->text_genre ?? ''),
         ];
     }
 }

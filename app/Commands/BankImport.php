@@ -90,6 +90,16 @@ class BankImport extends BaseCommand
                 $summary['library'],
                 $summary['library_media'],
             ));
+            // Research revision 10, part 5 (31 §6.3)
+            CLI::write(sprintf(
+                'Bank baru: %d kode kesalahan pilihan, %d unggahan babak 2 dengan %d bagian ketuk, %d skenario dengan %d pilihan, %d indikator.',
+                $summary['error_codes'],
+                $summary['post_scenes'],
+                $summary['post_parts'],
+                $summary['scenarios'],
+                $summary['scenario_options'],
+                $summary['indicators'],
+            ));
 
             $rows = [];
 

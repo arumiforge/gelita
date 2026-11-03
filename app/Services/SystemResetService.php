@@ -33,7 +33,7 @@ use Config\Database;
 class SystemResetService
 {
     /** Migration terakhir yang wajib sudah dijalankan. */
-    public const REQUIRED_MIGRATION = '2026-01-01-003500';
+    public const REQUIRED_MIGRATION = '2026-01-01-003910';
 
     /** Kata yang wajib diketik bila tanpa --ya. */
     public const CONFIRM_WORD = 'RESET-KELAS5';
@@ -49,7 +49,7 @@ class SystemResetService
         'field_sessions', 'field_session_tokens', 'field_session_members', 'participant_seats', 'participant_code_counters',
     ];
 
-    public const GROUP_B = ['hints', 'challenge_items', 'reading_passages', 'challenge_nodes'];
+    public const GROUP_B = ['hints', 'item_error_codes', 'scenario_options', 'post_parts', 'post_scenes', 'challenge_items', 'reading_passages', 'challenge_nodes'];
 
     public const GROUP_C = ['research_studies', 'game_releases', 'learning_indicators'];
 
@@ -61,7 +61,8 @@ class SystemResetService
         'item_tries', 'item_responses', 'challenge_attempts', 'audio_usage_events', 'game_event_logs',
         'device_logs', 'participant_progress', 'participant_seats', 'field_session_members', 'field_session_tokens',
         'participant_feedback', 'game_sessions', 'field_sessions', 'participant_code_counters', 'participants',
-        'data_exports', 'data_deletion_requests', 'audit_logs', 'hints', 'challenge_items',
+        'data_exports', 'data_deletion_requests', 'audit_logs', 'hints', 'item_error_codes', 'scenario_options',
+        'post_parts', 'post_scenes', 'challenge_items',
         'reading_passages', 'challenge_nodes', 'research_studies', 'game_releases', 'learning_indicators',
         'ci_sessions',
     ];

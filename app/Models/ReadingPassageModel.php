@@ -14,7 +14,7 @@ class ReadingPassageModel extends Model
     protected $dateFormat    = 'datetime';
     protected $allowedFields = [
         'level_id', 'passage_key', 'title_id', 'title_en', 'body_id', 'body_en',
-        'media_asset_id', 'reference_source', 'is_active',
+        'media_asset_id', 'reference_source', 'is_active', 'text_genre', 'layout',
     ];
     protected $validationRules = [
         'level_id'    => 'required|is_natural_no_zero',

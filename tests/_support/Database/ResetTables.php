@@ -8,7 +8,7 @@ use Config\Database;
 
 /**
  * Skema lengkap GELITA (app/Database/Migrations) untuk SQLite
- * (grup `tests`): 36 tabel dengan kolom, nilai bawaan, kunci utama, dan kunci
+ * (grup `tests`): 40 tabel dengan kolom, nilai bawaan, kunci utama, dan kunci
  * unik yang sama dengan MySQL/MariaDB. Indeks biasa dan FK tidak ikut.
  * Dipakai uji reset total (SystemResetTest), pendaftaran bertahap
  * (RegisterWizardTest), dan penulisan item_tries (ItemTryWritesTest).
@@ -101,6 +101,8 @@ trait ResetTables
             'completed_at'           => 'DATETIME?',
             'duration_ms'            => 'INTEGER?',
             'created_at'             => 'DATETIME=CURRENT_TIMESTAMP',
+            'variant_source'         => 'VARCHAR(10)?',
+            'booklet_at_open'        => 'CHAR(2)?',
             '_unique'                => [['session_id', 'challenge_node_id', 'attempt_no']],
         ],
         'challenge_items' => [
@@ -129,6 +131,20 @@ trait ResetTables
             'is_active'          => 'INTEGER=1',
             'created_at'         => 'DATETIME=CURRENT_TIMESTAMP',
             'updated_at'         => 'DATETIME=CURRENT_TIMESTAMP',
+            'round'              => 'INTEGER?',
+            'dimension'          => 'VARCHAR(4)?',
+            'subaspect'          => 'VARCHAR(4)?',
+            'akm_level'          => 'VARCHAR(2)?',
+            'akm_level_source'   => 'VARCHAR(10)?',
+            'pirls_process'      => 'VARCHAR(20)?',
+            'bloom_level_source' => 'VARCHAR(10)?',
+            'testlet_key'        => 'VARCHAR(40)?',
+            'error_code'         => 'VARCHAR(12)?',
+            'd2_topic'           => 'VARCHAR(4)?',
+            'd3_clue_type'       => 'VARCHAR(4)?',
+            'explanation_id'     => 'TEXT?',
+            'explanation_en'     => 'TEXT?',
+            'surface_json'       => 'TEXT?',
             '_unique'            => [['challenge_node_id', 'item_key']],
         ],
         'challenge_nodes' => [
@@ -348,6 +364,15 @@ trait ResetTables
             'text_en'           => 'TEXT',
             'is_active'         => 'INTEGER=1',
         ],
+        'item_error_codes' => [
+            'id'                => 'pk',
+            'challenge_item_id' => 'INTEGER',
+            'choice_type'       => 'VARCHAR(10)',
+            'choice_ref'        => 'VARCHAR(100)',
+            'error_code'        => 'VARCHAR(12)',
+            'is_main'           => 'INTEGER=0',
+            '_unique'           => [['challenge_item_id', 'choice_type', 'choice_ref']],
+        ],
         'item_responses' => [
             'id'                   => 'pk',
             'challenge_attempt_id' => 'INTEGER',
@@ -382,6 +407,8 @@ trait ResetTables
             'first_input_ms'       => 'INTEGER?',
             'last_input_ms'        => 'INTEGER?',
             'occurred_at'          => 'DATETIME=CURRENT_TIMESTAMP',
+            'error_code'           => 'VARCHAR(12)?',
+            'manual_code'          => 'VARCHAR(12)?',
             '_unique'              => [['challenge_attempt_id', 'challenge_item_id', 'try_no']],
         ],
         'learning_indicators' => [
@@ -557,6 +584,35 @@ trait ResetTables
             'locked_at'      => 'DATETIME?',
             '_unique'        => [['participant_id', 'study_id']],
         ],
+        'post_parts' => [
+            'id'            => 'pk',
+            'post_scene_id' => 'INTEGER',
+            'part_key'      => 'VARCHAR(10)',
+            'kind'          => 'VARCHAR(20)',
+            'label_id'      => 'VARCHAR(200)?',
+            'label_en'      => 'VARCHAR(200)?',
+            'text_id'       => 'TEXT?',
+            'text_en'       => 'TEXT?',
+            'x'             => 'DECIMAL(5,2)=0',
+            'y'             => 'DECIMAL(5,2)=0',
+            'w'             => 'DECIMAL(5,2)=0',
+            'h'             => 'DECIMAL(5,2)=0',
+            'sequence'      => 'INTEGER=1',
+            '_unique'       => [['post_scene_id', 'part_key']],
+        ],
+        'post_scenes' => [
+            'id'                => 'pk',
+            'challenge_node_id' => 'INTEGER',
+            'variant_group'     => 'VARCHAR(10)',
+            'title_id'          => 'VARCHAR(250)?',
+            'title_en'          => 'VARCHAR(250)?',
+            'text_genre'        => 'VARCHAR(30)?',
+            'media_asset_id'    => 'INTEGER?',
+            'reference_source'  => 'VARCHAR(500)?',
+            'created_at'        => 'DATETIME=CURRENT_TIMESTAMP',
+            'updated_at'        => 'DATETIME=CURRENT_TIMESTAMP',
+            '_unique'           => [['challenge_node_id', 'variant_group']],
+        ],
         'reading_passages' => [
             'id'               => 'pk',
             'level_id'         => 'INTEGER',
@@ -570,6 +626,8 @@ trait ResetTables
             'is_active'        => 'INTEGER=1',
             'created_at'       => 'DATETIME=CURRENT_TIMESTAMP',
             'updated_at'       => 'DATETIME=CURRENT_TIMESTAMP',
+            'text_genre'       => 'VARCHAR(30)?',
+            'layout'           => 'VARCHAR(20)?',
             '_unique'          => [['passage_key']],
         ],
         'research_studies' => [
@@ -588,6 +646,20 @@ trait ResetTables
             'created_at'     => 'DATETIME=CURRENT_TIMESTAMP',
             'updated_at'     => 'DATETIME=CURRENT_TIMESTAMP',
             '_unique'        => [['code']],
+        ],
+        'scenario_options' => [
+            'id'                => 'pk',
+            'challenge_item_id' => 'INTEGER',
+            'kind'              => 'VARCHAR(10)',
+            'option_key'        => 'VARCHAR(10)',
+            'sequence'          => 'INTEGER=1',
+            'text_id'           => 'TEXT',
+            'text_en'           => 'TEXT',
+            'score'             => 'INTEGER?',
+            'code'              => 'VARCHAR(12)?',
+            'feedback_id'       => 'TEXT?',
+            'feedback_en'       => 'TEXT?',
+            '_unique'           => [['challenge_item_id', 'kind', 'option_key']],
         ],
         'schools' => [
             'id'               => 'pk',
@@ -629,7 +701,7 @@ trait ResetTables
     ];
 
     /**
-     * Membuat (ulang) tabel. Tanpa argumen: semua 36 tabel.
+     * Membuat (ulang) tabel. Tanpa argumen: semua 40 tabel.
      *
      * @param list<string>|null $only
      */

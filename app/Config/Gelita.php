@@ -14,7 +14,7 @@ class Gelita extends BaseConfig
     public array $engineTypes = ['puzzle', 'rumpang', 'boleh', 'cari'];
 
     /** Jenis interaksi soal yang dikenali sistem */
-    public array $interactionTypes = ['puzzle_arrange', 'fill_blank_bank', 'verdict_card', 'find_object'];
+    public array $interactionTypes = ['puzzle_arrange', 'fill_blank_bank', 'verdict_card', 'find_object', 'find_part', 'scenario_choice'];
 
     /** Batas percobaan per soal; lewat dari ini jawaban disimpan apa adanya (Dok 2 §5) */
     public int $maxTries = 3;
