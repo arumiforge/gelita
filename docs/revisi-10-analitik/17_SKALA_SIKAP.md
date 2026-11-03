@@ -26,7 +26,7 @@ Layarnya dirancang di dokumen implementasi bagian 8 ([34 → Skala sikap di Bala
 | Diisi hanya di P5, di Balai Refleksi, setelah cerita penutup; tidak ada data awal di P1 | 25 Oktober 2026 | [01](01_REVISI_10_ANALITIK.md#pertanyaan-yang-masih-terbuka), [13](13_TES_AWAL_AKHIR.md) (urutan P5) |
 | G3 (pengamat budaya) menilai butir skala setelah disusun | 25 Oktober 2026 | [07](07_TELAAH_INSTRUMEN_VALIDASI.md) |
 | Aturan I-CVI Lynn: dengan lima ahli atau kurang, butir lolos hanya kalau semua ahli memberi skor 3 atau 4 | 26 Oktober 2026 | [07](07_TELAAH_INSTRUMEN_VALIDASI.md#koreksi-kecil) |
-| Variabel instrumen di luar game masuk kamus data di `kamus-1.1`, setelah uji coba | 26 Oktober 2026 | [04](04_CATATAN_KEPUTUSAN.md), [11](11_KAMUS_DATA.md) |
+| Variabel instrumen di luar game masuk kamus data di `kamus-1.1` (draf 3 November 2026); angkanya ditetapkan ulang setelah uji coba | 26 Oktober 2026 | [04](04_CATATAN_KEPUTUSAN.md), [11](11_KAMUS_DATA.md) |
 | Urutan P5: susulan, tes akhir, butir risiko daring, cerita penutup, skala sikap, wawancara L5 | 26 Oktober 2026 | [13](13_TES_AWAL_AKHIR.md) |
 
 ## Konstruk
@@ -157,7 +157,7 @@ Skor tidak tampil untuk siswa, guru, atau sekolah.
 
 ## Variabel untuk kamus data
 
-Masuk `kamus-1.1` setelah uji coba, sama seperti variabel tes dan angket. `kamus-1.0` di [11](11_KAMUS_DATA.md) tidak diubah.
+Masuk `kamus-1.1` (draf 3 November 2026, [11 → Yang baru di `kamus-1.1`](11_KAMUS_DATA.md#yang-baru-di-kamus-11)), sama seperti variabel tes dan angket; angkanya ditetapkan ulang setelah uji coba. `kamus-1.0` di [11](11_KAMUS_DATA.md) tidak diubah.
 
 | Variabel | Isi | Jenis |
 | --- | --- | --- |

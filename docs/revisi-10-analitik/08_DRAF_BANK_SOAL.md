@@ -4,7 +4,7 @@
 
 Per 26 Oktober 2026 (nama fiktif dicek; telaah pendahuluan T6 sudah dijalankan, lihat [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md); keterangan Susun Gambar diperiksa dan variasinya selama studi diputuskan, lihat [Susun Gambar selama studi](#susun-gambar-selama-studi)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Dasar: [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md) (disetujui pengembang 25 Oktober 2026) · Status semua butir: **`needs_verification`**
 
-Ini isi bank soal baru, ditulis mengikuti kisi-kisi. Dokumen ini masih **draf untuk telaah dan validasi ahli**. Bentuknya dokumen supaya mudah dibaca ahli. Setelah lolos validasi, isinya dipindah ke berkas data [`docs/bank-soal/`](../bank-soal/README.md) dan diterjemahkan ke bahasa Inggris. Belum ada yang diubah di sistem atau di workbook.
+Ini isi bank soal baru, ditulis mengikuti kisi-kisi. Dokumen ini masih **draf untuk telaah dan validasi ahli**. Bentuknya dokumen supaya mudah dibaca ahli. Setelah lolos validasi, isinya dipindah ke berkas data [`docs/bank-soal/`](../bank-soal/README.md). Draf terjemahan bahasa Inggrisnya ada di [36](36_TERJEMAHAN_BANK_SOAL.md) (3 November 2026). Belum ada yang diubah di sistem atau di workbook.
 
 ## Cara membaca
 
@@ -1262,7 +1262,7 @@ Teks digital (layar informasi, unggahan, grup, hasil pencarian) dibangun sebagai
 2. Gambar baru Susun Gambar Wayang Kedu dan Candi Pawon dari tim katalog, dicek ulang terhadap butir; cek fakta Papringan, Pawon, Arjuna, dan tahun penetapan Lengger ([keputusan 26 Oktober 2026](#keputusan-pengembang-26-oktober-2026)).
 3. Cek fakta di bagian *Yang harus dicek* (nama fiktif sudah dicek; tinggal pencarian manual akun di Instagram dan TikTok), ditambah fakta keterangan Susun Gambar yang dipilih.
 4. Validasi ahli (I-CVI atau V Aiken) dengan instrumen yang sedang disiapkan sesi koordinator.
-5. Terjemahan bahasa Inggris untuk setiap teks yang tampil di game.
+5. Terjemahan bahasa Inggris untuk setiap teks yang tampil di game. **Didraf AI 3 November 2026 di [36](36_TERJEMAHAN_BANK_SOAL.md)** (`draf pengembang`, menunggu pemeriksaan pengembang); butir yang berubah di sini diterjemahkan ulang di sana.
 6. Pindahkan isi ke berkas data `docs/bank-soal/` dengan kolom baru dari kisi-kisi. Ini pekerjaan tahap implementasi.
 
 # Untuk dicatat di catatan keputusan

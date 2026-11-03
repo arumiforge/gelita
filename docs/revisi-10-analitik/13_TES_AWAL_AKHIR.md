@@ -242,7 +242,7 @@ Teks untuk siswa (dijelaskan koordinator sesi):
 - **Tidak sampai:** butir yang belum pernah tampil di layar siswa saat bagiannya ditutup batas waktu ditandai `not_reached`. Di analisis Rasch, butir yang tidak sampai dianggap data hilang, bukan salah. Butir yang sudah tampil tapi tidak dijawab dihitung dilewati.
 - **Tebakan cepat:** waktu tampil per butir di bawah ambang tebakan cepat di [11](11_KAMUS_DATA.md) ditandai `rapid_guess`. Jawabannya tetap dinilai apa adanya, sama seperti di game; penandanya dipakai di analisis kepekaan. Ambang untuk tes ditinjau setelah uji coba, karena beberapa butir tampil bersama satu teks dan waktu membaca teksnya jatuh ke butir pertama. Penanda ini dihitung lapis data turunan, bukan modul; sementara memakai ambang tebakan cepat studi ([35 → Pertanyaan terbuka](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#18-pertanyaan-terbuka) no. 2).
 - **Skor mentah per bagian:** D1 0–16, D2 0–16, D3 0–8. Skor total 0–40 hanya untuk gambaran; analisis memakai skor per bagian.
-- **Variabel baru**, yang masuk [11](11_KAMUS_DATA.md#variabel-peserta-dan-sesi) di `kamus-1.1` setelah uji coba (keputusan 26 Oktober 2026); `kamus-1.0` tidak diubah:
+- **Variabel baru**, yang masuk [11](11_KAMUS_DATA.md#variabel-peserta-dan-sesi) di `kamus-1.1` (draf 3 November 2026, [11 → Yang baru di `kamus-1.1`](11_KAMUS_DATA.md#yang-baru-di-kamus-11)); angkanya ditetapkan ulang setelah uji coba (keputusan 26 Oktober 2026); `kamus-1.0` tidak diubah:
 
 | Satuan | Kolom | Isi |
 | --- | --- | --- |
@@ -290,7 +290,7 @@ Status per 1 November 2026:
 - **28:** selesai. Buklet dan bentuk tes dihitung panel dan disimpan di `participant_seats`; token P1 dan P5 membuka modul (titik sambung no. 22).
 - **29:** selesai. L6 tidak diimpor; status dan jawaban tes berasal dari modul; templat L6 diisi dari sistem setelah modul ada.
 - **30:** selesai. Aturan layar T11 dan T12, `risk_reconsent`, dan izin berkode untuk butir risiko daring.
-- **11:** menunggu `kamus-1.1` setelah uji coba (keputusan 26 Oktober 2026): variabel tes dan angket di *Variabel peserta dan sesi*, termasuk `error_codes` berupa daftar kode, dan jawaban dari modul di *Aturan gabung lembar lapangan*.
+- **11:** selesai sebagai draf: variabel tes dan angket masuk `kamus-1.1` (draf 3 November 2026, [11 → Yang baru di `kamus-1.1`](11_KAMUS_DATA.md#yang-baru-di-kamus-11)); angkanya ditetapkan ulang setelah uji coba (keputusan 26 Oktober 2026). Isinya: variabel tes dan angket di *Variabel peserta dan sesi*, termasuk `error_codes` berupa daftar kode, dan jawaban dari modul di *Aturan gabung lembar lapangan*.
 
 ## Keputusan pengembang
 
