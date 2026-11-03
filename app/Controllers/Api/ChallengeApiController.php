@@ -45,7 +45,11 @@ class ChallengeApiController extends BaseApiController
             return $this->fail('LEVEL_LOCKED', lang('Game.levelLocked'), 409);
         }
 
-        $opened = service('challengeService')->openNode($session, $nodeId);
+        try {
+            $opened = service('challengeService')->openNode($session, $nodeId);
+        } catch (ChallengeRuleException $e) {
+            return $this->ruleFailed($e);
+        }
 
         // Pengerjaan lama ternyata sudah tuntas dan baru saja ditutup
         if (isset($opened['redirect'])) {
@@ -285,6 +289,7 @@ class ChallengeApiController extends BaseApiController
             'CLUE_CLOSED'     => lang('Game.errClueClosed'),
             'TRIES_REMAINING' => lang('Game.errTriesRemaining'),
             'ATTEMPT_CHANGED' => lang('Game.errAttemptChanged'),
+            'BOOKLET_MISSING' => lang('Game.bookletMissing'),
             default           => $e->getMessage(),
         };
 

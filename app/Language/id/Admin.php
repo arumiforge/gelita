@@ -446,4 +446,13 @@ return [
         'school_merge'                 => 'Menggabungkan nama sekolah',
         'school_verify'                => 'Mengesahkan sekolah baru',
     ],
+
+    // Research revision part 5: new question bank (31)
+    'bankDimension'      => 'Dimensi',
+    'bankSubaspect'      => 'Sub-aspek',
+    'bankAkm'            => 'Level AKM',
+    'bankLabelSource'    => 'Asal label',
+    'bankLabelDeveloper' => 'Label pengembang',
+    'bankLabelExpert'    => 'Label ahli',
+    'bankErrorCodes'     => 'Kode kesalahan',
 ];

@@ -444,4 +444,14 @@ return [
     'regNextHint' => 'When everything is filled in, tap Next.',
     'regionHint' => 'Is your school in Central Java? Choose the province and regency or city first. Do not type the school name straight away: your school is found with its NPSN.',
     'schoolConfirmHint' => 'If this is the right school, tap Next.',
+
+    // Research revision part 5: new question bank (31)
+    'bookletMissing'    => 'Please wait a moment. The researcher is still setting up your seat. Try again when they tell you.',
+    'huntRoundTwoTitle' => 'Round 2: Check the Post',
+    'huntRoundTwoIntro' => 'Now check this post. Read the clue, then tap the right part of the post.',
+    'huntPartWrong'     => "Not this part. That part isn't what the clue means. Read the clue again.",
+    'anchorCardTitle'   => 'Second text',
+    'huntRoundTwoStart' => 'Start round 2',
+    'huntPartN'         => 'Part {0}',
+    'postSceneAlt'      => 'Photo in the post',
 ];

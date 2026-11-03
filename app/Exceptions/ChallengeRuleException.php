@@ -72,4 +72,14 @@ final class ChallengeRuleException extends \RuntimeException
     {
         return new self('TRIES_REMAINING', 409, 'Tantangan ini belum selesai: masih ada kesempatan untuk memperbaiki jawaban.');
     }
+
+    /**
+     * Research mode is on, the study is active, and the student has no seat
+     * and booklet yet: a scored challenge does not open (409, 31 K10). The
+     * player sees Game.bookletMissing and goes back to the region map.
+     */
+    public static function bookletMissing(): self
+    {
+        return new self('BOOKLET_MISSING', 409, 'Siswa ini belum punya buklet, jadi tantangan yang dinilai belum dibuka.');
+    }
 }

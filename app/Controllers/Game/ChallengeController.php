@@ -2,6 +2,8 @@
 
 namespace App\Controllers\Game;
 
+use App\Exceptions\ChallengeRuleException;
+use App\Libraries\VariantPicker;
 use App\Models\ChallengeAttemptModel;
 use App\Models\ItemResponseModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
@@ -30,11 +32,15 @@ class ChallengeController extends BaseGameController
             return $gate;
         }
 
+        // Research mode without a booklet: the scored challenge stays closed (31 K10)
+        $served = model(ChallengeAttemptModel::class)->variantsServed($session->participant_id, $node->id);
+
         return view('game/mission-brief', $this->hudData() + [
-            'level'    => $level,
-            'node'     => $node,
-            'sequence' => $sequence,
-            'best'     => $this->bestAttempt($session, $node->id),
+            'level'          => $level,
+            'node'           => $node,
+            'sequence'       => $sequence,
+            'best'           => $this->bestAttempt($session, $node->id),
+            'bookletMissing' => (new VariantPicker(\CodeIgniter\Config\Factories::libraries('BookletSource')))->bookletMissing($session, $node, $served),
         ]);
     }
 
@@ -63,6 +69,9 @@ class ChallengeController extends BaseGameController
 
         try {
             $opened = service('challengeService')->openNode($session, $node->id);
+        } catch (ChallengeRuleException $e) {
+            // BOOKLET_MISSING (31 K10): back to the mission brief, which explains it
+            return redirect()->to(site_url('misi/' . $level->code . '/' . $sequence))->with('error', lang('Game.bookletMissing'));
         } catch (\RuntimeException $e) {
             log_message('error', 'Gagal membuka node {id}: {msg}', ['id' => $node->id, 'msg' => $e->getMessage()]);
 

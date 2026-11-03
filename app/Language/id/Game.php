@@ -444,4 +444,14 @@ return [
     'regNextHint' => 'Kalau semua isian sudah lengkap, ketuk tombol Berikutnya, ya.',
     'regionHint' => 'Sekolahmu di Jawa Tengah? Pilih provinsi dan kabupaten/kota dulu, ya. Jangan langsung menulis nama sekolah, karena sekolahmu akan dicari dengan NPSN.',
     'schoolConfirmHint' => 'Kalau sekolahnya sudah benar, ketuk tombol Berikutnya, ya.',
+
+    // Research revision part 5: new question bank (31)
+    'bookletMissing'    => 'Tunggu sebentar, ya. Kakak peneliti masih menyiapkan tempat dudukmu. Coba buka lagi setelah diberi tahu.',
+    'huntRoundTwoTitle' => 'Babak 2: Periksa Unggahan',
+    'huntRoundTwoIntro' => 'Sekarang periksa unggahan ini. Baca petunjuknya, lalu ketuk bagian unggahan yang tepat.',
+    'huntPartWrong'     => 'Bukan bagian ini. Bagian itu bukan yang dimaksud petunjuk. Baca lagi petunjuknya, ya.',
+    'anchorCardTitle'   => 'Bacaan kedua',
+    'huntRoundTwoStart' => 'Mulai babak 2',
+    'huntPartN'         => 'Bagian {0}',
+    'postSceneAlt'      => 'Foto di dalam unggahan',
 ];
