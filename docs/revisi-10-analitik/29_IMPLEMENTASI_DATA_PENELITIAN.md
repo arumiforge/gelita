@@ -403,16 +403,16 @@ Urutan resmi sesudah bagian ini, termasuk lembar dari bagian 4–9 (urutan baris
 | `turunan_percobaan` | Percobaan | `derived_tries` (35) | **Baru** (35) |
 | `turunan_pengamatan` | Pengamatan L4 | `derived_observations` (35) | **Baru** (35) |
 | `turunan_tes` | Jawaban tes dengan `rapid_guess` | `derived_test_responses` ([35 §6.8](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#68-derived_test_responses-satu-baris-per-jawaban-tes)) | **Baru** (35) |
-| `tes_jawaban` | Satuan tes per siswa per kesempatan | `instrument_responses` ([34 §11.4](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#114-data-untuk-kamus-dan-unduhan)) | **Baru** (34) |
-| `tes_bagian` | Bagian tes per siswa per kesempatan | `instrument_parts`, `instrument_blocks` (34) | **Baru** (34) |
-| `angket` | Satu baris per siswa (16) | Tabel modul (`instrument_sittings`, `instrument_responses`), 34 | **Baru** (34) |
-| `sikap` | Satu baris per siswa (17) | Tabel modul (`instrument_sittings`, `instrument_responses`), 34 | **Baru** (34) |
+| `tes_jawaban` | Satu baris per satuan jawaban per siswa per tes (`pre`/`post`): jawaban mentah, skor, kode kesalahan, `not_reached`, waktu tampil, penggantian jawaban, versi isi | `instrument_responses` ([34 §11.4](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#114-data-untuk-kamus-dan-unduhan)) | **Baru** (34) |
+| `tes_bagian` | Satu baris per bagian tes per siswa per kesempatan: jam mulai dan kirim, ditutup batas waktu, menit tambahan, skor mentah | `instrument_parts`, `instrument_blocks` (34) | **Baru** (34) |
+| `angket` | Satu baris per siswa (16): status pengisian dan 41 kolom ang-01–ang-17 | Tabel modul (`instrument_sittings`, `instrument_responses`), 34 | **Baru** (34) |
+| `sikap` | Satu baris per siswa (17): `skp_*`, waktu per butir, `feedback_rating` | Tabel modul (`instrument_sittings`, `instrument_responses`), 34; `participant_feedback` | **Baru** (34) |
 | `risiko_gabungan` | Angka gabungan butir risiko daring ([§7.6](#76-butir-risiko-daring)) | Sesi jenis `risk` di tabel modul (34 §8.3) | **Baru** |
 | `izin` | Satu baris per siswa di unduhan itu: kolom daftar izin berkode ([30 §10.1](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#101-daftar-izin-berkode)), disaring ke siswa unduhan itu; hanya studi `field_mode = 1` | `participant_consents` (30) | **Baru** (30, keputusan no. 9); kodenya ditulis bagian 4 |
 | `l1_kondisi`, `l1_penyimpangan`, `l2_kursi`, `l3_bantuan`, `l4_bromp`, `l5_wawancara`, `l6_sesi` | Lembar lapangan yang diimpor ([§10](#10-templat-dan-impor-lembar-lapangan-perubahan-no-15)) | `field_sheet_rows` | **Baru** |
 | `perangkat` | — | — | **Keluar** dari unduhan; pindah ke log teknis ([§5.6](#56-data-bertanda-admin-dan-halaman-log-teknis)) |
 
-Lembar dari perubahan lain sudah masuk daftar ini: `kode_pilihan` ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) §13.3), delapan lembar turunan ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) §10.1, termasuk `turunan_tes`), lembar tes, angket, dan skala sikap ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) §11.4), dan `risiko_gabungan` ([§7.6](#76-butir-risiko-daring); sumbernya sesi jenis `risk`). Urutannya tetap: … `butir`, `kode_pilihan`, lembar `turunan_*`, `tes_jawaban`, `tes_bagian`, `angket`, `sikap`, `risiko_gabungan`, `izin`, lalu lembar lapangan `l1_…`–`l6_…` ([§19](#19-keputusan-pengembang) no. 13). Sesi modul `is_preview = 1` (34 §5.5) tidak pernah masuk unduhan, dan contoh soal tes (`tes-ct-*`) tidak masuk `tes_jawaban`.
+Lembar dari perubahan lain sudah masuk daftar ini: `kode_pilihan` ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) §13.3), delapan lembar turunan ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) §10.1, termasuk `turunan_tes`), empat lembar tes, angket, dan skala sikap (no. 21, 22; [34 → Data untuk kamus dan unduhan](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#114-data-untuk-kamus-dan-unduhan)) beserta kolom `peserta` tambahan `pre_form` … `post_capped` dari 13 ([§7.3](#73-kolom-yang-berubah-per-lembar)), dan `risiko_gabungan` ([§7.6](#76-butir-risiko-daring); sumbernya sesi jenis `risk`). Urutannya tetap: … `butir`, `kode_pilihan`, lembar `turunan_*`, `tes_jawaban`, `tes_bagian`, `angket`, `sikap`, `risiko_gabungan`, `izin`, lalu lembar lapangan `l1_…`–`l6_…` ([§19](#19-keputusan-pengembang) no. 13). Sesi modul `is_preview = 1` (sesi pratinjau validator, 34 §5.5) tidak pernah masuk unduhan, sesi jenis `risk` tidak pernah masuk lembar per siswa (hanya angka gabungan di `risiko_gabungan`), dan contoh soal tes (`tes-ct-*`) tidak masuk `tes_jawaban`.
 
 ### 7.3 Kolom yang berubah per lembar
 
@@ -463,7 +463,7 @@ Penilaian dampak menetapkan bahwa peneliti hanya melihat angka gabungan butir ri
 - Jawaban ang-21–ang-23 **tidak pernah** masuk lembar per siswa, lembar `event`, atau layar data mentah.
 - Unduhan memuat lembar **`risiko_gabungan`**: satu baris per butir dan pilihan jawaban, dengan banyak siswa untuk seluruh studi, lalu per kode sekolah. Sel dengan kurang dari 5 siswa ditulis `<5`, mengikuti batas laporan di 26 → P9. *Tidak mau menjawab* dan *tidak diberi butir* (tanpa izin) dihitung sebagai pilihan sendiri.
 - Penanda tindak lanjut hanya di bagian 4, untuk `ketua`, dan tidak diekspor.
-- Isi lembarnya baru ada setelah modul no. 22 ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) §8.3) menyimpan jawaban. Bagian ini hanya menetapkan bentuknya.
+- Isi lembarnya baru ada setelah modul no. 22 menyimpan jawaban. Bagian ini hanya menetapkan bentuknya. Sumbernya sesi modul jenis `risk` (`instrument_sittings.kind = 'risk'`, tanpa pratinjau): `risk_offered = 0` dihitung *tidak diberi butir*, `risk_reconsent = 0` *tidak mau mengisi*, kode `7` *tidak mau menjawab* ([34 → Data](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#83-data)).
 - Aturan ini hanya untuk unduhan peneliti. Salinan data satu anak untuk orang tua adalah jalur lain di bagian 4: jawaban butir risiko diberikan bila orang tua tetap meminta setelah anak ditanya, kecuali membahayakan anak ([30 → Salinan data satu anak](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#8-salinan-data-satu-anak); putaran kedua 30–31 Oktober 2026 di 04).
 
 ---

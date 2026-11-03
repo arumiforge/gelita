@@ -516,7 +516,7 @@ Sejak 1 November 2026 semua perubahan dibangun sekarang, tanpa menunggu matriks 
 - no. 1, 3, 4, 8, 17, dan 20: bagian 5, bank soal baru ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md));
 - no. 2, 6, dan 18: bagian 6, Skenario Digital ([32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md));
 - no. 5, 16, dan 19: bagian 7, mode penelitian ([33](33_IMPLEMENTASI_MODE_PENELITIAN.md));
-- no. 21 dan 22: bagian 8, modul tes dan skala sikap ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md));
+- no. 21 dan 22: bagian 8, modul tes dan skala sikap ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md), `disetujui pengembang` 2 November 2026);
 - no. 9: bagian 9, lapis data turunan ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md)).
 
 Hasil validasi ahli kembali sebagai revisi isi (workbook, cerita, teks) dan, bila perlu, revisi dokumen implementasi.

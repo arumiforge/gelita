@@ -217,7 +217,7 @@ private const CAPABILITIES = [
 ];
 ```
 
-Peta ini lengkap untuk bagian 1–4: bagian 2 (`28`) dan bagian 3 (`29`) tidak menambah kemampuan; bagian 4 (`30`) menambah `deletion.confirm` dan `identities.replace` ([30 → Hak akses dan menu](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#14-hak-akses-dan-menu)). Bagian 8, no. 21 dan 22 ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md), K15), juga tidak menambah kemampuan: mulai tes dan tambah menit memakai `field_sessions.manage`, pengaturan batas waktu memakai `studies.manage`, jawaban modul terlihat lewat `research.browse` dan `research.export`. Bagian 9 ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md), K14) juga tanpa kemampuan baru ([§7](#7-rute)).
+Peta ini lengkap untuk bagian 1–4: bagian 2 (`28`) dan bagian 3 (`29`) tidak menambah kemampuan; bagian 4 (`30`) menambah `deletion.confirm` dan `identities.replace` ([30 → Hak akses dan menu](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#14-hak-akses-dan-menu)). Bagian 8, no. 21 dan 22 ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) K15), juga tidak menambah kemampuan: mulai tes dan tambah menit memakai `field_sessions.manage`, batas waktu tes memakai `studies.manage`, dan jawaban modul (tes, angket, skala sikap) terlihat lewat `research.browse` dan `research.export`. Bagian 9 ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md), K14) juga tanpa kemampuan baru ([§7](#7-rute)).
 
 `StaffAccess::allows(string $role, string $capability): bool` mengembalikan `false` untuk peran atau kemampuan yang tidak dikenal, jadi salah ketik menutup akses, bukan membukanya.
 

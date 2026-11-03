@@ -245,7 +245,7 @@ Layarnya bagian modul tes (no. 22, tampilan Bootstrap). Bagian ini menetapkan at
 | Siapa melihat T11 | Siswa dengan `risk_items_consent = 1` dan status `active`, dibaca server saat modul sampai di titik itu (setelah tes akhir P5) |
 | Pilihan di T11 | *Ya, aku mau mengisi* → ang-21–ang-23, lalu T12; *Tidak, lewati saja* → langsung T12 |
 | Siswa lain | Langsung T12 di titik yang sama, termasuk siswa tanpa izin dan yang izinnya belum diisi |
-| Yang disimpan | Pilihan T11 sebagai `risk_reconsent` (1 atau 0) dengan waktu, di sesi jenis `risk` modul tes (`instrument_sittings.risk_reconsent`, `risk_reconsent_at`; `risk_offered` di sesi yang sama, [34 §11.1](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#111-tabel-baru)). Bukan bagian kamus `kamus-1.0`; masuk `kamus-1.1` |
+| Yang disimpan | Pilihan T11 sebagai `risk_reconsent` (1 atau 0) dengan waktu, di sesi modul jenis `risk` (`instrument_sittings.risk_reconsent`, `risk_reconsent_at`; [34 → Butir risiko daring](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#8-butir-risiko-daring-t11-dan-t12), [34 §11.1](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#111-tabel-baru)). Sesi itu juga menyimpan `risk_offered` (izin dibaca saat titik itu tercapai), untuk angka *tidak diberi butir* di unduhan gabungan. Bukan bagian kamus `kamus-1.0`; masuk `kamus-1.1` |
 | Yang tidak boleh terlihat | P1–P3 tidak melihat siapa yang melihat T11, apa pilihannya, atau apakah siswa mengisi butir risiko. Pemantauan bagian 2 hanya menunjukkan "modul selesai" |
 | Tampilan | Kedua tombol T11 sama besar dan sama warna (23 → T11); T12 satu tombol *Lanjut* |
 | Teks | id dari 23 → T11 dan T12 apa adanya; en diusulkan di [§17](#17-teks-layar-dan-panel) |
@@ -332,7 +332,7 @@ ketua mengajukan ─────────────────────
 | `field_sheet_rows` (per `participant_id`) | Ya | — | Bagian 3 |
 | `participant_consents` | Ya (ikut `ON DELETE CASCADE`) | — | Bagian 4 |
 | `challenge_attempt_segments` | Ya (`ON DELETE CASCADE` lewat `challenge_attempt_id` dan `session_id`; di `HARD_ORDER` sebelum `challenge_attempts`) | — | Bagian 7 ([33](33_IMPLEMENTASI_MODE_PENELITIAN.md) §5.4, §9) |
-| `instrument_responses`, `instrument_parts`, `instrument_blocks`, `instrument_sittings` | Ya: semua sesi tes, angket, butir risiko, dan skala sikap (di `HARD_ORDER` sebelum `participants`) | Hanya sesi jenis `risk` beserta bagian dan jawabannya (ang-21–ang-23); `risk_offered` dan `risk_reconsent` ikut, karena disimpan per siswa di sesi itu | Bagian 8 ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) §11.1, §11.3) |
+| Jawaban modul tes, angket, dan skala sikap: `instrument_responses`, `instrument_parts`, `instrument_blocks`, `instrument_sittings` | Ya: semua sesi tes, angket, butir risiko, dan skala sikap (di `HARD_ORDER` sebelum `participants`) | Hanya sesi jenis `risk` anak itu beserta bagian dan jawabannya (ang-21–ang-23), lewat `ON DELETE CASCADE`; `risk_offered` dan `risk_reconsent` ikut, karena disimpan per siswa di sesi itu | Bagian 8, no. 21, 22 ([34 → Skema database](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#11-skema-database), §11.1, §11.3) |
 | `derived_participants`, `derived_field_sessions`, `derived_challenges`, `derived_attempts`, `derived_items`, `derived_tries`, `derived_observations`, `derived_test_responses` (semua putaran) | Ya (`ON DELETE CASCADE` lewat `participant_id`; di `HARD_ORDER` sebelum `participants`, untuk pratinjau) | — | Bagian 9 ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) §9, §12) |
 | `participants` | Ya, terakhir | — | Sudah ada |
 
@@ -547,7 +547,7 @@ Untuk [26 → P15](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md#langkah-perlindungan)
 | Kebutuhan | Jalan manual | Siapa |
 | --- | --- | --- |
 | Hapus semua data (B) | Sudah ada: Tata kelola, cakupan nomor siswa, mode `hard` | Admin, atas perintah `ketua` |
-| Hapus jawaban butir risiko (C) | `DELETE` sesi jenis `risk` anak itu di `instrument_sittings` dengan id peserta (`instrument_parts` dan `instrument_responses` ang-21–ang-23 ikut lewat `ON DELETE CASCADE`, bersama `risk_offered` dan `risk_reconsent`; 34 §8.3), setelah `SELECT COUNT(*)` atas ketiga tabel itu dicatat | Admin, atas perintah `ketua` |
+| Hapus jawaban butir risiko (C) | `DELETE` sesi jenis `risk` anak itu di `instrument_sittings` dengan id peserta (`instrument_parts` dan `instrument_responses` ang-21–ang-23 ikut lewat `ON DELETE CASCADE`, bersama `risk_offered` dan `risk_reconsent`; [34 §8.3](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#83-data)), setelah `SELECT COUNT(*)` atas ketiga tabel itu dicatat | Admin, atas perintah `ketua` |
 | Salinan satu anak (D) | `SELECT` per tabel dengan id peserta, disimpan sebagai CSV di penyimpanan terenkripsi admin; `ketua` menyusun salinan tanpa kunci jawaban; jawaban butir risiko mengikuti [§8](#8-salinan-data-satu-anak) | Admin dan `ketua` |
 | Pembetulan (D) | `UPDATE participants SET {kolom} = … WHERE participant_code = …` | Admin, atas perintah `ketua` |
 | Cadangan | Cadangan baru, lalu berkas lama di kedua lokasi dihapus dengan tangan | Admin |
@@ -671,12 +671,12 @@ Mengikuti `.claude/rules/ui-copy.md`. Teks game di `Game.php` (id dan en, `Langu
 | `assentRequiredStudy` | Centang dulu kalau kamu mau ikut, ya. Kalau tidak mau, tidak apa-apa. Bilang pelan-pelan ke kakak peneliti. | Tick the box first if you want to take part. If you don't want to, that's fine. Quietly tell a researcher. |
 | `loginInactive` | Akun ini sudah tidak dipakai lagi. Kalau ada pertanyaan, bicara dengan kakak peneliti, ya. | This account is no longer in use. If you have a question, talk to a researcher. |
 
-**Modul tes: T11** (id dari 23 → T11 apa adanya, paragraf 3 diubah 30 Oktober 2026, keputusan no. 6; en usulan)
+**Modul tes: T11** (id dari 23 → T11 apa adanya, paragraf 3 diubah 30 Oktober 2026, keputusan no. 6; en usulan; paragraf 1 en disamakan dengan id 2 November 2026, usulan dari cek kemutakhiran 23, diterapkan atas permintaan pengembang)
 
 | Bagian | en (usulan) |
 | --- | --- |
 | Judul | A few questions about the internet |
-| Paragraf 1 | There are a few more questions. They are about things on the internet or a phone that may have made you feel uncomfortable. |
+| Paragraf 1 | There are a few more questions. They are about things on the internet or a phone that may make you feel uncomfortable. |
 | Paragraf 2 | You don't have to answer them. That's okay. Every question also has the choice *I don't want to answer*. |
 | Paragraf 3 | Your answers are saved with your code, not your name. Your teachers and friends do not see your answers. If your parents ask to see your answers, a researcher will talk with you first. |
 | Paragraf 4 | But there is one thing you should know. The researchers want every child to be safe. If your answers show you might need help, a researcher may ask you for a short chat. If you are in danger, the researcher will ask a grown-up to help keep you safe. |
@@ -740,8 +740,8 @@ Label pilihan *Tidak mau menjawab* di en mengikuti teks en butir ang-21–ang-23
 
 | Perubahan | Yang disediakan bagian ini | Yang dirancang di sana |
 | --- | --- | --- |
-| No. 21 skala sikap ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md)) | Cakupan hapus `all` mencakup tabel modul | Sesi jenis `attitude` di tabel modul (34 §9, §11.1) |
-| No. 22 modul tes ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md)) | `ConsentService::riskItemsAllowed()`, aturan T11/T12 dan teksnya, `risk_reconsent`, cakupan hapus `risk_items`, `RiskFollowUpService` | Layar T11/T12 (34 §8); tabel `instrument_sittings`, `instrument_blocks`, `instrument_parts`, `instrument_responses`; sesi jenis `risk` dengan `risk_offered` dan `risk_reconsent` per siswa; cakupan `risk_items` = sesi jenis `risk` (34 §8.3); kode pilihan ang-21–ang-23 |
+| No. 21 skala sikap ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) §9) | Cakupan hapus `all` mencakup tabel modul (jawaban skala) | Tabel jawaban skala: sesi modul jenis `attitude` di tabel modul (34 §9, §11.1) |
+| No. 22 modul tes ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) §8, §11) | `ConsentService::riskItemsAllowed()`, aturan T11/T12 dan teksnya, `risk_reconsent`, cakupan hapus `risk_items`, `RiskFollowUpService` | Layar T11/T12 (34 §8); tabel `instrument_sittings`, `instrument_blocks`, `instrument_parts`, `instrument_responses`; sesi jenis `risk` dengan `risk_offered` dan `risk_reconsent` per siswa; cakupan `risk_items` = sesi jenis `risk` (34 §8.3); kode pilihan ang-21–ang-23 di `data/instrumen/angket.php` |
 | No. 5, 16 mode penelitian (bagian 7, [33](33_IMPLEMENTASI_MODE_PENELITIAN.md)) | Cakupan hapus `all` mencakup potongan pengerjaan | `challenge_attempt_segments` (33 §5.4, §9) |
 | No. 9 lapis turunan ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md)) | Daftar izin berkode, `status_on`, `registration_corrected`, `participants.deactivated_at`; cakupan hapus mencakup `derived_*` | `consent_ok` dihitung di server dari `participant_consents` (35 §7), data sampai saat mundur (`withdrawn_at`, `after_withdrawal`), `kamus-1.1` |
 | Bagian 2 (`28`) | Baris izin dibuat saat mendaftar; nonaktif ditolak token; `gelita:uji:akun` mengisi izin butir risiko Ya | Halaman kursi di sebelah halaman izin; angka "izin belum diisi" di pemantauan |
