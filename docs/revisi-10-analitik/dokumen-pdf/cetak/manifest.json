@@ -33,19 +33,19 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "95c2d6c8d7b60ea4173e88f824c04d962a0c67c8e691ac4cbde8e74324308e81",
-      "commit": "ee839c9",
+      "source": "24fec6985e92184d3aab729df6f6f7e4d6b8144af178984035c9c049dac49509",
+      "commit": "8c8446e",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
       "pages": 69,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
-      "source": "4728eb38ef56021e766bd1786bb9c963eca10a579927aabc09ba1cddbd432ea1",
-      "commit": "b4126be",
+      "source": "5e706325ad6e5c2056bc4857668d0a69b6d35e1ce15388a46aa5782ca878bf41",
+      "commit": "8c8446e",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-27",
-      "pages": 13,
+      "date": "2026-11-03",
+      "pages": 14,
       "landscapeTables": 0
     },
     "06_KISI_KISI_BANK_SOAL.md": {
@@ -65,18 +65,18 @@
       "landscapeTables": 0
     },
     "08_DRAF_BANK_SOAL.md": {
-      "source": "9b837658765f2f2383e23182b803abc36015ad9908c97041330898f04b24e490",
-      "commit": "f63b5e8",
+      "source": "9dbdac21a8f83fcdbb21a78fa638c7a992ed20631e507b4e25bc8cb706133137",
+      "commit": "8c8446e",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
       "pages": 43,
       "landscapeTables": 0
     },
     "09_TELAAH_PENDAHULUAN_BANK_SOAL.md": {
-      "source": "8b624a7bee233fe19b98d66eb943b9bcdebbe7627d2fb8b3b116ffcdc1360865",
-      "commit": "b4126be",
+      "source": "a9efde2386a36138e1aec17a7fc7235775a60c2d12a0b27ef545dfa8e2a3470a",
+      "commit": "8c8446e",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-27",
+      "date": "2026-11-03",
       "pages": 10,
       "landscapeTables": 0
     },
@@ -153,10 +153,10 @@
       "landscapeTables": 0
     },
     "19_TELAAH_LABEL_BLOOM.md": {
-      "source": "66f693f75b7f79a45289792041c761bcc9d22f4cdb8f21d54d926046d72b03e6",
-      "commit": "b4126be",
+      "source": "f69b60e3d513188355f900c9f12e790dbcc06791f21bb568f98c30646e3fb8da",
+      "commit": "8c8446e",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-27",
+      "date": "2026-11-03",
       "pages": 10,
       "landscapeTables": 0
     },
@@ -201,10 +201,10 @@
       "landscapeTables": 0
     },
     "25_CEK_FAKTA_BUDAYA.md": {
-      "source": "c8d9faeb64098291481afadba7b1227f4b8a497ea10d28d0db36cf6260470944",
-      "commit": "fb47e1d",
+      "source": "faf974c62816b6e523d77ab5e3d0122f3c4f759bb8df41f3d882fbb1a2c5988d",
+      "commit": "8c8446e",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
+      "date": "2026-11-03",
       "pages": 27,
       "landscapeTables": 0
     },
