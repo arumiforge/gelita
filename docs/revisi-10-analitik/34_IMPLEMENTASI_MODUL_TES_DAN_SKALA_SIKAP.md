@@ -233,7 +233,7 @@ Setiap berkas dibuka dengan `'version' => 'tes-0.1'` (atau `angket-0.1`, `sikap-
 
 Butir yang tidak dijawab disimpan kosong (`NULL`) dan ditulis `-` di unduhan (13, 16, 17). Kode kesalahan PGK dan menjodohkan mengikuti *Aturan kode* di 14: satu kode per pernyataan atau pasangan yang salah, dipisah titik koma.
 
-**Layar tiruan dan gambar.** Unggahan *Kedugram*, layar tiruan D2, dan adegan D3 digambar tim katalog dari keterangan di 14 dan 15. Berkas data menyimpan tulisannya sebagai teks dan menunjuk gambar lewat slot `instr.{kode bacaan}` (misalnya `instr.tes-mb-A-M3`), dipasang lewat `gelita:katalog:impor` seperti slot lain. Selama gambar belum ada, modul menampilkan tata letak teks yang sama tanpa ilustrasi, dan `AssetChecklist` mencatat slot yang kosong.
+**Layar tiruan dan gambar.** Unggahan *Kedugram*, layar tiruan D2, dan adegan D3 digambar tim katalog dari keterangan di 14 dan 15. Berkas data menyimpan tulisannya sebagai teks dan menunjuk gambar lewat slot `instr.{kode bacaan}` (misalnya `instr.tes-mb-A-M3`), dipasang lewat `gelita:katalog:impor` seperti slot lain. Selama gambar belum ada, modul menampilkan tata letak teks yang sama tanpa ilustrasi, dan `AssetChecklist` mencatat slot yang kosong. Sejak 3 November 2026 ke-24 gambar M3, M4, D2, dan D3 (bentuk A dan B) tersedia di `gelita-katalog/mockup/gambar-mockup/instrumen/aset/instr.{kode bacaan}.webp`, dari berkas asli pengembang di [gambar/doc-34/](gambar/doc-34/). Bagian ini yang mendaftarkannya ke `CatalogImporter::MOCKUP_FILES` dan `AssetChecklist` saat slotnya dibuat.
 
 ### 6.2 Impor
 
@@ -695,7 +695,7 @@ Judul, petunjuk, pernyataan, dan empat label pilihan skala ada di `data/instrume
 Tidak menahan draf ini.
 
 1. **Ambang tebakan cepat untuk tes** (13: ditinjau setelah uji coba; waktu membaca bacaan jatuh ke butir pertama). Bagian 9 menghitungnya; bagian ini hanya menyediakan waktu per satuan. Perlu angka dari peneliti.
-2. **Gambar layar tiruan** untuk M3, M4, D2, dan D3 belum ada. Sampai tim katalog menggambarnya, modul memakai tata letak teks (§6.1). Apakah uji keterbacaan boleh memakai tata letak teks itu, atau menunggu gambar? Keputusan peneliti.
+2. **Gambar layar tiruan** untuk M3, M4, D2, dan D3: ditutup 3 November 2026. Ke-24 gambar sudah ada (§6.1), jadi uji keterbacaan memakai gambar, bukan tata letak teks. Gambarnya masih `draf pengembang`; pemeriksaan ahli yang diminta 15 (misalnya motif karawo di `tes-bd-A-G1`) tetap berlaku.
 3. **Isi instrumen dalam bahasa en** (K13): tidak dibuat. Bila penelitian nanti butuh versi en (misalnya untuk publikasi), terjemahannya dokumen tersendiri, bukan berkas bahasa.
 4. **Angket setelah P5 utama dibuka** (§10.2): ditutup. Siswa yang belum mengisi sampai saat itu `hilang`. 16 no. 9 menulis "sampai P5"; dibaca di sini sebagai "sebelum P5 dimulai". Perlu konfirmasi peneliti.
 5. **Pemeriksaan JavaScript di perangkat lab.** Modul bekerja tanpa JavaScript (K6), tetapi pengingat 5 menit butuh JavaScript. Bila perangkat sekolah mematikannya, pengingat tidak tampil; batas tetap ditegakkan. Dicek di uji coba.

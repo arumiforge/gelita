@@ -6,6 +6,15 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 3 November 2026
 
+**Gambar layar tiruan modul tes (34) dipasang di katalog** (cabang `pw/friendly-hamilton-lz7xox`) · `asal: pengembang` · `draf pengembang` · merevisi produk (gambar stimulus tes)
+
+Pengembang mengunggah 24 gambar ke [gambar/doc-34/](gambar/doc-34/): M3 dan M4 bentuk A dan B (`tes-mb-*`), D2 `tes-ae-A01`–`A08` dan `B01`–`B08`, dan adegan D3 `tes-bd-A-G1`, `B-G1`, `A-G2`, `B-G2`. Judul setiap berkas dicocokkan dengan situasi di [14](14_TES_BAGIAN_MEMBACA.md) dan [15](15_TES_BAGIAN_DIGITAL.md). Gambar diubah ke WebP (mutu 82, gambar tegak 2000 × 3000 diperkecil ke 1024 × 1536 seperti yang lain; 48 MB menjadi 1,5 MB) dan diberi nama slot `instr.{kode bacaan}.webp` di `gelita-katalog/mockup/gambar-mockup/instrumen/aset/`. PNG asli tetap di `gambar/doc-34/` sebagai induk.
+
+1. **Belum dipasang ke game.** Slot `instr.*` dan modul tesnya belum dibuat; bagian 34 yang mendaftarkannya ke `CatalogImporter::MOCKUP_FILES` dan `AssetChecklist`. Tidak dipilih: memasang sekarang sebagai slot yang belum dibaca halaman mana pun.
+2. **Pertanyaan terbuka no. 2 di [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) ditutup**: uji keterbacaan memakai gambar. Pemeriksaan ahli atas gambar (15, misalnya motif karawo) tetap berlaku.
+
+Diubah: 34 (§6.1, pertanyaan no. 2), 04, katalog (`instrumen/`).
+
 **Empat peringatan isi bank bagian 5 dibetulkan di 08** (cabang `r10-bank-peringatan-isi`) · `asal: pengembang` (rumusan dan kode didraf AI) · `draf pengembang` · merevisi produk (isi bank, butir tetap `needs_verification`)
 
 Menjalankan keputusan no. 4 entri di bawah. Sebelum 08 diubah, `docs/bank-soal/tools/import_08.py` menghasilkan ulang ketiga berkas data persis sama, jadi sejak hari ini 08 dan [36](36_TERJEMAHAN_BANK_SOAL.md) kembali menjadi sumber: isi diubah di 08/36, lalu pengubah dijalankan dan workbook dibangun ulang.
