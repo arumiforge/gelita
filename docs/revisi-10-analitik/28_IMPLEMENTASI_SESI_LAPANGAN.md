@@ -449,6 +449,7 @@ Dalam mode penelitian, aturan buka dibaca dari rencana pertemuan sesi lapangan y
 | Tantangan tertinggal untuk susulan P5 | Per kode | — |
 | Event hilang (jumlah `dropped` dari `events_dropped` sesi game di sesi ini) | Jumlah per kode | Jumlah |
 | Izin belum diisi (siswa rombel tanpa tanggal izin orang tua, [30 → Izin berkode per siswa](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#52-izin-berkode-per-siswa)) | Jumlah | — (isian izin dan angkanya tidak terlihat admin, [§21](#21-pertanyaan-terbuka) no. 7) |
+| Belum punya kursi (siswa rombel tanpa baris `participant_seats`; di mode penelitian tantangan dinilai belum bisa dibuka, [31 → K10](31_IMPLEMENTASI_BANK_SOAL_BARU.md#2-keputusan-yang-dikunci)) | Daftar kode | Jumlah |
 | Status tes awal/akhir per kode (`belum`, `sedang`, `selesai`, `susulan`, `hilang`), tanpa jawaban, skor, atau tanda butir risiko; tombol *Tambah waktu* per kode ([34 → Batas waktu tersembunyi](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#74-batas-waktu-tersembunyi)) | Ya | — |
 | Tombol *Mulai tes awal* / *Mulai tes akhir* di halaman sesi lapangan P1 dan P5 ([34 → Mulai tes bersama](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#53-mulai-tes-bersama)) | Ya | — |
 
@@ -645,7 +646,7 @@ Kunci gabung dengan lembar lapangan: kode peserta, `field_session_code`, dan jam
 | Perubahan | Yang disediakan bagian ini | Yang dirancang di sana |
 | --- | --- | --- |
 | No. 16 mode penelitian (bagian 7, `33`) | Sakelar `field_mode`, rencana pertemuan, pengerjaan terbuka saat sesi tutup | Melanjutkan pengerjaan pertama yang terputus, pengerjaan ulang, Kenali, layar kecil, jam disembunyikan |
-| No. 20 bank baru (bagian 5, `31`) | `participant_seats.booklet` | Buklet menentukan variasi pengerjaan pertama |
+| No. 20 bank baru (bagian 5, [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md)) | `participant_seats.booklet`, `field_mode`; angka "belum punya kursi" di pemantauan (§12) | Buklet menentukan variasi pengerjaan pertama (`VariantPicker`, `BookletRules`); tanpa kursi, tantangan dinilai dijawab `BOOKLET_MISSING` ([31 §11](31_IMPLEMENTASI_BANK_SOAL_BARU.md#11-variasi-dari-buklet-dan-butir-jangkar-perubahan-no-4-20)) |
 | No. 21 skala sikap (bagian 8, `34`) | Susulan P5 dengan jam buka panjang | Layar skala dan `sikap_makeup`; Balai Refleksi hanya di sesi P5 dan susulannya dalam mode penelitian ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) K12) |
 | No. 22 modul tes (bagian 8, `34`) | Token P1 dan P5 membuka modul; bentuk A/B dan `locked_at` dari `participant_seats`; "semua siswa punya bentuk" | Modul tes, mulai tes bersama (`field_sessions.test_started_at`), susulan tes, angket; batas 20 menit di P5 dan angket terlambat ([§21](#21-pertanyaan-terbuka) no. 2–3, diputuskan di [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) K1 dan §10.2); rencana `satu_sesi` tanpa modul tes (34 §5.1) |
 | No. 23 (bagian 4, [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md)) | Kode peserta, sesi lapangan, halaman kursi, angka "izin belum diisi" di pemantauan | Izin berkode per siswa di `/admin/sesi-lapangan/{id}/izin`, baris izin saat mendaftar, token menolak siswa nonaktif, penanda tindak lanjut |

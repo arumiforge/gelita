@@ -68,6 +68,7 @@ B.5a menguji apakah dua ahli memberi label yang sama dengan pengembang tanpa mel
 | Yang bisa membocorkan label | Yang dilakukan |
 | --- | --- |
 | Kolom label pengembang (Sub, AKM, Bloom) di 08 dan kolom Sel di 14 | Tidak diambil. Kolom Dimensi, Sub-aspek D1, Level, dan Bloom di lembar kerja kosong (Bloom butir tes berisi "—") |
+| Workbook bank soal, berkas data `docs/bank-soal/data/`, dan halaman konten panel. Sejak bank baru ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md)) ketiganya memuat label pengembang (dimensi, sub-aspek, level AKM, Bloom) dan kode kesalahan | Tidak dikirim ke validator dan tidak dipakai sebagai sumber berkas validator; generator tetap membaca 08. Muatan game tidak membawa label atau kode, jadi akun `uji.*` di instalasi uji tidak melihatnya ([31 §13.1](31_IMPLEMENTASI_BANK_SOAL_BARU.md#131-label-pengembang-dan-label-ahli)) |
 | Kode butir: `wnb-3-a02` menunjukkan wilayah, tantangan, dan variasi, padahal wilayah naik level; `tes-ae-…` menunjukkan bagian tes, jadi dimensinya | Diganti ID netral `BT-001` … `BT-180` |
 | Urutan dokumen (Temanggung → Magelang → Wonosobo, Bagian 1 → 3) | Bahan diacak dengan benih tetap 20261027; butir di dalam satu bahan tetap urut. ID bahan netral `BH-01` … `BH-73` |
 | Kode kesalahan: INF berarti D1, INF-SUM dan INF-FOP berarti D1b, DIG berarti D2, BUD berarti D3 | Tidak dicantumkan di daftar buta |

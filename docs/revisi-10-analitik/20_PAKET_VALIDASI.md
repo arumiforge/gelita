@@ -739,6 +739,8 @@ Yang harus diketahui ketua peneliti sebelum paket dikirim:
 9. **Tulis versi di surat dan D.1:** "versi/tanggal" diisi `<tanggal beku> · commit <7 karakter> · <versi berkas>`, misalnya `9 November 2026 · commit 1a2b3c4 · berkas-1.0 · sumber 3a48dbfe`. Teks yang sama dipakai di IMd D.3 no. 2 (versi yang dinilai) dan di surat akses.
 10. **Ubah tabel *Ringkasan* no. 4** menjadi "Selesai (*tanggal*, *commit* 7 karakter, lihat 04)".
 
+**Bank soal di *commit* beku** ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md), 2 November 2026). Workbook, berkas data bank, dan halaman konten panel memuat label pengembang dan kode kesalahan, jadi tidak ikut paket validator; berkas validator tetap dibuat dari 08 (langkah 3). Bila *commit* beku sudah memuat bank baru, validator memainkan bank baru di instalasi uji (langkah 6), tanpa label atau kode di layar; bila belum, validator memainkan bank lama, dan hal itu dicatat di entri 04 langkah 8.
+
 **Kapan `berkas-validator.php` dijalankan lagi:**
 
 | Keadaan | Yang dilakukan |

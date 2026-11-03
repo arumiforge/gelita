@@ -392,6 +392,7 @@ Urutan resmi sesudah bagian ini. `ExportService::SHEETS` dan `RawDataService::DI
 | `event` | Semua event bertanda Peneliti (K1) | `game_event_logs` | Diubah: sekarang untuk `ketua` |
 | `masukan` | Kritik dan saran | `participant_feedback` | Tetap |
 | `butir` | Satu baris per butir | `challenge_items` | Diubah |
+| `kode_pilihan` | Kode kesalahan bank per pilihan: rumpang × kata, petunjuk × benda, petunjuk × bagian, pilihan skenario; hanya `ketua`, seperti kunci | `item_error_codes`, `scenario_options` ([31 §13.3](31_IMPLEMENTASI_BANK_SOAL_BARU.md#133-lembar-butir-di-unduhan)) | **Baru** |
 | `izin` | Satu baris per siswa di unduhan itu: kolom daftar izin berkode ([30 §10.1](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#101-daftar-izin-berkode)), disaring ke siswa unduhan itu; hanya studi `field_mode = 1` | `participant_consents` (30) | **Baru** (30, keputusan no. 9); kodenya ditulis bagian 4 |
 | `l1_kondisi`, `l1_penyimpangan`, `l2_kursi`, `l3_bantuan`, `l4_bromp`, `l5_wawancara`, `l6_sesi` | Lembar lapangan yang diimpor ([§10](#10-templat-dan-impor-lembar-lapangan-perubahan-no-15)) | `field_sheet_rows` | **Baru** |
 | `perangkat` | — | — | **Keluar** dari unduhan; pindah ke log teknis ([§5.6](#56-data-bertanda-admin-dan-halaman-log-teknis)) |
@@ -418,14 +419,14 @@ Hanya yang berubah. Kolom lain tetap seperti `RawDataService::COLUMNS` (baris 10
 | `sesi_lapangan` | — | `field_session_code`, `school_code`, `rombel`, `meeting_no`, `makeup_no`, `main_session_code`, `region_opened`, `session_date`, `opens_at`, `closes_at`, `closed_at` (28 §17). Riwayat token tidak ikut |
 | `sesi` | `os_name`, `browser_name`, `is_touch`, `app_client_version`, `package_code`, `package_mode` | `field_session_code`, `meeting_no` |
 | `progres` | `session_code` | `study_code`; kolom lain dari `participant_progress` |
-| `pengerjaan` | — | `field_session_code`, `meeting_no` |
+| `pengerjaan` | — | `field_session_code`, `meeting_no`, `variant_source`, `booklet_at_open` ([31 §11.4](31_IMPLEMENTASI_BANK_SOAL_BARU.md#114-kolom-pengerjaan)) |
 | `jawaban` | — | `answer_key` (K1), `field_session_code` |
-| `percobaan` | — | `ready_ms` ([§6.1](#61-saat-butir-bisa-dijawab-ready_ms)), `field_session_code` |
+| `percobaan` | — | `ready_ms` ([§6.1](#61-saat-butir-bisa-dijawab-ready_ms)), `field_session_code`, `error_code`, `manual_code` ([31 §10](31_IMPLEMENTASI_BANK_SOAL_BARU.md#10-kode-kesalahan-di-setiap-percobaan-salah-perubahan-no-1)) |
 | `navigasi` | Jenis `dialogue_advanced`, `viewport_changed`, `package_changed`, `events_dropped`; kolom `occurred_at`, `server_received_at`, `clock_offset_ms` | Jenis `dialogue_completed`, `passage_reopened`; kolom `occurred_at_corrected`, `offset_known`, `field_session_code` |
 | `bantuan` | Baris per aksi | Baris per pemutaran ([§5.4](#54-audio_pause-dan-lama-mendengar)); `occurred_at_corrected` |
 | `selesai` | `occurred_at` | `occurred_at_corrected`, `offset_known`, `field_session_code` |
 | `event` | `id`, `event_uuid`, `client_event_id`, `session_id`, `participant_id`, `level_id`, `challenge_node_id`, `challenge_item_id`, `occurred_at`, `server_received_at`, `clock_offset_ms`, `payload_json` | `field_session_code`, `level`, `node_ref`, `item_key`, `occurred_at_corrected`, `offset_known`, `payload` ([§7.5](#75-lembar-event-dan-kunci-jawaban)) |
-| `butir` | — | `answer_key` (K1) |
+| `butir` | — | `answer_key` (K1); dari [31 §13.3](31_IMPLEMENTASI_BANK_SOAL_BARU.md#133-lembar-butir-di-unduhan): `round`, `variant`, `booklet_shared`, `dimension`, `subaspect`, `akm_level`, `akm_level_source`, `pirls_process`, `bloom_level_source`, `text_genre`, `testlet_key`, `d2_topic`, `d3_clue_type`, kolom beban permukaan (`gap_count`, `distractor_word_count`, `passage_words`, `decoy_count`, `option_count`, `reason_option_count`, `puzzle_grid`, `tap_min_dp`), `review_status`, `reference_source` |
 
 `attempt_id` tetap di semua lembar yang memuatnya, karena kamus memakainya sebagai kunci antartabel. Nama kolom yang sudah ada tidak diganti, walaupun kamus memakai nama lain (misalnya `hint_opened_before` untuk `hint_before`, `rating` untuk `feedback_rating`). Padanannya ditulis di lembar *Kamus Data* ([§8](#8-lembar-kamus-data-dan-dictionary_version)).
 
@@ -733,7 +734,7 @@ Pesan pemeriksaan per kolom ("jam harus berbentuk JJ:MM:SS", "kode tidak dikenal
 
 | Perubahan | Yang disediakan bagian ini | Yang dirancang di sana |
 | --- | --- | --- |
-| No. 1 kode kesalahan | Lembar `percobaan` dan `jawaban`, kamus berversi | Kolom `error_code`, `manual_code` |
+| No. 1, 3, 4, 8, 20 bank baru (bagian 5, [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md)) | Lembar `percobaan`, `pengerjaan`, `butir`, dan `kode_pilihan`; kamus berversi; impor L5 sebagai sumber `manual_code` | Kolom `item_tries.error_code` dan `manual_code`, `challenge_attempts.variant_source` dan `booklet_at_open`, label dan beban permukaan di `challenge_items`, tabel `item_error_codes` (31 §10, §11.4, §13, §15) |
 | No. 2 Skenario Digital | `ready_ms`, katalog event | Waktu tampil pilihan tindakan dan alasan, event penutupan skenario |
 | No. 5 waktu aktif | Baris `pause` dan lama mendengar yang lengkap ([§5.4](#54-audio_pause-dan-lama-mendengar)), `page_hidden`/`page_visible`, waktu terkoreksi | Event jeda masukan 20 detik, selang narasi diputar |
 | No. 6 narasi instruksi | Katalog event, lembar `bantuan` per pemutaran | Kode konteks narasi instruksi |

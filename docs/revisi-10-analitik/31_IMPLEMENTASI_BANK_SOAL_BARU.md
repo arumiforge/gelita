@@ -1,8 +1,8 @@
 # Dokumen Implementasi Bagian 5 — Bank Soal Baru, Kode Kesalahan, Label, Jangkar, dan Area Ketuk
 
-Per 2 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 1, 3, 4, 8, 17, dan 20 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
+Per 3 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 1, 3, 4, 8, 17, dan 20 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
 
-> **Status: `draf pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 1–2 November 2026). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 kodenya boleh dibangun sekarang ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026), di gelombang D bersama bagian 2 ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md)). Sistem baru tidak dipakai dengan anak sebelum persetujuan etik terbit.
+> **Status: `disetujui pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 1–2 November 2026; ditinjau dan disetujui pengembang 3 November 2026, [§22](#22-keputusan-pengembang)). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 kodenya boleh dibangun sekarang ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026), di gelombang D bersama bagian 2 ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md)). Sistem baru tidak dipakai dengan anak sebelum persetujuan etik terbit.
 >
 > **Isi bank masih `needs_verification`.** Butir di [08](08_DRAF_BANK_SOAL.md) akan berubah setelah validasi ahli. Karena itu dokumen ini merancang **mekanisme**: format workbook, impor, aturan bank, pemilihan variasi, dan penurunan kode. Revisi isi dari validasi cukup diubah di berkas data, dibangun ulang, lalu diimpor, tanpa mengubah kode ([K2](#2-keputusan-yang-dikunci)).
 >
@@ -309,7 +309,7 @@ Rentang Bloom per jenis soal (`bloomRange()`) diganti satu rentang per wilayah, 
 - `FIRST_ATTEMPT_GROUPS` (`:72`) = `['a', 'b']`.
 - `SHARED_GROUP` = `'x'` (baru).
 - `MAX_OVERLAP` (`:75`) dihapus; diganti `MIN_GAP_DP = 24` dan `HUNT_SCENE_DP` ([§9](#9-area-ketuk-tidak-bersentuhan-perubahan-no-17)).
-- `ENGINES` (`:46`) tetap empat di bagian ini; bagian 6 menambah `5 => '{engine skenario}'` ([§18](#18-titik-sambung-ke-perubahan-lain)). Aturan wilayah (`region()`) membaca panjang `ENGINES`, jadi wilayah dengan tantangan kelima lolos setelah bagian 6 tanpa perubahan lain.
+- `ENGINES` (`:46`) tetap empat di bagian ini; bagian 6 menambah `5 => 'skenario'` ([32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md)) ([§18](#18-titik-sambung-ke-perubahan-lain)). Aturan wilayah (`region()`) membaca panjang `ENGINES`, jadi wilayah dengan tantangan kelima lolos setelah bagian 6 tanpa perubahan lain.
 
 **Galat baru** (impor ditolak, pembangun tidak menulis):
 
@@ -669,8 +669,8 @@ Instruksi tantangan dan petunjuk babak 2 dari 08 ada di workbook, bukan berkas b
 2. ~~**Tata letak kartu jangkar.**~~ Dua kartu bertumpuk dengan satu Cek, atau kartu kedua muncul setelah semua pernyataan pertama dijawab? Belum ada mock-up di 18. Usulan: bertumpuk, satu Cek; diperiksa ahli media. **Diputuskan pengembang 2 November 2026** (sesi koordinator, [04](04_CATATAN_KEPUTUSAN.md)): bertumpuk dengan satu Cek; ahli media memeriksanya di langkah 2.
 3. ~~**Kode bank yang direvisi setelah ada percobaan.**~~ Kode tersimpan tidak ditulis ulang (§7.1). Lapis turunan (bagian 9) memilih: kode saat percobaan atau kode bank terbaru. Usulan untuk bagian 9: kode bank terbaru, dengan kode saat percobaan tetap di data mentah. **Diputuskan pengembang 2 November 2026** (sesi koordinator, [04](04_CATATAN_KEPUTUSAN.md)): kode bank terbaru untuk analisis; `item_tries.error_code` tetap kode saat percobaan ([35 → Keputusan pengembang](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#19-keputusan-pengembang) no. 5).
 4. ~~**Terjemahan bahasa Inggris** bank baru belum ada (08 → *Langkah berikutnya* no. 5).~~ **Diputuskan pengembang 2 November 2026** (sesi koordinator, [04](04_CATATAN_KEPUTUSAN.md)): AI mendraf terjemahan bahasa Inggris sekarang, disetujui pengembang, lalu butir yang direvisi dari validasi diterjemahkan ulang. Tidak dipilih: diterjemahkan sekali setelah matriks revisi, sebelum G3 (usulan AI); studi hanya berbahasa Indonesia.
-5. **Penanda baris di bacaan digital** (`layout`): bentuk penanda di `body_id` ditetapkan saat implementasi, bersama mock-up.
-6. **`HUNT_SCENE_DP`** diukur dari tata letak tantangan sekarang; bila tata letak tantangan berubah (misalnya dari bagian 7, layar kecil), angka dan adegan diperiksa ulang.
+5. ~~**Penanda baris di bacaan digital** (`layout`)~~: bentuk penanda di `body_id` ditetapkan saat implementasi, bersama mock-up. **Disetujui pengembang 3 November 2026** ([§22](#22-keputusan-pengembang) no. 9).
+6. ~~**`HUNT_SCENE_DP`**~~ diukur dari tata letak tantangan sekarang; bila tata letak tantangan berubah (misalnya dari bagian 7, layar kecil), angka dan adegan diperiksa ulang. **Disetujui pengembang 3 November 2026** ([§22](#22-keputusan-pengembang) no. 10).
 
 ---
 
@@ -691,18 +691,24 @@ Putaran kedua, 2 November 2026 (sesi koordinator, `asal: pengembang`, [04](04_CA
 7. **Analisis memakai kode bank terbaru**; kode saat percobaan tetap di `item_tries.error_code`. Tidak dipilih: kode saat percobaan.
 8. **Terjemahan bahasa Inggris bank baru didraf AI sekarang**, disetujui pengembang, dan butir yang direvisi dari validasi diterjemahkan ulang. Tidak dipilih: diterjemahkan sekali setelah matriks revisi (usulan AI); studi hanya berbahasa Indonesia.
 
+Putaran ketiga, 3 November 2026 (`asal: pengembang`, [04](04_CATATAN_KEPUTUSAN.md)): pengembang meninjau seluruh dokumen dan menyetujuinya, termasuk usulan di [§21](#21-pertanyaan-terbuka) no. 5–6. Status naik ke `disetujui pengembang`.
+
+9. **Penanda baris bacaan digital ditetapkan saat implementasi**, bersama mock-up tampilan teks digital.
+10. **`HUNT_SCENE_DP` diukur dari tata letak tantangan sekarang dan dikunci tes** (`HuntSceneWidthTest`); bila tata letak tantangan berubah, angka dan adegan diperiksa ulang.
+11. **Terjemahan bahasa Inggris** dikonfirmasi lagi sama dengan no. 8: AI mendraf saat berkas data ditulis di gelombang D, pengembang memeriksa, dan butir tetap bercatatan "terjemahan belum ada" sampai diperiksa.
+
 ---
 
 ## 23. Akibat ke dokumen lain
 
-Dibawa sesi koordinator setelah digabung ke `main`.
+Dibawa sesi koordinator setelah digabung ke `main`. Per 3 November 2026 (cabang `r10-koordinator-31`): no. 1–3, 6, 8, dan 9 sudah dibawa; no. 4 sudah diselaraskan di 32 sebelumnya; no. 5 dan 7 tetap menunggu (glosarium saat implementasi, `kamus-1.1` saat ditulis ke 11).
 
-1. **[29](29_IMPLEMENTASI_DATA_PENELITIAN.md) §7.2–7.3:** lembar `butir` mendapat kolom §13.3; lembar baru `kode_pilihan` (hanya `ketua`); lembar `percobaan` mendapat `error_code`, `manual_code`; lembar `pengerjaan` mendapat `variant_source`, `booklet_at_open`. §15 baris no. 1: kolomnya sekarang dirancang di 31.
-2. **[28](28_IMPLEMENTASI_SESI_LAPANGAN.md) §12 dan §18:** panel pemantauan menampilkan jumlah siswa sesi itu yang belum punya kursi (karena tanpa kursi tantangan dinilai tidak terbuka, K10); baris no. 20 di §18 menunjuk 31 §11.
-3. **[20](20_PAKET_VALIDASI.md) prasyarat no. 4 dan [21](21_BERKAS_BUTIR_VALIDATOR.md):** workbook, berkas data, dan halaman panel konten memuat label pengembang, jadi tidak ikut paket validator; berkas validator tetap dibuat dari 08. Bila *commit* yang dibekukan sudah memuat bank baru, validator memainkan bank baru.
-4. **Bagian 6 (`32`):** membaca format data skenario dari §6.3 dan §15; menambah `BankRules::ENGINES[5]` dan `reason_code`/skor di `item_tries`.
-5. **Glosarium** (saat implementasi): babak (`round`), *Periksa Unggahan* (`post check`, `find_part`, `post_scenes`, `post_parts`), bagian ketuk (`tap part`, `part_key`), kartu jangkar (`anchor card`, grup `x`), buklet (`booklet`, `participant_seats.booklet`, `variant_source`), kode kesalahan (`error_code`, `item_error_codes`, `ErrorCodeResolver`), beban permukaan (`surface load`, `surface_json`), label pengembang/ahli (`label source`).
-6. **[03](03_KODE_DAN_ARTI.md):** kode `BOOKLET_MISSING`; nilai `variant_source` (`booklet`, `random`, `retake`); kode genre dan `layout` bacaan.
-7. **[11](11_KAMUS_DATA.md) → *Variabel butir*** (`kamus-1.1`): `tap_min_dp`, `akm_level_source` berpasangan dengan `bloom_level_source`, `variant_source`, `booklet_at_open`; `variant` untuk Susun Gambar kini `c`–`k`.
-8. **[08](08_DRAF_BANK_SOAL.md):** pemetaan huruf Susun Gambar di §14 menjawab "Pemetaan huruf lama ke huruf baru ditulis di dokumen implementasi".
-9. **[01](01_REVISI_10_ANALITIK.md) → *Catatan perubahan sistem*:** baris no. 1, 3, 4, 8, 17, 20 menunjuk 31.
+1. **[29](29_IMPLEMENTASI_DATA_PENELITIAN.md) §7.2–7.3:** lembar `butir` mendapat kolom §13.3; lembar baru `kode_pilihan` (hanya `ketua`); lembar `percobaan` mendapat `error_code`, `manual_code`; lembar `pengerjaan` mendapat `variant_source`, `booklet_at_open`. §15 baris no. 1: kolomnya sekarang dirancang di 31. **Sudah** (29 §7.2, §7.3, §15).
+2. **[28](28_IMPLEMENTASI_SESI_LAPANGAN.md) §12 dan §18:** panel pemantauan menampilkan jumlah siswa sesi itu yang belum punya kursi (karena tanpa kursi tantangan dinilai tidak terbuka, K10); baris no. 20 di §18 menunjuk 31 §11. **Sudah** (28 §12, §18).
+3. **[20](20_PAKET_VALIDASI.md) prasyarat no. 4 dan [21](21_BERKAS_BUTIR_VALIDATOR.md):** workbook, berkas data, dan halaman panel konten memuat label pengembang, jadi tidak ikut paket validator; berkas validator tetap dibuat dari 08. Bila *commit* yang dibekukan sudah memuat bank baru, validator memainkan bank baru. **Sudah** (20 → Prasyarat no. 4, 21 → Cara menjaga kebutaan B.5a).
+4. **Bagian 6 (`32`):** membaca format data skenario dari §6.3 dan §15; menambah `BankRules::ENGINES[5]` dan `reason_code`/skor di `item_tries`. **Sudah** (32, entri 04 2 November 2026).
+5. **Glosarium** (saat implementasi): babak (`round`), *Periksa Unggahan* (`post check`, `find_part`, `post_scenes`, `post_parts`), bagian ketuk (`tap part`, `part_key`), kartu jangkar (`anchor card`, grup `x`), buklet (`booklet`, `participant_seats.booklet`, `variant_source`), kode kesalahan (`error_code`, `item_error_codes`, `ErrorCodeResolver`), beban permukaan (`surface load`, `surface_json`), label pengembang/ahli (`label source`). Menunggu implementasi.
+6. **[03](03_KODE_DAN_ARTI.md):** kode `BOOKLET_MISSING`; nilai `variant_source` (`booklet`, `random`, `retake`); kode genre dan `layout` bacaan. **Sudah** (03 → Wilayah dan tantangan).
+7. **[11](11_KAMUS_DATA.md) → *Variabel butir*** (`kamus-1.1`): `tap_min_dp`, `akm_level_source` berpasangan dengan `bloom_level_source`, `variant_source`, `booklet_at_open`; `variant` untuk Susun Gambar kini `c`–`k`. Menunggu `kamus-1.1` ditulis ke 11.
+8. **[08](08_DRAF_BANK_SOAL.md):** pemetaan huruf Susun Gambar di §14 menjawab "Pemetaan huruf lama ke huruf baru ditulis di dokumen implementasi". **Sudah** (08 → Keputusan pengembang, *Huruf variasi*).
+9. **[01](01_REVISI_10_ANALITIK.md) → *Catatan perubahan sistem*:** baris no. 1, 3, 4, 8, 17, 20 menunjuk 31. **Sudah**.

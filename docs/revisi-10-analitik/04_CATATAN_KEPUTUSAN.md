@@ -1,10 +1,27 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 2 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 3 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
 
 ## 3 November 2026
+
+**31 disetujui pengembang; akibatnya dibawa ke dokumen lain** (cabang `r10-koordinator-31`, dari `main` setelah PR #324) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Pengembang meninjau [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) dan menyetujui keenam pertanyaan terbukanya. No. 1–4 sudah dijawab sesi koordinator 2 November 2026 (entri di bawah). Usulan no. 5 dan 6 disetujui apa adanya: penanda baris bacaan digital ditetapkan saat implementasi bersama mock-up, dan `HUNT_SCENE_DP` diukur dari tata letak sekarang lalu dikunci tes. Untuk no. 4 pengembang menegaskan pilihan yang sama: AI mendraf terjemahan bahasa Inggris saat berkas data ditulis di gelombang D, lalu pengembang memeriksanya. Status 31 naik ke `disetujui pengembang` (31 §22 no. 9–11).
+
+*Akibat ke dokumen lain* di 31 §23 dibawa tanpa keputusan baru:
+- **29:** lembar `percobaan` mendapat `error_code` dan `manual_code`; lembar `pengerjaan` mendapat `variant_source` dan `booklet_at_open`; lembar `butir` mendapat label dan beban permukaan; ada lembar baru `kode_pilihan` (hanya `ketua`); baris titik sambung no. 1 diperluas ke bank baru.
+- **28:** panel pemantauan mendapat baris "Belum punya kursi", karena tanpa kursi tantangan yang dinilai belum terbuka (31 K10); baris no. 20 di titik sambung menunjuk 31 §11.
+- **20 dan 21:** workbook, berkas data bank, dan halaman konten panel memuat label pengembang dan kode kesalahan, jadi tidak ikut paket validator; berkas validator tetap dibuat dari 08.
+- **03:** variasi Susun Gambar `a`/`b` dan `c … k`, `variant_source`, `BOOKLET_MISSING`, kode bagian ketuk, kode genre dan tampilan bacaan, asal label `developer`/`expert`.
+- **08:** kalimat "pemetaan huruf … ditulis di dokumen implementasi" menunjuk 31 §14.
+- **01:** baris perubahan sistem no. 1, 3, 4, 8, 17, 20 menunjuk 31.
+- **31:** `BankRules::ENGINES[5]` ditulis `skenario`, sesuai 32.
+
+Yang masih menunggu: glosarium (saat implementasi) dan kolom 31 di 11 → *Variabel butir* (saat `kamus-1.1` ditulis ke 11). Baris 31 di 00 juga dibetulkan; sebelumnya tertulis `disetujui pengembang` 2 November 2026 dengan frasa "isi instrumen" yang tidak cocok.
+
+Diubah: 31, 01, 03, 08, 20, 21, 28, 29, 00 (dua baris 31), 04, `docs/PROGRESS.md`, PDF siap cetak.
 
 **PDF 23 terbaru dikirim ke peneliti** (cabang `r10-kirim-23`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
 
