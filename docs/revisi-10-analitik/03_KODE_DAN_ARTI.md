@@ -97,14 +97,23 @@ Akun **siswa** di instalasi uji untuk validator, bukan akun staf ([20 → Akses 
 | a, b (Susun Gambar) | Dua variasi Susun Gambar yang keterangannya bersih dari kunci; pengerjaan pertama diacak dari keduanya, tidak dari buklet | [08](08_DRAF_BANK_SOAL.md#keputusan-pengembang-26-oktober-2026), 26 Oktober 2026; huruf lama dipetakan di [31 §14](31_IMPLEMENTASI_BANK_SOAL_BARU.md#14-susun-gambar-selama-studi) |
 | c … k | Variasi Susun Gambar untuk pengerjaan ulang (Temanggung sampai `k`, Magelang dan Wonosobo sampai `j`) | [31 §14](31_IMPLEMENTASI_BANK_SOAL_BARU.md#14-susun-gambar-selama-studi), 2 November 2026 (dulu `c … j`) |
 | B1–B4 | Buklet: kombinasi variasi per wilayah (B1 a-a-a, B2 b-b-b, B3 a-b-a, B4 b-a-b), dibagikan per kursi lewat denah L2 | Disetujui |
-| booklet, random, retake | Asal variasi sebuah pengerjaan (`challenge_attempts.variant_source`): dari buklet siswa, acak dari `a`/`b` (di luar mode penelitian, dan Susun Gambar), atau pengerjaan ulang | [31 §11](31_IMPLEMENTASI_BANK_SOAL_BARU.md#11-variasi-dari-buklet-dan-butir-jangkar-perubahan-no-4-20), 2 November 2026 |
-| BOOKLET_MISSING | Galat aturan: di mode penelitian siswa belum punya kursi dan buklet, jadi tantangan yang dinilai belum bisa dibuka; siswa melihat pesan ramah | [31 → K10](31_IMPLEMENTASI_BANK_SOAL_BARU.md#2-keputusan-yang-dikunci), 2 November 2026 |
 | A1, B4, … | Kode bagian ketuk di adegan *Periksa Unggahan* (`post_parts.part_key`) | [08](08_DRAF_BANK_SOAL.md); [31 §6.3](31_IMPLEMENTASI_BANK_SOAL_BARU.md#63-sheet-baru) |
-| papan_info, pesan_grup, hasil_pencarian, … | Kode genre teks (`reading_passages.text_genre`): `artikel_pustaka`, `artikel_majalah`, `papan_info`, `unggahan_resmi`, `pesan_grup`, `hasil_pencarian`, `situs_wisata`, `dua_sumber`, `unggahan_bersponsor` | [06](06_KISI_KISI_BANK_SOAL.md#genre-teks-digital); [31 §6.2](31_IMPLEMENTASI_BANK_SOAL_BARU.md#62-kolom-baru-di-sheet-passages) |
-| plain, info_screen, chat, search, post | Bentuk tampilan bacaan di engine (`reading_passages.layout`) | [31 §6.2](31_IMPLEMENTASI_BANK_SOAL_BARU.md#62-kolom-baru-di-sheet-passages) |
 | developer, expert | Asal label AKM dan Bloom per butir (`akm_level_source`, `bloom_level_source`): pengembang, atau hasil pelabelan buta B.5a | [31 → K13](31_IMPLEMENTASI_BANK_SOAL_BARU.md#2-keputusan-yang-dikunci) |
 | Kedugram | Aplikasi media sosial fiktif tempat semua unggahan di bacaan digital dan *Periksa Unggahan* tampil | Disetujui |
 | tmg-2-a01 | Kode butir: tantangan `tmg-2`, variasi `a`, butir ke-01 | Kode tersimpan |
+
+## Variasi, buklet, dan bacaan digital di sistem
+
+Kode di bank soal baru dan data pengerjaan ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md), keputusan pengembang 2 November 2026).
+
+| Kode | Arti | Catatan |
+| --- | --- | --- |
+| `booklet` | Nilai `variant_source`: variasi pengerjaan pertama diambil dari buklet siswa (mode penelitian, studi `active`, tantangan 2–5) | [31 → Memilih variasi](31_IMPLEMENTASI_BANK_SOAL_BARU.md#112-memilih-variasi-di-opennode) |
+| `random` | Nilai `variant_source`: variasi diacak dari `a`, `b` (mode penelitian mati atau studi tidak `active`, dan Susun Gambar selalu) | 31 §11.2 |
+| `retake` | Nilai `variant_source`: pengerjaan ulang, variasi yang belum didapat siswa | 31 §11.2 |
+| `BOOKLET_MISSING` | Aturan tantangan: di mode penelitian siswa belum punya kursi dan buklet, jadi tantangan 2–5 tidak dibuka; siswa melihat pesan ramah, Susun Gambar tetap terbuka | 31 K10 |
+| `artikel_pustaka`, `artikel_majalah`, `papan_info`, `unggahan_resmi`, `pesan_grup`, `hasil_pencarian`, `situs_wisata`, `dua_sumber`, `unggahan_bersponsor` | Kode genre bacaan (`text_genre`), dari [06 → Genre teks digital](06_KISI_KISI_BANK_SOAL.md#genre-teks-digital) | [31 → Kolom baru di sheet `passages`](31_IMPLEMENTASI_BANK_SOAL_BARU.md#62-kolom-baru-di-sheet-passages) |
+| `plain`, `info_screen`, `chat`, `search`, `post` | Bentuk tampilan bacaan (`layout`): teks biasa, layar info, grup pesan, hasil pencarian, unggahan; hanya memilih templat tampilan, isinya tetap teks | 31 §6.2; penanda baris ditetapkan saat implementasi (31 §21 no. 5) |
 
 ## Peserta, sekolah, dan sesi
 

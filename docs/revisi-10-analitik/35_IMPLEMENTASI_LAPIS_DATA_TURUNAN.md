@@ -86,7 +86,7 @@ K1–K4 diputuskan pengembang ([§19](#19-keputusan-pengembang)). Sisanya menuru
 | Kode | Keputusan |
 | --- | --- |
 | K1 | **Lapis turunan disimpan di tabel** (`derived_*`), diisi satu kalkulator berversi per putaran hitung satu studi. Unduhan dan layar data membaca tabel itu. Tidak dipilih: dihitung saat unduhan dibuat. |
-| K2 | **Ambang di kolom studi**: `research_studies.idle_threshold_ms` dan `rapid_guess_ms`, bawaan dari `Config\Gelita`, diubah `ketua` di halaman studi dengan log audit, dan terkunci setelah versi dikunci di G4. |
+| K2 | **Ambang di kolom studi**: `research_studies.idle_threshold_ms` dan `rapid_guess_ms`, dibuat migrasi bagian 7 ([33 §6, §9](33_IMPLEMENTASI_MODE_PENELITIAN.md#6-pengaturan-studi)) dan diubah `ketua` di halaman pengaturan studi 33 dengan batas dan audit `study_settings_changed` di sana. Bagian ini hanya membacanya dan menambah kunci G4: `thresholds_locked_at`, tombol *Kunci ambang*, audit `study_thresholds_locked`; sesudah dikunci, halaman 33 menolak perubahan kedua ambang ([§19](#19-keputusan-pengembang) no. 8). |
 | K3 | **Dihitung ulang saat unduhan bila basi, ditambah tombol dan perintah.** Unduhan menghitung ulang studi lebih dulu bila data mentah, lembar lapangan yang diimpor, izin, atau ambang berubah sejak putaran terakhir. `ketua` juga punya tombol *Hitung ulang*, dan ada perintah spark. |
 | K4 | **Data mentah tetap, lapis turunan dipotong pada saat mundur.** Untuk status `withdrawn_keep`, semua yang terjadi sesudah saat mundur tidak masuk tabel turunan mana pun; peserta tetap `consent_ok = 1` dengan `withdrawn_on` terisi. |
 | K5 | **Satu kalkulator, fungsi murni.** `App\Libraries\Derived\*` menerima larik data mentah yang sudah dimuat dan ambang, lalu mengembalikan baris turunan, tanpa membaca database atau jam sendiri. `DerivedDataService` yang memuat, memanggil, dan menyimpan. Ini yang membuat contoh data hitungan tangan bisa diuji persis. |
@@ -122,13 +122,14 @@ K1–K4 diputuskan pengembang ([§19](#19-keputusan-pengembang)). Sisanya menuru
 
 ```text
 app/Libraries/Derived/
-  Thresholds.php          // value object: idle_ms, rapid_ms, near_miss_dp, input_gap_min_ms
+  Thresholds.php          // value object: idle_ms, rapid_ms, near_miss_dp, input_idle_log_ms
   RunInput.php            // raw rows of one study, loaded once, ordered
   Timeline.php            // active-time arithmetic (segments, hidden, idle excess, narration)
   TryCalculator.php       // per try: decision_ms, rapid_guess, error_code_analysis, flags
   ItemCalculator.php      // per participant x item: first try, final, censored, missing, change after feedback
   AttemptCalculator.php   // per attempt: scored or retake, active time, returns, exits
   ChallengeCalculator.php // per participant x challenge: completion status, skipped (a) and (b)
+  TestResponseCalculator.php // per test answer: decision_ms, rapid_guess (derived_test_responses)
   ParticipantCalculator.php // consent_ok, analysable, complete, rapid_share, questionnaire and attitude derivations
   FieldSheetFlags.php     // L1-L4 window joins (shared_device, helped_*, deviation_code, observation codes)
 app/Services/DerivedDataService.php   // load, call calculators, write rows, switch the current run
@@ -147,21 +148,21 @@ app/Commands/DerivedCompute.php       // gelita:turunan:hitung
 | Peserta, sekolah, rombel, kode | `participants`, `schools.research_code` | 28 |
 | Izin dan status | `participant_consents`, `participants.deactivated_at`, `participants.corrected_at` | 30 |
 | Sesi lapangan, pertemuan, wilayah yang dibuka | `field_sessions`, rencana pertemuan, `game_sessions.field_session_id` | 28 |
-| Pengerjaan, jawaban, percobaan | `challenge_attempts`, `item_responses`, `item_tries` (termasuk `ready_ms` 29, `error_code` dan kolom D2 dari 31/32) | 29, 31, 32 |
+| Pengerjaan, jawaban, percobaan | `challenge_attempts` (termasuk `is_retake` 33 K6, `variant_source` 31 K15), `item_responses`, `item_tries` (termasuk `ready_ms` 29, `error_code` dan kolom D2 dari 31/32) | 29, 31, 32, 33 |
+| Potongan pengerjaan | `challenge_attempt_segments` (`opened_at`, `left_at`, `left_via`, sesi dan sesi lapangan) | 33 §5.4 |
 | Event peneliti | `game_event_logs` jenis Peneliti di `EventCatalog` (29 K7), dengan `occurred_at_corrected` | 29 |
-| Narasi diputar | `audio_usage_events` per pemutaran | 29 §5.4 |
-| Jeda masukan ≥ 20 detik | Event mentah dari bagian 7 (anggapan: `input_gap`) | 33 |
-| Butir dan adegan | `challenge_items` (dimensi, sub-aspek, level AKM, babak, `testlet_key`), bagian ketuk Cari Objek | 31 |
+| Narasi diputar | `audio_usage_events` per pemutaran, dengan `clock_offset_ms` (33 K10) dan `audio_assets.context_code` | 29 §5.4, 33 §5.3 |
+| Jeda masukan ≥ 20 detik | Event `input_idle` (payload `idle_ms`, `started_at`, `end`, `screen`) | 33 K4, §5.2 |
+| Butir dan adegan | `challenge_items` (dimensi, sub-aspek, level AKM, babak, `testlet_key`), bagian ketuk Cari Objek (kotak benda babak 1, `post_parts` babak 2), `HuntGeometry` | 31 §9, §13, §15 |
 | Lembar lapangan | `field_sheet_rows` impor utama yang berlaku | 29 |
-| Tes, angket, skala sikap | Tabel jawaban modul (anggapan nama di §15) | 34 |
+| Tes, angket, skala sikap | `instrument_sittings`, `instrument_blocks`, `instrument_parts`, `instrument_responses` | 34 §11.1 |
 
 ### 4.3 Sidik jari masukan
 
 Setiap putaran menyimpan `input_fingerprint`: SHA-256 dari daftar angka yang cukup untuk tahu apakah data mentah berubah, tanpa membaca semuanya:
 - `MAX(id)` dan `COUNT(*)` `item_tries`, `game_event_logs`, `audio_usage_events` untuk studi itu;
-- `MAX(updated_at)` `challenge_attempts`, `participant_consents`, `participants`;
+- `MAX(updated_at)` `challenge_attempts`, `participant_consents`, `participants`, `instrument_sittings`, `instrument_responses` (kolom `updated_at` kedua tabel modul dari [34 §11.1](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#111-tabel-baru)); satu aturan untuk semua tabel yang barisnya bisa berubah, tanpa `revision` ([§19](#19-keputusan-pengembang) no. 10);
 - `MAX(id)` `field_sheet_imports` dan `MAX(superseded_at)`;
-- `MAX(id)` dan `MAX(updated_at)` tabel modul tes;
 - `idle_threshold_ms`, `rapid_guess_ms`, dan `ResearchDictionary::VERSION`.
 
 Putaran **basi** bila sidik jari sekarang berbeda dari sidik jari putaran yang berlaku ([§9](#9-kapan-dihitung)). Penghapusan data (bagian 4) mengubah `COUNT(*)`, jadi putaran sesudah penghapusan selalu basi.
@@ -172,16 +173,16 @@ Putaran **basi** bila sidik jari sekarang berbeda dari sidik jari putaran yang b
 
 | Kolom `research_studies` | Bawaan | Arti | Dari |
 | --- | --- | --- | --- |
-| `idle_threshold_ms` | 180000 | T_idle: jeda tanpa masukan yang lebih panjang dari ini dipotong bagian lebihnya | 11 → Analitik 5 |
-| `rapid_guess_ms` | 3000 | T_teb: `decision_ms` di bawah ini = tebakan cepat | 11 → Analitik 6 |
-| `thresholds_locked_at` | null | Diisi saat versi dikunci di G4; sesudahnya kedua ambang tidak bisa diubah | 01, gerbang G4 |
+| `idle_threshold_ms` | 180000 | T_idle: jeda tanpa masukan yang lebih panjang dari ini dipotong bagian lebihnya. Dibuat bagian 7 (33 §9) | 11 → Analitik 5 |
+| `rapid_guess_ms` | 3000 | T_teb: `decision_ms` di bawah ini = tebakan cepat. Dibuat bagian 7 (33 §9) | 11 → Analitik 6 |
+| `thresholds_locked_at` | null | Dibuat migrasi bagian ini (§12). Diisi saat versi dikunci di G4; sesudahnya kedua ambang tidak bisa diubah | 01, gerbang G4 |
 
-- **Bawaan dari `Config\Gelita`**: properti baru `$derivedIdleThresholdMs = 180000` dan `$derivedRapidGuessMs = 3000`, dipakai saat studi dibuat. Angka di kode hanya bawaan; nilai yang berlaku selalu dari studi.
-- **Halaman studi** (`studies.manage`, `ketua`): dua isian dalam detik ("Ambang jeda" 30–1800, "Ambang tebakan cepat" 1–30), dengan catatan "Sementara. Ditetapkan ulang setelah uji coba." Disimpan dengan UPDATE bersyarat pada `updated_at` dan log audit `study_thresholds_changed` `{from, to}`.
-- **Mengunci.** Tombol *Kunci ambang* (`ketua`) mengisi `thresholds_locked_at` dengan log audit `study_thresholds_locked`. Tidak ada tombol membuka kunci di panel; membukanya hanya lewat perintah spark dengan alasan, untuk kesalahan yang dicatat sebagai penyimpangan (11 → *Versi dan cara berubah*, baris Beku).
+- **Kolom dan bawaan dari bagian 7.** Migrasi `004100` ([33 §9](33_IMPLEMENTASI_MODE_PENELITIAN.md#9-skema-database)) membuat kedua kolom ambang dengan bawaan di atas; bagian ini tidak membuatnya lagi dan tidak punya properti bawaan sendiri di `Config\Gelita`. Nilai yang berlaku selalu dari studi.
+- **Mengubah** (`studies.manage`, `ketua`) hanya di halaman pengaturan studi bagian 7 ([33 §6](33_IMPLEMENTASI_MODE_PENELITIAN.md#6-pengaturan-studi), `POST /admin/studi/{id}/pengaturan`), dengan batas isiannya (T_idle 30.000–1.800.000 ms, T_teb 500–10.000 ms, ditampilkan dalam detik) dan audit `study_settings_changed` (nilai lama dan baru). Bagian ini tidak punya isian atau audit ubah ambang sendiri.
+- **Mengunci.** Tombol *Kunci ambang* (`ketua`) di halaman studi mengisi `thresholds_locked_at` dengan log audit `study_thresholds_locked`. Sesudahnya halaman pengaturan 33 menolak perubahan `idle_threshold_ms` dan `rapid_guess_ms`. Tidak ada tombol membuka kunci di panel; membukanya hanya lewat perintah spark dengan alasan, untuk kesalahan yang dicatat sebagai penyimpangan (11 → *Versi dan cara berubah*, baris Beku).
 - **Mengubah ambang tidak mengubah data mentah**: putaran berikutnya basi dan dihitung ulang (K3), dan nilai ambang yang dipakai tercatat di `derived_runs` dan di lembar *Kamus Data*.
 - **Ambang lain tetap konstanta kode**, karena 11 membekukannya: 24 dp untuk NON-SEN, 20 detik untuk jeda mentah yang dicatat (bagian 7), dan 80% (49 dari 61) untuk `analysable`. Ketiganya ada di `Thresholds` dengan nama, supaya `kamus-1.1` bisa mengubahnya di satu tempat.
-- **Tes awal–akhir.** 13 menyebut ambang tebakan cepat tes ditinjau tersendiri. Sampai ada keputusan, `rapid_guess` jawaban tes memakai `rapid_guess_ms` yang sama ([§18](#18-pertanyaan-terbuka) no. 2).
+- **Tes awal–akhir.** 13 menyebut ambang tebakan cepat tes ditinjau tersendiri. Sampai ada keputusan, `rapid_guess` jawaban tes (`derived_test_responses`, §6.8) memakai `rapid_guess_ms` yang sama ([§18](#18-pertanyaan-terbuka) no. 2).
 
 ---
 
@@ -204,13 +205,13 @@ Setiap aturan di bawah adalah aturan di 11; kolom kanan menyebut bagian 11 yang 
 | `scored_try_no` | Nomor percobaan butir itu di pengerjaan pertama setelah aturan cadangan: percobaan butir yang sama diurutkan menurut waktu lintas pengerjaan sebelum tantangan tertutup pertama kali; hanya tiga yang pertama diberi nomor | Pengerjaan pertama, aturan cadangan |
 | `anomaly` | `extra_try` untuk percobaan sesudah yang ketiga; selain itu kosong | Sama |
 | `error_code` | Kode dari bank terbaru untuk pilihan percobaan itu (`ErrorCodeResolver` bagian 5); kosong untuk percobaan benar dan Susun Gambar. Kode saat percobaan tetap di `item_tries.error_code` dan masuk lembar sebagai `error_code_at_try` | Analitik 6 |
-| `decision_ms` | `last_input_ms − ready_ms` (29 §6.1) untuk Benar atau Salah, kartu jangkar, dan Cari Objek; untuk tindakan Skenario Digital dari kolom bagian 6. Kosong bila salah satu kosong, bila hasilnya negatif, atau untuk Isi Rumpang dan Susun Gambar | Analitik 6, waktu putus |
+| `decision_ms` | `last_input_ms − ready_ms` (29 §6.1) untuk Benar atau Salah, kartu jangkar, dan Cari Objek; untuk tindakan Skenario Digital `action_last_input_ms − ready_ms` (kolom mentah [32 §6.4](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#64-waktu), dibaca apa adanya). Kosong bila salah satu kosong, bila hasilnya negatif, atau untuk Isi Rumpang dan Susun Gambar | Analitik 6, waktu putus |
 | `rapid_guess` | 1 bila `decision_ms < rapid_guess_ms`, 0 bila tidak, kosong bila `decision_ms` kosong | Analitik 6, NON-TEB |
-| `reason_decision_ms`, `reason_rapid` | Sama untuk alasan Skenario Digital | Analitik 6 |
+| `reason_decision_ms`, `reason_rapid` | Sama untuk alasan Skenario Digital: `reason_last_input_ms − reason_ready_ms` (32 §6.4) | Analitik 6 |
 | `error_code_analysis` | `error_code`, kecuali percobaan salah dengan `rapid_guess = 1` diberi `NON-TEB` | Analitik 6 |
 | `last_try_exhausted` | 1 pada percobaan salah yang menghabiskan kesempatan terakhir butir itu (NON-HABIS) | Analitik 6 |
 | `hint_before` | `item_tries.hint_opened_before` | Analitik 7 |
-| `item_hint_before`, `item_narration_before` | 1 bila Bantuan khusus butir itu dibuka, atau narasi butir itu diputar siswa (bukan *autoplay*), sebelum `occurred_at` percobaan | Analitik 7 |
+| `item_hint_before`, `item_narration_before` | 1 bila Bantuan khusus butir itu dibuka, atau narasi butir itu diputar siswa (bukan *autoplay*), sebelum `occurred_at` percobaan. Narasi butir dibaca dari `audio_usage_events` lewat `audio_assets` → `challenge_items.audio_prompt_*` (32 §9.2) | Analitik 7 |
 | `reason_code`, `action_score` | Disalin dari kolom Skenario Digital bagian 6 | Analitik 10 |
 | `shared_device` | 1 bila L2 sesi itu mencatat *Pakai bareng: Ya* untuk kursi siswa, dalam jendela sampai jam pindah perangkat | Penanda, L2 |
 | `helped_content`, `helped_technical`, `encouraged`, `disturbed` | 1 bila ada baris L3 (ISI/STR/BHS, TKN, SMG, GG-*) untuk siswa atau kursinya, dari 1 menit sebelum jam kejadian sampai 2 menit sesudahnya (atau sesudah jam selesai) | Penanda, L3 |
@@ -249,12 +250,12 @@ Satu baris untuk **setiap butir yang dinilai** di variasi buklet siswa, juga yan
 | --- | --- | --- |
 | `attempt_id`, `participant_code`, `node_ref`, `attempt_no` | Kunci | — |
 | `is_scored_attempt` | 1 untuk pengerjaan dengan variasi buklet siswa sampai tantangan tertutup pertama kali; bila ada dua sebelum tertutup (gangguan), keduanya 1 dan aturan cadangan §6.1 berlaku | Pengerjaan pertama |
-| `is_retake` | 1 untuk pengerjaan sesudah tantangan tertutup | Pengerjaan ulang |
-| `segments` | Banyak potongan (sesi game berbeda) | Analitik 5 |
+| `is_retake` | Disalin `challenge_attempts.is_retake` (33 K6): 1 untuk pengerjaan sesudah tantangan tertutup | Pengerjaan ulang |
+| `segments` | Banyak potongan di `challenge_attempt_segments` (33 §5.4) | Analitik 5 |
 | `total_ms`, `hidden_ms`, `idle_excess_ms`, `active_ms` | §6.7 | Analitik 5 |
 | `cumulative_active_ms` | Jumlah `session_active_ms` peserta sebelum pengerjaan ini dimulai | Analitik 5, kovariat |
 | `hint_count` | Disalin `challenge_attempts.hint_count` | Analitik 7 |
-| `instruction_replays` | Banyak pemutaran ulang narasi instruksi oleh siswa (kode konteks bagian 7 atau 6, anggapan di §15) | Analitik 7 |
+| `instruction_replays` | Banyak aksi `play`/`replay` dengan `context_code = challenge_instruction` di pengerjaan ini; semua putaran dihitung, karena narasi instruksi tidak pernah berbunyi sendiri (32 K10, §8.2) | Analitik 7 |
 | `material_returns` | (a) `library_opened` saat pengerjaan belum tertutup + (b) `passage_reopened` (29 §6.3) | Analitik 8 |
 | `exit_count` | Banyak `challenge_abandoned` pengerjaan ini sebelum tertutup | Analitik 8 |
 | `reading_max_pct` | `reading_progress` terbesar | Analitik 8 |
@@ -265,7 +266,7 @@ Satu baris untuk **setiap butir yang dinilai** di variasi buklet siswa, juga yan
 | Kolom | Aturan | 11 |
 | --- | --- | --- |
 | `completion_status` | `solved`, `exhausted`, `unfinished`, `not_started`, `locked`, dinilai saat putaran dari pengerjaan pertama | Analitik 1 |
-| `skipped_failed_count` | Jenis (a): banyak petunjuk Cari Objek (`clue_failed`, ditulis `ChallengeService.php:1009`) dan skenario Skenario Digital (event bagian 6) yang ditutup setelah kesempatan ketiga | Analitik 1 |
+| `skipped_failed_count` | Jenis (a): banyak petunjuk Cari Objek (`clue_failed`, ditulis `ChallengeService.php:1009`) dan skenario Skenario Digital (`scenario_failed`, 32 K13, §5.6) yang ditutup setelah kesempatan ketiga | Analitik 1 |
 | `skipped_left_count` | Jenis (b): banyak `challenge_abandoned` (ditulis `ChallengeService.php:732`, juga `RetentionService` `via: retention`) di pengerjaan pertama yang **tidak** diikuti aktivitas pengerjaan itu di sesi lapangan yang sama | Analitik 1 |
 | `closed_meeting_no` | Pertemuan saat tantangan tuntas | Analitik 1 |
 
@@ -307,14 +308,26 @@ Satu baris untuk **setiap butir yang dinilai** di variasi buklet siswa, juga yan
 
 Satu fungsi, `Timeline::active()`, dipakai untuk pengerjaan, butir, dan sesi:
 
-1. **Potongan.** Satu potongan = selang di dalam satu sesi game, dari mulai (`challenge_opened`, atau tampilnya petunjuk atau situasi untuk butir, atau awal sesi game) sampai selesai (percobaan yang menutup, atau event terakhir potongan itu). Selang di antara potongan tidak dihitung. `total_ms` = jumlah potongan.
+1. **Potongan.** Untuk pengerjaan, satu potongan = satu baris `challenge_attempt_segments` (33 §5.4), dari `opened_at` sampai `left_at`; potongan yang tetap terbuka (perangkat mati) ditutup dengan event terakhir pengerjaan itu (11). Untuk butir, potongan dimulai dari tampilnya petunjuk atau situasi; untuk sesi, dari awal sesi game. Potongan berakhir pada percobaan yang menutup, atau event terakhir potongan itu. Selang di antara potongan tidak dihitung. `total_ms` = jumlah potongan.
 2. **Tersembunyi.** Selang `page_hidden` sampai `page_visible` berikutnya (atau sampai akhir potongan) dipotong seluruhnya → `hidden_ms`.
 3. **Jeda masukan.** Dari sisa yang tampil, setiap jeda tanpa masukan yang dicatat bagian 7 (≥ 20 detik) dikurangi selang narasi yang sedang diputar dan selang yang sudah tersembunyi. Bila sisanya lebih dari T_idle, bagian yang melebihi T_idle masuk `idle_excess_ms`.
 4. `active_ms = total_ms − hidden_ms − idle_excess_ms`.
 
-Semua jam memakai waktu terkoreksi (`occurred_at_corrected`, 29 K8). Event dengan `offset_known = 0` tetap dipakai dengan waktu mentahnya; banyaknya dicatat di `derived_runs.notes` untuk dilaporkan.
+Semua jam memakai waktu terkoreksi (`occurred_at_corrected`, 29 K8); jam narasi dikoreksi dengan `audio_usage_events.clock_offset_ms` (33 K10). Event dengan `offset_known = 0` tetap dipakai dengan waktu mentahnya; banyaknya dicatat di `derived_runs.notes` untuk dilaporkan.
 
 **Masukan** adalah sentuhan atau klik, tombol keyboard, gulir, dan seret; gerakan tetikus tanpa klik tidak (11). Itu aturan perekaman bagian 7; lapis turunan hanya membaca jeda yang dicatat.
+
+### 6.8 `derived_test_responses`: satu baris per jawaban tes
+
+Satu baris per baris `instrument_responses` dari sesi `kind = test` (tes awal dan akhir, [34 §11.1](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#111-tabel-baru)), tanpa sesi `is_preview = 1` dan tanpa contoh soal `tes-ct-*`. Angket, skala sikap, dan butir risiko daring tidak masuk ([§19](#19-keputusan-pengembang) no. 9).
+
+| Kolom | Aturan | 11 |
+| --- | --- | --- |
+| `participant_code`, `occasion`, `form`, `item_code`, `unit` | Kunci, dari `instrument_sittings` dan `instrument_items`; dicocokkan ke lembar `tes_jawaban` 34 §11.4 | *Jawaban tes* |
+| `decision_ms` | `last_view_ms` (waktu tampil terakhir sampai jawaban dikirim, 34 §7.5); kosong bila `response` kosong atau `not_reached = 1` | *Jawaban tes* |
+| `rapid_guess` | 1 bila `decision_ms < rapid_guess_ms`, 0 bila tidak, kosong bila `decision_ms` kosong. Ambang yang sama dengan tantangan sampai §18 no. 2 diputuskan | *Jawaban tes*, 13 |
+
+Jawaban sesudah saat mundur tidak ditulis (§7). Barisnya berversi per putaran seperti tabel `derived_*` lain (`run_id`, `dictionary_version`); lembar `tes_jawaban` (mentah) mengambil `rapid_guess` dari putaran yang berlaku.
 
 ---
 
@@ -366,7 +379,7 @@ Yang **tidak** berubah dari `kamus-1.0`: peta bukti, istilah, butir yang dinilai
 | 3 | Sama | Variabel angket 16 → *Variabel untuk kamus data*, **tanpa** `risk_*` dan `support_*` per siswa; butir risiko daring hanya lembar `risiko_gabungan` | 16, 29 K9 |
 | 4 | Sama | Variabel skala sikap 17 → *Variabel untuk kamus data*; `feedback_rating` = `participant_feedback.rating` | 17 |
 | 5 | Sama | `registration_corrected`; `risk_reconsent` hanya sebagai angka gabungan (berapa siswa memilih Ya di T11) | 30 §5.4, §9 |
-| 6 | Baru: *Jawaban tes* | Satu baris per butir per siswa per tes (13), dengan `rapid_guess` memakai T_teb studi | 13 |
+| 6 | Baru: *Jawaban tes* | Satu baris per butir per siswa per tes (13), dengan `rapid_guess` memakai T_teb studi, dihitung di `derived_test_responses` (§6.8) | 13 |
 | 7 | *Kunci penggabungan dan waktu* | `offset_known` (1/0); `after_withdrawal` di lembar mentah | 29 K8, §7 |
 | 8 | Analitik 5 dan 6 | Waktu putus = `last_input_ms − ready_ms`; `last_input_ms` Cari Objek sebelum bagian 3 memakai rujukan lama (selisih dari petunjuk tampil), jadi `decision_ms` data lama kosong | 29 §6.1 |
 | 9 | Analitik 6, NON-SEN | `empty_tap` mencatat koordinat; jarak ke kunci diturunkan di server (K11) | 29 §6.2 |
@@ -374,7 +387,7 @@ Yang **tidak** berubah dari `kamus-1.0`: peta bukti, istilah, butir yang dinilai
 | 11 | *Versi dan cara berubah* | Setiap tabel turunan menyimpan `dictionary_version` **dan** `run_id`; ambang yang dipakai tercatat per putaran; versi antara `kamus-1.1-usulan` | §4, §8.1 |
 | 12 | Analitik 1 | "Pengambilan data selesai" = jam putaran yang dipakai unduhan akhir; data yang diunduh sebelum studi ditutup menyebut jam putarannya | §6.4 |
 | 13 | *Aturan gabung lembar lapangan*, L4 | Pengamatan L4 diberi `attempt_id` dan `item_key` yang aktif (`derived_observations`) | §6.6 |
-| 14 | Analitik 7, 10 | `instruction_replays` memakai kode konteks narasi instruksi (bagian 6 atau 7); `reason_level` tetap kosong sampai urutan alasan ditetapkan | 01 no. 6, 11 |
+| 14 | Analitik 7, 10 | `instruction_replays` memakai kode konteks narasi instruksi `challenge_instruction` (32 K10); `reason_level` tetap kosong sampai urutan alasan ditetapkan | 01 no. 6, 11 |
 | 15 | *Variabel peserta dan sesi*, sesi game | `is_touch` tetap di log teknis admin kecuali peneliti memintanya (29 §18 no. 3) | 29 |
 
 Setelah uji coba, angka yang ditetapkan ulang (T_idle, T_teb, batas `game_time_group`, ambang tebakan cepat tes) ditulis ke 11 bersama nomor di atas.
@@ -417,6 +430,7 @@ Ditambahkan ke daftar lembar 29 §7.2, sesudah `butir` dan sebelum lembar lapang
 | `turunan_butir` | `derived_items` | Peserta × butir |
 | `turunan_percobaan` | `derived_tries` | Percobaan |
 | `turunan_pengamatan` | `derived_observations` | Pengamatan L4 |
+| `turunan_tes` | `derived_test_responses` | Jawaban tes (§6.8) |
 
 Filter unduhan (wilayah, tantangan, sekolah, `field_session_code`, `meeting_no`, tanggal) berlaku juga untuk lembar turunan. Filter tidak mengubah hitungan; hanya memilih baris.
 
@@ -433,7 +447,7 @@ Baris kepala lembar `kamus` (29 §8) ditambah: `derived_run_id`, jam putaran, `d
 
 ### 10.4 Layar data
 
-`/admin/data/{dimensi}` (`research.browse`) mendapat ketujuh lembar turunan sebagai dimensi, membaca putaran yang berlaku. Di atas tabel: jam putaran, versi kamus, dan "Data mentah sudah berubah sejak dihitung" bila basi, dengan tombol *Hitung ulang*.
+`/admin/data/{dimensi}` (`research.browse`) mendapat kedelapan lembar turunan sebagai dimensi, membaca putaran yang berlaku. Di atas tabel: jam putaran, versi kamus, dan "Data mentah sudah berubah sejak dihitung" bila basi, dengan tombol *Hitung ulang*.
 
 ---
 
@@ -459,7 +473,7 @@ Tidak ada kemampuan baru (K14).
 
 | Tabel atau kolom | Isi |
 | --- | --- |
-| `research_studies` | Kolom baru `idle_threshold_ms` INT UNSIGNED bawaan 180000, `rapid_guess_ms` INT UNSIGNED bawaan 3000, `thresholds_locked_at` DATETIME (null), `derived_run_id` FK `derived_runs` (null, `ON DELETE SET NULL`), `derived_running_since` DATETIME (null) |
+| `research_studies` | Kolom baru `thresholds_locked_at` DATETIME (null), `derived_run_id` FK `derived_runs` (null, `ON DELETE SET NULL`), `derived_running_since` DATETIME (null) |
 | `derived_runs` (baru) | `id`, `study_id` FK (`ON DELETE CASCADE`), `status` VARCHAR(10) (`running`, `done`, `failed`), `dictionary_version` VARCHAR(30), `idle_threshold_ms`, `rapid_guess_ms` INT UNSIGNED, `input_fingerprint` CHAR(64), `participant_count` INT UNSIGNED, `notes_json` JSON (null), `error` TEXT (null), `started_by` FK staf (null, `ON DELETE SET NULL`), `via` VARCHAR(10) (`export`, `button`, `command`), `started_at`, `finished_at` DATETIME(3) (null). Indeks (`study_id`, `status`) |
 | `derived_participants` (baru) | `run_id` FK (`ON DELETE CASCADE`), `participant_id` FK (`ON DELETE CASCADE`), `dictionary_version`, kolom §6.5. Kunci utama (`run_id`, `participant_id`) |
 | `derived_field_sessions` (baru) | `run_id`, `participant_id`, `field_session_id`, `dictionary_version`, kolom §6.6. Kunci utama (`run_id`, `participant_id`, `field_session_id`) |
@@ -467,9 +481,10 @@ Tidak ada kemampuan baru (K14).
 | `derived_attempts` (baru) | `run_id`, `attempt_id`, `participant_id`, `dictionary_version`, kolom §6.3. Kunci utama (`run_id`, `attempt_id`) |
 | `derived_items` (baru) | `run_id`, `participant_id`, `challenge_item_id`, `dictionary_version`, kolom §6.2. Kunci utama (`run_id`, `participant_id`, `challenge_item_id`) |
 | `derived_tries` (baru) | `run_id`, `try_id` (`item_tries.id`), `participant_id`, `dictionary_version`, kolom §6.1. Kunci utama (`run_id`, `try_id`) |
+| `derived_test_responses` (baru) | `run_id` FK (`ON DELETE CASCADE`), `instrument_response_id` (`instrument_responses.id`), `participant_id` FK (`ON DELETE CASCADE`), `dictionary_version`, kolom §6.8 (`decision_ms` INT UNSIGNED null, `rapid_guess` TINYINT(1) null). Kunci utama (`run_id`, `instrument_response_id`) |
 | `derived_observations` (baru) | `run_id`, `field_sheet_row_id`, `participant_id`, `attempt_id` (null), `challenge_item_id` (null), `dictionary_version`. Kunci utama (`run_id`, `field_sheet_row_id`) |
 | `data_exports` | Kolom baru `derived_run_id` FK `derived_runs` (null, `ON DELETE SET NULL`) |
-| `game_event_logs`, `item_tries` dan tabel mentah lain | Tidak berubah. `after_withdrawal` di lembar mentah dihitung saat unduhan dari `withdrawn_at` putaran, bukan kolom |
+| `game_event_logs`, `item_tries` dan tabel mentah lain | Tidak berubah. `idle_threshold_ms` dan `rapid_guess_ms` dibuat migrasi `004100` bagian 7 (33 §9), bukan di sini. `after_withdrawal` di lembar mentah dihitung saat unduhan dari `withdrawn_at` putaran, bukan kolom |
 
 Semua kunci asing `participant_id` di tabel turunan memakai `ON DELETE CASCADE`, sesuai aturan hapus bagian 4 ([30 §7.3](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#73-yang-dihapus-sistem)). Kolom kode (`participant_code`, `item_key`, `node_ref`, `field_session_code`) tidak disimpan di tabel turunan; lembar unduhan menggabungnya dari tabel asal, supaya penggantian identitas saat studi ditutup (30 §10.2) tidak perlu menyentuh tabel turunan.
 
@@ -477,9 +492,7 @@ Semua kunci asing `participant_id` di tabel turunan memakai `ON DELETE CASCADE`,
 - `tests/_support/Database/ResetTables.php` (skema SQLite).
 - `SystemResetService`: `REQUIRED_MIGRATION` menjadi `004300` (atau nomor akhirnya); tabel turunan di daftar yang dikosongkan.
 - `RetentionService`: `HARD_ORDER` mendapat tabel turunan sebelum `participants` (untuk pratinjau jumlah); pembersihan putaran lama.
-- `ResearchStudySeeder`: ambang bawaan.
 - Model baru `DerivedRunModel` (tabel turunan ditulis lewat query builder per batch, tanpa entity). `ResearchStudyModel`, `DataExportModel`: `allowedFields`.
-- `Config\Gelita`: `$derivedIdleThresholdMs`, `$derivedRapidGuessMs`.
 - `app/Config/Services.php`: `derivedData`.
 
 ---
@@ -490,13 +503,12 @@ Semua kunci asing `participant_id` di tabel turunan memakai `ON DELETE CASCADE`,
 
 | Rute | Controller::method | Kemampuan |
 | --- | --- | --- |
-| `POST /admin/studi/{id}/ambang` | `StudyController::saveThresholds` | `studies.manage` |
 | `POST /admin/studi/{id}/ambang/kunci` | `StudyController::lockThresholds` | `studies.manage` |
 | `POST /admin/studi/{id}/hitung-ulang` | `DerivedDataController::recompute` | `research.export` |
 | `GET /admin/studi/{id}/hitung-ulang/status` | `DerivedDataController::status` (JSON untuk polling panel) | `research.export` |
 | `/admin/ekspor…`, `/admin/data…` | Tetap (27, 29) | `research.export`, `research.browse` |
 
-Prefiks `/admin/studi` mengikuti rute studi bagian 1; bila 27 memakai slug lain, ikuti 27. Tidak ada rute game atau `/api` baru.
+Mengubah ambang memakai rute pengaturan bagian 7 (`POST /admin/studi/{id}/pengaturan`, 33 §10). Prefiks `/admin/studi` mengikuti rute studi bagian 1; bila 27 memakai slug lain, ikuti 27. Tidak ada rute game atau `/api` baru.
 
 **Perintah spark:**
 
@@ -512,19 +524,14 @@ php spark gelita:turunan:ambang --studi=KODE --buka --alasan="…"  # unlock thr
 
 ## 14. Teks antarmuka
 
-Semua teks baru ada di panel, jadi masuk `app/Language/id/Admin.php` (hanya bahasa Indonesia; tidak butuh pasangan `en`). Game tidak mendapat teks baru. Mengikuti `.claude/rules/ui-copy.md`.
+Semua teks baru ada di panel, jadi masuk `app/Language/id/Admin.php` (hanya bahasa Indonesia; tidak butuh pasangan `en`). Game tidak mendapat teks baru. Mengikuti `.claude/rules/ui-copy.md`. Isian ambang jeda dan tebakan cepat beserta teks bantuannya ada di halaman pengaturan bagian 7 ([33 §11](33_IMPLEMENTASI_MODE_PENELITIAN.md#11-teks-antarmuka), `studyIdleThreshold` dan seterusnya); di sini hanya teks kunci ambang dan putaran hitung.
 
 | Kunci | Usulan |
 | --- | --- |
 | `studyThresholds` | Ambang data turunan |
-| `studyIdleThreshold` | Ambang jeda (detik) |
-| `studyIdleThresholdHelp` | Jeda tanpa sentuhan yang lebih lama dari ini tidak dihitung waktu aktif. Sementara 180 detik; ditetapkan ulang setelah uji coba. |
-| `studyRapidThreshold` | Ambang tebakan cepat (detik) |
-| `studyRapidThresholdHelp` | Jawaban yang diputuskan lebih cepat dari ini ditandai tebakan cepat. Sementara 3 detik; ditetapkan ulang setelah uji coba. |
-| `studyThresholdsSaved` | Ambang disimpan. Data turunan akan dihitung ulang saat diunduh. |
 | `studyThresholdsLock` | Kunci ambang |
 | `studyThresholdsLockConfirm` | Setelah dikunci, ambang tidak bisa diubah dari panel. Lanjutkan? |
-| `studyThresholdsLocked` | Ambang sudah dikunci {0}. |
+| `studyThresholdsLocked` | Ambang sudah dikunci {0}. Ambang jeda dan tebakan cepat tidak bisa diubah lagi. |
 | `derivedRecompute` | Hitung ulang |
 | `derivedRunning` | Data turunan sedang dihitung. Tunggu sebentar. |
 | `derivedLastRun` | Dihitung {0} · kamus {1} · ambang jeda {2} dtk, tebakan cepat {3} dtk |
@@ -538,7 +545,7 @@ Semua teks baru ada di panel, jadi masuk `app/Language/id/Admin.php` (hanya baha
 
 ## 15. Titik sambung ke perubahan lain
 
-Nama kolom dan event dari bagian 5–8 di bawah adalah **anggapan** dokumen ini; masing-masing dicocokkan dengan dokumennya di sesi koordinator ([§20](#20-akibat-ke-dokumen-lain)).
+Nama kolom dan event dari bagian 5–8 di bawah adalah **anggapan** dokumen ini; masing-masing dicocokkan dengan dokumennya di sesi koordinator ([§20](#20-akibat-ke-dokumen-lain)). Sesi koordinator 3 November 2026 mencocokkan kolom kanan dengan 31–34 dan menutup dua sisanya ([§19](#19-keputusan-pengembang) no. 8–11): `action_last_input_ms` dan `reason_last_input_ms` dicatat bagian 6 (32 §6.4) dan dibaca apa adanya; kolom ambang `research_studies` dibuat bagian 7 (33 §9), bagian ini hanya menambah `thresholds_locked_at`.
 
 | Perubahan | Yang dibutuhkan bagian ini | Anggapan nama |
 | --- | --- | --- |
@@ -546,11 +553,11 @@ Nama kolom dan event dari bagian 5–8 di bawah adalah **anggapan** dokumen ini;
 | Bagian 2 (`28`) | `field_mode`, `field_sessions`, rencana pertemuan, `participant_progress`, `game_sessions.field_session_id`, `schools.research_code`, rombel, buklet | Sesuai 28 §17 |
 | Bagian 3 (`29`) | `ready_ms`, `empty_tap` (koordinat, `overflow`), `passage_reopened`, `occurred_at_corrected`, `offset_known`, `EventCatalog`, `field_sheet_rows`, `ResearchDictionary`, daftar lembar | Sesuai 29 §6, §8, §12 |
 | Bagian 4 (`30`) | `participant_consents` (`parent_consent_on`, `status`, `status_on`), `participants.deactivated_at`, `assented_at`, `corrected_at`, cakupan hapus | Sesuai 30 §15 |
-| Bagian 5 (`31`): kode kesalahan, label, beban permukaan, bank baru | `item_tries.error_code`; `challenge_items` `dimension`, `subaspect`, `akm_level`, `round`, `testlet_key`; bagian ketuk Cari Objek dengan koordinat persen dan ukuran panggung; butir yang dinilai per buklet | `error_code` VARCHAR; label di `challenge_items` atau tabel label butir |
-| Bagian 6 (`32`): Skenario Digital | Per percobaan: kunci pilihan tindakan, `action_score`, `reason_code`, waktu tampil pilihan tindakan dan alasan; event penutupan skenario setelah kesempatan ketiga | `item_tries.action_key`, `action_score`, `reason_code`, `action_ready_ms`, `reason_ready_ms`, `reason_last_input_ms`; event `scenario_failed` |
-| Bagian 7 (`33`): waktu aktif mentah, mode penelitian | Jeda masukan ≥ 20 detik dengan jam mulai dan akhir; selang narasi diputar; pengerjaan pertama yang terputus dilanjutkan; `is_retake` dapat dibaca | Event `input_gap {from_ms, to_ms}` atau tabel jeda; narasi dari `audio_usage_events` |
-| Bagian 6 atau 7: narasi instruksi | Kode konteks narasi instruksi | Konteks `instruction` di `audio_usage_events` |
-| Bagian 8 (`34`): modul tes, angket, skala sikap | Jawaban mentah angket per variabel; skor tes per bagian, `capped`, tanggal, susulan; jawaban tes per butir dengan waktu tampil; jawaban skala per butir, `sikap_makeup`; `risk_reconsent` | Tabel jawaban modul per siswa per kegiatan, dengan kode variabel 16 dan 17 |
+| Bagian 5 (`31`): kode kesalahan, label, beban permukaan, bank baru | `item_tries.error_code`; `challenge_items` `dimension`, `subaspect`, `akm_level`, `round`, `testlet_key`; bagian ketuk Cari Objek dengan koordinat persen dan ukuran panggung; butir yang dinilai per buklet | Sesuai 31 §9, §13, §15: `item_tries.error_code` VARCHAR(12); label di kolom `challenge_items`; kotak benda babak 1 dan `post_parts` babak 2 (x, y, w, h persen adegan 16:9); ukuran adegan `HUNT_SCENE_DP` di `HuntGeometry`; buklet dari `participant_seats.booklet` dan `BookletRules` |
+| Bagian 6 (`32`): Skenario Digital | Per percobaan: kunci pilihan tindakan, `action_score`, `reason_code`, waktu tampil dan waktu terakhir diubah pilihan tindakan dan alasan; event penutupan skenario setelah kesempatan ketiga | `item_tries.action_key`, `action_score`, `reason_code`, `ready_ms` (pilihan tindakan tampil, 32 §6.4), `reason_ready_ms`, `action_last_input_ms`, `reason_last_input_ms` (32 §6.4, §11); event `scenario_failed` |
+| Bagian 7 (`33`): waktu aktif mentah, mode penelitian | Jeda masukan ≥ 20 detik dengan jam mulai dan akhir; selang narasi diputar; pengerjaan pertama yang terputus dilanjutkan; `is_retake` dapat dibaca | Sesuai 33 §5: event `input_idle` (`idle_ms`, `started_at`, `end`, `screen`); narasi dari `audio_usage_events` dengan `clock_offset_ms`; potongan `challenge_attempt_segments`; `challenge_attempts.is_retake`; ambang `research_studies.idle_threshold_ms`, `rapid_guess_ms` (33 §6, §9) |
+| Bagian 6 (`32`): narasi instruksi | Kode konteks narasi instruksi | Sesuai 32 K10: `audio_assets.context_code = challenge_instruction`, dibaca lewat `audio_usage_events` |
+| Bagian 8 (`34`): modul tes, angket, skala sikap | Jawaban mentah angket per variabel; skor tes per bagian, `capped`, tanggal, susulan; jawaban tes per butir dengan waktu tampil; jawaban skala per butir, `sikap_makeup`; `risk_reconsent` | Sesuai 34 §11.1: `instrument_sittings` (`occasion`, `kind`, `is_makeup`, `risk_reconsent`), `instrument_blocks`, `instrument_parts` (`raw_score`, `closed_by_limit`), `instrument_responses` (satu baris per satuan `unit` = kode variabel 16 dan 17, K7; `last_view_ms` untuk §6.8); `updated_at` di `instrument_sittings` dan `instrument_responses` untuk sidik jari §4.3 |
 
 **Yang disediakan bagian ini untuk yang lain:** `derived_*` sebagai satu-satunya sumber angka turunan; tidak ada bagian lain yang menghitung ulang `rapid_guess`, waktu aktif, atau `completion_status` sendiri. Panel pemantauan bagian 2 tetap menghitung angka operasionalnya sendiri (siapa belum selesai), karena itu bukan hasil penelitian (01 → *Olah data*).
 
@@ -565,7 +572,7 @@ Nama kolom dan event dari bagian 5–8 di bawah adalah **anggapan** dokumen ini;
 | Tes | Yang diperiksa |
 | --- | --- |
 | `TimelineTest` | Potongan, tersembunyi, jeda > T_idle hanya bagian lebihnya, narasi tidak dihitung jeda, tersembunyi tidak dihitung dua kali; contoh 11 (jeda 5 menit dengan T_idle 3 menit menyumbang 3 menit aktif) |
-| `TryCalculatorTest` | `decision_ms`, `rapid_guess` tepat di ambang (3000 bukan tebakan cepat, 2999 ya), kosong untuk Isi Rumpang, `error_code_analysis` NON-TEB, NON-HABIS, aturan cadangan `extra_try` |
+| `TryCalculatorTest` | `decision_ms`, `rapid_guess` tepat di ambang (3000 bukan tebakan cepat, 2999 ya), kosong untuk Isi Rumpang, Skenario Digital dari `action_last_input_ms` dan `reason_last_input_ms`, `error_code_analysis` NON-TEB, NON-HABIS, aturan cadangan `extra_try` |
 | `ItemCalculatorTest` | Butir tanpa percobaan kosong dengan `missing_reason`; `censored` tidak pernah 3; `change_after_feedback` D2 dari kunci pilihan; `near_miss_count` di 24 dp |
 | `ChallengeCalculatorTest` | Lima nilai `completion_status`; jenis (a) dan (b) tidak saling meniadakan; (b) tetap terhitung bila tuntas di P5 |
 | `ParticipantCalculatorTest` | `analysable` di 49 dan 48 butir; `rapid_share`; rumus 16 dan 17 dengan `-`, `8`, `9`; skor sikap kosong di bawah 10 butir |
@@ -575,7 +582,8 @@ Nama kolom dan event dari bagian 5–8 di bawah adalah **anggapan** dokumen ini;
 | `DerivedRunTest` | Putaran mencatat versi, ambang, sidik jari; basi setelah ambang, impor lembar, izin, atau penghapusan berubah; dua hitung ulang bersamaan, satu yang menghitung (pola `Factories::injectMock`); gagal → putaran lama tetap |
 | `DerivedExportTest` | Lembar turunan hanya untuk ketua dan studi `field_mode`; unduhan basi menghitung ulang dulu; `data_exports.derived_run_id`; tidak ada jawaban, kunci, butir risiko per siswa, nama, atau `participant_id` |
 | `DerivedDictionaryTest` | Setiap kolom lembar turunan punya entri `ResearchDictionary` dan `ExportLabels`; versi `kamus-1.1-usulan` tertulis di baris kepala |
-| `StudyThresholdsTest` | Ketua menyimpan dalam batas; di luar batas ditolak; audit; terkunci tidak bisa diubah; peneliti dan admin 404 |
+| `StudyThresholdsTest` | Ketua mengunci ambang dengan audit `study_thresholds_locked`; setelah dikunci, pengaturan bagian 7 (`StudySettingsTest` 33) menolak perubahan kedua ambang; peneliti dan admin 404 |
+| `TestResponseCalculatorTest` | `derived_test_responses`: `rapid_guess` tepat di ambang dari `last_view_ms`; kosong untuk `not_reached` dan jawaban kosong; contoh soal dan sesi pratinjau tidak masuk |
 | `DerivedPurityTest` | Kalkulator tidak memanggil `db_connect`, `config`, `service`, `time`, atau `date` (pemeriksaan sumber berkas) |
 | `DerivedRetentionTest` | Menghapus satu siswa menghapus barisnya di semua putaran; putaran lama yang tidak dipakai dibersihkan |
 | `DerivedCommandTest` | `gelita:turunan:hitung --cek` tidak menulis apa pun; `--buka` butuh alasan dan menulis audit |
@@ -591,7 +599,7 @@ Nama kolom dan event dari bagian 5–8 di bawah adalah **anggapan** dokumen ini;
 
 Di mesin pengembangan, dengan `gelita:simulasi` di studi `field_mode` menyala:
 1. Unduh sebagai ketua; pastikan putaran dihitung sekali, lembar turunan terisi, dan baris kepala *Kamus Data* menyebut versi dan ambang. Catat lama hitung.
-2. Ubah ambang jeda; unduh lagi; pastikan `active_ms` berubah dan data mentah tidak.
+2. Ubah ambang jeda di halaman pengaturan studi (33 §6); unduh lagi; pastikan `active_ms` berubah dan data mentah tidak.
 3. Pilih tiga baris `turunan_butir` dan satu `turunan_pengerjaan` secara acak; hitung tangan dari lembar mentah dan cocokkan.
 4. Ubah status satu siswa menjadi mundur (data tetap) di tengah sesi; pastikan data sesudahnya tidak ada di lembar turunan.
 5. Masuk sebagai peneliti dan admin; pastikan tombol, ambang, dan lembar turunan tidak terlihat.
@@ -642,30 +650,38 @@ Putaran kedua, 2 November 2026 (sesi koordinator, `asal: pengembang`, [04](04_CA
 6. **`kamus-1.1` ditulis ke 11 sekarang sebagai `draf pengembang`**, lalu direvisi setelah uji coba (angka ambang, `asal: peneliti` bila peneliti yang menetapkannya), dan dikunci di G4. Tidak dipilih: satu sesi setelah KG3b bersama peneliti (usulan AI).
 7. **"Pengambilan data selesai" = jam putaran hitung**, tanpa kolom tanggal akhir di studi. Tidak dipilih: tanggal akhir pengambilan data yang diisi `ketua`.
 
+**Sesi koordinator 31–35, 3 November 2026** (cabang `r10-cek-30`, `asal: pengembang`, `disetujui pengembang`):
+
+8. **Kolom ambang milik bagian 7** (K2, §5, §12): migrasi `004100` ([33 §9](33_IMPLEMENTASI_MODE_PENELITIAN.md#9-skema-database)) membuat `idle_threshold_ms` dan `rapid_guess_ms` dengan batas dan audit `study_settings_changed` 33 §6. Migrasi `004300` di sini hanya menambah `thresholds_locked_at` dan kunci G4 (*Kunci ambang*, audit `study_thresholds_locked`); sesudah dikunci, halaman pengaturan 33 menolak perubahan kedua ambang. Ini mengubah cara no. 2 dilaksanakan, bukan isinya. Tidak dipilih: bagian ini yang memiliki kolom ambang.
+9. **Tebakan cepat jawaban tes disimpan di tabel turunan `derived_test_responses`** (§6.8, lembar `turunan_tes`), satu baris per jawaban tes dari `instrument_responses`, berversi per putaran, `ON DELETE CASCADE` pada peserta; `tes_jawaban.rapid_guess` (34 §11.4) membacanya. Tidak dipilih: dihitung hanya saat unduhan dibuat.
+
+Diikuti dari keputusan dokumen lain di sesi yang sama:
+
+10. **Sidik jari satu aturan `MAX(updated_at)`** (§4.3), karena `instrument_sittings` dan `instrument_responses` mendapat `updated_at` ([34 §18](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#18-keputusan-pengembang) no. 6). Tidak dipilih: sidik jari dengan `revision`.
+11. **Waktu keputusan Skenario Digital dibaca dari data mentah** (§6.1): `action_last_input_ms` dan `reason_last_input_ms` dari [32 §6.4](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#64-waktu) ([32 §18](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#18-keputusan-pengembang) no. 5). Tidak dipilih: perkiraan di bagian ini.
+
 ---
 
 ## 20. Akibat ke dokumen lain
 
-Dicatat di sini dan dibawa sesi koordinator setelah dokumen ini dan 31–34 digabung.
+Dicatat di sini dan dibawa sesi koordinator setelah dokumen ini dan 31–34 digabung. **Status per 3 November 2026:** dibawa sesi koordinator 31–35 (cabang `r10-cek-30`), kecuali baris yang menunggu `kamus-1.1` atau implementasi.
 
 | Dokumen | Bagian | Perubahan | Status |
 | --- | --- | --- | --- |
-| [11](11_KAMUS_DATA.md) | Seluruh usulan §8.2 | Masuk `kamus-1.1` setelah uji coba; termasuk baris 11 dari 29 §20 dan baris 11 dari 30 §23 | **Sudah**: `kamus-1.1` draf (3 November 2026) |
 | [11](11_KAMUS_DATA.md) | *Yang harus disediakan sistem di tahap 3* | Kalimat "dikerjakan di tahap 3, setelah G2" sudah diketahui basi (04, 1 November 2026); diganti saat 11 disentuh | **Sudah**: `kamus-1.1` draf (3 November 2026) |
-| [16](16_ANGKET_AKSES_DIGITAL.md) | *Variabel untuk kamus data* | Baris `risk_status` … `support_na` sebagai variabel peserta bertentangan dengan 29 K9 (jawaban butir risiko hanya angka gabungan). Usulan: baris itu menunjuk lembar `risiko_gabungan` | Untuk sesi koordinator |
-| [16](16_ANGKET_AKSES_DIGITAL.md), [17](17_SKALA_SIKAP.md) | Variabel turunan | Dihitung lapis turunan (K10), bukan modul; rumusnya tetap di 16 dan 17 | Untuk sesi koordinator |
-| [17](17_SKALA_SIKAP.md) | `sikap_missing_reason = tanpa_izin` | Tidak pernah terjadi di sistem (anak tanpa izin tidak punya akun, 30 §5.2); nilai ini hanya dari L7 di lapis 3 | Untuk sesi koordinator |
-| [13](13_TES_AWAL_AKHIR.md) | *Penskoran*, `*_theta` | Dihitung di lapis 3, tidak oleh sistem; ambang tebakan cepat tes (§18 no. 2) | Untuk sesi koordinator |
-| [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) | §7.2 daftar lembar; §8 | Tujuh lembar `turunan_*`; baris kepala *Kamus Data* membawa `derived_run_id` dan ambang; versi antara `kamus-1.1-usulan` | Untuk sesi koordinator |
-| [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) | §7.3 | Kolom `after_withdrawal` di lembar mentah `pengerjaan`, `jawaban`, `percobaan`, `navigasi`, `bantuan`, `selesai`, `event` | Untuk sesi koordinator |
-| [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) | §7.3, §15 | Tabel `derived_*` di cakupan hapus satu siswa (`ON DELETE CASCADE`); §21 no. 4 (lembar `izin` di unduhan utama) tidak dibutuhkan lapis turunan, karena `consent_ok` dihitung di server | Untuk sesi koordinator |
-| [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) | §17 skema | `game_sessions.field_session_id` dan rencana pertemuan dibaca lapis turunan untuk `locked`/`not_started` | Untuk sesi koordinator |
-| [27](27_IMPLEMENTASI_PERAN_PENELITI.md) | §7 rute studi | Rute `/admin/studi/{id}/ambang` dan `/hitung-ulang`; tanpa kemampuan baru | Untuk sesi koordinator |
-| `31` (bagian 5) | Skema | Anggapan §15: `item_tries.error_code`, label butir, bagian ketuk dengan koordinat persen dan ukuran panggung | Dicocokkan sesi koordinator |
-| `32` (bagian 6) | Skema dan event | Anggapan §15: kunci pilihan tindakan, `action_score`, `reason_code`, waktu tampil pilihan, event penutupan skenario | Dicocokkan sesi koordinator |
-| `33` (bagian 7) | Data mentah waktu aktif | Anggapan §15: jeda masukan ≥ 20 detik dengan jam mulai dan akhir; kode konteks narasi instruksi; ambang **tidak** disimpan bagian 7, tetapi di `research_studies` dari dokumen ini | Dicocokkan sesi koordinator |
-| `34` (bagian 8) | Tabel jawaban modul | Anggapan §15: jawaban angket per kode variabel 16, skor tes per bagian, jawaban skala per butir, `risk_reconsent`; variabel turunan tidak dihitung modul | Dicocokkan sesi koordinator |
-| [01](01_REVISI_10_ANALITIK.md) | No. 9 | Catatan: dokumen implementasi `35`; tabel turunan berversi, ambang di studi, hitung ulang saat unduhan | Untuk sesi koordinator |
+| [16](16_ANGKET_AKSES_DIGITAL.md) | *Variabel untuk kamus data* | Baris `risk_status` … `support_na` sebagai variabel peserta bertentangan dengan 29 K9 (jawaban butir risiko hanya angka gabungan). Usulan: baris itu menunjuk lembar `risiko_gabungan` | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| [16](16_ANGKET_AKSES_DIGITAL.md), [17](17_SKALA_SIKAP.md) | Variabel turunan | Dihitung lapis turunan (K10), bukan modul; rumusnya tetap di 16 dan 17 | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| [17](17_SKALA_SIKAP.md) | `sikap_missing_reason = tanpa_izin` | Tidak pernah terjadi di sistem (anak tanpa izin tidak punya akun, 30 §5.2); nilai ini hanya dari L7 di lapis 3 | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| [13](13_TES_AWAL_AKHIR.md) | *Penskoran*, `*_theta` | Dihitung di lapis 3, tidak oleh sistem; ambang tebakan cepat tes (§18 no. 2) | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) | §7.3 | Kolom `after_withdrawal` di lembar mentah `pengerjaan`, `jawaban`, `percobaan`, `navigasi`, `bantuan`, `selesai`, `event` | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) | §7.3, §15 | Tabel `derived_*` (termasuk `derived_test_responses`) di cakupan hapus satu siswa (`ON DELETE CASCADE`); §21 no. 4 (lembar `izin` di unduhan utama) tidak dibutuhkan lapis turunan, karena `consent_ok` dihitung di server | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) | §17 skema | `game_sessions.field_session_id` dan rencana pertemuan dibaca lapis turunan untuk `locked`/`not_started` | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| [27](27_IMPLEMENTASI_PERAN_PENELITI.md) | §7 rute studi | Rute `/admin/studi/{id}/ambang/kunci` dan `/hitung-ulang` (ubah ambang lewat `/pengaturan` 33); tanpa kemampuan baru | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| `31` (bagian 5) | Skema | Anggapan §15: `item_tries.error_code`, label butir, bagian ketuk dengan koordinat persen dan ukuran panggung | Sudah dicocokkan (sesi koordinator 3 November 2026, cabang `r10-cek-30`; sisanya diputuskan di §19 no. 8–11) |
+| `32` (bagian 6) | Skema dan event | Anggapan §15: kunci pilihan tindakan, `action_score`, `reason_code`, waktu tampil pilihan, event penutupan skenario | Sudah dicocokkan (sesi koordinator 3 November 2026, cabang `r10-cek-30`; sisanya diputuskan di §19 no. 8–11) |
+| `33` (bagian 7) | Data mentah waktu aktif | Anggapan §15: jeda masukan ≥ 20 detik dengan jam mulai dan akhir; kode konteks narasi instruksi; kolom ambang `research_studies` dibuat bagian 7 (33 §9), kunci G4 di sini (§19 no. 8) | Sudah dicocokkan (sesi koordinator 3 November 2026, cabang `r10-cek-30`; sisanya diputuskan di §19 no. 8–11) |
+| `34` (bagian 8) | Tabel jawaban modul | Anggapan §15: jawaban angket per kode variabel 16, skor tes per bagian, jawaban skala per butir, `risk_reconsent`; variabel turunan tidak dihitung modul | Sudah dicocokkan (sesi koordinator 3 November 2026, cabang `r10-cek-30`; sisanya diputuskan di §19 no. 8–11) |
+| [01](01_REVISI_10_ANALITIK.md) | No. 9 | Catatan: dokumen implementasi `35`; tabel turunan berversi, ambang di studi, hitung ulang saat unduhan | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
 | `.claude/rules/glossary.md` | Baris baru | `lapis data turunan` = `derived data layer`, `derived_*`; `putaran hitung` = `derived run`, `derived_runs`; `ambang jeda` / `ambang tebakan cepat` = `idle threshold` / `rapid-guess threshold`, `research_studies.idle_threshold_ms` / `rapid_guess_ms`; `Hitung ulang` = `recompute`; `saat mundur` = `withdrawal cutoff` | Saat implementasi |
 | Aturan kerja repo | Perintah spark | `gelita:turunan:hitung`, `gelita:turunan:ambang` | Saat implementasi |
 | [00](00_INDEKS.md) | *Daftar dokumen*, *Tahap dokumen 3* | Baris 35 | Sudah (cabang ini) |

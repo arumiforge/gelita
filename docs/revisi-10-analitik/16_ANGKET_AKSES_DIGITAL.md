@@ -6,7 +6,7 @@ Per 1 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 Dokumen ini berisi angket akses digital yang diisi siswa kelas 5 di layar modul tes GELITA, langsung setelah tes awal, ditambah dua–tiga butir pengalaman risiko daring yang diisi di P5 setelah tes akhir: butir, kode jawaban, nama variabel, gunanya, sumber, pelaksanaan, pemasukan data, etika, dan validasinya. Rancangan tesnya ada di [13](13_TES_AWAL_AKHIR.md).
 
-Belum ada yang diubah di sistem; modulnya dibangun di tahap 3 (perubahan sistem no. 22 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)). Angket tidak mengukur literasi digital dan tidak diskor. Jawabannya menjadi variabel peserta (kovariat) yang digabung lewat kode peserta ([11](11_KAMUS_DATA.md#aturan-gabung-lembar-lapangan)).
+Modulnya perubahan sistem no. 22 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), dirancang di [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md). Sejak 1 November 2026 modul dibangun sekarang, di balik sakelar studi yang mati secara bawaan, dan tidak dipakai dengan anak sebelum izin etik ([04](04_CATATAN_KEPUTUSAN.md)). Angket tidak mengukur literasi digital dan tidak diskor. Jawabannya menjadi variabel peserta (kovariat) yang digabung lewat kode peserta ([11](11_KAMUS_DATA.md#aturan-gabung-lembar-lapangan)).
 
 ## Ringkasan
 
@@ -418,7 +418,7 @@ Teks di layar pembuka angket. Siswa membacanya sendiri; koordinator sesi tidak m
 6. **Peneliti lain dan guru.** P2 dan P3 berkeliling hanya untuk membantu cara memilih jawaban di layar, tidak membaca atau mengomentari jawaban. Guru kelas diminta tidak berkeliling melihat layar siswa.
 7. **Selesai.** Siswa menekan *Selesai*, dan modul menampilkan layar terima kasih. Tidak ada lembar yang perlu dikumpulkan atau disimpan.
 8. **Catatan di L6.** Status angket (`sudah`, `susulan` dengan tanggalnya, atau `hilang`) dibaca dari modul. P3 mencatat pertanyaan yang sering ditanyakan siswa di kolom *Catatan*. Catatan ini dipakai di uji coba.
-9. **Siswa absen.** Ikut susulan dalam tiga hari, sesudah tes susulan; peneliti membuka angket di modul untuk kelompok kecil itu. Kalau baru bisa setelah siswa mulai bermain di P2, angket masih boleh diisi sampai P5 dan ditandai `questionnaire_late = 1`. Kalau tidak sama sekali, ditandai `hilang`.
+9. **Siswa absen.** Ikut susulan dalam tiga hari, sesudah tes susulan; peneliti membuka angket di modul untuk kelompok kecil itu. Kalau baru bisa setelah siswa mulai bermain di P2, angket masih boleh diisi sampai P5 dan ditandai `questionnaire_late = 1`. Kalau tidak sama sekali, ditandai `hilang`. *Menunggu konfirmasi peneliti:* rancangan sistem membaca "sampai P5" sebagai "sebelum P5 utama dibuka" ([34 → Angket terlambat](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#102-angket-terlambat), §17 no. 4); kalimat ini belum diubah.
 10. **Siswa tanpa izin.** Tidak mengisi angket dan ikut kegiatan pengganti sesuai L7.
 
 ## Pemasukan data dan variabel turunan
@@ -461,6 +461,8 @@ Tidak ada pengetikan, jadi ketik ulang 10% tidak diperlukan. Sebagai gantinya, p
 | `game_time_group` | Dari `game_time_school`: `rendah` (0–1), `sedang` (2–3), `tinggi` (4); batasnya ditinjau setelah uji coba | 3 kelompok |
 | `questionnaire_status` | `lengkap` (paling banyak 2 butir kosong), `sebagian` (lebih dari 2 butir kosong), `hilang` (tidak mengisi) | — |
 
+Variabel turunan ini dan `q_flags` dihitung lapis data turunan, bukan modul angket; modul hanya menyimpan jawaban mentah ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) K10). Rumusnya tetap di tabel ini.
+
 - **Media sosial** di sini adalah TikTok, Instagram, dan Facebook: aplikasi tempat anak mengunggah dan punya pengikut. WhatsApp (pesan) dan YouTube (kebanyakan menonton) dilaporkan sendiri-sendiri.
 - **Data hilang.** Indeks hilang kalau salah satu komponennya hilang; tidak ada imputasi. Kalau lebih dari 10% siswa kehilangan satu indeks, aturannya ditinjau setelah uji coba.
 - **Konsistensi indeks** (`access_index`, `parent_active`) dicek di uji coba dan data utama. Kalau komponennya tidak sejalan, komponen dilaporkan terpisah, bukan dijumlahkan.
@@ -475,7 +477,7 @@ Masuk [11, *Variabel peserta dan sesi*](11_KAMUS_DATA.md#variabel-peserta-dan-se
 | | `phone_access` … `books_home` (41 kolom, urutan ang-01 sampai ang-17) | Jawaban mentah berkode, termasuk `-`, `8`, `9` |
 | | `own_phone`, `device_count`, `access_index`, `activity_breadth`, `own_accounts`, `social_media_own`, `social_media_use`, `parent_active`, `parent_rules`, `safety_info_sources`, `game_time_group` | Variabel turunan |
 | | `q_flags` | Kode butir yang isinya bertentangan |
-| | `risk_status`, `risk_upset`, `risk_stranger_contact`, `support_parent` … `support_na` | Butir risiko daring di P5 (ang-21 sampai ang-23), termasuk kode `7` (tidak mau menjawab). Penanda rujukan tidak disimpan di data penelitian; lihat [Etika](#etika) |
+| Gabungan (bukan per peserta) | `risk_status`, `risk_upset`, `risk_stranger_contact`, `support_parent` … `support_na` | Butir risiko daring di P5 (ang-21 sampai ang-23), termasuk kode `7` (tidak mau menjawab). Tidak pernah per siswa di unduhan: hanya angka gabungan per butir dan pilihan di lembar `risiko_gabungan`, sel di bawah 5 siswa ditulis `<5` ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md) K9, [§7.6](29_IMPLEMENTASI_DATA_PENELITIAN.md#76-butir-risiko-daring)). Penanda rujukan tidak disimpan di data penelitian; lihat [Etika](#etika) |
 
 ## Etika
 

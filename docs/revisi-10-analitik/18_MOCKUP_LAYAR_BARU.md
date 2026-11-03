@@ -204,6 +204,7 @@ Ditemukan saat menggambar; tidak diperbaiki di sini karena berkasnya milik dokum
 6. **Bantuan (💡) di Skenario Digital.** Tidak ada dokumen yang menyebut apakah tantangan kelima punya tombol Bantuan. Mock-up tidak menampilkannya.
 7. **Penghitung ✓/✗ di kepala Skenario Digital.** Kerangka tantangan menghitung butir benar dan salah, tetapi di Skenario Digital belum ditetapkan apakah "kurang tepat" dihitung salah. Mock-up menghitung skenario yang sudah selesai dengan tepat.
 8. **Kolom bintang per wilayah di Balai Refleksi terlalu sempit untuk 15 tantangan.** "13 dari 15" bertumpuk dengan bilahnya di lebar kolom sekarang (`.reflection-side .bar-row`, 5,75rem); `mk-ss-05` melebarkannya hanya di halaman mock-up. Perlu dicatat di dokumen implementasi perubahan sistem no. 2 (lima belas tantangan) atau no. 21.
+9. **Tombol ▶ instruksi di kepala tantangan.** Sejak [32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md) K10 (2 November 2026) narasi instruksi hanya diputar lewat tombol ▶ di kelima belas tantangan. Mock-up `mk-sd-*` dan `mk-pu-*` belum menggambar tombol itu; perlu ditambahkan bila ahli media menilainya. Catatan ini tidak mengubah keputusan yang sudah ada.
 
 ## Keputusan pengembang
 

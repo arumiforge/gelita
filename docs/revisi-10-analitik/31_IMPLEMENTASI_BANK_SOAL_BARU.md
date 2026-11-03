@@ -309,7 +309,7 @@ Rentang Bloom per jenis soal (`bloomRange()`) diganti satu rentang per wilayah, 
 - `FIRST_ATTEMPT_GROUPS` (`:72`) = `['a', 'b']`.
 - `SHARED_GROUP` = `'x'` (baru).
 - `MAX_OVERLAP` (`:75`) dihapus; diganti `MIN_GAP_DP = 24` dan `HUNT_SCENE_DP` ([§9](#9-area-ketuk-tidak-bersentuhan-perubahan-no-17)).
-- `ENGINES` (`:46`) tetap empat di bagian ini; bagian 6 menambah `5 => 'skenario'` ([32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md)) ([§18](#18-titik-sambung-ke-perubahan-lain)). Aturan wilayah (`region()`) membaca panjang `ENGINES`, jadi wilayah dengan tantangan kelima lolos setelah bagian 6 tanpa perubahan lain.
+- `ENGINES` (`:46`) tetap empat di bagian ini; bagian 6 menambah `5 => 'skenario'` ([32 → K1](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#2-keputusan-yang-dikunci), [§18](#18-titik-sambung-ke-perubahan-lain)). Aturan wilayah (`region()`) membaca panjang `ENGINES`, jadi wilayah dengan tantangan kelima lolos setelah bagian 6 tanpa perubahan lain.
 
 **Galat baru** (impor ditolak, pembangun tidak menulis):
 
@@ -394,7 +394,7 @@ Kode kesalahan, skor tindakan, kode alasan, `d3_clue_type`, `d2_topic`, label pe
 
 ### 10.4 `manual_code`
 
-`item_tries.manual_code` (VARCHAR 12, null) disediakan untuk pengodean manual (`*-LAIN`, transkrip L5) supaya kode bank tidak tertimpa (11 → Analitik 6). Bagian ini hanya membuat kolomnya; pengisiannya lewat impor L5 milik bagian 3 ([29 §10](29_IMPLEMENTASI_DATA_PENELITIAN.md#10-templat-dan-impor-lembar-lapangan-perubahan-no-15)) atau lapis turunan.
+`item_tries.manual_code` (VARCHAR 12, null) disediakan untuk pengodean manual (`*-LAIN`, transkrip L5) supaya kode bank tidak tertimpa (11 → Analitik 6). Bagian ini hanya membuat kolomnya. Pengisiannya lewat impor L5 milik bagian 3 ([29 §10.4, §10.7](29_IMPLEMENTASI_DATA_PENELITIAN.md#10-templat-dan-impor-lembar-lapangan-perubahan-no-15)): templat L5 punya kolom `manual_code` per percobaan butir, impor memeriksanya terhadap kode butir itu di `item_error_codes` (§15), lalu menulisnya ke `item_tries.manual_code` ([§22](#22-keputusan-pengembang) no. 9). Lapis turunan tidak mengisinya.
 
 ---
 
@@ -598,7 +598,7 @@ Instruksi tantangan dan petunjuk babak 2 dari 08 ada di workbook, bukan berkas b
 | Bagian 2 ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md)), no. 11 | `VariantPicker` membaca `participant_seats.booklet` dan `research_studies.field_mode`; `BOOKLET_MISSING` | `participant_seats`, `field_mode`, `participant_progress`, `refreshProgress()`. Angka "siswa belum punya kursi" di panel pemantauan |
 | Bagian 3 ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md)), no. 7, 14 | `item_tries.error_code`, `manual_code`; kolom baru lembar `butir`; lembar `kode_pilihan`; geometri adegan untuk `empty_tap` | Daftar lembar unduhan, kamus berversi, `empty_tap` dan `ready_ms`, impor L5 ke `manual_code` |
 | Bagian 6 (`32`), no. 2, 6, 18 | Sheet `scenarios`/`scenario_options`, tabel `scenario_options`, kolom skenario di `challenge_items`, aturan bank skenario, kode tindakan di `ErrorCodeResolver` | Engine skenario dan namanya, `BankRules::ENGINES[5]`, layar, skor tindakan, `reason_code` dan skor di `item_tries`, narasi instruksi, tombol ▶ petunjuk babak 2 |
-| Bagian 7 (`33`), no. 16 | `variant_source`; butir `x` di setiap pengerjaan | Melanjutkan pengerjaan pertama yang terputus, pengerjaan ulang setelah wilayah tuntas, `is_scored_attempt` |
+| Bagian 7 (`33`), no. 16 | `variant_source`; butir `x` di setiap pengerjaan | Melanjutkan pengerjaan pertama yang terputus, pengerjaan ulang setelah wilayah tuntas, `is_retake` (33 K6); `is_scored_attempt` diturunkan bagian 9 (35 §6.3) |
 | Bagian 9 (`35`), no. 9 | Kode tersimpan, label, `testlet_key`, beban permukaan, `HuntGeometry` | `error_code_analysis`, `rapid_guess`, `near_miss_count`, penanganan kode bank yang direvisi |
 | `ChallengeService` bersama bagian 2 | Bagian ini mengubah `openNode()` (baris pemilihan variasi), `grade()`, `recordTry()`, `registerWrongClick()`, `huntPayload()`, `buildPayload()` | Bagian 2 mengubah `refreshProgress()` dan pembaca kemajuan. Cabang yang digabung kedua menyelesaikan bentrokan |
 
@@ -690,6 +690,10 @@ Putaran kedua, 2 November 2026 (sesi koordinator, `asal: pengembang`, [04](04_CA
 6. **Kartu jangkar bertumpuk dengan satu Cek.** Tidak dipilih: kartu kedua muncul setelah semua pernyataan pertama dijawab.
 7. **Analisis memakai kode bank terbaru**; kode saat percobaan tetap di `item_tries.error_code`. Tidak dipilih: kode saat percobaan.
 8. **Terjemahan bahasa Inggris bank baru didraf AI sekarang**, disetujui pengembang, dan butir yang direvisi dari validasi diterjemahkan ulang. Tidak dipilih: diterjemahkan sekali setelah matriks revisi (usulan AI); studi hanya berbahasa Indonesia.
+
+**Sesi koordinator 31–35, 3 November 2026** (cabang `r10-cek-30`, `asal: pengembang`, `disetujui pengembang`):
+
+9. **`manual_code` tetap, diisi impor L5** (§10.4): templat dan impor L5 di [29 §10](29_IMPLEMENTASI_DATA_PENELITIAN.md#10-templat-dan-impor-lembar-lapangan-perubahan-no-15) mendapat kolom `manual_code` per percobaan butir, diperiksa terhadap `item_error_codes` butir itu, dan ditulis ke `item_tries.manual_code`. Tidak dipilih: `manual_code` dibuang.
 
 Putaran ketiga, 3 November 2026 (`asal: pengembang`, [04](04_CATATAN_KEPUTUSAN.md)): pengembang meninjau seluruh dokumen dan menyetujuinya, termasuk usulan di [§21](#21-pertanyaan-terbuka) no. 5–6. Status naik ke `disetujui pengembang`.
 

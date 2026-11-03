@@ -6,7 +6,7 @@ Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 Dokumen ini berisi skala pendamping **sikap menjaga warisan** (kode `sikap`) yang diisi siswa kelas 5 sekali, di P5, di Balai Refleksi setelah cerita penutup: definisi konstruk, kisi-kisi, butir, format jawaban, kode, penskoran, pelaksanaan, rencana validasi, dan etika. Dasarnya keputusan 25 Oktober 2026: indikator `sikap` tetap dipakai sebagai skala pendamping, di luar skor literasi digital ([01](01_REVISI_10_ANALITIK.md#pertanyaan-yang-masih-terbuka), perubahan sistem no. 21).
 
-Layarnya dirancang di dokumen implementasi bagian 8 ([34 → Skala sikap di Balai Refleksi](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#9-skala-sikap-di-balai-refleksi)) dan dibangun sekarang, tetapi tidak dipakai dengan anak sebelum persetujuan etik ([04](04_CATATAN_KEPUTUSAN.md), 1 November 2026). Butirnya disimpan di berkas data `data/instrumen/sikap.php`, jadi revisi dari validasi cukup diubah di sana lalu diimpor ulang. Isi skala hanya berbahasa Indonesia di sistem (34 K13); terjemahan bahasa Inggris, bila dibutuhkan untuk laporan, ditulis terpisah setelah validasi.
+Layarnya dirancang di dokumen implementasi bagian 8 ([34 → Skala sikap di Balai Refleksi](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#9-skala-sikap-di-balai-refleksi)). Sejak 1 November 2026 sistemnya dibangun sekarang ([04](04_CATATAN_KEPUTUSAN.md)): perilaku penelitian ada di balik sakelar studi yang mati secara bawaan, tidak dipakai dengan anak sebelum persetujuan etik, G3 dinilai setelah G2, dan versinya dikunci di G4. Butirnya disimpan di berkas data `data/instrumen/sikap.php`, jadi revisi dari validasi cukup diubah di sana lalu diimpor ulang. Isi skala hanya berbahasa Indonesia di sistem (34 K13); terjemahan bahasa Inggris, bila dibutuhkan untuk laporan, ditulis terpisah setelah validasi.
 
 ## Ringkasan
 
@@ -145,7 +145,7 @@ Skor tidak tampil untuk siswa, guru, atau sekolah.
 
 | Hal | Ketentuan |
 | --- | --- |
-| Letak | Balai Refleksi, langsung setelah cerita penutup. Urutan di Balai Refleksi: skala sikap → kirim → ringkasan perjalanan dan kritik dan saran |
+| Letak | Balai Refleksi, langsung setelah cerita penutup. Urutan di Balai Refleksi: skala sikap → kirim → ringkasan perjalanan dan kritik dan saran. Dalam mode penelitian Balai Refleksi hanya terbuka di sesi lapangan P5 dan susulannya; di P2–P4 siswa yang sudah tuntas melihat pesan bahwa Balai Refleksi dibuka di pertemuan terakhir. Rencana `satu_sesi` tidak punya P5, jadi skala tidak tampil di sana ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) K12) |
 | Kritik dan saran | Tetap ada sesudah skala. Bintang 1–5 dan empat pertanyaan terbuka boleh dikosongkan semua selama penelitian (aturan "minimal dua" tidak dipakai), supaya siswa yang lelah tidak terbebani. Bintang 1–5 ("Seberapa senang kamu bermain GELITA?") dipakai sebagai data kepraktisan (keputusan pengembang, 26 Oktober 2026); jawaban terbuka tetap masukan untuk tim |
 | Waktu | ± 5 menit: petunjuk dan contoh ± 1 menit, 12 pernyataan × ± 15 detik ± 3 menit, cadangan 1 menit. Kritik dan saran ± 3–5 menit sesudahnya. Waktu sebenarnya diukur di uji coba |
 | Dibacakan? | **Tidak.** Pernyataan hanya tampil di layar dan tidak ada rekaman narasi. Kalau siswa bertanya arti satu kata, P3 boleh membacakan atau menjelaskan kata itu saja dengan suara pelan, tanpa menafsirkan pernyataan, dan mencatatnya di L3 (`PNL` + `BHS`). Ini sejalan dengan angket di [16](16_ANGKET_AKSES_DIGITAL.md) dan aturan narasi (perubahan sistem no. 18) |
@@ -170,10 +170,12 @@ Masuk `kamus-1.1` setelah uji coba, sama seperti variabel tes dan angket. `kamus
 | `sikap_n_answered` | Jumlah butir yang dijawab (0–12) | Turunan |
 | `sikap_flag_straight` | 1 kalau 12 jawaban mentah sama | Turunan, penanda |
 | `sikap_makeup` | 1 kalau diisi di susulan | Mentah |
-| `sikap_missing_reason` | Alasan skala kosong: `absen` (tidak hadir di P5 dan susulan), `belum_tuntas` (tantangan belum tuntas di akhir P5), `tanpa_izin` (tidak ada izin di L7); kosong kalau skala diisi | Turunan |
+| `sikap_missing_reason` | Alasan skala kosong: `absen` (tidak hadir di P5 dan susulan), `belum_tuntas` (tantangan belum tuntas di akhir P5), `tanpa_izin` (tidak ada izin di L7); kosong kalau skala diisi. `tanpa_izin` tidak pernah terjadi di sistem, karena anak tanpa izin tidak punya akun ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) §5.2); nilai itu hanya diisi dari L7 di lapis 3 (analisis di luar sistem) | Turunan |
 | `feedback_rating` | Bintang 1–5 di kritik dan saran, kosong kalau dilewati; data kepraktisan, bukan bagian skala sikap | Mentah |
 | `sikap_submitted_at` | Waktu kirim (WIB) | Mentah |
 | `sikap_version` | Versi skala (`sikap-1.0` setelah dibekukan di G4) | Mentah |
+
+Variabel turunan di tabel ini dihitung lapis data turunan, bukan modul skala sikap; modul hanya menyimpan jawaban mentah ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) K10). Rumusnya tetap di [Penskoran](#penskoran).
 
 Semua bertanda "Peneliti" dan masuk ekspor peneliti, tidak masuk skor literasi digital. `feedback_rating` sudah tersimpan di sistem sekarang (`participant_feedback.rating`); yang baru hanya penandanya sebagai data penelitian.
 

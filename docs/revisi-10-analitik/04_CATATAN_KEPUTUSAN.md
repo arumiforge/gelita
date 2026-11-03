@@ -6,6 +6,31 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 3 November 2026
 
+**Sesi koordinator untuk 31–35: akibatnya dibawa ke dokumen lain, delapan keputusan pengembang** (cabang `r10-cek-30`, setelah PR #326) · `asal: pengembang` (penyelarasan berbantuan AI dan delapan keputusan) · status dokumen tidak berubah · tidak merevisi produk
+
+Atas permintaan pengembang, *Akibat ke dokumen lain* di [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md)–[35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) dibawa ke dokumen tujuannya, dalam tiga sesi paralel yang dibagi per pemilik berkas:
+- **27–30:** lembar unduhan baru dan kolomnya di 29 §7.2–§7.3 (`kode_pilihan`, lembar `turunan_*`, lembar modul tes, `after_withdrawal`), `scenario_failed` dan `input_idle` di katalog event, `audio_usage_events.clock_offset_ms`; baris pemantauan dan layar token di 28; tabel `challenge_attempt_segments`, tabel modul `instrument_*`, dan `derived_*` di cakupan hapus 30 §7.3; rute ambang dan hitung ulang di 27 §7. Kalimat `consent_ok` di 29 §10.6 dan 30 §10.1 dibetulkan: dihitung lapis turunan di server (35 §7); lembar `izin` tetap di unduhan utama untuk dicocokkan dengan L7.
+- **01, 03, 06, 08, 12, 13, 16, 17, 18, 20, 21:** baris perubahan sistem no. 1–6, 8, 9, 16–22 di 01 menunjuk 31–35; kode baru di 03 (`variant_source`, `BOOKLET_MISSING`, genre dan `layout`, variasi Susun Gambar `c`–`k`); kalimat "tahap 3, setelah G2" diganti di 13, 16, dan 17; variabel butir risiko di 16 hanya angka gabungan (29 K9); variabel turunan angket dan skala dihitung lapis turunan (35 K10). Baris 16 *Cara pelaksanaan* no. 9 hanya diberi catatan, karena menunggu peneliti (34 §17 no. 4).
+- **Di antara 31–35:** nama engine `skenario` di 31 §8.2; anggapan 35 §15 dicocokkan dengan 31–34 (nama kolom dan event yang basi dibetulkan, misalnya `ready_ms`, `input_idle`, `challenge_instruction`, tabel `instrument_*`).
+
+**Delapan keputusan pengembang** (dua putaran tanya; usulan dipilih di kedelapannya):
+1. **Waktu putusan Skenario Digital:** `item_tries` mendapat `action_last_input_ms` dan `reason_last_input_ms` (32 §6.4); 35 memakainya. Tidak dipilih: perkiraan di 35.
+2. **Ambang:** migrasi 33 (`004100`) membuat `idle_threshold_ms` dan `rapid_guess_ms` dengan batas isian dan audit `study_settings_changed` dari 33; 35 hanya menambah `thresholds_locked_at` dan kunci di G4. Tidak dipilih: 35 memegang ambang.
+3. **Tebakan cepat jawaban tes:** tabel turunan baru `derived_test_responses` dan lembar `turunan_tes` di 35. Tidak dipilih: dihitung saat unduh saja.
+4. **Penanda data basi:** `instrument_sittings` dan `instrument_responses` mendapat `updated_at` (34), sehingga 35 memakai satu aturan. Tidak dipilih: memakai `revision`.
+5. **Urutan lembar unduhan** di 29 §7.2 ditetapkan. Tidak dipilih: dibiarkan terbuka.
+6. **Dua baris pemantauan baru** (siswa tanpa kursi, layar kecil ditolak) terlihat admin, peneliti, dan ketua; angka izin tetap peneliti dan ketua. Tidak dipilih: peneliti dan ketua saja.
+7. **Layar kecil juga ditolak saat daftar dengan token** di `/daftar` dalam mode penelitian (28 §6.5, 33 §7.2). Tidak dipilih: hanya di `/token`.
+8. **`manual_code` diisi lewat impor L5** (29 §10, dengan `try_no`), diperiksa terhadap `item_error_codes`. Tidak dipilih: `manual_code` dibuang.
+
+**Yang belum:**
+- baris untuk 11 (`kamus-1.1`), glosarium, dan aturan kerja repo (saat implementasi);
+- tabel L5 di [02](02_LEMBAR_LAPANGAN.md) belum memuat kolom `try_no` dan `manual_code` (keputusan no. 8). L5 berstatus final, jadi kolom itu ditambahkan bersama peneliti; sampai itu `FieldSheetSpec` menandainya kolom tambahan templat (29 §10.7);
+- catatan 18 tentang tombol ▶ menunggu ahli media; berkas serah terima diperbarui bila dibuat versi baru;
+- berkas validator dibuat ulang saat pembekuan (20 prasyarat no. 4), karena 03, 08, 16, 17, dan 18 berubah.
+
+Diubah: 01, 03, 06, 08, 12, 13, 16, 17, 18, 20, 21, 27–35, 04, `docs/PROGRESS.md`, PDF siap cetak.
+
 **`kamus-1.1` ditulis ke 11 sebagai `draf pengembang`** (cabang `r10-kamus-11`, di atas cabang `r10-koordinator-31`) · `asal: pengembang` (disusun dengan bantuan AI) · `draf pengembang` · tidak merevisi produk
 
 Atas permintaan pengembang ("tulis kamus 1.1 ke 11"), menjalankan keputusan 2 November 2026 (entri di bawah, no. 5; [35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) §19 no. 6). Tidak ada keputusan baru dan **tidak ada definisi `kamus-1.0` yang diubah**. Yang baru ditandai *(1.1)* di [11](11_KAMUS_DATA.md) dan didaftar di bagian baru *Yang baru di `kamus-1.1`* (22 butir):

@@ -221,10 +221,12 @@ Ambang adalah pengaturan, bukan angka di kode (11). Disimpan sebagai kolom `rese
 | `rapid_guess_ms` | 3.000 | T_teb, tebakan cepat | Bagian 9 |
 | `min_stage_px` | 960 | Lebar panggung terkecil untuk sesi penelitian (K7) | §7.2 |
 
+- Ketiga kolom dibuat migrasi bagian ini (`004100`, §9); bagian 9 ([35 §5](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#5-ambang-di-konfigurasi-studi)) hanya membacanya dan menambah kunci ambang.
 - Ketiganya bisa diubah selama studi `active`; mengubah ambang tidak mengubah data mentah. Bagian 9 mencatat nilai yang dipakai bersama `dictionary_version`.
+- **Setelah ambang dikunci** di G4 (`research_studies.thresholds_locked_at` terisi, tombol *Kunci ambang* bagian 9, audit `study_thresholds_locked`), halaman studi menolak perubahan `idle_threshold_ms` dan `rapid_guess_ms` dan menampilkan keduanya hanya-baca. `min_stage_px` tetap bisa diubah.
 - Batas isian: `idle_threshold_ms` 30.000–1.800.000, `rapid_guess_ms` 500–10.000, `min_stage_px` 640–1.280. Panel menampilkan detik dan piksel, bukan milidetik.
 - `inputIdleLogMs` (20.000) **tidak** pengaturan studi: ia batas pencatatan, harus di bawah ambang mana pun. Panel menolak `idle_threshold_ms` di bawah `inputIdleLogMs`.
-- Kalau bagian 9 menempatkan T_idle dan T_teb di tempat lain, satu tempat dipilih saat kedua dokumen digabung ([§15](#15-pertanyaan-terbuka) no. 1).
+- Satu tempat untuk kedua ambang: kolom dan batas di sini, kunci di bagian 9 ([§15](#15-pertanyaan-terbuka) no. 1, [§17](#17-keputusan-pengembang) no. 6).
 
 ---
 
@@ -242,6 +244,8 @@ Ambang adalah pengaturan, bukan angka di kode (11). Disimpan sebagai kolom `rese
 
 View membaca `$researchMode` dari `BaseGameController::hudData()` (satu tempat, K1).
 
+Berlaku untuk kelima engine, termasuk engine `skenario` tantangan kelima ([32 §14](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#14-titik-sambung-ke-perubahan-lain)): Skenario Digital memakai kepala tantangan dan layar hasil yang sama, jadi tidak punya jam atau sakelar sendiri.
+
 ### 7.2 Layar kecil
 
 **Ukuran.** Panggung 16:9 berukuran `min(lebar, tinggi × 16/9)` (`core/stage.js`, `stageRect()`). Di ponsel mendatar 844 × 390 panggungnya ± 693 px, dengan teks 6–9 px (10 → B.5); di tablet 1024 × 768 panggungnya 1024 px. Ambang 960 px meloloskan laptop, Chromebook, dan tablet ≥ 10 inci, dan menolak ponsel (K7).
@@ -250,7 +254,7 @@ View membaca `$researchMode` dari `BaseGameController::hudData()` (satu tempat, 
 - **Klien:** modul baru `game/screen-check.js` mengukur `stageRect().width` saat dimuat dan saat `resize` (diredam 500 ms).
   - Mode penelitian dan lebar < `min_stage_px`: tampil layar penghalang `components/small-screen.php` (pola `rotate-gate.js`: isi lain `inert`, fokus ke penghalang). Penghalang hilang sendiri bila jendela dibesarkan.
   - Di luar mode penelitian: peringatan yang bisa ditutup, sekali per sesi peramban (`sessionStorage`).
-- **Server:** layar token (`/token`, 28) menerima `stage_w` dari formulir. Dalam mode penelitian, nilai di bawah `min_stage_px` ditolak dengan pesan yang sama sebelum sesi game dibuat, supaya tidak ada sesi lapangan yang tercatat dari ponsel. Nilai kosong (JavaScript mati) diterima; klien tetap menahan.
+- **Server:** layar token (`/token`, 28 §6.4) dan pendaftaran dengan token di `/daftar` (28 §6.5 langkah 0) sama-sama menerima `stage_w` dari formulir. Dalam mode penelitian, nilai di bawah `min_stage_px` ditolak dengan pesan yang sama sebelum sesi game (atau akun baru) dibuat, supaya tidak ada sesi lapangan yang tercatat dari ponsel. Nilai kosong (JavaScript mati) diterima; klien tetap menahan.
 - **Data:** event `viewport_changed` (admin, 29) sudah membawa ukuran. Penolakan dicatat sebagai audit sesi lapangan `small_screen_refused` (jumlah per sesi di panel pemantauan 28), tanpa data siswa, karena siswa belum masuk sesi.
 
 L0 dan L1 menyebut perangkat yang dipakai ([§14](#14-dokumen-yang-ikut-diperbarui-saat-implementasi)).
@@ -282,6 +286,7 @@ L0 dan L1 menyebut perangkat yang dipakai ([§14](#14-dokumen-yang-ikut-diperbar
 - `GameProgress::nodeOverview()` memberi status `done_locked` untuk tantangan tuntas yang belum boleh diulang; peta wilayah dan layar hasil menyembunyikan *Ulangi* dan menampilkan `Game.retakeLater`.
 - Pengerjaan ulang: `is_retake = 1` (K6), aturan 3 kesempatan sama, bintang seperti sekarang (K5), waktu direkam server seperti biasa. Cerita penghubung tidak diputar lagi (12, keputusan 1; bagian 6).
 - Variasi pengerjaan ulang tetap dari `pickVariant()` (variasi yang belum didapat); buklet hanya menentukan pengerjaan pertama (bagian 5).
+- Aturan ini berlaku juga untuk tantangan kelima Skenario Digital (engine `skenario`, [32 → K2](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#2-keputusan-yang-dikunci)): "kelima tantangan" termasuk tantangan itu, dan pengerjaan ulangnya memakai pemeriksaan `assertRetakeAllowed()` yang sama.
 
 ### 7.5 Kenali setelah wilayah tuntas
 
@@ -326,7 +331,7 @@ L0 dan L1 menyebut perangkat yang dipakai ([§14](#14-dokumen-yang-ikut-diperbar
 
 ### 8.4 M-07 satu nama per jenis tantangan
 
-Pin peta memakai nama jenis ("Isi Rumpang"), sedangkan kartu dan judul memakai judul variasi ("Lengkapi Bacaan Temanggung", `ChallengeService::variantTitle()`, baris 1201). Sesudah: **nama jenis** (glosarium: Susun Gambar, Isi Rumpang, Benar atau Salah, Cari Objek; Skenario Digital dari bagian 6) tampil di pin, kartu tantangan, dan cincin nomor tantangan; judul variasi menjadi subjudul kecil di kepala tantangan saja. Nama jenis dibaca dari berkas bahasa (`Game.engine{Puzzle,Rumpang,Boleh,Cari}`), bukan dari bank.
+Pin peta memakai nama jenis ("Isi Rumpang"), sedangkan kartu dan judul memakai judul variasi ("Lengkapi Bacaan Temanggung", `ChallengeService::variantTitle()`, baris 1201). Sesudah: **nama jenis** (glosarium: Susun Gambar, Isi Rumpang, Benar atau Salah, Cari Objek; Skenario Digital dari bagian 6) tampil di pin, kartu tantangan, dan cincin nomor tantangan; judul variasi menjadi subjudul kecil di kepala tantangan saja. Nama jenis dibaca dari berkas bahasa (`Game.engine_{puzzle,rumpang,boleh,cari}`, kunci yang sudah ada di `app/Language/id/Game.php`, ditambah `Game.engine_skenario` dari 32 §13), bukan dari bank.
 
 ### 8.5 M-08 dua pelanggaran axe
 
@@ -357,7 +362,7 @@ Sudah diatur (K12): pendaftaran dengan token melewati provinsi, kabupaten, dan s
 
 | Tabel atau kolom | Isi |
 | --- | --- |
-| `research_studies` | Kolom baru `idle_threshold_ms` INT UNSIGNED bawaan 180000, `rapid_guess_ms` INT UNSIGNED bawaan 3000, `min_stage_px` SMALLINT UNSIGNED bawaan 960 |
+| `research_studies` | Kolom baru `idle_threshold_ms` INT UNSIGNED bawaan 180000, `rapid_guess_ms` INT UNSIGNED bawaan 3000, `min_stage_px` SMALLINT UNSIGNED bawaan 960 (batas isian dan audit `study_settings_changed` di §6). Bagian 9 tidak membuat kedua kolom ambang lagi; migrasinya hanya menambah `thresholds_locked_at` (35 §12) |
 | `challenge_attempts` | Kolom baru `is_retake` TINYINT(1) bawaan 0. Pengisian data lama: 1 untuk setiap pengerjaan yang punya pengerjaan `completed` lebih awal dari siswa yang sama di tantangan yang sama |
 | `audio_usage_events` | Kolom baru `clock_offset_ms` INT (null). Data lama tetap kosong |
 | `challenge_attempt_segments` (baru) | `id`, `challenge_attempt_id` FK (`ON DELETE CASCADE`), `session_id` FK `game_sessions` (`ON DELETE CASCADE`), `field_session_id` FK (null, `ON DELETE SET NULL`), `segment_no` SMALLINT, `opened_at` DATETIME(3), `left_at` DATETIME(3) (null), `left_via` VARCHAR(30) (null). Unik (`challenge_attempt_id`, `segment_no`); indeks (`session_id`, `left_at`) |
@@ -378,9 +383,9 @@ Pengisian potongan untuk pengerjaan lama: satu potongan per pengerjaan (`started
 | Metode dan jalur | Target | Filter | Catatan |
 | --- | --- | --- | --- |
 | `GET /api/attempts/{id}/objects/{ref}` | `ChallengeApiController::objectImage` | `apiSession` | M-04; jalur `/api` berbahasa Inggris |
-| `POST /admin/studi/{id}/pengaturan` | `StudyController::updateSettings` | `staffCan:studies.manage` | Ambang dan `min_stage_px` (§6) |
+| `POST /admin/studi/{id}/pengaturan` | `StudyController::updateSettings` | `staffCan:studies.manage` | Ambang dan `min_stage_px` (§6); ambang yang sudah dikunci (35 §5) ditolak |
 
-Tidak ada rute siswa baru. Penghalang layar kecil, Kenali terkunci, dan *Ulangi* yang terkunci tampil di halaman yang sudah ada. Layar token (`/token`, 28) hanya menerima bidang tambahan `stage_w`.
+Tidak ada rute siswa baru. Penghalang layar kecil, Kenali terkunci, dan *Ulangi* yang terkunci tampil di halaman yang sudah ada. Layar token (`/token`, 28) dan langkah 0 `/daftar` (28 §6.5) hanya menerima bidang tambahan `stage_w`.
 
 ---
 
@@ -443,8 +448,8 @@ Teks siswa mengikuti `.claude/rules/ui-copy.md`; setiap kunci id punya pasangan 
 | `RetakeRuleTest` | Mode penelitian: tantangan tuntas tidak bisa diulang sebelum kelima tantangan wilayah tuntas (`RETAKE_LOCKED`, juga lewat API), bisa sesudahnya bila wilayah ada di rencana pertemuan; `is_retake` di semua mode; bintang terbaik seperti sekarang |
 | `KenaliGateTest` | Mode penelitian: narasi Kenali wilayah yang belum tuntas tidak ada di halaman peta; ada setelah tuntas; di luar mode semua ada |
 | `ResearchClockTest` | Mode penelitian: `#timer`, *Waktu* layar hasil, dan *Total waktu* Profil tidak dirender; ✓/✗ tetap; di luar mode semuanya tampil |
-| `SmallScreenTokenTest` | `/token` menolak `stage_w` < `min_stage_px` dalam mode penelitian, menerima nilai kosong, dan mencatat audit tanpa data siswa |
-| `StudySettingsTest` | Hanya `ketua` yang mengubah; batas isian; audit nilai lama dan baru; `idle_threshold_ms` di bawah 20 detik ditolak |
+| `SmallScreenTokenTest` | `/token` dan langkah 0 `/daftar` (pendaftaran dengan token) menolak `stage_w` < `min_stage_px` dalam mode penelitian, menerima nilai kosong, dan mencatat audit tanpa data siswa |
+| `StudySettingsTest` | Hanya `ketua` yang mengubah; batas isian; audit nilai lama dan baru; `idle_threshold_ms` di bawah 20 detik ditolak; setelah `thresholds_locked_at` terisi, perubahan kedua ambang ditolak dan `min_stage_px` tetap bisa diubah |
 | `AudioOffsetTest` | `audio_usage_events.clock_offset_ms` sama dengan offset event mentah batch itu, juga untuk `pause` |
 | `InputIdleEventTest` | `input_idle` diterima dengan payload yang dijepit (`idle_ms` bulat ≥ 0, `end` dari tiga nilai); bukan `SERVER_ONLY` |
 | `HuntObjectImageTest` | Payload Cari Objek tidak memuat jalur berkas atau kode butir; `/api/attempts/{id}/objects/{ref}` mengirim gambar untuk pemiliknya, 404 untuk token asing dan pengerjaan siswa lain |
@@ -489,7 +494,7 @@ Teks siswa mengikuti `.claude/rules/ui-copy.md`; setiap kunci id punya pasangan 
 
 Tidak menahan draf ini.
 
-1. ~~**Tempat T_idle dan T_teb.**~~ **Selesai 2 November 2026** (sesi koordinator): 33 dan [35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) (K2) sama-sama memakai kolom `research_studies.idle_threshold_ms` dan `rapid_guess_ms`; tidak ada yang perlu dipilih.
+1. ~~**Tempat T_idle dan T_teb.**~~ **Selesai 2 November 2026** (sesi koordinator): 33 dan [35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) (K2) sama-sama memakai kolom `research_studies.idle_threshold_ms` dan `rapid_guess_ms`. ~~Migrasi mana yang membuatnya.~~ **Diputuskan pengembang 3 November 2026** (sesi koordinator 31–35, [§17](#17-keputusan-pengembang) no. 6): migrasi `004100` bagian ini membuat kedua kolom dengan batas dan audit §6; bagian 9 hanya menambah `thresholds_locked_at` dan kunci G4.
 2. **Layar dengan bacaan panjang** butuh ambang jeda lain? (11 → *Aturan jeda*). Data `input_idle` membawa `screen`, jadi bisa diputuskan setelah uji coba tanpa perubahan sistem.
 3. **Ambang 960 px** diperiksa di uji keterbacaan dan KG3a dengan perangkat sekolah yang sebenarnya; bila tablet 10 inci dengan bilah peramban lebar ternyata < 960, ambangnya diturunkan lewat pengaturan.
 4. ~~**Pengerjaan ulang di P2–P4 setelah wilayah tuntas**~~ memakai sisa waktu pertemuan dan bisa menambah waktu bermain. Bila peneliti ingin pengerjaan ulang hanya di P5, cukup ubah syarat "wilayah di rencana pertemuan" menjadi "pertemuan 5"; tidak ada perubahan data. **Diputuskan pengembang 2 November 2026** (sesi koordinator, [04](04_CATATAN_KEPUTUSAN.md)): tetap boleh di P2–P4 ([§17](#17-keputusan-pengembang) no. 5).
@@ -498,20 +503,20 @@ Tidak menahan draf ini.
 
 ## 16. Akibat ke dokumen lain
 
-Dicatat di sini dan dibawa sesi koordinator setelah gelombang B digabung.
+Dicatat di sini dan dibawa sesi koordinator setelah gelombang B digabung. **Status per 3 November 2026:** dibawa sesi koordinator 31–35 (cabang `r10-cek-30`), kecuali baris yang menunggu `kamus-1.1` atau implementasi.
 
-| Dokumen | Bagian | Perubahan |
-| --- | --- | --- |
-| [01](01_REVISI_10_ANALITIK.md) | *Catatan perubahan sistem* no. 5, 16, 19 | Tautan ke 33; no. 5 menyebut `input_idle` dan potongan pengerjaan; no. 16 menyebut ambang 960 px dan pengerjaan ulang yang tetap berbintang; no. 19 menyebut M-11 diatur di 28 dan 29 |
-| [11](11_KAMUS_DATA.md) | Analitik 5, *Variabel*, *Yang harus disediakan sistem* | `input_idle` sebagai sumber jeda; `challenge_attempt_segments` sebagai sumber potongan; `duration_ms` tidak dipakai untuk pengerjaan berpotongan; `audio_usage_events.clock_offset_ms`; T_idle dan T_teb di `research_studies` (atau tempat yang dipilih, §15 no. 1); kalimat lama "tahap 3, setelah G2". Masuk `kamus-1.1` lewat bagian 9 **Sudah**: `kamus-1.1` draf (3 November 2026). |
-| [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) | *Yang perlu disiapkan di tahap 3* no. 7 | Kenali selama studi dirancang di 33 §7.5 |
-| [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) | §6.4 layar token, §12 pemantauan, §18 | `/token` menerima `stage_w` dan menolak layar kecil; angka "perangkat layar kecil ditolak" di pemantauan; titik sambung no. 16 menunjuk 33 |
-| [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) | §4 katalog, §5.4, §12, §15 | `input_idle` (Peneliti, klien) di katalog; `audio_usage_events.clock_offset_ms` (K10); titik sambung no. 5 menunjuk 33 |
-| [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) | §7.3 yang dihapus sistem | `challenge_attempt_segments` ikut hapus per siswa |
-| `35` (bagian 9) | Seluruh | Batas di 33 §4; membaca `input_idle`, potongan, offset audio, dan ambang di §6 |
-| `32` (bagian 6) | Nama jenis | "Skenario Digital" sebagai nama jenis di pin dan kartu (M-07) |
-| [10](10_TELAAH_PENDAHULUAN_MEDIA.md) | *Catatan temuan* | Tidak diubah (telaah selesai); tindak lanjut M-04–M-11 ada di 33 §8 |
-| `.claude/rules/glossary.md` | — | Istilah baru di §14, diperbarui saat implementasi |
+| Dokumen | Bagian | Perubahan | Status |
+| --- | --- | --- | --- |
+| [01](01_REVISI_10_ANALITIK.md) | *Catatan perubahan sistem* no. 5, 16, 19 | Tautan ke 33; no. 5 menyebut `input_idle` dan potongan pengerjaan; no. 16 menyebut ambang 960 px dan pengerjaan ulang yang tetap berbintang; no. 19 menyebut M-11 diatur di 28 dan 29 | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| [11](11_KAMUS_DATA.md) | Analitik 5, *Variabel*, *Yang harus disediakan sistem* | `input_idle` sebagai sumber jeda; `challenge_attempt_segments` sebagai sumber potongan; `duration_ms` tidak dipakai untuk pengerjaan berpotongan; `audio_usage_events.clock_offset_ms`; T_idle dan T_teb di `research_studies` (atau tempat yang dipilih, §15 no. 1); kalimat lama "tahap 3, setelah G2". Masuk `kamus-1.1` lewat bagian 9 | **Sudah**: `kamus-1.1` draf (3 November 2026) |
+| [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) | *Yang perlu disiapkan di tahap 3* no. 7 | Kenali selama studi dirancang di 33 §7.5 | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) | §6.4 layar token, §12 pemantauan, §18 | `/token` menerima `stage_w` dan menolak layar kecil; angka "perangkat layar kecil ditolak" di pemantauan; titik sambung no. 16 menunjuk 33 | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) | §4 katalog, §5.4, §12, §15 | `input_idle` (Peneliti, klien) di katalog; `audio_usage_events.clock_offset_ms` (K10); titik sambung no. 5 menunjuk 33 | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) | §7.3 yang dihapus sistem | `challenge_attempt_segments` ikut hapus per siswa | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| `35` (bagian 9) | Seluruh | Batas di 33 §4; membaca `input_idle`, potongan, offset audio, dan ambang di §6 | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| `32` (bagian 6) | Nama jenis | "Skenario Digital" sebagai nama jenis di pin dan kartu (M-07) | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| [10](10_TELAAH_PENDAHULUAN_MEDIA.md) | *Catatan temuan* | Tidak diubah (telaah selesai); tindak lanjut M-04–M-11 ada di 33 §8 | Tidak perlu diubah |
+| `.claude/rules/glossary.md` | — | Istilah baru di §14, diperbarui saat implementasi | Saat implementasi |
 
 ---
 
@@ -526,3 +531,8 @@ Satu putaran tanya, empat pertanyaan (1–2 November 2026). Pengembang memilih u
 3. **Layar kecil: lebar panggung di bawah 960 px**, disimpan sebagai pengaturan studi (K7). Tidak dipilih: di bawah 1024 px; ponsel menurut jenis perangkat.
 4. **Keluar mengirim antrean dulu** (paling lama 5 detik), sisa antrean tetap berpenanda sesi dan dibuang setelah 14 hari (K11). Tidak dipilih: kirim lalu hapus semua sisa; tetap seperti sekarang dan hanya menambah L0.
 5. **Pengerjaan ulang tetap terbuka di P2–P4** setelah kelima tantangan wilayah pertemuan itu tuntas (2 November 2026, sesi koordinator, [04](04_CATATAN_KEPUTUSAN.md)). Tidak dipilih: pengerjaan ulang hanya di P5.
+
+**Sesi koordinator 31–35, 3 November 2026** (`asal: pengembang`, `disetujui pengembang`):
+
+6. **Kolom ambang dibuat bagian ini** (§6, §9): migrasi `004100` membuat `research_studies.idle_threshold_ms` dan `rapid_guess_ms` dengan batas isian 30.000–1.800.000 dan 500–10.000 dan audit `study_settings_changed`. Bagian 9 ([35 §5](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#5-ambang-di-konfigurasi-studi)) hanya menambah `thresholds_locked_at` dan kunci G4 (*Kunci ambang*, audit `study_thresholds_locked`); setelah dikunci, halaman studi di sini menolak perubahan kedua ambang. Tidak dipilih: bagian 9 yang memiliki kolom ambang.
+7. **Layar kecil juga ditolak di `/daftar`** (§7.2): dalam mode penelitian, pendaftaran dengan token ([28 §6.5](28_IMPLEMENTASI_SESI_LAPANGAN.md#65-pendaftaran-dengan-token-p1) langkah 0) mengirim `stage_w` juga dan menolak panggung di bawah `min_stage_px` dengan pesan yang sama dan audit `small_screen_refused`. Tidak dipilih: hanya di `/token`.

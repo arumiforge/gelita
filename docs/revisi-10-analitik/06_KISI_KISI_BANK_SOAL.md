@@ -346,7 +346,7 @@ Daftar ini hanya catatan untuk dokumen implementasi; belum ada yang dikerjakan.
 
 | No | Perubahan | Catatan |
 | --- | --- | --- |
-| 1 | Engine Skenario Digital | Dua langkah (tindakan, alasan), skor 0–1–2 di server, simpan `reason_code`; pilihan diacak per pengerjaan |
+| 1 | Engine Skenario Digital | Dua langkah (tindakan, alasan), skor 0–1–2 di server, simpan `reason_code`; pilihan diacak sekali per pengerjaan, tetap di ketiga kesempatan ([32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md) K7) |
 | 2 | Cari Objek dua babak | Babak 2 dengan adegan per variasi; satu tantangan, dua kelompok butir; babak 1 tanpa variasi |
 | 3 | Kartu jangkar di Benar atau Salah | Bacaan kedua di satu tantangan; butir `x` dipakai semua variasi |
 | 4 | Variasi dari buklet | Pengerjaan pertama memakai variasi dari buklet siswa (dimasukkan P1 di panel peneliti dari L2), bukan acak; `BankRules::FIRST_ATTEMPT_GROUPS` jadi `a`, `b`. Susun Gambar tidak mengikuti buklet: pengerjaan pertama diacak dari `a` dan `b`, dua variasi yang keterangannya bersih dari kunci ([08](08_DRAF_BANK_SOAL.md#keputusan-pengembang-26-oktober-2026)) |
