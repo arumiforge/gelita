@@ -2,339 +2,179 @@
 
 use App\Libraries\BankRules;
 use App\Libraries\BankSource;
-use App\Libraries\DifficultyRules;
+use App\Libraries\HuntGeometry;
 use CodeIgniter\Test\CIUnitTestCase;
 
 /**
- * The grade-5 bank (docs/bank-soal/data/*.php, revision of October 2026 =
- * draft 2) passes every §7.5 check without errors or warnings, is complete
- * (151 item rows: 147 active + 4 retired; 51 variants, 9 passages, 36 hints,
- * 15 distractors, 66 image slots), and every §7.5 rule really rejects a bank
- * that breaks it.
+ * The research bank of revision 10 (docs/bank-soal/data/*.php, from 08 with
+ * the English draft of 36; 31 §7.3): no rule error, the counts of
+ * 08 → Jumlah, Susun Gambar letters remapped (31 §14), the fact-check fixes
+ * of 25, the error-code matrices derived by the fixed rules of 08 (K6), and
+ * both Cari Objek rounds keep 24 dp between tap areas (K9). The per-rule
+ * cases live in BankRulesNewBankTest.
  *
  * @internal
  */
 final class BankKelas5DataTest extends CIUnitTestCase
 {
-    /** Dok 2 §10.4: 45 challenge image slots, plus 21 for Susun Gambar variants d–j (draft 2). */
-    private const MEDIA_SLOTS = [
-        'challenge.item.tmg-1-01', 'challenge.item.tmg-1-03', 'challenge.item.tmg-1-04',
-        'challenge.item.tmg-3-a03', 'challenge.item.tmg-3-b03', 'challenge.item.tmg-3-c03',
-        'challenge.tmg-4.scene',
-        'challenge.item.tmg-4-03', 'challenge.item.tmg-4-02', 'challenge.item.tmg-4-06', 'challenge.item.tmg-4-04',
-        'challenge.item.tmg-4-09', 'challenge.item.tmg-4-10', 'challenge.item.tmg-4-11', 'challenge.item.tmg-4-12',
-        'challenge.item.mgl-1-01', 'challenge.item.mgl-1-02', 'challenge.item.mgl-1-03',
-        'challenge.mgl-4.scene',
-        'challenge.item.mgl-4-a01', 'challenge.item.mgl-4-a02', 'challenge.item.mgl-4-a03', 'challenge.item.mgl-4-a04',
-        'challenge.item.mgl-4-a05', 'challenge.item.mgl-4-a06', 'challenge.item.mgl-4-a07', 'challenge.item.mgl-4-a08',
-        'challenge.item.mgl-4-a09', 'challenge.item.mgl-4-a10',
-        'challenge.item.wnb-1-05', 'challenge.item.wnb-1-06', 'challenge.item.wnb-1-07',
-        'challenge.wnb-4.scene',
-        'challenge.item.wnb-4-a01', 'challenge.item.wnb-4-a02', 'challenge.item.wnb-4-a03', 'challenge.item.wnb-4-a04',
-        'challenge.item.wnb-4-a05', 'challenge.item.wnb-4-a06', 'challenge.item.wnb-4-a07', 'challenge.item.wnb-4-a08',
-        'challenge.item.wnb-4-a09', 'challenge.item.wnb-4-a10', 'challenge.item.wnb-4-a11', 'challenge.item.wnb-4-a12',
-        'challenge.item.tmg-1-d01', 'challenge.item.tmg-1-e01', 'challenge.item.tmg-1-f01', 'challenge.item.tmg-1-g01',
-        'challenge.item.tmg-1-h01', 'challenge.item.tmg-1-i01', 'challenge.item.tmg-1-j01',
-        'challenge.item.mgl-1-d01', 'challenge.item.mgl-1-e01', 'challenge.item.mgl-1-f01', 'challenge.item.mgl-1-g01',
-        'challenge.item.mgl-1-h01', 'challenge.item.mgl-1-i01', 'challenge.item.mgl-1-j01',
-        'challenge.item.wnb-1-d01', 'challenge.item.wnb-1-e01', 'challenge.item.wnb-1-f01', 'challenge.item.wnb-1-g01',
-        'challenge.item.wnb-1-h01', 'challenge.item.wnb-1-i01', 'challenge.item.wnb-1-j01',
+    /** Warnings the data may carry: content flags for the experts, never rule errors. */
+    private const KNOWN_WARNINGS = [
+        'terjemahan belum ada', 'Level AKM', 'belum setara', 'berselang-seling', 'Kode kesalahan yang diharapkan',
     ];
-
-    /** Retired items (is_active 0): kept so stored answers keep their item. */
-    private const RETIRED = ['mgl-2-a04', 'mgl-2-c04', 'wnb-2-c05', 'wnb-2-c07'];
 
     /** @var array<string, mixed>|null */
     private static ?array $flat = null;
 
-    public function testDataFilesPassEveryCheckWithoutWarnings(): void
+    public function testDataFilesHaveNoRuleErrors(): void
     {
-        $problems = array_map([BankRules::class, 'format'], BankSource::problems($this->flat()));
+        $problems = BankSource::problems($this->flat());
+        $errors   = array_map([BankRules::class, 'format'], array_filter($problems, static fn (array $p): bool => $p['level'] === 'error'));
 
-        $this->assertSame([], $problems);
+        $this->assertSame([], $errors);
+
+        foreach (array_filter($problems, static fn (array $p): bool => $p['level'] === 'warning') as $warning) {
+            $known = array_filter(self::KNOWN_WARNINGS, static fn (string $needle): bool => str_contains($warning['message'], $needle));
+            $this->assertNotSame([], $known, BankRules::format($warning));
+        }
     }
 
-    public function testBankIsCompleteAsAgreed(): void
+    /** 08 → Jumlah: 116 digital literacy items (30 + 32 + 6 + 24 + 24) and 12 PBK clues. */
+    public function testCountsMatchDraft08(): void
     {
         $sheets = $this->flat()['sheets'];
         $items  = array_filter($sheets['items'], static fn (array $row): bool => $row['is_active'] === '1');
+        $count  = static fn (callable $test): int => count(array_filter($items, $test));
 
-        $this->assertCount(12, $sheets['nodes']);
-        $this->assertCount(151, $sheets['items']);
-        $this->assertCount(147, $items);
-        $this->assertSame(self::RETIRED, array_values(array_column(array_filter($sheets['items'], static fn (array $row): bool => $row['is_active'] === '0'), 'item_key')));
-        $this->assertCount(129, array_filter($items, static fn (array $row): bool => $row['scorable'] === '1'));
-        $this->assertCount(18, array_filter($items, static fn (array $row): bool => $row['decoy'] === '1'));
-        $this->assertCount(51, $sheets['variants']);
+        $this->assertCount(15, $sheets['nodes']);
+        $this->assertSame(30, $count(static fn (array $r): bool => $r['interaction_type'] === 'fill_blank_bank'));
+        $this->assertSame(32, $count(static fn (array $r): bool => $r['interaction_type'] === 'verdict_card' && $r['variant_group'] !== 'x'));
+        $this->assertSame(6, $count(static fn (array $r): bool => $r['interaction_type'] === 'verdict_card' && $r['variant_group'] === 'x'));
+        $this->assertSame(24, $count(static fn (array $r): bool => $r['interaction_type'] === 'find_part'));
+        $this->assertSame(24, $count(static fn (array $r): bool => $r['interaction_type'] === 'scenario_choice'));
+        $this->assertSame(116, $count(static fn (array $r): bool => in_array($r['dimension'], ['D1', 'D2', 'D3'], true)));
+        $this->assertSame(12, $count(static fn (array $r): bool => $r['dimension'] === 'PBK'));
+        $this->assertSame(18, $count(static fn (array $r): bool => $r['decoy'] === '1'));
+        $this->assertSame(31, $count(static fn (array $r): bool => $r['interaction_type'] === 'puzzle_arrange'));
+        $this->assertCount(177, $items);
+
         $this->assertCount(9, $sheets['passages']);
         $this->assertCount(36, $sheets['hints']);
-        $this->assertCount(15, $sheets['distractors']);
-        $this->assertCount(66, $this->flat()['media']);
-
-        // Ringkasan §8: rumpang 9 bacaan (3 per wilayah), B/S 9 bacaan
-        $this->assertCount(9, array_unique(array_map(
-            static fn (array $row): string => $row['node_ref'] . $row['variant_group'],
-            array_filter($items, static fn (array $row): bool => $row['interaction_type'] === 'fill_blank_bank'),
-        )));
+        $this->assertCount(12, $sheets['distractors']);
+        $this->assertCount(184, $sheets['cloze_matrix'], 'TMG 4 × 5, MGL 5 × 6, WNB 6 × 7 per variant (31 §6.3)');
+        $this->assertCount(108, $sheets['object_codes']);
+        $this->assertCount(6, $sheets['post_scenes']);
+        $this->assertCount(60, $sheets['post_parts'], '8 / 10 / 12 parts per post');
+        $this->assertCount(216, $sheets['part_codes']);
+        $this->assertCount(24, $sheets['scenarios']);
+        $this->assertCount(184, $sheets['scenario_options']);
+        $this->assertSame(['D1a', 'D1b', 'D2', 'D3', 'PBK'], array_column($sheets['indicators'], 'code'));
+        $this->assertCount(67, $this->flat()['media']);
     }
 
-    public function testRegionsFollowTheChallengeOrderAndLevelSeederDifficulty(): void
-    {
-        $seeder   = (string) file_get_contents(APPPATH . 'Database/Seeds/LevelSeeder.php');
-        $expected = [
-            'temanggung' => ['mudah', ['tmg-1' => array_fill(0, 10, 1), 'tmg-2' => [3, 3, 3], 'tmg-3' => [3, 3, 3], 'tmg-4' => [8]]],
-            'magelang'   => ['sedang', ['mgl-1' => array_fill(0, 10, 1), 'mgl-2' => [5, 5, 5], 'mgl-3' => [5, 5, 5], 'mgl-4' => [10]]],
-            'wonosobo'   => ['sulit', ['wnb-1' => array_fill(0, 10, 1), 'wnb-2' => [7, 7, 7], 'wnb-3' => [6, 6, 6], 'wnb-4' => [12]]],
-        ];
-
-        foreach (BankSource::load(ROOTPATH . 'docs/bank-soal/data') as $region => $data) {
-            [$difficulty, $nodes] = $expected[$region];
-
-            $this->assertSame($difficulty, $data['difficulty'], $region);
-            $this->assertMatchesRegularExpression("/'code'\\s*=>\\s*'{$region}'.*?'difficulty'\\s*=>\\s*'{$difficulty}'/s", $seeder, $region);
-            $this->assertSame(array_keys($nodes), array_keys($data['nodes']), "{$region}: urutan tantangan");
-            $this->assertSame(['puzzle', 'rumpang', 'boleh', 'cari'], array_values(array_column($data['nodes'], 'engine')), $region);
-
-            foreach ($nodes as $ref => $counts) {
-                $active = static fn (array $v): int => count(array_filter($v['items'], static fn (array $item): bool => ($item['active'] ?? true) !== false));
-
-                $this->assertSame($counts, array_values(array_map($active, $data['nodes'][$ref]['variants'])), "{$ref}: active items per variant");
-            }
-        }
-    }
-
-    public function testCodesSequencesAndReviewStatusFollowTheRules(): void
-    {
-        $perNode = [];
-
-        $retired = [];
-
-        foreach ($this->flat()['sheets']['items'] as $row) {
-            $this->assertMatchesRegularExpression('/^' . preg_quote($row['node_ref'], '/') . '-' . $row['variant_group'] . '\d{2}$/', $row['item_key']);
-
-            if ($row['is_active'] === '1') {
-                $perNode[$row['node_ref']][] = (int) $row['sequence'];
-            } else {
-                $retired[$row['node_ref']][] = (int) $row['sequence'];
-            }
-
-            // Revised items wait for the researcher's check; the rest stay as approved.
-            $this->assertContains($row['review_status'], ['verified', 'needs_verification'], $row['item_key']);
-
-            if ($row['review_status'] === 'verified' && ! str_starts_with($row['review_note'], 'Revisi')) {
-                $this->assertSame(BankSource::REVIEW_NOTE, $row['review_note'], $row['item_key']);
-            } else {
-                $this->assertNotSame('', $row['review_note'], "{$row['item_key']}: reason for the revision");
-            }
-
-            $this->assertNotSame('', $row['reference_source'], "{$row['item_key']}: rujukan §9.4");
-
-            if ($row['interaction_type'] === 'verdict_card') {
-                $this->assertSame(substr($row['item_key'], 0, -2), $row['passage_key'], 'kode bacaan {node}-{variasi}');
-            }
-        }
-
-        foreach ($perNode as $ref => $sequence) {
-            $this->assertSame(range(1, count($sequence)), $sequence, "{$ref}: sequence = urutan global di tantangan");
-        }
-
-        $this->assertSame(['mgl-2' => [91, 92], 'wnb-2' => [91, 92]], $retired, 'retired items sort after every active item');
-
-        // Explicit keys: inserted items keep the numbering of the items around them
-        $sequence = array_column($this->flat()['sheets']['items'], 'sequence', 'item_key');
-        $this->assertSame(['3', '4', '91'], [$sequence['mgl-2-a06'], $sequence['mgl-2-a03'], $sequence['mgl-2-a04']]);
-        $this->assertSame(['13', '19', '21'], [$sequence['wnb-2-b02'], $sequence['wnb-2-c08'], $sequence['wnb-2-c09']]);
-
-        $this->assertSame(['tmg-2-a01', 'tmg-3-b03', 'tmg-4-a08', 'mgl-4-a10', 'wnb-4-a12'], array_values(array_intersect(
-            ['tmg-2-a01', 'tmg-3-b03', 'tmg-4-a08', 'mgl-4-a10', 'wnb-4-a12'],
-            array_column($this->flat()['sheets']['items'], 'item_key'),
-        )));
-    }
-
-    public function testMediaSlotsMatchTheAgreedList(): void
-    {
-        $media = $this->flat()['media'];
-
-        $this->assertEqualsCanonicalizing(self::MEDIA_SLOTS, array_keys($media));
-
-        foreach ($media as $key => $slot) {
-            $this->assertNotSame('', $slot['label'], $key);
-            $this->assertLessThanOrEqual(120, mb_strlen($slot['label']), $key);
-            $this->assertNotSame('', $slot['note'], "{$key}: isi gambar asli §10.4");
-        }
-
-        $this->assertSame('Kuda kepang bambu', $media['challenge.item.tmg-4-03']['label']);
-        $this->assertSame('puzzle', $media['challenge.item.wnb-1-j01']['kind']);
-        $this->assertSame(['wnb-1-j01'], $media['challenge.item.wnb-1-j01']['used_by']);
-        $this->assertSame('Pasar Budaya Temanggung', $media['challenge.tmg-4.scene']['label']);
-        $this->assertSame('arca Buddha duduk dari batu (sengaja tidak sesuai bacaan)', $media['challenge.item.tmg-3-b03']['note']);
-    }
-
-    public function testReadingChunksKeepParagraphBreaksAfterTheBlank(): void
+    /** Every item of 08 stays needs_verification until expert validation (31 §7.3). */
+    public function testNewItemsAreNeedsVerification(): void
     {
         foreach ($this->flat()['sheets']['items'] as $row) {
-            if ($row['interaction_type'] !== 'fill_blank_bank') {
+            if ($row['interaction_type'] !== 'puzzle_arrange') {
+                $this->assertSame('needs_verification', $row['review_status'], $row['item_key']);
+                $this->assertStringContainsString('terjemahan belum ada', $row['review_note'], $row['item_key']);
+            }
+        }
+    }
+
+    /** 31 §14: letters remapped; a and b are the clean variants, Temanggung has 11 (a–k). */
+    public function testSusunGambarLettersAreRemapped(): void
+    {
+        $media = [];
+
+        foreach ($this->flat()['sheets']['items'] as $row) {
+            if ($row['interaction_type'] === 'puzzle_arrange') {
+                $media[$row['node_ref']][$row['variant_group']] = $row['media_asset_key'];
+            }
+        }
+
+        $this->assertSame(range('a', 'k'), array_keys($media['tmg-1']));
+        $this->assertSame(range('a', 'j'), array_keys($media['mgl-1']));
+        $this->assertSame(range('a', 'j'), array_keys($media['wnb-1']));
+        $this->assertSame(['challenge.item.tmg-1-i01', 'challenge.item.tmg-1-k01', 'challenge.item.tmg-1-01'], [$media['tmg-1']['a'], $media['tmg-1']['b'], $media['tmg-1']['c']]);
+        $this->assertSame('challenge.item.tmg-1-j01', $media['tmg-1']['k']);
+        $this->assertSame(['challenge.item.mgl-1-03', 'challenge.item.mgl-1-e01', 'challenge.item.mgl-1-01', 'challenge.item.mgl-1-d01'], [$media['mgl-1']['a'], $media['mgl-1']['b'], $media['mgl-1']['c'], $media['mgl-1']['e']]);
+        $this->assertSame(['challenge.item.wnb-1-d01', 'challenge.item.wnb-1-i01', 'challenge.item.wnb-1-05', 'challenge.item.wnb-1-e01'], [$media['wnb-1']['a'], $media['wnb-1']['b'], $media['wnb-1']['c'], $media['wnb-1']['f']]);
+    }
+
+    /** 25 → Akibat ke dokumen lain no. 4 on the Susun Gambar captions. */
+    public function testCaptionFixesFromTheFactCheck(): void
+    {
+        $prompts = array_column($this->flat()['sheets']['items'], 'prompt_id', 'item_key');
+
+        $this->assertStringContainsString('Wayang Kedu adalah wayang kulit asli wilayah Kedu yang berkembang di Temanggung.', $prompts['tmg-1-b01']);
+        $this->assertStringNotContainsString('Warisan Budaya Takbenda', $prompts['tmg-1-b01']);
+        $this->assertStringContainsString('sekitar 3.150 m', $prompts['tmg-1-c01']);
+        $this->assertStringContainsString('ratusan kelompok kuda lumping', $prompts['tmg-1-e01']);
+        $this->assertStringContainsString('diperkirakan dibuat sekitar tahun 832 Masehi', $prompts['tmg-1-g01']);
+        $this->assertStringContainsString('Desa Dieng Kulon, Banjarnegara', $prompts['wnb-1-a01']);
+        $this->assertStringContainsString('sejak zaman Belanda', $prompts['wnb-1-i01']);
+        $this->assertStringContainsString('direbus atau dikukus', $prompts['mgl-1-g01']);
+        $this->assertStringContainsString('prajurit', implode(' ', array_column(array_filter($this->flat()['sheets']['items'], static fn (array $r): bool => $r['item_key'] === 'mgl-2-b04'), 'answer_id')));
+    }
+
+    /** K6: the builder writes the full matrices from the three fixed rules of 08 and `special`. */
+    public function testErrorCodeMatricesFollowTheFixedRules(): void
+    {
+        $cloze = [];
+
+        foreach ($this->flat()['sheets']['cloze_matrix'] as $row) {
+            $cloze[$row['item_key']][mb_strtolower($row['word_id'])] = $row['error_code'];
+        }
+
+        $this->assertSame('INF-REL', $cloze['tmg-2-a01']['abu'], 'another blank\'s answer');
+        $this->assertSame('INF-HUB', $cloze['tmg-2-a02']['pasir'], 'the decoy at its target blank');
+        $this->assertSame('INF-LIT', $cloze['tmg-2-a01']['pasir'], 'a decoy at another blank');
+        $this->assertSame('INF-HUB', $cloze['wnb-2-a02']['agar'], 'Kode khusus of 08');
+        $this->assertSame('INF-HUB', $cloze['wnb-2-a03']['agar']);
+        $this->assertSame('INF-LIT', $cloze['wnb-2-a04']['agar']);
+        $this->assertCount(5, $cloze['tmg-2-b03']);
+
+        $objects = [];
+
+        foreach ($this->flat()['sheets']['object_codes'] as $row) {
+            $objects[$row['item_key']][$row['object_key']] = $row['error_code'];
+        }
+
+        $this->assertSame('INF-LIT', $objects['tmg-4-x01']['tmg-4-x02'], 'another clue\'s target');
+        $this->assertSame('INF-BUD', $objects['tmg-4-x01']['tmg-4-x05'], 'a decoy');
+        $this->assertCount(11, $objects['wnb-4-x01']);
+
+        $parts = [];
+
+        foreach ($this->flat()['sheets']['part_codes'] as $row) {
+            $parts[$row['item_key']][$row['part_key']] = [$row['error_code'], $row['main']];
+        }
+
+        $this->assertSame(['BUD-ETK', '1'], $parts['tmg-4-a02']['A6'], 'main lure of 08');
+        $this->assertSame(['BUD-REP', '0'], $parts['tmg-4-a02']['A8'], 'any other part: the code of the clue type');
+        $this->assertArrayNotHasKey('A3', $parts['tmg-4-a02'], 'the key has no code');
+        $this->assertCount(11, $parts['wnb-4-b04']);
+    }
+
+    /** K9: both rounds keep 24 dp between tap areas; Magelang and Wonosobo were re-laid (31 §9.2). */
+    public function testTapAreasKeep24DpInBothRounds(): void
+    {
+        foreach ($this->flat()['nodes'] as $node) {
+            if ($node['engine'] !== 'cari') {
                 continue;
             }
 
-            foreach ([$row['prompt_id'], $row['prompt_en']] as $text) {
-                // importer memangkas tepi sel: jeda paragraf di tepi akan hilang
-                $this->assertSame(trim($text), $text, "{$row['item_key']}: jeda paragraf harus di tengah potongan");
-                $this->assertStringNotContainsString('⏎', $text);
+            $boxes = array_map(BankRules::box(...), $node['variants']['x']['items']);
+            $this->assertGreaterThanOrEqual(HuntGeometry::MIN_GAP_DP, $this->minGap($boxes), $node['ref'] . ' round 1');
 
-                if (str_contains($text, "\n")) {
-                    $this->assertStringContainsString("\n\n", $text);
-                    $this->assertLessThan(strpos($text, "\n"), strpos($text, '___'), "{$row['item_key']}: jeda paragraf sesudah rumpang");
-                }
+            foreach (['a', 'b'] as $group) {
+                $parts = array_map(static fn (array $p): array => [$p['x'], $p['y'], $p['w'], $p['h']], $node['posts'][$group]['parts']);
+                $this->assertGreaterThanOrEqual(HuntGeometry::MIN_GAP_DP, $this->minGap($parts), "{$node['ref']} round 2 {$group}");
             }
         }
     }
 
-    /**
-     * Fact/opinion in Magelang Benar atau Salah (draft 2): two items per
-     * variant, and the answer keys approved in the review (catatan-revisi §7.2)
-     * so the true/false pattern cannot be guessed.
-     */
-    public function testTrueFalseKeysAndFactOpinionItems(): void
-    {
-        $keys   = [];
-        $skills = [];
-
-        foreach ($this->flat()['sheets']['items'] as $row) {
-            if ($row['interaction_type'] === 'verdict_card' && $row['is_active'] === '1') {
-                $keys[$row['node_ref']][$row['variant_group']]   = ($keys[$row['node_ref']][$row['variant_group']] ?? '') . strtoupper($row['answer_id'][0]);
-                $skills[$row['node_ref']][$row['variant_group']][] = $row['skill'];
-            }
-        }
-
-        $this->assertSame(['a' => 'BBSBS', 'b' => 'SBBSB', 'c' => 'BSBBS'], $keys['mgl-3']);
-        $this->assertSame(['a' => 'BBSBSS', 'b' => 'SBBSSB', 'c' => 'BSBBSS'], $keys['wnb-3']);
-
-        foreach ($skills['mgl-3'] as $group => $list) {
-            $this->assertSame(
-                ['gagasan_pokok' => 1, 'membedakan_fakta_pendapat' => 2, 'menghubungkan_informasi' => 1, 'mengklasifikasikan_tindakan' => 1],
-                (static function (array $count): array { ksort($count); return $count; })(array_count_values($list)),
-                "mgl-3-{$group}",
-            );
-        }
-
-        $this->assertSame('Membedakan fakta dan pendapat', DifficultyRules::skillLabel('membedakan_fakta_pendapat'));
-    }
-
-    // ------------------------------------------------- aturan §7.5 menolak
-
-    public function testVariantAndPuzzleRules(): void
-    {
-        $node = $this->node('tmg-2');
-        unset($node['variants']['c']);
-        $this->assertProblem($node, 'error', 'tepat 3 variasi');
-
-        // Susun Gambar: 3–10 variants, and a–c (first attempt) must exist
-        $node = $this->node('tmg-1');
-        unset($node['variants']['c']);
-        $this->assertProblem($node, 'error', 'Variasi c belum ada');
-
-        $node             = $this->node('tmg-1');
-        $node['variants'] = ['a' => $node['variants']['a'], 'b' => $node['variants']['b']];
-        $this->assertProblem($node, 'error', 'paling sedikit 3 variasi');
-
-        $node                     = $this->node('tmg-1');
-        $node['variants']['k']    = $node['variants']['a'];
-        $this->assertProblem($node, 'error', 'paling banyak 10');
-
-        $node                                   = $this->node('mgl-1');
-        $node['variants']['b']['items'][]        = $node['variants']['b']['items'][0];
-        $node['variants']['a']['items'][0]['media'] = false;
-        $this->assertProblem($node, 'error', 'tepat satu gambar per variasi');
-        $this->assertProblem($node, 'error', 'Gambar Susun Gambar belum ditentukan');
-
-        $node                                           = $this->node('wnb-1');
-        $node['variants']['a']['items'][0]['type']      = 'single_choice';
-        $this->assertProblem($node, 'error', "Jenis soal 'single_choice' tidak cocok");
-    }
-
-    public function testReadingRules(): void
-    {
-        $node = $this->node('mgl-2');
-        array_pop($node['variants']['a']['items']);
-        $this->assertProblem($node, 'error', 'tepat 5 rumpang');
-
-        $node = $this->node('mgl-2');
-        $node['variants']['b']['items'][1]['prompt_id'] = '___ dimulai dengan rumpang.';
-        $node['variants']['b']['items'][2]['prompt_en'] = 'Two ___ blanks ___.';
-        $node['variants']['b']['items'][3]['answer_id'] = 'Borobudur';
-        $node['variants']['b']['items'][4]['bloom']     = '';
-        $this->assertProblem($node, 'error', 'tidak boleh diawali ___');
-        $this->assertProblem($node, 'error', 'bahasa Inggris harus punya tepat satu ___');
-        $this->assertProblem($node, 'error', "Jawaban 'borobudur' sama dengan jawaban soal mgl-2-b01");
-        $this->assertProblem($node, 'error', 'Bloom) wajib diisi');
-
-        $node = $this->node('wnb-2');
-        $node['variants']['c']['distractors'][0]['id'] = 'karena';   // sama dengan jawaban c01
-        $node['variants']['a']['distractors'][]         = ['id' => 'embun', 'en' => 'dew'];
-        $this->assertProblem($node, 'error', "Kata pengecoh 'karena' sama dengan jawaban soal wnb-2-c01");
-        $this->assertProblem($node, 'error', 'Variasi ini punya 3 kata pengecoh; harus tepat 2');
-
-        $node                     = $this->node('tmg-2');
-        $node['distractor_count'] = 0;
-        $this->assertProblem($node, 'error', 'aturan tingkat mudah adalah 1');
-
-        $node = $this->node('tmg-2');
-        $node['variants']['a']['items'][0]['bloom'] = 'C4';
-        $this->assertProblem($node, 'warning', 'C4 di luar anjuran tingkat mudah (C1–C2');
-    }
-
-    public function testTrueFalseRules(): void
-    {
-        $node     = $this->node('mgl-3');
-        $passages = $this->flat()['passages'];
-        array_pop($node['variants']['a']['items']);
-        $node['variants']['b']['items'][0]['passage']   = 'mgl-3-c';
-        $node['variants']['c']['items'][0]['answer_id'] = 'pendapat';
-        $node['variants']['c']['items'][1]['skill']     = '';
-        $node['variants']['c']['items'][2]['skill']     = 'menilai_pilihan';
-        $this->assertProblem($node, 'error', 'tepat 5 pernyataan', $passages);
-        $this->assertProblem($node, 'error', 'tepat satu bacaan', $passages);
-        $this->assertProblem($node, 'error', 'Kunci jawaban harus benar atau salah', $passages);
-        $this->assertProblem($node, 'error', 'Keterampilan (skill) pernyataan belum diisi', $passages);
-        $this->assertProblem($node, 'warning', "Keterampilan 'menilai_pilihan' bukan keterampilan tingkat sedang", $passages);
-
-        $node                               = $this->node('wnb-3');
-        $passages['wnb-3-a']['body_id']     = 'Satu paragraf saja.';
-        foreach ($node['variants']['b']['items'] as $i => $item) {
-            $node['variants']['b']['items'][$i]['answer_id'] = 'benar';
-        }
-        $node['variants']['c']['items'][0]['bloom'] = 'C2';
-        $this->assertProblem($node, 'error', 'punya 1 paragraf; aturan tingkat sulit adalah 3 paragraf', $passages);
-        $this->assertProblem($node, 'warning', 'Tidak ada pernyataan berkunci salah', $passages);
-        $this->assertProblem($node, 'warning', 'C2 di luar anjuran tingkat sulit (C4–C5', $passages);
-    }
-
-    public function testHuntRules(): void
-    {
-        $node  = $this->node('mgl-4');
-        $items = &$node['variants']['a']['items'];
-        array_pop($items);                       // satu pengecoh hilang → 4 + 5
-        $items[4]['wrong_id'] = '';              // pengecoh tanpa umpan balik
-        $items[0]['media']    = false;           // benda tanpa gambar
-        $items[1]['x']        = 95;              // keluar adegan (95 + 12 > 100)
-        $items[2]['x']        = $items[3]['x'];  // menumpuk penuh dengan benda lain
-        $items[2]['y']        = $items[3]['y'];
-        unset($items);
-
-        $this->assertProblem($node, 'error', '4 benda dicari dan 5 pengecoh; aturan tingkat sedang adalah 4 dicari + 6 pengecoh');
-        $this->assertProblem($node, 'error', 'wajib punya umpan balik bahasa Indonesia');
-        $this->assertProblem($node, 'error', 'Gambar benda belum ditentukan');
-        $this->assertProblem($node, 'error', 'Posisi benda keluar dari adegan');
-        $this->assertProblem($node, 'error', 'menumpuk 100 % luasnya');
-
-        // Batas 20 %: geser setengah lebar → 50 % menumpuk (galat); geser 90 % → 10 % (boleh)
-        $this->assertEqualsWithDelta(0.5, BankRules::overlap(['x' => 10, 'y' => 10, 'w' => 12], ['x' => 16, 'y' => 10, 'w' => 12]), 0.0001);
-        $this->assertEqualsWithDelta(0.1, BankRules::overlap(['x' => 10, 'y' => 10, 'w' => 10], ['x' => 19, 'y' => 10, 'w' => 10]), 0.0001);
-        $this->assertSame(0.0, BankRules::overlap(['x' => 10, 'y' => 10, 'w' => 10], ['x' => 30, 'y' => 10, 'w' => 10]));
-    }
-
-    /** Explicit item keys must belong to their own challenge and variant, and stay unique. */
     public function testExplicitItemKeys(): void
     {
         $regions = BankSource::load(ROOTPATH . 'docs/bank-soal/data');
@@ -356,6 +196,10 @@ final class BankKelas5DataTest extends CIUnitTestCase
         $wrong = BankRules::region('magelang', [['sequence' => 1, 'engine' => 'puzzle'], ['sequence' => 2, 'engine' => 'pilihan']]);
         $this->assertStringContainsString('seharusnya 4 berurutan', $wrong[0]['message']);
 
+        // Skenario Digital waits for part 6: it is checked, but not part of the region order yet
+        $this->assertSame([], array_diff_key(array_flip(['temanggung', 'magelang', 'wonosobo']), $this->flat()['regions']));
+        $this->assertSame(BankRules::ENGINES, array_combine(range(1, 4), array_column($this->flat()['regions']['temanggung'], 'engine')));
+
         $this->assertSame(['tmg-2-a01'], BankRules::duplicateKeys(['tmg-2-a01', 'tmg-2-a02', 'tmg-2-a01']));
         $this->assertSame(3, BankRules::paragraphCount("Satu.\n\nDua.\n\n  \nTiga."));
     }
@@ -368,36 +212,17 @@ final class BankKelas5DataTest extends CIUnitTestCase
         return self::$flat ??= BankSource::flatten(BankSource::load(ROOTPATH . 'docs/bank-soal/data'));
     }
 
-    /** @return array<string, mixed> salinan node bentuk BankRules */
-    private function node(string $ref): array
+    /** @param list<array{0: float, 1: float, 2: float, 3: float}> $boxes */
+    private function minGap(array $boxes): float
     {
-        foreach ($this->flat()['nodes'] as $node) {
-            if ($node['ref'] === $ref) {
-                $this->assertSame([], BankRules::node($node, $this->flat()['passages']), "{$ref} awalnya bersih");
+        $min = PHP_FLOAT_MAX;
 
-                return $node;
+        foreach ($boxes as $i => $a) {
+            foreach (array_slice($boxes, $i + 1) as $b) {
+                $min = min($min, HuntGeometry::gapDp($a, $b));
             }
         }
 
-        $this->fail("Tantangan {$ref} tidak ada.");
-    }
-
-    /** @param array<string, array<string, mixed>>|null $passages */
-    private function assertProblem(array $node, string $level, string $needle, ?array $passages = null): void
-    {
-        $found = array_map(
-            [BankRules::class, 'format'],
-            array_filter(BankRules::node($node, $passages ?? $this->flat()['passages']), static fn (array $p): bool => $p['level'] === $level),
-        );
-
-        foreach ($found as $text) {
-            if (str_contains($text, $needle)) {
-                $this->addToAssertionCount(1);
-
-                return;
-            }
-        }
-
-        $this->fail("Tidak ada {$level} berisi '{$needle}'. Temuan: " . implode(' | ', $found));
+        return $min;
     }
 }
