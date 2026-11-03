@@ -40,6 +40,9 @@ class FieldTokenController extends BaseController
         }
 
         return view('game/token', [
+            // No HUD account rows on these screens (the shared renderer may still hold earlier view data)
+            'participant'  => null,
+            'progress'     => null,
             'locale'       => $this->locale,
             'researchCode' => $this->participant()?->participant_code,
             'errors'       => session('errors') ?? [],
@@ -88,6 +91,8 @@ class FieldTokenController extends BaseController
     public function closed(): string
     {
         return view('game/session-closed', [
+            'participant' => null,
+            'progress'    => null,
             'locale'    => $this->locale,
             'fieldMode' => service('fieldSessions')->fieldModeOn(),
         ]);

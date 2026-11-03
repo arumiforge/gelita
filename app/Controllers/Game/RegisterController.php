@@ -144,6 +144,8 @@ class RegisterController extends BaseController
     public function token(): string
     {
         return view('game/token', [
+            'participant' => null,
+            'progress'    => null,
             'locale' => $this->locale,
             'action' => 'daftar/' . self::TOKEN_STEP,
             'errors' => session('errors') ?? [],

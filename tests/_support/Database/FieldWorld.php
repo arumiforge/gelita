@@ -47,7 +47,7 @@ trait FieldWorld
 
     private function resetFieldServices(): void
     {
-        foreach (['fieldSessions', 'gameContext', 'participantCodes', 'security', 'sessionService', 'challengeService', 'scoringService', 'eventService', 'contentRepository'] as $name) {
+        foreach (['fieldSessions', 'gameContext', 'participantCodes', 'security', 'sessionService', 'challengeService', 'scoringService', 'eventService', 'contentRepository', 'staffContext', 'analyticsService'] as $name) {
             Services::resetSingle($name);
         }
     }

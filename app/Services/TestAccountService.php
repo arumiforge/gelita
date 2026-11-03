@@ -132,7 +132,7 @@ class TestAccountService
             throw new \InvalidArgumentException("Akun uji {$username} tidak ditemukan.");
         }
 
-        $deleted = service('retentionService')->deletePlayData($participant->id);
+        $deleted = service('retentionService', false)->deletePlayData($participant->id);
 
         model(AuditLogModel::class)->record('test_account_reset', [
             'staff_user_id' => null,

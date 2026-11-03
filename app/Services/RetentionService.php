@@ -539,20 +539,26 @@ class RetentionService
         $sessions = $this->sessionIds($scope);
         $affected = [];
 
-        $db->transException(true)->transStart();
+        $db->transBegin();
 
-        foreach (self::HARD_ORDER as $table) {
-            $builder = $table === 'participants' ? null : $this->scopedBuilder($db, $table, $scope, $sessions);
+        try {
+            foreach (self::HARD_ORDER as $table) {
+                $builder = $table === 'participants' ? null : $this->scopedBuilder($db, $table, $scope, $sessions);
 
-            if ($builder === null) {
-                continue;
+                if ($builder === null) {
+                    continue;
+                }
+
+                $builder->delete();
+                $affected[$table] = $db->affectedRows();
             }
 
-            $builder->delete();
-            $affected[$table] = $db->affectedRows();
-        }
+            $db->transCommit();
+        } catch (\Throwable $e) {
+            $db->transRollback();
 
-        $db->transComplete();
+            throw $e;
+        }
 
         return $affected;
     }
