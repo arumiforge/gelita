@@ -63,12 +63,18 @@ final class VariantSelectionTest extends CIUnitTestCase
             $attempt = $this->current($nodeId);
             $group   = (string) $attempt->variant_group;
 
-            $expected = array_map('intval', array_column($this->conn->table('challenge_items')->select('id')
-                ->where('challenge_node_id', $nodeId)->where('variant_group', $group)->where('is_active', 1)
+            $ids = fn (string $g): array => array_map('intval', array_column($this->conn->table('challenge_items')->select('id')
+                ->where('challenge_node_id', $nodeId)->where('variant_group', $g)->where('is_active', 1)
                 ->orderBy('sequence')->get()->getResultArray(), 'id'));
 
-            // Cari Objek: satu adegan tetap per wilayah (Dok 2 §3.1)
-            $this->assertContains($group, str_ends_with($ref, '-4') ? ['a'] : ['a', 'b', 'c'], $ref);
+            // Shared x items join every attempt (31 K11): round 1 first, anchor cards last
+            $expected = match (true) {
+                str_ends_with($ref, '-4') => [...$ids('x'), ...$ids($group)],
+                str_ends_with($ref, '-3') => [...$ids($group), ...$ids('x')],
+                default                   => $ids($group),
+            };
+
+            $this->assertContains($group, ['a', 'b'], $ref);
             $this->assertSame($expected, $attempt->selectedItemIds(), $ref . ': satu variasi utuh, urut sequence');
             $this->assertSame(['group' => $group, 'title' => $payload['variant']['title']], $payload['variant'], $ref);
             $this->assertNotSame('', $payload['variant']['title'], $ref);
@@ -92,7 +98,9 @@ final class VariantSelectionTest extends CIUnitTestCase
         $passage = $this->conn->table('reading_passages')->where('passage_key', 'mgl-3-' . $payload['variant']['group'])->get()->getRowArray();
 
         $this->assertSame($passage['title_id'], $payload['variant']['title'], 'Benar atau Salah: judul bacaan variasi itu');
-        $this->assertSame([(int) $passage['id']], array_keys($payload['passages']), 'satu bacaan per pengerjaan');
+        $anchor  = $this->conn->table('reading_passages')->where('passage_key', 'mgl-3-x')->get()->getRowArray();
+        $this->assertSame([(int) $passage['id'], (int) $anchor['id']], array_keys($payload['passages']), 'the variant\'s text and the anchor card');
+        $this->assertSame(['post', 'hasil_pencarian'], [$payload['passages'][(int) $passage['id']]['layout'], $payload['passages'][(int) $anchor['id']]['genre']]);
     }
 
     /** Siswa yang berbeda mendapat variasi acak: ketiga variasi muncul. */
@@ -108,9 +116,9 @@ final class VariantSelectionTest extends CIUnitTestCase
             $seen[] = (string) $this->current($nodeId, $session->id)->variant_group;
         }
 
-        // Peluang satu variasi tidak pernah muncul dalam 40 siswa: 3 × (2/3)^40 ≈ 3e-7
-        $this->assertSame(['a', 'b', 'c'], array_values(array_unique(array_merge(['a', 'b', 'c'], $seen))));
-        $this->assertCount(3, array_unique($seen), 'ketiga variasi pernah terpilih');
+        // Chance that one variant never shows up for 40 students: 2 × (1/2)^40
+        $this->assertSame(['a', 'b'], array_values(array_unique(array_merge(['a', 'b'], $seen))));
+        $this->assertCount(2, array_unique($seen), 'both variants were picked');
     }
 
     /**
@@ -136,7 +144,7 @@ final class VariantSelectionTest extends CIUnitTestCase
         $this->assertNotSame($first->variant_group, $second->variant_group);
         $this->service->abandonAttempt($second);
 
-        // Sesi lain milik siswa yang sama: variasi ketiga yang tersisa
+        // Another session of the same student: both variants served, so any of them
         $this->conn->table('game_sessions')->where('id', 1)->update(['status' => 'completed']);
         $this->conn->table('game_sessions')->insert([
             'session_code' => 'S-KELAS5-2', 'participant_id' => 1, 'study_id' => 1, 'release_id' => 1, 'locale' => 'id', 'status' => 'active',
@@ -147,12 +155,10 @@ final class VariantSelectionTest extends CIUnitTestCase
         $third    = $this->current($nodeId, 2);
         $groups[] = $third->variant_group;
 
-        $this->assertSame(['a', 'b', 'c'], $this->sorted($groups), 'tiga pengerjaan, tiga variasi berbeda');
-        $this->service->abandonAttempt($third);
-
-        // Ketiganya sudah pernah: pengerjaan berikutnya memilih dari semua variasi
-        $this->service->openNode($other, $nodeId);
-        $this->assertContains($this->current($nodeId, 2)->variant_group, ['a', 'b', 'c']);
+        $this->assertSame(['a', 'b'], $this->sorted([$groups[0], $groups[1]]), 'two attempts, two variants');
+        $this->assertContains($third->variant_group, ['a', 'b']);
+        $this->assertSame('retake', $third->variant_source);
+        $this->assertSame('random', $first->variant_source);
     }
 
     /**
@@ -164,13 +170,13 @@ final class VariantSelectionTest extends CIUnitTestCase
         foreach (['tmg-1', 'mgl-1', 'wnb-1'] as $offset => $ref) {
             $nodeId = $this->nodeId($this->conn, $ref);
 
-            $this->assertSame(10, $this->conn->table('challenge_items')->where('challenge_node_id', $nodeId)->where('is_active', 1)->countAllResults(), $ref);
+            $this->assertSame($ref === 'tmg-1' ? 11 : 10, $this->conn->table('challenge_items')->where('challenge_node_id', $nodeId)->where('is_active', 1)->countAllResults(), $ref);
 
             for ($n = 2; $n <= 21; $n++) {
                 $session = $this->newStudent($n + 100 * $offset);
 
                 $this->service->openNode($session, $nodeId);
-                $this->assertContains((string) $this->current($nodeId, $session->id)->variant_group, ['a', 'b', 'c'], $ref);
+                $this->assertContains((string) $this->current($nodeId, $session->id)->variant_group, ['a', 'b'], $ref);
             }
         }
     }
