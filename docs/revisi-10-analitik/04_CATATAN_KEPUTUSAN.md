@@ -6,6 +6,19 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 3 November 2026
 
+**Draf terjemahan bahasa Inggris bank soal baru ditulis di 36** (cabang `sky/wonderful-albattani-kpz0qx`) · `asal: pengembang` (draf AI) · `draf pengembang` · tidak merevisi produk
+
+Melaksanakan keputusan 2 November 2026 ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) §22 no. 8 dan 11): AI mendraf terjemahan sekarang, pengembang memeriksanya. Dokumen baru [36](36_TERJEMAHAN_BANK_SOAL.md) memuat pasangan bahasa Inggris untuk semua teks bank baru di [08](08_DRAF_BANK_SOAL.md) yang tampil di game: instruksi, 6 bacaan Isi Rumpang dengan pasangan kata bank kata, 6 bacaan Benar atau Salah dan 3 kartu jangkar dengan 38 pernyataan, 12 butir Temukan Benda (dari bank lama), 6 unggahan *Periksa Unggahan* dengan 24 petunjuk, dan 24 Skenario Digital lengkap dengan tindakan, umpan balik, penjelasan setelah kesempatan habis, dan alasan.
+
+- Kunci, skor, dan semua kode tidak berubah. Kunci Isi Rumpang mendapat kata bahasa Inggris, satu pasangan per kata, untuk `ErrorCodeResolver`.
+- Aturan penerjemahan dan istilah tetap ditulis di 36 (ejaan Britania seperti bank lama, nama diri dan istilah budaya tetap, kata ganti netral untuk tokoh, istilah antarmuka dari 31 §17 dan 32 §13).
+- Dua butir Temukan Benda diterjemahkan ulang karena isinya diubah cek fakta 27 Oktober 2026: `mgl-4-x03` (*cooked*, bukan *steamed*) dan `wnb-4-x04` (*since Dutch colonial times*, bukan *since 1865*).
+- Sembilan pilihan penerjemahan dicatat untuk pengembang di 36 → *Catatan untuk diperiksa pengembang*, antara lain *dry*/*dry up* di `tmg-2-b`, pengecoh *stop* di `mgl-2-b`, kunci *well*/*poorly* di `wnb-2-a`, dan pengecekan kotak bagian ketuk dengan teks bahasa Inggris.
+
+Status 36 `draf pengembang` sampai diperiksa. Butir di berkas data tetap bercatatan "terjemahan belum ada" sampai pengembang menyetujui 36 (31 §22 no. 11). Butir tetap `needs_verification`, dan validasi tetap memakai teks Indonesia di 08.
+
+Diubah: 36 (baru), 00 (baris 36), 08 (*Langkah berikutnya* no. 5 dan paragraf pembuka), 04, `docs/PROGRESS.md`, PDF siap cetak.
+
 **Tindak lanjut dokumen kecil sesudah gelombang A dan B** (cabang `sky/ecstatic-brown-wy18u5`) · `asal: pengembang` (penyelarasan berbantuan AI) · tidak ada keputusan baru · status dokumen tidak berubah · tidak merevisi produk
 
 Atas permintaan pengembang, tujuh tindak lanjut yang sudah diputuskan (baris *Small document follow-ups* di `docs/PROGRESS.md`) dibawa ke dokumen tujuannya:
