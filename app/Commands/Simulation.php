@@ -101,6 +101,12 @@ class Simulation extends BaseCommand
             return 'tidak ada studi aktif (research_studies.status = active); pendaftaran siswa membutuhkannya.';
         }
 
+        // shortcut: the simulator plays every region in free sittings, which field mode forbids;
+        // it refuses instead of making its own `sim` field sessions (28 §19.2), until it learns meeting plans
+        if ((int) ($study['field_mode'] ?? 0) === 1) {
+            return 'mode penelitian menyala pada studi aktif. Matikan dulu di halaman Penelitian, lalu jalankan simulasi.';
+        }
+
         // Pengambilan data berjalan: studi aktif sudah punya sesi milik siswa sungguhan
         $real = db_connect()->table('game_sessions s')
             ->join('participants p', 'p.id = s.participant_id')

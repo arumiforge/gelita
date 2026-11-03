@@ -541,8 +541,8 @@ class SessionService
         }
     }
 
-    /** Sandi sementara yang dijamin memenuhi kebijakan dan tidak memuat nama pengguna. */
-    private function generateTemporaryPassword(string $username): string
+    /** Sandi sementara yang dijamin memenuhi kebijakan dan tidak memuat nama pengguna (also gelita:uji:akun). */
+    public function generateTemporaryPassword(string $username): string
     {
         $upper   = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
         $lower   = 'abcdefghijkmnpqrstuvwxyz';

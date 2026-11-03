@@ -526,6 +526,38 @@ class RetentionService
     }
 
     /**
+     * Deletes one student's play data and keeps the account (`gelita:uji:akun
+     * --reset`, research revision 10, part 2: 28 §13): every HARD_ORDER table
+     * in the student's scope except `participants` itself.
+     *
+     * @return array<string, int> rows deleted per table
+     */
+    public function deletePlayData(int $participantId): array
+    {
+        $db       = $this->db();
+        $scope    = ['participant_id' => $participantId];
+        $sessions = $this->sessionIds($scope);
+        $affected = [];
+
+        $db->transException(true)->transStart();
+
+        foreach (self::HARD_ORDER as $table) {
+            $builder = $table === 'participants' ? null : $this->scopedBuilder($db, $table, $scope, $sessions);
+
+            if ($builder === null) {
+                continue;
+            }
+
+            $builder->delete();
+            $affected[$table] = $db->affectedRows();
+        }
+
+        $db->transComplete();
+
+        return $affected;
+    }
+
+    /**
      * Hard delete dari anak ke induk agar FK RESTRICT pada
      * `participants` → `game_sessions` tidak menggagalkan transaction.
      *
