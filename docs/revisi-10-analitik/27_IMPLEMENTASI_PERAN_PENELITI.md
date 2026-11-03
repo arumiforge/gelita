@@ -1,6 +1,6 @@
 # Dokumen Implementasi Bagian 1 — Peran Peneliti dan Panel Peneliti
 
-Per 2 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 10 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
+Per 3 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 10 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
 
 > **Status: `disetujui pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 30 Oktober 2026; dicek kemutakhirannya dan disetujui pengembang 2 November 2026, [§17](#17-keputusan-pengembang) no. 6–9). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 kodenya dibangun sekarang, di cabang pendek dari `main`, sebagai gelombang C (bagian 1 sendirian, sebelum bagian lain), tanpa menunggu G2 ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026 *Pembagian kerja baru*). Sistem baru tidak dipakai dengan anak sebelum persetujuan etik terbit.
 >
@@ -45,7 +45,7 @@ Per 2 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 - `vendor/bin/phpunit --no-coverage` harus hijau sebelum push.
 - Jangan menjalankan migrasi, `gelita:reset`, atau skrip rilis di server produksi (aturan kerja repo).
 - Perilaku penelitian ada di balik sakelar studi yang mati secara bawaan (misalnya `field_mode`, [28 → Sakelar `field_mode`](28_IMPLEMENTASI_SESI_LAPANGAN.md#51-sakelar-field_mode)), jadi `main` tetap bisa dirilis. Di bagian 1 ini berlaku untuk teks "kakak peneliti" ([§12](#12-teks-antarmuka)); peran dan hak akses sendiri bukan perilaku penelitian dan tidak bersakelar.
-- Migrasi `003400` menghapus data (akun `guru` dan unduhannya). Migrasi ini baru dijalankan di server produksi bila pengembang memutuskannya, dan dijaga di kodenya sendiri ([§6.1](#61-migrasi-2026-01-01-003400_replaceteacherwithresearcherroles), K16).
+- Migrasi `003400` menghapus data (akun `guru` dan unduhannya). Sejak 3 November 2026 akun `guru` **selalu dihapus setiap kali migrasi ini berjalan**, di server mana pun, tanpa penjaga ([§6.1](#61-migrasi-2026-01-01-003400_replaceteacherwithresearcherroles), K16, [§17](#17-keputusan-pengembang) no. 11).
 - Instalasi uji validator tetap memakai *commit* yang dibekukan di [20 → Prasyarat no. 4](20_PAKET_VALIDASI.md#prasyarat-no-4-membekukan-versi-bahan), bukan `main` ([§11](#11-akun-staf-dan-perintah-spark)).
 
 **Prinsip yang tetap berlaku:**
@@ -100,7 +100,7 @@ Keputusan ini tidak perlu ditanyakan ulang saat implementasi. K1, K2, K11, K12, 
 | K13 | **Pratinjau paket aset (`?paket=`) hanya untuk `admin`.** Sekarang semua staf boleh (`AssetPackageService.php:198-208`). |
 | K14 | **Unduh data hanya untuk `ketua` dan selalu berkode.** Mode unduh dengan identitas dihapus. Lembar dan kolom apa saja yang masuk ditetapkan bagian 3. |
 | K15 | **Keamanan masuk staf** ([§11.1](#111-keamanan-masuk-staf)): kata sandi staf memakai aturan kata sandi kuat yang sama dengan siswa, ditambah panjang minimal 12 yang sudah ada. Sesi staf berakhir setelah 2 jam tanpa aktivitas. Tanpa verifikasi dua langkah. |
-| K16 | **Migrasi `003400` dijaga di kodenya** ([§6.1](#61-migrasi-2026-01-01-003400_replaceteacherwithresearcherroles)): berhenti dengan pesan jelas bila masih ada akun `guru` atau unduhan milik akun itu, kecuali `.env` memuat `gelita.allowTeacherRemoval = true`. Instalasi baru dan instalasi tanpa akun guru berjalan bebas. |
+| K16 | **Migrasi `003400` selalu menghapus akun `guru`** ([§6.1](#61-migrasi-2026-01-01-003400_replaceteacherwithresearcherroles)), kapan pun dan di server mana pun, tanpa penjaga (keputusan pengembang 3 November 2026, [§17](#17-keputusan-pengembang) no. 11; guru tidak masuk sistem lagi). Penjaga lama dengan `gelita.allowTeacherRemoval` (2 November 2026, no. 9) dibuang dari kode. |
 | K17 | **CSV daftar siswa untuk admin dihapus.** Nama hanya tampil di layar admin; tidak ada salinan berkas berisi nama. CSV berkode untuk `peneliti` dan `ketua` tetap ([§9](#9-data-yang-terlihat-per-peran)). |
 
 ---
@@ -293,13 +293,9 @@ Nomor sesudah migrasi terakhir (`003300_AddPackageCodeToResearchStudies`, masih 
 
 Bila ada migrasi lain yang masuk `main` sebelum implementasi, seluruh urutan digeser bersama dan tabel ini diperbarui. Bagian 5–9 (31–35) memakai nomor mulai `003900`, mengikuti urutan digabung ([04](04_CATATAN_KEPUTUSAN.md), 1 November 2026).
 
-**Penjaga migrasi yang menghapus data (K16).** Skrip pembaruan di `docs/08_DEPLOYMENT.md` menjalankan `php spark migrate` otomatis, jadi tanpa penjaga, memperbarui server produksi ke *commit* mana pun sesudah bagian 1 langsung menghapus akun `guru`. Padahal `003400` baru boleh dijalankan di produksi bila pengembang memutuskannya ([04](04_CATATAN_KEPUTUSAN.md), 1 November 2026). Karena itu, sebelum langkah 1 di bawah:
-- `up()` menghitung akun `role = 'guru'` dan baris `data_exports` milik akun itu.
-- Bila keduanya nol, migrasi berjalan (instalasi baru, tes, instalasi uji tanpa akun guru).
-- Bila ada, migrasi berjalan hanya bila `.env` memuat `gelita.allowTeacherRemoval = true` (`Config\Gelita::$allowTeacherRemoval`, bawaan `false`). Tanpa itu, migrasi melempar pengecualian dengan pesan berbahasa Indonesia: berapa akun guru dan berkas unduhan yang akan dihapus, dan cara mengizinkannya. Tidak ada yang terhapus.
-- Pola yang sama dipakai `003600` (bagian 3, [29](29_IMPLEMENTASI_DATA_PENELITIAN.md#12-skema-database)) bila sesinya memutuskannya; itu dicatat di [§18](#18-akibat-ke-dokumen-lain).
+**Tanpa penjaga (K16, 3 November 2026).** Skrip pembaruan di `docs/08_DEPLOYMENT.md` menjalankan `php spark migrate` otomatis, jadi memperbarui server mana pun ke *commit* sesudah bagian 1 langsung menghapus akun `guru` beserta unduhan dan permintaan hapusnya. Ini disengaja: pengembang memutuskan akun guru selalu dihapus saat migrasi, kapan pun, karena guru tidak masuk sistem lagi ([§17](#17-keputusan-pengembang) no. 11). Penjaga 2 November 2026 (berhenti bila masih ada akun `guru`, kecuali `.env` memuat `gelita.allowTeacherRemoval = true`) dibuang dari kode, bersama `Config\Gelita::$allowTeacherRemoval`. Akibatnya untuk `003600` dicatat di [§18](#18-akibat-ke-dokumen-lain).
 
-Selama migrasi tertahan, kode bagian 1 bisa saja sudah terpasang sementara akun `guru` masih ada. `StaffAuthFilter` mengakhiri sesi akun yang perannya di luar `StaffAccess::ROLES` (sama dengan akun nonaktif), jadi `StaffScope::fromStaff()` tidak pernah dipanggil dengan peran `guru`.
+Bila kode bagian 1 sempat terpasang sebelum migrasi berjalan, akun `guru` bisa masih ada sebentar. `StaffAuthFilter` mengakhiri sesi akun yang perannya di luar `StaffAccess::ROLES` (sama dengan akun nonaktif), jadi `StaffScope::fromStaff()` tidak pernah dipanggil dengan peran `guru`.
 
 **`up()`** dalam satu transaksi:
 
@@ -583,7 +579,7 @@ Mengikuti `.claude/rules/ui-copy.md`: kalimat panel sopan dan polos, kalimat sis
 | `AdminHasNoResearchDataTest` | Admin mendapat 404 di sesi, data mentah, kritik dan saran, unduh data, dan CSV daftar siswa (K17); halaman siswa admin tanpa tab data penelitian |
 | `ResetByCodeTest` | Kode benar memberi kata sandi sementara, `must_change_password`, `no-store`, dan baris audit `via: kode`; kode salah memberi pesan ramah tanpa perubahan; halaman hasil tanpa nama pengguna; admin mendapat 404 |
 | `StudyAccessTest` | Ketua mengubah studi; admin melihat formulir terkunci dan `POST`-nya 404; peneliti 404 |
-| `ReplaceTeacherMigrationTest` | Akun guru, unduhannya beserta berkas, dan permintaannya terhapus; baris audit tetap dengan pelaku kosong; `school_id` hilang; peran wajib diisi. Penjaga K16: dengan akun guru dan tanpa `allowTeacherRemoval`, migrasi berhenti dan tidak ada yang terhapus; tanpa akun guru, migrasi berjalan tanpa pengaturan itu. Akun berperan `guru` yang masih ada keluar di permintaan berikutnya |
+| `ReplaceTeacherMigrationTest` | Akun guru, unduhannya beserta berkas, dan permintaannya terhapus; baris audit tetap dengan pelaku kosong; `school_id` hilang; peran wajib diisi. K16 (3 November 2026): akun guru selalu terhapus tanpa pengaturan apa pun; tanpa akun guru, migrasi tetap berjalan. Akun berperan `guru` yang masih ada keluar di permintaan berikutnya |
 | `StaffRolesTest` | Membuat dan mengubah akun dengan tiga peran; peran `guru` atau kosong ditolak; admin tidak bisa menurunkan perannya sendiri. Belum ada tes untuk ini sekarang. |
 | `StaffLoginSecurityTest` | Kata sandi staf yang lemah atau memuat nama pengguna ditolak di ganti sendiri, akun baru, dan `gelita:staff:password`. Sesi staf yang diam lebih dari `staffIdleSeconds` diakhiri dengan audit `staff_idle_logout`. Permintaan API latar tidak memperpanjang sesi. Sesi siswa tidak terpengaruh. |
 
@@ -614,7 +610,7 @@ Di mesin pengembangan, masuk sebagai tiap peran:
 
 ## 15. Dokumen yang ikut diperbarui saat implementasi
 
-- `docs/08_DEPLOYMENT.md`: langkah pembaruan menyebut penjaga `003400` dan `gelita.allowTeacherRemoval` (K16), dan bahwa pengaturan itu dihapus lagi dari `.env` setelah migrasi berjalan.
+- `docs/08_DEPLOYMENT.md`: langkah pembaruan menyebut bahwa `003400` selalu menghapus akun `guru` beserta unduhannya (K16, 3 November 2026), jadi unduhan yang masih dibutuhkan diambil sebelum pembaruan.
 - `docs/07_FEATURE_INTEGRATION.md`: FITUR 2a (*Reset oleh Guru*), FITUR 10 dan 10a–10c (panel staf, akun, studi dan rilis, sekolah), FITUR 14–18 (ekspor, PDF, tata kelola, retensi, `gelita:reset`), aturan sistem.
 - `docs/01_DATABASE.md`, `docs/02_PROJECT_FOUNDATION.md`, `docs/03_MODEL_ENTITY.md`, `docs/04_CONTROLLER_ROUTE.md`, `docs/05_VIEW_UI.md`, `docs/08_DEPLOYMENT.md`, `README.md`: setiap penyebutan peran `guru`.
 - `docs/perombakan-kelas5/03_TAMPILAN_16x9_DAN_ADMIN.md` §8.3–8.4 dan §12.1: diberi catatan bahwa menu dan cakupan guru diganti dokumen ini.
@@ -658,8 +654,12 @@ Satu putaran tanya, empat pertanyaan (30 Oktober 2026); pengembang memilih usula
 6. **CSV daftar siswa untuk admin dihapus** (K17, [§16](#16-pertanyaan-terbuka) no. 4). Nama hanya tampil di layar admin, supaya tidak ada salinan berkas berisi nama. Tidak dipilih: CSV admin tanpa nama (kode, sekolah, status akun); CSV admin dengan nama seperti sekarang, setiap unduhan dicatat di log audit.
 7. **"Hanya ketua yang menyambungkan kode ke nama" tetap pembatasan prosedur** ([§16](#16-pertanyaan-terbuka) no. 6), seperti yang sudah tertulis di 22 dan 26. Tidak dipilih: halaman siswa admin tanpa kode peserta, sehingga admin tidak bisa lagi membantu lewat kode.
 8. **Akun `pengamat` dan `pewawancara` tetap berperan `peneliti`, dibuat hanya bila perlu** ([§16](#16-pertanyaan-terbuka) no. 7). Tidak dipilih: hanya akun `pewawancara`; peran keempat yang hanya melihat.
-9. **Penjaga di migrasi `003400`** (K16, [§6.1](#61-migrasi-2026-01-01-003400_replaceteacherwithresearcherroles)): berhenti bila masih ada akun `guru` atau unduhannya, kecuali `.env` memuat `gelita.allowTeacherRemoval = true`. Ini menjalankan aturan 1 November 2026 bahwa migrasi yang menghapus data baru dijalankan di produksi bila pengembang memutuskannya. Tidak dipilih: prosedur saja, tanpa penjaga di kode.
+9. ~~**Penjaga di migrasi `003400`**~~ (diganti no. 11, 3 November 2026) (K16, [§6.1](#61-migrasi-2026-01-01-003400_replaceteacherwithresearcherroles)): berhenti bila masih ada akun `guru` atau unduhannya, kecuali `.env` memuat `gelita.allowTeacherRemoval = true`. Ini menjalankan aturan 1 November 2026 bahwa migrasi yang menghapus data baru dijalankan di produksi bila pengembang memutuskannya. Tidak dipilih: prosedur saja, tanpa penjaga di kode.
 10. **Status `disetujui pengembang`** (2 November 2026), setelah cek kemutakhiran: pengembang menyetujui dokumen ini sebagai dasar kode gelombang C.
+
+**Keputusan pengembang 3 November 2026** ([04](04_CATATAN_KEPUTUSAN.md)). `asal: pengembang`.
+
+11. **Akun `guru` selalu dihapus saat migrasi, kapan pun** (K16, [§6.1](#61-migrasi-2026-01-01-003400_replaceteacherwithresearcherroles)). Guru tidak masuk sistem ke depannya, jadi `003400` tidak lagi menunggu keputusan produksi: penjaga no. 9 dan `gelita.allowTeacherRemoval` dibuang dari kode, dan aturan 1 November 2026 "migrasi yang menghapus data baru dijalankan di produksi bila pengembang memutuskannya" tidak lagi berlaku untuk `003400` (tetap untuk `003600`). Tidak dipilih: penjaga tetap.
 
 Yang diselaraskan tanpa keputusan baru, dari entri 04 sesudah 31 Oktober 2026 dan dari kode:
 - aturan kerja 1 November 2026 menggantikan "kode diubah di tahap 3, setelah G2" (status dan §0), ditambah sakelar studi yang mati secara bawaan, migrasi yang menghapus data, dan instalasi uji pada *commit* beku (§0, §11);
@@ -684,5 +684,5 @@ Dicatat di sini dan dibawa sesi koordinator setelah bagian 2–4 selesai, supaya
 | [20](20_PAKET_VALIDASI.md) | *Prasyarat no. 8* | Di G3, pengembang memegang akun `admin` dan `ketua` di instalasi uji | Sudah (sesi koordinator, 30 Oktober 2026, PR #285) |
 | [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) | T10, pilihan D | "`ketua` membuka kode" sesuai hak `ketua` di 27; tidak ada perubahan teks surat | Tidak perlu diubah |
 | `.claude/rules/glossary.md` | *People, data, and the panel* | Baris peran staf, saat implementasi ([§15](#15-dokumen-yang-ikut-diperbarui-saat-implementasi)) | Saat implementasi |
-| [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) | *Skema database* (`003600`) | Pertimbangkan penjaga yang sama dengan K16 untuk `003600` (menghapus baris log), supaya aturan "baru dijalankan di produksi bila pengembang memutuskannya" juga dijaga di kode | Untuk sesi koordinator (2 November 2026) |
-| `docs/08_DEPLOYMENT.md` | Langkah pembaruan | Penjaga `003400` dan `gelita.allowTeacherRemoval` (K16) | Saat implementasi |
+| [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) | *Skema database* (`003600`) | Pertimbangkan penjaga yang sama dengan K16 untuk `003600` (menghapus baris log), supaya aturan "baru dijalankan di produksi bila pengembang memutuskannya" juga dijaga di kode. **Sejak 3 November 2026 `003400` tidak lagi menahan server produksi** ([§17](#17-keputusan-pengembang) no. 11), jadi alasan 29 §19 no. 5 ("`003400` sudah lebih dulu menahan") tidak berlaku lagi: `003600` perlu penjaga sendiri, atau pengembang memutuskan penghapusan log juga selalu berjalan | Menunggu pengembang, sebelum kode bagian 3 |
+| `docs/08_DEPLOYMENT.md` | Langkah pembaruan | `003400` selalu menghapus akun `guru` (K16, 3 November 2026); penjaga dan `gelita.allowTeacherRemoval` dihapus dari teks | Sudah (3 November 2026) |

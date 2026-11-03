@@ -20,7 +20,8 @@ The Markdown documents total about 1.2 MB, roughly 500k tokens (27 October 2026)
 - An implementation session (parts `27`–`35`, or code for one part) reads its own part document and the source sections that document names; nothing else up front. Code is built now but never used with children before ethics approval (`04`, 1 November 2026).
 
 ## Researcher changes (1 November 2026)
-- The researcher handles validation and ethics. The repo stays the master copy of `22`, `23`, `24`, and `26`: researcher edits come in through the owner, are applied with `asal: peneliti` (or `asal: komite etik`), and the rebuilt PDFs from `dokumen-pdf/cetak/` go back to the researcher. The researcher receives PDFs only.
+- The researcher handles validation and ethics. The repo stays the master copy of `23`, `24`, and `26`: researcher edits come in through the owner, are applied with `asal: peneliti` (or `asal: komite etik`), and the rebuilt PDFs from `dokumen-pdf/cetak/` go back to the researcher. The researcher receives PDFs only.
+- Since 3 November 2026 the researcher handles `22` directly, without the owner, including the group B fill-ins (institution, funding, files and tools). The repo copy of `22` stays as the PDF sent that day (page footer `05b025a`); do not edit it, rebuild it, or plan work from its *Daftar isian* unless the owner asks.
 
 ## End of each round or document
 - Record each decision in `04` (newest first) as soon as the round ends, tick the matching open question in `01`, update this branch's rows in `docs/PROGRESS.md`, then commit and push. A restarted or new session only knows what is in the repo.

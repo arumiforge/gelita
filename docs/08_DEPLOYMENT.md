@@ -873,15 +873,11 @@ Catatan skrip:
 
 Pembaruan **tidak** menjalankan `gelita:reset`, `db:seed`, atau impor ulang bank soal; isi konten di server dikelola lewat panel. Migration yang menghapus kolom atau tabel **tidak pernah digabung** dalam pembaruan yang sama dengan perubahan lain, dan selalu didahului satu rilis yang berhenti memakai kolom itu.
 
-#### Guarded migration `003400` (staff roles, research revision 10 part 1)
+#### Migration `003400` always deletes `guru` accounts (staff roles, research revision 10 part 1)
 
-`2026-01-01-003400_ReplaceTeacherWithResearcherRoles` replaces the staff role `guru` with `peneliti` and `ketua` and deletes every `guru` account together with its exports and deletion requests (`docs/revisi-10-analitik/27_IMPLEMENTASI_PERAN_PENELITI.md` §6.1, K16). Because step 6 runs `php spark migrate` automatically, the migration guards itself:
+`2026-01-01-003400_ReplaceTeacherWithResearcherRoles` replaces the staff role `guru` with `peneliti` and `ketua` and deletes every `guru` account together with its exports (files under `writable/` too) and deletion requests (`docs/revisi-10-analitik/27_IMPLEMENTASI_PERAN_PENELITI.md` §6.1, K16). Step 6 runs `php spark migrate` automatically, and the migration has **no guard**: the owner decided on 3 November 2026 that `guru` accounts are always deleted whenever it runs, on any server, because teachers no longer use the system. The earlier `gelita.allowTeacherRemoval` setting is gone; remove it from `.env` if it is still there.
 
-- With no `guru` account on the server it runs like any other migration.
-- While `guru` accounts exist it **stops** and prints how many accounts and export files it would delete. Nothing is deleted and the update stops in maintenance mode.
-- It runs on the production server only when the owner decides it: add `gelita.allowTeacherRemoval = true` to `.env`, run the update (or `php spark migrate`) again, then **remove that line** from `.env`.
-
-Before that, ask every `guru` account holder whether they still need an export, and create the replacement accounts (`peneliti`, `ketua`) under *Staf* after the migration.
+Before the first update past part 1, ask every `guru` account holder whether they still need an export, and create the replacement accounts (`peneliti`, `ketua`) under *Staf* after the migration.
 
 ### Story script changed (`gelita:story:sync`)
 

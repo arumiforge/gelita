@@ -18,11 +18,10 @@ use App\Database\GelitaMigration;
  * 4. `staff_users.school_id` is dropped with its foreign key;
  * 5. `staff_users.role` loses its default (`guru`).
  *
- * Guard (27 K16): deleting accounts and exports may run on the production
- * server only when the owner decides it. While `guru` accounts or their exports
- * exist, up() stops with an explanation unless `.env` sets
- * `gelita.allowTeacherRemoval = true`. Fresh installs, tests, and installs
- * without teacher accounts run freely.
+ * No guard: the owner decided on 3 November 2026 that `guru` accounts are
+ * always deleted whenever this migration runs, on any server, because teachers
+ * have no place in the system any more (27 K16; replaces the earlier guard
+ * with `gelita.allowTeacherRemoval`).
  *
  * down() brings back the column and the default only. Deleted accounts,
  * exports, and requests do not come back.
@@ -41,17 +40,6 @@ class ReplaceTeacherWithResearcherRoles extends GelitaMigration
             ->whereIn('requested_by', $teacherIds)
             ->get()
             ->getResultArray();
-
-        if ($teacherIds !== [] && ! config('Gelita')->allowTeacherRemoval) {
-            throw new \RuntimeException(sprintf(
-                'Migrasi 2026-01-01-003400 dihentikan: masih ada %d akun guru dan %d berkas unduhan milik akun itu, '
-                . 'yang akan dihapus migrasi ini. Bila pengembang sudah memutuskan menghapusnya, tambahkan '
-                . '`gelita.allowTeacherRemoval = true` di .env, jalankan `php spark migrate` lagi, lalu hapus baris itu. '
-                . 'Tidak ada data yang terhapus.',
-                count($teacherIds),
-                count($exports),
-            ));
-        }
 
         $this->db->transException(true)->transStart();
 

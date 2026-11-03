@@ -8,7 +8,8 @@ use Tests\Support\Database\ResetTables;
 /**
  * Migration 2026-01-01-003400 (revision 10, part 1:
  * docs/revisi-10-analitik/27_IMPLEMENTASI_PERAN_PENELITI.md §6.1, K16,
- * §14.1 `ReplaceTeacherMigrationTest`).
+ * §14.1 `ReplaceTeacherMigrationTest`). Since 3 November 2026 the migration
+ * has no guard: `guru` accounts are always deleted.
  *
  * The real migration chain uses MySQL-only SQL, so the tables come from
  * ResetTables and `staff_users` is rebuilt in its old shape (with
@@ -20,15 +21,13 @@ final class ReplaceTeacherMigrationTest extends CIUnitTestCase
 {
     use ResetTables;
 
-    private bool $allowBefore;
     private string $exportFile;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->allowBefore = config('Gelita')->allowTeacherRemoval;
-        $this->db          = $this->createResetTables();
+        $this->db = $this->createResetTables();
         $this->createOldStaffTable();
 
         $this->exportFile = WRITEPATH . 'exports-test-' . bin2hex(random_bytes(4)) . '.xlsx';
@@ -36,8 +35,6 @@ final class ReplaceTeacherMigrationTest extends CIUnitTestCase
 
     protected function tearDown(): void
     {
-        config('Gelita')->allowTeacherRemoval = $this->allowBefore;
-
         if (is_file($this->exportFile)) {
             unlink($this->exportFile);
         }
@@ -47,29 +44,8 @@ final class ReplaceTeacherMigrationTest extends CIUnitTestCase
         parent::tearDown();
     }
 
-    public function testGuardStopsWhileTeacherAccountsExist(): void
+    public function testTeacherDataIsAlwaysRemoved(): void
     {
-        config('Gelita')->allowTeacherRemoval = false;
-        $this->seedTeacherData();
-
-        try {
-            $this->migrate();
-            $this->fail('The migration must stop while guru accounts exist.');
-        } catch (RuntimeException $e) {
-            $this->assertStringContainsString('allowTeacherRemoval', $e->getMessage());
-        }
-
-        $this->assertSame(2, $this->db->table('staff_users')->countAllResults());
-        $this->assertSame(1, $this->db->table('data_exports')->countAllResults());
-        $this->assertSame(1, $this->db->table('data_deletion_requests')->countAllResults());
-        $this->assertSame(2, (int) $this->db->table('audit_logs')->where('staff_user_id', 2)->countAllResults());
-        $this->assertFileExists($this->exportFile);
-        $this->assertContains('school_id', $this->db->getFieldNames('staff_users'));
-    }
-
-    public function testWithTheFlagTeacherDataIsRemoved(): void
-    {
-        config('Gelita')->allowTeacherRemoval = true;
         $this->seedTeacherData();
 
         $this->migrate();
@@ -91,9 +67,8 @@ final class ReplaceTeacherMigrationTest extends CIUnitTestCase
         $this->assertRoleHasNoDefault();
     }
 
-    public function testRunsWithoutTheFlagWhenNoTeacherAccountsExist(): void
+    public function testRunsWhenNoTeacherAccountsExist(): void
     {
-        config('Gelita')->allowTeacherRemoval = false;
         $this->insertStaff(1, 'admin_utama', 'admin');
         $this->db->table('audit_logs')->insert(['staff_user_id' => 1, 'action' => 'staff_login']);
 
