@@ -358,7 +358,7 @@ $routes->group('', ['filter' => 'staffAuth'], static function ($routes): void {
     $routes->group('', ['filter' => 'staffCan:content.edit'], static function ($routes): void { /* POST, impor bank */ });
 
     $routes->get('studi', 'StudyController::index', ['filter' => 'staffCan:studies.view']);
-    $routes->group('', ['filter' => 'staffCan:studies.manage'], static function ($routes): void { /* POST studi; studi/{id}/ambang (+ /kunci), part 9; studi/{id}/instrumen, part 8 */ });
+    $routes->group('', ['filter' => 'staffCan:studies.manage'], static function ($routes): void { /* POST studi; studi/{id}/pengaturan, part 7; studi/{id}/ambang/kunci, part 9; studi/{id}/instrumen, part 8 */ });
     $routes->group('', ['filter' => 'staffCan:releases.manage'], static function ($routes): void { /* studi/rilis… */ });
     // tata-kelola: deletion.execute, audit.view, retention.run; sekolah: schools.manage; staf: staff.manage
 });
@@ -368,7 +368,7 @@ Catatan:
 - `peserta/reset-sandi` dan `peserta/salinan` (bagian 4) tidak bertabrakan dengan `peserta/(:num)`, karena `(:num)` hanya angka. Begitu juga `sesi-lapangan/baru` (bagian 2) dengan `sesi-lapangan/(:num)`. Tetap daftarkan rute tetap sebelum rute berpola, supaya urutannya jelas.
 - Halaman impor bank (`konten/impor-bank`, termasuk `GET` pratinjau dan templat) masuk `content.edit`, karena isinya alur mengubah.
 - Rute studi dari bagian lain, tanpa kemampuan baru:
-  - lapis turunan ([35 §13](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#13-rute-dan-perintah-spark)): `POST studi/{id}/ambang` → `StudyController::saveThresholds` dan `POST studi/{id}/ambang/kunci` → `StudyController::lockThresholds` (`studies.manage`); `POST studi/{id}/hitung-ulang` → `DerivedDataController::recompute` dan `GET studi/{id}/hitung-ulang/status` → `DerivedDataController::status` (`research.export`);
+  - lapis turunan ([35 §13](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#13-rute-dan-perintah-spark)): `POST studi/{id}/ambang/kunci` → `StudyController::lockThresholds` (`studies.manage`; nilai ambang diubah lewat halaman pengaturan studi bagian 7, [33](33_IMPLEMENTASI_MODE_PENELITIAN.md) §6, keputusan sesi koordinator 3 November 2026); `POST studi/{id}/hitung-ulang` → `DerivedDataController::recompute` dan `GET studi/{id}/hitung-ulang/status` → `DerivedDataController::status` (`research.export`);
   - modul tes ([34 §12](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#12-rute)): `POST studi/{id}/instrumen` → `StudyController::updateInstrumentSettings` (`studies.manage`).
 - Rute `api/admin/*` mendapat filter per rute sesuai [§4](#4-hak-akses-per-peran).
 - Harapan di `tests/unit/RouteWiringTest.php` (sekarang `['staffAuth','staffRole:admin']`) ditulis ulang per kelompok.

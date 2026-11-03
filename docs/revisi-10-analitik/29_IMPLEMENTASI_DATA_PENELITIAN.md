@@ -378,7 +378,7 @@ Isi Rumpang menampilkan bacaannya terus di layar, jadi tidak mengirim event ini.
 
 ### 7.2 Lembar
 
-Urutan resmi sesudah bagian ini. `ExportService::SHEETS` dan `RawDataService::DIMENSIONS` membaca satu daftar.
+Urutan resmi sesudah bagian ini, termasuk lembar dari bagian 4–9 (urutan baris tabel ini, [§19](#19-keputusan-pengembang) no. 13). `ExportService::SHEETS` dan `RawDataService::DIMENSIONS` membaca satu daftar.
 
 | Lembar | Isi | Sumber | Status |
 | --- | --- | --- | --- |
@@ -402,6 +402,7 @@ Urutan resmi sesudah bagian ini. `ExportService::SHEETS` dan `RawDataService::DI
 | `turunan_butir` | Peserta × butir | `derived_items` (35) | **Baru** (35) |
 | `turunan_percobaan` | Percobaan | `derived_tries` (35) | **Baru** (35) |
 | `turunan_pengamatan` | Pengamatan L4 | `derived_observations` (35) | **Baru** (35) |
+| `turunan_tes` | Jawaban tes dengan `rapid_guess` | `derived_test_responses` ([35 §6.8](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#68-derived_test_responses-satu-baris-per-jawaban-tes)) | **Baru** (35) |
 | `tes_jawaban` | Satuan tes per siswa per kesempatan | `instrument_responses` ([34 §11.4](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#114-data-untuk-kamus-dan-unduhan)) | **Baru** (34) |
 | `tes_bagian` | Bagian tes per siswa per kesempatan | `instrument_parts`, `instrument_blocks` (34) | **Baru** (34) |
 | `angket` | Satu baris per siswa (16) | Tabel modul (`instrument_sittings`, `instrument_responses`), 34 | **Baru** (34) |
@@ -411,7 +412,7 @@ Urutan resmi sesudah bagian ini. `ExportService::SHEETS` dan `RawDataService::DI
 | `l1_kondisi`, `l1_penyimpangan`, `l2_kursi`, `l3_bantuan`, `l4_bromp`, `l5_wawancara`, `l6_sesi` | Lembar lapangan yang diimpor ([§10](#10-templat-dan-impor-lembar-lapangan-perubahan-no-15)) | `field_sheet_rows` | **Baru** |
 | `perangkat` | — | — | **Keluar** dari unduhan; pindah ke log teknis ([§5.6](#56-data-bertanda-admin-dan-halaman-log-teknis)) |
 
-Lembar dari perubahan lain sudah masuk daftar ini: `kode_pilihan` ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) §13.3), tujuh lembar turunan ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) §10.1), lembar tes, angket, dan skala sikap ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) §11.4), dan `risiko_gabungan` ([§7.6](#76-butir-risiko-daring); sumbernya sesi jenis `risk`). 35 §10.1 menaruh lembar turunan sesudah `butir` dan sebelum lembar lapangan; urutan lain di antara lembar baru itu belum ditetapkan dan tabel ini memakai urutan sementara. Sesi modul `is_preview = 1` (34 §5.5) tidak pernah masuk unduhan, dan contoh soal tes (`tes-ct-*`) tidak masuk `tes_jawaban`.
+Lembar dari perubahan lain sudah masuk daftar ini: `kode_pilihan` ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) §13.3), delapan lembar turunan ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) §10.1, termasuk `turunan_tes`), lembar tes, angket, dan skala sikap ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) §11.4), dan `risiko_gabungan` ([§7.6](#76-butir-risiko-daring); sumbernya sesi jenis `risk`). Urutannya tetap: … `butir`, `kode_pilihan`, lembar `turunan_*`, `tes_jawaban`, `tes_bagian`, `angket`, `sikap`, `risiko_gabungan`, `izin`, lalu lembar lapangan `l1_…`–`l6_…` ([§19](#19-keputusan-pengembang) no. 13). Sesi modul `is_preview = 1` (34 §5.5) tidak pernah masuk unduhan, dan contoh soal tes (`tes-ct-*`) tidak masuk `tes_jawaban`.
 
 ### 7.3 Kolom yang berubah per lembar
 
@@ -425,7 +426,7 @@ Hanya yang berubah. Kolom lain tetap seperti `RawDataService::COLUMNS` (baris 10
 | `progres` | `session_code` | `study_code`; kolom lain dari `participant_progress` |
 | `pengerjaan` | — | `field_session_code`, `meeting_no`; `variant_source`, `booklet_at_open` (31 §11.4); `after_withdrawal` (35 §7) |
 | `jawaban` | — | `answer_key` (K1), `field_session_code`; `after_withdrawal` |
-| `percobaan` | — | `ready_ms` ([§6.1](#61-saat-butir-bisa-dijawab-ready_ms)), `field_session_code`; `error_code`, `manual_code` (31 §10); `action_key`, `action_score`, `reason_code`, `reason_ready_ms` (32 §10; kosong untuk engine lain, `reason_key` tidak diekspor); `after_withdrawal` |
+| `percobaan` | — | `ready_ms` ([§6.1](#61-saat-butir-bisa-dijawab-ready_ms)), `field_session_code`; `error_code` (31 §10), `manual_code` (diisi impor L5, [§10.4](#104-mengunggah-lembar-yang-sudah-diketik)); `action_key`, `action_score`, `reason_code`, `reason_ready_ms`, `action_last_input_ms`, `reason_last_input_ms` (32 §6.4, §10; kosong untuk engine lain, `reason_key` tidak diekspor); `after_withdrawal` |
 | `navigasi` | Jenis `dialogue_advanced`, `viewport_changed`, `package_changed`, `events_dropped`; kolom `occurred_at`, `server_received_at`, `clock_offset_ms` | Jenis `dialogue_completed`, `passage_reopened`; kolom `occurred_at_corrected`, `offset_known`, `field_session_code`, `after_withdrawal` |
 | `bantuan` | Baris per aksi | Baris per pemutaran ([§5.4](#54-audio_pause-dan-lama-mendengar)); `occurred_at_corrected`; `audio_context` dari `audio_assets.context_code` (32 §10: `challenge_instruction`, `scenario_situation`, `post_clue`, `hunt_clue` terbedakan); `after_withdrawal` |
 | `selesai` | `occurred_at` | `occurred_at_corrected`, `offset_known`, `field_session_code`, `after_withdrawal` |
@@ -579,7 +580,8 @@ Lembar tetap diisi di kertas selama sesi (02). Sistem menyediakan berkas ketik y
 - kode peserta milik rombel sesi itu (susulan: anggotanya);
 - kode (DEV-*, pemberi, jenis, perilaku, emosi) ada di daftar 02;
 - nomor kursi di L1, L3, L4 ada di L2 sesi itu, atau "semua", atau rentang (`05–08`);
-- isian "—" dibaca sebagai kosong, sesuai aturan menulis di 02.
+- isian "—" dibaca sebagai kosong, sesuai aturan menulis di 02;
+- L5: `manual_code` (bila diisi) harus salah satu kode kesalahan butir itu di `item_error_codes` ([31 §10](31_IMPLEMENTASI_BANK_SOAL_BARU.md#10-kode-kesalahan-di-setiap-percobaan-salah-perubahan-no-1)), dan percobaan yang ditunjuk (`item_key`, `try_no` di pengerjaan pertama siswa itu) harus ada dan salah.
 
 **Peringatan (tidak menahan):**
 - buklet atau bentuk tes di L2 berbeda dari panel (panel yang berlaku);
@@ -591,6 +593,7 @@ Lembar tetap diisi di kertas selama sesi (02). Sistem menyediakan berkas ketik y
 - Satu baris `field_sheet_imports` per lembar per unggahan, dan barisnya di `field_sheet_rows` ([§12](#12-skema-database)).
 - Kunci gabung disimpan sebagai kolom: `participant_id` (dari kode peserta), `seat_no`, `started_at`, `ended_at` (tanggal sesi + jam). Isian lain di `values_json` dengan kode kolom dari spesifikasi.
 - **Unggah ulang menggantikan.** Lembar yang sama untuk sesi yang sama diganti seluruhnya: impor lama diberi `superseded_at` lewat UPDATE bersyarat (`WHERE superseded_at IS NULL`), sehingga dua unggahan bersamaan tidak sama-sama berlaku. Impor lama tetap ada sebagai riwayat dan tidak ikut unduhan.
+- **L5 → `item_tries.manual_code`.** Untuk setiap baris L5 dengan `manual_code` terisi, impor utama menulis kodenya ke `item_tries.manual_code` percobaan yang ditunjuk, di transaksi yang sama; kode bank di `error_code` tidak berubah (11 → Analitik 6). Unggah ulang yang menggantikan mengosongkan dulu `manual_code` yang ditulis impor lama, lalu menulis yang baru. Impor cek (§10.5) tidak menulis apa pun ke `item_tries`.
 - Audit `field_sheet_import` dengan kode sesi, lembar, banyak baris, dan banyak peringatan.
 
 **Halaman sesi lapangan** menampilkan status per lembar yang diharapkan pertemuan itu: *belum diunggah*, *diunggah* (tanggal, pengunggah), *dicek* (persentase baris ketikan kedua). Setelah 24 jam, lembar yang belum diunggah ditandai.
@@ -601,7 +604,7 @@ Lembar tetap diisi di kertas selama sesi (02). Sistem menyediakan berkas ketik y
 
 02 meminta 10% baris diketik ulang orang lain.
 - Di halaman unggah ada pilihan **Ketikan kedua (cek)**. Berkasnya boleh berisi sebagian baris.
-- Server mencocokkan baris dengan impor utama lewat kunci baris spesifikasi (misalnya L2: kode peserta; L3: jam mulai dan kursi; L4: putaran dan kursi; L1 penyimpangan: jam mulai; L5: kode peserta dan butir).
+- Server mencocokkan baris dengan impor utama lewat kunci baris spesifikasi (misalnya L2: kode peserta; L3: jam mulai dan kursi; L4: putaran dan kursi; L1 penyimpangan: jam mulai; L5: kode peserta, butir, dan `try_no`).
 - Hasilnya: banyak baris dicek dari seluruh baris, dan daftar sel yang berbeda (baris, kolom, ketikan pertama, ketikan kedua) untuk diperbaiki di impor utama.
 - Impor cek disimpan dengan `purpose = check` dan tidak pernah masuk unduhan.
 
@@ -623,8 +626,10 @@ Judul kolom persis seperti 02; kode di bawah dipakai di `values_json`, CSV, dan 
 | `l2_kursi` | `seat_no`, `row_no`, `seat_in_row`, `device_no`, `participant_code`, `booklet`, `pre_form`, `entry_time`, `shared_device`, `shared_with`, `switch_time`, `switch_device`, `note` |
 | `l3_bantuan` | `start_time`, `end_time`, `seats`, `participant_code`, `screen`, `helper`, `help_type`, `asked`, `description` |
 | `l4_bromp` | `round_no`, `obs_time`, `seat_no`, `participant_code`, `screen`, `behavior`, `emotion`, `note` |
-| `l5_wawancara` | Kepala: `participant_code`, `field_session_code`, `pretest_group`, `interviewer`, `start_time`, `end_time`, `recorded`. Baris: `item_key`, `first_answer`, `game_code`, `coder_1`, `coder_2`, `agree` |
+| `l5_wawancara` | Kepala: `participant_code`, `field_session_code`, `pretest_group`, `interviewer`, `start_time`, `end_time`, `recorded`. Baris: `item_key`, `try_no`, `first_answer`, `game_code`, `coder_1`, `coder_2`, `agree`, `manual_code` |
 | `l6_sesi` | `field_session_code`, `test`, `part1_start`, `part23_start`, `last_finish`, `spare_devices`, `frequent_questions` |
+
+**`try_no` dan `manual_code` L5** adalah kolom templat dan impor ([§19](#19-keputusan-pengembang) no. 14): satu baris per percobaan butir yang dikode manual (`try_no` kosong dibaca 1), dan `manual_code` adalah kode hasil pengodean manual (`*-LAIN`, transkrip). Di `FieldSheetSpec` keduanya ditandai kolom tambahan, sehingga `FieldSheetSpecTest` tidak mencarinya di tabel 02 sampai tabel L5 di 02 diperbarui.
 
 Isian gabungan di 02 dipecah saat impor: *Headset* "24 dari 26" → `headset_count`, `headset_of`; *Pakai bareng* "Ya, S03-A16" → `shared_device` 1 dan `shared_with`; *Pindah perangkat* "08:40:00 ke P15 (baterai habis)" → `switch_time`, `switch_device`, sisanya ke `note`; *Menit tersedia dan dipakai* "90 / 84" → dua kolom. Di templat, isian itu sudah dua kolom; di kertas tetap seperti 02.
 
@@ -747,7 +752,7 @@ Pesan pemeriksaan per kolom ("jam harus berbentuk JJ:MM:SS", "kode tidak dikenal
 | No. 2 Skenario Digital ([32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md)) | `ready_ms`, katalog event | Dirancang di 32: `reason_ready_ms` (32 §6.4), event `scenario_failed` (32 §5.6), kolom lembar `percobaan` dan `bantuan` (32 §10) |
 | No. 5 waktu aktif ([33](33_IMPLEMENTASI_MODE_PENELITIAN.md)) | Baris `pause` dan lama mendengar yang lengkap ([§5.4](#54-audio_pause-dan-lama-mendengar)), `page_hidden`/`page_visible`, waktu terkoreksi | Dirancang di 33: event `input_idle` (33 §5.2), `audio_usage_events.clock_offset_ms` (33 §5.3, K10), potongan pengerjaan `challenge_attempt_segments` (33 §5.4) |
 | No. 6 narasi instruksi ([32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md) §8) | Katalog event, lembar `bantuan` per pemutaran | Kode konteks `challenge_instruction` (32 §8); kolom `audio_context` lembar `bantuan` (32 §10) |
-| No. 9 lapis turunan ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md)) | Data mentah §6, lembar lapangan yang diimpor, `ResearchDictionary::VERSION` | `decision_ms`, `rapid_guess`, `near_miss_count`, `material_returns`, penanda dari L1–L4, `outside_session`; tujuh lembar `turunan_*` (35 §10.1); baris kepala *Kamus Data* dan `kamus-1.1-usulan` (35 §8, §10.2); `consent_ok` dan `after_withdrawal` (35 §7) |
+| No. 9 lapis turunan ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md)) | Data mentah §6, lembar lapangan yang diimpor, `ResearchDictionary::VERSION` | `decision_ms`, `rapid_guess`, `near_miss_count`, `material_returns`, penanda dari L1–L4, `outside_session`; delapan lembar `turunan_*` (35 §10.1, termasuk `turunan_tes`); baris kepala *Kamus Data* dan `kamus-1.1-usulan` (35 §8, §10.2); `consent_ok` dan `after_withdrawal` (35 §7) |
 | No. 21 skala sikap ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md)) | Daftar lembar dan kamus | Lembar `sikap`, `feedback_rating` (34 §11.4) |
 | No. 22 modul tes ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md)) | Lembar `risiko_gabungan` ([§7.6](#76-butir-risiko-daring)), templat L6 tes | Lembar `tes_jawaban`, `tes_bagian`, `angket`, kolom `peserta` tambahan (34 §11.4); sumber `risiko_gabungan` = sesi jenis `risk` (34 §8.3); status L6 |
 | Bagian 4 ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md)) | `data_exports.participant_count`, riwayat unduhan, `field_sheet_rows.participant_id` (`ON DELETE CASCADE`) | Penghapusan termasuk ekspor dan lembar, `data_exports.purged_by_request_id`, ambil data satu anak, daftar izin berkode sebagai unduhan terpisah (`/admin/ekspor/izin`), penanda tindak lanjut; lembar `izin` di unduhan utama (30 keputusan no. 9, kodenya di bagian 4); pemeriksaan nama K13 dipakai ulang untuk kritik dan saran sebelum studi ditutup (30 §10.2, keputusan no. 10). Bagian 4 digabung sesudah bagian ini (keputusan no. 7) |
@@ -862,6 +867,11 @@ Dua putaran tanya, delapan pertanyaan; pengembang memilih usulan di semuanya:
 12. **Versi kamus dan spesifikasi lembar dikunci di G4** bersama versi game (K17). Tidak dipilih: kamus masih boleh naik versi selama KG5.
 
 Dengan keputusan ini 29 `disetujui pengembang` (2 November 2026).
+
+**Sesi koordinator 31–35, 3 November 2026** (cabang `r10-cek-30`, `asal: pengembang`, `disetujui pengembang`):
+
+13. **Urutan lembar di §7.2 menjadi resmi**: … `butir`, `kode_pilihan`, lembar `turunan_*` (termasuk `turunan_tes` dari 35), `tes_jawaban`, `tes_bagian`, `angket`, `sikap`, `risiko_gabungan`, `izin`, lalu lembar lapangan `l1_…`–`l6_…`. Tidak dipilih: urutan dibiarkan terbuka sampai implementasi.
+14. **`manual_code` diisi lewat impor L5** (§10.4, §10.7): templat dan impor L5 mendapat kolom `manual_code` per percobaan butir (dengan `try_no`), diperiksa terhadap kode kesalahan butir itu di `item_error_codes` (31), lalu ditulis ke `item_tries.manual_code`. Tidak dipilih: `manual_code` dibuang.
 
 ---
 

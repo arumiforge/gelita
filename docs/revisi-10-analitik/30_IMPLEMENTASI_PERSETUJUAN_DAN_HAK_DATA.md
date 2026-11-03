@@ -333,7 +333,7 @@ ketua mengajukan ─────────────────────
 | `participant_consents` | Ya (ikut `ON DELETE CASCADE`) | — | Bagian 4 |
 | `challenge_attempt_segments` | Ya (`ON DELETE CASCADE` lewat `challenge_attempt_id` dan `session_id`; di `HARD_ORDER` sebelum `challenge_attempts`) | — | Bagian 7 ([33](33_IMPLEMENTASI_MODE_PENELITIAN.md) §5.4, §9) |
 | `instrument_responses`, `instrument_parts`, `instrument_blocks`, `instrument_sittings` | Ya: semua sesi tes, angket, butir risiko, dan skala sikap (di `HARD_ORDER` sebelum `participants`) | Hanya sesi jenis `risk` beserta bagian dan jawabannya (ang-21–ang-23); `risk_offered` dan `risk_reconsent` ikut, karena disimpan per siswa di sesi itu | Bagian 8 ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) §11.1, §11.3) |
-| `derived_participants`, `derived_field_sessions`, `derived_challenges`, `derived_attempts`, `derived_items`, `derived_tries`, `derived_observations` (semua putaran) | Ya (`ON DELETE CASCADE` lewat `participant_id`; di `HARD_ORDER` sebelum `participants`, untuk pratinjau) | — | Bagian 9 ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) §9, §12) |
+| `derived_participants`, `derived_field_sessions`, `derived_challenges`, `derived_attempts`, `derived_items`, `derived_tries`, `derived_observations`, `derived_test_responses` (semua putaran) | Ya (`ON DELETE CASCADE` lewat `participant_id`; di `HARD_ORDER` sebelum `participants`, untuk pratinjau) | — | Bagian 9 ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) §9, §12) |
 | `participants` | Ya, terakhir | — | Sudah ada |
 
 **Yang tetap:**

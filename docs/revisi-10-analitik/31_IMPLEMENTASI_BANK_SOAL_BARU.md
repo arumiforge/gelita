@@ -394,7 +394,7 @@ Kode kesalahan, skor tindakan, kode alasan, `d3_clue_type`, `d2_topic`, label pe
 
 ### 10.4 `manual_code`
 
-`item_tries.manual_code` (VARCHAR 12, null) disediakan untuk pengodean manual (`*-LAIN`, transkrip L5) supaya kode bank tidak tertimpa (11 → Analitik 6). Bagian ini hanya membuat kolomnya; pengisiannya lewat impor L5 milik bagian 3 ([29 §10](29_IMPLEMENTASI_DATA_PENELITIAN.md#10-templat-dan-impor-lembar-lapangan-perubahan-no-15)) atau lapis turunan.
+`item_tries.manual_code` (VARCHAR 12, null) disediakan untuk pengodean manual (`*-LAIN`, transkrip L5) supaya kode bank tidak tertimpa (11 → Analitik 6). Bagian ini hanya membuat kolomnya. Pengisiannya lewat impor L5 milik bagian 3 ([29 §10.4, §10.7](29_IMPLEMENTASI_DATA_PENELITIAN.md#10-templat-dan-impor-lembar-lapangan-perubahan-no-15)): templat L5 punya kolom `manual_code` per percobaan butir, impor memeriksanya terhadap kode butir itu di `item_error_codes` (§15), lalu menulisnya ke `item_tries.manual_code` ([§22](#22-keputusan-pengembang) no. 9). Lapis turunan tidak mengisinya.
 
 ---
 
@@ -691,18 +691,22 @@ Putaran kedua, 2 November 2026 (sesi koordinator, `asal: pengembang`, [04](04_CA
 7. **Analisis memakai kode bank terbaru**; kode saat percobaan tetap di `item_tries.error_code`. Tidak dipilih: kode saat percobaan.
 8. **Terjemahan bahasa Inggris bank baru didraf AI sekarang**, disetujui pengembang, dan butir yang direvisi dari validasi diterjemahkan ulang. Tidak dipilih: diterjemahkan sekali setelah matriks revisi (usulan AI); studi hanya berbahasa Indonesia.
 
+**Sesi koordinator 31–35, 3 November 2026** (cabang `r10-cek-30`, `asal: pengembang`, `disetujui pengembang`):
+
+9. **`manual_code` tetap, diisi impor L5** (§10.4): templat dan impor L5 di [29 §10](29_IMPLEMENTASI_DATA_PENELITIAN.md#10-templat-dan-impor-lembar-lapangan-perubahan-no-15) mendapat kolom `manual_code` per percobaan butir, diperiksa terhadap `item_error_codes` butir itu, dan ditulis ke `item_tries.manual_code`. Tidak dipilih: `manual_code` dibuang.
+
 ---
 
 ## 23. Akibat ke dokumen lain
 
-Dibawa sesi koordinator setelah digabung ke `main`.
+Dibawa sesi koordinator setelah digabung ke `main`. **Status per 3 November 2026:** dibawa sesi koordinator 31–35 (cabang `r10-cek-30`), kecuali no. 5 dan 7.
 
-1. **[29](29_IMPLEMENTASI_DATA_PENELITIAN.md) §7.2–7.3:** lembar `butir` mendapat kolom §13.3; lembar baru `kode_pilihan` (hanya `ketua`); lembar `percobaan` mendapat `error_code`, `manual_code`; lembar `pengerjaan` mendapat `variant_source`, `booklet_at_open`. §15 baris no. 1: kolomnya sekarang dirancang di 31.
-2. **[28](28_IMPLEMENTASI_SESI_LAPANGAN.md) §12 dan §18:** panel pemantauan menampilkan jumlah siswa sesi itu yang belum punya kursi (karena tanpa kursi tantangan dinilai tidak terbuka, K10); baris no. 20 di §18 menunjuk 31 §11.
-3. **[20](20_PAKET_VALIDASI.md) prasyarat no. 4 dan [21](21_BERKAS_BUTIR_VALIDATOR.md):** workbook, berkas data, dan halaman panel konten memuat label pengembang, jadi tidak ikut paket validator; berkas validator tetap dibuat dari 08. Bila *commit* yang dibekukan sudah memuat bank baru, validator memainkan bank baru.
-4. **Bagian 6 (`32`):** membaca format data skenario dari §6.3 dan §15; menambah `BankRules::ENGINES[5]` dan `reason_code`/skor di `item_tries`.
-5. **Glosarium** (saat implementasi): babak (`round`), *Periksa Unggahan* (`post check`, `find_part`, `post_scenes`, `post_parts`), bagian ketuk (`tap part`, `part_key`), kartu jangkar (`anchor card`, grup `x`), buklet (`booklet`, `participant_seats.booklet`, `variant_source`), kode kesalahan (`error_code`, `item_error_codes`, `ErrorCodeResolver`), beban permukaan (`surface load`, `surface_json`), label pengembang/ahli (`label source`).
-6. **[03](03_KODE_DAN_ARTI.md):** kode `BOOKLET_MISSING`; nilai `variant_source` (`booklet`, `random`, `retake`); kode genre dan `layout` bacaan.
-7. **[11](11_KAMUS_DATA.md) → *Variabel butir*** (`kamus-1.1`): `tap_min_dp`, `akm_level_source` berpasangan dengan `bloom_level_source`, `variant_source`, `booklet_at_open`; `variant` untuk Susun Gambar kini `c`–`k`.
-8. **[08](08_DRAF_BANK_SOAL.md):** pemetaan huruf Susun Gambar di §14 menjawab "Pemetaan huruf lama ke huruf baru ditulis di dokumen implementasi".
-9. **[01](01_REVISI_10_ANALITIK.md) → *Catatan perubahan sistem*:** baris no. 1, 3, 4, 8, 17, 20 menunjuk 31.
+1. **[29](29_IMPLEMENTASI_DATA_PENELITIAN.md) §7.2–7.3:** lembar `butir` mendapat kolom §13.3; lembar baru `kode_pilihan` (hanya `ketua`); lembar `percobaan` mendapat `error_code`, `manual_code`; lembar `pengerjaan` mendapat `variant_source`, `booklet_at_open`. §15 baris no. 1: kolomnya sekarang dirancang di 31. — *Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`).*
+2. **[28](28_IMPLEMENTASI_SESI_LAPANGAN.md) §12 dan §18:** panel pemantauan menampilkan jumlah siswa sesi itu yang belum punya kursi (karena tanpa kursi tantangan dinilai tidak terbuka, K10); baris no. 20 di §18 menunjuk 31 §11. — *Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`).*
+3. **[20](20_PAKET_VALIDASI.md) prasyarat no. 4 dan [21](21_BERKAS_BUTIR_VALIDATOR.md):** workbook, berkas data, dan halaman panel konten memuat label pengembang, jadi tidak ikut paket validator; berkas validator tetap dibuat dari 08. Bila *commit* yang dibekukan sudah memuat bank baru, validator memainkan bank baru. — *Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`).*
+4. **Bagian 6 (`32`):** membaca format data skenario dari §6.3 dan §15; menambah `BankRules::ENGINES[5]` dan `reason_code`/skor di `item_tries`. — *Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`).*
+5. **Glosarium** (saat implementasi): babak (`round`), *Periksa Unggahan* (`post check`, `find_part`, `post_scenes`, `post_parts`), bagian ketuk (`tap part`, `part_key`), kartu jangkar (`anchor card`, grup `x`), buklet (`booklet`, `participant_seats.booklet`, `variant_source`), kode kesalahan (`error_code`, `item_error_codes`, `ErrorCodeResolver`), beban permukaan (`surface load`, `surface_json`), label pengembang/ahli (`label source`). — *Saat implementasi.*
+6. **[03](03_KODE_DAN_ARTI.md):** kode `BOOKLET_MISSING`; nilai `variant_source` (`booklet`, `random`, `retake`); kode genre dan `layout` bacaan. — *Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`).*
+7. **[11](11_KAMUS_DATA.md) → *Variabel butir*** (`kamus-1.1`): `tap_min_dp`, `akm_level_source` berpasangan dengan `bloom_level_source`, `variant_source`, `booklet_at_open`; `variant` untuk Susun Gambar kini `c`–`k`. — *Saat `kamus-1.1`.*
+8. **[08](08_DRAF_BANK_SOAL.md):** pemetaan huruf Susun Gambar di §14 menjawab "Pemetaan huruf lama ke huruf baru ditulis di dokumen implementasi". — *Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`).*
+9. **[01](01_REVISI_10_ANALITIK.md) → *Catatan perubahan sistem*:** baris no. 1, 3, 4, 8, 17, 20 menunjuk 31. — *Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`).*

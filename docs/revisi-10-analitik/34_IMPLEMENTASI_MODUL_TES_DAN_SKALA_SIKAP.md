@@ -449,10 +449,12 @@ Susulan P5 biasa dengan jam buka yang panjang (28 §6.7 no. 6), paling lambat `a
 | `instrument_versions` | `id`, `instrument` VARCHAR(10) (`tes`, `angket`, `sikap`), `version` VARCHAR(20), `content_hash` CHAR(64), `status` VARCHAR(20) (`needs_verification`, `frozen`), `is_active` TINYINT(1), `imported_at`. Unik (`instrument`, `version`) |
 | `instrument_stimuli` | `id`, `version_id` FK, `code` VARCHAR(30) (`tes-mb-A-M1`), `show_json` JSON, `image_slot` VARCHAR(60) (null). Unik (`version_id`, `code`) |
 | `instrument_items` | `id`, `version_id` FK, `code` VARCHAR(20), `part` VARCHAR(10) (`ct`, `mb`, `ae`, `bd`, `A`–`H` angket, `risk`, `sikap`), `form` CHAR(1) (null), `position` SMALLINT, `type` VARCHAR(10), `stimulus_id` FK (null), `show_json` JSON, `key_json` JSON (null), `units_json` JSON (nama satuan/variabel), `cell_json` JSON (null). Unik (`version_id`, `code`) |
-| `instrument_sittings` | `id`, `participant_id` FK `ON DELETE CASCADE`, `study_id` FK, `field_session_id` FK (null), `occasion` VARCHAR(4) (`pre`, `post`, `p5`), `kind` VARCHAR(14) (`test`, `questionnaire`, `risk`, `attitude`), `form` CHAR(1) (null), `version_id` FK, `is_makeup`, `late`, `is_preview` TINYINT(1) bawaan 0, `risk_offered` TINYINT(1) (null), `risk_reconsent` TINYINT(1) (null), `risk_reconsent_at` (null), `started_at`, `submitted_at` (null), `last_item_id` (null). Unik (`participant_id`, `study_id`, `occasion`, `kind`, `is_preview`) |
+| `instrument_sittings` | `id`, `participant_id` FK `ON DELETE CASCADE`, `study_id` FK, `field_session_id` FK (null), `occasion` VARCHAR(4) (`pre`, `post`, `p5`), `kind` VARCHAR(14) (`test`, `questionnaire`, `risk`, `attitude`), `form` CHAR(1) (null), `version_id` FK, `is_makeup`, `late`, `is_preview` TINYINT(1) bawaan 0, `risk_offered` TINYINT(1) (null), `risk_reconsent` TINYINT(1) (null), `risk_reconsent_at` (null), `started_at`, `submitted_at` (null), `last_item_id` (null), `updated_at` DATETIME(3). Unik (`participant_id`, `study_id`, `occasion`, `kind`, `is_preview`) |
 | `instrument_blocks` | `id`, `sitting_id` FK `ON DELETE CASCADE`, `block` VARCHAR(4) (`p1`, `p23`), `started_at`, `limit_minutes` SMALLINT, `extra_minutes` SMALLINT bawaan 0, `closed_at` (null), `closed_reason` VARCHAR(10) (null: `submitted`, `limit`). Unik (`sitting_id`, `block`) |
 | `instrument_parts` | `id`, `sitting_id` FK `ON DELETE CASCADE`, `part` VARCHAR(10), `block_id` FK (null untuk angket, risiko, sikap), `opened_at`, `submitted_at` (null), `closed_at` (null), `closed_by_limit` TINYINT(1) bawaan 0, `raw_score` SMALLINT (null), `answered_count` SMALLINT (null). Unik (`sitting_id`, `part`) |
-| `instrument_responses` | `id`, `part_id` FK `ON DELETE CASCADE`, `sitting_id` FK `ON DELETE CASCADE`, `item_id` FK, `unit` VARCHAR(40), `response` VARCHAR(40) (null), `score` TINYINT (null), `error_codes` VARCHAR(80) (null), `not_reached` TINYINT(1) bawaan 0, `first_shown_at`, `shown_at`, `answered_at` (null), `view_count` SMALLINT bawaan 0, `time_on_item_ms` INT bawaan 0, `last_view_ms` INT (null), `answer_changes` SMALLINT bawaan 0, `revision` INT bawaan 0. Unik (`sitting_id`, `unit`) |
+| `instrument_responses` | `id`, `part_id` FK `ON DELETE CASCADE`, `sitting_id` FK `ON DELETE CASCADE`, `item_id` FK, `unit` VARCHAR(40), `response` VARCHAR(40) (null), `score` TINYINT (null), `error_codes` VARCHAR(80) (null), `not_reached` TINYINT(1) bawaan 0, `first_shown_at`, `shown_at`, `answered_at` (null), `view_count` SMALLINT bawaan 0, `time_on_item_ms` INT bawaan 0, `last_view_ms` INT (null), `answer_changes` SMALLINT bawaan 0, `revision` INT bawaan 0, `updated_at` DATETIME(3). Unik (`sitting_id`, `unit`) |
+
+`updated_at` di `instrument_sittings` dan `instrument_responses` diisi setiap kali baris ditulis (simpan jawaban, kirim, tutup, persetujuan ulang), supaya sidik jari lapis turunan memakai satu aturan `MAX(updated_at)` untuk semua tabel ([35 §4.3](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#43-sidik-jari-masukan), [§18](#18-keputusan-pengembang) no. 6). `revision` tetap untuk penyimpanan bersyarat, bukan untuk sidik jari.
 
 Kunci asing ke `participants` memakai `ON DELETE CASCADE`, mengikuti aturan hapus bagian 4 (30 §7.3); `RetentionService::HARD_ORDER` tetap menghapusnya satu per satu.
 
@@ -480,7 +482,7 @@ Bagian ini menyediakan data mentah. Lembar dan kolom ditetapkan bersama bagian 3
 
 | Lembar (usulan) | Satu baris per | Kolom mentah dari bagian ini |
 | --- | --- | --- |
-| `tes_jawaban` | Satuan per siswa per kesempatan | `participant_code`, `occasion`, `form`, `item_code`, `response`, `score`, `error_codes`, `not_reached`, `time_on_item` (ms), `answer_changes`, `instrument_version` (13 → *Jawaban tes*); `rapid_guess` dari bagian 9 |
+| `tes_jawaban` | Satuan per siswa per kesempatan | `participant_code`, `occasion`, `form`, `item_code`, `response`, `score`, `error_codes`, `not_reached`, `time_on_item` (ms), `answer_changes`, `instrument_version` (13 → *Jawaban tes*); `rapid_guess` dari bagian 9: tabel turunan `derived_test_responses` (lembar `turunan_tes`, [35 §6.8](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#68-derived_test_responses-satu-baris-per-jawaban-tes)), digabung per `participant_code`, `occasion`, dan `item_code` dari putaran yang berlaku ([§18](#18-keputusan-pengembang) no. 7) |
 | `tes_bagian` | Bagian per siswa per kesempatan | `participant_code`, `occasion`, `part`, `block`, `started_at`, `submitted_at`, `closed_by_limit`, `extra_minutes`, `raw_score`, `answered_count`, `is_makeup`, `field_session_code` |
 | `angket` | Siswa | `questionnaire_date`, `questionnaire_makeup`, `questionnaire_late`, `questionnaire_minutes`, dan 41 kolom `phone_access` … `books_home` (16) |
 | `sikap` | Siswa | `skp_ct_01`, `skp_01`–`skp_12`, `skp_01_ms`–`skp_12_ms`, `skp_changes`, `sikap_makeup`, `sikap_submitted_at`, `sikap_version`, `feedback_rating` (17) |
@@ -711,24 +713,29 @@ Satu putaran wawancara, 2 November 2026 (`asal: pengembang`). Pengembang memilih
 4. **Mengikuti `field_mode`, dengan pratinjau untuk akun `uji.*`** (K4). Tidak dipilih: dua sakelar studi tersendiri (lebih banyak kombinasi); skala selalu menyala (mengumpulkan data tanpa dasar izin di luar penelitian).
 5. **Dokumen disetujui pengembang** (2 November 2026), bersama keputusan rancangan K5–K15 dan penyelarasan dengan rencana `satu_sesi` (PR #319). Pertanyaan terbuka di [§17](#17-pertanyaan-terbuka) tetap untuk peneliti dan tidak menahan persetujuan ini.
 
+**Sesi koordinator 31–35, 3 November 2026** (cabang `r10-cek-30`, `asal: pengembang`, `disetujui pengembang`):
+
+6. **`instrument_sittings` dan `instrument_responses` mendapat `updated_at`** (§11.1), sehingga sidik jari lapis turunan ([35 §4.3](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#43-sidik-jari-masukan)) memakai satu aturan `MAX(updated_at)` untuk semua tabel. Tidak dipilih: sidik jari memakai `revision`.
+7. **`tes_jawaban.rapid_guess` dibaca dari tabel turunan `derived_test_responses`** bagian 9 (§11.4), yang disimpan dan berversi per putaran seperti tabel `derived_*` lain. Tidak dipilih: dihitung hanya saat unduhan dibuat.
+
 ---
 
 ## 19. Akibat ke dokumen lain
 
-Untuk sesi koordinator; tidak diubah di sini.
+Untuk sesi koordinator. **Status per 3 November 2026:** dibawa sesi koordinator 31–35 (cabang `r10-cek-30`), kecuali baris yang menunggu `kamus-1.1`, implementasi, peneliti, atau versi PDF baru.
 
-| Dokumen | Bagian | Yang perlu diubah |
-| --- | --- | --- |
-| [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) | §21 no. 2 dan 3 | Dicoret: no. 2 diputuskan di 34 K1 (tombol P1 menutup tantangan); no. 3 diatur di 34 §10.2 (angket terlambat di susulan P1 sampai P5 utama dibuka). Rencana `satu_sesi` tanpa modul tes dan skala sikap tertulis di 34 §5.1 dan K12 |
-| 28 | §6.5 langkah 8, §12, §14 | Arah ke `/tes` setelah daftar; status tes di pemantauan diisi dari 34 §14, ditambah tombol *Tambah waktu*; kolom `field_sessions.test_started_at`, `test_started_by` (dibuat migrasi 34) |
-| [13](13_TES_AWAL_AKHIR.md) | *Modul tes di GELITA* butir "Belum diputuskan" | Diputuskan di 34 K1; tombol *Mulai tes awal/akhir*; tambah menit oleh P1 (34 K3) di *Aturan selama tes* |
-| [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) | §7.2 | Lembar `tes_jawaban`, `tes_bagian`, `angket`, `sikap`, kolom `peserta` tambahan (34 §11.4); sumber `risiko_gabungan` = sesi jenis `risk` |
-| [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) | §7.3, §18 | Nama tabel jawaban modul (`instrument_sittings`, `instrument_blocks`, `instrument_parts`, `instrument_responses`); cakupan `risk_items` = sesi jenis `risk`; `risk_offered` disimpan per siswa |
-| [27](27_IMPLEMENTASI_PERAN_PENELITI.md) | §15 | No. 21 dan 22 tidak menambah kemampuan |
-| [16](16_ANGKET_AKSES_DIGITAL.md) | *Cara pelaksanaan* no. 9 | "sampai P5" dibaca "sebelum P5 utama dibuka" bila peneliti setuju (§17 no. 4) |
-| [17](17_SKALA_SIKAP.md) | Pembuka, *Pelaksanaan di P5* | Kalimat lama "sistem diubah di tahap 3" (04, 1 November 2026); Balai Refleksi hanya di sesi P5 dalam mode penelitian (34 K12) |
-| [18](18_MOCKUP_LAYAR_BARU.md) | *Celah* no. 3 | Salinan modul tes dibawa ke 34 §13 |
-| [11](11_KAMUS_DATA.md) | `kamus-1.1` | Kolom tambahan `extra_minutes`, `instrument_version`, `risk_offered` (hanya gabungan) di samping variabel 13, 16, 17 |
-| [01](01_REVISI_10_ANALITIK.md) | *Catatan perubahan sistem* no. 21, 22 | Rujukan ke 34 |
-| `.claude/rules/glossary.md` | Tabel *Game* dan *People, data, and the panel* | Baris baru: modul tes (`instrument module`, `/tes`), sesi tes (`sitting`, `instrument_sittings`), blok waktu (`time block`, `p1`/`p23`), tambah waktu (`extra minutes`), skala sikap (`attitude scale`, `/refleksi/sikap`, `sikap`), pertanyaan tambahan (`risk items`, `/tes/tambahan`), *Mulai tes awal/akhir* (`test start`, `field_sessions.test_started_at`), pratinjau instrumen (`instrument preview`, `Config\Gelita::$instrumentPreview`) |
-| `docs/revisi-10-analitik/dokumen-pdf/serah-terima-peneliti.pdf` | Pertanyaan untuk peneliti | §17 no. 1, 2, 4 bila dibuat versi baru |
+| Dokumen | Bagian | Yang perlu diubah | Status |
+| --- | --- | --- | --- |
+| [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) | §21 no. 2 dan 3 | Dicoret: no. 2 diputuskan di 34 K1 (tombol P1 menutup tantangan); no. 3 diatur di 34 §10.2 (angket terlambat di susulan P1 sampai P5 utama dibuka). Rencana `satu_sesi` tanpa modul tes dan skala sikap tertulis di 34 §5.1 dan K12 | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| 28 | §6.5 langkah 8, §12, §14 | Arah ke `/tes` setelah daftar; status tes di pemantauan diisi dari 34 §14, ditambah tombol *Tambah waktu*; kolom `field_sessions.test_started_at`, `test_started_by` (dibuat migrasi 34) | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| [13](13_TES_AWAL_AKHIR.md) | *Modul tes di GELITA* butir "Belum diputuskan" | Diputuskan di 34 K1; tombol *Mulai tes awal/akhir*; tambah menit oleh P1 (34 K3) di *Aturan selama tes* | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) | §7.2 | Lembar `tes_jawaban`, `tes_bagian`, `angket`, `sikap`, kolom `peserta` tambahan (34 §11.4); sumber `risiko_gabungan` = sesi jenis `risk` | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) | §7.3, §18 | Nama tabel jawaban modul (`instrument_sittings`, `instrument_blocks`, `instrument_parts`, `instrument_responses`); cakupan `risk_items` = sesi jenis `risk`; `risk_offered` disimpan per siswa | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| [27](27_IMPLEMENTASI_PERAN_PENELITI.md) | §15 | No. 21 dan 22 tidak menambah kemampuan | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| [16](16_ANGKET_AKSES_DIGITAL.md) | *Cara pelaksanaan* no. 9 | "sampai P5" dibaca "sebelum P5 utama dibuka" bila peneliti setuju (§17 no. 4) | Menunggu peneliti (§17 no. 4) |
+| [17](17_SKALA_SIKAP.md) | Pembuka, *Pelaksanaan di P5* | Kalimat lama "sistem diubah di tahap 3" (04, 1 November 2026); Balai Refleksi hanya di sesi P5 dalam mode penelitian (34 K12) | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| [18](18_MOCKUP_LAYAR_BARU.md) | *Celah* no. 3 | Salinan modul tes dibawa ke 34 §13 | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| [11](11_KAMUS_DATA.md) | `kamus-1.1` | Kolom tambahan `extra_minutes`, `instrument_version`, `risk_offered` (hanya gabungan) di samping variabel 13, 16, 17 | Saat `kamus-1.1` |
+| [01](01_REVISI_10_ANALITIK.md) | *Catatan perubahan sistem* no. 21, 22 | Rujukan ke 34 | Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
+| `.claude/rules/glossary.md` | Tabel *Game* dan *People, data, and the panel* | Baris baru: modul tes (`instrument module`, `/tes`), sesi tes (`sitting`, `instrument_sittings`), blok waktu (`time block`, `p1`/`p23`), tambah waktu (`extra minutes`), skala sikap (`attitude scale`, `/refleksi/sikap`, `sikap`), pertanyaan tambahan (`risk items`, `/tes/tambahan`), *Mulai tes awal/akhir* (`test start`, `field_sessions.test_started_at`), pratinjau instrumen (`instrument preview`, `Config\Gelita::$instrumentPreview`) | Saat implementasi |
+| `docs/revisi-10-analitik/dokumen-pdf/serah-terima-peneliti.pdf` | Pertanyaan untuk peneliti | §17 no. 1, 2, 4 bila dibuat versi baru | Bila dibuat versi baru |

@@ -270,7 +270,7 @@ Setiap penolakan punya pesannya sendiri ([§16](#16-layar-dan-teks)). Penolakan 
 
 ### 6.5 Pendaftaran dengan token (P1)
 
-1. `/daftar` dalam mode penelitian dimulai dengan layar token (langkah 0).
+1. `/daftar` dalam mode penelitian dimulai dengan layar token (langkah 0). Formulir langkah 0 juga mengirim `stage_w`, dan panggung di bawah `research_studies.min_stage_px` ditolak seperti di `/token` ([§6.4](#64-siswa-mengetik-token-p2p5) no. 6, [33 §7.2](33_IMPLEMENTASI_MODE_PENELITIAN.md#72-layar-kecil)): pesan layar kecil yang sama, sebelum wizard berlanjut dan akun dibuat, dengan audit sesi lapangan `small_screen_refused` tanpa data siswa ([§22](#22-keputusan-pengembang) no. 14).
 2. Token harus milik sesi pertemuan 1 yang buka, atau susulannya. Untuk susulan P1 belum ada akun yang bisa dicentang, jadi keanggotaan tidak diperiksa saat mendaftar.
 3. Sesi lapangan disimpan di wizard (`reg_wizard`).
 4. Langkah 1 (nama, umur, jenis kelamin, avatar) tetap.
@@ -450,8 +450,8 @@ Dalam mode penelitian, aturan buka dibaca dari rencana pertemuan sesi lapangan y
 | Tantangan tertinggal untuk susulan P5 | Per kode | — |
 | Event hilang (jumlah `dropped` dari `events_dropped` sesi game di sesi ini) | Jumlah per kode | Jumlah |
 | Izin belum diisi (siswa rombel tanpa tanggal izin orang tua, [30 → Izin berkode per siswa](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#52-izin-berkode-per-siswa)) | Jumlah | — (isian izin dan angkanya tidak terlihat admin, [§21](#21-pertanyaan-terbuka) no. 7) |
-| Siswa sesi itu yang belum punya kursi (tanpa kursi, tantangan 2–5 tidak terbuka: `BOOKLET_MISSING`, [31 §11.2](31_IMPLEMENTASI_BANK_SOAL_BARU.md#112-memilih-variasi-di-opennode), K10) | Jumlah | Belum diputuskan (31 hanya menyebut panel pemantauan) |
-| Perangkat layar kecil ditolak (jumlah audit `small_screen_refused` sesi ini, [33 §7.2](33_IMPLEMENTASI_MODE_PENELITIAN.md#72-layar-kecil)) | Jumlah | Belum diputuskan (33 hanya menyebut panel pemantauan) |
+| Siswa sesi itu yang belum punya kursi (tanpa kursi, tantangan 2–5 tidak terbuka: `BOOKLET_MISSING`, [31 §11.2](31_IMPLEMENTASI_BANK_SOAL_BARU.md#112-memilih-variasi-di-opennode), K10) | Jumlah | Jumlah ([§22](#22-keputusan-pengembang) no. 13) |
+| Perangkat layar kecil ditolak (jumlah audit `small_screen_refused` sesi ini, [33 §7.2](33_IMPLEMENTASI_MODE_PENELITIAN.md#72-layar-kecil)) | Jumlah | Jumlah ([§22](#22-keputusan-pengembang) no. 13) |
 | Status tes awal/akhir (`belum`, `sedang`, `selesai`, `susulan`, `hilang`), dari modul tes ([34 §14](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#14-titik-sambung-ke-perubahan-lain)) | Per kode, dengan tombol *Tambah waktu* per siswa (`POST /admin/sesi-lapangan/{id}/tambah-waktu`, `field_sessions.manage`, 34 K3 dan §12) | — |
 
 **Penyegaran:**
@@ -649,7 +649,7 @@ Kunci gabung dengan lembar lapangan: kode peserta, `field_session_code`, dan jam
 
 | Perubahan | Yang disediakan bagian ini | Yang dirancang di sana |
 | --- | --- | --- |
-| No. 16 mode penelitian (bagian 7, [33](33_IMPLEMENTASI_MODE_PENELITIAN.md)) | Sakelar `field_mode`, rencana pertemuan, pengerjaan terbuka saat sesi tutup, layar token | Melanjutkan pengerjaan pertama yang terputus, pengerjaan ulang, Kenali, layar kecil (`stage_w` di `/token`, angka penolakan di pemantauan, 33 §7.2), jam disembunyikan |
+| No. 16 mode penelitian (bagian 7, [33](33_IMPLEMENTASI_MODE_PENELITIAN.md)) | Sakelar `field_mode`, rencana pertemuan, pengerjaan terbuka saat sesi tutup, layar token | Melanjutkan pengerjaan pertama yang terputus, pengerjaan ulang, Kenali, layar kecil (`stage_w` di `/token` dan `/daftar`, angka penolakan di pemantauan, 33 §7.2), jam disembunyikan |
 | No. 20 bank baru (bagian 5, [31 §11](31_IMPLEMENTASI_BANK_SOAL_BARU.md#11-variasi-dari-buklet-dan-butir-jangkar-perubahan-no-4-20)) | `participant_seats.booklet` | Buklet menentukan variasi pengerjaan pertama; tanpa kursi tantangan 2–5 tidak dibuka (`BOOKLET_MISSING`, 31 K10), dengan angka "belum punya kursi" di pemantauan ([§12](#12-panel-pemantauan)) |
 | No. 21 skala sikap (bagian 8, [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md)) | Susulan P5 dengan jam buka panjang | Layar skala dan `sikap_makeup` (34 §9, §10.3) |
 | No. 22 modul tes (bagian 8, [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md)) | Token P1 dan P5 membuka modul; bentuk A/B dan `locked_at` dari `participant_seats`; "semua siswa punya bentuk" | Modul tes, mulai tes bersama (`field_sessions.test_started_at`, `test_started_by`), status tes dan tombol *Tambah waktu* di pemantauan, arah `/tes` setelah daftar, susulan tes, angket; batas 20 menit di P5 (34 K1) dan angket terlambat (34 §10.2); rencana `satu_sesi` tanpa modul tes dan skala sikap (34 §5.1, K12) |
@@ -759,6 +759,11 @@ Putaran kedua hari yang sama, dua pertanyaan; pengembang memilih usulan di kedua
 12. **28 disetujui pengembang** (1 November 2026). Gelombang kode D boleh membangun dari dokumen ini.
 
 Yang diselaraskan tanpa keputusan baru: aturan "dibangun sekarang" menggantikan "tahap 3, setelah G2" (status, §13); `field_mode` mati secara bawaan dan satu studi per uji (K1, §5.1); satu urutan `U` untuk semua uji dan penghitung kode yang tidak per studi (§10); rujukan kode (`GameSessionModel::resumable()`, `ParticipantAuthFilter`, `keepForLater()` juga membuang antrean pada 422, pemeriksaan urutan tantangan di `ChallengeController`, tes lain yang membaca `session_progress`); §21 no. 1–4. Urutan migrasi `003400` → `003500` → `003600`, `003700` → `003800` di [27 §6.1](27_IMPLEMENTASI_PERAN_PENELITI.md#61-migrasi-2026-01-01-003400_replaceteacherwithresearcherroles) tetap cocok; migrasi terakhir di kode masih `003300` dan `REQUIRED_MIGRATION` masih `2026-01-01-003300`.
+
+**Sesi koordinator 31–35, 3 November 2026** (cabang `r10-cek-30`, `asal: pengembang`, `disetujui pengembang`):
+
+13. **Angka "siswa belum punya kursi" (`BOOKLET_MISSING`) dan "perangkat layar kecil ditolak" tampil untuk admin, peneliti, dan ketua** ([§12](#12-panel-pemantauan)), karena keduanya urusan perangkat dan tempat duduk yang juga ditangani admin. Angka "izin belum diisi" tetap hanya untuk peneliti dan ketua (no. 5). Tidak dipilih: hanya peneliti dan ketua.
+14. **Layar kecil juga ditolak saat mendaftar dengan token** ([§6.5](#65-pendaftaran-dengan-token-p1) langkah 0): `/daftar` dalam mode penelitian mengirim `stage_w` dan menolak panggung di bawah `min_stage_px` dengan pesan dan audit `small_screen_refused` yang sama dengan `/token`. Aturannya di [33 §7.2](33_IMPLEMENTASI_MODE_PENELITIAN.md#72-layar-kecil). Tidak dipilih: hanya di `/token`.
 
 **Akibat dari kamus yang sudah disetujui** (bukan pertanyaan baru). Karena satu sesi game milik tepat satu sesi lapangan (11), kemajuan pindah dari sesi game ke siswa ([§8](#8-kemajuan-mengikuti-siswa-bukan-sesi-game)). Ini perubahan terbesar di bagian ini dan disebut di [04](04_CATATAN_KEPUTUSAN.md) untuk ditinjau pengembang.
 

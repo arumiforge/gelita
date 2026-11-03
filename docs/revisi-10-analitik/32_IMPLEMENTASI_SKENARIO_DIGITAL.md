@@ -271,9 +271,11 @@ Semua dalam milidetik sejak tantangan dibuka (`sinceOpen()` di `game/challenge.j
 | `ready_ms` | Pilihan tindakan tampil untuk percobaan ini (layar skenario tampil, atau *Coba lagi* diketuk) |
 | `reason_ready_ms` | Pilihan alasan tampil (terakhir kali, bila siswa kembali ke langkah 1 lalu maju lagi) |
 | `first_input_ms` | Pilihan tindakan pertama di percobaan ini |
+| `action_last_input_ms` | Perubahan terakhir pilihan tindakan sebelum *Kirim jawaban* |
+| `reason_last_input_ms` | Perubahan terakhir pilihan alasan sebelum *Kirim jawaban* |
 | `last_input_ms` | *Kirim jawaban* diketuk |
 
-`selected()` (baris 79–86) tetap dipanggil untuk setiap pilihan tindakan dan alasan, dengan `change.step` = `action` atau `reason`. Pengiriman event `answer_selected` dihapus bagian 3; waktunya tetap dipakai. Server menjepit keempat nilai dengan `clientMs()` (baris 914–923) dan mengosongkan `ready_ms` atau `reason_ready_ms` yang lebih besar dari `last_input_ms`, mengikuti 29 §6.1.
+`selected()` (baris 79–86) tetap dipanggil untuk setiap pilihan tindakan dan alasan, dengan `change.step` = `action` atau `reason`; peramban mencatat waktu panggilan terakhir per langkah sebagai `action_last_input_ms` dan `reason_last_input_ms`. Pengiriman event `answer_selected` dihapus bagian 3; waktunya tetap dipakai. Keenam nilai disimpan di `item_tries` dengan nama yang sama (`first_input_ms` dan `last_input_ms` sudah ada); lapis turunan (bagian 9) membaca `action_last_input_ms` dan `reason_last_input_ms` apa adanya untuk waktu keputusan tindakan dan alasan, tanpa perkiraan. Server menjepit keenam nilai dengan `clientMs()` (baris 914–923) dan mengosongkan `ready_ms`, `reason_ready_ms`, `action_last_input_ms`, atau `reason_last_input_ms` yang lebih besar dari `last_input_ms`, mengikuti 29 §6.1.
 
 ---
 
@@ -394,10 +396,11 @@ Saat menyetujui rekaman `skenario-*` dan `unggahan-*` di panel Narasi, pendengar
 | `action_reason_pattern` | Diturunkan bagian 9 dari baris pertama, aturan [11 → Analitik 10](11_KAMUS_DATA.md#analitik-10-pilihan-dan-alasan-di-skenario-digital) | 10 |
 | Urutan pilihan yang tampil | `item_tries.answer_json.order` (`actions`, `reasons`: daftar kunci) | Pemeriksaan posisi |
 | Saat pilihan tindakan dan alasan tampil | `item_tries.ready_ms`, `reason_ready_ms` | 5, 6 (`decision_ms`, tebakan cepat) |
+| Saat pilihan tindakan dan alasan terakhir diubah | `item_tries.action_last_input_ms`, `reason_last_input_ms` | 6 (waktu keputusan tindakan dan alasan) |
 | Skenario ditutup setelah kesempatan ketiga | Event `scenario_failed` | 1 jenis (a) |
 | Putaran situasi dan instruksi | `audio_usage_events` + `audio_assets.context_code` | 7 |
 
-- **Lembar `percobaan`** di unduhan `ketua` (29 §7.3) mendapat kolom `action_key`, `action_score`, `reason_code`, `reason_ready_ms`. `reason_key` tidak diekspor (kodenya sudah cukup). Kolom ini kosong untuk engine lain.
+- **Lembar `percobaan`** di unduhan `ketua` (29 §7.3) mendapat kolom `action_key`, `action_score`, `reason_code`, `reason_ready_ms`, `action_last_input_ms`, `reason_last_input_ms`. `reason_key` tidak diekspor (kodenya sudah cukup). Kolom ini kosong untuk engine lain.
 - **Lembar `bantuan`** (29 §5.4) mendapat kolom `audio_context` dari `audio_assets.context_code`, supaya `challenge_instruction`, `scenario_situation`, `post_clue`, dan `hunt_clue` terbedakan.
 - **Kunci jawaban** di unduhan `ketua` (29 §7.5) memuat skor dan kode setiap pilihan skenario dan kode setiap alasan.
 - Lembar *Kamus Data* (`ResearchDictionary`) mendapat entri kolom baru dengan status `baru` untuk `kamus-1.1`.
@@ -410,7 +413,7 @@ Satu migrasi, `2026-01-01-004000_AddScenarioEngineColumns` (nomor sementara, K14
 
 | Tabel | Perubahan |
 | --- | --- |
-| `item_tries` | Kolom baru `action_key` VARCHAR(10) null, `action_score` TINYINT UNSIGNED null, `reason_key` VARCHAR(10) null, `reason_code` VARCHAR(12) null (panjang sama dengan `scenario_options.option_key` dan `code` di 31 §15), `reason_ready_ms` INT UNSIGNED null. Indeks `(reason_code)` |
+| `item_tries` | Kolom baru `action_key` VARCHAR(10) null, `action_score` TINYINT UNSIGNED null, `reason_key` VARCHAR(10) null, `reason_code` VARCHAR(12) null (panjang sama dengan `scenario_options.option_key` dan `code` di 31 §15), `reason_ready_ms` INT UNSIGNED null, `action_last_input_ms` INT UNSIGNED null, `reason_last_input_ms` INT UNSIGNED null (§6.4). Indeks `(reason_code)` |
 | `challenge_nodes` | Kolom baru `audio_instruction_id`, `audio_instruction_en_id` (rujukan `audio_assets`, `ON DELETE SET NULL`), seperti `audio_intro_*` di `2026-01-01-001100_CreateChallengeNodes` baris 30–31, 49–50 |
 
 Yang **tidak** perlu kolom baru:
@@ -427,7 +430,7 @@ Yang **tidak** perlu kolom baru:
 | Metode dan jalur | Target | Catatan |
 | --- | --- | --- |
 | `GET /penghubung/(:segment)` | `DialogueController::bridge/$1` | Baru; cerita penghubung wilayah |
-| `POST /api/attempts/(:num)/responses` | `ChallengeApiController::respond/$1` (tetap, `Routes.php:89`) | Menerima `answer: {action, reason}` dan `ready_ms`, `reason_ready_ms`, `first_input_ms`, `last_input_ms` untuk butir `scenario_choice` |
+| `POST /api/attempts/(:num)/responses` | `ChallengeApiController::respond/$1` (tetap, `Routes.php:89`) | Menerima `answer: {action, reason}` dan `ready_ms`, `reason_ready_ms`, `first_input_ms`, `action_last_input_ms`, `reason_last_input_ms`, `last_input_ms` untuk butir `scenario_choice` |
 | `POST /api/attempts/(:num)/check` | Tetap | Menolak engine `skenario` (§5.5) |
 
 Tidak ada rute panel baru: butir skenario disunting di halaman butir yang ada (`/admin/konten/…`), rekaman di halaman Narasi yang ada. Hak aksesnya kemampuan bagian 1 (`content.view`, `content.edit`).
@@ -487,7 +490,7 @@ Teks yang menyebut jumlah serpihan ("12 serpihan", "dua belas") dicari di `app/L
 | --- | --- |
 | `ScenarioEngineTest` | Pilih tindakan skor 2 → skenario tertutup benar, `first_pass_correct` 1; skor 1 lalu 2 → benar di percobaan kedua; tiga kali skor 0/1 → tertutup tidak benar, `scenario_failed` tertulis; kiriman keempat → `CLUE_CLOSED`; alasan kosong → `INCOMPLETE`; ref asing → 400 |
 | `ScenarioPayloadTest` | Payload tidak memuat `score`, `error_code`, `reason_code`, umpan balik, atau kunci pilihan mentah sebelum skenario tertutup; urutan sama setelah muat ulang dan di ketiga kesempatan; berbeda antarpengerjaan |
-| `ScenarioTriesTest` | `item_tries` menyimpan `action_key`, `action_score`, `reason_key`, `reason_code`, `ready_ms`, `reason_ready_ms`, urutan di `answer_json`; nilai waktu di luar batas atau lebih besar dari `last_input_ms` disimpan kosong |
+| `ScenarioTriesTest` | `item_tries` menyimpan `action_key`, `action_score`, `reason_key`, `reason_code`, `ready_ms`, `reason_ready_ms`, `action_last_input_ms`, `reason_last_input_ms`, urutan di `answer_json`; nilai waktu di luar batas atau lebih besar dari `last_input_ms` disimpan kosong |
 | `ScenarioCloseTest` | Pengerjaan tertutup `solved` bila keempat skenario benar, `tries_exhausted` bila ada yang tidak; bintang mengikuti `bintang-1`; `/check` menolak engine `skenario` |
 | `ScenarioRaceTest` | Kiriman basi (entitas lama, `try_count` lama) kalah lewat `updateOrStale()` dan dijawab dari keadaan terbaru; tidak ada dua `item_tries` bernomor sama (pola `Factories::injectMock` seperti tes balapan lain) |
 | `ScenarioBridgeTest` | Tantangan kelima pertama kali → dialihkan ke `/penghubung/{wilayah}`; setelah ditonton → kartu misi; setelah pengerjaan pertama ada, juga di sesi game lain → tidak dialihkan lagi |
@@ -555,19 +558,23 @@ Diambil pengembang dalam wawancara 2 November 2026 (`asal: pengembang`, `disetuj
 3. **Tanpa sakelar studi** (K8): engine selalu ada, tantangan kelima muncul bila bank memuatnya, dan aturan narasi berlaku di luar studi juga. Tidak dipilih: di balik `field_mode`.
 4. **Urutan pilihan diacak sekali per pengerjaan** (K7), tetap di ketiga kesempatan, dan urutannya disimpan. Tidak dipilih: diacak ulang setiap kesempatan.
 
+**Sesi koordinator 31–35, 3 November 2026** (`asal: pengembang`, `disetujui pengembang`):
+
+5. **Waktu keputusan Skenario Digital disimpan sebagai data mentah** (§6.4, §10, §11): `item_tries` mendapat `action_last_input_ms` dan `reason_last_input_ms` (milidetik sejak tantangan dibuka, seperti `ready_ms`; saat terakhir pilihan tindakan atau alasan diubah sebelum *Kirim jawaban*). Keduanya masuk lembar `percobaan` (29 §7.3), dan bagian 9 (35) membacanya apa adanya. Tidak dipilih: perkiraan di lapis turunan (35).
+
 ---
 
 ## 19. Akibat ke dokumen lain
 
-Untuk sesi koordinator berikutnya; dokumen lain tidak diubah di cabang ini.
+Untuk sesi koordinator berikutnya; dokumen lain tidak diubah di cabang ini. **Status per 3 November 2026:** dibawa sesi koordinator 31–35 (cabang `r10-cek-30`), kecuali no. 1, 3, dan 5.
 
-1. **Glosarium** (`.claude/rules/glossary.md`), saat implementasi: *Skenario Digital* → engine `skenario`, butir `scenario_choice`; *tindakan*, *alasan* → `action`, `reason` (`action_key`, `reason_code`); *cerita penghubung* → `scenario_open`, rute `/penghubung/{wilayah}`; *narasi instruksi* → `challenge_instruction`, `audio_instruction_*`; *situasi* → `scenario_situation`; *petunjuk Periksa Unggahan* (rekaman) → `post_clue`; event `scenario_failed`.
-2. **[01](01_REVISI_10_ANALITIK.md) → Catatan perubahan sistem:** baris no. 2, 6, dan 18 merujuk dokumen ini; no. 6 ditambah "hanya lewat tombol ▶".
-3. **[11](11_KAMUS_DATA.md), untuk `kamus-1.1`:** `instruction_replays` = semua putaran `challenge_instruction` (tidak ada putaran otomatis); event setara `clue_failed` bernama `scenario_failed`; kolom `reason_ready_ms`; `first_action_key` memakai kunci tetap bank (`t1`…); urutan pilihan di `answer_json.order`.
-4. **[12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) → Yang dibacakan:** baris instruksi menjadi "Ya, hanya lewat tombol ▶"; *Yang perlu disiapkan di tahap 3* no. 1–4 merujuk §7.2, §8.3, dan §9.3.
-5. **[18](18_MOCKUP_LAYAR_BARU.md):** mock-up tantangan perlu tombol ▶ instruksi (layar `mk-sd-*`, `mk-pu-*`), bila ahli media menilainya; tidak mengubah keputusan yang sudah ada.
-6. **[29](29_IMPLEMENTASI_DATA_PENELITIAN.md):** katalog event mendapat `scenario_failed` (riset, hanya server); §6.1 baris Skenario Digital merujuk §6.4 dokumen ini; lembar `percobaan` dan `bantuan` mendapat kolom §10.
-7. **[31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) (bagian 5):** tidak ada perubahan; 32 mengikuti format data skenario 31 (§5.1) setelah 31 digabung. Catatan saja: 31 §8.2 menulis `5 => '{engine skenario}'`, yang kini bernama `skenario` (K1).
-8. **`33` (bagian 7):** sakelar jam berlaku juga untuk engine `skenario`; aturan pengerjaan ulang berlaku juga untuk tantangan kelima.
-9. **`35` (bagian 9):** turunan `action_reason_pattern`, `skipped_failed_count` dari `scenario_failed`, `instruction_replays`, `item_narration_before` dari §10.
-10. **[06](06_KISI_KISI_BANK_SOAL.md) → Yang perlu disiapkan sistem nanti** no. 1: "pilihan diacak per pengerjaan" diperjelas "sekali per pengerjaan, tetap di ketiga kesempatan".
+1. **Glosarium** (`.claude/rules/glossary.md`), saat implementasi: *Skenario Digital* → engine `skenario`, butir `scenario_choice`; *tindakan*, *alasan* → `action`, `reason` (`action_key`, `reason_code`); *cerita penghubung* → `scenario_open`, rute `/penghubung/{wilayah}`; *narasi instruksi* → `challenge_instruction`, `audio_instruction_*`; *situasi* → `scenario_situation`; *petunjuk Periksa Unggahan* (rekaman) → `post_clue`; event `scenario_failed`. — *Saat implementasi.*
+2. **[01](01_REVISI_10_ANALITIK.md) → Catatan perubahan sistem:** baris no. 2, 6, dan 18 merujuk dokumen ini; no. 6 ditambah "hanya lewat tombol ▶". — *Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`).*
+3. **[11](11_KAMUS_DATA.md), untuk `kamus-1.1`:** `instruction_replays` = semua putaran `challenge_instruction` (tidak ada putaran otomatis); event setara `clue_failed` bernama `scenario_failed`; kolom `reason_ready_ms`, `action_last_input_ms`, `reason_last_input_ms` (§18 no. 5); `first_action_key` memakai kunci tetap bank (`t1`…); urutan pilihan di `answer_json.order`. — *Saat `kamus-1.1`.*
+4. **[12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) → Yang dibacakan:** baris instruksi menjadi "Ya, hanya lewat tombol ▶"; *Yang perlu disiapkan di tahap 3* no. 1–4 merujuk §7.2, §8.3, dan §9.3. — *Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`).*
+5. **[18](18_MOCKUP_LAYAR_BARU.md):** mock-up tantangan perlu tombol ▶ instruksi (layar `mk-sd-*`, `mk-pu-*`), bila ahli media menilainya; tidak mengubah keputusan yang sudah ada. — *Catatan saja; menunggu penilaian ahli media.*
+6. **[29](29_IMPLEMENTASI_DATA_PENELITIAN.md):** katalog event mendapat `scenario_failed` (riset, hanya server); §6.1 baris Skenario Digital merujuk §6.4 dokumen ini; lembar `percobaan` dan `bantuan` mendapat kolom §10. — *Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`).*
+7. **[31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) (bagian 5):** tidak ada perubahan; 32 mengikuti format data skenario 31 (§5.1) setelah 31 digabung. Catatan saja: 31 §8.2 menulis `5 => '{engine skenario}'`, yang kini bernama `skenario` (K1). — *Tidak perlu diubah (catatan sudah dicocokkan, sesi koordinator 3 November 2026).*
+8. **`33` (bagian 7):** sakelar jam berlaku juga untuk engine `skenario`; aturan pengerjaan ulang berlaku juga untuk tantangan kelima. — *Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`).*
+9. **`35` (bagian 9):** turunan `action_reason_pattern`, `skipped_failed_count` dari `scenario_failed`, `instruction_replays`, `item_narration_before` dari §10. — *Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`).*
+10. **[06](06_KISI_KISI_BANK_SOAL.md) → Yang perlu disiapkan sistem nanti** no. 1: "pilihan diacak per pengerjaan" diperjelas "sekali per pengerjaan, tetap di ketiga kesempatan". — *Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`).*
