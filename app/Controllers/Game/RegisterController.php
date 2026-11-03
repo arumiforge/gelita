@@ -167,7 +167,9 @@ class RegisterController extends BaseController
         $check = $fields->checkToken((string) $this->request->getPost('token'), null, true);
 
         if ($check['status'] !== 'ok') {
-            $fields->registerFailure($key);
+            if ($fields->registerFailure($key)) {
+                return $this->tokenError('Game.tokenTooMany');
+            }
 
             return $this->tokenError(match ($check['status']) {
                 'not_open_yet' => 'Game.tokenNotOpenYet',

@@ -730,8 +730,8 @@ class FieldSessionService
         return service('cache')->get($this->throttleKey($key, 'pause')) !== null;
     }
 
-    /** Counts a wrong token; the tenth in the window starts a pause (28 §6.3). */
-    public function registerFailure(string $key): void
+    /** Counts a wrong token; the tenth in the window starts a pause (28 §6.3). True when the pause starts. */
+    public function registerFailure(string $key): bool
     {
         $config = config('Gelita')->tokenThrottle;
         $cache  = service('cache');
@@ -742,10 +742,12 @@ class FieldSessionService
             $cache->save($this->throttleKey($key, 'pause'), time(), (int) $config['pause_minutes'] * 60);
             $cache->delete($count);
 
-            return;
+            return true;
         }
 
         $cache->save($count, $fails, (int) $config['window_minutes'] * 60);
+
+        return false;
     }
 
     public function clearFailures(string $key): void

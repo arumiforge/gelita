@@ -65,9 +65,7 @@ class FieldTokenController extends BaseController
         $check = $fields->checkToken((string) $this->request->getPost('token'), $participant);
 
         if ($check['status'] !== 'ok') {
-            $fields->registerFailure($key);
-
-            return $this->refuse($check['status']);
+            return $this->refuse($fields->registerFailure($key) ? 'too_many' : $check['status']);
         }
 
         $fields->clearFailures($key);
