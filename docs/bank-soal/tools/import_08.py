@@ -120,7 +120,7 @@ def quote_blocks(text):
 
 
 def field(text, label):
-    m = re.search(r'^\*\*' + re.escape(label) + r'(?:\s*\([^)]*\))?:\*\*\s*(.+)$', text, re.M)
+    m = re.search(r'^\*\*' + re.escape(label) + r'(?:\s*\([^)]*\))?(?::\*\*|\*\*\s*\([^)]*\):)\s*(.+)$', text, re.M)
     return m.group(1).strip() if m else None
 
 
@@ -234,9 +234,10 @@ def pengecoh_ids(text):
 
 
 def pengecoh_en(text):
-    m = re.search(r'^Pengecoh: (.+?)\.?\s*(Lihat .*)?$', text, re.M)
+    m = re.search(r'^Pengecoh: (.+)$', text, re.M)
+    line = re.split(r'\.\s+(?:Lihat|Kode khusus)', m.group(1))[0].rstrip('.')
     out = {}
-    for pair in m.group(1).split(','):
+    for pair in line.split(','):
         a, b = pair.split('→')
         out[plain(a).strip().lower()] = plain(b).strip()
     return out
