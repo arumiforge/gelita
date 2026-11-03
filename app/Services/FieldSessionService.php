@@ -199,7 +199,7 @@ class FieldSessionService
     }
 
     /** True when the game session belongs to a field session that is open now. */
-    public function sessionIsOpen(GameSession|object $session): bool
+    public function sessionIsOpen(object $session): bool
     {
         $fieldSessionId = (int) ($session->field_session_id ?? 0);
 

@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 
 /**
  * A student's progress in one study, carried from meeting to meeting
- * (research revision 10, part 2: 28 §8; replaces `session_progress`).
+ * (research revision 10, part 2: 28 §8; replaces the old per-game-session progress table).
  * Written only by ChallengeService::refreshProgress() and openNode().
  */
 class ParticipantProgressModel extends Model

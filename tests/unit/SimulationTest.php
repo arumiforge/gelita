@@ -115,7 +115,7 @@ final class SimulationTest extends CIUnitTestCase
         $this->assertSame('completed', $this->sessionStatus('sim_001'));
         $this->assertNotSame('completed', $this->sessionStatus('sim_002'));
         $this->assertNotSame('completed', $this->sessionStatus('sim_003'));
-        $this->assertSame(1, $this->conn->table('session_progress')->where('completed_levels', 3)->countAllResults() >= 1 ? 1 : 0);
+        $this->assertSame(1, $this->conn->table('participant_progress')->where('completed_levels', 3)->countAllResults() >= 1 ? 1 : 0);
 
         // Variasi hasil
         $reasons = array_count_values(array_filter(array_column($this->allAttempts(), 'completion_reason')));

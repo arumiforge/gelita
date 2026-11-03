@@ -106,7 +106,7 @@ class DashboardController extends BaseAdminController
             ->select('p.id, p.participant_code, p.school_id, l.name_id AS level_name')
             ->select('sp.completed_nodes, sp.total_stars, gs.last_active_at', false)
             ->join($db->prefixTable('game_sessions') . ' gs', "gs.id = ({$latest})", 'left', false)
-            ->join('session_progress sp', 'sp.session_id = gs.id', 'left')
+            ->join('participant_progress sp', 'sp.participant_id = gs.participant_id AND sp.study_id = gs.study_id', 'left')
             ->join('levels l', 'l.id = sp.current_level_id', 'left')
             ->where('p.deleted_at', null);
 

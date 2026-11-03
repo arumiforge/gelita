@@ -83,7 +83,14 @@ final class StarsTest extends CIUnitTestCase
 
     public function testLevelSummaryUsesTheBestCompletedAttemptPerNode(): void
     {
-        $db = $this->createResetTables(['challenge_nodes', 'challenge_attempts']);
+        $db = $this->createResetTables(['challenge_nodes', 'challenge_attempts', 'game_sessions']);
+
+        // Sessions 1 and 3 belong to one student in study 1 (progress follows the student, 28 §8); session 2 to another
+        foreach ([1 => 1, 2 => 2, 3 => 1] as $sessionId => $participantId) {
+            $db->table('game_sessions')->insert([
+                'session_code' => 'S-' . $sessionId, 'participant_id' => $participantId, 'study_id' => 1, 'release_id' => 1,
+            ]);
+        }
 
         foreach ([[1, 1], [1, 2], [1, 3], [1, 4], [2, 1]] as [$level, $sequence]) {
             $db->table('challenge_nodes')->insert([
@@ -99,13 +106,15 @@ final class StarsTest extends CIUnitTestCase
         $this->attempt($db, 1, 3, 1, 'in_progress');
         $this->attempt($db, 1, 4, 1, 'abandoned');
         $this->attempt($db, 1, 5, 1, 'completed', ['stars' => 1]);   // wilayah lain
-        $this->attempt($db, 2, 2, 1, 'completed', ['stars' => 3]);   // sesi lain
+        $this->attempt($db, 2, 2, 1, 'completed', ['stars' => 3]);   // another student
+        $this->attempt($db, 3, 4, 1, 'completed', ['stars' => 1]);   // the same student's later session
 
         $service = new ScoringService();
 
-        $this->assertSame(['completed_nodes' => 2, 'total_nodes' => 4, 'stars' => 5], $service->levelSummary(1, 1));
+        $this->assertSame(['completed_nodes' => 3, 'total_nodes' => 4, 'stars' => 6], $service->levelSummary(1, 1));
+        $this->assertSame(['completed_nodes' => 3, 'total_nodes' => 4, 'stars' => 6], $service->levelSummary(3, 1));
         $this->assertSame(['completed_nodes' => 1, 'total_nodes' => 1, 'stars' => 1], $service->levelSummary(1, 2));
-        $this->assertSame(6, $service->totalStars(1));
+        $this->assertSame(7, $service->totalStars(1));
         $this->assertSame(['completed_nodes' => 0, 'total_nodes' => 0, 'stars' => 0], $service->levelSummary(1, 9));
     }
 

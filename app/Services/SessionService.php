@@ -12,7 +12,7 @@ use App\Models\GameReleaseModel;
 use App\Models\GameSessionModel;
 use App\Models\ParticipantModel;
 use App\Models\ResearchStudyModel;
-use App\Models\SessionProgressModel;
+use App\Models\ParticipantProgressModel;
 
 /**
  * Siklus hidup akun siswa dan sesi permainan. Satu tahap bermain per studi
@@ -426,7 +426,7 @@ class SessionService
             return false;
         }
 
-        $progress   = model(SessionProgressModel::class)->ensure($sessionId);
+        $progress   = model(ParticipantProgressModel::class)->forSession($session);
         $levelCount = count(service('contentRepository')->levels());
 
         if ($levelCount === 0 || (int) $progress['completed_levels'] < $levelCount) {
@@ -609,7 +609,7 @@ class SessionService
 
         $session = $sessions->find((int) $sessionId);
 
-        model(SessionProgressModel::class)->ensure($session->id);
+        model(ParticipantProgressModel::class)->forSession($session);
 
         return $session;
     }

@@ -427,7 +427,7 @@ final class SystemResetTest extends CIUnitTestCase
             ['participant_code' => 'GLT-000002', 'username' => 'uji2', 'password_hash' => 'x', 'school_id' => 1],
         ]);
         $db->table('game_sessions')->insert(['session_code' => 'S-1', 'participant_id' => 1, 'study_id' => 1, 'release_id' => 1, 'status' => 'completed', 'last_active_at' => '2026-09-01 08:00:00']);
-        $db->table('session_progress')->insert(['session_id' => 1]);
+        $db->table('participant_progress')->insert(['participant_id' => 1, 'study_id' => 1]);
         $db->table('challenge_attempts')->insert(['session_id' => 1, 'challenge_node_id' => 1, 'selected_item_ids_json' => '[1]', 'status' => 'completed']);
         $db->table('item_responses')->insert(['challenge_attempt_id' => 1, 'challenge_item_id' => 1]);
         $db->table('item_tries')->insert(['challenge_attempt_id' => 1, 'challenge_item_id' => 1, 'try_no' => 1, 'answer_json' => '{}']);

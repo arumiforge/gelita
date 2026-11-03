@@ -145,11 +145,11 @@ class RawDataService
         ],
         'progres' => [
             'session_code' => 'game_sessions.session_code', 'participant_code' => 'participants.participant_code',
-            'current_level' => 'session_progress.current_level_id', 'current_node_ref' => 'session_progress.current_node_id',
-            'unlocked_level_sequence' => 'session_progress.unlocked_level_sequence',
-            'completed_nodes' => 'session_progress.completed_nodes', 'total_nodes' => null,
-            'completed_levels' => 'session_progress.completed_levels', 'total_stars' => 'session_progress.total_stars',
-            'updated_at' => 'session_progress.updated_at',
+            'current_level' => 'participant_progress.current_level_id', 'current_node_ref' => 'participant_progress.current_node_id',
+            'unlocked_level_sequence' => 'participant_progress.unlocked_level_sequence',
+            'completed_nodes' => 'participant_progress.completed_nodes', 'total_nodes' => null,
+            'completed_levels' => 'participant_progress.completed_levels', 'total_stars' => 'participant_progress.total_stars',
+            'updated_at' => 'participant_progress.updated_at',
         ],
         'pengerjaan' => [
             'attempt_id' => 'challenge_attempts.id', 'session_code' => 'game_sessions.session_code',
@@ -244,7 +244,7 @@ class RawDataService
         'peserta'    => 'participants.id',
         'sesi'       => 'game_sessions.id',
         'perangkat'  => 'device_logs.id',
-        'progres'    => 'session_progress.session_id',
+        'progres'    => 'game_sessions.id',
         'pengerjaan' => 'challenge_attempts.id',
         'jawaban'    => 'item_responses.id',
         'percobaan'  => 'item_tries.id',
@@ -662,11 +662,13 @@ class RawDataService
 
     private function progressQuery(array $filters, StaffScope $scope): BaseBuilder
     {
-        $builder = $this->sessionBase('session_progress', 'session_progress.session_id')
-            ->select('session_progress.session_id AS _key, game_sessions.session_code, participants.participant_code')
-            ->select('session_progress.current_level_id, session_progress.current_node_id')
-            ->select('session_progress.unlocked_level_sequence, session_progress.completed_nodes')
-            ->select('session_progress.completed_levels, session_progress.total_stars, session_progress.updated_at');
+        // One row per game session with its student's progress in that study (28 §8)
+        $builder = $this->sessionBase('game_sessions')
+            ->join('participant_progress', 'participant_progress.participant_id = game_sessions.participant_id AND participant_progress.study_id = game_sessions.study_id')
+            ->select('game_sessions.id AS _key, game_sessions.session_code, participants.participant_code')
+            ->select('participant_progress.current_level_id, participant_progress.current_node_id')
+            ->select('participant_progress.unlocked_level_sequence, participant_progress.completed_nodes')
+            ->select('participant_progress.completed_levels, participant_progress.total_stars, participant_progress.updated_at');
 
         $this->applySessionFilters($builder, $filters, $scope, 'game_sessions.started_at');
 

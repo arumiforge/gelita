@@ -33,7 +33,7 @@ use Config\Database;
 class SystemResetService
 {
     /** Migration terakhir yang wajib sudah dijalankan. */
-    public const REQUIRED_MIGRATION = '2026-01-01-003400';
+    public const REQUIRED_MIGRATION = '2026-01-01-003500';
 
     /** Kata yang wajib diketik bila tanpa --ya. */
     public const CONFIRM_WORD = 'RESET-KELAS5';
@@ -42,9 +42,11 @@ class SystemResetService
     public const ACTIVE_GUARD_MINUTES = 10;
 
     public const GROUP_A = [
-        'participants', 'game_sessions', 'session_progress', 'challenge_attempts', 'item_responses',
+        'participants', 'game_sessions', 'participant_progress', 'challenge_attempts', 'item_responses',
         'item_tries', 'audio_usage_events', 'game_event_logs', 'device_logs', 'participant_feedback',
         'data_exports', 'data_deletion_requests', 'audit_logs', 'ci_sessions',
+        // research revision 10, part 2 (28 §14)
+        'field_sessions', 'field_session_tokens', 'field_session_members', 'participant_seats', 'participant_code_counters',
     ];
 
     public const GROUP_B = ['hints', 'challenge_items', 'reading_passages', 'challenge_nodes'];
@@ -57,7 +59,8 @@ class SystemResetService
     /** Urutan pengosongan mengikuti FK: anak dulu. */
     public const CLEAR_ORDER = [
         'item_tries', 'item_responses', 'challenge_attempts', 'audio_usage_events', 'game_event_logs',
-        'device_logs', 'session_progress', 'participant_feedback', 'game_sessions', 'participants',
+        'device_logs', 'participant_progress', 'participant_seats', 'field_session_members', 'field_session_tokens',
+        'participant_feedback', 'game_sessions', 'field_sessions', 'participant_code_counters', 'participants',
         'data_exports', 'data_deletion_requests', 'audit_logs', 'hints', 'challenge_items',
         'reading_passages', 'challenge_nodes', 'research_studies', 'game_releases', 'learning_indicators',
         'ci_sessions',

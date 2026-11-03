@@ -5,7 +5,8 @@ namespace App\Controllers\Api;
 use App\Exceptions\ChallengeRuleException;
 use App\Models\ChallengeAttemptModel;
 use App\Models\ItemResponseModel;
-use App\Models\SessionProgressModel;
+use App\Models\GameSessionModel;
+use App\Models\ParticipantProgressModel;
 use CodeIgniter\HTTP\ResponseInterface;
 
 /**
@@ -16,8 +17,8 @@ use CodeIgniter\HTTP\ResponseInterface;
  * yang dikirim browser tidak pernah dipakai.
  *
  * Urutan pembukaan node di dalam satu wilayah ditegakkan layar HTML
- * (ChallengeController); di API yang ditegakkan adalah kunci level, sama
- * seperti ChallengeService::openNode().
+ * (ChallengeController) dan juga ChallengeService::openNode() (NODE_LOCKED,
+ * 28 K17), bersama kunci level.
  *
  * Aturan 3 kesempatan (Dok 2 §5): /check dan /responses menutup pengerjaan
  * sendiri bila semua benar atau kesempatan habis (`completed`, `redirect`).
@@ -45,7 +46,11 @@ class ChallengeApiController extends BaseApiController
             return $this->fail('LEVEL_LOCKED', lang('Game.levelLocked'), 409);
         }
 
-        $opened = service('challengeService')->openNode($session, $nodeId);
+        try {
+            $opened = service('challengeService')->openNode($session, $nodeId);
+        } catch (ChallengeRuleException $e) {
+            return $this->ruleFailed($e);   // NODE_LOCKED: challenges in a region open in order (28 K17)
+        }
 
         // Pengerjaan lama ternyata sudah tuntas dan baru saja ditutup
         if (isset($opened['redirect'])) {
@@ -271,7 +276,7 @@ class ChallengeApiController extends BaseApiController
             'scorable_items'     => (int) $closed->scorable_items,
             'completion_reason'  => $closed->completion_reason,
             'duration_ms'        => (int) ($closed->duration_ms ?? 0),
-            'shards'             => (int) (model(SessionProgressModel::class)->ensure($attempt->session_id)['completed_nodes'] ?? 0),
+            'shards'             => (int) (model(ParticipantProgressModel::class)->forSession(model(GameSessionModel::class)->find($attempt->session_id))['completed_nodes'] ?? 0),
             'redirect'           => site_url('selesai/' . $attempt->id),
         ]);
     }

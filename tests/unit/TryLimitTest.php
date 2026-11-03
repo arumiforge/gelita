@@ -117,7 +117,7 @@ final class TryLimitTest extends CIUnitTestCase
         $this->assertCount(27, $this->events('challenge_checked'));
         $this->assertCount(9, $this->events('challenge_tries_exhausted'));
         $this->assertSame(array_fill(0, 9, 'tries_exhausted'), array_column($this->events('challenge_completed'), 'completion_reason'));
-        $this->assertSame(9, (int) $this->conn->table('session_progress')->where('session_id', 1)->get()->getRow('completed_nodes'), 'serpihan tetap didapat');
+        $this->assertSame(9, (int) $this->conn->table('participant_progress')->where('participant_id', 1)->get()->getRow('completed_nodes'), 'serpihan tetap didapat');
     }
 
     /** Cek ke-4 ditolak TRIES_EXHAUSTED (409) tanpa perubahan apa pun. */
