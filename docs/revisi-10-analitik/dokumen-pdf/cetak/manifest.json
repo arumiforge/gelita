@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "0fc8df5e6a19bcd5bf2422b06d940fe952f40dbf794022992e88a0ddc5ef91a1",
-      "commit": "ea8094a",
+      "source": "02da72447eee7403f625dafd08f32cd3f2421ca91e4b51c98514a85179f2ba4b",
+      "commit": "05b025a",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
-      "pages": 65,
+      "pages": 66,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -137,8 +137,8 @@
       "landscapeTables": 0
     },
     "17_SKALA_SIKAP.md": {
-      "source": "acea575e4b2e5e4d499da801a6a56b1ae40286af8539731f8410b925b0d40b5f",
-      "commit": "c8fb97f",
+      "source": "bb2c6a3bc53a115fc74033ec2708ccd71025b70bd307f51a7b10b1b35c82447a",
+      "commit": "05b025a",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
       "pages": 10,
@@ -177,10 +177,10 @@
       "landscapeTables": 0
     },
     "22_PERMOHONAN_IZIN_ETIK.md": {
-      "source": "7dcceaa0ab6298fb7e1a6e408f6f745d62c3e4f86a48a5e99a88266c03499faa",
-      "commit": "f90f7c1",
+      "source": "635e5aa8da8ea07616e14022ea90202d863f7e22d855b314b73bd6e14c74c534",
+      "commit": "05b025a",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-02",
+      "date": "2026-11-03",
       "pages": 51,
       "landscapeTables": 0
     },
@@ -257,8 +257,8 @@
       "landscapeTables": 0
     },
     "32_IMPLEMENTASI_SKENARIO_DIGITAL.md": {
-      "source": "80d633566b747dae9df86136d7710552bc784d6bf914b7bd4b51d32eb16e3b70",
-      "commit": "f641e1c",
+      "source": "a7948ffba5690a0ef1eaf7d7fedf28cef4cc94bca926b609c5f59332cafd829d",
+      "commit": "05b025a",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
       "pages": 18,
