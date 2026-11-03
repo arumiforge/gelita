@@ -6,47 +6,51 @@ namespace App\Libraries;
  * Menu panel admin (Dok 3 §8.3) — satu sumber untuk sidebar dan breadcrumb
  * topbar.
  *
- * Menu yang tidak berhak diakses TIDAK dirender untuk guru; rutenya tetap
- * dijaga filter `staffRole:admin` (404 untuk guru).
+ * An item shows only when the role holds one of its capabilities
+ * (App\Libraries\StaffAccess, revision 10 part 1, 27 §5.4); the route is
+ * still guarded by the `staffCan` filter (404 without the right).
  */
 final class AdminMenu
 {
     /**
-     * [href, kunci label Admin.*, ikon, khusus admin, kunci grup|null].
+     * [href, kunci label Admin.*, ikon, kemampuan (any one), kunci grup|null].
      *
-     * @var list<array{0: string, 1: string, 2: string, 3: bool, 4: string|null}>
+     * @var list<array{0: string, 1: string, 2: string, 3: list<string>, 4: string|null}>
      */
     private const ITEMS = [
-        ['admin',                   'Admin.menuDashboard',    'grid',      false, null],
-        ['admin/peserta',           'Admin.menuParticipants', 'users',     false, 'Admin.groupData'],
-        ['admin/sesi',              'Admin.menuSessions',     'clock',     false, 'Admin.groupData'],
-        ['admin/data',              'Admin.menuRawData',      'database',  false, 'Admin.groupData'],
-        ['admin/masukan',           'Admin.menuFeedback',     'message',   false, 'Admin.groupData'],
-        ['admin/ekspor',            'Admin.menuExport',       'download',  false, 'Admin.groupData'],
-        ['admin/konten',            'Admin.menuContent',      'puzzle',    true,  'Admin.groupContent'],
-        ['admin/konten/impor-bank', 'Admin.menuBankImport',   'upload',    true,  'Admin.groupContent'],
-        ['admin/konten/narasi',     'Admin.menuNarration',    'sound',     true,  'Admin.groupContent'],
-        ['admin/media',             'Admin.menuMedia',        'image',     true,  'Admin.groupContent'],
-        ['admin/media/kelengkapan', 'Admin.menuChecklist',    'clipboard', true,  'Admin.groupContent'],
-        ['admin/studi',             'Admin.menuStudy',        'flask',     true,  'Admin.groupSettings'],
-        ['admin/studi/rilis',       'Admin.menuReleases',     'tag',       true,  'Admin.groupSettings'],
-        ['admin/sekolah',           'Admin.menuSchools',      'building',  true,  'Admin.groupSettings'],
-        ['admin/staf',              'Admin.menuStaff',        'key',       true,  'Admin.groupSettings'],
-        ['admin/tata-kelola',       'Admin.menuGovernance',   'shield',    true,  'Admin.groupSettings'],
+        ['admin',                     'Admin.menuDashboard',    'grid',      ['dashboard.view'], null],
+        ['admin/peserta',             'Admin.menuParticipants', 'users',     ['participants.accounts', 'participants.research'], 'Admin.groupData'],
+        ['admin/peserta/reset-sandi', 'Admin.menuResetByCode',  'key',       ['participants.reset_by_code'], 'Admin.groupData'],
+        ['admin/sesi',                'Admin.menuSessions',     'clock',     ['research.browse'], 'Admin.groupData'],
+        ['admin/data',                'Admin.menuRawData',      'database',  ['research.browse'], 'Admin.groupData'],
+        ['admin/masukan',             'Admin.menuFeedback',     'message',   ['research.browse'], 'Admin.groupData'],
+        ['admin/ekspor',              'Admin.menuExport',       'download',  ['research.export'], 'Admin.groupData'],
+        ['admin/konten',              'Admin.menuContent',      'puzzle',    ['content.view'], 'Admin.groupContent'],
+        ['admin/konten/impor-bank',   'Admin.menuBankImport',   'upload',    ['content.edit'], 'Admin.groupContent'],
+        ['admin/konten/narasi',       'Admin.menuNarration',    'sound',     ['content.view'], 'Admin.groupContent'],
+        ['admin/media',               'Admin.menuMedia',        'image',     ['content.view'], 'Admin.groupContent'],
+        ['admin/media/kelengkapan',   'Admin.menuChecklist',    'clipboard', ['content.view'], 'Admin.groupContent'],
+        ['admin/studi',               'Admin.menuStudy',        'flask',     ['studies.view'], 'Admin.groupSettings'],
+        ['admin/studi/rilis',         'Admin.menuReleases',     'tag',       ['releases.manage'], 'Admin.groupSettings'],
+        ['admin/sekolah',             'Admin.menuSchools',      'building',  ['schools.manage'], 'Admin.groupSettings'],
+        ['admin/staf',                'Admin.menuStaff',        'key',       ['staff.manage'], 'Admin.groupSettings'],
+        ['admin/tata-kelola',         'Admin.menuGovernance',   'shield',    ['deletion.execute', 'audit.view', 'retention.run'], 'Admin.groupSettings'],
     ];
 
     /**
      * Menu yang berhak dilihat, dikelompokkan berurutan.
      *
+     * @param callable(string): bool $can capability check of the signed-in staff member
+     *
      * @return list<array{href: string, label: string, icon: string, group: string|null, active: bool}>
      */
-    public static function items(bool $isAdmin, string $path): array
+    public static function items(callable $can, string $path): array
     {
         $active = self::activeHref($path);
         $out    = [];
 
-        foreach (self::ITEMS as [$href, $label, $icon, $adminOnly, $group]) {
-            if ($adminOnly && ! $isAdmin) {
+        foreach (self::ITEMS as [$href, $label, $icon, $capabilities, $group]) {
+            if (array_filter($capabilities, $can) === []) {
                 continue;
             }
 

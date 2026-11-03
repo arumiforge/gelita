@@ -14,9 +14,13 @@ use CodeIgniter\HTTP\ResponseInterface;
 /**
  * Siswa (Dok 3 §8.3): daftar ber-filter, detail bertab, dan reset sandi.
  *
- * Guru hanya melihat dan mereset siswa di sekolahnya; siswa di luar
- * cakupan dibalas 404, bukan 403, agar keberadaannya tidak terkonfirmasi.
- * Kolom identitas (nama, nama pengguna) tidak pernah diambil untuk guru.
+ * One route, two views (revision 10, part 1, 27 §9):
+ * - `participants.accounts` (admin): the account card (code, name,
+ *   username, school, status) and reset by id; no research data, no CSV
+ *   (27 K17);
+ * - `participants.research` (peneliti, ketua): code, school code, covariates
+ *   and the research tabs; names, usernames and school names are never
+ *   selected; reset by participant code (§10).
  *
  * Siswa dikirim ke view sebagai array aman (Participant::toSafeArray() +
  * kolom tampilan), tidak pernah sebagai entity — entity ikut membawa
@@ -42,13 +46,14 @@ class ParticipantController extends BaseAdminController
     public function index(): string|ResponseInterface
     {
         $filters = $this->readFilters();
-        $columns = AdminTable::visibleColumns(self::listColumns(), $this->isAdmin());
+        $columns = AdminTable::visibleColumns(self::listColumns($this->seesIdentity()), $this->seesIdentity());
         $builder = $this->listBuilder($filters);
 
-        if ($this->wantsCsv()) {
+        // The list CSV is coded and for researchers only; the admin has none (27 K17)
+        if ($this->wantsCsv() && $this->can('participants.research')) {
             $sort = AdminTable::validSort((string) $this->request->getGet('sort'), $this->sortable($columns)) ?? '-created_at';
 
-            return $this->tableCsv('siswa', $builder, $columns, $sort, 'p.id', $this->scopedFilters($filters));
+            return $this->tableCsv('siswa', $builder, $columns, $sort, 'p.id', $filters);
         }
 
         $params = AdminTable::params($this->request, $this->sortable($columns), '-created_at');
@@ -56,7 +61,7 @@ class ParticipantController extends BaseAdminController
         return $this->panel('admin/participants/index', lang('Admin.menuParticipants'), [
             'filters' => $filters,
             'table'   => AdminTable::page($builder, $columns, $params['page'], $params['per_page'], $params['sort'], 'p.id'),
-            'isAdmin' => $this->isAdmin(),
+            'identity' => $this->seesIdentity(),
         ]);
     }
 
@@ -69,9 +74,17 @@ class ParticipantController extends BaseAdminController
             'participant' => $this->viewRow($participant),
             'tab'         => $tab,
             'tabs'        => self::TABS,
-            'isAdmin'     => $this->isAdmin(),
+            'identity'    => $this->seesIdentity(),
+            'research'    => $this->can('participants.research'),
             'breadcrumb'  => [$participant->participant_code => null],
         ];
+
+        // The admin sees the account card only: no research tabs (27 §9)
+        if (! $this->can('participants.research')) {
+            $tab          = 'profil';
+            $data['tab']  = $tab;
+            $data['tabs'] = ['profil' => self::TABS['profil']];
+        }
 
         if (in_array($tab, self::RAW_TABS, true)) {
             $raw = $this->participantRaw($participantId, $tab);
@@ -122,17 +135,64 @@ class ParticipantController extends BaseAdminController
     }
 
     /**
-     * Kolom daftar siswa (§8.3). `identity` = hanya admin.
+     * Temporary password by participant code (27 §10), for `peneliti` and
+     * `ketua`. Shows the code and the temporary password only, never a name
+     * or username, with no-store caching. Codes are stored in capitals, so
+     * the typed code is upper-cased and trimmed before matching; the form does not check the code pattern,
+     * so it keeps working with the research codes of part 2.
+     */
+    public function resetByCodeForm(): string
+    {
+        return $this->panel('admin/participants/reset-by-code', lang('Admin.menuResetByCode'), [
+            'code' => '',
+        ]);
+    }
+
+    public function resetByCode(): string|RedirectResponse
+    {
+        $code = strtoupper(trim((string) $this->request->getPost('participant_code')));
+
+        if ((string) $this->request->getPost('confirm') !== 'RESET') {
+            return $this->back('admin/peserta/reset-sandi', 'Ketik RESET (huruf besar) di kotak konfirmasi untuk membuat kata sandi sementara.');
+        }
+
+        $participant = $code === '' ? null : model(ParticipantModel::class)
+            ->where('participant_code', $code)
+            ->where('deleted_at', null)
+            ->first();
+
+        if ($participant === null) {
+            return $this->back('admin/peserta/reset-sandi', lang('Admin.resetCodeNotFound'));
+        }
+
+        $temporary = service('sessionService')->resetPasswordByStaff((int) $participant->id, $this->staffId(), 'kode');
+
+        $this->response->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+        $this->response->setHeader('Pragma', 'no-cache');
+
+        return $this->panel('admin/participants/reset-result', 'Kata sandi sementara', [
+            'participant'       => ['participant_code' => $participant->participant_code],
+            'temporaryPassword' => $temporary,
+            'doneUrl'           => 'admin/peserta/reset-sandi',
+            'breadcrumb'        => [lang('Admin.menuResetByCode') => 'admin/peserta/reset-sandi', 'Sandi sementara' => null],
+        ]);
+    }
+
+    /**
+     * Kolom daftar siswa (§8.3). `identity` = admin only. Researchers see the
+     * school as its code, the admin by name (27 K5).
      *
      * @return list<array<string, mixed>>
      */
-    public static function listColumns(): array
+    public static function listColumns(bool $identity = true): array
     {
         return [
             ['key' => 'participant_code', 'label' => 'Kode', 'type' => 'code', 'sort' => 'p.participant_code'],
             ['key' => 'display_name', 'label' => 'Nama', 'type' => 'text', 'sort' => 'p.display_name', 'identity' => true],
             ['key' => 'username', 'label' => 'Nama pengguna', 'type' => 'code', 'sort' => 'p.username', 'identity' => true],
-            ['key' => 'school_name', 'label' => 'Sekolah', 'type' => 'text', 'sort' => 'school_name'],
+            $identity
+                ? ['key' => 'school_name', 'label' => 'Sekolah', 'type' => 'text', 'sort' => 'school_name']
+                : ['key' => 'school_ref', 'label' => 'Kode sekolah', 'type' => 'school_ref', 'sort' => 'school_ref'],
             ['key' => 'district_name', 'label' => 'Kab/Kota', 'type' => 'text', 'sort' => 'district_name'],
             ['key' => 'gender', 'label' => 'JK', 'type' => 'label:gender', 'sort' => 'p.gender'],
             ['key' => 'age', 'label' => 'Umur (tahun)', 'type' => 'int', 'sort' => 'p.age'],
@@ -155,13 +215,12 @@ class ParticipantController extends BaseAdminController
     private function listBuilder(array $filters): BaseBuilder
     {
         $db     = db_connect();
-        $scope  = $this->schoolScope();
         $latest = $db->table('game_sessions')->select('MAX(id)', false)->where('participant_id = p.id', null, false)->getCompiledSelect();
         $total  = max(1, count($this->nodeRefs()));
 
         $builder = $db->table('participants p')
-            ->select('p.id, p.participant_code, p.gender, p.age, p.created_at, p.assented_at', false)
-            ->select('COALESCE(s.name, p.school_name_snapshot) AS school_name, p.district_name_snapshot AS district_name', false)
+            ->select('p.id, p.participant_code, p.school_id, p.gender, p.age, p.created_at, p.assented_at', false)
+            ->select('p.district_name_snapshot AS district_name', false)
             ->select('COALESCE(sp.completed_nodes, 0) AS completed_nodes, sp.total_stars, l.name_id AS last_level, gs.last_active_at', false)
             ->join('schools s', 's.id = p.school_id', 'left')
             ->join($db->prefixTable('game_sessions') . ' gs', "gs.id = ({$latest})", 'left', false)
@@ -169,13 +228,15 @@ class ParticipantController extends BaseAdminController
             ->join('levels l', 'l.id = sp.current_level_id', 'left')
             ->where('p.deleted_at', null);
 
-        if ($this->isAdmin()) {
-            $builder->select('p.display_name, p.username');
+        if ($this->seesIdentity()) {
+            $builder->select('p.display_name, p.username')
+                ->select('COALESCE(s.name, p.school_name_snapshot) AS school_name', false);
+        } else {
+            // The id under the code's name; AdminTable shows it as `SCH-000123`
+            $builder->select('p.school_id AS school_ref', false);
         }
 
-        if ($scope !== null) {
-            $builder->where('p.school_id', $scope);
-        } elseif (isset($filters['school_id'])) {
+        if (isset($filters['school_id'])) {
             $builder->where('p.school_id', (int) $filters['school_id']);
         }
 
@@ -205,9 +266,9 @@ class ParticipantController extends BaseAdminController
         if ($search !== '') {
             $builder->groupStart()->like('p.participant_code', $search);
 
-            // Identity columns are admin-only; matching them for a teacher
-            // would confirm a username the teacher is not allowed to see.
-            if ($this->isAdmin()) {
+            // Identity columns are admin-only; matching them for a researcher
+            // would confirm a username the researcher is not allowed to see.
+            if ($this->seesIdentity()) {
                 $builder->orLike('p.username', $search)->orLike('p.display_name', $search);
             }
 
@@ -238,7 +299,7 @@ class ParticipantController extends BaseAdminController
         }
 
         $dimension = ['pengerjaan' => 'pengerjaan', 'jawaban' => 'jawaban', 'navigasi' => 'navigasi', 'bantuan' => 'bantuan'][$tab];
-        $filters   = $this->scopedFilters(['participant_id' => $participantId]);
+        $filters   = ['participant_id' => $participantId];
 
         if ($this->wantsCsv()) {
             return $this->rawCsv($dimension, $filters);
@@ -262,13 +323,12 @@ class ParticipantController extends BaseAdminController
         return ['table' => $table, 'tries' => $tries, 'readableAnswers' => $this->readableAnswers()];
     }
 
-    /** Siswa dalam cakupan pemanggil, atau 404. */
+    /** Siswa yang masih ada, atau 404. */
     private function requireInScope(int $participantId): Participant
     {
         $participant = model(ParticipantModel::class)->find($participantId);
-        $scope       = $this->schoolScope();
 
-        if ($participant === null || $participant->deleted_at !== null || ($scope !== null && (int) $participant->school_id !== $scope)) {
+        if ($participant === null || $participant->deleted_at !== null) {
             throw PageNotFoundException::forPageNotFound("Siswa {$participantId} tidak ditemukan.");
         }
 
@@ -278,7 +338,8 @@ class ParticipantController extends BaseAdminController
     /**
      * Bentuk tampilan panel: toSafeArray() + snapshot wilayah, metrik literasi
      * keamanan digital, dan waktu penting. Tanpa password_hash & kolom
-     * throttle; tanpa nama & nama pengguna untuk guru.
+     * throttle; without name, username and school name for researchers,
+     * who get the school code instead.
      *
      * @return array<string, mixed>
      */
@@ -298,15 +359,17 @@ class ParticipantController extends BaseAdminController
             'created_at'               => $participant->created_at,
         ];
 
-        if (! $this->isAdmin()) {
-            unset($row['username'], $row['display_name']);
+        if (! $this->seesIdentity()) {
+            unset($row['username'], $row['display_name'], $row['school_name']);
+            $row['school_ref'] = \App\Services\RawDataService::schoolRef($participant->school_id);
         }
 
         return $row;
     }
 
     /**
-     * Sesi siswa beserta progres, terbaru dulu.
+     * Sesi siswa beserta progres, terbaru dulu. Without OS and browser names:
+     * those are technical logs for the admin (27 §9, part 3).
      *
      * @return array<string, mixed> bentuk tabel data-table
      */
@@ -314,7 +377,7 @@ class ParticipantController extends BaseAdminController
     {
         $rows = db_connect()->table('game_sessions gs')
             ->select('gs.id, gs.session_code, gs.status, gs.locale, gs.started_at, gs.last_active_at, gs.ended_at, gs.duration_ms', false)
-            ->select('gs.device_type, gs.os_name, gs.browser_name, gs.screen_size, sp.completed_nodes, sp.total_stars', false)
+            ->select('gs.device_type, gs.screen_size, sp.completed_nodes, sp.total_stars', false)
             ->join('session_progress sp', 'sp.session_id = gs.id', 'left')
             ->where('gs.participant_id', $participantId)
             ->orderBy('gs.started_at', 'DESC')
@@ -329,8 +392,6 @@ class ParticipantController extends BaseAdminController
             ['key' => 'last_active_at', 'label' => 'Aktif terakhir', 'type' => 'datetime'],
             ['key' => 'duration_ms', 'label' => 'Durasi (m:dd)', 'type' => 'ms'],
             ['key' => 'device_type', 'label' => 'Perangkat', 'type' => 'label:device'],
-            ['key' => 'os_name', 'label' => 'Sistem operasi', 'type' => 'text'],
-            ['key' => 'browser_name', 'label' => 'Peramban', 'type' => 'text'],
             ['key' => 'screen_size', 'label' => 'Layar', 'type' => 'code'],
             ['key' => 'completed_nodes', 'label' => 'Tantangan selesai', 'type' => 'int'],
             ['key' => 'total_stars', 'label' => 'Bintang', 'type' => 'int'],

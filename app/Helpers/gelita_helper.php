@@ -559,3 +559,14 @@ if (! function_exists('db_sync_timezone')) {
         }
     }
 }
+
+if (! function_exists('staff_can')) {
+    /**
+     * Whether the signed-in staff member holds $capability (27 §5.2). Views
+     * use this to hide buttons and forms; routes are guarded by `staffCan`.
+     */
+    function staff_can(string $capability): bool
+    {
+        return \App\Libraries\StaffAccess::allows(session('staff_role'), $capability);
+    }
+}

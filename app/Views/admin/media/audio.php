@@ -37,13 +37,16 @@ $pending        = count(array_filter($rows, static fn (array $row): bool => $row
 <section class="panel">
   <h2 class="panel-title"><?= icon('message') ?> Rekaman narasi cerita</h2>
   <p>Rekaman untuk semua baris cerita diunggah sekaligus di halaman <a href="<?= base_url('admin/konten/narasi/unggah') ?>">Unggah rekaman narasi</a> dan dipantau di halaman <a href="<?= base_url('admin/konten/narasi') ?>">Rekaman narasi</a>. Tombol di bawah hanya menyetujui rekaman narasi cerita, bukan rekaman lain di daftar ini.</p>
+  <?php if (staff_can('content.edit')): ?>
   <div class="btn-row">
     <?php foreach ($locales as $code): ?>
       <?= component('admin/narration/approve-all', ['locale' => $code, 'count' => $drafts[$code] ?? 0, 'back' => 'audio']) ?>
     <?php endforeach ?>
   </div>
+  <?php endif ?>
 </section>
 
+<?php if (staff_can('content.edit')): ?>
 <details class="panel" <?= $rows === [] ? 'open' : '' ?>>
   <summary class="panel-title"><?= icon('upload') ?> Unggah satu rekaman baru</summary>
   <form method="post" action="<?= base_url('admin/media/audio/unggah') ?>" class="stack" enctype="multipart/form-data">
@@ -103,6 +106,7 @@ $pending        = count(array_filter($rows, static fn (array $row): bool => $row
     </div>
   </form>
 </details>
+<?php endif ?>
 
 <section class="panel">
   <h2 class="panel-title"><?= icon('sound') ?> Daftar rekaman</h2>
@@ -143,6 +147,10 @@ $pending        = count(array_filter($rows, static fn (array $row): bool => $row
           'actions' => ['label' => '', 'render' => static function (array $row): string {
               if ($row['approval_status'] === 'approved') {
                   return '<span class="cell-sub">disetujui ' . esc(fmt_date($row['approved_at'], false, 'id')) . '</span>';
+              }
+
+              if (! staff_can('content.edit')) {
+                  return '<span class="cell-sub">menunggu persetujuan</span>';
               }
 
               return '<form method="post" action="' . esc(base_url('admin/media/audio/' . $row['id'] . '/setujui'), 'attr') . '" class="inline-form">'

@@ -26,6 +26,7 @@ $rows[] = null;
 
 <?= component('components/media-datalist', ['types' => ['image']]) ?>
 <form method="post" action="<?= base_url('admin/konten/bacaan/' . $level->id) ?>" class="stack" enctype="multipart/form-data">
+<?= staff_can('content.edit') ? '' : '<fieldset class="form-readonly" disabled>' ?>
   <?= csrf_field() ?>
 
   <?php foreach ($rows as $index => $passage): ?>
@@ -114,5 +115,6 @@ $rows[] = null;
   <div class="form-actions">
     <button class="btn btn-primary" type="submit"><?= icon('check') ?> Simpan teks bacaan</button>
   </div>
+<?= staff_can('content.edit') ? '' : '</fieldset>' ?>
 </form>
 <?= $this->endSection() ?>

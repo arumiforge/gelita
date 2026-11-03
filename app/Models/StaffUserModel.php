@@ -14,12 +14,12 @@ class StaffUserModel extends Model
     protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $allowedFields = [
-        'username', 'email', 'password_hash', 'must_change_password', 'role', 'display_name', 'school_id',
+        'username', 'email', 'password_hash', 'must_change_password', 'role', 'display_name',
         'is_active', 'failed_login_count', 'locked_until', 'last_login_at',
     ];
     protected $validationRules = [
         'username'     => ['label' => 'Nama pengguna', 'rules' => 'required|alpha_dash|min_length[3]|max_length[100]|is_unique[staff_users.username,id,{id}]'],
-        'role'         => ['label' => 'Peran', 'rules' => 'required|in_list[admin,guru]'],
+        'role'         => ['label' => 'Peran', 'rules' => 'required|in_list[admin,peneliti,ketua]'],
         'display_name' => ['label' => 'Nama yang ditampilkan', 'rules' => 'required|max_length[150]'],
     ];
 

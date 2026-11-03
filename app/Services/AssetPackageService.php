@@ -169,7 +169,7 @@ class AssetPackageService
             $asked   = $request instanceof IncomingRequest ? $request->getGet('paket') : null;
 
             // Only look at the session when the URL asks or a session already runs
-            if ((is_string($asked) || session_status() === PHP_SESSION_ACTIVE || isset($_SESSION)) && $this->isStaff()) {
+            if ((is_string($asked) || session_status() === PHP_SESSION_ACTIVE || isset($_SESSION)) && $this->canPreview()) {
                 $session = session();
 
                 if (is_string($asked)) {
@@ -195,8 +195,11 @@ class AssetPackageService
         return $code;
     }
 
-    /** A logged-in, active staff account (guru or admin) in this session. */
-    private function isStaff(): bool
+    /**
+     * A logged-in, active staff account allowed to preview packages
+     * (`releases.manage`, admin only since revision 10 part 1, 27 K13).
+     */
+    private function canPreview(): bool
     {
         if ((int) session('staff_id') <= 0) {
             return false;
@@ -204,7 +207,8 @@ class AssetPackageService
 
         $staff = service('staffContext');
 
-        return $staff !== null && (int) $staff->is_active === 1;
+        return $staff !== null && (int) $staff->is_active === 1
+            && \App\Libraries\StaffAccess::allows((string) $staff->role, 'releases.manage');
     }
 
     /**

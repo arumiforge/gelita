@@ -64,6 +64,7 @@ $itemFormData = [
 
 <?= component('components/media-datalist', ['types' => ['image']]) ?>
 <form method="post" action="<?= base_url('admin/konten/node/' . $node->id) ?>" class="form-section" enctype="multipart/form-data">
+<?= staff_can('content.edit') ? '' : '<fieldset class="form-readonly" disabled>' ?>
   <?= csrf_field() ?>
   <div class="stack" id="tab-info" data-tab-panel="info">
   <h2>Info tantangan</h2>
@@ -213,6 +214,7 @@ $itemFormData = [
   <div class="form-actions" data-tab-panel="info variasi">
     <button class="btn btn-primary" type="submit"><?= icon('check') ?> Simpan tantangan</button>
   </div>
+<?= staff_can('content.edit') ? '' : '</fieldset>' ?>
 </form>
 
 <div data-tab-panel="variasi">
@@ -274,6 +276,7 @@ $itemFormData = [
         <div class="item-card-body">
           <?= component('admin/content/items', ['item' => $item] + $itemFormData) ?>
 
+          <?php if (staff_can('content.edit')): ?>
           <details class="confirm">
             <summary class="btn btn-quiet btn-sm"><?= icon('trash') ?> Hapus soal</summary>
             <div class="confirm-box">
@@ -285,16 +288,19 @@ $itemFormData = [
               </form>
             </div>
           </details>
+          <?php endif ?>
         </div>
       </details>
     <?php endforeach ?>
   </div>
 
+  <?php if (staff_can('content.edit')): ?>
   <details class="item-card" <?= $items === [] ? 'open' : '' ?>>
     <summary><?= icon('check') ?> <b>Tambah soal</b> <span class="item-meta muted">soal baru berstatus draf</span></summary>
     <div class="item-card-body">
       <?= component('admin/content/items', ['item' => null] + $itemFormData) ?>
     </div>
   </details>
+  <?php endif ?>
 </section>
 <?= $this->endSection() ?>

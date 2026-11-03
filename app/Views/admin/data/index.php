@@ -13,7 +13,6 @@
  * @var array<string, string>     $tabs
  * @var array<string, mixed>|null $table   RawDataService::page(); null = layanan belum terpasang
  * @var array<string, mixed>      $filters
- * @var bool                      $isAdmin
  * @var bool                      $readable  answer columns as sentences
  */
 $labeler = class_exists(App\Libraries\ExportLabels::class) && method_exists(App\Libraries\ExportLabels::class, 'label')
@@ -36,7 +35,7 @@ foreach ($table['columns'] ?? [] as $column) {
 <?= component('partials/admin-head', [
     'title' => 'Data mentah',
     'lead'  => 'Satu baris = satu rekaman apa adanya, tanpa skor atau olahan. Waktu dalam milidetik ada di tab Pengerjaan, Jawaban & ketepatan, dan Riwayat percobaan.'
-        . ($isAdmin ? '' : ' Akun guru melihat siswa sekolahnya saja, tanpa identitas.'),
+        . ' Siswa dan sekolah tampil sebagai kode, tanpa nama.',
     'actions' => '<a class="btn" href="' . base_url('admin/ekspor') . '">' . icon('download') . ' Unduh semua lembar</a>',
 ]) ?>
 <?= $this->include('partials/flash') ?>

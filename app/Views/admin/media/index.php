@@ -84,12 +84,16 @@ $labels = ['asli' => 'Asli', 'mockup' => 'Gambar contoh', 'kosong' => 'Kosong'];
 
 <?= $this->section('content') ?>
 <?php ob_start() ?>
+<?php if (staff_can('content.edit')): ?>
 <form method="post" action="<?= base_url('admin/media/pindai') ?>" class="inline-form">
   <?= csrf_field() ?>
   <button class="btn" type="submit"><?= icon('search') ?> Cek berkas hilang/rusak</button>
 </form>
+<?php endif ?>
 <a class="btn" href="<?= base_url('admin/media/audio') ?>"><?= icon('sound') ?> Rekaman suara</a>
+<?php if (staff_can('content.edit')): ?>
 <a class="btn btn-primary" href="#unggah"><?= icon('upload') ?> Unggah dengan kode baru</a>
+<?php endif ?>
 <?php $actions = ob_get_clean() ?>
 <?= component('partials/admin-head', [
     'title'   => 'Gambar & mockup',
@@ -273,6 +277,11 @@ $labels = ['asli' => 'Asli', 'mockup' => 'Gambar contoh', 'kosong' => 'Kosong'];
                 . icon('upload') . ' Unggah gambar asli</button>'
                 . '<a class="btn btn-sm no-js-only" href="' . esc(base_url('admin/media?asset_key=' . rawurlencode($key)) . '#unggah', 'attr') . '">' . icon('upload') . ' Unggah</a>';
 
+            // Read-only roles (content.view without content.edit) get the detail link only
+            if (! staff_can('content.edit')) {
+                return '<span class="actions-cell">' . $detail . '</span>';
+            }
+
             if (! $row['is_active']) {
                 return '<span class="actions-cell">' . $upload . '</span>';
             }
@@ -286,6 +295,7 @@ $labels = ['asli' => 'Asli', 'mockup' => 'Gambar contoh', 'kosong' => 'Kosong'];
 ]) ?>
 
 <div class="split-grid" id="unggah">
+  <?php if (staff_can('content.edit')): ?>
   <form method="post" action="<?= base_url('admin/media/unggah') ?>" class="upload-box" enctype="multipart/form-data">
     <?= csrf_field() ?>
     <h2 class="panel-title"><?= icon('upload') ?> Unggah gambar atau video</h2>
@@ -308,6 +318,7 @@ $labels = ['asli' => 'Asli', 'mockup' => 'Gambar contoh', 'kosong' => 'Kosong'];
       <button class="btn btn-primary" type="submit"><?= icon('upload') ?> Unggah</button>
     </div>
   </form>
+  <?php endif ?>
 
   <section class="panel">
     <h2 class="panel-title"><?= icon('grid') ?> Ukuran gambar per slot</h2>

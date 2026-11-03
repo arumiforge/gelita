@@ -2,16 +2,22 @@
 
 namespace App\Filters;
 
+use App\Libraries\StaffAccess;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
 /**
- * Pemakaian: ['filter' => 'staffRole:admin'] atau 'staffRole:admin,guru'.
- * HTML tanpa hak → 404 (struktur panel tidak terpetakan); API → 403 FORBIDDEN.
+ * Route guard by capability (revision 10, part 1, 27 §5.3).
+ *
+ * Usage: ['filter' => 'staffCan:research.export'] or
+ * 'staffCan:participants.accounts,participants.research' (any one is enough).
+ * Runs after `staffAuth`, which keeps `staff_role` in sync with the database.
+ * A page without the right → 404 (the panel's structure stays unmapped);
+ * an API path → 403 FORBIDDEN.
  */
-class StaffRoleFilter implements FilterInterface
+class StaffCanFilter implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
@@ -21,7 +27,7 @@ class StaffRoleFilter implements FilterInterface
             return redirect()->to(site_url('admin/login'));
         }
 
-        if ($arguments && ! in_array($role, (array) $arguments, true)) {
+        if (! StaffAccess::allowsAny((string) $role, (array) $arguments)) {
             if (is_api_path($request->getPath())) {
                 return api_error('FORBIDDEN', 'Anda tidak memiliki akses ke bagian ini.', 403);
             }

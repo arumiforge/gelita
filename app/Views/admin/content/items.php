@@ -46,6 +46,7 @@ $guides = [
 <form method="post" action="<?= esc($action, 'attr') ?>" class="form item-form" enctype="multipart/form-data"
       data-verdicts="<?= esc(json_encode($node->verdictOptions()), 'attr') ?>"
       <?= $puzzle !== null ? 'data-puzzle-grid="' . $puzzle['grid'] . '" data-puzzle-shape="' . esc($puzzle['shape'], 'attr') . '"' : '' ?>
+<?= staff_can('content.edit') ? '' : '<fieldset class="form-readonly" disabled>' ?>
       <?= $node->scene_media_id && media_exists($node->scene_media_id) ? 'data-scene="' . esc(media_src($node->scene_media_id), 'attr') . '"' : '' ?>>
   <?= csrf_field() ?>
 
@@ -209,4 +210,5 @@ $guides = [
   <div class="form-actions">
     <button class="btn btn-primary btn-sm" type="submit"><?= icon($isNew ? 'check' : 'edit') ?> <?= $isNew ? 'Tambah soal' : 'Simpan soal' ?></button>
   </div>
+<?= staff_can('content.edit') ? '' : '</fieldset>' ?>
 </form>

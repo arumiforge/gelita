@@ -20,10 +20,10 @@ use CodeIgniter\Database\BaseConnection;
  * dibangun ExportService dari ExportLabels, bukan dari query.
  *
  * Cakupan (`StaffScope`, lapis ketiga otorisasi) diterapkan di sini:
- * - guru: `participants.school_id` sekolahnya dipaksakan di setiap query,
- *   kolom identitas tidak pernah dibaca, tanpa dimensi `event`, tanpa
- *   kolom `answer_key`;
- * - admin anonim: kolom identitas tidak dibuat; `school_ref` tetap.
+ * - anonymous (`peneliti`, `ketua`): identity columns are never read;
+ *   `school_ref` stays;
+ * - without full detail: no `event` dimension and no `answer_key` column.
+ * There is no school scope since revision 10 part 1 (27 §5.5).
  * `password_hash`, `failed_login_count`, `locked_until`, dan `ip_hash`
  * tidak pernah dibaca.
  *
@@ -459,7 +459,7 @@ class RawDataService
             $columns = array_diff($columns, self::IDENTITY_COLUMNS);
         }
 
-        if (! $scope->isAdmin) {
+        if (! $scope->fullDetail) {
             $columns = array_diff($columns, self::ADMIN_ONLY_COLUMNS);
         }
 
@@ -490,7 +490,7 @@ class RawDataService
     /** Dimensi yang boleh dibaca $scope, urutan resmi. @return list<string> */
     public function dimensions(StaffScope $scope): array
     {
-        return $scope->isAdmin ? self::DIMENSIONS : array_values(array_diff(self::DIMENSIONS, self::ADMIN_ONLY_DIMENSIONS));
+        return $scope->fullDetail ? self::DIMENSIONS : array_values(array_diff(self::DIMENSIONS, self::ADMIN_ONLY_DIMENSIONS));
     }
 
     public function allows(string $dimension, StaffScope $scope): bool
@@ -866,10 +866,6 @@ class RawDataService
     /** Cakupan sekolah + filter milik siswa + rentang tanggal pada $dateColumn. */
     private function applyParticipantFilters(BaseBuilder $builder, array $filters, StaffScope $scope, string $dateColumn): void
     {
-        if (! $scope->isAdmin) {
-            $builder->where('participants.school_id', (int) $scope->schoolId);
-        }
-
         $map = [
             'participant_id'   => 'participants.id',
             'participant_code' => 'participants.participant_code',

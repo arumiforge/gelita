@@ -158,13 +158,27 @@ class Gelita extends BaseConfig
      */
 
     /** Nama pengguna siswa yang tidak boleh dipakai */
-    public array $reservedUsernames = ['admin', 'guru', 'gelita', 'root', 'system', 'test'];
+    public array $reservedUsernames = ['admin', 'guru', 'peneliti', 'ketua', 'gelita', 'root', 'system', 'test'];
 
     /** Throttle login */
     public array $loginThrottle = [
         'participant' => ['max_fail' => 8, 'lock_minutes' => 5],   // anak sering salah ketik
         'staff'       => ['max_fail' => 5, 'lock_minutes' => 15],
     ];
+
+    /**
+     * A staff session ends after this many seconds without a page request
+     * (revision 10, part 1, 27 §11.1). Student sessions are not affected.
+     */
+    public int $staffIdleSeconds = 7200;
+
+    /**
+     * Lets migration 2026-01-01-003400 delete existing `guru` accounts and
+     * their exports (27 K16). Off by default: the migration stops while such
+     * accounts exist. Set `gelita.allowTeacherRemoval = true` in .env only
+     * when the owner has decided to run it, and remove it afterwards.
+     */
+    public bool $allowTeacherRemoval = false;
 
     /**
      * Character animation per pose: up to `frames` images

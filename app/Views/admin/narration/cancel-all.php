@@ -8,6 +8,10 @@
  * @var string $locale
  * @var int    $count  recordings of this language that would be cancelled
  */
+// Writes are for content.edit (admin) only; researchers see nothing here (27 K7)
+if (! staff_can('content.edit')) {
+    return;
+}
 $language = 'bahasa ' . admin_label('locale', $locale);
 ?>
 <?php if ($count > 0): ?>

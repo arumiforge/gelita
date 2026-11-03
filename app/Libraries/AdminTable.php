@@ -2,6 +2,7 @@
 
 namespace App\Libraries;
 
+use App\Services\RawDataService;
 use CodeIgniter\Database\BaseBuilder;
 use CodeIgniter\HTTP\IncomingRequest;
 
@@ -33,17 +34,18 @@ final class AdminTable
     public const PER_PAGE = [25, 50, 100];
 
     /**
-     * Kolom yang boleh dilihat pemanggil: kolom identitas dibuang untuk guru.
+     * Kolom yang boleh dilihat pemanggil: identity columns are dropped for
+     * callers who may not see identities (`participants.accounts`).
      *
      * @param list<array<string, mixed>> $columns
      *
      * @return list<array<string, mixed>>
      */
-    public static function visibleColumns(array $columns, bool $isAdmin): array
+    public static function visibleColumns(array $columns, bool $identity): array
     {
         return array_values(array_filter(
             $columns,
-            static fn (array $column): bool => $isAdmin || empty($column['identity']),
+            static fn (array $column): bool => $identity || empty($column['identity']),
         ));
     }
 
@@ -117,7 +119,8 @@ final class AdminTable
      */
     public static function streamCsv(BaseBuilder $builder, array $columns, $handle, ?string $sort, string $tieBreaker): int
     {
-        $keys = array_column($columns, 'key');
+        $keys  = array_column($columns, 'key');
+        $types = array_column($columns, 'type', 'key');
 
         fwrite($handle, "\xEF\xBB\xBF");
         fputcsv($handle, $keys, ',', '"', '');
@@ -129,7 +132,9 @@ final class AdminTable
 
         // Akhir hasil: MySQLi memberi null, SQLite3 memberi false
         while (is_array($row = $query->getUnbufferedRow('array'))) {
-            fputcsv($handle, array_map(static fn (string $key) => self::csvValue($row[$key] ?? null), $keys), ',', '"', '');
+            fputcsv($handle, array_map(static fn (string $key) => self::csvValue(
+                ($types[$key] ?? '') === 'school_ref' ? RawDataService::schoolRef($row[$key] ?? null) : ($row[$key] ?? null),
+            ), $keys), ',', '"', '');
             $count++;
         }
 
@@ -213,6 +218,10 @@ final class AdminTable
             case 'code':
                 return esc((string) $value);
 
+            case 'school_ref':
+                // A school id shown as its code (`SCH-000123`), never its name (27 K5)
+                return esc((string) RawDataService::schoolRef($value));
+
             case 'status':
                 $code = (string) $value;
 
@@ -254,7 +263,7 @@ final class AdminTable
     {
         return match ($type) {
             'int', 'num', 'ms' => 'is-num',
-            'code'             => 'is-code',
+            'code', 'school_ref' => 'is-code',
             'datetime'         => 'is-time',
             default            => '',
         };

@@ -9,7 +9,7 @@ use App\Models\StaffUserModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
- * Login dan logout staf (admin & guru).
+ * Login dan logout staf (admin, peneliti, ketua).
  *
  * Akun tidak ada, kata sandi salah, dan akun nonaktif dibalas dengan pesan
  * yang sama persis. Setiap percobaan — berhasil maupun gagal — masuk
@@ -64,10 +64,10 @@ class AuthController extends BaseController
         $session = session();
         $session->regenerate(true);
         $session->set([
-            'staff_id'        => $staff->id,
-            'staff_role'      => $staff->role,
-            'staff_school_id' => $staff->school_id,
-            'staff_name'      => $staff->display_name,
+            'staff_id'   => $staff->id,
+            'staff_role' => $staff->role,
+            'staff_name' => $staff->display_name,
+            StaffAuthFilter::LAST_SEEN_KEY => time(),
         ]);
 
         model(AuditLogModel::class)->record('login', [

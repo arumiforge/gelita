@@ -6,6 +6,7 @@ use App\Database\Seeds\ContentSeeder;
 use App\Libraries\ContentVerifier;
 use App\Libraries\MockupGenerator;
 use App\Libraries\NarrationImporter;
+use App\Libraries\StaffAccess;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use Config\Database;
@@ -32,7 +33,7 @@ use Config\Database;
 class SystemResetService
 {
     /** Migration terakhir yang wajib sudah dijalankan. */
-    public const REQUIRED_MIGRATION = '2026-01-01-003300';
+    public const REQUIRED_MIGRATION = '2026-01-01-003400';
 
     /** Kata yang wajib diketik bila tanpa --ya. */
     public const CONFIRM_WORD = 'RESET-KELAS5';
@@ -124,7 +125,7 @@ class SystemResetService
      * Rencana reset: jumlah baris per tabel, tanpa menulis apa pun.
      *
      * @return array{clear: array<string, int>, rebuild: array<string, int>, settings: array<string, int>,
-     *               unverified_schools: int, staff: array{admin: int, guru: int}, kept: array<string, int>,
+     *               unverified_schools: int, staff: array{admin: int, peneliti: int, ketua: int}, kept: array<string, int>,
      *               nodes_after: int}
      */
     public function plan(): array
@@ -157,7 +158,7 @@ class SystemResetService
 
         $staff = [];
 
-        foreach (['admin', 'guru'] as $role) {
+        foreach (StaffAccess::ROLES as $role) {
             $staff[$role] = $this->db->table('staff_users')->where('role', $role)->countAllResults();
         }
 
@@ -178,9 +179,9 @@ class SystemResetService
      * Menjalankan reset (langkah 4–11 Dok 1 §7.3). Pemeriksaan awal dan
      * konfirmasi menjadi tanggung jawab pemanggil (command).
      *
-     * @param array{hapus_guru?: bool, tanpa_bank?: bool, bank?: ?string, tanpa_mockup?: bool} $options
+     * @param array{tanpa_bank?: bool, bank?: ?string, tanpa_mockup?: bool} $options
      *
-     * @return array{cleared: array<string, int>, schools_removed: int, teachers_removed: int,
+     * @return array{cleared: array<string, int>, schools_removed: int,
      *               bank: array<string, mixed>, mockups: array<string, mixed>,
      *               findings: list<array{level: string, scope: string, message: string}>, errors: int,
      *               nodes: int, next_code: string, warnings: list<string>, seconds: float}
@@ -197,7 +198,7 @@ class SystemResetService
 
         // 5. Bersihkan sebagian kelompok D
         $schools  = $this->removeUnverifiedSchools();
-        $teachers = $this->resetStaff(! empty($options['hapus_guru']));
+        $this->resetStaff();
 
         // 6. Isi ulang bawaan
         $this->seedDefaults();
@@ -225,7 +226,6 @@ class SystemResetService
         return [
             'cleared'          => $counts,
             'schools_removed'  => $schools,
-            'teachers_removed' => $teachers,
             'bank'             => $bank,
             'mockups'          => $mockups,
             'findings'         => $findings,
@@ -285,30 +285,19 @@ class SystemResetService
             return 0;
         }
 
-        $this->db->table('staff_users')->whereIn('school_id', $ids)->update(['school_id' => null]);
-
         $this->db->table('schools')->whereIn('merged_into_id', $ids)->update(['merged_into_id' => null]);
         $this->db->table('schools')->whereIn('id', $ids)->delete();
 
         return count($ids);
     }
 
-    /** Akun staf tetap (kunci login dibuka); --hapus-guru menghapus semua akun guru. */
-    private function resetStaff(bool $removeTeachers): int
+    /** Every staff account stays (login locks are cleared). */
+    private function resetStaff(): void
     {
         $this->db->table('staff_users')->where('1 = 1', null, false)->update([
             'failed_login_count' => 0,
             'locked_until'       => null,
         ]);
-
-        if (! $removeTeachers) {
-            return 0;
-        }
-
-        $teachers = $this->db->table('staff_users')->where('role', 'guru')->countAllResults();
-        $this->db->table('staff_users')->where('role', 'guru')->delete();
-
-        return $teachers;
     }
 
     /** Nilai bawaan pengaturan + 12 tantangan (dialog & Pustaka tidak disentuh). */

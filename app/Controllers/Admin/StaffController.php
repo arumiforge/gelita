@@ -2,13 +2,15 @@
 
 namespace App\Controllers\Admin;
 
+use App\Libraries\StaffAccess;
 use App\Models\AuditLogModel;
-use App\Models\SchoolModel;
 use App\Models\StaffUserModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
- * Akun guru dan admin. Hanya role `admin`.
+ * Akun staf: `admin`, `peneliti`, `ketua` (StaffAccess::ROLES, revision 10
+ * part 1, 27 §11). Only `staff.manage` (admin). Accounts are deactivated,
+ * never deleted (27 K10).
  *
  * Kata sandi baru dan sandi sementara hasil reset tidak pernah masuk flash,
  * `old()`, maupun `audit_logs` — hanya ditampilkan sekali pada respons reset.
@@ -19,7 +21,6 @@ class StaffController extends BaseAdminController
     {
         return $this->panel('admin/staff/index', lang('Admin.menuStaff'), [
             'rows'      => $this->viewRows(),
-            'schools'   => model(SchoolModel::class)->inUseList(),
             'temporary' => null,
         ]);
     }
@@ -31,25 +32,17 @@ class StaffController extends BaseAdminController
         $rules = [
             'username'     => ['label' => 'Nama pengguna', 'rules' => 'required|alpha_dash|min_length[3]|max_length[100]|is_unique[staff_users.username]'],
             'display_name' => ['label' => 'Nama yang ditampilkan', 'rules' => 'required|max_length[150]'],
-            'role'         => ['label' => 'Peran', 'rules' => 'required|in_list[admin,guru]'],
+            'role'         => ['label' => 'Peran', 'rules' => 'required|in_list[' . implode(',', StaffAccess::ROLES) . ']'],
             'email'        => ['label' => 'Email', 'rules' => 'permit_empty|valid_email|max_length[150]'],
-            'password'     => ['label' => 'Kata sandi awal', 'rules' => 'required|min_length[12]|max_length[72]'],
+            // Same strong-password rule as students, plus the staff minimum of 12 (27 §11.1, K15)
+            'password'     => ['label' => 'Kata sandi awal', 'rules' => 'required|min_length[12]|max_length[72]|strong_password[username]', 'errors' => ['strong_password' => lang('Admin.staffPasswordWeak')]],
         ];
 
         if (! $this->validate($rules)) {
             return redirect()->to(site_url('admin/staf'))->with('errors', $this->validator->getErrors());
         }
 
-        $role                = (string) $this->request->getPost('role');
-        [$schoolId, $problem] = $this->postedSchool();
-
-        if ($role === 'guru' && $problem !== null) {
-            return $this->back('admin/staf', $problem);
-        }
-
-        if ($role === 'guru' && $schoolId === null) {
-            return $this->back('admin/staf', 'Akun guru harus punya sekolah. Pilih sekolahnya atau ketik NPSN-nya.');
-        }
+        $role = (string) $this->request->getPost('role');
 
         // sandi awal dipilih admin → pemilik wajib menggantinya saat pertama masuk
         $staffId = $staff->insert([
@@ -59,7 +52,6 @@ class StaffController extends BaseAdminController
             'must_change_password' => 1,
             'role'                 => $role,
             'display_name'         => (string) $this->request->getPost('display_name'),
-            'school_id'            => $role === 'admin' ? null : $schoolId,
             'is_active'            => 1,
         ], true);
 
@@ -82,7 +74,7 @@ class StaffController extends BaseAdminController
 
         $rules = [
             'display_name' => ['label' => 'Nama yang ditampilkan', 'rules' => 'required|max_length[150]'],
-            'role'         => ['label' => 'Peran', 'rules' => 'required|in_list[admin,guru]'],
+            'role'         => ['label' => 'Peran', 'rules' => 'required|in_list[' . implode(',', StaffAccess::ROLES) . ']'],
             'email'        => ['label' => 'Email', 'rules' => 'permit_empty|valid_email|max_length[150]'],
         ];
 
@@ -90,17 +82,8 @@ class StaffController extends BaseAdminController
             return redirect()->to(site_url('admin/staf'))->with('errors', $this->validator->getErrors());
         }
 
-        $role                = (string) $this->request->getPost('role');
-        [$schoolId, $problem] = $this->postedSchool();
-        $active              = $this->request->getPost('is_active') ? 1 : 0;
-
-        if ($role === 'guru' && $problem !== null) {
-            return $this->back('admin/staf', $problem);
-        }
-
-        if ($role === 'guru' && $schoolId === null) {
-            return $this->back('admin/staf', 'Akun guru harus punya sekolah. Pilih sekolahnya atau ketik NPSN-nya.');
-        }
+        $role   = (string) $this->request->getPost('role');
+        $active = $this->request->getPost('is_active') ? 1 : 0;
 
         // Sama seperti deactivate(): admin tidak boleh mengunci dirinya sendiri
         // keluar dari panel dengan menurunkan role atau menonaktifkan akunnya.
@@ -112,7 +95,6 @@ class StaffController extends BaseAdminController
             'display_name' => (string) $this->request->getPost('display_name'),
             'email'        => $this->nullIfBlank($this->request->getPost('email')),
             'role'         => $role,
-            'school_id'    => $role === 'admin' ? null : $schoolId,
             'is_active'    => $active,
         ]);
 
@@ -150,7 +132,6 @@ class StaffController extends BaseAdminController
 
         return $this->panel('admin/staff/index', lang('Admin.menuStaff'), [
             'rows'      => $this->viewRows(),
-            'schools'   => model(SchoolModel::class)->inUseList(),
             'temporary' => ['staff' => $target->toSafeArray(), 'password' => $temporary],
         ]);
     }
@@ -174,28 +155,6 @@ class StaffController extends BaseAdminController
     }
 
     // -------------------------------------------------------------- bantuan
-
-    /**
-     * Sekolah guru dari formulir: NPSN (daftar sekolah resmi) didahulukan,
-     * selain itu pilihan daftar sekolah yang sudah dipakai. Guru dan siswanya
-     * harus menunjuk baris `schools` yang sama agar cakupan data guru benar.
-     *
-     * @return array{0: ?int, 1: ?string} [school_id, pesan galat]
-     */
-    private function postedSchool(): array
-    {
-        $npsn = trim((string) $this->request->getPost('school_npsn'));
-
-        if ($npsn === '') {
-            return [$this->idOrNull($this->request->getPost('school_id')), null];
-        }
-
-        $school = service('schoolDirectory')->findByNpsn($npsn);
-
-        return $school === null
-            ? [null, "NPSN {$npsn} tidak ada di daftar sekolah resmi. Periksa lagi angkanya, atau cari sekolahnya di menu Sekolah."]
-            : [(int) $school['id'], null];
-    }
 
     /**
      * Baris tabel staf tanpa password_hash; status kunci login ikut dihitung.
@@ -226,13 +185,6 @@ class StaffController extends BaseAdminController
             'target_id'     => (string) $staffId,
             'metadata'      => $metadata,
         ]);
-    }
-
-    private function idOrNull($value): ?int
-    {
-        $value = (int) $value;
-
-        return $value > 0 ? $value : null;
     }
 
     private function nullIfBlank($value): ?string

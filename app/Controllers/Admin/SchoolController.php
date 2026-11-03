@@ -87,9 +87,8 @@ class SchoolController extends BaseAdminController
         }
 
         return $this->done('admin/sekolah', sprintf(
-            'Digabungkan: %d siswa dan %d akun guru dipindahkan. Ketikan yang sama berikutnya langsung tertaut.',
+            'Digabungkan: %d siswa dipindahkan. Ketikan yang sama berikutnya langsung tertaut.',
             $moved['participants'],
-            $moved['staff'],
         ));
     }
 

@@ -192,7 +192,8 @@ $src         = $isActive && $row['asset_type'] !== 'video'
   <?php endif ?>
 </section>
 
-<?php if (($slot['priority'] ?? '') !== 'unused'): ?>
+<?php // Uploads and deactivation only for content.edit (admin); researchers look only (27 K7) ?>
+<?php if (($slot['priority'] ?? '') !== 'unused' && staff_can('content.edit')): ?>
   <div class="split-grid">
     <form method="post" action="<?= base_url('admin/media/unggah') ?>" class="upload-box" enctype="multipart/form-data" id="unggah">
       <?= csrf_field() ?>

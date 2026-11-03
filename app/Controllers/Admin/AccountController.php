@@ -8,7 +8,7 @@ use App\Models\StaffUserModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
- * Akun staf yang sedang login: ganti kata sandi sendiri (admin & guru).
+ * Akun staf yang sedang login: ganti kata sandi sendiri (every staff role).
  *
  * Aturan sandi baru sama dengan pembuatan akun di StaffController::store()
  * (12–72 karakter; 72 = batas bcrypt). Sandi saat ini wajib benar. Salah tebak
@@ -46,7 +46,8 @@ class AccountController extends BaseAdminController
 
         $rules = [
             'current_password' => 'required',
-            'password'         => 'required|min_length[12]|max_length[72]|differs[current_password]',
+            // Same strong-password rule as students, plus the staff minimum of 12 (27 §11.1, K15)
+            'password'         => 'required|min_length[12]|max_length[72]|strong_password[username]|differs[current_password]',
             'password_confirm' => 'required|matches[password]',
         ];
 
@@ -57,6 +58,7 @@ class AccountController extends BaseAdminController
                 'min_length' => 'Kata sandi baru minimal 12 karakter.',
                 'max_length' => 'Kata sandi baru maksimal 72 karakter.',
                 'differs'    => 'Kata sandi baru harus berbeda dari kata sandi saat ini.',
+                'strong_password' => lang('Admin.staffPasswordWeak'),
             ],
             'password_confirm' => [
                 'required' => 'Ulangi kata sandi baru.',
@@ -64,7 +66,10 @@ class AccountController extends BaseAdminController
             ],
         ];
 
-        if (! $this->validate($rules, $messages)) {
+        // The username is not a form field; it comes from the account itself
+        $input = ['username' => (string) $staff->username] + (array) $this->request->getPost();
+
+        if (! $this->validateData($input, $rules, $messages)) {
             return redirect()->to(site_url(self::FORM))->with('errors', $this->validator->getErrors());
         }
 
@@ -75,7 +80,7 @@ class AccountController extends BaseAdminController
             if ($staffModel->find($staff->id)?->isLocked()) {
                 // Keluarkan staf tanpa menghancurkan sesi agar pesan flash sampai
                 $session = session();
-                $session->remove(['staff_id', 'staff_role', 'staff_school_id', 'staff_name']);
+                $session->remove(['staff_id', 'staff_role', 'staff_name', StaffAuthFilter::LAST_SEEN_KEY]);
                 $session->regenerate(true);
 
                 return redirect()->to(site_url('admin/login'))->with('errors', [

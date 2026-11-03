@@ -921,7 +921,7 @@ final class Simulator
             $this->clock->advance($this->rng->getInt(5_000, 15_000));
         }
 
-        $staffId   = (int) ($this->db->table('staff_users')->select('id')->orderBy('id', 'ASC')->get()->getRow('id') ?? 0);
+        $staffId   = (int) ($this->db->table('staff_users')->select('id')->where('role', 'admin')->where('is_active', 1)->orderBy('id', 'ASC')->get()->getRow('id') ?? 0);
         $temporary = $this->clock->act(fn () => service('sessionService')->resetPasswordByStaff($participantId, $staffId));
         $this->clock->advance($this->rng->getInt(60_000, 180_000));
 

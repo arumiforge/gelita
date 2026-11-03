@@ -13,15 +13,16 @@
  * @var array<string, mixed>|null      $activeStudy BaseAdminController::panel()
  */
 use App\Libraries\AdminMenu;
+use App\Libraries\StaffAccess;
 
 $title   = trim($this->renderSection('title'));
 $path    = service('request')->getPath();
 $crumbs  = AdminMenu::crumbs($path, $pageTitle ?? null, $breadcrumb ?? []);
 $isStaff = (bool) session('staff_id');
-$role    = session('staff_role') === 'admin' ? lang('Admin.roleAdmin') : lang('Admin.roleGuru');
+$role    = StaffAccess::label(session('staff_role'));
 $name    = (string) (session('staff_name') ?? '');
 $initial = mb_strtoupper(mb_substr($name !== '' ? $name : 'A', 0, 1));
-$search  = lang(session('staff_role') === 'admin' ? 'Admin.quickSearch' : 'Admin.quickSearchTeacher');
+$search  = lang(staff_can('participants.accounts') ? 'Admin.quickSearch' : 'Admin.quickSearchCode');
 ?>
 <!DOCTYPE html>
 <html lang="id">
