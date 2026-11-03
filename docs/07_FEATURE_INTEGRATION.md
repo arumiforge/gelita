@@ -833,6 +833,14 @@ Format teks halaman (ditulis tanpa HTML): baris kosong = paragraf, `## ` subjudu
 
 Panel admin selalu berbahasa Indonesia (`LocaleFilter`). Dua peran: `admin` (semua sekolah, konten, pengaturan) dan `guru` (hanya data siswa di sekolahnya).
 
+> **Superseded by research revision 10, part 1 (3 November 2026).** The roles are now `admin`, `peneliti`, and `ketua`; `guru`, the school scope, and `staffRole` are gone. Where this section and FITUR 2a, 10a–10c, 11, and 14–18 below still say *guru*, read the rules in `docs/revisi-10-analitik/27_IMPLEMENTASI_PERAN_PENELITI.md`:
+>
+> - Rights come from one capability map, `App\Libraries\StaffAccess`. Routes use the filter `staffCan:<capability>` (404 for a page, 403 for `/api`), the menu (`AdminMenu`) and views (`staff_can()`) read the same map.
+> - `admin`: student accounts (name, username, status, reset by id), content, releases and asset packages (including `?paket=` preview), schools, staff, audit log, retention, deletions. No research data, no downloads, no student list CSV.
+> - `peneliti`: coded student list and student page (school as `SCH-000123`), reset by participant code at `/admin/peserta/reset-sandi`, content read-only.
+> - `ketua`: everything `peneliti` has, plus sessions, raw data, feedback, downloads (always coded, own files only), and changing studies (`/admin/studi`; the admin sees it locked).
+> - Staff passwords follow the student strong-password rule plus 12 characters; a staff session ends after 2 hours without a page request (`Config\Gelita::$staffIdleSeconds`).
+
 ```text
 1. Staf membuka /admin/login
 2. POST /admin/login → AuthController::login
