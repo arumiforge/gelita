@@ -1,11 +1,11 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "3e53b002b78fc2bad347e816b22eb223e040a14c70780f89eb31382ca448b0c3",
-      "commit": "4b070ad",
+      "source": "8f3529665fc36938622db6999e7c47d81f224606c1b0603b3d5122e435a7d43f",
+      "commit": "f583d46",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
-      "pages": 17,
+      "pages": 18,
       "landscapeTables": 0
     },
     "01_REVISI_10_ANALITIK.md": {
@@ -33,8 +33,8 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "8408f9461bfa7a788b389f33fc00d341d7369f4fc3f153da4e8859000f28f052",
-      "commit": "4fbd685",
+      "source": "bd2da59751af2932c3d90c9ba1afeb2c5b5b7b20c9d9cd54aa82a77dd97b6c13",
+      "commit": "f583d46",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
       "pages": 67,
@@ -185,10 +185,10 @@
       "landscapeTables": 0
     },
     "23_SURAT_INFORMASI_DAN_PERSETUJUAN.md": {
-      "source": "836e1d86f6fc94fac1842cdfa9f158f73ede71e3a313f66fe9392bca5190427d",
-      "commit": "071c0e2",
+      "source": "3b11f2e50e37f04926ec24a25aa77e4c79dc312c2f6abadf33934f131bc03b6c",
+      "commit": "2147331",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-02",
+      "date": "2026-11-03",
       "pages": 33,
       "landscapeTables": 0
     },
@@ -217,8 +217,8 @@
       "landscapeTables": 0
     },
     "27_IMPLEMENTASI_PERAN_PENELITI.md": {
-      "source": "39c9713220e558b8687ce7cbb63fe3ff1d0362357ef14cf5baf520e0eeb85963",
-      "commit": "a832240",
+      "source": "4d03cc560e3fa2a52b98ccfd435f0f8922c7f14d7e2c03570d721d6a7305cd9d",
+      "commit": "f583d46",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
       "pages": 20,
@@ -233,8 +233,8 @@
       "landscapeTables": 0
     },
     "29_IMPLEMENTASI_DATA_PENELITIAN.md": {
-      "source": "d448efb9e50f3b3502057500685e91298fe91feee3029e55f542c997a02eb444",
-      "commit": "a832240",
+      "source": "dc90aa82a9935741eedd7721bdd943e7e9e3b2bc45296b02e0a54ad4db483c43",
+      "commit": "f583d46",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
       "pages": 29,
