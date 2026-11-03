@@ -131,10 +131,10 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
     - [ ] **Owner:** send the researcher the current PDFs of `22` and `26` from `dokumen-pdf/cetak/` (both changed by #326 after hand-over commit `f45d274`; only `23` was re-sent, #330) and record it in `04` as in #330
     - [ ] **Waiting for the researcher:** `34` §17 no. 1, 2, 4 (no. 4 is also `16` *Cara pelaksanaan* no. 9); `21` finding no. 3 (level per item for *Periksa Unggahan* and Skenario Digital); L5 columns in `02` (L5 is final); the revision matrix in `20` once validation results arrive
     - [ ] **At implementation (code waves):** glossary rows from `27` and `31`–`35`; `docs/08_DEPLOYMENT.md` (`003400` guard with `gelita.allowTeacherRemoval`, `gelita.researchPrivacy`, `KEDUA_HARI`); spark commands `gelita:turunan:*` (`35`); `25` → *Akibat ke dokumen lain* no. 4 and 6 (bank data files, *Tentang GELITA*), no. 7 before G4; validator files rebuilt at the freeze (`20` prerequisite 4)
-    - [ ] **Code wave C in progress:** part 1 (`27`, roles), PR #332 from the session on branch `r10-dok-32-skenario-digital`; merge only with the full phpunit suite green, then waves D–F as in `00` → *Tahap dokumen 3*
+    - [x] **Code wave C done:** part 1 (`27`, roles) merged as PR #332 (3 November 2026), suite green (874 tests). Next: code wave D, part 2 (`28`) with part 5 (`31`), then E and F as in `00` → *Tahap dokumen 3*
   - [ ] English draft of the new question bank by AI, approved by the owner; items revised by validation are re-translated (owner, 2 November 2026; `31` §22 no. 8)
 - [ ] Implementation of the system changes listed in `01` (24), one short-lived branch per part, in waves (owner, 1 November 2026, `00` → *Tahap dokumen 3*): C part 1 (`27`) alone; D part 2 (`28`) with part 5 (`31`); E parts 3 (`29`), 4 (`30`), and 6 (`32`); F parts 7 (`33`) and 8 (`34`), then part 9 (`35`) last
-  - [ ] Wave C, part 1 (`27`, researcher roles and capability map): code on branch `r10-dok-32-skenario-digital` (3 November 2026), PR open for the owner; migration `003400` is guarded (`gelita.allowTeacherRemoval`)
+  - [x] Wave C, part 1 (`27`, researcher roles and capability map): code on branch `r10-dok-32-skenario-digital` (3 November 2026), merged as PR #332; migration `003400` is guarded (`gelita.allowTeacherRemoval`, `docs/08_DEPLOYMENT.md`). Full suite green on `main` after the merge (874 tests, 3 November 2026)
 
 ## Before the research starts
 
