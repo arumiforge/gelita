@@ -6,6 +6,17 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 3 November 2026
 
+**Jawaban pengembang atas pertanyaan gelombang kode D; PR #339 dan #340 digabung** (cabang `pw/youthful-faraday-tcbj5z`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Bagian 2 dan bagian 5 digabung ke `main` sebagai PR #339 dan #340 (3 November 2026); `main` sama dengan pohon yang diuji (949 tes hijau). Pengembang menjawab empat pertanyaan dari entri *Gelombang kode D selesai* di bawah:
+
+1. **Susulan skala sikap P5 tetap dalam batas 4 jam.** Sesi susulannya dibuka pada hari pelaksanaannya; satu duduk kelas cukup dalam 4 jam. Kode tidak berubah; [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) §6.7 no. 6 ditulis ulang. Tidak dipilih: batas lebih panjang khusus susulan; diserahkan ke bagian 8.
+2. **Simulator dan kaitan bagian 4 dan 7 tetap seperti dibuat bagian 2.** `gelita:simulasi` menolak berjalan saat mode penelitian menyala (alat pengembangan; mode penelitian mati di lingkungan pengembangan). Baris `participant_consents`, penolakan token `inactive`, penolakan layar kecil, dan hitungan "izin belum diisi" dibuat di bagian 4 dan 7, yang membuat tabelnya. Tidak dipilih: simulator membuat sesi lapangan `sim`.
+3. **`003600` selalu berjalan tanpa penjaga**, sama dengan `003400`. Server produksi belum memuat data studi (belum ada kegiatan dengan anak sebelum persetujuan etik), jadi yang terhapus hanya log pengembangan dan uji coba; `gelita:log:hitung` tetap ada untuk mencatat jumlahnya lebih dulu. Menutup baris [27](27_IMPLEMENTASI_PERAN_PENELITI.md) §18 dan [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) §5.8. Tidak dipilih: penjaga sendiri.
+4. **Empat peringatan isi bank dibetulkan di [08](08_DRAF_BANK_SOAL.md) sekarang**, bukan diserahkan ke ahli: catatan urutan S B S B `tmg-3-b` disamakan dengan isinya, Wonosobo mendapat butir `INF-KAT`, `mgl-2` tidak lagi memuat butir AKM level 1, dan sebaran kode kesalahan varian `a` dan `b` diseimbangkan. Sesudahnya berkas data dibuat ulang dengan `docs/bank-soal/tools/import_08.py`, [36](36_TERJEMAHAN_BANK_SOAL.md) diperbarui untuk butir yang berubah, workbook dibangun ulang, dan tes dijalankan. Dikerjakan satu sesi dokumen di cabangnya sendiri (baris baru di `docs/PROGRESS.md`). Tidak dipilih: semuanya ke ahli; hanya salah tulis di 08 yang dibetulkan.
+
+Diubah: 04, 00 (baris bagian 2 dan 5), 27 (§18), 28 (§6.7 no. 6), 29 (kotak peringatan, aturan kerja, §5.8), `docs/PROGRESS.md`.
+
 **Gelombang kode D selesai: bagian 2 (28) dan bagian 5 (31) dikerjakan paralel lalu digabung koordinator** (cabang `pw/laughing-pasteur-e6ajo7`, `r10-kode-31-bank-soal`, dan cabang koordinator `pw/youthful-faraday-tcbj5z`) · `asal: pengembang` (penyimpangan dipilih AI saat implementasi) · `draf pengembang` · tidak merevisi produk
 
 Dua sesi AI mengerjakan bagian 2 dan bagian 5 di cabang masing-masing. Sesi koordinator menjalankan ulang tes, membuka PR #339 (bagian 2), lalu menggabungkan kedua cabang di cabang koordinator. Isi bank tetap `needs_verification`; kode belum dipakai dengan anak sebelum izin etik (entri 1 November 2026).
