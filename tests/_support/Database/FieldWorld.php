@@ -36,7 +36,7 @@ trait FieldWorld
         $db->table('staff_users')->insert([
             'username' => 'peneliti_uji', 'password_hash' => 'x', 'role' => 'peneliti', 'display_name' => 'Peneliti', 'is_active' => 1,
         ]);
-        $db->table('participants')->where('id', 1)->update(['participant_code' => 'S03-A01', 'school_id' => 1, 'rombel' => 'A']);
+        $db->table('participants')->where('id', 1)->update(['participant_code' => 'S03-A01', 'school_id' => 1, 'rombel' => 'A', 'intro_seen_at' => date('Y-m-d H:i:s')]);
         $db->table('participant_code_counters')->insert(['school_id' => 1, 'rombel' => 'A', 'next_no' => 2]);
 
         $this->resetFieldServices();

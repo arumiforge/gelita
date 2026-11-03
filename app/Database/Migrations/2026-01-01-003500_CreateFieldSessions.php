@@ -61,7 +61,7 @@ class CreateFieldSessions extends GelitaMigration
             'updated_at'              => $this->stamp(true),
         ]);
         $this->forge->addPrimaryKey('session_id');
-        $this->createGelitaTable('session_progress');
+        $this->createTable('session_progress');
 
         // Every game session gets its student's progress back
         foreach ($this->db->table('participant_progress')->get()->getResultArray() as $row) {
@@ -139,7 +139,7 @@ class CreateFieldSessions extends GelitaMigration
         $this->forge->addForeignKey('main_session_id', 'field_sessions', 'id', '', 'SET NULL');
         $this->forge->addForeignKey('created_by', 'staff_users', 'id', '', 'SET NULL');
         $this->forge->addForeignKey('closed_by', 'staff_users', 'id', '', 'SET NULL');
-        $this->createGelitaTable('field_sessions');
+        $this->createTable('field_sessions');
     }
 
     private function createTokens(): void
@@ -157,7 +157,7 @@ class CreateFieldSessions extends GelitaMigration
         $this->forge->addKey(['field_session_id', 'revoked_at']);
         $this->forge->addForeignKey('field_session_id', 'field_sessions', 'id', '', 'CASCADE');
         $this->forge->addForeignKey('created_by', 'staff_users', 'id', '', 'SET NULL');
-        $this->createGelitaTable('field_session_tokens');
+        $this->createTable('field_session_tokens');
     }
 
     private function createMembers(): void
@@ -173,7 +173,7 @@ class CreateFieldSessions extends GelitaMigration
         $this->forge->addForeignKey('field_session_id', 'field_sessions', 'id', '', 'CASCADE');
         $this->forge->addForeignKey('participant_id', 'participants', 'id', '', 'CASCADE');
         $this->forge->addForeignKey('added_by', 'staff_users', 'id', '', 'SET NULL');
-        $this->createGelitaTable('field_session_members');
+        $this->createTable('field_session_members');
     }
 
     private function createSeats(): void
@@ -198,7 +198,7 @@ class CreateFieldSessions extends GelitaMigration
         $this->forge->addForeignKey('participant_id', 'participants', 'id', '', 'CASCADE');
         $this->forge->addForeignKey('study_id', 'research_studies', 'id', '', 'CASCADE');
         $this->forge->addForeignKey('entered_by', 'staff_users', 'id', '', 'SET NULL');
-        $this->createGelitaTable('participant_seats');
+        $this->createTable('participant_seats');
     }
 
     private function createCodeCounters(): void
@@ -212,7 +212,7 @@ class CreateFieldSessions extends GelitaMigration
         $this->forge->addPrimaryKey('id');
         $this->forge->addUniqueKey(['school_id', 'rombel']);
         $this->forge->addForeignKey('school_id', 'schools', 'id', '', 'CASCADE');
-        $this->createGelitaTable('participant_code_counters');
+        $this->createTable('participant_code_counters');
     }
 
     private function createParticipantProgress(): void
@@ -237,7 +237,7 @@ class CreateFieldSessions extends GelitaMigration
         $this->forge->addForeignKey('study_id', 'research_studies', 'id', '', 'CASCADE');
         $this->forge->addForeignKey('current_level_id', 'levels', 'id', '', 'SET NULL');
         $this->forge->addForeignKey('current_node_id', 'challenge_nodes', 'id', '', 'SET NULL');
-        $this->createGelitaTable('participant_progress');
+        $this->createTable('participant_progress');
     }
 
     private function addColumns(): void
@@ -339,6 +339,18 @@ class CreateFieldSessions extends GelitaMigration
     }
 
     // ------------------------------------------------------------ helpers
+
+    /** createGelitaTable() on MySQL/MariaDB; SQLite (tests) takes no table attributes. */
+    private function createTable(string $table): void
+    {
+        if ($this->isMysql()) {
+            $this->createGelitaTable($table);
+
+            return;
+        }
+
+        $this->forge->createTable($table, true);
+    }
 
     private function isMysql(): bool
     {
