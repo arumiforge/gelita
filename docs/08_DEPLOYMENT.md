@@ -812,7 +812,7 @@ Yang dilakukan `gelita:reset`:
 
 | Kelompok | Tabel | Perlakuan |
 |---|---|---|
-| Data penelitian & uji coba | `participants`, `game_sessions`, `session_progress`, `challenge_attempts`, `item_responses`, `item_tries`, `audio_usage_events`, `game_event_logs`, `device_logs`, `participant_feedback`, `data_exports`, `data_deletion_requests`, `audit_logs`, `ci_sessions` | dikosongkan (`TRUNCATE`; berkas di `writable/exports/` ikut dihapus) |
+| Data penelitian & uji coba | `participants`, `game_sessions`, `participant_progress`, `challenge_attempts`, `item_responses`, `item_tries`, `audio_usage_events`, `game_event_logs`, `device_logs`, `participant_feedback`, `data_exports`, `data_deletion_requests`, `audit_logs`, `ci_sessions` | dikosongkan (`TRUNCATE`; berkas di `writable/exports/` ikut dihapus) |
 | Konten tantangan | `challenge_nodes`, `challenge_items`, `reading_passages`, `hints` | dikosongkan, lalu 12 tantangan dibangun ulang dan bank soal kelas 5 diimpor ulang |
 | Pengaturan | `research_studies`, `game_releases`, `learning_indicators` | dikosongkan, lalu diisi nilai bawaan |
 | Sebagian | `schools`, `staff_users` | sekolah ketikan yang belum terverifikasi dihapus; akun staf tetap dan dibuka kuncinya |
@@ -1536,3 +1536,8 @@ Setelah panduan ini dijalankan:
 * Backup berjalan otomatis ke dua lokasi tanpa IP mentah siswa, kegagalannya terlihat, dan prosedur pemulihannya sudah pernah diuji.
 * Retensi harian berjalan pada jam WIB yang benar; data penelitian tidak pernah terhapus tanpa persetujuan manusia.
 * Delapan pemeriksaan otomatis dan sepuluh uji manual lolos, dan aplikasi dinyatakan siap dipakai kelas.
+
+## Research revision 10, part 2: migration `003500` and the validators' test install
+
+- **Migration `2026-01-01-003500_CreateFieldSessions`** adds the field session tables and columns and moves progress to `participant_progress`: it fills that table from the completed attempts already stored (one row per student and study) before it drops `session_progress`, so no progress is lost. `SystemResetService::REQUIRED_MIGRATION` is `2026-01-01-003500`. Field mode stays off on existing installs, so the game behaves as before. Never run migrations or `gelita:reset` against the production server from a development session.
+- **Validators' test install (G3).** After `php spark migrate` and `gelita:reset` on the test install: `php spark gelita:uji:akun --buat` (passwords are shown once), then turn on Mode penelitian for the study, and create one field session `V01-A-P2` (or the meeting under review) of at most 4 hours per day. `php spark gelita:uji:akun --reset=uji.bahasa1` gives one validator a fresh start. The tool refuses in production and when any non-`uji.*` student exists.

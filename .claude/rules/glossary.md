@@ -119,5 +119,15 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | gambar gerak (tokoh) | `frame` | `char.{jaka|kedu}.{pose}.{1–24}`; route `/admin/media/{id}/unggah-gerak` |
 | naskah rekaman (PDF untuk pengisi suara) | `voice-actor script` | `NarrationScriptPdf`; route `/admin/konten/narasi/naskah-pdf?bahasa=id\|en\|semua` |
 | Batalkan semua rekaman | `cancel all recordings` | `NarrationCatalog::cancelAll()`; route `POST /admin/konten/narasi/batalkan`; audit `narration_cancel_bulk` |
+| mode penelitian | `field mode` | `research_studies.field_mode` (0 by default), with `meeting_plan` (`lima_pertemuan`, `satu_sesi`); `ResearchStudyModel::fieldModeStudy()`; revision 10, part 2 (28) |
+| sesi lapangan, sesi susulan | `field session`, `make-up session` | `field_sessions` (code `S03-A-P2`, `-S`, `-S2`); `FieldSessionService`; route `/admin/sesi-lapangan` |
+| token sesi | `session token` | `field_session_tokens`; routes `/token`, `/daftar/0`; screen `/sampai-jumpa` when closed; API `FIELD_SESSION_CLOSED` |
+| kode sekolah penelitian | `research school code` | `schools.research_code` (`S03`, `U01`, `V01`) |
+| rombel | `class group` | `participants.rombel`, `field_sessions.rombel` (one capital letter) |
+| kode peserta (mode penelitian) | `participant code` | `S03-A07` from `participant_code_counters` (`ParticipantCodeService`); `GLT-000001` outside field mode; `UJI-01` for test accounts |
+| kursi, buklet, bentuk tes | `seat`, `booklet`, `test form` | `participant_seats` (`booklet` `B1`–`B4`, `pre_form`/`post_form` `A`/`B`); `SeatRules`; route `/admin/sesi-lapangan/{id}/kursi` |
+| kemajuan siswa | `participant progress` | `participant_progress` per student and study (replaced `session_progress`, migration `003500`) |
+| Pemantauan | `monitoring panel` | route `/admin/pemantauan`, `GET /api/admin/monitoring`; capability `monitoring.view` (admin: numbers only) |
+| akun uji | `test account` | `uji.*` accounts, command `gelita:uji:akun`, school `V01` |
 
 Add a row whenever a new concept appears. If a term here conflicts with existing code, the existing stored value wins and the table gets corrected.

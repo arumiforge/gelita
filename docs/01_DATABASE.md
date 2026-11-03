@@ -50,7 +50,7 @@ Pola bersama semua migration ada di `App\Database\GelitaMigration` (di luar fold
 | Hal | Aturan |
 |---|---|
 | Engine, charset | `InnoDB`, `utf8mb4`, collation `utf8mb4_unicode_ci` (`createGelitaTable()`) |
-| Primary key | `id BIGINT UNSIGNED AUTO_INCREMENT` (`id()`). Pengecualian: `session_progress` (PK = `session_id`) dan `ci_sessions` (PK `VARCHAR(128)`) |
+| Primary key | `id BIGINT UNSIGNED AUTO_INCREMENT` (`id()`). Pengecualian: `field_session_members` (PK = `field_session_id`, `participant_id`) dan `ci_sessions` (PK `VARCHAR(128)`) |
 | Kolom referensi | `BIGINT UNSIGNED`, `NULL` bila opsional (`ref()`) |
 | Flag 0/1 | `TINYINT(1) NOT NULL` dengan default (`flag()`); benar/salah yang belum diketahui `TINYINT(1) NULL` (`nullableFlag()`) |
 | Waktu | `DATETIME(6)` (presisi mikrodetik untuk urutan event penelitian). `created_at` = `DEFAULT CURRENT_TIMESTAMP(6)`; `updated_at` = `DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)` (`timestamps()`) |
@@ -77,7 +77,8 @@ Master wilayah administratif Indonesia tidak disimpan di database. Daftarnya ber
 | | [`research_studies`](#research_studies) | `000300` | Studi penelitian, mode buka wilayah, masa simpan data |
 | | [`game_releases`](#game_releases) | `000500` | Versi permainan/konten/aturan bintang yang dipakai sesi |
 | | [`game_sessions`](#game_sessions) | `001700` | Sesi bermain siswa |
-| | [`session_progress`](#session_progress) | `001800` | Keadaan terbaru satu sesi (wilayah terbuka, serpihan, bintang) |
+| | [`participant_progress`](#participant_progress) | `003500` | Kemajuan siswa per studi (wilayah terbuka, serpihan, bintang); replaced `session_progress` (`001800`) |
+| | [Field sessions](#research-revision-10-part-2-field-sessions-migration-003500) | `003500` | `field_sessions`, `field_session_tokens`, `field_session_members`, `participant_seats`, `participant_code_counters` |
 | | [`participant_feedback`](#participant_feedback) | `002400` | Kritik dan saran siswa (Balai Refleksi) |
 | B. Konten | [`levels`](#levels) | `000900` | Tiga wilayah |
 | | [`learning_indicators`](#learning_indicators) | `000600` | Indikator pembelajaran (`literasi`, `budaya`, `sikap`) |
@@ -165,7 +166,7 @@ Ringkasan aturan `ON DELETE`:
 | `item_responses` / `item_tries` `.challenge_item_id` → `challenge_items` | RESTRICT | Soal yang sudah dijawab tidak dapat dihapus; soal diistirahatkan dengan `is_active = 0` |
 | `challenge_attempts.challenge_node_id` → `challenge_nodes` | RESTRICT | Tantangan yang sudah dikerjakan tidak dapat dihapus |
 | `game_sessions.participant_id` / `study_id` / `release_id` | RESTRICT | Siswa, studi, dan rilis yang punya sesi tidak dapat dihapus langsung; penghapusan siswa lewat `RetentionService` (anak dulu) |
-| Turunan sesi (`session_progress`, `challenge_attempts`, `audio_usage_events`, `game_event_logs`, `device_logs`) → `game_sessions` | CASCADE | Menghapus sesi menghapus seluruh data turunannya |
+| Turunan sesi (`challenge_attempts`, `audio_usage_events`, `game_event_logs`, `device_logs`) → `game_sessions` | CASCADE | Menghapus sesi menghapus seluruh data turunannya |
 | `item_responses`, `item_tries`, `audio_usage_events.challenge_attempt_id` → `challenge_attempts` | CASCADE | |
 | `audio_usage_events.audio_asset_id` → `audio_assets` | RESTRICT | Rekaman yang pernah diputar tidak dapat dihapus |
 | `audio_assets.media_asset_id` → `media_assets` | CASCADE | Menghapus berkas menghapus catatan rekamannya |
@@ -337,22 +338,24 @@ Index gabungan: `participant_id_study_id_status (participant_id, study_id, statu
 
 Perubahan status: `active` → `paused` bila diam lebih dari `Config\Gelita::$sessionIdleMinutes` (45 menit, `GameSessionModel::markStale()`) atau siswa keluar; `paused` → `active` saat masuk lagi; → `completed` saat semua wilayah aktif tuntas (`SessionService::completeIfFinished()`, event `session_completed`); `paused` yang diam lebih dari `$sessionAbandonDays` (30 hari) → `abandoned` oleh `gelita:retention:run`.
 
-#### `session_progress`
+#### `participant_progress`
 
-Keadaan terbaru satu sesi, satu baris per sesi (`SessionProgressModel::ensure()`). Semua angka dapat dihitung ulang dari `challenge_attempts`; tabel ini hanya mempercepat peta dan HUD.
+A student's latest progress in one study, one row per student and study (research revision 10, part 2, migration `003500`; replaces `session_progress`). It follows the student across game sessions, so a new session (a later meeting, or a new login after a completed session) does not start from empty. Every number can be recomputed from `challenge_attempts` (`App\Libraries\ProgressRules`); `ChallengeService::refreshProgress()` writes it with a conditional UPDATE.
 
 | Kolom | Tipe | Null | Bawaan | Arti |
 |---|---|---|---|---|
-| session_id | BIGINT UNSIGNED | tidak | — | PK + FK `game_sessions.id` CASCADE |
+| id | BIGINT UNSIGNED | tidak | AI | PK |
+| participant_id | BIGINT UNSIGNED | tidak | — | FK `participants.id` CASCADE; UNIQUE (`participant_id`, `study_id`) |
+| study_id | BIGINT UNSIGNED | tidak | — | FK `research_studies.id` CASCADE |
 | current_level_id | BIGINT UNSIGNED | ya | NULL | FK `levels.id` SET NULL |
 | current_node_id | BIGINT UNSIGNED | ya | NULL | FK `challenge_nodes.id` SET NULL |
-| unlocked_level_sequence | TINYINT UNSIGNED | tidak | 1 | `levels.sequence` tertinggi yang terbuka; pada `unlock_mode = free` = jumlah wilayah |
+| unlocked_level_sequence | TINYINT UNSIGNED | tidak | 1 | `levels.sequence` tertinggi yang terbuka; pada `unlock_mode = free` = jumlah wilayah; not used in field mode |
 | completed_nodes | SMALLINT UNSIGNED | tidak | 0 | Jumlah tantangan tuntas = jumlah Serpihan Cahaya (0–12) |
 | completed_levels | TINYINT UNSIGNED | tidak | 0 | Wilayah yang keempat tantangannya tuntas |
 | total_stars | SMALLINT UNSIGNED | tidak | 0 | Jumlah bintang terbaik per tantangan (`ScoringService::totalStars()`), paling banyak 36 |
 | updated_at | DATETIME(6) | tidak | NOW↻ | INDEX |
 
-"Tuntas" = punya pengerjaan `completed` (apa pun `completion_reason`-nya). Pengerjaan terbaik per tantangan = bintang terbanyak, lalu yang paling awal (`ChallengeAttemptModel::completedForSession()`).
+"Tuntas" = punya pengerjaan `completed` (apa pun `completion_reason`-nya) in any game session of the student in that study. Pengerjaan terbaik per tantangan = bintang terbanyak, lalu yang paling awal (`ChallengeAttemptModel::completedForParticipant()`). Migration `003500` filled this table from the completed attempts already stored before it dropped `session_progress`.
 
 #### `participant_feedback`
 
@@ -675,7 +678,7 @@ Panel dan ekspor tidak punya tabel sendiri: setiap dimensi `App\Services\RawData
 | `peserta` | `participants` | — (halaman Siswa) |
 | `sesi` | `game_sessions` | — (halaman Sesi bermain) |
 | `perangkat` | `device_logs` | Perangkat |
-| `progres` | `session_progress` | Progres |
+| `progres` | `game_sessions` + `participant_progress` | Progres (one row per session, with its student's progress) |
 | `pengerjaan` | `challenge_attempts` | Pengerjaan |
 | `jawaban` | `item_responses` | Jawaban & ketepatan |
 | `percobaan` | `item_tries` | Riwayat percobaan |
@@ -1117,7 +1120,7 @@ Nilai bawaan penting: `game_sessions.locale = 'id'`, `game_sessions.status = 'ac
 | Mode | Yang berubah |
 |---|---|
 | `soft` | `game_event_logs` sesi dalam cakupan ditandai `deleted_at`, `deleted_by`, `delete_reason`; untuk cakupan siswa, `participants.deleted_at` diisi. Baris lain tetap ada agar dapat diaudit |
-| `hard` | Baris dihapus dari anak ke induk agar FK RESTRICT tidak menggagalkan transaction: `game_event_logs`, `audio_usage_events`, `item_tries`, `item_responses`, `challenge_attempts`, `device_logs`, `session_progress`, `participant_feedback`, `game_sessions`, lalu `participants` (hanya untuk cakupan satu siswa) |
+| `hard` | Baris dihapus dari anak ke induk agar FK RESTRICT tidak menggagalkan transaction: `game_event_logs`, `audio_usage_events`, `item_tries`, `item_responses`, `challenge_attempts`, `device_logs`, `participant_progress`, `participant_feedback`, `game_sessions`, lalu `participants` (hanya untuk cakupan satu siswa) |
 
 ### Reset data uji coba
 
@@ -1125,7 +1128,7 @@ Nilai bawaan penting: `game_sessions.locale = 'id'`, `game_sessions.status = 'ac
 
 | Kelompok | Tabel | Perlakuan |
 |---|---|---|
-| A. Data penelitian dan uji coba | `participants`, `game_sessions`, `session_progress`, `challenge_attempts`, `item_responses`, `item_tries`, `audio_usage_events`, `game_event_logs`, `device_logs`, `participant_feedback`, `data_exports`, `data_deletion_requests`, `audit_logs`, `ci_sessions` | `TRUNCATE` (AUTO_INCREMENT kembali ke 1, siswa pertama `GLT-000001`); folder `writable/exports/` dikosongkan |
+| A. Data penelitian dan uji coba | `participants`, `game_sessions`, `participant_progress`, `challenge_attempts`, `item_responses`, `item_tries`, `audio_usage_events`, `game_event_logs`, `device_logs`, `participant_feedback`, `data_exports`, `data_deletion_requests`, `audit_logs`, `ci_sessions` | `TRUNCATE` (AUTO_INCREMENT kembali ke 1, siswa pertama `GLT-000001`); folder `writable/exports/` dikosongkan |
 | B. Konten tantangan | `hints`, `challenge_items`, `reading_passages`, `challenge_nodes` | Dikosongkan, lalu 12 tantangan dibangun ulang dan bank soal kelas 5 diimpor ulang (kecuali `--tanpa-bank`) |
 | C. Pengaturan | `research_studies`, `game_releases`, `learning_indicators` | Dikosongkan, lalu diisi nilai bawaan |
 | D. Sebagian | `schools`, `staff_users` | Sekolah `is_verified = 0` dibuang; akun staf tetap (kunci login dibuka), kecuali akun guru dengan `--hapus-guru` |
@@ -1184,3 +1187,22 @@ GROUP BY n.engine_type;                     -- variasi per tantangan: puzzle/rum
 ```
 
 Sesudah itu: impor dan setujui narasi, jalankan `php spark gelita:content:verify`, ganti gambar contoh dengan gambar asli sampai **daftar siap penelitian** (`App\Libraries\ResearchReadiness`: 0 `media_assets.is_placeholder = 1` aktif, semua rekaman narasi `approved` menurut `NarrationCatalog`, verifikasi `--siap-penelitian` tanpa galat) hijau, lalu sebelum pengambilan data penelitian jalankan `php spark gelita:reset`.
+
+
+## Research revision 10, part 2: field sessions (migration `003500`)
+
+Source: `docs/revisi-10-analitik/28_IMPLEMENTASI_SESI_LAPANGAN.md` §14. Everything here only matters while the active study has `field_mode = 1` (off by default). `participant_progress` is described above.
+
+| Table / column | Content |
+|---|---|
+| `field_sessions` | One meeting of one class group: `study_id` FK, `code` (`S03-A-P2`, make-ups `-S`, `-S2`; UNIQUE with `study_id`), `school_id` FK, `rombel` CHAR(1), `meeting_no` 1–5, `makeup_no` (0 = main), `main_session_id` (self FK, make-ups), `session_date`, `opens_at`, `closes_at`, `closed_at` (closed early), `region_code` (plan `satu_sesi` only), `created_by`/`closed_by` FK staff SET NULL. The state (pending/open/closed) is derived from the hours, never stored |
+| `field_session_tokens` | `token` CHAR(6) UNIQUE over all history (alphabet without O, 0, I, 1, L), `revoked_at`; only the latest unrevoked token of an open session works |
+| `field_session_members` | Students allowed into a make-up session (PK `field_session_id`, `participant_id`; FK participants CASCADE) |
+| `participant_seats` | L2 sheet per student and study: `row_no`, `seat_no`, computed `booklet` (`B1`–`B4`), `pre_form`/`post_form` (`A`/`B`), `entered_by`, `entered_at`, `updated_at`, `locked_at` (set by part 8 when the pre-test starts). UNIQUE (`participant_id`, `study_id`). Part 5 reads `booklet` |
+| `participant_code_counters` | Next number per school and class group (`next_no`, UNIQUE `school_id`, `rombel`), not per study; moved on with a conditional UPDATE |
+| `game_sessions.field_session_id`, `meeting_no` | The field session a game session belongs to (one each, 28 K6); INDEX (`field_session_id`, `participant_id`) |
+| `participants.rombel` | Class group from the field session at registration |
+| `schools.research_code` | `S03`, `U01`, `V01` (UNIQUE, filled by the admin on `/admin/sekolah`); unchangeable once the school has students |
+| `research_studies.field_mode`, `meeting_plan` | Field mode switch (TINYINT, default 0) and meeting plan (`lima_pertemuan` default, `satu_sesi`) |
+
+Foreign keys to `staff_users` are `ON DELETE SET NULL`; to `participants` `ON DELETE CASCADE`. `RetentionService::HARD_ORDER` deletes `participant_progress`, `participant_seats`, and `field_session_members` itself so their counts show in the preview. `gelita:reset` empties all five new tables and starts the study with `field_mode = 0`.

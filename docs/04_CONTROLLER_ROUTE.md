@@ -920,3 +920,31 @@ Nomor aturan dirujuk dari kode (mis. `BaseApiController` → aturan 2, `safe_int
 * [07_FEATURE_INTEGRATION.md](07_FEATURE_INTEGRATION.md): alur fitur dari ujung ke ujung.
 
 Pemeriksaan otomatis: `tests/` memuat uji route (mis. `RouteWiringTest`) dan uji aturan 3 kesempatan (`TryLimitTest`); jalankan `vendor/bin/phpunit`.
+
+## Research revision 10, part 2: field sessions (28 §15)
+
+Game (filter `participantAuth` + `screenView`, no game session needed):
+
+| Route | Controller::method | Notes |
+|---|---|---|
+| `GET`, `POST /token` | `Game\FieldTokenController::form`, `::submit` | Token screen (P2–P5); wrong tokens throttled 10 per 10 minutes, then 5 minutes; screen code `field_token` |
+| `GET /sampai-jumpa` | `Game\FieldTokenController::closed` | "See you" screen; screen code `field_closed` |
+| `GET`, `POST /daftar/0` | `Game\RegisterController::token`, `::saveToken` (through `step`/`saveStep`) | Field mode only: registration starts with the token; step 2 (school) is skipped |
+
+Panel (group `staffAuth`):
+
+| Route | Controller::method | Capability |
+|---|---|---|
+| `GET /admin/sesi-lapangan` | `FieldSessionController::index` | `field_sessions.manage` |
+| `GET`, `POST /admin/sesi-lapangan/baru` | `::create`, `::store` | `field_sessions.manage` |
+| `GET /admin/sesi-lapangan/{id}` | `::show` | `field_sessions.manage` |
+| `POST /admin/sesi-lapangan/{id}/jam`, `/token-baru`, `/tutup` | `::updateHours`, `::regenerateToken`, `::close` | `field_sessions.manage` |
+| `GET`, `POST /admin/sesi-lapangan/{id}/kursi` | `::seats`, `::saveSeats` | `field_sessions.manage` |
+| `GET`, `POST /admin/sesi-lapangan/{id}/susulan` | `::makeupForm`, `::storeMakeup` | `field_sessions.manage` |
+| `GET /admin/pemantauan` | `MonitoringController::index` | `monitoring.view` (admin: numbers only) |
+| `GET /api/admin/monitoring` | `Api\AdminApiController::monitoring` | `monitoring.view` |
+| `POST /admin/sekolah/kode-penelitian` | `SchoolController::setResearchCode` | `schools.manage` |
+
+The field mode switch and meeting plan are fields of the study form (`studies.manage`); they cannot change while a field session is open.
+
+Gate (`Filters\ParticipantCheck`, status `CLOSED`): with field mode on and the study `active`, game pages redirect to `/token` (no game session of a field session) or `/sampai-jumpa` (its field session closed, which pauses the game session once with `session_paused {via: field_session_closed}`). The API answers `409 FIELD_SESSION_CLOSED`, except `POST /api/events`, `/api/audio-events`, and `/api/session/heartbeat` (the heartbeat then extends nothing). `ChallengeService::openNode()` also refuses a challenge whose predecessor in the region is not done (`409 NODE_LOCKED`, K17).

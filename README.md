@@ -249,3 +249,7 @@ Rincian, spesifikasi berkas, dan lisensi model suara ada di [`docs/audio.md`](do
 - Howler.js 2.2.4 (MIT) dan font Marcellus, Plus Jakarta Sans, IBM Plex Mono (SIL OFL 1.1) di-host sendiri; versi dan lisensinya di [`public/assets/vendor/README.md`](public/assets/vendor/README.md).
 - Model suara narasi (Mimic 3 `jv_ID`, CC BY-SA 4.0; suara Piper) beserta syarat atribusinya tercantum di [`docs/audio.md`](docs/audio.md#lisensi-dan-kredit).
 - Kredit gambar dan video Pustaka Kedu tercantum per media di [`docs/pustaka/data/`](docs/pustaka/data/).
+
+## Field sessions (research revision 10, part 2)
+
+With Mode penelitian on (per study, off by default), the game opens only inside a field session: students type the session token, get participant codes like `S03-A07`, and see only the regions of that meeting; researchers run sessions on `/admin/sesi-lapangan` and watch them on `/admin/pemantauan`. Progress belongs to the student across sessions (`participant_progress`). Test accounts for validators: `php spark gelita:uji:akun`. Details: `docs/07_FEATURE_INTEGRATION.md` and `docs/revisi-10-analitik/28_IMPLEMENTASI_SESI_LAPANGAN.md`.

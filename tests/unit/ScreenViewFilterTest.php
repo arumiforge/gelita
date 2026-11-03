@@ -121,6 +121,8 @@ final class ScreenViewFilterTest extends CIUnitTestCase
             'profil'                => ['profile', []],
             'refleksi'              => ['reflection', []],
             'ganti-sandi'           => ['change_password', []],
+            'token'                 => ['field_token', []],
+            'sampai-jumpa'          => ['field_closed', []],
         ];
 
         foreach ($expected as $path => $match) {
