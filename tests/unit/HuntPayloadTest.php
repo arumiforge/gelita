@@ -111,7 +111,7 @@ final class HuntPayloadTest extends CIUnitTestCase
                 $nodeId  = $this->nodeId($db, $ref);
                 $payload = $this->service->openNode(model(GameSessionModel::class)->find(1), $nodeId)['payload'];
                 $bank    = service('contentRepository')->itemBank($nodeId);
-                $targets = array_filter($bank, static fn (ChallengeItem $item): bool => ! $item->isDecoy());
+                $targets = array_filter($bank, static fn (ChallengeItem $item): bool => $item->interaction_type === 'find_object' && ! $item->isDecoy());
                 $decoys  = array_filter($bank, static fn (ChallengeItem $item): bool => $item->isDecoy());
 
                 $this->assertArrayNotHasKey('items', $payload, $ref);

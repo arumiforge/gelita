@@ -8,7 +8,9 @@ use App\Entities\ChallengeNode;
 use App\Entities\GameSession;
 use App\Entities\ItemResponse;
 use App\Exceptions\ChallengeRuleException;
+use App\Libraries\ErrorCodeResolver;
 use App\Libraries\ProgressRules;
+use App\Libraries\VariantPicker;
 use App\Models\ChallengeAttemptModel;
 use App\Models\ChallengeItemModel;
 use App\Models\GameSessionModel;
@@ -17,6 +19,7 @@ use App\Models\Concerns\ConditionalUpdate;
 use App\Models\ItemTryModel;
 use App\Models\ResearchStudyModel;
 use App\Models\ParticipantProgressModel;
+use CodeIgniter\Config\Factories;
 
 /**
  * Inti permainan: membuka node, menerima jawaban, menutup pengerjaan.
@@ -99,10 +102,12 @@ class ChallengeService
         }
 
         if (! $resumed) {
-            // Satu variasi acak; variasi yang sudah pernah didapat siswa ini
-            // (di semua sesinya) dihindari selama masih ada yang lain.
+            // Variant of the new attempt (31 §11.2): booklet in research mode,
+            // otherwise random; retakes avoid the variants already served.
+            // BOOKLET_MISSING is thrown here, before anything is written.
             $served = $attempts->variantsServed($session->participant_id, $nodeId);
-            $picked = model(ChallengeItemModel::class)->pickVariant($nodeId, $served, $bank);
+            $level  = service('contentRepository')->levelById($node->level_id);
+            $picked = (new VariantPicker(Factories::libraries('BookletSource')))->pick($session, $node, (int) ($level?->sequence ?? 0), $served, $bank);
             $items  = $picked['items'];
 
             if ($items === []) {
@@ -118,6 +123,8 @@ class ChallengeService
                     'challenge_node_id'      => $nodeId,
                     'attempt_no'             => $attempts->nextAttemptNo($session->id, $nodeId),
                     'variant_group'          => $picked['group'],
+                    'variant_source'         => $picked['source'],
+                    'booklet_at_open'        => $picked['booklet'],
                     'status'                 => 'in_progress',
                     'selected_item_ids_json' => array_map(static fn (ChallengeItem $i): int => $i->id, $items),
                     'scorable_items'         => $this->countScorable($items),
@@ -136,6 +143,7 @@ class ChallengeService
                 service('eventService')->record($session, 'challenge_opened', [
                     'attempt_no'    => $attempt->attempt_no,
                     'variant_group' => $attempt->variant_group,
+                    'variant_source' => $picked['source'],
                     'item_count'    => count($items),
                 ], [
                     'level_id'             => $node->level_id,
@@ -198,11 +206,18 @@ class ChallengeService
         $item    = $this->itemOf($node->id, $itemId);
         $locale  = $session->resolvedLocale();
 
-        if ($item->interaction_type !== 'find_object' || ! $this->expectsAnswer($item)) {
+        if (! in_array($item->interaction_type, ['find_object', 'find_part'], true) || ! $this->expectsAnswer($item)) {
             throw new \InvalidArgumentException("Butir {$itemId} bukan petunjuk Cari Objek.");
         }
 
-        $answer   = $this->resolveObjectAnswer($attempt, $answer);
+        // Round 2 opens once every round-1 clue is closed (31 §12.1)
+        if ($item->interaction_type === 'find_part' && $this->roundOnePending($attempt) !== []) {
+            throw new \InvalidArgumentException('Babak 2 belum terbuka: petunjuk babak 1 belum selesai.');
+        }
+
+        $answer   = $item->interaction_type === 'find_part'
+            ? $this->resolvePartAnswer($attempt, $answer)
+            : $this->resolveObjectAnswer($attempt, $answer);
         $response = model(ItemResponseModel::class)->findOne($attempt->id, $itemId);
 
         if ($response === null) {
@@ -218,7 +233,11 @@ class ChallengeService
         $db->transBegin();
 
         try {
-            if ((int) $answer['item_id'] !== $itemId) {
+            $wrong = $item->interaction_type === 'find_part'
+                ? ! $this->grade($node, $item, $answer, $locale)
+                : (int) $answer['item_id'] !== $itemId;
+
+            if ($wrong) {
                 // Ketukan salah: dicatat sebagai percobaan petunjuk yang sedang dicari
                 $result = $this->registerWrongClick($session, $attempt, $item, $answer, $locale, $meta);
             } else {
@@ -383,6 +402,11 @@ class ChallengeService
 
                 $correct          = $this->grade($node, $item, $answer, $locale);
                 $results[$itemId] = $correct;
+
+                // Error code of a wrong try, derived here, never by the client (31 §10.2)
+                if (! $correct && $item->interaction_type !== 'puzzle_arrange') {
+                    $timing['error_code'] = (new ErrorCodeResolver())->resolve($item, $answer, $locale);
+                }
 
                 if ($item->interaction_type === 'puzzle_arrange') {
                     $detail[$itemId] = $this->orderDetail($item, $answer);
@@ -756,8 +780,17 @@ class ChallengeService
             'fill_blank_bank' => $this->gradeFillBank($item, $answer, $locale),
             'verdict_card'    => $this->gradeVerdict($node, $item, $answer),
             'find_object'     => $this->gradeFindObject($item, $answer),
+            'find_part'       => $this->gradeFindPart($item, $answer),
             default           => false,
         };
+    }
+
+    /** Round 2: the tapped part is the key part of this clue (`answer_key_json.part`). */
+    private function gradeFindPart(ChallengeItem $item, array $answer): bool
+    {
+        $key = strtoupper(trim((string) ($item->answerKey('part') ?? '')));
+
+        return $key !== '' && strtoupper(trim((string) ($answer['part'] ?? ''))) === $key;
     }
 
     /** Urutan harus sama persis dengan kunci. */
@@ -875,7 +908,7 @@ class ChallengeService
 
         // try_count sebagai versi baris: dua ketukan bersamaan tidak sama-sama menulis try_no yang sama
         $this->updateOrStale($responses, $response->id, ['try_count' => $response->try_count], $update);
-        $this->recordTry($attempt, $item->id, $tryNo, $answer, $correct, $meta);
+        $this->recordTry($attempt, $item->id, $tryNo, $answer, $correct, $meta, $correct ? null : ($meta['error_code'] ?? null));
 
         if ($changed) {
             db_connect()->table('challenge_attempts')
@@ -890,11 +923,14 @@ class ChallengeService
     /**
      * Satu baris item_tries. `hint_opened_before` dibaca dari hint_count
      * pengerjaan saat ini (petunjuk yang dibuka sebelum percobaan ini).
+     * `error_code` = the code of a wrong try, derived by the server
+     * (ErrorCodeResolver, 31 K5); null for a correct try. It goes into the
+     * same INSERT, so no new racing write appears.
      *
      * @param array<string, mixed> $answer
      * @param array<string, mixed> $meta
      */
-    private function recordTry(ChallengeAttempt $attempt, int $itemId, int $tryNo, array $answer, bool $correct, array $meta): void
+    private function recordTry(ChallengeAttempt $attempt, int $itemId, int $tryNo, array $answer, bool $correct, array $meta, ?string $errorCode = null): void
     {
         $hintCount = (int) (db_connect()->table('challenge_attempts')
             ->select('hint_count')->where('id', $attempt->id)->get()->getRowArray()['hint_count'] ?? 0);
@@ -910,6 +946,7 @@ class ChallengeService
             'first_input_ms'       => self::clientMs($meta['first_input_ms'] ?? null),
             'last_input_ms'        => self::clientMs($meta['last_input_ms'] ?? null),
             'occurred_at'          => date('Y-m-d H:i:s'),
+            'error_code'           => $correct ? null : $errorCode,
         ]);
     }
 
@@ -985,15 +1022,18 @@ class ChallengeService
             }
 
             $this->updateOrStale($responses, $response->id, ['try_count' => $response->try_count], $update);
-
-            $this->recordTry($attempt, $target->id, $tryNo, $answer, false, [
-                'last_input_ms' => $meta['duration_ms'] ?? null,
-            ]);
         }
 
         $clickedId = (int) ($answer['item_id'] ?? 0);
         $clicked   = $clickedId > 0 ? $this->findItemInBank($target->challenge_node_id, $clickedId) : null;
         $isDecoy   = $clicked !== null && $clicked->isDecoy();
+        $part      = isset($answer['part']) ? (string) $answer['part'] : null;
+
+        if ($response !== null) {
+            $this->recordTry($attempt, $target->id, $tryNo, $answer, false, [
+                'last_input_ms' => $meta['duration_ms'] ?? null,
+            ], (new ErrorCodeResolver())->resolve($target, $answer, $locale, $part ?? $clicked?->item_key));
+        }
         $refs      = [
             'level_id'             => $this->nodeOf($attempt)->level_id,
             'challenge_node_id'    => $target->challenge_node_id,
@@ -1004,6 +1044,7 @@ class ChallengeService
         service('eventService')->record($session, 'wrong_target_clicked', [
             'try_no'          => $tryNo,
             'clicked_item_id' => $clickedId ?: null,
+            'clicked_part'    => $part,
             'decoy'           => $isDecoy,
             'first_pass'      => $firstClick,
         ], $refs);
@@ -1289,8 +1330,15 @@ class ChallengeService
     {
         $objects = [];
         $clues   = [];
+        $parts   = [];
 
         foreach ($items as $item) {
+            if ($item->interaction_type === 'find_part') {
+                $parts[] = $item;
+
+                continue;
+            }
+
             if ($item->interaction_type !== 'find_object') {
                 continue;
             }
@@ -1304,19 +1352,98 @@ class ChallengeService
             ];
 
             if ($this->expectsAnswer($item)) {
-                $clues[] = ['item_id' => $item->id, 'text' => $item->text('prompt', $locale)] + $this->clueAudio($item, $locale) + [
-                    'state' => [
-                        'found'  => $found,
-                        'closed' => $response !== null && $response->isAnswered(),
-                        'tries'  => $response?->try_count ?? 0,
-                    ],
-                ];
+                $clues[] = $this->clueEntry($item, $locale, $response, $found);
             }
         }
 
         usort($objects, static fn (array $a, array $b): int => [$a['y'], $a['x'], $a['ref']] <=> [$b['y'], $b['x'], $b['ref']]);
 
-        return ['objects' => $objects, 'clues' => seeded_shuffle($clues, 'clue|' . $attempt->id)];
+        return [
+            'objects' => $objects,
+            'clues'   => seeded_shuffle($clues, 'clue|' . $attempt->id),
+            'round2'  => $parts === [] ? null : $this->postPayload($attempt, $parts, $locale, $responses),
+        ];
+    }
+
+    /**
+     * Round 2 (*Periksa Unggahan*, 31 §12.1): the post of the attempt's
+     * variant, drawn by engines/cari.js from boxes as plain text. Parts carry
+     * an opaque per-attempt ref (partRef()), their box, kind, label, and
+     * text; never the key, the error codes, the clue type, or the main lures.
+     *
+     * @param list<ChallengeItem>      $clues find_part items of the attempt
+     * @param array<int, ItemResponse> $responses
+     *
+     * @return array{title: string, media: ?string, parts: list<array<string, mixed>>, clues: list<array<string, mixed>>}|null
+     */
+    private function postPayload(ChallengeAttempt $attempt, array $clues, string $locale, array $responses): ?array
+    {
+        $post = service('contentRepository')->postScene((int) $attempt->challenge_node_id, (string) $attempt->variant_group);
+
+        if ($post === null) {
+            return null;
+        }
+
+        $text  = static fn (array $row, string $field): string => trim((string) ($row[$field . '_' . $locale] ?? '')) !== '' ? (string) $row[$field . '_' . $locale] : (string) ($row[$field . '_id'] ?? '');
+        $parts = [];
+
+        foreach ($post['parts'] as $part) {
+            $parts[] = [
+                'ref'   => $this->partRef($attempt->id, (int) $part['id']),
+                'kind'  => (string) $part['kind'],
+                'label' => $text($part, 'label'),
+                'text'  => $text($part, 'text'),
+                'x'     => (float) $part['x'],
+                'y'     => (float) $part['y'],
+                'w'     => (float) $part['w'],
+                'h'     => (float) $part['h'],
+            ];
+        }
+
+        $entries = [];
+
+        foreach ($clues as $item) {
+            $response  = $responses[$item->id] ?? null;
+            $found     = $response !== null && $response->isAnswered() && (bool) $response->is_correct;
+            $entries[] = $this->clueEntry($item, $locale, $response, $found);
+        }
+
+        return [
+            'title' => $text($post['scene'], 'title'),
+            'media' => ! empty($post['scene']['media_asset_id']) ? media_src((int) $post['scene']['media_asset_id']) : null,
+            'parts' => $parts,
+            'clues' => seeded_shuffle($entries, 'clue2|' . $attempt->id),
+        ];
+    }
+
+    /** One clue of either round: text, narration, and its state for a reload. */
+    private function clueEntry(ChallengeItem $item, string $locale, ?ItemResponse $response, bool $found): array
+    {
+        return ['item_id' => $item->id, 'text' => $item->text('prompt', $locale)] + $this->clueAudio($item, $locale) + [
+            'state' => [
+                'found'  => $found,
+                'closed' => $response !== null && $response->isAnswered(),
+                'tries'  => $response?->try_count ?? 0,
+            ],
+        ];
+    }
+
+    /**
+     * Round-1 clues of the attempt that are still open; round 2 waits for them.
+     *
+     * @return list<int>
+     */
+    private function roundOnePending(ChallengeAttempt $attempt): array
+    {
+        $roundOne = [];
+
+        foreach ($this->expectedItems($attempt) as $id => $item) {
+            if ($item->interaction_type === 'find_object') {
+                $roundOne[$id] = true;
+            }
+        }
+
+        return array_values(array_filter($this->pendingItemIds($attempt), static fn (int $id): bool => isset($roundOne[$id])));
     }
 
     /**
@@ -1372,6 +1499,42 @@ class ChallengeService
         }
 
         throw new \InvalidArgumentException('Objek tidak dikenal pada percobaan ini.');
+    }
+
+    /** Opaque ref of one round-2 part for one attempt (same HMAC as objectRef(), its own namespace). */
+    private function partRef(int $attemptId, int $partId): string
+    {
+        $key = (string) config('Encryption')->key;
+
+        if ($key === '') {
+            throw new \RuntimeException('encryption.key wajib diisi: token bagian unggahan diturunkan darinya.');
+        }
+
+        return substr(hash_hmac('sha256', 'cari-part|' . $attemptId . '|' . $partId, $key), 0, 20);
+    }
+
+    /**
+     * Round-2 answer from the client, `{ object: <ref> }` as in round 1, →
+     * `{ part: <part_key> }` of the attempt's post. Unknown refs are refused.
+     *
+     * @param array<string, mixed> $answer
+     *
+     * @return array{part: string}
+     */
+    private function resolvePartAnswer(ChallengeAttempt $attempt, array $answer): array
+    {
+        $ref  = (string) ($answer['object'] ?? '');
+        $post = service('contentRepository')->postScene((int) $attempt->challenge_node_id, (string) $attempt->variant_group);
+
+        if ($ref !== '' && $post !== null) {
+            foreach ($post['parts'] as $part) {
+                if (hash_equals($this->partRef($attempt->id, (int) $part['id']), $ref)) {
+                    return ['part' => strtoupper((string) $part['part_key'])];
+                }
+            }
+        }
+
+        throw new \InvalidArgumentException('Bagian unggahan tidak dikenal pada percobaan ini.');
     }
 
     /**

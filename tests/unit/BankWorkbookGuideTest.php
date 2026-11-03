@@ -149,7 +149,7 @@ final class BankWorkbookGuideTest extends CIUnitTestCase
 
         $media = $book->getSheetByName('DAFTAR_MEDIA');
         $this->assertNotNull($media);
-        $this->assertCount(66, $this->dataRows($media));
+        $this->assertCount(67, $this->dataRows($media));
 
         $book->disconnectWorksheets();
     }

@@ -553,4 +553,13 @@ return [
     'researchCodeSaved'          => 'Kode sekolah penelitian {0}: {1}.',
     'schoolName'                 => 'Nama sekolah',
     'save'                       => 'Simpan',
+
+    // Research revision part 5: new question bank (31)
+    'bankDimension'      => 'Dimensi',
+    'bankSubaspect'      => 'Sub-aspek',
+    'bankAkm'            => 'Level AKM',
+    'bankLabelSource'    => 'Asal label',
+    'bankLabelDeveloper' => 'Label pengembang',
+    'bankLabelExpert'    => 'Label ahli',
+    'bankErrorCodes'     => 'Kode kesalahan',
 ];

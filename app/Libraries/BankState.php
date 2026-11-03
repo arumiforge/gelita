@@ -6,8 +6,12 @@ use App\Entities\ChallengeItem;
 use App\Entities\ChallengeNode;
 use App\Models\ChallengeItemModel;
 use App\Models\ChallengeNodeModel;
+use App\Models\ItemErrorCodeModel;
 use App\Models\LevelModel;
+use App\Models\PostPartModel;
+use App\Models\PostSceneModel;
 use App\Models\ReadingPassageModel;
+use App\Models\ScenarioOptionModel;
 
 /**
  * Bank soal yang tersimpan di database dalam bentuk node BankRules.
@@ -46,8 +50,12 @@ final class BankState
             $this->passageKeys[(int) $passage->id] = (string) $passage->passage_key;
             $this->passages[(string) $passage->passage_key] = [
                 'level'   => $this->levels[(int) $passage->level_id]['code'] ?? '',
+                'title'   => (string) ($passage->title_id ?? ''),
                 'body_id' => (string) ($passage->body_id ?? ''),
                 'body_en' => (string) ($passage->body_en ?? ''),
+                'genre'   => (string) ($passage->text_genre ?? ''),
+                'layout'  => (string) ($passage->layout ?? ''),
+                'ref'     => (string) ($passage->reference_source ?? ''),
             ];
         }
     }
@@ -128,6 +136,9 @@ final class BankState
             'difficulty'       => $level['difficulty'],
             'distractor_count' => (int) $node->config('distractor_count', 0),
             'variants'         => [],
+            'codes'            => [],
+            'posts'            => [],
+            'scenarios'        => [],
         ];
 
         foreach ($node->variants() as $group => $entry) {
@@ -138,6 +149,26 @@ final class BankState
             $group = trim((string) $item->variant_group) ?: 'a';
             $normal['variants'][$group] ??= ['distractors' => [], 'items' => []];
             $normal['variants'][$group]['items'][] = $this->item($item);
+
+            foreach (model(ItemErrorCodeModel::class)->forItem((int) $item->id) as $type => $codes) {
+                foreach ($codes as $ref => $code) {
+                    $normal['codes'][(string) $item->item_key][] = ['type' => $type, 'ref' => (string) $ref, 'code' => $code['code'], 'main' => $code['main']];
+                }
+            }
+
+            if ($item->interaction_type === 'scenario_choice') {
+                $normal['scenarios'][(string) $item->item_key] = $this->scenario($item);
+            }
+        }
+
+        foreach (model(PostSceneModel::class)->where('challenge_node_id', (int) $node->id)->findAll() as $scene) {
+            $normal['posts'][(string) $scene['variant_group']] = [
+                'scene' => $scene,
+                'parts' => array_map(static fn (array $p): array => [
+                    'key' => (string) $p['part_key'], 'kind' => (string) $p['kind'], 'text_id' => (string) $p['text_id'], 'text_en' => (string) $p['text_en'],
+                    'x' => (float) $p['x'], 'y' => (float) $p['y'], 'w' => (float) $p['w'], 'h' => (float) $p['h'],
+                ], model(PostPartModel::class)->forScene((int) $scene['id'])),
+            ];
         }
 
         ksort($normal['variants'], SORT_STRING);
@@ -145,12 +176,41 @@ final class BankState
         return $normal;
     }
 
-    /** Soal tersimpan → bentuk BankRules. */
+    /** Stored scenario options → the scenario shape of BankRules. */
+    private function scenario(ChallengeItem $item): array
+    {
+        $out = ['topic' => (string) ($item->d2_topic ?? ''), 'steps' => (int) $item->conf('steps', 1), 'explanation' => (string) ($item->explanation_id ?? ''), 'actions' => [], 'reasons' => []];
+
+        foreach (model(ScenarioOptionModel::class)->forItem((int) $item->id) as $row) {
+            $out[$row['kind'] === 'reason' ? 'reasons' : 'actions'][] = [
+                'key' => (string) $row['option_key'], 'text_id' => (string) $row['text_id'], 'text_en' => (string) $row['text_en'],
+                'score' => $row['score'] === null ? null : (int) $row['score'], 'code' => (string) ($row['code'] ?? ''),
+            ];
+        }
+
+        return $out;
+    }
+
+    /** Soal tersimpan → bentuk BankRules (BankSource::itemFromRow()). */
     public function item(ChallengeItem $item): array
     {
         $type = (string) $item->interaction_type;
 
         return [
+            'sequence'    => (int) $item->sequence,
+            'round'       => $item->round === null ? null : (int) $item->round,
+            'dim'         => (string) ($item->dimension ?? ''),
+            'sub'         => (string) ($item->subaspect ?? ''),
+            'akm'         => (string) ($item->akm_level ?? ''),
+            'pirls'       => (string) ($item->pirls_process ?? ''),
+            'error_code'  => (string) ($item->error_code ?? ''),
+            'clue_type'   => (string) ($item->d3_clue_type ?? ''),
+            'topic'       => (string) ($item->d2_topic ?? ''),
+            'testlet'     => (string) ($item->testlet_key ?? ''),
+            'ref'         => (string) ($item->reference_source ?? ''),
+            'review'      => (string) ($item->review_status ?? ''),
+            'review_note' => (string) ($item->review_note ?? ''),
+            'media_label' => '',
             'key'       => (string) $item->item_key,
             'type'      => $type,
             'prompt_id' => (string) ($item->prompt_id ?? ''),
@@ -159,6 +219,7 @@ final class BankState
                 'fill_blank_bank' => (string) ($item->answerKey('text_id') ?? ''),
                 'verdict_card'    => (string) ($item->verdict() ?? ''),
                 'find_object'     => $item->isDecoy() ? 'decoy' : 'target',
+                'find_part'       => (string) ($item->answerKey('part') ?? ''),
                 default           => '',
             },
             'answer_en' => $type === 'fill_blank_bank' ? (string) ($item->answerKey('text_en') ?? '') : '',

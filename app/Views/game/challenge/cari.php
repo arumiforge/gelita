@@ -36,6 +36,11 @@
  * @var App\Entities\ChallengeAttempt $attempt
  * @var array<string, mixed>          $payload
  * @var string                        $locale
+ *
+ * Round 2, *Periksa Unggahan* (31 §12.1): `payload.round2` carries the post
+ * (title, photo, parts as boxes with plain text, clues). engines/cari.js
+ * draws it into the same #hunt-scene once every round-1 clue is closed; the
+ * texts it needs come from the data attributes on .hunt (Game.php keys).
  */
 $objects = $payload['objects'] ?? [];
 $clues   = $payload['clues'] ?? [];
@@ -53,7 +58,14 @@ $maxTries = max(1, (int) ($payload['max_tries'] ?? config('Gelita')->maxTries));
 <?= $this->section('hudLayout') ?>region-centre<?= $this->endSection() ?>
 
 <?= $this->section('arena') ?>
-<div class="hunt">
+<div class="hunt"
+     data-round2-title="<?= esc(lang('Game.huntRoundTwoTitle'), 'attr') ?>"
+     data-round2-intro="<?= esc(lang('Game.huntRoundTwoIntro'), 'attr') ?>"
+     data-round2-start="<?= esc(lang('Game.huntRoundTwoStart'), 'attr') ?>"
+     data-part-wrong="<?= esc(lang('Game.huntPartWrong'), 'attr') ?>"
+     data-part-label="<?= esc(lang('Game.huntPartN', ['{0}']), 'attr') ?>"
+     data-photo-alt="<?= esc(lang('Game.postSceneAlt'), 'attr') ?>"
+     data-pending-label="<?= esc(lang('Game.huntPending', ['{0}']), 'attr') ?>">
   <div class="hunt-clue">
     <?php // Mbah Kedu's round avatar in its gold ring, not a pose frame (owner, 21 October 2026) ?>
     <span class="hunt-guide"><?= component('partials/kedu-portrait', ['src' => media_key_src('ui.kedu-avatar'), 'name' => lang('Game.char_mbah_kedu')]) ?></span>

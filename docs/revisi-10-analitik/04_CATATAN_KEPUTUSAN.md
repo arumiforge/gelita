@@ -6,6 +6,22 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 3 November 2026
 
+**Gelombang kode D selesai: bagian 2 (28) dan bagian 5 (31) dikerjakan paralel lalu digabung koordinator** (cabang `pw/laughing-pasteur-e6ajo7`, `r10-kode-31-bank-soal`, dan cabang koordinator `pw/youthful-faraday-tcbj5z`) · `asal: pengembang` (penyimpangan dipilih AI saat implementasi) · `draf pengembang` · tidak merevisi produk
+
+Dua sesi AI mengerjakan bagian 2 dan bagian 5 di cabang masing-masing. Sesi koordinator menjalankan ulang tes, membuka PR #339 (bagian 2), lalu menggabungkan kedua cabang di cabang koordinator. Isi bank tetap `needs_verification`; kode belum dipakai dengan anak sebelum izin etik (entri 1 November 2026).
+
+1. **Penggabungan.**
+   - `SystemResetService::REQUIRED_MIGRATION` = `2026-01-01-003910` (migrasi terakhir), urutan pengosongan memuat tabel baru kedua bagian, `ResetTables` 40 tabel, `DataLayerWiringTest` 37 model.
+   - `BookletSource` (bagian 5) kini membaca `ParticipantSeatModel::bookletFor()` dan `ResearchStudyModel` (`field_mode = 1`, `status = active`) dari bagian 2; pemeriksaan "tabel ada atau tidak" dibuang. Tes `BookletVariantTest` memakai tabel bagian 2 yang sebenarnya.
+   - Teks bahasa (`Game.php`, `Admin.php`), `ChallengeRuleException` (`NODE_LOCKED` dan `BOOKLET_MISSING`), dan `ChallengeService` memuat kedua bagian. Bagian 5 tidak menyentuh `refreshProgress()`.
+   - Tes penuh hijau setelah penggabungan (949 tes).
+2. **Penyimpangan bagian 2** (rincian di catatan implementasi dan PR #339): simulator menolak berjalan saat mode penelitian menyala; kaitan ke bagian 4 dan 7 (baris `participant_consents`, penolakan token `inactive`, penolakan layar kecil, hitungan "izin belum diisi") belum dibuat karena tabelnya belum ada; token yang diganti ditolak sebagai `token_unknown`; percobaan token salah ke-10 sudah ditolak; rute baru `POST /admin/sekolah/kode-penelitian`; penanda langkah daftar tetap tiga langkah di mode penelitian.
+3. **Penyimpangan bagian 5** (rincian di catatan implementasi): teks bahasa Inggris diambil dari draf [36](36_TERJEMAHAN_BANK_SOAL.md) yang belum diperiksa pengembang; baris Skenario Digital disisihkan saat impor sampai bagian 6 memasang tantangannya; `pirls_process` diturunkan dari level AKM; `verdict_D1a` juga menerima `INF-GEN` (dipakai 08 di `mgl-3-a02`); `HUNT_SCENE_DP` = 864 dari `stage.css`; benda babak 1 Magelang dan Wonosobo ditata ulang agar memenuhi 24 dp; lembar `kode_pilihan` dan tampilan kunci untuk `ketua` diserahkan ke bagian 3.
+
+**Pertanyaan untuk pengembang.** (a) Susulan sikap P5 yang panjang berbenturan dengan batas 4 jam sesi lapangan (28 §6.7 no. 6). (b) Simulator di mode penelitian: dibuatkan sesi lapangan `sim` nanti, atau tetap ditolak? (c) Kaitan bagian 4 dan 7 di no. 2 dikerjakan di bagian itu. (d) Peringatan isi untuk ahli dari bagian 5: urutan S B S B `tmg-3-b` berbeda dengan keterangan 08, Wonosobo tanpa butir `INF-KAT`, `mgl-2` memuat butir AKM level 1, sebaran kode varian a dan b berbeda.
+
+Diubah: 04, 00 (baris bagian 2 dan 5 di *Tahap dokumen 3*), `docs/PROGRESS.md`, `BookletSource`, `BookletVariantTest`, `DataLayerWiringTest`, dan berkas yang bentrok saat penggabungan. Dokumen bernomor lain tidak diubah.
+
 **PDF 22 dan 26 terbaru dikirim; 22 ditangani peneliti langsung; akun `guru` selalu dihapus saat migrasi** (cabang `sky/loving-einstein-asupcs`) · `asal: peneliti` (22 diambil alih, dikonfirmasi peneliti ke pengembang) dan `asal: pengembang` (akun guru) · `disetujui pengembang` · tidak merevisi produk
 
 1. **PDF 22 dan 26 terbaru dikirim ke peneliti** pada 3 November 2026, PDF saja, menyelesaikan tugas pengembang di entri *Gelombang A dan B ditutup* di bawah. Berkasnya dari `dokumen-pdf/cetak/` di `main` pada *commit* `cf868b7`:

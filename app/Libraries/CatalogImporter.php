@@ -92,6 +92,9 @@ final class CatalogImporter
      * sha256 of the scene file: object media key → [old bank position, new
      * position]. Owner decision 12 October 2026: objects sit on the tables
      * and shelves drawn in the scene (the bank carries the same new values).
+     * Magelang and Wonosobo were re-laid on 3 November 2026 so every pair of
+     * objects keeps 24 dp apart (31 §9.2); the new positions stay on the
+     * same tables, and the art may be redrawn to fit them.
      */
     public const SCENE_OBJECTS = [
         '2e51f64d15fc5567617239aae838949fe90adb8715f78a309cd2e83512f01261' => ['challenge.tmg-4.scene', [
@@ -105,30 +108,30 @@ final class CatalogImporter
             'challenge.item.tmg-4-09' => [[74.0, 40.0, 12.0], [76.0, 56.5, 12.0]],
         ]],
         '0e1696c329f915a3c8c1eb9daa597e218d6335e4c3a438ae5909f002ca092fe2' => ['challenge.mgl-4.scene', [
-            'challenge.item.mgl-4-a02' => [[4.0, 56.0, 12.0], [1.0, 54.5, 8.0]],
-            'challenge.item.mgl-4-a05' => [[4.0, 17.0, 12.0], [10.5, 54.5, 8.0]],
-            'challenge.item.mgl-4-a09' => [[23.5, 56.0, 12.0], [20.0, 54.5, 8.0]],
-            'challenge.item.mgl-4-a01' => [[23.5, 17.0, 12.0], [28.5, 48.0, 7.0]],
-            'challenge.item.mgl-4-a07' => [[43.0, 17.0, 12.0], [23.5, 45.5, 6.0]],
-            'challenge.item.mgl-4-a08' => [[43.0, 56.0, 12.0], [72.0, 54.5, 8.0]],
-            'challenge.item.mgl-4-a04' => [[62.5, 56.0, 12.0], [81.5, 54.5, 8.0]],
-            'challenge.item.mgl-4-a10' => [[82.0, 56.0, 12.0], [91.0, 54.5, 8.0]],
-            'challenge.item.mgl-4-a03' => [[62.5, 17.0, 12.0], [64.5, 48.0, 7.0]],
-            'challenge.item.mgl-4-a06' => [[82.0, 17.0, 12.0], [70.5, 45.5, 6.0]],
+            'challenge.item.mgl-4-a02' => [[4.0, 56.0, 12.0], [1.0, 58.44, 6.5]],
+            'challenge.item.mgl-4-a05' => [[4.0, 17.0, 12.0], [10.5, 58.44, 6.5]],
+            'challenge.item.mgl-4-a09' => [[23.5, 56.0, 12.0], [20.0, 58.44, 6.5]],
+            'challenge.item.mgl-4-a01' => [[23.5, 17.0, 12.0], [38.3, 45.33, 6.0]],
+            'challenge.item.mgl-4-a07' => [[43.0, 17.0, 12.0], [29.5, 45.33, 6.0]],
+            'challenge.item.mgl-4-a08' => [[43.0, 56.0, 12.0], [73.0, 58.44, 6.5]],
+            'challenge.item.mgl-4-a04' => [[62.5, 56.0, 12.0], [82.5, 58.44, 6.5]],
+            'challenge.item.mgl-4-a10' => [[82.0, 56.0, 12.0], [92.0, 58.44, 6.5]],
+            'challenge.item.mgl-4-a03' => [[62.5, 17.0, 12.0], [55.7, 45.33, 6.0]],
+            'challenge.item.mgl-4-a06' => [[82.0, 17.0, 12.0], [64.5, 45.33, 6.0]],
         ]],
         'e9727ebb0def249783b255a896d1fe3aa39f7194b2bcd7c02228b698cd6738d8' => ['challenge.wnb-4.scene', [
-            'challenge.item.wnb-4-a01' => [[9.0, 8.0, 10.0], [31.0, 26.0, 10.0]],
-            'challenge.item.wnb-4-a08' => [[33.0, 8.0, 10.0], [47.0, 26.0, 10.0]],
-            'challenge.item.wnb-4-a12' => [[81.0, 8.0, 10.0], [63.0, 26.0, 10.0]],
-            'challenge.item.wnb-4-a09' => [[9.0, 39.0, 10.0], [15.0, 41.5, 10.0]],
-            'challenge.item.wnb-4-a03' => [[33.0, 39.0, 10.0], [35.0, 41.5, 10.0]],
-            'challenge.item.wnb-4-a11' => [[57.0, 39.0, 10.0], [55.0, 41.5, 10.0]],
-            'challenge.item.wnb-4-a02' => [[81.0, 39.0, 10.0], [75.0, 41.5, 10.0]],
-            'challenge.item.wnb-4-a06' => [[9.0, 70.0, 10.0], [7.0, 59.0, 10.0]],
-            'challenge.item.wnb-4-a07' => [[33.0, 70.0, 10.0], [25.0, 59.0, 10.0]],
-            'challenge.item.wnb-4-a05' => [[57.0, 8.0, 10.0], [45.0, 59.0, 10.0]],
-            'challenge.item.wnb-4-a04' => [[57.0, 70.0, 10.0], [65.0, 59.0, 10.0]],
-            'challenge.item.wnb-4-a10' => [[81.0, 70.0, 10.0], [83.0, 59.0, 10.0]],
+            'challenge.item.wnb-4-a01' => [[9.0, 8.0, 10.0], [25.0, 28.8, 8.0]],
+            'challenge.item.wnb-4-a08' => [[33.0, 8.0, 10.0], [47.0, 28.8, 8.0]],
+            'challenge.item.wnb-4-a12' => [[81.0, 8.0, 10.0], [69.0, 28.8, 8.0]],
+            'challenge.item.wnb-4-a09' => [[9.0, 39.0, 10.0], [14.0, 43.8, 8.0]],
+            'challenge.item.wnb-4-a03' => [[33.0, 39.0, 10.0], [36.0, 43.8, 8.0]],
+            'challenge.item.wnb-4-a11' => [[57.0, 39.0, 10.0], [58.0, 43.8, 8.0]],
+            'challenge.item.wnb-4-a02' => [[81.0, 39.0, 10.0], [80.0, 43.8, 8.0]],
+            'challenge.item.wnb-4-a06' => [[9.0, 70.0, 10.0], [4.0, 63.1, 8.0]],
+            'challenge.item.wnb-4-a07' => [[33.0, 70.0, 10.0], [23.0, 63.1, 8.0]],
+            'challenge.item.wnb-4-a05' => [[57.0, 8.0, 10.0], [42.0, 63.1, 8.0]],
+            'challenge.item.wnb-4-a04' => [[57.0, 70.0, 10.0], [61.0, 63.1, 8.0]],
+            'challenge.item.wnb-4-a10' => [[81.0, 70.0, 10.0], [80.0, 63.1, 8.0]],
         ]],
     ];
 

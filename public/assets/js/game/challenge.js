@@ -237,6 +237,12 @@ export async function bootChallenge() {
       }
       return true;
     }
+    // Research mode without a booklet (31 K10): the server's friendly sentence, then back to the region map
+    if (error.code === 'BOOKLET_MISSING') {
+      await showModal({ type: 'info', title: '', text: error.message, dismissible: false, buttons: [{ label: t('ok'), style: 'primary', value: 'ok' }] });
+      await leaveTo(exitUrl);
+      return true;
+    }
     if (error.code === 'CLUE_CLOSED' || error.code === 'ATTEMPT_CLOSED') {
       state.leaving = true;
       window.location.reload();

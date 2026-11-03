@@ -236,6 +236,16 @@ class RawDataService
             'skill' => null, 'indicator' => null, 'prompt' => null, 'passage_key' => 'reading_passages.passage_key',
             'answer_key' => null, 'decoy' => null, 'scorable' => 'challenge_items.scorable',
             'is_active' => 'challenge_items.is_active', 'media_asset_key' => 'media_assets.asset_key',
+            // Research revision 10, part 5 (31 §13.3; names of 11 → Variabel butir)
+            'round' => 'challenge_items.round', 'variant' => 'challenge_items.variant_group', 'booklet_shared' => null,
+            'dimension' => 'challenge_items.dimension', 'subaspect' => 'challenge_items.subaspect',
+            'akm_level' => 'challenge_items.akm_level', 'akm_level_source' => 'challenge_items.akm_level_source',
+            'pirls_process' => 'challenge_items.pirls_process', 'bloom_level_source' => 'challenge_items.bloom_level_source',
+            'text_genre' => 'reading_passages.text_genre', 'testlet_key' => 'challenge_items.testlet_key',
+            'd2_topic' => 'challenge_items.d2_topic', 'd3_clue_type' => 'challenge_items.d3_clue_type',
+            'gap_count' => null, 'distractor_word_count' => null, 'passage_words' => null, 'decoy_count' => null,
+            'option_count' => null, 'reason_option_count' => null, 'puzzle_grid' => null, 'tap_min_dp' => null,
+            'review_status' => 'challenge_items.review_status', 'reference_source' => 'challenge_items.reference_source',
         ],
     ];
 
@@ -827,7 +837,11 @@ class RawDataService
             ->select('levels.code AS level_code, challenge_nodes.sequence AS node_sequence')
             ->select('challenge_items.challenge_node_id, challenge_items.variant_group, challenge_items.sequence')
             ->select('challenge_items.interaction_type, challenge_items.bloom_level, reading_passages.passage_key')
-            ->select('challenge_items.scorable, challenge_items.is_active, media_assets.asset_key AS media_asset_key');
+            ->select('challenge_items.scorable, challenge_items.is_active, media_assets.asset_key AS media_asset_key')
+            ->select('challenge_items.round, challenge_items.variant_group AS variant, challenge_items.dimension, challenge_items.subaspect')
+            ->select('challenge_items.akm_level, challenge_items.akm_level_source, challenge_items.pirls_process, challenge_items.bloom_level_source')
+            ->select('reading_passages.text_genre, challenge_items.testlet_key, challenge_items.d2_topic, challenge_items.d3_clue_type')
+            ->select('challenge_items.review_status, challenge_items.reference_source, challenge_items.surface_json');
 
         $this->applyContentFilters($builder, $filters, 'challenge_nodes.level_id', 'challenge_items.challenge_node_id', 'challenge_items.variant_group');
 
@@ -1072,7 +1086,25 @@ class RawDataService
             'prompt'        => $item?->prompt_id,
             'answer_key'    => $this->answerKey($item, $labeled),
             'decoy'         => $item === null || $item->interaction_type !== 'find_object' ? null : ($item->isDecoy() ? 1 : 0),
-        ];
+            'booklet_shared' => $row['variant_group'] === \App\Libraries\BankRules::SHARED_GROUP ? 1 : 0,
+        ] + $this->surfaceValues($row['surface_json'] ?? null);
+    }
+
+    /**
+     * Surface-load columns of one item (SurfaceLoad, frozen at import).
+     *
+     * @return array<string, int|float|null>
+     */
+    private function surfaceValues(mixed $json): array
+    {
+        $load = is_string($json) ? (json_decode($json, true) ?: []) : (array) ($json ?? []);
+        $out  = [];
+
+        foreach (\App\Libraries\SurfaceLoad::KEYS as $key) {
+            $out[$key] = $load[$key] ?? null;
+        }
+
+        return $out;
     }
 
     /** Jawaban: JSON tersimpan apa adanya (berkode) atau kalimat (berlabel). */

@@ -54,7 +54,7 @@ final class NarrationKelas5Test extends CIUnitTestCase
         $this->assertSame($expected, array_keys($clues));
 
         // Teks petunjuk = petunjuk target bank soal §9, sesuai urutan soal
-        $this->assertSame('tmg-4-a01', $clues['petunjuk-tmg-4-01']['item_key']);
+        $this->assertSame('tmg-4-x01', $clues['petunjuk-tmg-4-01']['item_key']);
         $this->assertStringStartsWith('Temukan kuda-kudaan dari anyaman bambu', (string) $clues['petunjuk-tmg-4-01']['text_id']);
         $this->assertStringStartsWith('Temukan daun yang diseduh', (string) $clues['petunjuk-wnb-4-04']['text_id']);
     }

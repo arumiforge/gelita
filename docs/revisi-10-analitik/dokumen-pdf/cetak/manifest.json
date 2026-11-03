@@ -1,11 +1,11 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "8f3529665fc36938622db6999e7c47d81f224606c1b0603b3d5122e435a7d43f",
-      "commit": "f583d46",
+      "source": "42390e4b2839c6f3a823f04468936a2f8ce0251485c1cc9f78a06b745d37ac69",
+      "commit": "7f0a107",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
-      "pages": 18,
+      "pages": 19,
       "landscapeTables": 0
     },
     "01_REVISI_10_ANALITIK.md": {
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "bd2da59751af2932c3d90c9ba1afeb2c5b5b7b20c9d9cd54aa82a77dd97b6c13",
-      "commit": "f583d46",
+      "source": "3b0574b0c88d814ac0c7c01894737d9a16ea4fb1127a47b5de876e216175447b",
+      "commit": "7f0a107",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
-      "pages": 67,
+      "pages": 68,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {

@@ -22,11 +22,13 @@ class ChallengeItemModel extends Model
         'answer_key_json', 'media_asset_id', 'audio_prompt_id', 'audio_prompt_en_id',
         'indicator_id', 'bloom_level', 'config_json',
         'reference_source', 'review_status', 'review_note', 'scorable', 'is_active',
+        'round', 'dimension', 'subaspect', 'akm_level', 'akm_level_source', 'pirls_process', 'bloom_level_source',
+        'testlet_key', 'error_code', 'd2_topic', 'd3_clue_type', 'explanation_id', 'explanation_en', 'surface_json',
     ];
     protected $validationRules = [
         'challenge_node_id' => 'required|is_natural_no_zero',
         'item_key'          => ['label' => 'Kode soal', 'rules' => 'required|max_length[100]'],
-        'interaction_type'  => ['label' => 'Jenis soal', 'rules' => 'required|in_list[puzzle_arrange,fill_blank_bank,verdict_card,find_object]'],
+        'interaction_type'  => ['label' => 'Jenis soal', 'rules' => 'required|in_list[puzzle_arrange,fill_blank_bank,verdict_card,find_object,find_part,scenario_choice]'],
         'variant_group'     => ['label' => 'Variasi', 'rules' => 'permit_empty|alpha_numeric|max_length[10]'],
         'review_status'     => ['label' => 'Status pemeriksaan isi', 'rules' => 'permit_empty|in_list[draft,needs_verification,verified]'],
         'bloom_level'       => ['label' => 'Tingkat berpikir (Bloom)', 'rules' => 'permit_empty|in_list[C1,C2,C3,C4,C5,C6]'],
@@ -36,7 +38,7 @@ class ChallengeItemModel extends Model
     protected $beforeInsertBatch = ['encodeJsonBatch'];
 
     /** @var list<string> kolom JSON milik tabel ini */
-    protected array $jsonFields = ['answer_key_json', 'config_json'];
+    protected array $jsonFields = ['answer_key_json', 'config_json', 'surface_json'];
 
     /**
      * Seluruh bank soal aktif satu node, urut variasi lalu sequence.
@@ -81,46 +83,69 @@ class ChallengeItemModel extends Model
     }
 
     /**
-     * Picks one variant for a new attempt (Dok 1 §9.2). The first attempt
-     * (nothing served yet) draws only from the research set
-     * BankRules::FIRST_ATTEMPT_GROUPS (a–c) when the bank has any of them, so
-     * Susun Gambar variants d–j appear on replays only. Later attempts drop
-     * the variants the student already got ($excludeGroups) while others
-     * remain. The pick uses random_int(), truly random and unseeded. Every
-     * active item of the variant is used in sequence order; `cari` decoys go
-     * last so they still show in the scene.
+     * Picks one variant for a new attempt (Dok 1 §9.2, 31 §11). $group, when
+     * given and present in the bank, is used as it is (booklet, VariantPicker).
+     * Otherwise the first attempt (nothing served yet) draws from
+     * BankRules::FIRST_ATTEMPT_GROUPS (a, b) when the bank has any of them,
+     * and later attempts drop the variants the student already got while
+     * others remain. The draw uses random_int(), truly random and unseeded.
+     *
+     * The shared group `x` is never a variant: its active items join every
+     * attempt (K11): Cari Objek round 1 first, Benar atau Salah anchor cards
+     * after the variant's statements. `cari` decoys follow their targets.
      *
      * @param list<string>             $excludeGroups
      * @param list<ChallengeItem>|null $bank          bank yang sudah dimuat, hindari query ulang
      *
      * @return array{group: string, items: list<ChallengeItem>} items kosong bila bank kosong
      */
-    public function pickVariant(int $nodeId, array $excludeGroups, ?array $bank = null): array
+    public function pickVariant(int $nodeId, array $excludeGroups, ?array $bank = null, ?string $group = null): array
     {
         $groups = self::groupByVariant($bank ?? $this->bankForNode($nodeId));
+        $shared = $groups[BankRules::SHARED_GROUP] ?? [];
+        unset($groups[BankRules::SHARED_GROUP]);
 
         if ($groups === []) {
-            return ['group' => '', 'items' => []];
+            return ['group' => '', 'items' => self::targetsFirst($shared)];
         }
 
         $all = array_map('strval', array_keys($groups));
 
-        if ($excludeGroups === []) {
-            $candidates = array_values(array_intersect($all, BankRules::FIRST_ATTEMPT_GROUPS));
-        } else {
-            $candidates = array_values(array_diff($all, $excludeGroups));
+        if ($group === null || ! isset($groups[$group])) {
+            $candidates = $excludeGroups === []
+                ? array_values(array_intersect($all, BankRules::FIRST_ATTEMPT_GROUPS))
+                : array_values(array_diff($all, $excludeGroups));
+
+            if ($candidates === []) {
+                $candidates = $all;
+            }
+
+            $group = (string) $candidates[$this->randomIndex(count($candidates))];
         }
 
-        if ($candidates === []) {
-            $candidates = $all;
+        $items = self::targetsFirst($groups[$group]);
+
+        if ($shared !== []) {
+            $roundOne = array_filter($shared, static fn (ChallengeItem $i): bool => $i->interaction_type === 'find_object');
+            $items    = $roundOne !== []
+                ? [...self::targetsFirst($shared), ...$items]
+                : [...$items, ...$shared];
         }
 
-        $group = (string) $candidates[$this->randomIndex(count($candidates))];
+        return ['group' => $group, 'items' => $items];
+    }
 
+    /**
+     * @param list<ChallengeItem> $items
+     *
+     * @return list<ChallengeItem> targets first, `cari` decoys last
+     */
+    private static function targetsFirst(array $items): array
+    {
         $targets = [];
         $decoys  = [];
 
-        foreach ($groups[$group] as $item) {
+        foreach ($items as $item) {
             if ($item->isDecoy()) {
                 $decoys[] = $item;
             } else {
@@ -128,7 +153,7 @@ class ChallengeItemModel extends Model
             }
         }
 
-        return ['group' => $group, 'items' => array_merge($targets, $decoys)];
+        return [...$targets, ...$decoys];
     }
 
     /**

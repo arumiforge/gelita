@@ -53,7 +53,7 @@ final class WordBankShuffleTest extends CIUnitTestCase
 
     public function testAnswerOrderIsNeverTheBlankOrder(): void
     {
-        foreach (['tmg-2' => [3, 1], 'mgl-2' => [5, 2], 'wnb-2' => [7, 2]] as $ref => [$blanks, $decoys]) {
+        foreach (['tmg-2' => [4, 2], 'mgl-2' => [5, 2], 'wnb-2' => [6, 2]] as $ref => [$blanks, $decoys]) {
             foreach ($this->variants($ref) as $group => [$node, $items]) {
                 foreach (['id', 'en'] as $locale) {
                     $answers     = $this->answers($items, $locale);
@@ -76,7 +76,7 @@ final class WordBankShuffleTest extends CIUnitTestCase
                         $orders[implode('|', $bank)] = true;
                     }
 
-                    // Temanggung: 4 words = 24 orders, 20 of them allowed; the others vary far more
+                    // Temanggung: 6 words now (4 answers + 2 decoys, 31 §8.1), so the orders vary widely
                     $this->assertGreaterThan(min(self::SEEDS * 0.9, 19), count($orders), "{$ref} {$group} {$locale}: urutan beragam");
                 }
             }
@@ -155,7 +155,7 @@ final class WordBankShuffleTest extends CIUnitTestCase
             $out[(string) $item->variant_group][0]   = $node;
         }
 
-        $this->assertSame(['a', 'b', 'c'], array_keys($out), $ref);
+        $this->assertSame(['a', 'b'], array_keys($out), $ref);
 
         return array_map(static fn (array $pair): array => [$pair[0], $pair[1]], $out);
     }

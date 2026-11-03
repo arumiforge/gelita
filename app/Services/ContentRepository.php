@@ -12,11 +12,15 @@ use App\Models\ChallengeNodeModel;
 use App\Models\DialogueModel;
 use App\Models\GameReleaseModel;
 use App\Models\HintModel;
+use App\Models\ItemErrorCodeModel;
 use App\Models\LevelModel;
 use App\Models\LibraryMediaModel;
 use App\Models\LibraryPageModel;
 use App\Models\MediaAssetModel;
+use App\Models\PostPartModel;
+use App\Models\PostSceneModel;
 use App\Models\ReadingPassageModel;
+use App\Models\ScenarioOptionModel;
 
 /**
  * Pembaca konten permainan dengan cache.
@@ -91,6 +95,43 @@ class ContentRepository
     public function itemBank(int $nodeId): array
     {
         return $this->remember('items.' . $nodeId, static fn (): array => model(ChallengeItemModel::class)->bankForNode($nodeId));
+    }
+
+    /**
+     * Error codes of one item's wrong choices (31 §10.1), keyed by choice
+     * type (`word`, `object`, `part`) then choice ref. Server only.
+     *
+     * @return array<string, array<string, array{code: string, main: bool}>>
+     */
+    public function errorCodes(int $itemId): array
+    {
+        return $this->remember('codes.' . $itemId, static fn (): array => model(ItemErrorCodeModel::class)->forItem($itemId));
+    }
+
+    /**
+     * The *Periksa Unggahan* post of one variant with its tap parts (31 §6.3),
+     * or null when the variant has none.
+     *
+     * @return array{scene: array<string, mixed>, parts: list<array<string, mixed>>}|null
+     */
+    public function postScene(int $nodeId, string $group): ?array
+    {
+        // false (not null) is cached for a variant without a post
+        return $this->remember('post.' . $nodeId . '.' . $group, static function () use ($nodeId, $group): array|false {
+            $scene = model(PostSceneModel::class)->findFor($nodeId, $group);
+
+            return $scene === null ? false : ['scene' => $scene, 'parts' => model(PostPartModel::class)->forScene((int) $scene['id'])];
+        }) ?: null;
+    }
+
+    /**
+     * Actions and reasons of one Skenario Digital item (31 §6.3; read by part 6).
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function scenarioOptions(int $itemId): array
+    {
+        return $this->remember('scenario.' . $itemId, static fn (): array => model(ScenarioOptionModel::class)->forItem($itemId));
     }
 
     /** Petunjuk node, atau petunjuk item bila $itemId diisi. */

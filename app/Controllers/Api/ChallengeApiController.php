@@ -290,6 +290,7 @@ class ChallengeApiController extends BaseApiController
             'CLUE_CLOSED'     => lang('Game.errClueClosed'),
             'TRIES_REMAINING' => lang('Game.errTriesRemaining'),
             'ATTEMPT_CHANGED' => lang('Game.errAttemptChanged'),
+            'BOOKLET_MISSING' => lang('Game.bookletMissing'),
             default           => $e->getMessage(),
         };
 

@@ -1134,3 +1134,22 @@ mPDF. It returns `{sha, rows}`.
 | `GameSessionModel::resumable()` | `game_sessions` | in field mode only a session whose field session is open; `inFieldSession()` for K7 |
 
 Services: `FieldSessionService` (`service('fieldSessions')`: create, hours, close, tokens, make-ups, token check, meeting plan, open regions), `ParticipantCodeService` (`service('participantCodes')`: `S03-A07` from the counter), `SeatService` (L2 seats, booklet balance), `TestAccountService` (`service('testAccounts')`, `gelita:uji:akun`). `AnalyticsService` gained `fieldSessionSummary()`, `fieldSessionRoster()`, `droppedEvents()`, `monitoring()`. Libraries: `ProgressRules`, `SeatRules`.
+
+## Research revision 10, part 5: bank models and libraries
+
+*(New, English; 31 §15.)*
+
+| Class | Role |
+|---|---|
+| `ItemErrorCodeModel` | `item_error_codes`: `forItem()` (type → ref → code, main), `replaceForItem()` (import, counts changed codes) |
+| `PostSceneModel`, `PostPartModel` | the *Periksa Unggahan* post per challenge and variant, and its tap parts (boxes in percent) |
+| `ScenarioOptionModel` | actions and reasons of a Skenario Digital item (read by part 6) |
+| `ContentRepository::errorCodes()`, `postScene()`, `scenarioOptions()` | cached readers in the bank cache, cleared by `flush()` |
+| `App\Libraries\ErrorCodes` | the code list of 03 and the codes allowed per kind of choice |
+| `App\Libraries\ErrorCodeResolver` | the code of one wrong try (`item_tries.error_code`), English cloze words mapped back to Indonesian |
+| `App\Libraries\BookletRules`, `VariantPicker`, `BookletSource` | first-attempt variant from the booklet (B1–B4) in research mode, random otherwise, `BOOKLET_MISSING` without a booklet; `BookletSource` is the seam to part 2 (`participant_seats.booklet`, `research_studies.field_mode`) |
+| `App\Libraries\HuntGeometry` | dp conversion and edge distance of tap areas (24 dp rule, `near_miss_count` of part 9) |
+| `App\Libraries\SurfaceLoad` | surface-load variables per item, computed at import into `surface_json` |
+
+`ChallengeItemModel::pickVariant()` takes an optional forced group and adds the shared group `x` to every attempt (round 1 first, anchor cards last). `ChallengeItem` casts `surface_json` and `round`; `ReadingPassage::toPlayerArray()` adds `layout` and `genre`.
+

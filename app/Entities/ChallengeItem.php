@@ -23,6 +23,8 @@ class ChallengeItem extends Entity
         'passage_id'         => '?int',
         'answer_key_json'    => '?json-array',
         'config_json'        => '?json-array',
+        'surface_json'       => '?json-array',
+        'round'              => '?int',
         'media_asset_id'     => '?int',
         'audio_prompt_id'    => '?int',
         'audio_prompt_en_id' => '?int',

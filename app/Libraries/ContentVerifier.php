@@ -48,6 +48,11 @@ class ContentVerifier
         $regions = $state->regions($normal);
         $keys    = [];
 
+        // Across challenges: code coverage per region, Susun Gambar captions that leak a key (31 §8.2)
+        foreach (BankRules::bank($normal, $state->passages()) as $problem) {
+            $findings[] = $this->finding($researchReady ? 'error' : $problem['level'], 'Bank soal · ' . $problem['node'], $problem['message']);
+        }
+
         foreach ($levels as $level) {
             $nodes = $content->nodesForLevel($level->id);
             $scope = 'Wilayah ' . $level->text('name', 'id');
@@ -72,8 +77,9 @@ class ContentVerifier
                 $ref       = node_ref((string) $level->code, (int) $node->sequence);
                 $bank      = $content->itemBank($node->id);
 
+                // Bank warnings of 31 §8.2 become errors in research-ready mode
                 foreach (BankRules::node($normal[$ref] ?? ['ref' => $ref, 'engine' => $node->engine_type, 'variants' => []], $state->passages()) as $problem) {
-                    $findings[] = $this->finding($problem['level'], $this->scope($nodeScope, $problem), $problem['message']);
+                    $findings[] = $this->finding($researchReady ? 'error' : $problem['level'], $this->scope($nodeScope, $problem), $problem['message']);
                 }
 
                 if ($node->engine_type === 'puzzle') {
