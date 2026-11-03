@@ -57,8 +57,13 @@ final class BankRulesNewBankTest extends CIUnitTestCase
         $node['variants']['x']['items'][0]['answer_id'] = 'benar';
         $this->assertProblem($node, 'error', 'Kartu jangkar berkunci 2 benar : 0 salah');
 
-        // 08 itself: tmg-3-b is S B S B
-        $this->assertProblem($this->node('tmg-3'), 'warning', 'berselang-seling penuh (S B S B)');
+        // 08 shows tmg-3-b as S B B S (fixed 3 November 2026); S B S B warns
+        $this->assertNoProblem($this->node('tmg-3'), 'berselang-seling penuh');
+        $node  = $this->node('tmg-3');
+        $items = &$node['variants']['b']['items'];
+        [$items[2], $items[3]] = [$items[3], $items[2]];
+        unset($items);
+        $this->assertProblem($node, 'warning', 'berselang-seling penuh (S B S B)');
     }
 
     public function testExactlyOneCodePerWrongChoiceOfTheRightKind(): void
@@ -239,8 +244,14 @@ final class BankRulesNewBankTest extends CIUnitTestCase
         $node['variants']['a']['items'][0]['prompt_en'] = $node['variants']['a']['items'][0]['prompt_id'];
         $this->assertProblem($node, 'warning', 'Teks bahasa Inggris sama dengan teks Indonesia');
 
-        // Already in the data: mgl-2 a and b have different code spreads
-        $this->assertProblem($this->node('mgl-2'), 'warning', 'sebaran kode kesalahan berbeda');
+        // Variants a and b share one code spread in the data (evened out 3 November 2026)
+        foreach (['mgl-2', 'mgl-3', 'wnb-3'] as $ref) {
+            $this->assertNoProblem($this->node($ref), 'sebaran kode kesalahan berbeda');
+        }
+
+        $node = $this->node('mgl-2');
+        $node['codes']['mgl-2-a01'][0]['code'] = 'INF-GEN';
+        $this->assertProblem($node, 'warning', 'sebaran kode kesalahan berbeda');
     }
 
     public function testBankWideCoverageAndCaptionLeaks(): void
@@ -250,7 +261,22 @@ final class BankRulesNewBankTest extends CIUnitTestCase
         $found = array_map([BankRules::class, 'format'], BankRules::bank($nodes, $this->flat()['passages']));
 
         $this->assertContains("tmg-1 · variasi a · tmg-1-a01: Keterangan memuat kata kunci butir yang dinilai ('kuda kepang bambu'); periksa kebocoran dengan telaah 08.", $found);
-        $this->assertContains('wonosobo: Kode kesalahan yang diharapkan belum muncul di wilayah ini: INF-KAT.', $found, '08 has no INF-KAT in Wonosobo');
+        $this->assertNotContains('wonosobo: Kode kesalahan yang diharapkan belum muncul di wilayah ini: INF-KAT.', $found, '08 has INF-KAT in Wonosobo since 3 November 2026');
+
+        $withoutKat = $nodes;
+
+        foreach (['wnb-2', 'wnb-3', 'wnb-4', 'wnb-5'] as $ref) {
+            foreach ($withoutKat[$ref]['codes'] as $key => $codes) {
+                foreach ($codes as $i => $code) {
+                    if ($code['code'] === 'INF-KAT') {
+                        $withoutKat[$ref]['codes'][$key][$i]['code'] = 'INF-LIT';
+                    }
+                }
+            }
+        }
+
+        $found = array_map([BankRules::class, 'format'], BankRules::bank($withoutKat, $this->flat()['passages']));
+        $this->assertContains('wonosobo: Kode kesalahan yang diharapkan belum muncul di wilayah ini: INF-KAT.', $found);
 
         foreach (['tmg-2', 'tmg-3', 'tmg-4', 'tmg-5'] as $ref) {
             $nodes[$ref]['codes'] = [];
@@ -279,6 +305,13 @@ final class BankRulesNewBankTest extends CIUnitTestCase
     private function node(string $ref): array
     {
         return $this->flat()['nodes'][$ref];
+    }
+
+    private function assertNoProblem(array $node, string $needle): void
+    {
+        foreach (BankRules::node($node, $this->flat()['passages']) as $problem) {
+            $this->assertStringNotContainsString($needle, BankRules::format($problem));
+        }
     }
 
     /** @param array<string, array<string, mixed>>|null $passages */

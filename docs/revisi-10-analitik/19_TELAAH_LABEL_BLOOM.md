@@ -65,7 +65,7 @@ Tidak ada butir Periksa Unggahan C5: semua kriteria sudah diberikan di petunjuk,
 
 Tiga aturan, ditambah satu pengecualian:
 
-1. **Membandingkan isi dua teks atau dua angka → C2** (Anderson & Krathwohl: *comparing*). Contoh: `wnb-3-a01`, `wnb-3-a03`, `wnb-3-b01`, `mgl-3-b02`. Sebelumnya C4.
+1. **Membandingkan isi dua teks atau dua angka → C2** (Anderson & Krathwohl: *comparing*). Contoh: `wnb-3-a01`, `wnb-3-b01`, `mgl-3-b02`. Sebelumnya C4. (`wnb-3-a03` dulu juga contoh di sini; sejak 3 November 2026 butir itu menjelaskan sebab warna air dari bacaan, tetap C2 sebagai *explaining*.)
 2. **Menggolongkan komentar sebagai fakta atau pendapat → C2** (*classifying*). Contoh: `mgl-3-a04`, `a05`, `b04`, `b05`. Daftar kata kerja operasional yang beredar di Indonesia sering memasukkan "membedakan" ke C4. Di Anderson & Krathwohl, menempatkan contoh ke dalam kategori yang sudah diberikan adalah C2, sedangkan *differentiating* (C4) berarti memilah yang relevan dari yang tidak relevan. Pengembang memilih mengikuti Anderson & Krathwohl.
 3. **Menilai kepercayaan sumber dari penanda yang ada di teks (pembuat, tanggal, akun resmi) atau menolak alasan popularitas dan posisi → C4** (*attributing*, menemukan sudut pandang dan maksud sumber). Contoh: `mgl-3-a06`, `mgl-3-x02`, `wnb-3-a02`, `a04`, `a05`, `b03`–`b05`, `wnb-3-x02`. Sebelumnya C5 di Wonosobo. Kriterianya (pembuat jelas, tanggal jelas) diberikan di bacaan atau di pernyataan, jadi siswa tidak menyusun dan menerapkan kriteria sendiri.
 4. **Pengecualian C5:** `wnb-3-a06` dan `wnb-3-b06`. Pernyataannya dimulai "Berdasarkan bukti dalam bacaan, …", dan siswa harus memeriksa apakah simpulan itu didukung bukti (*checking*). Pengecohnya simpulan yang terdengar masuk akal (air tampak jernih; pengumuman melarang datang) tetapi melampaui bukti.
@@ -160,11 +160,11 @@ Kolom: kode, engine, label lama, label baru, proses kognitif yang dilakukan sisw
 | Kode | Engine | Lama | Baru | Proses | Alasan |
 | --- | --- | --- | --- | --- | --- |
 | mgl-2-a01 | Isi Rumpang | C2 | C2 | Menyimpulkan | Memadukan enam dan tiga teras |
-| mgl-2-a02 | Isi Rumpang | C2 | C2 | Menafsirkan | Mengaitkan definisi "bangunan berbentuk lonceng" dengan istilah |
+| mgl-2-a02 | Isi Rumpang | C2 | C2 | Menafsirkan | Mengaitkan definisi "bangunan berbentuk lonceng" dengan bangunan di puncak yang disebut di kalimat berikutnya (rumusan 3 November 2026) |
 | mgl-2-a03 | Isi Rumpang | C2 | C2 | Menyimpulkan | Satu arca di setiap stupa → 72 |
 | mgl-2-a04 | Isi Rumpang | C3 | **C2** | Membandingkan | Membandingkan 1.460 dan 1.212, sama dengan perbandingan angka di butir lain |
 | mgl-2-a05 | Isi Rumpang | C2 | C2 | Menjelaskan sebab–akibat | Batu rusak → dilarang |
-| mgl-2-b01 | Isi Rumpang | C2 | C2 | Menafsirkan | Mengaitkan definisi dengan istilah "kuluk" |
+| mgl-2-b01 | Isi Rumpang | C2 | C2 | Menafsirkan | Mengaitkan "bulu" di kalimat kedua dengan istilah "kuluk" di kalimat pertama (rumusan 3 November 2026) |
 | mgl-2-b02 | Isi Rumpang | C2 | C2 | Menjelaskan sebab–akibat | Kaki dihentakkan → lonceng berbunyi |
 | mgl-2-b03 | Isi Rumpang | C2 | C2 | Menyimpulkan | Dari "bergerak serempak" |
 | mgl-2-b04 | Isi Rumpang | C2 | C2 | Menyimpulkan | Dari "warganya banyak bertani" |
@@ -177,7 +177,7 @@ Kolom: kode, engine, label lama, label baru, proses kognitif yang dilakukan sisw
 | mgl-3-a06 | Benar atau Salah | C4 | C4 | Mengatribusikan | Menilai sumber dari penanda akun resmi |
 | mgl-3-b01 | Benar atau Salah | C2 | C2 | Merangkum | Gagasan pokok paragraf |
 | mgl-3-b02 | Benar atau Salah | C4 | **C2** | Membandingkan | 907 dengan 1957 |
-| mgl-3-b03 | Benar atau Salah | C2 | C2 | Menafsirkan | Teks menyebut cerita itu legenda |
+| mgl-3-b03 | Benar atau Salah | C2 | C2 | Menafsirkan | Rumusan 3 November 2026: "semua keterangan tentang Gunung Tidar adalah legenda"; siswa membedakan satu cerita yang disebut legenda dari keterangan lain di unggahan |
 | mgl-3-b04 | Benar atau Salah | C4 | **C2** | Menggolongkan | Fakta atau pendapat (aturan 2) |
 | mgl-3-b05 | Benar atau Salah | C4 | **C2** | Menggolongkan | Fakta atau pendapat (aturan 2) |
 | mgl-3-b06 | Benar atau Salah | C4 | C4 | Mengatribusikan | Menilai sumber dari penanda akun resmi |
@@ -222,7 +222,7 @@ Kolom: kode, engine, label lama, label baru, proses kognitif yang dilakukan sisw
 | wnb-2-b06 | Isi Rumpang | C4 | C4 | Mengorganisasi | Memadukan rantai sebab–akibat paragraf pertama |
 | wnb-3-a01 | Benar atau Salah | C4 | **C2** | Membandingkan | Isi dua kabar (aturan 1) |
 | wnb-3-a02 | Benar atau Salah | C5 | **C4** | Mengatribusikan | Menolak alasan popularitas (aturan 3) |
-| wnb-3-a03 | Benar atau Salah | C4 | **C2** | Membandingkan | Isi dua kabar (aturan 1) |
+| wnb-3-a03 | Benar atau Salah | C4 | **C2** | Menjelaskan | Rumusan 3 November 2026: sebab warna air (belerang) dari unggahan pengelola; dulu membandingkan isi dua kabar (aturan 1) |
 | wnb-3-a04 | Benar atau Salah | C5 | **C4** | Mengatribusikan | Penanda pembuat dan tanggal sudah diberikan di pernyataan (aturan 3) |
 | wnb-3-a05 | Benar atau Salah | C5 | **C4** | Mengatribusikan | Dito hanya membaca pesan berantai; guru punya pengetahuan (aturan 3) |
 | wnb-3-a06 | Benar atau Salah | C5 | C5 | Memeriksa | Apakah simpulan "boleh diminum asal jernih" didukung bukti |
@@ -272,7 +272,7 @@ Kolom: kode, engine, label lama, label baru, proses kognitif yang dilakukan sisw
 Hal di 08 yang terlihat selama telaah, tetapi di luar wewenang sesi ini:
 
 - `wnb-3-b02` berlevel AKM L2, padahal jawabannya tersurat ("gas yang berbahaya bagi kesehatan"); lebih dekat ke L1. **Diputuskan pengembang (26 Oktober 2026):** level AKM tetap L2, pernyataannya ditulis ulang supaya siswa perlu menyimpulkan. Sudah ditulis ulang di hari yang sama: "Menurut bacaan, petugas memasang pagar pembatas karena kawah di Dieng terlalu panas untuk didekati." (salah, INF-HUB). Label Bloom-nya diperiksa lagi dan tetap C2 (catatan di 08, *Yang harus dicek sebelum validasi ahli*).
-- `mgl-2-a02` dan `mgl-2-b01` berlevel AKM L1 tetapi berlabel Bloom C2. Ini tidak bertentangan, karena siswa mengaitkan definisi dengan istilah. Ahli bisa memeriksanya di B.5a.
+- `mgl-2-a02` dan `mgl-2-b01` dulu berlevel AKM L1 dengan Bloom C2. Sejak 3 November 2026 keduanya ditulis ulang menjadi L2 (definisi dan rumpang dipisah satu kalimat), sesuai kisi-kisi Magelang; Bloom tetap C2. Ahli bisa memeriksanya di B.5a.
 
 ## Rujukan
 

@@ -685,26 +685,6 @@ return [
                             ],
                         ],
                         [
-                            'key'    => 'tmg-3-b03',
-                            'type'   => 'verdict_card',
-                            'prompt' => [
-                                'Layar ini dipasang tanpa nama pemasang, jadi isinya tidak bisa ditanyakan kepada siapa pun.',
-                                'This screen was put up with no name on it, so there is no one to ask about what it says.',
-                            ],
-                            'answer' => 'salah',
-                            'code'   => 'INF-SUM',
-                            'dim'    => 'D1',
-                            'sub'    => 'D1b',
-                            'akm'    => 'L1',
-                            'pirls'  => 'retrieve',
-                            'bloom'  => 'C2',
-                            'skill'  => 'mengenali_penanda_sumber',
-                            'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
-                            ],
-                        ],
-                        [
                             'key'    => 'tmg-3-b04',
                             'type'   => 'verdict_card',
                             'prompt' => [
@@ -725,6 +705,26 @@ return [
                                 'note'   => 'arca lembu Nandi duduk dari batu',
                                 'source' => 'Baru (08 → Gambar yang dibutuhkan): gambar lama tmg-3-b03 sengaja arca Buddha',
                             ],
+                            'review' => [
+                                'status' => 'needs_verification',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            ],
+                        ],
+                        [
+                            'key'    => 'tmg-3-b03',
+                            'type'   => 'verdict_card',
+                            'prompt' => [
+                                'Layar ini dipasang tanpa nama pemasang, jadi isinya tidak bisa ditanyakan kepada siapa pun.',
+                                'This screen was put up with no name on it, so there is no one to ask about what it says.',
+                            ],
+                            'answer' => 'salah',
+                            'code'   => 'INF-SUM',
+                            'dim'    => 'D1',
+                            'sub'    => 'D1b',
+                            'akm'    => 'L1',
+                            'pirls'  => 'retrieve',
+                            'bloom'  => 'C2',
+                            'skill'  => 'mengenali_penanda_sumber',
                             'review' => [
                                 'status' => 'needs_verification',
                                 'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',

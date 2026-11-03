@@ -6,6 +6,19 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 3 November 2026
 
+**Empat peringatan isi bank bagian 5 dibetulkan di 08** (cabang `r10-bank-peringatan-isi`) · `asal: pengembang` (rumusan dan kode didraf AI) · `draf pengembang` · merevisi produk (isi bank, butir tetap `needs_verification`)
+
+Menjalankan keputusan no. 4 entri di bawah. Sebelum 08 diubah, `docs/bank-soal/tools/import_08.py` menghasilkan ulang ketiga berkas data persis sama, jadi sejak hari ini 08 dan [36](36_TERJEMAHAN_BANK_SOAL.md) kembali menjadi sumber: isi diubah di 08/36, lalu pengubah dijalankan dan workbook dibangun ulang.
+
+1. **`tmg-3-b`: yang keliru urutan butirnya, bukan keterangannya.** Pemeriksaan 08 menyatakan "tidak ada pola selang-seling penuh", dan aturan bank memperingatkan pola itu. Variasi b kini tampil b01, b02, b04, b03 (S B B S). Kode butir tidak diubah agar rujukan di 05, 09, 19, dan 25 tetap cocok. Tidak dipilih: mengganti keterangan menjadi S B S B; mengganti kunci b01/b02 (bertentangan dengan cek fakta 25).
+2. **Wonosobo mendapat `INF-KAT`** lewat kode pengecoh Isi Rumpang: `wnb-2-a06` *panas* (kata yang sama ada di bacaan) INF-LIT → INF-KAT, `wnb-2-b06` *berawan* (mirip "awan") INF-HUB → INF-KAT, dan `wnb-2-b05` *siang* INF-LIT → INF-HUB supaya variasi a dan b tetap setara. Jumlah butir dan kisi-kisi tidak berubah.
+3. **`mgl-2` tanpa butir AKM L1.** Bacaan `mgl-2-a02` (stupa induk) dan `mgl-2-b01` (kuluk) ditulis ulang sehingga rumpang tidak lagi tepat sesudah definisinya; siswa memadukan dua kalimat. Level AKM L1 → L2, Bloom tetap C2.
+4. **Sebaran kode varian a dan b diseimbangkan** di tiga tantangan yang diperingatkan: `mgl-2-b04` *penjajah* INF-LIT → INF-KAT (setara *enam* di `mgl-2-a01`); `mgl-3-b03` ditulis ulang menjadi "Menurut unggahan, semua keterangan tentang Gunung Tidar adalah legenda." (INF-GEN, setara `mgl-3-a02`); `wnb-3-a03` ditulis ulang menjadi pernyataan sebab tentang warna air dan belerang (INF-HUB, setara `wnb-3-b02`). Kunci tetap.
+
+Teks Inggris butir yang berubah diperbarui di 36 (draf AI). Peringatan yang tersisa (17) hanya soal terjemahan yang belum diperiksa pengembang. Atas permintaan pengembang, telaah di [05](05_TELAAH_BUTIR_DAN_DIMENSI.md), [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md), [19](19_TELAAH_LABEL_BLOOM.md), dan [25](25_CEK_FAKTA_BUDAYA.md) diberi rumusan baru di baris butir yang berubah. Temuan lama tetap tertulis sebagai riwayat telaah; rumusan dan kode yang berlaku ditambahkan dengan tanggal 3 November 2026. Keterangan panjang bacaan `mgl-2` di 08 dihitung ulang: variasi a ± 125 kata (124), variasi b ± 135 kata (133), sedikit di atas kisi-kisi 100–120; selisih a dan b tetap di bawah 10%. Tes penuh hijau (949 tes).
+
+Diubah: 08, 36, 05, 09, 19, 25, 04, 00 (baris 08 dan 36), berkas data dan workbook bank soal, `BankRulesNewBankTest`, `docs/PROGRESS.md`, catatan implementasi.
+
 **Jawaban pengembang atas pertanyaan gelombang kode D; PR #339 dan #340 digabung** (cabang `pw/youthful-faraday-tcbj5z`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
 
 Bagian 2 dan bagian 5 digabung ke `main` sebagai PR #339 dan #340 (3 November 2026); `main` sama dengan pohon yang diuji (949 tes hijau). Pengembang menjawab empat pertanyaan dari entri *Gelombang kode D selesai* di bawah:

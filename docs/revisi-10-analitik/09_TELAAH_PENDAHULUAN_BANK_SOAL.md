@@ -41,8 +41,8 @@ Untuk butir D1b, "bisa ditebak dari pengetahuan umum tentang sumber" (misalnya a
 | 9 | `mgl-2-b05` | Hanya *tertabrak* yang cocok sebagai kata kerja pasif | B.5b tanpa teks | Kalimat diubah menjadi "tetap ___ dari lompatan penari", kunci *aman*; *diam* dan *kompak* ikut bersaing |
 | 10 | `wnb-2-b03` | Hanya *membeku* yang berupa kata kerja di bank kata | B.5b tanpa teks | Rumpang dipindah ke kata penghubung: (2) *lalu*, (3) *sehingga*. Variasi b kini punya empat kata penghubung, variasi a tiga |
 | 11 | `mgl-3-a04` | Komentar diawali "Menurut saya", sehingga pendapatnya tertandai | B.5b | Penanda dihapus; pendapat dikenali dari isinya ("paling indah") |
-| 12 | `mgl-3-b03` | Butir berlabel L2 ternyata tersurat kata per kata (L1) | B.5b level | Kalimat legenda dari bank lama dikembalikan ("Konon, Pulau Jawa dulu bergoyang-goyang …"); pernyataan menanyakan apakah peristiwa itu benar terjadi |
-| 13 | `wnb-3-a06` | Kunci tersurat langsung di unggahan ("Bawalah air minum sendiri"), padahal berlabel D1b L3 | B.5b level | Kembali ke butir bank lama yang menuntut penerapan bukti ("boleh minum asal tampak jernih", salah, INF-GEN). Supaya kunci tetap 3 : 3, butir "kedua kabar sama-sama menyarankan meminum" diubah menjadi "hanya satu kabar yang menyarankan meminum" (benar). Urutan kunci a: B S B B S S |
+| 12 | `mgl-3-b03` | Butir berlabel L2 ternyata tersurat kata per kata (L1) | B.5b level | Kalimat legenda dari bank lama dikembalikan ("Konon, Pulau Jawa dulu bergoyang-goyang …"); pernyataan menanyakan apakah peristiwa itu benar terjadi. Sejak 3 November 2026 pernyataannya "Menurut unggahan, semua keterangan tentang Gunung Tidar adalah legenda." (salah, INF-GEN) supaya sebaran kode setara dengan variasi a; kalimat legenda tetap di bacaan |
+| 13 | `wnb-3-a06` | Kunci tersurat langsung di unggahan ("Bawalah air minum sendiri"), padahal berlabel D1b L3 | B.5b level | Kembali ke butir bank lama yang menuntut penerapan bukti ("boleh minum asal tampak jernih", salah, INF-GEN). Supaya kunci tetap 3 : 3, butir "kedua kabar sama-sama menyarankan meminum" diubah menjadi "hanya satu kabar yang menyarankan meminum" (benar). Urutan kunci a: B S B B S S. Sejak 3 November 2026 `wnb-3-a03` berbunyi "Menurut unggahan pengelola, warna air Telaga Warna bisa tampak hijau, biru, atau kekuningan karena airnya mengandung belerang." (benar, INF-HUB); kunci dan urutan tetap |
 | 14 | `tmg-3-a03`, `tmg-3-b03` | Butir D1b hanya menanyakan siapa pemasang layar. Instrumen D8 menolak butir seperti ini sebagai D1b | B.5b sub-aspek | Pernyataan dikaitkan dengan kepercayaan: "Layar ini tidak menyebutkan siapa pemasangnya, jadi kita tidak tahu siapa yang bisa ditanya kalau isinya keliru." (salah). Bloom C1 → C2 |
 | 15 | `mgl-5-a02`, `mgl-5-b02` | Pilihan "kurang tepat" berupa memutus pertemanan; itu tidak berada di antara tepat dan berisiko pada sumbu etis | B.6 | Diganti "Tolak tanpa menjelaskan apa pun", kode DIG-PSF |
 
@@ -141,14 +141,14 @@ Butir D1a diberi 3 karena menuntut proses membaca yang menjadi dasar D1, tapi be
 | tmg-5-b03 | D2 | 4 | T | T |  |
 | tmg-5-b04 | D2 | 4 | T | T |  |
 | mgl-2-a01 | D1a | 3 | T | T |  |
-| mgl-2-a02 | D1a | 2 | Y | T | Hanya *stupa* yang cocok sebagai kata benda di "disebut ___ induk" (sisa temuan R1) |
+| mgl-2-a02 | D1a | 2 | Y | T | Hanya *stupa* yang cocok sebagai kata benda di "disebut ___ induk" (sisa temuan R1). Ditulis ulang 3 November 2026 (L1 → L2): definisi dan rumpang dipisah satu kalimat; temuan R1 tetap berlaku |
 | mgl-2-a03 | D1a | 3 | T | T |  |
 | mgl-2-a04 | D1a | 3 | T | T |  |
 | mgl-2-a05 | D1a | 3 | Sebagian | T | Pesaing bentuk kata lemah (*banyak*) (sisa temuan R1) |
-| mgl-2-b01 | D1a | 3 | T | T |  |
+| mgl-2-b01 | D1a | 3 | T | T | Ditulis ulang 3 November 2026 (L1 → L2): bulu disebut di kalimat sesudah definisi kuluk |
 | mgl-2-b02 | D1a | 3 | T | T |  |
 | mgl-2-b03 | D1a | 3 | T | T |  |
-| mgl-2-b04 | D1a | 3 | T | T |  |
+| mgl-2-b04 | D1a | 3 | T | T | Kode pengecoh *penjajah* INF-LIT → INF-KAT (3 November 2026) |
 | mgl-2-b05 | D1a | 3 | T | T |  |
 | mgl-3-a01 | D1a | 3 | T | T |  |
 | mgl-3-a02 | D1a | 3 | T | T |  |
@@ -158,7 +158,7 @@ Butir D1a diberi 3 karena menuntut proses membaca yang menjadi dasar D1, tapi be
 | mgl-3-a06 | D1b | 4 | T | T | Bisa ditebak dari pengetahuan umum "akun resmi lebih dipercaya"; itu memang inti D1b |
 | mgl-3-b01 | D1a | 3 | T | T |  |
 | mgl-3-b02 | D1a | 3 | T | T |  |
-| mgl-3-b03 | D1a | 3 | T | T |  |
+| mgl-3-b03 | D1a | 3 | T | T | Ditulis ulang 3 November 2026: "semua keterangan tentang Gunung Tidar adalah legenda" (salah, INF-GEN) |
 | mgl-3-b04 | D1b | 4 | T | T |  |
 | mgl-3-b05 | D1b | 4 | T | T |  |
 | mgl-3-b06 | D1b | 4 | T | T | Sama dengan mgl-3-a06 |
@@ -185,16 +185,16 @@ Butir D1a diberi 3 karena menuntut proses membaca yang menjadi dasar D1, tapi be
 | wnb-2-a03 | D1a | 3 | T | T |  |
 | wnb-2-a04 | D1a | 3 | T | T |  |
 | wnb-2-a05 | D1a | 3 | T | T |  |
-| wnb-2-a06 | D1a | 3 | T | T |  |
+| wnb-2-a06 | D1a | 3 | T | T | Kode pengecoh *panas* INF-LIT → INF-KAT (3 November 2026) |
 | wnb-2-b01 | D1a | 3 | T | T |  |
 | wnb-2-b02 | D1a | 3 | T | T |  |
 | wnb-2-b03 | D1a | 3 | T | T |  |
 | wnb-2-b04 | D1a | 3 | T | T |  |
-| wnb-2-b05 | D1a | 3 | T | T |  |
-| wnb-2-b06 | D1a | 3 | T | T |  |
+| wnb-2-b05 | D1a | 3 | T | T | Kode pengecoh *siang* INF-LIT → INF-HUB (3 November 2026) |
+| wnb-2-b06 | D1a | 3 | T | T | Kode pengecoh *berawan* INF-HUB → INF-KAT (3 November 2026) |
 | wnb-3-a01 | D1a | 3 | T | T |  |
 | wnb-3-a02 | D1b | 4 | T | T |  |
-| wnb-3-a03 | D1a | 3 | T | T |  |
+| wnb-3-a03 | D1a | 3 | T | T | Ditulis ulang 3 November 2026: warna air karena belerang (benar, INF-HUB) |
 | wnb-3-a04 | D1b | 4 | T | T |  |
 | wnb-3-a05 | D1b | 4 | T | T |  |
 | wnb-3-a06 | D1b | 4 | T | T |  |

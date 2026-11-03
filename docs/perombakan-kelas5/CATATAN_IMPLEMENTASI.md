@@ -2517,3 +2517,15 @@ Spec: `docs/revisi-10-analitik/31_IMPLEMENTASI_BANK_SOAL_BARU.md` (system change
 - **Research mode.** Bank warnings of 31 §8.2 become errors in `gelita:content:verify --siap-penelitian`.
 - **Not done here.** The `kode_pilihan` sheet and `ketua`-only answer keys (part 3 owns the sheet list); manual browser check of 31 §19.3 (no server in this container); mockup image for the new post photo `challenge.post.tmg-4-b` (no mockup kind for posts).
 
+
+## Follow-up: the four part-5 bank content warnings (3 November 2026, branch `r10-bank-peringatan-isi`)
+
+Owner decision in `04` (3 November 2026, item 4): fix the warnings in `08` instead of leaving them to the experts.
+
+- **Pipeline.** `docs/bank-soal/tools/import_08.py` reproduced the committed data files byte for byte before any edit, so 08/36 are the source again: content changes go into 08/36, then the converter, then `build-workbook.php`. The README and the script docstring say so.
+- **`tmg-3-b`.** The item order was the slip (08's check table says no full alternation, and `BankRules` warns on it). Variant b now shows b01, b02, b04, b03 (S B B S); item codes kept so references in 05, 09, 19, and 25 stay valid.
+- **`mgl-2-a02`, `mgl-2-b01`.** Passages rewritten so the blank no longer sits right after its definition; AKM L1 → L2 (PIRLS `infer`), Bloom C2 unchanged.
+- **Code spread a/b and Wonosobo `INF-KAT`.** `mgl-2-b04` *penjajah* INF-LIT → INF-KAT; `mgl-3-b03` rewritten as an over-generalisation (INF-GEN, mirrors `mgl-3-a02`); `wnb-2-a06` *panas* INF-LIT → INF-KAT, `wnb-2-b05` *siang* INF-LIT → INF-HUB, `wnb-2-b06` *berawan* INF-HUB → INF-KAT; `wnb-3-a03` rewritten as a cause statement (INF-HUB, mirrors `wnb-3-b02`). Keys, counts, sub-aspects, and blueprint totals unchanged.
+- **Tests.** `BankRulesNewBankTest` no longer expects these warnings from the data; it now checks the data is free of them and provokes each warning with a mutated copy.
+- **Older reviews.** At the owner's request, the rows of the changed items in `05`, `09`, `19`, and `25` now carry the current wording and codes (dated 3 November 2026); the earlier findings stay as review history. The `mgl-2` passage lengths in `08` were recounted (a 124, b 133 words; the blueprint asks 100–120).
+- **Left alone.** 17 warnings remain: translation still marked "terjemahan belum ada" (13) and English text equal to Indonesian in four tap parts (`tmg-4-b B2`, `mgl-4-a C2`, `wnb-4-a E2`, `wnb-4-b F2`).

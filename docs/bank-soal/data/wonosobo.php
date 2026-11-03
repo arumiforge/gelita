@@ -437,9 +437,9 @@ return [
                             'pirls'  => 'integrate',
                             'bloom'  => 'C4',
                             'trap'   => [
-                                'panas' => 'INF-LIT',
+                                'panas' => 'INF-KAT',
                             ],
-                            'note'   => 'Simpulan dari seluruh teks',
+                            'note'   => 'Simpulan dari seluruh teks; panas ada di bacaan ("dataran rendah yang panas"), jadi menangkap siswa yang mencocokkan kata. Kode diganti 3 November 2026 dari INF-LIT',
                             'review' => [
                                 'status' => 'needs_verification',
                                 'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
@@ -545,9 +545,9 @@ return [
                             'pirls'  => 'integrate',
                             'bloom'  => 'C2',
                             'trap'   => [
-                                'siang' => 'INF-LIT',
+                                'siang' => 'INF-HUB',
                             ],
-                            'note'   => 'Dari "cepat mencair saat matahari mulai terik"',
+                            'note'   => 'Dari "cepat mencair saat matahari mulai terik"; siang menangkap siswa yang tidak menghubungkan sebab dan akibat. Kode diganti 3 November 2026 dari INF-LIT',
                             'review' => [
                                 'status' => 'needs_verification',
                                 'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
@@ -567,9 +567,9 @@ return [
                             'pirls'  => 'integrate',
                             'bloom'  => 'C4',
                             'trap'   => [
-                                'berawan' => 'INF-HUB',
+                                'berawan' => 'INF-KAT',
                             ],
-                            'note'   => 'Simpulan sebab–akibat dari paragraf pertama',
+                            'note'   => 'Simpulan sebab–akibat dari paragraf pertama; berawan mirip kata "awan" di bacaan. Kode diganti 3 November 2026 dari INF-HUB',
                             'review' => [
                                 'status' => 'needs_verification',
                                 'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
@@ -663,17 +663,17 @@ return [
                             'key'    => 'wnb-3-a03',
                             'type'   => 'verdict_card',
                             'prompt' => [
-                                'Hanya satu dari dua kabar itu yang menyarankan orang meminum air telaga.',
-                                'Only one of the two messages suggests that people drink the lake water.',
+                                'Menurut unggahan pengelola, warna air Telaga Warna bisa tampak hijau, biru, atau kekuningan karena airnya mengandung belerang.',
+                                'According to the managers\' post, the water of Telaga Warna can look green, blue, or yellowish because it contains sulphur.',
                             ],
                             'answer' => 'benar',
-                            'code'   => 'INF-LIT',
+                            'code'   => 'INF-HUB',
                             'dim'    => 'D1',
                             'sub'    => 'D1a',
                             'akm'    => 'L2',
                             'pirls'  => 'integrate',
                             'bloom'  => 'C2',
-                            'skill'  => 'informasi_tersurat',
+                            'skill'  => 'menghubungkan_informasi',
                             'review' => [
                                 'status' => 'needs_verification',
                                 'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',

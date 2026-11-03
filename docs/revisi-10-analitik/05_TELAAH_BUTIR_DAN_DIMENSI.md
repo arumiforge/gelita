@@ -212,11 +212,11 @@ Kolom "Jawab" memuat kunci jawaban. Butir yang diistirahatkan (`mgl-2-a04`, `mgl
 | Kode | Inti soal | Jawab | AKM | Relevansi | Catatan |
 | --- | --- | --- | --- | --- | --- |
 | mgl-2-a01 | 6 teras persegi + 3 bundar = ___ teras | sembilan | L2 | 3 | Memadukan dua angka; pengecoh "enam" baik (INF-LIT) |
-| mgl-2-a02 | Bangunan lonceng terbesar = ___ induk | stupa | L1 | 3 | Istilah didefinisikan di teks |
+| mgl-2-a02 | Bangunan lonceng terbesar = ___ induk | stupa | L1 | 3 | Istilah didefinisikan di teks. Rumusan 08 sejak 3 November 2026: definisi dan rumpang dipisah satu kalimat ("Di puncak candi ada satu bangunan berbentuk lonceng yang paling besar. Bangunan itu disebut ___ induk."), L2 |
 | mgl-2-a06 | Ada ___ arca Buddha di dalam stupa | 72 | L2 | 3 | Simpulan kecil: satu arca per stupa |
 | mgl-2-a03 | Pahatan bercerita disebut ___ | relief | L1 | 2 | Kata "relief" tidak ada di teks; menuntut kosakata awal. **Tulis ulang** (definisikan di teks) |
 | mgl-2-a05 | Batu rusak bila dipanjat, jadi pengunjung ___ memanjat | dilarang | L2 | 3 | Baik; sebab–akibat |
-| mgl-2-b01 | Kecamatan Borobudur, dekat Candi ___ | Borobudur | L1 | 3 | — |
+| mgl-2-b01 | Kecamatan Borobudur, dekat Candi ___ | Borobudur | L1 | 3 | Rumusan 08 sejak 3 November 2026: "bulu-bulu pada ___ itu ikut bergoyang", kunci *kuluk*; bulu disebut di kalimat sesudah definisi kuluk, L2 |
 | mgl-2-b02 | Kaki dihentakkan, lonceng ___ | berbunyi | L2 | 3 | — |
 | mgl-2-b03 | Satu penari lebih cepat, tarian tidak ___ | kompak | L2 | 3 | Baik; menyimpulkan dari "bergerak serempak" |
 | mgl-2-b04 | Gerakan menggambarkan semangat para ___ | petani | L1 | 3 | — |
@@ -238,7 +238,7 @@ Kolom "Jawab" memuat kunci jawaban. Butir yang diistirahatkan (`mgl-2-a04`, `mgl
 | mgl-3-a05 | "Menjaga Borobudur tugas mulia" = fakta | salah | L3 | 4 | Baik: pendapat penulis tanpa penanda "menurut saya" |
 | mgl-3-b01 | Paragraf 1 terutama soal Waisak | salah | L2 | 3 | — |
 | mgl-3-b02 | Candi awal lebih tua dari candi akhir | benar | L2 | 3 | Sangat baik: tiga langkah. Fakta dicek: Mendut umumnya disebut yang tertua dari ketiganya |
-| mgl-3-b03 | Ucapan Bu Ratna = pendapat | benar | L3 | 4 | — |
+| mgl-3-b03 | Ucapan Bu Ratna = pendapat | benar | L3 | 4 | Rumusan 08 sejak 3 November 2026: "Menurut unggahan, semua keterangan tentang Gunung Tidar adalah legenda." (salah, L2, INF-GEN) |
 | mgl-3-b04 | Memotret menghalangi umat = menghormati | salah | L2 | 2 | Terjawab dari norma. Ini **kandidat babak 2 D3** kalau ditambah unsur mengunggah foto upacara |
 | mgl-3-b05 | Ucapan biksu (perjalanan dimulai dari Mendut) = fakta | benar | L3 | 4 | Baik dan menantang: kutipan bisa berisi fakta |
 | mgl-3-c01 | Paragraf 1 terutama soal Gunung Tidar dan legendanya | benar | L2 | 3 | **Bisa diperdebatkan:** paragraf 1 juga memuat tinggi bukit, pendakian, aturan, dan ucapan Kak Dewi, jadi "terutama ... legendanya" tidak tegas. Ubah jadi "terutama menceritakan Gunung Tidar" |
@@ -267,13 +267,13 @@ Kolom "Jawab" memuat kunci jawaban. Butir yang diistirahatkan (`mgl-2-a04`, `mgl
 | wnb-2-a03 | Sebaiknya membawa pakaian ___ | hangat | L2 | 3 | Pengecoh "panas" |
 | wnb-2-a04 | Carica tumbuh di 1.400–2.400 m, ___ sulit di dataran rendah | tetapi | L2 | 3 | — |
 | wnb-2-a05 | Sembungan 2.300 m, jadi carica ___ tumbuh | dapat | L2 | 3 | Sangat baik: membandingkan angka dengan rentang |
-| wnb-2-a06 | Pantai panas, jadi carica ___ tumbuh | sulit | L2 | 3 | Bergantung kuat pada a04–a05 (testlet) |
+| wnb-2-a06 | Pantai panas, jadi carica ___ tumbuh | sulit | L2 | 3 | Bergantung kuat pada a04–a05 (testlet). Rumusan 08 sejak 3 November 2026: rumpang (6) *sejuk*, pengecoh *panas* → INF-KAT |
 | wnb-2-a07 | Carica membutuhkan udara yang ___ | sejuk | L2 | 3 | Simpulan dari seluruh teks |
 | wnb-2-b01 | Dimasukkan ke ongklok, ___ dicelupkan | lalu | L2 | 3 | Urutan |
 | wnb-2-b03 | Kuah kental ___ dari tepung kanji | karena | L2 | 3 | — |
 | wnb-2-b04 | Udara dingin, ___ warga suka makanan berkuah | sehingga | L2 | 3 | — |
-| wnb-2-b05 | Rina punya mi dan kol, masih perlu daun ___ | kucai | L2 | 3 | Sangat baik: menerapkan daftar bahan |
-| wnb-2-b06 | Enak selagi hangat, ___ kuahnya bisa sangat panas | tetapi | L2 | 3 | — |
+| wnb-2-b05 | Rina punya mi dan kol, masih perlu daun ___ | kucai | L2 | 3 | Sangat baik: menerapkan daftar bahan. Rumusan 08 sejak 3 November 2026: bacaan embun upas, kunci *pagi*, pengecoh *siang* → INF-HUB |
+| wnb-2-b06 | Enak selagi hangat, ___ kuahnya bisa sangat panas | tetapi | L2 | 3 | Rumusan 08 sejak 3 November 2026: bacaan embun upas, kunci *cerah*, pengecoh *berawan* → INF-KAT |
 | wnb-2-b02 | Nama mi berasal dari nama ___ perebusnya | alat | L2 | 3 | — |
 | wnb-2-b07 | Paling cocok disantap saat udara ___ | dingin | L2 | 3 | — |
 | wnb-2-c01 | Panas lepas ___ tidak ada awan | karena | L2 | 3 | — |
@@ -290,7 +290,7 @@ Kolom "Jawab" memuat kunci jawaban. Butir yang diistirahatkan (`mgl-2-a04`, `mgl
 | --- | --- | --- | --- | --- | --- |
 | wnb-3-a01 | Kabar pertama lebih dipercaya karena pembuatnya jelas | benar | L3 | 4 | Kredibilitas sumber (INF-SUM) |
 | wnb-3-a02 | Kedua kabar membahas hal sama tapi bertentangan | benar | L3 | 4 | Mengenali kabar yang bertentangan |
-| wnb-3-a03 | Kedua kabar sama-sama menyarankan meminum air | salah | L2 | 4 | Membandingkan dua sumber |
+| wnb-3-a03 | Kedua kabar sama-sama menyarankan meminum air | salah | L2 | 4 | Membandingkan dua sumber. Rumusan 08 sejak 3 November 2026: "Menurut unggahan pengelola, warna air Telaga Warna bisa tampak hijau, biru, atau kekuningan karena airnya mengandung belerang." (benar, L2, INF-HUB) |
 | wnb-3-a04 | Memeriksa pembuat lalu bertanya ke guru = tepat | benar | L3 | 4 | Strategi verifikasi |
 | wnb-3-a05 | Bertanya ke teman lebih membantu daripada ke guru | salah | L3 | 3 | **Bisa diperdebatkan:** bacaan tidak menilai teman sama sekali. Ubah jadi "teman yang juga hanya membaca pesan berantai itu" |
 | wnb-3-a06 | Boleh minum asal airnya jernih | salah | L3 | 4 | Menerapkan bukti |
