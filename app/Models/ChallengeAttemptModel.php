@@ -19,7 +19,7 @@ class ChallengeAttemptModel extends Model
         'completion_reason', 'selected_item_ids_json', 'scorable_items',
         'first_pass_correct', 'final_correct', 'check_count', 'max_tries',
         'hint_count', 'answer_change_count', 'audio_use_count', 'stars',
-        'started_at', 'completed_at', 'duration_ms',
+        'started_at', 'completed_at', 'duration_ms', 'variant_source', 'booklet_at_open',
     ];
     protected $validationRules = [
         'session_id'        => 'required|is_natural_no_zero',

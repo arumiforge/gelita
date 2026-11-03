@@ -20,6 +20,7 @@ class ItemTryModel extends Model
     protected $allowedFields = [
         'challenge_attempt_id', 'challenge_item_id', 'try_no', 'check_no', 'answer_json',
         'is_correct', 'hint_opened_before', 'first_input_ms', 'last_input_ms', 'occurred_at',
+        'error_code', 'manual_code',
     ];
     protected $validationRules = [
         'challenge_attempt_id' => 'required|is_natural_no_zero',

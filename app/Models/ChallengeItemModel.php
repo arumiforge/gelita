@@ -22,11 +22,13 @@ class ChallengeItemModel extends Model
         'answer_key_json', 'media_asset_id', 'audio_prompt_id', 'audio_prompt_en_id',
         'indicator_id', 'bloom_level', 'config_json',
         'reference_source', 'review_status', 'review_note', 'scorable', 'is_active',
+        'round', 'dimension', 'subaspect', 'akm_level', 'akm_level_source', 'pirls_process', 'bloom_level_source',
+        'testlet_key', 'error_code', 'd2_topic', 'd3_clue_type', 'explanation_id', 'explanation_en', 'surface_json',
     ];
     protected $validationRules = [
         'challenge_node_id' => 'required|is_natural_no_zero',
         'item_key'          => ['label' => 'Kode soal', 'rules' => 'required|max_length[100]'],
-        'interaction_type'  => ['label' => 'Jenis soal', 'rules' => 'required|in_list[puzzle_arrange,fill_blank_bank,verdict_card,find_object]'],
+        'interaction_type'  => ['label' => 'Jenis soal', 'rules' => 'required|in_list[puzzle_arrange,fill_blank_bank,verdict_card,find_object,find_part,scenario_choice]'],
         'variant_group'     => ['label' => 'Variasi', 'rules' => 'permit_empty|alpha_numeric|max_length[10]'],
         'review_status'     => ['label' => 'Status pemeriksaan isi', 'rules' => 'permit_empty|in_list[draft,needs_verification,verified]'],
         'bloom_level'       => ['label' => 'Tingkat berpikir (Bloom)', 'rules' => 'permit_empty|in_list[C1,C2,C3,C4,C5,C6]'],
@@ -36,7 +38,7 @@ class ChallengeItemModel extends Model
     protected $beforeInsertBatch = ['encodeJsonBatch'];
 
     /** @var list<string> kolom JSON milik tabel ini */
-    protected array $jsonFields = ['answer_key_json', 'config_json'];
+    protected array $jsonFields = ['answer_key_json', 'config_json', 'surface_json'];
 
     /**
      * Seluruh bank soal aktif satu node, urut variasi lalu sequence.
