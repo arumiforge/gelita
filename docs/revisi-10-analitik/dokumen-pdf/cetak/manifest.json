@@ -1,18 +1,18 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "d7abcb788d70968dcf2c0a67f21d07efb9f75fc221c74a084da4e7c951df595b",
-      "commit": "b8f55f5",
+      "source": "ef606a9b8ca0d686ecdc11c47741634ece5e0cd83059cf684ab542018d1e9420",
+      "commit": "9950d31",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-02",
+      "date": "2026-11-03",
       "pages": 17,
       "landscapeTables": 0
     },
     "01_REVISI_10_ANALITIK.md": {
-      "source": "54f9617a7eab5c8a2bfe49f83b65a0c76a96afd807ff05e7049c69fe726f8e97",
-      "commit": "81647d8",
+      "source": "62a667e40ee7cd6b231c02fa4f549371b506dc6f36cb37fc962cce849b6313c3",
+      "commit": "9950d31",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-02",
+      "date": "2026-11-03",
       "pages": 28,
       "landscapeTables": 0
     },
@@ -25,18 +25,18 @@
       "landscapeTables": 0
     },
     "03_KODE_DAN_ARTI.md": {
-      "source": "780e80720058a2b321a9415f35a41570a1e3cfd0cf46c990c59d8871d6eb0a44",
-      "commit": "8b46ca2",
+      "source": "0dba90ee0e7b0543820b57c4647751f7b144473454eca20db5782267e394dad3",
+      "commit": "9950d31",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
+      "date": "2026-11-03",
       "pages": 11,
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "b50c8c6c6ad97ebb704c6485167068a970890120282ba71f274cd6dc297c456f",
-      "commit": "f90f7c1",
+      "source": "7d942d2afda467986ec34b368a9b683f52fa690d4d9797fa72d519ec25b69a32",
+      "commit": "9b8bcac",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-02",
+      "date": "2026-11-03",
       "pages": 62,
       "landscapeTables": 0
     },
@@ -65,10 +65,10 @@
       "landscapeTables": 0
     },
     "08_DRAF_BANK_SOAL.md": {
-      "source": "0d8f59b9184b9fd8ddc7d00d83e0b4f812b3376255ac90ae6d17c42b63a6d921",
-      "commit": "4384161",
+      "source": "c522432a6a9a3b11acd017d0ebd6b34e5cf18d00b0beba41eb78f2bb65adfe60",
+      "commit": "9950d31",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-27",
+      "date": "2026-11-03",
       "pages": 42,
       "landscapeTables": 0
     },
@@ -161,18 +161,18 @@
       "landscapeTables": 0
     },
     "20_PAKET_VALIDASI.md": {
-      "source": "f2a122deb534cab64e7b9a85cee5ecc987465387765b3eedf0fb40af19e62632",
-      "commit": "da90bef",
+      "source": "1ff2973bfc8129eb5a2154c61265d856b06dbfdc0e0872831fa4a8a1d1f531dd",
+      "commit": "9950d31",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
+      "date": "2026-11-03",
       "pages": 28,
       "landscapeTables": 1
     },
     "21_BERKAS_BUTIR_VALIDATOR.md": {
-      "source": "e1c26f390b0fc07862da46fdab0a2daeacc432de83cd73b078de84164572e039",
-      "commit": "9826410",
+      "source": "ffa01eca029799024dd4a9a7a78ddf651cb3e11e354304c9bfd2d946b9ceb975",
+      "commit": "9950d31",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-30",
+      "date": "2026-11-03",
       "pages": 7,
       "landscapeTables": 0
     },
@@ -225,18 +225,18 @@
       "landscapeTables": 0
     },
     "28_IMPLEMENTASI_SESI_LAPANGAN.md": {
-      "source": "d8b9a715f58007149da2383ab1a55fc4c94de50b748990ebf25f7a2cc808112b",
-      "commit": "4c89185",
+      "source": "c9e45f655ce6b5d23405120ce2ded271c691236b0be77278d84168667e725823",
+      "commit": "9950d31",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-02",
+      "date": "2026-11-03",
       "pages": 22,
       "landscapeTables": 0
     },
     "29_IMPLEMENTASI_DATA_PENELITIAN.md": {
-      "source": "87c03a53033bf7ca192c7df0be20c3bd4e78edf9fc11be8d710ca83d28a008a6",
-      "commit": "f90f7c1",
+      "source": "b829de23a1540627c0db273ecbe197ac5e2f0d4c0072663dad222424b802db5a",
+      "commit": "9b8bcac",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-02",
+      "date": "2026-11-03",
       "pages": 27,
       "landscapeTables": 0
     },
@@ -249,10 +249,10 @@
       "landscapeTables": 0
     },
     "31_IMPLEMENTASI_BANK_SOAL_BARU.md": {
-      "source": "39e0eb81447283df5b63af3f27aca4a3fe43509c4a4819c749e14aac196c4eaf",
-      "commit": "4c89185",
+      "source": "aa84d5ff155e36d9ef2114a49afdab2334906db96c120e940113ffa3fb398c09",
+      "commit": "9950d31",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-02",
+      "date": "2026-11-03",
       "pages": 21,
       "landscapeTables": 0
     },
