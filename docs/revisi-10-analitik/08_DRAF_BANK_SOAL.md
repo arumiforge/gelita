@@ -358,7 +358,7 @@ Level utama: interpretasi dan integrasi (L2) · Bloom C2–C4 · Skenario: tanda
 
 > Candi Borobudur berdiri di Kabupaten Magelang. Candi Buddha ini dibangun pada abad ke-8 dan ke-9. Di bagian bawah ada enam teras persegi, lalu di atasnya ada tiga teras bundar. Jadi, Borobudur memiliki **(1)** teras. Di teras bundar berdiri 72 stupa berlubang. Stupa adalah bangunan berbentuk lonceng. Di puncak candi ada satu bangunan berbentuk lonceng yang paling besar. Bangunan itu disebut **(2)** induk. Di dalam setiap stupa berlubang duduk sebuah arca Buddha. Jadi, di teras bundar ada **(3)** arca Buddha di dalam stupa. Dinding candi dihiasi 2.672 panel relief, yaitu pahatan gambar. Sebanyak 1.460 panel bercerita, sedangkan 1.212 panel hanya hiasan. Jadi, relief yang bercerita lebih **(4)** daripada relief hiasan. Batu-batu candi bisa rusak bila diinjak dan dipanjat. Oleh karena itu, pengunjung **(5)** memanjat stupa.
 
-Panjang ± 120 kata · Pengecoh bank kata: *enam*, *sedikit*
+Panjang ± 125 kata · Pengecoh bank kata: *enam*, *sedikit*
 
 | Kode | Rumpang | Kunci | Sub | AKM | Bloom | Pengecoh sasaran | Catatan |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -374,7 +374,7 @@ Fakta relief sudah dibetulkan sesuai 05: 2.672 panel, 1.460 bercerita, 1.212 hia
 
 > Topeng Ireng adalah tari rakyat dari Kabupaten Magelang. Tarian ini mulai tumbuh sekitar tahun 1950-an di Desa Tuksongo, Kecamatan Borobudur. Penarinya memakai kuluk, yaitu hiasan kepala yang berwarna-warni. Hiasan itu dibuat dari banyak helai bulu. Saat penari melompat, bulu-bulu pada **(1)** itu ikut bergoyang. Di pergelangan kaki penari terpasang lonceng kecil. Setiap kali kaki dihentakkan, lonceng itu **(2)**. Satu kelompok bisa berisi banyak penari yang bergerak serempak. Kalau ada satu penari yang bergerak lebih cepat daripada teman-temannya, tarian mereka menjadi tidak **(3)**. Konon, tarian ini lahir dari kisah warga desa yang dahulu berjuang mengusir penjajah. Karena itu, gerakannya tegas dan bersemangat, seperti barisan **(4)** yang siap bertempur. Dalam pertunjukan di lapangan desa, panitia memasang tali pembatas karena penari melompat ke segala arah. Penonton yang duduk di belakang tali tetap **(5)** dari lompatan penari.
 
-Panjang ± 120 kata · Pengecoh bank kata: *diam*, *penjajah*
+Panjang ± 135 kata · Pengecoh bank kata: *diam*, *penjajah*
 
 | Kode | Rumpang | Kunci | Sub | AKM | Bloom | Pengecoh sasaran | Catatan |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -1089,7 +1089,7 @@ Skenario ini diambil dari contoh di 01; kalimat tanya alasannya dibuat netral.
 | `tmg-2` | 55–70 kata | ± 75–80 | Sedikit di atas; selisih a dan b < 10% |
 | `tmg-3` | 50–70 | ± 50–55 (isi), ± 65 dengan kepala layar | Sesuai |
 | Jangkar TMG | 30–40 | ± 35 | Sesuai |
-| `mgl-2` | 100–120 | ± 120 | Sesuai |
+| `mgl-2` | 100–120 | ± 125–135 | Sedikit di atas (dihitung ulang 3 November 2026 sesudah `mgl-2-a02` dan `b01` ditulis ulang: a 124, b 133 kata); selisih a dan b < 10% |
 | `mgl-3` | 110–140 | ± 110–125 | Sesuai |
 | Jangkar MGL | 40–50 | ± 55 | Sedikit di atas |
 | `wnb-2` | 110–130 | ± 120–125 (isi) | Sesuai |
