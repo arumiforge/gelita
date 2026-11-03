@@ -6,6 +6,12 @@ use App\Models\AuditLogModel;
 use App\Models\ChallengeItemModel;
 use App\Models\ChallengeNodeModel;
 use App\Models\HintModel;
+use App\Models\ItemErrorCodeModel;
+use App\Models\PostPartModel;
+use App\Models\PostSceneModel;
+use App\Models\ScenarioOptionModel;
+use App\Libraries\ErrorCodes;
+use App\Libraries\SurfaceLoad;
 use App\Models\LearningIndicatorModel;
 use App\Libraries\BankRules;
 use App\Libraries\BankSource;
@@ -47,15 +53,31 @@ class ContentImportService
         'nodes'       => ['node_ref', 'title_id', 'title_en', 'instruction_id', 'instruction_en', 'description_id', 'description_en', 'distractor_count', 'scene_media_key', 'scene_media_label', 'scene_media_note', 'background_media_key', 'variant_code', 'indicator'],
         'variants'    => ['node_ref', 'variant_group', 'title_id', 'title_en'],
         'distractors' => ['node_ref', 'variant_group', 'text_id', 'text_en'],
-        'passages'    => ['passage_key', 'level_code', 'title_id', 'title_en', 'body_id', 'body_en', 'media_asset_key', 'reference_source'],
-        'items'       => ['item_key', 'node_ref', 'variant_group', 'sequence', 'interaction_type', 'indicator', 'bloom_level', 'skill', 'prompt_id', 'prompt_en', 'passage_key', 'answer_id', 'answer_en', 'x', 'y', 'w', 'decoy', 'wrong_feedback_id', 'wrong_feedback_en', 'media_asset_key', 'media_label', 'media_note', 'scorable', 'is_active', 'review_status', 'review_note', 'reference_source'],
+        'passages'    => ['passage_key', 'level_code', 'title_id', 'title_en', 'body_id', 'body_en', 'media_asset_key', 'reference_source', 'text_genre', 'layout'],
+        'items'       => ['item_key', 'node_ref', 'variant_group', 'sequence', 'interaction_type', 'indicator', 'bloom_level', 'skill', 'prompt_id', 'prompt_en', 'passage_key', 'answer_id', 'answer_en', 'x', 'y', 'w', 'decoy', 'wrong_feedback_id', 'wrong_feedback_en', 'media_asset_key', 'media_label', 'media_note', 'scorable', 'is_active', 'review_status', 'review_note', 'reference_source',
+            'round', 'dimension', 'subaspect', 'akm_level', 'pirls_process', 'label_source', 'testlet_key', 'error_code', 'd3_clue_type', 'd2_topic'],
         'hints'       => ['node_ref', 'item_key', 'sequence', 'text_id', 'text_en'],
+        // Research revision 10, part 5 (31 §6.3)
+        'cloze_matrix'     => ['node_ref', 'variant_group', 'item_key', 'word_id', 'error_code'],
+        'object_codes'     => ['item_key', 'object_key', 'error_code'],
+        'post_scenes'      => ['node_ref', 'variant_group', 'title_id', 'title_en', 'text_genre', 'media_asset_key', 'media_label', 'media_note', 'reference_source'],
+        'post_parts'       => ['node_ref', 'variant_group', 'part_key', 'kind', 'label_id', 'label_en', 'text_id', 'text_en', 'x', 'y', 'w', 'h'],
+        'part_codes'       => ['item_key', 'part_key', 'error_code', 'main'],
+        'scenarios'        => ['item_key', 'd2_topic', 'steps', 'explanation_id', 'explanation_en'],
+        'scenario_options' => ['item_key', 'kind', 'option_key', 'sequence', 'text_id', 'text_en', 'score', 'code', 'feedback_id', 'feedback_en'],
+        'indicators'       => ['code', 'name_id', 'name_en', 'description_id', 'description_en', 'domain'],
         'library'       => ['level_code', 'sequence', 'title_id', 'title_en', 'body_id', 'body_en', 'is_active'],
         'library_media' => ['level_code', 'page_sequence', 'sequence', 'media_kind', 'media_asset_key', 'external_url', 'poster_media_key', 'caption_id', 'caption_en', 'credit'],
     ];
 
     /** Sheet Pustaka: workbook bank soal tidak memilikinya, workbook Pustaka hanya keduanya. */
     private const LIBRARY_SHEETS = ['library', 'library_media'];
+
+    /** Sheets of 31 §6.3: optional, an older bank workbook has none of them. */
+    private const OPTIONAL_SHEETS = ['cloze_matrix', 'object_codes', 'post_scenes', 'post_parts', 'part_codes', 'scenarios', 'scenario_options', 'indicators'];
+
+    /** Indicator codes of the old bank, made inactive (not deleted) once a workbook brings the `indicators` sheet (31 §13.1). */
+    private const OLD_INDICATORS = ['budaya', 'literasi', 'sikap'];
 
 
     /** Pesan untuk jenis soal di luar Config\Gelita::$interactionTypes (Dok 2 §6.5). */
@@ -207,7 +229,7 @@ class ContentImportService
                 )
                 : [];
 
-            if (! $book->sheetNameExists($name) && $isBank && ! in_array($name, self::LIBRARY_SHEETS, true)) {
+            if (! $book->sheetNameExists($name) && $isBank && ! in_array($name, [...self::LIBRARY_SHEETS, ...self::OPTIONAL_SHEETS], true)) {
                 $warnings[] = ['sheet' => $name, 'row' => 0, 'message' => 'Sheet ' . $name . ' tidak ada di berkas, jadi dilewati.'];
             }
         }
@@ -221,7 +243,15 @@ class ContentImportService
             $sheets['items'][$index]['interaction_type'] = strtolower((string) $row['interaction_type']);
         }
 
-        foreach (['variants', 'distractors'] as $name) {
+        foreach ($sheets['items'] as $index => $row) {
+            foreach (['dimension', 'akm_level', 'error_code', 'd3_clue_type', 'd2_topic'] as $column) {
+                $sheets['items'][$index][$column] = strtoupper((string) $row[$column]);
+            }
+
+            $sheets['items'][$index]['label_source'] = strtolower((string) $row['label_source']);
+        }
+
+        foreach (['variants', 'distractors', 'cloze_matrix', 'post_scenes', 'post_parts'] as $name) {
             foreach ($sheets[$name] as $index => $row) {
                 $sheets[$name][$index]['variant_group'] = strtolower((string) $row['variant_group']) ?: 'a';
             }
@@ -231,6 +261,18 @@ class ContentImportService
         $nodes      = $this->nodeIdsByRef($levels);
         $indicators = array_map(static fn ($row): int => (int) $row['id'], model(LearningIndicatorModel::class)->map());
         $media      = model(MediaAssetModel::class)->keyMap();
+
+        // Indicators the workbook brings count as known before they are written
+        foreach ($sheets['indicators'] as $row) {
+            $indicators[trim((string) $row['code'])] ??= 0;
+        }
+
+        // Skenario Digital rows wait for their challenge (part 6): checked, not written
+        [$sheets, $pending] = $this->setAsidePending($sheets, $nodes);
+
+        foreach ($pending['refs'] as $ref => $count) {
+            $warnings[] = ['sheet' => 'items', 'row' => 0, 'message' => "Tantangan {$ref} (Skenario Digital) belum ada di permainan, jadi {$count} skenario beserta pilihannya sudah diperiksa tetapi belum disimpan. Impor ulang berkas yang sama setelah tantangan kelima dipasang."];
+        }
 
         $context = [
             'levels'     => $levels,
@@ -272,7 +314,7 @@ class ContentImportService
         // Aturan bank soal kelas 5 atas keadaan sesudah impor (hanya bila
         // baris-barisnya sendiri sudah sah, agar pesan tidak bertumpuk)
         if ($errors === []) {
-            foreach ($this->bankProblems($sheets, $context) as $problem) {
+            foreach ([...$this->bankProblems($sheets, $context), ...$this->pendingProblems($pending['sheets'], $context)] as $problem) {
                 if ($problem['level'] === 'error') {
                     $errors[] = $problem['finding'];
                 } else {
@@ -350,6 +392,13 @@ class ContentImportService
             'passages' => $this->validatePassage($row, $context),
             'items'    => $this->validateItem($row, $context),
             'hints'  => $this->validateHint($row, $context),
+            'cloze_matrix', 'object_codes', 'part_codes' => $this->validateCode($sheet, $row, $context),
+            'post_scenes', 'post_parts' => $this->validateNodeRef($row['node_ref'] ?? '', $context)
+                ?? $this->validateVariantGroup($sheet, (string) $row['variant_group'])
+                ?? $this->validatePost($sheet, $row),
+            'scenarios', 'scenario_options' => $this->validateScenario($sheet, $row, $context),
+            'indicators' => trim((string) $row['code']) === '' || trim((string) $row['name_id']) === '' || trim((string) $row['name_en']) === ''
+                ? 'Kolom code, name_id, dan name_en indikator wajib diisi.' : null,
             'library'       => $this->validateLibraryPage($row, $context),
             'library_media' => $this->validateLibraryMedia($row, $context),
             default  => null,
@@ -414,6 +463,99 @@ class ContentImportService
             return 'Isi bacaan bahasa Indonesia (body_id) dan bahasa Inggris (body_en) keduanya wajib diisi.';
         }
 
+        if ($row['text_genre'] !== '' && ! in_array($row['text_genre'], DifficultyRules::GENRES, true)) {
+            return self::unknown('passages', 'text_genre', $row['text_genre'], 'Pakai ' . implode(', ', DifficultyRules::GENRES) . '.');
+        }
+
+        if ($row['layout'] !== '' && ! in_array($row['layout'], DifficultyRules::LAYOUTS, true)) {
+            return self::unknown('passages', 'layout', $row['layout'], 'Pakai ' . implode(', ', DifficultyRules::LAYOUTS) . '.');
+        }
+
+        return null;
+    }
+
+    /** A row of `cloze_matrix`, `object_codes`, or `part_codes` (31 §6.3, §7.1). */
+    private function validateCode(string $sheet, array $row, array $context): ?string
+    {
+        $key = trim((string) $row['item_key']);
+
+        if ($key === '' || (! isset($context['items'][$key]) && model(ChallengeItemModel::class)->findByKey($key) === null)) {
+            return "Kode soal (item_key) '{$key}' tidak ditemukan di sheet items.";
+        }
+
+        $code = strtoupper(trim((string) $row['error_code']));
+
+        if ($code === '' || ErrorCodes::forbiddenInBank($code)) {
+            return $code === '' ? self::missing($sheet, 'error_code') : "Kode kesalahan '{$code}' tidak dikenal atau tidak boleh ada di bank (*-LAIN, NON-*). Pakai kode dari daftar kode dan arti (03).";
+        }
+
+        if ($sheet === 'object_codes' && ! isset($context['items'][trim((string) $row['object_key'])])) {
+            return "Benda (object_key) '{$row['object_key']}' tidak ditemukan di sheet items.";
+        }
+
+        if ($sheet === 'part_codes' && ! in_array((string) $row['main'], ['', '0', '1'], true)) {
+            return 'Kolom main (pengecoh utama?) hanya boleh 0 atau 1.';
+        }
+
+        return null;
+    }
+
+    private function validatePost(string $sheet, array $row): ?string
+    {
+        if ($sheet === 'post_scenes') {
+            return null;
+        }
+
+        if (trim((string) $row['part_key']) === '' || ! in_array($row['kind'], BankRules::PART_KINDS, true)) {
+            return 'Bagian ketuk wajib punya part_key dan kind (' . implode(', ', BankRules::PART_KINDS) . ').';
+        }
+
+        foreach (['x', 'y', 'w', 'h'] as $column) {
+            if (! is_numeric($row[$column])) {
+                return ucfirst(self::column('post_parts', $column)) . ' wajib angka (persen adegan).';
+            }
+        }
+
+        return null;
+    }
+
+    private function validateScenario(string $sheet, array $row, array $context): ?string
+    {
+        $key = trim((string) $row['item_key']);
+
+        if (! isset($context['items'][$key]) && model(ChallengeItemModel::class)->findByKey($key) === null) {
+            return "Kode skenario (item_key) '{$key}' tidak ditemukan di sheet items.";
+        }
+
+        if ($sheet === 'scenarios') {
+            return in_array((string) $row['steps'], ['1', '2'], true) ? null : 'Kolom steps (jumlah langkah) hanya boleh 1 atau 2.';
+        }
+
+        if (! in_array($row['kind'], ['action', 'reason'], true) || trim((string) $row['option_key']) === '' || trim((string) $row['text_id']) === '') {
+            return 'Pilihan skenario wajib punya kind (action atau reason), option_key, dan text_id.';
+        }
+
+        if ($row['kind'] === 'action' && ! in_array((string) $row['score'], ['0', '1', '2'], true)) {
+            return 'Skor tindakan (score) hanya boleh 0, 1, atau 2.';
+        }
+
+        $code = strtoupper(trim((string) $row['code']));
+
+        if ($code !== '' && ErrorCodes::forbiddenInBank($code)) {
+            return "Kode '{$code}' tidak dikenal atau tidak boleh ada di bank.";
+        }
+
+        // Action scores are keys: an answered scenario keeps them (31 §7.1)
+        $stored = model(ChallengeItemModel::class)->findByKey($key);
+
+        if ($row['kind'] === 'action' && $stored !== null && model(ChallengeItemModel::class)->hasResponses($stored->id)) {
+            $old = model(ScenarioOptionModel::class)->where('challenge_item_id', $stored->id)->where('kind', 'action')->where('option_key', trim((string) $row['option_key']))->first();
+
+            if ($old !== null && (string) $old['score'] !== (string) $row['score']) {
+                return "Skenario {$key} sudah pernah dijawab siswa, jadi skor tindakan {$row['option_key']} tidak boleh diubah.";
+            }
+        }
+
         return null;
     }
 
@@ -459,6 +601,14 @@ class ContentImportService
 
         if (! in_array((string) $row['is_active'], ['', '0', '1'], true)) {
             return 'Kolom is_active (soal dipakai?) hanya boleh 0 atau 1, atau dikosongkan.';
+        }
+
+        if ($row['label_source'] !== '' && preg_match('/^(developer|expert|(akm|bloom):(developer|expert)(,(akm|bloom):(developer|expert))?)$/', $row['label_source']) !== 1) {
+            return self::unknown('items', 'label_source', $row['label_source'], 'Pakai developer, expert, akm:expert, atau bloom:expert.');
+        }
+
+        if ($row['error_code'] !== '' && ErrorCodes::forbiddenInBank($row['error_code'])) {
+            return "Kode kesalahan '{$row['error_code']}' soal {$row['item_key']} tidak dikenal atau tidak boleh ada di bank (*-LAIN, NON-*).";
         }
 
         $passageKey = trim((string) $row['passage_key']);
@@ -620,6 +770,7 @@ class ContentImportService
             'nodes'         => ['scene_media_key', 'background_media_key'],
             'passages'      => ['media_asset_key'],
             'items'         => ['media_asset_key'],
+            'post_scenes'   => ['media_asset_key'],
             'library_media' => ['media_asset_key', 'poster_media_key'],
         ];
 
@@ -751,6 +902,10 @@ class ContentImportService
         $media   = $this->createMediaSlots($sheets, $parsed['media']);
         $written = array_fill_keys(array_keys(self::SHEETS), 0);
 
+        $written['indicators'] = $this->writeIndicators($sheets['indicators']);
+        $indicators            = array_map(static fn ($row): int => (int) $row['id'], model(LearningIndicatorModel::class)->map());
+        $parsed['indicators']  = $indicators;
+
         $written['nodes'] = $this->writeNodes($sheets['nodes'], $sheets['variants'], $sheets['distractors'], $nodes, $media, $parsed['indicators']);
 
         $passageIds        = $this->writePassages($sheets['passages'], $parsed['levels'], $media);
@@ -768,6 +923,16 @@ class ContentImportService
 
         $written['items'] = count($itemIds);
         $written['hints'] = $this->writeHints($sheets['hints'], $nodes, $itemIds);
+
+        // Research revision 10, part 5 (31 §7.1)
+        $written['post_scenes'] = $this->writePostScenes($sheets['post_scenes'], $sheets['post_parts'], $nodes, $media);
+        $written['post_parts']  = count($sheets['post_parts']);
+        $codes                  = $this->writeErrorCodes($sheets, $itemIds);
+        $written['error_codes'] = $codes['written'];
+        $written['codes_changed'] = $codes['changed'];
+        $written['scenarios']   = $this->writeScenarios($sheets['scenarios'], $sheets['scenario_options'], $itemIds);
+        $written['scenario_options'] = count($sheets['scenario_options']);
+        $this->writeSurfaceLoad($sheets, $parsed['difficulty'], $itemIds);
 
         $written['variants']    = count($sheets['variants']);
         $written['distractors'] = count($sheets['distractors']);
@@ -885,6 +1050,8 @@ class ContentImportService
                 'body_id'          => $row['body_id'],
                 'body_en'          => $row['body_en'],
                 'reference_source' => $this->nullIfBlank($row['reference_source']),
+                'text_genre'       => $this->nullIfBlank($row['text_genre']),
+                'layout'           => $this->nullIfBlank($row['layout']),
                 'is_active'        => 1,
             ] + $this->mediaColumns($row, ['media_asset_key' => 'media_asset_id'], $media);
 
@@ -953,7 +1120,7 @@ class ContentImportService
                 'review_status'     => $row['review_status'] !== '' ? $row['review_status'] : 'draft',
                 'review_note'       => $this->nullIfBlank($row['review_note']),
                 'scorable'          => $row['scorable'] !== '' ? (int) $row['scorable'] : 1,
-            ] + $this->mediaColumns($row, ['media_asset_key' => 'media_asset_id'], $media);
+            ] + $this->labelColumns($row) + $this->mediaColumns($row, ['media_asset_key' => 'media_asset_id'], $media);
 
             // is_active kosong: soal baru dipakai, soal yang sudah ada tidak diubah —
             // impor ulang tidak boleh menghidupkan lagi soal yang sudah diistirahatkan.
@@ -1167,7 +1334,7 @@ class ContentImportService
         $labels = [];
 
         foreach (['nodes' => ['scene_media_key', 'background_media_key'], 'passages' => ['media_asset_key'],
-            'items' => ['media_asset_key'], 'library_media' => ['media_asset_key', 'poster_media_key']] as $sheet => $columns) {
+            'items' => ['media_asset_key'], 'post_scenes' => ['media_asset_key'], 'library_media' => ['media_asset_key', 'poster_media_key']] as $sheet => $columns) {
             foreach ($sheets[$sheet] as $row) {
                 foreach ($columns as $column) {
                     $key = trim((string) ($row[$column] ?? ''));
@@ -1177,7 +1344,7 @@ class ContentImportService
                     }
 
                     [$label, $note] = match (true) {
-                        $sheet === 'items' && $column === 'media_asset_key' => [$row['media_label'], $row['media_note']],
+                        in_array($sheet, ['items', 'post_scenes'], true) && $column === 'media_asset_key' => [$row['media_label'], $row['media_note']],
                         $sheet === 'nodes' && $column === 'scene_media_key' => [$row['scene_media_label'], $row['scene_media_note']],
                         default                                             => ['', ''],
                     };
@@ -1235,6 +1402,263 @@ class ContentImportService
     }
 
     /**
+     * Label and round columns of one item row (31 §6.1, §13.1). `label_source`
+     * fills `akm_level_source` and `bloom_level_source`; `akm:expert` changes
+     * only the AKM source.
+     *
+     * @param array<string, string> $row
+     *
+     * @return array<string, mixed>
+     */
+    private function labelColumns(array $row): array
+    {
+        $source = ['akm' => 'developer', 'bloom' => 'developer'];
+        $given  = trim((string) $row['label_source']);
+
+        if (in_array($given, ['developer', 'expert'], true)) {
+            $source = ['akm' => $given, 'bloom' => $given];
+        } elseif ($given !== '') {
+            foreach (explode(',', $given) as $pair) {
+                [$label, $value] = array_pad(explode(':', $pair, 2), 2, 'developer');
+                $source[$label]  = $value;
+            }
+        }
+
+        return [
+            'round'              => $row['round'] !== '' ? (int) $row['round'] : null,
+            'dimension'          => $this->nullIfBlank($row['dimension']),
+            'subaspect'          => $this->nullIfBlank($row['subaspect']),
+            'akm_level'          => $this->nullIfBlank($row['akm_level']),
+            'akm_level_source'   => $row['akm_level'] !== '' ? $source['akm'] : null,
+            'pirls_process'      => $this->nullIfBlank($row['pirls_process']),
+            'bloom_level_source' => $row['bloom_level'] !== '' && $row['interaction_type'] !== 'puzzle_arrange' ? $source['bloom'] : null,
+            'testlet_key'        => $this->nullIfBlank($row['testlet_key']),
+            'error_code'         => $this->nullIfBlank($row['error_code']),
+            'd3_clue_type'       => $this->nullIfBlank($row['d3_clue_type']),
+            'd2_topic'           => $this->nullIfBlank($row['d2_topic']),
+        ];
+    }
+
+    /**
+     * Sheet `indicators` → `learning_indicators` (upsert by code). Once the
+     * sheet is there, the old bank's indicators are made inactive, not
+     * deleted (31 §15), so stored references stay valid.
+     *
+     * @param list<array<string, string>> $rows
+     */
+    private function writeIndicators(array $rows): int
+    {
+        if ($rows === []) {
+            return 0;
+        }
+
+        $codes = [];
+        $table = db_connect()->table('learning_indicators');
+
+        foreach ($rows as $row) {
+            $code    = trim((string) $row['code']);
+            $codes[] = $code;
+            $data    = [
+                'name_id'        => $row['name_id'],
+                'name_en'        => $row['name_en'],
+                'description_id' => $this->nullIfBlank($row['description_id']),
+                'description_en' => $this->nullIfBlank($row['description_en']),
+                'domain'         => $this->nullIfBlank($row['domain']),
+                'is_active'      => 1,
+            ];
+
+            if ($table->where('code', $code)->countAllResults() > 0) {
+                db_connect()->table('learning_indicators')->where('code', $code)->update($data);
+            } else {
+                db_connect()->table('learning_indicators')->insert(['code' => $code] + $data);
+            }
+        }
+
+        $old = array_values(array_diff(self::OLD_INDICATORS, $codes));
+
+        if ($old !== []) {
+            db_connect()->table('learning_indicators')->whereIn('code', $old)->update(['is_active' => 0]);
+        }
+
+        return count($rows);
+    }
+
+    /**
+     * Sheets `post_scenes` and `post_parts` (Periksa Unggahan): one post per
+     * challenge and variant; its parts are replaced as a whole.
+     *
+     * @param list<array<string, string>> $scenes
+     * @param list<array<string, string>> $parts
+     * @param array<string, int>          $nodes
+     * @param array<string, int>          $media
+     */
+    private function writePostScenes(array $scenes, array $parts, array $nodes, array $media): int
+    {
+        $sceneModel = model(PostSceneModel::class);
+        $ids        = [];
+
+        foreach ($scenes as $row) {
+            $ids[$row['node_ref'] . '|' . $row['variant_group']] = $sceneModel->upsert($nodes[$row['node_ref']], $row['variant_group'], [
+                'title_id'         => $this->nullIfBlank($row['title_id']),
+                'title_en'         => $this->nullIfBlank($row['title_en']),
+                'text_genre'       => $this->nullIfBlank($row['text_genre']),
+                'reference_source' => $this->nullIfBlank($row['reference_source']),
+            ] + $this->mediaColumns($row, ['media_asset_key' => 'media_asset_id'], $media));
+        }
+
+        $byScene = [];
+
+        foreach ($parts as $part) {
+            $byScene[$part['node_ref'] . '|' . $part['variant_group']][] = $part;
+        }
+
+        foreach ($byScene as $scene => $list) {
+            [$ref, $group] = explode('|', $scene, 2);
+            $sceneId       = $ids[$scene] ?? $sceneModel->upsert($nodes[$ref], $group, ['title_id' => null]);
+            $rows          = [];
+
+            foreach ($list as $n => $part) {
+                $rows[] = [
+                    'part_key' => strtoupper(trim($part['part_key'])),
+                    'kind'     => trim($part['kind']),
+                    'label_id' => $this->nullIfBlank($part['label_id']),
+                    'label_en' => $this->nullIfBlank($part['label_en']),
+                    'text_id'  => $part['text_id'],
+                    'text_en'  => $part['text_en'] !== '' ? $part['text_en'] : $part['text_id'],
+                    'x'        => (float) $part['x'],
+                    'y'        => (float) $part['y'],
+                    'w'        => (float) $part['w'],
+                    'h'        => (float) $part['h'],
+                    'sequence' => $n + 1,
+                ];
+            }
+
+            model(PostPartModel::class)->replaceForScene($sceneId, $rows);
+        }
+
+        return count($scenes);
+    }
+
+    /**
+     * Sheets `cloze_matrix`, `object_codes`, `part_codes` → `item_error_codes`.
+     * Every item with rows here gets its codes replaced as a whole, so codes
+     * revised by experts apply at once. Codes may change after an item was
+     * answered: stored tries keep the code of their own time (31 §7.1, K5).
+     *
+     * @param array<string, int> $itemIds
+     *
+     * @return array{written: int, changed: int}
+     */
+    private function writeErrorCodes(array $sheets, array $itemIds): array
+    {
+        $written = 0;
+        $changed = 0;
+        $model   = model(ItemErrorCodeModel::class);
+
+        foreach (BankSource::codesFromSheets($sheets) as $key => $codes) {
+            $id = $itemIds[$key] ?? model(ChallengeItemModel::class)->findByKey((string) $key)?->id;
+
+            if ($id === null) {
+                continue;
+            }
+
+            $result = $model->replaceForItem((int) $id, array_map(static fn (array $c): array => [
+                'choice_type' => $c['type'],
+                'choice_ref'  => $c['ref'],
+                'error_code'  => $c['code'],
+                'is_main'     => $c['main'] ? 1 : 0,
+            ], $codes));
+            $written += $result['written'];
+            $changed += $result['changed'];
+        }
+
+        return ['written' => $written, 'changed' => $changed];
+    }
+
+    /**
+     * Sheets `scenarios` and `scenario_options` (31 K4): the explanation and
+     * topic/steps (`config_json`) on the item, its options replaced.
+     *
+     * @param list<array<string, string>> $scenarios
+     * @param list<array<string, string>> $options
+     * @param array<string, int>          $itemIds
+     */
+    private function writeScenarios(array $scenarios, array $options, array $itemIds): int
+    {
+        $items = model(ChallengeItemModel::class);
+        $count = 0;
+
+        foreach ($scenarios as $row) {
+            $item = $items->findByKey($row['item_key']);
+
+            if ($item === null) {
+                continue;
+            }
+
+            $config          = $item->config_json ?: [];
+            $config['steps'] = (int) $row['steps'];
+            $config['topic'] = strtoupper(trim($row['d2_topic']));
+
+            $items->update($item->id, [
+                'explanation_id' => $this->nullIfBlank($row['explanation_id']),
+                'explanation_en' => $this->nullIfBlank($row['explanation_en'] !== '' ? $row['explanation_en'] : $row['explanation_id']),
+                'config_json'    => $config,
+            ]);
+            $count++;
+        }
+
+        foreach ($this->groupBy($options, 'item_key') as $key => $list) {
+            $id = $itemIds[$key] ?? $items->findByKey((string) $key)?->id;
+
+            if ($id === null) {
+                continue;
+            }
+
+            model(ScenarioOptionModel::class)->replaceForItem((int) $id, array_map(fn (array $o): array => [
+                'kind'        => $o['kind'],
+                'option_key'  => trim($o['option_key']),
+                'sequence'    => $o['sequence'] !== '' ? (int) $o['sequence'] : 1,
+                'text_id'     => $o['text_id'],
+                'text_en'     => $o['text_en'] !== '' ? $o['text_en'] : $o['text_id'],
+                'score'       => $o['score'] !== '' ? (int) $o['score'] : null,
+                'code'        => $this->nullIfBlank(strtoupper(trim($o['code']))),
+                'feedback_id' => $this->nullIfBlank($o['feedback_id']),
+                'feedback_en' => $this->nullIfBlank($o['feedback_en'] !== '' ? $o['feedback_en'] : $o['feedback_id']),
+            ], $list));
+        }
+
+        return $count;
+    }
+
+    /**
+     * Surface load of every item of the workbook (SurfaceLoad, 31 §13.2),
+     * computed from the bank content and frozen with it (K14).
+     *
+     * @param array<string, string> $difficulty
+     * @param array<string, int>    $itemIds
+     */
+    private function writeSurfaceLoad(array $sheets, array $difficulty, array $itemIds): void
+    {
+        $normal = BankSource::nodesFromSheets($sheets, $difficulty, static fn (): bool => true);
+        $items  = model(ChallengeItemModel::class);
+        $grids  = [];
+
+        foreach ($sheets['items'] as $row) {
+            if ($row['interaction_type'] === 'puzzle_arrange' && isset($itemIds[$row['item_key']])) {
+                $grids[$row['item_key']] = (int) ($items->find($itemIds[$row['item_key']])?->conf('grid') ?? 0);
+            }
+        }
+
+        foreach ($normal['nodes'] as $node) {
+            foreach (SurfaceLoad::forNode($node, $normal['passages'], array_filter($grids)) as $key => $load) {
+                if (isset($itemIds[$key])) {
+                    $items->update($itemIds[$key], ['surface_json' => $load === [] ? null : $load]);
+                }
+            }
+        }
+    }
+
+    /**
      * Kolom FK media dari kolom kunci workbook. Sel kosong TIDAK menyentuh
      * kolomnya: gambar yang dipasang dari editor konten tidak hilang saat
      * workbook tanpa kunci media diimpor ulang.
@@ -1279,6 +1703,7 @@ class ContentImportService
             'fill_blank_bank' => ['text_id' => $answerId, 'text_en' => $answerEn !== '' ? $answerEn : $answerId],
             'verdict_card'    => ['verdict' => mb_strtolower($answerId)],
             'find_object'     => ['target' => mb_strtolower($answerId) !== 'decoy'],
+            'find_part'       => ['part' => strtoupper($answerId)],
             default       => [],
         };
     }
@@ -1394,6 +1819,12 @@ class ContentImportService
                 'variants'      => count($sheets['variants']),
                 'hints'         => count($sheets['hints']),
                 'distractors'   => count($sheets['distractors']),
+                'error_codes'   => count($sheets['cloze_matrix']) + count($sheets['object_codes']) + count($sheets['part_codes']),
+                'post_scenes'   => count($sheets['post_scenes']),
+                'post_parts'    => count($sheets['post_parts']),
+                'scenarios'     => count($sheets['scenarios']),
+                'scenario_options' => count($sheets['scenario_options']),
+                'indicators'    => count($sheets['indicators']),
                 'library'       => count($sheets['library']),
                 'library_media' => count($sheets['library_media']),
                 'per_node'      => $perNode,
@@ -1403,11 +1834,13 @@ class ContentImportService
     }
 
     /**
-     * Aturan bank soal kelas 5 (BankRules, Dok 2 §7.5) atas keadaan SESUDAH
-     * impor setiap tantangan yang disentuh workbook: soal aktif di database
-     * ditimpa baris workbook (kode soal sama), soal ber-is_active 0 keluar,
-     * pengecoh per variasi diganti isi sheet distractors, bacaan dari
-     * database + sheet passages. Temuan dipetakan ke baris workbook-nya.
+     * Rules of the grade 5 bank (BankRules, 31 §8.2) on the state AFTER the
+     * import of every challenge the workbook touches: active items in the
+     * database replaced by workbook rows with the same key, items with
+     * is_active 0 left out, decoy words per variant replaced by the
+     * distractors sheet, and error codes per item, posts per variant, and
+     * scenarios per item replaced by the workbook. Findings point to their
+     * workbook row.
      *
      * @param array<string, list<array<string, string>>> $sheets
      * @param array<string, mixed>                       $context
@@ -1418,7 +1851,7 @@ class ContentImportService
     {
         $touched = [];
 
-        foreach (['nodes', 'variants', 'distractors', 'items'] as $sheet) {
+        foreach (['nodes', 'variants', 'distractors', 'items', 'post_scenes', 'post_parts'] as $sheet) {
             foreach ($sheets[$sheet] as $row) {
                 if (isset($context['nodes'][$row['node_ref']])) {
                     $touched[$row['node_ref']] = true;
@@ -1430,13 +1863,6 @@ class ContentImportService
             return [];
         }
 
-        $state    = new BankState();
-        $passages = $state->passages();
-
-        foreach ($sheets['passages'] as $row) {
-            $passages[$row['passage_key']] = ['level' => $row['level_code'], 'body_id' => $row['body_id'], 'body_en' => $row['body_en']];
-        }
-
         $itemRows = [];
 
         foreach ($sheets['items'] as $row) {
@@ -1445,100 +1871,43 @@ class ContentImportService
 
         $out = [];
 
-        foreach (array_keys(array_count_values(array_column($sheets['items'], 'item_key'))) as $key) {
-            if (count(array_keys(array_column($sheets['items'], 'item_key'), $key, true)) > 1) {
+        foreach (array_count_values(array_column($sheets['items'], 'item_key')) as $key => $count) {
+            if ($count > 1) {
                 $out[] = ['level' => 'error', 'finding' => ['sheet' => 'items', 'row' => (int) $itemRows[$key]['__row'], 'message' => "Kode soal (item_key) {$key} ditulis lebih dari sekali."]];
             }
         }
 
-        foreach (array_keys($touched) as $ref) {
-            $node = model(ChallengeNodeModel::class)->find($context['nodes'][$ref]);
+        // is_active left empty keeps a stored item as it is (retired stays retired)
+        $stored = [];
+        $rows   = $sheets;
 
-            if ($node === null) {
-                continue;
+        foreach ($sheets['items'] as $index => $row) {
+            $stored[$row['item_key']] = model(ChallengeItemModel::class)->findByKey((string) $row['item_key']);
+
+            if ($row['is_active'] === '' && $stored[$row['item_key']] !== null && ! $stored[$row['item_key']]->is_active) {
+                $rows['items'][$index]['is_active'] = '0';
             }
+        }
 
-            $normal = $state->node($node);
+        $incoming = BankSource::nodesFromSheets($rows, $context['difficulty'], static fn (array $row): bool => trim((string) $row['media_asset_key']) !== ''
+            || (($stored[$row['item_key']] ?? null) !== null && $stored[$row['item_key']]->media_asset_id !== null));
+        $state    = new BankState();
+        $passages = array_merge($state->passages(), $incoming['passages']);
+
+        foreach (array_keys($touched) as $ref) {
+            $node   = model(ChallengeNodeModel::class)->find($context['nodes'][$ref]);
+            $normal = $node === null ? null : $state->node($node);
 
             if ($normal === null) {
                 continue;
             }
 
-            // Pengaturan tantangan dari sheet nodes
-            foreach ($sheets['nodes'] as $row) {
-                if ($row['node_ref'] === $ref && $row['distractor_count'] !== '') {
-                    $normal['distractor_count'] = (int) $row['distractor_count'];
-                }
+            if (isset($incoming['nodes'][$ref])) {
+                $normal = $this->overlay($normal, $incoming['nodes'][$ref], $sheets);
             }
-
-            // Pengecoh: variasi yang punya baris di sheet distractors diganti seluruhnya
-            $byGroup = [];
-
-            foreach ($sheets['distractors'] as $row) {
-                if ($row['node_ref'] === $ref) {
-                    $byGroup[$row['variant_group']][] = ['id' => $row['text_id'], 'en' => $row['text_en'] !== '' ? $row['text_en'] : $row['text_id']];
-                }
-            }
-
-            foreach ($byGroup as $group => $list) {
-                $normal['variants'][$group] ??= ['distractors' => [], 'items' => []];
-                $normal['variants'][$group]['distractors'] = $list;
-            }
-
-            // Soal: database ditimpa baris workbook dengan kode yang sama
-            $existing = [];
-
-            foreach (model(ChallengeItemModel::class)->where('challenge_node_id', $node->id)->findAll() as $item) {
-                $existing[(string) $item->item_key] = $item;
-            }
-
-            foreach ($normal['variants'] as $group => $variant) {
-                $normal['variants'][$group]['items'] = array_values(array_filter(
-                    $variant['items'],
-                    static fn (array $item): bool => ! isset($itemRows[$item['key']]),
-                ));
-            }
-
-            foreach ($sheets['items'] as $row) {
-                if ($row['node_ref'] !== $ref || $itemRows[$row['item_key']] !== $row) {
-                    continue;
-                }
-
-                $stored = $existing[$row['item_key']] ?? null;
-                $active = $row['is_active'] !== '' ? $row['is_active'] === '1' : ($stored === null || $stored->is_active);
-
-                if (! $active) {
-                    continue;
-                }
-
-                $group = $row['variant_group'];
-                $normal['variants'][$group] ??= ['distractors' => [], 'items' => []];
-                $normal['variants'][$group]['items'][] = $this->normalItem($row, $stored, $context['media']);
-            }
-
-            foreach ($normal['variants'] as $group => $variant) {
-                usort($normal['variants'][$group]['items'], static fn (array $a, array $b): int => [$a['sequence'] ?? 0, $a['key']] <=> [$b['sequence'] ?? 0, $b['key']]);
-            }
-
-            ksort($normal['variants'], SORT_STRING);
 
             foreach (BankRules::node($normal, $passages) as $problem) {
-                $row   = $problem['item'] !== null ? ($itemRows[$problem['item']] ?? null) : null;
-                $sheet = 'items';
-
-                if ($row === null) {
-                    $row = $this->firstRow($sheets['items'], $ref, $problem['variant'])
-                        ?? $this->firstRow($sheets['distractors'], $ref, $problem['variant'])
-                        ?? $this->firstRow($sheets['nodes'], $ref, null);
-                    $sheet = $row === null ? '-' : ($row['__sheet'] ?? 'items');
-                }
-
-                $out[] = ['level' => $problem['level'], 'finding' => [
-                    'sheet'   => $sheet,
-                    'row'     => (int) ($row['__row'] ?? 0),
-                    'message' => 'Tantangan ' . $ref . ($problem['variant'] !== null ? ' variasi ' . $problem['variant'] : '')
-                        . ($problem['item'] !== null ? ', soal ' . $problem['item'] : '') . ': ' . $problem['message'],
-                ]];
+                $out[] = $this->finding($problem, $sheets, $itemRows, $ref);
             }
         }
 
@@ -1546,41 +1915,180 @@ class ContentImportService
     }
 
     /**
-     * Baris workbook → bentuk BankRules. Gambar dianggap ada bila kolom
-     * kodenya terisi atau soal tersimpan sudah punya gambar.
+     * Stored node + workbook node of the same challenge = the state after import.
      *
-     * @param array<string, string> $row
-     * @param array<string, int>    $media
+     * @param array<string, mixed> $stored   BankState::node()
+     * @param array<string, mixed> $incoming BankSource::nodesFromSheets() node
      *
      * @return array<string, mixed>
      */
-    private function normalItem(array $row, ?\App\Entities\ChallengeItem $stored, array $media): array
+    private function overlay(array $stored, array $incoming, array $sheets): array
     {
-        $type  = $row['interaction_type'];
-        $decoy = $row['decoy'] !== '' ? $row['decoy'] === '1' : mb_strtolower($row['answer_id']) === 'decoy';
+        $keys = [];
 
-        return [
-            'key'       => $row['item_key'],
-            'sequence'  => $row['sequence'] !== '' ? (int) $row['sequence'] : 1,
-            'type'      => $type,
-            'prompt_id' => $row['prompt_id'],
-            'prompt_en' => $row['prompt_en'],
-            'answer_id' => match ($type) {
-                'verdict_card' => mb_strtolower($row['answer_id']),
-                'find_object'  => $decoy ? 'decoy' : 'target',
-                default        => $row['answer_id'],
-            },
-            'answer_en' => $type === 'fill_blank_bank' ? ($row['answer_en'] !== '' ? $row['answer_en'] : $row['answer_id']) : '',
-            'bloom'     => $row['bloom_level'],
-            'skill'     => $row['skill'],
-            'passage'   => $row['passage_key'] !== '' ? $row['passage_key'] : null,
-            'x'         => $row['x'] !== '' ? (float) $row['x'] : null,
-            'y'         => $row['y'] !== '' ? (float) $row['y'] : null,
-            'w'         => $row['w'] !== '' ? (float) $row['w'] : null,
-            'decoy'     => $decoy,
-            'wrong_id'  => $row['wrong_feedback_id'],
-            'media'     => trim($row['media_asset_key']) !== '' || ($stored !== null && $stored->media_asset_id !== null),
-        ];
+        // Workbook rows replace the stored items; rows with is_active 0 leave
+        foreach ($sheets['items'] as $row) {
+            if ($row['node_ref'] === $stored['ref']) {
+                $keys[$row['item_key']] = true;
+            }
+        }
+
+        foreach ($sheets['nodes'] as $row) {
+            if ($row['node_ref'] === $stored['ref'] && $row['distractor_count'] !== '') {
+                $stored['distractor_count'] = (int) $row['distractor_count'];
+            }
+        }
+
+        foreach ($stored['variants'] as $group => $variant) {
+            $stored['variants'][$group]['items'] = array_values(array_filter($variant['items'], static fn (array $item): bool => ! isset($keys[$item['key']])));
+        }
+
+        $distractorGroups = [];
+
+        foreach ($sheets['distractors'] as $row) {
+            if ($row['node_ref'] === $stored['ref']) {
+                $distractorGroups[$row['variant_group']] = true;
+            }
+        }
+
+        foreach ($incoming['variants'] as $group => $variant) {
+            $stored['variants'][$group] ??= ['distractors' => [], 'items' => []];
+            $stored['variants'][$group]['items'] = [...$stored['variants'][$group]['items'], ...$variant['items']];
+
+            if (isset($distractorGroups[$group])) {
+                $stored['variants'][$group]['distractors'] = $variant['distractors'];
+            }
+
+            usort($stored['variants'][$group]['items'], static fn (array $a, array $b): int => [$a['sequence'] ?? 0, $a['key']] <=> [$b['sequence'] ?? 0, $b['key']]);
+        }
+
+        foreach ($stored['variants'] as $group => $variant) {
+            if ($variant['items'] === [] && $variant['distractors'] === []) {
+                unset($stored['variants'][$group]);
+            }
+        }
+
+        ksort($stored['variants'], SORT_STRING);
+
+        $stored['codes']     = (array) $incoming['codes'] + (array) $stored['codes'];
+        $stored['posts']     = (array) $incoming['posts'] + (array) $stored['posts'];
+        $stored['scenarios'] = (array) $incoming['scenarios'] + (array) $stored['scenarios'];
+
+        return $stored;
+    }
+
+    /**
+     * One BankRules finding → its workbook row.
+     *
+     * @param array<string, array<string, string>> $itemRows
+     *
+     * @return array{level: string, finding: array{sheet: string, row: int, message: string}}
+     */
+    private function finding(array $problem, array $sheets, array $itemRows, string $ref): array
+    {
+        $row   = $problem['item'] !== null ? ($itemRows[$problem['item']] ?? null) : null;
+        $sheet = 'items';
+
+        if ($row === null) {
+            $row = $this->firstRow($sheets['items'], $ref, $problem['variant'])
+                ?? $this->firstRow($sheets['post_parts'], $ref, $problem['variant'])
+                ?? $this->firstRow($sheets['distractors'], $ref, $problem['variant'])
+                ?? $this->firstRow($sheets['nodes'], $ref, null);
+            $sheet = $row === null ? '-' : ($row['__sheet'] ?? 'items');
+        }
+
+        return ['level' => $problem['level'], 'finding' => [
+            'sheet'   => $sheet,
+            'row'     => (int) ($row['__row'] ?? 0),
+            'message' => 'Tantangan ' . $ref . ($problem['variant'] !== null ? ' variasi ' . $problem['variant'] : '')
+                . ($problem['item'] !== null ? ', soal ' . $problem['item'] : '') . ': ' . $problem['message'],
+        ]];
+    }
+
+    /**
+     * Rows of a challenge that does not exist in the game yet and holds only
+     * Skenario Digital items (`tmg-5` before part 6 installs it): set aside,
+     * checked with BankRules, and not written (31 K4; 32 §5.1).
+     *
+     * @param array<string, list<array<string, string>>> $sheets
+     * @param array<string, int>                         $nodes  node_ref => id of the game
+     *
+     * @return array{0: array<string, list<array<string, string>>>, 1: array{refs: array<string, int>, sheets: array<string, list<array<string, string>>>}}
+     */
+    private function setAsidePending(array $sheets, array $nodes): array
+    {
+        $types = [];
+
+        foreach ($sheets['items'] as $row) {
+            if (! isset($nodes[$row['node_ref']])) {
+                $types[$row['node_ref']][] = $row['interaction_type'];
+            }
+        }
+
+        $refs = [];
+
+        foreach ($types as $ref => $list) {
+            if (array_values(array_unique($list)) === ['scenario_choice']) {
+                $refs[$ref] = count($list);
+            }
+        }
+
+        $aside = array_fill_keys(array_keys(self::SHEETS), []);
+
+        if ($refs === []) {
+            return [$sheets, ['refs' => [], 'sheets' => $aside]];
+        }
+
+        $keys = [];
+
+        foreach ($sheets['items'] as $row) {
+            if (isset($refs[$row['node_ref']])) {
+                $keys[$row['item_key']] = true;
+            }
+        }
+
+        foreach ($sheets as $name => $list) {
+            if (in_array($name, self::LIBRARY_SHEETS, true)) {
+                continue;
+            }
+
+            foreach ($list as $index => $row) {
+                $pending = ($row['node_ref'] ?? '') !== '' ? isset($refs[$row['node_ref']]) : isset($keys[$row['item_key'] ?? '']);
+
+                if ($pending) {
+                    $aside[$name][] = $row;
+                    unset($sheets[$name][$index]);
+                }
+            }
+
+            $sheets[$name] = array_values($sheets[$name]);
+        }
+
+        return [$sheets, ['refs' => $refs, 'sheets' => $aside]];
+    }
+
+    /**
+     * BankRules on the challenges set aside by setAsidePending().
+     *
+     * @return list<array{level: string, finding: array{sheet: string, row: int, message: string}}>
+     */
+    private function pendingProblems(array $sheets, array $context): array
+    {
+        if ($sheets['items'] === []) {
+            return [];
+        }
+
+        $normal   = BankSource::nodesFromSheets($sheets, $context['difficulty'], static fn (): bool => true);
+        $itemRows = $this->collect($sheets['items'], 'item_key');
+        $out      = [];
+
+        foreach ($normal['nodes'] as $ref => $node) {
+            foreach (BankRules::node($node, $normal['passages']) as $problem) {
+                $out[] = $this->finding($problem, $sheets, $itemRows, (string) $ref);
+            }
+        }
+
+        return $out;
     }
 
     /**
