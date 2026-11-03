@@ -33,10 +33,10 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "b50c8c6c6ad97ebb704c6485167068a970890120282ba71f274cd6dc297c456f",
-      "commit": "f90f7c1",
+      "source": "565dd9d1026cc789bd105f936a04bcec2ee3f24d36a131bd6405cb61af1681a5",
+      "commit": "f7d9bed",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-02",
+      "date": "2026-11-03",
       "pages": 62,
       "landscapeTables": 0
     },
@@ -185,8 +185,8 @@
       "landscapeTables": 0
     },
     "23_SURAT_INFORMASI_DAN_PERSETUJUAN.md": {
-      "source": "a0b1acae331082bcb50abadabe74d9c504426d6f71c71b5d64175e4ff17e3bc8",
-      "commit": "52541ed",
+      "source": "836e1d86f6fc94fac1842cdfa9f158f73ede71e3a313f66fe9392bca5190427d",
+      "commit": "071c0e2",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 33,
@@ -241,11 +241,11 @@
       "landscapeTables": 0
     },
     "30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md": {
-      "source": "8937be104fcad5d730807de2c29db70576e4fe80477d6241e84951e578fe9d90",
-      "commit": "f90f7c1",
+      "source": "3c7b640495d538be475315498eb84b0c153d6b614471ac3a42066f3eb760738a",
+      "commit": "f7d9bed",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-02",
-      "pages": 28,
+      "date": "2026-11-03",
+      "pages": 29,
       "landscapeTables": 0
     },
     "31_IMPLEMENTASI_BANK_SOAL_BARU.md": {
