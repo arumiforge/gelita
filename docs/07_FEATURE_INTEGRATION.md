@@ -1142,8 +1142,12 @@ Pemetaan kunci ringkas → `answer_key_json` (`ContentImportService::answerKeyFo
 | `fill_blank_bank` | satu kata/frasa, mis. `Sumbing` | `{"text_id":…,"text_en":…}` |
 | `verdict_card` | `benar` \| `salah` (disimpan huruf kecil) | `{"verdict":…}` + `config_json.skill` |
 | `find_object` | `target` atau `decoy` | `{"target":true\|false}` + `config_json.x/y/w/decoy/wrong_feedback_*` |
+| `find_part` | the key part, e.g. `A2` (round 2, *Periksa Unggahan*) | `{"part":"A2"}`; the post and its parts in `post_scenes`/`post_parts` |
+| `scenario_choice` | empty: scores live in `scenario_options` | `{}`; `config_json.steps`/`topic`, `explanation_*` from sheet `scenarios` |
 
 Jenis soal di luar `Config\Gelita::$interactionTypes` ditolak.
+
+*(New, English; research revision 10, part 5, 3 November 2026.)* **Error codes** (31 §6.3, §10): the sheets `cloze_matrix` (blank × wrong word), `object_codes` (round-1 clue × object), and `part_codes` (round-2 clue × part, `main` = 1 for the main lures of 08) go to `item_error_codes` (`choice_type` `word`, `object`, `part`; `choice_ref` = the lower-case Indonesian word, the tapped object's `item_key`, or the `part_key`); every item with rows there has its codes replaced as a whole on import. Statement and decoy codes stay on the item (`challenge_items.error_code`). `build-workbook.php` writes the full matrices from the fixed rules of 08 (K6). When a try is graded, `ErrorCodeResolver` copies the matching code into `item_tries.error_code` (null for a correct try); a later code revision never rewrites stored tries. Scenario action codes (`scenario_options.code`) are resolved the same way by the engine of part 6.
 
 ### Aturan bank soal (`App\Libraries\BankRules`, `App\Libraries\DifficultyRules`)
 

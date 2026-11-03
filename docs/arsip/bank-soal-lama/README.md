@@ -1,0 +1,3 @@
+# Bank soal lama (draf 2, Oktober 2026)
+
+Archived on 3 November 2026 when the research bank of revision 10 (from `08`, see [`docs/bank-soal/README.md`](../../bank-soal/README.md) and `31_IMPLEMENTASI_BANK_SOAL_BARU.md` K3) replaced it in `main`. This folder keeps the three data files and the workbook exactly as they were at `eeb0c13` (12 challenges, 151 item rows, variants a–c and Susun Gambar a–j); git history keeps every earlier version. They are not imported by anything; a server that still runs the old bank keeps it until the developer runs `gelita:reset` or an import with the new workbook.

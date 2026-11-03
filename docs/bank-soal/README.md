@@ -1,150 +1,86 @@
 # Bank Soal GELITA — Kelas 5 SD/MI
 
-Bank soal penelitian kelas 5, revisi Oktober 2026 (draf 2): **12 tantangan** (4 per wilayah), **151 baris soal** — 147 aktif (129 dinilai + 18 benda pengecoh) dan 4 diistirahatkan — **51 variasi** (Susun Gambar 10 per wilayah), 9 bacaan Benar atau Salah, 9 bacaan Isi Rumpang, 36 petunjuk, dan 15 kata pengecoh bank kata. Dasar isinya [`docs/perombakan-kelas5/02_TANTANGAN_DAN_BANK_SOAL.md`](../perombakan-kelas5/02_TANTANGAN_DAN_BANK_SOAL.md) §9, direvisi lewat [`gelita-katalog/update/`](../../gelita-katalog/update/catatan-revisi-gelita.md) (telaah dan catatan revisi). Soal yang diubah atau ditambahkan berstatus `needs_verification` sampai dicek peneliti.
+*(Rewritten in English for the research bank of revision 10, 3 November 2026; sections below the image table are the old Indonesian text.)*
 
-| Berkas | Isi |
+The research bank of revision 10: the items of [`08_DRAF_BANK_SOAL.md`](../revisi-10-analitik/08_DRAF_BANK_SOAL.md) with the English AI draft of [`36`](../revisi-10-analitik/36_TERJEMAHAN_BANK_SOAL.md), in the format of [`31_IMPLEMENTASI_BANK_SOAL_BARU.md`](../revisi-10-analitik/31_IMPLEMENTASI_BANK_SOAL_BARU.md) §6. **15 challenges** (5 per region), **116 digital literacy items** (Isi Rumpang 30, Benar atau Salah 32 + 6 anchor statements, Periksa Unggahan 24, Skenario Digital 24) and **12 PBK clues**, 18 decoy objects, 31 Susun Gambar pictures. Every item of 08 is `needs_verification` until expert validation, and its English text is marked "terjemahan belum ada" until the developer checks the AI draft. The old bank is archived in [`docs/arsip/bank-soal-lama/`](../arsip/bank-soal-lama/README.md).
+
+| File | Content |
 |---|---|
-| [`gelita-bank-soal-kelas5.xlsx`](gelita-bank-soal-kelas5.xlsx) | workbook siap impor: sheet PETUNJUK, KAMUS_KOLOM, enam sheet data (`nodes`, `variants`, `distractors`, `passages`, `items`, `hints`), dan DAFTAR_MEDIA. Diimpor saat instalasi oleh `DatabaseSeeder` dan lagi oleh `php spark gelita:reset`. |
-| [`data/temanggung.php`](data/temanggung.php), [`data/magelang.php`](data/magelang.php), [`data/wonosobo.php`](data/wonosobo.php) | sumber isi yang mudah ditinjau (satu wilayah per berkas, format di bawah) |
-| [`build-workbook.php`](build-workbook.php) | penyusun workbook dari berkas data, termasuk seluruh pemeriksaan aturan |
+| [`gelita-bank-soal-kelas5.xlsx`](gelita-bank-soal-kelas5.xlsx) | import workbook: PETUNJUK, KAMUS_KOLOM, the data sheets below, DAFTAR_MEDIA. Imported by `DatabaseSeeder` and `php spark gelita:reset`. |
+| [`data/temanggung.php`](data/temanggung.php), [`data/magelang.php`](data/magelang.php), [`data/wonosobo.php`](data/wonosobo.php) | the edited source, one region per file (31 K1) |
+| [`build-workbook.php`](build-workbook.php) | builds the workbook from the data files, derives the error-code matrices, and runs every rule |
+| [`tools/import_08.py`](tools/import_08.py), [`tools/old-bank-json.php`](tools/old-bank-json.php) | the one-off converter that wrote the data files from 08/36 and the old bank (provenance; do not rerun over edited data files) |
 
-Workbook ini **tidak** memuat sheet `library`/`library_media`, jadi impornya (termasuk lewat `gelita:reset`) tidak pernah menyentuh Pustaka Kedu. Isi Pustaka untuk pemasangan baru ada di [`docs/pustaka/`](../pustaka/README.md).
+The workbook has no `library`/`library_media` sheets, so importing it never touches Pustaka Kedu.
 
-## Tantangan
+## Challenges
 
-Urutan sama di ketiga wilayah; wilayah terbuka berurutan (Temanggung → Magelang → Wonosobo), tantangan di dalam wilayah juga.
-
-| seq | Tantangan | engine | Jenis soal | Temanggung (mudah) | Magelang (sedang) | Wonosobo (sulit) |
+| seq | Challenge | engine | Item types | Temanggung (mudah) | Magelang (sedang) | Wonosobo (sulit) |
 |---:|---|---|---|---|---|---|
-| 1 | Susun Gambar | `puzzle` | `puzzle_arrange` | `tmg-1` · 3 × 3 kotak | `mgl-1` · 4 × 4 kotak | `wnb-1` · 4 × 4 jigsaw |
-| 2 | Isi Rumpang | `rumpang` | `fill_blank_bank` | `tmg-2` · 3 rumpang, 1 pengecoh | `mgl-2` · 5 rumpang, 2 pengecoh | `wnb-2` · 7 rumpang, 2 pengecoh |
-| 3 | Benar atau Salah | `boleh` | `verdict_card` | `tmg-3` · 1 paragraf, 3 pernyataan | `mgl-3` · 2 paragraf, 5 pernyataan | `wnb-3` · 3 paragraf, 6 pernyataan |
-| 4 | Cari Objek | `cari` | `find_object` | `tmg-4` · 4 dicari + 4 pengecoh | `mgl-4` · 4 dicari + 6 pengecoh | `wnb-4` · 4 dicari + 8 pengecoh |
+| 1 | Susun Gambar | `puzzle` | `puzzle_arrange` | 3 × 3, 11 variants (`a`–`k`) | 4 × 4, 10 variants | 4 × 4 jigsaw, 10 variants |
+| 2 | Isi Rumpang | `rumpang` | `fill_blank_bank` | 4 blanks + 2 decoy words | 5 + 2 | 6 + 2 |
+| 3 | Benar atau Salah | `boleh` | `verdict_card` | 4 statements (3 D1a, 1 D1b), key 2 : 2, + anchor card `x` (2) | 6 (3 D1a, 3 D1b), 3 : 3, + 2 | 6 (2 D1a, 4 D1b), 3 : 3, + 2 |
+| 4 | Cari Objek | `cari` | `find_object` (round 1), `find_part` (round 2) | round 1 `x`: 4 clues + 4 decoys; round 2 `a`/`b`: 4 clues, 8 tap parts, 2 main lures | 4 + 6; 4, 10, 3 | 4 + 8; 4, 12, 3 |
+| 5 | Skenario Digital | `skenario` (engine: part 6) | `scenario_choice` | 4 scenarios, 3 actions, 3 reasons | 4; 4, 4 | 4; 4, 5, two steps |
 
-12 tantangan = 12 Serpihan Cahaya.
+The fifth challenge's data is checked and in the workbook, but its rows are only written once part 6 installs the challenge in the game; until then the import warns and sets them aside.
 
-## Aturan per tingkat
+## Rules per level
 
-Satu-satunya sumber aturan: [`app/Libraries/DifficultyRules.php`](../../app/Libraries/DifficultyRules.php). Taksonomi Bloom revisi (Anderson & Krathwohl): C1 Mengingat, C2 Memahami, C3 Menerapkan, C4 Menganalisis, C5 Mengevaluasi, C6 Mencipta. Penanda Bloom wajib untuk rumpang, pernyataan Benar atau Salah, dan benda yang dicari; Susun Gambar dan benda pengecoh tanpa Bloom.
+One source for the blueprint counts: [`app/Libraries/DifficultyRules.php`](../../app/Libraries/DifficultyRules.php) (31 §8.1). Bloom has one range per region (Temanggung C1–C3, Magelang C2–C4, Wonosobo C2–C5; [19](../revisi-10-analitik/19_TELAAH_LABEL_BLOOM.md)); AKM levels and text genres expected per region are there too. A revised blueprint changes one constant there; revised content only changes the data files (K2).
 
-| Tingkat | Isi Rumpang (Bloom) | Benar atau Salah (Bloom · keterampilan) | Cari Objek (Bloom petunjuk) |
-|---|---|---|---|
-| mudah | C1–C2 | C1–C2 · `informasi_tersurat`, `mengenali_fakta`, `mengenali_gambar` | C1–C2 |
-| sedang | C2–C3 | C2–C4 · `gagasan_pokok`, `menghubungkan_informasi`, `mengklasifikasikan_tindakan`, `membedakan_fakta_pendapat` | C2–C3 |
-| sulit | C3–C4 | C4–C5 · `membandingkan_informasi`, `menilai_pilihan`, `menentukan_solusi` | C3–C4 |
+## Variants and booklets
 
-Jumlah rumpang dan pengecoh **tepat**, bukan rentang, agar ketiga variasi satu wilayah setara.
+- Every scored challenge has exactly variants `a` and `b`; `x` holds the items every booklet shares (the anchor card of Benar atau Salah, Cari Objek round 1) and joins every attempt (K11).
+- **First attempt** of challenges 2–5: from the student's booklet B1–B4 when research mode (`research_studies.field_mode`, part 2) is on and the study is active (`App\Libraries\BookletRules`, table of 06). Without a booklet the challenge does not open (`BOOKLET_MISSING`, K10). Field mode off: random `a`/`b`. Susun Gambar is always random `a`/`b` (K12); `c`… are for retakes. Retakes take a variant not served yet. `challenge_attempts.variant_source` records `booklet`, `random`, or `retake`, and `booklet_at_open` the booklet (`App\Libraries\VariantPicker`).
+- Three tries as before: one Cek per challenge for Isi Rumpang and Benar atau Salah (both cards in one Cek), one tap per clue in each Cari Objek round.
 
-## Variasi dan pengacakan
+## Data file shape
 
-- Satu **variasi** = satu kelompok soal yang dimainkan utuh dalam satu pengerjaan. Isi Rumpang dan Benar atau Salah punya tepat 3 variasi (`a`, `b`, `c`); Susun Gambar paling sedikit 3 dan paling banyak 10 (`a` sampai `j`; bank ini memakai 10); Cari Objek satu adegan tetap (`a`), karena posisi benda diatur sekali.
-- Variasi dipilih acak sungguhan setiap pengerjaan baru. **Pengerjaan pertama** selalu memakai variasi `a`–`c` (set penelitian yang dinilai; `BankRules::FIRST_ATTEMPT_GROUPS`), jadi variasi Susun Gambar `d`–`j` hanya muncul pada pengerjaan ulang. Pengerjaan ulang memilih variasi yang belum pernah didapat siswa itu (bila semua sudah, semua boleh lagi). Muat ulang halaman memakai pengerjaan yang sama.
-- Bank kata Isi Rumpang diacak dengan benih id pengerjaan (tetap saat dimuat ulang) dan urutan jawabannya selalu berbeda dari urutan rumpang (ketiga wilayah kini punya kata pengecoh). Urutan petunjuk Cari Objek juga diacak per pengerjaan. Pernyataan Benar atau Salah dan posisi benda tidak diacak.
-- Setiap pengerjaan punya **3 kesempatan** (`Config\Gelita::$maxTries`): di Susun Gambar, Isi Rumpang, dan Benar atau Salah setiap **Cek jawabanku** memakai satu kesempatan untuk semua soal sekaligus (soal yang sudah benar terkunci); di Cari Objek setiap petunjuk punya 3 kesempatan sendiri. Bila kesempatan habis, jawaban terakhir disimpan apa adanya, kunci jawaban tidak ditampilkan, dan tantangan tetap selesai dengan serpihannya.
+Texts are pairs `[Indonesia, English]`. Per item: `key`, `type`, the labels `dim` (D1, D2, D3, PBK), `sub` (D1a, D1b), `akm` (L1–L3), `pirls`, `bloom`, and `labels` => `'expert'` (or `['akm' => 'expert']`) once the blind labelling replaces the developer labels; `review`.
 
-## Bentuk berkas data
+- Isi Rumpang: segments with one `___` each; `'trap' => ['pasir' => 'INF-HUB']` on the blank a decoy word targets; `'special' => ['agar' => ['wnb-2-a02' => 'INF-HUB']]` for the "Kode khusus" of 08.
+- Benar atau Salah: `'code' => 'INF-LIT'` per statement; `'passage'` with `genre` and `layout`; the node-level `'anchor' => ['passage' => …, 'items' => …]` becomes variant `x`.
+- Cari Objek: `'round1' => ['items' => …]` (decoys with `'code' => 'INF-BUD'`); `'round2' => ['a' => ['scene' => …, 'parts' => […], 'items' => […]], 'b' => …]`; each part a box `x`, `y`, `w`, `h` in percent of the 16:9 scene (K8); each clue `answer` (part key), `clue_type` (ATR, REP, IZN, ETK), and `'main' => ['A1' => 'BUD-ATR', …]`.
+- Skenario Digital: `'scenarios' => ['a' => [['key', 'topic', 'steps', 'situation', 'actions' => [[text, score, code, feedback]], 'reasons' => [[text, code]], 'explanation'], …]]`.
+- Line markers of digital texts (decided here, 31 §21 no. 5): `>> ` header line (screen title, account, search result title), `~~ ` small meta line (byline, likes, "no maker"), `:: ` entry (comment, chat message); a blank line starts a new block.
 
-Teks berpasangan `[Indonesia, English]`. Kode dibuat otomatis oleh `build-workbook.php` menurut urutan di berkas:
+The builder derives the full matrices from the three fixed rules of 08 (K6): another blank's answer → INF-REL, a decoy at its target blank → its `trap` code, a decoy at another blank → INF-LIT; round 1: a decoy → its code, another clue's target → INF-LIT; round 2: main lures → their code, every other part → the code of the clue type.
 
-- kode soal `{node}-{variasi}{nn}` (mis. `tmg-2-a01`, `wnb-4-a12`), dua digit per variasi;
-- kode bacaan Benar atau Salah `{node}-{variasi}` (mis. `mgl-3-a`);
-- `sequence` soal = urutan global di tantangan (a01…, b01…, c01…);
-- judul variasi Benar atau Salah = judul bacaannya.
+## Workbook sheets
 
-Jangan menyisipkan atau menghapus soal di tengah variasi tanpa kode eksplisit: kode soal sesudahnya akan bergeser dan jawaban siswa yang tersimpan tidak tersambung lagi.
+Old sheets keep their columns; new columns and sheets (31 §6):
 
-### Explicit keys, retired items, review status (draft 2)
-
-Three optional item fields (`App\Libraries\BankSource`):
-
-- `'key' => 'mgl-2-a06'`: an explicit item key. Use it when an item is inserted or moved inside a variant; the automatic key counts the item's position in the list, retired items included. The key must start with `{node}-{variant}`.
-- `'active' => false`: a retired item. It stays in the workbook with `is_active = 0`, so stored answers keep their item, and gets sequence 91, 92, … per challenge. The rule checks skip it. Retire an item instead of deleting it. Draft 2 retires `mgl-2-a04`, `mgl-2-c04`, `wnb-2-c05`, and `wnb-2-c07`.
-- `'review' => ['status' => 'needs_verification', 'note' => '…']`: overrides the default `verified` status and note. Revised items keep `needs_verification` until the researcher checks them; the importer and `gelita:content:verify` warn about each one.
-
-Active items take their `sequence` from file order, so list them in play order.
-
-```php
-$ref = ['geo' => 'Pemkab Temanggung; BPS; PVMBG', /* … rujukan §9.4 … */];
-
-return [
-    'difficulty' => 'mudah',                       // sama dengan LevelSeeder
-    'nodes' => [
-        'tmg-1' => [
-            'engine' => 'puzzle', 'variant' => 'susun_gambar', 'indicator' => 'budaya',
-            'title' => [ID, EN], 'instruction' => [ID, EN], 'description' => [ID, EN],   // description = kartu misi
-            'hints' => [[ID, EN], [ID, EN], [ID, EN]],
-            'variants' => [
-                'a' => [
-                    'title' => [ID, EN], 'ref' => $ref['geo'],
-                    'items' => [[
-                        'type' => 'puzzle_arrange', 'prompt' => [keterangan ID, caption EN],
-                        'media' => ['key' => 'challenge.item.tmg-1-01', 'label' => 'Gunung Sindoro dan Sumbing', 'note' => 'isi gambar asli', 'source' => 'saran sumber'],
-                    ]],
-                ],
-            ],
-        ],
-        'tmg-2' => [   // Isi Rumpang
-            'engine' => 'rumpang', 'variant' => 'rumpang_bacaan', 'indicator' => 'literasi', 'distractor_count' => 0,
-            'variants' => ['a' => [
-                'title' => [ID, EN], 'ref' => …, 'distractors' => [],          // [['enam', 'six'], …]
-                'items' => [['type' => 'fill_blank_bank', 'bloom' => 'C1', 'prompt' => ['… Gunung ___.', '… Mount ___.'], 'answer' => ['Sumbing', 'Sumbing'], 'bloom_reason' => '…']],
-            ]],
-        ],
-        'tmg-3' => [   // Benar atau Salah
-            'engine' => 'boleh', 'variant' => 'benar_salah_bacaan', 'indicator' => 'literasi',
-            'variants' => ['a' => [
-                'passage' => ['title' => [ID, EN], 'body' => [ID, EN], 'ref' => …],   // paragraf dipisah "\n\n"
-                'items' => [['type' => 'verdict_card', 'bloom' => 'C1', 'skill' => 'informasi_tersurat', 'answer' => 'benar', 'prompt' => [ID, EN],
-                             'media' => [/* hanya pernyataan bergambar */]]],
-            ]],
-        ],
-        'tmg-4' => [   // Cari Objek
-            'engine' => 'cari', 'variant' => 'cari_objek', 'indicator' => 'budaya',
-            'scene' => ['key' => 'challenge.tmg-4.scene', 'label' => …, 'note' => …],
-            'variants' => ['a' => [
-                'title' => [ID, EN], 'ref' => …,
-                'items' => [
-                    ['type' => 'find_object', 'bloom' => 'C1', 'x' => 84, 'y' => 6, 'w' => 12, 'prompt' => [petunjuk ID, clue EN], 'media' => […]],
-                    ['type' => 'find_object', 'decoy' => true, 'x' => 74, 'y' => 40, 'w' => 12, 'prompt' => ['Angklung (pengecoh)', 'Angklung (decoy)'], 'wrong' => [ID, EN], 'media' => […]],
-                ],
-            ]],
-        ],
-    ],
-];
-```
-
-- Potongan Isi Rumpang ditulis persis seperti disimpan: tepat satu `___` per potongan dan **tidak** di awal potongan (spasi sebelum rumpang hilang saat disambung). Jeda paragraf ditulis `\n\n` di tengah potongan **sesudah** `___`; importer memangkas tepi sel, jadi jeda di tepi akan hilang.
-- `media.label` (nama pendek, ≤ 120 huruf) dan `media.note` (isi gambar asli) mengisi `media_assets.label`/`description` dan dipakai halaman Media serta gambar contoh. `bloom_reason` hanya catatan penyusun (tidak ikut workbook).
-- Posisi benda Cari Objek dalam persen adegan 16:9: `x`, `y` dari kiri/atas, `w` lebar; tinggi benda = `w × 16/9`.
-
-## Sheet workbook
-
-| Sheet | Kolom |
+| Sheet | New columns |
 |---|---|
-| `nodes` | `node_ref, title_id, title_en, instruction_id, instruction_en, description_id, description_en, distractor_count, scene_media_key, scene_media_label, scene_media_note, background_media_key, variant_code, indicator` |
-| `variants` | `node_ref, variant_group, title_id, title_en` |
-| `distractors` | `node_ref, variant_group, text_id, text_en` |
-| `passages` | `passage_key, level_code, title_id, title_en, body_id, body_en, media_asset_key, reference_source` |
-| `items` | `item_key, node_ref, variant_group, sequence, interaction_type, indicator, bloom_level, skill, prompt_id, prompt_en, passage_key, answer_id, answer_en, x, y, w, decoy, wrong_feedback_id, wrong_feedback_en, media_asset_key, media_label, media_note, scorable, is_active, review_status, review_note, reference_source` |
-| `hints` | `node_ref, item_key, sequence, text_id, text_en` |
+| `passages` | `text_genre, layout` |
+| `items` | `round, dimension, subaspect, akm_level, pirls_process, label_source, testlet_key, error_code, d3_clue_type, d2_topic` |
+| `cloze_matrix` | `node_ref, variant_group, item_key, word_id, error_code` |
+| `object_codes` | `item_key, object_key, error_code` |
+| `post_scenes` | `node_ref, variant_group, title_id, title_en, text_genre, media_asset_key, media_label, media_note, reference_source` |
+| `post_parts` | `node_ref, variant_group, part_key, kind, label_id, label_en, text_id, text_en, x, y, w, h` |
+| `part_codes` | `item_key, part_key, error_code, main` |
+| `scenarios` | `item_key, d2_topic, steps, explanation_id, explanation_en` |
+| `scenario_options` | `item_key, kind, option_key, sequence, text_id, text_en, score, code, feedback_id, feedback_en` |
+| `indicators` | `code, name_id, name_en, description_id, description_en, domain` |
 
-Arti setiap kolom ada di sheet KAMUS_KOLOM dan di catatan header workbook. Soal yang tidak diubah berstatus `review_status = verified`; soal revisi Oktober 2026 berstatus `needs_verification`. Jenis soal selain empat di atas ditolak ("Jenis soal tidak dikenal.").
+## Checks
 
-## Pemeriksaan
+[`app/Libraries/BankRules.php`](../../app/Libraries/BankRules.php), used by the builder, the importer, `gelita:content:verify`, and the tests (`BankKelas5DataTest`, `BankRulesNewBankTest`).
 
-Satu sumber aturan, [`app/Libraries/BankRules.php`](../../app/Libraries/BankRules.php), dipakai `build-workbook.php`, importer, `php spark gelita:content:verify`, dan uji `BankKelas5DataTest`.
+**Errors** (no workbook / import refused): counts per variant and anchor (§8.1); balanced keys; exactly one error code per wrong choice, of the kind that fits, never `*-LAIN` or `NON-*`; scenario scores (one 2, one 1) and reason sets; every round-2 post has the four clue types and its keys; tap areas inside the scene, not overlapping, at least 24 dp apart in both rounds (`HuntGeometry`, K9); addresses only `.example`, phone numbers only `08xx-xxxx-xxxx`; references for every reading, card, post, and clue; labels; `round` only in `cari`, `x` only for anchors and round 1.
 
-**Galat** (workbook tidak ditulis / impor ditolak / verifikasi gagal): tiap wilayah tepat 4 tantangan aktif berurutan; tepat 3 variasi untuk Isi Rumpang dan Benar atau Salah, 3–10 untuk Susun Gambar dengan `a`, `b`, `c` wajib ada, Cari Objek ≥ 1; Susun Gambar satu soal bergambar per variasi; Isi Rumpang jumlah rumpang sesuai tingkat, tepat satu `___` per potongan (ID dan EN), tidak diawali `___`, jawaban unik, jumlah pengecoh = `distractor_count`, pengecoh ≠ jawaban, tanpa kata dobel; Benar atau Salah satu bacaan per variasi dengan jumlah paragraf dan pernyataan sesuai tingkat, kunci `benar`/`salah`, keterampilan sah; Cari Objek 4 dicari + pengecoh sesuai tingkat, umpan balik pengecoh, semua benda bergambar, posisi di dalam 0–100 % dan tumpukan ≤ 20 %; Bloom wajib; `item_key` unik.
+**Warnings** (errors with `--siap-penelitian`): a/b equivalence (genre, length ±15 %, sub-aspects and AKM levels, code spread), region code coverage, Bloom or AKM outside what the region expects, Susun Gambar captions a/b that contain a key of this region or a later one, fully alternating key order, English equal to Indonesian or still "terjemahan belum ada".
 
-**Peringatan**: Bloom di luar rentang tingkat; variasi tanpa pernyataan `benar` atau tanpa `salah`; gambar masih gambar contoh — menjadi galat dengan `php spark gelita:content:verify --siap-penelitian`.
+## Import and revisions
 
-## Mengimpor dan mengubah isi
+- `php spark gelita:reset` imports this workbook (development and tests); the production server gets the new bank only when the developer decides (K3).
+- Revisions from validation: edit the data files → `php docs/bank-soal/build-workbook.php` → `php spark gelita:bank:import … --dry-run` → import → `php spark gelita:content:verify`. Error codes and labels may change after items were answered (stored tries keep their own code; the audit `content_import` counts changed codes); keys may not (including `find_part` keys and scenario action scores).
+- Surface load (`challenge_items.surface_json`, `SurfaceLoad`) is computed at import and frozen with the bank.
 
-- Instalasi: `php spark db:seed DatabaseSeeder` mengimpor workbook ini (lewat `KontenKelas5Seeder`) lalu memasang gambar contoh. `php spark gelita:reset` (mengosongkan data uji coba sebelum penelitian) mengimpornya lagi.
-- Impor manual: menu panel **Konten → Impor bank soal** (`/admin/konten/impor-bank`: unggah, pemeriksaan tanpa menulis, lalu **Simpan soal ke permainan**), atau `php spark gelita:bank:import docs/bank-soal/gelita-bank-soal-kelas5.xlsx --dry-run` lalu tanpa `--dry-run`. Impor ulang aman: data dicocokkan lewat kodenya. Kunci jawaban soal yang sudah dijawab siswa tidak dapat diubah.
-- Mengubah isi: sunting berkas data, jalankan `php docs/bank-soal/build-workbook.php`, lalu commit workbook-nya. `BankWorkbookGuideTest` gagal bila workbook belum dibangun ulang.
+## Gambar tantangan (daftar bank lama)
 
-## Gambar tantangan (66 slot)
+*(Note, 3 November 2026.)* This table lists the 66 slots of the old bank. The authoritative list for the new bank is the sheet DAFTAR_MEDIA of the workbook (67 slots: Susun Gambar 31 with the new `challenge.item.tmg-1-k01` Wayang Kedu, 3 scenes, 30 objects, 2 statement pictures, 1 new post photo `challenge.post.tmg-4-b`). Media keys did not change when the Susun Gambar letters were remapped.
 
 Setiap slot langsung berisi **gambar contoh** (SVG bertulisan "GAMBAR CONTOH", `media_assets.is_placeholder = 1`) dari `php spark gelita:mockups`, agar sistem dapat diuji ujung ke ujung. Admin menggantinya satu per satu lewat **Konten → Gambar & mockup** (`/admin/media`) dengan kode berkas yang sama; gambar asli tidak pernah ditimpa gambar contoh. Karena gambar contoh menuliskan nama benda, Cari Objek dan pernyataan bergambar **belum layak untuk pengambilan data** sebelum gambar asli dipasang.
 

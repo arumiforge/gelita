@@ -138,6 +138,7 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
     - [ ] Owner checks `36` (its *Catatan untuk diperiksa pengembang*) and raises it to `disetujui pengembang`; code wave D then fills the English column of the bank data files from `36`
 - [ ] Implementation of the system changes listed in `01` (24), one short-lived branch per part, in waves (owner, 1 November 2026, `00` → *Tahap dokumen 3*): C part 1 (`27`) alone; D part 2 (`28`) with part 5 (`31`); E parts 3 (`29`), 4 (`30`), and 6 (`32`); F parts 7 (`33`) and 8 (`34`), then part 9 (`35`) last
   - [x] Wave C, part 1 (`27`, researcher roles and capability map): code on branch `r10-dok-32-skenario-digital` (3 November 2026), merged as PR #332; migration `003400` was guarded (`gelita.allowTeacherRemoval`); the owner dropped the guard on 3 November 2026 (`guru` accounts are always deleted whenever the migration runs; branch `sky/loving-einstein-asupcs`, `04`, `27` §17 no. 11). Full suite green on `main` after the merge (874 tests, 3 November 2026)
+  - [ ] Wave D, part 5 (`31`, new question bank, error codes, booklets, anchors, two hunt rounds, labels, surface load): code on branch `r10-kode-31-bank-soal` (3 November 2026), pushed, waiting for the coordinator's PR; migrations `003900`, `003910` (`REQUIRED_MIGRATION` `003910`; part 2 adds `003500`); `BookletSource` is wired to part 2's tables after both merge; suite green (910 tests)
 
 ## Before the research starts
 

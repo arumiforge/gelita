@@ -1039,6 +1039,8 @@ Hanya `x`, `y`, `w`, `grid`, `shape` yang ikut payload pemain (`ChallengeItem::s
 | `fill_blank_bank` | `{"text_id": "Sumbing", "text_en": "Sumbing"}` | Kata yang dipilih dibandingkan dengan `text_{locale}` (jatuh ke `text_id`), huruf kecil dan dipangkas |
 | `verdict_card` | `{"verdict": "benar"}` | `benar` \| `salah` |
 | `find_object` | `{"target": true}` (pengecoh: `{"target": false}`) | Benar bila benda yang diketuk adalah soal target itu sendiri; benda `decoy` tidak pernah benar |
+| `find_part` | `{"part": "A2"}` | Round 2: the tapped post part is the key part of the clue |
+| `scenario_choice` | `{}` | Scored by part 6 from `scenario_options.score` |
 
 Kunci tidak pernah dikirim ke browser. Kunci Susun Gambar dibuat otomatis `range(0, grid² − 1)` dari tingkat wilayah saat soal pertama kali dibuat dan tidak dihitung ulang pada impor berikutnya.
 
@@ -1134,6 +1136,23 @@ Nilai bawaan penting: `game_sessions.locale = 'id'`, `game_sessions.status = 'ac
 Siswa simulasi dari `php spark gelita:simulasi` (nama pengguna `sim_NNN`, sekolah ketikan "Sekolah Simulasi …" yang `is_verified = 0`) adalah baris biasa di tabel kelompok A dan D, jadi ikut terhapus reset.
 
 Jangan menjalankan reset terhadap server yang sedang mengambil data penelitian.
+
+## Research revision 10, part 5: bank labels, error codes, choice tables
+
+*(New, English; migrations `2026-01-01-003900_AddBankLabelsAndErrorCodes` and `003910_CreateBankChoiceTables`, 31 §15.)* All new columns are nullable; the new tables hold bank content, not student data, and are cleared and rebuilt by `gelita:reset` (`SystemResetService::GROUP_B`).
+
+| Table | New columns or table |
+|---|---|
+| `challenge_items` | `round` TINYINT (Cari Objek 1/2), `dimension` VARCHAR(4) (D1, D2, D3, PBK), `subaspect` VARCHAR(4) (D1a, D1b), `akm_level` VARCHAR(2), `akm_level_source` VARCHAR(10) (`developer`, `expert`), `pirls_process` VARCHAR(20), `bloom_level_source` VARCHAR(10), `testlet_key` VARCHAR(40), `error_code` VARCHAR(12) (statements, round-1 decoys), `d2_topic` VARCHAR(4), `d3_clue_type` VARCHAR(4), `explanation_id`/`explanation_en` TEXT (scenarios), `surface_json` JSON (SurfaceLoad, frozen at import); index (`challenge_node_id`, `variant_group`, `round`) |
+| `reading_passages` | `text_genre` VARCHAR(30), `layout` VARCHAR(20) (`plain`, `info_screen`, `chat`, `search`, `post`) |
+| `item_tries` | `error_code` VARCHAR(12) (derived by the server when the try is graded), `manual_code` VARCHAR(12) (L5 import of part 3 only); index (`error_code`) |
+| `challenge_attempts` | `variant_source` VARCHAR(10) (`booklet`, `random`, `retake`), `booklet_at_open` CHAR(2) (B1–B4) |
+| `item_error_codes` (new) | `id`, `challenge_item_id` FK CASCADE, `choice_type` VARCHAR(10) (`word`, `object`, `part`), `choice_ref` VARCHAR(100), `error_code` VARCHAR(12), `is_main` TINYINT(1) = 0; unique (`challenge_item_id`, `choice_type`, `choice_ref`) |
+| `post_scenes` (new) | `id`, `challenge_node_id` FK CASCADE, `variant_group`, `title_id`/`title_en`, `text_genre`, `media_asset_id` FK SET NULL, `reference_source`, timestamps; unique (`challenge_node_id`, `variant_group`) |
+| `post_parts` (new) | `id`, `post_scene_id` FK CASCADE, `part_key` VARCHAR(10), `kind` VARCHAR(20), `label_*`, `text_*`, `x`, `y`, `w`, `h` DECIMAL(5,2) (percent of the 16:9 scene), `sequence`; unique (`post_scene_id`, `part_key`) |
+| `scenario_options` (new) | `id`, `challenge_item_id` FK CASCADE, `kind` (`action`, `reason`), `option_key` VARCHAR(10), `sequence`, `text_*`, `score` TINYINT (actions 0/1/2), `code` VARCHAR(12) (DIG-*, R-*), `feedback_*`; unique (`challenge_item_id`, `kind`, `option_key`). Read by the scenario engine of part 6 |
+
+`learning_indicators` gets the rows D1a, D1b, D2, D3, PBK from the workbook sheet `indicators`; the old `budaya`, `literasi`, `sikap` rows are made inactive, not deleted.
 
 ## Isi database setelah instalasi baru
 

@@ -2489,3 +2489,20 @@ Code for `docs/revisi-10-analitik/27_IMPLEMENTASI_PERAN_PENELITI.md` (status `di
 - **Decision (owner).** `guru` accounts are always deleted whenever migration `003400` runs, on any server; teachers have no place in the system any more (`docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`, 3 November 2026; `27` K16, §17 no. 11). This replaces the guard from the entry above.
 - **Code.** The guard in `up()` and `Config\Gelita::$allowTeacherRemoval` are removed. `ReplaceTeacherMigrationTest` drops the guard test; the remaining tests check that teacher data is always removed and that installs without teacher accounts migrate cleanly. `docs/08_DEPLOYMENT.md` describes the unguarded migration.
 - **Open.** `003600` (part 3, log deletion) relied on `003400` holding production back (`29` §19 no. 5). The owner decides before part 3 whether `003600` gets its own guard.
+
+## Research revision 10, part 5 / code wave D: new question bank (3 November 2026, branch `r10-kode-31-bank-soal`)
+
+Spec: `docs/revisi-10-analitik/31_IMPLEMENTASI_BANK_SOAL_BARU.md` (system changes no. 1, 3, 4, 8, 17, 20). Origin: AI under the coordinator's brief; decisions below are implementation choices (`draf pengembang`) for the coordinator's `04` log.
+
+- **Bank.** Data files rewritten from `08` by `docs/bank-soal/tools/import_08.py` (kept for provenance, not to be rerun); English from the AI draft `36` (not re-drafted); every `08` item `needs_verification` with the note "terjemahan belum ada" until the owner checks `36`. Counts match `08` → Jumlah (116 + 12 PBK). Old bank archived in `docs/arsip/bank-soal-lama/`.
+- **Mission cards** of the changed and new challenges taken from `12` → Kartu misi (32 says they come in through the part-5 workbook).
+- **Fifth challenge.** Scenario data (`scenarios`, `scenario_options`, `scenario_choice` items, node rows `*-5`) is in the data files and workbook and checked by `BankRules`, but the importer sets the rows aside with a warning while `tmg-5` … `wnb-5` do not exist in the game; once part 6 installs the nodes, the same workbook writes them. `BankRules::ENGINES` stays four.
+- **Labels.** `pirls_process` is not in `08`; derived from AKM (L1 retrieve, L2 infer in Magelang / integrate in Wonosobo, L3 evaluate). `skill` of statements derived by a simple rule (D1b: penanda sumber, iklan, membandingkan sumber, fakta–pendapat, kredibilitas). Both are developer labels.
+- **Codes.** `verdict_D1a` also allows INF-GEN, because `08` uses it on a D1a statement (`mgl-3-a02`). Round-2 instructions of `08` per region are not stored; the UI uses `Game.huntRoundTwoIntro`.
+- **Line markers** of digital texts (31 §21 no. 5): `>> ` header, `~~ ` small meta line, `:: ` entry; blank line = block. Rendered by the `boleh` view as plain text; Isi Rumpang site headers stay one plain first paragraph.
+- **Tap areas.** `HUNT_SCENE_DP` = 864 from `stage.css` (`.challenge-cari .hunt-scene`), locked by `HuntSceneWidthTest`. Magelang and Wonosobo round 1 re-laid on the catalogue scenes' tables (smallest gaps 24.2 and 24.7 dp); `CatalogImporter::SCENE_OBJECTS` follows. Round-2 posts use one fixed layout per part count (smallest gap 24.3 dp). `tap_min_dp` is stored as whole dp, rounded down.
+- **Payload.** Round 1 stays in `objects`/`clues` (server-rendered scene); round 2 is a new `round2` block (title, photo, parts with opaque `partRef()`, clues). Round 2 refuses taps until round 1 is closed. A found key part stays tappable in round 2, because it is a lure for the other clues.
+- **Workbook.** `post_scenes` gets `media_label`/`media_note` besides the columns of 31 §6.3, so new post photos get a named slot. `label_source` accepts `akm:expert`/`bloom:expert` for partial expert labels.
+- **Research mode.** Bank warnings of 31 §8.2 become errors in `gelita:content:verify --siap-penelitian`.
+- **Not done here.** The `kode_pilihan` sheet and `ketua`-only answer keys (part 3 owns the sheet list); manual browser check of 31 §19.3 (no server in this container); mockup image for the new post photo `challenge.post.tmg-4-b` (no mockup kind for posts).
+
