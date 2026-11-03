@@ -772,7 +772,7 @@ Dicatat di sini dan dibawa sesi koordinator setelah bagian 3 dan 4 selesai.
 | [02](02_LEMBAR_LAPANGAN.md) | L1 | Kode sesi susulan kedua `-S2`; riwayat token dari panel | Sudah (sesi koordinator, 30 Oktober 2026, PR #285) |
 | [03](03_KODE_DAN_ARTI.md) | Kode sesi, sekolah, akun uji | `-S2`, awalan `V` untuk instalasi uji, kode `UJI-01` | Sudah (sesi koordinator, 30 Oktober 2026, PR #285) |
 | [04](04_CATATAN_KEPUTUSAN.md) | Entri 25 Oktober 2026 (buklet) | Tidak diubah (riwayat); keputusan baru di entri 30 Oktober | Tidak perlu diubah |
-| [11](11_KAMUS_DATA.md) | Variabel peserta dan sesi | `is_makeup`, `makeup_no`, bentuk tes; masuk `kamus-1.1` | Saat `kamus-1.1` |
+| [11](11_KAMUS_DATA.md) | Variabel peserta dan sesi | `is_makeup`, `makeup_no`, bentuk tes; masuk `kamus-1.1` | **Sudah**: `kamus-1.1` draf (3 November 2026) |
 | [18](18_MOCKUP_LAYAR_BARU.md) | Teks layar token | "enam huruf dan angka"; pesan `tokenNotOpenYet`, `tokenOtherClass`, `tokenNotMember` | Sudah (sesi koordinator, 30 Oktober 2026, PR #285) |
 | [20](20_PAKET_VALIDASI.md) | Prasyarat no. 8 | Di G3: mode penelitian menyala dan satu sesi lapangan `V01` untuk validator; akun dari `gelita:uji:akun` | Sudah (sesi koordinator, 30 Oktober 2026, PR #285) |
 | [27](27_IMPLEMENTASI_PERAN_PENELITI.md) | §4, §16 no. 3 | Admin melihat pemantauan sebagai angka saja | Sudah (cabang ini) |
@@ -781,4 +781,4 @@ Dicatat di sini dan dibawa sesi koordinator setelah bagian 3 dan 4 selesai.
 | [18](18_MOCKUP_LAYAR_BARU.md) | Teks layar token | Pesan baru `tokenOtherStudy` | Belum (1 November 2026) |
 | `33` (bagian 7) | Mode penelitian | Memakai `field_mode` dan `meeting_plan` per studi dari sini; rencana `satu_sesi` tidak memakai Kenali dan pengerjaan ulang | Untuk sesi gelombang B (1 November 2026) |
 | `34` (bagian 8) | Modul tes dan skala sikap | Memutuskan 28 §21 no. 2 (batas 20 menit P5) dan no. 3 (angket terlambat); rencana `satu_sesi` (KG2) tanpa modul tes, angket, dan skala sikap | Sudah (34 K1, §5.1, §10.2, K12; dibawa ke 28 oleh sesi koordinator bagian 8, 2 November 2026) |
-| [11](11_KAMUS_DATA.md) | Variabel sesi | `meeting_plan` studi dan `region_code` sesi lapangan KG2 menurunkan `region_opened`; masuk `kamus-1.1` | Saat `kamus-1.1` |
+| [11](11_KAMUS_DATA.md) | Variabel sesi | `meeting_plan` studi dan `region_code` sesi lapangan KG2 menurunkan `region_opened`; masuk `kamus-1.1` | **Sudah**: `kamus-1.1` draf (3 November 2026) |
