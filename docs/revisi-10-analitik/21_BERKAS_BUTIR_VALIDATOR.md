@@ -35,8 +35,6 @@ Penilai B.5a ditetapkan pengembang ([20 → Keputusan pengembang](20_PAKET_VALID
 
 Paket B.5a untuk ABA1 dan ALD1 juga berisi halaman petunjuk B.5a dari instrumen ahli materi, yang bukan berkas skrip ini; halaman itu baru dikirim setelah pembukanya menyebut ID netral (lihat [Akibat ke dokumen lain](#akibat-ke-dokumen-lain)). Berkas instrumen lain (surat, bank, kisi-kisi, tes, akses game) dan kapan dikirim ada di 20.
 
-**Bank soal baru di sistem ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md), 2 November 2026).** Workbook bank soal, berkas data, dan halaman panel konten memuat label pengembang, jadi tidak pernah menjadi sumber berkas ini dan tidak ikut paket validator. Berkas validator tetap dibuat dari 08 ([31 → Label pengembang dan label ahli](31_IMPLEMENTASI_BANK_SOAL_BARU.md#131-label-pengembang-dan-label-ahli); [20 → Prasyarat no. 4](20_PAKET_VALIDASI.md#prasyarat-no-4-membekukan-versi-bahan)).
-
 ### Isi setiap lembar kerja
 
 | Berkas | Lembar | Baris | Kolom yang diisi validator |
@@ -70,6 +68,7 @@ B.5a menguji apakah dua ahli memberi label yang sama dengan pengembang tanpa mel
 | Yang bisa membocorkan label | Yang dilakukan |
 | --- | --- |
 | Kolom label pengembang (Sub, AKM, Bloom) di 08 dan kolom Sel di 14 | Tidak diambil. Kolom Dimensi, Sub-aspek D1, Level, dan Bloom di lembar kerja kosong (Bloom butir tes berisi "—") |
+| Workbook bank soal, berkas data `docs/bank-soal/data/`, dan halaman konten panel. Sejak bank baru ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md)) ketiganya memuat label pengembang (dimensi, sub-aspek, level AKM, Bloom) dan kode kesalahan | Tidak dikirim ke validator dan tidak dipakai sebagai sumber berkas validator; generator tetap membaca 08. Muatan game tidak membawa label atau kode, jadi akun `uji.*` di instalasi uji tidak melihatnya ([31 §13.1](31_IMPLEMENTASI_BANK_SOAL_BARU.md#131-label-pengembang-dan-label-ahli)) |
 | Kode butir: `wnb-3-a02` menunjukkan wilayah, tantangan, dan variasi, padahal wilayah naik level; `tes-ae-…` menunjukkan bagian tes, jadi dimensinya | Diganti ID netral `BT-001` … `BT-180` |
 | Urutan dokumen (Temanggung → Magelang → Wonosobo, Bagian 1 → 3) | Bahan diacak dengan benih tetap 20261027; butir di dalam satu bahan tetap urut. ID bahan netral `BH-01` … `BH-73` |
 | Kode kesalahan: INF berarti D1, INF-SUM dan INF-FOP berarti D1b, DIG berarti D2, BUD berarti D3 | Tidak dicantumkan di daftar buta |

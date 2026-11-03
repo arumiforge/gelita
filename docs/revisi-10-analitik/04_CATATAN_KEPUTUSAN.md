@@ -1,6 +1,6 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 2 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 3 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
 
@@ -30,6 +30,58 @@ Atas permintaan pengembang, *Akibat ke dokumen lain* di [31](31_IMPLEMENTASI_BAN
 - berkas validator dibuat ulang saat pembekuan (20 prasyarat no. 4), karena 03, 08, 16, 17, dan 18 berubah.
 
 Diubah: 01, 03, 06, 08, 12, 13, 16, 17, 18, 20, 21, 27–35, 04, `docs/PROGRESS.md`, PDF siap cetak.
+
+**`kamus-1.1` ditulis ke 11 sebagai `draf pengembang`** (cabang `r10-kamus-11`, di atas cabang `r10-koordinator-31`) · `asal: pengembang` (disusun dengan bantuan AI) · `draf pengembang` · tidak merevisi produk
+
+Atas permintaan pengembang ("tulis kamus 1.1 ke 11"), menjalankan keputusan 2 November 2026 (entri di bawah, no. 5; [35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) §19 no. 6). Tidak ada keputusan baru dan **tidak ada definisi `kamus-1.0` yang diubah**. Yang baru ditandai *(1.1)* di [11](11_KAMUS_DATA.md) dan didaftar di bagian baru *Yang baru di `kamus-1.1`* (22 butir):
+- **Sumber `consent_ok`** adalah daftar izin berkode di sistem, dicocokkan `ketua` dengan L7. Siswa `withdrawn_keep` dihitung sampai saat mundur (`withdrawn_on`, `cutoff_basis`; `after_withdrawal` di lembar mentah). Ada juga `registration_corrected`.
+- **"Pengambilan data selesai"** = jam putaran hitung.
+- **Analitik 1:** jenis (a) untuk skenario memakai `scenario_failed`. Pengerjaan ulang terbuka di P2–P4 (`is_retake`), dan asal variasi dicatat di `variant_source`.
+- **Analitik 5:** sumber datanya `input_idle` dan `challenge_attempt_segments`. Ambang ada di kolom studi.
+- **Analitik 6:** waktu putus dari `ready_ms`, dan `reason_ready_ms` untuk alasan skenario. Jarak NON-SEN diturunkan server dari geometri bank. Analisis memakai kode bank terbaru, dengan `error_code_at_try`.
+- **Analitik 7, 8, 10:** `challenge_instruction`, `passage_reopened`, kunci tindakan tetap (`t1`, …), dan `reason_level` kosong sampai urutan alasan ditetapkan.
+- **Variabel butir dari 31.**
+- **Variabel sesi:** `is_makeup`, `makeup_no`, dan `region_opened` dari rencana pertemuan.
+- **Variabel baru:** tes awal–akhir, jawaban dan bagian tes, angket, skala sikap, dan `feedback_rating`. Jawaban butir risiko daring, `risk_reconsent`, dan `risk_offered` hanya sebagai angka gabungan. `*_theta` dan `sikap_missing_reason = tanpa_izin` diisi di analisis, bukan sistem.
+- **Variabel sekolah dari L8**, dengan nama variabel usulan (`docs/PROGRESS.md`, keputusan 26 Oktober 2026).
+- **Aturan nama** dari [22 → Di mana nama berada](22_PERMOHONAN_IZIN_ETIK.md#di-mana-nama-berada) menggantikan "nama hanya ada di L7" (keputusan 27 Oktober 2026).
+- **Lembar lapangan:** L4 diberi `attempt_id` dan `item_key`, dan L6 tidak diimpor.
+- **Versi:** `dictionary_version` dan `run_id` di setiap tabel turunan; versi antara `kamus-1.1-usulan`; versi dikunci bersama versi game di G4.
+- ***Yang harus disediakan sistem*:** kalimat "tahap 3, setelah G2" diganti, dan setiap syarat menunjuk dokumen implementasinya. Judul bagiannya tetap, supaya tautan di 01, 28, 29, dan 33 tidak putus.
+
+Yang menunggu uji coba (KG3a, KG3b):
+- T_idle dan T_teb;
+- batas `game_time_group`;
+- ambang tebakan cepat tes;
+- urutan alasan;
+- ambang `rapid_share`.
+
+Empat penyesuaian teks untuk 13, 16, dan 17 dicatat di 11 → *Penyesuaian di dokumen lain* untuk sesi koordinator. Baris *Akibat ke dokumen lain* yang menunjuk 11 di 28, 29, 30, 33, 34, dan 35, serta 31 §23 no. 7, ditandai sudah.
+
+Diubah: 11, 28, 29, 30, 31, 33, 34, 35 (baris akibat), 00 (dua baris 11), 04, `docs/PROGRESS.md`, PDF siap cetak.
+
+**31 disetujui pengembang; akibatnya dibawa ke dokumen lain** (cabang `r10-koordinator-31`, dari `main` setelah PR #324) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Pengembang meninjau [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) dan menyetujui keenam pertanyaan terbukanya. No. 1–4 sudah dijawab sesi koordinator 2 November 2026 (entri di bawah). Usulan no. 5 dan 6 disetujui apa adanya: penanda baris bacaan digital ditetapkan saat implementasi bersama mock-up, dan `HUNT_SCENE_DP` diukur dari tata letak sekarang lalu dikunci tes. Untuk no. 4 pengembang menegaskan pilihan yang sama: AI mendraf terjemahan bahasa Inggris saat berkas data ditulis di gelombang D, lalu pengembang memeriksanya. Status 31 naik ke `disetujui pengembang` (31 §22 no. 9–11).
+
+*Akibat ke dokumen lain* di 31 §23 dibawa tanpa keputusan baru:
+- **29:** lembar `percobaan` mendapat `error_code` dan `manual_code`; lembar `pengerjaan` mendapat `variant_source` dan `booklet_at_open`; lembar `butir` mendapat label dan beban permukaan; ada lembar baru `kode_pilihan` (hanya `ketua`); baris titik sambung no. 1 diperluas ke bank baru.
+- **28:** panel pemantauan mendapat baris "Belum punya kursi", karena tanpa kursi tantangan yang dinilai belum terbuka (31 K10); baris no. 20 di titik sambung menunjuk 31 §11.
+- **20 dan 21:** workbook, berkas data bank, dan halaman konten panel memuat label pengembang dan kode kesalahan, jadi tidak ikut paket validator; berkas validator tetap dibuat dari 08.
+- **03:** variasi Susun Gambar `a`/`b` dan `c … k`, `variant_source`, `BOOKLET_MISSING`, kode bagian ketuk, kode genre dan tampilan bacaan, asal label `developer`/`expert`.
+- **08:** kalimat "pemetaan huruf … ditulis di dokumen implementasi" menunjuk 31 §14.
+- **01:** baris perubahan sistem no. 1, 3, 4, 8, 17, 20 menunjuk 31.
+- **31:** `BankRules::ENGINES[5]` ditulis `skenario`, sesuai 32.
+
+Yang masih menunggu: glosarium (saat implementasi) dan kolom 31 di 11 → *Variabel butir* (saat `kamus-1.1` ditulis ke 11). Baris 31 di 00 juga dibetulkan; sebelumnya tertulis `disetujui pengembang` 2 November 2026 dengan frasa "isi instrumen" yang tidak cocok.
+
+Diubah: 31, 01, 03, 08, 20, 21, 28, 29, 00 (dua baris 31), 04, `docs/PROGRESS.md`, PDF siap cetak.
+
+**PDF 23 terbaru dikirim ke peneliti** (cabang `r10-kirim-23`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Pengembang mengirim PDF [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) terbaru ke peneliti pada 3 November 2026, PDF saja (keputusan no. 4 di entri *Pembagian kerja baru*, 1 November 2026). Berkasnya `dokumen-pdf/cetak/23_SURAT_INFORMASI_DAN_PERSETUJUAN.pdf` dari `main` di *commit* `5c5eed3`, 33 halaman, kaki halaman `071c0e2` (sama dengan `manifest.json`). Bedanya dengan kiriman pertama (*commit* serah terima `f45d274`, kaki halaman `52541ed`) hanya satu baris di *Akibat ke dokumen lain*: usulan teks en T11 untuk 30 ditandai sudah (entri *Teks en T11 paragraf 1 di 30 disamakan dengan id*, 2 November 2026). Teks untuk orang tua, sekolah, guru, dan anak tidak berubah. Kalimat "PDF 22, 23, 24, dan 26 tidak berubah sesudahnya" di entri 2 November 2026 berlaku sampai perubahan itu; versi 23 yang dipegang peneliti kini kiriman ini. 22, 24, dan 26 tidak dikirim ulang.
+
+Diubah: 04, 00 (dua baris 23), PDF siap cetak 00 dan 04.
 
 ## 2 November 2026
 

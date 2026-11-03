@@ -686,7 +686,7 @@ Judul, petunjuk, pernyataan, dan empat label pilihan skala ada di `data/instrume
 | `.claude/rules/glossary.md` | Istilah baru di [§19](#19-akibat-ke-dokumen-lain) |
 | `CLAUDE.md` (*Spark commands*) | `gelita:instrumen:impor` |
 | `docs/PROGRESS.md`, `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md` | Baris dan keputusan implementasi |
-| [11](11_KAMUS_DATA.md) | Variabel mentah §11.4 di `kamus-1.1` (bersama bagian 9, setelah uji coba) |
+| [11](11_KAMUS_DATA.md) | Variabel mentah §11.4 di `kamus-1.1` (bersama bagian 9, setelah uji coba) **Sudah**: `kamus-1.1` draf (3 November 2026). |
 
 ---
 
@@ -735,7 +735,7 @@ Untuk sesi koordinator. **Status per 3 November 2026:** baris 28, 13, 29, 30, 27
 | [16](16_ANGKET_AKSES_DIGITAL.md) | *Cara pelaksanaan* no. 9 | "sampai P5" dibaca "sebelum P5 utama dibuka" bila peneliti setuju (§17 no. 4) | Menunggu peneliti (§17 no. 4) |
 | [17](17_SKALA_SIKAP.md) | Pembuka, *Pelaksanaan di P5* | Kalimat lama "sistem diubah di tahap 3" (04, 1 November 2026); Balai Refleksi hanya di sesi P5 dalam mode penelitian (34 K12) | Sudah (PR #325, cabang `r10-dok-34-modul-tes-sikap`, 2 November 2026; sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
 | [18](18_MOCKUP_LAYAR_BARU.md) | *Celah* no. 3 | Salinan modul tes dibawa ke 34 §13 | Sudah (PR #325, cabang `r10-dok-34-modul-tes-sikap`, 2 November 2026; sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
-| [11](11_KAMUS_DATA.md) | `kamus-1.1` | Kolom tambahan `extra_minutes`, `instrument_version`, `risk_offered` (hanya gabungan) di samping variabel 13, 16, 17 | Saat `kamus-1.1` |
+| [11](11_KAMUS_DATA.md) | `kamus-1.1` | Kolom tambahan `extra_minutes`, `instrument_version`, `risk_offered` (hanya gabungan) di samping variabel 13, 16, 17 | **Sudah**: `kamus-1.1` draf (3 November 2026) |
 | [01](01_REVISI_10_ANALITIK.md) | *Catatan perubahan sistem* no. 21, 22 | Rujukan ke 34 | Sudah (PR #325, cabang `r10-dok-34-modul-tes-sikap`, 2 November 2026; sesi koordinator 3 November 2026, cabang `r10-cek-30`) |
 | `.claude/rules/glossary.md` | Tabel *Game* dan *People, data, and the panel* | Baris baru: modul tes (`instrument module`, `/tes`), sesi tes (`sitting`, `instrument_sittings`), blok waktu (`time block`, `p1`/`p23`), tambah waktu (`extra minutes`), skala sikap (`attitude scale`, `/refleksi/sikap`, `sikap`), pertanyaan tambahan (`risk items`, `/tes/tambahan`), *Mulai tes awal/akhir* (`test start`, `field_sessions.test_started_at`), pratinjau instrumen (`instrument preview`, `Config\Gelita::$instrumentPreview`) | Saat implementasi |
 | `docs/revisi-10-analitik/dokumen-pdf/serah-terima-peneliti.pdf` | Pertanyaan untuk peneliti | §17 no. 1, 2, 4 bila dibuat versi baru | Bila dibuat versi baru |

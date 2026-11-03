@@ -94,8 +94,11 @@ Akun **siswa** di instalasi uji untuk validator, bukan akun staf ([20 → Akses 
 | tmg-5, mgl-5, wnb-5 | Skenario Digital, tantangan kelima (D2) | Disetujui |
 | a, b | Variasi soal dalam tantangan yang dinilai; pengerjaan pertama memakai variasi dari buklet siswa | Disetujui 25 Oktober 2026 (dulu a–c) |
 | x | Butir yang dipakai semua buklet: kartu jangkar (mis. `tmg-3-x01`) dan Temukan Benda (mis. `wnb-4-x03`) | Disetujui |
-| c … k | Variasi Susun Gambar untuk pengerjaan ulang (Temanggung `a`–`k`, [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) K12) | Kode tersimpan |
+| a, b (Susun Gambar) | Dua variasi Susun Gambar yang keterangannya bersih dari kunci; pengerjaan pertama diacak dari keduanya, tidak dari buklet | [08](08_DRAF_BANK_SOAL.md#keputusan-pengembang-26-oktober-2026), 26 Oktober 2026; huruf lama dipetakan di [31 §14](31_IMPLEMENTASI_BANK_SOAL_BARU.md#14-susun-gambar-selama-studi) |
+| c … k | Variasi Susun Gambar untuk pengerjaan ulang (Temanggung sampai `k`, Magelang dan Wonosobo sampai `j`) | [31 §14](31_IMPLEMENTASI_BANK_SOAL_BARU.md#14-susun-gambar-selama-studi), 2 November 2026 (dulu `c … j`) |
 | B1–B4 | Buklet: kombinasi variasi per wilayah (B1 a-a-a, B2 b-b-b, B3 a-b-a, B4 b-a-b), dibagikan per kursi lewat denah L2 | Disetujui |
+| A1, B4, … | Kode bagian ketuk di adegan *Periksa Unggahan* (`post_parts.part_key`) | [08](08_DRAF_BANK_SOAL.md); [31 §6.3](31_IMPLEMENTASI_BANK_SOAL_BARU.md#63-sheet-baru) |
+| developer, expert | Asal label AKM dan Bloom per butir (`akm_level_source`, `bloom_level_source`): pengembang, atau hasil pelabelan buta B.5a | [31 → K13](31_IMPLEMENTASI_BANK_SOAL_BARU.md#2-keputusan-yang-dikunci) |
 | Kedugram | Aplikasi media sosial fiktif tempat semua unggahan di bacaan digital dan *Periksa Unggahan* tampil | Disetujui |
 | tmg-2-a01 | Kode butir: tantangan `tmg-2`, variasi `a`, butir ke-01 | Kode tersimpan |
 

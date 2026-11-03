@@ -720,8 +720,6 @@ Yang harus diketahui ketua peneliti sebelum paket dikirim:
 
 "Dibekukan" berarti versinya dicatat, bukan tidak boleh diubah ([01 → Peran pengembang, peneliti, dan ahli](01_REVISI_10_ANALITIK.md#peran-pengembang-peneliti-dan-ahli), aturan 3). Pembekuan dilakukan **setelah** cek fakta budaya (no. 6), PR #275, dan PR cabang ini digabung ke `main`, dan setelah no. 8, 9, dan 10 selesai (keputusan no. 10). Pembekuan adalah langkah terakhir sebelum kirim.
 
-**Bank soal baru di sistem ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md), 2 November 2026).** Workbook bank soal, berkas data, dan halaman panel konten memuat label pengembang (dimensi, sub-aspek, level AKM, Bloom, `label_source`), jadi tidak ikut paket validator ([31 → Label pengembang dan label ahli](31_IMPLEMENTASI_BANK_SOAL_BARU.md#131-label-pengembang-dan-label-ahli)). Berkas validator tetap dibuat dari 08 ([21](21_BERKAS_BUTIR_VALIDATOR.md)). Label tidak pernah masuk muatan pemain, jadi bila *commit* yang dibekukan sudah memuat bank baru, validator memainkan bank baru di instalasi uji tanpa melihat label.
-
 **Langkah:**
 
 1. **Pastikan tidak ada PR terbuka** yang mengubah bahan yang dinilai: 08, 11 (`kamus-1.0`), 12–18, tiga instrumen di `dokumen-pdf/src/`, atau 21. Bila ada, tunggu digabung atau tunda.
@@ -740,6 +738,8 @@ Yang harus diketahui ketua peneliti sebelum paket dikirim:
    - aturan sesudahnya (di bawah).
 9. **Tulis versi di surat dan D.1:** "versi/tanggal" diisi `<tanggal beku> · commit <7 karakter> · <versi berkas>`, misalnya `9 November 2026 · commit 1a2b3c4 · berkas-1.0 · sumber 3a48dbfe`. Teks yang sama dipakai di IMd D.3 no. 2 (versi yang dinilai) dan di surat akses.
 10. **Ubah tabel *Ringkasan* no. 4** menjadi "Selesai (*tanggal*, *commit* 7 karakter, lihat 04)".
+
+**Bank soal di *commit* beku** ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md), 2 November 2026). Workbook, berkas data bank, dan halaman konten panel memuat label pengembang dan kode kesalahan, jadi tidak ikut paket validator; berkas validator tetap dibuat dari 08 (langkah 3). Bila *commit* beku sudah memuat bank baru, validator memainkan bank baru di instalasi uji (langkah 6), tanpa label atau kode di layar; bila belum, validator memainkan bank lama, dan hal itu dicatat di entri 04 langkah 8.
 
 **Kapan `berkas-validator.php` dijalankan lagi:**
 

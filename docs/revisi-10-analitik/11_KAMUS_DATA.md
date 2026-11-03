@@ -2,11 +2,15 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · `kamus-1.0`, disetujui pengembang 26 Oktober 2026 (daftar kerja no. 2); ambang jeda dan tebakan cepat masih sementara
+Per 3 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · `kamus-1.1` (`draf pengembang`, 3 November 2026) di atas `kamus-1.0` (disetujui pengembang 26 Oktober 2026, daftar kerja no. 2); ambang jeda dan tebakan cepat masih sementara
+
+> **`kamus-1.1`: `draf pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 3 November 2026), ditulis sekarang atas keputusan pengembang 2 November 2026 ([04](04_CATATAN_KEPUTUSAN.md); [35 → Keputusan pengembang](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#19-keputusan-pengembang) no. 6). Isinya usulan [35 §8.2](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#82-isi-yang-diusulkan) dan variabel yang diserahkan 13, 16, 17, dan dokumen implementasi 28–34. **Tidak ada definisi `kamus-1.0` yang diubah**: yang baru menambah sumber data, variabel, dan penegasan, dan ditandai *(1.1)*. Daftarnya di [Yang baru di `kamus-1.1`](#yang-baru-di-kamus-11). Teks `kamus-1.0` tetap bisa dibaca di riwayat git (*commit* `751522a`).
+>
+> Angka ambang, batas `game_time_group`, dan urutan alasan ditetapkan ulang setelah uji kelompok kecil dan menengah (KG3a, KG3b), dengan `asal: peneliti` bila peneliti yang menetapkannya. Versi dikunci di G4 bersama versi game.
 
 Kamus ini membekukan **cara menghitung** setiap data penelitian: peta bukti, 10 analitik, butir yang dinilai, "dilewati", waktu aktif, data tersensor, tebakan cepat, kode, dan aturan menggabungkan log dengan lembar lapangan. Dokumen [01](01_REVISI_10_ANALITIK.md) menjelaskan *apa* yang diukur dan *kenapa*; kamus ini menjelaskan *bagaimana* angkanya didapat, sampai bisa dihitung ulang orang lain dari data mentah. Arti setiap kode tetap di [03](03_KODE_DAN_ARTI.md); di sini hanya aturan memakainya.
 
-Kamus ini belum mengubah sistem. Nama kolom ditulis dalam bahasa Inggris karena nanti menjadi nama kolom di lapis data turunan dan ekspor peneliti (tahap 3, perubahan sistem no. 9 dan 14). Kolom yang **sudah ada** di sistem sekarang ditandai *(ada)*; sisanya baru. Keputusan pengembang atas draf kamus ini dikumpulkan di [Keputusan pengembang](#keputusan-pengembang).
+Kamus ini sendiri tidak mengubah sistem. Sejak 1 November 2026 sistem dibangun sekarang ([04](04_CATATAN_KEPUTUSAN.md)); lapis data turunan yang menghitung kamus ini dirancang di [35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md), ekspornya di [29](29_IMPLEMENTASI_DATA_PENELITIAN.md). Nama kolom ditulis dalam bahasa Inggris karena menjadi nama kolom di lapis data turunan dan ekspor peneliti (perubahan sistem no. 9 dan 14). Kolom yang **sudah ada** di sistem sekarang ditandai *(ada)*; sisanya baru. Keputusan pengembang atas draf kamus ini dikumpulkan di [Keputusan pengembang](#keputusan-pengembang).
 
 ## Ringkasan
 
@@ -16,6 +20,7 @@ Kamus ini belum mengubah sistem. Nama kolom ditulis dalam bahasa Inggris karena 
 4. **Waktu aktif** = waktu total dikurangi selang layar tersembunyi dan bagian jeda tanpa masukan yang melebihi ambang (sementara 3 menit). Narasi yang sedang diputar dihitung aktif.
 5. **Setiap percobaan salah membawa tepat satu kode isi** dari bank soal. Tebakan cepat (NON-TEB) dan jawaban terakhir saat kesempatan habis (NON-HABIS) adalah penanda tambahan yang dihitung sistem, bukan pengganti kode di data mentah.
 6. **Ambang masih sementara:** jeda 3 menit dan tebakan cepat di bawah 3 detik. Keduanya pengaturan yang mudah diubah tanpa mengubah sistem, ditetapkan ulang setelah uji coba, lalu dibekukan di gerbang G4 bersama pra-registrasi.
+7. *(1.1)* **Sumber data dan variabel baru, definisi tetap.** `consent_ok` dihitung dari daftar izin berkode di sistem, dan data siswa yang mundur dengan data tetap dihitung sampai saat mundur. Waktu putus memakai `ready_ms`. Analisis memakai kode kesalahan dari bank terbaru. Variabel tes awal–akhir, angket, dan skala sikap masuk kamus, tetapi jawaban butir risiko daring hanya sebagai angka gabungan. Setiap putaran hitung lapis turunan mencatat versi kamus, nomor putaran, dan ambang yang dipakai.
 
 ## Versi dan cara berubah
 
@@ -23,10 +28,42 @@ Kamus ini belum mengubah sistem. Nama kolom ditulis dalam bahasa Inggris karena 
 | --- | --- | --- |
 | Draf | 25 Oktober 2026 | Disusun AI, dengan empat pertanyaan untuk pengembang |
 | `kamus-1.0` | 26 Oktober 2026, disetujui pengembang | Semua definisi beku. Ambang jeda (3 menit) dan tebakan cepat (3 detik) masih sementara |
-| `kamus-1.1` | Setelah uji coba (tahap 4), sebelum G4 | Ambang jeda dan tebakan cepat ditetapkan ulang, dan urutan alasan ditetapkan, dari data uji coba |
-| Beku | Sejak G4 sampai analisis selesai | Tidak diubah selama pengambilan data utama. Kesalahan yang ketahuan kemudian dicatat sebagai penyimpangan, dan analisisnya dijalankan dengan aturan lama dan baru |
+| `kamus-1.1` draf | 3 November 2026, `draf pengembang` | Sumber data, variabel, dan penegasan dari 13, 16, 17, dan 28–35 ([Yang baru di `kamus-1.1`](#yang-baru-di-kamus-11)). Selama belum disetujui, sistem menulisnya `kamus-1.1-usulan` di lembar *Kamus Data*, dengan catatan "usulan, belum disetujui" ([35 §8.1](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#81-cara-versinya-berjalan)) |
+| `kamus-1.1` | Setelah KG3a dan KG3b, sebelum G4 | Ambang jeda dan tebakan cepat (kolom studi, [Analitik 5](#analitik-5-waktu-pengerjaan)), batas `game_time_group`, ambang tebakan cepat tes, dan urutan alasan ditetapkan dari data uji coba; entri 04 dengan asalnya |
+| Beku | Sejak G4 sampai analisis selesai | Dikunci bersama versi game, dan tidak berubah selama pengambilan data utama (KG5) ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md) K17). Kesalahan yang ketahuan kemudian dicatat sebagai penyimpangan, dan analisisnya dijalankan dengan aturan lama dan baru |
 
-Setiap tabel data turunan menyimpan kolom `dictionary_version`, supaya angka di naskah bisa ditelusuri ke versi kamus yang dipakai. Setiap perubahan dicatat di [04](04_CATATAN_KEPUTUSAN.md).
+Setiap tabel data turunan menyimpan kolom `dictionary_version`, supaya angka di naskah bisa ditelusuri ke versi kamus yang dipakai. *(1.1)* Setiap tabel juga menyimpan `run_id` putaran hitungnya, dan ambang yang dipakai tercatat per putaran (`derived_runs`, [35 §4](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#4-bentuk-lapis-turunan)). Mengubah versi kamus atau ambang membuat putaran lama basi, jadi unduhan berikutnya dihitung ulang. Setiap perubahan dicatat di [04](04_CATATAN_KEPUTUSAN.md).
+
+## Yang baru di `kamus-1.1`
+
+*(1.1)* Semua butir menambah atau menegaskan; tidak ada definisi `kamus-1.0` yang diganti. Kolom terakhir menunjuk bagian kamus yang diubah.
+
+| No | Isi | Asal | Di kamus |
+| ---: | --- | --- | --- |
+| 1 | `consent_ok` dihitung dari daftar izin berkode di sistem, dicocokkan `ketua` dengan L7; siswa `withdrawn_keep` dihitung sampai saat mundur; kolom `withdrawn_on`, `cutoff_basis`, `after_withdrawal` | 35 §7, 35 K4; 30 §5, §10.1; 13 → *Analisis* | [Penanda untuk analisis](#penanda-untuk-analisis), [Kunci penggabungan](#kunci-penggabungan-dan-waktu) |
+| 2 | `registration_corrected`; `risk_reconsent` hanya sebagai angka gabungan | 30 §5.4, §9 | [Variabel peserta dan sesi](#variabel-peserta-dan-sesi) |
+| 3 | `offset_known` | 29 K8 | Kunci penggabungan |
+| 4 | "Pengambilan data selesai" = jam putaran hitung yang dipakai unduhan | 35 §6.4; 04, 2 November 2026 | [Data hilang](#data-hilang), Analitik 1 |
+| 5 | Jenis (a) "dilewati" untuk skenario memakai event `scenario_failed`; pengerjaan ulang terbuka di P2–P4 setelah kelima tantangan wilayah pertemuan itu tuntas, `is_retake = 1` | 32; 33 §7.4; 04, 2 November 2026 | Analitik 1 |
+| 6 | Sumber waktu aktif: jeda masukan `input_idle` (≥ 20 detik), potongan `challenge_attempt_segments`, offset jam audio; ambang di kolom studi `idle_threshold_ms`, `rapid_guess_ms` | 33; 35 §5, §6.7, K2 | Analitik 5 |
+| 7 | Waktu putus = `last_input_ms − ready_ms`; alasan skenario memakai `reason_ready_ms`; data dari sebelum `ready_ms` ada memakai waktu putus kosong | 29 §6.1; 32 | Analitik 6 |
+| 8 | `empty_tap` mencatat koordinat; jarak ke kunci diturunkan server dari geometri bank | 29 §6.2; 31 §9 | Analitik 6 |
+| 9 | Analisis memakai kode kesalahan dari bank terbaru; kode saat percobaan di `error_code_at_try` | 31 §21 no. 3; 35 K5 | Analitik 6, 9 |
+| 10 | `instruction_replays` = semua pemutaran narasi `challenge_instruction` | 32 §8; 01 no. 6 | Analitik 7 |
+| 11 | `material_returns` bagian (b) dari event `passage_reopened` | 29 §6.3 | Analitik 8 |
+| 12 | `first_action_key` memakai kunci tetap bank (`t1`, `t2`, …); urutan tampil di `answer_json.order`; `reason_level` kosong sampai urutan alasan ditetapkan | 32; 35 §8.2 no. 14 | Analitik 10 |
+| 13 | Variabel butir dari bank baru: `round`, `variant_source`, `booklet_at_open`, `tap_min_dp`, `bloom_level_source`; variasi Susun Gambar `c`–`k` | 31 §13 | [Variabel butir](#variabel-butir) |
+| 14 | `is_makeup`, `makeup_no`; `region_opened` diturunkan dari rencana pertemuan studi | 28 §5, §17 | Variabel peserta dan sesi |
+| 15 | Variabel tes awal–akhir dan jawaban tes; `*_theta` dihitung di analisis, bukan sistem | 13 → *Penskoran*; 34 §11.4 | [Tes awal–akhir dan angket](#tes-awalakhir-angket-dan-skala-sikap-11) |
+| 16 | Variabel angket, **tanpa** jawaban butir risiko daring per siswa; butir risiko hanya lembar `risiko_gabungan` | 16; 29 K9, §7.6 | Sama |
+| 17 | Variabel skala sikap dan `feedback_rating`; `sikap_missing_reason = tanpa_izin` tidak pernah dari sistem | 17; 35 §20 | Sama |
+| 18 | Pengamatan L4 diberi `attempt_id` dan `item_key` yang aktif (`derived_observations`); status tes dari modul, L6 tidak diimpor | 35 §6.6; 29 K12 | [Aturan gabung lembar lapangan](#aturan-gabung-lembar-lapangan) |
+| 19 | `is_touch` tetap di log teknis admin, tidak di data penelitian | 29 §18 no. 3 | Variabel peserta dan sesi |
+| 20 | Variabel sekolah dari L8; L2 baris dan kursi lewat panel; aturan nama dari 22 → *Di mana nama berada* menggantikan "nama hanya ada di L7" | 02 → L8; 28 §11; 22; `docs/PROGRESS.md` (keputusan 26 dan 27 Oktober 2026) | Variabel peserta dan sesi, Aturan gabung lembar lapangan |
+| 21 | Setiap tabel turunan menyimpan `dictionary_version` dan `run_id`; versi antara `kamus-1.1-usulan` | 35 §4, §8.1 | [Versi dan cara berubah](#versi-dan-cara-berubah) |
+| 22 | Syarat sistem di bawah ditandai dokumen implementasinya; kalimat "tahap 3, setelah G2" diganti | 04, 1 November 2026 | [Yang harus disediakan sistem](#yang-harus-disediakan-sistem-di-tahap-3) |
+
+Yang masih menunggu uji coba: T_idle dan T_teb, batas `game_time_group` (16), ambang tebakan cepat tes (13; sementara memakai T_teb studi), urutan alasan (`reason_level`), dan ambang `rapid_share`.
 
 ## Peta bukti (beku)
 
@@ -87,6 +124,9 @@ Ketukan di luar bagian ketuk mana pun **bukan percobaan** dan tidak memakai kese
 - **Satu sesi game masuk tepat satu sesi lapangan**, lewat token yang diketik siswa. Setiap percobaan dan event ikut sesi lapangan dari sesi game-nya.
 - **Waktu disimpan dalam WIB**, ISO 8601 dengan milidetik. Waktu percobaan adalah waktu server saat percobaan dinilai. Waktu event dari perangkat dikoreksi: `occurred_at_corrected = occurred_at + clock_offset_ms` *(ada)*. Semua selang waktu di kamus ini memakai waktu terkoreksi.
 - **Jam lembar lapangan** diambil dari ponsel yang jamnya diatur otomatis dari jaringan, sampai detik (02). Selisih jam ponsel dan server dianggap kecil dibanding jendela pencocokan di bawah.
+- *(1.1)* **`offset_known`** (1/0): 1 kalau selisih jam perangkat dan server diketahui untuk event itu. Event dengan `offset_known = 0` tetap dipakai dengan waktu mentahnya, dan banyaknya dilaporkan ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md) K8).
+- *(1.1)* **Sesi game ke sesi lapangan** lewat `game_sessions.field_session_id` dan `meeting_no` ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md) §14).
+- *(1.1)* **`after_withdrawal`** (1/0) di lembar mentah (`pengerjaan`, `jawaban`, `percobaan`, `navigasi`, `bantuan`, `selesai`, `event`): 1 untuk data sesudah saat mundur siswa `withdrawn_keep`. Data mentah tidak diubah; lembar turunan tidak memuat baris itu ([Penanda untuk analisis](#penanda-untuk-analisis)).
 - **Data di luar sesi lapangan tidak ada**, karena game tertutup di luar sesi. Kalau tetap muncul (misalnya karena salah atur), datanya diberi `outside_session = 1` dan dikeluarkan dari semua analisis.
 
 ## Data yang dinilai
@@ -124,14 +164,18 @@ Bintang dan Serpihan Cahaya tidak dianalisis sebagai prestasi (01). Super-item t
 
 Kosong selalu berarti "tidak ada data", tidak pernah 0.
 
+*(1.1)* **"Pengambilan data selesai"** = jam putaran hitung lapis turunan yang dipakai unduhan akhir. Unduhan sebelum studi ditutup menyebut jam putarannya, jadi `not_started` dan `no_try` dibaca "sampai jam itu" (35 §6.4; keputusan pengembang 2 November 2026). Tidak ada kolom tanggal akhir di studi.
+
 ### Penanda untuk analisis
 
 Penanda tidak mengubah data mentah. Tiga penanda mengeluarkan data dari analisis (`consent_ok = 0`, `is_pilot = 1`, `outside_session = 1`); sisanya dipakai untuk menjalankan analisis utama dua kali, dengan dan tanpa data bertanda (01, *Rencana analisis singkat*), atau sebagai kovariat.
 
 | Penanda | Satuan | Aturan | Sumber |
 | --- | --- | --- | --- |
-| `consent_ok` | Peserta | 1 kalau izin orang tua dan persetujuan siswa lengkap di L7, dan siswa tidak mengundurkan diri. Data dengan 0 tidak dianalisis dan diurus sesuai protokol | L7 |
-| `is_pilot` | Peserta | 1 kalau kode sekolah berawalan `U`. Tidak masuk analisis utama | Kode peserta |
+| `consent_ok` | Peserta | 1 kalau izin orang tua dan persetujuan siswa lengkap di L7, dan siswa tidak mengundurkan diri. Data dengan 0 tidak dianalisis dan diurus sesuai protokol. *(1.1)* Dihitung dari daftar izin berkode di sistem (`participant_consents`, [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) §5.2 dan §10.1) dan centang persetujuan anak saat mendaftar (`assented_at`); kecocokan dengan L7 diperiksa `ketua`. Siswa `Mengundurkan diri (data tetap)` (`withdrawn_keep`) mendapat 1 dengan data **sampai saat mundur**; siswa `hapus data` tidak ada lagi di data. Aturan lengkap di [35 §7](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#7-consent_ok-dan-data-sampai-tanggal-mundur) | Daftar izin berkode di sistem, dicocokkan dengan L7 |
+| `withdrawn_on`, `cutoff_basis` *(1.1)* | Peserta | Tanggal mundur siswa `withdrawn_keep`. Saat mundur = `deactivated_at` akun bila ada (`cutoff_basis = 'deactivated_at'`), selain itu akhir hari tanggal status (`'status_on'`). Data sesudahnya tidak masuk lapis turunan; pengerjaan yang terpotong dinilai dari yang tersisa | Sistem (30) |
+| `registration_corrected` *(1.1)* | Peserta | 1 kalau umur, jenis kelamin, atau kelas pernah dibetulkan admin (dengan jejak audit) | Sistem (30 §9) |
+| `is_pilot` | Peserta | 1 kalau kode sekolah berawalan `U`. Tidak masuk analisis utama. *(1.1)* Kode `V` hanya ada di instalasi uji validator, tidak pernah di data penelitian ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md) §10.1) | Kode peserta |
 | `shared_device` | Percobaan | 1 kalau perangkat dipakai bersama di sesi itu (L2 "Pakai bareng: Ya") | L2 |
 | `helped_content` | Percobaan | 1 kalau ada kejadian L3 berjenis ISI, STR, atau BHS untuk siswa itu, dari 1 menit sebelum sampai 2 menit sesudah jam kejadian (lihat [L3](#aturan-gabung-lembar-lapangan)) | L3 |
 | `helped_technical` | Percobaan | Sama, untuk jenis TKN | L3 |
@@ -139,7 +183,8 @@ Penanda tidak mengubah data mentah. Tiga penanda mengeluarkan data dari analisis
 | `disturbed` | Percobaan | Sama, untuk gangguan GG-* | L3 |
 | `deviation_code` | Percobaan | Kode DEV-* L1 yang mengenai siswa itu pada jam percobaan | L1 |
 | `rapid_guess` | Percobaan | Tebakan cepat, lihat [Analitik 6](#analitik-6-pola-kesalahan) | Log |
-| `is_retake` | Pengerjaan | Pengerjaan ulang | Log |
+| `is_retake` | Pengerjaan | Pengerjaan ulang. *(1.1)* Dalam mode penelitian terbuka di P2–P4 setelah kelima tantangan wilayah pertemuan itu tuntas, hanya di dalam sesi ([33](33_IMPLEMENTASI_MODE_PENELITIAN.md) §7.4) | Log |
+| `variant_source` *(1.1)* | Pengerjaan | `booklet`, `random`, atau `retake`: asal variasi pengerjaan itu. Pengerjaan pertama butir dinilai dalam mode penelitian selalu `booklet` ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) §11) | Log |
 | `outside_session` | Event | Data di luar sesi lapangan | Log |
 
 Analisis utama yang dijalankan dua kali: tanpa dan dengan percobaan `helped_content = 1`, dan tanpa dan dengan `shared_device = 1` (01). Penanda `helped_technical`, `encouraged`, dan `disturbed` dipakai sebagai kovariat, tidak untuk mengeluarkan data. Percobaan `rapid_guess = 1` dipakai apa adanya di analisis utama; analisis kedua memperlakukannya sebagai data hilang (keputusan 26 Oktober 2026).
@@ -175,7 +220,7 @@ Tantangan **tuntas** = `solved` atau `exhausted`, sama dengan aturan Serpihan Ca
 
 | Jenis | Kolom | Definisi | Satuan | Sumber |
 | --- | --- | --- | --- | --- |
-| (a) Ditutup setelah kesempatan habis | `skipped_failed_count` | Banyak butir yang ditutup tanpa jawaban benar setelah kesempatan ketiga, di tantangan yang kesempatannya per butir: petunjuk Cari Objek (kedua babak) dan skenario Skenario Digital | Peserta × tantangan | Event `clue_failed` *(ada)*; untuk skenario, event baru yang setara |
+| (a) Ditutup setelah kesempatan habis | `skipped_failed_count` | Banyak butir yang ditutup tanpa jawaban benar setelah kesempatan ketiga, di tantangan yang kesempatannya per butir: petunjuk Cari Objek (kedua babak) dan skenario Skenario Digital | Peserta × tantangan | Event `clue_failed` *(ada)*; untuk skenario, *(1.1)* event `scenario_failed` ([32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md)) |
 | (b) Ditinggal | `skipped_left_count` | Banyak kejadian pengerjaan pertama yang ditinggal (tombol Keluar, halaman ditutup, atau sesi berakhir) saat tantangan belum tertutup, **dan tidak dilanjutkan di sesi lapangan yang sama** | Peserta × tantangan × sesi lapangan | `challenge_abandoned` *(ada)* dan aktivitas pengerjaan sesudahnya |
 | (c) Tidak dimulai | `completion_status = 'not_started'` | Tantangan sudah terbuka (wilayahnya dibuka token dan tantangan sebelumnya sudah tuntas) tapi tidak pernah dimulai sampai pengambilan data selesai. Tantangan yang tidak pernah terbuka diberi `locked`, bukan dilewati | Peserta × tantangan | Progres dan sesi lapangan |
 
@@ -258,6 +303,12 @@ Jenis (b) tetap terhitung walaupun tantangannya kemudian dilanjutkan dan tuntas 
 
 **Pelaporan:** waktu total dan waktu aktif selalu dilaporkan berdampingan, dengan median dan rentang antarkuartil.
 
+*(1.1)* **Sumber data mentah** ([33](33_IMPLEMENTASI_MODE_PENELITIAN.md), [35 §6.7](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#67-waktu-aktif)):
+- Jeda masukan 20 detik atau lebih: event `input_idle` dengan jam mulai dan akhir.
+- Potongan pengerjaan: tabel `challenge_attempt_segments` (satu baris per potongan di satu sesi game). `challenge_attempts.duration_ms` *(ada)* tidak dipakai untuk pengerjaan yang berpotongan.
+- Selang narasi diputar: `audio_usage_events`, dengan waktu terkoreksi lewat `clock_offset_ms`.
+- **T_idle dan T_teb** ada di kolom studi `research_studies.idle_threshold_ms` (bawaan 180000) dan `rapid_guess_ms` (bawaan 3000), diubah `ketua` dengan log audit dan dikunci di G4 (`thresholds_locked_at`) ([35 §5](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#5-ambang-di-konfigurasi-studi)). Batas 24 dp (NON-SEN), 20 detik (jeda yang dicatat), dan 80% (`analysable`) tetap angka kamus.
+
 ### Analitik 6 Pola kesalahan
 
 **Satuan:** percobaan salah.
@@ -291,6 +342,12 @@ Kode `*-LAIN` tidak pernah ada di bank. Kode itu hanya diberikan saat pengodean 
 - Skenario Digital: dari pilihan tindakan tampil sampai tindakan dipilih; untuk alasan, dari pilihan alasan tampil sampai alasan dipilih.
 - Benar atau Salah: semua pernyataan terlihat bersama, jadi waktu putus adalah **perkiraan**: selang dari masukan sebelumnya di pengerjaan itu (atau dari layar tampil, atau dari umpan balik Cek sebelumnya) sampai pilihan terakhir di kartu itu sebelum Cek. Kalau kartu yang salah tidak disentuh lagi sebelum Cek berikutnya, waktu putusnya kosong dan `rapid_guess` tidak dihitung.
 
+*(1.1)* **Sumber waktu putus.** `decision_ms = last_input_ms − ready_ms`, dengan `item_tries.ready_ms` = saat butir bisa dijawab untuk percobaan itu ([29 §6.1](29_IMPLEMENTASI_DATA_PENELITIAN.md#61-saat-butir-bisa-dijawab-ready_ms)). Alasan Skenario Digital memakai `reason_ready_ms` ([32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md)). Percobaan tanpa `ready_ms` (data dari sebelum kolom itu ada, termasuk `last_input_ms` Cari Objek yang memakai rujukan lama) mendapat `decision_ms` dan `rapid_guess` kosong, bukan 0.
+
+*(1.1)* **Sumber NON-SEN.** Event `empty_tap` mencatat koordinat ketukan dalam persen adegan; jaraknya ke kotak kunci petunjuk aktif diturunkan server dari geometri adegan di bank ([29 §6.2](29_IMPLEMENTASI_DATA_PENELITIAN.md#62-ketukan-di-luar-bagian-ketuk-empty_tap), [31 §9](31_IMPLEMENTASI_BANK_SOAL_BARU.md#9-area-ketuk-tidak-bersentuhan-perubahan-no-17)). Kotak bagian ketuk tidak pernah dikirim ke peramban.
+
+*(1.1)* **Kode bank terbaru.** `error_code` di lapis turunan diturunkan dari matriks kode bank yang berlaku saat putaran hitung, supaya kode yang direvisi dari validasi berlaku untuk semua data. Kode yang dicatat sistem saat percobaan tetap di data mentah (`item_tries.error_code`) dan di kolom turunan `error_code_at_try` (keputusan pengembang 2 November 2026; [35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) K5).
+
 **Kode untuk analisis pola** (`error_code_analysis`): sama dengan `error_code`, kecuali percobaan bertanda `rapid_guess` diberi NON-TEB, karena tebakan cepat tidak menunjukkan salah paham tertentu. `last_try_exhausted` hanya penanda; pola kesalahan dilaporkan dengan dan tanpa percobaan itu.
 
 **Ringkasan utama** memakai kesalahan di **percobaan pertama** saja (satu kesalahan per siswa per butir), supaya siswa yang sering mencoba ulang tidak lebih berbobot. Kesalahan di semua percobaan dipakai di Analitik 9. Frekuensi dilaporkan per wilayah, dimensi, sub-aspek, dan level AKM.
@@ -307,7 +364,7 @@ Kode `*-LAIN` tidak pernah ada di bank. Kode itu hanya diberikan saat pengodean 
 | | `hint_before` (percobaan) *(ada sebagai `hint_opened_before`)* | 1 kalau ada Bantuan dibuka di pengerjaan itu sebelum percobaan dinilai | Log |
 | | `item_hint_before` (percobaan) | 1 kalau Bantuan khusus butir itu dibuka sebelum percobaan | Log |
 | Narasi soal | `item_narration_before` (percobaan) | 1 kalau narasi butir itu diputar siswa sebelum percobaan: situasi Skenario Digital dan petunjuk *Periksa Unggahan* lewat tombol ▶, serta narasi petunjuk Temukan Benda | `audio_play`, `audio_replay` *(ada)* |
-| Narasi instruksi | `instruction_replays` (pengerjaan) | Banyak instruksi tantangan diputar ulang siswa. Butuh kode konteks narasi instruksi yang baru (perubahan sistem no. 6) | Log |
+| Narasi instruksi | `instruction_replays` (pengerjaan) | Banyak instruksi tantangan diputar ulang siswa. Butuh kode konteks narasi instruksi yang baru (perubahan sistem no. 6). *(1.1)* = semua pemutaran narasi konteks `challenge_instruction` di pengerjaan itu; narasi instruksi tidak pernah berbunyi sendiri ([32 §8](32_IMPLEMENTASI_SKENARIO_DIGITAL.md)) | Log |
 | Lama mendengar | `listened_ms` *(ada)* | Milidetik narasi didengar | Log |
 | Bantuan orang | `helped_content`, `helped_technical`, `encouraged` | Lihat [Penanda untuk analisis](#penanda-untuk-analisis) | L3 |
 | Headset | `headset_share` (sesi lapangan) | Siswa memakai headset dibagi siswa bermain. L1 tidak mencatat headset per siswa, jadi ini kovariat sesi | L1 |
@@ -321,7 +378,7 @@ Bacaan dan pernyataan D1 tidak pernah dibacakan (keputusan media), jadi butir D1
 | Kolom | Definisi | Sumber |
 | --- | --- | --- |
 | Urutan layar | Urutan `screen_viewed` per sesi game, dengan waktu terkoreksi | `screen_viewed` *(ada, hanya server)* |
-| `material_returns` (pengerjaan) | **Kembali ke materi**: (a) membuka Pustaka wilayah saat pengerjaan belum tertutup, ditambah (b) membuka lagi bacaan di dalam tantangan setelah masukan pertama, misalnya membuka panel bacaan atau mengetuk label "Berdasarkan Teks" | `library_opened` *(ada)*; event baru untuk (b) |
+| `material_returns` (pengerjaan) | **Kembali ke materi**: (a) membuka Pustaka wilayah saat pengerjaan belum tertutup, ditambah (b) membuka lagi bacaan di dalam tantangan setelah masukan pertama, misalnya membuka panel bacaan atau mengetuk label "Berdasarkan Teks" | `library_opened` *(ada)*; *(1.1)* event `passage_reopened` untuk (b), dikirim hanya setelah masukan pertama ([29 §6.3](29_IMPLEMENTASI_DATA_PENELITIAN.md#63-membuka-lagi-bacaan-passage_reopened)) |
 | `exit_count` (pengerjaan) | Banyak kali siswa keluar dari tantangan sebelum tertutup (tombol Keluar, Kembali, atau halaman ditutup) | `challenge_abandoned` *(ada)* |
 | `library_pages`, `library_ms` (sesi) | Halaman Pustaka yang dibuka dan lama aktifnya | `library_page_viewed` *(ada)* |
 | `reading_max_pct` (pengerjaan) | Bagian bacaan terjauh yang tergulir, dalam persen | `reading_progress` *(ada)* |
@@ -350,7 +407,7 @@ Event yang ditandai "Dihapus" di 01 (`answer_changed`, `answer_selected`, `dialo
 
 | Kolom | Arti |
 | --- | --- |
-| `first_action_key` | Kunci pilihan tindakan pertama (pilihan tepat tidak punya kode kesalahan, jadi kuncinya yang disimpan) |
+| `first_action_key` | Kunci pilihan tindakan pertama (pilihan tepat tidak punya kode kesalahan, jadi kuncinya yang disimpan). *(1.1)* Kunci tetap dari bank (`t1`, `t2`, …), bukan posisi tampil; urutan tampil yang diacak tersimpan di `answer_json.order` ([32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md)) |
 | `first_action_score` | 0, 1, atau 2 |
 | `first_action_code` | Kode DIG-* tindakan pertama; kosong kalau tepat |
 | `first_reason_code` | Kode R-* alasan pertama |
@@ -365,7 +422,7 @@ Event yang ditandai "Dihapus" di 01 (`answer_changed`, `answer_selected`, `dialo
 | `risky` | Skor 0, alasan apa pun |
 
 - **"Tindakannya benar, alasannya keliru"** di 01 = `safe_rule` + `safe_wrong_reason`, dan keduanya juga dilaporkan terpisah.
-- Urutan alasan R-ACAK/R-SOS < R-ATUR < R-RISK/R-ETIK (`reason_level` 0–2) baru dipakai **setelah uji coba** (keputusan kisi-kisi 06, pertanyaan 3). Sampai saat itu alasan hanya dikode, tidak diskor.
+- Urutan alasan R-ACAK/R-SOS < R-ATUR < R-RISK/R-ETIK (`reason_level` 0–2) baru dipakai **setelah uji coba** (keputusan kisi-kisi 06, pertanyaan 3). Sampai saat itu alasan hanya dikode, tidak diskor, dan *(1.1)* kolom `reason_level` ada tetapi kosong.
 - **Metrik kata sandi saat daftar**, bukti validitas luar D2 yang tidak masuk skor: `pw_first_submit_criteria` (0–5 syarat terpenuhi di kiriman pertama) dan `pw_weak_submit_count` (banyak penolakan karena sandi lemah) *(keduanya ada)*. Dengan token, pendaftaran terjadi di pertemuan 1.
 - Transkrip L5 dikode dengan kode R-* yang sama dan dibandingkan dengan `first_reason_code` siswa itu.
 
@@ -384,6 +441,10 @@ Ekspor butir (perubahan sistem no. 3, 8, dan 20) memuat satu baris per butir.
 | `option_count`, `reason_option_count` | Banyak pilihan tindakan dan alasan (D2), atau bagian ketuk (Cari Objek) |
 | Beban permukaan | `gap_count`, `distractor_word_count`, `passage_words`, `decoy_count`, `puzzle_grid` (perubahan sistem no. 8) |
 | `review_status`, `reference_source` | `needs_verification` atau sudah divalidasi; sumber fakta |
+| `bloom_level_source` *(1.1)* | Pasangan `akm_level_source`: `developer` atau `expert` ([31 §13.1](31_IMPLEMENTASI_BANK_SOAL_BARU.md#131-label-pengembang-dan-label-ahli)) |
+| `tap_min_dp` *(1.1)* | Jarak terkecil antara kotak kunci dan kotak lain di adegan Cari Objek, dalam dp; bagian beban permukaan ([31 §13.2](31_IMPLEMENTASI_BANK_SOAL_BARU.md#132-variabel-beban-permukaan)) |
+
+*(1.1)* `variant` Susun Gambar kini `a`–`k`: `a` dan `b` dua variasi bersih untuk pengerjaan pertama, `c` dan seterusnya untuk pengerjaan ulang ([31 §14](31_IMPLEMENTASI_BANK_SOAL_BARU.md#14-susun-gambar-selama-studi)). Asal variasi per pengerjaan ada di `variant_source` dan `booklet_at_open` ([Penanda untuk analisis](#penanda-untuk-analisis)). Kode kesalahan per pilihan dari bank ada di lembar `kode_pilihan`, hanya untuk `ketua` ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md) §7.2).
 
 **Panjang bacaan** (`passage_words`) = banyak kata teks yang tampil di layar bacaan atau kartu (judul, isi, nama akun, keterangan, dan komentar), dihitung sebagai potongan yang dipisah spasi dan memuat minimal satu huruf atau angka. Emoji tidak dihitung.
 
@@ -391,17 +452,41 @@ Ekspor butir (perubahan sistem no. 3, 8, dan 20) memuat satu baris per butir.
 
 | Satuan | Kolom | Sumber |
 | --- | --- | --- |
-| Peserta | `participant_code`, `school_code`, `rombel`, `booklet` (B1–B4) | Sistem, token, L2 |
+| Peserta | `participant_code`, `school_code`, `rombel`, `booklet` (B1–B4) | Sistem, token, L2. *(1.1)* Buklet dihitung panel dari baris dan kursi L2 (`participant_seats`, [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) §11) |
 | | `age`, `gender`, `class_level` *(ada)* | Pendaftaran |
 | | `consent_ok`, `is_pilot`, `analysable`, `complete` | L7, kode peserta, kamus |
+| | `withdrawn_on`, `cutoff_basis`, `registration_corrected` *(1.1)* | Sistem ([Penanda untuk analisis](#penanda-untuk-analisis)) |
 | | `pw_first_submit_criteria`, `pw_weak_submit_count` *(ada)* | Pendaftaran |
 | | `rapid_share` | Proporsi percobaan pertama bertanda `rapid_guess`; penanda kesungguhan, ambangnya diputuskan setelah uji coba |
-| Sesi lapangan | `field_session_code`, `meeting_no`, `region_opened`, tanggal, jam buka dan tutup | Panel peneliti |
+| Sesi lapangan | `field_session_code`, `meeting_no`, `region_opened`, tanggal, jam buka dan tutup | Panel peneliti. *(1.1)* `region_opened` diturunkan dari rencana pertemuan studi (`meeting_plan`) dan, untuk KG2, `region_code` sesi lapangan ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md) §5) |
+| | `is_makeup`, `makeup_no`, `main_session_code` *(1.1)* | Sesi susulan (`-S`, `-S2`, …) dan sesi utamanya ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md) §6.7, §17) |
 | | Internet, kebisingan, kehadiran guru, `headset_share`, menit tersedia dan dipakai | L1 |
+| Sekolah *(1.1)* | `school_code`, `district`, `area_type` (`kota`, `desa`), `school_status` (`negeri`, `swasta`), `grade5_rombel_count`, `grade5_students`, `classroom_language`, `school_devices`, `devices_sufficient` (1/0), `internet_type`, `internet_mbps_min`, `internet_mbps_median`, `power_ok` (1/0), `screen_assessment_exp` (1/0), `digital_lessons` (1/0) | L8 (nama variabel usulan, ditetapkan bersama ringkasan sekolah di Bab III). Kolom *Catatan* L8 tidak masuk data; NPSN dan nama sekolah tidak pernah |
 | Sesi game | `session_code`, `locale` *(ada)* | Log |
-| | `device_type`, `screen_size` *(ada)* | Log (kovariat). Nama dan versi OS dan peramban, serta mode dan pergantian paket aset, hanya untuk admin; rincian perangkat lain dihapus (01) |
+| | `device_type`, `screen_size` *(ada)* | Log (kovariat). Nama dan versi OS dan peramban, serta mode dan pergantian paket aset, hanya untuk admin; rincian perangkat lain dihapus (01). *(1.1)* `is_touch` juga tetap di log teknis admin, kecuali peneliti memintanya ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md) §18 no. 3) |
 
 Nama, nama pengguna, nama sekolah, dan NPSN tidak pernah masuk data peneliti (01, *Admin dan peneliti*).
+
+### Tes awal–akhir, angket, dan skala sikap (1.1)
+
+Instrumen di luar game. Datanya dari modul tes dan layar skala sikap ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) §11.4), tidak diketik dari L6 ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md) K12). Rumus variabel turunan tetap di dokumen asalnya; lapis turunan menghitungnya ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) K10), bukan modul. Semua bertanda Peneliti, dan tidak satu pun masuk skor literasi digital game. Sesi pratinjau (`is_preview = 1`) dan contoh soal (`tes-ct-*`, `skp-ct-01`) tidak dianalisis.
+
+| Satuan | Kolom | Isi | Rumus atau arti di |
+| --- | --- | --- | --- |
+| Peserta | `pre_form`, `post_form` | `A` atau `B`, dihitung panel dari baris dan kursi L2 | [13](13_TES_AWAL_AKHIR.md), [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) §11 |
+| | `pre_date`, `post_date`, `pre_makeup`, `post_makeup` | Tanggal, dan apakah dikerjakan di susulan | 13 → *Penskoran* |
+| | `pre_d1` … `post_d3` | Skor mentah per bagian (D1 0–16, D2 0–16, D3 0–8) | 13 |
+| | `pre_minutes_p1`, `pre_minutes_p23`, `post_minutes_p1`, `post_minutes_p23`, `pre_capped`, `post_capped` | Lama kerja per bagian; bagian yang ditutup batas waktu | 13 |
+| | `test_status` | `lengkap`, `hanya_awal`, `hanya_akhir`, `hilang`; dari modul | 13; 34 |
+| | `pre_d1_theta` … `post_d3_theta` | Kemampuan Rasch per bagian. **Dihitung di analisis, bukan sistem** | 13 → *Analisis* |
+| Jawaban tes (satu baris per butir per siswa per tes) | `participant_code`, `occasion` (`pre`/`post`), `form`, `item_code`, `response`, `score`, `error_codes`, `not_reached`, `time_on_item`, `answer_changes`, `instrument_version`, `rapid_guess` | Jawaban mentah dan skor dari kunci; `rapid_guess` memakai T_teb studi sampai ada ambang tes sendiri | 13 → *Penskoran*; 34 §11.4 |
+| Bagian tes (per siswa per kesempatan) | `part`, `block`, `started_at`, `submitted_at`, `closed_by_limit`, `extra_minutes`, `raw_score`, `answered_count`, `is_makeup`, `field_session_code` | Satu baris per bagian | 34 §11.4 |
+| Peserta (angket) | `questionnaire_status`, `questionnaire_date`, `questionnaire_makeup`, `questionnaire_late`, `questionnaire_minutes`; 41 kolom jawaban berkode `phone_access` … `books_home`; variabel turunan `own_phone` … `game_time_group`; `q_flags` | Jawaban mentah termasuk `-`, `8`, `9` | [16 → Variabel untuk kamus data](16_ANGKET_AKSES_DIGITAL.md#variabel-untuk-kamus-data) |
+| Butir risiko daring | **Bukan variabel per siswa.** Jawaban ang-21–ang-23, `risk_reconsent`, dan `risk_offered` (siswa yang ditawari butir ini) hanya muncul sebagai angka gabungan di lembar `risiko_gabungan` | Kolom `risk_*` dan `support_*` di 16 tidak masuk data peserta | [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) K9, §7.6; 30 §5.4 |
+| Peserta (skala sikap) | `skp_01` … `skp_12`, `skp_01_ms` … `skp_12_ms`, `skp_changes`, `sikap_makeup`, `sikap_submitted_at`, `sikap_version`; turunan `sikap_score`, `sikap_sk1` … `sikap_sk4`, `sikap_n_answered`, `sikap_flag_straight`, `sikap_missing_reason` | Jawaban 1–4 atau `-`. `sikap_missing_reason = tanpa_izin` tidak pernah dihasilkan sistem (anak tanpa izin tidak punya akun); nilai itu hanya diisi di analisis dari L7 | [17 → Variabel untuk kamus data](17_SKALA_SIKAP.md#variabel-untuk-kamus-data) |
+| | `feedback_rating` | Bintang 1–5 di kritik dan saran (`participant_feedback.rating`); data kepraktisan, bukan skala sikap | 17 |
+
+Siswa `withdrawn_keep` ikut dengan data sampai saat mundur; tes akhir sesudah tanggal itu tidak ada. Ambang tebakan cepat tes ditinjau setelah uji coba, karena waktu membaca teks jatuh ke butir pertama (13); bila perlu, studi mendapat kolom `test_rapid_guess_ms` ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) §18 no. 2).
 
 ## Aturan gabung lembar lapangan
 
@@ -409,32 +494,35 @@ Nama, nama pengguna, nama sekolah, dan NPSN tidak pernah masuk data peneliti (01
 | --- | --- | --- | --- |
 | L1 bagian atas | Kode sesi lapangan | Satu baris per sesi lapangan | Kovariat sesi |
 | L1 penyimpangan | Kode sesi lapangan, jam | Mengenai siswa di kolom "Siswa terdampak" (nomor kursi dicocokkan ke kode peserta lewat L2; "semua" berarti semua siswa sesi itu) dari jam kejadian sampai 5 menit sesudahnya, atau sampai akhir lama kejadian kalau lamanya ditulis | `deviation_code` per percobaan |
-| L2 | Kode peserta, kode sesi lapangan | Menghubungkan kursi, perangkat, dan buklet; jam pindah perangkat memotong jendela | `booklet`, `shared_device` |
+| L2 | Kode peserta, kode sesi lapangan | Menghubungkan kursi, perangkat, dan buklet; jam pindah perangkat memotong jendela. *(1.1)* Baris dan kursi dimasukkan P1 ke panel, yang menghitung buklet dan bentuk tes ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md) §11) | `booklet`, `shared_device` |
 | L3 | Kode peserta, jam | Percobaan siswa itu dari 1 menit sebelum jam kejadian sampai 2 menit sesudahnya. Kalau jam selesai ditulis (kejadian lebih dari 2 menit), jendelanya dari 1 menit sebelum jam mulai sampai 2 menit sesudah jam selesai. Baris untuk beberapa kursi berlaku untuk setiap siswa di kursi itu | `helped_content`, `helped_technical`, `encouraged`, `disturbed` |
-| L4 | Kode peserta, jam | Satu pengamatan menutup 20 detik sejak jamnya, dipasangkan dengan pengerjaan dan butir yang aktif di selang itu | Kode perilaku dan emosi per pengamatan |
+| L4 | Kode peserta, jam | Satu pengamatan menutup 20 detik sejak jamnya, dipasangkan dengan pengerjaan dan butir yang aktif di selang itu | Kode perilaku dan emosi per pengamatan; *(1.1)* dengan `attempt_id` dan `item_key` yang aktif (`derived_observations`, [35 §6.6](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#66-derived_field_sessions-satu-baris-per-peserta--sesi-lapangan)) |
 | L5 | Kode peserta, kode butir | Transkrip dikode dengan kode R-*, INF, DIG, atau BUD; `*-LAIN` untuk yang tidak cocok | `manual_code` |
-| L6 | Kode peserta | Skor tes awal dan akhir, angket akses digital | Variabel peserta |
-| L7 | Kode peserta | Menentukan `consent_ok`. Nama hanya ada di L7 | `consent_ok` |
+| L6 | Kode peserta | Skor tes awal dan akhir, angket akses digital. *(1.1)* Datanya dari modul tes; L6 hanya catatan pelaksanaan dan tidak diimpor ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md) K12) | Variabel peserta |
+| L8 *(1.1)* | Kode sekolah | Satu baris per sekolah; tidak diimpor ke sistem, diketik tim di lapis analisis ([02 → L8](02_LEMBAR_LAPANGAN.md#l8-profil-sekolah)) | Variabel sekolah ([Variabel peserta dan sesi](#variabel-peserta-dan-sesi)) |
+| L7 | Kode peserta | Menentukan `consent_ok`. *(1.1)* Nama anak tidak pernah ada di data penelitian; nama hanya ada di akun GELITA (hanya terlihat admin), di L7 dan formulir izin bertanda tangan, dan di berkas terpisah yang disimpan terkunci ketua peneliti ([22 → Di mana nama berada](22_PERMOHONAN_IZIN_ETIK.md#di-mana-nama-berada)). Kolom berkode L7 dimasukkan P1 ke panel (daftar izin berkode); sistem menghitung `consent_ok` dari sana, dan `ketua` mencocokkannya dengan L7 kertas sampai studi ditutup ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) §10.1) | `consent_ok` |
 
 ## Yang harus disediakan sistem di tahap 3
 
-Kamus ini menambah syarat data berikut ke [Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti). Semuanya dikerjakan di tahap 3, setelah G2.
+Kamus ini menambah syarat data berikut ke [Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti). *(1.1)* Sejak 1 November 2026 semuanya dibangun sekarang, tidak lagi menunggu G2 ([04](04_CATATAN_KEPUTUSAN.md)); kolom terakhir menunjuk dokumen implementasinya.
 
-| Syarat | Untuk | Perubahan sistem di 01 |
-| --- | --- | --- |
-| `error_code`, `reason_code`, dan skor tindakan disimpan di setiap percobaan | Analitik 6, 9, 10 | no. 1, 2 |
-| Pengerjaan pertama yang terputus dilanjutkan, bukan dibuat baru | Data inti | no. 16 |
-| Setiap jeda masukan 20 detik atau lebih dicatat; selang narasi diputar bisa dibaca dari log | Analitik 5 | no. 5 |
-| Saat butir bisa dijawab dicatat (petunjuk aktif, pilihan tindakan dan alasan tampil, kartu Benar atau Salah disentuh pertama) | Waktu putus, NON-TEB | no. 14 |
-| Ketukan di luar bagian ketuk dicatat dengan jaraknya ke kunci petunjuk aktif | NON-SEN | no. 14 |
-| Event membuka lagi bacaan di dalam tantangan | Analitik 8 | no. 14 |
-| Event penutupan skenario setelah kesempatan ketiga (setara `clue_failed`) | Analitik 1 jenis (a) | no. 2 |
-| Kode konteks narasi instruksi | Analitik 7 | no. 6 |
-| Sesi game menyimpan `field_session_code` dan nomor pertemuan | Semua | no. 11 |
-| Wilayah yang dibuka token terbuka untuk semua siswa sesi itu, walaupun wilayah sebelumnya belum tuntas; tantangan di dalam wilayah tetap terbuka berurutan | Analitik 1 (`locked`) | no. 11 |
-| Ambang T_idle dan T_teb disimpan di konfigurasi studi dan bisa diubah tanpa mengubah kode; lapis turunan dihitung ulang dengan ambang baru | Analitik 5, 6 | no. 9, 16 |
-| Lapis turunan menyimpan `dictionary_version` dan diuji otomatis dengan contoh data yang hasilnya dihitung tangan dari kamus ini | Semua | no. 9 |
-| Lembar *Kamus Data* di ekspor peneliti diturunkan dari kamus ini | Semua | no. 14 |
+| Syarat | Untuk | Perubahan sistem di 01 | Dirancang di |
+| --- | --- | --- | --- |
+| `error_code`, `reason_code`, dan skor tindakan disimpan di setiap percobaan | Analitik 6, 9, 10 | no. 1, 2 | [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) §10, [32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md) |
+| Pengerjaan pertama yang terputus dilanjutkan, bukan dibuat baru | Data inti | no. 16 | [33](33_IMPLEMENTASI_MODE_PENELITIAN.md) |
+| Setiap jeda masukan 20 detik atau lebih dicatat; selang narasi diputar bisa dibaca dari log | Analitik 5 | no. 5 | 33 (`input_idle`) |
+| Saat butir bisa dijawab dicatat (petunjuk aktif, pilihan tindakan dan alasan tampil, kartu Benar atau Salah disentuh pertama) | Waktu putus, NON-TEB | no. 14 | [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) §6.1 (`ready_ms`), 32 (`reason_ready_ms`) |
+| Ketukan di luar bagian ketuk dicatat dengan jaraknya ke kunci petunjuk aktif | NON-SEN | no. 14 | 29 §6.2 (koordinat), 31 §9 (geometri), 35 (jarak) |
+| Event membuka lagi bacaan di dalam tantangan | Analitik 8 | no. 14 | 29 §6.3 (`passage_reopened`) |
+| Event penutupan skenario setelah kesempatan ketiga (setara `clue_failed`) | Analitik 1 jenis (a) | no. 2 | 32 (`scenario_failed`) |
+| Kode konteks narasi instruksi | Analitik 7 | no. 6 | 32 §8 (`challenge_instruction`) |
+| Sesi game menyimpan `field_session_code` dan nomor pertemuan | Semua | no. 11 | [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) §14 |
+| Wilayah yang dibuka token terbuka untuk semua siswa sesi itu, walaupun wilayah sebelumnya belum tuntas; tantangan di dalam wilayah tetap terbuka berurutan | Analitik 1 (`locked`) | no. 11 | 28 §9 |
+| Ambang T_idle dan T_teb disimpan di konfigurasi studi dan bisa diubah tanpa mengubah kode; lapis turunan dihitung ulang dengan ambang baru | Analitik 5, 6 | no. 9, 16 | [35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) §5 |
+| Lapis turunan menyimpan `dictionary_version` dan diuji otomatis dengan contoh data yang hasilnya dihitung tangan dari kamus ini | Semua | no. 9 | 35 |
+| Lembar *Kamus Data* di ekspor peneliti diturunkan dari kamus ini | Semua | no. 14 | 29 §8, 35 §10.2 |
+| *(1.1)* Daftar izin berkode dan saat mundur tersimpan di sistem | `consent_ok` | no. 23 | [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) §5, §10.1 |
+| *(1.1)* Jawaban tes, angket, dan skala sikap tersimpan per butir dengan waktunya | Variabel instrumen | no. 21, 22 | [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) §11.4 |
 
 ## Penyesuaian di dokumen lain
 
@@ -446,6 +534,12 @@ Perubahan yang ikut dikerjakan bersama kamus ini:
 - **06:** siswa yang belum selesai melanjutkan di pertemuan 5 (susulan), bukan "di pertemuan berikutnya", sesuai keputusan token (P5 untuk tantangan yang tertinggal).
 - **08:** aturan kode *Periksa Unggahan* di *Cara membaca* tidak lagi memakai INF-REL: bagian ketuk lain diberi kode jenis petunjuknya, dan ketukan di tempat kosong dekat kunci = NON-SEN tanpa memakai kesempatan (keputusan 26 Oktober 2026).
 - **01 dan 03:** ambang sementara jeda 3 menit dan tebakan cepat di bawah 3 detik (keputusan 26 Oktober 2026).
+
+*(1.1)* **Untuk sesi koordinator** (belum dibawa; ditulis 3 November 2026):
+- **16** → *Variabel untuk kamus data*: baris `risk_status` … `support_na` menunjuk lembar `risiko_gabungan`, bukan variabel peserta (29 K9).
+- **17** → *Variabel untuk kamus data*: `sikap_missing_reason = tanpa_izin` hanya diisi di analisis dari L7.
+- **13** → *Penskoran*: `*_theta` dihitung di analisis, bukan sistem; ambang tebakan cepat tes menunggu uji coba.
+- **13, 16, 17**: kalimat "masuk `kamus-1.1` setelah uji coba" menjadi "masuk `kamus-1.1` (draf 3 November 2026); angkanya ditetapkan ulang setelah uji coba".
 
 Penegasan yang menafsirkan dokumen sebelumnya. Tafsiran ini tidak dikoreksi pengembang saat menyetujui kamus, jadi ikut berlaku:
 
@@ -464,3 +558,16 @@ Empat pertanyaan di draf diputuskan pengembang pada 26 Oktober 2026:
 2. **Jeda tanpa masukan: ambang sementara 3 menit.** Hanya bagian jeda yang melebihi ambang yang dipotong dari waktu aktif. Ambangnya harus mudah diubah, jadi disimpan sebagai pengaturan dan ditetapkan ulang setelah uji coba.
 3. **Data siswa yang bisa dianalisis: setuju dengan usulan.** Izin lengkap, bukan sekolah uji coba, dan percobaan pertama yang bukan dari perangkat bersama pada sedikitnya 80% butir literasi digital (49 dari 61).
 4. **Tebakan cepat: dipakai apa adanya di analisis utama**, dengan ambang sementara di bawah 3 detik. Analisis kedua memperlakukan tebakan cepat sebagai data hilang.
+
+### `kamus-1.1` (draf, 3 November 2026)
+
+`kamus-1.1` tidak membawa keputusan baru. Isinya menurunkan keputusan pengembang yang sudah dicatat di [04](04_CATATAN_KEPUTUSAN.md) dan dokumen implementasi:
+
+1. `kamus-1.1` ditulis sekarang sebagai `draf pengembang`, direvisi setelah uji coba, dan dikunci di G4 (2 November 2026; 35 §19 no. 6).
+2. Analisis memakai kode kesalahan dari bank terbaru; kode saat percobaan tetap di data mentah (2 November 2026; 31 §22 no. 7, 35 §19 no. 5).
+3. "Pengambilan data selesai" = jam putaran hitung (2 November 2026; 35 §19 no. 7).
+4. Pengerjaan ulang tetap terbuka di P2–P4 setelah kelima tantangan wilayah pertemuan itu tuntas (2 November 2026; 33 §17 no. 5).
+5. Ambang di kolom studi, diubah `ketua`, dikunci di G4 (35 §19 no. 2).
+6. Data mentah tetap; lapis turunan dipotong pada saat mundur (35 §19 no. 4).
+7. Jawaban butir risiko daring hanya sebagai angka gabungan (29 K9).
+8. Status tes berasal dari modul; L6 tidak diimpor (29 K12).
