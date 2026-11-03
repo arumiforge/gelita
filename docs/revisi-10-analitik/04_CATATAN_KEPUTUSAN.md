@@ -15,7 +15,7 @@ Menjalankan keputusan no. 4 entri di bawah. Sebelum 08 diubah, `docs/bank-soal/t
 3. **`mgl-2` tanpa butir AKM L1.** Bacaan `mgl-2-a02` (stupa induk) dan `mgl-2-b01` (kuluk) ditulis ulang sehingga rumpang tidak lagi tepat sesudah definisinya; siswa memadukan dua kalimat. Level AKM L1 → L2, Bloom tetap C2.
 4. **Sebaran kode varian a dan b diseimbangkan** di tiga tantangan yang diperingatkan: `mgl-2-b04` *penjajah* INF-LIT → INF-KAT (setara *enam* di `mgl-2-a01`); `mgl-3-b03` ditulis ulang menjadi "Menurut unggahan, semua keterangan tentang Gunung Tidar adalah legenda." (INF-GEN, setara `mgl-3-a02`); `wnb-3-a03` ditulis ulang menjadi pernyataan sebab tentang warna air dan belerang (INF-HUB, setara `wnb-3-b02`). Kunci tetap.
 
-Teks Inggris butir yang berubah diperbarui di 36 (draf AI). Peringatan yang tersisa (17) hanya soal terjemahan yang belum diperiksa pengembang. Telaah lama di 05, 09, dan 19 untuk `mgl-3-b03` dan `wnb-3-a03` masih merujuk rumusan lama; ahli menilai rumusan baru. Tes penuh hijau (949 tes).
+Teks Inggris butir yang berubah diperbarui di 36 (draf AI). Peringatan yang tersisa (17) hanya soal terjemahan yang belum diperiksa pengembang. Telaah lama di 05, 09, 19, dan 25 untuk `mgl-3-b03` dan `wnb-3-a03`, serta catatan L1 untuk `mgl-2-a02` dan `mgl-2-b01` di 19, masih merujuk rumusan lama dan tidak diubah di sesi ini; ahli menilai rumusan baru. Tes penuh hijau (949 tes).
 
 Diubah: 08, 36, 04, 00 (baris 08 dan 36), berkas data dan workbook bank soal, `BankRulesNewBankTest`, `docs/PROGRESS.md`, catatan implementasi.
 
