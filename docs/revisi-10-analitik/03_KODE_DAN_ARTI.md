@@ -126,6 +126,7 @@ Kode di bank soal baru dan data pengerjaan ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.
 | UJI-01, UJI-02, … | Kode akun uji validator dari `gelita:uji:akun`, sengaja bukan pola kode peserta | [28](28_IMPLEMENTASI_SESI_LAPANGAN.md#13-alat-bantu-gelitaujiakun-perubahan-no-24), 30 Oktober 2026 |
 | A, B | Rombel kelas 5 di satu sekolah | Disetujui 25 Oktober 2026 |
 | S03-A-P1 | Kode sesi lapangan: sekolah, rombel, pertemuan ke-1 | Disetujui 25 Oktober 2026 |
+| U01-A-P1 | Kode sesi lapangan KG2 (rencana pertemuan `satu_sesi`): hanya pertemuan 1, satu wilayah yang dipilih di formulir sesi; beberapa anak berpikir lantang berurutan di satu sesi; tanpa susulan | [28](28_IMPLEMENTASI_SESI_LAPANGAN.md#52-rencana-pertemuan), 1 November 2026 |
 | S03-A-P3-S | Kode sesi lapangan susulan: siswa yang absen di P3, dalam tiga hari | 02, 26 Oktober 2026 |
 | S03-A-P3-S2 | Susulan kedua untuk pertemuan yang sama; berikutnya `-S3` | [28](28_IMPLEMENTASI_SESI_LAPANGAN.md#62-kode-sesi), 30 Oktober 2026 |
 | KD7RMA | Contoh token sesi: 6 huruf dan angka tanpa O, 0, I, 1, L; huruf besar dan kecil tidak dibedakan | Disetujui 25 Oktober 2026; L ditambahkan di [28](28_IMPLEMENTASI_SESI_LAPANGAN.md#63-token), 30 Oktober 2026 |
@@ -144,6 +145,8 @@ Kegiatan yang dimintakan izin etik dalam satu permohonan ([22 → Kegiatan yang 
 | KG3b | Uji kelompok menengah: ± 80 siswa, sekolah berawalan `U`, lima pertemuan per kelas; menggantikan uji coba satu kelas (sejak 1 November 2026) | 4 |
 | KG4 | Wawancara retrospektif di P2–P4 (L5) | 4 dan 5 |
 | KG5 | Pengambilan data utama, P1–P5 dan sesi susulan | 5 |
+
+Setiap uji (KG2, KG3a, KG3b) dan pengambilan data utama (KG5) adalah studi tersendiri di sistem. **Satu akun hanya ikut satu studi:** token menolak akun yang sudah punya sesi game di studi lain (`other_study`, pesan `tokenOtherStudy`), jadi anak yang sudah ikut satu uji tidak ikut uji berikutnya dengan akun lamanya, walau tempatnya sekolah `U` yang sama. Pengaman utamanya tetap daftar di lapangan ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md) K20, 1 November 2026).
 
 ## Kode kesalahan: salah memilih informasi (INF)
 

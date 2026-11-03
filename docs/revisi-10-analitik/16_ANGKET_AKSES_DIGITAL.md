@@ -469,7 +469,7 @@ Variabel turunan ini dan `q_flags` dihitung lapis data turunan, bukan modul angk
 
 ### Variabel untuk kamus data
 
-Masuk [11, *Variabel peserta dan sesi*](11_KAMUS_DATA.md#variabel-peserta-dan-sesi) di `kamus-1.1`, setelah uji coba (keputusan 26 Oktober 2026); `kamus-1.0` tidak diubah:
+Masuk [11, *Variabel peserta dan sesi*](11_KAMUS_DATA.md#variabel-peserta-dan-sesi) di `kamus-1.1` (draf 3 November 2026, [11 → Yang baru di `kamus-1.1`](11_KAMUS_DATA.md#yang-baru-di-kamus-11)); angkanya ditetapkan ulang setelah uji coba (keputusan 26 Oktober 2026); `kamus-1.0` tidak diubah:
 
 | Satuan | Kolom | Isi |
 | --- | --- | --- |
@@ -523,7 +523,7 @@ Status per 26 Oktober 2026, setelah keputusan pengembang:
 - **03:** selesai. Pola kode `ang-*` serta kode jawaban `7`, `8`, dan `9`.
 - **07:** selesai. Angket masuk paket validasi tahap 2 (telaah isi dan bahasa).
 - **01 dan 00:** selesai. Status daftar kerja no. 10.
-- **11:** menunggu `kamus-1.1` setelah uji coba (keputusan 26 Oktober 2026).
+- **11:** selesai sebagai draf: variabel angket masuk `kamus-1.1` (draf 3 November 2026, [11 → Yang baru di `kamus-1.1`](11_KAMUS_DATA.md#yang-baru-di-kamus-11)); angkanya ditetapkan ulang setelah uji coba (keputusan 26 Oktober 2026).
 
 ## Keputusan pengembang
 

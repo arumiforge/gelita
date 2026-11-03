@@ -297,7 +297,7 @@ Bila ada migrasi lain yang masuk `main` sebelum implementasi, seluruh urutan dig
 - `up()` menghitung akun `role = 'guru'` dan baris `data_exports` milik akun itu.
 - Bila keduanya nol, migrasi berjalan (instalasi baru, tes, instalasi uji tanpa akun guru).
 - Bila ada, migrasi berjalan hanya bila `.env` memuat `gelita.allowTeacherRemoval = true` (`Config\Gelita::$allowTeacherRemoval`, bawaan `false`). Tanpa itu, migrasi melempar pengecualian dengan pesan berbahasa Indonesia: berapa akun guru dan berkas unduhan yang akan dihapus, dan cara mengizinkannya. Tidak ada yang terhapus.
-- Pola yang sama dipakai `003600` (bagian 3, [29](29_IMPLEMENTASI_DATA_PENELITIAN.md#12-skema-database)) bila sesinya memutuskannya; itu dicatat di [§18](#18-akibat-ke-dokumen-lain).
+- `003600` (bagian 3, [29](29_IMPLEMENTASI_DATA_PENELITIAN.md#12-skema-database)) tidak mendapat penjaga sendiri ([29 §19](29_IMPLEMENTASI_DATA_PENELITIAN.md#19-keputusan-pengembang) no. 5): penghapusan baris log tetap di migrasi itu, dan karena migrasi berjalan berurutan, penjaga `003400` sudah menahan pembaruan server produksi yang berjalan tanpa keputusan pengembang sebelum `003600` tercapai.
 
 Selama migrasi tertahan, kode bagian 1 bisa saja sudah terpasang sementara akun `guru` masih ada. `StaffAuthFilter` mengakhiri sesi akun yang perannya di luar `StaffAccess::ROLES` (sama dengan akun nonaktif), jadi `StaffScope::fromStaff()` tidak pernah dipanggil dengan peran `guru`.
 
@@ -440,6 +440,8 @@ Panel peneliti adalah panel staf yang sama dengan menu yang berbeda, bertampilan
 - Admin: kolom akun.
 - Peneliti dan ketua: kolom kode dan kemajuan.
 - CSV daftar siswa hanya untuk peneliti dan ketua, berkode, dan dicatat sebagai `list_csv`. Admin tidak punya CSV daftar siswa (K17, [§16](#16-pertanyaan-terbuka) no. 4); tombolnya tidak dirender dan rutenya 404 untuk admin.
+
+**Unduhan `ketua` selalu memerlukan satu studi** ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md#71-siapa-cakupan-dan-format) K16), juga saat mode penelitian mati: `study_id` wajib, jadi data uji coba (KG3a, KG3b) dan data utama (KG5) tidak pernah ada di satu berkas. Bila belum ada studi, halaman unduh menampilkan pesan untuk membuat studi dulu di halaman Studi (`exportNeedsStudy`, [29 → Teks panel](29_IMPLEMENTASI_DATA_PENELITIAN.md#14-teks-panel)). Dibangun di bagian 3.
 
 **Lembar `event` dan kolom `answer_key`.** Sekarang hanya untuk admin. Sesudah bagian 1, admin tidak lagi melihat data penelitian. Bagian 3 memberi keduanya ke `ketua` ([29 → Keputusan yang dikunci](29_IMPLEMENTASI_DATA_PENELITIAN.md#2-keputusan-yang-dikunci), K1): lembar `event` hanya event bertanda Peneliti dengan kode sebagai pengganti id internal, `answer_key` di lembar `butir` dan `jawaban`. Admin tidak mendapat keduanya.
 
@@ -684,5 +686,5 @@ Dicatat di sini dan dibawa sesi koordinator setelah bagian 2–4 selesai, supaya
 | [20](20_PAKET_VALIDASI.md) | *Prasyarat no. 8* | Di G3, pengembang memegang akun `admin` dan `ketua` di instalasi uji | Sudah (sesi koordinator, 30 Oktober 2026, PR #285) |
 | [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) | T10, pilihan D | "`ketua` membuka kode" sesuai hak `ketua` di 27; tidak ada perubahan teks surat | Tidak perlu diubah |
 | `.claude/rules/glossary.md` | *People, data, and the panel* | Baris peran staf, saat implementasi ([§15](#15-dokumen-yang-ikut-diperbarui-saat-implementasi)) | Saat implementasi |
-| [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) | *Skema database* (`003600`) | Pertimbangkan penjaga yang sama dengan K16 untuk `003600` (menghapus baris log), supaya aturan "baru dijalankan di produksi bila pengembang memutuskannya" juga dijaga di kode | Untuk sesi koordinator (2 November 2026) |
+| [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) | *Skema database* (`003600`) | Pertimbangkan penjaga yang sama dengan K16 untuk `003600` (menghapus baris log), supaya aturan "baru dijalankan di produksi bila pengembang memutuskannya" juga dijaga di kode | **Ditutup** (3 November 2026): tanpa penjaga sendiri. Penghapusan tetap di `003600` ([29 §19](29_IMPLEMENTASI_DATA_PENELITIAN.md#19-keputusan-pengembang) no. 5); penjaga `003400` sudah menahan pembaruan server produksi yang tidak diawasi ([§6.1](#61-migrasi-2026-01-01-003400_replaceteacherwithresearcherroles)) |
 | `docs/08_DEPLOYMENT.md` | Langkah pembaruan | Penjaga `003400` dan `gelita.allowTeacherRemoval` (K16) | Saat implementasi |
