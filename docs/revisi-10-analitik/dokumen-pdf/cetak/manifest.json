@@ -1,8 +1,8 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "281e8f61418976c3c5d98136f1bc94f312a647c6f20d17eaf05659d39245b6d6",
-      "commit": "76d8a47",
+      "source": "6aadb0b00fbde85c834f019a31ea2d40b09bce6ab4189bf869a3327b7c5a4bb9",
+      "commit": "1e2db61",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
       "pages": 19,
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "9025925cec6566bb9c83b91a50c923bf58fe66b6f3ec4347b77f99b957589a06",
-      "commit": "76d8a47",
+      "source": "dcf948d4e1ebfafa43d2bfac01dfd883d5f0b6aa8c20b8c720fa0d944ddfa48a",
+      "commit": "1e2db61",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
-      "pages": 70,
+      "pages": 71,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -58,7 +58,7 @@
     },
     "07_TELAAH_INSTRUMEN_VALIDASI.md": {
       "source": "f0435f19f3c475ae23934cbb5b449556ca9071cd6d38aff940fd73137b3d4702",
-      "commit": "18da83e",
+      "commit": "4359366",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-31",
       "pages": 10,
@@ -82,7 +82,7 @@
     },
     "10_TELAAH_PENDAHULUAN_MEDIA.md": {
       "source": "13e86a96e4af811a151e2cfa7809576c900961fd7cc64bd589a3ffacc45a298e",
-      "commit": "18da83e",
+      "commit": "4359366",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-31",
       "pages": 8,
@@ -114,7 +114,7 @@
     },
     "14_TES_BAGIAN_MEMBACA.md": {
       "source": "55ecc0f33e43bc4302182a0e9867e5e7c99cb74078b0f030c893b036ab56a2f1",
-      "commit": "18da83e",
+      "commit": "4359366",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-31",
       "pages": 20,
@@ -122,15 +122,15 @@
     },
     "15_TES_BAGIAN_DIGITAL.md": {
       "source": "fa236e4443314df9b75912b9eba20c0fbdc3eee67251c5ced3d7ac9c1fa628b6",
-      "commit": "18da83e",
+      "commit": "4359366",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-31",
       "pages": 23,
       "landscapeTables": 0
     },
     "16_ANGKET_AKSES_DIGITAL.md": {
-      "source": "a4c509f63408c5a9d520339aa274fabc8049f051931143af7381db2f1279f3a6",
-      "commit": "a832240",
+      "source": "e66712ea300cc42c4bbeddceecba6b4915102d0a5a0b48b421daba757f033abb",
+      "commit": "1e2db61",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
       "pages": 17,
@@ -145,8 +145,8 @@
       "landscapeTables": 0
     },
     "18_MOCKUP_LAYAR_BARU.md": {
-      "source": "5adfeb1410625801469b95b44b82f5456b3fa35bfd49c0d51e10d05ab2510bb8",
-      "commit": "a832240",
+      "source": "5e32fbf6480f42b12b5a01c521de437048e8ea47027f64570b007de3c9fa7c77",
+      "commit": "1e2db61",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
       "pages": 8,
@@ -225,8 +225,8 @@
       "landscapeTables": 0
     },
     "28_IMPLEMENTASI_SESI_LAPANGAN.md": {
-      "source": "24030eb81ecca5a31a976d140a1dca8bc1b8d0ed8d42dcc27337fbeb244507ee",
-      "commit": "b453125",
+      "source": "0ed388cbf635342c9561df1dfecb6f76a6202984c2bb6c4719e9954b110aeabe",
+      "commit": "1e2db61",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
       "pages": 23,
@@ -257,8 +257,8 @@
       "landscapeTables": 0
     },
     "32_IMPLEMENTASI_SKENARIO_DIGITAL.md": {
-      "source": "a7948ffba5690a0ef1eaf7d7fedf28cef4cc94bca926b609c5f59332cafd829d",
-      "commit": "05b025a",
+      "source": "99dcf8cdbcf7522576ae26551604ba75847e4f980de9cd3d0b3f9b36da837398",
+      "commit": "1e2db61",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
       "pages": 18,
@@ -273,8 +273,8 @@
       "landscapeTables": 0
     },
     "34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md": {
-      "source": "fd3fa255c15c47a265f9434222656cfaa6955347c81a2fc91c2a10adccde9732",
-      "commit": "458fec3",
+      "source": "dfa1dd64805485860c8e74801943b2ab54f55b39c082e2e56243016aadc4ecc6",
+      "commit": "1e2db61",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
       "pages": 23,
@@ -289,8 +289,8 @@
       "landscapeTables": 0
     },
     "36_TERJEMAHAN_BANK_SOAL.md": {
-      "source": "c00de322bef41cf1b300d146e4d439c3a88493625c3da45c53f3fc96f9330118",
-      "commit": "f63b5e8",
+      "source": "be4d8aa2eeddbe633b12779270e21cdd885bd5a2ed3f08a447b69e069c17f6ef",
+      "commit": "1e2db61",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
       "pages": 27,
