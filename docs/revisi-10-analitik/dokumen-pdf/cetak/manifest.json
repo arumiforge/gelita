@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "baa63f8004fe76b824f96d5ebc3f72a15f3ba6cb47454b650833839497218ac8",
-      "commit": "071c0e2",
+      "source": "b50c8c6c6ad97ebb704c6485167068a970890120282ba71f274cd6dc297c456f",
+      "commit": "f90f7c1",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 61,
+      "pages": 62,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -177,16 +177,16 @@
       "landscapeTables": 0
     },
     "22_PERMOHONAN_IZIN_ETIK.md": {
-      "source": "72783ac1588e32bcefac7f2088eb5d387f555ef3b264aaf93ededf6720d1da91",
-      "commit": "81647d8",
+      "source": "7dcceaa0ab6298fb7e1a6e408f6f745d62c3e4f86a48a5e99a88266c03499faa",
+      "commit": "f90f7c1",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 51,
       "landscapeTables": 0
     },
     "23_SURAT_INFORMASI_DAN_PERSETUJUAN.md": {
-      "source": "836e1d86f6fc94fac1842cdfa9f158f73ede71e3a313f66fe9392bca5190427d",
-      "commit": "071c0e2",
+      "source": "a0b1acae331082bcb50abadabe74d9c504426d6f71c71b5d64175e4ff17e3bc8",
+      "commit": "52541ed",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 33,
@@ -209,16 +209,16 @@
       "landscapeTables": 0
     },
     "26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md": {
-      "source": "b704bdea2b5c2067b0e2721b1aec774c472ba326bfc18854afd7083f4dd113b7",
-      "commit": "81647d8",
+      "source": "58b9ec7fe2eea5cc112fc730a16dfd0442f0971cf4a1d406f1103b964c50faa3",
+      "commit": "f90f7c1",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
-      "pages": 19,
+      "pages": 20,
       "landscapeTables": 0
     },
     "27_IMPLEMENTASI_PERAN_PENELITI.md": {
-      "source": "55c8ecce7b036b056356f3662675dc26a3e42507a5e6a4dcac61db95e45d1909",
-      "commit": "7a6d569",
+      "source": "cfe2bc70fc67fe4f4f1e074f8a6cd1d82ee9b5bd3ecc01e91c0e69ca9b539190",
+      "commit": "f90f7c1",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 20,
@@ -233,16 +233,16 @@
       "landscapeTables": 0
     },
     "29_IMPLEMENTASI_DATA_PENELITIAN.md": {
-      "source": "50a27b65e66f9f5c7c94d0870d56043bc1899239613479ae5852d95130fb438b",
-      "commit": "5e8839f",
+      "source": "87c03a53033bf7ca192c7df0be20c3bd4e78edf9fc11be8d710ca83d28a008a6",
+      "commit": "f90f7c1",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 27,
       "landscapeTables": 0
     },
     "30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md": {
-      "source": "9ba4020762beb7ce87cd2762985f838592789c634eb57753d1649eb6ff060d08",
-      "commit": "071c0e2",
+      "source": "8937be104fcad5d730807de2c29db70576e4fe80477d6241e84951e578fe9d90",
+      "commit": "f90f7c1",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-02",
       "pages": 28,
