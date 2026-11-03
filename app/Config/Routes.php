@@ -105,75 +105,97 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
     $routes->get('logout', 'AuthController::logout');
 
     $routes->group('', ['filter' => 'staffAuth'], static function ($routes): void {
-        $routes->get('/', 'DashboardController::index');
-        $routes->get('dashboard', 'DashboardController::index');
+        // Rights per capability (revision 10, part 1: App\Libraries\StaffAccess, 27 §4, §7).
+        // Fixed paths are registered before patterned ones, so the order reads clearly.
+        $routes->get('/', 'DashboardController::index', ['filter' => 'staffCan:dashboard.view']);
+        $routes->get('dashboard', 'DashboardController::index', ['filter' => 'staffCan:dashboard.view']);
 
-        // Akun sendiri — guru & admin
+        // Own account (every staff role)
         $routes->get('akun/sandi', 'AccountController::passwordForm');
         $routes->post('akun/sandi', 'AccountController::changePassword');
 
-        // Data penelitian — guru & admin (scope guru dibatasi sekolahnya)
-        $routes->get('peserta', 'ParticipantController::index');
-        $routes->get('peserta/(:num)', 'ParticipantController::show/$1');
-        $routes->post('peserta/(:num)/reset-sandi', 'ParticipantController::resetPassword/$1');
-        $routes->get('sesi', 'SessionController::index');
-        $routes->get('sesi/(:num)', 'SessionController::show/$1');
-        $routes->get('sesi/(:num)/event', 'SessionController::timeline/$1');
-        $routes->get('masukan', 'FeedbackController::index');
-        $routes->get('data', 'RawDataController::index');
-        $routes->get('data/(:segment)', 'RawDataController::show/$1');
+        // Students: the admin sees accounts, researchers see codes (one route, two views)
+        $routes->group('', ['filter' => 'staffCan:participants.reset_by_code'], static function ($routes): void {
+            $routes->get('peserta/reset-sandi', 'ParticipantController::resetByCodeForm');
+            $routes->post('peserta/reset-sandi', 'ParticipantController::resetByCode');
+        });
+        $routes->group('', ['filter' => 'staffCan:participants.accounts,participants.research'], static function ($routes): void {
+            $routes->get('peserta', 'ParticipantController::index');
+            $routes->get('peserta/(:num)', 'ParticipantController::show/$1');
+        });
+        $routes->post('peserta/(:num)/reset-sandi', 'ParticipantController::resetPassword/$1', ['filter' => 'staffCan:participants.reset_by_id']);
 
-        // Export — guru & admin, tetapi mode non-anonim hanya admin
-        $routes->get('ekspor', 'ExportController::index');
-        $routes->post('ekspor/xlsx', 'ExportController::xlsx');
-        $routes->post('ekspor/csv', 'ExportController::csv');
-        $routes->post('ekspor/pdf', 'ExportController::pdf');
-        $routes->get('ekspor/unduh/(:num)', 'ExportController::download/$1');
+        // Research data of all students: head researcher only
+        $routes->group('', ['filter' => 'staffCan:research.browse'], static function ($routes): void {
+            $routes->get('sesi', 'SessionController::index');
+            $routes->get('sesi/(:num)', 'SessionController::show/$1');
+            $routes->get('sesi/(:num)/event', 'SessionController::timeline/$1');
+            $routes->get('masukan', 'FeedbackController::index');
+            $routes->get('data', 'RawDataController::index');
+            $routes->get('data/(:segment)', 'RawDataController::show/$1');
+        });
 
-        // Konten — admin saja
-        $routes->group('', ['filter' => 'staffRole:admin'], static function ($routes): void {
-            $routes->get('konten', 'ContentController::index');
-            $routes->get('konten/level/(:num)', 'ContentController::level/$1');
-            $routes->post('konten/level/(:num)', 'ContentController::updateLevel/$1');
-            $routes->get('konten/node/(:num)', 'ContentController::node/$1');
-            $routes->post('konten/node/(:num)', 'ContentController::updateNode/$1');
-            $routes->post('konten/node/(:num)/item', 'ContentController::createItem/$1');
-            $routes->post('konten/item/(:num)', 'ContentController::updateItem/$1');
-            $routes->post('konten/item/(:num)/hapus', 'ContentController::deleteItem/$1');
+        // Downloads: head researcher only, always coded (27 K14)
+        $routes->group('', ['filter' => 'staffCan:research.export'], static function ($routes): void {
+            $routes->get('ekspor', 'ExportController::index');
+            $routes->post('ekspor/xlsx', 'ExportController::xlsx');
+            $routes->post('ekspor/csv', 'ExportController::csv');
+            $routes->post('ekspor/pdf', 'ExportController::pdf');
+            $routes->get('ekspor/unduh/(:num)', 'ExportController::download/$1');
+        });
+
+        // Content, narration, media: read for content.view, writes and the bank import for content.edit (27 K7)
+        $routes->group('', ['filter' => 'staffCan:content.edit'], static function ($routes): void {
             $routes->get('konten/impor-bank', 'ContentController::importForm');
             $routes->post('konten/impor-bank/pratinjau', 'ContentController::importPreview');
             $routes->post('konten/impor-bank/jalankan', 'ContentController::importRun');
             $routes->get('konten/impor-bank/templat', 'ContentController::importTemplate');
-            $routes->get('konten/bacaan/(:num)', 'ContentController::passages/$1');
+            $routes->post('konten/level/(:num)', 'ContentController::updateLevel/$1');
+            $routes->post('konten/node/(:num)', 'ContentController::updateNode/$1');
+            $routes->post('konten/node/(:num)/item', 'ContentController::createItem/$1');
+            $routes->post('konten/item/(:num)', 'ContentController::updateItem/$1');
+            $routes->post('konten/item/(:num)/hapus', 'ContentController::deleteItem/$1');
             $routes->post('konten/bacaan/(:num)', 'ContentController::savePassages/$1');
-            $routes->get('konten/pustaka/(:num)', 'ContentController::library/$1');
             $routes->post('konten/pustaka/(:num)', 'ContentController::saveLibrary/$1');
-            $routes->get('konten/dialog/(:num)', 'ContentController::dialogues/$1');
             $routes->post('konten/dialog/(:num)', 'ContentController::saveDialogues/$1');
-            $routes->get('konten/narasi', 'NarrationController::index');
             $routes->get('konten/narasi/unggah', 'NarrationController::uploadForm');
             $routes->post('konten/narasi/unggah', 'NarrationController::upload');
             $routes->post('konten/narasi/impor-folder', 'NarrationController::importFolder');
             $routes->post('konten/narasi/setujui', 'NarrationController::approveAll');
-            $routes->get('konten/narasi/daftar-rekaman', 'NarrationController::recordingList');
             $routes->post('konten/narasi/batalkan', 'NarrationController::cancelAll');
-            $routes->get('konten/narasi/naskah-pdf', 'NarrationController::scriptPdf');
             $routes->post('konten/verifikasi', 'ContentController::verify');
-
-            $routes->get('media', 'MediaController::index');
-            $routes->get('media/kelengkapan', 'MediaController::checklist');
-            $routes->get('media/(:num)', 'MediaController::show/$1');
             $routes->post('media/unggah', 'MediaController::upload');
             $routes->post('media/(:num)/nonaktif', 'MediaController::deactivate/$1');
             $routes->post('media/(:num)/unggah-gerak', 'MediaController::uploadFrames/$1');
-            $routes->get('media/audio', 'MediaController::audioIndex');
             $routes->post('media/audio/unggah', 'MediaController::uploadAudio');
             $routes->post('media/audio/(:num)/setujui', 'MediaController::approveAudio/$1');
             $routes->post('media/pindai', 'MediaController::scan');
+        });
+        $routes->group('', ['filter' => 'staffCan:content.view'], static function ($routes): void {
+            $routes->get('konten', 'ContentController::index');
+            $routes->get('konten/level/(:num)', 'ContentController::level/$1');
+            $routes->get('konten/node/(:num)', 'ContentController::node/$1');
+            $routes->get('konten/bacaan/(:num)', 'ContentController::passages/$1');
+            $routes->get('konten/pustaka/(:num)', 'ContentController::library/$1');
+            $routes->get('konten/dialog/(:num)', 'ContentController::dialogues/$1');
+            $routes->get('konten/narasi', 'NarrationController::index');
+            $routes->get('konten/narasi/daftar-rekaman', 'NarrationController::recordingList');
+            $routes->get('konten/narasi/naskah-pdf', 'NarrationController::scriptPdf');
+            $routes->get('media', 'MediaController::index');
+            $routes->get('media/kelengkapan', 'MediaController::checklist');
+            $routes->get('media/audio', 'MediaController::audioIndex');
+            $routes->get('media/(:num)', 'MediaController::show/$1');
+        });
 
-            $routes->get('studi', 'StudyController::index');
+        // Studies: the head researcher changes them, the admin only looks (27 K12)
+        $routes->get('studi', 'StudyController::index', ['filter' => 'staffCan:studies.view']);
+        $routes->group('', ['filter' => 'staffCan:studies.manage'], static function ($routes): void {
             $routes->post('studi', 'StudyController::store');
             $routes->post('studi/(:num)', 'StudyController::update/$1');
+        });
+
+        // Releases and asset packages stay with the admin, under /admin/studi/rilis
+        $routes->group('', ['filter' => 'staffCan:releases.manage'], static function ($routes): void {
             $routes->get('studi/rilis', 'StudyController::releases');
             $routes->post('studi/rilis', 'StudyController::storeRelease');
             $routes->get('studi/rilis/(:num)/aktifkan', 'StudyController::confirmActivation/$1');
@@ -187,19 +209,26 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->post('studi/rilis/paket/matikan', 'PackageController::switchOff');
             $routes->post('studi/rilis/paket/izin-daring', 'PackageController::saveOnlineLab');
             $routes->post('studi/rilis/paket/periksa', 'PackageController::verify');
+        });
 
+        // Governance: deletion, audit log, retention (admin)
+        $routes->group('', ['filter' => 'staffCan:deletion.execute'], static function ($routes): void {
             $routes->get('tata-kelola', 'GovernanceController::index');
             $routes->post('tata-kelola/hapus/pratinjau', 'GovernanceController::deletePreview');
             $routes->post('tata-kelola/hapus/(:num)/jalankan', 'GovernanceController::deleteExecute/$1');
             $routes->post('tata-kelola/hapus/(:num)/batal', 'GovernanceController::deleteCancel/$1');
-            $routes->get('tata-kelola/audit', 'GovernanceController::audit');
-            $routes->post('tata-kelola/retensi', 'GovernanceController::runRetention');
+        });
+        $routes->get('tata-kelola/audit', 'GovernanceController::audit', ['filter' => 'staffCan:audit.view']);
+        $routes->post('tata-kelola/retensi', 'GovernanceController::runRetention', ['filter' => 'staffCan:retention.run']);
 
+        $routes->group('', ['filter' => 'staffCan:schools.manage'], static function ($routes): void {
             $routes->get('sekolah', 'SchoolController::index');
             $routes->post('sekolah/gabung-otomatis', 'SchoolController::autoMerge');
             $routes->post('sekolah/(:num)/gabung', 'SchoolController::merge/$1');
             $routes->post('sekolah/(:num)/sahkan', 'SchoolController::verify/$1');
+        });
 
+        $routes->group('', ['filter' => 'staffCan:staff.manage'], static function ($routes): void {
             $routes->get('staf', 'StaffController::index');
             $routes->post('staf', 'StaffController::store');
             $routes->post('staf/(:num)', 'StaffController::update/$1');
@@ -214,7 +243,7 @@ $routes->group('api/admin', [
     'namespace' => 'App\Controllers\Api',
     'filter'    => ['jsonResponse', 'staffAuth'],
 ], static function ($routes): void {
-    $routes->get('summary', 'AdminApiController::summary');
-    $routes->get('sessions/(:num)/timeline', 'AdminApiController::timeline/$1');
-    $routes->get('exports/(:num)/status', 'AdminApiController::exportStatus/$1');
+    $routes->get('summary', 'AdminApiController::summary', ['filter' => 'staffCan:dashboard.view']);
+    $routes->get('sessions/(:num)/timeline', 'AdminApiController::timeline/$1', ['filter' => 'staffCan:research.browse']);
+    $routes->get('exports/(:num)/status', 'AdminApiController::exportStatus/$1', ['filter' => 'staffCan:research.export']);
 });

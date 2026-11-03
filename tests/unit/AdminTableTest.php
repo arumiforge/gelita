@@ -8,8 +8,10 @@ use Tests\Support\Database\RawDataWorld;
 /**
  * Tabel data mentah admin di tingkat layanan (Dok 3 §8.4, §12.1
  * `AdminTableTest`): kontrak `RawDataService::page()` — kolom, urutan,
- * halaman —, CSV per tabel sama dengan isi tabel, dan cakupan guru
- * (sekolahnya saja, anonim, tanpa Event Mentah dan kunci jawaban).
+ * halaman —, CSV per tabel sama dengan isi tabel, dan the research scope
+ * of `peneliti` and `ketua` (every school, coded, without Event Mentah and
+ * answer key until part 3; 27 §5.5). `$full` is the full-detail service
+ * scope (identity and admin-only columns) that no role holds in part 1.
  * Tampilan tabelnya (komponen, JS) diuji sesi admin.
  *
  * @internal
@@ -19,15 +21,15 @@ final class AdminTableTest extends CIUnitTestCase
     use RawDataWorld;
 
     private RawDataService $admin;
-    private RawDataService $teacher;
+    private RawDataService $research;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->createRawDataWorld();
-        $this->admin   = new RawDataService(StaffScope::admin());
-        $this->teacher = new RawDataService(StaffScope::teacher(1));
+        $this->admin    = new RawDataService(StaffScope::of(false, true));
+        $this->research = new RawDataService(StaffScope::research());
     }
 
     protected function tearDown(): void
@@ -185,16 +187,15 @@ final class AdminTableTest extends CIUnitTestCase
         $this->assertStringNotContainsString('{', $csv, 'no JSON left');
     }
 
-    public function testTeacherSeesOnlyOwnSchoolAnonymouslyWithoutKeysOrRawEvents(): void
+    public function testResearchScopeSeesEverySchoolCodedWithoutKeysOrRawEvents(): void
     {
-        $sessions = $this->teacher->page('sesi', [], 1, 25, null);
-        $this->assertSame(['GLT-000001'], array_column($sessions['rows'], 'participant_code'));
+        $sessions = $this->research->page('sesi', [], 1, 25, null);
+        $this->assertEqualsCanonicalizing(['GLT-000001', 'GLT-000002'], array_column($sessions['rows'], 'participant_code'), 'no school scope since part 1');
 
-        // Memaksa sekolah lain lewat filter tidak menembus cakupan
-        $this->assertSame(0, $this->teacher->page('sesi', ['school_id' => 2], 1, 25, null)['total']);
-        $this->assertSame(0, $this->teacher->page('jawaban', ['participant_code' => 'GLT-000002'], 1, 25, null)['total']);
+        // The school filter narrows like any filter
+        $this->assertSame(1, $this->research->page('sesi', ['school_id' => 2], 1, 25, null)['total']);
 
-        $people = $this->teacher->page('peserta', [], 1, 25, null);
+        $people = $this->research->page('peserta', [], 1, 25, null);
         $keys   = array_column($people['columns'], 'key');
 
         foreach (RawDataService::IDENTITY_COLUMNS as $identity) {
@@ -202,50 +203,57 @@ final class AdminTableTest extends CIUnitTestCase
         }
 
         $this->assertContains('school_ref', $keys);
-        $this->assertSame('SCH-000001', $people['rows'][0]['school_ref']);
+        $this->assertEqualsCanonicalizing(['SCH-000001', 'SCH-000002'], array_column($people['rows'], 'school_ref'));
         $this->assertStringNotContainsString('Ani', json_encode($people['rows']));
+        $this->assertStringNotContainsString('SD Negeri', json_encode($people['rows']));
 
         foreach (['jawaban', 'butir'] as $dimension) {
-            $page = $this->teacher->page($dimension, [], 1, 25, null);
+            $page = $this->research->page($dimension, [], 1, 25, null);
             $this->assertNotContains('answer_key', array_column($page['columns'], 'key'), $dimension);
             $this->assertStringNotContainsString('"verdict":"benar"}"', json_encode($page['rows']), $dimension);
         }
 
-        $this->assertNotContains('event', $this->teacher->dimensions(StaffScope::teacher(1)));
+        $this->assertNotContains('event', $this->research->dimensions(StaffScope::research()));
 
         $this->expectException(DomainException::class);
-        $this->teacher->page('event', [], 1, 25, null);
+        $this->research->page('event', [], 1, 25, null);
     }
 
-    public function testTeacherCsvAndQueryKeepTheScope(): void
+    public function testResearchCsvIsCoded(): void
     {
         $handle = fopen('php://temp', 'w+b');
-        $this->assertSame(1, $this->teacher->streamCsv('peserta', [], $handle));
+        $this->assertSame(2, $this->research->streamCsv('peserta', [], $handle));
         rewind($handle);
         $csv = stream_get_contents($handle);
 
         $this->assertStringContainsString('GLT-000001', $csv);
-        $this->assertStringNotContainsString('GLT-000002', $csv);
         $this->assertStringNotContainsString('Ani Lestari', $csv);
         $this->assertStringNotContainsString('ani.5', $csv);
 
-        // Guru tanpa sekolah tidak melihat apa-apa
-        $nobody = new RawDataService(StaffScope::teacher(null));
-        $this->assertSame(0, $nobody->page('sesi', [], 1, 25, null)['total']);
-
         // query() memakai cakupan yang diberikan, bukan yang terikat
-        $this->assertSame(2, $this->teacher->query('sesi', [], StaffScope::admin())->countAllResults());
+        $this->assertStringContainsString('display_name', (string) $this->research->query('peserta', [], StaffScope::of(false, true))->getCompiledSelect());
+    }
+
+    public function testRolesMapToScopes(): void
+    {
+        $this->assertFalse(StaffScope::fromRole('admin')->anonymous, 'admin: account identities');
+        $this->assertTrue(StaffScope::fromRole('peneliti')->anonymous);
+        $this->assertTrue(StaffScope::fromRole('ketua')->anonymous);
+        $this->assertFalse(StaffScope::fromRole('ketua')->fullDetail);
+
+        $this->expectException(DomainException::class);
+        StaffScope::fromRole('guru');
     }
 
     public function testIdentityQueryNeverReadsSecrets(): void
     {
-        $sql = (string) $this->admin->query('peserta', [], StaffScope::admin())->getCompiledSelect();
+        $sql = (string) $this->admin->query('peserta', [], StaffScope::of(false, true))->getCompiledSelect();
 
         $this->assertStringNotContainsString('password_hash', $sql);
         $this->assertStringNotContainsString('failed_login', $sql);
         $this->assertStringNotContainsString('locked_until', $sql);
 
-        $anonymous = (string) $this->admin->query('peserta', [], StaffScope::admin(true))->getCompiledSelect();
+        $anonymous = (string) $this->admin->query('peserta', [], StaffScope::of(true, true))->getCompiledSelect();
         $this->assertStringNotContainsString('display_name', $anonymous);
         $this->assertStringNotContainsString('username', $anonymous);
     }

@@ -23,7 +23,7 @@ class ApiSessionFilter implements FilterInterface
         }
 
         if ($status === 'MUST_CHANGE') {
-            return api_error('PASSWORD_CHANGE_REQUIRED', lang('Auth.mustChange'), 403);
+            return api_error('PASSWORD_CHANGE_REQUIRED', password_reset_text('Auth.mustChange'), 403);
         }
 
         return api_error('INVALID_SESSION', lang('Game.sessionExpired'), 401);

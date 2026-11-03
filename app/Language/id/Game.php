@@ -169,7 +169,8 @@ return [
     'loginLead'      => 'Masuk ke akunmu untuk melanjutkan petualangan bersama Jaka, ya!',
     'noAccount'      => 'Belum punya akun?',
     'registerLink'   => 'Daftar',
-    'forgotPassword' => 'Lupa kata sandi? Minta gurumu mengatur ulang.',
+    'forgotPassword' => 'Lupa kata sandi? Minta kakak peneliti mengatur ulang, ya.',
+    'forgotPasswordAdmin' => 'Lupa kata sandi? Bilang ke gurumu, ya. Gurumu bisa meminta admin GELITA mengatur ulang.',
 
     // Cerita pembuka & dialog
     'introTitle'       => 'Cerita pembuka',

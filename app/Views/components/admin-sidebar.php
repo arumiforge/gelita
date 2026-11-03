@@ -5,12 +5,12 @@
  * tooltip). Di bawah 768 px menjadi laci yang dibuka tautan #admin-menu
  * (CSS :target, tanpa JavaScript).
  *
- * Daftar menu dari App\Libraries\AdminMenu; menu yang tidak berhak diakses
- * TIDAK dirender untuk guru.
+ * Daftar menu dari App\Libraries\AdminMenu; items the role holds no
+ * capability for are not rendered.
  */
 use App\Libraries\AdminMenu;
 
-$items = AdminMenu::items(session('staff_role') === 'admin', service('request')->getPath());
+$items = AdminMenu::items(static fn (string $capability): bool => staff_can($capability), service('request')->getPath());
 $group = null;
 ?>
 <nav class="admin-sidebar" id="admin-menu" aria-label="<?= esc(lang('Admin.mainMenu'), 'attr') ?>">

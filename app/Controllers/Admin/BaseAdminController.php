@@ -9,6 +9,7 @@ use App\Models\AuditLogModel;
 use App\Models\ParticipantModel;
 use App\Models\ResearchStudyModel;
 use App\Models\SchoolModel;
+use App\Services\RawDataService;
 use CodeIgniter\Database\BaseBuilder;
 use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\HTTP\RedirectResponse;
@@ -17,9 +18,8 @@ use CodeIgniter\HTTP\ResponseInterface;
 /**
  * Dasar seluruh controller panel.
  *
- * `schoolScope()` dan `readFilters()` datang dari trait StaffScope, yang
- * dipakai juga oleh Api\AdminApiController agar aturan cakupan sekolah
- * hanya ditulis satu kali.
+ * `can()` and `readFilters()` come from the StaffScope trait, which
+ * Api\AdminApiController uses too, so staff rights are read in one place.
  */
 abstract class BaseAdminController extends BaseController
 {
@@ -43,17 +43,15 @@ abstract class BaseAdminController extends BaseController
     }
 
     /**
-     * Pilihan untuk components/admin-filter-bar: studi, wilayah, sekolah, provinsi.
-     * Provinsi diambil dari data peserta dalam cakupan pemanggil, sehingga
-     * guru hanya melihat provinsi yang memang ada di sekolahnya.
+     * Pilihan untuk components/admin-filter-bar: studi, wilayah, sekolah,
+     * provinsi. Schools carry their name only for callers who may see
+     * identities (admin); `peneliti` and `ketua` get the school code (27 K5).
      *
      * @return array<string, mixed>
      */
     protected function filterOptions(): array
     {
-        $scope = $this->schoolScope();
-
-        $provinces = model(ParticipantModel::class)->scopedForStaff($scope)
+        $provinces = model(ParticipantModel::class)->builder()
             ->select('province_code, MAX(province_name_snapshot) AS province_name', false)
             ->where('participants.deleted_at', null)
             ->where('province_code IS NOT NULL')
@@ -62,7 +60,7 @@ abstract class BaseAdminController extends BaseController
             ->get()
             ->getResultArray();
 
-        $districts = model(ParticipantModel::class)->scopedForStaff($scope)
+        $districts = model(ParticipantModel::class)->builder()
             ->select('district_code, MAX(district_name_snapshot) AS district_name', false)
             ->where('participants.deleted_at', null)
             ->where('district_code IS NOT NULL')
@@ -71,7 +69,7 @@ abstract class BaseAdminController extends BaseController
             ->get()
             ->getResultArray();
 
-        $ages = model(ParticipantModel::class)->scopedForStaff($scope)
+        $ages = model(ParticipantModel::class)->builder()
             ->select('age')
             ->distinct()
             ->where('participants.deleted_at', null)
@@ -80,30 +78,33 @@ abstract class BaseAdminController extends BaseController
             ->get()
             ->getResultArray();
 
-        $ownSchool = $scope === null ? null : model(SchoolModel::class)->find($scope);
+        $schools = model(SchoolModel::class)->inUseList();
+
+        if (! $this->seesIdentity()) {
+            $schools = array_map(static fn (array $s): array => ['id' => $s['id'], 'name' => (string) RawDataService::schoolRef($s['id'])], $schools);
+        }
 
         return [
             'studies'    => model(ResearchStudyModel::class)->orderBy('id', 'DESC')->findAll(),
             'levels'     => service('contentRepository')->levels(),
             'nodes'      => $this->nodeOptions(),
-            'schools'    => $scope === null ? model(SchoolModel::class)->inUseList() : [],
-            'own_school' => $ownSchool['name'] ?? null,
+            'schools'    => $schools,
             'provinces'  => array_column($provinces, 'province_name', 'province_code'),
             'districts'  => array_column($districts, 'district_name', 'district_code'),
             'ages'       => array_map('strval', array_column($ages, 'age')),
-            'classes'    => $this->classOptions($scope),
+            'classes'    => $this->classOptions(),
         ];
     }
 
     /**
-     * Kelas yang ada di data siswa dalam cakupan staf, selalu memuat kelas
-     * sasaran (Config\Gelita::$registrationClass).
+     * Kelas yang ada di data siswa, selalu memuat kelas sasaran
+     * (Config\Gelita::$registrationClass).
      *
      * @return list<string>
      */
-    private function classOptions(?int $scope): array
+    private function classOptions(): array
     {
-        $rows = model(ParticipantModel::class)->scopedForStaff($scope)
+        $rows = model(ParticipantModel::class)->builder()
             ->select('class_level')
             ->distinct()
             ->where('participants.deleted_at', null)
@@ -164,8 +165,8 @@ abstract class BaseAdminController extends BaseController
     /**
      * RawDataService (sesi data mentah, Dok 3 §8.4) untuk pemanggil ini, atau
      * null selama layanan itu belum ada di branch ini. Layanan sungguhan
-     * diambil lewat StaffScope::rawData() (cakupan sekolah & anonim diikat
-     * di sana); uji dapat menyuntikkan tiruan lewat
+     * diambil lewat StaffScope::rawData() (the caller's scope is bound
+     * there); uji dapat menyuntikkan tiruan lewat
      * `Services::injectMock('rawDataService', …)`.
      */
     protected function rawService(): ?object
@@ -186,7 +187,7 @@ abstract class BaseAdminController extends BaseController
      * `rawCsvDownload()` milik sesi data mentah bila sudah ada (mencatat
      * audit), selain itu RawDataService::streamCsv() lewat csvResponse().
      *
-     * @param array<string, mixed> $filters sudah dipaksa ke cakupan sekolah
+     * @param array<string, mixed> $filters
      */
     protected function rawCsv(string $dimension, array $filters): ResponseInterface
     {
@@ -206,7 +207,7 @@ abstract class BaseAdminController extends BaseController
      * urutan dari query string (`kolom` / `-kolom`), pagination 25/50/100,
      * dan penanda kolom yang dapat diurutkan (`sortable($dimension)`).
      *
-     * @param array<string, mixed> $filters sudah dipaksa ke cakupan sekolah
+     * @param array<string, mixed> $filters
      *
      * @return array<string, mixed>
      */
@@ -272,7 +273,7 @@ abstract class BaseAdminController extends BaseController
      * only as present/absent, since it may hold a student's name.
      *
      * @param list<array<string, mixed>> $columns
-     * @param array<string, mixed>       $filters already forced to the caller's school scope
+     * @param array<string, mixed>       $filters
      */
     protected function tableCsv(string $name, BaseBuilder $builder, array $columns, ?string $sort, string $tieBreaker, array $filters): ResponseInterface
     {

@@ -6,7 +6,6 @@ use App\Libraries\ExportLabels;
 use App\Models\AuditLogModel;
 use App\Models\DataExportModel;
 use App\Models\ResearchStudyModel;
-use App\Models\SchoolModel;
 use App\Services\ExportService;
 use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\HTTP\RedirectResponse;
@@ -15,8 +14,9 @@ use CodeIgniter\HTTP\RedirectResponse;
  * Permintaan ekspor data mentah (XLSX / CSV-ZIP, Dok 3 §9), laporan PDF
  * satu siswa (§10), beserta unduhannya.
  *
- * Controller ini mencatat permintaan, menegakkan aturan anonimitas (lapis
- * kedua), dan mengaudit setiap unduhan. Berkasnya dibangun
+ * Only `ketua` reaches this controller (`research.export`, 27 K14): every
+ * export is coded, and each account sees and downloads only its own files.
+ * Controller ini mencatat permintaan dan mengaudit setiap unduhan. Berkasnya dibangun
  * `App\Services\ExportService`, yang membaca ulang hak pemohon dari
  * `staff_users` sebagai lapis ketiga.
  *
@@ -24,29 +24,22 @@ use CodeIgniter\HTTP\RedirectResponse;
  * - filter `ExportService::FILTER_KEYS`;
  * - `sheets[]` kode lembar §9.2 (kosong = semua yang boleh; Kamus Data selalu ikut);
  * - `labels` = `label` (nilai berlabel) | `code` (berkode); bawaan XLSX berlabel, CSV berkode;
- * - `anonymized` = 1 (admin dapat mengosongkannya; guru selalu anonim);
+ * - `anonymized` is always 1 (the identified mode was removed, 27 K14);
  * - `participant_id` = ekspor per siswa §9.3 (wajib untuk PDF).
  */
 class ExportController extends BaseAdminController
 {
     public function index(): string
     {
-        $exports = model(DataExportModel::class);
-
-        if (! $this->isAdmin()) {
-            $exports->where('requested_by', $this->staffId());
-        }
-
-        $sheets = service('exportService')->allowedSheets([], $this->isAdmin());
+        $exports = model(DataExportModel::class)->where('requested_by', $this->staffId());
+        $sheets  = service('exportService')->allowedSheets([], $this->dataScope()->fullDetail);
 
         return $this->panel('admin/export/index', 'Unduh data', [
             'filters'       => $this->readFilters(),
             'sheets'        => $sheets,
             'sheetTitles'   => array_combine($sheets, array_map(ExportLabels::sheetTitle(...), $sheets)),
             'sheetNotes'    => array_combine($sheets, array_map(ExportLabels::sheetMeaning(...), $sheets)),
-            'isAdmin'       => $this->isAdmin(),
             'studies'       => model(ResearchStudyModel::class)->findAll(),
-            'schools'       => model(SchoolModel::class)->inUseList(),
             'recent'        => $exports->orderBy('created_at', 'DESC')->findAll(20),
             'retention'     => config('Gelita')->exportRetentionDays,
             'rawEventLimit' => config('Gelita')->exportMaxRawEvents,
@@ -78,7 +71,7 @@ class ExportController extends BaseAdminController
             return $this->back('admin/ekspor', 'Unduhan tidak ditemukan.');
         }
 
-        if (! $this->isAdmin() && (int) $export['requested_by'] !== $this->staffId()) {
+        if ((int) $export['requested_by'] !== $this->staffId()) {
             return $this->back('admin/ekspor', 'Unduhan ini dibuat oleh akun lain.');
         }
 
@@ -106,15 +99,14 @@ class ExportController extends BaseAdminController
 
     /**
      * Mencatat permintaan ekspor lalu membangunnya lewat ExportService.
-     * Guru selalu dipaksa mode anonim dan tidak pernah mendapat lembar
-     * `event`, berapa pun isi formulir yang dikirim.
+     * Always coded, whatever the form sends; ExportService re-reads the
+     * requester's role as the third layer.
      */
     private function queue(string $format): RedirectResponse
     {
-        $isAdmin       = $this->isAdmin();
-        $anonymized    = $isAdmin ? ($this->request->getPost('anonymized') ? 1 : 0) : 1;
+        $anonymized    = 1;
         $participantId = (int) ($this->request->getPost('participant_id') ?? 0);
-        $filters       = $this->scopedFilters($this->postFilters());
+        $filters       = $this->postFilters();
         $back          = $participantId > 0 ? 'admin/peserta/' . $participantId : 'admin/ekspor';
         $scope         = ['filters' => $filters];
 
@@ -130,7 +122,7 @@ class ExportController extends BaseAdminController
             $scope['template'] = 'participant';
         } else {
             $labels           = (string) $this->request->getPost('labels');
-            $scope['sheets']  = $this->requestedSheets($isAdmin);
+            $scope['sheets']  = $this->requestedSheets();
             $scope['labels']  = in_array($labels, ['label', 'code'], true) ? $labels : ($format === 'xlsx' ? 'label' : 'code');
         }
 
@@ -189,10 +181,11 @@ class ExportController extends BaseAdminController
      *
      * @return list<string>
      */
-    private function requestedSheets(bool $isAdmin): array
+    private function requestedSheets(): array
     {
-        return service('exportService')->allowedSheets((array) ($this->request->getPost('sheets') ?? []), $isAdmin);
+        return service('exportService')->allowedSheets((array) ($this->request->getPost('sheets') ?? []), $this->dataScope()->fullDetail);
     }
+
 
     /**
      * Filter ekspor datang lewat POST, bukan query string.

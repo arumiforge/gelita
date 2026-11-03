@@ -928,9 +928,6 @@ a.media-thumb:hover, a.media-thumb:focus-visible { border-color: var(--accent); 
 .slot-upload { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .slot-upload input[type="file"] { width: 200px; padding: 3px; font-size: 12px; }
 
-/* Akun admin tidak terikat sekolah: kolom sekolah disembunyikan */
-.staff-form:has(select[name="role"] option[value="admin"]:checked) .field-school,
-.staff-form:has(input[type="hidden"][name="role"][value="admin"]) .field-school { display: none; }
 
 /* Sandi sementara */
 .temp-password-card { display: grid; justify-items: center; gap: 16px; padding: 32px; text-align: center; }

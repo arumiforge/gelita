@@ -38,7 +38,9 @@ $audioCell   = static function (array $audio, string $code, string $locale) use 
 
 <?= $this->section('content') ?>
 <?php ob_start() ?>
+<?php if (staff_can('content.edit')): ?>
 <a class="btn btn-primary btn-sm" href="<?= base_url('admin/konten/narasi/unggah') ?>"><?= icon('upload') ?> Unggah rekaman</a>
+<?php endif ?>
 <a class="btn btn-ghost btn-sm" href="<?= base_url('admin/konten/narasi/daftar-rekaman') ?>"><?= icon('download') ?> Unduh daftar rekaman (Excel)</a>
 <a class="btn btn-ghost btn-sm" href="<?= base_url('admin/media/kelengkapan') ?>"><?= icon('list') ?> Kelengkapan gambar &amp; suara</a>
 <?php $actions = ob_get_clean() ?>

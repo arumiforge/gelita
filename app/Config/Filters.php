@@ -13,7 +13,7 @@ use App\Filters\PackageHeaderFilter;
 use App\Filters\ParticipantAuthFilter;
 use App\Filters\ScreenViewFilter;
 use App\Filters\StaffAuthFilter;
-use App\Filters\StaffRoleFilter;
+use App\Filters\StaffCanFilter;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
 use CodeIgniter\Filters\CSRF;
@@ -39,7 +39,7 @@ class Filters extends BaseFilters
         'pagecache'       => PageCache::class,
         'performance'     => PerformanceMetrics::class,
         'staffAuth'       => StaffAuthFilter::class,
-        'staffRole'       => StaffRoleFilter::class,
+        'staffCan'        => StaffCanFilter::class,
         'participantAuth' => ParticipantAuthFilter::class,
         'gameSession'     => GameSessionFilter::class,
         'apiSession'      => ApiSessionFilter::class,

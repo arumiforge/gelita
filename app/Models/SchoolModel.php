@@ -31,23 +31,17 @@ class SchoolModel extends Model
     ];
 
     /**
-     * Sekolah aktif yang dipakai peserta atau staf — pilihan filter panel,
-     * ekspor, dan akun guru.
+     * Sekolah aktif yang dipakai peserta — pilihan filter panel dan ekspor.
      *
      * @return list<array<string, mixed>>
      */
     public function inUseList(): array
     {
         return $this->where('is_active', 1)
-            ->groupStart()
             ->whereIn('id', static fn (BaseBuilder $builder): BaseBuilder => $builder->select('school_id')
                 ->from('participants')
                 ->where('school_id IS NOT NULL')
                 ->where('deleted_at', null))
-            ->orWhereIn('id', static fn (BaseBuilder $builder): BaseBuilder => $builder->select('school_id')
-                ->from('staff_users')
-                ->where('school_id IS NOT NULL'))
-            ->groupEnd()
             ->orderBy('name', 'ASC')
             ->findAll();
     }

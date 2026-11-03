@@ -14,7 +14,7 @@ return [
     'logout'         => 'Keluar',
     'changePassword' => 'Ganti kata sandi',
     'mainMenu'       => 'Menu utama',
-    'loginTitle'     => 'Masuk Panel Guru & Admin',
+    'loginTitle'     => 'Masuk Panel Staf',
 
     'closeMenu'        => 'Tutup menu',
     'openMenu'         => 'Buka menu',
@@ -28,6 +28,7 @@ return [
     'menuRawData'      => 'Data mentah',
     'menuFeedback'     => 'Kritik & saran',
     'menuExport'       => 'Unduh data',
+    'menuResetByCode'  => 'Atur ulang kata sandi siswa',
     'menuContent'      => 'Tantangan',
     'menuBankImport'   => 'Impor bank soal',
     'menuNarration'    => 'Rekaman narasi',
@@ -39,14 +40,28 @@ return [
     'menuStaff'        => 'Staf',
     'menuGovernance'   => 'Tata kelola',
     'quickSearch'        => 'Cari kode, nama pengguna, atau nama siswa',
-    'quickSearchTeacher' => 'Cari kode siswa',
+    'quickSearchCode'    => 'Cari kode siswa',
     'accountMenu'        => 'Menu akun',
     'skipToContent'      => 'Langsung ke isi halaman',
     'breadcrumbLabel'    => 'Lokasi halaman',
     'activeStudyTitle'   => 'Penelitian yang sedang berjalan',
 
     'roleAdmin'    => 'Admin',
-    'roleGuru'     => 'Guru',
+    'rolePeneliti' => 'Peneliti',
+    'roleKetua'    => 'Ketua peneliti',
+
+    // Role help on the staff accounts page (revision 10, part 1, 27 §11)
+    'roleHelpAdmin'    => 'Sistem, akun, konten, rilis, sekolah, dan log audit. Tidak melihat data penelitian.',
+    'roleHelpPeneliti' => 'Kerja lapangan: sesi, isian L2, atur ulang kata sandi lewat kode. Tidak bisa mengunduh data.',
+    'roleHelpKetua'    => 'Semua hak peneliti, ditambah data semua siswa, unduh data, pengaturan studi, konfirmasi permintaan hapus data, dan penanda tindak lanjut.',
+
+    // Reset by participant code (27 §10)
+    'resetByCodeHelp'   => 'Ketik kode peserta dari L2. Kata sandi sementara hanya tampil sekali.',
+    'resetCodeNotFound' => 'Kode peserta tidak ditemukan. Periksa lagi kodenya di L2.',
+
+    // Staff sign-in security (27 §11.1)
+    'staffIdleLogout'   => 'Sesi berakhir karena tidak ada aktivitas selama 2 jam. Silakan masuk lagi.',
+    'staffPasswordWeak' => 'Kata sandi belum cukup kuat. Pakai minimal 12 karakter dengan huruf besar, huruf kecil, angka, dan simbol, dan jangan memuat nama pengguna.',
     'emptyDefault' => 'Belum ada data untuk ditampilkan.',
 
     // Under "Aktivitas terbaru" on Ringkasan; {0} = seconds between event batches

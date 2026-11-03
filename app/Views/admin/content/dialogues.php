@@ -71,6 +71,7 @@ $rows[] = null;
 </nav>
 
 <form method="post" action="<?= base_url('admin/konten/dialog/' . $levelId) ?>" class="stack"<?= $withBackground ? ' enctype="multipart/form-data"' : '' ?>>
+<?= staff_can('content.edit') ? '' : '<fieldset class="form-readonly" disabled>' ?>
   <?= csrf_field() ?>
   <input type="hidden" name="context" value="<?= esc($context, 'attr') ?>">
 
@@ -191,5 +192,6 @@ $rows[] = null;
   <div class="form-actions">
     <button class="btn btn-primary" type="submit"><?= icon('check') ?> Simpan cerita & dialog</button>
   </div>
+<?= staff_can('content.edit') ? '' : '</fieldset>' ?>
 </form>
 <?= $this->endSection() ?>

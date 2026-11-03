@@ -63,6 +63,7 @@ $spare  = 2;   // baris media kosong per halaman untuk menambah
 <?= component('components/media-datalist', ['types' => ['image', 'video']]) ?>
 
 <form method="post" action="<?= base_url('admin/konten/pustaka/' . $level->id) ?>" class="stack" enctype="multipart/form-data">
+<?= staff_can('content.edit') ? '' : '<fieldset class="form-readonly" disabled>' ?>
   <?= csrf_field() ?>
 
   <?php foreach ($rows as $index => $page): ?>
@@ -233,5 +234,6 @@ $spare  = 2;   // baris media kosong per halaman untuk menambah
   <div class="form-actions">
     <button class="btn btn-primary" type="submit"><?= icon('check') ?> Simpan Pustaka</button>
   </div>
+<?= staff_can('content.edit') ? '' : '</fieldset>' ?>
 </form>
 <?= $this->endSection() ?>

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Libraries\ExcelWriter;
 use App\Libraries\ExportLabels;
+use App\Libraries\StaffAccess;
 use App\Models\AuditLogModel;
 use App\Models\DataExportModel;
 use CodeIgniter\Database\BaseConnection;
@@ -111,13 +112,13 @@ class ExportService
      *
      * @return list<string>
      */
-    public function columns(string $sheet, bool $anonymized, bool $isAdmin): array
+    public function columns(string $sheet, bool $anonymized, bool $fullDetail): array
     {
         if ($sheet === 'kamus') {
             return self::DICTIONARY_COLUMNS;
         }
 
-        $scope = $isAdmin ? StaffScope::admin($anonymized) : StaffScope::teacher(0);
+        $scope = StaffScope::of($anonymized, $fullDetail);
 
         return $this->rawData()->columns($sheet, $scope);
     }
@@ -130,9 +131,9 @@ class ExportService
      *
      * @return list<string>
      */
-    public function allowedSheets(array $requested, bool $isAdmin): array
+    public function allowedSheets(array $requested, bool $fullDetail): array
     {
-        $allowed = $isAdmin ? self::SHEETS : array_values(array_diff(self::SHEETS, self::ADMIN_ONLY_SHEETS));
+        $allowed = $fullDetail ? self::SHEETS : array_values(array_diff(self::SHEETS, self::ADMIN_ONLY_SHEETS));
         $picked  = array_values(array_intersect($allowed, array_map('strval', $requested)));
 
         if ($picked === [] || $picked === ['kamus']) {
@@ -143,35 +144,29 @@ class ExportService
     }
 
     /**
-     * Filter dari scope_json yang disaring: hanya kunci resmi, tanggal
-     * berformat Y-m-d, dan school_id dipaksa untuk pemohon non-admin.
+     * Filter dari scope_json yang disaring: hanya kunci resmi dan tanggal
+     * berformat Y-m-d. There is no school scope since revision 10 part 1.
      *
      * @param array<string, mixed> $filters
      *
      * @return array<string, int|string>
      */
-    public function sanitizeFilters(array $filters, ?int $schoolScope): array
+    public function sanitizeFilters(array $filters): array
     {
-        $out = $this->rawData()->sanitizeFilters(array_intersect_key($filters, array_flip(self::FILTER_KEYS)));
-
-        if ($schoolScope !== null) {
-            $out['school_id'] = $schoolScope;
-        }
-
-        return $out;
+        return $this->rawData()->sanitizeFilters(array_intersect_key($filters, array_flip(self::FILTER_KEYS)));
     }
 
     /**
      * Hak dan cakupan ekspor, dibaca ulang dari staff_users.
      *
      * @return array{export_id: int, format: string, filters: array<string, int|string>, sheets: list<string>,
-     *               anonymized: bool, labeled: bool, is_admin: bool, school_scope: ?int, scope: StaffScope,
+     *               anonymized: bool, labeled: bool, full_detail: bool, scope: StaffScope,
      *               template: ?string, participant_id: ?int, requested_by: int, requester: string}
      */
     public function context(array $export): array
     {
         $staff = $this->db()->table('staff_users')
-            ->select('id, username, display_name, role, school_id, is_active')
+            ->select('id, username, display_name, role, is_active')
             ->where('id', (int) $export['requested_by'])
             ->get()
             ->getRowArray();
@@ -180,7 +175,12 @@ class ExportService
             throw new \DomainException('Akun yang meminta unduhan ini tidak ditemukan atau sudah dinonaktifkan.');
         }
 
-        $scope = StaffScope::fromStaff($staff, (bool) (int) $export['anonymized']);
+        // Only `research.export` (ketua) downloads, always coded (27 K14)
+        if (! StaffAccess::allows((string) $staff['role'], 'research.export')) {
+            throw new \DomainException('Akun yang meminta unduhan ini tidak berhak mengunduh data penelitian.');
+        }
+
+        $scope = StaffScope::fromStaff($staff);
 
         $json = is_array($export['scope_json'])
             ? $export['scope_json']
@@ -188,7 +188,7 @@ class ExportService
 
         $format        = (string) $export['format'];
         $participantId = (int) ($json['participant_id'] ?? 0);
-        $filters       = $this->sanitizeFilters((array) ($json['filters'] ?? []), $scope->isAdmin ? null : $scope->schoolId);
+        $filters       = $this->sanitizeFilters((array) ($json['filters'] ?? []));
 
         // Ekspor per siswa (§9.3): lembar yang sama, difilter satu peserta
         if ($participantId > 0) {
@@ -201,11 +201,10 @@ class ExportService
             'export_id'      => (int) $export['id'],
             'format'         => $format,
             'filters'        => $filters,
-            'sheets'         => $this->allowedSheets((array) ($json['sheets'] ?? []), $scope->isAdmin),
+            'sheets'         => $this->allowedSheets((array) ($json['sheets'] ?? []), $scope->fullDetail),
             'anonymized'     => $scope->anonymous,
             'labeled'        => $labels === '' ? $format === 'xlsx' : $labels === 'label',
-            'is_admin'       => $scope->isAdmin,
-            'school_scope'   => $scope->isAdmin ? null : $scope->schoolId,
+            'full_detail'    => $scope->fullDetail,
             'scope'          => $scope,
             'template'       => ($json['template'] ?? null) === 'participant' ? 'participant' : null,
             'participant_id' => $participantId > 0 ? $participantId : null,
@@ -230,7 +229,7 @@ class ExportService
 
         try {
             foreach ($context['sheets'] as $sheet) {
-                $columns = $this->columns($sheet, $context['anonymized'], $context['is_admin']);
+                $columns = $this->columns($sheet, $context['anonymized'], $context['full_detail']);
 
                 $writer->startSheet(
                     ExportLabels::sheetTitle($sheet),
@@ -286,7 +285,7 @@ class ExportService
 
         try {
             foreach ($context['sheets'] as $sheet) {
-                $columns = $this->columns($sheet, $context['anonymized'], $context['is_admin']);
+                $columns = $this->columns($sheet, $context['anonymized'], $context['full_detail']);
                 $file    = $tmpDir . DIRECTORY_SEPARATOR . $sheet . '.csv';
                 $handle  = fopen($file, 'wb');
 
@@ -353,7 +352,7 @@ class ExportService
             $columns = [];
 
             foreach ($context['sheets'] as $other) {
-                $columns[$other] = $this->columns($other, $context['anonymized'], $context['is_admin']);
+                $columns[$other] = $this->columns($other, $context['anonymized'], $context['full_detail']);
             }
 
             return ExportLabels::dictionary($columns);

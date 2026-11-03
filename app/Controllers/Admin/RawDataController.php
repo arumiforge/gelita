@@ -12,8 +12,8 @@ use CodeIgniter\HTTP\ResponseInterface;
  * dengan filter yang sama (`?format=csv`, nilai mentah).
  *
  * Dimensi waktu tidak punya tab sendiri: kolomnya ada di Pengerjaan,
- * Jawaban, dan Riwayat percobaan. Guru melihat sekolahnya saja dan selalu
- * anonim (dipaksa RawDataService lewat StaffScope).
+ * Jawaban, dan Riwayat percobaan. Only `ketua` opens this page
+ * (`research.browse`); rows are always coded (RawDataService via StaffScope).
  */
 class RawDataController extends BaseAdminController
 {
@@ -43,10 +43,10 @@ class RawDataController extends BaseAdminController
             throw PageNotFoundException::forPageNotFound("Dimensi {$dimension} tidak dikenal.");
         }
 
-        $filters = $this->scopedFilters(array_intersect_key(
+        $filters = array_intersect_key(
             $this->readFilters(),
             array_flip([...self::FILTERS, 'date_to']),
-        ));
+        );
         $service = $this->rawService();
         $table   = null;
 
@@ -67,7 +67,6 @@ class RawDataController extends BaseAdminController
             'tabs'       => self::TABS,
             'table'      => $table,
             'filters'    => $filters,
-            'isAdmin'    => $this->isAdmin(),
             'readable'   => $this->readableAnswers(),
             'breadcrumb' => [self::TABS[$dimension] => null],
         ]);

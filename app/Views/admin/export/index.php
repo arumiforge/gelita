@@ -3,8 +3,8 @@
  * Ekspor data mentah — `/admin/ekspor` → ExportController::index (Dok 3 §9)
  *
  * Filter sama dengan filter bar panel (nama field identik), tetapi dikirim
- * lewat POST. Guru: sekolah terkunci, mode anonim dipaksa server, dan lembar
- * Event Mentah tidak tersedia — form hanya mencerminkan aturan itu.
+ * lewat POST. Only `ketua` reaches this page (27 K14): every download is
+ * coded, and Event Mentah is not offered until part 3 (29 K1).
  * Baris dengan status queued/running diperbarui admin/export.js
  * lewat data-export-id; tanpa JavaScript, muat ulang halaman.
  *
@@ -17,7 +17,6 @@
  * @var list<string>                $sheets    lembar yang boleh diterima pemanggil
  * @var array<string, string>       $sheetTitles
  * @var array<string, string>       $sheetNotes
- * @var bool                        $isAdmin
  * @var list<array<string, mixed>>  $recent
  * @var int                         $retention hari
  * @var int                         $rawEventLimit ambang baris lembar event
@@ -51,14 +50,7 @@
     </fieldset>
     <fieldset class="field">
       <legend class="label">Identitas siswa</legend>
-      <?php if ($isAdmin): ?>
-        <label class="check">
-          <input type="checkbox" name="anonymized" value="1" checked>
-          <span><b>Anonim</b><span class="cell-sub">Nama, nama pengguna, nama sekolah, dan NPSN tidak ikut; kode siswa dan kode sekolah samaran tetap ada.</span></span>
-        </label>
-      <?php else: ?>
-        <p class="filter-locked"><?= icon('lock') ?> Selalu anonim, tanpa Event Mentah dan kunci jawaban, hanya siswa sekolah Anda.</p>
-      <?php endif ?>
+      <p class="filter-locked"><?= icon('lock') ?> Selalu berkode: tanpa nama, nama pengguna, nama sekolah, dan NPSN. Kode siswa dan kode sekolah tetap ada.</p>
     </fieldset>
   </div>
 
@@ -114,7 +106,7 @@ $rows = array_map(static function (array $row): array {
     'paginate'     => false,
     'stickyFirst'  => false,
     'emptyMessage' => 'Belum ada data yang diunduh.',
-    'tools'        => '<span class="table-count">Berkas dihapus otomatis ' . (int) $retention . ' hari setelah dibuat' . ($isAdmin ? '' : '; hanya unduhan milik Anda') . '.</span>',
+    'tools'        => '<span class="table-count">Berkas dihapus otomatis ' . (int) $retention . ' hari setelah dibuat; hanya unduhan milik Anda.</span>',
     'render'       => [
         'format' => static fn (array $row): string => '<span class="badge no-dot">' . esc(match ((string) $row['format']) { 'xlsx' => 'XLSX', 'csv' => 'CSV-ZIP', default => strtoupper((string) $row['format']) }) . '</span>'
             . '<span class="cell-sub">' . ($row['anonymized'] ? 'anonim' : 'beridentitas') . '</span>',

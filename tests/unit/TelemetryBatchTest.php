@@ -473,7 +473,7 @@ final class TelemetryBatchTest extends CIUnitTestCase
             'progress'        => $table,
             'readiness'       => null,
             'retentionAlerts' => [],
-            'isAdmin'         => true,
+            'research'        => true,
         ]);
 
         $this->assertStringContainsString('<p class="table-note muted">Diperbarui tiap ±30 detik.</p>', $html);
@@ -486,7 +486,7 @@ final class TelemetryBatchTest extends CIUnitTestCase
             $config->eventFlush = ['intervalMs' => 15000, 'maxEvents' => 40];
             $this->assertStringContainsString('Diperbarui tiap ±15 detik.', view('admin/dashboard', [
                 'kpi' => ['participants' => 0, 'active_sessions' => 0, 'completed_today' => 0, 'feedback' => 0],
-                'events' => $table, 'progress' => $table, 'readiness' => null, 'retentionAlerts' => [], 'isAdmin' => false,
+                'events' => $table, 'progress' => $table, 'readiness' => null, 'retentionAlerts' => [], 'research' => true,
             ]), 'worded from the configured interval');
         } finally {
             $config->eventFlush = $saved;

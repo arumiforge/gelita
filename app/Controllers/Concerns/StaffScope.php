@@ -2,29 +2,32 @@
 
 namespace App\Controllers\Concerns;
 
+use App\Libraries\StaffAccess;
 use App\Services\AnalyticsService;
 use App\Services\RawDataService;
 use App\Services\StaffScope as DataScope;
 
 /**
- * Batas akses staf, lapis kedua dari tiga (route → controller → service).
+ * Staff access, second layer of three (route → controller → service).
  *
- * `schoolScope()` dipanggil di setiap method yang membaca data peserta.
- * Guru tanpa sekolah menghasilkan scope 0 — tidak cocok dengan `school_id`
- * mana pun, jadi kegagalan konfigurasi berakhir "tidak melihat apa-apa",
- * bukan "melihat semuanya".
+ * Rights come from the capability map (App\Libraries\StaffAccess) through
+ * `can()`, read from `staff_role`, which StaffAuthFilter syncs with the
+ * database on every request. Since revision 10 part 1 there is no school
+ * scope: the `guru` role is gone, `admin` sees accounts, and `peneliti` and
+ * `ketua` see coded research data of every school (27 §5).
  */
 trait StaffScope
 {
-    /** NULL untuk admin (semua sekolah), school_id untuk guru. */
-    protected function schoolScope(): ?int
+    /** Whether the signed-in staff member holds $capability. */
+    protected function can(string $capability): bool
     {
-        return session('staff_role') === 'admin' ? null : (int) session('staff_school_id');
+        return StaffAccess::allows(session('staff_role'), $capability);
     }
 
-    protected function isAdmin(): bool
+    /** Student names and usernames are shown only to `participants.accounts` (admin). */
+    protected function seesIdentity(): bool
     {
-        return session('staff_role') === 'admin';
+        return $this->can('participants.accounts');
     }
 
     protected function staffId(): int
@@ -33,9 +36,9 @@ trait StaffScope
     }
 
     /**
-     * Filter penelitian dari query string. Nilai kosong dibuang agar
-     * apply_research_filters() tidak menambahkan WHERE yang tidak perlu;
-     * kunci di luar peta filter baku diabaikan helper itu.
+     * Research filters from the query string. Empty values are dropped so
+     * apply_research_filters() does not add needless WHERE clauses; keys
+     * outside the standard filter map are ignored by that helper.
      *
      * @return array<string, mixed>
      */
@@ -45,7 +48,7 @@ trait StaffScope
             'study_id', 'participant_id', 'participant_code', 'level_id', 'node_id', 'variant_group',
             'school_id', 'class_level', 'province_code', 'locale', 'date_from', 'date_to',
             // Panel admin Dok 3 §8.3: daftar siswa dan data mentah
-            'q', 'district_code', 'gender', 'age', 'progress', 'variant_group', 'participant_code',
+            'q', 'district_code', 'gender', 'age', 'progress',
         ];
 
         $filters = [];
@@ -61,47 +64,21 @@ trait StaffScope
         return $filters;
     }
 
-    /**
-     * Filter yang sudah dipaksa ke cakupan sekolah pemanggil.
-     *
-     * @param array<string, mixed>|null $filters
-     *
-     * @return array<string, mixed>
-     */
-    protected function scopedFilters(?array $filters = null): array
+    /** AnalyticsService for the caller: coded unless the caller may see identities. */
+    protected function analytics(): AnalyticsService
     {
-        $filters = $filters ?? $this->readFilters();
-        $scope   = $this->schoolScope();
-
-        if ($scope === null) {
-            return $filters;
-        }
-
-        $filters['school_id'] = $scope;
-
-        return $filters;
+        return service('analyticsService', null, ! $this->seesIdentity());
     }
 
-    /** AnalyticsService yang sudah terikat cakupan sekolah pemanggil. */
-    protected function analytics(bool $anonymous = false): AnalyticsService
+    /** Raw data scope of the caller (third layer, App\Services\StaffScope). */
+    protected function dataScope(): DataScope
     {
-        return service('analyticsService', $this->schoolScope(), $anonymous);
+        return DataScope::fromRole((string) session('staff_role'));
     }
 
-    /**
-     * Cakupan data mentah pemanggil (lapis ketiga, App\Services\StaffScope):
-     * admin beridentitas kecuali $anonymous; guru selalu anonim dan sekolahnya.
-     */
-    protected function dataScope(bool $anonymous = false): DataScope
+    /** RawDataService bound to the caller's scope (page(), streamCsv()). */
+    protected function rawData(): RawDataService
     {
-        return $this->isAdmin()
-            ? DataScope::admin($anonymous)
-            : DataScope::teacher((int) session('staff_school_id'));
-    }
-
-    /** RawDataService yang sudah terikat cakupan pemanggil (page(), streamCsv()). */
-    protected function rawData(bool $anonymous = false): RawDataService
-    {
-        return service('rawDataService', $this->dataScope($anonymous));
+        return service('rawDataService', $this->dataScope());
     }
 }

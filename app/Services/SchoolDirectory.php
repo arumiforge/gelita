@@ -353,10 +353,10 @@ class SchoolDirectory
 
     /**
      * Menggabungkan entri belum terverifikasi $fromId ke sekolah $toId:
-     * peserta dan akun guru pindah, snapshot nama peserta ikut nama tujuan,
+     * peserta pindah, snapshot nama peserta ikut nama tujuan,
      * entri asal dinonaktifkan dengan jejak `merged_into_id`.
      *
-     * @return array{participants: int, staff: int}
+     * @return array{participants: int}
      */
     public function merge(int $fromId, int $toId): array
     {
@@ -385,9 +385,6 @@ class SchoolDirectory
                 ->update();
             $participants = $this->db->affectedRows();
 
-            $this->db->table('staff_users')->set('school_id', $toId)->where('school_id', $fromId)->update();
-            $staff = $this->db->affectedRows();
-
             // entri yang dulu digabung ke asal ikut menunjuk tujuan akhir
             $this->db->table('schools')->set('merged_into_id', $toId)->where('merged_into_id', $fromId)->update();
             $this->db->table('schools')->set(['is_active' => 0, 'merged_into_id' => $toId])->where('id', $fromId)->update();
@@ -401,7 +398,6 @@ class SchoolDirectory
                     'to_name'      => $to['name'],
                     'to_npsn'      => $to['code'],
                     'participants' => $participants,
-                    'staff'        => $staff,
                 ],
             ]);
 
@@ -414,7 +410,7 @@ class SchoolDirectory
 
         unset($this->districtRows[(string) $from['district_code']]);
 
-        return ['participants' => $participants, 'staff' => $staff];
+        return ['participants' => $participants];
     }
 
     /**

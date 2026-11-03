@@ -1,6 +1,8 @@
 <?php
 /**
- * Sandi sementara — respons POST `/admin/peserta/{id}/reset-sandi`.
+ * Sandi sementara — respons POST `/admin/peserta/{id}/reset-sandi` (admin)
+ * or `/admin/peserta/reset-sandi` (researchers by code: the participant
+ * array then holds the code only, 27 §10).
  *
  * Ditampilkan SEKALI: tidak disimpan, tidak lewat flash, tidak masuk log.
  * Controller menandai respons `Cache-Control: no-store`. Tombol salin diberi
@@ -9,6 +11,7 @@
  *
  * @var array<string, mixed> $participant bentuk aman
  * @var string               $temporaryPassword
+ * @var string|null          $doneUrl     where "Selesai" leads (by-code flow)
  */
 ?>
 <?= $this->extend('layouts/admin') ?>
@@ -31,6 +34,10 @@
     <p><b>Berikan sandi ini kepada siswa. Saat masuk, siswa akan diminta membuat sandi baru.</b><br>
       Sandi ini hanya muncul sekali dan tidak disimpan di mana pun — catat sekarang, dan jangan memuat ulang halaman ini.</p>
   </div>
-  <a class="btn btn-primary" href="<?= base_url('admin/peserta/' . $participant['id']) ?>"><?= icon('left') ?> Kembali ke profil</a>
+  <?php if (isset($doneUrl)): ?>
+    <a class="btn btn-primary" href="<?= base_url($doneUrl) ?>"><?= icon('check') ?> Selesai</a>
+  <?php else: ?>
+    <a class="btn btn-primary" href="<?= base_url('admin/peserta/' . $participant['id']) ?>"><?= icon('left') ?> Kembali ke profil</a>
+  <?php endif ?>
 </section>
 <?= $this->endSection() ?>

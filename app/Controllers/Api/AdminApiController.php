@@ -11,9 +11,9 @@ use CodeIgniter\HTTP\ResponseInterface;
  * Dataset JSON panel admin: KPI hitungan, linimasa event, dan status ekspor.
  * Chart, sebaran siswa, dan analitik olahan dihapus (Dok 1 §14, Dok 3 §8.3).
  *
- * Cakupan sekolah diterapkan di sini (lapis controller) dan sekali lagi di
- * AnalyticsService (lapis service); guru tidak pernah menerima baris dari
- * sekolah lain meski memaksa `?school_id=` di query string.
+ * Each route is guarded by capability (`staffCan`, 27 §4): the summary for
+ * every staff role, the timeline for `research.browse`, and the export
+ * status for `research.export`, own exports only.
  */
 class AdminApiController extends BaseController
 {
@@ -21,7 +21,7 @@ class AdminApiController extends BaseController
 
     public function summary(): ResponseInterface
     {
-        return $this->ok($this->analytics()->summary($this->scopedFilters()));
+        return $this->ok($this->analytics()->summary($this->readFilters()));
     }
 
     public function timeline(int $sessionId): ResponseInterface
@@ -44,7 +44,7 @@ class AdminApiController extends BaseController
             return $this->fail('NOT_FOUND', 'Unduhan tidak ditemukan.', 404);
         }
 
-        if (! $this->isAdmin() && (int) $export['requested_by'] !== $this->staffId()) {
+        if ((int) $export['requested_by'] !== $this->staffId()) {
             return $this->fail('FORBIDDEN', 'Unduhan ini dibuat oleh akun lain.', 403);
         }
 

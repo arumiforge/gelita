@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Libraries\StaffAccess;
 use CodeIgniter\Entity\Entity;
 
 class StaffUser extends Entity
@@ -10,15 +11,21 @@ class StaffUser extends Entity
     protected $dates   = ['created_at', 'updated_at'];
     protected $casts   = [
         'id'                   => 'int',
-        'school_id'            => '?int',
         'is_active'            => 'boolean',
         'must_change_password' => 'boolean',
         'failed_login_count'   => 'int',
     ];
 
+    /** Only for the guard "an admin cannot demote or deactivate themselves" (StaffController). */
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
+    }
+
+    /** Whether this account's role holds $capability (App\Libraries\StaffAccess). */
+    public function can(string $capability): bool
+    {
+        return StaffAccess::allows((string) $this->role, $capability);
     }
 
     /** Sandi sementara dari admin (reset / akun baru) belum diganti pemiliknya. */
@@ -37,15 +44,6 @@ class StaffUser extends Entity
         return $this->locked_until !== null && strtotime((string) $this->locked_until) > time();
     }
 
-    /**
-     * Batas akses data: admin melihat semua (NULL), guru hanya sekolahnya.
-     * Dipakai AnalyticsService sebagai $schoolScope.
-     */
-    public function schoolScope(): ?int
-    {
-        return $this->isAdmin() ? null : $this->school_id;
-    }
-
     /** Tanpa password_hash & kolom throttle */
     public function toSafeArray(): array
     {
@@ -55,7 +53,6 @@ class StaffUser extends Entity
             'email'        => $this->email,
             'role'         => $this->role,
             'display_name' => $this->display_name,
-            'school_id'    => $this->school_id,
             'is_active'    => $this->is_active,
         ];
     }

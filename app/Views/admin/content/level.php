@@ -30,6 +30,7 @@ $fields = [
 <?= $this->include('partials/flash') ?>
 
 <form method="post" action="<?= base_url('admin/konten/level/' . $level->id) ?>" class="form-section" enctype="multipart/form-data">
+<?= staff_can('content.edit') ? '' : '<fieldset class="form-readonly" disabled>' ?>
   <?= csrf_field() ?>
   <h2>Teks wilayah</h2>
 
@@ -106,6 +107,7 @@ $fields = [
   <div class="form-actions">
     <button class="btn btn-primary" type="submit"><?= icon('check') ?> Simpan wilayah</button>
   </div>
+<?= staff_can('content.edit') ? '' : '</fieldset>' ?>
 </form>
 
 <section class="panel">

@@ -13,7 +13,8 @@ use Tests\Support\Database\ResetTables;
  * Tabel data panel admin di tingkat tampilan (Dok 3 §8.2, §12.1
  * `AdminTableTest`): komponen components/data-table merender kolom, urut
  * server-side, pagination 25/50/100 + total, dan tombol CSV; CSV mentah
- * sama dengan isi tabel; guru tidak melihat kolom identitas. Kontrak
+ * sama dengan isi tabel; researchers never see identity columns, and the
+ * admin has no list CSV (revision 10 part 1, 27 K17). Kontrak
  * `RawDataService::page()` diuji sesi data mentah di `AdminTableTest`.
  *
  * Basis data SQLite dari trait ResetTables; staf disuntikkan ke service
@@ -151,7 +152,7 @@ final class AdminTableViewTest extends CIUnitTestCase
         );
     }
 
-    public function testParticipantListAndCsvForAdminIncludeIdentity(): void
+    public function testParticipantListForAdminIncludesIdentityWithoutCsv(): void
     {
         $result = $this->asStaff('admin')->call(Method::GET, 'admin/peserta', ['sort' => 'participant_code']);
         $result->assertOK();
@@ -161,36 +162,40 @@ final class AdminTableViewTest extends CIUnitTestCase
         $this->assertMatchesRegularExpression('/Nama Rahasia 1\s*</', $html);
         $this->assertStringContainsString('1–25 dari 60 baris', html_entity_decode($html));
 
+        // No CSV button, and ?format=csv gives the page, not a file (27 K17)
+        $this->assertStringNotContainsString('format=csv', $html);
         $csv = $this->asStaff('admin')->call(Method::GET, 'admin/peserta', ['format' => 'csv']);
-        $csv->assertOK();
-        $this->assertStringContainsString('text/csv', $csv->response()->getHeaderLine('Content-Type'));
-        $this->assertStringContainsString('participant_code,display_name,username,school_name', (string) $csv->response()->getBody());
+        $this->assertStringNotContainsString('text/csv', $csv->response()->getHeaderLine('Content-Type'));
     }
 
-    public function testTeacherSeesOwnSchoolWithoutIdentityColumns(): void
+    public function testResearcherSeesCodesWithoutIdentityColumns(): void
     {
-        $result = $this->asStaff('guru', 2)->call(Method::GET, 'admin/peserta');
+        $result = $this->asStaff('peneliti')->call(Method::GET, 'admin/peserta', ['school_id' => 2]);
         $result->assertOK();
         $html = html_entity_decode((string) $result->getBody(), ENT_QUOTES | ENT_HTML5);
 
-        $this->assertStringContainsString('1–20 dari 20 baris', $html, 'hanya sekolah sendiri');
+        $this->assertStringContainsString('1–20 dari 20 baris', $html, 'the school filter narrows the list');
         $this->assertStringNotContainsString('Nama pengguna</a>', $html);
         $this->assertStringNotContainsString('Nama Rahasia', $html);
         $this->assertStringNotContainsString('siswa45', $html);
         $this->assertStringContainsString('GLT-000045', $html);
+        $this->assertStringContainsString('SCH-000002', $html, 'the school as its code');
 
-        $csv = (string) $this->asStaff('guru', 2)->call(Method::GET, 'admin/peserta', ['format' => 'csv'])->response()->getBody();
+        $csv = (string) $this->asStaff('peneliti')->call(Method::GET, 'admin/peserta', ['format' => 'csv'])->response()->getBody();
         $this->assertStringNotContainsString('display_name', $csv);
         $this->assertStringNotContainsString('username', $csv);
-        $this->assertStringNotContainsString('GLT-000001', $csv, 'CSV guru juga dibatasi sekolahnya');
-        $this->assertSame(21, substr_count(trim($csv), "\n") + 1, 'judul + 20 baris');
+        $this->assertStringContainsString('school_ref', $csv);
+        $this->assertStringContainsString('SCH-000001', $csv);
+        $this->assertSame(61, substr_count(trim($csv), "\n") + 1, 'judul + 60 baris, every school');
 
-        // Quick search names only what a teacher can search (Dok 3 §11 audit, item 6)
+        // Quick search names only what a researcher can search (Dok 3 §11 audit, item 6)
         $this->assertStringContainsString('placeholder="Cari kode siswa"', $html);
 
-        // Menu admin tidak dirender; rutenya 404 bagi guru
-        $this->assertStringNotContainsString('admin/konten', $html);
-        $this->assertStringContainsString('admin/data', $html);
+        // Content is read-only, research data for all students is ketua's: menu items by capability
+        $this->assertStringContainsString('admin/konten', $html);
+        $this->assertStringNotContainsString('admin/konten/impor-bank', $html);
+        $this->assertStringNotContainsString('href="' . base_url('admin/data') . '"', $html);
+        $this->assertStringContainsString('admin/peserta/reset-sandi', $html);
     }
 
     public function testLoginLayoutHasASkipLink(): void
@@ -201,15 +206,15 @@ final class AdminTableViewTest extends CIUnitTestCase
         $this->assertStringContainsString('id="auth-main"', $html);
     }
 
-    private function asStaff(string $role, ?int $school = null): self
+    private function asStaff(string $role): self
     {
-        $this->injectStaff($role, $school);
+        $this->injectStaff($role);
 
-        return $this->withSession(['staff_id' => 7, 'staff_role' => $role, 'staff_school_id' => $school, 'staff_name' => 'Uji']);
+        return $this->withSession(['staff_id' => 7, 'staff_role' => $role, 'staff_name' => 'Uji']);
     }
 
     /** null = hapus suntikan agar test lain kembali membaca database. */
-    private function injectStaff(?string $role, ?int $school = null): void
+    private function injectStaff(?string $role): void
     {
         $property  = new ReflectionProperty(BaseService::class, 'instances');
         $instances = $property->getValue();
@@ -219,7 +224,7 @@ final class AdminTableViewTest extends CIUnitTestCase
         } else {
             $instances['staffcontext'] = (object) [
                 'id' => 7, 'username' => 'staf_uji', 'email' => null, 'role' => $role, 'display_name' => 'Staf Uji',
-                'school_id' => $school, 'is_active' => 1, 'must_change_password' => 0, 'last_login_at' => null,
+                'is_active' => 1, 'must_change_password' => 0, 'last_login_at' => null,
             ];
         }
 

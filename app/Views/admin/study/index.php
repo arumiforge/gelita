@@ -17,6 +17,9 @@
  * verifikasi siap penelitian lolos. Mengubah status ke *berjalan* saat daftar
  * belum hijau meminta centang konfirmasi (diperiksa ulang server).
  *
+ * Rights (revision 10, part 1, 27 K12): `ketua` changes studies
+ * (`studies.manage`); the admin sees the same page with the forms locked.
+ *
  * Study package lock (docs/rencana-paket-aset.md §7.2): a running study shows
  * the asset package it was locked to when it became *berjalan*, and a warning
  * when students now get another package.
@@ -156,14 +159,20 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $r
       <?php endif ?>
     <?php endif ?>
 
-    <?= $fields($study, 's' . $sid) ?>
+    <?php if (staff_can('studies.manage')): ?>
+      <?= $fields($study, 's' . $sid) ?>
 
-    <div class="form-actions">
-      <button class="btn btn-primary" type="submit"><?= icon('check') ?> Simpan penelitian</button>
-    </div>
+      <div class="form-actions">
+        <button class="btn btn-primary" type="submit"><?= icon('check') ?> Simpan penelitian</button>
+      </div>
+    <?php else: ?>
+      <fieldset class="form-readonly" disabled><?= $fields($study, 's' . $sid) ?></fieldset>
+      <p class="filter-locked"><?= icon('lock') ?> Hanya ketua peneliti yang dapat mengubah penelitian.</p>
+    <?php endif ?>
   </form>
 <?php endforeach ?>
 
+<?php if (staff_can('studies.manage')): ?>
 <details class="form-section" <?= $studies === [] ? 'open' : '' ?>>
   <summary class="panel-title"><?= icon('sparkle') ?> Buat penelitian baru</summary>
   <form method="post" action="<?= base_url('admin/studi') ?>" class="stack">
@@ -174,4 +183,5 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $r
     </div>
   </form>
 </details>
+<?php endif ?>
 <?= $this->endSection() ?>

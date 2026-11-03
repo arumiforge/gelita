@@ -262,10 +262,10 @@ class SessionService
     }
 
     /**
-     * Guru/admin mereset sandi siswa. Sandi sementara dikembalikan SEKALI
+     * Staff reset a student's password (admin by id, researchers by code). Sandi sementara dikembalikan SEKALI
      * untuk ditunjukkan ke siswa dan tidak disimpan di mana pun.
      */
-    public function resetPasswordByStaff(int $participantId, int $staffId): string
+    public function resetPasswordByStaff(int $participantId, int $staffId, string $via = 'id'): string
     {
         $participants = model(ParticipantModel::class);
         $participant  = $participants->find($participantId);
@@ -282,7 +282,8 @@ class SessionService
             'staff_user_id' => $staffId,
             'target_type'   => 'participant',
             'target_id'     => (string) $participantId,
-            'metadata'      => ['participant_code' => $participant->participant_code],
+            // `via`: `id` = admin from the student page, `kode` = researcher by participant code (27 §10)
+            'metadata'      => ['participant_code' => $participant->participant_code, 'via' => $via],
         ]);
 
         return $temporary;

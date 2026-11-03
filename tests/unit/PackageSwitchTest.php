@@ -278,8 +278,14 @@ final class PackageSwitchTest extends CIUnitTestCase
         $this->assertNull($this->packages->previewCode());
         $this->assertNull($this->packages->urlForKey('bg.welcome'));
 
-        // Staff: the helpers serve the package, the active package stays null
-        $this->previewRequest($code, ['staff_id' => 1, 'staff_role' => 'guru']);
+        // Staff without releases.manage (ketua) gets no preview (27 K13)
+        $this->injectStaff('ketua');
+        $this->previewRequest($code, ['staff_id' => 1, 'staff_role' => 'ketua']);
+        $this->assertNull($this->packages->previewCode());
+        $this->injectStaff('admin');
+
+        // Staff with releases.manage (admin, 27 K13): the helpers serve the package, the active package stays null
+        $this->previewRequest($code, ['staff_id' => 1, 'staff_role' => 'admin']);
         $this->assertSame($code, $this->packages->previewCode());
         $this->assertSame($url, $this->packages->urlForKey('bg.welcome'));
         $this->assertSame(base_url($url), media_key_src('bg.welcome'));
@@ -454,7 +460,7 @@ final class PackageSwitchTest extends CIUnitTestCase
         } else {
             $instances['staffcontext'] = (object) [
                 'id' => 1, 'username' => 'admin_uji', 'email' => null, 'role' => $role, 'display_name' => 'Admin Uji',
-                'school_id' => null, 'is_active' => $active, 'must_change_password' => 0, 'last_login_at' => null,
+                'is_active' => $active, 'must_change_password' => 0, 'last_login_at' => null,
             ];
         }
 

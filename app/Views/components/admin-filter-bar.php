@@ -8,9 +8,8 @@
  * admin/filters.js memuat isi halaman untuk filter baru di latar tanpa
  * memuat ulang halaman; tanpa JavaScript, tombol Terapkan mengirim form.
  *
- * Guru terkunci pada sekolahnya: kontrol sekolah tidak dirender untuk guru
- * (tampil sebagai chip terkunci), dan server tetap memaksa cakupan lewat
- * StaffScope::scopedFilters().
+ * Schools are listed by name for the admin and by code (`SCH-000123`) for
+ * `peneliti` and `ketua` (BaseAdminController::filterOptions(), 27 K5).
  *
  * @var array<string, mixed>          $filters        filter aktif
  * @var Closure|array<string, mixed>  $filterOptions  BaseAdminController::filterOptions()
@@ -24,7 +23,6 @@ use App\Libraries\AdminTable;
 
 $options = $filterOptions instanceof Closure ? $filterOptions() : ($filterOptions ?? []);
 $filters = $filters ?? [];
-$isAdmin = session('staff_role') === 'admin';
 $bare    = ! empty($bare);
 $request = service('request');
 $path    = '/' . ltrim($request->getPath(), '/');
@@ -87,7 +85,7 @@ $shown = static fn (string $key): bool => in_array($key, $order, true)
 // Chip filter aktif: hanya kunci yang dirender bilah ini
 $chips = [];
 foreach (array_keys($labels) as $key) {
-    if (! $shown($key) || $value($key) === '' || ($key === 'school_id' && ! $isAdmin)) {
+    if (! $shown($key) || $value($key) === '') {
         continue;
     }
 
@@ -134,11 +132,6 @@ $resetUrl = base_url(ltrim(AdminTable::url($path, array_intersect_key($query, ar
         <label for="f-to"><?= esc($labels['date_to']) ?></label>
         <input type="date" id="f-to" name="date_to" value="<?= esc($value('date_to'), 'attr') ?>">
       </div>
-    <?php elseif ($key === 'school_id' && ! $isAdmin): ?>
-      <div class="field">
-        <span class="label">Sekolah</span>
-        <span class="filter-locked"><?= icon('lock') ?> <?= esc($options['own_school'] ?? 'Sekolah Anda') ?></span>
-      </div>
     <?php elseif (isset($choices[$key])): ?>
       <div class="field">
         <label for="f-<?= esc($key, 'attr') ?>"><?= esc($labels[$key] ?? $key) ?></label>
@@ -162,12 +155,9 @@ $resetUrl = base_url(ltrim(AdminTable::url($path, array_intersect_key($query, ar
     <button class="btn btn-primary" type="submit"><?= icon('filter') ?> Terapkan</button>
   </div>
 
-  <?php if ($chips !== [] || ! $isAdmin): ?>
+  <?php if ($chips !== []): ?>
     <div class="filter-chips" aria-label="Filter aktif">
       <span class="filter-chips-label">Filter aktif:</span>
-      <?php if (! $isAdmin && in_array('school_id', $order, true)): ?>
-        <span class="chip filter-chip is-locked"><?= icon('lock') ?> Sekolah: <?= esc($options['own_school'] ?? 'Sekolah Anda') ?></span>
-      <?php endif ?>
       <?php foreach ($chips as $chip): ?>
         <span class="chip filter-chip">
           <?= esc($chip['label']) ?>: <b><?= esc($chip['text']) ?></b>

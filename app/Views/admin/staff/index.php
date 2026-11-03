@@ -4,22 +4,22 @@
  *
  * Satu kartu per akun: ringkasan di <summary>, form sunting, reset sandi
  * (ketik RESET), dan nonaktifkan (konfirmasi). Akun sendiri tidak dapat
- * diturunkan role-nya atau dinonaktifkan. Kolom sekolah disembunyikan CSS
- * :has() saat role Admin dipilih — admin tidak terikat sekolah.
+ * diturunkan role-nya atau dinonaktifkan. Three roles (StaffAccess::ROLES,
+ * revision 10 part 1, 27 §11), each with a one-line explanation; staff
+ * accounts have no school.
  *
  * Sandi sementara hasil reset hanya ada di respons ini (tidak di flash, log,
  * atau audit) dan halaman dikirim dengan Cache-Control: no-store.
  *
  * @var list<array<string, mixed>>                         $rows      toSafeArray() + locked, must_change, last_login_at
- * @var list<array<string, mixed>>                         $schools   SchoolModel::inUseList()
  * @var array{staff: array<string, mixed>, password: string}|null $temporary
  */
-$me          = (int) session('staff_id');
-$schoolNames = array_column($schools, 'name', 'id');
-$roleNames   = ['admin' => 'Admin', 'guru' => 'Guru'];
+$me        = (int) session('staff_id');
+$roleNames = array_combine(App\Libraries\StaffAccess::ROLES, array_map(App\Libraries\StaffAccess::label(...), App\Libraries\StaffAccess::ROLES));
+$roleHelp  = ['admin' => lang('Admin.roleHelpAdmin'), 'peneliti' => lang('Admin.roleHelpPeneliti'), 'ketua' => lang('Admin.roleHelpKetua')];
 
 /** Kolom akun, dipakai form sunting dan form akun baru. */
-$fields = static function (?array $staff, string $p) use ($schools, $roleNames, $me): string {
+$fields = static function (?array $staff, string $p) use ($roleNames, $roleHelp, $me): string {
     $isSelf = $staff !== null && (int) $staff['id'] === $me;
     ob_start(); ?>
     <div class="form-grid">
@@ -44,24 +44,17 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
           <input type="hidden" name="role" value="admin">
           <span class="filter-locked"><?= icon('lock') ?> Admin (akun Anda sendiri)</span>
         <?php else: ?>
-          <select id="<?= $p ?>-role" name="role" required>
+          <select id="<?= $p ?>-role" name="role" required aria-describedby="<?= $p ?>-role-help">
             <?php foreach ($roleNames as $value => $label): ?>
-              <option value="<?= $value ?>" <?= ($staff['role'] ?? 'guru') === $value ? 'selected' : '' ?>><?= $label ?></option>
+              <option value="<?= esc($value, 'attr') ?>" <?= ($staff['role'] ?? 'peneliti') === $value ? 'selected' : '' ?>><?= esc($label) ?></option>
             <?php endforeach ?>
           </select>
+          <ul class="field-help" id="<?= $p ?>-role-help">
+            <?php foreach ($roleNames as $value => $label): ?>
+              <li><b><?= esc($label) ?>:</b> <?= esc($roleHelp[$value]) ?></li>
+            <?php endforeach ?>
+          </ul>
         <?php endif ?>
-      </div>
-      <div class="field field-school">
-        <label for="<?= $p ?>-school">Sekolah <span class="req">*</span></label>
-        <select id="<?= $p ?>-school" name="school_id">
-          <option value="">— pilih sekolah yang sudah punya siswa —</option>
-          <?php foreach ($schools as $school): ?>
-            <option value="<?= esc($school['id'], 'attr') ?>" <?= (int) ($staff['school_id'] ?? 0) === (int) $school['id'] ? 'selected' : '' ?>><?= esc($school['name']) ?><?= ! empty($school['code']) ? ' · NPSN ' . esc($school['code']) : '' ?></option>
-          <?php endforeach ?>
-        </select>
-        <label for="<?= $p ?>-npsn">atau ketik NPSN sekolah</label>
-        <input type="text" id="<?= $p ?>-npsn" name="school_npsn" inputmode="numeric" maxlength="8" pattern="[0-9]{8}" autocomplete="off" placeholder="mis. 20318068">
-        <p class="field-help">Guru hanya melihat data siswa dari sekolah ini. Bila sekolahnya belum punya siswa (belum ada di daftar), ketik NPSN-nya — cari di menu Sekolah. NPSN yang diketik dipakai lebih dulu daripada pilihan daftar.</p>
       </div>
     </div>
     <?php return (string) ob_get_clean();
@@ -72,7 +65,7 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
     'title'   => 'Staf',
-    'lead'    => 'Admin dapat membuka seluruh panel. Guru hanya melihat data siswa dari sekolahnya sendiri, dan data yang diunduh guru selalu tanpa nama siswa.',
+    'lead'    => 'Tiga peran: admin memegang sistem dan akun, peneliti memegang kerja lapangan, ketua peneliti juga memegang data semua siswa dan unduhannya. Peneliti dan ketua peneliti tidak pernah melihat nama siswa. Satu orang dengan dua peran memakai dua akun.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
 
@@ -98,9 +91,6 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
         </span>
         <span class="item-meta">
           <span class="badge"><?= esc($roleNames[$staff['role']] ?? $staff['role']) ?></span>
-          <?php if ($staff['role'] === 'guru'): ?>
-            <span class="badge is-muted"><?= esc($schoolNames[$staff['school_id']] ?? 'belum ada sekolah') ?></span>
-          <?php endif ?>
           <?php if ($staff['must_change']): ?>
             <span class="badge is-warn"><?= icon('key') ?> harus ganti sandi</span>
           <?php endif ?>
@@ -154,7 +144,7 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
   <?php endforeach ?>
 
   <details class="item-card" <?= $rows === [] ? 'open' : '' ?>>
-    <summary><span class="node-row-no"><?= icon('sparkle') ?></span> <b>Buat akun baru</b> <span class="item-meta muted">untuk guru atau admin</span></summary>
+    <summary><span class="node-row-no"><?= icon('sparkle') ?></span> <b>Buat akun baru</b> <span class="item-meta muted">admin, peneliti, atau ketua peneliti</span></summary>
     <div class="item-card-body">
       <form method="post" action="<?= base_url('admin/staf') ?>" class="stack staff-form" autocomplete="off">
         <?= csrf_field() ?>
@@ -162,7 +152,7 @@ $fields = static function (?array $staff, string $p) use ($schools, $roleNames, 
         <div class="field">
           <label for="new-password">Kata sandi awal <span class="req">*</span></label>
           <input type="password" id="new-password" name="password" required minlength="12" maxlength="72" autocomplete="new-password">
-          <p class="field-help">Minimal 12 karakter. Sampaikan langsung kepada pemilik akun, jangan lewat grup pesan. Pemilik akun wajib menggantinya saat pertama kali masuk.</p>
+          <p class="field-help">Minimal 12 karakter dengan huruf besar, huruf kecil, angka, dan simbol, dan tidak memuat nama pengguna. Sampaikan langsung kepada pemilik akun, jangan lewat grup pesan. Pemilik akun wajib menggantinya saat pertama kali masuk.</p>
         </div>
         <div class="form-actions">
           <button class="btn btn-primary" type="submit"><?= icon('check') ?> Buat akun</button>

@@ -113,7 +113,7 @@ $dataDate  = isset($dataMeta['upstream_updated']) ? substr((string) $dataMeta['u
   <h2 id="school-tidy-title"><?= icon('edit') ?> Rapikan nama sekolah</h2>
   <p class="muted">
     Nama-nama di bawah diketik sendiri oleh siswa, karena NPSN-nya tidak ada di daftar atau sekolahnya di luar Jawa Tengah.
-    <b>Gabungkan</b> bila nama itu sebenarnya sekolah yang sudah ada: siswanya (dan akun guru) dipindahkan ke sekolah itu, dan ketikan yang sama berikutnya langsung ikut ke sana.
+    <b>Gabungkan</b> bila nama itu sebenarnya sekolah yang sudah ada: siswanya dipindahkan ke sekolah itu, dan ketikan yang sama berikutnya langsung ikut ke sana.
     <b>Sahkan</b> bila nama itu memang sekolah baru: sekolah itu didaftarkan dengan NPSN-nya sehingga bisa dipilih siswa berikutnya.
   </p>
 

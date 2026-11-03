@@ -21,8 +21,10 @@ final class RawExportTest extends CIUnitTestCase
 {
     use RawDataWorld;
 
-    private const ADMIN   = 1;
-    private const TEACHER = 2;
+    // Staff of RawDataWorld. Only `ketua` downloads, always coded (27 K14).
+    private const ADMIN    = 1;
+    private const KETUA    = 2;
+    private const PENELITI = 3;
 
     /** @var list<string> */
     private array $files = [];
@@ -49,22 +51,23 @@ final class RawExportTest extends CIUnitTestCase
 
     public function testCsvZipHasEverySheetWithCodedValuesAndADictionary(): void
     {
-        $export = $this->build('csv', self::ADMIN, ['anonymized' => 0]);
-        $sheets = $this->readZip($export['file_path']);
-
-        $this->assertSame(array_map(static fn (string $s): string => $s . '.csv', ExportService::SHEETS), array_keys($sheets));
-
+        $export  = $this->build('csv', self::KETUA, ['anonymized' => 0]);
+        $sheets  = $this->readZip($export['file_path']);
         $service = new ExportService();
+        $allowed = $service->allowedSheets([], false);
 
-        foreach (ExportService::SHEETS as $sheet) {
-            $this->assertSame($service->columns($sheet, false, true), $sheets[$sheet . '.csv']['header'], "{$sheet}: kolom §9.2, judul = kode");
+        $this->assertSame(array_map(static fn (string $s): string => $s . '.csv', $allowed), array_keys($sheets));
+        $this->assertNotContains('event', $allowed, 'Event Mentah comes to ketua with part 3 (29 K1)');
+
+        foreach ($allowed as $sheet) {
+            $this->assertSame($service->columns($sheet, true, false), $sheets[$sheet . '.csv']['header'], "{$sheet}: kolom §9.2, judul = kode");
         }
 
         // Kamus Data: setiap kolom setiap lembar, dengan arti
         $dictionary = $sheets['kamus.csv']['rows'];
 
-        foreach (ExportService::SHEETS as $sheet) {
-            foreach ($service->columns($sheet, false, true) as $column) {
+        foreach ($allowed as $sheet) {
+            foreach ($service->columns($sheet, true, false) as $column) {
                 $entry = array_values(array_filter($dictionary, static fn (array $r): bool => $r['lembar'] === $sheet && $r['kolom'] === $column));
                 $this->assertCount(1, $entry, "kamus {$sheet}.{$column}");
                 $this->assertNotSame('', $entry[0]['arti'], "kamus {$sheet}.{$column}: arti");
@@ -83,10 +86,13 @@ final class RawExportTest extends CIUnitTestCase
         $this->assertSame(['{"verdict":"salah"}', '{"verdict":"benar"}'], array_column($tries, 'answer'));
         $this->assertSame(['1200', ''], array_column($tries, 'first_input_ms'));
 
-        $this->assertSame('{"verdict":"benar"}', $sheets['jawaban.csv']['rows'][0]['answer_key'] ?? null);
-        $this->assertSame('Ani Lestari', $this->only($sheets['peserta.csv']['rows'], 'participant_code', 'GLT-000001')['display_name']);
-        $this->assertSame('11111111', $this->only($sheets['peserta.csv']['rows'], 'participant_code', 'GLT-000001')['school_npsn']);
-        $this->assertCount(4, $sheets['event.csv']['rows'], 'event yang ditandai hapus tidak ikut');
+        // Always coded: the form's anonymized=0 is ignored, the school is its code
+        $this->assertSame(1, (int) $export['anonymized']);
+        $this->assertArrayNotHasKey('answer_key', $sheets['jawaban.csv']['rows'][0]);
+        $person = $this->only($sheets['peserta.csv']['rows'], 'participant_code', 'GLT-000001');
+        $this->assertArrayNotHasKey('display_name', $person);
+        $this->assertArrayNotHasKey('school_npsn', $person);
+        $this->assertSame('SCH-000001', $person['school_ref']);
         $this->assertSame('=1+1', $sheets['masukan.csv']['rows'][0]['suggestion'], 'teks apa adanya');
         $this->assertStringNotContainsString('RAHASIA-HASH', implode('', array_map(static fn (array $s): string => $s['raw'], $sheets)));
 
@@ -96,10 +102,10 @@ final class RawExportTest extends CIUnitTestCase
 
     public function testXlsxIsLabeledByDefaultWithIndonesianTitles(): void
     {
-        $export = $this->build('xlsx', self::ADMIN, ['anonymized' => 1]);
+        $export = $this->build('xlsx', self::KETUA);
         $book   = IOFactory::load($export['file_path']);
 
-        $this->assertSame(array_map(ExportLabels::sheetTitle(...), ExportService::SHEETS), $book->getSheetNames());
+        $this->assertSame(array_map(ExportLabels::sheetTitle(...), (new ExportService())->allowedSheets([], false)), $book->getSheetNames());
 
         $attempts = $book->getSheetByName('Pengerjaan Tantangan')->toArray(null, false, false);
         $header   = $attempts[0];
@@ -117,7 +123,7 @@ final class RawExportTest extends CIUnitTestCase
         $this->assertSame('Menemukan informasi tersurat', $answer['Keterampilan membaca']);
         $this->assertStringNotContainsString('{', (string) $answer['Jawaban pertama'], 'jawaban dalam kalimat');
 
-        // Anonim: kolom identitas tidak dibuat, kode samaran sekolah tetap
+        // Coded: kolom identitas tidak dibuat, kode samaran sekolah tetap
         $people = $book->getSheetByName('Peserta')->toArray(null, false, false);
         $this->assertNotContains('Nama siswa', $people[0]);
         $this->assertNotContains('NPSN sekolah', $people[0]);
@@ -126,47 +132,55 @@ final class RawExportTest extends CIUnitTestCase
 
     public function testCodedXlsxAndLabeledCsvOnRequest(): void
     {
-        $coded = IOFactory::load($this->build('xlsx', self::ADMIN, ['labels' => 'code'])['file_path']);
+        $coded = IOFactory::load($this->build('xlsx', self::KETUA, ['labels' => 'code'])['file_path']);
         $rows  = $coded->getSheetByName('Pengerjaan Tantangan')->toArray(null, false, false);
         $this->assertSame('completion_reason', $rows[0][array_search('completion_reason', $rows[0], true)]);
         $this->assertContains('solved', array_column(array_map(static fn (array $r): array => array_combine($rows[0], $r), array_slice($rows, 1)), 'completion_reason'));
 
-        $labeled = $this->readZip($this->build('csv', self::ADMIN, ['labels' => 'label'])['file_path']);
+        $labeled = $this->readZip($this->build('csv', self::KETUA, ['labels' => 'label'])['file_path']);
         $this->assertContains('Alasan selesai', $labeled['pengerjaan.csv']['header']);
     }
 
-    public function testTeacherExportIsScopedAnonymousWithoutRawEventsOrKeys(): void
+    public function testKetuaExportIsAlwaysCodedWithoutRawEventsOrKeys(): void
     {
-        $export = $this->build('csv', self::TEACHER, ['anonymized' => 0, 'filters' => ['school_id' => 2], 'sheets' => ['event', 'peserta', 'jawaban', 'butir']]);
+        $export = $this->build('csv', self::KETUA, ['anonymized' => 0, 'filters' => ['school_id' => 2], 'sheets' => ['event', 'peserta', 'jawaban', 'butir']]);
 
-        $this->assertSame(1, (int) $export['anonymized'], 'guru selalu anonim');
+        $this->assertSame(1, (int) $export['anonymized'], 'selalu berkode');
 
         $sheets = $this->readZip($export['file_path']);
         $this->assertSame(['kamus.csv', 'peserta.csv', 'jawaban.csv', 'butir.csv'], array_keys($sheets));
 
-        $this->assertSame(['GLT-000001'], array_column($sheets['peserta.csv']['rows'], 'participant_code'), 'sekolah dipaksa dari staff_users');
+        // No school scope any more: the school filter narrows like any other filter
+        $this->assertSame(['GLT-000002'], array_column($sheets['peserta.csv']['rows'], 'participant_code'));
 
         foreach ($sheets as $name => $sheet) {
             $this->assertNotContains('answer_key', $sheet['header'], $name);
             $this->assertNotContains('display_name', $sheet['header'], $name);
             $this->assertStringNotContainsString('Ani Lestari', $sheet['raw'], $name);
+            $this->assertStringNotContainsString('SD Negeri', $sheet['raw'], $name);
         }
 
         $this->assertStringNotContainsString('event', implode(',', array_column($sheets['kamus.csv']['rows'], 'lembar')));
     }
 
+    public function testAdminAndResearcherCannotDownload(): void
+    {
+        foreach ([self::ADMIN, self::PENELITI] as $staffId) {
+            $export = $this->build('csv', $staffId);
+
+            $this->assertSame('failed', $export['status'], "staf {$staffId}");
+            $this->assertNull($export['file_path'] ?? null);
+        }
+    }
+
     public function testPerStudentExportFiltersOneParticipant(): void
     {
-        $sheets = $this->readZip($this->build('csv', self::ADMIN, ['participant_id' => 2])['file_path']);
+        $sheets = $this->readZip($this->build('csv', self::KETUA, ['participant_id' => 2])['file_path']);
 
         $this->assertSame(['GLT-000002'], array_column($sheets['peserta.csv']['rows'], 'participant_code'));
         $this->assertSame(['GLT-000002'], array_column($sheets['sesi.csv']['rows'], 'participant_code'));
         $this->assertSame([], $sheets['masukan.csv']['rows']);
         $this->assertCount(2, $sheets['butir.csv']['rows'], 'bank soal tidak bergantung siswa');
-
-        // Guru meminta siswa sekolah lain → lembar kosong, bukan bocor
-        $other = $this->readZip($this->build('csv', self::TEACHER, ['participant_id' => 2])['file_path']);
-        $this->assertSame([], $other['peserta.csv']['rows']);
     }
 
     public function testEventSheetLimitRejectsTooLargeExports(): void
@@ -176,7 +190,7 @@ final class RawExportTest extends CIUnitTestCase
         $config->exportMaxRawEvents = 1;
 
         try {
-            $export = $this->build('xlsx', self::ADMIN, ['sheets' => ['navigasi']]);
+            $export = $this->build('xlsx', self::KETUA, ['sheets' => ['navigasi']]);
         } finally {
             $config->exportMaxRawEvents = $original;
         }
@@ -188,7 +202,7 @@ final class RawExportTest extends CIUnitTestCase
     public function testParticipantPdfHasRawTablesAndRespectsScope(): void
     {
         $context = (new ExportService())->context([
-            'id' => 0, 'requested_by' => self::ADMIN, 'format' => 'pdf', 'anonymized' => 1,
+            'id' => 0, 'requested_by' => self::KETUA, 'format' => 'pdf', 'anonymized' => 1,
             'scope_json' => ['template' => 'participant', 'participant_id' => 1],
         ]);
         $data = service('reportService')->participantData($context);
@@ -205,17 +219,16 @@ final class RawExportTest extends CIUnitTestCase
         $this->assertSame(['tmg-1', 'tmg-3'], array_column($data['profile']['progress'], 'node_ref'));
         $this->assertSame(['not_started', 'completed'], array_column($data['profile']['progress'], 'status'));
 
-        $pdf = $this->build('pdf', self::ADMIN, ['participant_id' => 1]);
+        $pdf = $this->build('pdf', self::KETUA, ['participant_id' => 1]);
         $this->assertSame('done', $pdf['status'], (string) $pdf['error_message']);
         $this->assertStringStartsWith('%PDF', (string) file_get_contents((string) $pdf['file_path'], false, null, 0, 4));
 
-        $teacher = (new ExportService())->context([
-            'id' => 0, 'requested_by' => self::TEACHER, 'format' => 'pdf', 'anonymized' => 0,
+        // The admin may not download research data, not even one student's PDF
+        $this->expectException(DomainException::class);
+        (new ExportService())->context([
+            'id' => 0, 'requested_by' => self::ADMIN, 'format' => 'pdf', 'anonymized' => 0,
             'scope_json' => ['template' => 'participant', 'participant_id' => 2],
         ]);
-
-        $this->expectException(DomainException::class);
-        service('reportService')->participantData($teacher);
     }
 
     // ------------------------------------------------------------ bantuan

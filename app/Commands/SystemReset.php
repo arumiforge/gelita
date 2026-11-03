@@ -25,7 +25,7 @@ class SystemReset extends BaseCommand
     protected $group       = 'GELITA';
     protected $name        = 'gelita:reset';
     protected $description = 'Reset total data uji coba dan pengaturan untuk penelitian kelas 5 (Pustaka, cerita, media, sekolah resmi, staf tetap).';
-    protected $usage       = 'gelita:reset [--dry-run] [--ya] [--paksa] [--pemeliharaan] [--tanpa-bank] [--bank=JALUR] [--tanpa-mockup] [--hapus-guru]';
+    protected $usage       = 'gelita:reset [--dry-run] [--ya] [--paksa] [--pemeliharaan] [--tanpa-bank] [--bank=JALUR] [--tanpa-mockup]';
     protected $options     = [
         '--dry-run'      => 'Hanya hitung dan tampilkan rencana; tidak menulis apa pun.',
         '--ya'           => 'Lewati ketik konfirmasi (untuk skrip rilis).',
@@ -34,7 +34,6 @@ class SystemReset extends BaseCommand
         '--tanpa-bank'   => 'Jangan impor bank soal (12 tantangan kosong).',
         '--bank'         => 'Workbook bank soal lain (bawaan docs/bank-soal/gelita-bank-soal-kelas5.xlsx).',
         '--tanpa-mockup' => 'Jangan buat gambar mockup.',
-        '--hapus-guru'   => 'Hapus juga semua akun guru (akun admin selalu tetap).',
     ];
 
     public function run(array $params)
@@ -130,7 +129,6 @@ class SystemReset extends BaseCommand
 
         try {
             $result = $service->run([
-                'hapus_guru'      => $flag('hapus-guru'),
                 'tanpa_bank'      => $flag('tanpa-bank'),
                 'bank'            => $bank,
                 'tanpa_mockup'    => $flag('tanpa-mockup'),
@@ -186,16 +184,17 @@ class SystemReset extends BaseCommand
         ));
         CLI::write(sprintf('Akan DIHAPUS: %d sekolah belum terverifikasi', $plan['unverified_schools']));
         CLI::write(sprintf(
-            'TETAP: Pustaka %d halaman / %d media · cerita %d baris · %d wilayah · %d media · %d audio · %d akun staf (%d admin, %d guru)',
+            'TETAP: Pustaka %d halaman / %d media · cerita %d baris · %d wilayah · %d media · %d audio · %d akun staf (%d admin, %d peneliti, %d ketua)',
             $plan['kept']['library_pages'],
             $plan['kept']['library_media'],
             $plan['kept']['dialogues'],
             $plan['kept']['levels'],
             $plan['kept']['media_assets'],
             $plan['kept']['audio_assets'],
-            $plan['staff']['admin'] + $plan['staff']['guru'],
+            array_sum($plan['staff']),
             $plan['staff']['admin'],
-            $plan['staff']['guru'],
+            $plan['staff']['peneliti'],
+            $plan['staff']['ketua'],
         ));
     }
 
@@ -204,10 +203,9 @@ class SystemReset extends BaseCommand
     {
         CLI::newLine();
         CLI::write(sprintf(
-            '✓ Dikosongkan · ✓ Pengaturan bawaan · ✓ %d tantangan · %d sekolah belum terverifikasi dihapus%s',
+            '✓ Dikosongkan · ✓ Pengaturan bawaan · ✓ %d tantangan · %d sekolah belum terverifikasi dihapus',
             $result['nodes'],
             $result['schools_removed'],
-            $result['teachers_removed'] > 0 ? ' · ' . $result['teachers_removed'] . ' akun guru dihapus' : '',
         ), 'green');
 
         $bank = $result['bank'];

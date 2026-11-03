@@ -9,13 +9,13 @@ use CodeIgniter\HTTP\ResponseInterface;
 /**
  * Kritik & saran dari Balai Refleksi (Dok 3 §8.3): tabel kode, sekolah,
  * bintang (1–5), empat jawaban (dipotong, klik untuk lengkap), waktu.
- * Guru hanya melihat masukan siswa sekolahnya.
+ * Only `ketua` (`research.browse`); schools show as codes (27 K5).
  */
 class FeedbackController extends BaseAdminController
 {
     public function index(): string|ResponseInterface
     {
-        $filters = $this->scopedFilters();
+        $filters = $this->readFilters();
         $columns = self::listColumns();
         $builder = $this->builder($filters);
         $sorts   = array_column(array_filter($columns, static fn (array $c): bool => ! empty($c['sort'])), 'key');
@@ -63,19 +63,19 @@ class FeedbackController extends BaseAdminController
     {
         return [
             ['key' => 'participant_code', 'label' => 'Kode siswa', 'type' => 'code', 'sort' => 'p.participant_code'],
-            ['key' => 'school_name', 'label' => 'Sekolah', 'type' => 'text', 'sort' => 'school_name'],
+            // Coded school (27 K5): the id shown as `SCH-000123`
+            ['key' => 'school_ref', 'label' => 'Kode sekolah', 'type' => 'school_ref', 'sort' => 'school_ref'],
             ...self::answerColumns(),
         ];
     }
 
-    /** @param array<string, mixed> $filters sudah dipaksa ke cakupan sekolah */
+    /** @param array<string, mixed> $filters */
     private function builder(array $filters): BaseBuilder
     {
         $builder = db_connect()->table('participant_feedback f')
-            ->select('f.id, f.participant_id, p.participant_code, COALESCE(s.name, p.school_name_snapshot) AS school_name', false)
+            ->select('f.id, f.participant_id, p.participant_code, p.school_id AS school_ref', false)
             ->select('f.rating, f.liked_most, f.hardest_part, f.new_learning, f.suggestion, f.submitted_at')
             ->join('participants p', 'p.id = f.participant_id')
-            ->join('schools s', 's.id = p.school_id', 'left')
             ->where('p.deleted_at', null);
 
         if (isset($filters['school_id'])) {

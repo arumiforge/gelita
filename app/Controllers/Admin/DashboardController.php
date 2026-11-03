@@ -3,26 +3,31 @@
 namespace App\Controllers\Admin;
 
 use App\Libraries\ResearchReadiness;
+use App\Services\RawDataService;
 
 /**
- * Ringkasan panel (Dok 3 §8.3): empat KPI hitungan, peringatan kesiapan
- * konten (admin), 20 aktivitas terbaru, dan progres 10 siswa terbaru.
- * Semua query dibatasi cakupan sekolah pemanggil.
+ * Ringkasan panel (Dok 3 §8.3): four count tiles for every role; per role
+ * (revision 10, part 1, 27 §8):
+ * - admin: content readiness and retention warnings, no per-student lists
+ *   (events are research data);
+ * - peneliti and ketua: the 20 latest events and the 10 latest students,
+ *   coded, with the school as its code (`school_ref`), never its name.
  */
 class DashboardController extends BaseAdminController
 {
     public function index(): string
     {
-        $scope = $this->schoolScope();
+        $research = $this->can('participants.research');
+        $system   = $this->can('content.edit');
 
         return $this->panel('admin/dashboard', lang('Admin.menuDashboard'), [
             'kpi'             => $this->kpi(),
-            'events'          => $this->recentEvents($scope),
-            'progress'        => $this->recentProgress($scope),
-            'readiness'       => $this->isAdmin() ? (new ResearchReadiness())->check() : null,
-            'isAdmin'         => $this->isAdmin(),
+            'events'          => $research ? $this->recentEvents() : null,
+            'progress'        => $research ? $this->recentProgress() : null,
+            'readiness'       => $system ? (new ResearchReadiness())->check() : null,
+            'research'        => $research,
             // pratinjau penghapusan buatan retensi: hanya admin yang boleh memutuskan
-            'retentionAlerts' => $this->isAdmin() ? service('retentionService')->pendingRetentionRequests() : [],
+            'retentionAlerts' => $this->can('retention.run') ? service('retentionService')->pendingRetentionRequests() : [],
         ]);
     }
 
@@ -35,7 +40,7 @@ class DashboardController extends BaseAdminController
      */
     private function kpi(): array
     {
-        $summary = $this->analytics()->summary($this->scopedFilters([]));
+        $summary = $this->analytics()->summary([]);
 
         return [
             'participants'    => (int) $summary['participant_count'],
@@ -50,19 +55,16 @@ class DashboardController extends BaseAdminController
      *
      * @return array<string, mixed> bentuk tabel components/data-table
      */
-    private function recentEvents(?int $scope): array
+    private function recentEvents(): array
     {
+        // Read before the builder: another query in between drops its table aliases
+        $refs    = $this->nodeRefs();
         $builder = db_connect()->table('game_event_logs e')
             ->select('e.id, e.session_id, e.occurred_at, e.event_type, e.challenge_node_id, e.payload_json, p.participant_code')
             ->join('participants p', 'p.id = e.participant_id')
             ->where('e.deleted_at', null)
             ->where('p.deleted_at', null);
 
-        if ($scope !== null) {
-            $builder->where('p.school_id', $scope);
-        }
-
-        $refs = $this->nodeRefs();
         $rows = array_map(static function (array $row) use ($refs): array {
             $payload       = json_decode((string) $row['payload_json'], true);
             $row['event']  = admin_label('event', $row['event_type']);
@@ -89,32 +91,28 @@ class DashboardController extends BaseAdminController
     }
 
     /**
-     * 10 siswa terbaru: kode, sekolah, wilayah saat ini, tantangan selesai
+     * 10 siswa terbaru: kode, kode sekolah, wilayah saat ini, tantangan selesai
      * x/12, bintang, aktif terakhir (sesi terakhir masing-masing).
      *
      * @return array<string, mixed> bentuk tabel components/data-table
      */
-    private function recentProgress(?int $scope): array
+    private function recentProgress(): array
     {
         $db     = db_connect();
+        $total  = count($this->nodeRefs());
         $latest = $db->table('game_sessions')->select('MAX(id)', false)->where('participant_id = p.id', null, false)->getCompiledSelect();
 
         $builder = $db->table('participants p')
-            ->select('p.id, p.participant_code, s.name AS school_name, l.name_id AS level_name')
+            ->select('p.id, p.participant_code, p.school_id, l.name_id AS level_name')
             ->select('sp.completed_nodes, sp.total_stars, gs.last_active_at', false)
-            ->join('schools s', 's.id = p.school_id', 'left')
             ->join($db->prefixTable('game_sessions') . ' gs', "gs.id = ({$latest})", 'left', false)
             ->join('session_progress sp', 'sp.session_id = gs.id', 'left')
             ->join('levels l', 'l.id = sp.current_level_id', 'left')
             ->where('p.deleted_at', null);
 
-        if ($scope !== null) {
-            $builder->where('p.school_id', $scope);
-        }
-
-        $total = count($this->nodeRefs());
-        $rows  = array_map(static function (array $row) use ($total): array {
-            $row['done'] = (int) ($row['completed_nodes'] ?? 0) . '/' . $total;
+        $rows = array_map(static function (array $row) use ($total): array {
+            $row['done']       = (int) ($row['completed_nodes'] ?? 0) . '/' . $total;
+            $row['school_ref'] = RawDataService::schoolRef($row['school_id']);
 
             return $row;
         }, $builder->orderBy('p.id', 'DESC')->limit(10)->get()->getResultArray());
@@ -127,7 +125,7 @@ class DashboardController extends BaseAdminController
             'sort'     => null,
             'columns'  => [
                 ['key' => 'participant_code', 'label' => 'Kode', 'type' => 'code', 'sortable' => false],
-                ['key' => 'school_name', 'label' => 'Sekolah', 'type' => 'text', 'sortable' => false],
+                ['key' => 'school_ref', 'label' => 'Kode sekolah', 'type' => 'code', 'sortable' => false],
                 ['key' => 'level_name', 'label' => 'Wilayah saat ini', 'type' => 'text', 'sortable' => false],
                 ['key' => 'done', 'label' => 'Tantangan selesai', 'type' => 'text', 'sortable' => false],
                 ['key' => 'total_stars', 'label' => 'Bintang', 'type' => 'int', 'sortable' => false],

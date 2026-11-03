@@ -19,7 +19,7 @@ class SessionController extends BaseAdminController
 {
     public function index(): string|ResponseInterface
     {
-        $filters = $this->scopedFilters();
+        $filters = $this->readFilters();
         $columns = self::listColumns();
         $builder = $this->listBuilder($filters);
         $sorts   = self::sortable($columns);
@@ -89,7 +89,8 @@ class SessionController extends BaseAdminController
         return [
             ['key' => 'session_code', 'label' => 'Kode sesi', 'type' => 'code', 'sort' => 'gs.session_code'],
             ['key' => 'participant_code', 'label' => 'Kode siswa', 'type' => 'code', 'sort' => 'p.participant_code'],
-            ['key' => 'school_name', 'label' => 'Sekolah', 'type' => 'text', 'sort' => 'school_name'],
+            // Coded school (27 K5): the id shown as `SCH-000123`
+            ['key' => 'school_ref', 'label' => 'Kode sekolah', 'type' => 'school_ref', 'sort' => 'school_ref'],
             ['key' => 'study_code', 'label' => 'Penelitian', 'type' => 'code', 'sort' => 'rs.code'],
             ['key' => 'locale', 'label' => 'Bahasa', 'type' => 'label:locale', 'sort' => 'gs.locale'],
             ['key' => 'status', 'label' => 'Status', 'type' => 'status', 'sort' => 'gs.status'],
@@ -115,15 +116,14 @@ class SessionController extends BaseAdminController
         ];
     }
 
-    /** @param array<string, mixed> $filters sudah dipaksa ke cakupan sekolah */
+    /** @param array<string, mixed> $filters */
     private function listBuilder(array $filters): BaseBuilder
     {
         $builder = db_connect()->table('game_sessions gs')
-            ->select('gs.id, gs.session_code, gs.participant_id, p.participant_code, COALESCE(s.name, p.school_name_snapshot) AS school_name', false)
+            ->select('gs.id, gs.session_code, gs.participant_id, p.participant_code, p.school_id AS school_ref', false)
             ->select('rs.code AS study_code, gs.locale, gs.status, gs.started_at, gs.last_active_at, gs.duration_ms, gs.device_type', false)
             ->select('sp.completed_nodes, sp.total_stars', false)
             ->join('participants p', 'p.id = gs.participant_id')
-            ->join('schools s', 's.id = p.school_id', 'left')
             ->join('research_studies rs', 'rs.id = gs.study_id', 'left')
             ->join('session_progress sp', 'sp.session_id = gs.id', 'left')
             ->where('p.deleted_at', null);
@@ -247,23 +247,13 @@ class SessionController extends BaseAdminController
         return array_column(array_filter($columns, static fn (array $c): bool => ! empty($c['sort'])), 'key');
     }
 
-    /** Sesi dalam cakupan pemanggil, atau 404. */
+    /** Sesi yang ada, atau 404 (only `ketua` reaches this controller). */
     private function requireInScope(int $sessionId): \App\Entities\GameSession
     {
         $session = model(GameSessionModel::class)->find($sessionId);
 
         if ($session === null) {
             throw PageNotFoundException::forPageNotFound("Sesi {$sessionId} tidak ditemukan.");
-        }
-
-        $scope = $this->schoolScope();
-
-        if ($scope !== null) {
-            $participant = model(ParticipantModel::class)->find($session->participant_id);
-
-            if ($participant === null || (int) $participant->school_id !== $scope) {
-                throw PageNotFoundException::forPageNotFound("Sesi {$sessionId} tidak ditemukan.");
-            }
         }
 
         return $session;

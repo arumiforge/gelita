@@ -45,7 +45,8 @@ final class SessionPackageTest extends CIUnitTestCase
             'asset_version' => '1', 'scoring_version' => 'bintang-1', 'is_active' => 1,
         ]);
         $this->conn->table('staff_users')->insert([
-            'username' => 'admin_uji', 'password_hash' => 'x', 'role' => 'admin', 'display_name' => 'Admin', 'is_active' => 1,
+            // The only role that downloads (27 K14)
+            'username' => 'ketua_uji', 'password_hash' => 'x', 'role' => 'ketua', 'display_name' => 'Ketua', 'is_active' => 1,
         ]);
 
         foreach (['security', 'schoolDirectory', 'sessionService', 'eventService', 'gameContext', 'rawDataService'] as $name) {
@@ -147,18 +148,18 @@ final class SessionPackageTest extends CIUnitTestCase
         $this->register('gita', $this->device(null, 'nonaktif'));
 
         $raw  = service('rawDataService');
-        $rows = array_column(iterator_to_array($raw->rows('sesi', [], StaffScope::admin(false)), false), null, 'package_mode');
+        $rows = array_column(iterator_to_array($raw->rows('sesi', [], StaffScope::of(false, true)), false), null, 'package_mode');
 
         $this->assertSame('2.0.0+pkt-2026-10-20-01', $rows['lengkap']['app_client_version']);
         $this->assertSame('pkt-2026-10-20-01', $rows['lengkap']['package_code']);
         $this->assertSame('2.0.0', $rows['nonaktif']['app_client_version']);
         $this->assertNull($rows['nonaktif']['package_code']);
 
-        $labeled = array_column(iterator_to_array($raw->rows('sesi', [], StaffScope::admin(false), true), false), 'package_mode');
+        $labeled = array_column(iterator_to_array($raw->rows('sesi', [], StaffScope::of(false, true), true), false), 'package_mode');
         sort($labeled);
         $this->assertSame(['Mode paket mati', 'Paket lengkap di perangkat'], $labeled);
 
-        // Teacher (anonymous) export keeps them: they are not identity columns
+        // The coded export keeps them: they are not identity columns
         $this->assertContains('package_mode', (new ExportService())->columns('sesi', true, false));
 
         // CSV-ZIP: columns and Kamus Data entries

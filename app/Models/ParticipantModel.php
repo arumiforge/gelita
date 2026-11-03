@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Entities\Participant;
-use CodeIgniter\Database\BaseBuilder;
 use CodeIgniter\Model;
 
 class ParticipantModel extends Model
@@ -139,20 +138,5 @@ class ParticipantModel extends Model
             'locked_until'       => null,
             'last_login_at'      => date('Y-m-d H:i:s'),
         ]);
-    }
-
-    /**
-     * Builder dengan batas akses: admin ($schoolId NULL) melihat semua,
-     * guru hanya sekolahnya.
-     */
-    public function scopedForStaff(?int $schoolId): BaseBuilder
-    {
-        $builder = $this->db->table($this->table);
-
-        if ($schoolId !== null) {
-            $builder->where('participants.school_id', $schoolId);
-        }
-
-        return $builder;
     }
 }

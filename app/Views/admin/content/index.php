@@ -21,12 +21,16 @@ $verifyBadge = ['ok' => 'is-ok', 'warning' => 'is-warn', 'error' => 'is-bad'];
 
 <?= $this->section('content') ?>
 <?php ob_start() ?>
+<?php if (staff_can('content.edit')): ?>
 <form method="post" action="<?= base_url('admin/konten/verifikasi') ?>" class="inline-form">
   <?= csrf_field() ?>
   <button class="btn" type="submit"><?= icon('check') ?> Rincian verifikasi</button>
 </form>
+<?php endif ?>
 <a class="btn" href="<?= base_url('admin/konten/dialog/0') ?>"><?= icon('message') ?> Cerita pembuka &amp; penutup</a>
+<?php if (staff_can('content.edit')): ?>
 <a class="btn btn-primary" href="<?= base_url('admin/konten/impor-bank') ?>"><?= icon('upload') ?> Impor bank soal</a>
+<?php endif ?>
 <?php $actions = ob_get_clean() ?>
 <?= component('partials/admin-head', [
     'title'   => 'Tantangan',

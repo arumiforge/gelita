@@ -8,10 +8,15 @@
  * dibuka untuk riwayat percobaan) · Navigasi · Bantuan · Kritik & saran.
  * Tab dirender server satu per satu (`?tab=`), tanpa JavaScript.
  *
- * @var array<string, mixed>            $participant bentuk aman; tanpa nama untuk guru
+ * Two views (27 §9): the admin sees the account card only (no research
+ * tabs, no downloads); `peneliti` and `ketua` see codes and the research
+ * tabs, never the name, username or school name.
+ *
+ * @var array<string, mixed>            $participant bentuk aman; without name for researchers
  * @var string                          $tab
  * @var array<string, string>           $tabs
- * @var bool                            $isAdmin
+ * @var bool                            $identity    the caller sees names (admin)
+ * @var bool                            $research    the caller sees research data
  * @var array<string, mixed>|null       $table      tab data mentah (null = layanan belum tersedia)
  * @var array<string, list<array>>|null $tries      riwayat percobaan per "attempt_id|item_key"
  * @var bool|null                       $readableAnswers jawaban as sentences (false = stored JSON, `?raw=1`)
@@ -24,18 +29,27 @@ $id       = (int) $participant['id'];
 $base     = 'admin/peserta/' . $id;
 $criteria = $participant['pw_first_submit_criteria'];
 $region   = implode(', ', array_filter([$participant['district_name'], $participant['province_name'], $participant['country_name']]));
-$title    = $isAdmin && ! empty($participant['display_name']) ? $participant['display_name'] : $participant['participant_code'];
+$title    = $identity && ! empty($participant['display_name']) ? $participant['display_name'] : $participant['participant_code'];
+$school   = $identity ? ($participant['school_name'] ?? null) : ($participant['school_ref'] ?? null);
 
 // Unduh data siswa (lembar §9.2 difilter satu siswa) dan laporan PDF: satu
-// form, tujuan dipilih tombolnya. Guru selalu anonim (dipaksa server).
-$actions = '<form method="post" action="' . base_url('admin/ekspor/pdf') . '" class="btn-row">'
-    . csrf_field()
-    . '<input type="hidden" name="participant_id" value="' . $id . '">'
-    . ($isAdmin ? '<label class="check"><input type="checkbox" name="anonymized" value="1" checked> <span>Anonim</span></label>' : '')
-    . '<button class="btn" type="submit" formaction="' . base_url('admin/ekspor/xlsx') . '">' . icon('download') . ' Unduh XLSX</button>'
-    . '<button class="btn" type="submit" formaction="' . base_url('admin/ekspor/csv') . '">' . icon('download') . ' Unduh CSV-ZIP</button>'
-    . '<button class="btn" type="submit">' . icon('text') . ' Cetak PDF</button></form>'
-    . '<a class="btn btn-danger-soft" href="' . base_url($base . '#reset-sandi') . '">' . icon('key') . ' Reset sandi</a>';
+// form, tujuan dipilih tombolnya. Only `research.export` (ketua), always coded.
+$actions = '';
+
+if (staff_can('research.export')) {
+    $actions .= '<form method="post" action="' . base_url('admin/ekspor/pdf') . '" class="btn-row">'
+        . csrf_field()
+        . '<input type="hidden" name="participant_id" value="' . $id . '">'
+        . '<button class="btn" type="submit" formaction="' . base_url('admin/ekspor/xlsx') . '">' . icon('download') . ' Unduh XLSX</button>'
+        . '<button class="btn" type="submit" formaction="' . base_url('admin/ekspor/csv') . '">' . icon('download') . ' Unduh CSV-ZIP</button>'
+        . '<button class="btn" type="submit">' . icon('text') . ' Cetak PDF</button></form>';
+}
+
+if (staff_can('participants.reset_by_id')) {
+    $actions .= '<a class="btn btn-danger-soft" href="' . base_url($base . '#reset-sandi') . '">' . icon('key') . ' Atur ulang kata sandi</a>';
+} elseif (staff_can('participants.reset_by_code')) {
+    $actions .= '<a class="btn btn-danger-soft" href="' . base_url('admin/peserta/reset-sandi') . '">' . icon('key') . ' ' . esc(lang('Admin.menuResetByCode')) . '</a>';
+}
 
 $rawTable = static function (?array $table, string $empty, array $extra = []) {
     return $table === null
@@ -48,13 +62,14 @@ $rawTable = static function (?array $table, string $empty, array $extra = []) {
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
     'title'   => $title,
-    'lead'    => ($isAdmin ? 'Kode ' . $participant['participant_code'] . ' · nama pengguna ' . $participant['username'] . ' · ' : '')
+    'lead'    => ($identity ? 'Kode ' . $participant['participant_code'] . ' · nama pengguna ' . $participant['username'] . ' · ' : '')
         . 'terdaftar ' . fmt_date($participant['created_at'], false, 'id')
-        . ' · ' . ($participant['school_name'] ?? 'sekolah tidak tercatat'),
+        . ' · ' . ($school ?? 'sekolah tidak tercatat'),
     'actions' => $actions,
 ]) ?>
 <?= $this->include('partials/flash') ?>
 
+<?php if (count($tabs) > 1): ?>
 <nav aria-label="Bagian data siswa">
   <ul class="tabs">
     <?php foreach ($tabs as $key => $label): ?>
@@ -62,6 +77,7 @@ $rawTable = static function (?array $table, string $empty, array $extra = []) {
     <?php endforeach ?>
   </ul>
 </nav>
+<?php endif ?>
 
 <?php if ($tab === 'profil'): ?>
   <div class="split-grid">
@@ -69,14 +85,14 @@ $rawTable = static function (?array $table, string $empty, array $extra = []) {
       <h2 class="panel-title">Data diri</h2>
       <dl class="detail-grid">
         <div><dt>Kode siswa</dt><dd class="mono"><?= esc($participant['participant_code']) ?></dd></div>
-        <?php if ($isAdmin): ?>
+        <?php if ($identity): ?>
           <div><dt>Nama pengguna</dt><dd class="mono"><?= esc($participant['username']) ?></dd></div>
           <div><dt>Nama</dt><dd><?= esc($participant['display_name'] ?? '—') ?></dd></div>
         <?php endif ?>
         <div><dt>Umur</dt><dd class="num"><?= esc($participant['age'] ?? '—') ?><?= $participant['age'] !== null ? ' tahun' : '' ?></dd></div>
         <div><dt>Jenis kelamin</dt><dd><?= esc(admin_label('gender', $participant['gender'] ?? null)) ?></dd></div>
         <div><dt>Kelas</dt><dd><?= esc(class_label($participant['class_level'] ?? null)) ?></dd></div>
-        <div><dt>Sekolah</dt><dd><?= esc($participant['school_name'] ?? '—') ?></dd></div>
+        <div><dt><?= $identity ? 'Sekolah' : 'Kode sekolah' ?></dt><dd<?= $identity ? '' : ' class="mono"' ?>><?= esc($school ?? '—') ?></dd></div>
         <div><dt>Daerah</dt><dd><?= esc($region !== '' ? $region : '—') ?></dd></div>
       </dl>
     </section>
@@ -85,17 +101,22 @@ $rawTable = static function (?array $table, string $empty, array $extra = []) {
       <h2 class="panel-title">Pendaftaran & akun</h2>
       <dl class="detail-grid">
         <div><dt>Terdaftar</dt><dd><?= esc(fmt_date($participant['created_at'], true, 'id')) ?></dd></div>
-        <div><dt>Setuju ikut bermain</dt><dd><?= empty($participant['assented_at']) ? 'tidak tercatat' : esc(fmt_date($participant['assented_at'], true, 'id')) ?></dd></div>
-        <div><dt>Pengantar dilihat</dt><dd><?= esc(fmt_date($participant['intro_seen_at'], true, 'id')) ?></dd></div>
-        <div><dt>Masuk terakhir</dt><dd><?= esc(fmt_date($participant['last_login_at'], true, 'id')) ?></dd></div>
-        <div><dt>Syarat sandi dipenuhi pada kiriman pertama</dt><dd class="num"><?= $criteria === null ? '—' : esc($criteria) . ' dari 5' ?></dd></div>
-        <div><dt>Mencoba sandi terlalu lemah</dt><dd class="num"><?= esc($participant['pw_weak_submit_count']) ?> kali</dd></div>
-        <div><dt>Terakhir ganti sandi</dt><dd><?= esc(fmt_date($participant['password_changed_at'], false, 'id')) ?></dd></div>
-        <div><dt>Harus membuat sandi baru</dt><dd><?= $participant['must_change_password'] ? 'ya' : 'tidak' ?></dd></div>
+        <?php if ($research): ?>
+          <div><dt>Setuju ikut bermain</dt><dd><?= empty($participant['assented_at']) ? 'tidak tercatat' : esc(fmt_date($participant['assented_at'], true, 'id')) ?></dd></div>
+          <div><dt>Pengantar dilihat</dt><dd><?= esc(fmt_date($participant['intro_seen_at'], true, 'id')) ?></dd></div>
+          <div><dt>Syarat sandi dipenuhi pada kiriman pertama</dt><dd class="num"><?= $criteria === null ? '—' : esc($criteria) . ' dari 5' ?></dd></div>
+          <div><dt>Mencoba sandi terlalu lemah</dt><dd class="num"><?= esc($participant['pw_weak_submit_count']) ?> kali</dd></div>
+        <?php endif ?>
+        <?php if ($identity): ?>
+          <div><dt>Masuk terakhir</dt><dd><?= esc(fmt_date($participant['last_login_at'], true, 'id')) ?></dd></div>
+          <div><dt>Terakhir ganti sandi</dt><dd><?= esc(fmt_date($participant['password_changed_at'], false, 'id')) ?></dd></div>
+          <div><dt>Harus membuat sandi baru</dt><dd><?= $participant['must_change_password'] ? 'ya' : 'tidak' ?></dd></div>
+        <?php endif ?>
       </dl>
     </section>
   </div>
 
+  <?php if (staff_can('participants.reset_by_id')): ?>
   <section class="form-section danger-zone" id="reset-sandi">
     <h2><?= icon('key') ?> Siswa lupa kata sandi?</h2>
     <p class="muted">Buat sandi sementara untuk siswa ini. Sandi hanya ditampilkan sekali, dan siswa harus membuat sandi baru saat masuk berikutnya.</p>
@@ -110,13 +131,14 @@ $rawTable = static function (?array $table, string $empty, array $extra = []) {
         <button class="btn btn-danger" type="submit"><?= icon('key') ?> Buat sandi sementara</button>
       </div>
     </form>
-    <?php if ($isAdmin): ?>
+    <?php if (staff_can('deletion.execute')): ?>
       <p class="muted">
         Siswa atau orang tua/wali meminta datanya dihapus?
         <a href="<?= base_url('admin/tata-kelola?participant_id=' . $id) ?>#hapus">Hapus data siswa ini di Tata kelola</a>
       </p>
     <?php endif ?>
   </section>
+  <?php endif ?>
 
 <?php elseif ($tab === 'sesi'): ?>
   <?= component('data-table', [
@@ -127,7 +149,9 @@ $rawTable = static function (?array $table, string $empty, array $extra = []) {
       'paginate'     => false,
       'emptyMessage' => 'Siswa ini belum pernah bermain.',
       'render'       => [
-          'session_code' => static fn (array $r): string => '<a href="' . base_url('admin/sesi/' . $r['id']) . '">' . esc($r['session_code']) . '</a>',
+          'session_code' => static fn (array $r): string => staff_can('research.browse')
+              ? '<a href="' . base_url('admin/sesi/' . $r['id']) . '">' . esc($r['session_code']) . '</a>'
+              : esc($r['session_code']),
       ],
   ]) ?>
   <?= component('data-table', [

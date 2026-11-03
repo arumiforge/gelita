@@ -8,6 +8,10 @@
  * @var int    $count  jumlah narasi draft bahasa ini
  * @var string $back   narasi | audio — halaman tujuan setelah menyetujui
  */
+// Writes are for content.edit (admin) only; researchers see nothing here (27 K7)
+if (! staff_can('content.edit')) {
+    return;
+}
 $language = 'bahasa ' . admin_label('locale', $locale);
 ?>
 <?php if ($count === 0): ?>

@@ -91,7 +91,8 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | UI (id) | Code (en) | Stored / notes |
 |---|---|---|
 | siswa | `participant` | `participants`; admin route `/admin/peserta` |
-| guru, admin, staf | `staff`, `teacher` | `staff_users`; stored roles `guru`, `admin` |
+| admin, peneliti, ketua peneliti, staf | `staff`, `admin`, `researcher`, `head researcher` | `staff_users`; stored roles `admin`, `peneliti`, `ketua` (revision 10 part 1, 3 November 2026; `guru` removed by migration `003400`). Rights come from the capability map `App\Libraries\StaffAccess`, route filter `staffCan`, view helper `staff_can()` |
+| atur ulang kata sandi lewat kode | `reset by code` | `/admin/peserta/reset-sandi`, `peneliti` and `ketua`; audit `participant_password_reset` with `via: kode` |
 | sekolah | `school` | `schools` |
 | sesi bermain | `game session` | `game_sessions` |
 | kata sandi (sandi) | `password` | never "password" in UI |

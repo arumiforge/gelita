@@ -134,6 +134,7 @@ Documentation only, in `docs/revisi-10-analitik/` (Indonesian, at the owner's re
     - [ ] **Code wave C in progress:** part 1 (`27`, roles), PR #332 from the session on branch `r10-dok-32-skenario-digital`; merge only with the full phpunit suite green, then waves D–F as in `00` → *Tahap dokumen 3*
   - [ ] English draft of the new question bank by AI, approved by the owner; items revised by validation are re-translated (owner, 2 November 2026; `31` §22 no. 8)
 - [ ] Implementation of the system changes listed in `01` (24), one short-lived branch per part, in waves (owner, 1 November 2026, `00` → *Tahap dokumen 3*): C part 1 (`27`) alone; D part 2 (`28`) with part 5 (`31`); E parts 3 (`29`), 4 (`30`), and 6 (`32`); F parts 7 (`33`) and 8 (`34`), then part 9 (`35`) last
+  - [ ] Wave C, part 1 (`27`, researcher roles and capability map): code on branch `r10-dok-32-skenario-digital` (3 November 2026), PR open for the owner; migration `003400` is guarded (`gelita.allowTeacherRemoval`)
 
 ## Before the research starts
 

@@ -197,15 +197,15 @@ final class EventOrderingTest extends CIUnitTestCase
         $this->assertContains('package_changed', config('Gelita')->eventTypes);
 
         $raw  = service('rawDataService');
-        $rows = iterator_to_array($raw->rows('navigasi', [], StaffScope::admin(false)), false);
+        $rows = iterator_to_array($raw->rows('navigasi', [], StaffScope::of(false, true)), false);
         $row  = array_values(array_filter($rows, static fn (array $r): bool => $r['event_type'] === 'package_changed'));
 
         $this->assertCount(1, $row);
         $this->assertSame(['from' => 'pkt-2026-10-20-01', 'to' => 'pkt-2026-10-27-01', 'reason' => 'evicted'], json_decode((string) $row[0]['payload'], true));
         $this->assertSame(12, (int) $row[0]['sequence_no']);
         $this->assertNotNull($row[0]['clock_offset_ms']);
-        $this->assertContains('clock_offset_ms', $raw->columns('navigasi', StaffScope::admin(false)));
-        $this->assertContains('clock_offset_ms', $raw->columns('event', StaffScope::admin(false)));
+        $this->assertContains('clock_offset_ms', $raw->columns('navigasi', StaffScope::of(false, true)));
+        $this->assertContains('clock_offset_ms', $raw->columns('event', StaffScope::of(false, true)));
         $this->assertContains('package_changed', RawDataService::NAVIGATION_EVENTS);
         $this->assertContains('events_dropped', RawDataService::NAVIGATION_EVENTS);
     }

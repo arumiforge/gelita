@@ -11,7 +11,8 @@ use Tests\Support\Database\RawDataWorld;
  * Student pages of the panel, for the code issues found in the Dok 3 §11
  * documentation audit (decision log, items 1–3): the Jawaban tab shows the
  * whole try history, the list search does not match hidden identity
- * columns for teachers, and list-table CSV downloads are audited.
+ * columns for researchers, and list-table CSV downloads are audited (the
+ * admin has none, revision 10 part 1, 27 K17).
  *
  * @internal
  */
@@ -47,7 +48,7 @@ final class ParticipantPanelTest extends CIUnitTestCase
             ]);
         }
 
-        $html = (string) $this->asStaff('admin')->call(Method::GET, 'admin/peserta/1', ['tab' => 'jawaban'])->getBody();
+        $html = (string) $this->asStaff('ketua')->call(Method::GET, 'admin/peserta/1', ['tab' => 'jawaban'])->getBody();
 
         $this->assertStringContainsString('tanda-32', $html, 'newest try');
         $this->assertMatchesRegularExpression('/tanda-3(?!\d)/', $html, 'oldest added try, which page() used to cut off');
@@ -55,65 +56,73 @@ final class ParticipantPanelTest extends CIUnitTestCase
 
     public function testRawDataTablesShowReadableAnswersWithASwitchToJson(): void
     {
-        $readable = $this->adminPage('admin/data/jawaban');
+        $readable = $this->researchPage('admin/data/jawaban');
         $this->assertMatchesRegularExpression('/aria-current="true">Mudah dibaca</', $readable);
         $this->assertStringContainsString('raw=1', $readable, 'link to the JSON view');
         $this->assertStringNotContainsString('{"verdict', $readable);
         $this->assertMatchesRegularExpression('/<td class="">\s*Salah\s*<\/td>/', $readable);
 
-        $raw = $this->adminPage('admin/data/jawaban', ['raw' => '1']);
+        $raw = $this->researchPage('admin/data/jawaban', ['raw' => '1']);
         $this->assertMatchesRegularExpression('/aria-current="true">Asli \(JSON\)</', $raw);
         $this->assertStringContainsString('>{"verdict":"salah"}<', $raw);
 
         // Tabs without answer columns have no switch
-        $this->assertStringNotContainsString('Mudah dibaca', $this->adminPage('admin/data/pengerjaan'));
+        $this->assertStringNotContainsString('Mudah dibaca', $this->researchPage('admin/data/pengerjaan'));
 
         // The student page's Jawaban tab, try history included
-        $student = $this->adminPage('admin/peserta/1', ['tab' => 'jawaban']);
+        $student = $this->researchPage('admin/peserta/1', ['tab' => 'jawaban']);
         $this->assertStringContainsString('Mudah dibaca', $student);
         $this->assertStringNotContainsString('{"verdict', $student);
     }
 
-    public function testTeacherSearchDoesNotMatchUsername(): void
+    public function testResearcherSearchDoesNotMatchUsername(): void
     {
-        $this->assertSame(0, $this->listTotal('guru', 1, 'ani.5'), 'a hidden username must not find the student');
-        $this->assertSame(1, $this->listTotal('guru', 1, '000001'));
-        $this->assertSame(1, $this->listTotal('admin', null, 'ani.5'), 'admins still search by username');
+        $this->assertSame(0, $this->listTotal('peneliti', 'ani.5'), 'a hidden username must not find the student');
+        $this->assertSame(1, $this->listTotal('peneliti', '000001'));
+        $this->assertSame(1, $this->listTotal('admin', 'ani.5'), 'admins still search by username');
     }
 
     public function testListCsvDownloadsAreAudited(): void
     {
-        $this->asStaff('guru', 1)->call(Method::GET, 'admin/peserta', ['format' => 'csv', 'q' => 'Ani'])->assertOK();
-        $this->asStaff('admin')->call(Method::GET, 'admin/sesi', ['format' => 'csv'])->assertOK();
-        $this->asStaff('admin')->call(Method::GET, 'admin/sesi/1', ['format' => 'csv'])->assertOK();
-        $this->asStaff('admin')->call(Method::GET, 'admin/masukan', ['format' => 'csv'])->assertOK();
+        $this->asStaff('peneliti')->call(Method::GET, 'admin/peserta', ['format' => 'csv', 'q' => 'Ani'])->assertOK();
+        $this->asStaff('ketua')->call(Method::GET, 'admin/sesi', ['format' => 'csv'])->assertOK();
+        $this->asStaff('ketua')->call(Method::GET, 'admin/sesi/1', ['format' => 'csv'])->assertOK();
+        $this->asStaff('ketua')->call(Method::GET, 'admin/masukan', ['format' => 'csv'])->assertOK();
 
         $rows = db_connect()->table('audit_logs')->where('action', 'list_csv')->orderBy('id')->get()->getResultArray();
         $this->assertSame(['siswa', 'sesi', 'linimasa-1', 'kritik-saran'], array_column($rows, 'target_id'));
         $this->assertSame(['admin_table'], array_values(array_unique(array_column($rows, 'target_type'))));
 
         $meta = json_decode((string) $rows[0]['metadata_json'], true);
-        $this->assertSame(1, (int) $meta['filters']['school_id'], 'teacher scope is recorded');
+        $this->assertArrayNotHasKey('school_id', $meta['filters'], 'no school scope since part 1');
         $this->assertTrue($meta['search']);
         $this->assertArrayNotHasKey('q', $meta['filters'], 'the search text may hold a name');
         $this->assertSame(0, $meta['row_count']);
     }
 
+    public function testAdminHasNoStudentListCsv(): void
+    {
+        $page = (string) $this->asStaff('admin')->call(Method::GET, 'admin/peserta', ['format' => 'csv'])->getBody();
+
+        $this->assertStringContainsString('<html', $page, 'the admin gets the page, never a file with names');
+        $this->assertSame(0, db_connect()->table('audit_logs')->where('action', 'list_csv')->countAllResults());
+    }
+
     /**
-     * One admin page. The shared RawDataService left by an earlier request in
+     * One page as the head researcher. The shared RawDataService left by an earlier request in
      * the same process has no staff scope, so it is reset first.
      */
-    private function adminPage(string $path, array $query = []): string
+    private function researchPage(string $path, array $query = []): string
     {
         Services::resetSingle('rawDataService');
 
-        return (string) $this->asStaff('admin')->call(Method::GET, $path, $query)->getBody();
+        return (string) $this->asStaff('ketua')->call(Method::GET, $path, $query)->getBody();
     }
 
     /** Row total the student list reports for search $q. */
-    private function listTotal(string $role, ?int $school, string $q): int
+    private function listTotal(string $role, string $q): int
     {
-        $html = html_entity_decode((string) $this->asStaff($role, $school)->call(Method::GET, 'admin/peserta', ['q' => $q])->getBody());
+        $html = html_entity_decode((string) $this->asStaff($role)->call(Method::GET, 'admin/peserta', ['q' => $q])->getBody());
 
         $this->assertMatchesRegularExpression('/dari (\d+) baris/', $html);
         preg_match('/dari (\d+) baris/', $html, $match);
@@ -121,15 +130,15 @@ final class ParticipantPanelTest extends CIUnitTestCase
         return (int) $match[1];
     }
 
-    private function asStaff(string $role, ?int $school = null): self
+    private function asStaff(string $role): self
     {
-        $this->injectStaff($role, $school);
+        $this->injectStaff($role);
 
-        return $this->withSession(['staff_id' => 7, 'staff_role' => $role, 'staff_school_id' => $school, 'staff_name' => 'Uji']);
+        return $this->withSession(['staff_id' => 7, 'staff_role' => $role, 'staff_name' => 'Uji']);
     }
 
     /** null removes the injected staff so later tests read the database again. */
-    private function injectStaff(?string $role, ?int $school = null): void
+    private function injectStaff(?string $role): void
     {
         $property  = new ReflectionProperty(BaseService::class, 'instances');
         $instances = $property->getValue();
@@ -139,7 +148,7 @@ final class ParticipantPanelTest extends CIUnitTestCase
         } else {
             $instances['staffcontext'] = (object) [
                 'id' => 7, 'username' => 'staf_uji', 'email' => null, 'role' => $role, 'display_name' => 'Staf Uji',
-                'school_id' => $school, 'is_active' => 1, 'must_change_password' => 0, 'last_login_at' => null,
+                'is_active' => 1, 'must_change_password' => 0, 'last_login_at' => null,
             ];
         }
 

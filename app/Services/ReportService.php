@@ -45,8 +45,8 @@ class ReportService
     }
 
     /**
-     * Snapshot laporan satu peserta. Guru hanya untuk peserta di sekolahnya;
-     * AnalyticsService melempar exception bila di luar cakupan.
+     * Snapshot laporan satu peserta (coded for `ketua`, the only role that
+     * downloads).
      *
      * @param array<string, mixed> $context
      *
@@ -60,7 +60,7 @@ class ReportService
             throw new \DomainException('Laporan siswa memerlukan kode siswa. Buat laporan dari halaman profil siswa.');
         }
 
-        $analytics = new AnalyticsService($context['school_scope'], (bool) $context['anonymized']);
+        $analytics = new AnalyticsService(null, (bool) $context['anonymized']);
 
         try {
             $profile = $analytics->participantProfile($participantId);

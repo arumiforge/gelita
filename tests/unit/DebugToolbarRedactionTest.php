@@ -25,12 +25,12 @@ final class DebugToolbarRedactionTest extends CIUnitTestCase
             'password_confirm' => 'Kedu#2026',
             'current_password' => 'Lama#2025',
             'display_name'     => 'Jaka',
-            'staff'            => ['new_password' => 'Guru#2026', 'role' => 'guru'],
+            'staff'            => ['new_password' => 'Peneliti#2026', 'role' => 'peneliti'],
         ]);
 
         $this->assertSame('jaka.kedu', $redacted['username']);
         $this->assertSame('Jaka', $redacted['display_name']);
-        $this->assertSame('guru', $redacted['staff']['role']);
+        $this->assertSame('peneliti', $redacted['staff']['role']);
 
         $this->assertStringNotContainsString('2026', json_encode([
             $redacted['password'],

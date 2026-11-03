@@ -1,6 +1,6 @@
 <?php
 /**
- * Ubah sandi sendiri — `/admin/akun/sandi` → AccountController (admin & guru)
+ * Ubah sandi sendiri — `/admin/akun/sandi` → AccountController (every staff role)
  *
  * Kolom sandi tidak pernah diisi ulang dari old(). Aturan 12–72 karakter sama
  * dengan pembuatan akun di /admin/staf; server tetap memeriksanya. Kolom nama

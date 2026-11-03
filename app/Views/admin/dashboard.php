@@ -8,11 +8,11 @@
  * terbaru" (20 event) dan "Progres siswa" (10 terbaru). Tanpa skor dan chart.
  *
  * @var array{participants: int, active_sessions: int, completed_today: int, feedback: int} $kpi
- * @var array<string, mixed>       $events      bentuk tabel data-table
- * @var array<string, mixed>       $progress    bentuk tabel data-table
+ * @var array<string, mixed>|null  $events      bentuk tabel data-table (peneliti, ketua)
+ * @var array<string, mixed>|null  $progress    bentuk tabel data-table (peneliti, ketua)
  * @var array<string, mixed>|null  $readiness   ResearchReadiness::check() (admin)
  * @var list<array<string, mixed>> $retentionAlerts
- * @var bool                       $isAdmin
+ * @var bool                       $research    the caller sees coded research data
  */
 ?>
 <?= $this->extend('layouts/admin') ?>
@@ -20,9 +20,9 @@
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
     'title' => 'Ringkasan',
-    'lead'  => $isAdmin
-        ? 'Hitungan data mentah yang sudah tercatat di semua sekolah.'
-        : 'Hitungan data mentah siswa dari sekolah Anda.',
+    'lead'  => $research
+        ? 'Hitungan data mentah yang sudah tercatat di semua sekolah. Siswa dan sekolah tampil sebagai kode.'
+        : 'Hitungan yang sudah tercatat di semua sekolah, kesiapan konten, dan peringatan sistem.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
 
@@ -61,6 +61,7 @@
   </section>
 <?php endif ?>
 
+<?php if ($research): ?>
 <div class="stack">
   <?= component('data-table', [
       'table'        => $events,
@@ -72,7 +73,7 @@
       'emptyMessage' => 'Belum ada aktivitas. Aktivitas muncul setelah siswa mulai bermain.',
       // The game sends its events in batches (Config\Gelita::$eventFlush), so the list may lag one interval
       'note'         => lang('Admin.recentEventsLag', [fmt_num(round(event_flush_config()['intervalMs'] / 1000), 0, 'id')]),
-      'tools'        => '<a class="btn btn-sm btn-quiet" href="' . base_url('admin/sesi') . '">Semua sesi</a>',
+      'tools'        => staff_can('research.browse') ? '<a class="btn btn-sm btn-quiet" href="' . base_url('admin/sesi') . '">Semua sesi</a>' : '',
   ]) ?>
   <?= component('data-table', [
       'table'        => $progress,
@@ -89,4 +90,5 @@
       ],
   ]) ?>
 </div>
+<?php endif ?>
 <?= $this->endSection() ?>
