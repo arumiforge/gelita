@@ -1,6 +1,6 @@
 # Draf Terjemahan Bahasa Inggris Bank Soal Baru
 
-Per 3 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Sumber: [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md) (per 26 Oktober 2026, dengan perbaikan cek fakta 27 Oktober 2026 dari [25](25_CEK_FAKTA_BUDAYA.md)) · Status: **`draf pengembang`** (didraf AI, menunggu pemeriksaan pengembang) · Semua butir tetap **`needs_verification`**
+Per 3 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Sumber: [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md) (per 26 Oktober 2026, dengan perbaikan cek fakta 27 Oktober 2026 dari [25](25_CEK_FAKTA_BUDAYA.md)) · Status: **`disetujui pengembang`** (3 November 2026; didraf AI, usulan AI diterima pengembang apa adanya) · Semua butir tetap **`needs_verification`**
 
 Dokumen ini berisi pasangan bahasa Inggris untuk setiap teks bank soal baru yang tampil di game: instruksi, bacaan, pernyataan, petunjuk, bagian unggahan, dan seluruh teks Skenario Digital. Dasarnya keputusan pengembang 2 November 2026 ([04](04_CATATAN_KEPUTUSAN.md); [31 → Keputusan pengembang](31_IMPLEMENTASI_BANK_SOAL_BARU.md#22-keputusan-pengembang) no. 8 dan 11): **AI mendraf terjemahan sekarang, pengembang memeriksanya, lalu butir yang direvisi dari validasi diterjemahkan ulang.**
 
@@ -1031,7 +1031,7 @@ Pengecoh (label bank lama): *Ordinary papaya*, *Rigen*, *A bowl of ongklok noodl
 
 ## Catatan untuk diperiksa pengembang
 
-Pilihan penerjemahan yang mengubah sedikit cara butir bekerja, atau yang punya pilihan lain. Semua masih usulan AI.
+Pilihan penerjemahan yang mengubah sedikit cara butir bekerja, atau yang punya pilihan lain. Semua usulan AI di bawah **disetujui pengembang apa adanya** (3 November 2026); tidak ada baris terjemahan yang diubah.
 
 1. **`tmg-2-b` (Isi Rumpang): *dry* dan *dry up* ada di bank kata yang sama.** "Kemarau" paling wajar diterjemahkan *dry (season)*, dan "kering" untuk mata air *dry up*. Keduanya berbeda sebagai teks, jadi pemetaan kode tetap jalan, tetapi dua kata yang mirip bisa sedikit membantu siswa: *dry up* hanya cocok di rumpang (4). Di teks Indonesia "tidak pernah kering" dan kunci (4) "kering" juga sama-sama tersurat, jadi gema katanya setara. Pilihan lain: kunci (4) *disappear*, yang menjauh dari makna "kering".
 2. **`mgl-2-b` (Isi Rumpang): pengecoh *diam* → *stop*.** Di teks Indonesia "diam" menyasar rumpang (2) dan, menurut catatan 08, juga bersaing secara bentuk kata di rumpang (5) ("tetap diam"). Dalam bahasa Inggris kata kerja *stop* cocok di (2) ("the bells stop"), tetapi tidak di (5) ("stays stop"). Di (5) yang masih bersaing *together* ("stays together"). Kode sasaran (INF-HUB di rumpang 2) tidak berubah. Pilihan lain: rumpang (2) dijadikan kata sifat ("the bells sound *loud*", pengecoh *quiet*), supaya *quiet* juga bersaing di (5); maknanya sedikit bergeser dari "berbunyi".
@@ -1045,13 +1045,13 @@ Pilihan penerjemahan yang mengubah sedikit cara butir bekerja, atau yang punya p
 
 ## Cara memperbarui
 
-- Pengembang memeriksa dokumen ini, menandai baris yang diubah, lalu menaikkan statusnya ke `disetujui pengembang` (dicatat di [04](04_CATATAN_KEPUTUSAN.md) dan `00`).
+- Pengembang memeriksa dokumen ini dan menaikkan statusnya ke `disetujui pengembang` (3 November 2026, dicatat di [04](04_CATATAN_KEPUTUSAN.md) dan `00`). Perubahan berikutnya ditandai di tabelnya, lalu diperiksa lagi.
 - Bila 08 berubah (perbaikan sebelum validasi, matriks revisi setelah validasi, atau uji keterbacaan), baris yang sama di sini diterjemahkan ulang oleh AI dan diperiksa lagi oleh pengembang. Butir yang berubah ditandai di tabelnya dengan tanggal dan asal perubahannya (`asal: peneliti + ahli` untuk hasil validasi).
 - Butir yang baru diterjemahkan ulang mendapat lagi `review.note` "terjemahan belum diperiksa" di berkas data sampai pengembang memeriksanya.
 
 ## Dipakai di mana
 
-- **Gelombang kode D** ([31 §7.3](31_IMPLEMENTASI_BANK_SOAL_BARU.md#73-berkas-data-ditulis-ulang)): kolom bahasa Inggris berkas data `docs/bank-soal/data/*.php` diisi dari dokumen ini, bukan dari teks Indonesia. Sampai pengembang menyetujui dokumen ini, butirnya tetap bercatatan `review.note` "terjemahan belum ada" ([31 §6.4](31_IMPLEMENTASI_BANK_SOAL_BARU.md#64-bentuk-berkas-data); keputusan no. 11), dan `gelita:content:verify --siap-penelitian` tetap menyebutnya.
+- **Gelombang kode D** ([31 §7.3](31_IMPLEMENTASI_BANK_SOAL_BARU.md#73-berkas-data-ditulis-ulang)): kolom bahasa Inggris berkas data `docs/bank-soal/data/*.php` diisi dari dokumen ini, bukan dari teks Indonesia. Selama dokumen ini belum disetujui, butirnya bercatatan `review.note` "terjemahan belum ada" ([31 §6.4](31_IMPLEMENTASI_BANK_SOAL_BARU.md#64-bentuk-berkas-data); keputusan no. 11). Sejak persetujuan 3 November 2026 catatan itu diganti "Teks Inggris: dari 36, disetujui pengembang 3 November 2026" (`docs/bank-soal/tools/import_08.py`), dan `gelita:content:verify` tidak lagi menyebut 13 butir itu.
 - **Isi Rumpang**: pasangan kata di tabel kunci dan pengecoh menjadi pasangan bank kata (`wordBank()`), yang dipakai `ErrorCodeResolver` untuk siswa yang bermain dalam bahasa Inggris.
 - **Narasi**: teks bahasa Inggris ini juga naskah rekaman `instruksi-*`, `unggahan-*`, dan `skenario-*` versi Inggris ([12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) → daftar rekaman), setelah disetujui.
 - **Bukan untuk validasi.** Validator, uji keterbacaan, dan cek fakta memakai 08. Data penelitian dari siswa yang bermain dalam bahasa Inggris tetap tercatat dengan kode butir yang sama.

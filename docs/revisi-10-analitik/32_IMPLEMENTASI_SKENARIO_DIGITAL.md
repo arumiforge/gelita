@@ -2,7 +2,7 @@
 
 Per 2 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 2, 6, dan 18 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
 
-> **Status: `draf pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 1–2 November 2026). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 kode boleh dibangun sekarang, di cabang pendek dari `main`, tetapi tidak dipakai dengan anak sebelum persetujuan etik terbit ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026). Kode bagian ini dibangun di gelombang E, setelah format bank bagian 5 (`31`), bersamaan dengan bagian 3 (`29`) dan 4 (`30`).
+> **Status: `disetujui pengembang`, `asal: pengembang`** (3 November 2026; disusun dengan bantuan AI, 1–2 November 2026; pertanyaan terbuka §17 dijawab semua). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 kode boleh dibangun sekarang, di cabang pendek dari `main`, tetapi tidak dipakai dengan anak sebelum persetujuan etik terbit ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026). Kode bagian ini dibangun di gelombang E, setelah format bank bagian 5 (`31`), bersamaan dengan bagian 3 (`29`) dan 4 (`30`).
 >
 > Isi skenario (situasi, pilihan, umpan balik, kode) masih `needs_verification` dan menunggu validasi ahli. Dokumen ini hanya mengatur **mekanismenya**; revisi dari validasi cukup diubah di workbook lalu diimpor ulang.
 >
@@ -77,7 +77,7 @@ Bagian 3 dikerjakan bersamaan. Bila bagian 3 belum digabung saat bagian ini mula
 | 10 | Cerita penghubung `scenario_open` sekali per siswa per studi, sebelum kartu misi tantangan kelima | [12 → Yang perlu disiapkan di tahap 3](12_CERITA_PENGHUBUNG_DAN_NARASI.md#yang-perlu-disiapkan-di-tahap-3) no. 1 | §7.2 |
 | 11 | `level_done` dipicu tantangan kelima; `map_done` setelah 15 tantangan; Serpihan Cahaya jadi 15 | 12 no. 2; 01 no. 2 | §7.3 |
 | 12 | Kartu misi tiga tantangan baru dan tujuh yang berubah | [12 → Kartu misi](12_CERITA_PENGHUBUNG_DAN_NARASI.md#kartu-misi) | §7.4 |
-| 13 | Gambar situasi (opsional), latar cerita penghubung, gambar kartu tantangan peta | 08; 12 no. 6; 18 | §7.5 |
+| 13 | Gambar situasi (dibuat, prompt di 32A), latar cerita penghubung, gambar kartu tantangan peta | 08; 12 no. 6; 18 | §7.5 |
 | 14 | Narasi instruksi dengan kode konteks sendiri, supaya mengulang instruksi terpisah dari memutar narasi soal | 01 no. 6; [11 → Analitik 7](11_KAMUS_DATA.md#analitik-7-penggunaan-bantuan) (`instruction_replays`) | §8 |
 | 15 | Bacaan dan pernyataan D1 tidak pernah dibacakan; situasi Skenario Digital dan petunjuk *Periksa Unggahan* hanya lewat tombol ▶ dan tercatat | 01 no. 18; 12 → *Yang dibacakan di Skenario Digital*; 18 → *Keputusan yang dipakai di semua layar* | §9 |
 | 16 | Impor narasi mengenali awalan `layar-`, `skenario-`, `unggahan-`, `instruksi-` | 12 no. 4 | §8.3, §9.3 |
@@ -316,10 +316,10 @@ Kartu misi 15 tantangan, termasuk tiga kartu baru dan tujuh yang berubah di [12 
 | --- | --- | --- |
 | Kartu tantangan peta, engine Skenario Digital | `public/assets/ui/node-card-skenario.webp` | Ya, sebelum G3 |
 | Latar cerita penghubung, satu per wilayah | Katalog `bg.cerita-layar-{wilayah}-NN` → `bg.story.scenario_open.{wilayah}.{n}` | Ya, sebelum G3 (12 no. 6) |
-| Gambar situasi per butir (24) | `challenge_items.media_asset_id`, katalog `item.skenario.{kode butir}` | Opsional (08); tablet atau pesan tiruan tanpa layar sungguhan dan tanpa merek |
+| Gambar situasi per butir (24) | `challenge_items.media_asset_id`, katalog `item.skenario.{kode butir}` | Dibuat (pengembang, 3 November 2026), prompt siap pakai di [32A](32A_PROMPT_GAMBAR_SITUASI.md); butir tanpa gambar tetap tampil dengan teks saja, jadi gambar tidak menahan G3. Tablet atau pesan tiruan tanpa layar sungguhan dan tanpa merek |
 | Latar layar tantangan kelima | `challenge_nodes.background_media_id`, sama dengan latar wilayah bila kosong | Tidak |
 
-Gambar situasi tidak boleh memuat petunjuk jawaban (misalnya ikon bahaya). Nama berkas tidak memuat kata seperti "aman" atau "tipuan".
+Gambar situasi tidak boleh memuat petunjuk jawaban (misalnya ikon bahaya). Nama berkas tidak memuat kata seperti "aman" atau "tipuan". Ke-24 prompt, aturannya, dan daftar periksa hasil ada di [32A](32A_PROMPT_GAMBAR_SITUASI.md).
 
 ---
 
@@ -439,7 +439,7 @@ Tidak ada rute panel baru: butir skenario disunting di halaman butir yang ada (`
 
 ## 13. Teks antarmuka
 
-Teks siswa di `app/Language/id/Game.php` dan `Js.php`, dengan pasangan di `en/`. Teks panel di `Admin.php` (Indonesia saja). Yang bertanda *draf* belum ada di dokumen sumber dan menunggu tinjauan ahli media bersama mock-up.
+Teks siswa di `app/Language/id/Game.php` dan `Js.php`, dengan pasangan di `en/`. Teks panel di `Admin.php` (Indonesia saja). Tiga kalimat bingkai yang dulu bertanda *draf* sudah ditinjau pengembang dan dipakai apa adanya (3 November 2026, §18 no. 7).
 
 | Kunci | id | en |
 | --- | --- | --- |
@@ -452,10 +452,10 @@ Teks siswa di `app/Language/id/Game.php` dan `Js.php`, dengan pasangan di `en/`.
 | `Js.scenarioYourChoice` | Pilihanmu: {0} | Your choice: {0} |
 | `Js.scenarioReasonQuestion` | Yang paling penting kupikirkan di sini adalah … | The most important thing I'm thinking about here is … |
 | `Js.scenarioSend` | Kirim jawaban | Send answer |
-| `Js.scenarioTriesLeft` (*draf*) | Kamu masih punya {0} kesempatan. Pilih lagi tindakan dan alasanmu. | You still have {0} tries. Choose your action and reason again. |
+| `Js.scenarioTriesLeft` | Kamu masih punya {0} kesempatan. Pilih lagi tindakan dan alasanmu. | You still have {0} tries. Choose your action and reason again. |
 | `Js.scenarioRetry` | Coba lagi | Try again |
-| `Js.scenarioSafeAction` (*draf*) | Ini tindakan yang aman | This is the safe action |
-| `Js.scenarioClosed` (*draf*) | Kesempatanmu untuk cerita ini sudah habis. Ayo lanjut ke cerita berikutnya. | You've used all your tries for this story. Let's go on to the next one. |
+| `Js.scenarioSafeAction` | Ini tindakan yang aman | This is the safe action |
+| `Js.scenarioClosed` | Kesempatanmu untuk cerita ini sudah habis. Ayo lanjut ke cerita berikutnya. | You've used all your tries for this story. Let's go on to the next one. |
 | `Js.scenarioNext` | Lanjut ke cerita berikutnya | Go to the next story |
 | `Js.scenarioProgress` | Cerita {0} dari {1} | Story {0} of {1} |
 | `Js.instructionListen` | Dengarkan instruksi | Listen to the instructions |
@@ -541,17 +541,19 @@ Teks yang menyebut jumlah serpihan ("12 serpihan", "dua belas") dicari di `app/L
 
 ## 17. Pertanyaan terbuka
 
-1. **Gambar situasi (24) dibuat atau tidak.** 08 mencatatnya opsional. Usulan AI: buat setelah validasi ahli media, karena isinya bisa berubah. Ditanyakan saat tim katalog siap.
-2. **Kalimat bingkai bertanda *draf*** di §13 menunggu tinjauan ahli media (instrumen media v1.1, mock-up `mk-sd-04` dan `mk-sd-05`).
-3. **Umpan balik skor 2.** Bank 08 menulis umpan balik untuk setiap tindakan, juga yang tepat; layar memakainya apa adanya. Bila ahli media meminta umpan balik tepat yang lebih pendek, cukup diubah di bank.
-4. ~~**Nomor migrasi `004000`** dinomori ulang saat digabung, bila bagian 5 atau 7 memakai blok yang sama.~~ **Selesai 2 November 2026** (sesi koordinator): blok tidak bertabrakan (bagian 5 `003900`/`003910`, bagian 6 `004000`, bagian 7 `0041xx`, bagian 8 `004200`, bagian 9 `004300`), jadi tidak ada penomoran ulang.
-5. **Keseimbangan posisi tindakan tepat.** Pengacakan per pengerjaan tidak memaksa posisi; bila uji coba menunjukkan tindakan tepat terlalu sering di satu posisi untuk sekelompok siswa, ditinjau ulang setelah KG3a.
+Semua dijawab pengembang pada 3 November 2026 (jawaban lengkap di [§18](#18-keputusan-pengembang) no. 6–10). Tidak ada yang tersisa.
+
+1. ~~**Gambar situasi (24) dibuat atau tidak.**~~ **Dibuat sekarang**, tidak menunggu validasi ahli media (usulan AI sebelumnya dilepas). Prompt untuk pembuat gambar ada di [32A](32A_PROMPT_GAMBAR_SITUASI.md). → §18 no. 6.
+2. ~~**Kalimat bingkai bertanda *draf*** di §13.~~ **Sudah ditinjau dan dipakai.** → §18 no. 7.
+3. ~~**Umpan balik skor 2.**~~ **Dipakai apa adanya**: bank 08 menulis umpan balik untuk setiap tindakan, juga yang tepat. Bila ahli media nanti meminta umpan balik tepat yang lebih pendek, cukup diubah di bank. → §18 no. 8.
+4. ~~**Nomor migrasi `004000`.**~~ **Selesai 2 November 2026** (sesi koordinator): blok tidak bertabrakan (bagian 5 `003900`/`003910`, bagian 6 `004000`, bagian 7 `0041xx`, bagian 8 `004200`, bagian 9 `004300`), jadi tidak ada penomoran ulang. Disetujui pengembang 3 November 2026. → §18 no. 9.
+5. ~~**Keseimbangan posisi tindakan tepat.**~~ Pengacakan per pengerjaan tidak memaksa posisi. Bila uji coba menunjukkan tindakan tepat terlalu sering di satu posisi untuk sekelompok siswa, ditinjau ulang setelah KG3a. Disetujui pengembang 3 November 2026. → §18 no. 10.
 
 ---
 
 ## 18. Keputusan pengembang
 
-Diambil pengembang dalam wawancara 2 November 2026 (`asal: pengembang`, `disetujui pengembang` untuk keempat keputusan; dokumen tetap `draf pengembang`).
+Diambil pengembang dalam wawancara 2 November 2026 (`asal: pengembang`, `disetujui pengembang` untuk keempat keputusan; dokumen disetujui seluruhnya 3 November 2026, lihat di bawah).
 
 1. **Kode engine tersimpan `skenario`** (K1), sejajar dengan `rumpang`, `boleh`, dan `cari`. Tidak dipilih: `scenario` (bahasa Inggris, berbeda dari kode engine lain) dan `pilih` (menamai tindakan, bukan isi).
 2. **Narasi instruksi hanya lewat tombol ▶** (K10), tidak pernah otomatis, di kelima belas tantangan. Tidak dipilih: sekali otomatis saat layar dibuka ditambah ▶ (usulan AI), dan diputar di kartu misi.
@@ -562,11 +564,19 @@ Diambil pengembang dalam wawancara 2 November 2026 (`asal: pengembang`, `disetuj
 
 5. **Waktu keputusan Skenario Digital disimpan sebagai data mentah** (§6.4, §10, §11): `item_tries` mendapat `action_last_input_ms` dan `reason_last_input_ms` (milidetik sejak tantangan dibuka, seperti `ready_ms`; saat terakhir pilihan tindakan atau alasan diubah sebelum *Kirim jawaban*). Keduanya masuk lembar `percobaan` (29 §7.3), dan bagian 9 (35) membacanya apa adanya. Tidak dipilih: perkiraan di lapis turunan (35).
 
+**Tinjauan pengembang atas pertanyaan terbuka, 3 November 2026** (`asal: pengembang`, `disetujui pengembang`; dokumen naik dari `draf pengembang` ke `disetujui pengembang`):
+
+6. **Gambar situasi (24) dibuat sekarang** (dulu §17 no. 1). Tidak menunggu validasi ahli media. Prompt untuk ChatGPT dibuat AI di [32A](32A_PROMPT_GAMBAR_SITUASI.md): satu prompt per butir, tanpa teks terbaca, tanpa merek, tanpa wajah, tanpa petunjuk jawaban. Isi situasi di 08 masih `needs_verification`; bila validasi mengubah situasi, hanya baris adegan pada prompt yang bersangkutan yang diganti. Butir tanpa gambar tetap tampil dengan teks saja.
+7. **Tiga kalimat bingkai yang bertanda *draf*** (`Js.scenarioTriesLeft`, `Js.scenarioSafeAction`, `Js.scenarioClosed`) sudah ditinjau pengembang dan dipakai apa adanya. Penandanya dilepas dari §13. Ahli media tetap boleh menilainya bersama mock-up `mk-sd-04` dan `mk-sd-05`; perubahan dari penilaian itu cukup di berkas bahasa.
+8. **Umpan balik skor 2 dipakai apa adanya**: layar menampilkan umpan balik tindakan tepat dari bank 08 tanpa dipendekkan. Bila ahli media meminta yang lebih pendek, cukup diubah di bank.
+9. **Blok migrasi tidak bertabrakan**: bagian 5 `003900`/`003910`, bagian 6 `004000`, bagian 7 `0041xx`, bagian 8 `004200`, bagian 9 `004300`. Tidak ada penomoran ulang.
+10. **Posisi tindakan tepat tidak dipaksa.** Pengacakan sekali per pengerjaan (K7) tidak diberi aturan penyeimbang. Bila uji coba menunjukkan tindakan tepat terlalu sering di satu posisi untuk sekelompok siswa, keputusan ditinjau ulang setelah KG3a.
+
 ---
 
 ## 19. Akibat ke dokumen lain
 
-Untuk sesi koordinator berikutnya; dokumen lain tidak diubah di cabang ini. **Status per 3 November 2026:** dibawa sesi koordinator 31–35 (cabang `r10-cek-30`), kecuali no. 1, 3, dan 5.
+Untuk sesi koordinator berikutnya; dokumen lain tidak diubah di cabang ini. **Status per 3 November 2026:** dibawa sesi koordinator 31–35 (cabang `r10-cek-30`), kecuali no. 1, 3, dan 5; no. 11 ditambah 3 November 2026 setelah tinjauan pengembang.
 
 1. **Glosarium** (`.claude/rules/glossary.md`), saat implementasi: *Skenario Digital* → engine `skenario`, butir `scenario_choice`; *tindakan*, *alasan* → `action`, `reason` (`action_key`, `reason_code`); *cerita penghubung* → `scenario_open`, rute `/penghubung/{wilayah}`; *narasi instruksi* → `challenge_instruction`, `audio_instruction_*`; *situasi* → `scenario_situation`; *petunjuk Periksa Unggahan* (rekaman) → `post_clue`; event `scenario_failed`. — *Saat implementasi.*
 2. **[01](01_REVISI_10_ANALITIK.md) → Catatan perubahan sistem:** baris no. 2, 6, dan 18 merujuk dokumen ini; no. 6 ditambah "hanya lewat tombol ▶". — *Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`).*
@@ -578,3 +588,4 @@ Untuk sesi koordinator berikutnya; dokumen lain tidak diubah di cabang ini. **St
 8. **`33` (bagian 7):** sakelar jam berlaku juga untuk engine `skenario`; aturan pengerjaan ulang berlaku juga untuk tantangan kelima. — *Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`).*
 9. **`35` (bagian 9):** turunan `action_reason_pattern`, `skipped_failed_count` dari `scenario_failed`, `instruction_replays`, `item_narration_before` dari §10. — *Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`).*
 10. **[06](06_KISI_KISI_BANK_SOAL.md) → Yang perlu disiapkan sistem nanti** no. 1: "pilihan diacak per pengerjaan" diperjelas "sekali per pengerjaan, tetap di ketiga kesempatan". — *Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`).*
+11. **[18](18_MOCKUP_LAYAR_BARU.md) → Skenario Digital:** *Draf salinan* tiga kalimat bingkai (kesempatan tersisa, tindakan yang aman, kesempatan habis) kini ditetapkan di §13 dokumen ini; tidak perlu mengubah mock-up. — *Sudah (3 November 2026, cabang `sky/gallant-mccarthy-71jnn1`).*
