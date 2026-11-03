@@ -297,7 +297,7 @@ Setiap penolakan punya pesannya sendiri ([§16](#16-layar-dan-teks)). Penolakan 
 3. P1 memeriksa, mengubah bila perlu, lalu menyimpan ke `field_session_members`. Perubahan anggota dicatat di log audit.
 4. Siswa yang bukan anggota mendapat pesan `not_member`.
 5. Susulan P1 (siswa belum punya akun) memakai pendaftaran dengan token tanpa pemeriksaan anggota ([§6.5](#65-pendaftaran-dengan-token-p1)).
-6. Susulan skala sikap 7 hari setelah P5 (no. 21) adalah susulan P5 biasa dengan jam buka yang panjang.
+6. Susulan skala sikap 7 hari setelah P5 (no. 21) adalah susulan P5 biasa. Sesinya dibuka pada hari pelaksanaannya dan tetap dalam batas 4 jam sesi lapangan ([§6.1](#61-isi-dan-keadaan-sesi-lapangan); keputusan pengembang 3 November 2026, [04](04_CATATAN_KEPUTUSAN.md)).
 
 ---
 
