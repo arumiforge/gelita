@@ -245,7 +245,7 @@ Layarnya bagian modul tes (no. 22, tampilan Bootstrap). Bagian ini menetapkan at
 | Siapa melihat T11 | Siswa dengan `risk_items_consent = 1` dan status `active`, dibaca server saat modul sampai di titik itu (setelah tes akhir P5) |
 | Pilihan di T11 | *Ya, aku mau mengisi* → ang-21–ang-23, lalu T12; *Tidak, lewati saja* → langsung T12 |
 | Siswa lain | Langsung T12 di titik yang sama, termasuk siswa tanpa izin dan yang izinnya belum diisi |
-| Yang disimpan | Pilihan T11 sebagai `risk_reconsent` (1 atau 0) dengan waktu, di penyimpanan jawaban modul (no. 22). Bukan bagian kamus `kamus-1.0`; masuk `kamus-1.1` |
+| Yang disimpan | Pilihan T11 sebagai `risk_reconsent` (1 atau 0) dengan waktu, di sesi jenis `risk` modul tes (`instrument_sittings.risk_reconsent`, `risk_reconsent_at`; `risk_offered` di sesi yang sama, [34 §11.1](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#111-tabel-baru)). Bukan bagian kamus `kamus-1.0`; masuk `kamus-1.1` |
 | Yang tidak boleh terlihat | P1–P3 tidak melihat siapa yang melihat T11, apa pilihannya, atau apakah siswa mengisi butir risiko. Pemantauan bagian 2 hanya menunjukkan "modul selesai" |
 | Tampilan | Kedua tombol T11 sama besar dan sama warna (23 → T11); T12 satu tombol *Lanjut* |
 | Teks | id dari 23 → T11 dan T12 apa adanya; en diusulkan di [§17](#17-teks-layar-dan-panel) |
@@ -277,7 +277,7 @@ Kode pilihannya mengikuti kode jawaban di 16 dan modul no. 22. Bila Ahli Literas
 - tidak ada isian "sudah dihubungi" atau catatan, karena catatan rujukan disimpan `ketua` di luar sistem (22 langkah 6);
 - log audit `risk_flags_viewed` hanya memuat `{field_session_code, count}`, tanpa kode peserta, karena admin membaca log audit dan memegang nama.
 
-**Sumber data.** `RiskFollowUpService::flags(int $studyId, ?int $fieldSessionId)` membaca jawaban ang-21 dan ang-23 dari penyimpanan modul no. 22 (titik sambung). Siswa nonaktif tetap ikut dihitung bila jawabannya ada, karena keselamatan anak tidak bergantung pada status mundur. Jawaban yang sudah dihapus lewat permintaan C tidak menghasilkan penanda lagi.
+**Sumber data.** `RiskFollowUpService::flags(int $studyId, ?int $fieldSessionId)` membaca jawaban ang-21 dan ang-23 (satuan `risk_upset` dan `support_none`) dari sesi jenis `risk` yang `is_preview = 0` di tabel modul ([34 §8.3](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#83-data)). Siswa nonaktif tetap ikut dihitung bila jawabannya ada, karena keselamatan anak tidak bergantung pada status mundur. Jawaban yang sudah dihapus lewat permintaan C tidak menghasilkan penanda lagi.
 
 ---
 
@@ -314,7 +314,7 @@ ketua mengajukan ─────────────────────
 | Jenis (`kind`) | Dari T10 | Status izin yang ikut berubah | Yang dihapus sistem | Di luar sistem (centang) |
 | --- | --- | --- | --- | --- |
 | `all` | B | Status `withdrawn_delete`, akun nonaktif | Semua data anak ([§7.3](#73-yang-dihapus-sistem)) | Rekaman dan transkrip L5, baris berkode di lembar kertas L2–L6, salinan peneliti, cadangan |
-| `risk_items` | C, butir risiko | Izin butir risiko Tidak, dengan tanggal ditarik | Jawaban ang-21–ang-23 dan `risk_reconsent` anak itu | Salinan peneliti, cadangan |
+| `risk_items` | C, butir risiko | Izin butir risiko Tidak, dengan tanggal ditarik | Sesi jenis `risk` anak itu beserta jawabannya: ang-21–ang-23, `risk_offered`, dan `risk_reconsent` (34 §8.3) | Salinan peneliti, cadangan |
 | `recording` | C, rekaman | Izin rekaman Tidak, dengan tanggal ditarik | Tidak ada; rekaman tidak pernah di server | Rekaman yang sudah ada dan transkripnya |
 
 - Bila anak belum punya jawaban butir risiko (misalnya izin ditarik sebelum P5), formulir hanya mengubah izinnya dan berkata "Belum ada jawaban yang perlu dihapus. Izinnya sudah diubah." Tidak ada permintaan yang dibuat.
@@ -323,7 +323,7 @@ ketua mengajukan ─────────────────────
 
 ### 7.3 Yang dihapus sistem
 
-`RetentionService::HARD_ORDER` (`RetentionService.php:24-28`) dan `scopedBuilder()` (baris 564–604) mendapat tabel dari bagian 2–4 dan perubahan lain. Cakupan baru `['participant_id' => …, 'kind' => 'risk_items']` di `normalizeScope()`.
+`RetentionService::HARD_ORDER` (`RetentionService.php:24-28`) dan `scopedBuilder()` (baris 564–604) mendapat tabel dari bagian 2–4 dan perubahan lain. Cakupan baru `['participant_id' => …, 'kind' => 'risk_items']` di `normalizeScope()`; isinya sesi modul jenis `risk` anak itu (`instrument_sittings.kind = 'risk'`, [34 §8.3](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#83-data)).
 
 | Tabel | Cakupan `all` | Cakupan `risk_items` | Asal tabel |
 | --- | --- | --- | --- |
@@ -331,14 +331,16 @@ ketua mengajukan ─────────────────────
 | `participant_progress`, `participant_seats`, `field_session_members` | Ya | — | Bagian 2 (menggantikan `session_progress`) |
 | `field_sheet_rows` (per `participant_id`) | Ya | — | Bagian 3 |
 | `participant_consents` | Ya (ikut `ON DELETE CASCADE`) | — | Bagian 4 |
-| Jawaban modul tes, angket, dan skala sikap | Ya | Hanya ang-21–ang-23 dan `risk_reconsent` | No. 21, 22 (titik sambung) |
+| `challenge_attempt_segments` | Ya (`ON DELETE CASCADE` lewat `challenge_attempt_id` dan `session_id`; di `HARD_ORDER` sebelum `challenge_attempts`) | — | Bagian 7 ([33](33_IMPLEMENTASI_MODE_PENELITIAN.md) §5.4, §9) |
+| `instrument_responses`, `instrument_parts`, `instrument_blocks`, `instrument_sittings` | Ya: semua sesi tes, angket, butir risiko, dan skala sikap (di `HARD_ORDER` sebelum `participants`) | Hanya sesi jenis `risk` beserta bagian dan jawabannya (ang-21–ang-23); `risk_offered` dan `risk_reconsent` ikut, karena disimpan per siswa di sesi itu | Bagian 8 ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) §11.1, §11.3) |
+| `derived_participants`, `derived_field_sessions`, `derived_challenges`, `derived_attempts`, `derived_items`, `derived_tries`, `derived_observations` (semua putaran) | Ya (`ON DELETE CASCADE` lewat `participant_id`; di `HARD_ORDER` sebelum `participants`, untuk pratinjau) | — | Bagian 9 ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) §9, §12) |
 | `participants` | Ya, terakhir | — | Sudah ada |
 
 **Yang tetap:**
 - `data_deletion_requests` menyimpan `participant_code` di kolomnya sendiri sebagai bukti untuk berita acara;
 - `audit_logs` tetap, karena itu catatan tindakan staf dan metadatanya hanya memuat kode.
 
-**Kunci asing ke `participants`** dari bagian 2–4 (`participant_seats`, `participant_progress`, `field_session_members`, `field_sheet_rows`, `participant_consents`) memakai `ON DELETE CASCADE`, tetapi `HARD_ORDER` tetap menghapusnya satu per satu, supaya jumlah barisnya masuk pratinjau dan berita acara. Ini menjawab "kunci asing ke `participants` ikut aturan hapus bagian 4" di 28 §14 dan 29 §12.
+**Kunci asing ke `participants`** dari bagian 2–4 (`participant_seats`, `participant_progress`, `field_session_members`, `field_sheet_rows`, `participant_consents`) dan dari bagian 7–9 (`challenge_attempt_segments`, `instrument_*`, `derived_*`) memakai `ON DELETE CASCADE`, tetapi `HARD_ORDER` tetap menghapusnya satu per satu, supaya jumlah barisnya masuk pratinjau dan berita acara. Ini menjawab "kunci asing ke `participants` ikut aturan hapus bagian 4" di 28 §14 dan 29 §12.
 
 ### 7.4 Unduhan di server dan salinan peneliti
 
@@ -468,8 +470,8 @@ Kalimat di PDF bila jawaban butir risiko tidak disertakan: "Jawaban anak untuk b
 - Dicatat di `data_exports` (`scope_json.kind = "consent_register"`) dan log audit; `research_studies.consent_register_exported_at` diisi.
 - Sebelum L7 dimusnahkan, `ketua` mencocokkan setiap baris dengan L7. Selisih dibetulkan dulu di halaman izin, lalu daftar diunduh lagi.
 - Disimpan bersama data berkode selama data itu disimpan (22 → Masa simpan, PP 33/2026 Pasal 36).
-- Lembar yang sama dipakai untuk menghitung `consent_ok` di lapis 3 (`kamus-1.1`), dengan L7 sebagai pembanding sampai studi ditutup.
-- **Lembar `izin` di unduhan utama** (keputusan no. 9): unduhan `ketua` ([29 §7.2](29_IMPLEMENTASI_DATA_PENELITIAN.md#72-lembar)) mendapat lembar `izin` dengan kolom yang sama, disaring ke siswa di unduhan itu, supaya lapis 3 bisa menghitung `consent_ok` dari satu berkas. Unduhan terpisah di atas tetap dokumen penutupan studi; hanya unduhan terpisah yang mengisi `consent_register_exported_at`.
+- `consent_ok` (`kamus-1.1`) dihitung lapis turunan di server dari `participant_consents` ([35 §7](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#7-consent_ok-dan-data-sampai-tanggal-mundur)), bukan dari lembar ini. Daftar ini, dengan L7 sebagai pembanding sampai studi ditutup, tetap sumber yang diperiksa `ketua`.
+- **Lembar `izin` di unduhan utama** (keputusan no. 9): unduhan `ketua` ([29 §7.2](29_IMPLEMENTASI_DATA_PENELITIAN.md#72-lembar)) mendapat lembar `izin` dengan kolom yang sama, disaring ke siswa di unduhan itu. Lembar itu membawa kolom sumber `consent_ok`, supaya `ketua` bisa mencocokkannya dengan L7 dan lapis 3 bisa memeriksa `consent_ok` dari satu berkas. Unduhan terpisah di atas tetap dokumen penutupan studi; hanya unduhan terpisah yang mengisi `consent_register_exported_at`.
 
 Anak yang datanya dihapus (pilihan B) tidak ada di daftar, karena baris izinnya ikut terhapus; buktinya permintaan hapus dan berita acaranya.
 
@@ -545,7 +547,7 @@ Untuk [26 → P15](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md#langkah-perlindungan)
 | Kebutuhan | Jalan manual | Siapa |
 | --- | --- | --- |
 | Hapus semua data (B) | Sudah ada: Tata kelola, cakupan nomor siswa, mode `hard` | Admin, atas perintah `ketua` |
-| Hapus jawaban butir risiko (C) | `DELETE` baris ang-21–ang-23 anak itu di tabel jawaban modul (no. 22) dengan id peserta, setelah `SELECT COUNT(*)` yang sama dicatat | Admin, atas perintah `ketua` |
+| Hapus jawaban butir risiko (C) | `DELETE` sesi jenis `risk` anak itu di `instrument_sittings` dengan id peserta (`instrument_parts` dan `instrument_responses` ang-21–ang-23 ikut lewat `ON DELETE CASCADE`, bersama `risk_offered` dan `risk_reconsent`; 34 §8.3), setelah `SELECT COUNT(*)` atas ketiga tabel itu dicatat | Admin, atas perintah `ketua` |
 | Salinan satu anak (D) | `SELECT` per tabel dengan id peserta, disimpan sebagai CSV di penyimpanan terenkripsi admin; `ketua` menyusun salinan tanpa kunci jawaban; jawaban butir risiko mengikuti [§8](#8-salinan-data-satu-anak) | Admin dan `ketua` |
 | Pembetulan (D) | `UPDATE participants SET {kolom} = … WHERE participant_code = …` | Admin, atas perintah `ketua` |
 | Cadangan | Cadangan baru, lalu berkas lama di kedua lokasi dihapus dengan tangan | Admin |
@@ -597,14 +599,14 @@ Dua kemampuan baru di peta [27 §5.1](27_IMPLEMENTASI_PERAN_PENELITI.md#51-peta-
 | `data_exports` | Kolom baru `purged_by_request_id` FK `data_deletion_requests` (null) |
 | `ci_sessions` | Tidak diubah migrasi; baris ber-IP mentah dihapus retensi setelah `researchPrivacy` menyala (§12) |
 
-Semua kunci asing ke `staff_users` memakai `ON DELETE SET NULL`. Kunci asing ke `participants` dari bagian 2–4 memakai `ON DELETE CASCADE` ([§7.3](#73-yang-dihapus-sistem)).
+Semua kunci asing ke `staff_users` memakai `ON DELETE SET NULL`. Kunci asing ke `participants` dari bagian 2–4 memakai `ON DELETE CASCADE` ([§7.3](#73-yang-dihapus-sistem)); begitu juga tabel dari bagian 7–9 (`challenge_attempt_segments`, 33 §9; `instrument_*`, 34 §11.1; `derived_*`, 35 §12), yang dibuat migrasi masing-masing.
 
 **`down()`** membuang tabel dan kolom baru. Data yang sudah terhapus lewat permintaan tidak kembali; ini ditulis di komentar migrasi.
 
 **Ikut diperbarui:**
 - `tests/_support/Database/ResetTables.php` (skema SQLite).
 - `SystemResetService`: `REQUIRED_MIGRATION` menjadi `2026-01-01-003800`, nilai akhir bagian 1–4 (bagian 5–9 memakai nomor mulai `003900` dan menaikkannya lagi); `participant_consents` di kelompok A (dikosongkan).
-- `RetentionService`: `HARD_ORDER`, `scopedBuilder()`, `normalizeScope()` (`kind`), `flagExpiredStudyData()`, `purgeExpiredBrowserSessions()`, perpindahan status bersyarat.
+- `RetentionService`: `HARD_ORDER` (termasuk `challenge_attempt_segments`, `instrument_*`, dan `derived_*` dari bagian 7–9, [§7.3](#73-yang-dihapus-sistem)), `scopedBuilder()`, `normalizeScope()` (`kind`; cakupan `risk_items` = sesi jenis `risk`), `flagExpiredStudyData()`, `purgeExpiredBrowserSessions()`, perpindahan status bersyarat.
 - `ResearchStudySeeder`: tetap 1825 (studi bawaan bukan `field_mode`).
 - `Config\Gelita`: `$researchPrivacy = false` (dari `.env` `gelita.researchPrivacy`); `Config\Session`: pilihan penangan di konstruktor.
 - Model baru `ParticipantConsentModel`; `ParticipantModel`, `ResearchStudyModel`, `DataDeletionRequestModel`, `DataExportModel`: `allowedFields` dan aturan status.
@@ -738,11 +740,12 @@ Label pilihan *Tidak mau menjawab* di en mengikuti teks en butir ang-21–ang-23
 
 | Perubahan | Yang disediakan bagian ini | Yang dirancang di sana |
 | --- | --- | --- |
-| No. 21 skala sikap | Cakupan hapus `all` mencakup tabel skala | Tabel jawaban skala |
-| No. 22 modul tes | `ConsentService::riskItemsAllowed()`, aturan T11/T12 dan teksnya, `risk_reconsent`, cakupan hapus `risk_items`, `RiskFollowUpService` | Layar, tabel jawaban, kode pilihan ang-21–ang-23 |
-| No. 9 lapis turunan | Daftar izin berkode, `status_on`, `registration_corrected` | `consent_ok`, data sampai tanggal mundur (`kamus-1.1`) |
+| No. 21 skala sikap ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md)) | Cakupan hapus `all` mencakup tabel modul | Sesi jenis `attitude` di tabel modul (34 §9, §11.1) |
+| No. 22 modul tes ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md)) | `ConsentService::riskItemsAllowed()`, aturan T11/T12 dan teksnya, `risk_reconsent`, cakupan hapus `risk_items`, `RiskFollowUpService` | Layar T11/T12 (34 §8); tabel `instrument_sittings`, `instrument_blocks`, `instrument_parts`, `instrument_responses`; sesi jenis `risk` dengan `risk_offered` dan `risk_reconsent` per siswa; cakupan `risk_items` = sesi jenis `risk` (34 §8.3); kode pilihan ang-21–ang-23 |
+| No. 5, 16 mode penelitian (bagian 7, [33](33_IMPLEMENTASI_MODE_PENELITIAN.md)) | Cakupan hapus `all` mencakup potongan pengerjaan | `challenge_attempt_segments` (33 §5.4, §9) |
+| No. 9 lapis turunan ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md)) | Daftar izin berkode, `status_on`, `registration_corrected`, `participants.deactivated_at`; cakupan hapus mencakup `derived_*` | `consent_ok` dihitung di server dari `participant_consents` (35 §7), data sampai saat mundur (`withdrawn_at`, `after_withdrawal`), `kamus-1.1` |
 | Bagian 2 (`28`) | Baris izin dibuat saat mendaftar; nonaktif ditolak token; `gelita:uji:akun` mengisi izin butir risiko Ya | Halaman kursi di sebelah halaman izin; angka "izin belum diisi" di pemantauan |
-| Bagian 3 (`29`) | `purged_by_request_id`, salinan satu anak dari lembar unduhan, isi lembar `izin` (§10.1) | Lembar `izin` di daftar lembar unduhan utama (keputusan no. 9); pemeriksaan nama impor (K13) dipakai ulang untuk kritik dan saran |
+| Bagian 3 (`29`) | `purged_by_request_id`, salinan satu anak dari lembar unduhan, isi lembar `izin` (§10.1) | Lembar `izin` di daftar lembar unduhan utama (keputusan no. 9), untuk pemeriksaan `ketua` terhadap L7 dan pemeriksaan `consent_ok` di lapis 3; pemeriksaan nama impor (K13) dipakai ulang untuk kritik dan saran |
 
 ---
 
@@ -822,7 +825,7 @@ Tidak menahan dokumen ini. Semua pertanyaan sudah dijawab (no. 6 oleh peneliti, 
 1. ~~**Dasar menahan jawaban butir risiko dari salinan orang tua**~~ **Diputuskan pengembang 30 Oktober 2026** (keputusan no. 6). Dicek ke naskah resmi UU No. 27 Tahun 2022 (anotasi Mahkamah Konstitusi 2025): hak akses dan salinan ada di Pasal 7 dan 32, pengecualian penelitian di Pasal 15 tidak mencakupnya, dan Pasal 33 hanya mewajibkan menolak akses *perubahan* data yang membahayakan. Karena itu jawaban diberikan bila orang tua tetap meminta, dengan anak ditanya lebih dulu, kecuali pemberiannya membahayakan anak ([§8](#8-salinan-data-satu-anak)). `needs_verification` yang tersisa sudah selesai 1 November 2026: pasal sejenis di PP 33/2026 adalah Pasal 77 ayat (4) huruf a, juga hanya tentang akses perubahan ([§8](#8-salinan-data-satu-anak) langkah 4).
 2. ~~**Transkrip pada pilihan C rekaman.**~~ **Diputuskan pengembang 30 Oktober 2026** (keputusan no. 5): transkrip berkode dari rekaman itu ikut dihapus; catatan tertulis P3 di L5 tetap.
 3. ~~**Provinsi dan kabupaten setelah studi ditutup.**~~ **Diputuskan pengembang 2 November 2026** (keputusan no. 11): tetap disimpan; peneliti menanyakannya ke komite lewat 22 dan 26 ([§23](#23-akibat-ke-dokumen-lain)). Bila komite menilai kabupaten bersama kode sekolah terlalu sempit, keduanya ikut dikosongkan di §10.2 dan analisis memakai L8.
-4. ~~**Lembar `izin` di unduhan utama `ketua`.**~~ **Diputuskan pengembang 2 November 2026** (keputusan no. 9): lembar `izin` ditambahkan ke unduhan utama; unduhan terpisah §10.1 tetap.
+4. ~~**Lembar `izin` di unduhan utama `ketua`.**~~ **Diputuskan pengembang 2 November 2026** (keputusan no. 9): lembar `izin` ditambahkan ke unduhan utama; unduhan terpisah §10.1 tetap. Lapis turunan tidak membutuhkan lembar itu, karena `consent_ok` dihitung di server ([35 §7](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#7-consent_ok-dan-data-sampai-tanggal-mundur)); lembar tetap untuk pemeriksaan `ketua` dan lapis 3 ([§10.1](#101-daftar-izin-berkode)).
 5. ~~**Kritik dan saran yang memuat nama.**~~ **Diputuskan pengembang 2 November 2026** (keputusan no. 10): `ketua` memeriksanya sekali sebelum studi ditutup, sebagai syarat penutupan ([§10.2](#102-nama-dan-sekolah-diganti-kode)).
 6. ~~**Snapshot cadangan penyedia server.**~~ **Dijawab 2 November 2026** (`asal: peneliti`, konfirmasi IDCloudHost yang diperoleh peneliti): cadangan bisa dihapus pelanggan (kendali penuh); tidak ada cadangan otomatis dari IDCloudHost kecuali pelanggan mengaturnya; data di database utama dihapus atau dianonimkan sesuai prosedur dan dasar penghapusannya; cadangan yang memuat data itu dihapus saat masa simpannya berakhir (bawaan 30 hari), jadi cadangan lama tidak disimpan tanpa batas; IDCloudHost memberi informasi atau bukti bahwa cadangan sudah dihapus, termasuk cadangan di infrastruktur internal penyedia. Langkah 5 di [§7.5](#75-salinan-cadangan) bisa dijalankan; konfirmasi ini masuk perjanjian prosesor (26 → P6, 22 → *Penyimpanan dan enkripsi*).
 

@@ -217,7 +217,7 @@ private const CAPABILITIES = [
 ];
 ```
 
-Peta ini lengkap untuk bagian 1–4: bagian 2 (`28`) dan bagian 3 (`29`) tidak menambah kemampuan; bagian 4 (`30`) menambah `deletion.confirm` dan `identities.replace` ([30 → Hak akses dan menu](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#14-hak-akses-dan-menu)).
+Peta ini lengkap untuk bagian 1–4: bagian 2 (`28`) dan bagian 3 (`29`) tidak menambah kemampuan; bagian 4 (`30`) menambah `deletion.confirm` dan `identities.replace` ([30 → Hak akses dan menu](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#14-hak-akses-dan-menu)). Bagian 8, no. 21 dan 22 ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md), K15), juga tidak menambah kemampuan: mulai tes dan tambah menit memakai `field_sessions.manage`, pengaturan batas waktu memakai `studies.manage`, jawaban modul terlihat lewat `research.browse` dan `research.export`. Bagian 9 ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md), K14) juga tanpa kemampuan baru ([§7](#7-rute)).
 
 `StaffAccess::allows(string $role, string $capability): bool` mengembalikan `false` untuk peran atau kemampuan yang tidak dikenal, jadi salah ketik menutup akses, bukan membukanya.
 
@@ -351,14 +351,14 @@ $routes->group('', ['filter' => 'staffAuth'], static function ($routes): void {
 
     // Research data of all students: head researcher only.
     $routes->group('', ['filter' => 'staffCan:research.browse'], static function ($routes): void { /* sesi, data, masukan */ });
-    $routes->group('', ['filter' => 'staffCan:research.export'], static function ($routes): void { /* ekspor */ });
+    $routes->group('', ['filter' => 'staffCan:research.export'], static function ($routes): void { /* ekspor; studi/{id}/hitung-ulang (+ /status), part 9 */ });
 
     // Content: GET for everyone with content.view, writes for content.edit.
     $routes->group('', ['filter' => 'staffCan:content.view'], static function ($routes): void { /* GET konten, narasi, media */ });
     $routes->group('', ['filter' => 'staffCan:content.edit'], static function ($routes): void { /* POST, impor bank */ });
 
     $routes->get('studi', 'StudyController::index', ['filter' => 'staffCan:studies.view']);
-    $routes->group('', ['filter' => 'staffCan:studies.manage'], static function ($routes): void { /* POST studi */ });
+    $routes->group('', ['filter' => 'staffCan:studies.manage'], static function ($routes): void { /* POST studi; studi/{id}/ambang (+ /kunci), part 9; studi/{id}/instrumen, part 8 */ });
     $routes->group('', ['filter' => 'staffCan:releases.manage'], static function ($routes): void { /* studi/rilis… */ });
     // tata-kelola: deletion.execute, audit.view, retention.run; sekolah: schools.manage; staf: staff.manage
 });
@@ -367,6 +367,9 @@ $routes->group('', ['filter' => 'staffAuth'], static function ($routes): void {
 Catatan:
 - `peserta/reset-sandi` dan `peserta/salinan` (bagian 4) tidak bertabrakan dengan `peserta/(:num)`, karena `(:num)` hanya angka. Begitu juga `sesi-lapangan/baru` (bagian 2) dengan `sesi-lapangan/(:num)`. Tetap daftarkan rute tetap sebelum rute berpola, supaya urutannya jelas.
 - Halaman impor bank (`konten/impor-bank`, termasuk `GET` pratinjau dan templat) masuk `content.edit`, karena isinya alur mengubah.
+- Rute studi dari bagian lain, tanpa kemampuan baru:
+  - lapis turunan ([35 §13](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#13-rute-dan-perintah-spark)): `POST studi/{id}/ambang` → `StudyController::saveThresholds` dan `POST studi/{id}/ambang/kunci` → `StudyController::lockThresholds` (`studies.manage`); `POST studi/{id}/hitung-ulang` → `DerivedDataController::recompute` dan `GET studi/{id}/hitung-ulang/status` → `DerivedDataController::status` (`research.export`);
+  - modul tes ([34 §12](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#12-rute)): `POST studi/{id}/instrumen` → `StudyController::updateInstrumentSettings` (`studies.manage`).
 - Rute `api/admin/*` mendapat filter per rute sesuai [§4](#4-hak-akses-per-peran).
 - Harapan di `tests/unit/RouteWiringTest.php` (sekarang `['staffAuth','staffRole:admin']`) ditulis ulang per kelompok.
 
