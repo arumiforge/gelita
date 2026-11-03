@@ -83,7 +83,7 @@
 
     <div class="login-foot">
       <p><?= esc(lang('Game.noAccount')) ?> <a href="<?= base_url('daftar') ?>"><?= esc(lang('Game.registerLink')) ?></a></p>
-      <p class="muted"><?= icon('info') ?> <?= esc(lang('Game.forgotPassword')) ?></p>
+      <p class="muted"><?= icon('info') ?> <?= esc(password_reset_text('Game.forgotPassword')) ?></p>
     </div>
   </div>
 </section>

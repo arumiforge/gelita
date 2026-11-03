@@ -570,3 +570,20 @@ if (! function_exists('staff_can')) {
         return \App\Libraries\StaffAccess::allows(session('staff_role'), $capability);
     }
 }
+
+if (! function_exists('password_reset_text')) {
+    /**
+     * Language key for who resets a student's password (revision 10, part 1,
+     * 27 §12): `Auth.mustChange`, `Auth.currentHelp`, `Game.forgotPassword`
+     * name the research team ("kakak peneliti") during research mode; outside
+     * it the `…Admin` variant names the GELITA admin.
+     *
+     * Research mode (`research_studies.field_mode` on and the study active)
+     * arrives with part 2 (28 §5.1), which returns lang($key) while it is on.
+     * Until then every install is outside research mode.
+     */
+    function password_reset_text(string $key): string
+    {
+        return lang($key . 'Admin');
+    }
+}

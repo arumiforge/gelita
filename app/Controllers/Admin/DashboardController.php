@@ -57,13 +57,14 @@ class DashboardController extends BaseAdminController
      */
     private function recentEvents(): array
     {
+        // Read before the builder: another query in between drops its table aliases
+        $refs    = $this->nodeRefs();
         $builder = db_connect()->table('game_event_logs e')
             ->select('e.id, e.session_id, e.occurred_at, e.event_type, e.challenge_node_id, e.payload_json, p.participant_code')
             ->join('participants p', 'p.id = e.participant_id')
             ->where('e.deleted_at', null)
             ->where('p.deleted_at', null);
 
-        $refs = $this->nodeRefs();
         $rows = array_map(static function (array $row) use ($refs): array {
             $payload       = json_decode((string) $row['payload_json'], true);
             $row['event']  = admin_label('event', $row['event_type']);
@@ -98,6 +99,7 @@ class DashboardController extends BaseAdminController
     private function recentProgress(): array
     {
         $db     = db_connect();
+        $total  = count($this->nodeRefs());
         $latest = $db->table('game_sessions')->select('MAX(id)', false)->where('participant_id = p.id', null, false)->getCompiledSelect();
 
         $builder = $db->table('participants p')
@@ -108,8 +110,7 @@ class DashboardController extends BaseAdminController
             ->join('levels l', 'l.id = sp.current_level_id', 'left')
             ->where('p.deleted_at', null);
 
-        $total = count($this->nodeRefs());
-        $rows  = array_map(static function (array $row) use ($total): array {
+        $rows = array_map(static function (array $row) use ($total): array {
             $row['done']       = (int) ($row['completed_nodes'] ?? 0) . '/' . $total;
             $row['school_ref'] = RawDataService::schoolRef($row['school_id']);
 

@@ -169,7 +169,8 @@ return [
     'loginLead'      => 'Log in to your account to continue your adventure with Jaka!',
     'noAccount'      => 'No account yet?',
     'registerLink'   => 'Sign up',
-    'forgotPassword' => 'Forgot your password? Ask your teacher to reset it.',
+    'forgotPassword' => 'Forgot your password? Ask the research team to reset it.',
+    'forgotPasswordAdmin' => 'Forgot your password? Tell your teacher. Your teacher can ask the GELITA admin to reset it.',
 
     // Opening story & dialogue
     'introTitle'       => 'Opening story',

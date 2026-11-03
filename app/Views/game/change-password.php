@@ -37,7 +37,7 @@
       <span class="ornate-divider" aria-hidden="true"></span>
 
       <?php if ($mustChange): ?>
-        <div class="alert alert-info" role="status"><?= icon('key') ?><p><?= esc(lang('Auth.mustChange')) ?></p></div>
+        <div class="alert alert-info" role="status"><?= icon('key') ?><p><?= esc(password_reset_text('Auth.mustChange')) ?></p></div>
       <?php endif ?>
 
       <?= $this->include('partials/form-errors') ?>
@@ -49,7 +49,7 @@
           <label for="current_password"><?= esc(lang('Auth.currentPassword')) ?> <span class="req" aria-hidden="true">*</span></label>
           <input type="password" id="current_password" name="current_password" required
                  autocomplete="current-password" enterkeyhint="next" aria-describedby="current-help">
-          <p class="field-help" id="current-help"><?= esc(lang('Auth.currentHelp')) ?></p>
+          <p class="field-help" id="current-help"><?= esc(password_reset_text('Auth.currentHelp')) ?></p>
           <?php if (isset($errors['current_password'])): ?>
             <p class="field-error"><?= esc($errors['current_password']) ?></p>
           <?php endif ?>

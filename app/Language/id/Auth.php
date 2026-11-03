@@ -23,7 +23,10 @@ return [
     'tip4'             => 'Minta bantuan orang tua atau guru untuk menyimpannya dengan aman.',
     'loginFailed'      => 'Nama pengguna atau kata sandi salah.',
     'locked'           => 'Terlalu banyak percobaan. Tunggu {0} menit, lalu coba lagi.',
-    'mustChange'       => 'Gurumu sudah mengatur ulang kata sandimu. Buat kata sandi baru yang kuat, ya.',
+    // Research mode (field_mode on, study active): the research team resets (27 §12)
+    'mustChange'       => 'Kakak peneliti sudah mengatur ulang kata sandimu. Buat kata sandi baru yang kuat, ya.',
+    // Outside research mode the GELITA admin resets
+    'mustChangeAdmin'  => 'Admin GELITA sudah mengatur ulang kata sandimu. Buat kata sandi baru yang kuat, ya.',
     'showPassword'     => 'Lihat kata sandi',
     'hidePassword'     => 'Sembunyikan kata sandi',
     'capsLock'         => 'Tombol Caps Lock sedang menyala.',
@@ -33,7 +36,8 @@ return [
     'currentPassword'  => 'Kata sandi sekarang',
     'changeTitle'      => 'Ganti kata sandi',
     'newPassword'      => 'Kata sandi baru',
-    'currentHelp'      => 'Pakai kata sandi sementara dari gurumu, atau kata sandimu yang sekarang.',
+    'currentHelp'      => 'Pakai kata sandi sementara dari kakak peneliti, atau kata sandimu yang sekarang.',
+    'currentHelpAdmin' => 'Pakai kata sandi sementara dari admin GELITA, atau kata sandimu yang sekarang.',
     'saveNew'          => 'Simpan kata sandi baru',
     'rulesTitle'       => 'Syarat kata sandi kuat',
     'matchOk'          => 'Kata sandi sudah sama.',
