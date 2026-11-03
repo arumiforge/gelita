@@ -33,7 +33,7 @@ DOC36 = (ROOT / 'docs/revisi-10-analitik/36_TERJEMAHAN_BANK_SOAL.md').read_text(
 
 REGIONS = [('temanggung', 'tmg', 'mudah', 'Temanggung'), ('magelang', 'mgl', 'sedang', 'Magelang'), ('wonosobo', 'wnb', 'sulit', 'Wonosobo')]
 REVIEW_NOTE = ('Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. '
-               'Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.')
+               'Teks Inggris: dari 36, disetujui pengembang 3 November 2026.')
 REVIEW = {'status': 'needs_verification', 'note': REVIEW_NOTE}
 
 # ---------------------------------------------------------------- markdown
@@ -789,7 +789,7 @@ WAYANG = {
             'note': 'pertunjukan wayang kulit di pendapa desa: dalang dewasa di balik kelir yang disinari lampu, bayangan wayang di kelir, pemain gamelan, anak-anak menonton sambil duduk; tanpa gunung, kebun kopi, candi, kuda kepang, ikan, dan tulisan',
             'source': 'Baru: usulan prompt TMG-P11 (08 → Susun Gambar selama studi). Gambar dari tim katalog, lalu dicek ulang terhadap butir; sampai ada, gelita:mockups memasang gambar contoh.',
         },
-        'review': {'status': 'needs_verification', 'note': 'Revisi 10 (31 §14): variasi baru b Temanggung (Wayang Kedu, keterangan dari 08, tanpa status Warisan Budaya Takbenda). Teks Inggris: draf AI, terjemahan belum ada yang diperiksa pengembang.'},
+        'review': {'status': 'needs_verification', 'note': 'Revisi 10 (31 §14): variasi baru b Temanggung (Wayang Kedu, keterangan dari 08, tanpa status Warisan Budaya Takbenda). Teks Inggris: dari 36, disetujui pengembang 3 November 2026.'},
     }],
 }
 PUZZLE_NOTE = 'Revisi 10 (31 §14): huruf variasi dipetakan ulang; a dan b = dua variasi bersih untuk pengerjaan pertama selama studi, huruf lain untuk pengerjaan ulang.'

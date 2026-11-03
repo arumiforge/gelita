@@ -79,7 +79,7 @@ $puzzle   = array_count_values(array_column(array_filter($flat['sheets']['varian
 (new BankWorkbookGuide())->write($rows, $output, [
     'title'    => 'Bank Soal GELITA — Kelas 5',
     'subtitle' => sprintf(
-        'Bank soal penelitian kelas 5 SD/MI, revisi 10 (dari draf 08; semua butir needs_verification sampai validasi ahli; teks Inggris draf AI dari 36): 15 tantangan (5 per wilayah), %d butir literasi digital dinilai (D1, D2, D3) + %d butir PBK, %d benda pengecoh, %d variasi Susun Gambar (paling banyak %d per wilayah), %d bacaan, %d kode kesalahan pilihan, %d bagian ketuk unggahan, %d pilihan skenario. Pengerjaan pertama tantangan 2–5 mengikuti buklet siswa selama penelitian. Gambar di sheet DAFTAR_MEDIA mula-mula tampil sebagai gambar contoh; unggah gambar asli dengan kode berkas yang sama di menu Gambar & mockup.',
+        'Bank soal penelitian kelas 5 SD/MI, revisi 10 (dari draf 08; semua butir needs_verification sampai validasi ahli; teks Inggris dari 36, disetujui pengembang): 15 tantangan (5 per wilayah), %d butir literasi digital dinilai (D1, D2, D3) + %d butir PBK, %d benda pengecoh, %d variasi Susun Gambar (paling banyak %d per wilayah), %d bacaan, %d kode kesalahan pilihan, %d bagian ketuk unggahan, %d pilihan skenario. Pengerjaan pertama tantangan 2–5 mengikuti buklet siswa selama penelitian. Gambar di sheet DAFTAR_MEDIA mula-mula tampil sebagai gambar contoh; unggah gambar asli dengan kode berkas yang sama di menu Gambar & mockup.',
         $literacy,
         count($scored) - $literacy,
         count($active) - count($scored) - array_sum($puzzle),

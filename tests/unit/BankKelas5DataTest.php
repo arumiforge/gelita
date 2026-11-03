@@ -77,7 +77,8 @@ final class BankKelas5DataTest extends CIUnitTestCase
         foreach ($this->flat()['sheets']['items'] as $row) {
             if ($row['interaction_type'] !== 'puzzle_arrange') {
                 $this->assertSame('needs_verification', $row['review_status'], $row['item_key']);
-                $this->assertStringContainsString('terjemahan belum ada', $row['review_note'], $row['item_key']);
+                $this->assertStringContainsString('Teks Inggris: dari 36, disetujui pengembang', $row['review_note'], $row['item_key']);
+                $this->assertStringNotContainsString('terjemahan belum ada', $row['review_note'], $row['item_key']);
             }
         }
     }
