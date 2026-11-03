@@ -168,7 +168,7 @@ Sejak 30 Oktober 2026 ([04](04_CATATAN_KEPUTUSAN.md), entri 30 Oktober 2026), ba
 | --- | --- | --- |
 | A | Enam sesi paralel, satu dokumen per sesi: cek kemutakhiran 22 dan 23 (lalu diserahkan ke peneliti sebagai PDF), 27, 28, 29, dan 30 (cek kemutakhiran dan tinjauan pengembang sampai `disetujui pengembang`) | 22 juga mengubah kalimat "sistem baru diubah setelah G2" di jadwal dan garis waktu; **selesai 2 November 2026** (semua PR digabung) |
 | B | Lima sesi paralel, bersamaan dengan A: dokumen implementasi bagian 5–9 (31–35) | Nomor migrasi mulai `003900`, mengikuti urutan digabung; **selesai 2 November 2026** (semua PR digabung) |
-| C | Kode bagian 1 (27), sendirian | Semua bagian lain memakai peta kemampuan dan filter `staffCan` |
+| C | Kode bagian 1 (27), sendirian | Semua bagian lain memakai peta kemampuan dan filter `staffCan`; **selesai 3 November 2026** (PR #332, 874 tes hijau) |
 | D | Kode bagian 2 (28) ∥ bagian 5 (31) | Bagian 5 tetap di workbook, impor, `DifficultyRules`, dan engine; perubahan kemajuan di `ChallengeService` milik bagian 2 |
 | E | Kode bagian 3 (29) ∥ bagian 4 (30) ∥ bagian 6 (32) | Bagian 3 dan 4 memakai sesi lapangan dan kode dari bagian 2; bagian 6 memakai format bank dari bagian 5 |
 | F | Kode bagian 7 (33) ∥ bagian 8 (34), lalu bagian 9 (35) terakhir | Bagian 8 memakai token (2) dan izin (4); bagian 9 menghitung dari semuanya |
