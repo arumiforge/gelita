@@ -52,6 +52,12 @@ Yang masih menunggu: glosarium (saat implementasi) dan kolom 31 di 11 → *Varia
 
 Diubah: 31, 01, 03, 08, 20, 21, 28, 29, 00 (dua baris 31), 04, `docs/PROGRESS.md`, PDF siap cetak.
 
+**PDF 23 terbaru dikirim ke peneliti** (cabang `r10-kirim-23`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Pengembang mengirim PDF [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) terbaru ke peneliti pada 3 November 2026, PDF saja (keputusan no. 4 di entri *Pembagian kerja baru*, 1 November 2026). Berkasnya `dokumen-pdf/cetak/23_SURAT_INFORMASI_DAN_PERSETUJUAN.pdf` dari `main` di *commit* `5c5eed3`, 33 halaman, kaki halaman `071c0e2` (sama dengan `manifest.json`). Bedanya dengan kiriman pertama (*commit* serah terima `f45d274`, kaki halaman `52541ed`) hanya satu baris di *Akibat ke dokumen lain*: usulan teks en T11 untuk 30 ditandai sudah (entri *Teks en T11 paragraf 1 di 30 disamakan dengan id*, 2 November 2026). Teks untuk orang tua, sekolah, guru, dan anak tidak berubah. Kalimat "PDF 22, 23, 24, dan 26 tidak berubah sesudahnya" di entri 2 November 2026 berlaku sampai perubahan itu; versi 23 yang dipegang peneliti kini kiriman ini. 22, 24, dan 26 tidak dikirim ulang.
+
+Diubah: 04, 00 (dua baris 23), PDF siap cetak 00 dan 04.
+
 ## 2 November 2026
 
 **Teks en T11 paragraf 1 di 30 disamakan dengan id** (cabang `r10-30-t11-en`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
