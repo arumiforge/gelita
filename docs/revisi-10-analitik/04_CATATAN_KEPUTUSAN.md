@@ -25,6 +25,27 @@ Diubah: 31, 01, 03, 08, 20, 21, 28, 29, 00 (dua baris 31), 04, `docs/PROGRESS.md
 
 ## 2 November 2026
 
+**Teks en T11 paragraf 1 di 30 disamakan dengan id** (cabang `r10-30-t11-en`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Pengembang meminta usulan di [23 → Akibat ke dokumen lain](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#akibat-ke-dokumen-lain) diterapkan: di [30 §17](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#17-teks-layar-dan-panel), paragraf 1 T11 en "that may have made you feel uncomfortable" menjadi "that may make you feel uncomfortable", sama dengan "yang mungkin membuatmu tidak nyaman" di T11 id. Teks id T11 dan isi 23 yang diserahkan ke peneliti (*commit* `f45d274`) tidak berubah, karena 23 tidak memuat teks en. Status 30 tetap `disetujui pengembang`. Baris 30 di *Akibat ke dokumen lain* 23 ditandai sudah.
+
+Diubah: 30 (§17), 23 (*Akibat ke dokumen lain*, satu baris), 04, PDF siap cetak 04, 23, dan 30.
+**Sesi koordinator bagian 8: akibat 34 dibawa ke 01, 13, 17, 18, 27, 28, 29, dan 30** (cabang `r10-dok-34-modul-tes-sikap`, setelah PR #323) · `asal: pengembang` (penyelarasan berbantuan AI, diminta pengembang) · status dokumen tidak berubah · tidak merevisi produk
+
+Yang dibawa dari [34 → Akibat ke dokumen lain](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#19-akibat-ke-dokumen-lain), tanpa keputusan baru:
+- **28:** §21 no. 2 dan 3 dicoret (34 K1, §10.2); arah ke `/tes` setelah daftar (§6.5 langkah 8); status tes per kode, tombol *Tambah waktu*, dan tombol *Mulai tes awal/akhir* di pemantauan (§12); kolom `test_started_at`, `test_started_by` di `field_sessions` (§14); titik sambung no. 21 dan 22 (§18); baris 34 di §23 bertanda sudah.
+- **13:** butir "Belum diputuskan" diganti *Mulai tes bersama* (34 K1); tambah menit oleh P1 di *Aturan selama tes* (34 K3); kalimat "tahap 3" diganti aturan 1 November 2026.
+- **29:** lima lembar dan kolom dari 34 §11.4 di §7.2; sumber `risiko_gabungan` di §7.6.
+- **30:** nama tabel `instrument_*` untuk hapus (§7.3) dan untuk hapus manual (§13); `risk_offered` dan `risk_reconsent` di sesi jenis `risk` (§5.4, §6); titik sambung (§18).
+- **27:** bagian 8 tidak menambah kemampuan (§5.1).
+- **17:** kalimat lama "tahap 3, setelah G2" diganti; isi skala hanya berbahasa Indonesia di sistem (34 K13), terjemahan en ditulis terpisah bila perlu; baris *Mode penelitian* di *Pelaksanaan di P5* (34 K12).
+- **18:** celah no. 3 bertanda dibawa; rujukan Bootstrap lokal ke 34 §7.1.
+- **01:** rujukan ke 34 di daftar bagian dan baris no. 21, 22.
+
+Yang belum dibawa, karena menunggu: 16 *Cara pelaksanaan* no. 9 (konfirmasi peneliti, 34 §17 no. 4), 11 `kamus-1.1` (bagian 9, setelah uji coba), `.claude/rules/glossary.md` (saat implementasi, 34 §16), dan berkas serah terima (bila dibuat versi baru).
+
+Diubah: 01, 13, 17, 18, 27, 28, 29, 30, 34 (§19 status), 04, `docs/PROGRESS.md`, PDF siap cetak.
+
 **Akibat 30 dibawa ke 22, 26, 27, dan 29; konfirmasi IDCloudHost dari peneliti** (sesi koordinator untuk 30, cabang `r10-cek-30`, setelah PR #324) · `asal: pengembang` (penyelarasan) dan `asal: peneliti` (konfirmasi penyedia server) · status dokumen tidak berubah · tidak merevisi produk
 
 Atas permintaan pengembang, baris *Akibat ke dokumen lain* di [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#23-akibat-ke-dokumen-lain) yang bertanggal 2 November 2026 dibawa ke dokumen tujuannya, tanpa keputusan baru:
