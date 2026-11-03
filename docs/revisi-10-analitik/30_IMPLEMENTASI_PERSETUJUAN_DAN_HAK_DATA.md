@@ -669,12 +669,12 @@ Mengikuti `.claude/rules/ui-copy.md`. Teks game di `Game.php` (id dan en, `Langu
 | `assentRequiredStudy` | Centang dulu kalau kamu mau ikut, ya. Kalau tidak mau, tidak apa-apa. Bilang pelan-pelan ke kakak peneliti. | Tick the box first if you want to take part. If you don't want to, that's fine. Quietly tell a researcher. |
 | `loginInactive` | Akun ini sudah tidak dipakai lagi. Kalau ada pertanyaan, bicara dengan kakak peneliti, ya. | This account is no longer in use. If you have a question, talk to a researcher. |
 
-**Modul tes: T11** (id dari 23 → T11 apa adanya, paragraf 3 diubah 30 Oktober 2026, keputusan no. 6; en usulan)
+**Modul tes: T11** (id dari 23 → T11 apa adanya, paragraf 3 diubah 30 Oktober 2026, keputusan no. 6; en usulan; paragraf 1 en disamakan dengan id 2 November 2026, usulan dari cek kemutakhiran 23, diterapkan atas permintaan pengembang)
 
 | Bagian | en (usulan) |
 | --- | --- |
 | Judul | A few questions about the internet |
-| Paragraf 1 | There are a few more questions. They are about things on the internet or a phone that may have made you feel uncomfortable. |
+| Paragraf 1 | There are a few more questions. They are about things on the internet or a phone that may make you feel uncomfortable. |
 | Paragraf 2 | You don't have to answer them. That's okay. Every question also has the choice *I don't want to answer*. |
 | Paragraf 3 | Your answers are saved with your code, not your name. Your teachers and friends do not see your answers. If your parents ask to see your answers, a researcher will talk with you first. |
 | Paragraf 4 | But there is one thing you should know. The researchers want every child to be safe. If your answers show you might need help, a researcher may ask you for a short chat. If you are in danger, the researcher will ask a grown-up to help keep you safe. |

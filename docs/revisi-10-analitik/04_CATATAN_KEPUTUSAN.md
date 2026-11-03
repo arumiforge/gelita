@@ -6,6 +6,11 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 2 November 2026
 
+**Teks en T11 paragraf 1 di 30 disamakan dengan id** (cabang `r10-30-t11-en`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Pengembang meminta usulan di [23 → Akibat ke dokumen lain](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#akibat-ke-dokumen-lain) diterapkan: di [30 §17](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#17-teks-layar-dan-panel), paragraf 1 T11 en "that may have made you feel uncomfortable" menjadi "that may make you feel uncomfortable", sama dengan "yang mungkin membuatmu tidak nyaman" di T11 id. Teks id T11 dan isi 23 yang diserahkan ke peneliti (*commit* `f45d274`) tidak berubah, karena 23 tidak memuat teks en. Status 30 tetap `disetujui pengembang`. Baris 30 di *Akibat ke dokumen lain* 23 ditandai sudah.
+
+Diubah: 30 (§17), 23 (*Akibat ke dokumen lain*, satu baris), 04, PDF siap cetak 04, 23, dan 30.
 **Sesi koordinator bagian 8: akibat 34 dibawa ke 01, 13, 17, 18, 27, 28, 29, dan 30** (cabang `r10-dok-34-modul-tes-sikap`, setelah PR #323) · `asal: pengembang` (penyelarasan berbantuan AI, diminta pengembang) · status dokumen tidak berubah · tidak merevisi produk
 
 Yang dibawa dari [34 → Akibat ke dokumen lain](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#19-akibat-ke-dokumen-lain), tanpa keputusan baru:
