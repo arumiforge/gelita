@@ -26,9 +26,31 @@ class DashboardController extends BaseAdminController
             'progress'        => $research ? $this->recentProgress() : null,
             'readiness'       => $system ? (new ResearchReadiness())->check() : null,
             'research'        => $research,
+            // Field sessions open now (revision 10, part 2: 28 §12), researchers and the head researcher
+            'fieldSessions'   => $this->can('field_sessions.manage') ? $this->openFieldSessions() : [],
             // pratinjau penghapusan buatan retensi: hanya admin yang boleh memutuskan
             'retentionAlerts' => $this->can('retention.run') ? service('retentionService')->pendingRetentionRequests() : [],
         ]);
+    }
+
+    /**
+     * Open field sessions of the active study: code, students in, active now.
+     *
+     * @return list<array{id: int, code: string, entered: int, active: int}>
+     */
+    private function openFieldSessions(): array
+    {
+        $study = model(\App\Models\ResearchStudyModel::class)->activeStudy();
+
+        if ($study === null || ! service('fieldSessions')->fieldModeOn()) {
+            return [];
+        }
+
+        $rows = array_filter(service('analyticsService')->fieldSessionSummary((int) $study['id']), static fn (array $r): bool => $r['state'] === 'open');
+
+        return array_values(array_map(static fn (array $r): array => [
+            'id' => $r['id'], 'code' => $r['code'], 'entered' => $r['entered'], 'active' => $r['active'],
+        ], $rows));
     }
 
     /**

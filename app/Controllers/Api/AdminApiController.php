@@ -59,4 +59,18 @@ class AdminApiController extends BaseController
             'error'       => $export['error_message'],
         ]);
     }
+
+    /**
+     * Monitoring data, polled every 30 seconds by admin/monitoring.js with
+     * `X-Gelita-Background: 1` (not counted as staff activity, 27 §11.1).
+     * Codes and tokens only for `field_sessions.manage` (28 §12, K2).
+     */
+    public function monitoring(): ResponseInterface
+    {
+        $study = model(\App\Models\ResearchStudyModel::class)->activeStudy();
+
+        return $this->ok([
+            'sessions' => $study === null ? [] : service('analyticsService')->monitoring((int) $study['id'], $this->can('field_sessions.manage')),
+        ]);
+    }
 }

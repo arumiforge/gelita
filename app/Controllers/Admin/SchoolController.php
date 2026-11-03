@@ -4,6 +4,8 @@ namespace App\Controllers\Admin;
 
 use App\Libraries\RegionDirectory;
 use App\Libraries\SchoolImporter;
+use App\Models\SchoolModel;
+use App\Models\AuditLogModel;
 use CodeIgniter\HTTP\RedirectResponse;
 
 /**
@@ -56,7 +58,49 @@ class SchoolController extends BaseAdminController
             'clearMatches' => count($directory->autoMerge(true)),
             'stats'        => $this->stats(),
             'dataMeta'     => $this->dataMeta(),
+            // Research school codes (revision 10, part 2: 28 §10.1); the NPSN mapping is admin-only
+            'researchSchools' => model(SchoolModel::class)->where('research_code IS NOT NULL', null, false)->orderBy('research_code', 'ASC')->findAll(),
         ]);
+    }
+
+    /**
+     * POST /admin/sekolah/kode-penelitian: gives a school (found by NPSN) its
+     * research code `S03`, `U01`, or `V01` (28 §10.1, K16). A code cannot
+     * change once the school has students; an empty code removes it while
+     * there are none.
+     */
+    public function setResearchCode(): RedirectResponse
+    {
+        $npsn   = trim((string) $this->request->getPost('npsn'));
+        $code   = strtoupper(trim((string) $this->request->getPost('research_code')));
+        $school = $npsn === '' ? null : model(SchoolModel::class)->where('code', $npsn)->first();
+
+        if ($school === null) {
+            return $this->back('admin/sekolah', lang('Admin.researchCodeSchoolUnknown'));
+        }
+
+        if ($code !== '' && preg_match('/^[SUV][0-9]{2}$/', $code) !== 1) {
+            return $this->back('admin/sekolah', lang('Admin.researchCodeInvalid'));
+        }
+
+        if ($code !== '' && model(SchoolModel::class)->where('research_code', $code)->where('id !=', (int) $school['id'])->countAllResults() > 0) {
+            return $this->back('admin/sekolah', lang('Admin.researchCodeTaken', [$code]));
+        }
+
+        $old = $school['research_code'] ?? null;
+
+        if ($old !== null && $old !== $code && db_connect()->table('participants')->where('school_id', (int) $school['id'])->countAllResults() > 0) {
+            return $this->back('admin/sekolah', lang('Admin.researchCodeLocked'));
+        }
+
+        model(SchoolModel::class)->update((int) $school['id'], ['research_code' => $code === '' ? null : $code]);
+        model(AuditLogModel::class)->record('school_research_code_set', [
+            'target_type' => 'school',
+            'target_id'   => (string) $school['id'],
+            'metadata'    => ['from' => $old, 'to' => $code === '' ? null : $code],
+        ]);
+
+        return $this->done('admin/sekolah', lang('Admin.researchCodeSaved', [$school['name'], $code === '' ? '—' : $code]));
     }
 
     /** Gabungkan entri belum terverifikasi ke sekolah pilihan saran atau ber-NPSN. */

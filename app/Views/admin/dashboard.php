@@ -33,6 +33,18 @@
   <?= component('stat-tile', ['label' => 'Kritik & saran', 'value' => fmt_num($kpi['feedback'], 0, 'id'), 'icon' => 'message']) ?>
 </section>
 
+<?php if (($fieldSessions ?? []) !== []): ?>
+  <section class="form-section" aria-labelledby="dash-field-title">
+    <h2 id="dash-field-title"><?= icon('clock') ?> <?= esc(lang('Admin.dashboardFieldSessions')) ?></h2>
+    <ul>
+      <?php foreach ($fieldSessions as $row): ?>
+        <li><b class="mono"><?= esc($row['code']) ?></b> · <?= esc(lang('Admin.monitoringEntered')) ?> <?= esc(fmt_num($row['entered'], 0, 'id')) ?> · <?= esc(lang('Admin.monitoringActive')) ?> <?= esc(fmt_num($row['active'], 0, 'id')) ?></li>
+      <?php endforeach ?>
+    </ul>
+    <p><a href="<?= base_url('admin/pemantauan') ?>"><?= esc(lang('Admin.menuMonitoring')) ?> <?= icon('right') ?></a></p>
+  </section>
+<?php endif ?>
+
 <?php if ($retentionAlerts !== [] || ($readiness !== null && ! $readiness['ready'])): ?>
   <section class="stack" aria-label="Peringatan">
     <?php if ($retentionAlerts !== []): ?>
