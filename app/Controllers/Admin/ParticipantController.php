@@ -224,7 +224,7 @@ class ParticipantController extends BaseAdminController
             ->select('COALESCE(sp.completed_nodes, 0) AS completed_nodes, sp.total_stars, l.name_id AS last_level, gs.last_active_at', false)
             ->join('schools s', 's.id = p.school_id', 'left')
             ->join($db->prefixTable('game_sessions') . ' gs', "gs.id = ({$latest})", 'left', false)
-            ->join('session_progress sp', 'sp.session_id = gs.id', 'left')
+            ->join('participant_progress sp', 'sp.participant_id = gs.participant_id AND sp.study_id = gs.study_id', 'left')
             ->join('levels l', 'l.id = sp.current_level_id', 'left')
             ->where('p.deleted_at', null);
 
@@ -378,7 +378,7 @@ class ParticipantController extends BaseAdminController
         $rows = db_connect()->table('game_sessions gs')
             ->select('gs.id, gs.session_code, gs.status, gs.locale, gs.started_at, gs.last_active_at, gs.ended_at, gs.duration_ms', false)
             ->select('gs.device_type, gs.screen_size, sp.completed_nodes, sp.total_stars', false)
-            ->join('session_progress sp', 'sp.session_id = gs.id', 'left')
+            ->join('participant_progress sp', 'sp.participant_id = gs.participant_id AND sp.study_id = gs.study_id', 'left')
             ->where('gs.participant_id', $participantId)
             ->orderBy('gs.started_at', 'DESC')
             ->get()

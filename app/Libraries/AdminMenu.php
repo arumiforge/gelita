@@ -21,6 +21,9 @@ final class AdminMenu
         ['admin',                     'Admin.menuDashboard',    'grid',      ['dashboard.view'], null],
         ['admin/peserta',             'Admin.menuParticipants', 'users',     ['participants.accounts', 'participants.research'], 'Admin.groupData'],
         ['admin/peserta/reset-sandi', 'Admin.menuResetByCode',  'key',       ['participants.reset_by_code'], 'Admin.groupData'],
+        // Research revision 10, part 2 (28 §15): the slots reserved in 27 §8
+        ['admin/sesi-lapangan',       'Admin.menuFieldSessions', 'clock',    ['field_sessions.manage'], 'Admin.groupData'],
+        ['admin/pemantauan',          'Admin.menuMonitoring',   'eye',       ['monitoring.view'], 'Admin.groupData'],
         ['admin/sesi',                'Admin.menuSessions',     'clock',     ['research.browse'], 'Admin.groupData'],
         ['admin/data',                'Admin.menuRawData',      'database',  ['research.browse'], 'Admin.groupData'],
         ['admin/masukan',             'Admin.menuFeedback',     'message',   ['research.browse'], 'Admin.groupData'],

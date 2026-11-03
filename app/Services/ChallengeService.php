@@ -8,14 +8,15 @@ use App\Entities\ChallengeNode;
 use App\Entities\GameSession;
 use App\Entities\ItemResponse;
 use App\Exceptions\ChallengeRuleException;
+use App\Libraries\ProgressRules;
 use App\Models\ChallengeAttemptModel;
 use App\Models\ChallengeItemModel;
 use App\Models\GameSessionModel;
 use App\Models\ItemResponseModel;
+use App\Models\Concerns\ConditionalUpdate;
 use App\Models\ItemTryModel;
 use App\Models\ResearchStudyModel;
-use App\Models\SessionProgressModel;
-use CodeIgniter\Model;
+use App\Models\ParticipantProgressModel;
 
 /**
  * Inti permainan: membuka node, menerima jawaban, menutup pengerjaan.
@@ -41,6 +42,8 @@ use CodeIgniter\Model;
  */
 class ChallengeService
 {
+    use ConditionalUpdate;
+
     /** Paling banyak berapa kali bank kata diacak ulang sampai lolos aturan §4. */
     private const BANK_SHUFFLE_TRIES = 50;
 
@@ -61,6 +64,7 @@ class ChallengeService
         }
 
         $this->assertLevelUnlocked($session, $node);
+        $this->assertNodeUnlocked($session, $node);
 
         $attempts = model(ChallengeAttemptModel::class);
         $attempt  = $attempts->currentInProgress($session->id, $nodeId);
@@ -153,9 +157,8 @@ class ChallengeService
             'last_active_at'         => date('Y-m-d H:i:s'),
         ]);
 
-        $progress = model(SessionProgressModel::class);
-        $progress->ensure($session->id);
-        $progress->update($session->id, [
+        $progress = model(ParticipantProgressModel::class);
+        $progress->update((int) $progress->forSession($session)['id'], [
             'current_level_id' => $node->level_id,
             'current_node_id'  => $nodeId,
         ]);
@@ -1030,34 +1033,25 @@ class ChallengeService
     {
         $scoring  = service('scoringService');
         $content  = service('contentRepository');
-        $progress = model(SessionProgressModel::class);
-        $done     = model(ChallengeAttemptModel::class)->completedForSession($session->id);
+        $progress = model(ParticipantProgressModel::class);
+        $attempts = model(ChallengeAttemptModel::class);
+
+        // Progress follows the student across every game session of the study (28 §8)
+        $done = $attempts->completedFor($session);
 
         $levelNodes    = $content->nodesForLevel($node->level_id);
         $levelNodeIds  = array_map(static fn (ChallengeNode $n): int => $n->id, $levelNodes);
         $levelFinished = $levelNodeIds !== [] && array_diff($levelNodeIds, array_keys($done)) === [];
 
-        $completedLevels   = 0;
-        $unlockedSequence  = 1;
         $nextLevelUnlocked = null;
         $level             = $content->levelById($node->level_id);
         $study             = model(ResearchStudyModel::class)->find($session->study_id);
         $isFree            = ($study['unlock_mode'] ?? 'sequential') === 'free';
 
-        foreach ($content->levels() as $candidate) {
-            $ids = array_map(static fn (ChallengeNode $n): int => $n->id, $content->nodesForLevel($candidate->id));
+        // In field mode the meeting plan opens regions (28 §9): no "next region unlocked" moment
+        $fieldMode = service('fieldSessions')->openRegions($session) !== null;
 
-            if ($ids !== [] && array_diff($ids, array_keys($done)) === []) {
-                $completedLevels++;
-                $unlockedSequence = max($unlockedSequence, $candidate->sequence + 1);
-            }
-        }
-
-        if ($isFree) {
-            $unlockedSequence = max($unlockedSequence, count($content->levels()));
-        }
-
-        if ($levelFinished && $level !== null) {
+        if ($levelFinished && $level !== null && ! $fieldMode) {
             $next = $level->sequence + 1;
 
             foreach ($content->levels() as $candidate) {
@@ -1068,14 +1062,32 @@ class ChallengeService
             }
         }
 
-        $progress->update($session->id, [
-            'current_level_id'        => $node->level_id,
-            'current_node_id'         => $node->id,
-            'completed_nodes'         => count($done),
-            'completed_levels'        => $completedLevels,
-            'unlocked_level_sequence' => $unlockedSequence,
-            'total_stars'             => $scoring->totalStars($session->id),
-        ]);
+        // Conditional write: a request that read older numbers retries with the newest attempts
+        for ($try = 0; $try < 3; $try++) {
+            $row     = $progress->forSession($session);
+            $summary = ProgressRules::summarize(
+                array_map(static fn ($attempt): int => (int) $attempt->stars, $done),
+                $this->levelShape(),
+                $isFree,
+            );
+            $data = $summary + ['current_level_id' => $node->level_id, 'current_node_id' => $node->id];
+
+            if ($this->sameProgress($row, $data)) {
+                break;
+            }
+
+            $data['updated_at'] = date('Y-m-d H:i:s');
+
+            if ($this->updateIf($progress, (int) $row['id'], [
+                'completed_nodes' => $row['completed_nodes'],
+                'total_stars'     => $row['total_stars'],
+                'updated_at'      => $row['updated_at'],
+            ], $data)) {
+                break;
+            }
+
+            $done = $attempts->completedFor($session);
+        }
 
         return [
             'level_completed'     => $levelFinished,
@@ -1083,6 +1095,41 @@ class ChallengeService
             'shards'              => count($done),
             'level_stars'         => $scoring->levelSummary($session->id, $node->level_id)['stars'],
         ];
+    }
+
+    /**
+     * Active levels in order with their active node ids (ProgressRules input).
+     *
+     * @return list<array{sequence: int, node_ids: list<int>}>
+     */
+    private function levelShape(): array
+    {
+        $content = service('contentRepository');
+        $out     = [];
+
+        foreach ($content->levels() as $level) {
+            $out[] = [
+                'sequence' => $level->sequence,
+                'node_ids' => array_map(static fn (ChallengeNode $n): int => $n->id, $content->nodesForLevel($level->id)),
+            ];
+        }
+
+        return $out;
+    }
+
+    /**
+     * @param array<string, mixed> $row
+     * @param array<string, mixed> $data
+     */
+    private function sameProgress(array $row, array $data): bool
+    {
+        foreach ($data as $key => $value) {
+            if ((string) ($row[$key] ?? '') !== (string) $value) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     // -------------------------------------------------------------- payload
@@ -1429,37 +1476,7 @@ class ChallengeService
 
     // --------------------------------------------------------------- bantu
 
-    /**
-     * UPDATE bersyarat (penguncian optimistis): baris $id hanya diubah bila
-     * kolom $expected masih bernilai sama. false = permintaan lain lebih dulu
-     * mengubahnya. Di MySQL UPDATE menunggu kunci baris transaction lain lalu
-     * membaca nilai terbarunya; di SQLite (uji) penulis memang berurutan.
-     * $data selalu mengubah salah satu kolom $expected, jadi baris yang cocok
-     * selalu terhitung berubah.
-     *
-     * @param array<string, mixed> $expected
-     * @param array<string, mixed> $data
-     */
-    private function updateIf(Model $model, int $id, array $expected, array $data): bool
-    {
-        $model->where($expected)->update($id, $data);
-
-        return db_connect()->affectedRows() === 1;
-    }
-
-    /**
-     * updateIf() di dalam transaction: kalah balapan → ATTEMPT_CHANGED, yang
-     * oleh rollback() diganti galat sesuai keadaan terbaru.
-     *
-     * @param array<string, mixed> $expected
-     * @param array<string, mixed> $data
-     */
-    private function updateOrStale(Model $model, int $id, array $expected, array $data): void
-    {
-        if (! $this->updateIf($model, $id, $expected, $data)) {
-            throw ChallengeRuleException::attemptChanged();
-        }
-    }
+    // updateIf() and updateOrStale() come from App\Models\Concerns\ConditionalUpdate (28 §10.2).
 
     /**
      * Membatalkan transaction yang gagal. Permintaan yang kalah balapan
@@ -1500,22 +1517,64 @@ class ChallengeService
 
     private function assertLevelUnlocked(GameSession $session, ChallengeNode $node): void
     {
-        $study = model(ResearchStudyModel::class)->find($session->study_id);
-
-        if (($study['unlock_mode'] ?? 'sequential') === 'free') {
-            return;
-        }
-
         $level = service('contentRepository')->levelById($node->level_id);
 
         if ($level === null) {
             throw new \RuntimeException("Level node {$node->id} tidak ditemukan.");
         }
 
-        $progress = model(SessionProgressModel::class)->ensure($session->id);
+        // Field mode: the meeting plan of the session's field session decides (28 §9)
+        $regions = service('fieldSessions')->openRegions($session);
+
+        if ($regions !== null) {
+            if (! in_array((string) $level->code, $regions, true)) {
+                throw new \RuntimeException('Level ini belum terbuka.');
+            }
+
+            return;
+        }
+
+        $study = model(ResearchStudyModel::class)->find($session->study_id);
+
+        if (($study['unlock_mode'] ?? 'sequential') === 'free') {
+            return;
+        }
+
+        $progress = model(ParticipantProgressModel::class)->forSession($session);
 
         if ($level->sequence > (int) $progress['unlocked_level_sequence']) {
             throw new \RuntimeException('Level ini belum terbuka.');
+        }
+    }
+
+    /**
+     * Challenges inside a region open in order: n needs n − 1 completed by
+     * this student in this study (28 K17), so the API cannot skip ahead.
+     * `unlock_mode = free` opens them all, except in field mode.
+     */
+    private function assertNodeUnlocked(GameSession $session, ChallengeNode $node): void
+    {
+        if (service('fieldSessions')->openRegions($session) === null) {
+            $study = model(ResearchStudyModel::class)->find($session->study_id);
+
+            if (($study['unlock_mode'] ?? 'sequential') === 'free') {
+                return;
+            }
+        }
+
+        $done     = model(ChallengeAttemptModel::class)->completedFor($session);
+        $previous = true;
+
+        foreach (service('contentRepository')->nodesForLevel($node->level_id) as $candidate) {
+            if ($candidate->id === $node->id) {
+                if ($previous || isset($done[$node->id])) {
+                    return;
+                }
+
+                throw ChallengeRuleException::nodeLocked();
+            }
+
+            $previous = isset($done[$candidate->id]);
         }
     }
 

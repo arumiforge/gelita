@@ -12,6 +12,8 @@ class GameSession extends Entity
         'id'                     => 'int',
         'participant_id'         => 'int',
         'study_id'               => 'int',
+        'field_session_id'       => '?int',
+        'meeting_no'             => '?int',
         'release_id'             => 'int',
         'duration_ms'            => 'int',
         'last_level_id'          => '?int',

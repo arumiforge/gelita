@@ -66,7 +66,8 @@ class SessionController extends BaseAdminController
         return $this->panel('admin/sessions/show', 'Sesi ' . $session->session_code, [
             'session'     => $session->toArray(),
             'participant' => $participant === null ? null : ['id' => $participant->id, 'participant_code' => $participant->participant_code],
-            'progress'    => db_connect()->table('session_progress')->where('session_id', $sessionId)->get()->getRowArray(),
+            // The student's progress in this study (28 §8), the same in each of their sessions
+            'progress'    => db_connect()->table('participant_progress')->where('participant_id', $session->participant_id)->where('study_id', $session->study_id)->get()->getRowArray(),
             'attempts'    => $this->attemptsOf($sessionId, $refs),
             'timeline'    => $timeline,
             'types'       => $this->eventTypes($sessionId),
@@ -125,7 +126,7 @@ class SessionController extends BaseAdminController
             ->select('sp.completed_nodes, sp.total_stars', false)
             ->join('participants p', 'p.id = gs.participant_id')
             ->join('research_studies rs', 'rs.id = gs.study_id', 'left')
-            ->join('session_progress sp', 'sp.session_id = gs.id', 'left')
+            ->join('participant_progress sp', 'sp.participant_id = gs.participant_id AND sp.study_id = gs.study_id', 'left')
             ->where('p.deleted_at', null);
 
         foreach (['school_id' => 'p.school_id', 'study_id' => 'gs.study_id', 'locale' => 'gs.locale'] as $key => $column) {

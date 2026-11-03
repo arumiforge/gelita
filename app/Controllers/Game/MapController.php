@@ -7,7 +7,7 @@ use CodeIgniter\HTTP\RedirectResponse;
 
 /**
  * Peta Kedu (tiga wilayah) dan peta wilayah (empat pos tantangan).
- * Status buka/kunci disusun GameProgress dari `session_progress`.
+ * Status buka/kunci disusun GameProgress dari `participant_progress` (dan rencana pertemuan dalam mode penelitian).
  * Peta Kedu baru terbuka setelah cerita pembuka ditonton (introGate()).
  * Tahap 3: overlay "Kenali wilayah" (region_intro) dan tirai wilayah.
  */

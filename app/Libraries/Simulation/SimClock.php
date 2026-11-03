@@ -217,7 +217,7 @@ final class SimClock
             ['game_sessions', 'participant_id', [$pid], ['started_at', 'last_active_at', 'ended_at', 'created_at']],
             ['device_logs', 'participant_id', [$pid], ['created_at']],
             ['participant_feedback', 'participant_id', [$pid], ['submitted_at']],
-            ['session_progress', 'session_id', $sessionIds, ['updated_at']],
+            ['participant_progress', 'participant_id', [$pid], ['updated_at']],
             ['challenge_attempts', 'session_id', $sessionIds, ['started_at', 'completed_at', 'created_at']],
             ['audio_usage_events', 'session_id', $sessionIds, ['occurred_at', 'server_received_at']],
             ['item_responses', 'challenge_attempt_id', $attemptIds, ['started_at', 'answered_at', 'created_at', 'updated_at']],

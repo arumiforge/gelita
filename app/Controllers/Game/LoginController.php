@@ -54,6 +54,8 @@ class LoginController extends BaseController
 
         return match ($result['status']) {
             'ok'          => $this->afterLogin(),
+            // Field mode: no open field session yet, the token comes first (28 §6.4)
+            'token'       => $this->goTo(site_url('token')),
             // No flash: /ganti-sandi already explains it in its alert (Auth.mustChange)
             'must_change' => $this->goTo(site_url('ganti-sandi')),
             'locked'      => $this->failLogin('password', ['password' => lang('Auth.locked', [$result['lock_minutes'] ?? 5])]),
@@ -148,7 +150,7 @@ class LoginController extends BaseController
 
         // Straight to `/gerbang`: going through `/mulai` (one more redirect for
         // a logged-in student) used up the flash before any page showed it.
-        $target = (int) session('game_session_id') > 0 ? 'gerbang' : 'mulai';
+        $target = (int) session('game_session_id') > 0 ? 'gerbang' : (($login['status'] ?? '') === 'token' ? 'token' : 'mulai');
 
         return redirect()->to(site_url($target))->with('message', lang('Auth.passwordChanged'));
     }

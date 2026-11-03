@@ -259,6 +259,188 @@ class AnalyticsService
 
     // ------------------------------------------------------------- internal
 
+    // ------------------------------------------------ research revision 10, part 2 (28 §12)
+
+    /**
+     * Field sessions open today or closed less than 24 hours ago, with the
+     * counts every monitoring viewer sees (admin: numbers only, K2).
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function fieldSessionSummary(int $studyId): array
+    {
+        $fields = service('fieldSessions');
+        $now    = date('Y-m-d H:i:s');
+        $out    = [];
+
+        foreach (model(\App\Models\FieldSessionModel::class)->recent($studyId, date('Y-m-d H:i:s', time() - 86400), $now) as $row) {
+            $roster = $this->fieldSessionRoster($row);
+
+            $out[] = [
+                'id'           => (int) $row['id'],
+                'code'         => (string) $row['code'],
+                'opens_at'     => (string) $row['opens_at'],
+                'closes_at'    => (string) ($row['closed_at'] ?? $row['closes_at']),
+                'state'        => $fields->state($row),
+                'roster'       => $roster,
+                'entered'      => count(array_filter($roster, static fn (array $r): bool => $r['entered'])),
+                'active'       => count(array_filter($roster, static fn (array $r): bool => $r['active'])),
+                'not_entered'  => count(array_filter($roster, static fn (array $r): bool => ! $r['entered'])),
+                'all_done'     => count(array_filter($roster, static fn (array $r): bool => $r['entered'] && $r['total'] > 0 && $r['done'] >= $r['total'])),
+                'dropped'      => array_sum(array_column($roster, 'dropped')),
+                'no_seat'      => count(array_filter($roster, static fn (array $r): bool => ! $r['has_seat'])),
+                'small_screen' => $this->db()->table('audit_logs')->where('action', 'small_screen_refused')
+                    ->where('target_type', 'field_session')->where('target_id', (string) $row['id'])->countAllResults(),
+            ];
+        }
+
+        return $out;
+    }
+
+    /**
+     * The monitoring panel's data (28 §12). With $detail (researchers and
+     * the head researcher) the token and per-code lists come along; without
+     * it (admin, K2) only numbers. Never answers, scores, or stars.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function monitoring(int $studyId, bool $detail): array
+    {
+        $out = [];
+
+        foreach ($this->fieldSessionSummary($studyId) as $row) {
+            $roster = $row['roster'];
+            unset($row['roster']);
+
+            if ($detail) {
+                $row['token']    = $row['state'] === 'closed' ? null : service('fieldSessions')->currentToken($row['id']);
+                $row['students'] = $roster;
+            }
+
+            $out[] = $row;
+        }
+
+        return $out;
+    }
+
+    /**
+     * One row per student of the field session's class group (make-ups: its
+     * members): entered, active now, challenges done in the meeting's regions,
+     * challenges left over (meeting 5), lost events, and whether a seat exists.
+     *
+     * @param array<string, mixed> $fieldSession
+     *
+     * @return list<array{participant_code: string, entered: bool, active: bool, done: int, total: int, leftovers: int, dropped: int, has_seat: bool}>
+     */
+    public function fieldSessionRoster(array $fieldSession): array
+    {
+        $fields   = service('fieldSessions');
+        $id       = (int) $fieldSession['id'];
+        $studyId  = (int) $fieldSession['study_id'];
+        $plan     = $fields->planEntry($fieldSession);
+        $students = $fields->roster($fieldSession);
+
+        if ((int) $fieldSession['makeup_no'] > 0) {
+            $members  = model(\App\Models\FieldSessionMemberModel::class)->memberIds($id);
+            $students = array_values(array_filter($students, static fn (array $s): bool => in_array($s['id'], $members, true)));
+        }
+
+        $ids      = array_column($students, 'id');
+        $sessions = $ids === [] ? [] : $this->db()->table('game_sessions')
+            ->select('id, participant_id, last_active_at')
+            ->where('field_session_id', $id)
+            ->whereIn('participant_id', $ids)
+            ->get()->getResultArray();
+        $cutoff  = date('Y-m-d H:i:s', time() - self::ACTIVE_MINUTES * 60);
+        $entered = [];
+        $active  = [];
+
+        foreach ($sessions as $session) {
+            $entered[(int) $session['participant_id']] = true;
+
+            if ((string) $session['last_active_at'] >= $cutoff) {
+                $active[(int) $session['participant_id']] = true;
+            }
+        }
+
+        $content = service('contentRepository');
+        $nodeIds = [];
+
+        foreach ($plan['regions'] as $code) {
+            $level = $content->level($code);
+
+            foreach ($level === null ? [] : $content->nodesForLevel($level->id) as $node) {
+                $nodeIds[] = (int) $node->id;
+            }
+        }
+
+        $allNodes = [];
+
+        foreach ($content->levels() as $level) {
+            foreach ($content->nodesForLevel($level->id) as $node) {
+                $allNodes[] = (int) $node->id;
+            }
+        }
+
+        $dropped = $this->droppedEvents(array_map('intval', array_column($sessions, 'id')));
+        $seats   = model(\App\Models\ParticipantSeatModel::class)->forParticipants($studyId, $ids);
+        $out     = [];
+
+        foreach ($students as $student) {
+            $pid  = $student['id'];
+            $done = array_keys(model(\App\Models\ChallengeAttemptModel::class)->completedForParticipant($pid, $studyId));
+            $lost = 0;
+
+            foreach ($sessions as $session) {
+                if ((int) $session['participant_id'] === $pid) {
+                    $lost += $dropped[(int) $session['id']] ?? 0;
+                }
+            }
+
+            $out[] = [
+                'participant_code' => $student['participant_code'],
+                'entered'          => isset($entered[$pid]),
+                'active'           => isset($active[$pid]),
+                'done'             => count(array_intersect($nodeIds, $done)),
+                'total'            => count($nodeIds),
+                'leftovers'        => $plan['leftovers'] ? count(array_diff($allNodes, $done)) : 0,
+                'dropped'          => $lost,
+                'has_seat'         => isset($seats[$pid]),
+            ];
+        }
+
+        return $out;
+    }
+
+    /**
+     * Lost device events per game session: the sum of `dropped` in the
+     * `events_dropped` events of these sessions (28 §12).
+     *
+     * @param list<int> $sessionIds
+     *
+     * @return array<int, int> session id => dropped events
+     */
+    public function droppedEvents(array $sessionIds): array
+    {
+        if ($sessionIds === []) {
+            return [];
+        }
+
+        $out  = [];
+        $rows = $this->db()->table('game_event_logs')
+            ->select('session_id, payload_json')
+            ->where('event_type', 'events_dropped')
+            ->whereIn('session_id', $sessionIds)
+            ->get()->getResultArray();
+
+        foreach ($rows as $row) {
+            $payload = json_decode((string) $row['payload_json'], true);
+            $out[(int) $row['session_id']] = ($out[(int) $row['session_id']] ?? 0) + max(0, (int) ($payload['dropped'] ?? 0));
+        }
+
+        return $out;
+    }
+
     /**
      * Satu baris per tantangan aktif (urutan wilayah lalu tantangan): status
      * (`not_started` | `in_progress` | `completed` | `abandoned`), jumlah

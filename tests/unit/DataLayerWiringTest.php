@@ -14,7 +14,7 @@ final class DataLayerWiringTest extends CIUnitTestCase
 {
     // kelas 5 (Dok 1): − ResearchPhase, ParticipantConsent, ScoringProfile, ChallengeOption; + ItemTry, DeviceLog
     // + AssetPackage (asset package Stage 1)
-    private const MODEL_COUNT = 29;
+    private const MODEL_COUNT = 33;
 
     private const ENTITY_COUNT = 11;  // − ChallengeOption
 

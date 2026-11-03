@@ -105,9 +105,9 @@ trait RawDataWorld
             ],
         ]);
 
-        $this->insertRows($db, 'session_progress', [
-            ['session_id' => 1, 'current_level_id' => 1, 'current_node_id' => 2, 'completed_nodes' => 1, 'total_stars' => 2],
-            ['session_id' => 2, 'current_level_id' => 1, 'current_node_id' => 1, 'completed_nodes' => 0, 'total_stars' => 0],
+        $this->insertRows($db, 'participant_progress', [
+            ['participant_id' => 1, 'study_id' => 1, 'current_level_id' => 1, 'current_node_id' => 2, 'completed_nodes' => 1, 'total_stars' => 2],
+            ['participant_id' => 2, 'study_id' => 1, 'current_level_id' => 1, 'current_node_id' => 1, 'completed_nodes' => 0, 'total_stars' => 0],
         ]);
 
         $this->insertRows($db, 'device_logs', [

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Entities\ChallengeAttempt;
 use App\Models\ChallengeAttemptModel;
 use App\Models\ChallengeNodeModel;
+use App\Models\GameSessionModel;
 use App\Models\ItemResponseModel;
 
 /**
@@ -68,12 +69,15 @@ class ScoringService
         return $row;
     }
 
-    /** Jumlah bintang terbaik per node yang sudah tuntas pada satu sesi. */
+    /**
+     * Best stars of every completed node of the session's student in its
+     * study, across game sessions (research revision 10, part 2: 28 §8).
+     */
     public function totalStars(int $sessionId): int
     {
         $stars = 0;
 
-        foreach (model(ChallengeAttemptModel::class)->completedForSession($sessionId) as $attempt) {
+        foreach ($this->completedOfStudent($sessionId) as $attempt) {
             $stars += $attempt->stars;
         }
 
@@ -92,7 +96,7 @@ class ScoringService
             model(ChallengeNodeModel::class)->forLevel($levelId),
         );
 
-        $attempts = $nodeIds === [] ? [] : model(ChallengeAttemptModel::class)->completedForSession($sessionId);
+        $attempts = $nodeIds === [] ? [] : $this->completedOfStudent($sessionId);
         $stars    = 0;
         $done     = 0;
 
@@ -104,5 +108,19 @@ class ScoringService
         }
 
         return ['completed_nodes' => $done, 'total_nodes' => count($nodeIds), 'stars' => $stars];
+    }
+
+    /**
+     * Completed attempts of the student who owns $sessionId, in that
+     * session's study; just the session's own when the row is gone.
+     *
+     * @return array<int, ChallengeAttempt>
+     */
+    private function completedOfStudent(int $sessionId): array
+    {
+        $session = model(GameSessionModel::class)->find($sessionId);
+        $model   = model(ChallengeAttemptModel::class);
+
+        return $session === null ? $model->completedForSession($sessionId) : $model->completedFor($session);
     }
 }

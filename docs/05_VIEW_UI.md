@@ -742,3 +742,16 @@ Pustaka frontend: **Howler.js** (`public/assets/vendor/howler.min.js`, lisensi `
 10. Tidak ada permintaan ke domain pihak ketiga dari halaman yang dibuka anak sebelum anak sendiri menekan Putar pada video Pustaka; font, ikon, dan pustaka di-host sendiri.
 11. Perangkat sentuh hanya dilayani mendatar; aset cukup satu versi mendatar.
 12. Semua layar game digambar di panggung 16:9 1280 × 720 dp yang diskalakan seragam; halaman tidak pernah bergulir, hanya panel `.stage-scroll`.
+
+## Research revision 10, part 2: field sessions (28 §16)
+
+| View | Screen |
+|---|---|
+| `game/token.php` | Token screen (`/token`, mock-up `mk-tk-01`/`mk-tk-02`) and step 0 of `/daftar`; plain form (works without JavaScript); the research code above the box; texts `Game.token*` |
+| `game/session-closed.php` | "Sampai jumpa di sesi berikutnya!" (`mk-tk-03`): Masukkan token and Keluar; no shard plate, no Pustaka or Profil links |
+| `game/intro.php` | The welcome card shows the big "Kode penelitian" card after a field-mode registration (flash `research_code`) |
+| `admin/field-sessions/{index,create,show,seats,makeup}.php` | Field sessions, new session, one session (hours, new token, close, token history), L2 seats with booklet balance, make-up members |
+| `admin/monitoring.php` + `public/assets/js/admin/monitoring.js` | Monitoring cards, refreshed every 30 seconds from `/api/admin/monitoring` with `X-Gelita-Background: 1` |
+| `admin/study/index.php`, `admin/schools/index.php`, `admin/dashboard.php` | Field mode and meeting plan fields; research school codes; card "Sesi lapangan aktif" |
+
+`core/api.js` sends the student to `/sampai-jumpa` on `FIELD_SESSION_CLOSED` and treats `NODE_LOCKED` like `LEVEL_LOCKED`. Panel texts live in `Admin.php` (Indonesian only).

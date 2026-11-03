@@ -36,7 +36,7 @@ Pola yang dipakai semua Model:
 
 | Properti | Aturan |
 |---|---|
-| `$table`, `$primaryKey` | satu tabel; PK `id`, kecuali `SessionProgressModel` (`session_id`, `$useAutoIncrement = false`) |
+| `$table`, `$primaryKey` | satu tabel; PK `id`, kecuali `FieldSessionMemberModel` (pasangan `field_session_id`, `participant_id`) |
 | `$returnType` | Entity bila baris butuh casting/method (11 Model), selain itu `'array'` |
 | `$useTimestamps` | `true` hanya untuk tabel ber-`created_at` + `updated_at` (`$dateFormat = 'datetime'`). Tabel lain mengisi waktunya sendiri (`occurred_at`, `started_at`, `submitted_at`, …) atau memakai default `CURRENT_TIMESTAMP(6)` database |
 | `$useSoftDeletes` | hanya `ParticipantModel` (`deleted_at`). `game_event_logs.deleted_at` diisi manual oleh layanan penghapusan, bukan oleh Model |
@@ -129,7 +129,7 @@ Ditulis terutama oleh `SessionService` (pendaftaran, masuk, ganti sandi, sesi) d
 | `SchoolModel` | `schools` | array | ya |
 | `ParticipantModel` | `participants` | `Participant` | ya, + soft delete |
 | `GameSessionModel` | `game_sessions` | `GameSession` | tidak |
-| `SessionProgressModel` | `session_progress` | array | tidak |
+| `ParticipantProgressModel` | `participant_progress` | array | tidak |
 | `DeviceLogModel` | `device_logs` | array | tidak (`created_at` dari database) |
 
 ### `SchoolModel`
@@ -227,15 +227,15 @@ Entity `GameSession`: casts `id`, `participant_id`, `study_id`, `release_id`, `d
 `isFinished()` (`completed` atau `abandoned`), `resolvedLocale()` (locale sesi bila didukung, selain
 itu `id`). Semua teks permainan memakai `resolvedLocale()`.
 
-### `SessionProgressModel`
+### `ParticipantProgressModel`
 
-- PK `session_id` (`$useAutoIncrement = false`); allowedFields `session_id`, `current_level_id`,
-  `current_node_id`, `unlocked_level_sequence`, `completed_nodes`, `completed_levels`, `total_stars`.
-- `ensure($sessionId)` — mengembalikan baris progres, membuatnya bila belum ada
-  (`unlocked_level_sequence = 1`, hitungan 0).
-- Baris ini ringkasan yang dihitung ulang `ChallengeService` setiap pengerjaan ditutup (lihat
-  [Kelompok 4](#kelompok-4--data-penelitian)): `completed_nodes` = jumlah Serpihan Cahaya (paling
-  banyak 12), `total_stars` = jumlah bintang terbaik per tantangan.
+- One row per student and study (research revision 10, part 2: 28 §8; replaced `SessionProgressModel`).
+  allowedFields `participant_id`, `study_id`, `current_level_id`, `current_node_id`,
+  `unlocked_level_sequence`, `completed_nodes`, `completed_levels`, `total_stars`, `updated_at`.
+- `ensure($participantId, $studyId)` makes the row when missing (INSERT IGNORE, so two requests at
+  once end with one row); `forSession(GameSession)` is the same for the session's student and study.
+- Recomputed by `ChallengeService::refreshProgress()` from `ChallengeAttemptModel::completedForParticipant()`
+  every time an attempt closes (`App\Libraries\ProgressRules`), with a conditional UPDATE.
 
 ### `DeviceLogModel`
 
@@ -699,7 +699,7 @@ selalu diperbarui; `solved_on_try` diisi saat pertama kali benar; jawaban yang b
 menambah `change_count` dan `challenge_attempts.answer_change_count`.
 
 Penutupan (`closeAttempt()`) mengisi `status = completed`, `completion_reason`, `completed_at`,
-`duration_ms`, memanggil `ScoringService::finalize()`, menghitung ulang `session_progress`, menulis
+`duration_ms`, memanggil `ScoringService::finalize()`, menghitung ulang `participant_progress`, menulis
 `challenge_completed` (dan `level_completed` bila wilayah tuntas); sesudah commit
 `SessionService::completeIfFinished()` menandai sesi selesai bila ketiga wilayah tuntas.
 
@@ -815,7 +815,7 @@ siswa, dan linimasa event.
 | `peserta` | siswa | `participants` (+ `schools.code` hanya beridentitas) |
 | `sesi` | sesi bermain | `game_sessions` + studi + rilis |
 | `perangkat` | catatan perangkat | `device_logs` |
-| `progres` | keadaan terbaru sesi | `session_progress` |
+| `progres` | keadaan terbaru sesi (kemajuan siswanya) | `game_sessions` + `participant_progress` |
 | `pengerjaan` | pengerjaan tantangan | `challenge_attempts` |
 | `jawaban` | keadaan akhir soal | `item_responses` + `challenge_items` |
 | `percobaan` | satu percobaan | `item_tries` |
@@ -1117,3 +1117,20 @@ mPDF. It returns `{sha, rows}`.
    transaction; `EventService::record()` sengaja tidak membuka transaction sendiri.
 9. **Kunci jawaban soal yang sudah dijawab tidak diubah.** Panel dan impor memeriksa
    `ChallengeItemModel::hasResponses()` agar data lama tetap sebanding.
+
+
+## Research revision 10, part 2: field sessions (28)
+
+| Model / class | Table | Notes |
+|---|---|---|
+| `FieldSessionModel` | `field_sessions` | `forStudy()`, `recent($studyId, $since, $now)` (monitoring) |
+| `FieldSessionTokenModel` | `field_session_tokens` | `current()`, `findToken()`, `history()` |
+| `FieldSessionMemberModel` | `field_session_members` | `isMember()`, `memberIds()` (make-ups only) |
+| `ParticipantSeatModel` | `participant_seats` | `bookletFor($participantId, $studyId): ?string` (contract with part 5, `VariantPicker`), `findFor()`, `forParticipants()` |
+| `ParticipantProgressModel` | `participant_progress` | see above |
+| `Models\Concerns\ConditionalUpdate` | — | trait `updateIf()` / `updateOrStale()`, moved out of `ChallengeService`; used by the challenge core, field sessions, and progress |
+| `ChallengeAttemptModel::completedForParticipant()` / `completedFor(GameSession)` | `challenge_attempts` | best completed attempt per node across a student's game sessions in a study; `ScoringService::levelSummary()`/`totalStars()` and `GameProgress` read it |
+| `ResearchStudyModel::fieldModeStudy()` | `research_studies` | the active study when `field_mode = 1`, else null |
+| `GameSessionModel::resumable()` | `game_sessions` | in field mode only a session whose field session is open; `inFieldSession()` for K7 |
+
+Services: `FieldSessionService` (`service('fieldSessions')`: create, hours, close, tokens, make-ups, token check, meeting plan, open regions), `ParticipantCodeService` (`service('participantCodes')`: `S03-A07` from the counter), `SeatService` (L2 seats, booklet balance), `TestAccountService` (`service('testAccounts')`, `gelita:uji:akun`). `AnalyticsService` gained `fieldSessionSummary()`, `fieldSessionRoster()`, `droppedEvents()`, `monitoring()`. Libraries: `ProgressRules`, `SeatRules`.

@@ -72,4 +72,12 @@ final class ChallengeRuleException extends \RuntimeException
     {
         return new self('TRIES_REMAINING', 409, 'Tantangan ini belum selesai: masih ada kesempatan untuk memperbaiki jawaban.');
     }
+
+    // Research revision 10, part 2 (28 K17)
+
+    /** The challenge before this one in its region is not completed yet (409). */
+    public static function nodeLocked(): self
+    {
+        return new self('NODE_LOCKED', 409, lang('Game.nodeLocked'));
+    }
 }

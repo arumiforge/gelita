@@ -68,19 +68,36 @@ class StudyController extends BaseAdminController
             return redirect()->to(site_url('admin/studi'))->with('errors', $this->validator->getErrors());
         }
 
-        $previous = $studies->find($studyId)['status'] ?? null;
+        $row      = $studies->find($studyId);
+        $previous = $row['status'] ?? null;
 
         if (($blocked = $this->readinessGuard($previous)) !== null) {
             return $blocked;
         }
 
-        $lock = $this->packageLock($previous);
+        $lock    = $this->packageLock($previous);
+        $payload = $this->studyPayload(true);
 
-        if (! $studies->update($studyId, $this->studyPayload(true) + $lock)) {
+        // Field mode and meeting plan stay put while a field session is open (28 §5.1, §5.2)
+        $fieldChanged = (int) $payload['field_mode'] !== (int) ($row['field_mode'] ?? 0)
+            || $payload['meeting_plan'] !== (string) ($row['meeting_plan'] ?? 'lima_pertemuan');
+
+        if ($fieldChanged && service('fieldSessions')->hasOpenSessions($studyId)) {
+            return $this->back('admin/studi', lang('Admin.fieldModeLockedOpen'));
+        }
+
+        if (! $studies->update($studyId, $payload + $lock)) {
             return $this->back('admin/studi', 'Penelitian belum dapat disimpan: ' . $this->modelErrors($studies));
         }
 
         $this->audit('study_update', 'research_study', $studyId, $lock);
+
+        if ($fieldChanged) {
+            $this->audit('study_field_mode_changed', 'research_study', $studyId, [
+                'from' => ['field_mode' => (int) ($row['field_mode'] ?? 0), 'meeting_plan' => $row['meeting_plan'] ?? null],
+                'to'   => ['field_mode' => (int) $payload['field_mode'], 'meeting_plan' => $payload['meeting_plan']],
+            ]);
+        }
 
         return $this->done('admin/studi', 'Perubahan penelitian sudah disimpan.');
     }
@@ -221,6 +238,8 @@ class StudyController extends BaseAdminController
             'status'             => ['label' => 'Status', 'rules' => 'required|in_list[draft,active,closed]'],
             'default_locale'     => ['label' => 'Bahasa awal permainan', 'rules' => 'required|valid_locale'],
             'unlock_mode'        => ['label' => 'Cara wilayah terbuka', 'rules' => 'required|in_list[sequential,free]'],
+            'field_mode'         => ['label' => lang('Admin.fieldModeLabel'), 'rules' => 'permit_empty|in_list[0,1]'],
+            'meeting_plan'       => ['label' => lang('Admin.meetingPlanLabel'), 'rules' => 'permit_empty|in_list[' . implode(',', array_keys(config('Gelita')->meetingPlans)) . ']'],
             'retention_days'     => ['label' => 'Lama penyimpanan data', 'rules' => 'permit_empty|is_natural'],
         ];
     }
@@ -244,6 +263,9 @@ class StudyController extends BaseAdminController
             'retention_days'      => (int) ($this->request->getPost('retention_days') ?: 365),
             'default_locale'      => (string) $this->request->getPost('default_locale'),
             'unlock_mode'         => (string) $this->request->getPost('unlock_mode'),
+            // Off unless ticked (28 K1)
+            'field_mode'          => (string) $this->request->getPost('field_mode') === '1' ? 1 : 0,
+            'meeting_plan'        => (string) ($this->request->getPost('meeting_plan') ?: 'lima_pertemuan'),
         ];
 
         if ($forUpdate) {

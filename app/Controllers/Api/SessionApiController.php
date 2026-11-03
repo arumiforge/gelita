@@ -60,7 +60,10 @@ class SessionApiController extends BaseApiController
 
         $session = $this->gameSession();
 
-        service('sessionService')->heartbeat($session->id);
+        // Accepted but extends nothing once the field session has closed (28 §7)
+        if (! service('fieldSessions')->fieldModeOn() || service('fieldSessions')->sessionIsOpen($session)) {
+            service('sessionService')->heartbeat($session->id);
+        }
 
         return $this->ok(['server_time' => $this->serverTime()]);
     }

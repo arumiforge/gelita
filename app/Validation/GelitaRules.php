@@ -86,6 +86,20 @@ class GelitaRules
         return ! in_array(strtolower(trim((string) $str)), config('Gelita')->reservedUsernames, true);
     }
 
+    /** Prefixes kept for test accounts and the simulator, `uji.` and `sim_` (28 K18). */
+    public function not_reserved_prefix(?string $str): bool
+    {
+        $name = strtolower(trim((string) $str));
+
+        foreach (config('Gelita')->reservedUsernamePrefixes as $prefix) {
+            if (str_starts_with($name, $prefix)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /** NPSN 8 angka milik sekolah resmi yang aktif (App\Services\SchoolDirectory) */
     public function known_npsn(?string $str): bool
     {

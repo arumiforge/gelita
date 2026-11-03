@@ -39,7 +39,7 @@ Istilah yang dipakai di seluruh dokumen:
 | Kesempatan | Sisa percobaan yang masih boleh dipakai; kata yang tampil di layar siswa | dihitung dari `check_count` / `try_count` dan `max_tries` |
 | Berhasil pada Percobaan Pertama | Soal yang benar pada percobaan ke-1 | `item_responses.first_pass_correct`, `challenge_attempts.first_pass_correct` |
 | Benar di akhir | Soal yang benar pada percobaan terakhirnya | `item_responses.is_correct`, `challenge_attempts.final_correct` |
-| Serpihan Cahaya | Satu serpihan per tantangan yang pernah selesai pada sesi itu; 12 seluruhnya | `session_progress.completed_nodes` |
+| Serpihan Cahaya | Satu serpihan per tantangan yang pernah selesai di semua sesi siswa itu (studi yang sama); 12 seluruhnya | `participant_progress.completed_nodes` |
 
 ## Komponen utama
 
@@ -127,7 +127,7 @@ Pendaftaran berjalan seluruhnya di server (`App\Controllers\Game\RegisterControl
          kab-kota, pw_first_submit_criteria, pw_weak_submit_count,
          password_changed_at, assented_at = waktu server
       e. insert game_sessions (session_code acak, study_id, release_id, locale,
-         ringkasan perangkat dari DeviceProfile, ip_hash) + session_progress nol
+         ringkasan perangkat dari DeviceProfile, ip_hash) + participant_progress nol
       f. insert device_logs (via = register)
       g. event session_started {via: 'register'}
  7. Hapus reg_wizard, reg_first_criteria, reg_weak_count dari session PHP;
@@ -176,7 +176,7 @@ Neither endpoint opens the session (`LocaleFilter::STATELESS_PATHS`), so their r
  7. GameSessionModel::resumable(peserta, studi aktif)
       ada   → status 'active', locale, last_active_at;
               event session_resumed {via: 'login'}; device_logs via = resume
-      tidak → startNewSession(): game_sessions + session_progress baru,
+      tidak → startNewSession(): game_sessions + participant_progress baru,
               event session_started {via: 'login'}; device_logs via = login
  8. session()->regenerate(true); participant_id + game_session_id diset
  9. Redirect ke URL tujuan yang tersimpan (GameSessionFilter menyimpan path
@@ -280,7 +280,7 @@ Yang **tidak** berubah: sesi, progres, pengerjaan, jawaban, dan bintang. Di laya
       → /peta dengan flash curtain=map (tirai "Membuka Peta Kedu")
  4. /peta → MapController::kedu (introGate(): kembali ke /intro selama
     intro_seen_at kosong, juga untuk URL yang diketik langsung)
-      levelOverview(): status setiap wilayah dari session_progress dan
+      levelOverview(): status setiap wilayah dari participant_progress dan
       pengerjaan selesai (ScoringService::levelSummary):
         locked      wilayah belum terbuka
         open        terbuka, belum ada tantangan selesai (wilayah baru)
@@ -311,7 +311,7 @@ Yang **tidak** berubah: sesi, progres, pengerjaan, jawaban, dan bintang. Di laya
 
 | Nilai | Wilayah | Tantangan di dalam wilayah | Pustaka |
 |---|---|---|---|
-| `sequential` (bawaan) | terbuka berurutan: wilayah berikutnya terbuka setelah keempat tantangan wilayah sebelumnya selesai (`session_progress.unlocked_level_sequence`) | berurutan | terbuka setelah wilayahnya tuntas |
+| `sequential` (bawaan) | terbuka berurutan: wilayah berikutnya terbuka setelah keempat tantangan wilayah sebelumnya selesai (`participant_progress.unlocked_level_sequence`) | berurutan | terbuka setelah wilayahnya tuntas |
 | `free` | semua terbuka sejak awal | semua terbuka | tetap terbuka setelah wilayahnya tuntas |
 
 Peta hanya membaca. Pembukaan wilayah berikutnya ditulis saat sebuah pengerjaan ditutup (FITUR 5a). Kunci wilayah ditegakkan lagi di `ChallengeService::openNode()` dan `POST /api/nodes/{id}/attempts` (409 `LEVEL_LOCKED`); urutan pos di dalam wilayah ditegakkan layar HTML (`ChallengeController`).
@@ -369,7 +369,7 @@ Ini fitur inti. Setiap wilayah punya 4 tantangan dengan urutan sama; tingkatnya 
            ItemResponseModel::createPlaceholders() → satu baris 'pending' per soal
            event challenge_opened {attempt_no, variant_group, item_count}
       d. game_sessions.last_level_id/last_challenge_node_id dan
-         session_progress.current_level_id/current_node_id diperbarui
+         participant_progress.current_level_id/current_node_id diperbarui
       e. payload pemain (buildPayload) — TANPA answer_key_json:
            variant {group, title}, max_tries, tries_used (= check_count),
            elapsed_ms (jam tantangan dari started_at server), node,
@@ -509,7 +509,7 @@ a. challenge_attempts: status 'completed', completion_reason
    ('solved' | 'tries_exhausted'), completed_at, duration_ms
 b. ScoringService::finalize(): first_pass_correct, final_correct,
    scorable_items, stars (dihitung dari item_responses soal yang dinilai)
-c. refreshProgress(): session_progress (FITUR 5a)
+c. refreshProgress(): participant_progress (FITUR 5a)
 d. event challenge_completed {stars, first_pass_correct, final_correct,
    scorable_items, completion_reason, attempt_no}
 e. wilayah tuntas → event level_completed {level_stars}
@@ -560,7 +560,7 @@ Tirai tantangan tidak memengaruhi waktu pengerjaan: tirai diputar di kartu misi,
 
 ```text
 1. Saat pengerjaan ditutup, ChallengeService::refreshProgress() menghitung ulang
-   session_progress dari pengerjaan 'completed' sesi itu:
+   participant_progress dari pengerjaan 'completed' semua sesi siswa itu di studi yang sama:
      completed_nodes         = jumlah pos yang pernah selesai = Serpihan Cahaya
      completed_levels        = wilayah yang keempat posnya selesai
      unlocked_level_sequence = sequence wilayah tuntas terakhir + 1
@@ -1449,7 +1449,7 @@ Halaman `/admin/tata-kelola` (admin saja, `GovernanceController`) adalah satu-sa
        audit 'delete_preview'
 3. Halaman menampilkan jumlah per tabel: game_event_logs, audio_usage_events,
    item_tries, item_responses, challenge_attempts, device_logs,
-   session_progress, participant_feedback, game_sessions, participants
+   participant_progress, participant_feedback, game_sessions, participants
 4. Admin mengetik HAPUS → POST /admin/tata-kelola/hapus/{id}/jalankan
      RetentionService::execute() — SATU TRANSACTION:
        jumlah dihitung ulang; bila menyimpang dari pratinjau lebih dari
@@ -1523,7 +1523,7 @@ Di server, jalankan dengan akun migrasi (`database_default_DSN` akun `gelita_mig
 
 | Kelompok | Tabel | Tindakan |
 |---|---|---|
-| A. Data penelitian & uji coba | `participants`, `game_sessions`, `session_progress`, `challenge_attempts`, `item_responses`, `item_tries`, `audio_usage_events`, `game_event_logs`, `device_logs`, `participant_feedback`, `data_exports`, `data_deletion_requests`, `audit_logs`, `ci_sessions` | dikosongkan (semua siswa dan staf ter-logout); berkas `writable/exports/*` ikut dihapus |
+| A. Data penelitian & uji coba | `participants`, `game_sessions`, `participant_progress`, `challenge_attempts`, `item_responses`, `item_tries`, `audio_usage_events`, `game_event_logs`, `device_logs`, `participant_feedback`, `data_exports`, `data_deletion_requests`, `audit_logs`, `ci_sessions` | dikosongkan (semua siswa dan staf ter-logout); berkas `writable/exports/*` ikut dihapus |
 | B. Konten tantangan | `hints`, `challenge_items`, `reading_passages`, `challenge_nodes` | dikosongkan lalu dibangun ulang: 12 tantangan (`ContentSeeder::seedNodes()`) + impor workbook bank soal kelas 5 |
 | C. Pengaturan | `research_studies`, `game_releases`, `learning_indicators` | dikosongkan lalu diisi nilai bawaan seeder |
 | D. Dibersihkan sebagian | `schools`, `staff_users` | sekolah belum terverifikasi dihapus (`staff_users.school_id` yang menunjuknya di-NULL-kan); akun staf tetap dan kunci loginnya dibuka; `--hapus-guru` menghapus semua akun guru (admin tidak pernah) |
@@ -1613,12 +1613,12 @@ Jalankan di database pengembangan, misalnya sesudah `gelita:reset`. Untuk membua
 
 | Operasi | Yang dibungkus satu transaction |
 |---|---|
-| Pendaftaran siswa | sekolah ketikan (bila baru) + `participants` (akun, metrik sandi, `assented_at`) + `game_sessions` + `session_progress` + `device_logs` + event |
-| Sesi baru saat masuk | `game_sessions` + `session_progress` + event |
+| Pendaftaran siswa | sekolah ketikan (bila baru) + `participants` (akun, metrik sandi, `assented_at`) + `game_sessions` + `participant_progress` + `device_logs` + event |
+| Sesi baru saat masuk | `game_sessions` + `participant_progress` + event |
 | Buka pengerjaan | `challenge_attempts` + `item_responses` placeholder + event |
 | Cek jawaban (batch) | `challenge_attempts.check_count` + `item_responses` + `item_tries` + event + penutupan (bila selesai) |
 | Ketukan benda (Cari Objek) | `item_responses` + `item_tries` + event + penutupan (bila semua petunjuk tertutup) |
-| Penutupan pengerjaan | `challenge_attempts` (status, alasan, bintang) + `session_progress` + event `challenge_completed`/`level_completed` |
+| Penutupan pengerjaan | `challenge_attempts` (status, alasan, bintang) + `participant_progress` + event `challenge_completed`/`level_completed` |
 | Pakai petunjuk | `challenge_attempts.hint_count` + `item_responses.hint_used` + event |
 | Event audio | `audio_usage_events` + `game_event_logs` + `challenge_attempts.audio_use_count` |
 | Ingest event batch | insert batch (idempoten) |
@@ -1704,3 +1704,23 @@ Untuk **[08_DEPLOYMENT.md](08_DEPLOYMENT.md)**: instalasi baru (migrate, `Databa
 * Admin dapat memuat bank soal dari satu workbook dengan pratinjau galat per baris, mengganti gambar contoh dengan gambar asli, menyetujui narasi, mengelola studi, rilis, sekolah, dan akun staf, mengekspor data lengkap, serta menghapus data dengan pratinjau, konfirmasi, dan jejak audit.
 * Satu perintah `gelita:reset` menyiapkan sistem bersih untuk pengambilan data penelitian; retensi terjadwal hanya mengingatkan, tidak pernah menghapus data penelitian sendiri.
 * Koneksi yang sempat putus tidak menghilangkan event dan tidak menggandakan data.
+
+## FEATURE: field sessions, tokens, and monitoring (research revision 10, part 2)
+
+Source: `docs/revisi-10-analitik/28_IMPLEMENTASI_SESI_LAPANGAN.md`. Off by default: everything below applies only while the active study has `field_mode = 1`. Built now, never used with children before ethics approval.
+
+1. **Before the meeting.** The admin gives schools their research code on `/admin/sekolah`. The head researcher turns on Mode penelitian and picks the meeting plan on `/admin/studi`. A researcher creates the field session on `/admin/sesi-lapangan/baru` (school code, class group, meeting, date, hours of at most 4 hours); the panel shows the code (`S03-A-P2`) and the token.
+2. **P1 (registration).** `/daftar` starts with the token (step 0); school and class group come from the field session, the school step is skipped, and `SessionService::registerAndStart()` gives the student a code `S03-A07` (`ParticipantCodeService`, conditional UPDATE on `participant_code_counters`, at most 99) and a game session bound to the field session. Right after, the researcher enters rows and seats on `/admin/sesi-lapangan/{id}/kursi`; the panel computes booklet and test form and warns when booklets are unbalanced.
+3. **P2–P5.** `/masuk` resumes a game session of an open field session, else sends the student to `/token`; an accepted token makes a game session with `field_session_id`, `meeting_no`, and `session_started {via: token}`. Regions open per meeting plan (`Config\Gelita::$meetingPlans`): P1 none, P2–P4 one region each, P5 all three; challenges inside a region stay in order, also in the API.
+4. **Progress** is per student and study (`participant_progress`), so a challenge done at P2 stays done at P5. This also holds with field mode off (a new login after a completed session keeps the progress).
+5. **Closing.** *Tutup sesi sekarang* or the closing time: game sessions are paused once (`session_paused {via: field_session_closed}`), open attempts stay open; the next request shows `/sampai-jumpa`, the API answers `FIELD_SESSION_CLOSED`, events and heartbeats are still accepted. Retention never abandons field-session game sessions.
+6. **Make-ups.** From a closed main session, *Buat sesi susulan* creates `-S`, `-S2`, …; students without a game session in the main session start ticked; only members can use the token (`not_member`).
+7. **Monitoring** (`/admin/pemantauan`): per field session open today or closed within 24 hours, students in, active now (≤ 10 minutes), not in, all done, lost events (`events_dropped`), no seat yet, small-screen refusals. Researchers see codes and the token; the admin sees numbers only.
+
+Token refusals: `token_unknown`, `not_open_yet`, `closed`, `other_class`, `not_member`, `other_study` (an account with a game session in another study, K20), and `too_many` after 10 wrong tokens in 10 minutes.
+
+`gelita:reset` empties the field tables and the study starts with field mode off. `gelita:simulasi` refuses while field mode is on.
+
+## FEATURE: `gelita:uji:akun` (research revision 10, part 2, change no. 24)
+
+Test accounts for the validators' install (28 §13): `--buat` makes the default `uji.*` list (or `--nama=uji.x`) at school `Sekolah Uji Validator` (`V01`), class group `A`, codes `UJI-01`, …, random passwords shown once; `--reset=uji.x` deletes that account's play data through `RetentionService::deletePlayData()` and keeps the account; `--daftar` lists them. Refuses in production, beside any student who is not `uji.*`, and without an active study. Audit `test_account_created`, `test_account_reset` (no actor, `via: cli`). Students cannot register with the prefixes `uji.` and `sim_`.

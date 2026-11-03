@@ -37,6 +37,10 @@ $routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($ro
         $routes->get('ganti-sandi', 'LoginController::changePasswordForm');
         $routes->post('ganti-sandi', 'LoginController::changePassword');
         $routes->get('keluar', 'LoginController::logout');
+        // Field mode (revision 10, part 2: 28 §6.4, §7): token and "see you", no game session needed
+        $routes->get('token', 'FieldTokenController::form');
+        $routes->post('token', 'FieldTokenController::submit');
+        $routes->get('sampai-jumpa', 'FieldTokenController::closed');
     });
 
     // Login + sandi sudah sah + sesi permainan aktif; setiap layar → screen_viewed
@@ -124,6 +128,22 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->get('peserta/(:num)', 'ParticipantController::show/$1');
         });
         $routes->post('peserta/(:num)/reset-sandi', 'ParticipantController::resetPassword/$1', ['filter' => 'staffCan:participants.reset_by_id']);
+
+        // Field sessions and L2 seats (revision 10, part 2: 28 §15); `baru` before the patterned paths
+        $routes->group('', ['filter' => 'staffCan:field_sessions.manage'], static function ($routes): void {
+            $routes->get('sesi-lapangan', 'FieldSessionController::index');
+            $routes->get('sesi-lapangan/baru', 'FieldSessionController::create');
+            $routes->post('sesi-lapangan/baru', 'FieldSessionController::store');
+            $routes->get('sesi-lapangan/(:num)', 'FieldSessionController::show/$1');
+            $routes->post('sesi-lapangan/(:num)/jam', 'FieldSessionController::updateHours/$1');
+            $routes->post('sesi-lapangan/(:num)/token-baru', 'FieldSessionController::regenerateToken/$1');
+            $routes->post('sesi-lapangan/(:num)/tutup', 'FieldSessionController::close/$1');
+            $routes->get('sesi-lapangan/(:num)/kursi', 'FieldSessionController::seats/$1');
+            $routes->post('sesi-lapangan/(:num)/kursi', 'FieldSessionController::saveSeats/$1');
+            $routes->get('sesi-lapangan/(:num)/susulan', 'FieldSessionController::makeupForm/$1');
+            $routes->post('sesi-lapangan/(:num)/susulan', 'FieldSessionController::storeMakeup/$1');
+        });
+        $routes->get('pemantauan', 'MonitoringController::index', ['filter' => 'staffCan:monitoring.view']);
 
         // Research data of all students: head researcher only
         $routes->group('', ['filter' => 'staffCan:research.browse'], static function ($routes): void {
@@ -226,6 +246,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->post('sekolah/gabung-otomatis', 'SchoolController::autoMerge');
             $routes->post('sekolah/(:num)/gabung', 'SchoolController::merge/$1');
             $routes->post('sekolah/(:num)/sahkan', 'SchoolController::verify/$1');
+            $routes->post('sekolah/kode-penelitian', 'SchoolController::setResearchCode');
         });
 
         $routes->group('', ['filter' => 'staffCan:staff.manage'], static function ($routes): void {
@@ -246,4 +267,5 @@ $routes->group('api/admin', [
     $routes->get('summary', 'AdminApiController::summary', ['filter' => 'staffCan:dashboard.view']);
     $routes->get('sessions/(:num)/timeline', 'AdminApiController::timeline/$1', ['filter' => 'staffCan:research.browse']);
     $routes->get('exports/(:num)/status', 'AdminApiController::exportStatus/$1', ['filter' => 'staffCan:research.export']);
+    $routes->get('monitoring', 'AdminApiController::monitoring', ['filter' => 'staffCan:monitoring.view']);
 });

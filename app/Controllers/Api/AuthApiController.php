@@ -36,7 +36,7 @@ class AuthApiController extends BaseController
             return $this->ok(['available' => false, 'reason' => 'format']);
         }
 
-        if (! $rules->not_reserved_username($username)) {
+        if (! $rules->not_reserved_username($username) || ! $rules->not_reserved_prefix($username)) {
             return $this->ok(['available' => false, 'reason' => 'reserved']);
         }
 

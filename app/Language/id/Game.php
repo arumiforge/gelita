@@ -444,4 +444,21 @@ return [
     'regNextHint' => 'Kalau semua isian sudah lengkap, ketuk tombol Berikutnya, ya.',
     'regionHint' => 'Sekolahmu di Jawa Tengah? Pilih provinsi dan kabupaten/kota dulu, ya. Jangan langsung menulis nama sekolah, karena sekolahmu akan dicari dengan NPSN.',
     'schoolConfirmHint' => 'Kalau sekolahnya sudah benar, ketuk tombol Berikutnya, ya.',
+
+    // Research revision part 2: field sessions (28)
+    'tokenTitle'         => 'Token Sesi',
+    'tokenHelp'          => 'Ketik enam huruf dan angka token yang ditulis kakak peneliti di papan tulis, ya.',
+    'tokenUnknown'       => 'Token belum cocok. Periksa lagi huruf di papan tulis, ya. Kalau masih belum bisa, angkat tangan.',
+    'tokenNotOpenYet'    => 'Sesi ini belum dibuka. Tunggu aba-aba kakak peneliti, ya.',
+    'tokenClosed'        => 'Sesi ini sudah ditutup. Tanyakan token baru ke kakak peneliti, ya.',
+    'tokenOtherClass'    => 'Token ini untuk kelas lain. Periksa lagi token di papan tulis kelasmu, ya.',
+    'tokenNotMember'     => 'Token ini untuk sesi susulan teman lain. Tanyakan ke kakak peneliti, ya.',
+    'tokenOtherStudy'    => 'Akun ini sudah dipakai di kegiatan lain. Panggil kakak peneliti, ya.',
+    'tokenTooMany'       => 'Sudah banyak percobaan. Tunggu lima menit, lalu coba lagi, ya.',
+    'tokenEnter'         => 'Masukkan token',
+    'sessionClosedTitle' => 'Sampai jumpa di sesi berikutnya!',
+    'sessionClosedBody'  => 'Permainan dibuka waktu sesi bersama kakak peneliti, ya.',
+    'researchCodeLabel'  => 'Kode penelitian',
+    'researchCodeHelp'   => 'Tunjukkan kode ini ke kakak peneliti, ya.',
+    'codeFull'           => 'Kode untuk kelasmu sudah penuh. Panggil kakak peneliti, ya.',
 ];

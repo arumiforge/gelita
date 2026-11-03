@@ -8,23 +8,56 @@ use App\Entities\GameSession;
 use App\Entities\Level;
 use App\Models\ChallengeAttemptModel;
 use App\Models\ResearchStudyModel;
-use App\Models\SessionProgressModel;
+use App\Models\ParticipantProgressModel;
 
 /**
  * Status buka/kunci level & node untuk layar peta dan payload API.
  *
  * Trait ini hanya menyusun status dari data yang sudah ditulis Service tahap 3
- * (`session_progress` dan `challenge_attempts`). Tidak ada rumus skor,
+ * (`participant_progress` dan `challenge_attempts`). Tidak ada rumus skor,
  * tidak ada penilaian benar/salah, dan tidak ada query analitik di sini.
+ *
+ * Research revision 10, part 2 (28 §8, §9): progress is the student's across
+ * every game session of the study, and in field mode the open regions come
+ * from the meeting plan of the session's field session instead of
+ * `unlock_mode` (challenges inside a region stay in order).
  */
 trait GameProgress
 {
     /** `free` bila studi membuka semua level sekaligus, selain itu `sequential`. */
     protected function unlockMode(GameSession $session): string
     {
+        // Field mode ignores unlock_mode: regions come from the meeting plan, challenges stay in order (28 §9)
+        if ($this->meetingRegions($session) !== null) {
+            return 'sequential';
+        }
+
         $study = model(ResearchStudyModel::class)->find($session->study_id);
 
         return ($study['unlock_mode'] ?? 'sequential') === 'free' ? 'free' : 'sequential';
+    }
+
+    /**
+     * Region codes the field session of this game session opens, or null
+     * when field mode is off (28 §9).
+     *
+     * @return list<string>|null
+     */
+    protected function meetingRegions(GameSession $session): ?array
+    {
+        return service('fieldSessions')->openRegions($session);
+    }
+
+    /** One region open? Meeting plan in field mode, else unlock_mode and progress. */
+    private function regionOpen(GameSession $session, Level $level, bool $free, int $unlocked): bool
+    {
+        $regions = $this->meetingRegions($session);
+
+        if ($regions !== null) {
+            return in_array((string) $level->code, $regions, true);
+        }
+
+        return $free || $level->sequence <= $unlocked;
     }
 
     /**
@@ -34,7 +67,7 @@ trait GameProgress
      */
     protected function levelOverview(GameSession $session): array
     {
-        $progress = model(SessionProgressModel::class)->ensure($session->id);
+        $progress = model(ParticipantProgressModel::class)->forSession($session);
         $unlocked = (int) $progress['unlocked_level_sequence'];
         $free     = $this->unlockMode($session) === 'free';
         $scoring  = service('scoringService');
@@ -44,7 +77,7 @@ trait GameProgress
 
         foreach (service('contentRepository')->levels() as $level) {
             $summary  = $scoring->levelSummary($session->id, $level->id);
-            $open   = $free || $level->sequence <= $unlocked;
+            $open   = $this->regionOpen($session, $level, $free, $unlocked);
             $status = $this->levelStatus($summary, $open);
 
             $out[] = [
@@ -79,7 +112,7 @@ trait GameProgress
      */
     protected function nodeOverview(GameSession $session, int $levelId): array
     {
-        $done    = model(ChallengeAttemptModel::class)->completedForSession($session->id);
+        $done    = model(ChallengeAttemptModel::class)->completedFor($session);
         $free    = $this->unlockMode($session) === 'free';
         $locale  = $session->resolvedLocale();
 
@@ -121,9 +154,9 @@ trait GameProgress
      */
     protected function lanternMap(GameSession $session): array
     {
-        $done     = model(ChallengeAttemptModel::class)->completedForSession($session->id);
+        $done     = model(ChallengeAttemptModel::class)->completedFor($session);
         $free     = $this->unlockMode($session) === 'free';
-        $progress = model(SessionProgressModel::class)->ensure($session->id);
+        $progress = model(ParticipantProgressModel::class)->forSession($session);
         $unlocked = (int) $progress['unlocked_level_sequence'];
         $locale   = $session->resolvedLocale();
         $content  = service('contentRepository');
@@ -131,7 +164,7 @@ trait GameProgress
         $out = [];
 
         foreach ($content->levels() as $level) {
-            $levelOpen    = $free || $level->sequence <= $unlocked;
+            $levelOpen    = $this->regionOpen($session, $level, $free, $unlocked);
             $previousDone = true;
             $nodes        = [];
 
@@ -161,11 +194,23 @@ trait GameProgress
     /** Level terbuka untuk sesi ini? */
     protected function levelUnlocked(GameSession $session, int $sequence): bool
     {
+        $regions = $this->meetingRegions($session);
+
+        if ($regions !== null) {
+            foreach (service('contentRepository')->levels() as $level) {
+                if ($level->sequence === $sequence) {
+                    return in_array((string) $level->code, $regions, true);
+                }
+            }
+
+            return false;
+        }
+
         if ($this->unlockMode($session) === 'free') {
             return true;
         }
 
-        $progress = model(SessionProgressModel::class)->ensure($session->id);
+        $progress = model(ParticipantProgressModel::class)->forSession($session);
 
         return $sequence <= (int) $progress['unlocked_level_sequence'];
     }
@@ -187,7 +232,7 @@ trait GameProgress
      */
     protected function bestAttempt(GameSession $session, int $nodeId): ?ChallengeAttempt
     {
-        return model(ChallengeAttemptModel::class)->completedForSession($session->id)[$nodeId] ?? null;
+        return model(ChallengeAttemptModel::class)->completedFor($session)[$nodeId] ?? null;
     }
 
     /**
@@ -197,7 +242,7 @@ trait GameProgress
      */
     protected function progressSummary(GameSession $session): array
     {
-        $progress = model(SessionProgressModel::class)->ensure($session->id);
+        $progress = model(ParticipantProgressModel::class)->forSession($session);
         $total    = 0;
 
         foreach (service('contentRepository')->levels() as $level) {

@@ -31,6 +31,10 @@ final class GelitaHelperTest extends CIUnitTestCase
     public function testParticipantCode(): void
     {
         $this->assertSame('GLT-000123', participant_code(123));
+        // Field mode (28 §10.2): school research code, class group, two digits
+        $this->assertSame('S03-A07', participant_code(7, 'S03', 'A'));
+        $this->assertSame('U01-B12', participant_code(12, 'U01', 'B'));
+        $this->assertSame('GLT-000007', participant_code(7, '', 'A'), 'without a school code the old form stays');
     }
 
     public function testMsToHuman(): void

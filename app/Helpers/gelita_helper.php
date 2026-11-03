@@ -27,9 +27,16 @@ if (! function_exists('random_code')) {
 }
 
 if (! function_exists('participant_code')) {
-    /** 1 → GLT-000001 */
-    function participant_code(int $sequence): string
+    /**
+     * 1 → GLT-000001 outside field mode; with a research school code and a
+     * class group, 7 → S03-A07 (research revision 10, part 2: 28 §10.2).
+     */
+    function participant_code(int $sequence, ?string $schoolCode = null, ?string $rombel = null): string
     {
+        if ($schoolCode !== null && $schoolCode !== '' && $rombel !== null && $rombel !== '') {
+            return sprintf('%s-%s%02d', $schoolCode, $rombel, $sequence);
+        }
+
         return sprintf('GLT-%06d', $sequence);
     }
 }

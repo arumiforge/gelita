@@ -15,4 +15,7 @@ return [
     'valid_person_name'     => '{field} may only use letters, spaces, and an apostrophe (\').',
     'not_reserved_username' => 'That username cannot be used. Choose another one.',
     'strong_password'       => 'Your password is not strong yet. Meet all five rules and do not include your username.',
+
+    // Research revision part 2: field sessions (28)
+    'not_reserved_prefix' => 'That username cannot be used. Choose another one.',
 ];

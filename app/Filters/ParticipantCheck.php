@@ -9,8 +9,11 @@ namespace App\Filters;
 trait ParticipantCheck
 {
     /**
-     * @return array{status: string, participant_id: int, game_session_id: int}
-     *               status: OK | NO_LOGIN | MUST_CHANGE | NO_SESSION
+     * @return array{status: string, participant_id: int, game_session_id: int, target?: string}
+     *               status: OK | NO_LOGIN | MUST_CHANGE | NO_SESSION | CLOSED. CLOSED (field
+     *               mode, 28 §7) carries `target`: `token` (no game session of a field session
+     *               yet) or `sampai-jumpa` (its field session closed); the game context is loaded
+     *               whenever the student has a game session.
      */
     protected function checkParticipant(bool $requireGameSession): array
     {
@@ -58,13 +61,32 @@ trait ParticipantCheck
                 ->getRow();
         }
 
+        $fields = service('fieldSessions');
+
         if ($gameSession === null || $gameSession->status === 'abandoned') {
-            return ['status' => 'NO_SESSION'] + $result;
+            return $fields->fieldModeOn() ? ['status' => 'CLOSED', 'target' => 'token'] + $result : ['status' => 'NO_SESSION'] + $result;
         }
 
         // 5. muat konteks permainan untuk request ini
         if (! service('gameContext')->load($participantId, $gameSessionId)) {
             return ['status' => 'NO_SESSION'] + $result;
+        }
+
+        // 6. field mode: the game only opens inside an open field session (28 §7)
+        if ($fields->fieldModeOn()) {
+            $session = service('gameContext')->session;
+            $closed  = ['status' => 'CLOSED', 'participant_id' => $participantId, 'game_session_id' => $gameSessionId];
+
+            if ($session->field_session_id === null) {
+                return $closed + ['target' => 'token'];
+            }
+
+            if (! $fields->sessionIsOpen($session)) {
+                // First request after the closing time writes the pause once (28 §6.6)
+                $fields->pauseForClosedSession($session);
+
+                return $closed + ['target' => 'sampai-jumpa'];
+            }
         }
 
         return ['status' => 'OK', 'participant_id' => $participantId, 'game_session_id' => $gameSessionId];

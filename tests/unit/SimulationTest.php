@@ -63,6 +63,11 @@ final class SimulationTest extends CIUnitTestCase
         $this->assertNull(Simulation::refusal('development'));
         $this->assertStringContainsString('production', (string) Simulation::refusal('production'));
 
+        // Field mode on: the simulator does not know meeting plans yet (28 §19.2)
+        $this->conn->table('research_studies')->update(['field_mode' => 1]);
+        $this->assertStringContainsString('mode penelitian', (string) Simulation::refusal('development'));
+        $this->conn->table('research_studies')->update(['field_mode' => 0]);
+
         // Siswa sungguhan di studi aktif = pengambilan data berjalan
         $this->conn->table('participants')->insert(['participant_code' => 'GLT-000009', 'username' => 'jaka5', 'password_hash' => 'x']);
         $this->conn->table('game_sessions')->insert([
@@ -115,7 +120,7 @@ final class SimulationTest extends CIUnitTestCase
         $this->assertSame('completed', $this->sessionStatus('sim_001'));
         $this->assertNotSame('completed', $this->sessionStatus('sim_002'));
         $this->assertNotSame('completed', $this->sessionStatus('sim_003'));
-        $this->assertSame(1, $this->conn->table('session_progress')->where('completed_levels', 3)->countAllResults() >= 1 ? 1 : 0);
+        $this->assertSame(1, $this->conn->table('participant_progress')->where('completed_levels', 3)->countAllResults() >= 1 ? 1 : 0);
 
         // Variasi hasil
         $reasons = array_count_values(array_filter(array_column($this->allAttempts(), 'completion_reason')));

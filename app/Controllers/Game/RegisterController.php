@@ -39,6 +39,9 @@ class RegisterController extends BaseController
 
     public const STEPS = [1, 2, 3];
 
+    /** Step 0: the session token, only in field mode (research revision 10, part 2: 28 §6.5). */
+    public const TOKEN_STEP = 0;
+
     /** Isian yang disimpan per langkah (langkah 3 tidak pernah disimpan) */
     private const STEP_FIELDS = [
         1 => ['display_name', 'age', 'gender', 'avatar_no'],
@@ -54,7 +57,7 @@ class RegisterController extends BaseController
     /** GET /daftar/{1|2|3} */
     public function step(int $n): string|RedirectResponse
     {
-        if (! in_array($n, self::STEPS, true)) {
+        if (! in_array($n, $this->steps(), true)) {
             return $this->index();
         }
 
@@ -62,6 +65,10 @@ class RegisterController extends BaseController
 
         if ($n > $first) {
             return redirect()->to(site_url('daftar/' . $first));
+        }
+
+        if ($n === self::TOKEN_STEP) {
+            return $this->token();
         }
 
         $wizard = $this->wizard();
@@ -99,7 +106,7 @@ class RegisterController extends BaseController
     /** POST /daftar/{1|2|3} */
     public function saveStep(int $n): RedirectResponse
     {
-        if (! in_array($n, self::STEPS, true)) {
+        if (! in_array($n, $this->steps(), true)) {
             return $this->index();
         }
 
@@ -107,6 +114,10 @@ class RegisterController extends BaseController
 
         if ($n > $first) {
             return redirect()->to(site_url('daftar/' . $first));
+        }
+
+        if ($n === self::TOKEN_STEP) {
+            return $this->saveToken();
         }
 
         $post  = $this->request->getPost();
@@ -126,7 +137,89 @@ class RegisterController extends BaseController
         $wizard[(string) $n]  = array_intersect_key($input, array_flip(self::STEP_FIELDS[$n]));
         session()->set(self::WIZARD, $wizard);
 
-        return redirect()->to(site_url('daftar/' . ($n + 1)));
+        return redirect()->to(site_url('daftar/' . $this->firstIncomplete()));
+    }
+
+    /** GET /daftar/0: the token comes first in field mode (28 §6.5). */
+    public function token(): string
+    {
+        return view('game/token', [
+            'participant' => null,
+            'progress'    => null,
+            'locale' => $this->locale,
+            'action' => 'daftar/' . self::TOKEN_STEP,
+            'errors' => session('errors') ?? [],
+        ]);
+    }
+
+    /**
+     * POST /daftar/0: the token must belong to an open meeting-1 session (or
+     * its make-up); the field session is kept in the wizard. Wrong tokens are
+     * counted per hashed IP address (28 §6.3).
+     */
+    public function saveToken(): RedirectResponse
+    {
+        $fields = service('fieldSessions');
+        $key    = 'ip' . (string) hash_ip($this->request->getIPAddress());
+
+        if ($fields->throttled($key)) {
+            return $this->tokenError('Game.tokenTooMany');
+        }
+
+        $check = $fields->checkToken((string) $this->request->getPost('token'), null, true);
+
+        if ($check['status'] !== 'ok') {
+            if ($fields->registerFailure($key)) {
+                return $this->tokenError('Game.tokenTooMany');
+            }
+
+            return $this->tokenError(match ($check['status']) {
+                'not_open_yet' => 'Game.tokenNotOpenYet',
+                'closed'       => 'Game.tokenClosed',
+                default        => 'Game.tokenUnknown',
+            });
+        }
+
+        $fields->clearFailures($key);
+
+        $wizard                                  = $this->wizard();
+        $wizard[(string) self::TOKEN_STEP]       = ['field_session_id' => (int) $check['field_session']['id']];
+        session()->set(self::WIZARD, $wizard);
+
+        return redirect()->to(site_url('daftar/' . $this->firstIncomplete()));
+    }
+
+    private function tokenError(string $key): RedirectResponse
+    {
+        $wizard = $this->wizard();
+        unset($wizard[(string) self::TOKEN_STEP]);
+        session()->set(self::WIZARD, $wizard);
+
+        return redirect()->to(site_url('daftar/' . self::TOKEN_STEP))->with('errors', ['token' => lang($key)]);
+    }
+
+    /** Steps of this install: step 0 (token) in field mode, which skips step 2 (school). */
+    private function steps(): array
+    {
+        return $this->fieldMode() ? [self::TOKEN_STEP, 1, 3] : self::STEPS;
+    }
+
+    private function fieldMode(): bool
+    {
+        return service('fieldSessions')->fieldModeOn();
+    }
+
+    /**
+     * The field session kept by step 0 while it is still open, else null.
+     *
+     * @return array<string, mixed>|null
+     */
+    private function wizardFieldSession(): ?array
+    {
+        $id  = (int) ($this->wizard()[(string) self::TOKEN_STEP]['field_session_id'] ?? 0);
+        $row = $id > 0 ? model(\App\Models\FieldSessionModel::class)->find($id) : null;
+
+        return $row !== null && service('fieldSessions')->isOpen($row) ? $row : null;
     }
 
     /**
@@ -155,10 +248,21 @@ class RegisterController extends BaseController
             session()->set('reg_weak_count', (int) session('reg_weak_count') + 1);
         }
 
+        // Field mode: the token's session must still be open (28 §6.5)
+        $fieldSession = null;
+
+        if ($this->fieldMode()) {
+            $fieldSession = $this->wizardFieldSession();
+
+            if ($fieldSession === null) {
+                return $this->tokenError('Game.tokenClosed');
+            }
+        }
+
         // Pertahanan bila session diubah: langkah 1–2 divalidasi ulang
         $wizard = $this->wizard();
 
-        foreach ([1, 2] as $step) {
+        foreach ($fieldSession === null ? [1, 2] : [1] as $step) {
             $saved = $this->normalize($step, (array) ($wizard[(string) $step] ?? []));
 
             if (! $this->validateData($saved, $this->rulesFor($step, $saved), $this->messages())) {
@@ -177,12 +281,13 @@ class RegisterController extends BaseController
         }
 
         $about  = $wizard['1'];
-        $school = $wizard['2'];
+        $school = $wizard['2'] ?? ['country_code' => 'ID'];
         $region = $this->verifiedRegion($school);
-        $byNpsn = service('schoolDirectory')->requiresNpsn($region['country_code'], (string) $region['province_code']);
+        $byNpsn = $fieldSession === null && service('schoolDirectory')->requiresNpsn($region['country_code'], (string) $region['province_code']);
         $manual = $byNpsn && ! empty($school['school_manual']);
 
-        $result = service('sessionService')->registerAndStart([
+        try {
+            $result = $this->registerWith($fieldSession, [
             'username'      => $username,
             'password'      => $password,
             'display_name'  => $about['display_name'] ?? null,
@@ -207,15 +312,43 @@ class RegisterController extends BaseController
                 'weak_submit_count'     => (int) (session('reg_weak_count') ?? 0),
             ],
             'device' => $this->deviceInfo(),
-        ]);
+            ]);
+        } catch (\App\Services\ParticipantCodeFullException) {
+            return $this->tokenError('Game.codeFull');
+        }
 
         // Data wizard & metrik selesai dipakai; sesi PHP sudah diperbarui service
         session()->remove([self::WIZARD, 'reg_first_criteria', 'reg_weak_count']);
 
         // Sambutan; nama pengguna ditampilkan, kata sandi tidak pernah.
-        return redirect()->to(site_url('intro'))->with('welcome', lang('Game.registerWelcome', [
+        $redirect = redirect()->to(site_url('intro'))->with('welcome', lang('Game.registerWelcome', [
             $result['participant']->username,
         ]));
+
+        // Field mode: the research code card (28 §6.5, M-11)
+        return $fieldSession === null ? $redirect : $redirect->with('research_code', $result['participant']->participant_code);
+    }
+
+    /**
+     * @param array<string, mixed>|null $fieldSession
+     * @param array<string, mixed>      $input
+     *
+     * @return array{participant: \App\Entities\Participant, session: \App\Entities\GameSession}
+     */
+    private function registerWith(?array $fieldSession, array $input): array
+    {
+        if ($fieldSession !== null) {
+            // School and class group come from the field session; nothing about the region is asked (M-11)
+            $input = array_merge($input, [
+                'field_session' => $fieldSession,
+                'school_npsn'   => null,
+                'school_name'   => null,
+                'province_code' => null, 'province_name' => null,
+                'district_code' => null, 'district_name' => null,
+            ]);
+        }
+
+        return service('sessionService')->registerAndStart($input);
     }
 
     /**
@@ -259,7 +392,7 @@ class RegisterController extends BaseController
         }
 
         return $this->withLabels([
-            'username'         => 'required|valid_username|not_reserved_username|is_unique[participants.username]',
+            'username'         => 'required|valid_username|not_reserved_username|not_reserved_prefix|is_unique[participants.username]',
             'password'         => 'required|strong_password[username]',
             'password_confirm' => 'required|matches[password]',
             'assent'           => 'required|in_list[1]',
@@ -368,6 +501,14 @@ class RegisterController extends BaseController
     {
         $wizard = $this->wizard();
 
+        if ($this->fieldMode()) {
+            if (! isset($wizard[(string) self::TOKEN_STEP]) || $this->wizardFieldSession() === null) {
+                return self::TOKEN_STEP;
+            }
+
+            return isset($wizard['1']) && is_array($wizard['1']) ? 3 : 1;
+        }
+
         foreach ([1, 2] as $step) {
             if (! isset($wizard[(string) $step]) || ! is_array($wizard[(string) $step])) {
                 return $step;
@@ -386,7 +527,7 @@ class RegisterController extends BaseController
     {
         $wizard = session(self::WIZARD);
 
-        return is_array($wizard) ? array_intersect_key($wizard, ['1' => true, '2' => true]) : [];
+        return is_array($wizard) ? array_intersect_key($wizard, ['0' => true, '1' => true, '2' => true]) : [];
     }
 
     /**

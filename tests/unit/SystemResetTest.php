@@ -156,7 +156,14 @@ final class SystemResetTest extends CIUnitTestCase
         );
         $this->assertSame(0, $this->conn->table('challenge_items')->countAllResults(), '--tanpa-bank');
         $this->assertSame(0, $this->conn->table('hints')->countAllResults());
-        $this->assertSame([['STUDI-KEDU-KELAS5-2026', 'active']], array_map('array_values', $this->conn->table('research_studies')->select('code, status')->get()->getResultArray()));
+        $this->assertSame([['STUDI-KEDU-KELAS5-2026', 'active', '0', 'lima_pertemuan']], array_map(
+            static fn (array $r): array => [$r['code'], $r['status'], (string) $r['field_mode'], $r['meeting_plan']],
+            $this->conn->table('research_studies')->get()->getResultArray(),
+        ), 'a reset study starts with field mode off (28 §5.1)');
+
+        foreach (['field_sessions', 'field_session_tokens', 'participant_seats', 'participant_code_counters', 'participant_progress'] as $table) {
+            $this->assertSame(0, $this->conn->table($table)->countAllResults(), $table);
+        }
         $this->assertSame([['GELITA-KELAS5-2026', 'bintang-1', '1']], array_map(
             static fn (array $r): array => [$r['release_code'], $r['scoring_version'], (string) $r['is_active']],
             $this->conn->table('game_releases')->get()->getResultArray(),
@@ -393,7 +400,12 @@ final class SystemResetTest extends CIUnitTestCase
 
         // Pengaturan lama
         $db->table('learning_indicators')->insert(['code' => 'literasi', 'name_id' => 'Literasi lama', 'name_en' => 'Old literacy']);
-        $db->table('research_studies')->insert(['code' => 'STUDI-UJI-COBA', 'name' => 'Uji coba', 'status' => 'active']);
+        $db->table('research_studies')->insert(['code' => 'STUDI-UJI-COBA', 'name' => 'Uji coba', 'status' => 'active', 'field_mode' => 1, 'meeting_plan' => 'satu_sesi']);
+        // Field sessions of the trial go with it (28 §14)
+        $db->table('field_sessions')->insert(['study_id' => 1, 'code' => 'U01-A-P1', 'school_id' => 1, 'rombel' => 'A', 'meeting_no' => 1, 'session_date' => '2026-09-01', 'opens_at' => '2026-09-01 07:00:00', 'closes_at' => '2026-09-01 09:00:00']);
+        $db->table('field_session_tokens')->insert(['field_session_id' => 1, 'token' => 'ABCDEF']);
+        $db->table('participant_seats')->insert(['participant_id' => 1, 'study_id' => 1, 'row_no' => 1, 'seat_no' => 1, 'booklet' => 'B1', 'pre_form' => 'A', 'post_form' => 'B']);
+        $db->table('participant_code_counters')->insert(['school_id' => 1, 'rombel' => 'A', 'next_no' => 5]);
         $db->table('game_releases')->insert(['release_code' => 'GELITA-1.0', 'app_version' => '1.0', 'content_version' => '1', 'asset_version' => '1', 'scoring_version' => '1.0', 'is_active' => 1]);
 
         // 4 tantangan uji coba per wilayah, isinya sudah disunting
@@ -427,7 +439,7 @@ final class SystemResetTest extends CIUnitTestCase
             ['participant_code' => 'GLT-000002', 'username' => 'uji2', 'password_hash' => 'x', 'school_id' => 1],
         ]);
         $db->table('game_sessions')->insert(['session_code' => 'S-1', 'participant_id' => 1, 'study_id' => 1, 'release_id' => 1, 'status' => 'completed', 'last_active_at' => '2026-09-01 08:00:00']);
-        $db->table('session_progress')->insert(['session_id' => 1]);
+        $db->table('participant_progress')->insert(['participant_id' => 1, 'study_id' => 1]);
         $db->table('challenge_attempts')->insert(['session_id' => 1, 'challenge_node_id' => 1, 'selected_item_ids_json' => '[1]', 'status' => 'completed']);
         $db->table('item_responses')->insert(['challenge_attempt_id' => 1, 'challenge_item_id' => 1]);
         $db->table('item_tries')->insert(['challenge_attempt_id' => 1, 'challenge_item_id' => 1, 'try_no' => 1, 'answer_json' => '{}']);

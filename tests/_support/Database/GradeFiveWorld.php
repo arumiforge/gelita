@@ -63,10 +63,11 @@ trait GradeFiveWorld
         $db->table('game_sessions')->insert([
             'session_code' => 'S-KELAS5', 'participant_id' => 1, 'study_id' => 1, 'release_id' => 1, 'locale' => 'id', 'status' => 'active',
         ]);
-        // Ketiga wilayah terbuka (unlock_mode free), agar setiap tantangan dapat langsung dibuka
-        $db->table('research_studies')->update(['unlock_mode' => 'free']);
+        // Ketiga wilayah terbuka (unlock_mode free), agar setiap tantangan dapat langsung dibuka.
+        // Field mode off on purpose: game tests need no token (28 §3).
+        $db->table('research_studies')->update(['unlock_mode' => 'free', 'field_mode' => 0]);
 
-        foreach (['contentRepository', 'gameContext', 'challengeService', 'eventService', 'scoringService', 'sessionService', 'assetPackages'] as $name) {
+        foreach (['contentRepository', 'gameContext', 'challengeService', 'eventService', 'scoringService', 'sessionService', 'assetPackages', 'fieldSessions'] as $name) {
             Services::resetSingle($name);
         }
 

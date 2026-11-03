@@ -257,7 +257,7 @@ final class ItemTryWritesTest extends CIUnitTestCase
             'difficulty' => 'mudah', 'focus_id' => 'Fokus', 'focus_en' => 'Focus',
         ]);
         $db->table('research_studies')->insert([
-            'code' => 'STUDI-UJI', 'name' => 'Studi uji', 'status' => 'active', 'unlock_mode' => 'sequential', 'default_locale' => 'id',
+            'code' => 'STUDI-UJI', 'name' => 'Studi uji', 'status' => 'active', 'unlock_mode' => 'free', 'default_locale' => 'id',
         ]);
         $db->table('participants')->insert([
             'participant_code' => 'GLT-000001', 'username' => 'jaka', 'password_hash' => 'x', 'display_name' => 'Jaka',

@@ -48,6 +48,33 @@ $dataDate  = isset($dataMeta['upstream_updated']) ? substr((string) $dataMeta['u
   <?= component('stat-tile', ['label' => 'Nama sekolah perlu dirapikan', 'value' => fmt_num($stats['unverified'], 0, 'id'), 'icon' => 'warn', 'hint' => 'diketik sendiri oleh siswa']) ?>
 </div>
 
+<section class="form-section" aria-labelledby="research-code-title">
+  <h2 id="research-code-title"><?= icon('key') ?> <?= esc(lang('Admin.researchCodeTitle')) ?></h2>
+  <p class="muted"><?= esc(lang('Admin.researchCodeLead')) ?></p>
+  <form method="post" action="<?= base_url('admin/sekolah/kode-penelitian') ?>" class="filter-bar">
+    <?= csrf_field() ?>
+    <div class="field">
+      <label for="rc-npsn">NPSN</label>
+      <input type="text" id="rc-npsn" name="npsn" inputmode="numeric" maxlength="8" pattern="[0-9]{8}" required autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="rc-code"><?= esc(lang('Admin.researchCodeLabel')) ?></label>
+      <input type="text" id="rc-code" name="research_code" maxlength="3" pattern="[SUVsuv][0-9]{2}" placeholder="S03" autocomplete="off">
+    </div>
+    <button class="btn btn-primary btn-sm" type="submit"><?= icon('check') ?> <?= esc(lang('Admin.save')) ?></button>
+  </form>
+  <?php if (($researchSchools ?? []) !== []): ?>
+    <table class="data-table">
+      <thead><tr><th><?= esc(lang('Admin.researchCodeLabel')) ?></th><th>NPSN</th><th><?= esc(lang('Admin.schoolName')) ?></th></tr></thead>
+      <tbody>
+        <?php foreach ($researchSchools as $row): ?>
+          <tr><td><b><?= esc($row['research_code']) ?></b></td><td><?= esc((string) $row['code']) ?></td><td><?= esc($row['name']) ?></td></tr>
+        <?php endforeach ?>
+      </tbody>
+    </table>
+  <?php endif ?>
+</section>
+
 <section class="form-section" aria-labelledby="school-search-title">
   <h2 id="school-search-title"><?= icon('search') ?> Cari sekolah</h2>
   <p class="muted">Ketik NPSN, nama sekolah, kecamatan, atau desa. Tulis NPSN sekolah Anda di papan tulis saat sesi kelas — siswa mengetik NPSN itu saat mendaftar.</p>

@@ -84,6 +84,19 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $r
         </select>
       </div>
       <div class="field">
+        <label class="check"><input type="checkbox" id="<?= $p ?>-field" name="field_mode" value="1" <?= (int) $value('field_mode', 0) === 1 ? 'checked' : '' ?>>
+          <span><?= esc(lang('Admin.fieldModeLabel')) ?></span></label>
+        <p class="field-help"><?= esc(lang('Admin.fieldModeHelp')) ?></p>
+      </div>
+      <div class="field">
+        <label for="<?= $p ?>-plan"><?= esc(lang('Admin.meetingPlanLabel')) ?></label>
+        <select id="<?= $p ?>-plan" name="meeting_plan">
+          <?php foreach (array_keys(config('Gelita')->meetingPlans) as $plan): ?>
+            <option value="<?= esc($plan, 'attr') ?>" <?= $value('meeting_plan', 'lima_pertemuan') === $plan ? 'selected' : '' ?>><?= esc(lang('Admin.meetingPlan_' . $plan)) ?></option>
+          <?php endforeach ?>
+        </select>
+      </div>
+      <div class="field">
         <label for="<?= $p ?>-retention">Lama penyimpanan data (hari)</label>
         <input type="number" id="<?= $p ?>-retention" name="retention_days" min="1" max="3650" value="<?= esc($value('retention_days', 1825), 'attr') ?>">
         <p class="field-help">Setelah lewat, sistem mengingatkan admin untuk menghapus data siswa penelitian ini (tidak dihapus otomatis). 1825 hari = 5 tahun.</p>

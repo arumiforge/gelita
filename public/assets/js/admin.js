@@ -126,5 +126,9 @@ if (document.querySelector('.media-sprite .character[data-frames]')) {
 if (document.querySelector('[data-export-id]')) {
   import('./admin/export.js').then((m) => m.initExport());
 }
+// Monitoring panel (research revision 10, part 2: 28 §12)
+if (document.querySelector('[data-monitoring]')) {
+  import('./admin/monitoring.js').then((m) => m.initMonitoring());
+}
 
 document.body.dataset.ready = 'id';

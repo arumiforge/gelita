@@ -529,7 +529,7 @@ final class LibraryLockTest extends CIUnitTestCase
                 return LibraryLockTest::hud();
             }
 
-            /** levelOverview() asli membaca session_progress; statusnya disusun di sini dengan aturan yang sama. */
+            /** levelOverview() asli membaca participant_progress; statusnya disusun di sini dengan aturan yang sama. */
             protected function levelOverview(GameSession $session): array
             {
                 $rows = [];

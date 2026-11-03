@@ -23,8 +23,8 @@ class RetentionService
     /** Urutan penghapusan keras: anak lebih dulu, induk terakhir. */
     public const HARD_ORDER = [
         'game_event_logs', 'audio_usage_events', 'item_tries', 'item_responses', 'challenge_attempts',
-        'device_logs', 'session_progress', 'participant_feedback', 'game_sessions',
-        'participants',
+        'device_logs', 'participant_progress', 'participant_seats', 'field_session_members',
+        'participant_feedback', 'game_sessions', 'participants',
     ];
 
     /** Jenis cakupan utama; tepat satu yang dipakai. */
@@ -386,7 +386,8 @@ class RetentionService
     {
         $cutoff   = date('Y-m-d H:i:s', time() - ($days * 86400));
         $sessions = model(GameSessionModel::class);
-        $stale    = $sessions->where('status', 'paused')->where('last_active_at <', $cutoff)->findAll();
+        // Sessions of a field session are paused when it closes and never abandoned here (28 §6.6)
+        $stale    = $sessions->where('status', 'paused')->where('last_active_at <', $cutoff)->where('field_session_id', null)->findAll();
         $count    = 0;
 
         foreach ($stale as $session) {
@@ -525,6 +526,44 @@ class RetentionService
     }
 
     /**
+     * Deletes one student's play data and keeps the account (`gelita:uji:akun
+     * --reset`, research revision 10, part 2: 28 §13): every HARD_ORDER table
+     * in the student's scope except `participants` itself.
+     *
+     * @return array<string, int> rows deleted per table
+     */
+    public function deletePlayData(int $participantId): array
+    {
+        $db       = $this->db();
+        $scope    = ['participant_id' => $participantId];
+        $sessions = $this->sessionIds($scope);
+        $affected = [];
+
+        $db->transBegin();
+
+        try {
+            foreach (self::HARD_ORDER as $table) {
+                $builder = $table === 'participants' ? null : $this->scopedBuilder($db, $table, $scope, $sessions);
+
+                if ($builder === null) {
+                    continue;
+                }
+
+                $builder->delete();
+                $affected[$table] = $db->affectedRows();
+            }
+
+            $db->transCommit();
+        } catch (\Throwable $e) {
+            $db->transRollback();
+
+            throw $e;
+        }
+
+        return $affected;
+    }
+
+    /**
      * Hard delete dari anak ke induk agar FK RESTRICT pada
      * `participants` → `game_sessions` tidak menggagalkan transaction.
      *
@@ -563,7 +602,20 @@ class RetentionService
      */
     private function scopedBuilder(BaseConnection $db, string $table, array $scope, array $sessionIds): ?BaseBuilder
     {
-        $bySession = ['game_event_logs', 'audio_usage_events', 'challenge_attempts', 'session_progress', 'device_logs'];
+        $bySession = ['game_event_logs', 'audio_usage_events', 'challenge_attempts', 'device_logs'];
+
+        // Rows per student and study (28 §14): a student's own, or a whole study without a date range
+        if (in_array($table, ['participant_progress', 'participant_seats', 'field_session_members'], true)) {
+            if (isset($scope['participant_id'])) {
+                return $db->table($table)->where('participant_id', (int) $scope['participant_id']);
+            }
+
+            if ($table !== 'field_session_members' && isset($scope['study_id']) && ! isset($scope['date_from']) && ! isset($scope['date_to'])) {
+                return $db->table($table)->where('study_id', (int) $scope['study_id']);
+            }
+
+            return null;
+        }
 
         if (in_array($table, $bySession, true)) {
             return $sessionIds === [] ? null : $db->table($table)->whereIn('session_id', $sessionIds);
