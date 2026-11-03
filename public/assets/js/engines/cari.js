@@ -38,6 +38,16 @@
  * challenge_attempts.audio_use_count. Clues without a recording get no button.
  *
  * "Perbesar adegan" (display plan F3.2): see initZoom() below.
+ *
+ * Two rounds (research revision 10, 31 §12.1). Round 1 is the scene above.
+ * `ctx.data.round2` (if any) is *Periksa Unggahan*: once every round-1 clue
+ * is closed a short interlude modal names round 2, then the scene is redrawn
+ * as a Kedugram post: the photo (decorative) and one absolutely positioned
+ * <button class="post-part"> per tap part, plain text that zooms with the
+ * scene. Parts carry opaque per-attempt refs like objects, and the answer has
+ * the same shape `{ object: <ref> }`. Tries stay per clue; a wrong tap shows
+ * the round-2 sentence (data-part-wrong). A reload after round 1 starts
+ * straight in round 2.
  */
 import { $, $$, el, announce } from '../core/dom.js';
 import { showModal, isModalOpen } from '../core/modal.js';
@@ -100,18 +110,51 @@ function initZoom(ctx, scene) {
   return { close: () => { if (zoomed) set(false); } };
 }
 
+/** Round-2 post drawn into the scene: photo + one text button per tap part. */
+function drawPost(scene, post, texts) {
+  $$('.object, .scene-bg', scene).forEach((node) => node.remove());
+  scene.classList.remove('is-drawn');
+  scene.classList.add('is-post');
+  if (post.media) {
+    scene.append(el('img', { class: 'post-photo', src: post.media, alt: texts.photoAlt || '', loading: 'lazy' }));
+  }
+  (post.parts ?? []).forEach((part, i) => {
+    const button = el('button', {
+      type: 'button',
+      class: `post-part is-${part.kind}`,
+      dataset: { object: part.ref },
+      style: `left: ${Number(part.x)}%; top: ${Number(part.y)}%; width: ${Number(part.w)}%; height: ${Number(part.h)}%`,
+      'aria-label': `${(texts.partLabel || '{0}').replace('{0}', String(i + 1))}: ${part.label ? `${part.label}. ` : ''}${part.text}`,
+    }, el('span', { class: 'post-part-text' }, part.text));
+    scene.append(button);
+  });
+}
+
 export function mount(ctx) {
   const scene = $('#hunt-scene', ctx.section);
-  const clues = Array.isArray(ctx.data.clues) ? ctx.data.clues : [];
+  let clues = Array.isArray(ctx.data.clues) ? ctx.data.clues : [];
   if (!scene || !clues.length) return;
+
+  const hunt = scene.closest('.hunt');
+  const texts = {
+    title: hunt?.dataset.round2Title || '',
+    intro: hunt?.dataset.round2Intro || '',
+    start: hunt?.dataset.round2Start || '',
+    partWrong: hunt?.dataset.partWrong || '',
+    partLabel: hunt?.dataset.partLabel || '',
+    photoAlt: hunt?.dataset.photoAlt || '',
+    pending: hunt?.dataset.pendingLabel || '{0}',
+  };
+  const round2 = ctx.data.round2 && Array.isArray(ctx.data.round2.clues) && ctx.data.round2.clues.length ? ctx.data.round2 : null;
+  let round = 1;
 
   const clueText = $('#clue-text', ctx.section);
   const clueIndex = $('#clue-index', ctx.section);
-  const listItems = $$('#hunt-list .hunt-target', ctx.section);
+  let listItems = $$('#hunt-list .hunt-target', ctx.section);
   const region = ctx.section.dataset.regionName || '';
   const found = new Set();
   const skipped = new Set(); // petunjuk yang kesempatannya habis
-  const triesUsed = clues.map((clue) => Number(clue?.state?.tries) || 0);
+  let triesUsed = clues.map((clue) => Number(clue?.state?.tries) || 0);
   const triesNode = $('#clue-tries', ctx.section);
   const closed = (i) => found.has(i) || skipped.has(i);
   let current = 0;
@@ -155,10 +198,11 @@ export function mount(ctx) {
   };
 
   // Daftar sisa → tombol lompat ke petunjuk
-  listItems.forEach((li, i) => {
+  const makeJumps = () => listItems.forEach((li, i) => {
     const label = li.textContent.trim();
     li.replaceChildren(el('button', { type: 'button', class: 'hunt-jump', dataset: { clue: i } }, label));
   });
+  makeJumps();
 
   const render = () => {
     const clue = clues[current];
@@ -196,6 +240,55 @@ export function mount(ctx) {
 
   ctx.currentItemId = () => clues[current]?.item_id ?? null;
 
+  // Round 2: new clues, list, and scene; tries and marks start afresh per clue
+  const startRoundTwo = () => {
+    round = 2;
+    clues = round2.clues;
+    found.clear();
+    skipped.clear();
+    triesUsed = clues.map((clue) => Number(clue?.state?.tries) || 0);
+    clues.forEach((clue, i) => {
+      if (clue?.state?.found) found.add(i);
+      else if (clue?.state?.closed) skipped.add(i);
+    });
+    voices.forEach((player) => player.root.remove());
+    voices.clear();
+    drawPost(scene, round2, texts);
+    const list = $('#hunt-list', ctx.section);
+    if (list) {
+      list.replaceChildren(...clues.map((_, i) => el('li', { class: 'hunt-target' }, texts.pending.replace('{0}', String(i + 1)))));
+      listItems = $$('.hunt-target', list);
+      makeJumps();
+    }
+    const totalNode = $('#clue-total', ctx.section);
+    if (totalNode) totalNode.textContent = String(clues.length);
+    current = 0;
+    if (closed(current)) current = nextUnfound() ?? current;
+    render();
+    showVoice(current);
+    announce(`${texts.title}: ${clues[current]?.text ?? ''}`);
+  };
+
+  // Next open clue; at the end of round 1 the interlude and round 2
+  const advance = async () => {
+    const next = nextUnfound();
+    if (next !== null) {
+      goTo(next);
+      return;
+    }
+    if (round === 1 && round2) {
+      pauseNarration();
+      await showModal({
+        type: 'info',
+        title: texts.title,
+        text: texts.intro,
+        dismissible: false,
+        buttons: [{ label: texts.start || ctx.t('next'), style: 'primary', value: 'next' }],
+      });
+      startRoundTwo();
+    }
+  };
+
   const shake = (object) => {
     object.classList.remove('is-shaking');
     void object.offsetWidth; // mulai ulang animasi
@@ -226,9 +319,12 @@ export function mount(ctx) {
 
     if (result.correct) {
       found.add(index);
-      object.classList.add('is-found');
-      object.disabled = true;
-      object.setAttribute('aria-label', `${object.getAttribute('aria-label')} — ${ctx.t('huntFoundMark')}`);
+      // Round 2: a key part stays tappable, it is a lure for the other clues (31 §6.3)
+      if (round === 1) {
+        object.classList.add('is-found');
+        object.disabled = true;
+        object.setAttribute('aria-label', `${object.getAttribute('aria-label')} — ${ctx.t('huntFoundMark')}`);
+      }
       Sfx.play('correct');
       ctx.tally({ addCorrect: 1 });
     } else {
@@ -259,8 +355,7 @@ export function mount(ctx) {
     }
 
     if (result.correct) {
-      const next = nextUnfound();
-      if (next !== null) goTo(next);
+      await advance();
       return;
     }
 
@@ -274,8 +369,7 @@ export function mount(ctx) {
         dismissible: false,
         buttons: [{ label: ctx.t('next'), style: 'primary', value: 'next' }],
       });
-      const next = nextUnfound();
-      if (next !== null) goTo(next);
+      await advance();
       return;
     }
 
@@ -285,7 +379,9 @@ export function mount(ctx) {
       type: 'wrong',
       title: decoy ? ctx.t('huntDecoyTitle') : ctx.t('huntOtherTitle'),
       text: [
-        result.feedback || (decoy ? ctx.t('huntDecoyText') : ctx.t('huntOtherText', region)),
+        round === 2
+          ? texts.partWrong
+          : (result.feedback || (decoy ? ctx.t('huntDecoyText') : ctx.t('huntOtherText', region))),
         ctx.triesText(result.tries_left),
       ],
       buttons: [{ label: ctx.t('tryAgain'), style: 'primary', value: 'ok' }],
@@ -296,7 +392,7 @@ export function mount(ctx) {
   const zoom = initZoom(ctx, scene);
 
   scene.addEventListener('click', (event) => {
-    const object = event.target.closest('.object');
+    const object = event.target.closest('.object, .post-part');
     if (object) pick(object);
   });
 
@@ -319,6 +415,12 @@ export function mount(ctx) {
     object.setAttribute('aria-label', `${object.getAttribute('aria-label')} — ${ctx.t('huntFoundMark')}`);
   });
   if (found.size || skipped.size) ctx.tally({ correct: found.size, wrong: 0 });
+
+  // Reload after round 1: straight on to round 2
+  if (round2 && clues.every((_, i) => closed(i))) {
+    startRoundTwo();
+    return;
+  }
   if (closed(current)) current = nextUnfound() ?? current;
 
   render();
