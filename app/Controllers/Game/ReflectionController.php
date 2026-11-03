@@ -44,7 +44,7 @@ class ReflectionController extends BaseGameController
      */
     private function journey(GameSession $session): array
     {
-        $best    = model(ChallengeAttemptModel::class)->completedForSession($session->id);
+        $best    = model(ChallengeAttemptModel::class)->completedFor($session);
         $content = service('contentRepository');
         $locale  = $session->resolvedLocale();
 

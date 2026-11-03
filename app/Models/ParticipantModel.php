@@ -17,7 +17,7 @@ class ParticipantModel extends Model
     protected $allowedFields  = [
         'participant_code', 'username', 'password_hash', 'must_change_password',
         'display_name', 'age', 'gender', 'class_level', 'avatar_no',
-        'school_id', 'school_name_snapshot',
+        'school_id', 'school_name_snapshot', 'rombel',
         'country_code', 'country_name_snapshot',
         'province_code', 'province_name_snapshot',
         'district_code', 'district_name_snapshot',

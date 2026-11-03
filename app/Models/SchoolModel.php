@@ -22,7 +22,7 @@ class SchoolModel extends Model
     protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $allowedFields = [
-        'code', 'name', 'level', 'stage', 'status',
+        'code', 'research_code', 'name', 'level', 'stage', 'status',
         'country_code', 'province_code', 'district_code', 'subdistrict_name', 'village_name',
         'is_active', 'is_verified', 'match_key', 'merged_into_id',
     ];

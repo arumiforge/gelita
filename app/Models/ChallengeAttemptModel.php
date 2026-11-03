@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Entities\ChallengeAttempt;
+use App\Entities\GameSession;
 use App\Models\Traits\EncodesJson;
 use CodeIgniter\Model;
 
@@ -77,6 +78,44 @@ class ChallengeAttemptModel extends Model
         }
 
         return $out;
+    }
+
+    /**
+     * Best `completed` attempt per node of one student across every game
+     * session of a study (research revision 10, part 2: progress follows the
+     * student, 28 §8): most stars, then the earliest when equal.
+     *
+     * @return array<int, ChallengeAttempt> keyed by challenge_node_id
+     */
+    public function completedForParticipant(int $participantId, int $studyId): array
+    {
+        $attempts = $this->select('challenge_attempts.*')
+            ->join('game_sessions', 'game_sessions.id = challenge_attempts.session_id')
+            ->where('game_sessions.participant_id', $participantId)
+            ->where('game_sessions.study_id', $studyId)
+            ->where('challenge_attempts.status', 'completed')
+            ->orderBy('challenge_attempts.challenge_node_id', 'ASC')
+            ->orderBy('challenge_attempts.stars', 'ASC')
+            ->orderBy('challenge_attempts.id', 'DESC')
+            ->findAll();
+
+        $out = [];
+
+        foreach ($attempts as $attempt) {
+            $out[$attempt->challenge_node_id] = $attempt;
+        }
+
+        return $out;
+    }
+
+    /**
+     * completedForParticipant() for the student and study of a game session.
+     *
+     * @return array<int, ChallengeAttempt> keyed by challenge_node_id
+     */
+    public function completedFor(GameSession $session): array
+    {
+        return $this->completedForParticipant($session->participant_id, $session->study_id);
     }
 
     /**

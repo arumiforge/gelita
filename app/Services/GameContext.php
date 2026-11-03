@@ -6,7 +6,7 @@ use App\Entities\GameSession;
 use App\Entities\Participant;
 use App\Models\GameSessionModel;
 use App\Models\ParticipantModel;
-use App\Models\SessionProgressModel;
+use App\Models\ParticipantProgressModel;
 
 /**
  * Wadah state satu request: sesi, progres, dan peserta yang sedang bermain.
@@ -44,7 +44,8 @@ class GameContext
 
         $this->session     = $session;
         $this->participant = $participant;
-        $this->progress    = model(SessionProgressModel::class)->ensure($session->id);
+        // Progress follows the student across game sessions (28 §8)
+        $this->progress    = model(ParticipantProgressModel::class)->forSession($session);
 
         return true;
     }
@@ -68,7 +69,7 @@ class GameContext
     public function refreshProgress(): void
     {
         if ($this->session !== null) {
-            $this->progress = model(SessionProgressModel::class)->ensure($this->session->id);
+            $this->progress = model(ParticipantProgressModel::class)->forSession($this->session);
         }
     }
 

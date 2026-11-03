@@ -8,7 +8,7 @@ use Config\Database;
 
 /**
  * Skema lengkap GELITA (app/Database/Migrations) untuk SQLite
- * (grup `tests`): 31 tabel dengan kolom, nilai bawaan, kunci utama, dan kunci
+ * (grup `tests`): 36 tabel dengan kolom, nilai bawaan, kunci utama, dan kunci
  * unik yang sama dengan MySQL/MariaDB. Indeks biasa dan FK tidak ikut.
  * Dipakai uji reset total (SystemResetTest), pendaftaran bertahap
  * (RegisterWizardTest), dan penulisan item_tries (ItemTryWritesTest).
@@ -242,6 +242,42 @@ trait ResetTables
             'is_active'           => 'INTEGER=1',
             '_unique'             => [['level_id', 'context_code', 'sequence']],
         ],
+        'field_sessions' => [
+            'id'              => 'pk',
+            'study_id'        => 'INTEGER',
+            'code'            => 'VARCHAR(20)',
+            'school_id'       => 'INTEGER',
+            'rombel'          => 'CHAR(1)',
+            'meeting_no'      => 'INTEGER',
+            'makeup_no'       => 'INTEGER=0',
+            'main_session_id' => 'INTEGER?',
+            'session_date'    => 'DATE',
+            'opens_at'        => 'DATETIME',
+            'closes_at'       => 'DATETIME',
+            'closed_at'       => 'DATETIME?',
+            'region_code'     => 'VARCHAR(20)?',
+            'created_by'      => 'INTEGER?',
+            'closed_by'       => 'INTEGER?',
+            'created_at'      => 'DATETIME=CURRENT_TIMESTAMP',
+            'updated_at'      => 'DATETIME=CURRENT_TIMESTAMP',
+            '_unique'         => [['study_id', 'code']],
+        ],
+        'field_session_members' => [
+            'field_session_id' => 'INTEGER',
+            'participant_id'   => 'INTEGER',
+            'added_by'         => 'INTEGER?',
+            'created_at'       => 'DATETIME=CURRENT_TIMESTAMP',
+            '_primary'         => ['field_session_id', 'participant_id'],
+        ],
+        'field_session_tokens' => [
+            'id'               => 'pk',
+            'field_session_id' => 'INTEGER',
+            'token'            => 'CHAR(6)',
+            'created_by'       => 'INTEGER?',
+            'created_at'       => 'DATETIME=CURRENT_TIMESTAMP',
+            'revoked_at'       => 'DATETIME?',
+            '_unique'          => [['token']],
+        ],
         'game_event_logs' => [
             'id'                   => 'pk',
             'event_uuid'           => 'VARCHAR(36)',
@@ -280,6 +316,8 @@ trait ResetTables
             'session_code'           => 'VARCHAR(64)',
             'participant_id'         => 'INTEGER',
             'study_id'               => 'INTEGER',
+            'field_session_id'       => 'INTEGER?',
+            'meeting_no'             => 'INTEGER?',
             'release_id'             => 'INTEGER',
             'locale'                 => 'VARCHAR(5)=id',
             'status'                 => 'VARCHAR(20)=active',
@@ -453,6 +491,7 @@ trait ResetTables
             'avatar_no'                => 'INTEGER?',
             'school_id'                => 'INTEGER?',
             'school_name_snapshot'     => 'VARCHAR(200)?',
+            'rombel'                   => 'CHAR(1)?',
             'country_code'             => 'VARCHAR(5)?=ID',
             'country_name_snapshot'    => 'VARCHAR(100)?',
             'province_code'            => 'VARCHAR(10)?',
@@ -472,6 +511,13 @@ trait ResetTables
             'deleted_at'               => 'DATETIME?',
             '_unique'                  => [['participant_code'], ['username']],
         ],
+        'participant_code_counters' => [
+            'id'        => 'pk',
+            'school_id' => 'INTEGER',
+            'rombel'    => 'CHAR(1)',
+            'next_no'   => 'INTEGER=1',
+            '_unique'   => [['school_id', 'rombel']],
+        ],
         'participant_feedback' => [
             'id'             => 'pk',
             'participant_id' => 'INTEGER',
@@ -482,6 +528,34 @@ trait ResetTables
             'new_learning'   => 'TEXT?',
             'suggestion'     => 'TEXT?',
             'submitted_at'   => 'DATETIME=CURRENT_TIMESTAMP',
+        ],
+        'participant_progress' => [
+            'id'                      => 'pk',
+            'participant_id'          => 'INTEGER',
+            'study_id'                => 'INTEGER',
+            'current_level_id'        => 'INTEGER?',
+            'current_node_id'         => 'INTEGER?',
+            'unlocked_level_sequence' => 'INTEGER=1',
+            'completed_nodes'         => 'INTEGER=0',
+            'completed_levels'        => 'INTEGER=0',
+            'total_stars'             => 'INTEGER=0',
+            'updated_at'              => 'DATETIME=CURRENT_TIMESTAMP',
+            '_unique'                 => [['participant_id', 'study_id']],
+        ],
+        'participant_seats' => [
+            'id'             => 'pk',
+            'participant_id' => 'INTEGER',
+            'study_id'       => 'INTEGER',
+            'row_no'         => 'INTEGER',
+            'seat_no'        => 'INTEGER',
+            'booklet'        => 'CHAR(2)',
+            'pre_form'       => 'CHAR(1)',
+            'post_form'      => 'CHAR(1)',
+            'entered_by'     => 'INTEGER?',
+            'entered_at'     => 'DATETIME=CURRENT_TIMESTAMP',
+            'updated_at'     => 'DATETIME=CURRENT_TIMESTAMP',
+            'locked_at'      => 'DATETIME?',
+            '_unique'        => [['participant_id', 'study_id']],
         ],
         'reading_passages' => [
             'id'               => 'pk',
@@ -508,6 +582,8 @@ trait ResetTables
             'retention_days' => 'INTEGER=1825',
             'default_locale' => 'VARCHAR(5)=id',
             'unlock_mode'    => 'VARCHAR(20)=sequential',
+            'field_mode'     => 'INTEGER=0',
+            'meeting_plan'   => 'VARCHAR(20)=lima_pertemuan',
             'package_code'   => 'VARCHAR(30)?',
             'created_at'     => 'DATETIME=CURRENT_TIMESTAMP',
             'updated_at'     => 'DATETIME=CURRENT_TIMESTAMP',
@@ -516,6 +592,7 @@ trait ResetTables
         'schools' => [
             'id'               => 'pk',
             'code'             => 'VARCHAR(80)?',
+            'research_code'    => 'VARCHAR(3)?',
             'name'             => 'VARCHAR(200)',
             'level'            => 'VARCHAR(20)?',
             'stage'            => 'VARCHAR(10)?',
@@ -531,18 +608,7 @@ trait ResetTables
             'merged_into_id'   => 'INTEGER?',
             'created_at'       => 'DATETIME=CURRENT_TIMESTAMP',
             'updated_at'       => 'DATETIME=CURRENT_TIMESTAMP',
-            '_unique'          => [['code']],
-        ],
-        'session_progress' => [
-            'session_id'              => 'INTEGER',
-            'current_level_id'        => 'INTEGER?',
-            'current_node_id'         => 'INTEGER?',
-            'unlocked_level_sequence' => 'INTEGER=1',
-            'completed_nodes'         => 'INTEGER=0',
-            'completed_levels'        => 'INTEGER=0',
-            'total_stars'             => 'INTEGER=0',
-            'updated_at'              => 'DATETIME=CURRENT_TIMESTAMP',
-            '_primary'                => ['session_id'],
+            '_unique'          => [['code'], ['research_code']],
         ],
         'staff_users' => [
             'id'                   => 'pk',
@@ -563,7 +629,7 @@ trait ResetTables
     ];
 
     /**
-     * Membuat (ulang) tabel. Tanpa argumen: semua 31 tabel.
+     * Membuat (ulang) tabel. Tanpa argumen: semua 36 tabel.
      *
      * @param list<string>|null $only
      */

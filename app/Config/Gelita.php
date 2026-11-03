@@ -409,6 +409,42 @@ class Gelita extends BaseConfig
         ],
     ];
 
+    // ------------------------------------------------ research revision 10, part 2 (28)
+
+    /**
+     * Plan name => meeting number => what a field session of that meeting
+     * opens (28 §5.2, K19). Region codes follow `levels.code`. The keys
+     * `test`, `ending`, and `leftovers` are hooks for parts 7 and 8.
+     *
+     * @var array<string, array<int, array<string, mixed>>>
+     */
+    public array $meetingPlans = [
+        // KG3a, KG3b, KG5 (default)
+        'lima_pertemuan' => [
+            1 => ['register' => true, 'intro' => true, 'regions' => [], 'test' => 'pre'],
+            2 => ['regions' => ['temanggung']],
+            3 => ['regions' => ['magelang']],
+            4 => ['regions' => ['wonosobo']],
+            5 => ['regions' => ['temanggung', 'magelang', 'wonosobo'], 'leftovers' => true, 'ending' => true, 'test' => 'post'],
+        ],
+        // KG2 think-aloud: one session per child; the region is picked when the field session is created
+        'satu_sesi' => [
+            1 => ['register' => true, 'regions' => 'chosen'],
+        ],
+    ];
+
+    /** Longest field session, from opening to closing time (28 §6.1). */
+    public int $fieldSessionMaxHours = 4;
+
+    /** Wrong tokens per student (or hashed IP when registering) before a pause (28 §6.3). */
+    public array $tokenThrottle = ['max_fail' => 10, 'window_minutes' => 10, 'pause_minutes' => 5];
+
+    /** Highest participant number per school and class group (`S03-A99`, 28 K11). */
+    public int $participantCodeMax = 99;
+
+    /** Username prefixes students cannot register with; tools and the simulator still may (28 K18). */
+    public array $reservedUsernamePrefixes = ['uji.', 'sim_'];
+
     public function __construct()
     {
         parent::__construct();

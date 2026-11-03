@@ -12,7 +12,7 @@ class GameSessionModel extends Model
     protected $returnType    = GameSession::class;
     protected $useTimestamps = false;
     protected $allowedFields = [
-        'session_code', 'participant_id', 'study_id', 'release_id',
+        'session_code', 'participant_id', 'study_id', 'field_session_id', 'meeting_no', 'release_id',
         'locale', 'status', 'started_at', 'last_active_at', 'ended_at', 'duration_ms',
         'last_level_id', 'last_challenge_node_id',
         'device_type', 'os_name', 'browser_name', 'screen_size', 'is_touch',

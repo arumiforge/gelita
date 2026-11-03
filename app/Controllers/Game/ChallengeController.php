@@ -3,6 +3,7 @@
 namespace App\Controllers\Game;
 
 use App\Models\ChallengeAttemptModel;
+use App\Models\GameSessionModel;
 use App\Models\ItemResponseModel;
 use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\RedirectResponse;
@@ -164,8 +165,17 @@ class ChallengeController extends BaseGameController
             return false;
         }
 
+        // Every game session of the student in this study (progress follows the student, 28 §8)
+        $session  = model(GameSessionModel::class)->find($sessionId);
+        $sessions = $session === null ? [$sessionId] : array_map('intval', array_column(
+            db_connect()->table('game_sessions')->select('id')
+                ->where('participant_id', $session->participant_id)->where('study_id', $session->study_id)
+                ->get()->getResultArray(),
+            'id',
+        ));
+
         $attempts = model(ChallengeAttemptModel::class)
-            ->where('session_id', $sessionId)
+            ->whereIn('session_id', $sessions)
             ->where('status', 'completed')
             ->whereIn('challenge_node_id', $nodeIds)
             ->orderBy('completed_at', 'ASC')

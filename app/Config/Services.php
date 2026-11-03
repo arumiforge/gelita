@@ -13,7 +13,9 @@ use App\Services\ContentImportService;
 use App\Services\ContentRepository;
 use App\Services\EventService;
 use App\Services\ExportService;
+use App\Services\FieldSessionService;
 use App\Services\GameContext;
+use App\Services\ParticipantCodeService;
 use App\Services\RawDataService;
 use App\Services\ReportService;
 use App\Services\RetentionService;
@@ -21,6 +23,7 @@ use App\Services\ScoringService;
 use App\Services\SchoolDirectory;
 use App\Services\SessionService;
 use App\Services\StaffScope;
+use App\Services\TestAccountService;
 use CodeIgniter\Config\BaseService;
 
 class Services extends BaseService
@@ -127,6 +130,36 @@ class Services extends BaseService
         }
 
         return new SessionService();
+    }
+
+    /** Field sessions, tokens, and the meeting plan (research revision 10, part 2: 28 §6). */
+    public static function fieldSessions(bool $getShared = true): FieldSessionService
+    {
+        if ($getShared) {
+            return static::getSharedInstance('fieldSessions');
+        }
+
+        return new FieldSessionService();
+    }
+
+    /** Participant codes `S03-A07` from the per-class-group counter (28 §10.2). */
+    public static function participantCodes(bool $getShared = true): ParticipantCodeService
+    {
+        if ($getShared) {
+            return static::getSharedInstance('participantCodes');
+        }
+
+        return new ParticipantCodeService();
+    }
+
+    /** `uji.*` accounts for the validators' test install (`gelita:uji:akun`, 28 §13). */
+    public static function testAccounts(bool $getShared = true): TestAccountService
+    {
+        if ($getShared) {
+            return static::getSharedInstance('testAccounts');
+        }
+
+        return new TestAccountService();
     }
 
     /** Direktori sekolah: NPSN resmi, pencocokan nama ketikan, penggabungan. */
