@@ -7,9 +7,10 @@ format of 31 §6.4 (research revision 10, part 5, code wave D, 3 November 2026).
     php docs/bank-soal/tools/old-bank-json.php docs/arsip/bank-soal-lama/data > old.json
     python3 -I docs/bank-soal/tools/import_08.py old.json docs/bank-soal/data
 
-After the first run the data files are the edited source (31 K1): revise them
-by hand, rebuild the workbook, and import. Running this script again would
-overwrite those edits; it is kept to show where every line came from.
+Since 3 November 2026 (owner, 04: the four part-5 content warnings fixed in
+08) 08 and 36 are the source again: edit them, rerun this script, rebuild the
+workbook, and import. The script overwrites the data files, so never edit
+them by hand; its output must match the committed data files byte for byte.
 
 What comes from where:
 - tantangan 2-5 (texts, keys, codes, labels): 08; English: 36 (AI draft);

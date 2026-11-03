@@ -9,7 +9,7 @@ The research bank of revision 10: the items of [`08_DRAF_BANK_SOAL.md`](../revis
 | [`gelita-bank-soal-kelas5.xlsx`](gelita-bank-soal-kelas5.xlsx) | import workbook: PETUNJUK, KAMUS_KOLOM, the data sheets below, DAFTAR_MEDIA. Imported by `DatabaseSeeder` and `php spark gelita:reset`. |
 | [`data/temanggung.php`](data/temanggung.php), [`data/magelang.php`](data/magelang.php), [`data/wonosobo.php`](data/wonosobo.php) | the edited source, one region per file (31 K1) |
 | [`build-workbook.php`](build-workbook.php) | builds the workbook from the data files, derives the error-code matrices, and runs every rule |
-| [`tools/import_08.py`](tools/import_08.py), [`tools/old-bank-json.php`](tools/old-bank-json.php) | the one-off converter that wrote the data files from 08/36 and the old bank (provenance; do not rerun over edited data files) |
+| [`tools/import_08.py`](tools/import_08.py), [`tools/old-bank-json.php`](tools/old-bank-json.php) | the converter that writes the data files from 08/36 and the old bank. Since 3 November 2026 08 is the source again: edit 08 (and 36), rerun the converter, rebuild the workbook. Hand edits to the data files are overwritten, so make every content change in 08/36 |
 
 The workbook has no `library`/`library_media` sheets, so importing it never touches Pustaka Kedu.
 
