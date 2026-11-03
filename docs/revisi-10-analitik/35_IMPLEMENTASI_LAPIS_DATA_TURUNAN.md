@@ -650,8 +650,8 @@ Dicatat di sini dan dibawa sesi koordinator setelah dokumen ini dan 31–34 diga
 
 | Dokumen | Bagian | Perubahan | Status |
 | --- | --- | --- | --- |
-| [11](11_KAMUS_DATA.md) | Seluruh usulan §8.2 | Masuk `kamus-1.1` setelah uji coba; termasuk baris 11 dari 29 §20 dan baris 11 dari 30 §23 | Saat `kamus-1.1` |
-| [11](11_KAMUS_DATA.md) | *Yang harus disediakan sistem di tahap 3* | Kalimat "dikerjakan di tahap 3, setelah G2" sudah diketahui basi (04, 1 November 2026); diganti saat 11 disentuh | Saat `kamus-1.1` |
+| [11](11_KAMUS_DATA.md) | Seluruh usulan §8.2 | Masuk `kamus-1.1` setelah uji coba; termasuk baris 11 dari 29 §20 dan baris 11 dari 30 §23 | **Sudah**: `kamus-1.1` draf (3 November 2026) |
+| [11](11_KAMUS_DATA.md) | *Yang harus disediakan sistem di tahap 3* | Kalimat "dikerjakan di tahap 3, setelah G2" sudah diketahui basi (04, 1 November 2026); diganti saat 11 disentuh | **Sudah**: `kamus-1.1` draf (3 November 2026) |
 | [16](16_ANGKET_AKSES_DIGITAL.md) | *Variabel untuk kamus data* | Baris `risk_status` … `support_na` sebagai variabel peserta bertentangan dengan 29 K9 (jawaban butir risiko hanya angka gabungan). Usulan: baris itu menunjuk lembar `risiko_gabungan` | Untuk sesi koordinator |
 | [16](16_ANGKET_AKSES_DIGITAL.md), [17](17_SKALA_SIKAP.md) | Variabel turunan | Dihitung lapis turunan (K10), bukan modul; rumusnya tetap di 16 dan 17 | Untuk sesi koordinator |
 | [17](17_SKALA_SIKAP.md) | `sikap_missing_reason = tanpa_izin` | Tidak pernah terjadi di sistem (anak tanpa izin tidak punya akun, 30 §5.2); nilai ini hanya dari L7 di lapis 3 | Untuk sesi koordinator |
