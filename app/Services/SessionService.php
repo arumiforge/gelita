@@ -12,6 +12,7 @@ use App\Models\GameReleaseModel;
 use App\Models\GameSessionModel;
 use App\Models\ParticipantModel;
 use App\Models\ResearchStudyModel;
+use App\Models\SchoolModel;
 use App\Models\ParticipantProgressModel;
 
 /**
@@ -65,10 +66,19 @@ class SessionService
         $db = db_connect();
         $db->transBegin();
 
+        // Field mode (28 §6.5): school and class group come from the field session of the token
+        $fieldSession = isset($input['field_session']) && is_array($input['field_session']) ? $input['field_session'] : null;
+
         try {
+            if ($fieldSession !== null) {
+                $row    = model(SchoolModel::class)->find((int) $fieldSession['school_id']);
+                $school = ['id' => (int) $row['id'], 'name' => (string) $row['name']];
+                $code   = service('participantCodes')->next($school['id'], (string) $fieldSession['rombel'], (string) $row['research_code']);
+            }
+
             // NPSN → sekolah resmi; nama ketikan → sekolah resmi bila jelas, selain itu
             // entri "belum terverifikasi" (SchoolDirectory::resolve)
-            $school = service('schoolDirectory')->resolve([
+            $school ??= service('schoolDirectory')->resolve([
                 'npsn'          => $input['school_npsn'] ?? null,
                 'name'          => $input['school_name'] ?? null,
                 'country_code'  => $input['country_code'] ?? 'ID',
@@ -79,7 +89,7 @@ class SessionService
             $metrics = (array) ($input['registration_metrics'] ?? []);
 
             $participantId = $participants->insert([
-                'participant_code'         => $participants->placeholderCode(),
+                'participant_code'         => $code ?? $participants->placeholderCode(),
                 'username'                 => $username,
                 'password_hash'            => password_hash($password, PASSWORD_DEFAULT),
                 'must_change_password'     => 0,
@@ -91,6 +101,7 @@ class SessionService
                 'avatar_no'                => isset($input['avatar_no']) && $input['avatar_no'] !== '' ? (int) $input['avatar_no'] : null,
                 'school_id'                => $school['id'],
                 'school_name_snapshot'     => $school['name'],
+                'rombel'                   => $fieldSession === null ? null : (string) $fieldSession['rombel'],
                 'country_code'             => $input['country_code'] ?? 'ID',
                 'country_name_snapshot'    => $this->nullIfBlank($input['country_name'] ?? null),
                 'province_code'            => $this->nullIfBlank($input['province_code'] ?? null),
@@ -109,7 +120,10 @@ class SessionService
             }
 
             $participantId = (int) $participantId;
-            $participants->assignCode($participantId);
+
+            if ($fieldSession === null) {
+                $participants->assignCode($participantId);
+            }
 
             $device  = (array) ($input['device'] ?? []);
             $session = $this->insertSession(
@@ -118,6 +132,7 @@ class SessionService
                 $release,
                 $locale,
                 $device,
+                $fieldSession,
             );
 
             model(DeviceLogModel::class)->record($session->id, $participantId, 'register', $device);
@@ -200,6 +215,14 @@ class SessionService
 
         $sessions = model(GameSessionModel::class);
         $existing = $sessions->resumable($participant->id, (int) $study['id']);
+
+        // Field mode: without a game session of an open field session the student types a token first (28 §6.4)
+        if ($existing === null && service('fieldSessions')->fieldModeOn()) {
+            $this->bindPhpSession($participant->id, null);
+            session()->set('locale', $locale);
+
+            return ['status' => 'token', 'session' => null, 'participant' => $participant];
+        }
 
         if ($existing !== null) {
             $sessions->update($existing->id, [
@@ -308,6 +331,54 @@ class SessionService
         }
 
         session()->destroy();
+    }
+
+    /**
+     * Enters a field session after an accepted token (28 §6.4): the student's
+     * game session of this field session is resumed when there is one (K7),
+     * otherwise a new one is made with `field_session_id` and `meeting_no`
+     * and `session_started {via: token}`.
+     *
+     * @param array<string, mixed> $fieldSession
+     * @param array<string, mixed> $device       DeviceProfile::capture()
+     */
+    public function enterFieldSession(int $participantId, array $fieldSession, string $locale, array $device): GameSession
+    {
+        $sessions = model(GameSessionModel::class);
+        $existing = $sessions->inFieldSession($participantId, (int) $fieldSession['id']);
+
+        if ($existing !== null) {
+            $sessions->update($existing->id, ['status' => $existing->status === 'completed' ? 'completed' : 'active', 'last_active_at' => date('Y-m-d H:i:s')]);
+            $session = $sessions->find($existing->id);
+            service('eventService')->record($session, 'session_resumed', ['via' => 'token']);
+            model(DeviceLogModel::class)->record($session->id, $participantId, 'resume', $device);
+            $this->bindPhpSession($participantId, $session->id);
+
+            return $session;
+        }
+
+        $study   = model(ResearchStudyModel::class)->requireActiveStudy();
+        $release = model(GameReleaseModel::class)->active();
+        $locale  = $this->resolveLocale($locale, $study);
+
+        $db = db_connect();
+        $db->transBegin();
+
+        try {
+            $session = $this->insertSession($participantId, (int) $study['id'], $release, $locale, $device, $fieldSession);
+            service('eventService')->record($session, 'session_started', ['via' => 'token']);
+            model(DeviceLogModel::class)->record($session->id, $participantId, 'login', $device);
+
+            $db->transCommit();
+        } catch (\Throwable $e) {
+            $db->transRollback();
+
+            throw $e;
+        }
+
+        $this->bindPhpSession($participantId, $session->id);
+
+        return $session;
     }
 
     /** Sesi baru untuk peserta yang sudah terdaftar (sesi lama selesai/ditinggalkan). */
@@ -576,6 +647,7 @@ class SessionService
         array $release,
         string $locale,
         array $device,
+        ?array $fieldSession = null,
     ): GameSession {
         $sessions = model(GameSessionModel::class);
         $now      = date('Y-m-d H:i:s');
@@ -586,6 +658,9 @@ class SessionService
             'session_code'       => random_code(16),
             'participant_id'     => $participantId,
             'study_id'           => $studyId,
+            // One game session belongs to exactly one field session (28 K6)
+            'field_session_id'   => $fieldSession === null ? null : (int) $fieldSession['id'],
+            'meeting_no'         => $fieldSession === null ? null : (int) $fieldSession['meeting_no'],
             'release_id'         => (int) $release['id'],
             'locale'             => $locale,
             'status'             => 'active',

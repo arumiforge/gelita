@@ -13,8 +13,8 @@ use CodeIgniter\Test\CIUnitTestCase;
 final class RouteWiringTest extends CIUnitTestCase
 {
     private const CONTROLLER_COUNT = [
-        'Game'  => 13,  // 12 controller + BaseGameController (AppController: manifest, display plan A3; PackageController: asset package Stage 3)
-        'Admin' => 17,  // 16 controller + BaseAdminController (PackageController: asset package Stage 6)
+        'Game'  => 14,  // 13 controller (FieldTokenController: revision 10, part 2) + BaseGameController (AppController: manifest, display plan A3; PackageController: asset package Stage 3)
+        'Admin' => 19,  // 18 controller (FieldSessionController, MonitoringController: revision 10, part 2) + BaseAdminController (PackageController: asset package Stage 6)
         'Api'   => 11,  // 10 controller + BaseApiController (PackageApiController: asset package Stage 1)
     ];
 
@@ -156,6 +156,11 @@ final class RouteWiringTest extends CIUnitTestCase
         }
 
         $this->assertSame(['participantAuth', 'screenView'], $routes->getFiltersForRoute('ganti-sandi'));
+
+        // Field mode token and "see you" screens need a student, not a game session (28 §15)
+        foreach (['token', 'sampai-jumpa'] as $path) {
+            $this->assertSame(['participantAuth', 'screenView'], $routes->getFiltersForRoute($path), $path);
+        }
         $this->assertSame([], $routes->getFiltersForRoute('daftar/([0-9]+)'), 'pendaftaran belum punya sesi bermain');
     }
 

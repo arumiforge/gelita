@@ -22,6 +22,9 @@ class GameSessionFilter implements FilterInterface
             case 'OK':
                 return null;
 
+            case 'CLOSED':   // field mode: type a token, or the session is over (28 §7)
+                return redirect()->to(site_url($check['target'] ?? 'token'));
+
             case 'MUST_CHANGE':
                 if ($request->getPath() === 'ganti-sandi') {
                     return null;

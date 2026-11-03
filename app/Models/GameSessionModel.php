@@ -33,13 +33,39 @@ class GameSessionModel extends Model
         return $this->where('session_code', trim($sessionCode))->first();
     }
 
-    /** Sesi yang masih dapat dilanjutkan (satu tahap bermain per studi) */
+    /**
+     * Sesi yang masih dapat dilanjutkan (satu tahap bermain per studi). In
+     * field mode only a session whose field session is open right now
+     * (research revision 10, part 2: 28 §6.4, §6.6).
+     */
     public function resumable(int $participantId, int $studyId): ?GameSession
     {
+        $this->select('game_sessions.*')
+            ->where('game_sessions.participant_id', $participantId)
+            ->where('game_sessions.study_id', $studyId)
+            ->whereIn('game_sessions.status', ['active', 'paused']);
+
+        if (service('fieldSessions')->fieldModeOn()) {
+            $now = date('Y-m-d H:i:s');
+
+            $this->join('field_sessions', 'field_sessions.id = game_sessions.field_session_id')
+                ->where('game_sessions.ended_at', null)
+                ->where('field_sessions.closed_at', null)
+                ->where('field_sessions.opens_at <=', $now)
+                ->where('field_sessions.closes_at >', $now);
+        }
+
+        return $this->orderBy('game_sessions.last_active_at', 'DESC')->first();
+    }
+
+    /** The student's game session in one field session that can still be resumed (K7). */
+    public function inFieldSession(int $participantId, int $fieldSessionId): ?GameSession
+    {
         return $this->where('participant_id', $participantId)
-            ->where('study_id', $studyId)
-            ->whereIn('status', ['active', 'paused'])
-            ->orderBy('last_active_at', 'DESC')
+            ->where('field_session_id', $fieldSessionId)
+            ->whereIn('status', ['active', 'paused', 'completed'])
+            ->where('ended_at', null)
+            ->orderBy('id', 'DESC')
             ->first();
     }
 

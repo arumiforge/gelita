@@ -67,6 +67,13 @@ $firstBg   = $slides === [] ? null : slide_bg_src($slides[0]);
         <h2><?= esc(lang('Game.welcomeCardTitle')) ?></h2>
         <p><?= esc($welcome) ?></p>
         <p class="muted"><?= esc(lang('Game.welcomeCardTip')) ?></p>
+        <?php $researchCode = session('research_code') ?>
+        <?php if (is_string($researchCode) && $researchCode !== ''): ?>
+          <?php /* Field mode (28 §6.5, M-11): the big research code card */ ?>
+          <p class="welcome-research-code"><?= esc(lang('Game.researchCodeLabel')) ?>
+            <strong><?= esc($researchCode) ?></strong>
+            <small><?= esc(lang('Game.researchCodeHelp')) ?></small></p>
+        <?php endif ?>
       </div>
     </div>
   <?php endif ?>

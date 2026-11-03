@@ -35,6 +35,9 @@ class ScreenViewFilter implements FilterInterface
         '#^profil$#'                      => ['profile', []],
         '#^refleksi$#'                    => ['reflection', []],
         '#^ganti-sandi$#'                 => ['change_password', []],
+        // research revision 10, part 2 (28 §15)
+        '#^token$#'                       => ['field_token', []],
+        '#^sampai-jumpa$#'                => ['field_closed', []],
     ];
 
     public function before(RequestInterface $request, $arguments = null)

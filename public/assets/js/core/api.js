@@ -129,7 +129,13 @@ export async function handleApiError(error, { mapUrl = url('peta'), onNetwork = 
       window.location.href = url('ganti-sandi');
       break;
 
+    // Field mode: the field session closed while the student played (research revision 10, part 2: 28 §7)
+    case 'FIELD_SESSION_CLOSED':
+      window.location.href = url('sampai-jumpa');
+      break;
+
     case 'LEVEL_LOCKED':
+    case 'NODE_LOCKED':
       toast(error.message, 'warn');
       setTimeout(() => { window.location.href = mapUrl; }, 1200);
       break;

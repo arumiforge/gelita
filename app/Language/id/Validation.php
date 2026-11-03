@@ -71,4 +71,7 @@ return [
     'valid_person_name'     => '{field} hanya boleh berisi huruf, spasi, dan tanda petik satu (\').',
     'not_reserved_username' => 'Nama pengguna itu tidak boleh dipakai. Pilih yang lain.',
     'strong_password'       => 'Kata sandi belum kuat. Penuhi kelima syarat dan jangan memuat nama penggunamu.',
+
+    // Research revision part 2: field sessions (28)
+    'not_reserved_prefix' => 'Nama pengguna itu tidak boleh dipakai. Pilih yang lain.',
 ];

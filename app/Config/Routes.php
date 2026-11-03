@@ -37,6 +37,10 @@ $routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($ro
         $routes->get('ganti-sandi', 'LoginController::changePasswordForm');
         $routes->post('ganti-sandi', 'LoginController::changePassword');
         $routes->get('keluar', 'LoginController::logout');
+        // Field mode (revision 10, part 2: 28 §6.4, §7): token and "see you", no game session needed
+        $routes->get('token', 'FieldTokenController::form');
+        $routes->post('token', 'FieldTokenController::submit');
+        $routes->get('sampai-jumpa', 'FieldTokenController::closed');
     });
 
     // Login + sandi sudah sah + sesi permainan aktif; setiap layar → screen_viewed

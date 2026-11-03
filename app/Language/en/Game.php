@@ -444,4 +444,21 @@ return [
     'regNextHint' => 'When everything is filled in, tap Next.',
     'regionHint' => 'Is your school in Central Java? Choose the province and regency or city first. Do not type the school name straight away: your school is found with its NPSN.',
     'schoolConfirmHint' => 'If this is the right school, tap Next.',
+
+    // Research revision part 2: field sessions (28)
+    'tokenTitle'         => 'Session Token',
+    'tokenHelp'          => 'Type the six letters and numbers the research team wrote on the board.',
+    'tokenUnknown'       => "That token doesn't match. Check the board again. Still stuck? Raise your hand.",
+    'tokenNotOpenYet'    => "This session hasn't started yet. Wait for the research team's signal.",
+    'tokenClosed'        => 'This session has ended. Ask the research team for a new token.',
+    'tokenOtherClass'    => 'This token is for another class. Check the token on your class board.',
+    'tokenNotMember'     => "This token is for another student's catch-up session. Ask the research team.",
+    'tokenOtherStudy'    => 'This account was used in another activity. Please call the research team.',
+    'tokenTooMany'       => 'Too many tries. Wait five minutes, then try again.',
+    'tokenEnter'         => 'Enter a token',
+    'sessionClosedTitle' => 'See you in the next session!',
+    'sessionClosedBody'  => 'The game opens during sessions with the research team.',
+    'researchCodeLabel'  => 'Research code',
+    'researchCodeHelp'   => 'Show this code to the research team.',
+    'codeFull'           => 'Your class has no codes left. Please call the research team.',
 ];
