@@ -2483,3 +2483,9 @@ Code for `docs/revisi-10-analitik/27_IMPLEMENTASI_PERAN_PENELITI.md` (status `di
 - **Student texts.** `Auth.mustChange`, `Auth.currentHelp`, `Game.forgotPassword` now name the research team; new `…Admin` variants name the GELITA admin. `password_reset_text()` always picks the admin variant until part 2 adds research mode (`field_mode`).
 - **Deviation.** `DashboardController` reads node references before building its aliased queries: another query in between dropped the table aliases (seen on SQLite with a table prefix in tests; production has no prefix).
 - **Not done here.** `docs/01`–`05`, `README.md`, and Dok 3 §8.3–8.4 still mention `guru`; `docs/07` has a superseding note. `AnalyticsService` keeps its unused school-scope parameter (always NULL). Part 3 gives `ketua` the event sheet and answer key.
+
+## Follow-up: migration `003400` always deletes `guru` accounts (3 November 2026, branch `sky/loving-einstein-asupcs`)
+
+- **Decision (owner).** `guru` accounts are always deleted whenever migration `003400` runs, on any server; teachers have no place in the system any more (`docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`, 3 November 2026; `27` K16, §17 no. 11). This replaces the guard from the entry above.
+- **Code.** The guard in `up()` and `Config\Gelita::$allowTeacherRemoval` are removed. `ReplaceTeacherMigrationTest` drops the guard test; the remaining tests check that teacher data is always removed and that installs without teacher accounts migrate cleanly. `docs/08_DEPLOYMENT.md` describes the unguarded migration.
+- **Open.** `003600` (part 3, log deletion) relied on `003400` holding production back (`29` §19 no. 5). The owner decides before part 3 whether `003600` gets its own guard.

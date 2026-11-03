@@ -6,6 +6,26 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 3 November 2026
 
+**PDF 22 dan 26 terbaru dikirim; 22 ditangani peneliti langsung; akun `guru` selalu dihapus saat migrasi** (cabang `sky/loving-einstein-asupcs`) · `asal: peneliti` (22 diambil alih, dikonfirmasi peneliti ke pengembang) dan `asal: pengembang` (akun guru) · `disetujui pengembang` · tidak merevisi produk
+
+1. **PDF 22 dan 26 terbaru dikirim ke peneliti** pada 3 November 2026, PDF saja, menyelesaikan tugas pengembang di entri *Gelombang A dan B ditutup* di bawah. Berkasnya dari `dokumen-pdf/cetak/` di `main` pada *commit* `cf868b7`:
+   - [22](22_PERMOHONAN_IZIN_ETIK.md): 51 halaman, kaki halaman `05b025a`;
+   - [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md): 20 halaman, kaki halaman `f90f7c1`.
+
+   Keduanya sama dengan `manifest.json`. Versi 22, 23, dan 26 yang dipegang peneliti kini kiriman 3 November 2026; 24 tetap kiriman *commit* `f45d274`.
+2. **Isian kelompok B di 22 diambil alih peneliti** (`asal: peneliti`). Sebelumnya dipegang pengembang ([22 → Daftar isian sebelum diajukan](22_PERMOHONAN_IZIN_ETIK.md#daftar-isian-sebelum-diajukan): institusi dan dana; berkas dan alat). Pengembang tidak lagi menyiapkannya.
+3. **22 ditangani peneliti langsung, tanpa lewat pengembang**, mulai 3 November 2026 (dikonfirmasi peneliti ke pengembang). Ini mengubah keputusan no. 3 di entri *Pembagian kerja baru* (1 November 2026) untuk 22 saja: repo bukan lagi salinan induk 22. Berkas 22 di repo dibiarkan sama dengan PDF yang dikirim (kaki halaman `05b025a`) dan tidak diubah lagi kecuali pengembang memintanya; perubahan dari peneliti atau komite tidak dibawa ke repo. Repo tetap salinan induk 23, 24, dan 26. 23 masih merujuk 22 (tempat kosong yang sama, lampiran 1); bila peneliti mengubah 22 dengan akibat ke 23, perubahan itu dikirim lewat pengembang seperti biasa.
+4. **Akun `guru` selalu dihapus saat migrasi, kapan pun** (`asal: pengembang`). Guru tidak masuk sistem ke depannya. Keputusan ini mengganti penjaga migrasi `003400` (entri *27 dicek kemutakhirannya*, 2 November 2026, no. 4; [27](27_IMPLEMENTASI_PERAN_PENELITI.md) K16) dan aturan 1 November 2026 "migrasi yang menghapus data baru dijalankan di produksi bila pengembang memutuskannya" untuk `003400`. Aturan itu tetap berlaku untuk `003600`. Kode diubah di cabang yang sama:
+   - `003400` tidak lagi berhenti bila masih ada akun `guru`;
+   - `Config\Gelita::$allowTeacherRemoval` dibuang;
+   - `ReplaceTeacherMigrationTest` diganti: akun guru selalu terhapus tanpa pengaturan;
+   - `docs/08_DEPLOYMENT.md` diperbarui.
+
+   Tidak dipilih: penjaga tetap.
+
+**Akibat yang belum diputuskan.** 29 §19 no. 5 menyimpan penghapusan log di `003600` dengan alasan "`003400` sudah lebih dulu menahan server produksi". Alasan itu kini tidak berlaku. Baris 27 §18 tentang penjaga `003600`, yang ditutup sesi *Tindak lanjut dokumen kecil* (entri di bawah) dengan alasan yang sama, dibuka lagi. Tanpa penjaga sendiri, pembaruan otomatis akan menjalankan `003600` begitu kode bagian 3 masuk. Sebelum kode bagian 3 (gelombang E), pengembang memilih: `003600` diberi penjaga sendiri, atau penghapusan log juga selalu berjalan. Dicatat di [27 §18](27_IMPLEMENTASI_PERAN_PENELITI.md#18-akibat-ke-dokumen-lain) dan 29 §5.8.
+
+Diubah: 04, 00 (baris 22, 26, 27; *Pembagian kerja*; *Cara membangunnya*), 23 (dua baris tempat kosong kelompok B), 27 (status, §0, K16, §6.1, §14.1, §15, §17 no. 9 dan 11, §18), 29 (§5.8), `docs/08_DEPLOYMENT.md`, `docs/PROGRESS.md`, aturan sesi revisi, migrasi `003400`, `Config\Gelita`, `ReplaceTeacherMigrationTest`, catatan implementasi, PDF siap cetak. 22 tidak diubah.
 **Draf terjemahan bahasa Inggris bank soal baru ditulis di 36** (cabang `sky/wonderful-albattani-kpz0qx`) · `asal: pengembang` (draf AI) · `draf pengembang` · tidak merevisi produk
 
 Melaksanakan keputusan 2 November 2026 ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) §22 no. 8 dan 11): AI mendraf terjemahan sekarang, pengembang memeriksanya. Dokumen baru [36](36_TERJEMAHAN_BANK_SOAL.md) memuat pasangan bahasa Inggris untuk semua teks bank baru di [08](08_DRAF_BANK_SOAL.md) yang tampil di game: instruksi, 6 bacaan Isi Rumpang dengan pasangan kata bank kata, 6 bacaan Benar atau Salah dan 3 kartu jangkar dengan 38 pernyataan, 12 butir Temukan Benda (dari bank lama), 6 unggahan *Periksa Unggahan* dengan 24 petunjuk, dan 24 Skenario Digital lengkap dengan tindakan, umpan balik, penjelasan setelah kesempatan habis, dan alasan.

@@ -173,14 +173,6 @@ class Gelita extends BaseConfig
     public int $staffIdleSeconds = 7200;
 
     /**
-     * Lets migration 2026-01-01-003400 delete existing `guru` accounts and
-     * their exports (27 K16). Off by default: the migration stops while such
-     * accounts exist. Set `gelita.allowTeacherRemoval = true` in .env only
-     * when the owner has decided to run it, and remove it afterwards.
-     */
-    public bool $allowTeacherRemoval = false;
-
-    /**
      * Character animation per pose: up to `frames` images
      * `char.{jaka|kedu}.{pose}.{1..frames}` in media_assets, always looping
      * (owner decision 11 October 2026: 24 frames per pose, repeated).
