@@ -1,8 +1,8 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "6964c2ba4c25660266b89d6154326f8d3aaca2c397ff442ac7e41e1b2671677e",
-      "commit": "333c5d5",
+      "source": "3e53b002b78fc2bad347e816b22eb223e040a14c70780f89eb31382ca448b0c3",
+      "commit": "4b070ad",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
       "pages": 17,
@@ -33,8 +33,8 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "02da72447eee7403f625dafd08f32cd3f2421ca91e4b51c98514a85179f2ba4b",
-      "commit": "05b025a",
+      "source": "9d110533acffbee0d3b2c360766493a324f635e9447f484410f2a672e4c75e5a",
+      "commit": "4b070ad",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
       "pages": 66,
@@ -42,7 +42,7 @@
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
       "source": "4728eb38ef56021e766bd1786bb9c963eca10a579927aabc09ba1cddbd432ea1",
-      "commit": "751522a",
+      "commit": "b4126be",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-27",
       "pages": 13,
@@ -58,15 +58,15 @@
     },
     "07_TELAAH_INSTRUMEN_VALIDASI.md": {
       "source": "f0435f19f3c475ae23934cbb5b449556ca9071cd6d38aff940fd73137b3d4702",
-      "commit": "751522a",
+      "commit": "b4126be",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-27",
       "pages": 10,
       "landscapeTables": 0
     },
     "08_DRAF_BANK_SOAL.md": {
-      "source": "c522432a6a9a3b11acd017d0ebd6b34e5cf18d00b0beba41eb78f2bb65adfe60",
-      "commit": "9950d31",
+      "source": "c8a96ea1ea3b4642e669e4546ea5d3a4ee9734f54d79483c23e6bfcfb7ef18f1",
+      "commit": "4b070ad",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
       "pages": 42,
@@ -74,7 +74,7 @@
     },
     "09_TELAAH_PENDAHULUAN_BANK_SOAL.md": {
       "source": "8b624a7bee233fe19b98d66eb943b9bcdebbe7627d2fb8b3b116ffcdc1360865",
-      "commit": "751522a",
+      "commit": "b4126be",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-27",
       "pages": 10,
@@ -82,7 +82,7 @@
     },
     "10_TELAAH_PENDAHULUAN_MEDIA.md": {
       "source": "13e86a96e4af811a151e2cfa7809576c900961fd7cc64bd589a3ffacc45a298e",
-      "commit": "751522a",
+      "commit": "b4126be",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-27",
       "pages": 8,
@@ -114,7 +114,7 @@
     },
     "14_TES_BAGIAN_MEMBACA.md": {
       "source": "55ecc0f33e43bc4302182a0e9867e5e7c99cb74078b0f030c893b036ab56a2f1",
-      "commit": "751522a",
+      "commit": "b4126be",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-27",
       "pages": 20,
@@ -122,7 +122,7 @@
     },
     "15_TES_BAGIAN_DIGITAL.md": {
       "source": "fa236e4443314df9b75912b9eba20c0fbdc3eee67251c5ced3d7ac9c1fa628b6",
-      "commit": "751522a",
+      "commit": "b4126be",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-27",
       "pages": 23,
@@ -154,7 +154,7 @@
     },
     "19_TELAAH_LABEL_BLOOM.md": {
       "source": "66f693f75b7f79a45289792041c761bcc9d22f4cdb8f21d54d926046d72b03e6",
-      "commit": "751522a",
+      "commit": "b4126be",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-27",
       "pages": 10,
@@ -286,6 +286,14 @@
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
       "pages": 22,
+      "landscapeTables": 0
+    },
+    "36_TERJEMAHAN_BANK_SOAL.md": {
+      "source": "463d66790bf2b380a187cf88fb001938d83db30b59e88c321601f40819eacdbd",
+      "commit": "4b070ad",
+      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
+      "date": "2026-11-03",
+      "pages": 27,
       "landscapeTables": 0
     }
   }
