@@ -245,7 +245,7 @@ Layarnya bagian modul tes (no. 22, tampilan Bootstrap). Bagian ini menetapkan at
 | Siapa melihat T11 | Siswa dengan `risk_items_consent = 1` dan status `active`, dibaca server saat modul sampai di titik itu (setelah tes akhir P5) |
 | Pilihan di T11 | *Ya, aku mau mengisi* → ang-21–ang-23, lalu T12; *Tidak, lewati saja* → langsung T12 |
 | Siswa lain | Langsung T12 di titik yang sama, termasuk siswa tanpa izin dan yang izinnya belum diisi |
-| Yang disimpan | Pilihan T11 sebagai `risk_reconsent` (1 atau 0) dengan waktu, di penyimpanan jawaban modul (no. 22). Bukan bagian kamus `kamus-1.0`; masuk `kamus-1.1` |
+| Yang disimpan | Pilihan T11 sebagai `risk_reconsent` (1 atau 0) dengan waktu, di sesi modul jenis `risk` (`instrument_sittings.risk_reconsent`, [34 → Butir risiko daring](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#8-butir-risiko-daring-t11-dan-t12)). Sesi itu juga menyimpan `risk_offered` (izin dibaca saat titik itu tercapai), untuk angka *tidak diberi butir* di unduhan gabungan. Bukan bagian kamus `kamus-1.0`; masuk `kamus-1.1` |
 | Yang tidak boleh terlihat | P1–P3 tidak melihat siapa yang melihat T11, apa pilihannya, atau apakah siswa mengisi butir risiko. Pemantauan bagian 2 hanya menunjukkan "modul selesai" |
 | Tampilan | Kedua tombol T11 sama besar dan sama warna (23 → T11); T12 satu tombol *Lanjut* |
 | Teks | id dari 23 → T11 dan T12 apa adanya; en diusulkan di [§17](#17-teks-layar-dan-panel) |
@@ -277,7 +277,7 @@ Kode pilihannya mengikuti kode jawaban di 16 dan modul no. 22. Bila Ahli Literas
 - tidak ada isian "sudah dihubungi" atau catatan, karena catatan rujukan disimpan `ketua` di luar sistem (22 langkah 6);
 - log audit `risk_flags_viewed` hanya memuat `{field_session_code, count}`, tanpa kode peserta, karena admin membaca log audit dan memegang nama.
 
-**Sumber data.** `RiskFollowUpService::flags(int $studyId, ?int $fieldSessionId)` membaca jawaban ang-21 dan ang-23 dari penyimpanan modul no. 22 (titik sambung). Siswa nonaktif tetap ikut dihitung bila jawabannya ada, karena keselamatan anak tidak bergantung pada status mundur. Jawaban yang sudah dihapus lewat permintaan C tidak menghasilkan penanda lagi.
+**Sumber data.** `RiskFollowUpService::flags(int $studyId, ?int $fieldSessionId)` membaca satuan `risk_upset` dan `support_none` dari sesi modul jenis `risk` yang bukan pratinjau ([34 → Data](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#83-data)). Siswa nonaktif tetap ikut dihitung bila jawabannya ada, karena keselamatan anak tidak bergantung pada status mundur. Jawaban yang sudah dihapus lewat permintaan C tidak menghasilkan penanda lagi.
 
 ---
 
@@ -331,7 +331,7 @@ ketua mengajukan ─────────────────────
 | `participant_progress`, `participant_seats`, `field_session_members` | Ya | — | Bagian 2 (menggantikan `session_progress`) |
 | `field_sheet_rows` (per `participant_id`) | Ya | — | Bagian 3 |
 | `participant_consents` | Ya (ikut `ON DELETE CASCADE`) | — | Bagian 4 |
-| Jawaban modul tes, angket, dan skala sikap | Ya | Hanya ang-21–ang-23 dan `risk_reconsent` | No. 21, 22 (titik sambung) |
+| Jawaban modul tes, angket, dan skala sikap: `instrument_responses`, `instrument_parts`, `instrument_blocks`, `instrument_sittings` | Ya | Hanya sesi jenis `risk` anak itu (jawaban ang-21–ang-23, `risk_offered`, `risk_reconsent`), lewat `ON DELETE CASCADE` | No. 21, 22 ([34 → Skema database](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#11-skema-database)) |
 | `participants` | Ya, terakhir | — | Sudah ada |
 
 **Yang tetap:**
@@ -545,7 +545,7 @@ Untuk [26 → P15](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md#langkah-perlindungan)
 | Kebutuhan | Jalan manual | Siapa |
 | --- | --- | --- |
 | Hapus semua data (B) | Sudah ada: Tata kelola, cakupan nomor siswa, mode `hard` | Admin, atas perintah `ketua` |
-| Hapus jawaban butir risiko (C) | `DELETE` baris ang-21–ang-23 anak itu di tabel jawaban modul (no. 22) dengan id peserta, setelah `SELECT COUNT(*)` yang sama dicatat | Admin, atas perintah `ketua` |
+| Hapus jawaban butir risiko (C) | `DELETE` sesi modul jenis `risk` anak itu (`instrument_sittings`, jawabannya ikut terhapus, [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#83-data)) dengan id peserta, setelah `SELECT COUNT(*)` yang sama dicatat | Admin, atas perintah `ketua` |
 | Salinan satu anak (D) | `SELECT` per tabel dengan id peserta, disimpan sebagai CSV di penyimpanan terenkripsi admin; `ketua` menyusun salinan tanpa kunci jawaban; jawaban butir risiko mengikuti [§8](#8-salinan-data-satu-anak) | Admin dan `ketua` |
 | Pembetulan (D) | `UPDATE participants SET {kolom} = … WHERE participant_code = …` | Admin, atas perintah `ketua` |
 | Cadangan | Cadangan baru, lalu berkas lama di kedua lokasi dihapus dengan tangan | Admin |
@@ -738,8 +738,8 @@ Label pilihan *Tidak mau menjawab* di en mengikuti teks en butir ang-21–ang-23
 
 | Perubahan | Yang disediakan bagian ini | Yang dirancang di sana |
 | --- | --- | --- |
-| No. 21 skala sikap | Cakupan hapus `all` mencakup tabel skala | Tabel jawaban skala |
-| No. 22 modul tes | `ConsentService::riskItemsAllowed()`, aturan T11/T12 dan teksnya, `risk_reconsent`, cakupan hapus `risk_items`, `RiskFollowUpService` | Layar, tabel jawaban, kode pilihan ang-21–ang-23 |
+| No. 21 skala sikap ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) §9) | Cakupan hapus `all` mencakup tabel skala | Tabel jawaban skala: sesi modul jenis `attitude` |
+| No. 22 modul tes ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) §8, §11) | `ConsentService::riskItemsAllowed()`, aturan T11/T12 dan teksnya, `risk_reconsent`, cakupan hapus `risk_items`, `RiskFollowUpService` | Layar, tabel `instrument_*`, sesi jenis `risk` dengan `risk_offered` dan `risk_reconsent`, kode pilihan ang-21–ang-23 di `data/instrumen/angket.php` |
 | No. 9 lapis turunan | Daftar izin berkode, `status_on`, `registration_corrected` | `consent_ok`, data sampai tanggal mundur (`kamus-1.1`) |
 | Bagian 2 (`28`) | Baris izin dibuat saat mendaftar; nonaktif ditolak token; `gelita:uji:akun` mengisi izin butir risiko Ya | Halaman kursi di sebelah halaman izin; angka "izin belum diisi" di pemantauan |
 | Bagian 3 (`29`) | `purged_by_request_id`, salinan satu anak dari lembar unduhan, isi lembar `izin` (§10.1) | Lembar `izin` di daftar lembar unduhan utama (keputusan no. 9); pemeriksaan nama impor (K13) dipakai ulang untuk kritik dan saran |

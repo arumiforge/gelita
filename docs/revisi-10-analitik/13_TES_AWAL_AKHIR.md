@@ -165,7 +165,7 @@ Butir angket memakai kode `ang-{nn}` (lihat [16](16_ANGKET_AKSES_DIGITAL.md)). K
 
 ### Modul tes di GELITA
 
-Tes dan angket dikerjakan di modul tes GELITA (diputuskan 26 Oktober 2026). Modul ini dibangun di tahap 3 sebagai perubahan sistem no. 22 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti); rinciannya ditulis di dokumen implementasi. Yang sudah ditetapkan untuk rancangan:
+Tes dan angket dikerjakan di modul tes GELITA (diputuskan 26 Oktober 2026). Modul ini adalah perubahan sistem no. 22 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), dibangun sekarang tetapi tidak dipakai dengan anak sebelum persetujuan etik ([04](04_CATATAN_KEPUTUSAN.md), 1 November 2026); rinciannya di dokumen implementasi bagian 8, [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md). Yang sudah ditetapkan untuk rancangan:
 
 - **Tampilan Bootstrap, bukan tampilan game.** Latar polos, huruf besar dan mudah dibaca, tanpa HUD, musik, narasi, animasi, bintang, atau Serpihan Cahaya. Bootstrap disimpan sebagai salinan lokal berversi di `public/assets/vendor/`, seperti pustaka lain di proyek, supaya modul tetap jalan tanpa internet dan tanpa CDN.
 - **Dibuka lewat sesi lapangan.** Token sesi P1 dan P5 membuka modul tes, bukan wilayah game. Di luar sesi, modul tertutup seperti game. Siswa masuk dengan akunnya sendiri, dan layar hanya menampilkan kode peserta.
@@ -175,9 +175,9 @@ Tes dan angket dikerjakan di modul tes GELITA (diputuskan 26 Oktober 2026). Modu
 - **Jawaban tersimpan per butir di server**, jadi perangkat yang mati tidak menghapus jawaban; siswa melanjutkan di perangkat lain dari soal terakhir. Kunci dan skor tidak pernah dikirim ke browser, sama seperti aturan game.
 - **Yang dicatat:** jawaban mentah, waktu tampil per butir, berapa kali jawaban diganti, jam mulai dan selesai setiap bagian, dan bagian yang ditutup batas waktu.
 - **Angket di modul yang sama**, langsung setelah Bagian 3 tes awal, dan butir risiko daring langsung setelah Bagian 3 tes akhir ([16](16_ANGKET_AKSES_DIGITAL.md)). Butir risiko hanya untuk siswa yang izin terpisahnya ada di daftar izin berkode: modul menampilkan layar tanya ulang T11 lebih dulu, dan semua siswa, juga yang tanpa izin, melihat pesan dukungan T12 di titik yang sama, supaya peneliti dan teman tidak bisa menebak siapa yang mengisi ([30 → Layar T11 dan T12](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#54-layar-t11-dan-t12); teksnya di [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md)). Pilihan T11 disimpan sebagai `risk_reconsent`.
-- **Belum diputuskan, untuk dokumen implementasi no. 22:** apakah batas 20 menit tantangan susulan di P5 dijaga P1 dengan jam atau ditutup sistem sebelum modul tes dibuka ([28 → Pertanyaan terbuka](28_IMPLEMENTASI_SESI_LAPANGAN.md#21-pertanyaan-terbuka) no. 2; usulan di sana: dijaga P1).
+- **Mulai tes bersama** (diputuskan pengembang 2 November 2026, [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) K1). P1 menekan *Mulai tes awal* setelah panel menampilkan "Semua siswa sudah punya bentuk tes". Di P5, P1 menjaga batas 20 menit tantangan susulan dengan jam, lalu menekan *Mulai tes akhir*; sejak itu tantangan tertutup dan semua siswa diarahkan ke modul ([28 → Pertanyaan terbuka](28_IMPLEMENTASI_SESI_LAPANGAN.md#21-pertanyaan-terbuka) no. 2).
 
-Modul baru ada di tahap 3, jadi uji keterbacaan di tahap 2 memakai mock-up layar (lihat [Validasi dan uji coba](#validasi-dan-uji-coba)).
+Modul belum dipakai dengan anak sebelum persetujuan etik, jadi uji keterbacaan memakai mock-up layar (lihat [Validasi dan uji coba](#validasi-dan-uji-coba)).
 
 ### Waktu di P1 dan P5
 
@@ -218,7 +218,7 @@ Bentuk mengikuti nomor baris dan nomor kursi di denah L2 saat tes awal:
 - Koordinator sesi (peran P1 di [01](01_REVISI_10_ANALITIK.md#kerja-lapangan-cara-kerjanya)) menjelaskan layar pembuka dan mengerjakan lima contoh soal bersama siswa: satu untuk setiap bentuk butir Bagian 1 (PG, PGK, menjodohkan), satu skenario Bagian 2, dan satu unggahan Bagian 3. Butir tes tidak dibacakan dan modul tidak bernarasi, sejalan dengan aturan narasi D1 di game. Siswa boleh bertanya tentang cara menjawab, tidak tentang arti kata di teks.
 - Waktu dijaga modul, bukan koordinator. Siswa yang selesai lebih dulu melihat layar selesai dan menunggu dengan tenang.
 - Guru boleh di kelas tapi tidak membantu isi soal. Bantuan dan gangguan dicatat P3 di L3, seperti saat bermain ([02](02_LEMBAR_LAPANGAN.md#l3-log-bantuan-dan-gangguan)).
-- Kalau perangkat bermasalah, siswa pindah ke perangkat cadangan dan melanjutkan dari soal terakhir. P1 mencatat jam dan lamanya di L1.
+- Kalau perangkat bermasalah, siswa pindah ke perangkat cadangan dan melanjutkan dari soal terakhir. P1 mencatat jam dan lamanya di L1, dan boleh menambah menit untuk siswa itu di panel dengan alasan; tambahannya tercatat dan masuk unduhan ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) K3).
 - Siswa yang absen ikut susulan dalam tiga hari dengan bentuk yang sudah ditetapkan dan batas waktu yang sama; peneliti membuka modul untuk mereka. Kalau tidak, status tesnya `hilang`. Status tes berasal dari modul; L6 hanya catatan pelaksanaan dan statusnya tidak diimpor ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md), K12). Angket boleh menyusul sampai P5 dan ditandai `questionnaire_late` ([16](16_ANGKET_AKSES_DIGITAL.md#cara-pelaksanaan)); tes awal tidak, karena harus dikerjakan sebelum bermain.
 - **Tes awal dinilai sebelum P2**, karena pemilihan siswa wawancara L5 memakai kelompok nilai tes awal. Modul menilainya langsung.
 
