@@ -56,7 +56,7 @@ Ukuran gambar 27–111 KB (WebP, jumlah ± 1,8 MB). Semua layar game digambar di
 | [`mk-sd-04`](gambar/mockup/mk-sd-04.webp) | Umpan balik setelah pilihan "kurang tepat", kesempatan tersisa 2 dari 3. Tanpa kata "salah" atau "gagal", tanpa warna merah; tombol *Coba lagi* |
 | [`mk-sd-05`](gambar/mockup/mk-sd-05.webp) | Kesempatan ketiga habis: tindakan yang aman ditampilkan dan dijelaskan, tombol *Lanjut* ke cerita berikutnya |
 
-*Draf salinan* (belum ada di dokumen sumber): "Kamu masih punya 2 kesempatan. Pilih lagi tindakan dan alasanmu.", "Ini tindakan yang aman", "Kesempatanmu untuk cerita ini sudah habis. Ayo lanjut ke cerita berikutnya.", Penjelasan tindakan aman di `mk-sd-05` bukan draf: itu baris *Penjelasan setelah kesempatan habis* `tmg-5-a02` di 08, kata demi kata (celah no. 1).
+*Draf salinan* (belum ada di dokumen sumber; ketiga kalimat bingkai ini kini ditetapkan di [32 §13](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#13-teks-antarmuka), 3 November 2026): "Kamu masih punya 2 kesempatan. Pilih lagi tindakan dan alasanmu.", "Ini tindakan yang aman", "Kesempatanmu untuk cerita ini sudah habis. Ayo lanjut ke cerita berikutnya.", Penjelasan tindakan aman di `mk-sd-05` bukan draf: itu baris *Penjelasan setelah kesempatan habis* `tmg-5-a02` di 08, kata demi kata (celah no. 1).
 
 **Yang dinilai ahli media.**
 - Apakah dua langkah (tindakan, lalu alasan) jelas bagi anak kelas 5, dan langkah alasan tidak terasa seperti soal kedua yang membingungkan?
