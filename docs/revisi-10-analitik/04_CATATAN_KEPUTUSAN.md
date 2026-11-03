@@ -6,6 +6,21 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 3 November 2026
 
+**Tindak lanjut dokumen kecil sesudah gelombang A dan B** (cabang `sky/ecstatic-brown-wy18u5`) · `asal: pengembang` (penyelarasan berbantuan AI) · tidak ada keputusan baru · status dokumen tidak berubah · tidak merevisi produk
+
+Atas permintaan pengembang, tujuh tindak lanjut yang sudah diputuskan (baris *Small document follow-ups* di `docs/PROGRESS.md`) dibawa ke dokumen tujuannya:
+- **20, prasyarat no. 8:** "Usulan alat bantu untuk tahap 3" menjadi *Alat bantu `gelita:uji:akun`* dengan aturan 1 November 2026: kodenya dibangun di gelombang kode D bersama bagian 2, instalasi uji tahap 2 tetap memakai langkah 3 dan 6, dan `--reset` menghapus data permainan (28 K15), bukan menutup sesi. Judul "Di G3 (… setelah tahap 3)" menjadi "setelah G2" (28 §23).
+- **03:** kode sesi KG2 `U01-A-P1` (rencana `satu_sesi`) di *Peserta, sekolah, dan sesi*; aturan satu akun satu studi (`other_study`, 28 K20) di bawah *Kegiatan dengan anak*.
+- **18:** pesan token keempat `tokenOtherStudy` dari 28 §16; belum digambar di mock-up.
+- **02, *Cara mencetak dan mengisi*:** situs statis memakai `kolom.json` dari spesifikasi lembar (29 §19 no. 6); spesifikasi lembar dikunci di G4 bersama versi game dan kamus (29 K17). Judul kolom tabel tidak berubah, jadi `FieldSheetSpecTest` nanti tetap cocok.
+- **27 §9:** unduhan `ketua` selalu memerlukan satu studi, juga saat mode penelitian mati, dengan pesan `exportNeedsStudy` (29 K16).
+- **13, 16, 17:** dari empat butir di 11 → *Penyesuaian di dokumen lain*, tiga pertama sudah ada sejak sesi koordinator 31–35; butir keempat dibawa: "masuk `kamus-1.1` setelah uji coba" menjadi "masuk `kamus-1.1` (draf 3 November 2026); angkanya ditetapkan ulang setelah uji coba". Kalimat di *Keputusan pengembang* 13 dibiarkan sebagai riwayat.
+- **27 §18, baris penjaga `003600`:** ditutup tanpa penjaga sendiri. Penghapusan tetap di `003600` (29 §19 no. 5), dan penjaga `003400` sudah menahan pembaruan server produksi yang tidak diawasi; kalimat 27 §6.1 diselaraskan.
+
+Baris sumbernya ditandai sudah: 28 §23 (20, 03, 18), 29 §18 (02, 27), dan blok *Untuk sesi koordinator* di 11.
+
+Diubah: 02, 03, 11, 13, 16, 17, 18, 20, 27, 28, 29, 04, `docs/PROGRESS.md`, PDF siap cetak.
+
 **Gelombang A dan B ditutup** (sesi koordinator, cabang `sky/sweet-allen-0md2pw`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
 
 Atas permintaan pengembang, semua PR gelombang A dan B dan tindak lanjutnya sudah digabung (#308–#331). PR #331 (akibat 31–35) digabung terakhir, setelah #328 (akibat 31) dan #329 (`kamus-1.1`), dengan aturan berikut:
