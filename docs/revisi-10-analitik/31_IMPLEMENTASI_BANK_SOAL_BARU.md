@@ -309,7 +309,7 @@ Rentang Bloom per jenis soal (`bloomRange()`) diganti satu rentang per wilayah, 
 - `FIRST_ATTEMPT_GROUPS` (`:72`) = `['a', 'b']`.
 - `SHARED_GROUP` = `'x'` (baru).
 - `MAX_OVERLAP` (`:75`) dihapus; diganti `MIN_GAP_DP = 24` dan `HUNT_SCENE_DP` ([§9](#9-area-ketuk-tidak-bersentuhan-perubahan-no-17)).
-- `ENGINES` (`:46`) tetap empat di bagian ini; bagian 6 menambah `5 => '{engine skenario}'` ([§18](#18-titik-sambung-ke-perubahan-lain)). Aturan wilayah (`region()`) membaca panjang `ENGINES`, jadi wilayah dengan tantangan kelima lolos setelah bagian 6 tanpa perubahan lain.
+- `ENGINES` (`:46`) tetap empat di bagian ini; bagian 6 menambah `5 => 'skenario'` ([32 → K1](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#2-keputusan-yang-dikunci), [§18](#18-titik-sambung-ke-perubahan-lain)). Aturan wilayah (`region()`) membaca panjang `ENGINES`, jadi wilayah dengan tantangan kelima lolos setelah bagian 6 tanpa perubahan lain.
 
 **Galat baru** (impor ditolak, pembangun tidak menulis):
 
@@ -598,7 +598,7 @@ Instruksi tantangan dan petunjuk babak 2 dari 08 ada di workbook, bukan berkas b
 | Bagian 2 ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md)), no. 11 | `VariantPicker` membaca `participant_seats.booklet` dan `research_studies.field_mode`; `BOOKLET_MISSING` | `participant_seats`, `field_mode`, `participant_progress`, `refreshProgress()`. Angka "siswa belum punya kursi" di panel pemantauan |
 | Bagian 3 ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md)), no. 7, 14 | `item_tries.error_code`, `manual_code`; kolom baru lembar `butir`; lembar `kode_pilihan`; geometri adegan untuk `empty_tap` | Daftar lembar unduhan, kamus berversi, `empty_tap` dan `ready_ms`, impor L5 ke `manual_code` |
 | Bagian 6 (`32`), no. 2, 6, 18 | Sheet `scenarios`/`scenario_options`, tabel `scenario_options`, kolom skenario di `challenge_items`, aturan bank skenario, kode tindakan di `ErrorCodeResolver` | Engine skenario dan namanya, `BankRules::ENGINES[5]`, layar, skor tindakan, `reason_code` dan skor di `item_tries`, narasi instruksi, tombol ▶ petunjuk babak 2 |
-| Bagian 7 (`33`), no. 16 | `variant_source`; butir `x` di setiap pengerjaan | Melanjutkan pengerjaan pertama yang terputus, pengerjaan ulang setelah wilayah tuntas, `is_scored_attempt` |
+| Bagian 7 (`33`), no. 16 | `variant_source`; butir `x` di setiap pengerjaan | Melanjutkan pengerjaan pertama yang terputus, pengerjaan ulang setelah wilayah tuntas, `is_retake` (33 K6); `is_scored_attempt` diturunkan bagian 9 (35 §6.3) |
 | Bagian 9 (`35`), no. 9 | Kode tersimpan, label, `testlet_key`, beban permukaan, `HuntGeometry` | `error_code_analysis`, `rapid_guess`, `near_miss_count`, penanganan kode bank yang direvisi |
 | `ChallengeService` bersama bagian 2 | Bagian ini mengubah `openNode()` (baris pemilihan variasi), `grade()`, `recordTry()`, `registerWrongClick()`, `huntPayload()`, `buildPayload()` | Bagian 2 mengubah `refreshProgress()` dan pembaca kemajuan. Cabang yang digabung kedua menyelesaikan bentrokan |
 

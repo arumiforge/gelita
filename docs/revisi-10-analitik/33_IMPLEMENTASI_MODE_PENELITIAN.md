@@ -242,6 +242,8 @@ Ambang adalah pengaturan, bukan angka di kode (11). Disimpan sebagai kolom `rese
 
 View membaca `$researchMode` dari `BaseGameController::hudData()` (satu tempat, K1).
 
+Berlaku untuk kelima engine, termasuk engine `skenario` tantangan kelima ([32 §14](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#14-titik-sambung-ke-perubahan-lain)): Skenario Digital memakai kepala tantangan dan layar hasil yang sama, jadi tidak punya jam atau sakelar sendiri.
+
 ### 7.2 Layar kecil
 
 **Ukuran.** Panggung 16:9 berukuran `min(lebar, tinggi × 16/9)` (`core/stage.js`, `stageRect()`). Di ponsel mendatar 844 × 390 panggungnya ± 693 px, dengan teks 6–9 px (10 → B.5); di tablet 1024 × 768 panggungnya 1024 px. Ambang 960 px meloloskan laptop, Chromebook, dan tablet ≥ 10 inci, dan menolak ponsel (K7).
@@ -282,6 +284,7 @@ L0 dan L1 menyebut perangkat yang dipakai ([§14](#14-dokumen-yang-ikut-diperbar
 - `GameProgress::nodeOverview()` memberi status `done_locked` untuk tantangan tuntas yang belum boleh diulang; peta wilayah dan layar hasil menyembunyikan *Ulangi* dan menampilkan `Game.retakeLater`.
 - Pengerjaan ulang: `is_retake = 1` (K6), aturan 3 kesempatan sama, bintang seperti sekarang (K5), waktu direkam server seperti biasa. Cerita penghubung tidak diputar lagi (12, keputusan 1; bagian 6).
 - Variasi pengerjaan ulang tetap dari `pickVariant()` (variasi yang belum didapat); buklet hanya menentukan pengerjaan pertama (bagian 5).
+- Aturan ini berlaku juga untuk tantangan kelima Skenario Digital (engine `skenario`, [32 → K2](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#2-keputusan-yang-dikunci)): "kelima tantangan" termasuk tantangan itu, dan pengerjaan ulangnya memakai pemeriksaan `assertRetakeAllowed()` yang sama.
 
 ### 7.5 Kenali setelah wilayah tuntas
 
@@ -326,7 +329,7 @@ L0 dan L1 menyebut perangkat yang dipakai ([§14](#14-dokumen-yang-ikut-diperbar
 
 ### 8.4 M-07 satu nama per jenis tantangan
 
-Pin peta memakai nama jenis ("Isi Rumpang"), sedangkan kartu dan judul memakai judul variasi ("Lengkapi Bacaan Temanggung", `ChallengeService::variantTitle()`, baris 1201). Sesudah: **nama jenis** (glosarium: Susun Gambar, Isi Rumpang, Benar atau Salah, Cari Objek; Skenario Digital dari bagian 6) tampil di pin, kartu tantangan, dan cincin nomor tantangan; judul variasi menjadi subjudul kecil di kepala tantangan saja. Nama jenis dibaca dari berkas bahasa (`Game.engine{Puzzle,Rumpang,Boleh,Cari}`), bukan dari bank.
+Pin peta memakai nama jenis ("Isi Rumpang"), sedangkan kartu dan judul memakai judul variasi ("Lengkapi Bacaan Temanggung", `ChallengeService::variantTitle()`, baris 1201). Sesudah: **nama jenis** (glosarium: Susun Gambar, Isi Rumpang, Benar atau Salah, Cari Objek; Skenario Digital dari bagian 6) tampil di pin, kartu tantangan, dan cincin nomor tantangan; judul variasi menjadi subjudul kecil di kepala tantangan saja. Nama jenis dibaca dari berkas bahasa (`Game.engine_{puzzle,rumpang,boleh,cari}`, kunci yang sudah ada di `app/Language/id/Game.php`, ditambah `Game.engine_skenario` dari 32 §13), bukan dari bank.
 
 ### 8.5 M-08 dua pelanggaran axe
 

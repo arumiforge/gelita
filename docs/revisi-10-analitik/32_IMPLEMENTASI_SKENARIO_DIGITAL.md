@@ -284,6 +284,7 @@ Semua dalam milidetik sejak tantangan dibuka (`sinceOpen()` di `game/challenge.j
 - Node kelima tiap wilayah berasal dari sheet `nodes` workbook (bagian 5): `sequence` 5, `engine_type` `skenario`, kartu misi, gambar kartu, dan tingkat.
 - Peta wilayah membaca node dari `ContentRepository::nodesForLevel()`; kartu tantangan `.node-card` mendapat gambar mesin `public/assets/ui/node-card-skenario.webp` (sepia, dalam bingkai `node-card-frame.webp`). Gambar ini dipesan ke tim Katalog Aset (§7.5); sampai ada, kartu memakai gambar umum yang sama dengan engine tanpa gambar.
 - `engine_label()` (dipakai `mission-brief.php` baris 36) mendapat label "Skenario Digital" / *Digital Scenarios*.
+- **Nama jenis (M-07, [33 §8.4](33_IMPLEMENTASI_MODE_PENELITIAN.md#84-m-07-satu-nama-per-jenis-tantangan)).** "Skenario Digital" (`Game.engine_skenario`, §13) tampil sebagai nama jenis di pin peta, kartu tantangan, dan cincin nomor tantangan, seperti keempat jenis lain; judul variasi hanya subjudul kecil di kepala tantangan.
 - Tantangan dalam wilayah tetap terbuka berurutan (`GameProgress::nodeUnlocked()`); tantangan kelima terbuka setelah tantangan keempat tuntas.
 
 ### 7.2 Cerita penghubung `scenario_open`

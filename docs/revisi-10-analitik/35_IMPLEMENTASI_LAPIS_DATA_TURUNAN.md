@@ -122,7 +122,7 @@ K1–K4 diputuskan pengembang ([§19](#19-keputusan-pengembang)). Sisanya menuru
 
 ```text
 app/Libraries/Derived/
-  Thresholds.php          // value object: idle_ms, rapid_ms, near_miss_dp, input_gap_min_ms
+  Thresholds.php          // value object: idle_ms, rapid_ms, near_miss_dp, input_idle_log_ms
   RunInput.php            // raw rows of one study, loaded once, ordered
   Timeline.php            // active-time arithmetic (segments, hidden, idle excess, narration)
   TryCalculator.php       // per try: decision_ms, rapid_guess, error_code_analysis, flags
@@ -147,13 +147,14 @@ app/Commands/DerivedCompute.php       // gelita:turunan:hitung
 | Peserta, sekolah, rombel, kode | `participants`, `schools.research_code` | 28 |
 | Izin dan status | `participant_consents`, `participants.deactivated_at`, `participants.corrected_at` | 30 |
 | Sesi lapangan, pertemuan, wilayah yang dibuka | `field_sessions`, rencana pertemuan, `game_sessions.field_session_id` | 28 |
-| Pengerjaan, jawaban, percobaan | `challenge_attempts`, `item_responses`, `item_tries` (termasuk `ready_ms` 29, `error_code` dan kolom D2 dari 31/32) | 29, 31, 32 |
+| Pengerjaan, jawaban, percobaan | `challenge_attempts` (termasuk `is_retake` 33 K6, `variant_source` 31 K15), `item_responses`, `item_tries` (termasuk `ready_ms` 29, `error_code` dan kolom D2 dari 31/32) | 29, 31, 32, 33 |
+| Potongan pengerjaan | `challenge_attempt_segments` (`opened_at`, `left_at`, `left_via`, sesi dan sesi lapangan) | 33 §5.4 |
 | Event peneliti | `game_event_logs` jenis Peneliti di `EventCatalog` (29 K7), dengan `occurred_at_corrected` | 29 |
-| Narasi diputar | `audio_usage_events` per pemutaran | 29 §5.4 |
-| Jeda masukan ≥ 20 detik | Event mentah dari bagian 7 (anggapan: `input_gap`) | 33 |
-| Butir dan adegan | `challenge_items` (dimensi, sub-aspek, level AKM, babak, `testlet_key`), bagian ketuk Cari Objek | 31 |
+| Narasi diputar | `audio_usage_events` per pemutaran, dengan `clock_offset_ms` (33 K10) dan `audio_assets.context_code` | 29 §5.4, 33 §5.3 |
+| Jeda masukan ≥ 20 detik | Event `input_idle` (payload `idle_ms`, `started_at`, `end`, `screen`) | 33 K4, §5.2 |
+| Butir dan adegan | `challenge_items` (dimensi, sub-aspek, level AKM, babak, `testlet_key`), bagian ketuk Cari Objek (kotak benda babak 1, `post_parts` babak 2), `HuntGeometry` | 31 §9, §13, §15 |
 | Lembar lapangan | `field_sheet_rows` impor utama yang berlaku | 29 |
-| Tes, angket, skala sikap | Tabel jawaban modul (anggapan nama di §15) | 34 |
+| Tes, angket, skala sikap | `instrument_sittings`, `instrument_blocks`, `instrument_parts`, `instrument_responses` | 34 §11.1 |
 
 ### 4.3 Sidik jari masukan
 
@@ -210,7 +211,7 @@ Setiap aturan di bawah adalah aturan di 11; kolom kanan menyebut bagian 11 yang 
 | `error_code_analysis` | `error_code`, kecuali percobaan salah dengan `rapid_guess = 1` diberi `NON-TEB` | Analitik 6 |
 | `last_try_exhausted` | 1 pada percobaan salah yang menghabiskan kesempatan terakhir butir itu (NON-HABIS) | Analitik 6 |
 | `hint_before` | `item_tries.hint_opened_before` | Analitik 7 |
-| `item_hint_before`, `item_narration_before` | 1 bila Bantuan khusus butir itu dibuka, atau narasi butir itu diputar siswa (bukan *autoplay*), sebelum `occurred_at` percobaan | Analitik 7 |
+| `item_hint_before`, `item_narration_before` | 1 bila Bantuan khusus butir itu dibuka, atau narasi butir itu diputar siswa (bukan *autoplay*), sebelum `occurred_at` percobaan. Narasi butir dibaca dari `audio_usage_events` lewat `audio_assets` → `challenge_items.audio_prompt_*` (32 §9.2) | Analitik 7 |
 | `reason_code`, `action_score` | Disalin dari kolom Skenario Digital bagian 6 | Analitik 10 |
 | `shared_device` | 1 bila L2 sesi itu mencatat *Pakai bareng: Ya* untuk kursi siswa, dalam jendela sampai jam pindah perangkat | Penanda, L2 |
 | `helped_content`, `helped_technical`, `encouraged`, `disturbed` | 1 bila ada baris L3 (ISI/STR/BHS, TKN, SMG, GG-*) untuk siswa atau kursinya, dari 1 menit sebelum jam kejadian sampai 2 menit sesudahnya (atau sesudah jam selesai) | Penanda, L3 |
@@ -249,12 +250,12 @@ Satu baris untuk **setiap butir yang dinilai** di variasi buklet siswa, juga yan
 | --- | --- | --- |
 | `attempt_id`, `participant_code`, `node_ref`, `attempt_no` | Kunci | — |
 | `is_scored_attempt` | 1 untuk pengerjaan dengan variasi buklet siswa sampai tantangan tertutup pertama kali; bila ada dua sebelum tertutup (gangguan), keduanya 1 dan aturan cadangan §6.1 berlaku | Pengerjaan pertama |
-| `is_retake` | 1 untuk pengerjaan sesudah tantangan tertutup | Pengerjaan ulang |
-| `segments` | Banyak potongan (sesi game berbeda) | Analitik 5 |
+| `is_retake` | Disalin `challenge_attempts.is_retake` (33 K6): 1 untuk pengerjaan sesudah tantangan tertutup | Pengerjaan ulang |
+| `segments` | Banyak potongan di `challenge_attempt_segments` (33 §5.4) | Analitik 5 |
 | `total_ms`, `hidden_ms`, `idle_excess_ms`, `active_ms` | §6.7 | Analitik 5 |
 | `cumulative_active_ms` | Jumlah `session_active_ms` peserta sebelum pengerjaan ini dimulai | Analitik 5, kovariat |
 | `hint_count` | Disalin `challenge_attempts.hint_count` | Analitik 7 |
-| `instruction_replays` | Banyak pemutaran ulang narasi instruksi oleh siswa (kode konteks bagian 7 atau 6, anggapan di §15) | Analitik 7 |
+| `instruction_replays` | Banyak aksi `play`/`replay` dengan `context_code = challenge_instruction` di pengerjaan ini; semua putaran dihitung, karena narasi instruksi tidak pernah berbunyi sendiri (32 K10, §8.2) | Analitik 7 |
 | `material_returns` | (a) `library_opened` saat pengerjaan belum tertutup + (b) `passage_reopened` (29 §6.3) | Analitik 8 |
 | `exit_count` | Banyak `challenge_abandoned` pengerjaan ini sebelum tertutup | Analitik 8 |
 | `reading_max_pct` | `reading_progress` terbesar | Analitik 8 |
@@ -265,7 +266,7 @@ Satu baris untuk **setiap butir yang dinilai** di variasi buklet siswa, juga yan
 | Kolom | Aturan | 11 |
 | --- | --- | --- |
 | `completion_status` | `solved`, `exhausted`, `unfinished`, `not_started`, `locked`, dinilai saat putaran dari pengerjaan pertama | Analitik 1 |
-| `skipped_failed_count` | Jenis (a): banyak petunjuk Cari Objek (`clue_failed`, ditulis `ChallengeService.php:1009`) dan skenario Skenario Digital (event bagian 6) yang ditutup setelah kesempatan ketiga | Analitik 1 |
+| `skipped_failed_count` | Jenis (a): banyak petunjuk Cari Objek (`clue_failed`, ditulis `ChallengeService.php:1009`) dan skenario Skenario Digital (`scenario_failed`, 32 K13, §5.6) yang ditutup setelah kesempatan ketiga | Analitik 1 |
 | `skipped_left_count` | Jenis (b): banyak `challenge_abandoned` (ditulis `ChallengeService.php:732`, juga `RetentionService` `via: retention`) di pengerjaan pertama yang **tidak** diikuti aktivitas pengerjaan itu di sesi lapangan yang sama | Analitik 1 |
 | `closed_meeting_no` | Pertemuan saat tantangan tuntas | Analitik 1 |
 
@@ -307,12 +308,12 @@ Satu baris untuk **setiap butir yang dinilai** di variasi buklet siswa, juga yan
 
 Satu fungsi, `Timeline::active()`, dipakai untuk pengerjaan, butir, dan sesi:
 
-1. **Potongan.** Satu potongan = selang di dalam satu sesi game, dari mulai (`challenge_opened`, atau tampilnya petunjuk atau situasi untuk butir, atau awal sesi game) sampai selesai (percobaan yang menutup, atau event terakhir potongan itu). Selang di antara potongan tidak dihitung. `total_ms` = jumlah potongan.
+1. **Potongan.** Untuk pengerjaan, satu potongan = satu baris `challenge_attempt_segments` (33 §5.4), dari `opened_at` sampai `left_at`; potongan yang tetap terbuka (perangkat mati) ditutup dengan event terakhir pengerjaan itu (11). Untuk butir, potongan dimulai dari tampilnya petunjuk atau situasi; untuk sesi, dari awal sesi game. Potongan berakhir pada percobaan yang menutup, atau event terakhir potongan itu. Selang di antara potongan tidak dihitung. `total_ms` = jumlah potongan.
 2. **Tersembunyi.** Selang `page_hidden` sampai `page_visible` berikutnya (atau sampai akhir potongan) dipotong seluruhnya → `hidden_ms`.
 3. **Jeda masukan.** Dari sisa yang tampil, setiap jeda tanpa masukan yang dicatat bagian 7 (≥ 20 detik) dikurangi selang narasi yang sedang diputar dan selang yang sudah tersembunyi. Bila sisanya lebih dari T_idle, bagian yang melebihi T_idle masuk `idle_excess_ms`.
 4. `active_ms = total_ms − hidden_ms − idle_excess_ms`.
 
-Semua jam memakai waktu terkoreksi (`occurred_at_corrected`, 29 K8). Event dengan `offset_known = 0` tetap dipakai dengan waktu mentahnya; banyaknya dicatat di `derived_runs.notes` untuk dilaporkan.
+Semua jam memakai waktu terkoreksi (`occurred_at_corrected`, 29 K8); jam narasi dikoreksi dengan `audio_usage_events.clock_offset_ms` (33 K10). Event dengan `offset_known = 0` tetap dipakai dengan waktu mentahnya; banyaknya dicatat di `derived_runs.notes` untuk dilaporkan.
 
 **Masukan** adalah sentuhan atau klik, tombol keyboard, gulir, dan seret; gerakan tetikus tanpa klik tidak (11). Itu aturan perekaman bagian 7; lapis turunan hanya membaca jeda yang dicatat.
 
@@ -374,7 +375,7 @@ Yang **tidak** berubah dari `kamus-1.0`: peta bukti, istilah, butir yang dinilai
 | 11 | *Versi dan cara berubah* | Setiap tabel turunan menyimpan `dictionary_version` **dan** `run_id`; ambang yang dipakai tercatat per putaran; versi antara `kamus-1.1-usulan` | §4, §8.1 |
 | 12 | Analitik 1 | "Pengambilan data selesai" = jam putaran yang dipakai unduhan akhir; data yang diunduh sebelum studi ditutup menyebut jam putarannya | §6.4 |
 | 13 | *Aturan gabung lembar lapangan*, L4 | Pengamatan L4 diberi `attempt_id` dan `item_key` yang aktif (`derived_observations`) | §6.6 |
-| 14 | Analitik 7, 10 | `instruction_replays` memakai kode konteks narasi instruksi (bagian 6 atau 7); `reason_level` tetap kosong sampai urutan alasan ditetapkan | 01 no. 6, 11 |
+| 14 | Analitik 7, 10 | `instruction_replays` memakai kode konteks narasi instruksi `challenge_instruction` (32 K10); `reason_level` tetap kosong sampai urutan alasan ditetapkan | 01 no. 6, 11 |
 | 15 | *Variabel peserta dan sesi*, sesi game | `is_touch` tetap di log teknis admin kecuali peneliti memintanya (29 §18 no. 3) | 29 |
 
 Setelah uji coba, angka yang ditetapkan ulang (T_idle, T_teb, batas `game_time_group`, ambang tebakan cepat tes) ditulis ke 11 bersama nomor di atas.
@@ -538,7 +539,7 @@ Semua teks baru ada di panel, jadi masuk `app/Language/id/Admin.php` (hanya baha
 
 ## 15. Titik sambung ke perubahan lain
 
-Nama kolom dan event dari bagian 5–8 di bawah adalah **anggapan** dokumen ini; masing-masing dicocokkan dengan dokumennya di sesi koordinator ([§20](#20-akibat-ke-dokumen-lain)).
+Nama kolom dan event dari bagian 5–8 di bawah adalah **anggapan** dokumen ini; masing-masing dicocokkan dengan dokumennya di sesi koordinator ([§20](#20-akibat-ke-dokumen-lain)). Sesi koordinator 3 November 2026 mencocokkan kolom kanan dengan 31–34; yang masih menunggu keputusan: `reason_last_input_ms` (32 §6.4 tidak mencatat saat tindakan atau alasan dipilih) dan migrasi mana yang membuat kolom ambang `research_studies` (33 §9 atau §12 di sini).
 
 | Perubahan | Yang dibutuhkan bagian ini | Anggapan nama |
 | --- | --- | --- |
@@ -546,11 +547,11 @@ Nama kolom dan event dari bagian 5–8 di bawah adalah **anggapan** dokumen ini;
 | Bagian 2 (`28`) | `field_mode`, `field_sessions`, rencana pertemuan, `participant_progress`, `game_sessions.field_session_id`, `schools.research_code`, rombel, buklet | Sesuai 28 §17 |
 | Bagian 3 (`29`) | `ready_ms`, `empty_tap` (koordinat, `overflow`), `passage_reopened`, `occurred_at_corrected`, `offset_known`, `EventCatalog`, `field_sheet_rows`, `ResearchDictionary`, daftar lembar | Sesuai 29 §6, §8, §12 |
 | Bagian 4 (`30`) | `participant_consents` (`parent_consent_on`, `status`, `status_on`), `participants.deactivated_at`, `assented_at`, `corrected_at`, cakupan hapus | Sesuai 30 §15 |
-| Bagian 5 (`31`): kode kesalahan, label, beban permukaan, bank baru | `item_tries.error_code`; `challenge_items` `dimension`, `subaspect`, `akm_level`, `round`, `testlet_key`; bagian ketuk Cari Objek dengan koordinat persen dan ukuran panggung; butir yang dinilai per buklet | `error_code` VARCHAR; label di `challenge_items` atau tabel label butir |
-| Bagian 6 (`32`): Skenario Digital | Per percobaan: kunci pilihan tindakan, `action_score`, `reason_code`, waktu tampil pilihan tindakan dan alasan; event penutupan skenario setelah kesempatan ketiga | `item_tries.action_key`, `action_score`, `reason_code`, `action_ready_ms`, `reason_ready_ms`, `reason_last_input_ms`; event `scenario_failed` |
-| Bagian 7 (`33`): waktu aktif mentah, mode penelitian | Jeda masukan ≥ 20 detik dengan jam mulai dan akhir; selang narasi diputar; pengerjaan pertama yang terputus dilanjutkan; `is_retake` dapat dibaca | Event `input_gap {from_ms, to_ms}` atau tabel jeda; narasi dari `audio_usage_events` |
-| Bagian 6 atau 7: narasi instruksi | Kode konteks narasi instruksi | Konteks `instruction` di `audio_usage_events` |
-| Bagian 8 (`34`): modul tes, angket, skala sikap | Jawaban mentah angket per variabel; skor tes per bagian, `capped`, tanggal, susulan; jawaban tes per butir dengan waktu tampil; jawaban skala per butir, `sikap_makeup`; `risk_reconsent` | Tabel jawaban modul per siswa per kegiatan, dengan kode variabel 16 dan 17 |
+| Bagian 5 (`31`): kode kesalahan, label, beban permukaan, bank baru | `item_tries.error_code`; `challenge_items` `dimension`, `subaspect`, `akm_level`, `round`, `testlet_key`; bagian ketuk Cari Objek dengan koordinat persen dan ukuran panggung; butir yang dinilai per buklet | Sesuai 31 §9, §13, §15: `item_tries.error_code` VARCHAR(12); label di kolom `challenge_items`; kotak benda babak 1 dan `post_parts` babak 2 (x, y, w, h persen adegan 16:9); ukuran adegan `HUNT_SCENE_DP` di `HuntGeometry`; buklet dari `participant_seats.booklet` dan `BookletRules` |
+| Bagian 6 (`32`): Skenario Digital | Per percobaan: kunci pilihan tindakan, `action_score`, `reason_code`, waktu tampil pilihan tindakan dan alasan; event penutupan skenario setelah kesempatan ketiga | `item_tries.action_key`, `action_score`, `reason_code`, `ready_ms` (pilihan tindakan tampil, 32 §6.4), `reason_ready_ms`, `reason_last_input_ms`; event `scenario_failed` |
+| Bagian 7 (`33`): waktu aktif mentah, mode penelitian | Jeda masukan ≥ 20 detik dengan jam mulai dan akhir; selang narasi diputar; pengerjaan pertama yang terputus dilanjutkan; `is_retake` dapat dibaca | Sesuai 33 §5: event `input_idle` (`idle_ms`, `started_at`, `end`, `screen`); narasi dari `audio_usage_events` dengan `clock_offset_ms`; potongan `challenge_attempt_segments`; `challenge_attempts.is_retake` |
+| Bagian 6 (`32`): narasi instruksi | Kode konteks narasi instruksi | Sesuai 32 K10: `audio_assets.context_code = challenge_instruction`, dibaca lewat `audio_usage_events` |
+| Bagian 8 (`34`): modul tes, angket, skala sikap | Jawaban mentah angket per variabel; skor tes per bagian, `capped`, tanggal, susulan; jawaban tes per butir dengan waktu tampil; jawaban skala per butir, `sikap_makeup`; `risk_reconsent` | Sesuai 34 §11.1: `instrument_sittings` (`occasion`, `kind`, `is_makeup`, `risk_reconsent`), `instrument_blocks`, `instrument_parts` (`raw_score`, `closed_by_limit`), `instrument_responses` (satu baris per satuan `unit` = kode variabel 16 dan 17, K7) |
 
 **Yang disediakan bagian ini untuk yang lain:** `derived_*` sebagai satu-satunya sumber angka turunan; tidak ada bagian lain yang menghitung ulang `rapid_guess`, waktu aktif, atau `completion_status` sendiri. Panel pemantauan bagian 2 tetap menghitung angka operasionalnya sendiri (siapa belum selesai), karena itu bukan hasil penelitian (01 → *Olah data*).
 
