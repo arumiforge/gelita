@@ -53,43 +53,44 @@ final class ClozeReadingTest extends CIUnitTestCase
 
     public function testRulesFollowRegionDifficulty(): void
     {
-        // Dok 2 §2: jumlah rumpang & pengecoh tepat, bukan rentang
-        $this->assertSame([3, 3], DifficultyRules::reading('mudah')['blanks']);
+        // 31 §8.1: 4 / 5 / 6 blanks, 2 decoy words everywhere; one Bloom range per region (19)
+        $this->assertSame([4, 4], DifficultyRules::reading('mudah')['blanks']);
         $this->assertSame([5, 5], DifficultyRules::reading('sedang')['blanks']);
-        $this->assertSame([7, 7], DifficultyRules::reading('sulit')['blanks']);
-        $this->assertSame([[1, 1], [2, 2], [2, 2]], array_map(static fn (string $d): array => DifficultyRules::reading($d)['distractors'], ['mudah', 'sedang', 'sulit']));
-        $this->assertSame(['C1', 'C2'], DifficultyRules::bloomRange('mudah'));
-        $this->assertSame(['C2', 'C3'], DifficultyRules::bloomRange('sedang'));
-        $this->assertSame(['C3', 'C4'], DifficultyRules::bloomRange('sulit'));
+        $this->assertSame([6, 6], DifficultyRules::reading('sulit')['blanks']);
+        $this->assertSame([[2, 2], [2, 2], [2, 2]], array_map(static fn (string $d): array => DifficultyRules::reading($d)['distractors'], ['mudah', 'sedang', 'sulit']));
+        $this->assertSame(['C1', 'C2', 'C3'], DifficultyRules::bloomRange('mudah'));
+        $this->assertSame(['C2', 'C3', 'C4'], DifficultyRules::bloomRange('sedang'));
+        $this->assertSame(['C2', 'C3', 'C4', 'C5'], DifficultyRules::bloomRange('sulit'));
         $this->assertSame('C2 · Memahami', DifficultyRules::bloomLabel('c2'));
     }
 
-    /** Dok 2 §2: Benar atau Salah dan Cari Objek punya aturan dan rentang Bloom sendiri. */
+    /** 31 §8.1: statements, key split, sub-aspects, anchors, both hunt rounds, scenarios. */
     public function testTrueFalseAndHuntRulesFollowRegionDifficulty(): void
     {
-        $this->assertSame([1, 3], [DifficultyRules::trueFalse('mudah')['paragraphs'], DifficultyRules::trueFalse('mudah')['statements']]);
-        $this->assertSame([2, 5], [DifficultyRules::trueFalse('sedang')['paragraphs'], DifficultyRules::trueFalse('sedang')['statements']]);
-        $this->assertSame([3, 6], [DifficultyRules::trueFalse('sulit')['paragraphs'], DifficultyRules::trueFalse('sulit')['statements']]);
+        $this->assertSame([4, [2, 2], ['D1a' => 3, 'D1b' => 1]], array_values(array_intersect_key(DifficultyRules::trueFalse('mudah'), array_flip(['statements', 'key_split', 'subaspects']))));
+        $this->assertSame([6, [3, 3], ['D1a' => 3, 'D1b' => 3]], array_values(array_intersect_key(DifficultyRules::trueFalse('sedang'), array_flip(['statements', 'key_split', 'subaspects']))));
+        $this->assertSame([6, [3, 3], ['D1a' => 2, 'D1b' => 4]], array_values(array_intersect_key(DifficultyRules::trueFalse('sulit'), array_flip(['statements', 'key_split', 'subaspects']))));
+        $this->assertSame([['D1a' => 2], ['D1a' => 1, 'D1b' => 1], ['D1b' => 2]], array_map(static fn (string $d): array => DifficultyRules::anchor($d)['subaspects'], ['mudah', 'sedang', 'sulit']));
 
-        $this->assertSame(['C1', 'C2'], DifficultyRules::bloomRange('mudah', 'truefalse'));
-        $this->assertSame(['C2', 'C3', 'C4'], DifficultyRules::bloomRange('sedang', 'truefalse'));
-        $this->assertSame(['C4', 'C5'], DifficultyRules::bloomRange('sulit', 'truefalse'));
+        $this->assertSame([4, 4, 8, 2], array_values(array_intersect_key(DifficultyRules::hunt('mudah'), array_flip(['targets', 'decoys', 'parts', 'main']))));
+        $this->assertSame([4, 6, 10, 3], array_values(array_intersect_key(DifficultyRules::hunt('sedang'), array_flip(['targets', 'decoys', 'parts', 'main']))));
+        $this->assertSame([4, 8, 12, 3], array_values(array_intersect_key(DifficultyRules::hunt('sulit'), array_flip(['targets', 'decoys', 'parts', 'main']))));
+        $this->assertSame([[3, 3, 1], [4, 4, 1], [4, 5, 2]], array_map(static fn (string $d): array => [DifficultyRules::scenario($d)['actions'], DifficultyRules::scenario($d)['reasons'], DifficultyRules::scenario($d)['steps']], ['mudah', 'sedang', 'sulit']));
+
         $this->assertTrue(DifficultyRules::bloomInRange('C5', 'sulit', 'truefalse'));
-        $this->assertFalse(DifficultyRules::bloomInRange('C5', 'sulit'), 'Isi Rumpang sulit tetap C3–C4');
+        $this->assertFalse(DifficultyRules::bloomInRange('C5', 'sedang', 'hunt'));
+        $this->assertSame('C2–C4 (Memahami, Menerapkan, Menganalisis)', DifficultyRules::bloomRangeLabel('sedang', 'hunt'));
+        $this->assertSame(['L2'], DifficultyRules::akm('sedang', 'D1a'));
+        $this->assertSame(['L3'], DifficultyRules::akm('sulit', 'D3'));
 
-        $this->assertSame([4, 4], [DifficultyRules::hunt('mudah')['targets'], DifficultyRules::hunt('mudah')['decoys']]);
-        $this->assertSame([4, 6], [DifficultyRules::hunt('sedang')['targets'], DifficultyRules::hunt('sedang')['decoys']]);
-        $this->assertSame([4, 8], [DifficultyRules::hunt('sulit')['targets'], DifficultyRules::hunt('sulit')['decoys']]);
-        $this->assertSame(['C3', 'C4'], DifficultyRules::bloomRange('sulit', 'hunt'));
-        $this->assertSame('C2–C3 (Memahami, Menerapkan)', DifficultyRules::bloomRangeLabel('sedang', 'hunt'));
-
-        // Keterampilan Benar atau Salah: kode per tingkat, semuanya berlabel
+        // Reading skills, D1b ones included (06 no. 6), all labelled
         foreach (['mudah', 'sedang', 'sulit'] as $difficulty) {
             foreach (DifficultyRules::trueFalse($difficulty)['skills'] as $skill) {
                 $this->assertTrue(DifficultyRules::isSkill($skill), $skill);
             }
         }
 
+        $this->assertSame('Mengenali iklan', DifficultyRules::skillLabel('mengenali_iklan'));
         $this->assertSame('Menentukan solusi berdasarkan bukti', DifficultyRules::skillLabel('menentukan_solusi'));
         $this->assertSame('kode_lain', DifficultyRules::skillLabel('kode_lain'));
         $this->assertSame('', DifficultyRules::skillLabel(null));

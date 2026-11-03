@@ -2237,11 +2237,12 @@ class ContentImportService
         $flat ??= BankSource::flatten(BankSource::load(ROOTPATH . 'docs/bank-soal/data'));
 
         // Bacaan tidak punya node_ref: kodenya {tantangan}-{variasi} (tmg-3-a → tmg-3)
+        // Rows keyed by item (code sheets, scenarios) take the node of the item key; indicators are all shown
         $refOf = static fn (array $row): string => (string) ($row['node_ref']
-            ?? implode('-', array_slice(explode('-', (string) ($row['passage_key'] ?? '')), 0, 2)));
+            ?? implode('-', array_slice(explode('-', (string) ($row['passage_key'] ?? $row['item_key'] ?? '')), 0, 2)));
         $rows = array_values(array_filter(
             $flat['sheets'][$sheet] ?? [],
-            static fn (array $row): bool => in_array($refOf($row), ['tmg-1', 'mgl-2', 'tmg-3', 'tmg-4'], true),
+            static fn (array $row): bool => $sheet === 'indicators' || in_array($refOf($row), ['tmg-1', 'mgl-2', 'tmg-3', 'tmg-4', 'tmg-5'], true),
         ));
 
         return array_map(
