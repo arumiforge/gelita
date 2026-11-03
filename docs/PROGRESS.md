@@ -191,4 +191,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `sky/eloquent-maxwell-eiucbe` | Research revision: `21` finding no. 3 and L5 columns in `02` (`04`, 3 November 2026) | PR open |
