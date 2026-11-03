@@ -6,6 +6,27 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 3 November 2026
 
+**Gelombang A dan B ditutup** (sesi koordinator, cabang `sky/sweet-allen-0md2pw`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Atas permintaan pengembang, semua PR gelombang A dan B dan tindak lanjutnya sudah digabung (#308–#331). PR #331 (akibat 31–35) digabung terakhir, setelah #328 (akibat 31) dan #329 (`kamus-1.1`), dengan aturan berikut:
+
+- Tautan yang lebih rinci dari #331 dipakai di 01, 29, dan 31 §18.
+- Baris Susun Gambar di 03, kalimat 08, dan status 31 §23 diambil dari `main`.
+- Baris 17 dan 20 di 01 digabung.
+- Baris kembar dibuang: kode di 03, baris pemantauan dan titik sambung di 28, serta paragraf *commit* beku di 20 dan 21.
+- Kolom tabel yang hilang di baris 11 pada 33 dan 34 dikembalikan.
+
+Tiga baris yang sudah selesai tetapi belum ditandai sekarang ditandai **Sudah** (`kamus-1.1` didraf di 11, PR #329): 17 (baris 11), 22 (dua baris `consent_ok` di 11), dan 32 (*Akibat ke dokumen lain* no. 3).
+
+Sisa pekerjaan dicatat di `docs/PROGRESS.md` (baris *Waves A and B closed*), dikelompokkan menurut siapa yang mengerjakan:
+- tindak lanjut dokumen kecil yang sudah diputuskan (20, 03, 18, 02, 27, dan butir 11 untuk 13, 16, 17);
+- tugas pengembang: PDF 22 dan 26 terbaru untuk peneliti, karena keduanya berubah setelah *commit* serah terima `f45d274`, dan draf terjemahan bahasa Inggris bank soal;
+- yang menunggu peneliti;
+- yang dikerjakan saat implementasi;
+- gelombang kode C (bagian 1, PR #332) yang sedang berjalan.
+
+Diubah: 04, 17, 22, 32, `docs/PROGRESS.md`, dan PDF siap cetak.
+
 **Sesi koordinator untuk 31–35: akibatnya dibawa ke dokumen lain, delapan keputusan pengembang** (cabang `r10-cek-30`, setelah PR #326) · `asal: pengembang` (penyelarasan berbantuan AI dan delapan keputusan) · status dokumen tidak berubah · tidak merevisi produk
 
 Atas permintaan pengembang, *Akibat ke dokumen lain* di [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md)–[35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) dibawa ke dokumen tujuannya, dalam tiga sesi paralel yang dibagi per pemilik berkas:
