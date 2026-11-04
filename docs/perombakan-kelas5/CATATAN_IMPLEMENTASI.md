@@ -2529,3 +2529,7 @@ Owner decision in `04` (3 November 2026, item 4): fix the warnings in `08` inste
 - **Tests.** `BankRulesNewBankTest` no longer expects these warnings from the data; it now checks the data is free of them and provokes each warning with a mutated copy.
 - **Older reviews.** At the owner's request, the rows of the changed items in `05`, `09`, `19`, and `25` now carry the current wording and codes (dated 3 November 2026); the earlier findings stay as review history. The `mgl-2` passage lengths in `08` were recounted (a 124, b 133 words; the blueprint asks 100–120).
 - **Left alone.** 17 warnings remain: translation still marked "terjemahan belum ada" (13) and English text equal to Indonesian in four tap parts (`tmg-4-b B2`, `mgl-4-a C2`, `wnb-4-a E2`, `wnb-4-b F2`).
+
+## Follow-up: approved translation notes in the bank data (3–4 November 2026, branch `sky/gallant-mccarthy-71jnn1`, PR #346)
+
+- **Deviation: content check without `spark`.** `gelita:content:verify` needs a migrated database, and the migrations are MySQL-only (no MySQL in the cloud session), so the same `ContentVerifier` ran on the SQLite test world (`GradeFiveWorld` schema + `SystemResetService`), once with the old and once with the rebuilt workbook: 233 → 223 findings, 0 errors. The previous entry counted 13 translation warnings; on the old workbook this verifier reported 10 per-challenge findings (123 items). All are gone; the four tap-part warnings remain.
