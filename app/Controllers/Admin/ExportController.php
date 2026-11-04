@@ -254,10 +254,8 @@ class ExportController extends BaseAdminController
             'metadata'      => ['study_code' => $study['code'], 'row_count' => count($rows)],
         ]);
 
-        return $this->response
-            ->setHeader('Content-Type', ExportService::mimeType('xlsx'))
-            ->setHeader('Content-Disposition', 'attachment; filename="daftar-izin-' . $study['code'] . '-' . date('Y-m-d') . '.xlsx"')
-            ->setHeader('Cache-Control', 'no-store')
-            ->setBody($body);
+        return $this->response->download('daftar-izin-' . $study['code'] . '-' . date('Y-m-d') . '.xlsx', $body)
+            ->setContentType(ExportService::mimeType('xlsx'))
+            ->noCache();
     }
 }

@@ -93,11 +93,9 @@ class DataRequestController extends BaseAdminController
         $body = (string) file_get_contents($path);
         unlink($path);
 
-        return $this->response
-            ->setHeader('Content-Type', 'application/pdf')
-            ->setHeader('Content-Disposition', 'attachment; filename="berita-acara-' . $id . '.pdf"')
-            ->setHeader('Cache-Control', 'no-store')
-            ->setBody($body);
+        return $this->response->download('berita-acara-' . $id . '.pdf', $body)
+            ->setContentType('application/pdf')
+            ->noCache();
     }
 
     private function act(int $id, \Closure $action, string $message): RedirectResponse

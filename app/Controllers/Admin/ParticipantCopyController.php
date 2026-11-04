@@ -44,10 +44,8 @@ class ParticipantCopyController extends BaseAdminController
             return $this->back('admin/peserta/salinan', $e->getMessage());
         }
 
-        return $this->response
-            ->setHeader('Content-Type', 'application/zip')
-            ->setHeader('Content-Disposition', 'attachment; filename="' . $zip['name'] . '"')
-            ->setHeader('Cache-Control', 'no-store')
-            ->setBody($zip['body']);
+        return $this->response->download($zip['name'], $zip['body'])
+            ->setContentType('application/zip')
+            ->noCache();
     }
 }
