@@ -4,7 +4,7 @@
   Kode keluar: 0 berhasil; 1 gagal; 2 backup lokal berhasil, salinan kedua gagal.
 #>
 param([string]$Config = 'C:\gelita-ops\config.psd1', [switch]$Ganti)
-# Part 4 (30 §7.5): -Ganti replaces every older backup at both locations with the fresh one (K3);
+# Part 4 (30 7.5): -Ganti replaces every older backup at both locations with the fresh one (K3);
 # KeduaHari in config.psd1 (e.g. 30) limits the second location; empty = kept forever (as before).
 
 $ErrorActionPreference = 'Stop'
