@@ -212,6 +212,9 @@ class SystemResetService
             ? ['status' => 'skipped', 'message' => 'Bank soal tidak diimpor (--tanpa-bank).']
             : $this->importBank($options['bank'] ?? null);
 
+        // Part 6 (32 K8): without Skenario Digital in the bank, four challenges per region (12 shards)
+        $this->retireEmptyScenarioNodes();
+
         // 8. Gambar mockup (Dok 2 §10)
         $mockups = ! empty($options['tanpa_mockup'])
             ? ['status' => 'skipped', 'count' => 0, 'message' => 'Gambar mockup tidak dibuat (--tanpa-mockup).']
@@ -350,9 +353,6 @@ class SystemResetService
                 array_slice($result['errors'], 0, 5),
             ));
         }
-
-        // Part 6 (32 K8): a bank without Skenario Digital keeps four challenges per region (12 shards)
-        $this->retireEmptyScenarioNodes();
 
         // Butir soal dibangun ulang: tautan rekaman petunjuk Cari Objek yang sudah terdaftar dipasang lagi
         $clueAudio = $result['ok'] ? (new NarrationImporter($this->db))->relinkClues() : 0;

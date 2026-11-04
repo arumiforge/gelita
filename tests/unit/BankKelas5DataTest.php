@@ -195,11 +195,15 @@ final class BankKelas5DataTest extends CIUnitTestCase
         ]));
 
         $wrong = BankRules::region('magelang', [['sequence' => 1, 'engine' => 'puzzle'], ['sequence' => 2, 'engine' => 'pilihan']]);
-        $this->assertStringContainsString('seharusnya 4 berurutan', $wrong[0]['message']);
+        $this->assertStringContainsString('seharusnya 5 berurutan', $wrong[0]['message']);
 
-        // Skenario Digital waits for part 6: it is checked, but not part of the region order yet
+        // Skenario Digital is the fifth challenge since part 6 (32 K1); a bank without it keeps the first four
+        $this->assertSame([], BankRules::region('wonosobo', [
+            ['sequence' => 1, 'engine' => 'puzzle'], ['sequence' => 2, 'engine' => 'rumpang'], ['sequence' => 3, 'engine' => 'boleh'],
+            ['sequence' => 4, 'engine' => 'cari'], ['sequence' => 5, 'engine' => 'skenario'],
+        ]));
         $this->assertSame([], array_diff_key(array_flip(['temanggung', 'magelang', 'wonosobo']), $this->flat()['regions']));
-        $this->assertSame(BankRules::ENGINES, array_combine(range(1, 4), array_column($this->flat()['regions']['temanggung'], 'engine')));
+        $this->assertSame(BankRules::ENGINES, array_combine(range(1, 5), array_column($this->flat()['regions']['temanggung'], 'engine')));
 
         $this->assertSame(['tmg-2-a01'], BankRules::duplicateKeys(['tmg-2-a01', 'tmg-2-a02', 'tmg-2-a01']));
         $this->assertSame(3, BankRules::paragraphCount("Satu.\n\nDua.\n\n  \nTiga."));

@@ -103,13 +103,20 @@ final class BankImportNewSheetsTest extends CIUnitTestCase
     public function testScenariosAreWrittenOnceTheirChallengeExists(): void
     {
         $file   = $this->workbook(BankSource::load(ROOTPATH . 'docs/bank-soal/data'));
+        // A server without the fifth challenge (installed before part 6): checked, set aside
+        $levelId = (int) $this->conn->table('levels')->where('code', 'temanggung')->get()->getRow('id');
+        $this->conn->table('challenge_nodes')->where('level_id', $levelId)->where('sequence', 5)->update(['is_active' => 0]);
+        service('contentRepository')->flush();
+        service('cache')->clean();
+
         $before = (new ContentImportService())->preview($file);
         $this->assertTrue($before['ok']);
         $this->assertStringContainsString('Tantangan tmg-5 (Skenario Digital) belum ada di permainan, jadi 8 skenario', implode(' ', array_column($before['warnings'], 'message')));
 
-        // Part 6 installs the fifth challenge; the same workbook then writes the scenarios
-        $levelId = (int) $this->conn->table('levels')->where('code', 'temanggung')->get()->getRow('id');
-        $this->conn->table('challenge_nodes')->insert(['level_id' => $levelId, 'sequence' => 5, 'engine_type' => 'skenario', 'title_id' => 'Skenario', 'title_en' => 'Scenarios', 'is_active' => 1]);
+        // Part 6 seeds the fifth challenge (gelita:reset); the same workbook then writes the scenarios
+        $this->conn->table('challenge_nodes')->where('level_id', $levelId)->where('sequence', 5)->update(['is_active' => 1]);
+        service('contentRepository')->flush();
+        service('cache')->clean();
 
         $result = (new ContentImportService())->import($file, 1);
         $this->assertTrue($result['ok'], json_encode($result['errors'], JSON_UNESCAPED_UNICODE));
@@ -123,7 +130,7 @@ final class BankImportNewSheetsTest extends CIUnitTestCase
         $this->assertCount(6, $options);
         $this->assertSame([[0, 'DIG-PRI'], [2, null], [1, 'DIG-PSF']], array_map(static fn (array $o): array => [(int) $o['score'], $o['code']], array_slice($options, 0, 3)));
         $this->assertSame(['R-RISK', 'R-ATUR', 'R-SOS'], array_column(array_slice($options, 3), 'code'));
-        $this->assertSame(48, $this->conn->table('scenario_options')->countAllResults(), 'Temanggung only: Magelang and Wonosobo still wait');
+        $this->assertSame(184, $this->conn->table('scenario_options')->countAllResults(), 'all three regions (part 6 seeds every fifth challenge)');
     }
 
     /** Workbook from data files, as docs/bank-soal/build-workbook.php writes it. */
