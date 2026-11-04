@@ -23,6 +23,7 @@ class FieldTokenController extends BaseController
         'not_member'    => 'Game.tokenNotMember',
         'other_study'   => 'Game.tokenOtherStudy',
         'too_many'      => 'Game.tokenTooMany',
+        'inactive'      => 'Game.loginInactive',   // part 4 (30 §5.3)
     ];
 
     /** GET /token */

@@ -103,7 +103,9 @@ class TestAccountService
                 throw new \RuntimeException('Akun uji gagal dibuat: ' . implode(' ', $participants->errors()));
             }
 
-            // shortcut: no participant_consents row yet; part 4 (30 §5.2) adds the table and this row
+            // Part 4 (30 §5.2): risk-items consent Yes, so the validators can see T11 on the test install
+            service('consentService')->createRow((int) $id, (int) model(ResearchStudyModel::class)->requireActiveStudy()['id'], ['risk_items_consent' => 1]);
+
             model(AuditLogModel::class)->record('test_account_created', [
                 'staff_user_id' => null,
                 'target_type'   => 'participant',

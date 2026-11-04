@@ -58,6 +58,8 @@ class LoginController extends BaseController
             'token'       => $this->goTo(site_url('token')),
             // No flash: /ganti-sandi already explains it in its alert (Auth.mustChange)
             'must_change' => $this->goTo(site_url('ganti-sandi')),
+            // Part 4 (30 §5.3)
+            'inactive'    => $this->failLogin('password', ['password' => lang('Game.loginInactive')]),
             'locked'      => $this->failLogin('password', ['password' => lang('Auth.locked', [$result['lock_minutes'] ?? 5])]),
             default       => $this->failLogin('password', ['password' => lang('Auth.loginFailed')]),
         };

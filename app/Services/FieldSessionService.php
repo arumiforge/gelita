@@ -702,6 +702,11 @@ class FieldSessionService
             return $refuse('token_unknown', $fieldSession);
         }
 
+        // Part 4 (30 §5.3): a withdrawn student is refused
+        if ($participant->isDeactivated()) {
+            return $refuse('inactive', $fieldSession);
+        }
+
         $otherStudy = model(GameSessionModel::class)
             ->where('participant_id', $participant->id)
             ->where('study_id !=', (int) $study['id'])

@@ -24,8 +24,26 @@ class RetentionService
     public const HARD_ORDER = [
         'game_event_logs', 'audio_usage_events', 'item_tries', 'item_responses', 'challenge_attempts',
         'device_logs', 'participant_progress', 'participant_seats', 'field_session_members',
-        'participant_feedback', 'game_sessions', 'participants',
+        'participant_feedback', 'game_sessions',
+        // Part 4 (30 §7.3): counted one by one although the FK cascades, so the preview and the minutes show them.
+        // WAVE-E seam (part 3): `field_sheet_rows` (per participant_id, 29 §12) belongs here, before `participants`.
+        // Later parts add their own tables here: `challenge_attempt_segments` (part 7, 33 §9, before
+        // `challenge_attempts`), `instrument_responses`, `instrument_parts`, `instrument_blocks`,
+        // `instrument_sittings` (part 8, 34 §11.1) and `derived_*` (part 9, 35 §12), all before `participants`.
+        'participant_consents',
+        'participants',
     ];
+
+    /**
+     * Part 4 (30 §7.3): scope `kind = risk_items` deletes one student's
+     * `risk` sitting of the test module with its parts and answers
+     * (ang-21–ang-23, `risk_offered`, `risk_reconsent`). The tables come with
+     * part 8 (34 §11.1); until then they do not exist and nothing is counted.
+     */
+    public const RISK_ORDER = ['instrument_responses', 'instrument_parts', 'instrument_blocks', 'instrument_sittings'];
+
+    /** Tables kept per student: whole rows go with the student (scope per student or a closed study's cohort). */
+    private const STUDENT_TABLES = ['participant_progress', 'participant_seats', 'field_session_members', 'participant_feedback', 'participant_consents', 'participants'];
 
     /** Jenis cakupan utama; tepat satu yang dipakai. */
     public const SCOPE_KEYS = ['participant_id', 'session_id', 'study_id'];
@@ -57,8 +75,18 @@ class RetentionService
 
             $scope = [$key => $value];
 
+            // Part 4 (30 §7.3): one student's risk-item answers only
+            if ($key === 'participant_id' && ($input['kind'] ?? null) === 'risk_items') {
+                return $scope + ['kind' => 'risk_items'];
+            }
+
             if ($key !== 'study_id') {
                 return $scope;
+            }
+
+            // Part 4 (30 §11): a closed field-mode study's whole cohort, students included
+            if (! empty($input['participants'])) {
+                return $scope + ['participants' => 1];
             }
 
             foreach (['date_from', 'date_to'] as $dateKey) {
@@ -84,12 +112,13 @@ class RetentionService
      */
     public function countAffected(array $scope): array
     {
-        $db         = $this->db();
-        $sessionIds = $this->sessionIds($scope);
-        $counts     = [];
+        $db             = $this->db();
+        $sessionIds     = $this->sessionIds($scope);
+        $participantIds = $this->participantIds($scope);
+        $counts         = [];
 
-        foreach (self::HARD_ORDER as $table) {
-            $counts[$table] = $this->scopedBuilder($db, $table, $scope, $sessionIds)?->countAllResults() ?? 0;
+        foreach ($this->tablesFor($scope) as $table) {
+            $counts[$table] = $this->scopedBuilder($db, $table, $scope, $sessionIds, $participantIds)?->countAllResults() ?? 0;
         }
 
         return $counts;
@@ -104,6 +133,10 @@ class RetentionService
      */
     public function sessionIds(array $scope): array
     {
+        if (($scope['kind'] ?? null) === 'risk_items') {
+            return [];
+        }
+
         $builder = $this->db()->table('game_sessions')->select('game_sessions.id');
 
         if (isset($scope['session_id'])) {
@@ -211,16 +244,24 @@ class RetentionService
 
         $db->transBegin();
 
+        // Part 4 (30 §7.1): the status moves conditionally first; a second admin pressing at once changes nothing
+        $db->table('data_deletion_requests')->where('id', $requestId)->where('status', 'preview')
+            ->update(['status' => 'executed', 'approved_by' => $staffId, 'executed_at' => date('Y-m-d H:i:s')]);
+
+        if ($db->affectedRows() !== 1) {
+            $db->transRollback();
+
+            throw new \DomainException(lang('Admin.requestAlreadyRun'));
+        }
+
         try {
             $affected = $mode === 'hard'
                 ? $this->hardDelete($scope)
                 : $this->softDelete($scope, $staffId, $reason);
 
             $requests->update($requestId, [
-                'status'         => 'executed',
-                'approved_by'    => $staffId,
                 'affected_count' => array_sum($affected),
-                'executed_at'    => date('Y-m-d H:i:s'),
+                'scope_json'     => $stored + ['affected' => $affected],
             ]);
 
             model(AuditLogModel::class)->record('delete_execute', [
@@ -249,6 +290,11 @@ class RetentionService
             throw new \DomainException('Penghapusan gagal karena kesalahan sistem; tidak ada data yang berubah.', 0, $e);
         }
 
+        // Part 4 (30 §7.4, §7.6): a parent's request purges the server downloads and ticks its system items
+        if (($request['kind'] ?? null) !== null) {
+            service('dataRequests')->afterExecute($requestId, $staffId);
+        }
+
         return ['mode' => $mode, 'affected' => $affected, 'total' => array_sum($affected)];
     }
 
@@ -257,11 +303,16 @@ class RetentionService
         $requests = model(DataDeletionRequestModel::class);
         $request  = $requests->find($requestId);
 
-        if ($request === null || $request['status'] !== 'preview') {
+        if ($request === null || ! in_array($request['status'], ['requested', 'preview'], true)) {
             throw new \DomainException('Permintaan ini sudah dijalankan atau dibatalkan sebelumnya.');
         }
 
-        $requests->update($requestId, ['status' => 'cancelled']);
+        // Conditional on the status read (30 §7.1)
+        $this->db()->table('data_deletion_requests')->where('id', $requestId)->where('status', $request['status'])->update(['status' => 'cancelled']);
+
+        if ($this->db()->affectedRows() !== 1) {
+            throw new \DomainException('Permintaan ini sudah dijalankan atau dibatalkan sebelumnya.');
+        }
 
         model(AuditLogModel::class)->record('delete_cancel', [
             'staff_user_id' => $staffId,
@@ -318,6 +369,11 @@ class RetentionService
 
         ['previews' => $result['retention_previews'], 'warnings' => $result['warnings']]
             = $this->flagExpiredStudyData($staffId);
+
+        // Part 4 (30 §12): only with the research privacy switch on
+        if ($config->researchPrivacy) {
+            $result['expired_browser_sessions'] = $this->purgeExpiredBrowserSessions();
+        }
 
         model(AuditLogModel::class)->record('retention_run', [
             'staff_user_id' => $staffId,
@@ -429,7 +485,7 @@ class RetentionService
      */
     public function flagExpiredStudyData(?int $staffId = null): array
     {
-        $studies  = $this->db()->table('research_studies')->select('id, code, retention_days')->where('retention_days >', 0)->get()->getResultArray();
+        $studies  = $this->db()->table('research_studies')->select('id, code, retention_days, field_mode, closed_at')->where('retention_days >', 0)->get()->getResultArray();
         $previews = [];
         $warnings = [];
 
@@ -438,7 +494,18 @@ class RetentionService
             $dateTo = date('Y-m-d', strtotime('today -' . ($days + 1) . ' days'));
             $scope  = ['study_id' => (int) $study['id'], 'date_to' => $dateTo];
 
-            if ($this->sessionIds($scope) === []) {
+            // Part 4 (30 §11, K10): a field-mode study counts from its closing, never before, and the whole cohort goes
+            if ((int) ($study['field_mode'] ?? 0) === 1) {
+                if ($study['closed_at'] === null || substr((string) $study['closed_at'], 0, 10) > $dateTo) {
+                    continue;
+                }
+
+                $scope = ['study_id' => (int) $study['id'], 'participants' => 1];
+
+                if (array_sum($this->countAffected($scope)) === 0) {
+                    continue;
+                }
+            } elseif ($this->sessionIds($scope) === []) {
                 continue;
             }
 
@@ -451,7 +518,9 @@ class RetentionService
             }
 
             $counts   = $this->countAffected($scope);
-            $reason   = "Melewati masa simpan {$days} hari studi {$study['code']} (sesi dimulai s.d. {$dateTo}). Dibuat otomatis oleh retensi; periksa sebelum mengeksekusi.";
+            $reason   = isset($scope['participants'])
+                ? "Melewati masa simpan {$days} hari studi {$study['code']} sejak studi ditutup. Dibuat otomatis oleh retensi; periksa sebelum mengeksekusi."
+                : "Melewati masa simpan {$days} hari studi {$study['code']} (sesi dimulai s.d. {$dateTo}). Dibuat otomatis oleh retensi; periksa sebelum mengeksekusi.";
             $existing = $this->pendingRetentionFor((int) $study['id']);
             $payload  = [
                 'scope_json'     => ['scope' => $scope, 'counts' => $counts, 'origin' => self::ORIGIN_RETENTION],
@@ -482,7 +551,71 @@ class RetentionService
         return ['previews' => $previews, 'warnings' => $warnings];
     }
 
+    /**
+     * Part 4 (30 §12, K12): removes `ci_sessions` rows older than the session
+     * lifetime, and rows whose `ip_address` is not a 64-character hash (raw
+     * IPs from DatabaseHandler before the switch). The cutoff is computed in
+     * PHP so the same query runs on SQLite. Called only with the switch on.
+     */
+    public function purgeExpiredBrowserSessions(): int
+    {
+        $db = $this->db();
+
+        if (! $db->tableExists('ci_sessions')) {
+            return 0;
+        }
+
+        $cutoff = date('Y-m-d H:i:s', time() - config('Session')->expiration);
+        $db->table('ci_sessions')->where('timestamp <', $cutoff)->delete();
+        $removed = $db->affectedRows();
+
+        $raw = array_column(array_filter(
+            $db->table('ci_sessions')->select('id, ip_address')->get()->getResultArray(),
+            static fn (array $row): bool => preg_match('/^[0-9a-f]{64}$/', (string) $row['ip_address']) !== 1,
+        ), 'id');
+
+        if ($raw !== []) {
+            $db->table('ci_sessions')->whereIn('id', $raw)->delete();
+            $removed += $db->affectedRows();
+        }
+
+        return $removed;
+    }
+
     // ------------------------------------------------------------ internal
+
+    /** @return list<string> the tables a scope deletes from, children first */
+    private function tablesFor(array $scope): array
+    {
+        if (($scope['kind'] ?? null) === 'risk_items') {
+            return array_values(array_filter(self::RISK_ORDER, fn (string $t): bool => $this->db()->tableExists($t)));
+        }
+
+        return self::HARD_ORDER;
+    }
+
+    /**
+     * Students in scope: the one student, or a closed field-mode study's
+     * cohort (students with a consent row in it, 30 §10.2, §11), read before
+     * anything is deleted.
+     *
+     * @return list<int>
+     */
+    private function participantIds(array $scope): array
+    {
+        if (isset($scope['participant_id'])) {
+            return [(int) $scope['participant_id']];
+        }
+
+        if (isset($scope['study_id'], $scope['participants'])) {
+            return array_map('intval', array_column(
+                $this->db()->table('participant_consents')->select('participant_id')->where('study_id', (int) $scope['study_id'])->get()->getResultArray(),
+                'participant_id',
+            ));
+        }
+
+        return [];
+    }
 
     /**
      * Soft delete: `game_event_logs` ditandai (deleted_at/by/reason) dan, untuk
@@ -543,7 +676,8 @@ class RetentionService
 
         try {
             foreach (self::HARD_ORDER as $table) {
-                $builder = $table === 'participants' ? null : $this->scopedBuilder($db, $table, $scope, $sessions);
+                // The account and its consent row stay (a test account keeps its risk-items consent)
+                $builder = in_array($table, ['participants', 'participant_consents'], true) ? null : $this->scopedBuilder($db, $table, $scope, $sessions, [$participantId]);
 
                 if ($builder === null) {
                     continue;
@@ -573,12 +707,13 @@ class RetentionService
      */
     private function hardDelete(array $scope): array
     {
-        $db         = $this->db();
-        $sessionIds = $this->sessionIds($scope);
-        $affected   = [];
+        $db             = $this->db();
+        $sessionIds     = $this->sessionIds($scope);
+        $participantIds = $this->participantIds($scope);
+        $affected       = [];
 
-        foreach (self::HARD_ORDER as $table) {
-            $builder = $this->scopedBuilder($db, $table, $scope, $sessionIds);
+        foreach ($this->tablesFor($scope) as $table) {
+            $builder = $this->scopedBuilder($db, $table, $scope, $sessionIds, $participantIds);
 
             if ($builder === null) {
                 $affected[$table] = 0;
@@ -599,10 +734,30 @@ class RetentionService
      *
      * @param array<string, int|string> $scope
      * @param list<int>                 $sessionIds
+     * @param list<int>                 $participantIds participantIds()
      */
-    private function scopedBuilder(BaseConnection $db, string $table, array $scope, array $sessionIds): ?BaseBuilder
+    private function scopedBuilder(BaseConnection $db, string $table, array $scope, array $sessionIds, array $participantIds = []): ?BaseBuilder
     {
         $bySession = ['game_event_logs', 'audio_usage_events', 'challenge_attempts', 'device_logs'];
+
+        // Part 4 (30 §7.3): the student's `risk` sitting and what hangs on it (part 8 tables)
+        if (in_array($table, self::RISK_ORDER, true)) {
+            $sittings = static fn (BaseBuilder $sub): BaseBuilder => $sub->select('id')->from('instrument_sittings')
+                ->where('participant_id', (int) $scope['participant_id'])->where('kind', 'risk');
+
+            return $table === 'instrument_sittings'
+                ? $db->table($table)->where('participant_id', (int) $scope['participant_id'])->where('kind', 'risk')
+                : $db->table($table)->whereIn('sitting_id', $sittings);
+        }
+
+        // Part 4 (30 §11): a closed field-mode study's cohort, by student
+        if (isset($scope['participants']) && in_array($table, self::STUDENT_TABLES, true)) {
+            return $participantIds === [] ? null : $db->table($table)->whereIn($table === 'participants' ? 'id' : 'participant_id', $participantIds);
+        }
+
+        if ($table === 'participant_consents') {
+            return isset($scope['participant_id']) ? $db->table($table)->where('participant_id', (int) $scope['participant_id']) : null;
+        }
 
         // Rows per student and study (28 §14): a student's own, or a whole study without a date range
         if (in_array($table, ['participant_progress', 'participant_seats', 'field_session_members'], true)) {
