@@ -316,7 +316,7 @@ class AnalyticsService
                 $row['token']    = $row['state'] === 'closed' ? null : service('fieldSessions')->currentToken($row['id']);
                 $row['students'] = $roster;
                 // Part 4 (30 §5.2): "izin belum diisi" as a number, researchers and the head researcher only
-                $row['consent_missing'] = service('consentService')->missingCount(array_map(static fn (array $s): int => (int) $s['id'], $roster));
+                $row['consent_missing'] = service('consentService')->missingForCodes(array_column($roster, 'participant_code'));
             }
 
             $out[] = $row;

@@ -110,6 +110,18 @@ class ConsentService
         return count(array_filter($participantIds, static fn (int $id): bool => ($filled[$id]['parent_consent_on'] ?? null) === null));
     }
 
+    /** missingCount() for students given by participant code (the monitoring roster). */
+    public function missingForCodes(array $codes): int
+    {
+        if ($codes === []) {
+            return 0;
+        }
+
+        $ids = db_connect()->table('participants')->select('id')->whereIn('participant_code', $codes)->get()->getResultArray();
+
+        return $this->missingCount(array_map('intval', array_column($ids, 'id')));
+    }
+
     /**
      * Saves the panel's rows (participant id => fields + `stamp`, the
      * `updated_at` the page read). Untouched default rows are skipped.

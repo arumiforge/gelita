@@ -14,7 +14,8 @@ final class DataLayerWiringTest extends CIUnitTestCase
 {
     // kelas 5 (Dok 1): − ResearchPhase, ParticipantConsent, ScoringProfile, ChallengeOption; + ItemTry, DeviceLog
     // + AssetPackage (asset package Stage 1)
-    private const MODEL_COUNT = 37;
+    // + ParticipantConsentModel (research revision 10, part 4: 30 §15, coded consent per student; not the old guardian consent)
+    private const MODEL_COUNT = 38;
 
     private const ENTITY_COUNT = 11;  // − ChallengeOption
 
@@ -29,6 +30,12 @@ final class DataLayerWiringTest extends CIUnitTestCase
         'analyticsService'     => App\Services\AnalyticsService::class,
         'contentImportService' => App\Services\ContentImportService::class,
         'assetPackages'        => App\Services\AssetPackageService::class,
+        // Part 4 (30 §15)
+        'consentService'       => App\Services\ConsentService::class,
+        'dataRequests'         => App\Services\DataRequestService::class,
+        'riskFollowUp'         => App\Services\RiskFollowUpService::class,
+        'participantCopy'      => App\Services\ParticipantCopyService::class,
+        'studyClosure'         => App\Services\StudyClosureService::class,
     ];
 
     public function testEveryModelLoadsAndDeclaresItsTable(): void
@@ -54,7 +61,7 @@ final class DataLayerWiringTest extends CIUnitTestCase
             $this->assertSame($table, $this->propertyOf(new $class(), 'table'), $class);
         }
 
-        foreach (['ResearchPhaseModel', 'ParticipantConsentModel', 'ScoringProfileModel', 'ChallengeOptionModel'] as $gone) {
+        foreach (['ResearchPhaseModel', 'ScoringProfileModel', 'ChallengeOptionModel'] as $gone) {
             $this->assertFileDoesNotExist(APPPATH . "Models/{$gone}.php");
         }
 

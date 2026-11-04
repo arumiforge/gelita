@@ -49,7 +49,8 @@ final class AdminMenu
     private static function fieldModeStudyExists(): bool
     {
         try {
-            return model(\App\Models\ResearchStudyModel::class)->where('field_mode', 1)->countAllResults() > 0;
+            // A plain builder: a failed query must not leave a condition on the shared model
+            return db_connect()->table('research_studies')->where('field_mode', 1)->countAllResults() > 0;
         } catch (\Throwable) {
             return false;
         }
