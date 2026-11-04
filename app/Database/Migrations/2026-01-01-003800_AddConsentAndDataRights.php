@@ -79,7 +79,8 @@ class AddConsentAndDataRights extends GelitaMigration
             'confirmed_by'     => $this->ref(true),
             'confirmed_at'     => $this->datetime(true),
             'completed_at'     => $this->datetime(true),
-            'checklist_json'   => $this->isMysql() ? $this->json(true) : ['type' => 'TEXT', 'null' => true],
+            // TEXT, not JSON: the tick is conditional on the exact text read (MySQL 8 compares JSON semantically)
+            'checklist_json'   => ['type' => 'TEXT', 'null' => true],
         ]);
         $this->forge->addColumn('data_exports', [
             'purged_by_request_id' => $this->ref(true),

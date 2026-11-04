@@ -434,6 +434,43 @@ class ExportService
         return $removed;
     }
 
+    /**
+     * Part 4 (30 §7.4): a parent's request purges every download file still on
+     * the server that was made since the student registered ($since). The row
+     * stays, with `file_path` empty and `purged_by_request_id` set.
+     *
+     * @return list<int> export ids purged
+     */
+    public function purgeForRequest(int $requestId, string $since, ?int $staffId = null): array
+    {
+        $exports = model(DataExportModel::class);
+        $removed = [];
+
+        foreach ($exports->where('file_path IS NOT NULL')->where('file_path !=', '')->where('created_at >=', $since)->findAll() as $export) {
+            $path = (string) $export['file_path'];
+
+            if (is_file($path) && $this->isInsideExportDir($path)) {
+                unlink($path);
+            }
+
+            $exports->update((int) $export['id'], [
+                'file_path'            => null,
+                'purged_by_request_id' => $requestId,
+                'error_message'        => 'Berkas sudah dihapus karena permintaan hapus data orang tua.',
+            ]);
+            $removed[] = (int) $export['id'];
+        }
+
+        model(AuditLogModel::class)->record('export_purge', [
+            'staff_user_id' => $staffId,
+            'target_type'   => 'data_deletion_request',
+            'target_id'     => (string) $requestId,
+            'metadata'      => ['export_ids' => $removed, 'request_id' => $requestId],
+        ]);
+
+        return $removed;
+    }
+
     /** Jalur berkas harus berada di writable/exports/ — pertahanan terhadap file_path yang rusak. */
     public function isInsideExportDir(string $path): bool
     {
