@@ -344,7 +344,7 @@ return [
                             'note'   => 'Akibat, bukan tujuan',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -363,7 +363,7 @@ return [
                             'note'   => 'Sebab',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -382,7 +382,7 @@ return [
                             'note'   => 'Pertentangan',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -401,7 +401,7 @@ return [
                             'note'   => 'Membandingkan 2.300 dengan rentang 1.400–2.400',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -420,7 +420,7 @@ return [
                             'note'   => 'Menerapkan keterangan dataran rendah',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -442,7 +442,7 @@ return [
                             'note'   => 'Simpulan dari seluruh teks; panas ada di bacaan ("dataran rendah yang panas"), jadi menangkap siswa yang mencocokkan kata. Kode diganti 3 November 2026 dari INF-LIT',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                     ],
@@ -471,7 +471,7 @@ return [
                             'note'   => 'Sebab',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -490,7 +490,7 @@ return [
                             'note'   => 'Urutan',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -509,7 +509,7 @@ return [
                             'note'   => 'Akibat. Mengganti rumpang "membeku", satu-satunya kata kerja di bank kata, yang bisa diisi tanpa membaca',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -528,7 +528,7 @@ return [
                             'note'   => 'Pertentangan',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -550,7 +550,7 @@ return [
                             'note'   => 'Dari "cepat mencair saat matahari mulai terik"; siang menangkap siswa yang tidak menghubungkan sebab dan akibat. Kode diganti 3 November 2026 dari INF-LIT',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -572,7 +572,7 @@ return [
                             'note'   => 'Simpulan sebab–akibat dari paragraf pertama; berawan mirip kata "awan" di bacaan. Kode diganti 3 November 2026 dari INF-HUB',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                     ],
@@ -636,7 +636,7 @@ return [
                             'skill'  => 'informasi_tersurat',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -656,7 +656,7 @@ return [
                             'skill'  => 'menilai_kredibilitas',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -676,7 +676,7 @@ return [
                             'skill'  => 'menghubungkan_informasi',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -696,7 +696,7 @@ return [
                             'skill'  => 'membandingkan_sumber',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -716,7 +716,7 @@ return [
                             'skill'  => 'menilai_kredibilitas',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -736,7 +736,7 @@ return [
                             'skill'  => 'menilai_kredibilitas',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                     ],
@@ -770,7 +770,7 @@ return [
                             'skill'  => 'informasi_tersurat',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -790,7 +790,7 @@ return [
                             'skill'  => 'menghubungkan_informasi',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -810,7 +810,7 @@ return [
                             'skill'  => 'menilai_kredibilitas',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -830,7 +830,7 @@ return [
                             'skill'  => 'mengenali_penanda_sumber',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -850,7 +850,7 @@ return [
                             'skill'  => 'membandingkan_sumber',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -870,7 +870,7 @@ return [
                             'skill'  => 'menilai_kredibilitas',
                             'review' => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                     ],
@@ -905,7 +905,7 @@ return [
                         'skill'  => 'mengenali_iklan',
                         'review' => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                     [
@@ -925,7 +925,7 @@ return [
                         'skill'  => 'menilai_kredibilitas',
                         'review' => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                 ],
@@ -984,7 +984,7 @@ return [
                         ],
                         'review'       => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                     [
@@ -1007,7 +1007,7 @@ return [
                         ],
                         'review'       => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                     [
@@ -1030,7 +1030,7 @@ return [
                         ],
                         'review'       => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                     [
@@ -1053,7 +1053,7 @@ return [
                         ],
                         'review'       => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                     [
@@ -1076,7 +1076,7 @@ return [
                         ],
                         'review' => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                     [
@@ -1099,7 +1099,7 @@ return [
                         ],
                         'review' => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                     [
@@ -1122,7 +1122,7 @@ return [
                         ],
                         'review' => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                     [
@@ -1145,7 +1145,7 @@ return [
                         ],
                         'review' => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                     [
@@ -1168,7 +1168,7 @@ return [
                         ],
                         'review' => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                     [
@@ -1191,7 +1191,7 @@ return [
                         ],
                         'review' => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                     [
@@ -1214,7 +1214,7 @@ return [
                         ],
                         'review' => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                     [
@@ -1237,7 +1237,7 @@ return [
                         ],
                         'review' => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                 ],
@@ -1403,7 +1403,7 @@ return [
                             'bloom'     => 'C2',
                             'review'    => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -1425,7 +1425,7 @@ return [
                             'bloom'     => 'C4',
                             'review'    => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -1447,7 +1447,7 @@ return [
                             'bloom'     => 'C3',
                             'review'    => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -1469,7 +1469,7 @@ return [
                             'bloom'     => 'C4',
                             'review'    => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                     ],
@@ -1634,7 +1634,7 @@ return [
                             'bloom'     => 'C2',
                             'review'    => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -1656,7 +1656,7 @@ return [
                             'bloom'     => 'C4',
                             'review'    => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -1678,7 +1678,7 @@ return [
                             'bloom'     => 'C3',
                             'review'    => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                         [
@@ -1700,7 +1700,7 @@ return [
                             'bloom'     => 'C4',
                             'review'    => [
                                 'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                             ],
                         ],
                     ],
@@ -1798,7 +1798,7 @@ return [
                         'bloom'       => 'C4',
                         'review'      => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                     [
@@ -1877,7 +1877,7 @@ return [
                         'bloom'       => 'C4',
                         'review'      => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                     [
@@ -1962,7 +1962,7 @@ return [
                         'bloom'       => 'C5',
                         'review'      => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                     [
@@ -2041,7 +2041,7 @@ return [
                         'bloom'       => 'C4',
                         'review'      => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                 ],
@@ -2122,7 +2122,7 @@ return [
                         'bloom'       => 'C4',
                         'review'      => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                     [
@@ -2201,7 +2201,7 @@ return [
                         'bloom'       => 'C4',
                         'review'      => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                     [
@@ -2280,7 +2280,7 @@ return [
                         'bloom'       => 'C5',
                         'review'      => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                     [
@@ -2362,7 +2362,7 @@ return [
                         'bloom'       => 'C4',
                         'review'      => [
                             'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: draf AI dari 36, terjemahan belum ada yang diperiksa pengembang.',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
                         ],
                     ],
                 ],
