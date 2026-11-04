@@ -194,4 +194,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pw/dreamy-keller-9yxzad` | Owner; research revision: G2 confirmed, rapid-guess threshold and fact checks decided, `37` image prompts (4 November 2026) | PR open |
