@@ -38,7 +38,7 @@ class BankWorkbookGuide
 {
     public const LEVELS = ['temanggung', 'magelang', 'wonosobo'];
 
-    /** 5 challenges per region (31 §5): 1 Susun Gambar, 2 Isi Rumpang, 3 Benar atau Salah, 4 Cari Objek, 5 Skenario Digital (engine: part 6) */
+    /** 5 challenges per region (31 §5): 1 Susun Gambar, 2 Isi Rumpang, 3 Benar atau Salah, 4 Cari Objek, 5 Skenario Digital (engine `skenario`, part 6) */
     public const NODE_REFS = [
         'tmg-1', 'tmg-2', 'tmg-3', 'tmg-4', 'tmg-5',
         'mgl-1', 'mgl-2', 'mgl-3', 'mgl-4', 'mgl-5',
@@ -57,7 +57,7 @@ class BankWorkbookGuide
 
     /** Urutan & kegunaan sheet data. [judul Indonesia, fungsi, cara mengisi] */
     public const SHEETS = [
-        'nodes'         => ['Tantangan', 'Judul, perintah, kartu misi, dan pengaturan tantangan yang SUDAH ADA (tmg-1 … wnb-5). Sheet ini tidak membuat tantangan baru: baris tantangan kelima dilewati selama Skenario Digital belum ada di permainan.', 'Satu baris untuk satu tantangan. Sel yang dikosongkan = isi lama tetap dipakai.'],
+        'nodes'         => ['Tantangan', 'Judul, perintah, kartu misi, dan pengaturan tantangan yang SUDAH ADA (tmg-1 … wnb-5). Sheet ini tidak membuat tantangan baru; kelima tantangan setiap wilayah dibuat gelita:reset. Server lama tanpa tantangan kelima melewati barisnya.', 'Satu baris untuk satu tantangan. Sel yang dikosongkan = isi lama tetap dipakai.'],
         'variants'      => ['Judul variasi', 'Judul tampil setiap variasi soal satu tantangan: a dan b (Susun Gambar a sampai k; Cari Objek x = babak 1). Pengerjaan pertama mengikuti buklet siswa selama penelitian, selain itu acak. Benar atau Salah memakai judul bacaannya.', 'Satu baris untuk satu variasi. Kosong = judul tantangan yang dipakai.'],
         'distractors'   => ['Kata pengecoh', 'Kata-kata yang SALAH tetapi ikut muncul di pilihan kata tantangan Isi Rumpang, per variasi, supaya siswa perlu berpikir.', 'Satu baris untuk satu kata. Semua kata pengecoh satu variasi diganti dengan isi sheet ini.'],
         'passages'      => ['Teks bacaan', 'Bacaan panjang yang tampil di samping soal. Soal memakainya lewat kolom passage_key di sheet items.', 'Satu baris untuk satu bacaan. Isi bahasa Indonesia dan Inggris wajib diisi.'],
@@ -461,7 +461,7 @@ class BankWorkbookGuide
                 ['tmg-2, mgl-2, wnb-2', 'Isi Rumpang — pilih kata', 'fill_blank_bank', 'Satu bacaan rumpang (setiap soal satu potongan dengan ___) + kata pengecoh di sheet distractors. Kode setiap rumpang × kata salah di sheet cloze_matrix.'],
                 ['tmg-3, mgl-3, wnb-3', 'Benar atau Salah', 'verdict_card', 'Satu bacaan digital (sheet passages, {tantangan}-{variasi}) + pernyataannya; kartu jangkar {tantangan}-x dengan dua pernyataan ikut di setiap pengerjaan. answer_id = benar atau salah; error_code wajib.'],
                 ['tmg-4, mgl-4, wnb-4', 'Cari Objek — dua babak', 'find_object (babak 1), find_part (babak 2)', 'Babak 1 (variasi x, sama untuk semua): adegan + 4 benda dicari + benda pengecoh (decoy = 1, error_code). Babak 2 (variasi a, b): unggahan di post_scenes/post_parts + 4 petunjuk (answer_id = kode bagian, d3_clue_type).'],
-                ['tmg-5, mgl-5, wnb-5', 'Skenario Digital (permainannya dibuat di bagian 6)', 'scenario_choice', '4 skenario per variasi: situasi di prompt_id, topik d2_topic; tindakan dan alasan di scenario_options; penjelasan di scenarios. Disimpan setelah tantangan kelima ada di permainan.'],
+                ['tmg-5, mgl-5, wnb-5', 'Skenario Digital', 'scenario_choice', '4 skenario per variasi: situasi di prompt_id, topik d2_topic; tindakan dan alasan di scenario_options; penjelasan di scenarios; gambar situasi item.skenario.{kode butir} dari Katalog Aset.'],
             ]);
 
             $r++;

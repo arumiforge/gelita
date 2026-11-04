@@ -85,9 +85,9 @@ final class Simulator
 
     /** Hasil pengerjaan batch yang dipaksa untuk siswa pertama, agar setiap jenis hasil pasti ada. */
     private const SHOWCASE = [
-        'first', 'fix', 'exhausted', 'first',     // Temanggung: puzzle, rumpang, boleh, cari
-        'fix', 'first', 'first', 'exhausted',     // Magelang
-        'exhausted', 'fix', 'fix', 'fix',         // Wonosobo
+        'first', 'fix', 'exhausted', 'first', 'fix',          // Temanggung: puzzle, rumpang, boleh, cari, skenario
+        'fix', 'first', 'first', 'exhausted', 'first',        // Magelang
+        'exhausted', 'fix', 'fix', 'fix', 'exhausted',        // Wonosobo
     ];
 
     private readonly Randomizer $rng;
@@ -95,6 +95,9 @@ final class Simulator
     private readonly ChallengeService $challenges;
     private readonly \ReflectionMethod $objectRef;
     private readonly \ReflectionMethod $partRef;
+
+    /** Part 6 (32 §5.7): opaque scenario option refs, as the server derives them */
+    private readonly \ReflectionMethod $optionRef;
 
     /** Kode layar terakhir per sesi (session PHP `last_screen` di ScreenViewFilter). */
     private ?string $lastScreen = null;
@@ -127,6 +130,7 @@ final class Simulator
         $this->challenges = service('challengeService');
         $this->objectRef  = new \ReflectionMethod(ChallengeService::class, 'objectRef');
         $this->partRef    = new \ReflectionMethod(ChallengeService::class, 'partRef');
+        $this->optionRef  = new \ReflectionMethod(ChallengeService::class, 'optionRef');
 
         // Variasi soal berbenih (lihat SeededItemModel); dipulihkan di run()
         $items = new SeededItemModel();
@@ -218,7 +222,8 @@ final class Simulator
         $this->intro();
 
         $plan = match ($profile) {
-            'tuntas'   => 12,
+            // Every active challenge: 12, or 15 with Skenario Digital (part 6)
+            'tuntas'   => array_sum(array_map(static fn ($l): int => count(service('contentRepository')->nodesForLevel($l->id)), service('contentRepository')->levels())),
             'berhenti' => $this->rng->getInt(2, 10),
             default    => $this->rng->getInt(0, 1),
         };
@@ -239,7 +244,7 @@ final class Simulator
                 }
 
                 // Satu pertemuan kelas ±4–5 tantangan: sesudahnya keluar dan masuk lagi hari lain
-                if ($done > 0 && $done % 4 === 0) {
+                if ($done > 0 && $done % 5 === 0) {
                     $this->nextSitting($participantId, $username, $school, ++$sitting, $showcase);
                     $this->openRegion($level, true);
                 }
@@ -373,6 +378,13 @@ final class Simulator
     private function challenge(Level $level, ChallengeNode $node, float $skill, ?string $mode, bool $leaveOpen, bool $quitEarly): void
     {
         $refs = ['level_id' => $level->id];
+
+        // Part 6 (32 §7.2): the bridge story before the first Skenario Digital attempt
+        if ($node->engine_type === 'skenario' && ! model(\App\Models\ChallengeAttemptModel::class)->hasAttemptInStudy($this->session, $node->id)) {
+            $this->screen('dialogue', '/penghubung/' . $level->code, ['code' => $level->code], $refs);
+            $this->slides(service('contentRepository')->dialogues($level->id, 'scenario_open'), 'scenario_open', $level->id, 4_000);
+        }
+
         $this->screen('brief', "/misi/{$level->code}/{$node->sequence}", ['level' => $level->code, 'seq' => $node->sequence], $refs);
         $this->screen('challenge', "/tantangan/{$level->code}/{$node->sequence}", ['level' => $level->code, 'seq' => $node->sequence], $refs);
 
@@ -410,6 +422,8 @@ final class Simulator
 
         if ($node->engine_type === 'cari') {
             $this->playHunt($level, $attempt, $payload, $skill, $mode, $leaveOpen);
+        } elseif ($node->engine_type === 'skenario') {
+            $this->playScenarios($level, $attempt, $payload, $skill, $mode, $leaveOpen);
         } else {
             $this->playBatch($level, $node, $attempt, $payload, $skill, $mode, $leaveOpen);
         }
@@ -624,6 +638,97 @@ final class Simulator
                 }
 
                 if ($result['clue_closed']) {
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Skenario Digital (32 §5.7): per scenario 0–3 tries without the safe
+     * action before it (3 = closed after the third try), as for a hunt clue.
+     * The action is picked from the payload refs by the student's profile;
+     * the reason is any reason shown. Times follow 32 §6.4.
+     *
+     * @param array<string, mixed> $payload
+     */
+    private function playScenarios(Level $level, ChallengeAttempt $attempt, array $payload, float $skill, ?string $mode, bool $leaveOpen): void
+    {
+        $ease      = ['temanggung' => 0.1, 'magelang' => 0.0, 'wonosobo' => -0.1][$level->code] ?? 0.0;
+        $scenarios = array_values((array) ($payload['scenarios'] ?? []));
+        $total     = count($scenarios);
+        $elapsed   = 0;
+
+        foreach ($scenarios as $index => $scenario) {
+            $itemId = (int) $scenario['id'];
+            $safe   = null;
+
+            foreach (service('contentRepository')->scenarioOptions($itemId) as $option) {
+                if ($option['kind'] === 'action' && (int) $option['score'] === 2) {
+                    $safe = (string) $this->optionRef->invoke($this->challenges, $attempt->id, $itemId, 'action', (string) $option['option_key']);
+                }
+            }
+
+            $actions = array_column((array) $scenario['actions'], 'ref');
+            $reasons = array_column((array) $scenario['reasons'], 'ref');
+            $others  = array_values(array_filter($actions, static fn (string $ref): bool => $ref !== $safe));
+            $misses  = match (true) {
+                $mode === 'exhausted' && $index === $total - 1 => 3,
+                $mode === 'fix' && $index === 0                => 1,
+                $mode === 'first'                              => 0,
+                default                                        => $this->misses($skill + $ease),
+            };
+
+            if ($leaveOpen && $index === intdiv($total, 2)) {
+                $this->pageHide($attempt, $level);
+
+                return;
+            }
+
+            // The situation is read out only when ▶ is tapped (K11)
+            if ($this->rng->getInt(1, 100) <= 30) {
+                $this->clueAudio($attempt, $scenario + ['item_id' => $scenario['id']], 'play');
+            }
+
+            for ($try = 1; $try <= min(3, $misses + 1); $try++) {
+                $wrong  = $try <= $misses && $others !== [];
+                $action = $wrong ? $others[$this->rng->getInt(0, count($others) - 1)] : (string) $safe;
+                $reason = $reasons[$this->rng->getInt(0, count($reasons) - 1)];
+                $ready  = $elapsed + $this->rng->getInt(300, 900);
+                $picked = $ready + $this->rng->getInt(4_000, 15_000);
+                $toStep = $picked + $this->rng->getInt(1_000, 4_000);
+                $choose = $toStep + $this->rng->getInt(3_000, 10_000);
+                $sent   = $choose + $this->rng->getInt(800, 3_000);
+                $elapsed = $sent + $this->rng->getInt(4_000, 12_000);
+
+                $this->clock->advance($sent - $ready);
+
+                try {
+                    $result = $this->clock->act(fn () => $this->challenges->submitAnswer(
+                        $this->reload($attempt),
+                        $itemId,
+                        ['action' => $action, 'reason' => $reason],
+                        [
+                            'ready_ms' => $ready, 'reason_ready_ms' => $toStep, 'first_input_ms' => $picked,
+                            'action_last_input_ms' => $picked, 'reason_last_input_ms' => $choose, 'last_input_ms' => $sent,
+                        ],
+                    ));
+                } catch (ChallengeRuleException) {
+                    return;
+                }
+
+                // Feedback, then Coba lagi or the next story
+                $this->clock->advance($this->rng->getInt(3_000, 9_000));
+
+                if ($result['completed']) {
+                    if ($result['completion_reason'] === 'tries_exhausted') {
+                        $this->stats['kesempatan_habis']++;
+                    }
+
+                    return;
+                }
+
+                if ($result['scenario_closed']) {
                     break;
                 }
             }
