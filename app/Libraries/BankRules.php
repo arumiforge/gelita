@@ -28,8 +28,8 @@ namespace App\Libraries;
  */
 final class BankRules
 {
-    /** Challenge order of every region. Part 6 adds `5 => 'skenario'` (32 K1); region() follows its length. */
-    public const ENGINES = [1 => 'puzzle', 2 => 'rumpang', 3 => 'boleh', 4 => 'cari'];
+    /** Challenge order of every region; `5 => 'skenario'` since part 6 (32 K1). region() follows its length. */
+    public const ENGINES = [1 => 'puzzle', 2 => 'rumpang', 3 => 'boleh', 4 => 'cari', 5 => 'skenario'];
 
     /** Item types per engine (`find_part` and `scenario_choice` since 31 §5). */
     public const INTERACTION = [
@@ -223,7 +223,8 @@ final class BankRules
 
         $engines = array_map(static fn (array $n): string => (string) $n['engine'], $nodes);
 
-        if ($engines === array_values(self::ENGINES)) {
+        // A bank without Skenario Digital keeps the first four in order (32 §15.4: main stays releasable)
+        if ($engines === array_values(self::ENGINES) || $engines === array_slice(array_values(self::ENGINES), 0, 4)) {
             return [];
         }
 

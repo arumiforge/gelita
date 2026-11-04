@@ -20,6 +20,8 @@ class ChallengeNode extends Entity
         'scene_media_id'      => '?int',
         'audio_intro_id'      => '?int',
         'audio_intro_en_id'   => '?int',
+        'audio_instruction_id'    => '?int',
+        'audio_instruction_en_id' => '?int',
         'config_json'         => '?json-array',
         'map_x'               => 'float',
         'map_y'               => 'float',
@@ -70,6 +72,15 @@ class ChallengeNode extends Entity
     public function isReading(): bool
     {
         return $this->engine_type === 'rumpang' && (bool) $this->config('as_reading');
+    }
+
+    /**
+     * Tries counted per item, not per check: Cari Objek clues and Skenario
+     * Digital scenarios (32 §5.5). Such engines answer through /responses only.
+     */
+    public function triesPerItem(): bool
+    {
+        return in_array($this->engine_type, ['cari', 'skenario'], true);
     }
 
     /** Pilihan penilaian engine `boleh`: selalu Benar / Salah. */

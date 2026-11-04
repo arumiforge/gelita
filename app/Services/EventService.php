@@ -19,7 +19,9 @@ class EventService
      * dengan tipe ini ditolak agar data mentah navigasi dan batas percobaan
      * tidak dapat dipalsukan.
      */
-    public const SERVER_ONLY = ['screen_viewed', 'challenge_tries_exhausted', 'clue_failed', 'events_dropped'];
+    public const SERVER_ONLY = ['screen_viewed', 'challenge_tries_exhausted', 'clue_failed', 'events_dropped',
+        // Part 6 (32 §5.6). WAVE-E seam (part 3): EventCatalog::SERVER_ONLY replaces this list
+        'scenario_failed'];
 
     /**
      * Cookie `{sessionTag}.{n}`: the last client `sequence_no` of this browser

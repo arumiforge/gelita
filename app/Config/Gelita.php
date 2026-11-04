@@ -11,7 +11,7 @@ use CodeIgniter\Config\BaseConfig;
 class Gelita extends BaseConfig
 {
     /** Engine tantangan (urutan = urutan node di setiap wilayah) */
-    public array $engineTypes = ['puzzle', 'rumpang', 'boleh', 'cari'];
+    public array $engineTypes = ['puzzle', 'rumpang', 'boleh', 'cari', 'skenario'];
 
     /** Jenis interaksi soal yang dikenali sistem */
     public array $interactionTypes = ['puzzle_arrange', 'fill_blank_bank', 'verdict_card', 'find_object', 'find_part', 'scenario_choice'];
@@ -64,7 +64,7 @@ class Gelita extends BaseConfig
      */
     public array $dialogueContexts = [
         'global' => ['intro', 'map_intro', 'ending', 'map_done'],
-        'level'  => ['region_intro', 'level_open', 'level_done'],
+        'level'  => ['region_intro', 'level_open', 'scenario_open', 'level_done'],
     ];
 
     /**
@@ -74,7 +74,7 @@ class Gelita extends BaseConfig
      * `intro`/`ending`, the region background for the region contexts.
      * `map_intro` and `map_done` play in the Peta Kedu story bar and have no backdrop.
      */
-    public array $dialogueBackgroundContexts = ['intro', 'ending', 'region_intro', 'level_open', 'level_done'];
+    public array $dialogueBackgroundContexts = ['intro', 'ending', 'region_intro', 'level_open', 'scenario_open', 'level_done'];
 
     /**
      * WebGL screen effects on the narrated scenes (owner, 19 October 2026):
@@ -109,6 +109,9 @@ class Gelita extends BaseConfig
         'feedback_submitted', 'password_changed',
         // asset package and event queue integrity (rencana-paket-aset §7.1, §7.3)
         'package_changed', 'events_dropped',
+        // Part 6 (32 §5.6): a scenario closed after its third try (server only)
+        // WAVE-E seam (part 3): moves to EventCatalog::RESEARCH and SERVER_ONLY once 29 is merged
+        'scenario_failed',
     ];
 
     /**

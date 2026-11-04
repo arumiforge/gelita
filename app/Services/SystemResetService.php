@@ -33,7 +33,7 @@ use Config\Database;
 class SystemResetService
 {
     /** Migration terakhir yang wajib sudah dijalankan. */
-    public const REQUIRED_MIGRATION = '2026-01-01-003910';
+    public const REQUIRED_MIGRATION = '2026-01-01-004000';
 
     /** Kata yang wajib diketik bila tanpa --ya. */
     public const CONFIRM_WORD = 'RESET-KELAS5';
@@ -351,6 +351,9 @@ class SystemResetService
             ));
         }
 
+        // Part 6 (32 K8): a bank without Skenario Digital keeps four challenges per region (12 shards)
+        $this->retireEmptyScenarioNodes();
+
         // Butir soal dibangun ulang: tautan rekaman petunjuk Cari Objek yang sudah terdaftar dipasang lagi
         $clueAudio = $result['ok'] ? (new NarrationImporter($this->db))->relinkClues() : 0;
 
@@ -369,6 +372,22 @@ class SystemResetService
             'passages'   => $this->db->table('reading_passages')->where('is_active', 1)->countAllResults(),
             'clue_audio' => $clueAudio,
         ];
+    }
+
+    /**
+     * Part 6 (32 K8): the fifth challenge appears only when the imported bank
+     * holds its scenarios. A `skenario` node without an active item is set
+     * inactive, so the shard total stays the number of active nodes.
+     */
+    private function retireEmptyScenarioNodes(): void
+    {
+        foreach ($this->db->table('challenge_nodes')->select('id')->where('engine_type', 'skenario')->where('is_active', 1)->get()->getResultArray() as $node) {
+            $items = $this->db->table('challenge_items')->where('challenge_node_id', (int) $node['id'])->where('is_active', 1)->countAllResults();
+
+            if ($items === 0) {
+                $this->db->table('challenge_nodes')->where('id', (int) $node['id'])->update(['is_active' => 0]);
+            }
+        }
     }
 
     /** @return array<string, mixed> */

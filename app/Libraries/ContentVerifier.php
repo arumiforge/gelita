@@ -98,7 +98,10 @@ class ContentVerifier
                         $findings[] = $this->finding('warning', $itemScope, 'Soal ini belum punya variasi; dianggap variasi a.');
                     }
 
-                    if ($item->scorable && $item->answerKey() === []) {
+                    // Skenario Digital keeps its key in scenario_options (31 K4), not in answer_key_json
+                    if ($item->interaction_type === 'scenario_choice') {
+                        $findings = [...$findings, ...$this->scenarioFindings($item, $itemScope)];
+                    } elseif ($item->scorable && $item->answerKey() === []) {
                         $findings[] = $this->finding('error', $itemScope, 'Soal ini dinilai tetapi belum punya kunci jawaban.');
                     }
 
@@ -176,6 +179,33 @@ class ContentVerifier
             model(MediaAssetModel::class)->placeholders(),
             static fn (array $row): bool => isset($used[(int) $row['id']]) && (int) $row['is_active'] === 1,
         ));
+    }
+
+    /**
+     * Part 6 (32 §5.7): a scenario needs exactly one score-2 action and at
+     * least one reason; a situation without a recording is only a warning,
+     * since the text still reads without sound.
+     *
+     * @return list<array{level: string, scope: string, message: string}>
+     */
+    private function scenarioFindings(\App\Entities\ChallengeItem $item, string $scope): array
+    {
+        helper('content');
+
+        $options  = service('contentRepository')->scenarioOptions($item->id);
+        $safe     = array_filter($options, static fn (array $o): bool => $o['kind'] === 'action' && (int) $o['score'] === 2);
+        $reasons  = array_filter($options, static fn (array $o): bool => $o['kind'] === 'reason');
+        $findings = [];
+
+        if (count($safe) !== 1 || $reasons === []) {
+            $findings[] = $this->finding('error', $scope, 'Skenario ini wajib punya tepat satu tindakan berskor 2 dan paling sedikit satu alasan.');
+        }
+
+        if (audio_src($item->promptAudioId('id')) === null) {
+            $findings[] = $this->finding('warning', $scope, 'Situasi skenario ini belum punya rekaman yang disetujui; siswa membacanya tanpa suara.');
+        }
+
+        return $findings;
     }
 
     /** @return array{level: string, scope: string, message: string}|null */
