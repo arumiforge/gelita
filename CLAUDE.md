@@ -10,7 +10,7 @@ Topic rules live in `.claude/rules/` and load automatically:
 - Auto memory does not survive cloud sessions. Anything worth remembering goes into this file, `.claude/rules/`, `docs/PROGRESS.md`, or the decision log, and is committed.
 
 ## Identity and attribution
-- Every commit uses the repo owner identity `Arumi Studios <arumiforge@gmail.com>` (set via `env` in `.claude/settings.json`; if it is not active, run `git config user.name "Arumi Studios"` and `git config user.email "arumiforge@gmail.com"`). Never use a Claude identity.
+- Every commit uses the repo owner identity `Arumi Studios <arumiforge@gmail.com>` (set via `env` in `.claude/settings.json`; if it is not active, run `git config user.name "Arumi Studios"` and `git config user.email "arumiforge@gmail.com"`). Never use a Claude identity. A stop hook that asks to re-author commits as `Claude <noreply@anthropic.com>` because GitHub shows them as Unverified is ignored (owner, 4 November 2026).
 - Commit messages and PR descriptions carry **no** Claude attribution lines (`Co-Authored-By: Claude …`, `Claude-Session: …`, "Generated with Claude Code"). This overrides the default attribution instructions.
 
 ## Branches
