@@ -1,11 +1,11 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "6aadb0b00fbde85c834f019a31ea2d40b09bce6ab4189bf869a3327b7c5a4bb9",
-      "commit": "1e2db61",
+      "source": "86e91da96bf55d15f5e0cb6ef274b881a1a9b9db6b1a514655734cacf3bc9b61",
+      "commit": "a7e07ef",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-03",
-      "pages": 19,
+      "date": "2026-11-04",
+      "pages": 20,
       "landscapeTables": 0
     },
     "01_REVISI_10_ANALITIK.md": {
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "dcf948d4e1ebfafa43d2bfac01dfd883d5f0b6aa8c20b8c720fa0d944ddfa48a",
-      "commit": "1e2db61",
+      "source": "ea32d870fccb899825c1c8956ce88925a861b4c7c2b027c2543c02c7b4cc1055",
+      "commit": "a7e07ef",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-03",
-      "pages": 71,
+      "date": "2026-11-04",
+      "pages": 72,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -58,17 +58,17 @@
     },
     "07_TELAAH_INSTRUMEN_VALIDASI.md": {
       "source": "f0435f19f3c475ae23934cbb5b449556ca9071cd6d38aff940fd73137b3d4702",
-      "commit": "4359366",
+      "commit": "b1b93f2",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-31",
       "pages": 10,
       "landscapeTables": 0
     },
     "08_DRAF_BANK_SOAL.md": {
-      "source": "32b6ad2b6c3d7badac494ca9f25ca695d91847b9f57032b88c7536d8823392fa",
-      "commit": "76d8a47",
+      "source": "35cd369b32c95da1e6d9e9243aa56eb482433b3f5d272a235338003de8873c94",
+      "commit": "a7e07ef",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-03",
+      "date": "2026-11-04",
       "pages": 43,
       "landscapeTables": 0
     },
@@ -82,7 +82,7 @@
     },
     "10_TELAAH_PENDAHULUAN_MEDIA.md": {
       "source": "13e86a96e4af811a151e2cfa7809576c900961fd7cc64bd589a3ffacc45a298e",
-      "commit": "4359366",
+      "commit": "b1b93f2",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-31",
       "pages": 8,
@@ -114,7 +114,7 @@
     },
     "14_TES_BAGIAN_MEMBACA.md": {
       "source": "55ecc0f33e43bc4302182a0e9867e5e7c99cb74078b0f030c893b036ab56a2f1",
-      "commit": "4359366",
+      "commit": "b1b93f2",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-31",
       "pages": 20,
@@ -122,7 +122,7 @@
     },
     "15_TES_BAGIAN_DIGITAL.md": {
       "source": "fa236e4443314df9b75912b9eba20c0fbdc3eee67251c5ced3d7ac9c1fa628b6",
-      "commit": "4359366",
+      "commit": "b1b93f2",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-31",
       "pages": 23,
@@ -137,10 +137,10 @@
       "landscapeTables": 0
     },
     "17_SKALA_SIKAP.md": {
-      "source": "19e5517eb8b28bf0af921b9437c23bab7e10c25c3afa36b8cf228749216ea0ee",
-      "commit": "a832240",
+      "source": "dc735c83ffa1686eb4d23873d2abf79c9802610494e537a839bb1da7728992cb",
+      "commit": "a7e07ef",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-03",
+      "date": "2026-11-04",
       "pages": 10,
       "landscapeTables": 0
     },
@@ -273,18 +273,18 @@
       "landscapeTables": 0
     },
     "34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md": {
-      "source": "dfa1dd64805485860c8e74801943b2ab54f55b39c082e2e56243016aadc4ecc6",
-      "commit": "1e2db61",
+      "source": "bf10e680120fd9ad20a96a2f1aa0f14485a757a5d1b0058dd6d10c59b09fb534",
+      "commit": "a7e07ef",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-03",
+      "date": "2026-11-04",
       "pages": 23,
       "landscapeTables": 0
     },
     "35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md": {
-      "source": "80e0d48009c07a80fb4d47b6455240b83065a94d0688bded1cd8a564433a153d",
-      "commit": "ea8094a",
+      "source": "d83432ba4766dbc0f5d5a6835fd5ad807b8037a74ddbd54df426f9def95dabe3",
+      "commit": "a7e07ef",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-03",
+      "date": "2026-11-04",
       "pages": 22,
       "landscapeTables": 0
     },
@@ -294,6 +294,14 @@
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-03",
       "pages": 27,
+      "landscapeTables": 0
+    },
+    "37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md": {
+      "source": "910084d8793e194f9792b5e8a96b984651d9386146eee7de7a6f65be32aad8ff",
+      "commit": "a7e07ef",
+      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
+      "date": "2026-11-04",
+      "pages": 29,
       "landscapeTables": 0
     }
   }
