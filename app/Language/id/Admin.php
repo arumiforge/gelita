@@ -257,6 +257,8 @@ return [
         'fill_blank_bank' => 'Isi rumpang (pilih kata)',
         'verdict_card'    => 'Kartu benar/salah',
         'find_object'     => 'Cari benda di gambar',
+        // Part 6 (32 §13)
+        'scenario_choice' => 'Skenario Digital (tindakan dan alasan)',
     ],
 
     /** Status tinjauan isi soal. */
@@ -385,6 +387,8 @@ return [
         'answer_selected'      => 'Memilih jawaban',
         'wrong_target_clicked' => 'Salah pilih benda',
         'clue_failed'          => 'Petunjuk dilewati',
+        // Part 6 (32 §13)
+        'scenario_failed'      => 'Skenario ditutup setelah kesempatan habis',
         'reading_progress'     => 'Membaca bacaan',
         'screen_viewed'        => 'Membuka layar',
         'overlay_opened'       => 'Membuka jendela',
@@ -562,4 +566,10 @@ return [
     'bankLabelDeveloper' => 'Label pengembang',
     'bankLabelExpert'    => 'Label ahli',
     'bankErrorCodes'     => 'Kode kesalahan',
+
+    // Part 6 (32 §13): Skenario Digital and the narration rules
+    'engine_skenario'       => 'Skenario Digital',
+    'narration_tone_check'  => 'Nada datar dan sama untuk setiap situasi',
+    'narration_d1_refused'  => 'Bacaan dan pernyataan tidak dibacakan.',
+    'event_scenario_failed' => 'Skenario ditutup setelah kesempatan habis',
 ];

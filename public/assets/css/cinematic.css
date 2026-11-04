@@ -1842,3 +1842,17 @@ body.has-kenal { overflow: hidden; }
   .cc-light { left: 50%; }
   .dialogue-stage .character.is-speaking.pose-determined:has(> .character-fallback) { translate: none; }
 }
+
+/* Challenge curtain art of Skenario Digital (part 6): a screen whose message lines appear as the mist lifts */
+.cc-skenario { position: relative; display: grid; place-items: center; }
+.cc-screen { display: grid; gap: .5rem; width: 7rem; padding: 1rem .75rem; border: .25rem solid var(--gold-500); border-radius: .75rem; background: rgba(11, 19, 32, .8); }
+.cc-screen i { display: block; height: .5rem; border-radius: .25rem; background: var(--gold-300); opacity: 0; animation: cc-line-in .5s calc(var(--i) * .2s + .2s) ease-out forwards; }
+.cc-screen i:nth-child(2) { width: 70%; }
+.cc-mist { position: absolute; inset: -1rem; border-radius: 50%; background: radial-gradient(rgba(200, 210, 220, .55), transparent 70%); animation: cc-mist-out 1.2s ease-out forwards; }
+@keyframes cc-line-in { to { opacity: 1; } }
+@keyframes cc-mist-out { to { opacity: 0; transform: scale(1.4); } }
+@media (prefers-reduced-motion: reduce) {
+  .cc-screen i { opacity: 1; animation: none; }
+  .cc-mist { display: none; }
+}
+

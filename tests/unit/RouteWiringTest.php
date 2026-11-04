@@ -350,7 +350,7 @@ final class RouteWiringTest extends CIUnitTestCase
     {
         $engines = config('Gelita')->engineTypes;
 
-        $this->assertSame(['puzzle', 'rumpang', 'boleh', 'cari'], $engines);
+        $this->assertSame(['puzzle', 'rumpang', 'boleh', 'cari', 'skenario'], $engines);
 
         foreach ($engines as $engine) {
             $this->assertFileExists(APPPATH . 'Views/game/challenge/' . $engine . '.php');

@@ -64,7 +64,7 @@ body.game {
 .stage .challenge-puzzle .puzzle-board, .stage .challenge-puzzle .arena-actions, .stage .challenge-puzzle .puzzle-caption,
 .stage .challenge-rumpang .rumpang-reading, .stage .challenge-rumpang .sentences, .stage .challenge-rumpang .rumpang-media,
 .stage .challenge-rumpang .word-bank, .stage .challenge-rumpang .arena-actions,
-.stage .challenge-boleh .arena-actions,
+.stage .challenge-boleh .arena-actions, .stage .challenge-skenario .arena-actions,
 .stage .challenge-cari .hunt-clue, .stage .challenge-cari .hunt-side, .stage .challenge-cari .hunt-scene,
 .stage .challenge-cari .hunt-zoom {
   position: absolute;
@@ -967,6 +967,12 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 .challenge-boleh .challenge-aside   { --x: 652; --y: 140; --w: 596; --h: 64; }
 .challenge-boleh .boleh-cards       { --x: 652; --y: 212; --w: 596; --h: 428; }
 .challenge-boleh .arena-actions     { --x: 32;  --y: 648; --w: 1216; --h: 56; }
+
+/* Skenario Digital (part 6, 32 §6.2): situation left, instruction + the two steps right, action bar */
+.challenge-skenario .scenario-situation { --x: 32;  --y: 140; --w: 616; --h: 500; }
+.challenge-skenario .challenge-aside    { --x: 664; --y: 140; --w: 584; --h: 56; }
+.challenge-skenario .scenario-steps     { --x: 664; --y: 204; --w: 584; --h: 436; }
+.challenge-skenario .arena-actions      { --x: 32;  --y: 648; --w: 1216; --h: 56; }
 
 /* Cari Objek: bilah petunjuk, daftar benda, adegan 16:9, panel kanan (instruksi) */
 .challenge-cari .hunt-clue          { --x: 32;   --y: 140; --w: 1216; --h: 60; }

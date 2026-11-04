@@ -93,6 +93,7 @@ return [
     'engine_rumpang' => 'Fill the Gaps',
     'engine_boleh'   => 'True or False',
     'engine_cari'    => 'Find the Object',
+    'engine_skenario' => 'Digital Scenarios',
 
     // Welcome & start
     'startTitle'         => 'Ready for an adventure?',
@@ -415,6 +416,7 @@ return [
     'challengeLead_rumpang' => 'Find the missing words, then fill the gaps!',
     'challengeLead_boleh'   => 'True or false? Think it through!',
     'challengeLead_cari'    => 'Raise your lantern and find what is hidden!',
+    'challengeLead_skenario' => 'Imagine the story is happening to you, then think it through!',
     'chapterOf'            => 'Chapter {0} · {1}',
     'chapterTap'           => 'Tap to hear the story',
     'doneTitle'            => 'The {0} shards are back!',
@@ -429,7 +431,7 @@ return [
     'aboutWhatTitle' => 'What is GELITA?',
     'aboutWhatText' => 'GELITA is a reading adventure game. You explore Temanggung, Magelang, and Wonosobo, get to know the culture of the Kedu Plain, and practise reading with care.',
     'aboutStoryTitle' => 'The story',
-    'aboutStoryText' => 'The Mist of Forgetting broke the Lantern of Kedu, and twelve Shards of Light fell across three regions. With Jaka and Mbah Kedu, you look for the shards one by one until the Light of Kedu shines again.',
+    'aboutStoryText' => 'The Mist of Forgetting broke the Lantern of Kedu, and its Shards of Light fell across three regions. With Jaka and Mbah Kedu, you look for the shards one by one until the Light of Kedu shines again.',
     'aboutPlayTitle' => 'How to play',
     'aboutPlay1' => 'Choose a region on the Kedu Map, then listen to its story.',
     'aboutPlay2' => 'Finish the challenges to win shards and stars.',
@@ -471,4 +473,13 @@ return [
     'huntRoundTwoStart' => 'Start round 2',
     'huntPartN'         => 'Part {0}',
     'postSceneAlt'      => 'Photo in the post',
+
+    // Part 6 (32 §13): Skenario Digital, bridge story, instruction narration
+    'watchBridgeStory'    => 'Watch the linking story',
+    'bridgeStoryTitle'    => 'Mist on the Screen',
+    'enterScenario'       => 'Open the fifth challenge',
+    'scenarioSituation'   => 'Situation',
+    'scenarioSituationAlt' => 'Picture of this story\'s situation',
+    'scenarioActions'     => 'What would you do?',
+    'instructionListen'   => 'Listen to the instructions',
 ];

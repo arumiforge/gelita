@@ -93,6 +93,7 @@ return [
     'engine_rumpang' => 'Isi Rumpang',
     'engine_boleh'   => 'Benar atau Salah',
     'engine_cari'    => 'Cari Objek',
+    'engine_skenario' => 'Skenario Digital',
 
     // Welcome & mulai
     'startTitle'        => 'Siap berpetualang?',
@@ -415,6 +416,7 @@ return [
     'challengeLead_rumpang' => 'Temukan kata yang hilang, lalu isi celahnya!',
     'challengeLead_boleh'   => 'Benar atau salah? Timbang baik-baik!',
     'challengeLead_cari'    => 'Angkat lenteramu, temukan yang tersembunyi!',
+    'challengeLead_skenario' => 'Bayangkan ceritanya terjadi padamu, lalu pikirkan baik-baik!',
     'chapterOf'            => 'Bab {0} · {1}',
     'chapterTap'           => 'Ketuk untuk mendengar kisahnya',
     'doneTitle'            => 'Serpihan {0} kembali!',
@@ -429,7 +431,7 @@ return [
     'aboutWhatTitle' => 'Apa itu GELITA?',
     'aboutWhatText' => 'GELITA adalah permainan petualangan membaca. Kamu menjelajahi Temanggung, Magelang, dan Wonosobo sambil mengenal budaya Dataran Kedu dan berlatih membaca dengan teliti.',
     'aboutStoryTitle' => 'Alur cerita',
-    'aboutStoryText' => 'Kabut Lupa memecahkan Lentera Kedu, dan dua belas Serpihan Cahaya jatuh di tiga wilayah. Bersama Jaka dan Mbah Kedu, kamu mencari serpihan itu satu per satu sampai Cahaya Kedu menyala lagi.',
+    'aboutStoryText' => 'Kabut Lupa memecahkan Lentera Kedu, dan Serpihan Cahayanya jatuh di tiga wilayah. Bersama Jaka dan Mbah Kedu, kamu mencari serpihan itu satu per satu sampai Cahaya Kedu menyala lagi.',
     'aboutPlayTitle' => 'Cara bermain',
     'aboutPlay1' => 'Pilih wilayah di Peta Kedu, lalu dengarkan ceritanya.',
     'aboutPlay2' => 'Selesaikan tantangan untuk mendapat serpihan dan bintang.',
@@ -471,4 +473,13 @@ return [
     'huntRoundTwoStart' => 'Mulai babak 2',
     'huntPartN'         => 'Bagian {0}',
     'postSceneAlt'      => 'Foto di dalam unggahan',
+
+    // Part 6 (32 §13): Skenario Digital, bridge story, instruction narration
+    'watchBridgeStory'    => 'Lihat cerita penghubung',
+    'bridgeStoryTitle'    => 'Kabut di Layar',
+    'enterScenario'       => 'Buka tantangan kelima',
+    'scenarioSituation'   => 'Situasi',
+    'scenarioSituationAlt' => 'Gambar situasi cerita ini',
+    'scenarioActions'     => 'Apa yang akan kamu lakukan?',
+    'instructionListen'   => 'Dengarkan instruksi',
 ];
