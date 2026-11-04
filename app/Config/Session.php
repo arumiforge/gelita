@@ -4,6 +4,7 @@ namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Session\Handlers\BaseHandler;
+use App\Libraries\HashedIpSessionHandler;
 use CodeIgniter\Session\Handlers\DatabaseHandler;
 
 class Session extends BaseConfig
@@ -139,4 +140,18 @@ class Session extends BaseConfig
      * seconds.
      */
     public int $lockMaxRetries = 300;
+
+    /**
+     * Part 4 (30 §12, K12): with `gelita.researchPrivacy` on, browser sessions
+     * go through HashedIpSessionHandler (MySQL/MariaDB only, like production),
+     * which stores hash_ip() instead of the raw IP. Off: DatabaseHandler as before.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        if (config(Gelita::class)->researchPrivacy) {
+            $this->driver = HashedIpSessionHandler::class;
+        }
+    }
 }

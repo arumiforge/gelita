@@ -47,6 +47,8 @@ class SystemResetService
         'data_exports', 'data_deletion_requests', 'audit_logs', 'ci_sessions',
         // research revision 10, part 2 (28 §14)
         'field_sessions', 'field_session_tokens', 'field_session_members', 'participant_seats', 'participant_code_counters',
+        // Part 4 (30 §15)
+        'participant_consents',
     ];
 
     public const GROUP_B = ['hints', 'item_error_codes', 'scenario_options', 'post_parts', 'post_scenes', 'challenge_items', 'reading_passages', 'challenge_nodes'];
@@ -59,6 +61,8 @@ class SystemResetService
     /** Urutan pengosongan mengikuti FK: anak dulu. */
     public const CLEAR_ORDER = [
         'item_tries', 'item_responses', 'challenge_attempts', 'audio_usage_events', 'game_event_logs',
+        // Part 4 (30 §15): before participants
+        'participant_consents',
         'device_logs', 'participant_progress', 'participant_seats', 'field_session_members', 'field_session_tokens',
         'participant_feedback', 'game_sessions', 'field_sessions', 'participant_code_counters', 'participants',
         'data_exports', 'data_deletion_requests', 'audit_logs', 'hints', 'item_error_codes', 'scenario_options',
