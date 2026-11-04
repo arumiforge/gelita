@@ -1,8 +1,39 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 3 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 4 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
+
+## 4 November 2026
+
+**Gerbang G2 dilalui: validasi ahli selesai dan izin etik disetujui** (cabang `pw/dreamy-keller-9yxzad`) · `asal: peneliti` (dikonfirmasi peneliti lewat pengembang) dan `asal: komite etik` (persetujuan izin) · status 17 dan 22 menjadi `tervalidasi ahli`
+
+Pengembang menyampaikan bahwa peneliti sudah mengonfirmasi validasi, bahwa dokumen skala sikap [17](17_SKALA_SIKAP.md) dapat dipakai, dan bahwa permohonan izin etik [22](22_PERMOHONAN_IZIN_ETIK.md) disetujui, sehingga gerbang G2 dilalui. Pengembang memilih rumusan ini saat ditanya (validasi bank, tes, dan skala sikap selesai; komite etik menyetujui).
+- **Status:** 17 dan 22 `tervalidasi ahli` di [00](00_INDEKS.md). Berkas 22 di repo tidak diubah (aturan 3 November 2026: 22 ditangani peneliti langsung).
+- **Yang belum ada di repo:** skor dan catatan validator, kesepakatan B.5a (κ), dan matriks revisi [20](20_PAKET_VALIDASI.md); juga nomor dan tanggal surat persetujuan komite. Karena itu status 08 dan 13–16 belum dinaikkan, dan butir `needs_verification` tetap bertanda sampai hasilnya masuk dan revisinya diterapkan.
+- **Akibat:** kegiatan dengan anak yang tercakup protokol 22 boleh dimulai sesuai jadwal peneliti. Urutan gerbang berikutnya tetap seperti di [00](00_INDEKS.md#tahap-dokumen-yang-tersisa-sebelum-implementasi): G3 dinilai setelah G2, pada Prototipe II yang memuat revisi dari validasi ahli. Sakelar mode penelitian tetap mati secara bawaan sampai dinyalakan untuk studi.
+
+**Ambang tebakan cepat tes dan cek fakta Susun Gambar** (wawancara satu putaran, empat pertanyaan) · `asal: pengembang` (rekomendasi AI) · `disetujui pengembang` · merevisi produk (dokumen implementasi bagian 8 dan 9, bank soal)
+
+Pengembang memilih rekomendasi di keempat pertanyaan.
+1. **Ambang tebakan cepat tes** ([34 §17](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#17-pertanyaan-terbuka) no. 1, [35 §18](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#18-pertanyaan-terbuka) no. 2): kolom studi tersendiri `test_rapid_guess_ms`, satu nilai untuk semua tes (awal/akhir, bentuk A/B) supaya `rapid_share` sebelum dan sesudah bisa dibandingkan, nilai awal 3000 ms. Butir pertama sesudah bacaan tidak diberi `rapid_guess` (kosong), karena waktunya memuat waktu membaca. Ditinjau setelah uji coba dan dikunci bersama ambang lain di G4. Tidak dipilih: memakai `rapid_guess_ms` tantangan, ambang normatif per butir (NT10), atau ambang per jenis butir. Dibawa ke migrasi bagian 7 ([33](33_IMPLEMENTASI_MODE_PENELITIAN.md)) dan perhitungan bagian 9 saat implementasi.
+2. **Tahun penetapan Topeng Lengger (2020):** kalimatnya tetap dan dicatat dikonfirmasi pengembang dari sumber Pemprov Jawa Tengah ([Visit Jawa Tengah](https://visitjawatengah.jatengprov.go.id/en/art-and-culture/tari-topeng-lengger)); basis data kementerian masih belum bisa dibuka. Pengamat budaya tetap memeriksanya di B.7.
+3. **Pasar Papringan:** fakta di keterangan `tmg-1` variasi a dikonfirmasi pengembang (Minggu Wage dan Minggu Pon, sumber masih sama: [Tempo](https://www.tempo.co/teroka/cerita-pasar-papringan-yang-buka-tiap-minggu-wage-dan-minggu-pon-794148), [Wikipedia](https://id.wikipedia.org/wiki/Pasar_Papringan_Ngadiprono)); langkah 7 di [25](25_CEK_FAKTA_BUDAYA.md) tetap: jadwal dicek ulang di akun pasar sebelum versi dikunci di G4.
+4. **Candi Pawon dan Kompleks Candi Arjuna:** Pawon di antara Mendut dan Borobudur, ketiganya hampir segaris ([Wikipedia: Pawon](https://en.wikipedia.org/wiki/Pawon)), dan letak Arjuna di Desa Dieng Kulon, Kecamatan Batur, Banjarnegara ([GNFI](https://www.goodnewsfromindonesia.id/indonesiana/sejarah/candi-arjuna-jejak-penyebaran-agama-hindu-tertua-di-dataran-tinggi-dieng)) dikonfirmasi pengembang. Keterangan tidak berubah.
+
+Diubah: 34 (§17 no. 1), 35 (§18 no. 2), 08 (dua catatan cek fakta).
+
+**Nama akun fiktif dan Kedugram aman dipakai** · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Pengembang sudah mencari setiap nama akun pengunggah dan akun resmi tiruan di [08](08_DRAF_BANK_SOAL.md) di Instagram dan TikTok: tidak ada akun dengan nama yang sama persis. Kedugram aman dipakai sebagai aplikasi media sosial fiktif. Tidak ada nama yang diganti; catatan di 08 (*Nama fiktif*) diperbarui.
+
+**Gambar situasi Skenario Digital sudah dibuat; prompt gambar Susun Gambar baru dan latar cerita wilayah** · `asal: pengembang` (prompt disusun AI atas permintaan pengembang) · `draf pengembang` · menambah dokumen [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md)
+
+- Ke-24 gambar situasi dari [32A](32A_PROMPT_GAMBAR_SITUASI.md) sudah dibuat pengembang dan ada di `gambar/32a/` (PNG, `item.skenario.{kode butir}`). Yang tersisa: ubah ke WebP, masukkan ke Katalog Aset, dan pasang dengan `gelita:katalog:impor` saat bagian 6 diimplementasikan.
+- Pengembang meminta prompt untuk gambar yang masih ditunggu. [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md) memuat `TMG-P11` Wayang Kedu (`challenge.item.tmg-1-k01`, 3 × 3) dan `MGL-P05R` Candi Pawon pengganti (`challenge.item.mgl-1-e01`, tanpa stupa dan tanpa Borobudur), mengikuti arahan 08, serta 29 latar cerita wilayah untuk 92 slot `bg.cerita-{kenal,dialog,tuntas,layar}-{wilayah}-NN` dari naskah [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md). Satu gambar dipakai beberapa slide yang tempatnya sama; latar tanpa Jaka dan Mbah Kedu, tanpa tulisan atau isi layar yang terbaca, dan tidak memuat benda atau tanda bahaya yang diuji butir. Latar Wonosobo tidak menampilkan kawah atau bencana, karena kabar berantai di naskah 12 adalah ramalan gempa.
+- Catatan untuk pemasangan: slot `tuntas-*-05` dan `layar-*` baru punya slide setelah naskah 12 dipasang (tahap 3); awalan `bg.cerita-layar-` ditambahkan ke `CatalogImporter` di bagian 6; catatan gambar Candi Pawon di berkas data bank soal diganti saat gambar penggantinya dipasang.
+
+Diubah: 37 (baru), 32A (kepala dokumen), 08, 00, `docs/PROGRESS.md`.
 
 ## 3 November 2026
 
