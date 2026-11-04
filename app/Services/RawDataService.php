@@ -83,16 +83,10 @@ class RawDataService
 
     public const PER_PAGE = [25, 50, 100];
 
-    public const NAVIGATION_EVENTS = [
-        'screen_viewed', 'overlay_opened', 'dialogue_advanced', 'library_opened', 'library_page_viewed',
-        'locale_changed', 'page_hidden', 'page_visible', 'viewport_changed', 'reading_progress',
-        'package_changed', 'events_dropped',
-    ];
+    /** Event lists of the `navigasi` and `selesai` sheets, owned by the event catalog (29 §4). */
+    public const NAVIGATION_EVENTS = \App\Libraries\EventCatalog::NAVIGATION;
 
-    public const COMPLETION_EVENTS = [
-        'challenge_completed', 'challenge_abandoned', 'challenge_tries_exhausted', 'clue_failed',
-        'level_completed', 'session_completed', 'intro_completed', 'feedback_submitted',
-    ];
+    public const COMPLETION_EVENTS = \App\Libraries\EventCatalog::COMPLETION;
 
     /** Ukuran potongan iterasi keyset (`rows()`, `streamCsv()`). */
     public const CHUNK = 2000;

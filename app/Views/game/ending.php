@@ -5,7 +5,7 @@
  * Penutup cerita sinematik (Tahap 3), seperti cerita pembuka: lima slide
  * `ending` (naskah §6) satu per layar penuh (partials/cine-slides), tokoh
  * sesuai pose, efek layar, audio narasi, dan kartu "Ketuk untuk mulai"
- * (game/narrator.js mode `tap`, event `dialogue_advanced` context `ending`).
+ * (game/narrator.js mode `tap`, event `dialogue_completed` context `ending`).
  * Hanya terbuka setelah seluruh node tuntas; boleh ditonton ulang lewat
  * "Tonton penutup" di Peta Kedu. Slide akhir → Balai Refleksi.
  * Tanpa JavaScript slide berpindah lewat #slide-n + :target.

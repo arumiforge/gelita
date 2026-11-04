@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Entities\GameSession;
+use App\Libraries\EventCatalog;
 use App\Models\AudioUsageEventModel;
 use App\Models\GameEventLogModel;
 use CodeIgniter\HTTP\IncomingRequest;
@@ -14,12 +15,8 @@ use CodeIgniter\HTTP\IncomingRequest;
  */
 class EventService
 {
-    /**
-     * Event yang hanya boleh ditulis server (Dok 1 §12.3). Kiriman klien
-     * dengan tipe ini ditolak agar data mentah navigasi dan batas percobaan
-     * tidak dapat dipalsukan.
-     */
-    public const SERVER_ONLY = ['screen_viewed', 'challenge_tries_exhausted', 'clue_failed', 'events_dropped'];
+    /** Server-only types, owned by the event catalog (29 §4). */
+    public const SERVER_ONLY = EventCatalog::SERVER_ONLY;
 
     /**
      * Cookie `{sessionTag}.{n}`: the last client `sequence_no` of this browser
@@ -31,11 +28,13 @@ class EventService
     /** Largest `dropped` count accepted from one batch envelope. */
     public const MAX_DROPPED_REPORT = 1_000_000;
 
-    /** Raw event type per audio action. */
+    /**
+     * Raw event type per audio action. `pause` has none since revision 10,
+     * part 3 (29 K6): it only writes its audio_usage_events row (listened_ms).
+     */
     private const AUDIO_EVENT_TYPES = [
         'play'     => 'audio_play',
         'autoplay' => 'audio_autoplay',
-        'pause'    => 'audio_pause',
         'replay'   => 'audio_replay',
         'complete' => 'audio_completed',
     ];
@@ -84,7 +83,7 @@ class EventService
 
             $type = (string) ($event['event_type'] ?? '');
 
-            if (! in_array($type, $config->eventTypes, true)) {
+            if (! in_array($type, EventCatalog::accepted(), true)) {
                 $rejected[] = ['index' => $index, 'reason' => 'event_type_unknown'];
 
                 continue;
@@ -149,7 +148,19 @@ class EventService
      */
     public function record(GameSession $session, string $type, array $payload = [], array $refs = []): void
     {
-        if (! in_array($type, config('Gelita')->eventTypes, true)) {
+        $this->recordAt($session, $type, null, $payload, $refs);
+    }
+
+    /**
+     * record() with the time the event happened, when that is not now (an
+     * idle session's last activity, 29 §5.7).
+     *
+     * @param array<string, mixed> $payload
+     * @param array<string, mixed> $refs
+     */
+    public function recordAt(GameSession $session, string $type, ?string $occurredAt, array $payload = [], array $refs = []): void
+    {
+        if (! in_array($type, EventCatalog::accepted(), true)) {
             throw new \InvalidArgumentException("event_type '{$type}' tidak dikenali.");
         }
 
@@ -164,7 +175,7 @@ class EventService
                 $refs,
                 'srv-' . uuid4(),
                 $this->nextServerSequence($session->id),
-                $now,
+                $occurredAt ?? $now,
                 $now,
                 0,
             ),
@@ -349,15 +360,29 @@ class EventService
             ];
         }
 
-        // 2. Duplicates: already stored, or repeated within this batch
+        // 2. Duplicates: already stored, or repeated within this batch. A
+        // `pause` has no raw event (29 K6), so a re-sent one is found by its
+        // audio row: same asset and the same client time.
         $stored = $this->storedClientEventIds($session->id, array_filter(array_column($valid, 'client_event_id')));
         $seen   = [];
         $fresh  = [];
+
+        foreach ($valid as $i => $item) {
+            $valid[$i]['occurred_at'] = $this->clientTime($item['entry']['occurred_at'] ?? null);
+        }
+
+        $storedPauses = $this->storedPauses($session->id, array_values(array_filter($valid, static fn (array $item): bool => $item['action'] === 'pause')));
 
         foreach ($valid as $item) {
             $id = $item['client_event_id'];
 
             if ($id !== '' && (isset($stored[$id]) || isset($seen[$id]))) {
+                $duplicate++;
+
+                continue;
+            }
+
+            if ($item['action'] === 'pause' && isset($storedPauses[$item['asset_id'] . '|' . $item['occurred_at']])) {
                 $duplicate++;
 
                 continue;
@@ -374,16 +399,21 @@ class EventService
             return ['accepted' => 0, 'duplicate' => $duplicate, 'rejected' => $rejected];
         }
 
-        // 3. Raw events: server sequence numbers in batch order
+        // 3. Raw events: server sequence numbers in batch order (none for `pause`)
         $sequence = $this->nextServerSequence($session->id);
         $rows     = [];
 
         foreach ($fresh as $i => $item) {
             $entry      = $item['entry'];
-            $occurredAt = $this->clientTime($entry['occurred_at'] ?? null);
+            $occurredAt = $item['occurred_at'];
 
-            $fresh[$i]['occurred_at'] = $occurredAt;
-            $fresh[$i]['row']         = $this->buildRow(
+            if (! isset(self::AUDIO_EVENT_TYPES[$item['action']])) {
+                $fresh[$i]['row'] = null;
+
+                continue;
+            }
+
+            $fresh[$i]['row'] = $this->buildRow(
                 $session,
                 self::AUDIO_EVENT_TYPES[$item['action']],
                 [
@@ -405,7 +435,7 @@ class EventService
         $db->transBegin();
 
         try {
-            $written = model(GameEventLogModel::class)->appendBatch($rows);
+            $written = $rows === [] ? ['accepted' => 0] : model(GameEventLogModel::class)->appendBatch($rows);
 
             // Lost a race with another tab for some entries: keep only ours
             if ($written['accepted'] < count($rows)) {
@@ -416,7 +446,7 @@ class EventService
                         ->get()->getResultArray(),
                     'event_uuid',
                 ));
-                $won        = array_values(array_filter($fresh, static fn (array $item): bool => isset($ours[$item['row']['event_uuid']])));
+                $won        = array_values(array_filter($fresh, static fn (array $item): bool => $item['row'] === null || isset($ours[$item['row']['event_uuid']])));
                 $duplicate += count($fresh) - count($won);
                 $fresh      = $won;
             }
@@ -498,6 +528,39 @@ class EventService
         }
 
         $db->table('audio_usage_events')->insertBatch($rows);
+    }
+
+    /**
+     * Stored `pause` rows of this session matching the given entries, keyed
+     * `{asset_id}|{occurred_at}`.
+     *
+     * @param list<array<string, mixed>> $pauses
+     *
+     * @return array<string, true>
+     */
+    private function storedPauses(int $sessionId, array $pauses): array
+    {
+        if ($pauses === []) {
+            return [];
+        }
+
+        $rows = $this->db()->table('audio_usage_events')
+            ->select('audio_asset_id, occurred_at')
+            ->where('session_id', $sessionId)
+            ->where('action', 'pause')
+            ->whereIn('audio_asset_id', array_values(array_unique(array_column($pauses, 'asset_id'))))
+            ->whereIn('occurred_at', array_values(array_unique(array_column($pauses, 'occurred_at'))))
+            ->get()
+            ->getResultArray();
+        $out = [];
+
+        foreach ($rows as $row) {
+            // The database may return fewer fraction digits than clientTime() wrote
+            $time = (new \DateTimeImmutable((string) $row['occurred_at']))->format('Y-m-d H:i:s.u');
+            $out[$row['audio_asset_id'] . '|' . $time] = true;
+        }
+
+        return $out;
     }
 
     /**

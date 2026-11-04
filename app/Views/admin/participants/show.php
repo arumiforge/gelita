@@ -161,8 +161,6 @@ $rawTable = static function (?array $table, string $empty, array $extra = []) {
               ['key' => 'created_at', 'label' => 'Waktu', 'type' => 'datetime'],
               ['key' => 'via', 'label' => 'Tercatat lewat', 'type' => 'text'],
               ['key' => 'device_type', 'label' => 'Jenis', 'type' => 'label:device'],
-              ['key' => 'device_brand', 'label' => 'Merek', 'type' => 'text'],
-              ['key' => 'device_model', 'label' => 'Model', 'type' => 'text'],
               ['key' => 'os_name', 'label' => 'Sistem operasi', 'type' => 'text'],
               ['key' => 'os_version', 'label' => 'Versi SO', 'type' => 'code'],
               ['key' => 'browser_name', 'label' => 'Peramban', 'type' => 'text'],

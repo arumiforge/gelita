@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use App\Entities\GameSession;
+use App\Models\Concerns\ConditionalUpdate;
 use CodeIgniter\Model;
 
 class GameSessionModel extends Model
 {
+    use ConditionalUpdate;
+
     protected $table         = 'game_sessions';
     protected $primaryKey    = 'id';
     protected $returnType    = GameSession::class;
@@ -87,19 +90,42 @@ class GameSessionModel extends Model
     }
 
     /**
-     * Sesi `active` yang tidak aktif lebih dari $idleMinutes → `paused`.
+     * Sesi `active` yang tidak aktif lebih dari $idleMinutes → `paused`, one
+     * conditional UPDATE per session (revision 10, part 3: 29 §5.7, K14).
+     * Only the caller whose UPDATE changed the row writes `session_paused`
+     * `{via: idle, last_active_at}`, timed at `last_active_at`, so two runs
+     * at once never write the event twice and the timeline does not move to
+     * the time of the cleanup.
      *
      * @return int jumlah baris yang berubah
      */
     public function markStale(int $idleMinutes): int
     {
-        $cutoff = date('Y-m-d H:i:s', time() - ($idleMinutes * 60));
+        $cutoff  = date('Y-m-d H:i:s', time() - ($idleMinutes * 60));
+        $changed = 0;
 
-        $this->db->table($this->table)
-            ->where('status', 'active')
-            ->where('last_active_at <', $cutoff)
-            ->update(['status' => 'paused']);
+        foreach ($this->staleIds($cutoff) as $id) {
+            $session = $this->find($id);
 
-        return $this->db->affectedRows();
+            if ($session === null || ! $this->updateIf($this, $id, ['status' => 'active', 'last_active_at <' => $cutoff], ['status' => 'paused'])) {
+                continue;
+            }
+
+            $changed++;
+            $lastActive = (string) $session->toRawArray()['last_active_at'];
+
+            service('eventService')->recordAt($session, 'session_paused', $lastActive, ['via' => 'idle', 'last_active_at' => $lastActive]);
+        }
+
+        return $changed;
+    }
+
+    /** @return list<int> active sessions idle since before $cutoff */
+    protected function staleIds(string $cutoff): array
+    {
+        return array_map('intval', array_column(
+            $this->db->table($this->table)->select('id')->where('status', 'active')->where('last_active_at <', $cutoff)->get()->getResultArray(),
+            'id',
+        ));
     }
 }

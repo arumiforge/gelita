@@ -95,7 +95,8 @@ class ChallengeApiController extends BaseApiController
 
         try {
             $result = service('challengeService')->submitAnswer($attempt, $itemId, $body['answer'], [
-                'duration_ms' => $body['duration_ms'] ?? null,
+                'ready_ms'      => $body['ready_ms'] ?? null,
+                'last_input_ms' => $body['last_input_ms'] ?? null,
             ]);
         } catch (ChallengeRuleException $e) {
             return $this->ruleFailed($e);
@@ -176,6 +177,7 @@ class ChallengeApiController extends BaseApiController
             $map[$itemId] = $row['answer'] + [
                 'first_input_ms' => $row['first_input_ms'] ?? null,
                 'last_input_ms'  => $row['last_input_ms'] ?? null,
+                'ready_ms'       => $row['ready_ms'] ?? null,
             ];
         }
 

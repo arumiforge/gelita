@@ -84,7 +84,7 @@ class MapController extends BaseGameController
 
     /**
      * level_id wilayah yang narasi Kenali-nya sudah didengar peserta ini sampai
-     * slide terakhir (dihitung dari `dialogue_advanced`); lencana "Belum
+     * slide terakhir (dihitung dari `dialogue_completed`); lencana "Belum
      * didengar" berdenyut pada wilayah lainnya.
      *
      * @return list<int>

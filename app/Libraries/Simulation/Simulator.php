@@ -33,7 +33,7 @@ use Random\Randomizer;
  * - Tantangan: ChallengeService (openNode, submitCheck, submitAnswer,
  *   useHint, abandonAttempt), dengan bentuk jawaban yang sama dengan
  *   ChallengeApiController.
- * - Event klien (answer_selected, dialogue_advanced, library_page_viewed,
+ * - Event klien (dialogue_completed, library_page_viewed,
  *   reading_progress, overlay_opened, level_opened, page_hidden, …):
  *   EventService::ingest() dengan amplop yang sama dengan core/events.js;
  *   audio: EventService::recordAudio().
@@ -71,15 +71,15 @@ final class Simulator
     private const DEVICES = [
         'tablet' => [
             'ua'     => 'Mozilla/5.0 (Linux; Android 13; SM-X200) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
-            'client' => ['screen_w' => 1340, 'screen_h' => 800, 'viewport_w' => 1340, 'viewport_h' => 708, 'pixel_ratio' => 1.5, 'touch_points' => 5, 'orientation' => 'landscape-primary', 'language' => 'id-ID', 'timezone' => 'Asia/Jakarta'],
+            'client' => ['screen_w' => 1340, 'screen_h' => 800, 'viewport_w' => 1340, 'viewport_h' => 708, 'touch_points' => 5, 'orientation' => 'landscape-primary'],
         ],
         'phone' => [
             'ua'     => 'Mozilla/5.0 (Linux; Android 12; Redmi Note 11) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Mobile Safari/537.36',
-            'client' => ['screen_w' => 393, 'screen_h' => 873, 'viewport_w' => 844, 'viewport_h' => 390, 'pixel_ratio' => 2.75, 'touch_points' => 5, 'orientation' => 'landscape-primary', 'language' => 'id-ID', 'timezone' => 'Asia/Jakarta'],
+            'client' => ['screen_w' => 393, 'screen_h' => 873, 'viewport_w' => 844, 'viewport_h' => 390, 'touch_points' => 5, 'orientation' => 'landscape-primary'],
         ],
         'laptop' => [
             'ua'     => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
-            'client' => ['screen_w' => 1366, 'screen_h' => 768, 'viewport_w' => 1366, 'viewport_h' => 657, 'pixel_ratio' => 1, 'touch_points' => 0, 'orientation' => 'landscape-primary', 'language' => 'id', 'timezone' => 'Asia/Jakarta'],
+            'client' => ['screen_w' => 1366, 'screen_h' => 768, 'viewport_w' => 1366, 'viewport_h' => 657, 'touch_points' => 0, 'orientation' => 'landscape-primary'],
         ],
     ];
 
@@ -424,9 +424,10 @@ final class Simulator
     }
 
     /**
-     * Susun Gambar, Isi Rumpang, Benar atau Salah: isian satu per satu
-     * (answer_selected), lalu "Cek jawabanku" sampai benar semua atau
-     * kesempatan habis.
+     * Susun Gambar, Isi Rumpang, Benar atau Salah: isian satu per satu (input
+     * times only; `answer_selected` is gone since 29 §5.1), lalu "Cek
+     * jawabanku" sampai benar semua atau kesempatan habis. Benar atau Salah
+     * also sends `ready_ms` (the previous input, 29 §6.1).
      *
      * $mode (siswa pertama): `first` benar sejak cek pertama; `fix` salah lalu
      * benar; `exhausted` tetap ada yang salah sampai cek ke-3.
@@ -451,7 +452,6 @@ final class Simulator
 
         for ($check = 1; $check <= 3; $check++) {
             $answers = [];
-            $events  = [];
             $since   = $this->clock->msSince($opened);
             $t       = max($t, $since);
             $wrongs  = $this->wrongPlan($mode, $check, array_diff_key($items, $locked), $skill + $ease);
@@ -463,23 +463,23 @@ final class Simulator
 
                 $right  = ! isset($wrongs[$itemId]);
                 $answer = $this->batchAnswer($node, $item, $right, $bank, $check);
+                $ready  = $t;
                 $first  = $t + $this->rng->getInt(2_000, 9_000);
                 $t      = $first + $this->rng->getInt(0, 6_000);
 
-                $events[] = ['answer_selected', $refs + ['item_id' => $itemId], $this->selection($item, $answer) + ['t_ms' => $t], $t - $since];
-                $answers[$itemId] = $answer + ['first_input_ms' => $first, 'last_input_ms' => $t];
+                $answers[$itemId] = $answer + ['first_input_ms' => $first, 'last_input_ms' => $t]
+                    + ($node->engine_type === 'boleh' ? ['ready_ms' => $ready] : []);
             }
 
             // Berhenti di tengah: isian sudah dimulai, tetapi tidak pernah dicek
             if ($leaveOpen && $check === 1 && $this->rng->getInt(1, 100) <= 60) {
-                $this->clientEvents(array_slice($events, 0, max(1, intdiv(count($events), 2))));
+                $this->clock->advance(intdiv(max(0, $t - $since), 2));
                 $this->pageHide($attempt, $level);
 
                 return;
             }
 
-            $this->clientEvents($events);
-            $this->clock->advance($this->rng->getInt(1_500, 5_000));
+            $this->clock->advance(max(0, $t - $since) + $this->rng->getInt(1_700, 8_000));
 
             try {
                 $result = $this->clock->act(fn () => $this->challenges->submitCheck($this->reload($attempt), $answers));
@@ -524,8 +524,9 @@ final class Simulator
      */
     private function playHunt(Level $level, ChallengeAttempt $attempt, array $payload, float $skill, ?string $mode, bool $leaveOpen): void
     {
-        $ease  = ['temanggung' => 0.1, 'magelang' => 0.0, 'wonosobo' => -0.1][$level->code] ?? 0.0;
-        $clues = array_values((array) ($payload['clues'] ?? []));
+        $ease   = ['temanggung' => 0.1, 'magelang' => 0.0, 'wonosobo' => -0.1][$level->code] ?? 0.0;
+        $opened = $this->clock->now();
+        $clues  = array_values((array) ($payload['clues'] ?? []));
         $refs  = array_map(static fn (array $o): string => (string) $o['ref'], (array) ($payload['objects'] ?? []));
         $total = count($clues) + count((array) ($payload['round2']['clues'] ?? []));
 
@@ -583,12 +584,11 @@ final class Simulator
                 return;
             }
 
-            $shown = 0;
-
             for ($tap = 1; $tap <= min(3, $misses + 1); $tap++) {
                 $wrong  = $tap <= $misses;
                 $target = $wrong && $others !== [] ? $others[$this->rng->getInt(0, count($others) - 1)] : $correct;
-                $shown += $this->rng->getInt(2_500, 14_000);
+                // Both since the challenge opened (29 §6.1): ready = clue shown or previous feedback done
+                $ready  = $this->clock->msSince($opened);
 
                 $this->clock->advance($this->rng->getInt(2_500, 9_000));
 
@@ -597,7 +597,7 @@ final class Simulator
                         $this->reload($attempt),
                         $itemId,
                         ['object' => $target],
-                        ['duration_ms' => $shown],
+                        ['ready_ms' => $ready, 'last_input_ms' => $this->clock->msSince($opened)],
                     ));
                 } catch (ChallengeRuleException) {
                     return;
@@ -720,22 +720,6 @@ final class Simulator
         $options = array_values(array_diff($node->verdictOptions(), [$verdict]));
 
         return ['verdict' => $options[0] ?? ($verdict === 'benar' ? 'salah' : 'benar')];
-    }
-
-    /**
-     * Payload `answer_selected` seperti engine klien.
-     *
-     * @param array<string, mixed> $answer
-     *
-     * @return array<string, mixed>
-     */
-    private function selection(ChallengeItem $item, array $answer): array
-    {
-        return match ($item->interaction_type) {
-            'puzzle_arrange'  => ['action' => 'swap', 'value' => null, 'from' => $this->rng->getInt(0, 8), 'to' => $this->rng->getInt(0, 8)],
-            'fill_blank_bank' => ['action' => 'set', 'value' => $answer['text']],
-            default           => ['action' => 'set', 'value' => $answer['verdict']],
-        };
     }
 
     private function misses(float $skill): int
@@ -1024,8 +1008,8 @@ final class Simulator
     }
 
     /**
-     * Slide narasi/dialog: `dialogue_advanced` per slide, narasinya diputar
-     * otomatis dan biasanya didengar sampai habis.
+     * Slide narasi/dialog: one `dialogue_completed` at the last slide (29 K5),
+     * narasinya diputar otomatis dan biasanya didengar sampai habis.
      *
      * @param list<object> $slides
      */
@@ -1038,10 +1022,11 @@ final class Simulator
         $base  = $this->clock->now();
 
         foreach ($slides as $index => $slide) {
-            $t     += $this->rng->getInt($perSlide - 1_500, $perSlide + 3_000);
-            $rows[] = ['dialogue_advanced', ['level_id' => $levelId], [
-                'index' => $index + 1, 'total' => $total, 'context' => $context, 'character' => $slide->character_code ?? null,
-            ], $t];
+            $t += $this->rng->getInt($perSlide - 1_500, $perSlide + 3_000);
+
+            if ($index === $total - 1) {
+                $rows[] = ['dialogue_completed', ['level_id' => $levelId], ['context' => $context, 'total' => $total], $t];
+            }
 
             $audioId = (int) ($this->locale === 'en' ? ($slide->audio_en_asset_id ?? 0) : ($slide->audio_id_asset_id ?? 0));
 

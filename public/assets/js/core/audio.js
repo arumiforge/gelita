@@ -223,6 +223,14 @@ export const Sfx = {
 // ------------------------------------------------------------- Narasi
 
 const players = new Set();
+
+// Page hidden or left: playbacks still running report their listening time
+// (29 K6). Capture runs before core/events.js flushes its queue on pagehide.
+const reportAllListened = () => { for (const player of players) player.reportListened?.(); };
+window.addEventListener('pagehide', reportAllListened, true);
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') reportAllListened();
+}, true);
 const playersByNode = new WeakMap();
 
 function stopAllNarration(except = null) {
@@ -423,11 +431,26 @@ class NarrationPlayer {
     return this.restart(this.playIndex === 0 ? 'play' : 'replay');
   }
 
+  /**
+   * Listening time so far, sent as `pause` while the playback may go on
+   * (page hidden or left): the only carrier of listened_ms for a playback
+   * that never completes (revision 10, part 3: 29 K6).
+   */
+  reportListened() {
+    if (this.playingSince === null) return;
+    this.accumulate();
+    this.playingSince = performance.now();
+    this.send('pause');
+  }
+
   /** @param {'play'|'autoplay'|'replay'} action */
   restart(action) {
     stopAllNarration(this);
     const audio = this.element();
+    // A playback cut short by the restart reports its time before it is reset (29 K6)
+    const wasPlaying = this.playingSince !== null;
     this.accumulate();
+    if (wasPlaying && this.playIndex > 0 && !this.completed) this.send('pause');
     audio.pause();
     audio.currentTime = 0;
     this.playIndex += 1;

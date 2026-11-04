@@ -130,12 +130,16 @@ final class SimulationTest extends CIUnitTestCase
         $this->assertGreaterThan(0, $this->conn->table('item_responses')->where('solved_on_try', 1)->countAllResults(), 'benar sejak percobaan pertama');
         $this->assertGreaterThan(0, $this->conn->table('item_responses')->where('solved_on_try >', 1)->countAllResults(), 'salah lalu benar');
 
-        // GradeFiveWorld tidak berisi dialog dan halaman Pustaka: dialogue_advanced / library_page_viewed tidak diperiksa di sini
-        foreach (['hint_opened', 'wrong_target_clicked', 'clue_failed', 'challenge_tries_exhausted', 'answer_selected', 'screen_viewed',
+        // GradeFiveWorld tidak berisi dialog dan halaman Pustaka: dialogue_completed / library_page_viewed tidak diperiksa di sini
+        foreach (['hint_opened', 'wrong_target_clicked', 'clue_failed', 'challenge_tries_exhausted', 'answer_submitted', 'screen_viewed',
             'intro_completed', 'library_opened', 'reading_progress', 'feedback_submitted',
             'level_opened', 'overlay_opened', 'challenge_abandoned', 'session_started'] as $type) {
             $this->assertGreaterThan(0, $this->conn->table('game_event_logs')->where('event_type', $type)->countAllResults(), "event {$type}");
         }
+
+        // Removed types are never written (29 §5.1)
+        $this->assertSame(0, $this->conn->table('game_event_logs')->whereIn('event_type', array_keys(App\Libraries\EventCatalog::REMOVED))->countAllResults());
+        $this->assertGreaterThan(0, $this->conn->table('item_tries')->where('ready_ms IS NOT NULL', null, false)->countAllResults(), 'ready_ms for Benar atau Salah and Cari Objek');
 
         $this->assertSame(1, $this->conn->table('game_event_logs')->where('event_type', 'challenge_abandoned')->like('payload_json', 'pagehide')->countAllResults() > 0 ? 1 : 0, 'tab ditutup di tengah tantangan');
         $this->assertGreaterThan(0, $this->conn->table('participant_feedback')->countAllResults());

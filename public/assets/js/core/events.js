@@ -16,7 +16,7 @@
  * `CONFIG.eventFlush` (Gelita::$eventFlush) and fall back to 30 s / 40 events.
  * Forced sends stay immediate: tab hidden and page closed beacon whatever is
  * waiting, and the curtain (core/curtain.js) and the narrator's last slide
- * await flush() before the next screen, so `dialogue_advanced` is on the
+ * await flush() before the next screen, so `dialogue_completed` is on the
  * server when the map renders its "Belum didengar" badge.
  *
  * Persist-on-push (R1): every event is written to the offline queue

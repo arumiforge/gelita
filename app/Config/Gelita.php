@@ -27,8 +27,8 @@ class Gelita extends BaseConfig
 
     /** Client Hints yang diminta lewat header Accept-CH (App\Filters\ClientHintsFilter) */
     public array $clientHints = [
-        'Sec-CH-UA-Model', 'Sec-CH-UA-Platform-Version', 'Sec-CH-UA-Full-Version-List',
-        'Sec-CH-UA-Arch', 'Sec-CH-UA-Bitness',
+        // Only what the OS and browser versions need (revision 10, part 3: 29 §5.5)
+        'Sec-CH-UA-Platform-Version', 'Sec-CH-UA-Full-Version-List',
     ];
 
     /**
@@ -89,27 +89,7 @@ class Gelita extends BaseConfig
     /** three.js entry under public/assets/ (the folder carries the version; vendor/README.md) */
     public string $screenFxThree = 'vendor/three-0.186.1/three.module.js';
 
-    /**
-     * Event type yang boleh ditulis ke game_event_logs (perombakan kelas 5,
-     * Dok 1 §12.3). Data mentah: tidak ada skor atau indeks yang dihitung.
-     */
-    public array $eventTypes = [
-        // sesi & navigasi
-        'session_started', 'session_resumed', 'session_paused', 'session_abandoned',
-        'session_completed', 'locale_changed', 'level_opened', 'level_completed',
-        'library_opened', 'library_page_viewed', 'dialogue_advanced', 'intro_completed',
-        'screen_viewed', 'overlay_opened', 'page_hidden', 'page_visible', 'viewport_changed',
-        // tantangan
-        'challenge_opened', 'challenge_checked', 'challenge_completed', 'challenge_abandoned',
-        'challenge_tries_exhausted', 'answer_submitted', 'answer_changed', 'answer_selected',
-        'wrong_target_clicked', 'clue_failed', 'reading_progress', 'hint_opened',
-        // audio
-        'audio_play', 'audio_autoplay', 'audio_pause', 'audio_replay', 'audio_completed',
-        // lain-lain
-        'feedback_submitted', 'password_changed',
-        // asset package and event queue integrity (rencana-paket-aset §7.1, §7.3)
-        'package_changed', 'events_dropped',
-    ];
+    // Event types moved to App\Libraries\EventCatalog (revision 10, part 3: 29 §4, K7).
 
     /**
      * Kebijakan kata sandi SISWA — literasi keamanan digital.
@@ -340,6 +320,13 @@ class Gelita extends BaseConfig
      * deletes the real uploads of a developer machine.
      */
     public string $uploadDir = 'assets/uploads/';
+
+    /**
+     * Empty taps (`empty_tap`) a Cari Objek clue sends per attempt before the
+     * rest become one event with `overflow` (revision 10, part 3: 29 §6.2).
+     * Checked in KG3a and KG3b, fixed before G4.
+     */
+    public int $emptyTapLimit = 30;
 
     /**
      * Client event queue rhythm (core/events.js via js_config() `eventFlush`;

@@ -19,7 +19,7 @@
  *   tombol itu interaksinya). Esc atau Tutup menghentikan narasi dan
  *   mengembalikan fokus. Mencapai slide terakhir menghapus lencana "Belum
  *   didengar" wilayah itu; server menghitung ulang dari event
- *   `dialogue_advanced` (context `region_intro`) pada kunjungan berikutnya.
+ *   `dialogue_completed` (context `region_intro`) pada kunjungan berikutnya.
  *   Tanpa JavaScript overlay adalah target :target #kenal-{code}.
  *   Tombol yang diketuk sebelum modul ini siap hanya sempat mengubah hash
  *   (#kenal-{code} atau #kenal-{code}-{n}); saat siap, hash itu membuka

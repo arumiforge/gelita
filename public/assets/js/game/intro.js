@@ -2,8 +2,8 @@
  * Layar sinematik layar penuh: cerita pembuka (/intro, context `intro`) dan
  * penutup (/penutup, context `ending`, Tahap 3). Pemutar narasi mode `tap`
  * (game/narrator.js): kartu "Ketuk untuk mulai" membuka kunci audio, lalu
- * narasi diputar otomatis; event `dialogue_advanced` { index, total,
- * context } tiap perpindahan slide.
+ * narasi diputar otomatis; event `dialogue_completed` { context, total }
+ * at the last slide.
  *
  * Right after sign-up the intro carries the welcome card (flash `welcome`).
  * It opens as a modal over the tap card (owner, 19 October 2026): the

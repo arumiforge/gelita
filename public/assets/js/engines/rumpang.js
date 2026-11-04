@@ -10,7 +10,7 @@
  * berikutnya.
  *
  * Setiap kata yang dipasang atau dilepas dicatat sebagai event
- * `answer_selected` (action set / clear).
+ * input times only (`ctx.selected`; no event since 29 §5.1).
  *
  * Cek jawabanku → POST /check dengan seluruh isian sekaligus. Kotak kosong →
  * modal lokal, request TIDAK dikirim (tidak dihitung percobaan). Jawaban yang

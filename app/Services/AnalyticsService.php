@@ -171,7 +171,7 @@ class AnalyticsService
             ->getResultArray();
 
         $devices = $db->table('device_logs')
-            ->select('device_logs.created_at, device_logs.via, device_logs.device_type, device_logs.device_brand, device_logs.device_model')
+            ->select('device_logs.created_at, device_logs.via, device_logs.device_type')
             ->select('device_logs.os_name, device_logs.os_version, device_logs.browser_name, device_logs.browser_version')
             ->select('device_logs.screen_w, device_logs.screen_h, device_logs.viewport_w, device_logs.viewport_h')
             ->where('device_logs.participant_id', $participantId)

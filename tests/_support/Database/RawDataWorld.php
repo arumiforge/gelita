@@ -111,7 +111,7 @@ trait RawDataWorld
         ]);
 
         $this->insertRows($db, 'device_logs', [
-            ['session_id' => 1, 'participant_id' => 1, 'via' => 'register', 'device_type' => 'tablet', 'client_hints_json' => '{"headers":{}}', 'user_agent' => 'Mozilla/5.0', 'created_at' => '2026-10-01 08:01:00'],
+            ['session_id' => 1, 'participant_id' => 1, 'via' => 'register', 'device_type' => 'tablet', 'os_name' => 'Android', 'browser_name' => 'Chrome', 'created_at' => '2026-10-01 08:01:00'],
             ['session_id' => 2, 'participant_id' => 2, 'via' => 'login', 'device_type' => 'desktop', 'created_at' => '2026-10-02 09:01:00'],
         ]);
 

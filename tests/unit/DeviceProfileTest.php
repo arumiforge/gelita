@@ -50,7 +50,7 @@ final class DeviceProfileTest extends CIUnitTestCase
         $this->assertSame(['desktop', 'Windows', '11', 'Chrome', 'Blink'], [$row['device_type'], $row['os_name'], $row['os_version'], $row['browser_name'], $row['browser_engine']]);
         $this->assertSame(0, $row['is_bot']);
         $this->assertNull($row['corrected']);
-        $this->assertSame('"Windows"', $row['client_hints_json']['headers']['Sec-CH-UA-Platform']);
+        $this->assertArrayNotHasKey('client_hints_json', $row, 'hints are read, not stored (29 §5.5)');
 
         // tanpa Client Hints, UA Windows 11 tidak dapat dibedakan dari Windows 10
         $this->assertSame('10', DeviceProfile::fromParts(self::WINDOWS_CHROME, [], [])['os_version']);
@@ -60,12 +60,13 @@ final class DeviceProfileTest extends CIUnitTestCase
     {
         $tablet = DeviceProfile::fromParts(self::SAMSUNG_TAB, [], ['touch_points' => 5]);
 
-        $this->assertSame(['tablet', 'Samsung', 'Android', '13', 'Chrome'], [$tablet['device_type'], $tablet['device_brand'], $tablet['os_name'], $tablet['os_version'], $tablet['browser_name']]);
-        $this->assertStringStartsWith('Galaxy Tab', (string) $tablet['device_model']);
+        $this->assertSame(['tablet', 'Android', '13', 'Chrome'], [$tablet['device_type'], $tablet['os_name'], $tablet['os_version'], $tablet['browser_name']]);
+        $this->assertArrayNotHasKey('device_brand', $tablet);
+        $this->assertArrayNotHasKey('device_model', $tablet);
 
         $phone = DeviceProfile::fromParts(self::IPHONE_SAFARI, [], ['touch_points' => 5]);
 
-        $this->assertSame(['smartphone', 'Apple', 'iPhone', 'iOS', '17.4', 'Mobile Safari'], [$phone['device_type'], $phone['device_brand'], $phone['device_model'], $phone['os_name'], $phone['os_version'], $phone['browser_name']]);
+        $this->assertSame(['smartphone', 'iOS', '17.4', 'Mobile Safari'], [$phone['device_type'], $phone['os_name'], $phone['os_version'], $phone['browser_name']]);
         $this->assertNull($phone['corrected']);
     }
 
@@ -74,8 +75,6 @@ final class DeviceProfileTest extends CIUnitTestCase
         $ipad = DeviceProfile::fromParts(self::MAC_SAFARI, [], ['touch_points' => 5, 'screen_w' => 1024, 'screen_h' => 1366]);
 
         $this->assertSame('tablet', $ipad['device_type']);
-        $this->assertSame('Apple', $ipad['device_brand']);
-        $this->assertSame('iPad', $ipad['device_model']);
         $this->assertSame('iPadOS', $ipad['os_name']);
         $this->assertNull($ipad['os_version'], 'versi macOS dari UA bukan versi iPadOS');
         $this->assertSame('ipad_desktop_ua', $ipad['corrected']);
@@ -106,18 +105,16 @@ final class DeviceProfileTest extends CIUnitTestCase
         $client = ['ua_data' => [
             'platform'        => 'Android',
             'platformVersion' => '13.0.0',
-            'model'           => 'SM-A515F',
+            'model'           => 'SM-A515F',   // not requested any more; ignored
             'mobile'          => true,
             'fullVersionList' => [['brand' => 'Google Chrome', 'version' => '124.0.6367.82']],
         ]];
 
-        $this->assertNull(DeviceProfile::fromParts(self::ANDROID_FROZEN, [], [])['device_model'], 'UA beku Chrome Android: model "K"');
-
         $row = DeviceProfile::fromParts(self::ANDROID_FROZEN, [], $client);
 
-        $this->assertSame(['smartphone', 'Samsung', 'Galaxy A51', 'Android'], [$row['device_type'], $row['device_brand'], $row['device_model'], $row['os_name']]);
-        $this->assertStringStartsWith('13', (string) $row['os_version']);
-        $this->assertSame('SM-A515F', $row['client_hints_json']['ua_data']['model']);
+        $this->assertSame(['smartphone', 'Android'], [$row['device_type'], $row['os_name']]);
+        $this->assertStringStartsWith('13', (string) $row['os_version'], 'platformVersion still fills the frozen UA');
+        $this->assertStringNotContainsString('SM-A515F', json_encode($row), 'the model is never kept');
     }
 
     public function testScreenSignalsAreValidatedAndClipped(): void
@@ -135,20 +132,19 @@ final class DeviceProfileTest extends CIUnitTestCase
             'timezone'      => 'Asia/Jakarta; DROP TABLE',
         ]);
 
-        $this->assertSame(512, mb_strlen((string) $row['user_agent']), 'user_agent dipangkas ke panjang kolom');
+        $this->assertArrayNotHasKey('user_agent', $row);
         $this->assertSame([1366, 768], [$row['screen_w'], $row['screen_h']]);
         $this->assertNull($row['viewport_w'], 'bukan angka');
         $this->assertNull($row['viewport_h'], 'di luar batas kolom');
-        $this->assertSame(1.33, $row['pixel_ratio']);
         $this->assertNull($row['touch_points']);
         $this->assertSame('landscape-primary', $row['orientation']);
         $this->assertNull($row['is_standalone'], 'hanya boolean');
-        $this->assertSame('id-ID', $row['language']);
-        $this->assertNull($row['timezone']);
-        $this->assertSame(['orientation' => null, 'language' => null], array_intersect_key(
-            DeviceProfile::fromParts(self::IPHONE_SAFARI, [], ['orientation' => str_repeat('x', 30), 'language' => '<b>id</b>']),
-            ['orientation' => 1, 'language' => 1],
-        ));
+
+        foreach (['pixel_ratio', 'language', 'timezone', 'os_platform'] as $dropped) {
+            $this->assertArrayNotHasKey($dropped, $row, $dropped . ' is not stored (29 §5.5)');
+        }
+
+        $this->assertNull(DeviceProfile::fromParts(self::IPHONE_SAFARI, [], ['orientation' => str_repeat('x', 30)])['orientation']);
     }
 
     public function testBrokenOrOversizedDeviceJsonIsIgnored(): void
@@ -166,7 +162,6 @@ final class DeviceProfileTest extends CIUnitTestCase
 
         $this->assertSame('smartphone', $row['device_type']);
         $this->assertNull($row['screen_w']);
-        $this->assertNull($row['client_hints_json']);
     }
 
     public function testRawIpIsNeverKept(): void
@@ -177,6 +172,26 @@ final class DeviceProfileTest extends CIUnitTestCase
         $this->assertStringNotContainsString('203.0.113.9', json_encode($row));
         $this->assertNull(DeviceProfile::fromParts(self::WINDOWS_CHROME, [], [], null)['ip_hash']);
         $this->assertMatchesRegularExpression('#^matomo/device-detector \d+\.\d+#', $row['detector']);
+    }
+
+    /** Revision 10, part 3 (29 §5.5, `DeviceMinimisationTest`): only the kept columns reach device_logs. */
+    public function testDeviceLogsKeepOnlyTheMinimisedColumns(): void
+    {
+        $fields = (new \ReflectionProperty(\App\Models\DeviceLogModel::class, 'allowedFields'))->getValue(model(\App\Models\DeviceLogModel::class, false));
+
+        foreach (['user_agent', 'client_hints_json', 'device_brand', 'device_model', 'pixel_ratio', 'touch_points', 'timezone', 'language', 'os_platform'] as $dropped) {
+            $this->assertNotContains($dropped, $fields, $dropped);
+        }
+
+        $this->assertSame(['Sec-CH-UA-Platform-Version', 'Sec-CH-UA-Full-Version-List'], config('Gelita')->clientHints, 'Accept-CH without Model, Arch, Bitness');
+
+        $response = (new \App\Filters\ClientHintsFilter())->after(service('request'), service('response'));
+        $this->assertSame('Sec-CH-UA-Platform-Version, Sec-CH-UA-Full-Version-List', $response->getHeaderLine('Accept-CH'));
+
+        $device = (string) file_get_contents(FCPATH . 'assets/js/core/device.js');
+        foreach (['pixel_ratio', 'timezone', "'model'", "'architecture'", "'bitness'"] as $word) {
+            $this->assertStringNotContainsString($word, $device, $word . ' is not sent any more');
+        }
     }
 
     public function testCaptureReadsTheRequestHeaders(): void
