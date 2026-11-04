@@ -35,6 +35,7 @@
  * @var list<array<string, mixed>> $nodes
  * @var bool                       $hasLibrary
  * @var array<string, mixed>       $library    GameProgress::libraryAccess() wilayah ini
+ * @var bool                       $bridgeSeen part 6: the bridge story may be watched again
  * @var string                     $locale
  */
 $region = $level->text('name', $locale);
@@ -160,6 +161,10 @@ $hasTrack     = is_file(FCPATH . 'assets/ui/map-progress-track.webp');
               <?= stars_html((int) $node['stars']) ?>
             <?php endif ?>
           </div>
+          <?php if ($node['engine_type'] === 'skenario' && ! empty($bridgeSeen) && $node['status'] !== 'locked'): ?>
+            <?php // Part 6 (32 §7.2): watch the bridge story again; no data depends on it ?>
+            <a class="node-bridge" href="<?= esc(base_url('penghubung/' . $level->code), 'attr') ?>"><?= icon('play') ?> <?= esc(lang('Game.watchBridgeStory')) ?></a>
+          <?php endif ?>
           <?php if ($node['status'] === 'completed'): ?>
             <a class="btn btn-ghost btn-sm node-action is-green" href="<?= esc($href($node), 'attr') ?>"><?= esc(lang('Game.viewResult')) ?></a>
           <?php elseif ($node['status'] === 'open'): ?>

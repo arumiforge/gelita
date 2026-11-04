@@ -33,6 +33,11 @@ class ChallengeController extends BaseGameController
             return $gate;
         }
 
+        // Part 6 (32 §7.2): the bridge story before the first Skenario Digital attempt
+        if ($gate = $this->scenarioGate($session, $level, $node)) {
+            return $gate;
+        }
+
         // Research mode without a booklet: the scored challenge stays closed (31 K10)
         $served = model(ChallengeAttemptModel::class)->variantsServed($session->participant_id, $node->id);
 
@@ -56,6 +61,11 @@ class ChallengeController extends BaseGameController
         }
 
         if ($gate = $this->dialogueGate($session, $level)) {
+            return $gate;
+        }
+
+        // Part 6 (32 §7.2): the bridge story before the first Skenario Digital attempt
+        if ($gate = $this->scenarioGate($session, $level, $node)) {
             return $gate;
         }
 

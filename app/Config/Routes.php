@@ -52,6 +52,8 @@ $routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($ro
         $routes->get('peta', 'MapController::kedu');
         $routes->get('wilayah/(:segment)', 'MapController::level/$1');
         $routes->get('dialog/(:segment)', 'DialogueController::show/$1');
+        // Part 6 (32 §12): the bridge story before the fifth challenge
+        $routes->get('penghubung/(:segment)', 'DialogueController::bridge/$1');
         $routes->get('tuntas/(:segment)', 'DialogueController::done/$1');
         $routes->get('penutup', 'DialogueController::ending');
         $routes->get('misi/(:segment)/(:num)', 'ChallengeController::brief/$1/$2');

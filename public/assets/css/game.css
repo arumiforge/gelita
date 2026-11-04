@@ -4561,3 +4561,6 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .scenario-feedback.is-safe { border-left-color: #6FBF73; }
 .scenario-safe { font-weight: 700; color: #FFF3C4; }
 .instruction-audio { display: inline-flex; margin-left: var(--gap-2); vertical-align: middle; }
+/* Region map: "Lihat cerita penghubung" under the Skenario Digital card (part 6) */
+.node-bridge { display: inline-flex; align-items: center; gap: .25rem; font-size: var(--fs-small, .875rem); color: var(--gold-300); text-decoration: underline; }
+
