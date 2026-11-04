@@ -1914,11 +1914,11 @@ class ChallengeService
                 ] + ($response->is_correct ? [] : $this->scenarioExplanation($item, $locale));
             }
 
-            $media = $item->media_asset_id ? media_src($item->media_asset_id) : null;
             $out[] = [
                 'id'      => $item->id,
                 'prompt'  => $item->text('prompt', $locale),
-                'media'   => $media === '' ? null : $media,
+                // No picture yet: the scenario shows its text only (32 §7.5)
+                'media'   => media_exists($item->media_asset_id) ? media_src($item->media_asset_id) : null,
                 'steps'   => max(1, (int) ($item->config_json['steps'] ?? 1)),
             ] + $this->clueAudio($item, $locale) + $lists + ['state' => $state];
         }

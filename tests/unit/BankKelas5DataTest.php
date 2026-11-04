@@ -68,7 +68,7 @@ final class BankKelas5DataTest extends CIUnitTestCase
         $this->assertCount(24, $sheets['scenarios']);
         $this->assertCount(184, $sheets['scenario_options']);
         $this->assertSame(['D1a', 'D1b', 'D2', 'D3', 'PBK'], array_column($sheets['indicators'], 'code'));
-        $this->assertCount(67, $this->flat()['media']);
+        $this->assertCount(67 + 24, $this->flat()['media'], '+ one situation picture per scenario (32 §7.5)');
     }
 
     /** Every item of 08 stays needs_verification until expert validation (31 §7.3). */
