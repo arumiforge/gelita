@@ -7,6 +7,12 @@ OPS=/home/deploy/.gelita              # backup.cnf, migrate.dsn, ops.conf (chmod
 APP=/var/www/gelita
 DIR=/var/backups/gelita               # milik deploy, chmod 700
 KEDUA=/mnt/backup-eksternal/gelita    # drive eksternal / NAS / mesin lain
+# Part 4 (30 §7.5, §0.1): days kept at the second location; empty = kept forever (as before).
+# Research installs set KEDUA_HARI=30 in ops.conf.
+KEDUA_HARI=
+# --ganti: after a deletion or a study closure, a fresh backup replaces every older one at both locations (K3)
+GANTI=0
+[ "${1:-}" = "--ganti" ] && GANTI=1
 # Nilai khusus server ditulis di ops.conf, bukan di sini: skrip ini dilacak git.
 # shellcheck source=/dev/null
 [ -r "$OPS/ops.conf" ] && . "$OPS/ops.conf"
@@ -54,3 +60,24 @@ if ! rsync -a "$DIR/" "$KEDUA/"; then
   echo "$STAMP PERINGATAN: salinan kedua ke $KEDUA GAGAL" >&2
   exit 2
 fi
+
+# 6. Part 4 (30 §7.5): second location kept KEDUA_HARI days when set
+if [ -n "$KEDUA_HARI" ]; then
+  find "$KEDUA" -name 'gelita-*' -mtime +"$KEDUA_HARI" -delete
+fi
+
+# 7. --ganti: the fresh backup is tested above (gzip -t); now every older file goes at both locations.
+#    rsync already reached the second location, so it is reachable; step 5 stops with code 2 otherwise.
+if [ "$GANTI" = 1 ]; then
+  removed=0
+  for loc in "$DIR" "$KEDUA"; do
+    while IFS= read -r -d '' f; do
+      case "$(basename "$f")" in *"$STAMP"*) continue ;; esac
+      rm -f -- "$f"; removed=$((removed + 1))
+    done < <(find "$loc" -maxdepth 1 -name 'gelita-*' -print0)
+  done
+  echo "$STAMP ganti: $removed berkas cadangan lama dihapus; tersisa stempel $STAMP"
+fi
+
+# 8. Status for the governance page warning (30 §0.1)
+printf '{"ran_at":"%s","kedua_hari":"%s","ganti":%s}\n' "$(date -Iseconds)" "$KEDUA_HARI" "$GANTI" > "$APP/writable/backup-status.json" || true

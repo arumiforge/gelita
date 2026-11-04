@@ -3,7 +3,9 @@
   Dijalankan Task Scheduler (akun yang sama dengan Laragon) dan oleh deploy.ps1.
   Kode keluar: 0 berhasil; 1 gagal; 2 backup lokal berhasil, salinan kedua gagal.
 #>
-param([string]$Config = 'C:\gelita-ops\config.psd1')
+param([string]$Config = 'C:\gelita-ops\config.psd1', [switch]$Ganti)
+# Part 4 (30 §7.5): -Ganti replaces every older backup at both locations with the fresh one (K3);
+# KeduaHari in config.psd1 (e.g. 30) limits the second location; empty = kept forever (as before).
 
 $ErrorActionPreference = 'Stop'
 $c     = Import-PowerShellDataFile $Config
@@ -77,3 +79,28 @@ try {
     Write-Warning "$stamp salinan kedua ke $($c.Kedua) GAGAL: $($_.Exception.Message)"
     exit 2
 }
+
+# 6. Part 4 (30 7.5): second location kept KeduaHari days when set
+$keduaHari = if ($c.ContainsKey('KeduaHari') -and $c.KeduaHari) { [int]$c.KeduaHari } else { 0 }
+if ($keduaHari -gt 0) {
+    Get-ChildItem $c.Kedua -Filter 'gelita-*' |
+        Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-$keduaHari) } |
+        Remove-Item
+}
+
+# 7. -Ganti: test the fresh zip, then remove every older file at both locations
+if ($Ganti) {
+    $fresh = Join-Path $c.Dir "gelita-db-$stamp.zip"
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    try { [IO.Compression.ZipFile]::OpenRead($fresh).Dispose() } catch { Write-Warning "$stamp uji zip GAGAL; tidak ada yang dihapus"; exit 1 }
+    $removed = 0
+    foreach ($loc in @($c.Dir, $c.Kedua)) {
+        Get-ChildItem $loc -Filter 'gelita-*' | Where-Object { $_.Name -notlike "*$stamp*" } |
+            ForEach-Object { Remove-Item $_.FullName; $removed++ }
+    }
+    Write-Output "$stamp ganti: $removed berkas cadangan lama dihapus; tersisa stempel $stamp"
+}
+
+# 8. Status for the governance page warning (30 0.1)
+@{ ran_at = (Get-Date).ToString('o'); kedua_hari = $keduaHari; ganti = [bool]$Ganti } | ConvertTo-Json |
+    Set-Content -Path ([IO.Path]::Combine($c.App, 'writable', 'backup-status.json')) -Encoding ascii
