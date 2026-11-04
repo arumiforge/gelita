@@ -33,6 +33,17 @@
   <?= component('stat-tile', ['label' => 'Kritik & saran', 'value' => fmt_num($kpi['feedback'], 0, 'id'), 'icon' => 'message']) ?>
 </section>
 
+<?php // Part 4 (30 §6, §7.7) ?>
+<?php if (($requestCards ?? []) !== []): ?>
+  <section class="form-section" aria-label="<?= esc(lang('Admin.menuDataRequests'), 'attr') ?>">
+    <ul>
+      <?php foreach ($requestCards as $card): ?>
+        <li><a href="<?= base_url($card['href']) ?>"><?= esc($card['label']) ?></a></li>
+      <?php endforeach ?>
+    </ul>
+  </section>
+<?php endif ?>
+
 <?php if (($fieldSessions ?? []) !== []): ?>
   <section class="form-section" aria-labelledby="dash-field-title">
     <h2 id="dash-field-title"><?= icon('clock') ?> <?= esc(lang('Admin.dashboardFieldSessions')) ?></h2>

@@ -43,6 +43,8 @@ if (staff_can('research.export')) {
         . '<button class="btn" type="submit" formaction="' . base_url('admin/ekspor/xlsx') . '">' . icon('download') . ' Unduh XLSX</button>'
         . '<button class="btn" type="submit" formaction="' . base_url('admin/ekspor/csv') . '">' . icon('download') . ' Unduh CSV-ZIP</button>'
         . '<button class="btn" type="submit">' . icon('text') . ' Cetak PDF</button></form>';
+    // Part 4 (30 §8, §14): one child's copy for the parents
+    $actions .= '<a class="btn" href="' . base_url('admin/peserta/salinan?kode=' . rawurlencode((string) $participant['participant_code'])) . '">' . icon('download') . ' ' . esc(lang('Admin.copyTitle')) . '</a>';
 }
 
 if (staff_can('participants.reset_by_id')) {
@@ -138,6 +140,37 @@ $rawTable = static function (?array $table, string $empty, array $extra = []) {
       </p>
     <?php endif ?>
   </section>
+  <?php endif ?>
+
+  <?php // Part 4 (30 §5.3, §9): registration correction and reactivation, admin only ?>
+  <?php if (staff_can('participants.accounts')): ?>
+  <section class="form-section" id="betulkan">
+    <h2><?= icon('edit') ?> <?= esc(lang('Admin.correctTitle')) ?></h2>
+    <p class="muted"><?= esc(lang('Admin.correctHelp')) ?></p>
+    <form method="post" action="<?= base_url($base . '/betulkan') ?>" class="form">
+      <?= csrf_field() ?>
+      <input type="hidden" name="stamp" value="<?= esc((string) ($participant['updated_at'] ?? ''), 'attr') ?>">
+      <div class="field"><label for="fix-age">Umur (tahun)</label> <input type="number" id="fix-age" name="age" value="<?= esc((string) ($participant['age'] ?? ''), 'attr') ?>" required></div>
+      <div class="field"><label for="fix-gender">Jenis kelamin</label>
+        <select id="fix-gender" name="gender" required>
+          <?php foreach (config('Gelita')->genders as $gender): ?><option value="<?= esc($gender, 'attr') ?>" <?= ($participant['gender'] ?? '') === $gender ? 'selected' : '' ?>><?= esc(admin_label('gender', $gender)) ?></option><?php endforeach ?>
+        </select></div>
+      <div class="field"><label for="fix-class">Kelas</label> <input type="number" id="fix-class" name="class_level" min="1" max="6" value="<?= esc((string) ($participant['class_level'] ?? ''), 'attr') ?>" required></div>
+      <div class="field"><label for="fix-reason"><?= esc(lang('Admin.correctReason')) ?></label> <input type="text" id="fix-reason" name="reason" maxlength="200" required></div>
+      <div class="form-actions"><button class="btn" type="submit"><?= esc(lang('Admin.save')) ?></button></div>
+    </form>
+  </section>
+  <?php if (! empty($participant['deactivated_at'])): ?>
+  <section class="form-section" id="aktifkan">
+    <h2><?= esc(lang('Admin.reactivate')) ?></h2>
+    <p class="muted"><?= esc(lang('Admin.reactivateHelp', [fmt_date((string) $participant['deactivated_at'], true, 'id')])) ?></p>
+    <form method="post" action="<?= base_url($base . '/aktifkan') ?>" class="form">
+      <?= csrf_field() ?>
+      <div class="field"><label for="re-reason"><?= esc(lang('Admin.correctReason')) ?></label> <input type="text" id="re-reason" name="reason" maxlength="200" required></div>
+      <div class="form-actions"><button class="btn" type="submit"><?= esc(lang('Admin.reactivate')) ?></button></div>
+    </form>
+  </section>
+  <?php endif ?>
   <?php endif ?>
 
 <?php elseif ($tab === 'sesi'): ?>

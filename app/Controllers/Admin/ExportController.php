@@ -9,6 +9,7 @@ use App\Models\ResearchStudyModel;
 use App\Services\ExportService;
 use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\HTTP\RedirectResponse;
+use CodeIgniter\HTTP\ResponseInterface;
 
 /**
  * Permintaan ekspor data mentah (XLSX / CSV-ZIP, Dok 3 §9), laporan PDF
@@ -205,5 +206,58 @@ class ExportController extends BaseAdminController
         }
 
         return $filters;
+    }
+
+    /**
+     * Part 4 (30 §10.1): the coded consent register of a study as XLSX, one row
+     * per student with a consent row in it. No name, school name, NPSN, or
+     * username. Recorded in `data_exports` (`kind = consent_register`) and the
+     * audit log; sets `research_studies.consent_register_exported_at`. The
+     * file is sent at once and not kept.
+     */
+    public function consentRegister(): ResponseInterface|RedirectResponse
+    {
+        $studies = model(ResearchStudyModel::class);
+        $id      = (int) ($this->request->getGet('studi') ?? 0);
+        $study   = $id > 0 ? $studies->find($id) : $studies->where('field_mode', 1)->orderBy('id', 'DESC')->first();
+
+        if ($study === null) {
+            return $this->back('admin/ekspor', lang('Admin.consentRegisterNoStudy'));
+        }
+
+        $rows = service('consentService')->registerRows((int) $study['id']);
+        $path = WRITEPATH . 'cache' . DIRECTORY_SEPARATOR . 'izin-' . bin2hex(random_bytes(6)) . '.xlsx';
+
+        $writer = new \App\Libraries\ExcelWriter($path);
+        $writer->startSheet('izin', \App\Services\ConsentService::REGISTER_COLUMNS);
+
+        foreach ($rows as $row) {
+            $writer->row(array_map(static fn (string $c): mixed => $row[$c] ?? null, \App\Services\ConsentService::REGISTER_COLUMNS));
+        }
+
+        $sha  = $writer->finish();
+        $body = (string) file_get_contents($path);
+        unlink($path);
+        $now = date('Y-m-d H:i:s');
+
+        model(DataExportModel::class)->insert([
+            'requested_by' => $this->staffId(), 'study_id' => (int) $study['id'], 'format' => 'xlsx',
+            'scope_json' => ['kind' => 'consent_register', 'study_id' => (int) $study['id']], 'anonymized' => 1, 'status' => 'done',
+            'row_count' => count($rows), 'file_path' => null, 'file_sha256' => $sha, 'completed_at' => $now,
+        ]);
+        $studies->update((int) $study['id'], ['consent_register_exported_at' => $now]);
+
+        model(AuditLogModel::class)->record('consent_register_export', [
+            'staff_user_id' => $this->staffId(),
+            'target_type'   => 'research_study',
+            'target_id'     => (string) $study['id'],
+            'metadata'      => ['study_code' => $study['code'], 'row_count' => count($rows)],
+        ]);
+
+        return $this->response
+            ->setHeader('Content-Type', ExportService::mimeType('xlsx'))
+            ->setHeader('Content-Disposition', 'attachment; filename="daftar-izin-' . $study['code'] . '-' . date('Y-m-d') . '.xlsx"')
+            ->setHeader('Cache-Control', 'no-store')
+            ->setBody($body);
     }
 }

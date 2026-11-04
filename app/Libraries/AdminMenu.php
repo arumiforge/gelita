@@ -28,6 +28,9 @@ final class AdminMenu
         ['admin/data',                'Admin.menuRawData',      'database',  ['research.browse'], 'Admin.groupData'],
         ['admin/masukan',             'Admin.menuFeedback',     'message',   ['research.browse'], 'Admin.groupData'],
         ['admin/ekspor',              'Admin.menuExport',       'download',  ['research.export'], 'Admin.groupData'],
+        // Part 4 (30 §14): shown only while a field-mode study exists (FIELD_MODE_ONLY)
+        ['admin/permintaan-data',     'Admin.menuDataRequests', 'shield',    ['deletion.request', 'deletion.confirm', 'deletion.execute'], 'Admin.groupData'],
+        ['admin/tindak-lanjut',       'Admin.menuRiskFollowUp', 'message',   ['risk_flags.view'], 'Admin.groupData'],
         ['admin/konten',              'Admin.menuContent',      'puzzle',    ['content.view'], 'Admin.groupContent'],
         ['admin/konten/impor-bank',   'Admin.menuBankImport',   'upload',    ['content.edit'], 'Admin.groupContent'],
         ['admin/konten/narasi',       'Admin.menuNarration',    'sound',     ['content.view'], 'Admin.groupContent'],
@@ -39,6 +42,18 @@ final class AdminMenu
         ['admin/staf',                'Admin.menuStaff',        'key',       ['staff.manage'], 'Admin.groupSettings'],
         ['admin/tata-kelola',         'Admin.menuGovernance',   'shield',    ['deletion.execute', 'audit.view', 'retention.run'], 'Admin.groupSettings'],
     ];
+
+    /** Part 4 (30 §0.1): items that show only while a study with field mode exists. */
+    private const FIELD_MODE_ONLY = ['admin/permintaan-data', 'admin/tindak-lanjut'];
+
+    private static function fieldModeStudyExists(): bool
+    {
+        try {
+            return model(\App\Models\ResearchStudyModel::class)->where('field_mode', 1)->countAllResults() > 0;
+        } catch (\Throwable) {
+            return false;
+        }
+    }
 
     /**
      * Menu yang berhak dilihat, dikelompokkan berurutan.
@@ -54,6 +69,10 @@ final class AdminMenu
 
         foreach (self::ITEMS as [$href, $label, $icon, $capabilities, $group]) {
             if (array_filter($capabilities, $can) === []) {
+                continue;
+            }
+
+            if (in_array($href, self::FIELD_MODE_ONLY, true) && ! self::fieldModeStudyExists()) {
                 continue;
             }
 

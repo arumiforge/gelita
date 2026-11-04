@@ -64,13 +64,18 @@ $history = array_values(array_filter($requests, static fn (array $row): bool => 
   <li><a href="<?= base_url('admin/tata-kelola/audit') ?>">Riwayat aktivitas (audit)</a></li>
 </ul>
 <?= $this->include('partials/flash') ?>
+<?php // Part 4 (30 §0.1, §7.5): a field-mode study without the 30-day limit at the second backup location ?>
+<?php if (! empty($backupWarning)): ?>
+  <div class="alert alert-warn" role="status"><?= icon('warn') ?><p><?= esc($backupWarning) ?></p></div>
+<?php endif ?>
 
 <?php foreach ($pending as $request): ?>
   <?php $data = $decode($request); $counts = array_filter((array) ($data['counts'] ?? []), static fn ($n): bool => (int) $n > 0); ?>
   <section class="form-section danger-zone" aria-labelledby="req-<?= (int) $request['id'] ?>">
     <header class="level-card-head">
       <div>
-        <span class="eyebrow">Permintaan nomor <?= (int) $request['id'] ?> · <?= esc(fmt_date($request['created_at'], true, 'id')) ?><?= ($data['origin'] ?? null) === 'retention' ? ' · dibuat otomatis karena data melewati batas lama penyimpanan' : '' ?></span>
+        <span class="eyebrow">Permintaan nomor <?= (int) $request['id'] ?> · <?= esc(fmt_date($request['created_at'], true, 'id')) ?><?= ($data['origin'] ?? null) === 'retention' ? ' · dibuat otomatis karena data melewati batas lama penyimpanan' : '' ?><?php // Part 4 (30 §7.1 step 4): a parent's request
+        if (($request['kind'] ?? null) !== null): ?> · <b><?= esc(lang('Admin.requestFromParents')) ?></b> · <span class="mono"><?= esc((string) $request['participant_code']) ?></span> · <?= esc(lang('Admin.requestKind_' . $request['kind'])) ?> · <?= esc(lang('Admin.requestReceivedAgo', [service('dataRequests')->deadlines($request)['received_hours']])) ?><?php endif ?></span>
         <h2 id="req-<?= (int) $request['id'] ?>"><?= icon('warn') ?> <?= esc($scopeText((array) ($data['scope'] ?? []))) ?></h2>
       </div>
       <span class="badge <?= $request['mode'] === 'hard' ? 'is-bad' : 'is-warn' ?>"><?= $request['mode'] === 'hard' ? 'hapus selamanya' : 'sembunyikan' ?></span>

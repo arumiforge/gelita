@@ -71,6 +71,8 @@ $base = 'admin/sesi-lapangan/' . $id;
 
 <p class="form-actions">
   <a class="btn btn-sm" href="<?= base_url($base . '/kursi') ?>"><?= esc(lang('Admin.fieldSessionSeats')) ?></a>
+  <?php // Part 4 (30 §5.2, §14): the consent page next to the seats ?>
+  <a class="btn btn-sm" href="<?= base_url($base . '/izin') ?>"><?= esc(lang('Admin.consentTitle')) ?></a>
   <?php if ((int) $fieldSession['makeup_no'] === 0 && $state === 'closed'): ?>
     <a class="btn btn-sm" href="<?= base_url($base . '/susulan') ?>"><?= esc(lang('Admin.fieldSessionMakeup')) ?></a>
   <?php endif ?>

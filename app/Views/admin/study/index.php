@@ -98,8 +98,8 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $r
       </div>
       <div class="field">
         <label for="<?= $p ?>-retention">Lama penyimpanan data (hari)</label>
-        <input type="number" id="<?= $p ?>-retention" name="retention_days" min="1" max="3650" value="<?= esc($value('retention_days', 1825), 'attr') ?>">
-        <p class="field-help">Setelah lewat, sistem mengingatkan admin untuk menghapus data siswa penelitian ini (tidak dihapus otomatis). 1825 hari = 5 tahun.</p>
+        <input type="number" id="<?= $p ?>-retention" name="retention_days" min="1" max="36525" value="<?= esc($value('retention_days', 1825), 'attr') ?>">
+        <p class="field-help">Setelah lewat, sistem mengingatkan admin untuk menghapus data siswa penelitian ini (tidak dihapus otomatis). 1825 hari = 5 tahun. <?= esc(lang('Admin.retentionStudyHelp')) ?></p>
       </div>
       <div class="field span-all">
         <label for="<?= $p ?>-desc">Keterangan</label>
@@ -181,6 +181,10 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $r
     <?php else: ?>
       <fieldset class="form-readonly" disabled><?= $fields($study, 's' . $sid) ?></fieldset>
       <p class="filter-locked"><?= icon('lock') ?> Hanya ketua peneliti yang dapat mengubah penelitian.</p>
+    <?php endif ?>
+    <?php // Part 4 (30 §10.2): the closure page of a field-mode study ?>
+    <?php if ((int) ($study['field_mode'] ?? 0) === 1): ?>
+      <p><a class="btn btn-sm btn-quiet" href="<?= base_url('admin/studi/' . $sid . '/penutupan') ?>"><?= esc(lang('Admin.closureTitle')) ?></a></p>
     <?php endif ?>
   </form>
 <?php endforeach ?>

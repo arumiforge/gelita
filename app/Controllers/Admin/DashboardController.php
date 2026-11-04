@@ -30,7 +30,43 @@ class DashboardController extends BaseAdminController
             'fieldSessions'   => $this->can('field_sessions.manage') ? $this->openFieldSessions() : [],
             // pratinjau penghapusan buatan retensi: hanya admin yang boleh memutuskan
             'retentionAlerts' => $this->can('retention.run') ? service('retentionService')->pendingRetentionRequests() : [],
+            // Part 4 (30 §6, §7.7): parents' requests and follow-up flags, per role
+            'requestCards'    => $this->requestCards(),
         ]);
+    }
+
+    /**
+     * Part 4 (30 §6, §7.7) cards: the admin sees requests waiting to run;
+     * `ketua` sees requests waiting for confirmation and for ticks, and the
+     * follow-up flags from today's P5. Only while a field-mode study exists.
+     *
+     * @return list<array{label: string, href: string}>
+     */
+    private function requestCards(): array
+    {
+        $study = model(\App\Models\ResearchStudyModel::class)->where('field_mode', 1)->orderBy('id', 'DESC')->first();
+
+        if ($study === null) {
+            return [];
+        }
+
+        $counts = service('dataRequests')->counts();
+        $cards  = [];
+
+        if ($this->can('deletion.execute')) {
+            $cards[] = ['label' => lang('Admin.dashRequestsToRun', [$counts['to_run']]), 'href' => 'admin/tata-kelola'];
+        }
+
+        if ($this->can('deletion.confirm')) {
+            $cards[] = ['label' => lang('Admin.dashRequestsToConfirm', [$counts['to_confirm']]), 'href' => 'admin/permintaan-data'];
+            $cards[] = ['label' => lang('Admin.dashRequestsToTick', [$counts['to_tick']]), 'href' => 'admin/permintaan-data'];
+        }
+
+        if ($this->can('risk_flags.view')) {
+            $cards[] = ['label' => lang('Admin.dashRiskToday', [service('riskFollowUp')->todayCount((int) $study['id'])]), 'href' => 'admin/tindak-lanjut'];
+        }
+
+        return $cards;
     }
 
     /**
