@@ -1183,7 +1183,7 @@ Pengembang memilih **dua variasi bersih yang diacak**, bukan satu variasi tetap.
   - Keterangan (`needs_verification` sampai validasi ahli): *"Wayang Kedu adalah wayang kulit asli wilayah Kedu yang berkembang di Temanggung. Dalang memainkan wayang di balik kelir, yaitu kain putih yang disinari lampu, dengan iringan gamelan."*
   - Status Warisan Budaya Takbenda tidak ditulis di keterangan, karena surat penetapannya belum ditemukan (berita Agustus 2026 hanya menyebut usulannya lolos). Kalimat itu boleh ditambahkan setelah penetapannya dicek. Keterangan wajib menyebut Temanggung, karena Wonosobo punya gaya sendiri (Wayang Kedu *gagrag Wonosaban*).
   - Arahan gambar untuk tim katalog (usulan prompt TMG-P11): pertunjukan wayang kulit di pendapa desa, dalang dewasa di balik kelir yang disinari lampu, bayangan wayang di kelir, pemain gamelan, dan anak-anak menonton sambil duduk. Tanpa gunung, kebun kopi, candi, kuda kepang, ikan, dan tulisan, supaya gambarnya juga bersih. Gambar harus lulus uji keping otomatis dan uji susun oleh dua orang.
-- **Wonosobo: syarat Lengger terpenuhi.** Pengembang mengonfirmasi bahwa Topeng Lengger berasal dari Wonosobo (26 Oktober 2026), jadi Lengger menjadi variasi `b` dan Bukit Sikunir tidak dipakai di pengerjaan pertama. Tahun penetapan Warisan Budaya Takbenda (2020) di keterangannya tetap dicek peneliti; kalau tidak cocok, kalimat itu dihapus.
+- **Wonosobo: syarat Lengger terpenuhi.** Pengembang mengonfirmasi bahwa Topeng Lengger berasal dari Wonosobo (26 Oktober 2026), jadi Lengger menjadi variasi `b` dan Bukit Sikunir tidak dipakai di pengerjaan pertama. Tahun penetapan Warisan Budaya Takbenda (2020) di keterangannya tetap dicek peneliti; kalau tidak cocok, kalimat itu dihapus. **Dikonfirmasi pengembang (4 November 2026)** dari sumber Pemprov Jawa Tengah (Visit Jawa Tengah); kalimatnya tetap, dan pengamat budaya tetap memeriksanya di B.7.
 - **Magelang: gambar Pawon diganti.** Gambar `mgl-1-e` sekarang menonjolkan stupa kecil di atap candi, yang mirip sasaran PBK `mgl-4-x01`. Tim katalog membuat gambar baru, lalu gambarnya dicek ulang. Arahan: Candi Pawon dari sudut dekat ke tangga, pintu, dan panel berukir, dengan atap dan stupanya terpotong bingkai atau jauh di latar; tanpa stupa berlubang dan tanpa Borobudur. Keterangannya tidak berubah.
 - **Yang tidak berubah.** Ke-25 variasi lama lainnya tetap dipakai untuk pengerjaan ulang, tanpa perubahan keterangan atau gambar.
 - **Gambar baru dicek ulang.** Kedua gambar baru (Wayang Kedu dan Candi Pawon) dicek ulang terhadap butir di draf ini setelah dibuat, sebelum validasi ahli.
@@ -1232,7 +1232,7 @@ Sesudahnya pengembang mengonfirmasi asal Wayang Kedu Temanggungan dan asal Topen
 | Nama komentator | Nama depan umum tidak menunjuk orang tertentu | `@nama` diganti nama depan saja (misalnya **Nadia**, **Pak Anton**) |
 | Situs | Semua memakai domain `.example` (dicadangkan, RFC 2606) | Dipakai |
 
-Sebelum pengambilan data, satu orang tim tetap disarankan mengetik setiap nama akun di kolom cari Instagram dan TikTok. Kalau ada akun nyata yang aktif dengan nama sama persis, namanya diganti.
+Sebelum pengambilan data, satu orang tim tetap disarankan mengetik setiap nama akun di kolom cari Instagram dan TikTok. Kalau ada akun nyata yang aktif dengan nama sama persis, namanya diganti. **Sudah dicek (4 November 2026, `asal: pengembang`):** tidak ada akun Instagram atau TikTok dengan nama yang sama persis, dan Kedugram aman dipakai sebagai nama aplikasi fiktif. Tidak ada nama yang diganti.
 
 **Fakta yang dipakai ulang dari bank lama** sudah dicek di telaah pendahuluan T6 ([09_TELAAH_PENDAHULUAN_BANK_SOAL.md](09_TELAAH_PENDAHULUAN_BANK_SOAL.md), bagian C.5): semuanya didukung sumber. Satu catatan: tahun berdirinya perkebunan teh Tambi umumnya ditulis 1865, tapi ada sumber yang menulis 1885; ahli budaya memutuskan apakah angka tahun tetap dipakai di petunjuk `wnb-4-x04`.
 
@@ -1265,7 +1265,7 @@ Teks digital (layar informasi, unggahan, grup, hasil pencarian) dibangun sebagai
 # Langkah berikutnya
 
 1. Pengembang menelaah draf ini.
-2. Gambar baru Susun Gambar Wayang Kedu dan Candi Pawon dari tim katalog, dicek ulang terhadap butir; cek fakta Papringan, Pawon, Arjuna, dan tahun penetapan Lengger ([keputusan 26 Oktober 2026](#keputusan-pengembang-26-oktober-2026)).
+2. Gambar baru Susun Gambar Wayang Kedu dan Candi Pawon dari tim katalog, dicek ulang terhadap butir; cek fakta Papringan, Pawon, Arjuna, dan tahun penetapan Lengger ([keputusan 26 Oktober 2026](#keputusan-pengembang-26-oktober-2026)). Cek fakta selesai 4 November 2026 (dikonfirmasi pengembang, [04](04_CATATAN_KEPUTUSAN.md)); jadwal Pasar Papringan tetap dicek ulang sebelum versi dikunci di G4. Prompt kedua gambar ada di [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md).
 3. Cek fakta di bagian *Yang harus dicek* (nama fiktif sudah dicek; tinggal pencarian manual akun di Instagram dan TikTok), ditambah fakta keterangan Susun Gambar yang dipilih.
 4. Validasi ahli (I-CVI atau V Aiken) dengan instrumen yang sedang disiapkan sesi koordinator.
 5. Terjemahan bahasa Inggris untuk setiap teks yang tampil di game. **Didraf AI 3 November 2026 di [36](36_TERJEMAHAN_BANK_SOAL.md)** (`draf pengembang`, menunggu pemeriksaan pengembang); butir yang berubah di sini diterjemahkan ulang di sana.

@@ -1,6 +1,6 @@
 # Prompt Gambar Situasi Skenario Digital (24)
 
-Per 3 November 2026 · Lampiran dokumen implementasi bagian 6 ([32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md), §7.5 dan §18 no. 6) · Sumber situasi: [08](08_DRAF_BANK_SOAL.md) · Status: **`draf pengembang`** (disusun AI, belum diperiksa pengembang)
+Per 3 November 2026 · Lampiran dokumen implementasi bagian 6 ([32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md), §7.5 dan §18 no. 6) · Sumber situasi: [08](08_DRAF_BANK_SOAL.md) · Status: **`draf pengembang`** (disusun AI, belum diperiksa pengembang) · **Gambar sudah dibuat (4 November 2026):** ke-24 gambar ada di [`gambar/32a/`](gambar/32a/) sebagai PNG bernama `item.skenario.{kode butir}`; diubah ke WebP saat masuk Katalog Aset
 
 Dua puluh empat prompt siap tempel ke ChatGPT (pembuat gambar), satu untuk tiap situasi Skenario Digital (3 wilayah × 2 variasi × 4 skenario). Prompt ditulis dalam bahasa Inggris karena pembuat gambar paling andal dengan bahasa itu; kutipan situasi Indonesia dari 08 hanya untuk konteks pembaca dan **tidak ikut ditempel**. Keputusan pengembang 3 November 2026 ([04](04_CATATAN_KEPUTUSAN.md)): gambar situasi dibuat sekarang, tidak menunggu validasi ahli media.
 

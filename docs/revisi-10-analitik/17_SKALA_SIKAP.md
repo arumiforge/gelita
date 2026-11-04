@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 19 · Status: **draf**, butir `needs_verification`; keputusan pengembang diambil 26 Oktober 2026 ([bagian akhir](#keputusan-pengembang)); menunggu validasi ahli
+Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 19 · Status: **`tervalidasi ahli`** (4 November 2026, `asal: peneliti`, dikonfirmasi peneliti lewat pengembang: validasi ahli selesai dan dokumen ini dapat dipakai; [04](04_CATATAN_KEPUTUSAN.md)); semula draf, keputusan pengembang 26 Oktober 2026 ([bagian akhir](#keputusan-pengembang)). Hasil penilaian ahli belum dimasukkan ke repo
 
 Dokumen ini berisi skala pendamping **sikap menjaga warisan** (kode `sikap`) yang diisi siswa kelas 5 sekali, di P5, di Balai Refleksi setelah cerita penutup: definisi konstruk, kisi-kisi, butir, format jawaban, kode, penskoran, pelaksanaan, rencana validasi, dan etika. Dasarnya keputusan 25 Oktober 2026: indikator `sikap` tetap dipakai sebagai skala pendamping, di luar skor literasi digital ([01](01_REVISI_10_ANALITIK.md#pertanyaan-yang-masih-terbuka), perubahan sistem no. 21).
 
