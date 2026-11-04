@@ -23,6 +23,11 @@ final class NarrationCatalog
         'map_intro'    => 'Narasi Peta Kedu',
         'region_intro' => 'Kenali wilayah',
         'level_open'   => 'Dialog masuk wilayah',
+        // Part 6 (32 §8.3, §9.3)
+        'scenario_open'         => 'Cerita penghubung',
+        'scenario_situation'    => 'Situasi Skenario Digital',
+        'post_clue'             => 'Petunjuk Periksa Unggahan',
+        'challenge_instruction' => 'Instruksi tantangan',
         'level_done'   => 'Wilayah tuntas',
         'ending'       => 'Penutup',
         'map_done'     => 'Narasi Peta Kedu (semua tuntas)',
@@ -245,6 +250,10 @@ final class NarrationCatalog
             $clueColumn = NarrationImporter::CLUE_COLUMNS[$locale];
             $this->db->table('challenge_items')->whereIn($clueColumn, $ids)->update([$clueColumn => null]);
 
+            // Part 6: instruction narration
+            $instructionColumn = NarrationImporter::INSTRUCTION_COLUMNS[$locale];
+            $this->db->table('challenge_nodes')->whereIn($instructionColumn, $ids)->update([$instructionColumn => null]);
+
             // Only imported narration files change status; other audio may be in use elsewhere
             $media = $this->db->table('audio_assets aa')
                 ->select('aa.id AS audio_id, ma.id, ma.storage_path')
@@ -339,10 +348,21 @@ final class NarrationCatalog
             $this->db->table('challenge_items')
                 ->select($clueColumn)
                 ->where($clueColumn . ' IS NOT NULL')
-                ->where('interaction_type', 'find_object')
+                // Part 6: round-2 clues and scenario situations are narrated too
+                ->whereIn('interaction_type', ['find_object', 'find_part', 'scenario_choice'])
                 ->get()
                 ->getResultArray(),
             $clueColumn,
+        )));
+
+        $instructionColumn = NarrationImporter::INSTRUCTION_COLUMNS[$locale];
+        $linked            = array_merge($linked, array_map('intval', array_column(
+            $this->db->table('challenge_nodes')
+                ->select($instructionColumn)
+                ->where($instructionColumn . ' IS NOT NULL')
+                ->get()
+                ->getResultArray(),
+            $instructionColumn,
         )));
 
         return array_values(array_unique($linked));

@@ -63,6 +63,11 @@ trait NarrationTables
             'audio_intro_en_id' => ['type' => 'INTEGER', 'null' => true],
             // Challenge images: read by the asset checklist
             'scene_media_id'    => ['type' => 'INTEGER', 'null' => true],
+            // Part 6 (32 §8.2): the instruction and its narration
+            'instruction_id'          => ['type' => 'TEXT', 'null' => true],
+            'instruction_en'          => ['type' => 'TEXT', 'null' => true],
+            'audio_instruction_id'    => ['type' => 'INTEGER', 'null' => true],
+            'audio_instruction_en_id' => ['type' => 'INTEGER', 'null' => true],
             'is_active'         => ['type' => 'INTEGER', 'default' => 1],
         ])->addPrimaryKey('id')->createTable('challenge_nodes');
 
@@ -78,6 +83,8 @@ trait NarrationTables
             'audio_prompt_id'    => ['type' => 'INTEGER', 'null' => true],
             'audio_prompt_en_id' => ['type' => 'INTEGER', 'null' => true],
             'scorable'           => ['type' => 'INTEGER', 'default' => 1],
+            // Cari Objek round (31 §15), read by the petunjuk-* numbering (32 §9.3)
+            'round'              => ['type' => 'INTEGER', 'null' => true],
             'media_asset_id'     => ['type' => 'INTEGER', 'null' => true],
             'is_active'          => ['type' => 'INTEGER', 'default' => 1],
         ])->addPrimaryKey('id')->createTable('challenge_items');
