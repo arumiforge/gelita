@@ -30,6 +30,8 @@ class DashboardController extends BaseAdminController
             'fieldSessions'   => $this->can('field_sessions.manage') ? $this->openFieldSessions() : [],
             // pratinjau penghapusan buatan retensi: hanya admin yang boleh memutuskan
             'retentionAlerts' => $this->can('retention.run') ? service('retentionService')->pendingRetentionRequests() : [],
+            // Part 3 (29 §5.6): technical numbers for the admin
+            'techLog'         => $this->can('tech_logs.view') ? service('techLogs')->summary() : null,
         ]);
     }
 

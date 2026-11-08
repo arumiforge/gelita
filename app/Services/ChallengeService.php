@@ -185,7 +185,7 @@ class ChallengeService
      * dalam transaction yang sama.
      *
      * @param array<string, mixed> $answer `{object: <ref>}` (token objek, bukan id butir)
-     * @param array<string, mixed> $meta   duration_ms (sejak petunjuk tampil)
+     * @param array<string, mixed> $meta   ready_ms, last_input_ms (ms since the challenge opened, 29 §6.1)
      *
      * @return array{correct: bool, first_pass: bool, wrong_click: bool, decoy: bool, feedback: ?string,
      *               try_no: int, tries_left: int, clue_closed: bool, progress: array{answered: int, total: int},
@@ -243,17 +243,20 @@ class ChallengeService
             } else {
                 $correct = $this->grade($node, $item, $answer, $locale);
                 $applied = $this->applyAnswer($attempt, $item, $answer, $correct, [
-                    'last_input_ms' => $meta['duration_ms'] ?? null,
+                    'last_input_ms' => $meta['last_input_ms'] ?? null,
+                    'ready_ms'      => $meta['ready_ms'] ?? null,
                 ]);
 
+                // Always `answer_submitted`; a tap that differs from the previous one carries `changed` (29 K2)
                 service('eventService')->record(
                     $session,
-                    $applied['changed'] ? 'answer_changed' : 'answer_submitted',
+                    'answer_submitted',
                     [
                         'try_no'       => $applied['try_no'],
                         'correct'      => $correct,
                         'first_pass'   => $applied['first_pass'],
                         'change_count' => $applied['change_count'],
+                        'changed'      => $applied['changed'],
                     ],
                     [
                         'level_id'             => $node->level_id,
@@ -396,9 +399,11 @@ class ChallengeService
                 $timing = [
                     'first_input_ms' => $answer['first_input_ms'] ?? null,
                     'last_input_ms'  => $answer['last_input_ms'] ?? null,
+                    // Only Benar atau Salah has a ready time among the batch engines (29 §6.1)
+                    'ready_ms'       => $node->engine_type === 'boleh' ? ($answer['ready_ms'] ?? null) : null,
                     'check_no'       => $checkCount,
                 ];
-                unset($answer['first_input_ms'], $answer['last_input_ms'], $answer['duration_ms']);
+                unset($answer['first_input_ms'], $answer['last_input_ms'], $answer['ready_ms'], $answer['duration_ms']);
 
                 $correct          = $this->grade($node, $item, $answer, $locale);
                 $results[$itemId] = $correct;
@@ -945,6 +950,7 @@ class ChallengeService
             'hint_opened_before'   => $hintCount > 0 ? 1 : 0,
             'first_input_ms'       => self::clientMs($meta['first_input_ms'] ?? null),
             'last_input_ms'        => self::clientMs($meta['last_input_ms'] ?? null),
+            'ready_ms'             => self::readyMs($meta),
             'occurred_at'          => date('Y-m-d H:i:s'),
             'error_code'           => $correct ? null : $errorCode,
         ]);
@@ -960,6 +966,20 @@ class ChallengeService
         $ms = (int) round((float) $value);
 
         return $ms < 0 || $ms > 4_294_967_295 ? null : $ms;
+    }
+
+    /**
+     * `item_tries.ready_ms` (29 §6.1): clamped like clientMs(); a ready time
+     * after the last input cannot be right and is stored empty.
+     *
+     * @param array<string, mixed> $meta
+     */
+    private static function readyMs(array $meta): ?int
+    {
+        $ready = self::clientMs($meta['ready_ms'] ?? null);
+        $last  = self::clientMs($meta['last_input_ms'] ?? null);
+
+        return $ready !== null && $last !== null && $ready > $last ? null : $ready;
     }
 
     private function answerDiffers(ItemResponse $response, array $answer): bool
@@ -997,7 +1017,7 @@ class ChallengeService
         if ($response !== null) {
             $tryNo     = $response->try_count + 1;
             $closed    = $tryNo >= $attempt->maxTries();
-            $lastInput = self::clientMs($meta['duration_ms'] ?? null);
+            $lastInput = self::clientMs($meta['last_input_ms'] ?? null);
             $update    = [
                 'wrong_click_count' => $response->wrong_click_count + 1,
                 'try_count'         => $tryNo,
@@ -1031,7 +1051,8 @@ class ChallengeService
 
         if ($response !== null) {
             $this->recordTry($attempt, $target->id, $tryNo, $answer, false, [
-                'last_input_ms' => $meta['duration_ms'] ?? null,
+                'last_input_ms' => $meta['last_input_ms'] ?? null,
+                'ready_ms'      => $meta['ready_ms'] ?? null,
             ], (new ErrorCodeResolver())->resolve($target, $answer, $locale, $part ?? $clicked?->item_key));
         }
         $refs      = [

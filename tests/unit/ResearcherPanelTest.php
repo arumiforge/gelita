@@ -60,7 +60,7 @@ final class ResearcherPanelTest extends CIUnitTestCase
             $this->assertNoIdentity($csv, "{$role} CSV");
         }
 
-        foreach (['admin/sesi', 'admin/sesi/1', 'admin/masukan', 'admin/data/perangkat', 'admin/data/jawaban', 'admin/ekspor'] as $path) {
+        foreach (['admin/sesi', 'admin/sesi/1', 'admin/masukan', 'admin/data/event', 'admin/data/jawaban', 'admin/ekspor'] as $path) {
             $this->assertNoIdentity($this->page('ketua', $path), "ketua {$path}");
         }
 

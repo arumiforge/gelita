@@ -28,6 +28,8 @@ final class AdminMenu
         ['admin/data',                'Admin.menuRawData',      'database',  ['research.browse'], 'Admin.groupData'],
         ['admin/masukan',             'Admin.menuFeedback',     'message',   ['research.browse'], 'Admin.groupData'],
         ['admin/ekspor',              'Admin.menuExport',       'download',  ['research.export'], 'Admin.groupData'],
+        // Part 3 (29 §11): the slot reserved in 27 §8
+        ['admin/log-teknis',          'Admin.menuTechLog',      'database',  ['tech_logs.view'], 'Admin.groupData'],
         ['admin/konten',              'Admin.menuContent',      'puzzle',    ['content.view'], 'Admin.groupContent'],
         ['admin/konten/impor-bank',   'Admin.menuBankImport',   'upload',    ['content.edit'], 'Admin.groupContent'],
         ['admin/konten/narasi',       'Admin.menuNarration',    'sound',     ['content.view'], 'Admin.groupContent'],

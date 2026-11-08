@@ -1,6 +1,7 @@
 <?php
 
 use App\Entities\GameSession;
+use App\Libraries\EventCatalog;
 use App\Models\GameSessionModel;
 use App\Services\EventService;
 use App\Services\RawDataService;
@@ -114,7 +115,7 @@ final class EventOrderingTest extends CIUnitTestCase
         for ($i = 0; $i < 130; $i++) {
             // one event about every 0.92 s over 2 minutes; sequence continues across pages
             $events[] = $this->event(
-                $i % 2 === 0 ? 'reading_progress' : 'answer_changed',
+                $i % 2 === 0 ? 'reading_progress' : 'hint_opened',
                 40 + $i,
                 $this->iso(-125_000 + (int) round($i * 923) + $skewMs),
                 ['page' => intdiv($i, 50) + 1],
@@ -187,27 +188,25 @@ final class EventOrderingTest extends CIUnitTestCase
         }
     }
 
-    public function testPackageChangedIsAcceptedAndExportedInNavigation(): void
+    /** `package_changed` is an admin event since revision 10, part 3 (29 §4): accepted, kept out of the research sheets. */
+    public function testPackageChangedIsAcceptedAsAnAdminEvent(): void
     {
         $result = $this->service()->ingest($this->session(), [
             $this->event('package_changed', 12, $this->iso(-1_000), ['from' => 'pkt-2026-10-20-01', 'to' => 'pkt-2026-10-27-01', 'reason' => 'evicted']),
         ], ['client_sent_at' => $this->iso(0)]);
 
         $this->assertSame(1, $result['accepted']);
-        $this->assertContains('package_changed', config('Gelita')->eventTypes);
+        $this->assertTrue(EventCatalog::isAdmin('package_changed'));
+        $this->assertTrue(EventCatalog::isAdmin('events_dropped'));
 
-        $raw  = service('rawDataService');
-        $rows = iterator_to_array($raw->rows('navigasi', [], StaffScope::of(false, true)), false);
-        $row  = array_values(array_filter($rows, static fn (array $r): bool => $r['event_type'] === 'package_changed'));
+        $stored = db_connect()->table('game_event_logs')->where('event_type', 'package_changed')->get()->getRowArray();
+        $this->assertSame(12, (int) $stored['sequence_no']);
+        $this->assertNotNull($stored['clock_offset_ms']);
 
-        $this->assertCount(1, $row);
-        $this->assertSame(['from' => 'pkt-2026-10-20-01', 'to' => 'pkt-2026-10-27-01', 'reason' => 'evicted'], json_decode((string) $row[0]['payload'], true));
-        $this->assertSame(12, (int) $row[0]['sequence_no']);
-        $this->assertNotNull($row[0]['clock_offset_ms']);
-        $this->assertContains('clock_offset_ms', $raw->columns('navigasi', StaffScope::of(false, true)));
-        $this->assertContains('clock_offset_ms', $raw->columns('event', StaffScope::of(false, true)));
-        $this->assertContains('package_changed', RawDataService::NAVIGATION_EVENTS);
-        $this->assertContains('events_dropped', RawDataService::NAVIGATION_EVENTS);
+        $rows = iterator_to_array(service('rawDataService')->rows('navigasi', [], StaffScope::research()), false);
+        $this->assertSame([], array_values(array_filter($rows, static fn (array $r): bool => $r['event_type'] === 'package_changed')));
+        $this->assertNotContains('package_changed', RawDataService::NAVIGATION_EVENTS);
+        $this->assertNotContains('events_dropped', RawDataService::NAVIGATION_EVENTS);
     }
 
     /** Audio batches carry client_sent_at too; their raw event gets the offset. */
@@ -276,12 +275,12 @@ final class EventOrderingTest extends CIUnitTestCase
         }
 
         $this->service()->ingest($this->session(), [
-            $this->event('answer_changed', 6, $this->iso(-1_500)),
+            $this->event('hint_opened', 6, $this->iso(-1_500)),
             $this->event('page_hidden', 7, $this->iso(-1_000)),
         ], ['client_sent_at' => $this->iso(0)]);
 
         $this->assertSame(
-            ['page_hidden', 'answer_changed', 'page_hidden', 'screen_viewed'],
+            ['page_hidden', 'hint_opened', 'page_hidden', 'screen_viewed'],
             array_column($this->rows(), 'event_type'),
             'order by sequence_no is the order of events',
         );

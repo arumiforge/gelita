@@ -54,19 +54,17 @@ export async function deviceSignals() {
   let uaData = null;
   try {
     uaData = ua ? await ua.getHighEntropyValues(
-      ['platform', 'platformVersion', 'model', 'architecture', 'bitness', 'fullVersionList', 'mobile']) : null;
+      ['platform', 'platformVersion', 'fullVersionList', 'mobile']) : null;
   } catch { /* tidak didukung: biarkan null */ }
   const pkg = await packageInfo();
   return {
     ...pkg,
     screen_w: screen.width, screen_h: screen.height,
     viewport_w: innerWidth, viewport_h: innerHeight,
-    pixel_ratio: Math.round((devicePixelRatio || 1) * 100) / 100,
+    // touch points: only for the server's iPad correction and is_touch, not stored (29 §5.5)
     touch_points: navigator.maxTouchPoints || 0,
     orientation: screen.orientation?.type || null,
     is_standalone: matchMedia('(display-mode: standalone)').matches || navigator.standalone === true,
-    language: navigator.language || null,
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || null,
     ua_data: uaData,
   };
 }

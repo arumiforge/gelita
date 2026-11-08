@@ -33,6 +33,7 @@ class ExportController extends BaseAdminController
     {
         $exports = model(DataExportModel::class)->where('requested_by', $this->staffId());
         $sheets  = service('exportService')->allowedSheets([], $this->dataScope()->fullDetail);
+        $recent  = $exports->orderBy('created_at', 'DESC')->findAll(20);
 
         return $this->panel('admin/export/index', 'Unduh data', [
             'filters'       => $this->readFilters(),
@@ -40,10 +41,33 @@ class ExportController extends BaseAdminController
             'sheetTitles'   => array_combine($sheets, array_map(ExportLabels::sheetTitle(...), $sheets)),
             'sheetNotes'    => array_combine($sheets, array_map(ExportLabels::sheetMeaning(...), $sheets)),
             'studies'       => model(ResearchStudyModel::class)->findAll(),
-            'recent'        => $exports->orderBy('created_at', 'DESC')->findAll(20),
+            'recent'        => $recent,
+            'downloads'     => $this->downloadCounts(array_column($recent, 'id')),
             'retention'     => config('Gelita')->exportRetentionDays,
             'rawEventLimit' => config('Gelita')->exportMaxRawEvents,
         ]);
+    }
+
+    /**
+     * How often each of the caller's exports was downloaded, from the audit
+     * log (`export_download`, 29 §9).
+     *
+     * @param list<int|string> $ids
+     *
+     * @return array<int, int>
+     */
+    private function downloadCounts(array $ids): array
+    {
+        if ($ids === []) {
+            return [];
+        }
+
+        $rows = db_connect()->table('audit_logs')->select('target_id')->selectCount('id', 'n')
+            ->where('action', 'export_download')->where('target_type', 'data_export')
+            ->whereIn('target_id', array_map('strval', $ids))
+            ->groupBy('target_id')->get()->getResultArray();
+
+        return array_map('intval', array_column($rows, 'n', 'target_id'));
     }
 
     public function xlsx(): RedirectResponse
@@ -76,7 +100,7 @@ class ExportController extends BaseAdminController
         }
 
         if ($export['expires_at'] !== null && strtotime((string) $export['expires_at']) < time()) {
-            return $this->back('admin/ekspor', 'Berkas ini sudah dihapus otomatis karena melewati batas waktu. Silakan buat unduhan baru.');
+            return $this->back('admin/ekspor', lang('Admin.exportFileGone'));
         }
 
         $path = (string) $export['file_path'];
@@ -114,6 +138,11 @@ class ExportController extends BaseAdminController
             $scope['participant_id'] = $participantId;
         }
 
+        // One study per download (29 K16), field mode on or off
+        if ($format !== 'pdf' && ! isset($filters['study_id'])) {
+            return redirect()->to(site_url($back))->with('error', lang('Admin.exportNeedsStudy'));
+        }
+
         if ($format === 'pdf') {
             if ($participantId <= 0) {
                 return redirect()->to(site_url($back))->with('error', 'Laporan PDF hanya untuk satu siswa. Buat laporan dari halaman profil siswa, atau unduh data mentah sebagai Excel/CSV.');
@@ -128,7 +157,8 @@ class ExportController extends BaseAdminController
 
         $exports  = model(DataExportModel::class);
         $exportId = $exports->insert([
-            'requested_by' => $this->staffId(),
+            'requested_by'       => $this->staffId(),
+            'dictionary_version' => \App\Libraries\ResearchDictionary::VERSION,
             'study_id'     => isset($filters['study_id']) ? (int) $filters['study_id'] : null,
             'format'       => $format,
             'scope_json'   => $scope,

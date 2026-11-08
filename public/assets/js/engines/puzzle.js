@@ -15,7 +15,7 @@
  * Slots (buttons) stay in place; the piece art (.piece-art) and data-piece
  * move. Pieces carry no numbers; the screen reader label names the slot
  * position. The client only swaps positions and judges nothing. Every swap
- * is logged as an `answer_selected` event (action swap), whichever way it
+ * updates the input times (`ctx.selected`, no event since 29 §5.1), whichever way it
  * was made.
  *
  * "Cek jawabanku" → POST /check { answers: [{ item_id, answer: { order } }] }.

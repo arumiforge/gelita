@@ -350,7 +350,7 @@ export function initCurtains() {
     if (leaving) return; // tirai sudah berjalan: klik/Enter kedua tidak memutar tirai kedua
     leaving = true;
 
-    // Event yang masih antre (mis. dialogue_advanced slide terakhir Kenali) dikirim
+    // Event yang masih antre (e.g. dialogue_completed of the last Kenali slide) dikirim
     // selama tirai, bukan saat halaman ditutup: beacon di pagehide tidak selalu sampai
     const sent = flush().catch(() => {});
 

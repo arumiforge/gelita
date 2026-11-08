@@ -142,6 +142,17 @@ class Services extends BaseService
         return new FieldSessionService();
     }
 
+    // Part 3 (29 §12): tech log and field sheets
+    public static function techLogs(bool $getShared = true): \App\Services\TechLogService
+    {
+        return $getShared ? static::getSharedInstance('techLogs') : new \App\Services\TechLogService();
+    }
+
+    public static function fieldSheets(bool $getShared = true): \App\Services\FieldSheetService
+    {
+        return $getShared ? static::getSharedInstance('fieldSheets') : new \App\Services\FieldSheetService();
+    }
+
     /** Participant codes `S03-A07` from the per-class-group counter (28 §10.2). */
     public static function participantCodes(bool $getShared = true): ParticipantCodeService
     {

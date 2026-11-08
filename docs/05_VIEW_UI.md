@@ -755,3 +755,11 @@ Pustaka frontend: **Howler.js** (`public/assets/vendor/howler.min.js`, lisensi `
 | `admin/study/index.php`, `admin/schools/index.php`, `admin/dashboard.php` | Field mode and meeting plan fields; research school codes; card "Sesi lapangan aktif" |
 
 `core/api.js` sends the student to `/sampai-jumpa` on `FIELD_SESSION_CLOSED` and treats `NODE_LOCKED` like `LEVEL_LOCKED`. Panel texts live in `Admin.php` (Indonesian only).
+
+## Research revision 10, part 3: tech log, downloads, field sheets (29 §14)
+
+- `admin/tech-log/index`: three tabs (Perangkat, Event teknis, Sesi), search by participant code, CSV per tab, the admin's technical numbers; the admin dashboard shows lost events (7 days) and the most common OS / browser.
+- `admin/export/index`: study select (required; without a study the page says to create one first), field session code and meeting filters, history with *Versi kamus data*, *Jumlah siswa*, *Diunduh*, and *Berkas sudah dihapus otomatis…* for expired files.
+- `admin/field-sessions/sheets`: state per expected sheet (Belum diunggah, Diunggah, Dicek with the share typed twice, Lewat 24 jam), upload (first or second typing), preview with errors (row, column, message), warnings, name warnings that need the checkbox *Sudah saya periksa, tidak ada nama siswa*. The field session page links the template and the upload.
+- The participant page shows device rows only to `tech_logs.view` (admin).
+- Panel text lives in `app/Language/id/Admin.php` (keys `techLog*`, `export*`, `fieldSheet*`).

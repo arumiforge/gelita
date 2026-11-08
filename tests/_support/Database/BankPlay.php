@@ -84,12 +84,12 @@ trait BankPlay
 
     private function tapObject(ChallengeAttempt $attempt, ChallengeItem $clue, ChallengeItem $tapped): array
     {
-        return $this->service->submitAnswer($this->reload($attempt), $clue->id, ['object' => $this->objectRef($attempt, $tapped->id)], ['duration_ms' => 800]);
+        return $this->service->submitAnswer($this->reload($attempt), $clue->id, ['object' => $this->objectRef($attempt, $tapped->id)], ['last_input_ms' => 800]);
     }
 
     private function tapPart(ChallengeAttempt $attempt, ChallengeItem $clue, string $partKey): array
     {
-        return $this->service->submitAnswer($this->reload($attempt), $clue->id, ['object' => $this->partRef($attempt, $partKey)], ['duration_ms' => 800]);
+        return $this->service->submitAnswer($this->reload($attempt), $clue->id, ['object' => $this->partRef($attempt, $partKey)], ['last_input_ms' => 800]);
     }
 
     /** Every round-1 clue found on the first tap. */

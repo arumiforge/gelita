@@ -13,8 +13,8 @@ use CodeIgniter\HTTP\RedirectResponse;
  * - `/penutup`        penutup cerita (`ending`), setelah seluruh node tuntas.
  *
  * Ketiganya diputar game/narrator.js (kartu ketuk, pose, efek, audio).
- * Perpindahan slide dicatat client lewat `/api/events` (`dialogue_advanced`
- * dengan `context` = konteks dialognya).
+ * The client reports the last slide through `/api/events` (`dialogue_completed`
+ * with `context` = the dialogue's context, 29 K5).
  */
 class DialogueController extends BaseGameController
 {

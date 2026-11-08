@@ -71,6 +71,9 @@ $base = 'admin/sesi-lapangan/' . $id;
 
 <p class="form-actions">
   <a class="btn btn-sm" href="<?= base_url($base . '/kursi') ?>"><?= esc(lang('Admin.fieldSessionSeats')) ?></a>
+  <?php // Part 3 (29 §10.3–§10.4): field sheets ?>
+  <a class="btn btn-sm" href="<?= base_url($base . '/lembar') ?>"><?= icon('download') ?> <?= esc(lang('Admin.fieldSheetTemplate')) ?></a>
+  <a class="btn btn-sm" href="<?= base_url($base . '/lembar/unggah') ?>"><?= icon('upload') ?> <?= esc(lang('Admin.fieldSheetUpload')) ?></a>
   <?php if ((int) $fieldSession['makeup_no'] === 0 && $state === 'closed'): ?>
     <a class="btn btn-sm" href="<?= base_url($base . '/susulan') ?>"><?= esc(lang('Admin.fieldSessionMakeup')) ?></a>
   <?php endif ?>

@@ -2533,3 +2533,33 @@ Owner decision in `04` (3 November 2026, item 4): fix the warnings in `08` inste
 ## Follow-up: approved translation notes in the bank data (3–4 November 2026, branch `sky/gallant-mccarthy-71jnn1`, PR #346)
 
 - **Deviation: content check without `spark`.** `gelita:content:verify` needs a migrated database, and the migrations are MySQL-only (no MySQL in the cloud session), so the same `ContentVerifier` ran on the SQLite test world (`GradeFiveWorld` schema + `SystemResetService`), once with the old and once with the rebuilt workbook: 233 → 223 findings, 0 errors. The previous entry counted 13 translation warnings; on the old workbook this verifier reported 10 per-challenge findings (123 items). All are gone; the four tap-part warnings remain.
+
+## Research revision 10, part 3 / code wave E: log cleanup, research export, data dictionary, field sheets (4 November 2026, branch `r10-kode-29-data-penelitian`)
+
+Source: `docs/revisi-10-analitik/29_IMPLEMENTASI_DATA_PENELITIAN.md` (`disetujui pengembang`). Built in parallel with part 4 (30) and part 6 (32); the coordinator merges 3 → 4 → 6.
+
+**Decisions and deviations**
+
+- **REQUIRED_MIGRATION check.** `SystemResetService::REQUIRED_MIGRATION` is `2026-01-01-003700`, lower than the `003910` already on `main`. A check on the highest version would always pass, so `migrationsReady()` now also needs the row of the required version in `migrations`.
+- **`audio_pause` without a raw event.** The duplicate check of a re-sent `pause` used the raw event's `client_event_id`; without that row a `pause` is a duplicate when the same session, asset, and client time is already stored (no new column).
+- **Admin data scope.** `StaffScope::head()` (ketua, `research.browse`) has full detail (`event`, `kode_pilihan`, `answer_key`); `peneliti` keeps `research()` without them, so the one-student tabs of the participant page show no key. `ADMIN_ONLY_*` became `FULL_DETAIL_*`.
+- **Test and simulated accounts** (`uji.*`, school `V01`, `sim_*`) are left out of every research query except a one-student view (`participant_id` filter), so a researcher can still look at a validator's account by code.
+- **`peserta.school_ref` replaced by `school_code`** (29 §7.3 lists it as leaving); `country`, `province`, `district` left the research sheet too. `progres` now has one row per student and study (from `participant_progress`), keyed `study_code`.
+- **`bantuan` per playback**: the opening action's row with the largest `listened_ms` and any `completed` of the same playback (correlated subqueries). A playback with only `pause` rows (no opening action) does not show. Audio rows keep their raw time as `occurred_at_corrected` until part 7 adds `audio_usage_events.clock_offset_ms` (seam comment in `RawDataService::helpQuery()`).
+- **`kode_pilihan`** (31 §13.3) is built here: one row per `item_error_codes` row and per `scenario_options` row; the option score column is `option_score` (a column named `score` is refused by the old "no derived score" rule).
+- **Field-sheet download columns**: `field_session_code`, `sheet_row` (row number in the upload; `row_no` is L2's *Baris*), then the spec codes.
+- **L5 head** (participant code, pretest group, interviewer, times, recording) is typed on every row of one `l5_wawancara` sheet, not three sheets per file (29 §10.3 says "tiga lembar L5"). Its times use the codes `start_time`, `end_time` of 29 §10.7.
+- **L1 kondisi** is one row in the template; the import also reads the vertical layout of 02 (heading in column A, value in *Isi di sini*) and splits combined entries ("24 dari 26", "90 / 84", "Ya, S03-A16", "08:40:00 ke P15 (…)", "date; start–end").
+- **Supersede race**: the save marks older main imports `WHERE id < new AND superseded_at IS NULL`, so of two uploads at once the newer counts; L5 manual codes of the superseded import are cleared with a conditional UPDATE (only while the try still holds that code).
+- **Template sheets per meeting** follow 29 §10.3 by `meeting_no` (P1, P2–P4, P5, makeups); L6 *tes* is not in the template (no test module yet). L0 has no table in 02, so `gelita:lembar:templat` writes L1–L8 only.
+- **`ResearchLogCleanup` and `gelita:log:hitung`** name the removed types too (29 §16.4 lists only the migration and the catalog); they are the migration's own data steps.
+- **`/responses`** takes `last_input_ms` (since the challenge opened) instead of `duration_ms` (since the clue showed); an old cached client sends no last input until it reloads.
+- **Tech log 404 test** checks the route filters and `StaffCanFilter` directly: a feature call after another feature call in the same class returned an empty 200 in the test harness only.
+- **RiskAggregateSheetTest**: the shape test is skipped until the test module (change no. 22, part 8) gives the sheet a source; part 3 only checks that no risk answer reaches a sheet.
+
+**Seams left for the coordinator**
+
+- Part 4 (30): sheet `izin` goes in `RawDataService::DIMENSIONS` where the `// WAVE-E seam (part 4 …)` comment stands (before the field sheets); `data_exports.purged_by_request_id` (migration `003800`) and the final `REQUIRED_MIGRATION`.
+- Part 6 (32): `scenario_failed` in `EventCatalog::RESEARCH`, `SERVER_ONLY`, and `COMPLETION` (comment in `RESEARCH`); the scenario columns of `percobaan` at the comment in `RawDataService::COLUMNS['percobaan']`, plus `tryQuery()`, `ExportLabels::SHEETS['percobaan']`, and `ResearchDictionary::SHEETS['percobaan']`. New audio contexts need no change (`bantuan.audio_context` reads `audio_assets.context_code`).
+
+**Not done here (manual, 29 §16.3)**: the MariaDB run of `003600` on a copy of a database with simulated data, and the browser checks of `ready_ms`, `empty_tap`, `passage_reopened`, the tech log CSV, and the template round trip.

@@ -360,9 +360,9 @@ final class RegionStoryTest extends CIUnitTestCase
         $dialogue = (string) file_get_contents(FCPATH . 'assets/js/game/dialogue.js');
         $narrator = (string) file_get_contents(FCPATH . 'assets/js/game/narrator.js');
 
-        $this->assertStringNotContainsString("emit('dialogue_advanced'", $dialogue, 'tidak menggandakan event');
+        $this->assertStringNotContainsString("emit('dialogue_completed'", $dialogue, 'tidak menggandakan event');
         $this->assertStringContainsString('initNarrator(screen, { onSlide:', $dialogue);
-        $this->assertSame(1, substr_count($narrator, "emit('dialogue_advanced'"));
+        $this->assertSame(1, substr_count($narrator, "emit('dialogue_completed'"));
     }
 
     // ------------------------------------------------------------ peta: Kenali wilayah
@@ -476,22 +476,6 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString('class="kedu-btn is-secondary kenal-card-btn" href="#kenal-magelang"', $page, 'Magelang sudah didengar');
         $this->assertSame(2, substr_count($page, esc(lang('Game.kenalUnheard'))), 'badge on the Kenali button of 2 regions');
         $this->assertSame(2, substr_count($page, 'class="kedu-unheard"'), 'and a dot on their pins');
-    }
-
-    public function testReachedLastSlideReadsOnlyRegionIntroEventsAtTheEnd(): void
-    {
-        $rows = [
-            ['level_id' => 1, 'payload_json' => '{"index":2,"total":4,"context":"region_intro"}'],
-            ['level_id' => 2, 'payload_json' => '{"index":4,"total":4,"context":"region_intro","character":"mbah_kedu"}'],
-            ['level_id' => 3, 'payload_json' => '{"index":16,"total":16,"context":"level_open"}'],
-            ['level_id' => 2, 'payload_json' => ['index' => 4, 'total' => 4, 'context' => 'region_intro']],
-            ['level_id' => null, 'payload_json' => '{"index":4,"total":4,"context":"region_intro"}'],
-            ['level_id' => 1, 'payload_json' => 'bukan json'],
-        ];
-
-        $this->assertSame([2], GameEventLogModel::reachedLastSlide($rows, 'region_intro'));
-        $this->assertSame([3], GameEventLogModel::reachedLastSlide($rows, 'level_open'));
-        $this->assertSame([], GameEventLogModel::reachedLastSlide([], 'region_intro'));
     }
 
     public function testPinsAndCardsPlayTheRegionCurtain(): void

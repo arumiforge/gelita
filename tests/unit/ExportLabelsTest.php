@@ -50,15 +50,17 @@ final class ExportLabelsTest extends CIUnitTestCase
     {
         $titles = array_map(ExportLabels::sheetTitle(...), ExportService::SHEETS);
 
-        $this->assertSame(['Kamus Data', 'Peserta', 'Sesi', 'Perangkat', 'Progres', 'Pengerjaan Tantangan', 'Jawaban Soal',
-            'Riwayat Percobaan', 'Navigasi', 'Bantuan', 'Penyelesaian', 'Event Mentah', 'Kritik & Saran', 'Bank Soal'], $titles);
+        $this->assertSame(['Kamus Data', 'Peserta', 'Sesi Lapangan', 'Sesi', 'Progres', 'Pengerjaan Tantangan', 'Jawaban Soal',
+            'Riwayat Percobaan', 'Navigasi', 'Bantuan', 'Penyelesaian', 'Event Mentah', 'Kritik & Saran', 'Bank Soal', 'Kode Pilihan',
+            'L1 Kondisi sesi', 'L1 Log penyimpangan', 'L2 Tempat duduk', 'L3 Bantuan dan gangguan', 'L4 Observasi', 'L5 Wawancara',
+            'L6 Catatan sesi tes'], $titles);
 
         foreach ($titles as $title) {
             $this->assertLessThanOrEqual(31, mb_strlen($title));
             $this->assertDoesNotMatchRegularExpression('/[\[\]:*?\/\\\\]/', $title);
         }
 
-        $this->assertSame(ExportService::SHEETS, ExportLabels::sheets());
+        $this->assertSame(array_slice(ExportService::SHEETS, 0, 15), ExportLabels::sheets(), 'field sheets take their titles from FieldSheetSpec');
     }
 
     public function testLabelsReplaceCodesOnly(): void

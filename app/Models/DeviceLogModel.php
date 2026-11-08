@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Traits\EncodesJson;
 use CodeIgniter\Model;
 
 /**
@@ -11,31 +10,25 @@ use CodeIgniter\Model;
  */
 class DeviceLogModel extends Model
 {
-    use EncodesJson;
-
     public const VIA = ['register', 'login', 'resume'];
 
     protected $table         = 'device_logs';
     protected $primaryKey    = 'id';
     protected $returnType    = 'array';
     protected $useTimestamps = false;
+    // Device details beyond OS and browser are not stored (revision 10, part 3: 29 §5.5)
     protected $allowedFields = [
-        'session_id', 'participant_id', 'via', 'user_agent',
-        'device_type', 'device_brand', 'device_model', 'os_name', 'os_version', 'os_platform',
-        'browser_name', 'browser_version', 'browser_engine', 'is_bot', 'client_hints_json',
-        'screen_w', 'screen_h', 'viewport_w', 'viewport_h', 'pixel_ratio', 'touch_points',
-        'orientation', 'is_standalone', 'language', 'timezone', 'corrected', 'detector', 'ip_hash',
+        'session_id', 'participant_id', 'via',
+        'device_type', 'os_name', 'os_version',
+        'browser_name', 'browser_version', 'browser_engine', 'is_bot',
+        'screen_w', 'screen_h', 'viewport_w', 'viewport_h',
+        'orientation', 'is_standalone', 'corrected', 'detector', 'ip_hash',
     ];
     protected $validationRules = [
         'session_id'     => 'required|is_natural_no_zero',
         'participant_id' => 'required|is_natural_no_zero',
         'via'            => 'required|in_list[register,login,resume]',
     ];
-    protected $beforeInsert      = ['encodeJson'];
-    protected $beforeInsertBatch = ['encodeJsonBatch'];
-
-    /** @var list<string> kolom JSON milik tabel ini */
-    protected array $jsonFields = ['client_hints_json'];
 
     /**
      * @param array<string, mixed> $profile hasil DeviceProfile::capture()

@@ -10,7 +10,8 @@
  *   submit(itemId, answer, extra)  → POST /api/attempts/{id}/responses  (cari)
  *   check(answers)                 → POST /api/attempts/{id}/check      (puzzle, rumpang, boleh),
  *                                    dengan `check_no` = cek ke-berapa menurut layar ini
- *   selected(itemId, change)       → event `answer_selected` + waktu isian per soal
+ *   selected(itemId, change)       → waktu isian per soal (no event since revision 10, part 3: 29 §5.1)
+ *   passageReopened(via, passage)  → event `passage_reopened`, only after the first input (29 §6.3)
  *
  * Waktu isian per soal (Dok 1 §12.5): ms sejak tantangan dibuka
  * (performance.now()) saat siswa pertama kali dan terakhir kali mengisi/
@@ -19,6 +20,11 @@
  * dihitung ulang untuk percobaan berikutnya. Soal yang tidak disentuh dalam
  * satu percobaan dikirim tanpa waktu. Hanya catatan proses — urutan dan
  * waktu resmi tetap occurred_at server.
+ *
+ * `ready_ms` (Benar atau Salah only, 29 §6.1): when the card could be
+ * answered for this try, on the same clock: the latest of the attempt's
+ * previous input before the card's last choice, the screen shown (0), and
+ * the end of the previous check's feedback.
  *   finish(result)                 → pengerjaan ditutup server: tetap di layar ini, tombol
  *                                    Lanjut (#btn-next) membawa ke `redirect` dari /check atau /responses
  *   useHint()                      → POST /api/attempts/{id}/hints
@@ -82,16 +88,28 @@ export async function bootChallenge() {
   // ------------------------------------------------------ waktu isian
 
   const openedAt = performance.now();
-  const inputTimes = new Map(); // itemId → { first, last } (ms sejak tantangan dibuka)
+  const inputTimes = new Map(); // itemId → { first, last, ready } (ms sejak tantangan dibuka)
   const sinceOpen = () => Math.max(0, Math.round(performance.now() - openedAt));
+  const sendsReady = engineType === 'boleh';
+  let lastInputAt = 0;     // the attempt's latest input on this screen
+  let feedbackDoneAt = 0;  // end of the previous check's feedback
+  let inputSeen = (Number(data.tries_used) || 0) > 0;
 
-  /** Siswa mengisi/mengubah satu soal sebelum mengecek (event answer_selected). */
-  function selected(itemId, change = {}) {
+  /** Siswa mengisi/mengubah satu soal sebelum mengecek (input times only). */
+  function selected(itemId) {
     const ms = sinceOpen();
     const times = inputTimes.get(itemId) ?? { first: ms, last: ms };
     times.last = ms;
+    times.ready = Math.max(lastInputAt, feedbackDoneAt);
+    lastInputAt = ms;
+    inputSeen = true;
     inputTimes.set(itemId, times);
-    emit('answer_selected', { ...refs, itemId, payload: { ...change, t_ms: ms } });
+  }
+
+  /** The reading passage opened again after the first input (`via` = panel | label). */
+  function passageReopened(via, passage) {
+    if (!inputSeen) return;
+    emit('passage_reopened', { ...refs, payload: { via, passage, t_ms: sinceOpen() } });
   }
 
   // ---------------------------------------------------------- permintaan
@@ -135,7 +153,7 @@ export async function bootChallenge() {
       if (!times) return row;
       sent.set(row.item_id, times);
       inputTimes.delete(row.item_id);
-      return { ...row, first_input_ms: times.first, last_input_ms: times.last };
+      return { ...row, first_input_ms: times.first, last_input_ms: times.last, ...(sendsReady ? { ready_ms: times.ready } : {}) };
     });
     try {
       const result = await post('check', { answers: rows, check_no: checksUsed + 1, client_event_id: uuid(), occurred_at: now() });
@@ -145,7 +163,7 @@ export async function bootChallenge() {
       // Gagal: waktunya dikembalikan untuk pengiriman berikutnya (first lama, last terbaru)
       for (const [itemId, times] of sent) {
         const newer = inputTimes.get(itemId);
-        inputTimes.set(itemId, { first: times.first, last: newer ? newer.last : times.last });
+        inputTimes.set(itemId, { first: times.first, last: newer ? newer.last : times.last, ready: newer ? newer.ready : times.ready });
       }
       throw error;
     }
@@ -354,6 +372,7 @@ export async function bootChallenge() {
       text: [partialText, triesText(result.tries_left)],
       buttons: [{ label: t('fixAnswers'), style: 'primary', value: 'fix' }],
     });
+    feedbackDoneAt = sinceOpen();
     return 'fix';
   }
 
@@ -376,6 +395,8 @@ export async function bootChallenge() {
     submit,
     check,
     selected,
+    passageReopened,
+    sinceOpen,
     finish,
     closingLabel,
     tally,

@@ -16,6 +16,7 @@ class DataExportModel extends Model
     protected $allowedFields = [
         'requested_by', 'study_id', 'format', 'scope_json', 'anonymized', 'status',
         'row_count', 'file_path', 'file_sha256', 'error_message', 'completed_at', 'expires_at',
+        'dictionary_version', 'participant_count',   // part 3 (29 §8, §9)
     ];
     protected $validationRules = [
         'requested_by' => 'required|is_natural_no_zero',

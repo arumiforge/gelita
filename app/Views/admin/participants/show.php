@@ -154,6 +154,7 @@ $rawTable = static function (?array $table, string $empty, array $extra = []) {
               : esc($r['session_code']),
       ],
   ]) ?>
+  <?php if (staff_can('tech_logs.view')): // device details are admin data (29 §5.5) ?>
   <?= component('data-table', [
       'table' => [
           'rows' => $devices, 'total' => count($devices), 'page' => 1, 'per_page' => max(1, count($devices)), 'sort' => null,
@@ -161,8 +162,6 @@ $rawTable = static function (?array $table, string $empty, array $extra = []) {
               ['key' => 'created_at', 'label' => 'Waktu', 'type' => 'datetime'],
               ['key' => 'via', 'label' => 'Tercatat lewat', 'type' => 'text'],
               ['key' => 'device_type', 'label' => 'Jenis', 'type' => 'label:device'],
-              ['key' => 'device_brand', 'label' => 'Merek', 'type' => 'text'],
-              ['key' => 'device_model', 'label' => 'Model', 'type' => 'text'],
               ['key' => 'os_name', 'label' => 'Sistem operasi', 'type' => 'text'],
               ['key' => 'os_version', 'label' => 'Versi SO', 'type' => 'code'],
               ['key' => 'browser_name', 'label' => 'Peramban', 'type' => 'text'],
@@ -182,6 +181,7 @@ $rawTable = static function (?array $table, string $empty, array $extra = []) {
           'viewport' => static fn (array $r): string => ($r['viewport_w'] ?? null) === null ? '<span class="is-empty">—</span>' : esc($r['viewport_w'] . ' × ' . $r['viewport_h']),
       ],
   ]) ?>
+  <?php endif ?>
 
 <?php elseif ($tab === 'progres'): ?>
   <?= component('data-table', [

@@ -319,7 +319,8 @@ final class RegisterWizardTest extends CIUnitTestCase
         $this->assertSame((int) $participant['id'], (int) $_SESSION['participant_id']);
 
         $log = $this->conn->table('device_logs')->get()->getRowArray();
-        $this->assertSame(['register', 1366, 768, 'Asia/Jakarta'], [$log['via'], (int) $log['screen_w'], (int) $log['screen_h'], $log['timezone']]);
+        $this->assertSame(['register', 1366, 768], [$log['via'], (int) $log['screen_w'], (int) $log['screen_h']]);
+        $this->assertArrayNotHasKey('timezone', $log, 'not stored since revision 10, part 3 (29 §5.5)');
         $this->assertSame((int) $_SESSION['game_session_id'], (int) $log['session_id']);
         $this->assertSame('1366x768', $this->conn->table('game_sessions')->get()->getRow('screen_size'));
 

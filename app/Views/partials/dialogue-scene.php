@@ -20,7 +20,7 @@
  *   keeps the region background.
  * - Efek baris (`data-effect`) diputar lapisan efek narrator; audio, mesin
  *   ketik, dan maju otomatis oleh game/narrator.js mode `tap`, yang juga
- *   satu-satunya pengirim `dialogue_advanced` (context = $context).
+ *   satu-satunya pengirim `dialogue_completed` (context = $context).
  * - Kartu ketuk berjudul ($tap) menutupi panggung sampai diketuk.
  *
  * `$cinematic` (the region dialogue, owner 19 October 2026; the region-done
