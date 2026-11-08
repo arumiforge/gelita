@@ -64,6 +64,8 @@ const ENGINES = {
   rumpang: () => import('../engines/rumpang.js'),
   boleh: () => import('../engines/boleh.js'),
   cari: () => import('../engines/cari.js'),
+  // Part 6 (32 §6.1): Skenario Digital, one action and one reason per try
+  skenario: () => import('../engines/skenario.js'),
 };
 
 export async function bootChallenge() {
@@ -215,7 +217,7 @@ export async function bootChallenge() {
    */
   function hold(result) {
     markClosed(result?.shards);
-    for (const node of [$('#btn-check', section), hintButton, $('details.challenge-exit', section)]) {
+    for (const node of [$('#btn-check', section), $('#btn-scenario-go', section), $('#btn-scenario-back', section), hintButton, $('details.challenge-exit', section)]) {
       if (node) node.hidden = true;
     }
     nextButton.hidden = false;

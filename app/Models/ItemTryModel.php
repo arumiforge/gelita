@@ -22,6 +22,8 @@ class ItemTryModel extends Model
         'is_correct', 'hint_opened_before', 'first_input_ms', 'last_input_ms', 'occurred_at',
         'error_code', 'manual_code',
         'ready_ms',   // part 3 (29 §6.1)
+        // Part 6 (32 §11): one scenario try
+        'action_key', 'action_score', 'reason_key', 'reason_code', 'reason_ready_ms', 'action_last_input_ms', 'reason_last_input_ms',
     ];
     protected $validationRules = [
         'challenge_attempt_id' => 'required|is_natural_no_zero',

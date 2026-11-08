@@ -196,8 +196,10 @@ class RawDataService
             'ready_ms' => 'item_tries.ready_ms',
             'first_input_ms' => 'item_tries.first_input_ms', 'last_input_ms' => 'item_tries.last_input_ms',
             'occurred_at' => 'item_tries.occurred_at',
-            // WAVE-E seam (part 6, 32 §6.4, §10): action_key, action_score, reason_code, reason_ready_ms,
-            // action_last_input_ms, reason_last_input_ms go here (and in tryQuery(), ExportLabels, ResearchDictionary).
+            // Part 6 (32 §6.4, §10): one Skenario Digital try; empty for the other engines
+            'action_key' => 'item_tries.action_key', 'action_score' => 'item_tries.action_score',
+            'reason_code' => 'item_tries.reason_code', 'reason_ready_ms' => 'item_tries.reason_ready_ms',
+            'action_last_input_ms' => 'item_tries.action_last_input_ms', 'reason_last_input_ms' => 'item_tries.reason_last_input_ms',
         ],
         'navigasi' => [
             'session_code' => 'game_sessions.session_code', 'participant_code' => 'participants.participant_code',
@@ -780,6 +782,8 @@ class RawDataService
             ->select('item_tries.try_no, item_tries.check_no, item_tries.answer_json, item_tries.is_correct')
             ->select('item_tries.hint_opened_before, item_tries.first_input_ms, item_tries.last_input_ms')
             ->select('item_tries.occurred_at, item_tries.ready_ms, item_tries.error_code, item_tries.manual_code')
+            ->select('item_tries.action_key, item_tries.action_score, item_tries.reason_code, item_tries.reason_ready_ms')
+            ->select('item_tries.action_last_input_ms, item_tries.reason_last_input_ms')
             ->select('field_sessions.code AS field_session_code');
 
         $this->applyAttemptFilters($builder, $filters, $scope, 'item_tries.occurred_at');

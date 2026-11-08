@@ -7,15 +7,17 @@ Naskah lengkap seluruh narasi dan dialog permainan, dalam bahasa Indonesia dan I
 
 ## Benang merah
 
-Dataran Kedu dahulu diterangi **Cahaya Kedu**, cahaya yang lahir dari ilmu dan budaya dan disimpan di **Lentera Kedu**. Ketika orang mulai membaca dengan terburu-buru, memercayai kabar tanpa memeriksanya, dan melupakan cerita leluhur, naiklah **Kabut Lupa**. Kabut itu meretakkan lentera, dan cahayanya pecah menjadi **12 Serpihan Cahaya** yang jatuh di tiga wilayah. **Mbah Kedu**, penjaga lentera, ikut melemah setiap kali cahayanya meredup. **Jaka** menjadi Pembawa Lentera, dan pemain (disapa "penjelajah") berjalan bersamanya.
+Dataran Kedu dahulu diterangi **Cahaya Kedu**, cahaya yang lahir dari ilmu dan budaya dan disimpan di **Lentera Kedu**. Ketika orang mulai membaca dengan terburu-buru, memercayai kabar tanpa memeriksanya, membagikan apa saja tanpa berpikir, dan melupakan cerita leluhur, naiklah **Kabut Lupa**. Kabut itu meretakkan lentera, dan cahayanya pecah menjadi **15 Serpihan Cahaya**, lima di setiap wilayah. Empat jatuh di tanah wilayah itu; yang kelima disembunyikan Kabut Lupa **di dalam layar** ponsel dan tablet warga (cerita penghubung, sejak revisi penelitian 10). **Mbah Kedu**, penjaga lentera, ikut melemah setiap kali cahayanya meredup. **Jaka** menjadi Pembawa Lentera, dan pemain (disapa "penjelajah") berjalan bersamanya.
 
 Setiap wilayah melawan satu wujud Kabut Lupa, sesuai keterampilan membaca yang dilatih di sana:
 
 | Urutan | Wilayah | Keterampilan | Wujud kabut | Taruhan cerita |
 |---:|---|---|---|---|
 | 1 | Temanggung | Menemukan informasi yang tertulis jelas | Tulisan di papan petunjuk memudar, warga tersesat | Jaka belajar tidak terburu-buru |
-| 2 | Magelang | Menghubungkan informasi, membedakan fakta dan pendapat | Urutan relief Borobudur teracak, warga bertengkar soal "katanya" | Mbah Kedu mulai melemah |
-| 3 | Wonosobo | Menilai informasi dan sumbernya | Pesan berantai palsu tentang kawah membuat warga panik | Mbah tak kuat naik, Jaka harus berani sendirian |
+| 2 | Magelang | Menghubungkan informasi, membedakan fakta dan pendapat | Urutan relief Borobudur teracak, warga bertengkar soal kabar yang tidak diperiksa | Mbah Kedu mulai melemah |
+| 3 | Wonosobo | Menilai informasi dan sumbernya | Pesan berantai ramalan gempa membuat warga panik | Mbah tak kuat naik, Jaka harus berani sendirian |
+
+Tantangan kelima setiap wilayah (Skenario Digital) diawali cerita penghubung *Kabut di Layar* (`scenario_open`): anak-anak dengan tablet di bawah pohon (Temanggung), ponsel yang terus berbunyi di rumah baca (Magelang), dan layar di seluruh Dieng (Wonosobo).
 
 Penutup: lentera menyala, Mbah Kedu pulih, dan Jaka bersama pemain menjadi Penjaga Lentera.
 
@@ -31,7 +33,7 @@ Di teks Inggris, Jaka tetap memanggil "Mbah" agar nuansa lokalnya terjaga, semen
 
 ## Konvensi berkas audio
 
-Repositori sudah membawa **rekaman sintetis (TTS) bawaan** untuk ke-100 baris di kedua bahasa, dengan suara Narator, Jaka, dan Mbah Kedu yang diolah menurut arahan di atas. Asal-usul, pengolahan, dan lisensinya ada di [`docs/audio.md`](audio.md). Rekaman pengisi suara dapat menggantikannya kapan saja dengan konvensi di bawah ini. Rekaman pengganti otomatis tercatat sebagai rekaman sendiri, bukan TTS.
+Rekaman narasi tidak ikut di repositori: rekaman sintetis lama dihapus 17 Oktober 2026 dan diganti rekaman pengisi suara (lihat [`docs/audio.md`](audio.md)). Rekaman diimpor dengan konvensi di bawah ini.
 
 - Folder: `public/assets/audio/narasi/id/` untuk bahasa Indonesia dan `public/assets/audio/narasi/en/` untuk bahasa Inggris.
 - Nama berkas mengikuti kode di setiap judul baris di bawah, ditambah `.mp3`, misalnya `narasi/id/dialog-magelang-09.mp3`.
@@ -47,14 +49,20 @@ Repositori sudah membawa **rekaman sintetis (TTS) bawaan** untuk ke-100 baris di
 | `map_intro` | `peta-NN` | 3 | Kunjungan pertama ke Peta Kedu |
 | `region_intro` | `kenal-{wilayah}-NN` | 12 | Ikon lentera "Kenali wilayah" di peta |
 | `level_open` | `dialog-{wilayah}-NN` | 47 | Saat wilayah baru terbuka |
-| `level_done` | `tuntas-{wilayah}-NN` | 12 | Saat wilayah tuntas |
+| `scenario_open` | `layar-{wilayah}-NN` | 18 | Cerita penghubung, sekali sebelum tantangan kelima (Skenario Digital) |
+| `level_done` | `tuntas-{wilayah}-NN` | 15 | Saat wilayah tuntas (setelah tantangan kelima) |
 | `ending` | `penutup-NN` | 5 | Setelah seluruh wilayah tuntas |
 | `map_done` | `peta-tuntas-NN` | 3 | Peta Kedu setelah seluruh wilayah tuntas (menggantikan `map_intro`) |
-| **Total naskah** | | **91** | Durasi rekaman sekitar 12–14 menit per bahasa |
-| `hunt_clue` | `petunjuk-{node}-NN` | 12 | Petunjuk Mbah Kedu di Cari Objek (`tmg-4`, `mgl-4`, `wnb-4`, masing-masing 4), di samping teks petunjuk — teks dari bank soal, bukan naskah ini |
-| **Total rekaman** | | **103** | |
+| **Total naskah** | | **112** | Durasi rekaman sekitar 15–17 menit per bahasa |
+| `hunt_clue` | `petunjuk-{node}-NN` | 12 | Petunjuk Mbah Kedu di Cari Objek babak 1 (`tmg-4`, `mgl-4`, `wnb-4`, masing-masing 4), di samping teks petunjuk — teks dari bank soal, bukan naskah ini |
+| `post_clue` | `unggahan-{kode butir}` | 24 | Petunjuk *Periksa Unggahan* (Cari Objek babak 2), dibacakan Mbah Kedu, hanya lewat tombol ▶ — teks dari bank soal |
+| `scenario_situation` | `skenario-{kode butir}` | 24 | Situasi Skenario Digital, dibacakan Narator, hanya lewat tombol ▶ — teks dari bank soal |
+| `challenge_instruction` | `instruksi-{tantangan}` | 15 | Instruksi kelima belas tantangan, dibacakan Narator, hanya lewat tombol ▶ — teks dari bank soal |
+| **Total rekaman** | | **± 187** | |
 
-Baris `petunjuk-*` **tidak ada di naskah ini**: teksnya berasal dari bank soal, yaitu kolom pertanyaan (`prompt_id` / `prompt_en`) butir `find_object` target di [`docs/bank-soal/data/`](bank-soal/data/) (node `tmg-4`, `mgl-4`, `wnb-4`). Dibacakan Mbah Kedu. `{node}` = kode tantangan; NN = urutan petunjuk target menurut urutan butir, dimulai 01, sehingga `petunjuk-tmg-4-01` … `-04` sama dengan butir `tmg-4-a01` … `tmg-4-a04`. Benda pengecoh tidak punya petunjuk dan tidak direkam. Teks terkini ada di daftar rekaman XLSX (kelompok "Petunjuk Cari Objek"), karena admin dapat menyuntingnya di bank soal.
+Baris `petunjuk-*` **tidak ada di naskah ini**: teksnya berasal dari bank soal, yaitu kolom pertanyaan (`prompt_id` / `prompt_en`) butir `find_object` target babak 1 di [`docs/bank-soal/data/`](bank-soal/data/) (node `tmg-4`, `mgl-4`, `wnb-4`). Dibacakan Mbah Kedu. `{node}` = kode tantangan; NN = urutan petunjuk target babak 1 menurut urutan butir, dimulai 01, sehingga `petunjuk-tmg-4-01` … `-04` sama dengan butir Temukan Benda `tmg-4-x01` … `tmg-4-x04`. Butir *Periksa Unggahan* (`a01`–`a04`, `b01`–`b04`) punya rekamannya sendiri, `unggahan-{kode butir}`.
+
+Rekaman `unggahan-*`, `skenario-*`, dan `instruksi-*` juga **tidak ada di naskah ini**; teksnya dari bank soal (petunjuk babak 2, situasi skenario, dan kolom instruksi tantangan). Ketiganya hanya diputar saat siswa mengetuk ▶, tidak pernah otomatis, dan setiap putaran tercatat bersama id pengerjaan. Kode berkas butir memakai kode butir, bukan nomor urut, supaya variasi a dan b tidak tertukar. Situasi dan petunjuk *Periksa Unggahan* dibaca **datar dan sama untuk setiap situasi**: tanpa nada curiga, menakut-nakuti, atau mendesak; kutipan pesan dibaca biasa; alamat situs dibaca seperti tertulis; nama bagian kunci tidak ditekan (12 → *Arahan suara*). Bacaan dan pernyataan Isi Rumpang dan Benar atau Salah tidak pernah dibacakan. Benda pengecoh tidak punya petunjuk dan tidak direkam. Teks terkini ada di daftar rekaman XLSX (kelompok "Petunjuk Cari Objek"), karena admin dapat menyuntingnya di bank soal.
 
 ## Mengimpor dan menyetujui audio
 
@@ -132,16 +140,16 @@ Wajib ditonton pada kesempatan pertama. Pemain tetap dapat menekan Lanjut di set
 #### `intro-03` · Narator · efek `fog`
 **Judul:** Kabut Lupa / *The Mist of Forgetting*
 
-**ID:** Namun perlahan, orang-orang mulai lupa. Mereka membaca dengan terburu-buru, memercayai kabar tanpa memeriksanya, dan meninggalkan cerita para leluhur. Dari kebiasaan itu, naiklah kabut kelabu yang dingin. Namanya Kabut Lupa.
+**ID:** Namun perlahan, orang-orang mulai lupa. Mereka membaca dengan terburu-buru, memercayai kabar tanpa memeriksanya, membagikan apa saja tanpa berpikir, dan meninggalkan cerita para leluhur. Dari kebiasaan itu, naiklah kabut kelabu yang dingin. Namanya Kabut Lupa.
 
-**EN:** But slowly, people began to forget. They read in a hurry, believed news without checking it, and left their ancestors' stories behind. From those habits, a cold grey mist rose up. It was called the Mist of Forgetting.
+**EN:** But slowly, people began to forget. They read in a hurry, believed news without checking it, shared anything without thinking, and left their ancestors' stories behind. From those habits, a cold grey mist rose up. It was called the Mist of Forgetting.
 
 #### `intro-04` · Narator · efek `shake`
 **Judul:** Malam Lentera Retak / *The Night the Lantern Cracked*
 
-**ID:** Pada suatu malam, Kabut Lupa melilit Lentera Kedu. Kacanya retak, apinya bergetar, lalu cahayanya pecah! Dua belas Serpihan Cahaya melesat ke langit dan jatuh di Temanggung, Magelang, dan Wonosobo.
+**ID:** Pada suatu malam, Kabut Lupa melilit Lentera Kedu. Kacanya retak, apinya bergetar, lalu cahayanya pecah! Lima belas Serpihan Cahaya melesat ke langit dan jatuh di Temanggung, Magelang, dan Wonosobo.
 
-**EN:** One night, the Mist of Forgetting coiled around the Lantern of Kedu. Its glass cracked, its flame trembled, and then its light shattered! Twelve Shards of Light shot into the sky and fell across Temanggung, Magelang, and Wonosobo.
+**EN:** One night, the Mist of Forgetting coiled around the Lantern of Kedu. Its glass cracked, its flame trembled, and then its light shattered! Fifteen Shards of Light shot into the sky and fell across Temanggung, Magelang, and Wonosobo.
 
 #### `intro-05` · Mbah Kedu · pose `weak` · efek `dim`
 **Judul:** Penjaga yang Menua / *The Ageing Keeper*
@@ -153,23 +161,23 @@ Wajib ditonton pada kesempatan pertama. Pemain tetap dapat menekan Lanjut di set
 #### `intro-06` · Jaka · pose `determined` · efek `glow`
 **Judul:** Jaka, Pembawa Lentera / *Jaka, the Lantern Bearer*
 
-**ID:** Biar aku yang pergi, Mbah! Aku akan mencari kedua belas serpihan itu satu per satu, sampai Lentera Kedu menyala lagi. Aku janji!
+**ID:** Biar aku yang pergi, Mbah! Aku akan mencari kelima belas serpihan itu satu per satu, sampai Lentera Kedu menyala lagi. Aku janji!
 
-**EN:** Let me go, Mbah! I will find all twelve shards, one by one, until the Lantern of Kedu shines again. I promise!
+**EN:** Let me go, Mbah! I will find all fifteen shards, one by one, until the Lantern of Kedu shines again. I promise!
 
 #### `intro-07` · Narator
 **Judul:** Cara Mengumpulkan Serpihan / *How to Gather the Shards*
 
-**ID:** Setiap wilayah menyimpan empat serpihan, dan setiap serpihan dijaga oleh satu tantangan. Selesaikan tantangannya untuk mendapatkan serpihan dan bintang. Lihat lentera di bagian atas layar: lentera itu makin terang setiap kali serpihan kembali.
+**ID:** Setiap wilayah menyimpan lima serpihan, dan setiap serpihan dijaga oleh satu tantangan. Selesaikan tantangannya untuk mendapatkan serpihan dan bintang. Lihat papan Serpihan Cahaya di bagian atas layar: cahayanya bertambah setiap kali serpihan kembali.
 
-**EN:** Each region holds four shards, and each shard is guarded by a challenge. Complete the challenge to win its shard and stars. Watch the lantern at the top of the screen: it grows brighter every time a shard returns.
+**EN:** Each region holds five shards, and each shard is guarded by a challenge. Complete the challenge to win its shard and stars. Watch the Shards of Light panel at the top of the screen: its light grows every time a shard returns.
 
 #### `intro-08` · Mbah Kedu · pose `smile`
 **Judul:** Tiga Kunci Cahaya / *Three Keys of Light*
 
-**ID:** Ingat tiga kunci ini, Le. Di Temanggung, temukan informasi yang tertulis jelas. Di Magelang, hubungkan informasi dan bedakan fakta dari pendapat. Di Wonosobo, periksa dan timbang setiap kabar sebelum kamu memercayainya.
+**ID:** Ingat tiga kunci ini, Le. Di Temanggung, temukan informasi yang tertulis jelas. Di Magelang, hubungkan informasi dan bedakan fakta dari pendapat. Di Wonosobo, timbang setiap informasi dan dari mana asalnya.
 
-**EN:** Remember these three keys, my boy. In Temanggung, find the information that is clearly written. In Magelang, connect information and tell facts from opinions. In Wonosobo, check and weigh every piece of news before you believe it.
+**EN:** Remember these three keys, my boy. In Temanggung, find the information that is clearly written. In Magelang, connect information and tell facts from opinions. In Wonosobo, weigh every piece of information and where it comes from.
 
 #### `intro-09` · Narator · efek `glow`
 **Judul:** Perjalanan Dimulai / *The Journey Begins*
@@ -194,9 +202,9 @@ Diputar otomatis setelah loading "Membuka Peta Kedu". Pada kunjungan berikutnya,
 #### `peta-02` · Jaka · pose `determined`
 **Judul:** Tiga Wilayah / *Three Regions*
 
-**ID:** Aku harus menjelajahi tiga wilayah untuk memulihkannya: Temanggung, lalu Magelang, dan terakhir Wonosobo. Di setiap wilayah, empat Serpihan Cahaya sedang menunggu.
+**ID:** Aku harus menjelajahi tiga wilayah untuk memulihkannya: Temanggung, lalu Magelang, dan terakhir Wonosobo. Di setiap wilayah, lima Serpihan Cahaya sedang menunggu.
 
-**EN:** I must explore three regions to bring it back: Temanggung, then Magelang, and finally Wonosobo. In each region, four Shards of Light are waiting.
+**EN:** I must explore three regions to bring it back: Temanggung, then Magelang, and finally Wonosobo. In each region, five Shards of Light are waiting.
 
 #### `peta-03` · Jaka · pose `happy` · efek `glow`
 **Judul:** Kenali Dulu / *Get to Know Them First*
@@ -230,9 +238,9 @@ Mbah Kedu memperkenalkan geografi dan budaya tiap wilayah. Narasi ini dibuka dar
 #### `kenal-temanggung-03` · Mbah Kedu · pose `idle`
 **Judul:** Jejak Masa Lalu / *Traces of the Past*
 
-**ID:** Temanggung juga menyimpan jejak masa lalu. Ada Situs Liyangan, permukiman kuno yang pernah tertimbun pasir dan batu dari letusan Gunung Sindoro. Ada pula Candi Pringapus dengan arca lembu Nandi di dalamnya, dan Prasasti Gondosuli yang dibuat pada tahun 832 Masehi.
+**ID:** Temanggung juga menyimpan jejak masa lalu. Ada Situs Liyangan, permukiman kuno yang pernah tertimbun pasir dan batu dari letusan Gunung Sindoro. Ada pula Candi Pringapus dengan arca lembu Nandi di dalamnya, dan Prasasti Gondosuli yang diperkirakan dibuat sekitar tahun 832 Masehi.
 
-**EN:** Temanggung also keeps traces of the past. There is the Liyangan Site, an ancient settlement once buried under sand and stones from an eruption of Mount Sindoro. There is also Pringapus Temple, with a statue of Nandi the bull inside, and the Gondosuli Inscription, made in the year 832 CE.
+**EN:** Temanggung also keeps traces of the past. There is the Liyangan Site, an ancient settlement once buried under sand and stones from an eruption of Mount Sindoro. There is also Pringapus Temple, with a statue of Nandi the bull inside, and the Gondosuli Inscription, thought to date from around 832 CE.
 
 #### `kenal-temanggung-04` · Mbah Kedu · pose `smile` · efek `glow`
 **Judul:** Pesan Mbah / *Mbah's Advice*
@@ -253,9 +261,9 @@ Mbah Kedu memperkenalkan geografi dan budaya tiap wilayah. Narasi ini dibuka dar
 #### `kenal-magelang-02` · Mbah Kedu · pose `idle`
 **Judul:** Buku dari Batu / *A Book Made of Stone*
 
-**ID:** Dinding Borobudur dihiasi 2.672 panel relief. Setiap panel adalah bagian dari sebuah cerita. Membacanya seperti membaca buku raksasa dari batu: urutannya harus benar supaya ceritanya utuh.
+**ID:** Dinding Borobudur dihiasi 2.672 panel relief, dan lebih dari separuhnya bercerita. Membaca relief itu seperti membaca buku raksasa dari batu: urutannya harus benar supaya ceritanya utuh.
 
-**EN:** Borobudur's walls are decorated with 2,672 relief panels. Each panel is part of a story. Reading them is like reading a giant book made of stone: the order must be right for the story to make sense.
+**EN:** Borobudur's walls are decorated with 2,672 relief panels, and more than half of them tell stories. Reading those reliefs is like reading a giant book made of stone: the order must be right for the story to make sense.
 
 #### `kenal-magelang-03` · Mbah Kedu · pose `idle`
 **Judul:** Tiga Candi Segaris / *Three Temples in a Line*
@@ -375,9 +383,9 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 **EN:** I understand now. I will read word by word, look at pictures closely, and listen carefully.
 
 #### `dialog-temanggung-14` · Mbah Kedu · pose `idle`
-**ID:** Empat serpihan menunggumu di Temanggung. Temukan informasi yang tertulis jelas, maka kabut ini akan mundur dengan sendirinya.
+**ID:** Lima serpihan menunggumu di Temanggung. Temukan informasi yang tertulis jelas, maka kabut ini akan mundur dengan sendirinya.
 
-**EN:** Four shards are waiting for you in Temanggung. Find the information that is clearly written, and this mist will retreat on its own.
+**EN:** Five shards are waiting for you in Temanggung. Find the information that is clearly written, and this mist will retreat on its own.
 
 #### `dialog-temanggung-15` · Jaka · pose `determined` · efek `fog-lift`
 **ID:** Tunggu kami, warga Temanggung! Lentera ini akan menyala untuk kalian!
@@ -412,9 +420,9 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 **EN:** Mbah, listen... Down there, two men are arguing.
 
 #### `dialog-magelang-06` · Mbah Kedu · pose `worried`
-**ID:** Bapak yang satu berteriak, "Katanya candi ini dibangun dengan semen!" Bapak yang lain membalas, "Katanya candi ini baru dibangun seratus tahun lalu!" Keduanya hanya berkata "katanya". Tak seorang pun mau memeriksa.
+**ID:** Bapak yang satu berteriak, "Candi ini dibangun dengan semen!" Bapak yang lain membalas, "Bukan! Candi ini baru dibangun seratus tahun lalu!"
 
-**EN:** One man shouts, "They say this temple was built with cement!" The other shouts back, "They say it was built only a hundred years ago!" Both of them only say "they say". Neither of them wants to check.
+**EN:** One man shouts, "This temple was built with cement!" The other shouts back, "No! It was built only a hundred years ago!"
 
 #### `dialog-magelang-07` · Jaka · pose `idle`
 **ID:** Jadi, mana yang benar, Mbah?
@@ -422,9 +430,9 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 **EN:** So which one is right, Mbah?
 
 #### `dialog-magelang-08` · Mbah Kedu · pose `smile`
-**ID:** Itulah tugasmu, Le. Pendapat, atau opini, boleh berbeda, tapi fakta bisa dibuktikan. "Candi ini indah sekali" itu pendapat. "Candi ini dibangun lebih dari seribu tahun lalu" itu fakta. Hubungkan informasi yang satu dengan yang lain, maka kebenaran akan terlihat.
+**ID:** Itulah tugasmu, Le. Pendapat boleh berbeda-beda, tetapi fakta bisa dibuktikan. Hubungkan informasi yang satu dengan yang lain, maka kebenaran akan terlihat.
 
-**EN:** That is your task, my boy. Opinions may differ, but facts can be proven. "This temple is very beautiful" is an opinion. "This temple was built more than a thousand years ago" is a fact. Connect one piece of information with another, and the truth will appear.
+**EN:** That is your task, my boy. Opinions may differ, but facts can be proven. Connect one piece of information with another, and the truth will appear.
 
 #### `dialog-magelang-09` · Mbah Kedu · pose `weak` · efek `dim`
 **ID:** Uhh... Maaf, Le. Kaki Mbah gemetar. Setiap kali kabut menebal, tenaga Mbah seperti ikut tersedot.
@@ -457,9 +465,9 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 **EN:** Because I learned from you, Mbah. Read carefully first, then act!
 
 #### `dialog-magelang-15` · Mbah Kedu · pose `smile` · efek `glow`
-**ID:** Ingat pesan Mbah: temukan gagasan pokoknya, susun urutannya, dan pisahkan fakta dari pendapat. Empat serpihan Magelang menunggumu.
+**ID:** Ingat pesan Mbah: temukan gagasan pokoknya, susun urutannya, dan pisahkan fakta dari pendapat. Lima serpihan Magelang menunggumu.
 
-**EN:** Remember my advice: find the main idea, put things in order, and separate facts from opinions. Four shards of Magelang are waiting for you.
+**EN:** Remember my advice: find the main idea, put things in order, and separate facts from opinions. Five shards of Magelang are waiting for you.
 
 #### `dialog-magelang-16` · Jaka · pose `determined` · efek `fog-lift`
 **ID:** Aku berangkat, Mbah. Sebelum senja, relief-relief itu akan bercerita dengan benar lagi!
@@ -484,19 +492,19 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 **EN:** Mbah, listen! A frightened villager is beating the kentongan, a wooden alarm drum. People are running around holding their phones!
 
 #### `dialog-wonosobo-04` · Mbah Kedu · pose `worried`
-**ID:** Mereka menerima pesan berantai: "Kawah akan meletus besok pagi! Cepat mengungsi! Sebarkan ke semua orang!" Tak ada nama pengirim, tak ada sumber resmi.
+**ID:** Mereka menerima pesan berantai: "Besok pagi akan ada gempa besar di Dieng! Cepat mengungsi! Sebarkan ke semua orang!"
 
-**EN:** They have received a chain message: "The crater will erupt tomorrow morning! Evacuate now! Share this with everyone!" There is no sender's name and no official source.
+**EN:** They have received a chain message: "A big earthquake will hit Dieng tomorrow morning! Evacuate now! Share this with everyone!"
 
 #### `dialog-wonosobo-05` · Jaka · pose `afraid`
-**ID:** Tapi bagaimana kalau pesan itu benar, Mbah? Kalau kita diam saja, orang bisa celaka!
+**ID:** Apa pesan itu benar, Mbah? Aku jadi cemas...
 
-**EN:** But what if the message is true, Mbah? If we do nothing, people could get hurt!
+**EN:** Is that message true, Mbah? It makes me worried...
 
 #### `dialog-wonosobo-06` · Mbah Kedu · pose `idle`
-**ID:** Pertanyaan yang bagus, Le. Justru karena ini penting, kita harus memeriksanya. Kabar bohong paling mudah menyebar ketika orang sedang takut.
+**ID:** Pertanyaanmu penting, Le. Jawabannya tersembunyi di balik kabut ini, dan kamulah yang akan menemukannya.
 
-**EN:** That's a good question, my boy. It is exactly because this matters that we must check it. False news spreads most easily when people are afraid.
+**EN:** That's an important question, my boy. The answer is hidden behind this mist, and you are the one who will find it.
 
 #### `dialog-wonosobo-07` · Mbah Kedu · pose `weak` · efek `dim`
 **ID:** Le... Mbah tidak kuat naik lebih tinggi lagi. Napas Mbah pendek, dan kaki ini sudah tidak mau melangkah.
@@ -524,14 +532,14 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 **EN:** Being scared is normal, my boy. This lantern shines because of your courage, not because you are never afraid.
 
 #### `dialog-wonosobo-12` · Mbah Kedu · pose `idle`
-**ID:** Dengarkan pesan Mbah. Sebelum percaya, periksa sumbernya. Sebelum membagikan, pikirkan akibatnya. Kalau ragu, tanyakan kepada orang yang tepat, seperti guru, orang tua, atau petugas resmi.
+**ID:** Dengarkan pesan Mbah. Apa pun yang kamu temui, bacalah sekali lagi sebelum memutuskan.
 
-**EN:** Listen to my advice. Before you believe, check the source. Before you share, think about what could happen. When in doubt, ask the right person, such as a teacher, a parent, or an official.
+**EN:** Listen to my advice. Whatever you come across, read it once more before you decide.
 
 #### `dialog-wonosobo-13` · Jaka · pose `idle`
-**ID:** Periksa sumbernya... pikirkan akibatnya... tanyakan kepada orang yang tepat. Aku akan mengingatnya, Mbah.
+**ID:** Baca sekali lagi sebelum memutuskan... Aku akan mengingatnya, Mbah.
 
-**EN:** Check the source... think about what could happen... ask the right person. I will remember, Mbah.
+**EN:** Read it once more before deciding... I will remember, Mbah.
 
 #### `dialog-wonosobo-14` · Jaka · pose `determined`
 **ID:** Warga Dieng tidak butuh kepanikan. Mereka butuh kabar yang benar. Dan aku akan membantu mereka menemukannya.
@@ -539,9 +547,9 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 **EN:** The people of Dieng don't need panic. They need the truth. And I will help them find it.
 
 #### `dialog-wonosobo-15` · Mbah Kedu · pose `smile`
-**ID:** Itu baru anak pemberani. Pergilah, Le. Empat serpihan terakhir menunggu di balik kabut.
+**ID:** Itu baru anak pemberani. Pergilah, Le. Lima serpihan terakhir menunggu di balik kabut.
 
-**EN:** Now that's a brave child. Go, my boy. The last four shards are waiting behind the mist.
+**EN:** Now that's a brave child. Go, my boy. The last five shards are waiting behind the mist.
 
 #### `dialog-wonosobo-16` · Jaka · pose `determined` · efek `fog-lift`
 **ID:** Tunggu aku di Telaga Warna, Mbah. Saat aku kembali, Lentera Kedu akan menyala paling terang!
@@ -550,9 +558,111 @@ Tampil setiap kali wilayah baru terbuka (aturan dialog gate). Jaka berdiri di ki
 
 ---
 
-## 5. Wilayah tuntas (`level_done`)
+## 5. Cerita penghubung tantangan kelima (`scenario_open`)
 
-Tampil saat tantangan keempat sebuah wilayah selesai, bersamaan dengan momen "Pustaka {wilayah} terbuka!".
+Tampil sekali, saat tantangan kelima (Skenario Digital) sebuah wilayah pertama kali dibuka, sebelum kartu misinya. Siswa yang sudah punya pengerjaan di tantangan itu tidak melihatnya lagi, juga di pertemuan lain; ceritanya bisa ditonton ulang dari peta wilayah. Jaka di kiri panggung, Mbah Kedu di kanan, seperti dialog wilayah. Sumber: [`12`](revisi-10-analitik/12_CERITA_PENGHUBUNG_DAN_NARASI.md#cerita-penghubung-tantangan-kelima-scenario_open).
+
+### Temanggung: *Kabut di Layar*
+
+#### `layar-temanggung-01` · Jaka · pose `happy` · efek `glow`
+**ID:** Mbah, empat serpihan Temanggung sudah kembali! Tapi cahaya lenteraku belum utuh. Di mana serpihan kelima?
+
+**EN:** Mbah, four of Temanggung's shards are back! But my lantern's light still isn't whole. Where is the fifth shard?
+
+#### `layar-temanggung-02` · Mbah Kedu · pose `worried` · efek `fog`
+**ID:** Lihat anak-anak di bawah pohon itu, Le. Mereka menunduk menatap layar tablet. Ada kabut tipis yang keluar dari layarnya.
+
+**EN:** Look at the children under that tree, my boy. They are bent over a tablet. A thin mist is drifting out of its screen.
+
+#### `layar-temanggung-03` · Jaka · pose `afraid`
+**ID:** Kabut Lupa bisa masuk ke dalam layar, Mbah? Pantas saja unggahan tadi ada yang keliru.
+
+**EN:** The Mist of Forgetting can get inside a screen, Mbah? No wonder that post had mistakes in it.
+
+#### `layar-temanggung-04` · Mbah Kedu · pose `idle`
+**ID:** Kabut itu pandai bersembunyi, Le. Di layar, ia menyelinap di antara pesan, foto, dan kabar yang lewat cepat sekali. Serpihan kelima tersangkut di sana.
+
+**EN:** That mist is good at hiding, my boy. On a screen, it slips in among the messages, photos, and news that rush past. The fifth shard is caught in there.
+
+#### `layar-temanggung-05` · Jaka · pose `idle`
+**ID:** Jadi bukan layarnya yang jahat, ya, Mbah? Kabutnya yang harus kita usir.
+
+**EN:** So it isn't the screen that's bad, is it, Mbah? It's the mist we have to chase away.
+
+#### `layar-temanggung-06` · Mbah Kedu · pose `smile` · efek `glow`
+**ID:** Betul, Le. Layar bisa menjadi jendela ilmu. Kali ini, penjelajah, kamulah yang memegang layarnya. Bayangkan setiap cerita terjadi padamu.
+
+**EN:** That's right, my boy. A screen can be a window to knowledge. This time, explorer, you are the one holding the screen. Imagine each story is happening to you.
+
+### Magelang: *Ponsel yang Terus Berbunyi*
+
+#### `layar-magelang-01` · Jaka · pose `idle`
+**ID:** Mbah, empat serpihan Magelang sudah kembali. Serpihan kelima pasti tersangkut di layar lagi, ya?
+
+**EN:** Mbah, four of Magelang's shards are back. The fifth one must be caught in a screen again, right?
+
+#### `layar-magelang-02` · Mbah Kedu · pose `weak` · efek `dim`
+**ID:** Benar, Le. Lihat rumah baca di ujung jalan itu. Ponsel anak-anak di sana terus berbunyi, dan kabut tipis keluar dari layarnya.
+
+**EN:** That's right, my boy. Look at the reading house at the end of the road. The children's phones there keep chiming, and a thin mist is drifting out of the screens.
+
+#### `layar-magelang-03` · Jaka · pose `idle`
+**ID:** Mbah masih lemas. Mbah istirahat saja di sini, ya. Biar aku yang ke sana.
+
+**EN:** You're still weak, Mbah. Please rest here. I'll go over there.
+
+#### `layar-magelang-04` · Mbah Kedu · pose `weak`
+**ID:** Pergilah, Le. Kamu sudah menyusun relief dan memisahkan fakta dari pendapat. Sekarang ajak penjelajah bersamamu.
+
+**EN:** Go, my boy. You have put the reliefs back in order and separated facts from opinions. Now take the explorer with you.
+
+#### `layar-magelang-05` · Jaka · pose `determined`
+**ID:** Baik, Mbah. Kami akan berpikir dulu sebelum memilih.
+
+**EN:** All right, Mbah. We'll think before we choose.
+
+#### `layar-magelang-06` · Mbah Kedu · pose `smile` · efek `glow`
+**ID:** Penjelajah, bayangkan setiap cerita itu terjadi padamu. Pilihanmu yang akan menyibak kabut di layar Magelang.
+
+**EN:** Explorer, imagine each of these stories is happening to you. Your choices will clear the mist from Magelang's screens.
+
+### Wonosobo: *Layar Terakhir*
+
+#### `layar-wonosobo-01` · Jaka · pose `happy` · efek `glow`
+**ID:** Mbah! Empat serpihan Wonosobo sudah kembali. Tinggal satu lagi, yang terakhir!
+
+**EN:** Mbah! Four of Wonosobo's shards are back. Only one left, the very last one!
+
+#### `layar-wonosobo-02` · Mbah Kedu · pose `worried` · efek `fog`
+**ID:** Serpihan terakhir tersembunyi paling dalam, Le. Kabut Lupa membawanya ke layar-layar di seluruh Dieng, dari ponsel di rumah warga sampai tablet di sekolah.
+
+**EN:** The last shard is hidden the deepest, my boy. The Mist of Forgetting has carried it into screens all over Dieng, from the phones in people's homes to the tablets at school.
+
+#### `layar-wonosobo-03` · Jaka · pose `afraid`
+**ID:** Di seluruh Dieng? Banyak sekali, Mbah...
+
+**EN:** All over Dieng? That's so many, Mbah...
+
+#### `layar-wonosobo-04` · Mbah Kedu · pose `weak` · efek `dim`
+**ID:** Mbah tetap menunggu di tepi telaga ini, Le. Dari sini, Mbah bisa melihat setiap layar yang kembali terang.
+
+**EN:** I'll keep waiting here on the lake shore, my boy. From here, I can see every screen that grows bright again.
+
+#### `layar-wonosobo-05` · Jaka · pose `determined`
+**ID:** Aku akan mengingat semua yang sudah kita lalui, Mbah. Aku akan membaca setiap cerita dengan teliti.
+
+**EN:** I will remember everything we have been through, Mbah. I will read every story carefully.
+
+#### `layar-wonosobo-06` · Mbah Kedu · pose `smile` · efek `glow`
+**ID:** Itu bekal yang cukup. Penjelajah, inilah layar terakhir. Bayangkan setiap cerita terjadi padamu, lalu pikirkan baik-baik.
+
+**EN:** That is all you need. Explorer, this is the last screen. Imagine each story is happening to you, then think it through.
+
+---
+
+## 6. Wilayah tuntas (`level_done`)
+
+Tampil saat tantangan kelima sebuah wilayah selesai, bersamaan dengan momen "Pustaka {wilayah} terbuka!". Jumlah serpihan seluruhnya tidak disebut, karena siswa susulan bisa menuntaskan wilayah dengan urutan lain.
 
 ### Temanggung
 
@@ -562,38 +672,48 @@ Tampil saat tantangan keempat sebuah wilayah selesai, bersamaan dengan momen "Pu
 **EN:** Look, my boy! The mist over Temanggung has parted. The signposts can be read again, and people have found their way home.
 
 #### `tuntas-temanggung-02` · Jaka · pose `happy` · efek `glow`
-**ID:** Empat serpihan sudah kembali ke lentera! Rasanya hangat sekali, Mbah.
+**ID:** Kabut di layar tablet itu juga hilang, Mbah! Kelima serpihan sudah kembali ke lentera. Rasanya hangat sekali.
 
-**EN:** Four shards are back in the lantern! It feels so warm, Mbah.
+**EN:** The mist on that tablet is gone too, Mbah! All five shards are back in the lantern. It feels so warm.
 
 #### `tuntas-temanggung-03` · Mbah Kedu · pose `smile`
+**ID:** Anak-anak itu sekarang tahu, Le: data diri disimpan baik-baik, kata sandi hanya untuk pemilik akun, dan pesan yang aneh ditunjukkan dulu kepada orang tua.
+
+**EN:** Those children know now, my boy: personal details are kept safe, a password is only for its owner, and strange messages are shown to a parent first.
+
+#### `tuntas-temanggung-04` · Mbah Kedu · pose `smile`
 **ID:** Itu hasil ketelitianmu. Pustaka Temanggung kini terbuka untukmu. Bacalah sepuasnya.
 
 **EN:** That is the reward for your care. The Temanggung Library is now open to you. Read as much as you like.
 
-#### `tuntas-temanggung-04` · Jaka · pose `determined`
-**ID:** Terima kasih, Mbah. Sekarang, ke Magelang!
+#### `tuntas-temanggung-05` · Jaka · pose `determined`
+**ID:** Terima kasih, Mbah. Berikutnya, Magelang!
 
-**EN:** Thank you, Mbah. Now, on to Magelang!
+**EN:** Thank you, Mbah. Next stop, Magelang!
 
 ### Magelang
 
 #### `tuntas-magelang-01` · Mbah Kedu · pose `smile` · efek `fog-lift`
-**ID:** Dengar, Le... Kedua bapak itu berhenti bertengkar. Di papan informasi tertulis: Borobudur dibangun pada abad ke-8 dan ke-9 dari batu yang disusun saling mengunci, tanpa semen. Jadi, kedua kabar "katanya" tadi keliru. Sekarang mereka membaca relief bersama-sama.
+**ID:** Dengar, Le... Kedua bapak itu berhenti bertengkar. Di papan informasi tertulis: Borobudur dibangun pada abad ke-8 dan ke-9 dari batu yang disusun saling mengunci, tanpa semen. Jadi, kabar kedua bapak tadi sama-sama keliru. Sekarang mereka membaca relief bersama-sama.
 
-**EN:** Listen, my boy... Those two men have stopped arguing. The information board says: Borobudur was built in the 8th and 9th centuries from interlocking stones, without cement. So both "they say" stories were wrong. Now they are reading the reliefs together.
+**EN:** Listen, my boy... Those two men have stopped arguing. The information board says: Borobudur was built in the 8th and 9th centuries from interlocking stones, without cement. So both men's stories were wrong. Now they are reading the reliefs together.
 
 #### `tuntas-magelang-02` · Jaka · pose `happy`
-**ID:** Dan Mbah... Mbah sudah bisa berdiri tegak lagi!
+**ID:** Anak-anak di rumah baca juga sudah tenang. Dan Mbah... Mbah sudah bisa berdiri tegak lagi!
 
-**EN:** And Mbah... you can stand up straight again!
+**EN:** The children at the reading house are calm again too. And Mbah... you can stand up straight again!
 
-#### `tuntas-magelang-03` · Mbah Kedu · pose `smile` · efek `glow`
-**ID:** Delapan serpihan sudah kembali, dan tenaga Mbah ikut pulih. Pustaka Magelang kini terbuka untukmu.
+#### `tuntas-magelang-03` · Mbah Kedu · pose `smile`
+**ID:** Mereka sekarang bertanya dulu sebelum membagikan foto teman, dan memeriksa dulu kabar yang belum jelas sumbernya.
 
-**EN:** Eight shards have returned, and my strength is coming back. The Magelang Library is now open to you.
+**EN:** Now they ask first before sharing a friend's photo, and they check any news whose source isn't clear.
 
-#### `tuntas-magelang-04` · Jaka · pose `determined`
+#### `tuntas-magelang-04` · Mbah Kedu · pose `smile` · efek `glow`
+**ID:** Serpihan Magelang sudah kembali, dan tenaga Mbah ikut pulih. Pustaka Magelang kini terbuka untukmu.
+
+**EN:** Magelang's shards have returned, and my strength is coming back. The Magelang Library is now open to you.
+
+#### `tuntas-magelang-05` · Jaka · pose `determined`
 **ID:** Tinggal satu wilayah lagi. Wonosobo, kami datang!
 
 **EN:** Only one region left. Wonosobo, here we come!
@@ -601,58 +721,63 @@ Tampil saat tantangan keempat sebuah wilayah selesai, bersamaan dengan momen "Pu
 ### Wonosobo
 
 #### `tuntas-wonosobo-01` · Jaka · pose `happy` · efek `fog-lift`
-**ID:** Mbah! Aku berhasil! Aku mengajak warga bertanya kepada petugas resmi. Kata petugas, keadaan kawah normal, jadi tidak ada yang perlu mengungsi. Semua tetap menjaga jarak sesuai rambu.
+**ID:** Mbah! Aku berhasil! Aku mengajak warga bertanya kepada petugas resmi. Kata petugas, belum ada yang bisa meramal kapan gempa terjadi, dan tidak ada peringatan untuk Dieng. Warga sudah tenang lagi.
 
-**EN:** Mbah! I did it! I got people to ask the officials. The officials say the crater is at normal status, so nobody needs to evacuate. Everyone is still keeping a safe distance, as the signs say.
+**EN:** Mbah! I did it! I got people to ask the officials. The officials say no one can yet predict when an earthquake will happen, and there is no warning for Dieng. Everyone is calm again.
 
 #### `tuntas-wonosobo-02` · Mbah Kedu · pose `smile` · efek `glow`
-**ID:** Mbah melihatnya dari tepi telaga, Le. Setiap kali kamu memilih dengan bijak, kabut di puncak itu menipis sedikit demi sedikit.
+**ID:** Mbah melihatnya dari tepi telaga, Le. Setiap kali kamu memilih dengan bijak, kabut di puncak dan di layar-layar itu menipis sedikit demi sedikit.
 
-**EN:** I saw it from the lake shore, my boy. Every time you chose wisely, the mist on that peak grew a little thinner.
+**EN:** I saw it from the lake shore, my boy. Every time you chose wisely, the mist on the peak and on all those screens grew a little thinner.
 
-#### `tuntas-wonosobo-03` · Jaka · pose `happy`
-**ID:** Dua belas serpihan... semuanya sudah kembali!
+#### `tuntas-wonosobo-03` · Mbah Kedu · pose `smile`
+**ID:** Kamu sudah menemukan sendiri pesan terpenting dari Kedu, Le. Sebelum percaya, periksa sumbernya. Sebelum membagikan, pikirkan akibatnya. Kalau ragu, tanyakan kepada orang yang tepat, seperti guru, orang tua, atau petugas resmi.
 
-**EN:** Twelve shards... every single one is back!
+**EN:** You have found Kedu's most important lesson by yourself, my boy. Before you believe, check the source. Before you share, think about what could happen. When in doubt, ask the right person, such as a teacher, a parent, or an official.
 
-#### `tuntas-wonosobo-04` · Mbah Kedu · pose `smile`
-**ID:** Pustaka Wonosobo terbuka untukmu. Sekarang, mari kita pulang dan nyalakan Lentera Kedu bersama-sama.
+#### `tuntas-wonosobo-04` · Jaka · pose `happy`
+**ID:** Serpihan terakhir dari Wonosobo... sudah kembali!
 
-**EN:** The Wonosobo Library is open to you. Now, let's go home and light the Lantern of Kedu together.
+**EN:** The last shard from Wonosobo... is back!
+
+#### `tuntas-wonosobo-05` · Mbah Kedu · pose `smile`
+**ID:** Pustaka Wonosobo terbuka untukmu. Saat semuanya siap, kita pulang dan menyalakan Lentera Kedu bersama-sama.
+
+**EN:** The Wonosobo Library is open to you. When everything is ready, we will go home and light the Lantern of Kedu together.
 
 ---
 
-## 6. Penutup (`ending`)
+## 7. Penutup (`ending`)
 
-Tampil setelah seluruh wilayah tuntas, sebelum Balai Refleksi.
+Tampil setelah seluruh wilayah tuntas, sebelum Balai Refleksi. Selama studi diputar di P5, setelah tes akhir.
 
 #### `penutup-01` · Narator · efek `glow`
 **Judul:** Lentera Menyala Kembali / *The Lantern Shines Again*
 
-**ID:** Di puncak bukit, Jaka mengangkat lenteranya tinggi-tinggi. Kedua belas serpihan menyatu, dan cahaya keemasan memancar ke seluruh Dataran Kedu.
+**ID:** Di puncak bukit, Jaka mengangkat lenteranya tinggi-tinggi. Kelima belas serpihan menyatu, dan cahaya keemasan memancar ke seluruh tanah Kedu.
 
-**EN:** On top of the hill, Jaka lifted his lantern high. All twelve shards joined together, and a golden light poured out across the whole Kedu Plain.
+**EN:** On top of the hill, Jaka lifted his lantern high. All fifteen shards joined together, and a golden light poured out across all the lands of Kedu.
 
 #### `penutup-02` · Narator · efek `fog-lift`
 **Judul:** Kabut Tersibak / *The Mist Clears*
 
-**ID:** Kabut Lupa tersibak dari Temanggung, Magelang, sampai Wonosobo. Papan petunjuk terbaca jelas, relief bercerita dengan urutan yang benar, dan pesan berantai tidak lagi langsung dipercaya begitu saja.
+**ID:** Kabut Lupa tersibak dari Temanggung, Magelang, sampai Wonosobo. Papan petunjuk terbaca jelas, relief bercerita dengan urutan yang benar, dan layar-layar di rumah warga tidak lagi berkabut. Pesan berantai tidak lagi langsung dipercaya dan dibagikan begitu saja.
 
-**EN:** The Mist of Forgetting cleared from Temanggung to Magelang to Wonosobo. Signposts could be read clearly, the reliefs told their stories in the right order, and chain messages were no longer believed without checking.
+**EN:** The Mist of Forgetting cleared from Temanggung to Magelang to Wonosobo. Signposts could be read clearly, the reliefs told their stories in the right order, and the screens in people's homes were no longer misty. Chain messages were no longer believed and shared without checking.
 
 #### `penutup-03` · Mbah Kedu · pose `smile` · efek `glow`
 **Judul:** Mbah Kedu Pulih / *Mbah Kedu Recovers*
 
-**ID:** Badan Mbah terasa segar lagi, Le! Tapi ingat, cahaya ini bukan hanya milik lentera. Cahaya ini hidup setiap kali seseorang membaca dengan teliti.
+**ID:** Badan Mbah terasa segar lagi, Le! Tapi ingat, cahaya ini bukan hanya milik lentera. Cahaya ini hidup setiap kali seseorang membaca dengan teliti dan berbagi dengan bijak.
 
-**EN:** I feel strong again, my boy! But remember, this light does not belong to the lantern alone. It lives every time someone reads with care.
+**EN:** I feel strong again, my boy! But remember, this light does not belong to the lantern alone. It lives every time someone reads with care and shares wisely.
 
 #### `penutup-04` · Jaka · pose `bow`
 **Judul:** Janji Jaka / *Jaka's Promise*
 
-**ID:** Aku akan terus membaca dengan teliti, menghubungkan informasi, dan memeriksa sumbernya, Mbah. Supaya Kabut Lupa tidak pernah kembali.
+**ID:** Aku akan terus menjaga cahaya ini, Mbah: saat membaca, saat memakai layar, dan saat budaya Kedu tampil di layar. Supaya Kabut Lupa tidak pernah kembali.
 
-**EN:** I will keep reading carefully, connecting information, and checking the source, Mbah. So that the Mist of Forgetting never comes back.
+**EN:** I will keep this light safe, Mbah: when I read, when I use a screen, and when Kedu's culture appears on a screen. So that the Mist of Forgetting never comes back.
 
 #### `penutup-05` · Mbah Kedu · pose `smile`
 **Judul:** Penjaga Lentera / *Keepers of the Lantern*
@@ -663,23 +788,23 @@ Tampil setelah seluruh wilayah tuntas, sebelum Balai Refleksi.
 
 ---
 
-## 7. Narasi Peta Kedu setelah semua wilayah tuntas (`map_done`)
+## 8. Narasi Peta Kedu setelah semua wilayah tuntas (`map_done`)
 
-Menggantikan narasi `map_intro` di Peta Kedu begitu kedua belas tantangan tuntas, karena Kabut Lupa sudah hilang. Bila baris ini belum ada di basis data (server lama sebelum `gelita:story:sync`), Peta Kedu tetap memutar `map_intro`.
+Menggantikan narasi `map_intro` di Peta Kedu begitu kelima belas tantangan tuntas, karena Kabut Lupa sudah hilang. Bila baris ini belum ada di basis data (server lama sebelum `gelita:story:sync`), Peta Kedu tetap memutar `map_intro`.
 
 #### `peta-tuntas-01` · Jaka · pose `happy` · efek `glow`
 **Judul:** Kabut Sudah Pergi / *The Mist Is Gone*
 
-**ID:** Lihat! Kabut Lupa sudah hilang dari Dataran Kedu. Temanggung, Magelang, dan Wonosobo bercahaya lagi berkat kerja kerasmu.
+**ID:** Lihat! Kabut Lupa sudah hilang dari tanah Kedu. Temanggung, Magelang, dan Wonosobo bercahaya lagi berkat kerja kerasmu.
 
-**EN:** Look! The Mist of Forgetting is gone from the Kedu Plain. Temanggung, Magelang, and Wonosobo shine again thanks to your hard work.
+**EN:** Look! The Mist of Forgetting is gone from the lands of Kedu. Temanggung, Magelang, and Wonosobo shine again thanks to your hard work.
 
 #### `peta-tuntas-02` · Jaka · pose `determined`
 **Judul:** Cahaya yang Dijaga / *A Light to Keep*
 
-**ID:** Kedua belas Serpihan Cahaya sudah kembali. Sekarang tugas kita menjaga cahayanya: terus membaca dengan teliti dan memeriksa sumbernya.
+**ID:** Kelima belas Serpihan Cahaya sudah kembali. Sekarang tugas kita menjaga cahayanya, saat membaca maupun saat memakai layar.
 
-**EN:** All twelve Shards of Light are back. Now our job is to keep the light shining: keep reading carefully and checking the source.
+**EN:** All fifteen Shards of Light are back. Now our job is to keep the light shining, whether we are reading or using a screen.
 
 #### `peta-tuntas-03` · Jaka · pose `happy`
 **Judul:** Jelajahi Lagi / *Explore Again*

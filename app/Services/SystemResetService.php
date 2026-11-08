@@ -33,10 +33,11 @@ use Config\Database;
 class SystemResetService
 {
     /**
-     * Migration that must have run. Part 3 (29 §12): 003700; checked by its
-     * row in the history, since 003900/003910 were numbered before 003600.
+     * Migration that must have run: the last of code wave E (part 6, 32 §11).
+     * Checked by its row in the history too, since 003900/003910 were
+     * numbered before 003600–003800 (part 3, 29 §12).
      */
-    public const REQUIRED_MIGRATION = '2026-01-01-003700';
+    public const REQUIRED_MIGRATION = '2026-01-01-004000';
 
     /** Kata yang wajib diketik bila tanpa --ya. */
     public const CONFIRM_WORD = 'RESET-KELAS5';
@@ -225,6 +226,9 @@ class SystemResetService
             ? ['status' => 'skipped', 'message' => 'Bank soal tidak diimpor (--tanpa-bank).']
             : $this->importBank($options['bank'] ?? null);
 
+        // Part 6 (32 K8): without Skenario Digital in the bank, four challenges per region (12 shards)
+        $this->retireEmptyScenarioNodes();
+
         // 8. Gambar mockup (Dok 2 §10)
         $mockups = ! empty($options['tanpa_mockup'])
             ? ['status' => 'skipped', 'count' => 0, 'message' => 'Gambar mockup tidak dibuat (--tanpa-mockup).']
@@ -382,6 +386,22 @@ class SystemResetService
             'passages'   => $this->db->table('reading_passages')->where('is_active', 1)->countAllResults(),
             'clue_audio' => $clueAudio,
         ];
+    }
+
+    /**
+     * Part 6 (32 K8): the fifth challenge appears only when the imported bank
+     * holds its scenarios. A `skenario` node without an active item is set
+     * inactive, so the shard total stays the number of active nodes.
+     */
+    private function retireEmptyScenarioNodes(): void
+    {
+        foreach ($this->db->table('challenge_nodes')->select('id')->where('engine_type', 'skenario')->where('is_active', 1)->get()->getResultArray() as $node) {
+            $items = $this->db->table('challenge_items')->where('challenge_node_id', (int) $node['id'])->where('is_active', 1)->countAllResults();
+
+            if ($items === 0) {
+                $this->db->table('challenge_nodes')->where('id', (int) $node['id'])->update(['is_active' => 0]);
+            }
+        }
     }
 
     /** @return array<string, mixed> */

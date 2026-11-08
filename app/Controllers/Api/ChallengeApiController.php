@@ -60,6 +60,9 @@ class ChallengeApiController extends BaseApiController
         return $this->ok($opened['payload']);
     }
 
+    /** Part 6 (32 §6.4, §12): client times of one Skenario Digital try, ms since the challenge opened. */
+    private const SCENARIO_TIMES = ['ready_ms', 'reason_ready_ms', 'first_input_ms', 'action_last_input_ms', 'reason_last_input_ms', 'last_input_ms'];
+
     public function respond(int $attemptId): ResponseInterface
     {
         if ($limited = $this->rateLimited('attempts')) {
@@ -97,11 +100,16 @@ class ChallengeApiController extends BaseApiController
             $result = service('challengeService')->submitAnswer($attempt, $itemId, $body['answer'], [
                 'ready_ms'      => $body['ready_ms'] ?? null,
                 'last_input_ms' => $body['last_input_ms'] ?? null,
-            ]);
+            ] + array_intersect_key($body, array_flip(self::SCENARIO_TIMES)));
         } catch (ChallengeRuleException $e) {
             return $this->ruleFailed($e);
         } catch (\InvalidArgumentException $e) {
             return $this->invalidPayload(['item_id' => $e->getMessage()], 'INVALID_RESPONSE');
+        }
+
+        // Skenario Digital (32 §5.4): its own fields, no tap counters
+        if (isset($result['scenario_closed'])) {
+            return $this->ok($result);
         }
 
         $response = model(ItemResponseModel::class)->findOne($attempt->id, $itemId);

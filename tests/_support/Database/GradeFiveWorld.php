@@ -9,8 +9,8 @@ use Config\Services;
 /**
  * Dunia permainan kelas 5 di SQLite (grup `tests`): skema lengkap
  * (ResetTables), tiga wilayah, akun admin, lalu `gelita:reset` sungguhan
- * yang mengimpor workbook bank soal kelas 5 di repositori (151 soal, 147
- * aktif; 51 variasi). Satu siswa dengan satu sesi aktif (ketiga wilayah terbuka)
+ * yang mengimpor workbook bank soal kelas 5 di repositori (177 active items,
+ * 52 variants; five challenges per region since part 6). Satu siswa dengan satu sesi aktif (ketiga wilayah terbuka)
  * siap bermain.
  *
  * Impor workbook hanya dijalankan sekali per kelas uji; uji berikutnya

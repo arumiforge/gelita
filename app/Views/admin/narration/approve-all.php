@@ -26,6 +26,8 @@ $language = 'bahasa ' . admin_label('locale', $locale);
         <?= csrf_field() ?>
         <input type="hidden" name="locale" value="<?= esc($locale, 'attr') ?>">
         <input type="hidden" name="back" value="<?= esc($back, 'attr') ?>">
+        <?php // Part 6 (32 §9.4): without this check, Skenario Digital situations and Periksa Unggahan clues stay drafts ?>
+        <label class="check"><input type="checkbox" name="tone_checked" value="1"> <?= esc(lang('Admin.narration_tone_check')) ?> (situasi Skenario Digital dan petunjuk Periksa Unggahan)</label>
         <button class="btn btn-primary btn-sm" type="submit"><?= icon('check') ?> Ya, setujui <?= esc($count) ?> rekaman</button>
       </form>
     </div>

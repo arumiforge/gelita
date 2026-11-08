@@ -105,6 +105,11 @@ final class ResearchDictionary
             'first_input_ms' => ['ada', 'first_input_ms', 'analitik-5-waktu-pengerjaan', [5]],
             'last_input_ms' => ['ada', 'last_input_ms', 'analitik-5-waktu-pengerjaan', [5, 6]],
             'occurred_at' => ['ada', 'occurred_at', self::KEYS, [5]],
+            // Part 6 (32 §10): Skenario Digital
+            'action_key' => 'baru', 'action_score' => 'baru', 'reason_code' => ['baru', 'reason_code', 'analitik-6-pola-kesalahan', [6]],
+            'reason_ready_ms' => ['baru', 'reason_ready_ms', 'analitik-5-waktu-pengerjaan', [5]],
+            'action_last_input_ms' => ['baru', 'action_last_input_ms', 'analitik-5-waktu-pengerjaan', [5]],
+            'reason_last_input_ms' => ['baru', 'reason_last_input_ms', 'analitik-5-waktu-pengerjaan', [5]],
         ]],
         'navigasi' => ['analitik-8-navigasi-permainan', [8], [
             'session_code' => 'ada', 'participant_code' => 'ada', 'field_session_code' => 'baru', 'sequence_no' => 'ada',

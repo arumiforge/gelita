@@ -257,6 +257,8 @@ return [
         'fill_blank_bank' => 'Isi rumpang (pilih kata)',
         'verdict_card'    => 'Kartu benar/salah',
         'find_object'     => 'Cari benda di gambar',
+        // Part 6 (32 §13)
+        'scenario_choice' => 'Skenario Digital (tindakan dan alasan)',
     ],
 
     /** Status tinjauan isi soal. */
@@ -388,6 +390,8 @@ return [
         'empty_tap'            => 'Mengetuk tempat kosong',
         'passage_reopened'     => 'Membuka bacaan lagi',
         'clue_failed'          => 'Petunjuk dilewati',
+        // Part 6 (32 §13)
+        'scenario_failed'      => 'Skenario ditutup setelah kesempatan habis',
         'reading_progress'     => 'Membaca bacaan',
         'screen_viewed'        => 'Membuka layar',
         'overlay_opened'       => 'Membuka jendela',
@@ -784,4 +788,10 @@ return [
     'retentionStudyHelp' => 'Penelitian dengan mode penelitian paling singkat 7305 hari (20 tahun), dihitung sejak penelitian selesai.',
     'researchPrivacyRequired' => 'Nyalakan pengaman data penelitian (gelita.researchPrivacy) di server sebelum studi penelitian diaktifkan.',
     'backupSecondDaysMissing' => 'Ada penelitian dengan mode penelitian, tetapi skrip cadangan belum melaporkan batas 30 hari di lokasi kedua (KEDUA_HARI). Isi batas itu di server.',
+
+    // Part 6 (32 §13): Skenario Digital and the narration rules
+    'engine_skenario'       => 'Skenario Digital',
+    'narration_tone_check'  => 'Nada datar dan sama untuk setiap situasi',
+    'narration_d1_refused'  => 'Bacaan dan pernyataan tidak dibacakan.',
+    'event_scenario_failed' => 'Skenario ditutup setelah kesempatan habis',
 ];

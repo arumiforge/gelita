@@ -164,6 +164,8 @@ trait ResetTables
             'scene_media_id'      => 'INTEGER?',
             'audio_intro_id'      => 'INTEGER?',
             'audio_intro_en_id'   => 'INTEGER?',
+            'audio_instruction_id'    => 'INTEGER?',
+            'audio_instruction_en_id' => 'INTEGER?',
             'config_json'         => 'TEXT?',
             'map_x'               => 'DECIMAL(5,2)=50.00',
             'map_y'               => 'DECIMAL(5,2)=50.00',
@@ -442,6 +444,14 @@ trait ResetTables
             'error_code'           => 'VARCHAR(12)?',
             'manual_code'          => 'VARCHAR(12)?',
             'ready_ms'             => 'INTEGER?',   // part 3 (29 §12)
+            // Part 6 (32 §11)
+            'action_key'           => 'VARCHAR(10)?',
+            'action_score'         => 'INTEGER?',
+            'reason_key'           => 'VARCHAR(10)?',
+            'reason_code'          => 'VARCHAR(12)?',
+            'reason_ready_ms'      => 'INTEGER?',
+            'action_last_input_ms' => 'INTEGER?',
+            'reason_last_input_ms' => 'INTEGER?',
             '_unique'              => [['challenge_attempt_id', 'challenge_item_id', 'try_no']],
         ],
         'learning_indicators' => [

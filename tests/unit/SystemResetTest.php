@@ -64,13 +64,13 @@ final class SystemResetTest extends CIUnitTestCase
         $this->assertSame($before, $this->counts(), '--dry-run tidak menulis apa pun');
         $this->assertStringContainsString('--dry-run: tidak ada yang diubah.', $output);
         $this->assertMatchesRegularExpression('/participants\s*\|\s*2\b/', $output);
-        $this->assertStringContainsString('Akan DIBANGUN ULANG: 12 tantangan → 12 tantangan', $output);
+        $this->assertStringContainsString('Akan DIBANGUN ULANG: 12 tantangan → 15 tantangan', $output);
         $this->assertStringContainsString('Akan DIHAPUS: 2 sekolah belum terverifikasi', $output);
 
         $plan = (new SystemResetService($this->conn, $this->exportsDir))->plan();
         $this->assertSame(array_values(SystemResetService::GROUP_A), array_keys($plan['clear']));
         $this->assertSame(['admin' => 1, 'peneliti' => 1, 'ketua' => 1], $plan['staff']);
-        $this->assertSame(12, $plan['nodes_after']);
+        $this->assertSame(15, $plan['nodes_after'], 'five per region; reset retires the fifth without scenarios (32 K8)');
     }
 
     /** `--bank=JALUR` dan `--bank JALUR` sama-sama terbaca (parser CodeIgniter tidak memecah `=`). */
@@ -151,8 +151,8 @@ final class SystemResetTest extends CIUnitTestCase
         $this->assertSame(12, $result['nodes']);
         $this->assertSame(12, $this->conn->table('challenge_nodes')->where('is_active', 1)->countAllResults());
         $this->assertSame(
-            [[1, 'puzzle'], [2, 'rumpang'], [3, 'boleh'], [4, 'cari']],
-            array_map(static fn (array $r): array => [(int) $r['sequence'], $r['engine_type']], $this->conn->table('challenge_nodes')->where('level_id', 2)->orderBy('sequence')->get()->getResultArray()),
+            [[1, 'puzzle', 1], [2, 'rumpang', 1], [3, 'boleh', 1], [4, 'cari', 1], [5, 'skenario', 0]],
+            array_map(static fn (array $r): array => [(int) $r['sequence'], $r['engine_type'], (int) $r['is_active']], $this->conn->table('challenge_nodes')->where('level_id', 2)->orderBy('sequence')->get()->getResultArray()),
         );
         $this->assertSame(0, $this->conn->table('challenge_items')->countAllResults(), '--tanpa-bank');
         $this->assertSame(0, $this->conn->table('hints')->countAllResults());
@@ -212,20 +212,20 @@ final class SystemResetTest extends CIUnitTestCase
 
         $this->assertSame('imported', $result['bank']['status'], json_encode($result['warnings']));
         $this->assertSame(hash_file('sha256', $bank), $result['bank']['sha256']);
-        $this->assertSame(12, $this->conn->table('challenge_nodes')->where('is_active', 1)->countAllResults());
+        $this->assertSame(15, $this->conn->table('challenge_nodes')->where('is_active', 1)->countAllResults(), 'the bank holds Skenario Digital (32 §7.1)');
         $this->assertSame(1, $this->conn->table('research_studies')->where('status', 'active')->countAllResults());
         $this->assertSame(1, $this->conn->table('research_studies')->countAllResults());
 
-        // New bank (31, from 08): 153 active items = 31 Susun Gambar + 92 literacy items
-        // + 12 PBK clues + 18 decoys; the 24 scenarios wait for tmg-5 … wnb-5 (part 6)
-        $this->assertSame(153, $this->conn->table('challenge_items')->where('is_active', 1)->countAllResults());
+        // New bank (31, from 08): 177 active items = 31 Susun Gambar + 92 literacy items
+        // + 12 PBK clues + 18 decoys + 24 scenarios (tmg-5 … wnb-5, part 6)
+        $this->assertSame(177, $this->conn->table('challenge_items')->where('is_active', 1)->countAllResults());
         $this->assertSame(0, $this->conn->table('challenge_items')->where('is_active', 0)->countAllResults());
-        // Error codes (K6): 30 blanks, 12 round-1 clues, 24 round-2 clues; 324 rows = 184 + 108 … minus the pending scenarios
+        // Error codes (K6): 30 blanks, 12 round-1 clues, 24 round-2 clues (scenario codes live in scenario_options)
         $this->assertSame(66, $this->conn->table('item_error_codes')->select('challenge_item_id')->distinct()->countAllResults());
         $this->assertSame(184 + 108 + 216, $this->conn->table('item_error_codes')->countAllResults());
         $this->assertSame(6, $this->conn->table('post_scenes')->countAllResults());
         $this->assertSame(60, $this->conn->table('post_parts')->countAllResults());
-        $this->assertSame(0, $this->conn->table('scenario_options')->countAllResults(), 'scenarios wait for their challenge (part 6)');
+        $this->assertSame(184, $this->conn->table('scenario_options')->countAllResults(), '24 scenarios with their actions and reasons (part 6)');
         $this->assertSame(['D1a', 'D1b', 'D2', 'D3', 'PBK'], array_column($this->conn->table('learning_indicators')->where('is_active', 1)->orderBy('code')->get()->getResultArray(), 'code'));
         $this->assertSame(18, $this->conn->table('challenge_items')->where('scorable', 0)->countAllResults());
         $this->assertSame(9, $this->conn->table('reading_passages')->countAllResults());

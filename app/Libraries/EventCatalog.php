@@ -29,7 +29,7 @@ final class EventCatalog
         'challenge_opened', 'challenge_checked', 'challenge_completed', 'challenge_abandoned',
         'challenge_tries_exhausted', 'clue_failed', 'answer_submitted', 'wrong_target_clicked',
         'empty_tap', 'passage_reopened',
-        // WAVE-E seam (part 6, 32 §5.6): add 'scenario_failed' here and in SERVER_ONLY and COMPLETION.
+        'scenario_failed',   // part 6 (32 §5.6): a scenario closed after its third try, server only
         // help and narration
         'hint_opened', 'audio_play', 'audio_autoplay', 'audio_replay', 'audio_completed',
         // screens and reading
@@ -50,7 +50,7 @@ final class EventCatalog
     ];
 
     /** Types the client may never send (data that must not be forged). */
-    public const SERVER_ONLY = ['screen_viewed', 'challenge_tries_exhausted', 'clue_failed', 'events_dropped'];
+    public const SERVER_ONLY = ['screen_viewed', 'challenge_tries_exhausted', 'clue_failed', 'events_dropped', 'scenario_failed'];
 
     /** Research events of the `navigasi` sheet. */
     public const NAVIGATION = [
@@ -60,7 +60,7 @@ final class EventCatalog
 
     /** Research events of the `selesai` sheet. */
     public const COMPLETION = [
-        'challenge_completed', 'challenge_abandoned', 'challenge_tries_exhausted', 'clue_failed',
+        'challenge_completed', 'challenge_abandoned', 'challenge_tries_exhausted', 'clue_failed', 'scenario_failed',
         'level_completed', 'session_completed', 'intro_completed', 'feedback_submitted',
     ];
 

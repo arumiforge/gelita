@@ -36,7 +36,9 @@ class ContentController extends BaseAdminController
         'puzzle'  => ['puzzle_arrange'],
         'rumpang' => ['fill_blank_bank'],
         'boleh'   => ['verdict_card'],
-        'cari'    => ['find_object'],
+        'cari'    => ['find_object', 'find_part'],
+        // Part 6 (32 §5.7)
+        'skenario' => ['scenario_choice'],
     ];
 
     /** Berkas pratinjau impor; disimpan di luar public/. */
@@ -994,8 +996,16 @@ class ContentController extends BaseAdminController
             return $media;
         }
 
-        // Narasi petunjuk hanya untuk find_object (engine `cari`); jenis lain selalu tanpa audio
-        $audio = $this->request->getPost('interaction_type') === 'find_object'
+        // Narration only for Cari Objek clues and Skenario Digital situations (32 §9.1);
+        // reading passages and statements are never read out (K12)
+        $type = (string) $this->request->getPost('interaction_type');
+
+        if (in_array($type, \App\Libraries\NarrationImporter::SILENT_TYPES, true)
+            && ((int) $this->request->getPost('audio_prompt_id') > 0 || (int) $this->request->getPost('audio_prompt_en_id') > 0)) {
+            return lang('Admin.narration_d1_refused');
+        }
+
+        $audio = in_array($type, ['find_object', 'find_part', 'scenario_choice'], true)
             ? $this->audioFields(['audio_prompt_id', 'audio_prompt_en_id'])
             : ['audio_prompt_id' => null, 'audio_prompt_en_id' => null];
 

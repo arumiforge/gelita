@@ -40,8 +40,16 @@ final class NarrationKelas5Test extends CIUnitTestCase
         $lines = (new NarrationImporter($this->conn))->lines();
         $clues = array_filter($lines, static fn (array $line): bool => $line['context_code'] === NarrationImporter::CLUE_CONTEXT);
 
-        $this->assertCount(103, $lines);
+        // 112 script lines, 12 round-1 clues, and part 6 (32 §8.3, §9.3): 24 post clues, 24 situations, 15 instructions
+        $this->assertCount(187, $lines);
         $this->assertCount(12, $clues);
+        $this->assertSame(['post_clue' => 24, 'scenario_situation' => 24, 'challenge_instruction' => 15], array_intersect_key(
+            array_count_values(array_column($lines, 'context_code')),
+            ['post_clue' => 0, 'scenario_situation' => 0, 'challenge_instruction' => 0],
+        ));
+        $this->assertSame(['scenario_choice', 'narator'], [$this->conn->table('challenge_items')->where('id', $lines['skenario-tmg-5-a01']['id'])->get()->getRow('interaction_type'), $lines['skenario-tmg-5-a01']['character_code']]);
+        $this->assertSame(['find_part', 'mbah_kedu'], [$this->conn->table('challenge_items')->where('id', $lines['unggahan-tmg-4-a01']['id'])->get()->getRow('interaction_type'), $lines['unggahan-tmg-4-a01']['character_code']]);
+        $this->assertSame('challenge_nodes', $lines['instruksi-wnb-5']['table']);
 
         $expected = [];
 

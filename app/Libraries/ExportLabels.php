@@ -185,10 +185,17 @@ final class ExportLabels
             'is_correct'         => ['Benar', 'bool', '1 = percobaan ini benar.'],
             'hint_opened_before' => ['Sudah membuka petunjuk', 'bool', '1 = ada petunjuk yang dibuka di pengerjaan ini sebelum percobaan.'],
             'manual_code'        => ['Kode manual', 'code', 'Kode kesalahan dari pengodean manual wawancara L5, bila kedua pengode sepakat dan berbeda dari kode game.'],
-            'ready_ms'           => ['Siap dijawab (mdtk)', 'ms', 'Milidetik sejak tantangan dibuka saat butir bisa dijawab untuk percobaan ini (Benar atau Salah, Cari Objek); kosong untuk Isi Rumpang dan Susun Gambar.'],
+            'ready_ms'           => ['Siap dijawab (mdtk)', 'ms', 'Milidetik sejak tantangan dibuka saat butir bisa dijawab untuk percobaan ini (Benar atau Salah, Cari Objek, Skenario Digital: tindakan bisa dipilih); kosong untuk Isi Rumpang dan Susun Gambar.'],
             'first_input_ms'     => ['Masukan pertama (mdtk)', 'ms', 'Milidetik sejak tantangan dibuka sampai masukan pertama soal ini (klien).'],
             'last_input_ms'      => ['Masukan terakhir (mdtk)', 'ms', 'Milidetik sejak tantangan dibuka sampai masukan terakhir sebelum percobaan (klien). Cari Objek sebelum November 2026: sejak petunjuk tampil.'],
             'occurred_at'        => ['Waktu percobaan', 'datetime', 'Waktu server saat percobaan dinilai.'],
+            // Part 6 (32 §10): Skenario Digital only
+            'action_key'           => ['Tindakan dipilih', 'code', 'Kode tindakan yang dipilih (Skenario Digital).'],
+            'action_score'         => ['Skor tindakan', 'int', 'Skor bank tindakan itu: 2 = aman, 1 = sebagian, 0 = berisiko (Skenario Digital).'],
+            'reason_code'          => ['Kode alasan', 'code', 'Kode alasan yang dipilih (Skenario Digital).'],
+            'reason_ready_ms'      => ['Alasan siap dipilih (mdtk)', 'ms', 'Milidetik sejak tantangan dibuka saat pilihan alasan tampil (Skenario Digital).'],
+            'action_last_input_ms' => ['Masukan terakhir tindakan (mdtk)', 'ms', 'Milidetik sejak tantangan dibuka sampai tindakan terakhir dipilih (Skenario Digital).'],
+            'reason_last_input_ms' => ['Masukan terakhir alasan (mdtk)', 'ms', 'Milidetik sejak tantangan dibuka sampai alasan terakhir dipilih (Skenario Digital).'],
         ],
         'navigasi' => [
             'screen'      => ['Layar', 'code', 'Kode layar (payload.screen).'],
@@ -207,7 +214,7 @@ final class ExportLabels
             'completed'     => ['Didengar sampai habis', 'bool', '1 = pemutaran ini didengar sampai habis.'],
         ],
         'selesai' => [
-            'event_type' => ['Jenis event', 'enum', 'Event penyelesaian: challenge_completed, challenge_abandoned, challenge_tries_exhausted, clue_failed, level_completed, session_completed, intro_completed, feedback_submitted.', 'event'],
+            'event_type' => ['Jenis event', 'enum', 'Event penyelesaian: challenge_completed, challenge_abandoned, challenge_tries_exhausted, clue_failed, scenario_failed, level_completed, session_completed, intro_completed, feedback_submitted.', 'event'],
         ],
         'event' => [
             'item_key'   => ['Kode soal', 'code', 'Soal yang dirujuk event, bila ada.'],

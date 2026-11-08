@@ -15,6 +15,7 @@ use CodeIgniter\Database\BaseConnection;
  *   peta-NN               → map_intro    (global)
  *   kenal-{wilayah}-NN    → region_intro
  *   dialog-{wilayah}-NN   → level_open
+ *   layar-{wilayah}-NN    → scenario_open (bridge story, part 6)
  *   tuntas-{wilayah}-NN   → level_done
  *   penutup-NN            → ending       (global)
  *
@@ -40,6 +41,22 @@ use CodeIgniter\Database\BaseConnection;
  * - unggahan banyak berkas dari panel (Admin\NarrationController): berkas
  *   disalin ke public/assets/uploads/ lewat MediaStore, sama seperti
  *   unggahan media lain, sehingga ikut backup.
+ *
+ * Research revision 10, part 6 (32 §8.3, §9.3): three more groups whose text
+ * comes from the question bank, each only ever played through ▶:
+ *
+ *   skenario-{kode butir}  → situation of a `scenario_choice` item, Narator,
+ *                            context `scenario_situation`, audio_prompt_*
+ *   unggahan-{kode butir}  → round-2 *Periksa Unggahan* clue (`find_part`),
+ *                            Mbah Kedu, context `post_clue`, audio_prompt_*
+ *   instruksi-{node}       → instruction of every active challenge, Narator,
+ *                            context `challenge_instruction`,
+ *                            challenge_nodes.audio_instruction_*
+ *
+ * Item files carry the item code, not a number, so variants a and b never
+ * swap. `petunjuk-*` numbers count round-1 clues only (`find_object`,
+ * `round` 1). Isi Rumpang and Benar atau Salah items and the passages are
+ * never read out (K12): a file named after one of them is refused.
  *
  * Untuk setiap berkas yang cocok: `media_assets` dengan asset_key
  * `audio.narasi.{locale}.{kode}` dibuat atau diganti (MediaStore),
@@ -78,6 +95,8 @@ final class NarrationImporter
         'map_intro'    => 'peta',
         'region_intro' => 'kenal',
         'level_open'   => 'dialog',
+        // Part 6 (32 §9.3): the bridge story before the fifth challenge
+        'scenario_open' => 'layar',
         'level_done'   => 'tuntas',
         'ending'       => 'penutup',
         'map_done'     => 'peta-tuntas',
@@ -94,6 +113,22 @@ final class NarrationImporter
 
     /** Kolom tautan audio petunjuk per bahasa pada `challenge_items`. */
     public const CLUE_COLUMNS = ['id' => 'audio_prompt_id', 'en' => 'audio_prompt_en_id'];
+
+    /** Part 6 (32 §8.3): instruction narration `instruksi-{node}` of every active challenge. */
+    public const INSTRUCTION_PREFIX = 'instruksi';
+
+    public const INSTRUCTION_CONTEXT = 'challenge_instruction';
+
+    public const INSTRUCTION_COLUMNS = ['id' => 'audio_instruction_id', 'en' => 'audio_instruction_en_id'];
+
+    /** Part 6 (32 §9.3): item narration by item code → [interaction_type, context, character]. */
+    public const ITEM_PREFIXES = [
+        'skenario' => ['scenario_choice', 'scenario_situation', 'narator'],
+        'unggahan' => ['find_part', 'post_clue', 'mbah_kedu'],
+    ];
+
+    /** Item types never read out (K12): Isi Rumpang and Benar atau Salah. */
+    public const SILENT_TYPES = ['fill_blank_bank', 'verdict_card'];
 
     /** Manifest rekaman sintetis bawaan, di folder narasi (bukan subfolder bahasa). */
     public const MANIFEST = 'produksi.json';
@@ -231,6 +266,9 @@ final class NarrationImporter
         }
 
         $this->lines += $this->clueLines();
+        // Part 6 (32 §8.3, §9.3)
+        $this->lines += $this->itemLines();
+        $this->lines += $this->instructionLines();
 
         return $this->lines;
     }
@@ -256,6 +294,8 @@ final class NarrationImporter
             ->where('ci.is_active', 1)
             ->where('ci.scorable', 1)
             ->where('ci.interaction_type', 'find_object')
+            // Round-1 clues only, so a Mbah Kedu clue never lands on a round-2 item (32 §9.3)
+            ->groupStart()->where('ci.round', 1)->orWhere('ci.round', null)->groupEnd()
             ->orderBy('l.sequence', 'ASC')
             ->orderBy('n.sequence', 'ASC')
             ->orderBy('ci.sequence', 'ASC')
@@ -307,6 +347,117 @@ final class NarrationImporter
     }
 
     /**
+     * Part 6 (32 §9.3): Skenario Digital situations (`skenario-{kode butir}`)
+     * and *Periksa Unggahan* clues (`unggahan-{kode butir}`) as narration
+     * lines, in the shape of clueLines().
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    private function itemLines(): array
+    {
+        $types = array_combine(array_column(self::ITEM_PREFIXES, 0), array_keys(self::ITEM_PREFIXES));
+        $rows  = $this->db->table('challenge_items ci')
+            ->select('ci.id, ci.item_key, ci.interaction_type, ci.prompt_id, ci.prompt_en, ci.audio_prompt_id, ci.audio_prompt_en_id')
+            ->select('n.id AS node_id, n.sequence AS node_sequence, n.level_id, l.code AS level_code, l.name_id AS level_name, l.sequence AS level_sequence')
+            ->join('challenge_nodes n', 'n.id = ci.challenge_node_id')
+            ->join('levels l', 'l.id = n.level_id')
+            ->where('n.is_active', 1)
+            ->where('ci.is_active', 1)
+            ->whereIn('ci.interaction_type', array_keys($types))
+            ->orderBy('l.sequence', 'ASC')
+            ->orderBy('n.sequence', 'ASC')
+            ->orderBy('ci.sequence', 'ASC')
+            ->orderBy('ci.id', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        $lines = [];
+
+        foreach ($rows as $row) {
+            $prefix  = $types[$row['interaction_type']];
+            [, $context, $character] = self::ITEM_PREFIXES[$prefix];
+            $code    = $prefix . '-' . strtolower((string) $row['item_key']);
+            $lines[$code] = [
+                'id'                => (int) $row['id'],
+                'table'             => 'challenge_items',
+                'level_id'          => (int) $row['level_id'],
+                'level_code'        => (string) $row['level_code'],
+                'level_name'        => (string) $row['level_name'],
+                'level_sequence'    => (int) $row['level_sequence'],
+                'context_code'      => $context,
+                'sequence'          => count($lines) + 1,
+                'character_code'    => $character,
+                'pose'              => null,
+                'effect'            => null,
+                'title_id'          => null,
+                'title_en'          => null,
+                'text_id'           => (string) $row['prompt_id'],
+                'text_en'           => $row['prompt_en'],
+                'audio_id_asset_id' => $row['audio_prompt_id'],
+                'audio_en_asset_id' => $row['audio_prompt_en_id'],
+                'node_id'           => (int) $row['node_id'],
+                'node_ref'          => node_ref((string) $row['level_code'], (int) $row['node_sequence']),
+                'item_key'          => (string) $row['item_key'],
+                'code'              => $code,
+            ];
+        }
+
+        return $lines;
+    }
+
+    /**
+     * Part 6 (32 §8.3): the instruction of every active challenge
+     * (`instruksi-{node}`), read by the Narrator, only through ▶ (K10).
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    private function instructionLines(): array
+    {
+        $rows = $this->db->table('challenge_nodes n')
+            ->select('n.id, n.sequence, n.level_id, n.instruction_id, n.instruction_en, n.audio_instruction_id, n.audio_instruction_en_id')
+            ->select('l.code AS level_code, l.name_id AS level_name, l.sequence AS level_sequence')
+            ->join('levels l', 'l.id = n.level_id')
+            ->where('n.is_active', 1)
+            ->where('n.instruction_id IS NOT NULL', null, false)
+            ->where('n.instruction_id !=', '')
+            ->orderBy('l.sequence', 'ASC')
+            ->orderBy('n.sequence', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        $lines = [];
+
+        foreach ($rows as $row) {
+            $nodeRef = node_ref((string) $row['level_code'], (int) $row['sequence']);
+            $code    = self::INSTRUCTION_PREFIX . '-' . $nodeRef;
+            $lines[$code] = [
+                'id'                => (int) $row['id'],
+                'table'             => 'challenge_nodes',
+                'level_id'          => (int) $row['level_id'],
+                'level_code'        => (string) $row['level_code'],
+                'level_name'        => (string) $row['level_name'],
+                'level_sequence'    => (int) $row['level_sequence'],
+                'context_code'      => self::INSTRUCTION_CONTEXT,
+                'sequence'          => (int) $row['sequence'],
+                'character_code'    => 'narator',
+                'pose'              => null,
+                'effect'            => null,
+                'title_id'          => null,
+                'title_en'          => null,
+                'text_id'           => (string) $row['instruction_id'],
+                'text_en'           => $row['instruction_en'],
+                'audio_id_asset_id' => $row['audio_instruction_id'],
+                'audio_en_asset_id' => $row['audio_instruction_en_id'],
+                'node_id'           => (int) $row['id'],
+                'node_ref'          => $nodeRef,
+                'code'              => $code,
+            ];
+        }
+
+        return $lines;
+    }
+
+    /**
      * Cocokkan nama berkas dengan baris naskah (huruf besar/kecil diabaikan).
      *
      * @return array{code: string, error: null, suggestion: null}|array{code: null, error: string, suggestion: string|null}
@@ -327,7 +478,7 @@ final class NarrationImporter
 
         if (preg_match('/^(intro|peta|penutup)-(\d{2})$/', $base, $m) === 1) {
             $code = $base;
-        } elseif (preg_match('/^(kenal|dialog|tuntas)-(.+)-(\d{2})$/', $base, $m) === 1) {
+        } elseif (preg_match('/^(kenal|dialog|layar|tuntas)-(.+)-(\d{2})$/', $base, $m) === 1) {
             if (! in_array($m[2], $this->levelCodes(), true)) {
                 return $this->unknown('wilayah "' . $m[2] . '" tidak ada di permainan', $this->suggest($base, $extension));
             }
@@ -339,12 +490,26 @@ final class NarrationImporter
             }
 
             $code = $base;
+        } elseif (preg_match('/^(' . implode('|', array_keys(self::ITEM_PREFIXES)) . ')-(.+)$/', $base, $m) === 1) {
+            // K12: reading passages and statements are never read out
+            if (! isset($lines[$base]) && $this->isSilentItem($m[2])) {
+                return $this->unknown(lang('Admin.narration_d1_refused'), null);
+            }
+
+            $code = $base;
+        } elseif (preg_match('/^' . self::INSTRUCTION_PREFIX . '-(.+)$/', $base) === 1) {
+            $code = $base;
         } else {
             return $this->unknown('nama berkas tidak sesuai pola nama rekaman (lihat Unduh daftar rekaman)', $this->suggest($base, $extension));
         }
 
         if (! isset($lines[$code])) {
-            $where = str_starts_with($code, self::CLUE_PREFIX . '-') ? 'di petunjuk target (soal Cari Objek yang aktif)' : 'di naskah cerita';
+            $where = match (true) {
+                str_starts_with($code, self::CLUE_PREFIX . '-')       => 'di petunjuk target (soal Cari Objek yang aktif)',
+                str_starts_with($code, self::INSTRUCTION_PREFIX . '-') => 'di instruksi tantangan yang aktif',
+                preg_match('/^(' . implode('|', array_keys(self::ITEM_PREFIXES)) . ')-/', $code) === 1 => 'di soal skenario atau petunjuk Periksa Unggahan yang aktif',
+                default                                                => 'di naskah cerita',
+            };
 
             return $this->unknown('baris ' . $code . ' tidak ada ' . $where, $this->suggest($base, $extension));
         }
@@ -549,8 +714,9 @@ final class NarrationImporter
         $linked = 0;
         $report = ['linked' => [], 'written' => false];
 
+        // Items and challenges are rebuilt by a reset; dialogues keep their links (part 6 adds the nodes)
         foreach ($this->lines() as $line) {
-            if ($line['table'] !== 'challenge_items') {
+            if ($line['table'] === 'dialogues') {
                 continue;
             }
 
@@ -592,9 +758,13 @@ final class NarrationImporter
         }
 
         if (! $dryRun) {
-            $table = ($line['table'] ?? 'dialogues') === 'challenge_items' ? 'challenge_items' : 'dialogues';
+            $table = in_array($line['table'] ?? 'dialogues', ['challenge_items', 'challenge_nodes'], true) ? $line['table'] : 'dialogues';
             $this->db->table($table)->where('id', (int) $line['id'])->update([
-                $table === 'challenge_items' ? self::CLUE_COLUMNS[$locale] : $column => $audioId,
+                match ($table) {
+                    'challenge_items' => self::CLUE_COLUMNS[$locale],
+                    'challenge_nodes' => self::INSTRUCTION_COLUMNS[$locale],
+                    default           => $column,
+                } => $audioId,
             ]);
             $this->lines[$line['code']][$column] = $audioId;
             $report['written'] = true;
@@ -662,6 +832,15 @@ final class NarrationImporter
         unset($report['linked']);
 
         return $report;
+    }
+
+    /** K12: the item code names an Isi Rumpang or Benar atau Salah item. */
+    private function isSilentItem(string $itemKey): bool
+    {
+        return $this->db->table('challenge_items')
+            ->where('item_key', $itemKey)
+            ->whereIn('interaction_type', self::SILENT_TYPES)
+            ->countAllResults() > 0;
     }
 
     /** @return list<string> kode node `cari` aktif (node_ref()) */

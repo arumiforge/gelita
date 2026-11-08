@@ -358,8 +358,17 @@ class MediaController extends BaseAdminController
     {
         $audio = model(AudioAssetModel::class);
 
-        if ($audio->find($audioId) === null) {
+        $row = $audio->find($audioId);
+
+        if ($row === null) {
             return $this->back('admin/media/audio', 'Rekaman tidak ditemukan.');
+        }
+
+        // Part 6 (32 §9.4): a scored situation or clue needs the tone check first
+        $toned = in_array((string) ($row['context_code'] ?? ''), \App\Libraries\NarrationCatalog::TONE_CONTEXTS, true);
+
+        if ($toned && $this->request->getPost('tone_checked') !== '1') {
+            return $this->back('admin/media/audio', 'Centang dulu: ' . lang('Admin.narration_tone_check') . '.');
         }
 
         $audio->update($audioId, [
@@ -374,7 +383,7 @@ class MediaController extends BaseAdminController
             'staff_user_id' => $this->staffId(),
             'target_type'   => 'audio_asset',
             'target_id'     => (string) $audioId,
-        ]);
+        ] + ($toned ? ['metadata' => ['tone_checked' => true]] : []));
 
         return $this->done('admin/media/audio', 'Rekaman disetujui dan kini terdengar oleh siswa.');
     }

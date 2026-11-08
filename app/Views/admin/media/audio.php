@@ -155,6 +155,10 @@ $pending        = count(array_filter($rows, static fn (array $row): bool => $row
 
               return '<form method="post" action="' . esc(base_url('admin/media/audio/' . $row['id'] . '/setujui'), 'attr') . '" class="inline-form">'
                   . csrf_field()
+                  // Part 6 (32 §9.4): Setujui works only once the tone is confirmed
+                  . (in_array((string) $row['context_code'], App\Libraries\NarrationCatalog::TONE_CONTEXTS, true)
+                      ? '<label class="check"><input type="checkbox" name="tone_checked" value="1" required> ' . esc(lang('Admin.narration_tone_check')) . '</label> '
+                      : '')
                   . '<button class="btn btn-primary btn-sm" type="submit">' . icon('check') . ' Setujui</button></form>';
           }],
       ],

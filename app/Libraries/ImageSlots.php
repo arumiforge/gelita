@@ -54,6 +54,7 @@ final class ImageSlots
         2 => 'Isi Rumpang',
         3 => 'Benar atau Salah',
         4 => 'Cari Objek',
+        5 => 'Skenario Digital',
     ];
 
     /**
@@ -636,6 +637,20 @@ final class ImageSlots
             'tips'        => 'Semua benda satu adegan (yang dicari dan pengecoh) satu gaya dan sudut pandang, agar pengecoh tidak mudah dikenali.',
             'admin'       => ['Atur posisi benda di halaman tantangan', 'admin/konten/node/{node_id}'],
         ],
+        // Part 6 (32 §7.5): one situation picture per Skenario Digital item, from the Katalog Aset
+        'item.skenario.*' => [
+            'group'       => 'challenge',
+            'label'       => 'Gambar situasi Skenario Digital {Wilayah}',
+            'content'     => 'Gambar situasi satu skenario: benda dan tempat, tanpa teks terbaca, merek, wajah, atau petunjuk jawaban (32A).',
+            'screens'     => [['Tantangan Skenario Digital {Wilayah}', '/tantangan/{wilayah}/5']],
+            'format'      => 'WebP kualitas ± 82, lanskap 3:2',
+            'transparent' => false,
+            'fallback'    => 'Skenario tampil dengan teks saja',
+            'priority'    => 'opsional',
+            'tips'        => 'Cahaya dan suasana sama netralnya di ke-24 gambar; nama berkas tanpa kata seperti "aman" atau "tipuan".',
+            'recommended' => [1536, 1024],
+            'admin'       => ['Buka soal tantangan', 'admin/konten/node/{node_id}'],
+        ],
         'challenge.item.*' => [
             'group'       => 'challenge',
             'label'       => 'Gambar soal {Wilayah}',
@@ -773,7 +788,7 @@ final class ImageSlots
     {
         $prefixes = config('Gelita')->levelPrefixes;
 
-        if (preg_match('/^challenge\.(?:item\.)?(' . implode('|', array_keys($prefixes)) . ')-/', $assetKey, $m)) {
+        if (preg_match('/^(?:challenge\.(?:item\.)?|item\.skenario\.)(' . implode('|', array_keys($prefixes)) . ')-/', $assetKey, $m)) {
             return $prefixes[$m[1]];
         }
 

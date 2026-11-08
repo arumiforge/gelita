@@ -133,9 +133,32 @@ $guides = [
     <p class="field-help">Untuk soal rumpang, tandai bagian yang kosong dengan tiga garis bawah <code>___</code>. Kolom Inggris boleh dikosongkan — pemain berbahasa Inggris akan membaca teks Indonesia.</p>
   </div>
 
-  <?php if ($node->engine_type === 'cari'): ?>
+  <?php if (! $isNew && $item->interaction_type === 'scenario_choice'): ?>
+    <?php // Part 6 (32 §5.7): actions and reasons of the scenario, read-only; edited through the question bank workbook ?>
     <div class="bilingual">
-      <span class="bilingual-label">Rekaman petunjuk (dibacakan Mbah Kedu)</span>
+      <span class="bilingual-label">Tindakan dan alasan (dari workbook bank soal, sheet scenario_options)</span>
+      <table class="data-table scenario-options-table">
+        <thead><tr><th>Jenis</th><th>Kunci</th><th>Teks</th><th>Skor</th><th>Kode</th><th>Umpan balik</th></tr></thead>
+        <tbody>
+          <?php foreach (service('contentRepository')->scenarioOptions($item->id) as $option): ?>
+            <tr>
+              <td><?= esc($option['kind'] === 'action' ? 'Tindakan' : 'Alasan') ?></td>
+              <td><code><?= esc($option['option_key']) ?></code></td>
+              <td><?= esc($option['text_id']) ?></td>
+              <td><?= esc($option['score'] ?? '—') ?></td>
+              <td><?= esc($option['code'] ?? '—') ?></td>
+              <td><?= esc($option['feedback_id'] ?? '') ?></td>
+            </tr>
+          <?php endforeach ?>
+        </tbody>
+      </table>
+      <p class="field-help">Penjelasan setelah kesempatan habis: <?= esc((string) ($item->explanation_id ?? '—')) ?> Ubah pilihan, skor, dan kode di workbook bank soal lalu impor ulang; skor tindakan tidak boleh berubah setelah skenario dijawab siswa.</p>
+    </div>
+  <?php endif ?>
+
+  <?php if (in_array($node->engine_type, ['cari', 'skenario'], true)): ?>
+    <div class="bilingual">
+      <span class="bilingual-label"><?= $node->engine_type === 'skenario' ? 'Rekaman situasi (dibacakan Narator, hanya lewat tombol ▶)' : 'Rekaman petunjuk (dibacakan Mbah Kedu)' ?></span>
       <?= component('components/audio-select', ['id' => $prefix . '-audio-id', 'name' => 'audio_prompt_id', 'label' => 'Rekaman petunjuk (Indonesia)', 'audioId' => $isNew ? null : $item->audio_prompt_id, 'locale' => 'id']) ?>
       <?= component('components/audio-select', ['id' => $prefix . '-audio-en', 'name' => 'audio_prompt_en_id', 'label' => 'Rekaman petunjuk (Inggris)', 'audioId' => $isNew ? null : $item->audio_prompt_en_id, 'locale' => 'en']) ?>
       <p class="field-help">Isi rekamannya sama dengan teks pertanyaan di atas. Unggah rekaman bernama <code>petunjuk-{node}-NN.mp3</code> (mis. <code>petunjuk-tmg-4-01.mp3</code>) di halaman <a href="<?= base_url('admin/konten/narasi') ?>">Rekaman narasi</a>; siswa baru mendengarnya setelah rekaman disetujui. Benda jebakan tidak perlu rekaman.</p>
