@@ -425,7 +425,7 @@ final class Simulator
 
     /**
      * Susun Gambar, Isi Rumpang, Benar atau Salah: isian satu per satu (input
-     * times only; `answer_selected` is gone since 29 §5.1), lalu "Cek
+     * times only, no selection event since 29 §5.1), lalu "Cek
      * jawabanku" sampai benar semua atau kesempatan habis. Benar atau Salah
      * also sends `ready_ms` (the previous input, 29 §6.1).
      *

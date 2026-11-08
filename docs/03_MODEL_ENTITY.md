@@ -1153,3 +1153,12 @@ Services: `FieldSessionService` (`service('fieldSessions')`: create, hours, clos
 
 `ChallengeItemModel::pickVariant()` takes an optional forced group and adds the shared group `x` to every attempt (round 1 first, anchor cards last). `ChallengeItem` casts `surface_json` and `round`; `ReadingPassage::toPlayerArray()` adds `layout` and `genre`.
 
+## Research revision 10, part 3: event catalog, data dictionary, field sheets (29)
+
+- **`App\Libraries\EventCatalog`**: the only list of event types (`RESEARCH`, `ADMIN`, `REMOVED`, `SERVER_ONLY`, `NAVIGATION`, `COMPLETION`, `accepted()`). `Config\Gelita::$eventTypes` is gone; `EventService::SERVER_ONLY` points here. A later part adds its type in one place.
+- **`App\Libraries\ResearchDictionary`** (`VERSION` = `kamus-1.0`): per download column its name in 11, analytics, anchor, and status; the Kamus Data sheet and `data_exports.dictionary_version` read it.
+- **`App\Libraries\FieldSheetSpec`** (`VERSION` = `lembar-1.0`): sheets L1–L8 from the tables tagged `<!-- lembar: … -->` in 02 (headings exactly as 02, column codes of 29 §10.7, code lists, row keys, imported or not). `FieldSheetSpecTest` compares it with 02.
+- **`App\Libraries\ResearchLogCleanup`**: the data steps of migration `003600` and its dry run (`gelita:log:hitung`).
+- Models **`FieldSheetImportModel`** (`current()` = the counting main import) and **`FieldSheetRowModel`**. `ItemTryModel` allows `ready_ms`, `DataExportModel` `dictionary_version` and `participant_count`; `DeviceLogModel` keeps only OS, browser, screen, and technical columns.
+- `GameSessionModel::markStale()` pauses idle sessions one conditional UPDATE each and writes `session_paused {via: idle, last_active_at}` at the last activity (`EventService::recordAt()`).
+- `StaffScope::head()` (role `ketua`, `research.browse`): research scope with full detail (`event`, `kode_pilihan`, `answer_key`).

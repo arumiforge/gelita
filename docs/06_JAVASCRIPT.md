@@ -1148,3 +1148,12 @@ Sintaks modul dapat diperiksa cepat dengan `node --check public/assets/js/<berka
 - [02_PROJECT_FOUNDATION.md](02_PROJECT_FOUNDATION.md): `Config\Gelita` (`$maxTries`, `$eventTypes`, `$maxEventsPerBatch`, `$passwordPolicy`, `$assetSizes`) dan berkas bahasa.
 - [01_DATABASE.md](01_DATABASE.md): `game_event_logs`, `audio_usage_events`, `item_tries`, dan `interaction_type`.
 - [docs/perombakan-kelas5/03_TAMPILAN_16x9_DAN_ADMIN.md](perombakan-kelas5/03_TAMPILAN_16x9_DAN_ADMIN.md) (Dok 3): rencana panggung 16:9 (`core/stage.js`) dan panel admin; penyimpangannya dicatat di `CATATAN_IMPLEMENTASI.md`.
+
+## Research revision 10, part 3: client events (29 §5–§6)
+
+- `game/challenge.js`: `selected()` keeps input times only (no `answer_selected`); Benar atau Salah sends `ready_ms` per card on `/check`; `passageReopened(via, passage)` sends `passage_reopened` after the first input.
+- `engines/boleh.js`: opening a passage panel (`panel`) or tapping its card label (`label`) calls `passageReopened`.
+- `engines/cari.js`: every tap sends `ready_ms` and `last_input_ms`, both since the challenge opened; a tap on an empty spot sends `empty_tap` {x_pct, y_pct, round, t_ms}, at most `CONFIG.emptyTapLimit` (30) per clue per attempt, then one event with `overflow`.
+- `game/narrator.js`: one `dialogue_completed` {context, total} at the last slide.
+- `core/audio.js`: a playback cut short by a restart, a hidden page, or `pagehide` reports its listening time as `pause` (no raw event on the server).
+- `core/device.js`: no pixel ratio, time zone, browser language, model, architecture, or bitness; touch points only for the server's iPad correction.
