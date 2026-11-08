@@ -22,6 +22,8 @@ class RetentionService
 {
     /** Urutan penghapusan keras: anak lebih dulu, induk terakhir. */
     public const HARD_ORDER = [
+        // Part 3 (29 §12): typed field sheets; rows per student, imports in a study cleanup
+        'field_sheet_rows', 'field_sheet_imports',
         'game_event_logs', 'audio_usage_events', 'item_tries', 'item_responses', 'challenge_attempts',
         'device_logs', 'participant_progress', 'participant_seats', 'field_session_members',
         'participant_feedback', 'game_sessions', 'participants',
@@ -603,6 +605,25 @@ class RetentionService
     private function scopedBuilder(BaseConnection $db, string $table, array $scope, array $sessionIds): ?BaseBuilder
     {
         $bySession = ['game_event_logs', 'audio_usage_events', 'challenge_attempts', 'device_logs'];
+
+        // Part 3 (29 §12, 30 §7.3): a student's field-sheet rows; a whole study's imports and rows
+        if ($table === 'field_sheet_rows' || $table === 'field_sheet_imports') {
+            $wholeStudy = isset($scope['study_id']) && ! isset($scope['date_from']) && ! isset($scope['date_to']);
+
+            if ($table === 'field_sheet_rows' && isset($scope['participant_id'])) {
+                return $db->table($table)->where('participant_id', (int) $scope['participant_id']);
+            }
+
+            if (! $wholeStudy) {
+                return null;
+            }
+
+            $sessions = static fn (BaseBuilder $sub): BaseBuilder => $sub->select('id')->from('field_sessions')->where('study_id', (int) $scope['study_id']);
+
+            return $table === 'field_sheet_imports'
+                ? $db->table($table)->whereIn('field_session_id', $sessions)
+                : $db->table($table)->whereIn('import_id', static fn (BaseBuilder $sub): BaseBuilder => $sub->select('id')->from('field_sheet_imports')->whereIn('field_session_id', $sessions));
+        }
 
         // Rows per student and study (28 §14): a student's own, or a whole study without a date range
         if (in_array($table, ['participant_progress', 'participant_seats', 'field_session_members'], true)) {

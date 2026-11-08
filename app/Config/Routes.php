@@ -142,6 +142,11 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->post('sesi-lapangan/(:num)/kursi', 'FieldSessionController::saveSeats/$1');
             $routes->get('sesi-lapangan/(:num)/susulan', 'FieldSessionController::makeupForm/$1');
             $routes->post('sesi-lapangan/(:num)/susulan', 'FieldSessionController::storeMakeup/$1');
+            // Part 3 (29 §13): field sheet template, upload, second typing
+            $routes->get('sesi-lapangan/(:num)/lembar', 'FieldSheetController::template/$1');
+            $routes->get('sesi-lapangan/(:num)/lembar/unggah', 'FieldSheetController::uploadForm/$1');
+            $routes->post('sesi-lapangan/(:num)/lembar/unggah', 'FieldSheetController::preview/$1');
+            $routes->post('sesi-lapangan/(:num)/lembar/simpan', 'FieldSheetController::save/$1');
         });
 
         // Part 3 (29 §5.6, K15): the admin's tech log

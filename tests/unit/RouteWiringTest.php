@@ -14,7 +14,7 @@ final class RouteWiringTest extends CIUnitTestCase
 {
     private const CONTROLLER_COUNT = [
         'Game'  => 14,  // 13 controller (FieldTokenController: revision 10, part 2) + BaseGameController (AppController: manifest, display plan A3; PackageController: asset package Stage 3)
-        'Admin' => 20,  // part 3 (29 §13): + TechLogController; 18 controller (FieldSessionController, MonitoringController: revision 10, part 2) + BaseAdminController (PackageController: asset package Stage 6)
+        'Admin' => 21,  // part 3 (29 §13): + TechLogController, FieldSheetController; 18 controller (FieldSessionController, MonitoringController: revision 10, part 2) + BaseAdminController (PackageController: asset package Stage 6)
         'Api'   => 11,  // 10 controller + BaseApiController (PackageApiController: asset package Stage 1)
     ];
 
