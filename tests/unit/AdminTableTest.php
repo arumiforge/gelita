@@ -120,7 +120,7 @@ final class AdminTableTest extends CIUnitTestCase
 
     public function testCsvEqualsTableRows(): void
     {
-        foreach (['jawaban', 'percobaan', 'pengerjaan', 'progres', 'selesai', 'navigasi', 'bantuan', 'perangkat', 'sesi', 'masukan'] as $dimension) {
+        foreach (['jawaban', 'percobaan', 'pengerjaan', 'progres', 'selesai', 'navigasi', 'bantuan', 'event', 'sesi', 'sesi_lapangan', 'kode_pilihan', 'masukan'] as $dimension) {
             $page   = $this->admin->page($dimension, [], 1, 100, null);
             $handle = fopen('php://temp', 'w+b');
             $count  = $this->admin->streamCsv($dimension, [], $handle);
@@ -202,8 +202,8 @@ final class AdminTableTest extends CIUnitTestCase
             $this->assertNotContains($identity, $keys);
         }
 
-        $this->assertContains('school_ref', $keys);
-        $this->assertEqualsCanonicalizing(['SCH-000001', 'SCH-000002'], array_column($people['rows'], 'school_ref'));
+        $this->assertContains('school_code', $keys, 'the research school code replaces SCH-nnnnnn (29 §7.3)');
+        $this->assertNotContains('school_ref', $keys);
         $this->assertStringNotContainsString('Ani', json_encode($people['rows']));
         $this->assertStringNotContainsString('SD Negeri', json_encode($people['rows']));
 
@@ -239,7 +239,8 @@ final class AdminTableTest extends CIUnitTestCase
         $this->assertFalse(StaffScope::fromRole('admin')->anonymous, 'admin: account identities');
         $this->assertTrue(StaffScope::fromRole('peneliti')->anonymous);
         $this->assertTrue(StaffScope::fromRole('ketua')->anonymous);
-        $this->assertFalse(StaffScope::fromRole('ketua')->fullDetail);
+        $this->assertTrue(StaffScope::fromRole('ketua')->fullDetail, 'ketua gets events and keys (29 K1)');
+        $this->assertFalse(StaffScope::fromRole('peneliti')->fullDetail);
 
         $this->expectException(DomainException::class);
         StaffScope::fromRole('guru');
@@ -254,17 +255,18 @@ final class AdminTableTest extends CIUnitTestCase
         $this->assertStringNotContainsString('locked_until', $sql);
 
         $anonymous = (string) $this->admin->query('peserta', [], StaffScope::of(true, true))->getCompiledSelect();
-        $this->assertStringNotContainsString('display_name', $anonymous);
-        $this->assertStringNotContainsString('username', $anonymous);
+        $select    = strstr($anonymous, 'FROM', true);
+        $this->assertStringNotContainsString('display_name', $select);
+        $this->assertStringNotContainsString('username', $select, 'only used to leave out test accounts');
     }
 
     public function testDeletedEventsAndHelpUnion(): void
     {
-        $navigation = $this->admin->page('navigasi', [], 1, 25, 'occurred_at');
+        $navigation = $this->admin->page('navigasi', [], 1, 25, 'occurred_at_corrected');
         $this->assertSame(['screen_viewed', 'screen_viewed'], array_column($navigation['rows'], 'event_type'), 'page_hidden yang ditandai hapus tidak ikut');
         $this->assertSame(['map_kedu', 'intro'], [$navigation['rows'][0]['screen'], $navigation['rows'][0]['from_screen']]);
 
-        $help = $this->admin->page('bantuan', [], 1, 25, 'occurred_at');
+        $help = $this->admin->page('bantuan', [], 1, 25, 'occurred_at_corrected');
         $this->assertSame(['audio', 'petunjuk'], array_column($help['rows'], 'jenis'));
         $this->assertSame(['audio.narasi.id.intro-01', 'intro', 'play', 4200, 1], [
             $help['rows'][0]['asset_key'], $help['rows'][0]['audio_context'], $help['rows'][0]['action'], $help['rows'][0]['listened_ms'], $help['rows'][0]['completed'],

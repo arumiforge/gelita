@@ -142,46 +142,23 @@ final class SessionPackageTest extends CIUnitTestCase
         $this->assertSame(0, $this->conn->table('game_event_logs')->where('event_type', 'package_changed')->countAllResults());
     }
 
-    public function testSesiExportCarriesThePackageColumnsAndDictionary(): void
+    /** The package columns are admin data since revision 10, part 3 (29 §5.5): the tech log, not the research sheet. */
+    public function testPackageColumnsLiveInTheTechLog(): void
     {
         $this->register('fajar', $this->device('pkt-2026-10-20-01', 'lengkap'));
         $this->register('gita', $this->device(null, 'nonaktif'));
 
-        $raw  = service('rawDataService');
-        $rows = array_column(iterator_to_array($raw->rows('sesi', [], StaffScope::of(false, true)), false), null, 'package_mode');
+        $tech = service('techLogs')->page('sesi', [], 1, 25, null);
+        $rows = array_column($tech['rows'], null, 'package_mode');
 
         $this->assertSame('2.0.0+pkt-2026-10-20-01', $rows['lengkap']['app_client_version']);
         $this->assertSame('pkt-2026-10-20-01', $rows['lengkap']['package_code']);
         $this->assertSame('2.0.0', $rows['nonaktif']['app_client_version']);
         $this->assertNull($rows['nonaktif']['package_code']);
 
-        $labeled = array_column(iterator_to_array($raw->rows('sesi', [], StaffScope::of(false, true), true), false), 'package_mode');
-        sort($labeled);
-        $this->assertSame(['Mode paket mati', 'Paket lengkap di perangkat'], $labeled);
-
-        // The coded export keeps them: they are not identity columns
-        $this->assertContains('package_mode', (new ExportService())->columns('sesi', true, false));
-
-        // CSV-ZIP: columns and Kamus Data entries
-        $export = $this->buildCsv(['sesi']);
-        $zip    = new ZipArchive();
-        $this->assertTrue($zip->open((string) $export['file_path']) === true);
-        $sesi   = $this->csv((string) $zip->getFromName('sesi.csv'));
-        $kamus  = $this->csv((string) $zip->getFromName('kamus.csv'));
-        $zip->close();
-
         foreach (['app_client_version', 'package_code', 'package_mode'] as $column) {
-            $this->assertContains($column, array_keys($sesi[0]), "sesi.{$column}");
-            $entry = array_values(array_filter($kamus, static fn (array $r): bool => $r['lembar'] === 'sesi' && $r['kolom'] === $column));
-            $this->assertCount(1, $entry, "kamus sesi.{$column}");
-            $this->assertNotSame('', $entry[0]['arti']);
+            $this->assertNotContains($column, (new ExportService())->columns('sesi', true, true), "sesi.{$column}");
         }
-
-        $mode = array_values(array_filter($kamus, static fn (array $r): bool => $r['lembar'] === 'sesi' && $r['kolom'] === 'package_mode'))[0];
-        foreach (['lengkap', 'daring', 'nonaktif'] as $code) {
-            $this->assertStringContainsString($code, $mode['nilai']);
-        }
-        $this->assertSame('Mode paket', ExportLabels::column('sesi', 'package_mode')['label']);
     }
 
     /** @return array<string, mixed> DeviceProfile::capture() with the package the client reports */

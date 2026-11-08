@@ -143,6 +143,13 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->get('sesi-lapangan/(:num)/susulan', 'FieldSessionController::makeupForm/$1');
             $routes->post('sesi-lapangan/(:num)/susulan', 'FieldSessionController::storeMakeup/$1');
         });
+
+        // Part 3 (29 §5.6, K15): the admin's tech log
+        $routes->group('', ['filter' => 'staffCan:tech_logs.view'], static function ($routes): void {
+            $routes->get('log-teknis', 'TechLogController::index');
+            $routes->get('log-teknis/(perangkat|event|sesi)', 'TechLogController::table/$1');
+            $routes->get('log-teknis/(perangkat|event|sesi)/csv', 'TechLogController::csv/$1');
+        });
         $routes->get('pemantauan', 'MonitoringController::index', ['filter' => 'staffCan:monitoring.view']);
 
         // Research data of all students: head researcher only
