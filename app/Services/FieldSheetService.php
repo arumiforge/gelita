@@ -33,6 +33,12 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
  */
 class FieldSheetService
 {
+    /** L5 worksheets per template: one per interviewed student, three per meeting (02 → L5). */
+    public const L5_WORKSHEETS = 3;
+
+    /** Row-number block per extra worksheet of one sheet (rows of worksheet k are k·1000 + row). */
+    public const WORKSHEET_ROWS = 1000;
+
     /** Preview lifetime in the staff session (29 §13). */
     public const PREVIEW_TTL = 1800;
 
@@ -142,18 +148,19 @@ class FieldSheetService
         $book->removeSheetByIndex(0);
 
         foreach ($sheets as $sheet) {
-            $spec  = FieldSheetSpec::sheet($sheet);
-            $title = mb_substr((string) $spec['title'], 0, 31);
-            $ws    = $book->createSheet()->setTitle($title);
-            $ws->setCellValue('A1', 'Kode sesi lapangan');
-            $ws->setCellValue('C1', 'Tanggal');
-            $ws->setCellValue('E1', 'Inisial pengisi');
-
+            $spec     = FieldSheetSpec::sheet($sheet);
             $headings = $spec['imported'] ? array_column(FieldSheetSpec::columns($sheet), 'label') : array_keys($spec['paper']);
 
-            foreach ($headings as $i => $heading) {
-                $ws->setCellValue([$i + 1, 3], $heading);
-                $ws->getColumnDimensionByColumn($i + 1)->setWidth(max(12, min(40, mb_strlen($heading) + 2)));
+            foreach (self::worksheetTitles($sheet) as $title) {
+                $ws = $book->createSheet()->setTitle($title);
+                $ws->setCellValue('A1', 'Kode sesi lapangan');
+                $ws->setCellValue('C1', 'Tanggal');
+                $ws->setCellValue('E1', 'Inisial pengisi');
+
+                foreach ($headings as $i => $heading) {
+                    $ws->setCellValue([$i + 1, 3], $heading);
+                    $ws->getColumnDimensionByColumn($i + 1)->setWidth(max(12, min(40, mb_strlen($heading) + 2)));
+                }
             }
         }
 
@@ -162,11 +169,84 @@ class FieldSheetService
         $book->disconnectWorksheets();
     }
 
+    /**
+     * Blank L0 checklist (owner, 8 November 2026), read from its section in
+     * 02 so the printed list never drifts from the document. Rows: the page
+     * head, bold group headings, meeting sub-headings, and one ☐ per item.
+     * Only for `gelita:lembar:templat` on a machine that has the docs.
+     */
+    public function writeL0Template(string $path, string $doc): void
+    {
+        $text = is_file($doc) ? (string) file_get_contents($doc) : '';
+
+        if (preg_match('/^## L0 [^\n]*\n(.*?)^## /ms', $text, $m) !== 1) {
+            throw new \RuntimeException('Bagian L0 tidak ditemukan di ' . $doc);
+        }
+
+        $book = new Spreadsheet();
+        $ws   = $book->getActiveSheet()->setTitle('L0 Daftar periksa');
+        $ws->getColumnDimension('A')->setWidth(5);
+        $ws->getColumnDimension('B')->setWidth(110);
+        $ws->setCellValue('A1', 'L0 Daftar periksa persiapan sesi');
+        $ws->getStyle('A1')->getFont()->setBold(true);
+        $r = 2;
+
+        foreach (preg_split('/\R/', $m[1]) ?: [] as $line) {
+            $plain = trim((string) preg_replace(['/\[([^\]]+)\]\([^)]*\)/', '/\*\*|`/'], ['$1', ''], $line));
+
+            if (str_starts_with($plain, 'Kode sesi lapangan:')) {
+                $ws->setCellValue([2, $r++], $plain);
+            } elseif (preg_match('/^- \[ \] (.+)$/', $plain, $item) === 1) {
+                $ws->setCellValue([1, $r], '☐');
+                $ws->setCellValue([2, $r++], (str_starts_with($line, ' ') ? '    ' : '') . $item[1]);
+            } elseif (preg_match('/^- ([^\[].*):$/', $plain, $sub) === 1 || (str_starts_with($line, '**') && ($sub = [1 => $plain]))) {
+                $ws->setCellValue([2, ++$r], $sub[1]);
+                $ws->getStyle('B' . $r++)->getFont()->setBold(true);
+            }
+        }
+
+        $ws->getStyle('B1:B' . $r)->getAlignment()->setWrapText(true);
+        (new Xlsx($book))->save($path);
+        $book->disconnectWorksheets();
+    }
+
     private function templateSheet(Spreadsheet $book, string $sheet, array $fieldSession, array $roster): void
+    {
+        foreach (self::worksheetTitles($sheet) as $title) {
+            $this->templateWorksheet($book->createSheet()->setTitle($title), $sheet, $fieldSession, $roster);
+        }
+    }
+
+    /**
+     * Worksheet titles of one sheet in a template: L5 has one worksheet per
+     * interviewed student, three per meeting (02 → L5, 29 §10.3; owner,
+     * 8 November 2026); every other sheet has one.
+     *
+     * @return list<string>
+     */
+    public static function worksheetTitles(string $sheet): array
+    {
+        $title = mb_substr(FieldSheetSpec::title($sheet), 0, 29);
+
+        return $sheet === 'l5_wawancara'
+            ? array_map(static fn (int $n): string => $title . ' ' . $n, range(1, self::L5_WORKSHEETS))
+            : [mb_substr(FieldSheetSpec::title($sheet), 0, 31)];
+    }
+
+    /** Row number as the panel shows it: rows of L5 worksheet 2 and 3 are stored from 2000 and 3000 (worksheetRow()). */
+    public static function rowLabel(int|string $rowNo): string
+    {
+        $rowNo = (int) $rowNo;
+
+        return $rowNo >= self::WORKSHEET_ROWS
+            ? sprintf('%d (lembar %d)', $rowNo % self::WORKSHEET_ROWS, intdiv($rowNo, self::WORKSHEET_ROWS))
+            : (string) $rowNo;
+    }
+
+    private function templateWorksheet(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $ws, string $sheet, array $fieldSession, array $roster): void
     {
         $columns = FieldSheetSpec::columns($sheet);
         $codes   = array_keys($columns);
-        $ws      = $book->createSheet()->setTitle(mb_substr(FieldSheetSpec::title($sheet), 0, 31));
 
         // Page head as in 02: session code, date, initials of the one who fills it in
         $ws->setCellValue('A1', 'Kode sesi lapangan');
@@ -348,7 +428,18 @@ class FieldSheetService
             }
 
             $cells = $ws->toArray(null, false, true, false);
-            $out[$sheet] = $this->rowsOf($sheet, array_map(fn (array $r): array => array_map(fn ($v): string => $this->cellText($v), $r), $cells));
+            $data  = $this->rowsOf($sheet, array_map(fn (array $r): array => array_map(fn ($v): string => $this->cellText($v), $r), $cells));
+
+            // L5 worksheet 2 and 3 (one per student): rows kept apart as 2000 + row, 3000 + row
+            $copy = $sheet === 'l5_wawancara' && preg_match('/\s(\d)$/', $ws->getTitle(), $m) === 1 ? (int) $m[1] : 1;
+
+            if ($copy > 1) {
+                $data['rows'] = array_combine(array_map(static fn (int $n): int => $copy * self::WORKSHEET_ROWS + $n, array_keys($data['rows'])), $data['rows']) ?: [];
+            }
+
+            $out[$sheet] = isset($out[$sheet])
+                ? ['session' => $out[$sheet]['session'] ?? $data['session'], 'rows' => $out[$sheet]['rows'] + $data['rows']]
+                : $data;
         }
 
         $book->disconnectWorksheets();
@@ -652,7 +743,7 @@ class FieldSheetService
 
         $row['values']['_try_id'] = (int) $try['id'];
 
-        return [$row, null, $try['error_code'] === $code ? lang('Admin.fieldSheetWarnSameCode', [$row['row_no']]) : null];
+        return [$row, null, $try['error_code'] === $code ? lang('Admin.fieldSheetWarnSameCode', [self::rowLabel($row['row_no'])]) : null];
     }
 
     /** The try of an item in the student's first attempt of its challenge in this study. */
@@ -1108,6 +1199,8 @@ class FieldSheetService
 
     private function sheetFromTitle(string $title): ?string
     {
+        $title = (string) preg_replace('/^(' . preg_quote(mb_substr(FieldSheetSpec::title('l5_wawancara'), 0, 29), '/') . ') [1-' . self::L5_WORKSHEETS . ']$/i', '$1', $title);
+
         foreach (FieldSheetSpec::imported() as $sheet) {
             if (strcasecmp($title, $sheet) === 0 || strcasecmp($title, mb_substr(FieldSheetSpec::title($sheet), 0, 31)) === 0) {
                 return $sheet;

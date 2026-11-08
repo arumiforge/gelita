@@ -152,6 +152,33 @@ final class FieldSheetImportTest extends CIUnitTestCase
         $this->assertSame([null, $wrong['error_code']], $this->tryCodes((int) $wrong['id']));
     }
 
+    /** The three L5 worksheets of the template (one per student, owner 8 Nov 2026) are read as one sheet; rows keep their worksheet. */
+    public function testThreeL5WorksheetsOfTheTemplateAreReadTogether(): void
+    {
+        [$wrong] = $this->tries();
+        $path    = sys_get_temp_dir() . '/lembar-' . bin2hex(random_bytes(4)) . '.xlsx';
+        $this->tempFiles[] = $path;
+        $this->sheets()->writeTemplate($this->fieldSession, $path, ['l5_wawancara']);
+
+        $book = \PhpOffice\PhpSpreadsheet\IOFactory::load($path);
+        foreach ([1 => '1', 2 => '1', 3 => '9'] as $n => $try) {
+            $ws     = $book->getSheetByName('L5 Wawancara ' . $n);
+            $header = array_flip($ws->toArray(null, false, false)[2]);
+            foreach (['Kode peserta' => 'S03-A01', 'Butir' => (string) $wrong['item_key'], 'Percobaan' => $try] as $label => $value) {
+                $ws->setCellValueExplicit([$header[$label] + 1, 4], $value, \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+            }
+        }
+        (new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($book))->save($path);
+
+        $preview = $this->sheets()->preview($this->fieldSession, $path, 'lembar-S03-A-P2.xlsx', 'main');
+        $l5      = $preview['sheets']['l5_wawancara'];
+
+        $this->assertSame([4, 2004, 3004], array_column($l5['rows'], 'row_no'), 'worksheet 2 and 3 rows from 2000 and 3000');
+        $this->assertSame([3004], array_column($l5['errors'], 0), 'try 9 on worksheet 3');
+        $this->assertSame('4 (lembar 3)', App\Services\FieldSheetService::rowLabel(3004));
+        $this->assertSame('4', App\Services\FieldSheetService::rowLabel(4));
+    }
+
     public function testReuploadSupersedesAndTheNewestCounts(): void
     {
         $file = fn (string $who): string => $this->csv('l4_bromp.csv', [

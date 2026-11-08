@@ -57,13 +57,13 @@ $base = 'admin/sesi-lapangan/' . $id;
       <?php if ($result['errors'] !== []): ?>
         <p><b><?= esc(lang('Admin.fieldSheetErrors')) ?></b></p>
         <ul class="field-errors"><?php foreach ($result['errors'] as [$row, $column, $message]): ?>
-          <li><?= esc(lang('Admin.fieldSheetRowError', [$row, $column, $message])) ?></li>
+          <li><?= esc(lang('Admin.fieldSheetRowError', [App\Services\FieldSheetService::rowLabel($row), $column, $message])) ?></li>
         <?php endforeach ?></ul>
       <?php endif ?>
       <?php if ($result['warnings'] !== [] || $result['names'] !== []): ?>
         <p><b><?= esc(lang('Admin.fieldSheetWarnings')) ?></b></p>
         <ul><?php foreach ($result['warnings'] as $warning): ?><li><?= esc($warning) ?></li><?php endforeach ?>
-          <?php foreach ($result['names'] as [$row, $column]): ?><li><?= esc(lang('Admin.fieldSheetNameWarn', [$row, $column])) ?></li><?php endforeach ?></ul>
+          <?php foreach ($result['names'] as [$row, $column]): ?><li><?= esc(lang('Admin.fieldSheetNameWarn', [App\Services\FieldSheetService::rowLabel($row), $column])) ?></li><?php endforeach ?></ul>
       <?php endif ?>
       <?php if (isset($result['compare'])): ?>
         <?php if ($result['compare']['missing_main']): ?>
@@ -71,7 +71,7 @@ $base = 'admin/sesi-lapangan/' . $id;
         <?php else: ?>
           <p><?= esc(lang('Admin.fieldSheetCheckResult', [$result['compare']['checked'], $result['compare']['total'], count($result['compare']['diffs'])])) ?></p>
           <ul><?php foreach ($result['compare']['diffs'] as [$row, $column, $first, $second]): ?>
-            <li><?= esc(lang('Admin.fieldSheetDiff', [$row, $column, $first, $second])) ?></li>
+            <li><?= esc(lang('Admin.fieldSheetDiff', [App\Services\FieldSheetService::rowLabel($row), $column, $first, $second])) ?></li>
           <?php endforeach ?></ul>
         <?php endif ?>
       <?php endif ?>

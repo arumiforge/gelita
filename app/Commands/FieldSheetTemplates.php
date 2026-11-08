@@ -12,11 +12,12 @@ use CodeIgniter\CLI\CLI;
  * on the production web server: L7, the only sheet with names, is never made
  * by the web panel.
  *
- *   php spark gelita:lembar:templat --keluar=lembar/       blank L1–L8 (L7 included), for printing
+ *   php spark gelita:lembar:templat --keluar=lembar/       blank L1–L8 (L7 included, L5 three times) and L0, for printing
  *   php spark gelita:lembar:templat --l7 --keluar=lembar/  blank L7 only
  *   php spark gelita:lembar:templat --kolom=kolom.json     column spec as JSON for the static site
  *
- * L0 is a checklist without a table in 02, so it has no template here.
+ * L0 is a checklist without a table in 02: its blank template is a separate
+ * file read from the L0 section of 02 (owner, 8 November 2026).
  */
 class FieldSheetTemplates extends BaseCommand
 {
@@ -75,6 +76,12 @@ class FieldSheetTemplates extends BaseCommand
 
             (new \App\Services\FieldSheetService())->writeBlankTemplate($file, $sheets);
             CLI::write('Blank templates written to ' . $file . ' (' . implode(', ', $sheets) . ')', 'green');
+
+            if (! $l7) {
+                $l0 = rtrim($folder, '/\\') . DIRECTORY_SEPARATOR . 'lembar-l0-kosong.xlsx';
+                (new \App\Services\FieldSheetService())->writeL0Template($l0, ROOTPATH . 'docs/revisi-10-analitik/02_LEMBAR_LAPANGAN.md');
+                CLI::write('Blank L0 checklist written to ' . $l0, 'green');
+            }
         }
 
         if (! is_string($json) && ! is_string($folder)) {
