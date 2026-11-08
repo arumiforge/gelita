@@ -1728,3 +1728,31 @@ Token refusals: `token_unknown`, `not_open_yet`, `closed`, `other_class`, `not_m
 ## FEATURE: `gelita:uji:akun` (research revision 10, part 2, change no. 24)
 
 Test accounts for the validators' install (28 §13): `--buat` makes the default `uji.*` list (or `--nama=uji.x`) at school `Sekolah Uji Validator` (`V01`), class group `A`, codes `UJI-01`, …, random passwords shown once; `--reset=uji.x` deletes that account's play data through `RetentionService::deletePlayData()` and keeps the account; `--daftar` lists them. Refuses in production, beside any student who is not `uji.*`, and without an active study. Audit `test_account_created`, `test_account_reset` (no actor, `via: cli`). Students cannot register with the prefixes `uji.` and `sim_`.
+
+## FEATURE 16 and 17 additions: consent, parents' requests, study closure (research revision 10, part 4)
+
+Everything here applies only while a study has field mode on (30 §0.1); without one, registration, login, the menu, Tata kelola, and retention behave as before.
+
+```text
+Sign-up in field mode → participants.assent_version = t4-1 + participant_consents row (defaults No)
+P1 fills L7 codes at /admin/sesi-lapangan/{id}/izin (ConsentService::save, conditional on updated_at)
+  status withdrawn_keep / withdrawn_delete → participants.deactivated_at (same transaction)
+    → next game request ends the session, /masuk answers Game.loginInactive, the token is refused
+  admin "Aktifkan lagi" only after P1 restored the status, with a reason (participant_reactivated)
+
+Parent's request (DataRequestService), /admin/permintaan-data:
+  peneliti files → requested ── ketua confirms ──► preview (RetentionService::countAffected, hard)
+  ketua files ─────────────────────────────────► preview
+  recording: confirmed → executed with 0 rows (nothing on the server)
+  admin types HAPUS in Tata kelola → executed (conditional status move first)
+    → ExportService::purgeForRequest() + ticks system, server_exports
+  ticks per role; parent_notified last → completed; minutes PDF (berita acara)
+
+Study closure, /admin/studi/{id}/penutupan (StudyClosureService):
+  conditions: closed (closed_at), no open request, consent register downloaded after the last change,
+  feedback checked for names → Hitung → GANTI → names, usernames, passwords, schools replaced by codes
+```
+
+Other parts: follow-up flags `tl-1` at `/admin/tindak-lanjut` (computed, never stored, head researcher only); one child's copy at `/admin/peserta/salinan` (ZIP made on request, never kept); registration correction of age, gender, class by the admin (`participant_corrected`); the coded consent register at `/admin/ekspor/izin`.
+
+FEATURE 17 gains: a field-mode study is flagged only after `closed_at` + `retention_days`, for its whole cohort; with `gelita.researchPrivacy` on, step `expired_browser_sessions` cleans `ci_sessions`.

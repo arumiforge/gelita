@@ -948,3 +948,26 @@ Panel (group `staffAuth`):
 The field mode switch and meeting plan are fields of the study form (`studies.manage`); they cannot change while a field session is open.
 
 Gate (`Filters\ParticipantCheck`, status `CLOSED`): with field mode on and the study `active`, game pages redirect to `/token` (no game session of a field session) or `/sampai-jumpa` (its field session closed, which pauses the game session once with `session_paused {via: field_session_closed}`). The API answers `409 FIELD_SESSION_CLOSED`, except `POST /api/events`, `/api/audio-events`, and `/api/session/heartbeat` (the heartbeat then extends nothing). `ChallengeService::openNode()` also refuses a challenge whose predecessor in the region is not done (`409 NODE_LOCKED`, K17).
+
+## Research revision 10, part 4: routes (30 §16)
+
+All in the `staffAuth` group with `staffCan`:
+
+| Route | Controller::method | Capability |
+|---|---|---|
+| `GET`, `POST /admin/sesi-lapangan/{id}/izin` | `ConsentController::edit`, `::save` | `field_sessions.manage` |
+| `GET /admin/permintaan-data`, `GET /admin/permintaan-data/{id}` | `DataRequestController::index`, `::show` | `deletion.request`, `deletion.confirm`, `deletion.execute` (a `peneliti` sees own requests only) |
+| `GET`, `POST /admin/permintaan-data/baru` | `::create`, `::store` | `deletion.request` |
+| `POST /admin/permintaan-data/{id}/konfirmasi`, `…/tolak` | `::confirm`, `::reject` | `deletion.confirm` |
+| `POST /admin/permintaan-data/{id}/batal` | `::cancel` | `deletion.request` (the filer, before confirmation) |
+| `POST /admin/permintaan-data/{id}/centang` | `::tick` | per item (`DataRequestService::TICK_CAPABILITY`) |
+| `GET /admin/permintaan-data/{id}/berita-acara` | `::minutes` | `deletion.confirm`, `deletion.execute` |
+| `GET /admin/tindak-lanjut` | `RiskFollowUpController::index` | `risk_flags.view` |
+| `GET`, `POST /admin/peserta/salinan` | `ParticipantCopyController::form`, `::download` | `research.export` |
+| `POST /admin/peserta/{id}/betulkan`, `…/aktifkan` | `ParticipantController::correct`, `::reactivate` | `participants.accounts` |
+| `GET /admin/ekspor/izin` | `ExportController::consentRegister` | `research.export` |
+| `GET /admin/studi/{id}/penutupan` | `StudyClosureController::show` | `studies.view` |
+| `POST /admin/studi/{id}/penutupan/hitung`, `…/jalankan` | `::preview`, `::run` | `identities.replace` |
+| `GET`, `POST /admin/studi/{id}/penutupan/nama` | `::feedbackNames`, `::saveFeedbackNames` | `research.export` |
+
+No new game or API route. `/masuk` and `/token` refuse a deactivated account (`Game.loginInactive`).

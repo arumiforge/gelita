@@ -1225,3 +1225,17 @@ Source: `docs/revisi-10-analitik/28_IMPLEMENTASI_SESI_LAPANGAN.md` §14. Everyth
 | `research_studies.field_mode`, `meeting_plan` | Field mode switch (TINYINT, default 0) and meeting plan (`lima_pertemuan` default, `satu_sesi`) |
 
 Foreign keys to `staff_users` are `ON DELETE SET NULL`; to `participants` `ON DELETE CASCADE`. `RetentionService::HARD_ORDER` deletes `participant_progress`, `participant_seats`, and `field_session_members` itself so their counts show in the preview. `gelita:reset` empties all five new tables and starts the study with `field_mode = 0`.
+
+## Research revision 10, part 4: consent and data rights (migration `003800`)
+
+Migration `2026-01-01-003800_AddConsentAndDataRights` (30 §15):
+
+| Table / column | Content |
+|---|---|
+| `participant_consents` (new) | One row per student (`participant_id` PK, FK `participants` ON DELETE CASCADE), `study_id`; `parent_consent_on` DATE; `recording_consent`, `risk_items_consent` TINYINT(1) default 0 (K6) with `recording_withdrawn_on`, `risk_items_withdrawn_on`; `status` (`active`, `left`, `withdrawn_keep`, `withdrawn_delete`) and `status_on`; `entered_by`, `updated_by` (staff, SET NULL); `created_at`, `updated_at` DATETIME(6) written by the code with microseconds, so a save is conditional on the value the page read. Index (`study_id`, `status`). Made at sign-up in field mode; never a name |
+| `participants` | `deactivated_at` (a withdrawal or the study closure; the filter `ParticipantCheck` ends the session, login answers `inactive`, the token check refuses), `assent_version` (`t4-1` research text, `umum-1` general text), `corrected_at` |
+| `research_studies` | `closed_at`, `consent_register_exported_at`, `feedback_names_checked_at`, `identities_replaced_at`. `retention_days` default stays 1825; a field-mode study needs at least 7305 |
+| `data_deletion_requests` | Parents' requests: `kind` (`all`, `risk_items`, `recording`; null for admin and retention deletions), `participant_code` (kept as evidence after the deletion), `received_at`, `verified_at`, `received_via` (`paper`, `whatsapp`, `email`, `oral`), `confirmed_by`, `confirmed_at`, `completed_at`, `checklist_json` (TEXT: item → `{at, by}`). New statuses `requested` and `completed` beside `preview`, `executed`, `cancelled`; every move is a conditional UPDATE on the status read |
+| `data_exports` | `purged_by_request_id` (FK `data_deletion_requests`, SET NULL) |
+
+**Retention and deletion.** `RetentionService::HARD_ORDER` now ends with `participant_consents`, `participants`. Scope `{participant_id, kind: risk_items}` deletes only the student's `risk` sitting of the test module (part 8 tables, `RISK_ORDER`); scope `{study_id, participants: 1}` (retention of a closed field-mode study) takes the whole cohort, students included. A field-mode study counts its retention from `closed_at`; other studies still count from the session start. `ci_sessions` is not changed by the migration; with `gelita.researchPrivacy` on, the retention run removes expired rows and rows with a raw IP.

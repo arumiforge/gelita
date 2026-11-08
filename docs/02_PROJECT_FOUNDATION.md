@@ -462,7 +462,7 @@ Helper `gelita`, `content`, dan `ui` dimuat global lewat `Config\Autoload::$help
 |---|---|
 | `PasswordPolicy` | penilaian kekuatan sandi siswa (§ 7.4) |
 | `RequestId`, `HeadAsGetRouteCollection`, `GelitaExceptionHandler` | id request, rute HEAD, dan penanganan galat (§ 6.8) |
-| `HashedIpSessionHandler` | handler sesi yang menyimpan hash IP; belum dipasang (§ 7.3) |
+| `HashedIpSessionHandler` | handler sesi yang menyimpan hash IP; dipasang di balik sakelar `gelita.researchPrivacy` sejak bagian 4 (§ 7.3) |
 | `DeviceProfile` | profil perangkat untuk `device_logs` dari User-Agent, Client Hints, dan sinyal formulir |
 | `DifficultyRules` | aturan per tingkat kesulitan wilayah (papan Susun Gambar, rumpang dan pengecoh, pernyataan, benda, rentang Bloom) |
 | `BankRules`, `BankSource`, `BankState` | pemeriksaan bank soal kelas 5 dengan satu aturan untuk skrip workbook, importer, dan verifikasi; sumber dari berkas data; bank yang tersimpan di database |
@@ -542,7 +542,9 @@ Stack trace hanya masuk `writable/logs/`.
 
 `App\Libraries\HashedIpSessionHandler` (turunan `MySQLiHandler` yang menulis `hash_ip()` ke `ci_sessions.ip_address`) ada di repositori, tetapi **tidak dipakai**: `session.driver` tetap `CodeIgniter\Session\Handlers\DatabaseHandler`. Akibatnya `ci_sessions.ip_address` (`VARCHAR(64)`, cukup untuk SHA-256 heksadesimal) berisi IP **mentah** selama sesi hidup, sampai dibersihkan garbage collector sesi. Tabel GELITA lain hanya menyimpan `ip_hash`.
 
-Yang harus diselesaikan sebelum handler ini boleh dipasang:
+**Update (research revision 10, part 4: 30 §12).** `Config\Session::__construct()` now picks `HashedIpSessionHandler` when `Config\Gelita::$researchPrivacy` (`.env` `gelita.researchPrivacy`) is on; off (the default) keeps `DatabaseHandler`. The two points below were settled by scope rather than code: the handler is for MySQL/MariaDB only, like the production server (point 1; tests never build a real session handler, CIUnitTestCase uses MockSession), and `Services::session()` builds a custom driver directly with `($config, $request->getIPAddress())`, which is all this handler needs (point 2). `matchIP` stays `false`. `gelita:retention:run` removes expired and raw-IP `ci_sessions` rows while the switch is on (`RetentionService::purgeExpiredBrowserSessions()`).
+
+Yang harus diselesaikan sebelum handler ini boleh dipasang (catatan lama):
 
 | # | Masalah | Perubahan yang diperlukan |
 |---|---|---|
@@ -699,7 +701,7 @@ Ketiga skrip penyusun berjalan tanpa framework CodeIgniter. Kedua `build-workboo
 3. Semua konten permainan dibaca dari database lewat `ContentRepository`, tidak pernah dari array PHP yang di-hard-code.
 4. Bahasa disimpan di session dan `game_sessions.locale`. Mengganti bahasa tidak membuat sesi baru dan tidak mereset progres.
 5. `writable/exports/` di luar `public/`. Tidak ada berkas data penelitian yang dapat diakses tanpa melewati controller berotorisasi.
-6. IP mentah tidak disimpan di tabel GELITA; hanya `ip_hash`. Pengecualian yang diketahui: `ci_sessions.ip_address` selama `HashedIpSessionHandler` belum dipasang (§ 7.3).
+6. IP mentah tidak disimpan di tabel GELITA; hanya `ip_hash`. Pengecualian yang diketahui: `ci_sessions.ip_address` selama sakelar `gelita.researchPrivacy` mati (§ 7.3).
 7. Zona waktu `Asia/Jakarta` dipakai PHP dan koneksi database (`db_sync_timezone()`).
 8. Semua respons API memakai bentuk seragam `{success, data | code + message, request_id}`.
 9. Aturan kata sandi siswa hanya ditulis di `Config\Gelita::$passwordPolicy`. JavaScript menerima salinannya dari server, tidak menulis ulang angka-angkanya sendiri.

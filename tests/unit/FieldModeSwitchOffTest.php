@@ -45,9 +45,11 @@ final class FieldModeSwitchOffTest extends CIUnitTestCase
         $this->assertSame('ok', service('sessionService')->login('jaka5', 'Kopi-Kedu7!', 'id', [])['status']);
 
         $_SESSION = ['staff_id' => 3, 'staff_role' => 'ketua', 'staff_last_seen' => time()];
+        // The shared view renderer keeps data (e.g. a breadcrumb) from pages of earlier tests
+        Config\Services::resetSingle('renderer');
         $page     = (string) $this->withSession($_SESSION)->call(Method::GET, 'admin')->getBody();
-        $this->assertStringNotContainsString(lang('Admin.menuDataRequests'), $page);
-        $this->assertStringNotContainsString(lang('Admin.menuRiskFollowUp'), $page);
+        $this->assertStringNotContainsString(site_url('admin/permintaan-data'), $page);
+        $this->assertStringNotContainsString(site_url('admin/tindak-lanjut'), $page);
 
         $this->assertNull(GovernanceController::backupWarning('/nonexistent'));
         $this->assertSame(CodeIgniter\Session\Handlers\DatabaseHandler::class, (new Config\Session())->driver);
