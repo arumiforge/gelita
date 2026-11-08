@@ -1,10 +1,10 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "86e91da96bf55d15f5e0cb6ef274b881a1a9b9db6b1a514655734cacf3bc9b61",
-      "commit": "a7e07ef",
+      "source": "27ee654506913e135fe8dc022cd76159f4ce487d5a83ae7294f2852a04f3aaf6",
+      "commit": "6011066",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-04",
+      "date": "2026-11-08",
       "pages": 20,
       "landscapeTables": 0
     },
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "ea32d870fccb899825c1c8956ce88925a861b4c7c2b027c2543c02c7b4cc1055",
-      "commit": "a7e07ef",
+      "source": "e12539c16563fc536fae07d5917dfef3b8db6019a6b9514f9ddbb8b434375abf",
+      "commit": "6011066",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-04",
-      "pages": 72,
+      "date": "2026-11-08",
+      "pages": 73,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -58,7 +58,7 @@
     },
     "07_TELAAH_INSTRUMEN_VALIDASI.md": {
       "source": "f0435f19f3c475ae23934cbb5b449556ca9071cd6d38aff940fd73137b3d4702",
-      "commit": "b1b93f2",
+      "commit": "2556dda",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-31",
       "pages": 10,
@@ -82,7 +82,7 @@
     },
     "10_TELAAH_PENDAHULUAN_MEDIA.md": {
       "source": "13e86a96e4af811a151e2cfa7809576c900961fd7cc64bd589a3ffacc45a298e",
-      "commit": "b1b93f2",
+      "commit": "2556dda",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-31",
       "pages": 8,
@@ -114,7 +114,7 @@
     },
     "14_TES_BAGIAN_MEMBACA.md": {
       "source": "55ecc0f33e43bc4302182a0e9867e5e7c99cb74078b0f030c893b036ab56a2f1",
-      "commit": "b1b93f2",
+      "commit": "2556dda",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-31",
       "pages": 20,
@@ -122,7 +122,7 @@
     },
     "15_TES_BAGIAN_DIGITAL.md": {
       "source": "fa236e4443314df9b75912b9eba20c0fbdc3eee67251c5ced3d7ac9c1fa628b6",
-      "commit": "b1b93f2",
+      "commit": "2556dda",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-31",
       "pages": 23,
