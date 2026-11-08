@@ -134,25 +134,56 @@ $guides = [
   </div>
 
   <?php if (! $isNew && $item->interaction_type === 'scenario_choice'): ?>
-    <?php // Part 6 (32 §5.7): actions and reasons of the scenario, read-only; edited through the question bank workbook ?>
+    <?php // Part 6 (32 §5.7), panel form 8 November 2026: actions and reasons, saved with the item; scores and codes locked once answered ?>
+    <?php $answered = model(App\Models\ChallengeItemModel::class)->hasResponses((int) $item->id); ?>
     <div class="bilingual">
-      <span class="bilingual-label">Tindakan dan alasan (dari workbook bank soal, sheet scenario_options)</span>
+      <span class="bilingual-label">Tindakan dan alasan</span>
       <table class="data-table scenario-options-table">
-        <thead><tr><th>Jenis</th><th>Kunci</th><th>Teks</th><th>Skor</th><th>Kode</th><th>Umpan balik</th></tr></thead>
+        <thead><tr><th>Jenis</th><th>Kunci</th><th>Teks (ID / EN)</th><th>Skor</th><th>Kode</th><th>Umpan balik (ID / EN)</th></tr></thead>
         <tbody>
           <?php foreach (service('contentRepository')->scenarioOptions($item->id) as $option): ?>
+            <?php $field = 'options[' . (int) $option['id'] . ']'; $what = ($option['kind'] === 'action' ? 'Tindakan ' : 'Alasan ') . $option['option_key']; ?>
             <tr>
               <td><?= esc($option['kind'] === 'action' ? 'Tindakan' : 'Alasan') ?></td>
               <td><code><?= esc($option['option_key']) ?></code></td>
-              <td><?= esc($option['text_id']) ?></td>
-              <td><?= esc($option['score'] ?? '—') ?></td>
-              <td><?= esc($option['code'] ?? '—') ?></td>
-              <td><?= esc($option['feedback_id'] ?? '') ?></td>
+              <td>
+                <textarea name="<?= esc($field, 'attr') ?>[text_id]" rows="2" aria-label="<?= esc($what . ', teks Indonesia', 'attr') ?>" required><?= esc($option['text_id']) ?></textarea>
+                <textarea name="<?= esc($field, 'attr') ?>[text_en]" rows="2" aria-label="<?= esc($what . ', teks Inggris', 'attr') ?>"><?= esc($option['text_en']) ?></textarea>
+              </td>
+              <td>
+                <?php if ($option['kind'] === 'action'): ?>
+                  <select name="<?= esc($field, 'attr') ?>[score]" aria-label="<?= esc($what . ', skor', 'attr') ?>" <?= $answered ? 'disabled' : '' ?>>
+                    <?php foreach (['2' => '2 · aman', '1' => '1 · sebagian', '0' => '0 · berisiko'] as $value => $name): ?>
+                      <option value="<?= $value ?>" <?= (string) $option['score'] === (string) $value ? 'selected' : '' ?>><?= esc($name) ?></option>
+                    <?php endforeach ?>
+                  </select>
+                <?php else: ?>—<?php endif ?>
+              </td>
+              <td>
+                <?php $codes = App\Libraries\ErrorCodes::BY_CHOICE[$option['kind'] === 'action' ? 'action' : 'reason']; ?>
+                <select name="<?= esc($field, 'attr') ?>[code]" aria-label="<?= esc($what . ', kode', 'attr') ?>" <?= $answered ? 'disabled' : '' ?>>
+                  <?php if ($option['kind'] === 'action'): ?><option value="">— (tindakan tepat)</option><?php endif ?>
+                  <?php foreach ($codes as $code): ?>
+                    <option value="<?= esc($code, 'attr') ?>" <?= (string) $option['code'] === $code ? 'selected' : '' ?>><?= esc($code) ?></option>
+                  <?php endforeach ?>
+                </select>
+              </td>
+              <td>
+                <?php if ($option['kind'] === 'action'): ?>
+                  <textarea name="<?= esc($field, 'attr') ?>[feedback_id]" rows="2" aria-label="<?= esc($what . ', umpan balik Indonesia', 'attr') ?>"><?= esc($option['feedback_id'] ?? '') ?></textarea>
+                  <textarea name="<?= esc($field, 'attr') ?>[feedback_en]" rows="2" aria-label="<?= esc($what . ', umpan balik Inggris', 'attr') ?>"><?= esc($option['feedback_en'] ?? '') ?></textarea>
+                <?php else: ?>—<?php endif ?>
+              </td>
             </tr>
           <?php endforeach ?>
         </tbody>
       </table>
-      <p class="field-help">Penjelasan setelah kesempatan habis: <?= esc((string) ($item->explanation_id ?? '—')) ?> Ubah pilihan, skor, dan kode di workbook bank soal lalu impor ulang; skor tindakan tidak boleh berubah setelah skenario dijawab siswa.</p>
+      <p class="field-help">
+        Disimpan bersama soal dengan tombol Simpan. Aturannya sama dengan impor bank soal: tepat satu tindakan skor 2 (tanpa kode), satu skor 1, sisanya skor 0, dan kode alasan sesuai aturan wilayah.
+        <?php if ($answered): ?><strong>Skenario ini sudah dijawab siswa, jadi skor dan kode dikunci; teks dan umpan balik tetap bisa diubah.</strong><?php endif ?>
+        Workbook bank soal tetap sumber utama: perubahan di sini tertimpa bila bank diimpor ulang, jadi salin juga ke workbook.
+        Penjelasan setelah kesempatan habis: <?= esc((string) ($item->explanation_id ?? '—')) ?>
+      </p>
     </div>
   <?php endif ?>
 
