@@ -429,6 +429,20 @@ class Gelita extends BaseConfig
     /** Highest participant number per school and class group (`S03-A99`, 28 K11). */
     public int $participantCodeMax = 99;
 
+    /**
+     * Part 4 (30 §0.1, §12): research privacy switch (`gelita.researchPrivacy`
+     * in `.env`). On: browser sessions store hashed IPs (HashedIpSessionHandler)
+     * and the retention run removes expired and raw-IP `ci_sessions` rows. A
+     * study in field mode cannot be saved or started while it is off.
+     */
+    public bool $researchPrivacy = false;
+
+    /** Part 4 (30 §11, K10): shortest retention of a field-mode study, 20 × 365.25 days from closing. */
+    public int $researchRetentionDays = 7305;
+
+    /** Part 4 (30 §7.7): hours to stop collecting and to tell the parents (3 × 24). */
+    public int $dataRequestHours = 72;
+
     /** Username prefixes students cannot register with; tools and the simulator still may (28 K18). */
     public array $reservedUsernamePrefixes = ['uji.', 'sim_'];
 

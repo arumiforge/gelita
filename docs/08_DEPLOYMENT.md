@@ -1391,13 +1391,13 @@ Bulanan: periksa tanggal kedaluwarsa sertifikat (pemeriksaan 8) dan jalankan sat
 
 Dataset ini memuat data pribadi anak. Yang harus disiapkan bersama institusi sebelum pengambilan data:
 
-1. **Persetujuan.** Aplikasi mencatat centang persetujuan siswa saat mendaftar (`participants.assented_at`). Persetujuan orang tua/wali dan buktinya dikelola institusi di luar aplikasi.
-2. **Retensi.** Tetapkan masa simpan studi (`research_studies.retention_days`) sesuai kesepakatan dengan sekolah dan institusi. Nilai bawaan 1825 hari adalah titik awal, bukan keputusan.
+1. **Persetujuan.** Aplikasi mencatat centang persetujuan siswa saat mendaftar (`participants.assented_at`, dengan versi teks di `participants.assent_version`). Dalam mode penelitian, izin orang tua berkode dari L7 (tanggal, izin rekaman, izin pertanyaan internet, status) diisi peneliti di panel per siswa, tanpa nama; formulir T2 tetap di luar aplikasi. Lihat [bagian 4](#research-revision-10-part-4-consent-data-rights-and-research-privacy).
+2. **Retensi.** Masa simpan studi penelitian ditetapkan oleh izin etik: studi `field_mode = 1` paling singkat 7305 hari (20 tahun), dihitung sejak studi ditutup (`research_studies.closed_at`). Studi lain tetap memakai `retention_days` sejak mulai sesi; nilai bawaan 1825 hari.
 3. **Akses terbatas.** Guru hanya melihat sekolahnya, unduhan guru selalu anonim, akun admin sesedikit mungkin.
 4. **Unduhan pseudonim sebagai bawaan.** Analisis dilakukan dengan kode peserta; nama hanya dibuka bila memang diperlukan dan tercatat di audit log.
-5. **Penghapusan yang dapat ditelusuri.** Selalu lewat pratinjau, konfirmasi, dan audit di **Tata kelola**. Bila orang tua menarik persetujuan, buat permintaan penghapusan untuk peserta itu.
+5. **Penghapusan yang dapat ditelusuri.** Selalu lewat pratinjau, konfirmasi, dan audit di **Tata kelola**. Permintaan orang tua diajukan peneliti di **Permintaan data** (`/admin/permintaan-data`), dikonfirmasi ketua peneliti, dijalankan admin di Tata kelola, lalu diselesaikan dengan daftar periksa dan berita acara.
 6. **Kata sandi anak** disimpan hanya sebagai hash; guru dan admin tidak dapat melihatnya. Sandi sementara hasil reset hanya tampil sekali. Nama pengguna diperlakukan sebagai data identitas dan tidak ikut unduhan anonim.
-7. **IP mentah di `ci_sessions`.** Sesi memakai `DatabaseHandler` bawaan CodeIgniter; `App\Libraries\HashedIpSessionHandler` belum dipasang (lihat [02_PROJECT_FOUNDATION.md](02_PROJECT_FOUNDATION.md)). Karena itu kolom `ci_sessions.ip_address` menyimpan IP **mentah** selama sesi hidup, sampai dibersihkan garbage collector sesi. Tabel lain hanya menyimpan `ip_hash`, dan backup tidak membawa isi `ci_sessions`. Nyatakan hal ini dalam dokumen perlindungan data sampai handler hash dipasang.
+7. **IP di `ci_sessions`.** Dengan `gelita.researchPrivacy = true` sesi memakai `App\Libraries\HashedIpSessionHandler`, yang menyimpan hash IP (64 karakter), dan `gelita:retention:run` menghapus baris sesi yang kedaluwarsa atau masih ber-IP mentah. Dengan nilai bawaan (`false`) sesi tetap memakai `DatabaseHandler`, sehingga `ci_sessions.ip_address` menyimpan IP **mentah** selama sesi hidup. Tabel lain hanya menyimpan `ip_hash`, dan backup tidak membawa isi `ci_sessions`.
 8. **Backup** memuat data pribadi anak: batasi aksesnya dan enkripsi media salinan kedua.
 
 Persetujuan etik dan penafsiran hukumnya tetap urusan institusi. Aplikasi menyediakan mekanismenya; kebijakannya ditetapkan manusia.
@@ -1548,3 +1548,30 @@ Setelah panduan ini dijalankan:
 - `SystemResetService::REQUIRED_MIGRATION` = `2026-01-01-003700` (coordinator sets the final value after part 4).
 - `php spark gelita:lembar:templat --keluar=lembar/` (blank L1–L8, L7 included), `--l7 --keluar=…` (L7 only), `--kolom=kolom.json` (column spec for the static site). Refuses in production.
 - `Config\Gelita::$emptyTapLimit` (30) is the cap of `empty_tap` events per clue per attempt; check it in KG3a and KG3b and fix it before G4.
+
+## Research revision 10, part 4: consent, data rights, and research privacy
+
+Part 4 (`docs/revisi-10-analitik/30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md`) adds migration `2026-01-01-003800_AddConsentAndDataRights` (new table `participant_consents`; new columns on `participants`, `research_studies`, `data_deletion_requests`, `data_exports`). It removes no data and does not empty `ci_sessions`; run it outside class hours like any migration. Everything in part 4 stays off until a study has field mode on.
+
+### Research install checklist (before children first use their accounts)
+
+1. **`gelita.researchPrivacy = true`** in `.env`. The study form refuses to save or start a field-mode study while it is off. Turn it on outside class hours (students with an old raw-IP session sign in again), then run `php spark gelita:retention:run` once: it removes expired `ci_sessions` rows and every row whose `ip_address` is not a 64-character hash. Check once that `php -i | grep gc_probability` shows 0 on Debian/Ubuntu; the retention run then is the only session cleaner, so keep its daily cron.
+2. **Second backup location 30 days.** Set `KEDUA_HARI=30` in `ops.conf` (Jalur L) or `KeduaHari = 30` in `config.psd1` (Jalur W). Each run then deletes files older than that at the second location, and writes `writable/backup-status.json` (`ran_at`, `kedua_hari`). Tata kelola warns while a field-mode study exists and the status file reports no limit.
+3. **Retention.** A field-mode study keeps at least 7305 days, counted from `closed_at` (filled when the study status becomes *Selesai*, emptied when it is opened again before the identities are replaced). Until it is closed it never gets a retention preview; afterwards the preview covers the whole cohort, students included.
+4. On MariaDB, sign in once and check that `ci_sessions.ip_address` holds a 64-character hash.
+
+### Backup replacement after a deletion or the study closure
+
+After the admin has run a parent's request (or replaced the identities at study closure), and before the parents are told:
+
+```text
+bash deploy/linux/backup.sh --ganti
+powershell -File deploy\windows\backup.ps1 -Config C:\gelita-ops\config.psd1 -Ganti
+```
+
+The script makes a fresh backup as usual and tests it (`gzip -t` / opening the zip). It copies it to the second location; if that location cannot be reached it stops with code 2 and deletes nothing. Then it deletes every older `gelita-*` file at both locations and prints how many went. Snapshots the hosting provider makes are removed in the provider's panel. Tick *Cadangan diganti* on the request afterwards.
+
+### Scheduled tasks
+
+`gelita:retention:run` gains one step with the switch on: `expired_browser_sessions` in the `retention_run` audit summary.
+

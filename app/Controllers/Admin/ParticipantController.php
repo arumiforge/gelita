@@ -179,6 +179,82 @@ class ParticipantController extends BaseAdminController
     }
 
     /**
+     * Part 4 (30 §9, K13): the admin corrects age, gender, and class on the
+     * head researcher's request, with a reason; old and new values go to the
+     * audit log. Code, school, class group, and username never change.
+     * Conditional on the `updated_at` the page read.
+     */
+    public function correct(int $participantId): RedirectResponse
+    {
+        $participant = $this->requireInScope($participantId);
+        $path        = 'admin/peserta/' . $participantId;
+        [$minAge, $maxAge] = config('Gelita')->registrationAge;
+        $data = [
+            'age'         => trim((string) $this->request->getPost('age')),
+            'gender'      => trim((string) $this->request->getPost('gender')),
+            'class_level' => trim((string) $this->request->getPost('class_level')),
+            'reason'      => trim((string) $this->request->getPost('reason')),
+        ];
+        $rules = [
+            // The registration rules (RegisterController::rulesFor(1)); class is not asked at sign-up, so 1–6
+            'age'         => ['label' => 'Umur', 'rules' => 'required|integer|greater_than_equal_to[' . $minAge . ']|less_than_equal_to[' . $maxAge . ']'],
+            'gender'      => ['label' => 'Jenis kelamin', 'rules' => 'required|in_list[' . implode(',', config('Gelita')->genders) . ']'],
+            'class_level' => ['label' => 'Kelas', 'rules' => 'required|integer|greater_than_equal_to[1]|less_than_equal_to[6]'],
+            'reason'      => ['label' => lang('Admin.correctReason'), 'rules' => 'required|max_length[200]'],
+        ];
+
+        if (service('studyClosure')->identitiesReplacedFor($participantId)) {
+            return $this->back($path, lang('Admin.closureReplaced'));
+        }
+
+        if (! $this->validateData($data, $rules)) {
+            return $this->back($path, implode(' ', $this->validator->getErrors()));
+        }
+
+        $changes = [];
+
+        foreach (['age', 'gender', 'class_level'] as $field) {
+            if ((string) $participant->{$field} !== $data[$field]) {
+                $changes[$field] = [$participant->{$field}, $field === 'age' ? (int) $data[$field] : $data[$field]];
+            }
+        }
+
+        if ($changes === []) {
+            return $this->done($path, lang('Admin.correctNothing'));
+        }
+
+        $stamp = (string) ($this->request->getPost('stamp') ?: db_connect()->table('participants')->select('updated_at')->where('id', $participantId)->get()->getRow('updated_at'));
+        $db    = db_connect();
+        $db->table('participants')->where('id', $participantId)->where('updated_at', $stamp)->update(
+            array_map(static fn (array $pair) => $pair[1], $changes) + ['corrected_at' => date('Y-m-d H:i:s'), 'updated_at' => date('Y-m-d H:i:s')],
+        );
+
+        if ($db->affectedRows() !== 1) {
+            return $this->back($path, lang('Admin.consentStale'));
+        }
+
+        model(\App\Models\AuditLogModel::class)->record('participant_corrected', [
+            'staff_user_id' => $this->staffId(),
+            'target_type'   => 'participant',
+            'target_id'     => (string) $participantId,
+            'metadata'      => ['participant_code' => $participant->participant_code, 'changes' => $changes, 'reason' => $data['reason']],
+        ]);
+
+        return $this->done($path, lang('Admin.correctSaved'));
+    }
+
+    /** Part 4 (30 §5.3): the admin turns a deactivated account on again, with a reason. */
+    public function reactivate(int $participantId): RedirectResponse
+    {
+        $this->requireInScope($participantId);
+        $error = service('consentService')->reactivate($participantId, (string) $this->request->getPost('reason'), $this->staffId());
+
+        return $error === ''
+            ? $this->done('admin/peserta/' . $participantId, lang('Admin.reactivated'))
+            : $this->back('admin/peserta/' . $participantId, $error);
+    }
+
+    /**
      * Kolom daftar siswa (§8.3). `identity` = admin only. Researchers see the
      * school as its code, the admin by name (27 K5).
      *
@@ -357,6 +433,10 @@ class ParticipantController extends BaseAdminController
             'intro_seen_at'            => $participant->intro_seen_at,
             'assented_at'              => $participant->assented_at,
             'created_at'               => $participant->created_at,
+            // Part 4 (30 §5.3, §9)
+            'deactivated_at'           => $participant->deactivated_at,
+            // The stored text as read (an entity Time would drop the microseconds the conditional save compares)
+            'updated_at'               => db_connect()->table('participants')->select('updated_at')->where('id', $participant->id)->get()->getRow('updated_at'),
         ];
 
         if (! $this->seesIdentity()) {

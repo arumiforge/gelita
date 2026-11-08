@@ -8,7 +8,7 @@ use Config\Database;
 
 /**
  * Skema lengkap GELITA (app/Database/Migrations) untuk SQLite
- * (grup `tests`): 40 tabel dengan kolom, nilai bawaan, kunci utama, dan kunci
+ * (grup `tests`): 41 tabel dengan kolom, nilai bawaan, kunci utama, dan kunci
  * unik yang sama dengan MySQL/MariaDB. Indeks biasa dan FK tidak ikut.
  * Dipakai uji reset total (SystemResetTest), pendaftaran bertahap
  * (RegisterWizardTest), dan penulisan item_tries (ItemTryWritesTest).
@@ -191,6 +191,16 @@ trait ResetTables
             'approved_by'    => 'INTEGER?',
             'executed_at'    => 'DATETIME?',
             'created_at'     => 'DATETIME=CURRENT_TIMESTAMP',
+            // Part 4 (30 §15): parents' data requests
+            'kind'             => 'VARCHAR(20)?',
+            'participant_code' => 'VARCHAR(40)?',
+            'received_at'      => 'DATETIME?',
+            'verified_at'      => 'DATETIME?',
+            'received_via'     => 'VARCHAR(10)?',
+            'confirmed_by'     => 'INTEGER?',
+            'confirmed_at'     => 'DATETIME?',
+            'completed_at'     => 'DATETIME?',
+            'checklist_json'   => 'TEXT?',
         ],
         'data_exports' => [
             'id'            => 'pk',
@@ -210,6 +220,8 @@ trait ResetTables
             // part 3 (29 §12)
             'dictionary_version' => 'VARCHAR(20)?',
             'participant_count'  => 'INTEGER?',
+            // Part 4 (30 §7.4)
+            'purged_by_request_id' => 'INTEGER?',
         ],
         'device_logs' => [
             'id'                => 'pk',
@@ -557,6 +569,10 @@ trait ResetTables
             'created_at'               => 'DATETIME=CURRENT_TIMESTAMP',
             'updated_at'               => 'DATETIME=CURRENT_TIMESTAMP',
             'deleted_at'               => 'DATETIME?',
+            // Part 4 (30 §15)
+            'deactivated_at'           => 'DATETIME?',
+            'assent_version'           => 'VARCHAR(20)?',
+            'corrected_at'             => 'DATETIME?',
             '_unique'                  => [['participant_code'], ['username']],
         ],
         'participant_code_counters' => [
@@ -565,6 +581,23 @@ trait ResetTables
             'rombel'    => 'CHAR(1)',
             'next_no'   => 'INTEGER=1',
             '_unique'   => [['school_id', 'rombel']],
+        ],
+        // Part 4 (30 §15): coded consent per student
+        'participant_consents' => [
+            'participant_id'          => 'INTEGER',
+            'study_id'                => 'INTEGER',
+            'parent_consent_on'       => 'DATE?',
+            'recording_consent'       => 'INTEGER=0',
+            'recording_withdrawn_on'  => 'DATE?',
+            'risk_items_consent'      => 'INTEGER=0',
+            'risk_items_withdrawn_on' => 'DATE?',
+            'status'                  => 'VARCHAR(20)=active',
+            'status_on'               => 'DATE?',
+            'entered_by'              => 'INTEGER?',
+            'updated_by'              => 'INTEGER?',
+            'created_at'              => 'DATETIME=CURRENT_TIMESTAMP',
+            'updated_at'              => 'DATETIME=CURRENT_TIMESTAMP',
+            '_primary'                => ['participant_id'],
         ],
         'participant_feedback' => [
             'id'             => 'pk',
@@ -666,6 +699,11 @@ trait ResetTables
             'package_code'   => 'VARCHAR(30)?',
             'created_at'     => 'DATETIME=CURRENT_TIMESTAMP',
             'updated_at'     => 'DATETIME=CURRENT_TIMESTAMP',
+            // Part 4 (30 §15)
+            'closed_at'                    => 'DATETIME?',
+            'consent_register_exported_at' => 'DATETIME?',
+            'feedback_names_checked_at'    => 'DATETIME?',
+            'identities_replaced_at'       => 'DATETIME?',
             '_unique'        => [['code']],
         ],
         'scenario_options' => [
@@ -722,7 +760,7 @@ trait ResetTables
     ];
 
     /**
-     * Membuat (ulang) tabel. Tanpa argumen: semua 40 tabel.
+     * Membuat (ulang) tabel. Tanpa argumen: semua 41 tabel.
      *
      * @param list<string>|null $only
      */

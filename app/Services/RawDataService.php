@@ -75,12 +75,12 @@ class RawDataService
     public const DIMENSIONS = [
         'peserta', 'sesi_lapangan', 'sesi', 'progres', 'pengerjaan', 'jawaban', 'percobaan',
         'navigasi', 'bantuan', 'selesai', 'event', 'masukan', 'butir', 'kode_pilihan',
-        // WAVE-E seam (part 4, 30 keputusan no. 9): sheet `izin` goes here, before the field sheets.
+        'izin',   // part 4 (30 keputusan no. 9, §10.1): coded consent per student, ketua only
         'l1_kondisi', 'l1_penyimpangan', 'l2_kursi', 'l3_bantuan', 'l4_bromp', 'l5_wawancara', 'l6_sesi',
     ];
 
     /** Dimensions only for `ketua` (full detail, 29 K1): raw events and the bank codes per choice. */
-    public const FULL_DETAIL_DIMENSIONS = ['event', 'kode_pilihan'];
+    public const FULL_DETAIL_DIMENSIONS = ['event', 'kode_pilihan', 'izin'];
 
     /** Answer columns that `$readableAnswers` writes as sentences (AnswerText). */
     public const ANSWER_COLUMNS = ['first_answer', 'final_answer', 'answer', 'answer_key'];
@@ -263,6 +263,14 @@ class RawDataService
             'choice_type' => 'kode_pilihan.choice_type', 'choice_ref' => 'kode_pilihan.choice_ref',
             'error_code' => 'kode_pilihan.error_code', 'is_main' => 'kode_pilihan.is_main', 'option_score' => 'kode_pilihan.option_score',
         ],
+        // Coded consent per student (30 §10.1, ConsentService::REGISTER_COLUMNS), for the ketua's check against L7
+        'izin' => [
+            'participant_code' => 'participants.participant_code', 'parent_consent_on' => 'participant_consents.parent_consent_on',
+            'recording_consent' => 'participant_consents.recording_consent', 'recording_withdrawn_on' => 'participant_consents.recording_withdrawn_on',
+            'risk_items_consent' => 'participant_consents.risk_items_consent', 'risk_items_withdrawn_on' => 'participant_consents.risk_items_withdrawn_on',
+            'assented_at' => 'participants.assented_at', 'assent_version' => 'participants.assent_version',
+            'status' => 'participant_consents.status', 'status_on' => 'participant_consents.status_on',
+        ],
     ];
 
     /** Kunci unik tiap dimensi untuk iterasi keyset dan pemecah seri urutan. */
@@ -281,6 +289,7 @@ class RawDataService
         'masukan'       => 'participant_feedback.id',
         'butir'         => 'challenge_items.id',
         'kode_pilihan'  => 'kode_pilihan._key',
+        'izin'          => 'participant_consents.participant_id',
     ];
 
     /** Urutan bawaan tabel admin (terbaru dulu untuk data kejadian). */
@@ -299,6 +308,7 @@ class RawDataService
         'masukan'       => '-submitted_at',
         'butir'         => 'node_ref',
         'kode_pilihan'  => 'item_key',
+        'izin'          => 'participant_code',
     ];
 
     /** @var array<string, mixed> peta id → isi konten, dimuat sekali per objek */
@@ -350,6 +360,7 @@ class RawDataService
             'masukan'    => $this->feedbackQuery($filters, $scope),
             'butir'      => $this->itemQuery($filters),
             'kode_pilihan' => $this->choiceCodeQuery($filters),
+            'izin'       => $this->consentQuery($filters, $scope),
             default      => $this->fieldSheetQuery($dimension, $filters, $scope),
         };
     }
@@ -593,6 +604,7 @@ class RawDataService
             'masukan'    => $row,
             'butir'      => $this->itemValues($row, $answers),
             'kode_pilihan' => $row + ['node_ref' => $this->nodeRefById($row['challenge_node_id'])],
+            'izin'       => $row,
             default      => $this->fieldSheetValues($row),
         };
 
@@ -867,6 +879,29 @@ class RawDataService
             ->where('participants.deleted_at', null);
 
         $this->applySessionFilters($builder, $filters, $scope, 'participant_feedback.submitted_at');
+
+        return $builder;
+    }
+
+    /**
+     * Coded consent of the study's students (part 4, 30 §10.1): codes only;
+     * downloading it does not stamp `consent_register_exported_at`.
+     */
+    private function consentQuery(array $filters, StaffScope $scope): BaseBuilder
+    {
+        $builder = $this->db()->table('participant_consents')
+            ->join('participants', 'participants.id = participant_consents.participant_id')
+            ->select('participant_consents.participant_id AS _key, participants.participant_code')
+            ->select('participant_consents.parent_consent_on, participant_consents.recording_consent, participant_consents.recording_withdrawn_on')
+            ->select('participant_consents.risk_items_consent, participant_consents.risk_items_withdrawn_on')
+            ->select('participants.assented_at, participants.assent_version, participant_consents.status, participant_consents.status_on')
+            ->where('participants.deleted_at', null);
+
+        if (isset($filters['study_id'])) {
+            $builder->where('participant_consents.study_id', (int) $filters['study_id']);
+        }
+
+        $this->applyParticipantFilters($builder, array_diff_key($filters, array_flip(['date_from', 'date_to'])), $scope, 'participants.created_at');
 
         return $builder;
     }

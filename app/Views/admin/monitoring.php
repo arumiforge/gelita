@@ -37,6 +37,10 @@ $codes = static fn (array $students, callable $keep): string => implode(', ', ar
       </div>
 
       <?php if ($detail): ?>
+        <?php // Part 4 (30 §5.2) ?>
+        <?php if ((int) ($row['consent_missing'] ?? 0) > 0): ?>
+          <p class="alert alert-warn" data-m="consent-missing"><?= icon('warn') ?> <?= esc(lang('Admin.consentMissing', [$row['consent_missing']])) ?></p>
+        <?php endif ?>
         <dl class="detail-list">
           <dt><?= esc(lang('Admin.monitoringActive')) ?></dt><dd class="mono" data-m="list-active"><?= esc($codes($row['students'], static fn ($s) => $s['active'])) ?></dd>
           <dt><?= esc(lang('Admin.monitoringNotEntered')) ?></dt><dd class="mono" data-m="list-not-entered"><?= esc($codes($row['students'], static fn ($s) => ! $s['entered'])) ?></dd>

@@ -471,4 +471,23 @@ return [
     'huntRoundTwoStart' => 'Start round 2',
     'huntPartN'         => 'Part {0}',
     'postSceneAlt'      => 'Photo in the post',
+    // Part 4 (30 §5.1, §5.3, §17): research-mode assent (23 → T4) and the deactivated account
+    'assentLabelStudy'    => 'I want to take part in the GELITA study. I know my answers in the game and the questions are recorded with my code, not my name. I can stop at any time.',
+    'assentNameStudy'     => 'Agreement to take part',
+    'assentRequiredStudy' => "Tick the box first if you want to take part. If you don't want to, that's fine. Quietly tell a researcher.",
+    'loginInactive'       => 'This account is no longer in use. If you have a question, talk to a researcher.',
+    // Part 4 (30 §5.4, 23 → T11, T12): texts for the test module's screens (part 8 builds the screens)
+    'riskAskTitle'     => 'A few questions about the internet',
+    'riskAskP1'        => 'There are a few more questions. They are about things on the internet or a phone that may make you feel uncomfortable.',
+    'riskAskP2'        => "You don't have to answer them. That's okay. Every question also has the choice I don't want to answer.",
+    'riskAskP3'        => 'Your answers are saved with your code, not your name. Your teachers and friends do not see your answers. If your parents ask to see your answers, a researcher will talk with you first.',
+    'riskAskP4'        => 'But there is one thing you should know. The researchers want every child to be safe. If your answers show you might need help, a researcher may ask you for a short chat. If you are in danger, the researcher will ask a grown-up to help keep you safe.',
+    'riskAskQuestion'  => 'Do you want to answer these questions?',
+    'riskAskYes'       => "Yes, I'll answer",
+    'riskAskNo'        => 'No, skip them',
+    'riskThanksTitle'  => 'Thank you.',
+    'riskThanksP1'     => 'Sometimes things on the internet make us feel uncomfortable, scared, or sad. That is not your fault.',
+    'riskThanksP2'     => 'If that happens, tell a grown-up you trust. For example, your parents, a teacher, or a researcher.',
+    'riskThanksP3'     => "The researchers are here until today's session ends. You can come to them at any time.",
+    'riskThanksNext'   => 'Next',
 ];

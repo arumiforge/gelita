@@ -221,6 +221,18 @@ final class ExportLabels
             'suggestion'   => ['Saran', 'text', 'Saran siswa.'],
             'submitted_at' => ['Dikirim', 'datetime', 'Waktu kritik & saran dikirim.'],
         ],
+        // Part 4 (30 §10.1): codes as stored; 1 = Ya, 0 = Tidak
+        'izin' => [
+            'parent_consent_on'       => ['Tanggal izin orang tua', 'text', 'Tanggal di surat izin orang tua (L7), TTTT-BB-HH.'],
+            'recording_consent'       => ['Izin rekaman suara', 'bool', '1 = orang tua mengizinkan rekaman suara.'],
+            'recording_withdrawn_on'  => ['Izin rekaman ditarik', 'text', 'Tanggal izin rekaman ditarik (TTTT-BB-HH), bila ada.'],
+            'risk_items_consent'      => ['Izin pertanyaan internet', 'bool', '1 = orang tua mengizinkan pertanyaan pengalaman di internet (ang-21–ang-23).'],
+            'risk_items_withdrawn_on' => ['Izin pertanyaan internet ditarik', 'text', 'Tanggal izin pertanyaan internet ditarik (TTTT-BB-HH), bila ada.'],
+            'assented_at'             => ['Persetujuan siswa', 'datetime', 'Waktu siswa mencentang persetujuan di layar daftar.'],
+            'assent_version'          => ['Versi teks persetujuan', 'code', 'Versi teks yang dicentang siswa, mis. t4-1.'],
+            'status'                  => ['Status izin', 'code', 'active, left (pindah atau keluar), withdrawn_keep (mundur, data dipakai), withdrawn_delete (mundur, data dihapus).'],
+            'status_on'               => ['Tanggal status', 'text', 'Tanggal status izin terakhir berubah, TTTT-BB-HH.'],
+        ],
         'butir' => [
             'sequence'        => ['Urutan', 'int', 'Urutan soal dalam tantangan.'],
             'passage_key'     => ['Kode bacaan', 'code', 'Bacaan Benar atau Salah, mis. tmg-3-a.'],
@@ -279,6 +291,7 @@ final class ExportLabels
         'masukan'    => ['Kritik & Saran', 'Satu baris per kiriman kritik dan saran.'],
         'butir'      => ['Bank Soal', 'Satu baris per soal di bank soal.'],
         'kode_pilihan' => ['Kode Pilihan', 'Kode kesalahan bank per pilihan dan pilihan skenario (hanya ketua peneliti).'],
+        'izin'       => ['Izin Berkode', 'Izin orang tua dan persetujuan siswa per siswa, hanya kode (hanya ketua peneliti).'],
         // Field sheets: titles from FieldSheetSpec (sheetTitle())
     ];
 

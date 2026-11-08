@@ -381,7 +381,7 @@ class FieldSheetService
         return [
             'session'  => $fieldSession,
             'roster'   => array_column($roster, null, 'participant_code'),
-            'names'    => $this->nameWords($roster),
+            'names'    => self::nameWords($roster),
             'seats'    => $seats,
             'late'     => ($closed = $this->closedAt($fieldSession)) !== null && time() - strtotime($closed) > self::LATE_HOURS * 3600,
         ];
@@ -922,8 +922,15 @@ class FieldSheetService
         ], $builder->get()->getResultArray());
     }
 
-    /** @return array<string, true> lower-case words of the class group's names (≥ 3 letters) */
-    private function nameWords(array $roster): array
+    /**
+     * Lower-case words of the students' names and usernames (≥ 3 letters, 29 K13);
+     * also used by StudyClosureService to mask feedback (30 §10.2).
+     *
+     * @param iterable<array{display_name: mixed, username: mixed}> $roster
+     *
+     * @return array<string, true>
+     */
+    public static function nameWords(iterable $roster): array
     {
         $words = [];
 

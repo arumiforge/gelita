@@ -118,8 +118,8 @@ class ReportService
         ];
     }
 
-    /** mPDF: UTF-8, A4, margin 20 mm, header/footer bernomor halaman. */
-    private function writePdf(string $html, string $path, string $title): void
+    /** mPDF: UTF-8, A4, margin 20 mm, header/footer bernomor halaman. Public for part 4 (minutes, one child's copy). */
+    public function writePdf(string $html, string $path, string $title): void
     {
         $tempDir = WRITEPATH . 'cache' . DIRECTORY_SEPARATOR . 'mpdf';
 

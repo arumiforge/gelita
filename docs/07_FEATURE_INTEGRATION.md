@@ -1739,3 +1739,31 @@ Source: `docs/revisi-10-analitik/29_IMPLEMENTASI_DATA_PENELITIAN.md`.
 4. **Tech log** (`/admin/log-teknis`, admin): devices, technical events (`password_changed`, `viewport_changed`, `package_changed`, `events_dropped`), session tech columns (OS, browser, touch, app version, package); CSV audited as `tech_log_csv`.
 5. **Research download** (`/admin/ekspor`, ketua only): always one study; sheets `kamus`, `peserta`, `sesi_lapangan`, `sesi`, `progres`, `pengerjaan`, `jawaban`, `percobaan`, `navigasi`, `bantuan`, `selesai`, `event`, `masukan`, `butir`, `kode_pilihan`, then field sheets `l1_kondisi` … `l6_sesi`; event times corrected (`occurred_at_corrected`, `offset_known`); `answer_key` and the `event` sheet for ketua; test (`uji.*`, school V01) and simulated (`sim_*`) accounts never included. The Kamus Data sheet carries the dictionary version, time, study, filters, and per column the name, analytics, and anchor in 11.
 6. **Field sheets.** On the field session page: *Unduh templat lembar* (XLSX with codes and booklets, a Kode sheet) and *Unggah lembar yang sudah diketik* (XLSX or CSV named after the sheet code), preview, then save; the newest upload counts; L5 *Kode manual* goes to `item_tries.manual_code`; *Ketikan kedua (cek)* is compared by row key and never downloaded. L7 never reaches the server: `php spark gelita:lembar:templat --l7 --keluar=<folder>` on a laptop.
+
+## FEATURE 16 and 17 additions: consent, parents' requests, study closure (research revision 10, part 4)
+
+Everything here applies only while a study has field mode on (30 §0.1); without one, registration, login, the menu, Tata kelola, and retention behave as before.
+
+```text
+Sign-up in field mode → participants.assent_version = t4-1 + participant_consents row (defaults No)
+P1 fills L7 codes at /admin/sesi-lapangan/{id}/izin (ConsentService::save, conditional on updated_at)
+  status withdrawn_keep / withdrawn_delete → participants.deactivated_at (same transaction)
+    → next game request ends the session, /masuk answers Game.loginInactive, the token is refused
+  admin "Aktifkan lagi" only after P1 restored the status, with a reason (participant_reactivated)
+
+Parent's request (DataRequestService), /admin/permintaan-data:
+  peneliti files → requested ── ketua confirms ──► preview (RetentionService::countAffected, hard)
+  ketua files ─────────────────────────────────► preview
+  recording: confirmed → executed with 0 rows (nothing on the server)
+  admin types HAPUS in Tata kelola → executed (conditional status move first)
+    → ExportService::purgeForRequest() + ticks system, server_exports
+  ticks per role; parent_notified last → completed; minutes PDF (berita acara)
+
+Study closure, /admin/studi/{id}/penutupan (StudyClosureService):
+  conditions: closed (closed_at), no open request, consent register downloaded after the last change,
+  feedback checked for names → Hitung → GANTI → names, usernames, passwords, schools replaced by codes
+```
+
+Other parts: follow-up flags `tl-1` at `/admin/tindak-lanjut` (computed, never stored, head researcher only); one child's copy at `/admin/peserta/salinan` (ZIP made on request, never kept); registration correction of age, gender, class by the admin (`participant_corrected`); the coded consent register at `/admin/ekspor/izin`.
+
+FEATURE 17 gains: a field-mode study is flagged only after `closed_at` + `retention_days`, for its whole cohort; with `gelita.researchPrivacy` on, step `expired_browser_sessions` cleans `ci_sessions`.

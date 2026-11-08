@@ -74,6 +74,8 @@ $base = 'admin/sesi-lapangan/' . $id;
   <?php // Part 3 (29 §10.3–§10.4): field sheets ?>
   <a class="btn btn-sm" href="<?= base_url($base . '/lembar') ?>"><?= icon('download') ?> <?= esc(lang('Admin.fieldSheetTemplate')) ?></a>
   <a class="btn btn-sm" href="<?= base_url($base . '/lembar/unggah') ?>"><?= icon('upload') ?> <?= esc(lang('Admin.fieldSheetUpload')) ?></a>
+  <?php // Part 4 (30 §5.2, §14): the consent page next to the seats ?>
+  <a class="btn btn-sm" href="<?= base_url($base . '/izin') ?>"><?= esc(lang('Admin.consentTitle')) ?></a>
   <?php if ((int) $fieldSession['makeup_no'] === 0 && $state === 'closed'): ?>
     <a class="btn btn-sm" href="<?= base_url($base . '/susulan') ?>"><?= esc(lang('Admin.fieldSessionMakeup')) ?></a>
   <?php endif ?>

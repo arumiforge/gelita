@@ -293,4 +293,31 @@ class Services extends BaseService
 
         return new VideoThumbnail();
     }
+
+    // Part 4 (30 §15): consent, data requests, risk follow-up, one child's copy, study closure
+
+    public static function consentService(bool $getShared = true): \App\Services\ConsentService
+    {
+        return $getShared ? static::getSharedInstance('consentService') : new \App\Services\ConsentService();
+    }
+
+    public static function dataRequests(bool $getShared = true): \App\Services\DataRequestService
+    {
+        return $getShared ? static::getSharedInstance('dataRequests') : new \App\Services\DataRequestService();
+    }
+
+    public static function riskFollowUp(bool $getShared = true): \App\Services\RiskFollowUpService
+    {
+        return $getShared ? static::getSharedInstance('riskFollowUp') : new \App\Services\RiskFollowUpService();
+    }
+
+    public static function participantCopy(bool $getShared = true): \App\Services\ParticipantCopyService
+    {
+        return $getShared ? static::getSharedInstance('participantCopy') : new \App\Services\ParticipantCopyService();
+    }
+
+    public static function studyClosure(bool $getShared = true): \App\Services\StudyClosureService
+    {
+        return $getShared ? static::getSharedInstance('studyClosure') : new \App\Services\StudyClosureService();
+    }
 }

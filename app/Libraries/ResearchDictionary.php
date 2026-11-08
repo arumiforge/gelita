@@ -136,6 +136,12 @@ final class ResearchDictionary
             'participant_code' => 'ada', 'session_code' => 'ada', 'rating' => ['ada', 'feedback_rating', self::PEOPLE, []],
             'liked_most' => 'ada', 'hardest_part' => 'ada', 'new_learning' => 'ada', 'suggestion' => 'ada', 'submitted_at' => 'ada',
         ]],
+        // Part 4 (30 §10.1, keputusan no. 9)
+        'izin' => [self::PEOPLE, [], [
+            'participant_code' => 'ada', 'parent_consent_on' => 'baru', 'recording_consent' => 'baru', 'recording_withdrawn_on' => 'baru',
+            'risk_items_consent' => 'baru', 'risk_items_withdrawn_on' => 'baru', 'assented_at' => 'ada', 'assent_version' => 'baru',
+            'status' => 'baru', 'status_on' => 'baru',
+        ]],
         'butir' => [self::ITEMS, [2, 3, 6], [
             'item_key' => 'ada', 'level' => 'ada', 'node_ref' => 'ada', 'variant_group' => 'ada', 'variant_title' => 'ada',
             'sequence' => 'ada', 'interaction_type' => 'ada', 'bloom_level' => 'ada', 'skill' => 'ada', 'indicator' => 'ada',

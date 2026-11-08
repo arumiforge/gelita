@@ -199,8 +199,8 @@ class ExportService
         $participantId = (int) ($json['participant_id'] ?? 0);
         $filters       = $this->sanitizeFilters((array) ($json['filters'] ?? []));
 
-        // One study per download, field mode on or off (29 K16)
-        if ($format !== 'pdf' && ! isset($filters['study_id'])) {
+        // One study per download, field mode on or off (29 K16); a one-student export (one child's copy, 30 §8) covers all the child's studies
+        if ($format !== 'pdf' && $participantId === 0 && ! isset($filters['study_id'])) {
             throw new \DomainException(lang('Admin.exportNeedsStudy'));
         }
 
@@ -488,6 +488,43 @@ class ExportService
                 'metadata'      => ['export_ids' => $removed],
             ]);
         }
+
+        return $removed;
+    }
+
+    /**
+     * Part 4 (30 §7.4): a parent's request purges every download file still on
+     * the server that was made since the student registered ($since). The row
+     * stays, with `file_path` empty and `purged_by_request_id` set.
+     *
+     * @return list<int> export ids purged
+     */
+    public function purgeForRequest(int $requestId, string $since, ?int $staffId = null): array
+    {
+        $exports = model(DataExportModel::class);
+        $removed = [];
+
+        foreach ($exports->where('file_path IS NOT NULL')->where('file_path !=', '')->where('created_at >=', $since)->findAll() as $export) {
+            $path = (string) $export['file_path'];
+
+            if (is_file($path) && $this->isInsideExportDir($path)) {
+                unlink($path);
+            }
+
+            $exports->update((int) $export['id'], [
+                'file_path'            => null,
+                'purged_by_request_id' => $requestId,
+                'error_message'        => 'Berkas sudah dihapus karena permintaan hapus data orang tua.',
+            ]);
+            $removed[] = (int) $export['id'];
+        }
+
+        model(AuditLogModel::class)->record('export_purge', [
+            'staff_user_id' => $staffId,
+            'target_type'   => 'data_deletion_request',
+            'target_id'     => (string) $requestId,
+            'metadata'      => ['export_ids' => $removed, 'request_id' => $requestId],
+        ]);
 
         return $removed;
     }
