@@ -1,8 +1,27 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 4 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 8 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
+
+## 8 November 2026
+
+**Gelombang kode E selesai: bagian 3 (29), bagian 4 (30), dan bagian 6 (32) dikerjakan paralel lalu digabung koordinator** (cabang `r10-kode-29-data-penelitian`, `r10-kode-30-hak-data`, `r10-kode-32-skenario-digital`, dan cabang koordinator `pw/trusting-edison-ivf3mi`) · `asal: pengembang` (penyimpangan dipilih AI saat implementasi) · `draf pengembang` · tidak merevisi produk
+
+Pengembang meminta gelombang E dijalankan seperti gelombang D: satu cabang per bagian dan satu koordinator, dengan tes penuh hijau di setiap penggabungan. Tiga sesi AI mengerjakan bagian 3, 4, dan 6 di cabang masing-masing (sempat berhenti tiga kali karena batas pemakaian, tanpa kehilangan kerja). Koordinator menggabungkan berurutan 3 → 4 → 6; tes penuh hijau setelah setiap penggabungan (994, 1058, lalu 1082 tes; 2 dilewati dengan sengaja karena menunggu tabel bagian 8). Kode belum dipakai dengan anak; mode penelitian tetap mati secara bawaan.
+
+1. **Penggabungan dan sambungan antarbagian.**
+   - `SystemResetService::REQUIRED_MIGRATION` = `2026-01-01-004000`. Barisnya juga harus ada di riwayat migrasi, karena `003900`/`003910` lebih dulu berjalan daripada `003600`–`003800` (pemeriksaan dari bagian 3).
+   - Bagian 4 ← bagian 3: `field_sheet_rows` dan `field_sheet_imports` ikut urutan hapus retensi; lembar `izin` masuk unduhan utama (hanya `ketua`, kode saja, tidak mengisi `consent_register_exported_at`; 30 keputusan no. 9); daftar salinan peneliti di daftar periksa hanya unduhan yang benar diunduh dan memuat siswa (`participant_count > 0`, atau baris sebelum bagian 3); penutupan studi memakai daftar kata nama dari pemeriksaan nama lembar lapangan (29 K13). Unduhan satu siswa (salinan data satu anak, 30 §8) tidak diikat ke satu studi; unduhan lain tetap harus memilih studi (29 K16).
+   - Bagian 6 ← bagian 3: `scenario_failed` masuk `EventCatalog` (peneliti, hanya server, lembar `selesai`); percobaan skenario menyimpan `ready_ms`; lembar `percobaan` mendapat `action_key`, `action_score`, `reason_code`, `reason_ready_ms`, `action_last_input_ms`, `reason_last_input_ms` beserta label dan entri kamus; cerita penghubung sudah mengirim `dialogue_completed` dengan `context = scenario_open`. Skor dan kode pilihan skenario sudah ada di lembar `kode_pilihan`.
+2. **Penyimpangan bagian 3** (rincian di catatan implementasi): `ketua` melihat rincian penuh (`event`, `kode_pilihan`, kunci), `peneliti` tidak; akun `uji.*`, sekolah V01, dan siswa `sim_*` tidak masuk data penelitian kecuali tampilan satu siswa; `audio_pause` tidak lagi ditulis sebagai event; lembar `kode_pilihan` dibuat di bagian 3 dengan kolom `option_score`; templat L5 satu lembar `l5_wawancara`; L0 tanpa templat; `/responses` memakai `last_input_ms`, bukan `duration_ms`.
+3. **Penyimpangan bagian 4:** `checklist_json` disimpan sebagai TEXT (pembandingan bersyarat); daftar izin berkode berisi kode 1/0 dan kode status, bukan Ya/Tidak; batas atas masa simpan di formulir studi naik dari 3650 ke 36525 hari, dan server mengisi 7305 bila kosong untuk studi mode penelitian (menutup butir terbuka masa simpan); menu *Permintaan data* dan *Tindak lanjut* hanya tampil bila ada studi mode penelitian; teks T11/T12 sudah di berkas bahasa untuk bagian 8.
+4. **Penyimpangan bagian 6:** tantangan kelima dibuat `ContentSeeder` dan dinonaktifkan saat reset bila bank tanpa skenario; letaknya di peta wilayah ditebak (60 %, 22 %); urutan pilihan memakai `seeded_shuffle()` (sama dalam satu pengerjaan); pilihan skenario hanya bisa dibaca di panel dan disunting lewat workbook; centang nada (§9.4) disimpan sebagai `tone_checked` di audit persetujuan rekaman; 24 gambar situasi tidak diperkecil (1536 × 1024, mutu 82, total 2,3 MB) dan tidak masuk `data.json` (mengikuti `instr.*`); naskah 12 terpasang di `data/story.php` (112 baris; 187 baris narasi per bahasa).
+5. **Belum dicek:** semua cek manual 29 §16.3, 30 §19.3, dan 32 §15.3 butuh instalasi pengembangan MariaDB dan peramban; tidak ada yang dijalankan di sesi awan. Daftarnya di `docs/PROGRESS.md`.
+
+**Pertanyaan untuk pengembang.** (a) Letak tantangan kelima di tiga peta wilayah. (b) Gambar kartu `node-card-skenario.webp` dan latar `bg.cerita-layar-*` belum ada (game tetap jalan tanpa keduanya). (c) Panel perlu formulir sunting pilihan skenario, atau cukup workbook? (d) Formulir studi mengisi 7305 sendiri di peramban saat mode penelitian dicentang, atau cukup bawaan server? (e) Daftar izin berkode: kode 1/0 atau Ya/Tidak? (f) Akun `uji.*` diberi versi teks persetujuan? (g) Layar token untuk siswa yang mundur memakai kalimat sendiri, atau sama dengan `loginInactive`? (h) Templat L5 tiga lembar per berkas, atau satu lembar datar cukup? (i) L0 diberi templat kosong?
+
+Diubah: 04, 00 (gelombang E dan baris bagian 3, 4, 6), `docs/PROGRESS.md`, glosarium, `CLAUDE.md`, catatan implementasi (tiga bagian), dan kode serta tes ketiga bagian. Dokumen bernomor lain tidak diubah.
 
 ## 4 November 2026
 
