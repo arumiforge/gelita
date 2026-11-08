@@ -32,7 +32,9 @@ use RuntimeException;
  *   (MOCKUP_FILES): the Peta Kedu diorama becomes `map.kedu-diorama`, and the
  *   owner's framed Jaka avatar (Kenali package) becomes `ui.jaka-avatar`.
  *   Whole folders of slot-named pictures (MOCKUP_DIRS): the 24 Skenario
- *   Digital situation pictures `item.skenario.{item code}` (part 6).
+ *   Digital situation pictures `item.skenario.{item code}` (part 6), and
+ *   interim bridge-story backgrounds `bg.cerita-layar-{wilayah}-NN`, which
+ *   are installed as story slides like the entries below.
  * - Some entries also fill a second slot (COPY_SLOTS): `avatar.2` stays an
  *   avatar and is copied to the result screen medal `ui.result-medal`.
  * - App icons are converted to PNG, because the `app.*` slots take PNG only;
@@ -199,6 +201,8 @@ final class CatalogImporter
      */
     public const MOCKUP_DIRS = [
         'mockup/gambar-mockup/skenario/aset' => 'item.skenario.*',
+        // Interim bridge-story backgrounds (8 November 2026), installed like the bg.cerita-* entries of data.json
+        'mockup/gambar-mockup/cerita-layar/aset' => 'bg.cerita-layar-*',
     ];
 
     /** Lossy WebP quality for every stored image except the PNG app icons. */
@@ -335,6 +339,12 @@ final class CatalogImporter
                     $slot = basename($file, '.webp');
 
                     if (! fnmatch($pattern, $slot) || isset($byKey[$slot]) || ($only !== [] && ! $this->matches($slot, $only))) {
+                        continue;
+                    }
+
+                    if (preg_match('/^bg\.cerita-(' . implode('|', array_keys(self::REGION_STORY_CONTEXTS)) . ')-([a-z]+)-(\d+)$/', $slot, $m) === 1) {
+                        $this->installStory($slot, $file, self::REGION_STORY_CONTEXTS[$m[1]], $m[2], (int) $m[3], $dryRun, $overwrite);
+
                         continue;
                     }
 
