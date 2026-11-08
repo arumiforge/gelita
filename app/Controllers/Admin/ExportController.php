@@ -262,7 +262,9 @@ class ExportController extends BaseAdminController
         $writer->startSheet('izin', \App\Services\ConsentService::REGISTER_COLUMNS);
 
         foreach ($rows as $row) {
-            $writer->row(array_map(static fn (string $c): mixed => $row[$c] ?? null, \App\Services\ConsentService::REGISTER_COLUMNS));
+            $writer->row(array_map(static fn (string $c): mixed => in_array($c, \App\Services\ConsentService::REGISTER_YES_NO, true)
+                ? lang((int) ($row[$c] ?? 0) === 1 ? 'Admin.yes' : 'Admin.no')
+                : ($row[$c] ?? null), \App\Services\ConsentService::REGISTER_COLUMNS));
         }
 
         $sha  = $writer->finish();

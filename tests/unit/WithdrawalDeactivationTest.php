@@ -57,7 +57,8 @@ final class WithdrawalDeactivationTest extends CIUnitTestCase
         $this->assertSame('invalid', service('sessionService')->login('jaka5', 'salah-Kedu7!', 'id', [])['status'], 'a wrong password says nothing about the account');
 
         $participant = model(App\Models\ParticipantModel::class)->find(1);
-        $this->assertSame('inactive', service('fieldSessions')->checkToken('GHJKMN', $participant)['status']);
+        $this->assertSame('withdrawn', service('fieldSessions')->checkToken('GHJKMN', $participant)['status'], 'own text on the token screen (owner, 8 Nov 2026)');
+        $this->assertNotSame(lang('Game.loginInactive'), lang('Game.tokenWithdrawn'));
     }
 
     public function testRestoringTheStatusKeepsTheAccountOffUntilTheAdminTurnsItOn(): void

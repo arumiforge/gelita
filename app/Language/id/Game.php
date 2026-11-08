@@ -477,6 +477,7 @@ return [
     'assentLabelStudy'    => 'Aku mau ikut penelitian GELITA. Aku tahu jawabanku di permainan dan di soal dicatat dengan kodeku, bukan namaku. Aku boleh berhenti kapan saja.',
     'assentNameStudy'     => 'Persetujuan ikut penelitian',
     'assentRequiredStudy' => 'Centang dulu kalau kamu mau ikut, ya. Kalau tidak mau, tidak apa-apa. Bilang pelan-pelan ke kakak peneliti.',
+    'tokenWithdrawn'      => 'Kamu sudah memilih berhenti ikut penelitian GELITA, dan itu tidak apa-apa. Terima kasih sudah pernah ikut, ya. Kalau ada pertanyaan, bicara dengan kakak peneliti.',
     'loginInactive'       => 'Akun ini sudah tidak dipakai lagi. Kalau ada pertanyaan, bicara dengan kakak peneliti, ya.',
     // Part 4 (30 §5.4, 23 → T11, T12): texts for the test module's screens (part 8 builds the screens)
     'riskAskTitle'     => 'Beberapa pertanyaan tentang internet',

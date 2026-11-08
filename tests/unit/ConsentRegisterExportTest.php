@@ -54,6 +54,8 @@ final class ConsentRegisterExportTest extends CIUnitTestCase
         $this->assertStringContainsString('S03-A01', $xlsx);
         $this->assertStringContainsString('withdrawn_keep', $xlsx);
         $this->assertStringContainsString('t4-1', $xlsx);
+        $this->assertStringContainsString('>Ya<', $xlsx, 'consent flags as Ya/Tidak (owner, 8 Nov 2026)');
+        $this->assertStringContainsString('>Tidak<', $xlsx);
 
         foreach (['Jaka', 'jaka5', 'SD Lapangan', 'DEWI', 'dewi'] as $identity) {
             $this->assertStringNotContainsString($identity, $xlsx, $identity);

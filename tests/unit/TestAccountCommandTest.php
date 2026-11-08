@@ -59,6 +59,7 @@ final class TestAccountCommandTest extends CIUnitTestCase
         $this->assertSame('Sekolah Uji Validator', $school['name']);
         $account = $this->conn->table('participants')->where('username', 'uji.bahasa1')->get()->getRowArray();
         $this->assertSame([(int) $school['id'], 'A', 11], [(int) $account['school_id'], $account['rombel'], (int) $account['age']]);
+        $this->assertSame(\App\Services\ConsentService::ASSENT_STUDY, $account['assent_version'], 'research assent text (owner, 8 Nov 2026)');
         $this->assertSame(13, $this->conn->table('audit_logs')->where('action', 'test_account_created')->where('staff_user_id', null)->countAllResults());
 
         // Existing accounts are skipped

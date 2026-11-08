@@ -477,6 +477,7 @@ return [
     'assentLabelStudy'    => 'I want to take part in the GELITA study. I know my answers in the game and the questions are recorded with my code, not my name. I can stop at any time.',
     'assentNameStudy'     => 'Agreement to take part',
     'assentRequiredStudy' => "Tick the box first if you want to take part. If you don't want to, that's fine. Quietly tell a researcher.",
+    'tokenWithdrawn'      => "You chose to stop taking part in the GELITA study, and that's okay. Thank you for taking part. If you have a question, talk to a researcher.",
     'loginInactive'       => 'This account is no longer in use. If you have a question, talk to a researcher.',
     // Part 4 (30 §5.4, 23 → T11, T12): texts for the test module's screens (part 8 builds the screens)
     'riskAskTitle'     => 'A few questions about the internet',

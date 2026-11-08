@@ -97,6 +97,8 @@ class TestAccountService
                 'rombel'               => 'A',
                 'country_code'         => 'ID',
                 'assented_at'          => date('Y-m-d H:i:s'),
+                // The research assent text, as their consent row puts them in the study (owner, 8 November 2026)
+                'assent_version'       => ConsentService::ASSENT_STUDY,
             ], true);
 
             if ($id === false) {

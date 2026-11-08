@@ -305,6 +305,9 @@ class ConsentService
     }
 
     /** Columns of the consent register, in order (30 §10.1). */
+    /** Consent flags the register download shows as Ya/Tidak (owner, 8 November 2026); the `izin` research sheet keeps 1/0. */
+    public const REGISTER_YES_NO = ['recording_consent', 'risk_items_consent'];
+
     public const REGISTER_COLUMNS = [
         'participant_code', 'parent_consent_on', 'recording_consent', 'recording_withdrawn_on',
         'risk_items_consent', 'risk_items_withdrawn_on', 'assented_at', 'assent_version', 'status', 'status_on',
