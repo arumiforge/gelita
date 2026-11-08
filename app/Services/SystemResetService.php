@@ -32,8 +32,12 @@ use Config\Database;
  */
 class SystemResetService
 {
-    /** Migration terakhir yang wajib sudah dijalankan. */
-    public const REQUIRED_MIGRATION = '2026-01-01-003910';
+    /**
+     * Migration that must have run: the last of code wave E (part 6, 32 §11).
+     * Checked by its row in the history too, since 003900/003910 were
+     * numbered before 003600–003800 (part 3, 29 §12).
+     */
+    public const REQUIRED_MIGRATION = '2026-01-01-004000';
 
     /** Kata yang wajib diketik bila tanpa --ya. */
     public const CONFIRM_WORD = 'RESET-KELAS5';
@@ -47,6 +51,10 @@ class SystemResetService
         'data_exports', 'data_deletion_requests', 'audit_logs', 'ci_sessions',
         // research revision 10, part 2 (28 §14)
         'field_sessions', 'field_session_tokens', 'field_session_members', 'participant_seats', 'participant_code_counters',
+        // Part 3 (29 §12)
+        'field_sheet_imports', 'field_sheet_rows',
+        // Part 4 (30 §15)
+        'participant_consents',
     ];
 
     public const GROUP_B = ['hints', 'item_error_codes', 'scenario_options', 'post_parts', 'post_scenes', 'challenge_items', 'reading_passages', 'challenge_nodes'];
@@ -58,7 +66,10 @@ class SystemResetService
 
     /** Urutan pengosongan mengikuti FK: anak dulu. */
     public const CLEAR_ORDER = [
+        'field_sheet_rows', 'field_sheet_imports',   // part 3 (29 §12)
         'item_tries', 'item_responses', 'challenge_attempts', 'audio_usage_events', 'game_event_logs',
+        // Part 4 (30 §15): before participants
+        'participant_consents',
         'device_logs', 'participant_progress', 'participant_seats', 'field_session_members', 'field_session_tokens',
         'participant_feedback', 'game_sessions', 'field_sessions', 'participant_code_counters', 'participants',
         'data_exports', 'data_deletion_requests', 'audit_logs', 'hints', 'item_error_codes', 'scenario_options',
@@ -109,7 +120,10 @@ class SystemResetService
     {
         $latest = $this->latestMigration();
 
-        return $latest !== null && strcmp($latest, self::REQUIRED_MIGRATION) >= 0;
+        // The required version itself must be in the history: later numbers
+        // ran before it (003900 before 003600), so the highest says nothing.
+        return $latest !== null && strcmp($latest, self::REQUIRED_MIGRATION) >= 0
+            && $this->db->table('migrations')->where('version', self::REQUIRED_MIGRATION)->countAllResults() > 0;
     }
 
     /** Sesi `active` yang masih bergerak dalam 10 menit terakhir. */
@@ -211,6 +225,9 @@ class SystemResetService
         $bank = ! empty($options['tanpa_bank'])
             ? ['status' => 'skipped', 'message' => 'Bank soal tidak diimpor (--tanpa-bank).']
             : $this->importBank($options['bank'] ?? null);
+
+        // Part 6 (32 K8): without Skenario Digital in the bank, four challenges per region (12 shards)
+        $this->retireEmptyScenarioNodes();
 
         // 8. Gambar mockup (Dok 2 §10)
         $mockups = ! empty($options['tanpa_mockup'])
@@ -369,6 +386,22 @@ class SystemResetService
             'passages'   => $this->db->table('reading_passages')->where('is_active', 1)->countAllResults(),
             'clue_audio' => $clueAudio,
         ];
+    }
+
+    /**
+     * Part 6 (32 K8): the fifth challenge appears only when the imported bank
+     * holds its scenarios. A `skenario` node without an active item is set
+     * inactive, so the shard total stays the number of active nodes.
+     */
+    private function retireEmptyScenarioNodes(): void
+    {
+        foreach ($this->db->table('challenge_nodes')->select('id')->where('engine_type', 'skenario')->where('is_active', 1)->get()->getResultArray() as $node) {
+            $items = $this->db->table('challenge_items')->where('challenge_node_id', (int) $node['id'])->where('is_active', 1)->countAllResults();
+
+            if ($items === 0) {
+                $this->db->table('challenge_nodes')->where('id', (int) $node['id'])->update(['is_active' => 0]);
+            }
+        }
     }
 
     /** @return array<string, mixed> */

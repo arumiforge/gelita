@@ -14,7 +14,7 @@ final class RouteWiringTest extends CIUnitTestCase
 {
     private const CONTROLLER_COUNT = [
         'Game'  => 14,  // 13 controller (FieldTokenController: revision 10, part 2) + BaseGameController (AppController: manifest, display plan A3; PackageController: asset package Stage 3)
-        'Admin' => 19,  // 18 controller (FieldSessionController, MonitoringController: revision 10, part 2) + BaseAdminController (PackageController: asset package Stage 6)
+        'Admin' => 26,  // 25 controller (FieldSessionController, MonitoringController: revision 10, part 2; TechLog, FieldSheet: part 3; Consent, DataRequest, RiskFollowUp, ParticipantCopy, StudyClosure: part 4) + BaseAdminController (PackageController: asset package Stage 6)
         'Api'   => 11,  // 10 controller + BaseApiController (PackageApiController: asset package Stage 1)
     ];
 
@@ -192,8 +192,9 @@ final class RouteWiringTest extends CIUnitTestCase
         $this->assertFileDoesNotExist(FCPATH . 'assets/vendor/echarts.min.js');
 
         // Dok 3 §9–§10: tanpa laporan studi PDF, lembar olahan, dan metrik olahan
-        // The voice-actor script (17 October 2026) is the only PDF besides the participant report
-        $this->assertEqualsCanonicalizing(['report-participant.php', 'narration-script.php', '_style.php'], array_map('basename', glob(APPPATH . 'Views/pdf/*.php')));
+        // The voice-actor script (17 October 2026) is the only PDF besides the participant report;
+        // part 4 (30 §7.6, §8) adds the deletion minutes and one child's copy
+        $this->assertEqualsCanonicalizing(['report-participant.php', 'narration-script.php', '_style.php', 'deletion-minutes.php', 'participant-copy.php'], array_map('basename', glob(APPPATH . 'Views/pdf/*.php')));
         $this->assertFalse(method_exists(App\Services\AnalyticsService::class, 'digitalSecurityLiteracy'));
         $this->assertFalse(method_exists(App\Models\AudioUsageEventModel::class, 'usageStats'));
         $this->assertFalse(method_exists(App\Models\ParticipantModel::class, 'digitalSecurityStats'));
@@ -350,7 +351,7 @@ final class RouteWiringTest extends CIUnitTestCase
     {
         $engines = config('Gelita')->engineTypes;
 
-        $this->assertSame(['puzzle', 'rumpang', 'boleh', 'cari'], $engines);
+        $this->assertSame(['puzzle', 'rumpang', 'boleh', 'cari', 'skenario'], $engines);
 
         foreach ($engines as $engine) {
             $this->assertFileExists(APPPATH . 'Views/game/challenge/' . $engine . '.php');

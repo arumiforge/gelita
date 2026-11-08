@@ -2,6 +2,10 @@
 
 Diperbarui 15 Oktober 2026 (Asia/Bangkok). Urutan di bawah membedakan hasil terkini dari pemeriksaan historis. Keputusan aktif dirangkum dalam [MEMORY.md](MEMORY.md).
 
+## 4 November 2026 — Skenario Digital situation pictures (game integration)
+
+- The owner's 24 situation pictures of the fifth challenge (`docs/revisi-10-analitik/gambar/32a/`, PNG masters kept there) were converted to WebP (quality 82, 1536 × 1024) as [`mockup/gambar-mockup/skenario/`](../mockup/gambar-mockup/skenario/README.md), named after their game slots `item.skenario.{item code}`. `data.json` entries are unchanged; the build was not re-run; no other asset was regenerated.
+
 ## 20 October 2026 — Peta Kedu island map from the owner (game integration)
 
 - The owner's single-island picture replaces the revisi-04 three-island diorama in the game slot `map.kedu-diorama`: [revisi-05](../mockup/gambar-mockup/peta-kedu/revisi-05/README.md). The game's region masks were measured on it. The new GELITA logo from the owner replaces `assets/logo/ui.logo-hero.webp` (same 8:3 shape). `data.json` entries are unchanged; the build was not re-run.

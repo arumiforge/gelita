@@ -155,16 +155,16 @@ final class ItemTryWritesTest extends CIUnitTestCase
         $this->assertContains($decoy, $ids);
 
         // Petunjuk 1: salah ketuk jebakan dulu, lalu benar
-        $miss = $this->service->submitAnswer($attempt, $first, ['object' => $this->ref($attempt, $decoy)], ['duration_ms' => 1500]);
+        $miss = $this->service->submitAnswer($attempt, $first, ['object' => $this->ref($attempt, $decoy)], ['last_input_ms' => 1500]);
         $this->assertTrue($miss['wrong_click']);
         $this->assertSame(1, $miss['try_no']);
 
-        $hit = $this->service->submitAnswer($this->reload($attempt), $first, ['object' => $this->ref($attempt, $first)], ['duration_ms' => 2600]);
+        $hit = $this->service->submitAnswer($this->reload($attempt), $first, ['object' => $this->ref($attempt, $first)], ['last_input_ms' => 2600]);
         $this->assertTrue($hit['correct']);
         $this->assertSame(2, $hit['try_no']);
 
         // Petunjuk 2: langsung benar
-        $this->service->submitAnswer($this->reload($attempt), $second, ['object' => $this->ref($attempt, $second)], ['duration_ms' => 800]);
+        $this->service->submitAnswer($this->reload($attempt), $second, ['object' => $this->ref($attempt, $second)], ['last_input_ms' => 800]);
 
         $tries = $this->tries($attempt->id);
         $this->assertSame(

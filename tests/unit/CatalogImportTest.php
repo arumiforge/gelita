@@ -470,6 +470,71 @@ final class CatalogImportTest extends CIUnitTestCase
         $this->assertSame(['map.kedu-diorama'], $only);
     }
 
+    /**
+     * Part 6 (32 §7.5): the 24 Skenario Digital situation pictures come from a
+     * slot-named mockup folder and fill the item slots the bank names; the
+     * bridge story backgrounds `bg.cerita-layar-{region}-NN` reach their slides.
+     */
+    public function testScenarioPicturesAndBridgeBackgroundsAreInstalled(): void
+    {
+        $dir = $this->catalog . '/' . array_key_first(CatalogImporter::MOCKUP_DIRS);
+        mkdir($dir, 0777, true);
+        imagewebp(imagecreatetruecolor(1536, 1024), $dir . '/item.skenario.tmg-5-a01.webp', 82);
+        imagewebp(imagecreatetruecolor(64, 64), $dir . '/bukan-slot.webp', 82);
+
+        $levelId = (int) $this->sqlite->table('levels')->where('code', 'magelang')->get()->getRow('id');
+        $this->sqlite->table('dialogues')->insert(['level_id' => $levelId, 'context_code' => 'scenario_open', 'sequence' => 1, 'character_code' => 'jaka', 'text_id' => 'a', 'text_en' => 'a']);
+        $this->writeCatalog(['bg.cerita-layar-magelang-01' => ['latar/bg.cerita-layar-magelang-01.webp', 1920, 1080, false]]);
+
+        $report = array_column($this->importer()->run(), null, 'target');
+
+        $this->assertSame(['item.skenario.tmg-5-a01.webp', 'installed'], [$report['item.skenario.tmg-5-a01']['source'], $report['item.skenario.tmg-5-a01']['status']]);
+        $this->assertArrayNotHasKey('bukan-slot', $report, 'only slot-named pictures');
+
+        $media = model(MediaAssetModel::class)->findByKey('item.skenario.tmg-5-a01');
+        $item  = $this->sqlite->table('challenge_items')->where('item_key', 'tmg-5-a01')->get()->getRowArray();
+        $this->assertSame([1, (int) $media['id']], [(int) $media['is_active'], (int) $item['media_asset_id']], 'the slot the bank created for the item');
+        $this->assertSame(CatalogImporter::CREDIT, $media['credit']);
+
+        $bridge = model(MediaAssetModel::class)->findByKey('bg.story.scenario_open.magelang.1');
+        $this->assertNotNull($bridge);
+        $this->assertSame((int) $bridge['id'], (int) $this->sqlite->table('dialogues')->where(['level_id' => $levelId, 'context_code' => 'scenario_open'])->get()->getRow('background_media_id'));
+
+        // The 24 pictures ship in the catalogue, one per scenario item of the bank
+        $shipped = glob(dirname(APPPATH) . '/gelita-katalog/' . array_key_first(CatalogImporter::MOCKUP_DIRS) . '/item.skenario.*.webp') ?: [];
+        $items   = array_column($this->sqlite->table('challenge_items')->select('item_key')->where('interaction_type', 'scenario_choice')->get()->getResultArray(), 'item_key');
+        $this->assertCount(24, $shipped);
+        $this->assertEqualsCanonicalizing(array_map(static fn (string $k): string => 'item.skenario.' . $k . '.webp', $items), array_map('basename', $shipped));
+    }
+
+    /** Interim bridge backgrounds from the mockup folder reach their slide; a data.json entry with the same code wins (8 Nov 2026). */
+    public function testInterimBridgeBackgroundsFromTheMockupFolder(): void
+    {
+        $dir = $this->catalog . '/' . array_keys(CatalogImporter::MOCKUP_DIRS)[1];
+        mkdir($dir, 0777, true);
+        imagewebp(imagecreatetruecolor(1920, 1080), $dir . '/bg.cerita-layar-wonosobo-01.webp', 82);
+        imagewebp(imagecreatetruecolor(1920, 1080), $dir . '/bg.cerita-layar-magelang-01.webp', 82);
+
+        foreach (['wonosobo', 'magelang'] as $region) {
+            $levelId = (int) $this->sqlite->table('levels')->where('code', $region)->get()->getRow('id');
+            $this->sqlite->table('dialogues')->insert(['level_id' => $levelId, 'context_code' => 'scenario_open', 'sequence' => 1, 'character_code' => 'jaka', 'text_id' => 'a', 'text_en' => 'a']);
+        }
+
+        $this->writeCatalog(['bg.cerita-layar-magelang-01' => ['latar/bg.cerita-layar-magelang-01.webp', 1920, 1080, false]]);
+        $report = $this->importer()->run();
+        $sources = array_column(array_filter($report, static fn (array $r): bool => $r['target'] === 'bg.story.scenario_open.magelang.1'), 'source');
+
+        $media   = model(MediaAssetModel::class)->findByKey('bg.story.scenario_open.wonosobo.1');
+        $levelId = (int) $this->sqlite->table('levels')->where('code', 'wonosobo')->get()->getRow('id');
+        $this->assertNotNull($media);
+        $this->assertSame(CatalogImporter::CREDIT, $media['credit']);
+        $this->assertSame((int) $media['id'], (int) $this->sqlite->table('dialogues')->where(['level_id' => $levelId, 'context_code' => 'scenario_open'])->get()->getRow('background_media_id'));
+        $this->assertSame(['bg.cerita-layar-magelang-01'], array_values(array_unique($sources)), 'data.json wins over the mockup folder');
+
+        // The shipped interim set: six slides per region
+        $this->assertCount(18, glob(dirname(APPPATH) . '/gelita-katalog/' . array_keys(CatalogImporter::MOCKUP_DIRS)[1] . '/bg.cerita-layar-*.webp') ?: []);
+    }
+
     /** --kunci limits the run, and so --timpa, to the named slots. */
     public function testOnlyLimitsTheOverwriteToMatchingSlots(): void
     {

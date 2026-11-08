@@ -110,13 +110,16 @@ final class SimulationTest extends CIUnitTestCase
 
         $this->assertGreaterThanOrEqual(3, $this->conn->table('schools')->like('name', Simulator::SCHOOL_PREFIX, 'after')->countAllResults(), 'beberapa sekolah');
 
-        // Siswa pertama menuntaskan 12 tantangan (4 jenis × 3 wilayah); siswa ke-2 dan ke-3 belum selesai
+        // Siswa pertama menuntaskan 15 tantangan (5 jenis × 3 wilayah, Skenario Digital since part 6); siswa ke-2 dan ke-3 belum selesai
         $first = $this->attempts($this->sessionOf('sim_001'));
-        $this->assertSame(12, count(array_unique(array_column(array_filter($first, static fn (array $a): bool => $a['status'] === 'completed'), 'challenge_node_id'))));
+        $this->assertSame(15, count(array_unique(array_column(array_filter($first, static fn (array $a): bool => $a['status'] === 'completed'), 'challenge_node_id'))));
         $engines = $this->conn->table('challenge_attempts a')->select('n.engine_type, l.code')
             ->join('challenge_nodes n', 'n.id = a.challenge_node_id')->join('levels l', 'l.id = n.level_id')
             ->where('a.status', 'completed')->groupBy('n.engine_type, l.code')->get()->getResultArray();
-        $this->assertCount(12, $engines, 'keempat jenis tantangan di ketiga wilayah');
+        $this->assertCount(15, $engines, 'kelima jenis tantangan di ketiga wilayah');
+        // Part 6 (32 §15.2): scenario tries carry action and reason; the showcase closes one scenario after three tries
+        $this->assertGreaterThan(0, $this->conn->table('item_tries')->where('action_key IS NOT NULL', null, false)->where('reason_code IS NOT NULL', null, false)->countAllResults());
+        $this->assertGreaterThan(0, $this->conn->table('game_event_logs')->where('event_type', 'scenario_failed')->countAllResults());
         $this->assertSame('completed', $this->sessionStatus('sim_001'));
         $this->assertNotSame('completed', $this->sessionStatus('sim_002'));
         $this->assertNotSame('completed', $this->sessionStatus('sim_003'));
@@ -130,12 +133,16 @@ final class SimulationTest extends CIUnitTestCase
         $this->assertGreaterThan(0, $this->conn->table('item_responses')->where('solved_on_try', 1)->countAllResults(), 'benar sejak percobaan pertama');
         $this->assertGreaterThan(0, $this->conn->table('item_responses')->where('solved_on_try >', 1)->countAllResults(), 'salah lalu benar');
 
-        // GradeFiveWorld tidak berisi dialog dan halaman Pustaka: dialogue_advanced / library_page_viewed tidak diperiksa di sini
-        foreach (['hint_opened', 'wrong_target_clicked', 'clue_failed', 'challenge_tries_exhausted', 'answer_selected', 'screen_viewed',
+        // GradeFiveWorld tidak berisi dialog dan halaman Pustaka: dialogue_completed / library_page_viewed tidak diperiksa di sini
+        foreach (['hint_opened', 'wrong_target_clicked', 'clue_failed', 'challenge_tries_exhausted', 'answer_submitted', 'screen_viewed',
             'intro_completed', 'library_opened', 'reading_progress', 'feedback_submitted',
             'level_opened', 'overlay_opened', 'challenge_abandoned', 'session_started'] as $type) {
             $this->assertGreaterThan(0, $this->conn->table('game_event_logs')->where('event_type', $type)->countAllResults(), "event {$type}");
         }
+
+        // Removed types are never written (29 §5.1)
+        $this->assertSame(0, $this->conn->table('game_event_logs')->whereIn('event_type', array_keys(App\Libraries\EventCatalog::REMOVED))->countAllResults());
+        $this->assertGreaterThan(0, $this->conn->table('item_tries')->where('ready_ms IS NOT NULL', null, false)->countAllResults(), 'ready_ms for Benar atau Salah and Cari Objek');
 
         $this->assertSame(1, $this->conn->table('game_event_logs')->where('event_type', 'challenge_abandoned')->like('payload_json', 'pagehide')->countAllResults() > 0 ? 1 : 0, 'tab ditutup di tengah tantangan');
         $this->assertGreaterThan(0, $this->conn->table('participant_feedback')->countAllResults());

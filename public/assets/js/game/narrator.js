@@ -25,9 +25,9 @@
  * bila sakelar Otomatis menyala (preferensi Storage `narrationAuto`, bawaan
  * aktif) slide maju sendiri 1,2 detik setelah audio selesai. Slide tanpa
  * audio yang tersedia/disetujui tetap tampil sebagai teks dan dilanjutkan
- * manual. Setiap perpindahan mengirim `dialogue_advanced` { index, total,
- * context, character } — hanya di sini, jadi modul halaman (dialogue.js,
- * map.js) cukup memakai `onSlide` tanpa mengirim event sendiri.
+ * manual. Reaching the last slide sends `dialogue_completed` { context,
+ * total } (revision 10, part 3: 29 K5), only here, so the page modules
+ * (dialogue.js, map.js) just use `onSlide` and send no event of their own.
  *
  * `data-hash="0"`: slide tidak memakai hash URL (slides.js `hash: false`),
  * untuk beberapa pemutar dalam satu halaman (overlay Kenali di peta).
@@ -39,7 +39,7 @@
  * the root has `data-backdrop="stage"`.
  *
  * Swipe left/right on the player (touch and pen) does what the slide's
- * Lanjut/Kembali link does (game/slides.js), including `dialogue_advanced`.
+ * Lanjut/Kembali link does (game/slides.js), including `dialogue_completed`.
  *
  * Tanpa JavaScript slide tetap berpindah lewat #{prefix}{n} + CSS :target;
  * kartu ketuk dan kontrol tetap tersembunyi. Dengan prefers-reduced-motion:
@@ -101,13 +101,12 @@ export function initNarrator(root, { onFinish = null, onSlide = null } = {}) {
     // Swipe anywhere on the player except the "Ketuk untuk mulai" card (display plan F3.3)
     swipe: { area: root, ignore: '[data-narrator-tap]' },
     onChange: (index, slide, total) => {
-      emit('dialogue_advanced', {
-        levelId,
-        payload: { index, total, context, character: slide.dataset.character || null },
-      });
-      // Slide terakhir = narasi didengar sampai habis (lencana Kenali, analitik):
-      // send now, not on the event timer or by beacon when the page closes
-      if (index >= total) flush();
+      // One event when the last slide is reached (29 K5); other slides send nothing.
+      // Sent now, not on the event timer, so the map's "Belum didengar" badge sees it.
+      if (index >= total) {
+        emit('dialogue_completed', { levelId, payload: { context, total } });
+        flush();
+      }
       enter(slide);
       onSlide?.(index, slide, total);
     },

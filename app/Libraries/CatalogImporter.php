@@ -31,6 +31,10 @@ use RuntimeException;
  * - A few pictures live only in a catalogue mockup package, not in data.json
  *   (MOCKUP_FILES): the Peta Kedu diorama becomes `map.kedu-diorama`, and the
  *   owner's framed Jaka avatar (Kenali package) becomes `ui.jaka-avatar`.
+ *   Whole folders of slot-named pictures (MOCKUP_DIRS): the 24 Skenario
+ *   Digital situation pictures `item.skenario.{item code}` (part 6), and
+ *   interim bridge-story backgrounds `bg.cerita-layar-{wilayah}-NN`, which
+ *   are installed as story slides like the entries below.
  * - Some entries also fill a second slot (COPY_SLOTS): `avatar.2` stays an
  *   avatar and is copied to the result screen medal `ui.result-medal`.
  * - App icons are converted to PNG, because the `app.*` slots take PNG only;
@@ -40,7 +44,8 @@ use RuntimeException;
  *   become `bg.story.{intro|ending}.{n}` and are linked to their slide.
  *   Region slides use the narration words: `bg.cerita-kenal-{wilayah}-NN`
  *   (region_intro), `bg.cerita-dialog-{wilayah}-NN` (level_open), and
- *   `bg.cerita-tuntas-{wilayah}-NN` (level_done) become
+ *   `bg.cerita-tuntas-{wilayah}-NN` (level_done), and since part 6
+ *   `bg.cerita-layar-{wilayah}-NN` (scenario_open, 32 §7.5) become
  *   `bg.story.{context}.{wilayah}.{n}`. A picture for a slide the script
  *   does not have is skipped.
  * - Library images `library.{wilayah}.p{n}.{i}` are linked to media `i` of
@@ -188,6 +193,18 @@ final class CatalogImporter
         'mockup/gambar-mockup/kenali/aset/ui.jaka-avatar.webp'                   => 'ui.jaka-avatar',
     ];
 
+    /**
+     * Folders of a catalogue mockup package whose pictures are named after
+     * their slot (`{slot}.webp`) → the slot pattern they may fill. Part 6
+     * (32 §7.5): the 24 Skenario Digital situation pictures fill the item
+     * slots the question bank names (`item.skenario.{item code}`).
+     */
+    public const MOCKUP_DIRS = [
+        'mockup/gambar-mockup/skenario/aset' => 'item.skenario.*',
+        // Interim bridge-story backgrounds (8 November 2026), installed like the bg.cerita-* entries of data.json
+        'mockup/gambar-mockup/cerita-layar/aset' => 'bg.cerita-layar-*',
+    ];
+
     /** Lossy WebP quality for every stored image except the PNG app icons. */
     public const WEBP_QUALITY = 82;
 
@@ -196,6 +213,8 @@ final class CatalogImporter
         'kenal'  => 'region_intro',
         'dialog' => 'level_open',
         'tuntas' => 'level_done',
+        // Part 6 (32 §7.5): the bridge story before the fifth challenge
+        'layar'  => 'scenario_open',
     ];
 
     /** Background of app icons without transparency (--navy-900). */
@@ -314,6 +333,24 @@ final class CatalogImporter
                     $this->installSlot(basename($path), $slot, fn (): ?string => $this->webp($file, $slot), $dryRun, $overwrite);
                 }
             }
+
+            foreach (self::MOCKUP_DIRS as $dir => $pattern) {
+                foreach (glob(rtrim($this->root, '/\\') . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $dir) . DIRECTORY_SEPARATOR . '*.webp') ?: [] as $file) {
+                    $slot = basename($file, '.webp');
+
+                    if (! fnmatch($pattern, $slot) || isset($byKey[$slot]) || ($only !== [] && ! $this->matches($slot, $only))) {
+                        continue;
+                    }
+
+                    if (preg_match('/^bg\.cerita-(' . implode('|', array_keys(self::REGION_STORY_CONTEXTS)) . ')-([a-z]+)-(\d+)$/', $slot, $m) === 1) {
+                        $this->installStory($slot, $file, self::REGION_STORY_CONTEXTS[$m[1]], $m[2], (int) $m[3], $dryRun, $overwrite);
+
+                        continue;
+                    }
+
+                    $this->installSlot(basename($file), $slot, fn (): ?string => $this->webp($file, $slot), $dryRun, $overwrite);
+                }
+            }
         } finally {
             foreach ($this->temp as $file) {
                 @unlink($file);
@@ -393,7 +430,7 @@ final class CatalogImporter
             return;
         }
 
-        if (preg_match('/^bg\.cerita-(kenal|dialog|tuntas)-([a-z]+)-(\d+)$/', $key, $m) === 1) {
+        if (preg_match('/^bg\.cerita-(' . implode('|', array_keys(self::REGION_STORY_CONTEXTS)) . ')-([a-z]+)-(\d+)$/', $key, $m) === 1) {
             $this->installStory($key, $entry['file'], self::REGION_STORY_CONTEXTS[$m[1]], $m[2], (int) $m[3], $dryRun, $overwrite);
 
             return;

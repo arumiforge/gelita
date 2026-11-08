@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Libraries\ExcelWriter;
 use App\Libraries\ExportLabels;
+use App\Libraries\ResearchDictionary;
 use App\Libraries\StaffAccess;
 use App\Models\AuditLogModel;
 use App\Models\DataExportModel;
@@ -19,27 +20,31 @@ use CodeIgniter\Database\BaseConnection;
  * kolom, mode nilai (berlabel/berkode), dan menulis berkas.
  *
  * Lapis ketiga otorisasi: hak pemohon dibaca ulang dari `staff_users`,
- * bukan dari isi formulir (`context()` → StaffScope). Pemohon non-admin
- * selalu dibatasi sekolahnya (tanpa sekolah → 0, tidak cocok apa pun),
- * selalu anonim, tanpa lembar `event` dan tanpa kolom `answer_key`.
+ * bukan dari isi formulir (`context()` → StaffScope). Only `ketua`
+ * (`research.export`) downloads, always coded, with the `event` and
+ * `kode_pilihan` sheets and the answer key (29 K1).
+ *
+ * Revision 10, part 3 (29 §7–§9): every download belongs to one study
+ * (`study_id` required, K16, field mode on or off); the Kamus Data sheet
+ * reads ResearchDictionary and starts with a file header; the row of
+ * data_exports keeps `dictionary_version` and `participant_count` (the
+ * students of the `peserta` sheet under the same filters, for part 4).
  */
 class ExportService
 {
-    /** Urutan resmi lembar (§9.2). `kamus` selalu ikut. */
-    public const SHEETS = [
-        'kamus', 'peserta', 'sesi', 'perangkat', 'progres', 'pengerjaan', 'jawaban', 'percobaan',
-        'navigasi', 'bantuan', 'selesai', 'event', 'masukan', 'butir',
-    ];
+    /** Official sheet order (29 §7.2): `kamus` first and always, then RawDataService::DIMENSIONS. */
+    public const SHEETS = ['kamus', ...RawDataService::DIMENSIONS];
 
-    public const ADMIN_ONLY_SHEETS = RawDataService::ADMIN_ONLY_DIMENSIONS;
+    public const FULL_DETAIL_SHEETS = RawDataService::FULL_DETAIL_DIMENSIONS;
 
     public const IDENTITY_COLUMNS = RawDataService::IDENTITY_COLUMNS;
 
-    public const ADMIN_ONLY_COLUMNS = RawDataService::ADMIN_ONLY_COLUMNS;
+    public const FULL_DETAIL_COLUMNS = RawDataService::FULL_DETAIL_COLUMNS;
 
-    /** Kunci filter yang diterima dari formulir / scope_json (§9.2). */
+    /** Kunci filter yang diterima dari formulir / scope_json (29 §7.1). */
     public const FILTER_KEYS = [
-        'study_id', 'level_id', 'node_id', 'school_id', 'province_code', 'locale', 'date_from', 'date_to',
+        'study_id', 'level_id', 'node_id', 'school_id', 'locale', 'date_from', 'date_to',
+        'field_session_code', 'meeting_no',
     ];
 
     /** `data_exports.format`: xlsx = workbook, csv = CSV-ZIP, pdf = laporan satu siswa. */
@@ -48,7 +53,7 @@ class ExportService
     /** Lembar yang jumlah barisnya dibatasi `Config\Gelita::$exportMaxRawEvents`. */
     public const EVENT_SHEETS = ['event', 'navigasi', 'selesai'];
 
-    private const DICTIONARY_COLUMNS = ['lembar', 'kolom', 'judul', 'arti', 'satuan', 'nilai'];
+    private const DICTIONARY_COLUMNS = ['lembar', 'kolom', 'judul', 'arti', 'satuan', 'nilai', 'nama_kamus', 'analitik', 'rujukan_kamus'];
 
     /**
      * Membangun berkas untuk satu baris data_exports berstatus queued/running.
@@ -78,7 +83,11 @@ class ExportService
                 $exports->update($exportId, ['anonymized' => $context['anonymized'] ? 1 : 0]);
             }
 
-            $exports->update($exportId, ['status' => 'running']);
+            $exports->update($exportId, [
+                'status'             => 'running',
+                'dictionary_version' => ResearchDictionary::VERSION,
+                'participant_count'  => $this->participantCount($context),
+            ]);
 
             $path = $this->targetPath($exportId, (string) $export['format']);
 
@@ -133,7 +142,7 @@ class ExportService
      */
     public function allowedSheets(array $requested, bool $fullDetail): array
     {
-        $allowed = $fullDetail ? self::SHEETS : array_values(array_diff(self::SHEETS, self::ADMIN_ONLY_SHEETS));
+        $allowed = $fullDetail ? self::SHEETS : array_values(array_diff(self::SHEETS, self::FULL_DETAIL_SHEETS));
         $picked  = array_values(array_intersect($allowed, array_map('strval', $requested)));
 
         if ($picked === [] || $picked === ['kamus']) {
@@ -189,6 +198,11 @@ class ExportService
         $format        = (string) $export['format'];
         $participantId = (int) ($json['participant_id'] ?? 0);
         $filters       = $this->sanitizeFilters((array) ($json['filters'] ?? []));
+
+        // One study per download, field mode on or off (29 K16); a one-student export (one child's copy, 30 §8) covers all the child's studies
+        if ($format !== 'pdf' && $participantId === 0 && ! isset($filters['study_id'])) {
+            throw new \DomainException(lang('Admin.exportNeedsStudy'));
+        }
 
         // Ekspor per siswa (§9.3): lembar yang sama, difilter satu peserta
         if ($participantId > 0) {
@@ -355,7 +369,7 @@ class ExportService
                 $columns[$other] = $this->columns($other, $context['anonymized'], $context['full_detail']);
             }
 
-            return ExportLabels::dictionary($columns);
+            return ExportLabels::dictionary($columns, $this->dictionaryHead($context));
         }
 
         return $this->rawData()->rows($sheet, $context['filters'], $context['scope'], $context['labeled']);
@@ -382,6 +396,50 @@ class ExportService
                 ));
             }
         }
+    }
+
+    /**
+     * File header of the Kamus Data sheet (29 §8): dictionary version, time
+     * of the download (WIB), study, filters, and where the full definitions are.
+     *
+     * @param array<string, mixed> $context
+     *
+     * @return list<array{0: string, 1: string}>
+     */
+    public function dictionaryHead(array $context): array
+    {
+        $filters = $context['filters'];
+        $study   = isset($filters['study_id'])
+            ? $this->db()->table('research_studies')->select('code')->where('id', (int) $filters['study_id'])->get()->getRowArray()
+            : null;
+        $shown   = [];
+
+        foreach (array_diff_key($filters, ['study_id' => 1]) as $key => $value) {
+            $shown[] = $key . '=' . $value;
+        }
+
+        return [
+            ['Versi kamus', ResearchDictionary::VERSION],
+            ['Diunduh', (string) RawDataService::isoTime(date('Y-m-d H:i:s'))],
+            ['Kode penelitian', (string) ($study['code'] ?? '')],
+            ['Filter', $shown === [] ? 'tanpa filter' : implode('; ', $shown)],
+            ['Definisi lengkap', ResearchDictionary::DOC . ', versi yang sama'],
+        ];
+    }
+
+    /**
+     * Students in this download: the `peserta` sheet under the same filters
+     * (29 §9; part 4 finds the downloads that may hold one child's data).
+     *
+     * @param array<string, mixed> $context
+     */
+    public function participantCount(array $context): ?int
+    {
+        if ($context['format'] === 'pdf') {
+            return $context['participant_id'] === null ? null : 1;
+        }
+
+        return $this->rawData()->count('peserta', $context['filters'], $context['scope']);
     }
 
     /** writable/exports/{id}-{timestamp}.{xlsx|zip|pdf} — di luar public/. */
@@ -430,6 +488,43 @@ class ExportService
                 'metadata'      => ['export_ids' => $removed],
             ]);
         }
+
+        return $removed;
+    }
+
+    /**
+     * Part 4 (30 §7.4): a parent's request purges every download file still on
+     * the server that was made since the student registered ($since). The row
+     * stays, with `file_path` empty and `purged_by_request_id` set.
+     *
+     * @return list<int> export ids purged
+     */
+    public function purgeForRequest(int $requestId, string $since, ?int $staffId = null): array
+    {
+        $exports = model(DataExportModel::class);
+        $removed = [];
+
+        foreach ($exports->where('file_path IS NOT NULL')->where('file_path !=', '')->where('created_at >=', $since)->findAll() as $export) {
+            $path = (string) $export['file_path'];
+
+            if (is_file($path) && $this->isInsideExportDir($path)) {
+                unlink($path);
+            }
+
+            $exports->update((int) $export['id'], [
+                'file_path'            => null,
+                'purged_by_request_id' => $requestId,
+                'error_message'        => 'Berkas sudah dihapus karena permintaan hapus data orang tua.',
+            ]);
+            $removed[] = (int) $export['id'];
+        }
+
+        model(AuditLogModel::class)->record('export_purge', [
+            'staff_user_id' => $staffId,
+            'target_type'   => 'data_deletion_request',
+            'target_id'     => (string) $requestId,
+            'metadata'      => ['export_ids' => $removed, 'request_id' => $requestId],
+        ]);
 
         return $removed;
     }

@@ -94,6 +94,14 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | beban permukaan | `surface load` | `challenge_items.surface_json` (`SurfaceLoad`: `gap_count`, `passage_words`, `tap_min_dp`, …), frozen at import |
 | label pengembang / label ahli | `label source` | `akm_level_source`, `bloom_level_source` = `developer` or `expert`; workbook column `label_source` |
 | Skenario Digital (data) | `scenario`, `scenario_choice` | item type `scenario_choice`, table `scenario_options` (actions with score, reasons); engine `skenario` is part 6's |
+| Skenario Digital (tantangan kelima) | `skenario` engine | engine `skenario`, item `scenario_choice`, route `/tantangan/{wilayah}/5`; `engines/skenario.js`, `ChallengeService::submitScenario()` (revision 10, part 6: 32, since 8 Nov 2026) |
+| tindakan, alasan (skenario) | `action`, `reason` | `item_tries.action_key`, `action_score` (2 aman, 1 sebagian, 0 berisiko), `reason_key`, `reason_code` |
+| kesempatan per soal | `tries per item` | `ChallengeNode::triesPerItem()`: three tries per scenario, not per challenge |
+| cerita penghubung | `bridge story` | context `scenario_open`, route `/penghubung/{wilayah}` (`DialogueController::bridge`), recordings `layar-{wilayah}-NN`, catalogue `bg.cerita-layar-{wilayah}-NN`; once per student and study (`scenarioGate()`) |
+| narasi instruksi | `instruction narration` | context `challenge_instruction`, `challenge_nodes.audio_instruction_id`/`_en_id`, recordings `instruksi-{node}`; plays only through ▶ |
+| situasi (skenario) | `situation` | context `scenario_situation`, recordings `skenario-{item}`; picture slot `item.skenario.{item}` (`CatalogImporter::MOCKUP_DIRS`, catalogue `mockup/gambar-mockup/skenario/`) |
+| rekaman petunjuk Periksa Unggahan | `post clue recording` | context `post_clue`, recordings `unggahan-{item}` |
+| skenario ditutup (kesempatan habis) | `scenario_failed` | server-only event, `EventCatalog::SERVER_ONLY` |
 
 ## People, data, and the panel
 
@@ -138,5 +146,23 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | kemajuan siswa | `participant progress` | `participant_progress` per student and study (replaced `session_progress`, migration `003500`) |
 | Pemantauan | `monitoring panel` | route `/admin/pemantauan`, `GET /api/admin/monitoring`; capability `monitoring.view` (admin: numbers only) |
 | akun uji | `test account` | `uji.*` accounts, command `gelita:uji:akun`, school `V01` |
+| katalog event | `event catalog` | `App\Libraries\EventCatalog` (`RESEARCH`, `ADMIN`, `REMOVED`, `SERVER_ONLY`); `dialogue_completed` replaced `dialogue_advanced`, `answer_changed` merged into `answer_submitted` (revision 10, part 3: 29) |
+| Log teknis | `tech log` | route `/admin/log-teknis`, `TechLogService`, capability `tech_logs.view` (admin) |
+| Kamus Data (lembar unduhan) | `data dictionary` | `ResearchDictionary` (`kamus-1.0`), `data_exports.dictionary_version` |
+| riwayat unduhan | `download history` | audit `export_download`, `data_exports.participant_count` |
+| lembar lapangan (diketik) | `field sheet` | `FieldSheetSpec` (`lembar-1.0`), `field_sheet_imports`, `field_sheet_rows`; route `/admin/sesi-lapangan/{id}/lembar`; command `gelita:lembar:templat` |
+| ketikan kedua | `check entry` | `field_sheet_imports.purpose` = `check` (first typing `main`) |
+| izin berkode per siswa | `consent register` | `participant_consents`; route `/admin/sesi-lapangan/{id}/izin`; download `/admin/ekspor/izin`; sheet `izin` in the main download (ketua only) (revision 10, part 4: 30) |
+| status izin | `consent status` | stored `active`, `left`, `withdrawn_keep`, `withdrawn_delete` |
+| akun nonaktif | `deactivated` | `participants.deactivated_at`; login and token refuse it (`Game.loginInactive`) |
+| versi teks persetujuan | `assent version` | `participants.assent_version` (`t4-1`, `umum-1`) |
+| permintaan data (orang tua) | `data request` | `data_deletion_requests.kind` = `all`, `risk_items`, `recording`; route `/admin/permintaan-data`; `DataRequestService` |
+| berita acara | `deletion minutes` | `/admin/permintaan-data/{id}/berita-acara` (PDF) |
+| penanda tindak lanjut | `risk follow-up flag` | `RiskFollowUpService`, rule `tl-1`, never stored; route `/admin/tindak-lanjut` |
+| salinan data satu anak | `participant copy` | `ParticipantCopyService`, route `/admin/peserta/salinan` (ketua) |
+| pembetulan data pendaftaran | `registration correction` | `participants.corrected_at` |
+| ganti nama dengan kode (penutupan studi) | `identity replacement` | `StudyClosureService`, confirm word `GANTI` |
+| cadangan diganti | `backup replacement` | `deploy/linux/backup.sh --ganti`, `deploy/windows/backup.ps1 -Ganti` |
+| IP berhash di sesi peramban | `hashed IP session` | `HashedIpSessionHandler`, switch `gelita.researchPrivacy` (off by default) |
 
 Add a row whenever a new concept appears. If a term here conflicts with existing code, the existing stored value wins and the table gets corrected.

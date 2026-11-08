@@ -98,6 +98,8 @@ class RegisterController extends BaseController
 
         if ($n === 3) {
             $data['passwordPolicy'] = (new PasswordPolicy())->toClient();
+            // Part 4 (30 §5.1): the research assent text in field mode
+            $data['assentSuffix'] = $this->assentSuffix();
         }
 
         return view('game/register/step-' . $n, $data);
@@ -207,6 +209,12 @@ class RegisterController extends BaseController
     private function fieldMode(): bool
     {
         return service('fieldSessions')->fieldModeOn();
+    }
+
+    /** `Study` for the research assent keys (field mode), else '' (30 §5.1). */
+    private function assentSuffix(): string
+    {
+        return $this->fieldMode() ? 'Study' : '';
     }
 
     /**
@@ -424,7 +432,7 @@ class RegisterController extends BaseController
             'username'         => 'Auth.username',
             'password'         => 'Auth.password',
             'password_confirm' => 'Auth.passwordRepeat',
-            'assent'           => 'Game.assentLabel',
+            'assent'           => 'Game.assentLabel' . $this->assentSuffix(),
             'locale'           => 'Game.language',
         ];
 
@@ -488,8 +496,8 @@ class RegisterController extends BaseController
                 'matches' => lang('Auth.notMatch'),
             ],
             'assent' => [
-                'required' => lang('Game.assentRequired'),
-                'in_list'  => lang('Game.assentRequired'),
+                'required' => lang('Game.assentRequired' . $this->assentSuffix()),
+                'in_list'  => lang('Game.assentRequired' . $this->assentSuffix()),
             ],
         ];
     }

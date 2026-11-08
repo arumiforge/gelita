@@ -113,6 +113,8 @@ class SessionService
                     : null,
                 'pw_weak_submit_count' => max(0, (int) ($metrics['weak_submit_count'] ?? 0)),
                 'assented_at'          => date('Y-m-d H:i:s'),
+                // Part 4 (30 §5.1): which assent text was ticked
+                'assent_version'       => $fieldSession === null ? ConsentService::ASSENT_GENERAL : ConsentService::ASSENT_STUDY,
             ], true);
 
             if ($participantId === false) {
@@ -123,6 +125,9 @@ class SessionService
 
             if ($fieldSession === null) {
                 $participants->assignCode($participantId);
+            } else {
+                // Part 4 (30 §5.2): the consent row with its defaults, in the same transaction
+                service('consentService')->createRow($participantId, (int) $study['id']);
             }
 
             $device  = (array) ($input['device'] ?? []);
@@ -203,6 +208,11 @@ class SessionService
 
         $participants->clearFailedLogin($participant->id);
         $participant = $participants->find($participant->id);
+
+        // Part 4 (30 §5.3): a withdrawn student's account is closed; told only after the right password
+        if ($participant->isDeactivated()) {
+            return ['status' => 'inactive', 'session' => null, 'participant' => null];
+        }
 
         if ($participant->mustChangePassword()) {
             $this->bindPhpSession($participant->id, null);

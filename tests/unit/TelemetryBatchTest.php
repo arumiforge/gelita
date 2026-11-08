@@ -303,7 +303,7 @@ final class TelemetryBatchTest extends CIUnitTestCase
         // A later batch continues from the stored maximum per asset
         $this->service()->recordAudioBatch($this->session(), [
             $this->audio('p-8', $b, 'play'),
-            $this->audio('p-9', $a, 'pause'),
+            ['occurred_at' => $this->iso(-20_000)] + $this->audio('p-9', $a, 'pause'),
         ]);
 
         $rows = $this->conn->table('audio_usage_events')->orderBy('id')->get()->getResultArray();
@@ -322,12 +322,13 @@ final class TelemetryBatchTest extends CIUnitTestCase
             array_map(static fn (array $r): array => [(int) $r['audio_asset_id'], $r['action'], (int) $r['play_index']], $rows),
         );
 
-        // Raw events keep batch order in sequence_no, after the server's next number
-        $sequence = array_map('intval', array_column(
-            $this->conn->table('game_event_logs')->like('client_event_id', 'p-', 'after')->orderBy('id')->get()->getResultArray(),
-            'sequence_no',
-        ));
-        $this->assertSame(range($sequence[0], $sequence[0] + 8), $sequence);
+        // Raw events keep batch order in sequence_no, after the server's next number;
+        // `pause` writes no raw event since revision 10, part 3 (29 K6)
+        $events = $this->conn->table('game_event_logs')->like('client_event_id', 'p-', 'after')->orderBy('id')->get()->getResultArray();
+        $this->assertSame(['p-2', 'p-3', 'p-5', 'p-6', 'p-7', 'p-8'], array_column($events, 'client_event_id'));
+        $sequence = array_map('intval', array_column($events, 'sequence_no'));
+        $this->assertSame(range($sequence[0], $sequence[0] + 5), $sequence);
+        $this->assertSame(0, $this->conn->table('game_event_logs')->where('event_type', 'audio_pause')->countAllResults());
     }
 
     public function testAttemptCounterAndRejectedReasons(): void

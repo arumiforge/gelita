@@ -70,7 +70,7 @@ $status = [
     <tr>
       <td><?= esc($time($d['created_at'])) ?></td>
       <td><?= esc($d['via']) ?></td>
-      <td><?= esc(implode(' ', array_filter([$d['device_type'], $d['device_brand'], $d['device_model']]))) ?: '—' ?></td>
+      <td><?= esc((string) ($d['device_type'] ?? '')) ?: '—' ?></td>
       <td><?= esc(trim($d['os_name'] . ' ' . $d['os_version'])) ?: '—' ?></td>
       <td><?= esc(trim($d['browser_name'] . ' ' . $d['browser_version'])) ?: '—' ?></td>
       <td><?= esc($d['screen_w'] === null ? '—' : $d['screen_w'] . ' × ' . $d['screen_h']) ?></td>

@@ -16,7 +16,7 @@ class GelitaRules
     /** Event type yang boleh ditulis */
     public function valid_event_type(?string $str): bool
     {
-        return in_array((string) $str, config('Gelita')->eventTypes, true);
+        return in_array((string) $str, \App\Libraries\EventCatalog::accepted(), true);
     }
 
     /** Locale yang didukung */

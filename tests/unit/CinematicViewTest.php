@@ -336,7 +336,7 @@ final class CinematicViewTest extends CIUnitTestCase
     public function testAutoplayIsItsOwnAudioAction(): void
     {
         $this->assertContains('autoplay', App\Models\AudioUsageEventModel::ACTIONS);
-        $this->assertContains('audio_autoplay', config('Gelita')->eventTypes);
+        $this->assertContains('audio_autoplay', App\Libraries\EventCatalog::accepted());
 
         $model = (string) file_get_contents(APPPATH . 'Models/AudioUsageEventModel.php');
         $this->assertStringContainsString('in_list[play,autoplay,pause,replay,complete]', $model);

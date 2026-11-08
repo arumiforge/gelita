@@ -8,7 +8,7 @@ use Config\Database;
 
 /**
  * Skema lengkap GELITA (app/Database/Migrations) untuk SQLite
- * (grup `tests`): 40 tabel dengan kolom, nilai bawaan, kunci utama, dan kunci
+ * (grup `tests`): 41 tabel dengan kolom, nilai bawaan, kunci utama, dan kunci
  * unik yang sama dengan MySQL/MariaDB. Indeks biasa dan FK tidak ikut.
  * Dipakai uji reset total (SystemResetTest), pendaftaran bertahap
  * (RegisterWizardTest), dan penulisan item_tries (ItemTryWritesTest).
@@ -164,6 +164,8 @@ trait ResetTables
             'scene_media_id'      => 'INTEGER?',
             'audio_intro_id'      => 'INTEGER?',
             'audio_intro_en_id'   => 'INTEGER?',
+            'audio_instruction_id'    => 'INTEGER?',
+            'audio_instruction_en_id' => 'INTEGER?',
             'config_json'         => 'TEXT?',
             'map_x'               => 'DECIMAL(5,2)=50.00',
             'map_y'               => 'DECIMAL(5,2)=50.00',
@@ -191,6 +193,16 @@ trait ResetTables
             'approved_by'    => 'INTEGER?',
             'executed_at'    => 'DATETIME?',
             'created_at'     => 'DATETIME=CURRENT_TIMESTAMP',
+            // Part 4 (30 §15): parents' data requests
+            'kind'             => 'VARCHAR(20)?',
+            'participant_code' => 'VARCHAR(40)?',
+            'received_at'      => 'DATETIME?',
+            'verified_at'      => 'DATETIME?',
+            'received_via'     => 'VARCHAR(10)?',
+            'confirmed_by'     => 'INTEGER?',
+            'confirmed_at'     => 'DATETIME?',
+            'completed_at'     => 'DATETIME?',
+            'checklist_json'   => 'TEXT?',
         ],
         'data_exports' => [
             'id'            => 'pk',
@@ -207,34 +219,30 @@ trait ResetTables
             'created_at'    => 'DATETIME=CURRENT_TIMESTAMP',
             'completed_at'  => 'DATETIME?',
             'expires_at'    => 'DATETIME?',
+            // part 3 (29 §12)
+            'dictionary_version' => 'VARCHAR(20)?',
+            'participant_count'  => 'INTEGER?',
+            // Part 4 (30 §7.4)
+            'purged_by_request_id' => 'INTEGER?',
         ],
         'device_logs' => [
             'id'                => 'pk',
             'session_id'        => 'INTEGER',
             'participant_id'    => 'INTEGER',
             'via'               => 'VARCHAR(20)',
-            'user_agent'        => 'VARCHAR(512)?',
             'device_type'       => 'VARCHAR(30)?',
-            'device_brand'      => 'VARCHAR(60)?',
-            'device_model'      => 'VARCHAR(100)?',
             'os_name'           => 'VARCHAR(60)?',
             'os_version'        => 'VARCHAR(40)?',
-            'os_platform'       => 'VARCHAR(20)?',
             'browser_name'      => 'VARCHAR(60)?',
             'browser_version'   => 'VARCHAR(40)?',
             'browser_engine'    => 'VARCHAR(40)?',
             'is_bot'            => 'INTEGER=0',
-            'client_hints_json' => 'TEXT?',
             'screen_w'          => 'INTEGER?',
             'screen_h'          => 'INTEGER?',
             'viewport_w'        => 'INTEGER?',
             'viewport_h'        => 'INTEGER?',
-            'pixel_ratio'       => 'DECIMAL(4,2)?',
-            'touch_points'      => 'INTEGER?',
             'orientation'       => 'VARCHAR(20)?',
             'is_standalone'     => 'INTEGER?',
-            'language'          => 'VARCHAR(20)?',
-            'timezone'          => 'VARCHAR(60)?',
             'corrected'         => 'VARCHAR(40)?',
             'detector'          => 'VARCHAR(40)?',
             'ip_hash'           => 'VARCHAR(64)?',
@@ -257,6 +265,32 @@ trait ResetTables
             'background_media_id' => 'INTEGER?',
             'is_active'           => 'INTEGER=1',
             '_unique'             => [['level_id', 'context_code', 'sequence']],
+        ],
+        // Part 3 (29 §12): typed field sheets
+        'field_sheet_imports' => [
+            'id'               => 'pk',
+            'field_session_id' => 'INTEGER',
+            'sheet'            => 'VARCHAR(30)',
+            'spec_version'     => 'VARCHAR(20)',
+            'purpose'          => 'VARCHAR(10)=main',
+            'file_sha256'      => 'VARCHAR(64)',
+            'row_count'        => 'INTEGER=0',
+            'warning_count'    => 'INTEGER=0',
+            'names_confirmed'  => 'INTEGER=0',
+            'uploaded_by'      => 'INTEGER?',
+            'created_at'       => 'DATETIME=CURRENT_TIMESTAMP',
+            'superseded_at'    => 'DATETIME?',
+            'superseded_by'    => 'INTEGER?',
+        ],
+        'field_sheet_rows' => [
+            'id'             => 'pk',
+            'import_id'      => 'INTEGER',
+            'row_no'         => 'INTEGER',
+            'participant_id' => 'INTEGER?',
+            'seat_no'        => 'INTEGER?',
+            'started_at'     => 'DATETIME?',
+            'ended_at'       => 'DATETIME?',
+            'values_json'    => 'TEXT',
         ],
         'field_sessions' => [
             'id'              => 'pk',
@@ -409,6 +443,15 @@ trait ResetTables
             'occurred_at'          => 'DATETIME=CURRENT_TIMESTAMP',
             'error_code'           => 'VARCHAR(12)?',
             'manual_code'          => 'VARCHAR(12)?',
+            'ready_ms'             => 'INTEGER?',   // part 3 (29 §12)
+            // Part 6 (32 §11)
+            'action_key'           => 'VARCHAR(10)?',
+            'action_score'         => 'INTEGER?',
+            'reason_key'           => 'VARCHAR(10)?',
+            'reason_code'          => 'VARCHAR(12)?',
+            'reason_ready_ms'      => 'INTEGER?',
+            'action_last_input_ms' => 'INTEGER?',
+            'reason_last_input_ms' => 'INTEGER?',
             '_unique'              => [['challenge_attempt_id', 'challenge_item_id', 'try_no']],
         ],
         'learning_indicators' => [
@@ -536,6 +579,10 @@ trait ResetTables
             'created_at'               => 'DATETIME=CURRENT_TIMESTAMP',
             'updated_at'               => 'DATETIME=CURRENT_TIMESTAMP',
             'deleted_at'               => 'DATETIME?',
+            // Part 4 (30 §15)
+            'deactivated_at'           => 'DATETIME?',
+            'assent_version'           => 'VARCHAR(20)?',
+            'corrected_at'             => 'DATETIME?',
             '_unique'                  => [['participant_code'], ['username']],
         ],
         'participant_code_counters' => [
@@ -544,6 +591,23 @@ trait ResetTables
             'rombel'    => 'CHAR(1)',
             'next_no'   => 'INTEGER=1',
             '_unique'   => [['school_id', 'rombel']],
+        ],
+        // Part 4 (30 §15): coded consent per student
+        'participant_consents' => [
+            'participant_id'          => 'INTEGER',
+            'study_id'                => 'INTEGER',
+            'parent_consent_on'       => 'DATE?',
+            'recording_consent'       => 'INTEGER=0',
+            'recording_withdrawn_on'  => 'DATE?',
+            'risk_items_consent'      => 'INTEGER=0',
+            'risk_items_withdrawn_on' => 'DATE?',
+            'status'                  => 'VARCHAR(20)=active',
+            'status_on'               => 'DATE?',
+            'entered_by'              => 'INTEGER?',
+            'updated_by'              => 'INTEGER?',
+            'created_at'              => 'DATETIME=CURRENT_TIMESTAMP',
+            'updated_at'              => 'DATETIME=CURRENT_TIMESTAMP',
+            '_primary'                => ['participant_id'],
         ],
         'participant_feedback' => [
             'id'             => 'pk',
@@ -645,6 +709,11 @@ trait ResetTables
             'package_code'   => 'VARCHAR(30)?',
             'created_at'     => 'DATETIME=CURRENT_TIMESTAMP',
             'updated_at'     => 'DATETIME=CURRENT_TIMESTAMP',
+            // Part 4 (30 §15)
+            'closed_at'                    => 'DATETIME?',
+            'consent_register_exported_at' => 'DATETIME?',
+            'feedback_names_checked_at'    => 'DATETIME?',
+            'identities_replaced_at'       => 'DATETIME?',
             '_unique'        => [['code']],
         ],
         'scenario_options' => [
@@ -701,7 +770,7 @@ trait ResetTables
     ];
 
     /**
-     * Membuat (ulang) tabel. Tanpa argumen: semua 40 tabel.
+     * Membuat (ulang) tabel. Tanpa argumen: semua 41 tabel.
      *
      * @param list<string>|null $only
      */

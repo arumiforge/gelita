@@ -25,11 +25,12 @@ trait ParticipantCheck
             return $result;
         }
 
-        // 2. peserta tidak ada / terhapus (soft delete)
+        // 2. peserta tidak ada / terhapus (soft delete) / deactivated by a withdrawal (part 4: 30 §5.3)
         $participant = db_connect()->table('participants')
             ->select('id, must_change_password')
             ->where('id', $participantId)
             ->where('deleted_at', null)
+            ->where('deactivated_at', null)
             ->get()
             ->getRow();
 

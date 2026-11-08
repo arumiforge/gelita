@@ -12,9 +12,10 @@ use App\Libraries\StaffAccess;
  * - `accounts()`: the admin's view of student accounts: identity columns,
  *   all schools. The admin never reaches research data (routes are guarded
  *   by capability), so this scope is only used for account lists.
- * - `research()`: `peneliti` and `ketua`: all schools, always coded (no name,
- *   username, school name or NPSN), without the admin-only raw data (event
- *   dimension, answer key). Part 3 (29 K1) gives those to `ketua`.
+ * - `research()`: `peneliti`: all schools, always coded (no name, username,
+ *   school name or NPSN), without the `ketua`-only raw data.
+ * - `head()`: `ketua` (`research.browse`): the same, plus the `event` and
+ *   `kode_pilihan` sheets and the answer key (part 3, 29 K1).
  *
  * The difference between `peneliti` and `ketua` (one student by code, or all
  * students and downloads) is decided at the route level by capability, not
@@ -41,6 +42,11 @@ final class StaffScope
         return new self(true, false);
     }
 
+    public static function head(): self
+    {
+        return new self(true, true);
+    }
+
     /**
      * Any combination, for column listings that are not tied to a signed-in
      * role (ExportService::columns(), the data dictionary, tests). Never
@@ -65,6 +71,10 @@ final class StaffScope
     {
         if (StaffAccess::allows($role, 'participants.accounts')) {
             return self::accounts();
+        }
+
+        if (StaffAccess::allows($role, 'research.browse')) {
+            return self::head();
         }
 
         if (StaffAccess::allows($role, 'participants.research')) {

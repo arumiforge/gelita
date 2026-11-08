@@ -110,8 +110,8 @@ final class MediaSlotPagesTest extends CIUnitTestCase
         $this->assertStringContainsString('<code>/wilayah/temanggung</code>', $html);
         $this->assertStringContainsString('admin/konten/level/1', $html);
 
-        // Four challenge buttons drawn on the map, in percent and pixels
-        $this->assertSame(4, substr_count($html, 'class="media-pin"'));
+        // Five challenge buttons drawn on the map (Skenario Digital since part 6), in percent and pixels
+        $this->assertSame(5, substr_count($html, 'class="media-pin"'));
         $this->assertStringContainsString('1. Susun Gambar', $html);
         $this->assertStringContainsString('252, 630', $html, '18 %, 70 % of 1400 × 900');
 

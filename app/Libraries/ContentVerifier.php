@@ -98,7 +98,10 @@ class ContentVerifier
                         $findings[] = $this->finding('warning', $itemScope, 'Soal ini belum punya variasi; dianggap variasi a.');
                     }
 
-                    if ($item->scorable && $item->answerKey() === []) {
+                    // Skenario Digital keeps its key in scenario_options (31 K4), not in answer_key_json
+                    if ($item->interaction_type === 'scenario_choice') {
+                        $findings = [...$findings, ...$this->scenarioFindings($item, $itemScope)];
+                    } elseif ($item->scorable && $item->answerKey() === []) {
                         $findings[] = $this->finding('error', $itemScope, 'Soal ini dinilai tetapi belum punya kunci jawaban.');
                     }
 
@@ -110,7 +113,10 @@ class ContentVerifier
                         $findings[] = $this->finding('warning', $itemScope, 'Fakta di soal ini masih ditandai "perlu dicek".');
                     }
 
-                    $findings = [...$findings, ...$this->mediaFindings($item->media_asset_id, $itemScope, 'Gambar soal', true)];
+                    // Part 6: a situation picture is optional (text only) and comes from the Katalog Aset, not from mockups
+                    $findings = [...$findings, ...($item->interaction_type === 'scenario_choice'
+                        ? $this->scenarioPictureFindings($item->media_asset_id, $itemScope)
+                        : $this->mediaFindings($item->media_asset_id, $itemScope, 'Gambar soal', true))];
 
                     // Kunci susun gambar dan benar/salah memang sama di banyak soal
                     $signature = $item->interaction_type === 'fill_blank_bank' ? $this->answerSignature($item) : null;
@@ -178,6 +184,33 @@ class ContentVerifier
         ));
     }
 
+    /**
+     * Part 6 (32 §5.7): a scenario needs exactly one score-2 action and at
+     * least one reason; a situation without a recording is only a warning,
+     * since the text still reads without sound.
+     *
+     * @return list<array{level: string, scope: string, message: string}>
+     */
+    private function scenarioFindings(\App\Entities\ChallengeItem $item, string $scope): array
+    {
+        helper('content');
+
+        $options  = service('contentRepository')->scenarioOptions($item->id);
+        $safe     = array_filter($options, static fn (array $o): bool => $o['kind'] === 'action' && (int) $o['score'] === 2);
+        $reasons  = array_filter($options, static fn (array $o): bool => $o['kind'] === 'reason');
+        $findings = [];
+
+        if (count($safe) !== 1 || $reasons === []) {
+            $findings[] = $this->finding('error', $scope, 'Skenario ini wajib punya tepat satu tindakan berskor 2 dan paling sedikit satu alasan.');
+        }
+
+        if (audio_src($item->promptAudioId('id')) === null) {
+            $findings[] = $this->finding('warning', $scope, 'Situasi skenario ini belum punya rekaman yang disetujui; siswa membacanya tanpa suara.');
+        }
+
+        return $findings;
+    }
+
     /** @return array{level: string, scope: string, message: string}|null */
     private function placeholderFinding(bool $researchReady): ?array
     {
@@ -241,6 +274,21 @@ class ContentVerifier
      *
      * @return list<array{level: string, scope: string, message: string}>
      */
+    /**
+     * Part 6 (32 §7.5): a scenario without its picture still shows its text, so
+     * a missing picture is a warning that points to the catalogue import.
+     *
+     * @return list<array{level: string, scope: string, message: string}>
+     */
+    private function scenarioPictureFindings(?int $mediaId, string $scope): array
+    {
+        if ($mediaId === null || $mediaId <= 0 || isset(service('contentRepository')->mediaMap()[$mediaId])) {
+            return $mediaId === null || $mediaId <= 0 ? [] : $this->mediaFindings($mediaId, $scope, 'Gambar situasi');
+        }
+
+        return [$this->finding('warning', $scope, 'Gambar situasi belum dipasang; skenario tampil dengan teks saja. Jalankan php spark gelita:katalog:impor untuk memasang gambar dari Katalog Aset.')];
+    }
+
     private function mediaFindings(?int $mediaId, string $scope, string $label, bool $mockupSlot = false): array
     {
         if ($mediaId === null || $mediaId <= 0) {

@@ -45,7 +45,11 @@ class StudyController extends BaseAdminController
             return $blocked;
         }
 
-        $studyId = $studies->insert($this->studyPayload() + $this->packageLock(null), true);
+        if (($refused = $this->researchGuard($this->studyPayload(), null)) !== null) {
+            return $this->back('admin/studi', $refused);
+        }
+
+        $studyId = $studies->insert($this->studyPayload() + $this->packageLock(null) + $this->closing(null), true);
 
         if ($studyId === false) {
             return $this->back('admin/studi', 'Penelitian belum dapat disimpan: ' . $this->modelErrors($studies));
@@ -77,6 +81,12 @@ class StudyController extends BaseAdminController
 
         $lock    = $this->packageLock($previous);
         $payload = $this->studyPayload(true);
+
+        if (($refused = $this->researchGuard($payload, $row)) !== null) {
+            return $this->back('admin/studi', $refused);
+        }
+
+        $payload += $this->closing($row);
 
         // Field mode and meeting plan stay put while a field session is open (28 §5.1, §5.2)
         $fieldChanged = (int) $payload['field_mode'] !== (int) ($row['field_mode'] ?? 0)
@@ -260,7 +270,8 @@ class StudyController extends BaseAdminController
             'description'         => $this->request->getPost('description') ?: null,
             'year_label'          => $this->request->getPost('year_label') ?: null,
             'status'              => (string) $this->request->getPost('status'),
-            'retention_days'      => (int) ($this->request->getPost('retention_days') ?: 365),
+            // Part 4 (30 §11): a field-mode study keeps its data 7305 days unless more is typed
+            'retention_days'      => (int) ($this->request->getPost('retention_days') ?: ((string) $this->request->getPost('field_mode') === '1' ? config('Gelita')->researchRetentionDays : 365)),
             'default_locale'      => (string) $this->request->getPost('default_locale'),
             'unlock_mode'         => (string) $this->request->getPost('unlock_mode'),
             // Off unless ticked (28 K1)
@@ -289,6 +300,50 @@ class StudyController extends BaseAdminController
         }
 
         return ['package_code' => service('assetPackages')->releasePackageCode()];
+    }
+
+    /**
+     * Part 4 (30 §0.1, §11, §10.2): a field-mode study needs the research
+     * privacy switch on and at least 7305 days of retention; a study whose
+     * identities were replaced cannot be opened again.
+     *
+     * @param array<string, mixed>      $payload
+     * @param array<string, mixed>|null $row     the stored study (null = new)
+     */
+    private function researchGuard(array $payload, ?array $row): ?string
+    {
+        if ($row !== null && $row['identities_replaced_at'] !== null && $payload['status'] !== 'closed') {
+            return lang('Admin.closureReplaced');
+        }
+
+        if ((int) $payload['field_mode'] !== 1) {
+            return null;
+        }
+
+        if (! config('Gelita')->researchPrivacy) {
+            return lang('Admin.researchPrivacyRequired');
+        }
+
+        return (int) $payload['retention_days'] < config('Gelita')->researchRetentionDays ? lang('Admin.retentionMinStudy') : null;
+    }
+
+    /**
+     * `closed_at` is filled when the status becomes *closed* and emptied when
+     * the study is opened again (30 §11).
+     *
+     * @param array<string, mixed>|null $row
+     *
+     * @return array{closed_at?: string|null}
+     */
+    private function closing(?array $row): array
+    {
+        $closed = $this->request->getPost('status') === 'closed';
+
+        if ($closed && ($row === null || $row['closed_at'] === null)) {
+            return ['closed_at' => date('Y-m-d H:i:s')];
+        }
+
+        return ! $closed && $row !== null && $row['closed_at'] !== null ? ['closed_at' => null] : [];
     }
 
     /** @param array<string, mixed> $metadata */

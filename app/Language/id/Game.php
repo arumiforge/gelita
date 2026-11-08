@@ -93,6 +93,7 @@ return [
     'engine_rumpang' => 'Isi Rumpang',
     'engine_boleh'   => 'Benar atau Salah',
     'engine_cari'    => 'Cari Objek',
+    'engine_skenario' => 'Skenario Digital',
 
     // Welcome & mulai
     'startTitle'        => 'Siap berpetualang?',
@@ -415,6 +416,7 @@ return [
     'challengeLead_rumpang' => 'Temukan kata yang hilang, lalu isi celahnya!',
     'challengeLead_boleh'   => 'Benar atau salah? Timbang baik-baik!',
     'challengeLead_cari'    => 'Angkat lenteramu, temukan yang tersembunyi!',
+    'challengeLead_skenario' => 'Bayangkan ceritanya terjadi padamu, lalu pikirkan baik-baik!',
     'chapterOf'            => 'Bab {0} · {1}',
     'chapterTap'           => 'Ketuk untuk mendengar kisahnya',
     'doneTitle'            => 'Serpihan {0} kembali!',
@@ -429,7 +431,7 @@ return [
     'aboutWhatTitle' => 'Apa itu GELITA?',
     'aboutWhatText' => 'GELITA adalah permainan petualangan membaca. Kamu menjelajahi Temanggung, Magelang, dan Wonosobo sambil mengenal budaya Dataran Kedu dan berlatih membaca dengan teliti.',
     'aboutStoryTitle' => 'Alur cerita',
-    'aboutStoryText' => 'Kabut Lupa memecahkan Lentera Kedu, dan dua belas Serpihan Cahaya jatuh di tiga wilayah. Bersama Jaka dan Mbah Kedu, kamu mencari serpihan itu satu per satu sampai Cahaya Kedu menyala lagi.',
+    'aboutStoryText' => 'Kabut Lupa memecahkan Lentera Kedu, dan Serpihan Cahayanya jatuh di tiga wilayah. Bersama Jaka dan Mbah Kedu, kamu mencari serpihan itu satu per satu sampai Cahaya Kedu menyala lagi.',
     'aboutPlayTitle' => 'Cara bermain',
     'aboutPlay1' => 'Pilih wilayah di Peta Kedu, lalu dengarkan ceritanya.',
     'aboutPlay2' => 'Selesaikan tantangan untuk mendapat serpihan dan bintang.',
@@ -471,4 +473,34 @@ return [
     'huntRoundTwoStart' => 'Mulai babak 2',
     'huntPartN'         => 'Bagian {0}',
     'postSceneAlt'      => 'Foto di dalam unggahan',
+    // Part 4 (30 §5.1, §5.3, §17): research-mode assent (23 → T4) and the deactivated account
+    'assentLabelStudy'    => 'Aku mau ikut penelitian GELITA. Aku tahu jawabanku di permainan dan di soal dicatat dengan kodeku, bukan namaku. Aku boleh berhenti kapan saja.',
+    'assentNameStudy'     => 'Persetujuan ikut penelitian',
+    'assentRequiredStudy' => 'Centang dulu kalau kamu mau ikut, ya. Kalau tidak mau, tidak apa-apa. Bilang pelan-pelan ke kakak peneliti.',
+    'tokenWithdrawn'      => 'Kamu sudah memilih berhenti ikut penelitian GELITA, dan itu tidak apa-apa. Terima kasih sudah pernah ikut, ya. Kalau ada pertanyaan, bicara dengan kakak peneliti.',
+    'loginInactive'       => 'Akun ini sudah tidak dipakai lagi. Kalau ada pertanyaan, bicara dengan kakak peneliti, ya.',
+    // Part 4 (30 §5.4, 23 → T11, T12): texts for the test module's screens (part 8 builds the screens)
+    'riskAskTitle'     => 'Beberapa pertanyaan tentang internet',
+    'riskAskP1'        => 'Ada beberapa pertanyaan lagi. Isinya tentang hal yang mungkin membuatmu tidak nyaman di internet atau HP.',
+    'riskAskP2'        => 'Kamu boleh tidak mengisinya. Tidak apa-apa. Di setiap pertanyaan juga ada pilihan Tidak mau menjawab.',
+    'riskAskP3'        => 'Jawabanmu disimpan dengan kode, bukan dengan namamu. Guru dan temanmu tidak melihat jawabanmu. Kalau orang tuamu meminta melihat jawabanmu, kakak peneliti akan bicara denganmu dulu.',
+    'riskAskP4'        => 'Tapi ada satu hal yang perlu kamu tahu. Kakak peneliti ingin semua anak aman. Kalau jawabanmu menunjukkan kamu mungkin butuh bantuan, seorang kakak peneliti bisa mengajakmu mengobrol sebentar. Kalau kamu sedang dalam bahaya, kakak akan meminta bantuan orang dewasa untuk menjagamu.',
+    'riskAskQuestion'  => 'Kamu mau mengisi pertanyaan ini?',
+    'riskAskYes'       => 'Ya, aku mau mengisi',
+    'riskAskNo'        => 'Tidak, lewati saja',
+    'riskThanksTitle'  => 'Terima kasih, ya.',
+    'riskThanksP1'     => 'Kadang ada hal di internet yang membuat kita tidak nyaman, takut, atau sedih. Itu bukan salahmu.',
+    'riskThanksP2'     => 'Kalau itu terjadi, ceritakan kepada orang dewasa yang kamu percaya. Misalnya orang tua, guru, atau kakak peneliti.',
+    'riskThanksP3'     => 'Kakak peneliti ada di sini sampai pertemuan hari ini selesai. Kamu boleh menghampiri kakak kapan saja.',
+    'riskThanksNext'   => 'Lanjut',
+
+
+    // Part 6 (32 §13): Skenario Digital, bridge story, instruction narration
+    'watchBridgeStory'    => 'Lihat cerita penghubung',
+    'bridgeStoryTitle'    => 'Kabut di Layar',
+    'enterScenario'       => 'Buka tantangan kelima',
+    'scenarioSituation'   => 'Situasi',
+    'scenarioSituationAlt' => 'Gambar situasi cerita ini',
+    'scenarioActions'     => 'Apa yang akan kamu lakukan?',
+    'instructionListen'   => 'Dengarkan instruksi',
 ];

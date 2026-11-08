@@ -24,6 +24,8 @@ class ParticipantModel extends Model
         'pw_first_submit_criteria', 'pw_weak_submit_count',
         'failed_login_count', 'locked_until', 'last_login_at', 'password_changed_at', 'assented_at',
         'intro_seen_at',
+        // Part 4 (30 §15)
+        'deactivated_at', 'assent_version', 'corrected_at',
     ];
     protected $validationRules = [
         'participant_code' => 'required|max_length[40]|is_unique[participants.participant_code,id,{id}]',

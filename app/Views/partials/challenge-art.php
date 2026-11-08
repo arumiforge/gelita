@@ -8,6 +8,7 @@
  * - rumpang  huruf jatuh mengisi celah kalimat
  * - boleh    kartu berputar antara ✓ dan ✗
  * - cari     sorot lentera menyapu siluet gelap
+ * - skenario three message lines appear on a screen as the mist lifts (part 6)
  *
  * @var string $engine
  */
@@ -24,6 +25,9 @@
       <b class="cc-face is-ok"><?= icon('check') ?></b>
       <b class="cc-face is-bad"><?= icon('cross') ?></b>
     </span>
+  <?php elseif ($engine === 'skenario'): ?>
+    <span class="cc-screen"><?php for ($i = 0; $i < 3; $i++): ?><i style="--i: <?= $i ?>"></i><?php endfor ?></span>
+    <span class="cc-mist"></span>
   <?php else: ?>
     <span class="cc-shape is-temple"></span><span class="cc-shape is-mask"></span><span class="cc-shape is-drum"></span>
     <span class="cc-light"></span>

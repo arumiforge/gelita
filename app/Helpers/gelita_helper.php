@@ -294,6 +294,8 @@ if (! function_exists('js_config')) {
             // asset package Stage 2: package URLs of music and sound effects (empty when off)
             'audioUrls'  => package_audio_urls(),
             'eventFlush' => event_flush_config(),
+            // Part 3 (29 §6.2): empty taps sent per clue per attempt before the rest become one `overflow`
+            'emptyTapLimit' => max(0, (int) config('Gelita')->emptyTapLimit),
             'text'       => $text,
         ];
     }

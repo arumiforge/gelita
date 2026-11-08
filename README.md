@@ -253,3 +253,11 @@ Rincian, spesifikasi berkas, dan lisensi model suara ada di [`docs/audio.md`](do
 ## Field sessions (research revision 10, part 2)
 
 With Mode penelitian on (per study, off by default), the game opens only inside a field session: students type the session token, get participant codes like `S03-A07`, and see only the regions of that meeting; researchers run sessions on `/admin/sesi-lapangan` and watch them on `/admin/pemantauan`. Progress belongs to the student across sessions (`participant_progress`). Test accounts for validators: `php spark gelita:uji:akun`. Details: `docs/07_FEATURE_INTEGRATION.md` and `docs/revisi-10-analitik/28_IMPLEMENTASI_SESI_LAPANGAN.md`.
+
+## Research data (research revision 10, part 3)
+
+Event types live in `App\Libraries\EventCatalog`. The ketua's download (`/admin/ekspor`) always belongs to one study and carries the Kamus Data sheet (`ResearchDictionary`, `kamus-1.0`); the admin's technical log is `/admin/log-teknis`. Field sheets L1–L6 are typed into the template of each field session and uploaded back (`FieldSheetSpec`, `lembar-1.0`); L7 never reaches the server. Before migrating a server with this code: `php spark gelita:log:hitung` (see `docs/08_DEPLOYMENT.md`).
+
+## Research revision 10, part 4 (consent and data rights)
+
+Coded consent per student, withdrawal with immediate deactivation, parents' data requests (file, confirm, run, checklist, minutes), one child's data copy, registration correction, study closure with identity replacement, retention from the study's closing, and hashed browser-session IPs behind `gelita.researchPrivacy`. All of it applies only to a study in field mode. Plan: `docs/revisi-10-analitik/30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md`; deployment checklist in `docs/08_DEPLOYMENT.md`.

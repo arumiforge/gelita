@@ -59,8 +59,11 @@ final class LanguageFilesTest extends CIUnitTestCase
         foreach (glob(APPPATH . 'Language/*/*.php') ?: [] as $path) {
             $label = basename(dirname($path)) . '/' . basename($path);
 
+            // Part 4 (30 §17): the panel's coded consent per student (`consent*` in Admin.php) is new, not the guardian consent
+            $pattern = $label === 'id/Admin.php' ? '/^phase|lainnya$/i' : '/^(?:phase|consent)|lainnya$/i';
+
             foreach ($this->keysOf(require $path) as $key) {
-                $this->assertDoesNotMatchRegularExpression('/^(?:phase|consent)|lainnya$/i', $key, "{$label}: kunci {$key}");
+                $this->assertDoesNotMatchRegularExpression($pattern, $key, "{$label}: kunci {$key}");
             }
         }
 

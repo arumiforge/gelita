@@ -11,7 +11,7 @@ use CodeIgniter\Config\BaseConfig;
 class Gelita extends BaseConfig
 {
     /** Engine tantangan (urutan = urutan node di setiap wilayah) */
-    public array $engineTypes = ['puzzle', 'rumpang', 'boleh', 'cari'];
+    public array $engineTypes = ['puzzle', 'rumpang', 'boleh', 'cari', 'skenario'];
 
     /** Jenis interaksi soal yang dikenali sistem */
     public array $interactionTypes = ['puzzle_arrange', 'fill_blank_bank', 'verdict_card', 'find_object', 'find_part', 'scenario_choice'];
@@ -27,8 +27,8 @@ class Gelita extends BaseConfig
 
     /** Client Hints yang diminta lewat header Accept-CH (App\Filters\ClientHintsFilter) */
     public array $clientHints = [
-        'Sec-CH-UA-Model', 'Sec-CH-UA-Platform-Version', 'Sec-CH-UA-Full-Version-List',
-        'Sec-CH-UA-Arch', 'Sec-CH-UA-Bitness',
+        // Only what the OS and browser versions need (revision 10, part 3: 29 §5.5)
+        'Sec-CH-UA-Platform-Version', 'Sec-CH-UA-Full-Version-List',
     ];
 
     /**
@@ -64,7 +64,7 @@ class Gelita extends BaseConfig
      */
     public array $dialogueContexts = [
         'global' => ['intro', 'map_intro', 'ending', 'map_done'],
-        'level'  => ['region_intro', 'level_open', 'level_done'],
+        'level'  => ['region_intro', 'level_open', 'scenario_open', 'level_done'],
     ];
 
     /**
@@ -74,7 +74,7 @@ class Gelita extends BaseConfig
      * `intro`/`ending`, the region background for the region contexts.
      * `map_intro` and `map_done` play in the Peta Kedu story bar and have no backdrop.
      */
-    public array $dialogueBackgroundContexts = ['intro', 'ending', 'region_intro', 'level_open', 'level_done'];
+    public array $dialogueBackgroundContexts = ['intro', 'ending', 'region_intro', 'level_open', 'scenario_open', 'level_done'];
 
     /**
      * WebGL screen effects on the narrated scenes (owner, 19 October 2026):
@@ -89,27 +89,7 @@ class Gelita extends BaseConfig
     /** three.js entry under public/assets/ (the folder carries the version; vendor/README.md) */
     public string $screenFxThree = 'vendor/three-0.186.1/three.module.js';
 
-    /**
-     * Event type yang boleh ditulis ke game_event_logs (perombakan kelas 5,
-     * Dok 1 §12.3). Data mentah: tidak ada skor atau indeks yang dihitung.
-     */
-    public array $eventTypes = [
-        // sesi & navigasi
-        'session_started', 'session_resumed', 'session_paused', 'session_abandoned',
-        'session_completed', 'locale_changed', 'level_opened', 'level_completed',
-        'library_opened', 'library_page_viewed', 'dialogue_advanced', 'intro_completed',
-        'screen_viewed', 'overlay_opened', 'page_hidden', 'page_visible', 'viewport_changed',
-        // tantangan
-        'challenge_opened', 'challenge_checked', 'challenge_completed', 'challenge_abandoned',
-        'challenge_tries_exhausted', 'answer_submitted', 'answer_changed', 'answer_selected',
-        'wrong_target_clicked', 'clue_failed', 'reading_progress', 'hint_opened',
-        // audio
-        'audio_play', 'audio_autoplay', 'audio_pause', 'audio_replay', 'audio_completed',
-        // lain-lain
-        'feedback_submitted', 'password_changed',
-        // asset package and event queue integrity (rencana-paket-aset §7.1, §7.3)
-        'package_changed', 'events_dropped',
-    ];
+    // Event types moved to App\Libraries\EventCatalog (revision 10, part 3: 29 §4, K7).
 
     /**
      * Kebijakan kata sandi SISWA — literasi keamanan digital.
@@ -342,6 +322,13 @@ class Gelita extends BaseConfig
     public string $uploadDir = 'assets/uploads/';
 
     /**
+     * Empty taps (`empty_tap`) a Cari Objek clue sends per attempt before the
+     * rest become one event with `overflow` (revision 10, part 3: 29 §6.2).
+     * Checked in KG3a and KG3b, fixed before G4.
+     */
+    public int $emptyTapLimit = 30;
+
+    /**
      * Client event queue rhythm (core/events.js via js_config() `eventFlush`;
      * rencana-log-asinkron §5.1 R1, owner decision 17 October 2026): send a
      * batch every `intervalMs`, or as soon as `maxEvents` are waiting. Forced
@@ -441,6 +428,20 @@ class Gelita extends BaseConfig
 
     /** Highest participant number per school and class group (`S03-A99`, 28 K11). */
     public int $participantCodeMax = 99;
+
+    /**
+     * Part 4 (30 §0.1, §12): research privacy switch (`gelita.researchPrivacy`
+     * in `.env`). On: browser sessions store hashed IPs (HashedIpSessionHandler)
+     * and the retention run removes expired and raw-IP `ci_sessions` rows. A
+     * study in field mode cannot be saved or started while it is off.
+     */
+    public bool $researchPrivacy = false;
+
+    /** Part 4 (30 §11, K10): shortest retention of a field-mode study, 20 × 365.25 days from closing. */
+    public int $researchRetentionDays = 7305;
+
+    /** Part 4 (30 §7.7): hours to stop collecting and to tell the parents (3 × 24). */
+    public int $dataRequestHours = 72;
 
     /** Username prefixes students cannot register with; tools and the simulator still may (28 K18). */
     public array $reservedUsernamePrefixes = ['uji.', 'sim_'];

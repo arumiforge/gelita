@@ -22,6 +22,12 @@ use DeviceDetector\DeviceDetector;
  *
  * IP mentah tidak pernah disimpan (hanya `ip_hash`); tidak ada sidik jari
  * peramban.
+ *
+ * Revision 10, part 3 (29 §5.5): the User-Agent and Client Hints are read
+ * to work out the OS and browser, then dropped. Brand, model, platform
+ * (architecture), pixel ratio, touch points, time zone, and browser language
+ * are not stored. `touch_points` stays in the returned profile only for the
+ * iPad correction and `game_sessions.is_touch`; it is not a device_logs column.
  */
 final class DeviceProfile
 {
@@ -33,19 +39,13 @@ final class DeviceProfile
 
     /** Panjang maksimum kolom teks device_logs */
     private const LENGTHS = [
-        'user_agent'      => 512,
         'device_type'     => 30,
-        'device_brand'    => 60,
-        'device_model'    => 100,
         'os_name'         => 60,
         'os_version'      => 40,
-        'os_platform'     => 20,
         'browser_name'    => 60,
         'browser_version' => 40,
         'browser_engine'  => 40,
         'orientation'     => 20,
-        'language'        => 20,
-        'timezone'        => 60,
         'corrected'       => 40,
         'detector'        => 40,
     ];
@@ -54,7 +54,7 @@ final class DeviceProfile
     private const BASE_HINTS = ['Sec-CH-UA', 'Sec-CH-UA-Mobile', 'Sec-CH-UA-Platform'];
 
     /** Kunci navigator.userAgentData yang diteruskan ke ClientHints::factory() */
-    private const UA_DATA_KEYS = ['platform', 'platformVersion', 'model', 'architecture', 'bitness', 'fullVersionList', 'mobile', 'brands'];
+    private const UA_DATA_KEYS = ['platform', 'platformVersion', 'fullVersionList', 'mobile', 'brands'];
 
     /**
      * @param array<string, mixed> $client hasil decode `device_json` dari formulir (boleh kosong)
@@ -113,21 +113,13 @@ final class DeviceProfile
         $browser = is_array($browser) ? $browser : [];
 
         $row = [
-            'user_agent'      => $userAgent,
             'device_type'     => $detector->getDeviceName(),
-            'device_brand'    => $detector->getBrandName(),
-            'device_model'    => $detector->getModel(),
             'os_name'         => $os['name'] ?? null,
             'os_version'      => $os['version'] ?? null,
-            'os_platform'     => $os['platform'] ?? null,
             'browser_name'    => $browser['name'] ?? null,
             'browser_version' => $browser['version'] ?? null,
             'browser_engine'  => $browser['engine'] ?? null,
             'is_bot'          => $detector->isBot() ? 1 : 0,
-            'client_hints_json' => $headers === [] && $uaData === [] ? null : array_filter([
-                'headers' => $headers ?: null,
-                'ua_data' => $uaData ?: null,
-            ]),
         ];
 
         $row += self::clientSignals($client);
@@ -138,8 +130,6 @@ final class DeviceProfile
 
         if (in_array($row['os_name'], ['Mac', 'macOS', 'Mac OS'], true) && (int) ($row['touch_points'] ?? 0) > 1) {
             $row['device_type']  = 'tablet';
-            $row['device_brand'] = 'Apple';
-            $row['device_model'] = 'iPad';
             $row['os_name']      = 'iPadOS';
             $row['os_version']   = null;   // versi macOS palsu dari UA, bukan versi iPadOS
             $row['corrected']    = 'ipad_desktop_ua';
@@ -230,19 +220,14 @@ final class DeviceProfile
      */
     private static function clientSignals(array $client): array
     {
-        $pixelRatio = self::number($client['pixel_ratio'] ?? null, 0.1, 99.99, true);
-
         return [
             'screen_w'      => self::number($client['screen_w'] ?? null, 1, 65535),
             'screen_h'      => self::number($client['screen_h'] ?? null, 1, 65535),
             'viewport_w'    => self::number($client['viewport_w'] ?? null, 1, 65535),
             'viewport_h'    => self::number($client['viewport_h'] ?? null, 1, 65535),
-            'pixel_ratio'   => $pixelRatio === null ? null : round((float) $pixelRatio, 2),
             'touch_points'  => self::number($client['touch_points'] ?? null, 0, 255),
             'orientation'   => self::word($client['orientation'] ?? null, '/^[a-z-]{3,20}$/'),
             'is_standalone' => isset($client['is_standalone']) && is_bool($client['is_standalone']) ? (int) $client['is_standalone'] : null,
-            'language'      => self::word($client['language'] ?? null, '/^[A-Za-z]{2,3}(-[A-Za-z0-9]{1,8})*$/'),
-            'timezone'      => self::word($client['timezone'] ?? null, '#^[A-Za-z0-9_+\-/]{1,60}$#'),
         ];
     }
 

@@ -171,7 +171,7 @@ class AnalyticsService
             ->getResultArray();
 
         $devices = $db->table('device_logs')
-            ->select('device_logs.created_at, device_logs.via, device_logs.device_type, device_logs.device_brand, device_logs.device_model')
+            ->select('device_logs.created_at, device_logs.via, device_logs.device_type')
             ->select('device_logs.os_name, device_logs.os_version, device_logs.browser_name, device_logs.browser_version')
             ->select('device_logs.screen_w, device_logs.screen_h, device_logs.viewport_w, device_logs.viewport_h')
             ->where('device_logs.participant_id', $participantId)
@@ -315,6 +315,8 @@ class AnalyticsService
             if ($detail) {
                 $row['token']    = $row['state'] === 'closed' ? null : service('fieldSessions')->currentToken($row['id']);
                 $row['students'] = $roster;
+                // Part 4 (30 §5.2): "izin belum diisi" as a number, researchers and the head researcher only
+                $row['consent_missing'] = service('consentService')->missingForCodes(array_column($roster, 'participant_code'));
             }
 
             $out[] = $row;

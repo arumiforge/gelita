@@ -66,6 +66,12 @@ class Participant extends Entity
         return $this->deleted_at === null;
     }
 
+    /** Account turned off by a withdrawal or the study closure (part 4: 30 §5.3, K5). */
+    public function isDeactivated(): bool
+    {
+        return $this->deactivated_at !== null;
+    }
+
     /** Satu-satunya bentuk yang boleh dikirim ke view/API: tanpa password_hash & kolom throttle */
     public function toSafeArray(): array
     {

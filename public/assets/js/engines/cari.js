@@ -48,12 +48,23 @@
  * the same shape `{ object: <ref> }`. Tries stay per clue; a wrong tap shows
  * the round-2 sentence (data-part-wrong). A reload after round 1 starts
  * straight in round 2.
+ *
+ * Research data (revision 10, part 3: 29 §6.1–6.2). Each tap sends
+ * `ready_ms` (the clue shown or the previous tap's feedback closed) and
+ * `last_input_ms` (the tap), both in ms since the challenge opened. A tap on
+ * an empty spot of the scene sends `empty_tap` { x_pct, y_pct, round, t_ms }
+ * through the event queue, at most CONFIG.emptyTapLimit per clue per
+ * attempt; the rest leave as one `empty_tap` with `overflow`. The game stays
+ * silent on such a tap, and the client never measures a distance (it does
+ * not know where the key is).
  */
 import { $, $$, el, announce } from '../core/dom.js';
 import { showModal, isModalOpen } from '../core/modal.js';
 import { overlayOpened } from '../core/device.js';
 import { confetti } from '../core/confetti.js';
 import { Sfx, narrationPlayer, pauseNarration } from '../core/audio.js';
+import { emit } from '../core/events.js';
+import { CONFIG } from '../core/config.js';
 
 const SHAKE_MS = 700;
 
@@ -158,7 +169,7 @@ export function mount(ctx) {
   const triesNode = $('#clue-tries', ctx.section);
   const closed = (i) => found.has(i) || skipped.has(i);
   let current = 0;
-  let shownAt = performance.now();
+  let readyAt = ctx.sinceOpen(); // clue shown or previous feedback done (29 §6.1)
   let busy = false;
   let done = false; // attempt closed: the scene stays visible but takes no more taps
 
@@ -219,8 +230,48 @@ export function mount(ctx) {
         jump.setAttribute('aria-pressed', i === current ? 'true' : 'false');
       }
     });
-    shownAt = performance.now();
+    readyAt = ctx.sinceOpen();
   };
+
+  // ------------------------------------------------- empty taps (29 §6.2)
+
+  const tapLimit = Math.max(0, Number(CONFIG.emptyTapLimit) || 30);
+  const tapCounts = new Map(); // `${round}:${item_id}` → empty taps sent
+  let overflow = null;         // { key, refs, round, count } held back over the limit
+
+  const sendOverflow = () => {
+    if (!overflow) return;
+    emit('empty_tap', { ...overflow.refs, payload: { round: overflow.round, overflow: overflow.count, t_ms: ctx.sinceOpen() } });
+    overflow = null;
+  };
+
+  const emptyTap = (event) => {
+    const clue = clues[current];
+    if (!clue || done) return;
+    const box = scene.getBoundingClientRect();
+    if (!box.width || !box.height) return;
+    const key = `${round}:${clue.item_id}`;
+    const refs = { levelId: ctx.levelId, nodeId: ctx.nodeId, attemptId: ctx.attemptId, itemId: clue.item_id };
+    if (overflow && overflow.key !== key) sendOverflow();
+    const sent = tapCounts.get(key) ?? 0;
+    if (sent >= tapLimit) {
+      overflow = overflow ?? { key, refs, round, count: 0 };
+      overflow.count += 1;
+      return;
+    }
+    tapCounts.set(key, sent + 1);
+    const pct = (value) => Math.round(Math.min(100, Math.max(0, value)) * 10) / 10;
+    emit('empty_tap', {
+      ...refs,
+      payload: {
+        x_pct: pct(((event.clientX - box.left) / box.width) * 100),
+        y_pct: pct(((event.clientY - box.top) / box.height) * 100),
+        round,
+        t_ms: ctx.sinceOpen(),
+      },
+    });
+  };
+  window.addEventListener('pagehide', sendOverflow, true);
 
   const goTo = (i) => {
     if (closed(i)) return;
@@ -303,10 +354,12 @@ export function mount(ctx) {
     if (!clue) return;
 
     busy = true;
+    sendOverflow();
     let result;
     try {
       result = await ctx.submit(clue.item_id, { object: object.dataset.object }, {
-        duration_ms: Math.round(performance.now() - shownAt),
+        ready_ms: readyAt,
+        last_input_ms: ctx.sinceOpen(),
       });
     } catch (error) {
       busy = false;
@@ -386,6 +439,7 @@ export function mount(ctx) {
       ],
       buttons: [{ label: ctx.t('tryAgain'), style: 'primary', value: 'ok' }],
     });
+    readyAt = ctx.sinceOpen();
     object.focus({ preventScroll: true });
   };
 
@@ -394,6 +448,7 @@ export function mount(ctx) {
   scene.addEventListener('click', (event) => {
     const object = event.target.closest('.object, .post-part');
     if (object) pick(object);
+    else if (!busy) emptyTap(event);
   });
 
   // Lompat diabaikan selama ketukan masih menunggu server

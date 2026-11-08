@@ -16,18 +16,21 @@ class DataDeletionRequestModel extends Model
     protected $allowedFields = [
         'requested_by', 'scope_json', 'reason', 'mode', 'status',
         'affected_count', 'approved_by', 'executed_at',
+        // Part 4 (30 §15): parents' data requests
+        'kind', 'participant_code', 'received_at', 'verified_at', 'received_via',
+        'confirmed_by', 'confirmed_at', 'completed_at', 'checklist_json',
     ];
     protected $validationRules = [
         'requested_by' => 'required|is_natural_no_zero',
         'mode'         => 'permit_empty|in_list[soft,hard]',
-        'status'       => 'permit_empty|in_list[preview,approved,executed,cancelled]',
+        'status'       => 'permit_empty|in_list[requested,preview,approved,executed,completed,cancelled]',
     ];
     protected $beforeInsert      = ['encodeJson'];
     protected $beforeUpdate      = ['encodeJson'];
     protected $beforeInsertBatch = ['encodeJsonBatch'];
 
     /** @var list<string> kolom JSON milik tabel ini */
-    protected array $jsonFields = ['scope_json'];
+    protected array $jsonFields = ['scope_json', 'checklist_json'];
 
     /** Permintaan yang menunggu persetujuan admin kedua. */
     public function pendingApproval(): array

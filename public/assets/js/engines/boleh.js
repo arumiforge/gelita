@@ -1,7 +1,8 @@
 /**
  * Engine `boleh` — kartu pernyataan dengan verdict Benar / Salah. Tombol
  * verdict dirender server sebagai radio bawaan; client tidak tahu kuncinya.
- * Setiap pilihan dicatat sebagai event `answer_selected` (action set).
+ * Each choice only updates the input times (`ctx.selected`); opening a
+ * passage again after the first input sends `passage_reopened` (29 §6.3).
  *
  * Cek jawabanku → POST /check [{ item_id, answer: { verdict } }].
  * Kartu belum dipilih → .has-error selama 2,6 detik, digulirkan ke tengah,
@@ -26,9 +27,20 @@ import { Sfx } from '../core/audio.js';
 
 const ERROR_MS = 2600;
 
-function initPassages(section) {
+function initPassages(section, ctx) {
   const passages = $$('details.passage', section);
   if (!passages.length) return;
+
+  // Opening a panel by its summary counts as `panel`; the card label as `label`
+  const viaLabel = new Set();
+  passages.forEach((details, index) => {
+    details.addEventListener('toggle', () => {
+      if (!details.open) return;
+      const via = viaLabel.has(details) ? 'label' : 'panel';
+      viaLabel.clear();
+      ctx.passageReopened(via, index + 1);
+    });
+  });
 
   // Label "Berdasarkan Teks A" membuka dan menggulir ke teks bacaannya
   section.addEventListener('click', (event) => {
@@ -37,6 +49,8 @@ function initPassages(section) {
     const target = document.getElementById(link.getAttribute('href').slice(1));
     if (!target) return;
     event.preventDefault();
+    if (target.open) ctx.passageReopened('label', passages.indexOf(target) + 1);
+    else viaLabel.add(target);
     target.open = true;
     scrollToCenter(target);
     $('summary', target)?.focus({ preventScroll: true });
@@ -65,7 +79,7 @@ export function mount(ctx) {
   const button = $('#btn-check', section);
   if (!cards.length || !button) return;
 
-  initPassages(section);
+  initPassages(section, ctx);
   initImageZoom(section, ctx);
 
   const idOf = (card) => Number(card.dataset.item);
@@ -101,7 +115,7 @@ export function mount(ctx) {
     if (!input) return;
     const card = input.closest('.verdict-card');
     card.classList.remove('has-error');
-    ctx.selected(idOf(card), { action: 'set', value: input.value });
+    ctx.selected(idOf(card));
     lastFocused = card;
     Sfx.play('click');
     if (card.classList.contains('is-wrong')) {

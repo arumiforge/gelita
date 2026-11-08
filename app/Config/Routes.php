@@ -52,6 +52,8 @@ $routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($ro
         $routes->get('peta', 'MapController::kedu');
         $routes->get('wilayah/(:segment)', 'MapController::level/$1');
         $routes->get('dialog/(:segment)', 'DialogueController::show/$1');
+        // Part 6 (32 §12): the bridge story before the fifth challenge
+        $routes->get('penghubung/(:segment)', 'DialogueController::bridge/$1');
         $routes->get('tuntas/(:segment)', 'DialogueController::done/$1');
         $routes->get('penutup', 'DialogueController::ending');
         $routes->get('misi/(:segment)/(:num)', 'ChallengeController::brief/$1/$2');
@@ -142,6 +144,18 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->post('sesi-lapangan/(:num)/kursi', 'FieldSessionController::saveSeats/$1');
             $routes->get('sesi-lapangan/(:num)/susulan', 'FieldSessionController::makeupForm/$1');
             $routes->post('sesi-lapangan/(:num)/susulan', 'FieldSessionController::storeMakeup/$1');
+            // Part 3 (29 §13): field sheet template, upload, second typing
+            $routes->get('sesi-lapangan/(:num)/lembar', 'FieldSheetController::template/$1');
+            $routes->get('sesi-lapangan/(:num)/lembar/unggah', 'FieldSheetController::uploadForm/$1');
+            $routes->post('sesi-lapangan/(:num)/lembar/unggah', 'FieldSheetController::preview/$1');
+            $routes->post('sesi-lapangan/(:num)/lembar/simpan', 'FieldSheetController::save/$1');
+        });
+
+        // Part 3 (29 §5.6, K15): the admin's tech log
+        $routes->group('', ['filter' => 'staffCan:tech_logs.view'], static function ($routes): void {
+            $routes->get('log-teknis', 'TechLogController::index');
+            $routes->get('log-teknis/(perangkat|event|sesi)', 'TechLogController::table/$1');
+            $routes->get('log-teknis/(perangkat|event|sesi)/csv', 'TechLogController::csv/$1');
         });
         $routes->get('pemantauan', 'MonitoringController::index', ['filter' => 'staffCan:monitoring.view']);
 
@@ -240,6 +254,31 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
         });
         $routes->get('tata-kelola/audit', 'GovernanceController::audit', ['filter' => 'staffCan:audit.view']);
         $routes->post('tata-kelola/retensi', 'GovernanceController::runRetention', ['filter' => 'staffCan:retention.run']);
+
+        // Part 4 (30 §16): consent per student, parents' data requests, risk follow-up, one child's copy,
+        // registration correction, consent register, study closure. Fixed paths before patterned ones.
+        $routes->get('sesi-lapangan/(:num)/izin', 'ConsentController::edit/$1', ['filter' => 'staffCan:field_sessions.manage']);
+        $routes->post('sesi-lapangan/(:num)/izin', 'ConsentController::save/$1', ['filter' => 'staffCan:field_sessions.manage']);
+        $routes->get('permintaan-data', 'DataRequestController::index', ['filter' => 'staffCan:deletion.request,deletion.confirm,deletion.execute']);
+        $routes->get('permintaan-data/baru', 'DataRequestController::create', ['filter' => 'staffCan:deletion.request']);
+        $routes->post('permintaan-data/baru', 'DataRequestController::store', ['filter' => 'staffCan:deletion.request']);
+        $routes->get('permintaan-data/(:num)', 'DataRequestController::show/$1', ['filter' => 'staffCan:deletion.request,deletion.confirm,deletion.execute']);
+        $routes->post('permintaan-data/(:num)/konfirmasi', 'DataRequestController::confirm/$1', ['filter' => 'staffCan:deletion.confirm']);
+        $routes->post('permintaan-data/(:num)/tolak', 'DataRequestController::reject/$1', ['filter' => 'staffCan:deletion.confirm']);
+        $routes->post('permintaan-data/(:num)/batal', 'DataRequestController::cancel/$1', ['filter' => 'staffCan:deletion.request']);
+        $routes->post('permintaan-data/(:num)/centang', 'DataRequestController::tick/$1', ['filter' => 'staffCan:deletion.request,deletion.confirm,deletion.execute']);
+        $routes->get('permintaan-data/(:num)/berita-acara', 'DataRequestController::minutes/$1', ['filter' => 'staffCan:deletion.confirm,deletion.execute']);
+        $routes->get('tindak-lanjut', 'RiskFollowUpController::index', ['filter' => 'staffCan:risk_flags.view']);
+        $routes->get('peserta/salinan', 'ParticipantCopyController::form', ['filter' => 'staffCan:research.export']);
+        $routes->post('peserta/salinan', 'ParticipantCopyController::download', ['filter' => 'staffCan:research.export']);
+        $routes->post('peserta/(:num)/betulkan', 'ParticipantController::correct/$1', ['filter' => 'staffCan:participants.accounts']);
+        $routes->post('peserta/(:num)/aktifkan', 'ParticipantController::reactivate/$1', ['filter' => 'staffCan:participants.accounts']);
+        $routes->get('ekspor/izin', 'ExportController::consentRegister', ['filter' => 'staffCan:research.export']);
+        $routes->get('studi/(:num)/penutupan', 'StudyClosureController::show/$1', ['filter' => 'staffCan:studies.view']);
+        $routes->post('studi/(:num)/penutupan/hitung', 'StudyClosureController::preview/$1', ['filter' => 'staffCan:identities.replace']);
+        $routes->post('studi/(:num)/penutupan/jalankan', 'StudyClosureController::run/$1', ['filter' => 'staffCan:identities.replace']);
+        $routes->get('studi/(:num)/penutupan/nama', 'StudyClosureController::feedbackNames/$1', ['filter' => 'staffCan:research.export']);
+        $routes->post('studi/(:num)/penutupan/nama', 'StudyClosureController::saveFeedbackNames/$1', ['filter' => 'staffCan:research.export']);
 
         $routes->group('', ['filter' => 'staffCan:schools.manage'], static function ($routes): void {
             $routes->get('sekolah', 'SchoolController::index');

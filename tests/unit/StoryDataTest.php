@@ -21,16 +21,17 @@ final class StoryDataTest extends CIUnitTestCase
         'map_intro'    => 3,
         'region_intro' => 12,
         'level_open'   => 47,
-        'level_done'   => 12,
+        'scenario_open' => 18,
+        'level_done'   => 15,
         'ending'       => 5,
         'map_done'     => 3,
     ];
 
     /** Jumlah per wilayah dan konteks */
     private const REGION_COUNTS = [
-        'temanggung' => ['region_intro' => 4, 'level_open' => 15, 'level_done' => 4],
-        'magelang'   => ['region_intro' => 4, 'level_open' => 16, 'level_done' => 4],
-        'wonosobo'   => ['region_intro' => 4, 'level_open' => 16, 'level_done' => 4],
+        'temanggung' => ['region_intro' => 4, 'level_open' => 15, 'scenario_open' => 6, 'level_done' => 5],
+        'magelang'   => ['region_intro' => 4, 'level_open' => 16, 'scenario_open' => 6, 'level_done' => 5],
+        'wonosobo'   => ['region_intro' => 4, 'level_open' => 16, 'scenario_open' => 6, 'level_done' => 5],
     ];
 
     public function testCountsPerContextMatchTheScript(): void
@@ -38,7 +39,7 @@ final class StoryDataTest extends CIUnitTestCase
         $story  = (require APPPATH . 'Database/Seeds/data/story.php');
         $counts = array_count_values(array_column($story, 'context'));
 
-        $this->assertCount(91, $story);
+        $this->assertCount(112, $story, 'the 12 script of research revision 10 (part 6)');
         $this->assertSame(self::CONTEXT_COUNTS, $counts);
         $this->assertSame($this->scriptCounts(), $counts, 'tabel jumlah di naskah');
     }
@@ -159,8 +160,9 @@ final class StoryDataTest extends CIUnitTestCase
         $counts = [];
 
         foreach ($m as [, $context, $count]) {
-            // `hunt_clue` (petunjuk-*) ada di tabel yang sama, tetapi teksnya dari bank soal, bukan baris dialogues
-            if ($context !== NarrationImporter::CLUE_CONTEXT) {
+            // `hunt_clue` (petunjuk-*) ada di tabel yang sama, tetapi teksnya dari bank soal, bukan baris dialogues;
+            // so are the part 6 groups `post_clue`, `scenario_situation`, and `challenge_instruction`
+            if (! in_array($context, [NarrationImporter::CLUE_CONTEXT, 'post_clue', 'scenario_situation', 'challenge_instruction'], true)) {
                 $counts[$context] = (int) $count;
             }
         }

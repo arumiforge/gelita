@@ -84,7 +84,7 @@ class MapController extends BaseGameController
 
     /**
      * level_id wilayah yang narasi Kenali-nya sudah didengar peserta ini sampai
-     * slide terakhir (dihitung dari `dialogue_advanced`); lencana "Belum
+     * slide terakhir (dihitung dari `dialogue_completed`); lencana "Belum
      * didengar" berdenyut pada wilayah lainnya.
      *
      * @return list<int>
@@ -150,6 +150,24 @@ class MapController extends BaseGameController
             'nodes'      => $this->nodeOverview($session, $level->id),
             'hasLibrary' => service('contentRepository')->libraryPages($level->id) !== [],
             'library'    => $this->libraryAccess($session, $level),
+            // Part 6 (32 §7.2): the bridge story may be watched again once it was opened
+            'bridgeSeen' => $this->bridgeSeen($session, $level),
         ]);
+    }
+
+    /** The region's bridge story was shown in this login, or its Skenario Digital challenge already has an attempt. */
+    private function bridgeSeen(\App\Entities\GameSession $session, \App\Entities\Level $level): bool
+    {
+        if (service('contentRepository')->dialogues($level->id, 'scenario_open') === []) {
+            return false;
+        }
+
+        foreach (service('contentRepository')->nodesForLevel($level->id) as $node) {
+            if ($node->engine_type === 'skenario') {
+                return $this->scenarioShown($session, $level) || model(\App\Models\ChallengeAttemptModel::class)->hasAttemptInStudy($session, $node->id);
+            }
+        }
+
+        return false;
     }
 }

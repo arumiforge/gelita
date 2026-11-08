@@ -755,3 +755,18 @@ Pustaka frontend: **Howler.js** (`public/assets/vendor/howler.min.js`, lisensi `
 | `admin/study/index.php`, `admin/schools/index.php`, `admin/dashboard.php` | Field mode and meeting plan fields; research school codes; card "Sesi lapangan aktif" |
 
 `core/api.js` sends the student to `/sampai-jumpa` on `FIELD_SESSION_CLOSED` and treats `NODE_LOCKED` like `LEVEL_LOCKED`. Panel texts live in `Admin.php` (Indonesian only).
+
+## Research revision 10, part 3: tech log, downloads, field sheets (29 §14)
+
+- `admin/tech-log/index`: three tabs (Perangkat, Event teknis, Sesi), search by participant code, CSV per tab, the admin's technical numbers; the admin dashboard shows lost events (7 days) and the most common OS / browser.
+- `admin/export/index`: study select (required; without a study the page says to create one first), field session code and meeting filters, history with *Versi kamus data*, *Jumlah siswa*, *Diunduh*, and *Berkas sudah dihapus otomatis…* for expired files.
+- `admin/field-sessions/sheets`: state per expected sheet (Belum diunggah, Diunggah, Dicek with the share typed twice, Lewat 24 jam), upload (first or second typing), preview with errors (row, column, message), warnings, name warnings that need the checkbox *Sudah saya periksa, tidak ada nama siswa*. The field session page links the template and the upload.
+- The participant page shows device rows only to `tech_logs.view` (admin).
+- Panel text lives in `app/Language/id/Admin.php` (keys `techLog*`, `export*`, `fieldSheet*`).
+
+## Research revision 10, part 4: views (30 §17)
+
+- Game: `game/register/step-3` shows `Game.assentLabelStudy`/`assentNameStudy`/`assentRequiredStudy` in field mode (`$assentSuffix`). The T11/T12 texts (`Game.riskAsk*`, `Game.riskThanks*`) are in `Game.php` for the test module of part 8, which builds the screens.
+- Panel (Indonesian only, `Admin.php`): `admin/consent/edit` (codes only), `admin/data-requests/{index,create,show,_row}`, `admin/risk/index` (no download or print, `Cache-Control: no-store`), `admin/participants/copy`, `admin/closure/{show,feedback}`; the correction and *Aktifkan lagi* forms on the admin's student page; the consent link on the field session page; cards on Ringkasan; the parent's-request label in Tata kelola.
+- PDF: `pdf/deletion-minutes` (no child's or parent's name, two signature lines), `pdf/participant-copy` (plain sentences for parents; `Admin.copyRiskLeftOut` when the ang-21–ang-23 answers are left out).
+- Menu: *Permintaan data* and *Tindak lanjut* show only while a field-mode study exists (`AdminMenu::FIELD_MODE_ONLY`).

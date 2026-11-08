@@ -142,6 +142,17 @@ class Services extends BaseService
         return new FieldSessionService();
     }
 
+    // Part 3 (29 §12): tech log and field sheets
+    public static function techLogs(bool $getShared = true): \App\Services\TechLogService
+    {
+        return $getShared ? static::getSharedInstance('techLogs') : new \App\Services\TechLogService();
+    }
+
+    public static function fieldSheets(bool $getShared = true): \App\Services\FieldSheetService
+    {
+        return $getShared ? static::getSharedInstance('fieldSheets') : new \App\Services\FieldSheetService();
+    }
+
     /** Participant codes `S03-A07` from the per-class-group counter (28 §10.2). */
     public static function participantCodes(bool $getShared = true): ParticipantCodeService
     {
@@ -281,5 +292,32 @@ class Services extends BaseService
         }
 
         return new VideoThumbnail();
+    }
+
+    // Part 4 (30 §15): consent, data requests, risk follow-up, one child's copy, study closure
+
+    public static function consentService(bool $getShared = true): \App\Services\ConsentService
+    {
+        return $getShared ? static::getSharedInstance('consentService') : new \App\Services\ConsentService();
+    }
+
+    public static function dataRequests(bool $getShared = true): \App\Services\DataRequestService
+    {
+        return $getShared ? static::getSharedInstance('dataRequests') : new \App\Services\DataRequestService();
+    }
+
+    public static function riskFollowUp(bool $getShared = true): \App\Services\RiskFollowUpService
+    {
+        return $getShared ? static::getSharedInstance('riskFollowUp') : new \App\Services\RiskFollowUpService();
+    }
+
+    public static function participantCopy(bool $getShared = true): \App\Services\ParticipantCopyService
+    {
+        return $getShared ? static::getSharedInstance('participantCopy') : new \App\Services\ParticipantCopyService();
+    }
+
+    public static function studyClosure(bool $getShared = true): \App\Services\StudyClosureService
+    {
+        return $getShared ? static::getSharedInstance('studyClosure') : new \App\Services\StudyClosureService();
     }
 }

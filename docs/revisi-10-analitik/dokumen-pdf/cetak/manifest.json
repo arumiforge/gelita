@@ -1,10 +1,10 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "86e91da96bf55d15f5e0cb6ef274b881a1a9b9db6b1a514655734cacf3bc9b61",
-      "commit": "a7e07ef",
+      "source": "54ac4165c69e9fbc86b49c75b7c1128fa98400a67f9474b9320d496786d70a2b",
+      "commit": "302f399",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-04",
+      "date": "2026-11-08",
       "pages": 20,
       "landscapeTables": 0
     },
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "ea32d870fccb899825c1c8956ce88925a861b4c7c2b027c2543c02c7b4cc1055",
-      "commit": "a7e07ef",
+      "source": "972f9d0c1cd778cda7636fc7deaff44efa764634a8822e7541bc7ab35aa97568",
+      "commit": "302f399",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-04",
-      "pages": 72,
+      "date": "2026-11-08",
+      "pages": 74,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -58,7 +58,7 @@
     },
     "07_TELAAH_INSTRUMEN_VALIDASI.md": {
       "source": "f0435f19f3c475ae23934cbb5b449556ca9071cd6d38aff940fd73137b3d4702",
-      "commit": "b1b93f2",
+      "commit": "2556dda",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-31",
       "pages": 10,
@@ -82,7 +82,7 @@
     },
     "10_TELAAH_PENDAHULUAN_MEDIA.md": {
       "source": "13e86a96e4af811a151e2cfa7809576c900961fd7cc64bd589a3ffacc45a298e",
-      "commit": "b1b93f2",
+      "commit": "2556dda",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-31",
       "pages": 8,
@@ -114,7 +114,7 @@
     },
     "14_TES_BAGIAN_MEMBACA.md": {
       "source": "55ecc0f33e43bc4302182a0e9867e5e7c99cb74078b0f030c893b036ab56a2f1",
-      "commit": "b1b93f2",
+      "commit": "2556dda",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-31",
       "pages": 20,
@@ -122,7 +122,7 @@
     },
     "15_TES_BAGIAN_DIGITAL.md": {
       "source": "fa236e4443314df9b75912b9eba20c0fbdc3eee67251c5ced3d7ac9c1fa628b6",
-      "commit": "b1b93f2",
+      "commit": "2556dda",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-10-31",
       "pages": 23,
@@ -302,6 +302,14 @@
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-04",
       "pages": 29,
+      "landscapeTables": 0
+    },
+    "38_PROMPT_PETA_LIMA_TANTANGAN_DAN_SKENARIO.md": {
+      "source": "dd7c3c787c351b37550f83da257d5ac90dbb006d62a46bc320f475dbde0f94e1",
+      "commit": "261ddd3",
+      "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
+      "date": "2026-11-08",
+      "pages": 10,
       "landscapeTables": 0
     }
   }

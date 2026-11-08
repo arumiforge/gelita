@@ -9,6 +9,7 @@ use App\Models\ResearchStudyModel;
 use App\Services\ExportService;
 use CodeIgniter\HTTP\DownloadResponse;
 use CodeIgniter\HTTP\RedirectResponse;
+use CodeIgniter\HTTP\ResponseInterface;
 
 /**
  * Permintaan ekspor data mentah (XLSX / CSV-ZIP, Dok 3 §9), laporan PDF
@@ -33,6 +34,7 @@ class ExportController extends BaseAdminController
     {
         $exports = model(DataExportModel::class)->where('requested_by', $this->staffId());
         $sheets  = service('exportService')->allowedSheets([], $this->dataScope()->fullDetail);
+        $recent  = $exports->orderBy('created_at', 'DESC')->findAll(20);
 
         return $this->panel('admin/export/index', 'Unduh data', [
             'filters'       => $this->readFilters(),
@@ -40,10 +42,33 @@ class ExportController extends BaseAdminController
             'sheetTitles'   => array_combine($sheets, array_map(ExportLabels::sheetTitle(...), $sheets)),
             'sheetNotes'    => array_combine($sheets, array_map(ExportLabels::sheetMeaning(...), $sheets)),
             'studies'       => model(ResearchStudyModel::class)->findAll(),
-            'recent'        => $exports->orderBy('created_at', 'DESC')->findAll(20),
+            'recent'        => $recent,
+            'downloads'     => $this->downloadCounts(array_column($recent, 'id')),
             'retention'     => config('Gelita')->exportRetentionDays,
             'rawEventLimit' => config('Gelita')->exportMaxRawEvents,
         ]);
+    }
+
+    /**
+     * How often each of the caller's exports was downloaded, from the audit
+     * log (`export_download`, 29 §9).
+     *
+     * @param list<int|string> $ids
+     *
+     * @return array<int, int>
+     */
+    private function downloadCounts(array $ids): array
+    {
+        if ($ids === []) {
+            return [];
+        }
+
+        $rows = db_connect()->table('audit_logs')->select('target_id')->selectCount('id', 'n')
+            ->where('action', 'export_download')->where('target_type', 'data_export')
+            ->whereIn('target_id', array_map('strval', $ids))
+            ->groupBy('target_id')->get()->getResultArray();
+
+        return array_map('intval', array_column($rows, 'n', 'target_id'));
     }
 
     public function xlsx(): RedirectResponse
@@ -76,7 +101,7 @@ class ExportController extends BaseAdminController
         }
 
         if ($export['expires_at'] !== null && strtotime((string) $export['expires_at']) < time()) {
-            return $this->back('admin/ekspor', 'Berkas ini sudah dihapus otomatis karena melewati batas waktu. Silakan buat unduhan baru.');
+            return $this->back('admin/ekspor', lang('Admin.exportFileGone'));
         }
 
         $path = (string) $export['file_path'];
@@ -114,6 +139,11 @@ class ExportController extends BaseAdminController
             $scope['participant_id'] = $participantId;
         }
 
+        // One study per download (29 K16), field mode on or off
+        if ($format !== 'pdf' && ! isset($filters['study_id'])) {
+            return redirect()->to(site_url($back))->with('error', lang('Admin.exportNeedsStudy'));
+        }
+
         if ($format === 'pdf') {
             if ($participantId <= 0) {
                 return redirect()->to(site_url($back))->with('error', 'Laporan PDF hanya untuk satu siswa. Buat laporan dari halaman profil siswa, atau unduh data mentah sebagai Excel/CSV.');
@@ -128,7 +158,8 @@ class ExportController extends BaseAdminController
 
         $exports  = model(DataExportModel::class);
         $exportId = $exports->insert([
-            'requested_by' => $this->staffId(),
+            'requested_by'       => $this->staffId(),
+            'dictionary_version' => \App\Libraries\ResearchDictionary::VERSION,
             'study_id'     => isset($filters['study_id']) ? (int) $filters['study_id'] : null,
             'format'       => $format,
             'scope_json'   => $scope,
@@ -205,5 +236,58 @@ class ExportController extends BaseAdminController
         }
 
         return $filters;
+    }
+
+    /**
+     * Part 4 (30 §10.1): the coded consent register of a study as XLSX, one row
+     * per student with a consent row in it. No name, school name, NPSN, or
+     * username. Recorded in `data_exports` (`kind = consent_register`) and the
+     * audit log; sets `research_studies.consent_register_exported_at`. The
+     * file is sent at once and not kept.
+     */
+    public function consentRegister(): ResponseInterface|RedirectResponse
+    {
+        $studies = model(ResearchStudyModel::class);
+        $id      = (int) ($this->request->getGet('studi') ?? 0);
+        $study   = $id > 0 ? $studies->find($id) : $studies->where('field_mode', 1)->orderBy('id', 'DESC')->first();
+
+        if ($study === null) {
+            return $this->back('admin/ekspor', lang('Admin.consentRegisterNoStudy'));
+        }
+
+        $rows = service('consentService')->registerRows((int) $study['id']);
+        $path = WRITEPATH . 'cache' . DIRECTORY_SEPARATOR . 'izin-' . bin2hex(random_bytes(6)) . '.xlsx';
+
+        $writer = new \App\Libraries\ExcelWriter($path);
+        $writer->startSheet('izin', \App\Services\ConsentService::REGISTER_COLUMNS);
+
+        foreach ($rows as $row) {
+            $writer->row(array_map(static fn (string $c): mixed => in_array($c, \App\Services\ConsentService::REGISTER_YES_NO, true)
+                ? lang((int) ($row[$c] ?? 0) === 1 ? 'Admin.yes' : 'Admin.no')
+                : ($row[$c] ?? null), \App\Services\ConsentService::REGISTER_COLUMNS));
+        }
+
+        $sha  = $writer->finish();
+        $body = (string) file_get_contents($path);
+        unlink($path);
+        $now = date('Y-m-d H:i:s');
+
+        model(DataExportModel::class)->insert([
+            'requested_by' => $this->staffId(), 'study_id' => (int) $study['id'], 'format' => 'xlsx',
+            'scope_json' => ['kind' => 'consent_register', 'study_id' => (int) $study['id']], 'anonymized' => 1, 'status' => 'done',
+            'row_count' => count($rows), 'file_path' => null, 'file_sha256' => $sha, 'completed_at' => $now,
+        ]);
+        $studies->update((int) $study['id'], ['consent_register_exported_at' => $now]);
+
+        model(AuditLogModel::class)->record('consent_register_export', [
+            'staff_user_id' => $this->staffId(),
+            'target_type'   => 'research_study',
+            'target_id'     => (string) $study['id'],
+            'metadata'      => ['study_code' => $study['code'], 'row_count' => count($rows)],
+        ]);
+
+        return $this->response->download('daftar-izin-' . $study['code'] . '-' . date('Y-m-d') . '.xlsx', $body)
+            ->setContentType(ExportService::mimeType('xlsx'))
+            ->noCache();
     }
 }

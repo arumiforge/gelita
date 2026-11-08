@@ -185,7 +185,7 @@ class ChallengeService
      * dalam transaction yang sama.
      *
      * @param array<string, mixed> $answer `{object: <ref>}` (token objek, bukan id butir)
-     * @param array<string, mixed> $meta   duration_ms (sejak petunjuk tampil)
+     * @param array<string, mixed> $meta   ready_ms, last_input_ms (ms since the challenge opened, 29 §6.1)
      *
      * @return array{correct: bool, first_pass: bool, wrong_click: bool, decoy: bool, feedback: ?string,
      *               try_no: int, tries_left: int, clue_closed: bool, progress: array{answered: int, total: int},
@@ -205,6 +205,11 @@ class ChallengeService
         $node    = $this->nodeOf($attempt);
         $item    = $this->itemOf($node->id, $itemId);
         $locale  = $session->resolvedLocale();
+
+        // Part 6 (32 §5.4): one Skenario Digital try = one action and one reason
+        if ($item->interaction_type === 'scenario_choice') {
+            return $this->submitScenario($attempt, $session, $node, $item, $answer, $meta);
+        }
 
         if (! in_array($item->interaction_type, ['find_object', 'find_part'], true) || ! $this->expectsAnswer($item)) {
             throw new \InvalidArgumentException("Butir {$itemId} bukan petunjuk Cari Objek.");
@@ -243,17 +248,20 @@ class ChallengeService
             } else {
                 $correct = $this->grade($node, $item, $answer, $locale);
                 $applied = $this->applyAnswer($attempt, $item, $answer, $correct, [
-                    'last_input_ms' => $meta['duration_ms'] ?? null,
+                    'last_input_ms' => $meta['last_input_ms'] ?? null,
+                    'ready_ms'      => $meta['ready_ms'] ?? null,
                 ]);
 
+                // Always `answer_submitted`; a tap that differs from the previous one carries `changed` (29 K2)
                 service('eventService')->record(
                     $session,
-                    $applied['changed'] ? 'answer_changed' : 'answer_submitted',
+                    'answer_submitted',
                     [
                         'try_no'       => $applied['try_no'],
                         'correct'      => $correct,
                         'first_pass'   => $applied['first_pass'],
                         'change_count' => $applied['change_count'],
+                        'changed'      => $applied['changed'],
                     ],
                     [
                         'level_id'             => $node->level_id,
@@ -344,8 +352,9 @@ class ChallengeService
         $locale   = $session->resolvedLocale();
         $attempts = model(ChallengeAttemptModel::class);
 
-        if ($node->engine_type === 'cari') {
-            throw new \InvalidArgumentException('Cari Objek dijawab per ketukan benda, bukan lewat Cek jawabanku.');
+        // Tries per item (Cari Objek, Skenario Digital, 32 §5.5) answer through /responses only
+        if ($node->triesPerItem()) {
+            throw new \InvalidArgumentException('Tantangan ini dijawab per soal, bukan lewat Cek jawabanku.');
         }
 
         $responses = model(ItemResponseModel::class)->forAttempt($attempt->id);
@@ -396,9 +405,11 @@ class ChallengeService
                 $timing = [
                     'first_input_ms' => $answer['first_input_ms'] ?? null,
                     'last_input_ms'  => $answer['last_input_ms'] ?? null,
+                    // Only Benar atau Salah has a ready time among the batch engines (29 §6.1)
+                    'ready_ms'       => $node->engine_type === 'boleh' ? ($answer['ready_ms'] ?? null) : null,
                     'check_no'       => $checkCount,
                 ];
-                unset($answer['first_input_ms'], $answer['last_input_ms'], $answer['duration_ms']);
+                unset($answer['first_input_ms'], $answer['last_input_ms'], $answer['ready_ms'], $answer['duration_ms']);
 
                 $correct          = $this->grade($node, $item, $answer, $locale);
                 $results[$itemId] = $correct;
@@ -647,7 +658,7 @@ class ChallengeService
             return 'solved';
         }
 
-        $exhausted = $node->engine_type === 'cari'
+        $exhausted = $node->triesPerItem()
             ? $this->pendingItemIds($attempt) === []
             : $attempt->check_count >= $attempt->maxTries();
 
@@ -781,6 +792,7 @@ class ChallengeService
             'verdict_card'    => $this->gradeVerdict($node, $item, $answer),
             'find_object'     => $this->gradeFindObject($item, $answer),
             'find_part'       => $this->gradeFindPart($item, $answer),
+            'scenario_choice' => $this->gradeScenario($item, $answer),
             default           => false,
         };
     }
@@ -930,7 +942,7 @@ class ChallengeService
      * @param array<string, mixed> $answer
      * @param array<string, mixed> $meta
      */
-    private function recordTry(ChallengeAttempt $attempt, int $itemId, int $tryNo, array $answer, bool $correct, array $meta, ?string $errorCode = null): void
+    private function recordTry(ChallengeAttempt $attempt, int $itemId, int $tryNo, array $answer, bool $correct, array $meta, ?string $errorCode = null, array $extra = []): void
     {
         $hintCount = (int) (db_connect()->table('challenge_attempts')
             ->select('hint_count')->where('id', $attempt->id)->get()->getRowArray()['hint_count'] ?? 0);
@@ -945,9 +957,10 @@ class ChallengeService
             'hint_opened_before'   => $hintCount > 0 ? 1 : 0,
             'first_input_ms'       => self::clientMs($meta['first_input_ms'] ?? null),
             'last_input_ms'        => self::clientMs($meta['last_input_ms'] ?? null),
+            'ready_ms'             => self::readyMs($meta),
             'occurred_at'          => date('Y-m-d H:i:s'),
             'error_code'           => $correct ? null : $errorCode,
-        ]);
+        ] + $extra);
     }
 
     /** Angka milidetik dari klien: bilangan bulat ≥ 0 dan muat di INT UNSIGNED, selain itu NULL. */
@@ -960,6 +973,20 @@ class ChallengeService
         $ms = (int) round((float) $value);
 
         return $ms < 0 || $ms > 4_294_967_295 ? null : $ms;
+    }
+
+    /**
+     * `item_tries.ready_ms` (29 §6.1): clamped like clientMs(); a ready time
+     * after the last input cannot be right and is stored empty.
+     *
+     * @param array<string, mixed> $meta
+     */
+    private static function readyMs(array $meta): ?int
+    {
+        $ready = self::clientMs($meta['ready_ms'] ?? null);
+        $last  = self::clientMs($meta['last_input_ms'] ?? null);
+
+        return $ready !== null && $last !== null && $ready > $last ? null : $ready;
     }
 
     private function answerDiffers(ItemResponse $response, array $answer): bool
@@ -997,7 +1024,7 @@ class ChallengeService
         if ($response !== null) {
             $tryNo     = $response->try_count + 1;
             $closed    = $tryNo >= $attempt->maxTries();
-            $lastInput = self::clientMs($meta['duration_ms'] ?? null);
+            $lastInput = self::clientMs($meta['last_input_ms'] ?? null);
             $update    = [
                 'wrong_click_count' => $response->wrong_click_count + 1,
                 'try_count'         => $tryNo,
@@ -1031,7 +1058,8 @@ class ChallengeService
 
         if ($response !== null) {
             $this->recordTry($attempt, $target->id, $tryNo, $answer, false, [
-                'last_input_ms' => $meta['duration_ms'] ?? null,
+                'last_input_ms' => $meta['last_input_ms'] ?? null,
+                'ready_ms'      => $meta['ready_ms'] ?? null,
             ], (new ErrorCodeResolver())->resolve($target, $answer, $locale, $part ?? $clicked?->item_key));
         }
         $refs      = [
@@ -1245,6 +1273,12 @@ class ChallengeService
         if ($node->engine_type === 'cari') {
             unset($payload['items']);
             $payload += $this->huntPayload($attempt, $items, $locale, $responses);
+        }
+
+        // Part 6 (32 §5.2): scenarios with opaque option refs in the attempt's order
+        if ($node->engine_type === 'skenario') {
+            unset($payload['items']);
+            $payload += $this->scenarioPayload($attempt, $items, $locale, $responses);
         }
 
         if ($node->engine_type === 'rumpang' && $node->config('use_word_bank')) {
@@ -1635,6 +1669,377 @@ class ChallengeService
         }
 
         return $out;
+    }
+
+    // ------------------------------------------------------- Skenario Digital
+
+    /**
+     * One Skenario Digital try (32 §5.4): the action and the reason, sent
+     * together after step 2. Tries count per scenario (3); the scenario closes
+     * as correct when the score-2 action is chosen, or as not correct after
+     * the third try. The attempt closes once all four scenarios are closed.
+     * The reason is coded, never graded (K3).
+     *
+     * @param array<string, mixed> $answer `{action: <ref>, reason: <ref>}` (opaque per-attempt refs)
+     * @param array<string, mixed> $meta   ready_ms, reason_ready_ms, first_input_ms, action_last_input_ms,
+     *                                     reason_last_input_ms, last_input_ms (ms since the challenge opened)
+     *
+     * @return array<string, mixed>
+     *
+     * @throws ChallengeRuleException CLUE_CLOSED (scenario already closed), INCOMPLETE (action or reason missing)
+     */
+    private function submitScenario(ChallengeAttempt $attempt, GameSession $session, ChallengeNode $node, ChallengeItem $item, array $answer, array $meta): array
+    {
+        $responses = model(ItemResponseModel::class);
+        $response  = $responses->findOne($attempt->id, $item->id);
+
+        if ($response === null) {
+            throw new \RuntimeException("Baris jawaban untuk butir {$item->id} tidak ada.");
+        }
+
+        if ($response->isAnswered()) {
+            throw ChallengeRuleException::clueClosed();
+        }
+
+        $locale  = $session->resolvedLocale();
+        $chosen  = $this->resolveScenarioAnswer($attempt, $item, $answer);
+        $outcome = $this->scenarioOutcome($item, $chosen, $locale);
+        $safe    = $outcome['score'] === 2;
+        $tryNo   = $response->try_count + 1;
+        $closed  = $safe || $tryNo >= $attempt->maxTries();
+        $times   = self::scenarioTimes($meta);
+        $stored  = ['action' => $chosen['action'], 'reason' => $chosen['reason']];
+        $update  = ['try_count' => $tryNo];
+
+        if ($response->isFirstPassOpen()) {
+            $update['first_answer_json']  = $stored;
+            $update['first_pass_correct'] = $safe ? 1 : 0;
+        }
+
+        if ($safe && $response->solved_on_try === null) {
+            $update['solved_on_try'] = min(255, $tryNo);
+        }
+
+        if ($closed) {
+            $update += [
+                'final_answer_json' => $stored,
+                'is_correct'        => $safe ? 1 : 0,
+                'status'            => 'answered',
+                'answered_at'       => date('Y-m-d H:i:s'),
+            ] + ($times['last_input_ms'] !== null ? ['duration_ms' => $times['last_input_ms']] : []);
+        }
+
+        $extra = [
+            'action_key'           => $chosen['action'],
+            'action_score'         => $outcome['score'],
+            'reason_key'           => $chosen['reason'],
+            'reason_code'          => $outcome['reason_code'],
+            'reason_ready_ms'      => $times['reason_ready_ms'],
+            'action_last_input_ms' => $times['action_last_input_ms'],
+            'reason_last_input_ms' => $times['reason_last_input_ms'],
+        ];
+
+        $refs = [
+            'level_id'             => $node->level_id,
+            'challenge_node_id'    => $node->id,
+            'challenge_attempt_id' => $attempt->id,
+            'challenge_item_id'    => $item->id,
+        ];
+        $completion = null;
+        $db         = db_connect();
+        $db->transBegin();
+
+        try {
+            // try_count as the row version: a second tab with the same old count loses (32 §5.4)
+            $this->updateOrStale($responses, $response->id, ['try_count' => $response->try_count], $update);
+            $this->recordTry($attempt, $item->id, $tryNo, $stored + ['order' => $this->scenarioOrderKeys($attempt, $item)], $safe, [
+                'first_input_ms' => $times['first_input_ms'],
+                'last_input_ms'  => $times['last_input_ms'],
+                'ready_ms'       => $times['ready_ms'],   // recordTry() writes it (29 §6.1)
+            ], $outcome['error_code'], $extra);
+
+            // No codes in the event: it is read together with item_tries
+            service('eventService')->record($session, 'answer_submitted', [
+                'try_no'       => $tryNo,
+                'first_pass'   => $tryNo === 1,
+                'action_score' => $outcome['score'],
+                'closed'       => $closed,
+            ], $refs);
+
+            if ($closed && ! $safe) {
+                service('eventService')->record($session, 'scenario_failed', ['try_count' => $tryNo], $refs);
+            }
+
+            if ($this->pendingItemIds($attempt) === []) {
+                $completion = $this->closeAttempt($attempt, $this->allCorrect($attempt) ? 'solved' : 'tries_exhausted', $session, $node);
+            }
+
+            $db->transCommit();
+        } catch (\Throwable $e) {
+            throw $this->rollback($e, $attempt->id, $item->id);
+        }
+
+        if ($completion !== null) {
+            service('sessionService')->completeIfFinished($session->id);
+        }
+
+        $result = [
+            'correct'         => $safe,
+            'score_band'      => match ($outcome['score']) {
+                2       => 'safe',
+                1       => 'partial',
+                default => 'risky',
+            },
+            'feedback'        => $outcome['feedback'],
+            'try_no'          => $tryNo,
+            'tries_left'      => max(0, $attempt->maxTries() - $tryNo),
+            'scenario_closed' => $closed,
+        ];
+
+        if ($closed && ! $safe) {
+            $result += $this->scenarioExplanation($item, $locale);
+        }
+
+        return $result + ['progress' => $this->progressOf($attempt)] + $this->completionFields($attempt, $completion);
+    }
+
+    /** True when the action key is the score-2 action of the bank (K5). */
+    private function gradeScenario(ChallengeItem $item, array $answer): bool
+    {
+        return $this->optionOf($item, 'action', (string) ($answer['action'] ?? ''))['score'] === 2;
+    }
+
+    /**
+     * Score, codes, and feedback of one chosen action and reason, from
+     * `scenario_options` (never from the client). The action's DIG-* code
+     * comes through ErrorCodeResolver like every other engine (31 §10.1).
+     *
+     * @param array{action: string, reason: string} $chosen option keys
+     *
+     * @return array{score: int, error_code: ?string, reason_code: ?string, feedback: ?string}
+     */
+    private function scenarioOutcome(ChallengeItem $item, array $chosen, string $locale): array
+    {
+        $action = $this->optionOf($item, 'action', $chosen['action']);
+        $reason = $this->optionOf($item, 'reason', $chosen['reason']);
+        $score  = (int) ($action['score'] ?? 0);
+
+        return [
+            'score'       => $score,
+            'error_code'  => $score === 2 ? null : (new ErrorCodeResolver())->resolve($item, $chosen, $locale, $chosen['action']),
+            'reason_code' => isset($reason['code']) && $reason['code'] !== '' ? (string) $reason['code'] : null,
+            'feedback'    => self::optionText($action, 'feedback', $locale),
+        ];
+    }
+
+    /** The score-2 action of one scenario, or null when the bank has none. */
+    private function safeAction(int $itemId): ?array
+    {
+        foreach (service('contentRepository')->scenarioOptions($itemId) as $option) {
+            if ($option['kind'] === 'action' && (int) $option['score'] === 2) {
+                return $option;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Sent only when a scenario closes without the safe action (32 §5.2):
+     * the safe action's text and the bank's explanation.
+     *
+     * @return array{safe_action: ?string, explanation: string}
+     */
+    private function scenarioExplanation(ChallengeItem $item, string $locale): array
+    {
+        $safe = $this->safeAction($item->id);
+
+        return [
+            'safe_action' => $safe === null ? null : self::optionText($safe, 'text', $locale),
+            'explanation' => $item->text('explanation', $locale),
+        ];
+    }
+
+    /** @return array<string, mixed> the option row, or `['score' => null]` when the key is unknown */
+    private function optionOf(ChallengeItem $item, string $kind, string $key): array
+    {
+        foreach (service('contentRepository')->scenarioOptions($item->id) as $option) {
+            if ($option['kind'] === $kind && (string) $option['option_key'] === $key) {
+                return $option;
+            }
+        }
+
+        return ['score' => null];
+    }
+
+    /** @param array<string, mixed> $option */
+    private static function optionText(array $option, string $field, string $locale): ?string
+    {
+        $text = trim((string) ($option[$field . '_' . $locale] ?? ''));
+
+        if ($text === '') {
+            $text = trim((string) ($option[$field . '_id'] ?? ''));
+        }
+
+        return $text === '' ? null : $text;
+    }
+
+    /**
+     * Payload of the `skenario` engine (32 §5.2): one entry per scenario with
+     * its text, picture, narration, and the actions and reasons as `{ref,
+     * text}` in the attempt's order (K7). An open scenario carries only how
+     * many tries it used; scores, codes, keys, and feedback never go out
+     * before the scenario is closed.
+     *
+     * @param list<ChallengeItem>      $items
+     * @param array<int, ItemResponse> $responses
+     *
+     * @return array{scenarios: list<array<string, mixed>>}
+     */
+    private function scenarioPayload(ChallengeAttempt $attempt, array $items, string $locale, array $responses): array
+    {
+        $out = [];
+
+        foreach ($items as $item) {
+            if ($item->interaction_type !== 'scenario_choice') {
+                continue;
+            }
+
+            $response = $responses[$item->id] ?? null;
+            $lists    = [];
+
+            foreach (['action' => 'actions', 'reason' => 'reasons'] as $kind => $name) {
+                $lists[$name] = array_map(fn (array $option): array => [
+                    'ref'  => $this->optionRef($attempt->id, $item->id, $kind, (string) $option['option_key']),
+                    'text' => (string) self::optionText($option, 'text', $locale),
+                ], $this->scenarioOrder($attempt, $item, $kind));
+            }
+
+            $state = ['tries' => $response?->try_count ?? 0, 'closed' => $response !== null && $response->isAnswered()];
+
+            if ($state['closed']) {
+                $final  = (array) ($response->final_answer_json ?? []);
+                $chosen = ['action' => (string) ($final['action'] ?? ''), 'reason' => (string) ($final['reason'] ?? '')];
+                $state += [
+                    'outcome'  => $response->is_correct ? 'safe' : 'exhausted',
+                    'chosen'   => [
+                        'action' => $this->optionRef($attempt->id, $item->id, 'action', $chosen['action']),
+                        'reason' => $this->optionRef($attempt->id, $item->id, 'reason', $chosen['reason']),
+                    ],
+                    'feedback' => self::optionText($this->optionOf($item, 'action', $chosen['action']), 'feedback', $locale),
+                ] + ($response->is_correct ? [] : $this->scenarioExplanation($item, $locale));
+            }
+
+            $out[] = [
+                'id'      => $item->id,
+                'prompt'  => $item->text('prompt', $locale),
+                // No picture yet: the scenario shows its text only (32 §7.5)
+                'media'   => media_exists($item->media_asset_id) ? media_src($item->media_asset_id) : null,
+                'steps'   => max(1, (int) ($item->config_json['steps'] ?? 1)),
+            ] + $this->clueAudio($item, $locale) + $lists + ['state' => $state];
+        }
+
+        return ['scenarios' => $out];
+    }
+
+    /**
+     * Options of one kind in the attempt's order (K7): shuffled once with a
+     * seed from the attempt and the item, so the order stays the same on
+     * every reload and try and differs between attempts. The safe action's
+     * position is not forced (32 §18 no. 10).
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function scenarioOrder(ChallengeAttempt $attempt, ChallengeItem $item, string $kind): array
+    {
+        $options = array_values(array_filter(
+            service('contentRepository')->scenarioOptions($item->id),
+            static fn (array $option): bool => $option['kind'] === $kind,
+        ));
+
+        return seeded_shuffle($options, $attempt->id . ':' . $item->id . ':' . $kind);
+    }
+
+    /** @return array{actions: list<string>, reasons: list<string>} option keys as shown (answer_json.order) */
+    private function scenarioOrderKeys(ChallengeAttempt $attempt, ChallengeItem $item): array
+    {
+        $keys = fn (string $kind): array => array_map(static fn (array $o): string => (string) $o['option_key'], $this->scenarioOrder($attempt, $item, $kind));
+
+        return ['actions' => $keys('action'), 'reasons' => $keys('reason')];
+    }
+
+    /** Opaque ref of one scenario option for one attempt (same HMAC as objectRef(), its own namespace). */
+    private function optionRef(int $attemptId, int $itemId, string $kind, string $key): string
+    {
+        $secret = (string) config('Encryption')->key;
+
+        if ($secret === '') {
+            throw new \RuntimeException('encryption.key wajib diisi: token pilihan skenario diturunkan darinya.');
+        }
+
+        return substr(hash_hmac('sha256', 'skenario-option|' . $attemptId . '|' . $itemId . '|' . $kind . '|' . $key, $secret), 0, 20);
+    }
+
+    /**
+     * `{action: <ref>, reason: <ref>}` from the client → option keys. Both are
+     * required (INCOMPLETE); a ref this attempt never showed is refused (400).
+     *
+     * @param array<string, mixed> $answer
+     *
+     * @return array{action: string, reason: string}
+     */
+    private function resolveScenarioAnswer(ChallengeAttempt $attempt, ChallengeItem $item, array $answer): array
+    {
+        $refs = ['action' => trim((string) ($answer['action'] ?? '')), 'reason' => trim((string) ($answer['reason'] ?? ''))];
+
+        if ($refs['action'] === '' || $refs['reason'] === '') {
+            throw ChallengeRuleException::incomplete([$item->id]);
+        }
+
+        $out = [];
+
+        foreach ($refs as $kind => $ref) {
+            foreach ($this->scenarioOrder($attempt, $item, $kind) as $option) {
+                if (hash_equals($this->optionRef($attempt->id, $item->id, $kind, (string) $option['option_key']), $ref)) {
+                    $out[$kind] = (string) $option['option_key'];
+                    break;
+                }
+            }
+
+            if (! isset($out[$kind])) {
+                throw new \InvalidArgumentException('Pilihan skenario tidak dikenal pada percobaan ini.');
+            }
+        }
+
+        return $out;
+    }
+
+    /**
+     * Client times of one scenario try (32 §6.4), clamped with clientMs();
+     * a time later than `last_input_ms` (Kirim jawaban) is stored empty, as
+     * in 29 §6.1.
+     *
+     * @param array<string, mixed> $meta
+     *
+     * @return array{ready_ms: ?int, reason_ready_ms: ?int, first_input_ms: ?int, action_last_input_ms: ?int, reason_last_input_ms: ?int, last_input_ms: ?int}
+     */
+    private static function scenarioTimes(array $meta): array
+    {
+        $times = [];
+
+        foreach (['ready_ms', 'reason_ready_ms', 'first_input_ms', 'action_last_input_ms', 'reason_last_input_ms', 'last_input_ms'] as $name) {
+            $times[$name] = self::clientMs($meta[$name] ?? null);
+        }
+
+        if ($times['last_input_ms'] !== null) {
+            foreach (['ready_ms', 'reason_ready_ms', 'first_input_ms', 'action_last_input_ms', 'reason_last_input_ms'] as $name) {
+                if ($times[$name] !== null && $times[$name] > $times['last_input_ms']) {
+                    $times[$name] = null;
+                }
+            }
+        }
+
+        return $times;
     }
 
     // --------------------------------------------------------------- bantu

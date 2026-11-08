@@ -43,7 +43,7 @@ class FieldSessionService
     public const STATE_CLOSED  = 'closed';
 
     /** Token refusal reasons (28 §6.3). */
-    public const REASONS = ['token_unknown', 'not_open_yet', 'closed', 'other_class', 'not_member', 'other_study', 'inactive', 'too_many'];
+    public const REASONS = ['token_unknown', 'not_open_yet', 'closed', 'other_class', 'not_member', 'other_study', 'inactive', 'withdrawn', 'too_many'];
 
     /** @var \Closure(): string|null test hook: makes the next candidate token */
     private ?\Closure $tokenSource;
@@ -700,6 +700,13 @@ class FieldSessionService
 
         if ($participant === null) {
             return $refuse('token_unknown', $fieldSession);
+        }
+
+        // Part 4 (30 §5.3): a deactivated student is refused; one who withdrew gets their own text (owner, 8 November 2026)
+        if ($participant->isDeactivated()) {
+            $withdrew = str_starts_with((string) (service('consentService')->forParticipant((int) $participant->id)['status'] ?? ''), 'withdrawn');
+
+            return $refuse($withdrew ? 'withdrawn' : 'inactive', $fieldSession);
         }
 
         $otherStudy = model(GameSessionModel::class)

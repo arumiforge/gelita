@@ -56,7 +56,7 @@ final class ExportLabels
         'display_order'      => ['Urutan tampil', 'int', 'Urutan soal pada layar pengerjaan.'],
         'is_correct'         => ['Benar', 'bool', '1 = benar.'],
         'first_pass_correct' => ['Berhasil pada Percobaan Pertama', 'bool', '1 = soal benar pada percobaan pertama.'],
-        'answer_key'         => ['Kunci jawaban', 'json', 'Kunci jawaban soal (hanya admin). Berlabel: kalimat; berkode: JSON.'],
+        'answer_key'         => ['Kunci jawaban', 'json', 'Kunci jawaban soal (hanya ketua peneliti). Berlabel: kalimat; berkode: JSON.'],
         'started_at'         => ['Mulai', 'datetime', 'Waktu mulai.'],
         'completed_at'       => ['Selesai', 'datetime', 'Waktu pengerjaan ditutup (selesai atau ditinggalkan).'],
         'answered_at'        => ['Waktu menjawab', 'datetime', 'Waktu percobaan terakhir soal ini.'],
@@ -72,6 +72,17 @@ final class ExportLabels
         'os_name'            => ['Sistem operasi', 'text', 'Nama sistem operasi.'],
         'browser_name'       => ['Peramban', 'text', 'Nama peramban.'],
         'updated_at'         => ['Diperbarui', 'datetime', 'Waktu baris terakhir diubah.'],
+        // Part 3 (29 §7.3, §7.4)
+        'field_session_code'    => ['Kode sesi lapangan', 'code', 'Sesi lapangan sesi bermain ini, mis. S03-A-P2 (susulan -S, -S2). Penghubung dengan lembar lapangan.'],
+        'meeting_no'            => ['Pertemuan ke-', 'int', 'Nomor pertemuan sesi lapangan (1–5).'],
+        'school_code'           => ['Kode sekolah', 'code', 'Kode sekolah penelitian, mis. S03, U01.'],
+        'rombel'                => ['Rombel', 'code', 'Rombongan belajar, satu huruf.'],
+        'study_code'            => ['Kode penelitian', 'code', 'Kode studi (research_studies.code).'],
+        'occurred_at_corrected' => ['Waktu kejadian (terkoreksi)', 'datetime', 'Jam perangkat + selisih jam perangkat dan server. Tanpa selisih: jam perangkat apa adanya (Selisih jam diketahui = 0). Event yang dicatat server: waktu server.'],
+        'offset_known'          => ['Selisih jam diketahui', 'bool', '1 = selisih jam perangkat dan server diketahui untuk event ini.'],
+        'variant'               => ['Variasi (kamus)', 'code', 'Nama 11 untuk variant_group: a, b, x (dipakai semua buklet), atau c–k (Susun Gambar).'],
+        'error_code'            => ['Kode kesalahan', 'code', 'Kode kesalahan dari bank soal, diturunkan server untuk percobaan salah.'],
+        'sheet_row'             => ['Baris ke-', 'int', 'Nomor baris di lembar yang diunggah.'],
     ];
 
     /**
@@ -87,8 +98,12 @@ final class ExportLabels
             'arti'   => ['Arti', 'text', 'Arti kolom.'],
             'satuan' => ['Satuan', 'text', 'Satuan nilai.'],
             'nilai'  => ['Nilai', 'text', 'Daftar nilai berkode: kode = label.'],
+            'nama_kamus'    => ['Nama di kamus', 'code', 'Nama variabel di kamus data penelitian (11), bila berbeda dari kode kolom.'],
+            'analitik'      => ['Analitik', 'text', 'Nomor analitik (1–10) yang memakai kolom ini.'],
+            'rujukan_kamus' => ['Rujukan kamus', 'text', 'Bagian kamus data penelitian yang mendefinisikan kolom ini.'],
         ],
         'peserta' => [
+            'booklet'                  => ['Buklet', 'code', 'Buklet B1–B4 siswa di studi ini, dari baris dan kursi L2 (participant_seats).'],
             'display_name'             => ['Nama siswa', 'text', 'Nama asli (hanya ekspor beridentitas).'],
             'username'                 => ['Nama pengguna', 'text', 'Nama pengguna untuk masuk (hanya ekspor beridentitas).'],
             'school_name'              => ['Nama sekolah', 'text', 'Nama sekolah saat mendaftar (hanya ekspor beridentitas).'],
@@ -97,21 +112,24 @@ final class ExportLabels
             'age'                      => ['Umur (tahun)', 'int', 'Umur saat mendaftar.'],
             'gender'                   => ['Jenis kelamin', 'enum', 'Jenis kelamin.', 'gender'],
             'class_level'              => ['Kelas', 'enum', 'Kelas saat mendaftar.', 'class'],
-            'country'                  => ['Negara', 'text', 'Negara saat mendaftar.'],
-            'province'                 => ['Provinsi', 'text', 'Provinsi saat mendaftar.'],
-            'district'                 => ['Kabupaten/kota', 'text', 'Kabupaten/kota saat mendaftar.'],
             'registered_at'            => ['Terdaftar', 'datetime', 'Waktu akun dibuat.'],
             'assented_at'              => ['Setuju ikut', 'datetime', 'Waktu siswa mencentang persetujuan ikut bermain.'],
             'intro_seen_at'            => ['Selesai cerita pembuka', 'datetime', 'Pertama kali menyelesaikan cerita pembuka.'],
             'pw_first_submit_criteria' => ['Syarat sandi terpenuhi pada kiriman pertama', 'int', 'Jumlah syarat kata sandi (0–5) yang terpenuhi pada kiriman pertama formulir pendaftaran.'],
             'pw_weak_submit_count'     => ['Kiriman sandi terlalu lemah', 'int', 'Berapa kali formulir pendaftaran ditolak karena sandi belum kuat.'],
         ],
+        'sesi_lapangan' => [
+            'makeup_no'         => ['Susulan ke-', 'int', '0 = sesi utama; 1, 2 = susulan pertama, kedua.'],
+            'main_session_code' => ['Kode sesi utama', 'code', 'Sesi lapangan utama dari sesi susulan ini.'],
+            'region_opened'     => ['Isi yang dibuka', 'code', 'Wilayah yang dibuka sesi ini menurut rencana pertemuan studi; dipisah koma.'],
+            'session_date'      => ['Tanggal sesi', 'text', 'Tanggal sesi lapangan (YYYY-MM-DD).'],
+            'opens_at'          => ['Jam buka', 'datetime', 'Sesi lapangan dibuka.'],
+            'closes_at'         => ['Jam tutup', 'datetime', 'Sesi lapangan ditutup menurut jadwal.'],
+            'closed_at'         => ['Ditutup peneliti', 'datetime', 'Waktu sesi ditutup lebih awal oleh peneliti; kosong bila tidak.'],
+        ],
         'sesi' => [
             'study_code'     => ['Kode penelitian', 'code', 'Kode penelitian (research_studies.code).'],
             'release_code'   => ['Versi permainan', 'code', 'Kode rilis permainan yang aktif saat sesi dibuat.'],
-            'app_client_version' => ['Versi aplikasi & paket', 'code', 'Versi aplikasi + kode paket aset yang dipakai perangkat saat sesi dibuat, mis. 2.0.0+pkt-2026-10-20-01; tanpa "+…" bila perangkat tidak memakai paket.'],
-            'package_code'   => ['Kode paket aset', 'code', 'Paket aset (gambar dan suara) di perangkat saat sesi dibuat; kosong bila tanpa paket.'],
-            'package_mode'   => ['Mode paket', 'enum', 'Cara perangkat memuat gambar dan suara selama sesi.', 'packageMode'],
             'status'         => ['Status sesi', 'enum', 'Status sesi bermain.', 'sessionStatus'],
             'started_at'     => ['Mulai', 'datetime', 'Waktu sesi dibuat.'],
             'last_active_at' => ['Terakhir aktif', 'datetime', 'Denyut terakhir dari permainan.'],
@@ -119,32 +137,6 @@ final class ExportLabels
             'duration_ms'    => ['Durasi aktif (mdtk)', 'ms', 'Akumulasi waktu aktif antar-denyut; jeda panjang tidak dihitung.'],
             'device_type'    => ['Jenis perangkat', 'enum', 'Ringkasan perangkat saat sesi dibuat.', 'device'],
             'screen_size'    => ['Ukuran layar', 'text', 'Lebar × tinggi layar saat sesi dibuat, mis. 1366x768.'],
-            'is_touch'       => ['Layar sentuh', 'bool', '1 = layar sentuh.'],
-        ],
-        'perangkat' => [
-            'via'             => ['Asal catatan', 'enum', 'Saat perangkat dicatat.', 'deviceVia'],
-            'created_at'      => ['Dicatat', 'datetime', 'Waktu catatan perangkat dibuat.'],
-            'device_brand'    => ['Merek perangkat', 'text', 'Merek perangkat.'],
-            'device_model'    => ['Model perangkat', 'text', 'Model perangkat.'],
-            'os_version'      => ['Versi sistem operasi', 'text', 'Versi sistem operasi.'],
-            'os_platform'     => ['Platform sistem operasi', 'text', 'Arsitektur, mis. x64, ARM.'],
-            'browser_version' => ['Versi peramban', 'text', 'Versi peramban.'],
-            'browser_engine'  => ['Mesin peramban', 'text', 'Mesin peramban, mis. Blink, WebKit.'],
-            'is_bot'          => ['Bot', 'bool', '1 = dikenali sebagai bot.'],
-            'screen_w'        => ['Lebar layar (px)', 'int', 'Lebar layar dalam piksel CSS.'],
-            'screen_h'        => ['Tinggi layar (px)', 'int', 'Tinggi layar dalam piksel CSS.'],
-            'viewport_w'      => ['Lebar jendela (px)', 'int', 'Lebar jendela peramban dalam piksel CSS.'],
-            'viewport_h'      => ['Tinggi jendela (px)', 'int', 'Tinggi jendela peramban dalam piksel CSS.'],
-            'pixel_ratio'     => ['Rasio piksel', 'text', 'devicePixelRatio, mis. 2.00.'],
-            'touch_points'    => ['Titik sentuh', 'int', 'Jumlah titik sentuh yang didukung.'],
-            'orientation'     => ['Orientasi', 'text', 'Orientasi layar, mis. landscape-primary.'],
-            'is_standalone'   => ['Aplikasi terpasang', 'bool', '1 = dibuka sebagai aplikasi terpasang.'],
-            'language'        => ['Bahasa peramban', 'text', 'Bahasa peramban, mis. id-ID.'],
-            'timezone'        => ['Zona waktu', 'text', 'Zona waktu perangkat.'],
-            'corrected'       => ['Koreksi', 'code', 'Koreksi pengurai yang diterapkan, mis. ipad_desktop_ua.'],
-            'detector'        => ['Pengurai', 'text', 'Nama dan versi pengurai perangkat.'],
-            'user_agent'      => ['User-Agent', 'text', 'Teks User-Agent apa adanya.'],
-            'client_hints'    => ['Client Hints (JSON)', 'json', 'Client Hints mentah: {headers, ua_data}.'],
         ],
         'progres' => [
             'current_level'           => ['Wilayah saat ini', 'enum', 'Wilayah terakhir yang dibuka.', 'level'],
@@ -156,6 +148,8 @@ final class ExportLabels
             'total_stars'             => ['Jumlah bintang', 'int', 'Jumlah bintang terbaik per tantangan (0–36).'],
         ],
         'pengerjaan' => [
+            'variant_source'      => ['Asal variasi', 'code', 'booklet = dari buklet siswa (pengerjaan pertama dalam mode penelitian), random = acak, retake = pengerjaan ulang.'],
+            'booklet_at_open'     => ['Buklet saat dibuka', 'code', 'Buklet siswa (B1–B4) saat pengerjaan dibuka; kosong di luar mode penelitian.'],
             'attempt_no'          => ['Pengerjaan ke-', 'int', 'Pengerjaan ke-n tantangan ini dalam sesi.'],
             'status'              => ['Status', 'enum', 'Status pengerjaan.', 'attemptStatus'],
             'completion_reason'   => ['Alasan selesai', 'enum', 'Diisi saat pengerjaan selesai.', 'completion'],
@@ -190,40 +184,41 @@ final class ExportLabels
             'answer'             => ['Jawaban', 'json', 'Jawaban percobaan ini. Berlabel: kalimat; berkode: JSON.'],
             'is_correct'         => ['Benar', 'bool', '1 = percobaan ini benar.'],
             'hint_opened_before' => ['Sudah membuka petunjuk', 'bool', '1 = ada petunjuk yang dibuka di pengerjaan ini sebelum percobaan.'],
+            'manual_code'        => ['Kode manual', 'code', 'Kode kesalahan dari pengodean manual wawancara L5, bila kedua pengode sepakat dan berbeda dari kode game.'],
+            'ready_ms'           => ['Siap dijawab (mdtk)', 'ms', 'Milidetik sejak tantangan dibuka saat butir bisa dijawab untuk percobaan ini (Benar atau Salah, Cari Objek, Skenario Digital: tindakan bisa dipilih); kosong untuk Isi Rumpang dan Susun Gambar.'],
             'first_input_ms'     => ['Masukan pertama (mdtk)', 'ms', 'Milidetik sejak tantangan dibuka sampai masukan pertama soal ini (klien).'],
-            'last_input_ms'      => ['Masukan terakhir (mdtk)', 'ms', 'Milidetik sampai masukan terakhir sebelum percobaan (klien); Cari Objek: sejak petunjuk tampil.'],
+            'last_input_ms'      => ['Masukan terakhir (mdtk)', 'ms', 'Milidetik sejak tantangan dibuka sampai masukan terakhir sebelum percobaan (klien). Cari Objek sebelum November 2026: sejak petunjuk tampil.'],
             'occurred_at'        => ['Waktu percobaan', 'datetime', 'Waktu server saat percobaan dinilai.'],
+            // Part 6 (32 §10): Skenario Digital only
+            'action_key'           => ['Tindakan dipilih', 'code', 'Kode tindakan yang dipilih (Skenario Digital).'],
+            'action_score'         => ['Skor tindakan', 'int', 'Skor bank tindakan itu: 2 = aman, 1 = sebagian, 0 = berisiko (Skenario Digital).'],
+            'reason_code'          => ['Kode alasan', 'code', 'Kode alasan yang dipilih (Skenario Digital).'],
+            'reason_ready_ms'      => ['Alasan siap dipilih (mdtk)', 'ms', 'Milidetik sejak tantangan dibuka saat pilihan alasan tampil (Skenario Digital).'],
+            'action_last_input_ms' => ['Masukan terakhir tindakan (mdtk)', 'ms', 'Milidetik sejak tantangan dibuka sampai tindakan terakhir dipilih (Skenario Digital).'],
+            'reason_last_input_ms' => ['Masukan terakhir alasan (mdtk)', 'ms', 'Milidetik sejak tantangan dibuka sampai alasan terakhir dipilih (Skenario Digital).'],
         ],
         'navigasi' => [
             'screen'      => ['Layar', 'code', 'Kode layar (payload.screen).'],
             'from_screen' => ['Dari layar', 'code', 'Kode layar sebelumnya (payload.from) untuk screen_viewed.'],
-            'event_type'  => ['Jenis event', 'enum', 'Event navigasi: screen_viewed, overlay_opened (payload overlay: kenal, hint, exit, lightbox, statement_image, hunt_zoom), dialogue_advanced, library_opened, library_page_viewed, locale_changed, page_hidden, page_visible, viewport_changed, reading_progress, package_changed (paket aset berganti; payload from, to, reason), events_dropped (catatan yang tidak muat di memori perangkat; payload dropped, channel).', 'event'],
+            'event_type'  => ['Jenis event', 'enum', 'Event navigasi: screen_viewed, overlay_opened (payload overlay: kenal, hint, exit, lightbox, statement_image, hunt_zoom), dialogue_completed (slide terakhir sebuah cerita; payload context, total), passage_reopened (bacaan dibuka lagi sesudah masukan pertama; payload via, passage, t_ms), library_opened, library_page_viewed, locale_changed, page_hidden, page_visible, reading_progress.', 'event'],
         ],
         'bantuan' => [
-            'jenis'         => ['Jenis bantuan', 'enum', 'petunjuk = petunjuk dibuka (event hint_opened); audio = satu aksi pemutar suara.', 'helpKind'],
+            'jenis'         => ['Jenis bantuan', 'enum', 'petunjuk = petunjuk dibuka (event hint_opened); audio = satu pemutaran rekaman.', 'helpKind'],
             'hint_id'       => ['No. petunjuk', 'int', 'Nomor petunjuk yang dibuka (hints.id).'],
             'asset_key'     => ['Kode rekaman', 'code', 'Kunci berkas suara.'],
             'audio_context' => ['Bagian permainan', 'enum', 'Tempat rekaman diputar.', 'audioContext'],
             'audio_locale'  => ['Bahasa rekaman', 'enum', 'Bahasa rekaman.', 'locale'],
-            'action'        => ['Tindakan suara', 'enum', 'Aksi pemutar suara.', 'audioAction'],
+            'action'        => ['Tindakan suara', 'enum', 'Aksi yang membuka pemutaran ini (putar, putar otomatis, ulang).', 'audioAction'],
             'play_index'    => ['Pemutaran ke-', 'int', 'Pemutaran ke-n rekaman itu dalam sesi.'],
-            'listened_ms'   => ['Lama didengar (mdtk)', 'ms', 'Milidetik rekaman didengar.'],
-            'completed'     => ['Didengar sampai habis', 'bool', '1 = rekaman didengar sampai habis.'],
+            'listened_ms'   => ['Lama didengar (mdtk)', 'ms', 'Lama didengar terbesar yang tercatat untuk pemutaran ini.'],
+            'completed'     => ['Didengar sampai habis', 'bool', '1 = pemutaran ini didengar sampai habis.'],
         ],
         'selesai' => [
-            'event_type' => ['Jenis event', 'enum', 'Event penyelesaian: challenge_completed, challenge_abandoned, challenge_tries_exhausted, clue_failed, level_completed, session_completed, intro_completed, feedback_submitted.', 'event'],
+            'event_type' => ['Jenis event', 'enum', 'Event penyelesaian: challenge_completed, challenge_abandoned, challenge_tries_exhausted, clue_failed, scenario_failed, level_completed, session_completed, intro_completed, feedback_submitted.', 'event'],
         ],
         'event' => [
-            'id'                   => ['No. event', 'int', 'game_event_logs.id.'],
-            'event_uuid'           => ['UUID event', 'code', 'Pengenal unik event, dibuat server.'],
-            'client_event_id'      => ['Kode event klien', 'code', 'Kunci idempotensi dari klien; event server memakai srv-{uuid}.'],
-            'session_id'           => ['No. sesi', 'int', 'game_sessions.id.'],
-            'participant_id'       => ['No. siswa', 'int', 'participants.id.'],
-            'level_id'             => ['No. wilayah', 'int', 'levels.id.'],
-            'challenge_node_id'    => ['No. tantangan', 'int', 'challenge_nodes.id.'],
-            'challenge_attempt_id' => ['No. pengerjaan', 'int', 'challenge_attempts.id.'],
-            'challenge_item_id'    => ['No. soal', 'int', 'challenge_items.id.'],
-            'payload_json'         => ['Rincian (JSON)', 'json', 'payload_json apa adanya.'],
+            'item_key'   => ['Kode soal', 'code', 'Soal yang dirujuk event, bila ada.'],
+            'event_type' => ['Jenis event', 'enum', 'Semua event bertanda Peneliti di katalog event (App\\Libraries\\EventCatalog::RESEARCH).', 'event'],
         ],
         'masukan' => [
             'rating'       => ['Bintang (1–5)', 'int', 'Penilaian siswa terhadap permainan.'],
@@ -233,6 +228,18 @@ final class ExportLabels
             'suggestion'   => ['Saran', 'text', 'Saran siswa.'],
             'submitted_at' => ['Dikirim', 'datetime', 'Waktu kritik & saran dikirim.'],
         ],
+        // Part 4 (30 §10.1): codes as stored; 1 = Ya, 0 = Tidak
+        'izin' => [
+            'parent_consent_on'       => ['Tanggal izin orang tua', 'text', 'Tanggal di surat izin orang tua (L7), TTTT-BB-HH.'],
+            'recording_consent'       => ['Izin rekaman suara', 'bool', '1 = orang tua mengizinkan rekaman suara.'],
+            'recording_withdrawn_on'  => ['Izin rekaman ditarik', 'text', 'Tanggal izin rekaman ditarik (TTTT-BB-HH), bila ada.'],
+            'risk_items_consent'      => ['Izin pertanyaan internet', 'bool', '1 = orang tua mengizinkan pertanyaan pengalaman di internet (ang-21–ang-23).'],
+            'risk_items_withdrawn_on' => ['Izin pertanyaan internet ditarik', 'text', 'Tanggal izin pertanyaan internet ditarik (TTTT-BB-HH), bila ada.'],
+            'assented_at'             => ['Persetujuan siswa', 'datetime', 'Waktu siswa mencentang persetujuan di layar daftar.'],
+            'assent_version'          => ['Versi teks persetujuan', 'code', 'Versi teks yang dicentang siswa, mis. t4-1.'],
+            'status'                  => ['Status izin', 'code', 'active, left (pindah atau keluar), withdrawn_keep (mundur, data dipakai), withdrawn_delete (mundur, data dihapus).'],
+            'status_on'               => ['Tanggal status', 'text', 'Tanggal status izin terakhir berubah, TTTT-BB-HH.'],
+        ],
         'butir' => [
             'sequence'        => ['Urutan', 'int', 'Urutan soal dalam tantangan.'],
             'passage_key'     => ['Kode bacaan', 'code', 'Bacaan Benar atau Salah, mis. tmg-3-a.'],
@@ -240,9 +247,9 @@ final class ExportLabels
             'scorable'        => ['Dinilai', 'bool', '0 = tidak dinilai (benda pengecoh).'],
             'is_active'       => ['Aktif', 'bool', '0 = soal diistirahatkan.'],
             'media_asset_key' => ['Kode gambar', 'code', 'Kunci slot gambar soal.'],
+            'variant_group'   => ['Variasi', 'code', 'Variasi butir: a, b, x, atau c–k (Susun Gambar).'],
             // Research revision 10, part 5 (31 §13.3; 11 → Variabel butir)
             'round'                 => ['Babak', 'int', 'Cari Objek: 1 = Temukan Benda, 2 = Periksa Unggahan. Kosong untuk tantangan lain.'],
-            'variant'               => ['Variasi (kamus)', 'code', 'Nama 11 untuk variant_group: a, b, x (dipakai semua buklet), atau c–k (Susun Gambar).'],
             'booklet_shared'        => ['Dipakai semua buklet', 'bool', '1 = butir x (kartu jangkar, babak 1 Cari Objek).'],
             'dimension'             => ['Dimensi', 'code', 'D1, D2, D3, atau PBK (pendamping).'],
             'subaspect'             => ['Sub-aspek', 'code', 'D1a memahami informasi, D1b menilai informasi dan sumber.'],
@@ -265,24 +272,34 @@ final class ExportLabels
             'review_status'         => ['Status pemeriksaan', 'code', 'draft, needs_verification, atau verified.'],
             'reference_source'      => ['Sumber rujukan', 'text', 'Asal fakta butir.'],
         ],
+        'kode_pilihan' => [
+            'choice_type' => ['Jenis pilihan', 'code', 'word (kata Isi Rumpang), object (benda Cari Objek), part (bagian unggahan), action atau reason (Skenario Digital).'],
+            'choice_ref'  => ['Pilihan', 'code', 'Kata, kode benda, kode bagian (A1, C10, …), atau kode pilihan skenario.'],
+            'error_code'  => ['Kode kesalahan', 'code', 'Kode kesalahan bank bila pilihan ini dipilih (tindakan skenario: kode tindakan).'],
+            'is_main'     => ['Kode utama', 'bool', '1 = kode utama butir itu.'],
+            'option_score' => ['Skor tindakan', 'int', 'Skor tindakan Skenario Digital (0–2); kosong untuk pilihan lain.'],
+        ],
     ];
 
     /** Nama lembar (XLSX, tab tabel) dan artinya untuk Kamus Data. */
     private const SHEET_TITLES = [
-        'kamus'      => ['Kamus Data', 'Arti setiap lembar dan kolom, satuan, dan daftar nilai berkode.'],
+        'kamus'      => ['Kamus Data', 'Arti setiap lembar dan kolom, satuan, daftar nilai berkode, dan rujukannya di kamus data penelitian.'],
         'peserta'    => ['Peserta', 'Satu baris per siswa.'],
+        'sesi_lapangan' => ['Sesi Lapangan', 'Satu baris per sesi lapangan (tanpa riwayat token).'],
         'sesi'       => ['Sesi', 'Satu baris per sesi bermain.'],
-        'perangkat'  => ['Perangkat', 'Satu baris setiap siswa mendaftar, masuk, atau melanjutkan sesi.'],
-        'progres'    => ['Progres', 'Keadaan terbaru satu sesi.'],
+        'progres'    => ['Progres', 'Kemajuan satu siswa di satu studi.'],
         'pengerjaan' => ['Pengerjaan Tantangan', 'Satu baris per pengerjaan tantangan.'],
         'jawaban'    => ['Jawaban Soal', 'Keadaan akhir satu soal dalam satu pengerjaan.'],
         'percobaan'  => ['Riwayat Percobaan', 'Satu baris per percobaan satu soal.'],
         'navigasi'   => ['Navigasi', 'Event perpindahan layar dan membaca.'],
-        'bantuan'    => ['Bantuan', 'Petunjuk yang dibuka dan setiap aksi pemutar suara.'],
+        'bantuan'    => ['Bantuan', 'Petunjuk yang dibuka dan setiap pemutaran rekaman.'],
         'selesai'    => ['Penyelesaian', 'Event selesai, ditinggalkan, dan kesempatan habis.'],
-        'event'      => ['Event Mentah', 'Semua kolom game_event_logs, tanpa baris yang ditandai hapus (hanya admin).'],
+        'event'      => ['Event Mentah', 'Semua event bertanda Peneliti, dengan kode sebagai pengganti nomor internal (hanya ketua peneliti).'],
         'masukan'    => ['Kritik & Saran', 'Satu baris per kiriman kritik dan saran.'],
         'butir'      => ['Bank Soal', 'Satu baris per soal di bank soal.'],
+        'kode_pilihan' => ['Kode Pilihan', 'Kode kesalahan bank per pilihan dan pilihan skenario (hanya ketua peneliti).'],
+        'izin'       => ['Izin Berkode', 'Izin orang tua dan persetujuan siswa per siswa, hanya kode (hanya ketua peneliti).'],
+        // Field sheets: titles from FieldSheetSpec (sheetTitle())
     ];
 
     /** Nilai berlabel kelompok yang tidak ada di Language/id/Admin.php. */
@@ -291,13 +308,7 @@ final class ExportLabels
         'attemptStatus'  => ['in_progress', 'completed', 'abandoned'],
         'responseStatus' => ['pending', 'answered', 'skipped'],
         'helpKind'       => ['petunjuk' => 'Petunjuk dibuka', 'audio' => 'Pemutaran suara'],
-        'deviceVia'      => ['register' => 'Mendaftar', 'login' => 'Masuk', 'resume' => 'Melanjutkan sesi'],
         'level'          => ['temanggung' => 'Temanggung', 'magelang' => 'Magelang', 'wonosobo' => 'Wonosobo'],
-        'packageMode'    => [
-            'lengkap'  => 'Paket lengkap di perangkat',
-            'daring'   => 'Daring (perangkat tanpa paket)',
-            'nonaktif' => 'Mode paket mati',
-        ],
     ];
 
     /** @return list<string> */
@@ -308,18 +319,53 @@ final class ExportLabels
 
     public static function sheetTitle(string $sheet): string
     {
+        if (! isset(self::SHEET_TITLES[$sheet]) && FieldSheetSpec::has($sheet)) {
+            return FieldSheetSpec::title($sheet);
+        }
+
         return self::SHEET_TITLES[$sheet][0] ?? $sheet;
     }
 
     public static function sheetMeaning(string $sheet): string
     {
+        if (! isset(self::SHEET_TITLES[$sheet]) && FieldSheetSpec::has($sheet)) {
+            return 'Lembar lapangan yang diketik dan diunggah (impor utama yang berlaku); kolom seperti 02_LEMBAR_LAPANGAN.md.';
+        }
+
         return self::SHEET_TITLES[$sheet][1] ?? '';
     }
 
     /** Apakah kolom ini punya keterangan lengkap. Dipakai uji. */
     public static function has(string $sheet, string $column): bool
     {
-        return isset(self::SHEETS[$sheet][$column]) || isset(self::COMMON[$column]);
+        return isset(self::SHEETS[$sheet][$column]) || isset(self::COMMON[$column]) || self::fieldColumn($sheet, $column) !== null;
+    }
+
+    /**
+     * A field-sheet column (29 §10.7), its wording from FieldSheetSpec.
+     *
+     * @return array{0: string, 1: string, 2: string}|null
+     */
+    private static function fieldColumn(string $sheet, string $column): ?array
+    {
+        if (! FieldSheetSpec::has($sheet) || isset(self::COMMON[$column])) {
+            return null;
+        }
+
+        $spec = FieldSheetSpec::columns($sheet)[$column] ?? null;
+
+        if ($spec === null) {
+            return null;
+        }
+
+        $type = match ($spec['type']) {
+            'int', 'try'      => 'int',
+            'yesno'           => 'text',
+            'participant', 'session', 'item', 'manual', 'code' => 'code',
+            default           => 'text',
+        };
+
+        return [$spec['label'], $type, 'Isian lembar ' . FieldSheetSpec::title($sheet) . ': ' . $spec['label'] . ($spec['list'] ? ' (kode: ' . implode(', ', FieldSheetSpec::CODES[$spec['list']]) . ')' : '') . '.'];
     }
 
     /**
@@ -329,7 +375,7 @@ final class ExportLabels
      */
     public static function column(string $sheet, string $column): array
     {
-        $spec = self::SHEETS[$sheet][$column] ?? self::COMMON[$column] ?? [$column, 'text', ''];
+        $spec = self::SHEETS[$sheet][$column] ?? self::fieldColumn($sheet, $column) ?? self::COMMON[$column] ?? [$column, 'text', ''];
 
         return [
             'key'     => $column,
@@ -442,15 +488,22 @@ final class ExportLabels
     }
 
     /**
-     * Baris lembar Kamus Data untuk lembar-lembar yang diekspor.
+     * Baris lembar Kamus Data untuk lembar-lembar yang diekspor, with the
+     * research dictionary's name, analytics, and anchor in 11 per column
+     * (ResearchDictionary, 29 §8). `$head` rows come first (file header).
      *
      * @param array<string, list<string>> $columnsBySheet kode lembar → kolom
+     * @param list<array{0: string, 1: string}> $head label → value
      *
-     * @return list<array{lembar: string, kolom: string, judul: string, arti: string, satuan: string, nilai: string}>
+     * @return list<array<string, string>>
      */
-    public static function dictionary(array $columnsBySheet): array
+    public static function dictionary(array $columnsBySheet, array $head = []): array
     {
         $rows = [];
+
+        foreach ($head as [$label, $value]) {
+            $rows[] = ['lembar' => $label, 'kolom' => '', 'judul' => $value, 'arti' => '', 'satuan' => '', 'nilai' => '', 'nama_kamus' => '', 'analitik' => '', 'rujukan_kamus' => ''];
+        }
 
         foreach ($columnsBySheet as $sheet => $columns) {
             $rows[] = [
@@ -460,6 +513,9 @@ final class ExportLabels
                 'arti'   => self::sheetMeaning($sheet),
                 'satuan' => '',
                 'nilai'  => '',
+                'nama_kamus'    => '',
+                'analitik'      => '',
+                'rujukan_kamus' => '',
             ];
 
             foreach ($columns as $column) {
@@ -470,6 +526,7 @@ final class ExportLabels
                     $values = ['1' => 'ya', '0' => 'tidak'];
                 }
 
+                $entry  = ResearchDictionary::entry($sheet, $column);
                 $rows[] = [
                     'lembar' => $sheet,
                     'kolom'  => $column,
@@ -481,6 +538,9 @@ final class ExportLabels
                         array_keys($values),
                         $values,
                     )),
+                    'nama_kamus'    => $entry === null ? '' : (string) $entry['kamus'],
+                    'analitik'      => $entry === null ? '' : implode(', ', $entry['analytics']),
+                    'rujukan_kamus' => $entry === null ? '' : ResearchDictionary::DOC . '#' . $entry['ref'],
                 ];
             }
         }

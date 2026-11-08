@@ -4,7 +4,8 @@
  *
  * Filter sama dengan filter bar panel (nama field identik), tetapi dikirim
  * lewat POST. Only `ketua` reaches this page (27 K14): every download is
- * coded, and Event Mentah is not offered until part 3 (29 K1).
+ * coded, belongs to one study (29 K16), and offers Event Mentah and the
+ * answer key (29 K1). The history shows the caller's own downloads (29 §9).
  * Baris dengan status queued/running diperbarui admin/export.js
  * lewat data-export-id; tanpa JavaScript, muat ulang halaman.
  *
@@ -18,6 +19,8 @@
  * @var array<string, string>       $sheetTitles
  * @var array<string, string>       $sheetNotes
  * @var list<array<string, mixed>>  $recent
+ * @var array<int, int>             $downloads export id → times downloaded
+ * @var list<array<string, mixed>>  $studies
  * @var int                         $retention hari
  * @var int                         $rawEventLimit ambang baris lembar event
  */
@@ -31,9 +34,31 @@
 ]) ?>
 <?= $this->include('partials/flash') ?>
 
+<?php if ($studies === []): ?>
+<div class="alert alert-warn" role="status"><div class="alert-body"><?= esc(lang('Admin.exportNeedsStudy')) ?> <a href="<?= base_url('admin/studi') ?>">Buka halaman Studi</a></div></div>
+<?php else: ?>
 <form method="post" action="<?= base_url('admin/ekspor/xlsx') ?>" class="form-section">
   <?= csrf_field() ?>
   <h2><?= icon('filter') ?> Data mana yang diunduh?</h2>
+  <div class="form-grid">
+    <div class="field">
+      <label class="label" for="export-study">Studi</label>
+      <select id="export-study" name="study_id" required>
+        <?php foreach ($studies as $study): ?>
+          <option value="<?= (int) $study['id'] ?>" <?= (string) ($filters['study_id'] ?? '') === (string) $study['id'] ? 'selected' : '' ?>><?= esc($study['code'] . ' · ' . $study['name']) ?></option>
+        <?php endforeach ?>
+      </select>
+      <p class="field-help"><?= esc(lang('Admin.exportPickStudy')) ?></p>
+    </div>
+    <div class="field">
+      <label class="label" for="export-field-session">Kode sesi lapangan</label>
+      <input type="text" id="export-field-session" name="field_session_code" value="<?= esc((string) ($filters['field_session_code'] ?? ''), 'attr') ?>" placeholder="mis. S03-A-P2" maxlength="20" autocomplete="off">
+    </div>
+    <div class="field">
+      <label class="label" for="export-meeting">Pertemuan ke-</label>
+      <input type="number" id="export-meeting" name="meeting_no" min="1" max="9" value="<?= esc((string) ($filters['meeting_no'] ?? ''), 'attr') ?>">
+    </div>
+  </div>
   <?= component('components/admin-filter-bar', [
       'filters'       => $filters,
       'filterOptions' => $filterOptions,
@@ -76,11 +101,22 @@
     <span class="field-help">Data dan laporan PDF satu siswa dibuat dari halaman detail siswa.</span>
   </div>
 </form>
+<?php endif ?>
 
 <?php
-$rows = array_map(static function (array $row): array {
+$rows = array_map(static function (array $row) use ($downloads): array {
     $path        = (string) ($row['file_path'] ?? '');
     $row['size'] = $path !== '' && is_file($path) ? (int) filesize($path) : null;
+    $scope       = is_array($row['scope_json']) ? $row['scope_json'] : (json_decode((string) $row['scope_json'], true) ?: []);
+    $filters     = [];
+
+    foreach ((array) ($scope['filters'] ?? []) as $key => $value) {
+        $filters[] = $key . '=' . $value;
+    }
+
+    $row['sheets']    = implode(', ', (array) ($scope['sheets'] ?? [])) ?: 'semua';
+    $row['filters']   = implode('; ', $filters) ?: '—';
+    $row['downloads'] = $downloads[(int) $row['id']] ?? 0;
 
     return $row;
 }, $recent);
@@ -93,7 +129,12 @@ $rows = array_map(static function (array $row): array {
             ['key' => 'created_at', 'label' => 'Dibuat', 'type' => 'datetime'],
             ['key' => 'format', 'label' => 'Format', 'type' => 'text'],
             ['key' => 'status', 'label' => 'Status', 'type' => 'text'],
+            ['key' => 'sheets', 'label' => 'Lembar', 'type' => 'text'],
+            ['key' => 'filters', 'label' => 'Filter', 'type' => 'text'],
             ['key' => 'row_count', 'label' => 'Baris', 'type' => 'int'],
+            ['key' => 'participant_count', 'label' => lang('Admin.exportParticipantCount'), 'type' => 'int'],
+            ['key' => 'dictionary_version', 'label' => lang('Admin.exportDictionaryVersion'), 'type' => 'code'],
+            ['key' => 'downloads', 'label' => lang('Admin.exportDownloadCount'), 'type' => 'int'],
             ['key' => 'size', 'label' => 'Ukuran (KB)', 'type' => 'int'],
             ['key' => 'file_sha256', 'label' => 'SHA-256', 'type' => 'code'],
             ['key' => 'expires_at', 'label' => 'Kedaluwarsa', 'type' => 'datetime'],
@@ -101,7 +142,7 @@ $rows = array_map(static function (array $row): array {
         ]),
     ],
     'id'           => 'riwayat-unduhan',
-    'title'        => 'Riwayat unduhan',
+    'title'        => lang('Admin.exportHistoryMine'),
     'csv'          => false,
     'paginate'     => false,
     'stickyFirst'  => false,
@@ -120,7 +161,7 @@ $rows = array_map(static function (array $row): array {
             }
 
             if ($row['expires_at'] !== null && strtotime((string) $row['expires_at']) < time()) {
-                return '<span class="cell-sub">sudah dihapus</span>';
+                return '<span class="cell-sub">' . esc(lang('Admin.exportFileGone')) . '</span>';
             }
 
             return '<a class="btn btn-sm" href="' . esc(base_url('admin/ekspor/unduh/' . $row['id']), 'attr') . '">' . icon('download') . ' Unduh</a>';

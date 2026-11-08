@@ -41,6 +41,9 @@ $maxTries   = max(1, (int) ($payload['max_tries'] ?? config('Gelita')->maxTries)
 $triesLeft  = max(0, $maxTries - (int) ($payload['tries_used'] ?? 0));
 // "Kesempatan: {0} dari {1}" — challenge.js mengisi angkanya setiap respons server
 $triesAria  = lang('Game.triesLabel') . ': ' . lang('Game.triesOf', ['{0}', '{1}']);
+// Part 6 (32 §8.2, K10): instruction narration, only through ▶ and only when approved
+$instructionAudioId  = $locale === 'en' ? $node->audio_instruction_en_id : $node->audio_instruction_id;
+$instructionAudioSrc = audio_src($instructionAudioId);
 ?>
 <section class="challenge challenge-<?= esc($engine, 'attr') ?>"
          data-screen="challenge"
@@ -77,8 +80,8 @@ $triesAria  = lang('Game.triesLabel') . ': ' . lang('Game.triesOf', ['{0}', '{1}
             <span class="tally-sep" aria-hidden="true">/</span>
             <span class="tally-bad"><?= round_icon('wrong', 'stat-art', 'cross') ?><span class="visually-hidden"><?= esc(lang('Game.countWrong')) ?></span> <b id="count-wrong" class="num">0</b></span>
           </span>
-          <?php if ($engine !== 'cari'): ?>
-            <?php // Penanda 3 kesempatan engine batch (Dok 2 §5.3): bulatan terisi = sisa ?>
+          <?php if (! $node->triesPerItem()): ?>
+            <?php // Penanda 3 kesempatan engine batch (Dok 2 §5.3): bulatan terisi = sisa; per-item engines draw their own ?>
             <span class="chip-tries" id="tries" role="img" data-left="<?= $triesLeft ?>"
                   data-label="<?= esc($triesAria, 'attr') ?>"
                   aria-label="<?= esc(lang('Game.triesLabel') . ': ' . lang('Game.triesOf', [$triesLeft, $maxTries]), 'attr') ?>">
@@ -106,12 +109,21 @@ $triesAria  = lang('Game.triesLabel') . ': ' . lang('Game.triesOf', ['{0}', '{1}
         <?php if ($node->text('instruction', $locale) !== ''): ?>
           <?php // The round "i" button of the owner's sheet beside the text (owner, 22 October 2026) ?>
           <p class="instruction"><?= round_icon('info', 'instruction-art') ?: '<span class="instruction-mark" aria-hidden="true">i</span>' ?> <span class="instruction-text"><?= esc($node->text('instruction', $locale)) ?></span></p>
+          <?php if ($instructionAudioSrc !== null): ?>
+            <?php // Never plays on its own: core/audio.js mounts it with the attempt id, so each tap is logged (challenge_instruction) ?>
+            <div class="audio-player instruction-audio" data-audio-id="<?= (int) $instructionAudioId ?>" data-src="<?= esc($instructionAudioSrc, 'attr') ?>">
+              <div class="audio-controls">
+                <button type="button" class="audio-btn" data-action="play" aria-label="<?= esc(lang('Game.instructionListen'), 'attr') ?>" title="<?= esc(lang('Game.instructionListen'), 'attr') ?>"><?= icon('play') ?></button>
+                <button type="button" class="audio-btn" data-action="pause" aria-label="<?= esc(lang('Game.audioPause'), 'attr') ?>" hidden><?= icon('pause') ?></button>
+              </div>
+            </div>
+          <?php endif ?>
         <?php endif ?>
         <?= $this->renderSection('aside') ?>
       </aside>
       <noscript><div class="alert alert-warn arena-alert stage-box"><?= icon('warn') ?><p><?= esc(lang('Game.needsJs')) ?></p></div></noscript>
 
-      <?php if (($payload['items'] ?? $payload['objects'] ?? []) === []): ?>
+      <?php if (($payload['items'] ?? $payload['objects'] ?? $payload['scenarios'] ?? []) === []): ?>
         <div class="empty-state arena-empty stage-box"><?= icon('info') ?><p><?= esc(lang('Game.noItems')) ?></p></div>
       <?php else: ?>
         <div class="arena-body"><?= $this->renderSection('arena') ?></div>

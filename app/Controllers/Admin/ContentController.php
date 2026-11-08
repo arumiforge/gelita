@@ -36,7 +36,9 @@ class ContentController extends BaseAdminController
         'puzzle'  => ['puzzle_arrange'],
         'rumpang' => ['fill_blank_bank'],
         'boleh'   => ['verdict_card'],
-        'cari'    => ['find_object'],
+        'cari'    => ['find_object', 'find_part'],
+        // Part 6 (32 §5.7)
+        'skenario' => ['scenario_choice'],
     ];
 
     /** Berkas pratinjau impor; disimpan di luar public/. */
@@ -356,6 +358,16 @@ class ContentController extends BaseAdminController
             $payload = $this->applyPuzzleLayout($payload, $node, $item);
         }
 
+        $options = null;
+
+        if ($item->interaction_type === 'scenario_choice' && is_array($this->request->getPost('options'))) {
+            $options = $this->scenarioOptionChanges($item, $node);
+
+            if (is_string($options)) {
+                return $this->back($back, $options);
+            }
+        }
+
         $saved = $items->update($itemId, $payload + [
             'interaction_type' => (string) $this->request->getPost('interaction_type'),
         ]);
@@ -364,9 +376,89 @@ class ContentController extends BaseAdminController
             return $this->back($back, 'Soal belum dapat disimpan: ' . $this->modelErrors($items));
         }
 
+        foreach ($options ?? [] as $optionId => $changes) {
+            db_connect()->table('scenario_options')->where('id', $optionId)->where('challenge_item_id', $itemId)->update($changes);
+        }
+
         $this->afterContentChange('item', $itemId);
 
         return $this->done($back, 'Perubahan soal sudah disimpan.');
+    }
+
+    /**
+     * Posted edits of a Skenario Digital item's actions and reasons, checked
+     * with the same rules as the bank import (BankRules::scenarios()). Once
+     * the item has been answered, scores and codes stay as they are (they
+     * score research data); only the texts may change.
+     *
+     * @return array<int, array<string, mixed>>|string changes per option id, or the error to show
+     */
+    private function scenarioOptionChanges(ChallengeItem $item, ?ChallengeNode $node): array|string
+    {
+        $posted   = (array) $this->request->getPost('options');
+        $answered = model(ChallengeItemModel::class)->hasResponses((int) $item->id);
+        $rows     = db_connect()->table('scenario_options')->where('challenge_item_id', $item->id)->orderBy('kind')->orderBy('sequence')->get()->getResultArray();
+        $changes  = [];
+        $scores   = [];
+        $reasons  = [];
+
+        foreach ($rows as $row) {
+            $in    = (array) ($posted[$row['id']] ?? []);
+            $label = ($row['kind'] === 'action' ? 'Tindakan ' : 'Alasan ') . $row['option_key'];
+            $text  = trim((string) ($in['text_id'] ?? $row['text_id']));
+            $score = $row['kind'] === 'action' ? (string) ($in['score'] ?? $row['score']) : null;
+            $code  = strtoupper(trim((string) ($in['code'] ?? $row['code'])));
+
+            if ($text === '') {
+                return "{$label}: teks Indonesia wajib diisi.";
+            }
+
+            if ($answered && ($score !== ($row['score'] === null ? null : (string) $row['score']) || $code !== strtoupper((string) $row['code']))) {
+                return "{$label}: skor dan kode tidak bisa diubah karena skenario ini sudah dijawab siswa. Teksnya tetap bisa diubah.";
+            }
+
+            if ($row['kind'] === 'action') {
+                if (! in_array($score, ['0', '1', '2'], true)) {
+                    return "{$label}: skor harus 0, 1, atau 2.";
+                }
+
+                if ($score === '2' ? $code !== '' : ! \App\Libraries\ErrorCodes::allowedFor('action', $code)) {
+                    return $score === '2'
+                        ? "{$label}: tindakan tepat (skor 2) tidak diberi kode kesalahan."
+                        : "{$label}: tindakan berskor {$score} wajib punya kode " . implode(', ', \App\Libraries\ErrorCodes::BY_CHOICE['action']) . '.';
+                }
+
+                $scores[] = $score;
+            } elseif (! \App\Libraries\ErrorCodes::allowedFor('reason', $code)) {
+                return "{$label}: kode alasan harus salah satu dari " . implode(', ', \App\Libraries\ErrorCodes::BY_CHOICE['reason']) . '.';
+            } else {
+                $reasons[$code] = true;
+            }
+
+            $changes[(int) $row['id']] = [
+                'text_id'     => $text,
+                'text_en'     => trim((string) ($in['text_en'] ?? $row['text_en'])),
+                'score'       => $score === null ? null : (int) $score,
+                'code'        => $code === '' ? null : $code,
+                'feedback_id' => $row['kind'] === 'action' ? (trim((string) ($in['feedback_id'] ?? $row['feedback_id'])) ?: null) : $row['feedback_id'],
+                'feedback_en' => $row['kind'] === 'action' ? (trim((string) ($in['feedback_en'] ?? $row['feedback_en'])) ?: null) : $row['feedback_en'],
+            ];
+        }
+
+        $counts = array_count_values($scores);
+
+        if (($counts['2'] ?? 0) !== 1 || ($counts['1'] ?? 0) !== 1) {
+            return 'Setiap skenario punya tepat satu tindakan skor 2, tepat satu skor 1, dan sisanya skor 0.';
+        }
+
+        $difficulty = $node === null ? null : model(LevelModel::class)->find($node->level_id)?->difficulty;
+        $setOk      = DifficultyRules::scenario($difficulty)['all_reasons']
+            ? array_diff(\App\Libraries\ErrorCodes::BY_CHOICE['reason'], array_keys($reasons)) === []
+            : (isset($reasons['R-RISK']) || isset($reasons['R-ETIK'])) && isset($reasons['R-ATUR']) && (isset($reasons['R-SOS']) || isset($reasons['R-ACAK']));
+
+        return $setOk ? $changes : (DifficultyRules::scenario($difficulty)['all_reasons']
+            ? 'Alasan di wilayah ini wajib memuat kelima kode R-*.'
+            : 'Alasan wajib memuat R-RISK atau R-ETIK, R-ATUR, dan R-SOS atau R-ACAK.');
     }
 
     public function deleteItem(int $itemId): RedirectResponse
@@ -994,8 +1086,16 @@ class ContentController extends BaseAdminController
             return $media;
         }
 
-        // Narasi petunjuk hanya untuk find_object (engine `cari`); jenis lain selalu tanpa audio
-        $audio = $this->request->getPost('interaction_type') === 'find_object'
+        // Narration only for Cari Objek clues and Skenario Digital situations (32 §9.1);
+        // reading passages and statements are never read out (K12)
+        $type = (string) $this->request->getPost('interaction_type');
+
+        if (in_array($type, \App\Libraries\NarrationImporter::SILENT_TYPES, true)
+            && ((int) $this->request->getPost('audio_prompt_id') > 0 || (int) $this->request->getPost('audio_prompt_en_id') > 0)) {
+            return lang('Admin.narration_d1_refused');
+        }
+
+        $audio = in_array($type, ['find_object', 'find_part', 'scenario_choice'], true)
             ? $this->audioFields(['audio_prompt_id', 'audio_prompt_en_id'])
             : ['audio_prompt_id' => null, 'audio_prompt_en_id' => null];
 

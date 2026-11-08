@@ -31,6 +31,7 @@ class GovernanceController extends BaseAdminController
             'sessionDays'     => $config->sessionAbandonDays,
             'exportRetention' => $config->exportRetentionDays,
             'retention'       => session('retention_result'),
+            'backupWarning'   => self::backupWarning(),
         ]);
     }
 
@@ -134,6 +135,23 @@ class GovernanceController extends BaseAdminController
     }
 
     // -------------------------------------------------------------- bantuan
+
+    /**
+     * Part 4 (30 §0.1): warns when a field-mode study exists but the backup
+     * script never reported `KEDUA_HARI` (`writable/backup-status.json`,
+     * written by deploy/linux/backup.sh and deploy/windows/backup.ps1).
+     */
+    public static function backupWarning(?string $statusFile = null): ?string
+    {
+        if (model(\App\Models\ResearchStudyModel::class)->where('field_mode', 1)->countAllResults() === 0) {
+            return null;
+        }
+
+        $file   = $statusFile ?? WRITEPATH . 'backup-status.json';
+        $status = is_file($file) ? json_decode((string) file_get_contents($file), true) : null;
+
+        return is_array($status) && (int) ($status['kedua_hari'] ?? 0) > 0 ? null : lang('Admin.backupSecondDaysMissing');
+    }
 
     /** @return list<string> aksi yang pernah tercatat, untuk filter */
     private function knownActions(): array

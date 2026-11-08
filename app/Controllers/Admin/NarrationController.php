@@ -129,7 +129,7 @@ class NarrationController extends BaseAdminController
             return $this->back($back, 'Bahasa tidak dikenal.');
         }
 
-        $count = (new NarrationCatalog())->approveDrafts($locale, $this->staffId() ?: null);
+        $count = (new NarrationCatalog())->approveDrafts($locale, $this->staffId() ?: null, $this->request->getPost('tone_checked') === '1');
 
         return $this->done($back, $count === 0
             ? 'Tidak ada rekaman ' . self::localeName($locale) . ' yang menunggu persetujuan.'

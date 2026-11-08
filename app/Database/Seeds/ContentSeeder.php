@@ -13,7 +13,8 @@ use App\Models\DialogueModel;
  *
  * Urutan node sama di ketiga wilayah (perombakan kelas 5, K1):
  *   1 Susun Gambar (puzzle) · 2 Isi Rumpang (rumpang) ·
- *   3 Benar atau Salah (boleh) · 4 Cari Objek (cari)
+ *   3 Benar atau Salah (boleh) · 4 Cari Objek (cari) ·
+ *   5 Skenario Digital (skenario, research revision 10 part 6)
  */
 class ContentSeeder extends GelitaSeeder
 {
@@ -23,6 +24,8 @@ class ContentSeeder extends GelitaSeeder
         2 => ['rumpang', 'rumpang_bacaan', 'literasi', '40.00', '46.00'],
         3 => ['boleh', 'benar_salah_bacaan', 'literasi', '62.00', '68.00'],
         4 => ['cari', 'cari_objek', 'budaya', '82.00', '44.00'],
+        // Part 6 (32 §7.1): Skenario Digital; reset turns it off when the bank has no scenarios (32 K8)
+        5 => ['skenario', 'skenario_digital', 'budaya', '60.00', '22.00'],
     ];
 
     /** Judul & instruksi sementara (diganti workbook bank soal) */
@@ -46,6 +49,11 @@ class ContentSeeder extends GelitaSeeder
             'Cari Objek', 'Find the Objects',
             'Temukan benda sesuai petunjuk di gambar. Hati-hati, ada benda pengecoh!',
             'Find the objects that match the clues in the picture. Careful, some are decoys!',
+        ],
+        'skenario' => [
+            'Skenario Digital', 'Digital Scenarios',
+            'Bacalah ceritanya. Pilih apa yang akan kamu lakukan, lalu pilih alasanmu.',
+            'Read the story. Choose what you would do, then choose your reason.',
         ],
     ];
 

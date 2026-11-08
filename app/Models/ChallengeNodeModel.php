@@ -23,11 +23,12 @@ class ChallengeNodeModel extends Model
         'title_id', 'title_en', 'instruction_id', 'instruction_en',
         'description_id', 'description_en', 'indicator_id',
         'background_media_id', 'scene_media_id', 'audio_intro_id', 'audio_intro_en_id',
+        'audio_instruction_id', 'audio_instruction_en_id',
         'config_json', 'map_x', 'map_y', 'content_version', 'is_active',
     ];
     protected $validationRules = [
         'level_id'    => 'required|is_natural_no_zero',
-        'sequence'    => ['label' => 'Urutan tantangan', 'rules' => 'required|greater_than[0]|less_than[5]'],
+        'sequence'    => ['label' => 'Urutan tantangan', 'rules' => 'required|greater_than[0]|less_than[6]'],
         'engine_type' => ['label' => 'Jenis tantangan', 'rules' => 'required|valid_engine_type'],
         'title_id'    => ['label' => 'Judul (Indonesia)', 'rules' => 'required|max_length[250]'],
         'title_en'    => ['label' => 'Judul (Inggris)', 'rules' => 'required|max_length[250]'],

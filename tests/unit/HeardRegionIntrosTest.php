@@ -6,7 +6,8 @@ use Tests\Support\Database\ResetTables;
 
 /**
  * "Belum didengar" badge on the Kedu map: GameEventLogModel::heardRegionIntros()
- * reads the participant's `dialogue_advanced` events from the database.
+ * reads the participant's `dialogue_completed` events from the database
+ * (sent once at the last slide, revision 10, part 3: 29 K5).
  *
  * MySQL 8 stores a JSON column in binary form and returns it re-serialised
  * with a space after every colon (`{"index": 4, "context": "region_intro"}`);
@@ -30,13 +31,13 @@ final class HeardRegionIntrosTest extends CIUnitTestCase
 
         $rows = [
             // MariaDB: the text as json_encode() wrote it
-            [1, 7, '{"index":4,"total":4,"context":"region_intro","character":"jaka"}'],
+            [1, 7, '{"context":"region_intro","total":4}'],
             // MySQL 8: re-serialised with spaces
-            [2, 7, '{"index": 4, "total": 4, "context": "region_intro", "character": "mbah_kedu"}'],
-            // Not at the last slide yet
-            [3, 7, '{"index": 2, "total": 4, "context": "region_intro"}'],
+            [2, 7, '{"context": "region_intro", "total": 4}'],
+            // Another story context
+            [3, 7, '{"total": 16, "context": "level_open"}'],
             // Another participant
-            [3, 8, '{"index":4,"total":4,"context":"region_intro"}'],
+            [3, 8, '{"context":"region_intro","total":4}'],
         ];
 
         foreach ($rows as $n => [$levelId, $participantId, $payload]) {
@@ -46,7 +47,7 @@ final class HeardRegionIntrosTest extends CIUnitTestCase
                 'session_id'      => $participantId,
                 'participant_id'  => $participantId,
                 'level_id'        => $levelId,
-                'event_type'      => 'dialogue_advanced',
+                'event_type'      => 'dialogue_completed',
                 'occurred_at'     => '2026-10-12 09:00:00',
                 'payload_json'    => $payload,
             ]);

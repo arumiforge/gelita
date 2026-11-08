@@ -5,8 +5,8 @@
  *
  * Pemutarnya game/narrator.js mode `tap` (kartu bab / kartu "Serpihan …
  * kembali!", audio otomatis, mesin ketik, efek baris, maju otomatis).
- * narrator.js satu-satunya pengirim `dialogue_advanced` { index, total,
- * context: 'level_open' | 'level_done' }; modul ini hanya memakai `onSlide`:
+ * narrator.js is the only sender of `dialogue_completed` { context:
+ * 'level_open' | 'level_done', total } at the last slide; this module only uses `onSlide`:
  *
  * - tokoh yang berbicara diberi .is-speaking (maju dan terang), yang
  *   mendengar .is-listening. Tanpa JavaScript CSS :target sudah menentukan

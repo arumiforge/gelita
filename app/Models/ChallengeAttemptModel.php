@@ -119,6 +119,21 @@ class ChallengeAttemptModel extends Model
     }
 
     /**
+     * Part 6 (32 K9): whether the student of this session already has any
+     * attempt (open, closed, or abandoned) at the node in this study, across
+     * every game session. Gates the bridge story once per student per study.
+     */
+    public function hasAttemptInStudy(GameSession $session, int $nodeId): bool
+    {
+        return $this->db->table('challenge_attempts ca')
+            ->join('game_sessions gs', 'gs.id = ca.session_id')
+            ->where('gs.participant_id', $session->participant_id)
+            ->where('gs.study_id', $session->study_id)
+            ->where('ca.challenge_node_id', $nodeId)
+            ->countAllResults() > 0;
+    }
+
+    /**
      * Variasi yang sudah pernah didapat seorang siswa pada satu node, di semua
      * sesinya (Dok 2 §3.2) — termasuk pengerjaan yang ditinggalkan.
      *

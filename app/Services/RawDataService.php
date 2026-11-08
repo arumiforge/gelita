@@ -20,10 +20,18 @@ use CodeIgniter\Database\BaseConnection;
  * dibangun ExportService dari ExportLabels, bukan dari query.
  *
  * Cakupan (`StaffScope`, lapis ketiga otorisasi) diterapkan di sini:
- * - anonymous (`peneliti`, `ketua`): identity columns are never read;
- *   `school_ref` stays;
- * - without full detail: no `event` dimension and no `answer_key` column.
+ * - anonymous (`peneliti`, `ketua`): identity columns are never read, and
+ *   the validators' test accounts (`uji.*`, school V01) and simulated
+ *   students (`sim_*`) never appear, except in a one-student view (29 §7.1);
+ * - full detail (`ketua`, 29 K1): the `event` and `kode_pilihan` sheets and
+ *   the `answer_key` column; without it neither.
  * There is no school scope since revision 10 part 1 (27 §5.5).
+ *
+ * Revision 10, part 3 (29 §7): event times of the research sheets are
+ * corrected (`occurred_at_corrected` = occurred_at + clock_offset_ms, with
+ * `offset_known`), internal ids become codes, the admin-only device and
+ * package columns moved to TechLogService (`/admin/log-teknis`), and the
+ * `bantuan` sheet has one row per playback.
  * `password_hash`, `failed_login_count`, `locked_until`, dan `ip_hash`
  * tidak pernah dibaca.
  *
@@ -57,14 +65,22 @@ use CodeIgniter\Database\BaseConnection;
  */
 class RawDataService
 {
-    /** Kode dimensi = kode lembar ekspor §9.2, urutan resmi (tanpa `kamus`). */
+    /**
+     * Dimension codes = download sheet codes, official order (29 §7.2,
+     * §19 no. 13), without `kamus`. Field sheets l1_… – l6_… come from
+     * FieldSheetSpec::imported(). Later parts add their sheets here in the
+     * order of 29 §7.2: `turunan_*` (35), `tes_jawaban`, `tes_bagian`,
+     * `angket`, `sikap`, `risiko_gabungan` (34) after `kode_pilihan`.
+     */
     public const DIMENSIONS = [
-        'peserta', 'sesi', 'perangkat', 'progres', 'pengerjaan', 'jawaban', 'percobaan',
-        'navigasi', 'bantuan', 'selesai', 'event', 'masukan', 'butir',
+        'peserta', 'sesi_lapangan', 'sesi', 'progres', 'pengerjaan', 'jawaban', 'percobaan',
+        'navigasi', 'bantuan', 'selesai', 'event', 'masukan', 'butir', 'kode_pilihan',
+        'izin',   // part 4 (30 keputusan no. 9, §10.1): coded consent per student, ketua only
+        'l1_kondisi', 'l1_penyimpangan', 'l2_kursi', 'l3_bantuan', 'l4_bromp', 'l5_wawancara', 'l6_sesi',
     ];
 
-    /** Dimensi yang hanya untuk admin. */
-    public const ADMIN_ONLY_DIMENSIONS = ['event'];
+    /** Dimensions only for `ketua` (full detail, 29 K1): raw events and the bank codes per choice. */
+    public const FULL_DETAIL_DIMENSIONS = ['event', 'kode_pilihan', 'izin'];
 
     /** Answer columns that `$readableAnswers` writes as sentences (AnswerText). */
     public const ANSWER_COLUMNS = ['first_answer', 'final_answer', 'answer', 'answer_key'];
@@ -72,27 +88,22 @@ class RawDataService
     /** Kolom yang hanya ada pada data beridentitas (admin, tidak anonim). */
     public const IDENTITY_COLUMNS = ['display_name', 'username', 'school_name', 'school_npsn'];
 
-    /** Kolom yang hanya ada untuk admin. */
-    public const ADMIN_ONLY_COLUMNS = ['answer_key'];
+    /** Columns only for `ketua` (29 K1). */
+    public const FULL_DETAIL_COLUMNS = ['answer_key'];
 
-    /** Kunci filter yang dikenali; kunci lain diabaikan. */
+    /** Kunci filter yang dikenali; kunci lain diabaikan. `province_code` is admin data (29 §7.1). */
     public const FILTER_KEYS = [
-        'study_id', 'participant_id', 'participant_code', 'school_id', 'class_level', 'province_code',
+        'study_id', 'participant_id', 'participant_code', 'school_id', 'class_level',
         'locale', 'level_id', 'node_id', 'variant_group', 'date_from', 'date_to',
+        'field_session_code', 'meeting_no',   // part 3 (29 §7.1)
     ];
 
     public const PER_PAGE = [25, 50, 100];
 
-    public const NAVIGATION_EVENTS = [
-        'screen_viewed', 'overlay_opened', 'dialogue_advanced', 'library_opened', 'library_page_viewed',
-        'locale_changed', 'page_hidden', 'page_visible', 'viewport_changed', 'reading_progress',
-        'package_changed', 'events_dropped',
-    ];
+    /** Event lists of the `navigasi` and `selesai` sheets, owned by the event catalog (29 §4). */
+    public const NAVIGATION_EVENTS = \App\Libraries\EventCatalog::NAVIGATION;
 
-    public const COMPLETION_EVENTS = [
-        'challenge_completed', 'challenge_abandoned', 'challenge_tries_exhausted', 'clue_failed',
-        'level_completed', 'session_completed', 'intro_completed', 'feedback_submitted',
-    ];
+    public const COMPLETION_EVENTS = \App\Libraries\EventCatalog::COMPLETION;
 
     /** Ukuran potongan iterasi keyset (`rows()`, `streamCsv()`). */
     public const CHUNK = 2000;
@@ -100,7 +111,8 @@ class RawDataService
     /**
      * Kolom per dimensi, urut resmi §9.2: kolom → ekspresi SQL untuk
      * pengurutan, atau null bila nilainya dihitung di PHP (tidak dapat
-     * diurutkan).
+     * diurutkan). Field sheets are built from FieldSheetSpec (columnMap()).
+     * `occurred_at_corrected` sorts by the raw time (the offset is small).
      *
      * @var array<string, array<string, list<string>|string|null>>
      */
@@ -108,43 +120,34 @@ class RawDataService
         'peserta' => [
             'participant_code' => 'participants.participant_code', 'display_name' => 'participants.display_name',
             'username' => 'participants.username', 'school_name' => 'participants.school_name_snapshot',
-            'school_npsn' => null, 'school_ref' => 'participants.school_id', 'age' => 'participants.age',
+            'school_npsn' => null, 'school_code' => 'schools.research_code', 'rombel' => 'participants.rombel',
+            'booklet' => null, 'age' => 'participants.age',
             'gender' => 'participants.gender', 'class_level' => 'participants.class_level',
-            'country' => 'participants.country_name_snapshot', 'province' => 'participants.province_name_snapshot',
-            'district' => 'participants.district_name_snapshot', 'registered_at' => 'participants.created_at',
+            'registered_at' => 'participants.created_at',
             'assented_at' => 'participants.assented_at', 'intro_seen_at' => 'participants.intro_seen_at',
             'pw_first_submit_criteria' => 'participants.pw_first_submit_criteria',
             'pw_weak_submit_count' => 'participants.pw_weak_submit_count',
+            // Part 8 (34 §11.4) adds pre_form … post_capped here.
+        ],
+        'sesi_lapangan' => [
+            'field_session_code' => 'field_sessions.code', 'school_code' => 'schools.research_code',
+            'rombel' => 'field_sessions.rombel', 'meeting_no' => 'field_sessions.meeting_no',
+            'makeup_no' => 'field_sessions.makeup_no', 'main_session_code' => null,
+            'region_opened' => null, 'session_date' => 'field_sessions.session_date',
+            'opens_at' => 'field_sessions.opens_at', 'closes_at' => 'field_sessions.closes_at',
+            'closed_at' => 'field_sessions.closed_at',
         ],
         'sesi' => [
             'session_code' => 'game_sessions.session_code', 'participant_code' => 'participants.participant_code',
-            'study_code' => 'research_studies.code', 'release_code' => 'game_releases.release_code',
-            'app_client_version' => 'game_sessions.app_client_version', 'package_code' => 'game_sessions.package_code',
-            'package_mode' => 'game_sessions.package_mode',
+            'study_code' => 'research_studies.code', 'field_session_code' => 'field_sessions.code',
+            'meeting_no' => 'game_sessions.meeting_no', 'release_code' => 'game_releases.release_code',
             'locale' => 'game_sessions.locale', 'status' => 'game_sessions.status',
             'started_at' => 'game_sessions.started_at', 'last_active_at' => 'game_sessions.last_active_at',
             'ended_at' => 'game_sessions.ended_at', 'duration_ms' => 'game_sessions.duration_ms',
-            'device_type' => 'game_sessions.device_type', 'os_name' => 'game_sessions.os_name',
-            'browser_name' => 'game_sessions.browser_name', 'screen_size' => 'game_sessions.screen_size',
-            'is_touch' => 'game_sessions.is_touch',
-        ],
-        'perangkat' => [
-            'session_code' => 'game_sessions.session_code', 'participant_code' => 'participants.participant_code',
-            'via' => 'device_logs.via', 'created_at' => 'device_logs.created_at', 'device_type' => 'device_logs.device_type',
-            'device_brand' => 'device_logs.device_brand', 'device_model' => 'device_logs.device_model',
-            'os_name' => 'device_logs.os_name', 'os_version' => 'device_logs.os_version',
-            'os_platform' => 'device_logs.os_platform', 'browser_name' => 'device_logs.browser_name',
-            'browser_version' => 'device_logs.browser_version', 'browser_engine' => 'device_logs.browser_engine',
-            'is_bot' => 'device_logs.is_bot', 'screen_w' => 'device_logs.screen_w', 'screen_h' => 'device_logs.screen_h',
-            'viewport_w' => 'device_logs.viewport_w', 'viewport_h' => 'device_logs.viewport_h',
-            'pixel_ratio' => 'device_logs.pixel_ratio', 'touch_points' => 'device_logs.touch_points',
-            'orientation' => 'device_logs.orientation', 'is_standalone' => 'device_logs.is_standalone',
-            'language' => 'device_logs.language', 'timezone' => 'device_logs.timezone',
-            'corrected' => 'device_logs.corrected', 'detector' => 'device_logs.detector',
-            'user_agent' => 'device_logs.user_agent', 'client_hints' => null,
+            'device_type' => 'game_sessions.device_type', 'screen_size' => 'game_sessions.screen_size',
         ],
         'progres' => [
-            'session_code' => 'game_sessions.session_code', 'participant_code' => 'participants.participant_code',
+            'study_code' => 'research_studies.code', 'participant_code' => 'participants.participant_code',
             'current_level' => 'participant_progress.current_level_id', 'current_node_ref' => 'participant_progress.current_node_id',
             'unlocked_level_sequence' => 'participant_progress.unlocked_level_sequence',
             'completed_nodes' => 'participant_progress.completed_nodes', 'total_nodes' => null,
@@ -153,10 +156,13 @@ class RawDataService
         ],
         'pengerjaan' => [
             'attempt_id' => 'challenge_attempts.id', 'session_code' => 'game_sessions.session_code',
-            'participant_code' => 'participants.participant_code', 'level' => 'levels.sequence',
+            'participant_code' => 'participants.participant_code', 'field_session_code' => 'field_sessions.code',
+            'meeting_no' => 'game_sessions.meeting_no', 'level' => 'levels.sequence',
             'node_ref' => ['levels.sequence', 'challenge_nodes.sequence'], 'node_sequence' => 'challenge_nodes.sequence',
             'engine_type' => 'challenge_nodes.engine_type', 'variant_group' => 'challenge_attempts.variant_group',
-            'variant_title' => null, 'attempt_no' => 'challenge_attempts.attempt_no', 'status' => 'challenge_attempts.status',
+            'variant_title' => null, 'variant_source' => 'challenge_attempts.variant_source',
+            'booklet_at_open' => 'challenge_attempts.booklet_at_open',
+            'attempt_no' => 'challenge_attempts.attempt_no', 'status' => 'challenge_attempts.status',
             'completion_reason' => 'challenge_attempts.completion_reason', 'scorable_items' => 'challenge_attempts.scorable_items',
             'first_pass_correct' => 'challenge_attempts.first_pass_correct', 'final_correct' => 'challenge_attempts.final_correct',
             'check_count' => 'challenge_attempts.check_count', 'max_tries' => 'challenge_attempts.max_tries',
@@ -167,7 +173,8 @@ class RawDataService
         ],
         'jawaban' => [
             'attempt_id' => 'challenge_attempts.id', 'session_code' => 'game_sessions.session_code',
-            'participant_code' => 'participants.participant_code', 'level' => 'levels.sequence',
+            'participant_code' => 'participants.participant_code', 'field_session_code' => 'field_sessions.code',
+            'level' => 'levels.sequence',
             'node_ref' => ['levels.sequence', 'challenge_nodes.sequence'], 'variant_group' => 'challenge_attempts.variant_group',
             'item_key' => 'challenge_items.item_key', 'interaction_type' => 'challenge_items.interaction_type',
             'bloom_level' => 'challenge_items.bloom_level', 'skill' => null, 'indicator' => null,
@@ -181,25 +188,32 @@ class RawDataService
         ],
         'percobaan' => [
             'attempt_id' => 'challenge_attempts.id', 'session_code' => 'game_sessions.session_code',
-            'participant_code' => 'participants.participant_code',
+            'participant_code' => 'participants.participant_code', 'field_session_code' => 'field_sessions.code',
             'node_ref' => ['levels.sequence', 'challenge_nodes.sequence'], 'variant_group' => 'challenge_attempts.variant_group',
             'item_key' => 'challenge_items.item_key', 'try_no' => 'item_tries.try_no', 'check_no' => 'item_tries.check_no',
-            'answer' => null, 'is_correct' => 'item_tries.is_correct', 'hint_opened_before' => 'item_tries.hint_opened_before',
+            'answer' => null, 'is_correct' => 'item_tries.is_correct', 'error_code' => 'item_tries.error_code',
+            'manual_code' => 'item_tries.manual_code', 'hint_opened_before' => 'item_tries.hint_opened_before',
+            'ready_ms' => 'item_tries.ready_ms',
             'first_input_ms' => 'item_tries.first_input_ms', 'last_input_ms' => 'item_tries.last_input_ms',
             'occurred_at' => 'item_tries.occurred_at',
+            // Part 6 (32 §6.4, §10): one Skenario Digital try; empty for the other engines
+            'action_key' => 'item_tries.action_key', 'action_score' => 'item_tries.action_score',
+            'reason_code' => 'item_tries.reason_code', 'reason_ready_ms' => 'item_tries.reason_ready_ms',
+            'action_last_input_ms' => 'item_tries.action_last_input_ms', 'reason_last_input_ms' => 'item_tries.reason_last_input_ms',
         ],
         'navigasi' => [
             'session_code' => 'game_sessions.session_code', 'participant_code' => 'participants.participant_code',
-            'sequence_no' => 'game_event_logs.sequence_no', 'occurred_at' => 'game_event_logs.occurred_at',
-            'server_received_at' => 'game_event_logs.server_received_at',
-            'clock_offset_ms' => 'game_event_logs.clock_offset_ms', 'event_type' => 'game_event_logs.event_type',
+            'field_session_code' => 'field_sessions.code',
+            'sequence_no' => 'game_event_logs.sequence_no', 'occurred_at_corrected' => 'game_event_logs.occurred_at',
+            'offset_known' => null, 'event_type' => 'game_event_logs.event_type',
             'screen' => null, 'from_screen' => null, 'level' => 'game_event_logs.level_id',
             'node_ref' => 'game_event_logs.challenge_node_id', 'attempt_id' => 'game_event_logs.challenge_attempt_id',
             'payload' => null,
         ],
         'bantuan' => [
             'session_code' => 'bantuan.session_code', 'participant_code' => 'bantuan.participant_code',
-            'occurred_at' => 'bantuan.occurred_at', 'jenis' => 'bantuan.jenis', 'level' => 'bantuan.level_id',
+            'field_session_code' => 'bantuan.field_session_code',
+            'occurred_at_corrected' => 'bantuan.occurred_at', 'jenis' => 'bantuan.jenis', 'level' => 'bantuan.level_id',
             'node_ref' => 'bantuan.node_id', 'attempt_id' => 'bantuan.attempt_id', 'item_key' => null, 'hint_id' => null,
             'asset_key' => 'bantuan.asset_key', 'audio_context' => 'bantuan.audio_context',
             'audio_locale' => 'bantuan.audio_locale', 'action' => 'bantuan.action', 'play_index' => 'bantuan.play_index',
@@ -207,21 +221,19 @@ class RawDataService
         ],
         'selesai' => [
             'session_code' => 'game_sessions.session_code', 'participant_code' => 'participants.participant_code',
-            'occurred_at' => 'game_event_logs.occurred_at', 'event_type' => 'game_event_logs.event_type',
+            'field_session_code' => 'field_sessions.code',
+            'occurred_at_corrected' => 'game_event_logs.occurred_at', 'offset_known' => null,
+            'event_type' => 'game_event_logs.event_type',
             'level' => 'game_event_logs.level_id', 'node_ref' => 'game_event_logs.challenge_node_id',
             'attempt_id' => 'game_event_logs.challenge_attempt_id', 'payload' => null,
         ],
         'event' => [
-            'id' => 'game_event_logs.id', 'event_uuid' => 'game_event_logs.event_uuid',
-            'client_event_id' => 'game_event_logs.client_event_id', 'session_id' => 'game_event_logs.session_id',
-            'session_code' => 'game_sessions.session_code', 'participant_id' => 'game_event_logs.participant_id',
-            'participant_code' => 'participants.participant_code', 'level_id' => 'game_event_logs.level_id',
-            'challenge_node_id' => 'game_event_logs.challenge_node_id',
-            'challenge_attempt_id' => 'game_event_logs.challenge_attempt_id',
-            'challenge_item_id' => 'game_event_logs.challenge_item_id', 'event_type' => 'game_event_logs.event_type',
-            'sequence_no' => 'game_event_logs.sequence_no', 'occurred_at' => 'game_event_logs.occurred_at',
-            'server_received_at' => 'game_event_logs.server_received_at',
-            'clock_offset_ms' => 'game_event_logs.clock_offset_ms', 'payload_json' => null,
+            'session_code' => 'game_sessions.session_code', 'participant_code' => 'participants.participant_code',
+            'field_session_code' => 'field_sessions.code', 'level' => 'game_event_logs.level_id',
+            'node_ref' => 'game_event_logs.challenge_node_id', 'attempt_id' => 'game_event_logs.challenge_attempt_id',
+            'item_key' => null, 'event_type' => 'game_event_logs.event_type',
+            'sequence_no' => 'game_event_logs.sequence_no', 'occurred_at_corrected' => 'game_event_logs.occurred_at',
+            'offset_known' => null, 'payload' => null,
         ],
         'masukan' => [
             'participant_code' => 'participants.participant_code', 'session_code' => 'game_sessions.session_code',
@@ -247,40 +259,58 @@ class RawDataService
             'option_count' => null, 'reason_option_count' => null, 'puzzle_grid' => null, 'tap_min_dp' => null,
             'review_status' => 'challenge_items.review_status', 'reference_source' => 'challenge_items.reference_source',
         ],
+        // Bank code per choice (31 §13.3), ketua only like the key
+        'kode_pilihan' => [
+            'item_key' => 'kode_pilihan.item_key', 'node_ref' => null, 'variant' => 'kode_pilihan.variant_group',
+            'choice_type' => 'kode_pilihan.choice_type', 'choice_ref' => 'kode_pilihan.choice_ref',
+            'error_code' => 'kode_pilihan.error_code', 'is_main' => 'kode_pilihan.is_main', 'option_score' => 'kode_pilihan.option_score',
+        ],
+        // Coded consent per student (30 §10.1, ConsentService::REGISTER_COLUMNS), for the ketua's check against L7
+        'izin' => [
+            'participant_code' => 'participants.participant_code', 'parent_consent_on' => 'participant_consents.parent_consent_on',
+            'recording_consent' => 'participant_consents.recording_consent', 'recording_withdrawn_on' => 'participant_consents.recording_withdrawn_on',
+            'risk_items_consent' => 'participant_consents.risk_items_consent', 'risk_items_withdrawn_on' => 'participant_consents.risk_items_withdrawn_on',
+            'assented_at' => 'participants.assented_at', 'assent_version' => 'participants.assent_version',
+            'status' => 'participant_consents.status', 'status_on' => 'participant_consents.status_on',
+        ],
     ];
 
     /** Kunci unik tiap dimensi untuk iterasi keyset dan pemecah seri urutan. */
     private const KEYS = [
-        'peserta'    => 'participants.id',
-        'sesi'       => 'game_sessions.id',
-        'perangkat'  => 'device_logs.id',
-        'progres'    => 'game_sessions.id',
-        'pengerjaan' => 'challenge_attempts.id',
-        'jawaban'    => 'item_responses.id',
-        'percobaan'  => 'item_tries.id',
-        'navigasi'   => 'game_event_logs.id',
-        'bantuan'    => 'bantuan._key',
-        'selesai'    => 'game_event_logs.id',
-        'event'      => 'game_event_logs.id',
-        'masukan'    => 'participant_feedback.id',
-        'butir'      => 'challenge_items.id',
+        'peserta'       => 'participants.id',
+        'sesi_lapangan' => 'field_sessions.id',
+        'sesi'          => 'game_sessions.id',
+        'progres'       => 'participant_progress.id',
+        'pengerjaan'    => 'challenge_attempts.id',
+        'jawaban'       => 'item_responses.id',
+        'percobaan'     => 'item_tries.id',
+        'navigasi'      => 'game_event_logs.id',
+        'bantuan'       => 'bantuan._key',
+        'selesai'       => 'game_event_logs.id',
+        'event'         => 'game_event_logs.id',
+        'masukan'       => 'participant_feedback.id',
+        'butir'         => 'challenge_items.id',
+        'kode_pilihan'  => 'kode_pilihan._key',
+        'izin'          => 'participant_consents.participant_id',
     ];
 
     /** Urutan bawaan tabel admin (terbaru dulu untuk data kejadian). */
     private const DEFAULT_SORT = [
-        'peserta'    => 'participant_code',
-        'sesi'       => '-started_at',
-        'perangkat'  => '-created_at',
-        'progres'    => '-updated_at',
-        'pengerjaan' => '-started_at',
-        'jawaban'    => '-started_at',
-        'percobaan'  => '-occurred_at',
-        'navigasi'   => '-occurred_at',
-        'bantuan'    => '-occurred_at',
-        'selesai'    => '-occurred_at',
-        'event'      => '-occurred_at',
-        'masukan'    => '-submitted_at',
-        'butir'      => 'node_ref',
+        'peserta'       => 'participant_code',
+        'sesi_lapangan' => 'field_session_code',
+        'sesi'          => '-started_at',
+        'progres'       => '-updated_at',
+        'pengerjaan'    => '-started_at',
+        'jawaban'       => '-started_at',
+        'percobaan'     => '-occurred_at',
+        'navigasi'      => '-occurred_at_corrected',
+        'bantuan'       => '-occurred_at_corrected',
+        'selesai'       => '-occurred_at_corrected',
+        'event'         => '-occurred_at_corrected',
+        'masukan'       => '-submitted_at',
+        'butir'         => 'node_ref',
+        'kode_pilihan'  => 'item_key',
+        'izin'          => 'participant_code',
     ];
 
     /** @var array<string, mixed> peta id → isi konten, dimuat sekali per objek */
@@ -319,8 +349,8 @@ class RawDataService
 
         return match ($dimension) {
             'peserta'    => $this->participantQuery($filters, $scope),
+            'sesi_lapangan' => $this->fieldSessionQuery($filters, $scope),
             'sesi'       => $this->sessionQuery($filters, $scope),
-            'perangkat'  => $this->deviceQuery($filters, $scope),
             'progres'    => $this->progressQuery($filters, $scope),
             'pengerjaan' => $this->attemptQuery($filters, $scope),
             'jawaban'    => $this->responseQuery($filters, $scope),
@@ -328,9 +358,12 @@ class RawDataService
             'navigasi'   => $this->eventQuery($filters, $scope, self::NAVIGATION_EVENTS),
             'bantuan'    => $this->helpQuery($filters, $scope),
             'selesai'    => $this->eventQuery($filters, $scope, self::COMPLETION_EVENTS),
-            'event'      => $this->eventQuery($filters, $scope, null),
+            'event'      => $this->eventQuery($filters, $scope, \App\Libraries\EventCatalog::RESEARCH),
             'masukan'    => $this->feedbackQuery($filters, $scope),
             'butir'      => $this->itemQuery($filters),
+            'kode_pilihan' => $this->choiceCodeQuery($filters),
+            'izin'       => $this->consentQuery($filters, $scope),
+            default      => $this->fieldSheetQuery($dimension, $filters, $scope),
         };
     }
 
@@ -428,7 +461,7 @@ class RawDataService
      */
     public function rows(string $dimension, array $filters, StaffScope $scope, bool $labeled = false, bool $readableAnswers = false): \Generator
     {
-        $key  = self::KEYS[$dimension] ?? throw new \InvalidArgumentException("Dimensi '{$dimension}' tidak dikenal.");
+        $key  = self::keyOf($dimension);
         $last = null;
 
         do {
@@ -463,14 +496,14 @@ class RawDataService
      */
     public function columns(string $dimension, StaffScope $scope): array
     {
-        $columns = array_keys(self::COLUMNS[$dimension] ?? throw new \InvalidArgumentException("Dimensi '{$dimension}' tidak dikenal."));
+        $columns = array_keys(self::columnMap($dimension));
 
         if ($scope->anonymous) {
             $columns = array_diff($columns, self::IDENTITY_COLUMNS);
         }
 
         if (! $scope->fullDetail) {
-            $columns = array_diff($columns, self::ADMIN_ONLY_COLUMNS);
+            $columns = array_diff($columns, self::FULL_DETAIL_COLUMNS);
         }
 
         return array_values($columns);
@@ -494,13 +527,13 @@ class RawDataService
      */
     public function sortable(string $dimension): array
     {
-        return array_keys(array_filter(self::COLUMNS[$dimension] ?? [], static fn ($expr): bool => $expr !== null));
+        return array_keys(array_filter(in_array($dimension, self::DIMENSIONS, true) ? self::columnMap($dimension) : [], static fn ($expr): bool => $expr !== null));
     }
 
     /** Dimensi yang boleh dibaca $scope, urutan resmi. @return list<string> */
     public function dimensions(StaffScope $scope): array
     {
-        return $scope->fullDetail ? self::DIMENSIONS : array_values(array_diff(self::DIMENSIONS, self::ADMIN_ONLY_DIMENSIONS));
+        return $scope->fullDetail ? self::DIMENSIONS : array_values(array_diff(self::DIMENSIONS, self::FULL_DETAIL_DIMENSIONS));
     }
 
     public function allows(string $dimension, StaffScope $scope): bool
@@ -532,7 +565,7 @@ class RawDataService
                 continue;
             }
 
-            if (str_ends_with($key, '_id')) {
+            if (str_ends_with($key, '_id') || $key === 'meeting_no') {
                 if (! ctype_digit($value)) {
                     continue;
                 }
@@ -560,8 +593,8 @@ class RawDataService
         $answers = $labeled || $readableAnswers;
         $values  = match ($dimension) {
             'peserta'    => $this->participantValues($row),
+            'sesi_lapangan' => $this->fieldSessionValues($row),
             'sesi'       => $row,
-            'perangkat'  => ['client_hints' => $row['client_hints_json'] ?? null] + $row,
             'progres'    => $this->progressValues($row),
             'pengerjaan' => $this->attemptValues($row),
             'jawaban'    => $this->responseValues($row, $answers),
@@ -569,10 +602,12 @@ class RawDataService
             'navigasi'   => $this->navigationValues($row),
             'bantuan'    => $this->helpValues($row),
             'selesai'    => $this->eventValues($row),
-            'event'      => $row,
+            'event'      => $this->eventValues($row) + ['item_key' => ($this->itemMap()[(int) $row['challenge_item_id']] ?? null)?->item_key],
             'masukan'    => $row,
             'butir'      => $this->itemValues($row, $answers),
-            default      => throw new \InvalidArgumentException("Dimensi '{$dimension}' tidak dikenal."),
+            'kode_pilihan' => $row + ['node_ref' => $this->nodeRefById($row['challenge_node_id'])],
+            'izin'       => $row,
+            default      => $this->fieldSheetValues($row),
         };
 
         $out = [];
@@ -603,30 +638,37 @@ class RawDataService
     private function participantQuery(array $filters, StaffScope $scope): BaseBuilder
     {
         $builder = $this->db()->table('participants')
+            ->join('schools', 'schools.id = participants.school_id', 'left')
             ->select('participants.id AS _key, participants.participant_code, participants.school_id')
+            ->select('schools.research_code AS school_code, participants.rombel')
             ->select('participants.age, participants.gender, participants.class_level')
-            ->select('participants.country_name_snapshot, participants.province_name_snapshot')
-            ->select('participants.district_name_snapshot, participants.created_at, participants.assented_at')
+            ->select('participants.created_at, participants.assented_at')
             ->select('participants.intro_seen_at, participants.pw_first_submit_criteria, participants.pw_weak_submit_count')
             ->where('participants.deleted_at', null);
 
+        // Booklet of the study downloaded (one seat per student and study, 28 §11)
+        if (isset($filters['study_id'])) {
+            $builder->join('participant_seats', 'participant_seats.participant_id = participants.id AND participant_seats.study_id = ' . (int) $filters['study_id'], 'left')
+                ->select('participant_seats.booklet');
+        }
+
         if (! $scope->anonymous) {
             $builder->select('participants.display_name, participants.username, participants.school_name_snapshot')
-                ->select('schools.code AS school_npsn')
-                ->join('schools', 'schools.id = participants.school_id', 'left');
+                ->select('schools.code AS school_npsn');
         }
 
         $this->applyParticipantFilters($builder, $filters, $scope, 'participants.created_at');
 
         // Filter milik sesi: siswa yang punya sesi dalam cakupan itu
-        $sessionFilters = array_intersect_key($filters, array_flip(['study_id', 'locale']));
+        $sessionFilters = array_intersect_key($filters, array_flip(['study_id', 'locale', 'meeting_no', 'field_session_code']));
 
         if ($sessionFilters !== []) {
             $builder->whereIn('participants.id', static function (BaseBuilder $sub) use ($sessionFilters): BaseBuilder {
-                $sub->select('game_sessions.participant_id')->from('game_sessions');
+                $sub->select('game_sessions.participant_id')->from('game_sessions')
+                    ->join('field_sessions', 'field_sessions.id = game_sessions.field_session_id', 'left');
 
                 foreach ($sessionFilters as $key => $value) {
-                    $sub->where('game_sessions.' . $key, $value);
+                    $sub->where($key === 'field_session_code' ? 'field_sessions.code' : 'game_sessions.' . $key, $value);
                 }
 
                 return $sub;
@@ -641,10 +683,9 @@ class RawDataService
         $builder = $this->sessionBase('game_sessions')
             ->select('game_sessions.id AS _key, game_sessions.session_code, participants.participant_code')
             ->select('research_studies.code AS study_code, game_releases.release_code')
-            ->select('game_sessions.app_client_version, game_sessions.package_code, game_sessions.package_mode')
+            ->select('field_sessions.code AS field_session_code, game_sessions.meeting_no')
             ->select('game_sessions.locale, game_sessions.status, game_sessions.started_at, game_sessions.last_active_at')
-            ->select('game_sessions.ended_at, game_sessions.duration_ms, game_sessions.device_type')
-            ->select('game_sessions.os_name, game_sessions.browser_name, game_sessions.screen_size, game_sessions.is_touch')
+            ->select('game_sessions.ended_at, game_sessions.duration_ms, game_sessions.device_type, game_sessions.screen_size')
             ->join('research_studies', 'research_studies.id = game_sessions.study_id', 'left')
             ->join('game_releases', 'game_releases.id = game_sessions.release_id', 'left');
 
@@ -653,34 +694,38 @@ class RawDataService
         return $builder;
     }
 
-    private function deviceQuery(array $filters, StaffScope $scope): BaseBuilder
+    private function progressQuery(array $filters, StaffScope $scope): BaseBuilder
     {
-        $builder = $this->sessionBase('device_logs', 'device_logs.session_id')
-            ->select('device_logs.id AS _key, game_sessions.session_code, participants.participant_code')
-            ->select('device_logs.via, device_logs.created_at, device_logs.device_type, device_logs.device_brand')
-            ->select('device_logs.device_model, device_logs.os_name, device_logs.os_version, device_logs.os_platform')
-            ->select('device_logs.browser_name, device_logs.browser_version, device_logs.browser_engine, device_logs.is_bot')
-            ->select('device_logs.screen_w, device_logs.screen_h, device_logs.viewport_w, device_logs.viewport_h')
-            ->select('device_logs.pixel_ratio, device_logs.touch_points, device_logs.orientation, device_logs.is_standalone')
-            ->select('device_logs.language, device_logs.timezone, device_logs.corrected, device_logs.detector')
-            ->select('device_logs.user_agent, device_logs.client_hints_json');
+        // One row per student and study (participant_progress, 28 §8)
+        $builder = $this->db()->table('participant_progress')
+            ->join('participants', 'participants.id = participant_progress.participant_id')
+            ->join('research_studies', 'research_studies.id = participant_progress.study_id', 'left')
+            ->select('participant_progress.id AS _key, research_studies.code AS study_code, participants.participant_code')
+            ->select('participant_progress.current_level_id, participant_progress.current_node_id')
+            ->select('participant_progress.unlocked_level_sequence, participant_progress.completed_nodes')
+            ->select('participant_progress.completed_levels, participant_progress.total_stars, participant_progress.updated_at')
+            ->where('participants.deleted_at', null);
 
-        $this->applySessionFilters($builder, $filters, $scope, 'device_logs.created_at');
+        $this->applyParticipantFilters($builder, $filters, $scope, 'participant_progress.updated_at');
+
+        if (isset($filters['study_id'])) {
+            $builder->where('participant_progress.study_id', $filters['study_id']);
+        }
 
         return $builder;
     }
 
-    private function progressQuery(array $filters, StaffScope $scope): BaseBuilder
+    /** Field sessions of the study (28 §17), without their token history. */
+    private function fieldSessionQuery(array $filters, StaffScope $scope): BaseBuilder
     {
-        // One row per game session with its student's progress in that study (28 §8)
-        $builder = $this->sessionBase('game_sessions')
-            ->join('participant_progress', 'participant_progress.participant_id = game_sessions.participant_id AND participant_progress.study_id = game_sessions.study_id')
-            ->select('game_sessions.id AS _key, game_sessions.session_code, participants.participant_code')
-            ->select('participant_progress.current_level_id, participant_progress.current_node_id')
-            ->select('participant_progress.unlocked_level_sequence, participant_progress.completed_nodes')
-            ->select('participant_progress.completed_levels, participant_progress.total_stars, participant_progress.updated_at');
+        $builder = $this->db()->table('field_sessions')
+            ->join('schools', 'schools.id = field_sessions.school_id', 'left')
+            ->select('field_sessions.id AS _key, field_sessions.code AS field_session_code, schools.research_code AS school_code')
+            ->select('field_sessions.study_id, field_sessions.rombel, field_sessions.meeting_no, field_sessions.makeup_no')
+            ->select('field_sessions.main_session_id, field_sessions.region_code, field_sessions.session_date')
+            ->select('field_sessions.opens_at, field_sessions.closes_at, field_sessions.closed_at');
 
-        $this->applySessionFilters($builder, $filters, $scope, 'game_sessions.started_at');
+        $this->applyFieldSessionFilters($builder, $filters, $scope);
 
         return $builder;
     }
@@ -693,6 +738,8 @@ class RawDataService
             ->select('levels.code AS level_code, challenge_attempts.challenge_node_id')
             ->select('challenge_nodes.sequence AS node_sequence, challenge_nodes.engine_type')
             ->select('challenge_attempts.variant_group, challenge_attempts.attempt_no, challenge_attempts.status')
+            ->select('field_sessions.code AS field_session_code, game_sessions.meeting_no')
+            ->select('challenge_attempts.variant_source, challenge_attempts.booklet_at_open')
             ->select('challenge_attempts.completion_reason, challenge_attempts.scorable_items')
             ->select('challenge_attempts.first_pass_correct, challenge_attempts.final_correct')
             ->select('challenge_attempts.check_count, challenge_attempts.max_tries, challenge_attempts.hint_count')
@@ -711,7 +758,7 @@ class RawDataService
             ->select('item_responses.id AS _key, challenge_attempts.id AS attempt_id')
             ->select('game_sessions.session_code, participants.participant_code')
             ->select('levels.code AS level_code, challenge_nodes.sequence AS node_sequence')
-            ->select('challenge_attempts.variant_group, item_responses.challenge_item_id')
+            ->select('challenge_attempts.variant_group, item_responses.challenge_item_id, field_sessions.code AS field_session_code')
             ->select('challenge_items.item_key, challenge_items.interaction_type, challenge_items.bloom_level')
             ->select('item_responses.display_order, item_responses.status, item_responses.try_count')
             ->select('item_responses.first_answer_json, item_responses.final_answer_json')
@@ -734,14 +781,17 @@ class RawDataService
             ->select('challenge_attempts.variant_group, item_tries.challenge_item_id, challenge_items.item_key')
             ->select('item_tries.try_no, item_tries.check_no, item_tries.answer_json, item_tries.is_correct')
             ->select('item_tries.hint_opened_before, item_tries.first_input_ms, item_tries.last_input_ms')
-            ->select('item_tries.occurred_at');
+            ->select('item_tries.occurred_at, item_tries.ready_ms, item_tries.error_code, item_tries.manual_code')
+            ->select('item_tries.action_key, item_tries.action_score, item_tries.reason_code, item_tries.reason_ready_ms')
+            ->select('item_tries.action_last_input_ms, item_tries.reason_last_input_ms')
+            ->select('field_sessions.code AS field_session_code');
 
         $this->applyAttemptFilters($builder, $filters, $scope, 'item_tries.occurred_at');
 
         return $builder;
     }
 
-    /** @param list<string>|null $types null = semua event (Event Mentah) */
+    /** @param list<string>|null $types event types of the sheet (the `event` sheet: every research type) */
     private function eventQuery(array $filters, StaffScope $scope, ?array $types): BaseBuilder
     {
         $builder = $this->sessionBase('game_event_logs', 'game_event_logs.session_id')
@@ -751,7 +801,7 @@ class RawDataService
             ->select('game_event_logs.challenge_node_id, game_event_logs.challenge_attempt_id')
             ->select('game_event_logs.challenge_item_id, game_event_logs.event_type, game_event_logs.sequence_no')
             ->select('game_event_logs.occurred_at, game_event_logs.server_received_at, game_event_logs.clock_offset_ms')
-            ->select('game_event_logs.payload_json')
+            ->select('game_event_logs.payload_json, field_sessions.code AS field_session_code')
             ->where('game_event_logs.deleted_at', null);
 
         if ($types !== null) {
@@ -776,7 +826,8 @@ class RawDataService
 
         $hints = $this->sessionBase('game_event_logs', 'game_event_logs.session_id')
             ->select($db->protectIdentifiers('game_event_logs', true) . '.id * 2 AS _key', false)
-            ->select('game_sessions.session_code, participants.participant_code, game_event_logs.occurred_at')
+            ->select('game_sessions.session_code, participants.participant_code, field_sessions.code AS field_session_code')
+            ->select('game_event_logs.occurred_at, game_event_logs.clock_offset_ms')
             ->select("'petunjuk' AS jenis", false)
             ->select('game_event_logs.level_id, game_event_logs.challenge_node_id AS node_id')
             ->select('game_event_logs.challenge_attempt_id AS attempt_id, game_event_logs.challenge_item_id AS item_id')
@@ -789,20 +840,30 @@ class RawDataService
         $this->applySessionFilters($hints, $filters, $scope, 'game_event_logs.occurred_at');
         $this->applyContentFilters($hints, $filters, 'game_event_logs.level_id', 'game_event_logs.challenge_node_id', null);
 
+        // One row per playback (29 §5.4): its opening action, the largest
+        // listened_ms, and whether any row of it completed
+        $usage = $db->protectIdentifiers('audio_usage_events', true);
+        $same  = "x.session_id = {$usage}.session_id AND x.audio_asset_id = {$usage}.audio_asset_id AND x.play_index = {$usage}.play_index";
+
         $audio = $this->sessionBase('audio_usage_events', 'audio_usage_events.session_id')
             ->join('challenge_attempts', 'challenge_attempts.id = audio_usage_events.challenge_attempt_id', 'left')
             ->join('challenge_nodes', 'challenge_nodes.id = challenge_attempts.challenge_node_id', 'left')
             ->join('audio_assets', 'audio_assets.id = audio_usage_events.audio_asset_id', 'left')
             ->join('media_assets', 'media_assets.id = audio_assets.media_asset_id', 'left')
             ->select($db->protectIdentifiers('audio_usage_events', true) . '.id * 2 + 1 AS _key', false)
-            ->select('game_sessions.session_code, participants.participant_code, audio_usage_events.occurred_at')
+            ->select('game_sessions.session_code, participants.participant_code, field_sessions.code AS field_session_code')
+            ->select('audio_usage_events.occurred_at')
+            // WAVE-E seam (part 7, 33 K10): audio_usage_events.clock_offset_ms corrects this time
+            ->select('NULL AS clock_offset_ms', false)
             ->select("'audio' AS jenis", false)
             ->select('challenge_nodes.level_id, challenge_attempts.challenge_node_id AS node_id')
             ->select('audio_usage_events.challenge_attempt_id AS attempt_id')
             ->select('NULL AS item_id, NULL AS payload_json', false)
             ->select('media_assets.asset_key, audio_assets.context_code AS audio_context, audio_assets.locale AS audio_locale')
             ->select('audio_usage_events.action, audio_usage_events.play_index')
-            ->select('audio_usage_events.listened_ms, audio_usage_events.completed');
+            ->select("(SELECT MAX(x.listened_ms) FROM {$usage} x WHERE {$same}) AS listened_ms", false)
+            ->select("(SELECT MAX(x.completed) FROM {$usage} x WHERE {$same}) AS completed", false)
+            ->whereIn('audio_usage_events.action', \App\Models\AudioUsageEventModel::OPENING_ACTIONS);
 
         $this->applySessionFilters($audio, $filters, $scope, 'audio_usage_events.occurred_at');
         $this->applyContentFilters($audio, $filters, 'challenge_nodes.level_id', 'challenge_attempts.challenge_node_id', null);
@@ -815,12 +876,36 @@ class RawDataService
         $builder = $this->db()->table('participant_feedback')
             ->join('participants', 'participants.id = participant_feedback.participant_id')
             ->join('game_sessions', 'game_sessions.id = participant_feedback.session_id', 'left')
+            ->join('field_sessions', 'field_sessions.id = game_sessions.field_session_id', 'left')
             ->select('participant_feedback.id AS _key, participants.participant_code, game_sessions.session_code')
             ->select('participant_feedback.rating, participant_feedback.liked_most, participant_feedback.hardest_part')
             ->select('participant_feedback.new_learning, participant_feedback.suggestion, participant_feedback.submitted_at')
             ->where('participants.deleted_at', null);
 
         $this->applySessionFilters($builder, $filters, $scope, 'participant_feedback.submitted_at');
+
+        return $builder;
+    }
+
+    /**
+     * Coded consent of the study's students (part 4, 30 §10.1): codes only;
+     * downloading it does not stamp `consent_register_exported_at`.
+     */
+    private function consentQuery(array $filters, StaffScope $scope): BaseBuilder
+    {
+        $builder = $this->db()->table('participant_consents')
+            ->join('participants', 'participants.id = participant_consents.participant_id')
+            ->select('participant_consents.participant_id AS _key, participants.participant_code')
+            ->select('participant_consents.parent_consent_on, participant_consents.recording_consent, participant_consents.recording_withdrawn_on')
+            ->select('participant_consents.risk_items_consent, participant_consents.risk_items_withdrawn_on')
+            ->select('participants.assented_at, participants.assent_version, participant_consents.status, participant_consents.status_on')
+            ->where('participants.deleted_at', null);
+
+        if (isset($filters['study_id'])) {
+            $builder->where('participant_consents.study_id', (int) $filters['study_id']);
+        }
+
+        $this->applyParticipantFilters($builder, array_diff_key($filters, array_flip(['date_from', 'date_to'])), $scope, 'participants.created_at');
 
         return $builder;
     }
@@ -848,6 +933,86 @@ class RawDataService
         return $builder;
     }
 
+    /**
+     * Bank code per choice (31 §13.3): every item_error_codes row and every
+     * Skenario Digital option, as they stand when downloaded.
+     */
+    private function choiceCodeQuery(array $filters): BaseBuilder
+    {
+        $db = $this->db();
+
+        $codes = $db->table('item_error_codes')
+            ->join('challenge_items', 'challenge_items.id = item_error_codes.challenge_item_id')
+            ->join('challenge_nodes', 'challenge_nodes.id = challenge_items.challenge_node_id')
+            ->select($db->protectIdentifiers('item_error_codes', true) . '.id * 2 AS _key', false)
+            ->select('challenge_items.item_key, challenge_items.challenge_node_id, challenge_items.variant_group')
+            ->select('item_error_codes.choice_type, item_error_codes.choice_ref, item_error_codes.error_code, item_error_codes.is_main')
+            ->select('NULL AS option_score', false);
+        $this->applyContentFilters($codes, $filters, 'challenge_nodes.level_id', 'challenge_items.challenge_node_id', 'challenge_items.variant_group');
+
+        $options = $db->table('scenario_options')
+            ->join('challenge_items', 'challenge_items.id = scenario_options.challenge_item_id')
+            ->join('challenge_nodes', 'challenge_nodes.id = challenge_items.challenge_node_id')
+            ->select($db->protectIdentifiers('scenario_options', true) . '.id * 2 + 1 AS _key', false)
+            ->select('challenge_items.item_key, challenge_items.challenge_node_id, challenge_items.variant_group')
+            ->select('scenario_options.kind AS choice_type, scenario_options.option_key AS choice_ref, scenario_options.code AS error_code')
+            ->select('NULL AS is_main', false)
+            ->select('scenario_options.score AS option_score');
+        $this->applyContentFilters($options, $filters, 'challenge_nodes.level_id', 'challenge_items.challenge_node_id', 'challenge_items.variant_group');
+
+        return $db->newQuery()->fromSubquery($codes->unionAll($options), 'kode_pilihan')->select('kode_pilihan.*', false);
+    }
+
+    /** Rows of the imported field sheet $sheet that count: main imports not superseded (29 §10.4). */
+    private function fieldSheetQuery(string $sheet, array $filters, StaffScope $scope): BaseBuilder
+    {
+        $builder = $this->db()->table('field_sheet_rows')
+            ->join('field_sheet_imports', 'field_sheet_imports.id = field_sheet_rows.import_id')
+            ->join('field_sessions', 'field_sessions.id = field_sheet_imports.field_session_id')
+            ->select('field_sheet_rows.id AS _key, field_sheet_rows.row_no, field_sheet_rows.values_json')
+            ->select('field_sessions.code AS field_session_code')
+            ->where('field_sheet_imports.sheet', $sheet)
+            ->where('field_sheet_imports.purpose', 'main')
+            ->where('field_sheet_imports.superseded_at', null);
+
+        if (isset($filters['participant_id'])) {
+            $builder->where('field_sheet_rows.participant_id', $filters['participant_id']);
+        }
+
+        $this->applyFieldSessionFilters($builder, $filters, $scope);
+
+        return $builder;
+    }
+
+    /** Filters on `field_sessions` (study, school, code, meeting, date), without validators' test schools. */
+    private function applyFieldSessionFilters(BaseBuilder $builder, array $filters, StaffScope $scope): void
+    {
+        $map = [
+            'study_id'           => 'field_sessions.study_id',
+            'school_id'          => 'field_sessions.school_id',
+            'field_session_code' => 'field_sessions.code',
+            'meeting_no'         => 'field_sessions.meeting_no',
+        ];
+
+        foreach ($map as $key => $column) {
+            if (isset($filters[$key])) {
+                $builder->where($column, $filters[$key]);
+            }
+        }
+
+        if (isset($filters['date_from'])) {
+            $builder->where('field_sessions.session_date >=', $filters['date_from']);
+        }
+
+        if (isset($filters['date_to'])) {
+            $builder->where('field_sessions.session_date <=', $filters['date_to']);
+        }
+
+        if ($scope->anonymous) {
+            $builder->whereNotIn('field_sessions.school_id', $this->testSchoolIds());
+        }
+    }
+
     // ----------------------------------------------------------- dasar query
 
     /** $table yang menunjuk sesi (atau tabel sesi itu sendiri) + sesi + peserta. */
@@ -860,6 +1025,7 @@ class RawDataService
         }
 
         return $builder->join('participants', 'participants.id = game_sessions.participant_id')
+            ->join('field_sessions', 'field_sessions.id = game_sessions.field_session_id', 'left')
             ->where('participants.deleted_at', null);
     }
 
@@ -874,6 +1040,7 @@ class RawDataService
 
         return $builder->join('game_sessions', 'game_sessions.id = challenge_attempts.session_id')
             ->join('participants', 'participants.id = game_sessions.participant_id')
+            ->join('field_sessions', 'field_sessions.id = game_sessions.field_session_id', 'left')
             ->join('challenge_nodes', 'challenge_nodes.id = challenge_attempts.challenge_node_id')
             ->join('levels', 'levels.id = challenge_nodes.level_id')
             ->where('participants.deleted_at', null);
@@ -887,7 +1054,6 @@ class RawDataService
             'participant_code' => 'participants.participant_code',
             'school_id'        => 'participants.school_id',
             'class_level'      => 'participants.class_level',
-            'province_code'    => 'participants.province_code',
         ];
 
         foreach ($map as $key => $column) {
@@ -903,13 +1069,33 @@ class RawDataService
         if (isset($filters['date_to'])) {
             $builder->where($dateColumn . ' <=', $filters['date_to'] . ' 23:59:59.999999');
         }
+
+        // Research data never holds the validators' test accounts or simulated
+        // students (29 §7.1); a one-student view still shows them.
+        if ($scope->anonymous && ! isset($filters['participant_id'])) {
+            $builder->notLike('participants.username', \App\Libraries\Simulation\Simulator::USERNAME_PREFIX, 'after')
+                ->notLike('participants.username', \App\Services\TestAccountService::PREFIX, 'after')
+                ->groupStart()
+                ->where('participants.school_id', null)
+                ->orWhereNotIn('participants.school_id', $this->testSchoolIds())
+                ->groupEnd();
+        }
+    }
+
+    /** @return list<int> schools of the validators' test install (V01); [0] when none, so NOT IN stays valid */
+    private function testSchoolIds(): array
+    {
+        return $this->maps['test_schools'] ??= array_map('intval', array_column(
+            $this->db()->table('schools')->select('id')->where('research_code', \App\Services\TestAccountService::SCHOOL_CODE)->get()->getResultArray(),
+            'id',
+        )) ?: [0];
     }
 
     private function applySessionFilters(BaseBuilder $builder, array $filters, StaffScope $scope, string $dateColumn): void
     {
         $this->applyParticipantFilters($builder, $filters, $scope, $dateColumn);
 
-        foreach (['study_id' => 'game_sessions.study_id', 'locale' => 'game_sessions.locale'] as $key => $column) {
+        foreach (['study_id' => 'game_sessions.study_id', 'locale' => 'game_sessions.locale', 'meeting_no' => 'game_sessions.meeting_no', 'field_session_code' => 'field_sessions.code'] as $key => $column) {
             if (isset($filters[$key])) {
                 $builder->where($column, $filters[$key]);
             }
@@ -947,7 +1133,7 @@ class RawDataService
 
         return $column !== '' && in_array($column, $this->sortable($dimension), true)
             ? $sort
-            : self::DEFAULT_SORT[$dimension];
+            : (self::DEFAULT_SORT[$dimension] ?? 'sheet_row');
     }
 
     private function applySort(BaseBuilder $builder, string $dimension, string $sort): void
@@ -955,12 +1141,12 @@ class RawDataService
         $direction = str_starts_with($sort, '-') ? 'DESC' : 'ASC';
         $column    = ltrim($sort, '-');
 
-        foreach ((array) self::COLUMNS[$dimension][$column] as $expression) {
+        foreach ((array) self::columnMap($dimension)[$column] as $expression) {
             $builder->orderBy($expression, $direction);
         }
 
         // Pemecah seri: urutan stabil antarhalaman
-        $builder->orderBy(self::KEYS[$dimension], $direction);
+        $builder->orderBy(self::keyOf($dimension), $direction);
     }
 
     // ------------------------------------------------------------ nilai
@@ -973,13 +1159,12 @@ class RawDataService
             'username'                 => $row['username'] ?? null,
             'school_name'              => $row['school_name_snapshot'] ?? null,
             'school_npsn'              => $row['school_npsn'] ?? null,
-            'school_ref'               => self::schoolRef($row['school_id']),
+            'school_code'              => $row['school_code'] ?? null,
+            'rombel'                   => $row['rombel'] ?? null,
+            'booklet'                  => $row['booklet'] ?? null,
             'age'                      => $row['age'],
             'gender'                   => $row['gender'],
             'class_level'              => $row['class_level'],
-            'country'                  => $row['country_name_snapshot'],
-            'province'                 => $row['province_name_snapshot'],
-            'district'                 => $row['district_name_snapshot'],
             'registered_at'            => $row['created_at'],
             'assented_at'              => $row['assented_at'],
             'intro_seen_at'            => $row['intro_seen_at'],
@@ -1055,7 +1240,54 @@ class RawDataService
             'node_ref'   => $this->nodeRefById($row['challenge_node_id']),
             'attempt_id' => $row['challenge_attempt_id'],
             'payload'    => $row['payload_json'],
-        ] + $row;
+        ] + self::correctedTime($row) + $row;
+    }
+
+    /**
+     * `occurred_at_corrected` = occurred_at + clock_offset_ms and
+     * `offset_known` (29 K8): without an offset the raw time, known = 0;
+     * events written by the server have offset 0.
+     *
+     * @param array<string, mixed> $row occurred_at, clock_offset_ms
+     *
+     * @return array{occurred_at_corrected: ?string, offset_known: int}
+     */
+    public static function correctedTime(array $row): array
+    {
+        $offset = $row['clock_offset_ms'] ?? null;
+        $time   = $row['occurred_at'] ?? null;
+
+        if ($time === null || $time === '' || $offset === null || $offset === '') {
+            return ['occurred_at_corrected' => $time, 'offset_known' => 0];
+        }
+
+        $at = new \DateTimeImmutable((string) $time, new \DateTimeZone(config('App')->appTimezone));
+        $ms = (int) $offset;
+        $at = $at->modify(sprintf('%+d seconds %+d microseconds', intdiv($ms, 1000), ($ms % 1000) * 1000));
+
+        return ['occurred_at_corrected' => $at->format('Y-m-d H:i:s.u'), 'offset_known' => 1];
+    }
+
+    private function fieldSessionValues(array $row): array
+    {
+        $this->maps['studies'] ??= [];
+        $studyId = (int) $row['study_id'];
+        $this->maps['studies'][$studyId] ??= model(\App\Models\ResearchStudyModel::class)->find($studyId);
+
+        $regions = service('fieldSessions')->planEntry($row + ['study_id' => $studyId], $this->maps['studies'][$studyId])['regions'];
+
+        $this->maps['field_codes'] ??= array_column($this->db()->table('field_sessions')->select('id, code')->get()->getResultArray(), 'code', 'id');
+
+        return $row + [
+            'region_opened'     => $regions === [] ? null : implode(',', $regions),
+            'main_session_code' => $this->maps['field_codes'][(int) $row['main_session_id']] ?? null,
+        ];
+    }
+
+    /** Field sheet row: the typed values under their spec codes, beside the session code. */
+    private function fieldSheetValues(array $row): array
+    {
+        return ['field_session_code' => $row['field_session_code'], 'sheet_row' => $row['row_no']] + $this->decode($row['values_json']);
     }
 
     private function helpValues(array $row): array
@@ -1069,7 +1301,7 @@ class RawDataService
             'node_ref' => $this->nodeRefById($row['node_id']),
             'item_key' => $item?->item_key,
             'hint_id'  => is_numeric($payload['hint_id'] ?? null) ? (int) $payload['hint_id'] : null,
-        ] + $row;
+        ] + self::correctedTime($row) + $row;
     }
 
     private function itemValues(array $row, bool $labeled): array
@@ -1290,8 +1522,44 @@ class RawDataService
         }
 
         if (! $this->allows($dimension, $scope)) {
-            throw new \DomainException('Data ini hanya untuk admin.');
+            throw new \DomainException('Data ini hanya untuk ketua peneliti.');
         }
+    }
+
+    /**
+     * Column map of one dimension: COLUMNS, or for a field sheet the session
+     * code, the row number, and the FieldSheetSpec columns.
+     *
+     * @return array<string, list<string>|string|null>
+     */
+    private static function columnMap(string $dimension): array
+    {
+        if (isset(self::COLUMNS[$dimension])) {
+            return self::COLUMNS[$dimension];
+        }
+
+        if (! in_array($dimension, self::DIMENSIONS, true) || ! \App\Libraries\FieldSheetSpec::has($dimension)) {
+            throw new \InvalidArgumentException("Dimensi '{$dimension}' tidak dikenal.");
+        }
+
+        $map = ['field_session_code' => 'field_sessions.code', 'sheet_row' => 'field_sheet_rows.row_no'];
+
+        foreach (array_keys(\App\Libraries\FieldSheetSpec::columns($dimension)) as $code) {
+            $map[$code] ??= null;
+        }
+
+        return $map;
+    }
+
+    private static function keyOf(string $dimension): string
+    {
+        if (isset(self::KEYS[$dimension])) {
+            return self::KEYS[$dimension];
+        }
+
+        self::columnMap($dimension);   // throws for an unknown dimension
+
+        return 'field_sheet_rows.id';
     }
 
     private function boundScope(): StaffScope

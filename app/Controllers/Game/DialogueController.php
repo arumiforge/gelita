@@ -9,12 +9,14 @@ use CodeIgniter\HTTP\RedirectResponse;
  *
  * - `/dialog/{code}`  dialog pembuka wilayah (`level_open`), gerbang wajib
  *                     wilayah yang baru terbuka (dialogueGate());
+ * - `/penghubung/{code}` the bridge story before the fifth challenge
+ *                     (`scenario_open`, part 6), gate of scenarioGate();
  * - `/tuntas/{code}`  wilayah tuntas (`level_done`), boleh ditonton ulang;
  * - `/penutup`        penutup cerita (`ending`), setelah seluruh node tuntas.
  *
  * Ketiganya diputar game/narrator.js (kartu ketuk, pose, efek, audio).
- * Perpindahan slide dicatat client lewat `/api/events` (`dialogue_advanced`
- * dengan `context` = konteks dialognya).
+ * The client reports the last slide through `/api/events` (`dialogue_completed`
+ * with `context` = the dialogue's context, 29 K5).
  */
 class DialogueController extends BaseGameController
 {
@@ -43,6 +45,52 @@ class DialogueController extends BaseGameController
             'slides'  => $content->dialogues($level->id, 'level_open'),
             // Kartu bab: tagline = judul slide pertama "Kenali wilayah", sama dengan tirai wilayah
             'tagline' => $intro === [] ? '' : tr($intro[0], 'title', $session->resolvedLocale()),
+        ]);
+    }
+
+    /**
+     * `/penghubung/{code}` — the bridge story *Kabut di Layar* (`scenario_open`,
+     * 32 §7.2): the same narrated scene as `/dialog/{code}`, with the region's
+     * `dialog-` music; its last slide leads to the mission brief of the
+     * Skenario Digital challenge. Marks the gate as passed, and may be watched
+     * again from the region map.
+     */
+    public function bridge(string $code): string|RedirectResponse
+    {
+        if ($gate = $this->introGate()) {
+            return $gate;
+        }
+
+        $session = $this->session();
+        $level   = $this->requireLevel($code);
+
+        if (! $this->levelUnlocked($session, $level->sequence)) {
+            return redirect()->to(site_url('peta'))->with('error', lang('Game.levelLocked'));
+        }
+
+        if ($gate = $this->dialogueGate($session, $level)) {
+            return $gate;
+        }
+
+        $node   = null;
+        $slides = service('contentRepository')->dialogues($level->id, 'scenario_open');
+
+        foreach (service('contentRepository')->nodesForLevel($level->id) as $candidate) {
+            if ($candidate->engine_type === 'skenario') {
+                $node = $candidate;
+            }
+        }
+
+        if ($node === null || $slides === [] || ! $this->nodeUnlocked($session, $node)) {
+            return redirect()->to(site_url('wilayah/' . $level->code));
+        }
+
+        $this->markScenarioShown($session, $level);
+
+        return view('game/bridge', $this->hudData() + [
+            'level'    => $level,
+            'node'     => $node,
+            'slides'   => $slides,
         ]);
     }
 

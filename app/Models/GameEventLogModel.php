@@ -100,16 +100,15 @@ class GameEventLogModel extends Model
     }
 
     /**
-     * Wilayah yang narasi "Kenali wilayah"-nya pernah didengar peserta ini
-     * sampai slide terakhir, di sesi mana pun: event `dialogue_advanced`
-     * dengan payload `context = region_intro` dan `index >= total`.
-     * Memakai index (participant_id, event_type, occurred_at); satu peserta
-     * hanya punya puluhan event dialog, jadi murah dibaca di setiap peta.
+     * Regions whose "Kenali wilayah" narration this participant heard to the
+     * last slide, in any session: event `dialogue_completed` with payload
+     * `context = region_intro` (29 K5; it is only sent at the last slide).
+     * Uses the index (participant_id, event_type, occurred_at); one
+     * participant has only a few dialogue events, so it is cheap on every map.
      *
      * The LIKE is only a cheap prefilter on the bare context word: MySQL 8
-     * returns a JSON column re-serialised with spaces (`"context": "…"`), so
-     * matching `"context":"region_intro"` found nothing there and the badge
-     * never went away. reachedLastSlide() checks the decoded context exactly.
+     * returns a JSON column re-serialised with spaces (`"context": "…"`); the
+     * decoded context is checked exactly afterwards.
      *
      * @return list<int> level_id
      */
@@ -118,41 +117,20 @@ class GameEventLogModel extends Model
         $rows = $this->db->table($this->table)
             ->select('level_id, payload_json')
             ->where('participant_id', $participantId)
-            ->where('event_type', 'dialogue_advanced')
+            ->where('event_type', 'dialogue_completed')
             ->where('level_id IS NOT NULL', null, false)
             ->where('deleted_at', null)
             ->like('payload_json', 'region_intro')
             ->get()
             ->getResultArray();
 
-        return self::reachedLastSlide($rows, 'region_intro');
-    }
-
-    /**
-     * level_id dari baris event dialog yang mencapai slide terakhir konteks itu.
-     *
-     * @param list<array{level_id: int|string|null, payload_json: array<string, mixed>|string|null}> $rows
-     *
-     * @return list<int>
-     */
-    public static function reachedLastSlide(array $rows, string $context): array
-    {
         $levels = [];
 
         foreach ($rows as $row) {
-            $payload = is_array($row['payload_json'] ?? null)
-                ? $row['payload_json']
-                : json_decode((string) ($row['payload_json'] ?? ''), true);
-            $levelId = (int) ($row['level_id'] ?? 0);
+            $payload = json_decode((string) ($row['payload_json'] ?? ''), true);
 
-            if ($levelId <= 0 || ! is_array($payload) || ($payload['context'] ?? null) !== $context) {
-                continue;
-            }
-
-            $total = (int) ($payload['total'] ?? 0);
-
-            if ($total > 0 && (int) ($payload['index'] ?? 0) >= $total) {
-                $levels[$levelId] = $levelId;
+            if (is_array($payload) && ($payload['context'] ?? null) === 'region_intro' && (int) $row['level_id'] > 0) {
+                $levels[(int) $row['level_id']] = (int) $row['level_id'];
             }
         }
 

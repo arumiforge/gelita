@@ -340,6 +340,11 @@ final class BankSource
             };
             $prompt = $type === 'scenario_choice' ? ($item['situation'] ?? null) : ($item['prompt'] ?? null);
 
+            // Part 6 (32 §7.5): every scenario names its situation picture slot (Katalog Aset, 32A)
+            if ($type === 'scenario_choice' && ! isset($item['media']['key'])) {
+                $item['media'] = ['key' => 'item.skenario.' . $key, 'label' => 'Situasi ' . $key, 'source' => 'Katalog Aset (32A)'];
+            }
+
             $row = [
                 'item_key'          => $key,
                 'node_ref'          => $ref,
@@ -383,9 +388,10 @@ final class BankSource
 
             if (isset($item['media']['key'])) {
                 self::addMedia($media, $item['media'], match ($engine) {
-                    'puzzle' => 'puzzle',
-                    'cari'   => 'object',
-                    default  => 'card',
+                    'puzzle'   => 'puzzle',
+                    'cari'     => 'object',
+                    'skenario' => 'situation',
+                    default    => 'card',
                 }, $ctx->region, $ref, $key . ($decoy ? ' (pengecoh)' : ''));
             }
 
@@ -868,6 +874,7 @@ final class BankSource
                 'card'   => 'Benar atau Salah (gambar pernyataan)',
                 'scene'  => 'Cari Objek (adegan)',
                 'post'   => 'Periksa Unggahan (foto unggahan)',
+                'situation' => 'Skenario Digital (gambar situasi)',
                 default  => 'Cari Objek (benda)',
             },
             'used_by' => [],

@@ -1728,3 +1728,57 @@ Token refusals: `token_unknown`, `not_open_yet`, `closed`, `other_class`, `not_m
 ## FEATURE: `gelita:uji:akun` (research revision 10, part 2, change no. 24)
 
 Test accounts for the validators' install (28 §13): `--buat` makes the default `uji.*` list (or `--nama=uji.x`) at school `Sekolah Uji Validator` (`V01`), class group `A`, codes `UJI-01`, …, random passwords shown once; `--reset=uji.x` deletes that account's play data through `RetentionService::deletePlayData()` and keeps the account; `--daftar` lists them. Refuses in production, beside any student who is not `uji.*`, and without an active study. Audit `test_account_created`, `test_account_reset` (no actor, `via: cli`). Students cannot register with the prefixes `uji.` and `sim_`.
+
+## FEATURE: log cleanup, research download, data dictionary, field sheets (research revision 10, part 3)
+
+Source: `docs/revisi-10-analitik/29_IMPLEMENTASI_DATA_PENELITIAN.md`.
+
+1. **Event catalog.** `EventCatalog` owns every type: research (download), admin (tech log), removed (`answer_selected`, `audio_pause`, `dialogue_advanced` → `dialogue_completed`, `answer_changed` → `answer_submitted {changed}`). A queued old client event is refused `event_type_unknown`.
+2. **Telemetry.** The "Belum didengar" badge reads `dialogue_completed` (context `region_intro`). Audio `pause` writes only its `audio_usage_events` row; the `bantuan` sheet shows one row per playback with the largest `listened_ms`. New raw data: `item_tries.ready_ms`, `empty_tap`, `passage_reopened`. Idle sessions get `session_paused {via: idle}`.
+3. **Devices.** `device_logs` keeps OS and browser with versions, screen and window size, and technical columns; User-Agent and Client Hints are read, then dropped. `Accept-CH` asks only for platform version and full version list.
+4. **Tech log** (`/admin/log-teknis`, admin): devices, technical events (`password_changed`, `viewport_changed`, `package_changed`, `events_dropped`), session tech columns (OS, browser, touch, app version, package); CSV audited as `tech_log_csv`.
+5. **Research download** (`/admin/ekspor`, ketua only): always one study; sheets `kamus`, `peserta`, `sesi_lapangan`, `sesi`, `progres`, `pengerjaan`, `jawaban`, `percobaan`, `navigasi`, `bantuan`, `selesai`, `event`, `masukan`, `butir`, `kode_pilihan`, then field sheets `l1_kondisi` … `l6_sesi`; event times corrected (`occurred_at_corrected`, `offset_known`); `answer_key` and the `event` sheet for ketua; test (`uji.*`, school V01) and simulated (`sim_*`) accounts never included. The Kamus Data sheet carries the dictionary version, time, study, filters, and per column the name, analytics, and anchor in 11.
+6. **Field sheets.** On the field session page: *Unduh templat lembar* (XLSX with codes and booklets, a Kode sheet) and *Unggah lembar yang sudah diketik* (XLSX or CSV named after the sheet code), preview, then save; the newest upload counts; L5 *Kode manual* goes to `item_tries.manual_code`; *Ketikan kedua (cek)* is compared by row key and never downloaded. L7 never reaches the server: `php spark gelita:lembar:templat --l7 --keluar=<folder>` on a laptop.
+
+## FEATURE 16 and 17 additions: consent, parents' requests, study closure (research revision 10, part 4)
+
+Everything here applies only while a study has field mode on (30 §0.1); without one, registration, login, the menu, Tata kelola, and retention behave as before.
+
+```text
+Sign-up in field mode → participants.assent_version = t4-1 + participant_consents row (defaults No)
+P1 fills L7 codes at /admin/sesi-lapangan/{id}/izin (ConsentService::save, conditional on updated_at)
+  status withdrawn_keep / withdrawn_delete → participants.deactivated_at (same transaction)
+    → next game request ends the session, /masuk answers Game.loginInactive, the token is refused
+  admin "Aktifkan lagi" only after P1 restored the status, with a reason (participant_reactivated)
+
+Parent's request (DataRequestService), /admin/permintaan-data:
+  peneliti files → requested ── ketua confirms ──► preview (RetentionService::countAffected, hard)
+  ketua files ─────────────────────────────────► preview
+  recording: confirmed → executed with 0 rows (nothing on the server)
+  admin types HAPUS in Tata kelola → executed (conditional status move first)
+    → ExportService::purgeForRequest() + ticks system, server_exports
+  ticks per role; parent_notified last → completed; minutes PDF (berita acara)
+
+Study closure, /admin/studi/{id}/penutupan (StudyClosureService):
+  conditions: closed (closed_at), no open request, consent register downloaded after the last change,
+  feedback checked for names → Hitung → GANTI → names, usernames, passwords, schools replaced by codes
+```
+
+Other parts: follow-up flags `tl-1` at `/admin/tindak-lanjut` (computed, never stored, head researcher only); one child's copy at `/admin/peserta/salinan` (ZIP made on request, never kept); registration correction of age, gender, class by the admin (`participant_corrected`); the coded consent register at `/admin/ekspor/izin`.
+
+FEATURE 17 gains: a field-mode study is flagged only after `closed_at` + `retention_days`, for its whole cohort; with `gelita.researchPrivacy` on, step `expired_browser_sessions` cleans `ci_sessions`.
+
+## FEATURE: Skenario Digital, the fifth challenge (research revision 10, part 6)
+
+Plan: `docs/revisi-10-analitik/32_IMPLEMENTASI_SKENARIO_DIGITAL.md`; story: `12_CERITA_PENGHUBUNG_DAN_NARASI.md`; decisions: `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md` → *Research revision 10, part 6*.
+
+- **Engine `skenario`, item `scenario_choice`.** Four scenarios per variant (a, b). One try = one action and one reason, sent together to `POST /api/attempts/{id}/responses` as `answer: {action: <ref>, reason: <ref>}` with `ready_ms`, `reason_ready_ms`, `first_input_ms`, `action_last_input_ms`, `reason_last_input_ms`, `last_input_ms`. `ChallengeService::submitScenario()` grades from `scenario_options` (score 2 = safe), writes `item_responses` with `updateOrStale()` on `try_count`, one `item_tries` row, `answer_submitted` (`try_no`, `first_pass`, `action_score`, `closed`), and `scenario_failed` when the third try closes the scenario without the safe action. Tries count per scenario (`ChallengeNode::triesPerItem()`, also Cari Objek); `/check` refuses the engine; a send to a closed scenario is `CLUE_CLOSED`, a missing reason `INCOMPLETE`, an unknown ref 400. All four closed → `solved` (all safe) or `tries_exhausted`; stars stay `bintang-1`.
+- **Payload.** `scenarios[]` = `id`, `prompt`, `media` (only when the picture exists), `steps`, `audio`/`audio_id` (approved only), `actions`/`reasons` as `{ref, text}` (HMAC refs per attempt, `optionRef()`), and `state` (`tries`, `closed`; once closed `outcome`, `chosen`, `feedback`, and for `exhausted` `safe_action` + `explanation`). No score, code, key, or feedback before a scenario is closed. The response carries `score_band` (`safe`, `partial`, `risky`), `feedback`, `try_no`, `tries_left`, `scenario_closed`, and for a closed scenario without the safe action `safe_action` + `explanation`.
+- **Screen.** `game/challenge/skenario.php` + `engines/skenario.js`: situation left (picture, text, ▶ *Dengarkan*), steps right (1 Tindakan, 2 Alasan), action bar (*Lanjut ke alasan*, *Kembali*, *Kirim jawaban*, *Coba lagi*, *Lanjut ke cerita berikutnya*). No red and no "salah"/"gagal"; a picked choice gets ● and a glow. The situation is read only when ▶ is tapped.
+- **Bridge story.** `GET /penghubung/{wilayah}` → `DialogueController::bridge()` plays `scenario_open` (*Kabut di Layar*, 6 lines per region, music `dialog-{wilayah}`) and ends on the mission brief `/misi/{wilayah}/5`. `scenarioGate()` sends the brief and the challenge there until the student has any attempt at that node in the study (all game sessions); the PHP session flag `gelita.scenario_shown` keeps it from repeating before that. The region map offers *Lihat cerita penghubung* once it was watched.
+- **Fifteen shards.** The shard total is the number of active nodes; `/tuntas/{wilayah}` opens after the fifth challenge and `/penutup` after fifteen, with no code that counts 12.
+- **Instruction narration.** `instruksi-{node}` → `challenge_nodes.audio_instruction_*`; a ▶ beside the instruction on every challenge screen, only for an approved recording, never autoplayed; each play is logged with the attempt id.
+- **Pictures.** `item.skenario.{item code}` (24, Katalog Aset folder `mockup/gambar-mockup/skenario/aset`, installed by `gelita:katalog:impor`); `bg.cerita-layar-{wilayah}-NN` → `bg.story.scenario_open.{wilayah}.{n}`; the map card picture `assets/ui/node-card-skenario.webp` is still to come (the card shows without one).
+- **Simulator.** `gelita:simulasi` plays the bridge story and the scenarios (0–3 tries without the safe action per scenario).
+- **Waits for part 3.** `item_tries.ready_ms`, `EventCatalog` (`scenario_failed` research + server-only), `dialogue_completed` for `scenario_open`, and the export columns (`percobaan`: `action_key`, `action_score`, `reason_code`, `reason_ready_ms`, `action_last_input_ms`, `reason_last_input_ms`; `bantuan`: `audio_context`) are wired when part 3 is merged (comments `WAVE-E seam (part 3)`).
+

@@ -24,6 +24,9 @@ abstract class BaseGameController extends BaseController
     /** Kunci sesi PHP: dialog pembuka wilayah yang sudah tampil, "sesi:level" → true */
     private const DIALOGUE_SHOWN_KEY = 'dialogues_shown';
 
+    /** Part 6 (32 §7.2): PHP session flag of the bridge stories shown, "session:level" → true */
+    private const SCENARIO_SHOWN_KEY = 'gelita.scenario_shown';
+
     protected function context(): GameContext
     {
         return service('gameContext');
@@ -148,6 +151,45 @@ abstract class BaseGameController extends BaseController
         $shown[$this->dialogueKey($session, $level)] = true;
 
         session()->set(self::DIALOGUE_SHOWN_KEY, $shown);
+    }
+
+    /**
+     * Part 6 (32 §7.2, K9): the first time a student opens the Skenario
+     * Digital challenge of a region, the bridge story `scenario_open` plays
+     * before its mission brief. "Once per student per study" holds because
+     * the gate stops as soon as the student has any attempt at that node, in
+     * any game session; the PHP session flag only keeps the gate from
+     * repeating when the student goes back to the map before opening it.
+     * Null when no redirect is needed (also when the region has no bridge story).
+     */
+    protected function scenarioGate(GameSession $session, Level $level, \App\Entities\ChallengeNode $node): ?RedirectResponse
+    {
+        if ($node->engine_type !== 'skenario' || ! empty(((array) session(self::SCENARIO_SHOWN_KEY))[$this->dialogueKey($session, $level)])) {
+            return null;
+        }
+
+        if (model(\App\Models\ChallengeAttemptModel::class)->hasAttemptInStudy($session, $node->id)
+            || service('contentRepository')->dialogues($level->id, 'scenario_open') === []) {
+            return null;
+        }
+
+        return redirect()->to(site_url('penghubung/' . $level->code));
+    }
+
+    /** Called by DialogueController::bridge() when the bridge story is shown. */
+    protected function markScenarioShown(GameSession $session, Level $level): void
+    {
+        $shown = (array) session(self::SCENARIO_SHOWN_KEY);
+
+        $shown[$this->dialogueKey($session, $level)] = true;
+
+        session()->set(self::SCENARIO_SHOWN_KEY, $shown);
+    }
+
+    /** Part 6: the bridge story was shown in this login (for the replay link on the region map). */
+    protected function scenarioShown(GameSession $session, Level $level): bool
+    {
+        return ! empty(((array) session(self::SCENARIO_SHOWN_KEY))[$this->dialogueKey($session, $level)]);
     }
 
     private function dialogueKey(GameSession $session, Level $level): string

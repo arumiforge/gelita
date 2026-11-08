@@ -14,6 +14,8 @@ class ResearchStudyModel extends Model
     protected $allowedFields = [
         'code', 'name', 'description', 'year_label', 'status', 'retention_days',
         'default_locale', 'unlock_mode', 'field_mode', 'meeting_plan', 'package_code',
+        // Part 4 (30 §15)
+        'closed_at', 'consent_register_exported_at', 'feedback_names_checked_at', 'identities_replaced_at',
     ];
     protected $validationRules = [
         'code'                => ['label' => 'Kode singkat studi', 'rules' => 'required|max_length[50]|is_unique[research_studies.code,id,{id}]'],

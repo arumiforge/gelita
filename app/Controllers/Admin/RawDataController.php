@@ -26,7 +26,8 @@ class RawDataController extends BaseAdminController
         'selesai'    => 'Penyelesaian',
         'navigasi'   => 'Navigasi',
         'bantuan'    => 'Bantuan',
-        'perangkat'  => 'Perangkat',
+        // Part 3 (29 K1, §5.6): raw events for ketua; device data moved to the admin tech log
+        'event'      => 'Event mentah',
     ];
 
     /** Filter tabel data mentah (§8.3). */

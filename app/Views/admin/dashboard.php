@@ -33,6 +33,25 @@
   <?= component('stat-tile', ['label' => 'Kritik & saran', 'value' => fmt_num($kpi['feedback'], 0, 'id'), 'icon' => 'message']) ?>
 </section>
 
+<?php if (($techLog ?? null) !== null): // part 3 (29 §5.6) ?>
+  <section class="kpi-grid" aria-label="<?= esc(lang('Admin.menuTechLog'), 'attr') ?>">
+    <?= component('stat-tile', ['label' => lang('Admin.techLogDropped7d'), 'value' => fmt_num($techLog['dropped_7d'], 0, 'id'), 'icon' => 'warn']) ?>
+    <?= component('stat-tile', ['label' => lang('Admin.techLogOsBrowser'), 'value' => $techLog['os_browser'] === [] ? '—' : $techLog['os_browser'][0]['os'] . ' / ' . $techLog['os_browser'][0]['browser'], 'icon' => 'database', 'hint' => lang('Admin.menuTechLog')]) ?>
+  </section>
+  <p><a href="<?= base_url('admin/log-teknis') ?>"><?= esc(lang('Admin.menuTechLog')) ?> <?= icon('right') ?></a></p>
+<?php endif ?>
+
+<?php // Part 4 (30 §6, §7.7) ?>
+<?php if (($requestCards ?? []) !== []): ?>
+  <section class="form-section" aria-label="<?= esc(lang('Admin.menuDataRequests'), 'attr') ?>">
+    <ul>
+      <?php foreach ($requestCards as $card): ?>
+        <li><a href="<?= base_url($card['href']) ?>"><?= esc($card['label']) ?></a></li>
+      <?php endforeach ?>
+    </ul>
+  </section>
+<?php endif ?>
+
 <?php if (($fieldSessions ?? []) !== []): ?>
   <section class="form-section" aria-labelledby="dash-field-title">
     <h2 id="dash-field-title"><?= icon('clock') ?> <?= esc(lang('Admin.dashboardFieldSessions')) ?></h2>
