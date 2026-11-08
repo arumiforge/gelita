@@ -1157,6 +1157,25 @@ Jangan menjalankan reset terhadap server yang sedang mengambil data penelitian.
 
 `learning_indicators` gets the rows D1a, D1b, D2, D3, PBK from the workbook sheet `indicators`; the old `budaya`, `literasi`, `sikap` rows are made inactive, not deleted.
 
+## Research revision 10, part 6: Skenario Digital (migration `004000`)
+
+Plan: `docs/revisi-10-analitik/32_IMPLEMENTASI_SKENARIO_DIGITAL.md` §11. Migration `2026-01-01-004000_AddScenarioEngineColumns`; `SystemResetService::REQUIRED_MIGRATION` = `2026-01-01-004000`. Nothing is deleted; every new column is nullable.
+
+| Table | Column | Type | Meaning |
+|---|---|---|---|
+| `item_tries` | `action_key` | VARCHAR(10) NULL | bank key of the chosen action (`A1` …), Skenario Digital only |
+| | `action_score` | TINYINT UNSIGNED NULL | 0, 1, or 2, from `scenario_options` (server) |
+| | `reason_key` | VARCHAR(10) NULL | bank key of the chosen reason (`R1` …) |
+| | `reason_code` | VARCHAR(12) NULL, index | R-RISK, R-ETIK, R-ATUR, R-SOS, R-ACAK (never graded) |
+| | `reason_ready_ms`, `action_last_input_ms`, `reason_last_input_ms` | INT UNSIGNED NULL | client ms since the challenge opened (32 §6.4); a value later than `last_input_ms` is stored NULL |
+| `challenge_nodes` | `audio_instruction_id`, `audio_instruction_en_id` | BIGINT UNSIGNED NULL, FK `audio_assets` ON DELETE SET NULL | instruction narration (context `challenge_instruction`) |
+
+- `item_tries.answer_json` of a scenario try = `{action, reason, order: {actions: [...], reasons: [...]}}`, the option keys in the order shown (once per attempt, seed attempt id + item id + kind).
+- `item_tries.error_code` of a scenario try = the DIG-* code of the action (NULL for score 2); `is_correct` = score 2.
+- `item_tries.ready_ms` belongs to part 3 (migration `003600`) and is not created here; the engine writes it once the column exists.
+- Stored codes: engine `skenario` (`challenge_nodes.engine_type`), item type `scenario_choice`, dialogue context `scenario_open`, audio contexts `challenge_instruction`, `scenario_situation`, `post_clue`; server event `scenario_failed` (`try_count`).
+- `ContentSeeder::NODES` seeds five challenges per region; `gelita:reset` sets a `skenario` node without active items inactive, so a bank without Skenario Digital keeps 12 nodes (32 K8).
+
 ## Isi database setelah instalasi baru
 
 Instalasi baru: `php spark migrate`, lalu `GELITA_ADMIN_PASSWORD='…' php spark db:seed DatabaseSeeder` (langkah lengkap di [08_DEPLOYMENT.md](08_DEPLOYMENT.md)). `DatabaseSeeder` menjalankan seeder di `app/Database/Seeds/` berurutan; setiap seeder hanya menyisipkan baris yang belum ada (`GelitaSeeder::insertIfMissing()`), jadi aman dijalankan ulang.

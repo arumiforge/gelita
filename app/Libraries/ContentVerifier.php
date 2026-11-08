@@ -113,7 +113,10 @@ class ContentVerifier
                         $findings[] = $this->finding('warning', $itemScope, 'Fakta di soal ini masih ditandai "perlu dicek".');
                     }
 
-                    $findings = [...$findings, ...$this->mediaFindings($item->media_asset_id, $itemScope, 'Gambar soal', true)];
+                    // Part 6: a situation picture is optional (text only) and comes from the Katalog Aset, not from mockups
+                    $findings = [...$findings, ...($item->interaction_type === 'scenario_choice'
+                        ? $this->scenarioPictureFindings($item->media_asset_id, $itemScope)
+                        : $this->mediaFindings($item->media_asset_id, $itemScope, 'Gambar soal', true))];
 
                     // Kunci susun gambar dan benar/salah memang sama di banyak soal
                     $signature = $item->interaction_type === 'fill_blank_bank' ? $this->answerSignature($item) : null;
@@ -271,6 +274,21 @@ class ContentVerifier
      *
      * @return list<array{level: string, scope: string, message: string}>
      */
+    /**
+     * Part 6 (32 §7.5): a scenario without its picture still shows its text, so
+     * a missing picture is a warning that points to the catalogue import.
+     *
+     * @return list<array{level: string, scope: string, message: string}>
+     */
+    private function scenarioPictureFindings(?int $mediaId, string $scope): array
+    {
+        if ($mediaId === null || $mediaId <= 0 || isset(service('contentRepository')->mediaMap()[$mediaId])) {
+            return $mediaId === null || $mediaId <= 0 ? [] : $this->mediaFindings($mediaId, $scope, 'Gambar situasi');
+        }
+
+        return [$this->finding('warning', $scope, 'Gambar situasi belum dipasang; skenario tampil dengan teks saja. Jalankan php spark gelita:katalog:impor untuk memasang gambar dari Katalog Aset.')];
+    }
+
     private function mediaFindings(?int $mediaId, string $scope, string $label, bool $mockupSlot = false): array
     {
         if ($mediaId === null || $mediaId <= 0) {

@@ -1,6 +1,6 @@
 # Audio GELITA
 
-Audio bawaan permainan yang ikut di repositori: **3 musik gamelan** (plus 12 scene and account tracks since 19 October 2026) dan **6 efek suara**, dibangkitkan oleh [`tools/audio/`](../tools/audio/README.md). Narasi (103 rekaman × 2 bahasa) tidak lagi ikut di repositori: rekaman suara sintetis lama dihapus (17 Oktober 2026) dan diganti rekaman pengisi suara (lihat *Voice-over narration* di bawah).
+Audio bawaan permainan yang ikut di repositori: **3 musik gamelan** (plus 12 scene and account tracks since 19 October 2026) dan **6 efek suara**, dibangkitkan oleh [`tools/audio/`](../tools/audio/README.md). Narasi (± 187 rekaman × 2 bahasa since research revision 10, part 6; 103 before) tidak lagi ikut di repositori: rekaman suara sintetis lama dihapus (17 Oktober 2026) dan diganti rekaman pengisi suara (lihat *Voice-over narration* di bawah).
 
 - Musik dan efek suara disintesis dari nol, tanpa sampel rekaman, dengan penalaan pelog–slendro. Gendingnya komposisi orisinal.
 - Narasi direkam pengisi suara (suara asli, bukan sintetis) dan diunggah di panel **Rekaman narasi**. Bagian tentang suara sintetis di bawah tinggal sebagai catatan sejarah.
@@ -9,7 +9,7 @@ Audio bawaan permainan yang ikut di repositori: **3 musik gamelan** (plus 12 sce
 |---|---|---|---|
 | Musik | `public/assets/audio/music/` | `map`, `region`, `challenge` (MP3 stereo 128 kbps, loop); since 19 October 2026 also `welcome`, `opening`, `ending`, and `kenal-`/`dialog-`/`tuntas-{wilayah}` (96 kbps, see *Scene and account music*) | `core/audio.js` → `Sfx.music()` |
 | Efek suara | `public/assets/audio/sfx/` | `click`, `correct`, `wrong`, `lock`, `shard`, `region-done` | `core/audio.js` → `Sfx.play()` |
-| Narasi | `public/assets/audio/narasi/{id,en}/` (kosong di repositori) | folder impor rekaman pengisi suara: 91 baris naskah + 12 petunjuk Cari Objek per bahasa | `gelita:narration:import` → `dialogues` / `challenge_items` |
+| Narasi | `public/assets/audio/narasi/{id,en}/` (kosong di repositori) | folder impor rekaman pengisi suara: 112 baris naskah, 12 petunjuk Cari Objek babak 1, 24 petunjuk *Periksa Unggahan*, 24 situasi Skenario Digital, 15 instruksi tantangan per bahasa | `gelita:narration:import` → `dialogues` / `challenge_items` |
 
 ## Musik gamelan
 
@@ -218,3 +218,22 @@ Owner decision: narration is recorded by voice actors (real voices, not TTS). Th
 1. **Script.** In **Rekaman narasi**, *Naskah untuk pengisi suara* downloads a printable PDF (`/admin/konten/narasi/naskah-pdf?bahasa=id|en|semua`, `App\Libraries\NarrationScriptPdf`): A4 portrait, 7 mm margins, condensed 8.5 pt type, one table in game order with a tick box, the file name, the speaker with pose/effect as a delivery cue, and the text. One language is about 5 pages; both side by side about 7.
 2. **Old recordings.** On a server that still has the TTS takes, press **Batalkan semua rekaman** once per language (`NarrationCatalog::cancelAll()`). Every line and clue goes back to "belum ada". Imported `audio.narasi.*` recordings become `rejected` (bulk approval skips them) and their files are deactivated and deleted; other audio picked by hand is only unlinked. The rows themselves stay, because `audio_usage_events` refers to them.
 3. **New recordings.** Name each take after its code (`intro-01.mp3`, `petunjuk-tmg-4-01.mp3`) and upload it in **Unggah rekaman**, or put it in `public/assets/audio/narasi/{id,en}/` and run `php spark gelita:narration:import`. A cancelled line comes back as a draft (`production_method = own_recording`); listen to it, then approve it.
+
+## Research revision 10, part 6: new recording groups (4 November 2026)
+
+Plan: `docs/revisi-10-analitik/32_IMPLEMENTASI_SKENARIO_DIGITAL.md` §8–§9; script: `12_CERITA_PENGHUBUNG_DAN_NARASI.md`. Per language there are now **± 187 recordings** (`NarrationImporter::lines()` lists 187 on the grade 5 bank):
+
+| Group | File code | Speaker | Count | Text from | Played |
+|---|---|---|---:|---|---|
+| Story script (8 contexts) | `intro-`, `peta-`, `kenal-`, `dialog-`, `layar-` (new), `tuntas-`, `penutup-`, `peta-tuntas-` | Narator, Jaka, Mbah Kedu | 112 | `docs/naskah-cerita.md` | on its own, as before |
+| Temukan Benda clues (round 1) | `petunjuk-{node}-NN` | Mbah Kedu | 12 | bank, items `*-4-x01` … `x04` | ▶ only |
+| *Periksa Unggahan* clues (round 2) | `unggahan-{item code}` | Mbah Kedu | 24 | bank, `find_part` items | ▶ only, context `post_clue` |
+| Skenario Digital situations | `skenario-{item code}` | Narator | 24 | bank, `scenario_choice` items | ▶ *Dengarkan* only, context `scenario_situation` |
+| Challenge instructions | `instruksi-{node}` | Narator | 15 | bank, `challenge_nodes.instruction_*` | ▶ beside the instruction only, context `challenge_instruction` |
+
+- Item files carry the item code, never a number, so variants a and b cannot swap. `petunjuk-*` numbers count round-1 clues only.
+- Never read out: Isi Rumpang and Benar atau Salah items and the reading passages. The importer refuses a file named after one of them (`Bacaan dan pernyataan tidak dibacakan.`), and the item form refuses a recording for them.
+- Voice direction for `skenario-*` and `unggahan-*`: flat and the same for every situation; quoted messages read plainly; web addresses read as written; key part names not stressed (12 → *Arahan suara*). Approving such a recording needs the tick *Nada datar dan sama untuk setiap situasi*, in the audio list and in the bulk approval (without it the bulk approval leaves them as drafts); the audit records `tone_checked`.
+- `gelita:reset` rebuilds items and challenges, then relinks every registered item and instruction recording (`NarrationImporter::relinkClues()`).
+- Every tap is logged in `audio_usage_events` with the attempt id; `instruction_replays` (part 9) counts all `challenge_instruction` plays, since none play on their own.
+

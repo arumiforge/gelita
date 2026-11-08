@@ -179,6 +179,8 @@ class RawDataService
             'started_at' => 'item_responses.started_at', 'answered_at' => 'item_responses.answered_at',
             'duration_ms' => 'item_responses.duration_ms',
         ],
+        // WAVE-E seam (part 3): 29 §7.3 rebuilds this sheet; it then gains action_key, action_score, reason_code,
+        // reason_ready_ms, action_last_input_ms, reason_last_input_ms (32 §10; columns from migration 004000)
         'percobaan' => [
             'attempt_id' => 'challenge_attempts.id', 'session_code' => 'game_sessions.session_code',
             'participant_code' => 'participants.participant_code',
@@ -197,6 +199,7 @@ class RawDataService
             'node_ref' => 'game_event_logs.challenge_node_id', 'attempt_id' => 'game_event_logs.challenge_attempt_id',
             'payload' => null,
         ],
+        // WAVE-E seam (part 3): 29 §5.4 rebuilds this sheet; it then gains audio_context = audio_assets.context_code (32 §10)
         'bantuan' => [
             'session_code' => 'bantuan.session_code', 'participant_code' => 'bantuan.participant_code',
             'occurred_at' => 'bantuan.occurred_at', 'jenis' => 'bantuan.jenis', 'level' => 'bantuan.level_id',
