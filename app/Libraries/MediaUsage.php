@@ -205,12 +205,19 @@ class MediaUsage
             }
         }
 
-        foreach ($db->table('challenge_nodes')->select('level_id, sequence, audio_intro_id, audio_intro_en_id')->get()->getResultArray() as $row) {
-            $label = 'Kartu misi ' . node_ref((string) ($levels[$row['level_id']] ?? '?'), (int) $row['sequence']);
+        foreach ($db->table('challenge_nodes')->select('level_id, sequence, audio_intro_id, audio_intro_en_id, audio_instruction_id, audio_instruction_en_id')->get()->getResultArray() as $row) {
+            $ref = node_ref((string) ($levels[$row['level_id']] ?? '?'), (int) $row['sequence']);
 
             foreach (['audio_intro_id' => 'Indonesia', 'audio_intro_en_id' => 'Inggris'] as $column => $lang) {
                 if (($id = $this->int($row[$column])) !== null) {
-                    $uses[$id][] = $label . ' (' . $lang . ')';
+                    $uses[$id][] = 'Kartu misi ' . $ref . ' (' . $lang . ')';
+                }
+            }
+
+            // Part 6 (32 §11): the instruction narration counts as in use
+            foreach (['audio_instruction_id' => 'Indonesia', 'audio_instruction_en_id' => 'Inggris'] as $column => $lang) {
+                if (($id = $this->int($row[$column])) !== null) {
+                    $uses[$id][] = 'Instruksi ' . $ref . ' (' . $lang . ')';
                 }
             }
         }

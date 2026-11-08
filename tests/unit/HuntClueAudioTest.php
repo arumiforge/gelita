@@ -173,7 +173,7 @@ final class HuntClueAudioTest extends CIUnitTestCase
         $this->assertStringNotContainsString('audio_prompt_id', $other);
     }
 
-    public function testItemPayloadKeepsPromptAudioForFindObjectOnly(): void
+    public function testItemPayloadKeepsPromptAudioForNarratedTypesOnly(): void
     {
         $audioId = $this->audio('audio.narasi.en.petunjuk-tmg-4-01', 'en', 'draft');
 
@@ -184,8 +184,9 @@ final class HuntClueAudioTest extends CIUnitTestCase
 
         $this->assertSame('Rekaman yang dipilih tidak ditemukan. Pilih ulang dari daftar.', $this->itemPayload(['interaction_type' => 'find_object', 'audio_prompt_id' => '999']));
 
-        // Jenis lain tidak pernah membawa audio petunjuk, walau dikirim
-        $choice = $this->itemPayload(['interaction_type' => 'verdict_card', 'audio_prompt_id' => (string) $audioId]);
+        // Statements and blanks are never read out (32 K12): a recording sent for one is refused
+        $this->assertSame(lang('Admin.narration_d1_refused'), $this->itemPayload(['interaction_type' => 'verdict_card', 'audio_prompt_id' => (string) $audioId]));
+        $choice = $this->itemPayload(['interaction_type' => 'verdict_card']);
         $this->assertNull($choice['audio_prompt_id']);
         $this->assertNull($choice['audio_prompt_en_id']);
     }

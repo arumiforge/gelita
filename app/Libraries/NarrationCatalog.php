@@ -34,6 +34,12 @@ final class NarrationCatalog
         'hunt_clue'    => 'Petunjuk Cari Objek',
     ];
 
+    /**
+     * Part 6 (32 §9.4): recordings of scored situations and clues are approved
+     * only after the listener confirms the flat, even tone (Admin.narration_tone_check).
+     */
+    public const TONE_CONTEXTS = ['scenario_situation', 'post_clue'];
+
     public const CHARACTER_LABELS = ['narator' => 'Narator', 'jaka' => 'Jaka', 'mbah_kedu' => 'Mbah Kedu'];
 
     /** Status audio satu bahasa → label panel. */
@@ -299,9 +305,16 @@ final class NarrationCatalog
     }
 
     /** Setujui seluruh audio narasi draft satu bahasa; mengembalikan jumlahnya. */
-    public function approveDrafts(string $locale, ?int $staffId): int
+    public function approveDrafts(string $locale, ?int $staffId, bool $toneChecked = false): int
     {
         $ids = $this->draftIds($locale);
+
+        // Part 6 (32 §9.4): without the tone check, scored situations and clues stay drafts
+        if (! $toneChecked && $ids !== []) {
+            $toned = array_map('intval', array_column($this->db->table('audio_assets')->select('id')
+                ->whereIn('id', $ids)->whereIn('context_code', self::TONE_CONTEXTS)->get()->getResultArray(), 'id'));
+            $ids   = array_values(array_diff($ids, $toned));
+        }
 
         if ($ids !== []) {
             $this->db->table('audio_assets')->whereIn('id', $ids)->update([
@@ -317,7 +330,7 @@ final class NarrationCatalog
             'staff_user_id' => $staffId,
             'target_type'   => 'audio_asset',
             'target_id'     => 'narasi.' . $locale,
-            'metadata'      => ['locale' => $locale, 'count' => count($ids), 'audio_ids' => array_slice($ids, 0, 200)],
+            'metadata'      => ['locale' => $locale, 'count' => count($ids), 'audio_ids' => array_slice($ids, 0, 200), 'tone_checked' => $toneChecked],
         ]);
 
         return count($ids);
