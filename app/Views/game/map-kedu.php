@@ -238,7 +238,14 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
           </p>
         <?php endif ?>
         <div class="kedu-panel-actions">
-          <?php if (($intros[$level['code']] ?? []) !== []): ?>
+          <?php if (in_array($level['code'], $kenaliLocked ?? [], true)): ?>
+            <?php // Part 7 (33 §7.5): research mode, Kenali opens after the region is finished; no "Belum didengar" badge ?>
+            <span class="kedu-btn is-secondary kenal-card-btn is-locked" aria-disabled="true" title="<?= esc(lang('Game.kenaliAfterRegion'), 'attr') ?>">
+              <?= icon('lock') ?> <span><?= esc(lang('Game.kenali')) ?></span>
+              <span class="visually-hidden"><?= esc(lang('Game.kenaliAfterRegion')) ?></span>
+            </span>
+            <small class="kenal-locked-note"><?= esc(lang('Game.kenaliAfterRegion')) ?></small>
+          <?php elseif (($intros[$level['code']] ?? []) !== []): ?>
             <a class="kedu-btn is-secondary kenal-card-btn<?= $unheard($level) ? ' is-unheard' : '' ?>" href="#kenal-<?= esc($level['code'], 'attr') ?>"
                data-kenal-open="<?= esc($level['code'], 'attr') ?>" aria-label="<?= esc(lang('Game.kenalRegion', [$level['name']]), 'attr') ?>">
               <?php // The owner's Kenali picture (book, magnifier, bulb; 18 October 2026), shipped in assets/ui ?>

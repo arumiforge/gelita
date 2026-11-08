@@ -54,7 +54,9 @@ $track     = is_file(FCPATH . 'assets/ui/loading-track.webp')
   <div class="stat-grid">
     <?= component('stat-tile', ['label' => lang('Game.firstPass'), 'value' => lang('Game.firstTryCount', [$journey['first_pass'], $journey['scorable']]), 'icon' => 'target']) ?>
     <?= component('stat-tile', ['label' => lang('Game.challengesDone'), 'value' => (string) $journey['completed'], 'icon' => 'check']) ?>
+    <?php if (empty($researchMode)): // Part 7 (33 §7.1): no Total waktu tile in research mode ?>
     <?= component('stat-tile', ['label' => lang('Game.totalTime'), 'value' => ms_to_human($journey['duration_ms']), 'icon' => 'clock']) ?>
+    <?php endif ?>
     <?= component('stat-tile', ['label' => lang('Game.correctItems'), 'value' => (string) $journey['correct_items'], 'icon' => 'star']) ?>
   </div>
 

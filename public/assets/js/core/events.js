@@ -417,7 +417,7 @@ window.addEventListener('pagehide', () => flush(true));
  * layout with the same resolver as the server's screen_viewed). The locked
  * library is recognised from its page, as in ScreenViewFilter.
  */
-const screenName = () => {
+export const screenName = () => {
   const code = document.body?.dataset.screenCode || null;
   return code === 'library' && document.querySelector('[data-screen="library-locked"]') ? 'library_locked' : code;
 };

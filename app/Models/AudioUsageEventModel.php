@@ -25,6 +25,8 @@ class AudioUsageEventModel extends Model
     protected $allowedFields = [
         'session_id', 'challenge_attempt_id', 'audio_asset_id', 'action',
         'play_index', 'listened_ms', 'completed', 'occurred_at', 'server_received_at',
+        // Part 7 (33 K10)
+        'clock_offset_ms',
     ];
     protected $validationRules = [
         'session_id'     => 'required|is_natural_no_zero',

@@ -15,7 +15,8 @@ final class DataLayerWiringTest extends CIUnitTestCase
     // kelas 5 (Dok 1): − ResearchPhase, ParticipantConsent, ScoringProfile, ChallengeOption; + ItemTry, DeviceLog
     // + AssetPackage (asset package Stage 1)
     // part 3 (29 §12): + FieldSheetImportModel, FieldSheetRowModel; part 4 (30 §15): + ParticipantConsentModel
-    private const MODEL_COUNT = 40;
+    // Part 7 (33 §9): + ChallengeAttemptSegmentModel
+    private const MODEL_COUNT = 41;
 
     private const ENTITY_COUNT = 11;  // − ChallengeOption
 

@@ -294,7 +294,6 @@ return [
 
     // Profil
     'profileTitle'     => 'Profil',
-    'researchCode'     => 'kode penelitianmu',
     // Avatar (display plan Phase B)
     'avatar'           => 'Avatar',
     'avatarOptional'   => 'Pilih avatar (boleh dilewati)',
@@ -503,4 +502,13 @@ return [
     'scenarioSituationAlt' => 'Gambar situasi cerita ini',
     'scenarioActions'     => 'Apa yang akan kamu lakukan?',
     'instructionListen'   => 'Dengarkan instruksi',
+
+    // Part 7 (33 §11): research mode in the game, media fixes M-07, M-08, M-10
+    'smallScreenTitle'   => 'Layarnya terlalu kecil',
+    'smallScreenBody'    => 'GELITA perlu layar yang lebih besar, seperti laptop atau tablet. Bilang ke kakak peneliti, ya.',
+    'smallScreenWarn'    => 'Layarmu agak kecil, jadi tulisannya kecil juga. Lebih nyaman main di laptop atau tablet, ya.',
+    'smallScreenDismiss' => 'Tetap main',
+    'retakeLater'        => 'Kamu bisa mengulang tantangan ini setelah kelima tantangan di wilayah ini selesai, ya.',
+    'kenaliAfterRegion'  => 'Kisah wilayah ini terbuka setelah kamu menyelesaikan wilayahnya, ya.',
+    'profileTableLabel'  => 'Daftar hasil tantangan',
 ];

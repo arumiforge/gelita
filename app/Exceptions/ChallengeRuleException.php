@@ -90,4 +90,16 @@ final class ChallengeRuleException extends \RuntimeException
     {
         return new self('BOOKLET_MISSING', 409, 'Siswa ini belum punya buklet, jadi tantangan yang dinilai belum dibuka.');
     }
+
+    // Part 7 (33 §7.4)
+
+    /**
+     * Research mode: a completed challenge opens again only after every
+     * challenge of its region is completed in a meeting that opens the
+     * region (409). The player sees Game.retakeLater.
+     */
+    public static function retakeLocked(): self
+    {
+        return new self('RETAKE_LOCKED', 409, lang('Game.retakeLater'));
+    }
 }

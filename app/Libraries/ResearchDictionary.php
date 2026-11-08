@@ -79,6 +79,8 @@ final class ResearchDictionary
             'started_at' => ['ada', 'started_at', 'analitik-5-waktu-pengerjaan', [5]],
             'completed_at' => ['ada', 'completed_at', 'analitik-5-waktu-pengerjaan', [5]],
             'duration_ms' => ['ada', 'duration_ms', 'analitik-5-waktu-pengerjaan', [5]],
+            // Part 7 (33 K6)
+            'is_retake' => ['baru', 'is_retake', self::MARKERS, [1, 3, 5]],
         ]],
         'jawaban' => ['analitik-2-ketepatan-jawaban', [2, 3], [
             'attempt_id' => ['ada', 'attempt_id', self::KEYS, [2, 3]], 'session_code' => 'ada', 'participant_code' => 'ada',

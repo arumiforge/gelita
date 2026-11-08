@@ -296,8 +296,40 @@ if (! function_exists('js_config')) {
             'eventFlush' => event_flush_config(),
             // Part 3 (29 §6.2): empty taps sent per clue per attempt before the rest become one `overflow`
             'emptyTapLimit' => max(0, (int) config('Gelita')->emptyTapLimit),
+            // Part 7 (33 §5.2, §7.2): input pauses logged from 20 s; research mode and the smallest stage
+            'inputIdleLogMs' => max(1000, (int) config('Gelita')->inputIdleLogMs),
+        ] + research_screen_config($gameSessionId) + [
             'text'       => $text,
         ];
+    }
+}
+
+if (! function_exists('research_screen_config')) {
+    /**
+     * Part 7 (33 K1, §7.2): `researchMode` and `minStagePx` for
+     * game/screen-check.js. With a game session, GameContext::researchMode();
+     * before one (token, sign-up), whether field mode is on. False when the
+     * database cannot be read (pages rendered without one).
+     *
+     * @return array{researchMode: bool, minStagePx: int}
+     */
+    function research_screen_config(?int $gameSessionId): array
+    {
+        try {
+            $fields = service('fieldSessions');
+            $study  = $fields->fieldModeStudy();
+
+            if ($study === null) {
+                return ['researchMode' => false, 'minStagePx' => 960];
+            }
+
+            $session = $gameSessionId ? model(\App\Models\GameSessionModel::class)->find($gameSessionId) : null;
+            $on      = $session === null ? true : service('gameContext')->researchMode($session);
+
+            return ['researchMode' => $on, 'minStagePx' => \App\Services\GameContext::studySettings($study)['min_stage_px']];
+        } catch (\Throwable) {
+            return ['researchMode' => false, 'minStagePx' => 960];
+        }
     }
 }
 

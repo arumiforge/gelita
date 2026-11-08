@@ -117,7 +117,8 @@ $hasTrack     = is_file(FCPATH . 'assets/ui/map-progress-track.webp');
                <?= $node['status'] === 'locked' ? 'aria-disabled="true" data-locked-title="' . esc(lang('Game.nodeLockedTitle'), 'attr') . '" data-locked-message="' . esc(lang('Game.nodeLocked'), 'attr') . '" data-locked-ok="' . esc(lang('Game.libraryUnderstood'), 'attr') . '"' : '' ?>>
               <span class="pin-icon<?= status_badge_src($node) !== null ? ' has-badge' : '' ?>" aria-hidden="true"><?= $medal($node, 'pin-badge') ?></span>
               <span class="pin-label">
-                <b><?= esc($node['sequence']) ?>. <?= esc(engine_label($node['engine_type'], $node['variant'])) ?></b>
+                <?php // Part 7 (33 §8.4, M-07): the kind's name, as on the card and the challenge header ?>
+                <b><?= esc($node['sequence']) ?>. <?= esc(lang_or('Game.engine_' . $node['engine_type'], $node['title'])) ?></b>
                 <?php if ($node['status'] === 'completed'): ?>
                   <?= stars_html((int) $node['stars']) ?>
                 <?php else: ?>
@@ -156,9 +157,13 @@ $hasTrack     = is_file(FCPATH . 'assets/ui/map-progress-track.webp');
           <span class="node-no<?= status_badge_src($node) !== null ? ' has-badge' : '' ?>" aria-hidden="true"><?= $medal($node, 'node-badge') ?></span>
           <div class="node-card-body">
             <span class="visually-hidden"><?= esc(lang('Game.challengeOf', [$node['sequence'], $total])) ?>:</span>
-            <span class="eyebrow"><?= esc($node['title']) ?></span>
+            <span class="eyebrow"><?= esc(lang_or('Game.engine_' . $node['engine_type'], $node['title'])) ?></span>
             <?php if ($node['status'] === 'completed'): ?>
               <?= stars_html((int) $node['stars']) ?>
+            <?php endif ?>
+            <?php // Part 7 (33 §7.4): research mode, the region is not finished yet ?>
+            <?php if (! empty($node['retake_locked'])): ?>
+              <small class="node-retake-later"><?= esc(lang('Game.retakeLater')) ?></small>
             <?php endif ?>
           </div>
           <?php if ($node['engine_type'] === 'skenario' && ! empty($bridgeSeen) && $node['status'] !== 'locked'): ?>

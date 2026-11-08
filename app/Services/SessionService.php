@@ -337,6 +337,8 @@ class SessionService
             if ($session !== null && $session->status === 'active') {
                 $sessions->update($sessionId, ['status' => 'paused', 'last_active_at' => date('Y-m-d H:i:s')]);
                 service('eventService')->record($session, 'session_paused', ['via' => 'logout']);
+                // Part 7 (33 §5.4): open attempt segments of the session end with the pause
+                model(\App\Models\ChallengeAttemptSegmentModel::class)->closeForSession($sessionId, date('Y-m-d H:i:s'));
             }
         }
 

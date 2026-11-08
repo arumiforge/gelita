@@ -47,6 +47,8 @@ class ChallengeController extends BaseGameController
             'sequence'       => $sequence,
             'best'           => $this->bestAttempt($session, $node->id),
             'bookletMissing' => (new VariantPicker(\CodeIgniter\Config\Factories::libraries('BookletSource')))->bookletMissing($session, $node, $served),
+            // Part 7 (33 §7.4): a completed challenge that may not be played again yet
+            'retakeLocked'   => $this->retakeLocked($session, $node),
         ]);
     }
 
@@ -81,6 +83,11 @@ class ChallengeController extends BaseGameController
         try {
             $opened = service('challengeService')->openNode($session, $node->id);
         } catch (ChallengeRuleException $e) {
+            // Part 7 (33 §7.4): a retake that is not open yet goes back to the region map with Game.retakeLater
+            if ($e->errorCode === 'RETAKE_LOCKED') {
+                return redirect()->to(site_url('wilayah/' . $level->code))->with('error', lang('Game.retakeLater'));
+            }
+
             // BOOKLET_MISSING (31 K10): back to the mission brief, which explains it
             return redirect()->to(site_url('misi/' . $level->code . '/' . $sequence))->with('error', lang('Game.bookletMissing'));
         } catch (\RuntimeException $e) {
@@ -122,6 +129,8 @@ class ChallengeController extends BaseGameController
             'sequence' => $sequence,
             'attempts' => $attempts,
             'best'     => $this->bestAttempt($session, $node->id),
+            // Part 7 (33 §7.4)
+            'retakeLocked' => $this->retakeLocked($session, $node),
         ]);
     }
 

@@ -170,6 +170,8 @@ class RawDataService
             'audio_use_count' => 'challenge_attempts.audio_use_count', 'stars' => 'challenge_attempts.stars',
             'started_at' => 'challenge_attempts.started_at', 'completed_at' => 'challenge_attempts.completed_at',
             'duration_ms' => 'challenge_attempts.duration_ms',
+            // Part 7 (33 K6): a retake (the student already completed this challenge); part 9 leaves it out
+            'is_retake' => 'challenge_attempts.is_retake',
         ],
         'jawaban' => [
             'attempt_id' => 'challenge_attempts.id', 'session_code' => 'game_sessions.session_code',
@@ -744,7 +746,9 @@ class RawDataService
             ->select('challenge_attempts.first_pass_correct, challenge_attempts.final_correct')
             ->select('challenge_attempts.check_count, challenge_attempts.max_tries, challenge_attempts.hint_count')
             ->select('challenge_attempts.answer_change_count, challenge_attempts.audio_use_count, challenge_attempts.stars')
-            ->select('challenge_attempts.started_at, challenge_attempts.completed_at, challenge_attempts.duration_ms');
+            ->select('challenge_attempts.started_at, challenge_attempts.completed_at, challenge_attempts.duration_ms')
+            // Part 7 (33 K6)
+            ->select('challenge_attempts.is_retake');
 
         $this->applyAttemptFilters($builder, $filters, $scope, 'challenge_attempts.started_at');
 
@@ -853,8 +857,8 @@ class RawDataService
             ->select($db->protectIdentifiers('audio_usage_events', true) . '.id * 2 + 1 AS _key', false)
             ->select('game_sessions.session_code, participants.participant_code, field_sessions.code AS field_session_code')
             ->select('audio_usage_events.occurred_at')
-            // WAVE-E seam (part 7, 33 K10): audio_usage_events.clock_offset_ms corrects this time
-            ->select('NULL AS clock_offset_ms', false)
+            // Part 7 (33 K10): the batch's clock offset corrects the playback time (occurred_at_corrected)
+            ->select('audio_usage_events.clock_offset_ms')
             ->select("'audio' AS jenis", false)
             ->select('challenge_nodes.level_id, challenge_attempts.challenge_node_id AS node_id')
             ->select('audio_usage_events.challenge_attempt_id AS attempt_id')

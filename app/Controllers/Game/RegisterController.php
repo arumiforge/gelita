@@ -184,6 +184,11 @@ class RegisterController extends BaseController
 
         $fields->clearFailures($key);
 
+        // Part 7 (33 §7.2, §17 no. 7): a phone-sized stage gets no account in the field session
+        if ($fields->refuseSmallScreen($check['field_session'], $this->request->getPost('stage_w'), 'daftar')) {
+            return $this->tokenError('Game.smallScreenBody');
+        }
+
         $wizard                                  = $this->wizard();
         $wizard[(string) self::TOKEN_STEP]       = ['field_session_id' => (int) $check['field_session']['id']];
         session()->set(self::WIZARD, $wizard);
