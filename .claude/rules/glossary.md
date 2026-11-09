@@ -160,7 +160,7 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | akun uji | `test account` | `uji.*` accounts, command `gelita:uji:akun`, school `V01` |
 | katalog event | `event catalog` | `App\Libraries\EventCatalog` (`RESEARCH`, `ADMIN`, `REMOVED`, `SERVER_ONLY`); `dialogue_completed` replaced `dialogue_advanced`, `answer_changed` merged into `answer_submitted` (revision 10, part 3: 29) |
 | Log teknis | `tech log` | route `/admin/log-teknis`, `TechLogService`, capability `tech_logs.view` (admin) |
-| Kamus Data (lembar unduhan) | `data dictionary` | `ResearchDictionary` (`kamus-1.0`), `data_exports.dictionary_version` |
+| Kamus Data (lembar unduhan) | `data dictionary` | `ResearchDictionary` (`kamus-1.1-usulan` since part 9, 9 Nov 2026: `BASE` `kamus-1.1`, `DRAFT` until 11 approves it; was `kamus-1.0`), `data_exports.dictionary_version` |
 | riwayat unduhan | `download history` | audit `export_download`, `data_exports.participant_count` |
 | lembar lapangan (diketik) | `field sheet` | `FieldSheetSpec` (`lembar-1.0`), `field_sheet_imports`, `field_sheet_rows`; route `/admin/sesi-lapangan/{id}/lembar`; command `gelita:lembar:templat` |
 | ketikan kedua | `check entry` | `field_sheet_imports.purpose` = `check` (first typing `main`) |
@@ -180,5 +180,10 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | batas waktu modul tes (studi) | `instrument settings` | `research_studies.instrument_settings` JSON (null = `Config\Gelita::$instrumentDefaults`), `POST /admin/studi/{id}/instrumen` |
 | Mulai tes awal / akhir | `test start` | `field_sessions.test_started_at`, `test_started_by`; `POST /admin/sesi-lapangan/{id}/mulai-tes` (`FieldTestService`), audit `field_test_started`; filter `instrumentRedirect` closes the challenges meanwhile |
 | status tes | `test status` | `belum`, `sedang`, `selesai`, `susulan`, `hilang` (`InstrumentService::testStatus()`); field-session page, monitoring, printed L6 *tes* sheet in the template (never uploaded) |
+| lapis data turunan | `derived data layer` | tables `derived_participants`, `derived_challenges`, `derived_attempts`, `derived_items`, `derived_tries`, `derived_test_responses`, `derived_field_sessions`, `derived_observations` (cascade from the run and from `participants`); pure calculators in `App\Libraries\Derived\`, `DerivedDataService` (`service('derivedData')`); download sheets `turunan_*` (`DerivedSheets`) (revision 10, part 9: 35, since 9 Nov 2026) |
+| putaran hitung | `derived run` | `derived_runs` (thresholds, fingerprint, `dictionary_version`); current run `research_studies.derived_run_id`, `derived_running_since` (claimed by a conditional UPDATE); `data_exports.derived_run_id`; recomputed on download when stale |
+| Hitung ulang | `recompute` | `POST /admin/studi/{id}/hitung-ulang` (`DerivedDataController`, `research.export`); command `gelita:turunan:hitung --studi=KODE [--cek]` |
+| Kunci ambang | `threshold lock` | `research_studies.thresholds_locked_at`, `POST /admin/studi/{id}/ambang/kunci` (`studies.manage`, audit `study_thresholds_locked`); unlock only by `gelita:turunan:ambang --studi=KODE --buka --alasan=…` (audit `study_thresholds_unlocked`); locked at G4 |
+| saat mundur | `withdrawal cutoff` | derived rows stop at the withdrawal moment (`consent_ok`, `withdrawn_on`); raw sheets carry `after_withdrawal`, computed at download time from `participant_consents` and `deactivated_at` (35 K4) |
 
 Add a row whenever a new concept appears. If a term here conflicts with existing code, the existing stored value wins and the table gets corrected.
