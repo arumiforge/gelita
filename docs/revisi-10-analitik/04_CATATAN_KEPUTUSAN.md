@@ -6,6 +6,16 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 9 November 2026
 
+**Jawaban pengembang atas pertanyaan gelombang F (putaran 2); PR #350 digabung** (cabang `r10-koordinator-gelombang-f`, dimulai ulang dari `main` setelah PR #350) · `asal: pengembang` · `disetujui pengembang` · merevisi produk (event baru `item_shown`, lapis turunan)
+
+PR #350 (gelombang F) digabung ke `main` 9 November 2026 setelah cek ulang di sesi. Pengembang menjawab tiga pertanyaan sisanya:
+
+1. **(e) Event ganti petunjuk ditambahkan.** Game mengirim `item_shown` setiap kali petunjuk Cari Objek atau skenario tampil di layar; waktu butir di lapis turunan hanya dihitung selama butir itu tampil ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#19-keputusan-pengembang) §19 no. 16). Data tanpa event ini tetap memakai seluruh rentang.
+2. **(f) Lembar turunan tetap tidak mengikuti filter tanggal**, seperti dibangun.
+3. **(g) Pengerjaan ulang hanya selama sesi lapangan terbuka**, seperti dibangun ([33](33_IMPLEMENTASI_MODE_PENELITIAN.md#17-keputusan-pengembang) §17 no. 11).
+
+Diubah: 33, 35, 04, 00, glosarium, `docs/PROGRESS.md`, catatan implementasi, `EventCatalog`, `EventService`, berkas bahasa `Admin`, `engines/cari.js`, `engines/skenario.js`, `ParticipantRun`, `DerivedSheets`, dan tesnya.
+
 **Jawaban pengembang atas pertanyaan gelombang F (putaran 1); 33 dan 35 disetujui** (cabang `r10-koordinator-gelombang-f`) · `asal: pengembang` · `disetujui pengembang` · merevisi produk (status tantangan di peta wilayah, lapis turunan, angket)
 
 Pengembang menjawab empat pertanyaan pertama di entri di bawah:

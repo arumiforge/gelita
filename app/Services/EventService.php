@@ -682,6 +682,9 @@ class EventService
     /** `end` values of `input_idle` (33 §5.2). */
     public const INPUT_IDLE_ENDS = ['input', 'hidden', 'pagehide'];
 
+    /** How an item came on screen (`item_shown`): first shown, moved on, jumped to, start of round 2. */
+    public const ITEM_SHOWN_VIA = ['start', 'next', 'jump', 'round2'];
+
     /**
      * Client payloads with a fixed shape (33 §5.2): `input_idle` keeps
      * `idle_ms` (whole ms, at least 0), `started_at` (ISO 8601 or null),
@@ -694,6 +697,15 @@ class EventService
      */
     public static function clampPayload(string $type, array $payload): array
     {
+        // Owner, 9 November 2026 (35 §6.2): `item_shown` keeps `round` (1/2 or null), `via`, `t_ms`
+        if ($type === 'item_shown') {
+            return [
+                'round' => in_array($payload['round'] ?? null, [1, 2, '1', '2'], true) ? (int) $payload['round'] : null,
+                'via'   => in_array($payload['via'] ?? null, self::ITEM_SHOWN_VIA, true) ? $payload['via'] : null,
+                't_ms'  => is_numeric($payload['t_ms'] ?? null) ? max(0, min(86_400_000, (int) round((float) $payload['t_ms']))) : null,
+            ];
+        }
+
         if ($type !== 'input_idle') {
             return $payload;
         }

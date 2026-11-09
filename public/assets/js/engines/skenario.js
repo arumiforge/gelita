@@ -32,6 +32,7 @@ import { $, $$, el, announce } from '../core/dom.js';
 import { showModal } from '../core/modal.js';
 import { confetti } from '../core/confetti.js';
 import { Sfx, narrationPlayer, pauseNarration } from '../core/audio.js';
+import { emit } from '../core/events.js';
 
 export function mount(ctx) {
   const scenarios = Array.isArray(ctx.data.scenarios) ? ctx.data.scenarios : [];
@@ -213,6 +214,7 @@ export function mount(ctx) {
     showAction();
   };
 
+  let shownVia = 'start';
   const render = (i) => {
     index = i;
     const scenario = scenarios[i];
@@ -227,6 +229,9 @@ export function mount(ctx) {
     ctx.setTries(nodes.tries, ctx.maxTries - used[i]);
     showVoice(i);
     showAction();
+    // Coordinator follow-up (owner, 9 November 2026; 35 §6.2): `item_shown` when a scenario comes on screen
+    emit('item_shown', { levelId: ctx.levelId, nodeId: ctx.nodeId, attemptId: ctx.attemptId, itemId: scenario.id, payload: { via: shownVia, t_ms: ctx.sinceOpen() } });
+    shownVia = 'next';
     announce(`${t('scenarioProgress', i + 1, scenarios.length)}: ${scenario.prompt || ''}`);
   };
 
