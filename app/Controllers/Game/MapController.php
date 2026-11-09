@@ -58,10 +58,10 @@ class MapController extends BaseGameController
             'storyContext'  => $storyContext,
             'curtain'       => $curtain,
             'curtainAssets' => $curtain ? $this->mapCurtainAssets($levels, $story, $locale) : [],
-            'regionIntros'  => $this->regionIntros($levels, $hud['researchMode']),
+            'regionIntros'  => $this->regionIntros($levels, ($hud['researchMode'] ?? false)),
             'heard'         => $this->heardRegionIntros(),
             // Part 7 (33 §7.5, K9): region codes whose Kenali waits for the region to be finished
-            'kenaliLocked'  => $hud['researchMode'] ? array_values(array_map(static fn (array $l): string => (string) $l['code'], array_filter($levels, static fn (array $l): bool => $l['status'] !== 'completed'))) : [],
+            'kenaliLocked'  => ($hud['researchMode'] ?? false) ? array_values(array_map(static fn (array $l): string => (string) $l['code'], array_filter($levels, static fn (array $l): bool => $l['status'] !== 'completed'))) : [],
         ]);
     }
 

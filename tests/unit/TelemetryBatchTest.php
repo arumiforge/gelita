@@ -336,7 +336,8 @@ final class TelemetryBatchTest extends CIUnitTestCase
         $this->conn->table('game_sessions')->insert([
             'session_code' => 'S-LAIN', 'participant_id' => 1, 'study_id' => 1, 'release_id' => 1, 'locale' => 'id', 'status' => 'active',
         ]);
-        $otherAttempt = service('challengeService')->openNode(model(GameSessionModel::class)->find(2), $this->nodeId($this->conn, 'tmg-1'))['attempt']->id;
+        // Another challenge: since part 7 (33 K3) opening the same one would move the open attempt to session 2
+        $otherAttempt = service('challengeService')->openNode(model(GameSessionModel::class)->find(2), $this->nodeId($this->conn, 'tmg-2'))['attempt']->id;
 
         $result = $this->service()->recordAudioBatch($this->session(), [
             $this->audio('r-0', 0, 'play', $this->attemptId),
