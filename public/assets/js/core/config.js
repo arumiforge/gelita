@@ -41,6 +41,14 @@ export const CONFIG = Object.freeze({
   eventFlush: parsed.eventFlush && typeof parsed.eventFlush === 'object' && !Array.isArray(parsed.eventFlush) ? Object.freeze({ ...parsed.eventFlush }) : null,
   audioUrls: parsed.audioUrls && typeof parsed.audioUrls === 'object' && !Array.isArray(parsed.audioUrls) ? Object.freeze({ ...parsed.audioUrls }) : Object.freeze({}),
   text: parsed.text && typeof parsed.text === 'object' ? parsed.text : {},
+  // Part 3 (29 §6.2): empty taps sent per clue per attempt (engines/cari.js); null = engine default
+  emptyTapLimit: parsed.emptyTapLimit ?? null,
+  // Part 7 (33 §5.2, §7.2): input pauses logged from this many ms (core/activity.js); research mode and
+  // the smallest 16:9 stage it accepts (game/screen-check.js). Missing before the coordinator fix of
+  // 9 November 2026, so the research-mode small-screen gate never showed in the browser.
+  inputIdleLogMs: parsed.inputIdleLogMs ?? null,
+  researchMode: parsed.researchMode === true,
+  minStagePx: parsed.minStagePx ?? null,
 });
 
 export const LOCALE = CONFIG.locale;
