@@ -144,6 +144,10 @@ $hasTrack     = is_file(FCPATH . 'assets/ui/map-progress-track.webp');
     <div class="map-progress<?= $hasTrack ? ' has-track' : '' ?>">
       <div class="progress" aria-hidden="true" style="--steps: <?= max(1, $total) ?>"><i style="width: <?= $total > 0 ? (int) round($done / $total * 100) : 0 ?>%"></i></div>
       <p><?= esc(lang('Game.nodesDoneOf', [$done, $total])) ?></p>
+      <?php // Part 7 (33 §7.4): one note for the done_locked challenges, inside the progress block so the panel keeps its rows (re-check of 9 November 2026: it overflowed the framed cards) ?>
+      <?php if ($hasFrame && in_array('done_locked', array_column($nodes, 'status'), true)): ?>
+        <p class="map-retake-later" role="status"><?= esc(lang('Game.retakeLater')) ?></p>
+      <?php endif ?>
     </div>
 
     <?php // Only the list scrolls; the head, the progress, and Pustaka stay in place ?>
@@ -161,8 +165,8 @@ $hasTrack     = is_file(FCPATH . 'assets/ui/map-progress-track.webp');
             <?php if (node_done($node)): ?>
               <?= stars_html((int) $node['stars']) ?>
             <?php endif ?>
-            <?php // Part 7 (33 §7.4): research mode, the region is not finished yet ?>
-            <?php if ($node['status'] === 'done_locked'): ?>
+            <?php // Part 7 (33 §7.4): research mode, the region is not finished yet; the framed card has no room, its note sits under the progress bar ?>
+            <?php if ($node['status'] === 'done_locked' && ! $hasFrame): ?>
               <small class="node-retake-later"><?= esc(lang('Game.retakeLater')) ?></small>
             <?php endif ?>
           </div>
