@@ -130,9 +130,55 @@ final class ReleasePackageLockTest extends CIUnitTestCase
         $this->assertSame('studi-uji', $audit['running_study']);
         $this->assertSame('paket-baru', $audit['release_code']);
 
-        // Going back to the release without a package is a change as well
-        $this->post('admin/studi/rilis/' . $old['id'] . '/aktifkan')->assertRedirectTo(site_url('admin/studi/rilis/' . $old['id'] . '/aktifkan'));
+        // The study started without a package: going back to that is free (owner, 9 November 2026)
+        $this->post('admin/studi/rilis/' . $old['id'] . '/aktifkan')->assertRedirectTo(site_url('admin/studi/rilis'));
+        $this->assertSame((int) $old['id'], (int) model(GameReleaseModel::class)->activeOrNull()['id']);
+        $this->assertNull($this->lastAudit('release_activate')['reason']);
+    }
+
+    public function testTheStudyLockIsTheReferenceShownOnRilisPaketAndTheChecklist(): void
+    {
+        $locked = $this->build();
+        $this->useRelease($locked);
+        $this->conn->table('research_studies')->insert(['code' => 'studi-uji', 'name' => 'Studi Uji', 'status' => 'active', 'package_code' => $locked]);
+
+        // In line with the lock: shown, no warning, checklist green
+        $page = $this->page('admin/studi/rilis');
+        $this->assertStringContainsString('data-study-package-lock="' . $locked . '"', $page);
+        $this->assertStringContainsString('Penelitian "Studi Uji" sedang berjalan', $page);
+        $this->assertStringNotContainsString('berbeda dengan paket yang terkunci', $page);
+        $this->assertTrue($this->readinessItem()['ok']);
+
+        // Drift away with a reason: Rilis and Paket aset warn, the checklist and verify fail
+        $other   = $this->build();
+        $release = $this->release('paket-lain', $other);
+        $this->post('admin/studi/rilis/' . $release . '/aktifkan', ['confirm_running_study' => '1', 'reason' => 'Perbaikan gambar']);
         $this->assertSame($release, (int) model(GameReleaseModel::class)->activeOrNull()['id']);
+
+        foreach (['admin/studi/rilis', 'admin/studi/rilis/paket'] as $path) {
+            $page = $this->page($path);
+            $this->assertStringContainsString('Siswa sekarang memakai ' . $other . ', berbeda dengan paket yang terkunci', $page, $path);
+            $this->assertStringContainsString('Kembali ke paket yang terkunci tidak perlu alasan', $page, $path);
+        }
+
+        $item = $this->readinessItem();
+        $this->assertFalse($item['ok']);
+        $this->assertStringContainsString('penelitian "Studi Uji" berjalan dengan paket ' . $locked, $item['detail']);
+
+        // A content-only release that keeps the drifted package needs nothing
+        $content = $this->release('konten-2', $other, 'kelas5-2');
+        $this->assertStringContainsString('admin/studi/rilis/' . $content . '/aktifkan" class="inline-form"', str_replace("'", '"', $this->page('admin/studi/rilis')));
+
+        // A third package still asks, and the confirmation names the lock
+        $third = $this->release('paket-ketiga', $this->build());
+        $this->assertStringContainsString('Paket yang terkunci untuk penelitian ini: ' . $locked, $this->page('admin/studi/rilis/' . $third . '/aktifkan'));
+
+        // Back to the locked package: free, and everything is green again
+        $back = $this->release('kembali', $locked);
+        $this->post('admin/studi/rilis/' . $back . '/aktifkan')->assertRedirectTo(site_url('admin/studi/rilis'));
+        $this->assertSame($back, (int) model(GameReleaseModel::class)->activeOrNull()['id']);
+        $this->assertNull($this->lastAudit('release_activate')['reason']);
+        $this->assertTrue($this->readinessItem()['ok']);
     }
 
     public function testSamePackageOrNoRunningStudyNeedsNoConfirmation(): void

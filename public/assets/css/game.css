@@ -4639,6 +4639,25 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   transform: translateX(-50%);
 }
 .small-screen-warn p { margin: 0; }
+/* Staff package preview (plan §6.1 step 3): a pill in the bottom-left corner, staff only */
+.package-preview {
+  position: fixed;
+  left: .75rem;
+  bottom: .75rem;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  max-width: calc(100% - 1.5rem);
+  padding: .375rem .875rem;
+  border: .0625rem solid var(--gold-300);
+  border-radius: 62.5rem;
+  background: rgba(3, 12, 24, .94);
+  color: var(--ink);
+  font-size: .875rem;
+}
+.package-preview p { margin: 0; }
+.package-preview a { color: var(--gold-300); font-weight: 600; min-height: 2.75rem; display: inline-flex; align-items: center; }
 /* Part 8 (34 §9.2; 17 → Layar): the attitude scale in Balai Refleksi — one navy card,
    four gold dots that grow from Tidak setuju to Sangat setuju, words always shown, no faces */
 .attitude { position: absolute; inset: 4.5rem 10rem 4rem; display: flex; align-items: center; justify-content: center; }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Entities\GameSession;
 use App\Filters\PackageHeaderFilter;
 use App\Services\AssetPackageBuilder;
 use CodeIgniter\Test\CIUnitTestCase;
@@ -93,6 +94,53 @@ final class AssetPackageCodeUrlTest extends CIUnitTestCase
         $this->assertSame(' data-sw="off"', asset_package_attrs(), 'kill switch: no package, empty service worker');
         $this->assertSame($this->versioned('js/game.js'), asset_url_versioned('js/game.js'));
         $this->assertSame([], package_audio_urls());
+    }
+
+    public function testAnOpenGameSessionKeepsItsOwnPackageUntilItEnds(): void
+    {
+        $this->useRelease($this->code);
+        $newer = (new AssetPackageBuilder($this->packages))->build(['copy_library' => false])['package_code'];
+        $this->useRelease($newer);
+
+        $context = service('gameContext');
+        $session = static fn (array $row): GameSession => new GameSession($row + ['id' => 1, 'participant_id' => 1, 'status' => 'active']);
+
+        try {
+            // Started on the older package: its pages keep naming it (S8); devices still learn the active one
+            $context->session = $session(['package_code' => $this->code, 'package_mode' => 'lengkap']);
+            $this->assertSame($this->code, $this->packages->pageCode());
+            $this->assertSame(' data-package="' . $this->code . '"', asset_package_attrs());
+            $this->assertSame($this->packages->map($this->code)['keys']['bg.welcome'], $this->packages->urlForKey('bg.welcome'));
+            $this->assertSame($newer, $this->packages->activeCode());
+
+            // A paused session is still open; online mode pins as well
+            $context->session = $session(['package_code' => $this->code, 'package_mode' => 'daring', 'status' => 'paused']);
+            $this->assertSame($this->code, $this->packages->pageCode());
+
+            // Started with package mode off: normal URLs until it ends
+            $context->session = $session(['package_code' => null, 'package_mode' => 'nonaktif']);
+            $this->assertNull($this->packages->pageCode());
+            $this->assertSame('', asset_package_attrs());
+            $this->assertSame($this->versioned('js/game.js'), asset_url_versioned('js/game.js'));
+            $this->assertSame([], package_audio_urls());
+
+            // Nothing to pin: ended session, session from before package tracking, unknown package
+            foreach ([
+                ['package_code' => $this->code, 'package_mode' => 'lengkap', 'status' => 'completed'],
+                ['package_code' => null, 'package_mode' => null],
+                ['package_code' => 'pkt-2000-01-01-01', 'package_mode' => 'lengkap'],
+            ] as $row) {
+                $context->session = $session($row);
+                $this->assertSame($newer, $this->packages->pageCode(), json_encode($row));
+            }
+
+            // The kill switch overrides the pin
+            $context->session = $session(['package_code' => $this->code, 'package_mode' => 'lengkap']);
+            config('Gelita')->paket['aktif'] = false;
+            $this->assertNull($this->packages->pageCode());
+        } finally {
+            $context->session = null;
+        }
     }
 
     public function testPackageAudioForMusicAndSoundEffects(): void

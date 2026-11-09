@@ -65,4 +65,10 @@ spark gelita:content:verify
 
 echo "→ Aktifkan kembali"
 rm -f "$FLAG"
+
+# Mode paket menyala: bangun ulang paket agar perangkat mendapat kode baru (rencana paket aset §6.3).
+# Mode paket mati = tidak ada yang dibangun. Penelitian berjalan = paket hanya dibangun, admin menerbitkannya.
+# Gagal = siswa tetap memakai paket lama; situs sudah aktif lagi.
+echo "→ Paket aset (hanya bila mode paket menyala)"
+spark gelita:paket:bangun --deploy || echo "  PERINGATAN: paket aset belum dibangun ulang. Tekan Bangun ulang paket di Rilis → Paket aset (docs/08_DEPLOYMENT.md)."
 echo "Deploy selesai."

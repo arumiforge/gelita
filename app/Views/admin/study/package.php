@@ -58,6 +58,7 @@ $isOn       = $activeCode !== null;
 <?php if ($building === null): ?>
   <?= component('admin/partials/package-notice', ['packageChanged' => $changed]) ?>
 <?php endif ?>
+<?= component('admin/partials/study-package-lock', ['study' => $runningStudy, 'packageCode' => $activeCode]) ?>
 
 <section class="panel package-switch" aria-labelledby="package-mode-title">
   <div class="panel-head">
@@ -100,7 +101,7 @@ $isOn       = $activeCode !== null;
               data-confirm="<?= esc(lang('Admin.packageTurnOffConfirm'), 'attr') ?>" data-confirm-text="<?= esc(lang('Admin.packageTurnOffText'), 'attr') ?>"
               data-confirm-ok="<?= esc(lang('Admin.packageTurnOff'), 'attr') ?>" data-confirm-style="danger">
           <?= csrf_field() ?>
-          <?php if ($runningStudy !== null): ?>
+          <?php if (\App\Services\ReleaseActivation::needsConfirmation($runningStudy, $activeCode, null)): ?>
             <?= component('admin/partials/study-confirm-fields', ['study' => $runningStudy, 'idPrefix' => 'off']) ?>
           <?php endif ?>
           <div><button class="btn btn-danger" type="submit"><?= icon('cross') ?> <?= esc(lang('Admin.packageTurnOff')) ?></button></div>
@@ -200,7 +201,7 @@ $isOn       = $activeCode !== null;
           data-confirm-text="<?= esc(lang('Admin.packagePublishText'), 'attr') ?>"
           data-confirm-ok="<?= esc(lang($isOn ? 'Admin.packagePublish' : 'Admin.packagePublishOn'), 'attr') ?>">
       <?= csrf_field() ?>
-      <?php if ($runningStudy !== null): ?>
+      <?php if (\App\Services\ReleaseActivation::needsConfirmation($runningStudy, $activeCode, $pending['package_code'])): ?>
         <?= component('admin/partials/study-confirm-fields', ['study' => $runningStudy, 'idPrefix' => 'publish']) ?>
       <?php endif ?>
       <div class="form-actions">

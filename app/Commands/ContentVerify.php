@@ -87,6 +87,17 @@ class ContentVerify extends BaseCommand
             ]];
         }
 
+        $drifted = (new \App\Services\ReleaseActivation($packages))->driftedStudy();
+
+        if ($drifted !== null) {
+            return [[
+                'level'   => 'error',
+                'scope'   => 'paket ' . $code,
+                'message' => 'Penelitian "' . $drifted['name'] . '" berjalan dengan paket ' . ($drifted['package_code'] ?? '(tanpa paket)')
+                    . ', tetapi siswa sekarang memakai ' . $code . '. Aktifkan lagi rilis dengan paket yang terkunci.',
+            ]];
+        }
+
         // Fresh re-hash; it also refreshes the cached result the panel checklist shows
         $issues = $packages->verification($code, true)['issues'];
 

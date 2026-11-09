@@ -507,6 +507,8 @@ return [
     'smallScreenTitle'   => 'Layarnya terlalu kecil',
     'smallScreenBody'    => 'GELITA perlu layar yang lebih besar, seperti laptop atau tablet. Bilang ke kakak peneliti, ya.',
     'smallScreenWarn'    => 'Layarmu agak kecil, jadi tulisannya kecil juga. Lebih nyaman main di laptop atau tablet, ya.',
+    'packagePreview'     => 'Pratinjau paket {0}. Hanya terlihat oleh Anda.',
+    'packagePreviewEnd'  => 'Akhiri pratinjau',
     'smallScreenDismiss' => 'Tetap main',
     'retakeLater'        => 'Kamu bisa mengulang tantangan ini setelah kelima tantangan di wilayah ini selesai, ya.',
     'kenaliAfterRegion'  => 'Kisah wilayah ini terbuka setelah kamu menyelesaikan wilayahnya, ya.',

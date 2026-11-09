@@ -14,6 +14,7 @@ $p = esc($idPrefix ?? 'confirm', 'attr');
   <?= icon('warn') ?>
   <div class="alert-body">
     <p><?= esc(lang('Admin.packageRunningStudy', [$study['name']])) ?></p>
+    <p><?= esc(lang('Admin.studyPackageLockedIs', [$study['package_code'] ?? lang('Admin.studyPackageNone')])) ?></p>
     <label class="check" for="<?= $p ?>-confirm">
       <input type="checkbox" id="<?= $p ?>-confirm" name="confirm_running_study" value="1" required>
       <span><?= esc(lang('Admin.packageConfirmStudy')) ?></span>

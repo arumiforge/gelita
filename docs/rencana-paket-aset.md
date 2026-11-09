@@ -427,6 +427,7 @@ Owner decision of 9 October 2026. The admin can switch package mode on and off a
 
 - `research_studies` mendapat kolom `package_code` yang dikunci saat studi diubah menjadi *berjalan* (sama dengan paket rilis aktif saat itu). **Daftar siap penelitian** (Dok 3 §8.3) menambah butir "paket terbit, lengkap, dan terverifikasi (`gelita:paket:periksa`)".
 - Selama studi *berjalan*, mengaktifkan rilis dengan paket lain **ditolak** kecuali admin mencentang konfirmasi dan menulis alasan (audit `release_activate` berisi `package_from`, `package_to`, `reason`). Data sebelum dan sesudahnya tetap terpisah lewat `app_client_version`.
+- *(Owner, 9 November 2026, English.)* Going back to the package the study locked needs no tick or reason. Rilis and Paket aset show the lock and warn while students get another package; the research-ready checklist and `gelita:content:verify --siap-penelitian` fail until the locked package is active again. While a study runs, the deploy scripts only build the new package; an admin publishes it (§6.3).
 - Sesi dalam mode `daring` memakai berkas dari server yang dilayani dengan peta paket aktif yang sama, jadi isinya identik dengan paket. Bedanya hanya kecepatan, dan itu tercatat di `package_mode`.
 
 ### 7.3 Event luring: urutan dan waktu yang benar
