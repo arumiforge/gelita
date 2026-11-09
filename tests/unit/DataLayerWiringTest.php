@@ -16,7 +16,7 @@ final class DataLayerWiringTest extends CIUnitTestCase
     // + AssetPackage (asset package Stage 1)
     // part 3 (29 §12): + FieldSheetImportModel, FieldSheetRowModel; part 4 (30 §15): + ParticipantConsentModel
     // Part 7 (33 §9): + ChallengeAttemptSegmentModel; part 8 (34 §11.3): + seven Instrument*Model
-    private const MODEL_COUNT = 40 + 1 + 7;
+    private const MODEL_COUNT = 40 + 1 + 7 + 1;   // part 9 (35 §12): DerivedRunModel
 
     private const ENTITY_COUNT = 11;  // − ChallengeOption
 
@@ -37,6 +37,8 @@ final class DataLayerWiringTest extends CIUnitTestCase
         'riskFollowUp'         => App\Services\RiskFollowUpService::class,
         'participantCopy'      => App\Services\ParticipantCopyService::class,
         'studyClosure'         => App\Services\StudyClosureService::class,
+        // Part 9 (35 §12)
+        'derivedData'          => App\Services\DerivedDataService::class,
     ];
 
     public function testEveryModelLoadsAndDeclaresItsTable(): void

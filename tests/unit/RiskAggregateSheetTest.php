@@ -35,6 +35,8 @@ final class RiskAggregateSheetTest extends CIUnitTestCase
     {
         $sheets = ExportService::SHEETS;
         $this->assertContains('risiko_gabungan', $sheets);
+        // Part 9 (35 §10.1): the turunan_* sheets sit between kode_pilihan and the test module's sheets
+        $sheets = array_values(array_filter($sheets, static fn (string $sheet): bool => ! App\Libraries\DerivedSheets::has($sheet)));
         $this->assertSame(['kode_pilihan', 'tes_jawaban', 'tes_bagian', 'angket', 'sikap', 'risiko_gabungan', 'izin'], array_slice($sheets, (int) array_search('kode_pilihan', $sheets, true), 7), '29 §7.2 order');
 
         foreach (array_diff($sheets, ['risiko_gabungan', 'kamus']) as $sheet) {

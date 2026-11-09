@@ -96,6 +96,27 @@ final class StudyThresholdsTest extends CIUnitTestCase
         $this->assertSame(lang('Admin.derivedRunning'), $_SESSION['error'] ?? null);
     }
 
+    public function testDerivedTabsOnTheRawDataScreen(): void
+    {
+        $this->post('ketua', 'admin/studi/1/hitung-ulang');
+        $this->asStaff('ketua');
+
+        foreach (array_keys(App\Libraries\DerivedSheets::TABLES) as $sheet) {
+            Config\Services::resetSingle('rawDataService');   // a shared instance would skip the staff scope
+            $page = (string) $this->send(Method::GET, 'admin/data/' . $sheet)->response()->getBody();
+            $this->assertStringContainsString('data-derived-status', $page, $sheet);
+        }
+
+        $this->asStaff('peneliti');
+
+        try {
+            $this->send(Method::GET, 'admin/data/turunan_butir');
+            $this->fail('research.browse is ketua only');
+        } catch (CodeIgniter\Exceptions\PageNotFoundException) {
+            $this->assertTrue(true);
+        }
+    }
+
     private function study(): array
     {
         return $this->conn->table('research_studies')->where('id', 1)->get()->getRowArray();
