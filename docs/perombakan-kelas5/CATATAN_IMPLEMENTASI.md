@@ -2737,3 +2737,23 @@ Parts 7 (`33`) and 8 (`34`) were built in parallel from `main` at 612fa2f; part 
 - **`sikap_missing_reason` empty before P5** (35 §6.6). `RunInput::$asOf` carries the run time (set by `DerivedDataService`, so the calculators stay pure); `absen` only once a P5 field session of the student (class group main or a make-up they belong to) has opened by then; `belum_tuntas` unchanged. Dictionary text updated. Test: `AttitudeMissingReasonTest`.
 - **ang-23 "Tidak mau menjawab"** kept as built; `16` notes it on the ang-23 row.
 - **Docs.** `33` and `35` raised to `disetujui pengembang` with their §15/§18 defaults and part 9's wording adjustments recorded in 33 §17 no. 8–10 and 35 §19 no. 12–15; `11` notes `after_withdrawal` at download time and the written value `kamus-1.1-usulan`.
+
+## Wave F re-check in the cloud session (9 November 2026, branch `r10-koordinator-gelombang-f`)
+
+The owner asked for a re-check in this session before the merge. MariaDB 10.11 was installed in the session container (local only, never a production server) and the app served by `php spark serve`; the browser checks ran in Playwright's Chromium.
+
+**Upgrade path on MariaDB.** A database built with `main`'s code (migrations to `004000`, `gelita:reset`, `gelita:simulasi --siswa=60`: 631 attempts, 10 982 events) was migrated with the wave F code: `004100`–`004300` ran in well under a second; one segment per existing attempt (631, `left_via = migration`, 12 left open for unfinished attempts); `is_retake` backfill matches a direct query (0, the simulator plays no retakes). `migrate:rollback` of the three migrations and a second `migrate` both worked (every `down()` checked).
+
+**Derived layer on MariaDB.** `gelita:turunan:hitung` computed 60 students in 0.7 s (about 12 ms per student, ~180 events each); simulated `sim_*` accounts are excluded by design, so they were renamed in the throwaway database for the timing. Two runs started at the same moment: one computed, the other answered "Another run is computing" (the conditional claim holds on a real lock). A ketua hard delete of one student through `RetentionService` removed every new table's rows (segments, instrument tables, all eight `derived_*`) with no orphans.
+
+**Browser.**
+- Research mode on a laptop: the token flow, the region map with `done_locked` (done medal, stars, *Lihat hasil*, no *Ulangi*), `/profil`, `/tes`, and the staff pages (`/admin/studi`, `/admin/pemantauan`, `/admin/ekspor`, `/admin/sesi-lapangan`, `/admin/data`) load without server errors.
+- Test module: *Mulai tes awal* on the panel, then a student through the example, three parts, the stretch break, the questionnaire, the done screen and on to the story; the seat locked at the start, both blocks closed `submitted`, no answer key in any page source; the next derived run gave `hanya_awal`, `lengkap`, 32 `derived_test_responses` rows, and an empty `sikap_missing_reason` before P5.
+
+**Fixed from the re-check.**
+- `core/config.js` copied a fixed list of keys into the frozen `CONFIG`, so `researchMode`, `minStagePx`, `inputIdleLogMs` (part 7) and `emptyTapLimit` (part 3, already on `main`) never reached the browser: the research-mode small-screen gate could not show (the warning showed instead), and the other two fell back to the same defaults as the server. The four keys are copied now; `JsConfigKeysTest` checks that every `CONFIG.x` read in the JS is defined there. After the fix the gate covers the page at 844 × 390.
+- The `done_locked` note ran under *Lihat hasil* on the framed region-map card (no room in its fixed shape). Framed cards now get one note under the progress bar (`.map-retake-later`); the plain card keeps its own.
+
+**Noted, not changed.** After migrating an existing server, `gelita:instrumen:impor` must run before the test module has content (`docs/08` says so); without it `/tes` shows an empty *Petunjuk* and *Mulai* does nothing. `StaffUserSeeder` on `main` still writes the removed `staff_users.school_id`, so `db:seed DatabaseSeeder` fails on a fresh install (older than wave F; the admin row was inserted by hand here).
+
+**Still not checked here:** a real tablet and real school devices (touch, on-screen keyboard, fast taps on Lanjut), axe on Gerbang and Profil, two students taking turns on one device with the network off, package mode with the service worker, and timing on real research volumes.
