@@ -84,7 +84,7 @@ final class DerivedExportTest extends CIUnitTestCase
 
         $kamus = array_column($sheets['kamus'], 'judul', 'lembar');
         $this->assertSame(ResearchDictionary::VERSION, $kamus['Versi kamus']);
-        $this->assertStringContainsString('usulan, belum disetujui', $kamus['Status kamus']);
+        $this->assertArrayNotHasKey('Status kamus', $kamus, 'kamus-1.1 is approved (9 November 2026)');
         $this->assertSame((string) $this->conn->table('research_studies')->get()->getRow('derived_run_id'), $kamus['Putaran hitung']);
         $this->assertSame(['180000', '3000'], [$kamus['Ambang jeda (mdtk)'], $kamus['Ambang tebakan cepat (mdtk)']]);
 

@@ -1,8 +1,8 @@
 # Mock-up Layar Baru untuk Ahli Media Langkah 1
 
-Per 26 Oktober 2026 · Daftar kerja no. 20 di [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja) · Disusun AI, disetujui pengembang 26 Oktober 2026; gambar skala sikap digambar ulang dari 17 di hari yang sama
+Per 9 November 2026 · Daftar kerja no. 20 di [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja) · Disusun AI, disetujui pengembang 26 Oktober 2026; gambar skala sikap digambar ulang dari 17 di hari yang sama; satu kalimat lama "sistem diubah setelah G2" diselaraskan 9 November 2026 tanpa keputusan baru (`asal: pengembang`)
 
-Dokumen ini menjelaskan 27 gambar mock-up layar baru Revisi 10 di folder [`gambar/mockup/`](gambar/mockup/). Gambar ini bahan ahli media langkah 1 di tahap 2: ahli menilai game yang ada sekarang ditambah rancangan layar baru, karena sistem baru diubah di tahap 3, setelah gerbang G2 (keputusan 25 Oktober 2026). Langkah 2, telaah singkat layar jadi di instalasi uji sebelum uji coba, adalah daftar kerja no. 21 dan bagian gerbang G3.
+Dokumen ini menjelaskan 27 gambar mock-up layar baru Revisi 10 di folder [`gambar/mockup/`](gambar/mockup/). Gambar ini bahan ahli media langkah 1 di tahap 2: ahli menilai game yang ada sekarang ditambah rancangan layar baru, karena layar baru belum ada saat itu (semula sistem baru diubah di tahap 3, setelah gerbang G2, keputusan 25 Oktober 2026; sejak 1 November 2026 sistem dibangun bersamaan dengan tahap 2, [04](04_CATATAN_KEPUTUSAN.md)). Langkah 2, telaah singkat layar jadi di instalasi uji sebelum uji coba, adalah daftar kerja no. 21 dan bagian gerbang G3.
 
 Setiap gambar diberi label merah **"Mock-up — bukan tampilan akhir"** dan kodenya (`mk-…`). Instrumen media v1.1 ([07](07_TELAAH_INSTRUMEN_VALIDASI.md#langkah-berikutnya)) bisa menyusun bagian mock-up langsung dari tabel di bawah: satu baris per layar, dengan keadaan yang ditampilkan dan pertanyaan untuk ahli.
 

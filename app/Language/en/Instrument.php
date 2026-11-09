@@ -14,6 +14,7 @@ return [
     'barRisk'          => 'Post-test · extra questions',
     'researchCode'     => 'Research code: {0}',
     'introTitle'       => 'Instructions',
+    'notReady'         => 'The test is not ready here yet. Please tell a researcher. You do not need to do anything.',
     'waitStart'        => 'Please wait a moment. A researcher will tell you when to start.',
     'waitForm'         => 'A researcher is getting your questions ready. Please wait a moment.',
     'reload'           => 'Reload',

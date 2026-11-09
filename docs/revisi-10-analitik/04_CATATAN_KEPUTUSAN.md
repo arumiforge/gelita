@@ -1,10 +1,31 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 8 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 9 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
 
 ## 9 November 2026
+
+**Wawancara sisa kerja pengembang: enam jawaban, pembersihan baris basi, dan cek MariaDB di wadah sesi** (cabang `r10-wawancara-sisa-kerja`) · `asal: pengembang` (pemilahan, rumusan, dan perbaikan dikerjakan AI) · `disetujui pengembang` · merevisi produk (modul tes, kamus data, lembar lapangan; Prototipe II, sebelum G3)
+
+Semua gelombang kode A–F sudah digabung ke `main`. Sisa kerja di `docs/PROGRESS.md`, pertanyaan terbuka 01, 33 §15, 34 §17, 35 §18, dan catatan "belum dicek" gelombang F dipilah menjadi empat kelompok: (a) sudah selesai tetapi belum dicentang, (b) bisa diputuskan pengembang sekarang, (c) milik peneliti, validator, atau komite etik, (d) butuh perangkat nyata, server produksi, atau gambar dari pengembang. Kelompok (b) ditanyakan dalam dua putaran:
+
+1. **`/tes` tanpa isi instrumen** (server yang dimutakhirkan sebelum `gelita:instrumen:impor`): halaman *Petunjuk* kini menampilkan kalimat ramah ("Tesnya belum siap di sini. Beri tahu kakak peneliti, ya. …") tanpa tombol *Mulai* yang mati, dan `gelita:content:verify` melaporkan isi instrumen yang belum diimpor (peringatan; galat dengan `--siap-penelitian`).
+2. **`kamus-1.1` disetujui sekarang**, tidak menunggu uji coba. [11](11_KAMUS_DATA.md) naik ke `disetujui pengembang`; unduhan dan lapis turunan menulis `kamus-1.1`, entri baru berstatus `baru`, dan lembar *Kamus Data* tidak lagi memuat baris "usulan, belum disetujui". Ambang tetap sementara; penetapan ulang setelah KG3a dan KG3b menjadi versi baru `kamus-1.2` ([35 §8.1](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#81-cara-versinya-berjalan) disesuaikan). Putaran hitung lama menjadi basi dan dihitung ulang saat unduhan berikutnya.
+3. **Cek MariaDB di wadah sesi** (MariaDB 10.11, bukan server produksi), termasuk bagian sisi server dari cek manual 29 §16.3, 30 §19.3, dan 32 §15.3 yang tidak butuh perangkat nyata. Hasilnya di bawah.
+4. **Gambar sementara tetap** (peta lima pos, kartu Skenario Digital, latar cerita penghubung) sampai gambar dari 37 dan 38 dibuat pengembang.
+5. **26 diperbarui sekarang**: kolom *Siap*, tabel hak, dan baris L3 menyebut fungsi bagian 1–9 yang sudah dibangun (tanpa keputusan baru; status dan versi 26 tidak berubah). PDF-nya dibuat ulang untuk dikirim ke peneliti.
+6. **Sisa rencana paket aset dibangun sekarang** (skrip deploy yang membangun ulang paket saat sakelar menyala, kunci studi berjalan dibanding paket rilis aktif, spanduk pratinjau di game, sesi berjalan tetap memakai paketnya sendiri; `docs/rencana-paket-aset.md` §6.3, §7.2, S8), di cabang tersendiri setelah PR ini digabung, karena terlalu besar untuk PR pembersihan.
+
+**Cek MariaDB** (basis data buangan dengan `gelita:reset` dan `gelita:simulasi --siswa=60`): migrasi `003300` menambah `package_code`, mengisi studi aktif dari paket rilis aktif dan membiarkan `NULL` bila rilis tanpa paket, lalu `down()`/`up()` berulang tanpa galat; semua migrasi dibalik sampai kosong lalu dijalankan lagi; `db:seed DatabaseSeeder` berjalan di pemasangan baru. `003600` pada data log bentuk lama: angka sama persis dengan `gelita:log:hitung` (50 `answer_selected`, 936 `dialogue_advanced`, 40 `audio_pause` dihapus; 100 `answer_changed` diganti nama; 468 `dialogue_completed` dibuat), tidak ada kelompok dialog yang hilang, jadi lencana "Belum didengar" tidak berubah. Dengan `gelita.researchPrivacy` menyala, `ci_sessions.ip_address` berisi hash 64 karakter dan `gelita:retention:run` menghapus baris kedaluwarsa. Admin mengunduh CSV log teknis; `ketua` dan `peneliti` ditolak di log teknis, admin dan `peneliti` ditolak di unduhan penelitian; unduhan XLSX dan CSV-ZIP `ketua` menulis `kamus-1.1`. Templat lembar lapangan P2 diunduh `peneliti`, diisi, diunggah, disimpan, lalu ketikan kedua (cek) disimpan dengan kecocokan 100 %.
+
+**Diperbaiki dari cek ini:** templat dari panel sendiri ditolak saat diunggah, karena kepala halaman *L1 Kondisi sesi* ("Kode sesi lapangan", "Tanggal") juga nama dua kolom lembar itu dan terbaca sebagai baris judul. Kepala halaman kini dilewati. Juga diperbaiki tanpa ditanya: `StaffUserSeeder` tidak lagi menulis `staff_users.school_id` yang sudah dihapus migrasi `003400`.
+
+**Belum dicek di sini:** alur panel 30 §19.3 no. 1–6 (pendaftaran mode penelitian, mundur saat bermain, permintaan data dan `backup.sh --ganti`/`backup.ps1 -Ganti`, salinan satu anak, pembetulan, penutupan studi) dan permainan Skenario Digital 32 §15.3 no. 1–6, ditambah semua cek yang butuh tablet, perangkat sekolah, dan volume data nyata.
+
+**Baris basi yang dicentang** di `docs/PROGRESS.md`: pertanyaan terbuka 01 (tinggal nama asli validator, milik ketua peneliti), skala sikap (17 `tervalidasi ahli`), draf awal 27–30, dokumen implementasi lengkap, cek kemutakhiran per dokumen, peralihan ke peneliti, butir "saat implementasi", terjemahan bank (tinggal terjemahan ulang setelah matriks revisi), dan implementasi 24 perubahan sistem. Di 00, status 33, 34, 35 di daftar dokumen disamakan dengan tabel bagian (`disetujui pengembang`). Satu kalimat lama "sistem diubah setelah G2" di 18 diselaraskan.
+
+Diubah: 04, 00, 11, 18, 26, 35, `docs/PROGRESS.md`, catatan implementasi, glosarium, `CLAUDE.md`, templat `env`, `ResearchDictionary`, `DerivedSheets`, `ContentVerifier`, `InstrumentController`, `instrument/start`, berkas bahasa `Instrument`, `FieldSheetService`, `StaffUserSeeder`, dan tesnya.
 
 **Jawaban pengembang atas pertanyaan gelombang F (putaran 2); PR #350 digabung** (cabang `r10-koordinator-gelombang-f`, dimulai ulang dari `main` setelah PR #350) · `asal: pengembang` · `disetujui pengembang` · merevisi produk (event baru `item_shown`, lapis turunan)
 

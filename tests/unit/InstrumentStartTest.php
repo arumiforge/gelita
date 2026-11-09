@@ -53,6 +53,28 @@ final class InstrumentStartTest extends CIUnitTestCase
         $this->assertSame('B', $this->sittingRow($this->conn, 'pre', 'test')['form'], 'copied from participant_seats');
     }
 
+    public function testNoImportedContentShowsANoteAndTheVerifierFlagsIt(): void
+    {
+        // An upgraded server before gelita:instrumen:impor (9 November 2026, 04)
+        $id = $this->meeting($this->conn, 1);
+        $this->conn->table('field_sessions')->where('id', $id)->update(['test_started_at' => date('Y-m-d H:i:s')]);
+        $this->conn->table('instrument_versions')->update(['is_active' => 0]);
+        \Config\Services::resetSingle('instrumentRepository');
+        $this->forgetInstruments();
+
+        $page = (string) $this->go(Method::GET, 'tes')->getBody();
+        $this->assertStringContainsString(esc(lang('Instrument.notReady')), $page);
+        $this->assertStringNotContainsString(esc(lang('Instrument.start')) . '</button>', $page, 'no dead Mulai button');
+        $this->assertStringNotContainsString('instrument/status.js', $page);
+
+        $messages = static fn (array $findings): array => array_column(array_filter($findings, static fn (array $f): bool => $f['scope'] === 'Modul tes'), 'level');
+        $this->assertSame(['warning'], $messages((new \App\Libraries\ContentVerifier())->run()));
+        $this->assertSame(['error'], $messages((new \App\Libraries\ContentVerifier())->run(true)), 'an error when checking research readiness');
+
+        $this->conn->table('instrument_versions')->update(['is_active' => 1]);
+        $this->assertSame([], $messages((new \App\Libraries\ContentVerifier())->run()));
+    }
+
     public function testTheSeatLocksOnceAndTwoStartsMakeOneSitting(): void
     {
         $this->meeting($this->conn, 1);

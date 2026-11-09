@@ -49,11 +49,12 @@ encryption.key =
 # SESSION
 # Satu mekanisme sesi untuk siswa dan staf: session CI4 berbasis database.
 # Siswa: session('participant_id') + session('game_session_id').
-# Staf : session('staff_id') + session('staff_role') + session('staff_school_id').
+# Staf : session('staff_id') + session('staff_role').
 # Tidak ada cookie "ingat saya" — komputer kelas dipakai bergantian.
 #
-# Handler penyimpan hash IP (App\Libraries\HashedIpSessionHandler) BELUM
-# dipasang; lihat docs/02_PROJECT_FOUNDATION.md §7.3 sebelum menggantinya.
+# Handler penyimpan hash IP (App\Libraries\HashedIpSessionHandler) dipasang
+# sendiri oleh Config\Session bila gelita.researchPrivacy = true (30 §12);
+# session.driver di sini tidak perlu diubah.
 #--------------------------------------------------------------------
 session.driver = 'CodeIgniter\Session\Handlers\DatabaseHandler'
 session.savePath = 'ci_sessions'

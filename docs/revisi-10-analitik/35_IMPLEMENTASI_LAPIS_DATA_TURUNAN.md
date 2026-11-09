@@ -363,8 +363,9 @@ Semua percobaan, event, jawaban modul, dan baris lembar lapangan dengan waktu **
 | --- | --- | --- |
 | Sekarang sampai bagian 9 digabung | `kamus-1.0` | Lembar *Kamus Data* 29 §8 tanpa lembar turunan |
 | Setelah bagian 9 digabung, sebelum uji coba | `kamus-1.1-usulan` | Entri baru di §8.2 ada di `ResearchDictionary` dengan status `usulan`; lembar *Kamus Data* menulis "usulan, belum disetujui" di baris kepala |
-| Setelah uji coba (tahap 4), sebelum G4 | `kamus-1.1` | 11 diubah (cabang sendiri, entri 04), ambang ditetapkan ulang, urutan alasan ditetapkan; entri menjadi `ada` |
-| G4 sampai analisis selesai | `kamus-1.1` beku | Ambang dikunci (§5); kesalahan dicatat sebagai penyimpangan |
+| Sejak 9 November 2026 (disetujui pengembang, [04](04_CATATAN_KEPUTUSAN.md)) | `kamus-1.1` | 11 menyetujui `kamus-1.1` sebelum uji coba; entri baru berstatus `baru`, baris "usulan, belum disetujui" hilang, ambang tetap sementara |
+| Setelah uji coba (tahap 4), sebelum G4 | `kamus-1.2` | 11 diubah (cabang sendiri, entri 04), ambang ditetapkan ulang, urutan alasan ditetapkan; entri menjadi `ada` |
+| G4 sampai analisis selesai | versi terakhir, beku | Ambang dikunci (§5); kesalahan dicatat sebagai penyimpangan |
 
 Mengubah `VERSION` membuat semua putaran basi (§4.3), jadi unduhan berikutnya otomatis memakai versi baru.
 
@@ -581,7 +582,7 @@ Nama kolom dan event dari bagian 5–8 di bawah adalah **anggapan** dokumen ini;
 | `DerivedGoldenTest` | Seluruh kelas contoh → setiap tabel turunan sama persis dengan CSV yang diharapkan |
 | `DerivedRunTest` | Putaran mencatat versi, ambang, sidik jari; basi setelah ambang, impor lembar, izin, atau penghapusan berubah; dua hitung ulang bersamaan, satu yang menghitung (pola `Factories::injectMock`); gagal → putaran lama tetap |
 | `DerivedExportTest` | Lembar turunan hanya untuk ketua dan studi `field_mode`; unduhan basi menghitung ulang dulu; `data_exports.derived_run_id`; tidak ada jawaban, kunci, butir risiko per siswa, nama, atau `participant_id` |
-| `DerivedDictionaryTest` | Setiap kolom lembar turunan punya entri `ResearchDictionary` dan `ExportLabels`; versi `kamus-1.1-usulan` tertulis di baris kepala |
+| `DerivedDictionaryTest` | Setiap kolom lembar turunan punya entri `ResearchDictionary` dan `ExportLabels`; versi kamus (`kamus-1.1-usulan`, sejak 9 November 2026 `kamus-1.1`) tertulis di baris kepala |
 | `StudyThresholdsTest` | Ketua mengunci ambang dengan audit `study_thresholds_locked`; setelah dikunci, pengaturan bagian 7 (`StudySettingsTest` 33) menolak perubahan kedua ambang; peneliti dan admin 404 |
 | `TestResponseCalculatorTest` | `derived_test_responses`: `rapid_guess` tepat di ambang dari `last_view_ms`; kosong untuk `not_reached` dan jawaban kosong; contoh soal dan sesi pratinjau tidak masuk |
 | `DerivedPurityTest` | Kalkulator tidak memanggil `db_connect`, `config`, `service`, `time`, atau `date` (pemeriksaan sumber berkas) |

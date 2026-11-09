@@ -23,18 +23,19 @@ namespace App\Libraries;
 final class ResearchDictionary
 {
     /**
-     * Part 9 (35 §8.1, K8; 11 → Versi dan cara berubah): `kamus-1.1` is a
-     * developer draft, so the system writes `kamus-1.1-usulan` until 11
-     * approves it; then VERSION becomes BASE and DRAFT false. Changing it
-     * makes every derived run stale.
+     * Part 9 (35 §8.1, K8; 11 → Versi dan cara berubah): the system wrote
+     * `kamus-1.1-usulan` while `kamus-1.1` was a developer draft. The
+     * developer approved `kamus-1.1` on 9 November 2026 (04), so VERSION is
+     * BASE and DRAFT is false. Threshold changes after the KG3b pilot come as
+     * a new version. Changing it makes every derived run stale.
      */
-    public const VERSION = 'kamus-1.1-usulan';
+    public const VERSION = 'kamus-1.1';
 
-    /** The dictionary version in 11 this one proposes. */
+    /** The dictionary version in 11 this one follows. */
     public const BASE = 'kamus-1.1';
 
     /** True while the version is a proposal: the Kamus Data header says "usulan, belum disetujui". */
-    public const DRAFT = true;
+    public const DRAFT = false;
 
     public const DOC = '11_KAMUS_DATA.md';
 
@@ -164,7 +165,7 @@ final class ResearchDictionary
             'participant_code' => 'ada', 'occasion' => 'baru', 'form' => 'baru', 'item_code' => 'baru', 'response' => 'baru', 'score' => 'baru',
             'error_codes' => 'baru', 'not_reached' => 'baru', 'time_on_item' => 'baru', 'answer_changes' => 'baru', 'instrument_version' => 'baru',
             // Part 9 (35 §6.8): from derived_test_responses
-            'rapid_guess' => ['usulan', 'rapid_guess', self::INSTRUMENTS, [6]],
+            'rapid_guess' => [self::DRAFT ? 'usulan' : 'baru', 'rapid_guess', self::INSTRUMENTS, [6]],
         ]],
         'tes_bagian' => [self::INSTRUMENTS, [], [
             'participant_code' => 'ada', 'occasion' => 'baru', 'part' => 'baru', 'block' => 'baru', 'started_at' => 'baru', 'submitted_at' => 'baru',
@@ -218,7 +219,7 @@ final class ResearchDictionary
      */
     public static function entry(string $sheet, string $column): ?array
     {
-        // Part 9 (35 §8.2, §10.2): derived sheets and `after_withdrawal`, status `usulan` while DRAFT (K8)
+        // Part 9 (35 §8.2, §10.2): derived sheets and `after_withdrawal`, status `usulan` while DRAFT (K8), `baru` since kamus-1.1 was approved
         if (($derived = self::derivedEntry($sheet, $column)) !== null || DerivedSheets::has($sheet)) {
             return $derived;
         }

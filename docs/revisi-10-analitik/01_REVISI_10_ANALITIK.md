@@ -445,7 +445,7 @@ Ahli media menilai dalam dua langkah (diputuskan 25 Oktober 2026): di tahap 2, g
 | No | Pekerjaan | Tahap | Penanggung jawab | Status |
 | --- | --- | --- | --- | --- |
 | 1 | Setujui penyelarasan konstruk: literasi digital dengan tiga dimensi | 1 | Pengembang | Selesai |
-| 2 | Bekukan peta bukti dan definisi 10 analitik di kamus data ([11](11_KAMUS_DATA.md)) | 1 | AI (draf), pengembang | Selesai: `kamus-1.0` disetujui 26 Oktober 2026 |
+| 2 | Bekukan peta bukti dan definisi 10 analitik di kamus data ([11](11_KAMUS_DATA.md)) | 1 | AI (draf), pengembang | Selesai: `kamus-1.0` disetujui 26 Oktober 2026; `kamus-1.1` disetujui pengembang 9 November 2026 ([04](04_CATATAN_KEPUTUSAN.md)); ambang ditetapkan ulang setelah KG3b sebagai `kamus-1.2` |
 | 3 | Pelabelan buta level AKM dan dimensi pada semua butir yang dinilai oleh dua ahli (B.5a di [07](07_TELAAH_INSTRUMEN_VALIDASI.md)); label pengembang sudah ada di 08 | 2 | AI (berkas), Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1 | Penilai ditetapkan pengembang (27 Oktober 2026): Ahli Bahasa Anak 1 dan Ahli Literasi Digital 1; keduanya menerima paket B.5a saja lebih dulu. Urutan kirim di [20](20_PAKET_VALIDASI.md), daftar buta ber-ID netral dan lembar kerja di [21](21_BERKAS_BUTIR_VALIDATOR.md) (draf) |
 | 4 | Periksa ulang label Bloom, terutama Cari Objek dan Benar atau Salah C5 | 1 | AI (telaah), pengembang | Selesai: [19](19_TELAAH_LABEL_BLOOM.md); keputusan pengembang 26 Oktober 2026 dimasukkan ke 08 dan 06 |
 | 5 | Beri kode kesalahan pada kata pengecoh, benda pengecoh, dan pernyataan | 1 | AI | Selesai di draf 08, menunggu validasi |
@@ -508,7 +508,7 @@ Pertanyaan ini perlu dijawab sebelum desain instrumen dibekukan. Centang kalau t
 
 ## Catatan perubahan sistem untuk tahap nanti
 
-Per 1 November 2026 belum ada yang dikerjakan di kode. Daftar ini menjadi bahan dokumen implementasi. Karena semua bagian game boleh dirombak, daftar ini bukan batas; ini yang wajib ada untuk penelitian.
+Per 1 November 2026 belum ada yang dikerjakan di kode. **Sejak 9 November 2026 ke-24 perubahan sudah dibangun** di bagian 1–9 (27–35, gelombang kode C–F, di balik sakelar studi yang mati secara bawaan; [00 → Tahap dokumen 3](00_INDEKS.md)); yang tersisa adalah revisi dari hasil validasi dan uji coba. Daftar ini menjadi bahan dokumen implementasi. Karena semua bagian game boleh dirombak, daftar ini bukan batas; ini yang wajib ada untuk penelitian.
 
 Dokumen implementasi no. 7, 10–15, 23, dan 24 didraf lebih dulu dalam empat bagian (keputusan pengembang 30 Oktober 2026, [04](04_CATATAN_KEPUTUSAN.md)): no. 10 di `27`, no. 11–13 dan 24 di `28`, no. 7, 14, dan 15 di `29`, dan no. 23 di `30`. Baris no. 7, 10–15, dan 23 diselaraskan dengan keputusan pengembang di 27–30 (sesi koordinator, 30 Oktober 2026, `asal: pengembang`); rinciannya tetap di dokumen implementasi masing-masing.
 
