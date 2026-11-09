@@ -125,6 +125,31 @@ final class FieldSheetTemplateTest extends CIUnitTestCase
         @rmdir($folder);
     }
 
+    public function testTheTemplateRoundTripsWithL1Conditions(): void
+    {
+        // Found on MariaDB, 9 November 2026: the page head of L1 Kondisi sesi
+        // ("Kode sesi lapangan", "Tanggal") was read as the table heading.
+        $fieldSession = $this->createFieldSheetWorld(2);
+        $path         = tempnam(sys_get_temp_dir(), 'lembar-') . '.xlsx';
+        $this->tempFiles[] = $path;
+        $this->sheets()->writeTemplate($fieldSession, $path);
+
+        $book = IOFactory::load($path);
+        $l1   = $book->getSheetByName('L1 Kondisi sesi');
+        $head = $l1->toArray(null, false, false)[2];
+        $l1->setCellValue([array_search('Jam mulai (WIB)', $head, true) + 1, 4], '08:00:00');
+        $l1->setCellValue([array_search('Jam selesai (WIB)', $head, true) + 1, 4], '09:15:00');
+        $l1->setCellValue([array_search('Siswa hadir', $head, true) + 1, 4], '24');
+        IOFactory::createWriter($book, 'Xlsx')->save($path);
+
+        $preview = $this->sheets()->preview($fieldSession, $path, 'lembar-S03-A-P2.xlsx', 'main');
+        $l1      = $preview['sheets']['l1_kondisi'];
+
+        $this->assertSame([], $l1['errors']);
+        $this->assertCount(1, $l1['rows'], 'only the typed row, not the page head or the heading row');
+        $this->assertSame(0, $preview['errors']);
+    }
+
     private function template(array $fieldSession): \PhpOffice\PhpSpreadsheet\Spreadsheet
     {
         $path              = tempnam(sys_get_temp_dir(), 'lembar-') . '.xlsx';

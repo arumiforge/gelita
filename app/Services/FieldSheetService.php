@@ -1080,7 +1080,9 @@ class FieldSheetService
     /**
      * Sheet rows by spec code, from a grid: the heading row is the first row
      * whose cells name at least two columns; a `fields` sheet may also be
-     * typed vertically (heading in column A, value beside it).
+     * typed vertically (heading in column A, value beside it). The page head
+     * ("Kode sesi lapangan", code, "Tanggal", …) is never the heading row,
+     * even where those words are also column headings (L1 Kondisi sesi).
      *
      * @param list<list<string>> $grid
      *
@@ -1089,16 +1091,25 @@ class FieldSheetService
     private function rowsOf(string $sheet, array $grid): array
     {
         $session = null;
+        $headRow = null;
 
-        foreach ($grid as $cells) {
-            if (strcasecmp(trim($cells[0] ?? ''), 'Kode sesi lapangan') === 0 && trim($cells[1] ?? '') !== '') {
-                $session = trim($cells[1]);
+        foreach ($grid as $r => $cells) {
+            $value = trim($cells[1] ?? '');
+
+            // A column heading beside it means the table's own heading row, not the page head
+            if (strcasecmp(trim($cells[0] ?? ''), 'Kode sesi lapangan') === 0 && $value !== '' && ! $this->isHeading($sheet, $value)) {
+                $session = $value;
+                $headRow = $r;
 
                 break;
             }
         }
 
         foreach ($grid as $r => $cells) {
+            if ($r === $headRow) {
+                continue;
+            }
+
             $map = [];
 
             foreach ($cells as $c => $heading) {
@@ -1148,6 +1159,11 @@ class FieldSheetService
         }
 
         return ['session' => $session, 'rows' => implode('', $row) === '' ? [] : [1 => $row]];
+    }
+
+    private function isHeading(string $sheet, string $text): bool
+    {
+        return FieldSheetSpec::codeFor($sheet, $text) !== null || $this->paperHeading($sheet, $text) !== null;
     }
 
     private function paperHeading(string $sheet, string $heading): ?string
