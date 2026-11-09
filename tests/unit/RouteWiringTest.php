@@ -13,9 +13,9 @@ use CodeIgniter\Test\CIUnitTestCase;
 final class RouteWiringTest extends CIUnitTestCase
 {
     private const CONTROLLER_COUNT = [
-        'Game'  => 14,  // 13 controller (FieldTokenController: revision 10, part 2) + BaseGameController (AppController: manifest, display plan A3; PackageController: asset package Stage 3)
-        'Admin' => 26,  // 25 controller (FieldSessionController, MonitoringController: revision 10, part 2; TechLog, FieldSheet: part 3; Consent, DataRequest, RiskFollowUp, ParticipantCopy, StudyClosure: part 4) + BaseAdminController (PackageController: asset package Stage 6)
-        'Api'   => 11,  // 10 controller + BaseApiController (PackageApiController: asset package Stage 1)
+        'Game'  => 14 + 4,  // Part 8 (34 §12): + Instrument, Questionnaire, RiskItems, Attitude. 13 controller (FieldTokenController: revision 10, part 2) + BaseGameController (AppController: manifest, display plan A3; PackageController: asset package Stage 3)
+        'Admin' => 26 + 1,  // Part 8 (34 §12): + FieldTestController. 25 controller (FieldSessionController, MonitoringController: revision 10, part 2; TechLog, FieldSheet: part 3; Consent, DataRequest, RiskFollowUp, ParticipantCopy, StudyClosure: part 4) + BaseAdminController (PackageController: asset package Stage 6)
+        'Api'   => 11 + 1,  // Part 8 (34 §12): + InstrumentController. 10 controller + BaseApiController (PackageApiController: asset package Stage 1)
     ];
 
     /** Route yang wajib ada beserta handlernya. */

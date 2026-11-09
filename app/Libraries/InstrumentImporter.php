@@ -502,38 +502,39 @@ class InstrumentImporter
     {
         $json = static fn ($value): ?string => $value === null ? null : json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
-        $this->db->transStart();
+        $this->db->transBegin();
 
-        $this->db->table('instrument_versions')->insert([
-            'instrument' => $instrument, 'version' => $version, 'content_hash' => $hash, 'status' => $status,
-            'is_active' => 0, 'meta_json' => $json($rows['meta']), 'imported_at' => date('Y-m-d H:i:s'),
-        ]);
-        $versionId = (int) $this->db->insertID();
-        $stimulusIds = [];
-
-        foreach ($rows['stimuli'] as $stimulus) {
-            $this->db->table('instrument_stimuli')->insert([
-                'version_id' => $versionId, 'code' => $stimulus['code'], 'show_json' => $json($stimulus['show']), 'image_slot' => $stimulus['image_slot'],
+        try {
+            $this->db->table('instrument_versions')->insert([
+                'instrument' => $instrument, 'version' => $version, 'content_hash' => $hash, 'status' => $status,
+                'is_active' => 0, 'meta_json' => $json($rows['meta']), 'imported_at' => date('Y-m-d H:i:s'),
             ]);
-            $stimulusIds[$stimulus['code']] = (int) $this->db->insertID();
-        }
+            $versionId = (int) $this->db->insertID();
+            $stimulusIds = [];
 
-        foreach ($rows['items'] as $item) {
-            $this->db->table('instrument_items')->insert([
-                'version_id' => $versionId, 'code' => $item['code'], 'part' => $item['part'], 'form' => $item['form'],
-                'position' => $item['position'], 'type' => $item['type'],
-                'stimulus_id' => $item['stimulus'] === null ? null : $stimulusIds[$item['stimulus']],
-                'show_json' => $json($item['show']), 'key_json' => $json($item['key']),
-                'units_json' => $json($item['units']), 'cell_json' => $json($item['cell'] === [] ? null : $item['cell']),
-            ]);
-        }
+            foreach ($rows['stimuli'] as $stimulus) {
+                $this->db->table('instrument_stimuli')->insert([
+                    'version_id' => $versionId, 'code' => $stimulus['code'], 'show_json' => $json($stimulus['show']), 'image_slot' => $stimulus['image_slot'],
+                ]);
+                $stimulusIds[$stimulus['code']] = (int) $this->db->insertID();
+            }
 
-        $this->activate($instrument, $versionId);
+            foreach ($rows['items'] as $item) {
+                $this->db->table('instrument_items')->insert([
+                    'version_id' => $versionId, 'code' => $item['code'], 'part' => $item['part'], 'form' => $item['form'],
+                    'position' => $item['position'], 'type' => $item['type'],
+                    'stimulus_id' => $item['stimulus'] === null ? null : $stimulusIds[$item['stimulus']],
+                    'show_json' => $json($item['show']), 'key_json' => $json($item['key']),
+                    'units_json' => $json($item['units']), 'cell_json' => $json($item['cell'] === [] ? null : $item['cell']),
+                ]);
+            }
 
-        $this->db->transComplete();
+            $this->activate($instrument, $versionId);
+            $this->db->transCommit();
+        } catch (\Throwable $e) {
+            $this->db->transRollback();
 
-        if (! $this->db->transStatus()) {
-            throw new \RuntimeException('Impor instrumen ' . $instrument . ' gagal ditulis.');
+            throw new \RuntimeException('Impor instrumen ' . $instrument . ' gagal ditulis: ' . $e->getMessage(), 0, $e);
         }
     }
 

@@ -69,7 +69,8 @@ final class ExportRulesTest extends CIUnitTestCase
 
             $this->assertNotContains('phase_code', $columns, "{$sheet}: fase penelitian sudah dihapus (Dok 1 §5.1)");
 
-            foreach (['score', 'first_pass_accuracy', 'final_accuracy', 'independence', 'retry_count', 'reason_text', 'mastery_ratio', 'consent_given', 'guardian_name'] as $gone) {
+            // Part 8 (34 §11.4): the test module stores a raw score per test item (`tes_jawaban.score`)
+            foreach ([...(in_array($sheet, \App\Libraries\InstrumentSheets::DIMENSIONS, true) ? [] : ['score']), 'first_pass_accuracy', 'final_accuracy', 'independence', 'retry_count', 'reason_text', 'mastery_ratio', 'consent_given', 'guardian_name'] as $gone) {
                 $this->assertNotContains($gone, $columns, "{$sheet}: rasio/skor turunan tidak lagi disimpan (Dok 1 §5.2)");
             }
         }

@@ -335,7 +335,7 @@ class RegisterController extends BaseController
 
         // Part 8 (34 §5.2, 28 §6.5 step 8): at P1 the test module comes before the opening story
         if ($fieldSession !== null && service('instrumentGate')->current() !== null) {
-            return redirect()->to(site_url('tes'));
+            return redirect()->to(site_url('tes'))->with('research_code', $result['participant']->participant_code);
         }
 
         // Field mode: the research code card (28 §6.5, M-11)

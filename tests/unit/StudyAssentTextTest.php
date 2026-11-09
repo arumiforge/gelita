@@ -48,7 +48,8 @@ final class StudyAssentTextTest extends CIUnitTestCase
         $this->send(Method::POST, 'daftar/3', $account);
         $this->assertSame(lang('Game.assentRequiredStudy'), $_SESSION['errors']['assent'] ?? null);
 
-        $this->assertRedirectsTo('intro', $this->send(Method::POST, 'daftar/3', $account + ['assent' => '1']));
+        // Part 8 (34 §5.2): meeting 1 starts with the test module
+        $this->assertRedirectsTo('tes', $this->send(Method::POST, 'daftar/3', $account + ['assent' => '1']));
         $row = $this->conn->table('participants')->where('username', 'sekar_ayu')->get()->getRowArray();
         $this->assertSame('t4-1', $row['assent_version']);
         $this->assertNotNull($row['assented_at']);

@@ -710,27 +710,34 @@ class InstrumentService
     {
         $db  = db_connect();
         $now = $this->now();
-        $db->transStart();
+        $db->transBegin();
 
-        $closed = $this->updateIf(model(InstrumentBlockModel::class), (int) $block['id'], ['closed_at' => null], ['closed_at' => $now, 'closed_reason' => 'limit']);
+        try {
+            $closed = $this->updateIf(model(InstrumentBlockModel::class), (int) $block['id'], ['closed_at' => null], ['closed_at' => $now, 'closed_reason' => 'limit']);
 
-        if ($closed) {
-            foreach (InstrumentImporter::TEST_PARTS as $code => $rule) {
-                if ($rule['block'] !== $block['block']) {
-                    continue;
+            if ($closed) {
+                foreach (InstrumentImporter::TEST_PARTS as $code => $rule) {
+                    if ($rule['block'] !== $block['block']) {
+                        continue;
+                    }
+
+                    $part = $this->part((int) $sitting['id'], $code) ?? $this->openPart($sitting, $code, (int) $block['id']);
+
+                    if (! self::isClosed($part) && $this->updateIf(model(InstrumentPartModel::class), (int) $part['id'], ['submitted_at' => null, 'closed_at' => null], ['closed_at' => $now, 'closed_by_limit' => 1])) {
+                        $this->scorePart((int) $part['id']);
+                    }
                 }
 
-                $part = $this->part((int) $sitting['id'], $code) ?? $this->openPart($sitting, $code, (int) $block['id']);
-
-                if (! self::isClosed($part) && $this->updateIf(model(InstrumentPartModel::class), (int) $part['id'], ['submitted_at' => null, 'closed_at' => null], ['closed_at' => $now, 'closed_by_limit' => 1])) {
-                    $this->scorePart((int) $part['id']);
-                }
+                $this->closeSittingWhenDone($sitting);
             }
 
-            $this->closeSittingWhenDone($sitting);
+            $db->transCommit();
+        } catch (\Throwable $e) {
+            $db->transRollback();
+
+            throw $e;
         }
 
-        $db->transComplete();
         $this->forget();
 
         return $closed;

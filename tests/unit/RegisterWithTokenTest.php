@@ -77,7 +77,8 @@ final class RegisterWithTokenTest extends CIUnitTestCase
     /** @return array<string, mixed> the new participants row */
     private function register(string $username, string $token): array
     {
-        $this->assertRedirectsTo('intro', $this->registerResponse($username, $token));
+        // Part 8 (34 §5.2): meeting 1 starts with the test module
+        $this->assertRedirectsTo('tes', $this->registerResponse($username, $token));
 
         return $this->conn->table('participants')->where('username', $username)->get()->getRowArray();
     }
