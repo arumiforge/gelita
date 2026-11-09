@@ -150,8 +150,14 @@ class InstrumentGate
     /** True for a `uji.*` account while the preview switch is on and field mode is off (K4). */
     public static function previewAllowed(Participant $participant): bool
     {
+        return self::previewFor((string) $participant->username);
+    }
+
+    /** previewAllowed() by username (the HUD menu row `Coba modul tes`). */
+    public static function previewFor(string $username): bool
+    {
         return config('Gelita')->instrumentPreview
-            && str_starts_with((string) $participant->username, TestAccountService::PREFIX)
+            && str_starts_with($username, TestAccountService::PREFIX)
             && ! service('fieldSessions')->fieldModeOn();
     }
 
