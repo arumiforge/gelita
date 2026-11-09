@@ -2689,3 +2689,32 @@ Built from `34` (status `disetujui pengembang`; §18 binding) on branch `r10-kod
 **Manual checks not done** (34 §15.3, all eight): no browser run of P1/P5 on laptop and narrow tablet, device switch mid-part, reminder with a 2-minute limit, the P5 challenge closing without a false `challenge_abandoned`, T11 Ya/Tidak against monitoring, Balai Refleksi with empty feedback, page source check, and the `uji.*` preview. No MariaDB run of the migration (SQLite only).
 
 **Open (34 §17)**: no. 5 JavaScript on lab devices (the reminder needs it; limits do not); no. 6 final screen texts (all frame texts are §13's drafts).
+
+## Research revision 10, part 9 / code wave F: derived data layer, kamus-1.1 (9 November 2026, branch r10-kode-35-lapis-turunan)
+
+Source: `docs/revisi-10-analitik/35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md` (`draf pengembang`, §19 no. 1–11 binding), `kamus-1.1` draft of 11. Built on the wave F coordinator branch (parts 7 and 8 merged). `asal: pengembang`.
+
+**What was built**
+- Migration `2026-01-01-004300_CreateDerivedLayer`: `derived_runs`, eight `derived_*` tables (PKs per 35 §12, FKs cascade from the run and from `participants`), `research_studies.thresholds_locked_at`/`derived_run_id`/`derived_running_since`, `data_exports.derived_run_id`. `SystemResetService::REQUIRED_MIGRATION` = `2026-01-01-004300`; the tables are in `GROUP_A`/`CLEAR_ORDER`, `RetentionService::HARD_ORDER` (new `DERIVED_TABLES`, per student or whole study) and the test schema.
+- Pure calculators in `app/Libraries/Derived/` (35 §4.1 names plus `Clock` and the orchestrator `ParticipantRun`); `DerivedDataService` loads, writes, claims, switches, prunes; `DerivedSheets` holds the eight `turunan_*` sheets, their wording and dictionary entries (`META`), and `after_withdrawal`.
+- Downloads: `ExportService::build()` calls `ensureFresh()` for field-mode studies, records `derived_run_id`, drops `turunan_*` for other studies and one-child copies, and adds the run, its time, version, thresholds, and "usulan, belum disetujui" to the Kamus Data header. `tes_jawaban.rapid_guess` joins `derived_test_responses` of the study's current run.
+- Panel: `StudyController::lockThresholds` (*Kunci ambang*, conditional UPDATE on an empty `thresholds_locked_at`, audit `study_thresholds_locked`), `DerivedDataController::recompute`/`status`, the status box `admin/study/_derived` on `/admin/studi` and above the new `turunan_*` tabs of `/admin/data`. Texts in `Admin.php` (35 §14; `studyThresholdsLocked` of part 7 kept, the §14 wording with the date is `studyThresholdsLockedOn`).
+- Commands: `gelita:turunan:hitung --studi=KODE [--cek]`, `gelita:turunan:ambang --studi=KODE --buka --alasan=…` (audit `study_thresholds_unlocked`).
+
+**Decisions and deviations**
+- `ResearchDictionary::VERSION` is `kamus-1.1-usulan` (with `BASE = 'kamus-1.1'`, `DRAFT = true`), as 11 → *Versi dan cara berubah* and 35 §8.1 say for a draft; every derived entry has status `usulan` (K8). When 11 approves `kamus-1.1`: VERSION = BASE, DRAFT = false (entries become `baru`).
+- Fingerprint: `challenge_attempts` has no `updated_at`, so its count, newest id, newest `completed_at`, and retake count stand in; added the game sessions, segments, seats, field sessions, and `item_error_codes` (count, newest id), since the latest bank codes are used (§19 no. 5).
+- `after_withdrawal` on the raw sheets is computed from `participant_consents`/`deactivated_at` with the same rule as the run (`ParticipantCalculator::cutoff()`), not read from the run, so it also works before any run.
+- Derived sheets page by offset in a fixed key order (composite keys, no keyset id); the derived tables keep the PKs of §12.
+- Item time (Cari Objek, Skenario Digital): the raw data has no clue-switch event, so the stretch runs from the first try's ready time (segment start + `ready_ms`) to the closing try; switching clues meanwhile is inside it. Observation item: the Cari Objek/Skenario item whose stretch overlaps the 20 s window; empty for batch engines.
+- `final_correct` is 0 for an item with tries that never became correct, also when it was left (`censor_reason` tells which); empty only without tries.
+- `sikap_missing_reason`: `belum_tuntas` when the student attended a meeting-5 field session (main or make-up) without a submitted scale, else `absen`, judged at run time.
+- `analysable`/`complete` count first tries of the D1–D3 items; `rapid_share` counts first tries of every scored item (PBK included).
+- `headset_share` = L1 `headset_count` / `headset_of`.
+- Old data without `ready_ms`/coordinates: no special rule (35 §18 no. 5); `decision_ms`, `rapid_guess`, and `near_miss_count` stay empty (the near-miss count is empty when the item's first try has no `ready_ms`).
+- Calculation time (35 §18 no. 4): synchronous in the request and the command. Measured on `gelita:simulasi` data in the SQLite test database: 30 students 0.22 s, 120 students 1.07 s (about 9 ms per student with ~180 events and ~75 tries each). No background queue; check again on MariaDB with real event volumes (§16.3).
+- Part 7/8 code changed: `StudySettingsTest` no longer adds `thresholds_locked_at` itself; `InstrumentModuleMigrationTest` accepts a later `REQUIRED_MIGRATION`; `InstrumentSheets` (`tes_jawaban.rapid_guess`). No part 7/8 logic changed.
+
+**Not done / open**
+- Manual checks 35 §16.3 (browser download as ketua, threshold change, hand check of three `turunan_butir` rows, withdrawal mid-session, peneliti/admin view) not run here.
+- `CLAUDE.md` (spark list: `gelita:turunan:hitung`, `gelita:turunan:ambang`), `.claude/rules/glossary.md` (35 §20 rows), `docs/PROGRESS.md`, and the numbered docs were not edited (not this branch's files).
