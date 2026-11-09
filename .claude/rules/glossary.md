@@ -161,7 +161,7 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | akun uji | `test account` | `uji.*` accounts, command `gelita:uji:akun`, school `V01` |
 | katalog event | `event catalog` | `App\Libraries\EventCatalog` (`RESEARCH`, `ADMIN`, `REMOVED`, `SERVER_ONLY`); `dialogue_completed` replaced `dialogue_advanced`, `answer_changed` merged into `answer_submitted` (revision 10, part 3: 29) |
 | Log teknis | `tech log` | route `/admin/log-teknis`, `TechLogService`, capability `tech_logs.view` (admin) |
-| Kamus Data (lembar unduhan) | `data dictionary` | `ResearchDictionary` (`kamus-1.1-usulan` since part 9, 9 Nov 2026: `BASE` `kamus-1.1`, `DRAFT` until 11 approves it; was `kamus-1.0`), `data_exports.dictionary_version` |
+| Kamus Data (lembar unduhan) | `data dictionary` | `ResearchDictionary` (`kamus-1.1` since the developer approved it, 9 Nov 2026, `DRAFT` false; `kamus-1.1-usulan` while it was a draft after part 9; was `kamus-1.0`; thresholds re-set after KG3b come as `kamus-1.2`), `data_exports.dictionary_version` |
 | riwayat unduhan | `download history` | audit `export_download`, `data_exports.participant_count` |
 | lembar lapangan (diketik) | `field sheet` | `FieldSheetSpec` (`lembar-1.0`), `field_sheet_imports`, `field_sheet_rows`; route `/admin/sesi-lapangan/{id}/lembar`; command `gelita:lembar:templat` |
 | ketikan kedua | `check entry` | `field_sheet_imports.purpose` = `check` (first typing `main`) |
