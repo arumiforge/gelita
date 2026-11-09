@@ -38,6 +38,14 @@ foreach ($table['columns'] ?? [] as $column) {
         . ' Siswa dan sekolah tampil sebagai kode, tanpa nama.',
     'actions' => '<a class="btn" href="' . base_url('admin/ekspor') . '">' . icon('download') . ' Unduh semua lembar</a>',
 ]) ?>
+<?php // Part 9 (35 §10.4): run time, dictionary version, stale, Hitung ulang ?>
+<?php if (App\Libraries\DerivedSheets::has($dimension)): ?>
+  <?php if (($derivedStudy ?? null) !== null): ?>
+    <?= view('admin/study/_derived', ['study' => $derivedStudy, 'back' => 'admin/data/' . $dimension]) ?>
+  <?php else: ?>
+    <p class="muted"><?= esc(lang('Admin.derivedOffForStudy')) ?></p>
+  <?php endif ?>
+<?php endif ?>
 <?= $this->include('partials/flash') ?>
 
 <nav aria-label="Dimensi data mentah">

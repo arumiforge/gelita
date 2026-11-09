@@ -188,6 +188,10 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $r
     <?php endif ?>
   </form>
   <?= view('admin/study/_settings', ['study' => $study]) ?>
+  <?php // Part 9 (35 §10.4, §11): derived data layer status, Hitung ulang, Kunci ambang ?>
+  <?php if (staff_can('research.export') || staff_can('studies.manage')): ?>
+    <?= view('admin/study/_derived', ['study' => $study, 'back' => 'admin/studi']) ?>
+  <?php endif ?>
   <?php // Part 8 (34 §7.4): hidden time limits of the test module, a form of its own ?>
   <?php $limits = service('instruments')->settings($study) ?>
   <form method="post" action="<?= base_url('admin/studi/' . $sid . '/instrumen') ?>" class="form-section" data-instrument-settings>

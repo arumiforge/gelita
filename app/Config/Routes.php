@@ -271,6 +271,11 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
         // Part 7 (33 §6, §10): thresholds and the smallest stage of a study (ketua)
         $routes->post('studi/(:num)/pengaturan', 'StudyController::updateSettings/$1', ['filter' => 'staffCan:studies.manage']);
 
+        // Part 9 (35 §13): lock the thresholds at G4 (ketua), recompute the derived layer and its status (research.export)
+        $routes->post('studi/(:num)/ambang/kunci', 'StudyController::lockThresholds/$1', ['filter' => 'staffCan:studies.manage']);
+        $routes->post('studi/(:num)/hitung-ulang', 'DerivedDataController::recompute/$1', ['filter' => 'staffCan:research.export']);
+        $routes->get('studi/(:num)/hitung-ulang/status', 'DerivedDataController::status/$1', ['filter' => 'staffCan:research.export']);
+
         // Releases and asset packages stay with the admin, under /admin/studi/rilis
         $routes->group('', ['filter' => 'staffCan:releases.manage'], static function ($routes): void {
             $routes->get('studi/rilis', 'StudyController::releases');
