@@ -273,11 +273,22 @@ export function mount(ctx) {
   };
   window.addEventListener('pagehide', sendOverflow, true);
 
-  const goTo = (i) => {
+  // Coordinator follow-up (owner, 9 November 2026; 35 §6.2): `item_shown` each time a clue comes on
+  // screen, so the derived layer counts an item's time only while it was shown (no repeat for the same clue)
+  let shownItem = null;
+  const shown = (via) => {
+    const clue = clues[current];
+    if (!clue || closed(current) || clue.item_id === shownItem) return;
+    shownItem = clue.item_id;
+    emit('item_shown', { levelId: ctx.levelId, nodeId: ctx.nodeId, attemptId: ctx.attemptId, itemId: clue.item_id, payload: { round, via, t_ms: ctx.sinceOpen() } });
+  };
+
+  const goTo = (i, via = 'next') => {
     if (closed(i)) return;
     current = i;
     render();
     showVoice(i);
+    shown(via);
     announce(`${ctx.t('clueLabel', i + 1)}: ${clues[i]?.text ?? ''}`);
   };
 
@@ -317,6 +328,7 @@ export function mount(ctx) {
     if (closed(current)) current = nextUnfound() ?? current;
     render();
     showVoice(current);
+    shown('round2');
     announce(`${texts.title}: ${clues[current]?.text ?? ''}`);
   };
 
@@ -454,7 +466,7 @@ export function mount(ctx) {
   // Lompat diabaikan selama ketukan masih menunggu server
   ctx.section.addEventListener('click', (event) => {
     const jump = event.target.closest('.hunt-jump');
-    if (jump && !jump.disabled && !busy) goTo(Number(jump.dataset.clue));
+    if (jump && !jump.disabled && !busy) goTo(Number(jump.dataset.clue), 'jump');
   });
 
   // Muat ulang di tengah tantangan: pulihkan temuan dan petunjuk yang dilewati
@@ -480,4 +492,5 @@ export function mount(ctx) {
 
   render();
   showVoice(current);
+  shown('start');
 }

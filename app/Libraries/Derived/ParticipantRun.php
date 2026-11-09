@@ -442,6 +442,52 @@ final class ParticipantRun
         return $out;
     }
 
+    /**
+     * Stretches of one attempt where $itemId was on screen (35 §6.2; owner,
+     * 9 November 2026): from each `item_shown` of the item to the next
+     * `item_shown` of the attempt, or the end of the window it falls in.
+     * Null when the attempt has no `item_shown` (data from before the event).
+     *
+     * @param list<array> $win the attempt's windows
+     *
+     * @return list<array{0: int, 1: int}>|null
+     */
+    private function shownSpans(int $attemptId, int $itemId, array $win): ?array
+    {
+        $shown = array_values(array_filter($this->in->events, static fn (array $e): bool => $e['type'] === 'item_shown' && (int) ($e['attempt_id'] ?? 0) === $attemptId && $e['at'] !== null));
+
+        if ($shown === []) {
+            return null;
+        }
+
+        usort($shown, static fn (array $a, array $b): int => [(int) $a['at'], (int) $a['id']] <=> [(int) $b['at'], (int) $b['id']]);
+        $out = [];
+
+        foreach ($shown as $i => $event) {
+            if ((int) ($event['item_id'] ?? 0) !== $itemId) {
+                continue;
+            }
+
+            $from = (int) $event['at'];
+            $to   = null;
+
+            foreach ($win as $w) {
+                if ($w[0] <= $from && $from <= $w[1]) {
+                    $to = $w[1];
+                }
+            }
+
+            $next = $shown[$i + 1]['at'] ?? null;
+            $to   = $next !== null ? min($to ?? (int) $next, (int) $next) : $to;
+
+            if ($to !== null && $to > $from) {
+                $out[] = [$from, $to];
+            }
+        }
+
+        return $out;
+    }
+
     /** Active time of every game session before $start (covariate, 11 → Analitik 5). */
     private function cumulative(int $start): int
     {
@@ -484,8 +530,12 @@ final class ParticipantRun
 
         $end ??= max(array_map(static fn (array $w): int => $w[1], $win));
         $parts = [];
+        // Coordinator follow-up (owner, 9 November 2026): with `item_shown` events only the stretches where
+        // this item was on screen count; without them (older data) the whole span, as before
+        $span  = $this->shownSpans((int) $first['attempt_id'], (int) $first['item_id'], $win) ?? [[$start, max($start, $end)]];
+        $span  = Timeline::intersect([[$start, max($start, $end)]], $span);
 
-        foreach (Timeline::intersect([[$start, max($start, $end)]], array_map(static fn (array $w): array => [$w[0], $w[1]], $win)) as $part) {
+        foreach (Timeline::intersect($span, array_map(static fn (array $w): array => [$w[0], $w[1]], $win)) as $part) {
             foreach ($win as $w) {
                 if ($part[0] >= $w[0] && $part[1] <= $w[1]) {
                     $parts[] = [$part[0], $part[1], 'session_id' => $w['session_id']];

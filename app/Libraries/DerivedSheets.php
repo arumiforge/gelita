@@ -266,7 +266,7 @@ final class DerivedSheets
         'score_change'      => ['Perubahan skor D2', 'int', 'Skor percobaan kedua dikurangi pertama (D2).', self::A9, [9]],
         'near_miss_count'   => ['Ketukan nyaris', 'int', 'Ketukan kosong paling jauh 24 dp dari bagian ketuk kunci (NON-SEN).', self::A6, [6]],
         'empty_tap_count'   => ['Ketukan kosong lain', 'int', 'Ketukan kosong lebih jauh dari 24 dp, termasuk kelebihan yang dijumlahkan.', self::A6, [6]],
-        'item_total_ms'     => ['Waktu total butir (mdtk)', 'ms', 'Cari Objek dan Skenario Digital: dari butir bisa dijawab sampai tertutup.', self::A5, [5]],
+        'item_total_ms'     => ['Waktu total butir (mdtk)', 'ms', 'Cari Objek dan Skenario Digital: dari butir bisa dijawab sampai tertutup, hanya selama butir itu tampil di layar (event item_shown); data tanpa item_shown memakai seluruh rentang.', self::A5, [5]],
         'item_active_ms'    => ['Waktu aktif butir (mdtk)', 'ms', 'Sama, dengan aturan waktu aktif.', self::A5, [5]],
         'first_input_ms'    => ['Masukan pertama (mdtk)', 'ms', 'Dari percobaan pertama (perkiraan untuk Isi Rumpang dan Benar atau Salah).', self::A5, [5]],
         'last_input_ms'     => ['Masukan terakhir (mdtk)', 'ms', 'Dari percobaan pertama.', self::A5, [5]],

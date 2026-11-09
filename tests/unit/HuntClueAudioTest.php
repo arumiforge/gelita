@@ -133,7 +133,7 @@ final class HuntClueAudioTest extends CIUnitTestCase
         $this->assertStringContainsString("narrationPlayer(node, { attemptId: ctx.attemptId, shared: true })", $js);
         $this->assertStringNotContainsString('autoplay', $code, 'no clue is read out without a tap');
         $this->assertMatchesRegularExpression('/if \(next !== null\) \{\s*goTo\(next\);/', $js, 'after a correct answer: next clue, button only');
-        $this->assertStringContainsString('goTo(Number(jump.dataset.clue))', $js, 'jumping does not play either');
+        $this->assertStringContainsString("goTo(Number(jump.dataset.clue), 'jump')", $js, 'jumping does not play either');
         $this->assertStringContainsString('showVoice(current);', $js);
         $this->assertStringContainsString('pauseNarration();', $js, 'ganti petunjuk menghentikan narasi');
     }

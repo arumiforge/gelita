@@ -399,6 +399,8 @@ return [
         'page_visible'         => 'Kembali ke layar',
         // Part 7 (33 §5.2)
         'input_idle'           => 'Jeda tanpa sentuhan (20 detik atau lebih)',
+        // Owner, 9 November 2026 (35 §6.2)
+        'item_shown'           => 'Soal tampil di layar',
         'viewport_changed'     => 'Ukuran layar berubah',
         'hint_opened'          => 'Membuka petunjuk',
         'audio_play'           => 'Memutar suara',

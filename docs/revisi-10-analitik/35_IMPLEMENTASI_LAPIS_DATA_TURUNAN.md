@@ -667,15 +667,16 @@ Diikuti dari keputusan dokumen lain di sesi yang sama:
 13. **`sikap_missing_reason` kosong sebelum P5** (§6.6): `absen` hanya bila pertemuan P5 siswa (utama atau susulan) sudah dibuka saat putaran hitung; `belum_tuntas` bila siswa hadir di P5 tanpa mengirim skala. Tidak dipilih: `absen` sejak awal.
 14. **Rumusan disesuaikan dengan kode** (dari laporan implementasi):
     - §4.3 sidik jari: `challenge_attempts` tidak punya `updated_at`, jadi dipakai jumlah, id terbaru, `completed_at` terbaru, dan jumlah pengerjaan ulang; masukan sidik jari juga sesi game, potongan, kursi, sesi lapangan, dan `item_error_codes` (karena kode bank terbaru dipakai, §19 no. 5).
-    - §6.2 waktu butir Cari Objek dan Skenario Digital: dari waktu siap percobaan pertama (awal potongan + `ready_ms`) sampai percobaan penutup; waktu di petunjuk lain di antaranya ikut terhitung, karena tidak ada event ganti petunjuk.
+    - §6.2 waktu butir Cari Objek dan Skenario Digital: dari waktu siap percobaan pertama (awal potongan + `ready_ms`) sampai percobaan penutup, hanya selama butir itu tampil di layar (no. 16).
     - §6.6 `headset_share = headset_count / headset_of`; `final_correct` = 0 untuk butir yang dicoba tetapi tidak terjawab benar, kosong hanya tanpa percobaan; `analysable`/`complete` menghitung percobaan pertama D1–D3, `rapid_share` semua butir berskor termasuk PBK.
     - §6.8 ambang tebakan cepat tes = `test_rapid_guess_ms` (keputusan 4 November 2026).
-    - §10.1 filter tanggal tidak berlaku untuk lembar turunan (baris tidak punya satu tanggal); filter studi, sekolah, peserta, wilayah/tantangan, `field_session_code`, dan `meeting_no` berlaku. Lembar turunan tidak ada di unduhan studi tanpa mode penelitian dan di salinan satu anak.
+    - §10.1 (dikonfirmasi pengembang, putaran 2) filter tanggal tidak berlaku untuk lembar turunan (baris tidak punya satu tanggal); filter studi, sekolah, peserta, wilayah/tantangan, `field_session_code`, dan `meeting_no` berlaku. Lembar turunan tidak ada di unduhan studi tanpa mode penelitian dan di salinan satu anak.
     - §10.3 setiap lembar turunan membawa `run_id`, `dictionary_version`, dan `unit`.
     - §12 `derived_runs.test_rapid_guess_ms` ditambahkan, supaya putaran mencatat ketiga ambang; `research_studies.derived_run_id` dan `derived_running_since`.
     - §14 teks kunci dengan tanggal memakai kunci baru `studyThresholdsLockedOn`; `studyThresholdsLocked` bagian 7 tetap.
     - Nilai versi yang ditulis: `kamus-1.1-usulan` (`ResearchDictionary::VERSION`), sampai 11 menyetujui `kamus-1.1`.
 15. **`after_withdrawal` di lembar mentah dihitung saat unduhan** dari `participant_consents` dan `deactivated_at` dengan aturan saat mundur yang sama (K4), bukan dibaca dari putaran, supaya ada juga sebelum putaran pertama.
+16. **Event `item_shown` untuk waktu per butir yang tepat** (putaran 2, 9 November 2026): game mengirim `item_shown` setiap kali petunjuk Cari Objek atau skenario tampil di layar (`round`, `via`: `start`, `next`, `jump`, `round2`, `t_ms`). Waktu butir hanya dihitung selama butir itu tampil (dari `item_shown` butir itu sampai `item_shown` berikutnya di pengerjaan yang sama, di dalam jendela pengerjaan). Pengerjaan tanpa `item_shown` (data lama) tetap memakai seluruh rentang. Tidak dipilih: perkiraan tanpa event.
 
 ---
 

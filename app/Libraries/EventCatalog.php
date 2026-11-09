@@ -30,6 +30,7 @@ final class EventCatalog
         'challenge_tries_exhausted', 'clue_failed', 'answer_submitted', 'wrong_target_clicked',
         'empty_tap', 'passage_reopened',
         'scenario_failed',   // part 6 (32 §5.6): a scenario closed after its third try, server only
+        'item_shown',   // owner, 9 Nov 2026 (35 §6.2): a Cari Objek clue or a scenario came on screen; exact time per item
         // help and narration
         'hint_opened', 'audio_play', 'audio_autoplay', 'audio_replay', 'audio_completed',
         // screens and reading
