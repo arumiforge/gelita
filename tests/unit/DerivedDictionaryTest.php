@@ -10,7 +10,7 @@ use CodeIgniter\Test\CIUnitTestCase;
 /**
  * Part 9 (35 §8, §10.2; 16.1 DerivedDictionaryTest): every derived column
  * has a ResearchDictionary entry and an ExportLabels entry, marked `usulan`
- * while `kamus-1.1` is a draft; `after_withdrawal` sits on the seven raw sheets.
+ * while `kamus-1.1` was a draft and `baru` since it was approved (9 November 2026); `after_withdrawal` sits on the seven raw sheets.
  *
  * @internal
  */
@@ -27,18 +27,19 @@ final class DerivedDictionaryTest extends CIUnitTestCase
             foreach (array_keys(DerivedSheets::COLUMNS[$sheet]) as $column) {
                 $entry = ResearchDictionary::entry($sheet, $column);
                 $this->assertNotNull($entry, "{$sheet}.{$column}");
-                $this->assertSame('usulan', $entry['status'], "{$sheet}.{$column} (35 K8)");
+                $this->assertSame(ResearchDictionary::DRAFT ? 'usulan' : 'baru', $entry['status'], "{$sheet}.{$column} (35 K8)");
                 $this->assertTrue(ExportLabels::has($sheet, $column), "{$sheet}.{$column}");
                 $this->assertNotSame('', ExportLabels::column($sheet, $column)['meaning']);
             }
         }
     }
 
-    public function testVersionIsTheDraftOfKamus11(): void
+    public function testVersionIsTheApprovedKamus11(): void
     {
-        $this->assertSame('kamus-1.1-usulan', ResearchDictionary::VERSION);
-        $this->assertSame('kamus-1.1', ResearchDictionary::BASE);
-        $this->assertTrue(ResearchDictionary::DRAFT);
+        // The developer approved kamus-1.1 on 9 November 2026 (04).
+        $this->assertSame('kamus-1.1', ResearchDictionary::VERSION);
+        $this->assertSame(ResearchDictionary::BASE, ResearchDictionary::VERSION);
+        $this->assertFalse(ResearchDictionary::DRAFT);
     }
 
     public function testAfterWithdrawalOnTheRawSheets(): void

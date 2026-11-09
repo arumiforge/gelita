@@ -7,12 +7,16 @@
  * @var bool                 $started the researcher started the test
  * @var bool                 $preview validators' preview: choose occasion and form
  * @var string               $occasion
+ * @var bool                 $missing no test content imported yet (gelita:instrumen:impor)
  */
 ?>
 <?= $this->extend('layouts/instrument') ?>
 <?= $this->section('content') ?>
 <div class="mx-auto" style="max-width: 46rem" data-status-url="<?= esc(site_url('api/instrument/status'), 'attr') ?>">
   <h1 class="h3 mb-3"><?= esc(lang('Instrument.introTitle')) ?></h1>
+  <?php if (! empty($missing)): ?>
+    <p class="alert alert-info" role="status"><?= esc(lang('Instrument.notReady')) ?></p>
+  <?php else: ?>
   <p><?= esc((string) ($meta['intro']['lead'] ?? '')) ?></p>
   <ol>
     <?php foreach ((array) ($meta['intro']['steps'] ?? []) as $step): ?><li class="mb-1"><?= esc((string) $step) ?></li><?php endforeach ?>
@@ -45,8 +49,9 @@
       <a class="btn btn-outline-secondary btn-lg ms-2" href="<?= esc(site_url('tes'), 'attr') ?>"><?= esc(lang('Instrument.reload')) ?></a>
     <?php endif ?>
   </form>
+  <?php endif ?>
 </div>
 <?= $this->endSection() ?>
 <?= $this->section('scripts') ?>
-<?php if (! $ready && ! $preview): ?><script src="<?= asset_url_versioned('js/instrument/status.js') ?>" defer></script><?php endif ?>
+<?php if (! $ready && ! $preview && empty($missing)): ?><script src="<?= asset_url_versioned('js/instrument/status.js') ?>" defer></script><?php endif ?>
 <?= $this->endSection() ?>

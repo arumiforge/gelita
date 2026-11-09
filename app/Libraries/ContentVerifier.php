@@ -140,6 +140,8 @@ class ContentVerifier
             $findings[] = $this->finding('error', 'Keseluruhan', "Kode soal {$key} dipakai lebih dari satu soal aktif.");
         }
 
+        $findings = [...$findings, ...$this->instrumentFindings($researchReady)];
+
         $placeholder = $this->placeholderFinding($researchReady);
 
         if ($placeholder !== null) {
@@ -209,6 +211,41 @@ class ContentVerifier
         }
 
         return $findings;
+    }
+
+    /**
+     * Test module content (34 §6): an upgraded server has the `instrument_*`
+     * tables but no content until `gelita:instrumen:impor` runs, and `/tes`
+     * then only shows a "not ready" note. A warning, an error when checking
+     * research readiness.
+     *
+     * @return list<array{level: string, scope: string, message: string}>
+     */
+    private function instrumentFindings(bool $researchReady): array
+    {
+        $db = db_connect();
+
+        if (! $db->tableExists('instrument_versions')) {
+            return [];
+        }
+
+        $missing = [];
+
+        foreach (InstrumentImporter::INSTRUMENTS as $instrument) {
+            if ($db->table('instrument_versions')->where('instrument', $instrument)->where('is_active', 1)->countAllResults() === 0) {
+                $missing[] = $instrument;
+            }
+        }
+
+        if ($missing === []) {
+            return [];
+        }
+
+        return [$this->finding(
+            $researchReady ? 'error' : 'warning',
+            'Modul tes',
+            'Isi instrumen belum diimpor (' . implode(', ', $missing) . '): halaman /tes belum bisa dipakai. Jalankan php spark gelita:instrumen:impor.',
+        )];
     }
 
     /** @return array{level: string, scope: string, message: string}|null */

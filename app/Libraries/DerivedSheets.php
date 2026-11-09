@@ -142,7 +142,7 @@ final class DerivedSheets
     /**
      * Wording and dictionary entry of every derived column:
      * [label, type, meaning, anchor in 11, analytics, enum group].
-     * The dictionary status is `usulan` (35 K8) while ResearchDictionary::DRAFT.
+     * The dictionary status is `usulan` (35 K8) while ResearchDictionary::DRAFT, else `baru`.
      *
      * @var array<string, array{0: string, 1: string, 2: string, 3: string, 4: list<int>, 5?: string}>
      */
@@ -172,7 +172,7 @@ final class DerivedSheets
         'item_code'          => ['Kode butir tes', 'code', 'Kode butir tes, tanpa contoh soal.', self::INSTR, []],
         'unit'               => ['Satuan jawaban', 'code', 'Satuan jawaban butir (instrument_responses.unit).', self::INSTR, []],
         'run_id'             => ['No. putaran hitung', 'int', 'Putaran hitung lapis turunan yang menghasilkan baris ini (derived_runs).', self::VERSIONS, []],
-        'dictionary_version' => ['Versi kamus', 'code', 'Versi kamus yang dipakai putaran hitung, mis. kamus-1.1-usulan.', self::VERSIONS, []],
+        'dictionary_version' => ['Versi kamus', 'code', 'Versi kamus yang dipakai putaran hitung, mis. kamus-1.1.', self::VERSIONS, []],
         // turunan_peserta
         'consent_ok'           => ['Izin lengkap', 'bool', '1 = izin orang tua terisi, persetujuan siswa dicentang, dan siswa tidak mundur dengan hapus data. Siswa mundur dengan data tetap = 1, dengan data sampai saat mundur.', self::MARK, []],
         'withdrawn_on'         => ['Tanggal mundur', 'text', 'Tanggal status mundur (data tetap); kosong bila tidak mundur.', self::MARK, []],

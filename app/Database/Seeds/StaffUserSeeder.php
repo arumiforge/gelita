@@ -37,7 +37,6 @@ class StaffUserSeeder extends GelitaSeeder
             'password_hash' => password_hash($password, PASSWORD_DEFAULT),
             'role'          => 'admin',
             'display_name'  => 'Administrator',
-            'school_id'     => null,
             'is_active'     => 1,
         ]);
 

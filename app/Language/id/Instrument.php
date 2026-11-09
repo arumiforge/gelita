@@ -14,6 +14,7 @@ return [
     'barRisk'          => 'Tes akhir · pertanyaan tambahan',
     'researchCode'     => 'Kode penelitian: {0}',
     'introTitle'       => 'Petunjuk',
+    'notReady'         => 'Tesnya belum siap di sini. Beri tahu kakak peneliti, ya. Kamu tidak perlu melakukan apa-apa.',
     'waitStart'        => 'Tunggu sebentar, ya. Kakak peneliti akan memberi tanda kapan mulai.',
     'waitForm'         => 'Kakak peneliti sedang menyiapkan soalmu. Tunggu sebentar, ya.',
     'reload'           => 'Muat ulang',

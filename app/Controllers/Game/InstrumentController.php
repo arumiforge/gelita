@@ -43,11 +43,14 @@ class InstrumentController extends BaseGameController
         $sitting     = $this->testSitting($context);
 
         if ($sitting === null) {
-            $meta  = service('instrumentRepository')->activeVersion('tes')['meta'] ?? [];
-            $ready = $context['preview'] || ($context['started'] && $this->formReady($context));
+            $version = service('instrumentRepository')->activeVersion('tes');
+            // No content imported yet (upgraded server before gelita:instrumen:impor): a note, no dead Mulai
+            $missing = $version === null;
+            $meta    = $version['meta'] ?? [];
+            $ready   = ! $missing && ($context['preview'] || ($context['started'] && $this->formReady($context)));
 
             return $this->page('instrument/start', $this->barFor($context['occasion'], 'test'), [
-                'meta' => $meta, 'ready' => $ready, 'started' => $context['started'], 'preview' => $context['preview'], 'occasion' => $context['occasion'],
+                'meta' => $meta, 'ready' => $ready, 'started' => $context['started'], 'preview' => $context['preview'] && ! $missing, 'occasion' => $context['occasion'], 'missing' => $missing,
             ]);
         }
 
