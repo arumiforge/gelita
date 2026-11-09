@@ -1,18 +1,18 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "ff645774246b23eb4d9acefdd4e38759c91f650744bc9840fe7f9710c7a1e447",
-      "commit": "7f4e349",
+      "source": "87525e7d0b930664466df2556f2b455b875ab9255c03521fdc858d4ee42541f1",
+      "commit": "f73b47c",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-09",
       "pages": 21,
       "landscapeTables": 0
     },
     "01_REVISI_10_ANALITIK.md": {
-      "source": "cc9ca0c14c1517350fdba34b4d71b265fb3db2f2f6548072668729fb2938c0f1",
-      "commit": "ea8094a",
+      "source": "ab309ca1b160fedf361c83811c8bc09680186ec9d0fdac71554f81283f03ed4a",
+      "commit": "f73b47c",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-03",
+      "date": "2026-11-09",
       "pages": 28,
       "landscapeTables": 0
     },
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "f3011e55cecb994c3712490dc38e7161318a0884ef8c5c99db39bea7063206ca",
-      "commit": "7f4e349",
+      "source": "9050160b7a608f932c0d9cea2ee310ae1046578b884fc5c0240e2a118cf4992b",
+      "commit": "f73b47c",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-09",
-      "pages": 76,
+      "pages": 77,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -89,8 +89,8 @@
       "landscapeTables": 0
     },
     "11_KAMUS_DATA.md": {
-      "source": "625d57217bfe3763b1ea4f72687a0aca6ce530cb2bfed5b22259af5371fe37b4",
-      "commit": "2b17f12",
+      "source": "83d0a97e7b02dfd45f2d3fe390496511045142cd9e4a12e95e0855f3e6b3d7c0",
+      "commit": "f73b47c",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-09",
       "pages": 20,
@@ -145,10 +145,10 @@
       "landscapeTables": 0
     },
     "18_MOCKUP_LAYAR_BARU.md": {
-      "source": "5e32fbf6480f42b12b5a01c521de437048e8ea47027f64570b007de3c9fa7c77",
-      "commit": "1e2db61",
+      "source": "eb40fd2d36baab1583de48c86356dc5d122d4ff7e7cb471daadd91a1b9186fdc",
+      "commit": "f73b47c",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-03",
+      "date": "2026-11-09",
       "pages": 8,
       "landscapeTables": 0
     },
@@ -209,10 +209,10 @@
       "landscapeTables": 0
     },
     "26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md": {
-      "source": "58b9ec7fe2eea5cc112fc730a16dfd0442f0971cf4a1d406f1103b964c50faa3",
-      "commit": "f90f7c1",
+      "source": "d8f9fd9fc5a684ee151ee1169c6fbe27bed7c2651858b22d9421a8180c4cff1c",
+      "commit": "f73b47c",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-02",
+      "date": "2026-11-09",
       "pages": 20,
       "landscapeTables": 0
     },
@@ -281,8 +281,8 @@
       "landscapeTables": 0
     },
     "35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md": {
-      "source": "1141f9f00d2e4704b16e67d1f14fba8cef822bdc98a4e8a66de152f826c44577",
-      "commit": "7f4e349",
+      "source": "babd4bdcd056b7a573ff9e3102e68378df56781d862b4a2d65fc6c9986e81fcb",
+      "commit": "f73b47c",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-09",
       "pages": 23,
