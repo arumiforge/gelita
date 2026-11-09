@@ -53,7 +53,9 @@ final class InstrumentModuleMigrationTest extends CIUnitTestCase
         $this->assertContains('updated_at', $this->conn->getFieldNames('instrument_responses'));
         $this->assertTrue($this->conn->fieldExists('test_started_at', 'field_sessions'));
         $this->assertTrue($this->conn->fieldExists('instrument_settings', 'research_studies'));
-        $this->assertFalse($this->conn->fieldExists('test_rapid_guess_ms', 'research_studies'), 'part 7 owns it');
+        // test_rapid_guess_ms is part 7's (migration 004100); since the merge the test schema has it, so check the source
+        $source = (string) file_get_contents(APPPATH . 'Database/Migrations/2026-01-01-004200_CreateInstrumentModule.php');
+        $this->assertDoesNotMatchRegularExpression("/'test_rapid_guess_ms'\s*=>/", $source, 'part 7 owns it');
 
         $this->conn->table('participant_feedback')->insert(['participant_id' => 1, 'rating' => null]);
         $this->assertNull($this->conn->table('participant_feedback')->get()->getRow('rating'), 'rating may be empty (§11.2)');
