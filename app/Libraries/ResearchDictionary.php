@@ -22,7 +22,19 @@ namespace App\Libraries;
  */
 final class ResearchDictionary
 {
-    public const VERSION = 'kamus-1.0';
+    /**
+     * Part 9 (35 §8.1, K8; 11 → Versi dan cara berubah): `kamus-1.1` is a
+     * developer draft, so the system writes `kamus-1.1-usulan` until 11
+     * approves it; then VERSION becomes BASE and DRAFT false. Changing it
+     * makes every derived run stale.
+     */
+    public const VERSION = 'kamus-1.1-usulan';
+
+    /** The dictionary version in 11 this one proposes. */
+    public const BASE = 'kamus-1.1';
+
+    /** True while the version is a proposal: the Kamus Data header says "usulan, belum disetujui". */
+    public const DRAFT = true;
 
     public const DOC = '11_KAMUS_DATA.md';
 
