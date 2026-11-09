@@ -21,11 +21,11 @@
   <?php foreach ($examples as $example): ?>
     <?php if ($example['stimulus'] !== null && ! in_array($example['stimulus']['id'], $shown, true)): ?>
       <?php $shown[] = $example['stimulus']['id'] ?>
-      <?= $this->include('instrument/_stimulus', ['stimulus' => $example['stimulus'], 'lead' => null]) ?>
+      <?= component('instrument/_stimulus', ['stimulus' => $example['stimulus'], 'lead' => null]) ?>
     <?php endif ?>
     <div class="card card-body mb-3">
       <span class="badge text-bg-secondary align-self-start mb-2"><?= esc(lang('Instrument.example')) ?></span>
-      <?= $this->include('instrument/_question', ['item' => $example['item'], 'values' => $values, 'meta' => $meta, 'hint' => true]) ?>
+      <?= component('instrument/_question', ['item' => $example['item'], 'values' => $values, 'meta' => $meta, 'hint' => true]) ?>
     </div>
   <?php endforeach ?>
   <button type="submit" class="btn btn-primary btn-lg"><?= esc(lang('Instrument.startPart', [$partMeta['no']])) ?></button>

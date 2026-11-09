@@ -25,7 +25,7 @@
   <form method="post" action="<?= esc(site_url($action), 'attr') ?>">
     <?= csrf_field() ?>
     <?php foreach ($items as $item): ?>
-      <?= $this->include('instrument/_question', ['item' => $item, 'values' => $values, 'meta' => $meta, 'hint' => false]) ?>
+      <?= component('instrument/_question', ['item' => $item, 'values' => $values, 'meta' => $meta, 'hint' => false]) ?>
     <?php endforeach ?>
     <?php if (! empty($footnote)): ?><p class="small text-body-secondary"><?= esc($footnote) ?></p><?php endif ?>
     <div class="d-flex flex-wrap gap-2">

@@ -30,10 +30,10 @@ $no = (int) $item['position'];
     <?= csrf_field() ?>
     <div class="row g-4">
       <?php if ($stimulus !== null): ?>
-        <div class="col-lg-6"><?= $this->include('instrument/_stimulus', ['stimulus' => $stimulus, 'lead' => $stimulusLead]) ?></div>
+        <div class="col-lg-6"><?= component('instrument/_stimulus', ['stimulus' => $stimulus, 'lead' => $stimulusLead]) ?></div>
       <?php endif ?>
       <div class="<?= $stimulus !== null ? 'col-lg-6' : 'col-12' ?>">
-        <?= $this->include('instrument/_question', ['item' => $item, 'values' => $values, 'meta' => $meta, 'hint' => true]) ?>
+        <?= component('instrument/_question', ['item' => $item, 'values' => $values, 'meta' => $meta, 'hint' => true]) ?>
         <div class="d-flex flex-wrap gap-2">
           <?php if ($no > 1): ?><button type="submit" name="tujuan" value="sebelumnya" class="btn btn-outline-primary btn-lg"><?= esc(lang('Instrument.previous')) ?></button><?php endif ?>
           <?php if ($no < $count): ?>
