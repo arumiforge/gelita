@@ -32,7 +32,11 @@ trait DerivedWorld
             'opens_at' => '2026-11-10 07:30:00', 'closes_at' => '2026-11-10 10:00:00',
         ]);
         $db->table('game_sessions')->where('id', 1)->update(['field_session_id' => (int) $db->insertID(), 'meeting_no' => 2, 'started_at' => '2026-11-10 08:00:00']);
+        // Staff 2: the head researcher who downloads (27 K14)
+        $db->table('staff_users')->insert(['username' => 'ketua_uji', 'password_hash' => 'x', 'role' => 'ketua', 'display_name' => 'Ketua', 'is_active' => 1]);
+        $db->table('staff_users')->insert(['username' => 'peneliti_uji', 'password_hash' => 'x', 'role' => 'peneliti', 'display_name' => 'Peneliti', 'is_active' => 1]);
         Services::resetSingle('derivedData');
+        Services::resetSingle('rawDataService');
         Services::resetSingle('fieldSessions');
 
         return $db;
