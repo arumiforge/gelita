@@ -24,12 +24,14 @@ class RetentionService
     public const HARD_ORDER = [
         // Part 3 (29 §12): typed field sheets; rows per student, imports in a study cleanup
         'field_sheet_rows', 'field_sheet_imports',
-        'game_event_logs', 'audio_usage_events', 'item_tries', 'item_responses', 'challenge_attempts',
+        'game_event_logs', 'audio_usage_events', 'item_tries', 'item_responses',
+        // Part 7 (33 §9, 30 §7.3): attempt segments, before `challenge_attempts`
+        'challenge_attempt_segments',
+        'challenge_attempts',
         'device_logs', 'participant_progress', 'participant_seats', 'field_session_members',
         'participant_feedback', 'game_sessions',
         // Part 4 (30 §7.3): counted one by one although the FK cascades, so the preview and the minutes show them.
-        // Later parts add their own tables here: `challenge_attempt_segments` (part 7, 33 §9, before
-        // `challenge_attempts`), `instrument_responses`, `instrument_parts`, `instrument_blocks`,
+        // Later parts add their own tables here: `instrument_responses`, `instrument_parts`, `instrument_blocks`,
         // `instrument_sittings` (part 8, 34 §11.1) and `derived_*` (part 9, 35 §12), all before `participants`.
         'participant_consents',
         'participants',
@@ -794,6 +796,18 @@ class RetentionService
 
         if (in_array($table, $bySession, true)) {
             return $sessionIds === [] ? null : $db->table($table)->whereIn('session_id', $sessionIds);
+        }
+
+        // Part 7 (33 §9): segments of the scope's attempts, and those written in its sessions (an attempt moved on, K3)
+        if ($table === 'challenge_attempt_segments') {
+            if ($sessionIds === []) {
+                return null;
+            }
+
+            return $db->table($table)->groupStart()
+                ->whereIn('challenge_attempt_id', static fn (BaseBuilder $sub): BaseBuilder => $sub->select('id')->from('challenge_attempts')->whereIn('session_id', $sessionIds))
+                ->orWhereIn('session_id', $sessionIds)
+                ->groupEnd();
         }
 
         if ($table === 'item_responses' || $table === 'item_tries') {

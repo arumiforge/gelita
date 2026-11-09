@@ -97,6 +97,8 @@ $routes->group('api', [
         $routes->post('attempts/(:num)/hints', 'ChallengeApiController::hint/$1');
         $routes->post('attempts/(:num)/complete', 'ChallengeApiController::complete/$1');
         $routes->post('attempts/(:num)/abandon', 'ChallengeApiController::abandon/$1');
+        // Part 7 (33 §8.1, §10, M-04): Cari Objek pictures by the attempt's opaque object token
+        $routes->get('attempts/(:num)/objects/(:segment)', 'ChallengeApiController::objectImage/$1/$2');
 
         $routes->post('events', 'EventApiController::ingest');
         $routes->post('audio-events', 'AudioApiController::ingest');
@@ -227,6 +229,9 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->post('studi', 'StudyController::store');
             $routes->post('studi/(:num)', 'StudyController::update/$1');
         });
+
+        // Part 7 (33 §6, §10): thresholds and the smallest stage of a study (ketua)
+        $routes->post('studi/(:num)/pengaturan', 'StudyController::updateSettings/$1', ['filter' => 'staffCan:studies.manage']);
 
         // Releases and asset packages stay with the admin, under /admin/studi/rilis
         $routes->group('', ['filter' => 'staffCan:releases.manage'], static function ($routes): void {

@@ -68,6 +68,8 @@ trait ResetTables
             'completed'            => 'INTEGER=0',
             'occurred_at'          => 'DATETIME=CURRENT_TIMESTAMP',
             'server_received_at'   => 'DATETIME=CURRENT_TIMESTAMP',
+            // Part 7 (33 §9, K10)
+            'clock_offset_ms'      => 'INTEGER?',
         ],
         'audit_logs' => [
             'id'            => 'pk',
@@ -103,7 +105,21 @@ trait ResetTables
             'created_at'             => 'DATETIME=CURRENT_TIMESTAMP',
             'variant_source'         => 'VARCHAR(10)?',
             'booklet_at_open'        => 'CHAR(2)?',
+            // Part 7 (33 K6)
+            'is_retake'              => 'INTEGER=0',
             '_unique'                => [['session_id', 'challenge_node_id', 'attempt_no']],
+        ],
+        // Part 7 (33 §5.4, §9): one row per stretch of an attempt on the challenge screen
+        'challenge_attempt_segments' => [
+            'id'                   => 'pk',
+            'challenge_attempt_id' => 'INTEGER',
+            'session_id'           => 'INTEGER',
+            'field_session_id'     => 'INTEGER?',
+            'segment_no'           => 'INTEGER=1',
+            'opened_at'            => 'DATETIME',
+            'left_at'              => 'DATETIME?',
+            'left_via'             => 'VARCHAR(30)?',
+            '_unique'              => [['challenge_attempt_id', 'segment_no']],
         ],
         'challenge_items' => [
             'id'                 => 'pk',
@@ -714,6 +730,11 @@ trait ResetTables
             'consent_register_exported_at' => 'DATETIME?',
             'feedback_names_checked_at'    => 'DATETIME?',
             'identities_replaced_at'       => 'DATETIME?',
+            // Part 7 (33 §6, §9; test_rapid_guess_ms: owner, 4 November 2026)
+            'idle_threshold_ms'            => 'INTEGER=180000',
+            'rapid_guess_ms'               => 'INTEGER=3000',
+            'min_stage_px'                 => 'INTEGER=960',
+            'test_rapid_guess_ms'          => 'INTEGER=3000',
             '_unique'        => [['code']],
         ],
         'scenario_options' => [

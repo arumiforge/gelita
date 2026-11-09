@@ -33,11 +33,11 @@ use Config\Database;
 class SystemResetService
 {
     /**
-     * Migration that must have run: the last of code wave E (part 6, 32 §11).
-     * Checked by its row in the history too, since 003900/003910 were
-     * numbered before 003600–003800 (part 3, 29 §12).
+     * Migration that must have run. Checked by its row in the history too,
+     * since 003900/003910 were numbered before 003600–003800 (part 3, 29 §12).
      */
-    public const REQUIRED_MIGRATION = '2026-01-01-004000';
+    // Part 7 (33 §9): research mode data; the coordinator sets the final value of wave F
+    public const REQUIRED_MIGRATION = '2026-01-01-004100';
 
     /** Kata yang wajib diketik bila tanpa --ya. */
     public const CONFIRM_WORD = 'RESET-KELAS5';
@@ -55,6 +55,8 @@ class SystemResetService
         'field_sheet_imports', 'field_sheet_rows',
         // Part 4 (30 §15)
         'participant_consents',
+        // Part 7 (33 §9)
+        'challenge_attempt_segments',
     ];
 
     public const GROUP_B = ['hints', 'item_error_codes', 'scenario_options', 'post_parts', 'post_scenes', 'challenge_items', 'reading_passages', 'challenge_nodes'];
@@ -67,6 +69,7 @@ class SystemResetService
     /** Urutan pengosongan mengikuti FK: anak dulu. */
     public const CLEAR_ORDER = [
         'field_sheet_rows', 'field_sheet_imports',   // part 3 (29 §12)
+        'challenge_attempt_segments',                // part 7 (33 §9): before challenge_attempts
         'item_tries', 'item_responses', 'challenge_attempts', 'audio_usage_events', 'game_event_logs',
         // Part 4 (30 §15): before participants
         'participant_consents',

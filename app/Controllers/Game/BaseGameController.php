@@ -71,6 +71,8 @@ abstract class BaseGameController extends BaseController
             'participant' => $this->participant()->toSafeArray(),
             'progress'    => $this->progressSummary($session),
             'lantern'     => $this->lanternMap($session),
+            // Part 7 (33 K1, §7.1): views hide the clock and lock retakes and Kenali from this one flag
+            'researchMode' => $this->context()->researchMode($session),
         ];
     }
 

@@ -141,10 +141,13 @@ $nextAssets = ! empty($levelCompleted) && isset($nextRegion['curtain'])
 
     <div class="result-summary">
       <dl class="result-stats">
+        <?php // Part 7 (33 §7.1): no time card in research mode; ✓/✗ and tries stay ?>
+        <?php if (empty($researchMode)): ?>
         <div class="result-stat">
           <dt><?= round_icon('clock', 'result-stat-art', 'clock') ?> <?= esc(lang('Game.timeSpent')) ?></dt>
           <dd class="num"><?= esc(ms_to_human((int) $attempt->duration_ms)) ?></dd>
         </div>
+        <?php endif ?>
         <?php if (($wrongTaps ?? null) !== null): ?>
           <div class="result-stat">
             <dt><?= round_icon('wrong', 'result-stat-art', 'cross') ?> <?= esc(lang('Game.wrongTaps')) ?></dt>

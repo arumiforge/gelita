@@ -112,6 +112,88 @@ class StudyController extends BaseAdminController
         return $this->done('admin/studi', 'Perubahan penelitian sudah disimpan.');
     }
 
+    // ------------------------------------------------ part 7 (33 §6, §10)
+
+    /** Study settings => [form field, unit factor to ms/px, min, max, range message]. */
+    public const SETTINGS = [
+        'idle_threshold_ms'   => ['idle_threshold_s', 1000, 30000, 1800000, 'Admin.studyIdleRange'],
+        'rapid_guess_ms'      => ['rapid_guess_s', 1000, 500, 10000, 'Admin.studyRapidRange'],
+        'test_rapid_guess_ms' => ['test_rapid_guess_s', 1000, 500, 10000, 'Admin.studyRapidRange'],
+        'min_stage_px'        => ['min_stage_px', 1, 640, 1280, 'Admin.studyMinStageRange'],
+    ];
+
+    /** Thresholds that part 9's *Kunci ambang* (35 §5, `thresholds_locked_at`) freezes. */
+    public const LOCKED_BY_THRESHOLDS = ['idle_threshold_ms', 'rapid_guess_ms', 'test_rapid_guess_ms'];
+
+    /**
+     * POST /admin/studi/{id}/pengaturan (ketua, `studies.manage`): the idle
+     * and rapid-guess thresholds (shown in seconds) and the smallest stage
+     * width (pixels). A field left out keeps its value. The idle threshold
+     * may never be below the logging limit `inputIdleLogMs`. Once the
+     * thresholds are locked (`thresholds_locked_at`, part 9) only
+     * `min_stage_px` may change. Audit `study_settings_changed` with the old
+     * and new values of what changed.
+     */
+    public function updateSettings(int $studyId): RedirectResponse
+    {
+        $studies = model(ResearchStudyModel::class);
+        $row     = $studies->find($studyId);
+
+        if ($row === null) {
+            return $this->back('admin/studi', 'Penelitian tidak ditemukan.');
+        }
+
+        $changes = [];
+
+        foreach (self::SETTINGS as $column => [$field, $factor, $min, $max, $range]) {
+            $raw = trim((string) $this->request->getPost($field));
+
+            if ($raw === '') {
+                continue;
+            }
+
+            $number = str_replace(',', '.', $raw);
+
+            if (! is_numeric($number)) {
+                return $this->back('admin/studi', lang($range));
+            }
+
+            $value = (int) round((float) $number * $factor);
+
+            if ($column === 'idle_threshold_ms' && ($value < $min || $value < (int) config('Gelita')->inputIdleLogMs)) {
+                return $this->back('admin/studi', lang('Admin.studyIdleTooLow'));
+            }
+
+            if ($value < $min || $value > $max) {
+                return $this->back('admin/studi', lang($range));
+            }
+
+            if ($value !== (int) ($row[$column] ?? 0)) {
+                $changes[$column] = $value;
+            }
+        }
+
+        if (! empty($row['thresholds_locked_at']) && array_intersect(array_keys($changes), self::LOCKED_BY_THRESHOLDS) !== []) {
+            return $this->back('admin/studi', lang('Admin.studyThresholdsLocked'));
+        }
+
+        if ($changes === []) {
+            return $this->done('admin/studi', lang('Admin.studySettingsUnchanged'));
+        }
+
+        if (! $studies->update($studyId, $changes)) {
+            return $this->back('admin/studi', 'Pengaturan belum dapat disimpan: ' . $this->modelErrors($studies));
+        }
+
+        $this->audit('study_settings_changed', 'research_study', $studyId, [
+            'from' => array_map(static fn (string $column): int => (int) ($row[$column] ?? 0), array_combine(array_keys($changes), array_keys($changes))),
+            'to'   => $changes,
+        ]);
+        service('fieldSessions')->forget();
+
+        return $this->done('admin/studi', lang('Admin.studySettingsSaved'));
+    }
+
     // ---------------------------------------------------------------- rilis
 
     public function releases(): string

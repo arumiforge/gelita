@@ -339,6 +339,11 @@ class Gelita extends BaseConfig
      * @var array{intervalMs: int, maxEvents: int}
      */
     public array $eventFlush = ['intervalMs' => 30000, 'maxEvents' => 40];
+
+    // Part 7 (33 §5.2, K4): input pauses of this length or longer are logged as `input_idle`.
+    // A logging limit, not an analysis threshold: it stays below every study's idle_threshold_ms
+    // (the study settings page refuses a lower threshold). `.env`: gelita.inputIdleLogMs
+    public int $inputIdleLogMs = 20000;
     public int $exportRetentionDays = 7;
     public int $sessionIdleMinutes  = 45;   // lewat ini → status 'paused'
 

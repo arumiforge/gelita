@@ -61,12 +61,20 @@ if (document.body.dataset.music) Sfx.music(document.body.dataset.music);
 
 // This session's unacknowledged events (offline, crash, previous page's
 // beacon) leave with this page's first batch; back online they go at once.
+// Part 7 (33 §8.2, K11): queued rows of sessions that did not come back for 14 days are let go
+import('./core/storage.js').then((m) => m.Storage.pruneStale(CONFIG.sessionTag)).catch(() => {});
+
 if (CONFIG.sessionTag) {
   restoreQueued();
   window.addEventListener('online', () => resendQueued());
   // Pindah tab/aplikasi (page_hidden/visible)
   initVisibilityTracking();
+  // Part 7 (33 §5.2): input pauses of 20 s or more (`input_idle`)
+  import('./core/activity.js').then((m) => m.initActivity()).catch(() => {});
 }
+
+// Part 7 (33 §7.2): small-screen gate in research mode, a warning otherwise
+import('./game/screen-check.js').then((m) => m.initScreenCheck()).catch(() => {});
 
 initHud();
 initRotateGate();

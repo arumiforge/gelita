@@ -397,6 +397,8 @@ return [
         'overlay_opened'       => 'Membuka jendela',
         'page_hidden'          => 'Meninggalkan layar',
         'page_visible'         => 'Kembali ke layar',
+        // Part 7 (33 §5.2)
+        'input_idle'           => 'Jeda tanpa sentuhan (20 detik atau lebih)',
         'viewport_changed'     => 'Ukuran layar berubah',
         'hint_opened'          => 'Membuka petunjuk',
         'audio_play'           => 'Memutar suara',
@@ -466,6 +468,8 @@ return [
         'test_account_created'           => 'Membuat akun uji',
         'test_account_reset'             => 'Mengatur ulang akun uji',
         'small_screen_refused'           => 'Menolak perangkat layar kecil',
+        // Part 7 (33 §6)
+        'study_settings_changed'         => 'Mengubah pengaturan pengambilan data',
     ],
 
     // Research revision part 2: field sessions (28)
@@ -794,4 +798,24 @@ return [
     'narration_tone_check'  => 'Nada datar dan sama untuk setiap situasi',
     'narration_d1_refused'  => 'Bacaan dan pernyataan tidak dibacakan.',
     'event_scenario_failed' => 'Skenario ditutup setelah kesempatan habis',
+
+    // Part 7 (33 §6, §11): study settings for data collection
+    'studySettingsTitle'      => 'Pengaturan pengambilan data',
+    'studySettingsLead'       => 'Batas ini dipakai saat menghitung data turunan. Mengubahnya tidak mengubah data yang sudah terekam.',
+    'studyIdleThreshold'      => 'Batas jeda tanpa sentuhan (detik)',
+    'studyIdleThresholdHelp'  => 'Jeda yang lebih lama dari batas ini dipotong dari waktu aktif. Sementara 180 detik, ditetapkan ulang setelah uji coba.',
+    'studyRapidGuess'         => 'Batas tebakan cepat (detik)',
+    'studyRapidGuessHelp'     => 'Jawaban yang lebih cepat dari batas ini ditandai sebagai tebakan cepat. Sementara 3 detik.',
+    'studyTestRapidGuess'     => 'Batas tebakan cepat di soal tes (detik)',
+    'studyTestRapidGuessHelp' => 'Satu batas untuk semua soal tes awal dan tes akhir. Sementara 3 detik.',
+    'studyMinStage'           => 'Lebar layar permainan terkecil (piksel)',
+    'studyMinStageHelp'       => 'Perangkat dengan layar permainan lebih kecil dari ini tidak bisa masuk sesi penelitian.',
+    'studyIdleTooLow'         => 'Batas jeda minimal 30 detik.',
+    'studyIdleRange'          => 'Batas jeda diisi 30 sampai 1.800 detik.',
+    'studyRapidRange'         => 'Batas tebakan cepat diisi 0,5 sampai 10 detik.',
+    'studyMinStageRange'      => 'Lebar layar permainan diisi 640 sampai 1.280 piksel.',
+    'studyThresholdsLocked'   => 'Batas jeda dan batas tebakan cepat sudah dikunci untuk analisis, jadi tidak bisa diubah lagi. Lebar layar tetap bisa diubah.',
+    'studySettingsSaved'      => 'Pengaturan pengambilan data sudah disimpan.',
+    'studySettingsUnchanged'  => 'Tidak ada pengaturan yang berubah.',
+    'studySettingsSave'       => 'Simpan pengaturan',
 ];

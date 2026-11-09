@@ -117,11 +117,19 @@ final class LibraryLockTest extends CIUnitTestCase
         Services::injectMock('gameContext', $context);
 
         Services::resetSingle('renderer');
+
+        // No database here: field mode off without reading research_studies (part 7 tests leave a fresh service behind)
+        Services::injectMock('fieldSessions', new class () extends App\Services\FieldSessionService {
+            public function fieldModeStudy(): ?array
+            {
+                return null;
+            }
+        });
     }
 
     protected function tearDown(): void
     {
-        foreach (['scoringService', 'contentRepository', 'eventService', 'gameContext', 'renderer'] as $name) {
+        foreach (['scoringService', 'contentRepository', 'eventService', 'gameContext', 'renderer', 'fieldSessions'] as $name) {
             Services::resetSingle($name);
         }
 

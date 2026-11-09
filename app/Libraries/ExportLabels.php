@@ -150,7 +150,9 @@ final class ExportLabels
         'pengerjaan' => [
             'variant_source'      => ['Asal variasi', 'code', 'booklet = dari buklet siswa (pengerjaan pertama dalam mode penelitian), random = acak, retake = pengerjaan ulang.'],
             'booklet_at_open'     => ['Buklet saat dibuka', 'code', 'Buklet siswa (B1–B4) saat pengerjaan dibuka; kosong di luar mode penelitian.'],
-            'attempt_no'          => ['Pengerjaan ke-', 'int', 'Pengerjaan ke-n tantangan ini dalam sesi.'],
+            // Part 7 (33 K6)
+            'is_retake'           => ['Pengerjaan ulang', 'bool', '1 = siswa sudah pernah menuntaskan tantangan ini saat pengerjaan dibuat. Pengerjaan ulang tetap memberi bintang, tetapi tidak dipakai sebagai pengerjaan pertama.'],
+            'attempt_no'          => ['Pengerjaan ke-', 'int', 'Pengerjaan ke-n tantangan ini oleh siswa (lintas sesi sejak bagian 7).'],
             'status'              => ['Status', 'enum', 'Status pengerjaan.', 'attemptStatus'],
             'completion_reason'   => ['Alasan selesai', 'enum', 'Diisi saat pengerjaan selesai.', 'completion'],
             'scorable_items'      => ['Soal dinilai', 'int', 'Jumlah soal yang dinilai.'],

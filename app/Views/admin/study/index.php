@@ -187,6 +187,7 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $r
       <p><a class="btn btn-sm btn-quiet" href="<?= base_url('admin/studi/' . $sid . '/penutupan') ?>"><?= esc(lang('Admin.closureTitle')) ?></a></p>
     <?php endif ?>
   </form>
+  <?= view('admin/study/_settings', ['study' => $study]) ?>
 <?php endforeach ?>
 
 <?php if (staff_can('studies.manage')): ?>

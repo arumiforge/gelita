@@ -35,6 +35,7 @@ final class EventCatalog
         // screens and reading
         'screen_viewed', 'overlay_opened', 'library_opened', 'library_page_viewed', 'reading_progress',
         'page_hidden', 'page_visible',
+        'input_idle',   // part 7 (33 §5.2, K4): one per input pause of 20 s or more, sent by the client
         // other
         'locale_changed', 'feedback_submitted',
     ];
@@ -56,6 +57,7 @@ final class EventCatalog
     public const NAVIGATION = [
         'screen_viewed', 'overlay_opened', 'dialogue_completed', 'passage_reopened', 'library_opened',
         'library_page_viewed', 'locale_changed', 'page_hidden', 'page_visible', 'reading_progress',
+        'input_idle',   // part 7 (33 §5.2): read with page_hidden/page_visible for active time (Analitik 5)
     ];
 
     /** Research events of the `selesai` sheet. */
