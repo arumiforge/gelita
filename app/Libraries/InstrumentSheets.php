@@ -47,6 +47,8 @@ final class InstrumentSheets
             'error_codes' => 'instrument_responses.error_codes', 'not_reached' => 'instrument_responses.not_reached',
             'time_on_item' => 'instrument_responses.time_on_item_ms', 'answer_changes' => 'instrument_responses.answer_changes',
             'instrument_version' => 'instrument_versions.version',
+            // Part 9 (35 §6.8, §19 no. 9): from derived_test_responses of the study's current run
+            'rapid_guess' => null,
         ],
         'tes_bagian' => [
             'participant_code' => 'participants.participant_code', 'occasion' => 'instrument_sittings.occasion', 'part' => 'instrument_parts.part',
@@ -144,7 +146,11 @@ final class InstrumentSheets
                 ->select('instrument_responses.id AS _key, instrument_sittings.occasion, instrument_sittings.form, instrument_items.code AS item_code')
                 ->select('instrument_responses.response, instrument_responses.score, instrument_responses.error_codes, instrument_responses.not_reached')
                 ->select('instrument_responses.time_on_item_ms AS time_on_item, instrument_responses.answer_changes')
-                ->where('instrument_sittings.kind', 'test')->where('instrument_items.part !=', 'ct'),
+                ->where('instrument_sittings.kind', 'test')->where('instrument_items.part !=', 'ct')
+                // Part 9 (35 §6.8): rapid_guess of the current derived run (empty without one)
+                ->join('research_studies', 'research_studies.id = instrument_sittings.study_id', 'left')
+                ->join('derived_test_responses', 'derived_test_responses.instrument_response_id = instrument_responses.id AND derived_test_responses.run_id = research_studies.derived_run_id', 'left')
+                ->select('derived_test_responses.rapid_guess'),
             'tes_bagian' => $this->db->table('instrument_parts')
                 ->join('instrument_sittings', 'instrument_sittings.id = instrument_parts.sitting_id')
                 ->join('instrument_blocks', 'instrument_blocks.id = instrument_parts.block_id', 'left')
