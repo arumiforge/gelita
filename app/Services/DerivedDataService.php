@@ -550,6 +550,7 @@ class DerivedDataService
             'seats'          => $seats,
             'sittings'       => $this->sittings($studyId, $participantId, $content),
             'questionnaireItems' => $content['questionnaire'],
+            'asOf'           => Clock::ms(date('Y-m-d H:i:s')),
         ]);
     }
 

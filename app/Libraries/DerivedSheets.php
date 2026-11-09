@@ -215,7 +215,7 @@ final class DerivedSheets
         'sikap_sk4'   => ['Skor SK4 Bangga', 'text', 'Rata-rata tiga butir SK4; kosong bila satu tidak dijawab.', self::INSTR, []],
         'sikap_n_answered'    => ['Butir sikap dijawab', 'int', 'Banyak butir skala sikap yang dijawab (0–12).', self::INSTR, []],
         'sikap_flag_straight' => ['Jawaban sikap seragam', 'bool', '1 bila ke-12 jawaban mentah sama.', self::INSTR, []],
-        'sikap_missing_reason' => ['Alasan skala kosong', 'code', 'absen (tidak hadir di P5 dan susulannya) atau belum_tuntas; tanpa_izin hanya diisi di analisis dari L7.', self::INSTR, []],
+        'sikap_missing_reason' => ['Alasan skala kosong', 'code', 'absen (tidak hadir di P5 dan susulannya) atau belum_tuntas; kosong bila skala terisi atau P5 siswa belum dibuka saat putaran hitung; tanpa_izin hanya diisi di analisis dari L7.', self::INSTR, []],
         // turunan_sesi
         'attended'          => ['Hadir', 'bool', '1 bila siswa punya sesi bermain di sesi lapangan ini.', self::PEOPLE, [5]],
         'session_total_ms'  => ['Waktu total sesi (mdtk)', 'ms', 'Jumlah semua sesi bermain siswa di sesi lapangan ini.', self::A5, [5]],

@@ -29,6 +29,7 @@ namespace App\Libraries\Derived;
  * - sittings: [id, occasion, kind, started_at, submitted_at, field_session_id, parts (part => [raw_score, submitted_at, closed_at]),
  *   blocks (block => closed_reason), responses: [id, unit, item_code, response, not_reached, last_view_ms, first_shown_at, after_stimulus]]
  * - questionnaireItems: unit => item code (ang-02 …)
+ * - asOf: run time (ms)
  */
 final class RunInput
 {
@@ -63,6 +64,8 @@ final class RunInput
     public array $seats       = [];
     public array $sittings    = [];
     public array $questionnaireItems = [];
+    /** Run time in ms (Clock::ms()); "held" for meetings is judged against it (owner, 9 November 2026). Null = no meeting counts as held unless attended. */
+    public ?int $asOf = null;
 
     /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self

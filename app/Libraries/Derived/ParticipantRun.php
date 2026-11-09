@@ -794,6 +794,13 @@ final class ParticipantRun
             $p5 = $p5 || (int) ($in->fieldSessions[(int) ($session['field_session_id'] ?? 0)]['meeting_no'] ?? 0) === 5;
         }
 
+        // Owner, 9 November 2026: `absen` only once a P5 meeting of the student (main or make-up) has opened by the run time; before that empty
+        $p5Held = $p5;
+
+        foreach ($in->fieldSessions as $fs) {
+            $p5Held = $p5Held || ((int) $fs['meeting_no'] === 5 && $in->asOf !== null && $fs['opens_at'] !== null && (int) $fs['opens_at'] <= $in->asOf);
+        }
+
         return [
             'consent_ok'                  => $consent,
             'withdrawn_on'                => $cut['withdrawn_on'],
@@ -810,6 +817,6 @@ final class ParticipantRun
         ] + ParticipantCalculator::questionnaire($questionnaire, $in->questionnaireItems)
           + ParticipantCalculator::tests($tests)
           + ParticipantCalculator::attitude($attitude)
-          + ['sikap_missing_reason' => $attitude !== null ? null : ($p5 ? 'belum_tuntas' : 'absen')];
+          + ['sikap_missing_reason' => $attitude !== null ? null : ($p5 ? 'belum_tuntas' : ($p5Held ? 'absen' : null))];
     }
 }
