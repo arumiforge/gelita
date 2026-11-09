@@ -28,6 +28,15 @@ class RawDataController extends BaseAdminController
         'bantuan'    => 'Bantuan',
         // Part 3 (29 K1, §5.6): raw events for ketua; device data moved to the admin tech log
         'event'      => 'Event mentah',
+        // Part 9 (35 §10.4): the derived sheets of the current run
+        'turunan_peserta'    => 'Turunan: peserta',
+        'turunan_sesi'       => 'Turunan: sesi',
+        'turunan_tantangan'  => 'Turunan: tantangan',
+        'turunan_pengerjaan' => 'Turunan: pengerjaan',
+        'turunan_butir'      => 'Turunan: butir',
+        'turunan_percobaan'  => 'Turunan: percobaan',
+        'turunan_pengamatan' => 'Turunan: pengamatan',
+        'turunan_tes'        => 'Turunan: tes',
     ];
 
     /** Filter tabel data mentah (§8.3). */
@@ -70,6 +79,8 @@ class RawDataController extends BaseAdminController
             'filters'    => $filters,
             'readable'   => $this->readableAnswers(),
             'breadcrumb' => [self::TABS[$dimension] => null],
+            // Part 9 (35 §10.4): the run status above a derived tab, for the running field-mode study
+            'derivedStudy' => \App\Libraries\DerivedSheets::has($dimension) ? model(\App\Models\ResearchStudyModel::class)->fieldModeStudy() : null,
         ]);
     }
 }

@@ -337,4 +337,10 @@ class Services extends BaseService
     {
         return $getShared ? static::getSharedInstance('instrumentGate') : new \App\Services\InstrumentGate();
     }
+
+    // Part 9 (35 §12): the derived data layer
+    public static function derivedData(bool $getShared = true): \App\Services\DerivedDataService
+    {
+        return $getShared ? static::getSharedInstance('derivedData') : new \App\Services\DerivedDataService();
+    }
 }

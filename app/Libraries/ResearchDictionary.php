@@ -22,7 +22,19 @@ namespace App\Libraries;
  */
 final class ResearchDictionary
 {
-    public const VERSION = 'kamus-1.0';
+    /**
+     * Part 9 (35 §8.1, K8; 11 → Versi dan cara berubah): `kamus-1.1` is a
+     * developer draft, so the system writes `kamus-1.1-usulan` until 11
+     * approves it; then VERSION becomes BASE and DRAFT false. Changing it
+     * makes every derived run stale.
+     */
+    public const VERSION = 'kamus-1.1-usulan';
+
+    /** The dictionary version in 11 this one proposes. */
+    public const BASE = 'kamus-1.1';
+
+    /** True while the version is a proposal: the Kamus Data header says "usulan, belum disetujui". */
+    public const DRAFT = true;
 
     public const DOC = '11_KAMUS_DATA.md';
 
@@ -151,6 +163,8 @@ final class ResearchDictionary
         'tes_jawaban' => [self::INSTRUMENTS, [], [
             'participant_code' => 'ada', 'occasion' => 'baru', 'form' => 'baru', 'item_code' => 'baru', 'response' => 'baru', 'score' => 'baru',
             'error_codes' => 'baru', 'not_reached' => 'baru', 'time_on_item' => 'baru', 'answer_changes' => 'baru', 'instrument_version' => 'baru',
+            // Part 9 (35 §6.8): from derived_test_responses
+            'rapid_guess' => ['usulan', 'rapid_guess', self::INSTRUMENTS, [6]],
         ]],
         'tes_bagian' => [self::INSTRUMENTS, [], [
             'participant_code' => 'ada', 'occasion' => 'baru', 'part' => 'baru', 'block' => 'baru', 'started_at' => 'baru', 'submitted_at' => 'baru',
@@ -194,7 +208,7 @@ final class ResearchDictionary
     /** @return list<string> sheets with entries, field sheets included */
     public static function sheets(): array
     {
-        return [...array_keys(self::SHEETS), ...FieldSheetSpec::imported()];
+        return [...array_keys(self::SHEETS), ...FieldSheetSpec::imported(), ...array_keys(DerivedSheets::TABLES)];   // part 9: turunan_*
     }
 
     /**
@@ -204,6 +218,11 @@ final class ResearchDictionary
      */
     public static function entry(string $sheet, string $column): ?array
     {
+        // Part 9 (35 §8.2, §10.2): derived sheets and `after_withdrawal`, status `usulan` while DRAFT (K8)
+        if (($derived = self::derivedEntry($sheet, $column)) !== null || DerivedSheets::has($sheet)) {
+            return $derived;
+        }
+
         if (! isset(self::SHEETS[$sheet])) {
             return self::fieldEntry($sheet, $column);
         }
@@ -225,8 +244,13 @@ final class ResearchDictionary
     /** @return list<string> columns with an entry in one sheet */
     public static function columns(string $sheet): array
     {
+        // Part 9 (35 §10)
+        if (DerivedSheets::has($sheet)) {
+            return array_keys(DerivedSheets::COLUMNS[$sheet]);
+        }
+
         if (isset(self::SHEETS[$sheet])) {
-            return array_keys(self::SHEETS[$sheet][2]);
+            return [...array_keys(self::SHEETS[$sheet][2]), ...(isset(DerivedSheets::AFTER_WITHDRAWAL[$sheet]) ? ['after_withdrawal'] : [])];
         }
 
         return FieldSheetSpec::has($sheet) ? ['field_session_code', 'sheet_row', ...array_keys(FieldSheetSpec::columns($sheet))] : [];
@@ -235,7 +259,12 @@ final class ResearchDictionary
     /** @return list<string> every anchor used */
     public static function refs(): array
     {
-        $refs = [self::FIELD];
+        $refs = [self::FIELD, self::KEYS];
+
+        // Part 9 (35 §10.2)
+        foreach (DerivedSheets::META as $meta) {
+            $refs[] = $meta[3];
+        }
 
         foreach (self::SHEETS as [$ref, , $columns]) {
             $refs[] = $ref;
@@ -248,6 +277,29 @@ final class ResearchDictionary
         }
 
         return array_values(array_unique($refs));
+    }
+
+    /**
+     * Part 9: an entry of a derived-sheet column (DerivedSheets::META) or of
+     * `after_withdrawal` on a raw sheet (11 → Kunci penggabungan, 1.1).
+     *
+     * @return array{kamus: string, analytics: list<int>, ref: string, status: string}|null
+     */
+    private static function derivedEntry(string $sheet, string $column): ?array
+    {
+        $status = self::DRAFT ? 'usulan' : 'baru';
+
+        if ($column === 'after_withdrawal' && isset(DerivedSheets::AFTER_WITHDRAWAL[$sheet])) {
+            return ['kamus' => 'after_withdrawal', 'analytics' => [], 'ref' => self::KEYS, 'status' => $status];
+        }
+
+        if (! DerivedSheets::has($sheet) || ! isset(DerivedSheets::COLUMNS[$sheet][$column], DerivedSheets::META[$column])) {
+            return null;
+        }
+
+        $meta = DerivedSheets::META[$column];
+
+        return ['kamus' => $column, 'analytics' => $meta[4], 'ref' => $meta[3], 'status' => $status];
     }
 
     /**

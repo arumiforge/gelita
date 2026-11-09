@@ -194,6 +194,43 @@ class StudyController extends BaseAdminController
         return $this->done('admin/studi', lang('Admin.studySettingsSaved'));
     }
 
+    // ------------------------------------------------ part 9 (35 §5, §13)
+
+    /**
+     * POST /admin/studi/{id}/ambang/kunci (ketua, `studies.manage`): the G4
+     * lock of the idle and rapid-guess thresholds. Fills
+     * `thresholds_locked_at` once (conditional UPDATE on the empty column);
+     * audit `study_thresholds_locked` with the values locked. Only for
+     * field-mode studies; unlocking is the command `gelita:turunan:ambang --buka`.
+     */
+    public function lockThresholds(int $studyId): RedirectResponse
+    {
+        $row = model(ResearchStudyModel::class)->find($studyId);
+
+        if ($row === null) {
+            return $this->back('admin/studi', 'Penelitian tidak ditemukan.');
+        }
+
+        if ((int) $row['field_mode'] !== 1) {
+            return $this->back('admin/studi', lang('Admin.studyThresholdsLockOff'));
+        }
+
+        $db = db_connect();
+        $db->table('research_studies')->where('id', $studyId)->where('thresholds_locked_at', null)->update(['thresholds_locked_at' => date('Y-m-d H:i:s')]);
+
+        if ($db->affectedRows() !== 1) {
+            return $this->back('admin/studi', lang('Admin.studyThresholdsLocked'));
+        }
+
+        $this->audit('study_thresholds_locked', 'research_study', $studyId, [
+            'idle_threshold_ms'   => (int) $row['idle_threshold_ms'],
+            'rapid_guess_ms'      => (int) $row['rapid_guess_ms'],
+            'test_rapid_guess_ms' => (int) $row['test_rapid_guess_ms'],
+        ]);
+
+        return $this->done('admin/studi', lang('Admin.studyThresholdsLockDone'));
+    }
+
     // ---------------------------------------------------------------- rilis
 
     public function releases(): string

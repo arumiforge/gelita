@@ -14,7 +14,7 @@ final class RouteWiringTest extends CIUnitTestCase
 {
     private const CONTROLLER_COUNT = [
         'Game'  => 14 + 4,  // Part 8 (34 §12): + Instrument, Questionnaire, RiskItems, Attitude. 13 controller (FieldTokenController: revision 10, part 2) + BaseGameController (AppController: manifest, display plan A3; PackageController: asset package Stage 3)
-        'Admin' => 26 + 1,  // Part 8 (34 §12): + FieldTestController. 25 controller (FieldSessionController, MonitoringController: revision 10, part 2; TechLog, FieldSheet: part 3; Consent, DataRequest, RiskFollowUp, ParticipantCopy, StudyClosure: part 4) + BaseAdminController (PackageController: asset package Stage 6)
+        'Admin' => 26 + 1 + 1,  // Part 9 (35 §13): + DerivedDataController. Part 8 (34 §12): + FieldTestController. 25 controller (FieldSessionController, MonitoringController: revision 10, part 2; TechLog, FieldSheet: part 3; Consent, DataRequest, RiskFollowUp, ParticipantCopy, StudyClosure: part 4) + BaseAdminController (PackageController: asset package Stage 6)
         'Api'   => 11 + 1,  // Part 8 (34 §12): + InstrumentController. 10 controller + BaseApiController (PackageApiController: asset package Stage 1)
     ];
 
@@ -78,6 +78,9 @@ final class RouteWiringTest extends CIUnitTestCase
             'admin/studi/rilis/paket/izin-daring'           => 'Admin\PackageController::saveOnlineLab',
             'admin/studi/rilis/paket/periksa'               => 'Admin\PackageController::verify',
             'admin/studi/rilis/([0-9]+)/aktifkan'           => 'Admin\StudyController::activateRelease/$1',
+            // Part 9 (35 §13)
+            'admin/studi/([0-9]+)/ambang/kunci'             => 'Admin\StudyController::lockThresholds/$1',
+            'admin/studi/([0-9]+)/hitung-ulang'             => 'Admin\DerivedDataController::recompute/$1',
         ],
     ];
 
@@ -256,6 +259,12 @@ final class RouteWiringTest extends CIUnitTestCase
         $routes->setHTTPVerb('POST');
         $this->assertSame(['staffAuth', 'staffCan:studies.manage'], $routes->getFiltersForRoute('admin/studi'));
         $this->assertSame(['staffAuth', 'staffCan:participants.reset_by_id'], $routes->getFiltersForRoute('admin/peserta/([0-9]+)/reset-sandi'));
+
+        // Part 9 (35 §11, §13): no new capability
+        $this->assertSame(['staffAuth', 'staffCan:studies.manage'], $routes->getFiltersForRoute('admin/studi/([0-9]+)/ambang/kunci'));
+        $this->assertSame(['staffAuth', 'staffCan:research.export'], $routes->getFiltersForRoute('admin/studi/([0-9]+)/hitung-ulang'));
+        $routes->setHTTPVerb('GET');
+        $this->assertSame(['staffAuth', 'staffCan:research.export'], $routes->getFiltersForRoute('admin/studi/([0-9]+)/hitung-ulang/status'));
     }
 
     /**

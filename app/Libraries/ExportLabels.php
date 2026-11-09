@@ -83,6 +83,8 @@ final class ExportLabels
         'variant'               => ['Variasi (kamus)', 'code', 'Nama 11 untuk variant_group: a, b, x (dipakai semua buklet), atau c–k (Susun Gambar).'],
         'error_code'            => ['Kode kesalahan', 'code', 'Kode kesalahan dari bank soal, diturunkan server untuk percobaan salah.'],
         'sheet_row'             => ['Baris ke-', 'int', 'Nomor baris di lembar yang diunggah.'],
+        // Part 9 (35 §7, §10; 29 §7.3)
+        'after_withdrawal'      => ['Sesudah mundur', 'bool', '1 = data ini sesudah saat mundur siswa (mundur dengan data tetap); tidak masuk lembar turunan. Data mentah tidak diubah.'],
     ];
 
     /**
@@ -305,6 +307,8 @@ final class ExportLabels
             'time_on_item'       => ['Waktu tampil (mdtk)', 'ms', 'Jumlah waktu butir tampil (jam server), dibatasi batas waktu blok.'],
             'answer_changes'     => ['Ganti jawaban', 'int', 'Berapa kali jawaban yang sudah tersimpan diganti.'],
             'instrument_version' => ['Versi isi', 'code', 'Versi berkas isi instrumen, mis. tes-0.1.'],
+            // Part 9 (35 §6.8)
+            'rapid_guess'        => ['Tebakan cepat', 'bool', '1 bila waktu tampil terakhir sampai jawaban dikirim di bawah ambang tebakan cepat tes studi; kosong untuk jawaban kosong, butir tidak sampai, butir pertama sesudah bacaan, atau tanpa putaran hitung.'],
         ],
         'tes_bagian' => [
             'occasion'        => ['Kesempatan', 'code', 'pre = tes awal (P1), post = tes akhir (P5).'],
@@ -452,11 +456,20 @@ final class ExportLabels
     /** @return list<string> */
     public static function sheets(): array
     {
-        return array_keys(self::SHEET_TITLES);
+        // Part 9 (35 §10.1): the derived sheets, right after kode_pilihan
+        $sheets = array_keys(self::SHEET_TITLES);
+        $at     = array_search('kode_pilihan', $sheets, true) + 1;
+
+        return [...array_slice($sheets, 0, $at), ...array_keys(DerivedSheets::TITLES), ...array_slice($sheets, $at)];
     }
 
     public static function sheetTitle(string $sheet): string
     {
+        // Part 9 (35 §10.1)
+        if (isset(DerivedSheets::TITLES[$sheet])) {
+            return DerivedSheets::TITLES[$sheet][0];
+        }
+
         if (! isset(self::SHEET_TITLES[$sheet]) && FieldSheetSpec::has($sheet)) {
             return FieldSheetSpec::title($sheet);
         }
@@ -466,6 +479,11 @@ final class ExportLabels
 
     public static function sheetMeaning(string $sheet): string
     {
+        // Part 9 (35 §10.1)
+        if (isset(DerivedSheets::TITLES[$sheet])) {
+            return DerivedSheets::TITLES[$sheet][1];
+        }
+
         if (! isset(self::SHEET_TITLES[$sheet]) && FieldSheetSpec::has($sheet)) {
             return 'Lembar lapangan yang diketik dan diunggah (impor utama yang berlaku); kolom seperti 02_LEMBAR_LAPANGAN.md.';
         }
@@ -476,7 +494,8 @@ final class ExportLabels
     /** Apakah kolom ini punya keterangan lengkap. Dipakai uji. */
     public static function has(string $sheet, string $column): bool
     {
-        return isset(self::SHEETS[$sheet][$column]) || isset(self::COMMON[$column]) || self::fieldColumn($sheet, $column) !== null;
+        return isset(self::SHEETS[$sheet][$column]) || isset(self::COMMON[$column]) || self::fieldColumn($sheet, $column) !== null
+            || self::derivedColumn($sheet, $column) !== null;   // part 9 (35 §10.2)
     }
 
     /**
@@ -507,13 +526,29 @@ final class ExportLabels
     }
 
     /**
+     * Part 9 (35 §10.2): a derived-sheet column, its wording from DerivedSheets::META.
+     *
+     * @return array{0: string, 1: string, 2: string, 3?: string}|null
+     */
+    private static function derivedColumn(string $sheet, string $column): ?array
+    {
+        if (! DerivedSheets::has($sheet) || ! isset(DerivedSheets::COLUMNS[$sheet][$column], DerivedSheets::META[$column])) {
+            return null;
+        }
+
+        $meta = DerivedSheets::META[$column];
+
+        return isset($meta[5]) ? [$meta[0], $meta[1], $meta[2], $meta[5]] : [$meta[0], $meta[1], $meta[2]];
+    }
+
+    /**
      * Keterangan satu kolom.
      *
      * @return array{key: string, label: string, type: string, meaning: string, unit: string, group: ?string}
      */
     public static function column(string $sheet, string $column): array
     {
-        $spec = self::SHEETS[$sheet][$column] ?? self::fieldColumn($sheet, $column) ?? self::COMMON[$column] ?? [$column, 'text', ''];
+        $spec = self::SHEETS[$sheet][$column] ?? self::fieldColumn($sheet, $column) ?? self::derivedColumn($sheet, $column) ?? self::COMMON[$column] ?? [$column, 'text', ''];
 
         return [
             'key'     => $column,

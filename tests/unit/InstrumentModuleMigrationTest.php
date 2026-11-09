@@ -72,7 +72,8 @@ final class InstrumentModuleMigrationTest extends CIUnitTestCase
 
     public function testTheTablesSitInTheResetAndDeletionLists(): void
     {
-        $this->assertSame('2026-01-01-004200', SystemResetService::REQUIRED_MIGRATION);
+        // Part 9 (35 §12) moved the required migration on to 004300
+        $this->assertGreaterThanOrEqual(0, strcmp(SystemResetService::REQUIRED_MIGRATION, '2026-01-01-004200'));
 
         foreach (array_slice(self::TABLES, 0, 4) as $table) {
             $this->assertContains($table, SystemResetService::GROUP_A);
