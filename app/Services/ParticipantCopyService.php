@@ -26,10 +26,13 @@ class ParticipantCopyService
      *
      * From the head researcher's sheet list (29 §7.2, RawDataService::DIMENSIONS);
      * `kamus`, `event`, `butir`, `kode_pilihan` (item texts, answer keys) and the
-     * field sheets stay out. Part 8 adds its test, questionnaire and attitude
-     * sheets here (34 §11.4).
+     * field sheets stay out. Part 8 (34 §11.4, 30 §8): the test, questionnaire
+     * (ang-01–ang-17), and attitude sheets; never `risiko_gabungan`.
      */
-    public const SHEETS = ['peserta', 'sesi', 'progres', 'pengerjaan', 'jawaban', 'percobaan', 'navigasi', 'bantuan', 'selesai', 'masukan'];
+    public const SHEETS = ['peserta', 'sesi', 'progres', 'pengerjaan', 'jawaban', 'percobaan', 'navigasi', 'bantuan', 'selesai', 'masukan',
+        // Part 8 (34 §11.4)
+        'tes_jawaban', 'tes_bagian', 'angket', 'sikap',
+    ];
 
     /** Columns never in the copy: answer key, item text, device details, internal links. */
     private const DROPPED = [
@@ -124,6 +127,8 @@ class ParticipantCopyService
             'stars'       => $stars,
             'minutes'     => (int) round($ms / 60000),
             'riskLeftOut' => $riskLeftOut,
+            // Part 8 (34 §11.4, 30 §8): the parts of the tests and the questionnaire done
+            'instruments' => $this->instrumentSummary($participantId),
         ], ['saveData' => false]);
     }
 
@@ -172,6 +177,34 @@ class ParticipantCopyService
         }
 
         return $written;
+    }
+
+    /**
+     * Part 8 (30 §8): which parts of the tests, the questionnaire, and the
+     * attitude scale the child did, in plain words (never scores or risk items).
+     *
+     * @return list<string>
+     */
+    private function instrumentSummary(int $participantId): array
+    {
+        $db    = db_connect();
+        $names = ['mb' => 'Bagian 1 (membaca)', 'ae' => 'Bagian 2 (aman dan etis)', 'bd' => 'Bagian 3 (budaya digital)'];
+        $out   = [];
+
+        foreach ($db->table('instrument_sittings')->where('participant_id', $participantId)->where('is_preview', 0)->where('kind !=', 'risk')->orderBy('id', 'ASC')->get()->getResultArray() as $sitting) {
+            if ($sitting['kind'] === 'test') {
+                $parts = array_column($db->table('instrument_parts')->select('part')->where('sitting_id', (int) $sitting['id'])->whereIn('part', array_keys($names))
+                    ->groupStart()->where('submitted_at IS NOT NULL', null, false)->orWhere('closed_at IS NOT NULL', null, false)->groupEnd()->get()->getResultArray(), 'part');
+                $done  = array_values(array_intersect_key($names, array_flip($parts)));
+                $out[] = ($sitting['occasion'] === 'pre' ? 'Tes awal' : 'Tes akhir') . ': ' . ($done === [] ? 'belum ada bagian yang selesai' : implode(', ', $done) . ' selesai') . '.';
+            } elseif ($sitting['kind'] === 'questionnaire') {
+                $out[] = 'Angket akses digital: ' . ($sitting['submitted_at'] === null ? 'belum selesai' : 'selesai') . '.';
+            } elseif ($sitting['kind'] === 'attitude') {
+                $out[] = 'Skala sikap di Balai Refleksi: ' . ($sitting['submitted_at'] === null ? 'belum dikirim' : 'dikirim') . '.';
+            }
+        }
+
+        return $out;
     }
 
     /**
