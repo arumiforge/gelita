@@ -1,0 +1,5 @@
+# derived_participants (35 §6.5, §7): B is a pilot school (U01); C withdrew keeping the data, cutoff = deactivated_at.
+participant_id,consent_ok,withdrawn_on,cutoff_basis,is_pilot,analysable,challenges_completed,scored_challenges_completed,regions_completed,questionnaire_status,test_status
+1,1,,,0,0,5,4,1,hilang,hilang
+2,1,,,1,0,1,1,0,hilang,hilang
+3,1,2026-11-10,deactivated_at,0,0,0,0,0,hilang,hilang
