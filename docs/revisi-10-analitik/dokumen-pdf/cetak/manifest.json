@@ -1,11 +1,11 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "54ac4165c69e9fbc86b49c75b7c1128fa98400a67f9474b9320d496786d70a2b",
-      "commit": "302f399",
+      "source": "15bed2d331eeef27e7d6e12d9e402aed573aa80c7ed7dd5aa228b418430e1059",
+      "commit": "f4f72a6",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-08",
-      "pages": 20,
+      "date": "2026-11-09",
+      "pages": 21,
       "landscapeTables": 0
     },
     "01_REVISI_10_ANALITIK.md": {
@@ -17,10 +17,10 @@
       "landscapeTables": 0
     },
     "02_LEMBAR_LAPANGAN.md": {
-      "source": "710642054400bb6b57824a3f331ca99686087bf5314823cb8cb7d0831d82e1f9",
-      "commit": "76d8a47",
+      "source": "5748c2f2def438559f5466ddf85baac0e0a95f84899af9ee8f2789e347306379",
+      "commit": "0cb8a8a",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-03",
+      "date": "2026-11-09",
       "pages": 15,
       "landscapeTables": 0
     },
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "972f9d0c1cd778cda7636fc7deaff44efa764634a8822e7541bc7ab35aa97568",
-      "commit": "302f399",
+      "source": "879a3399514e6f31ee134db7adc0e08c525cc3671a3df814c015f8209497ed01",
+      "commit": "f4f72a6",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-08",
-      "pages": 74,
+      "date": "2026-11-09",
+      "pages": 75,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
