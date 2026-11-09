@@ -446,6 +446,31 @@ class Gelita extends BaseConfig
     /** Username prefixes students cannot register with; tools and the simulator still may (28 K18). */
     public array $reservedUsernamePrefixes = ['uji.', 'sim_'];
 
+    // Part 8 (34): test module, questionnaire, risk items, attitude scale
+
+    /**
+     * Hidden time limits of the pre/post test and the make-up windows (34 §7.4).
+     * Minutes, except the two windows in days. A study overrides them in
+     * `research_studies.instrument_settings`; the final limits come from the
+     * trial (13: enough time for 95% of the students).
+     */
+    public array $instrumentDefaults = [
+        'limit_p1'      => 40,   // Bagian 1 Membaca (13)
+        'limit_p23'     => 35,   // Bagian 2 and 3 together (13)
+        'reminder'      => 5,    // friendly reminder before the limit (13)
+        'extra_max'     => 30,   // most extra minutes P1 may add per block
+        'makeup_days'   => 3,    // test make-up window (13)
+        'attitude_days' => 7,    // attitude-scale make-up window (17)
+    ];
+
+    /**
+     * Preview switch for the validators' test install (34 §5.5, K4;
+     * `gelita.instrumentPreview` in `.env`): `uji.*` accounts see the test
+     * module and the attitude scale without field mode, a token, or time
+     * limits. Their sittings carry `is_preview = 1` and never reach a download.
+     */
+    public bool $instrumentPreview = false;
+
     public function __construct()
     {
         parent::__construct();

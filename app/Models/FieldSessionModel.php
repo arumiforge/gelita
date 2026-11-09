@@ -19,6 +19,8 @@ class FieldSessionModel extends Model
     protected $allowedFields = [
         'study_id', 'code', 'school_id', 'rombel', 'meeting_no', 'makeup_no', 'main_session_id',
         'session_date', 'opens_at', 'closes_at', 'closed_at', 'region_code', 'created_by', 'closed_by',
+        // Part 8 (34 §5.3): the start-test button
+        'test_started_at', 'test_started_by',
     ];
 
     /**

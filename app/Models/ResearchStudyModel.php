@@ -16,6 +16,8 @@ class ResearchStudyModel extends Model
         'default_locale', 'unlock_mode', 'field_mode', 'meeting_plan', 'package_code',
         // Part 4 (30 §15)
         'closed_at', 'consent_register_exported_at', 'feedback_names_checked_at', 'identities_replaced_at',
+        // Part 8 (34 §7.4): hidden time limits of the test module (JSON; null = Config\Gelita::$instrumentDefaults)
+        'instrument_settings',
     ];
     protected $validationRules = [
         'code'                => ['label' => 'Kode singkat studi', 'rules' => 'required|max_length[50]|is_unique[research_studies.code,id,{id}]'],
