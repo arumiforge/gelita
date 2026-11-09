@@ -67,6 +67,16 @@ return [
         'match'  => 'Pilihlah huruf pasangan yang cocok untuk setiap pernyataan. Ada satu pilihan yang tidak dipakai.',
         'd2'     => null,
     ],
+    'scales'        => [
+        'bs' => [
+            'B' => 'Benar',
+            'S' => 'Salah',
+        ],
+        'fp' => [
+            'F' => 'Fakta',
+            'P' => 'Pendapat',
+        ],
+    ],
     'stimulus_lead' => 'Bacalah teks di bawah ini. Lalu, jawablah soal nomor {0} sampai {1}.',
     'stimuli'       => [
         'tes-ct-mb'   => [

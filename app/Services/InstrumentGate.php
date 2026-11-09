@@ -281,4 +281,76 @@ class InstrumentGate
 
         return (string) $fieldSession['session_date'] <= date('Y-m-d', strtotime((string) $main['session_date'] . ' +' . $days . ' days'));
     }
+
+    // ------------------------------------------------------------ Balai Refleksi (§9.1, K12)
+
+    /**
+     * Where Balai Refleksi stands for a student who completed every challenge
+     * (34 §9.1). `mode` `off`: field mode is off and no preview, the page is as
+     * before (§3). Otherwise `state`:
+     * - `last_meeting`: not inside the main P5 or a make-up within `attitude_days` of it;
+     * - `redirect`: a step comes first (`target` = `tes` or `penutup`);
+     * - `scale`: the attitude scale is not sent yet;
+     * - `open`: the scale is sent; praise, journey, and feedback show.
+     *
+     * @return array{mode: string, state?: string, target?: string, context?: array<string, mixed>}
+     */
+    public function reflectionState(Participant $participant, GameSession $session): array
+    {
+        $instruments = service('instruments');
+
+        if (self::previewAllowed($participant)) {
+            $study   = model(ResearchStudyModel::class)->activeStudy();
+            $context = ['participant' => $participant, 'session' => $session, 'study' => $study, 'field_session' => null, 'preview' => true, 'makeup' => false];
+            $sitting = $study === null ? null : $instruments->sitting($participant->id, (int) $study['id'], 'p5', 'attitude', true);
+
+            return ['mode' => 'preview', 'state' => $sitting !== null && $sitting['submitted_at'] !== null ? 'open' : 'scale', 'context' => $context];
+        }
+
+        $fields = service('fieldSessions');
+        $study  = $fields->fieldModeStudy();
+
+        if ($study === null) {
+            return ['mode' => 'off'];
+        }
+
+        $fieldSession = $session->field_session_id === null ? null : model(FieldSessionModel::class)->find($session->field_session_id);
+        $days         = $instruments->settings($study)['attitude_days'];
+
+        if ($fieldSession === null || ! $fields->isOpen($fieldSession) || ! $fields->planEntry($fieldSession, $study)['ending']
+            || ((int) $fieldSession['makeup_no'] > 0 && ! $this->withinMakeupWindow($fieldSession, $days))) {
+            return ['mode' => 'study', 'state' => 'last_meeting'];
+        }
+
+        $step = $this->status($participant, $session);
+
+        if (! in_array($step, [self::STEP_DONE, self::STEP_CLOSED], true)) {
+            return ['mode' => 'study', 'state' => 'redirect', 'target' => 'tes'];
+        }
+
+        if (! $this->endingSeen($session)) {
+            return ['mode' => 'study', 'state' => 'redirect', 'target' => 'penutup'];
+        }
+
+        $context = ['participant' => $participant, 'session' => $session, 'study' => $study, 'field_session' => $fieldSession, 'preview' => false, 'makeup' => (int) $fieldSession['makeup_no'] > 0];
+        $sitting = $instruments->sitting($participant->id, (int) $study['id'], 'p5', 'attitude');
+
+        return ['mode' => 'study', 'state' => $sitting !== null && $sitting['submitted_at'] !== null ? 'open' : 'scale', 'context' => $context];
+    }
+
+    /** The closing story reached its last slide in this game session (`dialogue_completed`, context `ending`, 29 §5.3). */
+    public function endingSeen(GameSession $session): bool
+    {
+        $rows = db_connect()->table('game_event_logs')->select('payload_json')
+            ->where('session_id', $session->id)->where('event_type', 'dialogue_completed')->where('deleted_at', null)
+            ->like('payload_json', 'ending')->get()->getResultArray();
+
+        foreach ($rows as $row) {
+            if ((json_decode((string) $row['payload_json'], true)['context'] ?? null) === 'ending') {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

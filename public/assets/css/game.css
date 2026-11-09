@@ -4564,3 +4564,26 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 /* Region map: "Lihat cerita penghubung" under the Skenario Digital card (part 6) */
 .node-bridge { display: inline-flex; align-items: center; gap: .25rem; font-size: var(--fs-small, .875rem); color: var(--gold-300); text-decoration: underline; }
 
+
+/* Part 8 (34 §9.2; 17 → Layar): the attitude scale in Balai Refleksi — one navy card,
+   four gold dots that grow from Tidak setuju to Sangat setuju, words always shown, no faces */
+.attitude { position: absolute; inset: 72px 160px 64px; display: flex; align-items: center; justify-content: center; }
+.attitude-card { width: 100%; padding: 32px 40px; border: 1px solid rgb(var(--gold-rgb, 214 175 92) / .6); border-radius: 18px; background: rgb(14 27 51 / .92); color: #f4ead2; }
+.attitude-title { margin: 0 0 16px; font-size: 1.6rem; }
+.attitude-statement { margin: 0 0 24px; font-size: 1.7rem; line-height: 1.35; text-align: center; }
+.attitude-example, .attitude-count { margin: 0 0 12px; text-align: center; opacity: .85; }
+.attitude-progress { margin: 0 auto 8px; max-width: 520px; }
+.attitude-choices { display: flex; justify-content: space-between; gap: 16px; }
+.attitude-choice { display: flex; flex: 1; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; }
+.attitude-choice input { position: absolute; opacity: 0; pointer-events: none; }
+.attitude-dot { display: block; border-radius: 50%; background: #d6af5c; box-shadow: 0 0 0 2px rgb(0 0 0 / .4); }
+.attitude-choice.is-size-1 .attitude-dot { width: 22px; height: 22px; }
+.attitude-choice.is-size-2 .attitude-dot { width: 32px; height: 32px; }
+.attitude-choice.is-size-3 .attitude-dot { width: 44px; height: 44px; }
+.attitude-choice.is-size-4 .attitude-dot { width: 56px; height: 56px; }
+.attitude-choice input:checked + .attitude-dot { box-shadow: 0 0 0 3px #fff6d8, 0 0 18px 6px rgb(255 214 120 / .7); }
+.attitude-choice input:checked ~ .attitude-word::before { content: '● '; }
+.attitude-choice input:focus-visible + .attitude-dot { outline: 3px solid #fff; outline-offset: 4px; }
+.attitude-word { font-size: 1.05rem; text-align: center; }
+.attitude-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; }
+.attitude-skip { background: none; border: 0; color: inherit; text-decoration: underline; font-size: .95rem; cursor: pointer; }

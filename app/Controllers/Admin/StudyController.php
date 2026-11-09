@@ -346,6 +346,39 @@ class StudyController extends BaseAdminController
         return ! $closed && $row !== null && $row['closed_at'] !== null ? ['closed_at' => null] : [];
     }
 
+    // Part 8 (34 §7.4, K15): hidden time limits of the test module, its own route and method
+
+    /** POST /admin/studi/{id}/instrumen (`studies.manage`); audit `study_instrument_settings_changed` with old and new values. */
+    public function updateInstrumentSettings(int $studyId): RedirectResponse
+    {
+        $studies = model(ResearchStudyModel::class);
+        $row     = $studies->find($studyId);
+
+        if ($row === null) {
+            return $this->back('admin/studi', 'Penelitian tidak ditemukan.');
+        }
+
+        $old = service('instruments')->settings($row);
+        $new = [];
+
+        foreach (array_keys(config('Gelita')->instrumentDefaults) as $key) {
+            $value = trim((string) $this->request->getPost($key));
+
+            if (! ctype_digit($value) || (int) $value < 1 || (int) $value > 240) {
+                return $this->back('admin/studi', lang('Admin.instrumentSettingsInvalid'));
+            }
+
+            $new[$key] = (int) $value;
+        }
+
+        if ($new !== $old) {
+            $studies->update($studyId, ['instrument_settings' => json_encode($new)]);
+            $this->audit('study_instrument_settings_changed', 'research_study', $studyId, ['from' => $old, 'to' => $new]);
+        }
+
+        return $this->done('admin/studi', lang('Admin.instrumentSettingsSaved'));
+    }
+
     /** @param array<string, mixed> $metadata */
     private function audit(string $action, string $targetType, int $targetId, array $metadata = []): void
     {

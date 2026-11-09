@@ -81,6 +81,8 @@ class FieldSessionController extends BaseAdminController
             'codesUsed'    => service('participantCodes')->used((int) $fieldSession['school_id'], (string) $fieldSession['rombel']),
             'codesMax'     => config('Gelita')->participantCodeMax,
             'makeups'      => model(FieldSessionModel::class)->where('main_session_id', $id)->orderBy('makeup_no', 'ASC')->findAll(),
+            // Part 8 (34 §5.3, §7.4): the start-test button, test status, extra minutes
+            'testPanel'    => (new \App\Services\FieldTestService())->panel($fieldSession),
         ]);
     }
 

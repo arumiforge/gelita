@@ -503,4 +503,19 @@ return [
     'scenarioSituationAlt' => 'Picture of this story\'s situation',
     'scenarioActions'     => 'What would you do?',
     'instructionListen'   => 'Listen to the instructions',
+
+    // Part 8 (34 §13): attitude scale in Balai Refleksi, feedback during a study, validators' preview
+    'attitudeTry' => 'Try an example',
+    'attitudeExample' => 'Example',
+    'attitudeSkip' => 'Skip',
+    'attitudeNext' => 'Next',
+    'attitudeBack' => 'Back',
+    'attitudeProgress' => '{0} of {1}',
+    'attitudeReview' => 'You answered {0} of 12 sentences. You skipped {1}. If you like, you can still go back and answer them. Once you send, your answers can\'t be changed.',
+    'attitudeReviewAll' => 'You answered all 12 sentences. Once you send, your answers can\'t be changed.',
+    'attitudeSend' => 'Send',
+    'attitudeThanks' => 'Your thoughts about Kedu culture have been sent. Thank you!',
+    'reflectionAllOptional' => 'You can leave every question empty.',
+    'reflectionLastMeeting' => 'The Hall of Reflection opens at the last meeting.',
+    'instrumentPreviewLink' => 'Try the test module',
 ];

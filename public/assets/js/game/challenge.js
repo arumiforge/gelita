@@ -521,6 +521,8 @@ export async function bootChallenge() {
 
   // Ganti bahasa memuat ulang halaman yang sama: bukan meninggalkan tantangan
   document.querySelector('form.lang-switch')?.addEventListener('submit', () => { state.leaving = true; });
+  // Part 8 (34 §5.4): core/api.js sends the student to the test module (INSTRUMENT_STARTED)
+  window.addEventListener('gelita:leaving', () => { state.leaving = true; });
 
   window.addEventListener('pagehide', () => {
     if (state.leaving || state.completed) return;
