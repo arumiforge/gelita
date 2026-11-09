@@ -191,13 +191,7 @@ class ParticipantCopyService
      */
     private function riskRows(int $participantId): array
     {
-        $db = db_connect();
-
-        if (! $db->tableExists('instrument_responses')) {
-            return [];
-        }
-
-        return $db->table('instrument_responses r')->select('r.unit, r.response, r.answered_at')
+        return db_connect()->table('instrument_responses r')->select('r.unit, r.response, r.answered_at')
             ->join('instrument_sittings s', 's.id = r.sitting_id')
             ->where('s.participant_id', $participantId)->where('s.kind', 'risk')->where('s.is_preview', 0)
             ->orderBy('r.id', 'ASC')->get()->getResultArray();
