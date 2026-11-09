@@ -335,6 +335,7 @@ class ChallengeApiController extends BaseApiController
             ->setStatusCode(200)
             ->setContentType((string) ($media['mime_type'] ?: 'application/octet-stream'), '')
             ->removeHeader('Cache-Control')
+            ->removeHeader('Content-Disposition')
             ->setHeader('Cache-Control', 'private, max-age=86400')
             ->setHeader('X-Content-Type-Options', 'nosniff')
             ->setBody((string) file_get_contents($path));

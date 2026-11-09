@@ -103,6 +103,7 @@ final class HuntObjectImageTest extends CIUnitTestCase
     private function get(int $sessionId, string $path, int $participantId = 1): \CodeIgniter\Test\TestResponse
     {
         Services::resetSingle('gameContext');
+        Services::resetSingle('response');
 
         return $this->withSession(['participant_id' => $participantId, 'game_session_id' => $sessionId, 'gelita_csrf' => self::CSRF_HASH])
             ->call(Method::GET, $path);
