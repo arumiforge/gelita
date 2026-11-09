@@ -13,7 +13,8 @@ export function initReflection() {
   const form = $('[data-screen="reflection"] form[data-min-answers]');
   if (!form) return;
 
-  const min = Number(form.dataset.minAnswers) || 2;
+  // 0 during a study (part 8, 34 §9.4): every field may stay empty
+  const min = Number.isFinite(Number(form.dataset.minAnswers)) ? Number(form.dataset.minAnswers) : 2;
   const areas = $$('textarea', form);
   const notice = el('p', { class: 'field-error reflection-need', role: 'alert', hidden: true }, t('needTwo'));
   $('.form-actions', form)?.before(notice);

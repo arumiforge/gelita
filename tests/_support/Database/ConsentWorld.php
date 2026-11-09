@@ -72,45 +72,32 @@ trait ConsentWorld
         return model(\App\Models\DataDeletionRequestModel::class)->find($id);
     }
 
-    /** Minimal part 8 tables (34 §11.1) so the risk-item scope has something to delete. */
-    private function createRiskTables(\CodeIgniter\Database\BaseConnection $db): void
-    {
-        $forge = \Config\Database::forge('tests');
-        $forge->addField(['id' => ['type' => 'INTEGER', 'auto_increment' => true], 'participant_id' => ['type' => 'INTEGER'], 'study_id' => ['type' => 'INTEGER'],
-            'field_session_id' => ['type' => 'INTEGER', 'null' => true], 'kind' => ['type' => 'VARCHAR', 'constraint' => 14], 'is_preview' => ['type' => 'INTEGER', 'default' => 0],
-            'risk_offered' => ['type' => 'INTEGER', 'null' => true], 'risk_reconsent' => ['type' => 'INTEGER', 'null' => true]]);
-        $forge->addPrimaryKey('id');
-        $forge->createTable('instrument_sittings', true);
-
-        foreach (['instrument_blocks', 'instrument_parts'] as $table) {
-            $forge->addField(['id' => ['type' => 'INTEGER', 'auto_increment' => true], 'sitting_id' => ['type' => 'INTEGER']]);
-            $forge->addPrimaryKey('id');
-            $forge->createTable($table, true);
-        }
-
-        $forge->addField(['id' => ['type' => 'INTEGER', 'auto_increment' => true], 'sitting_id' => ['type' => 'INTEGER'], 'part_id' => ['type' => 'INTEGER', 'null' => true],
-            'unit' => ['type' => 'VARCHAR', 'constraint' => 40], 'response' => ['type' => 'VARCHAR', 'constraint' => 40, 'null' => true], 'answered_at' => ['type' => 'DATETIME', 'null' => true]]);
-        $forge->addPrimaryKey('id');
-        $forge->createTable('instrument_responses', true);
-    }
-
-    private function dropRiskTables(): void
-    {
-        foreach (['instrument_responses', 'instrument_parts', 'instrument_blocks', 'instrument_sittings'] as $table) {
-            \Config\Database::forge('tests')->dropTable($table, true);
-        }
-    }
-
-    /** A `risk` sitting with answers for ang-21 (`risk_upset`) and ang-23 (`support_none`). */
+    /**
+     * A `risk` sitting (real schema, part 8: 34 §11.1) with answers for ang-21
+     * (`risk_upset`) and ang-23 (`support_none`); the other units of the part stay empty.
+     */
     private function riskAnswers(\CodeIgniter\Database\BaseConnection $db, int $participantId, string $upset, string $none = '0', ?int $fieldSessionId = null, int $preview = 0): int
     {
-        $db->table('instrument_sittings')->insert(['participant_id' => $participantId, 'study_id' => 1, 'field_session_id' => $fieldSessionId, 'kind' => 'risk', 'is_preview' => $preview, 'risk_offered' => 1, 'risk_reconsent' => 1]);
-        $sitting = (int) $db->insertID();
-        $db->table('instrument_parts')->insert(['sitting_id' => $sitting]);
-        $db->table('instrument_responses')->insertBatch([
-            ['sitting_id' => $sitting, 'unit' => 'risk_upset', 'response' => $upset, 'answered_at' => date('Y-m-d H:i:s')],
-            ['sitting_id' => $sitting, 'unit' => 'support_none', 'response' => $none, 'answered_at' => date('Y-m-d H:i:s')],
+        $version = (int) $db->table('instrument_versions')->where('instrument', 'angket')->where('is_active', 1)->get()->getRow('id');
+        $now     = date('Y-m-d H:i:s');
+        $db->table('instrument_sittings')->insert([
+            'participant_id' => $participantId, 'study_id' => 1, 'field_session_id' => $fieldSessionId, 'occasion' => 'post', 'kind' => 'risk',
+            'version_id' => $version, 'is_preview' => $preview, 'risk_offered' => 1, 'risk_reconsent' => 1, 'risk_reconsent_at' => $now,
+            'started_at' => $now, 'submitted_at' => $now, 'updated_at' => $now,
         ]);
+        $sitting = (int) $db->insertID();
+        $db->table('instrument_parts')->insert(['sitting_id' => $sitting, 'part' => 'risk', 'opened_at' => $now, 'submitted_at' => $now]);
+        $part = (int) $db->insertID();
+
+        foreach ($db->table('instrument_items')->where('version_id', $version)->where('part', 'risk')->get()->getResultArray() as $item) {
+            foreach ((array) json_decode((string) $item['units_json'], true) as $unit) {
+                $response = ['risk_upset' => $upset, 'support_none' => $none][$unit] ?? null;
+                $db->table('instrument_responses')->insert([
+                    'part_id' => $part, 'sitting_id' => $sitting, 'item_id' => (int) $item['id'], 'unit' => $unit,
+                    'response' => $response, 'answered_at' => $response === null ? null : $now, 'updated_at' => $now,
+                ]);
+            }
+        }
 
         return $sitting;
     }

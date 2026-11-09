@@ -30,7 +30,6 @@ final class DataRequestScopeTest extends CIUnitTestCase
 
     protected function tearDown(): void
     {
-        $this->dropRiskTables();
         $this->dropConsentWorld();
         parent::tearDown();
     }
@@ -64,12 +63,11 @@ final class DataRequestScopeTest extends CIUnitTestCase
 
     public function testRiskItemsDeletesTheRiskSittingOnly(): void
     {
-        $this->createRiskTables($this->conn);
         $this->riskAnswers($this->conn, 1, '2', '1');
-        $this->conn->table('instrument_sittings')->insert(['participant_id' => 1, 'study_id' => 1, 'kind' => 'test']);
+        $this->conn->table('instrument_sittings')->insert(['participant_id' => 1, 'study_id' => 1, 'occasion' => 'pre', 'kind' => 'test', 'version_id' => 1, 'started_at' => date('Y-m-d H:i:s')]);
 
         $id = $this->fileRequest('risk_items', 'ketua');
-        $this->assertSame(['instrument_responses' => 2, 'instrument_parts' => 1, 'instrument_blocks' => 0, 'instrument_sittings' => 1], service('retentionService')->decode($this->requestRow($id))['counts']);
+        $this->assertSame(['instrument_responses' => 9, 'instrument_parts' => 1, 'instrument_blocks' => 0, 'instrument_sittings' => 1], service('retentionService')->decode($this->requestRow($id))['counts']);
 
         service('retentionService')->execute($id, 1);
 

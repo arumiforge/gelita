@@ -37,6 +37,8 @@ class RetentionRun extends BaseCommand
             ['Sesi paused lama → abandoned', (string) $result['abandoned_sessions']],
             ['Berkas export kedaluwarsa dibuang', (string) $result['expired_exports']],
             ['Pratinjau penghapusan masa simpan', (string) count($result['retention_previews'])],
+            // Part 8 (34 §7.4)
+            ['Blok tes lewat batas waktu → ditutup', (string) ($result['closed_test_blocks'] ?? 0)],
         ], ['Langkah', 'Jumlah']);
 
         foreach ($result['retention_previews'] as $preview) {

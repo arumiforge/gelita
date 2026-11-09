@@ -1,0 +1,56 @@
+/*
+ * Test module, questionnaire, and risk items (research revision 10, part 8:
+ * 34 §7.1). Plain Bootstrap 5.3 (local copy, CSS only) on a white page:
+ * no HUD, music, narration, or game effects. Large base size, 44 px targets.
+ */
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/plus-jakarta-sans-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../fonts/plus-jakarta-sans-latin-700-normal.woff2') format('woff2');
+}
+
+body.instrument {
+  --bs-body-font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --bs-body-font-size: 1.25rem;
+  background: #fff;
+  color: #1b1f24;
+}
+
+.instrument-bar { border-bottom: 1px solid #d0d7de; background: #f6f8fa; }
+
+.instrument .btn,
+.instrument .form-check-input,
+.instrument .form-select { min-height: 44px; }
+
+.instrument .form-check-input { width: 1.6em; height: 1.6em; min-height: 0; margin-top: .1em; }
+
+.instrument .choice { display: flex; gap: .75rem; align-items: flex-start; padding: .6rem .8rem; border: 1px solid #d0d7de; border-radius: .5rem; min-height: 44px; cursor: pointer; }
+
+.instrument .choice + .choice { margin-top: .5rem; }
+
+.instrument .choice:has(input:checked) { border-color: #0b5ed7; border-width: 2px; }
+
+.instrument .choice-letter { font-weight: 700; min-width: 1.5em; }
+
+.instrument-stimulus { max-height: 70vh; overflow-y: auto; }
+
+.instrument-stimulus img { max-width: 100%; height: auto; }
+
+.instrument-stimulus table { font-size: 1rem; }
+
+.instrument-nav .btn { min-width: 44px; }
+
+/* "Not answered" is told by text and a dashed outline, not by colour alone (34 §7.1) */
+.instrument-nav .is-open { border-style: dashed; }
+
+.instrument-reminder[hidden] { display: none; }

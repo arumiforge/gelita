@@ -511,4 +511,18 @@ return [
     'retakeLater'        => 'Kamu bisa mengulang tantangan ini setelah kelima tantangan di wilayah ini selesai, ya.',
     'kenaliAfterRegion'  => 'Kisah wilayah ini terbuka setelah kamu menyelesaikan wilayahnya, ya.',
     'profileTableLabel'  => 'Daftar hasil tantangan',
+    // Part 8 (34 §13): attitude scale in Balai Refleksi, feedback during a study, validators' preview
+    'attitudeTry' => 'Coba contoh',
+    'attitudeExample' => 'Contoh',
+    'attitudeSkip' => 'Lewati',
+    'attitudeNext' => 'Lanjut',
+    'attitudeBack' => 'Kembali',
+    'attitudeProgress' => '{0} dari {1}',
+    'attitudeReview' => 'Kamu sudah menjawab {0} dari 12 kalimat. {1} kalimat kamu lewati. Kalau mau, kamu masih bisa kembali dan menjawabnya. Setelah dikirim, jawabanmu tidak bisa diganti lagi.',
+    'attitudeReviewAll' => 'Kamu sudah menjawab semua 12 kalimat. Setelah dikirim, jawabanmu tidak bisa diganti lagi.',
+    'attitudeSend' => 'Kirim',
+    'attitudeThanks' => 'Pendapatmu tentang budaya Kedu sudah terkirim. Terima kasih!',
+    'reflectionAllOptional' => 'Semua pertanyaan boleh dikosongkan.',
+    'reflectionLastMeeting' => 'Balai Refleksi dibuka di pertemuan terakhir.',
+    'instrumentPreviewLink' => 'Coba modul tes',
 ];

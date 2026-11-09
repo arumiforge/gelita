@@ -75,6 +75,8 @@ class RawDataService
     public const DIMENSIONS = [
         'peserta', 'sesi_lapangan', 'sesi', 'progres', 'pengerjaan', 'jawaban', 'percobaan',
         'navigasi', 'bantuan', 'selesai', 'event', 'masukan', 'butir', 'kode_pilihan',
+        // Part 8 (34 §11.4; 29 §7.2 order: after kode_pilihan and the turunan_* sheets, before izin)
+        'tes_jawaban', 'tes_bagian', 'angket', 'sikap', 'risiko_gabungan',
         'izin',   // part 4 (30 keputusan no. 9, §10.1): coded consent per student, ketua only
         'l1_kondisi', 'l1_penyimpangan', 'l2_kursi', 'l3_bantuan', 'l4_bromp', 'l5_wawancara', 'l6_sesi',
     ];
@@ -127,7 +129,8 @@ class RawDataService
             'assented_at' => 'participants.assented_at', 'intro_seen_at' => 'participants.intro_seen_at',
             'pw_first_submit_criteria' => 'participants.pw_first_submit_criteria',
             'pw_weak_submit_count' => 'participants.pw_weak_submit_count',
-            // Part 8 (34 §11.4) adds pre_form … post_capped here.
+            // Part 8 (34 §11.4): the test module's columns pre_form … post_capped (13)
+            ...\App\Libraries\InstrumentSheets::PARTICIPANT_COLUMNS,
         ],
         'sesi_lapangan' => [
             'field_session_code' => 'field_sessions.code', 'school_code' => 'schools.research_code',
@@ -365,6 +368,8 @@ class RawDataService
             'butir'      => $this->itemQuery($filters),
             'kode_pilihan' => $this->choiceCodeQuery($filters),
             'izin'       => $this->consentQuery($filters, $scope),
+            // Part 8 (34 §11.4): the test module's sheets
+            'tes_jawaban', 'tes_bagian', 'angket', 'sikap' => $this->instrumentSheets()->query($dimension, $filters, $this->participantFilter($scope)),
             default      => $this->fieldSheetQuery($dimension, $filters, $scope),
         };
     }
@@ -382,6 +387,21 @@ class RawDataService
     {
         $scope   = $this->boundScope();
         $perPage = in_array($perPage, self::PER_PAGE, true) ? $perPage : self::PER_PAGE[0];
+
+        // Part 8 (34 §8.3, 29 §7.6): the risk aggregate is built in PHP, never from student rows
+        if ($dimension === \App\Libraries\InstrumentSheets::AGGREGATE) {
+            $this->assertAllowed($dimension, $scope);
+            $all  = $this->instrumentSheets()->riskAggregate($this->sanitizeFilters($filters), $this->participantFilter($scope));
+            $last = max(1, (int) ceil(count($all) / $perPage));
+            $page = min(max(1, $page), $last);
+
+            return [
+                'rows'    => array_map(fn (array $row): array => $this->shape($dimension, $row, $scope), array_slice($all, ($page - 1) * $perPage, $perPage)),
+                'total'   => count($all), 'page' => $page, 'per_page' => $perPage, 'sort' => null,
+                'columns' => $this->columnSpecs($dimension, $scope, $readableAnswers),
+            ];
+        }
+
         $total   = $this->query($dimension, $filters, $scope)->countAllResults();
         $last    = max(1, (int) ceil($total / $perPage));
         $page    = min(max(1, $page), $last);
@@ -463,6 +483,17 @@ class RawDataService
      */
     public function rows(string $dimension, array $filters, StaffScope $scope, bool $labeled = false, bool $readableAnswers = false): \Generator
     {
+        // Part 8 (34 §8.3, 29 §7.6): the risk aggregate is built in PHP
+        if ($dimension === \App\Libraries\InstrumentSheets::AGGREGATE) {
+            $this->assertAllowed($dimension, $scope);
+
+            foreach ($this->instrumentSheets()->riskAggregate($this->sanitizeFilters($filters), $this->participantFilter($scope)) as $row) {
+                yield $this->shape($dimension, $row, $scope, $labeled, $readableAnswers);
+            }
+
+            return;
+        }
+
         $key  = self::keyOf($dimension);
         $last = null;
 
@@ -488,6 +519,11 @@ class RawDataService
     /** Jumlah baris satu dimensi dalam cakupan $scope. */
     public function count(string $dimension, array $filters, StaffScope $scope): int
     {
+        // Part 8 (34 §8.3)
+        if ($dimension === \App\Libraries\InstrumentSheets::AGGREGATE) {
+            return count($this->instrumentSheets()->riskAggregate($this->sanitizeFilters($filters), $this->participantFilter($scope)));
+        }
+
         return $this->query($dimension, $filters, $scope)->countAllResults();
     }
 
@@ -609,6 +645,8 @@ class RawDataService
             'butir'      => $this->itemValues($row, $answers),
             'kode_pilihan' => $row + ['node_ref' => $this->nodeRefById($row['challenge_node_id'])],
             'izin'       => $row,
+            // Part 8 (34 §11.4)
+            'tes_jawaban', 'tes_bagian', 'angket', 'sikap', 'risiko_gabungan' => $this->instrumentSheets()->values($dimension, $row),
             default      => $this->fieldSheetValues($row),
         };
 
@@ -660,6 +698,9 @@ class RawDataService
         }
 
         $this->applyParticipantFilters($builder, $filters, $scope, 'participants.created_at');
+
+        // Part 8 (34 §11.4): the study of the module columns
+        $this->maps['instrument_study'] = isset($filters['study_id']) ? (int) $filters['study_id'] : null;
 
         // Filter milik sesi: siswa yang punya sesi dalam cakupan itu
         $sessionFilters = array_intersect_key($filters, array_flip(['study_id', 'locale', 'meeting_no', 'field_session_code']));
@@ -1137,7 +1178,7 @@ class RawDataService
 
         return $column !== '' && in_array($column, $this->sortable($dimension), true)
             ? $sort
-            : (self::DEFAULT_SORT[$dimension] ?? 'sheet_row');
+            : (self::DEFAULT_SORT[$dimension] ?? \App\Libraries\InstrumentSheets::DEFAULT_SORT[$dimension] ?? 'sheet_row');
     }
 
     private function applySort(BaseBuilder $builder, string $dimension, string $sort): void
@@ -1174,7 +1215,9 @@ class RawDataService
             'intro_seen_at'            => $row['intro_seen_at'],
             'pw_first_submit_criteria' => $row['pw_first_submit_criteria'],
             'pw_weak_submit_count'     => $row['pw_weak_submit_count'],
-        ];
+        ]
+        // Part 8 (34 §11.4): pre_form … post_capped from the test module
+        + $this->instrumentSheets()->participantColumns((int) $row['_key'], $this->maps['instrument_study'] ?? null);
     }
 
     private function progressValues(array $row): array
@@ -1542,6 +1585,11 @@ class RawDataService
             return self::COLUMNS[$dimension];
         }
 
+        // Part 8 (34 §11.4)
+        if (isset(\App\Libraries\InstrumentSheets::COLUMNS[$dimension])) {
+            return \App\Libraries\InstrumentSheets::columnMap($dimension);
+        }
+
         if (! in_array($dimension, self::DIMENSIONS, true) || ! \App\Libraries\FieldSheetSpec::has($dimension)) {
             throw new \InvalidArgumentException("Dimensi '{$dimension}' tidak dikenal.");
         }
@@ -1561,9 +1609,27 @@ class RawDataService
             return self::KEYS[$dimension];
         }
 
+        // Part 8 (34 §11.4)
+        if (isset(\App\Libraries\InstrumentSheets::KEYS[$dimension])) {
+            return \App\Libraries\InstrumentSheets::KEYS[$dimension];
+        }
+
         self::columnMap($dimension);   // throws for an unknown dimension
 
         return 'field_sheet_rows.id';
+    }
+
+    // Part 8 (34 §11.4): the test module's sheets live in InstrumentSheets
+
+    private function instrumentSheets(): \App\Libraries\InstrumentSheets
+    {
+        return $this->maps['instrument_sheets'] ??= new \App\Libraries\InstrumentSheets($this->db());
+    }
+
+    /** @return callable(BaseBuilder, array, string): void the participant filters and exclusions of $scope */
+    private function participantFilter(StaffScope $scope): callable
+    {
+        return fn (BaseBuilder $builder, array $filters, string $dateColumn) => $this->applyParticipantFilters($builder, $filters, $scope, $dateColumn);
     }
 
     private function boundScope(): StaffScope

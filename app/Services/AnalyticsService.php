@@ -409,6 +409,15 @@ class AnalyticsService
                 'dropped'          => $lost,
                 'has_seat'         => isset($seats[$pid]),
             ];
+
+            // Part 8 (34 §14, §8.2): test status and "modul selesai" only; never risk items, scores, or answers
+            if ($plan['test'] !== null) {
+                $main = (int) ($fieldSession['main_session_id'] ?? 0) > 0 ? (model(\App\Models\FieldSessionModel::class)->find((int) $fieldSession['main_session_id']) ?? $fieldSession) : $fieldSession;
+                $out[array_key_last($out)] += [
+                    'test_status' => service('instruments')->testStatus($pid, $studyId, $plan['test'], $main),
+                    'module_done' => service('instruments')->moduleDone($pid, $studyId, $plan['test']),
+                ];
+            }
         }
 
         return $out;

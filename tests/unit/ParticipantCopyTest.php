@@ -31,7 +31,6 @@ final class ParticipantCopyTest extends CIUnitTestCase
 
     protected function tearDown(): void
     {
-        $this->dropRiskTables();
         $this->dropConsentWorld();
         parent::tearDown();
     }
@@ -65,7 +64,6 @@ final class ParticipantCopyTest extends CIUnitTestCase
 
     public function testRiskAnswersOnlyWithTheChildsOrParentsChoice(): void
     {
-        $this->createRiskTables($this->conn);
         $this->riskAnswers($this->conn, 1, '1');
 
         $this->asStaff('ketua');

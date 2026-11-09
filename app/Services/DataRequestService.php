@@ -365,13 +365,15 @@ class DataRequestService
         return $row;
     }
 
-    /** True when the student has an answered `risk` sitting (part 8 tables; none before part 8). */
+    /**
+     * True when the student has a `risk` sitting with at least one answer
+     * (part 8 tables, 34 §8.3); preview sittings never count.
+     */
     public function hasRiskAnswers(int $participantId): bool
     {
-        $db = db_connect();
-
-        return $db->tableExists('instrument_sittings')
-            && $db->table('instrument_sittings')->where('participant_id', $participantId)->where('kind', 'risk')->countAllResults() > 0;
+        return db_connect()->table('instrument_responses r')->join('instrument_sittings s', 's.id = r.sitting_id')
+            ->where('s.participant_id', $participantId)->where('s.kind', 'risk')->where('s.is_preview', 0)
+            ->where('r.response IS NOT NULL', null, false)->countAllResults() > 0;
     }
 
     // ------------------------------------------------------------ internal
