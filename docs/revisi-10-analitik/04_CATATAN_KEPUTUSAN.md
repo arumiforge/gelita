@@ -6,6 +6,17 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 9 November 2026
 
+**Jawaban pengembang atas pertanyaan gelombang F (putaran 1); 33 dan 35 disetujui** (cabang `r10-koordinator-gelombang-f`) · `asal: pengembang` · `disetujui pengembang` · merevisi produk (status tantangan di peta wilayah, lapis turunan, angket)
+
+Pengembang menjawab empat pertanyaan pertama di entri di bawah:
+
+1. **(a) PR koordinator digabung ke `main`, dengan cek ulang di sesi ini.** Mode penelitian tetap mati secara bawaan; cek manual MariaDB dan peramban yang tidak bisa dijalankan di sesi awan tetap di `docs/PROGRESS.md`.
+2. **(b) 33 dan 35 naik ke `disetujui pengembang`, tetapi dengan status `done_locked` sungguhan.** Tantangan tuntas yang belum boleh diulang kini berstatus `done_locked` di peta wilayah (medali ✓, bintang, *Lihat hasil*, tanpa *Ulangi*), bukan `completed` dengan tanda `retake_locked` ([33](33_IMPLEMENTASI_MODE_PENELITIAN.md#17-keputusan-pengembang) §17 no. 8). Pilihan bawaan 33 §15 no. 2–3 dan 35 §18 no. 4–5 disetujui, dan rumusan 35 serta 11 disesuaikan dengan kode ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#19-keputusan-pengembang) §19 no. 12–15).
+3. **(c) Kotak "Tidak mau menjawab" untuk ang-23 dipertahankan** (kode `7` di ketujuh kolom); [16](16_ANGKET_AKSES_DIGITAL.md) mendapat catatan di baris ang-23.
+4. **(d) `sikap_missing_reason` kosong sebelum P5:** `absen` hanya bila pertemuan P5 siswa (utama atau susulan) sudah dibuka saat putaran hitung ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#19-keputusan-pengembang) §19 no. 13).
+
+Pertanyaan (e)–(g) di entri di bawah ditanyakan di putaran kedua. Diubah: 33, 35, 11, 16, 00, 04, glosarium, `GameProgress`, `map-level`, `content_helper`, `ParticipantRun`, `RunInput`, `DerivedSheets`, dan tesnya.
+
 **Gelombang kode F selesai: bagian 7 (33), bagian 8 (34), dan bagian 9 (35) dikerjakan lalu digabung koordinator** (cabang `r10-kode-33-mode-penelitian`, `r10-kode-34-modul-tes`, `r10-kode-35-lapis-turunan`, dan cabang koordinator `r10-koordinator-gelombang-f`) · `asal: pengembang` (penyimpangan dan pilihan bawaan dipilih AI saat implementasi) · `draf pengembang` · tidak merevisi produk
 
 Pengembang meminta gelombang F dijalankan seperti gelombang D dan E: satu cabang per bagian dan satu koordinator, dengan tes penuh hijau di setiap penggabungan. Bagian 7 dan 8 dikerjakan paralel dari `main`; bagian 9 dipotong dari cabang koordinator setelah keduanya digabung, karena menghitung dari keduanya. Urutan gabung 7 → 8 → 9; tes penuh hijau setelah setiap penggabungan (1128, 1167, lalu 1229 tes; dua tes yang dilewati sejak gelombang E kini berjalan). Kode belum dipakai dengan anak; mode penelitian tetap mati secara bawaan.
