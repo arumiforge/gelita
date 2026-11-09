@@ -79,6 +79,24 @@ final class RetakeRuleTest extends CIUnitTestCase
         $this->assertSame($first->id, $best->id, 'the best attempt stays');
     }
 
+    public function testRegionMapShowsDoneLockedUntilTheRegionIsFinished(): void
+    {
+        // Owner, 9 November 2026: a real node status `done_locked` (33 §7.4), not a flag on `completed`
+        $this->markCompleted($this->sessionId, ['tmg-1', 'tmg-2']);
+        $this->signIn(1, $this->sessionId);
+        $this->resetFieldServices();
+        $page = (string) $this->send(Method::GET, 'wilayah/temanggung')->getBody();
+        $this->assertSame(2, substr_count($page, 'node-card panel is-completed is-done-locked'));
+        $this->assertStringContainsString(esc(lang('Game.retakeLater')), $page);
+        $this->assertStringContainsString('hasil/temanggung/1', $page, 'Lihat hasil stays');
+
+        $this->markCompleted($this->sessionId, ['tmg-3', 'tmg-4', 'tmg-5']);
+        $this->resetFieldServices();
+        $page = (string) $this->send(Method::GET, 'wilayah/temanggung')->getBody();
+        $this->assertStringNotContainsString('is-done-locked', $page);
+        $this->assertSame(5, substr_count($page, 'node-card panel is-completed'));
+    }
+
     public function testRegionOutsideTheMeetingPlanStaysClosed(): void
     {
         $this->markCompleted($this->sessionId, ['tmg-1', 'tmg-2', 'tmg-3', 'tmg-4', 'tmg-5']);

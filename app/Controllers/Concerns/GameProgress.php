@@ -133,12 +133,11 @@ trait GameProgress
                 'variant'     => (string) ($node->variant_code ?? ''),
                 'title'       => $node->text('title', $locale),
                 'description' => $node->text('description', $locale),
-                'status'      => $completed ? 'completed' : ($open ? 'open' : 'locked'),
+                // Part 7 (33 §7.4; owner, 9 November 2026): research mode, done but not yet open for a retake
+                'status'      => $completed ? ($retake ? 'completed' : 'done_locked') : ($open ? 'open' : 'locked'),
                 'stars'       => $attempt?->stars === null ? null : (int) $attempt->stars,
                 'map_x'       => $node->map_x,
                 'map_y'       => $node->map_y,
-                // Part 7 (33 §7.4): completed, but Ulangi stays hidden (Game.retakeLater); status stays `completed`
-                'retake_locked' => $completed && ! $retake,
             ];
 
             $previousDone = $completed;
