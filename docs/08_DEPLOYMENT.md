@@ -1575,3 +1575,10 @@ The script makes a fresh backup as usual and tests it (`gzip -t` / opening the z
 
 `gelita:retention:run` gains one step with the switch on: `expired_browser_sessions` in the `retention_run` audit summary.
 
+
+## Research revision 10, part 7: migration `004100`
+
+- `2026-01-01-004100_AddResearchModeData` adds `research_studies.idle_threshold_ms` (180000), `rapid_guess_ms` (3000), `min_stage_px` (960), `test_rapid_guess_ms` (3000); `challenge_attempts.is_retake` (filled for old retakes); `audio_usage_events.clock_offset_ms` (old rows empty); and the table `challenge_attempt_segments` (FKs `ON DELETE CASCADE` to attempts and game sessions, `SET NULL` to field sessions), with one segment per existing attempt (`left_via = migration`). Nothing is deleted. `gelita:reset` needs this migration in the history.
+- New config `gelita.inputIdleLogMs` (20000): the logging limit of `input_idle`, not an analysis threshold.
+- The JSON after-filter of `/api` leaves `image/*` responses alone (Cari Objek pictures). nginx needs nothing new: the pictures are served by PHP with `Cache-Control: private, max-age=86400`.
+- Asset packages: the public manifest names Cari Objek pictures (find_object items, post scenes) `cari.{sha256[0:16]}` instead of their asset key; rebuild the package after the upgrade.

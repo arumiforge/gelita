@@ -1157,3 +1157,10 @@ Sintaks modul dapat diperiksa cepat dengan `node --check public/assets/js/<berka
 - `game/narrator.js`: one `dialogue_completed` {context, total} at the last slide.
 - `core/audio.js`: a playback cut short by a restart, a hidden page, or `pagehide` reports its listening time as `pause` (no raw event on the server).
 - `core/device.js`: no pixel ratio, time zone, browser language, model, architecture, or bitness; touch points only for the server's iPad correction.
+
+## Research revision 10, part 7: input pauses, small screens, logout (33 §5.2, §7.2, §8)
+
+- `core/activity.js` (loaded by `game.js` when there is a session): one `input_idle {idle_ms, started_at, end, screen}` per pause of `CONFIG.inputIdleLogMs` (20 s) or more between inputs (`pointerdown`, `keydown`, `wheel`, `scroll` with capture, `pointermove` only with a pressed button). A hidden page cuts the pause (`end: hidden`), `pagehide` closes it (`end: pagehide`). Its listeners sit on `window` with capture, so the closing event leaves with the flush of `core/events.js`. The pure tracker is `core/idle-tracker.js` (tested in Node by `InputIdleEventTest`).
+- `game/screen-check.js`: the small-screen gate (research mode, `CONFIG.researchMode`, `CONFIG.minStagePx`) or warning, and `stage_w` in token forms.
+- `game/hud.js`: Keluar (`a[href$="/keluar"]`) waits for `flush()` at most 5 s. `core/storage.js` stamps queued rows with `at`; `Storage.pruneStale()` lets other sessions' rows go after 14 days and counts them.
+- `core/curtain.js`: a second navigation tap within 400 ms is ignored; rejected `pageswap`/`pagereveal` view transitions are caught.
