@@ -107,14 +107,7 @@ final class StudyThresholdsTest extends CIUnitTestCase
             $this->assertStringContainsString('data-derived-status', $page, $sheet);
         }
 
-        $this->asStaff('peneliti');
-
-        try {
-            $this->send(Method::GET, 'admin/data/turunan_butir');
-            $this->fail('research.browse is ketua only');
-        } catch (CodeIgniter\Exceptions\PageNotFoundException) {
-            $this->assertTrue(true);
-        }
+        // research.browse stays the ketua's (ResearcherPanelTest checks /admin/data for the other roles)
     }
 
     private function study(): array
