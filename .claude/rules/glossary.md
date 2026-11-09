@@ -102,6 +102,18 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | situasi (skenario) | `situation` | context `scenario_situation`, recordings `skenario-{item}`; picture slot `item.skenario.{item}` (`CatalogImporter::MOCKUP_DIRS`, catalogue `mockup/gambar-mockup/skenario/`) |
 | rekaman petunjuk Periksa Unggahan | `post clue recording` | context `post_clue`, recordings `unggahan-{item}` |
 | skenario ditutup (kesempatan habis) | `scenario_failed` | server-only event, `EventCatalog::SERVER_ONLY` |
+| jeda masukan | `input pause`, `input_idle` | client research event for input pauses ≥ 20 s (`Config\Gelita::$inputIdleLogMs`), payload `idle_ms`, `started_at`, `end`, `screen`; `core/idle-tracker.js`, `core/activity.js` (revision 10, part 7: 33, since 9 Nov 2026) |
+| potongan pengerjaan | `attempt segment` | `challenge_attempt_segments` (`segment_no`, `opened_at`, `left_at`, `left_via`); a first attempt left in one game session moves to the next one with a new segment (33 K3) |
+| pengerjaan ulang | `retake` | `challenge_attempts.is_retake`; in research mode only after the region's five challenges are done (`retake_locked` flag on a `completed` challenge, `RETAKE_LOCKED`, `Game.retakeLater`); stars still count (33 K5) |
+| layar terlalu kecil | `small-screen gate` | `components/small-screen`, `game/screen-check.js`; research mode refuses a stage under `research_studies.min_stage_px` (960) at `/token` and `/daftar` step 0 (`stage_w`, audit `small_screen_refused`); outside it a closable warning |
+| jam tersembunyi (mode penelitian) | `research clock` | no timer or `elapsed_ms` in the challenge frame while `field_mode` is on (33 §7) |
+| modul tes | `instrument module` | route `/tes` (Bootstrap layout `layouts/instrument`, no game HUD), `InstrumentService`, `gelita:instrumen:impor`, content in `app/Database/Seeds/data/instrumen/{tes,angket,sikap}.php` (revision 10, part 8: 34, since 9 Nov 2026) |
+| tes awal, tes akhir, angket | `pre-test`, `post-test`, `questionnaire` | `instrument_sittings.occasion` `pre`/`post`/`p5`, `kind` `test`/`questionnaire`/`risk`/`attitude`; forms A/B from `participant_seats.pre_form`/`post_form` |
+| bagian tes | `test part` | `mb`, `ae`, `bd`; `instrument_parts` (`raw_score`, `answered_count`), answers `instrument_responses` |
+| blok waktu, tambah waktu | `time block`, `extra minutes` | `instrument_blocks.block` `p1`/`p23`, hidden limit, `extra_minutes` via *Tambah waktu* on the field-session page |
+| pertanyaan tambahan (butir risiko) | `risk items` | route `/tes/tambahan`, sitting kind `risk`, T11/T12 (`riskAsk*`, `riskThanks*`); gate `ConsentService::riskItemsAllowed()`; only aggregate in downloads (`risiko_gabungan`) |
+| skala sikap | `attitude scale` | route `/refleksi/sikap` in Balai Refleksi at P5, sitting kind `attitude`, items skp-01–12 |
+| pratinjau instrumen | `instrument preview` | `Config\Gelita::$instrumentPreview` (`gelita.instrumentPreview`): `uji.*` accounts try the module, sittings `is_preview = 1`, never in research data |
 
 ## People, data, and the panel
 
@@ -164,5 +176,9 @@ One concept, one word, in every layer. "UI (id)" is what users read; "Code (en)"
 | ganti nama dengan kode (penutupan studi) | `identity replacement` | `StudyClosureService`, confirm word `GANTI` |
 | cadangan diganti | `backup replacement` | `deploy/linux/backup.sh --ganti`, `deploy/windows/backup.ps1 -Ganti` |
 | IP berhash di sesi peramban | `hashed IP session` | `HashedIpSessionHandler`, switch `gelita.researchPrivacy` (off by default) |
+| pengaturan pengambilan data (studi) | `study settings` | `POST /admin/studi/{id}/pengaturan` → `StudyController::updateSettings`; `research_studies.idle_threshold_ms` (180000), `rapid_guess_ms` (3000), `test_rapid_guess_ms` (3000), `min_stage_px` (960); audit `study_settings_changed`; refused once `thresholds_locked_at` is set (part 9) |
+| batas waktu modul tes (studi) | `instrument settings` | `research_studies.instrument_settings` JSON (null = `Config\Gelita::$instrumentDefaults`), `POST /admin/studi/{id}/instrumen` |
+| Mulai tes awal / akhir | `test start` | `field_sessions.test_started_at`, `test_started_by`; `POST /admin/sesi-lapangan/{id}/mulai-tes` (`FieldTestService`), audit `field_test_started`; filter `instrumentRedirect` closes the challenges meanwhile |
+| status tes | `test status` | `belum`, `sedang`, `selesai`, `susulan`, `hilang` (`InstrumentService::testStatus()`); field-session page, monitoring, printed L6 *tes* sheet in the template (never uploaded) |
 
 Add a row whenever a new concept appears. If a term here conflicts with existing code, the existing stored value wins and the table gets corrected.
