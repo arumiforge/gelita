@@ -131,6 +131,12 @@ class FieldSheetService
             $this->templateSheet($book, $sheet, $fieldSession, $roster);
         }
 
+        // Coordinator, wave F (29 §10.3, K12): on a test meeting, L6 status tes per siswa
+        // printed from the test module (part 8); never uploaded, so not in expectedSheets()
+        if ($sheets === null && ($testRows = (new FieldTestService())->testSheetRows($fieldSession)) !== []) {
+            $this->testStatusSheet($book, $fieldSession, $testRows);
+        }
+
         $this->codeSheet($book, array_column($roster, 'participant_code'));
         $book->setActiveSheetIndex(0);
 
@@ -208,6 +214,28 @@ class FieldSheetService
         $ws->getStyle('B1:B' . $r)->getAlignment()->setWrapText(true);
         (new Xlsx($book))->save($path);
         $book->disconnectWorksheets();
+    }
+
+    /** @param list<array<string, string>> $rows from FieldTestService::testSheetRows() */
+    private function testStatusSheet(Spreadsheet $book, array $fieldSession, array $rows): void
+    {
+        $ws = $book->createSheet()->setTitle(mb_substr(FieldSheetSpec::title('l6_tes'), 0, 31));
+        $ws->setCellValue('A1', 'Kode sesi lapangan');
+        $ws->setCellValue('B1', (string) $fieldSession['code']);
+        $ws->setCellValue('C1', 'Tanggal');
+        $ws->setCellValueExplicit('D1', (string) $fieldSession['session_date'], \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+        $ws->setCellValue('A2', FieldSheetSpec::VERSION . ' · l6_tes (dari modul tes, tidak diunggah)');
+
+        foreach (array_keys(FieldSheetSpec::sheet('l6_tes')['paper']) as $i => $heading) {
+            $ws->setCellValue([$i + 1, 3], $heading);
+            $ws->getColumnDimensionByColumn($i + 1)->setWidth(max(12, min(40, mb_strlen($heading) + 2)));
+
+            foreach ($rows as $r => $row) {
+                $ws->setCellValueExplicit([$i + 1, $r + 4], $row[$heading] ?? '', \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+            }
+        }
+
+        $ws->freezePane('A4');
     }
 
     private function templateSheet(Spreadsheet $book, string $sheet, array $fieldSession, array $roster): void

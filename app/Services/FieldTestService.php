@@ -62,6 +62,56 @@ class FieldTestService
         return $out;
     }
 
+    // Coordinator, wave F (29 §10.3, 34 §14): L6 status tes per siswa in the field-sheet template
+    /**
+     * Rows of the printed L6 *tes* sheet, filled from the module: per student
+     * the pre-test and post-test (date, form, status), the questionnaire
+     * status, the risk-items consent and whether the risk step was sent.
+     * Empty when the field session is not a test meeting.
+     *
+     * @param array<string, mixed> $fieldSession
+     *
+     * @return list<array<string, string>> keyed by the L6-tes paper headings
+     */
+    public function testSheetRows(array $fieldSession): array
+    {
+        if (service('fieldSessions')->planEntry($fieldSession)['test'] === null) {
+            return [];
+        }
+
+        $studyId     = (int) $fieldSession['study_id'];
+        $main        = $this->mainSession($fieldSession);
+        $instruments = service('instruments');
+        $consents    = service('consentService');
+        $rows        = [];
+
+        $test = static function (int $pid, string $occasion) use ($instruments, $studyId, $main): string {
+            $sitting = $instruments->sitting($pid, $studyId, $occasion, 'test');
+            $status  = $instruments->testStatus($pid, $studyId, $occasion, $main);
+
+            return $sitting === null ? $status
+                : implode(', ', array_filter([substr((string) ($sitting['submitted_at'] ?? $sitting['started_at']), 0, 10), (string) $sitting['form'], $status]));
+        };
+        $sent = static function (?array $sitting): string {
+            return $sitting === null ? 'belum' : ($sitting['submitted_at'] === null ? 'sedang' : 'selesai');
+        };
+
+        foreach ($this->roster($fieldSession) as $student) {
+            $pid    = (int) $student['id'];
+            $rows[] = [
+                'Kode peserta'                       => (string) $student['participant_code'],
+                'Tes awal (tanggal, bentuk, status)' => $test($pid, 'pre'),
+                'Angket'                             => $sent($instruments->sitting($pid, $studyId, 'pre', 'questionnaire')),
+                'Tes akhir (tanggal, bentuk, status)' => $test($pid, 'post'),
+                'Izin butir risiko'                  => $consents->riskItemsAllowed($pid) ? 'Ya' : 'Tidak',
+                'Butir risiko'                       => $sent($instruments->sitting($pid, $studyId, 'post', 'risk')),
+                'Catatan'                            => '',
+            ];
+        }
+
+        return $rows;
+    }
+
     /**
      * Mulai tes awal/akhir (§5.3, K1): `test_started_at` with a conditional
      * UPDATE `test_started_at IS NULL`; audit `field_test_started`. The
