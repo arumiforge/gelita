@@ -21,6 +21,8 @@
  */
 $questions = ['liked_most', 'hardest_part', 'new_learning', 'suggestion'];
 $rating    = (int) old('rating');
+// Part 8 (34 §9.4): during a study every feedback field may stay empty
+$studyFeedback = ! empty($studyFeedback);
 $plate     = 'ui/btn-reflection' . ($locale === 'en' ? '-en' : '') . '.webp';
 $plateSize = is_file(FCPATH . 'assets/' . $plate) ? @getimagesize(FCPATH . 'assets/' . $plate) : false;
 $track     = is_file(FCPATH . 'assets/ui/loading-track.webp')
@@ -48,13 +50,16 @@ $track     = is_file(FCPATH . 'assets/ui/loading-track.webp')
     <div class="reflection-speaker">
       <span class="reflection-avatar"><?= component('partials/kedu-portrait', ['src' => media_key_src('ui.kedu-avatar'), 'name' => lang('Game.char_mbah_kedu')]) ?></span>
       <p class="reflection-words"><?= esc(lang('Game.reflectionLead')) ?></p>
+      <?php if ($studyFeedback): ?><p class="reflection-words"><?= esc(lang('Game.attitudeThanks')) ?></p><?php endif ?>
     </div>
   </header>
 
   <div class="stat-grid">
     <?= component('stat-tile', ['label' => lang('Game.firstPass'), 'value' => lang('Game.firstTryCount', [$journey['first_pass'], $journey['scorable']]), 'icon' => 'target']) ?>
     <?= component('stat-tile', ['label' => lang('Game.challengesDone'), 'value' => (string) $journey['completed'], 'icon' => 'check']) ?>
+    <?php if (empty($researchMode)): // Part 7 (33 §7.1): no Total waktu tile in research mode ?>
     <?= component('stat-tile', ['label' => lang('Game.totalTime'), 'value' => ms_to_human($journey['duration_ms']), 'icon' => 'clock']) ?>
+    <?php endif ?>
     <?= component('stat-tile', ['label' => lang('Game.correctItems'), 'value' => (string) $journey['correct_items'], 'icon' => 'star']) ?>
   </div>
 
@@ -104,16 +109,16 @@ $track     = is_file(FCPATH . 'assets/ui/loading-track.webp')
 
     <?= $this->include('partials/form-errors') ?>
 
-    <form method="post" action="<?= base_url('refleksi') ?>" class="form reflection-fields-form" data-min-answers="2">
+    <form method="post" action="<?= base_url('refleksi') ?>" class="form reflection-fields-form" data-min-answers="<?= $studyFeedback ? 0 : 2 ?>">
       <?= csrf_field() ?>
       <div class="reflection-fields stage-scroll">
 
       <fieldset class="rating<?= isset($errors['rating']) ? ' has-error' : '' ?>">
-        <legend class="label"><?= esc(lang('Game.ratingLegend')) ?> <span class="req" aria-hidden="true">*</span></legend>
+        <legend class="label"><?= esc(lang('Game.ratingLegend')) ?> <?php if (! $studyFeedback): ?><span class="req" aria-hidden="true">*</span><?php endif ?></legend>
         <div class="rating-stars">
           <?php for ($star = 1; $star <= 5; $star++): ?>
             <label class="rating-star">
-              <input type="radio" name="rating" value="<?= $star ?>" required <?= $rating === $star ? 'checked' : '' ?>>
+              <input type="radio" name="rating" value="<?= $star ?>"<?= $studyFeedback ? '' : ' required' ?> <?= $rating === $star ? 'checked' : '' ?>>
               <?= star_img(false) ?>
               <span class="visually-hidden"><?= esc(lang('Game.ratingStar', [$star])) ?></span>
             </label>
@@ -128,7 +133,7 @@ $track     = is_file(FCPATH . 'assets/ui/loading-track.webp')
         </div>
       <?php endforeach ?>
 
-      <p class="field-help"><?= icon('info') ?> <?= esc(lang('Game.needTwoHint')) ?></p>
+      <p class="field-help"><?= icon('info') ?> <?= esc(lang($studyFeedback ? 'Game.reflectionAllOptional' : 'Game.needTwoHint')) ?></p>
       </div>
 
       <div class="form-actions">

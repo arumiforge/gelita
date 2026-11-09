@@ -187,6 +187,26 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $r
       <p><a class="btn btn-sm btn-quiet" href="<?= base_url('admin/studi/' . $sid . '/penutupan') ?>"><?= esc(lang('Admin.closureTitle')) ?></a></p>
     <?php endif ?>
   </form>
+  <?= view('admin/study/_settings', ['study' => $study]) ?>
+  <?php // Part 9 (35 §10.4, §11): derived data layer status, Hitung ulang, Kunci ambang ?>
+  <?php if (staff_can('research.export') || staff_can('studies.manage')): ?>
+    <?= view('admin/study/_derived', ['study' => $study, 'back' => 'admin/studi']) ?>
+  <?php endif ?>
+  <?php // Part 8 (34 §7.4): hidden time limits of the test module, a form of its own ?>
+  <?php $limits = service('instruments')->settings($study) ?>
+  <form method="post" action="<?= base_url('admin/studi/' . $sid . '/instrumen') ?>" class="form-section" data-instrument-settings>
+    <?= csrf_field() ?>
+    <h3><?= esc(lang('Admin.instrumentSettings')) ?></h3>
+    <p class="muted"><?= esc(lang('Admin.instrumentSettingsLead')) ?></p>
+    <fieldset class="form-grid"<?= staff_can('studies.manage') ? '' : ' disabled' ?>>
+      <?php foreach (['limit_p1' => 'instrumentLimitP1', 'limit_p23' => 'instrumentLimitP23', 'reminder' => 'instrumentReminder', 'extra_max' => 'instrumentExtraMax', 'makeup_days' => 'instrumentMakeupDays', 'attitude_days' => 'instrumentAttitudeDays'] as $key => $label): ?>
+        <label><?= esc(lang('Admin.' . $label)) ?> <input type="number" name="<?= esc($key, 'attr') ?>" min="1" max="240" value="<?= (int) $limits[$key] ?>"></label>
+      <?php endforeach ?>
+    </fieldset>
+    <?php if (staff_can('studies.manage')): ?>
+      <div class="form-actions"><button class="btn btn-sm" type="submit"><?= icon('check') ?> <?= esc(lang('Admin.instrumentSettings')) ?></button></div>
+    <?php endif ?>
+  </form>
 <?php endforeach ?>
 
 <?php if (staff_can('studies.manage')): ?>

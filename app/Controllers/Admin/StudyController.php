@@ -112,6 +112,125 @@ class StudyController extends BaseAdminController
         return $this->done('admin/studi', 'Perubahan penelitian sudah disimpan.');
     }
 
+    // ------------------------------------------------ part 7 (33 §6, §10)
+
+    /** Study settings => [form field, unit factor to ms/px, min, max, range message]. */
+    public const SETTINGS = [
+        'idle_threshold_ms'   => ['idle_threshold_s', 1000, 30000, 1800000, 'Admin.studyIdleRange'],
+        'rapid_guess_ms'      => ['rapid_guess_s', 1000, 500, 10000, 'Admin.studyRapidRange'],
+        'test_rapid_guess_ms' => ['test_rapid_guess_s', 1000, 500, 10000, 'Admin.studyRapidRange'],
+        'min_stage_px'        => ['min_stage_px', 1, 640, 1280, 'Admin.studyMinStageRange'],
+    ];
+
+    /** Thresholds that part 9's *Kunci ambang* (35 §5, `thresholds_locked_at`) freezes. */
+    public const LOCKED_BY_THRESHOLDS = ['idle_threshold_ms', 'rapid_guess_ms', 'test_rapid_guess_ms'];
+
+    /**
+     * POST /admin/studi/{id}/pengaturan (ketua, `studies.manage`): the idle
+     * and rapid-guess thresholds (shown in seconds) and the smallest stage
+     * width (pixels). A field left out keeps its value. The idle threshold
+     * may never be below the logging limit `inputIdleLogMs`. Once the
+     * thresholds are locked (`thresholds_locked_at`, part 9) only
+     * `min_stage_px` may change. Audit `study_settings_changed` with the old
+     * and new values of what changed.
+     */
+    public function updateSettings(int $studyId): RedirectResponse
+    {
+        $studies = model(ResearchStudyModel::class);
+        $row     = $studies->find($studyId);
+
+        if ($row === null) {
+            return $this->back('admin/studi', 'Penelitian tidak ditemukan.');
+        }
+
+        $changes = [];
+
+        foreach (self::SETTINGS as $column => [$field, $factor, $min, $max, $range]) {
+            $raw = trim((string) $this->request->getPost($field));
+
+            if ($raw === '') {
+                continue;
+            }
+
+            $number = str_replace(',', '.', $raw);
+
+            if (! is_numeric($number)) {
+                return $this->back('admin/studi', lang($range));
+            }
+
+            $value = (int) round((float) $number * $factor);
+
+            if ($column === 'idle_threshold_ms' && ($value < $min || $value < (int) config('Gelita')->inputIdleLogMs)) {
+                return $this->back('admin/studi', lang('Admin.studyIdleTooLow'));
+            }
+
+            if ($value < $min || $value > $max) {
+                return $this->back('admin/studi', lang($range));
+            }
+
+            if ($value !== (int) ($row[$column] ?? 0)) {
+                $changes[$column] = $value;
+            }
+        }
+
+        if (! empty($row['thresholds_locked_at']) && array_intersect(array_keys($changes), self::LOCKED_BY_THRESHOLDS) !== []) {
+            return $this->back('admin/studi', lang('Admin.studyThresholdsLocked'));
+        }
+
+        if ($changes === []) {
+            return $this->done('admin/studi', lang('Admin.studySettingsUnchanged'));
+        }
+
+        if (! $studies->update($studyId, $changes)) {
+            return $this->back('admin/studi', 'Pengaturan belum dapat disimpan: ' . $this->modelErrors($studies));
+        }
+
+        $this->audit('study_settings_changed', 'research_study', $studyId, [
+            'from' => array_map(static fn (string $column): int => (int) ($row[$column] ?? 0), array_combine(array_keys($changes), array_keys($changes))),
+            'to'   => $changes,
+        ]);
+        service('fieldSessions')->forget();
+
+        return $this->done('admin/studi', lang('Admin.studySettingsSaved'));
+    }
+
+    // ------------------------------------------------ part 9 (35 §5, §13)
+
+    /**
+     * POST /admin/studi/{id}/ambang/kunci (ketua, `studies.manage`): the G4
+     * lock of the idle and rapid-guess thresholds. Fills
+     * `thresholds_locked_at` once (conditional UPDATE on the empty column);
+     * audit `study_thresholds_locked` with the values locked. Only for
+     * field-mode studies; unlocking is the command `gelita:turunan:ambang --buka`.
+     */
+    public function lockThresholds(int $studyId): RedirectResponse
+    {
+        $row = model(ResearchStudyModel::class)->find($studyId);
+
+        if ($row === null) {
+            return $this->back('admin/studi', 'Penelitian tidak ditemukan.');
+        }
+
+        if ((int) $row['field_mode'] !== 1) {
+            return $this->back('admin/studi', lang('Admin.studyThresholdsLockOff'));
+        }
+
+        $db = db_connect();
+        $db->table('research_studies')->where('id', $studyId)->where('thresholds_locked_at', null)->update(['thresholds_locked_at' => date('Y-m-d H:i:s')]);
+
+        if ($db->affectedRows() !== 1) {
+            return $this->back('admin/studi', lang('Admin.studyThresholdsLocked'));
+        }
+
+        $this->audit('study_thresholds_locked', 'research_study', $studyId, [
+            'idle_threshold_ms'   => (int) $row['idle_threshold_ms'],
+            'rapid_guess_ms'      => (int) $row['rapid_guess_ms'],
+            'test_rapid_guess_ms' => (int) $row['test_rapid_guess_ms'],
+        ]);
+
+        return $this->done('admin/studi', lang('Admin.studyThresholdsLockDone'));
+    }
+
     // ---------------------------------------------------------------- rilis
 
     public function releases(): string
@@ -344,6 +463,39 @@ class StudyController extends BaseAdminController
         }
 
         return ! $closed && $row !== null && $row['closed_at'] !== null ? ['closed_at' => null] : [];
+    }
+
+    // Part 8 (34 §7.4, K15): hidden time limits of the test module, its own route and method
+
+    /** POST /admin/studi/{id}/instrumen (`studies.manage`); audit `study_instrument_settings_changed` with old and new values. */
+    public function updateInstrumentSettings(int $studyId): RedirectResponse
+    {
+        $studies = model(ResearchStudyModel::class);
+        $row     = $studies->find($studyId);
+
+        if ($row === null) {
+            return $this->back('admin/studi', 'Penelitian tidak ditemukan.');
+        }
+
+        $old = service('instruments')->settings($row);
+        $new = [];
+
+        foreach (array_keys(config('Gelita')->instrumentDefaults) as $key) {
+            $value = trim((string) $this->request->getPost($key));
+
+            if (! ctype_digit($value) || (int) $value < 1 || (int) $value > 240) {
+                return $this->back('admin/studi', lang('Admin.instrumentSettingsInvalid'));
+            }
+
+            $new[$key] = (int) $value;
+        }
+
+        if ($new !== $old) {
+            $studies->update($studyId, ['instrument_settings' => json_encode($new)]);
+            $this->audit('study_instrument_settings_changed', 'research_study', $studyId, ['from' => $old, 'to' => $new]);
+        }
+
+        return $this->done('admin/studi', lang('Admin.instrumentSettingsSaved'));
     }
 
     /** @param array<string, mixed> $metadata */

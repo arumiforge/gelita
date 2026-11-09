@@ -1,0 +1,26 @@
+# derived_tries, computed by hand (11 → Analitik 6, 7; Pengerjaan pertama; 35 §6.1). Empty = no data.
+# 1–4 Isi Rumpang: no decision time (11: not for cloze); try 4 is the third wrong try (NON-HABIS).
+# 5–7 Benar atau Salah: decision = last_input_ms − ready_ms; 1500 < 3000 = rapid; L3 ISI 08:08:30 covers 08:07:30–08:10:30.
+# 8 Cari Objek: latest bank code INF-BUD, at try INF-LIT; rapid and wrong → NON-TEB; DEV-NET (semua) 08:11–08:16.
+# 10–12 at P5 (field session 2): no sheet imported there, so the markers are empty.
+# 11 Skenario: action 3000 − 1000 = 2000 → rapid → NON-TEB.
+# 13–14 B on a shared device until 08:12 (L2), DEV-NET for every seat; 15 is a retake (never numbered).
+# C: try 18 (08:15) is after the cutoff 08:12 and has no row; try 16–17 at 08:10, before DEV-NET.
+try_id,scored_try_no,anomaly,error_code,error_code_at_try,decision_ms,rapid_guess,error_code_analysis,last_try_exhausted,shared_device,helped_content,deviation_code,outside_session,is_retake,field_session_id
+1,1,,,,,,,0,0,0,,0,0,1
+2,1,,INF-LIT,INF-LIT,,,INF-LIT,0,0,0,,0,0,1
+3,2,,INF-LIT,INF-LIT,,,INF-LIT,0,0,0,,0,0,1
+4,3,,INF-KAT,INF-KAT,,,INF-KAT,1,0,0,,0,0,1
+5,1,,,,1500,1,,0,0,1,,0,0,1
+6,1,,INF-SUM,INF-SUM,4000,0,INF-SUM,0,0,1,,0,0,1
+7,2,,,,3500,0,,0,0,1,,0,0,1
+8,1,,INF-BUD,INF-LIT,2000,1,NON-TEB,0,0,0,DEV-NET,0,0,1
+9,2,,,,4000,0,,0,0,0,DEV-NET,0,0,1
+10,1,,,,1000,1,,0,,,,0,0,2
+11,1,,DIG-PRI,DIG-PRI,2000,1,NON-TEB,0,,,,0,0,2
+12,2,,,,4000,0,,0,,,,0,0,2
+13,1,,,,,,,0,1,0,DEV-NET,0,0,1
+14,1,,,,,,,0,1,0,DEV-NET,0,0,1
+15,,,,,,,,0,0,0,,0,1,1
+16,1,,,,,,,0,0,0,,0,0,1
+17,1,,INF-REL,INF-REL,,,INF-REL,0,0,0,,0,0,1

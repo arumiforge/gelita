@@ -54,7 +54,8 @@ final class RawExportTest extends CIUnitTestCase
         $export  = $this->build('csv', self::KETUA, ['anonymized' => 0]);
         $sheets  = $this->readZip($export['file_path']);
         $service = new ExportService();
-        $allowed = $service->allowedSheets([], true);
+        // Part 9 (35 K9): the study has field mode off, so no turunan_* sheets
+        $allowed = array_values(array_filter($service->allowedSheets([], true), static fn (string $sheet): bool => ! \App\Libraries\DerivedSheets::has($sheet)));
 
         $this->assertSame(array_map(static fn (string $s): string => $s . '.csv', $allowed), array_keys($sheets));
         $this->assertContains('event', $allowed, 'Event Mentah is for ketua since part 3 (29 K1)');
@@ -107,7 +108,7 @@ final class RawExportTest extends CIUnitTestCase
         $export = $this->build('xlsx', self::KETUA);
         $book   = IOFactory::load($export['file_path']);
 
-        $this->assertSame(array_map(ExportLabels::sheetTitle(...), (new ExportService())->allowedSheets([], true)), $book->getSheetNames());
+        $this->assertSame(array_map(ExportLabels::sheetTitle(...), array_values(array_filter((new ExportService())->allowedSheets([], true), static fn (string $sheet): bool => ! \App\Libraries\DerivedSheets::has($sheet)))), $book->getSheetNames());
 
         $attempts = $book->getSheetByName('Pengerjaan Tantangan')->toArray(null, false, false);
         $header   = $attempts[0];

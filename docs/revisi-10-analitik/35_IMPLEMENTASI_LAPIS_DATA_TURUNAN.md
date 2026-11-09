@@ -2,7 +2,7 @@
 
 Per 2 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 9 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), ditambah usulan `kamus-1.1`
 
-> **Status: `draf pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 1–2 November 2026). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 sistem dibangun sekarang ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026), tetapi tidak dipakai dengan anak sebelum persetujuan etik terbit. Perilaku penelitian ada di balik sakelar studi yang mati secara bawaan, jadi `main` tetap bisa dirilis.
+> **Status: `disetujui pengembang` (9 November 2026), `asal: pengembang`** (disusun dengan bantuan AI, 1–2 November 2026; kode gelombang F, 9 November 2026; penyesuaian dari implementasi di [§19](#19-keputusan-pengembang) no. 12–15). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 sistem dibangun sekarang ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026), tetapi tidak dipakai dengan anak sebelum persetujuan etik terbit. Perilaku penelitian ada di balik sakelar studi yang mati secara bawaan, jadi `main` tetap bisa dirilis.
 >
 > **Bagian 9 dari 9, dikerjakan paling akhir** (gelombang kode F, setelah bagian 7 dan 8). Lapis turunan menghitung dari data mentah semua bagian lain: peran dan kemampuan dari [27](27_IMPLEMENTASI_PERAN_PENELITI.md), sesi lapangan dan kemajuan per siswa dari [28](28_IMPLEMENTASI_SESI_LAPANGAN.md), data mentah baru, lembar lapangan, dan `ResearchDictionary` dari [29](29_IMPLEMENTASI_DATA_PENELITIAN.md), izin dan status mundur dari [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md), serta kode kesalahan (bagian 5), Skenario Digital (bagian 6), waktu aktif mentah (bagian 7), dan modul tes, angket, dan skala sikap (bagian 8). Bagian 5–8 (`31`–`34`) ditulis paralel dengan dokumen ini; datanya disebut sebagai titik sambung dan anggapannya didaftar di [§20](#20-akibat-ke-dokumen-lain).
 >
@@ -630,8 +630,8 @@ Tidak menahan draf ini.
 1. ~~**Kapan 11 diubah ke `kamus-1.1`.**~~ Usulan: satu sesi setelah uji coba KG3b, bersama penetapan ulang ambang, dengan `asal: peneliti` bila peneliti yang menetapkan angkanya. Sampai itu, unduhan menulis `kamus-1.1-usulan`. **Diputuskan pengembang 2 November 2026** (sesi koordinator, [04](04_CATATAN_KEPUTUSAN.md)): `kamus-1.1` ditulis ke 11 sekarang sebagai `draf pengembang` ([§19](#19-keputusan-pengembang) no. 6); angka ambang ditetapkan ulang setelah KG3b.
 2. **Ambang tebakan cepat tes.** 13 menulis ambang untuk tes ditinjau tersendiri karena waktu membaca teks jatuh ke butir pertama. Sementara memakai T_teb studi. Bila uji coba menunjukkan perlu, ditambah kolom studi `test_rapid_guess_ms`. **Diputuskan pengembang (4 November 2026, [34 §17](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#17-pertanyaan-terbuka) no. 1):** kolom `test_rapid_guess_ms` dibuat sekarang (nilai awal 3000 ms, ikut dikunci bersama ambang lain), dan `rapid_guess` jawaban tes membacanya; butir pertama sesudah bacaan kosong. Dibawa ke §6.8, §11, dan migrasi saat implementasi bagian 7 dan 9.
 3. ~~**"Pengambilan data selesai" sebelum studi ditutup.**~~ Dibaca sebagai jam putaran (§6.4). Alternatif: tanggal akhir pengambilan data di studi, sehingga `not_started` tidak berubah setelah tanggal itu. Usulan: cukup jam putaran, karena game tertutup di luar sesi lapangan. **Diputuskan pengembang 2 November 2026** (sesi koordinator, [04](04_CATATAN_KEPUTUSAN.md)): jam putaran.
-4. **Lama hitung.** Bila cek manual menunjukkan lebih dari 10 menit untuk ± 360 anak, putaran pindah ke pekerjaan latar dan tombol menjadi antrean. Diputuskan saat implementasi dari angka cek manual.
-5. **Data lama tanpa `ready_ms` atau `empty_tap`.** Pengerjaan dari sebelum bagian 3 tidak punya keduanya; `decision_ms`, `rapid_guess`, dan `near_miss_count` kosong, bukan 0. Data itu memang tidak masuk studi (diuji di instalasi uji), jadi tidak ada aturan khusus.
+4. **Lama hitung.** **Diputuskan pengembang 9 November 2026** ([§19](#19-keputusan-pengembang) no. 12): dihitung langsung, tanpa antrean. Bila cek manual menunjukkan lebih dari 10 menit untuk ± 360 anak, putaran pindah ke pekerjaan latar dan tombol menjadi antrean. Diputuskan saat implementasi dari angka cek manual.
+5. **Data lama tanpa `ready_ms` atau `empty_tap`** (disetujui 9 November 2026, §19 no. 12). Pengerjaan dari sebelum bagian 3 tidak punya keduanya; `decision_ms`, `rapid_guess`, dan `near_miss_count` kosong, bukan 0. Data itu memang tidak masuk studi (diuji di instalasi uji), jadi tidak ada aturan khusus.
 
 ---
 
@@ -659,6 +659,23 @@ Diikuti dari keputusan dokumen lain di sesi yang sama:
 
 10. **Sidik jari satu aturan `MAX(updated_at)`** (§4.3), karena `instrument_sittings` dan `instrument_responses` mendapat `updated_at` ([34 §18](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#18-keputusan-pengembang) no. 6). Tidak dipilih: sidik jari dengan `revision`.
 11. **Waktu keputusan Skenario Digital dibaca dari data mentah** (§6.1): `action_last_input_ms` dan `reason_last_input_ms` dari [32 §6.4](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#64-waktu) ([32 §18](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#18-keputusan-pengembang) no. 5). Tidak dipilih: perkiraan di bagian ini.
+
+
+**Kode gelombang F dan jawaban pengembang, 9 November 2026** (`asal: pengembang`, `disetujui pengembang`, [04](04_CATATAN_KEPUTUSAN.md)):
+
+12. **Pilihan bawaan §18 disetujui:** putaran dihitung langsung di permintaan, tombol, dan perintah (no. 4; di data simulasi ± 9 ms per siswa, dicek ulang di MariaDB dengan volume nyata); data lama tanpa `ready_ms`/`empty_tap` kosong, bukan 0 (no. 5).
+13. **`sikap_missing_reason` kosong sebelum P5** (§6.6): `absen` hanya bila pertemuan P5 siswa (utama atau susulan) sudah dibuka saat putaran hitung; `belum_tuntas` bila siswa hadir di P5 tanpa mengirim skala. Tidak dipilih: `absen` sejak awal.
+14. **Rumusan disesuaikan dengan kode** (dari laporan implementasi):
+    - §4.3 sidik jari: `challenge_attempts` tidak punya `updated_at`, jadi dipakai jumlah, id terbaru, `completed_at` terbaru, dan jumlah pengerjaan ulang; masukan sidik jari juga sesi game, potongan, kursi, sesi lapangan, dan `item_error_codes` (karena kode bank terbaru dipakai, §19 no. 5).
+    - §6.2 waktu butir Cari Objek dan Skenario Digital: dari waktu siap percobaan pertama (awal potongan + `ready_ms`) sampai percobaan penutup; waktu di petunjuk lain di antaranya ikut terhitung, karena tidak ada event ganti petunjuk.
+    - §6.6 `headset_share = headset_count / headset_of`; `final_correct` = 0 untuk butir yang dicoba tetapi tidak terjawab benar, kosong hanya tanpa percobaan; `analysable`/`complete` menghitung percobaan pertama D1–D3, `rapid_share` semua butir berskor termasuk PBK.
+    - §6.8 ambang tebakan cepat tes = `test_rapid_guess_ms` (keputusan 4 November 2026).
+    - §10.1 filter tanggal tidak berlaku untuk lembar turunan (baris tidak punya satu tanggal); filter studi, sekolah, peserta, wilayah/tantangan, `field_session_code`, dan `meeting_no` berlaku. Lembar turunan tidak ada di unduhan studi tanpa mode penelitian dan di salinan satu anak.
+    - §10.3 setiap lembar turunan membawa `run_id`, `dictionary_version`, dan `unit`.
+    - §12 `derived_runs.test_rapid_guess_ms` ditambahkan, supaya putaran mencatat ketiga ambang; `research_studies.derived_run_id` dan `derived_running_since`.
+    - §14 teks kunci dengan tanggal memakai kunci baru `studyThresholdsLockedOn`; `studyThresholdsLocked` bagian 7 tetap.
+    - Nilai versi yang ditulis: `kamus-1.1-usulan` (`ResearchDictionary::VERSION`), sampai 11 menyetujui `kamus-1.1`.
+15. **`after_withdrawal` di lembar mentah dihitung saat unduhan** dari `participant_consents` dan `deactivated_at` dengan aturan saat mundur yang sama (K4), bukan dibaca dari putaran, supaya ada juga sebelum putaran pertama.
 
 ---
 

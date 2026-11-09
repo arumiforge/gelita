@@ -24,7 +24,6 @@ final class RiskFollowUpTest extends CIUnitTestCase
     {
         parent::setUp();
         $this->conn = $this->createConsentWorld();
-        $this->createRiskTables($this->conn);
         $fs  = $this->fieldSession($this->conn, 5, 'GHJKMN')['id'];
         $two = $this->student($this->conn, 'S03-A02', 'dewi');
         $tri = $this->student($this->conn, 'S03-A03', 'eko');
@@ -37,7 +36,6 @@ final class RiskFollowUpTest extends CIUnitTestCase
 
     protected function tearDown(): void
     {
-        $this->dropRiskTables();
         $this->dropConsentWorld();
         parent::tearDown();
     }

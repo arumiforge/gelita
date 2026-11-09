@@ -307,6 +307,40 @@ class ChallengeApiController extends BaseApiController
         return $this->fail($e->errorCode, $message, $e->status, $e->extra);
     }
 
+    // Part 7 (33 §8.1, §10, M-04)
+
+    /**
+     * GET /api/attempts/{id}/objects/{ref}: one Cari Objek picture by the
+     * attempt's opaque object token. Only the attempt's own game session gets
+     * it; an unknown token, another student's attempt, or a missing file is
+     * 404. No file name in the headers, `Cache-Control: private`.
+     */
+    public function objectImage(int $attemptId, string $ref): ResponseInterface
+    {
+        $attempt = model(ChallengeAttemptModel::class)->find($attemptId);
+
+        if ($attempt === null || $attempt->session_id !== $this->gameSession()->id) {
+            return $this->fail('NOT_FOUND', lang('Game.errNotFound'), 404);
+        }
+
+        $mediaId = service('challengeService')->objectMediaId($attempt, $ref);
+        $media   = $mediaId === null ? null : model(\App\Models\MediaAssetModel::class)->find($mediaId);
+        $path    = $media === null ? '' : FCPATH . ltrim(str_replace('\\', '/', (string) $media['storage_path']), '/');
+
+        if ($media === null || ! is_file($path)) {
+            return $this->fail('NOT_FOUND', lang('Game.errNotFound'), 404);
+        }
+
+        return $this->response
+            ->setStatusCode(200)
+            ->setContentType((string) ($media['mime_type'] ?: 'application/octet-stream'), '')
+            ->removeHeader('Cache-Control')
+            ->removeHeader('Content-Disposition')
+            ->setHeader('Cache-Control', 'private, max-age=86400')
+            ->setHeader('X-Content-Type-Options', 'nosniff')
+            ->setBody((string) file_get_contents($path));
+    }
+
     public function abandon(int $attemptId): ResponseInterface
     {
         $attempt = $this->attemptOrFail($attemptId, false);

@@ -9,6 +9,7 @@
  * @var int                        $stars
  * @var int                        $minutes
  * @var bool                       $riskLeftOut the ang-21–ang-23 answers exist and are not included
+ * @var list<string>               $instruments test, questionnaire, and attitude-scale parts done (part 8)
  */
 $dash = static fn ($value): string => $value === null || $value === '' ? '—' : (string) $value;
 ?>
@@ -42,7 +43,13 @@ $dash = static fn ($value): string => $value === null || $value === '' ? '—' :
   <?php endforeach ?>
 <?php endif ?>
 <p>Jumlah bintang yang dikumpulkan: <?= esc((string) $stars) ?>. Lama bermain seluruhnya sekitar <?= esc((string) $minutes) ?> menit.</p>
-<?php // WAVE-E seam (part 8): parts of the tests and questionnaire done, once the test module exists (30 §8) ?>
+<?php // Part 8 (34 §11.4, 30 §8): parts of the tests, the questionnaire, and the attitude scale done ?>
+<h2>Tes dan angket</h2>
+<?php if (($instruments ?? []) === []): ?>
+  <p>Anak belum mengerjakan tes atau angket.</p>
+<?php else: ?>
+  <?php foreach ($instruments as $line): ?><p><?= esc($line) ?></p><?php endforeach ?>
+<?php endif ?>
 
 <h2>Yang tidak disertakan</h2>
 <p>Kunci jawaban dan teks soal tidak disertakan, supaya soalnya tetap bisa dipakai. Apakah jawaban anak benar atau belum tetap ada di berkas Excel.</p>

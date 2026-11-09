@@ -34,6 +34,8 @@ Kamus ini sendiri tidak mengubah sistem. Sejak 1 November 2026 sistem dibangun s
 
 Setiap tabel data turunan menyimpan kolom `dictionary_version`, supaya angka di naskah bisa ditelusuri ke versi kamus yang dipakai. *(1.1)* Setiap tabel juga menyimpan `run_id` putaran hitungnya, dan ambang yang dipakai tercatat per putaran (`derived_runs`, [35 §4](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#4-bentuk-lapis-turunan)). Mengubah versi kamus atau ambang membuat putaran lama basi, jadi unduhan berikutnya dihitung ulang. Setiap perubahan dicatat di [04](04_CATATAN_KEPUTUSAN.md).
 
+**Nilai yang ditulis sistem (9 November 2026):** selama `kamus-1.1` masih draf, unduhan dan lapis turunan menulis `kamus-1.1-usulan` (`ResearchDictionary::VERSION`); setelah 11 menyetujui `kamus-1.1`, nilai itu menjadi `kamus-1.1` ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#19-keputusan-pengembang) §19 no. 14).
+
 ## Yang baru di `kamus-1.1`
 
 *(1.1)* Semua butir menambah atau menegaskan; tidak ada definisi `kamus-1.0` yang diganti. Kolom terakhir menunjuk bagian kamus yang diubah.
@@ -127,7 +129,7 @@ Ketukan di luar bagian ketuk mana pun **bukan percobaan** dan tidak memakai kese
 - **Jam lembar lapangan** diambil dari ponsel yang jamnya diatur otomatis dari jaringan, sampai detik (02). Selisih jam ponsel dan server dianggap kecil dibanding jendela pencocokan di bawah.
 - *(1.1)* **`offset_known`** (1/0): 1 kalau selisih jam perangkat dan server diketahui untuk event itu. Event dengan `offset_known = 0` tetap dipakai dengan waktu mentahnya, dan banyaknya dilaporkan ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md) K8).
 - *(1.1)* **Sesi game ke sesi lapangan** lewat `game_sessions.field_session_id` dan `meeting_no` ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md) §14).
-- *(1.1)* **`after_withdrawal`** (1/0) di lembar mentah (`pengerjaan`, `jawaban`, `percobaan`, `navigasi`, `bantuan`, `selesai`, `event`): 1 untuk data sesudah saat mundur siswa `withdrawn_keep`. Data mentah tidak diubah; lembar turunan tidak memuat baris itu ([Penanda untuk analisis](#penanda-untuk-analisis)).
+- *(1.1)* **`after_withdrawal`** (1/0) di lembar mentah (`pengerjaan`, `jawaban`, `percobaan`, `navigasi`, `bantuan`, `selesai`, `event`): 1 untuk data sesudah saat mundur siswa `withdrawn_keep`. Data mentah tidak diubah; lembar turunan tidak memuat baris itu ([Penanda untuk analisis](#penanda-untuk-analisis)). Dihitung saat unduhan dibuat dari daftar izin berkode dan `deactivated_at`, dengan aturan saat mundur yang sama dengan lapis turunan ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#19-keputusan-pengembang) §19 no. 15).
 - **Data di luar sesi lapangan tidak ada**, karena game tertutup di luar sesi. Kalau tetap muncul (misalnya karena salah atur), datanya diberi `outside_session = 1` dan dikeluarkan dari semua analisis.
 
 ## Data yang dinilai

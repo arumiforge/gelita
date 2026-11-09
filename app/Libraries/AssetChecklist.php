@@ -110,6 +110,7 @@ final class AssetChecklist
             $this->characterGroup(),
             $this->regionGroup(),
             $this->challengeGroup(),
+            $this->instrumentGroup(),   // part 8 (34 §6.1)
             $this->soundGroup(),
             $this->posterGroup(),
             $this->narrationGroup(),
@@ -314,6 +315,35 @@ final class AssetChecklist
             'title' => 'Gambar tantangan',
             'help'  => 'Gambar contoh (bertulisan GAMBAR CONTOH) harus diganti gambar asli sebelum pengambilan data, terutama Cari Objek dan pernyataan bergambar. Ukuran setiap gambar ada di halaman detailnya.',
             'items' => $items,
+        ];
+    }
+
+    /**
+     * Part 8 (34 §6.1): the `instr.*` pictures the active test content names
+     * (M3, M4, D2, D3; 24 from the Katalog Aset). Without one the module shows
+     * the same text without a picture.
+     *
+     * @return array<string, mixed>|null
+     */
+    private function instrumentGroup(): ?array
+    {
+        if (! $this->db->tableExists('instrument_stimuli')) {
+            return null;
+        }
+
+        $slots = array_column($this->db->table('instrument_stimuli s')->select('s.image_slot')
+            ->join('instrument_versions v', 'v.id = s.version_id')
+            ->where('v.instrument', 'tes')->where('v.is_active', 1)->where('s.image_slot IS NOT NULL', null, false)
+            ->orderBy('s.image_slot', 'ASC')->get()->getResultArray(), 'image_slot');
+
+        if ($slots === []) {
+            return null;
+        }
+
+        return [
+            'title' => 'Gambar tes awal–akhir',
+            'help'  => 'Layar tiruan dan adegan modul tes (dipasang lewat gelita:katalog:impor). Bila belum ada, modul menampilkan teksnya saja.',
+            'items' => array_map(fn (string $key): array => $this->slotItem($key, (string) (ImageSlots::label($key) ?? $key) . ' · ' . substr($key, 6), $this->detailLink($key)), $slots),
         ];
     }
 

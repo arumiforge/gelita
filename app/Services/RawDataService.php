@@ -75,6 +75,10 @@ class RawDataService
     public const DIMENSIONS = [
         'peserta', 'sesi_lapangan', 'sesi', 'progres', 'pengerjaan', 'jawaban', 'percobaan',
         'navigasi', 'bantuan', 'selesai', 'event', 'masukan', 'butir', 'kode_pilihan',
+        // Part 9 (35 §10.1): the derived sheets, after butir/kode_pilihan and before the test module and field sheets
+        'turunan_peserta', 'turunan_sesi', 'turunan_tantangan', 'turunan_pengerjaan', 'turunan_butir', 'turunan_percobaan', 'turunan_pengamatan', 'turunan_tes',
+        // Part 8 (34 §11.4; 29 §7.2 order: after kode_pilihan and the turunan_* sheets, before izin)
+        'tes_jawaban', 'tes_bagian', 'angket', 'sikap', 'risiko_gabungan',
         'izin',   // part 4 (30 keputusan no. 9, §10.1): coded consent per student, ketua only
         'l1_kondisi', 'l1_penyimpangan', 'l2_kursi', 'l3_bantuan', 'l4_bromp', 'l5_wawancara', 'l6_sesi',
     ];
@@ -127,7 +131,8 @@ class RawDataService
             'assented_at' => 'participants.assented_at', 'intro_seen_at' => 'participants.intro_seen_at',
             'pw_first_submit_criteria' => 'participants.pw_first_submit_criteria',
             'pw_weak_submit_count' => 'participants.pw_weak_submit_count',
-            // Part 8 (34 §11.4) adds pre_form … post_capped here.
+            // Part 8 (34 §11.4): the test module's columns pre_form … post_capped (13)
+            ...\App\Libraries\InstrumentSheets::PARTICIPANT_COLUMNS,
         ],
         'sesi_lapangan' => [
             'field_session_code' => 'field_sessions.code', 'school_code' => 'schools.research_code',
@@ -170,6 +175,10 @@ class RawDataService
             'audio_use_count' => 'challenge_attempts.audio_use_count', 'stars' => 'challenge_attempts.stars',
             'started_at' => 'challenge_attempts.started_at', 'completed_at' => 'challenge_attempts.completed_at',
             'duration_ms' => 'challenge_attempts.duration_ms',
+            // Part 7 (33 K6): a retake (the student already completed this challenge); part 9 leaves it out
+            'is_retake' => 'challenge_attempts.is_retake',
+            // Part 9 (35 §7, §10; 29 §7.3): after the student's withdrawal cutoff
+            'after_withdrawal' => null,
         ],
         'jawaban' => [
             'attempt_id' => 'challenge_attempts.id', 'session_code' => 'game_sessions.session_code',
@@ -185,6 +194,7 @@ class RawDataService
             'hint_used' => 'item_responses.hint_used', 'wrong_click_count' => 'item_responses.wrong_click_count',
             'started_at' => 'item_responses.started_at', 'answered_at' => 'item_responses.answered_at',
             'duration_ms' => 'item_responses.duration_ms',
+            'after_withdrawal' => null,   // part 9 (35 §7)
         ],
         'percobaan' => [
             'attempt_id' => 'challenge_attempts.id', 'session_code' => 'game_sessions.session_code',
@@ -200,6 +210,7 @@ class RawDataService
             'action_key' => 'item_tries.action_key', 'action_score' => 'item_tries.action_score',
             'reason_code' => 'item_tries.reason_code', 'reason_ready_ms' => 'item_tries.reason_ready_ms',
             'action_last_input_ms' => 'item_tries.action_last_input_ms', 'reason_last_input_ms' => 'item_tries.reason_last_input_ms',
+            'after_withdrawal' => null,   // part 9 (35 §7)
         ],
         'navigasi' => [
             'session_code' => 'game_sessions.session_code', 'participant_code' => 'participants.participant_code',
@@ -209,6 +220,7 @@ class RawDataService
             'screen' => null, 'from_screen' => null, 'level' => 'game_event_logs.level_id',
             'node_ref' => 'game_event_logs.challenge_node_id', 'attempt_id' => 'game_event_logs.challenge_attempt_id',
             'payload' => null,
+            'after_withdrawal' => null,   // part 9 (35 §7)
         ],
         'bantuan' => [
             'session_code' => 'bantuan.session_code', 'participant_code' => 'bantuan.participant_code',
@@ -218,6 +230,7 @@ class RawDataService
             'asset_key' => 'bantuan.asset_key', 'audio_context' => 'bantuan.audio_context',
             'audio_locale' => 'bantuan.audio_locale', 'action' => 'bantuan.action', 'play_index' => 'bantuan.play_index',
             'listened_ms' => 'bantuan.listened_ms', 'completed' => 'bantuan.completed',
+            'after_withdrawal' => null,   // part 9 (35 §7)
         ],
         'selesai' => [
             'session_code' => 'game_sessions.session_code', 'participant_code' => 'participants.participant_code',
@@ -226,6 +239,7 @@ class RawDataService
             'event_type' => 'game_event_logs.event_type',
             'level' => 'game_event_logs.level_id', 'node_ref' => 'game_event_logs.challenge_node_id',
             'attempt_id' => 'game_event_logs.challenge_attempt_id', 'payload' => null,
+            'after_withdrawal' => null,   // part 9 (35 §7)
         ],
         'event' => [
             'session_code' => 'game_sessions.session_code', 'participant_code' => 'participants.participant_code',
@@ -234,6 +248,7 @@ class RawDataService
             'item_key' => null, 'event_type' => 'game_event_logs.event_type',
             'sequence_no' => 'game_event_logs.sequence_no', 'occurred_at_corrected' => 'game_event_logs.occurred_at',
             'offset_known' => null, 'payload' => null,
+            'after_withdrawal' => null,   // part 9 (35 §7)
         ],
         'masukan' => [
             'participant_code' => 'participants.participant_code', 'session_code' => 'game_sessions.session_code',
@@ -363,6 +378,11 @@ class RawDataService
             'butir'      => $this->itemQuery($filters),
             'kode_pilihan' => $this->choiceCodeQuery($filters),
             'izin'       => $this->consentQuery($filters, $scope),
+            // Part 8 (34 §11.4): the test module's sheets
+            'tes_jawaban', 'tes_bagian', 'angket', 'sikap' => $this->instrumentSheets()->query($dimension, $filters, $this->participantFilter($scope)),
+            // Part 9 (35 §10): the derived sheets, from each study's current run
+            'turunan_peserta', 'turunan_sesi', 'turunan_tantangan', 'turunan_pengerjaan', 'turunan_butir', 'turunan_percobaan', 'turunan_pengamatan', 'turunan_tes'
+                => $this->derivedSheets()->query($dimension, $filters, $this->participantFilter($scope)),
             default      => $this->fieldSheetQuery($dimension, $filters, $scope),
         };
     }
@@ -380,6 +400,21 @@ class RawDataService
     {
         $scope   = $this->boundScope();
         $perPage = in_array($perPage, self::PER_PAGE, true) ? $perPage : self::PER_PAGE[0];
+
+        // Part 8 (34 §8.3, 29 §7.6): the risk aggregate is built in PHP, never from student rows
+        if ($dimension === \App\Libraries\InstrumentSheets::AGGREGATE) {
+            $this->assertAllowed($dimension, $scope);
+            $all  = $this->instrumentSheets()->riskAggregate($this->sanitizeFilters($filters), $this->participantFilter($scope));
+            $last = max(1, (int) ceil(count($all) / $perPage));
+            $page = min(max(1, $page), $last);
+
+            return [
+                'rows'    => array_map(fn (array $row): array => $this->shape($dimension, $row, $scope), array_slice($all, ($page - 1) * $perPage, $perPage)),
+                'total'   => count($all), 'page' => $page, 'per_page' => $perPage, 'sort' => null,
+                'columns' => $this->columnSpecs($dimension, $scope, $readableAnswers),
+            ];
+        }
+
         $total   = $this->query($dimension, $filters, $scope)->countAllResults();
         $last    = max(1, (int) ceil($total / $perPage));
         $page    = min(max(1, $page), $last);
@@ -461,6 +496,42 @@ class RawDataService
      */
     public function rows(string $dimension, array $filters, StaffScope $scope, bool $labeled = false, bool $readableAnswers = false): \Generator
     {
+        // Part 8 (34 §8.3, 29 §7.6): the risk aggregate is built in PHP
+        if ($dimension === \App\Libraries\InstrumentSheets::AGGREGATE) {
+            $this->assertAllowed($dimension, $scope);
+
+            foreach ($this->instrumentSheets()->riskAggregate($this->sanitizeFilters($filters), $this->participantFilter($scope)) as $row) {
+                yield $this->shape($dimension, $row, $scope, $labeled, $readableAnswers);
+            }
+
+            return;
+        }
+
+        // Part 9 (35 §10): derived rows have composite keys; offset paging in a fixed order
+        if (\App\Libraries\DerivedSheets::has($dimension)) {
+            $offset = 0;
+
+            do {
+                $builder = $this->query($dimension, $filters, $scope);
+
+                $builder->orderBy('research_studies.id', 'ASC');
+
+                foreach (\App\Libraries\DerivedSheets::ORDER[$dimension] as $column) {
+                    $builder->orderBy($column, 'ASC');
+                }
+
+                $batch = $builder->limit(self::CHUNK, $offset)->get()->getResultArray();
+
+                foreach ($batch as $row) {
+                    yield $this->shape($dimension, $row, $scope, $labeled, $readableAnswers);
+                }
+
+                $offset += self::CHUNK;
+            } while (count($batch) === self::CHUNK);
+
+            return;
+        }
+
         $key  = self::keyOf($dimension);
         $last = null;
 
@@ -486,6 +557,11 @@ class RawDataService
     /** Jumlah baris satu dimensi dalam cakupan $scope. */
     public function count(string $dimension, array $filters, StaffScope $scope): int
     {
+        // Part 8 (34 §8.3)
+        if ($dimension === \App\Libraries\InstrumentSheets::AGGREGATE) {
+            return count($this->instrumentSheets()->riskAggregate($this->sanitizeFilters($filters), $this->participantFilter($scope)));
+        }
+
         return $this->query($dimension, $filters, $scope)->countAllResults();
     }
 
@@ -607,8 +683,18 @@ class RawDataService
             'butir'      => $this->itemValues($row, $answers),
             'kode_pilihan' => $row + ['node_ref' => $this->nodeRefById($row['challenge_node_id'])],
             'izin'       => $row,
+            // Part 8 (34 §11.4)
+            'tes_jawaban', 'tes_bagian', 'angket', 'sikap', 'risiko_gabungan' => $this->instrumentSheets()->values($dimension, $row),
+            // Part 9 (35 §10)
+            'turunan_peserta', 'turunan_sesi', 'turunan_tantangan', 'turunan_pengerjaan', 'turunan_butir', 'turunan_percobaan', 'turunan_pengamatan', 'turunan_tes'
+                => $this->derivedSheets()->values($dimension, $row),
             default      => $this->fieldSheetValues($row),
         };
+
+        // Part 9 (35 §7, §10): raw rows after the student's withdrawal cutoff are marked, never removed
+        if (isset(\App\Libraries\DerivedSheets::AFTER_WITHDRAWAL[$dimension])) {
+            $values['after_withdrawal'] = $this->derivedSheets()->afterWithdrawal($values['participant_code'] ?? null, $values[\App\Libraries\DerivedSheets::AFTER_WITHDRAWAL[$dimension]] ?? null);
+        }
 
         $out = [];
 
@@ -658,6 +744,9 @@ class RawDataService
         }
 
         $this->applyParticipantFilters($builder, $filters, $scope, 'participants.created_at');
+
+        // Part 8 (34 §11.4): the study of the module columns
+        $this->maps['instrument_study'] = isset($filters['study_id']) ? (int) $filters['study_id'] : null;
 
         // Filter milik sesi: siswa yang punya sesi dalam cakupan itu
         $sessionFilters = array_intersect_key($filters, array_flip(['study_id', 'locale', 'meeting_no', 'field_session_code']));
@@ -744,7 +833,9 @@ class RawDataService
             ->select('challenge_attempts.first_pass_correct, challenge_attempts.final_correct')
             ->select('challenge_attempts.check_count, challenge_attempts.max_tries, challenge_attempts.hint_count')
             ->select('challenge_attempts.answer_change_count, challenge_attempts.audio_use_count, challenge_attempts.stars')
-            ->select('challenge_attempts.started_at, challenge_attempts.completed_at, challenge_attempts.duration_ms');
+            ->select('challenge_attempts.started_at, challenge_attempts.completed_at, challenge_attempts.duration_ms')
+            // Part 7 (33 K6)
+            ->select('challenge_attempts.is_retake');
 
         $this->applyAttemptFilters($builder, $filters, $scope, 'challenge_attempts.started_at');
 
@@ -853,8 +944,8 @@ class RawDataService
             ->select($db->protectIdentifiers('audio_usage_events', true) . '.id * 2 + 1 AS _key', false)
             ->select('game_sessions.session_code, participants.participant_code, field_sessions.code AS field_session_code')
             ->select('audio_usage_events.occurred_at')
-            // WAVE-E seam (part 7, 33 K10): audio_usage_events.clock_offset_ms corrects this time
-            ->select('NULL AS clock_offset_ms', false)
+            // Part 7 (33 K10): the batch's clock offset corrects the playback time (occurred_at_corrected)
+            ->select('audio_usage_events.clock_offset_ms')
             ->select("'audio' AS jenis", false)
             ->select('challenge_nodes.level_id, challenge_attempts.challenge_node_id AS node_id')
             ->select('audio_usage_events.challenge_attempt_id AS attempt_id')
@@ -1133,7 +1224,7 @@ class RawDataService
 
         return $column !== '' && in_array($column, $this->sortable($dimension), true)
             ? $sort
-            : (self::DEFAULT_SORT[$dimension] ?? 'sheet_row');
+            : (self::DEFAULT_SORT[$dimension] ?? \App\Libraries\InstrumentSheets::DEFAULT_SORT[$dimension] ?? \App\Libraries\DerivedSheets::DEFAULT_SORT[$dimension] ?? 'sheet_row');
     }
 
     private function applySort(BaseBuilder $builder, string $dimension, string $sort): void
@@ -1170,7 +1261,9 @@ class RawDataService
             'intro_seen_at'            => $row['intro_seen_at'],
             'pw_first_submit_criteria' => $row['pw_first_submit_criteria'],
             'pw_weak_submit_count'     => $row['pw_weak_submit_count'],
-        ];
+        ]
+        // Part 8 (34 §11.4): pre_form … post_capped from the test module
+        + $this->instrumentSheets()->participantColumns((int) $row['_key'], $this->maps['instrument_study'] ?? null);
     }
 
     private function progressValues(array $row): array
@@ -1538,6 +1631,16 @@ class RawDataService
             return self::COLUMNS[$dimension];
         }
 
+        // Part 8 (34 §11.4)
+        if (isset(\App\Libraries\InstrumentSheets::COLUMNS[$dimension])) {
+            return \App\Libraries\InstrumentSheets::columnMap($dimension);
+        }
+
+        // Part 9 (35 §10)
+        if (\App\Libraries\DerivedSheets::has($dimension)) {
+            return \App\Libraries\DerivedSheets::columnMap($dimension);
+        }
+
         if (! in_array($dimension, self::DIMENSIONS, true) || ! \App\Libraries\FieldSheetSpec::has($dimension)) {
             throw new \InvalidArgumentException("Dimensi '{$dimension}' tidak dikenal.");
         }
@@ -1557,9 +1660,39 @@ class RawDataService
             return self::KEYS[$dimension];
         }
 
+        // Part 8 (34 §11.4)
+        if (isset(\App\Libraries\InstrumentSheets::KEYS[$dimension])) {
+            return \App\Libraries\InstrumentSheets::KEYS[$dimension];
+        }
+
+        // Part 9 (35 §10): composite keys, read in ORDER (rows() pages by offset)
+        if (\App\Libraries\DerivedSheets::has($dimension)) {
+            return \App\Libraries\DerivedSheets::ORDER[$dimension][0];
+        }
+
         self::columnMap($dimension);   // throws for an unknown dimension
 
         return 'field_sheet_rows.id';
+    }
+
+    // Part 8 (34 §11.4): the test module's sheets live in InstrumentSheets
+
+    private function instrumentSheets(): \App\Libraries\InstrumentSheets
+    {
+        return $this->maps['instrument_sheets'] ??= new \App\Libraries\InstrumentSheets($this->db());
+    }
+
+    // Part 9 (35 §10): the derived sheets live in DerivedSheets
+
+    private function derivedSheets(): \App\Libraries\DerivedSheets
+    {
+        return $this->maps['derived_sheets'] ??= new \App\Libraries\DerivedSheets($this->db());
+    }
+
+    /** @return callable(BaseBuilder, array, string): void the participant filters and exclusions of $scope */
+    private function participantFilter(StaffScope $scope): callable
+    {
+        return fn (BaseBuilder $builder, array $filters, string $dateColumn) => $this->applyParticipantFilters($builder, $filters, $scope, $dateColumn);
     }
 
     private function boundScope(): StaffScope

@@ -46,6 +46,8 @@ $action ??= 'token';
           <?php endif ?>
         </div>
         <input type="hidden" name="device_json" value="">
+        <?php // Part 7 (33 §7.2): width of the 16:9 stage, filled by game/screen-check.js ?>
+        <input type="hidden" name="stage_w" value="">
         <div class="form-actions">
           <?= gold_plate_button(lang('Game.next'), 'medium', 'btn btn-primary btn-lg btn-block') ?>
         </div>

@@ -294,7 +294,6 @@ return [
 
     // Profile
     'profileTitle'       => 'Profile',
-    'researchCode'       => 'your research code',
     // Avatar (display plan Phase B)
     'avatar'             => 'Avatar',
     'avatarOptional'     => 'Choose an avatar (you can skip this)',
@@ -503,4 +502,27 @@ return [
     'scenarioSituationAlt' => 'Picture of this story\'s situation',
     'scenarioActions'     => 'What would you do?',
     'instructionListen'   => 'Listen to the instructions',
+
+    // Part 7 (33 §11): research mode in the game, media fixes M-07, M-08, M-10
+    'smallScreenTitle'   => 'This screen is too small',
+    'smallScreenBody'    => 'GELITA needs a bigger screen, like a laptop or tablet. Please tell the research team.',
+    'smallScreenWarn'    => 'Your screen is a bit small, so the text is small too. A laptop or tablet works better.',
+    'smallScreenDismiss' => 'Play anyway',
+    'retakeLater'        => 'You can replay this challenge after you finish all five challenges in this region.',
+    'kenaliAfterRegion'  => "This region's story opens after you finish the region.",
+    'profileTableLabel'  => 'Challenge results list',
+    // Part 8 (34 §13): attitude scale in Balai Refleksi, feedback during a study, validators' preview
+    'attitudeTry' => 'Try an example',
+    'attitudeExample' => 'Example',
+    'attitudeSkip' => 'Skip',
+    'attitudeNext' => 'Next',
+    'attitudeBack' => 'Back',
+    'attitudeProgress' => '{0} of {1}',
+    'attitudeReview' => 'You answered {0} of 12 sentences. You skipped {1}. If you like, you can still go back and answer them. Once you send, your answers can\'t be changed.',
+    'attitudeReviewAll' => 'You answered all 12 sentences. Once you send, your answers can\'t be changed.',
+    'attitudeSend' => 'Send',
+    'attitudeThanks' => 'Your thoughts about Kedu culture have been sent. Thank you!',
+    'reflectionAllOptional' => 'You can leave every question empty.',
+    'reflectionLastMeeting' => 'The Hall of Reflection opens at the last meeting.',
+    'instrumentPreviewLink' => 'Try the test module',
 ];

@@ -47,12 +47,30 @@ final class FieldSheetTemplateTest extends CIUnitTestCase
 
     public function testMeetingOneTemplateCarriesSeatsAndTheTestSheet(): void
     {
-        $book = $this->template($this->createFieldSheetWorld(1));
+        $fieldSession = $this->createFieldSheetWorld(1);
+        $book         = $this->template($fieldSession);
 
-        $this->assertSame(['L1 Kondisi sesi', 'L1 Log penyimpangan', 'L2 Tempat duduk', 'L3 Bantuan dan gangguan', 'L6 Catatan sesi tes', 'Kode'], $book->getSheetNames());
+        $this->assertSame(['L1 Kondisi sesi', 'L1 Log penyimpangan', 'L2 Tempat duduk', 'L3 Bantuan dan gangguan', 'L6 Catatan sesi tes', 'L6 Status tes per siswa', 'Kode'], $book->getSheetNames());
         $l2  = $book->getSheetByName('L2 Tempat duduk')->toArray(null, false, false);
         $row = array_combine($l2[2], $l2[3]);
         $this->assertSame(['1', '1', 'A'], [$row['Kursi'], $row['Baris'], $row['Bentuk tes awal']]);
+
+        // Coordinator, wave F: L6 status tes per siswa printed from the test module (29 K12); nothing started yet
+        $l6  = $book->getSheetByName('L6 Status tes per siswa')->toArray(null, false, false);
+        $row = array_combine($l6[2], $l6[3]);
+        $this->assertSame(['S03-A01', 'belum', 'belum', 'belum'], [$row['Kode peserta'], $row['Tes awal (tanggal, bentuk, status)'], $row['Angket'], $row['Butir risiko']]);
+        $this->assertNotContains('l6_tes', $this->sheets()->expectedSheets($fieldSession), 'never uploaded');
+
+        $db  = \Config\Database::connect();
+        $pid = (int) $db->table('participants')->where('participant_code', 'S03-A01')->get()->getRow('id');
+        $db->table('instrument_sittings')->insert([
+            'participant_id' => $pid, 'study_id' => (int) $fieldSession['study_id'], 'field_session_id' => (int) $fieldSession['id'], 'occasion' => 'pre',
+            'kind' => 'test', 'form' => 'A', 'version_id' => 1, 'is_makeup' => 0, 'is_preview' => 0,
+            'started_at' => '2026-11-10 08:05:00.000', 'submitted_at' => '2026-11-10 08:50:00.000', 'updated_at' => '2026-11-10 08:50:00.000',
+        ]);
+        \Config\Services::resetSingle('instruments'); // the shared service caches sittings
+        $l6  = $this->template($fieldSession)->getSheetByName('L6 Status tes per siswa')->toArray(null, false, false);
+        $this->assertSame('2026-11-10, A, selesai', array_combine($l6[2], $l6[3])['Tes awal (tanggal, bentuk, status)']);
         $this->assertNoPersonalData($book);
     }
 

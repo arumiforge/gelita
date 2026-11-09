@@ -36,8 +36,18 @@ foreach (service('contentRepository')->levels() as $entity) {
     <div class="profile-id">
       <h1><?= esc($name) ?></h1>
       <p class="profile-username">@<?= esc($participant['username']) ?></p>
-      <p class="profile-code"><small><span class="num"><?= esc($participant['participant_code']) ?></span> · <?= esc(lang('Game.researchCode')) ?></small></p>
     </div>
+  </div>
+
+  <?php
+  // Part 7 (33 §8.7, M-10): the research code on its own card, large and high-contrast; the
+  // parts are split by a thin spaced dash on screen, while copying gives the code without spaces
+  $code  = (string) $participant['participant_code'];
+  $parts = preg_split('/-/', $code, 2) ?: [$code];
+  ?>
+  <div class="profile-research-code">
+    <span class="profile-research-code-label"><?= esc(lang('Game.researchCodeLabel')) ?></span>
+    <b class="profile-research-code-value num" aria-label="<?= esc($code, 'attr') ?>"><?php foreach ($parts as $i => $part): ?><?php if ($i > 0): ?><span class="code-sep" aria-hidden="true">-</span><?php endif ?><span><?= esc($part) ?></span><?php endforeach ?></b>
   </div>
 
   <?php if (avatar_choices() !== []): ?>
@@ -67,7 +77,9 @@ foreach (service('contentRepository')->levels() as $entity) {
     <?= component('stat-tile', ['label' => lang('Game.shards'), 'value' => $progress['shards'] . '/' . $progress['shards_total'], 'icon' => 'lantern']) ?>
     <?= component('stat-tile', ['label' => lang('Game.challengesDone'), 'value' => $progress['completed_nodes'] . '/' . $progress['shards_total'], 'icon' => 'check']) ?>
     <?= component('stat-tile', ['label' => lang('Game.stars'), 'value' => (string) $progress['total_stars'], 'icon' => 'star']) ?>
+    <?php if (empty($researchMode)): // Part 7 (33 §7.1) ?>
     <?= component('stat-tile', ['label' => lang('Game.totalTime'), 'value' => ms_to_human($durationMs), 'icon' => 'clock']) ?>
+    <?php endif ?>
   </div>
 
   <a class="btn btn-ghost btn-sm profile-password" href="<?= base_url('ganti-sandi') ?>"><?= icon('key') ?> <?= esc(lang('Game.changePassword')) ?></a>
@@ -100,7 +112,8 @@ foreach (service('contentRepository')->levels() as $entity) {
   <?php if ($attempts === []): ?>
     <div class="empty-state"><?= icon('info') ?><p><?= esc(lang('Game.noHistory')) ?></p></div>
   <?php else: ?>
-    <div class="table-wrap stage-scroll">
+    <?php // Part 7 (33 §8.5, M-08): the scrolling list is reachable by keyboard ?>
+    <div class="table-wrap stage-scroll" tabindex="0" role="region" aria-label="<?= esc(lang('Game.profileTableLabel'), 'attr') ?>">
       <table class="data-table">
         <caption class="visually-hidden"><?= esc(lang('Game.history')) ?></caption>
         <thead>

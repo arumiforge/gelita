@@ -24,22 +24,33 @@ class RetentionService
     public const HARD_ORDER = [
         // Part 3 (29 §12): typed field sheets; rows per student, imports in a study cleanup
         'field_sheet_rows', 'field_sheet_imports',
-        'game_event_logs', 'audio_usage_events', 'item_tries', 'item_responses', 'challenge_attempts',
+        'game_event_logs', 'audio_usage_events', 'item_tries', 'item_responses',
+        // Part 7 (33 §9, 30 §7.3): attempt segments, before `challenge_attempts`
+        'challenge_attempt_segments',
+        'challenge_attempts',
         'device_logs', 'participant_progress', 'participant_seats', 'field_session_members',
         'participant_feedback', 'game_sessions',
         // Part 4 (30 §7.3): counted one by one although the FK cascades, so the preview and the minutes show them.
-        // Later parts add their own tables here: `challenge_attempt_segments` (part 7, 33 §9, before
-        // `challenge_attempts`), `instrument_responses`, `instrument_parts`, `instrument_blocks`,
+        // Later parts add their own tables here: `instrument_responses`, `instrument_parts`, `instrument_blocks`,
         // `instrument_sittings` (part 8, 34 §11.1) and `derived_*` (part 9, 35 §12), all before `participants`.
         'participant_consents',
+        // Part 8 (34 §11.3, 30 §15): the test module's answers, children first; the FK cascades too
+        'instrument_responses', 'instrument_parts', 'instrument_blocks', 'instrument_sittings',
+        // Part 9 (35 §9, §12): derived rows of every run; the FK cascades too, counted for the preview
+        ...self::DERIVED_TABLES,
         'participants',
+    ];
+
+    /** Part 9 (35 §12): derived tables, rows per student and run. */
+    public const DERIVED_TABLES = [
+        'derived_tries', 'derived_items', 'derived_attempts', 'derived_challenges', 'derived_field_sessions',
+        'derived_participants', 'derived_test_responses', 'derived_observations',
     ];
 
     /**
      * Part 4 (30 §7.3): scope `kind = risk_items` deletes one student's
      * `risk` sitting of the test module with its parts and answers
-     * (ang-21–ang-23, `risk_offered`, `risk_reconsent`). The tables come with
-     * part 8 (34 §11.1); until then they do not exist and nothing is counted.
+     * (ang-21–ang-23, `risk_offered`, `risk_reconsent`); the tables are part 8's (34 §11.1).
      */
     public const RISK_ORDER = ['instrument_responses', 'instrument_parts', 'instrument_blocks', 'instrument_sittings'];
 
@@ -371,6 +382,12 @@ class RetentionService
         ['previews' => $result['retention_previews'], 'warnings' => $result['warnings']]
             = $this->flagExpiredStudyData($staffId);
 
+        // Part 9 (35 §9): derived runs nobody reads any more
+        $result['pruned_derived_runs'] = service('derivedData')->pruneRuns();
+
+        // Part 8 (34 §7.4): test blocks past their hidden limit with no request since
+        $result['closed_test_blocks'] = service('instruments')->closeOverdueBlocks();
+
         // Part 4 (30 §12): only with the research privacy switch on
         if ($config->researchPrivacy) {
             $result['expired_browser_sessions'] = $this->purgeExpiredBrowserSessions();
@@ -589,7 +606,7 @@ class RetentionService
     private function tablesFor(array $scope): array
     {
         if (($scope['kind'] ?? null) === 'risk_items') {
-            return array_values(array_filter(self::RISK_ORDER, fn (string $t): bool => $this->db()->tableExists($t)));
+            return self::RISK_ORDER;
         }
 
         return self::HARD_ORDER;
@@ -761,13 +778,48 @@ class RetentionService
         }
 
         // Part 4 (30 §7.3): the student's `risk` sitting and what hangs on it (part 8 tables)
-        if (in_array($table, self::RISK_ORDER, true)) {
+        if (in_array($table, self::RISK_ORDER, true) && ($scope['kind'] ?? null) === 'risk_items') {
             $sittings = static fn (BaseBuilder $sub): BaseBuilder => $sub->select('id')->from('instrument_sittings')
                 ->where('participant_id', (int) $scope['participant_id'])->where('kind', 'risk');
 
             return $table === 'instrument_sittings'
                 ? $db->table($table)->where('participant_id', (int) $scope['participant_id'])->where('kind', 'risk')
                 : $db->table($table)->whereIn('sitting_id', $sittings);
+        }
+
+        // Part 8 (34 §11.3): every sitting of the student(s), or of a whole study without a date range
+        if (in_array($table, self::RISK_ORDER, true)) {
+            $byStudent = isset($scope['participant_id']) || isset($scope['participants']);
+            $ids       = $byStudent ? $participantIds : [];
+
+            if ($byStudent ? $ids === [] : ! (isset($scope['study_id']) && ! isset($scope['date_from']) && ! isset($scope['date_to']))) {
+                return null;
+            }
+
+            $sittings = static function (BaseBuilder $sub) use ($ids, $scope): BaseBuilder {
+                $sub->select('id')->from('instrument_sittings');
+
+                return $ids !== [] ? $sub->whereIn('participant_id', $ids) : $sub->where('study_id', (int) $scope['study_id']);
+            };
+
+            if ($table === 'instrument_sittings') {
+                return $ids !== [] ? $db->table($table)->whereIn('participant_id', $ids) : $db->table($table)->where('study_id', (int) $scope['study_id']);
+            }
+
+            return $db->table($table)->whereIn('sitting_id', $sittings);
+        }
+
+        // Part 9 (35 §9): a student's derived rows in every run, or a whole study's runs without a date range
+        if (in_array($table, self::DERIVED_TABLES, true)) {
+            if (isset($scope['participant_id']) || isset($scope['participants'])) {
+                return $participantIds === [] ? null : $db->table($table)->whereIn('participant_id', $participantIds);
+            }
+
+            if (isset($scope['study_id']) && ! isset($scope['date_from']) && ! isset($scope['date_to'])) {
+                return $db->table($table)->whereIn('run_id', static fn (BaseBuilder $sub): BaseBuilder => $sub->select('id')->from('derived_runs')->where('study_id', (int) $scope['study_id']));
+            }
+
+            return null;   // a session scope: the next run is stale (the counts changed) and recomputes
         }
 
         // Part 4 (30 §11): a closed field-mode study's cohort, by student
@@ -794,6 +846,18 @@ class RetentionService
 
         if (in_array($table, $bySession, true)) {
             return $sessionIds === [] ? null : $db->table($table)->whereIn('session_id', $sessionIds);
+        }
+
+        // Part 7 (33 §9): segments of the scope's attempts, and those written in its sessions (an attempt moved on, K3)
+        if ($table === 'challenge_attempt_segments') {
+            if ($sessionIds === []) {
+                return null;
+            }
+
+            return $db->table($table)->groupStart()
+                ->whereIn('challenge_attempt_id', static fn (BaseBuilder $sub): BaseBuilder => $sub->select('id')->from('challenge_attempts')->whereIn('session_id', $sessionIds))
+                ->orWhereIn('session_id', $sessionIds)
+                ->groupEnd();
         }
 
         if ($table === 'item_responses' || $table === 'item_tries') {

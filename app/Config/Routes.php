@@ -67,6 +67,36 @@ $routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($ro
         $routes->get('refleksi', 'ReflectionController::index');
         $routes->post('refleksi', 'ReflectionController::store');
     });
+
+    // Part 8 (34 §12): the test module, questionnaire, risk items (no screenView, K14), and the attitude scale
+    $routes->group('', ['filter' => ['gameSession', 'instrumentGate']], static function ($routes): void {
+        $routes->get('tes', 'InstrumentController::index');
+        $routes->post('tes/mulai', 'InstrumentController::start');
+        $routes->get('tes/jeda', 'InstrumentController::stretch');
+        $routes->get('tes/selesai', 'InstrumentController::done');
+        $routes->get('tes/contoh/(mb|ae|bd)', 'InstrumentController::example/$1');
+        $routes->post('tes/bagian/(mb|ae|bd)/mulai', 'InstrumentController::startPart/$1');
+        $routes->get('tes/bagian/(mb|ae|bd)/periksa', 'InstrumentController::review/$1');
+        $routes->post('tes/bagian/(mb|ae|bd)/kirim', 'InstrumentController::submitPart/$1');
+        $routes->get('tes/bagian/(mb|ae|bd)/(:num)', 'InstrumentController::item/$1/$2');
+        $routes->post('tes/bagian/(mb|ae|bd)/(:num)', 'InstrumentController::saveItem/$1/$2');
+        $routes->post('tes/angket/selesai', 'QuestionnaireController::finish');
+        $routes->get('tes/angket/(:num)', 'QuestionnaireController::section/$1');
+        $routes->post('tes/angket/(:num)', 'QuestionnaireController::saveSection/$1');
+        $routes->get('tes/tambahan', 'RiskItemsController::ask');
+        $routes->post('tes/tambahan', 'RiskItemsController::answerAsk');
+        $routes->get('tes/tambahan/(:num)', 'RiskItemsController::item/$1');
+        $routes->post('tes/tambahan/(:num)', 'RiskItemsController::saveItem/$1');
+        $routes->get('tes/pesan', 'RiskItemsController::support');
+    });
+    $routes->group('', ['filter' => ['gameSession']], static function ($routes): void {
+        $routes->get('refleksi/sikap', 'AttitudeController::index');
+        $routes->get('refleksi/sikap/contoh', 'AttitudeController::example');
+        $routes->get('refleksi/sikap/kirim', 'AttitudeController::review');
+        $routes->post('refleksi/sikap/kirim', 'AttitudeController::submit');
+        $routes->get('refleksi/sikap/(:num)', 'AttitudeController::item/$1');
+        $routes->post('refleksi/sikap/(:num)', 'AttitudeController::saveItem/$1');
+    });
 });
 
 // ---------------------------------------------------------------- API GAME
@@ -97,10 +127,15 @@ $routes->group('api', [
         $routes->post('attempts/(:num)/hints', 'ChallengeApiController::hint/$1');
         $routes->post('attempts/(:num)/complete', 'ChallengeApiController::complete/$1');
         $routes->post('attempts/(:num)/abandon', 'ChallengeApiController::abandon/$1');
+        // Part 7 (33 §8.1, §10, M-04): Cari Objek pictures by the attempt's opaque object token
+        $routes->get('attempts/(:num)/objects/(:segment)', 'ChallengeApiController::objectImage/$1/$2');
 
         $routes->post('events', 'EventApiController::ingest');
         $routes->post('audio-events', 'AudioApiController::ingest');
         $routes->get('progress', 'ProgressApiController::show');
+
+        // Part 8 (34 §5.3, §12): opening screen of the test module
+        $routes->get('instrument/status', 'InstrumentController::status');
     });
 });
 
@@ -149,6 +184,9 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->get('sesi-lapangan/(:num)/lembar/unggah', 'FieldSheetController::uploadForm/$1');
             $routes->post('sesi-lapangan/(:num)/lembar/unggah', 'FieldSheetController::preview/$1');
             $routes->post('sesi-lapangan/(:num)/lembar/simpan', 'FieldSheetController::save/$1');
+            // Part 8 (34 §5.3, §7.4, K15): start the test, extra minutes
+            $routes->post('sesi-lapangan/(:num)/mulai-tes', 'FieldTestController::start/$1');
+            $routes->post('sesi-lapangan/(:num)/tambah-waktu', 'FieldTestController::extendTime/$1');
         });
 
         // Part 3 (29 §5.6, K15): the admin's tech log
@@ -226,7 +264,17 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
         $routes->group('', ['filter' => 'staffCan:studies.manage'], static function ($routes): void {
             $routes->post('studi', 'StudyController::store');
             $routes->post('studi/(:num)', 'StudyController::update/$1');
+            // Part 8 (34 §7.4, §12): hidden time limits of the test module
+            $routes->post('studi/(:num)/instrumen', 'StudyController::updateInstrumentSettings/$1');
         });
+
+        // Part 7 (33 §6, §10): thresholds and the smallest stage of a study (ketua)
+        $routes->post('studi/(:num)/pengaturan', 'StudyController::updateSettings/$1', ['filter' => 'staffCan:studies.manage']);
+
+        // Part 9 (35 §13): lock the thresholds at G4 (ketua), recompute the derived layer and its status (research.export)
+        $routes->post('studi/(:num)/ambang/kunci', 'StudyController::lockThresholds/$1', ['filter' => 'staffCan:studies.manage']);
+        $routes->post('studi/(:num)/hitung-ulang', 'DerivedDataController::recompute/$1', ['filter' => 'staffCan:research.export']);
+        $routes->get('studi/(:num)/hitung-ulang/status', 'DerivedDataController::status/$1', ['filter' => 'staffCan:research.export']);
 
         // Releases and asset packages stay with the admin, under /admin/studi/rilis
         $routes->group('', ['filter' => 'staffCan:releases.manage'], static function ($routes): void {

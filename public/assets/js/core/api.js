@@ -134,6 +134,12 @@ export async function handleApiError(error, { mapUrl = url('peta'), onNetwork = 
       window.location.href = url('sampai-jumpa');
       break;
 
+    // Part 8 (34 §5.4, K1): the researcher started the test; the challenge closes without a false abandon
+    case 'INSTRUMENT_STARTED':
+      window.dispatchEvent(new CustomEvent('gelita:leaving'));
+      window.location.href = url('tes');
+      break;
+
     case 'LEVEL_LOCKED':
     case 'NODE_LOCKED':
       toast(error.message, 'warn');

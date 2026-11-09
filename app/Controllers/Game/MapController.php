@@ -58,8 +58,10 @@ class MapController extends BaseGameController
             'storyContext'  => $storyContext,
             'curtain'       => $curtain,
             'curtainAssets' => $curtain ? $this->mapCurtainAssets($levels, $story, $locale) : [],
-            'regionIntros'  => $this->regionIntros($levels),
+            'regionIntros'  => $this->regionIntros($levels, ($hud['researchMode'] ?? false)),
             'heard'         => $this->heardRegionIntros(),
+            // Part 7 (33 §7.5, K9): region codes whose Kenali waits for the region to be finished
+            'kenaliLocked'  => ($hud['researchMode'] ?? false) ? array_values(array_map(static fn (array $l): string => (string) $l['code'], array_filter($levels, static fn (array $l): bool => $l['status'] !== 'completed'))) : [],
         ]);
     }
 
@@ -67,16 +69,22 @@ class MapController extends BaseGameController
      * Narasi "Kenali wilayah" (dialogues `region_intro`, Mbah Kedu) per kode
      * wilayah. Wilayah terkunci ikut: boleh dikenali sebelum dimasuki.
      *
+     * Part 7 (33 §7.5, K9): in research mode only finished regions get their
+     * slides; the others get an empty list, so neither text nor audio of
+     * Kenali is in the page source.
+     *
      * @param list<array<string, mixed>> $levels
      *
      * @return array<string, list<array<string, mixed>>>
      */
-    private function regionIntros(array $levels): array
+    private function regionIntros(array $levels, bool $researchMode = false): array
     {
         $intros = [];
 
         foreach ($levels as $level) {
-            $intros[$level['code']] = service('contentRepository')->dialogues((int) $level['id'], 'region_intro');
+            $intros[$level['code']] = $researchMode && $level['status'] !== 'completed'
+                ? []
+                : service('contentRepository')->dialogues((int) $level['id'], 'region_intro');
         }
 
         return $intros;

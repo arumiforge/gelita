@@ -83,6 +83,8 @@ final class ExportLabels
         'variant'               => ['Variasi (kamus)', 'code', 'Nama 11 untuk variant_group: a, b, x (dipakai semua buklet), atau c–k (Susun Gambar).'],
         'error_code'            => ['Kode kesalahan', 'code', 'Kode kesalahan dari bank soal, diturunkan server untuk percobaan salah.'],
         'sheet_row'             => ['Baris ke-', 'int', 'Nomor baris di lembar yang diunggah.'],
+        // Part 9 (35 §7, §10; 29 §7.3)
+        'after_withdrawal'      => ['Sesudah mundur', 'bool', '1 = data ini sesudah saat mundur siswa (mundur dengan data tetap); tidak masuk lembar turunan. Data mentah tidak diubah.'],
     ];
 
     /**
@@ -117,6 +119,25 @@ final class ExportLabels
             'intro_seen_at'            => ['Selesai cerita pembuka', 'datetime', 'Pertama kali menyelesaikan cerita pembuka.'],
             'pw_first_submit_criteria' => ['Syarat sandi terpenuhi pada kiriman pertama', 'int', 'Jumlah syarat kata sandi (0–5) yang terpenuhi pada kiriman pertama formulir pendaftaran.'],
             'pw_weak_submit_count'     => ['Kiriman sandi terlalu lemah', 'int', 'Berapa kali formulir pendaftaran ditolak karena sandi belum kuat.'],
+            // Part 8 (34 §11.4; 13 → Penskoran)
+            'pre_form' => ['Bentuk tes awal', 'code', 'A atau B (dari baris dan kursi L2).'],
+            'post_form' => ['Bentuk tes akhir', 'code', 'A atau B (kebalikan tes awal).'],
+            'pre_date' => ['Tanggal tes awal', 'text', 'TTTT-BB-HH.'],
+            'post_date' => ['Tanggal tes akhir', 'text', 'TTTT-BB-HH.'],
+            'pre_makeup' => ['Tes awal susulan', 'bool', '1 = tes awal di sesi susulan.'],
+            'post_makeup' => ['Tes akhir susulan', 'bool', '1 = tes akhir di sesi susulan.'],
+            'pre_d1' => ['Skor D1 tes awal', 'int', 'Skor mentah bagian D1 tes awal (0–16).'],
+            'pre_d2' => ['Skor D2 tes awal', 'int', 'Skor mentah bagian D2 tes awal (0–16).'],
+            'pre_d3' => ['Skor D3 tes awal', 'int', 'Skor mentah bagian D3 tes awal (0–8).'],
+            'post_d1' => ['Skor D1 tes akhir', 'int', 'Skor mentah bagian D1 tes akhir (0–16).'],
+            'post_d2' => ['Skor D2 tes akhir', 'int', 'Skor mentah bagian D2 tes akhir (0–16).'],
+            'post_d3' => ['Skor D3 tes akhir', 'int', 'Skor mentah bagian D3 tes akhir (0–8).'],
+            'pre_minutes_p1' => ['Lama Bagian 1 tes awal (menit)', 'text', 'Menit kerja Bagian 1, satu desimal.'],
+            'pre_minutes_p23' => ['Lama Bagian 2–3 tes awal (menit)', 'text', 'Menit kerja Bagian 2 dan 3, satu desimal.'],
+            'post_minutes_p1' => ['Lama Bagian 1 tes akhir (menit)', 'text', 'Menit kerja Bagian 1, satu desimal.'],
+            'post_minutes_p23' => ['Lama Bagian 2–3 tes akhir (menit)', 'text', 'Menit kerja Bagian 2 dan 3, satu desimal.'],
+            'pre_capped' => ['Ditutup batas (tes awal)', 'code', 'Blok yang ditutup batas waktu: p1, p23, atau keduanya (p1;p23); kosong bila tidak ada.'],
+            'post_capped' => ['Ditutup batas (tes akhir)', 'code', 'Blok yang ditutup batas waktu: p1, p23, atau keduanya (p1;p23); kosong bila tidak ada.'],
         ],
         'sesi_lapangan' => [
             'makeup_no'         => ['Susulan ke-', 'int', '0 = sesi utama; 1, 2 = susulan pertama, kedua.'],
@@ -150,7 +171,9 @@ final class ExportLabels
         'pengerjaan' => [
             'variant_source'      => ['Asal variasi', 'code', 'booklet = dari buklet siswa (pengerjaan pertama dalam mode penelitian), random = acak, retake = pengerjaan ulang.'],
             'booklet_at_open'     => ['Buklet saat dibuka', 'code', 'Buklet siswa (B1–B4) saat pengerjaan dibuka; kosong di luar mode penelitian.'],
-            'attempt_no'          => ['Pengerjaan ke-', 'int', 'Pengerjaan ke-n tantangan ini dalam sesi.'],
+            // Part 7 (33 K6)
+            'is_retake'           => ['Pengerjaan ulang', 'bool', '1 = siswa sudah pernah menuntaskan tantangan ini saat pengerjaan dibuat. Pengerjaan ulang tetap memberi bintang, tetapi tidak dipakai sebagai pengerjaan pertama.'],
+            'attempt_no'          => ['Pengerjaan ke-', 'int', 'Pengerjaan ke-n tantangan ini oleh siswa (lintas sesi sejak bagian 7).'],
             'status'              => ['Status', 'enum', 'Status pengerjaan.', 'attemptStatus'],
             'completion_reason'   => ['Alasan selesai', 'enum', 'Diisi saat pengerjaan selesai.', 'completion'],
             'scorable_items'      => ['Soal dinilai', 'int', 'Jumlah soal yang dinilai.'],
@@ -272,6 +295,119 @@ final class ExportLabels
             'review_status'         => ['Status pemeriksaan', 'code', 'draft, needs_verification, atau verified.'],
             'reference_source'      => ['Sumber rujukan', 'text', 'Asal fakta butir.'],
         ],
+        // Part 8 (34 §11.4): the test module's sheets and columns; `-` = left empty
+        'tes_jawaban' => [
+            'occasion'           => ['Kesempatan', 'code', 'pre = tes awal (P1), post = tes akhir (P5).'],
+            'form'               => ['Bentuk tes', 'code', 'A atau B.'],
+            'item_code'          => ['Kode butir tes', 'code', 'tes-{bagian}-{bentuk}{nn}, mis. tes-mb-A07; contoh soal tidak ikut.'],
+            'response'           => ['Jawaban mentah', 'code', 'Huruf (PG, D2, D3), pola tiga huruf (PGK, mis. BSB), atau pasangan (menjodohkan, mis. 1C 2A 3D); - = tidak dijawab.'],
+            'score'              => ['Skor', 'int', 'Dari kunci: 0–1 (D2: 0–2); kosong bila tidak sampai.'],
+            'error_codes'        => ['Kode kesalahan', 'code', 'Dari kunci; PGK dan menjodohkan satu kode per pernyataan atau pasangan salah, dipisah titik koma.'],
+            'not_reached'        => ['Tidak sampai', 'bool', '1 = bagian ditutup batas waktu sebelum butir ini pernah tampil.'],
+            'time_on_item'       => ['Waktu tampil (mdtk)', 'ms', 'Jumlah waktu butir tampil (jam server), dibatasi batas waktu blok.'],
+            'answer_changes'     => ['Ganti jawaban', 'int', 'Berapa kali jawaban yang sudah tersimpan diganti.'],
+            'instrument_version' => ['Versi isi', 'code', 'Versi berkas isi instrumen, mis. tes-0.1.'],
+            // Part 9 (35 §6.8)
+            'rapid_guess'        => ['Tebakan cepat', 'bool', '1 bila waktu tampil terakhir sampai jawaban dikirim di bawah ambang tebakan cepat tes studi; kosong untuk jawaban kosong, butir tidak sampai, butir pertama sesudah bacaan, atau tanpa putaran hitung.'],
+        ],
+        'tes_bagian' => [
+            'occasion'        => ['Kesempatan', 'code', 'pre = tes awal (P1), post = tes akhir (P5).'],
+            'part'            => ['Bagian', 'code', 'mb = Bagian 1 Membaca, ae = Bagian 2 Aman dan Etis, bd = Bagian 3 Budaya Digital.'],
+            'block'           => ['Blok waktu', 'code', 'p1 = Bagian 1; p23 = Bagian 2 dan 3 bersama.'],
+            'started_at'      => ['Mulai', 'datetime', 'Waktu bagian dibuka.'],
+            'submitted_at'    => ['Dikirim', 'datetime', 'Waktu siswa mengirim bagian; kosong bila ditutup batas waktu.'],
+            'closed_by_limit' => ['Ditutup batas waktu', 'bool', '1 = bagian ditutup otomatis oleh batas waktu tersembunyi.'],
+            'extra_minutes'   => ['Menit tambahan', 'int', 'Menit yang ditambahkan peneliti untuk blok ini (perangkat bermasalah).'],
+            'raw_score'       => ['Skor mentah', 'int', 'Jumlah skor bagian (D1 0–16, D2 0–16, D3 0–8).'],
+            'answered_count'  => ['Butir dijawab', 'int', 'Banyak butir yang punya jawaban.'],
+            'is_makeup'       => ['Susulan', 'bool', '1 = dikerjakan di sesi susulan.'],
+        ],
+        'angket' => [
+            'questionnaire_date'    => ['Tanggal angket', 'text', 'Tanggal mulai mengisi angket, TTTT-BB-HH.'],
+            'questionnaire_makeup'  => ['Angket susulan', 'bool', '1 = diisi di sesi susulan.'],
+            'questionnaire_late'    => ['Angket terlambat', 'bool', '1 = diisi setelah siswa mulai bermain (questionnaire_late).'],
+            'questionnaire_minutes' => ['Lama mengisi (menit)', 'text', 'Menit dari mulai sampai Selesai, satu desimal; kosong bila belum dikirim.'],
+            'phone_access' => ['ang-01 punya HP sendiri', 'code', 'Angket ang-01 punya HP sendiri (2 ya, 1 memakai HP orang lain, 0 tidak); - = dilewati.'],
+            'home_phone' => ['ang-02 HP di rumah', 'code', 'Angket ang-02 HP di rumah (1/0); - = dilewati.'],
+            'home_tablet' => ['ang-02 tablet', 'code', 'Angket ang-02 tablet (1/0); - = dilewati.'],
+            'home_computer' => ['ang-02 laptop atau komputer', 'code', 'Angket ang-02 laptop atau komputer (1/0); - = dilewati.'],
+            'home_console' => ['ang-02 konsol game', 'code', 'Angket ang-02 konsol game (1/0); - = dilewati.'],
+            'home_device_none' => ['ang-02 tidak ada satu pun', 'code', 'Angket ang-02 tidak ada satu pun (1/0); - = dilewati.'],
+            'home_internet' => ['ang-03 bisa memakai internet di rumah', 'code', 'Angket ang-03 bisa memakai internet di rumah (3 hampir selalu … 0 tidak pernah, 9 tidak tahu); - = dilewati.'],
+            'first_use_grade' => ['ang-04 mulai memakai HP atau tablet', 'code', 'Angket ang-04 mulai memakai HP atau tablet (4 sebelum SD … 1 kelas 5, 0 belum pernah, 9 tidak ingat); - = dilewati.'],
+            'screen_time_school' => ['ang-05 lama memakai layar, hari sekolah', 'code', 'Angket ang-05 lama memakai layar, hari sekolah (0–4, 9); - = dilewati.'],
+            'screen_time_holiday' => ['ang-05 lama memakai layar, hari libur', 'code', 'Angket ang-05 lama memakai layar, hari libur (0–4, 9); - = dilewati.'],
+            'game_time_school' => ['ang-06 lama main game, hari sekolah', 'code', 'Angket ang-06 lama main game, hari sekolah (0–4, 9); - = dilewati.'],
+            'game_time_holiday' => ['ang-06 lama main game, hari libur', 'code', 'Angket ang-06 lama main game, hari libur (0–4, 9); - = dilewati.'],
+            'act_video' => ['ang-07a menonton video', 'code', 'Angket ang-07a menonton video (2, 1, 0, 9); - = dilewati.'],
+            'act_game' => ['ang-07b bermain game', 'code', 'Angket ang-07b bermain game (2, 1, 0, 9); - = dilewati.'],
+            'act_chat' => ['ang-07c pesan atau telepon', 'code', 'Angket ang-07c pesan atau telepon (2, 1, 0, 9); - = dilewati.'],
+            'act_schoolwork' => ['ang-07d tugas sekolah', 'code', 'Angket ang-07d tugas sekolah (2, 1, 0, 9); - = dilewati.'],
+            'act_search' => ['ang-07e mencari tahu', 'code', 'Angket ang-07e mencari tahu (2, 1, 0, 9); - = dilewati.'],
+            'act_read' => ['ang-07f membaca', 'code', 'Angket ang-07f membaca (2, 1, 0, 9); - = dilewati.'],
+            'act_post' => ['ang-07g membuat dan mengunggah', 'code', 'Angket ang-07g membuat dan mengunggah (2, 1, 0, 9); - = dilewati.'],
+            'acct_whatsapp' => ['ang-08a WhatsApp', 'code', 'Angket ang-08a WhatsApp (0 tidak memakai, 1 akun orang lain, 2 akun sendiri, 9); - = dilewati.'],
+            'acct_youtube' => ['ang-08b YouTube', 'code', 'Angket ang-08b YouTube (0, 1, 2, 9); - = dilewati.'],
+            'acct_tiktok' => ['ang-08c TikTok', 'code', 'Angket ang-08c TikTok (0, 1, 2, 9); - = dilewati.'],
+            'acct_instagram' => ['ang-08d Instagram', 'code', 'Angket ang-08d Instagram (0, 1, 2, 9); - = dilewati.'],
+            'acct_facebook' => ['ang-08e Facebook', 'code', 'Angket ang-08e Facebook (0, 1, 2, 9); - = dilewati.'],
+            'acct_game' => ['ang-08f game online berakun', 'code', 'Angket ang-08f game online berakun (0, 1, 2, 9); - = dilewati.'],
+            'parent_couse' => ['ang-09 ditemani orang tua', 'code', 'Angket ang-09 ditemani orang tua (3 … 0, 8 tidak memakai di rumah, 9); - = dilewati.'],
+            'parent_talk' => ['ang-10 mengobrol dengan orang tua', 'code', 'Angket ang-10 mengobrol dengan orang tua (3 … 0, 8, 9); - = dilewati.'],
+            'parent_rule_time' => ['ang-11a aturan lama memakai', 'code', 'Angket ang-11a aturan lama memakai (1 ada, 0 tidak, 9); - = dilewati.'],
+            'parent_rule_content' => ['ang-11b aturan isi yang dibuka', 'code', 'Angket ang-11b aturan isi yang dibuka (1, 0, 9); - = dilewati.'],
+            'safety_info_parent' => ['ang-12 orang tua', 'code', 'Angket ang-12 orang tua (1/0); - = dilewati.'],
+            'safety_info_teacher' => ['ang-12 guru', 'code', 'Angket ang-12 guru (1/0); - = dilewati.'],
+            'safety_info_family' => ['ang-12 kakak atau saudara', 'code', 'Angket ang-12 kakak atau saudara (1/0); - = dilewati.'],
+            'safety_info_friend' => ['ang-12 teman', 'code', 'Angket ang-12 teman (1/0); - = dilewati.'],
+            'safety_info_media' => ['ang-12 video, TV, atau internet', 'code', 'Angket ang-12 video, TV, atau internet (1/0); - = dilewati.'],
+            'safety_info_none' => ['ang-12 belum ada yang memberi tahu', 'code', 'Angket ang-12 belum ada yang memberi tahu (1/0); - = dilewati.'],
+            'safety_info_dk' => ['ang-12 tidak ingat', 'code', 'Angket ang-12 tidak ingat (1/0); - = dilewati.'],
+            'school_device_use' => ['ang-13 memakai alat di sekolah', 'code', 'Angket ang-13 memakai alat di sekolah (2, 1, 0, 9); - = dilewati.'],
+            'digital_quiz_exp' => ['ang-14 kuis di layar', 'code', 'Angket ang-14 kuis di layar (2, 1, 0, 9); - = dilewati.'],
+            'read_medium_pref' => ['ang-15 lebih mudah membaca di', 'code', 'Angket ang-15 lebih mudah membaca di (1 kertas, 2 sama, 3 layar, 9); - = dilewati.'],
+            'home_indonesian' => ['ang-16 bahasa Indonesia di rumah', 'code', 'Angket ang-16 bahasa Indonesia di rumah (3 … 0); - = dilewati.'],
+            'books_home' => ['ang-17 buku di rumah', 'code', 'Angket ang-17 buku di rumah (1–5, 9); - = dilewati.'],
+        ],
+        'sikap' => [
+            'skp_ct_01' => ['Contoh skala sikap', 'code', 'Jawaban contoh skp-ct-01 (tidak dianalisis): 1–4 atau -.'],
+            'skp_01' => ['skp-01', 'code', 'Jawaban mentah skp-01: 1 tidak setuju, 2 kurang setuju, 3 setuju, 4 sangat setuju; - = dilewati. Tidak dibalik.'],
+            'skp_02' => ['skp-02', 'code', 'Jawaban mentah skp-02: 1 tidak setuju, 2 kurang setuju, 3 setuju, 4 sangat setuju; - = dilewati. Tidak dibalik.'],
+            'skp_03' => ['skp-03', 'code', 'Jawaban mentah skp-03: 1 tidak setuju, 2 kurang setuju, 3 setuju, 4 sangat setuju; - = dilewati. Tidak dibalik.'],
+            'skp_04' => ['skp-04', 'code', 'Jawaban mentah skp-04: 1 tidak setuju, 2 kurang setuju, 3 setuju, 4 sangat setuju; - = dilewati. Tidak dibalik.'],
+            'skp_05' => ['skp-05', 'code', 'Jawaban mentah skp-05: 1 tidak setuju, 2 kurang setuju, 3 setuju, 4 sangat setuju; - = dilewati. Tidak dibalik.'],
+            'skp_06' => ['skp-06', 'code', 'Jawaban mentah skp-06: 1 tidak setuju, 2 kurang setuju, 3 setuju, 4 sangat setuju; - = dilewati. Tidak dibalik.'],
+            'skp_07' => ['skp-07', 'code', 'Jawaban mentah skp-07: 1 tidak setuju, 2 kurang setuju, 3 setuju, 4 sangat setuju; - = dilewati. Tidak dibalik.'],
+            'skp_08' => ['skp-08', 'code', 'Jawaban mentah skp-08: 1 tidak setuju, 2 kurang setuju, 3 setuju, 4 sangat setuju; - = dilewati. Tidak dibalik.'],
+            'skp_09' => ['skp-09', 'code', 'Jawaban mentah skp-09: 1 tidak setuju, 2 kurang setuju, 3 setuju, 4 sangat setuju; - = dilewati. Tidak dibalik.'],
+            'skp_10' => ['skp-10', 'code', 'Jawaban mentah skp-10: 1 tidak setuju, 2 kurang setuju, 3 setuju, 4 sangat setuju; - = dilewati. Tidak dibalik.'],
+            'skp_11' => ['skp-11', 'code', 'Jawaban mentah skp-11: 1 tidak setuju, 2 kurang setuju, 3 setuju, 4 sangat setuju; - = dilewati. Tidak dibalik.'],
+            'skp_12' => ['skp-12', 'code', 'Jawaban mentah skp-12: 1 tidak setuju, 2 kurang setuju, 3 setuju, 4 sangat setuju; - = dilewati. Tidak dibalik.'],
+            'skp_01_ms' => ['skp-01 waktu (mdtk)', 'ms', 'Lama pernyataan skp-01 tampil sampai dijawab, waktu terakhir bila siswa kembali.'],
+            'skp_02_ms' => ['skp-02 waktu (mdtk)', 'ms', 'Lama pernyataan skp-02 tampil sampai dijawab, waktu terakhir bila siswa kembali.'],
+            'skp_03_ms' => ['skp-03 waktu (mdtk)', 'ms', 'Lama pernyataan skp-03 tampil sampai dijawab, waktu terakhir bila siswa kembali.'],
+            'skp_04_ms' => ['skp-04 waktu (mdtk)', 'ms', 'Lama pernyataan skp-04 tampil sampai dijawab, waktu terakhir bila siswa kembali.'],
+            'skp_05_ms' => ['skp-05 waktu (mdtk)', 'ms', 'Lama pernyataan skp-05 tampil sampai dijawab, waktu terakhir bila siswa kembali.'],
+            'skp_06_ms' => ['skp-06 waktu (mdtk)', 'ms', 'Lama pernyataan skp-06 tampil sampai dijawab, waktu terakhir bila siswa kembali.'],
+            'skp_07_ms' => ['skp-07 waktu (mdtk)', 'ms', 'Lama pernyataan skp-07 tampil sampai dijawab, waktu terakhir bila siswa kembali.'],
+            'skp_08_ms' => ['skp-08 waktu (mdtk)', 'ms', 'Lama pernyataan skp-08 tampil sampai dijawab, waktu terakhir bila siswa kembali.'],
+            'skp_09_ms' => ['skp-09 waktu (mdtk)', 'ms', 'Lama pernyataan skp-09 tampil sampai dijawab, waktu terakhir bila siswa kembali.'],
+            'skp_10_ms' => ['skp-10 waktu (mdtk)', 'ms', 'Lama pernyataan skp-10 tampil sampai dijawab, waktu terakhir bila siswa kembali.'],
+            'skp_11_ms' => ['skp-11 waktu (mdtk)', 'ms', 'Lama pernyataan skp-11 tampil sampai dijawab, waktu terakhir bila siswa kembali.'],
+            'skp_12_ms' => ['skp-12 waktu (mdtk)', 'ms', 'Lama pernyataan skp-12 tampil sampai dijawab, waktu terakhir bila siswa kembali.'],
+            'skp_changes'        => ['Ganti jawaban skala', 'int', 'Berapa kali siswa mengganti jawaban sebelum mengirim.'],
+            'sikap_makeup'       => ['Skala susulan', 'bool', '1 = diisi di sesi susulan P5.'],
+            'sikap_submitted_at' => ['Skala dikirim', 'datetime', 'Waktu skala sikap dikirim.'],
+            'sikap_version'      => ['Versi skala', 'code', 'Versi isi skala, mis. sikap-0.1.'],
+            'feedback_rating'    => ['Bintang kritik dan saran', 'int', 'Bintang 1–5 di kritik dan saran; kosong bila dilewati.'],
+        ],
+        'risiko_gabungan' => [
+            'school_code' => ['Cakupan', 'code', 'semua = seluruh studi, atau kode sekolah penelitian.'],
+            'item_code'   => ['Kode butir', 'code', 'ang-21, ang-22, ang-23.'],
+            'unit'        => ['Variabel', 'code', 'risk_upset, risk_stranger_contact, support_*.'],
+            'choice'      => ['Pilihan', 'code', 'Kode jawaban (7 = tidak mau menjawab); - = kosong; tidak_mau_mengisi = memilih Tidak di T11; tidak_diberi = tanpa izin butir ini.'],
+            'students'    => ['Banyak siswa', 'text', 'Banyak siswa; kurang dari 5 ditulis <5. Tidak pernah per siswa.'],
+        ],
         'kode_pilihan' => [
             'choice_type' => ['Jenis pilihan', 'code', 'word (kata Isi Rumpang), object (benda Cari Objek), part (bagian unggahan), action atau reason (Skenario Digital).'],
             'choice_ref'  => ['Pilihan', 'code', 'Kata, kode benda, kode bagian (A1, C10, …), atau kode pilihan skenario.'],
@@ -298,6 +434,12 @@ final class ExportLabels
         'masukan'    => ['Kritik & Saran', 'Satu baris per kiriman kritik dan saran.'],
         'butir'      => ['Bank Soal', 'Satu baris per soal di bank soal.'],
         'kode_pilihan' => ['Kode Pilihan', 'Kode kesalahan bank per pilihan dan pilihan skenario (hanya ketua peneliti).'],
+        // Part 8 (34 §11.4; 29 §7.2, §7.6)
+        'tes_jawaban' => ['Jawaban Tes', 'Satu baris per butir per siswa per tes (pre/post), tanpa contoh soal.'],
+        'tes_bagian'  => ['Bagian Tes', 'Satu baris per bagian tes per siswa per kesempatan.'],
+        'angket'      => ['Angket', 'Satu baris per siswa: angket akses digital ang-01–ang-17 (41 kolom).'],
+        'sikap'       => ['Skala Sikap', 'Satu baris per siswa: skala sikap skp-01–skp-12 dan bintang kritik dan saran.'],
+        'risiko_gabungan' => ['Risiko Gabungan', 'Angka gabungan butir risiko daring per butir dan pilihan; sel di bawah 5 siswa ditulis <5. Tidak pernah per siswa.'],
         'izin'       => ['Izin Berkode', 'Izin orang tua dan persetujuan siswa per siswa, hanya kode (hanya ketua peneliti).'],
         // Field sheets: titles from FieldSheetSpec (sheetTitle())
     ];
@@ -314,11 +456,20 @@ final class ExportLabels
     /** @return list<string> */
     public static function sheets(): array
     {
-        return array_keys(self::SHEET_TITLES);
+        // Part 9 (35 §10.1): the derived sheets, right after kode_pilihan
+        $sheets = array_keys(self::SHEET_TITLES);
+        $at     = array_search('kode_pilihan', $sheets, true) + 1;
+
+        return [...array_slice($sheets, 0, $at), ...array_keys(DerivedSheets::TITLES), ...array_slice($sheets, $at)];
     }
 
     public static function sheetTitle(string $sheet): string
     {
+        // Part 9 (35 §10.1)
+        if (isset(DerivedSheets::TITLES[$sheet])) {
+            return DerivedSheets::TITLES[$sheet][0];
+        }
+
         if (! isset(self::SHEET_TITLES[$sheet]) && FieldSheetSpec::has($sheet)) {
             return FieldSheetSpec::title($sheet);
         }
@@ -328,6 +479,11 @@ final class ExportLabels
 
     public static function sheetMeaning(string $sheet): string
     {
+        // Part 9 (35 §10.1)
+        if (isset(DerivedSheets::TITLES[$sheet])) {
+            return DerivedSheets::TITLES[$sheet][1];
+        }
+
         if (! isset(self::SHEET_TITLES[$sheet]) && FieldSheetSpec::has($sheet)) {
             return 'Lembar lapangan yang diketik dan diunggah (impor utama yang berlaku); kolom seperti 02_LEMBAR_LAPANGAN.md.';
         }
@@ -338,7 +494,8 @@ final class ExportLabels
     /** Apakah kolom ini punya keterangan lengkap. Dipakai uji. */
     public static function has(string $sheet, string $column): bool
     {
-        return isset(self::SHEETS[$sheet][$column]) || isset(self::COMMON[$column]) || self::fieldColumn($sheet, $column) !== null;
+        return isset(self::SHEETS[$sheet][$column]) || isset(self::COMMON[$column]) || self::fieldColumn($sheet, $column) !== null
+            || self::derivedColumn($sheet, $column) !== null;   // part 9 (35 §10.2)
     }
 
     /**
@@ -369,13 +526,29 @@ final class ExportLabels
     }
 
     /**
+     * Part 9 (35 §10.2): a derived-sheet column, its wording from DerivedSheets::META.
+     *
+     * @return array{0: string, 1: string, 2: string, 3?: string}|null
+     */
+    private static function derivedColumn(string $sheet, string $column): ?array
+    {
+        if (! DerivedSheets::has($sheet) || ! isset(DerivedSheets::COLUMNS[$sheet][$column], DerivedSheets::META[$column])) {
+            return null;
+        }
+
+        $meta = DerivedSheets::META[$column];
+
+        return isset($meta[5]) ? [$meta[0], $meta[1], $meta[2], $meta[5]] : [$meta[0], $meta[1], $meta[2]];
+    }
+
+    /**
      * Keterangan satu kolom.
      *
      * @return array{key: string, label: string, type: string, meaning: string, unit: string, group: ?string}
      */
     public static function column(string $sheet, string $column): array
     {
-        $spec = self::SHEETS[$sheet][$column] ?? self::fieldColumn($sheet, $column) ?? self::COMMON[$column] ?? [$column, 'text', ''];
+        $spec = self::SHEETS[$sheet][$column] ?? self::fieldColumn($sheet, $column) ?? self::derivedColumn($sheet, $column) ?? self::COMMON[$column] ?? [$column, 'text', ''];
 
         return [
             'key'     => $column,

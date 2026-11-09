@@ -26,7 +26,7 @@ import { $ } from '../core/dom.js';
 import { Sfx } from '../core/audio.js';
 import { apiRequest } from '../core/api.js';
 import { CONFIG, t, currentLocale, setLocale } from '../core/config.js';
-import { lastBatchAt } from '../core/events.js';
+import { lastBatchAt, flush } from '../core/events.js';
 
 const HEARTBEAT_MS = 60_000;
 
@@ -154,10 +154,34 @@ function initLanguageSwitch() {
   });
 }
 
+// Part 7 (33 §8.2, K11, M-05): Keluar waits for the event queue, at most 5 s
+const LOGOUT_FLUSH_MS = 5000;
+
+/**
+ * Keluar (`a[href$="/keluar"]`, components/hud-menu.php and the token
+ * screen): the queue is sent first, so the last events of this student do
+ * not arrive after the session is gone. Then the page moves to /keluar. A
+ * remainder stays in this device's queue under this session's tag and goes
+ * when the same student signs in here again (core/storage.js). Without
+ * JavaScript the link works as before.
+ */
+function initLogout() {
+  document.addEventListener('click', (event) => {
+    const link = event.target instanceof Element ? event.target.closest('a[href$="/keluar"]') : null;
+    if (!link || !CONFIG.sessionTag || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey) return;
+    event.preventDefault();
+    if (link.dataset.leaving) return;
+    link.dataset.leaving = '1';
+    const go = () => { window.location.href = link.href; };
+    Promise.race([flush(), new Promise((resolve) => setTimeout(resolve, LOGOUT_FLUSH_MS))]).then(go, go);
+  });
+}
+
 export function initHud() {
   initLanguageSwitch();
   initSound();
   initLantern();
   initPopovers();
   initHeartbeat();
+  initLogout();
 }

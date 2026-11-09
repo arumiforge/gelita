@@ -89,6 +89,12 @@ class ExportService
                 'participant_count'  => $this->participantCount($context),
             ]);
 
+            // Part 9 (35 §9, K3): a field-mode study's derived layer is recomputed first when stale
+            if ($context['format'] !== 'pdf' && isset($context['filters']['study_id'])) {
+                $context['derived_run_id'] = service('derivedData')->ensureFresh((int) $context['filters']['study_id'], $context['requested_by'], 'export');
+                $exports->update($exportId, ['derived_run_id' => $context['derived_run_id']]);
+            }
+
             $path = $this->targetPath($exportId, (string) $export['format']);
 
             ['sha' => $sha, 'rows' => $rows] = match ($export['format']) {
@@ -210,12 +216,18 @@ class ExportService
         }
 
         $labels = (string) ($json['labels'] ?? '');
+        $sheets = $this->allowedSheets((array) ($json['sheets'] ?? []), $scope->fullDetail);
+
+        // Part 9 (35 K9, §10.1): derived sheets only for one study with field mode on
+        if (! $this->fieldModeStudy($filters['study_id'] ?? null) || $participantId > 0) {
+            $sheets = array_values(array_filter($sheets, static fn (string $sheet): bool => ! \App\Libraries\DerivedSheets::has($sheet)));
+        }
 
         return [
             'export_id'      => (int) $export['id'],
             'format'         => $format,
             'filters'        => $filters,
-            'sheets'         => $this->allowedSheets((array) ($json['sheets'] ?? []), $scope->fullDetail),
+            'sheets'         => $sheets,
             'anonymized'     => $scope->anonymous,
             'labeled'        => $labels === '' ? $format === 'xlsx' : $labels === 'label',
             'full_detail'    => $scope->fullDetail,
@@ -418,13 +430,31 @@ class ExportService
             $shown[] = $key . '=' . $value;
         }
 
-        return [
+        $head = [
             ['Versi kamus', ResearchDictionary::VERSION],
             ['Diunduh', (string) RawDataService::isoTime(date('Y-m-d H:i:s'))],
             ['Kode penelitian', (string) ($study['code'] ?? '')],
             ['Filter', $shown === [] ? 'tanpa filter' : implode('; ', $shown)],
             ['Definisi lengkap', ResearchDictionary::DOC . ', versi yang sama'],
         ];
+
+        // Part 9 (35 §8.1, §10.2): draft status, and the derived run the file used
+        if (ResearchDictionary::DRAFT) {
+            $head[] = ['Status kamus', 'usulan, belum disetujui (' . ResearchDictionary::BASE . ')'];
+        }
+
+        $run = empty($context['derived_run_id']) ? null : $this->db()->table('derived_runs')->where('id', (int) $context['derived_run_id'])->get()->getRowArray();
+
+        if ($run !== null) {
+            $head[] = ['Putaran hitung', (string) $run['id']];
+            $head[] = ['Jam putaran (pengambilan data sampai)', (string) RawDataService::isoTime($run['finished_at'] ?? $run['started_at'])];
+            $head[] = ['Versi kamus putaran', (string) $run['dictionary_version']];
+            $head[] = ['Ambang jeda (mdtk)', (string) $run['idle_threshold_ms']];
+            $head[] = ['Ambang tebakan cepat (mdtk)', (string) $run['rapid_guess_ms']];
+            $head[] = ['Ambang tebakan cepat tes (mdtk)', (string) $run['test_rapid_guess_ms']];
+        }
+
+        return $head;
     }
 
     /**
@@ -546,6 +576,16 @@ class ExportService
             'csv'   => 'application/zip',
             default => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         };
+    }
+
+    /** Part 9 (35 K9): true when $studyId names a study with field mode on. */
+    private function fieldModeStudy(mixed $studyId): bool
+    {
+        if ($studyId === null || $studyId === '') {
+            return false;
+        }
+
+        return (int) ($this->db()->table('research_studies')->select('field_mode')->where('id', (int) $studyId)->get()->getRow('field_mode') ?? 0) === 1;
     }
 
     private function rawData(): RawDataService

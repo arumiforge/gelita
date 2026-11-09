@@ -12,8 +12,8 @@ use App\Models\ResearchStudyModel;
  * never exported, never on the monitoring panel. The audit log records the
  * count only, without participant codes.
  *
- * The answers live in the test module's tables (part 8, 34 §8.3). Until they
- * exist the list is empty.
+ * The answers live in the test module's tables (part 8, 34 §8.3): units
+ * `risk_upset` and `support_none` of `risk` sittings without preview.
  */
 class RiskFollowUpService
 {
@@ -57,7 +57,7 @@ class RiskFollowUpService
     {
         $db = db_connect();
 
-        if ($this->studyClosed($studyId) || ! $db->tableExists('instrument_sittings') || ! $db->tableExists('instrument_responses')) {
+        if ($this->studyClosed($studyId)) {
             return [];
         }
 

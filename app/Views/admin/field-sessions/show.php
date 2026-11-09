@@ -82,6 +82,44 @@ $base = 'admin/sesi-lapangan/' . $id;
   <a class="btn btn-sm btn-quiet" href="<?= base_url('admin/pemantauan') ?>"><?= esc(lang('Admin.menuMonitoring')) ?></a>
 </p>
 
+<?php // Part 8 (34 §5.3, §7.4, §14): the test module of this meeting ?>
+<?php if (($testPanel['occasion'] ?? null) !== null): ?>
+  <section class="card">
+    <h2><?= esc(lang('Admin.fieldTestTitle')) ?></h2>
+    <?php if ($testPanel['makeup_late']): ?>
+      <p class="alert alert-warn"><?= esc(lang('Admin.fieldTestMakeupLate')) ?></p>
+    <?php elseif ($testPanel['started_at'] !== null): ?>
+      <p><?= esc(lang('Admin.fieldTestStarted', [fmt_date((string) $testPanel['started_at'])])) ?></p>
+    <?php else: ?>
+      <?php if ($testPanel['need_seats']): ?><p class="muted"><?= esc(lang('Admin.fieldTestNeedSeats')) ?></p><?php endif ?>
+      <?php if ($testPanel['occasion'] === 'post'): ?><p class="muted"><?= esc(lang('Admin.fieldTestStartPostHint')) ?></p><?php endif ?>
+      <form method="post" action="<?= base_url($base . '/mulai-tes') ?>" class="inline-form">
+        <?= csrf_field() ?>
+        <button class="btn btn-primary btn-sm" type="submit"<?= $testPanel['can_start'] ? '' : ' disabled' ?>><?= esc(lang($testPanel['occasion'] === 'pre' ? 'Admin.fieldTestStartPre' : 'Admin.fieldTestStartPost')) ?></button>
+      </form>
+    <?php endif ?>
+    <table class="data-table">
+      <thead><tr><th><?= esc(lang('Admin.instrumentExtendCode')) ?></th><th title="<?= esc(lang('Admin.testStatusHelp'), 'attr') ?>"><?= esc(lang('Admin.testStatus')) ?></th><th><?= esc(lang('Admin.moduleDone')) ?></th></tr></thead>
+      <tbody>
+        <?php foreach ($testPanel['students'] as $student): ?>
+          <tr><td class="mono"><?= esc($student['participant_code']) ?></td><td><?= esc(lang('Admin.testStatus' . ucfirst($student['status']))) ?></td><td><?= $student['module_done'] ? icon('check') : '' ?></td></tr>
+        <?php endforeach ?>
+      </tbody>
+    </table>
+    <form method="post" action="<?= base_url($base . '/tambah-waktu') ?>" class="form-grid">
+      <?= csrf_field() ?>
+      <h3><?= esc(lang('Admin.instrumentExtend')) ?></h3>
+      <label><?= esc(lang('Admin.instrumentExtendCode')) ?> <input type="text" name="participant_code" required></label>
+      <label><?= esc(lang('Admin.instrumentExtendBlock')) ?>
+        <select name="block"><option value="p1"><?= esc(lang('Admin.instrumentExtendBlockP1')) ?></option><option value="p23"><?= esc(lang('Admin.instrumentExtendBlockP23')) ?></option></select>
+      </label>
+      <label><?= esc(lang('Admin.instrumentExtendMinutes')) ?> <input type="number" name="minutes" min="1" max="60" required></label>
+      <label><?= esc(lang('Admin.instrumentExtendReason')) ?> <input type="text" name="reason" maxlength="200" required></label>
+      <button class="btn btn-sm" type="submit"><?= esc(lang('Admin.instrumentExtend')) ?></button>
+    </form>
+  </section>
+<?php endif ?>
+
 <?php if ($makeups !== []): ?>
   <h2><?= esc(lang('Admin.fieldSessionMakeup')) ?></h2>
   <ul><?php foreach ($makeups as $makeup): ?>

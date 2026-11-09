@@ -33,11 +33,11 @@ use Config\Database;
 class SystemResetService
 {
     /**
-     * Migration that must have run: the last of code wave E (part 6, 32 §11).
-     * Checked by its row in the history too, since 003900/003910 were
-     * numbered before 003600–003800 (part 3, 29 §12).
+     * Migration that must have run: the last of code wave F (part 7 004100,
+     * part 8 004200). Checked by its row in the history too, since
+     * 003900/003910 were numbered before 003600–003800 (part 3, 29 §12).
      */
-    public const REQUIRED_MIGRATION = '2026-01-01-004000';
+    public const REQUIRED_MIGRATION = '2026-01-01-004300';
 
     /** Kata yang wajib diketik bila tanpa --ya. */
     public const CONFIRM_WORD = 'RESET-KELAS5';
@@ -55,9 +55,19 @@ class SystemResetService
         'field_sheet_imports', 'field_sheet_rows',
         // Part 4 (30 §15)
         'participant_consents',
+        // Part 7 (33 §9)
+        'challenge_attempt_segments',
+        // Part 8 (34 §11.3): the students' test, questionnaire, risk-item and attitude answers
+        'instrument_responses', 'instrument_parts', 'instrument_blocks', 'instrument_sittings',
+        // Part 9 (35 §12): the derived data layer, rebuilt from the raw data by the next run
+        'derived_tries', 'derived_items', 'derived_attempts', 'derived_challenges', 'derived_field_sessions',
+        'derived_participants', 'derived_test_responses', 'derived_observations', 'derived_runs',
     ];
 
-    public const GROUP_B = ['hints', 'item_error_codes', 'scenario_options', 'post_parts', 'post_scenes', 'challenge_items', 'reading_passages', 'challenge_nodes'];
+    public const GROUP_B = ['hints', 'item_error_codes', 'scenario_options', 'post_parts', 'post_scenes', 'challenge_items', 'reading_passages', 'challenge_nodes',
+        // Part 8 (34 §11.3): instrument content, imported again from the data files
+        'instrument_items', 'instrument_stimuli', 'instrument_versions',
+    ];
 
     public const GROUP_C = ['research_studies', 'game_releases', 'learning_indicators'];
 
@@ -66,10 +76,17 @@ class SystemResetService
 
     /** Urutan pengosongan mengikuti FK: anak dulu. */
     public const CLEAR_ORDER = [
+        // Part 9 (35 §12): derived rows, then their runs, before everything they point to
+        'derived_tries', 'derived_items', 'derived_attempts', 'derived_challenges', 'derived_field_sessions',
+        'derived_participants', 'derived_test_responses', 'derived_observations', 'derived_runs',
         'field_sheet_rows', 'field_sheet_imports',   // part 3 (29 §12)
+        'challenge_attempt_segments',                // part 7 (33 §9): before challenge_attempts
         'item_tries', 'item_responses', 'challenge_attempts', 'audio_usage_events', 'game_event_logs',
         // Part 4 (30 §15): before participants
         'participant_consents',
+        // Part 8 (34 §11.3): answers before participants, content after them
+        'instrument_responses', 'instrument_parts', 'instrument_blocks', 'instrument_sittings',
+        'instrument_items', 'instrument_stimuli', 'instrument_versions',
         'device_logs', 'participant_progress', 'participant_seats', 'field_session_members', 'field_session_tokens',
         'participant_feedback', 'game_sessions', 'field_sessions', 'participant_code_counters', 'participants',
         'data_exports', 'data_deletion_requests', 'audit_logs', 'hints', 'item_error_codes', 'scenario_options',
@@ -229,6 +246,9 @@ class SystemResetService
         // Part 6 (32 K8): without Skenario Digital in the bank, four challenges per region (12 shards)
         $this->retireEmptyScenarioNodes();
 
+        // Part 8 (34 §6.2): the test, questionnaire and attitude-scale content from the data files
+        $instruments = $this->importInstruments();
+
         // 8. Gambar mockup (Dok 2 §10)
         $mockups = ! empty($options['tanpa_mockup'])
             ? ['status' => 'skipped', 'count' => 0, 'message' => 'Gambar mockup tidak dibuat (--tanpa-mockup).']
@@ -248,6 +268,7 @@ class SystemResetService
             'cleared'          => $counts,
             'schools_removed'  => $schools,
             'bank'             => $bank,
+            'instruments'      => $instruments,   // Part 8 (34 §6.2)
             'mockups'          => $mockups,
             'findings'         => $findings,
             'errors'           => $errors,
@@ -402,6 +423,23 @@ class SystemResetService
                 $this->db->table('challenge_nodes')->where('id', (int) $node['id'])->update(['is_active' => 0]);
             }
         }
+    }
+
+    /**
+     * Part 8 (34 §6.2): imports `data/instrumen/{tes,angket,sikap}.php`. A
+     * failed check leaves the module without content and warns; the reset goes on.
+     *
+     * @return array<string, mixed>
+     */
+    private function importInstruments(): array
+    {
+        $result = (new \App\Libraries\InstrumentImporter($this->db))->import();
+
+        foreach ($result['errors'] as $error) {
+            $this->warnings[] = 'Impor instrumen gagal: ' . $error;
+        }
+
+        return $result;
     }
 
     /** @return array<string, mixed> */

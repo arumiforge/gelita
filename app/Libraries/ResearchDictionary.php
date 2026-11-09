@@ -22,7 +22,19 @@ namespace App\Libraries;
  */
 final class ResearchDictionary
 {
-    public const VERSION = 'kamus-1.0';
+    /**
+     * Part 9 (35 §8.1, K8; 11 → Versi dan cara berubah): `kamus-1.1` is a
+     * developer draft, so the system writes `kamus-1.1-usulan` until 11
+     * approves it; then VERSION becomes BASE and DRAFT false. Changing it
+     * makes every derived run stale.
+     */
+    public const VERSION = 'kamus-1.1-usulan';
+
+    /** The dictionary version in 11 this one proposes. */
+    public const BASE = 'kamus-1.1';
+
+    /** True while the version is a proposal: the Kamus Data header says "usulan, belum disetujui". */
+    public const DRAFT = true;
 
     public const DOC = '11_KAMUS_DATA.md';
 
@@ -32,6 +44,8 @@ final class ResearchDictionary
     private const ITEMS   = 'variabel-butir';
     private const FIELD   = 'aturan-gabung-lembar-lapangan';
     private const MARKERS = 'penanda-untuk-analisis';
+    // Part 8 (34 §11.4): 11 → Tes awal–akhir, angket, dan skala sikap (1.1)
+    private const INSTRUMENTS = 'tes-awalakhir-angket-dan-skala-sikap-11';
 
     /**
      * sheet => [ref, analytics, columns]; a column is `status` (same name in
@@ -45,6 +59,8 @@ final class ResearchDictionary
             'age' => 'ada', 'gender' => 'ada', 'class_level' => 'ada', 'registered_at' => 'ada', 'assented_at' => 'ada',
             'intro_seen_at' => ['ada', 'intro_seen_at', 'analitik-8-navigasi-permainan', [8]],
             'pw_first_submit_criteria' => 'ada', 'pw_weak_submit_count' => 'ada',
+            // Part 8 (34 §11.4)
+            'pre_form' => ['baru', 'pre_form', self::INSTRUMENTS, []], 'post_form' => ['baru', 'post_form', self::INSTRUMENTS, []], 'pre_date' => ['baru', 'pre_date', self::INSTRUMENTS, []], 'post_date' => ['baru', 'post_date', self::INSTRUMENTS, []], 'pre_makeup' => ['baru', 'pre_makeup', self::INSTRUMENTS, []], 'post_makeup' => ['baru', 'post_makeup', self::INSTRUMENTS, []], 'pre_d1' => ['baru', 'pre_d1', self::INSTRUMENTS, []], 'pre_d2' => ['baru', 'pre_d2', self::INSTRUMENTS, []], 'pre_d3' => ['baru', 'pre_d3', self::INSTRUMENTS, []], 'post_d1' => ['baru', 'post_d1', self::INSTRUMENTS, []], 'post_d2' => ['baru', 'post_d2', self::INSTRUMENTS, []], 'post_d3' => ['baru', 'post_d3', self::INSTRUMENTS, []], 'pre_minutes_p1' => ['baru', 'pre_minutes_p1', self::INSTRUMENTS, []], 'pre_minutes_p23' => ['baru', 'pre_minutes_p23', self::INSTRUMENTS, []], 'post_minutes_p1' => ['baru', 'post_minutes_p1', self::INSTRUMENTS, []], 'post_minutes_p23' => ['baru', 'post_minutes_p23', self::INSTRUMENTS, []], 'pre_capped' => ['baru', 'pre_capped', self::INSTRUMENTS, []], 'post_capped' => ['baru', 'post_capped', self::INSTRUMENTS, []],
         ]],
         'sesi_lapangan' => [self::PEOPLE, [1, 5], [
             'field_session_code' => 'baru', 'school_code' => 'baru', 'rombel' => 'baru', 'meeting_no' => 'baru',
@@ -79,6 +95,8 @@ final class ResearchDictionary
             'started_at' => ['ada', 'started_at', 'analitik-5-waktu-pengerjaan', [5]],
             'completed_at' => ['ada', 'completed_at', 'analitik-5-waktu-pengerjaan', [5]],
             'duration_ms' => ['ada', 'duration_ms', 'analitik-5-waktu-pengerjaan', [5]],
+            // Part 7 (33 K6)
+            'is_retake' => ['baru', 'is_retake', self::MARKERS, [1, 3, 5]],
         ]],
         'jawaban' => ['analitik-2-ketepatan-jawaban', [2, 3], [
             'attempt_id' => ['ada', 'attempt_id', self::KEYS, [2, 3]], 'session_code' => 'ada', 'participant_code' => 'ada',
@@ -141,6 +159,29 @@ final class ResearchDictionary
             'participant_code' => 'ada', 'session_code' => 'ada', 'rating' => ['ada', 'feedback_rating', self::PEOPLE, []],
             'liked_most' => 'ada', 'hardest_part' => 'ada', 'new_learning' => 'ada', 'suggestion' => 'ada', 'submitted_at' => 'ada',
         ]],
+        // Part 8 (34 §11.4): the test module's sheets; risiko_gabungan is aggregate only (29 K9)
+        'tes_jawaban' => [self::INSTRUMENTS, [], [
+            'participant_code' => 'ada', 'occasion' => 'baru', 'form' => 'baru', 'item_code' => 'baru', 'response' => 'baru', 'score' => 'baru',
+            'error_codes' => 'baru', 'not_reached' => 'baru', 'time_on_item' => 'baru', 'answer_changes' => 'baru', 'instrument_version' => 'baru',
+            // Part 9 (35 §6.8): from derived_test_responses
+            'rapid_guess' => ['usulan', 'rapid_guess', self::INSTRUMENTS, [6]],
+        ]],
+        'tes_bagian' => [self::INSTRUMENTS, [], [
+            'participant_code' => 'ada', 'occasion' => 'baru', 'part' => 'baru', 'block' => 'baru', 'started_at' => 'baru', 'submitted_at' => 'baru',
+            'closed_by_limit' => 'baru', 'extra_minutes' => 'baru', 'raw_score' => 'baru', 'answered_count' => 'baru', 'is_makeup' => 'baru',
+            'field_session_code' => 'baru',
+        ]],
+        'angket' => [self::INSTRUMENTS, [], [
+            'participant_code' => 'ada', 'questionnaire_date' => 'baru', 'questionnaire_makeup' => 'baru', 'questionnaire_late' => 'baru',
+            'questionnaire_minutes' => 'baru', 'phone_access' => 'baru', 'home_phone' => 'baru', 'home_tablet' => 'baru', 'home_computer' => 'baru', 'home_console' => 'baru', 'home_device_none' => 'baru', 'home_internet' => 'baru', 'first_use_grade' => 'baru', 'screen_time_school' => 'baru', 'screen_time_holiday' => 'baru', 'game_time_school' => 'baru', 'game_time_holiday' => 'baru', 'act_video' => 'baru', 'act_game' => 'baru', 'act_chat' => 'baru', 'act_schoolwork' => 'baru', 'act_search' => 'baru', 'act_read' => 'baru', 'act_post' => 'baru', 'acct_whatsapp' => 'baru', 'acct_youtube' => 'baru', 'acct_tiktok' => 'baru', 'acct_instagram' => 'baru', 'acct_facebook' => 'baru', 'acct_game' => 'baru', 'parent_couse' => 'baru', 'parent_talk' => 'baru', 'parent_rule_time' => 'baru', 'parent_rule_content' => 'baru', 'safety_info_parent' => 'baru', 'safety_info_teacher' => 'baru', 'safety_info_family' => 'baru', 'safety_info_friend' => 'baru', 'safety_info_media' => 'baru', 'safety_info_none' => 'baru', 'safety_info_dk' => 'baru', 'school_device_use' => 'baru', 'digital_quiz_exp' => 'baru', 'read_medium_pref' => 'baru', 'home_indonesian' => 'baru', 'books_home' => 'baru',
+        ]],
+        'sikap' => [self::INSTRUMENTS, [], [
+            'participant_code' => 'ada', 'skp_ct_01' => 'baru', 'skp_01' => 'baru', 'skp_02' => 'baru', 'skp_03' => 'baru', 'skp_04' => 'baru', 'skp_05' => 'baru', 'skp_06' => 'baru', 'skp_07' => 'baru', 'skp_08' => 'baru', 'skp_09' => 'baru', 'skp_10' => 'baru', 'skp_11' => 'baru', 'skp_12' => 'baru', 'skp_01_ms' => 'baru', 'skp_02_ms' => 'baru', 'skp_03_ms' => 'baru', 'skp_04_ms' => 'baru', 'skp_05_ms' => 'baru', 'skp_06_ms' => 'baru', 'skp_07_ms' => 'baru', 'skp_08_ms' => 'baru', 'skp_09_ms' => 'baru', 'skp_10_ms' => 'baru', 'skp_11_ms' => 'baru', 'skp_12_ms' => 'baru', 'skp_changes' => 'baru', 'sikap_makeup' => 'baru',
+            'sikap_submitted_at' => 'baru', 'sikap_version' => 'baru', 'feedback_rating' => 'baru',
+        ]],
+        'risiko_gabungan' => [self::INSTRUMENTS, [], [
+            'school_code' => 'baru', 'item_code' => 'baru', 'unit' => 'baru', 'choice' => 'baru', 'students' => 'baru',
+        ]],
         // Part 4 (30 §10.1, keputusan no. 9)
         'izin' => [self::PEOPLE, [], [
             'participant_code' => 'ada', 'parent_consent_on' => 'baru', 'recording_consent' => 'baru', 'recording_withdrawn_on' => 'baru',
@@ -167,7 +208,7 @@ final class ResearchDictionary
     /** @return list<string> sheets with entries, field sheets included */
     public static function sheets(): array
     {
-        return [...array_keys(self::SHEETS), ...FieldSheetSpec::imported()];
+        return [...array_keys(self::SHEETS), ...FieldSheetSpec::imported(), ...array_keys(DerivedSheets::TABLES)];   // part 9: turunan_*
     }
 
     /**
@@ -177,6 +218,11 @@ final class ResearchDictionary
      */
     public static function entry(string $sheet, string $column): ?array
     {
+        // Part 9 (35 §8.2, §10.2): derived sheets and `after_withdrawal`, status `usulan` while DRAFT (K8)
+        if (($derived = self::derivedEntry($sheet, $column)) !== null || DerivedSheets::has($sheet)) {
+            return $derived;
+        }
+
         if (! isset(self::SHEETS[$sheet])) {
             return self::fieldEntry($sheet, $column);
         }
@@ -198,8 +244,13 @@ final class ResearchDictionary
     /** @return list<string> columns with an entry in one sheet */
     public static function columns(string $sheet): array
     {
+        // Part 9 (35 §10)
+        if (DerivedSheets::has($sheet)) {
+            return array_keys(DerivedSheets::COLUMNS[$sheet]);
+        }
+
         if (isset(self::SHEETS[$sheet])) {
-            return array_keys(self::SHEETS[$sheet][2]);
+            return [...array_keys(self::SHEETS[$sheet][2]), ...(isset(DerivedSheets::AFTER_WITHDRAWAL[$sheet]) ? ['after_withdrawal'] : [])];
         }
 
         return FieldSheetSpec::has($sheet) ? ['field_session_code', 'sheet_row', ...array_keys(FieldSheetSpec::columns($sheet))] : [];
@@ -208,7 +259,12 @@ final class ResearchDictionary
     /** @return list<string> every anchor used */
     public static function refs(): array
     {
-        $refs = [self::FIELD];
+        $refs = [self::FIELD, self::KEYS];
+
+        // Part 9 (35 §10.2)
+        foreach (DerivedSheets::META as $meta) {
+            $refs[] = $meta[3];
+        }
 
         foreach (self::SHEETS as [$ref, , $columns]) {
             $refs[] = $ref;
@@ -221,6 +277,29 @@ final class ResearchDictionary
         }
 
         return array_values(array_unique($refs));
+    }
+
+    /**
+     * Part 9: an entry of a derived-sheet column (DerivedSheets::META) or of
+     * `after_withdrawal` on a raw sheet (11 → Kunci penggabungan, 1.1).
+     *
+     * @return array{kamus: string, analytics: list<int>, ref: string, status: string}|null
+     */
+    private static function derivedEntry(string $sheet, string $column): ?array
+    {
+        $status = self::DRAFT ? 'usulan' : 'baru';
+
+        if ($column === 'after_withdrawal' && isset(DerivedSheets::AFTER_WITHDRAWAL[$sheet])) {
+            return ['kamus' => 'after_withdrawal', 'analytics' => [], 'ref' => self::KEYS, 'status' => $status];
+        }
+
+        if (! DerivedSheets::has($sheet) || ! isset(DerivedSheets::COLUMNS[$sheet][$column], DerivedSheets::META[$column])) {
+            return null;
+        }
+
+        $meta = DerivedSheets::META[$column];
+
+        return ['kamus' => $column, 'analytics' => $meta[4], 'ref' => $meta[3], 'status' => $status];
     }
 
     /**

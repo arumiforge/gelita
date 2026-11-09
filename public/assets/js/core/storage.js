@@ -32,6 +32,8 @@ const DROPPED_PREFIX = 'gelita.dropped.';
 const SEQUENCE_PREFIX = 'gelita.seq.';
 const PREF_KEY = 'gelita.prefs';
 export const QUEUE_MAX = 5000;
+/** Part 7 (33 K11): queued rows of other sessions older than this are let go. */
+export const STALE_MS = 14 * 24 * 60 * 60 * 1000;
 
 /** Fallbacks when web storage is blocked (private mode, full quota). */
 const memoryDropped = {};
@@ -85,7 +87,9 @@ function saveDropped(channel, map) {
 
 /** Appends stamped rows; over QUEUE_MAX the oldest rows make room. */
 function append(batch, tag, channel, beaconed) {
-  const stamped = batch.map((event) => (beaconed ? { tag, event, b: 1 } : { tag, event }));
+  // Part 7 (33 §8.2, K11): `at` = when the row was stored, for pruneStale()
+  const at = Date.now();
+  const stamped = batch.map((event) => (beaconed ? { tag, event, at, b: 1 } : { tag, event, at }));
   const all = list(channel).concat(stamped);
   const overflow = all.length > QUEUE_MAX ? all.splice(0, all.length - QUEUE_MAX) : [];
   if (!write(QUEUE_PREFIX + channel, all)) return { stored: false, lost: 0 };
@@ -223,6 +227,38 @@ export const Storage = {
       } catch { /* cookies blocked: the server falls back to its own count */ }
     }
     return next;
+  },
+
+  /**
+   * Part 7 (33 §8.2, K11, M-05): rows of OTHER sessions stored more than
+   * `maxAgeMs` ago (14 days) are let go and counted under their own session
+   * (`gelita.dropped.{channel}`); that report only leaves if the session comes
+   * back, so the number goes to the console too, without student data. Rows
+   * without `at` (older code) are kept.
+   *
+   * @returns {number} rows let go
+   */
+  pruneStale(currentTag, maxAgeMs = STALE_MS, channels = ['events', 'audio']) {
+    const limit = Date.now() - maxAgeMs;
+    let total = 0;
+    for (const channel of channels) {
+      const rows = list(channel);
+      const keep = [];
+      const lost = {};
+      for (const row of rows) {
+        if (row && row.tag && row.tag !== currentTag && Number(row.at) > 0 && Number(row.at) < limit) {
+          if (!row.b) lost[row.tag] = (lost[row.tag] || 0) + 1;
+          total++;
+        } else {
+          keep.push(row);
+        }
+      }
+      if (keep.length === rows.length) continue;
+      write(QUEUE_PREFIX + channel, keep);
+      for (const [owner, count] of Object.entries(lost)) Storage.addDropped(owner, channel, count);
+    }
+    if (total > 0) console.info(`GELITA: ${total} old queued events of other sessions removed.`);
+    return total;
   },
 
   getPref(name, fallback = null) {

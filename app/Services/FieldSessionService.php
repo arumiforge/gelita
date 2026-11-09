@@ -573,6 +573,49 @@ class FieldSessionService
         }
 
         service('eventService')->record($session, 'session_paused', ['via' => 'field_session_closed']);
+        // Part 7 (33 §5.4): open attempt segments of the session end with the pause
+        model(\App\Models\ChallengeAttemptSegmentModel::class)->closeForSession($session->id, $this->now());
+
+        return true;
+    }
+
+    // ------------------------------------------------------------ part 7 (33 §7.2, K7)
+
+    /**
+     * True when a token screen (/token, /daftar step 0) must refuse this
+     * device: field mode, and a stage width `stage_w` (from the form) below
+     * the study's `min_stage_px`. An empty or unreadable width (JavaScript
+     * off) is accepted; the page itself still holds the student back. A
+     * refusal writes the audit `small_screen_refused` for the field session
+     * (counted on the monitoring panel), with the width only: no student, no
+     * IP address, since the student has not entered the session yet.
+     *
+     * @param array<string, mixed> $fieldSession
+     */
+    public function refuseSmallScreen(array $fieldSession, mixed $stageW, string $via): bool
+    {
+        $study = $this->fieldModeStudy();
+        $width = is_numeric($stageW) ? (int) $stageW : 0;
+
+        if ($study === null || $width <= 0) {
+            return false;
+        }
+
+        $min = GameContext::studySettings($study)['min_stage_px'];
+
+        if ($width >= $min) {
+            return false;
+        }
+
+        db_connect()->table('audit_logs')->insert([
+            'staff_user_id' => null,
+            'action'        => 'small_screen_refused',
+            'target_type'   => 'field_session',
+            'target_id'     => (string) $fieldSession['id'],
+            'metadata_json' => json_encode(['stage_w' => min($width, 65535), 'min_stage_px' => $min, 'via' => $via]),
+            'ip_hash'       => null,
+            'occurred_at'   => $this->now(),
+        ]);
 
         return true;
     }

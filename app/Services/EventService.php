@@ -74,6 +74,17 @@ class EventService
 
         $this->recordDropped($session, $envelope, 'events');
 
+        // Part 7 (33 §7.3): attempts named by this batch that moved on to a newer game session
+        $named = [];
+
+        foreach ($events as $event) {
+            if (is_array($event)) {
+                $named[] = $this->refOrNull($event['challenge_attempt_id'] ?? $event['attempt_id'] ?? null);
+            }
+        }
+
+        $movedAway = $this->movedAttempts($session->id, array_values(array_filter($named)));
+
         foreach (array_values($events) as $index => $event) {
             if (! is_array($event)) {
                 $rejected[] = ['index' => $index, 'reason' => 'format_invalid'];
@@ -111,16 +122,25 @@ class EventService
 
             $seen[$clientEventId] = true;
 
+            // Part 7 (33 §7.3): a late event of an attempt that moved on is kept without the attempt
+            $attemptRef = $this->refOrNull($event['challenge_attempt_id'] ?? $event['attempt_id'] ?? null);
+
+            if ($attemptRef !== null && isset($movedAway[$attemptRef])) {
+                log_message('notice', 'Event {type} of session {session} kept without attempt {attempt}: attempt_moved', ['type' => $type, 'session' => $session->id, 'attempt' => $attemptRef]);
+                $attemptRef = null;
+            }
+
             // Kontrak klien (04/06): node_id, attempt_id, item_id. Nama kolom
             // lengkap (challenge_*_id) tetap diterima.
             $rows[] = $this->buildRow(
                 $session,
                 $type,
-                (array) ($event['payload'] ?? $event['payload_json'] ?? []),
+                // Part 7 (33 §5.2): the shape of `input_idle` is clamped
+                self::clampPayload($type, (array) ($event['payload'] ?? $event['payload_json'] ?? [])),
                 [
                     'level_id'             => $event['level_id'] ?? null,
                     'challenge_node_id'    => $event['challenge_node_id'] ?? $event['node_id'] ?? null,
-                    'challenge_attempt_id' => $event['challenge_attempt_id'] ?? $event['attempt_id'] ?? null,
+                    'challenge_attempt_id' => $attemptRef,
                     'challenge_item_id'    => $event['challenge_item_id'] ?? $event['item_id'] ?? null,
                 ],
                 $clientEventId,
@@ -322,6 +342,8 @@ class EventService
 
         $ownAttempts = $this->existingIds('challenge_attempts', array_filter($attemptIds), $session->id);
         $knownAssets = $this->existingIds('audio_assets', array_filter($assetIds));
+        // Part 7 (33 §7.3): attempts that moved on to a newer game session of this student
+        $movedAway   = $this->movedAttempts($session->id, array_values(array_diff(array_filter($attemptIds), array_keys($ownAttempts))));
 
         // 1. Validate in batch order
         $valid = [];
@@ -334,6 +356,12 @@ class EventService
             }
 
             $attemptId = $this->refOrNull($entry['challenge_attempt_id'] ?? $entry['attempt_id'] ?? null);
+
+            // Part 7 (33 §7.3): a late entry of an attempt that moved on keeps its row, without the attempt
+            if ($attemptId !== null && isset($movedAway[$attemptId])) {
+                log_message('notice', 'Audio entry of session {session} kept without attempt {attempt}: attempt_moved', ['session' => $session->id, 'attempt' => $attemptId]);
+                $attemptId = null;
+            }
 
             if ($attemptId !== null && ! isset($ownAttempts[$attemptId])) {
                 $rejected[] = ['index' => $index, 'reason' => 'attempt_not_in_session'];
@@ -451,7 +479,7 @@ class EventService
                 $fresh      = $won;
             }
 
-            $this->insertAudioUsage($session->id, $fresh, $receivedAt);
+            $this->insertAudioUsage($session->id, $fresh, $receivedAt, $offset);
 
             $perAttempt = array_count_values(array_filter(array_column($fresh, 'attempt_id')));
 
@@ -482,7 +510,7 @@ class EventService
      *
      * @param list<array<string, mixed>> $items
      */
-    private function insertAudioUsage(int $sessionId, array $items, string $receivedAt): void
+    private function insertAudioUsage(int $sessionId, array $items, string $receivedAt, ?int $clockOffsetMs = null): void
     {
         if ($items === []) {
             return;
@@ -524,6 +552,8 @@ class EventService
                 'completed'            => ! empty($entry['completed']) ? 1 : 0,
                 'occurred_at'          => $item['occurred_at'],
                 'server_received_at'   => $receivedAt,
+                // Part 7 (33 §5.3, K10): the batch's offset, as on the raw events
+                'clock_offset_ms'      => $clockOffsetMs,
             ];
         }
 
@@ -645,6 +675,68 @@ class EventService
             'clock_offset_ms'      => $clockOffsetMs,
             'payload_json'         => $payload === [] ? null : json_encode($payload, JSON_UNESCAPED_UNICODE),
         ];
+    }
+
+    // ------------------------------------------------ part 7 (33 §5.2, §7.3)
+
+    /** `end` values of `input_idle` (33 §5.2). */
+    public const INPUT_IDLE_ENDS = ['input', 'hidden', 'pagehide'];
+
+    /**
+     * Client payloads with a fixed shape (33 §5.2): `input_idle` keeps
+     * `idle_ms` (whole ms, at least 0), `started_at` (ISO 8601 or null),
+     * `end` (one of INPUT_IDLE_ENDS or null), and `screen` (a short code).
+     * Other types pass unchanged.
+     *
+     * @param array<string, mixed> $payload
+     *
+     * @return array<string, mixed>
+     */
+    public static function clampPayload(string $type, array $payload): array
+    {
+        if ($type !== 'input_idle') {
+            return $payload;
+        }
+
+        $started = $payload['started_at'] ?? null;
+        $screen  = $payload['screen'] ?? null;
+
+        return [
+            'idle_ms'    => is_numeric($payload['idle_ms'] ?? null) ? max(0, min(86_400_000, (int) round((float) $payload['idle_ms']))) : 0,
+            'started_at' => is_string($started) && preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{1,6})?(Z|[+-]\d{2}:?\d{2})?$/', $started) === 1 ? $started : null,
+            'end'        => in_array($payload['end'] ?? null, self::INPUT_IDLE_ENDS, true) ? $payload['end'] : null,
+            'screen'     => is_string($screen) && preg_match('/^[a-z0-9_.-]{1,60}$/', $screen) === 1 ? $screen : null,
+        ];
+    }
+
+    /**
+     * Attempts among $attemptIds that are no longer in this game session but
+     * had a segment in it: they moved on to the student's newer session (K3).
+     *
+     * @param list<int> $attemptIds
+     *
+     * @return array<int, true>
+     */
+    private function movedAttempts(int $sessionId, array $attemptIds): array
+    {
+        $attemptIds = array_values(array_unique($attemptIds));
+        $db         = $this->db();
+
+        if ($attemptIds === [] || ! $db->tableExists('challenge_attempt_segments')) {
+            return [];
+        }
+
+        $rows = $db->table('challenge_attempt_segments s')
+            ->distinct()
+            ->select('s.challenge_attempt_id')
+            ->join('challenge_attempts a', 'a.id = s.challenge_attempt_id')
+            ->where('s.session_id', $sessionId)
+            ->where('a.session_id !=', $sessionId)
+            ->whereIn('s.challenge_attempt_id', $attemptIds)
+            ->get()
+            ->getResultArray();
+
+        return array_fill_keys(array_map('intval', array_column($rows, 'challenge_attempt_id')), true);
     }
 
     private function refOrNull($value): ?int

@@ -45,6 +45,11 @@ $codes = static fn (array $students, callable $keep): string => implode(', ', ar
           <dt><?= esc(lang('Admin.monitoringActive')) ?></dt><dd class="mono" data-m="list-active"><?= esc($codes($row['students'], static fn ($s) => $s['active'])) ?></dd>
           <dt><?= esc(lang('Admin.monitoringNotEntered')) ?></dt><dd class="mono" data-m="list-not-entered"><?= esc($codes($row['students'], static fn ($s) => ! $s['entered'])) ?></dd>
           <dt><?= esc(lang('Admin.monitoringNoSeat')) ?></dt><dd class="mono" data-m="list-no-seat"><?= esc($codes($row['students'], static fn ($s) => ! $s['has_seat'])) ?></dd>
+          <?php // Part 8 (34 §14): test status and "modul selesai" only (§8.2) ?>
+          <?php if (isset($row['students'][0]['test_status'])): ?>
+            <dt title="<?= esc(lang('Admin.testStatusHelp'), 'attr') ?>"><?= esc(lang('Admin.testStatus')) ?></dt>
+            <dd class="mono" data-m="list-test-status"><?= esc(implode(', ', array_map(static fn ($s) => $s['participant_code'] . ': ' . lang('Admin.testStatus' . ucfirst($s['test_status'])) . ($s['module_done'] ? ' · ' . lang('Admin.moduleDone') : ''), $row['students']))) ?></dd>
+          <?php endif ?>
         </dl>
         <table class="data-table">
           <thead><tr><th>Kode peserta</th><th><?= esc(lang('Admin.monitoringProgress')) ?></th><th><?= esc(lang('Admin.monitoringLeftovers')) ?></th><th><?= esc(lang('Admin.monitoringDropped')) ?></th></tr></thead>

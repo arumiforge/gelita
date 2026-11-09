@@ -364,4 +364,47 @@ export function initCurtains() {
       .then(() => Promise.race([sent, wait(FLUSH_WAIT_MS)]))
       .then(() => { window.location.assign(link.href); });
   });
+
+  initFastNavigationGuard();
+}
+
+// ------------------------------------------------ part 7 (33 §8.6, M-09)
+
+/** A second navigation tap this soon after the first is ignored. */
+export const NAV_GUARD_MS = 400;
+
+/**
+ * Very fast screen changes cancel the cross-document view transition
+ * (`@view-transition`, stage.css) and the browser logs the rejected
+ * `ViewTransition.finished` as an error. A second tap on any same-page link
+ * within NAV_GUARD_MS of the first is ignored, and the rejected promises of
+ * `pageswap` / `pagereveal` transitions are caught.
+ */
+function initFastNavigationGuard() {
+  let lastNav = -Infinity;
+
+  document.addEventListener('click', (event) => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const link = event.target instanceof Element ? event.target.closest('a[href]') : null;
+    if (!link || (link.target && link.target !== '_self') || link.hasAttribute('download')) return;
+    const href = link.getAttribute('href') || '';
+    if (href.startsWith('#') || href.startsWith('javascript:')) return;
+    const now = performance.now();
+    if (now - lastNav < NAV_GUARD_MS) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      return;
+    }
+    lastNav = now;
+  }, { capture: true });
+
+  const quiet = (event) => {
+    const transition = event.viewTransition;
+    if (!transition) return;
+    for (const name of ['finished', 'ready', 'updateCallbackDone']) {
+      transition[name]?.catch?.(() => {});
+    }
+  };
+  window.addEventListener('pageswap', quiet);
+  window.addEventListener('pagereveal', quiet);
 }

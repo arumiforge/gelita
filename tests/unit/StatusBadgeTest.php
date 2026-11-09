@@ -69,6 +69,7 @@ final class StatusBadgeTest extends CIUnitTestCase
     public function testBadgeFollowsTheStatus(): void
     {
         $this->assertSame(asset_url_versioned('ui/status-done.webp'), status_badge_src(['status' => 'completed']));
+        $this->assertSame(asset_url_versioned('ui/status-done.webp'), status_badge_src(['status' => 'done_locked']), 'research mode: done, retake later (33 §7.4)');
         $this->assertSame(asset_url_versioned('ui/status-progress.webp'), status_badge_src(['status' => 'open']), 'open wears the gold arc');
         $this->assertSame(asset_url_versioned('ui/status-open.webp'), status_badge_src(['status' => 'locked']), 'locked wears the navy medallion');
         $this->assertNull(status_badge_src(['status' => 'unknown']));

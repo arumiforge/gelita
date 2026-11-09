@@ -8,7 +8,7 @@ use Config\Database;
 
 /**
  * Skema lengkap GELITA (app/Database/Migrations) untuk SQLite
- * (grup `tests`): 41 tabel dengan kolom, nilai bawaan, kunci utama, dan kunci
+ * (grup `tests`): 50 tabel dengan kolom, nilai bawaan, kunci utama, dan kunci
  * unik yang sama dengan MySQL/MariaDB. Indeks biasa dan FK tidak ikut.
  * Dipakai uji reset total (SystemResetTest), pendaftaran bertahap
  * (RegisterWizardTest), dan penulisan item_tries (ItemTryWritesTest).
@@ -68,6 +68,8 @@ trait ResetTables
             'completed'            => 'INTEGER=0',
             'occurred_at'          => 'DATETIME=CURRENT_TIMESTAMP',
             'server_received_at'   => 'DATETIME=CURRENT_TIMESTAMP',
+            // Part 7 (33 §9, K10)
+            'clock_offset_ms'      => 'INTEGER?',
         ],
         'audit_logs' => [
             'id'            => 'pk',
@@ -103,7 +105,21 @@ trait ResetTables
             'created_at'             => 'DATETIME=CURRENT_TIMESTAMP',
             'variant_source'         => 'VARCHAR(10)?',
             'booklet_at_open'        => 'CHAR(2)?',
+            // Part 7 (33 K6)
+            'is_retake'              => 'INTEGER=0',
             '_unique'                => [['session_id', 'challenge_node_id', 'attempt_no']],
+        ],
+        // Part 7 (33 §5.4, §9): one row per stretch of an attempt on the challenge screen
+        'challenge_attempt_segments' => [
+            'id'                   => 'pk',
+            'challenge_attempt_id' => 'INTEGER',
+            'session_id'           => 'INTEGER',
+            'field_session_id'     => 'INTEGER?',
+            'segment_no'           => 'INTEGER=1',
+            'opened_at'            => 'DATETIME',
+            'left_at'              => 'DATETIME?',
+            'left_via'             => 'VARCHAR(30)?',
+            '_unique'              => [['challenge_attempt_id', 'segment_no']],
         ],
         'challenge_items' => [
             'id'                 => 'pk',
@@ -224,6 +240,55 @@ trait ResetTables
             'participant_count'  => 'INTEGER?',
             // Part 4 (30 §7.4)
             'purged_by_request_id' => 'INTEGER?',
+            // Part 9 (35 §12)
+            'derived_run_id' => 'INTEGER?',
+        ],
+        // Part 9 (35 §12): the derived data layer, one run per computation (migration 004300)
+        'derived_runs' => [
+            'id' => 'pk', 'study_id' => 'INTEGER', 'status' => 'VARCHAR(10)=running', 'dictionary_version' => 'VARCHAR(30)',
+            'idle_threshold_ms' => 'INTEGER', 'rapid_guess_ms' => 'INTEGER', 'test_rapid_guess_ms' => 'INTEGER?', 'input_fingerprint' => 'CHAR(64)?',
+            'participant_count' => 'INTEGER?', 'notes_json' => 'TEXT?', 'error' => 'TEXT?', 'started_by' => 'INTEGER?', 'via' => 'VARCHAR(10)',
+            'started_at' => 'DATETIME', 'finished_at' => 'DATETIME?',
+        ],
+        'derived_participants' => [
+            'run_id' => 'INTEGER', 'participant_id' => 'INTEGER', 'dictionary_version' => 'VARCHAR(30)',
+            'consent_ok' => 'INTEGER?', 'withdrawn_on' => 'DATE?', 'withdrawn_at' => 'DATETIME?', 'cutoff_basis' => 'VARCHAR(20)?', 'is_pilot' => 'INTEGER?', 'analysable' => 'INTEGER?', 'complete' => 'INTEGER?', 'rapid_share' => 'DECIMAL(8,4)?', 'regions_completed' => 'INTEGER?', 'challenges_completed' => 'INTEGER?', 'scored_challenges_completed' => 'INTEGER?', 'registration_corrected' => 'INTEGER?', 'questionnaire_status' => 'VARCHAR(10)?', 'own_phone' => 'INTEGER?', 'device_count' => 'INTEGER?', 'access_index' => 'INTEGER?', 'activity_breadth' => 'INTEGER?', 'own_accounts' => 'INTEGER?', 'social_media_own' => 'INTEGER?', 'social_media_use' => 'INTEGER?', 'parent_active' => 'DECIMAL(8,4)?', 'parent_rules' => 'INTEGER?', 'safety_info_sources' => 'INTEGER?', 'game_time_group' => 'VARCHAR(10)?', 'q_flags' => 'VARCHAR(60)?', 'test_status' => 'VARCHAR(12)?', 'pre_d1' => 'INTEGER?', 'pre_d2' => 'INTEGER?', 'pre_d3' => 'INTEGER?', 'post_d1' => 'INTEGER?', 'post_d2' => 'INTEGER?', 'post_d3' => 'INTEGER?', 'pre_capped' => 'VARCHAR(10)?', 'post_capped' => 'VARCHAR(10)?', 'sikap_score' => 'DECIMAL(8,4)?', 'sikap_sk1' => 'DECIMAL(8,4)?', 'sikap_sk2' => 'DECIMAL(8,4)?', 'sikap_sk3' => 'DECIMAL(8,4)?', 'sikap_sk4' => 'DECIMAL(8,4)?', 'sikap_n_answered' => 'INTEGER?', 'sikap_flag_straight' => 'INTEGER?', 'sikap_missing_reason' => 'VARCHAR(20)?',
+            '_primary' => ['run_id', 'participant_id'],
+        ],
+        'derived_field_sessions' => [
+            'run_id' => 'INTEGER', 'participant_id' => 'INTEGER', 'field_session_id' => 'INTEGER', 'dictionary_version' => 'VARCHAR(30)',
+            'attended' => 'INTEGER?', 'session_total_ms' => 'INTEGER?', 'session_active_ms' => 'INTEGER?', 'library_pages' => 'INTEGER?', 'library_ms' => 'INTEGER?', 'headset_share' => 'DECIMAL(8,4)?', 'internet' => 'VARCHAR(100)?', 'noise' => 'VARCHAR(20)?', 'teacher_present' => 'VARCHAR(100)?', 'minutes_available' => 'INTEGER?', 'minutes_used' => 'INTEGER?', 'l4_observations' => 'INTEGER?',
+            '_primary' => ['run_id', 'participant_id', 'field_session_id'],
+        ],
+        'derived_challenges' => [
+            'run_id' => 'INTEGER', 'participant_id' => 'INTEGER', 'challenge_node_id' => 'INTEGER', 'dictionary_version' => 'VARCHAR(30)',
+            'completion_status' => 'VARCHAR(12)?', 'skipped_failed_count' => 'INTEGER?', 'skipped_left_count' => 'INTEGER?', 'closed_meeting_no' => 'INTEGER?',
+            '_primary' => ['run_id', 'participant_id', 'challenge_node_id'],
+        ],
+        'derived_attempts' => [
+            'run_id' => 'INTEGER', 'attempt_id' => 'INTEGER', 'participant_id' => 'INTEGER', 'dictionary_version' => 'VARCHAR(30)',
+            'is_scored_attempt' => 'INTEGER?', 'is_retake' => 'INTEGER?', 'segments' => 'INTEGER?', 'total_ms' => 'INTEGER?', 'hidden_ms' => 'INTEGER?', 'idle_excess_ms' => 'INTEGER?', 'active_ms' => 'INTEGER?', 'cumulative_active_ms' => 'INTEGER?', 'hint_count' => 'INTEGER?', 'instruction_replays' => 'INTEGER?', 'material_returns' => 'INTEGER?', 'exit_count' => 'INTEGER?', 'reading_max_pct' => 'INTEGER?', 'meeting_no' => 'INTEGER?', 'field_session_id' => 'INTEGER?',
+            '_primary' => ['run_id', 'attempt_id'],
+        ],
+        'derived_items' => [
+            'run_id' => 'INTEGER', 'participant_id' => 'INTEGER', 'challenge_item_id' => 'INTEGER', 'dictionary_version' => 'VARCHAR(30)',
+            'first_try_score' => 'INTEGER?', 'first_try_correct' => 'INTEGER?', 'missing_reason' => 'VARCHAR(12)?', 'final_correct' => 'INTEGER?', 'final_score' => 'INTEGER?', 'tries_used' => 'INTEGER?', 'solved_on_try' => 'INTEGER?', 'censored' => 'INTEGER?', 'censor_reason' => 'VARCHAR(10)?', 'first_error_code' => 'VARCHAR(12)?', 'first_error_code_analysis' => 'VARCHAR(12)?', 'change_after_feedback' => 'VARCHAR(15)?', 'change_after_feedback_2' => 'VARCHAR(15)?', 'answer_unchanged' => 'INTEGER?', 'score_change' => 'INTEGER?', 'near_miss_count' => 'INTEGER?', 'empty_tap_count' => 'INTEGER?', 'item_total_ms' => 'INTEGER?', 'item_active_ms' => 'INTEGER?', 'first_input_ms' => 'INTEGER?', 'last_input_ms' => 'INTEGER?', 'first_action_key' => 'VARCHAR(10)?', 'first_action_score' => 'INTEGER?', 'first_action_code' => 'VARCHAR(12)?', 'first_reason_code' => 'VARCHAR(12)?', 'action_reason_pattern' => 'VARCHAR(20)?', 'reason_level' => 'INTEGER?', 'shared_device' => 'INTEGER?', 'helped_content' => 'INTEGER?', 'rapid_guess' => 'INTEGER?',
+            '_primary' => ['run_id', 'participant_id', 'challenge_item_id'],
+        ],
+        'derived_tries' => [
+            'run_id' => 'INTEGER', 'try_id' => 'INTEGER', 'participant_id' => 'INTEGER', 'dictionary_version' => 'VARCHAR(30)',
+            'attempt_id' => 'INTEGER?', 'field_session_id' => 'INTEGER?', 'is_scored_attempt' => 'INTEGER?', 'is_retake' => 'INTEGER?', 'scored_try_no' => 'INTEGER?', 'anomaly' => 'VARCHAR(12)?', 'error_code' => 'VARCHAR(12)?', 'error_code_at_try' => 'VARCHAR(12)?', 'decision_ms' => 'INTEGER?', 'rapid_guess' => 'INTEGER?', 'reason_decision_ms' => 'INTEGER?', 'reason_rapid' => 'INTEGER?', 'error_code_analysis' => 'VARCHAR(12)?', 'last_try_exhausted' => 'INTEGER?', 'hint_before' => 'INTEGER?', 'item_hint_before' => 'INTEGER?', 'item_narration_before' => 'INTEGER?', 'reason_code' => 'VARCHAR(12)?', 'action_score' => 'INTEGER?', 'shared_device' => 'INTEGER?', 'helped_content' => 'INTEGER?', 'helped_technical' => 'INTEGER?', 'encouraged' => 'INTEGER?', 'disturbed' => 'INTEGER?', 'deviation_code' => 'VARCHAR(60)?', 'outside_session' => 'INTEGER?',
+            '_primary' => ['run_id', 'try_id'],
+        ],
+        'derived_test_responses' => [
+            'run_id' => 'INTEGER', 'instrument_response_id' => 'INTEGER', 'participant_id' => 'INTEGER', 'dictionary_version' => 'VARCHAR(30)',
+            'decision_ms' => 'INTEGER?', 'rapid_guess' => 'INTEGER?',
+            '_primary' => ['run_id', 'instrument_response_id'],
+        ],
+        'derived_observations' => [
+            'run_id' => 'INTEGER', 'field_sheet_row_id' => 'INTEGER', 'participant_id' => 'INTEGER', 'dictionary_version' => 'VARCHAR(30)',
+            'attempt_id' => 'INTEGER?', 'challenge_item_id' => 'INTEGER?',
+            '_primary' => ['run_id', 'field_sheet_row_id'],
         ],
         'device_logs' => [
             'id'                => 'pk',
@@ -310,6 +375,9 @@ trait ResetTables
             'closed_by'       => 'INTEGER?',
             'created_at'      => 'DATETIME=CURRENT_TIMESTAMP',
             'updated_at'      => 'DATETIME=CURRENT_TIMESTAMP',
+            // Part 8 (34 §11.2): the start-test button
+            'test_started_at' => 'DATETIME?',
+            'test_started_by' => 'INTEGER?',
             '_unique'         => [['study_id', 'code']],
         ],
         'field_session_members' => [
@@ -397,6 +465,107 @@ trait ResetTables
             'text_id'           => 'TEXT',
             'text_en'           => 'TEXT',
             'is_active'         => 'INTEGER=1',
+        ],
+        // Part 8 (34 §11.1): test module, questionnaire, risk items, attitude scale
+        'instrument_blocks' => [
+            'id'            => 'pk',
+            'sitting_id'    => 'INTEGER',
+            'block'         => 'VARCHAR(4)',
+            'started_at'    => 'DATETIME',
+            'limit_minutes' => 'INTEGER',
+            'extra_minutes' => 'INTEGER=0',
+            'closed_at'     => 'DATETIME?',
+            'closed_reason' => 'VARCHAR(10)?',
+            '_unique'       => [['sitting_id', 'block']],
+        ],
+        'instrument_items' => [
+            'id'          => 'pk',
+            'version_id'  => 'INTEGER',
+            'code'        => 'VARCHAR(20)',
+            'part'        => 'VARCHAR(10)',
+            'form'        => 'CHAR(1)?',
+            'position'    => 'INTEGER',
+            'type'        => 'VARCHAR(10)',
+            'stimulus_id' => 'INTEGER?',
+            'show_json'   => 'TEXT',
+            'key_json'    => 'TEXT?',
+            'units_json'  => 'TEXT',
+            'cell_json'   => 'TEXT?',
+            '_unique'     => [['version_id', 'code']],
+        ],
+        'instrument_parts' => [
+            'id'              => 'pk',
+            'sitting_id'      => 'INTEGER',
+            'part'            => 'VARCHAR(10)',
+            'block_id'        => 'INTEGER?',
+            'opened_at'       => 'DATETIME',
+            'submitted_at'    => 'DATETIME?',
+            'closed_at'       => 'DATETIME?',
+            'closed_by_limit' => 'INTEGER=0',
+            'raw_score'       => 'INTEGER?',
+            'answered_count'  => 'INTEGER?',
+            '_unique'         => [['sitting_id', 'part']],
+        ],
+        'instrument_responses' => [
+            'id'              => 'pk',
+            'part_id'         => 'INTEGER',
+            'sitting_id'      => 'INTEGER',
+            'item_id'         => 'INTEGER',
+            'unit'            => 'VARCHAR(40)',
+            'response'        => 'VARCHAR(40)?',
+            'score'           => 'INTEGER?',
+            'error_codes'     => 'VARCHAR(80)?',
+            'not_reached'     => 'INTEGER=0',
+            'first_shown_at'  => 'DATETIME?',
+            'shown_at'        => 'DATETIME?',
+            'answered_at'     => 'DATETIME?',
+            'view_count'      => 'INTEGER=0',
+            'time_on_item_ms' => 'INTEGER=0',
+            'last_view_ms'    => 'INTEGER?',
+            'answer_changes'  => 'INTEGER=0',
+            'revision'        => 'INTEGER=0',
+            'updated_at'      => 'DATETIME?',
+            '_unique'         => [['sitting_id', 'unit']],
+        ],
+        'instrument_sittings' => [
+            'id'                => 'pk',
+            'participant_id'    => 'INTEGER',
+            'study_id'          => 'INTEGER',
+            'field_session_id'  => 'INTEGER?',
+            'occasion'          => 'VARCHAR(4)',
+            'kind'              => 'VARCHAR(14)',
+            'form'              => 'CHAR(1)?',
+            'version_id'        => 'INTEGER',
+            'is_makeup'         => 'INTEGER=0',
+            'late'              => 'INTEGER=0',
+            'is_preview'        => 'INTEGER=0',
+            'risk_offered'      => 'INTEGER?',
+            'risk_reconsent'    => 'INTEGER?',
+            'risk_reconsent_at' => 'DATETIME?',
+            'started_at'        => 'DATETIME',
+            'submitted_at'      => 'DATETIME?',
+            'last_item_id'      => 'INTEGER?',
+            'updated_at'        => 'DATETIME?',
+            '_unique'           => [['participant_id', 'study_id', 'occasion', 'kind', 'is_preview']],
+        ],
+        'instrument_stimuli' => [
+            'id'         => 'pk',
+            'version_id' => 'INTEGER',
+            'code'       => 'VARCHAR(30)',
+            'show_json'  => 'TEXT',
+            'image_slot' => 'VARCHAR(60)?',
+            '_unique'    => [['version_id', 'code']],
+        ],
+        'instrument_versions' => [
+            'id'           => 'pk',
+            'instrument'   => 'VARCHAR(10)',
+            'version'      => 'VARCHAR(20)',
+            'content_hash' => 'CHAR(64)',
+            'status'       => 'VARCHAR(20)=needs_verification',
+            'is_active'    => 'INTEGER=0',
+            'meta_json'    => 'TEXT?',
+            'imported_at'  => 'DATETIME',
+            '_unique'      => [['instrument', 'version']],
         ],
         'item_error_codes' => [
             'id'                => 'pk',
@@ -613,7 +782,7 @@ trait ResetTables
             'id'             => 'pk',
             'participant_id' => 'INTEGER',
             'session_id'     => 'INTEGER?',
-            'rating'         => 'INTEGER',
+            'rating'         => 'INTEGER?',   // nullable since part 8 (34 §11.2)
             'liked_most'     => 'TEXT?',
             'hardest_part'   => 'TEXT?',
             'new_learning'   => 'TEXT?',
@@ -714,6 +883,15 @@ trait ResetTables
             'consent_register_exported_at' => 'DATETIME?',
             'feedback_names_checked_at'    => 'DATETIME?',
             'identities_replaced_at'       => 'DATETIME?',
+            // Part 7 (33 §6, §9; test_rapid_guess_ms: owner, 4 November 2026)
+            'idle_threshold_ms'            => 'INTEGER=180000',
+            'rapid_guess_ms'               => 'INTEGER=3000',
+            'min_stage_px'                 => 'INTEGER=960',
+            'test_rapid_guess_ms'          => 'INTEGER=3000',
+            // Part 8 (34 §7.4): hidden time limits of the test module
+            'instrument_settings'          => 'TEXT?',
+            // Part 9 (35 §5, §9, §12): the G4 threshold lock, the current derived run, the running claim
+            'thresholds_locked_at' => 'DATETIME?', 'derived_run_id' => 'INTEGER?', 'derived_running_since' => 'DATETIME?',
             '_unique'        => [['code']],
         ],
         'scenario_options' => [
@@ -770,7 +948,7 @@ trait ResetTables
     ];
 
     /**
-     * Membuat (ulang) tabel. Tanpa argumen: semua 41 tabel.
+     * Membuat (ulang) tabel. Tanpa argumen: semua 50 tabel.
      *
      * @param list<string>|null $only
      */

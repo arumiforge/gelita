@@ -2,7 +2,7 @@
 
 Per 2 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 5, 16, dan 19 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
 
-> **Status: `draf pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 1–2 November 2026). Empat pilihan rancangan diputuskan pengembang ([§17](#17-keputusan-pengembang)).
+> **Status: `disetujui pengembang` (9 November 2026), `asal: pengembang`** (disusun dengan bantuan AI, 1–2 November 2026; kode gelombang F, 9 November 2026). Pilihan rancangan diputuskan pengembang ([§17](#17-keputusan-pengembang)); penyesuaian dari implementasi di §17 no. 8–10.
 >
 > Sejak 1 November 2026 kode dibangun sekarang ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026), tetapi tidak dipakai dengan anak sebelum persetujuan etik. Semua perilaku penelitian di sini ada di balik sakelar studi `field_mode` ([28 → K1](28_IMPLEMENTASI_SESI_LAPANGAN.md#2-keputusan-yang-dikunci)), yang mati secara bawaan, jadi `main` tetap bisa dirilis. Setelah hasil validasi kembali, dokumen ini dicek ulang terhadap matriks revisi induk ([20](20_PAKET_VALIDASI.md)) dan keputusan komite etik.
 >
@@ -495,8 +495,8 @@ Teks siswa mengikuti `.claude/rules/ui-copy.md`; setiap kunci id punya pasangan 
 Tidak menahan draf ini.
 
 1. ~~**Tempat T_idle dan T_teb.**~~ **Selesai 2 November 2026** (sesi koordinator): 33 dan [35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) (K2) sama-sama memakai kolom `research_studies.idle_threshold_ms` dan `rapid_guess_ms`. ~~Migrasi mana yang membuatnya.~~ **Diputuskan pengembang 3 November 2026** (sesi koordinator 31–35, [§17](#17-keputusan-pengembang) no. 6): migrasi `004100` bagian ini membuat kedua kolom dengan batas dan audit §6; bagian 9 hanya menambah `thresholds_locked_at` dan kunci G4.
-2. **Layar dengan bacaan panjang** butuh ambang jeda lain? (11 → *Aturan jeda*). Data `input_idle` membawa `screen`, jadi bisa diputuskan setelah uji coba tanpa perubahan sistem.
-3. **Ambang 960 px** diperiksa di uji keterbacaan dan KG3a dengan perangkat sekolah yang sebenarnya; bila tablet 10 inci dengan bilah peramban lebar ternyata < 960, ambangnya diturunkan lewat pengaturan.
+2. ~~**Layar dengan bacaan panjang** butuh ambang jeda lain?~~ **Diputuskan pengembang 9 November 2026** ([§17](#17-keputusan-pengembang) no. 9): satu ambang jeda untuk semua layar; `input_idle` membawa `screen`, jadi bisa ditinjau setelah uji coba tanpa perubahan sistem.
+3. **Ambang 960 px** (tetap 960, [§17](#17-keputusan-pengembang) no. 9) diperiksa di uji keterbacaan dan KG3a dengan perangkat sekolah yang sebenarnya; bila tablet 10 inci dengan bilah peramban lebar ternyata < 960, ambangnya diturunkan lewat pengaturan.
 4. ~~**Pengerjaan ulang di P2–P4 setelah wilayah tuntas**~~ memakai sisa waktu pertemuan dan bisa menambah waktu bermain. Bila peneliti ingin pengerjaan ulang hanya di P5, cukup ubah syarat "wilayah di rencana pertemuan" menjadi "pertemuan 5"; tidak ada perubahan data. **Diputuskan pengembang 2 November 2026** (sesi koordinator, [04](04_CATATAN_KEPUTUSAN.md)): tetap boleh di P2–P4 ([§17](#17-keputusan-pengembang) no. 5).
 
 ---
@@ -536,3 +536,9 @@ Satu putaran tanya, empat pertanyaan (1–2 November 2026). Pengembang memilih u
 
 6. **Kolom ambang dibuat bagian ini** (§6, §9): migrasi `004100` membuat `research_studies.idle_threshold_ms` dan `rapid_guess_ms` dengan batas isian 30.000–1.800.000 dan 500–10.000 dan audit `study_settings_changed`. Bagian 9 ([35 §5](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#5-ambang-di-konfigurasi-studi)) hanya menambah `thresholds_locked_at` dan kunci G4 (*Kunci ambang*, audit `study_thresholds_locked`); setelah dikunci, halaman studi di sini menolak perubahan kedua ambang. Tidak dipilih: bagian 9 yang memiliki kolom ambang.
 7. **Layar kecil juga ditolak di `/daftar`** (§7.2): dalam mode penelitian, pendaftaran dengan token ([28 §6.5](28_IMPLEMENTASI_SESI_LAPANGAN.md#65-pendaftaran-dengan-token-p1) langkah 0) mengirim `stage_w` juga dan menolak panggung di bawah `min_stage_px` dengan pesan yang sama dan audit `small_screen_refused`. Tidak dipilih: hanya di `/token`.
+
+**Kode gelombang F dan jawaban pengembang, 9 November 2026** (`asal: pengembang`, `disetujui pengembang`, [04](04_CATATAN_KEPUTUSAN.md)):
+
+8. **Status `done_locked` sungguhan** (§7.4). Tantangan tuntas yang belum boleh diulang mendapat status `done_locked` dari `GameProgress::nodeOverview()`, tampil seperti tuntas (medali ✓, bintang, *Lihat hasil*) tanpa *Ulangi*, dengan `Game.retakeLater`. Tidak dipilih: status tetap `completed` dengan tanda `retake_locked` (pilihan awal implementasi).
+9. **Pilihan bawaan §15 disetujui:** satu ambang jeda untuk semua layar (no. 2); 960 px tetap sebagai `min_stage_px` (no. 3).
+10. **Penyimpangan implementasi lain disetujui** (rincian di catatan implementasi): `moved_from_session` menyimpan kode sesi; event terlambat untuk pengerjaan yang pindah diterima tanpa rujukan pengerjaan; keluar juga menutup potongan; lebar layar diperiksa setelah token sah; `stage_w` sebagai isian formulir sendiri; `test_rapid_guess_ms` diperlakukan sama dengan `rapid_guess_ms` (batas, audit, kunci).

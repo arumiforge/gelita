@@ -203,6 +203,8 @@ final class CatalogImporter
         'mockup/gambar-mockup/skenario/aset' => 'item.skenario.*',
         // Interim bridge-story backgrounds (8 November 2026), installed like the bg.cerita-* entries of data.json
         'mockup/gambar-mockup/cerita-layar/aset' => 'bg.cerita-layar-*',
+        // Part 8 (34 §6.1): the 24 test stimulus pictures (M3, M4, D2, D3; forms A and B)
+        'mockup/gambar-mockup/instrumen/aset' => 'instr.*',
     ];
 
     /** Lossy WebP quality for every stored image except the PNG app icons. */

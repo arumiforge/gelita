@@ -1,30 +1,33 @@
 <?php
 
+use CodeIgniter\HTTP\Method;
 use CodeIgniter\Test\CIUnitTestCase;
-use Tests\Support\Database\ConsentWorld;
+use CodeIgniter\Test\FeatureTestTrait;
+use Tests\Support\Database\InstrumentWorld;
 
 /**
  * Who is offered the online-risk items (research revision 10, part 4: 30 §5.4,
  * K6, §19.1 `RiskItemsGateTest`). The T11/T12 screens and `risk_reconsent`
- * come with the test module (part 8, 34 §8); those checks are skipped until then.
+ * are the test module's (part 8, 34 §8).
  *
  * @internal
  */
 final class RiskItemsGateTest extends CIUnitTestCase
 {
-    use ConsentWorld;
+    use FeatureTestTrait;
+    use InstrumentWorld;
 
     private \CodeIgniter\Database\BaseConnection $conn;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->conn = $this->createConsentWorld();
+        $this->conn = $this->createInstrumentWorld();
     }
 
     protected function tearDown(): void
     {
-        $this->dropConsentWorld();
+        $this->dropInstrumentWorld();
         parent::tearDown();
     }
 
@@ -54,8 +57,26 @@ final class RiskItemsGateTest extends CIUnitTestCase
 
     public function testTheT11AndT12ScreensComeWithTheTestModule(): void
     {
-        $this->assertNotSame('', lang('Game.riskAskTitle'));
-        $this->assertNotSame('', lang('Game.riskThanksTitle'));
-        $this->markTestSkipped('T11/T12 screens and risk_reconsent are built by the test module (part 8, 34 §8).');
+        service('consentService')->apply(1, 1, ['risk_items_consent' => '1'], 2);
+        $this->meeting($this->conn, 5);
+        $version = (int) $this->conn->table('instrument_versions')->where('instrument', 'tes')->get()->getRow('id');
+        $this->conn->table('instrument_sittings')->insert(['participant_id' => 1, 'study_id' => 1, 'occasion' => 'post', 'kind' => 'test', 'form' => 'B', 'version_id' => $version, 'started_at' => date('Y-m-d H:i:s'), 'submitted_at' => date('Y-m-d H:i:s')]);
+
+        $this->assertRedirectsTo('tes/tambahan', $this->go(Method::GET, 'tes'));
+        $page = (string) $this->go(Method::GET, 'tes/tambahan')->getBody();
+        $this->assertStringContainsString(esc(lang('Game.riskAskTitle')), $page);
+        $this->assertSame(2, substr_count($page, 'class="btn btn-secondary btn-lg flex-fill"'), 'two buttons of the same size and colour');
+
+        $this->go(Method::POST, 'tes/tambahan', ['jawab' => 'ya']);
+        $risk = $this->sittingRow($this->conn, 'post', 'risk');
+        $this->assertSame([1, 1], [(int) $risk['risk_offered'], (int) $risk['risk_reconsent']]);
+        $this->assertNotNull($risk['risk_reconsent_at']);
+
+        // risk_reconsent is written once
+        $this->go(Method::POST, 'tes/tambahan', ['jawab' => 'tidak']);
+        $this->assertSame(1, (int) $this->sittingRow($this->conn, 'post', 'risk')['risk_reconsent']);
+
+        $this->assertRedirectsTo('tes/tambahan/1', $this->go(Method::GET, 'tes'));
+        $this->assertStringContainsString(esc(lang('Game.riskThanksTitle')), (string) $this->go(Method::GET, 'tes/pesan')->getBody());
     }
 }

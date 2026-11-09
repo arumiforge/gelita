@@ -115,6 +115,8 @@ class GameSessionModel extends Model
             $lastActive = (string) $session->toRawArray()['last_active_at'];
 
             service('eventService')->recordAt($session, 'session_paused', $lastActive, ['via' => 'idle', 'last_active_at' => $lastActive]);
+            // Part 7 (33 §5.4): open attempt segments of the session end with the pause
+            model(ChallengeAttemptSegmentModel::class)->closeForSession($id, $lastActive);
         }
 
         return $changed;

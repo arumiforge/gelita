@@ -21,6 +21,8 @@ class ChallengeAttemptModel extends Model
         'first_pass_correct', 'final_correct', 'check_count', 'max_tries',
         'hint_count', 'answer_change_count', 'audio_use_count', 'stars',
         'started_at', 'completed_at', 'duration_ms', 'variant_source', 'booklet_at_open',
+        // Part 7 (33 K6)
+        'is_retake',
     ];
     protected $validationRules = [
         'session_id'        => 'required|is_natural_no_zero',
@@ -35,16 +37,44 @@ class ChallengeAttemptModel extends Model
     /** @var list<string> kolom JSON milik tabel ini */
     protected array $jsonFields = ['selected_item_ids_json'];
 
+    /**
+     * Next attempt number of the student of this game session at the node,
+     * counted over every game session of that student (part 7, 33 §7.3): an
+     * attempt moved to a new session must not share its number with a new one.
+     */
     public function nextAttemptNo(int $sessionId, int $nodeId): int
     {
-        $row = $this->db->table($this->table)
-            ->selectMax('attempt_no', 'max_no')
-            ->where('session_id', $sessionId)
-            ->where('challenge_node_id', $nodeId)
+        $participantId = (int) ($this->db->table('game_sessions')->select('participant_id')->where('id', $sessionId)->get()->getRow('participant_id') ?? 0);
+
+        $row = $this->db->table('challenge_attempts ca')
+            ->selectMax('ca.attempt_no', 'max_no')
+            ->join('game_sessions gs', 'gs.id = ca.session_id')
+            ->where('gs.participant_id', $participantId)
+            ->where('ca.challenge_node_id', $nodeId)
             ->get()
             ->getRowArray();
 
         return ((int) ($row['max_no'] ?? 0)) + 1;
+    }
+
+    /**
+     * Part 7 (33 §7.3, K3): the newest `in_progress` attempt of one student at
+     * a node, in any of the student's game sessions of the study (all studies
+     * when $studyId is null).
+     */
+    public function openForParticipant(int $participantId, int $nodeId, ?int $studyId): ?ChallengeAttempt
+    {
+        $builder = $this->select('challenge_attempts.*')
+            ->join('game_sessions', 'game_sessions.id = challenge_attempts.session_id')
+            ->where('game_sessions.participant_id', $participantId)
+            ->where('challenge_attempts.challenge_node_id', $nodeId)
+            ->where('challenge_attempts.status', 'in_progress');
+
+        if ($studyId !== null) {
+            $builder->where('game_sessions.study_id', $studyId);
+        }
+
+        return $builder->orderBy('challenge_attempts.id', 'DESC')->first();
     }
 
     public function currentInProgress(int $sessionId, int $nodeId): ?ChallengeAttempt

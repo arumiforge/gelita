@@ -207,6 +207,12 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
             </a>
           <?php endif ?>
         <?php endif ?>
+        <?php // Part 8 (34 §5.5, K4): the validators' preview of the test module (uji.* accounts, switch on) ?>
+        <?php if ($signedIn && App\Services\InstrumentGate::previewFor((string) ($participant['username'] ?? ''))): ?>
+          <a class="hud-sheet-row hud-leave hud-instrument" href="<?= base_url('tes') ?>">
+            <?= round_icon('play', 'hud-sheet-art', 'play') ?><span class="hud-sheet-label"><?= esc(lang('Game.instrumentPreviewLink')) ?></span><?= icon('right', 'hud-sheet-go') ?>
+          </a>
+        <?php endif ?>
         <a class="hud-sheet-row hud-leave hud-about" href="<?= base_url('tentang') ?>">
           <?= round_icon('info', 'hud-sheet-art', 'info') ?><span class="hud-sheet-label"><?= esc(lang('Game.about')) ?></span><?= icon('right', 'hud-sheet-go') ?>
         </a>

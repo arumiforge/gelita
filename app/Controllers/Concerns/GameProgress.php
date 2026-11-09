@@ -115,6 +115,8 @@ trait GameProgress
         $done    = model(ChallengeAttemptModel::class)->completedFor($session);
         $free    = $this->unlockMode($session) === 'free';
         $locale  = $session->resolvedLocale();
+        // Part 7 (33 §7.4): research mode keeps completed challenges closed until the retake rule allows them
+        $retake  = $this->regionRetakeOpen($session, $levelId, $done);
 
         $out          = [];
         $previousDone = true;
@@ -131,7 +133,8 @@ trait GameProgress
                 'variant'     => (string) ($node->variant_code ?? ''),
                 'title'       => $node->text('title', $locale),
                 'description' => $node->text('description', $locale),
-                'status'      => $completed ? 'completed' : ($open ? 'open' : 'locked'),
+                // Part 7 (33 §7.4; owner, 9 November 2026): research mode, done but not yet open for a retake
+                'status'      => $completed ? ($retake ? 'completed' : 'done_locked') : ($open ? 'open' : 'locked'),
                 'stars'       => $attempt?->stars === null ? null : (int) $attempt->stars,
                 'map_x'       => $node->map_x,
                 'map_y'       => $node->map_y,
@@ -141,6 +144,30 @@ trait GameProgress
         }
 
         return $out;
+    }
+
+    /**
+     * Part 7 (33 §7.4): may the completed challenges of a region be played
+     * again in this session? Always outside research mode; in research mode
+     * ChallengeService::retakeAllowed() decides (same rule for the API).
+     *
+     * @param array<int, ChallengeAttempt> $done completedFor() of the session
+     */
+    protected function regionRetakeOpen(GameSession $session, int $levelId, array $done): bool
+    {
+        if (! service('gameContext')->researchMode($session)) {
+            return true;
+        }
+
+        $nodes = service('contentRepository')->nodesForLevel($levelId);
+
+        return $nodes !== [] && service('challengeService')->retakeAllowed($session, $nodes[0]);
+    }
+
+    /** Part 7 (33 §7.4): a completed challenge the student may not play again yet. */
+    protected function retakeLocked(GameSession $session, ChallengeNode $node): bool
+    {
+        return $this->bestAttempt($session, $node->id) !== null && ! service('challengeService')->retakeAllowed($session, $node);
     }
 
     /**

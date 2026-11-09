@@ -320,4 +320,27 @@ class Services extends BaseService
     {
         return $getShared ? static::getSharedInstance('studyClosure') : new \App\Services\StudyClosureService();
     }
+
+    // Part 8 (34 §11.3): test module, questionnaire, risk items, attitude scale
+
+    public static function instrumentRepository(bool $getShared = true): \App\Services\InstrumentRepository
+    {
+        return $getShared ? static::getSharedInstance('instrumentRepository') : new \App\Services\InstrumentRepository();
+    }
+
+    public static function instruments(bool $getShared = true): \App\Services\InstrumentService
+    {
+        return $getShared ? static::getSharedInstance('instruments') : new \App\Services\InstrumentService();
+    }
+
+    public static function instrumentGate(bool $getShared = true): \App\Services\InstrumentGate
+    {
+        return $getShared ? static::getSharedInstance('instrumentGate') : new \App\Services\InstrumentGate();
+    }
+
+    // Part 9 (35 §12): the derived data layer
+    public static function derivedData(bool $getShared = true): \App\Services\DerivedDataService
+    {
+        return $getShared ? static::getSharedInstance('derivedData') : new \App\Services\DerivedDataService();
+    }
 }

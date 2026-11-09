@@ -651,6 +651,18 @@ final class ImageSlots
             'recommended' => [1536, 1024],
             'admin'       => ['Buka soal tantangan', 'admin/konten/node/{node_id}'],
         ],
+        // Part 8 (34 §6.1): mock screens and scenes of the pre/post test, from the Katalog Aset
+        'instr.*' => [
+            'group'       => 'challenge',
+            'label'       => 'Gambar tes awal–akhir',
+            'content'     => 'Layar tiruan atau adegan satu bacaan tes (M3, M4, D2, D3), digambar dari keterangan di dokumen 14 dan 15; semua tulisan di gambar sama dengan teksnya.',
+            'screens'     => [['Modul tes', '/tes']],
+            'format'      => 'WebP kualitas ± 82, tegak 1024 × 1536 atau lanskap 1536 × 1024',
+            'transparent' => false,
+            'fallback'    => 'Modul tes menampilkan teks yang sama tanpa gambar',
+            'priority'    => 'opsional',
+            'tips'        => 'Arti dibawa tulisan, bingkai, dan ikon bergaris, bukan warna; tanpa logo platform sungguhan.',
+        ],
         'challenge.item.*' => [
             'group'       => 'challenge',
             'label'       => 'Gambar soal {Wilayah}',

@@ -49,6 +49,9 @@ class Filters extends BaseFilters
         'screenView'      => ScreenViewFilter::class,
         'packageHeader'   => PackageHeaderFilter::class,
         'minifyHtml'      => HtmlMinifyFilter::class,
+        // Part 8 (34 §5, §12): the test module's routes, and the game pages it closes
+        'instrumentGate'     => \App\Filters\InstrumentGateFilter::class,
+        'instrumentRedirect' => \App\Filters\InstrumentRedirectFilter::class,
     ];
 
     /**
@@ -103,5 +106,10 @@ class Filters extends BaseFilters
     public array $filters = [
         'clientHints' => ['after' => ['/', 'mulai', 'masuk', 'daftar', 'daftar/*']],
         'packageHeader' => ['after' => ['api', 'api/*']],
+        // Part 8 (34 §5.2, §5.4, K1): challenge pages and their API, the opening story, the ending, Balai Refleksi
+        'instrumentRedirect' => ['before' => [
+            'peta', 'wilayah/*', 'misi/*', 'tantangan/*', 'dialog/*', 'penghubung/*', 'intro', 'intro/*', 'penutup', 'refleksi',
+            'api/nodes/*/attempts', 'api/attempts/*/check', 'api/attempts/*/responses', 'api/attempts/*/hints', 'api/attempts/*/complete',
+        ]],
     ];
 }

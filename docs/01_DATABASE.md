@@ -1266,3 +1266,9 @@ Migration `2026-01-01-003800_AddConsentAndDataRights` (30 §15):
 | `data_exports` | `purged_by_request_id` (FK `data_deletion_requests`, SET NULL) |
 
 **Retention and deletion.** `RetentionService::HARD_ORDER` now ends with `participant_consents`, `participants`. Scope `{participant_id, kind: risk_items}` deletes only the student's `risk` sitting of the test module (part 8 tables, `RISK_ORDER`); scope `{study_id, participants: 1}` (retention of a closed field-mode study) takes the whole cohort, students included. A field-mode study counts its retention from `closed_at`; other studies still count from the session start. `ci_sessions` is not changed by the migration; with `gelita.researchPrivacy` on, the retention run removes expired rows and rows with a raw IP.
+
+## Research revision 10, part 9: derived data layer (migration `004300`)
+
+- `derived_runs`: one computation of one study (`study_id` cascade, `status` running/done/failed, `dictionary_version`, `idle_threshold_ms`, `rapid_guess_ms`, `test_rapid_guess_ms`, `input_fingerprint`, `participant_count`, `notes_json` with `offset_unknown_events` and `duration_ms`, `error`, `started_by`, `via` export/button/command, `started_at`, `finished_at`).
+- `derived_participants`, `derived_field_sessions`, `derived_challenges`, `derived_attempts`, `derived_items`, `derived_tries`, `derived_test_responses`, `derived_observations`: every row has `run_id` and `dictionary_version`, primary keys per 35 §12, FKs `ON DELETE CASCADE` to the run and to `participants`; only ids are stored, codes are joined in the download sheets. Column specs are frozen in `CreateDerivedLayer::TABLES`.
+- `research_studies.thresholds_locked_at` (G4 lock), `derived_run_id` (the run readers use, `SET NULL`), `derived_running_since` (claim of a running computation); `data_exports.derived_run_id`.

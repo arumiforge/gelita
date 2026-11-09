@@ -76,6 +76,11 @@ class FieldTokenController extends BaseController
         $fields->clearFailures($key);
 
         $fieldSession = $check['field_session'];
+
+        // Part 7 (33 §7.2): a phone-sized stage does not enter the field session
+        if ($fields->refuseSmallScreen($fieldSession, $this->request->getPost('stage_w'), 'token')) {
+            return redirect()->to(site_url('token'))->with('errors', ['token' => lang('Game.smallScreenBody')]);
+        }
         service('sessionService')->enterFieldSession(
             $participant->id,
             $fieldSession,

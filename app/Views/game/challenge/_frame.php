@@ -44,6 +44,9 @@ $triesAria  = lang('Game.triesLabel') . ': ' . lang('Game.triesOf', ['{0}', '{1}
 // Part 6 (32 §8.2, K10): instruction narration, only through ▶ and only when approved
 $instructionAudioId  = $locale === 'en' ? $node->audio_instruction_en_id : $node->audio_instruction_id;
 $instructionAudioSrc = audio_src($instructionAudioId);
+// Part 7 (33 §8.4, M-07): one name per challenge kind in the header; the variant title is a small subtitle
+$kindName     = lang_or('Game.engine_' . $engine, $node->text('title', $locale));
+$variantTitle = trim((string) ($payload['variant']['title'] ?? ''));
 ?>
 <section class="challenge challenge-<?= esc($engine, 'attr') ?>"
          data-screen="challenge"
@@ -68,13 +71,19 @@ $instructionAudioSrc = audio_src($instructionAudioId);
       <div class="challenge-info">
         <?php // The region · position · kind line left the screen (owner); screen readers still hear it ?>
         <span class="visually-hidden"><?= esc($region) ?> · <?= esc(lang('Game.challengeOf', [$sequence, $totalNodes])) ?> · <?= esc(engine_label($engine, $node->variant_code)) ?></span>
-        <h1 class="title"><?= esc($node->text('title', $locale)) ?></h1>
+        <h1 class="title"><?= esc($kindName) ?></h1>
+        <?php if ($variantTitle !== '' && $variantTitle !== $kindName): ?>
+          <p class="challenge-subtitle"><?= esc($variantTitle) ?></p>
+        <?php endif ?>
       </div>
       <div class="challenge-chips">
         <div class="challenge-stats">
+          <?php // Part 7 (33 §7.1): no clock in research mode; core/timer.js does nothing without #timer ?>
+          <?php if (empty($researchMode)): ?>
           <span class="stat-timer" title="<?= esc(lang('Game.timer'), 'attr') ?>">
             <?= round_icon('clock', 'stat-art', 'clock') ?><span class="visually-hidden"><?= esc(lang('Game.timer')) ?></span> <b id="timer" class="num">0:00</b>
           </span>
+          <?php endif ?>
           <span class="chip-tally">
             <span class="tally-ok"><?= round_icon('right', 'stat-art', 'check') ?><span class="visually-hidden"><?= esc(lang('Game.countCorrect')) ?></span> <b id="count-correct" class="num">0</b></span>
             <span class="tally-sep" aria-hidden="true">/</span>
@@ -108,7 +117,8 @@ $instructionAudioSrc = audio_src($instructionAudioId);
       <aside class="challenge-aside stage-box stage-scroll">
         <?php if ($node->text('instruction', $locale) !== ''): ?>
           <?php // The round "i" button of the owner's sheet beside the text (owner, 22 October 2026) ?>
-          <p class="instruction"><?= round_icon('info', 'instruction-art') ?: '<span class="instruction-mark" aria-hidden="true">i</span>' ?> <span class="instruction-text"><?= esc($node->text('instruction', $locale)) ?></span></p>
+          <?php // Part 7 (33 §8.3, M-06): Isi Rumpang and Benar atau Salah show it as a card above the passage ?>
+          <p class="instruction<?= in_array($engine, ['rumpang', 'boleh'], true) ? ' is-card' : '' ?>"><?= round_icon('info', 'instruction-art') ?: '<span class="instruction-mark" aria-hidden="true">i</span>' ?> <span class="instruction-text"><?= esc($node->text('instruction', $locale)) ?></span></p>
           <?php if ($instructionAudioSrc !== null): ?>
             <?php // Never plays on its own: core/audio.js mounts it with the attempt id, so each tap is logged (challenge_instruction) ?>
             <div class="audio-player instruction-audio" data-audio-id="<?= (int) $instructionAudioId ?>" data-src="<?= esc($instructionAudioSrc, 'attr') ?>">

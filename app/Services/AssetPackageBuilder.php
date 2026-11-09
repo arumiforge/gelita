@@ -510,6 +510,8 @@ class AssetPackageBuilder
     {
         $hints = $this->levelHints();
         $tasks = [];
+        // Part 7 (33 §8.1, M-04): Cari Objek pictures, whose asset keys hold item codes
+        $hunt  = $this->huntMediaIds();
 
         foreach (AssetPackageService::eligibleMedia() as $row) {
             $key                = (string) $row['asset_key'];
@@ -525,6 +527,7 @@ class AssetPackageBuilder
                 'group'       => self::groupFor($key, $hints[(int) $row['id']] ?? null),
                 'sha'         => $row['sha256'] === null ? null : (string) $row['sha256'],
                 'placeholder' => (int) $row['is_placeholder'] === 1,
+                'hide_key'    => isset($hunt[(int) $row['id']]),
             ];
         }
 
@@ -606,7 +609,36 @@ class AssetPackageBuilder
         $state['files'][] = [
             'url' => $url, 'sha256' => $sha, 'bytes' => $bytes, 'type' => $task['type'],
             'group' => $task['group'], 'key' => $task['key'], 'locale' => $task['locale'], 'media_ids' => [$task['media_id']],
+            'hide_key' => ! empty($task['hide_key']),
         ];
+    }
+
+    /**
+     * Part 7 (33 §8.1, M-04): media ids of Cari Objek pictures (find_object
+     * items and the round-2 post scenes). The public manifest names them by
+     * a content hash, never by their asset key; the server-side URL map keeps
+     * the key. The game loads them through /api/attempts/{id}/objects/{ref}.
+     *
+     * @return array<int, true>
+     */
+    private function huntMediaIds(): array
+    {
+        $db  = db_connect();
+
+        if (! $db->tableExists('challenge_items')) {
+            return [];
+        }
+
+        $ids = array_column($db->table('challenge_items')->select('media_asset_id')
+            ->where('interaction_type', 'find_object')->where('media_asset_id IS NOT NULL', null, false)
+            ->get()->getResultArray(), 'media_asset_id');
+
+        if ($db->tableExists('post_scenes')) {
+            $ids = array_merge($ids, array_column($db->table('post_scenes')->select('media_asset_id')
+                ->where('media_asset_id IS NOT NULL', null, false)->get()->getResultArray(), 'media_asset_id'));
+        }
+
+        return array_fill_keys(array_map('intval', $ids), true);
     }
 
     /**
@@ -756,11 +788,12 @@ class AssetPackageBuilder
             'bytes'  => $file['bytes'],
             'type'   => $file['type'],
             'group'  => $file['group'],
-            'key'    => $file['key'],
+            // Part 7 (33 §8.1): a Cari Objek picture is named by its content hash, not its asset key
+            'key'    => ! empty($file['hide_key']) ? 'cari.' . substr((string) $file['sha256'], 0, 16) : $file['key'],
             'locale' => $file['locale'],
         ];
 
-        if (! empty($file['aliases'])) {
+        if (! empty($file['aliases']) && empty($file['hide_key'])) {
             $entry['aliases'] = array_values(array_unique($file['aliases']));
         }
 

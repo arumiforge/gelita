@@ -562,7 +562,7 @@ if (! function_exists('status_badge_src')) {
     function status_badge_src(array $node): ?string
     {
         $state = match ($node['status'] ?? '') {
-            'completed' => 'done',
+            'completed', 'done_locked' => 'done',
             'open'      => 'progress',
             'locked'    => 'open',
             default     => null,
@@ -573,6 +573,27 @@ if (! function_exists('status_badge_src')) {
         }
 
         return asset_url_versioned('ui/status-' . $state . '.webp');
+    }
+}
+
+if (! function_exists('node_done')) {
+    /**
+     * A challenge the student has finished: `completed`, or `done_locked`
+     * (research mode, not yet open for a retake: 33 §7.4; owner, 9 November 2026).
+     *
+     * @param array<string, mixed> $node a nodeOverview() row
+     */
+    function node_done(array $node): bool
+    {
+        return in_array($node['status'] ?? '', ['completed', 'done_locked'], true);
+    }
+}
+
+if (! function_exists('node_status_class')) {
+    /** CSS state classes of a node: `done_locked` also wears `is-completed`, so it looks done. */
+    function node_status_class(array $node): string
+    {
+        return ($node['status'] ?? '') === 'done_locked' ? 'is-completed is-done-locked' : 'is-' . ($node['status'] ?? '');
     }
 }
 

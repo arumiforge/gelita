@@ -12,6 +12,7 @@ use App\Libraries\ErrorCodeResolver;
 use App\Libraries\ProgressRules;
 use App\Libraries\VariantPicker;
 use App\Models\ChallengeAttemptModel;
+use App\Models\ChallengeAttemptSegmentModel;
 use App\Models\ChallengeItemModel;
 use App\Models\GameSessionModel;
 use App\Models\ItemResponseModel;
@@ -70,7 +71,8 @@ class ChallengeService
         $this->assertNodeUnlocked($session, $node);
 
         $attempts = model(ChallengeAttemptModel::class);
-        $attempt  = $attempts->currentInProgress($session->id, $nodeId);
+        // Part 7 (33 §7.3, K3): the student's open attempt in another game session moves here
+        $attempt  = $this->resumeAcrossSessions($session, $node) ?? $attempts->currentInProgress($session->id, $nodeId);
         $bank     = service('contentRepository')->itemBank($nodeId);
         $resumed  = $attempt !== null;
 
@@ -105,6 +107,13 @@ class ChallengeService
             // Variant of the new attempt (31 §11.2): booklet in research mode,
             // otherwise random; retakes avoid the variants already served.
             // BOOKLET_MISSING is thrown here, before anything is written.
+            // Part 7 (33 K6, §7.4): a retake needs the retake rule of research mode (RETAKE_LOCKED)
+            $isRetake = isset($attempts->completedFor($session)[$nodeId]);
+
+            if ($isRetake) {
+                $this->assertRetakeAllowed($session, $node);
+            }
+
             $served = $attempts->variantsServed($session->participant_id, $nodeId);
             $level  = service('contentRepository')->levelById($node->level_id);
             $picked = (new VariantPicker(Factories::libraries('BookletSource')))->pick($session, $node, (int) ($level?->sequence ?? 0), $served, $bank);
@@ -130,6 +139,8 @@ class ChallengeService
                     'scorable_items'         => $this->countScorable($items),
                     'max_tries'              => config('Gelita')->maxTries,
                     'started_at'             => date('Y-m-d H:i:s'),
+                    // Part 7 (33 K6): written in every mode (K2)
+                    'is_retake'              => $isRetake ? 1 : 0,
                 ], true);
 
                 if ($attemptId === false) {
@@ -139,6 +150,9 @@ class ChallengeService
                 $attempt = $attempts->find((int) $attemptId);
 
                 model(ItemResponseModel::class)->createPlaceholders($attempt->id, $items);
+
+                // Part 7 (33 §5.4): segment 1 opens with the attempt
+                model(ChallengeAttemptSegmentModel::class)->openNext($attempt->id, $session->id, $session->field_session_id, (string) $attempt->toRawArray()['started_at']);
 
                 service('eventService')->record($session, 'challenge_opened', [
                     'attempt_no'    => $attempt->attempt_no,
@@ -157,6 +171,11 @@ class ChallengeService
 
                 throw $e;
             }
+        }
+
+        // Part 7 (33 §5.4): a resumed attempt gets a new segment only when its last one was closed (not on a reload)
+        if ($resumed) {
+            model(ChallengeAttemptSegmentModel::class)->openNext($attempt->id, $session->id, $session->field_session_id, self::nowMs());
         }
 
         model(GameSessionModel::class)->update($session->id, [
@@ -678,15 +697,19 @@ class ChallengeService
     {
         $attempts  = model(ChallengeAttemptModel::class);
         $startedAt = strtotime((string) $attempt->started_at) ?: time();
+        $closedAt  = date('Y-m-d H:i:s');
 
         // Hanya sekali: penutupan kedua (permintaan yang balapan) tidak
         // menghitung ulang bintang dan tidak mencatat event ganda.
         $this->updateOrStale($attempts, $attempt->id, ['status' => 'in_progress'], [
             'status'            => 'completed',
             'completion_reason' => $reason,
-            'completed_at'      => date('Y-m-d H:i:s'),
+            'completed_at'      => $closedAt,
             'duration_ms'       => max(0, (time() - $startedAt) * 1000),
         ]);
+
+        // Part 7 (33 §5.4): the open segment ends at completed_at
+        model(ChallengeAttemptSegmentModel::class)->closeOpen($attempt->id, $closedAt, 'closed');
 
         $attempt = $attempts->find($attempt->id);
         $scored  = service('scoringService')->finalize($attempt);
@@ -766,6 +789,14 @@ class ChallengeService
         ])) {
             return;
         }
+
+        // Part 7 (33 §5.4): the open segment ends now, with the way out
+        $via = (string) ($payload['via'] ?? 'user_exit');
+        model(ChallengeAttemptSegmentModel::class)->closeOpen(
+            $attempt->id,
+            self::nowMs(),
+            in_array($via, ChallengeAttemptSegmentModel::VIA, true) ? $via : 'user_exit',
+        );
 
         service('eventService')->record($session, 'challenge_abandoned', $payload + [
             'via'        => 'user_exit',
@@ -1246,7 +1277,6 @@ class ChallengeService
             'tries_used'    => $attempt->check_count,
             'check_count'   => $attempt->check_count,
             'resumed'       => $resumed,
-            'elapsed_ms'    => max(0, (time() - $startedAt) * 1000),
             'node'          => [
                 'id'           => $node->id,
                 'level_id'     => $node->level_id,
@@ -1264,6 +1294,11 @@ class ChallengeService
                 $items,
             ),
         ];
+
+        // Part 7 (33 §7.1): no clock in research mode, so no elapsed time either
+        if (! service('gameContext')->researchMode($session)) {
+            $payload['elapsed_ms'] = max(0, (time() - $startedAt) * 1000);
+        }
 
         // Id petunjuk tanpa teksnya: teks baru dikirim lewat POST /hints,
         // yang sekaligus mencatat pemakaian petunjuk sebagai data bantuan.
@@ -1380,8 +1415,10 @@ class ChallengeService
             $response = $responses[$item->id] ?? null;
             $found    = $response !== null && $response->isAnswered() && (bool) $response->is_correct && $this->expectsAnswer($item);
 
-            $objects[] = ['ref' => $this->objectRef($attempt->id, $item->id)] + $item->position() + [
-                'media' => $item->media_asset_id ? media_src($item->media_asset_id) : null,
+            $ref       = $this->objectRef($attempt->id, $item->id);
+            $objects[] = ['ref' => $ref] + $item->position() + [
+                // Part 7 (33 §8.1, M-04): the picture by token, never its file name (which holds the item code)
+                'media' => $item->media_asset_id ? $this->objectMediaUrl($attempt->id, $ref, (int) $item->media_asset_id) : null,
                 'found' => $found,
             ];
 
@@ -1444,7 +1481,8 @@ class ChallengeService
 
         return [
             'title' => $text($post['scene'], 'title'),
-            'media' => ! empty($post['scene']['media_asset_id']) ? media_src((int) $post['scene']['media_asset_id']) : null,
+            // Part 7 (33 §8.1): the post picture by token too
+            'media' => ! empty($post['scene']['media_asset_id']) ? $this->objectMediaUrl($attempt->id, $this->postRef($attempt->id), (int) $post['scene']['media_asset_id']) : null,
             'parts' => $parts,
             'clues' => seeded_shuffle($entries, 'clue2|' . $attempt->id),
         ];
@@ -1533,6 +1571,65 @@ class ChallengeService
         }
 
         throw new \InvalidArgumentException('Objek tidak dikenal pada percobaan ini.');
+    }
+
+    // ------------------------------------------------ part 7 (33 §8.1, M-04)
+
+    /**
+     * URL of a Cari Objek picture through `GET /api/attempts/{id}/objects/{ref}`;
+     * the stand-in picture when the media is missing (as media_src() did).
+     */
+    private function objectMediaUrl(int $attemptId, string $ref, int $mediaAssetId): string
+    {
+        return isset(service('contentRepository')->mediaMap()[$mediaAssetId])
+            ? site_url('api/attempts/' . $attemptId . '/objects/' . $ref)
+            : media_placeholder_src();
+    }
+
+    /** Opaque ref of the round-2 post picture of an attempt (own HMAC namespace). */
+    private function postRef(int $attemptId): string
+    {
+        $key = (string) config('Encryption')->key;
+
+        if ($key === '') {
+            throw new \RuntimeException('encryption.key wajib diisi: token objek engine cari diturunkan darinya.');
+        }
+
+        return substr(hash_hmac('sha256', 'cari-post|' . $attemptId, $key), 0, 20);
+    }
+
+    /**
+     * Media asset id behind an object token of this attempt (a find_object
+     * item's picture, or the round-2 post picture), or null for an unknown
+     * token. Used by ChallengeApiController::objectImage().
+     */
+    public function objectMediaId(ChallengeAttempt $attempt, string $ref): ?int
+    {
+        if ($ref === '' || preg_match('/^[0-9a-f]{20}$/', $ref) !== 1) {
+            return null;
+        }
+
+        $node = service('contentRepository')->node((int) $attempt->challenge_node_id);
+
+        if ($node === null || $node->engine_type !== 'cari') {
+            return null;
+        }
+
+        foreach ($attempt->selectedItemIds() as $itemId) {
+            if (hash_equals($this->objectRef($attempt->id, $itemId), $ref)) {
+                $item = $this->findItemInBank($node->id, $itemId) ?? model(ChallengeItemModel::class)->find($itemId);
+
+                return $item?->media_asset_id ? (int) $item->media_asset_id : null;
+            }
+        }
+
+        if (hash_equals($this->postRef($attempt->id), $ref)) {
+            $post = service('contentRepository')->postScene($node->id, (string) $attempt->variant_group);
+
+            return ! empty($post['scene']['media_asset_id']) ? (int) $post['scene']['media_asset_id'] : null;
+        }
+
+        return null;
     }
 
     /** Opaque ref of one round-2 part for one attempt (same HMAC as objectRef(), its own namespace). */
@@ -2045,6 +2142,98 @@ class ChallengeService
     // --------------------------------------------------------------- bantu
 
     // updateIf() and updateOrStale() come from App\Models\Concerns\ConditionalUpdate (28 §10.2).
+
+    // ------------------------------------------------ part 7 (33 §7.3, §7.4)
+
+    /**
+     * The student's open attempt at the node when it is in another game
+     * session: moved here by a conditional UPDATE (K3), its old segment
+     * closed at the old session's last activity (`session_ended`), and a
+     * server `challenge_opened {resumed: true, moved_from_session}` written.
+     * A request that loses the race reads the newest state: the attempt is
+     * then already here (returned) or no longer open (null). An open attempt
+     * already in this session is returned as it is.
+     */
+    private function resumeAcrossSessions(GameSession $session, ChallengeNode $node): ?ChallengeAttempt
+    {
+        $attempts = model(ChallengeAttemptModel::class);
+        $open     = $attempts->openForParticipant($session->participant_id, $node->id, $session->study_id);
+
+        if ($open === null || $open->session_id === $session->id) {
+            return $open;
+        }
+
+        $from = $open->session_id;
+
+        if (! $this->updateIf($attempts, $open->id, ['session_id' => $from, 'status' => 'in_progress'], ['session_id' => $session->id])) {
+            $fresh = $attempts->find($open->id);
+
+            return $fresh !== null && $fresh->isInProgress() && $fresh->session_id === $session->id ? $fresh : null;
+        }
+
+        $old    = model(GameSessionModel::class)->find($from);
+        $leftAt = (string) ($old?->toRawArray()['last_active_at'] ?? '');
+
+        model(ChallengeAttemptSegmentModel::class)->closeOpen($open->id, $leftAt !== '' ? $leftAt : self::nowMs(), 'session_ended');
+
+        service('eventService')->record($session, 'challenge_opened', [
+            'attempt_no'         => $open->attempt_no,
+            'variant_group'      => $open->variant_group,
+            'resumed'            => true,
+            'moved_from_session' => $old?->session_code,
+        ], [
+            'level_id'             => $node->level_id,
+            'challenge_node_id'    => $node->id,
+            'challenge_attempt_id' => $open->id,
+        ]);
+
+        return $attempts->find($open->id);
+    }
+
+    /**
+     * Whether the student may open a new attempt at a challenge already
+     * completed (33 §7.4). Outside research mode always. In research mode
+     * only while every challenge of its region is completed, the region is
+     * in the meeting plan of the session's field session, and that field
+     * session is open (P2–P5, §17 no. 5).
+     */
+    public function retakeAllowed(GameSession $session, ChallengeNode $node): bool
+    {
+        if (! service('gameContext')->researchMode($session)) {
+            return true;
+        }
+
+        $level   = service('contentRepository')->levelById($node->level_id);
+        $regions = service('fieldSessions')->openRegions($session) ?? [];
+
+        if ($level === null || ! in_array((string) $level->code, $regions, true) || ! service('fieldSessions')->sessionIsOpen($session)) {
+            return false;
+        }
+
+        $done = model(ChallengeAttemptModel::class)->completedFor($session);
+
+        foreach (service('contentRepository')->nodesForLevel($node->level_id) as $candidate) {
+            if (! isset($done[$candidate->id])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /** @throws ChallengeRuleException RETAKE_LOCKED (409) when retakeAllowed() says no */
+    public function assertRetakeAllowed(GameSession $session, ChallengeNode $node): void
+    {
+        if (! $this->retakeAllowed($session, $node)) {
+            throw ChallengeRuleException::retakeLocked();
+        }
+    }
+
+    /** Server time with milliseconds, for segment times (DATETIME(3)). */
+    private static function nowMs(): string
+    {
+        return (new \DateTimeImmutable('now'))->format('Y-m-d H:i:s.v');
+    }
 
     /**
      * Membatalkan transaction yang gagal. Permintaan yang kalah balapan

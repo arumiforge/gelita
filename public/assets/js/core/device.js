@@ -30,6 +30,8 @@ import { $$ } from './dom.js';
 import { emit } from './events.js';
 
 const DEVICE_JSON_MAX = 4000;
+/** Part 7 (33 §8.8): the same list as DeviceProfile::UA_DATA_KEYS (29 §5.5). */
+const UA_DATA_KEYS = ['platform', 'platformVersion', 'fullVersionList', 'mobile', 'brands'];
 
 export const PACKAGE_MODES = ['lengkap', 'daring', 'nonaktif'];
 const NO_PACKAGE = { package_code: null, package_mode: 'nonaktif' };
@@ -56,6 +58,10 @@ export async function deviceSignals() {
     uaData = ua ? await ua.getHighEntropyValues(
       ['platform', 'platformVersion', 'fullVersionList', 'mobile']) : null;
   } catch { /* tidak didukung: biarkan null */ }
+  // Part 7 (33 §8.8, M-11): only the userAgentData fields the server keeps (DeviceProfile::UA_DATA_KEYS)
+  if (uaData && typeof uaData === 'object') {
+    uaData = Object.fromEntries(UA_DATA_KEYS.filter((key) => key in uaData).map((key) => [key, uaData[key]]));
+  }
   const pkg = await packageInfo();
   return {
     ...pkg,

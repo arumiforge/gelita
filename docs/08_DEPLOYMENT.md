@@ -1575,3 +1575,17 @@ The script makes a fresh backup as usual and tests it (`gzip -t` / opening the z
 
 `gelita:retention:run` gains one step with the switch on: `expired_browser_sessions` in the `retention_run` audit summary.
 
+
+## Research revision 10, part 7: migration `004100`
+
+- `2026-01-01-004100_AddResearchModeData` adds `research_studies.idle_threshold_ms` (180000), `rapid_guess_ms` (3000), `min_stage_px` (960), `test_rapid_guess_ms` (3000); `challenge_attempts.is_retake` (filled for old retakes); `audio_usage_events.clock_offset_ms` (old rows empty); and the table `challenge_attempt_segments` (FKs `ON DELETE CASCADE` to attempts and game sessions, `SET NULL` to field sessions), with one segment per existing attempt (`left_via = migration`). Nothing is deleted. `gelita:reset` needs this migration in the history.
+- New config `gelita.inputIdleLogMs` (20000): the logging limit of `input_idle`, not an analysis threshold.
+- The JSON after-filter of `/api` leaves `image/*` responses alone (Cari Objek pictures). nginx needs nothing new: the pictures are served by PHP with `Cache-Control: private, max-age=86400`.
+- Asset packages: the public manifest names Cari Objek pictures (find_object items, post scenes) `cari.{sha256[0:16]}` instead of their asset key; rebuild the package after the upgrade.
+## Research revision 10, part 8: migration `004200` and the instrument content
+
+Migration `2026-01-01-004200_CreateInstrumentModule` adds seven `instrument_*` tables, `field_sessions.test_started_at`/`test_started_by`, `research_studies.instrument_settings`, and makes `participant_feedback.rating` nullable (`down()` writes 0 into empty ratings). After migrating, load the content once with `php spark gelita:instrumen:impor` (a reset does it itself) and install the 24 test pictures with `php spark gelita:katalog:impor` (`instr.*` slots; without them the module shows text). `gelita:retention:run` also closes test blocks past their hidden limit (`closed_test_blocks`). The validators' test install may set `gelita.instrumentPreview = true` in `.env`; never on a research install. The Bootstrap copy is CSS only (`public/assets/vendor/bootstrap-5.3.8/`).
+
+## Research revision 10, part 9: migration `004300` and the derived data layer
+
+Migration `2026-01-01-004300_CreateDerivedLayer` adds `derived_runs`, the eight `derived_*` tables (cascading from their run and from `participants`), `research_studies.thresholds_locked_at`/`derived_run_id`/`derived_running_since`, and `data_exports.derived_run_id`. It deletes nothing; `SystemResetService::REQUIRED_MIGRATION` is `2026-01-01-004300`. Nothing needs to be computed after migrating: the first download of a field-mode study (or *Hitung ulang*, or `php spark gelita:turunan:hitung --studi=KODE`) computes the first run. `--cek` only reports whether the current run is stale. The run is synchronous; measured on simulated data it takes about 9 ms per student (SQLite, 120 students, ~180 events each), so a study of ~360 children with ~2000 events each is expected to stay well under the 10-minute limit of 35 §18 no. 4 (check on the real server, 35 §16.3).

@@ -41,7 +41,7 @@
 $region = $level->text('name', $locale);
 $mapSrc = media_exists($level->map_media_id) ? media_src($level->map_media_id) : null;
 $bg     = media_exists($level->background_media_id) ? media_src($level->background_media_id) : '';
-$icons  = ['completed' => 'check', 'open' => 'right', 'locked' => 'lock'];
+$icons  = ['completed' => 'check', 'done_locked' => 'check', 'open' => 'right', 'locked' => 'lock'];
 // Status medallion with its mark: a lock on locked, none on done (the picture has its check)
 // and none on open (owner, 21 October 2026: no number on the gold arc). Without the pictures
 // the old marks show.
@@ -55,7 +55,7 @@ $medal = static function (array $n, string $class) use ($icons): string {
     return '<img class="' . $class . '" src="' . esc($badge, 'attr') . '" alt="" decoding="async" draggable="false">'
         . ($n['status'] === 'locked' ? icon('lock', 'badge-lock') : '');
 };
-$href   = static fn (array $n): string => base_url(($n['status'] === 'completed' ? 'hasil/' : 'misi/') . $level->code . '/' . $n['sequence']);
+$href   = static fn (array $n): string => base_url((node_done($n) ? 'hasil/' : 'misi/') . $level->code . '/' . $n['sequence']);
 $done   = (int) $levelSummary['completed_nodes'];
 $total  = (int) $levelSummary['total_nodes'];
 // Next screen: mission brief of the first open node (its background, Jaka)
@@ -111,14 +111,15 @@ $hasTrack     = is_file(FCPATH . 'assets/ui/map-progress-track.webp');
       </svg>
       <ol class="map-points">
         <?php foreach ($nodes as $node): ?>
-          <li class="map-point node-point is-<?= esc($node['status'], 'attr') ?>"
+          <li class="map-point node-point <?= esc(node_status_class($node), 'attr') ?>"
               style="left: <?= (float) $node['map_x'] ?>%; top: <?= (float) $node['map_y'] ?>%">
             <a class="map-pin" href="<?= esc($href($node), 'attr') ?>"
                <?= $node['status'] === 'locked' ? 'aria-disabled="true" data-locked-title="' . esc(lang('Game.nodeLockedTitle'), 'attr') . '" data-locked-message="' . esc(lang('Game.nodeLocked'), 'attr') . '" data-locked-ok="' . esc(lang('Game.libraryUnderstood'), 'attr') . '"' : '' ?>>
               <span class="pin-icon<?= status_badge_src($node) !== null ? ' has-badge' : '' ?>" aria-hidden="true"><?= $medal($node, 'pin-badge') ?></span>
               <span class="pin-label">
-                <b><?= esc($node['sequence']) ?>. <?= esc(engine_label($node['engine_type'], $node['variant'])) ?></b>
-                <?php if ($node['status'] === 'completed'): ?>
+                <?php // Part 7 (33 §8.4, M-07): the kind's name, as on the card and the challenge header ?>
+                <b><?= esc($node['sequence']) ?>. <?= esc(lang_or('Game.engine_' . $node['engine_type'], $node['title'])) ?></b>
+                <?php if (node_done($node)): ?>
                   <?= stars_html((int) $node['stars']) ?>
                 <?php else: ?>
                   <small><?= esc(lang($node['status'] === 'locked' ? 'Game.shardLocked' : 'Game.shardOpen')) ?></small>
@@ -143,29 +144,37 @@ $hasTrack     = is_file(FCPATH . 'assets/ui/map-progress-track.webp');
     <div class="map-progress<?= $hasTrack ? ' has-track' : '' ?>">
       <div class="progress" aria-hidden="true" style="--steps: <?= max(1, $total) ?>"><i style="width: <?= $total > 0 ? (int) round($done / $total * 100) : 0 ?>%"></i></div>
       <p><?= esc(lang('Game.nodesDoneOf', [$done, $total])) ?></p>
+      <?php // Part 7 (33 §7.4): one note for the done_locked challenges, inside the progress block so the panel keeps its rows (re-check of 9 November 2026: it overflowed the framed cards) ?>
+      <?php if ($hasFrame && in_array('done_locked', array_column($nodes, 'status'), true)): ?>
+        <p class="map-retake-later" role="status"><?= esc(lang('Game.retakeLater')) ?></p>
+      <?php endif ?>
     </div>
 
     <?php // Only the list scrolls; the head, the progress, and Pustaka stay in place ?>
     <ol class="node-list stage-scroll">
       <?php foreach ($nodes as $node): ?>
         <?php $art = is_file(FCPATH . 'assets/ui/node-card-' . $node['engine_type'] . '.webp') ? asset_url_versioned('ui/node-card-' . $node['engine_type'] . '.webp') : null; ?>
-        <li class="node-card panel is-<?= esc($node['status'], 'attr') ?><?= $art !== null ? ' has-art' : '' ?><?= $hasFrame ? ' has-frame' : '' ?>">
+        <li class="node-card panel <?= esc(node_status_class($node), 'attr') ?><?= $art !== null ? ' has-art' : '' ?><?= $hasFrame ? ' has-frame' : '' ?>">
           <?php if ($art !== null): ?>
             <img class="node-card-art" src="<?= esc($art, 'attr') ?>" alt="" decoding="async" draggable="false">
           <?php endif ?>
           <span class="node-no<?= status_badge_src($node) !== null ? ' has-badge' : '' ?>" aria-hidden="true"><?= $medal($node, 'node-badge') ?></span>
           <div class="node-card-body">
             <span class="visually-hidden"><?= esc(lang('Game.challengeOf', [$node['sequence'], $total])) ?>:</span>
-            <span class="eyebrow"><?= esc($node['title']) ?></span>
-            <?php if ($node['status'] === 'completed'): ?>
+            <span class="eyebrow"><?= esc(lang_or('Game.engine_' . $node['engine_type'], $node['title'])) ?></span>
+            <?php if (node_done($node)): ?>
               <?= stars_html((int) $node['stars']) ?>
+            <?php endif ?>
+            <?php // Part 7 (33 §7.4): research mode, the region is not finished yet; the framed card has no room, its note sits under the progress bar ?>
+            <?php if ($node['status'] === 'done_locked' && ! $hasFrame): ?>
+              <small class="node-retake-later"><?= esc(lang('Game.retakeLater')) ?></small>
             <?php endif ?>
           </div>
           <?php if ($node['engine_type'] === 'skenario' && ! empty($bridgeSeen) && $node['status'] !== 'locked'): ?>
             <?php // Part 6 (32 §7.2): watch the bridge story again; no data depends on it ?>
             <a class="node-bridge" href="<?= esc(base_url('penghubung/' . $level->code), 'attr') ?>"><?= icon('play') ?> <?= esc(lang('Game.watchBridgeStory')) ?></a>
           <?php endif ?>
-          <?php if ($node['status'] === 'completed'): ?>
+          <?php if (node_done($node)): ?>
             <a class="btn btn-ghost btn-sm node-action is-green" href="<?= esc($href($node), 'attr') ?>"><?= esc(lang('Game.viewResult')) ?></a>
           <?php elseif ($node['status'] === 'open'): ?>
             <a class="btn btn-primary node-action" href="<?= esc($href($node), 'attr') ?>"><?= esc(lang('Game.start')) ?> <?= icon('right') ?></a>

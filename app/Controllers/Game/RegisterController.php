@@ -184,6 +184,11 @@ class RegisterController extends BaseController
 
         $fields->clearFailures($key);
 
+        // Part 7 (33 §7.2, §17 no. 7): a phone-sized stage gets no account in the field session
+        if ($fields->refuseSmallScreen($check['field_session'], $this->request->getPost('stage_w'), 'daftar')) {
+            return $this->tokenError('Game.smallScreenBody');
+        }
+
         $wizard                                  = $this->wizard();
         $wizard[(string) self::TOKEN_STEP]       = ['field_session_id' => (int) $check['field_session']['id']];
         session()->set(self::WIZARD, $wizard);
@@ -332,6 +337,11 @@ class RegisterController extends BaseController
         $redirect = redirect()->to(site_url('intro'))->with('welcome', lang('Game.registerWelcome', [
             $result['participant']->username,
         ]));
+
+        // Part 8 (34 §5.2, 28 §6.5 step 8): at P1 the test module comes before the opening story
+        if ($fieldSession !== null && service('instrumentGate')->current() !== null) {
+            return redirect()->to(site_url('tes'))->with('research_code', $result['participant']->participant_code);
+        }
 
         // Field mode: the research code card (28 §6.5, M-11)
         return $fieldSession === null ? $redirect : $redirect->with('research_code', $result['participant']->participant_code);

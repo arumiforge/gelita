@@ -1,0 +1,7 @@
+# derived_field_sessions (35 §6.6): session windows from the start to the last activity, the same active-time rule.
+# headset_share = 10 headsets / 20 playing (L1); L4 not imported at P5 → empty.
+participant_id,field_session_id,attended,session_total_ms,session_active_ms,headset_share,l4_observations
+1,1,1,1200000,1120000,0.5,1
+1,2,1,420000,420000,,
+2,1,1,1020000,1020000,0.5,0
+3,1,1,600000,600000,0.5,0

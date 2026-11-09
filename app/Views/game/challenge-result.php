@@ -38,8 +38,14 @@ $totalNodes = count(service('contentRepository')->nodesForLevel($level->id));
   <nav class="result-list-actions" aria-label="<?= esc(lang('Game.continue'), 'attr') ?>">
     <a class="btn btn-quiet" href="<?= base_url('wilayah/' . $level->code) ?>"><?= icon('left') ?><span><?= esc($region) ?></span></a>
     <?php // Ulangi on the owner's curved-arrow plate (21 October 2026) ?>
+    <?php // Part 7 (33 §7.4): no Ulangi while research mode keeps the retake closed ?>
+    <?php if (empty($retakeLocked)): ?>
     <a <?= plate_attrs('back') ?> href="<?= base_url('misi/' . $level->code . '/' . $sequence) ?>"><span><?= esc(lang('Game.retry')) ?></span></a>
+    <?php endif ?>
   </nav>
+  <?php if (! empty($retakeLocked)): ?>
+    <p class="result-note result-retake-later" role="status"><?= icon('info') ?> <?= esc(lang('Game.retakeLater')) ?></p>
+  <?php endif ?>
 
   <?php if ($best !== null): ?>
     <section class="result-best" aria-labelledby="result-best-title">
@@ -49,7 +55,9 @@ $totalNodes = count(service('contentRepository')->nodesForLevel($level->id));
       </div>
       <dl class="result-best-stats">
         <div><dt><?= esc(lang('Game.firstPass')) ?></dt><dd><?= esc(first_pass_text($best, $locale, $node->engine_type)) ?></dd></div>
+        <?php if (empty($researchMode)): // Part 7 (33 §7.1): no time in research mode ?>
         <div><dt><?= esc(lang('Game.timeSpent')) ?></dt><dd class="num"><?= esc(ms_to_human((int) $best->duration_ms)) ?></dd></div>
+        <?php endif ?>
         <div><dt><?= esc(lang('Game.checks')) ?></dt><dd class="num"><?= esc((string) (int) $best->check_count) ?></dd></div>
       </dl>
     </section>
@@ -65,7 +73,7 @@ $totalNodes = count(service('contentRepository')->nodesForLevel($level->id));
           <tr>
             <th scope="col"><?= esc(lang('Game.attempt')) ?></th>
             <th scope="col"><?= esc(lang('Game.startedAt')) ?></th>
-            <th scope="col" class="is-num"><?= esc(lang('Game.duration')) ?></th>
+            <?php if (empty($researchMode)): ?><th scope="col" class="is-num"><?= esc(lang('Game.duration')) ?></th><?php endif ?>
             <th scope="col" class="is-num"><?= esc(lang('Game.checks')) ?></th>
             <th scope="col"><?= esc(lang('Game.firstPass')) ?></th>
             <th scope="col"><?= esc(lang('Game.stars')) ?></th>
@@ -77,7 +85,7 @@ $totalNodes = count(service('contentRepository')->nodesForLevel($level->id));
             <tr<?= $isBest ? ' class="is-best"' : '' ?>>
               <th scope="row">#<?= esc($attempt->attempt_no) ?><?php if ($isBest): ?> <span class="badge is-completed"><?= esc(lang('Game.best')) ?></span><?php endif ?></th>
               <td><?= esc(fmt_date($attempt->started_at, false, $locale)) ?></td>
-              <td class="is-num"><?= esc(ms_to_human((int) $attempt->duration_ms)) ?></td>
+              <?php if (empty($researchMode)): ?><td class="is-num"><?= esc(ms_to_human((int) $attempt->duration_ms)) ?></td><?php endif ?>
               <td class="is-num"><?= esc((int) $attempt->check_count) ?></td>
               <td><?= $attempt->isCompleted() ? esc(first_pass_text($attempt, $locale, $node->engine_type)) : '—' ?></td>
               <td><?= stars_html((int) $attempt->stars) ?></td>

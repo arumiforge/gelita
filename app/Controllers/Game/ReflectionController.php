@@ -23,6 +23,13 @@ class ReflectionController extends BaseGameController
             return redirect()->to(site_url('peta'))->with('error', lang('Game.reflectionLocked'));
         }
 
+        // Part 8 (34 §9.1, K4, K12): in field mode (or the validators' preview) the attitude scale comes first
+        $study = service('instrumentGate')->reflectionState($this->participant(), $session);
+
+        if ($study['mode'] !== 'off' && ($blocked = $this->studyGate($study)) !== null) {
+            return $blocked;
+        }
+
         $existing = model(ParticipantFeedbackModel::class)
             ->where('session_id', $session->id)
             ->orderBy('submitted_at', 'DESC')
@@ -33,6 +40,8 @@ class ReflectionController extends BaseGameController
             'existing' => $existing,
             'journey'  => $this->journey($session),
             'errors'   => session('errors') ?? [],
+            // Part 8 (34 §9.4): feedback during a study, every field optional
+            'studyFeedback' => $study['mode'] !== 'off',
         ]);
     }
 
@@ -118,8 +127,16 @@ class ReflectionController extends BaseGameController
             return redirect()->to(site_url('peta'))->with('error', lang('Game.reflectionLocked'));
         }
 
+        // Part 8 (34 §9.4): during a study the scale comes first and every feedback field may stay empty
+        $study         = service('instrumentGate')->reflectionState($this->participant(), $session);
+        $studyFeedback = $study['mode'] !== 'off';
+
+        if ($studyFeedback && ($blocked = $this->studyGate($study)) !== null) {
+            return $blocked;
+        }
+
         $rules = [
-            'rating'       => 'required|integer|greater_than[0]|less_than[6]',
+            'rating'       => ($studyFeedback ? 'permit_empty' : 'required') . '|integer|greater_than[0]|less_than[6]',
             'liked_most'   => 'permit_empty|max_length[2000]',
             'hardest_part' => 'permit_empty|max_length[2000]',
             'new_learning' => 'permit_empty|max_length[2000]',
@@ -144,18 +161,24 @@ class ReflectionController extends BaseGameController
             }
         }
 
-        if ($filled < 2) {
+        if ($filled < 2 && ! $studyFeedback) {
             return redirect()->to(site_url('refleksi'))
                 ->withInput()
                 ->with('errors', ['liked_most' => lang('Game.reflectionNeedTwo')]);
         }
 
         $feedback = model(ParticipantFeedbackModel::class);
+        // Part 8 (34 §9.4): an empty rating stays NULL during a study (`feedback_rating`)
+        $rating = trim((string) $this->request->getPost('rating')) === '' ? null : (int) $this->request->getPost('rating');
+
+        if ($studyFeedback) {
+            $feedback->setValidationRule('rating', 'permit_empty|greater_than[0]|less_than[6]');
+        }
 
         $saved = $feedback->insert([
             'participant_id' => $session->participant_id,
             'session_id'     => $session->id,
-            'rating'         => (int) $this->request->getPost('rating'),
+            'rating'         => $rating,
             'submitted_at'   => date('Y-m-d H:i:s'),
         ] + $answers, false);
 
@@ -166,10 +189,26 @@ class ReflectionController extends BaseGameController
         }
 
         service('eventService')->record($session, 'feedback_submitted', [
-            'rating'       => (int) $this->request->getPost('rating'),
+            'rating'       => $rating,
             'open_answers' => $filled,
         ]);
 
         return redirect()->to(site_url('refleksi'))->with('message', lang('Game.reflectionThanks'));
+    }
+
+    /**
+     * Part 8 (34 §9.1): the steps before Balai Refleksi during a study — the
+     * last meeting only, the module and the closing story first, then the scale.
+     *
+     * @param array<string, mixed> $study InstrumentGate::reflectionState()
+     */
+    private function studyGate(array $study): ?RedirectResponse
+    {
+        return match ($study['state']) {
+            'last_meeting' => redirect()->to(site_url('peta'))->with('error', lang('Game.reflectionLastMeeting')),
+            'redirect'     => redirect()->to(site_url($study['target'])),
+            'scale'        => redirect()->to(site_url('refleksi/sikap')),
+            default        => null,
+        };
     }
 }

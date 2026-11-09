@@ -67,7 +67,7 @@ Kode sesi lapangan: __________ · Tanggal: __________ · Inisial P1: ______
 - [ ] Rilis dan paket aset game yang aktif dicatat; sama untuk semua kelas penelitian
 - [ ] Daftar siswa berizin (L7) lengkap; siswa tanpa izin diketahui, dan guru sudah menyiapkan kegiatan pengganti di ruang yang sama
 - [ ] Setiap perangkat diberi stiker nomor (P01, P02, …); denah baris dan kursi L2 sudah digambar
-- [ ] Semua perangkat siswa laptop, Chromebook, atau tablet mendatar berlayar 10 inci atau lebih; tidak ada ponsel. Perangkat cadangan: ___ buah
+- [ ] Semua perangkat siswa laptop, Chromebook, atau tablet mendatar berlayar 10 inci atau lebih; tidak ada ponsel (dalam mode penelitian sistem menolak panggung di bawah 960 px, [33](33_IMPLEMENTASI_MODE_PENELITIAN.md) §7.2). Perangkat cadangan: ___ buah
 - [ ] Headset cukup untuk semua siswa yang bermain dan sudah dicoba
 - [ ] Lembar yang dipakai pertemuan ini sudah dicetak; papan jalan dan pulpen siap
 - [ ] Tiga peneliti hadir (P1, P2, P3). Kalau satu berhalangan: P1 juga mengisi L3, wawancara L5 dipindah ke pertemuan lain, dan dicatat DEV-TIM di L1
