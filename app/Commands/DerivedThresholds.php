@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Commands\Concerns\CliOptions;
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 
@@ -13,6 +14,8 @@ use CodeIgniter\CLI\CLI;
  */
 class DerivedThresholds extends BaseCommand
 {
+    use CliOptions;
+
     protected $group       = 'GELITA';
     protected $name        = 'gelita:turunan:ambang';
     protected $description = 'Unlocks the locked thresholds of one study (35 §5); needs --buka and --alasan, writes an audit row.';
@@ -27,7 +30,7 @@ class DerivedThresholds extends BaseCommand
     {
         db_sync_timezone();
 
-        $code  = (string) (CLI::getOption('studi') ?? $params['studi'] ?? '');
+        $code  = (string) $this->option('studi', $params);
         $study = $code === '' ? null : db_connect()->table('research_studies')->where('code', $code)->get()->getRowArray();
 
         if ($study === null) {
@@ -36,13 +39,13 @@ class DerivedThresholds extends BaseCommand
             return EXIT_ERROR;
         }
 
-        if (CLI::getOption('buka') === null && ! array_key_exists('buka', $params)) {
+        if (! $this->flag('buka', $params)) {
             CLI::write('Thresholds locked: ' . (empty($study['thresholds_locked_at']) ? 'no' : (string) $study['thresholds_locked_at']));
 
             return EXIT_SUCCESS;
         }
 
-        $reason = trim((string) (CLI::getOption('alasan') ?? $params['alasan'] ?? ''));
+        $reason = trim((string) $this->option('alasan', $params));
 
         if ($reason === '' || $reason === '1') {
             CLI::error('A reason is required: --alasan="...".');

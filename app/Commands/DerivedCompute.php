@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Commands\Concerns\CliOptions;
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 
@@ -12,6 +13,8 @@ use CodeIgniter\CLI\CLI;
  */
 class DerivedCompute extends BaseCommand
 {
+    use CliOptions;
+
     protected $group       = 'GELITA';
     protected $name        = 'gelita:turunan:hitung';
     protected $description = 'Computes the derived data layer of one field-mode study (35 §9). --cek only reports, without writing.';
@@ -25,7 +28,7 @@ class DerivedCompute extends BaseCommand
     {
         db_sync_timezone();
 
-        $code  = (string) (CLI::getOption('studi') ?? $params['studi'] ?? '');
+        $code  = (string) $this->option('studi', $params);
         $study = $code === '' ? null : db_connect()->table('research_studies')->where('code', $code)->get()->getRowArray();
 
         if ($study === null) {
@@ -37,7 +40,7 @@ class DerivedCompute extends BaseCommand
         $derived = service('derivedData');
         $status  = $derived->status((int) $study['id']);
 
-        if (CLI::getOption('cek') !== null || array_key_exists('cek', $params)) {
+        if ($this->flag('cek', $params)) {
             CLI::write('Field mode: ' . ($status['field_mode'] ? 'on' : 'off'));
             CLI::write('Current run: ' . ($status['current'] === null ? 'none' : '#' . $status['current']['id'] . ' (' . ($status['current']['finished_at'] ?? '') . ', ' . $status['current']['dictionary_version'] . ')'));
             CLI::write('Stale: ' . ($status['stale'] ? 'yes' : 'no'));
