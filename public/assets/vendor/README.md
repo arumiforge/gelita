@@ -65,3 +65,12 @@ pola lama — berkas di sini tidak akan ikut ter-commit.
 
 - Status dan versi: [`docs/02_PROJECT_FOUNDATION.md`](../../../docs/02_PROJECT_FOUNDATION.md) → *Status `public/assets/vendor/`*
 - Alasan pemilihan library: [`docs/05_VIEW_UI.md`](../../../docs/05_VIEW_UI.md) → *External CSS/JS Library*, [`docs/06_JAVASCRIPT.md`](../../../docs/06_JAVASCRIPT.md) → *Library JavaScript*
+
+## Bootstrap (test module, research revision 10, part 8)
+
+| File | Library | Version | SHA-256 | Used by |
+|---|---|---|---|---|
+| `bootstrap-5.3.8/bootstrap.min.css` | Bootstrap | 5.3.8 | `d85327d99c7a3ee1f9b5d0500d1370acea3ad2db39c163c2f51f232baedbdede` | `layouts/instrument.php` (test module, questionnaire, risk items) |
+| `bootstrap-5.3.8/LICENSE-bootstrap.txt` | — | — | — | MIT license |
+
+- Taken from the official npm release (`bootstrap@5.3.8`, `dist/css/bootstrap.min.css`) and committed unchanged; CSS only, no Bootstrap JavaScript (34 §7.1). The game pages never load it.

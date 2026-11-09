@@ -1575,3 +1575,7 @@ The script makes a fresh backup as usual and tests it (`gzip -t` / opening the z
 
 `gelita:retention:run` gains one step with the switch on: `expired_browser_sessions` in the `retention_run` audit summary.
 
+
+## Research revision 10, part 8: migration `004200` and the instrument content
+
+Migration `2026-01-01-004200_CreateInstrumentModule` adds seven `instrument_*` tables, `field_sessions.test_started_at`/`test_started_by`, `research_studies.instrument_settings`, and makes `participant_feedback.rating` nullable (`down()` writes 0 into empty ratings). After migrating, load the content once with `php spark gelita:instrumen:impor` (a reset does it itself) and install the 24 test pictures with `php spark gelita:katalog:impor` (`instr.*` slots; without them the module shows text). `gelita:retention:run` also closes test blocks past their hidden limit (`closed_test_blocks`). The validators' test install may set `gelita.instrumentPreview = true` in `.env`; never on a research install. The Bootstrap copy is CSS only (`public/assets/vendor/bootstrap-5.3.8/`).
