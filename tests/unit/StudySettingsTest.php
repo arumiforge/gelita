@@ -4,7 +4,6 @@ use CodeIgniter\Database\Forge;
 use CodeIgniter\HTTP\Method;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\FeatureTestTrait;
-use Config\Database;
 use Tests\Support\Database\ConsentWorld;
 
 /**
@@ -105,8 +104,7 @@ final class StudySettingsTest extends CIUnitTestCase
 
     public function testLockedThresholdsStayButTheStageWidthMoves(): void
     {
-        // Part 9 adds this column (35 §12); here only to see the lock work
-        Database::forge('tests')->addColumn('research_studies', ['thresholds_locked_at' => ['type' => 'DATETIME', 'null' => true]]);
+        // Part 9's column (35 §12, migration 004300) is in the test schema
         $this->conn->table('research_studies')->update(['thresholds_locked_at' => date('Y-m-d H:i:s')]);
 
         $this->save('ketua', ['idle_threshold_s' => '120']);

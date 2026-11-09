@@ -18,6 +18,7 @@ class DataExportModel extends Model
         'row_count', 'file_path', 'file_sha256', 'error_message', 'completed_at', 'expires_at',
         'dictionary_version', 'participant_count',   // part 3 (29 §8, §9)
         'purged_by_request_id',   // part 4 (30 §7.4)
+        'derived_run_id',         // part 9 (35 §9): the derived run the download used
     ];
     protected $validationRules = [
         'requested_by' => 'required|is_natural_no_zero',

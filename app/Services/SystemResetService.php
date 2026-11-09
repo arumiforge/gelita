@@ -37,7 +37,7 @@ class SystemResetService
      * part 8 004200). Checked by its row in the history too, since
      * 003900/003910 were numbered before 003600–003800 (part 3, 29 §12).
      */
-    public const REQUIRED_MIGRATION = '2026-01-01-004200';
+    public const REQUIRED_MIGRATION = '2026-01-01-004300';
 
     /** Kata yang wajib diketik bila tanpa --ya. */
     public const CONFIRM_WORD = 'RESET-KELAS5';
@@ -59,6 +59,9 @@ class SystemResetService
         'challenge_attempt_segments',
         // Part 8 (34 §11.3): the students' test, questionnaire, risk-item and attitude answers
         'instrument_responses', 'instrument_parts', 'instrument_blocks', 'instrument_sittings',
+        // Part 9 (35 §12): the derived data layer, rebuilt from the raw data by the next run
+        'derived_tries', 'derived_items', 'derived_attempts', 'derived_challenges', 'derived_field_sessions',
+        'derived_participants', 'derived_test_responses', 'derived_observations', 'derived_runs',
     ];
 
     public const GROUP_B = ['hints', 'item_error_codes', 'scenario_options', 'post_parts', 'post_scenes', 'challenge_items', 'reading_passages', 'challenge_nodes',
@@ -73,6 +76,9 @@ class SystemResetService
 
     /** Urutan pengosongan mengikuti FK: anak dulu. */
     public const CLEAR_ORDER = [
+        // Part 9 (35 §12): derived rows, then their runs, before everything they point to
+        'derived_tries', 'derived_items', 'derived_attempts', 'derived_challenges', 'derived_field_sessions',
+        'derived_participants', 'derived_test_responses', 'derived_observations', 'derived_runs',
         'field_sheet_rows', 'field_sheet_imports',   // part 3 (29 §12)
         'challenge_attempt_segments',                // part 7 (33 §9): before challenge_attempts
         'item_tries', 'item_responses', 'challenge_attempts', 'audio_usage_events', 'game_event_logs',

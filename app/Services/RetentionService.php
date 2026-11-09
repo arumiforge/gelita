@@ -36,7 +36,15 @@ class RetentionService
         'participant_consents',
         // Part 8 (34 §11.3, 30 §15): the test module's answers, children first; the FK cascades too
         'instrument_responses', 'instrument_parts', 'instrument_blocks', 'instrument_sittings',
+        // Part 9 (35 §9, §12): derived rows of every run; the FK cascades too, counted for the preview
+        ...self::DERIVED_TABLES,
         'participants',
+    ];
+
+    /** Part 9 (35 §12): derived tables, rows per student and run. */
+    public const DERIVED_TABLES = [
+        'derived_tries', 'derived_items', 'derived_attempts', 'derived_challenges', 'derived_field_sessions',
+        'derived_participants', 'derived_test_responses', 'derived_observations',
     ];
 
     /**
@@ -373,6 +381,9 @@ class RetentionService
 
         ['previews' => $result['retention_previews'], 'warnings' => $result['warnings']]
             = $this->flagExpiredStudyData($staffId);
+
+        // Part 9 (35 §9): derived runs nobody reads any more
+        $result['pruned_derived_runs'] = service('derivedData')->pruneRuns();
 
         // Part 8 (34 §7.4): test blocks past their hidden limit with no request since
         $result['closed_test_blocks'] = service('instruments')->closeOverdueBlocks();
@@ -796,6 +807,19 @@ class RetentionService
             }
 
             return $db->table($table)->whereIn('sitting_id', $sittings);
+        }
+
+        // Part 9 (35 §9): a student's derived rows in every run, or a whole study's runs without a date range
+        if (in_array($table, self::DERIVED_TABLES, true)) {
+            if (isset($scope['participant_id']) || isset($scope['participants'])) {
+                return $participantIds === [] ? null : $db->table($table)->whereIn('participant_id', $participantIds);
+            }
+
+            if (isset($scope['study_id']) && ! isset($scope['date_from']) && ! isset($scope['date_to'])) {
+                return $db->table($table)->whereIn('run_id', static fn (BaseBuilder $sub): BaseBuilder => $sub->select('id')->from('derived_runs')->where('study_id', (int) $scope['study_id']));
+            }
+
+            return null;   // a session scope: the next run is stale (the counts changed) and recomputes
         }
 
         // Part 4 (30 §11): a closed field-mode study's cohort, by student
