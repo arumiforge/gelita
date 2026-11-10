@@ -79,6 +79,8 @@ $screenCode = method_exists($request, 'getPath') ? (App\Filters\ScreenViewFilter
   <?= $this->include('components/rotate-gate') ?>
   <?php // Part 7 (33 §7.2): small-screen gate (research mode) and warning, shown by game/screen-check.js ?>
   <?= $this->include('components/small-screen') ?>
+  <?php // Staff previewing a package with ?paket= (plan §6.1 step 3); nothing for students ?>
+  <?= $this->include('components/package-preview') ?>
 
   <div class="stage-frame">
     <?php // The round HUD skin for the story narrator controls, the owner's neutral round button behind a letter avatar (21 October 2026),

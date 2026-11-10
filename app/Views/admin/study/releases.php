@@ -22,8 +22,11 @@
  * @var array<string, mixed>|null  $runningStudy
  * @var array<int, string|null>    $releasePackages release id => package it names
  */
-$needsConfirm = static fn (array $row): bool => $runningStudy !== null
-    && ($releasePackages[(int) $row['id']] ?? null) !== $packageCode;
+$needsConfirm = static fn (array $row): bool => \App\Services\ReleaseActivation::needsConfirmation(
+    $runningStudy,
+    $packageCode,
+    $releasePackages[(int) $row['id']] ?? null,
+);
 ?>
 <?= $this->extend('layouts/admin') ?>
 
@@ -66,6 +69,7 @@ $needsConfirm = static fn (array $row): bool => $runningStudy !== null
   <div class="form-actions"><a class="btn" href="<?= base_url('admin/studi/rilis/paket') ?>"><?= icon('download') ?> <?= esc(lang('Admin.packageOpen')) ?></a></div>
 </section>
 <?= component('admin/partials/package-notice', ['packageChanged' => $changed]) ?>
+<?= component('admin/partials/study-package-lock', ['study' => $runningStudy, 'packageCode' => $packageCode]) ?>
 
 <section class="panel">
   <h2 class="panel-title"><?= icon('list') ?> Semua versi</h2>

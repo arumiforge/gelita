@@ -80,4 +80,13 @@ try {
 
 Write-Output '-> Aktifkan kembali'
 Remove-Item $flag
+
+# Mode paket menyala: bangun ulang paket agar perangkat mendapat kode baru (rencana paket aset 6.3).
+# Mode paket mati = tidak ada yang dibangun. Penelitian berjalan = paket hanya dibangun, admin menerbitkannya.
+# Gagal = siswa tetap memakai paket lama; situs sudah aktif lagi.
+try {
+    Langkah 'Paket aset (hanya bila mode paket menyala)' { & $c.Php $spark gelita:paket:bangun --deploy }
+} catch {
+    Write-Warning "Paket aset belum dibangun ulang. Tekan Bangun ulang paket di Rilis > Paket aset (docs/08_DEPLOYMENT.md). $_"
+}
 Write-Output 'Deploy selesai.'

@@ -176,7 +176,8 @@ final class PackageSwitchTest extends CIUnitTestCase
         $this->assertSame('studi-uji', $audit['running_study']);
         $this->assertSame($code, $audit['package_to']);
 
-        // Switching off is locked the same way
+        // Switching off is locked the same way once the study runs on a package
+        $this->conn->table('research_studies')->where('code', 'studi-uji')->update(['package_code' => $code]);
         $this->post('admin/studi/rilis/paket/matikan');
         $this->assertSame($code, $this->apiData()['package_code']);
 
@@ -186,6 +187,11 @@ final class PackageSwitchTest extends CIUnitTestCase
         $this->assertSame($code, $audit['package_from']);
         $this->assertNull($audit['package_to']);
         $this->assertSame('Uji coba selesai', $audit['reason']);
+
+        // Back to the locked package: no tick or reason needed, and the publish form asks for none
+        $this->post('admin/studi/rilis/paket/' . $code . '/terbitkan');
+        $this->assertSame($code, $this->apiData()['package_code']);
+        $this->assertNull($this->lastAudit('release_activate')['reason']);
     }
 
     public function testChangedAssetNoticeAppearsAfterOneReplacementAndClearsAfterARebuild(): void
@@ -277,6 +283,7 @@ final class PackageSwitchTest extends CIUnitTestCase
         $this->previewRequest($code, ['participant_id' => 7]);
         $this->assertNull($this->packages->previewCode());
         $this->assertNull($this->packages->urlForKey('bg.welcome'));
+        $this->assertStringNotContainsString('package-preview"', view('components/package-preview', [], ['saveData' => false]), 'no preview pill for students');
 
         // Staff without releases.manage (ketua) gets no preview (27 K13)
         $this->injectStaff('ketua');
@@ -291,6 +298,12 @@ final class PackageSwitchTest extends CIUnitTestCase
         $this->assertSame(base_url($url), media_key_src('bg.welcome'));
         $this->assertNull($this->packages->activeCode());
         $this->assertSame($code, $_SESSION['package_preview']);
+
+        // The game shows the staff member a preview pill with a way out (owner, 9 November 2026)
+        $pill = html_entity_decode(view('components/package-preview', [], ['saveData' => false]), ENT_QUOTES | ENT_HTML5);
+        $this->assertStringContainsString('data-package-preview="' . $code . '"', $pill);
+        $this->assertStringContainsString('Pratinjau paket ' . $code, $pill);
+        $this->assertStringContainsString('?paket=mati">Akhiri pratinjau', $pill);
 
         // Next page without ?paket=: the preview follows the staff session
         $this->previewRequest(null, $_SESSION);

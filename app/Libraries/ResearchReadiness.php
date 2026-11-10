@@ -15,7 +15,9 @@ use CodeIgniter\Database\BaseConnection;
  *    §7.2, §6.3): package mode is on (the active release names a built
  *    package and the server kill switch is not set) and `gelita:paket:periksa`
  *    finds no problem. The check re-hashes the package, so its result is
- *    cached for an hour (AssetPackageService::verification()).
+ *    cached for an hour (AssetPackageService::verification()). While a study
+ *    runs, students must also get the package it locked when it started
+ *    (`research_studies.package_code`; owner, 9 November 2026).
  */
 final class ResearchReadiness
 {
@@ -98,6 +100,12 @@ final class ResearchReadiness
 
         if ($code === null) {
             return ['detail' => lang($packages->enabled() ? 'Admin.readyPackageOff' : 'Admin.readyPackageKilled')] + $item;
+        }
+
+        $drifted = (new \App\Services\ReleaseActivation($packages))->driftedStudy();
+
+        if ($drifted !== null) {
+            return ['detail' => lang('Admin.readyPackageDrift', [$code, $drifted['name'], $drifted['package_code'] ?? lang('Admin.studyPackageNone')])] + $item;
         }
 
         $check = $packages->verification($code);

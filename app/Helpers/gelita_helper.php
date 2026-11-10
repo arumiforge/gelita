@@ -78,8 +78,9 @@ if (! function_exists('ms_to_human')) {
 if (! function_exists('asset_package_path')) {
     /**
      * Path (relative to the base URL) of a game code file such as `js/game.js`
-     * or `css/game.css` in the active asset package (`assets/k/{code_version}/…`,
-     * docs/rencana-paket-aset.md §5.2), or null when package mode is off, the
+     * or `css/game.css` in the page's asset package (`assets/k/{code_version}/…`,
+     * docs/rencana-paket-aset.md §5.2; the open game session's own package, S8,
+     * else the active one, AssetPackageService::pageCode()), or null when package mode is off, the
      * file is not packaged (admin.css, admin.js), or its package copy is
      * missing on disk (e.g. a restore without public/assets/k/): a missing
      * script would break the game, the normal file never does.
@@ -88,7 +89,7 @@ if (! function_exists('asset_package_path')) {
     {
         try {
             $packages = service('assetPackages');
-            $code     = $packages->activeCode();
+            $code     = $packages->pageCode();
             $url      = $code === null ? null : ($packages->map($code)['keys'][ltrim($path, '/')] ?? null);
 
             if (is_string($url) && ! is_file($packages->publicDir() . $url)) {
@@ -178,7 +179,9 @@ if (! function_exists('game_asset_url')) {
 if (! function_exists('asset_package_attrs')) {
     /**
      * Attributes for the <script> tag of core/package-boot.js (asset package
-     * Stage 2): ` data-package="{code}"` while package mode is on, and
+     * Stage 2): ` data-package="{code}"` while package mode is on (the page's
+     * package, AssetPackageService::pageCode(), so an open session keeps
+     * naming the package it started with, S8), and
      * ` data-sw="off"` while the server kill switch `gelita.paket.aktif` is
      * false (the page then registers the empty sw-kosong.js). Only a package
      * code, never anything about the student.
@@ -187,7 +190,7 @@ if (! function_exists('asset_package_attrs')) {
     {
         try {
             $packages = service('assetPackages');
-            $code     = $packages->activeCode();
+            $code     = $packages->pageCode();
             $enabled  = $packages->enabled();
         } catch (Throwable) {
             return '';
@@ -204,7 +207,7 @@ if (! function_exists('package_audio_urls')) {
      * (`CONFIG.audioUrls`): `audio.music.map` → `music/map` => absolute URL.
      * Empty when package mode is off; audio.js then loads assets/audio/ as before.
      * Like the media helpers it follows a staff preview (`servingCode()`); code
-     * URLs and the boot attributes stay on `activeCode()`, which is what devices hold.
+     * URLs and the boot attributes stay on `pageCode()`, which is what devices hold.
      *
      * @return array<string, string>
      */

@@ -28,6 +28,15 @@ use CodeIgniter\HTTP\IncomingRequest;
  * kept in the session (`?paket=mati` ends it). activeCode(), and with it
  * `/api/paket/aktif` and the `X-Gelita-Paket` header, never reflect a preview,
  * so student devices are not affected.
+ *
+ * Running sessions keep their package (S8, §6.2, §6.3): pages rendered inside
+ * a game session that is still open name the package that session started
+ * with (`game_sessions.package_code`, or no package when it started with
+ * `package_mode = nonaktif`), via pageCode(), until the session ends. A
+ * publish or a switch in the middle therefore reaches a student only at the
+ * start of the next session. The API and `X-Gelita-Paket` keep reporting the
+ * active package, so devices can fetch it in the background. The server kill
+ * switch still overrides the pin.
  */
 class AssetPackageService
 {
@@ -143,7 +152,51 @@ class AssetPackageService
     /** Package the URL helpers use for this request: staff preview first. */
     public function servingCode(): ?string
     {
-        return $this->previewCode() ?? $this->activeCode();
+        return $this->previewCode() ?? $this->pageCode();
+    }
+
+    /**
+     * Package the pages of this request name for the device (code URLs, boot
+     * attributes, media): the open game session's own package (S8), else the
+     * active one. Null while package mode is off or the kill switch is set.
+     */
+    public function pageCode(): ?string
+    {
+        if (! $this->enabled()) {
+            return null;
+        }
+
+        $pin = $this->sessionPin();
+
+        return $pin === false ? $this->releasePackageCode() : $pin;
+    }
+
+    /**
+     * Package the open game session of this request started with: its code,
+     * null for a session that started without a package, or false when there
+     * is nothing to pin (no session loaded, session ended, a session from
+     * before package tracking, or a package no longer on the server).
+     */
+    private function sessionPin(): string|false|null
+    {
+        try {
+            $session = service('gameContext')->session;
+        } catch (\Throwable) {
+            return false;
+        }
+
+        if ($session === null || ! in_array($session->status, ['active', 'paused'], true) || $session->package_mode === null) {
+            return false;
+        }
+
+        if ($session->package_mode === 'nonaktif') {
+            return null;
+        }
+
+        $code = (string) $session->package_code;
+
+        // Only a built package; the code comes from the device at login
+        return self::validCode($code) && $this->map($code) !== null ? $code : false;
     }
 
     /**

@@ -507,6 +507,8 @@ return [
     'smallScreenTitle'   => 'This screen is too small',
     'smallScreenBody'    => 'GELITA needs a bigger screen, like a laptop or tablet. Please tell the research team.',
     'smallScreenWarn'    => 'Your screen is a bit small, so the text is small too. A laptop or tablet works better.',
+    'packagePreview'     => 'Previewing package {0}. Only you can see this.',
+    'packagePreviewEnd'  => 'End preview',
     'smallScreenDismiss' => 'Play anyway',
     'retakeLater'        => 'You can replay this challenge after you finish all five challenges in this region.',
     'kenaliAfterRegion'  => "This region's story opens after you finish the region.",

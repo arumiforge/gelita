@@ -18,7 +18,9 @@ use RuntimeException;
  * asset package differs from the package students get now (switching package
  * mode on or off, or publishing a rebuilt package) is refused unless the
  * admin ticks a confirmation and writes a reason. Releases that keep the same
- * package (e.g. a new content version) need no confirmation.
+ * package (e.g. a new content version) need no confirmation, and neither does
+ * going back to the package the study locked when it started
+ * (`research_studies.package_code`; owner, 9 November 2026).
  *
  * Every activation is audited as `release_activate` with `release_code`,
  * `package_from`, `package_to`, `reason` (null when none was needed), and the
@@ -60,7 +62,33 @@ class ReleaseActivation
         $from = $this->packages->releasePackageCode();
         $to   = $this->packages->packageOfRelease($target);
 
-        return $from === $to ? null : ['study' => $study, 'package_from' => $from, 'package_to' => $to];
+        return self::needsConfirmation($study, $from, $to) ? ['study' => $study, 'package_from' => $from, 'package_to' => $to] : null;
+    }
+
+    /**
+     * The running study when students now get another package than the one
+     * it locked (research-ready checklist, `gelita:content:verify
+     * --siap-penelitian`), else null.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function driftedStudy(): ?array
+    {
+        $study = model(ResearchStudyModel::class)->activeStudy();
+
+        return $study !== null && ($study['package_code'] ?? null) !== $this->packages->activeCode() ? $study : null;
+    }
+
+    /**
+     * Whether moving students from package $from to $to needs the tick and a
+     * reason: only during a running study, only when the package changes, and
+     * not when $to is the package the study locked (NULL = no package).
+     *
+     * @param array<string, mixed>|null $study the running study, or null
+     */
+    public static function needsConfirmation(?array $study, ?string $from, ?string $to): bool
+    {
+        return $study !== null && $from !== $to && $to !== ($study['package_code'] ?? null);
     }
 
     /**

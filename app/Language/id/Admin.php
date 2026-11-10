@@ -181,6 +181,9 @@ return [
     'studyPackage'          => 'Paket aset terkunci',
     'studyPackageNone'      => 'tanpa paket (mode paket mati saat penelitian dijalankan)',
     'studyPackageDiffers'   => 'Siswa sekarang memakai {0}, berbeda dengan paket yang terkunci untuk penelitian ini.',
+    'studyPackageRunning'   => 'Penelitian "{0}" sedang berjalan. Paket aset terkunci:',
+    'studyPackageReturnFree' => 'Kembali ke paket yang terkunci tidak perlu alasan.',
+    'studyPackageLockedIs'  => 'Paket yang terkunci untuk penelitian ini: {0}. Kembali ke paket itu tidak perlu alasan.',
 
     // Research-ready checklist item (§7.2)
     'readyPackageLabel'     => 'Paket terbit, lengkap, dan terverifikasi',
@@ -188,6 +191,7 @@ return [
     'readyPackageKilled'    => 'Mode paket dimatikan dari server. Hubungi pengelola server.',
     'readyPackageOk'        => 'Paket {0} lengkap dan utuh (diperiksa {1}).',
     'readyPackageBad'       => 'Paket {0}: {1} berkas tidak cocok. Bangun ulang paket.',
+    'readyPackageDrift'     => 'Siswa sekarang memakai paket {0}, padahal penelitian "{1}" berjalan dengan paket {2}. Aktifkan lagi rilis dengan paket yang terkunci.',
 
     // ------------------------------------------------ label kode (admin_label)
 

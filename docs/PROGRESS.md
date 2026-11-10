@@ -188,7 +188,7 @@ A server is always set up as a fresh install (`docs/08_DEPLOYMENT.md` → *Insta
 
 **Open owner decisions (asset package, Wave 2)**
 
-- [ ] Deploy scripts rebuilding the package while the switch is on (`docs/rencana-paket-aset.md` §6.3); running-study lock compared with the active release's package (§7.2); preview banner in the game; pinning a running session's URLs to its own package (S8) **Owner, 9 November 2026 (`04`): build them now**, on their own short-lived branch after `r10-wawancara-sisa-kerja` is merged (too big for that cleanup PR)
+- [x] Deploy scripts rebuilding the package while the switch is on (`docs/rencana-paket-aset.md` §6.3); running-study lock compared with the active release's package (§7.2); preview banner in the game; pinning a running session's URLs to its own package (S8) **Owner, 9 November 2026 (`04`): build them now**. **Built 9 November 2026** (branch `pw/intelligent-davinci-i6ysvq`, decision log *Asset package leftovers*): `gelita:paket:bangun --deploy` at the end of both deploy scripts (publishes unless a study runs); going back to the study's locked package is free, the lock shows on Rilis and Paket aset and fails the research-ready checklist while students get another package; a preview pill for the admin; open sessions keep their package (`pageCode()`). Still to check on a real server and device: a deploy with package mode on, and a mid-session publish
 
 **Release**
 

@@ -59,6 +59,39 @@ final class AssetPackageCommandTest extends CIUnitTestCase
         $this->assertStringContainsString('berkas tidak ada', $out);
     }
 
+    public function testDeployBuildsAndPublishesOnlyWhilePackageModeIsOn(): void
+    {
+        // Package mode off: nothing is built
+        [$exit, $out] = $this->command(PackageBuild::class, ['deploy' => null, 'tanpa-pustaka' => null]);
+        $this->assertSame(EXIT_SUCCESS, $exit, $out);
+        $this->assertStringContainsString('Mode paket mati', $out);
+        $this->assertNull(model(AssetPackageModel::class)->latestBuilt());
+
+        // On, no running study: a new package is built and published
+        $this->command(PackageBuild::class, ['tanpa-pustaka' => null]);
+        $first = model(AssetPackageModel::class)->latestBuilt()['package_code'];
+        $this->useRelease($first);
+
+        [$exit, $out] = $this->command(PackageBuild::class, ['deploy' => null, 'tanpa-pustaka' => null]);
+        $second = model(AssetPackageModel::class)->latestBuilt()['package_code'];
+        $this->assertSame(EXIT_SUCCESS, $exit, $out);
+        $this->assertNotSame($first, $second);
+        $this->assertSame($second, $this->packages->activeCode());
+        $this->assertStringContainsString('Paket ' . $second . ' diterbitkan', $out);
+        $this->assertSame('Dibangun otomatis saat deploy', model(AssetPackageModel::class)->findByCode($second)['notes']);
+        $audit = json_decode((string) $this->conn->table('audit_logs')->where('action', 'release_activate')->orderBy('id', 'DESC')->get()->getRow()->metadata_json, true);
+        $this->assertSame(['deploy', $first, $second, null], [$audit['via'], $audit['package_from'], $audit['package_to'], $audit['reason']]);
+
+        // Running study: built but not published; students keep the package
+        $this->conn->table('research_studies')->insert(['code' => 'studi-uji', 'name' => 'Studi Uji', 'status' => 'active', 'package_code' => $second]);
+        [$exit, $out] = $this->command(PackageBuild::class, ['deploy' => null, 'tanpa-pustaka' => null]);
+        $third = model(AssetPackageModel::class)->latestBuilt()['package_code'];
+        $this->assertSame(EXIT_SUCCESS, $exit, $out);
+        $this->assertNotSame($second, $third);
+        $this->assertSame($second, $this->packages->activeCode());
+        $this->assertStringContainsString('Penelitian "Studi Uji" sedang berjalan: paket ' . $third . ' belum diterbitkan', $out);
+    }
+
     public function testCheckWithoutAnyPackageFails(): void
     {
         [$exit, $out] = $this->command(PackageCheck::class, []);
