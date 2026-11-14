@@ -12,7 +12,7 @@ Dokumen Markdown di folder ini sekitar 1,2 MB, kira-kira 500 ribu token kalau di
 4. Baca baris revisi di `docs/PROGRESS.md`.
 5. Ingat *Label asal dan status* di bawah: semua yang tercatat sejauh ini masih kerja pengembang.
 
-Dokumen lain dibaca per bagian sesuai tugas. Versi PDF siap cetak setiap dokumen ada di [dokumen-pdf/cetak/](dokumen-pdf/README.md#versi-cetak-semua-dokumen); setelah dokumen berubah dan di-*commit*, buat ulang dengan `cetak.mjs`. Sebelum bertemu peneliti, pakai [berkas serah terima](dokumen-pdf/serah-terima-peneliti.pdf) (v1.5, 2 November 2026): daftar dokumen yang diserahkan, isian dan keputusan dari peneliti, dan alasan keputusan pengembang.
+Dokumen lain dibaca per bagian sesuai tugas. Versi PDF siap cetak setiap dokumen ada di [dokumen-pdf/cetak/](dokumen-pdf/README.md#versi-cetak-semua-dokumen); buat ulang dengan `cetak.mjs` saat dokumen akan dikirim ke peneliti atau atas permintaan pengembang, tidak lagi setiap dokumen berubah (14 November 2026, [04](04_CATATAN_KEPUTUSAN.md)). Sebelum bertemu peneliti, pakai [berkas serah terima](dokumen-pdf/serah-terima-peneliti.pdf) (v1.5, 2 November 2026): daftar dokumen yang diserahkan, isian dan keputusan dari peneliti, dan alasan keputusan pengembang.
 
 ## Label asal dan status
 

@@ -239,3 +239,7 @@ Diperbarui 15 Oktober 2026 (Asia/Bangkok). Urutan di bawah membedakan hasil terk
 ## Batas hasil
 
 Gambar di luar pekerjaan referensi/ikon/karakter tidak dibuat ulang secara massal. Prompt terbaru serta status keputusan pengguna tidak membuktikan aset lama telah diperbaiki. Pemeriksaan preview gerak sekunder bukan validasi rig atau integrasi aplikasi game. Validasi budaya/lisensi belum dilakukan. Sembilan audio sintetis nonnarasi tersedia dari permintaan 14 Oktober; rekaman narasi belum dibuat. Dokumen aplikasi/workbook di arsip bukan file yang disertakan dalam paket ini.
+
+## 14 November 2026: catalogue slimmed (owner request)
+
+Removed from the repository (kept in git history): `review/`, `archive/*.zip` and every picture under `archive/`, and the raw generation outputs under `provenance/` (`puzzle-generation-20261014/{candidates,native,factual-references}`, `result-ui-keyassets-20261013/`, `language-flag-keyassets-20261013/`, `peta-kedu-revision-02`–`04/`, `mockup-tantangan-selesai-temanggung/`). 730 MB became 379 MB. `data.json`, `assets/`, `mockup/`, `index.html`, and every JSON record stay. Checked with the game's importer tests (`CatalogImportTest`, `ResultScreenTest`, `InstrumentImportTest`); the catalogue's own `scripts/validate.mjs` was already failing before this change and was not repaired.

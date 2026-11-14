@@ -3,6 +3,7 @@
 ## Before spawning
 - Split work by file ownership: each agent gets an explicit list of files or directories it may change. Two agents never own the same file. Shared files (`CLAUDE.md`, `docs/PROGRESS.md`, `app/Config/Routes.php`, language files) belong to one agent or to the coordinating session.
 - If a task needs a file owned by another agent, the agent stops and reports it instead of editing.
+- Agents run only the tests of their own change (`vendor/bin/phpunit --no-coverage --filter …` or one test file). The coordinating session runs the full suite once at the end: one full run peaks above 7 GB, so two at once can exhaust the machine.
 
 ## Prompt template (write in English)
 Every agent prompt is self-contained; the agent has none of your context.
@@ -16,8 +17,8 @@ Rules:
 - Code, identifiers, and comments in English.
 - User-facing text in friendly Indonesian via app/Language (see .claude/rules/ui-copy.md); add the en/ counterpart.
 - Public URL paths are Indonesian slugs; controllers and methods English.
-- Use terms from .claude/rules/glossary.md.
-- Run vendor/bin/phpunit --no-coverage; it must be green.
+- Use terms from .claude/rules/glossary.md (and glossary-ui.md / glossary-research.md for screen parts and research terms).
+- Run only the tests of your change: vendor/bin/phpunit --no-coverage --filter <TestClass>; they must be green. Do not run the full suite.
 Done when: <checkable criteria>
 Report back (in English): files changed, tests run and results, decisions or deviations, open questions.
 ```

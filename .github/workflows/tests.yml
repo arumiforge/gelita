@@ -1,0 +1,44 @@
+name: tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: intl, mbstring, sqlite3, gd, zip
+          coverage: none
+      - run: composer install --no-interaction --no-progress
+      # One process per test file: the whole suite in one process peaks above
+      # 7 GB, more than a hosted runner has.
+      - name: PHPUnit
+        run: |
+          status=0
+          for file in $(find tests -name '*Test.php' | sort | awk 'NR % 3 == ${{ matrix.shard }}'); do
+            vendor/bin/phpunit --no-coverage "$file" > phpunit.out 2>&1 || { status=1; cat phpunit.out; }
+          done
+          exit $status
+
+  # One name to require in the branch ruleset, whatever the number of shards.
+  tests:
+    needs: phpunit
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - run: test "${{ needs.phpunit.result }}" = success

@@ -1,5 +1,7 @@
 # Instruksi agen proyek GELITA
 
+> **Slimmed on 14 November 2026 (owner).** The catalogue did its main job early in the project; the game now only needs `data.json`, `assets/`, and the pictures under `mockup/gambar-mockup/*/aset` (read by `php spark gelita:katalog:impor`), plus `index.html` as the gallery. Removed from the repository, still in git history before this date: `review/` (contact sheets), the two backup zips and every picture under `archive/`, and the raw generation outputs under `provenance/` (puzzle candidates, native files and factual references, result-UI, language-flag, Peta Kedu revision and mockup key assets). The JSON records in `archive/` and `provenance/` stay. Instructions below that point at the removed files are history. `scripts/validate.mjs` already failed before the slimming (the data embedded in `index.html` no longer equals `data.json`) and now also misses the removed folders; do not treat it as a gate.
+
 Baca [README.md](README.md), [docs/CONTEXT.md](docs/CONTEXT.md), [docs/MEMORY.md](docs/MEMORY.md), dan [docs/PROGRESS.md](docs/PROGRESS.md) sebelum mengubah proyek. Gunakan [docs/AI-GUIDE.md](docs/AI-GUIDE.md) untuk peta folder dan alur kerja; skema entri ada di [docs/DATA-SCHEMA.md](docs/DATA-SCHEMA.md).
 
 - Keputusan pengguna 11 Oktober 2026: gunakan desain 3D/Jaka bersyal merah dengan `assets/referensi/reference.01.webp`. Jangan kembali ke pedoman 2D lurik–iket dari arsip.

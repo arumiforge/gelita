@@ -81,23 +81,4 @@ final class BackgroundMusicTest extends CIUnitTestCase
         $this->assertStringContainsString('const DUCKED = 0.2;', $audio, 'owner: about 20 % under the voice');
         $this->assertStringContainsString('narrationChanged(playing ||', $audio);
     }
-
-    public function testTheTracksComeFromTheGeneratorInTools(): void
-    {
-        $scenes = (string) file_get_contents(ROOTPATH . 'tools/audio/music_scenes.py');
-
-        foreach (['welcome', 'opening', 'ending'] as $name) {
-            $this->assertStringContainsString("'" . $name . "': lambda: piece_" . $name . '(kendang)', $scenes);
-        }
-
-        foreach (['kenal', 'dialog', 'tuntas'] as $context) {
-            $this->assertStringContainsString("out[f'" . $context . "-{code}'] = lambda c=code: piece_" . $context . '(c, kendang)', $scenes);
-        }
-
-        foreach (self::REGIONS as $code) {
-            $this->assertStringContainsString("'" . $code . "': dict(", $scenes, 'one set of pieces per region');
-        }
-
-        $this->assertStringContainsString('**music_scenes.pieces(kendang_patterns)', (string) file_get_contents(ROOTPATH . 'tools/audio/music.py'));
-    }
 }

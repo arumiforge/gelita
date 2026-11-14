@@ -1,8 +1,26 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 9 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 14 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
+
+## 14 November 2026
+
+**Suara narasi: pengisi suara tetap pilihan pertama, suara sintetis ElevenLabs menjadi cadangan** (cabang `aru/zealous-hawking-higzmg`) · `asal: pengembang` · `disetujui pengembang` · belum mengubah isi dokumen atau produk
+
+Keputusan pengembang 17 Oktober 2026 (narasi direkam pengisi suara, suara asli; catatan implementasi perombakan kelas 5) dan 25 Oktober 2026 (cerita penghubung direkam pengisi suara yang sama di sesi yang sama) tetap berlaku sebagai pilihan pertama. Tambahannya: bila rekaman pengisi suara belum ada saat dibutuhkan, cadangannya adalah suara sintetis dari layanan ElevenLabs, dan tidak ada suara sintetis lain yang dipakai. Nama layanannya disebut di sini karena itulah isi keputusannya.
+
+- **Tempat kerja.** `ai-studio/elevenlabs-voice/`: daftar 187 baris dalam dua bahasa (`lines.csv`, ditulis `php spark gelita:narration:list`), pilihan suara per tokoh (`voices.md`, masih kosong), dan folder hasil. Belum ada rekaman yang dibuat.
+- **Arahan suara sama.** [12 → Arahan suara untuk situasi dan petunjuk yang dinilai](12_CERITA_PENGHUBUNG_DAN_NARASI.md#arahan-suara-untuk-situasi-dan-petunjuk-yang-dinilai) berlaku juga untuk suara sintetis: datar dan ramah, tanpa tekanan pada kata kunci.
+- **Tercatat sebagai suara sintetis.** Rekaman cadangan dipasang bersama `produksi.json`, sehingga tersimpan dengan `production_method = tts` dan `voice_profile`. Tanpa berkas itu rekaman tercatat sebagai suara asli, dan itu keliru di data penelitian. Skrip pemasangnya dibuat saat kumpulan rekaman pertama diterima pengembang.
+- **Pengisi suara menggantikan cadangan.** Rekaman pengisi suara yang diunggah kemudian dengan kode berkas yang sama menggantikan rekaman cadangan dan tercatat sebagai suara asli.
+- **Dokumen tidak diubah sekarang.** 01, 10, 12, dan 24 tetap menyebut narasi direkam atau dibacakan pengisi suara. Sebelum rekaman cadangan dipakai bersama siswa, perubahannya dicatat sebagai entri baru di sini, peneliti diberi tahu, dan dokumen yang menyebut pengisi suara disesuaikan.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
+**PDF siap cetak dibuat ulang saat akan dikirim, bukan setiap dokumen berubah** (cabang `aru/zealous-hawking-higzmg`) · `asal: pengembang` (usulan dari audit alur kerja oleh AI) · `disetujui pengembang` · tidak mengubah isi dokumen atau produk
+
+Aturan 31 Oktober 2026 (PDF di `dokumen-pdf/cetak/` dibuat ulang dan di-*commit* setiap dokumen bernomor berubah) diganti: `cetak.mjs` dijalankan hanya saat dokumen akan dikirim ke peneliti atau saat pengembang memintanya, lalu semua PDF yang berubah masuk dalam satu *commit*. Alasannya ukuran repositori: setiap PDF yang dibuat ulang menambah berkas biner ke riwayat git untuk selamanya. Akibatnya, di antara dua pengiriman sebuah PDF boleh lebih tua daripada Markdown-nya; kaki halamannya tetap menyebut *commit* asalnya, jadi versinya bisa dicocokkan. Aturan untuk 22 (tidak diubah dan tidak dibuat ulang) dan untuk 23, 24, 26 (PDF dikirim kembali ke peneliti setelah perubahan) tidak berubah. Entri ini tidak diikuti pembuatan ulang PDF 00 dan 04.
 
 ## 9 November 2026
 

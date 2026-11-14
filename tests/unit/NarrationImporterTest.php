@@ -473,6 +473,31 @@ final class NarrationImporterTest extends CIUnitTestCase
         $this->assertSame(0, $this->sqlite->table('audit_logs')->countAllResults());
     }
 
+    public function testListCommandWritesEveryLineAndMarksTheFilesThatExist(): void
+    {
+        $dir = sys_get_temp_dir() . '/gelita-narration-list-' . bin2hex(random_bytes(4));
+        mkdir($dir . '/id', 0777, true);
+        touch($dir . '/id/intro-03.mp3');
+
+        command('gelita:narration:list --csv=' . $dir . '/lines.csv --dir=' . $dir);
+        $this->assertStringContainsString('ID: 1 ada, 111 belum.', $this->getStreamFilterBuffer());
+
+        $lines = array_map('str_getcsv', file($dir . '/lines.csv', FILE_IGNORE_NEW_LINES));
+        $this->assertSame(['kode_berkas', 'konteks', 'wilayah', 'urutan', 'tokoh', 'teks_id', 'teks_en', 'berkas_id', 'berkas_en'], $lines[0]);
+        $this->assertCount(113, $lines, 'the header and one row per script line');
+        $this->assertSame(['intro-03', 'intro', '', '3', 'Narator'], array_slice($lines[3], 0, 5));
+        $this->assertSame(['ada', 'belum'], array_slice($lines[3], 7));
+
+        unlink($dir . '/id/intro-03.mp3');
+        unlink($dir . '/lines.csv');
+        rmdir($dir . '/id');
+        rmdir($dir);
+
+        $this->resetStreamFilterBuffer();
+        command('gelita:narration:list');
+        $this->assertStringContainsString('--csv wajib diisi', $this->getStreamFilterBuffer());
+    }
+
     // ---------------------------------------------------- persetujuan massal
 
     public function testBulkApprovalOnlyTouchesNarrationDraftsOfThatLocale(): void

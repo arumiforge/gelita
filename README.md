@@ -143,6 +143,7 @@ Semua command mengembalikan kode keluar 1 saat gagal, sehingga dapat dipakai di 
 | `gelita:media:scan [--check-only]` | Menyinkronkan `public/assets` dengan tabel `media_assets` dan melaporkan berkas yang hilang atau berubah. |
 | `gelita:mockups [--dry-run] [--paksa] [--node=tmg-4]` | Membuat gambar contoh untuk slot gambar tantangan yang belum berisi gambar asli; gambar asli tidak pernah ditimpa. |
 | `gelita:narration:import [--locale=id\|en] [--dry-run]` | Mengimpor rekaman di `public/assets/audio/narasi/{id,en}/` sebagai audio draft; berkas yang tidak berubah dilewati. |
+| `gelita:narration:list --csv=BERKAS [--dir=FOLDER]` | Menulis daftar rekaman narasi (kode berkas, konteks, tokoh, teks Indonesia dan Inggris) sebagai CSV. Dengan `--dir`, dua kolom tambahan menandai rekaman yang sudah ada di `FOLDER/{id,en}/` (`ada`/`belum`). Dipakai untuk `ai-studio/elevenlabs-voice/lines.csv`; tidak mengubah basis data. |
 | `gelita:reset [--dry-run] [--ya] [--paksa] [--pemeliharaan] [--tanpa-bank] [--bank=JALUR] [--tanpa-mockup] [--hapus-guru]` | Mengosongkan data uji coba dan pengaturan, membangun ulang 12 tantangan, dan mengimpor ulang bank soal; Pustaka, cerita, media, audio, sekolah resmi, dan akun staf tetap. Butuh akun berhak TRUNCATE. Data tidak dapat dikembalikan: selalu `--dry-run` dan backup dulu. |
 | `gelita:retention:run` | Retensi harian: sesi menganggur → `paused`, pengerjaan menggantung → `abandoned`, berkas ekspor kedaluwarsa dibuang, data yang melewati masa simpan hanya dibuatkan pratinjau penghapusan. |
 | `gelita:simulasi [--siswa=N] [--seed=N] [--mulai=YYYY-MM-DD]` | Membuat siswa simulasi `sim_NNN` (bawaan 12, paling banyak 500) yang bermain lewat layanan permainan sungguhan, untuk mengembangkan dan menguji panel, Data mentah, dan ekspor. Ditolak di production, tanpa studi aktif, atau bila studi aktif sudah berisi siswa sungguhan. Benih (`--seed`) yang sama pada database awal yang sama memberi isi yang sama. |
@@ -171,13 +172,14 @@ Suite memakai SQLite in-memory (grup database `tests`) dengan skema tiruan di `t
 | `app/Database/` | 29 migration, seeder, data naskah (`Seeds/data/story.php`) dan sekolah |
 | `app/Libraries/`, `app/Services/` | aturan bank soal (`BankRules`, `DifficultyRules`), impor, penilaian, ekspor, reset |
 | `app/Models/`, `app/Entities/` | model per tabel |
+| `ai-studio/` | ruang kerja alat AI lain, satu folder per alat: `chatgpt-images/` (gambar) dan `elevenlabs-voice/` (narasi cadangan). Tiap alat hanya menulis di foldernya; hasil yang diterima dipasang ke permainan oleh sesi Claude Code. Tidak dimuat permainan. Lihat `ai-studio/README.md` dan `AGENTS.md` |
 | `app/Views/`, `app/Language/{id,en}/` | tampilan dan teks dwibahasa |
 | `public/assets/` | CSS, JavaScript (`core/`, `game/`, `engines/`, `admin/`), audio, font, vendor; unggahan admin di `uploads/` (tidak dilacak Git) |
 | `deploy/` | skrip deploy, backup, retensi, dan konfigurasi Nginx untuk Linux dan Windows |
 | `docs/` | dokumentasi, sumber bank soal, Pustaka, dan daftar sekolah; rencana yang sudah selesai di `docs/arsip/` |
 | `gelita-katalog/` | Katalog Aset tim: gambar, gambar rujukan, prompt, dan arahan gaya (buka `index.html`); dipasang ke permainan dengan `gelita:katalog:impor`. Internal: memuat tanda benda pengecoh, jadi tidak pernah di bawah `public/` |
 | `tests/` | suite PHPUnit |
-| `tools/audio/` | generator musik, efek suara, dan narasi |
+| `tools/dev/` | `serve.sh` (instalasi pengembangan di MariaDB dalam satu perintah: basis data, `.env`, migrasi, data awal, `php spark serve`) dan `cloud-setup.sh` (salinan induk skrip penyiapan lingkungan sesi awan) |
 | `tools/qa/` | skrip uji peramban Playwright: `stage-check.mjs` (panggung 16:9), `challenge-races.mjs` (aturan kesempatan dan cek bersamaan), `a11y-check.mjs` (keyboard dan pembaca layar di layar tantangan), dan `nav-timing.mjs` (waktu pindah layar dan ganti bahasa di jaringan acuan; `node tools/qa/nav-timing.mjs --serve`, rencana paket aset Tahap 0) |
 
 Daftar route lengkap: `php spark routes`.
@@ -201,6 +203,8 @@ Daftar route lengkap: `php spark routes`.
 | [`docs/sekolah/README.md`](docs/sekolah/README.md) | daftar sekolah resmi Jawa Tengah |
 | [`docs/perombakan-kelas5/`](docs/perombakan-kelas5/) | rencana perombakan kelas 5 (Dok 1–3: fondasi data, tantangan dan bank soal, panggung 16:9 dan panel admin) dan [catatan implementasinya](docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md) |
 | [`docs/PROGRESS.md`](docs/PROGRESS.md) | daftar pekerjaan selesai dan terbuka, serta branch yang sedang berjalan |
+| [`docs/cloud-sessions.md`](docs/cloud-sessions.md) | sesi awan Claude Code dengan beberapa akun: penyiapan per akun dan aturan serah terima |
+| [`ai-studio/README.md`](ai-studio/README.md) | ruang kerja alat AI lain (gambar ChatGPT, narasi cadangan ElevenLabs) dan cara hasilnya dipasang |
 | [`docs/rencana-paket-aset.md`](docs/rencana-paket-aset.md) | rencana paket aset (unduh sekali), masih berjalan |
 | [`docs/arsip/`](docs/arsip/README.md) | rencana yang sudah selesai (perbaikan tampilan, katalog aset), disimpan sebagai catatan |
 | [`gelita-katalog/README.md`](gelita-katalog/README.md) | Katalog Aset: gambar, rujukan, dan prompt |
@@ -227,11 +231,11 @@ Ukuran gambar per slot ditetapkan di `Config\Gelita::$assetSizes`. Slot bertanda
 
 ## Audio bawaan
 
-Seluruh audio ikut di repositori dan dibangkitkan oleh [`tools/audio/`](tools/audio/README.md):
+Musik dan efek suara ikut di repositori sebagai berkas jadi. Generatornya (`tools/audio/`) dihapus 14 November 2026: audio kini dibuat di luar repositori.
 
 - **Musik gamelan** (`public/assets/audio/music/`): `map`, `region`, `challenge`, komposisi dan sintesis orisinal.
 - **Efek suara** (`public/assets/audio/sfx/`): `click`, `correct`, `wrong`, `lock`, `shard`, `region-done`.
-- **Narasi**: 103 rekaman per bahasa (91 baris naskah + 12 petunjuk Cari Objek), direkam pengisi suara. Tidak ikut di repositori (rekaman TTS lama dihapus 17 Oktober 2026). Naskahnya diunduh sebagai PDF di **Rekaman narasi**, rekamannya diunggah di sana (atau diletakkan di `public/assets/audio/narasi/{id,en}/` lalu `php spark gelita:narration:import`) dan disetujui.
+- **Narasi**: 103 rekaman per bahasa (91 baris naskah + 12 petunjuk Cari Objek), direkam pengisi suara. Tidak ikut di repositori (rekaman TTS lama dihapus 17 Oktober 2026). Naskahnya diunduh sebagai PDF di **Rekaman narasi**, rekamannya diunggah di sana (atau diletakkan di `public/assets/audio/narasi/{id,en}/` lalu `php spark gelita:narration:import`) dan disetujui. Cadangannya suara sintetis ElevenLabs (keputusan 14 November 2026; tidak ada suara sintetis lain), dikerjakan di `ai-studio/elevenlabs-voice/` dan dipasang dengan `produksi.json` supaya tercatat sebagai suara sintetis.
 
 Rincian, spesifikasi berkas, dan lisensi model suara ada di [`docs/audio.md`](docs/audio.md).
 
