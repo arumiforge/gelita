@@ -1572,7 +1572,7 @@ bash deploy/linux/backup.sh --ganti
 powershell -File deploy\windows\backup.ps1 -Config C:\gelita-ops\config.psd1 -Ganti
 ```
 
-The script makes a fresh backup as usual and tests it (`gzip -t` / opening the zip). It copies it to the second location; if that location cannot be reached it stops with code 2 and deletes nothing. Then it deletes every older `gelita-*` file at both locations and prints how many went. Snapshots the hosting provider makes are removed in the provider's panel. Tick *Cadangan diganti* on the request afterwards.
+The script makes a fresh backup as usual and tests it (`gzip -t` / opening the zip). It copies it to the second location; if that location cannot be reached it stops with code 2 and deletes nothing. On Jalur L a local `KEDUA` folder must already exist (create it once on the mounted drive, e.g. `install -d -m 700 /mnt/backup-eksternal/gelita`): an unplugged drive leaves an empty mount point, and the script stops with code 2 there instead of letting rsync create the folder on the server's own disk (manual check 30 §19.3 no. 3, 14 November 2026). Then it deletes every older `gelita-*` file at both locations and prints how many went. Snapshots the hosting provider makes are removed in the provider's panel. Tick *Cadangan diganti* on the request afterwards.
 
 ### Scheduled tasks
 

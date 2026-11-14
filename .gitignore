@@ -71,6 +71,8 @@ Vagrantfile
 
 # Penanda mode pemeliharaan Nginx (docs/08_DEPLOYMENT.md → Mode pemeliharaan)
 /writable/pemeliharaan.flag
+# Written by deploy/linux/backup.sh and deploy/windows/backup.ps1 for the Tata kelola warning (30 §0.1)
+/writable/backup-status.json
 
 # Aset unggahan admin hanya ada di server dan ikut backup, bukan git
 /public/assets/uploads/*

@@ -410,3 +410,17 @@ Found while running the manual checks of 32 §15.3 on a MariaDB development inst
 **Not done.** The Isi Rumpang band (52 dp) still cuts the second line of its instruction (text about 77 dp) and part of the ▶; a fix means moving the reading and sentence boxes down by about 28 dp, which is a layout decision for the owner.
 
 **Tests.** `ResultScreenTest::testSkenarioShowsTheTriesUsedNotZeroOfThree`, new `InstructionBandCssTest` (2); both fail without the change.
+
+## Wave E manual checks: `backup.sh` stops when the second-location drive is unplugged (14 November 2026, branch `r10-cek-manual-gelombang-e`)
+
+Found in the manual check of 30 §19.3 no. 3 (results in `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`, 14 November 2026).
+
+**The bug.** With the external drive unplugged its mount point is an empty folder. `rsync` then created `$KEDUA` on the server's own disk and returned 0, so `backup.sh --ganti` reported success and deleted the older backups at the first location while the real drive kept its old backups, which still held the deleted child's data; the admin would then tick *Cadangan diganti*. An unreachable path (not a directory, remote host down) already stopped with code 2.
+
+**The fix.** Before the copy, a local `KEDUA` (no `host:`) that does not exist stops the script with code 2 and the message `lokasi kedua … tidak ada (drive belum terpasang?); salinan kedua GAGAL`; nothing is deleted. The folder on the drive is therefore created once at setup (`docs/08_DEPLOYMENT.md` → backup replacement). An existing server whose `KEDUA` folder was only ever created by rsync keeps working, since the folder exists.
+
+**Also.** `/writable/backup-status.json` (written by both backup scripts for the Tata kelola warning) is now in `.gitignore`; `DeployFilesTest` checks the rule.
+
+**Not done.** `deploy/windows/backup.ps1` has a related gap: if another USB stick takes the same drive letter, `New-Item -Force` creates the folder on that stick. Not changed, because it cannot be tested without Windows.
+
+**Tests.** New `BackupSecondLocationTest` (2) runs a copy of the real script with a stub `mysqldump`; the unplugged-drive test fails without the fix.

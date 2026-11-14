@@ -56,6 +56,14 @@ find "$DIR" -name 'gelita-*' -mtime +30 -delete
 echo "$STAMP backup lokal selesai ($(du -h "$DB" | cut -f1))"
 
 # 5. Salinan kedua di luar mesin ini. Gagal = kode keluar 2, bukan diam.
+#    A local second location must already exist: an unplugged drive leaves an empty mount
+#    point, where rsync would create the folder on this machine's own disk and report
+#    success, and --ganti would then delete the older backups here while the drive keeps
+#    them (30 §7.5 step 4). Create the folder on the drive once at setup. host:path skips this.
+if [[ "$KEDUA" != *:* && ! -d "$KEDUA" ]]; then
+  echo "$STAMP PERINGATAN: lokasi kedua $KEDUA tidak ada (drive belum terpasang?); salinan kedua GAGAL" >&2
+  exit 2
+fi
 if ! rsync -a "$DIR/" "$KEDUA/"; then
   echo "$STAMP PERINGATAN: salinan kedua ke $KEDUA GAGAL" >&2
   exit 2
