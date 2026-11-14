@@ -30,16 +30,17 @@ Leftovers named inside finished rows (not checklist items; details in `04`):
 
 ## AI studio and multi-session work (owner, 14 November 2026)
 
-Folders where other AI tools work for GELITA (`ai-studio/README.md`); Claude Code sessions install the results. Started on branch `aru/zealous-hawking-higzmg` (PR #354); a new session continues it with the owner's permission to push to that branch, or on its own branch after #354 is merged.
+Folders where other AI tools work for GELITA (`ai-studio/README.md`); Claude Code sessions install the results. How sessions on several Claude accounts hand work over: `docs/cloud-sessions.md`. Built on branch `aru/zealous-hawking-higzmg` (PR #354) by two sessions; decision log *AI studio folders, narration list command, multi-account hand-over*.
 
 - [x] `ai-studio/chatgpt-images/`: instructions (`AGENTS.md`), work list of 35 pictures from `37` and `38` (`TASKS.md`), `out/`, `inbox/`; root `AGENTS.md` sends non-Claude agents to their folder
 - [x] `ai-studio/elevenlabs-voice/`: instructions (`README.md`), `voices.md` to fill in, `lines.csv` (187 lines, two languages) written by the new command `php spark gelita:narration:list --csv=… --dir=…` (test in `NarrationImporterTest`)
-- [ ] Record the owner's narration decision (14 November 2026: voice actors stay the first choice, ElevenLabs is the backup, no other synthetic voice) in `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`, the implementation log, and a note at the top of `docs/audio.md`; `README.md` → *Audio bawaan* keeps "direkam pengisi suara" and gains the backup sentence
-- [ ] Implementation-log section for the AI studio and the new command; rows in `CLAUDE.md` (quick map: `ai-studio/`, spark command `gelita:narration:list`) and `README.md` (folder table)
-- [ ] Multi-account guide `docs/cloud-sessions.md`, promised to the owner: (1) what every session gets from the repository alone (`CLAUDE.md`, `.claude/rules/`, `.claude/settings.json`, `tools/dev/`, CI); (2) checklist per Claude account: connect GitHub with access to this repository, create the "Gelita" environment (setup script = `tools/dev/cloud-setup.sh`, variables `BASH_DEFAULT_TIMEOUT_MS=600000` and `BASH_MAX_TIMEOUT_MS=1200000`, network Limited plus the Pustaka hosts `commons.wikimedia.org`, `upload.wikimedia.org`, `i.ytimg.com`, `www.youtube.com`, `www.youtube-nocookie.com`, `vimeo.com`, `player.vimeo.com`, `i.vimeocdn.com`, `drive.google.com`), no plugin or connector required besides GitHub; (3) hand-over rule: sessions end without warning at the usage limit, so commit and push after every finished step and keep this file's row current; the next session is started with "continue branch X / PR #N, you may push to that branch"
-- [ ] `CLAUDE.md`: the hand-over rule above in two lines, pointing at `docs/cloud-sessions.md`; optional repo skill `.claude/skills/continue-work/` (fetch the named branch, read its PR and this file's row, continue)
-- [ ] Installer for ElevenLabs recordings: copy `out/{id,en}/` to `public/assets/audio/narasi/` and write `produksi.json` (sha256 + `voice_profile`) so they are recorded as `tts` (`NarrationImporter::production()`); build it when the first batch is accepted
-- [ ] Update the PR #354 description with the AI studio commits (title too), and run the full suite once more before merging (only `NarrationImporterTest` was run after the last commit: 20 tests green)
+- [x] The owner's narration decision (voice actors first, ElevenLabs the only synthetic backup) recorded in `04`, the decision log, `docs/audio.md`, and `README.md` → *Audio bawaan*
+- [x] `CLAUDE.md` (quick map, spark command, hand-over rule), `README.md` (folder, command, document rows), glossary rows
+- [x] Multi-account guide `docs/cloud-sessions.md` and repo skill `.claude/skills/continue-work/`
+- [ ] Owner: on each Claude account, check the environment against `docs/cloud-sessions.md` §2 (setup script = current `tools/dev/cloud-setup.sh`, the two variables, GitHub connected)
+- [ ] Owner: fill in `ai-studio/elevenlabs-voice/voices.md`, then make and accept the first takes; make and accept pictures from `ai-studio/chatgpt-images/TASKS.md` (the same pictures as the `37`/`38` rows under *Research revision* above)
+- [ ] Installer for ElevenLabs recordings: copy `out/{id,en}/` to `public/assets/audio/narasi/` and write `produksi.json` (sha256 + `voice_profile` from `voices.md`) so they are recorded as `tts` (`NarrationImporter::production()`); build it when the first batch is accepted. Before such takes are used with students: new `04` entry and the researcher is told
+- [ ] Install accepted pictures (`ai-studio/README.md` → *For the Claude Code session that installs*), one branch per batch
 
 ## Before the research starts
 
@@ -95,4 +96,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `aru/zealous-hawking-higzmg` | Workflow housekeeping (CI, cloud setup, rule split, catalogue and audio-tool slimming, this file collapsed) and the AI studio folders | PR #354 open, CI green on the first three commits. **Session stopped at the usage limit on 14 November 2026; continue from *AI studio and multi-session work* below** |
+| `aru/zealous-hawking-higzmg` | Workflow housekeeping (CI, cloud setup, rule split, catalogue and audio-tool slimming, this file collapsed), the AI studio folders, and the multi-account hand-over guide | PR #354 open. Second session (14 November 2026) finished the documents of *AI studio and multi-session work*; full suite green on the last code commit (`542ec6c`: 1241 tests, 57977 assertions); the commit after it changes documents and rules only. Open items left there are the owner's or wait for accepted files. After the merge, continue on a new branch from `main` |

@@ -54,6 +54,7 @@ Core terms only. Two more files load by path: `glossary-ui.md` (screen parts, pi
 | Kelengkapan aset | `asset checklist` | `AssetChecklist` |
 | bank soal | `question bank` | workbook `gelita-bank-soal-kelas5.xlsx` |
 | kelas 5 | `grade 5` | doc and branch names keep "kelas5" |
+| ruang kerja alat AI lain | `AI studio` | folder `ai-studio/` (`chatgpt-images/`, `elevenlabs-voice/`); rules for those tools in the root `AGENTS.md`; nothing in it is loaded by the game |
 | Katalog Aset | `asset catalogue` | folder `gelita-katalog/`; command `gelita:katalog:impor`; credit `Katalog Aset GELITA (gambar sementara)` |
 
 Add a row whenever a new concept appears, in the file that fits (core term here, screen part in `glossary-ui.md`, research or panel detail in `glossary-research.md`). If a term here conflicts with existing code, the existing stored value wins and the table gets corrected.

@@ -59,6 +59,8 @@ Continues `glossary.md` (same columns, same rules). Add research, panel, and dat
 | mode lengkap / daring / nonaktif | `package_mode` | stored `lengkap`, `daring`, `nonaktif` in `game_sessions.package_mode` |
 | gambar gerak (tokoh) | `frame` | `char.{jaka|kedu}.{pose}.{1–24}`; route `/admin/media/{id}/unggah-gerak` |
 | naskah rekaman (PDF untuk pengisi suara) | `voice-actor script` | `NarrationScriptPdf`; route `/admin/konten/narasi/naskah-pdf?bahasa=id\|en\|semua` |
+| daftar rekaman (CSV) | `recording list` | `NarrationCatalog::recordingList()`; command `gelita:narration:list`; `ai-studio/elevenlabs-voice/lines.csv` with columns `kode_berkas`, `konteks`, `wilayah`, `urutan`, `tokoh`, `teks_id`, `teks_en`, `berkas_id`, `berkas_en` (`ada`/`belum`) |
+| narasi cadangan (suara sintetis) | `backup narration` | ElevenLabs only, voice actors stay first (owner, 14 Nov 2026); installed with `produksi.json` so `audio_assets.production_method` = `tts` (else `own_recording`), `voice_profile` |
 | Batalkan semua rekaman | `cancel all recordings` | `NarrationCatalog::cancelAll()`; route `POST /admin/konten/narasi/batalkan`; audit `narration_cancel_bulk` |
 | mode penelitian | `field mode` | `research_studies.field_mode` (0 by default), with `meeting_plan` (`lima_pertemuan`, `satu_sesi`); `ResearchStudyModel::fieldModeStudy()`; revision 10, part 2 (28) |
 | sesi lapangan, sesi susulan | `field session`, `make-up session` | `field_sessions` (code `S03-A-P2`, `-S`, `-S2`); `FieldSessionService`; route `/admin/sesi-lapangan` |
