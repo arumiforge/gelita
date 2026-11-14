@@ -19,7 +19,7 @@ Documents in `docs/revisi-10-analitik/` (Indonesian, at the owner's request); th
 - [x] Implementation of the 24 system changes listed in `01`, parts `27`–`35`, in code waves C–F (PR #332–#351, merged by 9 November 2026); leftovers:
   - [ ] Owner (wave E, part 6): generate the three five-stop region maps, the Skenario Digital card, and the three bridge backgrounds from `38`; then measure the five stops per map into `CatalogImporter::MAP_STOPS` (challenge 5 stays at the interim 60 %, 22 % until then)
   - [x] Manual checks on a MariaDB dev install (wave E). Server-side parts on MariaDB 10.11 in the cloud container on 9 November 2026 (29 §16.3 no. 1 and 3–5, 30 §19.3 no. 7); the rest on 14 November 2026 with Playwright, branch `r10-cek-manual-gelombang-e` (`04`): 29 §16.3 no. 2, 30 §19.3 no. 1–6 and 8, 32 §15.3 no. 1–6 all passed. Three bugs fixed on that branch: Skenario Digital result card, instruction band and its narration button, `backup.sh --ganti` with an unplugged second-location drive
-  - [ ] Owner (left by the wave E manual checks, details in `04`, 14 November 2026): `backup.ps1 -Ganti` on a real Windows machine (ran only on PowerShell 7 on Linux); Skenario Digital on a real tablet and Chromebook (32 §15.3 no. 5, §15.4); the Isi Rumpang instruction band still cuts its second line (layout decision); the open points listed in `04` for the child's copy, the 7305-day default, and narration play counts
+  - [ ] Owner (left by the wave E manual checks, details in `04`, 14 November 2026): `backup.ps1 -Ganti` on a real Windows machine (ran only on PowerShell 7 on Linux); Skenario Digital on a real tablet and Chromebook (32 §15.3 no. 5, §15.4); the open points listed in `04` for the child's copy, the 7305-day default, and narration play counts
   - [ ] Still open from the manual checks of wave F (need real devices): touch tablet and school devices, axe on Gerbang/Profil, two students on one offline device, package mode with the service worker, timing on real volumes
 
 Leftovers named inside finished rows (not checklist items; details in `04`):
@@ -98,3 +98,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `rumpang-pita-instruksi` | Cloud session, 15 November 2026: Isi Rumpang instruction band 66 dp so its two lines and the narration button fit (implementation log) | Done, full suite green; PR open, waiting for the owner |

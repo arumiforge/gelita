@@ -424,3 +424,17 @@ Found in the manual check of 30 §19.3 no. 3 (results in `docs/revisi-10-analiti
 **Not done.** `deploy/windows/backup.ps1` has a related gap: if another USB stick takes the same drive letter, `New-Item -Force` creates the folder on that stick. Not changed, because it cannot be tested without Windows.
 
 **Tests.** New `BackupSecondLocationTest` (2) runs a copy of the real script with a stub `mysqldump`; the unplugged-drive test fails without the fix.
+
+## Isi Rumpang instruction band holds its two lines (15 November 2026, branch `rumpang-pita-instruksi`)
+
+Left open by the wave E manual checks (section above: *Not done*); the owner asked for the fix.
+
+**Measured before** on a MariaDB development install with Playwright at 1280×720, 1024×768, 1366×768 and 1920×1080, in all three regions: the instruction card is 77 dp tall (two lines at the reading size of 33 M-06, line height 1.35, padding .5rem) in a 52 dp band, so the second line was cut everywhere, and with narration the ▶ (54 dp) reached 14 dp below the band.
+
+**Change.** The band is 66 dp and starts 4 dp higher (y 128, was 132; 8 dp under the header); the reading, the sentences and the picture beside them move to y 198 and are 314 dp tall (was 188 / 324), so the reading gives up 10 dp and the word bank and action bar stay where they were. The card on Isi Rumpang has `padding-block: .25rem` and line height 1.25, which makes it 65 dp. Chosen over an 80 dp band because that would have taken 28 dp from the reading, which already scrolls in every region.
+
+**Measured after**, same sizes and regions: band and card the same height, nothing overflowing, the ▶ inside the band and tappable.
+
+**Not done.** The card's skin `ui/kenal-plate-navy.webp` was drawn for a thin one-line plate: stretched to 66 dp its gold ornaments run under the ⓘ mark and the last word of the first line. The text stays readable; a plate with ornaments only at the far ends would be cleaner (owner's call, the picture is also used by Kenali and the HUD back button, so a new one would get its own file).
+
+**Tests.** `InstructionBandCssTest::testIsiRumpangInstructionBandHoldsTwoLinesAboveTheReading`.

@@ -54,4 +54,23 @@ final class InstructionBandCssTest extends CIUnitTestCase
         // The button box (48 dp + padding) fits the 60 dp band
         $this->assertMatchesRegularExpression('~\.challenge-aside > \.instruction-audio\s*\{[^}]*padding:\s*\.125rem;~', $css);
     }
+
+    public function testIsiRumpangInstructionBandHoldsTwoLinesAboveTheReading(): void
+    {
+        $head    = $this->box('.challenge-head');
+        $aside   = $this->box('.challenge-rumpang .challenge-aside');
+        $bank    = $this->box('.challenge-rumpang .word-bank');
+        $pattern = '~\.challenge-rumpang \.sentences\s*\{\s*--x:\s*\d+;\s*--y:\s*(\d+);\s*--w:\s*\d+;\s*--h:\s*(\d+);~';
+        $this->assertSame(1, preg_match($pattern, $this->css('stage'), $reading), 'the reading has no stage box');
+        $media = $this->box('.challenge-rumpang .rumpang-media');
+
+        // Two lines at the reading size (22 dp) × line-height 1.25 = 55 dp, + .25rem padding twice + border = 65 dp
+        $this->assertGreaterThanOrEqual(65, $aside['h']);
+        $this->assertMatchesRegularExpression('~\.challenge-rumpang \.instruction\.is-card\s*\{\s*padding-block:\s*\.25rem;\s*line-height:\s*1\.25;~', $this->css('game'));
+        // Below the header, above the reading; the reading and its picture share one box height and end above the word bank
+        $this->assertGreaterThanOrEqual($head['y'] + $head['h'], $aside['y']);
+        $this->assertGreaterThanOrEqual($aside['y'] + $aside['h'], (int) $reading[1]);
+        $this->assertLessThanOrEqual($bank['y'], (int) $reading[1] + (int) $reading[2]);
+        $this->assertSame([(int) $reading[1], (int) $reading[2]], [$media['y'], $media['h']]);
+    }
 }
