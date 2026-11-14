@@ -9,7 +9,7 @@ Whoever works here (the owner in the ElevenLabs app, or an agent with ElevenLabs
 | File | What it is |
 |---|---|
 | `lines.csv` | Every line to voice: 187 lines, each in Indonesian and English (about 24,000 characters per language). Also the done list: columns `berkas_id` and `berkas_en` say `ada` or `belum` |
-| `voices.md` | The chosen voice per speaker and language, and any pronunciation fixes. Fill it in before the first take |
+| `voices.md` | The model, the chosen voice per speaker and language, and any pronunciation fixes. Fill it in before the first take. The install command reads the line `ElevenLabs model:` and the first table, so keep the table's columns and the speaker names as they are |
 | `out/id/`, `out/en/` | The results, one file per line and language |
 
 ## Making a recording
@@ -44,9 +44,25 @@ If a line's text changed after its take was made, the take is out of date: delet
 
 ## Installing (not done from this folder)
 
-1. Copy `out/id/` and `out/en/` to `public/assets/audio/narasi/id/` and `en/` on the install.
-2. Write `public/assets/audio/narasi/produksi.json` with each file's sha256 and a `voice_profile` naming ElevenLabs, the model, and the voice from `voices.md`. With that manifest the game records the recordings as synthetic (`production_method = tts`); without it they would be recorded as real voices, which would be false in the research data (`App\Libraries\NarrationImporter::production()`). No script writes this manifest yet; the session that installs the first batch adds it.
-3. Run `php spark gelita:narration:import`, then listen and approve in the panel (**Rekaman narasi**), checking the tone rules above too.
+A Claude Code session, or the owner on the server, runs these on the install: a trial run first, then the install, then the import.
+
+```bash
+php spark gelita:narration:install --dry-run
+```
+
+```bash
+php spark gelita:narration:install
+```
+
+```bash
+php spark gelita:narration:import
+```
+
+1. `gelita:narration:install` copies `out/id/` and `out/en/` to `public/assets/audio/narasi/id/` and `en/`, and lists every copied file in `public/assets/audio/narasi/produksi.json` with its sha256 and a `voice_profile` built from `voices.md` (model, the speaker's voice for that language, settings). With that manifest the game records the takes as synthetic (`production_method = tts`); without it they would be recorded as real voices, which would be false in the research data. `--dry-run` shows what would happen and writes nothing.
+2. It stops before copying anything if `voices.md` has no model, or no voice for a speaker and language that has takes in `out/`. Fill the sheet in first.
+3. A line that already has a real recording (a voice actor's file in the narration folder, or one uploaded in the panel) keeps it: the take is listed as *Dilewati*. `--timpa` replaces real recordings too; use it only when the owner asks.
+4. A new take of a line replaces the earlier ElevenLabs take of that line. Running the command again without new takes changes nothing.
+5. `gelita:narration:import` then registers the files as drafts. Listen and approve in the panel (**Rekaman narasi**), checking the tone rules above too.
 
 A voice actor's recording uploaded later under the same file code replaces the ElevenLabs one and is recorded as a real voice.
 

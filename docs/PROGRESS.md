@@ -38,8 +38,9 @@ Folders where other AI tools work for GELITA (`ai-studio/README.md`); Claude Cod
 - [x] `CLAUDE.md` (quick map, spark command, hand-over rule), `README.md` (folder, command, document rows), glossary rows
 - [x] Multi-account guide `docs/cloud-sessions.md` and repo skill `.claude/skills/continue-work/`
 - [ ] Owner: on each Claude account, check the environment against `docs/cloud-sessions.md` §2 (setup script = current `tools/dev/cloud-setup.sh`, the two variables, GitHub connected)
-- [ ] Owner: fill in `ai-studio/elevenlabs-voice/voices.md`, then make and accept the first takes; make and accept pictures from `ai-studio/chatgpt-images/TASKS.md` (the same pictures as the `37`/`38` rows under *Research revision* above)
-- [ ] Installer for ElevenLabs recordings: copy `out/{id,en}/` to `public/assets/audio/narasi/` and write `produksi.json` (sha256 + `voice_profile` from `voices.md`) so they are recorded as `tts` (`NarrationImporter::production()`); build it when the first batch is accepted. Before such takes are used with students: new `04` entry and the researcher is told
+- [ ] Owner: finish `ai-studio/elevenlabs-voice/voices.md` (filled in on 14 November 2026: model v4 and the Indonesian voice of Mbah Kedu; still empty: Narator and Jaka in both languages, Mbah Kedu in English), then make and accept the first takes; make and accept pictures from `ai-studio/chatgpt-images/TASKS.md` (the same pictures as the `37`/`38` rows under *Research revision* above)
+- [x] Installer for ElevenLabs recordings: `php spark gelita:narration:install` copies `out/{id,en}/` to `public/assets/audio/narasi/` and writes `produksi.json` (sha256 + `voice_profile` from `voices.md`), so the import records them as `tts`; real recordings are kept unless `--timpa` (decision log *Installer for the ElevenLabs backup narration*)
+- [ ] Install the first accepted takes with that command on a development install, listen, then on the server with the owner. Before such takes are used with students: new `04` entry and the researcher is told
 - [ ] Install accepted pictures (`ai-studio/README.md` → *For the Claude Code session that installs*), one branch per batch
 
 ## Before the research starts

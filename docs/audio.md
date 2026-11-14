@@ -2,7 +2,7 @@
 
 > **14 November 2026:** the generator `tools/audio/` was removed from the repository (owner: audio is now produced outside the repo). The MP3 files under `public/assets/audio/` stay. Everything below about `tools/audio/` describes how those files were made and is history.
 >
-> **14 November 2026, narration:** voice actors (real voices) stay the first choice. ElevenLabs is the backup, and no other synthetic voice is used (owner; `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`). The backup takes are made in `ai-studio/elevenlabs-voice/` from `lines.csv` (`php spark gelita:narration:list`) and must be installed with a `produksi.json` manifest so they are recorded as `tts`; see that folder's `README.md`. None exist yet.
+> **14 November 2026, narration:** voice actors (real voices) stay the first choice. ElevenLabs is the backup, and no other synthetic voice is used (owner; `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`). The backup takes are made in `ai-studio/elevenlabs-voice/` from `lines.csv` (`php spark gelita:narration:list`) and are installed with `php spark gelita:narration:install`, which copies them into the narration folder and writes the `produksi.json` manifest so they are recorded as `tts`; a line that already has a real recording keeps it. See that folder's `README.md`. None exist yet.
 
 Audio bawaan permainan yang ikut di repositori: **3 musik gamelan** (plus 12 scene and account tracks since 19 October 2026) dan **6 efek suara**, dibangkitkan oleh [`tools/audio/`](../tools/audio/README.md). Narasi (± 187 rekaman × 2 bahasa since research revision 10, part 6; 103 before) tidak lagi ikut di repositori: rekaman suara sintetis lama dihapus (17 Oktober 2026) dan diganti rekaman pengisi suara (lihat *Voice-over narration* di bawah).
 

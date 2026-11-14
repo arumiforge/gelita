@@ -19,7 +19,7 @@ Work that other AI tools do for GELITA, one folder per tool. Each tool reads its
 - **Susun Gambar**: only after the tile check and the two-person assembly test, and a re-check against `08` (37 → *Daftar periksa hasil*). The Candi Pawon picture note in the bank data changes with it (37 → *Catatan pemasangan*).
 - **Region maps**: replace the catalogue file, then measure the five stops into `CatalogImporter::MAP_STOPS` and update `CatalogImportTest` (38 → *Setelah gambar dibuat* no. 1).
 - **Challenge card**: replace `public/assets/ui/node-card-skenario.webp` (38 no. 2).
-- **Recordings**: `elevenlabs-voice/README.md` → *Installing*. The manifest that marks them as synthetic is required.
+- **Recordings**: `php spark gelita:narration:install`, then `gelita:narration:import` (`elevenlabs-voice/README.md` → *Installing*). The install command writes the manifest that marks them as synthetic; never copy takes into the narration folder by hand.
 - Pictures and recordings stay drafts of the developer until the owner has accepted them; cultural checks by the validators still apply (37 and 38 → *Kebijakan perubahan*). Nothing is installed on the production server without the owner.
 
 ## Adding a tool

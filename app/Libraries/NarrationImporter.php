@@ -77,6 +77,11 @@ use CodeIgniter\Database\BaseConnection;
  * tercatat `tts` + `voice_profile`; selain itu `own_recording`. Rekaman
  * pengisi suara yang menggantikan berkas bawaan (dari folder maupun panel)
  * otomatis tercatat sebagai rekaman sendiri karena isinya berbeda.
+ *
+ * Since 14 November 2026 the manifest is written by SyntheticNarrationInstaller
+ * (`gelita:narration:install`) for the ElevenLabs backup takes. A file that was
+ * imported before the manifest listed it is corrected to `tts` on the next
+ * import, with its approval kept.
  */
 final class NarrationImporter
 {
@@ -195,6 +200,18 @@ final class NarrationImporter
         return $this->folder . $locale . '/';
     }
 
+    /** Absolute path of the production manifest (produksi.json) of this narration folder. */
+    public function manifestPath(): string
+    {
+        return FCPATH . $this->folder . self::MANIFEST;
+    }
+
+    /** Forgets the manifest read earlier, after SyntheticNarrationInstaller rewrote it. */
+    public function reloadManifest(): void
+    {
+        $this->manifest = null;
+    }
+
     /**
      * Cara produksi sebuah berkas menurut manifest produksi.json: `tts` bila
      * isinya (sha256) sama dengan entri manifest untuk kode itu, selain itu
@@ -205,7 +222,7 @@ final class NarrationImporter
     public function production(string $locale, string $code, string $sha256): array
     {
         if ($this->manifest === null) {
-            $path           = FCPATH . $this->folder . self::MANIFEST;
+            $path           = $this->manifestPath();
             $data           = is_file($path) ? json_decode((string) file_get_contents($path), true) : null;
             $this->manifest = is_array($data) && is_array($data['files'] ?? null) ? $data['files'] : [];
         }
@@ -629,6 +646,16 @@ final class NarrationImporter
         // Berkas terpasang yang hilang dari disk dipulihkan (diganti) dari berkas ini.
         if ($media !== null && $audio !== null && (string) $media['sha256'] === $sha && (int) $media['is_active'] === 1
             && is_file(FCPATH . $media['storage_path']) && hash_file('sha256', FCPATH . $media['storage_path']) === $sha) {
+            // A take imported before the manifest listed it was stored as a real voice: correct that,
+            // without touching its approval. Never the other way round (a missing manifest proves nothing).
+            $production = $this->production($locale, $code, $sha);
+
+            if (! $dryRun && $production['production_method'] === 'tts'
+                && [$audio['production_method'] ?? null, $audio['voice_profile'] ?? null] !== [$production['production_method'], $production['voice_profile']]) {
+                $this->db->table('audio_assets')->where('id', (int) $audio['id'])->update($production);
+                $report['written'] = true;
+            }
+
             $this->link($line, $locale, (int) $audio['id'], $dryRun, $report);
             $report['unchanged'][] = $code;
 
