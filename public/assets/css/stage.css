@@ -951,13 +951,15 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 .challenge-puzzle .puzzle-caption   { --x: 916; --y: 140; --w: 332; --h: 500; }
 
 /* Isi Rumpang: instruksi (baris pertama arena), bacaan gulir, bank kata, bilah aksi */
-/* Since 22 October 2026 the instruction band is 52 dp (two lines fit), centred over the reading */
-.challenge-rumpang .challenge-aside { --x: 96;  --y: 132; --w: 1088; --h: 52; }
+/* The instruction band is 66 dp since 15 November 2026: the instruction card at the reading size
+   (33 M-06) takes two lines, which the 52 dp band of 22 October 2026 cut (found in the manual
+   check of 32 §15.3). The band starts 4 dp higher and the reading gives up 10 dp. */
+.challenge-rumpang .challenge-aside { --x: 96;  --y: 128; --w: 1088; --h: 66; }
 .challenge-rumpang .rumpang-reading,
-.challenge-rumpang .sentences       { --x: 96;  --y: 188; --w: 1088; --h: 324; }
+.challenge-rumpang .sentences       { --x: 96;  --y: 198; --w: 1088; --h: 314; }
 .challenge-rumpang .rumpang.has-media .rumpang-reading,
 .challenge-rumpang .rumpang.has-media .sentences { --x: 416; --w: 768; }
-.challenge-rumpang .rumpang-media   { --x: 96;  --y: 188; --w: 304; --h: 324; }
+.challenge-rumpang .rumpang-media   { --x: 96;  --y: 198; --w: 304; --h: 314; }
 /* Two rows of words on the navy plate (Wonosobo has 9) fit without scrolling */
 .challenge-rumpang .word-bank       { --x: 96;  --y: 520; --w: 1088; --h: 120; }
 .challenge-rumpang .arena-actions   { --x: 32;  --y: 648; --w: 1216; --h: 56; }
