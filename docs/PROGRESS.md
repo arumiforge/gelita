@@ -28,6 +28,19 @@ Leftovers named inside finished rows (not checklist items; details in `04`):
 - `25` → *Akibat ke dokumen lain* no. 6 (*Tentang GELITA* sentence, after the cultural observer answers LNT-24) and no. 7 (Papringan market days re-checked before the G4 lock). The optional `kenal-temanggung-02` wording from `25` is the owner's call. The Wayang Kedu caption in `08` leaves out the World Heritage line until the decree is found.
 - `22` is handled by the researcher directly since 3 November 2026 (fill-in groups A–F stay off-repo); the repo copy is frozen at the sent version and is no longer the master copy. `23`, `24`, and `26` still are; re-send `23` with its next change.
 
+## AI studio and multi-session work (owner, 14 November 2026)
+
+Folders where other AI tools work for GELITA (`ai-studio/README.md`); Claude Code sessions install the results. Started on branch `aru/zealous-hawking-higzmg` (PR #354); a new session continues it with the owner's permission to push to that branch, or on its own branch after #354 is merged.
+
+- [x] `ai-studio/chatgpt-images/`: instructions (`AGENTS.md`), work list of 35 pictures from `37` and `38` (`TASKS.md`), `out/`, `inbox/`; root `AGENTS.md` sends non-Claude agents to their folder
+- [x] `ai-studio/elevenlabs-voice/`: instructions (`README.md`), `voices.md` to fill in, `lines.csv` (187 lines, two languages) written by the new command `php spark gelita:narration:list --csv=… --dir=…` (test in `NarrationImporterTest`)
+- [ ] Record the owner's narration decision (14 November 2026: voice actors stay the first choice, ElevenLabs is the backup, no other synthetic voice) in `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`, the implementation log, and a note at the top of `docs/audio.md`; `README.md` → *Audio bawaan* keeps "direkam pengisi suara" and gains the backup sentence
+- [ ] Implementation-log section for the AI studio and the new command; rows in `CLAUDE.md` (quick map: `ai-studio/`, spark command `gelita:narration:list`) and `README.md` (folder table)
+- [ ] Multi-account guide `docs/cloud-sessions.md`, promised to the owner: (1) what every session gets from the repository alone (`CLAUDE.md`, `.claude/rules/`, `.claude/settings.json`, `tools/dev/`, CI); (2) checklist per Claude account: connect GitHub with access to this repository, create the "Gelita" environment (setup script = `tools/dev/cloud-setup.sh`, variables `BASH_DEFAULT_TIMEOUT_MS=600000` and `BASH_MAX_TIMEOUT_MS=1200000`, network Limited plus the Pustaka hosts `commons.wikimedia.org`, `upload.wikimedia.org`, `i.ytimg.com`, `www.youtube.com`, `www.youtube-nocookie.com`, `vimeo.com`, `player.vimeo.com`, `i.vimeocdn.com`, `drive.google.com`), no plugin or connector required besides GitHub; (3) hand-over rule: sessions end without warning at the usage limit, so commit and push after every finished step and keep this file's row current; the next session is started with "continue branch X / PR #N, you may push to that branch"
+- [ ] `CLAUDE.md`: the hand-over rule above in two lines, pointing at `docs/cloud-sessions.md`; optional repo skill `.claude/skills/continue-work/` (fetch the named branch, read its PR and this file's row, continue)
+- [ ] Installer for ElevenLabs recordings: copy `out/{id,en}/` to `public/assets/audio/narasi/` and write `produksi.json` (sha256 + `voice_profile`) so they are recorded as `tts` (`NarrationImporter::production()`); build it when the first batch is accepted
+- [ ] Update the PR #354 description with the AI studio commits (title too), and run the full suite once more before merging (only `NarrationImporterTest` was run after the last commit: 20 tests green)
+
 ## Before the research starts
 
 A server is always set up as a fresh install (`docs/08_DEPLOYMENT.md` → *Instalasi baru*), which runs the bank import, the story data, the catalogue import, and the package build. On a server updated in place instead, `docs/08` lists the commands (`gelita:katalog:impor`, `gelita:story:sync`, **Bangun ulang paket**).
@@ -82,4 +95,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `aru/zealous-hawking-higzmg` | Workflow housekeeping: CI, cloud setup, rule split, catalogue and audio-tool slimming, this file collapsed | In progress (PR open) |
+| `aru/zealous-hawking-higzmg` | Workflow housekeeping (CI, cloud setup, rule split, catalogue and audio-tool slimming, this file collapsed) and the AI studio folders | PR #354 open, CI green on the first three commits. **Session stopped at the usage limit on 14 November 2026; continue from *AI studio and multi-session work* below** |
