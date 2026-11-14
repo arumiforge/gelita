@@ -86,7 +86,7 @@ final class DeployFilesTest extends CIUnitTestCase
     {
         $lines = file(ROOTPATH . '.gitignore', FILE_IGNORE_NEW_LINES);
 
-        foreach (['/writable/pemeliharaan.flag', '/public/assets/uploads/*', '!/public/assets/uploads/.gitkeep'] as $rule) {
+        foreach (['/writable/pemeliharaan.flag', '/writable/backup-status.json', '/public/assets/uploads/*', '!/public/assets/uploads/.gitkeep'] as $rule) {
             $this->assertContains($rule, $lines, $rule);
         }
     }

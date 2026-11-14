@@ -11,7 +11,7 @@
  * Panel (skin `ui.result-panel`, plain navy and gold while empty):
  * - challenge kind, title, stars 0–3 (`star_src()`: `ui.result-star` or the shipped star, grey and faded when empty);
  * - shard medal (`ui.result-medal`) with the shard count and a segment bar;
- * - two cards: Waktu and Percobaan (Ketukan salah for Cari Objek);
+ * - two cards: Waktu and Percobaan (Ketukan salah for Cari Objek, Percobaan dipakai for Skenario Digital);
  * - finish reason badge (Semua benar / Disimpan apa adanya) and one message:
  *   tries exhausted, several checks, or right on the first try;
  * - buttons: Peta {wilayah}, Detail hasil (first-try result, closed at
@@ -40,6 +40,7 @@
  * @var array<string, mixed>             $progress
  * @var array<string, mixed>|null        $nextRegion levelOverview row of the region after it (+ `curtain`)
  * @var int|null                         $wrongTaps  Cari Objek: number of wrong taps
+ * @var int|null                         $scenarioTries Skenario Digital: tries used on all scenarios
  * @var string                           $locale
  */
 $region = $level?->text('name', $locale) ?? '';
@@ -152,6 +153,12 @@ $nextAssets = ! empty($levelCompleted) && isset($nextRegion['curtain'])
           <div class="result-stat">
             <dt><?= round_icon('wrong', 'result-stat-art', 'cross') ?> <?= esc(lang('Game.wrongTaps')) ?></dt>
             <dd class="num"><?= (int) $wrongTaps ?></dd>
+          </div>
+        <?php elseif (($scenarioTries ?? null) !== null): ?>
+          <?php // Skenario Digital: three tries per scenario, so "x dari 3" of the attempt would read 0 (manual check 32 §15.3 no. 1) ?>
+          <div class="result-stat">
+            <dt><?= round_icon('replay', 'result-stat-art', 'replay') ?> <?= esc(lang('Game.triesUsed')) ?></dt>
+            <dd class="num"><?= (int) $scenarioTries ?></dd>
           </div>
         <?php else: ?>
           <div class="result-stat">

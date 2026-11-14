@@ -396,3 +396,31 @@ Owner request after PR #354: build the installer now. The owner named the model 
 **Checked on a MariaDB development install** (`tools/dev/serve.sh`, 187 lines) with three stand-in WAV files for Mbah Kedu lines: an English take was refused (no English voice), `--dry-run` wrote nothing, the install wrote three files and the manifest, `gelita:narration:import --locale=id` stored all three as `tts` with the profile `ElevenLabs v4 (eleven_v4) · Mbah Kedu (H1jaNlN43es4HneQ6wdS), custom voice`. The stand-in files, the manifest, and the database were removed afterwards.
 
 **Not done.** No real take was generated (generating spends the owner's ElevenLabs credits and was not asked for), so the command has not run on real MP3 files. `produksi.json` and the copied takes are not ignored by Git; they are meant to live on the install, not in the repository, as with voice actors' recordings. Before backup takes are used with students, the `04` entry and the word to the researcher are still needed.
+
+## Wave E manual checks: Skenario Digital result card and instruction band (14 November 2026, branch `r10-cek-manual-gelombang-e`)
+
+Found while running the manual checks of 32 §15.3 on a MariaDB development install with Playwright (results in `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`, 14 November 2026).
+
+**Result screen of Skenario Digital.** The second card read "Percobaan 0 dari 3": it shows the attempt's `check_count`, which stays 0 because Skenario Digital has three tries per scenario and no check. The card now reads *Percobaan dipakai* with the sum of `item_responses.try_count` (existing key `Game.triesUsed`; `ChallengeController` passes `scenarioTries`). The first-try and several-checks messages still read `check_count` and so never show for Skenario Digital; left as is.
+
+**Instruction ▶ on the one-band asides.** On Isi Rumpang, Benar atau Salah and Skenario Digital the narration button of the instruction (32 §8.2, K10) was a grid row of its own below the band; the aside's `overflow: hidden` cut it off and the panel below covered it, so a student could not tap it. It now sits beside the text (`game.css`, only when the aside has the button).
+
+**Skenario Digital instruction band.** The two-line instruction was cut on every screen size (56 dp band, text 66 dp). The band is 60 dp, the steps panel moved from y 204 / h 436 to y 208 / h 432, and the instruction's line height is 1.3 (`stage.css`, `game.css`). This departs from the boxes in 32 §6.2 by 4 dp.
+
+**Not done.** The Isi Rumpang band (52 dp) still cuts the second line of its instruction (text about 77 dp) and part of the ▶; a fix means moving the reading and sentence boxes down by about 28 dp, which is a layout decision for the owner.
+
+**Tests.** `ResultScreenTest::testSkenarioShowsTheTriesUsedNotZeroOfThree`, new `InstructionBandCssTest` (2); both fail without the change.
+
+## Wave E manual checks: `backup.sh` stops when the second-location drive is unplugged (14 November 2026, branch `r10-cek-manual-gelombang-e`)
+
+Found in the manual check of 30 §19.3 no. 3 (results in `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`, 14 November 2026).
+
+**The bug.** With the external drive unplugged its mount point is an empty folder. `rsync` then created `$KEDUA` on the server's own disk and returned 0, so `backup.sh --ganti` reported success and deleted the older backups at the first location while the real drive kept its old backups, which still held the deleted child's data; the admin would then tick *Cadangan diganti*. An unreachable path (not a directory, remote host down) already stopped with code 2.
+
+**The fix.** Before the copy, a local `KEDUA` (no `host:`) that does not exist stops the script with code 2 and the message `lokasi kedua … tidak ada (drive belum terpasang?); salinan kedua GAGAL`; nothing is deleted. The folder on the drive is therefore created once at setup (`docs/08_DEPLOYMENT.md` → backup replacement). An existing server whose `KEDUA` folder was only ever created by rsync keeps working, since the folder exists.
+
+**Also.** `/writable/backup-status.json` (written by both backup scripts for the Tata kelola warning) is now in `.gitignore`; `DeployFilesTest` checks the rule.
+
+**Not done.** `deploy/windows/backup.ps1` has a related gap: if another USB stick takes the same drive letter, `New-Item -Force` creates the folder on that stick. Not changed, because it cannot be tested without Windows.
+
+**Tests.** New `BackupSecondLocationTest` (2) runs a copy of the real script with a stub `mysqldump`; the unplugged-drive test fails without the fix.
