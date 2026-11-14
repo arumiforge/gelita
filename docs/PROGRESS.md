@@ -97,4 +97,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `claude/ai-studio-multi-session-74p683` | Installer for the ElevenLabs backup narration (`gelita:narration:install`), `voices.md` filled in as far as known | PR #355 open; full suite green (1250 tests, 58041 assertions); checked on a MariaDB development install with stand-in files, not yet with real ElevenLabs takes |
