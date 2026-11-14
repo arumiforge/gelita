@@ -7,8 +7,7 @@
  * rekaman audio, pose, dan efek. Bila teks perlu diubah, ubah naskahnya dulu,
  * lalu berkas ini (StoryDataTest mencocokkan keduanya baris demi baris).
  *
- * Dipakai ContentSeeder::seedDialogues() saat instalasi, generator audio
- * (tools/audio/export_lines.php), dan StoryDataTest.
+ * Dipakai ContentSeeder::seedDialogues() saat instalasi dan StoryDataTest.
  *
  * Kunci setiap baris:
  *   code       nama berkas audio tanpa `.mp3` (narasi/{id|en}/{code}.mp3)

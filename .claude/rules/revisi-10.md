@@ -26,7 +26,7 @@ The Markdown documents total about 1.2 MB, roughly 500k tokens (27 October 2026)
 ## End of each round or document
 - Record each decision in `04` (newest first) as soon as the round ends, tick the matching open question in `01`, update this branch's rows in `docs/PROGRESS.md`, then commit and push. A restarted or new session only knows what is in the repo.
 - Update the status column in `00_INDEKS.md` when a document changes status.
-- After committing changes to numbered documents, run `node docs/revisi-10-analitik/dokumen-pdf/src/cetak.mjs` (it rebuilds only the changed ones) and commit the PDFs in `dokumen-pdf/cetak/` with `manifest.json`, so the print-ready set stays current (owner, 31 October 2026). Don't open the PDFs to check them; the script's page counts are enough unless a layout change was made.
+- Rebuild the print-ready PDFs only when documents are about to go to the researcher or the owner asks: `node docs/revisi-10-analitik/dokumen-pdf/src/cetak.mjs` (it rebuilds only the changed ones), then commit the PDFs in `dokumen-pdf/cetak/` with `manifest.json` in one commit. Not after every document change (owner, 14 November 2026; replaces the 31 October 2026 rule): each rebuild adds binary files to the repository's history for good. Between handovers a PDF may be older than its Markdown; its page footer names the commit it was built from. Don't open the PDFs to check them; the script's page counts are enough unless a layout change was made.
 - Files in this folder stay Indonesian (owner's request); this rule file, commits, and PRs stay English.
 
 ## Roles and naming (27 October 2026)

@@ -15,7 +15,7 @@
  *   QA_RACE_ROUNDS  jumlah ulangan balapan dua tab (bawaan 5)
  *   PLAYWRIGHT_BROWSERS_PATH  Chromium terpasang (/opt/pw-browsers); jangan `playwright install`
  *
- * Skenario (bagian "QA PR #42 dan data simulasi" di CATATAN_IMPLEMENTASI.md):
+ * Skenario (bagian "QA PR #42 dan data simulasi" di docs/arsip/CATATAN_IMPLEMENTASI-2026-10.md):
  *   1. freeze  — selama "Cek jawabanku" berjalan (respons /check diperlambat), isian Susun
  *                Gambar, Isi Rumpang, dan Benar atau Salah tidak bisa diubah; jawaban di layar
  *                sesudah hasil = jawaban yang dinilai server (item_tries.answer_json).

@@ -177,7 +177,7 @@ Suite memakai SQLite in-memory (grup database `tests`) dengan skema tiruan di `t
 | `docs/` | dokumentasi, sumber bank soal, Pustaka, dan daftar sekolah; rencana yang sudah selesai di `docs/arsip/` |
 | `gelita-katalog/` | Katalog Aset tim: gambar, gambar rujukan, prompt, dan arahan gaya (buka `index.html`); dipasang ke permainan dengan `gelita:katalog:impor`. Internal: memuat tanda benda pengecoh, jadi tidak pernah di bawah `public/` |
 | `tests/` | suite PHPUnit |
-| `tools/audio/` | generator musik, efek suara, dan narasi |
+| `tools/dev/` | `serve.sh` (instalasi pengembangan di MariaDB dalam satu perintah: basis data, `.env`, migrasi, data awal, `php spark serve`) dan `cloud-setup.sh` (salinan induk skrip penyiapan lingkungan sesi awan) |
 | `tools/qa/` | skrip uji peramban Playwright: `stage-check.mjs` (panggung 16:9), `challenge-races.mjs` (aturan kesempatan dan cek bersamaan), `a11y-check.mjs` (keyboard dan pembaca layar di layar tantangan), dan `nav-timing.mjs` (waktu pindah layar dan ganti bahasa di jaringan acuan; `node tools/qa/nav-timing.mjs --serve`, rencana paket aset Tahap 0) |
 
 Daftar route lengkap: `php spark routes`.
@@ -227,7 +227,7 @@ Ukuran gambar per slot ditetapkan di `Config\Gelita::$assetSizes`. Slot bertanda
 
 ## Audio bawaan
 
-Seluruh audio ikut di repositori dan dibangkitkan oleh [`tools/audio/`](tools/audio/README.md):
+Musik dan efek suara ikut di repositori sebagai berkas jadi. Generatornya (`tools/audio/`) dihapus 14 November 2026: audio kini dibuat di luar repositori.
 
 - **Musik gamelan** (`public/assets/audio/music/`): `map`, `region`, `challenge`, komposisi dan sintesis orisinal.
 - **Efek suara** (`public/assets/audio/sfx/`): `click`, `correct`, `wrong`, `lock`, `shard`, `region-done`.

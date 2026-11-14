@@ -34,7 +34,7 @@ final class AssetChecklist
      * disalin langsung ke folder itu (git atau salin berkas). Berkas yang tidak
      * ada membuat suara itu diam, permainan tetap berjalan. The background
      * tracks of 19 October 2026 (home/account, story, per region) are
-     * synthesized gamelan from tools/audio/gamelan.py; a recording can replace
+     * synthesized gamelan (generator removed 14 November 2026); a recording can replace
      * any of them under the same name.
      */
     public const SOUNDS = [

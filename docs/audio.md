@@ -1,5 +1,7 @@
 # Audio GELITA
 
+> **14 November 2026:** the generator `tools/audio/` was removed from the repository (owner: audio is now produced outside the repo). The MP3 files under `public/assets/audio/` stay. Everything below about `tools/audio/` describes how those files were made and is history.
+
 Audio bawaan permainan yang ikut di repositori: **3 musik gamelan** (plus 12 scene and account tracks since 19 October 2026) dan **6 efek suara**, dibangkitkan oleh [`tools/audio/`](../tools/audio/README.md). Narasi (± 187 rekaman × 2 bahasa since research revision 10, part 6; 103 before) tidak lagi ikut di repositori: rekaman suara sintetis lama dihapus (17 Oktober 2026) dan diganti rekaman pengisi suara (lihat *Voice-over narration* di bawah).
 
 - Musik dan efek suara disintesis dari nol, tanpa sampel rekaman, dengan penalaan pelog–slendro. Gendingnya komposisi orisinal.

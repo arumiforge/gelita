@@ -1,11 +1,11 @@
 # GELITA — working rules for Claude Code
 
 Topic rules live in `.claude/rules/` and load automatically:
-`language.md` (chat, code, routes, docs), `ui-copy.md` (UI text and local formats, loads when editing UI files), `glossary.md` (Indonesian ↔ English terms), `parallel-agents.md` (subagents and file ownership), `revisi-10.md` (keeping research-revision sessions small, loads with `docs/revisi-10-analitik/`).
+`language.md` (chat, code, routes, docs), `ui-copy.md` (UI text and local formats, loads when editing UI files), `glossary.md` (core Indonesian ↔ English terms; `glossary-ui.md` loads with views, CSS and JS, `glossary-research.md` with backend code, tests and the research documents), `parallel-agents.md` (subagents and file ownership), `revisi-10.md` (keeping research-revision sessions small, loads with `docs/revisi-10-analitik/`).
 
 ## Where things stand (read first)
 - **Progress checklist:** `docs/PROGRESS.md` — what is done, what is open, who owns which branch.
-- **Decision log:** `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md` — record every decision or deviation from the plan documents there.
+- **Decision log:** `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md` — record every decision or deviation from the plan documents there, as a new section at the end. Sections up to 22 October 2026 are in `docs/arsip/CATATAN_IMPLEMENTASI-2026-10.md`; search either file by heading or keyword, never read them whole.
 - **Research revision (current focus):** start with `docs/revisi-10-analitik/00_INDEKS.md` (reading order, document status, remaining document stages); its decisions go in `04_CATATAN_KEPUTUSAN.md` there.
 - Auto memory does not survive cloud sessions. Anything worth remembering goes into this file, `.claude/rules/`, `docs/PROGRESS.md`, or the decision log, and is committed.
 
@@ -16,11 +16,14 @@ Topic rules live in `.claude/rules/` and load automatically:
 ## Branches
 - The only permanent branch is `main`.
 - Work happens on short-lived branches cut from `main`, without a `claude/` prefix (e.g. `dok2-klien-kesempatan`). They merge into `main` via PR and are deleted right after (GitHub deletes them on merge).
+- A cloud session that was assigned a branch (names like `aru/zealous-hawking-higzmg`) works on that branch and pushes nowhere else; the PR title and the `docs/PROGRESS.md` row say what it is for. A branch merged into another branch instead of `main` is not deleted by GitHub, and sessions cannot delete branches: list it for the owner to delete.
 - Never push directly to `main` unless the owner asks.
 - `main` history was rewritten on 6 October 2026. Clones or branches from before that date no longer match; re-fetch from `main`.
 
 ## Tests
 - `composer install`, then `vendor/bin/phpunit --no-coverage` (without the flag the suite exits 1 on machines without a coverage driver). Everything must be green before pushing.
+- The full suite takes about 7.5 minutes and peaks above 7 GB in one process (1240 tests, 14 November 2026). While working, run the tests of the change (`--filter`, or one file); run the full suite once before pushing, and never two full runs at the same time.
+- GitHub Actions (`.github/workflows/tests.yml`) runs every test file in its own process on each PR; the check to require on `main` is `tests`.
 
 ## Kelas 5 overhaul (in progress)
 - Plan documents: `docs/perombakan-kelas5/01_FONDASI_DATA_DAN_RESET.md`, `02_TANTANGAN_DAN_BANK_SOAL.md`, `03_TAMPILAN_16x9_DAN_ADMIN.md`, done in order (Dok 1 → Dok 2 → Dok 3). Follow-up work uses one short-lived branch per part.
@@ -44,7 +47,7 @@ Overview in `README.md`, details in `docs/01`–`08`.
   - Library from `docs/pustaka/`.
   - Story via `ContentSeeder`.
   - Narration via `gelita:narration:import`.
-  - Sample images via `gelita:mockups`; the team's art via `gelita:katalog:impor` from `gelita-katalog/` (Katalog Aset: images, references, prompts; its own rules in `gelita-katalog/AGENTS.md`).
+  - Sample images via `gelita:mockups`; the team's art via `gelita:katalog:impor` from `gelita-katalog/` (Katalog Aset: images, references, prompts; its own rules in `gelita-katalog/AGENTS.md`; slimmed on 14 November 2026 to what the importer and the gallery page use).
 
   `ContentRepository` caches content; call `flush()` after changing it.
 - **Art direction (owner, 11 October 2026).** Stylized 3D, Jaka with a red scarf, WebP as the default raster format (`app.*` icons PNG), up to 24 looping frames per character pose. Finished plans live in `docs/arsip/`.
@@ -54,6 +57,12 @@ Overview in `README.md`, details in `docs/01`–`08`.
 - **Derived data layer (revision 10, part 9: 35).** Analysis values (active time, rapid guess, skipped, censored, scores and indexes, `consent_ok`) are computed by pure calculators in `app/Libraries/Derived/` into `derived_*` tables per versioned run (`derived_runs`), never in the game. A download recomputes when the raw data changed (fingerprint); sheets `turunan_*`; dictionary `kamus-1.1` (approved 9 November 2026; was `kamus-1.1-usulan` while a draft).
 - **Research events.** `EventService` and the `game_event_logs` table; the list of event types lives in `App\Libraries\EventCatalog` (revision 10, part 3), where `dialogue_completed` replaced `dialogue_advanced` and `answer_changed` was merged into `answer_submitted`. `EventCatalog::SERVER_ONLY` (`screen_viewed`, `challenge_tries_exhausted`, `clue_failed`, `events_dropped`, `scenario_failed`) may only be written by the server.
 - **Spark commands** (`app/Commands`): `gelita:reset`, `gelita:bank:import`, `gelita:content:verify`, `gelita:mockups`, `gelita:narration:import`, `gelita:media:scan`, `gelita:retention:run`, `gelita:schools:import`, `gelita:staff:password`, `gelita:library:thumbnails`, `gelita:katalog:impor` (installs the `gelita-katalog/` images into the slots), `gelita:story:sync` (updates the story lines of an installed server to `data/story.php`; earlier versions in `data/story-previous.php`), `gelita:simulasi` (simulated `sim_*` students for development; FEATURE 19 in `docs/07`), `gelita:aset:minify` (minified JS/CSS mirror in `public/assets/min/`; sources stay unminified; `docs/08` → *Minified JS/CSS*), `gelita:uji:akun` (test accounts `uji.*` for the validators' test install; `--buat`, `--reset=uji.x`, `--daftar`; 28 §13), `gelita:log:hitung` (counts, without changing anything, the log rows migration `003600` deletes or renames; 29 §5.8), `gelita:lembar:templat` (blank field-sheet templates L1–L8; 29 §10), `gelita:instrumen:impor` (test, questionnaire and attitude-scale content from `app/Database/Seeds/data/instrumen/`, all-or-nothing checks; also run by `gelita:reset`; 34 §6), `gelita:turunan:hitung` (`--studi=KODE`: a new derived run for a field-mode study; `--cek` only reports stale/running/fingerprint; 35 §13), `gelita:turunan:ambang` (`--studi=KODE`: threshold lock state; `--buka --alasan=…` unlocks with an audit row; 35 §5).
+
+### Cloud sessions (claude.ai/code)
+
+- The "Gelita" environment's setup script (master copy: `tools/dev/cloud-setup.sh`) leaves `vendor/` installed and MariaDB installed but stopped. If `vendor/` is missing, run that script's Composer part; a plain `composer install` works but takes about 10 minutes and 12 GB, because the session's GitHub proxy refuses dependency zip downloads and Composer falls back to full clones.
+- `tools/dev/serve.sh` gives a development install on MariaDB in one command (database, `.env`, migrations, seed on an empty database, `php spark serve` on port 8080) for the checks SQLite cannot do and for `tools/qa/*.mjs`. Remove `.env` again before running the test suite if a test result looks different from CI.
+- Audio is produced outside the repository since 14 November 2026 (the generator `tools/audio/` was removed); the MP3 files under `public/assets/audio/` stay.
 
 ### Testing and known pitfalls
 

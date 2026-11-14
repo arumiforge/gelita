@@ -1,8 +1,14 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 9 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 14 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
+
+## 14 November 2026
+
+**PDF siap cetak dibuat ulang saat akan dikirim, bukan setiap dokumen berubah** (cabang `aru/zealous-hawking-higzmg`) · `asal: pengembang` (usulan dari audit alur kerja oleh AI) · `disetujui pengembang` · tidak mengubah isi dokumen atau produk
+
+Aturan 31 Oktober 2026 (PDF di `dokumen-pdf/cetak/` dibuat ulang dan di-*commit* setiap dokumen bernomor berubah) diganti: `cetak.mjs` dijalankan hanya saat dokumen akan dikirim ke peneliti atau saat pengembang memintanya, lalu semua PDF yang berubah masuk dalam satu *commit*. Alasannya ukuran repositori: setiap PDF yang dibuat ulang menambah berkas biner ke riwayat git untuk selamanya. Akibatnya, di antara dua pengiriman sebuah PDF boleh lebih tua daripada Markdown-nya; kaki halamannya tetap menyebut *commit* asalnya, jadi versinya bisa dicocokkan. Aturan untuk 22 (tidak diubah dan tidak dibuat ulang) dan untuk 23, 24, 26 (PDF dikirim kembali ke peneliti setelah perubahan) tidak berubah. Entri ini tidak diikuti pembuatan ulang PDF 00 dan 04.
 
 ## 9 November 2026
 
