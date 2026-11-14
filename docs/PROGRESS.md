@@ -30,7 +30,7 @@ Leftovers named inside finished rows (not checklist items; details in `04`):
 
 ## AI studio and multi-session work (owner, 14 November 2026)
 
-Folders where other AI tools work for GELITA (`ai-studio/README.md`); Claude Code sessions install the results. How sessions on several Claude accounts hand work over: `docs/cloud-sessions.md`. Built on branch `aru/zealous-hawking-higzmg` (PR #354) by two sessions; decision log *AI studio folders, narration list command, multi-account hand-over*.
+Folders where other AI tools work for GELITA (`ai-studio/README.md`); Claude Code sessions install the results. How sessions on several Claude accounts hand work over: `docs/cloud-sessions.md`. Built in PR #354 by two sessions (full suite green, 1241 tests); decision log *AI studio folders, narration list command, multi-account hand-over*.
 
 - [x] `ai-studio/chatgpt-images/`: instructions (`AGENTS.md`), work list of 35 pictures from `37` and `38` (`TASKS.md`), `out/`, `inbox/`; root `AGENTS.md` sends non-Claude agents to their folder
 - [x] `ai-studio/elevenlabs-voice/`: instructions (`README.md`), `voices.md` to fill in, `lines.csv` (187 lines, two languages) written by the new command `php spark gelita:narration:list --csv=… --dir=…` (test in `NarrationImporterTest`)
@@ -96,4 +96,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `aru/zealous-hawking-higzmg` | Workflow housekeeping (CI, cloud setup, rule split, catalogue and audio-tool slimming, this file collapsed), the AI studio folders, and the multi-account hand-over guide | PR #354 open. Second session (14 November 2026) finished the documents of *AI studio and multi-session work*; full suite green on the last code commit (`542ec6c`: 1241 tests, 57977 assertions); the commit after it changes documents and rules only. Open items left there are the owner's or wait for accepted files. After the merge, continue on a new branch from `main` |
