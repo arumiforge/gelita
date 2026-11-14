@@ -438,3 +438,13 @@ Left open by the wave E manual checks (section above: *Not done*); the owner ask
 **Not done.** The card's skin `ui/kenal-plate-navy.webp` was drawn for a thin one-line plate: stretched to 66 dp its gold ornaments run under the ⓘ mark and the last word of the first line. The text stays readable; a plate with ornaments only at the far ends would be cleaner (owner's call, the picture is also used by Kenali and the HUD back button, so a new one would get its own file).
 
 **Tests.** `InstructionBandCssTest::testIsiRumpangInstructionBandHoldsTwoLinesAboveTheReading`.
+
+## ChatGPT pictures reviewed and merged, not installed (15 November 2026, PR #357)
+
+The owner's first batch from `ai-studio/chatgpt-images/` (branch `images-chatgpt-20261115`): 28 story backgrounds, the three five-stop region maps, and the Skenario Digital card. Reviewed by a Claude session at the owner's request and merged with CI green.
+
+**Checked.** Only the workspace folder changed (32 files in `out/`, one candidate in `inbox/`, Status and Notes cells of `TASKS.md`); every file is WebP at the canvas size and under the file name of its row; contact sheets and full-size crops showed blank signs, boards, phones and tablets, no readable text, five clearings on one path and no people on the maps, and the card readable in sepia at 320 px.
+
+**Left for the owner's acceptance** (also in the Notes cells of `TASKS.md`): M-K3 has a busy lower third; M-L1 shows five children on phones without a clear adult and one child facing the viewer; W-K3 shows cooking steam at a food stall; the 2.8 MB candidate `inbox/M-K2-needs-relief-reference.png` should be deleted once M-K2 is settled. Cultural accuracy was not checked. TMG-P11, MGL-P05R and M-K2 stay blocked on reference material.
+
+**Not done.** Nothing is installed: the rows are `generated`, not `accepted`. After acceptance a Claude session installs them (`ai-studio/README.md`) and measures the five stops per map into `CatalogImporter::MAP_STOPS`.
