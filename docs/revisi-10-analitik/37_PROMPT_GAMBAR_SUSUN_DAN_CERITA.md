@@ -37,7 +37,7 @@ Catatan pemasangan:
 - **Komposisi slide:** 16:9, 1920 × 1080; sepertiga bawah tenang dan agak gelap untuk panel teks; 8% atas tanpa detail penting; tetap terbaca di bawah lapisan navy 35–75% (sama dengan latar `intro`).
 - **Kabut Lupa** selalu berwarna biru kelabu yang sama (#8C97AA–#5B6478), berlapis lembut, tidak pernah membentuk huruf, menyeramkan tetapi tidak menakutkan.
 - **Tidak membocorkan butir.** Gambar hanya memuat yang disebut kalimat slidenya. Dialog masuk dan cerita penghubung diputar tepat sebelum tantangan, jadi latarnya tidak menampilkan benda, tanda bahaya, atau isi layar yang diuji butir (sama dengan [aturan menulis cerita di 12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#aturan-menulis-cerita-untuk-penelitian)). Kenali boleh memuat fakta budaya, karena selama studi Kenali baru terbuka setelah wilayahnya tuntas.
-- **Wonosobo:** kabar berantai di naskah 12 adalah ramalan gempa. Latar tidak menampilkan kawah, asap, retakan, atau bangunan runtuh, supaya tidak menambah rasa takut dan tidak mengulang `wnb-3-b`.
+- **Wonosobo:** kabar berantai di naskah 12 adalah ramalan gempa. Latar tidak menampilkan kawah, uap, asap, retakan, atau bangunan runtuh, supaya tidak menambah rasa takut dan tidak mengulang `wnb-3-b`. Uap masakan termasuk: di gambar kecil, uap dari panci terbaca sebagai asap.
 
 **Untuk Susun Gambar**
 - Satu pemandangan utuh tanpa kolase; setiap area kisi punya penanda yang berbeda; tanpa bidang polos; pagi atau siang, bukan malam (panduan gambar puzzle §2–§3).
@@ -171,17 +171,17 @@ Setiap gambar di bawah dipakai untuk semua slot di barisnya. Judul dan isi slide
 | T-L1 | Temanggung | Anak-anak duduk di bawah pohon besar memandang tablet; kabut tipis keluar dari layar. | `bg.cerita-layar-temanggung-01`, `bg.cerita-layar-temanggung-02`, `bg.cerita-layar-temanggung-03`, `bg.cerita-layar-temanggung-04`, `bg.cerita-layar-temanggung-05`, `bg.cerita-layar-temanggung-06` |
 | M-K1 | Magelang | Candi Borobudur saat fajar di atas dataran hijau. | `bg.cerita-kenal-magelang-01` |
 | M-K2 | Magelang | Lorong relief Borobudur: deretan panel berukir berurutan. | `bg.cerita-kenal-magelang-02` |
-| M-K3 | Magelang | Pandangan tinggi: Candi Mendut, Candi Pawon, dan Borobudur hampir segaris di dataran; Gunung Tidar di kejauhan. | `bg.cerita-kenal-magelang-03` |
+| M-K3 | Magelang | Pandangan dari puncak bukit yang teduh: Candi Mendut, Candi Pawon, dan Borobudur hampir segaris di dataran, semuanya di dua pertiga atas gambar; sepertiga bawah hanya lereng rumput yang gelap dan polos; Gunung Tidar di kejauhan. | `bg.cerita-kenal-magelang-03` |
 | M-K4 | Magelang | Penari Topeng Ireng dengan kuluk bulu warna-warni di halaman desa. | `bg.cerita-kenal-magelang-04` |
 | M-D1 | Magelang | Borobudur diselimuti Kabut Lupa; panel relief tampak berantakan urutannya. | `bg.cerita-dialog-magelang-01`, `bg.cerita-dialog-magelang-02`, `bg.cerita-dialog-magelang-03`, `bg.cerita-dialog-magelang-04` |
 | M-D2 | Magelang | Pelataran di kaki candi: dua bapak berdebat dari kejauhan, kabut tipis. | `bg.cerita-dialog-magelang-05`, `bg.cerita-dialog-magelang-06`, `bg.cerita-dialog-magelang-07`, `bg.cerita-dialog-magelang-08` |
 | M-D3 | Magelang | Bangku batu di bawah pohon besar dekat candi; kabut menebal, suasana redup. | `bg.cerita-dialog-magelang-09`, `bg.cerita-dialog-magelang-10`, `bg.cerita-dialog-magelang-11`, `bg.cerita-dialog-magelang-12`, `bg.cerita-dialog-magelang-13`, `bg.cerita-dialog-magelang-14` |
 | M-D4 | Magelang | Kabut mulai tersibak dari dinding relief; cahaya keemasan menyinari panel. | `bg.cerita-dialog-magelang-15`, `bg.cerita-dialog-magelang-16` |
 | M-T1 | Magelang | Hari cerah: papan informasi tanpa tulisan terbaca di pelataran; warga membaca relief bersama. | `bg.cerita-tuntas-magelang-01`, `bg.cerita-tuntas-magelang-02`, `bg.cerita-tuntas-magelang-03`, `bg.cerita-tuntas-magelang-04`, `bg.cerita-tuntas-magelang-05` |
-| M-L1 | Magelang | Rumah baca di ujung jalan desa; kabut tipis keluar dari layar ponsel anak-anak di dalamnya. | `bg.cerita-layar-magelang-01`, `bg.cerita-layar-magelang-02`, `bg.cerita-layar-magelang-03`, `bg.cerita-layar-magelang-04`, `bg.cerita-layar-magelang-05`, `bg.cerita-layar-magelang-06` |
+| M-L1 | Magelang | Rumah baca di ujung jalan desa, dilihat dari samping; tiga anak tampak dari samping atau belakang bersama satu relawan yang jelas dewasa; kabut tipis keluar dari layar ponsel anak-anak. | `bg.cerita-layar-magelang-01`, `bg.cerita-layar-magelang-02`, `bg.cerita-layar-magelang-03`, `bg.cerita-layar-magelang-04`, `bg.cerita-layar-magelang-05`, `bg.cerita-layar-magelang-06` |
 | W-K1 | Wonosobo | Dataran Tinggi Dieng di atas awan; kabut lewat di antara rumah. | `bg.cerita-kenal-wonosobo-01` |
 | W-K2 | Wonosobo | Kompleks Candi Arjuna di lapangan rumput Dieng; Telaga Warna kehijauan di kejauhan. | `bg.cerita-kenal-wonosobo-02` |
-| W-K3 | Wonosobo | Kebun teh Tambi di lereng; warung mi ongklok berasap hangat dengan keranjang bambu kecil. | `bg.cerita-kenal-wonosobo-03` |
+| W-K3 | Wonosobo | Kebun teh Tambi di lereng; warung mi ongklok dengan panci tertutup dan keranjang bambu kecil, tanpa uap dan tanpa asap. | `bg.cerita-kenal-wonosobo-03` |
 | W-K4 | Wonosobo | Penari Topeng Lengger dan pemain bundengan di pendapa; kabut tebal di tepi gambar. | `bg.cerita-kenal-wonosobo-04` |
 | W-D1 | Wonosobo | Pagi dingin di Dieng; Kabut Lupa tebal menyelimuti desa. | `bg.cerita-dialog-wonosobo-01`, `bg.cerita-dialog-wonosobo-02` |
 | W-D2 | Wonosobo | Jalan desa: kentongan di pos ronda, warga bergegas sambil memegang ponsel; tanpa gambar bencana. | `bg.cerita-dialog-wonosobo-03`, `bg.cerita-dialog-wonosobo-04`, `bg.cerita-dialog-wonosobo-05`, `bg.cerita-dialog-wonosobo-06` |
@@ -449,7 +449,7 @@ No watermarks, signatures, unintended text, extra limbs, duplicate subjects, cro
 
 #### M-K3 · Tiga Candi Segaris
 
-Slot: `bg.cerita-kenal-magelang-03`. Pandangan tinggi: Candi Mendut, Candi Pawon, dan Borobudur hampir segaris di dataran; Gunung Tidar di kejauhan.
+Slot: `bg.cerita-kenal-magelang-03`. Pandangan dari puncak bukit yang teduh: Candi Mendut, Candi Pawon, dan Borobudur hampir segaris di dataran, semuanya di dua pertiga atas gambar; sepertiga bawah hanya lereng rumput yang gelap dan polos; Gunung Tidar di kejauhan.
 
 ```text
 GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
@@ -458,7 +458,7 @@ Premium stylized 3D animated adventure game for Indonesian children aged 8–14.
 Characters: do NOT draw Jaka, Mbah Kedu or any narrator — the game places them over this background. Attached GELITA references are for render finish and mood only; never copy their characters, text or logo into the picture.
 
 SUBJECT AND COMPOSITION
-wide 16:9 cinematic composition, main subject inside the central 75% of the width and the central 80% of the height, lower third calm and slightly darker for text panels, top 8% free of important detail, mid-tone exposure that stays readable under a dark navy overlay of 35% at the top to 75% at the bottom, no people in the foreground. A high, gentle aerial view over the Kedu plain: Mendut Temple, small Pawon Temple and Borobudur stand almost in one straight line among rice fields and villages, a faint golden line of light connecting them; the small forested hill of Mount Tidar in the distance; calm morning; accurate shapes of the three temples.
+wide 16:9 cinematic composition, main subject inside the central 75% of the width and the central 80% of the height, lower third calm and slightly darker for text panels, top 8% free of important detail, mid-tone exposure that stays readable under a dark navy overlay of 35% at the top to 75% at the bottom, no people in the foreground. A view from a shaded grassy hilltop over the Kedu plain on a calm morning. The upper two thirds of the picture hold the whole subject: Mendut Temple, small Pawon Temple and Borobudur stand almost in one straight line in the middle distance among open rice fields, each temple small but clear, a faint golden line of light connecting them; the small forested hill of Mount Tidar in the distance; accurate shapes of the three temples. The lower third of the picture shows only the hilltop itself in soft shadow: one broad, even band of dark green grass and low shrubs, clearly darker and much plainer than the plain above it, with no temple, house, roof, road, pond, palm tree, flower, bright highlight or other small detail in it. Houses are few, small and far away, near the horizon only.
 Place — Magelang, Central Java, Indonesia — the green Kedu plain around Borobudur; Mount Merapi and Mount Merbabu on the eastern horizon, the long Menoreh Hills to the south; rice paddies, coconut palms, banana and kapok trees; grey-black andesite temple stone with patches of lichen and moss; red-tiled village roofs.
 People — Stylized like the GELITA references but anatomically correct: Javanese Indonesians of mixed ages in modest local clothing, calm and friendly, never looking at the camera; no real or famous person; no brand logos; children only with adults and only doing safe things.
 Story safety — show only what this brief names. Every sign, board, banner, page, phone, tablet or screen carries no readable letters, numbers, icons or app layout: blank boards, soft blurred shapes or a faint mist only. Nothing frightening: no disaster, smoke plume, eruption, cracked ground, injury or crying.
@@ -610,7 +610,7 @@ No watermarks, signatures, unintended text, extra limbs, duplicate subjects, cro
 
 #### M-L1 · Ponsel yang Terus Berbunyi
 
-Slot: `bg.cerita-layar-magelang-01`, `bg.cerita-layar-magelang-02`, `bg.cerita-layar-magelang-03`, `bg.cerita-layar-magelang-04`, `bg.cerita-layar-magelang-05`, `bg.cerita-layar-magelang-06`. Rumah baca di ujung jalan desa; kabut tipis keluar dari layar ponsel anak-anak di dalamnya.
+Slot: `bg.cerita-layar-magelang-01`, `bg.cerita-layar-magelang-02`, `bg.cerita-layar-magelang-03`, `bg.cerita-layar-magelang-04`, `bg.cerita-layar-magelang-05`, `bg.cerita-layar-magelang-06`. Rumah baca di ujung jalan desa, dilihat dari samping; tiga anak tampak dari samping atau belakang bersama satu relawan yang jelas dewasa; kabut tipis keluar dari layar ponsel anak-anak.
 
 ```text
 GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
@@ -619,7 +619,7 @@ Premium stylized 3D animated adventure game for Indonesian children aged 8–14.
 Characters: do NOT draw Jaka, Mbah Kedu or any narrator — the game places them over this background. Attached GELITA references are for render finish and mood only; never copy their characters, text or logo into the picture.
 
 SUBJECT AND COMPOSITION
-wide 16:9 cinematic composition, main subject inside the central 75% of the width and the central 80% of the height, lower third calm and slightly darker for text panels, top 8% free of important detail, mid-tone exposure that stays readable under a dark navy overlay of 35% at the top to 75% at the bottom, no people in the foreground. A small village reading house (rumah baca) with an open veranda at the end of a lane: shelves of books, a mat, and a few children sitting inside with an adult volunteer, holding phones; thin ribbons of the Mist of Forgetting: cold desaturated blue-grey mist (#8C97AA to #5B6478) drifting in soft layered bands, faint abstract wisps that never form readable letters, eerie but never scary rise from the phone screens (no readable content); the lane in front is quiet in late-afternoon light.
+wide 16:9 cinematic composition, main subject inside the central 75% of the width and the central 80% of the height, lower third calm and slightly darker for text panels, top 8% free of important detail, mid-tone exposure that stays readable under a dark navy overlay of 35% at the top to 75% at the bottom, no people in the foreground. A small village reading house (rumah baca) with an open veranda at the end of a lane, seen from the lane at a three-quarter angle and from some distance, so the people are small figures in the middle of the picture: shelves of books, a mat, and exactly three children sitting on the mat, each seen from the side or from behind with the head bowed over the phone in their hands, no face turned toward the viewer. With them is one unmistakably adult volunteer: a grown woman of about forty, clearly taller and broader than the children, standing beside the bookshelf in side view with a closed book in her hands and no phone, watching over the children. Thin ribbons of the Mist of Forgetting: cold desaturated blue-grey mist (#8C97AA to #5B6478) drifting in soft layered bands, faint abstract wisps that never form readable letters, eerie but never scary rise from the three phone screens (no readable content); the lane in front is quiet in late-afternoon light.
 Place — Magelang, Central Java, Indonesia — the green Kedu plain around Borobudur; Mount Merapi and Mount Merbabu on the eastern horizon, the long Menoreh Hills to the south; rice paddies, coconut palms, banana and kapok trees; grey-black andesite temple stone with patches of lichen and moss; red-tiled village roofs.
 People — Stylized like the GELITA references but anatomically correct: Javanese Indonesians of mixed ages in modest local clothing, calm and friendly, never looking at the camera; no real or famous person; no brand logos; children only with adults and only doing safe things.
 Story safety — show only what this brief names. Every sign, board, banner, page, phone, tablet or screen carries no readable letters, numbers, icons or app layout: blank boards, soft blurred shapes or a faint mist only. Nothing frightening: no disaster, smoke plume, eruption, cracked ground, injury or crying.
@@ -681,7 +681,7 @@ No watermarks, signatures, unintended text, extra limbs, duplicate subjects, cro
 
 #### W-K3 · Hangatnya Budaya Pegunungan
 
-Slot: `bg.cerita-kenal-wonosobo-03`. Kebun teh Tambi di lereng; warung mi ongklok berasap hangat dengan keranjang bambu kecil.
+Slot: `bg.cerita-kenal-wonosobo-03`. Kebun teh Tambi di lereng; warung mi ongklok dengan panci tertutup dan keranjang bambu kecil, tanpa uap dan tanpa asap.
 
 ```text
 GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
@@ -690,7 +690,7 @@ Premium stylized 3D animated adventure game for Indonesian children aged 8–14.
 Characters: do NOT draw Jaka, Mbah Kedu or any narrator — the game places them over this background. Attached GELITA references are for render finish and mood only; never copy their characters, text or logo into the picture.
 
 SUBJECT AND COMPOSITION
-wide 16:9 cinematic composition, main subject inside the central 75% of the width and the central 80% of the height, lower third calm and slightly darker for text panels, top 8% free of important detail, mid-tone exposure that stays readable under a dark navy overlay of 35% at the top to 75% at the bottom, no people in the foreground. A cool highland morning: rows of tea bushes on the slopes of the Tambi tea garden in the background; in front, a small roadside food stall with steaming pots of mie ongklok and small bamboo baskets (ongklok) hanging above the boiling water, jars of yellow carica sweets on a shelf; people in jackets warming their hands; no brand names.
+wide 16:9 cinematic composition, main subject inside the central 75% of the width and the central 80% of the height, lower third calm and slightly darker for text panels, top 8% free of important detail, mid-tone exposure that stays readable under a dark navy overlay of 35% at the top to 75% at the bottom, no people in the foreground. A cool highland morning: rows of tea bushes on the slopes of the Tambi tea garden in the background; in front, a small roadside food stall selling mie ongklok: two cooking pots with their lids on, small bamboo baskets (ongklok) hanging above them, jars of yellow carica sweets on a shelf; people in jackets sit at the stall holding bowls and cups in both hands to keep warm; no brand names. No steam, vapour or smoke anywhere in the picture, not from the pots, the bowls, the cups or the stall: warmth is shown only by soft golden light under the stall roof and by the way people hold their bowls.
 Place — Wonosobo and the Dieng Plateau, Central Java, Indonesia — cool highland at about 2,000 m; steep terraced potato and cabbage fields, cypress (cemara) and pine trees, carica (mountain papaya) trees; houses with zinc or clay-tile roofs; people in thick jackets, knitted beanies and sarongs over their shoulders.
 People — Stylized like the GELITA references but anatomically correct: Javanese Indonesians of mixed ages in modest local clothing, calm and friendly, never looking at the camera; no real or famous person; no brand logos; children only with adults and only doing safe things.
 Story safety — show only what this brief names. Every sign, board, banner, page, phone, tablet or screen carries no readable letters, numbers, icons or app layout: blank boards, soft blurred shapes or a faint mist only. Nothing frightening: no disaster, smoke plume, eruption, cracked ground, injury or crying.
@@ -867,14 +867,15 @@ No watermarks, signatures, unintended text, extra limbs, duplicate subjects, cro
 
 Semua gambar:
 - [ ] Tidak ada tulisan, angka, logo, atau isi layar yang terbaca.
-- [ ] Tidak ada Jaka, Mbah Kedu, atau tokoh terkenal; orang tidak menatap kamera; anak-anak bersama orang dewasa.
+- [ ] Tidak ada Jaka, Mbah Kedu, atau tokoh terkenal; tidak ada wajah yang menghadap penonton; anak-anak bersama setidaknya satu orang yang jelas dewasa (lebih tinggi dan lebih besar dari anak-anak).
 - [ ] Bentuk candi, kostum, dan alat musik sesuai foto acuan; tidak ada unsur agama atau daerah lain.
 - [ ] WebP, ukuran sesuai, nama berkas sama dengan kode aset.
 
 Latar cerita:
-- [ ] Sepertiga bawah cukup tenang untuk panel teks; gambar masih terbaca di bawah lapisan gelap.
+- [ ] Sepertiga bawah cukup tenang untuk panel teks (tanpa bangunan, air yang memantul, atau banyak benda kecil); gambar masih terbaca di bawah lapisan gelap.
 - [ ] Hanya memuat yang disebut kalimat slide; tidak ada benda atau tanda bahaya yang diuji butir tantangan wilayah itu.
 - [ ] Kabut Lupa berwarna dan berbentuk sama di semua gambar; tidak menakutkan.
+- [ ] Wonosobo: tanpa kawah, uap (juga uap masakan), asap, retakan, atau bencana.
 
 Susun Gambar:
 - [ ] Setiap area kisi punya penanda berbeda; tidak ada bidang polos, kabur, atau gelap.
@@ -884,5 +885,6 @@ Susun Gambar:
 ## Kebijakan perubahan
 
 - Prompt ini `draf pengembang`. Gambar yang dihasilkan juga `draf pengembang` sampai dicek pengembang; pemeriksaan budaya oleh pengamat budaya (B.7) tetap berlaku untuk objek budaya.
+- **Perubahan 15 November 2026** (`asal: pengembang`, disusun AI atas permintaan pengembang, setelah gambar pertama dari ChatGPT diperiksa): prompt M-K3 (sepertiga bawah kini hanya lereng bukit yang gelap dan polos), M-L1 (tiga anak tampak dari samping atau belakang dan satu relawan yang jelas dewasa; salinannya di [38](38_PROMPT_PETA_LIMA_TANTANGAN_DAN_SKENARIO.md) ikut diubah), dan W-K3 (panci tertutup, tanpa uap dan asap) ditulis ulang di bagian adegannya saja. Aturan Wonosobo dan daftar periksa ikut dipertegas. Ketiga gambar dibuat ulang; daftar kerjanya di `ai-studio/chatgpt-images/TASKS.md`.
 - Bila naskah 12 berubah (jumlah slide atau tempat), tabel slot di atas ikut diubah. Bila keterangan Susun Gambar di 08 berubah, prompt Susun Gambar dicek ulang.
 - Setelah versi dikunci di G4, gambar yang sudah dipakai siswa tidak diganti selama pengambilan data utama.

@@ -2,7 +2,7 @@
 
 The single checklist of what is done and what is open. Decisions and their reasons go in `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md` (and, for the research revision, `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`); this file only tracks state. Each session updates only its own rows, and ticks an item only once its PR is merged into `main`. Finished work is summed up in one line per area under *Done*; the details live in the PRs, the git history, and the decision log.
 
-Last updated: 14 November 2026.
+Last updated: 15 November 2026.
 
 ## Research revision: 10 analytics (owner, 23 October 2026)
 
@@ -39,7 +39,7 @@ Folders where other AI tools work for GELITA (`ai-studio/README.md`); Claude Cod
 - [x] `CLAUDE.md` (quick map, spark command, hand-over rule), `README.md` (folder, command, document rows), glossary rows
 - [x] Multi-account guide `docs/cloud-sessions.md` and repo skill `.claude/skills/continue-work/`
 - [ ] Owner: on each Claude account, check the environment against `docs/cloud-sessions.md` §2 (setup script = current `tools/dev/cloud-setup.sh`, the two variables, GitHub connected)
-- [ ] Owner: finish `ai-studio/elevenlabs-voice/voices.md` (filled in on 14 November 2026: model v4 and the Indonesian voice of Mbah Kedu; still empty: Narator and Jaka in both languages, Mbah Kedu in English), then make and accept the first takes; accept or send back the 32 pictures ChatGPT generated (PR #357, 15 November 2026: 28 story backgrounds, 3 region maps, the Skenario Digital card; nothing installed yet). The review found sizes, names, and blank signs and screens in order; four points to look at are in the **Notes** cells of `TASKS.md` (M-K3 busy lower third, M-L1 no clear adult and one child facing the viewer, W-K3 cooking steam, the M-K2 candidate PNG in `inbox/`). Three rows are blocked: TMG-P11 and MGL-P05R need licensed photos, M-K2 a real relief panel
+- [ ] Owner: finish `ai-studio/elevenlabs-voice/voices.md` (filled in on 14 November 2026: model v4 and the Indonesian voice of Mbah Kedu; still empty: Narator and Jaka in both languages, Mbah Kedu in English), then make and accept the first takes; accept or send back the 32 pictures ChatGPT generated (PR #357, 15 November 2026: 28 story backgrounds, 3 region maps, the Skenario Digital card; nothing installed yet). The review found sizes, names, and blank signs and screens in order. Three of them are sent back (15 November 2026, branch `nty/adoring-goldberg-a3kr3a`): the prompts of M-K3 (busy lower third), M-L1 (no clear adult, one child facing the viewer) and W-K3 (cooking steam) are rewritten in `37` (M-L1 also in `38`), their rows are `redo: …` in `TASKS.md`, and the checks in `ai-studio/chatgpt-images/AGENTS.md` are sharper; next step: a ChatGPT session regenerates the three ("work on the `redo` rows"). Still to look at: the M-K2 candidate PNG in `inbox/`. Three rows are blocked: TMG-P11 and MGL-P05R need licensed photos, M-K2 a real relief panel
 - [x] Installer for ElevenLabs recordings: `php spark gelita:narration:install` copies `out/{id,en}/` to `public/assets/audio/narasi/` and writes `produksi.json` (sha256 + `voice_profile` from `voices.md`), so the import records them as `tts`; real recordings are kept unless `--timpa` (decision log *Installer for the ElevenLabs backup narration*)
 - [ ] Install the first accepted takes with that command on a development install, listen, then on the server with the owner. Before such takes are used with students: new `04` entry and the researcher is told
 - [ ] Install accepted pictures (`ai-studio/README.md` → *For the Claude Code session that installs*), one branch per batch
@@ -98,3 +98,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `nty/adoring-goldberg-a3kr3a` | Cloud session: three picture prompts sent back for a redo (M-K3, M-L1, W-K3); Mbah Kedu's Indonesian ElevenLabs takes | Picture part done; voice part: pilot of five takes made, settings waiting for the owner's ear |

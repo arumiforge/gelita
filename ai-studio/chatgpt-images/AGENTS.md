@@ -23,21 +23,31 @@ You are generating pictures for GELITA, an educational game for grade 5 students
 5. Save the picture in `out/` under exactly the name in the **Save in `out/` as** cell, as WebP (quality 90), at exactly the canvas size in the **Canvas** cell. Scale proportionally; never stretch, never add borders.
 6. In `TASKS.md`, set the row's status to `generated` and write the date in **Notes** (for example `2026-11-15`). Add one short note only if the owner needs to know something (for example "sky slightly cropped at the top").
 
+### A row marked `redo: …`
+
+The earlier picture failed the check named in the status, and its prompt may have been rewritten since. So:
+
+1. Open the prompt document again and use the text that is there now. Never reuse a prompt from memory or from an earlier conversation.
+2. Start a new conversation and generate from nothing. Do not attach, edit, or inpaint the earlier picture: it carries the fault.
+3. Before saving, look for the fault named in the status first, then run every other check.
+4. Save under the same file name (the old file in `out/` is replaced), set the status to `generated`, and add the new date in **Notes** after what is already there.
+
 ## Checks
 
 Every picture:
 
 - No readable text, numbers, logos, app icons, or screen contents. Boards, signs, phones, and tablets are blank, blurred, or misty.
-- No Jaka, no Mbah Kedu, no real or famous person. People do not look at the camera. Children are with adults and do nothing dangerous.
+- No Jaka, no Mbah Kedu, no real or famous person. No face is turned toward the viewer: people are seen from the side or from behind, or look at what they are doing. Wherever there are children, at least one figure is unmistakably an adult (clearly taller and broader than the children, not an older child), and nobody does anything dangerous.
+- The number of people is the number the prompt gives. When it says "exactly three children", count them.
 - Temples, costumes, and instruments match the attached photo or reference. Nothing from another religion or region.
 - The file is WebP, has the exact canvas size, and has the exact file name.
 
 Story backgrounds (`bg.cerita-…`):
 
-- The lower third is calm and a little darker (the game puts a text panel there). The top 8% has no important detail.
+- The lower third is calm and a little darker (the game puts a text panel there): no buildings, no bright or reflecting water, no rows of small trees or other small detail. Squint at it: it should read as one quiet band. The top 8% has no important detail.
 - Only what the prompt names is in the picture. No object, warning sign, or screen content that a quiz could ask about.
 - The mist (*Kabut Lupa*) is the same blue-grey (#8C97AA to #5B6478) in every picture, never shaped like letters, eerie but not frightening.
-- Temanggung: no tobacco plants, cigarettes, or smoke. Wonosobo: no crater, steam, smoke, cracked ground, or disaster.
+- Temanggung: no tobacco plants, cigarettes, or smoke. Wonosobo: no crater, steam, smoke, cracked ground, or disaster. Steam means any steam, also from cooking pots, bowls, or cups.
 
 Susun Gambar (`challenge.item.…`):
 

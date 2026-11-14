@@ -448,3 +448,19 @@ The owner's first batch from `ai-studio/chatgpt-images/` (branch `images-chatgpt
 **Left for the owner's acceptance** (also in the Notes cells of `TASKS.md`): M-K3 has a busy lower third; M-L1 shows five children on phones without a clear adult and one child facing the viewer; W-K3 shows cooking steam at a food stall; the 2.8 MB candidate `inbox/M-K2-needs-relief-reference.png` should be deleted once M-K2 is settled. Cultural accuracy was not checked. TMG-P11, MGL-P05R and M-K2 stay blocked on reference material.
 
 **Not done.** Nothing is installed: the rows are `generated`, not `accepted`. After acceptance a Claude session installs them (`ai-studio/README.md`) and measures the five stops per map into `CatalogImporter::MAP_STOPS`.
+
+## Three picture prompts rewritten and sent back to ChatGPT (15 November 2026, branch `nty/adoring-goldberg-a3kr3a`)
+
+The owner asked to fix the prompts behind the three points the review of PR #357 left open, and to set up the ChatGPT workspace so the pictures are made again from the new text.
+
+**Prompts** (`docs/revisi-10-analitik/37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md`; only the scene sentence of each block changed, the shared style, place, people, safety, delivery and constraint lines are untouched):
+
+- **M-K3** (busy lower third). The old scene was "a high, gentle aerial view", which puts fields, houses and ponds everywhere, also under the text panel. Now the view is from a shaded hilltop: the three temples and the golden line sit in the upper two thirds, and the lower third is named as one dark, plain band of grass with a list of what may not be in it.
+- **M-L1** (no clear adult, one child facing the viewer). "A few children … with an adult volunteer, holding phones" let the model draw five children and no adult. Now: exactly three children, each seen from the side or from behind with the head bowed; one unmistakably adult volunteer (a woman of about forty, taller and broader than the children) standing by the bookshelf in side view with a closed book and no phone; the house is seen at a three-quarter angle from some distance. The copy in `38_PROMPT_PETA_LIMA_TANTANGAN_DAN_SKENARIO.md` got the same text (38 says the two are changed together).
+- **W-K3** (cooking steam). The old prompt itself asked for "steaming pots" and "boiling water", against the Wonosobo rule. Now: pots with their lids on, no steam, vapour or smoke anywhere; warmth comes from golden light under the stall roof and from people holding their bowls. Decision: cooking steam is banned too rather than excepted, because at slide size steam from a pot reads as smoke, and the rule exists so that nothing in a Wonosobo background looks like a crater or a fire. The slide text still says the noodles are boiled; the picture does not have to show the steam.
+
+The shared Wonosobo rule in 37 now names steam (it only named smoke; `AGENTS.md` already banned steam), and the 37 checklist is sharper on the three points. The table rows and the one-line descriptions of the three pictures follow the new scenes. A dated line under *Kebijakan perubahan* in 37 records the change.
+
+**ChatGPT workspace.** `TASKS.md`: the three rows are `redo: <fault>`, with a note that the prompt was rewritten. `AGENTS.md`: a new part *A row marked `redo: …`* (read the prompt again from the document, start a new conversation, never edit the earlier picture, look for the named fault first); the checks now say that no face is turned toward the viewer, that at least one figure is unmistakably adult wherever there are children, that people are counted when the prompt gives a number, what a calm lower third means, and that steam includes cooking steam.
+
+**Not done.** The three pictures are not regenerated: that is ChatGPT's work (the earlier files stay in `out/` until then and must not be installed). Cultural accuracy of the scenes is still unchecked, as before.
