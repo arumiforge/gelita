@@ -4561,6 +4561,14 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .scenario-feedback.is-safe { border-left-color: #6FBF73; }
 .scenario-safe { font-weight: 700; color: #FFF3C4; }
 .instruction-audio { display: inline-flex; margin-left: var(--gap-2); vertical-align: middle; }
+/* In the one-band asides (Isi Rumpang, Benar atau Salah, Skenario Digital) the instruction ▶ sits
+   beside the text: as a grid row of its own it fell below the band, cut off and out of reach
+   (manual check 32 §15.3 no. 4–5, 14 November 2026) */
+:is(.challenge-rumpang, .challenge-boleh, .challenge-skenario) .challenge-aside:has(> .instruction-audio) { grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: var(--gap-2); }
+:is(.challenge-rumpang, .challenge-boleh, .challenge-skenario) .challenge-aside:has(> .instruction-audio) > :not(.instruction, .instruction-audio) { grid-column: 1 / -1; }
+:is(.challenge-rumpang, .challenge-boleh, .challenge-skenario) .challenge-aside > .instruction-audio { margin-left: 0; padding: .125rem; }
+/* Two lines of the Skenario Digital instruction in its 60 dp band, at the reading size (33 M-06) */
+.challenge-skenario .instruction { line-height: 1.3; }
 /* Region map: "Lihat cerita penghubung" under the Skenario Digital card (part 6) */
 .node-bridge { display: inline-flex; align-items: center; gap: .25rem; font-size: var(--fs-small, .875rem); color: var(--gold-300); text-decoration: underline; }
 

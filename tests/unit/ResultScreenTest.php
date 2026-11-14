@@ -196,6 +196,17 @@ final class ResultScreenTest extends CIUnitTestCase
         $this->assertStringContainsString(esc(lang('Game.exhaustedNote')), $page);
     }
 
+    public function testSkenarioShowsTheTriesUsedNotZeroOfThree(): void
+    {
+        // Manual check 32 §15.3 no. 1: tries are per scenario, so check_count stays 0
+        $page = $this->finished(['completion_reason' => 'tries_exhausted', 'check_count' => 0, 'stars' => 1], 'skenario', null, false, 7);
+
+        $this->assertStringContainsString(' ' . lang('Game.triesUsed') . '</dt>', $page);
+        $this->assertStringContainsString('<dd class="num">7</dd>', $page);
+        $this->assertStringNotContainsString(lang('Game.triesOf', [0, 3]), $page);
+        $this->assertStringNotContainsString(' ' . lang('Game.resultTries') . '</dt>', $page);
+    }
+
     public function testFirstTryMessage(): void
     {
         $page = $this->finished(['check_count' => 1, 'stars' => 3, 'first_pass_correct' => 1]);
@@ -273,7 +284,7 @@ final class ResultScreenTest extends CIUnitTestCase
     }
 
     /** @param array<string, mixed> $attempt */
-    private function finished(array $attempt = [], string $engine = 'puzzle', ?int $wrongTaps = null, bool $levelDone = false): string
+    private function finished(array $attempt = [], string $engine = 'puzzle', ?int $wrongTaps = null, bool $levelDone = false, ?int $scenarioTries = null): string
     {
         $entity = new ChallengeAttempt();
         $entity->injectRawData($attempt + ['id' => 105, 'session_id' => 9, 'challenge_node_id' => 11, 'status' => 'completed',
@@ -291,6 +302,7 @@ final class ResultScreenTest extends CIUnitTestCase
             'allCompleted'    => $levelDone,
             'nextRegion'      => null,
             'wrongTaps'       => $wrongTaps,
+            'scenarioTries'   => $scenarioTries,
         ]);
     }
 }

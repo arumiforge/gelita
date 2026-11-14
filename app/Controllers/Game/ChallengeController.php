@@ -178,6 +178,10 @@ class ChallengeController extends BaseGameController
             'wrongTaps'       => $node?->engine_type === 'cari'
                 ? array_sum(array_map(static fn ($r): int => (int) $r->wrong_click_count, model(ItemResponseModel::class)->forAttempt($attempt->id)))
                 : null,
+            // Skenario Digital has tries per scenario and no check (check_count 0): the tries used on all scenarios
+            'scenarioTries'   => $node?->engine_type === 'skenario'
+                ? array_sum(array_map(static fn ($r): int => (int) $r->try_count, model(ItemResponseModel::class)->forAttempt($attempt->id)))
+                : null,
         ]);
     }
 

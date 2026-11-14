@@ -970,8 +970,10 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 
 /* Skenario Digital (part 6, 32 §6.2): situation left, instruction + the two steps right, action bar */
 .challenge-skenario .scenario-situation { --x: 32;  --y: 140; --w: 616; --h: 500; }
-.challenge-skenario .challenge-aside    { --x: 664; --y: 140; --w: 584; --h: 56; }
-.challenge-skenario .scenario-steps     { --x: 664; --y: 204; --w: 584; --h: 436; }
+/* The instruction band holds its two lines (and the ▶ beside them, game.css): 60 dp, was 56,
+   which cut the second line on every screen (manual check 32 §15.3 no. 5, 14 November 2026) */
+.challenge-skenario .challenge-aside    { --x: 664; --y: 140; --w: 584; --h: 60; }
+.challenge-skenario .scenario-steps     { --x: 664; --y: 208; --w: 584; --h: 432; }
 .challenge-skenario .arena-actions      { --x: 32;  --y: 648; --w: 1216; --h: 56; }
 
 /* Cari Objek: bilah petunjuk, daftar benda, adegan 16:9, panel kanan (instruksi) */
