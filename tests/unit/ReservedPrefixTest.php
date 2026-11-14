@@ -3,6 +3,7 @@
 use App\Controllers\Game\RegisterController;
 use App\Validation\GelitaRules;
 use CodeIgniter\Test\CIUnitTestCase;
+use Tests\Support\Database\ResetTables;
 
 /**
  * `uji.` and `sim_` are kept for test accounts and the simulator (research
@@ -12,6 +13,22 @@ use CodeIgniter\Test\CIUnitTestCase;
  */
 final class ReservedPrefixTest extends CIUnitTestCase
 {
+    use ResetTables;
+
+    // rulesFor() looks up the field-mode study, so the schema must exist even
+    // when this file runs alone (as it does in CI).
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->createResetTables();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->dropResetTables();
+        parent::tearDown();
+    }
+
     public function testStudentsCannotRegisterWithTheReservedPrefixes(): void
     {
         $rules = new GelitaRules();
