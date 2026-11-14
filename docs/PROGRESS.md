@@ -97,3 +97,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `r10-cek-manual-gelombang-e` | Cloud session, 14 November 2026: the open wave E manual checks (29 §16.3 no. 2; 30 §19.3 no. 1–6, 8; 32 §15.3 no. 1–6) on MariaDB dev installs with Playwright, three workers in worktrees | Checks running; no results recorded yet. No PR (owner decides) |
