@@ -10,8 +10,17 @@
   "labels": {},
   "reference_audio": "preview.mp3",
   "clone_samples": [],
-  "note": "One voice for both languages (owner, 15 November 2026). No takes yet; clone samples come from its accepted takes once they exist.",
+  "note": "One voice for both languages (owner, 15 November 2026), the akun-1 voice. A second voice was designed on akun-2 (Free plan) and not used (`languages` empty); `languages` on an account row says which languages its voice serves, all of them when absent. Clone samples come from its accepted takes once they exist.",
   "accounts": [
+    {
+      "account": "akun-2",
+      "languages": [],
+      "voice_id": "9jk1K9VKFPFiBvMGrfwJ",
+      "how": "new Voice Design (Free plan, no Instant Voice Clone) from the description above, model eleven_ttv_v3, preview line intro-01; the owner picked preview 2 of 3; not used: the owner went back to akun-1 (Starter, credits topped up) the same day, before any take was made",
+      "preview": "preview-akun-2.mp3",
+      "noted_on": "2026-11-15",
+      "share_link": ""
+    },
     {
       "account": "akun-1",
       "voice_id": "RiC7WfZdhpblZ6cqa2Dr",

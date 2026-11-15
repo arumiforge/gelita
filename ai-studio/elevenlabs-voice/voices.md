@@ -14,6 +14,8 @@ ElevenLabs model: v4 (`eleven_v4`)
 
 A voice ID works only in the account that made it. The five voices are kept in `voices/` (description, labels, preview, clone samples, and the voice ID and share link per account), with the steps to bring them to another account: `voices/README.md`. When the takes move to another account, the voice table above gets that account's voice IDs.
 
+Narator's takes are made on `akun-1` with its own voice, in both languages. A second Narator voice designed on `akun-2` (Free plan, 15 November 2026) is not used: the owner went back to `akun-1` the same day, before any take (`voices/narator/voice.json`).
+
 ## How the settings are used
 
 Chosen by the owner on 15 November 2026 after a pilot of five takes (three settings for one story line, two clue lines). Model v4 has two voice settings, stability and similarity; it has no style and no speed setting, so the "style" in the column heading stays empty.
@@ -25,6 +27,7 @@ Chosen by the owner on 15 November 2026 after a pilot of five takes (three setti
 | Situations and instructions (Narator) | `scenario_situation`, `challenge_instruction` | the text only, no tags | 0.80 | 0.85 |
 
 - **Language:** `language_code` is set to `id` for Indonesian takes and `en` for English takes, so numbers and place names are read in the take's language.
+- **Narator in English (owner, 15 November 2026): slower, one pace.** The first English pilots ran at 146–194 words per minute, too fast for grade 5. Tags barely slow model v4 down, so every English Narator take is mastered with `WPM=130 WORDS=<words in teks_en> ./master.sh …`, which slows it to 130 words per minute with ffmpeg's `atempo` (pitch kept; never sped up; rubberband was tried first and dropped because the owner heard an echo in earphones). Story lines are typed with `[warmly] [slowly] [clearly] `; scored situations and instructions stay without tags. All 47 measure 129–130 words per minute. Indonesian takes keep their own pace (no `WPM`).
 - **English voice (owner, 15 November 2026):** Mbah Kedu's English takes use a voice of their own (`fWH0Fha1DCawTa59sMfX`, named *Mbah Kedu — English Narration* in ElevenLabs), with the same model, the same two rows above, and the same tags. With it, his `voice_profile` for English is exactly 200 characters, the limit; a longer voice name or settings cell would be cut off, so shorten something before adding to that row.
 - **Direction tags** (v4 only) are words in square brackets before the text. They are not spoken and are not part of the line; the text after them is `teks_id` exactly as written. One pair of tags per line, the same pair for every story line. They cost about 18 characters of credits per line.
 - **Clues are read flat on purpose.** They are part of scored questions (`README.md` → *Voice direction*), so they get no tags and a higher stability, the same for every clue.
@@ -66,5 +69,6 @@ Respellings typed into ElevenLabs instead of the written text. The text in `line
 | `"Official Game Bintang Team ✓"` | `"Official Game Bintang Team, with a check mark"` | English | `skenario-wnb-5-a02` |
 | `sekolah-kita.example/masuk` | `sekolah strip kita titik example garis miring masuk` | Indonesian | `skenario-wnb-5-b02` |
 | `sekolah-kita.example/masuk` | `sekolah dash kita dot example slash masuk` (the Indonesian words keep their Indonesian sound) | English | `skenario-wnb-5-b02` |
+| `Kedu` (also in `Mbah Kedu`) | `/kəˈdu/` (IPA, the Javanese *e pepet*; model v4 reads IPA between slashes) | English | every English line with Kedu, from Narator's English takes on (owner, 15 November 2026); Indonesian takes keep the written word, and Mbah Kedu's accepted English takes stay as they are |
 
 The four rows above are the agreed readings (`docs/revisi-10-analitik/12_CERITA_PENGHUBUNG_DAN_NARASI.md` → *Arahan suara*; English ones set by the owner on 15 November 2026). No take has been made with them yet: if the voice still misreads one, adjust the typed text and keep the reading.

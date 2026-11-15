@@ -41,6 +41,8 @@ Lines whose `konteks` is `scenario_situation` or `post_clue` are part of scored 
 
 Raw ElevenLabs takes differ by up to 3.5 LU from line to line, so a take that skips this step sounds louder or softer than its neighbours.
 
+For English takes, put `WPM=130 WORDS=<word count of teks_en>` before the command: it slows the trimmed take to 130 words per minute with ffmpeg's `atempo` (pitch kept, never sped up; `voices.md` → *How the settings are used*). If the finished MP3 peaks above −1 dBFS, the script lowers that file's gain in 0.2 dB steps and encodes it again.
+
 In a shell loop that reads a list from standard input, run each take through `master.sh` as usual: its `ffmpeg` calls use `-nostdin`, so they no longer swallow the rest of the list.
 
 ## What is done
