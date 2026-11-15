@@ -448,3 +448,53 @@ The owner's first batch from `ai-studio/chatgpt-images/` (branch `images-chatgpt
 **Left for the owner's acceptance** (also in the Notes cells of `TASKS.md`): M-K3 has a busy lower third; M-L1 shows five children on phones without a clear adult and one child facing the viewer; W-K3 shows cooking steam at a food stall; the 2.8 MB candidate `inbox/M-K2-needs-relief-reference.png` should be deleted once M-K2 is settled. Cultural accuracy was not checked. TMG-P11, MGL-P05R and M-K2 stay blocked on reference material.
 
 **Not done.** Nothing is installed: the rows are `generated`, not `accepted`. After acceptance a Claude session installs them (`ai-studio/README.md`) and measures the five stops per map into `CatalogImporter::MAP_STOPS`.
+
+## Three picture prompts rewritten and sent back to ChatGPT (15 November 2026, branch `nty/adoring-goldberg-a3kr3a`)
+
+The owner asked to fix the prompts behind the three points the review of PR #357 left open, and to set up the ChatGPT workspace so the pictures are made again from the new text.
+
+**Prompts** (`docs/revisi-10-analitik/37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md`; only the scene sentence of each block changed, the shared style, place, people, safety, delivery and constraint lines are untouched):
+
+- **M-K3** (busy lower third). The old scene was "a high, gentle aerial view", which puts fields, houses and ponds everywhere, also under the text panel. Now the view is from a shaded hilltop: the three temples and the golden line sit in the upper two thirds, and the lower third is named as one dark, plain band of grass with a list of what may not be in it.
+- **M-L1** (no clear adult, one child facing the viewer). "A few children … with an adult volunteer, holding phones" let the model draw five children and no adult. Now: exactly three children, each seen from the side or from behind with the head bowed; one unmistakably adult volunteer (a woman of about forty, taller and broader than the children) standing by the bookshelf in side view with a closed book and no phone; the house is seen at a three-quarter angle from some distance. The copy in `38_PROMPT_PETA_LIMA_TANTANGAN_DAN_SKENARIO.md` got the same text (38 says the two are changed together).
+- **W-K3** (cooking steam). The old prompt itself asked for "steaming pots" and "boiling water", against the Wonosobo rule. Now: pots with their lids on, no steam, vapour or smoke anywhere; warmth comes from golden light under the stall roof and from people holding their bowls. Decision: cooking steam is banned too rather than excepted, because at slide size steam from a pot reads as smoke, and the rule exists so that nothing in a Wonosobo background looks like a crater or a fire. The slide text still says the noodles are boiled; the picture does not have to show the steam.
+
+The shared Wonosobo rule in 37 now names steam (it only named smoke; `AGENTS.md` already banned steam), and the 37 checklist is sharper on the three points. The table rows and the one-line descriptions of the three pictures follow the new scenes. A dated line under *Kebijakan perubahan* in 37 records the change.
+
+**ChatGPT workspace.** `TASKS.md`: the three rows are `redo: <fault>`, with a note that the prompt was rewritten. `AGENTS.md`: a new part *A row marked `redo: …`* (read the prompt again from the document, start a new conversation, never edit the earlier picture, look for the named fault first); the checks now say that no face is turned toward the viewer, that at least one figure is unmistakably adult wherever there are children, that people are counted when the prompt gives a number, what a calm lower third means, and that steam includes cooking steam.
+
+**Not done.** The three pictures are not regenerated: that is ChatGPT's work (the earlier files stay in `out/` until then and must not be installed). Cultural accuracy of the scenes is still unchecked, as before.
+
+## Mbah Kedu's Indonesian ElevenLabs takes (15 November 2026, branch `nty/adoring-goldberg-a3kr3a`)
+
+The owner asked for Mbah Kedu's backup narration with model v4 and the custom voice `H1jaNlN43es4HneQ6wdS`, with stability, similarity and any audio effect set to fit GELITA, and to be asked where a choice was theirs.
+
+**Connection.** ElevenLabs is reached through its connector (no API key in the repository or the environment). Takes are made as nodes of an ElevenLabs flow, one node per line, labelled with the line's `kode_berkas`; the finished MP3 is downloaded from the signed link the connector returns.
+
+**Pilot, then the owner's choice.** Five takes: one story line (`intro-05`) at stability 0.50, at 0.65, and at 0.65 with the v4 direction tags `[warmly] [slowly]`; one scored clue at 0.80; one Cari Objek clue at 0.65. All at similarity 0.85. The owner listened and chose:
+
+| Lines | Typed into ElevenLabs | Stability | Similarity |
+|---|---|---|---|
+| Story (57): `intro`, `region_intro`, `level_open`, `level_done`, `scenario_open`, `ending` | `[warmly] [slowly] ` + `teks_id` | 0.65 | 0.85 |
+| Clues (36): `hunt_clue`, `post_clue` | `teks_id` only | 0.80 | 0.85 |
+
+- Story: the owner picked the tagged take over the two untagged ones (the recommendation was 0.65 without tags, for predictability).
+- Clues: not asked, decided here. They are scored, so tone must not point at an answer (`12` → *Arahan suara untuk situasi dan petunjuk yang dinilai*): no tags, and a higher stability so every clue is read the same way. The 12 Cari Objek clues get the same treatment as the 24 *Periksa Unggahan* clues so that all questions sound alike.
+- Model v4 has no style and no speed setting; pace comes from the voice and the `[slowly]` tag. `language_code` is `id`.
+- One take per line (the connector's default is two). The owner agreed to this when choosing the scope.
+
+**No audio effect** (owner's choice, as recommended). ElevenLabs offers reverb rooms, radio and phone filters and noise beds; none is used. A dry voice is clearer for ten-year-olds on school speakers, sits better over the game's music, and matches the voice actors' recordings that replace these takes later.
+
+**Mastering** is the only processing: new `ai-studio/elevenlabs-voice/master.sh` (ffmpeg) trims the ends, applies one fixed gain to the narration loudness of `docs/naskah-cerita.md`, limits the highest peaks, adds 0.3 s of silence at both ends, and writes MP3 mono 44.1 kHz 96 kbps. Raw takes ranged from −15.8 to −19.3 LUFS in the pilot; mastered files measure −16.4 to −16.6 LUFS with peaks at or below −1.2 dBFS. The target in the script is −16; the finished MP3 reads about 0.5 LU lower, the same for every file, and was left there.
+
+**Result.** 93 files in `ai-studio/elevenlabs-voice/out/id/` (966 s of speech, 12 MB), `lines.csv` marks them `ada`, `voices.md` carries the settings in the cell the installer reads (the `voice_profile` it builds is 194 of 200 characters) and a new part *How the settings are used*; `README.md` there describes the mastering step. Two pilot takes were kept as the final ones (`intro-05`, `unggahan-wnb-4-b02`); the other 91 were generated in one run.
+
+**Checked by measurement, not by ear.** Every `kode_berkas` of Mbah Kedu has exactly one file; all files have the same format and loudness; pace is steady (story 10.6 to 14.2 characters per second, median 12.5; clues 12.7 to 16.1, median 14.3). An independent transcription of one tagged take confirmed that all words are spoken and the tags are not. Three story lines stand out in pitch, six to eight semitones above the others: `dialog-temanggung-08` ("Tunggu, Le! Berhenti!"), `dialog-magelang-06` and `dialog-wonosobo-04` (both quote people shouting). The model acted the exclamation marks; whether that fits, above all for the earthquake chain message in `dialog-wonosobo-04`, is for the owner's ear.
+
+**Not checked.** Nobody has listened to the 88 takes outside the pilot. Wrong stress, a misread number (`2.672`, `832 Masehi`, `abad ke-8 dan ke-9`, `7.500`, `8.000`, `72`), or the Javanese address *Le* can only be caught by listening. The connector's own "transcription" of a take it generated returns the typed text, not what was spoken, so it proves nothing; a real transcription costs about 5.5 credits per second (about 5,300 credits for all 93) and was not bought. The prompts were typed line by line from `lines.csv`; a typing slip would show up only when listening against the text. `gelita:narration:install --dry-run` was not run (it needs a database).
+
+**Credits.** 14,360 used on 15 November 2026 (pilot 970, one transcription 108, the run 13,282); 24,127 of 40,000 left until the monthly reset.
+
+**Not done.** Nothing is installed in the game. Narator and Jaka have no voice yet; Mbah Kedu has no English voice (this one was designed for Indonesian with a Kedu accent). Before any ElevenLabs take is used with students: the `04` entry and the researcher, as already listed in `docs/PROGRESS.md`.
+
+**Accepted (owner, 15 November 2026).** After listening, the owner found the voice right and cleared the takes to go into the system. Installing them is left to a new session (`docs/PROGRESS.md`); the `04` entry and the note to the researcher are still due before students hear them.

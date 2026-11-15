@@ -10,14 +10,16 @@ Whoever works here (the owner in the ElevenLabs app, or an agent with ElevenLabs
 |---|---|
 | `lines.csv` | Every line to voice: 187 lines, each in Indonesian and English (about 24,000 characters per language). Also the done list: columns `berkas_id` and `berkas_en` say `ada` or `belum` |
 | `voices.md` | The model, the chosen voice per speaker and language, and any pronunciation fixes. Fill it in before the first take. The install command reads the line `ElevenLabs model:` and the first table, so keep the table's columns and the speaker names as they are |
-| `out/id/`, `out/en/` | The results, one file per line and language |
+| `out/id/`, `out/en/` | The results, one file per line and language, already mastered |
+| `master.sh` | Brings one take to the game's narration format (needs `ffmpeg`): `./master.sh RAW.mp3 out/id/{kode_berkas}.mp3` |
 
 ## Making a recording
 
 1. Take a row of `lines.csv`. The text to voice is `teks_id` (Indonesian) or `teks_en` (English), exactly as written. The speaker is in `tokoh`: Narator, Jaka, or Mbah Kedu.
-2. Use that speaker's voice from `voices.md`. One voice per speaker and language, the same for every line.
-3. Save the take as `out/id/{kode_berkas}.mp3` or `out/en/{kode_berkas}.mp3`, for example `out/id/intro-01.mp3`. The file name is the whole link between a recording and its line, so it must match `kode_berkas` exactly. ElevenLabs' standard MP3 output works as it is.
+2. Use that speaker's voice and settings from `voices.md` (→ *How the settings are used*: story lines and clue lines have their own row). One voice per speaker and language, the same for every line.
+3. Download the take (ElevenLabs' standard MP3) and master it straight into `out/`: `./master.sh RAW.mp3 out/id/{kode_berkas}.mp3`, or `out/en/…` for English, for example `out/id/intro-01.mp3`. The file name is the whole link between a recording and its line, so it must match `kode_berkas` exactly. Raw takes are not kept in the repository.
 4. Listen once: every word of the text is there, nothing is added, no cut-off at the end.
+5. Lines with the same text (some `a`/`b` clue pairs) still get one file each: pair a download with its line by the label you gave it in ElevenLabs, never by its text.
 
 If a word is mispronounced (a Javanese name, a web address), fix it with a respelling in the ElevenLabs input only and write the respelling in `voices.md`. Never change `lines.csv`: it is generated from the game's script.
 
@@ -32,9 +34,15 @@ Lines whose `konteks` is `scenario_situation` or `post_clue` are part of scored 
 - Web addresses are read as written: `sekolah-kita.example/masuk` is "sekolah strip kita titik example garis miring masuk". The mark ✓ is read "bertanda centang". Emoji are not read.
 - *Periksa Unggahan* clues are read without stressing the part that is the key.
 
+## Mastering
+
+`master.sh` trims silence at both ends, moves the take to the game's narration loudness with one fixed gain, holds the highest peaks under about −1.5 dBFS, adds 0.3 s of silence before and after, and writes MP3 mono, 44.1 kHz, 96 kbps (the format of `docs/naskah-cerita.md`). Finished files measure about −16.5 LUFS, within 0.1 of each other. It adds no reverb, filter, or noise, and it does not change pace or pitch.
+
+Raw ElevenLabs takes differ by up to 3.5 LU from line to line, so a take that skips this step sounds louder or softer than its neighbours.
+
 ## What is done
 
-A line is done when its file exists. To refresh the done columns of `lines.csv` (and the line texts, if the script changed), a Claude Code session runs this on a development install (`tools/dev/serve.sh` sets one up):
+A line is done when its file exists. State on 15 November 2026: Mbah Kedu's 93 Indonesian lines are in `out/id/`, made with model v4 through an ElevenLabs flow named *GELITA · Mbah Kedu (id) · takes* (one node per line, labelled with its `kode_berkas`); the owner has not listened to them all yet. Narator, Jaka, and all English lines are still to do. To refresh the done columns of `lines.csv` (and the line texts, if the script changed), a Claude Code session runs this on a development install (`tools/dev/serve.sh` sets one up):
 
 ```bash
 php spark gelita:narration:list --csv=ai-studio/elevenlabs-voice/lines.csv --dir=ai-studio/elevenlabs-voice/out
