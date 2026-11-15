@@ -498,3 +498,21 @@ The owner asked for Mbah Kedu's backup narration with model v4 and the custom vo
 **Not done.** Nothing is installed in the game. Narator and Jaka have no voice yet; Mbah Kedu has no English voice (this one was designed for Indonesian with a Kedu accent). Before any ElevenLabs take is used with students: the `04` entry and the researcher, as already listed in `docs/PROGRESS.md`.
 
 **Accepted (owner, 15 November 2026).** After listening, the owner found the voice right and cleared the takes to go into the system. Installing them is left to a new session (`docs/PROGRESS.md`); the `04` entry and the note to the researcher are still due before students hear them.
+
+## Mbah Kedu's English ElevenLabs takes (15 November 2026, branch `nty/gifted-cray-tyh5xu`)
+
+The owner confirmed the Indonesian takes once more (already accepted, section above) and asked for Mbah Kedu's English narration with the voice `fWH0Fha1DCawTa59sMfX`, model v4, and otherwise the settings of the Indonesian takes.
+
+**Settings, unchanged from the Indonesian run.** Story lines (57): `[warmly] [slowly] ` + `teks_en`, stability 0.65, similarity 0.85. Clues (36): `teks_en` only, stability 0.80, similarity 0.85. No audio effect, one take per line, every take through `master.sh`. The only difference is `language_code` `en`. The voice is named *Mbah Kedu — English Narration* in ElevenLabs; `voices.md` now carries it in the English column, and the `voice_profile` the installer builds from it is exactly 200 characters, the column's limit (noted in `voices.md`).
+
+**How.** The same connector and the same method as the Indonesian run: a flow *GELITA · Mbah Kedu (en) · takes*, one node per line labelled with its `kode_berkas`, the node settings copied from a node of the Indonesian flow. One line (`intro-05`) was generated and mastered first to check the voice and the chain, then the other 92 in four batches. The signed links were downloaded and mastered into `out/en/`; a session-to-line map tied each download to its line, never its text (the `a`/`b` clue pairs with the same text got one file each).
+
+**Result.** 93 files in `ai-studio/elevenlabs-voice/out/en/` (1,020 s, 12 MB), MP3 mono 44.1 kHz 96 kbps, −16.4 to −16.7 LUFS, peaks at or below −1.4 dBFS; pace story 10.7 to 14.5 characters per second (median 12.8), clues 12.5 to 16.2 (median 14.7), close to the Indonesian takes. `lines.csv` marks the 93 English files `ada`. Credits: 13,800 used; 10,327 of 40,000 left until the reset on 14 December 2026, not enough for Narator and Jaka in Indonesian (about 12,500).
+
+**Two English clues carried a note for the translator.** `mgl-4-x03` and `wnb-4-x04` had the 36 review note ("Diterjemahkan ulang: bank lama …") inside the clue text, so English players saw it on screen and it would have been read aloud. The takes voice the clue without the note. The note was inside the table cell in `36`, so the converter copied it into the data files; it now sits on its own line under the table (the information is kept), the converter output matches the data files byte for byte, and the workbook is rebuilt. The bank tests, the narration tests and the full suite pass. On an installed server the fix arrives with the next bank import (`gelita:bank:import`), which changes only these two English prompts.
+
+**`master.sh` reads no standard input any more.** Its `ffmpeg` calls ate the rest of a URL list when run inside a `while read` loop; `-nostdin` fixes that and does not change the output.
+
+**Not checked.** Nobody has listened to the English takes. The tags were chosen for the Indonesian voice; how `[warmly] [slowly]` sound with this voice, the Javanese names (Sindoro, Sumbing, Umbul Jumprit, Liyangan, Gondosuli, Klipoh, Tuksongo, ongklok, bundengan, uceng), the numbers (2,672, 832 CE, 72, 8,000, 7,500), and the shouted quotes in `dialog-temanggung-08`, `dialog-magelang-06` and `dialog-wonosobo-04` are for the owner's ear. `gelita:narration:install --dry-run` was not run (it needs a database); the `voices.md` parser was run on the file and gives the profile above.
+
+**Not done.** Nothing is installed. The `04` entry and the note to the researcher are still due before students hear any ElevenLabs take.

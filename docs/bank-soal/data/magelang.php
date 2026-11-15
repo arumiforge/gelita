@@ -959,7 +959,7 @@ return [
                         'type'         => 'find_object',
                         'prompt'       => [
                             'Temukan jajanan dari singkong yang dimasak, ditumbuk, lalu diberi gula. Jajanan ini membuat Magelang punya julukan khusus.',
-                            'Find the snack made of cassava that is cooked, pounded, and sweetened. This snack gave Magelang a special nickname. Diterjemahkan ulang: bank lama steamed; 08 kini "dimasak" (cek fakta MGL-35 di [25](25_CEK_FAKTA_BUDAYA.md): getuk dikukus atau direbus).',
+                            'Find the snack made of cassava that is cooked, pounded, and sweetened. This snack gave Magelang a special nickname.',
                         ],
                         'x'            => 55.7,
                         'y'            => 45.33,
