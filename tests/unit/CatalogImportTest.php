@@ -340,6 +340,31 @@ final class CatalogImportTest extends CIUnitTestCase
         $this->assertSame('installed', $forced[0]['status']);
     }
 
+    /**
+     * An illustration that shows something else than the photo it replaces brings its own caption
+     * (owner, 15 November 2026). The caption follows the list also when the picture is already installed.
+     */
+    public function testLibraryEntryBringsItsOwnCaption(): void
+    {
+        $this->setCatalogCaption('library.temanggung.p1.1', ['id' => 'Dua gunung dari desa', 'en' => 'Two mountains from a village']);
+        $this->importer()->run();
+        $media = $this->sqlite->table('library_media')->where('caption_id', 'Dua gunung dari desa')->get()->getRowArray();
+
+        $this->assertNotNull($media, 'the entry\'s caption replaced the photo\'s caption');
+        $this->assertSame('Two mountains from a village', $media['caption_en']);
+
+        $this->setCatalogCaption('library.temanggung.p1.1', ['id' => 'Sindoro dan Sumbing', 'en' => 'Sindoro and Sumbing']);
+        $report = array_column($this->importer()->run(), null, 'source');
+
+        $this->assertSame('skipped', $report['library.temanggung.p1.1']['status'], 'the picture itself is not installed twice');
+        $this->assertSame('Sindoro dan Sumbing', $this->sqlite->table('library_media')->where('id', $media['id'])->get()->getRow('caption_id'));
+
+        // A caption in one language only is not a caption: the medium keeps what it has
+        $this->setCatalogCaption('library.temanggung.p1.1', ['id' => 'Hanya satu bahasa']);
+        $this->importer()->run();
+        $this->assertSame('Sindoro dan Sumbing', $this->sqlite->table('library_media')->where('id', $media['id'])->get()->getRow('caption_id'));
+    }
+
     /** The flag icons icon.language-id / -en are the HUD language icons (owner request 18 October 2026). */
     public function testLanguageIconsComeFromTheFlagIcons(): void
     {
@@ -652,6 +677,21 @@ final class CatalogImportTest extends CIUnitTestCase
 
         $data[] = ['id' => 'audio', 'key' => 'audio.music.map', 'file' => 'assets/audio/map.mp3', 'size' => 'Audio', 'cat' => 'Musik'];
         file_put_contents($this->catalog . '/data.json', json_encode($data));
+    }
+
+    /** @param array<string, string> $caption */
+    private function setCatalogCaption(string $key, array $caption): void
+    {
+        $path = $this->catalog . '/data.json';
+        $data = json_decode((string) file_get_contents($path), true);
+
+        foreach ($data as &$entry) {
+            if ($entry['key'] === $key) {
+                $entry['caption'] = $caption;
+            }
+        }
+
+        file_put_contents($path, json_encode($data));
     }
 
     private function removeDir(string $dir): void

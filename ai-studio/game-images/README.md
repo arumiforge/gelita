@@ -8,7 +8,7 @@ Nothing here is loaded by the game at run time, and the folder is never served (
 
 | Path | Read by | Notes |
 |---|---|---|
-| `data.json` | `App\Libraries\CatalogImporter::entries()` | 514 picture entries: `key`, `file`, `cat`, plus title, size, and the prompt the picture was made from. Slimmed on 15 November 2026: the 97 audio entries and the status fields of the old gallery page are gone (git history). |
+| `data.json` | `App\Libraries\CatalogImporter::entries()` | 464 picture entries (514 until the 50 vector icons were dropped in the review of 15 November 2026): `key`, `file`, `cat`, plus title, size, and the prompt the picture was made from. A Pustaka entry may carry `caption` (`{"id": …, "en": …}`): the importer then replaces the caption of the photo the picture stands in for. Slimmed on 15 November 2026: the 97 audio entries and the status fields of the old gallery page are gone (git history). |
 | `assets/{karakter,tantangan,pustaka,ikon,latar,referensi,antarmuka,logo,lencana,peta}/` | the importer, through `data.json` | Lossless WebP masters (SVG for vector icons), named after their key. |
 | `mockup/gambar-mockup/*/aset/` | `CatalogImporter::MOCKUP_FILES` and `MOCKUP_DIRS` | 68 pictures that are not in `data.json` (Skenario Digital, test stimuli, interim bridge-story backgrounds, Jaka's avatar, the Peta Kedu island map). The folder names are those of the old catalogue. |
 | `REVIEW.md`, `review/` | the owner | The review list of every picture and its contact sheets. Temporary: removed when the review is done. |
