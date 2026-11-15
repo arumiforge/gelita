@@ -11,6 +11,7 @@ Whoever works here (the owner in the ElevenLabs app, or an agent with ElevenLabs
 | `lines.csv` | Every line to voice: 187 lines, each in Indonesian and English (about 24,000 characters per language). Also the done list: columns `berkas_id` and `berkas_en` say `ada` or `belum` |
 | `voices.md` | The model, the chosen voice per speaker and language, and any pronunciation fixes. Fill it in before the first take. The install command reads the line `ElevenLabs model:` and the first table, so keep the table's columns and the speaker names as they are |
 | `out/id/`, `out/en/` | The results, one file per line and language, already mastered |
+| `voices/` | The five voices (Narator; Jaka and Mbah Kedu per language), kept for any ElevenLabs account: description, preview, clone samples, voice ID and share link per account. How to move them: `voices/README.md` |
 | `master.sh` | Brings one take to the game's narration format (needs `ffmpeg`): `./master.sh RAW.mp3 out/id/{kode_berkas}.mp3` |
 
 ## Making a recording

@@ -1,0 +1,37 @@
+{
+  "speaker": "Mbah Kedu",
+  "languages": [
+    "id"
+  ],
+  "made_with": "ElevenLabs Voice Design (category \"generated\")",
+  "name": "Mbah Kedu",
+  "description": "Suara karakter orisinal Mbah Kedu, kakek sepuh dan kuncen dari Kedu, Jawa Tengah. Berbahasa Indonesia dengan logat Jawa Kedu, membimbing Jaka berusia 11 tahun menjelajahi Dataran Kedu dan menyelesaikan tantangan. Pilihan 1 yang dipilih pengguna, dirancang dengan acuan pengukuran enam rekaman Mbah.",
+  "labels": {
+    "accent": "Jawa Kedu",
+    "character": "Mbah Kedu",
+    "age": "old",
+    "gender": "male",
+    "language": "id"
+  },
+  "reference_audio": "preview.mp3",
+  "clone_samples": [
+    "out/id/intro-05.mp3",
+    "out/id/intro-08.mp3",
+    "out/id/kenal-temanggung-01.mp3",
+    "out/id/kenal-temanggung-02.mp3",
+    "out/id/kenal-temanggung-03.mp3",
+    "out/id/kenal-temanggung-04.mp3",
+    "out/id/kenal-magelang-01.mp3",
+    "out/id/kenal-magelang-02.mp3"
+  ],
+  "note": "All 93 lines made and accepted (15 November 2026).",
+  "accounts": [
+    {
+      "account": "akun-1",
+      "voice_id": "H1jaNlN43es4HneQ6wdS",
+      "how": "designed here",
+      "noted_on": "2026-11-15",
+      "share_link": ""
+    }
+  ]
+}

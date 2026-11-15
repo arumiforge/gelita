@@ -6,6 +6,13 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 15 November 2026
 
+**Suara sintetis untuk Narator dan Jaka juga disetujui peneliti; suara disimpan agar bisa dipakai dari akun lain** (cabang `pw/confident-gauss-m36qew`) · `asal: pengembang` · `disetujui peneliti` (disampaikan pengembang, 15 November 2026) · tidak mengubah dokumen lain
+
+- **Persetujuan.** Pengembang menyampaikan bahwa peneliti menyetujui pemakaian suara sintetis untuk narasi saat ini, termasuk Narator dan Jaka, bukan hanya Mbah Kedu. Syarat di entri di bawah ("peneliti diberi tahu lagi saat rekaman Narator dan Jaka jadi") terpenuhi oleh persetujuan ini. Suaranya tetap ditinjau validator nanti, dan perubahan dari tinjauan itu dicatat sebagai entri baru di sini.
+- **Suara tokoh.** Narator memakai satu suara untuk bahasa Indonesia dan Inggris; Jaka dan Mbah Kedu masing-masing satu suara per bahasa. Kelima suara dirancang pengembang. Rekaman Narator dan Jaka belum dibuat; setiap rekaman tetap disetujui satu per satu di panel dan mengikuti [12 → Arahan suara](12_CERITA_PENGHUBUNG_DAN_NARASI.md#arahan-suara-untuk-situasi-dan-petunjuk-yang-dinilai).
+- **Beberapa akun.** Karena kredit akun yang dipakai tinggal sedikit, kelima suara disimpan di repositori (`ai-studio/elevenlabs-voice/voices/`) supaya pembuatan rekaman bisa pindah ke akun lain. Suara yang sama dipindahkan lewat tautan berbagi; suara tiruan (klon) dari rekaman yang tersimpan hanya cadangan. Satu tokoh dalam satu bahasa tetap memakai satu suara untuk semua barisnya; memakai klon untuk baris tokoh yang sudah selesai hanya dengan keputusan pengembang yang dicatat di sini.
+- **Akibat ke data penelitian.** Tidak berubah: setiap rekaman tetap tercatat sebagai suara sintetis (`production_method = tts`) dengan keterangan suara (`voice_profile`) yang menyebut suara yang dipakai, termasuk bila suaranya berasal dari akun lain.
+
 **Bacaan bahasa Inggris untuk tanda ✓ dan alamat situs di dua situasi Skenario Digital** (cabang `aru/zen-dirac-ghknt1`) · `asal: pengembang` · `disetujui pengembang` · mengubah 12
 
 [12 → Arahan suara](12_CERITA_PENGHUBUNG_DAN_NARASI.md#arahan-suara-untuk-situasi-dan-petunjuk-yang-dinilai) baru menetapkan bacaan bahasa Indonesia. Untuk rekaman bahasa Inggris, pengembang memilih:

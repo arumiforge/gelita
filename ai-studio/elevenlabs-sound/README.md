@@ -51,9 +51,11 @@ The targets are those of the current files (measured 15 November 2026), so a new
 
 A sound is done when its file exists in `out/`. The owner listens and deletes a file that is not good enough; what is left in `out/` counts as accepted when the owner says so (in the pull request or to the installing session). Sounds can be made and installed in any order; a sound without a take keeps the game's current file.
 
-## Credits and licence
+## Credits and permission
 
-ElevenLabs' terms for music and sound effects depend on the plan the account is on. Before the first take is installed, the owner checks that the plan allows using the results in GELITA, and the installing session writes the credit in `README.md` → *Lisensi dan kredit* and in `docs/audio.md`. The credits are shared with the narration: Narator's and Jaka's lines still need about 12,600 per language (`../elevenlabs-voice/voices.md`).
+The owner allows ElevenLabs music and sound effects in GELITA (15 November 2026); the account is on a paid plan (Starter). The installing session still writes the credit in `README.md` → *Lisensi dan kredit* and in `docs/audio.md` with the first installed file.
+
+The credits are shared with the narration. On 15 November 2026 the account had 6,825 of 40,000 left until 14 December 2026, and Narator's and Jaka's lines still need about 12,600 per language; the owner decided to spend none for now. Work can move to another ElevenLabs account at any time: nothing in this folder depends on one account (the voices for the narration are kept in `../elevenlabs-voice/voices/`).
 
 ## Installing (not done from this folder)
 

@@ -6,9 +6,13 @@ ElevenLabs model: v4 (`eleven_v4`)
 
 | Speaker (`tokoh`) | Character | Indonesian voice (name, voice ID) | English voice (name, voice ID) | Settings (stability, similarity, style) |
 |---|---|---|---|---|
-| Narator | Neutral storyteller | | | |
-| Jaka | Boy, curious and polite | | | |
+| Narator | Neutral storyteller | narator (`RiC7WfZdhpblZ6cqa2Dr`) | narator (`RiC7WfZdhpblZ6cqa2Dr`) | story: stability 0.65, similarity 0.85, [warmly] [slowly]; other lines: stability 0.80, similarity 0.85, no tags; no effect |
+| Jaka | Boy, curious and polite | Jaka (`XvqPaxRmAYmYehRouVnM`) | Jaka english (`N4XCfNUh8sOhcRAo7UPE`) | story: stability 0.65, similarity 0.85, [warmly] [slowly]; no effect |
 | Mbah Kedu | Elderly man, calm and kind | Mbah Kedu (`H1jaNlN43es4HneQ6wdS`), custom voice | Mbah Kedu — English Narration (`fWH0Fha1DCawTa59sMfX`) | story: stability 0.65, similarity 0.85, [warmly] [slowly]; clues: stability 0.80, similarity 0.85, no tags; no effect |
+
+## Several ElevenLabs accounts
+
+A voice ID works only in the account that made it. The five voices are kept in `voices/` (description, labels, preview, clone samples, and the voice ID and share link per account), with the steps to bring them to another account: `voices/README.md`. When the takes move to another account, the voice table above gets that account's voice IDs.
 
 ## How the settings are used
 
@@ -30,10 +34,10 @@ Chosen by the owner on 15 November 2026 after a pilot of five takes (three setti
 
 ## Narator and Jaka: before the first take
 
-Both get a synthetic voice too (owner, 15 November 2026). Neither has a voice yet: 47 lines each per language, 94 files per language. The list was checked on 15 November 2026: `lines.csv` matches the game's script line for line, and no file of theirs exists yet.
+Both get a synthetic voice too (owner, 15 November 2026), approved by the researcher like Mbah Kedu's and still to be reviewed by the validators (`docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`, 15 November 2026). Their voices exist since 15 November 2026 (table above; designed by the owner: Narator one voice for both languages, Jaka one per language), but no take yet: 47 lines each per language, 94 files per language. The settings cells follow the rows below and were not piloted yet: make two or three pilot takes per voice and correct the cell before the rest. The list was checked on 15 November 2026: `lines.csv` matches the game's script line for line, and no file of theirs exists yet.
 
 - **Settings.** The table above covers every `konteks` they have. Jaka: story row only (47 lines, six of them `map_intro` and `map_done`). Narator: story row for `intro` and `ending` (8 lines), the third row for the 24 `scenario_situation` lines (scored, so flat like the clues) and the 15 `challenge_instruction` lines (instructions, read plain and steady).
-- **Room in the voice cell.** With the same settings cell as Mbah Kedu's, the voice cell (name and voice ID, backticks not counted) may be at most 52 characters per language, or the `voice_profile` is cut off at 200.
+- **Room in the voice cell.** With the same settings cell as Mbah Kedu's, the voice cell (name and voice ID, backticks not counted) may be at most 52 characters per language, or the `voice_profile` is cut off at 200. `NarrationVoicesTest` checks every speaker and language.
 - **Credits.** About 12,600 to 12,700 per language for the two speakers together (11,642 characters of Indonesian text, 11,715 of English, plus about 1,000 for the tags of the 55 story lines).
 - **Lines whose text holds something a voice may misread.** Listen to these first, and write any respelling that was needed in the table below.
 
