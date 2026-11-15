@@ -241,3 +241,6 @@ Plan: `docs/revisi-10-analitik/32_IMPLEMENTASI_SKENARIO_DIGITAL.md` §8–§9; s
 - `gelita:reset` rebuilds items and challenges, then relinks every registered item and instruction recording (`NarrationImporter::relinkClues()`).
 - Every tap is logged in `audio_usage_events` with the attempt id; `instruction_replays` (part 9) counts all `challenge_instruction` plays, since none play on their own.
 
+## Narration back at 96 kbps (owner, 15 November 2026)
+
+The owner lifted the 50 MB package target (S5 in [`rencana-paket-aset.md`](rencana-paket-aset.md)) and decided that narration is not re-encoded to save space: quality stays as delivered. The ElevenLabs backup takes are installed at the 96 kbps of `ai-studio/elevenlabs-voice/master.sh` (MP3 mono, 44.1 kHz, about −16.5 LUFS), and the asset checklist now names 96 kbps for narration. The 48 kbps section above describes the old synthetic narration, which is no longer in the repository.

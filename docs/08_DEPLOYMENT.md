@@ -584,7 +584,7 @@ Instalasi baru adalah satu-satunya cara memasang GELITA. Urutannya sama di kedua
 | 1 | Kode dan `.env` | `composer install --no-dev --optimize-autoloader`, `cp env .env`, `php spark key:generate` | — | `deploy` |
 | 2 | Skema | `php spark migrate` | `gelita_migrate` (DSN) | `www-data` |
 | 3 | Isi awal | `GELITA_ADMIN_PASSWORD='…' php spark db:seed DatabaseSeeder` | `gelita_app` | `www-data` |
-| 4 | Narasi | `php spark gelita:narration:import`, lalu setujui di panel | `gelita_app` | `www-data` |
+| 4 | Narasi | `php spark gelita:narration:install` (narasi cadangan ElevenLabs dari `ai-studio/elevenlabs-voice/out/`), `php spark gelita:narration:import`, lalu setujui di panel | `gelita_app` | `www-data` |
 | 5 | Verifikasi konten | `php spark gelita:content:verify` | `gelita_app` | `www-data` |
 | 6 | Gambar asli | ganti 66 gambar contoh lewat panel, sampai daftar siap penelitian hijau | — | — |
 | 7 | Uji asap | [Verifikasi Setelah Deploy](#verifikasi-setelah-deploy) | — | — |
@@ -646,7 +646,11 @@ read -rsp 'Sandi admin pertama: ' GELITA_ADMIN_PASSWORD && echo && export GELITA
 sudo --preserve-env=GELITA_ADMIN_PASSWORD -u www-data php spark db:seed DatabaseSeeder
 unset GELITA_ADMIN_PASSWORD
 
-# 6. Rekaman narasi pengisi suara di public/assets/audio/narasi/{id,en}/ → audio draft (folder kosong: dilewati; rekaman juga dapat diunggah di panel)
+# 6a. Narasi cadangan ElevenLabs (ai-studio/elevenlabs-voice/out/) → folder narasi + produksi.json (tercatat sintetis; rekaman pengisi suara yang sudah ada tidak ditimpa)
+sudo -u www-data php spark gelita:narration:install --dry-run
+sudo -u www-data php spark gelita:narration:install
+
+# 6b. Rekaman narasi di public/assets/audio/narasi/{id,en}/ → audio draft (folder kosong: dilewati; rekaman juga dapat diunggah di panel)
 sudo -u www-data php spark gelita:narration:import --dry-run
 sudo -u www-data php spark gelita:narration:import
 
@@ -715,6 +719,8 @@ $env:GELITA_ADMIN_PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringBSTR(
 php spark db:seed DatabaseSeeder
 Remove-Item Env:\GELITA_ADMIN_PASSWORD
 
+php spark gelita:narration:install --dry-run
+php spark gelita:narration:install
 php spark gelita:narration:import --dry-run
 php spark gelita:narration:import
 php spark gelita:content:verify
@@ -959,7 +965,7 @@ Bila kode sudah terlanjur di-reset, pasang lagi commit rilis yang gagal (`git re
 | Ikon aplikasi | bawaan `public/assets/app/`, `public/favicon.ico`, `public/sw.js` (git); ikon pengganti dari panel (slot `app.*`) di `public/assets/uploads/` | git / panel | revalidasi; `/manifest.json` dibuat PHP (`AppController`), `no-cache` |
 | Data referensi | `public/assets/data/wilayah-id.json` | git | revalidasi |
 | Aset resmi | `public/assets/{ui,char,bg,map,challenge,library,reward,audio}/` | **git**; gambar: baru `ui/placeholder.svg` (view memakai pengganti); audio: musik dan efek suara; narasi pengisi suara tidak ikut git ([`docs/audio.md`](audio.md)) | revalidasi |
-| Rekaman narasi (folder) | `public/assets/audio/narasi/{id,en}/{kode}.mp3` | salin ke server, lalu `gelita:narration:import` | revalidasi |
+| Rekaman narasi (folder) | `public/assets/audio/narasi/{id,en}/{kode}.mp3` | pengisi suara: salin ke server; narasi cadangan ElevenLabs: ikut git di `ai-studio/elevenlabs-voice/out/`, dipasang dengan `gelita:narration:install`; lalu `gelita:narration:import` | revalidasi |
 | Musik & efek suara | `public/assets/audio/{music,sfx}/{nama}.mp3` | git (dibaca langsung `core/audio.js`, bukan `media_assets`) | revalidasi |
 | Unggahan dan berkas bangkitan | `public/assets/uploads/` (`{asset_key}.{ext}`, `mockup/`, `library.thumb.*`) | panel `/admin/media`, editor konten, unggah narasi, gambar contoh, poster video — **hanya di server** | revalidasi |
 | Asset package: media | `public/assets/p/{sha256[0:16]}.{ext}` | `gelita:paket:bangun` — **only on the server**, back it up with `uploads/` | immutable without `?v=` |

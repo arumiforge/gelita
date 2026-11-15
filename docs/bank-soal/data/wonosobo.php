@@ -1038,7 +1038,7 @@ return [
                         'type'         => 'find_object',
                         'prompt'       => [
                             'Temukan daun yang diseduh menjadi minuman hangat. Daun ini dipetik di perkebunan Tambi yang sudah ada sejak zaman Belanda.',
-                            'Find the leaves that are brewed into a warm drink. They are picked at the Tambi estate, which has been there since Dutch colonial times. Diterjemahkan ulang: bank lama since 1865; 08 kini "sejak zaman Belanda" (cek fakta 27 Oktober 2026, [25](25_CEK_FAKTA_BUDAYA.md)).',
+                            'Find the leaves that are brewed into a warm drink. They are picked at the Tambi estate, which has been there since Dutch colonial times.',
                         ],
                         'x'            => 61,
                         'y'            => 63.1,

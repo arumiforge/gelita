@@ -40,9 +40,11 @@ Lines whose `konteks` is `scenario_situation` or `post_clue` are part of scored 
 
 Raw ElevenLabs takes differ by up to 3.5 LU from line to line, so a take that skips this step sounds louder or softer than its neighbours.
 
+In a shell loop that reads a list from standard input, run each take through `master.sh` as usual: its `ffmpeg` calls use `-nostdin`, so they no longer swallow the rest of the list.
+
 ## What is done
 
-A line is done when its file exists. State on 15 November 2026: Mbah Kedu's 93 Indonesian lines are in `out/id/`, made with model v4 through an ElevenLabs flow named *GELITA · Mbah Kedu (id) · takes* (one node per line, labelled with its `kode_berkas`); the owner has not listened to them all yet. Narator, Jaka, and all English lines are still to do. To refresh the done columns of `lines.csv` (and the line texts, if the script changed), a Claude Code session runs this on a development install (`tools/dev/serve.sh` sets one up):
+A line is done when its file exists. State on 15 November 2026: Mbah Kedu's 93 lines are in both `out/id/` and `out/en/`, made with model v4 through the ElevenLabs flows *GELITA · Mbah Kedu (id) · takes* and *GELITA · Mbah Kedu (en) · takes* (one node per line, labelled with its `kode_berkas`). The owner accepted both (15 November 2026); the install was checked on a development install, and a server installs them with the steps below (also step 4 of *Instalasi baru* in `docs/08_DEPLOYMENT.md`). Narator and Jaka are still to do in both languages. To refresh the done columns of `lines.csv` (and the line texts, if the script changed), a Claude Code session runs this on a development install (`tools/dev/serve.sh` sets one up):
 
 ```bash
 php spark gelita:narration:list --csv=ai-studio/elevenlabs-voice/lines.csv --dir=ai-studio/elevenlabs-voice/out

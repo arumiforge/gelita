@@ -478,8 +478,10 @@ Dari bank lama (`magelang.php`); `mgl-4-x03` diterjemahkan ulang.
 | --- | --- |
 | mgl-4-x01 | Find the small bell-shaped structure full of holes. Borobudur has 72 of these on its round terraces. |
 | mgl-4-x02 | Find the colourful feather headdress worn by dancers of the folk dance from Tuksongo Village, Magelang. |
-| mgl-4-x03 | Find the snack made of cassava that is cooked, pounded, and sweetened. This snack gave Magelang a special nickname. **Diterjemahkan ulang:** bank lama *steamed*; 08 kini "dimasak" (cek fakta MGL-35 di [25](25_CEK_FAKTA_BUDAYA.md): getuk dikukus atau direbus). |
+| mgl-4-x03 | Find the snack made of cassava that is cooked, pounded, and sweetened. This snack gave Magelang a special nickname. |
 | mgl-4-x04 | Find the object made of clay that is shaped and then fired, made by the people of Klipoh Hamlet. |
+
+*mgl-4-x03*, diterjemahkan ulang: bank lama *steamed*; 08 kini "dimasak" (cek fakta MGL-35 di [25](25_CEK_FAKTA_BUDAYA.md): getuk dikukus atau direbus).
 
 Pengecoh (label bank lama): *Bamboo hobby horse*, *Sweet carica in a jar*, *Reog dadak merak*, *Angklung*, *Bakpia*, *Metal pot*.
 
@@ -811,7 +813,9 @@ Dari bank lama (`wonosobo.php`); `wnb-4-x04` diterjemahkan ulang.
 | wnb-4-x01 | Find the musical instrument shaped like a curved hood of woven bamboo. The hood once protected duck herders from the sun and rain, and then strings were added to pluck. |
 | wnb-4-x02 | Find the mountain fruit that looks like a papaya but is small. It grows well in cool air and is often made into sweets. |
 | wnb-4-x03 | Find the small bamboo basket that is dipped again and again into boiling water. Its name was used to name Wonosobo's special noodles. |
-| wnb-4-x04 | Find the leaves that are brewed into a warm drink. They are picked at the Tambi estate, which has been there since Dutch colonial times. **Diterjemahkan ulang:** bank lama *since 1865*; 08 kini "sejak zaman Belanda" (cek fakta 27 Oktober 2026, [25](25_CEK_FAKTA_BUDAYA.md)). |
+| wnb-4-x04 | Find the leaves that are brewed into a warm drink. They are picked at the Tambi estate, which has been there since Dutch colonial times. |
+
+*wnb-4-x04*, diterjemahkan ulang: bank lama *since 1865*; 08 kini "sejak zaman Belanda" (cek fakta 27 Oktober 2026, [25](25_CEK_FAKTA_BUDAYA.md)).
 
 Pengecoh (label bank lama): *Ordinary papaya*, *Rigen*, *A bowl of ongklok noodles*, *Angklung*, *Sasando*, *Coffee beans*, *Topeng Ireng headdress*, *Getuk*.
 

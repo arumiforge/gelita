@@ -46,7 +46,7 @@ Angka diukur di perangkat acuan (Chromebook 4 GB dan iPad generasi ke-9 atau set
 | S2 | Pindah layar selesai | ≤ 400 ms (Tahap 4); ≤ 150 ms untuk layar yang sudah diprefetch (Tahap 7, bila diputuskan, P1) | ketukan → layar baru tergambar dengan semua gambarnya sudah ter-*decode* |
 | S3 | Gambar tanpa kedip | 0 gambar yang muncul bertahap atau terlambat | layar baru tergambar → semua `<img>` di panggung `complete` |
 | S4 | Ganti bahasa | ≤ 400 ms (Tahap 4); ≤ 150 ms (Tahap 7, bila diputuskan, P1) | ketukan ID/EN → seluruh teks dan narasi berikutnya berbahasa baru |
-| S5 | Ukuran paket penuh | ≤ 50 MB; ≤ 40 MB bila narasi dikodekan ulang (§12 P2) | jumlah `bytes` manifest |
+| S5 | Ukuran paket penuh | ≤ 50 MB; ≤ 40 MB bila narasi dikodekan ulang (§12 P2). **Dicabut oleh pemilik, 15 November 2026:** paket luring boleh di atas 50 MB, dan narasi tidak dikodekan ulang ke 48 kbps (tetap 96 kbps, kualitas tidak diturunkan) | jumlah `bytes` manifest |
 | S6 | Unduh paket penuh di jaringan acuan (wajib sebelum Mulai, P11) | ≤ 7 menit untuk paket ≤ 40 MB | ketuk "Unduh" → tombol Mulai aktif |
 | S7 | Unduhan yang terputus dilanjutkan | 0 berkas lengkap yang diunduh ulang | buka lagi sesudah putus → unduhan selesai |
 | S8 | Sakelar paket admin (§6.3) | berlaku di setiap perangkat pada awal sesi berikutnya; 0 perangkat berganti mode di tengah sesi | admin menyalakan/mematikan → sesi baru memakai mode baru |
