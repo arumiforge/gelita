@@ -104,4 +104,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `aru/zen-dirac-ghknt1` | Cloud session: synthetic narration recorded in `04` and the research documents; Narator and Jaka lines checked before voicing | Documents only, no code; PR open |
