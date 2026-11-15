@@ -1,0 +1,95 @@
+{
+  "checked_on": "2026-11-15",
+  "purpose": "Owner-supplied photo references; references are not finished game artwork.",
+  "sources": [
+    {
+      "file": "reference-Pawon-Gunawan-Kartapranata-CC-BY-3.0.jpg",
+      "title": "Pawon.jpg",
+      "creator": "Gunawan Kartapranata",
+      "source": "https://id.wikipedia.org/wiki/Berkas:Pawon.jpg",
+      "canonical_source": "https://commons.wikimedia.org/wiki/File:Pawon.jpg",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8e/Pawon.jpg/1280px-Pawon.jpg",
+      "license": "CC BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0/",
+      "license_verified": true,
+      "changes": "1280 px Wikimedia thumbnail, otherwise unchanged",
+      "use": "Factual reference for the unapproved MGL-P05R candidate",
+      "sha256": "293c08e315ff77d5cda42ebea1eb440171a1f91ac589b09de2b6da6726064d91"
+    },
+    {
+      "file": "reference-Candi-Pawon-Masgatotkaca-CC-BY-SA-3.0.JPG",
+      "title": "Candi Pawon.JPG",
+      "creator": "Masgatotkaca",
+      "source": "https://id.wikipedia.org/wiki/Berkas:Candi_Pawon.JPG",
+      "canonical_source": "https://commons.wikimedia.org/wiki/File:Candi_Pawon.JPG",
+      "download": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/Candi_Pawon.JPG/1280px-Candi_Pawon.JPG",
+      "license": "CC BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "license_verified": true,
+      "changes": "1280 px Wikimedia thumbnail, otherwise unchanged",
+      "use": "Factual reference for the unapproved MGL-P05R candidate",
+      "sha256": "dd193e65e9b5c2893073e009f121f90524d27a615f75f802a5c9e7415f0e4975"
+    },
+    {
+      "source": "https://smartcity.temanggungkab.go.id/frontend/d_galleri/793",
+      "title": "Menjaga Denyut Wayang Kedu: Ki Yatman Siswo Wisono, Sang Penjaga Tradisi Tujuh Turunan dari Tening",
+      "license": null,
+      "license_verified": false,
+      "use": "Not downloaded or used for generation. No explicit photo reuse license found; site footer is copyright Dinas Kebudayaan dan Pariwisata 2023-2026. The Bootstrap template license does not license the photographs."
+    },
+    {
+      "source": "https://commons.wikimedia.org/wiki/File:Candi_Mendut_-_Reliefs_-_033_Jataka_Tale_(11833015634).jpg",
+      "title": "033 Jataka Tale at Candi Mendut",
+      "creator": "Photo Dharma (Anandajoti)",
+      "license": "CC BY 2.0",
+      "license_url": "https://creativecommons.org/licenses/by/2.0/",
+      "license_verified": true,
+      "use": "Not downloaded or used. This is Mendut, while M-K2 requires Borobudur. The visible label and actual destination of the owner link differed; both were inspected."
+    },
+    {
+      "file": "reference-Borobudur-O001-Cephas.jpg",
+      "title": "COLLECTIE_TROPENMUSEUM_Reliëf_O_1_op_de_verborgen_voet_van_de_Borobudur_TMnr_10015739.jpg",
+      "creator": "Kassian Cephas (as credited by UGM index), collection Tropenmuseum",
+      "index": "https://luk.staff.ugm.ac.id/Borobudur/relief/Cephas/kwb.html",
+      "download": "https://luk.staff.ugm.ac.id/Borobudur/relief/Cephas/COLLECTIE_TROPENMUSEUM_Reli%C3%ABf_O_1_op_de_verborgen_voet_van_de_Borobudur_TMnr_10015739.jpg",
+      "canonical_source": "https://commons.wikimedia.org/wiki/File:COLLECTIE_TROPENMUSEUM_Reli%C3%ABf_O_1_op_de_verborgen_voet_van_de_Borobudur_TMnr_10015739.jpg",
+      "license": null,
+      "license_verified": false,
+      "use": "Downloaded as an unverified reference candidate only; not used for generation. Commons file pages and image metadata API returned HTTP 403. Do not infer a specific license from neighboring files. These photographs show the hidden base, not a verified gallery corridor.",
+      "sha256": "0bd623543cf959e9bb8d9b29ae93e4f68c42a87661521925b103390ea0ebe90c"
+    },
+    {
+      "file": "reference-Borobudur-O002-Cephas.jpg",
+      "title": "COLLECTIE_TROPENMUSEUM_Reliëf_O_2_op_de_verborgen_voet_van_de_Borobudur_TMnr_10015740.jpg",
+      "creator": "Kassian Cephas (as credited by UGM index), collection Tropenmuseum",
+      "index": "https://luk.staff.ugm.ac.id/Borobudur/relief/Cephas/kwb.html",
+      "download": "https://luk.staff.ugm.ac.id/Borobudur/relief/Cephas/COLLECTIE_TROPENMUSEUM_Reli%C3%ABf_O_2_op_de_verborgen_voet_van_de_Borobudur_TMnr_10015740.jpg",
+      "canonical_source": "https://commons.wikimedia.org/wiki/File:COLLECTIE_TROPENMUSEUM_Reli%C3%ABf_O_2_op_de_verborgen_voet_van_de_Borobudur_TMnr_10015740.jpg",
+      "license": null,
+      "license_verified": false,
+      "use": "Downloaded as an unverified reference candidate only; not used for generation. Commons file pages and image metadata API returned HTTP 403. Do not infer a specific license from neighboring files. These photographs show the hidden base, not a verified gallery corridor.",
+      "sha256": "def00419bbcac86c0b5f6eb75676c4cbb574d6f9808d243f540b78051912aedd"
+    },
+    {
+      "file": "reference-Borobudur-O003-Cephas.jpg",
+      "title": "COLLECTIE_TROPENMUSEUM_Reliëf_O_3_op_de_verborgen_voet_van_de_Borobudur_TMnr_10015741.jpg",
+      "creator": "Kassian Cephas (as credited by UGM index), collection Tropenmuseum",
+      "index": "https://luk.staff.ugm.ac.id/Borobudur/relief/Cephas/kwb.html",
+      "download": "https://luk.staff.ugm.ac.id/Borobudur/relief/Cephas/COLLECTIE_TROPENMUSEUM_Reli%C3%ABf_O_3_op_de_verborgen_voet_van_de_Borobudur_TMnr_10015741.jpg",
+      "canonical_source": "https://commons.wikimedia.org/wiki/File:COLLECTIE_TROPENMUSEUM_Reli%C3%ABf_O_3_op_de_verborgen_voet_van_de_Borobudur_TMnr_10015741.jpg",
+      "license": null,
+      "license_verified": false,
+      "use": "Downloaded as an unverified reference candidate only; not used for generation. Commons file pages and image metadata API returned HTTP 403. Do not infer a specific license from neighboring files. These photographs show the hidden base, not a verified gallery corridor.",
+      "sha256": "ff99b0f368a18187880ba080740eb6812d6887aef62ca95551bf9f98b28e6152"
+    }
+  ],
+  "candidate": {
+    "file": "MGL-P05R-candidate-failed-checks.webp",
+    "status": "NOT APPROVED; do not install",
+    "changes": "AI-generated stylized illustration using the two Pawon photographs as factual references; converted and resized to 1200 x 1200 WebP quality 90.",
+    "attribution": "Reference photographs: Pawon.jpg by Gunawan Kartapranata (CC BY 3.0), and Candi Pawon.JPG by Masgatotkaca (CC BY-SA 3.0); sources and license links above. AI illustration, not an unmodified photograph.",
+    "derivative_license": "CC BY-SA 3.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "failed_checks": "Three attempts failed photo fidelity or watermark checks. Final candidate still has a visible lower-right GELITA mark and stylized relief details need review."
+  }
+}
