@@ -6,6 +6,7 @@ Work that other AI tools do for GELITA, one folder per tool. Each tool reads its
 |---|---|---|---|---|
 | `chatgpt-images/` | ChatGPT (Codex or the ChatGPT app) | Pictures: story backgrounds, two Susun Gambar pictures, three region maps, one challenge card | `chatgpt-images/AGENTS.md` | `chatgpt-images/TASKS.md` (35 pictures) |
 | `elevenlabs-voice/` | ElevenLabs | Backup narration, 187 lines in two languages | `elevenlabs-voice/README.md` | `elevenlabs-voice/lines.csv` |
+| `elevenlabs-sound/` | ElevenLabs | Music (15 gamelan loops) and sound effects (6), made like the narration (owner, 15 November 2026) | `elevenlabs-sound/README.md` | `elevenlabs-sound/sounds.csv` (21 sounds) |
 
 ## How work moves
 
@@ -20,6 +21,7 @@ Work that other AI tools do for GELITA, one folder per tool. Each tool reads its
 - **Region maps**: replace the catalogue file, then measure the five stops into `CatalogImporter::MAP_STOPS` and update `CatalogImportTest` (38 → *Setelah gambar dibuat* no. 1).
 - **Challenge card**: replace `public/assets/ui/node-card-skenario.webp` (38 no. 2).
 - **Recordings**: `php spark gelita:narration:install`, then `gelita:narration:import` (`elevenlabs-voice/README.md` → *Installing*). The install command writes the manifest that marks them as synthetic; never copy takes into the narration folder by hand.
+- **Music and sound effects**: `php spark gelita:sound:install --dry-run`, then without `--dry-run` (`elevenlabs-sound/README.md` → *Installing*); commit the replaced files in `public/assets/audio/` with `produksi.json`. Never copy takes over the game's files by hand: the manifest records them as synthetic and gives browsers a new cache version.
 - Pictures and recordings stay drafts of the developer until the owner has accepted them; cultural checks by the validators still apply (37 and 38 → *Kebijakan perubahan*). Nothing is installed on the production server without the owner.
 
 ## Adding a tool

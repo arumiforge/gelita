@@ -34,8 +34,9 @@ final class AssetChecklist
      * disalin langsung ke folder itu (git atau salin berkas). Berkas yang tidak
      * ada membuat suara itu diam, permainan tetap berjalan. The background
      * tracks of 19 October 2026 (home/account, story, per region) are
-     * synthesized gamelan (generator removed 14 November 2026); a recording can replace
-     * any of them under the same name.
+     * synthesized gamelan (generator removed 14 November 2026). Since 15 November
+     * 2026 replacements are made with ElevenLabs in ai-studio/elevenlabs-sound/ and
+     * installed under the same name by gelita:sound:install (SoundInstaller).
      */
     public const SOUNDS = [
         'music/map'               => 'Musik Peta Kedu',
@@ -359,7 +360,7 @@ final class AssetChecklist
                 'key'        => 'public/' . $path,
                 'size'       => self::SOUND_SIZES[$name] ?? 'MP3 pendek (< 1 detik)',
                 'status'     => is_file(FCPATH . $path) ? 'ok' : 'missing',
-                'note'       => 'sudah tersedia bawaan; untuk menggantinya, petugas teknis menimpa berkas bernama sama di server (tidak lewat panel)',
+                'note'       => 'sudah tersedia bawaan; musik dan efek baru dari ElevenLabs dipasang petugas teknis dengan php spark gelita:sound:install (tidak lewat panel)',
                 'link'       => base_url($path),
                 'link_label' => 'Periksa berkas',
             ];
@@ -367,7 +368,7 @@ final class AssetChecklist
 
         return [
             'title' => 'Musik & efek suara',
-            'help'  => 'Musik dan bunyi bawaan (musik gamelan buatan komputer) sudah tersedia dan diputar setelah siswa mengetuk layar. Bila sebuah berkas tidak ada, bagian itu hanya tanpa suara. Petugas teknis: cara mengganti berkas bawaan ada di docs/audio.md.',
+            'help'  => 'Musik gamelan dan efek suara sudah tersedia dan diputar setelah siswa mengetuk layar. Bila sebuah berkas tidak ada, bagian itu hanya tanpa suara. Penggantinya dibuat dengan ElevenLabs di ai-studio/elevenlabs-sound/ dan dipasang petugas teknis (docs/audio.md).',
             'items' => $items,
         ];
     }

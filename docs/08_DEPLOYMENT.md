@@ -966,7 +966,7 @@ Bila kode sudah terlanjur di-reset, pasang lagi commit rilis yang gagal (`git re
 | Data referensi | `public/assets/data/wilayah-id.json` | git | revalidasi |
 | Aset resmi | `public/assets/{ui,char,bg,map,challenge,library,reward,audio}/` | **git**; gambar: baru `ui/placeholder.svg` (view memakai pengganti); audio: musik dan efek suara; narasi pengisi suara tidak ikut git ([`docs/audio.md`](audio.md)) | revalidasi |
 | Rekaman narasi (folder) | `public/assets/audio/narasi/{id,en}/{kode}.mp3` | pengisi suara: salin ke server; narasi cadangan ElevenLabs: ikut git di `ai-studio/elevenlabs-voice/out/`, dipasang dengan `gelita:narration:install`; lalu `gelita:narration:import` | revalidasi |
-| Musik & efek suara | `public/assets/audio/{music,sfx}/{nama}.mp3` | git (dibaca langsung `core/audio.js`, bukan `media_assets`) | revalidasi |
+| Musik & efek suara | `public/assets/audio/{music,sfx}/{nama}.mp3` | git (dibaca langsung `core/audio.js`, bukan `media_assets`); penggantinya dari ElevenLabs dipasang di cabang kerja dengan `gelita:sound:install`, yang menulis `public/assets/audio/produksi.json`, lalu ikut git | revalidasi; `?v=` dari `produksi.json` (`CONFIG.audioVersion`) |
 | Unggahan dan berkas bangkitan | `public/assets/uploads/` (`{asset_key}.{ext}`, `mockup/`, `library.thumb.*`) | panel `/admin/media`, editor konten, unggah narasi, gambar contoh, poster video — **hanya di server** | revalidasi |
 | Asset package: media | `public/assets/p/{sha256[0:16]}.{ext}` | `gelita:paket:bangun` — **only on the server**, back it up with `uploads/` | immutable without `?v=` |
 | Asset package: code | `public/assets/k/{code_version}/{css,js,vendor,fonts}/…`, `offline.html` | `gelita:paket:bangun` — only on the server | immutable without `?v=` |

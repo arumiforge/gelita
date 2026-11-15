@@ -44,11 +44,14 @@ const SFX_BASE = `${(document.body.dataset.base || '/').replace(/\/?$/, '/')}ass
 /**
  * URL of a music or sound-effect file: the asset package URL when the server
  * sent one (CONFIG.audioUrls, keys `music/map`, `sfx/click`; asset package
- * Stage 2), else the file in assets/audio/ as before.
+ * Stage 2), else the file in assets/audio/, with ?v= once gelita:sound:install
+ * has replaced files there (CONFIG.audioVersion).
  */
 export function soundUrl(folder, name) {
   const packaged = CONFIG.audioUrls[`${folder}/${name}`];
-  return typeof packaged === 'string' && packaged !== '' ? packaged : `${SFX_BASE}${folder}/${name}.mp3`;
+  if (typeof packaged === 'string' && packaged !== '') return packaged;
+  const version = CONFIG.audioVersion ? `?v=${encodeURIComponent(CONFIG.audioVersion)}` : '';
+  return `${SFX_BASE}${folder}/${name}.mp3${version}`;
 }
 
 const sounds = new Map();

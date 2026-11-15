@@ -8,6 +8,7 @@ Any other agent (ChatGPT, Codex, and similar) works in exactly one folder of `ai
 |---|---|---|
 | Generate or rename pictures | `ai-studio/chatgpt-images/` | `ai-studio/chatgpt-images/AGENTS.md`, then `TASKS.md` there |
 | Produce narration with ElevenLabs | `ai-studio/elevenlabs-voice/` | `ai-studio/elevenlabs-voice/README.md` |
+| Produce music or sound effects with ElevenLabs | `ai-studio/elevenlabs-sound/` | `ai-studio/elevenlabs-sound/README.md`, then `sounds.csv` there |
 
 Rules that hold everywhere:
 
