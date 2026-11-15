@@ -116,4 +116,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pw/confident-gauss-m36qew` | ElevenLabs voices kept for several accounts (`voices/`), Narator and Jaka in `voices.md`, researcher approval in `04`, music model corrected | Pushed, full suite green (1276 tests, 15 November 2026). Share links not made yet (owner) |
+| `pw/confident-gauss-m36qew` (PR #368) | ElevenLabs voices kept for several accounts (`voices/`), Narator and Jaka in `voices.md`, researcher approval in `04`, music model corrected | Pushed, full suite green (1276 tests, 15 November 2026). Share links not made yet (owner) |
