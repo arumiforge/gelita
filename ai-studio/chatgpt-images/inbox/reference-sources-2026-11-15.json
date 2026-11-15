@@ -33,9 +33,10 @@
     {
       "source": "https://smartcity.temanggungkab.go.id/frontend/d_galleri/793",
       "title": "Menjaga Denyut Wayang Kedu: Ki Yatman Siswo Wisono, Sang Penjaga Tradisi Tujuh Turunan dari Tening",
-      "license": null,
+      "license": "Direct permission confirmed by owner on 2026-11-15; not a public CC license",
       "license_verified": false,
-      "use": "Not downloaded or used for generation. No explicit photo reuse license found; site footer is copyright Dinas Kebudayaan dan Pariwisata 2023-2026. The Bootstrap template license does not license the photographs."
+      "use": "Factual puppet, screen and costume reference for TMG-P11; no portrait of the real dalang is intended. Earlier lack of a public photo license is superseded by owner-confirmed direct permission.",
+      "permission_confirmed_by_owner": true
     },
     {
       "source": "https://commons.wikimedia.org/wiki/File:Candi_Mendut_-_Reliefs_-_033_Jataka_Tale_(11833015634).jpg",
@@ -55,7 +56,7 @@
       "canonical_source": "https://commons.wikimedia.org/wiki/File:COLLECTIE_TROPENMUSEUM_Reli%C3%ABf_O_1_op_de_verborgen_voet_van_de_Borobudur_TMnr_10015739.jpg",
       "license": null,
       "license_verified": false,
-      "use": "Downloaded as an unverified reference candidate only; not used for generation. Commons file pages and image metadata API returned HTTP 403. Do not infer a specific license from neighboring files. These photographs show the hidden base, not a verified gallery corridor.",
+      "use": "Older UGM reference candidate; not used. Superseded for this task by owner-authorized Kemenag photographs. No license is inferred for this separate UGM copy.",
       "sha256": "0bd623543cf959e9bb8d9b29ae93e4f68c42a87661521925b103390ea0ebe90c"
     },
     {
@@ -67,7 +68,7 @@
       "canonical_source": "https://commons.wikimedia.org/wiki/File:COLLECTIE_TROPENMUSEUM_Reli%C3%ABf_O_2_op_de_verborgen_voet_van_de_Borobudur_TMnr_10015740.jpg",
       "license": null,
       "license_verified": false,
-      "use": "Downloaded as an unverified reference candidate only; not used for generation. Commons file pages and image metadata API returned HTTP 403. Do not infer a specific license from neighboring files. These photographs show the hidden base, not a verified gallery corridor.",
+      "use": "Older UGM reference candidate; not used. Superseded for this task by owner-authorized Kemenag photographs. No license is inferred for this separate UGM copy.",
       "sha256": "def00419bbcac86c0b5f6eb75676c4cbb574d6f9808d243f540b78051912aedd"
     },
     {
@@ -79,17 +80,244 @@
       "canonical_source": "https://commons.wikimedia.org/wiki/File:COLLECTIE_TROPENMUSEUM_Reli%C3%ABf_O_3_op_de_verborgen_voet_van_de_Borobudur_TMnr_10015741.jpg",
       "license": null,
       "license_verified": false,
-      "use": "Downloaded as an unverified reference candidate only; not used for generation. Commons file pages and image metadata API returned HTTP 403. Do not infer a specific license from neighboring files. These photographs show the hidden base, not a verified gallery corridor.",
+      "use": "Older UGM reference candidate; not used. Superseded for this task by owner-authorized Kemenag photographs. No license is inferred for this separate UGM copy.",
       "sha256": "ff99b0f368a18187880ba080740eb6812d6887aef62ca95551bf9f98b28e6152"
+    },
+    {
+      "file": "reference-Pawon-northwest-2025-Chainwit-CC-BY-4.0.jpg",
+      "title": "Candi Pawon - facade northwest (2025) - img 01.jpg",
+      "creator": "Chainwit.",
+      "source": "https://id.wikipedia.org/wiki/Berkas:Candi_Pawon_-_facade_northwest_%282025%29_-_img_01.jpg",
+      "canonical_source": "https://commons.wikimedia.org/wiki/File:Candi_Pawon_-_facade_northwest_%282025%29_-_img_01.jpg",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/d/d2/Candi_Pawon_-_facade_northwest_%282025%29_-_img_01.jpg?utm_campaign=index&utm_content=original&utm_source=id.wikipedia.org",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "license_verified": true,
+      "changes": "Original Wikimedia JPEG, unmodified",
+      "use": "Factual architecture and carving placement reference for final MGL-P05R illustration. The two standing niches flank the central tree panel at the same height.",
+      "sha256": "90411aadfc06f58199216af56873be098703dbad3dd5c07e687bb3541c5e6364",
+      "dimensions": [
+        4032,
+        3024
+      ]
+    },
+    {
+      "file": "reference-Pawon-kalpataru-Masgatotkaca-CC-BY-SA-3.0.jpg",
+      "title": "Kalpataru Candi Pawon.jpg",
+      "creator": "Masgatotkaca",
+      "source": "https://id.wikipedia.org/wiki/Berkas:Kalpataru_Candi_Pawon.jpg",
+      "canonical_source": "https://commons.wikimedia.org/wiki/File:Kalpataru_Candi_Pawon.jpg",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Kalpataru_Candi_Pawon.jpg?utm_campaign=index&utm_content=original&utm_source=id.wikipedia.org",
+      "license": "CC BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "license_verified": true,
+      "changes": "Original Wikimedia JPEG, unmodified",
+      "use": "Factual architecture and carving placement reference for final MGL-P05R illustration. The two standing niches flank the central tree panel at the same height.",
+      "sha256": "fc436ed27579bc269c367aaae4107c63c89348a2904a1aa87de798e7242c60bd",
+      "dimensions": [
+        1600,
+        1200
+      ]
+    },
+    {
+      "file": "reference-Wayang-Kedu-Smartcity-01.png",
+      "source": "https://smartcity.temanggungkab.go.id/frontend/d_galleri/793",
+      "download": "https://smartcity.temanggungkab.go.id/assets/galleri/6_1783340476.png",
+      "credit": "Smart City Temanggung; site footer credits Dinas Kebudayaan dan Pariwisata. Individual photographer is not named on the page.",
+      "license": "Direct permission confirmed by owner on 2026-11-15; no public CC license inferred",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "changes": "Downloaded source PNG, unmodified",
+      "use": "Factual puppet/costume/screen reference for generated TMG-P11, not a portrait instruction.",
+      "sha256": "1078b4769955c8239cbbcabf00ac807fde8b1559c94a67e2640f667ee7ce9bbe",
+      "dimensions": [
+        800,
+        534
+      ]
+    },
+    {
+      "file": "reference-Wayang-Kedu-Smartcity-02.png",
+      "source": "https://smartcity.temanggungkab.go.id/frontend/d_galleri/793",
+      "download": "https://smartcity.temanggungkab.go.id/assets/galleri/6_17833404761.png",
+      "credit": "Smart City Temanggung; site footer credits Dinas Kebudayaan dan Pariwisata. Individual photographer is not named on the page.",
+      "license": "Direct permission confirmed by owner on 2026-11-15; no public CC license inferred",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "changes": "Downloaded source PNG, unmodified",
+      "use": "Factual puppet/costume/screen reference for generated TMG-P11, not a portrait instruction.",
+      "sha256": "d9145b8fc1eed87b281528f660de6c0bccec80c3a02873c9876be6133d3aa824",
+      "dimensions": [
+        800,
+        534
+      ]
+    },
+    {
+      "file": "reference-Wayang-Kedu-Smartcity-03.png",
+      "source": "https://smartcity.temanggungkab.go.id/frontend/d_galleri/793",
+      "download": "https://smartcity.temanggungkab.go.id/assets/galleri/6_1783340477.png",
+      "credit": "Smart City Temanggung; site footer credits Dinas Kebudayaan dan Pariwisata. Individual photographer is not named on the page.",
+      "license": "Direct permission confirmed by owner on 2026-11-15; no public CC license inferred",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "changes": "Downloaded source PNG, unmodified",
+      "use": "Factual puppet/costume/screen reference for generated TMG-P11, not a portrait instruction.",
+      "sha256": "3231c03ff98501049cdb72ac9f94c50d1e8c4d1c723647050f538017983e14e6",
+      "dimensions": [
+        800,
+        534
+      ]
+    },
+    {
+      "file": "reference-Borobudur-Kemenag-05.jpg",
+      "title": "Borobudur gallery photograph 5.jpg",
+      "source": "https://bimasbuddha.kemenag.go.id/borobudur/360/galeri.html",
+      "supporting_page": "https://bimasbuddha.kemenag.go.id/borobudur/360/tentang-borobudur.html",
+      "download": "https://bimasbuddha.kemenag.go.id/borobudur/360/pictures/5.jpg",
+      "creator": "Lindra Hismanto",
+      "credit": "Koleksi foto Borobudur Hak Cipta Lindra Hismanto 2023, as credited by the Kemenag gallery.",
+      "license": "Direct permission/license confirmed by owner on 2026-11-15; no public CC license inferred",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "changes": "Downloaded source JPEG, unmodified",
+      "use": "Factual reference for M-K2 attempts. Final attempt uses corridor photograph 15 directly; attempts still failed relief-fidelity and quiet-lower-third checks.",
+      "sha256": "f1fb324d251fd79c3094c810c847c324098cc6b1dd8d95be9375d37cf87a32ab",
+      "dimensions": [
+        1080,
+        720
+      ]
+    },
+    {
+      "file": "reference-Borobudur-Kemenag-15.jpg",
+      "title": "Borobudur gallery photograph 15.jpg",
+      "source": "https://bimasbuddha.kemenag.go.id/borobudur/360/galeri.html",
+      "supporting_page": "https://bimasbuddha.kemenag.go.id/borobudur/360/tentang-borobudur.html",
+      "download": "https://bimasbuddha.kemenag.go.id/borobudur/360/pictures/15.jpg",
+      "creator": "Lindra Hismanto",
+      "credit": "Koleksi foto Borobudur Hak Cipta Lindra Hismanto 2023, as credited by the Kemenag gallery.",
+      "license": "Direct permission/license confirmed by owner on 2026-11-15; no public CC license inferred",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "changes": "Downloaded source JPEG, unmodified",
+      "use": "Factual reference for M-K2 attempts. Final attempt uses corridor photograph 15 directly; attempts still failed relief-fidelity and quiet-lower-third checks.",
+      "sha256": "a908c49aac0d59fe4f0de1b1b43aa017e44d6cd3c81b863afafeb8066f5488f6",
+      "dimensions": [
+        1080,
+        720
+      ]
+    },
+    {
+      "file": "reference-Borobudur-Kemenag-16.jpg",
+      "title": "Borobudur gallery photograph 16.jpg",
+      "source": "https://bimasbuddha.kemenag.go.id/borobudur/360/galeri.html",
+      "supporting_page": "https://bimasbuddha.kemenag.go.id/borobudur/360/tentang-borobudur.html",
+      "download": "https://bimasbuddha.kemenag.go.id/borobudur/360/pictures/16.jpg",
+      "creator": "Lindra Hismanto",
+      "credit": "Koleksi foto Borobudur Hak Cipta Lindra Hismanto 2023, as credited by the Kemenag gallery.",
+      "license": "Direct permission/license confirmed by owner on 2026-11-15; no public CC license inferred",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "changes": "Downloaded source JPEG, unmodified",
+      "use": "Factual reference for M-K2 attempts. Final attempt uses corridor photograph 15 directly; attempts still failed relief-fidelity and quiet-lower-third checks.",
+      "sha256": "ac0806880f75769b859db20bf909b30163f5d37c60c534f08ff38fb9d6c65c57",
+      "dimensions": [
+        1743,
+        720
+      ]
+    }
+  ],
+  "permission_updates": [
+    {
+      "date": "2026-11-15",
+      "reported_by": "repository owner in this chat",
+      "asset": "TMG-P11",
+      "basis": "Owner confirms permission was obtained by direct contact with the relevant party for the previously supplied Smart City Temanggung photographs.",
+      "public_license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "scope_recorded": "Use for this GELITA image task as confirmed by owner; no additional terms were supplied and no Creative Commons license is inferred."
+    },
+    {
+      "date": "2026-11-15",
+      "reported_by": "repository owner in this chat",
+      "asset": "M-K2",
+      "basis": "Owner confirms a new license/permission was obtained and the Borobudur photographs on the two supplied Bimas Buddha Kemenag pages may be used.",
+      "pages": [
+        "https://bimasbuddha.kemenag.go.id/borobudur/360/tentang-borobudur.html",
+        "https://bimasbuddha.kemenag.go.id/borobudur/360/galeri.html"
+      ],
+      "public_license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "scope_recorded": "Use for this GELITA image task as confirmed by owner; no additional terms were supplied and no Creative Commons license is inferred."
+    }
+  ],
+  "previous_candidates": [
+    {
+      "file": "MGL-P05R-candidate-failed-checks.webp",
+      "status": "Superseded by the final MGL-P05R output; this old generated candidate has been removed from inbox.",
+      "changes": "AI-generated stylized illustration using the two Pawon photographs as factual references; converted and resized to 1200 x 1200 WebP quality 90.",
+      "attribution": "Reference photographs: Pawon.jpg by Gunawan Kartapranata (CC BY 3.0), and Candi Pawon.JPG by Masgatotkaca (CC BY-SA 3.0); sources and license links above. AI illustration, not an unmodified photograph.",
+      "derivative_license": "CC BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "failed_checks": "Three attempts failed photo fidelity or watermark checks. Final candidate still has a visible lower-right GELITA mark and stylized relief details need review.",
+      "removed": true
+    }
+  ],
+  "generated_assets": [
+    {
+      "code": "TMG-P11",
+      "file": "out/challenge.item.tmg-1-k01.webp",
+      "status": "generated",
+      "dimensions": [
+        1200,
+        1200
+      ],
+      "format": "WebP",
+      "quality": 90,
+      "reference_files": [
+        "reference-Wayang-Kedu-Smartcity-01.png",
+        "reference-Wayang-Kedu-Smartcity-02.png",
+        "reference-Wayang-Kedu-Smartcity-03.png"
+      ],
+      "style_reference": "gelita-katalog/assets/referensi/reference.07.webp",
+      "attribution": "Wayang Kedu photo references: Smart City Temanggung, used with direct permission confirmed by the owner. Final image is an AI-generated illustration, not an unmodified photograph or a portrait of the real dalang.",
+      "sha256": "c7aa02613fdaabd33f06782f68e4ac0109d9e593feeb9fa77426ac9f021f249b"
+    },
+    {
+      "code": "MGL-P05R",
+      "file": "out/challenge.item.mgl-1-e01.webp",
+      "status": "generated",
+      "dimensions": [
+        1200,
+        1200
+      ],
+      "format": "WebP",
+      "quality": 90,
+      "reference_files": [
+        "reference-Pawon-northwest-2025-Chainwit-CC-BY-4.0.jpg",
+        "reference-Pawon-kalpataru-Masgatotkaca-CC-BY-SA-3.0.jpg"
+      ],
+      "style_reference": "gelita-katalog/assets/referensi/reference.07.webp",
+      "attribution": "Photo references: Candi Pawon - facade northwest (2025) - img 01.jpg by Chainwit. (CC BY 4.0), and Kalpataru Candi Pawon.jpg by Masgatotkaca (CC BY-SA 3.0), via Wikimedia Commons. AI-generated stylized illustration with a new garden composition; source and license links are recorded above.",
+      "adaptation_license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "review_note": "Visual checks performed against attached photos; final cultural/study acceptance remains with the owner.",
+      "sha256": "09908b407ec58e8ede7e58bc1488cc9c8c162a8d2bba8e245560aaef8b880a0c"
     }
   ],
   "candidate": {
-    "file": "MGL-P05R-candidate-failed-checks.webp",
-    "status": "NOT APPROVED; do not install",
-    "changes": "AI-generated stylized illustration using the two Pawon photographs as factual references; converted and resized to 1200 x 1200 WebP quality 90.",
-    "attribution": "Reference photographs: Pawon.jpg by Gunawan Kartapranata (CC BY 3.0), and Candi Pawon.JPG by Masgatotkaca (CC BY-SA 3.0); sources and license links above. AI illustration, not an unmodified photograph.",
-    "derivative_license": "CC BY-SA 3.0",
-    "license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
-    "failed_checks": "Three attempts failed photo fidelity or watermark checks. Final candidate still has a visible lower-right GELITA mark and stylized relief details need review."
+    "code": "M-K2",
+    "file": "M-K2-candidate-failed-checks.webp",
+    "status": "blocked: relief fidelity and quiet lower third checks",
+    "permission_status": "Permission resolved by owner-confirmed direct license; not blocked on licensing",
+    "dimensions": [
+      1920,
+      1080
+    ],
+    "format": "WebP",
+    "quality": 90,
+    "sha256": "bbbe40669b41b327c9492b3283233ee43b30212d6ccabac56cc42c1294238203",
+    "attempts_with_new_references": 3,
+    "last_attempt_basis": "reference-Borobudur-Kemenag-15.jpg used as the base image",
+    "failed_checks": "Relief detail is still changed rather than a faithful rendering of the photographed sequence, and the left wall intrudes into the lower-third text area. No further generation after three failed attempts under AGENTS.md.",
+    "credit": "Factual reference: Lindra Hismanto 2023, via Bimas Buddha Kemenag gallery, used with permission confirmed by owner. Candidate is an AI-generated illustration and is not approved for installation."
   }
 }
