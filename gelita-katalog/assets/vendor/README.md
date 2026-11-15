@@ -5,7 +5,7 @@ Halaman katalog memakai berkas yang disimpan di sini agar tetap bekerja tanpa in
 | Paket | Berkas | Asal dan lisensi |
 |---|---|---|
 | Bootstrap 5.3.8 | [CSS](bootstrap-5.3.8/bootstrap.min.css), [bundle JavaScript](bootstrap-5.3.8/bootstrap.bundle.min.js) | [Dokumentasi unduhan resmi](https://getbootstrap.com/docs/5.3/getting-started/download/), diunduh melalui jsDelivr pada 14 Oktober 2026; [MIT](bootstrap-5.3.8/LICENSE) |
-| Plus Jakarta Sans | WOFF2 Latin bobot 400 dan 700 di `plus-jakarta-sans/` | Disalin identik dari `mockup/gambar-mockup/tantangan-selesai-temanggung/aset-font/`; [SIL Open Font License 1.1](plus-jakarta-sans/LICENSE), salinan lisensi dari paket @fontsource/plus-jakarta-sans 5.2.6 |
+| Plus Jakarta Sans | WOFF2 Latin bobot 400 dan 700 di `plus-jakarta-sans/` | Sama dengan `public/assets/fonts/` milik permainan; [SIL Open Font License 1.1](plus-jakarta-sans/LICENSE), salinan lisensi dari paket @fontsource/plus-jakarta-sans 5.2.6 |
 
 SHA384 Bootstrap telah dicocokkan dengan nilai pada dokumentasi resmi:
 

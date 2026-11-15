@@ -73,6 +73,18 @@ Folders where other AI tools work for GELITA (`ai-studio/README.md`); Claude Cod
 - [ ] Run the `gelita-reviewer` subagent once on a real diff and adjust its checklist to what it misses or over-reports
 - [ ] `README.md`: review the audio licence line (Mimic 3, Piper) and the asset-size table, and re-read the panel bullets that are not about roles against the current screens
 
+## Asset catalogue audit (owner, 15 November 2026)
+
+Owner request: `gelita-katalog/` is out of date and has to follow the main repository, not the other way round. Audit and first step on branch `nty/laughing-ramanujan-l68r2v`; decision log *Asset catalogue audit*.
+
+- [x] Audit: what the importer reads (582 pictures), what nothing reads (332 files, 105 MB), which game slots the catalogue cannot fill, where pictures are stored twice
+- [x] Dead material removed (379 MB to 282 MB, 923 to 609 files); two documents moved to `docs/`; `gelita-katalog/AGENTS.md` and `README.md` rewritten
+- [ ] **Owner decision, on hold:** where the one committed copy of a picture lives. Today an accepted picture from `ai-studio/chatgpt-images/out/` is copied into `gelita-katalog/assets/` (a story background several times, once per slide). Options put to the owner: move it instead of copying; move every picture into `ai-studio/`; or let `data.json` point at the file in `ai-studio/` (several entries may share one file; the list then needs the accepted file's sha256 so a later overwrite in `out/` is refused). Not built; `CatalogImporter` has not been tried with a path outside the catalogue
+- [ ] **Owner decision:** the gallery page `gelita-katalog/index.html` stays as it is for now (owner). It can no longer be rebuilt; its page mock-up section, nine sound players and links to removed records are dead. Later either generate it from `ImageSlots` or remove it
+- [ ] `data.json` still has 97 audio entries and the page-only fields (prompts, style status, paths to removed records); untouched because the page stays. Slim it when the page is decided
+- [ ] Two catalogue pictures have no slot in the current question bank: `challenge.item.tmg-3-b03` (Arca Buddha duduk) and `challenge.item.tmg-3-c03` (Biji kopi sangrai); the importer still installs them as unused media rows. The bank's `challenge.item.tmg-3-b04` has no catalogue picture and stays a sample picture
+- [ ] The three region maps in the catalogue have four measured stops (`CatalogImporter::MAP_STOPS`); the game has five challenges per region. The five-stop maps are rows P-T, P-M, P-W of `ai-studio/chatgpt-images/TASKS.md`
+
 ## Before the research starts
 
 A server is always set up as a fresh install (`docs/08_DEPLOYMENT.md` → *Instalasi baru*), which runs the bank import, the story data, the catalogue import, and the package build. On a server updated in place instead, `docs/08` lists the commands (`gelita:katalog:impor`, `gelita:story:sync`, **Bangun ulang paket**).
@@ -80,7 +92,7 @@ A server is always set up as a fresh install (`docs/08_DEPLOYMENT.md` → *Insta
 **Content and art**
 
 - [ ] Record the voice-over narration (103 lines per language today; about 187 after the research revision, see `docs/revisi-10-analitik/12_CERITA_PENGHUBUNG_DAN_NARASI.md`) from the script PDF in **Rekaman narasi**, upload it, listen, and approve it. On a server that still has old TTS takes, press **Batalkan semua rekaman** for each language first (decision log, 17 October 2026)
-- [ ] The researcher checks every `needs_verification` item of the question bank and the facts in `gelita-katalog/update/telaah-draf-1-naskah-bank-soal.md` §6
+- [ ] The researcher checks every `needs_verification` item of the question bank and the facts in `docs/bank-soal/telaah-draf-1-naskah-bank-soal.md` §6
 - [ ] The researcher checks the Susun Gambar pictures against the reference photos and has two people assemble each puzzle
 - [ ] Art for the region story slides `bg.cerita-{kenal,dialog,tuntas}-{wilayah}-NN` (catalogue team); until it exists every slide shows the region background. Prompts in `docs/revisi-10-analitik/37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md` (4 November 2026). The bridge-story backgrounds `bg.cerita-layar-*` have interim pictures and their prompts are also in `38` (8 November 2026)
 - [ ] Replace or approve the remaining interim art: the AI Pustaka illustrations (owner: fine for now, replaced in the panel later)
@@ -127,3 +139,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `nty/laughing-ramanujan-l68r2v` | Cloud session; asset catalogue audit, step 1 (dead material removed, rules rewritten) | PR open. Verified: importer dry run on MariaDB before and after the removal (507 to install, 0 failed, both times), catalogue tests and full suite, gallery page opened in Chromium (517 of 519 pictures load). Not verified: a real install (only the dry run) |

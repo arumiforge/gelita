@@ -1,27 +1,41 @@
-# Instruksi agen proyek GELITA
+# Katalog Aset: rules for any agent working in this folder
 
-> **Slimmed on 14 November 2026 (owner).** The catalogue did its main job early in the project; the game now only needs `data.json`, `assets/`, and the pictures under `mockup/gambar-mockup/*/aset` (read by `php spark gelita:katalog:impor`), plus `index.html` as the gallery. Removed from the repository, still in git history before this date: `review/` (contact sheets), the two backup zips and every picture under `archive/`, and the raw generation outputs under `provenance/` (puzzle candidates, native files and factual references, result-UI, language-flag, Peta Kedu revision and mockup key assets). The JSON records in `archive/` and `provenance/` stay. Instructions below that point at the removed files are history. `scripts/validate.mjs` already failed before the slimming (the data embedded in `index.html` no longer equals `data.json`) and now also misses the removed folders; do not treat it as a gate.
+Rewritten 15 November 2026 after the owner's audit. Earlier versions of this file, and everything it used to point at (`docs/`, `reports/`, `provenance/`, `archive/`, `scripts/`, `update/`, the builder), are in git history before that date.
 
-Baca [README.md](README.md), [docs/CONTEXT.md](docs/CONTEXT.md), [docs/MEMORY.md](docs/MEMORY.md), dan [docs/PROGRESS.md](docs/PROGRESS.md) sebelum mengubah proyek. Gunakan [docs/AI-GUIDE.md](docs/AI-GUIDE.md) untuk peta folder dan alur kerja; skema entri ada di [docs/DATA-SCHEMA.md](docs/DATA-SCHEMA.md).
+## What this folder is
 
-- Keputusan pengguna 11 Oktober 2026: gunakan desain 3D/Jaka bersyal merah dengan `assets/referensi/reference.01.webp`. Jangan kembali ke pedoman 2D lurik–iket dari arsip.
-- Audio: permintaan 14 Oktober mengizinkan 3 musik dan 6 efek suara nonnarasi. MP3/master WAV sintetis tersedia; 88 Narasi tetap dibekukan. Baseline 97 brief di `archive/audio-baseline.json` tidak ditimpa. Perubahan metadata yang diizinkan dicatat di `provenance/nonnarration-audio-20261014.json`; jangan produksi ulang tanpa permintaan baru.
-- `data.json` adalah sumber aktif. Bangun `index.html`, prompt, dan laporan melalui `node build.mjs`; implementasi di `scripts/build.mjs`, template di `templates/catalog.template.html`.
-- Semua nama gambar mengikuti kode aset dan kelompok. Gunakan WebP untuk raster; jangan membuat ulang varian PNG. Pertahankan kode slot resmi dan tautan relatif dari root katalog.
-- Semua 273 visual ditandai “Sesuai gaya” atas keputusan pengguna 11 Oktober 2026 meskipun gambar lama belum diperbaiki. Pertahankan basis `user_override` dan `previous_style_review`. Jangan menyebutnya audit visual baru.
-- Permintaan 12 Oktober 2026: Jaka/Mbah Kedu kini 10 pose × 24 frame (240), mengganti 30 frame dan menambah 210. Total 580 entri: 483 visual/97 audio. Sepuluh key pose AI memakai gerak sekunder deterministik; jangan menyebutnya 240 generasi AI terpisah atau rig sendi. Provenance karakter ada di `provenance/character-generation-results.json` dan `provenance/character-keyposes/`.
-- Semua prompt aktif mengikuti Gelita: ilustrasi 3D/Jaka syal merah, ikon UI vektor emas yang jelas pada ukuran kecil, dan media faktual dokumenter. Prompt generasi lama adalah riwayat.
-- Seluruh 83 entri Ikon sudah dibuat ulang pada 11 Oktober 2026. Prompt hasil AI di `provenance/icon-generation-results.json` dan `provenance/generation-manifest.json`; `assets/ikon/vektor/` berisi sumber kontrol SVG. Jangan mengubah kode slot karena raster kini WebP.
-- Jangan menyatakan semua gambar siap produksi. Review lembar kontak bukan validasi budaya, lisensi, animasi, atau integrasi game.
-- Jangan membuat kembali `framegambarkarakter/jakahappy`; gunakan `assets/karakter/`. Jangan membuat kembali folder `source/` atau `sources/` yang tidak dipakai.
-- Struktur terbaru 12 Oktober 2026: dokumentasi di `docs/`, laporan di `reports/`, catatan generasi/migrasi di `provenance/`, pemeliharaan di `scripts/`. `README.md` tetap di root.
-- `archive/` berisi sejarah, baseline, dan cadangan; perintah dalam dokumen/skrip historis bukan instruksi aktif. Jangan menjalankan ulang skripnya sebagai pemeliharaan rutin.
-- Catat perubahan nyata dan hasil pemeriksaan dalam `docs/PROGRESS.md`. Jangan mengklaim pemeriksaan yang belum dijalankan. Panduan ada di `docs/MAINTENANCE.md`.
+The committed master pictures the game installs with `php spark gelita:katalog:impor`, plus an old gallery page. Nothing here is loaded by the game at run time, and the folder is never served (it holds answer-revealing pictures, so it stays outside `public/`).
 
-- Revisi puzzle 14 Oktober 2026: 611 entri (514 visual/97 audio), 66 visual Tantangan. 21 variasi d–j baru dan empat penggantian mengikuti update/gambar-puzzle. Gunakan [paket revisi](docs/PUZZLE-UPDATE-20261014.md) dan [manifest](provenance/puzzle-generation-results-20261014.json); jangan menjalankan ulang produksi bertanggal sebagai pemeliharaan rutin.
+| Path | Read by | Notes |
+|---|---|---|
+| `data.json` | `App\Libraries\CatalogImporter::entries()` | One entry per picture: `key`, `file`, `cat`. Entries whose `size` is `Audio` are skipped. |
+| `assets/{referensi,karakter,latar,peta,tantangan,pustaka,logo,antarmuka,ikon,lencana}/` | the importer, through `data.json` | Lossless WebP masters (SVG for vector icons), named after their key. |
+| `mockup/gambar-mockup/*/aset/` | `CatalogImporter::MOCKUP_FILES` and `MOCKUP_DIRS` | Pictures that are not in `data.json`; each package has a short `README.md`. |
+| `index.html`, `assets/catalog/`, `assets/vendor/` | a person opening the page | Frozen gallery page, see below. |
 
-- Katalog halaman 14 Oktober: `mockup/catalog.json` adalah inventaris galeri, ditanam oleh build. Satu mockup hasil tersedia; 12 halaman planned memiliki brief/prompt di `mockup/persiapan/`. Peta Kedu memiliki kandidat full UI WebP pada objek candidate, belum dipilih pengguna; kandidat04 memiliki preview interaktif dan states/riwayat sejak15Oktober; 11 halaman lain belum memiliki gambar baru. Jangan menyebutnya 12 redesain selesai. Slot reference.19/20 sekarang memakai bendera baru dengan kode/jalur lama; sumber SVG huruf lama hanya riwayat.
+## The game leads, this folder follows
 
-- Peta Kedu kandidat 03 (14 Oktober): pengguna mengizinkan perombakan bebas mockup/UI/ukuran titik dan usulan diorama baru untuk HP landscape; izin terbaru menggantikan batas konfirmasi perombakan total pada kandidat 02. Pengguna akan mengatur kode sistem sendiri. Gunakan mockup/gambar-mockup/peta-kedu/spesifikasi-sentuh-03.md; rencana hit area bukan uji DOM/perangkat. Jangan mengubah web asli atau mengganti aset map.kedu dari permintaan mockup ini.
+- The list of picture slots is `app/Libraries/ImageSlots.php`; challenge pictures follow the question bank (`docs/bank-soal/`); story slides follow `app/Database/Seeds/data/story.php`. When one of those changes, this folder is brought in line with it.
+- Never change the game (slot keys, bank codes, layouts, positions) to fit something in this folder, unless the owner asks for exactly that in the session.
+- A statement in `data.json` or `index.html` about the game (counts, statuses, "four stops per region map", audio briefs) is a record of October 2026, not a fact about the game today.
 
-- Peta Kedu kandidat04 (15 Oktober): preview interaktif ada di mockup/gambar-mockup/peta-kedu/revisi-04/README.md. Pustaka/Profil di menu, kontrol cerita ikon dan dot/efek ketik, Kenali buku/kaca pembesar, master diorama tiga lapisan yang diredupkan terpisah. candidate.preview/states tetap belum dipilih dan halaman planned. DOM preview diuji640x360/854x480; bukan uji perangkat/integrasi game. Pertahankan88 narasi dan aset resmi; peta03 disesuaikan hanya sebagai teks preview.
+## Who writes here
+
+- Only a Claude Code session, and only to install pictures the owner accepted or to follow a change in the game. Other AI tools never write here (root `AGENTS.md`); they read `assets/referensi/` as style references.
+- Where accepted pictures from `ai-studio/chatgpt-images/out/` end up (copied here, moved here, or referenced from there) is an open owner decision since 15 November 2026: `docs/PROGRESS.md` → *Asset catalogue audit*. Until it is made, follow `ai-studio/README.md` → *For the Claude Code session that installs*.
+
+## Rules for a change
+
+- A file is named after its key and keeps the key's official code. Raster pictures are WebP; do not add PNG variants.
+- Replacing a region map or a Cari Objek scene changes its sha256, so the measured positions in `CatalogImporter::MAP_STOPS` or `SCENE_OBJECTS` and `tests/unit/CatalogImportTest.php` change with it.
+- After a change, run `php spark gelita:katalog:impor --dry-run` on a development install (`tools/dev/serve.sh`) and `vendor/bin/phpunit --no-coverage --filter CatalogImportTest`.
+- Add no reports, backups, generation logs, one-off scripts or progress notes here. History is git; decisions go in the project's decision log and open work in `docs/PROGRESS.md`.
+- Pictures stay interim art (credit `Katalog Aset GELITA (gambar sementara)`) until the owner accepts them; cultural checks by the validators still apply. Never describe them as ready for production.
+
+## Art direction (owner, 11 October 2026)
+
+Stylized 3D, Jaka with a red scarf (`assets/referensi/reference.01.webp`); render finish and mood as in `reference.06.webp` and `reference.07.webp`. Current prompts are in `docs/revisi-10-analitik/` (`32A`, `37`, `38`), not in this folder.
+
+## The gallery page is frozen
+
+`index.html` is the page as built in October 2026, kept unchanged at the owner's wish (15 November 2026). Its builder and validator were removed, so it cannot be rebuilt; do not edit it by hand. Known gaps: the nine sound players, the page mock-up section and the links to briefs, reports and generation records point at removed files, and its counts are those of October 2026. `data.json` still carries the fields that page used (prompts, style status, 97 audio entries, paths to removed records); the importer ignores them.

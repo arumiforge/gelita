@@ -8,4 +8,4 @@ Pictures the owner supplied for the test module of revision 10, part 34 (`docs/r
 | `aset/instr.tes-ae-{A,B}0{1..8}.webp` | Bagian 2 (D2): the eight mock screens, forms A and B |
 | `aset/instr.tes-bd-{A,B}-G{1,2}.webp` | Bagian 3 (D3): scenes G1 (karawo, besurek) and G2 (Gantar, Maengket) |
 
-The PNG masters stay in `docs/revisi-10-analitik/gambar/doc-34/`. These WebPs are quality 82, portrait pictures 1024 × 1536, landscape 1536 × 1024. Not installed yet: part 34 adds them to `CatalogImporter::MOCKUP_FILES` and `AssetChecklist` when it creates the `instr.*` slots.
+The PNG masters stay in `docs/revisi-10-analitik/gambar/doc-34/`. These WebPs are quality 82, portrait pictures 1024 × 1536, landscape 1536 × 1024. `php spark gelita:katalog:impor` installs them into the `instr.*` slots (`CatalogImporter::MOCKUP_DIRS`, since part 8).

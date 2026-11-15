@@ -1,5 +1,7 @@
 # Telaah Draf 1 Naskah Cerita & Bank Soal GELITA Kelas 5
 
+> *(Note, English, 15 November 2026.)* Moved here from `gelita-katalog/update/`. The draft 1 files it reviews (`naskah-cerita/naskah-cerita.md`, `bank-soal/bank-soal-kelas5.xlsx`) were removed from the repository on that date and are in git history; the current story is `docs/naskah-cerita.md` and the current workbook `docs/bank-soal/gelita-bank-soal-kelas5.xlsx`. Section 6 (facts for the researcher to check) is still open (`docs/PROGRESS.md`).
+
 Tanggal telaah: 17 Oktober 2026.
 
 **Yang ditelaah** adalah draf 1 di `gelita-katalog/update/`:

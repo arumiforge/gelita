@@ -2,8 +2,8 @@
 /**
  * 12. Selesai — `/selesai/{attemptId}` → ChallengeController::finished
  *
- * Result screen redesign of 18 October 2026 (mockup 01 in
- * gelita-katalog/mockup/gambar-mockup/tantangan-selesai-temanggung): one
+ * Result screen redesign of 18 October 2026 (catalogue mockup package
+ * tantangan-selesai-temanggung, removed 15 November 2026, in git history): one
  * shared layout for every region and challenge kind, on the redesigned HUD
  * (section hudStyle `menu`). Temanggung and "Susun Gambar" in the mockup are
  * only sample data.

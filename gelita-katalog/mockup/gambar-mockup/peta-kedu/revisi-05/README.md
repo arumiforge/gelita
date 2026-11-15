@@ -1,6 +1,6 @@
 # Peta Kedu — owner's island map (20 October 2026)
 
-The owner replaced the three-island diorama of [revisi-04](../revisi-04/README.md) with this single-island picture. It is not a catalogue entry in `data.json`; the game installs it from here.
+The owner replaced the three-island diorama of revisi-04 (removed 15 November 2026, in git history) with this single-island picture. It is not a catalogue entry in `data.json`; the game installs it from here.
 
 | File | Game slot | Use |
 |---|---|---|

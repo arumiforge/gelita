@@ -1,6 +1,8 @@
 # Panduan Gambar Susun Gambar (Puzzle) GELITA
 
-**Status produksi katalog — 14 Oktober 2026:** 21 gambar tambahan d–j serta empat penggantian yang direkomendasikan di bawah telah dibuat dan dipasang. [Daftar final, prompt dan hasil pemeriksaan](../../docs/PUZZLE-UPDATE-20261014.md). Tinjauan bagian 6 adalah kondisi sebelum pekerjaan ini; label buat baru/wajib ganti pada kartu merupakan brief asal, bukan antrian generasi ulang. Needs_verification dan uji susun oleh manusia tetap perlu diselesaikan oleh peneliti.
+> *(Note, English, 15 November 2026.)* Moved here from `gelita-katalog/update/gambar-puzzle/`. The production report of 14 October 2026 linked below and the catalogue's copy of the tile checker were removed from the repository on that date (git history); the checker's code is section 9.2 of this guide. Current prompts for new Susun Gambar pictures are in `docs/revisi-10-analitik/37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md`.
+
+**Status produksi katalog — 14 Oktober 2026:** 21 gambar tambahan d–j serta empat penggantian yang direkomendasikan di bawah telah dibuat dan dipasang. Daftar final, prompt dan hasil pemeriksaan: `gelita-katalog/docs/PUZZLE-UPDATE-20261014.md` (riwayat git). Tinjauan bagian 6 adalah kondisi sebelum pekerjaan ini; label buat baru/wajib ganti pada kartu merupakan brief asal, bukan antrian generasi ulang. Needs_verification dan uji susun oleh manusia tetap perlu diselesaikan oleh peneliti.
 
 Panduan ini untuk siapa pun yang membuat gambar tantangan **Susun Gambar** (`tmg-1`, `mgl-1`, `wnb-1`) dengan ChatGPT. Isinya:
 

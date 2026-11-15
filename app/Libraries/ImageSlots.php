@@ -159,7 +159,8 @@ final class ImageSlots
 
         // ----------------------------------------------------------- result
         // Skin of the "Tantangan selesai" screen (/selesai/{id}), redesign of
-        // 18 October 2026 from gelita-katalog/mockup/gambar-mockup/tantangan-selesai-temanggung.
+        // 18 October 2026 from the catalogue mockup package tantangan-selesai-temanggung
+        // (removed 15 November 2026, in git history).
         // Every label stays text: the pictures carry no writing.
         'ui.result-panel' => [
             'group'       => 'result',

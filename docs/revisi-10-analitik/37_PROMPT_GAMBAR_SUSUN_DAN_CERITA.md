@@ -4,7 +4,7 @@
 
 Per 4 November 2026 · Lampiran [08](08_DRAF_BANK_SOAL.md) (Susun Gambar selama studi) dan [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) (naskah cerita) · Status: `draf pengembang`, `asal: pengembang` (disusun AI atas permintaan pengembang)
 
-Dokumen ini berisi prompt siap tempel ke ChatGPT untuk dua gambar Susun Gambar baru yang masih ditunggu 08 (Wayang Kedu dan pengganti Candi Pawon) dan untuk semua latar slide cerita wilayah: Kenali (`region_intro`), dialog masuk wilayah (`level_open`), wilayah tuntas (`level_done`), dan cerita penghubung tantangan kelima (`scenario_open`). Isinya mengikuti naskah 12, bukan naskah yang terpasang sekarang, karena naskah 12 yang dipakai selama studi. Polanya sama dengan [32A](32A_PROMPT_GAMBAR_SITUASI.md) dan panduan gambar puzzle Katalog Aset (`gelita-katalog/update/gambar-puzzle/panduan-gambar-puzzle-gelita.md`).
+Dokumen ini berisi prompt siap tempel ke ChatGPT untuk dua gambar Susun Gambar baru yang masih ditunggu 08 (Wayang Kedu dan pengganti Candi Pawon) dan untuk semua latar slide cerita wilayah: Kenali (`region_intro`), dialog masuk wilayah (`level_open`), wilayah tuntas (`level_done`), dan cerita penghubung tantangan kelima (`scenario_open`). Isinya mengikuti naskah 12, bukan naskah yang terpasang sekarang, karena naskah 12 yang dipakai selama studi. Polanya sama dengan [32A](32A_PROMPT_GAMBAR_SITUASI.md) dan panduan gambar puzzle Katalog Aset (`docs/panduan-gambar-puzzle-gelita.md`).
 
 ## Ringkasan
 

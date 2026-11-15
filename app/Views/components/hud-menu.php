@@ -1,7 +1,8 @@
 <?php
 /**
- * The game HUD (result screen redesign, 18 October 2026; mockup in
- * gelita-katalog/mockup/gambar-mockup/tantangan-selesai-temanggung). Every
+ * The game HUD (result screen redesign, 18 October 2026; from the catalogue
+ * mockup package tantangan-selesai-temanggung, removed 15 November 2026 and
+ * in git history). Every
  * page uses it (owner, 18 October 2026: the same logo, language, sound, and
  * menu everywhere). Three sizes:
  * - full (120 dp): pages laid out for it set section `hudStyle` = `menu`
