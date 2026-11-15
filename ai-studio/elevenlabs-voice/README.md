@@ -44,7 +44,7 @@ In a shell loop that reads a list from standard input, run each take through `ma
 
 ## What is done
 
-A line is done when its file exists. State on 15 November 2026: Mbah Kedu's 93 lines are in both `out/id/` and `out/en/`, made with model v4 through the ElevenLabs flows *GELITA · Mbah Kedu (id) · takes* and *GELITA · Mbah Kedu (en) · takes* (one node per line, labelled with its `kode_berkas`). The owner accepted the Indonesian ones; nobody has listened to the English ones yet. Narator and Jaka are still to do in both languages. To refresh the done columns of `lines.csv` (and the line texts, if the script changed), a Claude Code session runs this on a development install (`tools/dev/serve.sh` sets one up):
+A line is done when its file exists. State on 15 November 2026: Mbah Kedu's 93 lines are in both `out/id/` and `out/en/`, made with model v4 through the ElevenLabs flows *GELITA · Mbah Kedu (id) · takes* and *GELITA · Mbah Kedu (en) · takes* (one node per line, labelled with its `kode_berkas`). The owner accepted both (15 November 2026); the install was checked on a development install, and a server installs them with the steps below (also step 4 of *Instalasi baru* in `docs/08_DEPLOYMENT.md`). Narator and Jaka are still to do in both languages. To refresh the done columns of `lines.csv` (and the line texts, if the script changed), a Claude Code session runs this on a development install (`tools/dev/serve.sh` sets one up):
 
 ```bash
 php spark gelita:narration:list --csv=ai-studio/elevenlabs-voice/lines.csv --dir=ai-studio/elevenlabs-voice/out
