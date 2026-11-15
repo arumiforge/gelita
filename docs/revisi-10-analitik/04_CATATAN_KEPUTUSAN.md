@@ -18,7 +18,7 @@ Entri 14 November 2026 memberi tiga syarat sebelum suara sintetis didengar siswa
 - **Sebutan di dokumen.** Dokumen revisi cukup menulis "suara sintetis" (permintaan pengembang). Nama layanan ada di entri 14 November 2026; suara dan pengaturan per tokoh ada di `ai-studio/elevenlabs-voice/voices.md`.
 - **Dokumen yang disesuaikan.** 01 (jawaban pertanyaan terbuka tentang pengisi suara), 10 (catatan narasi di daftar *Yang belum bisa dinilai di sini* dan di aspek B), 12 (dasar keputusan, arahan suara, daftar rekaman), 24 (alasan cerita dan narasi tidak diuji baca), dan baris 12 di 00. 22 tidak diubah (ditangani peneliti). 22 tidak menyebut cara narasi direkam, tetapi 12 terlampir di sana sebagai instrumen; perlu tidaknya perubahan ini disampaikan ke komite etik diputuskan peneliti.
 
-Entri ini tidak diikuti pembuatan ulang PDF. 24 berubah satu sel tabel; PDF-nya dibuat ulang saat akan dikirim ke peneliti.
+PDF dibuat ulang di hari yang sama atas permintaan pengembang. PDF lama diganti untuk sembilan dokumen yang Markdown-nya sudah berubah: 00, 01, 04, 10, 12, dan 24 dari entri ini, serta 36, 37, dan 38 yang berubah pada 14–15 November 2026. PDF dokumen lain tidak disentuh, termasuk 22.
 
 ## 14 November 2026
 

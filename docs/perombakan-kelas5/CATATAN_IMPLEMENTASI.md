@@ -525,7 +525,9 @@ The owner confirmed the Indonesian takes once more (already accepted, section ab
 
 **Decision (owner, with the researcher's approval).** Mbah Kedu's narration is a synthetic voice in place of the voice actor, who is not available. It is still to be tried out in the field and stays open to the validators' suggestions. Narator and Jaka get a synthetic voice too. The research record is the 15 November 2026 entry of `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`; it closes the condition the 14 November entry set (new entry, researcher told, documents corrected).
 
-**Documents.** `01`, `10`, `12`, `24` and the `12` row of `00` no longer say the narration is recorded by voice actors only. They say *suara sintetis* and do not name the service (owner; now a line in `.claude/rules/revisi-10.md`). `22` was not touched. No PDF was rebuilt; `24` is one of the researcher's master copies, so its PDF is due at the next handover.
+**Documents.** `01`, `10`, `12`, `24` and the `12` row of `00` no longer say the narration is recorded by voice actors only. They say *suara sintetis* and do not name the service (owner; now a line in `.claude/rules/revisi-10.md`). `22` was not touched.
+
+**PDFs rebuilt (owner's request, same day).** Nine PDFs were older than their Markdown and were replaced: `00`, `01`, `04`, `10`, `12`, `24` from this change, and `36`, `37`, `38` from 14–15 November 2026. They were built by number (`cetak.mjs 00 01 04 10 12 24 36 37 38`), not with a full run. A cloud session's clone is shallow, and `cetak.mjs` reads each document's last commit from git: in a shallow clone an old document shows the clone's oldest commit instead, so a full run would also rebuild PDFs whose document did not change (here `07`, `14`, `15`). Fetching the full history makes git print eight-character hashes where the manifest holds seven, which would rebuild all 39, `22` included; the build ran with `core.abbrev=7` to keep the footers as they were. The rule is now in `.claude/rules/revisi-10.md`.
 
 **Narator and Jaka, checked before any credits are spent.** No code changed.
 
