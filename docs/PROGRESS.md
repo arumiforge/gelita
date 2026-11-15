@@ -106,4 +106,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pw/gallant-bohr-xx0uf6` | Claude Code setup that travels with the repository: four skills (`account-setup`, `finish-step`, `dev-install`, `new-migration`), the `gelita-reviewer` subagent, two hooks with `ClaudeHooksTest`, no plugin suggestion cards, `docs/cloud-sessions.md` extended (plugins to turn off, Desktop on Windows). Decision log *Claude Code setup kept in the repository* | PR #364. Built 15 November 2026. Verified: hook test, the edit hook live in the session, `tools/dev/serve.sh` up and stopped as `dev-install` says, full suite green (1266 tests). Not tried: `account-setup` on a new account, a local Desktop session on Windows |
