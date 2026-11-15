@@ -106,4 +106,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pw/gallant-bohr-xx0uf6` | `README.md` brought up to date with revision 10 and the Claude Code setup (PR #364 merged): five challenges per region, three staff roles, derived data layer, 44 migrations, eleven missing commands, test numbers, `tools/qa` list, new sections for parts 5 to 9 and Claude Code | 15 November 2026. Documents only; no test reads the README. Numbers checked against the code on that day; the audio licence line and the asset-size table were not reviewed |
+| `pw/gallant-bohr-xx0uf6` | `README.md` brought up to date with revision 10 and the Claude Code setup (PR #364 merged): five challenges per region, three staff roles, derived data layer, 44 migrations, eleven missing commands, test numbers, `tools/qa` list, new sections for parts 5 to 9 and Claude Code | PR #365. 15 November 2026. Documents only; no test reads the README. Numbers checked against the code on that day; the audio licence line and the asset-size table were not reviewed |
