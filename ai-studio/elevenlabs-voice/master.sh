@@ -1,23 +1,18 @@
 #!/usr/bin/env bash
 # Masters one ElevenLabs take to the game's narration format
-# (docs/naskah-cerita.md → format: MP3 stereo, 44.1 kHz, 192 kbps CBR, about
-# -16 LUFS, 0.3 s of silence at the start and the end). Owner, 15 November
-# 2026: every voice in stereo at about 192 kbps (the researcher accepts larger
-# voice files); before that, MP3 mono at 96 kbps.
-#
-# The voice is processed as one channel and written as stereo with the same
-# signal on both sides at full level (owner, 15 November 2026: every voice in
-# stereo). The gain is set on the single channel, so each channel measures
-# about -16.5 LUFS like the earlier mono files and plays as loud; a meter
-# that adds both channels reads the stereo file about 3 LU higher.
+# (docs/naskah-cerita.md → format: MP3 mono, 44.1 kHz, 96 kbps, about -16 LUFS,
+# 0.3 s of silence at the start and the end), the same as Mbah Kedu's takes.
+# A mono file plays in both earphones. (Owner, 15 November 2026: a stereo
+# 192 kbps version was tried the same day and dropped again.)
 #
 # Usage: master.sh RAW.mp3 OUT.mp3
 #        WPM=130 WORDS=34 master.sh RAW.mp3 OUT.mp3
 #
 # With WPM and WORDS (the line's word count) the trimmed take is slowed to that
-# pace, never sped up, with rubberband (pitch and formants kept). English takes
+# pace, never sped up, with atempo (pitch kept). English takes
 # use WPM=130 (owner, 15 November 2026: the English voice was too fast for
 # grade 5; one pace for every English line, so no scored line stands out).
+# rubberband was tried first and dropped: the owner heard an echo in earphones.
 #
 # Nothing is added to the voice: no reverb, no filter, no noise bed. The take
 # is trimmed, moved to the target loudness with one fixed gain, kept under
@@ -49,7 +44,7 @@ if [ -n "${WPM:-}" ] && [ -n "${WORDS:-}" ]; then
     tempo=$(awk -v w="$WORDS" -v d="$speech" -v t="$WPM" 'BEGIN {printf "%.4f", t / (w / d * 60)}')
     if awk -v x="$tempo" 'BEGIN {exit !(x < 1)}'; then
         ffmpeg -nostdin -v error -y -i "$tmp" \
-            -af "rubberband=tempo=${tempo}:formant=preserved:pitchq=quality" "$slow"
+            -af "atempo=${tempo}" "$slow"
         mv "$slow" "$tmp"
         echo "$(basename "$out"): tempo ${tempo} to ${WPM} words per minute" >&2
     fi
@@ -73,14 +68,29 @@ gain=$(awk -v t="$target_lufs" -v m="$measured" 'BEGIN {printf "%.2f", t - m}')
 limited=$(loudness "$tmp" "volume=${gain}dB,${limiter},${pad},ebur128")
 gain=$(awk -v g="$gain" -v t="$target_lufs" -v m="$limited" 'BEGIN {printf "%.2f", g + t - m}')
 
-# 3. 10 ms fades against clicks, 0.3 s of silence before and after, then the
-#    channel copied to left and right (pan, not -ac 2, which would lower each
-#    side by 3 dB), written as MP3 joint stereo 44.1 kHz at 192 kbps CBR, with
-#    the Xing header MediaStore reads the duration from.
+# 3. 10 ms fades against clicks, 0.3 s of silence before and after, then MP3
+#    mono 44.1 kHz at 96 kbps.
 duration=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$tmp")
 fade_out=$(awk -v d="$duration" 'BEGIN {printf "%.3f", d - 0.01}')
-ffmpeg -nostdin -v error -y -i "$tmp" \
-    -af "volume=${gain}dB,${limiter},afade=t=in:d=0.01,afade=t=out:st=${fade_out}:d=0.01,${pad},pan=stereo|c0=c0|c1=c0" \
-    -ar 44100 -c:a libmp3lame -b:a 192k -joint_stereo 1 -map_metadata -1 "$out"
+encode() {
+    ffmpeg -nostdin -v error -y -i "$tmp" \
+        -af "volume=${1}dB,${limiter},afade=t=in:d=0.01,afade=t=out:st=${fade_out}:d=0.01,${pad}" \
+        -ac 1 -ar 44100 -c:a libmp3lame -b:a 96k -map_metadata -1 "$out"
+}
+encode "$gain"
+
+# 4. The MP3 coder can push a peak above the limiter's ceiling, by a different
+#    amount on each encode. While the decoded file peaks above -1 dBFS, lower
+#    the gain by 0.2 dB and encode again (at most 10 times).
+decoded_peak() {
+    ffmpeg -nostdin -hide_banner -nostats -i "$out" -af ebur128=peak=sample -f null - 2>&1 \
+        | awk '/Sample peak:/ {found=1} found && /Peak:/ {print $2; exit}'
+}
+tries=0
+while [ "$tries" -lt 10 ] && awk -v p="$(decoded_peak)" 'BEGIN {exit !(p > -1.0)}'; do
+    gain=$(awk -v g="$gain" 'BEGIN {printf "%.2f", g - 0.2}')
+    encode "$gain"
+    tries=$((tries + 1))
+done
 
 echo "$(basename "$out"): ${measured} LUFS -> ${target_lufs} LUFS (gain ${gain} dB)"

@@ -37,9 +37,11 @@ Lines whose `konteks` is `scenario_situation` or `post_clue` are part of scored 
 
 ## Mastering
 
-`master.sh` trims silence at both ends, moves the take to the game's narration loudness with one fixed gain, holds the highest peaks under about −1.5 dBFS, adds 0.3 s of silence before and after, and writes MP3 stereo, 44.1 kHz, 192 kbps CBR, with the voice at full level on both channels (owner, 15 November 2026: stereo at about 192 kbps, since the researcher accepts larger voice files; before that MP3 mono at 96 kbps, which Mbah Kedu's accepted takes keep, because a mono file plays in both earphones). Each channel measures about −16.5 LUFS, so the file plays as loud as the earlier mono ones; a meter that adds both channels reads about 3 LU more. It adds no reverb, filter, or noise, and it does not change pace or pitch. A take is about 24 KB per second (a 15-second line is about 360 KB). For English takes, `WPM=130 WORDS=<word count of teks_en>` before the command also slows the take to 130 words per minute (`voices.md` → *How the settings are used*).
+`master.sh` trims silence at both ends, moves the take to the game's narration loudness with one fixed gain, holds the highest peaks under about −1.5 dBFS, adds 0.3 s of silence before and after, and writes MP3 mono, 44.1 kHz, 96 kbps (the format of `docs/naskah-cerita.md`). Finished files measure about −16.5 LUFS, within 0.1 of each other. It adds no reverb, filter, or noise, and it does not change pace or pitch.
 
 Raw ElevenLabs takes differ by up to 3.5 LU from line to line, so a take that skips this step sounds louder or softer than its neighbours.
+
+For English takes, put `WPM=130 WORDS=<word count of teks_en>` before the command: it slows the trimmed take to 130 words per minute with ffmpeg's `atempo` (pitch kept, never sped up; `voices.md` → *How the settings are used*). If the finished MP3 peaks above −1 dBFS, the script lowers that file's gain in 0.2 dB steps and encodes it again.
 
 In a shell loop that reads a list from standard input, run each take through `master.sh` as usual: its `ffmpeg` calls use `-nostdin`, so they no longer swallow the rest of the list.
 

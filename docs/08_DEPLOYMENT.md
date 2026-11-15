@@ -1103,7 +1103,7 @@ Aset gambar dan video mendominasi ukuran instalasi. Anjuran:
 * Objek dan benda: WebP atau PNG dengan transparansi, maksimum 400×400.
 * Frame tokoh: sampai 24 gambar per pose (diputar berulang), WebP ± 60 KB per gambar.
 * Video Pustaka: MP4 H.264, 720p, bitrate ≤ 1.5 Mbps, durasi ≤ 60 detik.
-* Audio narasi: MP3 stereo 192 kbps (15 November 2026; sebelumnya 96–128 kbps mono).
+* Audio narasi: MP3 96–128 kbps mono.
 
 Ukuran piksel resmi tiap slot ada di `Config\Gelita::$assetSizes` dan ditegakkan saat unggah. Batas unggah 64 MB (`Config\Gelita::$maxUploadBytes`, `upload_max_filesize`, `client_max_body_size 72M`).
 
