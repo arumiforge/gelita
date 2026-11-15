@@ -114,4 +114,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pw/confident-gauss-m36qew` | Account setup check; ElevenLabs music and sound-effects workspace and `gelita:sound:install` | Pushed, full suite green (1274 tests, 15 November 2026). Not checked: `master.sh` on a real ElevenLabs take, the `?v=` URL in a browser |
+| `pw/confident-gauss-m36qew` (PR #367) | Account setup check; ElevenLabs music and sound-effects workspace and `gelita:sound:install` | Pushed, full suite green (1274 tests, 15 November 2026). Not checked: `master.sh` on a real ElevenLabs take, the `?v=` URL in a browser |
