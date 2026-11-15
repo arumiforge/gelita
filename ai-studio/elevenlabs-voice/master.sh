@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
 # Masters one ElevenLabs take to the game's narration format
-# (docs/naskah-cerita.md → format: MP3 mono, 44.1 kHz, about -16 LUFS,
-# 0.3 s of silence at the start and the end).
+# (docs/naskah-cerita.md → format: MP3 stereo, 44.1 kHz, 192 kbps CBR, about
+# -16 LUFS, 0.3 s of silence at the start and the end). Owner, 15 November
+# 2026: every voice in stereo at about 192 kbps (the researcher accepts larger
+# voice files); before that, MP3 mono at 96 kbps.
+#
+# The voice is processed as one channel and written as stereo with the same
+# signal on both sides at full level (owner, 15 November 2026: every voice in
+# stereo). The gain is set on the single channel, so each channel measures
+# about -16.5 LUFS like the earlier mono files and plays as loud; a meter
+# that adds both channels reads the stereo file about 3 LU higher.
 #
 # Usage: master.sh RAW.mp3 OUT.mp3
 #
@@ -44,12 +52,14 @@ gain=$(awk -v t="$target_lufs" -v m="$measured" 'BEGIN {printf "%.2f", t - m}')
 limited=$(loudness "$tmp" "volume=${gain}dB,${limiter},${pad},ebur128")
 gain=$(awk -v g="$gain" -v t="$target_lufs" -v m="$limited" 'BEGIN {printf "%.2f", g + t - m}')
 
-# 3. 10 ms fades against clicks, 0.3 s of silence before and after, then MP3
-#    mono 44.1 kHz at 96 kbps.
+# 3. 10 ms fades against clicks, 0.3 s of silence before and after, then the
+#    channel copied to left and right (pan, not -ac 2, which would lower each
+#    side by 3 dB), written as MP3 joint stereo 44.1 kHz at 192 kbps CBR, with
+#    the Xing header MediaStore reads the duration from.
 duration=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$tmp")
 fade_out=$(awk -v d="$duration" 'BEGIN {printf "%.3f", d - 0.01}')
 ffmpeg -nostdin -v error -y -i "$tmp" \
-    -af "volume=${gain}dB,${limiter},afade=t=in:d=0.01,afade=t=out:st=${fade_out}:d=0.01,${pad}" \
-    -ac 1 -ar 44100 -c:a libmp3lame -b:a 96k -map_metadata -1 "$out"
+    -af "volume=${gain}dB,${limiter},afade=t=in:d=0.01,afade=t=out:st=${fade_out}:d=0.01,${pad},pan=stereo|c0=c0|c1=c0" \
+    -ar 44100 -c:a libmp3lame -b:a 192k -joint_stereo 1 -map_metadata -1 "$out"
 
 echo "$(basename "$out"): ${measured} LUFS -> ${target_lufs} LUFS (gain ${gain} dB)"

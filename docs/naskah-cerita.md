@@ -37,7 +37,7 @@ Rekaman narasi tidak ikut di repositori: rekaman sintetis lama dihapus 17 Oktobe
 
 - Folder: `public/assets/audio/narasi/id/` untuk bahasa Indonesia dan `public/assets/audio/narasi/en/` untuk bahasa Inggris.
 - Nama berkas mengikuti kode di setiap judul baris di bawah, ditambah `.mp3`, misalnya `narasi/id/dialog-magelang-09.mp3`.
-- Format yang disarankan: MP3 mono, 44,1 kHz, 64–96 kbps. Kenyaringan sekitar −16 LUFS, dengan jeda hening ±0,3 detik di awal dan akhir.
+- Format yang disarankan: MP3 stereo, 44,1 kHz, 192 kbps (pemilik, 15 November 2026; ukuran berkas yang lebih besar disetujui peneliti; sebelumnya MP3 mono 64–96 kbps). Kenyaringan sekitar −16 LUFS, dengan jeda hening ±0,3 detik di awal dan akhir.
 - Rekam suara saja, tanpa musik latar. Musik dan efek suara diputar terpisah oleh permainan.
 - Satu berkas berisi satu baris. Jangan menggabungkan beberapa baris ke satu berkas, karena teks di layar maju mengikuti selesainya audio.
 - Format yang diterima saat impor: MP3 (disarankan), M4A, OGG, dan WAV.
