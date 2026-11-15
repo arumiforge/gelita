@@ -38,13 +38,165 @@ The first two questions are the owner's. The others come from the validators' in
 
 This review is the developer's own check. It is not expert validation, its marks are never counted as such, and it is not shown to the validators before they rate (`docs/revisi-10-analitik/01_REVISI_10_ANALITIK.md` → *Peran pengembang, peneliti, dan ahli*).
 
-## First look by the AI (provisional, 15 November 2026)
+## First look by the AI (15 November 2026)
 
-From sheets 03, 07 and 10 only; the other sheets were rendered but not looked at. These are questions for the owner, not marks.
+All 21 sheets are looked at now: 03, 07 and 10 by the session that built the list, the others by a second session on the same day. These are questions for the owner, not marks.
 
-- **Sheet 03 is a clear benchmark:** carved gold ring, dark stone face, embossed gold sign, rendered in 3D.
-- **Sheets 07 and 08 (52 vector icons) are a different visual language:** thin flat gold lines. The game installs none of them; its buttons are the round ones of sheet 03. Candidates for `drop`.
-- **Sheet 10 (backgrounds) is one family** (stylized 3D landscapes at dusk, navy and gold) and sits well with the benchmark. Two to check against the story: no. 199 `bg.cerita-penutup-01` shows a veranda by the sea, and Kedu has no coast; no. 202 `bg.cerita-penutup-04` shows a child as a dark silhouette, so Jaka's red scarf cannot be seen.
+**How it was done.** Every sheet at thumbnail size. Looked at enlarged: the 30 Susun Gambar pictures, the 24 Skenario Digital pictures, the 24 test pictures (every word read), the new maps, and single pictures named below. Compared with `docs/naskah-cerita.md`, the question bank (`docs/bank-soal/data/`), the test items (`app/Database/Seeds/data/instrumen/tes.php`) and the Pustaka captions (`docs/pustaka/data/`).
+
+**Not done.** Only frame 1 of each character pose. Most Pustaka pictures only as thumbnails. No picture was compared with a reference photo of the real object: that stays the researcher's and the cultural observer's check. A line that says *looks like* is an impression, not a finding.
+
+### The eight questions I would answer first
+
+1. **No. 271 `challenge.item.wnb-4-a02` (Buah carica, a target of Cari Objek Wonosobo) shows star fruit (belimbing):** ridged yellow fruit and a star-shaped slice. The clue says "buah pegunungan yang mirip pepaya, tetapi ukurannya kecil", and the distractor no. 274 (Pepaya biasa) is the one picture that looks like a papaya. The picture works against the right answer. Redo from the carica tree of no. 241?
+2. **Nos. 382 and 384 (test, culture posts G1) point at an answer.** The button "Kirim pesan ke galeri" has a heavier outline than "Suka", "Komentar" and "Bagikan". Items `tes-bd-A03` and `tes-bd-B03` ask what to do first, and the key is asking the gallery for permission.
+3. **Three test pictures have wrong letters** (they are drawn by the image model, so each one has to be read):
+   - no. 374 `instr.tes-ae-B01`: button "Piih foto" (should be "Pilih foto", as in no. 366);
+   - no. 387 `instr.tes-mb-A-M4`: account "@panitia.kaghaianak" (`tes.php`: `@panitia.kaghatianak`);
+   - no. 383 `instr.tes-bd-A-G2`: the emoji after "menangkap ikan" is a pair of headphones (`tes.php` and option C of `tes-bd-A08`: 🎣).
+   - Smaller: no. 377 `instr.tes-ae-B04` has a stray stroke under "untuk" and after "kodenya".
+4. **No. 384 `instr.tes-bd-B-G1` (kain besurek): the motif is drawn as Arabic-looking calligraphy that may be readable.** Someone who reads Arabic should confirm it is not a real word or a sacred phrase before the picture goes to the validators.
+5. **Nos. 213 and 215 look swapped or wrong.** `bg.temanggung.region` (213, "Di Antara Dua Gunung") shows one mountain, a temple group and a turquoise lake, which reads as Dieng (Candi Arjuna, Telaga Warna). `bg.wonosobo.region` (215, "Negeri di Atas Awan") shows two pairs of peaks over a lit plain, without lake or temple.
+6. **Pustaka: the caption no longer describes the picture.** The importer replaces a medium's picture and credit and keeps the caption of the Wikimedia photo it replaced (`CatalogImporter::installLibrary`). Seen so far:
+
+   | No | Caption in `docs/pustaka/data/` | The picture shows |
+   |---|---|---|
+   | 283 | Lambang Kabupaten Magelang | Borobudur stupas with a Buddha statue |
+   | 288 | Bagian relief Karmawibhangga yang dibuka di kaki candi | Borobudur drawn in three floating levels |
+   | 290 | Stupa induk di puncak Borobudur | a boy with his hand on a perforated stupa (the main stupa has no holes) |
+   | 299 | Petilasan di Gunung Tidar yang banyak dikunjungi peziarah | a boy looking at a green hill |
+   | 308 | Lambang Kabupaten Temanggung | an elder telling a story to children |
+   | 322 | Suasana malam di Kota Wonosobo | a town in a valley by day |
+   | 323 | Lambang Kabupaten Wonosobo | a boy with a basket of fruit by a lake |
+   | 325 | Peta kawasan Dataran Tinggi Dieng | a landscape with a crater and a lake, no map |
+
+   Change the captions, or redo these pictures to fit them? The other Pustaka captions were not compared one by one.
+7. **"Tips Jaka" does not show Jaka.** Nos. 302, 321 and 341 show a boy in Javanese dress (iket, lurik or vest, batik cloth), in three different outfits, without the red scarf, white shirt and backpack. The same lurik boy stands in about a dozen other Pustaka pictures (290, 292, 294, 299, 301, 322 to 328, 330). Is he meant to be Jaka? No. 302 is on cream, 321 and 341 on navy.
+8. **How many looks may the game have?** I count these:
+   - the benchmark: carved gold, dark stone, 3D (sheets 01 to 03);
+   - a smooth polished navy and gold: result screen 90 to 94, badges 82 to 84, pins 101 to 103, avatars 114 to 123, flags 126 and 127, references 409 to 416;
+   - thin flat lines: icons 129 to 178, placeholder 89, `app.icon.svg` 113 and the shipped app icons 21 to 25;
+   - content art in four styles: dense, saturated landscapes (Susun Gambar, backgrounds, new story pictures), smooth cartoon 3D (Skenario Digital), brush-stroke painting (Pustaka), grey line art (test).
+
+   Which of these are one look on purpose? My guess: the grey test pictures are deliberate (a neutral instrument); the Pustaka painting is the visible outlier among what a student sees in the game. Of its 60 list entries, 12 ask for the 3D look ("no painted brush or paper texture") and 48 ask for a licensed photo to be found, not for a generated picture; the files are painted illustrations either way.
+
+### Sheet 01: cards, screen backgrounds, Jaka, app icons
+
+- **No. 20 `node-card-skenario`** is flat and pale beside cards 16 to 19. Its replacement no. 452 is waiting and fits the four.
+- **No. 11 `jaka-gate`:** Jaka wears closed grey shoes and his legs fade out; in no. 12 and in every pose of sheet 09 he wears sandals.
+- **Nos. 7 and 10** are almost the same open book in the same ring, for two meanings (the story on the start screen, Pustaka). **No. 9 `icon-kenali`** has no ring and a brighter, flatter finish.
+- **Nos. 21 to 25** (shipped app icons) are a flat lantern; **nos. 108 to 112** in the list are a 3D lantern, and only the favicon (109) is installed. The browser tab and the home-screen icon show two different lanterns. Which is the app icon?
+- Text inside pictures: 5 and 6 (Balai Refleksi), 85 and 86 (MULAI, START). Each has both languages. Their teal plate is a third plate colour next to navy and gold.
+
+### Sheet 02: plates, frames, markers
+
+- **No. 48 `plate-green`** looks soft and flat beside the carved plates.
+- **No. 53 `status-open`** carries no symbol; "done" has a tick and "in progress" an arc. Is the empty navy disc enough, or is colour the only marker here?
+- **No. 51 `star` and no. 96 `ui.result-star`** are nearly the same star. The game uses 96 when installed, otherwise 51 (`star_src()`). Keep one.
+
+### Sheet 03 (addition)
+
+- **No. 62 `round-lang-en` shows the flag of England** (red cross on white). No. 126 `icon.language-en` shows the Union Jack, and the slot text in `ImageSlots` asks for the Union Jack. The game shows 62 and 63 first (`hud-menu.php`), so 126 and 127 are never seen while the round ones exist: candidates for `drop`, once the flag question is settled.
+
+### Sheet 04: logo, start buttons, result screen, badges
+
+- **No. 84 `reward.badge.wonosobo`** shows a split gate (candi bentar) around a water drop. The Dieng temples (no. 239) are not split gates; the pin no. 103 shows a Dieng-like temple instead.
+- **No. 83 and pin no. 102 (Temanggung):** which leaf is it meant to be, tobacco or coffee?
+- **Nos. 90 to 94 (result screen)** are smooth glossy pills; the plates of sheet 02 (27 to 30, 44 to 47) are carved. Redo them, or use the shipped plates on the result screen?
+- **Nos. 89 and 95** are not installed: candidates for `drop`.
+
+### Sheet 05: maps, pins, lanterns
+
+- **No. 107 `diorama.kedu-pulau`** is what Peta Kedu shows (`map-kedu.php`); no. 97 `map.kedu` is only the fallback. No. 107 is an island in the sea, and the story (`intro-01`) describes a plain ringed by mountains. It is the owner's picture of 20 October; the question is only whether the story line or the picture gives way (see also no. 199, a veranda by the sea).
+- **Nos. 104 to 106** have four stops; no. 105 has props painted on its stops, 104 and 106 do not. All three are replaced by 449 to 451: `drop` after the install.
+- **One Lentera Kedu, several lantern designs:** 87 (logo), 98 to 100 (the three region lanterns), 108 (app icon), 114 (avatar), 124 (HUD) and the flat one of no. 21. The story has one old lantern. Should one design be the lantern, with the others redrawn from it?
+
+### Sheet 06: app icons, avatars, language flags
+
+- **No. 121 `avatar.7` (buah carica)** looks like an ordinary papaya (large, black seeds), the same as the distractor no. 274.
+- The avatars (114 to 123) are one family with `challenge-badge` (no. 26).
+
+### Sheets 07 and 08: vector icons
+
+- **A different visual language** (thin flat gold lines). The game installs none of the 52; its buttons are the round ones of sheet 03. Candidates for `drop`.
+
+### Sheet 09: characters
+
+- **Jaka** is the same boy in all six poses, red scarf every time. He holds the lantern in four poses (179, 181, 182, 184) and not in `bow` (180) and `idle` (183), so it appears and disappears between two lines of one scene. Intended?
+- **Mbah Kedu** is the same in all four poses and matches his avatar no. 394.
+
+### Sheet 10: backgrounds and story slides
+
+- **One family** (stylized 3D landscapes at dusk, navy and gold) that sits well with the benchmark.
+- **No. 199 `bg.cerita-penutup-01`** shows a veranda by the sea, and Kedu has no coast. **No. 202 `bg.cerita-penutup-04`** shows a child as a dark silhouette, so Jaka's red scarf cannot be seen.
+- **No. 212:** only Temanggung has a result background; the slot `bg.result.*` exists for all three regions.
+
+### Sheet 11: Susun Gambar
+
+- **No letters in any of the 30** (the signs in 221 and 240 carry pictograms or nothing).
+- **The study uses variants a and b:** 234 and 448 (Temanggung), 218 and 220 → 447 (Magelang), 239 and 244 (Wonosobo). These six matter most.
+- **No. 219 (Relief Borobudur):** the adult's hand reaches the relief. The caption ends "Pengunjung boleh melihat, tetapi tidak boleh menyentuhnya."
+- **No. 228 (Kuda Lumping):** the horse is painted flat; no weave can be seen. The caption says "anyaman bambu", and the same picture is the photo of the post in Cari Objek Temanggung, round 2, where the caption claims teak wood and the board says woven bamboo. Should the weave be visible (as in no. 235)?
+- **No. 217 (Topeng Ireng):** the caption names small bells on the legs; I could not make them out.
+- **Nos. 220, 227 and 447** share one composition (small temple, garden, a bicycle at the lower right). In no. 447 the roof is cut off, which removes the stupa that looked like the Cari Objek target, and also the roof that identifies Candi Pawon. Accepted by the owner; noted for the cultural observer.
+- **No. 241 shows carica on its tree correctly:** a reference for redoing 271 and 121.
+- **No. 242 (Bundengan)** has no angklung in it, which the post of Cari Objek Wonosobo needs (its caption wrongly says angklung).
+
+### Sheet 12: Benar atau Salah pictures and Cari Objek scenes
+
+- **No. 246** is used by item `tmg-3-a04` (true). Black grains on earth: read as burnt rice by a child?
+- **Nos. 247 and 248** have no item. Item `tmg-3-b04` needs "Arca lembu duduk" and has no picture. The cut-out no. 265 (Arca Nandi) would fit, but it is a target of Cari Objek in the same region.
+- **Missing as well:** `challenge.post.tmg-4-b` ("Uceng goreng di piring", the post of Cari Objek Temanggung, round 2, variant b). Not in the list.
+- The three scenes (249 to 251) are empty tables without letters.
+
+### Sheet 13: Cari Objek objects
+
+- **No. 271:** see question 1.
+- **No. 255 "Kendil gerabah"** shows a kendi (a jug with spout and handle). The bank and the caption of no. 223 say kendil, a cooking pot. The clue ("benda dari tanah liat") still works.
+- **Nos. 256 and 263 are both "Kuda kepang bambu"** and are two different objects: 256 (distractor in Magelang) is a horse head on a stick, 263 (target in Temanggung) a flat woven horse. Use 263 for both, as the other shared objects do.
+- **No. 276 (mi ongklok)** is the only object with a square background; the other 29 are cut-outs. It will stand out in the scene.
+- **Shared objects are the same picture in every region** (262 and 279, 259, 266 and 277, 269 and 278, 253 and 280, 254 and 281), so a picture gives no hint of its region. No letters anywhere.
+
+### Sheets 14 and 15: Pustaka
+
+- See questions 6, 7 and 8.
+- **No. 290:** apart from the caption, a child with a hand on a stupa contradicts "tidak boleh menyentuh" of no. 219.
+- **Nos. 286, 297, 318, 334 and 336** are the pictures of video entries, which the importer skips: candidates for `drop`. Their covers (287, 298, 319, 335, 337) are installed; the *Used in the game* cells of these ten rows were corrected.
+- **Nos. 309 to 311 and badge no. 83** show tobacco. It is in the Pustaka text; whether a children's game shows it this prominently is a question for the researcher.
+
+### Sheet 16: Skenario Digital
+
+- **All 24 fit their scenario**, none has letters, and none marks a choice as right. The screens inside the pictures show icons and grey bars only.
+- **Nos. 344 and 348:** a finger is on the send or upload button, so the picture shows the risky action being taken.
+- **No. 351** (Temanggung) has a stepped temple like Borobudur on the hill.
+
+### Sheet 17: test pictures
+
+- See questions 2, 3 and 4.
+- **I found no other difference between the words in the 24 pictures and `tes.php`.**
+- **Nos. 383 and 385:** the line "Video: Sanggar …" is the evidence for items `tes-bd-A05` and `tes-bd-B05`, and it is far smaller than "Foto: Galeri …" in 382 and 384. On a small screen the item may measure eyesight.
+- **Forms A and B are not always drawn alike:** 369 has a light header and 377 a dark one; 382 has initials in the comment avatars and 384 has none. The label "Bukan temanmu" (368, 372, 376, 380) is not in the item text.
+- **No. 367** (cooking channel) has a laboratory flask on the counter, which belongs to its twin no. 375.
+- **No. 387:** the kaghati is drawn as an ordinary diamond kite; the text says it is made of leaves.
+
+### Sheet 18: interim bridge-story backgrounds
+
+- Dark crops of the old maps, replaced by 441 to 443: `drop` after the install.
+
+### Sheet 19: style references
+
+- **Still attached to prompts:** 398 and 399 (`TASKS.md`), 393 and 401 (named in the list's own prompts). **Installed:** 394 (Mbah Kedu's avatar).
+- **These contradict the benchmark and should not be attached again:** 409, 410 and 413 to 416 (flat round buttons), 402 (navy MULAI; the game's is teal), 406 (Mbah Kedu in another outfit), 407 (a village guard who is not in the story), 400, 403.
+- **Look like copies of other rows:** 411 and 412 (126, 127), 399 (3), 417 and 418 (1, 2), 405 (12).
+- Keep 393, 394, 398, 399 and 401, drop the rest?
+
+### Sheets 20 and 21: new pictures waiting
+
+- **One family with sheet 10**, with a calm lower third for the text.
+- **Story fit is good:** 420 (two men arguing), 424 (a signpost with blank boards, for "tulisan memudar"), 444 (blank information board, people at the relief), 441 (rumah baca), 442 (children with a tablet under a tree), 443 (the lake). No letters seen.
+- **People are painted into about half of them** (420, 427, 432, 435, 436, 439, 440, 442, 444 to 446), and Jaka and Mbah Kedu stand in front as sprites: two figure styles and sizes in one frame. Acceptable?
+- **No. 445 `bg.cerita-tuntas-temanggung-01`:** the line says the signpost can be read again, and its boards are as blank as in no. 425, because a picture may not carry letters. Is a blank board right here?
+- **Nos. 449 to 451 (maps, five stops):** each stop carries a prop (frame with puzzle pieces, blank board, a green and a red disc, magnifier), and the fifth stop matches the bridge story (rumah baca, a bench with a tablet under a tree, a jetty at the lake). Two questions: the two discs are told apart by colour only, where card no. 16 uses a tick and a cross; and will the challenge cards cover the props or sit beside them?
 
 ## Sheets
 
@@ -448,8 +600,8 @@ These are what `php spark gelita:katalog:impor` installs.
 | 283 | [`library.magelang.p1.2`](assets/pustaka/library.magelang.p1.2.webp) | Lambang_Kabupaten_Magelang.jpg | Gambar Pustaka (Pustaka Kedu) |  |  |
 | 284 | [`library.magelang.p2.1`](assets/pustaka/library.magelang.p2.1.webp) | Candi Borobudur, Mahakarya Dunia | Gambar Pustaka (Pustaka Kedu) |  |  |
 | 285 | [`library.magelang.p2.2`](assets/pustaka/library.magelang.p2.2.webp) | Borobudur_stupas_on_upper_terrace.jpg | Gambar Pustaka (Pustaka Kedu) |  |  |
-| 286 | [`library.magelang.p2.3`](assets/pustaka/library.magelang.p2.3.webp) | youtube.com/watch?v=txujqGtB_6g | Not installed by the game |  | Fact: this Pustaka medium is a video; the game uses only its cover (`.poster`) |
-| 287 | [`library.magelang.p2.3.poster`](assets/pustaka/library.magelang.p2.3.poster.webp) | library.magelang.p2.3.poster | Not installed by the game |  | Fact: this Pustaka medium is a video; the game uses only its cover (`.poster`) |
+| 286 | [`library.magelang.p2.3`](assets/pustaka/library.magelang.p2.3.webp) | youtube.com/watch?v=txujqGtB_6g | Not installed by the game |  | Fact: this Pustaka medium is a video; the importer skips its picture and installs only the cover (`.poster`) |
+| 287 | [`library.magelang.p2.3.poster`](assets/pustaka/library.magelang.p2.3.poster.webp) | library.magelang.p2.3.poster | Sampul video Pustaka (Pustaka Kedu) |  | Fact: installed as the cover of this page's video |
 | 288 | [`library.magelang.p3.1`](assets/pustaka/library.magelang.p3.1.webp) | Tiga Alam di Borobudur | Gambar Pustaka (Pustaka Kedu) |  |  |
 | 289 | [`library.magelang.p3.2`](assets/pustaka/library.magelang.p3.2.webp) | Relief_Di_Candi_Borobudur.jpg | Gambar Pustaka (Pustaka Kedu) |  |  |
 | 290 | [`library.magelang.p3.3`](assets/pustaka/library.magelang.p3.3.webp) | Stupa_Borobudur.jpg | Gambar Pustaka (Pustaka Kedu) |  |  |
@@ -459,8 +611,8 @@ These are what `php spark gelita:katalog:impor` installs.
 | 294 | [`library.magelang.p5.3`](assets/pustaka/library.magelang.p5.3.webp) | Candi_Pawon_6.jpg | Gambar Pustaka (Pustaka Kedu) |  |  |
 | 295 | [`library.magelang.p6.1`](assets/pustaka/library.magelang.p6.1.webp) | Topeng Ireng, Tarian Penuh Semangat | Gambar Pustaka (Pustaka Kedu) |  |  |
 | 296 | [`library.magelang.p6.2`](assets/pustaka/library.magelang.p6.2.webp) | Topeng_Ireng_(4).jpg | Gambar Pustaka (Pustaka Kedu) |  |  |
-| 297 | [`library.magelang.p6.3`](assets/pustaka/library.magelang.p6.3.webp) | youtube.com/watch?v=CicQwPmwCWQ | Not installed by the game |  | Fact: this Pustaka medium is a video; the game uses only its cover (`.poster`) |
-| 298 | [`library.magelang.p6.3.poster`](assets/pustaka/library.magelang.p6.3.poster.webp) | library.magelang.p6.3.poster | Not installed by the game |  | Fact: this Pustaka medium is a video; the game uses only its cover (`.poster`) |
+| 297 | [`library.magelang.p6.3`](assets/pustaka/library.magelang.p6.3.webp) | youtube.com/watch?v=CicQwPmwCWQ | Not installed by the game |  | Fact: this Pustaka medium is a video; the importer skips its picture and installs only the cover (`.poster`) |
+| 298 | [`library.magelang.p6.3.poster`](assets/pustaka/library.magelang.p6.3.poster.webp) | library.magelang.p6.3.poster | Sampul video Pustaka (Pustaka Kedu) |  | Fact: installed as the cover of this page's video |
 | 299 | [`library.magelang.p7.1`](assets/pustaka/library.magelang.p7.1.webp) | Gunung Tidar, Paku Tanah Jawa | Gambar Pustaka (Pustaka Kedu) |  |  |
 | 300 | [`library.magelang.p8.1`](assets/pustaka/library.magelang.p8.1.webp) | Prasasti Canggal dan Awal Mataram Kuno | Gambar Pustaka (Pustaka Kedu) |  |  |
 | 301 | [`library.magelang.p9.1`](assets/pustaka/library.magelang.p9.1.webp) | Rasa dan Karya Magelang | Gambar Pustaka (Pustaka Kedu) |  |  |
@@ -487,8 +639,8 @@ These are what `php spark gelita:katalog:impor` installs.
 | 315 | [`library.temanggung.p6.1`](assets/pustaka/library.temanggung.p6.1.webp) | Umbul Jumprit, Hulu Kali Progo | Gambar Pustaka (Pustaka Kedu) |  |  |
 | 316 | [`library.temanggung.p7.1`](assets/pustaka/library.temanggung.p7.1.webp) | Parakan, Kota Bambu Runcing | Gambar Pustaka (Pustaka Kedu) |  |  |
 | 317 | [`library.temanggung.p8.1`](assets/pustaka/library.temanggung.p8.1.webp) | Kuda Lumping dan Tradisi Temanggung | Gambar Pustaka (Pustaka Kedu) |  |  |
-| 318 | [`library.temanggung.p8.2`](assets/pustaka/library.temanggung.p8.2.webp) | youtube.com/watch?v=IXDk03NgHqQ | Not installed by the game |  | Fact: this Pustaka medium is a video; the game uses only its cover (`.poster`) |
-| 319 | [`library.temanggung.p8.2.poster`](assets/pustaka/library.temanggung.p8.2.poster.webp) | library.temanggung.p8.2.poster | Not installed by the game |  | Fact: this Pustaka medium is a video; the game uses only its cover (`.poster`) |
+| 318 | [`library.temanggung.p8.2`](assets/pustaka/library.temanggung.p8.2.webp) | youtube.com/watch?v=IXDk03NgHqQ | Not installed by the game |  | Fact: this Pustaka medium is a video; the importer skips its picture and installs only the cover (`.poster`) |
+| 319 | [`library.temanggung.p8.2.poster`](assets/pustaka/library.temanggung.p8.2.poster.webp) | library.temanggung.p8.2.poster | Sampul video Pustaka (Pustaka Kedu) |  | Fact: installed as the cover of this page's video |
 | 320 | [`library.temanggung.p9.1`](assets/pustaka/library.temanggung.p9.1.webp) | Rasa Temanggung | Gambar Pustaka (Pustaka Kedu) |  |  |
 | 321 | [`library.temanggung.p10.1`](assets/pustaka/library.temanggung.p10.1.webp) | Tips Jaka: Membaca Informasi Tersurat | Gambar Pustaka (Pustaka Kedu) |  |  |
 | 322 | [`library.wonosobo.p1.1`](assets/pustaka/library.wonosobo.p1.1.webp) | Selamat Datang di Wonosobo | Gambar Pustaka (Pustaka Kedu) |  |  |
@@ -503,10 +655,10 @@ These are what `php spark gelita:katalog:impor` installs.
 | 331 | [`library.wonosobo.p5.1`](assets/pustaka/library.wonosobo.p5.1.webp) | Embun Upas, Es di Pulau Tropis | Gambar Pustaka (Pustaka Kedu) |  |  |
 | 332 | [`library.wonosobo.p6.1`](assets/pustaka/library.wonosobo.p6.1.webp) | Candi-candi Dieng | Gambar Pustaka (Pustaka Kedu) |  |  |
 | 333 | [`library.wonosobo.p6.2`](assets/pustaka/library.wonosobo.p6.2.webp) | Pagi_Candi_Arjuna_Dieng.jpg | Gambar Pustaka (Pustaka Kedu) |  |  |
-| 334 | [`library.wonosobo.p7.1`](assets/pustaka/library.wonosobo.p7.1.webp) | Tari Topeng Lengger dan Bundengan | Not installed by the game |  | Fact: this Pustaka medium is a video; the game uses only its cover (`.poster`) |
-| 335 | [`library.wonosobo.p7.1.poster`](assets/pustaka/library.wonosobo.p7.1.poster.webp) | library.wonosobo.p7.1.poster | Not installed by the game |  | Fact: this Pustaka medium is a video; the game uses only its cover (`.poster`) |
-| 336 | [`library.wonosobo.p8.1`](assets/pustaka/library.wonosobo.p8.1.webp) | Tradisi Rambut Gimbal Dieng | Not installed by the game |  | Fact: this Pustaka medium is a video; the game uses only its cover (`.poster`) |
-| 337 | [`library.wonosobo.p8.1.poster`](assets/pustaka/library.wonosobo.p8.1.poster.webp) | library.wonosobo.p8.1.poster | Not installed by the game |  | Fact: this Pustaka medium is a video; the game uses only its cover (`.poster`) |
+| 334 | [`library.wonosobo.p7.1`](assets/pustaka/library.wonosobo.p7.1.webp) | Tari Topeng Lengger dan Bundengan | Not installed by the game |  | Fact: this Pustaka medium is a video; the importer skips its picture and installs only the cover (`.poster`) |
+| 335 | [`library.wonosobo.p7.1.poster`](assets/pustaka/library.wonosobo.p7.1.poster.webp) | library.wonosobo.p7.1.poster | Sampul video Pustaka (Pustaka Kedu) |  | Fact: installed as the cover of this page's video |
+| 336 | [`library.wonosobo.p8.1`](assets/pustaka/library.wonosobo.p8.1.webp) | Tradisi Rambut Gimbal Dieng | Not installed by the game |  | Fact: this Pustaka medium is a video; the importer skips its picture and installs only the cover (`.poster`) |
+| 337 | [`library.wonosobo.p8.1.poster`](assets/pustaka/library.wonosobo.p8.1.poster.webp) | library.wonosobo.p8.1.poster | Sampul video Pustaka (Pustaka Kedu) |  | Fact: installed as the cover of this page's video |
 | 338 | [`library.wonosobo.p9.1`](assets/pustaka/library.wonosobo.p9.1.webp) | Rasa Wonosobo | Gambar Pustaka (Pustaka Kedu) |  |  |
 | 339 | [`library.wonosobo.p9.2`](assets/pustaka/library.wonosobo.p9.2.webp) | Mountain_papaya_(Vasconcellea_pubescens).jpg | Gambar Pustaka (Pustaka Kedu) |  |  |
 | 340 | [`library.wonosobo.p9.3`](assets/pustaka/library.wonosobo.p9.3.webp) | Es_carica_dieng_wonosobo.jpg | Gambar Pustaka (Pustaka Kedu) |  |  |
