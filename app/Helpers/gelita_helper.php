@@ -235,6 +235,21 @@ if (! function_exists('package_audio_urls')) {
     }
 }
 
+if (! function_exists('sound_files_version')) {
+    /**
+     * Cache version of the music and sound-effect files under assets/audio/
+     * (`CONFIG.audioVersion`): a short hash of the manifest that
+     * `gelita:sound:install` writes, so a browser holding an earlier copy of
+     * a replaced file loads the new one. Empty while nothing was installed.
+     */
+    function sound_files_version(): string
+    {
+        $manifest = FCPATH . 'assets/audio/' . \App\Libraries\SoundInstaller::MANIFEST;
+
+        return is_file($manifest) ? substr((string) sha1_file($manifest), 0, 10) : '';
+    }
+}
+
 if (! function_exists('session_tag')) {
     /**
      * Penanda buram sesi permainan untuk antrean event offline di browser.
@@ -296,6 +311,8 @@ if (! function_exists('js_config')) {
             'stage'      => ['w' => 1280, 'h' => 720],
             // asset package Stage 2: package URLs of music and sound effects (empty when off)
             'audioUrls'  => package_audio_urls(),
+            // without a package: ?v= for music and sound effects replaced by gelita:sound:install
+            'audioVersion' => sound_files_version(),
             'eventFlush' => event_flush_config(),
             // Part 3 (29 §6.2): empty taps sent per clue per attempt before the rest become one `overflow`
             'emptyTapLimit' => max(0, (int) config('Gelita')->emptyTapLimit),

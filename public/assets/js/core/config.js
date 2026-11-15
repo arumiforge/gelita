@@ -40,6 +40,8 @@ export const CONFIG = Object.freeze({
   // telemetry flush rhythm { intervalMs, maxEvents } from Gelita::$eventFlush; null on a server without it (core/events.js)
   eventFlush: parsed.eventFlush && typeof parsed.eventFlush === 'object' && !Array.isArray(parsed.eventFlush) ? Object.freeze({ ...parsed.eventFlush }) : null,
   audioUrls: parsed.audioUrls && typeof parsed.audioUrls === 'object' && !Array.isArray(parsed.audioUrls) ? Object.freeze({ ...parsed.audioUrls }) : Object.freeze({}),
+  // cache version of assets/audio/{music,sfx}/ when no package serves them (gelita:sound:install); '' = none
+  audioVersion: typeof parsed.audioVersion === 'string' ? parsed.audioVersion : '',
   text: parsed.text && typeof parsed.text === 'object' ? parsed.text : {},
   // Part 3 (29 §6.2): empty taps sent per clue per attempt (engines/cari.js); null = engine default
   emptyTapLimit: parsed.emptyTapLimit ?? null,
