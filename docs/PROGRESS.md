@@ -73,17 +73,22 @@ Folders where other AI tools work for GELITA (`ai-studio/README.md`); Claude Cod
 - [ ] Run the `gelita-reviewer` subagent once on a real diff and adjust its checklist to what it misses or over-reports
 - [ ] `README.md`: review the audio licence line (Mimic 3, Piper) and the asset-size table, and re-read the panel bullets that are not about roles against the current screens
 
-## Asset catalogue audit (owner, 15 November 2026)
+## Asset catalogue audit and picture review (owner, 15 November 2026)
 
-Owner request: `gelita-katalog/` is out of date and has to follow the main repository, not the other way round. Audit and first step on branch `nty/laughing-ramanujan-l68r2v`; decision log *Asset catalogue audit*.
+Owner request: `gelita-katalog/` was out of date; the pictures follow the game, not the other way round. Owner decisions of the session: delete what nothing reads; one source for pictures, in the AI folder; review every picture against the current game, story and research rules (also to prepare the expert validation); rebuild the catalogue page afterwards; ChatGPT makes whatever has to be redrawn for one consistent look. Branch `nty/laughing-ramanujan-l68r2v`, PR #372; decision log *Asset catalogue audit* (two sections).
 
-- [x] Audit: what the importer reads (582 pictures), what nothing reads (332 files, 105 MB), which game slots the catalogue cannot fill, where pictures are stored twice
-- [x] Dead material removed (379 MB to 282 MB, 923 to 609 files); two documents moved to `docs/`; `gelita-katalog/AGENTS.md` and `README.md` rewritten
-- [ ] **Owner decision, on hold:** where the one committed copy of a picture lives. Today an accepted picture from `ai-studio/chatgpt-images/out/` is copied into `gelita-katalog/assets/` (a story background several times, once per slide). Options put to the owner: move it instead of copying; move every picture into `ai-studio/`; or let `data.json` point at the file in `ai-studio/` (several entries may share one file; the list then needs the accepted file's sha256 so a later overwrite in `out/` is refused). Not built; `CatalogImporter` has not been tried with a path outside the catalogue
-- [ ] **Owner decision:** the gallery page `gelita-katalog/index.html` stays as it is for now (owner). It can no longer be rebuilt; its page mock-up section, nine sound players and links to removed records are dead. Later either generate it from `ImageSlots` or remove it
-- [ ] `data.json` still has 97 audio entries and the page-only fields (prompts, style status, paths to removed records); untouched because the page stays. Slim it when the page is decided
-- [ ] Two catalogue pictures have no slot in the current question bank: `challenge.item.tmg-3-b03` (Arca Buddha duduk) and `challenge.item.tmg-3-c03` (Biji kopi sangrai); the importer still installs them as unused media rows. The bank's `challenge.item.tmg-3-b04` has no catalogue picture and stays a sample picture
-- [ ] The three region maps in the catalogue have four measured stops (`CatalogImporter::MAP_STOPS`); the game has five challenges per region. The five-stop maps are rows P-T, P-M, P-W of `ai-studio/chatgpt-images/TASKS.md`
+- [x] Audit: what the importer reads (582 pictures), what nothing reads (332 files, 105 MB), which game slots have no picture, where pictures were stored twice
+- [x] Dead material removed from `gelita-katalog/`; two documents moved to `docs/`
+- [x] One source: pictures and `data.json` moved to `ai-studio/game-images/` (`CatalogImporter::DEFAULT_DIR`); `gelita-katalog/` holds one README; the old gallery page, its builder and the page-only fields of `data.json` removed
+- [x] **Review list** `ai-studio/game-images/REVIEW.md` (452 rows, 21 sheets) with contact sheets in `review/` (built by `review/build-sheets.mjs`): every picture of the list, the 68 mock-up pictures, the UI art shipped in `public/assets/ui/` and `public/assets/app/` that was never recorded, and the pictures waiting in `ai-studio/chatgpt-images/out/`
+- [ ] **Owner:** mark each row of `REVIEW.md` (`keep`, `redo: reason`, `drop: reason`)
+- [ ] A session looks at the sheets not yet looked at (all but 03, 07, 10) and adds its questions to *First look by the AI* in `REVIEW.md`: story fit against `docs/naskah-cerita.md`, answer leaks in challenge pictures, text inside pictures
+- [ ] After the review: rows marked `drop` removed from `data.json` and the folder; rows marked `redo` become rows of `ai-studio/chatgpt-images/TASKS.md` with prompts written for one look (the newest UI art as the benchmark), in a new prompt document under `docs/revisi-10-analitik/`
+- [ ] After the review: accepted pictures of `ai-studio/chatgpt-images/out/` moved (not copied) into `ai-studio/game-images/`; the install steps in `ai-studio/README.md` followed
+- [ ] After the review: `gelita-katalog/` rebuilt as a page generated from `ImageSlots` and the reviewed pictures (a command, no hand-kept copy)
+- [ ] Two list pictures have no slot in the current question bank: `challenge.item.tmg-3-b03` (Arca Buddha duduk) and `challenge.item.tmg-3-c03` (Biji kopi sangrai). The bank's `challenge.item.tmg-3-b04` has no picture and stays a sample picture
+- [ ] The three region maps in the list have four measured stops (`CatalogImporter::MAP_STOPS`); the game has five challenges per region. The five-stop maps are rows P-T, P-M, P-W of `ai-studio/chatgpt-images/TASKS.md`
+- [ ] `mockup/gambar-mockup/*/aset/` inside `ai-studio/game-images/` keeps the old catalogue's folder names; flatten when the catalogue is rebuilt (`CatalogImporter::MOCKUP_FILES`, `MOCKUP_DIRS`)
 
 ## Before the research starts
 
@@ -139,4 +144,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `nty/laughing-ramanujan-l68r2v` | Cloud session; asset catalogue audit, step 1 (dead material removed, rules rewritten) | PR open. Verified: importer dry run on MariaDB before and after the removal (507 to install, 0 failed, both times), catalogue tests and full suite, gallery page opened in Chromium (517 of 519 pictures load). Not verified: a real install (only the dry run) |
+| `nty/laughing-ramanujan-l68r2v` | Cloud session; asset catalogue audit: dead material removed, pictures moved to one source `ai-studio/game-images/`, review list for the owner | PR #372. Verified: importer dry run on MariaDB before and after the removal (507 to install, 0 failed, both times) and catalogue tests plus full suite after the move. Not verified: a real install (only dry runs); the dry run on MariaDB after the move (the tests that read the shipped pictures are green) |

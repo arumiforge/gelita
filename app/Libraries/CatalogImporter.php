@@ -9,7 +9,8 @@ use CodeIgniter\Database\BaseConnection;
 use RuntimeException;
 
 /**
- * Installs the images of the team's Katalog Aset (`gelita-katalog/`) into
+ * Installs the images of the team's Katalog Aset (`ai-studio/game-images/`
+ * since 15 November 2026, before that `gelita-katalog/`) into
  * the game's image slots (`php spark gelita:katalog:impor`).
  *
  * The catalogue's `data.json` lists every entry with its asset key and file.
@@ -73,6 +74,9 @@ use RuntimeException;
  */
 final class CatalogImporter
 {
+    /** Folder of the picture masters, relative to the application root (owner, 15 November 2026: one source, in the AI studio). */
+    public const DEFAULT_DIR = 'ai-studio/game-images';
+
     /** media_assets.credit of every image installed from the catalogue. */
     public const CREDIT = 'Katalog Aset GELITA (gambar sementara)';
 

@@ -11,7 +11,7 @@
  */
 (function () {
   var A = '../../../../../public/assets/';
-  var K = '../../../../../gelita-katalog/assets/';
+  var K = '../../../../../ai-studio/game-images/assets/';
   var body = document.body;
   var stage = document.getElementById('stage');
   document.documentElement.style.setProperty('--app-w', window.innerWidth + 'px');

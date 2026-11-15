@@ -745,7 +745,7 @@ Sesudah itu aplikasi siap untuk **uji coba**. Ke-66 gambar tantangan masih gamba
 
 ### Installing the Katalog Aset images
 
-*(New section, English.)* The team catalogue `gelita-katalog/` (in the repo, not under `public/`) holds the current art: logo, MULAI/START buttons, app icons, backgrounds, story slide backgrounds, maps, badges, pins, lanterns, avatars, character frames, the 66 challenge images, and Pustaka illustrations. One command installs all of it into the game's image slots:
+*(New section, English.)* The team catalogue (`ai-studio/game-images/` since 15 November 2026, before that `gelita-katalog/`; in the repo, not under `public/`) holds the current art: logo, MULAI/START buttons, app icons, backgrounds, story slide backgrounds, maps, badges, pins, lanterns, avatars, character frames, the 66 challenge images, and Pustaka illustrations. One command installs all of it into the game's image slots:
 
 ```bash
 sudo -u www-data php spark gelita:katalog:impor --dry-run   # Jalur L (Jalur W: without sudo -u www-data); lists what would be installed
@@ -974,7 +974,7 @@ Bila kode sudah terlanjur di-reset, pasang lagi commit rilis yang gagal (`git re
 | Berkas unduhan data | `writable/exports/` | aplikasi | tidak publik; dilayani controller berotorisasi |
 | Log / cache | `writable/logs/`, `writable/cache/` | aplikasi | tidak publik |
 
-Aset hanya punya tiga jalan masuk ke server: **commit ke repositori** (folder aset resmi, didaftarkan `gelita:media:scan`), **unggah lewat panel** (folder `uploads/`, ikut backup), atau **`gelita:katalog:impor`** dari Katalog Aset `gelita-katalog/` (juga ke `uploads/`, lihat [Installing the Katalog Aset images](#installing-the-katalog-aset-images)). Jangan menyalin berkas langsung ke folder aset resmi di server: berkas itu tidak ada di git, tidak ikut backup, dan hilang saat server dibangun ulang.
+Aset hanya punya tiga jalan masuk ke server: **commit ke repositori** (folder aset resmi, didaftarkan `gelita:media:scan`), **unggah lewat panel** (folder `uploads/`, ikut backup), atau **`gelita:katalog:impor`** dari Katalog Aset `ai-studio/game-images/` (juga ke `uploads/`, lihat [Installing the Katalog Aset images](#installing-the-katalog-aset-images)). Jangan menyalin berkas langsung ke folder aset resmi di server: berkas itu tidak ada di git, tidak ikut backup, dan hilang saat server dibangun ulang.
 
 ### Cache-busting
 

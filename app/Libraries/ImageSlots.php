@@ -14,8 +14,8 @@ namespace App\Libraries;
  * `recommended`.
  *
  * Prompts, reference images, and the visual style guide are not repeated
- * here: they live in the team's Katalog Aset (gelita-katalog/index.html,
- * source gelita-katalog/data.json), searched by asset key. Its images are
+ * here: they live in the team's Katalog Aset (ai-studio/game-images/data.json),
+ * searched by asset key. Its images are
  * installed with `php spark gelita:katalog:impor`. Style decisions of
  * 11 October 2026: stylized 3D art, Jaka with a red scarf, WebP as the
  * default raster format (decision log in docs/perombakan-kelas5/).

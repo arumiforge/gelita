@@ -8,7 +8,7 @@ use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 
 /**
- * Installs the images of the team's Katalog Aset (`gelita-katalog/`) into the
+ * Installs the images of the team's Katalog Aset (`ai-studio/game-images/`) into the
  * game: logo, buttons, app icons, backgrounds, story slides, maps, badges,
  * pins, lanterns, avatars, character frames, challenge images, and Pustaka
  * illustrations. Rules: App\Libraries\CatalogImporter.
@@ -24,10 +24,10 @@ class CatalogImport extends BaseCommand
 
     protected $group       = 'GELITA';
     protected $name        = 'gelita:katalog:impor';
-    protected $description = 'Memasang semua gambar Katalog Aset (gelita-katalog/) ke slot gambar permainan.';
+    protected $description = 'Memasang semua gambar Katalog Aset (ai-studio/game-images/) ke slot gambar permainan.';
     protected $usage       = 'gelita:katalog:impor [--sumber=folder] [--dry-run] [--timpa] [--kunci=pola,pola]';
     protected $options     = [
-        '--sumber'  => 'Folder Katalog Aset (bawaan: gelita-katalog di folder aplikasi)',
+        '--sumber'  => 'Folder Katalog Aset (bawaan: ai-studio/game-images di folder aplikasi)',
         '--dry-run' => 'Tampilkan yang akan dipasang tanpa mengubah apa pun',
         '--timpa'   => 'Ganti juga gambar yang sudah diunggah admin atau dipasang sebelumnya',
         '--kunci'   => 'Hanya slot ini, dipisah koma, boleh pakai * (mis. "ui.btn-start*,ui.lang.*,char.jaka.*")',
@@ -37,7 +37,7 @@ class CatalogImport extends BaseCommand
     {
         db_sync_timezone();
 
-        $root      = $this->option('sumber', $params) ?? ROOTPATH . 'gelita-katalog';
+        $root      = $this->option('sumber', $params) ?? ROOTPATH . CatalogImporter::DEFAULT_DIR;
         $dryRun    = $this->flag('dry-run', $params);
         $overwrite = $this->flag('timpa', $params);
         $only      = array_values(array_filter(array_map('trim', explode(',', (string) ($this->option('kunci', $params) ?? '')))));

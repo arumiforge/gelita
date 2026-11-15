@@ -652,3 +652,18 @@ Owner request: `gelita-katalog/` is out of date, much of it should simply go, it
 **Checked after the removal:** the same dry run on MariaDB gave the same result (507 to install, 41 skipped, none failed); `CatalogImportTest`, which reads the shipped catalogue, is green.
 
 **Not checked:** a real install (only the dry run). The gallery page was opened once at 1366 × 800 on its start view only. Whether `CatalogImporter` accepts a `file` outside the catalogue root was not tried.
+
+
+## Asset catalogue audit, step 2: one picture source in `ai-studio/game-images/` (15 November 2026, branch `nty/laughing-ramanujan-l68r2v`)
+
+After step 1 the owner decided the question left on hold, and replaced the "keep the gallery page" answer: the pictures the game uses move to a folder in the AI folder, that folder is the only source, everything else in `gelita-katalog/` goes, and the catalogue is rebuilt later in a better form. The owner wants to review every picture against the current game and story first, wants one consistent look measured against the newest UI art, and wants the review to prepare the expert validation (media, content, culture) of the research. ChatGPT makes what has to be redrawn.
+
+1. **Moved with `git mv`.** `gelita-katalog/data.json`, the ten picture folders under `assets/` and `mockup/` are now under `ai-studio/game-images/`, with the same paths inside, so the importer only needed a new default root: `CatalogImporter::DEFAULT_DIR`, used by the command and the tests. The command name `gelita:katalog:impor`, the class name and the stored credits are unchanged.
+2. **Removed.** The gallery page `index.html` with `assets/catalog/` and `assets/vendor/`, and `gelita-katalog/AGENTS.md`; `gelita-katalog/README.md` now only says where things went and that the folder will be rebuilt. This overrides item 6 of step 1.
+3. **`data.json` slimmed** from 611 to 514 entries and 2.7 MB to 1.1 MB: the 97 audio entries and the fields only the old page read (style and content status, previews, generation records, notes) are gone; `key`, `file`, `cat`, title, region, size, format, `prompt`, `negative`, `puzzle` and `vector_source` stay. The importer reads only `key`, `file`, `cat` and `size`.
+4. **Paths repointed** in the living files: root `AGENTS.md`, `ai-studio/README.md`, the ChatGPT instructions and task list, `CLAUDE.md`, `README.md`, the glossary, `docs/05`, `docs/08`, documents `18`, `32A`, `34`, `37`, `38` and the mock-up sources under `docs/revisi-10-analitik/gambar/mockup/src/`. Decision logs, `docs/arsip/` and the ChatGPT inbox file keep the old paths as history. Not rebuilt: the PDFs of the research documents (paths only changed).
+5. **One copy from now on.** `ai-studio/README.md` and `ai-studio/game-images/README.md` say that an accepted ChatGPT picture is moved, not copied, and that a picture filling several slots is one file with several `data.json` entries. `CatalogImporter` already works that way (an entry is a key and a file path); no test covers two entries sharing one file yet.
+6. **The panel's pointer** on the slot detail page (*Gambar & mockup*) now names `ai-studio/game-images/data.json` instead of the removed page.
+7. **Folder names inside.** `mockup/gambar-mockup/*/aset/` was kept to leave `MOCKUP_FILES`, `MOCKUP_DIRS` and their tests alone; flattening is listed in `docs/PROGRESS.md` for the rebuild.
+
+**Not checked:** the importer dry run on MariaDB after the move (`CatalogImportTest` and `InstrumentImportTest`, which read the shipped pictures from the new place, are green); rendering of the research mock-ups from their repointed sources (`render.mjs` was not run); a real install.

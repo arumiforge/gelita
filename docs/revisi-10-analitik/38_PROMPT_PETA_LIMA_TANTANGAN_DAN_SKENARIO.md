@@ -10,13 +10,13 @@ Pengembang memutuskan (8 November 2026, [04](04_CATATAN_KEPUTUSAN.md)) bahwa let
 | --- | --- | --- | --- |
 | P-T, P-M, P-W | Peta wilayah lima tantangan, satu per wilayah | `map.region.{temanggung,magelang,wonosobo}` (1400 × 900) | Peta empat pos yang ada; tantangan kelima di posisi tebakan (60 %, 22 %) sampai peta baru dipasang |
 | K-S | Kartu tantangan Skenario Digital | `public/assets/ui/node-card-skenario.webp` (640 × 360) | Mock-up gambar ponsel berkabut ([gambar](gambar/38/mockup-node-card-skenario.webp)), sudah terpasang |
-| T-L1, M-L1, W-L1 | Latar cerita penghubung *Kabut di Layar* | `bg.cerita-layar-{wilayah}-01`–`06` (1920 × 1080) | Langit dan gunung peta wilayah di bawah kabut biru kelabu ([contoh](gambar/38/mockup-bg-cerita-layar-temanggung.webp)), di `gelita-katalog/mockup/gambar-mockup/cerita-layar/` |
+| T-L1, M-L1, W-L1 | Latar cerita penghubung *Kabut di Layar* | `bg.cerita-layar-{wilayah}-01`–`06` (1920 × 1080) | Langit dan gunung peta wilayah di bawah kabut biru kelabu ([contoh](gambar/38/mockup-bg-cerita-layar-temanggung.webp)), di `ai-studio/game-images/mockup/gambar-mockup/cerita-layar/` |
 
 Prompt T-L1, M-L1, dan W-L1 disalin apa adanya dari 37 supaya ketiga jenis gambar ada di satu berkas; bila salah satu diubah, ubah keduanya.
 
 ## Cara memakai
 
-1. Buka percakapan baru di ChatGPT untuk setiap gambar. Lampirkan acuan gaya `reference.06` atau `reference.07` dari `gelita-katalog/assets/referensi/`. Untuk peta, lampirkan juga mock-up tata letak wilayahnya dan peta empat pos yang lama (`gelita-katalog/assets/peta/map.region.{wilayah}.webp`) sebagai acuan suasana, lalu tulis: *"Use the first image only for the positions of the five clearings and the path; use the second only for mood and finish."*
+1. Buka percakapan baru di ChatGPT untuk setiap gambar. Lampirkan acuan gaya `reference.06` atau `reference.07` dari `ai-studio/game-images/assets/referensi/`. Untuk peta, lampirkan juga mock-up tata letak wilayahnya dan peta empat pos yang lama (`ai-studio/game-images/assets/peta/map.region.{wilayah}.webp`) sebagai acuan suasana, lalu tulis: *"Use the first image only for the positions of the five clearings and the path; use the second only for mood and finish."*
 2. Tempel prompt di kotak kode apa adanya. Jangan menambah tokoh, tulisan, atau benda yang tidak disebut prompt.
 3. Periksa hasilnya dengan [daftar periksa](#daftar-periksa-hasil). Kalau gagal, minta perbaikan di percakapan yang sama dengan menyebut butir yang gagal. Untuk peta, letak pos boleh meleset sedikit; yang penting kelima lapangan terlihat utuh, berurutan, dan berada di area aman.
 4. Simpan sebagai WebP dengan nama di bagian *DELIVERY*, lalu pasang seperti [Setelah gambar dibuat](#setelah-gambar-dibuat).
@@ -57,7 +57,7 @@ Mock-up [Magelang](gambar/38/mockup-peta-magelang-5-tantangan.webp) dan [Wonosob
 
 #### P-T · Peta wilayah Temanggung (lima tantangan)
 
-Slot: `map.region.temanggung` (menggantikan berkas `gelita-katalog/assets/peta/map.region.temanggung.webp`, 1400 × 900). Mock-up tata letak: [mockup-peta-temanggung-5-tantangan.webp](gambar/38/mockup-peta-temanggung-5-tantangan.webp).
+Slot: `map.region.temanggung` (menggantikan berkas `ai-studio/game-images/assets/peta/map.region.temanggung.webp`, 1400 × 900). Mock-up tata letak: [mockup-peta-temanggung-5-tantangan.webp](gambar/38/mockup-peta-temanggung-5-tantangan.webp).
 
 ```text
 GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
@@ -86,7 +86,7 @@ No watermarks, signatures, numbers, labels, pins, arrows, buttons, icons or any 
 
 #### P-M · Peta wilayah Magelang (lima tantangan)
 
-Slot: `map.region.magelang` (menggantikan berkas `gelita-katalog/assets/peta/map.region.magelang.webp`, 1400 × 900). Mock-up tata letak: [mockup-peta-magelang-5-tantangan.webp](gambar/38/mockup-peta-magelang-5-tantangan.webp).
+Slot: `map.region.magelang` (menggantikan berkas `ai-studio/game-images/assets/peta/map.region.magelang.webp`, 1400 × 900). Mock-up tata letak: [mockup-peta-magelang-5-tantangan.webp](gambar/38/mockup-peta-magelang-5-tantangan.webp).
 
 ```text
 GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
@@ -115,7 +115,7 @@ No watermarks, signatures, numbers, labels, pins, arrows, buttons, icons or any 
 
 #### P-W · Peta wilayah Wonosobo (lima tantangan)
 
-Slot: `map.region.wonosobo` (menggantikan berkas `gelita-katalog/assets/peta/map.region.wonosobo.webp`, 1400 × 900). Mock-up tata letak: [mockup-peta-wonosobo-5-tantangan.webp](gambar/38/mockup-peta-wonosobo-5-tantangan.webp).
+Slot: `map.region.wonosobo` (menggantikan berkas `ai-studio/game-images/assets/peta/map.region.wonosobo.webp`, 1400 × 900). Mock-up tata letak: [mockup-peta-wonosobo-5-tantangan.webp](gambar/38/mockup-peta-wonosobo-5-tantangan.webp).
 
 ```text
 GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
@@ -241,7 +241,7 @@ No watermarks, signatures, unintended text, extra limbs, duplicate subjects, cro
 
 ## Setelah gambar dibuat
 
-1. **Peta.** Ganti `gelita-katalog/assets/peta/map.region.{wilayah}.webp` (kode dan entri `data.json` tetap; perbarui `prompt` entrinya dengan prompt di atas), lalu `node build.mjs` di katalog. Ukur titik tengah kelima lapangan di gambar baru dan tulis sebagai baris baru `CatalogImporter::MAP_STOPS` (sha256 berkas baru → wilayah, pos 1–5). `gelita:katalog:impor` lalu memindahkan kelima tombol, termasuk tantangan kelima. Tes `CatalogImportTest` ikut diperbarui.
+1. **Peta.** Ganti `ai-studio/game-images/assets/peta/map.region.{wilayah}.webp` (kode dan entri `data.json` tetap; perbarui `prompt` entrinya dengan prompt di atas), lalu `node build.mjs` di katalog. Ukur titik tengah kelima lapangan di gambar baru dan tulis sebagai baris baru `CatalogImporter::MAP_STOPS` (sha256 berkas baru → wilayah, pos 1–5). `gelita:katalog:impor` lalu memindahkan kelima tombol, termasuk tantangan kelima. Tes `CatalogImportTest` ikut diperbarui.
 2. **Kartu.** Ganti `public/assets/ui/node-card-skenario.webp` (640 × 360). URL berversi (`asset_url_versioned()`) memastikan peramban mengambil gambar baru.
 3. **Latar cerita penghubung.** Tim katalog menambah entri `bg.cerita-layar-{wilayah}-01`–`06` di `data.json` (berkas di `assets/latar/`). Entri `data.json` mengalahkan pengganti sementara di `mockup/gambar-mockup/cerita-layar/`; folder itu boleh dihapus setelahnya.
 4. Pemasangan memakai `php spark gelita:katalog:impor`, tidak pernah di server produksi tanpa izin pengembang.

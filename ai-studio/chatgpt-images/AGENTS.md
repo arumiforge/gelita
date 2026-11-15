@@ -5,8 +5,8 @@ You are generating pictures for GELITA, an educational game for grade 5 students
 ## What you may touch
 
 - **Write only inside `ai-studio/chatgpt-images/`**: files in `out/` and `inbox/`, and the **Status** and **Notes** cells of `TASKS.md`.
-- **Read anything** the tasks point at: the prompt documents in `docs/revisi-10-analitik/`, the reference pictures in `gelita-katalog/assets/referensi/`, the mock-ups in `docs/revisi-10-analitik/gambar/38/`.
-- **Never change anything else**: no code, no `gelita-katalog/`, no `public/`, no documents, no prompt text. Never run the game's commands (`php spark …`, `composer`, tests). Installing pictures into the game is done later by a Claude Code session.
+- **Read anything** the tasks point at: the prompt documents in `docs/revisi-10-analitik/`, the reference pictures in `ai-studio/game-images/assets/referensi/`, the mock-ups in `docs/revisi-10-analitik/gambar/38/`.
+- **Never change anything else**: no code, no `ai-studio/game-images/`, no `public/`, no documents, no prompt text. Never run the game's commands (`php spark …`, `composer`, tests). Installing pictures into the game is done later by a Claude Code session.
 
 ## Start of every session
 
@@ -17,7 +17,7 @@ You are generating pictures for GELITA, an educational game for grade 5 students
 ## One picture, step by step
 
 1. Open the prompt: the **Prompt** cell names a file and a heading. Under that heading is one fenced `text` block. Use it word for word. Do not add characters, text, or objects, and do not shorten it.
-2. Attach the files in the **Attach** cell. "style" means `gelita-katalog/assets/referensi/reference.06.webp` or `reference.07.webp`, for render finish and mood only. For a region map, also say: *"Use the layout mock-up only for the positions of the five clearings and the path; use the old map only for mood and finish."*
+2. Attach the files in the **Attach** cell. "style" means `ai-studio/game-images/assets/referensi/reference.06.webp` or `reference.07.webp`, for render finish and mood only. For a region map, also say: *"Use the layout mock-up only for the positions of the five clearings and the path; use the old map only for mood and finish."*
 3. A row that needs a **licensed photo** (the two Susun Gambar pictures) can only be made when the owner has put that photo in `inbox/` or named it. Without it, set the status to `blocked: needs reference photo` and go to the next row.
 4. Generate, then check the result against *Checks* below. If a check fails, regenerate or fix in the same conversation, naming the failed check. Three failed attempts: set `blocked: <which check keeps failing>` and move on.
 5. Save the picture in `out/` under exactly the name in the **Save in `out/` as** cell, as WebP (quality 90), at exactly the canvas size in the **Canvas** cell. Scale proportionally; never stretch, never add borders.
@@ -92,4 +92,4 @@ Never change a row that is `accepted` or `installed`, and never overwrite its fi
 
 ## Not your job
 
-Say so in **Notes** and stop if a task seems to need any of these: changing a prompt, measuring positions on a map, editing `gelita-katalog/data.json`, installing pictures, checking cultural facts, or deciding whether a picture is good enough for the study. The owner decides the last one; a Claude Code session does the rest.
+Say so in **Notes** and stop if a task seems to need any of these: changing a prompt, measuring positions on a map, editing `ai-studio/game-images/data.json`, installing pictures, checking cultural facts, or deciding whether a picture is good enough for the study. The owner decides the last one; a Claude Code session does the rest.

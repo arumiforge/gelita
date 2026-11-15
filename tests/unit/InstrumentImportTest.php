@@ -129,7 +129,7 @@ final class InstrumentImportTest extends CIUnitTestCase
     {
         $data  = require InstrumentImporter::defaultDir() . '/tes.php';
         $slots = array_values(array_filter(array_map(static fn (array $s): ?string => $s['image'] ?? null, $data['stimuli'])));
-        $dir   = dirname(APPPATH) . '/gelita-katalog/' . array_search('instr.*', CatalogImporter::MOCKUP_DIRS, true);
+        $dir   = ROOTPATH . CatalogImporter::DEFAULT_DIR . '/' . array_search('instr.*', CatalogImporter::MOCKUP_DIRS, true);
         $files = array_map(static fn (string $f): string => basename($f, '.webp'), glob($dir . '/instr.*.webp') ?: []);
 
         $this->assertCount(24, $slots);

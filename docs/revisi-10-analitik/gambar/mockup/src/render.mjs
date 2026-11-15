@@ -6,7 +6,7 @@
  *
  * Every *.html here (except files starting with "_") becomes ../{name}.webp.
  * The pages load the game's real CSS, fonts, and UI pictures from
- * public/assets and gelita-katalog/assets through relative paths, so they
+ * public/assets and ai-studio/game-images/assets through relative paths, so they
  * open straight from disk (file://). A page may set <meta name="viewport-size"
  * content="844x390"> to render at another window size; the default is the
  * game's 1280 × 720 stage. Uses the pre-installed Playwright Chromium and

@@ -420,7 +420,7 @@ Tiap wilayah berisi empat tantangan berurutan: 1 Susun Gambar (`puzzle`), 2 Isi 
 
 ### Selesai — `game/challenge-finished`
 
-Redesigned 18 October 2026 from catalogue mockup 01 (package `tantangan-selesai-temanggung` of `gelita-katalog/mockup/gambar-mockup/`, removed from the repository on 15 November 2026 and in git history); one layout for every region and challenge kind. Decisions in the decision log, *Page redesign 1*.
+Redesigned 18 October 2026 from catalogue mockup 01 (package `tantangan-selesai-temanggung` of the old `gelita-katalog/mockup/gambar-mockup/`, removed from the repository on 15 November 2026 and in git history); one layout for every region and challenge kind. Decisions in the decision log, *Page redesign 1*.
 
 `body.is-celebrate`, CSS confetti `.confetti` (24 pieces, off with reduced motion), HUD variant `components/hud-menu` (section `hudStyle` = `menu`), background `bg.result.{code}` or else the region background, no nav bar. Panel `.result-card` 133, 145, 1017 × 495 dp (skin `ui.result-panel`, plain navy and gold while empty):
 

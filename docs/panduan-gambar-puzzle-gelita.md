@@ -180,8 +180,8 @@ Kesembilan gambar itu diuji dengan `cek_keping.py` (kisi sesuai wilayah) lalu di
 Untuk mengulang uji pada gambar katalog:
 
 ```bash
-python3 cek_keping.py gelita-katalog/assets/tantangan/challenge.item.tmg-1-03.webp --kisi 3
-python3 cek_keping.py gelita-katalog/assets/tantangan/challenge.item.mgl-1-01.webp --kisi 4
+python3 cek_keping.py ai-studio/game-images/assets/tantangan/challenge.item.tmg-1-03.webp --kisi 3
+python3 cek_keping.py ai-studio/game-images/assets/tantangan/challenge.item.mgl-1-01.webp --kisi 4
 ```
 
 ---

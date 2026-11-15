@@ -8,6 +8,8 @@ Work that other AI tools do for GELITA, one folder per tool. Each tool reads its
 | `elevenlabs-voice/` | ElevenLabs | Backup narration, 187 lines in two languages; the five voices kept for any ElevenLabs account in `voices/` | `elevenlabs-voice/README.md` | `elevenlabs-voice/lines.csv` |
 | `elevenlabs-sound/` | ElevenLabs | Music (15 gamelan loops) and sound effects (6), made like the narration (owner, 15 November 2026) | `elevenlabs-sound/README.md` | `elevenlabs-sound/sounds.csv` (21 sounds) |
 
+One folder is not a tool's: **`game-images/`** holds the game's picture masters and their list, the one source the command `gelita:katalog:impor` installs from (owner, 15 November 2026; before that `gelita-katalog/`). No AI tool writes there. Its rules are in `game-images/README.md`, and the owner's review of every picture is `game-images/REVIEW.md`.
+
 ## How work moves
 
 1. **The tool** makes files in its `out/` folder and marks them in its work list.
@@ -16,7 +18,8 @@ Work that other AI tools do for GELITA, one folder per tool. Each tool reads its
 
 ## For the Claude Code session that installs
 
-- **Story backgrounds** (`bg.cerita-…`): one picture fills several slots (the *For the installer* cell lists them). Follow `docs/revisi-10-analitik/37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md` → *Cara memakai* step 5 and `38_…` → *Setelah gambar dibuat* no. 3. The interim pictures in `gelita-katalog/mockup/gambar-mockup/cerita-layar/` go once the real ones are in.
+- **One copy of every picture.** An accepted picture is moved from `chatgpt-images/out/` into `game-images/` with `git mv`, never copied. A picture that fills several slots stays one file; `game-images/data.json` gets one entry per slot, all pointing at it.
+- **Story backgrounds** (`bg.cerita-…`): one picture fills several slots (the *For the installer* cell lists them). Follow `docs/revisi-10-analitik/37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md` → *Cara memakai* step 5 and `38_…` → *Setelah gambar dibuat* no. 3. The interim pictures in `ai-studio/game-images/mockup/gambar-mockup/cerita-layar/` go once the real ones are in.
 - **Susun Gambar**: only after the tile check and the two-person assembly test, and a re-check against `08` (37 → *Daftar periksa hasil*). The Candi Pawon picture note in the bank data changes with it (37 → *Catatan pemasangan*).
 - **Region maps**: replace the catalogue file, then measure the five stops into `CatalogImporter::MAP_STOPS` and update `CatalogImportTest` (38 → *Setelah gambar dibuat* no. 1).
 - **Challenge card**: replace `public/assets/ui/node-card-skenario.webp` (38 no. 2).
