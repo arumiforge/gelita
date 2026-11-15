@@ -6,7 +6,7 @@ ElevenLabs model: v4 (`eleven_v4`)
 
 | Speaker (`tokoh`) | Character | Indonesian voice (name, voice ID) | English voice (name, voice ID) | Settings (stability, similarity, style) |
 |---|---|---|---|---|
-| Narator | Neutral storyteller | narator (`9jk1K9VKFPFiBvMGrfwJ`) | narator (`RiC7WfZdhpblZ6cqa2Dr`) | story: stability 0.65, similarity 0.85, [warmly] [slowly]; other lines: stability 0.80, similarity 0.85, no tags; no effect |
+| Narator | Neutral storyteller | narator (`RiC7WfZdhpblZ6cqa2Dr`) | narator (`RiC7WfZdhpblZ6cqa2Dr`) | story: stability 0.65, similarity 0.85, [warmly] [slowly]; other lines: stability 0.80, similarity 0.85, no tags; no effect |
 | Jaka | Boy, curious and polite | Jaka (`XvqPaxRmAYmYehRouVnM`) | Jaka english (`N4XCfNUh8sOhcRAo7UPE`) | story: stability 0.65, similarity 0.85, [warmly] [slowly]; no effect |
 | Mbah Kedu | Elderly man, calm and kind | Mbah Kedu (`H1jaNlN43es4HneQ6wdS`), custom voice | Mbah Kedu — English Narration (`fWH0Fha1DCawTa59sMfX`) | story: stability 0.65, similarity 0.85, [warmly] [slowly]; clues: stability 0.80, similarity 0.85, no tags; no effect |
 
@@ -14,7 +14,7 @@ ElevenLabs model: v4 (`eleven_v4`)
 
 A voice ID works only in the account that made it. The five voices are kept in `voices/` (description, labels, preview, clone samples, and the voice ID and share link per account), with the steps to bring them to another account: `voices/README.md`. When the takes move to another account, the voice table above gets that account's voice IDs.
 
-Narator's Indonesian voice above is the one designed on `akun-2` (15 November 2026; Free plan, so a new Voice Design, not a clone; the owner picked it from three previews). The English voice is still `akun-1`'s until the owner decides; `voices/narator/voice.json` says which account serves which language.
+Narator's takes are made on `akun-1` with its own voice, in both languages. A second Narator voice designed on `akun-2` (Free plan, 15 November 2026) is not used: the owner went back to `akun-1` the same day, before any take (`voices/narator/voice.json`).
 
 ## How the settings are used
 
