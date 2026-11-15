@@ -8,8 +8,10 @@ use CodeIgniter\Test\CIUnitTestCase;
  * can move to another ElevenLabs account (owner, 15 November 2026):
  * ai-studio/elevenlabs-voice/voices/{speaker}/voice.json and preview.mp3.
  * The voice table of voices.md must name, for every speaker and language,
- * the voice ID of the account in use (the last row of `accounts`), and the
- * voice_profile built from it must fit its 200 characters.
+ * the voice ID of the account in use for that language (the last row of
+ * `accounts` whose `languages`, when given, holds it: Narator's Indonesian
+ * takes moved to akun-2 on 15 November 2026, its English stayed on akun-1),
+ * and the voice_profile built from it must fit its 200 characters.
  *
  * @internal
  */
@@ -69,9 +71,26 @@ final class NarrationVoicesTest extends CIUnitTestCase
                 $this->assertFileExists(self::DIR . $sample, $folder);
             }
 
-            $current = end($voice['accounts'])['voice_id'];
+            foreach ($voice['accounts'] as $account) {
+                foreach ($account['languages'] ?? [] as $locale) {
+                    $this->assertContains($locale, $voice['languages'], $folder . ': an account serves a language of the voice');
+                }
+
+                if (isset($account['preview'])) {
+                    $this->assertFileExists(self::DIR . 'voices/' . $folder . '/' . $account['preview']);
+                }
+            }
 
             foreach ($voice['languages'] as $locale) {
+                $current = '';
+
+                foreach ($voice['accounts'] as $account) {
+                    if (in_array($locale, $account['languages'] ?? $voice['languages'], true)) {
+                        $current = $account['voice_id'];
+                    }
+                }
+
+                $this->assertNotSame('', $current, $folder . ' ' . $locale . ': an account serves this language');
                 $cell = $sheet[mb_strtolower($voice['speaker'])][$locale] ?? '';
                 $this->assertStringContainsString('(' . $current . ')', $cell, $folder . ' ' . $locale . ': voices.md names the voice of the account in use');
                 $named[mb_strtolower($voice['speaker']) . '/' . $locale] = true;

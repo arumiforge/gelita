@@ -217,6 +217,7 @@ The Whisper CER figures above were measured on the 96 kbps (or WAV) files and we
 - **Musik dan efek suara**: komposisi dan sintesis orisinal untuk GELITA (`tools/audio/gamelan.py`, `compose.py`, `music_scenes.py`), tanpa sampel atau rekaman pihak ketiga.
 - **Narasi Indonesia**: dibangkitkan dengan model Mimic 3 `jv_ID/google-gmu_low` (MycroftAI, **CC BY-SA 4.0**). Model itu dilatih dari *High quality TTS data for Javanese* (OpenSLR 41, Google & Universitas Gadjah Mada, CC BY-SA 4.0). Untuk amannya, perlakukan rekaman ini dengan syarat yang sama: cantumkan atribusi di atas dan bagikan turunannya dengan lisensi serupa.
 - **Narasi Inggris**: suara Piper `en_US-kristin-medium` (domain publik, dataset LibriVox), `en_GB-jenny_dioco-medium` (suara "Jenny (Dioco)"; klip hasil boleh dipakai, termasuk komersial, atribusi dianjurkan), dan `en_US-joe-medium` (CC0).
+- **Narasi cadangan ElevenLabs** (`ai-studio/elevenlabs-voice/`): rekaman Narator berbahasa Indonesia dibuat dengan ElevenLabs (elevenlabs.io) pada akun `akun-2`, paket **Free** (keputusan pemilik, 15 November 2026). Paket itu hanya untuk penggunaan nonkomersial dan mewajibkan kredit: *Suara Narator (bahasa Indonesia) dibuat dengan ElevenLabs (elevenlabs.io).* Rekaman Mbah Kedu dan suara lain yang dibuat di `akun-1` (paket Starter) tidak terikat syarat ini.
 - **Whisper small** (MIT) hanya dipakai untuk memeriksa kejelasan, bukan bagian dari permainan.
 
 ## Voice-over narration (17 October 2026)
