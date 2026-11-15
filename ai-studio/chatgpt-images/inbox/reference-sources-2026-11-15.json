@@ -56,8 +56,9 @@
       "canonical_source": "https://commons.wikimedia.org/wiki/File:COLLECTIE_TROPENMUSEUM_Reli%C3%ABf_O_1_op_de_verborgen_voet_van_de_Borobudur_TMnr_10015739.jpg",
       "license": null,
       "license_verified": false,
-      "use": "Older UGM reference candidate; not used. Superseded for this task by owner-authorized Kemenag photographs. No license is inferred for this separate UGM copy.",
-      "sha256": "0bd623543cf959e9bb8d9b29ae93e4f68c42a87661521925b103390ea0ebe90c"
+      "use": "Older UGM reference candidate; not used. Superseded for this task by owner-authorized Kemenag photographs. No license is inferred for this separate UGM copy. File deleted from inbox on 2026-11-15 (owner): unused, and no license was recorded.",
+      "sha256": "0bd623543cf959e9bb8d9b29ae93e4f68c42a87661521925b103390ea0ebe90c",
+      "removed": true
     },
     {
       "file": "reference-Borobudur-O002-Cephas.jpg",
@@ -68,8 +69,9 @@
       "canonical_source": "https://commons.wikimedia.org/wiki/File:COLLECTIE_TROPENMUSEUM_Reli%C3%ABf_O_2_op_de_verborgen_voet_van_de_Borobudur_TMnr_10015740.jpg",
       "license": null,
       "license_verified": false,
-      "use": "Older UGM reference candidate; not used. Superseded for this task by owner-authorized Kemenag photographs. No license is inferred for this separate UGM copy.",
-      "sha256": "def00419bbcac86c0b5f6eb75676c4cbb574d6f9808d243f540b78051912aedd"
+      "use": "Older UGM reference candidate; not used. Superseded for this task by owner-authorized Kemenag photographs. No license is inferred for this separate UGM copy. File deleted from inbox on 2026-11-15 (owner): unused, and no license was recorded.",
+      "sha256": "def00419bbcac86c0b5f6eb75676c4cbb574d6f9808d243f540b78051912aedd",
+      "removed": true
     },
     {
       "file": "reference-Borobudur-O003-Cephas.jpg",
@@ -80,8 +82,9 @@
       "canonical_source": "https://commons.wikimedia.org/wiki/File:COLLECTIE_TROPENMUSEUM_Reli%C3%ABf_O_3_op_de_verborgen_voet_van_de_Borobudur_TMnr_10015741.jpg",
       "license": null,
       "license_verified": false,
-      "use": "Older UGM reference candidate; not used. Superseded for this task by owner-authorized Kemenag photographs. No license is inferred for this separate UGM copy.",
-      "sha256": "ff99b0f368a18187880ba080740eb6812d6887aef62ca95551bf9f98b28e6152"
+      "use": "Older UGM reference candidate; not used. Superseded for this task by owner-authorized Kemenag photographs. No license is inferred for this separate UGM copy. File deleted from inbox on 2026-11-15 (owner): unused, and no license was recorded.",
+      "sha256": "ff99b0f368a18187880ba080740eb6812d6887aef62ca95551bf9f98b28e6152",
+      "removed": true
     },
     {
       "file": "reference-Pawon-northwest-2025-Chainwit-CC-BY-4.0.jpg",
@@ -265,7 +268,7 @@
     {
       "code": "TMG-P11",
       "file": "out/challenge.item.tmg-1-k01.webp",
-      "status": "generated",
+      "status": "accepted",
       "dimensions": [
         1200,
         1200
@@ -279,12 +282,14 @@
       ],
       "style_reference": "gelita-katalog/assets/referensi/reference.07.webp",
       "attribution": "Wayang Kedu photo references: Smart City Temanggung, used with direct permission confirmed by the owner. Final image is an AI-generated illustration, not an unmodified photograph or a portrait of the real dalang.",
-      "sha256": "c7aa02613fdaabd33f06782f68e4ac0109d9e593feeb9fa77426ac9f021f249b"
+      "sha256": "c7aa02613fdaabd33f06782f68e4ac0109d9e593feeb9fa77426ac9f021f249b",
+      "accepted_on": "2026-11-15",
+      "accepted_by": "researcher (recorded by owner)"
     },
     {
       "code": "MGL-P05R",
       "file": "out/challenge.item.mgl-1-e01.webp",
-      "status": "generated",
+      "status": "accepted",
       "dimensions": [
         1200,
         1200
@@ -300,7 +305,9 @@
       "adaptation_license": "CC BY-SA 4.0",
       "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
       "review_note": "Visual checks performed against attached photos; final cultural/study acceptance remains with the owner.",
-      "sha256": "09908b407ec58e8ede7e58bc1488cc9c8c162a8d2bba8e245560aaef8b880a0c"
+      "sha256": "09908b407ec58e8ede7e58bc1488cc9c8c162a8d2bba8e245560aaef8b880a0c",
+      "accepted_on": "2026-11-15",
+      "accepted_by": "researcher (recorded by owner)"
     }
   ],
   "candidate": {
