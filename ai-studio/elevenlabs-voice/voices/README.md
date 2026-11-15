@@ -10,7 +10,7 @@ The narration's five voices, saved so the work can go on from another ElevenLabs
 | `mbah-kedu-id/` | Mbah Kedu | Indonesian | Mbah Kedu | `H1jaNlN43es4HneQ6wdS` |
 | `mbah-kedu-en/` | Mbah Kedu | English | Mbah Kedu — English Narration | `fWH0Fha1DCawTa59sMfX` |
 
-All five were made with ElevenLabs Voice Design in the first account, here called `akun-1` (Starter plan). Each folder holds:
+All five were made with ElevenLabs Voice Design in the first account, here called `akun-1` (Starter plan). Its Starter plan cannot share voices by link, so on 15 November 2026 the voices move by clone or, for Narator and Jaka (no takes yet), by a new design. The second account, `akun-2` (Free plan), was connected the same day with no voices yet. Each folder holds:
 
 - `voice.json`: the name, description and labels exactly as ElevenLabs shows them, the clone samples, and per account the voice ID, how the voice got there, and its share link.
 - `preview.mp3`: the voice's preview as ElevenLabs made it (reference audio).
