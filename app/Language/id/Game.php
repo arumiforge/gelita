@@ -184,7 +184,7 @@ return [
     'enterRegion'      => 'Masuk ke wilayah',
 
     // Peta
-    'mapLead'            => 'Pilih wilayah yang sudah terbuka, lalu ketuk Lanjut.',
+    'mapLead'            => 'Pilih wilayah yang sudah terbuka, lalu ketuk Mulai atau Lanjut.',
     'levelStatus_open'        => 'Terbuka',
     'levelStatus_in_progress' => 'Sedang dijelajahi',
     'levelStatus_completed'   => 'Tuntas',

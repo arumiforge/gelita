@@ -15,7 +15,8 @@
  * Versions listed now: the script used before draft 2 of October 2026
  * (data/story.php at commit 2dcef33), for the 32 lines draft 2 changed;
  * peta-03 before the Peta Kedu redesign of 18 October 2026 (lantern icon →
- * Kenali button); intro-07 before the one HUD of 18 October 2026 (the lantern
+ * Kenali button) and before 15 November 2026 (Kenali named after the region
+ * is done, as research mode opens it); intro-07 before the one HUD of 18 October 2026 (the lantern
  * moved from the top-left corner to the top middle); and the script before
  * research revision 10 (12, part 6, 4 November 2026) for the 35 lines it
  * changed, including the `tuntas-*-03`/`-04` codes that shifted when each
@@ -364,6 +365,12 @@ return [
             'title_en' => 'Get to Know Them First',
             'text_id'  => 'Ketuk ikon lentera di setiap wilayah untuk mendengar cerita Mbah Kedu tentang tempat itu. Kalau sudah siap, ketuk wilayah yang lenteranya menyala. Ayo, kita berangkat!',
             'text_en'  => 'Tap the lantern icon on each region to hear Mbah Kedu\'s story about that place. When you are ready, tap the region whose lantern is lit. Come on, let\'s go!',
+        ],
+        [
+            'title_id' => 'Kenali Dulu',
+            'title_en' => 'Get to Know Them First',
+            'text_id'  => 'Ketuk tombol Kenali di setiap wilayah untuk mendengar cerita Mbah Kedu tentang tempat itu. Kalau sudah siap, pilih wilayah yang sudah terbuka, lalu ketuk Lanjut. Ayo, kita berangkat!',
+            'text_en'  => 'Tap Get to know on each region to hear Mbah Kedu\'s story about that place. When you are ready, choose an open region and tap Continue. Come on, let\'s go!',
         ],
     ],
     'intro-07' => [

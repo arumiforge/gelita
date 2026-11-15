@@ -207,11 +207,11 @@ Diputar otomatis setelah loading "Membuka Peta Kedu". Pada kunjungan berikutnya,
 **EN:** I must explore three regions to bring it back: Temanggung, then Magelang, and finally Wonosobo. In each region, five Shards of Light are waiting.
 
 #### `peta-03` · Jaka · pose `happy` · efek `glow`
-**Judul:** Kenali Dulu / *Get to Know Them First*
+**Judul:** Mulai Menjelajah / *Start Exploring*
 
-**ID:** Ketuk tombol Kenali di setiap wilayah untuk mendengar cerita Mbah Kedu tentang tempat itu. Kalau sudah siap, pilih wilayah yang sudah terbuka, lalu ketuk Lanjut. Ayo, kita berangkat!
+**ID:** Pilih wilayah yang sudah terbuka, lalu ketuk Mulai atau Lanjut. Setelah wilayah itu tuntas, ketuk tombol Kenali untuk mendengar cerita Mbah Kedu tentang tempat itu. Ayo, kita berangkat!
 
-**EN:** Tap Get to know on each region to hear Mbah Kedu's story about that place. When you are ready, choose an open region and tap Continue. Come on, let's go!
+**EN:** Choose an open region, then tap Start or Continue. Once that region is complete, tap Get to know to hear Mbah Kedu's story about that place. Come on, let's go!
 
 ---
 

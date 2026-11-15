@@ -33,8 +33,8 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "70db9454f1f641016340aea6c4e0fff0f35630899dd42f6ab9afe992b22c0163",
-      "commit": "3dab5fb",
+      "source": "6ae90b4361f4802b305b40fd405336e468414ced0e7a995155bfd8dcb4767387",
+      "commit": "74d4067",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-15",
       "pages": 82,
@@ -97,11 +97,11 @@
       "landscapeTables": 0
     },
     "12_CERITA_PENGHUBUNG_DAN_NARASI.md": {
-      "source": "8b5b30868cb254d3c508a7bcac4547daa285fdd0dc0439badc6558fa22f166b8",
-      "commit": "e4d8e8d",
+      "source": "ac9c0889113ff326bdb588f573df90d686a100c25709eeb509d4173597415a47",
+      "commit": "74d4067",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
       "date": "2026-11-15",
-      "pages": 17,
+      "pages": 18,
       "landscapeTables": 0
     },
     "13_TES_AWAL_AKHIR.md": {

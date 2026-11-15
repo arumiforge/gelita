@@ -6,7 +6,7 @@ Per 1 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 **Diselaraskan 1 November 2026** (tanpa keputusan baru, `asal: pengembang`): dua baris cerita dari cek fakta budaya [25 → Akibat ke dokumen lain](25_CEK_FAKTA_BUDAYA.md#akibat-ke-dokumen-lain) no. 5 masuk dokumen ini (`kenal-temanggung-03`, `peta-tuntas-01`), urutan P5 menyebut butir risiko daring, waktu bermain per pertemuan ± 90 menit ([06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain)), uji coba mengikuti model ADDIE (KG3a dan KG3b), dan catatan tahap 3 mengikuti dokumen implementasi [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) dan [29](29_IMPLEMENTASI_DATA_PENELITIAN.md). Isi cerita lain tidak berubah.
 
-**Diselaraskan 15 November 2026** (`asal: pengembang`, disetujui peneliti; [04](04_CATATAN_KEPUTUSAN.md)): narasi memakai suara sintetis sebagai pengganti suara asli, karena pengisi suara berhalangan. Suara ini masih diujicobakan di lapangan dan terbuka terhadap saran validator. Teks cerita, kode berkas, dan arahan suara tidak berubah.
+**Diselaraskan 15 November 2026** (`asal: pengembang`, disetujui peneliti; [04](04_CATATAN_KEPUTUSAN.md)): narasi memakai suara sintetis sebagai pengganti suara asli, karena pengisi suara berhalangan. Suara ini masih diujicobakan di lapangan dan terbuka terhadap saran validator. Kode berkas dan arahan suara tidak berubah. Satu baris cerita diubah di hari yang sama, `peta-03` ([Narasi Peta Kedu](#narasi-peta-kedu-map_intro), keputusan 7).
 
 Dokumen ini berisi cerita penghubung dan narasi untuk tantangan kelima, Skenario Digital (`tmg-5`, `mgl-5`, `wnb-5`), beserta penyesuaian cerita lama yang ikut diperlukan. Skenarionya sendiri sudah ada di [08](08_DRAF_BANK_SOAL.md). Pengembang membuka cerita lama untuk diubah bila perlu, jadi setiap baris lama yang diubah di sini punya alasan: jumlah serpihan, jawaban yang bocor lewat cerita, atau kesinambungan dengan tantangan kelima.
 
@@ -246,6 +246,15 @@ Lima serpihan per wilayah. "Lentera di bagian atas layar" diganti papan Serpihan
 **ID:** Aku harus menjelajahi tiga wilayah untuk memulihkannya: Temanggung, lalu Magelang, dan terakhir Wonosobo. Di setiap wilayah, lima Serpihan Cahaya sedang menunggu.
 
 **EN:** I must explore three regions to bring it back: Temanggung, then Magelang, and finally Wonosobo. In each region, five Shards of Light are waiting.
+
+#### `peta-03` · Jaka · pose `happy` · efek `glow` (diubah 15 November 2026)
+**Judul:** Mulai Menjelajah / *Start Exploring* (dulu Kenali Dulu / *Get to Know Them First*)
+
+**ID:** Pilih wilayah yang sudah terbuka, lalu ketuk Mulai atau Lanjut. Setelah wilayah itu tuntas, ketuk tombol Kenali untuk mendengar cerita Mbah Kedu tentang tempat itu. Ayo, kita berangkat!
+
+**EN:** Choose an open region, then tap Start or Continue. Once that region is complete, tap Get to know to hear Mbah Kedu's story about that place. Come on, let's go!
+
+Baris lama mengajak siswa mengetuk Kenali di setiap wilayah sebelum berangkat. Selama studi tombol itu baru terbuka setelah wilayahnya tuntas (keputusan 2), jadi ajakannya dipindah ke setelah wilayah tuntas. Di luar studi Kenali tetap terbuka sejak awal, dan baris ini tetap benar di sana. Baris ini menyebut "Mulai atau Lanjut" karena tombol wilayah yang belum dimasuki bertulisan *Mulai*, dan baru menjadi *Lanjut* setelah wilayahnya dijelajahi. Baris ini tidak memuat fakta yang dinilai.
 
 ### Kenali wilayah (`region_intro`)
 
@@ -503,7 +512,7 @@ Nada bicara bisa membocorkan jawaban, sama seperti teks. Untuk situasi Skenario 
 
 - **Datar dan ramah**, tempo dan nada sama untuk setiap situasi. Tidak terdengar curiga, menakut-nakuti, atau mendesak.
 - **Kutipan pesan dibaca biasa**, tidak diperankan. Tidak ada "suara penipu", dan kata seperti *sekarang*, *gratis*, *tinggal 3*, *resmi*, atau *dihapus hari ini* tidak ditekan.
-- **Alamat situs dibaca seperti tertulis**, misalnya `sekolah-kita.example/masuk` dibaca "sekolah strip kita titik example garis miring masuk". Tanda ✓ dibaca "bertanda centang". Emoji tidak dibaca.
+- **Alamat situs dibaca seperti tertulis**, misalnya `sekolah-kita.example/masuk` dibaca "sekolah strip kita titik example garis miring masuk". Tanda ✓ dibaca "bertanda centang". Emoji tidak dibaca. Di rekaman bahasa Inggris (pengembang, 15 November 2026) alamat itu dibaca "sekolah dash kita dot example slash masuk", dengan kata Indonesianya dilafalkan seperti aslinya, dan tanda ✓ dibaca "with a check mark".
 - **Petunjuk *Periksa Unggahan*** dibaca tanpa menekan nama bagian yang menjadi kunci.
 - Saat menyetujui rekaman di panel, pendengar memeriksa nada ini juga, bukan hanya kecocokan teks.
 - **Arahan ini berlaku juga untuk suara sintetis** ([04](04_CATATAN_KEPUTUSAN.md), 14 dan 15 November 2026). Baris yang dinilai dibuat dengan pengaturan yang sama untuk semuanya, tanpa penanda gaya atau emosi, lalu didengarkan satu per satu sebelum disetujui.
@@ -519,7 +528,7 @@ Nada bicara bisa membocorkan jawaban, sama seperti teks. Untuk situasi Skenario 
 | Instruksi tantangan | `instruksi-{tantangan}` | Narator | — | 15 | Bank; jumlah pasti mengikuti dokumen implementasi |
 | **Jumlah** | | | **103** | **± 187** | |
 
-Naskah cerita per konteks: `intro` 9, `map_intro` 3, `region_intro` 12, `level_open` 47, `scenario_open` 18 (baru), `level_done` 15 (dulu 12), `ending` 5, `map_done` 3. Dari 112 baris, 21 baru dan 33 diubah; 58 tetap, dua di antaranya hanya bergeser kode (`tuntas-*`).
+Naskah cerita per konteks: `intro` 9, `map_intro` 3, `region_intro` 12, `level_open` 47, `scenario_open` 18 (baru), `level_done` 15 (dulu 12), `ending` 5, `map_done` 3. Dari 112 baris, 21 baru dan 33 diubah; 58 tetap, dua di antaranya hanya bergeser kode (`tuntas-*`). Sejak 15 November 2026 `peta-03` ikut diubah: 34 diubah, 57 tetap.
 
 Perkiraan lama rekaman tambahan per bahasa (± 120 kata per menit): situasi ± 10 menit, petunjuk *Periksa Unggahan* ± 3 menit, instruksi ± 2 menit, dan cerita baru ± 3 menit. Semuanya direkam di sesi yang sama dengan naskah cerita (keputusan 25 Oktober 2026). Sejak 15 November 2026 rekamannya dibuat sebagai suara sintetis, tokoh demi tokoh: Mbah Kedu sudah jadi (93 baris per bahasa), Narator (47) dan Jaka (47) menyusul ([04](04_CATATAN_KEPUTUSAN.md)).
 
@@ -587,6 +596,8 @@ Pengembang menyetujui semua usulan pada 26 Oktober 2026. Pilihan lain yang tidak
 4. **Yang dibacakan di Skenario Digital hanya situasinya**, lewat tombol ▶, sesuai keputusan media 25 Oktober 2026. Pilihan tindakan, pilihan alasan, dan umpan balik tidak dibacakan.
 5. **Urutan P5:** tantangan susulan (paling lama 20 menit), tes akhir, cerita penutup, skala sikap di Balai Refleksi, wawancara L5. Butir risiko daring (hanya dengan izin terpisah) kini diletakkan setelah tes akhir, sebelum cerita penutup ([02](02_LEMBAR_LAPANGAN.md), [06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain)); kritik dan saran mengikuti skala sikap di Balai Refleksi ([17](17_SKALA_SIKAP.md)).
 6. **`penutup-04` diubah setelah pemeriksaan skala sikap** (26 Oktober 2026): "saat bercerita tentang budaya Kedu" menjadi "saat budaya Kedu tampil di layar", supaya baris terakhir sebelum skala tidak menggemakan butir `skp-07`. Baris ini direkam dengan teks baru di kedua bahasa.
+7. **`peta-03` diubah supaya cocok dengan mode penelitian** (pengembang, 15 November 2026): Jaka tidak lagi mengajak mengetuk Kenali sebelum berangkat, karena selama studi Kenali baru terbuka setelah wilayahnya tuntas (keputusan 2). Teks barunya ada di [Narasi Peta Kedu](#narasi-peta-kedu-map_intro). Baris ini belum punya rekaman, jadi tidak ada rekaman yang terbuang.
+8. **Bacaan bahasa Inggris untuk dua baris situasi** (pengembang, 15 November 2026): tanda ✓ di `skenario-wnb-5-a02` dibaca "with a check mark", dan alamat situs di `skenario-wnb-5-b02` dibaca "sekolah dash kita dot example slash masuk". Keduanya masuk [Arahan suara](#arahan-suara-untuk-situasi-dan-petunjuk-yang-dinilai); teks di layar tidak berubah.
 
 ## Rujukan
 
