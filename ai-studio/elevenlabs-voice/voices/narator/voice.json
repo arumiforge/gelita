@@ -1,0 +1,23 @@
+{
+  "speaker": "Narator",
+  "languages": [
+    "id",
+    "en"
+  ],
+  "made_with": "ElevenLabs Voice Design (category \"generated\")",
+  "name": "narator",
+  "description": "Narator perempuan dewasa muda berbahasa Indonesia, dengan suara ringan, jernih, dan hangat. Dipilih untuk narasi Lentera Kedu.",
+  "labels": {},
+  "reference_audio": "preview.mp3",
+  "clone_samples": [],
+  "note": "One voice for both languages (owner, 15 November 2026). No takes yet; clone samples come from its accepted takes once they exist.",
+  "accounts": [
+    {
+      "account": "akun-1",
+      "voice_id": "RiC7WfZdhpblZ6cqa2Dr",
+      "how": "designed here",
+      "noted_on": "2026-11-15",
+      "share_link": ""
+    }
+  ]
+}

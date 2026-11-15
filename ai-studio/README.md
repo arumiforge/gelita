@@ -5,7 +5,7 @@ Work that other AI tools do for GELITA, one folder per tool. Each tool reads its
 | Folder | Tool | Makes | Instructions | Work list |
 |---|---|---|---|---|
 | `chatgpt-images/` | ChatGPT (Codex or the ChatGPT app) | Pictures: story backgrounds, two Susun Gambar pictures, three region maps, one challenge card | `chatgpt-images/AGENTS.md` | `chatgpt-images/TASKS.md` (35 pictures) |
-| `elevenlabs-voice/` | ElevenLabs | Backup narration, 187 lines in two languages | `elevenlabs-voice/README.md` | `elevenlabs-voice/lines.csv` |
+| `elevenlabs-voice/` | ElevenLabs | Backup narration, 187 lines in two languages; the five voices kept for any ElevenLabs account in `voices/` | `elevenlabs-voice/README.md` | `elevenlabs-voice/lines.csv` |
 | `elevenlabs-sound/` | ElevenLabs | Music (15 gamelan loops) and sound effects (6), made like the narration (owner, 15 November 2026) | `elevenlabs-sound/README.md` | `elevenlabs-sound/sounds.csv` (21 sounds) |
 
 ## How work moves

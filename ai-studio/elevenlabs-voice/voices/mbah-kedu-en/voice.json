@@ -1,0 +1,36 @@
+{
+  "speaker": "Mbah Kedu",
+  "languages": [
+    "en"
+  ],
+  "made_with": "ElevenLabs Voice Design (category \"generated\")",
+  "name": "Mbah Kedu — English Narration",
+  "description": "Original elderly male narrator for Mbah Kedu, a traditional guardian and lantern keeper from Kedu, Central Java. Warm, patient, quietly authoritative, with a lower-middle register and gently weathered texture. Clear English narration with subtle Indonesian-Javanese inflection. English preview 1 selected by the user.",
+  "labels": {
+    "accent": "Indonesian-Javanese",
+    "age": "old",
+    "gender": "male",
+    "character": "Mbah Kedu",
+    "language": "en"
+  },
+  "reference_audio": "preview.mp3",
+  "clone_samples": [
+    "out/en/intro-05.mp3",
+    "out/en/intro-08.mp3",
+    "out/en/kenal-temanggung-01.mp3",
+    "out/en/kenal-temanggung-02.mp3",
+    "out/en/kenal-temanggung-03.mp3",
+    "out/en/kenal-temanggung-04.mp3",
+    "out/en/kenal-magelang-01.mp3"
+  ],
+  "note": "All 93 lines made and accepted (15 November 2026).",
+  "accounts": [
+    {
+      "account": "akun-1",
+      "voice_id": "fWH0Fha1DCawTa59sMfX",
+      "how": "designed here",
+      "noted_on": "2026-11-15",
+      "share_link": ""
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "speaker": "Jaka",
+  "languages": [
+    "id"
+  ],
+  "made_with": "ElevenLabs Voice Design (category \"generated\")",
+  "name": "Jaka",
+  "description": "Laki-laki muda 18 tahun, berbicara bahasa Indonesia dengan logat Jawa. Suara halus, nyaring, jernih, bernada lebih tinggi dan tidak ngebas, nyaman didengarkan anak sekolah.",
+  "labels": {
+    "accent": "Javanese",
+    "gender": "male",
+    "age": "young",
+    "language": "id"
+  },
+  "reference_audio": "preview.mp3",
+  "clone_samples": [],
+  "note": "The preview is only 9 s, too short for a good clone: move this voice with the share link. No takes yet; clone samples come from its accepted takes once they exist.",
+  "accounts": [
+    {
+      "account": "akun-1",
+      "voice_id": "XvqPaxRmAYmYehRouVnM",
+      "how": "designed here",
+      "noted_on": "2026-11-15",
+      "share_link": ""
+    }
+  ]
+}

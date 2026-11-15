@@ -1,0 +1,27 @@
+{
+  "speaker": "Jaka",
+  "languages": [
+    "en"
+  ],
+  "made_with": "ElevenLabs Voice Design (category \"generated\")",
+  "name": "Jaka english",
+  "description": "Karakter laki-laki muda 18 tahun untuk dialog bahasa Inggris dengan logat Jawa. Suara halus, nyaring, jernih, bernada lebih tinggi dan tidak ngebas, nyaman didengarkan anak sekolah.",
+  "labels": {
+    "accent": "Javanese",
+    "age": "young",
+    "gender": "male",
+    "language": "en"
+  },
+  "reference_audio": "preview.mp3",
+  "clone_samples": [],
+  "note": "The preview is only 7 s, too short for a good clone: move this voice with the share link. No takes yet; clone samples come from its accepted takes once they exist.",
+  "accounts": [
+    {
+      "account": "akun-1",
+      "voice_id": "N4XCfNUh8sOhcRAo7UPE",
+      "how": "designed here",
+      "noted_on": "2026-11-15",
+      "share_link": ""
+    }
+  ]
+}
