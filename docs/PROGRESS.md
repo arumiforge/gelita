@@ -106,4 +106,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `aru/zen-dirac-ghknt1` | Cloud session: story line `peta-03` changed for research mode; English readings of two Narator lines set | PR open |
