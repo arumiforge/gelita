@@ -520,3 +520,25 @@ The owner confirmed the Indonesian takes once more (already accepted, section ab
 **Accepted and installed (owner, 15 November 2026).** The owner accepted the English takes and asked to install Mbah Kedu's narration into the system. On a MariaDB development install (`tools/dev/serve.sh`), `gelita:narration:install --dry-run` reported 186 to install (none skipped, no unknown names); the install copied them to `public/assets/audio/narasi/{id,en}/` and wrote `produksi.json` (93 files per language, sha256 and voice profile each); `gelita:narration:import` registered 93 per language as drafts, all `production_method = tts`, with durations read, and the voice profiles stored in full (Indonesian 194 characters, English 200). The dev server serves the files. The copies are not committed: the repository ships no narration (owner, 17 October 2026, guarded by `NarrationKelas5Test::testNoBundledNarrationShipsWithTheRepository`, which failed when they were added). The takes already reach a server inside `ai-studio/elevenlabs-voice/out/`, so the install runs there. `docs/08_DEPLOYMENT.md` did not name `gelita:narration:install` in *Instalasi baru*; step 4, the Linux and Windows command blocks, and the asset table now run it before `gelita:narration:import`. Approval is per install, so nothing was approved here; the owner approves in **Rekaman narasi** on the server.
 
 **96 kbps stays (owner, 15 November 2026).** Before installing, this session started to re-encode the takes to 48 kbps to follow decision P2 (`docs/rencana-paket-aset.md` §12: narration at 48 kbps to keep the offline package under 50 MB). The owner stopped that: the offline package may be larger than 50 MB, and quality is not reduced. The 48 kbps files were discarded and the committed 96 kbps takes restored unchanged (all 186 checked at 96 kbps, `git status` clean); `master.sh` stays at 96 kbps. S5 in `rencana-paket-aset.md` is marked lifted, `docs/audio.md` has a short section, and the asset checklist now names "MP3 mono 96 kbps" for narration.
+
+## Claude Code setup kept in the repository (15 November 2026, branch `pw/gallant-bohr-xx0uf6`)
+
+The owner works from several Claude accounts and had to set up plugins and skills again on each. Decision (owner, 15 November 2026): what GELITA needs from Claude Code lives in the repository, and account plugins are turned off instead of installed.
+
+**Why not plugins.** A cloud session reads the repository's `.claude/` folder (rules, skills, agents, hooks, settings) on any account, but it does not install plugins a repository names in `.claude/settings.json`, and account plugins stay with the account (Claude Code documentation, *What carries over from your setup*, read 15 November 2026). The session that did this work had about 300 account skills loaded, each listed to the model on every turn, and two plugins that add their own working rules to every session. Generic CodeIgniter skills found on the web were not taken over: they teach the framework, not this project's rules.
+
+**Added.**
+- Skills: `account-setup`, `finish-step` (counterpart of `continue-work`), `dev-install`, `new-migration`.
+- Subagent `gelita-reviewer`: read-only review of a diff against the pitfalls in `CLAUDE.md`.
+- Hooks (`.claude/hooks/`, wired in `.claude/settings.json`): after an edit, `php -l` on a PHP file and `LanguageFilesTest` when the file is under `app/Language/`; before a shell command, a full PHPUnit run is refused while another full run is running. `tests/unit/ClaudeHooksTest.php` covers both scripts; the process list is passed in through `GELITA_HOOK_PS` there.
+- `permissions.deny` for `SearchPlugins` and `SuggestPluginInstall`, so sessions stop offering plugins.
+- `docs/cloud-sessions.md`: what to turn off per account, the one-sentence account setup, Claude Desktop on Windows.
+
+**Not added.** No `.mcp.json`, no plugin marketplace, no copied third-party skill. The owner did not want the behaviour of the ponytail plugin written into the rules.
+
+**Limits.** The full-run check compares text, so a command that only mentions `vendor/bin/phpunit` is held back too while a full run is running. The hooks are bash scripts; a local Windows session needs Git Bash or WSL for them.
+
+**Checked.** Full suite green (1266 tests) after one fix: in a full run the test read the real process list, because an empty `GELITA_HOOK_PS` did not reach the script. `ClaudeHooksTest` green; the command hook refused a full run in the session while a stand-in process was listed; the edit hook reported a deliberately broken PHP file in the session; the session listed the four new skills; the language-file branch of the edit hook passed on the paired files and reported a key added to `id` only; `tools/dev/serve.sh` came up (`/masuk` answered 200) and was stopped the way `dev-install` describes, which is where the `pkill -f '0.0.0.0:8080'` line comes from.
+
+**Not checked.** `account-setup` was not run on a new account (it would create an environment on the owner's account). The reviewer subagent was not exercised. No local Desktop session on Windows was tried.
+

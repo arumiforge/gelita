@@ -3,6 +3,8 @@
 Topic rules live in `.claude/rules/` and load automatically:
 `language.md` (chat, code, routes, docs), `ui-copy.md` (UI text and local formats, loads when editing UI files), `glossary.md` (core Indonesian ↔ English terms; `glossary-ui.md` loads with views, CSS and JS, `glossary-research.md` with backend code, tests and the research documents), `parallel-agents.md` (subagents and file ownership), `revisi-10.md` (keeping research-revision sessions small, loads with `docs/revisi-10-analitik/`).
 
+Workflows live in `.claude/skills/`: `account-setup` (first session of a new Claude account), `continue-work` and `finish-step` (hand-over), `dev-install` (dev server and `tools/qa` checks), `new-migration`. `.claude/agents/gelita-reviewer.md` reviews a diff against this project's pitfalls. `.claude/hooks/` syntax-checks an edited PHP file, runs `LanguageFilesTest` after a language-file edit, and refuses a second full PHPUnit run (`tests/unit/ClaudeHooksTest.php`). The repository needs no account plugin; which ones to turn off is in `docs/cloud-sessions.md` section 2.
+
 ## Where things stand (read first)
 - **Progress checklist:** `docs/PROGRESS.md` — what is done, what is open, who owns which branch.
 - **Decision log:** `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md` — record every decision or deviation from the plan documents there, as a new section at the end. Sections up to 22 October 2026 are in `docs/arsip/CATATAN_IMPLEMENTASI-2026-10.md`; search either file by heading or keyword, never read them whole.
@@ -24,7 +26,7 @@ Topic rules live in `.claude/rules/` and load automatically:
 
 ## Tests
 - `composer install`, then `vendor/bin/phpunit --no-coverage` (without the flag the suite exits 1 on machines without a coverage driver). Everything must be green before pushing.
-- The full suite takes about 7.5 minutes and peaks above 7 GB in one process (1250 tests, 14 November 2026). While working, run the tests of the change (`--filter`, or one file); run the full suite once before pushing, and never two full runs at the same time.
+- The full suite takes about 7.5 minutes and peaks above 7 GB in one process (1250 tests, 14 November 2026). While working, run the tests of the change (`--filter`, or one file); run the full suite once before pushing, and never two full runs at the same time (a hook refuses the second).
 - GitHub Actions (`.github/workflows/tests.yml`) runs every test file in its own process on each PR; the check to require on `main` is `tests`.
 
 ## Kelas 5 overhaul (in progress)
