@@ -496,3 +496,5 @@ The owner asked for Mbah Kedu's backup narration with model v4 and the custom vo
 **Credits.** 14,360 used on 15 November 2026 (pilot 970, one transcription 108, the run 13,282); 24,127 of 40,000 left until the monthly reset.
 
 **Not done.** Nothing is installed in the game. Narator and Jaka have no voice yet; Mbah Kedu has no English voice (this one was designed for Indonesian with a Kedu accent). Before any ElevenLabs take is used with students: the `04` entry and the researcher, as already listed in `docs/PROGRESS.md`.
+
+**Accepted (owner, 15 November 2026).** After listening, the owner found the voice right and cleared the takes to go into the system. Installing them is left to a new session (`docs/PROGRESS.md`); the `04` entry and the note to the researcher are still due before students hear them.
