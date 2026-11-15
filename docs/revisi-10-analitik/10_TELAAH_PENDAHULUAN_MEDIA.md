@@ -39,7 +39,7 @@ Ada juga lima temuan sedang (keparahan 2) dan beberapa temuan ringan. Daftar len
 **Yang belum bisa dinilai di sini** (diisi TD, menunggu ahli media dan perangkat nyata):
 - iPad Safari, ponsel dan tablet Android sungguhan, Chromebook sesi tamu, dan aplikasi terpasang.
 - Waktu muat di internet sekolah. Angka di server pengembangan tidak sebanding; ukurannya memakai `tools/qa/nav-timing.mjs --serve`.
-- Narasi suara: rekaman pengisi suara belum ada di instalasi uji.
+- Narasi suara: saat telaah ini (25 Oktober 2026) belum ada rekaman narasi di instalasi uji. Sejak 15 November 2026 narasi memakai suara sintetis sebagai pengganti suara asli ([04](04_CATATAN_KEPUTUSAN.md)); narasi Mbah Kedu sudah jadi, tetapi belum dinilai di telaah ini.
 - Pemeriksaan keyboard dan pembaca layar: `tools/qa/a11y-check.mjs` berhenti di layar cerita pembuka sesaat setelah mendaftar, dua kali berturut-turut, sebelum pemeriksaan apa pun berjalan.
 - Kesan anak yang sesungguhnya: observasi L4 dan wawancara L5.
 
@@ -50,7 +50,7 @@ Simbol: ✓ lolos pemeriksaan; ! ada temuan (lihat B.6); TD belum bisa dinilai d
 | Aspek | Status | Ringkasan |
 | --- | --- | --- |
 | A. Tampilan dan komunikasi visual | ✓ / ! | A1 lolos di 7 ukuran (stage-check). A2: lihat temuan M-01 (ponsel) dan M-06 (petunjuk lebih kecil dari bacaan). A3: axe menemukan 1 pelanggaran kontras (M-08); sekitar 350 elemen teks di atas gambar perlu dicek manual (banyak di antaranya HUD yang sama di setiap layar). A8 lolos: benar/salah memakai ikon dan teks |
-| B. Audio | TD | Musik latar ada; narasi belum direkam. B6 (bisa dikerjakan tanpa audio) lolos: semua petunjuk tantangan tampil sebagai teks |
+| B. Audio | TD | Musik latar ada; narasi belum ada saat telaah (sejak 15 November 2026 narasi memakai suara sintetis, [04](04_CATATAN_KEPUTUSAN.md); penilaiannya menunggu ahli media). B6 (bisa dikerjakan tanpa audio) lolos: semua petunjuk tantangan tampil sebagai teks |
 | C. Interaksi | ✓ / ! | C4: 48 dp lolos di semua layar, tetapi area ketuk Cari Objek bertumpuk (M-02). C6 lolos: keluar dari tantangan meminta konfirmasi. H4 (lihat aspek H) lolos |
 | D. Desain permainan | ! | D4: jam dan hitungan benar/salah selalu tampil (M-03). Nama tantangan tidak konsisten (M-07) |
 | E. Prinsip multimedia | ✓ / ! | E1 lolos: efek 3D hanya di adegan bernarasi dan mati dengan "kurangi gerakan". E5 lolos: bacaan Isi Rumpang dan pernyataan Benar atau Salah tidak dibacakan narasi (yang dibacakan hanya baris cerita dan 12 petunjuk Cari Objek) |

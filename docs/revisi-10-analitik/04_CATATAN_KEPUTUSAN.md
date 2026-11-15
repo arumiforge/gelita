@@ -1,8 +1,24 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 14 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 15 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
+
+## 15 November 2026
+
+**Narasi Mbah Kedu memakai suara sintetis; Narator dan Jaka menyusul** (cabang `aru/zen-dirac-ghknt1`) · `asal: pengembang` · `disetujui peneliti` (disampaikan peneliti lewat pengembang, 15 November 2026) · mengubah 01, 10, 12, dan 24
+
+Entri 14 November 2026 memberi tiga syarat sebelum suara sintetis didengar siswa: entri baru di sini, peneliti diberi tahu, dan dokumen yang menyebut pengisi suara disesuaikan. Entri ini memenuhi ketiganya.
+
+- **Yang berubah.** Narasi Mbah Kedu, 93 baris per bahasa (Indonesia dan Inggris), memakai suara sintetis sebagai pengganti suara asli, karena pengisi suara berhalangan. Pengembang menerima rekamannya pada 15 November 2026, dan peneliti menyetujui pemakaiannya.
+- **Masih diuji.** Suara ini belum final. Narasinya masih diujicobakan langsung di lapangan dan terbuka terhadap saran validator. Kalau uji coba atau saran validator meminta perubahan (suara lain, atau kembali ke pengisi suara), perubahannya dicatat sebagai entri baru di sini.
+- **Narator dan Jaka.** Keduanya, 47 baris per tokoh per bahasa, akan dibuat dengan suara sintetis juga; rekamannya belum ada. Persetujuan peneliti di entri ini untuk narasi Mbah Kedu. Peneliti diberi tahu lagi saat rekaman Narator dan Jaka jadi, sebelum didengar siswa.
+- **Akibat ke data penelitian.** Tidak berubah dari entri 14 November 2026. Setiap rekaman ini tersimpan sebagai suara sintetis (`production_method = tts`) bersama keterangan suara dan pengaturannya (`voice_profile`), jadi peneliti bisa membedakannya dari rekaman pengisi suara. Rekaman pengisi suara yang kelak diunggah dengan kode berkas yang sama menggantikannya dan tercatat sebagai suara asli.
+- **Arahan suara tetap berlaku.** [12 → Arahan suara untuk situasi dan petunjuk yang dinilai](12_CERITA_PENGHUBUNG_DAN_NARASI.md#arahan-suara-untuk-situasi-dan-petunjuk-yang-dinilai) dipakai juga untuk suara sintetis: datar dan ramah, tanpa tekanan pada kata kunci. Nadanya diperiksa saat rekaman disetujui di panel.
+- **Sebutan di dokumen.** Dokumen revisi cukup menulis "suara sintetis" (permintaan pengembang). Nama layanan ada di entri 14 November 2026; suara dan pengaturan per tokoh ada di `ai-studio/elevenlabs-voice/voices.md`.
+- **Dokumen yang disesuaikan.** 01 (jawaban pertanyaan terbuka tentang pengisi suara), 10 (catatan narasi di daftar *Yang belum bisa dinilai di sini* dan di aspek B), 12 (dasar keputusan, arahan suara, daftar rekaman), 24 (alasan cerita dan narasi tidak diuji baca), dan baris 12 di 00. 22 tidak diubah (ditangani peneliti). 22 tidak menyebut cara narasi direkam, tetapi 12 terlampir di sana sebagai instrumen; perlu tidaknya perubahan ini disampaikan ke komite etik diputuskan peneliti.
+
+Entri ini tidak diikuti pembuatan ulang PDF. 24 berubah satu sel tabel; PDF-nya dibuat ulang saat akan dikirim ke peneliti.
 
 ## 14 November 2026
 

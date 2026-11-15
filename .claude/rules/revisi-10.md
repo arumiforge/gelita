@@ -31,4 +31,5 @@ The Markdown documents total about 1.2 MB, roughly 500k tokens (27 October 2026)
 
 ## Roles and naming (27 October 2026)
 - In these files the owner is *pengembang* (never "pemilik proyek"), and AI help is written as *AI* (never a product or assistant name). The paths `.claude/rules/…` are the only exception.
+- The narration's synthetic voice is written *suara sintetis*, without the name of the service (owner, 15 November 2026). The 14 November 2026 entry of `04` and the folder path `ai-studio/elevenlabs-voice/` are the only places that name it.
 - Follow `01` → *Peran pengembang, peneliti, dan ahli*: developer work (including AI-assisted scores and labels) is provisional, never counted as expert validation, and never shown to experts before they rate. Every new decision in `04` names its origin and status with the labels in `00` → *Label asal dan status*.

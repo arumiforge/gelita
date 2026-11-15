@@ -6,6 +6,8 @@ Per 1 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 **Diselaraskan 1 November 2026** (tanpa keputusan baru, `asal: pengembang`): dua baris cerita dari cek fakta budaya [25 → Akibat ke dokumen lain](25_CEK_FAKTA_BUDAYA.md#akibat-ke-dokumen-lain) no. 5 masuk dokumen ini (`kenal-temanggung-03`, `peta-tuntas-01`), urutan P5 menyebut butir risiko daring, waktu bermain per pertemuan ± 90 menit ([06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain)), uji coba mengikuti model ADDIE (KG3a dan KG3b), dan catatan tahap 3 mengikuti dokumen implementasi [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) dan [29](29_IMPLEMENTASI_DATA_PENELITIAN.md). Isi cerita lain tidak berubah.
 
+**Diselaraskan 15 November 2026** (`asal: pengembang`, disetujui peneliti; [04](04_CATATAN_KEPUTUSAN.md)): narasi memakai suara sintetis sebagai pengganti suara asli, karena pengisi suara berhalangan. Suara ini masih diujicobakan di lapangan dan terbuka terhadap saran validator. Teks cerita, kode berkas, dan arahan suara tidak berubah.
+
 Dokumen ini berisi cerita penghubung dan narasi untuk tantangan kelima, Skenario Digital (`tmg-5`, `mgl-5`, `wnb-5`), beserta penyesuaian cerita lama yang ikut diperlukan. Skenarionya sendiri sudah ada di [08](08_DRAF_BANK_SOAL.md). Pengembang membuka cerita lama untuk diubah bila perlu, jadi setiap baris lama yang diubah di sini punya alasan: jumlah serpihan, jawaban yang bocor lewat cerita, atau kesinambungan dengan tantangan kelima.
 
 Naskah aktif ([`docs/naskah-cerita.md`](../naskah-cerita.md)) dan `app/Database/Seeds/data/story.php` **belum diubah**. Isi dokumen ini dipasang di tahap 3 bersama perubahan sistem no. 2. Format setiap baris sama dengan naskah aktif: kode berkas audio · tokoh · pose · efek, lalu teks Indonesia dan Inggris.
@@ -26,7 +28,7 @@ Naskah aktif ([`docs/naskah-cerita.md`](../naskah-cerita.md)) dan `app/Database/
 | Keputusan | Akibatnya untuk cerita |
 | --- | --- |
 | Skenario Digital tantangan kelima di tiap wilayah ([01](01_REVISI_10_ANALITIK.md#skenario-digital-tantangan-kelima)) | 15 tantangan, 15 Serpihan Cahaya; cerita tuntas pindah ke setelah tantangan kelima |
-| Cerita penghubung didraf AI, disetujui pengembang, direkam pengisi suara yang sama di sesi yang sama ([04](04_CATATAN_KEPUTUSAN.md), 25 Oktober 2026) | Hanya tiga suara yang sudah ada: Narator, Jaka, Mbah Kedu |
+| Cerita penghubung didraf AI, disetujui pengembang, direkam pengisi suara yang sama di sesi yang sama ([04](04_CATATAN_KEPUTUSAN.md), 25 Oktober 2026). Sejak 15 November 2026 narasi memakai suara sintetis sebagai pengganti suara asli, karena pengisi suara berhalangan (04, disetujui peneliti) | Hanya tiga suara yang sudah ada: Narator, Jaka, Mbah Kedu. Dengan suara sintetis tetap tiga suara, satu suara per tokoh per bahasa |
 | Satu wilayah per pertemuan lewat token: P1 cerita pembuka, P2–P4 satu wilayah, P5 susulan, tes akhir, dan cerita penutup ([28 → Wilayah yang dibuka per pertemuan](28_IMPLEMENTASI_SESI_LAPANGAN.md#9-wilayah-yang-dibuka-per-pertemuan)) | Cerita tidak boleh mengajak langsung ke wilayah berikutnya; wilayah itu baru terbuka di pertemuan berikutnya |
 | Aturan narasi (keputusan media, 25 Oktober 2026) | Bacaan dan pernyataan D1 tidak pernah dibacakan; situasi Skenario Digital dan petunjuk *Periksa Unggahan* hanya lewat tombol ▶ dan tercatat |
 | Tidak ada jawaban yang bocor lewat narasi (06, aturan menulis butir no. 2) | Cerita yang diputar sebelum tantangan diperiksa terhadap semua butir yang dinilai |
@@ -201,7 +203,7 @@ Bank baru mengubah bentuk teks tantangan 2–4 (genre digital dan *Periksa Ungga
 
 ## Baris lama yang diubah
 
-Hanya teks baru yang ditulis di sini; teks lama ada di naskah aktif dengan kode yang sama. Pose dan efek tetap, kecuali disebut. Baris `tuntas-*` mendapat satu baris baru, jadi kode sesudahnya bergeser. Pengisi suara belum merekam naskah ini (lihat `docs/PROGRESS.md`), jadi tidak ada rekaman yang terbuang.
+Hanya teks baru yang ditulis di sini; teks lama ada di naskah aktif dengan kode yang sama. Pose dan efek tetap, kecuali disebut. Baris `tuntas-*` mendapat satu baris baru, jadi kode sesudahnya bergeser. Saat dokumen ini disetujui, naskah ini belum direkam (lihat `docs/PROGRESS.md`), jadi tidak ada rekaman yang terbuang. Suara sintetis yang dipakai sejak 15 November 2026 dibuat dari naskah yang sudah diubah ini.
 
 ### Cerita pembuka (`intro`)
 
@@ -504,6 +506,7 @@ Nada bicara bisa membocorkan jawaban, sama seperti teks. Untuk situasi Skenario 
 - **Alamat situs dibaca seperti tertulis**, misalnya `sekolah-kita.example/masuk` dibaca "sekolah strip kita titik example garis miring masuk". Tanda ✓ dibaca "bertanda centang". Emoji tidak dibaca.
 - **Petunjuk *Periksa Unggahan*** dibaca tanpa menekan nama bagian yang menjadi kunci.
 - Saat menyetujui rekaman di panel, pendengar memeriksa nada ini juga, bukan hanya kecocokan teks.
+- **Arahan ini berlaku juga untuk suara sintetis** ([04](04_CATATAN_KEPUTUSAN.md), 14 dan 15 November 2026). Baris yang dinilai dibuat dengan pengaturan yang sama untuk semuanya, tanpa penanda gaya atau emosi, lalu didengarkan satu per satu sebelum disetujui.
 
 ### Daftar rekaman per bahasa
 
@@ -518,7 +521,7 @@ Nada bicara bisa membocorkan jawaban, sama seperti teks. Untuk situasi Skenario 
 
 Naskah cerita per konteks: `intro` 9, `map_intro` 3, `region_intro` 12, `level_open` 47, `scenario_open` 18 (baru), `level_done` 15 (dulu 12), `ending` 5, `map_done` 3. Dari 112 baris, 21 baru dan 33 diubah; 58 tetap, dua di antaranya hanya bergeser kode (`tuntas-*`).
 
-Perkiraan lama rekaman tambahan per bahasa (± 120 kata per menit): situasi ± 10 menit, petunjuk *Periksa Unggahan* ± 3 menit, instruksi ± 2 menit, dan cerita baru ± 3 menit. Semuanya direkam di sesi yang sama dengan naskah cerita (keputusan 25 Oktober 2026).
+Perkiraan lama rekaman tambahan per bahasa (± 120 kata per menit): situasi ± 10 menit, petunjuk *Periksa Unggahan* ± 3 menit, instruksi ± 2 menit, dan cerita baru ± 3 menit. Semuanya direkam di sesi yang sama dengan naskah cerita (keputusan 25 Oktober 2026). Sejak 15 November 2026 rekamannya dibuat sebagai suara sintetis, tokoh demi tokoh: Mbah Kedu sudah jadi (93 baris per bahasa), Narator (47) dan Jaka (47) menyusul ([04](04_CATATAN_KEPUTUSAN.md)).
 
 ## Waktu cerita per pertemuan
 
