@@ -102,4 +102,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `nty/gifted-cray-tyh5xu` | Mbah Kedu's English ElevenLabs takes, install checked on a dev install and added to the deployment steps; leaked note removed from two English Cari Objek clues | PR [#361](https://github.com/arumiforge/gelita/pull/361) open |
