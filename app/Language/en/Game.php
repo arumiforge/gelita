@@ -184,7 +184,7 @@ return [
     'enterRegion'      => 'Enter the region',
 
     // Map
-    'mapLead'                 => 'Choose an open region, then tap Continue.',
+    'mapLead'                 => 'Choose an open region, then tap Start or Continue.',
     'levelStatus_open'        => 'Open',
     'levelStatus_in_progress' => 'Exploring',
     'levelStatus_completed'   => 'Complete',

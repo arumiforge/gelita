@@ -31,7 +31,7 @@ Lines whose `konteks` is `scenario_situation` or `post_clue` are part of scored 
 
 - Flat and friendly, the same pace and pitch for every situation. Never suspicious, scary, or urgent.
 - Quoted messages are read plainly, not acted. No stress on words such as *sekarang*, *gratis*, *tinggal 3*, *resmi*, *dihapus hari ini*.
-- Web addresses are read as written: `sekolah-kita.example/masuk` is "sekolah strip kita titik example garis miring masuk". The mark ✓ is read "bertanda centang". Emoji are not read.
+- Web addresses are read as written: `sekolah-kita.example/masuk` is "sekolah strip kita titik example garis miring masuk". The mark ✓ is read "bertanda centang". In the English takes the address is "sekolah dash kita dot example slash masuk" and ✓ is "with a check mark" (owner, 15 November 2026). Emoji are not read.
 - *Periksa Unggahan* clues are read without stressing the part that is the key.
 
 ## Mastering

@@ -209,9 +209,9 @@ Diputar otomatis setelah loading "Membuka Peta Kedu". Pada kunjungan berikutnya,
 #### `peta-03` · Jaka · pose `happy` · efek `glow`
 **Judul:** Mulai Menjelajah / *Start Exploring*
 
-**ID:** Pilih wilayah yang sudah terbuka, lalu ketuk Lanjut. Setelah wilayah itu tuntas, ketuk tombol Kenali untuk mendengar cerita Mbah Kedu tentang tempat itu. Ayo, kita berangkat!
+**ID:** Pilih wilayah yang sudah terbuka, lalu ketuk Mulai atau Lanjut. Setelah wilayah itu tuntas, ketuk tombol Kenali untuk mendengar cerita Mbah Kedu tentang tempat itu. Ayo, kita berangkat!
 
-**EN:** Choose an open region, then tap Continue. Once that region is complete, tap Get to know to hear Mbah Kedu's story about that place. Come on, let's go!
+**EN:** Choose an open region, then tap Start or Continue. Once that region is complete, tap Get to know to hear Mbah Kedu's story about that place. Come on, let's go!
 
 ---
 

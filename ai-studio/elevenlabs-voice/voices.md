@@ -40,8 +40,8 @@ Both get a synthetic voice too (owner, 15 November 2026). Neither has a voice ye
 | What | Lines | To hear |
 |---|---|---|
 | `4 × 4` | `instruksi-mgl-1`, `instruksi-wnb-1` (in brackets there) | "empat kali empat" / "four by four" |
-| `✓` | `skenario-wnb-5-a02` | "bertanda centang" (`README.md` → *Voice direction*); English reading not set yet |
-| Web address | `skenario-wnb-5-b02` | Read as written: "sekolah strip kita titik example garis miring masuk" (`README.md` → *Voice direction*); English reading not set yet |
+| `✓` | `skenario-wnb-5-a02` | "bertanda centang" / "with a check mark" (owner, 15 November 2026; typed as in *Pronunciation fixes*) |
+| Web address | `skenario-wnb-5-b02` | "sekolah strip kita titik example garis miring masuk" / "sekolah dash kita dot example slash masuk" (owner, 15 November 2026; typed as in *Pronunciation fixes*) |
 | `HP`, `SMS`, `SD` | `skenario-tmg-5-b01`, `skenario-mgl-5-a04`, `skenario-wnb-5-a01`, `-a02`, `-b01` (Indonesian) | Letter by letter: "ha-pe", "es-em-es", "es-de" |
 | English words in Indonesian lines | `game`, `game-mu`, `levelmu` (`skenario-tmg-5-a02`, `-b02`, `skenario-mgl-5-a02`, `skenario-wnb-5-a02`), `puzzle` (`instruksi-wnb-1`) | Said the way children say them, not letter by letter |
 | Capitals | `BENAR`/`SALAH`, `TRUE`/`FALSE` in `instruksi-tmg-3`, `-mgl-3`, `-wnb-3` | Same loudness as the rest, not spelled out |
@@ -50,7 +50,7 @@ Both get a synthetic voice too (owner, 15 November 2026). Neither has a voice ye
 | Local words in English takes | Mbah, kentongan, kuda lumping, wayang, Topeng Ireng, kuluk, getuk, bundengan, Carica, embun upas, Telaga Warna, Dieng | Indonesian pronunciation |
 
 - **Same text, separate files.** `instruksi-tmg-2` and `instruksi-mgl-2` have the same text, and so do `instruksi-tmg-5`, `-mgl-5`, `-wnb-5`. Each still gets its own file (`README.md` → *Making a recording*, step 5).
-- **`peta-03` (Jaka) has a new text since 15 November 2026.** It names *Kenali* after the region is done, as research mode opens it; `lines.csv` holds the new text.
+- **`peta-03` (Jaka) has a new text since 15 November 2026.** It names *Kenali* after the region is done, as research mode opens it, and both button names (*Mulai atau Lanjut*); `lines.csv` holds the new text.
 
 ## Pronunciation fixes
 
@@ -58,3 +58,9 @@ Respellings typed into ElevenLabs instead of the written text. The text in `line
 
 | Written | Typed into ElevenLabs | Language | Used in (file codes) |
 |---|---|---|---|
+| `"Tim Resmi Game Bintang ✓"` | `"Tim Resmi Game Bintang, bertanda centang"` | Indonesian | `skenario-wnb-5-a02` |
+| `"Official Game Bintang Team ✓"` | `"Official Game Bintang Team, with a check mark"` | English | `skenario-wnb-5-a02` |
+| `sekolah-kita.example/masuk` | `sekolah strip kita titik example garis miring masuk` | Indonesian | `skenario-wnb-5-b02` |
+| `sekolah-kita.example/masuk` | `sekolah dash kita dot example slash masuk` (the Indonesian words keep their Indonesian sound) | English | `skenario-wnb-5-b02` |
+
+The four rows above are the agreed readings (`docs/revisi-10-analitik/12_CERITA_PENGHUBUNG_DAN_NARASI.md` → *Arahan suara*; English ones set by the owner on 15 November 2026). No take has been made with them yet: if the voice still misreads one, adjust the typed text and keep the reading.

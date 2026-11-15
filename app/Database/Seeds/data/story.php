@@ -127,8 +127,8 @@ return [
         'character' => 'jaka', 'pose' => 'happy', 'effect' => 'glow',
         'title_id' => 'Mulai Menjelajah',
         'title_en' => 'Start Exploring',
-        'text_id'  => 'Pilih wilayah yang sudah terbuka, lalu ketuk Lanjut. Setelah wilayah itu tuntas, ketuk tombol Kenali untuk mendengar cerita Mbah Kedu tentang tempat itu. Ayo, kita berangkat!',
-        'text_en'  => 'Choose an open region, then tap Continue. Once that region is complete, tap Get to know to hear Mbah Kedu\'s story about that place. Come on, let\'s go!',
+        'text_id'  => 'Pilih wilayah yang sudah terbuka, lalu ketuk Mulai atau Lanjut. Setelah wilayah itu tuntas, ketuk tombol Kenali untuk mendengar cerita Mbah Kedu tentang tempat itu. Ayo, kita berangkat!',
+        'text_en'  => 'Choose an open region, then tap Start or Continue. Once that region is complete, tap Get to know to hear Mbah Kedu\'s story about that place. Come on, let\'s go!',
     ],
 
     // 3. Kenali wilayah (region_intro) · Temanggung

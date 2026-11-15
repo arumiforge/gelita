@@ -250,11 +250,11 @@ Lima serpihan per wilayah. "Lentera di bagian atas layar" diganti papan Serpihan
 #### `peta-03` · Jaka · pose `happy` · efek `glow` (diubah 15 November 2026)
 **Judul:** Mulai Menjelajah / *Start Exploring* (dulu Kenali Dulu / *Get to Know Them First*)
 
-**ID:** Pilih wilayah yang sudah terbuka, lalu ketuk Lanjut. Setelah wilayah itu tuntas, ketuk tombol Kenali untuk mendengar cerita Mbah Kedu tentang tempat itu. Ayo, kita berangkat!
+**ID:** Pilih wilayah yang sudah terbuka, lalu ketuk Mulai atau Lanjut. Setelah wilayah itu tuntas, ketuk tombol Kenali untuk mendengar cerita Mbah Kedu tentang tempat itu. Ayo, kita berangkat!
 
-**EN:** Choose an open region, then tap Continue. Once that region is complete, tap Get to know to hear Mbah Kedu's story about that place. Come on, let's go!
+**EN:** Choose an open region, then tap Start or Continue. Once that region is complete, tap Get to know to hear Mbah Kedu's story about that place. Come on, let's go!
 
-Baris lama mengajak siswa mengetuk Kenali di setiap wilayah sebelum berangkat. Selama studi tombol itu baru terbuka setelah wilayahnya tuntas (keputusan 2), jadi ajakannya dipindah ke setelah wilayah tuntas. Di luar studi Kenali tetap terbuka sejak awal, dan baris ini tetap benar di sana. Baris ini tidak memuat fakta yang dinilai.
+Baris lama mengajak siswa mengetuk Kenali di setiap wilayah sebelum berangkat. Selama studi tombol itu baru terbuka setelah wilayahnya tuntas (keputusan 2), jadi ajakannya dipindah ke setelah wilayah tuntas. Di luar studi Kenali tetap terbuka sejak awal, dan baris ini tetap benar di sana. Baris ini menyebut "Mulai atau Lanjut" karena tombol wilayah yang belum dimasuki bertulisan *Mulai*, dan baru menjadi *Lanjut* setelah wilayahnya dijelajahi. Baris ini tidak memuat fakta yang dinilai.
 
 ### Kenali wilayah (`region_intro`)
 
@@ -512,7 +512,7 @@ Nada bicara bisa membocorkan jawaban, sama seperti teks. Untuk situasi Skenario 
 
 - **Datar dan ramah**, tempo dan nada sama untuk setiap situasi. Tidak terdengar curiga, menakut-nakuti, atau mendesak.
 - **Kutipan pesan dibaca biasa**, tidak diperankan. Tidak ada "suara penipu", dan kata seperti *sekarang*, *gratis*, *tinggal 3*, *resmi*, atau *dihapus hari ini* tidak ditekan.
-- **Alamat situs dibaca seperti tertulis**, misalnya `sekolah-kita.example/masuk` dibaca "sekolah strip kita titik example garis miring masuk". Tanda ✓ dibaca "bertanda centang". Emoji tidak dibaca.
+- **Alamat situs dibaca seperti tertulis**, misalnya `sekolah-kita.example/masuk` dibaca "sekolah strip kita titik example garis miring masuk". Tanda ✓ dibaca "bertanda centang". Emoji tidak dibaca. Di rekaman bahasa Inggris (pengembang, 15 November 2026) alamat itu dibaca "sekolah dash kita dot example slash masuk", dengan kata Indonesianya dilafalkan seperti aslinya, dan tanda ✓ dibaca "with a check mark".
 - **Petunjuk *Periksa Unggahan*** dibaca tanpa menekan nama bagian yang menjadi kunci.
 - Saat menyetujui rekaman di panel, pendengar memeriksa nada ini juga, bukan hanya kecocokan teks.
 - **Arahan ini berlaku juga untuk suara sintetis** ([04](04_CATATAN_KEPUTUSAN.md), 14 dan 15 November 2026). Baris yang dinilai dibuat dengan pengaturan yang sama untuk semuanya, tanpa penanda gaya atau emosi, lalu didengarkan satu per satu sebelum disetujui.
@@ -597,6 +597,7 @@ Pengembang menyetujui semua usulan pada 26 Oktober 2026. Pilihan lain yang tidak
 5. **Urutan P5:** tantangan susulan (paling lama 20 menit), tes akhir, cerita penutup, skala sikap di Balai Refleksi, wawancara L5. Butir risiko daring (hanya dengan izin terpisah) kini diletakkan setelah tes akhir, sebelum cerita penutup ([02](02_LEMBAR_LAPANGAN.md), [06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain)); kritik dan saran mengikuti skala sikap di Balai Refleksi ([17](17_SKALA_SIKAP.md)).
 6. **`penutup-04` diubah setelah pemeriksaan skala sikap** (26 Oktober 2026): "saat bercerita tentang budaya Kedu" menjadi "saat budaya Kedu tampil di layar", supaya baris terakhir sebelum skala tidak menggemakan butir `skp-07`. Baris ini direkam dengan teks baru di kedua bahasa.
 7. **`peta-03` diubah supaya cocok dengan mode penelitian** (pengembang, 15 November 2026): Jaka tidak lagi mengajak mengetuk Kenali sebelum berangkat, karena selama studi Kenali baru terbuka setelah wilayahnya tuntas (keputusan 2). Teks barunya ada di [Narasi Peta Kedu](#narasi-peta-kedu-map_intro). Baris ini belum punya rekaman, jadi tidak ada rekaman yang terbuang.
+8. **Bacaan bahasa Inggris untuk dua baris situasi** (pengembang, 15 November 2026): tanda ✓ di `skenario-wnb-5-a02` dibaca "with a check mark", dan alamat situs di `skenario-wnb-5-b02` dibaca "sekolah dash kita dot example slash masuk". Keduanya masuk [Arahan suara](#arahan-suara-untuk-situasi-dan-petunjuk-yang-dinilai); teks di layar tidak berubah.
 
 ## Rujukan
 
