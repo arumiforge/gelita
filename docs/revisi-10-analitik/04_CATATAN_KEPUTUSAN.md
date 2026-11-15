@@ -6,6 +6,13 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 15 November 2026
 
+**Rekaman suara sintetis Narator dan Jaka diterima; narasi ketiga tokoh siap dipasang** (cabang `tutu/optimistic-clarke-c0uye5`) · `asal: pengembang` · `disetujui pengembang` · tidak mengubah dokumen lain
+
+- **Yang diterima.** Pengembang mendengarkan dan menerima rekaman Narator dan Jaka, 47 baris per tokoh dalam bahasa Indonesia dan Inggris. Bersama rekaman Mbah Kedu, ke-187 baris narasi kini punya rekaman di kedua bahasa. Sesuai entri di bawah ("Peneliti diberi tahu lagi saat rekaman Narator dan Jaka jadi, sebelum didengar siswa"), entri ini menjadi catatan pemberitahuannya: rekaman sudah jadi dan belum didengar siswa.
+- **Cara pembuatan.** Satu suara per tokoh dan bahasa seperti di entri di bawah, pengaturan yang sama untuk setiap baris sejenis, satu rekaman per baris. Rekaman bahasa Inggris Narator dan Jaka diperlambat menjadi sekitar 130 kata per menit supaya mudah diikuti siswa kelas 5. Situasi Skenario Digital dibaca datar sesuai [12 → Arahan suara](12_CERITA_PENGHUBUNG_DAN_NARASI.md#arahan-suara-untuk-situasi-dan-petunjuk-yang-dinilai).
+- **Pemasangan.** Rekaman dipasang dengan perintah pemasangan narasi lalu didaftarkan sebagai draf, dan tercatat sebagai suara sintetis (`production_method = tts`) dengan keterangan suara (`voice_profile`). Setiap rekaman tetap disetujui di panel (**Rekaman narasi**) di server sebelum siswa mendengarnya. Pemasangan sudah dicoba di instalasi pengembangan; di server dilakukan pengembang.
+- **Yang tetap.** Suara masih ditinjau validator nanti dan diuji di lapangan; perubahan dari tinjauan itu dicatat sebagai entri baru di sini. Rekaman pengisi suara yang diunggah kemudian dengan kode berkas yang sama menggantikan rekaman sintetis dan tercatat sebagai suara asli.
+
 **Suara sintetis untuk Narator dan Jaka juga disetujui peneliti; suara disimpan agar bisa dipakai dari akun lain** (cabang `pw/confident-gauss-m36qew`) · `asal: pengembang` · `disetujui peneliti` (disampaikan pengembang, 15 November 2026) · tidak mengubah dokumen lain
 
 - **Persetujuan.** Pengembang menyampaikan bahwa peneliti menyetujui pemakaian suara sintetis untuk narasi saat ini, termasuk Narator dan Jaka, bukan hanya Mbah Kedu. Syarat di entri di bawah ("peneliti diberi tahu lagi saat rekaman Narator dan Jaka jadi") terpenuhi oleh persetujuan ini. Suaranya tetap ditinjau validator nanti, dan perubahan dari tinjauan itu dicatat sebagai entri baru di sini.

@@ -13,8 +13,23 @@
     "language": "id"
   },
   "reference_audio": "preview.mp3",
-  "clone_samples": [],
-  "note": "The preview is only 9 s, too short for a good clone: move this voice with the share link. No takes yet; clone samples come from its accepted takes once they exist.",
+  "clone_samples": [
+    "out/id/tuntas-wonosobo-01.mp3",
+    "out/id/peta-03.mp3",
+    "out/id/peta-tuntas-03.mp3",
+    "out/id/peta-02.mp3",
+    "out/id/penutup-04.mp3",
+    "out/id/peta-01.mp3",
+    "out/id/peta-tuntas-02.mp3",
+    "out/id/dialog-temanggung-09.mp3",
+    "out/id/intro-06.mp3",
+    "out/id/peta-tuntas-01.mp3",
+    "out/id/dialog-temanggung-13.mp3",
+    "out/id/dialog-wonosobo-14.mp3",
+    "out/id/dialog-magelang-03.mp3",
+    "out/id/layar-temanggung-01.mp3"
+  ],
+  "note": "All 47 lines made and accepted (15 November 2026). Clone samples: about 2.5 minutes of accepted story takes.",
   "accounts": [
     {
       "account": "akun-1",

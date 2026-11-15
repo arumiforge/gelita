@@ -24,7 +24,7 @@ The model and the settings per kind of line are not repeated here: they are in `
 Two ways, in this order (owner, 15 November 2026):
 
 1. **Share link: the exact same voice.** In `akun-1`, open the voice in *My Voices* and share it; keep the link in `voice.json` → `accounts[0].share_link`. If the app offers only publishing to the public Voice Library, ask the owner first. In the new account, open the link and add the voice to *My Voices*. This works only while `akun-1` and the voice still exist, so make the links before that account is given up.
-2. **Clone from the repository: the fallback.** If the share link no longer works, make an Instant Voice Clone in the new account (paid plan) from `preview.mp3` plus the files in `clone_samples` (about 2.5 minutes of accepted takes for Mbah Kedu). Name it as in `voice.json`. A clone comes very close but is not the same voice. Jaka's previews are only 7 and 9 seconds, too short for a good clone; his accepted takes become his clone samples once they exist, and Narator's the same.
+2. **Clone from the repository: the fallback.** If the share link no longer works, make an Instant Voice Clone in the new account (paid plan) from `preview.mp3` plus the files in `clone_samples` (about 2.5 minutes of accepted takes for Mbah Kedu). Name it as in `voice.json`. A clone comes very close but is not the same voice. Jaka's previews are only 7 and 9 seconds, too short for a good clone, so his `clone_samples` are about 2.5 minutes of his accepted story takes per language (15 November 2026; the English ones are slowed to 130 words per minute). Narator's are the eight Indonesian story takes, which are not slowed.
 
 After either way:
 
