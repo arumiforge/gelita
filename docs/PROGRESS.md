@@ -51,6 +51,11 @@ Folders where other AI tools work for GELITA (`ai-studio/README.md`); Claude Cod
 - [ ] Owner, on the server after deploying: `sudo -u www-data php spark gelita:story:sync --dry-run`, then without `--dry-run`, so the installed story gets the new `peta-03`
 - [ ] When Narator's and Jaka's takes are accepted: tell the researcher before students hear them and add a line to `04`
 - [ ] Install accepted pictures (`ai-studio/README.md` → *For the Claude Code session that installs*), one branch per batch
+- [x] Claude Code setup kept in the repository (15 November 2026, PR #364; decision log *Claude Code setup kept in the repository*): skills `account-setup`, `finish-step`, `dev-install`, `new-migration`, subagent `gelita-reviewer`, two hooks with `ClaudeHooksTest`, no plugin suggestion cards; `README.md` brought up to date with revision 10 and this setup (PR #365)
+- [ ] Owner: on each Claude account, turn off the plugins and skills listed in `docs/cloud-sessions.md` section 2 step 3
+- [ ] First session on a new account: say "set up this account" (skill `account-setup`, never run so far) and correct the skill where a step does not hold
+- [ ] Run the `gelita-reviewer` subagent once on a real diff and adjust its checklist to what it misses or over-reports
+- [ ] `README.md`: review the audio licence line (Mimic 3, Piper) and the asset-size table, and re-read the panel bullets that are not about roles against the current screens
 
 ## Before the research starts
 
