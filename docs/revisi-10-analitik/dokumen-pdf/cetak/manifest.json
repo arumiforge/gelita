@@ -1,18 +1,18 @@
 {
   "docs": {
     "00_INDEKS.md": {
-      "source": "87525e7d0b930664466df2556f2b455b875ab9255c03521fdc858d4ee42541f1",
-      "commit": "f73b47c",
+      "source": "7764a8a2a801f3febed77e906920489293876684f9d3aa06b974a0f413789988",
+      "commit": "e4d8e8d",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-09",
+      "date": "2026-11-15",
       "pages": 21,
       "landscapeTables": 0
     },
     "01_REVISI_10_ANALITIK.md": {
-      "source": "ab309ca1b160fedf361c83811c8bc09680186ec9d0fdac71554f81283f03ed4a",
-      "commit": "f73b47c",
+      "source": "607ec0a07850f5af2c27e58d7b820fca241665aa6e9caf911b505bf27be9287f",
+      "commit": "e4d8e8d",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-09",
+      "date": "2026-11-15",
       "pages": 28,
       "landscapeTables": 0
     },
@@ -33,11 +33,11 @@
       "landscapeTables": 0
     },
     "04_CATATAN_KEPUTUSAN.md": {
-      "source": "9050160b7a608f932c0d9cea2ee310ae1046578b884fc5c0240e2a118cf4992b",
-      "commit": "f73b47c",
+      "source": "70db9454f1f641016340aea6c4e0fff0f35630899dd42f6ab9afe992b22c0163",
+      "commit": "3dab5fb",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-09",
-      "pages": 77,
+      "date": "2026-11-15",
+      "pages": 82,
       "landscapeTables": 0
     },
     "05_TELAAH_BUTIR_DAN_DIMENSI.md": {
@@ -81,10 +81,10 @@
       "landscapeTables": 0
     },
     "10_TELAAH_PENDAHULUAN_MEDIA.md": {
-      "source": "13e86a96e4af811a151e2cfa7809576c900961fd7cc64bd589a3ffacc45a298e",
-      "commit": "2556dda",
+      "source": "3dbd786a41d726a337d5503fa84ee4a7e2d3104ceb4db76d69edda7416833086",
+      "commit": "e4d8e8d",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-31",
+      "date": "2026-11-15",
       "pages": 8,
       "landscapeTables": 0
     },
@@ -97,10 +97,10 @@
       "landscapeTables": 0
     },
     "12_CERITA_PENGHUBUNG_DAN_NARASI.md": {
-      "source": "064a43962489d37d53715315f56d99f652ad4b69cb0d78d1e7bc674f5ed742c1",
-      "commit": "1b2f7d8",
+      "source": "8b5b30868cb254d3c508a7bcac4547daa285fdd0dc0439badc6558fa22f166b8",
+      "commit": "e4d8e8d",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-03",
+      "date": "2026-11-15",
       "pages": 17,
       "landscapeTables": 0
     },
@@ -193,10 +193,10 @@
       "landscapeTables": 0
     },
     "24_UJI_KETERBACAAN.md": {
-      "source": "8ac3e27fc8433eb3237fa7305df40cee991a79b1ee90d8c0a830832253d9f6a5",
-      "commit": "8b46ca2",
+      "source": "0ea94c90b07bb8f6c031da9b971854c75eac7f2c26bc114a300395ba20a3e059",
+      "commit": "e4d8e8d",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-01",
+      "date": "2026-11-15",
       "pages": 20,
       "landscapeTables": 0
     },
@@ -289,26 +289,26 @@
       "landscapeTables": 0
     },
     "36_TERJEMAHAN_BANK_SOAL.md": {
-      "source": "be4d8aa2eeddbe633b12779270e21cdd885bd5a2ed3f08a447b69e069c17f6ef",
-      "commit": "1e2db61",
+      "source": "ffc3c9ee35d02cb36cae2a30344a898f38846da6fb01298202bfeb79651a1dff",
+      "commit": "fb8c7bf",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-03",
+      "date": "2026-11-15",
       "pages": 27,
       "landscapeTables": 0
     },
     "37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md": {
-      "source": "910084d8793e194f9792b5e8a96b984651d9386146eee7de7a6f65be32aad8ff",
-      "commit": "a7e07ef",
+      "source": "a6ef93ca5eba829626d091d4a63b4e1b65b667baccf93c236174251a359c4f41",
+      "commit": "869e9de",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-04",
+      "date": "2026-11-14",
       "pages": 29,
       "landscapeTables": 0
     },
     "38_PROMPT_PETA_LIMA_TANTANGAN_DAN_SKENARIO.md": {
-      "source": "dd7c3c787c351b37550f83da257d5ac90dbb006d62a46bc320f475dbde0f94e1",
-      "commit": "261ddd3",
+      "source": "51381d829f84f5f8f6bc6d8a4f0c596512a5b143889be5d1fd125978284615de",
+      "commit": "869e9de",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-08",
+      "date": "2026-11-14",
       "pages": 10,
       "landscapeTables": 0
     }
