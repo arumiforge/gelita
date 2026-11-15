@@ -574,3 +574,15 @@ The owner works from several Claude accounts and had to set up plugins and skill
 
 **Not checked.** `account-setup` was not run on a new account (it would create an environment on the owner's account). The reviewer subagent was not exercised. No local Desktop session on Windows was tried.
 
+## Music and sound effects made with ElevenLabs (15 November 2026, branch `pw/confident-gauss-m36qew`)
+
+Owner request, in the session that set up a new account: "untuk suara musik dan efek suara juga dikerjakan seperti narasi" (music and sound effects are done like the narration).
+
+1. **Own workspace, `ai-studio/elevenlabs-sound/`,** next to `elevenlabs-voice/` rather than inside it: other tools' instructions, the narration install command's default folder and the done list of `lines.csv` all point at `elevenlabs-voice/`, and the two jobs have different lists and mastering.
+2. **Work list from the game.** `sounds.csv` has one row per name of `AssetChecklist::SOUNDS` (15 music, 6 effects, in checklist order; `SoundInstallerTest` keeps them equal), with the screen, mood, an English prompt (instrumental Central Javanese gamelan, laras, form, tempo and instruments of the current track; owner direction of 19 October 2026), and the mastering targets.
+3. **Targets are the current files'** (measured 15 November 2026): music −20.4 to −21.9 LUFS, MP3 stereo 128 kbps for `map`, `region`, `challenge` and 96 kbps for the 12 scene tracks; effects −15.4 to −19.1 LUFS at 128 kbps, `click` by peak (−3.5 dB) because it is too short for a loudness reading. So a new take sits at the level of the files around it and under the narration.
+4. **Seamless loops in `master.sh`:** the last 3 s are folded over the first 3 s with an equal-power crossfade (separate ffmpeg passes; a single `asplit` graph stalled and dropped the seam). No fade at the ends. Optional START/END cut the usable part of a take. Checked with generated tones only.
+5. **Installer `gelita:sound:install` (`SoundInstaller`)**, like `gelita:narration:install`: dry run, unknown names reported with a suggestion and never copied, nothing copied while `settings.md` lacks a model or a file is not an MP3, unchanged files left alone. Unlike narration, installed files are committed (music and effects ship in the repository) and nothing goes into the database.
+6. **Manifest `public/assets/audio/produksi.json`** (sha256 and model per file): the record of which files are synthetic, and the source of a `?v=` cache version for sounds served from `assets/audio/` (`sound_files_version()` → `CONFIG.audioVersion` → `soundUrl()` in `core/audio.js`). Without it a replaced file kept playing from the browser cache under the same URL. Package URLs are content-addressed already and stay as they were.
+7. **Open for the owner:** the model lines of `settings.md` are the current ElevenLabs model names and must be checked in the app; whether the account's plan allows the use; and the order against Narator's and Jaka's narration, since both use the same credits.
+
