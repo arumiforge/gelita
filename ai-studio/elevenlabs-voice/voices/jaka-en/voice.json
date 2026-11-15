@@ -13,8 +13,21 @@
     "language": "en"
   },
   "reference_audio": "preview.mp3",
-  "clone_samples": [],
-  "note": "The preview is only 7 s, too short for a good clone: move this voice with the share link. No takes yet; clone samples come from its accepted takes once they exist.",
+  "clone_samples": [
+    "out/en/tuntas-wonosobo-01.mp3",
+    "out/en/peta-tuntas-03.mp3",
+    "out/en/penutup-04.mp3",
+    "out/en/peta-03.mp3",
+    "out/en/peta-01.mp3",
+    "out/en/peta-02.mp3",
+    "out/en/dialog-temanggung-09.mp3",
+    "out/en/peta-tuntas-02.mp3",
+    "out/en/peta-tuntas-01.mp3",
+    "out/en/intro-06.mp3",
+    "out/en/tuntas-temanggung-02.mp3",
+    "out/en/dialog-temanggung-06.mp3"
+  ],
+  "note": "All 47 lines made and accepted (15 November 2026). Clone samples: about 2.5 minutes of accepted story takes; English takes are slowed to 130 words per minute with ffmpeg atempo (factor 0.75 to 1), so the voice in them is a little slower than the original.",
   "accounts": [
     {
       "account": "akun-1",

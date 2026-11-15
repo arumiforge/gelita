@@ -70,6 +70,8 @@ final class NarrationImporterTest extends CIUnitTestCase
             'dialog-magelang-16.ogg'   => ['level_open', 'magelang', 16],
             'tuntas-wonosobo-04.m4a'   => ['level_done', 'wonosobo', 4],
             'penutup-05.wav'           => ['ending', null, 5],
+            'layar-magelang-03.mp3'    => ['scenario_open', 'magelang', 3],
+            'peta-tuntas-02.mp3'       => ['map_done', null, 2],
             'DIALOG-Temanggung-07.MP3' => ['level_open', 'temanggung', 7],
         ];
 
@@ -85,6 +87,11 @@ final class NarrationImporterTest extends CIUnitTestCase
 
         // Kode berkas setiap baris naskah = kolom `code` data cerita
         $this->assertSame(array_column(require APPPATH . 'Database/Seeds/data/story.php', 'code'), array_keys($importer->lines()));
+
+        // Every story line's own file name is accepted (peta-tuntas-NN was refused until 15 November 2026)
+        foreach (array_keys($importer->lines()) as $code) {
+            $this->assertSame($code, $importer->match($code . '.mp3')['code'], $code);
+        }
     }
 
     public function testUnknownNamesAreReportedWithASuggestion(): void

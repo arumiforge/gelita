@@ -9,8 +9,17 @@
   "description": "Narator perempuan dewasa muda berbahasa Indonesia, dengan suara ringan, jernih, dan hangat. Dipilih untuk narasi Lentera Kedu.",
   "labels": {},
   "reference_audio": "preview.mp3",
-  "clone_samples": [],
-  "note": "One voice for both languages (owner, 15 November 2026), the akun-1 voice. A second voice was designed on akun-2 (Free plan) and not used (`languages` empty); `languages` on an account row says which languages its voice serves, all of them when absent. Clone samples come from its accepted takes once they exist.",
+  "clone_samples": [
+    "out/id/intro-01.mp3",
+    "out/id/intro-02.mp3",
+    "out/id/intro-03.mp3",
+    "out/id/intro-04.mp3",
+    "out/id/intro-07.mp3",
+    "out/id/intro-09.mp3",
+    "out/id/penutup-01.mp3",
+    "out/id/penutup-02.mp3"
+  ],
+  "note": "One voice for both languages (owner, 15 November 2026), the akun-1 voice. A second voice was designed on akun-2 (Free plan) and not used (`languages` empty); `languages` on an account row says which languages its voice serves, all of them when absent. All 47 lines made and accepted in both languages (15 November 2026). Clone samples: the eight Indonesian story takes (about 2 minutes, not slowed); the English takes are slowed to 130 words per minute and are left out.",
   "accounts": [
     {
       "account": "akun-2",

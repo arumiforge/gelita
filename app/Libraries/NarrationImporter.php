@@ -493,7 +493,8 @@ final class NarrationImporter
             );
         }
 
-        if (preg_match('/^(intro|peta|penutup)-(\d{2})$/', $base, $m) === 1) {
+        // Story lines without a region, `peta-tuntas` (map_done) included
+        if (preg_match('/^(' . implode('|', self::GLOBAL_PREFIXES) . ')-(\d{2})$/', $base, $m) === 1) {
             $code = $base;
         } elseif (preg_match('/^(kenal|dialog|layar|tuntas)-(.+)-(\d{2})$/', $base, $m) === 1) {
             if (! in_array($m[2], $this->levelCodes(), true)) {
