@@ -1,8 +1,46 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 14 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 15 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
+
+## 15 November 2026
+
+**Bacaan bahasa Inggris untuk tanda ✓ dan alamat situs di dua situasi Skenario Digital** (cabang `aru/zen-dirac-ghknt1`) · `asal: pengembang` · `disetujui pengembang` · mengubah 12
+
+[12 → Arahan suara](12_CERITA_PENGHUBUNG_DAN_NARASI.md#arahan-suara-untuk-situasi-dan-petunjuk-yang-dinilai) baru menetapkan bacaan bahasa Indonesia. Untuk rekaman bahasa Inggris, pengembang memilih:
+
+- **`skenario-wnb-5-a02`.** Nama akun "Official Game Bintang Team ✓" dibaca "Official Game Bintang Team, with a check mark". Bacaan ini hanya menyebut tandanya, tidak menyebut "verified" atau artinya, jadi tidak memberi petunjuk jawaban.
+- **`skenario-wnb-5-b02`.** Alamat `sekolah-kita.example/masuk` dibaca "sekolah dash kita dot example slash masuk". Kata *sekolah*, *kita*, dan *masuk* dilafalkan seperti aslinya.
+- **Yang tidak berubah.** Teks di layar, kode berkas, dan arahan nada (datar, tanpa tekanan). Bacaan bahasa Indonesia tetap "bertanda centang" dan "sekolah strip kita titik example garis miring masuk".
+
+Kedua bacaan dicatat di `ai-studio/elevenlabs-voice/voices.md` sebagai teks yang diketik saat rekaman dibuat.
+
+**Baris cerita `peta-03` disesuaikan dengan mode penelitian** (cabang `aru/zen-dirac-ghknt1`) · `asal: pengembang` · `disetujui pengembang` · mengubah 12 dan naskah cerita
+
+Di narasi Peta Kedu, Jaka mengajak siswa mengetuk tombol Kenali di setiap wilayah sebelum berangkat. Selama studi tombol itu baru terbuka setelah wilayahnya tuntas ([12 → keputusan 2](12_CERITA_PENGHUBUNG_DAN_NARASI.md#keputusan-pengembang)), jadi siswa mendengar ajakan yang tidak bisa diikuti. Ketidakcocokan ini ditemukan saat baris Narator dan Jaka diperiksa sebelum dibuat suaranya.
+
+- **Teks baru.** "Pilih wilayah yang sudah terbuka, lalu ketuk Mulai atau Lanjut. Setelah wilayah itu tuntas, ketuk tombol Kenali untuk mendengar cerita Mbah Kedu tentang tempat itu. Ayo, kita berangkat!" Judul slide menjadi *Mulai Menjelajah* (dulu *Kenali Dulu*). Versi Inggrisnya ada di [12 → Narasi Peta Kedu](12_CERITA_PENGHUBUNG_DAN_NARASI.md#narasi-peta-kedu-map_intro).
+- **Nama tombol.** Baris lama menyebut "ketuk Lanjut", padahal tombol wilayah yang belum dimasuki bertulisan *Mulai* dan baru menjadi *Lanjut* setelah wilayahnya dijelajahi. Baris baru menyebut keduanya. Teks petunjuk peta yang tampil bila narasi peta tidak ada (`Game.mapLead`) dibetulkan dengan cara yang sama, di kedua bahasa.
+- **Di luar studi.** Kenali tetap terbuka sejak awal, dan baris baru tetap benar di sana.
+- **Tidak ada yang bocor dan tidak ada rekaman yang terbuang.** Baris ini tidak memuat fakta yang dinilai, dan Jaka belum punya rekaman.
+- **Server yang sudah terpasang.** Teks barunya masuk lewat `php spark gelita:story:sync`; teks lama tercatat sebagai versi sebelumnya, jadi baris yang belum disunting di panel diganti otomatis.
+
+PDF 04 dan 12 dibuat ulang setelah kedua entri hari ini ditulis, atas permintaan pengembang.
+
+**Narasi Mbah Kedu memakai suara sintetis; Narator dan Jaka menyusul** (cabang `aru/zen-dirac-ghknt1`) · `asal: pengembang` · `disetujui peneliti` (disampaikan peneliti lewat pengembang, 15 November 2026) · mengubah 01, 10, 12, dan 24
+
+Entri 14 November 2026 memberi tiga syarat sebelum suara sintetis didengar siswa: entri baru di sini, peneliti diberi tahu, dan dokumen yang menyebut pengisi suara disesuaikan. Entri ini memenuhi ketiganya.
+
+- **Yang berubah.** Narasi Mbah Kedu, 93 baris per bahasa (Indonesia dan Inggris), memakai suara sintetis sebagai pengganti suara asli, karena pengisi suara berhalangan. Pengembang menerima rekamannya pada 15 November 2026, dan peneliti menyetujui pemakaiannya.
+- **Masih diuji.** Suara ini belum final. Narasinya masih diujicobakan langsung di lapangan dan terbuka terhadap saran validator. Kalau uji coba atau saran validator meminta perubahan (suara lain, atau kembali ke pengisi suara), perubahannya dicatat sebagai entri baru di sini.
+- **Narator dan Jaka.** Keduanya, 47 baris per tokoh per bahasa, akan dibuat dengan suara sintetis juga; rekamannya belum ada. Persetujuan peneliti di entri ini untuk narasi Mbah Kedu. Peneliti diberi tahu lagi saat rekaman Narator dan Jaka jadi, sebelum didengar siswa.
+- **Akibat ke data penelitian.** Tidak berubah dari entri 14 November 2026. Setiap rekaman ini tersimpan sebagai suara sintetis (`production_method = tts`) bersama keterangan suara dan pengaturannya (`voice_profile`), jadi peneliti bisa membedakannya dari rekaman pengisi suara. Rekaman pengisi suara yang kelak diunggah dengan kode berkas yang sama menggantikannya dan tercatat sebagai suara asli.
+- **Arahan suara tetap berlaku.** [12 → Arahan suara untuk situasi dan petunjuk yang dinilai](12_CERITA_PENGHUBUNG_DAN_NARASI.md#arahan-suara-untuk-situasi-dan-petunjuk-yang-dinilai) dipakai juga untuk suara sintetis: datar dan ramah, tanpa tekanan pada kata kunci. Nadanya diperiksa saat rekaman disetujui di panel.
+- **Sebutan di dokumen.** Dokumen revisi cukup menulis "suara sintetis" (permintaan pengembang). Nama layanan ada di entri 14 November 2026; suara dan pengaturan per tokoh ada di `ai-studio/elevenlabs-voice/voices.md`.
+- **Dokumen yang disesuaikan.** 01 (jawaban pertanyaan terbuka tentang pengisi suara), 10 (catatan narasi di daftar *Yang belum bisa dinilai di sini* dan di aspek B), 12 (dasar keputusan, arahan suara, daftar rekaman), 24 (alasan cerita dan narasi tidak diuji baca), dan baris 12 di 00. 22 tidak diubah (ditangani peneliti). 22 tidak menyebut cara narasi direkam, tetapi 12 terlampir di sana sebagai instrumen; perlu tidaknya perubahan ini disampaikan ke komite etik diputuskan peneliti.
+
+PDF dibuat ulang di hari yang sama atas permintaan pengembang. PDF lama diganti untuk sembilan dokumen yang Markdown-nya sudah berubah: 00, 01, 04, 10, 12, dan 24 dari entri ini, serta 36, 37, dan 38 yang berubah pada 14–15 November 2026. PDF dokumen lain tidak disentuh, termasuk 22.
 
 ## 14 November 2026
 

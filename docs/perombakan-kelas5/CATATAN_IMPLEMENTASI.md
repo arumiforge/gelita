@@ -521,6 +521,38 @@ The owner confirmed the Indonesian takes once more (already accepted, section ab
 
 **96 kbps stays (owner, 15 November 2026).** Before installing, this session started to re-encode the takes to 48 kbps to follow decision P2 (`docs/rencana-paket-aset.md` §12: narration at 48 kbps to keep the offline package under 50 MB). The owner stopped that: the offline package may be larger than 50 MB, and quality is not reduced. The 48 kbps files were discarded and the committed 96 kbps takes restored unchanged (all 186 checked at 96 kbps, `git status` clean); `master.sh` stays at 96 kbps. S5 in `rencana-paket-aset.md` is marked lifted, `docs/audio.md` has a short section, and the asset checklist now names "MP3 mono 96 kbps" for narration.
 
+## Synthetic narration recorded for the research; Narator and Jaka checked (15 November 2026, branch `aru/zen-dirac-ghknt1`)
+
+**Decision (owner, with the researcher's approval).** Mbah Kedu's narration is a synthetic voice in place of the voice actor, who is not available. It is still to be tried out in the field and stays open to the validators' suggestions. Narator and Jaka get a synthetic voice too. The research record is the 15 November 2026 entry of `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`; it closes the condition the 14 November entry set (new entry, researcher told, documents corrected).
+
+**Documents.** `01`, `10`, `12`, `24` and the `12` row of `00` no longer say the narration is recorded by voice actors only. They say *suara sintetis* and do not name the service (owner; now a line in `.claude/rules/revisi-10.md`). `22` was not touched.
+
+**PDFs rebuilt (owner's request, same day).** Nine PDFs were older than their Markdown and were replaced: `00`, `01`, `04`, `10`, `12`, `24` from this change, and `36`, `37`, `38` from 14–15 November 2026. They were built by number (`cetak.mjs 00 01 04 10 12 24 36 37 38`), not with a full run. A cloud session's clone is shallow, and `cetak.mjs` reads each document's last commit from git: in a shallow clone an old document shows the clone's oldest commit instead, so a full run would also rebuild PDFs whose document did not change (here `07`, `14`, `15`). Fetching the full history makes git print eight-character hashes where the manifest holds seven, which would rebuild all 39, `22` included; the build ran with `core.abbrev=7` to keep the footers as they were. The rule is now in `.claude/rules/revisi-10.md`.
+
+**Narator and Jaka, checked before any credits are spent.** No code changed.
+
+- `php spark gelita:narration:list` on a fresh MariaDB development install wrote a list identical to the committed `lines.csv`: 187 lines, Narator 47, Jaka 47, none of theirs voiced, and the narration folder of the repository is empty.
+- The counts match `12` → *Daftar rekaman per bahasa*: 112 story lines, 24 situations and 15 instructions for the Narator.
+- The settings table of `voices.md` did not list `map_intro` and `map_done` (six Jaka lines) or the Narator's `scenario_situation` and `challenge_instruction`; it does now.
+- `voices.md` → *Narator and Jaka: before the first take* lists the lines whose text a voice may misread (`4 × 4`, `✓`, a web address, `HP`/`SMS`/`SD`, English words in Indonesian lines, capitals, `Brrr...`, local words in the English takes), the room left in the voice cell (52 characters with Mbah Kedu's settings cell), and the credits needed (about 12,600 per language).
+- The button names the lines speak (*Kenali*, *Lanjut*, *Pustaka Kedu*, *Balai Refleksi* and their English forms) match `app/Language`.
+
+**Left for the owner.** `peta-03` (Jaka) tells the student to tap *Kenali* on each region, which research mode keeps closed until the region is done; decide whether the line changes before it is voiced. The English reading of `✓` and of the web address in `skenario-wnb-5-a02` and `-b02` is not set in `12`. Whether the ethics committee needs to hear of the change is the researcher's call (`12` is attached to `22` as an instrument).
+
+## Story line `peta-03` changed for research mode (15 November 2026, branch `aru/zen-dirac-ghknt1`)
+
+**Decision (owner).** In the Peta Kedu narration Jaka told the student to tap *Kenali* on each region before setting off. Research mode keeps *Kenali* closed until the region is done (33 §7.5), so the student heard an invitation the screen refused. The line now reads: "Pilih wilayah yang sudah terbuka, lalu ketuk Mulai atau Lanjut. Setelah wilayah itu tuntas, ketuk tombol Kenali untuk mendengar cerita Mbah Kedu tentang tempat itu. Ayo, kita berangkat!" (English: "Choose an open region, then tap Start or Continue. Once that region is complete, tap Get to know to hear Mbah Kedu's story about that place. Come on, let's go!"). The slide title is *Mulai Menjelajah* / *Start Exploring*; *Kenali Dulu* said the opposite of the new text. Outside a study *Kenali* is open from the start and the line is still true there. Research record: `04`, 15 November 2026, and `12` → *Narasi Peta Kedu*.
+
+**Where it changed.** `app/Database/Seeds/data/story.php`; the replaced title and text appended to `peta-03` in `story-previous.php`, so `gelita:story:sync` replaces the line on an installed server unless it was edited in the panel; `docs/naskah-cerita.md`; `ai-studio/elevenlabs-voice/lines.csv` (rewritten by `gelita:narration:list`). The copy of the script in `gelita-katalog/update/naskah-cerita/` already held an older version of this line and was left alone. No recording existed for the line.
+
+**Checked on MariaDB.** On a development install that still held the old line, `gelita:story:sync --dry-run` reported one line to update (`peta-03`), and the run wrote it: 112 script lines, 111 already the same, 1 updated, none edited in the panel.
+
+**Button name (owner, same day).** The old line and the map's fallback hint `Game.mapLead` both said "ketuk Lanjut". The button on a region the student has not started reads *Mulai*; it reads *Lanjut* only once the region is in progress. Both now say "Mulai atau Lanjut" / "Start or Continue" (`app/Language/id/Game.php`, `en/Game.php`).
+
+**English readings set (owner, same day).** For the English takes of two Narator situations: `✓` in `skenario-wnb-5-a02` is read "with a check mark", and the address in `skenario-wnb-5-b02` is read "sekolah dash kita dot example slash masuk". Recorded in `04`, `12` → *Arahan suara* (and decision 8), the workspace `README.md`, and the *Pronunciation fixes* table of `voices.md` with the Indonesian readings `12` already set. The text on screen does not change.
+
+**PDFs.** `04` and `12` rebuilt on the owner's request, by number (`.claude/rules/revisi-10.md`).
+
 ## Claude Code setup kept in the repository (15 November 2026, branch `pw/gallant-bohr-xx0uf6`)
 
 The owner works from several Claude accounts and had to set up plugins and skills again on each. Decision (owner, 15 November 2026): what GELITA needs from Claude Code lives in the repository, and account plugins are turned off instead of installed.

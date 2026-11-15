@@ -131,7 +131,7 @@ Yang diuji adalah **bahan setelah revisi dari validasi ahli** (Prototipe I setel
 | [18](18_MOCKUP_LAYAR_BARU.md) | Draf salinan layar baru yang dibaca siswa: pengingat lima menit, layar periksa sebelum mengirim, label "sudah dijawab"/"belum dijawab", pesan ketukan keliru di *Periksa Unggahan*, pesan token keliru dan di luar sesi, layar kirim skala sikap, petunjuk kritik dan saran | ± 12 kalimat | Ya |
 | 18 | Panel peneliti (`mk-tk-05`) | — | **Tidak**: hanya dibaca peneliti |
 | [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) | Kartu misi tantangan kelima dan kalimat tanya alasan "Yang paling penting kupikirkan di sini adalah …" ([08](08_DRAF_BANK_SOAL.md#cara-membaca)) | 3 kartu misi, 1 kalimat | Ya, di blok bank |
-| 12 | Cerita penghubung dan narasi | — | **Tidak**: dibacakan pengisi suara, tidak dibaca sendiri; bahasanya sudah ditelaah dan disetujui 26 Oktober 2026 |
+| 12 | Cerita penghubung dan narasi | — | **Tidak**: didengar sebagai narasi, tidak dibaca sendiri; bahasanya sudah ditelaah dan disetujui 26 Oktober 2026. Narasinya memakai suara sintetis sejak 15 November 2026 ([04](04_CATATAN_KEPUTUSAN.md)) |
 
 ### Yang dikerjakan setiap anak (inti)
 

@@ -1,6 +1,6 @@
 # ElevenLabs voice workspace
 
-Backup narration for GELITA, generated with ElevenLabs. Owner decision, 14 November 2026: recordings by voice actors (real voices) stay the first choice; ElevenLabs is the backup, and no other synthetic voice is used.
+Backup narration for GELITA, generated with ElevenLabs. Owner decision, 14 November 2026: recordings by voice actors (real voices) stay the first choice; ElevenLabs is the backup, and no other synthetic voice is used. Since 15 November 2026 the backup is what the game uses: the voice actors are not available, the researcher approved Mbah Kedu's synthetic narration, and Narator and Jaka get a synthetic voice too. It is still to be tried out in the field and stays open to the validators' suggestions (`docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`, 15 November 2026).
 
 Whoever works here (the owner in the ElevenLabs app, or an agent with ElevenLabs access) writes only inside `ai-studio/elevenlabs-voice/`. Installing recordings into the game is done later by a Claude Code session or by the owner on the server.
 
@@ -31,7 +31,7 @@ Lines whose `konteks` is `scenario_situation` or `post_clue` are part of scored 
 
 - Flat and friendly, the same pace and pitch for every situation. Never suspicious, scary, or urgent.
 - Quoted messages are read plainly, not acted. No stress on words such as *sekarang*, *gratis*, *tinggal 3*, *resmi*, *dihapus hari ini*.
-- Web addresses are read as written: `sekolah-kita.example/masuk` is "sekolah strip kita titik example garis miring masuk". The mark ✓ is read "bertanda centang". Emoji are not read.
+- Web addresses are read as written: `sekolah-kita.example/masuk` is "sekolah strip kita titik example garis miring masuk". The mark ✓ is read "bertanda centang". In the English takes the address is "sekolah dash kita dot example slash masuk" and ✓ is "with a check mark" (owner, 15 November 2026). Emoji are not read.
 - *Periksa Unggahan* clues are read without stressing the part that is the key.
 
 ## Mastering
@@ -44,7 +44,7 @@ In a shell loop that reads a list from standard input, run each take through `ma
 
 ## What is done
 
-A line is done when its file exists. State on 15 November 2026: Mbah Kedu's 93 lines are in both `out/id/` and `out/en/`, made with model v4 through the ElevenLabs flows *GELITA · Mbah Kedu (id) · takes* and *GELITA · Mbah Kedu (en) · takes* (one node per line, labelled with its `kode_berkas`). The owner accepted both (15 November 2026); the install was checked on a development install, and a server installs them with the steps below (also step 4 of *Instalasi baru* in `docs/08_DEPLOYMENT.md`). Narator and Jaka are still to do in both languages. To refresh the done columns of `lines.csv` (and the line texts, if the script changed), a Claude Code session runs this on a development install (`tools/dev/serve.sh` sets one up):
+A line is done when its file exists. State on 15 November 2026: Mbah Kedu's 93 lines are in both `out/id/` and `out/en/`, made with model v4 through the ElevenLabs flows *GELITA · Mbah Kedu (id) · takes* and *GELITA · Mbah Kedu (en) · takes* (one node per line, labelled with its `kode_berkas`). The owner accepted both (15 November 2026); the install was checked on a development install, and a server installs them with the steps below (also step 4 of *Instalasi baru* in `docs/08_DEPLOYMENT.md`). Narator and Jaka are still to do in both languages (`voices.md` → *Narator and Jaka: before the first take*). To refresh the done columns of `lines.csv` (and the line texts, if the script changed), a Claude Code session runs this on a development install (`tools/dev/serve.sh` sets one up):
 
 ```bash
 php spark gelita:narration:list --csv=ai-studio/elevenlabs-voice/lines.csv --dir=ai-studio/elevenlabs-voice/out
@@ -76,4 +76,4 @@ php spark gelita:narration:import
 
 A voice actor's recording uploaded later under the same file code replaces the ElevenLabs one and is recorded as a real voice.
 
-The research documents describe the narration as recorded by voice actors. Before ElevenLabs recordings are used with students, that change is recorded in `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md` and the researcher is told.
+The research documents say *suara sintetis* and do not name the service (owner, 15 November 2026). Mbah Kedu's takes are recorded in `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md` (15 November 2026) and approved by the researcher. When Narator's and Jaka's takes are accepted, the researcher is told again before students hear them, and `04` gets a line.
