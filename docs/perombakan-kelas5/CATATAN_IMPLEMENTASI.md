@@ -538,3 +538,14 @@ The owner confirmed the Indonesian takes once more (already accepted, section ab
 - The button names the lines speak (*Kenali*, *Lanjut*, *Pustaka Kedu*, *Balai Refleksi* and their English forms) match `app/Language`.
 
 **Left for the owner.** `peta-03` (Jaka) tells the student to tap *Kenali* on each region, which research mode keeps closed until the region is done; decide whether the line changes before it is voiced. The English reading of `✓` and of the web address in `skenario-wnb-5-a02` and `-b02` is not set in `12`. Whether the ethics committee needs to hear of the change is the researcher's call (`12` is attached to `22` as an instrument).
+
+## Story line `peta-03` changed for research mode (15 November 2026, branch `aru/zen-dirac-ghknt1`)
+
+**Decision (owner).** In the Peta Kedu narration Jaka told the student to tap *Kenali* on each region before setting off. Research mode keeps *Kenali* closed until the region is done (33 §7.5), so the student heard an invitation the screen refused. The line now reads: "Pilih wilayah yang sudah terbuka, lalu ketuk Lanjut. Setelah wilayah itu tuntas, ketuk tombol Kenali untuk mendengar cerita Mbah Kedu tentang tempat itu. Ayo, kita berangkat!" (English: "Choose an open region, then tap Continue. Once that region is complete, tap Get to know to hear Mbah Kedu's story about that place. Come on, let's go!"). The slide title is *Mulai Menjelajah* / *Start Exploring*; *Kenali Dulu* said the opposite of the new text. Outside a study *Kenali* is open from the start and the line is still true there. Research record: `04`, 15 November 2026, and `12` → *Narasi Peta Kedu*.
+
+**Where it changed.** `app/Database/Seeds/data/story.php`; the replaced title and text appended to `peta-03` in `story-previous.php`, so `gelita:story:sync` replaces the line on an installed server unless it was edited in the panel; `docs/naskah-cerita.md`; `ai-studio/elevenlabs-voice/lines.csv` (rewritten by `gelita:narration:list`). The copy of the script in `gelita-katalog/update/naskah-cerita/` already held an older version of this line and was left alone. No recording existed for the line.
+
+**Checked on MariaDB.** On a development install that still held the old line, `gelita:story:sync --dry-run` reported one line to update (`peta-03`), and the run wrote it: 112 script lines, 111 already the same, 1 updated, none edited in the panel.
+
+**Noticed, not changed.** The line and the map's fallback text `Game.mapLead` both say "ketuk Lanjut". The button on a region the student has not started reads *Mulai*; it reads *Lanjut* only once the region is in progress.
+

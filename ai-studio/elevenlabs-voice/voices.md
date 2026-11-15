@@ -50,7 +50,7 @@ Both get a synthetic voice too (owner, 15 November 2026). Neither has a voice ye
 | Local words in English takes | Mbah, kentongan, kuda lumping, wayang, Topeng Ireng, kuluk, getuk, bundengan, Carica, embun upas, Telaga Warna, Dieng | Indonesian pronunciation |
 
 - **Same text, separate files.** `instruksi-tmg-2` and `instruksi-mgl-2` have the same text, and so do `instruksi-tmg-5`, `-mgl-5`, `-wnb-5`. Each still gets its own file (`README.md` → *Making a recording*, step 5).
-- **One line to decide before it is voiced.** `peta-03` (Jaka) tells the student to tap *Kenali* on each region. In research mode *Kenali* stays closed until the region is done, with its own note on the card. If the line is to change, change it in the script first; a take made before that is thrown away.
+- **`peta-03` (Jaka) has a new text since 15 November 2026.** It names *Kenali* after the region is done, as research mode opens it; `lines.csv` holds the new text.
 
 ## Pronunciation fixes
 

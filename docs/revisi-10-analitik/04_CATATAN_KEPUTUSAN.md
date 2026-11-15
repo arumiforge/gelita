@@ -6,6 +6,15 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 15 November 2026
 
+**Baris cerita `peta-03` disesuaikan dengan mode penelitian** (cabang `aru/zen-dirac-ghknt1`) · `asal: pengembang` · `disetujui pengembang` · mengubah 12 dan naskah cerita
+
+Di narasi Peta Kedu, Jaka mengajak siswa mengetuk tombol Kenali di setiap wilayah sebelum berangkat. Selama studi tombol itu baru terbuka setelah wilayahnya tuntas ([12 → keputusan 2](12_CERITA_PENGHUBUNG_DAN_NARASI.md#keputusan-pengembang)), jadi siswa mendengar ajakan yang tidak bisa diikuti. Ketidakcocokan ini ditemukan saat baris Narator dan Jaka diperiksa sebelum dibuat suaranya.
+
+- **Teks baru.** "Pilih wilayah yang sudah terbuka, lalu ketuk Lanjut. Setelah wilayah itu tuntas, ketuk tombol Kenali untuk mendengar cerita Mbah Kedu tentang tempat itu. Ayo, kita berangkat!" Judul slide menjadi *Mulai Menjelajah* (dulu *Kenali Dulu*). Versi Inggrisnya ada di [12 → Narasi Peta Kedu](12_CERITA_PENGHUBUNG_DAN_NARASI.md#narasi-peta-kedu-map_intro).
+- **Di luar studi.** Kenali tetap terbuka sejak awal, dan baris baru tetap benar di sana.
+- **Tidak ada yang bocor dan tidak ada rekaman yang terbuang.** Baris ini tidak memuat fakta yang dinilai, dan Jaka belum punya rekaman.
+- **Server yang sudah terpasang.** Teks barunya masuk lewat `php spark gelita:story:sync`; teks lama tercatat sebagai versi sebelumnya, jadi baris yang belum disunting di panel diganti otomatis.
+
 **Narasi Mbah Kedu memakai suara sintetis; Narator dan Jaka menyusul** (cabang `aru/zen-dirac-ghknt1`) · `asal: pengembang` · `disetujui peneliti` (disampaikan peneliti lewat pengembang, 15 November 2026) · mengubah 01, 10, 12, dan 24
 
 Entri 14 November 2026 memberi tiga syarat sebelum suara sintetis didengar siswa: entri baru di sini, peneliti diberi tahu, dan dokumen yang menyebut pengisi suara disesuaikan. Entri ini memenuhi ketiganya.
