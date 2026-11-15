@@ -111,4 +111,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `aru/vigilant-meitner-af35zt` | Claude session: five pictures of `ai-studio/chatgpt-images/` (M-K3, M-L1, W-K3, TMG-P11, MGL-P05R) set to `accepted` (approved by the researcher, owner 15 November 2026); the three unused, unlicensed UGM/Cephas reference photos removed from `inbox/` | PR open; installing the accepted pictures is a later step |
