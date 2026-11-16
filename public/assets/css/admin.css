@@ -1131,3 +1131,150 @@ body.auth { display: grid; min-height: 100vh; place-items: center; padding: 24px
   .detail-list { grid-template-columns: 1fr; gap: 2px 0; }
   .detail-list dd { margin-bottom: 8px; }
 }
+
+/* ==========================================================================
+   Field-day recommendations (16 November 2026): Ringkasan on a visit day,
+   "Perlu perhatian" on Pemantauan, the seat plan of the L2 page, and the
+   printable session card (one A4 page, landscape).
+   ========================================================================== */
+
+/* Ringkasan: today's field sessions, above the counts */
+.field-day { display: grid; gap: 12px; margin: 0 0 24px; }
+.field-day-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; }
+.field-day-head .panel-title { margin: 0 0 4px; }
+.field-day-head p { margin: 0; max-width: 72ch; font-size: 13px; }
+.field-day .empty-note { margin: 0; color: var(--text-dim); }
+.field-day-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.field-day-grid:empty { display: none; }
+.field-day-card { display: grid; align-content: start; gap: 14px; }
+.field-day-card-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+.field-day-code { font-size: 18px; font-weight: 600; color: var(--text); text-decoration: none; }
+.field-day-code:hover { color: var(--accent); text-decoration: underline; }
+.field-day-figures { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 32px; }
+.field-day-figures p { margin: 0; }
+.field-day-token { font-size: 32px; line-height: 1.1; font-weight: 600; letter-spacing: .12em; }
+.field-day-count { font-size: 18px; color: var(--text-2); }
+.field-day-count b { font-size: 28px; color: var(--text); }
+.field-day-clear { display: flex; align-items: center; gap: 6px; margin: 0; color: var(--ok); font-size: 13px; }
+.field-day-clear .icon { width: 16px; height: 16px; }
+.field-day-alerts { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.field-day-alerts li {
+  display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px;
+  border: 1px solid #FEDF89; border-radius: 999px; background: var(--warn-soft); color: var(--warn); font-size: 13px;
+}
+.field-day-alerts b { font-size: 14px; }
+
+/* Pemantauan: the codes behind each amber count */
+.attention {
+  margin: 0 0 16px; padding: 14px 16px;
+  border: 1px solid #FEDF89; border-radius: var(--radius); background: var(--warn-soft);
+}
+.attention.is-calm { border-color: #ABEFC6; background: var(--ok-soft); }
+.attention-title { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; font-size: 14px; font-weight: 600; color: var(--warn); }
+.attention.is-calm .attention-title { color: var(--ok); }
+.attention-title .icon { width: 18px; height: 18px; }
+.attention .attention-ok, .attention.is-calm .attention-warn { display: none; }
+.attention.is-calm .attention-ok { display: inline-block; }
+.attention-none { margin: 0; color: var(--text-2); font-size: 13px; }
+.attention-list { display: grid; gap: 10px; margin: 0; }
+.attention-list > div[hidden] { display: none; }
+.attention-list dt { color: var(--text-2); font-size: 13px; font-weight: 600; }
+.attention-list dt b { margin-left: 4px; color: var(--warn); }
+.attention-list dd { margin: 2px 0 0; overflow-wrap: anywhere; font-size: 15px; color: var(--text); }
+.attention-list dd.field-help { font-family: var(--font); font-size: 12px; color: var(--text-dim); }
+
+/* Kursi dan buklet: the plan as seen from the board */
+.seat-plan { margin: 0 0 16px; }
+.seat-plan > .field-help { margin: -8px 0 12px; }
+.seat-plan-scroll { overflow-x: auto; }
+.seat-board {
+  margin: 0 auto 10px; max-width: 420px; padding: 6px 12px; border-radius: var(--radius);
+  background: var(--side-bg); color: #fff; font-size: 13px; font-weight: 600; text-align: center; letter-spacing: .04em;
+}
+.seat-grid {
+  display: grid; grid-template-columns: max-content repeat(var(--seats, 1), minmax(96px, 1fr));
+  gap: 6px; min-width: max-content;
+}
+.seat-grid[hidden], .seat-plan [hidden] { display: none; }
+.seat-axis { align-self: end; color: var(--text-dim); font-size: 12px; text-align: center; white-space: nowrap; }
+.seat-axis.is-row { align-self: center; padding-right: 6px; text-align: right; }
+.seat-cell {
+  display: grid; align-content: start; gap: 2px; min-height: 58px; padding: 6px 8px;
+  border: 1px solid var(--line); border-left-width: 4px; border-radius: var(--radius); background: var(--surface);
+  font-size: 13px;
+}
+.seat-cell-booklet { font-size: 12px; }
+.seat-cell.is-empty { border-style: dashed; background: var(--surface-2); }
+.seat-cell.is-empty .seat-cell-booklet { opacity: .55; }
+.seat-cell.is-shared { box-shadow: inset 0 0 0 1px var(--warn); }
+/* One colour per booklet (left rule and chip), readable in grey print too */
+.seat-cell.is-b1, .seat-chip.is-b1 { border-left-color: #4338CA; }
+.seat-cell.is-b2, .seat-chip.is-b2 { border-left-color: #067647; }
+.seat-cell.is-b3, .seat-chip.is-b3 { border-left-color: #B54708; }
+.seat-cell.is-b4, .seat-chip.is-b4 { border-left-color: #C11574; }
+.seat-cell.is-b1 .seat-cell-booklet { color: #4338CA; }
+.seat-cell.is-b2 .seat-cell-booklet { color: #067647; }
+.seat-cell.is-b3 .seat-cell-booklet { color: #B54708; }
+.seat-cell.is-b4 .seat-cell-booklet { color: #C11574; }
+.seat-plan-clash { margin: 12px 0 0; }
+.seat-unseated { margin: 12px 0 0; font-size: 13px; }
+.seat-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 12px 0 0; color: var(--text-dim); font-size: 12px; }
+.seat-chip { padding: 1px 8px; border: 1px solid var(--line); border-left-width: 4px; border-radius: 4px; color: var(--text-2); font-weight: 600; }
+
+/* Kartu sesi lapangan: a standalone page, one A4 page landscape when printed */
+.print-page { background: var(--bg); }
+.print-toolbar {
+  display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 16px;
+  max-width: 297mm; margin: 0 auto; padding: 16px;
+}
+.print-toolbar .form-inline .field { min-width: 120px; }
+.print-toolbar .field-help { flex-basis: 100%; margin: 0; }
+.print-toolbar [hidden] { display: none; }
+.print-card {
+  display: grid; grid-template-rows: auto 1fr auto; gap: 4mm;
+  width: 297mm; max-width: 100%; min-height: 210mm; margin: 0 auto 24px; padding: 10mm;
+  border: 1px solid var(--line); background: #fff; color: #000; box-shadow: var(--shadow);
+  font-size: 10pt;
+}
+.print-card h2 { margin: 0 0 1mm; font-size: 11pt; }
+.print-card h2 small { margin-left: 2mm; font-size: 8.5pt; font-weight: 400; color: #444; }
+.print-card-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4mm 10mm; padding-bottom: 3mm; border-bottom: 1.5px solid #000; }
+.print-card-kicker { margin: 0; font-size: 8.5pt; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #444; }
+.print-card-code { margin: 0 0 2mm; font-size: 22pt; line-height: 1.1; }
+.print-card-facts { display: grid; grid-template-columns: repeat(4, auto); gap: 1.5mm 8mm; margin: 0; }
+.print-card-facts div { min-width: 0; }
+.print-card-facts dt { font-size: 8pt; color: #444; }
+.print-card-facts dd { margin: 0; font-size: 10.5pt; font-weight: 600; }
+.print-card-facts .print-blank { min-width: 30mm; min-height: 5mm; border-bottom: 1px solid #000; }
+.print-card-token { text-align: right; }
+.print-token { margin: 0; font-size: 40pt; line-height: 1.05; font-weight: 700; letter-spacing: .14em; }
+.print-token.is-none { font-family: var(--font); font-size: 12pt; letter-spacing: 0; font-weight: 600; }
+.print-card-note { margin: 1mm 0 0; font-size: 8.5pt; color: #444; }
+.print-plan { display: grid; grid-template-rows: auto auto auto 1fr; min-height: 0; }
+.print-board { display: flex; justify-content: center; position: relative; margin: 2mm 0; padding: 1.5mm; border: 1.5px solid #000; font-weight: 700; text-align: center; }
+.print-door { position: absolute; right: 3mm; font-weight: 400; font-size: 8.5pt; }
+.print-grid {
+  display: grid; gap: 1.5mm;
+  grid-template-columns: repeat(var(--seats, 6), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--rows, 5), minmax(14mm, 1fr));
+}
+.print-seat { position: relative; display: grid; align-content: start; gap: .5mm; padding: 1mm 1.5mm; border: 1px solid #000; border-radius: 1.5mm; min-width: 0; overflow: hidden; }
+.print-seat-pos { font-size: 7pt; color: #444; white-space: nowrap; }
+.print-seat-booklet { position: absolute; top: 1mm; right: 1.5mm; font-size: 9pt; }
+.print-seat-line { font-size: 7pt; color: #444; border-bottom: .6px solid #888; padding-top: 2.4mm; }
+.print-roster-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(30mm, 1fr)); gap: .5mm 4mm; margin: 0; padding: 0; list-style: none; font-size: 9pt; }
+.print-roster-list b { margin-left: 1mm; }
+
+@media print {
+  @page { size: A4 landscape; margin: 0; }
+  html, body.print-page { background: #fff; }
+  .print-page .skip-link, .print-toolbar { display: none; }
+  .print-card { width: 297mm; height: 210mm; min-height: 0; margin: 0; border: 0; box-shadow: none; overflow: hidden; break-inside: avoid; }
+  .print-card * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+@media (max-width: 767.98px) {
+  .field-day-token { font-size: 26px; }
+  .print-card { padding: 4mm; }
+  .print-card-facts { grid-template-columns: repeat(2, auto); }
+  .print-card-token { text-align: left; }
+}

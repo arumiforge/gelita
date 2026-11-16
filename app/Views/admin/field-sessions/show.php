@@ -80,6 +80,7 @@ $base = 'admin/sesi-lapangan/' . $id;
       <?php // Part 4 (30 §5.2, §14): the consent page next to the seats ?>
       <a class="btn" href="<?= base_url($base . '/izin') ?>"><?= icon('shield') ?> <?= esc(lang('Admin.consentTitle')) ?></a>
       <a class="btn" href="<?= base_url($base . '/kursi') ?>"><?= icon('users') ?> <?= esc(lang('Admin.fieldSessionSeats')) ?></a>
+      <a class="btn" href="<?= base_url($base . '/cetak') ?>"><?= icon('printer') ?> <?= esc(lang('Admin.printCardLink')) ?></a>
     </div>
   </section>
 

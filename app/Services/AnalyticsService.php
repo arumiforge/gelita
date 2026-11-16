@@ -269,32 +269,57 @@ class AnalyticsService
      */
     public function fieldSessionSummary(int $studyId): array
     {
-        $fields = service('fieldSessions');
-        $now    = date('Y-m-d H:i:s');
-        $out    = [];
+        $rows = model(\App\Models\FieldSessionModel::class)->recent($studyId, date('Y-m-d H:i:s', time() - 86400), date('Y-m-d H:i:s'));
 
-        foreach (model(\App\Models\FieldSessionModel::class)->recent($studyId, date('Y-m-d H:i:s', time() - 86400), $now) as $row) {
-            $roster = $this->fieldSessionRoster($row);
+        return array_map(fn (array $row): array => $this->fieldSessionCounts($row), $rows);
+    }
 
-            $out[] = [
-                'id'           => (int) $row['id'],
-                'code'         => (string) $row['code'],
-                'opens_at'     => (string) $row['opens_at'],
-                'closes_at'    => (string) ($row['closed_at'] ?? $row['closes_at']),
-                'state'        => $fields->state($row),
-                'roster'       => $roster,
-                'entered'      => count(array_filter($roster, static fn (array $r): bool => $r['entered'])),
-                'active'       => count(array_filter($roster, static fn (array $r): bool => $r['active'])),
-                'not_entered'  => count(array_filter($roster, static fn (array $r): bool => ! $r['entered'])),
-                'all_done'     => count(array_filter($roster, static fn (array $r): bool => $r['entered'] && $r['total'] > 0 && $r['done'] >= $r['total'])),
-                'dropped'      => array_sum(array_column($roster, 'dropped')),
-                'no_seat'      => count(array_filter($roster, static fn (array $r): bool => ! $r['has_seat'])),
-                'small_screen' => $this->db()->table('audit_logs')->where('action', 'small_screen_refused')
-                    ->where('target_type', 'field_session')->where('target_id', (string) $row['id'])->countAllResults(),
-            ];
-        }
+    /**
+     * Field sessions dated today, also those not open yet, with the same
+     * counts as fieldSessionSummary(): the Ringkasan of a visit day.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function todayFieldSessions(int $studyId): array
+    {
+        $rows = model(\App\Models\FieldSessionModel::class)->select('field_sessions.*, schools.research_code')
+            ->join('schools', 'schools.id = field_sessions.school_id', 'left')
+            ->where('field_sessions.study_id', $studyId)
+            ->where('field_sessions.session_date', date('Y-m-d'))
+            ->orderBy('field_sessions.opens_at', 'ASC')
+            ->findAll();
 
-        return $out;
+        return array_map(fn (array $row): array => $this->fieldSessionCounts($row), $rows);
+    }
+
+    /**
+     * One field session with its roster and the counts every monitoring
+     * viewer sees (admin: numbers only, K2).
+     *
+     * @param array<string, mixed> $row field_sessions row (+ research_code)
+     *
+     * @return array<string, mixed>
+     */
+    private function fieldSessionCounts(array $row): array
+    {
+        $roster = $this->fieldSessionRoster($row);
+
+        return [
+            'id'           => (int) $row['id'],
+            'code'         => (string) $row['code'],
+            'opens_at'     => (string) $row['opens_at'],
+            'closes_at'    => (string) ($row['closed_at'] ?? $row['closes_at']),
+            'state'        => service('fieldSessions')->state($row),
+            'roster'       => $roster,
+            'entered'      => count(array_filter($roster, static fn (array $r): bool => $r['entered'])),
+            'active'       => count(array_filter($roster, static fn (array $r): bool => $r['active'])),
+            'not_entered'  => count(array_filter($roster, static fn (array $r): bool => ! $r['entered'])),
+            'all_done'     => count(array_filter($roster, static fn (array $r): bool => $r['entered'] && $r['total'] > 0 && $r['done'] >= $r['total'])),
+            'dropped'      => array_sum(array_column($roster, 'dropped')),
+            'no_seat'      => count(array_filter($roster, static fn (array $r): bool => ! $r['has_seat'])),
+            'small_screen' => $this->db()->table('audit_logs')->where('action', 'small_screen_refused')
+                ->where('target_type', 'field_session')->where('target_id', (string) $row['id'])->countAllResults(),
+        ];
     }
 
     /**

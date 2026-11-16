@@ -26,8 +26,8 @@ class DashboardController extends BaseAdminController
             'progress'        => $research ? $this->recentProgress() : null,
             'readiness'       => $system ? (new ResearchReadiness())->check() : null,
             'research'        => $research,
-            // Field sessions open now (revision 10, part 2: 28 §12), researchers and the head researcher
-            'fieldSessions'   => $this->can('field_sessions.manage') ? $this->openFieldSessions() : [],
+            // A visit day first (revision 10, part 2: 28 §12): today's field sessions, researchers and the head researcher
+            'fieldDay'        => $this->can('field_sessions.manage') ? $this->fieldDay() : null,
             // pratinjau penghapusan buatan retensi: hanya admin yang boleh memutuskan
             'retentionAlerts' => $this->can('retention.run') ? service('retentionService')->pendingRetentionRequests() : [],
             // Part 3 (29 §5.6): technical numbers for the admin
@@ -72,23 +72,40 @@ class DashboardController extends BaseAdminController
     }
 
     /**
-     * Open field sessions of the active study: code, students in, active now.
+     * Today's field sessions of the active field-mode study (also those not
+     * open yet, and one still open from an earlier date), with token, roster
+     * and the counts the monitoring panel lights up. Null outside field mode.
+     * Codes and tokens only; the caller has `field_sessions.manage` (K2).
      *
-     * @return list<array{id: int, code: string, entered: int, active: int}>
+     * @return list<array<string, mixed>>|null
      */
-    private function openFieldSessions(): array
+    private function fieldDay(): ?array
     {
         $study = model(\App\Models\ResearchStudyModel::class)->activeStudy();
 
         if ($study === null || ! service('fieldSessions')->fieldModeOn()) {
-            return [];
+            return null;
         }
 
-        $rows = array_filter(service('analyticsService')->fieldSessionSummary((int) $study['id']), static fn (array $r): bool => $r['state'] === 'open');
+        $analytics = service('analyticsService');
+        $rows      = $analytics->todayFieldSessions((int) $study['id']);
+        $ids       = array_column($rows, 'id');
 
-        return array_values(array_map(static fn (array $r): array => [
-            'id' => $r['id'], 'code' => $r['code'], 'entered' => $r['entered'], 'active' => $r['active'],
-        ], $rows));
+        foreach ($analytics->fieldSessionSummary((int) $study['id']) as $row) {
+            if ($row['state'] === 'open' && ! in_array($row['id'], $ids, true)) {
+                $rows[] = $row;
+            }
+        }
+
+        $fields = service('fieldSessions');
+
+        return array_map(static function (array $row) use ($fields): array {
+            $row['roster_count'] = count($row['roster']);
+            $row['token']        = $row['state'] === 'closed' ? null : $fields->currentToken($row['id']);
+            unset($row['roster']);
+
+            return $row;
+        }, $rows);
     }
 
     /**

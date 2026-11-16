@@ -178,3 +178,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `panel-lapangan-rekomendasi` | Staff panel field-day recommendations 1, 2, 4, 5, 6 (after PR #388): Ringkasan on a visit day, printable session card `/admin/sesi-lapangan/{id}/cetak`, seat plan on the L2 page, "Perlu perhatian" on Pemantauan, `tools/qa/admin-check.mjs` brought up to date. Sibling `panel-panduan-staf` owns menu, layout, typography and `/admin/panduan-staf` | Code and tests done; browser check and PR next |

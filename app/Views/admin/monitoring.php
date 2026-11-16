@@ -43,10 +43,30 @@ $alerts = ['not_entered', 'dropped', 'no_seat', 'small_screen'];
         <?php if ((int) ($row['consent_missing'] ?? 0) > 0): ?>
           <p class="alert alert-warn" data-m="consent-missing"><?= icon('warn') ?> <?= esc(lang('Admin.consentMissing', [$row['consent_missing']])) ?></p>
         <?php endif ?>
+        <?php
+          // "Perlu perhatian": the codes behind each amber count (not signed in, lost records, no seat); admin/monitoring.js keeps it current
+          $attention = [
+              'not-entered' => ['monitoringNotEntered', array_column(array_filter($row['students'], static fn ($s) => ! $s['entered']), 'participant_code')],
+              'dropped'     => ['monitoringDropped', array_map(static fn ($s) => $s['participant_code'] . ' (' . fmt_num((int) $s['dropped'], 0, 'id') . ')', array_values(array_filter($row['students'], static fn ($s) => (int) $s['dropped'] > 0)))],
+              'no-seat'     => ['monitoringNoSeat', array_column(array_filter($row['students'], static fn ($s) => ! $s['has_seat']), 'participant_code')],
+          ];
+          $calm = array_filter($attention, static fn ($a) => $a[1] !== []) === [];
+        ?>
+        <div class="attention<?= $calm ? ' is-calm' : '' ?>" data-attention>
+          <h3 class="attention-title"><?= icon('warn', 'attention-warn') ?><?= icon('check', 'attention-ok') ?> <?= esc(lang('Admin.attentionTitle')) ?></h3>
+          <p class="attention-none" data-attention-none<?= $calm ? '' : ' hidden' ?>><?= esc(lang('Admin.attentionNone')) ?></p>
+          <dl class="attention-list">
+            <?php foreach ($attention as $key => [$label, $list]): ?>
+              <div data-attention-item="<?= $key ?>"<?= $list === [] ? ' hidden' : '' ?>>
+                <dt><?= esc(lang('Admin.' . $label)) ?><?php if ($key !== 'dropped'): ?> <b data-attention-count><?= esc(fmt_num(count($list), 0, 'id')) ?></b><?php endif ?></dt>
+                <dd class="mono" data-m="list-<?= $key ?>"><?= esc(implode(', ', $list) ?: '—') ?></dd>
+                <?php if ($key === 'dropped'): ?><dd class="field-help"><?= esc(lang('Admin.attentionDroppedHelp')) ?></dd><?php endif ?>
+              </div>
+            <?php endforeach ?>
+          </dl>
+        </div>
         <dl class="detail-list">
           <dt><?= esc(lang('Admin.monitoringActive')) ?></dt><dd class="mono" data-m="list-active"><?= esc($codes($row['students'], static fn ($s) => $s['active'])) ?></dd>
-          <dt><?= esc(lang('Admin.monitoringNotEntered')) ?></dt><dd class="mono" data-m="list-not-entered"><?= esc($codes($row['students'], static fn ($s) => ! $s['entered'])) ?></dd>
-          <dt><?= esc(lang('Admin.monitoringNoSeat')) ?></dt><dd class="mono" data-m="list-no-seat"><?= esc($codes($row['students'], static fn ($s) => ! $s['has_seat'])) ?></dd>
           <?php // Part 8 (34 §14): test status and "modul selesai" only (§8.2) ?>
           <?php if (isset($row['students'][0]['test_status'])): ?>
             <dt title="<?= esc(lang('Admin.testStatusHelp'), 'attr') ?>"><?= esc(lang('Admin.testStatus')) ?></dt>

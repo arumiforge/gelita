@@ -18,6 +18,9 @@ class FieldSessionController extends BaseAdminController
 {
     private const BASE = 'admin/sesi-lapangan';
 
+    /** Largest seating plan the printed card fits on one A4 page (rows and seats). */
+    private const PRINT_MAX = 8;
+
     public function index(): string
     {
         $fields = service('fieldSessions');
@@ -151,6 +154,40 @@ class FieldSessionController extends BaseAdminController
         }
 
         return $this->done($path, lang('Admin.seatsSaved', [$result['saved'], $result['changed']]));
+    }
+
+    /**
+     * Printable session card (one A4 page, landscape): session code, school
+     * research code, class group, meeting, date, hours, the token in large
+     * type, and an empty seating plan for L1/L2. Codes only, never names.
+     * `?baris=` and `?kursi=` size the plan (1–8 each); by default it covers
+     * the seats already typed, at least 5 × 6.
+     */
+    public function printCard(int $id): string
+    {
+        $fields       = service('fieldSessions');
+        $fieldSession = $this->find($id);
+        $roster       = (new \App\Services\SeatService())->roster($fieldSession);
+        $seated       = array_filter(array_column($roster, 'seat'));
+        $size         = static function (mixed $typed, int $fallback): int {
+            $value = filter_var($typed, FILTER_VALIDATE_INT);
+
+            return max(1, min(self::PRINT_MAX, $value === false ? $fallback : $value));
+        };
+        $rows  = $size($this->request->getGet('baris'), max([5, ...array_map('intval', array_column($seated, 'row_no'))]));
+        $seats = $size($this->request->getGet('kursi'), max([6, ...array_map('intval', array_column($seated, 'seat_no'))]));
+        $state = $fields->state($fieldSession);
+
+        return view('admin/field-sessions/print', [
+            'fieldSession' => $fieldSession,
+            'state'        => $state,
+            'token'        => $state === 'closed' ? null : $fields->currentToken($id),
+            'plan'         => $fields->planEntry($fieldSession),
+            'roster'       => $roster,
+            'rows'         => $rows,
+            'seats'        => $seats,
+            'max'          => self::PRINT_MAX,
+        ]);
     }
 
     public function makeupForm(int $id): string

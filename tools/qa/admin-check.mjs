@@ -8,11 +8,15 @@
  * 1280 × 800, 1440 × 900, and 1920 × 1080:
  *
  *   - admin: accounts (student list and student page without research tabs),
- *     content, settings (study read-only, releases, governance, schools, staff);
+ *     content, settings (study read-only, releases, governance, schools, staff),
+ *     the tech log (part 3: 29 §5.6), and Pemantauan (numbers only);
  *   - peneliti: Ringkasan, student list and student page with the research
  *     tabs, reset password by code, content read-only;
  *   - ketua: everything peneliti opens, plus play sessions, raw data,
- *     feedback, export, and the study page.
+ *     feedback, export, and the study page;
+ *   - peneliti and ketua, when the active study has a field session: the field
+ *     session list, the newest field session, its seats page (seat plan), its
+ *     printable card, and Pemantauan (28 §12, §15).
  *
  * For each page it checks:
  *
@@ -25,10 +29,13 @@
  *
  * Pages a role may not open must answer 404 (27 §4):
  *
- *   - admin: sessions, raw data, feedback, export, the student-list CSV (K17);
+ *   - admin: sessions, raw data, feedback, export, reset by code, field sessions;
  *   - peneliti: sessions, raw data, feedback, export, study, bank import,
- *     releases, governance, schools, staff;
- *   - ketua: bank import, releases, governance, schools, staff.
+ *     releases, governance, schools, staff, tech log;
+ *   - ketua: bank import, releases, governance, schools, staff, tech log.
+ *
+ * The device table is no raw-data dimension since part 3: it lives in the
+ * admin's tech log (`/admin/log-teknis/perangkat`, 29 §5.6).
  *
  * Then, once:
  *
@@ -38,7 +45,8 @@
  *      username find nothing, the code finds the student); admin finds by name;
  *   3. the list-table CSVs (Siswa, Sesi, timeline on the session page,
  *      Kritik & saran) each write a `list_csv` audit row (as ketua);
- *   4. the admin student list renders no CSV button;
+ *   4. the admin student list renders no CSV button, and `?format=csv` answers
+ *      the HTML list, never a CSV file (27 K17);
  *   6. the quick search placeholder matches the role (code only for
  *      peneliti and ketua, name for admin).
  *
@@ -106,6 +114,11 @@ const sessionId = Number(sql('SELECT MAX(id) FROM game_sessions'));
 const levelId = Number(sql('SELECT MIN(id) FROM levels'));
 const nodeId = Number(sql('SELECT MIN(id) FROM challenge_nodes'));
 const passageId = Number(sql('SELECT COALESCE(MIN(id), 1) FROM reading_passages'));
+/** Newest field session of the active study, or 0 (field-day pages skipped). */
+const fieldSessionId = Number(sql(
+  'SELECT COALESCE(MAX(fs.id), 0) FROM field_sessions fs JOIN research_studies rs ON rs.id = fs.study_id '
+  + "WHERE rs.status = 'active' AND rs.field_mode = 1",
+)) || 0;
 
 /**
  * Identity values researchers must never see (27 §9): name, username, school
@@ -121,7 +134,8 @@ const identities = [...new Set(sql(
   .filter((v) => v.length >= 4 && v !== 'NULL');
 
 const STUDENT_TABS = ['profil', 'sesi', 'progres', 'pengerjaan', 'jawaban', 'navigasi', 'bantuan', 'masukan'];
-const DIMENSIONS = ['jawaban', 'percobaan', 'pengerjaan', 'progres', 'selesai', 'navigasi', 'bantuan', 'perangkat'];
+// `perangkat` moved to the admin's tech log in part 3 (techLogPages)
+const DIMENSIONS = ['jawaban', 'percobaan', 'pengerjaan', 'progres', 'selesai', 'navigasi', 'bantuan'];
 
 /** Every staff role. */
 const commonPages = [
@@ -171,6 +185,22 @@ const researchDataPages = [
 ];
 /** studies.view: admin (read-only), ketua. */
 const studyPages = [['studi', 'admin/studi']];
+/** tech_logs.view: admin only (part 3: 29 §5.6). */
+const techLogPages = [
+  ['log-teknis', 'admin/log-teknis'],
+  ['log-teknis-perangkat', 'admin/log-teknis/perangkat'],
+];
+/** monitoring.view: every staff role (admin: numbers only, 28 §12 K2). */
+const monitoringPages = [['pemantauan', 'admin/pemantauan']];
+/** field_sessions.manage: peneliti, ketua; only when a field session exists. */
+const fieldSessionPages = [
+  ['sesi-lapangan', 'admin/sesi-lapangan'],
+  ...(fieldSessionId ? [
+    ['sesi-lapangan-detail', `admin/sesi-lapangan/${fieldSessionId}`],
+    ['sesi-lapangan-kursi', `admin/sesi-lapangan/${fieldSessionId}/kursi`],
+    ['sesi-lapangan-cetak', `admin/sesi-lapangan/${fieldSessionId}/cetak`],
+  ] : []),
+];
 
 const ROLES = {
   admin: {
@@ -179,21 +209,21 @@ const ROLES = {
       ['siswa-akun', `admin/peserta/${studentId}`],
       ...contentViewPages, ...contentEditPages,
       ['narasi-unggah', 'admin/konten/narasi/unggah'],
-      ...studyPages, ...settingsPages,
+      ...studyPages, ...settingsPages, ...techLogPages, ...monitoringPages,
     ],
     denied: [
       ...researchDataPages,
-      ['siswa-csv', 'admin/peserta?format=csv'], // K17
       ['reset-sandi', 'admin/peserta/reset-sandi'],
+      ...fieldSessionPages,
     ],
   },
   peneliti: {
-    open: [...commonPages, ...researchStudentPages, ...contentViewPages],
-    denied: [...researchDataPages, ...studyPages, ...contentEditPages, ...settingsPages],
+    open: [...commonPages, ...researchStudentPages, ...contentViewPages, ...monitoringPages, ...fieldSessionPages],
+    denied: [...researchDataPages, ...studyPages, ...contentEditPages, ...settingsPages, ...techLogPages],
   },
   ketua: {
-    open: [...commonPages, ...researchStudentPages, ...contentViewPages, ...researchDataPages, ...studyPages],
-    denied: [...contentEditPages, ...settingsPages],
+    open: [...commonPages, ...researchStudentPages, ...contentViewPages, ...researchDataPages, ...studyPages, ...monitoringPages, ...fieldSessionPages],
+    denied: [...contentEditPages, ...settingsPages, ...techLogPages],
   },
 };
 const RESEARCH_ROLES = ['peneliti', 'ketua'];
@@ -317,6 +347,10 @@ async function checkAdminStudents(page) {
   check(/nama/i.test(String(await placeholder(page) || '')), 'item 6: admin quick search mentions name');
   await page.goto(`${BASE}admin/peserta`);
   check(await page.locator('a[href*="format=csv"]').count() === 0, 'item 4: admin student list has no CSV button');
+  // K17: the admin gets no student-list CSV; `?format=csv` answers the HTML list
+  const csv = await page.request.get(`${BASE}admin/peserta?format=csv`, { maxRedirects: 0 });
+  const type = csv.headers()['content-type'] || '';
+  check(csv.status() === 200 && /text\/html/.test(type) && !/text\/csv/.test(type), `item 4: admin ?format=csv answers the HTML list (${csv.status()} ${type})`);
   await page.goto(`${BASE}admin/peserta/${studentId}`);
   const researchTabs = await page.locator(STUDENT_TABS.filter((t) => t !== 'profil').map((t) => `a[href*="tab=${t}"]`).join(', ')).count();
   check(researchTabs === 0, `admin student page has no research tabs (${researchTabs} found)`);
