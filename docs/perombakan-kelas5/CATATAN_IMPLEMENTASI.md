@@ -739,3 +739,11 @@ A session looked at all 21 review sheets and wrote its questions into `ai-studio
 - `library.wonosobo.p9.2` (review no. 339, now `redo`): the whole fruits were close to carica, but the cut fruit had thick orange flesh and a few big black seeds, like papaya; carica has thin cream flesh and a white, juicy pulp with many small dark seeds. It was also painted, not 3D. Task `R-15`, prompt in document 39.
 - `R-02` (the carica of Cari Objek) now attaches two of the photos, and its prompt asks for five clear ribs with rounded edges instead of shallow ribs.
 
+## Picture review: ChatGPT rows `R-01` to `R-10` checked, nine installed (16 November 2026, branch `nty/gracious-feynman-2yhoki`)
+
+- ChatGPT pushed `R-01` to `R-10` to branch `images-r01-r10`. A Claude session checked each against its prompt and checklist (document 39): sizes right; every word of the five test pictures read against *All text* and compared with the old picture.
+- **Passed and accepted by the owner:** `R-01` (one weakness noted: the lower third is bright and busy rather than calm and darker), `R-03` to `R-05`, `R-06` to `R-10` (`R-09` also accepted by the researcher).
+- **`R-02` failed:** smooth orange fruits without ribs, the same colour and finish as the papaya decoy `wnb-4-a05`, so a child cannot tell carica from papaya. Status `redo`; its prompt now attaches the carica photos.
+- **Installed:** the branch merged into this one (conflict in `TASKS.md` only, resolved by hand); the nine files moved with `git mv` from `ai-studio/chatgpt-images/out/` over their old files in `ai-studio/game-images/` (`data.json` unchanged); the five test pictures also written as the PNG masters in `docs/revisi-10-analitik/gambar/doc-34/` (same size as before); `REVIEW.md` rows 213, 302, 321, 341, 374, 382, 383, 384, 387 marked `keep`; contact sheets rebuilt. The research PDFs that show the test pictures were not rebuilt.
+- The carica photos: the researcher obtained the licence, with permission from the parties concerned (owner); the sources file says so.
+
