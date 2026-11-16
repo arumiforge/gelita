@@ -192,6 +192,7 @@ class Gelita extends BaseConfig
         'challenge.item.*-1-*'  => [1200, 1200],
         'challenge.item.*-4-*'  => [240, 240],
         'challenge.item.*-3-*'  => [480, 360],
+        'challenge.post.*'      => [1280, 720], // Cari Objek round-2 post photo, 16:9
         'reward.badge.*'   => [320, 320],
         'ui.logo-hero'     => [1600, 600],
         'ui.btn-start'     => [1200, 220],  // long carved plate, about 5.5 : 1 (owner, 20 October 2026, second version)

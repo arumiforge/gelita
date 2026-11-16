@@ -712,3 +712,38 @@ A session looked at all 21 review sheets and wrote its questions into `ai-studio
 
 **Not checked:** an import of the new captions on MariaDB (the SQLite test covers install, re-run and a one-language caption); the swapped backgrounds on a running game; any of the redo prompts in ChatGPT.
 
+## Picture review: Mendut reference photos, task `R-12` (16 November 2026, branch `nty/gracious-feynman-2yhoki`)
+
+- The owner sent four photos of Candi Mendut (the cella with its three statues, the Buddha close up, two views of the temple); the researcher obtained the licence. Creator and source are not recorded. Saved as references in `ai-studio/chatgpt-images/inbox/reference-Mendut-*` and listed in `reference-sources-2026-11-15.json` with their SHA-256; they are never installed in the game.
+- Compared with the photos, `library.magelang.p5.2` is wrong four ways: the Buddha sits cross-legged (the real one sits with both feet down on a lotus footstool, hands in dharmacakra mudra), the two flanking bodhisattvas stand (they sit), two lions stand in front of the pedestal, and a child worships the statue. Review row 293 changed from `redo later` to `redo`.
+- New row `R-12` in `ai-studio/chatgpt-images/TASKS.md`, prompt in document 39. The new picture shows no people: on a page about another religion's place of worship the child looks at the statue and is not drawn worshipping. The Pustaka text and caption stay; they already match the photos.
+- `ai-studio/chatgpt-images/AGENTS.md`: rows made from a `redo later` picture use the licensed photos named in **Attach** for the forms only, never copying the photo, its colours or modern details.
+- The owner sends the other reference files in later conversations, one at a time; each becomes a new `R-` row the same way.
+
+## Picture review: a slot for the round-2 post photo, task `R-13` (16 November 2026, branch `nty/gracious-feynman-2yhoki`)
+
+- **Gap.** The post `tmg-4-b` (Cari Objek Temanggung round 2, variant b, "Unggahan video ikan uceng") points at `challenge.post.tmg-4-b`, which has no picture. The other five posts point at their region's Susun Gambar picture (`challenge.item.*-1-*`). `challenge.post.*` matched no `ImageSlots` pattern, so `gelita:katalog:impor` skipped such a key ("bukan slot gambar permainan"), and the game showed the general placeholder.
+- **Owner's choice (16 November 2026):** a new picture from ChatGPT, not a crop of the puzzle picture `tmg-1-h01` (which the bank also allows).
+- **Code.** New slot `challenge.post.*` in `ImageSlots` (group `challenge`, `wajib`, not transparent, panel text in Indonesian), required size `[1280, 720]` in `Config\Gelita::$assetSizes` (the photo box of `game.css` `.post-photo` is 16:9); `regionOf()` and the challenge number of `describe()` read `challenge.post.` keys. `ImageSlotsTest` describes the slot; `CatalogImportTest` installs one and checks that the post scene's `media_asset_id` is that picture (it fails without the slot). Not changed: `AssetChecklist` still does not list post photos.
+- **Task.** Row `R-13` in `ai-studio/chatgpt-images/TASKS.md`, prompt in document 39. The game lays the credit part B2 over the lower quarter of the photo, so the prompt keeps that band plain. No sea food and no river, so that the photo neither helps nor misleads item `tmg-4-b02` (board: river fish; caption: sea fish). The installing session adds a `data.json` entry and a `REVIEW.md` row, as the picture is new.
+
+## Picture review: Dieng maps, task `R-14`; `R-09` accepted (16 November 2026, branch `nty/gracious-feynman-2yhoki`)
+
+- **Maps.** The owner sent five maps of the Dieng area and of Wonosobo (licence obtained by the researcher), saved as `ai-studio/chatgpt-images/inbox/reference-Dieng-*` and `reference-Wonosobo-*` with their SHA-256. A sixth, the 2017 slope map of Wonosobo, came only as a picture in the chat; no file reached the repository. The route map of the Wonosobo tourism office (`-08`) is the source for positions; `-07` looks AI-made and is used for its look only.
+- **Task `R-14`** for `library.wonosobo.p2.2` (review no. 325, now `redo`): a relief map showing the three regencies that share the plateau, as the page text says, with seven places. It is the only game picture that carries text: a fixed list of place names, read word by word like the test pictures (document 39, `AGENTS.md`). The installing session sets the entry's caption back to the page's own "Peta kawasan Dataran Tinggi Dieng".
+- **`R-09` accepted.** The owner made the besurek cloth post in the ChatGPT app; the researcher accepted it, including the check of the cloth motif by someone who reads Arabic. `TASKS.md` row set to `accepted` so ChatGPT does not make it again; the file itself is still to come from the owner.
+
+## Picture review: carica photos, task `R-15` (16 November 2026, branch `nty/gracious-feynman-2yhoki`)
+
+- The owner sent five carica photos (whole, on the tree, cut, peeled for sweets), saved as `inbox/reference-carica-*`. No licence was stated when they were sent; the sources file says so, and the owner is asked to confirm.
+- `library.wonosobo.p9.2` (review no. 339, now `redo`): the whole fruits were close to carica, but the cut fruit had thick orange flesh and a few big black seeds, like papaya; carica has thin cream flesh and a white, juicy pulp with many small dark seeds. It was also painted, not 3D. Task `R-15`, prompt in document 39.
+- `R-02` (the carica of Cari Objek) now attaches two of the photos, and its prompt asks for five clear ribs with rounded edges instead of shallow ribs.
+
+## Picture review: ChatGPT rows `R-01` to `R-10` checked, nine installed (16 November 2026, branch `nty/gracious-feynman-2yhoki`)
+
+- ChatGPT pushed `R-01` to `R-10` to branch `images-r01-r10`. A Claude session checked each against its prompt and checklist (document 39): sizes right; every word of the five test pictures read against *All text* and compared with the old picture.
+- **Passed and accepted by the owner:** `R-01` (one weakness noted: the lower third is bright and busy rather than calm and darker), `R-03` to `R-05`, `R-06` to `R-10` (`R-09` also accepted by the researcher).
+- **`R-02` failed:** smooth orange fruits without ribs, the same colour and finish as the papaya decoy `wnb-4-a05`, so a child cannot tell carica from papaya. Status `redo`; its prompt now attaches the carica photos.
+- **Installed:** the branch merged into this one (conflict in `TASKS.md` only, resolved by hand); the nine files moved with `git mv` from `ai-studio/chatgpt-images/out/` over their old files in `ai-studio/game-images/` (`data.json` unchanged); the five test pictures also written as the PNG masters in `docs/revisi-10-analitik/gambar/doc-34/` (same size as before); `REVIEW.md` rows 213, 302, 321, 341, 374, 382, 383, 384, 387 marked `keep`; contact sheets rebuilt. The research PDFs that show the test pictures were not rebuilt.
+- The carica photos: the researcher obtained the licence, with permission from the parties concerned (owner); the sources file says so.
+

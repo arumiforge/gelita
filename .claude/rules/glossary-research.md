@@ -29,6 +29,7 @@ Continues `glossary.md` (same columns, same rules). Add research, panel, and dat
 | cerita penghubung | `bridge story` | context `scenario_open`, route `/penghubung/{wilayah}` (`DialogueController::bridge`), recordings `layar-{wilayah}-NN`, catalogue `bg.cerita-layar-{wilayah}-NN`; once per student and study (`scenarioGate()`) |
 | narasi instruksi | `instruction narration` | context `challenge_instruction`, `challenge_nodes.audio_instruction_id`/`_en_id`, recordings `instruksi-{node}`; plays only through ▶ |
 | situasi (skenario) | `situation` | context `scenario_situation`, recordings `skenario-{item}`; picture slot `item.skenario.{item}` (`CatalogImporter::MOCKUP_DIRS`, catalogue `mockup/gambar-mockup/skenario/`) |
+| foto unggahan (Periksa Unggahan) | `post photo` | `post_scenes.media_asset_id`, slot `challenge.post.*` (1280 × 720, 16:9; since 16 Nov 2026, before that the catalogue importer skipped it); most posts point at their region's Susun Gambar picture instead |
 | rekaman petunjuk Periksa Unggahan | `post clue recording` | context `post_clue`, recordings `unggahan-{item}` |
 | skenario ditutup (kesempatan habis) | `scenario_failed` | server-only event, `EventCatalog::SERVER_ONLY` |
 | soal tampil (petunjuk atau skenario) | `item shown`, `item_shown` | client research event when a Cari Objek clue or a Skenario Digital scenario comes on screen, payload `round`, `via` (`start`, `next`, `jump`, `round2`), `t_ms`; the derived item time counts only while the item was shown (owner, 9 Nov 2026; 35 §19 no. 16) |
