@@ -67,6 +67,8 @@ class MediaStore
 
         if (in_array('audio', $allowedTypes, true)) {
             $mime = $this->detectMime($file->getTempName(), $mime);
+        } elseif ($this->typeForMime($mime) === null) {
+            $mime = $this->sniffImage($file->getTempName()) ?? $mime;
         }
 
         $type = $this->typeForMime($mime);
@@ -251,6 +253,11 @@ class MediaStore
      * video/mp4), jadi bila hasil finfo bukan audio, tanda tangan awal berkas
      * diperiksa: ID3 / sinkronisasi bingkai MPEG, OggS, RIFF…WAVE, dan ftyp
      * M4A. Ekstensi nama berkas tidak pernah dipercaya sendirian.
+     *
+     * Images get the same fallback: finfo on Windows (Laragon) reads a WebP
+     * written by GD as application/octet-stream, so when finfo names no known
+     * type the first bytes are checked for WebP, PNG, JPEG, and GIF.
+     * getimagesize() in inspect() still has to read the picture.
      */
     public function detectMime(string $path, ?string $reported = null): string
     {
@@ -264,7 +271,13 @@ class MediaStore
             return $mime;
         }
 
-        return $this->sniffAudio($path) ?? $mime;
+        $audio = $this->sniffAudio($path);
+
+        if ($audio !== null) {
+            return $audio;
+        }
+
+        return $this->typeForMime($mime) === null ? ($this->sniffImage($path) ?? $mime) : $mime;
     }
 
     /**
@@ -755,6 +768,21 @@ class MediaStore
             str_starts_with($head, 'RIFF') && substr($head, 8, 4) === 'WAVE'        => 'audio/wav',
             substr($head, 4, 4) === 'ftyp' && in_array(substr($head, 8, 4), ['M4A ', 'M4B '], true) => 'audio/mp4',
             default                                                                 => null,
+        };
+    }
+
+    /** Image type from the file's signature, for when finfo does not know it (see detectMime()). */
+    private function sniffImage(string $path): ?string
+    {
+        $head = is_file($path) ? (string) @file_get_contents($path, false, null, 0, 12) : '';
+
+        return match (true) {
+            strlen($head) < 12                                               => null,
+            str_starts_with($head, 'RIFF') && substr($head, 8, 4) === 'WEBP' => 'image/webp',
+            str_starts_with($head, "\x89PNG\r\n\x1A\n")                     => 'image/png',
+            str_starts_with($head, "\xFF\xD8\xFF")                           => 'image/jpeg',
+            str_starts_with($head, 'GIF87a'), str_starts_with($head, 'GIF89a') => 'image/gif',
+            default                                                          => null,
         };
     }
 
