@@ -75,7 +75,7 @@ Folders where other AI tools work for GELITA (`ai-studio/README.md`); Claude Cod
 
 ## Asset catalogue audit and picture review (owner, 15 November 2026)
 
-Owner request: `gelita-katalog/` was out of date; the pictures follow the game, not the other way round. Owner decisions of the session: delete what nothing reads; one source for pictures, in the AI folder; review every picture against the current game, story and research rules (also to prepare the expert validation); rebuild the catalogue page afterwards; ChatGPT makes whatever has to be redrawn for one consistent look. Branch `nty/laughing-ramanujan-l68r2v`, PR #372; decision log *Asset catalogue audit* (two sections).
+Owner request: `gelita-katalog/` was out of date; the pictures follow the game, not the other way round. Owner decisions of the session: delete what nothing reads; one source for pictures, in the AI folder; review every picture against the current game, story and research rules (also to prepare the expert validation); rebuild the catalogue page afterwards; ChatGPT makes whatever has to be redrawn for one consistent look. Done on branch `nty/laughing-ramanujan-l68r2v`, PR #372; decision log *Asset catalogue audit* (two sections) and *Picture review*. Verified there: full suite green after every step (1278 tests at the end); importer dry run on MariaDB before and after the removal of step 1. Not verified: an importer run on MariaDB since the move, the background swap and the new captions; a real install. The open items below continue on new branches cut from `main`.
 
 - [x] Audit: what the importer reads (582 pictures), what nothing reads (332 files, 105 MB), which game slots have no picture, where pictures were stored twice
 - [x] Dead material removed from `gelita-katalog/`; two documents moved to `docs/`
@@ -156,4 +156,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `nty/laughing-ramanujan-l68r2v` | Cloud session; asset catalogue audit, picture review, the owner's first marks, redo prompts (document 39), Pustaka captions, narration time in the derived layer | PR #372. Verified: importer dry run on MariaDB before and after the removal of step 1 (507 to install, 0 failed); full suite after the move, after the marks step (1277 tests) and after the narration fix (see the PR). Not verified: a real install; an importer run on MariaDB since the move, the swap and the new captions; the redo prompts in ChatGPT. Next: ChatGPT makes rows `R-01` to `R-10`; the owner marks the remaining rows; the interface is measured at Chromebook size |
