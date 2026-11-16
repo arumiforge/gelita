@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 15 November 2026, `R-12` sampai `R-22` ditambahkan 16 November 2026 · Lampiran `ai-studio/game-images/REVIEW.md` (telaah gambar oleh pengembang) · Status: `draf pengembang`, `asal: pengembang` (disusun AI atas permintaan pengembang)
+Per 15 November 2026, `R-12` sampai `R-26` ditambahkan 16 November 2026 · Lampiran `ai-studio/game-images/REVIEW.md` (telaah gambar oleh pengembang) · Status: `draf pengembang`, `asal: pengembang` (disusun AI atas permintaan pengembang)
 
 Pengembang menelaah semua gambar game pada 15 November 2026 dan menandai gambar yang harus dibuat ulang. Dokumen ini memuat prompt siap tempel ke ChatGPT (bahasa Inggris) untuk sepuluh gambar bertanda `redo`, ditambah satu gambar pasangan yang menunggu persetujuan pengembang. Gambar `redo later` menjadi baris baru setelah pengembang mengirim foto acuannya; yang pertama `R-12` (16 November 2026). Polanya sama dengan [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md) dan [38](38_PROMPT_PETA_LIMA_TANTANGAN_DAN_SKENARIO.md). Daftar kerjanya ada di `ai-studio/chatgpt-images/TASKS.md` (baris berkode `R-`).
 
@@ -34,6 +34,10 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 | `R-20` | Benda Cari Objek `challenge.item.tmg-4-03` (kuda kepang, target) | 263 | Sudah pipih dan tampak samping, tetapi berpelana kain berumbai dan berperut seperti kuda goyang; dibuat ulang bersama `R-21` supaya serupa. Foto dari peneliti |
 | `R-21` | Benda Cari Objek `challenge.item.mgl-4-a05` (kuda kepang, pengecoh) | 256 | Kepala kuda bulat bertongkat seperti mainan gaya Barat; kuda kepang berupa anyaman bambu pipih berbentuk kuda utuh, dicat, berbingkai rotan, tanpa tongkat. Foto dari peneliti |
 | `R-22` | Benda Cari Objek `challenge.item.mgl-4-a04` (kendil gerabah) | 255 | Teko tanah liat bercerat dan bergagang; bank soal dan cek fakta menyebut kendil, periuk bulat bermulut lebar bertutup, tanpa cerat dan tanpa gagang. Foto kendil dari pengembang |
+| `R-23` | Gambar Benar atau Salah Temanggung `challenge.item.tmg-3-b04` (arca Nandi di bilik Candi Pringapus) | — | Butir belum punya gambar (tampil gambar contoh); gambar lama `tmg-3-b03` arca Buddha dan `tmg-3-c03` kopi (247, 248) tidak dipakai butir mana pun dan dibuang. Foto dari peneliti |
+| `R-24` | Benda Cari Objek `challenge.item.wnb-4-a07` (mi ongklok, pengecoh) | 276 | Satu-satunya benda berlatar persegi; dibuat ulang sebagai potongan tanpa latar |
+| `R-25` | Tombol bahasa Inggris `public/assets/ui/round-lang-en.webp` | 62 | Bendera Inggris (salib merah); diganti Union Jack, bingkai tetap. Ikon 126 dan 127 dibuang |
+| `R-26` | Pelat instruksi Isi Rumpang `public/assets/ui/rumpang-instruction-plate.webp` (baru) | — | Pelat `kenal-plate-navy` teregang di pita 66 dp; pelat baru berhias hanya di kedua ujung |
 
 ## Aturan bersama
 
@@ -41,9 +45,10 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 
 Gambar di dokumen ini bukan bagian antarmuka. Gayanya mengikuti kelompoknya masing-masing:
 
-- **Gambar isi game** (`R-01` sampai `R-05`, `R-12` sampai `R-18`, `R-20` sampai `R-22`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
+- **Gambar isi game** (`R-01` sampai `R-05`, `R-12` sampai `R-18`, `R-20` sampai `R-24`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
 - **Avatar** (`R-19`): disunting, bukan digambar dari nol, seperti gambar tes: cincin medali dan cakramnya tetap, hanya lambang di tengah yang diganti, supaya kesepuluh avatar tetap satu keluarga sampai perombakan antarmuka mengganti cincin semuanya.
 - **Gambar tes** (`R-06` sampai `R-11`): gambar garis hitam-putih seperti 23 gambar tes lainnya. Gaya ini disengaja: instrumen tes tampil netral dan tidak memakai gaya game.
+- **Bagian antarmuka** (`R-25`, `R-26`): gaya *emas berukir* di atas. `R-25` disunting dari tombol yang ada, seperti gambar tes, supaya bingkainya sama dengan pasangannya.
 
 **Tulisan di gambar.** Gambar isi game tidak memuat tulisan, kecuali peta `R-14` (nama tempat, daftar tetap). Gambar tes justru memuat tulisan, dan setiap kata harus sama persis dengan `app/Database/Seeds/data/instrumen/tes.php`. Tulisan di gambar dibuat oleh model gambar, jadi setiap hasil dibaca ulang kata per kata dengan daftar di promptnya.
 
@@ -582,6 +587,76 @@ CONSTRAINTS
 No watermarks, signatures, text, numbers, logos, people, hands, food, fire, extra objects, cropped parts, blurry edges, neon colours, or fake checkerboard transparency. No painterly 2D, gouache or paper grain.
 ```
 
+### R-23 · Arca Nandi di bilik Candi Pringapus (gambar Benar atau Salah Temanggung)
+
+Ditambahkan 16 November 2026. Butir `tmg-3-b04` belum punya gambar sama sekali dan selama ini menampilkan gambar contoh. Bunyinya: "Gambar ini menunjukkan arca yang ada di dalam ruang Candi Pringapus." (kunci: **benar**). Jadi gambarnya harus memang arca lembu Nandi duduk di dalam bilik Candi Pringapus. Gambar lama `tmg-3-b03` (arca Buddha, telaah no. 247) sengaja salah untuk butir lama dan kini tidak dipakai butir mana pun; pengembang memutuskan gambar baru dibuat ChatGPT dalam gaya game dari foto peneliti, dan no. 247 serta 248 dibuang (16 November 2026). Foto peneliti sudah dipasang sebagai gambar Pustaka `library.temanggung.p5.3`, jadi gambar butir ini dibuat sendiri, bukan foto yang sama. Benda Cari Objek no. 265 (Arca Nandi, `tmg-4-06`, tantangan keempat wilayah yang sama) berupa Nandi berhias kalung tebal menghadap kanan tanpa latar; gambar ini harus jelas lain: di dalam bilik, menghadap kiri, sederhana seperti aslinya.
+
+| | |
+|---|---|
+| Kode berkas | `challenge.item.tmg-3-b04` → simpan sebagai `challenge.item.tmg-3-b04.webp` |
+| Kanvas | 480 × 360 (4:3), tanpa latar transparan, sama dengan gambar Benar atau Salah lain |
+| Lampiran | Foto peneliti `ai-studio/chatgpt-images/inbox/reference-Pringapus-researcher-Nandi-in-chamber-01.jpg` (bentuk arca, alas, dinding bilik), `ai-studio/chatgpt-images/inbox/reference-Pringapus-researcher-Nandi-close-carved-collar-03.jpg` (kalung berukir tipis, kepala), `ai-studio/chatgpt-images/inbox/reference-Pringapus-researcher-Nandi-through-doorway-sign-02.webp` (cahaya dari pintu); gaya `ai-studio/game-images/assets/tantangan/challenge.item.tmg-3-a03.webp` (gambar Benar atau Salah Temanggung yang sudah ada); pembeda `ai-studio/game-images/assets/tantangan/challenge.item.tmg-4-06.webp` (benda Cari Objek, jangan disamakan) |
+| Butir | `tmg-3-b04` (kartu Benar atau Salah, kunci benar). Kartu memotong gambar: subjek di pita tengah mendatar |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: challenge.item.tmg-3-b04  (R-23 · the Nandi statue inside the chamber of Candi Pringapus, true/false card picture)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Match the render finish and light of the attached true/false card picture so that the cards of this challenge look like one set.
+The attached photos of the researcher are the factual reference for the statue and its chamber: follow them, render them in the GELITA finish, and do not copy a photo. Leave out the small name sign on the floor in front of the statue. The attached Nandi cut-out is a different picture of the game: do NOT copy its pose, ornaments or direction.
+
+SUBJECT AND COMPOSITION
+The ancient stone statue of Nandi, the sacred bull, lying down inside the small stone chamber of Candi Pringapus, a 9th-century Hindu temple in Temanggung, Central Java. Three-quarter view from the front left at the height of a standing child; the statue faces LEFT.
+THE STATUE:
+- Grey volcanic andesite, weathered and slightly rough, with darker patches; matte stone, never shiny or gilded.
+- The bull lies with its legs folded under the body: the front legs bent forward, the rear leg tucked beside the belly, the tail curling over the haunch.
+- A large rounded hump behind the neck; short horns with one broken; a long calm face.
+- Only a thin, simply carved collar around the neck; no heavy necklaces, bells or saddle cloth.
+- It rests on a low, plain rectangular stone pedestal with straight edges.
+THE CHAMBER:
+- Walls of large fitted grey stone blocks, a plain stone-paved floor; small and narrow, the statue fills most of the space.
+- Soft daylight comes in from a doorway out of frame on the left and falls across the statue; the corners stay in gentle shadow.
+- Nothing else: no offerings, flowers, people, lamps, columns or other statues.
+Keep the statue and its pedestal inside the middle horizontal band; the card crops the top and bottom edges.
+
+DELIVERY
+Generate at 1440 × 1080 and scale down proportionally to exactly 480 × 360 pixels; aspect 4:3. Opaque background (the chamber), no transparency. Deliver WebP, named challenge.item.tmg-3-b04.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, signs, numbers, logos, people, hands, extra statues, cropped head or horns, blurry edges, neon colours, or fake checkerboard. No painterly 2D, gouache or paper grain. Nothing that marks the picture as the answer.
+```
+
+### R-24 · Semangkuk mi ongklok (benda Cari Objek Wonosobo, pengecoh)
+
+Ditambahkan 16 November 2026. Telaah no. 276: satu-satunya dari 30 benda Cari Objek yang berlatar persegi (kain batik dan nampan bambu, mangkuk terpotong di tepi, tampak atas dengan sate), sedangkan 29 benda lain potongan tanpa latar. Di adegan ia menonjol dan bisa dikira penanda jawaban. Pengembang memutuskan dibuat ulang sebagai potongan tanpa latar (16 November 2026). Benda ini **pengecoh** di Cari Objek Wonosobo babak 1.
+
+| | |
+|---|---|
+| Kode berkas | `challenge.item.wnb-4-a07` → simpan sebagai `challenge.item.wnb-4-a07.webp` |
+| Kanvas | 240 × 240, latar transparan (buat pada 1024 × 1024, lalu perkecil) |
+| Lampiran | Gambar lama `ai-studio/game-images/assets/tantangan/challenge.item.wnb-4-a07.webp` (isi mangkuk: mi, kuah kental cokelat, kol, kucai, bawang goreng); untuk hasil akhir yang sama `ai-studio/game-images/assets/tantangan/challenge.item.wnb-4-a06.webp` (nampan bambu tanpa latar) |
+| Butir | Benda pengecoh Cari Objek Wonosobo babak 1 ("Semangkuk mi ongklok") |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: challenge.item.wnb-4-a07  (R-24 · a bowl of mi ongklok, hidden-object cut-out)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Match the render finish, lighting, viewing angle and outline quality of the attached bamboo tray cut-out exactly, so that the objects of this scene look like parts of one set. The attached old picture shows what is in the bowl; keep its food, but NOT its top-down crop, its satay, its cloth or its tray.
+
+SUBJECT AND COMPOSITION
+One isolated object on a transparent background: one whole bowl of mi ongklok, the noodle dish of Wonosobo, seen from the front and a little above (about 30 degrees), the whole round bowl visible.
+- A white ceramic bowl with a simple blue band at the rim.
+- Inside: yellow noodles with pale green cabbage pieces and chopped chives (kucai), covered with a thick, glossy, brown starchy sauce; a little fried shallot on top.
+- Nothing beside the bowl: no satay, no spoon, no chopsticks, no plate, no cloth, no tray.
+Hidden-object rule — identical lighting and quality for targets and decoys: no glow, no sparkle, no outline, no steam, no label, no arrow, nothing that marks this object.
+
+DELIVERY
+Generate at 1024 × 1024 and scale down proportionally to exactly 240 × 240 pixels; aspect 1:1. The whole bowl inside the canvas with a small even margin. Genuine transparent background outside the subject; preserve alpha; no cast shadow on a ground. Deliver WebP, named challenge.item.wnb-4-a07.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, numbers, logos, people, hands, extra objects, cropped parts, blurry edges, neon colours, or fake checkerboard transparency. No painterly 2D, gouache or paper grain.
+```
+
 ## Gambar tes
 
 Lampirkan gambar tes yang sekarang dari `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/` dan minta gambar yang sama dengan perubahan yang disebut saja. Setelah itu baca setiap kata di hasilnya dan cocokkan dengan daftar *All text* di prompt.
@@ -754,6 +829,46 @@ All text in the finished picture, to be checked word by word:
 No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels as WebP, named instr.tes-bd-B-G2.webp.
 ```
 
+## Bagian antarmuka
+
+Dua bagian antarmuka dipesan lebih dulu, sebelum perombakan antarmuka (pengembang, 16 November 2026). Gayanya *emas berukir* (lihat *Aturan bersama*), bukan blok gambar isi game. Bagian antarmuka lain menunggu pengukuran di Chromebook dan menjadi baris `U-…`.
+
+### R-25 · Tombol bahasa Inggris `round-lang-en` (bendera Union Jack)
+
+Ditambahkan 16 November 2026. Telaah no. 62: tombol bundar bahasa Inggris memuat bendera Inggris (salib merah di atas putih), padahal teks slot `ui.lang.en` meminta Union Jack, dan ikon no. 126 sudah Union Jack. Tombol bundar inilah yang tampil di game (`hud-menu.php`), jadi no. 126 dan 127 tidak pernah terlihat. Pengembang memutuskan: tombol dibuat ulang dengan Union Jack, no. 126 dan 127 dibuang (16 November 2026). Disunting dari tombol yang ada, bukan digambar dari nol: bingkai emasnya harus sama persis dengan pasangannya `round-lang-id`.
+
+| | |
+|---|---|
+| Berkas | `public/assets/ui/round-lang-en.webp` → simpan sebagai `round-lang-en.webp` |
+| Kanvas | 256 × 256, latar transparan, sama dengan `round-lang-id.webp` |
+| Lampiran | `public/assets/ui/round-lang-en.webp` (yang disunting), `public/assets/ui/round-lang-id.webp` (pasangannya: bingkai, kain, cahaya) |
+
+```text
+Edit the attached round button "round-lang-en.webp". Keep its carved gold ring exactly as it is: same size, same ornaments, same position, same light from the upper left. Replace ONLY the flag inside the ring.
+New flag: the Union Jack of the United Kingdom, correct proportions and colours (navy blue field, white saltire, red saltire offset as on the real flag, white-bordered red cross), as softly waving fabric with the same cloth folds, sheen and inner shadow as the red-and-white flag in the attached "round-lang-id.webp".
+The two buttons must look like one pair: same ring, same fabric, same brightness.
+Output: 256 × 256 pixels, genuine transparent background outside the ring, preserve alpha. WebP, named round-lang-en.webp.
+No text, letters, extra symbols, glow, outline or shadow on a ground. Not the flag of England (a single red cross on white).
+```
+
+### R-26 · Pelat instruksi Isi Rumpang yang tenang `rumpang-instruction-plate`
+
+Ditambahkan 16 November 2026. Kartu instruksi Isi Rumpang memakai kulit `ui/kenal-plate-navy.webp` (459 × 131), yang digambar untuk pelat tipis satu baris. Sejak pita instruksi dibuat 66 dp pada 15 November 2026 (catatan implementasi), pelat itu teregang, dan hiasan emasnya jatuh di bawah tanda ⓘ dan kata terakhir baris pertama. Pengembang memesan pelat baru sekarang, tidak menunggu perombakan (16 November 2026). Pelat ini berkas baru; `kenal-plate-navy.webp` tetap dipakai Kenali dan tombol kembali. Hiasannya hanya di kedua ujung, bagian tengahnya polos, supaya pelat bisa dipasang dengan ujung tetap dan bagian tengah memanjang tanpa ada hiasan yang teregang.
+
+| | |
+|---|---|
+| Berkas | baru: `public/assets/ui/rumpang-instruction-plate.webp` |
+| Kanvas | 1600 × 132, latar transparan (dua kali ukuran pita 66 dp) |
+| Lampiran | `public/assets/ui/kenal-plate-navy.webp` (pelat sekarang: warna, bingkai, bidang biru tua), `public/assets/ui/round-lang-id.webp` (emas berukir acuan) |
+
+```text
+A long, calm, horizontal interface plate for a children's game, in the carved-gold style of the attached pieces: a dark navy stone panel with a very faint cloud pattern, framed by a thin raised gold border, one light from the upper left, rendered as a 3D object.
+Canvas exactly 1600 × 132 pixels, transparent outside the plate. The plate fills the canvas with an even 4-pixel margin.
+ORNAMENTS ONLY AT THE TWO ENDS: each end carries a small carved gold ornament (a pointed cap with a curl, in the family of the attached plate's end caps) inside the first and last 120 pixels. Between them, from x = 120 to x = 1480, the panel is completely plain: the same thin gold border along the top and bottom edges and the same flat navy surface, with no ornament, no gem, no highlight spot, no gradient that changes along the length, so that this middle part can be stretched horizontally without any visible distortion.
+The navy surface is darker and calmer than the attached plate, so light cream text of two lines reads clearly on it.
+No glow line, no bright rim light, no text, letters, icons or symbols. WebP, named rumpang-instruction-plate.webp.
+```
+
 ## Daftar periksa hasil
 
 **Gambar isi game (`R-01` sampai `R-05`, `R-12` sampai `R-22`)**
@@ -783,8 +898,11 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 
 ## Pemasangan
 
-- `R-01` sampai `R-05`, `R-12`, `R-14` sampai `R-22`: berkas dari `ai-studio/chatgpt-images/out/` **dipindahkan** (bukan disalin) ke tempat berkas lamanya di `ai-studio/game-images/assets/` dan menggantikannya; entri `data.json` tidak berubah. Lalu `php spark gelita:katalog:impor`. `R-13` adalah gambar baru: berkasnya dipindahkan ke `ai-studio/game-images/assets/tantangan/challenge.post.tmg-4-b.webp`, lalu entri baru `challenge.post.tmg-4-b` ditambahkan ke `data.json` (contoh: entri `challenge.item.tmg-1-h01`) dan satu baris ke `REVIEW.md`. `R-16`: entri `library.temanggung.p5.1` di `data.json` mendapat `caption` "Situs Liyangan di lereng Gunung Sindoro" / "The Liyangan Site on the slopes of Mount Sindoro". `R-14`: entri `library.wonosobo.p2.2` di `data.json` mendapat `caption` baru "Peta kawasan Dataran Tinggi Dieng" / "Map of the Dieng Plateau area".
+- `R-01` sampai `R-05`, `R-12`, `R-14` sampai `R-22`, `R-24`: berkas dari `ai-studio/chatgpt-images/out/` **dipindahkan** (bukan disalin) ke tempat berkas lamanya di `ai-studio/game-images/assets/` dan menggantikannya; entri `data.json` tidak berubah. Lalu `php spark gelita:katalog:impor`. `R-13` adalah gambar baru: berkasnya dipindahkan ke `ai-studio/game-images/assets/tantangan/challenge.post.tmg-4-b.webp`, lalu entri baru `challenge.post.tmg-4-b` ditambahkan ke `data.json` (contoh: entri `challenge.item.tmg-1-h01`) dan satu baris ke `REVIEW.md`. `R-16`: entri `library.temanggung.p5.1` di `data.json` mendapat `caption` "Situs Liyangan di lereng Gunung Sindoro" / "The Liyangan Site on the slopes of Mount Sindoro". `R-14`: entri `library.wonosobo.p2.2` di `data.json` mendapat `caption` baru "Peta kawasan Dataran Tinggi Dieng" / "Map of the Dieng Plateau area".
 - `R-06` sampai `R-11`: berkas dipindahkan ke `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/`. Berkas PNG induk di `docs/revisi-10-analitik/gambar/doc-34/` diganti dengan hasil yang sama, supaya induk dan gambar terpasang tidak berbeda.
+- `R-23` adalah gambar baru untuk slot yang sudah ada di bank: berkasnya dipindahkan ke `ai-studio/game-images/assets/tantangan/challenge.item.tmg-3-b04.webp`, entri baru `challenge.item.tmg-3-b04` ditambahkan ke `data.json` (contoh: entri `challenge.item.tmg-3-a03`) dan satu baris ke `REVIEW.md`. Entri dan berkas `challenge.item.tmg-3-b03` dan `tmg-3-c03` dihapus.
+- `R-25` menggantikan `public/assets/ui/round-lang-en.webp` di tempatnya (URL-nya berversi lewat `asset_url_versioned()`). Entri `icon.language-en` dan `icon.language-id` beserta berkasnya dihapus dari `data.json` bila tidak ada kode yang membacanya lagi.
+- `R-26` berkas baru `public/assets/ui/rumpang-instruction-plate.webp`; CSS kartu instruksi Isi Rumpang memakainya sebagai `border-image` dengan kedua ujung tetap (120 px dari 1600) dan tengah memanjang, diukur di Chromebook (1366 × 768).
 - Setelah dipasang, lembar telaah dibangun ulang (`node ai-studio/game-images/review/build-sheets.mjs`) dan baris `REVIEW.md` diberi tanda baru oleh pengembang.
 
 ## Kebijakan perubahan

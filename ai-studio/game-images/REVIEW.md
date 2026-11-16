@@ -297,7 +297,7 @@ These pictures were never in the picture list. They are the look the owner wants
 | 59 | [`round-eye`](../../public/assets/ui/round-eye.webp) | Round gold button: eye | Ships with the game in `public/assets/ui/`; never in the picture list |  |  |
 | 60 | [`round-help`](../../public/assets/ui/round-help.webp) | Round gold button: help | Ships with the game in `public/assets/ui/`; never in the picture list |  |  |
 | 61 | [`round-info`](../../public/assets/ui/round-info.webp) | Round gold button: info | Ships with the game in `public/assets/ui/`; never in the picture list |  |  |
-| 62 | [`round-lang-en`](../../public/assets/ui/round-lang-en.webp) | Round gold button: lang-en | Ships with the game in `public/assets/ui/`; never in the picture list |  |  |
+| 62 | [`round-lang-en`](../../public/assets/ui/round-lang-en.webp) | Round gold button: lang-en | Ships with the game in `public/assets/ui/`; never in the picture list | `redo: Union Jack, not the flag of England; ring unchanged` | Owner, 16 Nov 2026: task `R-25`. |
 | 63 | [`round-lang-id`](../../public/assets/ui/round-lang-id.webp) | Round gold button: lang-id | Ships with the game in `public/assets/ui/`; never in the picture list |  |  |
 | 64 | [`round-loading`](../../public/assets/ui/round-loading.webp) | Round gold button: loading | Ships with the game in `public/assets/ui/`; never in the picture list |  |  |
 | 65 | [`round-lock`](../../public/assets/ui/round-lock.webp) | Round gold button: lock | Ships with the game in `public/assets/ui/`; never in the picture list |  |  |
@@ -330,7 +330,7 @@ These are what `php spark gelita:katalog:impor` installs.
 |---|---|---|---|---|---|
 | 82 | [`reward.badge.magelang`](assets/lencana/reward.badge.magelang.webp) | Lencana Magelang | Lencana wilayah Magelang (Profil siswa, sesudah wilayah tuntas) |  |  |
 | 83 | [`reward.badge.temanggung`](assets/lencana/reward.badge.temanggung.webp) | Lencana Temanggung | Lencana wilayah Temanggung (Profil siswa, sesudah wilayah tuntas) |  |  |
-| 84 | [`reward.badge.wonosobo`](assets/lencana/reward.badge.wonosobo.webp) | Lencana Wonosobo | Lencana wilayah Wonosobo (Profil siswa, sesudah wilayah tuntas) |  |  |
+| 84 | [`reward.badge.wonosobo`](assets/lencana/reward.badge.wonosobo.webp) | Lencana Wonosobo | Lencana wilayah Wonosobo (Profil siswa, sesudah wilayah tuntas) | `redo: Candi Arjuna-style temple (as on pin 103) instead of the split gate` | Owner, 16 Nov 2026: drawn with the other badges in the interface overhaul, no task row yet. |
 | 85 | [`ui.btn-start`](assets/antarmuka/ui.btn-start.webp) | Tombol MULAI | Tombol MULAI bergambar (bahasa Indonesia) (Halaman awal, tombol utama (bahasa Indonesia)) |  |  |
 | 86 | [`ui.btn-start.en`](assets/antarmuka/ui.btn-start.en.webp) | Tombol START | Tombol START bergambar (bahasa Inggris) (Halaman awal saat bahasa permainan diganti ke bahasa itu) |  |  |
 | 87 | [`ui.logo`](assets/logo/ui.logo.webp) | Emblem panel tanpa tulisan | Emblem logo (tanpa tulisan) (Pita atas layar akun (di tengah, di samping tombol Kembali); Pita atas langkah daftar) |  |  |
@@ -386,8 +386,8 @@ These are what `php spark gelita:katalog:impor` installs.
 | 123 | [`avatar.9`](assets/ikon/avatar.9.webp) | Avatar kendang | Avatar 9 (Pilihan avatar di pendaftaran; Profil (Ganti avatar)) |  |  |
 | 124 | [`ui.lantern`](assets/ikon/ui.lantern.webp) | ui.lantern | Lentera (HUD dan tirai peta) (HUD (lentera serpihan); Tirai "Membuka Peta Kedu") |  |  |
 | 125 | [`ui.pin`](assets/ikon/ui.pin.webp) | ui.pin | Pin wilayah (semua kota) (Peta Kedu) |  |  |
-| 126 | [`icon.language-en`](assets/ikon/icon.language-en.webp) | English — bendera UK | Ikon bahasa Inggris (EN) (Pita atas semua layar, pemilih bahasa di kanan atas; Pita atas layar akun) · slot `ui.lang.en` |  |  |
-| 127 | [`icon.language-id`](assets/ikon/icon.language-id.webp) | Bahasa Indonesia — bendera merah putih | Ikon bahasa Indonesia (ID) (Pita atas semua layar, pemilih bahasa di kanan atas; Pita atas layar akun) · slot `ui.lang.id` |  |  |
+| 126 | [`icon.language-en`](assets/ikon/icon.language-en.webp) | English — bendera UK | Ikon bahasa Inggris (EN) (Pita atas semua layar, pemilih bahasa di kanan atas; Pita atas layar akun) · slot `ui.lang.en` | `drop: never shown; the round button 62 is the language button` | Owner, 16 Nov 2026 (with `R-25`). |
+| 127 | [`icon.language-id`](assets/ikon/icon.language-id.webp) | Bahasa Indonesia — bendera merah putih | Ikon bahasa Indonesia (ID) (Pita atas semua layar, pemilih bahasa di kanan atas; Pita atas layar akun) · slot `ui.lang.id` | `drop: never shown; the round button 63 is the language button` | Owner, 16 Nov 2026 (with `R-25`). |
 | 128 | [`ui.jaka-avatar`](mockup/gambar-mockup/kenali/aset/ui.jaka-avatar.webp) | Jaka's avatar in a gold ring (owner, 19 October 2026) | Avatar Jaka (potret cerita Peta Kedu dan layar Kenali) (Pita cerita Jaka di bawah Peta Kedu; Layar Mengenal wilayah, baris yang diucapkan Jaka) |  |  |
 
 ### Sheets 07 and 08: Vector icons (removed)
@@ -489,8 +489,8 @@ Rows 129 to 178, the 50 vector icons `icon.*.svg`. Owner, 15 November 2026: `dro
 | No | Picture | Shows | Used in the game | Status | Notes |
 |---|---|---|---|---|---|
 | 246 | [`challenge.item.tmg-3-a03`](assets/tantangan/challenge.item.tmg-3-a03.webp) | Butir padi hangus | Gambar pernyataan Benar atau Salah Temanggung (Tantangan Benar atau Salah Temanggung) |  |  |
-| 247 | [`challenge.item.tmg-3-b03`](assets/tantangan/challenge.item.tmg-3-b03.webp) | Arca Buddha duduk | Gambar pernyataan Benar atau Salah Temanggung (Tantangan Benar atau Salah Temanggung) |  | Fact: no item of the current question bank uses this code |
-| 248 | [`challenge.item.tmg-3-c03`](assets/tantangan/challenge.item.tmg-3-c03.webp) | Biji kopi sangrai | Gambar pernyataan Benar atau Salah Temanggung (Tantangan Benar atau Salah Temanggung) |  | Fact: no item of the current question bank uses this code |
+| 247 | [`challenge.item.tmg-3-b03`](assets/tantangan/challenge.item.tmg-3-b03.webp) | Arca Buddha duduk | Gambar pernyataan Benar atau Salah Temanggung (Tantangan Benar atau Salah Temanggung) | `drop: no item uses it` | Fact: no item of the current question bank uses this code Owner, 16 Nov 2026. Item `tmg-3-b04` gets its own picture, task `R-23`. |
+| 248 | [`challenge.item.tmg-3-c03`](assets/tantangan/challenge.item.tmg-3-c03.webp) | Biji kopi sangrai | Gambar pernyataan Benar atau Salah Temanggung (Tantangan Benar atau Salah Temanggung) | `drop: no item uses it` | Fact: no item of the current question bank uses this code Owner, 16 Nov 2026. |
 | 249 | [`challenge.mgl-4.scene`](assets/tantangan/challenge.mgl-4.scene.webp) | Galeri Budaya Magelang | Adegan Cari Objek Magelang (Tantangan Cari Objek Magelang) |  |  |
 | 250 | [`challenge.tmg-4.scene`](assets/tantangan/challenge.tmg-4.scene.webp) | Pasar Budaya Temanggung | Adegan Cari Objek Temanggung (Tantangan Cari Objek Temanggung) |  |  |
 | 251 | [`challenge.wnb-4.scene`](assets/tantangan/challenge.wnb-4.scene.webp) | Pasar Oleh-oleh Dieng | Adegan Cari Objek Wonosobo (Tantangan Cari Objek Wonosobo) |  |  |
@@ -526,7 +526,7 @@ Rows 129 to 178, the 50 vector icons `icon.*.svg`. Owner, 15 November 2026: `dro
 | 273 | [`challenge.item.wnb-4-a04`](assets/tantangan/challenge.item.wnb-4-a04.webp) | Daun teh | Benda Cari Objek Wonosobo (Tantangan Cari Objek Wonosobo) |  |  |
 | 274 | [`challenge.item.wnb-4-a05`](assets/tantangan/challenge.item.wnb-4-a05.webp) | Pepaya biasa | Benda Cari Objek Wonosobo (Tantangan Cari Objek Wonosobo) |  |  |
 | 275 | [`challenge.item.wnb-4-a06`](assets/tantangan/challenge.item.wnb-4-a06.webp) | Rigen | Benda Cari Objek Wonosobo (Tantangan Cari Objek Wonosobo) |  |  |
-| 276 | [`challenge.item.wnb-4-a07`](assets/tantangan/challenge.item.wnb-4-a07.webp) | Semangkuk mi ongklok | Benda Cari Objek Wonosobo (Tantangan Cari Objek Wonosobo) |  |  |
+| 276 | [`challenge.item.wnb-4-a07`](assets/tantangan/challenge.item.wnb-4-a07.webp) | Semangkuk mi ongklok | Benda Cari Objek Wonosobo (Tantangan Cari Objek Wonosobo) | `redo: a cut-out without background, like the other 29 objects` | Owner, 16 Nov 2026: task `R-24`. |
 | 277 | [`challenge.item.wnb-4-a08`](assets/tantangan/challenge.item.wnb-4-a08.webp) | Angklung | Benda Cari Objek Wonosobo (Tantangan Cari Objek Wonosobo) |  |  |
 | 278 | [`challenge.item.wnb-4-a09`](assets/tantangan/challenge.item.wnb-4-a09.webp) | Sasando | Benda Cari Objek Wonosobo (Tantangan Cari Objek Wonosobo) |  |  |
 | 279 | [`challenge.item.wnb-4-a10`](assets/tantangan/challenge.item.wnb-4-a10.webp) | Biji kopi | Benda Cari Objek Wonosobo (Tantangan Cari Objek Wonosobo) |  |  |

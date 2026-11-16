@@ -838,3 +838,25 @@ A session looked at all 21 review sheets and wrote its questions into `ai-studio
 - **Kendil photos.** The owner then sent two kendil photos (chat pictures only, sent mid-step): a round, deep reddish-brown pot with a domed clay lid and knob, one with two small lugs. The `R-22` prompt now follows them (lid with knob; burnished but not shiny; no spout or long handle; unlike the metal-pot decoy by its round belly and matte clay), and the row is `blocked: waiting for the kendil photos as files` until they can be attached.
 - **Kendil photo files.** The two kendil photos then arrived as files: saved unchanged as `inbox/reference-kendil-researcher-*-01`, `-02` with their SHA-256, attached to `R-22` (form, lid, colour), and the row set to `todo`.
 - **Women kuda kepang dancers.** The owner sent five photos of women kuda kepang dancers from Magelang and Temanggung as files, saved as `inbox/reference-Kuda-Lumping-researcher-women-*-10` to `-14`. No. 10 (black-and-gold horses with horsehair, a photographer's watermark) is now attached to `R-21` and no. 14 (a white horse painted red and yellow) to `R-20`, each the nearest match to that row's paint; the others are references. No Pustaka picture changed.
+
+## Owner interview: sound in research mode, child's copy, retention default, narration play counts, picture orders `R-23` to `R-26` (16 November 2026, branch `aru/dazzling-allen-p8hn5z`)
+
+The owner asked for the remaining revision 10 work (excluding the pictures ChatGPT is making) and then answered three interview rounds of four questions each. Recorded in `04` the same day (Indonesian, with the full list); this section is the developer-facing summary.
+
+**Decisions (owner):**
+
+1. Music and sound effects are never logged and never part of the research analysis. Music gets its own switch, separate from narration, **off by default** in every mode. Narration logging stays as in `11` (Analitik 7).
+2. The `correct`/`wrong` effects are silent while the study switch `field_mode` is on; unchanged outside research mode.
+3. Lewati and Otomatis stay during the study; Lewati writes a narration `skip` row (proposed for `kamus-1.2`).
+4. Sound check: at the start of every research-mode game session a short screen plays one sound and asks "Kamu mendengar suara ini?"; the answer is logged (proposed for `kamus-1.2`).
+5. A resumed narration writes a new action `resume`; plays = `play` + `replay` + `resume` (proposed for `kamus-1.2`). Closes finding (b) of the 32 §15.3 manual check.
+6. Child's copy (`ParticipantCopyService`): Indonesian headers on the `risiko` sheet and a PDF sentence that follows the real data; **no** `risk_reconsent` field. Closes finding (a) of the 30 §19.3 manual check except the re-consent part.
+7. Ticking research mode on any study's form fills 7305 retention days when the current value is lower (30 §11). Closes finding (c).
+8. Picture review: 62 → `R-25` (Union Jack, edited from the current button), 126 and 127 dropped; 84 redone with a Candi Arjuna-style temple inside the interface overhaul (no task row yet); 276 → `R-24` (cut-out); item `tmg-3-b04` → `R-23` (3D Nandi in its chamber from the researcher's photos), 247 and 248 dropped; calm Isi Rumpang plate ordered now → `R-26`. The remaining unmarked rows: the AI proposes marks per sheet, the owner confirms.
+
+**Done in this step:** prompts `R-23` to `R-26` in document 39 (new section *Bagian antarmuka* for the two interface parts, install steps under *Pemasangan*), four `TASKS.md` rows (`todo`), seven `REVIEW.md` marks (62, 84, 126, 127, 247, 248, 276), the `04` entry, `docs/PROGRESS.md`.
+
+**Design notes for the later code step.** `R-26` is drawn as a 1600 × 132 plate whose middle 1360 px is plain, so the CSS can use it as a `border-image` with fixed 120 px caps and a stretched middle without stretching any ornament (owner direction 2 of *Picture review*). The `tmg-3-b04` slot already exists in the bank; only a `data.json` entry is missing. Dropping 126/127 needs a check that no fallback still reads `ui.lang.*`.
+
+**Not done (code, open in `docs/PROGRESS.md`):** decisions 1 to 7. Nothing in the application changed in this step, so no test was run.
+
