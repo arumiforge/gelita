@@ -133,5 +133,9 @@ if (document.querySelector('[data-export-id]')) {
 if (document.querySelector('[data-monitoring]')) {
   import('./admin/monitoring.js').then((m) => m.initMonitoring());
 }
+// Seat plan on the L2 seats page, redrawn while rows and seats are typed
+if (document.querySelector('[data-seat-plan]')) {
+  import('./admin/seat-plan.js').then((m) => m.initSeatPlan());
+}
 
 document.body.dataset.ready = 'id';

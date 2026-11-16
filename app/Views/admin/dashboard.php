@@ -13,6 +13,7 @@
  * @var array<string, mixed>|null  $readiness   ResearchReadiness::check() (admin)
  * @var list<array<string, mixed>> $retentionAlerts
  * @var bool                       $research    the caller sees coded research data
+ * @var list<array<string, mixed>>|null $fieldDay today's field sessions (peneliti, ketua; null outside field mode)
  */
 ?>
 <?= $this->extend('layouts/admin') ?>
@@ -25,6 +26,66 @@
         : 'Hitungan yang sudah tercatat di semua sekolah, kesiapan konten, dan peringatan sistem.',
 ]) ?>
 <?= $this->include('partials/flash') ?>
+
+<?php // A visit day first: today's field sessions, codes and tokens only (peneliti, ketua; 28 §12) ?>
+<?php if (($fieldDay ?? null) !== null): ?>
+  <section class="field-day" aria-labelledby="field-day-title">
+    <div class="field-day-head">
+      <div>
+        <h2 class="panel-title" id="field-day-title"><?= icon('clock') ?> <?= esc(lang('Admin.fieldDayTitle')) ?></h2>
+        <p class="muted"><?= esc(lang('Admin.fieldDayLead')) ?></p>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="<?= base_url('admin/pemantauan') ?>"><?= icon('eye') ?> <?= esc(lang('Admin.menuMonitoring')) ?></a>
+        <a class="btn" href="<?= base_url('admin/sesi-lapangan/baru') ?>"><?= icon('plus') ?> <?= esc(lang('Admin.fieldSessionNew')) ?></a>
+      </div>
+    </div>
+
+    <?php if ($fieldDay === []): ?>
+      <p class="panel empty-note"><?= esc(lang('Admin.fieldDayNone')) ?></p>
+    <?php endif ?>
+
+    <div class="field-day-grid">
+      <?php foreach ($fieldDay as $row): ?>
+        <?php
+          $alerts = ['not_entered' => 'monitoringNotEntered', 'dropped' => 'monitoringDropped', 'no_seat' => 'monitoringNoSeat', 'small_screen' => 'monitoringSmallScreen'];
+          $raised = array_filter(array_keys($alerts), static fn (string $k): bool => (int) $row[$k] > 0);
+          $date   = substr($row['opens_at'], 0, 10);
+        ?>
+        <article class="panel field-day-card" data-field-day="<?= (int) $row['id'] ?>">
+          <header class="field-day-card-head">
+            <a class="mono field-day-code" href="<?= base_url('admin/sesi-lapangan/' . (int) $row['id']) ?>"><?= esc($row['code']) ?></a>
+            <span class="badge<?= $row['state'] === 'open' ? ' is-ok' : ($row['state'] === 'pending' ? ' is-warn' : '') ?>"><?= esc(lang('Admin.fieldSessionState_' . $row['state'])) ?></span>
+            <span class="mono muted"><?= esc(substr($row['opens_at'], 11, 5)) ?>–<?= esc(substr($row['closes_at'], 11, 5)) ?><?= $date !== date('Y-m-d') ? ' · ' . esc(lang('Admin.fieldDayOtherDate', [fmt_date($date)])) : '' ?></span>
+          </header>
+          <div class="field-day-figures">
+            <div>
+              <p class="token-hero-label"><?= esc(lang('Admin.fieldSessionToken')) ?></p>
+              <p class="field-day-token mono"><?= esc($row['token'] ?? '—') ?></p>
+            </div>
+            <div>
+              <p class="token-hero-label"><?= esc(lang('Admin.fieldDayRoster')) ?></p>
+              <p class="field-day-count"><b><?= esc(fmt_num((int) $row['entered'], 0, 'id')) ?></b> / <?= esc(fmt_num((int) $row['roster_count'], 0, 'id')) ?></p>
+            </div>
+          </div>
+          <?php if ($raised === []): ?>
+            <p class="field-day-clear"><?= icon('check') ?> <?= esc(lang('Admin.fieldDayAllClear')) ?></p>
+          <?php else: ?>
+            <ul class="field-day-alerts" aria-label="<?= esc(lang('Admin.attentionTitle'), 'attr') ?>">
+              <?php foreach ($raised as $key): ?>
+                <li><span><?= esc(lang('Admin.' . $alerts[$key])) ?></span> <b><?= esc(fmt_num((int) $row[$key], 0, 'id')) ?></b></li>
+              <?php endforeach ?>
+            </ul>
+          <?php endif ?>
+          <div class="btn-row">
+            <a class="btn btn-sm" href="<?= base_url('admin/sesi-lapangan/' . (int) $row['id']) ?>"><?= esc(lang('Admin.fieldDayOpenSession')) ?> <?= icon('right') ?></a>
+            <a class="btn btn-sm btn-quiet" href="<?= base_url('admin/sesi-lapangan/' . (int) $row['id'] . '/cetak') ?>"><?= icon('printer') ?> <?= esc(lang('Admin.printCardLink')) ?></a>
+          </div>
+        </article>
+      <?php endforeach ?>
+    </div>
+  </section>
+<?php endif ?>
 
 <section class="kpi-grid" aria-label="Angka utama">
   <?= component('stat-tile', ['label' => 'Siswa terdaftar', 'value' => fmt_num($kpi['participants'], 0, 'id'), 'icon' => 'users']) ?>
@@ -49,18 +110,6 @@
         <li><a href="<?= base_url($card['href']) ?>"><?= esc($card['label']) ?></a></li>
       <?php endforeach ?>
     </ul>
-  </section>
-<?php endif ?>
-
-<?php if (($fieldSessions ?? []) !== []): ?>
-  <section class="form-section" aria-labelledby="dash-field-title">
-    <h2 id="dash-field-title"><?= icon('clock') ?> <?= esc(lang('Admin.dashboardFieldSessions')) ?></h2>
-    <ul>
-      <?php foreach ($fieldSessions as $row): ?>
-        <li><b class="mono"><?= esc($row['code']) ?></b> · <?= esc(lang('Admin.monitoringEntered')) ?> <?= esc(fmt_num($row['entered'], 0, 'id')) ?> · <?= esc(lang('Admin.monitoringActive')) ?> <?= esc(fmt_num($row['active'], 0, 'id')) ?></li>
-      <?php endforeach ?>
-    </ul>
-    <p><a href="<?= base_url('admin/pemantauan') ?>"><?= esc(lang('Admin.menuMonitoring')) ?> <?= icon('right') ?></a></p>
   </section>
 <?php endif ?>
 
