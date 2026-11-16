@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 15 November 2026, `R-12` ditambahkan 16 November 2026 · Lampiran `ai-studio/game-images/REVIEW.md` (telaah gambar oleh pengembang) · Status: `draf pengembang`, `asal: pengembang` (disusun AI atas permintaan pengembang)
+Per 15 November 2026, `R-12` sampai `R-19` ditambahkan 16 November 2026 · Lampiran `ai-studio/game-images/REVIEW.md` (telaah gambar oleh pengembang) · Status: `draf pengembang`, `asal: pengembang` (disusun AI atas permintaan pengembang)
 
 Pengembang menelaah semua gambar game pada 15 November 2026 dan menandai gambar yang harus dibuat ulang. Dokumen ini memuat prompt siap tempel ke ChatGPT (bahasa Inggris) untuk sepuluh gambar bertanda `redo`, ditambah satu gambar pasangan yang menunggu persetujuan pengembang. Gambar `redo later` menjadi baris baru setelah pengembang mengirim foto acuannya; yang pertama `R-12` (16 November 2026). Polanya sama dengan [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md) dan [38](38_PROMPT_PETA_LIMA_TANTANGAN_DAN_SKENARIO.md). Daftar kerjanya ada di `ai-studio/chatgpt-images/TASKS.md` (baris berkode `R-`).
 
@@ -28,6 +28,9 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 | `R-14` | Pustaka Wonosobo, peta kawasan Dieng `library.wonosobo.p2.2` | 325 | Halaman butuh peta kawasan Dieng, bukan pemandangan. Lima peta acuan dari pengembang, lisensi didapat peneliti. Satu-satunya gambar isi game bertulisan (nama tempat) |
 | `R-15` | Pustaka Wonosobo, buah carica `library.wonosobo.p9.2` | 339 | Belahan buah berdaging jingga tebal dengan biji hitam besar seperti pepaya; carica berdaging tipis krem dengan isi putih berbiji kecil banyak. Bergaya lukisan. Foto acuan dari pengembang |
 | `R-16` | Pustaka Temanggung, Situs Liyangan `library.temanggung.p5.1` | 312 | Menara candi tinggi seperti Prambanan; Liyangan adalah kampung yang digali: teras bertalud batu, jalan batu, candi kecil, yoni, Gunung Sindoro. Foto dari peneliti |
+| `R-17` | Benda Cari Objek `challenge.item.wnb-4-a01` (bundengan) | 270 | Tudung tergeletak telentang seperti kereta luncur, senar di atas; aslinya tegak, meruncing, senar di dalam, bertongkat bambu panjang. Foto dari peneliti |
+| `R-18` | Susun Gambar Wonosobo `challenge.item.wnb-1-g01` (bundengan) | 242 | Tanpa tongkat panjang, jumbai ijuk, dan kisi lapisan luar; senar di luar seperti harpa. Juga foto unggahan Periksa Unggahan Wonosobo babak 2 variasi a. Foto dari peneliti |
+| `R-19` | Avatar 10 `avatar.10` (bundengan) | 115 | Lambangnya tudung telentang seperti kereta luncur; hanya lambang yang diganti, cincin tetap. Foto dari peneliti |
 
 ## Aturan bersama
 
@@ -35,7 +38,8 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 
 Gambar di dokumen ini bukan bagian antarmuka. Gayanya mengikuti kelompoknya masing-masing:
 
-- **Gambar isi game** (`R-01` sampai `R-05`, `R-12` sampai `R-16`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
+- **Gambar isi game** (`R-01` sampai `R-05`, `R-12` sampai `R-18`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
+- **Avatar** (`R-19`): disunting, bukan digambar dari nol, seperti gambar tes: cincin medali dan cakramnya tetap, hanya lambang di tengah yang diganti, supaya kesepuluh avatar tetap satu keluarga sampai perombakan antarmuka mengganti cincin semuanya.
 - **Gambar tes** (`R-06` sampai `R-11`): gambar garis hitam-putih seperti 23 gambar tes lainnya. Gaya ini disengaja: instrumen tes tampil netral dan tidak memakai gaya game.
 
 **Tulisan di gambar.** Gambar isi game tidak memuat tulisan, kecuali peta `R-14` (nama tempat, daftar tetap). Gambar tes justru memuat tulisan, dan setiap kata harus sama persis dengan `app/Database/Seeds/data/instrumen/tes.php`. Tulisan di gambar dibuat oleh model gambar, jadi setiap hasil dibaca ulang kata per kata dengan daftar di promptnya.
@@ -356,6 +360,116 @@ CONSTRAINTS
 No watermarks, signatures, text, letters, numbers, logos, frames, blurry edges or neon colours. No painterly 2D, gouache, oil-painting look or paper grain.
 ```
 
+### R-17 · Bundengan (benda Cari Objek Wonosobo)
+
+Ditambahkan 16 November 2026. Telaah no. 270: tudung anyaman tergeletak telentang seperti kereta luncur, senarnya di atas. Bundengan yang asli berdiri tegak, meruncing di atas, senarnya di dalam cekungan, dengan satu tongkat bambu panjang di tepinya. Benda ini **target** Cari Objek, jadi bentuknya penentu: siswa mencarinya dari petunjuk "alat musik berbentuk tudung lengkung dari anyaman bambu". Peneliti mengirim lima foto bundengan yang berizin (`ai-studio/chatgpt-images/inbox/reference-bundengan-researcher-*`).
+
+| | |
+|---|---|
+| Kode berkas | `challenge.item.wnb-4-a01` → simpan sebagai `challenge.item.wnb-4-a01.webp` |
+| Kanvas | 240 × 240, latar transparan (buat pada 1024 × 1024, lalu perkecil) |
+| Lampiran | Foto `ai-studio/chatgpt-images/inbox/reference-bundengan-researcher-player-indoors-01.webp` (bentuk, tongkat, senar di dalam), `ai-studio/chatgpt-images/inbox/reference-bundengan-researcher-players-on-stage-04.webp` (lapisan luar slumpring bergaris ijuk), `ai-studio/chatgpt-images/inbox/reference-bundengan-researcher-kowangan-against-wall-03.jpg` (anyaman dari sisi dalam). Untuk hasil akhir yang sama: `ai-studio/game-images/assets/tantangan/challenge.item.wnb-4-a08.webp` (angklung) dan `ai-studio/game-images/assets/tantangan/challenge.item.wnb-4-a09.webp` (sasando), keduanya pengecoh yang harus jelas berbeda |
+| Butir | `wnb-4-x01`: "Temukan alat musik berbentuk tudung lengkung dari anyaman bambu. Dulu tudung itu melindungi penggembala bebek dari panas dan hujan, lalu diberi senar untuk dipetik." Pengecoh sesama alat musik: angklung (`a08`) dan sasando (`a09`) |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: challenge.item.wnb-4-a01  (R-17 · bundengan, hidden-object cut-out)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Match the render finish, lighting and outline quality of the attached angklung and sasando cut-outs exactly, so that the three instruments look like parts of one set — and make sure the bundengan cannot be mistaken for either of them.
+The attached photos are factual references for the instrument only: follow its forms and materials, render them in the GELITA finish, and do not copy a photo. Leave out the people, the microphone, the stage and the walls.
+
+SUBJECT AND COMPOSITION
+One isolated object on a transparent background: a bundengan standing on its own, seen in three-quarter view from the front-left so that both the cream outer back and the open hollow with its strings are visible.
+THE BUNDENGAN, exactly as in the attached photos — it is built from a kowangan, the hood duck herders once carried against sun and rain:
+- An UPRIGHT hollow shell, taller than the seated player's head, shaped like a tall shield or half a boat standing on its end: broad and rounded at the bottom, narrowing to a POINT at the top, curving forward so it is hollow like a cupped hand.
+- The shell is a frame of flat woven bamboo strips in a loose square weave, honey-brown. Its OUTSIDE (back) is covered with pale cream sheets of bamboo sheath (slumpring), held by dark brown palm-fibre (ijuk) cords that make a large square grid; a short tuft of black ijuk sticks out at the pointed top.
+- ONE LONG straight bamboo pole, longer than the shell, runs along one edge from the floor and sticks out past the top.
+- INSIDE the hollow: a few thin strings stretched from side to side, and some thin flat bamboo strips with small clips; the player plucks them with the fingers of both hands.
+- It always stands on its rounded bottom edge, open side towards the player; it never lies on its back, has no neck, no tuning pegs, no sound hole, no tubes.
+
+Accuracy — It must NOT read as a guitar, lute, harp, zither on legs, angklung (shaken bamboo tubes), sasando (a palm-leaf tube harp), basket, hat, shield or sled. It stands upright; the pointed top is the highest point of the shell, with the pole tip a little above it.
+Hidden-object rule — identical lighting and quality for targets and decoys: no glow, no sparkle, no outline, no label, no arrow, nothing that marks this object as an answer.
+
+DELIVERY
+Generate at 1024 × 1024 and scale down proportionally to exactly 240 × 240 pixels; aspect 1:1. The whole instrument, pole included, inside the canvas with a small even margin; it is taller than wide, so it fills the height. Genuine transparent background outside the subject; preserve alpha; no cast shadow on a ground. Deliver WebP, named challenge.item.wnb-4-a01.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, people, hands, extra objects, cropped parts, blurry edges, neon colours, or fake checkerboard transparency. No painterly 2D, gouache or paper grain.
+```
+
+### R-18 · Bundengan (gambar Susun Gambar Wonosobo)
+
+Ditambahkan 16 November 2026. Telaah no. 242: bentuknya paling dekat dengan yang asli (cangkang lengkung tegak, dimainkan sambil duduk), tetapi tanpa tongkat bambu panjang, tanpa jumbai ijuk dan garis kisi lapisan luar, dan senarnya di luar seperti harpa. Gambar ini juga **foto unggahan** Periksa Unggahan Wonosobo babak 2 variasi a ("Unggahan video bundengan"; keterangan unggahan sengaja keliru menyebut angklung), jadi alatnya harus jelas terbaca sebagai bundengan. Semua tulisan unggahan diberi oleh halaman, bukan oleh gambar. Tata letak 4 × 4 dari 37 (*WNB-P07*) tetap, hanya pemainnya kini duduk bersila di tikar seperti di foto.
+
+| | |
+|---|---|
+| Kode berkas | `challenge.item.wnb-1-g01` → simpan sebagai `challenge.item.wnb-1-g01.webp` |
+| Kanvas | 1200 × 1200 |
+| Lampiran | Acuan gaya `ai-studio/game-images/assets/referensi/reference.06.webp`; foto `ai-studio/chatgpt-images/inbox/reference-bundengan-researcher-player-indoors-01.webp` (cara duduk dan memetik), `ai-studio/chatgpt-images/inbox/reference-bundengan-researcher-players-on-stage-04.webp` (alat utuh dengan tongkat dan lapisan luar); gambar lama `ai-studio/game-images/assets/tantangan/challenge.item.wnb-1-g01.webp` (suasana dan tata letak) |
+| Keterangan | "Bundengan adalah alat musik khas Wonosobo. Dulu benda ini berupa kowangan, tudung anyaman bambu yang melindungi penggembala bebek dari panas dan hujan. Tudung itu kemudian diberi senar dan dipetik; suaranya mirip gamelan." |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: challenge.item.wnb-1-g01  (R-18 · WNB-P07 · Bundengan)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Puzzle adaptation of the GELITA direction: a clear morning or warm golden-hour daytime scene (never night). Brass gold lives in the sunlight and highlights; deep navy appears only in small shadow accents and distant mountain shade, never as a large dark sky. Rich, organised detail across the whole square — not clutter. Real places, buildings, costumes and objects keep their true shapes and proportions; only the rendering is stylized.
+Characters: do NOT include Jaka or Mbah Kedu — this is a scene asset. The attached photos are factual references for the instrument and how it is played: follow them, render in the GELITA finish, and do not copy a photo or its people. Keep the mood and layout of the attached old picture, but replace its instrument completely.
+
+SUBJECT AND COMPOSITION
+On the porch of a village house in Wonosobo, an adult musician in a batik shirt and a batik headcloth sits CROSS-LEGGED on a woven mat beside a bundengan, reaching into its hollow and plucking with both hands. Two children sit on the mat a little apart and listen. Beyond the porch, in a harvested rice field, a duck herder carries the same kind of bamboo hood on his back and walks behind a flock of ducks; misty hills rise in the distance.
+THE BUNDENGAN, exactly as in the attached photos — it is built from a kowangan, the hood duck herders once carried against sun and rain:
+- An UPRIGHT hollow shell, taller than the seated player's head, shaped like a tall shield or half a boat standing on its end: broad and rounded at the bottom, narrowing to a POINT at the top, curving forward so it is hollow like a cupped hand.
+- The shell is a frame of flat woven bamboo strips in a loose square weave, honey-brown. Its OUTSIDE (back) is covered with pale cream sheets of bamboo sheath (slumpring), held by dark brown palm-fibre (ijuk) cords that make a large square grid; a short tuft of black ijuk sticks out at the pointed top.
+- ONE LONG straight bamboo pole, longer than the shell, runs along one edge from the floor and sticks out past the top.
+- INSIDE the hollow: a few thin strings stretched from side to side, and some thin flat bamboo strips with small clips; the player plucks them with the fingers of both hands.
+- It always stands on its rounded bottom edge, open side towards the player; it never lies on its back, has no neck, no tuning pegs, no sound hole, no tubes.
+
+Puzzle layout — imagine the square divided into a 4×4 grid (do NOT draw the grid). Put one clear landmark in each area:
+• Row 1 (top) — (1) misty hills with thin mist; (2) the duck herder carrying a bamboo hood in the field; (3) a flock of white and brown ducks in the paddy; (4) the sky with a cloud.
+• Row 2 — (5) the porch roof beam with hanging corn cobs; (6) the pointed top of the bundengan with its ijuk tuft and the tip of the long pole; (7) the musician's face and batik headcloth; (8) a window with a wooden frame.
+• Row 3 — (9) two children sitting and listening; (10) the cream outer back of the bundengan with its dark square cord grid; (11) the open hollow with the strings, the bamboo strips and the musician's plucking hands; (12) a low table with a kettle.
+• Row 4 (bottom) — (13) a woven floor mat; (14) the musician's crossed legs and bare feet; (15) the rounded bottom edge of the bundengan and the foot of the long pole on the mat; (16) a potted plant and a cat.
+
+Accuracy — It must NOT read as a guitar, lute, harp, zither on legs, angklung (shaken bamboo tubes), sasando (a palm-leaf tube harp), basket, hat, shield or sled. The strings are INSIDE the hollow, never across the outside. The musician sits on the mat, not on a bench, and the instrument stands on the mat next to him.
+Place — Wonosobo and the Dieng Plateau, Central Java, Indonesia — cool highland at about 2,000 m; steep terraced potato and cabbage fields, cypress (cemara) and pine trees, carica (mountain papaya) trees; houses with zinc or clay-tile roofs; people in thick jackets, knitted beanies and sarongs over their shoulders; crisp, cool, clear light from the left. Mist is allowed ONLY as thin, partial bands in distant valleys and must never hide more than a small part of the picture.
+Level — HARD (4×4 jigsaw): atmospheric, with subtler colour shifts, but each of the sixteen areas still has its own unique landmark.
+People — Stylized like the GELITA references but anatomically correct: Javanese Indonesians of mixed ages in modest local clothing, calm and friendly, never looking at the camera; no real or famous person; no brand logos; children only with adults and only doing safe things.
+
+DELIVERY
+Target canvas 1200 × 1200 pixels; aspect 1:1 (generate at the highest square resolution available; it will be resized to exactly 1200 × 1200). Opaque, full-bleed scene. Deliver WebP, named challenge.item.wnb-1-g01.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, extra limbs, blurry edges or neon colours. No painterly 2D, gouache or paper grain.
+Puzzle safety — This image will be cut into a 4×4 jigsaw puzzle for children:
+• ONE continuous natural scene — no collage, no panels, no grid lines.
+• Full-bleed to every edge; NO plain, white, transparent, studio or empty background.
+• All 16 areas have different landmarks; no two areas look alike.
+• No large uniform patches: sky, water, walls, mist and ground carry clouds, ripples, texture, objects or changing light.
+• Deep focus everywhere: no bokeh, blur, vignette, dark corners or lens flare.
+• Asymmetric; light from one side; the horizon rises and falls naturally, never one straight line across.
+• Faces sit fully inside one area, away from the grid lines.
+```
+
+### R-19 · Avatar bundengan (avatar 10)
+
+Ditambahkan 16 November 2026. Telaah no. 115: lambang di tengah avatar adalah tudung yang tergeletak telentang seperti kereta luncur, sama dengan benda Cari Objek lama. Yang diganti **hanya lambangnya**; cincin medali biru tua tetap seperti sembilan avatar lain, supaya kesepuluhnya tetap satu keluarga. Cincin semua avatar akan diganti bersama dalam perombakan antarmuka (pengembang, 16 November 2026: tepi bundar mengikuti `public/assets/ui/round-back.webp`), bukan di baris ini.
+
+| | |
+|---|---|
+| Kode berkas | `avatar.10` → simpan sebagai `avatar.10.webp` |
+| Kanvas | 512 × 512, latar transparan |
+| Lampiran | Gambar yang diubah `ai-studio/game-images/assets/ikon/avatar.10.webp`; avatar lain untuk hasil akhir yang sama `ai-studio/game-images/assets/ikon/avatar.1.webp` dan `ai-studio/game-images/assets/ikon/avatar.2.webp`; foto `ai-studio/chatgpt-images/inbox/reference-bundengan-researcher-player-indoors-01.webp` dan `ai-studio/chatgpt-images/inbox/reference-bundengan-researcher-players-on-stage-04.webp` (bentuk alat) |
+
+```text
+EDIT the attached avatar.10.webp. Keep EVERYTHING outside the central emblem exactly as it is: the dark-navy circular medallion rim, its thin brass edging, the four small gold diamond points, the cream parchment disc, the size, position, lighting and the transparent exterior. Compare with the attached avatar.1 and avatar.2 so the result stays in the same family.
+
+Replace ONLY the gold emblem in the middle with a new one: a bundengan from Wonosobo, as one large sculptural GOLD emblem, in the same raised gold finish as the emblems of the other avatars, readable at 48 pixels.
+The bundengan, as in the attached photos: an UPRIGHT hollow shell shaped like a tall shield standing on its end, broad and rounded at the bottom, narrowing to a POINT at the top, curving forward so it is hollow; a loose square weave of flat bamboo strips; on its back a few cords forming a large square grid and a small tuft at the pointed top; ONE long straight pole along one edge, sticking out past the top; inside the hollow a few strings stretched from side to side. Seen in three-quarter view from the front-left so that both the back and the open hollow show. All of it in gold relief, no other colours added.
+
+It must NOT read as a guitar, lute, harp, angklung, sasando, basket, hat, shield or sled; it never lies on its back. No person, no hands, no face, no lettering, no watermark.
+Delivery: 512 × 512 WebP; preserve the transparent margins; whole medallion visible with padding, exactly as in the original.
+```
+
 ## Gambar tes
 
 Lampirkan gambar tes yang sekarang dari `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/` dan minta gambar yang sama dengan perubahan yang disebut saja. Setelah itu baca setiap kata di hasilnya dan cocokkan dengan daftar *All text* di prompt.
@@ -530,7 +644,7 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 
 ## Daftar periksa hasil
 
-**Gambar isi game (`R-01` sampai `R-05`, `R-12` sampai `R-16`)**
+**Gambar isi game (`R-01` sampai `R-05`, `R-12` sampai `R-19`)**
 
 - Tanpa tulisan, angka, atau logo, kecuali `R-14`.
 - `R-01`: tepat dua gunung, tanpa candi, telaga, atau laut; tanpa tembakau; sepertiga bawah tenang.
@@ -540,6 +654,10 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 - `R-14`: setiap tulisan sama persis dengan daftar *All text*, tanpa tulisan lain; utara di atas; Dieng Kulon, Candi Arjuna, dan Kawah Sikidang di Banjarnegara, Dieng Wetan, Telaga Warna, dan Sikunir di Wonosobo; cocokkan letaknya dengan peta jalur wisata `-08`.
 - `R-15`: belahan buah berdaging tipis krem, isi putih dengan banyak biji kecil cokelat tua; buah utuh kecil bergerigi lima dan berujung lancip; gaya 3D, bukan lukisan.
 - `R-16`: tanpa menara candi tinggi; teras dengan talud batu polos, jalan batu, satu candi kecil beratap bertingkat, alas dengan yoni, Gunung Sindoro satu kerucut; tanpa orang.
+- `R-17` sampai `R-19`: bundengan berdiri tegak dengan ujung runcing di atas, satu tongkat bambu panjang di tepinya yang mencuat melewati puncak, senar di dalam cekungan (bukan di luar); tidak mirip gitar, harpa, angklung, sasando, atau kereta luncur. Bandingkan dengan foto `-01` dan `-04`.
+- `R-17`: latar transparan; hasil akhir sama dengan angklung `a08` dan sasando `a09`, tetapi jelas berbeda bentuk; tanpa orang dan tanpa tanda jawaban.
+- `R-18`: 16 bidang berbeda; pemain duduk bersila di tikar; tanpa tulisan apa pun (tulisan unggahan diberi halaman).
+- `R-19`: di luar lambang tidak ada yang berubah (cincin, titik intan, cakram krem, ukuran); bandingkan dengan avatar lama.
 - `R-03` sampai `R-05`: tokohnya Jaka (syal merah, kemeja krem, ransel, tanpa ikat kepala); ketiganya berlatar biru tua yang sama; medali simbol bergaya emas berukir.
 
 **Gambar tes (`R-06` sampai `R-11`)**
@@ -551,7 +669,7 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 
 ## Pemasangan
 
-- `R-01` sampai `R-05`, `R-12`, `R-14` sampai `R-16`: berkas dari `ai-studio/chatgpt-images/out/` **dipindahkan** (bukan disalin) ke tempat berkas lamanya di `ai-studio/game-images/assets/` dan menggantikannya; entri `data.json` tidak berubah. Lalu `php spark gelita:katalog:impor`. `R-13` adalah gambar baru: berkasnya dipindahkan ke `ai-studio/game-images/assets/tantangan/challenge.post.tmg-4-b.webp`, lalu entri baru `challenge.post.tmg-4-b` ditambahkan ke `data.json` (contoh: entri `challenge.item.tmg-1-h01`) dan satu baris ke `REVIEW.md`. `R-16`: entri `library.temanggung.p5.1` di `data.json` mendapat `caption` "Situs Liyangan di lereng Gunung Sindoro" / "The Liyangan Site on the slopes of Mount Sindoro". `R-14`: entri `library.wonosobo.p2.2` di `data.json` mendapat `caption` baru "Peta kawasan Dataran Tinggi Dieng" / "Map of the Dieng Plateau area".
+- `R-01` sampai `R-05`, `R-12`, `R-14` sampai `R-19`: berkas dari `ai-studio/chatgpt-images/out/` **dipindahkan** (bukan disalin) ke tempat berkas lamanya di `ai-studio/game-images/assets/` dan menggantikannya; entri `data.json` tidak berubah. Lalu `php spark gelita:katalog:impor`. `R-13` adalah gambar baru: berkasnya dipindahkan ke `ai-studio/game-images/assets/tantangan/challenge.post.tmg-4-b.webp`, lalu entri baru `challenge.post.tmg-4-b` ditambahkan ke `data.json` (contoh: entri `challenge.item.tmg-1-h01`) dan satu baris ke `REVIEW.md`. `R-16`: entri `library.temanggung.p5.1` di `data.json` mendapat `caption` "Situs Liyangan di lereng Gunung Sindoro" / "The Liyangan Site on the slopes of Mount Sindoro". `R-14`: entri `library.wonosobo.p2.2` di `data.json` mendapat `caption` baru "Peta kawasan Dataran Tinggi Dieng" / "Map of the Dieng Plateau area".
 - `R-06` sampai `R-11`: berkas dipindahkan ke `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/`. Berkas PNG induk di `docs/revisi-10-analitik/gambar/doc-34/` diganti dengan hasil yang sama, supaya induk dan gambar terpasang tidak berbeda.
 - Setelah dipasang, lembar telaah dibangun ulang (`node ai-studio/game-images/review/build-sheets.mjs`) dan baris `REVIEW.md` diberi tanda baru oleh pengembang.
 
