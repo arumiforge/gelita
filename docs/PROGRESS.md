@@ -178,4 +178,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `nty/beautiful-clarke-scy25i` | production `.env`: `env-example-production` matched to the gelita.id server (key kept, new ipSalt, `app.CSPEnabled`) | PR open; owner updates the server's `.env` and restores `App.php`/`Cookie.php` before pulling |
