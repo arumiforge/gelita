@@ -1,10 +1,22 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 15 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 16 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
 
 ## 15 November 2026
+
+**Telaah gambar: gaya antarmuka emas berukir, gambar tes diperbaiki, waktu narasi tidak lagi terhitung jeda** (cabang `nty/laughing-ramanujan-l68r2v`, dikerjakan 15 dan 16 November 2026) · `asal: pengembang` · `disetujui pengembang` · menambah dokumen [39](39_PROMPT_GAMBAR_PERBAIKAN_TELAAH.md); tidak mengubah teks butir, stimulus, atau kamus data
+
+- **Telaah gambar oleh pengembang.** Pengembang menelaah semua gambar game (`ai-studio/game-images/REVIEW.md`, pertanyaan pembuka disusun AI). Ini pemeriksaan pengembang, bukan validasi ahli, dan tidak ditunjukkan ke validator sebelum mereka menilai.
+- **Satu gaya antarmuka.** Seluruh antarmuka game memakai gaya *emas berukir* yang sudah disetujui peneliti. Bagian yang belum bergaya itu, ukuran, dan letaknya dirombak untuk siswa kelas 5 di Chromebook; pesanan gambarnya menyusul setelah ukuran setiap bagian diukur. Gambar gerak tokoh tidak dipakai lagi: satu pose satu gambar diam.
+- **Lima gambar tes diperbaiki** (prompt di 39; belum dibuat): `instr.tes-ae-B01` (tombol tertulis "Piih foto"), `instr.tes-mb-A-M4` (nama akun salah satu huruf), `instr.tes-bd-A-G2` (emoji keliru, tulisan pembuat video terlalu kecil), `instr.tes-bd-A-G1` dan `instr.tes-bd-B-G1` (tombol "Kirim pesan ke galeri" digambar lebih tebal dan menunjuk kunci `tes-bd-A03` dan `tes-bd-B03`). Pada `instr.tes-bd-B-G1`, motif kain besurek tampak seperti tulisan Arab yang bisa dibaca; gambarnya dibuat ulang dengan motif hiasan dan diperiksa orang yang bisa membaca huruf Arab sebelum dikirim ke validator. Pasangan buklet B `instr.tes-bd-B-G2` menunggu persetujuan pengembang. Semua kata lain di 24 gambar tes sudah dicocokkan dengan berkas data tes dan tidak berbeda.
+- **Satu sasaran Cari Objek diperbaiki.** Gambar `wnb-4-x02` (buah carica) ternyata belimbing, padahal petunjuknya "mirip pepaya, tetapi ukurannya kecil" dan pengecohnya pepaya biasa. Gambar dibuat ulang (39, `R-02`); teks butir tidak berubah.
+- **Waktu narasi.** Kamus data (11) dan 35 §6.7 menyatakan selang saat narasi diputar tidak pernah dihitung jeda. Lapis data turunan ternyata hanya membaca baris pembuka pemutaran, yang lamanya 0 ms, sehingga waktu mendengarkan cerita terhitung jeda masukan. Kodenya diperbaiki supaya sesuai kamus; versi kamus tetap `kamus-1.1`. Putaran hitung yang dibuat sebelumnya memuat nilai lama; belum ada data siswa.
+- **Suara lain: belum diputuskan.** Musik latar bukan bagian penelitian (pengembang). Pemeriksaan suara menemukan hal yang perlu keputusan pengembang sebelum pengambilan data: satu tombol suara mematikan musik, efek, dan narasi sekaligus; keadaan suara tidak tercatat dan tersimpan per peramban, bukan per siswa; musik dan efek benar/salah tetap berbunyi di mode penelitian; tombol Lewati tidak meninggalkan catatan. Rinciannya di catatan keputusan perombakan kelas 5 (bagian *Picture review*, 15 dan 16 November 2026). Bila keadaan suara dicatat sebagai event baru, itu masuk `kamus-1.2`.
+- **Pustaka.** Keterangan 15 gambar Pustaka diganti supaya sesuai gambar ilustrasinya; sepuluh gambar Pustaka yang kurang tepat ditandai untuk dibuat ulang nanti (bukan prioritas sekarang, pengembang).
+
+Entri ini tidak diikuti pembuatan ulang PDF.
 
 **Rekaman suara sintetis Narator dan Jaka diterima; narasi ketiga tokoh siap dipasang** (cabang `tutu/optimistic-clarke-c0uye5`) · `asal: pengembang` · `disetujui pengembang` · tidak mengubah dokumen lain
 

@@ -20,6 +20,12 @@ use App\Libraries\BookletRules;
  */
 final class ParticipantRun
 {
+    /**
+     * The actions of `audio_usage_events` (the same list as AudioUsageEventModel::ACTIONS, kept
+     * here so the calculators stay free of the database layer; NarrationIdleTest compares them).
+     */
+    public const AUDIO_ACTIONS = ['play', 'autoplay', 'pause', 'replay', 'complete'];
+
     /** L4: one observation covers 20 seconds from its time (11 → Aturan gabung). */
     public const OBSERVATION_MS = 20_000;
 
@@ -320,8 +326,12 @@ final class ParticipantRun
             $events = array_values(array_filter($in->events, static fn (array $e): bool => (int) $e['session_id'] === $session));
             $plays  = [];
 
+            // Every stored action counts: a playback's opening row
+            // (`play`, `autoplay`, `replay`) carries 0 ms, and the heard time arrives on the row
+            // that closes it (`pause`, `complete`). Reading only the opening rows made every
+            // narration interval empty, so listening was counted as an input pause.
             foreach ($in->audio as $audio) {
-                if ((int) $audio['session_id'] !== $session || ! in_array($audio['action'], ['play', 'replay', 'autoplay', 'progress', 'completed', 'ended'], true)) {
+                if ((int) $audio['session_id'] !== $session || ! in_array($audio['action'], self::AUDIO_ACTIONS, true)) {
                     continue;
                 }
 

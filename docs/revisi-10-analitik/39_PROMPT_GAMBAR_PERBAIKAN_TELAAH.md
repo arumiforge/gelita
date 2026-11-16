@@ -1,0 +1,378 @@
+# Prompt Gambar Perbaikan dari Telaah Gambar
+
+**Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
+
+Per 15 November 2026 · Lampiran `ai-studio/game-images/REVIEW.md` (telaah gambar oleh pengembang) · Status: `draf pengembang`, `asal: pengembang` (disusun AI atas permintaan pengembang)
+
+Pengembang menelaah semua gambar game pada 15 November 2026 dan menandai gambar yang harus dibuat ulang. Dokumen ini memuat prompt siap tempel ke ChatGPT (bahasa Inggris) untuk sepuluh gambar bertanda `redo`, ditambah satu gambar pasangan yang menunggu persetujuan pengembang. Polanya sama dengan [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md) dan [38](38_PROMPT_PETA_LIMA_TANTANGAN_DAN_SKENARIO.md). Daftar kerjanya ada di `ai-studio/chatgpt-images/TASKS.md` (baris berkode `R-`).
+
+Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pengembang, peneliti, dan ahli](01_REVISI_10_ANALITIK.md)).
+
+## Ringkasan
+
+| Kode | Gambar | Nomor di telaah | Yang diperbaiki |
+|---|---|---|---|
+| `R-01` | Latar wilayah Temanggung `bg.temanggung.region` | 213 | Berkasnya tertukar dengan Wonosobo; gambar sementara menampilkan Dataran Kedu saat senja, bukan Temanggung |
+| `R-02` | Benda Cari Objek `challenge.item.wnb-4-a02` (buah carica) | 271 | Gambarnya belimbing, padahal petunjuknya "mirip pepaya, tetapi ukurannya kecil" |
+| `R-03` | Pustaka Magelang, Tips Jaka `library.magelang.p10.1` | 302 | Tokohnya bukan Jaka; latarnya krem, dua lainnya biru tua |
+| `R-04` | Pustaka Temanggung, Tips Jaka `library.temanggung.p10.1` | 321 | Tokohnya bukan Jaka |
+| `R-05` | Pustaka Wonosobo, Tips Jaka `library.wonosobo.p10.1` | 341 | Tokohnya bukan Jaka |
+| `R-06` | Gambar tes `instr.tes-ae-B01` | 374 | Tombol tertulis "Piih foto" |
+| `R-07` | Gambar tes `instr.tes-bd-A-G1` | 382 | Tombol "Kirim pesan ke galeri" lebih tebal daripada tiga tombol lain dan menunjuk kunci `tes-bd-A03` |
+| `R-08` | Gambar tes `instr.tes-bd-A-G2` | 383 | Emoji keliru; tulisan "Video: Sanggar Lima Purnama" terlalu kecil |
+| `R-09` | Gambar tes `instr.tes-bd-B-G1` | 384 | Tombol "Kirim pesan ke galeri" lebih tebal; motif kain tampak seperti tulisan Arab yang bisa dibaca |
+| `R-10` | Gambar tes `instr.tes-mb-A-M4` | 387 | Nama akun tertulis "@panitia.kaghaianak" |
+| `R-11` | Gambar tes `instr.tes-bd-B-G2` | 385 | Belum ditandai pengembang. Pasangan `R-08` di buklet B: tulisan "Video: Sanggar Tujuh Pelita" sama kecilnya. Dikerjakan hanya kalau pengembang setuju, supaya buklet A dan B tetap setara |
+
+## Aturan bersama
+
+**Gaya yang berlaku (pengembang, 15 November 2026).** Seluruh antarmuka game memakai satu gaya, yaitu *emas berukir* yang sudah disetujui peneliti: bingkai emas tebal berukir dalam dengan hiasan ukel, bidang batu gelap atau biru tua berpola awan samar, simbol timbul dari emas yang sama, satu arah cahaya dari kiri atas, dirender sebagai benda 3D. Contohnya tombol bundar `public/assets/ui/round-*.webp` dan pelat `plate-gold-*.webp`. Hijau dan merah hanya menjadi warna bidang untuk benar dan salah, selalu bersama tanda centang atau silang. Pengembang juga meminta hiasan tepi bagian-bagian itu diseragamkan lagi; pesanan gambar antarmuka menyusul setelah ukuran setiap bagian diukur di layar Chromebook (`docs/PROGRESS.md` → *Asset catalogue audit and picture review*).
+
+Sepuluh gambar di dokumen ini bukan bagian antarmuka. Gayanya mengikuti kelompoknya masing-masing:
+
+- **Gambar isi game** (`R-01` sampai `R-05`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
+- **Gambar tes** (`R-06` sampai `R-11`): gambar garis hitam-putih seperti 23 gambar tes lainnya. Gaya ini disengaja: instrumen tes tampil netral dan tidak memakai gaya game.
+
+**Tulisan di gambar.** Gambar isi game tidak memuat tulisan. Gambar tes justru memuat tulisan, dan setiap kata harus sama persis dengan `app/Database/Seeds/data/instrumen/tes.php`. Tulisan di gambar dibuat oleh model gambar, jadi setiap hasil dibaca ulang kata per kata dengan daftar di promptnya.
+
+**Gambar tes diperbaiki, bukan digambar dari nol.** Berbeda dari aturan `redo` di `ai-studio/chatgpt-images/AGENTS.md`: gambar tes yang ada dilampirkan dan hanya bagian yang salah yang diubah. Alasannya, semua tulisan lainnya sudah dicocokkan dengan `tes.php` pada 15 November 2026, dan buklet A dan B harus tetap serupa. Kalau hasil suntingan mengubah bagian lain, ulangi dari gambar lama, jangan dari hasil yang gagal.
+
+**Tidak membocorkan kunci.** Tidak ada bagian gambar yang lebih tebal, lebih terang, atau lebih besar daripada bagian sejenisnya, kecuali diminta prompt.
+
+## Gambar isi game
+
+### R-01 · Latar wilayah Temanggung
+
+| | |
+|---|---|
+| Kode berkas | `bg.temanggung.region` → simpan sebagai `bg.temanggung.region.webp` |
+| Kanvas | 1920 × 1080 |
+| Lampiran | Acuan gaya `reference.06` atau `reference.07`; `ai-studio/game-images/assets/latar/bg.magelang.region.webp` sebagai contoh latar wilayah yang sudah benar (untuk suasana dan komposisi saja) |
+| Dipakai di | Dialog masuk wilayah Temanggung dan peta wilayahnya; judul Kenali pertama: "Di Antara Dua Gunung" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: bg.temanggung.region  (R-01 · Temanggung region background)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Characters: do NOT include Jaka or Mbah Kedu, and no people at all. Attached GELITA pictures are for render finish, mood and composition only; do not copy their subject.
+
+SUBJECT AND COMPOSITION
+Wide 16:9 cinematic landscape. Main subject inside the central 75% of the width and the central 80% of the height; horizon between 55% and 65% of the height; the lower third calm and slightly darker for text panels; the top 8% free of important detail; mid-tone exposure that stays readable under a dark navy overlay of 35% at the top to 75% at the bottom.
+Early morning in Temanggung, Central Java, seen from the east. Exactly TWO volcanoes stand side by side and fill the upper middle of the picture: Mount Sindoro on the right, a clean symmetrical cone, and Mount Sumbing on the left, broader and a little taller. No third or fourth peak anywhere on the horizon. Below them: terraced coffee and vegetable fields on dark volcanic soil, bamboo groves, a small village of Javanese houses with red clay-tile roofs, and one wooden signpost at a crossroads whose boards are blank. A thin glint of a river in the valley. Soft gold sunrise light from the left.
+The Mist of Forgetting lies in the valley and half hides the signpost: cold desaturated blue-grey mist (#8C97AA to #5B6478) in soft layered bands, with faint wisps that dissolve like fading ink strokes and never form letters; eerie but never scary.
+
+Accuracy — This is Temanggung, not Dieng and not Magelang: no temple, no stupa, no lake, no sea of clouds below the viewer, no sea or coast. No tobacco plants, cigarettes or smoke. No people, animals or vehicles in the foreground.
+
+DELIVERY
+Target canvas 1920 × 1080 pixels; aspect 16:9. Complete subject within canvas, proportional scaling only. Opaque, full-bleed picture. Deliver WebP, named bg.temanggung.region.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache or paper grain. No night sky: this is morning.
+```
+
+### R-02 · Buah carica (benda Cari Objek Wonosobo)
+
+| | |
+|---|---|
+| Kode berkas | `challenge.item.wnb-4-a02` → simpan sebagai `challenge.item.wnb-4-a02.webp` |
+| Kanvas | 240 × 240, latar transparan (buat pada 1024 × 1024, lalu perkecil) |
+| Lampiran | `ai-studio/game-images/assets/tantangan/challenge.item.wnb-1-f01.webp` (pohon carica yang sudah benar: bentuk dan warna buah); `challenge.item.wnb-4-a05.webp` (pepaya biasa: untuk hasil akhir yang sama dan supaya kedua benda jelas berbeda). Foto asli carica dari pengembang di `inbox/` membantu, tetapi tidak wajib |
+| Butir | `wnb-4-x02`: "Temukan buah pegunungan yang mirip pepaya, tetapi ukurannya kecil. Buah ini tumbuh baik di udara sejuk dan sering dibuat manisan." Pengecohnya `wnb-4-x05`, pepaya biasa |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: challenge.item.wnb-4-a02  (R-02 · carica fruit, hidden-object cut-out)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Match the render finish, lighting and outline quality of the attached papaya cut-out exactly, so that the two objects look like parts of one set.
+
+SUBJECT AND COMPOSITION
+One isolated object on a transparent background: a small cluster of FOUR whole carica fruits (mountain papaya, Vasconcellea pubescens, the fruit of the Dieng highlands) with one green leaf behind them. Each fruit is small and plump, shaped like a short, rounded papaya about as long as a child's hand: an oval body with a blunt stem end and a gently pointed tip, smooth golden-yellow skin, and five SHALLOW, ROUNDED lengthwise ribs. The fruits lie together at slightly different angles, one resting on another. Use the fruits on the tree in the attached garden picture as the model for shape and colour.
+
+Accuracy — This must NOT read as star fruit (belimbing): no sharp wing-like ridges, no star-shaped cross-section, no waxy translucent look. It must NOT read as an ordinary papaya either: several small fruits, not one large long fruit. Do not show a cut fruit, seeds, a slice, a jar, a basket, a plate or a knife.
+Hidden-object rule — identical lighting and quality for targets and decoys: no glow, no sparkle, no outline, no label, no arrow, nothing that marks this object as an answer.
+
+DELIVERY
+Generate at 1024 × 1024 and scale down proportionally to exactly 240 × 240 pixels; aspect 1:1. The whole cluster inside the canvas with a small even margin. Genuine transparent background outside the subject; preserve alpha; no cast shadow on a ground. Deliver WebP, named challenge.item.wnb-4-a02.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, extra objects, cropped fruit, blurry edges, neon colours, or fake checkerboard transparency. No painterly 2D, gouache or paper grain.
+```
+
+### R-03 · Tips Jaka, Magelang
+
+| | |
+|---|---|
+| Kode berkas | `library.magelang.p10.1` → simpan sebagai `library.magelang.p10.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.01.webp` (lembar karakter Jaka) dan `public/assets/ui/jaka-wave.webp` (Jaka yang tampil di game); `public/assets/ui/round-eye.webp` sebagai contoh medali emas berukir |
+| Halaman Pustaka | "Tips Jaka: Fakta, Pendapat, dan Menghubungkan Informasi" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.magelang.p10.1  (R-03 · Jaka's tips, Magelang)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Jaka: this picture MUST show Jaka exactly as on the attached character sheet and game sprite: an approximately 11-year-old Javanese boy, tousled dark-brown hair with a cowlick, brown eyes, cream short-sleeve shirt, RED SCARF around his neck, brown knee-length shorts, orange-brown batik waist cloth, sandals, leather backpack. He wears NO headcloth (no iket, no blangkon), no striped lurik jacket, no vest and no long batik cloth. Same face, same proportions, same 3D finish as the attachments.
+
+SUBJECT AND COMPOSITION
+Jaka stands behind a low wooden table, whole figure visible including his feet, three-quarter view facing screen right, smiling at the two cards he holds up: the card in his right hand shows a magnifying glass with a check mark, the card in his left hand shows a speech bubble with a small heart. On the table, side by side, lie a small landscape picture and a sheet with plain grey lines in place of writing.
+Background: one plain deep-navy backdrop (#1B2740 falling to #0B1320 at the edges) with a soft warm glow behind Jaka; no room, no scenery. The symbols on the two cards are embossed gold on a dark face, in the carved-gold finish of the attached round button.
+Soft warm key light from the upper left and a faint cool rim light from the right.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Jaka and the table centred, complete within the canvas, with even margins. Opaque background. Deliver WebP, named library.magelang.p10.1.webp.
+
+CONSTRAINTS
+No letters, numbers or words anywhere, also not on the cards or the sheet. No second person. No watermarks, signatures, extra limbs, cropped features, blurry edges or neon colours. No painterly 2D, gouache, paper grain or cream paper background.
+```
+
+### R-04 · Tips Jaka, Temanggung
+
+| | |
+|---|---|
+| Kode berkas | `library.temanggung.p10.1` → simpan sebagai `library.temanggung.p10.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | Sama dengan `R-03` |
+| Halaman Pustaka | "Tips Jaka: Membaca Informasi Tersurat" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.temanggung.p10.1  (R-04 · Jaka's tips, Temanggung)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Jaka: this picture MUST show Jaka exactly as on the attached character sheet and game sprite: an approximately 11-year-old Javanese boy, tousled dark-brown hair with a cowlick, brown eyes, cream short-sleeve shirt, RED SCARF around his neck, brown knee-length shorts, orange-brown batik waist cloth, sandals, leather backpack. He wears NO headcloth (no iket, no blangkon), no striped lurik jacket, no vest and no long batik cloth. Same face, same proportions, same 3D finish as the attachments.
+
+SUBJECT AND COMPOSITION
+Jaka sits on a bamboo stool at a bamboo table, whole figure visible including his feet, three-quarter view facing screen right. He reads a single sheet of paper that carries plain grey lines in place of writing, and points at one line with his finger. A magnifying glass lies beside the sheet. His backpack rests against the stool.
+Four round medallions float around him in an arc, two on each side, all the same size: an eye, a magnifying glass, a pointing finger, a check mark. Each medallion has the carved-gold rim and dark stone face of the attached round button, with the symbol embossed in gold.
+Background: one plain deep-navy backdrop (#1B2740 falling to #0B1320 at the edges) with a soft warm glow behind Jaka; no room, no scenery.
+Soft warm key light from the upper left and a faint cool rim light from the right.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Jaka, the table and the four medallions complete within the canvas, with even margins. Opaque background. Deliver WebP, named library.temanggung.p10.1.webp.
+
+CONSTRAINTS
+No letters, numbers or words anywhere, also not on the sheet. No second person. No watermarks, signatures, extra limbs, cropped features, blurry edges or neon colours. No painterly 2D, gouache or paper grain.
+```
+
+### R-05 · Tips Jaka, Wonosobo
+
+| | |
+|---|---|
+| Kode berkas | `library.wonosobo.p10.1` → simpan sebagai `library.wonosobo.p10.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | Sama dengan `R-03` |
+| Halaman Pustaka | "Tips Jaka: Cek Dulu Sebelum Percaya dan Berbagi" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.wonosobo.p10.1  (R-05 · Jaka's tips, Wonosobo)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Jaka: this picture MUST show Jaka exactly as on the attached character sheet and game sprite: an approximately 11-year-old Javanese boy, tousled dark-brown hair with a cowlick, brown eyes, cream short-sleeve shirt, RED SCARF around his neck, brown knee-length shorts, orange-brown batik waist cloth, sandals, leather backpack. He wears NO headcloth (no iket, no blangkon), no striped lurik jacket, no vest and no long batik cloth. Same face, same proportions, same 3D finish as the attachments.
+
+SUBJECT AND COMPOSITION
+Jaka stands, whole figure visible including his feet, three-quarter view facing screen right. He holds a smartphone in one hand and looks at it thoughtfully, the other hand at his chin. The phone screen shows only soft abstract shapes.
+Four round medallions float around him, two on each side, all the same size: a public building with columns and a flag pole, a clock, a magnifying glass, a shield. Each medallion has the carved-gold rim and dark stone face of the attached round button, with the symbol embossed in gold. The clock face has hands and tick marks but no numerals.
+Background: one plain deep-navy backdrop (#1B2740 falling to #0B1320 at the edges) with a soft warm glow behind Jaka; no room, no scenery.
+Soft warm key light from the upper left and a faint cool rim light from the right.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Jaka and the four medallions complete within the canvas, with even margins. Opaque background. Deliver WebP, named library.wonosobo.p10.1.webp.
+
+CONSTRAINTS
+No letters, numbers or words anywhere, also not on the phone, the building or the clock. No second person. No watermarks, signatures, extra limbs, cropped features, blurry edges or neon colours. No painterly 2D, gouache or paper grain.
+```
+
+## Gambar tes
+
+Lampirkan gambar tes yang sekarang dari `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/` dan minta gambar yang sama dengan perubahan yang disebut saja. Setelah itu baca setiap kata di hasilnya dan cocokkan dengan daftar *All text* di prompt.
+
+### R-06 · `instr.tes-ae-B01` (kotak isian gambar mewarnai)
+
+| | |
+|---|---|
+| Kode berkas | simpan sebagai `instr.tes-ae-B01.webp` |
+| Kanvas | 1536 × 1024 |
+| Lampiran | `instr.tes-ae-B01.webp` yang sekarang; `instr.tes-ae-A01.webp` (pasangannya di buklet A, yang tulisannya benar) |
+
+```text
+Edit the attached picture "instr.tes-ae-B01". Keep everything exactly as it is: the black-and-white line-art style, the browser window, the dinosaur drawing, the layout, the fonts and every word. Change ONE thing only: the button under "Foto wajah" must read "Pilih foto" (it now reads "Piih foto").
+
+All text in the finished picture, to be checked word by word:
+- Browser tab: Gambar Mewarnai Dinosaurus
+- Address bar: warnai-yuk.example
+- Heading: Gambar Mewarnai Dinosaurus
+- Field labels, in this order: Nama lengkap / Alamat rumah / Nomor HP orang tua / Foto wajah
+- Button under the last label: Pilih foto
+- Line above the main button: Semua wajib diisi
+- Main button: Unduh
+
+No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels as WebP, named instr.tes-ae-B01.webp.
+```
+
+### R-07 · `instr.tes-bd-A-G1` (unggahan kain karawo)
+
+| | |
+|---|---|
+| Kode berkas | simpan sebagai `instr.tes-bd-A-G1.webp` |
+| Kanvas | 1536 × 1024 |
+| Lampiran | `instr.tes-bd-A-G1.webp` yang sekarang |
+| Butir terkait | `tes-bd-A03`: kuncinya meminta izin ke galeri. Tombol "Kirim pesan ke galeri" tidak boleh lebih menonjol daripada tombol lain |
+
+```text
+Edit the attached picture "instr.tes-bd-A-G1". Keep everything exactly as it is: the black-and-white line-art style, the post, the cloth photo, the information card on the right, the layout, the fonts and every word. Change ONE thing only: the four buttons at the bottom of the post must look alike. Give "Suka", "Komentar", "Bagikan" and "Kirim pesan ke galeri" the same thin outline, the same height, the same fill and the same font weight. The fourth button may be wider because its label is longer, but nothing else about it may differ.
+
+All text in the finished picture, to be checked word by word:
+- App name: Kedugram
+- Account line: @rak.kain.tia · 2 hari
+- Credit on the photo: Foto: Galeri Kain Kenari Biru
+- Likes: 126 suka (with an outlined heart)
+- Caption: Kain karawo dari Gorontalo. Motifnya digambar pakai spidol, ya! (followed by a crayon emoji)
+- Comment 1: Citra — Cantik sekali! Terima kasih sudah berbagi (followed by a clapping-hands emoji)
+- Comment 2: Danu — Motifnya kayak sarang laba-laba, wkwk (followed by a tongue-out face emoji)
+- Buttons: Suka / Komentar / Bagikan / Kirim pesan ke galeri
+- Card heading: Kain Karawo · Gorontalo
+- Card text: Kain ini disulam dengan tangan. Sebelum disulam, benang kainnya diiris dan dicabut mengikuti pola. Karawo berasal dari kata mokarawo, artinya mengiris. (the words "Karawo" at the start of the last sentence and "mokarawo" are in italics)
+
+No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels as WebP, named instr.tes-bd-A-G1.webp.
+```
+
+### R-08 · `instr.tes-bd-A-G2` (unggahan video Tari Gantar)
+
+| | |
+|---|---|
+| Kode berkas | simpan sebagai `instr.tes-bd-A-G2.webp` |
+| Kanvas | 1536 × 1024 |
+| Lampiran | `instr.tes-bd-A-G2.webp` yang sekarang |
+| Butir terkait | `tes-bd-A05`: jawabannya dibaca dari tulisan "Video: Sanggar Lima Purnama". Tulisan itu harus terbaca di layar kecil. Pilihan C `tes-bd-A08` memakai emoji 🎣 yang sama dengan keterangan unggahan |
+
+```text
+Edit the attached picture "instr.tes-bd-A-G2". Keep everything exactly as it is: the black-and-white line-art style, the post, the video frame with the five dancers, the festival information board on the right, the layout, the fonts and every word. Change TWO things only:
+1. In the caption, the emoji after "menangkap ikan" must be a fishing rod with a fish on the line (it now looks like headphones).
+2. The credit on the video frame, "Video: Sanggar Lima Purnama", must be larger: white letters on a dark strip at the bottom left of the video frame, with letters as tall as the letters of the comments below. Do not make it bold, and do not make it larger than the caption.
+
+All text in the finished picture, to be checked word by word:
+- App name: Kedugram
+- Account line: @kamera.ryan · 2 hari
+- Credit on the video: Video: Sanggar Lima Purnama
+- Likes: 9.400 suka (with an outlined heart)
+- Caption: Tari Gantar dari Kalimantan Timur, tarian nelayan menangkap ikan (fishing-rod emoji) Video rekamanku sendiri, lho!  ("Tari Gantar" in bold)
+- Comment 1: Kevin — Oh, tari nelayan, ya. Aku baru tahu! (followed by a heart-eyes emoji)
+- Comment 2: Tasya — Keliru, tuh. Baca papannya dulu, dong, jangan asal tulis! (followed by a rolling-eyes emoji)
+- Comment 3: Wina — Yang suka ribuan, berarti benar dong (followed by a thumbs-up emoji)
+- Buttons: Suka / Komentar / Bagikan / Unduh (all four alike)
+- Board heading: Papan Informasi Festival
+- Board text: Tari Gantar berasal dari Kutai Barat, Kalimantan Timur. Gerakannya menggambarkan orang menanam padi. Tongkat panjang dipakai untuk melubangi tanah. Bambu pendek berisi biji-bijian menggambarkan benih padi.
+
+No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels as WebP, named instr.tes-bd-A-G2.webp.
+```
+
+### R-09 · `instr.tes-bd-B-G1` (unggahan kain besurek)
+
+| | |
+|---|---|
+| Kode berkas | simpan sebagai `instr.tes-bd-B-G1.webp` |
+| Kanvas | 1536 × 1024 |
+| Lampiran | `instr.tes-bd-B-G1.webp` yang sekarang; `instr.tes-bd-A-G1.webp` (pasangannya di buklet A, untuk bentuk avatar komentar) |
+| Butir terkait | `tes-bd-B03`: kuncinya meminta izin ke galeri |
+| Catatan | `tes.php` menyebut gambar ini "motif hiasan mirip huruf Arab dan bunga besar". Motif di gambar harus hiasan, bukan tulisan yang bisa dibaca. Hasilnya tetap diperiksa orang yang bisa membaca huruf Arab sebelum dikirim ke validator |
+
+```text
+Edit the attached picture "instr.tes-bd-B-G1". Keep everything exactly as it is: the black-and-white line-art style, the post, the information card on the right, the layout, the fonts and every word. Change THREE things only:
+1. The four buttons at the bottom of the post must look alike. Give "Suka", "Komentar", "Bagikan" and "Kirim pesan ke galeri" the same thin outline, the same height, the same fill and the same font weight. The fourth button may be wider because its label is longer, but nothing else about it may differ.
+2. Redraw the motif on the cloth. It is a besurek batik cloth: large five-petal flowers and leafy vines, and between them flowing ornamental strokes that only SUGGEST calligraphy. The strokes must be pure decoration: abstract curls, loops and dots that do NOT form any real Arabic letter, word or sacred phrase, and that cannot be read in any script. When in doubt, make the strokes more plant-like.
+3. Give the two comments round avatars with the initials L (Lusi) and B (Bimo), like the avatars with initials in the attached form A picture.
+
+All text in the finished picture, to be checked word by word:
+- App name: Kedugram
+- Account line: @lemari.ilham · 2 hari
+- Credit on the photo: Foto: Galeri Kain Camar Putih
+- Likes: 131 suka (with an outlined heart)
+- Caption: Kain besurek dari Bengkulu. Motifnya disemprot pakai cat, ya! (followed by a painter's-palette emoji)
+- Comment 1: Lusi — Bagus sekali! Terima kasih sudah berbagi (followed by a clapping-hands emoji)
+- Comment 2: Bimo — Motifnya kayak coretan anak TK, wkwk (followed by a tongue-out face emoji)
+- Buttons: Suka / Komentar / Bagikan / Kirim pesan ke galeri
+- Card heading: Kain Besurek · Bengkulu
+- Card text: Kain ini dibatik dengan tangan. Motifnya digambar dengan canting berisi lilin panas, lalu kain dicelup ke pewarna. Besurek artinya bertulisan. (the word "Besurek" at the start of the last sentence is in italics)
+
+No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels as WebP, named instr.tes-bd-B-G1.webp.
+```
+
+### R-10 · `instr.tes-mb-A-M4` (pesan terusan dan pengumuman lomba kaghati)
+
+| | |
+|---|---|
+| Kode berkas | simpan sebagai `instr.tes-mb-A-M4.webp` |
+| Kanvas | 1024 × 1536 |
+| Lampiran | `instr.tes-mb-A-M4.webp` yang sekarang |
+
+```text
+Edit the attached picture "instr.tes-mb-A-M4". Keep everything exactly as it is: the black-and-white line-art style, the forwarded group message at the top, the Kedugram post in the middle, the box with the three children at the bottom, the layout, the fonts and every word. Change ONE thing only: the account name under "Panitia Lomba Kaghati Anak" must read "@panitia.kaghatianak" (it now reads "@panitia.kaghaianak": the letter t is missing).
+
+All text in the finished picture, to be checked word by word:
+- Group name: Grup Pencinta Layang-Layang
+- Label: Diteruskan
+- Group message: PENTING!! Lomba kaghati hari Sabtu jam 7 pagi. Layang-layang plastik juga boleh, yang penting terbang tinggi. Kabari teman-temanmu!
+- App name: Kedugram
+- Account line: Panitia Lomba Kaghati Anak (verified tick) akun resmi — date at the right: 20 Juli
+- Account name: @panitia.kaghatianak
+- Post text: Lomba Kaghati Anak diadakan hari Minggu, 9 Agustus, pukul 14.00. Kaghati adalah layang-layang tradisional dari Muna, Sulawesi Tenggara. Layarnya dari daun kolope, yaitu daun ubi hutan. Rangkanya dari bambu, dan talinya dari serat nanas hutan. Karena itu, layang-layang plastik tidak ikut dinilai.
+- Box heading: Niko, Lala, dan Rendi membaca kedua kabar itu.
+- Niko: "Pesan di grup itu bisa dipercaya. Ada tulisan PENTING dan dua tanda seru."
+- Lala: "Pesan di grup tidak menyebut siapa pembuatnya. Isinya perlu dicek dulu."
+- Rendi: "Satu pesan di grup ternyata keliru. Berarti semua pesan di grup pasti bohong."
+
+No other text, no colour, no new objects. Deliver at exactly 1024 × 1536 pixels as WebP, named instr.tes-mb-A-M4.webp.
+```
+
+### R-11 · `instr.tes-bd-B-G2` (unggahan video Tari Maengket), menunggu persetujuan pengembang
+
+| | |
+|---|---|
+| Kode berkas | simpan sebagai `instr.tes-bd-B-G2.webp` |
+| Kanvas | 1536 × 1024 |
+| Lampiran | `instr.tes-bd-B-G2.webp` yang sekarang; hasil `R-08` yang sudah diterima (supaya ukuran tulisan kreditnya sama) |
+| Butir terkait | `tes-bd-B05`: jawabannya dibaca dari tulisan "Video: Sanggar Tujuh Pelita" |
+
+```text
+Edit the attached picture "instr.tes-bd-B-G2". Keep everything exactly as it is: the black-and-white line-art style, the post, the video frame with the dancers, the festival information board on the right, the layout, the fonts and every word. Change ONE thing only: the credit on the video frame, "Video: Sanggar Tujuh Pelita", must be larger: white letters on a dark strip at the bottom left of the video frame, with letters as tall as the letters of the comments below, the same size as the credit in the attached form A picture. Do not make it bold, and do not make it larger than the caption.
+
+All text in the finished picture, to be checked word by word:
+- App name: Kedugram
+- Account line: @tontonan.dina · 2 hari
+- Credit on the video: Video: Sanggar Tujuh Pelita
+- Likes: 9.100 suka (with a heart)
+- Caption: Tari Maengket dari Sulawesi Utara, tarian untuk menyambut raja (crown emoji) Video rekamanku sendiri, lho!  ("Tari Maengket" in bold)
+- Comment 1: Jihan — Oh, tari menyambut raja, ya. Aku baru tahu! (followed by a heart-eyes emoji)
+- Comment 2: Bonar — Ngawur, tuh. Makanya baca papannya dulu, jangan asal tulis! (followed by a rolling-eyes emoji)
+- Comment 3: Ratih — Yang suka ribuan, pasti benar dong (followed by a thumbs-up emoji)
+- Buttons: Suka / Komentar / Bagikan / Unduh (all four alike)
+- Board heading: Papan Informasi Festival
+- Board text: Tari Maengket berasal dari Minahasa, Sulawesi Utara. Para penari menari sambil bernyanyi, dipimpin seorang pemimpin lagu. Awalnya, tari ini adalah ungkapan syukur atas hasil panen padi.
+
+No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels as WebP, named instr.tes-bd-B-G2.webp.
+```
+
+## Daftar periksa hasil
+
+**Gambar isi game (`R-01` sampai `R-05`)**
+
+- Tanpa tulisan, angka, atau logo.
+- `R-01`: tepat dua gunung, tanpa candi, telaga, atau laut; tanpa tembakau; sepertiga bawah tenang.
+- `R-02`: terbaca sebagai beberapa pepaya kecil, bukan belimbing dan bukan satu pepaya besar; latar transparan; tanpa cahaya atau garis tepi yang menandai jawaban.
+- `R-03` sampai `R-05`: tokohnya Jaka (syal merah, kemeja krem, ransel, tanpa ikat kepala); ketiganya berlatar biru tua yang sama; medali simbol bergaya emas berukir.
+
+**Gambar tes (`R-06` sampai `R-11`)**
+
+- Setiap kata sama dengan daftar *All text* di promptnya. Baca seluruhnya, bukan hanya bagian yang diubah.
+- Hanya bagian yang disebut prompt yang berubah. Bandingkan dengan gambar lama.
+- Tidak ada tombol, tulisan, atau gambar yang lebih menonjol daripada bagian sejenisnya.
+- Tetap hitam-putih.
+
+## Pemasangan
+
+- `R-01` sampai `R-05`: berkas dari `ai-studio/chatgpt-images/out/` **dipindahkan** (bukan disalin) ke tempat berkas lamanya di `ai-studio/game-images/assets/` dan menggantikannya; entri `data.json` tidak berubah. Lalu `php spark gelita:katalog:impor`.
+- `R-06` sampai `R-11`: berkas dipindahkan ke `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/`. Berkas PNG induk di `docs/revisi-10-analitik/gambar/doc-34/` diganti dengan hasil yang sama, supaya induk dan gambar terpasang tidak berbeda.
+- Setelah dipasang, lembar telaah dibangun ulang (`node ai-studio/game-images/review/build-sheets.mjs`) dan baris `REVIEW.md` diberi tanda baru oleh pengembang.
+
+## Kebijakan perubahan
+
+Teks butir dan stimulus di `tes.php` tidak diubah oleh dokumen ini; hanya gambarnya yang disesuaikan dengan teks. Kalau teks stimulus berubah kelak, daftar *All text* di prompt terkait ikut diubah pada hari yang sama.

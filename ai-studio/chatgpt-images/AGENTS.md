@@ -61,6 +61,18 @@ Challenge card (`node-card-skenario`):
 
 - One phone in the centre with plain bubbles and thin mist, two blank choice cards, a small shield. Still readable in sepia at 320 px wide. No people.
 
+## Rows from the picture review (codes `R-…`)
+
+The owner reviewed every picture of the game on 15 November 2026 (`ai-studio/game-images/REVIEW.md`). Pictures marked for a fix are the rows `R-01` and up; their prompts are in `docs/revisi-10-analitik/39_PROMPT_GAMBAR_PERBAIKAN_TELAAH.md`. For these rows the prompt and the lines below come before the general checks above:
+
+- **Attachments** are exactly the files in the row's **Attach** cell. "style" keeps its meaning.
+- **`R-03` to `R-05` (Tips Jaka) show Jaka on purpose.** He must match the attached character sheet and sprite: red scarf, cream shirt, backpack, no headcloth. The check "No Jaka" does not apply to these three rows; "no letters" still does.
+- **`R-02` is one cut-out object** on a transparent background. Nothing may mark it as an answer: no glow, outline, label or arrow.
+- **`R-06` and up are test pictures: an edit, not a new picture.** Attach the current picture and ask for the same picture with only the changes the prompt names. These pictures carry text on purpose, so the check "No readable text" does not apply. Instead, read every word of the result against the list *All text* in the prompt, the unchanged parts too, and compare the result with the old picture: nothing else may have changed. If an edit damages another part, start again from the old picture, never from the failed result. They stay black-and-white line art.
+- A row that is `blocked: waiting for the owner's yes` is not made until the owner changes its status.
+
+The interface art of the game (buttons, plates, frames, small icons) will come as further rows after its sizes are measured on a Chromebook screen. Its one look is the carved gold of `public/assets/ui/round-*.webp`: a thick gold frame carved in deep relief, a dark stone or navy face, the symbol embossed in the same gold, light from the upper left.
+
 ## Files in `inbox/`
 
 The owner sometimes generates pictures in the ChatGPT app and drops the downloads here with their original names. For each file:

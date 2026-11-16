@@ -667,3 +667,48 @@ After step 1 the owner decided the question left on hold, and replaced the "keep
 7. **Folder names inside.** `mockup/gambar-mockup/*/aset/` was kept to leave `MOCKUP_FILES`, `MOCKUP_DIRS` and their tests alone; flattening is listed in `docs/PROGRESS.md` for the rebuild.
 
 **Not checked:** the importer dry run on MariaDB after the move (`CatalogImportTest` and `InstrumentImportTest`, which read the shipped pictures from the new place, are green); rendering of the research mock-ups from their repointed sources (`render.mjs` was not run); a real install.
+
+
+## Picture review: the owner's marks, one look for the interface, sound checked against the research data (15 and 16 November 2026, branch `nty/laughing-ramanujan-l68r2v`)
+
+A session looked at all 21 review sheets and wrote its questions into `ai-studio/game-images/REVIEW.md`; the owner then marked rows and gave directions for the whole interface.
+
+**Owner's directions (they hold for all later work):**
+
+1. **One look for the whole interface: the carved gold the researcher approved** (`public/assets/ui/round-*.webp`, the gold plates, the framed dialog). The owner looked at the session's sample sheet of it and confirmed the pieces; the ornaments at the edges of those pieces still differ from piece to piece and have to be made alike.
+2. **A picture fits what it holds.** No stretching of a plate or frame to a size it was not drawn for; when a part needs its own size, ChatGPT draws it at that size.
+3. **Every button and small icon, from the first screen to the last, is one family** in size and finish.
+4. **Positions and sizes are redone for grade 5 students on a Chromebook**, the smallest device of the data collection.
+5. **Background music is decoration, not part of the research.** The rules for narration, hints and the other sounds follow what the research analyses and records, not "autoplay for its own sake". The same holds for the existing screens.
+6. **Moving frames are no longer needed**: a character pose is one still picture.
+7. **ChatGPT takes its orders for pictures, interface art and visuals from a Claude session** (`ai-studio/chatgpt-images/TASKS.md`). When a picture needs a photo of the real thing that the repository and a web search cannot give, the session says so and the owner sends it.
+
+**Done in this step:**
+
+1. **`drop`: the 50 vector icons** `icon.*.svg` (review sheets 07 and 08): files, list entries and sheets removed. `data.json` has 464 entries. The game never installed them.
+2. **`fixed`: `bg.temanggung.region` and `bg.wonosobo.region` held each other's pictures.** The Wonosobo entry describes Dieng (Arjuna temples, lake, sea of clouds) and that picture stood under the Temanggung key. The files are swapped. What now stands under the Temanggung key is a dusk view of the Kedu plain, kept until its redo (row `R-01`) arrives.
+3. **`fixed`: Pustaka captions.** The importer replaced a medium's picture and credit and kept the caption of the Wikimedia photo, so "Lambang Kabupaten Magelang" stood under a painting of stupas. A list entry may now carry `caption` (`id` and `en`), and `CatalogImporter::installLibrary()` writes it when it installs the picture and also when it finds the entry's picture installed already. Without `caption` the medium keeps its caption, as before. All 50 picture media were compared; 15 got a caption. `docs/pustaka/data/` is unchanged: it still describes the photos it links.
+4. **`redo later` (owner: not a priority now): ten Pustaka pictures** that are wrong as pictures (three stand where a regency's coat of arms was, one where a map was, an invented relief, a child touching a stupa, and others). No task rows yet.
+5. **`redo`: ten pictures, as rows `R-01` to `R-10` of `TASKS.md`**, prompts in the new document `docs/revisi-10-analitik/39_PROMPT_GAMBAR_PERBAIKAN_TELAAH.md`. Row `R-11` (the form B twin of `R-08`) is `blocked` until the owner says yes.
+6. **Deviation from the ChatGPT rule "a redo starts from nothing":** the five test pictures are edited from the current picture. Every other word in them was read against `tes.php` on 15 November, and forms A and B have to stay alike. The rule and its reason are in document 39 and in `ai-studio/chatgpt-images/AGENTS.md` → *Rows from the picture review*.
+7. **`review/build-sheets.mjs`** read the headings of the first-look section as sheets; they are renamed (*About sheet NN*).
+
+**Sound, checked against the research documents (a read-only sweep by a subagent; the claims marked *verified* were re-read in the code by the session):**
+
+| Today | What the research documents say | Gap |
+|---|---|---|
+| Story narration starts from a "Ketuk untuk mulai" card, then plays slide after slide (Otomatis on); the student can pause, replay, skip (`game/narrator.js`) | Story narration is automatic and is logged, not counted as help (11, Analitik 7; 32 §9.1) | Lewati leaves no event; time per slide is not logged |
+| Item narration (instruction, Cari Objek clue, scenario situation) plays only on ▶ and carries the attempt; reading passages and statements have no audio; hints are text only | 32 §8.2 and §9; 11, Analitik 7 | Matches. With sound off, ▶ only opens the transcript and logs nothing (`core/audio.js`) |
+| *Verified:* the derived layer read only the rows that open a playback (`play`, `autoplay`, `replay`), which carry 0 ms; the heard time is on the closing rows (`pause`, `complete`), which it filtered out (`ParticipantRun`, list `['play', 'replay', 'autoplay', 'progress', 'completed', 'ended']`) | "Selang saat narasi sedang diputar tidak pernah dihitung jeda" (11; 35 §6.7) | **Code disagreed with the dictionary: listening counted as an input pause.** Fixed in this step |
+| One sound button turns off music, effects and narration together; the state is in `localStorage`, per browser, and is never logged (`game/hud.js`, `core/audio.js`) | Headsets for every student are a field condition (02, L0); nothing on sound state | A student who silences the music loses the narration; on a shared Chromebook the next student inherits the setting; neither can be seen in the data |
+| Music loops on almost every screen, the five challenges included, and drops to 20% under narration; effects `correct`/`wrong` play on every check. Research mode changes nothing about sound | Music is a study variable nowhere | Uncontrolled, unrecorded sound during reading tasks; without headsets the effects tell neighbours the outcome |
+| Autoplay that the browser blocks fails silently; the slide waits for a tap | Not defined | A missing `audio_autoplay` row can mean blocked, muted, failed or not approved |
+
+**Fixed:** `ParticipantRun` now reads every stored action (`AUDIO_ACTIONS`, the same list as `AudioUsageEventModel::ACTIONS`), so a narration's interval has its real length and a pause spent listening is not idle time. `NarrationIdleTest` reproduces the case on the golden student (20 s of idle excess gone) and holds the two lists together. This makes the code do what `kamus-1.1` already says, so the dictionary version stays. Derived runs made before this commit hold the old values; only development data exists.
+
+**Left for the owner (nothing built):** whether music is silent in research mode or gets its own switch apart from narration; whether the `correct`/`wrong` effects stay; whether the sound state is logged per game session and reset to on at each login in research mode (a new research event, so `kamus-1.2`); whether Lewati and Otomatis stay available during the study; what a student without a headset does.
+
+**Checked:** `CatalogImportTest` with the new caption test, the tests that read the picture list, the derived-data tests; the full suite after the marks step (1277 tests green), and again before the last push of this step (see the branch row of `docs/PROGRESS.md`).
+
+**Not checked:** an import of the new captions on MariaDB (the SQLite test covers install, re-run and a one-language caption); the swapped backgrounds on a running game; any of the redo prompts in ChatGPT.
+
