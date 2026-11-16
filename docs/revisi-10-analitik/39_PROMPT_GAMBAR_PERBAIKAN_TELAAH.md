@@ -25,6 +25,7 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 | `R-11` | Gambar tes `instr.tes-bd-B-G2` | 385 | Belum ditandai pengembang. Pasangan `R-08` di buklet B: tulisan "Video: Sanggar Tujuh Pelita" sama kecilnya. Dikerjakan hanya kalau pengembang setuju, supaya buklet A dan B tetap setara |
 | `R-12` | Pustaka Magelang, arca Buddha Mendut `library.magelang.p5.2` | 293 | Buddha duduk bersila (aslinya kedua kaki menjuntai); dua arca pengapit berdiri (aslinya duduk); ada singa dan anak yang menyembah. Foto acuan dari pengembang, lisensi didapat peneliti |
 | `R-13` | Foto unggahan Cari Objek Temanggung `challenge.post.tmg-4-b` (uceng goreng) | — | Belum ada fotonya, dan pemasang katalog belum mengenal gambar unggahan; slot `challenge.post.*` ditambahkan 16 November 2026 |
+| `R-14` | Pustaka Wonosobo, peta kawasan Dieng `library.wonosobo.p2.2` | 325 | Halaman butuh peta kawasan Dieng, bukan pemandangan. Lima peta acuan dari pengembang, lisensi didapat peneliti. Satu-satunya gambar isi game bertulisan (nama tempat) |
 
 ## Aturan bersama
 
@@ -32,10 +33,10 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 
 Gambar di dokumen ini bukan bagian antarmuka. Gayanya mengikuti kelompoknya masing-masing:
 
-- **Gambar isi game** (`R-01` sampai `R-05`, `R-12`, dan `R-13`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
+- **Gambar isi game** (`R-01` sampai `R-05`, `R-12` sampai `R-14`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
 - **Gambar tes** (`R-06` sampai `R-11`): gambar garis hitam-putih seperti 23 gambar tes lainnya. Gaya ini disengaja: instrumen tes tampil netral dan tidak memakai gaya game.
 
-**Tulisan di gambar.** Gambar isi game tidak memuat tulisan. Gambar tes justru memuat tulisan, dan setiap kata harus sama persis dengan `app/Database/Seeds/data/instrumen/tes.php`. Tulisan di gambar dibuat oleh model gambar, jadi setiap hasil dibaca ulang kata per kata dengan daftar di promptnya.
+**Tulisan di gambar.** Gambar isi game tidak memuat tulisan, kecuali peta `R-14` (nama tempat, daftar tetap). Gambar tes justru memuat tulisan, dan setiap kata harus sama persis dengan `app/Database/Seeds/data/instrumen/tes.php`. Tulisan di gambar dibuat oleh model gambar, jadi setiap hasil dibaca ulang kata per kata dengan daftar di promptnya.
 
 **Gambar tes diperbaiki, bukan digambar dari nol.** Berbeda dari aturan `redo` di `ai-studio/chatgpt-images/AGENTS.md`: gambar tes yang ada dilampirkan dan hanya bagian yang salah yang diubah. Alasannya, semua tulisan lainnya sudah dicocokkan dengan `tes.php` pada 15 November 2026, dan buklet A dan B harus tetap serupa. Kalau hasil suntingan mengubah bagian lain, ulangi dari gambar lama, jangan dari hasil yang gagal.
 
@@ -245,6 +246,49 @@ CONSTRAINTS
 No watermarks, signatures, text, letters, numbers, logos, play buttons, frames, social-media interface, emoji, blurry edges or neon colours. No painterly 2D, gouache or paper grain.
 ```
 
+### R-14 · Peta kawasan Dataran Tinggi Dieng (Pustaka Wonosobo)
+
+Ditambahkan 16 November 2026. Pengembang menandai gambar ini `redo later` (telaah no. 325): halaman Pustaka "Dieng, Tempat Para Dewa" membutuhkan peta kawasan Dieng, bukan pemandangan (gambar sekarang juga menampilkan anak berikat kepala lurik). Pengembang mengirim lima peta acuan yang lisensinya sudah didapat peneliti (`ai-studio/chatgpt-images/inbox/reference-Dieng-*` dan `reference-Wonosobo-*`, dicatat di `reference-sources-2026-11-15.json`). Letak tempat diambil dari peta jalur wisata Dinas Pariwisata dan Kebudayaan Wonosobo (`-08`); peta lain untuk batas kabupaten (`-06`, `-09`) dan untuk rupa peta timbul (`-05`, `-07`; `-07` tampak buatan AI, jadi bukan sumber fakta).
+
+**Pengecualian tulisan.** Peta tidak berguna tanpa nama tempat, jadi gambar ini satu-satunya gambar isi game yang memuat tulisan. Tulisannya hanya daftar *All text* di prompt, dan setiap kata dibaca ulang seperti gambar tes. Halaman ini menerangkan bahwa Dieng terbagi antara beberapa kabupaten; peta menunjukkan hal itu.
+
+| | |
+|---|---|
+| Kode berkas | `library.wonosobo.p2.2` → simpan sebagai `library.wonosobo.p2.2.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | Acuan gaya `reference.06` atau `reference.07`; `inbox/reference-Dieng-route-map-Wonosobo-tourism-office-08.jpg` (letak tempat dan jalan); `inbox/reference-Dieng-map-dieng-net-05.jpg` (contoh peta timbul) |
+| Halaman Pustaka | "Dieng, Tempat Para Dewa", bagian *Satu dataran, beberapa kabupaten*: Kecamatan Kejajar (Wonosobo), Kecamatan Batur dan sebagian Pejawaran (Banjarnegara), sebagian Kabupaten Batang; pusat wisata Desa Dieng Kulon (Banjarnegara) dan Dieng Wetan (Wonosobo). Keterangan gambar setelah dipasang: "Peta kawasan Dataran Tinggi Dieng" (keterangan asli halaman) |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.wonosobo.p2.2  (R-14 · map of the Dieng Plateau area, library picture)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Characters: do NOT include Jaka or Mbah Kedu, and no people at all. The attached route map is the factual source for where each place lies; the attached relief map shows the kind of picture wanted. Do not copy their text, logos, colours or layout boxes.
+
+SUBJECT AND COMPOSITION
+A pictorial relief map of the Dieng Plateau, Central Java, seen from above at a gentle angle, like a small clay diorama lying on a dark navy table: green highland with hills and two volcano peaks, winding roads as thin cream lines, small dark-blue lakes, and steam rising from one crater. North is at the top.
+Three regencies share the plateau. Show them as three areas with soft, slightly different green tones, separated by thin dashed gold border lines: BANJARNEGARA on the left (west) part, WONOSOBO on the right and bottom (east and south) part, and BATANG as a narrow strip along the top (north) edge.
+Places, each a small 3D landmark with its label on a small cream tag, positions following the attached route map:
+- Dieng Kulon: a small village of red-roofed houses in the upper middle, inside Banjarnegara, just west of the border.
+- Dieng Wetan: a small village just east of the border, inside Wonosobo, next to Dieng Kulon.
+- Candi Arjuna: a small group of dark-grey stone temples next to Dieng Kulon.
+- Telaga Warna: a lake of green-turquoise water close to the border, a little south-east of Candi Arjuna.
+- Kawah Sikidang: a grey crater with a white steam plume, west of Telaga Warna, inside Banjarnegara.
+- Sikunir: a hill with a viewpoint, south-east of Telaga Warna, inside Wonosobo.
+- Gunung Prau: a long green ridge in the north-east, near the Batang strip.
+A small north arrow in the top right corner, marked with the letter U.
+
+All text — exactly these words and nothing else, each spelled exactly so: "BANJARNEGARA", "WONOSOBO", "BATANG" (area names, large, gold capitals), "Dieng Kulon", "Dieng Wetan", "Candi Arjuna", "Telaga Warna", "Kawah Sikidang", "Sikunir", "Gunung Prau" (place tags, small dark letters on cream), "U" (north arrow). No title, no legend, no other words, numbers or road names.
+
+Accuracy — Dieng Kulon, Candi Arjuna and Kawah Sikidang are in Banjarnegara; Dieng Wetan, Telaga Warna and Sikunir are in Wonosobo. No sea, no city, no temple other than Candi Arjuna. No tobacco.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. The whole map complete within the canvas, with an even margin of dark navy table around it. Opaque background. Deliver WebP, named library.wonosobo.p2.2.webp.
+
+CONSTRAINTS
+No watermarks, signatures, logos, frames, misspelled or extra words, blurry edges or neon colours. No painterly 2D, gouache or paper grain.
+```
+
 ## Gambar tes
 
 Lampirkan gambar tes yang sekarang dari `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/` dan minta gambar yang sama dengan perubahan yang disebut saja. Setelah itu baca setiap kata di hasilnya dan cocokkan dengan daftar *All text* di prompt.
@@ -417,13 +461,14 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 
 ## Daftar periksa hasil
 
-**Gambar isi game (`R-01` sampai `R-05`, `R-12`, `R-13`)**
+**Gambar isi game (`R-01` sampai `R-05`, `R-12` sampai `R-14`)**
 
-- Tanpa tulisan, angka, atau logo.
+- Tanpa tulisan, angka, atau logo, kecuali `R-14`.
 - `R-01`: tepat dua gunung, tanpa candi, telaga, atau laut; tanpa tembakau; sepertiga bawah tenang.
 - `R-02`: terbaca sebagai beberapa pepaya kecil, bukan belimbing dan bukan satu pepaya besar; latar transparan; tanpa cahaya atau garis tepi yang menandai jawaban.
 - `R-12`: tepat tiga arca dari batu abu-abu kecokelatan; Buddha duduk dengan kedua kaki di alas teratai, tangan di depan dada; kedua arca pengapit duduk; tanpa singa, sesaji, pagar, dan orang. Cocokkan dengan kedua foto acuan.
 - `R-13`: ikan kecil ramping sebesar jari, bukan ikan laut; seperempat bawah dari kiri hanya permukaan meja; tanpa tulisan, tombol putar, dan tampilan media sosial.
+- `R-14`: setiap tulisan sama persis dengan daftar *All text*, tanpa tulisan lain; utara di atas; Dieng Kulon, Candi Arjuna, dan Kawah Sikidang di Banjarnegara, Dieng Wetan, Telaga Warna, dan Sikunir di Wonosobo; cocokkan letaknya dengan peta jalur wisata `-08`.
 - `R-03` sampai `R-05`: tokohnya Jaka (syal merah, kemeja krem, ransel, tanpa ikat kepala); ketiganya berlatar biru tua yang sama; medali simbol bergaya emas berukir.
 
 **Gambar tes (`R-06` sampai `R-11`)**
@@ -435,7 +480,7 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 
 ## Pemasangan
 
-- `R-01` sampai `R-05` dan `R-12`: berkas dari `ai-studio/chatgpt-images/out/` **dipindahkan** (bukan disalin) ke tempat berkas lamanya di `ai-studio/game-images/assets/` dan menggantikannya; entri `data.json` tidak berubah. Lalu `php spark gelita:katalog:impor`. `R-13` adalah gambar baru: berkasnya dipindahkan ke `ai-studio/game-images/assets/tantangan/challenge.post.tmg-4-b.webp`, lalu entri baru `challenge.post.tmg-4-b` ditambahkan ke `data.json` (contoh: entri `challenge.item.tmg-1-h01`) dan satu baris ke `REVIEW.md`.
+- `R-01` sampai `R-05` dan `R-12`: berkas dari `ai-studio/chatgpt-images/out/` **dipindahkan** (bukan disalin) ke tempat berkas lamanya di `ai-studio/game-images/assets/` dan menggantikannya; entri `data.json` tidak berubah. Lalu `php spark gelita:katalog:impor`. `R-13` adalah gambar baru: berkasnya dipindahkan ke `ai-studio/game-images/assets/tantangan/challenge.post.tmg-4-b.webp`, lalu entri baru `challenge.post.tmg-4-b` ditambahkan ke `data.json` (contoh: entri `challenge.item.tmg-1-h01`) dan satu baris ke `REVIEW.md`. `R-14`: entri `library.wonosobo.p2.2` di `data.json` mendapat `caption` baru "Peta kawasan Dataran Tinggi Dieng" / "Map of the Dieng Plateau area".
 - `R-06` sampai `R-11`: berkas dipindahkan ke `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/`. Berkas PNG induk di `docs/revisi-10-analitik/gambar/doc-34/` diganti dengan hasil yang sama, supaya induk dan gambar terpasang tidak berbeda.
 - Setelah dipasang, lembar telaah dibangun ulang (`node ai-studio/game-images/review/build-sheets.mjs`) dan baris `REVIEW.md` diberi tanda baru oleh pengembang.
 

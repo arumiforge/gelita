@@ -274,6 +274,74 @@
       "received_on": "2026-11-16",
       "use": "Factual reference for R-12 (library.magelang.p5.2, review no. 293): pose, hands, halo, throne and the two flanking statues. Reference only, never installed in the game.",
       "sha256": "c0c5df0240f0ce185b06988b1fafb1f925a9d548df047dc1910a3ae549c80ecb"
+    },
+    {
+      "file": "reference-Dieng-map-dieng-net-05.jpg",
+      "title": "'Peta Wisata Dieng berdasar wilayah' (dieng.net): relief map of the plateau with Batur, Kab. Banjarnegara, Kab. Wonosobo, Kejajar, Garung and the main sights",
+      "creator": null,
+      "source": null,
+      "license": "Licence obtained by the researcher (owner, 16 November 2026); creator and source not recorded beyond what the map itself shows",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Factual reference for R-14 (library.wonosobo.p2.2, review no. 325): Positions of places; relief-map look. Reference only, never installed in the game.",
+      "sha256": "ea58f2cde4a4f8aff9372132e11c543408052fa07ecc3d90208a5683fc7a1471"
+    },
+    {
+      "file": "reference-Wonosobo-district-map-06.jpg",
+      "title": "Map of the districts (kecamatan) of Kabupaten Wonosobo; Kejajar at the northern tip",
+      "creator": null,
+      "source": null,
+      "license": "Licence obtained by the researcher (owner, 16 November 2026); creator and source not recorded beyond what the map itself shows",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Factual reference for R-14 (library.wonosobo.p2.2, review no. 325): Where Kejajar lies in Wonosobo. Reference only, never installed in the game.",
+      "sha256": "c4e5b2771d3f5cee3ea095c3688de9ac50a5efacdf80f55ad3f317084fdff5be"
+    },
+    {
+      "file": "reference-Dieng-tourism-map-illustrated-07.jpg",
+      "title": "'Peta Wisata Dieng: jelajah alam, budaya & sejarah', an illustrated relief map (looks AI-made)",
+      "creator": null,
+      "source": null,
+      "license": "Licence obtained by the researcher (owner, 16 November 2026); creator and source not recorded beyond what the map itself shows",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Factual reference for R-14 (library.wonosobo.p2.2, review no. 325): Look of a pictorial relief map only; not a source of facts. Reference only, never installed in the game.",
+      "sha256": "af82bbabb837f0f6f19927edafcbdb0595464c505e0846be778ce6e1cb65b26a"
+    },
+    {
+      "file": "reference-Dieng-route-map-Wonosobo-tourism-office-08.jpg",
+      "title": "'Rekomendasi jalur wisata Dieng via jalur utama Wonosobo', Dinas Pariwisata dan Kebudayaan Kabupaten Wonosobo (map edit credited to dieng.net)",
+      "creator": null,
+      "source": null,
+      "license": "Licence obtained by the researcher (owner, 16 November 2026); creator and source not recorded beyond what the map itself shows",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Factual reference for R-14 (library.wonosobo.p2.2, review no. 325): Main source for the positions of the sights and roads. Reference only, never installed in the game.",
+      "sha256": "0399b9e184a9c95e95e0557f356ca8c45900b0f1d71b6adf7dc5c05355b43022"
+    },
+    {
+      "file": "reference-Wonosobo-satellite-map-09.jpg",
+      "title": "'Peta Kabupaten Wonosobo', satellite picture with the regency border and neighbouring regencies",
+      "creator": null,
+      "source": null,
+      "license": "Licence obtained by the researcher (owner, 16 November 2026); creator and source not recorded beyond what the map itself shows",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Factual reference for R-14 (library.wonosobo.p2.2, review no. 325): Outline of Wonosobo; Banjarnegara to the west, Batang and Kendal to the north. Reference only, never installed in the game.",
+      "sha256": "740201fcdfffe829e741c03ae6f56d2ba2a4823598e3a9b34fcc4a147197005e"
+    },
+    {
+      "file": null,
+      "title": "'Peta Kemiringan Lereng Kabupaten Wonosobo Tahun 2017' (UNNES student map)",
+      "license": "Licence obtained by the researcher (owner, 16 November 2026)",
+      "received_on": "2026-11-16",
+      "use": "Shown in the conversation only; no file reached the repository. Not needed for R-14.",
+      "removed": false
     }
   ],
   "permission_updates": [
