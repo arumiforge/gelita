@@ -6,6 +6,14 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Foto Candi Pringapus dicocokkan; berkasnya belum diterima** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
+
+- Pengembang mengirim lima foto Candi Pringapus dari peneliti, tetapi hanya sebagai gambar di percakapan, bukan berkas; foto belum disimpan dan belum dipasang.
+- Gambar Pustaka "Candi Pringapus, candi Hindu abad ke-9" keliru bentuk: lukisan candi lebar berpuncak banyak dengan dua pintu, padahal Pringapus satu bilik ramping di atas kaki tinggi dengan satu pintu berkepala kala. Foto tampak depan di taman akan dipasang apa adanya setelah berkasnya diterima.
+- Gambar "Arca Nandi di dalam bilik Candi Pringapus" menampilkan balairung bertiang dan menara mirip Prambanan; arca Nandi aslinya ada di bilik kecil yang gelap. Belum ada foto Nandi yang cukup jelas.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Foto Topeng Ireng dari peneliti; gambar Pustaka "Barisan penari Topeng Ireng" diganti foto asli** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
 
 - Pengembang mengirim lima foto Topeng Ireng (berizin, dari peneliti). Semuanya disimpan sebagai acuan di `ai-studio/chatgpt-images/inbox/` dan dicatat di `reference-sources-2026-11-15.json`.
