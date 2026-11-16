@@ -96,7 +96,11 @@ Di Linux atau sesi awan, `tools/dev/serve.sh` mengerjakan langkah 1–4 sekaligu
    mysql -u root -p -e "CREATE DATABASE gelita CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
    php spark migrate
    GELITA_ADMIN_PASSWORD='SandiKuatAnda123!' php spark db:seed DatabaseSeeder
+   php spark gelita:instrumen:impor
+   php spark gelita:narration:install
    php spark gelita:narration:import
+   php spark gelita:katalog:impor
+   php spark gelita:content:verify
    ```
 
    Di PowerShell:
@@ -107,6 +111,9 @@ Di Linux atau sesi awan, `tools/dev/serve.sh` mengerjakan langkah 1–4 sekaligu
 
    - `migrate` menjalankan 44 migration (termasuk `ci_sessions`); jangan menjalankan `php spark session:migration`.
    - `DatabaseSeeder` mengisi daftar sekolah resmi, akun `admin`, pengaturan bawaan (indikator, rilis, studi), tiga wilayah, slot media, tantangan dan cerita, lalu `KontenKelas5Seeder` mengimpor Pustaka Kedu, bank soal kelas 5, dan gambar contoh.
+   - `gelita:instrumen:impor` loads the test, questionnaire and attitude-scale content; `db:seed` does not, and without it `/tes` cannot be used (`gelita:content:verify` warns *Isi instrumen belum diimpor*). `gelita:reset` runs it too.
+   - `gelita:narration:install` copies the backup narration from `ai-studio/elevenlabs-voice/out/` into `public/assets/audio/narasi/{id,en}/` (marked as synthetic in `produksi.json`); files already there and unchanged are reported as *tidak berubah*.
+   - `gelita:katalog:impor` installs the team's pictures from `ai-studio/game-images/` over the sample pictures (optional on a development machine).
    - `gelita:narration:import` mendaftarkan rekaman yang ada di `public/assets/audio/narasi/{id,en}/` sebagai audio **draft** (repositori tidak membawa rekaman narasi; lihat [Audio bawaan](#audio-bawaan)). Setujui di panel: **Rekaman narasi → Setujui semua rekaman Indonesia / Inggris**.
 
 4. Jalankan server pengembangan:
@@ -126,10 +133,12 @@ Langkah lengkap untuk kedua jalur (Linux: Nginx + PHP-FPM + cron; Windows: Larag
 1. `composer install --no-dev --optimize-autoloader`, salin `env` → `.env` dengan `CI_ENVIRONMENT = production`, isi database, `encryption.key`, `gelita.ipSalt`, dan `app.baseURL`. Web server mengarah ke folder `public/`.
 2. `php spark migrate` dengan akun migrasi `gelita_migrate` lewat `database_default_DSN` (DSN ditulis tanpa port); aplikasi sendiri memakai akun berhak DML saja.
 3. `GELITA_ADMIN_PASSWORD='…' php spark db:seed DatabaseSeeder`, dijalankan sebagai pengguna web server (mis. `www-data`) agar `public/assets/uploads/` dapat ditulis.
-4. `php spark gelita:narration:import`, lalu setujui narasi draft di **Rekaman narasi**.
-5. `php spark gelita:content:verify`.
-6. Ganti gambar contoh dengan gambar asli di panel (**Gambar & mockup**), sampai **daftar siap penelitian** di **Penelitian** (`/admin/studi`) hijau: tanpa gambar contoh, narasi disetujui, dan `gelita:content:verify --siap-penelitian` lolos.
-7. Uji asap (daftar "Uji manual" di `08_DEPLOYMENT.md`), lalu sebelum pengambilan data penelitian: buat backup, lalu `php spark gelita:reset` dengan akun migrasi.
+4. `php spark gelita:instrumen:impor` (test, questionnaire and attitude-scale content for `/tes`; not part of `db:seed`).
+5. `php spark gelita:narration:install`, then `php spark gelita:narration:import`, lalu setujui narasi draft di **Rekaman narasi**.
+6. `php spark gelita:katalog:impor` (the team's pictures from `ai-studio/game-images/`).
+7. `php spark gelita:content:verify`.
+8. Ganti gambar contoh dengan gambar asli di panel (**Gambar & mockup**), sampai **daftar siap penelitian** di **Penelitian** (`/admin/studi`) hijau: tanpa gambar contoh, narasi disetujui, dan `gelita:content:verify --siap-penelitian` lolos.
+9. Uji asap (daftar "Uji manual" di `08_DEPLOYMENT.md`), lalu sebelum pengambilan data penelitian: buat backup, lalu `php spark gelita:reset` dengan akun migrasi.
 
 Tidak ada prosedur pembaruan dari instalasi lama: setiap rilis dipasang sebagai instalasi baru. Pembaruan kode berikutnya pada server yang sudah terpasang memakai `deploy/linux/deploy.sh` atau `deploy/windows/deploy.ps1` (menolak berjalan bila ada kelas aktif, backup, mode pemeliharaan, pull, composer, migrate, impor sekolah, bersihkan cache, naikkan versi aset, lalu membuka situs hanya bila `gelita:content:verify` lolos). Backup dan `gelita:retention:run` dijadwalkan harian.
 
