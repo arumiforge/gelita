@@ -6,6 +6,12 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Cek kemutakhiran 28 setelah kode gelombang D dan panel hari lapangan** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang) · status 28 tetap `disetujui pengembang` · mengubah 00 dan 28; tidak merevisi produk
+
+Diselaraskan tanpa keputusan baru ([28 §22](28_IMPLEMENTASI_SESI_LAPANGAN.md#22-keputusan-pengembang) no. 15–19): alasan penolakan token `withdrawn` dan `too_many` (§6.3); layar cek suara sesudah token (§6.4); *Tambah waktu* hanya di halaman sesi lapangan, Ringkasan *Sesi lapangan hari ini*, dan pemantauan dengan *Perlu perhatian* dan bunyi peringatan (§12); kartu cetak dan menu *Kerja lapangan* (§15); simulator menolak berjalan di mode penelitian (§19.2); cek manual §19.3 belum pernah dijalankan sebagai satu daftar, bagian-bagiannya dicek 9, 14, dan 16 November 2026.
+
+**Untuk pengembang:** sebagian penyimpangan bagian 2 (28 §22 no. 15: token yang diganti sebagai `token_unknown`, `too_many`, rute kode sekolah penelitian, penanda tiga langkah pendaftaran) belum pernah disetujui terpisah dan tetap `draf pengembang`. Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Cek kemutakhiran 29 setelah kode gelombang E** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang) · status 29 tetap `disetujui pengembang` · mengubah 00 dan 29; tidak merevisi produk
 
 Diselaraskan tanpa keputusan baru ([29 §19](29_IMPLEMENTASI_DATA_PENELITIAN.md#19-keputusan-pengembang) no. 18–22) dengan kode gelombang E dan entri 04 sesudah 3 November 2026: §4 mendapat `item_shown` dan `sound_check_answered`; §16.3 mendapat hasil cek manual 9 dan 14 November 2026; §19 mencatat penyimpangan gelombang E, jawaban pengembang 8 November 2026 (L5 tiga lembar, templat L0 kosong), dan sambungan dari bagian 4 dan 6–9.

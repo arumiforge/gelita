@@ -1,8 +1,8 @@
 # Dokumen Implementasi Bagian 2 — Sesi Lapangan, Token, Kode Peserta, Pemantauan, dan Akun Uji
 
-Per 1 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 11, 12, 13, dan 24 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
+Per 16 November 2026 (cek kemutakhiran setelah kode gelombang D dan panel hari lapangan; disetujui 1 November 2026) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 11, 12, 13, dan 24 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
 
-> **Status: `disetujui pengembang`, `asal: pengembang`** (disusun dengan bantuan AI 30 Oktober 2026; dicek kemutakhirannya, ditinjau, dan disetujui pengembang 1 November 2026, [§22](#22-keputusan-pengembang)). Ini dokumen, bukan perubahan sistem.
+> **Status: `disetujui pengembang`, `asal: pengembang`** (disusun dengan bantuan AI 30 Oktober 2026; dicek kemutakhirannya, ditinjau, dan disetujui pengembang 1 November 2026, [§22](#22-keputusan-pengembang); kode gelombang D 3 November 2026; cek kemutakhiran setelah kode 16 November 2026, §22 no. 15–19). Ini dokumen, bukan perubahan sistem.
 >
 > **Kapan dibangun** ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026, menggantikan "tahap 3, setelah G2"): kodenya dibangun sekarang, di gelombang kode D bersama bagian 5 (31), setelah bagian 1 ([27](27_IMPLEMENTASI_PERAN_PENELITI.md)) di gelombang C ([00 → Tahap dokumen 3](00_INDEKS.md)). Semua perilaku penelitian di sini ada di balik sakelar `field_mode` yang mati secara bawaan ([§5.1](#51-sakelar-field_mode)), jadi `main` tetap bisa dirilis. Sistem baru tidak dipakai dengan anak sebelum persetujuan etik terbit; G3 tetap dinilai setelah G2, versi dikunci di G4, dan instalasi uji validator tahap 2 tetap memakai *commit* yang dibekukan di [20](20_PAKET_VALIDASI.md) prasyarat no. 4. Migrasi bagian ini (`003500`) tidak termasuk migrasi yang menghapus data: ia mengisi `participant_progress` dari pengerjaan yang sudah tuntas sebelum membuang `session_progress`, jadi tidak ada kemajuan yang hilang ([§8](#8-kemajuan-mengikuti-siswa-bukan-sesi-game), [§22](#22-keputusan-pengembang) no. 11).
 >
@@ -249,7 +249,10 @@ Pemeriksaan token sekaligus memeriksa sekolah dan rombel siswa (K8), keanggotaan
 | Token untuk kelas lain | `other_class` |
 | Susulan untuk teman lain | `not_member` |
 | Akun sudah punya sesi game di studi lain (K20) | `other_study` |
-| Siswa nonaktif karena status mundur ([30 → Status mundur dan akun nonaktif](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#53-status-mundur-dan-akun-nonaktif)) | `inactive` |
+| Siswa nonaktif karena status mundur ([30 → Status mundur dan akun nonaktif](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#53-status-mundur-dan-akun-nonaktif)) | `withdrawn` (pesan `Game.tokenWithdrawn`, keputusan pengembang 8 November 2026); nonaktif karena alasan lain `inactive` |
+| Batas coba terlampaui (token salah ke-10 dalam 10 menit) | `too_many` |
+
+*Seperti dibangun:* token yang sudah diganti ditolak sebagai `token_unknown`, tanpa alasan sendiri.
 
 Setiap penolakan punya pesannya sendiri ([§16](#16-layar-dan-teks)). Penolakan `inactive` memakai pesan `Game.loginInactive` dari bagian 4; biasanya sesi siswa itu sudah berakhir lebih dulu lewat `ParticipantCheck`, jadi pemeriksaan token adalah pengaman kedua.
 
@@ -263,6 +266,7 @@ Setiap penolakan punya pesannya sendiri ([§16](#16-layar-dan-teks)). Penolakan 
    - sesi game baru dibuat dengan `field_session_id` dan `meeting_no`;
    - event `session_started` dengan `via: token`;
    - siswa diarahkan ke isi pertemuan: peta wilayah yang dibuka, atau `/intro` di P1.
+   - *Sejak 16 November 2026:* sebelum isi pertemuan, layar cek suara `/cek-suara` tampil sekali per sesi game mode penelitian ([33 §7.6](33_IMPLEMENTASI_MODE_PENELITIAN.md#76-cek-suara-di-awal-sesi-permainan)).
 5. Token ditolak: pesan sesuai alasan, siswa tetap di `/token` (`mk-tk-02`).
 6. **Layar kecil ([33 §7.2](33_IMPLEMENTASI_MODE_PENELITIAN.md#72-layar-kecil)).** Formulir `/token` juga mengirim `stage_w` (lebar panggung, diukur klien). Dalam mode penelitian, nilai di bawah `research_studies.min_stage_px` (bawaan 960) ditolak dengan pesan layar kecil **sebelum** sesi game dibuat, supaya tidak ada sesi lapangan yang tercatat dari ponsel. Nilai kosong (JavaScript mati) diterima; klien tetap menahan. Penolakan dicatat sebagai audit sesi lapangan `small_screen_refused`, tanpa data siswa.
 
@@ -452,7 +456,7 @@ Dalam mode penelitian, aturan buka dibaca dari rencana pertemuan sesi lapangan y
 | Izin belum diisi (siswa rombel tanpa tanggal izin orang tua, [30 → Izin berkode per siswa](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#52-izin-berkode-per-siswa)) | Jumlah | — (isian izin dan angkanya tidak terlihat admin, [§21](#21-pertanyaan-terbuka) no. 7) |
 | Siswa sesi itu yang belum punya kursi (tanpa kursi, tantangan 2–5 tidak terbuka: `BOOKLET_MISSING`, [31 §11.2](31_IMPLEMENTASI_BANK_SOAL_BARU.md#112-memilih-variasi-di-opennode), K10) | Daftar kode | Jumlah ([§22](#22-keputusan-pengembang) no. 13) |
 | Perangkat layar kecil ditolak (jumlah audit `small_screen_refused` sesi ini, [33 §7.2](33_IMPLEMENTASI_MODE_PENELITIAN.md#72-layar-kecil)) | Jumlah | Jumlah ([§22](#22-keputusan-pengembang) no. 13) |
-| Status tes awal/akhir per kode (`belum`, `sedang`, `selesai`, `susulan`, `hilang`), dari modul tes, tanpa jawaban, skor, atau tanda butir risiko ([34 §14](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#14-titik-sambung-ke-perubahan-lain)) | Per kode, dengan tombol *Tambah waktu* per siswa (`POST /admin/sesi-lapangan/{id}/tambah-waktu`, `field_sessions.manage`, 34 K3, [34 → Batas waktu tersembunyi](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#74-batas-waktu-tersembunyi), 34 §12) | — |
+| Status tes awal/akhir per kode (`belum`, `sedang`, `selesai`, `susulan`, `hilang`), dari modul tes, tanpa jawaban, skor, atau tanda butir risiko ([34 §14](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#14-titik-sambung-ke-perubahan-lain)) | Per kode, dengan tombol *Tambah waktu* per siswa (*dibangun hanya di halaman sesi lapangan, tidak di pemantauan*) (`POST /admin/sesi-lapangan/{id}/tambah-waktu`, `field_sessions.manage`, 34 K3, [34 → Batas waktu tersembunyi](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#74-batas-waktu-tersembunyi), 34 §12) | — |
 | Tombol *Mulai tes awal* / *Mulai tes akhir* di halaman sesi lapangan P1 dan P5 ([34 → Mulai tes bersama](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#53-mulai-tes-bersama)) | Ya | — |
 
 **Penyegaran:**
@@ -460,7 +464,9 @@ Dalam mode penelitian, aturan buka dibaca dari rencana pertemuan sesi lapangan y
 - Bila gagal, jeda bertambah. Polanya disalin dari `public/assets/js/admin/export.js`, berkas baru `public/assets/js/admin/monitoring.js`.
 - Permintaan ini membawa kepala `X-Gelita-Background: 1`, yang tidak dihitung sebagai aktivitas staf ([27 → Keamanan masuk staf](27_IMPLEMENTASI_PERAN_PENELITI.md#111-keamanan-masuk-staf)).
 
-**Ringkasan.** Kartu baru "Sesi lapangan aktif" (kode sesi, jumlah masuk, jumlah aktif) untuk peneliti dan ketua di `/admin`, dengan tautan ke pemantauan.
+**Ringkasan.** Kartu baru "Sesi lapangan aktif" (kode sesi, jumlah masuk, jumlah aktif) untuk peneliti dan ketua di `/admin`, dengan tautan ke pemantauan. *Diganti 16 November 2026 (panel hari lapangan):* "Sesi lapangan hari ini" di urutan pertama untuk peneliti dan ketua selama ada studi bermode penelitian aktif, satu kartu per sesi bertanggal hari itu (juga yang belum buka dan yang masih buka dari hari sebelumnya) dengan kode, keadaan, jam, token, siswa masuk dari daftar rombel, dan empat angka perhatian; tautan ke sesi, pemantauan, dan kartu cetak. Ringkasan admin tidak berubah (K2).
+
+**Sesudah panel hari lapangan, 16 November 2026:** keempat angka perhatian (belum masuk, catatan hilang, belum punya kursi, layar kecil ditolak) berwarna kuning bila di atas nol; untuk peneliti dan ketua, kotak *Perlu perhatian* menyebut kode di balik angka itu; sakelar *Bunyikan peringatan* (mati bawaan, diingat per perangkat) membunyikan nada pendek bila angka naik atau kode baru muncul setelah penyegaran, tidak pernah saat halaman pertama dibuka. Admin tetap hanya melihat angka.
 
 **Kueri.** Metode baru di `AnalyticsService`: `fieldSessionSummary()`, `fieldSessionRoster()`, `droppedEvents()`. Event hilang dibaca dari `game_event_logs` (`event_type = 'events_dropped'`, indeks `(event_type, occurred_at)`), dijumlahkan dari `payload_json.dropped`.
 
@@ -573,13 +579,14 @@ Keduanya didaftarkan di `app/Config/Services.php`.
 | `GET`, `POST /admin/sesi-lapangan/{id}/izin` | `ConsentController` (bagian 4, [30 → Rute, perintah, dan skrip](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#16-rute-perintah-dan-skrip)) | `field_sessions.manage` |
 | `GET /admin/pemantauan` | `MonitoringController::index` | `monitoring.view` |
 | `GET /api/admin/monitoring` | `AdminApiController::monitoring` | `monitoring.view` |
+| `GET /admin/sesi-lapangan/{id}/cetak` (16 November 2026) | `FieldSessionController::printCard`: kartu sesi siap cetak (A4 mendatar: kode sesi, kode sekolah, rombel, pertemuan, token besar, denah kursi kosong, kode peserta dengan bukletnya; tanpa nama) | `field_sessions.manage` |
 
 **Lain-lain:**
 - Studi (`field_mode`) memakai rute studi bagian 1 (`studies.manage`).
 - Kode sekolah penelitian memakai rute sekolah (`schools.manage`).
 - Daftarkan `sesi-lapangan/baru` sebelum `sesi-lapangan/(:num)`, seperti `peserta/reset-sandi` di 27 §7.
 - `ScreenViewFilter::ROUTES` mendapat kode layar untuk `/token` dan `/sampai-jumpa` (`ScreenViewFilterTest`).
-- Menu panel mendapat **Sesi lapangan** dan **Pemantauan** di kelompok Data, sesuai slot yang sudah dipesan di [27 → Panel peneliti](27_IMPLEMENTASI_PERAN_PENELITI.md#8-panel-peneliti).
+- Menu panel mendapat **Sesi lapangan** dan **Pemantauan** di kelompok Data (*sejak 16 November 2026 di kelompok menu "Kerja lapangan", dengan sub-menu sesi yang buka: halaman sesi, izin per siswa, kursi dan buklet, unggah lembar*), sesuai slot yang sudah dipesan di [27 → Panel peneliti](27_IMPLEMENTASI_PERAN_PENELITI.md#8-panel-peneliti).
 
 ---
 
@@ -683,7 +690,7 @@ Kunci gabung dengan lembar lapangan: kode peserta, `field_session_code`, dan jam
 ### 19.2 Tes yang ditulis ulang
 
 - `RegisterWizardTest`, `GelitaHelperTest`, `SystemResetTest`: bentuk kode untuk mode penelitian; `GLT-…` tetap di luar mode.
-- `SimulationTest` dan `Simulator`: bila `field_mode` menyala, simulator membuat sesi lapangan `sim` sendiri.
+- `SimulationTest` dan `Simulator`: bila `field_mode` menyala, simulator membuat sesi lapangan `sim` sendiri. *Diganti keputusan pengembang 3 November 2026: simulator menolak berjalan saat mode penelitian menyala (alat pengembangan).*
 - `LibraryLockTest`, `RegionEntryTest`, `DialogueGateTest`: kemajuan dari `participant_progress`.
 - Semua tes dan pendukung tes yang membaca `session_progress`, termasuk `TryLimitTest`, `tests/_support/Database/RawDataWorld.php`, dan `ResetTables.php`.
 - `RouteWiringTest`, `ScreenViewFilterTest`, `LanguageFilesTest` untuk rute dan kunci baru.
@@ -696,6 +703,8 @@ Di mesin pengembangan, dengan mode penelitian menyala:
 2. Tutup sesinya, lalu buat `S01-A-P2`. Pastikan satu siswa melihat Temanggung saja dan siswa lain di `/sampai-jumpa` setelah sesi ditutup.
 3. Buat susulan untuk siswa ketiga.
 4. Buka pemantauan sebagai peneliti dan sebagai admin.
+
+*Belum dijalankan sebagai satu daftar.* Bagian-bagiannya dicek di MariaDB: alur token dan peta wilayah 9 November 2026 ([04](04_CATATAN_KEPUTUSAN.md)); pendaftaran dengan token dan sesi lapangan P2/P5 di cek manual 14 November 2026; Ringkasan, pemantauan, halaman kursi, dan kartu cetak dengan 16 siswa simulasi di rombel A sekolah `S03` (16 November 2026, catatan implementasi *Staff panel field-day recommendations*).
 
 ### 19.4 Selesai bila
 
@@ -765,6 +774,14 @@ Yang diselaraskan tanpa keputusan baru: aturan "dibangun sekarang" menggantikan 
 
 13. **Angka "siswa belum punya kursi" (`BOOKLET_MISSING`) dan "perangkat layar kecil ditolak" tampil untuk admin, peneliti, dan ketua** ([§12](#12-panel-pemantauan)), karena keduanya urusan perangkat dan tempat duduk yang juga ditangani admin. Angka "izin belum diisi" tetap hanya untuk peneliti dan ketua (no. 5). Tidak dipilih: hanya peneliti dan ketua.
 14. **Layar kecil juga ditolak saat mendaftar dengan token** ([§6.5](#65-pendaftaran-dengan-token-p1) langkah 0): `/daftar` dalam mode penelitian mengirim `stage_w` dan menolak panggung di bawah `min_stage_px` dengan pesan dan audit `small_screen_refused` yang sama dengan `/token`. Aturannya di [33 §7.2](33_IMPLEMENTASI_MODE_PENELITIAN.md#72-layar-kecil). Tidak dipilih: hanya di `/token`.
+
+**Kode gelombang D, panel hari lapangan, dan cek kemutakhiran, 16 November 2026** (`asal: pengembang`, [04](04_CATATAN_KEPUTUSAN.md)). Diselaraskan tanpa keputusan baru dengan kode dan entri 04 sesudah 3 November 2026:
+
+15. **Penyimpangan implementasi gelombang D** (entri 04 *Gelombang kode D selesai*, 3 November 2026, no. 2): simulator menolak berjalan saat mode penelitian menyala dan kaitan ke bagian 4 dan 7 menunggu tabelnya (keduanya dikukuhkan pengembang 3 November 2026; kaitannya sudah dibuat bagian 4 dan 7); perpanjangan sesi tetap paling lama 4 jam sejak buka (dikukuhkan untuk susulan P5, §6.7 no. 6). Belum disetujui terpisah (`draf pengembang`): token yang diganti ditolak sebagai `token_unknown` (§6.3); percobaan token salah ke-10 sudah ditolak (`too_many`); rute baru `POST /admin/sekolah/kode-penelitian`; penanda langkah pendaftaran tetap tiga langkah bernomor di mode penelitian (langkah 2 dilewati server); dimensi `progres` semula tetap per sesi game (kemudian satu baris per siswa dan studi oleh bagian 3, [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) §19 no. 18).
+16. **Dari bagian lain sesudah gelombang D:** alasan `withdrawn` di layar token (bagian 4, 8 November 2026); pengerjaan ulang hanya setelah wilayah tuntas dan status tantangan `done_locked` di peta wilayah (bagian 7, [33](33_IMPLEMENTASI_MODE_PENELITIAN.md), 9 November 2026); layar cek suara sesudah token (§6.4, 16 November 2026).
+17. **Panel hari lapangan (16 November 2026, permintaan pengembang):** halaman sesi lapangan mengelompokkan tindakan per urutan kunjungan dan menampilkan token besar (*Tampilkan token besar*); Ringkasan *Sesi lapangan hari ini* (§12); kartu sesi siap cetak `GET /admin/sesi-lapangan/{id}/cetak` (§15); denah kursi di halaman kursi, yang menandai dua kode di satu kursi; pemantauan dengan angka kuning, *Perlu perhatian*, dan bunyi peringatan pilihan (§12); menu kelompok *Kerja lapangan* (§15). Nama formulir, rute lama, dan `SeatRules` tidak berubah.
+18. ***Tambah waktu* hanya di halaman sesi lapangan** (§12), tidak di pemantauan; panduan staf mengikuti kode.
+19. **Panduan staf** `/admin/panduan-staf` (16 November 2026) menjelaskan hari kunjungan dalam 10 langkah dari dokumen ini, 02, dan 27–35, dan bisa dibaca tanpa masuk.
 
 **Akibat dari kamus yang sudah disetujui** (bukan pertanyaan baru). Karena satu sesi game milik tepat satu sesi lapangan (11), kemajuan pindah dari sesi game ke siswa ([§8](#8-kemajuan-mengikuti-siswa-bukan-sesi-game)). Ini perubahan terbesar di bagian ini dan disebut di [04](04_CATATAN_KEPUTUSAN.md) untuk ditinjau pengembang.
 
