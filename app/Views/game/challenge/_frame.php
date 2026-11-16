@@ -10,7 +10,9 @@
  * 20 October 2026: number ring `assets/ui/challenge-badge.webp`, title, and
  * one capsule for timer | ✓/✗ | Kesempatan, then Petunjuk and Keluar).
  * `--plate-navy` carries the navy plate of Kenali for the answer choices
- * (Isi Rumpang words, Benar/Salah), owner's call of the same day. .arena-panel dan .arena hanya pembungkus
+ * (Isi Rumpang words, Benar/Salah), owner's call of the same day.
+ * `--rumpang-plate` (Isi Rumpang only) is the calm instruction plate of
+ * 39 R-26 (16 November 2026): ornaments at both ends, a plain stretchable middle. .arena-panel dan .arena hanya pembungkus
  * (display: contents), jadi panel engine memakai koordinat panggung langsung
  * (stage.css §Tantangan). Panel instruksi (.challenge-aside) diletakkan per
  * engine: panel kiri Susun Gambar, baris pertama arena Isi Rumpang dan Benar
@@ -59,7 +61,7 @@ $variantTitle = trim((string) ($payload['variant']['title'] ?? ''));
          data-region-name="<?= esc($region, 'attr') ?>"
          data-sequence="<?= esc($sequence, 'attr') ?>"
          data-exit-url="<?= esc(base_url('wilayah/' . $level->code), 'attr') ?>"
-         style="--plate-navy: url(&quot;<?= esc(asset_url_versioned('ui/kenal-plate-navy.webp'), 'attr') ?>&quot;)">
+         style="--plate-navy: url(&quot;<?= esc(asset_url_versioned('ui/kenal-plate-navy.webp'), 'attr') ?>&quot;)<?php if ($engine === 'rumpang' && is_file(FCPATH . 'assets/ui/rumpang-instruction-plate.webp')): ?>; --rumpang-plate: url(&quot;<?= esc(asset_url_versioned('ui/rumpang-instruction-plate.webp'), 'attr') ?>&quot;)<?php endif ?>">
 
   <div class="arena-panel">
     <?php // Owner's header, 20 October 2026: number on the gold-and-navy ring, title, one stats capsule ?>

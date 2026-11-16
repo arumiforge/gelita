@@ -4571,6 +4571,20 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .challenge-skenario .instruction { line-height: 1.3; }
 /* Two lines of the Isi Rumpang instruction card in its 66 dp band: 2 × 22 dp × 1.25 + padding and border */
 .challenge-rumpang .instruction.is-card { padding-block: .25rem; line-height: 1.25; }
+/* R-26 (39, 16 November 2026): the calm carved-gold plate behind the Isi Rumpang instruction. The
+   1600 × 132 picture keeps its two ornamented ends (120 px each, 60 dp at the 66 dp band) and
+   stretches only its plain middle; the text stays clear of the ends */
+.challenge-rumpang[style*="--rumpang-plate"] .instruction.is-card {
+  padding-inline: 4rem;
+  border: 0;
+  border-radius: 0;
+  border-image: var(--rumpang-plate) 0 120 fill / 0 3.75rem / 0 stretch;
+  background: none;
+  box-shadow: none;
+}
+/* The plate's own ends frame the text; the thin gold rules beside it would only add noise */
+.challenge-rumpang[style*="--rumpang-plate"] .instruction.is-card::before,
+.challenge-rumpang[style*="--rumpang-plate"] .instruction.is-card::after { content: none; }
 /* Region map: "Lihat cerita penghubung" under the Skenario Digital card (part 6) */
 .node-bridge { display: inline-flex; align-items: center; gap: .25rem; font-size: var(--fs-small, .875rem); color: var(--gold-300); text-decoration: underline; }
 
