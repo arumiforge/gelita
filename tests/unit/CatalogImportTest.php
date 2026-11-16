@@ -220,7 +220,7 @@ final class CatalogImportTest extends CIUnitTestCase
 
             $this->assertFileExists($file);
             $this->assertSame($sha, hash_file('sha256', $file), "map.region.{$region} changed: measure its clearings again");
-            $this->assertSame([1, 2, 3, 4], array_keys($stops));
+            $this->assertSame([1, 2, 3, 4, 5], array_keys($stops), 'one stop per challenge, Skenario Digital included');
         }
     }
 
@@ -567,32 +567,18 @@ final class CatalogImportTest extends CIUnitTestCase
         $this->assertEqualsCanonicalizing(array_map(static fn (string $k): string => 'item.skenario.' . $k . '.webp', $items), array_map('basename', $shipped));
     }
 
-    /** Interim bridge backgrounds from the mockup folder reach their slide; a data.json entry with the same code wins (8 Nov 2026). */
-    public function testInterimBridgeBackgroundsFromTheMockupFolder(): void
+    /** The bridge-story backgrounds are data.json entries since 16 November 2026: every bridge slide of the script has one. */
+    public function testShippedCatalogueHasEveryBridgeBackground(): void
     {
-        $dir = $this->catalog . '/' . array_keys(CatalogImporter::MOCKUP_DIRS)[1];
-        mkdir($dir, 0777, true);
-        imagewebp(imagecreatetruecolor(1920, 1080), $dir . '/bg.cerita-layar-wonosobo-01.webp', 82);
-        imagewebp(imagecreatetruecolor(1920, 1080), $dir . '/bg.cerita-layar-magelang-01.webp', 82);
+        $keys = array_column((new CatalogImporter(ROOTPATH . CatalogImporter::DEFAULT_DIR))->entries(), 'key');
 
-        foreach (['wonosobo', 'magelang'] as $region) {
-            $levelId = (int) $this->sqlite->table('levels')->where('code', $region)->get()->getRow('id');
-            $this->sqlite->table('dialogues')->insert(['level_id' => $levelId, 'context_code' => 'scenario_open', 'sequence' => 1, 'character_code' => 'jaka', 'text_id' => 'a', 'text_en' => 'a']);
+        foreach (['temanggung', 'magelang', 'wonosobo'] as $region) {
+            foreach (range(1, 6) as $n) {
+                $this->assertContains(sprintf('bg.cerita-layar-%s-%02d', $region, $n), $keys);
+            }
         }
 
-        $this->writeCatalog(['bg.cerita-layar-magelang-01' => ['latar/bg.cerita-layar-magelang-01.webp', 1920, 1080, false]]);
-        $report = $this->importer()->run();
-        $sources = array_column(array_filter($report, static fn (array $r): bool => $r['target'] === 'bg.story.scenario_open.magelang.1'), 'source');
-
-        $media   = model(MediaAssetModel::class)->findByKey('bg.story.scenario_open.wonosobo.1');
-        $levelId = (int) $this->sqlite->table('levels')->where('code', 'wonosobo')->get()->getRow('id');
-        $this->assertNotNull($media);
-        $this->assertSame(CatalogImporter::CREDIT, $media['credit']);
-        $this->assertSame((int) $media['id'], (int) $this->sqlite->table('dialogues')->where(['level_id' => $levelId, 'context_code' => 'scenario_open'])->get()->getRow('background_media_id'));
-        $this->assertSame(['bg.cerita-layar-magelang-01'], array_values(array_unique($sources)), 'data.json wins over the mockup folder');
-
-        // The shipped interim set: six slides per region
-        $this->assertCount(18, glob(ROOTPATH . CatalogImporter::DEFAULT_DIR . '/' . array_keys(CatalogImporter::MOCKUP_DIRS)[1] . '/bg.cerita-layar-*.webp') ?: []);
+        $this->assertDirectoryDoesNotExist(ROOTPATH . CatalogImporter::DEFAULT_DIR . '/mockup/gambar-mockup/cerita-layar', 'the interim set is gone');
     }
 
     /** --kunci limits the run, and so --timpa, to the named slots. */
