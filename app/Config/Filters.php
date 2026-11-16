@@ -52,6 +52,7 @@ class Filters extends BaseFilters
         // Part 8 (34 §5, §12): the test module's routes, and the game pages it closes
         'instrumentGate'     => \App\Filters\InstrumentGateFilter::class,
         'instrumentRedirect' => \App\Filters\InstrumentRedirectFilter::class,
+        'soundCheck'         => \App\Filters\SoundCheckFilter::class,
     ];
 
     /**
@@ -110,6 +111,12 @@ class Filters extends BaseFilters
         'instrumentRedirect' => ['before' => [
             'peta', 'wilayah/*', 'misi/*', 'tantangan/*', 'dialog/*', 'penghubung/*', 'intro', 'intro/*', 'penutup', 'refleksi',
             'api/nodes/*/attempts', 'api/attempts/*/check', 'api/attempts/*/responses', 'api/attempts/*/hints', 'api/attempts/*/complete',
+        ]],
+        // Research mode: the first game or test page of a game session asks for the sound check first
+        // (04, 15 November 2026, decision 4); GET pages only, the filter reads the student itself
+        'soundCheck' => ['before' => [
+            'gerbang', 'gerbang/*', 'intro', 'intro/*', 'peta', 'wilayah/*', 'misi/*', 'tantangan/*', 'hasil/*', 'selesai/*',
+            'dialog/*', 'penghubung/*', 'tuntas/*', 'penutup', 'pustaka', 'pustaka/*', 'profil', 'refleksi', 'refleksi/*', 'tes', 'tes/*',
         ]],
     ];
 }

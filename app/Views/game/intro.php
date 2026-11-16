@@ -29,6 +29,14 @@
  * dari N" text, no band behind the caption or the controls, and the slide
  * picture stays dark until the tap card is tapped (cinematic.css).
  *
+ * Owner, 16 November 2026: the tap card is a screen of its own before the
+ * story, on the story background `bg.intro` (`$tapBg`), with "Cerita pembuka"
+ * above "Ketuk untuk mendengar kisahnya", so no slide picture or caption lies
+ * under it; the tap opens slide 1. In research mode its hint asks for the
+ * headset and the slide dots only show the place. No light rays from above on
+ * any slide (`data-fx-rays="off"`, game/screen-fx.js); Lewati hides on the last
+ * slide, where Mulai petualangan already leads on (cinematic.css).
+ *
  * Right after sign-up the page carries the welcome card (flash `welcome`);
  * game/intro.js opens it as a modal over the tap card (owner, 19 October
  * 2026), and Lanjut leads into the intro. Without JavaScript it stays above
@@ -38,12 +46,16 @@
  * @var list<array<string, mixed>> $slides
  * @var string                     $locale
  * @var bool                       $canSkip sudah pernah menonton (intro_seen_at terisi)
+ * @var bool                       $researchMode
  */
 $welcome = session('welcome');
 // The page starts on slide 1's own picture, so nothing else shows before it;
 // the story background is the default for slides without one (core/backdrop.js)
 $defaultBg = media_key_src('bg.intro') ?? media_key_src('bg.welcome') ?? '';
 $firstBg   = $slides === [] ? null : slide_bg_src($slides[0]);
+// The tap screen's own picture: the story background, else slide 1's
+$tapBg        = $defaultBg !== '' ? $defaultBg : (string) ($firstBg ?? '');
+$researchMode = ! empty($researchMode);
 ?>
 <?= $this->extend('layouts/game') ?>
 
@@ -59,7 +71,7 @@ $firstBg   = $slides === [] ? null : slide_bg_src($slides[0]);
 <?php /* Next screen: Peta Kedu behind the opening map curtain */ ?>
 <section class="story intro cine narrator" data-screen="intro"<?= next_assets_attr([media_key_src('bg.loading'), media_key_src('map.kedu'), media_key_src('bg.map')]) ?>
          data-narrator data-context="intro" data-prefix="slide-" data-mode="tap"<?= screen_fx_attr() ?>
-         data-backdrop="stage" data-backdrop-mode="dip" data-bg-default="<?= esc($defaultBg, 'attr') ?>">
+         data-backdrop="stage" data-backdrop-mode="dip" data-bg-default="<?= esc($defaultBg, 'attr') ?>" data-fx-rays="off">
   <?php if (is_string($welcome) && $welcome !== ''): ?>
     <div class="welcome-card" role="status">
       <span class="welcome-card-icon" aria-hidden="true"><?= icon('key') ?></span>
@@ -96,10 +108,17 @@ $firstBg   = $slides === [] ? null : slide_bg_src($slides[0]);
         'final'    => lang('Game.startJourney'),
         // The owner's mountain plate (21 October 2026)
         'finalPlate' => 'enter',
+        'dotsStatic' => $researchMode,
     ]) ?>
 
     <?= component('narrator-controls', ['nextLabel' => true]) ?>
-    <?= component('narrator-tap') ?>
+    <?= component('narrator-tap', [
+        'eyebrow' => lang('Game.introTitle'),
+        'label'   => lang('Game.chapterTap'),
+        'hint'    => lang($researchMode ? 'Game.tapToStartHintHeadset' : 'Game.tapToStartHint'),
+        'variant' => 'intro',
+        'bg'      => $tapBg,
+    ]) ?>
   <?php endif ?>
 </section>
 <?= $this->endSection() ?>
@@ -107,7 +126,7 @@ $firstBg   = $slides === [] ? null : slide_bg_src($slides[0]);
 <?php if ($canSkip): ?>
 <?= $this->section('nav') ?>
 <?= component('nav-bar', ['nav' => [
-    ['label' => lang('Game.skip'), 'href' => base_url('gerbang/peta'), 'style' => 'quiet', 'arrow' => 'right'],
+    ['label' => lang('Game.skip'), 'href' => base_url('gerbang/peta'), 'style' => 'quiet', 'arrow' => 'right', 'attrs' => ['data-story-skip' => '1']],
 ]]) ?>
 <?= $this->endSection() ?>
 <?php endif ?>

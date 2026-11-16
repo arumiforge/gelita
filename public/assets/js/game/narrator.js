@@ -46,6 +46,7 @@
  * tanpa mesin ketik, tanpa efek layar, tanpa Ken Burns (CSS).
  */
 import { $, $$ } from '../core/dom.js';
+import { CONFIG } from '../core/config.js';
 import { emit, flush } from '../core/events.js';
 import { Sfx, narrationPlayer, pauseNarration } from '../core/audio.js';
 import { Storage } from '../core/storage.js';
@@ -57,6 +58,8 @@ const ADVANCE_MS = 1200;
 const TYPE_MS = 28;           // per karakter: ±35 karakter/detik, lebih cepat dari suara narasi
 const EFFECTS = ['fog', 'fog-lift', 'glow', 'flash', 'shake', 'dim'];
 const AUTO_PREF = 'narrationAuto';
+// Research mode: the game session whose Otomatis choice is stored (opaque `sessionTag`)
+const AUTO_SESSION_PREF = 'narrationAutoSession';
 
 const reducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
 
@@ -71,6 +74,22 @@ const reducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce
  *             next: () => void, prev: () => void, advance: () => void,
  *             readonly current: number, readonly total: number, readonly started: boolean } | null}
  */
+/**
+ * Otomatis is a device preference (on by default). In research mode a shared
+ * lab Chromebook must not hand one student's "off" to the next one, so the
+ * choice only holds within the game session that made it: a new session
+ * starts with Otomatis on again (owner, 16 November 2026).
+ */
+function autoChoice() {
+  const stored = Storage.getPref(AUTO_PREF, true) !== false;
+  if (!CONFIG.researchMode) return stored;
+  const tag = CONFIG.sessionTag || '';
+  if (Storage.getPref(AUTO_SESSION_PREF, null) === tag) return stored;
+  Storage.setPref(AUTO_PREF, true);
+  Storage.setPref(AUTO_SESSION_PREF, tag);
+  return true;
+}
+
 export function initNarrator(root, { onFinish = null, onSlide = null } = {}) {
   const list = $('ol.slides', root);
   if (!root || !list) return null;
@@ -87,7 +106,7 @@ export function initNarrator(root, { onFinish = null, onSlide = null } = {}) {
 
   let started = false;
   let paused = false;
-  let auto = Storage.getPref(AUTO_PREF, true) !== false;
+  let auto = autoChoice();
   let advanceTimer = null;
   let typing = null;       // { node, full, timer, index }
 
@@ -174,7 +193,12 @@ export function initNarrator(root, { onFinish = null, onSlide = null } = {}) {
     if (fxLoading || fxGaveUp) return;
     fxLoading = true;
     import('./screen-fx.js')
-      .then(({ createScreenFx }) => createScreenFx(root, { threeUrl: fxUrl, onFail: () => { screenFx = null; fxGaveUp = true; } }))
+      .then(({ createScreenFx }) => createScreenFx(root, {
+        threeUrl: fxUrl,
+        // `data-fx-rays="off"`: no light rays from above (the opening story, owner 16 November 2026)
+        rays: root.dataset.fxRays !== 'off',
+        onFail: () => { screenFx = null; fxGaveUp = true; },
+      }))
       .then((created) => {
         screenFx = created;
         if (!screenFx) {
@@ -387,14 +411,17 @@ export function initNarrator(root, { onFinish = null, onSlide = null } = {}) {
       toggle.hidden = !hasAudio;
       toggle.setAttribute('aria-pressed', playing ? 'true' : 'false');
       toggle.setAttribute('aria-label', playing ? toggle.dataset.labelPause : toggle.dataset.labelPlay);
+      toggle.dataset.tip = toggle.getAttribute('aria-label');
       toggle.classList.toggle('is-playing', playing);
     }
     const replay = btn('replay');
     if (replay) replay.hidden = !hasAudio || !started;
     const back = btn('prev');
     if (back) back.disabled = slides.current <= 1;
+    // On the last slide ▶ goes: the slide's own final button (Mulai petualangan) leads on
+    // (owner, 16 November 2026); a player with onFinish keeps it
     const forward = btn('next');
-    if (forward) forward.disabled = slides.current >= slides.total && !onFinish;
+    if (forward) forward.hidden = slides.current >= slides.total && !onFinish;
     const autoBtn = btn('auto');
     if (autoBtn) autoBtn.setAttribute('aria-pressed', auto ? 'true' : 'false');
   }

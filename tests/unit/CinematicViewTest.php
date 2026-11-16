@@ -122,10 +122,115 @@ final class CinematicViewTest extends CIUnitTestCase
 
         $this->assertStringContainsString('data-narrator data-context="intro" data-prefix="slide-" data-mode="tap"', $page);
         $this->assertMatchesRegularExpression('#data-mode="tap" data-fx3d="[^"]*three-0\.186\.1/three\.module\.js\?v=#', html_entity_decode($page), 'WebGL screen effects');
-        $this->assertMatchesRegularExpression('/class="narrator-tap" data-narrator-tap hidden/', $page, 'tersembunyi tanpa JS');
+        $this->assertMatchesRegularExpression('/class="narrator-tap is-intro[^"]*" data-narrator-tap hidden/', $page, 'tersembunyi tanpa JS');
         $this->assertMatchesRegularExpression('/data-narrator-controls[^>]*hidden/', $page);
-        $this->assertStringContainsString(esc(lang('Game.tapToStart')), $page);
         $this->assertStringContainsString('is-cinematic', $page);
+    }
+
+    /**
+     * Owner, 16 November 2026: the tap card is its own screen before the story,
+     * on the story background, with "Cerita pembuka" over "Ketuk untuk
+     * mendengar kisahnya"; in research mode it asks for the headset.
+     */
+    public function testIntroTapCardIsItsOwnScreenBeforeTheStory(): void
+    {
+        $this->mediaKeys = ['bg.intro' => 'assets/uploads/bg-intro.webp'];
+        $page            = html_entity_decode($this->intro(introSeen: false));
+
+        $this->assertMatchesRegularExpression('#class="narrator-tap is-intro has-bg" data-narrator-tap hidden>\s*<img class="narrator-tap-bg" src="[^"]*bg-intro\.webp"#', $page);
+        $this->assertStringContainsString('<span class="narrator-tap-eyebrow">' . lang('Game.introTitle') . '</span>', $page);
+        $this->assertStringContainsString(lang('Game.chapterTap'), $page);
+        $this->assertStringContainsString(lang('Game.tapToStartHint'), $page);
+        $this->assertStringNotContainsString(lang('Game.tapToStartHintHeadset'), $page);
+
+        $research = html_entity_decode($this->intro(introSeen: false, researchMode: true));
+        $this->assertStringContainsString(lang('Game.tapToStartHintHeadset'), $research);
+        $this->assertStringNotContainsString(lang('Game.tapToStartHint') . '<', $research);
+
+        $css = (string) file_get_contents(FCPATH . 'assets/css/cinematic.css');
+        $this->assertStringContainsString('.narrator-tap.has-bg { isolation: isolate; background: var(--navy-900); backdrop-filter: none; }', $css);
+    }
+
+    /** Owner, 16 November 2026: no light rays or glow halo from above or the side on the opening story. */
+    public function testIntroHasNoLightRays(): void
+    {
+        $page = $this->intro(introSeen: false);
+        $this->assertStringContainsString('data-fx-rays="off"', $page);
+
+        $narrator = (string) file_get_contents(FCPATH . 'assets/js/game/narrator.js');
+        $this->assertStringContainsString("rays: root.dataset.fxRays !== 'off',", $narrator);
+        $fx = (string) file_get_contents(FCPATH . 'assets/js/game/screen-fx.js');
+        $this->assertStringContainsString('rays.visible = withRays && raysUniforms.uRays.value > 0.002;', $fx);
+        $css = (string) file_get_contents(FCPATH . 'assets/css/cinematic.css');
+        $this->assertStringContainsString('.narrator[data-fx-rays="off"] > .narrator-fx.fx-glow { background: none; animation: none; }', $css);
+    }
+
+    /**
+     * Owner, 16 November 2026: the speaker is the round avatar with its
+     * nameplate (as on Kenali), not the full-body figure and the gold pill;
+     * an installed expression for the pose wins over the plain avatar.
+     */
+    public function testSpeakerIsTheRoundAvatarWithItsNameplate(): void
+    {
+        $this->mediaKeys = [
+            'ui.kedu-avatar'            => 'assets/uploads/ui.kedu-avatar.webp',
+            'ui.jaka-avatar'            => 'assets/uploads/ui.jaka-avatar.webp',
+            'ui.jaka-avatar.determined' => 'assets/uploads/ui.jaka-avatar.determined.webp',
+        ];
+        $page = html_entity_decode($this->intro(introSeen: false));
+
+        $this->assertStringNotContainsString('class="cine-stage"', $page);
+        $this->assertStringNotContainsString('class="cine-speaker"', $page);
+        $this->assertMatchesRegularExpression('#id="slide-2".*?<div class="kenal-avatar cine-avatar">.*?src="[^"]*ui\.kedu-avatar\.webp".*?<span class="kenal-nameplate">' . lang('Game.char_mbah_kedu') . '</span>.*?id="slide-3"#s', $page);
+        $this->assertMatchesRegularExpression('#id="slide-3".*?<div class="kenal-avatar cine-avatar">.*?src="[^"]*ui\.jaka-avatar\.determined\.webp"#s', $page);
+        $this->assertDoesNotMatchRegularExpression('#id="slide-1".*?cine-avatar.*?id="slide-2"#s', $page, 'the narrator has no avatar');
+        $this->assertMatchesRegularExpression('#<ol class="slides cine-slides" style="--kenal-plate-navy: url\("[^"]*kenal-plate-navy\.webp#', $page);
+    }
+
+    /** Owner, 16 November 2026: in research mode the dots only show the place, so no slide can be skipped by them. */
+    public function testResearchModeDotsAreNotLinks(): void
+    {
+        $page = $this->intro(introSeen: false, researchMode: true);
+        $this->assertStringNotContainsString('<a class="slide-dot', $page);
+        $this->assertStringContainsString('<span class="slide-dot is-static is-current"', $page);
+
+        $this->assertStringContainsString('<a class="slide-dot is-current" href="#slide-1"', $this->intro(introSeen: false));
+    }
+
+    /**
+     * Owner, 16 November 2026: on the last slide ▶ and Lewati go, Mulai
+     * petualangan sits low at the right; Otomatis starts on again in every
+     * research-mode game session (shared lab devices); the controls are 48 dp.
+     */
+    public function testLastSlideAndOtomatisRules(): void
+    {
+        $page = $this->intro(introSeen: true);
+        $this->assertStringContainsString('data-story-skip="1"', $page);
+
+        $css = (string) file_get_contents(FCPATH . 'assets/css/cinematic.css');
+        $this->assertStringContainsString('body:has(.cine-slides > .slide:last-child.is-current) [data-story-skip] { visibility: hidden; }', $css);
+        $this->assertMatchesRegularExpression('/\n\.cine-final \{[^}]*inset: auto calc\(32 \* var\(--dp\)\) calc\(214 \* var\(--dp\)\) auto;/', $css);
+
+        $narrator = (string) file_get_contents(FCPATH . 'assets/js/game/narrator.js');
+        $this->assertStringContainsString('if (forward) forward.hidden = slides.current >= slides.total && !onFinish;', $narrator);
+        $this->assertStringContainsString("if (Storage.getPref(AUTO_SESSION_PREF, null) === tag) return stored;", $narrator);
+        $this->assertStringContainsString('Storage.setPref(AUTO_PREF, true);', $narrator);
+    }
+
+    /** Owner, 16 November 2026: icon buttons show a short label on hover, focus, or a long press. */
+    public function testIconButtonsCarryShortLabels(): void
+    {
+        $page = $this->intro(introSeen: false);
+        $this->assertStringContainsString('data-narrator="prev" aria-label="' . esc(lang('Game.narratorPrev'), 'attr') . '" data-tip=""', $page);
+        $this->assertStringContainsString('data-narrator="replay" aria-label="' . esc(lang('Game.narratorReplay'), 'attr') . '" data-tip=""', $page);
+        $this->assertStringContainsString('data-tip="' . esc(lang('Game.narratorAutoHint'), 'attr') . '"', $page);
+        $this->assertStringContainsString('id="btn-sound" aria-pressed="true"', $page);
+        $this->assertMatchesRegularExpression('/id="btn-sound"[^>]*data-tip="/', $page);
+
+        $tips = (string) file_get_contents(FCPATH . 'assets/js/core/tips.js');
+        $this->assertStringContainsString("bubble.setAttribute('aria-hidden', 'true');", $tips);
+        $this->assertStringContainsString('LONG_PRESS_MS', $tips);
+        $this->assertStringContainsString("import('./core/tips.js').then((m) => m.initTips())", (string) file_get_contents(FCPATH . 'assets/js/game.js'));
     }
 
     public function testIntroCarriesPoseEffectAndTitle(): void
@@ -181,7 +286,8 @@ final class CinematicViewTest extends CIUnitTestCase
         $this->assertStringContainsString('box-shadow: none;', $controls[1]);
         $this->assertStringContainsString('.stage[style*="--skin-hud"] .cine .narrator-controls .icon-btn::after {', $css);
         $this->assertStringContainsString('.stage[style*="--gold-pill-3"] .cine .narrator-next.has-label:not(:disabled) {', $css);
-        $this->assertMatchesRegularExpression('/\n\.cine \.narrator-controls \.icon-btn \{[^}]*width: 2\.5rem;[^}]*height: 2\.5rem;/', $css);
+        // 48 dp since 16 November 2026 (owner), was 40 dp
+        $this->assertMatchesRegularExpression('/\n\.cine \.narrator-controls \.icon-btn \{[^}]*width: 3rem;[^}]*height: 3rem;/', $css);
         $this->assertStringNotContainsString('.cine-top .eyebrow', $css);
 
         // Dark until the tap; noscript.css and a failsafe show the picture without JavaScript
@@ -352,7 +458,7 @@ final class CinematicViewTest extends CIUnitTestCase
 
     // ------------------------------------------------------------ bantuan
 
-    private function intro(bool $introSeen): string
+    private function intro(bool $introSeen, bool $researchMode = false): string
     {
         $session = new GameSession();
         $session->injectRawData(['id' => 9, 'participant_id' => 5, 'locale' => 'id', 'status' => 'active']);
@@ -363,7 +469,17 @@ final class CinematicViewTest extends CIUnitTestCase
             'intro_seen_at' => $introSeen ? '2026-09-01 08:00:00' : null,
         ]);
 
-        $context              = new GameContext();
+        // No database here: research mode comes from the test, not from the study table
+        $context = new class ($researchMode) extends GameContext {
+            public function __construct(private readonly bool $research)
+            {
+            }
+
+            public function researchMode(?GameSession $session = null): bool
+            {
+                return $this->research;
+            }
+        };
         $context->session     = $session;
         $context->participant = $participant;
         Services::injectMock('gameContext', $context);

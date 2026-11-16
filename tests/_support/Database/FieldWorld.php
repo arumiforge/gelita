@@ -116,7 +116,8 @@ trait FieldWorld
 
     private function signIn(int $participantId, ?int $gameSessionId = null): void
     {
-        $_SESSION = ['participant_id' => $participantId] + ($gameSessionId === null ? [] : ['game_session_id' => $gameSessionId]);
+        // With a game session the research-mode sound check counts as answered (SoundCheckTest clears it)
+        $_SESSION = ['participant_id' => $participantId] + ($gameSessionId === null ? [] : ['game_session_id' => $gameSessionId, 'sound_checked' => $gameSessionId]);
     }
 
     private function assertRedirectsTo(string $path, TestResponse $response, string $message = ''): void

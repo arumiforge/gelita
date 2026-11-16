@@ -46,6 +46,9 @@ class GateController extends BaseGameController
             'participant' => $this->participant()->toSafeArray(),
             'slides'  => service('contentRepository')->dialogues(null, 'intro'),
             'canSkip' => $this->participant()->hasSeenIntro(),
+            // Research mode (owner, 16 November 2026): the slide dots only show the place
+            // (no jumping ahead) and the tap screen asks for the headset
+            'researchMode' => $this->context()->researchMode($this->session()),
         ]);
     }
 

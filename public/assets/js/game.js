@@ -77,6 +77,8 @@ if (CONFIG.sessionTag) {
 import('./game/screen-check.js').then((m) => m.initScreenCheck()).catch(() => {});
 
 initHud();
+// Short labels on icon buttons: hover, keyboard focus, long press (owner, 16 November 2026)
+import('./core/tips.js').then((m) => m.initTips()).catch(() => {});
 initRotateGate();
 initInstall();
 initCurtains();
@@ -118,6 +120,7 @@ initAudioPlayers(document, {
 
 const pages = {
   intro: () => import('./game/intro.js').then((m) => m.initStory('intro')),
+  'sound-check': () => import('./game/sound-check.js').then((m) => m.initSoundCheck()),
   ending: () => import('./game/intro.js').then((m) => m.initStory('ending')),
   dialogue: () => import('./game/dialogue.js').then((m) => m.initDialogue()),
   'region-done': () => import('./game/dialogue.js').then((m) => m.initDialogue()),

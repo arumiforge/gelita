@@ -411,6 +411,8 @@ return [
         'audio_autoplay'       => 'Suara diputar otomatis',
         'audio_replay'         => 'Mengulang suara',
         'audio_completed'      => 'Suara didengar sampai habis',
+        // Owner, 15 November 2026 (04, decision 4)
+        'sound_check_answered' => 'Cek suara dijawab',
         'feedback_submitted'   => 'Mengirim kritik & saran',
         'password_changed'     => 'Mengganti kata sandi',
         'intro_completed'      => 'Selesai menonton cerita pembuka',

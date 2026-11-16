@@ -16,6 +16,10 @@
  * class `has-round-art` and its picture as `--round-art` (the toggle also
  * `--round-art-play`; cinematic.css).
  *
+ * Icon buttons carry `data-tip` (empty = their aria-label) and Otomatis its
+ * explanation: a short label on hover, focus, or a long press (core/tips.js,
+ * owner 16 November 2026).
+ *
  * @var bool|null $nextLabel
  */
 $nextLabel = ! empty($nextLabel);
@@ -31,18 +35,18 @@ $art = static function (string $name, string $class, ?string $play = null): stri
 };
 ?>
 <div class="narrator-controls" data-narrator-controls role="group" aria-label="<?= esc(lang('Game.narratorControls'), 'attr') ?>" hidden>
-  <button type="button"<?= $art('back', 'icon-btn') ?> data-narrator="prev" aria-label="<?= esc(lang('Game.narratorPrev'), 'attr') ?>"><?= icon('left') ?></button>
+  <button type="button"<?= $art('back', 'icon-btn') ?> data-narrator="prev" aria-label="<?= esc(lang('Game.narratorPrev'), 'attr') ?>" data-tip=""><?= icon('left') ?></button>
   <button type="button"<?= $art('pause', 'icon-btn narrator-toggle', 'play') ?> data-narrator="toggle" aria-pressed="false"
           data-label-play="<?= esc(lang('Game.narratorPlay'), 'attr') ?>"
           data-label-pause="<?= esc(lang('Game.narratorPause'), 'attr') ?>"
-          aria-label="<?= esc(lang('Game.narratorPlay'), 'attr') ?>"><?= icon('play', 'icon-play') ?><?= icon('pause', 'icon-pause') ?></button>
-  <button type="button"<?= $art('replay', 'icon-btn') ?> data-narrator="replay" aria-label="<?= esc(lang('Game.narratorReplay'), 'attr') ?>" hidden><?= icon('replay') ?></button>
+          aria-label="<?= esc(lang('Game.narratorPlay'), 'attr') ?>" data-tip=""><?= icon('play', 'icon-play') ?><?= icon('pause', 'icon-pause') ?></button>
+  <button type="button"<?= $art('replay', 'icon-btn') ?> data-narrator="replay" aria-label="<?= esc(lang('Game.narratorReplay'), 'attr') ?>" data-tip="" hidden><?= icon('replay') ?></button>
   <?php if ($nextLabel): ?>
     <button type="button" class="icon-btn narrator-next has-label" data-narrator="next" aria-label="<?= esc(lang('Game.continue'), 'attr') ?>"><span class="narrator-next-label" aria-hidden="true"><?= esc(lang('Game.continue')) ?></span><?= icon('right') ?></button>
   <?php else: ?>
-    <button type="button"<?= $art('next', 'icon-btn') ?> data-narrator="next" aria-label="<?= esc(lang('Game.narratorNext'), 'attr') ?>"><?= icon('right') ?></button>
+    <button type="button"<?= $art('next', 'icon-btn') ?> data-narrator="next" aria-label="<?= esc(lang('Game.narratorNext'), 'attr') ?>" data-tip=""><?= icon('right') ?></button>
   <?php endif ?>
-  <button type="button" class="narrator-auto" data-narrator="auto" aria-pressed="true" title="<?= esc(lang('Game.narratorAutoHint'), 'attr') ?>">
+  <button type="button" class="narrator-auto" data-narrator="auto" aria-pressed="true" data-tip="<?= esc(lang('Game.narratorAutoHint'), 'attr') ?>">
     <span class="narrator-auto-track" aria-hidden="true"><i></i></span><?= esc(lang('Game.narratorAuto')) ?>
   </button>
 </div>

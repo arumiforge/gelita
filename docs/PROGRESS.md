@@ -124,6 +124,19 @@ Owner request: `gelita-katalog/` was out of date; the pictures follow the game, 
 - [x] The three region maps have five measured stops (`CatalogImporter::MAP_STOPS`, 16 November 2026)
 - [ ] `mockup/gambar-mockup/*/aset/` inside `ai-studio/game-images/` keeps the old catalogue's folder names; flatten when the catalogue is rebuilt (`CatalogImporter::MOCKUP_FILES`, `MOCKUP_DIRS`)
 
+## Opening story review (owner, 16 November 2026)
+
+Decisions in `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md` (16 November 2026, *Telaah layar cerita pembuka*); implementation notes in the decision log.
+
+- [x] *Ketuk untuk mendengar kisahnya* as a screen of its own on `bg.intro`; headset hint in research mode
+- [x] No light rays or glow halo on the intro; speaker as round avatar with nameplate (intro and ending)
+- [x] Research mode: dots only show the place; Otomatis back on in every game session
+- [x] Narrator controls 48 dp; short labels on hover, focus and long press (`core/tips.js`)
+- [x] Last slide: no ▶ and no Lewati; *Mulai petualangan* low at the right
+- [ ] Pictures `R-27` to `R-30` (slides 1, 6, 7, 8) and `R-31` to `R-33` (avatar expressions): `todo` in `ai-studio/chatgpt-images/TASKS.md`
+- [x] Research-mode sound-check screen `/cek-suara` (04, 15 November 2026, decision 4): event `sound_check_answered`; 33 §7.6, 11 (Analitik 7)
+- [ ] Sound-check result on the monitoring page (02 L0 follow-up of the same decision)
+
 ## Before the research starts
 
 A server is always set up as a fresh install (`docs/08_DEPLOYMENT.md` → *Instalasi baru*), which runs the bank import, the story data, the catalogue import, and the package build. On a server updated in place instead, `docs/08` lists the commands (`gelita:katalog:impor`, `gelita:story:sync`, **Bangun ulang paket**).
@@ -181,3 +194,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `pw/sweet-wright-b98n4x` | Opening story review (owner, 16 November 2026): own tap screen, speaker avatars, no rays, research-mode dots and Otomatis, 48 dp controls, short labels, last slide; picture rows `R-27` to `R-33`; then the research-mode sound-check screen | Intro and sound check done; PR [#393](https://github.com/arumiforge/gelita/pull/393) |

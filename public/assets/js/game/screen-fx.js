@@ -220,12 +220,14 @@ function channel(initial) {
 
 /**
  * @param {HTMLElement} root narrated scene with `data-fx3d`
- * @param {{ threeUrl: string, onFail?: () => void, light?: { x: number, y: number } | null, quality?: number }} options
+ * @param {{ threeUrl: string, onFail?: () => void, light?: { x: number, y: number } | null, quality?: number, rays?: boolean }} options
  *        light: point of the stage in 0…1 from the left and from the top
+ *        rays: false keeps the light rays and their halo off whatever the effect
+ *        (the opening story, owner 16 November 2026); fog and sparks still play
  * @returns {Promise<{ setEffect: (name: string | null) => void, pause: () => void,
  *                     resume: () => void, destroy: () => void } | null>}
  */
-export async function createScreenFx(root, { threeUrl, onFail = null, light = null, quality: startQuality = 0 }) {
+export async function createScreenFx(root, { threeUrl, onFail = null, light = null, quality: startQuality = 0, rays: withRays = true }) {
   // three.js r163+ needs WebGL 2: without it, skip the 2 MB download and three's console errors
   const probe = document.createElement('canvas').getContext('webgl2');
   if (!probe) return null;
@@ -421,7 +423,7 @@ export async function createScreenFx(root, { threeUrl, onFail = null, light = nu
     fogUniforms.uShift.value.set(x * 0.08, -y * 0.05);
     sparkUniforms.uShift.value.set(-x * 0.045, y * 0.04);
 
-    rays.visible = raysUniforms.uRays.value > 0.002;
+    rays.visible = withRays && raysUniforms.uRays.value > 0.002;
 
     renderer.setRenderTarget(sceneTarget);
     renderer.clear();

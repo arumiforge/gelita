@@ -270,6 +270,31 @@
   cursor: pointer;
 }
 .narrator-tap[hidden] { display: none; }
+/* Its own screen before the story (the opening story, owner 16 November 2026):
+   the story background `bg.intro` covers the whole stage under a dark layer,
+   so no slide picture, caption, or page dot shows through and nothing overlaps */
+.narrator-tap.has-bg { isolation: isolate; background: var(--navy-900); backdrop-filter: none; }
+.narrator-tap.has-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 50% 44%, rgba(223, 192, 135, .2), transparent 44%),
+    linear-gradient(to bottom, rgba(11, 19, 32, .55), rgba(11, 19, 32, .78));
+}
+.narrator-tap-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  animation: kenburns 30s ease-out both;
+}
+.narrator-tap.is-intro .narrator-tap-eyebrow { font-family: var(--font-display); font-size: var(--fs-h3); text-shadow: 0 .125rem .75rem rgba(11, 19, 32, .9); }
+.narrator-tap.is-intro .narrator-tap-label { font-size: 3rem; }
 /* No slide picture before the tap (owner, 20 October 2026): on a page with a
    "Ketuk untuk mulai" card the layout's scene stays dark from the first paint
    until the card is tapped (.is-started), then the picture fades in with
@@ -445,6 +470,9 @@
   animation: fx-glow 2.6s ease-in-out both;
 }
 .narrator-fx.fx-flash { background: #FFF9EC; animation: fx-flash .7s ease-out both; }
+/* The opening story has no light from above or the side (owner, 16 November 2026):
+   neither the WebGL rays (narrator.js passes rays: false) nor this CSS halo */
+.narrator[data-fx-rays="off"] > .narrator-fx.fx-glow { background: none; animation: none; }
 .narrator-fx.fx-dim { background: rgba(4, 8, 16, .5); animation: fx-dim 2.4s ease both; }
 .narrator:has(> .narrator-fx.fx-shake) .slide.is-current :is(.cine-stage, .cine-caption, .map-story-line) {
   animation: fx-shake .55s cubic-bezier(.36, .07, .19, .97) both;
@@ -756,6 +784,9 @@ body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards, .hud-back-plate
 .cine-top .slide-dot { width: 1rem; height: 1rem; box-shadow: 0 0 .375rem rgba(11, 19, 32, .8); }
 .cine-top .slide-dot.is-current { border-color: var(--navy-900); box-shadow: 0 0 0 .125rem var(--gold-500), 0 0 .75rem var(--glow); }
 .cine-top .slide-dot::before { width: calc(1rem + var(--gap-4)); }
+/* Research mode: the dots only show the place (no links, no hit area) */
+.cine-top .slide-dot.is-static { cursor: default; }
+.cine-top .slide-dot.is-static::before { content: none; }
 
 .cine-caption {
   grid-template-columns: minmax(0, 1fr);
@@ -768,10 +799,14 @@ body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards, .hud-back-plate
 .cine-caption .cine-caption-head { min-height: calc(66 * var(--dp)); }
 .cine.is-live .cine-caption .cine-caption-head { padding-right: calc(var(--cine-controls-w) + var(--gap-4)); }
 .cine-caption .cine-speaker { padding: var(--gap-1) var(--gap-4); font-size: var(--fs-body); }
-/* A slide with a character: the figure stands at the left of the caption, on
-   top of it (owner, 18 October 2026), so the caption text starts after it */
-.cine-slide:not(.is-narrator) .cine-caption { padding-left: calc(328 * var(--dp)); }
-.cine-slide > .cine-stage { z-index: 4; pointer-events: none; }
+/* A slide with a character: the speaker's round avatar on the caption's left
+   end with the name on the navy nameplate, as on Kenali (owner, 16 November
+   2026; it replaced the full-body figure and the gold speaker pill). The
+   caption text starts after it. */
+.cine { --kenal-avatar: calc(196 * var(--dp)); }
+.cine-slide:not(.is-narrator) .cine-caption { padding-left: calc(252 * var(--dp)); }
+.cine-caption > .cine-avatar { left: calc(32 * var(--dp)); bottom: calc(20 * var(--dp)); animation: cine-rise .6s ease both; }
+.cine-caption > .cine-avatar .kenal-nameplate { font-size: 1.125rem; }
 .cine-caption .cine-title { margin: 0; font-size: 1.75rem; }
 /* slides.js focuses the new slide's title (or text) for screen readers; that
    programmatic focus is not a control, so it draws no ring */
@@ -782,15 +817,19 @@ body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards, .hud-back-plate
 .cine.is-live .cine-caption .slide-nav { display: none; }
 .cine.is-live .cine-caption { grid-template-rows: auto minmax(0, 1fr); }
 
-/* Last slide: the main button in the middle of the page */
+/* Last slide: the main button low at the right, just above the narrator
+   controls, where Lanjut stood on the other slides, so it no longer covers
+   the middle of the picture (Borobudur's stupa; owner, 16 November 2026) */
 .cine-final {
   position: absolute;
-  inset: calc(120 * var(--dp)) 0 calc(224 * var(--dp));
+  inset: auto calc(32 * var(--dp)) calc(214 * var(--dp)) auto;
   z-index: 3;
   display: grid;
-  place-items: center;
+  place-items: end;
   pointer-events: none;
 }
+/* Lewati goes on the last slide: Mulai petualangan already leads on */
+body:has(.cine-slides > .slide:last-child.is-current) [data-story-skip] { visibility: hidden; }
 .cine-final .btn {
   min-height: 4.5rem;
   padding: var(--gap-3) var(--gap-7);
@@ -813,13 +852,13 @@ body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards, .hud-back-plate
 }
 
 /* Narrator controls on the caption's first row, at the right (owner, 20 October
-   2026): no band behind them; 40 dp round buttons on the HUD's skin
+   2026): no band behind them; round buttons on the HUD's skin
    (`ui.result-hud-control`, else a navy disc with a gold ring) and "Lanjut" on
-   the slim gold pill (`gold-pill-3`, since 22 October 2026), 40 dp tall. The 48 dp hit
-   areas (.icon-btn::before) with the 8 dp gap end at the neighbour's edge. */
-.cine { --cine-controls-w: 11.5rem; }
+   the slim gold pill (`gold-pill-3`, since 22 October 2026). 48 dp tall since
+   16 November 2026 (owner: big enough for a grade 5 finger), was 40 dp. */
+.cine { --cine-controls-w: 13rem; }
 /* With narration audio the controls also hold ⏸/▶, ↻, and Otomatis (narrator.js sets .has-audio) */
-.cine.has-audio { --cine-controls-w: 28rem; }
+.cine.has-audio { --cine-controls-w: 31rem; }
 .cine .narrator-controls {
   position: absolute;
   top: calc(521 * var(--dp));
@@ -834,8 +873,8 @@ body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards, .hud-back-plate
 }
 .cine .narrator-controls .icon-btn {
   isolation: isolate;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 3rem;
+  height: 3rem;
   border: 0;
   background: none;
   color: var(--gold-300);
@@ -855,7 +894,7 @@ body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards, .hud-back-plate
   background: var(--skin-hud) center / 101.6% 101.6% no-repeat;
   filter: brightness(.83) saturate(.8);
 }
-.cine .narrator-controls .icon-btn .icon { width: 1.125rem; height: 1.125rem; filter: drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9)); }
+.cine .narrator-controls .icon-btn .icon { width: 1.375rem; height: 1.375rem; filter: drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9)); }
 .cine .narrator-controls .narrator-toggle::after { box-shadow: 0 0 0 .125rem rgba(223, 192, 135, .5), 0 0 .75rem var(--glow); }
 /* ▶ reads "Lanjut" while there is a next slide (the old Lanjut button) */
 .cine .narrator-next.has-label:not(:disabled) {
@@ -874,7 +913,7 @@ body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards, .hud-back-plate
 .stage[style*="--gold-pill-3"] .cine .narrator-next.has-label:not(:disabled) {
   padding: 0 1.75rem 0 2rem;
   border: 0 solid transparent;
-  border-image: var(--gold-pill-3) 0 165 fill / 0 2.5rem stretch;
+  border-image: var(--gold-pill-3) 0 165 fill / 0 3rem stretch;
   background: none;
   color: #13223D;
 }
@@ -882,7 +921,7 @@ body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards, .hud-back-plate
 .cine .narrator-next.has-label:not(:disabled) .icon { filter: none; }
 .narrator-next-label { white-space: nowrap; }
 .narrator-next:disabled .narrator-next-label { display: none; }
-.cine .narrator-auto { min-height: 2.5rem; padding: 0 var(--gap-3) 0 var(--gap-2); color: var(--gold-300); font-size: var(--fs-caption); text-shadow: 0 1px .25rem rgba(11, 19, 32, .95); }
+.cine .narrator-auto { min-height: 3rem; padding: 0 var(--gap-3) 0 var(--gap-2); color: var(--gold-300); font-size: var(--fs-caption); text-shadow: 0 1px .25rem rgba(11, 19, 32, .95); }
 .cine .narrator-auto-track { width: 2rem; height: 1.125rem; border-radius: .5625rem; }
 .cine .narrator-auto-track i { width: .875rem; height: .875rem; }
 .cine .narrator-auto[aria-pressed="true"] .narrator-auto-track i { transform: translateX(.875rem); }
@@ -1487,7 +1526,7 @@ body.has-kenal { overflow: hidden; }
   white-space: nowrap;
   text-shadow: 0 1px .1875rem rgba(0, 0, 0, .8);
 }
-:is(.kenal, .kedu-story, .result-kedu)[style*="--kenal-plate-navy"] .kenal-nameplate { border: 0; border-radius: 0; background: var(--kenal-plate-navy) center / 100% 100% no-repeat; }
+:is(.kenal, .kedu-story, .result-kedu, .cine-slides)[style*="--kenal-plate-navy"] .kenal-nameplate { border: 0; border-radius: 0; background: var(--kenal-plate-navy) center / 100% 100% no-repeat; }
 /* The title and the dots and Lanjut on one row at the top of the bar */
 .kenal-caption .cine-caption-head { flex-wrap: nowrap; gap: var(--gap-3); min-height: 4rem; }
 .kenal-caption .cine-title { flex: 1 1 auto; min-width: 0; margin: 0; font-size: 1.75rem; }

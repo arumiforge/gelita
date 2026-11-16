@@ -375,6 +375,8 @@ Kode `*-LAIN` tidak pernah ada di bank. Kode itu hanya diberikan saat pengodean 
 
 Bacaan dan pernyataan D1 tidak pernah dibacakan (keputusan media), jadi butir D1 tidak punya narasi soal.
 
+**Cek suara** (usulan `kamus-1.2`; keputusan pengembang 15 November 2026, dibangun 16 November 2026): di awal setiap sesi permainan mode penelitian siswa memutar satu bunyi dan menjawab "Kamu mendengar suara ini?". Setiap jawaban dicatat sebagai event `sound_check_answered` (hanya ditulis server) dengan `heard` (benar/salah) dan `plays` (berapa kali bunyi diputar sebelum menjawab). Jawaban terakhir di sesi itu adalah hasilnya. Ini kovariat per sesi permainan: apakah narasi bisa didengar, melengkapi `headset_share` dari L1. Rinciannya di [33 §7.6](33_IMPLEMENTASI_MODE_PENELITIAN.md#76-cek-suara-di-awal-sesi-permainan).
+
 ### Analitik 8 Navigasi permainan
 
 **Satuan:** sesi game dan pengerjaan.

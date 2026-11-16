@@ -298,6 +298,19 @@ L0 dan L1 menyebut perangkat yang dipakai ([§14](#14-dokumen-yang-ikut-diperbar
 - `/dialog/{wilayah}` memakai judul slide Kenali pertama sebagai *tagline* (`DialogueController::show()`, baris 39–47). Judul itu hanya nama bab ("Mengenal …"), bukan fakta, jadi tetap.
 - `heardRegionIntros()` diganti pembaca `dialogue_completed` oleh bagian 3 (29 K5); bagian ini hanya memakai hasilnya.
 
+### 7.6 Cek suara di awal sesi permainan
+
+Ditambahkan 16 November 2026 (keputusan pengembang 15 November 2026, no. 4 di [04](04_CATATAN_KEPUTUSAN.md); dibangun 16 November 2026).
+
+**Mode penelitian:**
+- Halaman game atau modul tes pertama di setiap sesi permainan diarahkan ke `/cek-suara` (filter `soundCheck`, didaftarkan per path di `Config\Filters`; hanya GET, tidak untuk API). Setelah dijawab, sesi PHP menyimpan id sesi permainan itu (`sound_checked`), jadi masuk lagi (sesi permainan baru) bertanya lagi.
+- Layar *Cek suara*: "Pakai headset-mu dulu, ya. Lalu ketuk Putar suara." Tombol *Putar suara* menyalakan suara game (perangkat bersama bisa tertinggal dalam keadaan suara mati) dan memutar satu bunyi. Pertanyaan "Kamu mendengar suara ini?" dengan *Ya, terdengar* dan *Tidak terdengar*; keduanya baru bisa diketuk setelah bunyi diputar sekali.
+- Setiap jawaban menjadi event peneliti `sound_check_answered` (hanya ditulis server) dengan `heard` (benar/salah) dan `plays` (berapa kali bunyi diputar sebelum menjawab, 0–99).
+- *Ya, terdengar* melanjutkan ke halaman yang tadi dibuka. *Tidak terdengar* menampilkan "Tidak apa-apa. Angkat tanganmu, ya: kakak peneliti akan membantu memeriksa headset dan suaranya. Setelah itu putar suaranya lagi.", lalu menawarkan *Lanjut tanpa suara*. Lanjut tanpa suara tidak menulis event baru: jawaban terakhir adalah hasilnya.
+- Yang dicek adalah apakah narasi bisa didengar, bukan musik. Bunyinya efek suara game, bukan narasi, jadi tidak menulis baris `audio_usage_events`.
+
+**Di luar mode penelitian** tidak ada cek suara; `/cek-suara` langsung melanjutkan ke halaman tujuan.
+
 ---
 
 ## 8. Perbaikan media M-04–M-11 (perubahan no. 19)

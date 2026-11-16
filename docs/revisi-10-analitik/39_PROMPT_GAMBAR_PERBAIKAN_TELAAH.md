@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 15 November 2026, `R-12` sampai `R-26` ditambahkan 16 November 2026 · Lampiran `ai-studio/game-images/REVIEW.md` (telaah gambar oleh pengembang) · Status: `draf pengembang`, `asal: pengembang` (disusun AI atas permintaan pengembang)
+Per 15 November 2026, `R-12` sampai `R-33` ditambahkan 16 November 2026 · Lampiran `ai-studio/game-images/REVIEW.md` (telaah gambar oleh pengembang) · Status: `draf pengembang`, `asal: pengembang` (disusun AI atas permintaan pengembang)
 
 Pengembang menelaah semua gambar game pada 15 November 2026 dan menandai gambar yang harus dibuat ulang. Dokumen ini memuat prompt siap tempel ke ChatGPT (bahasa Inggris) untuk sepuluh gambar bertanda `redo`, ditambah satu gambar pasangan yang menunggu persetujuan pengembang. Gambar `redo later` menjadi baris baru setelah pengembang mengirim foto acuannya; yang pertama `R-12` (16 November 2026). Polanya sama dengan [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md) dan [38](38_PROMPT_PETA_LIMA_TANTANGAN_DAN_SKENARIO.md). Daftar kerjanya ada di `ai-studio/chatgpt-images/TASKS.md` (baris berkode `R-`).
 
@@ -38,6 +38,13 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 | `R-24` | Benda Cari Objek `challenge.item.wnb-4-a07` (mi ongklok, pengecoh) | 276 | Satu-satunya benda berlatar persegi; dibuat ulang sebagai potongan tanpa latar |
 | `R-25` | Tombol bahasa Inggris `public/assets/ui/round-lang-en.webp` | 62 | Bendera Inggris (salib merah); diganti Union Jack, bingkai tetap. Ikon 126 dan 127 dibuang |
 | `R-26` | Pelat instruksi Isi Rumpang `public/assets/ui/rumpang-instruction-plate.webp` (baru) | — | Pelat `kenal-plate-navy` teregang di pita 66 dp; pelat baru berhias hanya di kedua ujung |
+| `R-27` | Slide 1 cerita pembuka `bg.cerita-intro-01` | 190 | Dataran tinggi khayalan bertebing dan berair terjun; naskahnya dataran luas yang dikelilingi Sindoro, Sumbing, Merapi, Merbabu, dan Menoreh. Foto dari peneliti |
+| `R-28` | Slide 6 cerita pembuka `bg.cerita-intro-06` | 195 | Lentera besar di depan dan gunung yang tidak dikenali; Jaka kini tampil sebagai avatar, latar menjadi jalan berangkat dari rumah penjaga. Foto dari peneliti |
+| `R-29` | Slide 7 cerita pembuka `bg.cerita-intro-07` | 196 | Gambarnya isi slide 8 lama (papan, relief, kentongan); naskahnya lima serpihan di setiap wilayah. Foto dari peneliti |
+| `R-30` | Slide 8 cerita pembuka `bg.cerita-intro-08` | 197 | Matahari terbit dengan jalan setapak; naskahnya tiga kunci untuk tiga wilayah. Foto dari peneliti |
+| `R-31` | Avatar Jaka bertekad `ui.jaka-avatar.determined` (baru) | — | Tokoh di slide cerita kini avatar bundar; ekspresi untuk `intro-06` |
+| `R-32` | Avatar Jaka berterima kasih `ui.jaka-avatar.bow` (baru) | — | Ekspresi untuk cerita penutup |
+| `R-33` | Avatar Mbah Kedu lemah `ui.kedu-avatar.weak` (baru) | — | Ekspresi untuk `intro-05` |
 
 ## Aturan bersama
 
@@ -45,7 +52,8 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 
 Gambar di dokumen ini bukan bagian antarmuka. Gayanya mengikuti kelompoknya masing-masing:
 
-- **Gambar isi game** (`R-01` sampai `R-05`, `R-12` sampai `R-18`, `R-20` sampai `R-24`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
+- **Gambar isi game** (`R-01` sampai `R-05`, `R-12` sampai `R-18`, `R-20` sampai `R-24`, `R-27` sampai `R-30`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
+- **Avatar tokoh** (`R-31` sampai `R-33`): disunting dari avatar Jaka dan Mbah Kedu yang ada dengan masker di tokohnya saja; bingkai emas dan latar emasnya tetap, supaya hanya ekspresinya yang berganti di antara slide.
 - **Avatar** (`R-19`): disunting, bukan digambar dari nol, seperti gambar tes: cincin medali dan cakramnya tetap, hanya lambang di tengah yang diganti, supaya kesepuluh avatar tetap satu keluarga sampai perombakan antarmuka mengganti cincin semuanya.
 - **Gambar tes** (`R-06` sampai `R-11`): gambar garis hitam-putih seperti 23 gambar tes lainnya. Gaya ini disengaja: instrumen tes tampil netral dan tidak memakai gaya game.
 - **Bagian antarmuka** (`R-25`, `R-26`): gaya *emas berukir* di atas. `R-25` disunting dari tombol yang ada, seperti gambar tes, supaya bingkainya sama dengan pasangannya.
@@ -660,6 +668,205 @@ CONSTRAINTS
 No watermarks, signatures, text, numbers, logos, people, hands, extra objects, cropped parts, blurry edges, neon colours, or fake checkerboard transparency. No painterly 2D, gouache or paper grain.
 ```
 
+## Cerita pembuka (pengembang, 16 November 2026)
+
+Ditambahkan 16 November 2026. Pengembang menelaah layar cerita pembuka (`/intro`) dan meminta empat latar slide dibuat ulang: slide 1, 6, 7, dan 8. Peneliti mengirim lima foto Dataran Kedu yang berizin, disimpan di `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-*`, `-01` sampai `-05`: Borobudur dari udara dengan dataran dan gunung di belakangnya (`-01`), dua gunung kembar Sindoro dan Sumbing saat matahari terbit (`-02`), dua gunung kembar dari punggung bukit dengan puncak-puncak jauh di kiri (`-03`), Gunung Sindoro di atas desa dataran tinggi berladang sayur (`-04`), dan Telaga Warna di Dieng (`-05`).
+
+Yang salah dari gambar sekarang:
+
+- **Slide 1** (`intro-01`, *Dataran yang Bercahaya*): dataran tinggi khayalan dengan tebing, air terjun, dan gunung berasap. Naskahnya menyebut dataran luas yang dikelilingi Gunung Sindoro, Sumbing, Merapi, Merbabu, dan Perbukitan Menoreh, dengan desa-desa yang diterangi Cahaya Kedu setiap malam.
+- **Slide 6** (`intro-06`, *Jaka, Pembawa Lentera*): pendapa dengan lentera besar di depan dan deretan gunung yang tidak dikenali. Sejak hari yang sama tokohnya tampil sebagai avatar bundar di ujung kiri teks, jadi latar tidak perlu lagi menyisakan tempat untuk Jaka berdiri.
+- **Slide 7** (`intro-07`, *Cara Mengumpulkan Serpihan*): joglo dengan papan penunjuk, relief, dan kentongan melayang. Itu isi slide 8 di prompt lama; naskah slide 7 bercerita tentang lima serpihan di setiap wilayah.
+- **Slide 8** (`intro-08`, *Tiga Kunci Cahaya*): matahari terbit di atas dataran dengan jalan setapak. Naskahnya pesan Mbah Kedu tentang tiga kunci, satu untuk setiap wilayah.
+
+Sejak hari yang sama layar cerita pembuka tidak memakai efek sinar dari atas atau samping, jadi gambar ini tidak boleh membawa berkas sinar sendiri. Seluruh rujukan di bawah dipakai untuk bentuk gunung, candi, dan telaga saja, tidak disalin.
+
+Tokoh yang berbicara kini tampil sebagai avatar bundar dengan papan nama, seperti layar Kenali (pengembang, 16 November 2026). Avatar Jaka dan Mbah Kedu yang ada (wajah ceria dan tersenyum) dipakai untuk pose lain; tiga ekspresi baru dipesan untuk baris yang suasananya berbeda: `R-31` Jaka bertekad (`intro-06`), `R-32` Jaka berterima kasih (penutup), `R-33` Mbah Kedu lemah (`intro-05`). Papan nama memakai pelat biru tua yang sudah ada (`public/assets/ui/kenal-plate-navy.webp`), jadi tidak ada pesanan pelat baru. Layar *Ketuk untuk mendengar kisahnya* memakai latar cerita yang sudah ada (`bg.intro`, rumah joglo penjaga di malam hari), jadi juga tidak ada pesanan latar baru untuk layar itu.
+
+### R-27 · Dataran Kedu yang bercahaya (slide 1 cerita pembuka)
+
+| | |
+|---|---|
+| Kode berkas | `bg.cerita-intro-01` → simpan sebagai `bg.cerita-intro-01.webp` |
+| Kanvas | 1920 × 1080 |
+| Lampiran | Acuan gaya `ai-studio/game-images/assets/referensi/reference.06.webp`; foto `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-twin-volcanoes-from-ridge-03.jpg` (dua gunung kembar dan puncak jauh), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-Sumbing-sunrise-02.jpg` (bentuk Sindoro dan Sumbing), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Borobudur-aerial-plain-volcano-01.jpg` (dataran berpohon kelapa dan gunung di kejauhan; candinya tidak digambar) |
+| Naskah | "Dahulu kala, ada dataran luas bernama Dataran Kedu. Di sekelilingnya berdiri Gunung Sindoro, Sumbing, Merapi, Merbabu, dan Perbukitan Menoreh. Setiap malam, desa-desanya diterangi cahaya lembut yang disebut Cahaya Kedu." |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: bg.cerita-intro-01  (R-27 · opening story, slide 1: the shining Kedu plain)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Characters: do NOT include Jaka or Mbah Kedu, and no people at all. The attached photos are factual references for the land only: follow the shapes of the mountains and the plain, render them in the GELITA finish, and do not copy a photo.
+
+SUBJECT AND COMPOSITION
+Wide 16:9 cinematic landscape. Main subject inside the central 75% of the width and the central 80% of the height; horizon between 45% and 55% of the height; the lower third calm and darker for text panels; the top 8% free of important detail; mid-tone exposure that stays readable under a dark navy overlay of 35% at the top to 75% at the bottom.
+The Kedu plain in Central Java at blue hour, just after sunset, seen from the gentle slope of the Menoreh hills in the south, looking north across the plain.
+- A wide, flat, fertile plain fills the middle: rice fields, coconut palms and small villages of Javanese houses with clay-tile roofs. In every village small warm golden lights glow softly from windows and lanterns, so the whole plain is dotted with gentle gold: the Light of Kedu.
+- The plain is ringed by mountains, all clearly separate: on the LEFT, the twin volcanoes Mount Sumbing (broader) and Mount Sindoro (a clean symmetrical cone) side by side; on the RIGHT, Mount Merbabu (broad, with several low summits) and in front of it Mount Merapi (a steeper cone with a rough grey top). Smooth slopes, no smoke, no eruption, no lava.
+- The foreground and the whole lower third: the dark, quiet slope of the Menoreh hills with soft rounded tree silhouettes, no bright detail.
+- Sky: deep navy above, softening to violet and a thin warm band low behind the mountains; the first few stars. Wonder and calm.
+
+Accuracy — No cliffs, canyons, waterfalls, sea, coast or islands; the plain is flat farmland between mountains. No temple or stupa in this picture. No light rays, sunbeams or god rays.
+
+DELIVERY
+Target canvas 1920 × 1080 pixels; aspect 16:9. Complete subject within canvas, proportional scaling only. Opaque, full-bleed picture. Deliver WebP, named bg.cerita-intro-01.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache or paper grain.
+```
+
+### R-28 · Jaka berangkat dari rumah penjaga (slide 6 cerita pembuka)
+
+| | |
+|---|---|
+| Kode berkas | `bg.cerita-intro-06` → simpan sebagai `bg.cerita-intro-06.webp` |
+| Kanvas | 1920 × 1080 |
+| Lampiran | Acuan gaya `ai-studio/game-images/assets/referensi/reference.06.webp`; `ai-studio/game-images/assets/latar/bg.intro.webp` (rumah joglo penjaga: kayu dan ukirannya sama); foto `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-Sumbing-sunrise-02.jpg` (dua gunung kembar saat pagi), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-over-highland-village-04.jpg` (lereng berladang dan desa) |
+| Naskah | Jaka: "Biar aku yang pergi, Mbah! Aku akan mencari kelima belas serpihan itu satu per satu, sampai Lentera Kedu menyala lagi. Aku janji!" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: bg.cerita-intro-06  (R-28 · opening story, slide 6: setting out from the keeper's house)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Characters: do NOT include Jaka or Mbah Kedu, and no people at all (the game shows the speaker as a round portrait). Attached GELITA pictures are for render finish and for the keeper's joglo house only; the photos are factual references for the mountains and the slopes; do not copy a photo.
+
+SUBJECT AND COMPOSITION
+Wide 16:9 cinematic landscape. Main subject inside the central 75% of the width and the central 80% of the height; horizon between 45% and 55% of the height; the lower third calm and slightly darker for text panels; the top 8% free of important detail; mid-tone exposure that stays readable under a dark navy overlay of 35% at the top to 75% at the bottom.
+Early dawn, seen from the front veranda of the keeper's old wooden joglo house on a hillside (the same house as the attached bg.intro): two carved teak pillars frame the left and right edges of the picture, and the dark wooden veranda floor fills the bottom.
+- From the veranda steps a stone footpath winds down the green hillside, past terraced vegetable fields and a few clay-tile roofs, towards the wide valley.
+- In the distance, filling the upper middle: the twin volcanoes Mount Sumbing (left, broader) and Mount Sindoro (right, a clean cone), soft blue in the morning haze, the first warm light touching their tops. No smoke.
+- In the valley lies the Mist of Forgetting: cold desaturated blue-grey mist (#8C97AA to #5B6478) in soft layered bands, faint wisps that dissolve like fading ink strokes and never form letters; eerie but never scary. Far away in three directions, three tiny warm golden glints shine through the mist where shards of light have fallen.
+- Mood: hopeful, brave, the start of a journey.
+- The lower third: the veranda floor and the top of the steps in calm shadow, no objects on them.
+
+Accuracy — No lantern in the foreground, no people, no animals. No light rays, sunbeams or god rays. No tobacco plants or smoke.
+
+DELIVERY
+Target canvas 1920 × 1080 pixels; aspect 16:9. Complete subject within canvas, proportional scaling only. Opaque, full-bleed picture. Deliver WebP, named bg.cerita-intro-06.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache or paper grain.
+```
+
+### R-29 · Lima serpihan di setiap wilayah (slide 7 cerita pembuka)
+
+| | |
+|---|---|
+| Kode berkas | `bg.cerita-intro-07` → simpan sebagai `bg.cerita-intro-07.webp` |
+| Kanvas | 1920 × 1080 |
+| Lampiran | Acuan gaya `ai-studio/game-images/assets/referensi/reference.06.webp`; foto `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-Sumbing-sunrise-02.jpg` (Temanggung: dua gunung kembar), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Borobudur-aerial-plain-volcano-01.jpg` (Magelang: Borobudur), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Telaga-Warna-Dieng-05.jpg` (Wonosobo: Telaga Warna), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-over-highland-village-04.jpg` (Wonosobo: desa dataran tinggi) |
+| Naskah | "Setiap wilayah menyimpan lima serpihan, dan setiap serpihan dijaga oleh satu tantangan. Selesaikan tantangannya untuk mendapatkan serpihan dan bintang. Lihat papan Serpihan Cahaya di bagian atas layar: cahayanya bertambah setiap kali serpihan kembali." |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: bg.cerita-intro-07  (R-29 · opening story, slide 7: five shards in every region)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Characters: do NOT include Jaka or Mbah Kedu, and no people at all. The attached photos are factual references for the three lands only: follow the shapes of the mountains, the temple and the lake, render them in the GELITA finish, and do not copy a photo.
+
+SUBJECT AND COMPOSITION
+Wide 16:9 cinematic picture. Main subject inside the central 75% of the width and the central 80% of the height; the lower third calm and slightly darker for text panels; the top 10% free of important detail (the game shows its Shards of Light panel there); mid-tone exposure that stays readable under a dark navy overlay of 35% at the top to 75% at the bottom.
+A high bird's-eye view, like a softly lit 3D diorama, of three neighbouring lands side by side under a calm late-afternoon sky, each land clearly its own, joined by small roads and a river:
+- LEFT, Temanggung: the twin volcanoes Mount Sumbing and Mount Sindoro side by side, with terraced coffee and vegetable fields and small villages on their lower slopes.
+- MIDDLE, Magelang: the great stepped stupa temple of Borobudur on a low green hill among coconut palms and rice fields, the low Menoreh hills behind it.
+- RIGHT, Wonosobo: a high cool plateau with a small turquoise lake (Telaga Warna) beside a smaller one, terraced vegetable fields and a highland village, green forest around.
+In EACH land exactly FIVE small faceted crystal shards of warm golden light (#F0DFB8 core, #DFC087 edges) rest in five different places, each with a gentle glow and a few tiny sparkles: fifteen shards in all, five per land, easy to count. Thin patches of the Mist of Forgetting (cold blue-grey #8C97AA to #5B6478, soft layered bands, never shaped like letters) lie between and around the shards. Clear, inviting, a promise of adventure.
+The lower third: soft green lowland and mist only, no buildings, no lake, no shards.
+
+Accuracy — Exactly five shards in each land, no more, no fewer. Temanggung: no tobacco plants, cigarettes or smoke. Wonosobo: no crater, steam, smoke, cracked ground or disaster. No sea, coast, cliffs or waterfalls. No light rays, sunbeams or god rays.
+
+DELIVERY
+Target canvas 1920 × 1080 pixels; aspect 16:9. Complete subject within canvas, proportional scaling only. Opaque, full-bleed picture. Deliver WebP, named bg.cerita-intro-07.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, labels, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache or paper grain.
+```
+
+### R-30 · Tiga kunci cahaya (slide 8 cerita pembuka)
+
+| | |
+|---|---|
+| Kode berkas | `bg.cerita-intro-08` → simpan sebagai `bg.cerita-intro-08.webp` |
+| Kanvas | 1920 × 1080 |
+| Lampiran | Acuan gaya `ai-studio/game-images/assets/referensi/reference.06.webp`; `ai-studio/game-images/assets/latar/bg.intro.webp` (rumah joglo penjaga); foto `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-twin-volcanoes-from-ridge-03.jpg` (Temanggung), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Borobudur-aerial-plain-volcano-01.jpg` (Magelang), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Telaga-Warna-Dieng-05.jpg` (Wonosobo) |
+| Naskah | Mbah Kedu: "Ingat tiga kunci ini, Le. Di Temanggung, temukan informasi yang tertulis jelas. Di Magelang, hubungkan informasi dan bedakan fakta dari pendapat. Di Wonosobo, timbang setiap informasi dan dari mana asalnya." |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: bg.cerita-intro-08  (R-30 · opening story, slide 8: three keys of light)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Characters: do NOT include Jaka or Mbah Kedu, and no people at all (the game shows the speaker as a round portrait). Attached GELITA pictures are for render finish and for the keeper's joglo house only; the photos are factual references for the three lands; do not copy a photo.
+
+SUBJECT AND COMPOSITION
+Wide 16:9 cinematic picture. Main subject inside the central 75% of the width and the central 80% of the height; horizon between 40% and 50% of the height; the lower third calm and slightly darker for text panels; the top 8% free of important detail; mid-tone exposure that stays readable under a dark navy overlay of 35% at the top to 75% at the bottom.
+Golden hour, seen from the warm lantern-lit porch of the keeper's old wooden joglo house high on a hillside (the same house as the attached bg.intro); a low carved wooden railing runs along the bottom of the picture.
+- Beyond the railing the whole Kedu land spreads out in three clearly separate parts, from left to right: Temanggung, the twin volcanoes Mount Sumbing and Mount Sindoro with terraced fields below them; Magelang, the stepped stupa temple of Borobudur on a low green hill in the middle distance; Wonosobo, a high plateau on the right with a small turquoise lake.
+- Above EACH of the three lands floats one small antique brass key, softly glowing gold, the same size, shape and brightness as the other two: three keys, one over each land, gently shining like lanterns in the evening air.
+- Thin bands of the Mist of Forgetting (cold blue-grey #8C97AA to #5B6478, never shaped like letters) still lie in the low valleys. Warm, wise, calm.
+- The lower third: the dark porch floor and the railing in calm shadow, nothing on them.
+
+Accuracy — Exactly three keys, all alike: no key brighter, bigger or nearer than another. Temanggung: no tobacco plants or smoke. Wonosobo: no crater, steam or smoke. No signpost, relief panel or drum. No light rays, sunbeams or god rays.
+
+DELIVERY
+Target canvas 1920 × 1080 pixels; aspect 16:9. Complete subject within canvas, proportional scaling only. Opaque, full-bleed picture. Deliver WebP, named bg.cerita-intro-08.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, labels, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache or paper grain.
+```
+
+### R-31 · Avatar Jaka bertekad (`ui.jaka-avatar.determined`)
+
+Suntingan, bukan gambar baru, seperti `R-19`: bingkai emas dan latarnya sama persis dengan avatar Jaka, hanya wajah dan bahunya yang berganti ekspresi. Dipakai `intro-06` ("Biar aku yang pergi, Mbah! … Aku janji!").
+
+| | |
+|---|---|
+| Kode berkas | `ui.jaka-avatar.determined` → simpan sebagai `ui.jaka-avatar.determined.webp` |
+| Kanvas | 1200 × 1200, latar transparan, sama dengan avatar Jaka |
+| Lampiran | Gambar yang diubah `ai-studio/game-images/mockup/gambar-mockup/kenali/aset/ui.jaka-avatar.webp`; lembar tokoh `ai-studio/game-images/assets/referensi/reference.01.webp` |
+
+```text
+EDIT the attached round avatar "ui.jaka-avatar.webp". Keep EVERYTHING outside the boy exactly as it is: the carved gold ring with its ornaments, the warm gold cloud background inside the ring, the size, the position, the lighting and the transparent exterior.
+Use the image editor with a MASK over the boy's face, hair, neck and shoulders only; the ring and the background stay outside the mask, locked. Do not regenerate the whole picture.
+Change ONLY his expression and a little of his pose: DETERMINED and brave. Eyebrows slightly lowered and drawn together, eyes bright and focused straight ahead, mouth closed in a firm, small confident smile, chin a little raised, shoulders squared. He is the same boy as in the attached character sheet: about 11 years old, tousled dark-brown hair with a cowlick, brown eyes, red scarf, cream shirt, leather backpack strap. Not angry, not shouting, no fist in the picture.
+Output: 1200 × 1200 WebP, genuine transparent background outside the ring, preserve alpha. Named ui.jaka-avatar.determined.webp.
+No text, letters, extra objects, glow or outline added.
+```
+
+### R-32 · Avatar Jaka berterima kasih (`ui.jaka-avatar.bow`)
+
+Suntingan seperti `R-31`. Dipakai cerita penutup (pose `bow`).
+
+| | |
+|---|---|
+| Kode berkas | `ui.jaka-avatar.bow` → simpan sebagai `ui.jaka-avatar.bow.webp` |
+| Kanvas | 1200 × 1200, latar transparan, sama dengan avatar Jaka |
+| Lampiran | Gambar yang diubah `ai-studio/game-images/mockup/gambar-mockup/kenali/aset/ui.jaka-avatar.webp`; lembar tokoh `ai-studio/game-images/assets/referensi/reference.01.webp` |
+
+```text
+EDIT the attached round avatar "ui.jaka-avatar.webp". Keep EVERYTHING outside the boy exactly as it is: the carved gold ring with its ornaments, the warm gold cloud background inside the ring, the size, the position, the lighting and the transparent exterior.
+Use the image editor with a MASK over the boy's face, hair, neck and shoulders only; the ring and the background stay outside the mask, locked. Do not regenerate the whole picture.
+Change ONLY his expression and a little of his pose: THANKFUL and respectful, the polite Javanese way of thanking an elder. His head bowed slightly forward, eyes softly half-closed or looking down, a warm gentle smile with the mouth closed. He is the same boy as in the attached character sheet: about 11 years old, tousled dark-brown hair with a cowlick, brown eyes, red scarf, cream shirt, leather backpack strap. Not sad, not sleepy, no hands in the picture.
+Output: 1200 × 1200 WebP, genuine transparent background outside the ring, preserve alpha. Named ui.jaka-avatar.bow.webp.
+No text, letters, extra objects, glow or outline added.
+```
+
+### R-33 · Avatar Mbah Kedu lemah (`ui.kedu-avatar.weak`)
+
+Suntingan seperti `R-31`. Dipakai `intro-05` ("Aku Mbah Kedu, penjaga lentera ini. Kakiku sudah tua … Setiap kali cahayanya meredup, tubuhku ikut melemah.").
+
+| | |
+|---|---|
+| Kode berkas | `ui.kedu-avatar.weak` → simpan sebagai `ui.kedu-avatar.weak.webp` |
+| Kanvas | 1024 × 1024, latar transparan, sama dengan avatar Mbah Kedu |
+| Lampiran | Gambar yang diubah `ai-studio/game-images/assets/referensi/reference.02.webp` (avatar Mbah Kedu) |
+
+```text
+EDIT the attached round avatar "reference.02.webp" (Mbah Kedu, the keeper). Keep EVERYTHING outside the old man exactly as it is: the carved gold ring with its ornaments, the warm gold cloud background inside the ring, the size, the position, the lighting and the transparent exterior.
+Use the image editor with a MASK over his face, headcloth, beard and shoulders only; the ring and the background stay outside the mask, locked. Do not regenerate the whole picture.
+Change ONLY his expression and a little of his pose: TIRED and WEAK, but still kind. Eyes heavy and half-closed, eyebrows slightly raised in the middle, a small weary but gentle smile, shoulders a little dropped, head tilted slightly down; the warm colours of his face a touch paler. He is the same man: brown batik headcloth, white moustache and short white beard, brown batik vest over a cream shirt. Not crying, not ill in bed, nothing frightening.
+Output: 1024 × 1024 WebP, genuine transparent background outside the ring, preserve alpha. Named ui.kedu-avatar.weak.webp.
+No text, letters, extra objects, glow or outline added.
+```
+
 ## Gambar tes
 
 Lampirkan gambar tes yang sekarang dari `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/` dan minta gambar yang sama dengan perubahan yang disebut saja. Setelah itu baca setiap kata di hasilnya dan cocokkan dengan daftar *All text* di prompt.
@@ -892,6 +1099,8 @@ No glow line, no bright rim light, no text, letters, icons or symbols. WebP, nam
 - `R-20` dan `R-21`: kuda kepang pipih seperti papan, bentuk kuda utuh dari samping (kepala, leher melengkung, badan), anyaman bambu yang tetap tampak di bawah cat, bingkai rotan; tanpa tongkat, roda, ayunan, pelana kain, atau rumbai di bawah perut; latar transparan; `R-20` putih berhias merah-hitam, `R-21` hitam berhias emas; `R-21` jelas berbeda dari dadak merak. Bandingkan dengan foto `-01` dan `-04`.
 - `R-22`: kendil, periuk tanah liat bulat bermulut lebar dengan tutup tanah liat bertombol; tanpa cerat, gagang panjang, dan kaki; tanah liat bakar cokelat kemerahan, tidak mengilap seperti logam; jelas berbeda dari panci logam `a10`; latar transparan. Bandingkan dengan foto kendil dari pengembang.
 - `R-03` sampai `R-05`: tokohnya Jaka (syal merah, kemeja krem, ransel, tanpa ikat kepala); ketiganya berlatar biru tua yang sama; medali simbol bergaya emas berukir.
+- `R-27` sampai `R-30`: tanpa orang dan tanpa berkas sinar; sepertiga bawah tenang. `R-27`: dataran datar berdesa bercahaya keemasan, Sindoro dan Sumbing di kiri, Merbabu dan Merapi di kanan, tanpa tebing, air terjun, laut, dan candi. `R-28`: dua tiang joglo di tepi, jalan batu turun ke lembah, dua gunung kembar, tanpa lentera di depan. `R-29`: tiga wilayah yang jelas berbeda dan **tepat lima** serpihan di setiap wilayah (hitung). `R-30`: tepat tiga kunci kuningan yang sama besar dan sama terang, satu di atas setiap wilayah.
+- `R-31` sampai `R-33`: di luar tokoh tidak ada yang berubah (cincin, latar emas, ukuran, posisi); bandingkan dengan avatar lama. Tokohnya tetap orang yang sama, ekspresinya terbaca di 196 dp.
 
 **Gambar tes (`R-06` sampai `R-11`)**
 
@@ -905,6 +1114,8 @@ No glow line, no bright rim light, no text, letters, icons or symbols. WebP, nam
 - `R-01` sampai `R-05`, `R-12`, `R-14` sampai `R-22`, `R-24`: berkas dari `ai-studio/chatgpt-images/out/` **dipindahkan** (bukan disalin) ke tempat berkas lamanya di `ai-studio/game-images/assets/` dan menggantikannya; entri `data.json` tidak berubah. Lalu `php spark gelita:katalog:impor`. `R-13` adalah gambar baru: berkasnya dipindahkan ke `ai-studio/game-images/assets/tantangan/challenge.post.tmg-4-b.webp`, lalu entri baru `challenge.post.tmg-4-b` ditambahkan ke `data.json` (contoh: entri `challenge.item.tmg-1-h01`) dan satu baris ke `REVIEW.md`. `R-16`: entri `library.temanggung.p5.1` di `data.json` mendapat `caption` "Situs Liyangan di lereng Gunung Sindoro" / "The Liyangan Site on the slopes of Mount Sindoro". `R-14`: entri `library.wonosobo.p2.2` di `data.json` mendapat `caption` baru "Peta kawasan Dataran Tinggi Dieng" / "Map of the Dieng Plateau area".
 - `R-06` sampai `R-11`: berkas dipindahkan ke `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/`. Berkas PNG induk di `docs/revisi-10-analitik/gambar/doc-34/` diganti dengan hasil yang sama, supaya induk dan gambar terpasang tidak berbeda.
 - `R-23` adalah gambar baru untuk slot yang sudah ada di bank: berkasnya dipindahkan ke `ai-studio/game-images/assets/tantangan/challenge.item.tmg-3-b04.webp`, entri baru `challenge.item.tmg-3-b04` ditambahkan ke `data.json` (contoh: entri `challenge.item.tmg-3-a03`) dan satu baris ke `REVIEW.md`. Entri dan berkas `challenge.item.tmg-3-b03` dan `tmg-3-c03` dihapus.
+- `R-27` sampai `R-30`: berkas dipindahkan ke `ai-studio/game-images/assets/latar/` menggantikan berkas lamanya; entri `data.json` mendapat prompt baru dari bagian ini. Lalu `php spark gelita:katalog:impor`.
+- `R-31` sampai `R-33` gambar baru: berkas dipindahkan ke `ai-studio/game-images/assets/ikon/`, lalu entri baru `ui.jaka-avatar.determined`, `ui.jaka-avatar.bow`, dan `ui.kedu-avatar.weak` ditambahkan ke `data.json` (kategori Ikon, 512 × 512, alpha; slot `ui.jaka-avatar.*` dan `ui.kedu-avatar.*` sudah ada di `ImageSlots`) dan satu baris per gambar ke `REVIEW.md`. Lalu `php spark gelita:katalog:impor`. Tanpa gambar ini, slide memakai avatar biasa.
 - `R-25` menggantikan `public/assets/ui/round-lang-en.webp` di tempatnya (URL-nya berversi lewat `asset_url_versioned()`). Entri `icon.language-en` dan `icon.language-id` beserta berkasnya dihapus dari `data.json` bila tidak ada kode yang membacanya lagi.
 - `R-26` berkas baru `public/assets/ui/rumpang-instruction-plate.webp`; CSS kartu instruksi Isi Rumpang memakainya sebagai `border-image` dengan kedua ujung tetap (120 px dari 1600) dan tengah memanjang, diukur di Chromebook (1366 × 768).
 - Setelah dipasang, lembar telaah dibangun ulang (`node ai-studio/game-images/review/build-sheets.mjs`) dan baris `REVIEW.md` diberi tanda baru oleh pengembang.

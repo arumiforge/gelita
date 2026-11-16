@@ -33,6 +33,7 @@ final class EventCatalog
         'item_shown',   // owner, 9 Nov 2026 (35 §6.2): a Cari Objek clue or a scenario came on screen; exact time per item
         // help and narration
         'hint_opened', 'audio_play', 'audio_autoplay', 'audio_replay', 'audio_completed',
+        'sound_check_answered',   // owner, 15 Nov 2026 (04, decision 4): could the narration be heard; server only
         // screens and reading
         'screen_viewed', 'overlay_opened', 'library_opened', 'library_page_viewed', 'reading_progress',
         'page_hidden', 'page_visible',
@@ -52,7 +53,7 @@ final class EventCatalog
     ];
 
     /** Types the client may never send (data that must not be forged). */
-    public const SERVER_ONLY = ['screen_viewed', 'challenge_tries_exhausted', 'clue_failed', 'events_dropped', 'scenario_failed'];
+    public const SERVER_ONLY = ['screen_viewed', 'challenge_tries_exhausted', 'clue_failed', 'events_dropped', 'scenario_failed', 'sound_check_answered'];
 
     /** Research events of the `navigasi` sheet. */
     public const NAVIGATION = [

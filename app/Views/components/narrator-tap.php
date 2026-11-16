@@ -23,12 +23,20 @@
  * @var string|null $label    label tombol (bawaan "Ketuk untuk mulai")
  * @var string|null $variant  kelas `is-{variant}`, mis. `chapter`, `done`
  * @var bool|null   $trail    tampilkan jejak kaki (partials/footsteps)
+ * @var string|null $bg       optional: the card's own full-cover background picture,
+ *                            so it stands alone as a screen before the story instead
+ *                            of lying over the first slide (the opening story, owner
+ *                            16 November 2026)
  */
 $variant = $variant ?? '';
+$bg      = (string) ($bg ?? '');
 // The GELITA lantern picture (owner, 18 October 2026); the SVG only until it is uploaded
 $lantern = media_key_src('ui.lantern');
 ?>
-<div class="narrator-tap<?= $variant !== '' ? ' is-' . esc($variant, 'attr') : '' ?>" data-narrator-tap hidden>
+<div class="narrator-tap<?= $variant !== '' ? ' is-' . esc($variant, 'attr') : '' ?><?= $bg !== '' ? ' has-bg' : '' ?>" data-narrator-tap hidden>
+  <?php if ($bg !== ''): ?>
+    <img class="narrator-tap-bg" src="<?= esc($bg, 'attr') ?>" alt="" decoding="async" draggable="false">
+  <?php endif ?>
   <div class="narrator-tap-card">
     <?php if (! empty($trail)): ?>
       <?= component('partials/footsteps', ['steps' => 6, 'class' => 'tap-trail']) ?>

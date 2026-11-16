@@ -38,7 +38,8 @@ function initSound() {
     const on = Sfx.isEnabled();
     button.setAttribute('aria-pressed', on ? 'true' : 'false');
     button.classList.toggle('is-muted', !on);
-    button.title = on ? t('soundOn') : t('soundOff');
+    // Short label shown on hover, focus, or a long press (core/tips.js)
+    button.dataset.tip = on ? t('soundOn') : t('soundOff');
   };
 
   button.addEventListener('click', () => {

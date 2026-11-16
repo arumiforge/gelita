@@ -38,6 +38,8 @@ class ScreenViewFilter implements FilterInterface
         // research revision 10, part 2 (28 §15)
         '#^token$#'                       => ['field_token', []],
         '#^sampai-jumpa$#'                => ['field_closed', []],
+        // research mode sound check (04, 15 November 2026, decision 4)
+        '#^cek-suara$#'                   => ['sound_check', []],
     ];
 
     public function before(RequestInterface $request, $arguments = null)

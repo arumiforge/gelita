@@ -66,6 +66,9 @@ $routes->group('', ['namespace' => 'App\Controllers\Game'], static function ($ro
         $routes->post('profil/avatar', 'ProfileController::avatar');
         $routes->get('refleksi', 'ReflectionController::index');
         $routes->post('refleksi', 'ReflectionController::store');
+        // Research-mode sound check at the start of every game session (04, 15 November 2026, decision 4)
+        $routes->get('cek-suara', 'SoundCheckController::index');
+        $routes->post('cek-suara', 'SoundCheckController::answer');
     });
 
     // Part 8 (34 §12): the test module, questionnaire, risk items (no screenView, K14), and the attitude scale
