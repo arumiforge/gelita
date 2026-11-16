@@ -71,12 +71,18 @@ final class BankKelas5DataTest extends CIUnitTestCase
         $this->assertCount(67 + 24, $this->flat()['media'], '+ one situation picture per scenario (32 §7.5)');
     }
 
-    /** Every item of 08 stays needs_verification until expert validation (31 §7.3). */
-    public function testNewItemsAreNeedsVerification(): void
+    /**
+     * Every item of 08 was needs_verification (31 §7.3) until the researcher
+     * checked its facts: verified since 16 November 2026, ready for the field
+     * trial; the validators' decisions come later (04).
+     */
+    public function testItemsAreCheckedByTheResearcher(): void
     {
         foreach ($this->flat()['sheets']['items'] as $row) {
+            $this->assertSame('verified', $row['review_status'], $row['item_key']);
+
             if ($row['interaction_type'] !== 'puzzle_arrange') {
-                $this->assertSame('needs_verification', $row['review_status'], $row['item_key']);
+                $this->assertStringContainsString('fakta dicek peneliti, siap uji lapangan', $row['review_note'], $row['item_key']);
                 $this->assertStringContainsString('Teks Inggris: dari 36, disetujui pengembang', $row['review_note'], $row['item_key']);
                 $this->assertStringNotContainsString('terjemahan belum ada', $row['review_note'], $row['item_key']);
             }

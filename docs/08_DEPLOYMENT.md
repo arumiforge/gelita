@@ -586,7 +586,9 @@ Instalasi baru adalah satu-satunya cara memasang GELITA. Urutannya sama di kedua
 | 1 | Kode dan `.env` | `composer install --no-dev --optimize-autoloader`, `cp env .env`, `php spark key:generate` | — | `deploy` |
 | 2 | Skema | `php spark migrate` | `gelita_migrate` (DSN) | `www-data` |
 | 3 | Isi awal | `GELITA_ADMIN_PASSWORD='…' php spark db:seed DatabaseSeeder` | `gelita_app` | `www-data` |
+| 3a | Test module content *(new, English)* | `php spark gelita:instrumen:impor` (tests, questionnaire, attitude scale; `db:seed` does not load them, and `/tes` stays unusable without them) | `gelita_app` | `www-data` |
 | 4 | Narasi | `php spark gelita:narration:install` (narasi cadangan ElevenLabs dari `ai-studio/elevenlabs-voice/out/`), `php spark gelita:narration:import`, lalu setujui di panel | `gelita_app` | `www-data` |
+| 4a | Team pictures *(new, English)* | `php spark gelita:katalog:impor` (see [Installing the Katalog Aset images](#installing-the-katalog-aset-images)) | `gelita_app` | `www-data` |
 | 5 | Verifikasi konten | `php spark gelita:content:verify` | `gelita_app` | `www-data` |
 | 6 | Gambar asli | ganti 66 gambar contoh lewat panel, sampai daftar siap penelitian hijau | — | — |
 | 7 | Uji asap | [Verifikasi Setelah Deploy](#verifikasi-setelah-deploy) | — | — |
@@ -648,6 +650,9 @@ read -rsp 'Sandi admin pertama: ' GELITA_ADMIN_PASSWORD && echo && export GELITA
 sudo --preserve-env=GELITA_ADMIN_PASSWORD -u www-data php spark db:seed DatabaseSeeder
 unset GELITA_ADMIN_PASSWORD
 
+# 5a. Test module content (tests, questionnaire, attitude scale); not part of db:seed
+sudo -u www-data php spark gelita:instrumen:impor
+
 # 6a. Narasi cadangan ElevenLabs (ai-studio/elevenlabs-voice/out/) → folder narasi + produksi.json (tercatat sintetis; rekaman pengisi suara yang sudah ada tidak ditimpa)
 sudo -u www-data php spark gelita:narration:install --dry-run
 sudo -u www-data php spark gelita:narration:install
@@ -655,6 +660,9 @@ sudo -u www-data php spark gelita:narration:install
 # 6b. Rekaman narasi di public/assets/audio/narasi/{id,en}/ → audio draft (folder kosong: dilewati; rekaman juga dapat diunggah di panel)
 sudo -u www-data php spark gelita:narration:import --dry-run
 sudo -u www-data php spark gelita:narration:import
+
+# 6c. Team pictures from ai-studio/game-images/ (see "Installing the Katalog Aset images")
+sudo -u www-data php spark gelita:katalog:impor
 
 # 7. Verifikasi konten — harus 0 galat (peringatan gambar contoh boleh)
 sudo -u www-data php spark gelita:content:verify
@@ -721,10 +729,13 @@ $env:GELITA_ADMIN_PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringBSTR(
 php spark db:seed DatabaseSeeder
 Remove-Item Env:\GELITA_ADMIN_PASSWORD
 
+php spark gelita:instrumen:impor
+
 php spark gelita:narration:install --dry-run
 php spark gelita:narration:install
 php spark gelita:narration:import --dry-run
 php spark gelita:narration:import
+php spark gelita:katalog:impor
 php spark gelita:content:verify
 ```
 

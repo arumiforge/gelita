@@ -6,8 +6,9 @@
  * Research bank of revision 10 (docs/revisi-10-analitik/08_DRAF_BANK_SOAL.md;
  * English: 36, AI draft), format of 31 §6.4, written by
  * docs/bank-soal/tools/import_08.py on 3 November 2026 and edited by hand
- * from then on. Every item of 08 is `needs_verification` until expert
- * validation. The old bank is archived in docs/arsip/bank-soal-lama/.
+ * from then on. Every item of 08 was `needs_verification` until the
+ * researcher checked its facts (16 November 2026: `verified`, ready for the
+ * field trial; the validators' decisions come later). The old bank is archived in docs/arsip/bank-soal-lama/.
  *
  * Shape (docs/bank-soal/README.md → Bentuk berkas data): texts are pairs
  * [Indonesia, English]; labels per item `dim`, `sub`, `akm`, `pirls`,
@@ -89,8 +90,8 @@ return [
                                 'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt MGL-P05; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.',
                             ],
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (MGL-P05 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | Revisi 10: gambar diganti (stupa kecil di atap mirip sasaran mgl-4-x01); gambar baru dari tim katalog. | Revisi 10 (31 §14): huruf variasi dipetakan ulang; a dan b = dua variasi bersih untuk pengerjaan pertama selama studi, huruf lain untuk pengerjaan ulang.',
+                                'status' => 'verified',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (MGL-P05 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | Revisi 10: gambar diganti (stupa kecil di atap mirip sasaran mgl-4-x01); gambar baru dari tim katalog. | Revisi 10 (31 §14): huruf variasi dipetakan ulang; a dan b = dua variasi bersih untuk pengerjaan pertama selama studi, huruf lain untuk pengerjaan ulang. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                     ],
@@ -112,8 +113,8 @@ return [
                                 'source' => 'Sudah dibuat ulang di Katalog Aset (14 Oktober 2026, prompt MGL-P01; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang. Rujukan: https://commons.wikimedia.org/wiki/File:Borobudur_stupas_on_upper_terrace.jpg',
                             ],
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Revisi Oktober 2026: catatan isi gambar diperbarui; gambar katalog gagal uji keping dan stupa induk salah letak, wajib diganti. Perlu dicek ulang peneliti. | Revisi 10 (31 §14): huruf variasi dipetakan ulang; a dan b = dua variasi bersih untuk pengerjaan pertama selama studi, huruf lain untuk pengerjaan ulang.',
+                                'status' => 'verified',
+                                'note'   => 'Revisi Oktober 2026: catatan isi gambar diperbarui; gambar katalog gagal uji keping dan stupa induk salah letak, wajib diganti. Perlu dicek ulang peneliti. | Revisi 10 (31 §14): huruf variasi dipetakan ulang; a dan b = dua variasi bersih untuk pengerjaan pertama selama studi, huruf lain untuk pengerjaan ulang. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                     ],
@@ -158,8 +159,8 @@ return [
                                 'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt MGL-P04; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.',
                             ],
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (MGL-P04 di panduan gambar puzzle). Fakta baru yang wajib dicek: "searah jarum jam, dimulai dari sisi timur" (sumber: Wikipedia Borobudur). Gambar belum dibuat. | Revisi 10 (31 §14): huruf variasi dipetakan ulang; a dan b = dua variasi bersih untuk pengerjaan pertama selama studi, huruf lain untuk pengerjaan ulang.',
+                                'status' => 'verified',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (MGL-P04 di panduan gambar puzzle). Fakta baru yang wajib dicek: "searah jarum jam, dimulai dari sisi timur" (sumber: Wikipedia Borobudur). Gambar belum dibuat. | Revisi 10 (31 §14): huruf variasi dipetakan ulang; a dan b = dua variasi bersih untuk pengerjaan pertama selama studi, huruf lain untuk pengerjaan ulang. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                     ],
@@ -181,8 +182,8 @@ return [
                                 'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt MGL-P06; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.',
                             ],
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (MGL-P06 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | Revisi 10 (31 §14): huruf variasi dipetakan ulang; a dan b = dua variasi bersih untuk pengerjaan pertama selama studi, huruf lain untuk pengerjaan ulang.',
+                                'status' => 'verified',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (MGL-P06 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | Revisi 10 (31 §14): huruf variasi dipetakan ulang; a dan b = dua variasi bersih untuk pengerjaan pertama selama studi, huruf lain untuk pengerjaan ulang. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                     ],
@@ -204,8 +205,8 @@ return [
                                 'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt MGL-P07; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.',
                             ],
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (MGL-P07 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | Revisi 10: keterangan diperbaiki dari cek fakta 25. | Revisi 10 (31 §14): huruf variasi dipetakan ulang; a dan b = dua variasi bersih untuk pengerjaan pertama selama studi, huruf lain untuk pengerjaan ulang.',
+                                'status' => 'verified',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (MGL-P07 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | Revisi 10: keterangan diperbaiki dari cek fakta 25. | Revisi 10 (31 §14): huruf variasi dipetakan ulang; a dan b = dua variasi bersih untuk pengerjaan pertama selama studi, huruf lain untuk pengerjaan ulang. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                     ],
@@ -227,8 +228,8 @@ return [
                                 'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt MGL-P08; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.',
                             ],
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (MGL-P08 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | Revisi 10 (31 §14): huruf variasi dipetakan ulang; a dan b = dua variasi bersih untuk pengerjaan pertama selama studi, huruf lain untuk pengerjaan ulang.',
+                                'status' => 'verified',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (MGL-P08 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | Revisi 10 (31 §14): huruf variasi dipetakan ulang; a dan b = dua variasi bersih untuk pengerjaan pertama selama studi, huruf lain untuk pengerjaan ulang. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                     ],
@@ -250,8 +251,8 @@ return [
                                 'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt MGL-P09; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.',
                             ],
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Revisi v2 (17 Okt 2026): sumber air suci (Umbul Jumprit) dan api (Mrapen, Grobogan) dipisah; versi draf 1 menyiratkan api juga dari Jumprit. | Sebelumnya: Revisi Oktober 2026: gambar & keterangan baru (MGL-P09 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | Revisi 10 (31 §14): huruf variasi dipetakan ulang; a dan b = dua variasi bersih untuk pengerjaan pertama selama studi, huruf lain untuk pengerjaan ulang.',
+                                'status' => 'verified',
+                                'note'   => 'Revisi v2 (17 Okt 2026): sumber air suci (Umbul Jumprit) dan api (Mrapen, Grobogan) dipisah; versi draf 1 menyiratkan api juga dari Jumprit. | Sebelumnya: Revisi Oktober 2026: gambar & keterangan baru (MGL-P09 di panduan gambar puzzle). Fakta diambil dari bank soal; cek ulang rumusannya. Gambar belum dibuat. | Revisi 10 (31 §14): huruf variasi dipetakan ulang; a dan b = dua variasi bersih untuk pengerjaan pertama selama studi, huruf lain untuk pengerjaan ulang. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                     ],
@@ -273,8 +274,8 @@ return [
                                 'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt MGL-P10; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.',
                             ],
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (MGL-P10 di panduan gambar puzzle). Fakta baru yang wajib dicek: "dua pasang gunung kembar … dua sungai, Progo dan Elo" (sumber: Wikipedia Borobudur). Gambar belum dibuat. | Revisi 10 (31 §14): huruf variasi dipetakan ulang; a dan b = dua variasi bersih untuk pengerjaan pertama selama studi, huruf lain untuk pengerjaan ulang.',
+                                'status' => 'verified',
+                                'note'   => 'Revisi Oktober 2026: gambar & keterangan baru (MGL-P10 di panduan gambar puzzle). Fakta baru yang wajib dicek: "dua pasang gunung kembar … dua sungai, Progo dan Elo" (sumber: Wikipedia Borobudur). Gambar belum dibuat. | Revisi 10 (31 §14): huruf variasi dipetakan ulang; a dan b = dua variasi bersih untuk pengerjaan pertama selama studi, huruf lain untuk pengerjaan ulang. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                     ],
@@ -337,8 +338,8 @@ return [
                             ],
                             'note'   => 'Memadukan dua angka; enam menangkap siswa yang hanya mencocokkan kata di kalimat sebelumnya',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -356,8 +357,8 @@ return [
                             'bloom'  => 'C2',
                             'note'   => 'Memadukan dua kalimat: definisi "bangunan berbentuk lonceng" dengan bangunan di puncak. Ditulis ulang 3 November 2026 dari L1: rumpang tidak lagi tepat sesudah definisinya',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -375,8 +376,8 @@ return [
                             'bloom'  => 'C2',
                             'note'   => 'Satu arca di setiap stupa',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -397,8 +398,8 @@ return [
                             ],
                             'note'   => 'Membandingkan 1.460 dan 1.212; mengganti mgl-2-a03 lama ("relief") yang butuh kosakata awal',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -413,8 +414,8 @@ return [
                             'bloom'  => 'C2',
                             'note'   => 'Sebab–akibat',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                     ],
@@ -442,8 +443,8 @@ return [
                             'bloom'  => 'C2',
                             'note'   => 'Memadukan dua kalimat: hiasan dari bulu itu adalah kuluk. Ditulis ulang 3 November 2026 dari L1: bulu tidak lagi disebut di kalimat definisinya',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -464,8 +465,8 @@ return [
                             ],
                             'note'   => 'Sebab–akibat',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -483,8 +484,8 @@ return [
                             'bloom'  => 'C2',
                             'note'   => 'Menyimpulkan dari "bergerak serempak"',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -505,8 +506,8 @@ return [
                             ],
                             'note'   => 'Dari "berjuang mengusir penjajah" dan "siap bertempur"; penjajah ada di kalimat yang sama, tetapi tarian menggambarkan pihak yang melawannya. Kode pengecoh diganti 3 November 2026 dari INF-LIT: siswa yang memilihnya terkecoh kata yang sama di bacaan, setara dengan enam di mgl-2-a01. Ditulis ulang 27 Oktober 2026 dari cek fakta ([25](25_CEK_FAKTA_BUDAYA.md)): kunci lama petani tidak didukung sumber',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -524,8 +525,8 @@ return [
                             'bloom'  => 'C2',
                             'note'   => 'Sebab–akibat dari tali pembatas; diam dan kompak tetap bersaing secara bentuk kata. Mengganti mgl-2-b05 lama ("mengganggu") yang terjawab dari norma',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                     ],
@@ -588,8 +589,8 @@ return [
                             'bloom'  => 'C2',
                             'skill'  => 'gagasan_pokok',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -608,8 +609,8 @@ return [
                             'bloom'  => 'C2',
                             'skill'  => 'menilai_pilihan',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -628,8 +629,8 @@ return [
                             'bloom'  => 'C2',
                             'skill'  => 'menghubungkan_informasi',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -645,8 +646,8 @@ return [
                             'bloom'  => 'C2',
                             'skill'  => 'membedakan_fakta_pendapat',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -662,8 +663,8 @@ return [
                             'bloom'  => 'C2',
                             'skill'  => 'membedakan_fakta_pendapat',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -682,8 +683,8 @@ return [
                             'bloom'  => 'C4',
                             'skill'  => 'membandingkan_sumber',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                     ],
@@ -716,8 +717,8 @@ return [
                             'bloom'  => 'C2',
                             'skill'  => 'gagasan_pokok',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -736,8 +737,8 @@ return [
                             'bloom'  => 'C2',
                             'skill'  => 'menghubungkan_informasi',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -756,8 +757,8 @@ return [
                             'bloom'  => 'C2',
                             'skill'  => 'menilai_pilihan',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -773,8 +774,8 @@ return [
                             'bloom'  => 'C2',
                             'skill'  => 'membedakan_fakta_pendapat',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -790,8 +791,8 @@ return [
                             'bloom'  => 'C2',
                             'skill'  => 'membedakan_fakta_pendapat',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -810,8 +811,8 @@ return [
                             'bloom'  => 'C4',
                             'skill'  => 'membandingkan_sumber',
                             'review' => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                     ],
@@ -845,8 +846,8 @@ return [
                         'bloom'  => 'C2',
                         'skill'  => 'gagasan_pokok',
                         'review' => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                     [
@@ -865,8 +866,8 @@ return [
                         'bloom'  => 'C4',
                         'skill'  => 'menilai_kredibilitas',
                         'review' => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                 ],
@@ -927,8 +928,8 @@ return [
                             'note'  => 'stupa kecil berlubang (miniatur)',
                         ],
                         'review'       => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                     [
@@ -950,8 +951,8 @@ return [
                             'note'  => 'kuluk bulu warna-warni Topeng Ireng',
                         ],
                         'review'       => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                     [
@@ -973,8 +974,8 @@ return [
                             'note'  => 'getuk tiga warna di atas daun pisang',
                         ],
                         'review'       => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                     [
@@ -996,8 +997,8 @@ return [
                             'note'  => 'kendil gerabah cokelat kemerahan',
                         ],
                         'review'       => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                     [
@@ -1019,8 +1020,8 @@ return [
                             'note'  => 'kuda kepang anyaman bambu',
                         ],
                         'review' => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                     [
@@ -1039,8 +1040,8 @@ return [
                             'note'  => 'stoples manisan carica',
                         ],
                         'review' => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                     [
@@ -1062,8 +1063,8 @@ return [
                             'note'  => 'dadak merak Reog Ponorogo',
                         ],
                         'review' => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                     [
@@ -1085,8 +1086,8 @@ return [
                             'note'  => 'angklung bambu',
                         ],
                         'review' => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                     [
@@ -1108,8 +1109,8 @@ return [
                             'note'  => 'beberapa bakpia',
                         ],
                         'review' => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                     [
@@ -1128,8 +1129,8 @@ return [
                             'note'  => 'panci logam',
                         ],
                         'review' => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                 ],
@@ -1268,8 +1269,8 @@ return [
                             'akm'       => 'L2',
                             'bloom'     => 'C2',
                             'review'    => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -1290,8 +1291,8 @@ return [
                             'akm'       => 'L2',
                             'bloom'     => 'C4',
                             'review'    => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -1312,8 +1313,8 @@ return [
                             'akm'       => 'L2',
                             'bloom'     => 'C3',
                             'review'    => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -1331,8 +1332,8 @@ return [
                             'akm'       => 'L2',
                             'bloom'     => 'C2',
                             'review'    => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                     ],
@@ -1470,8 +1471,8 @@ return [
                             'akm'       => 'L2',
                             'bloom'     => 'C2',
                             'review'    => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -1492,8 +1493,8 @@ return [
                             'akm'       => 'L2',
                             'bloom'     => 'C4',
                             'review'    => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -1514,8 +1515,8 @@ return [
                             'akm'       => 'L2',
                             'bloom'     => 'C3',
                             'review'    => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                         [
@@ -1536,8 +1537,8 @@ return [
                             'akm'       => 'L2',
                             'bloom'     => 'C2',
                             'review'    => [
-                                'status' => 'needs_verification',
-                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                                'status' => 'verified',
+                                'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                             ],
                         ],
                     ],
@@ -1630,8 +1631,8 @@ return [
                         'akm'         => 'L2',
                         'bloom'       => 'C3',
                         'review'      => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                     [
@@ -1705,8 +1706,8 @@ return [
                         'akm'         => 'L2',
                         'bloom'       => 'C3',
                         'review'      => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                     [
@@ -1780,8 +1781,8 @@ return [
                         'akm'         => 'L2',
                         'bloom'       => 'C3',
                         'review'      => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                     [
@@ -1855,8 +1856,8 @@ return [
                         'akm'         => 'L2',
                         'bloom'       => 'C3',
                         'review'      => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                 ],
@@ -1932,8 +1933,8 @@ return [
                         'akm'         => 'L2',
                         'bloom'       => 'C3',
                         'review'      => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                     [
@@ -2007,8 +2008,8 @@ return [
                         'akm'         => 'L2',
                         'bloom'       => 'C3',
                         'review'      => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                     [
@@ -2079,8 +2080,8 @@ return [
                         'akm'         => 'L2',
                         'bloom'       => 'C3',
                         'review'      => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                     [
@@ -2154,8 +2155,8 @@ return [
                         'akm'         => 'L2',
                         'bloom'       => 'C3',
                         'review'      => [
-                            'status' => 'needs_verification',
-                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026.',
+                            'status' => 'verified',
+                            'note'   => 'Bank baru dari 08 (revisi 10, perubahan sistem no. 1, 3, 4, 8, 17, 20): menunggu validasi ahli. Teks Inggris: dari 36, disetujui pengembang 3 November 2026. | 16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul.',
                         ],
                     ],
                 ],
