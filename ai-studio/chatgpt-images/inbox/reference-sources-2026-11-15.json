@@ -1051,6 +1051,42 @@
       "received_on": "2026-11-16",
       "use": "Installed as it is as the Pustaka picture library.temanggung.p8.1 (review no. 317), cropped to 3:2 (608 x 405, centred) and scaled to 960 x 640.",
       "sha256": "a4fbae6110dd7a0027349d70f16e3fb0276769261de265bb8a71efd199b04b49"
+    },
+    {
+      "file": "reference-kendi-researcher-lidded-spout-01.jpg",
+      "title": "A brown earthenware kendi on a white table: round body, tall ringed neck with a lid and knob, a short spout on the shoulder, no handle",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference (form and fired-clay finish of a kendi) for review no. 255.",
+      "sha256": "fb8afebcd7fbef138674d5efe7d09d4a36a8882cc88ddc13a1d27ffe50d0c937"
+    },
+    {
+      "file": "reference-kendi-researcher-AI-made-altar-02.jpg",
+      "title": "A dark kendi with gold rims on a cloth among incense sticks, an oil lamp and offering bowls, a carved relief behind",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only: looks AI-made (typical 1536 x 1024 canvas, gold rims on clay, staged altar with incense and a lamp); never install it and never use it as a factual source.",
+      "sha256": "76d0a64ca3d5fe0dbc46e7c61c550a6f730e4ce09b883b10a8bdbbb8ec23a476"
+    },
+    {
+      "file": "reference-kendi-researcher-incised-on-saucer-03.jpg",
+      "title": "A burnished dark-brown kendi with an incised scroll on the shoulder, a cord round the neck, standing on a clay saucer; more painted pottery behind",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference (a kendi in the dark burnished finish of village pottery) for review no. 255.",
+      "sha256": "f77ca8f6ffe5d436538dc914873a967c4f7aec6151085b689a7d855ac2e65130"
     }
   ],
   "permission_updates": [
