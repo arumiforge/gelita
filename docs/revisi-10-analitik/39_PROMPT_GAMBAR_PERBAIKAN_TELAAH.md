@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 15 November 2026, `R-12` sampai `R-19` ditambahkan 16 November 2026 · Lampiran `ai-studio/game-images/REVIEW.md` (telaah gambar oleh pengembang) · Status: `draf pengembang`, `asal: pengembang` (disusun AI atas permintaan pengembang)
+Per 15 November 2026, `R-12` sampai `R-22` ditambahkan 16 November 2026 · Lampiran `ai-studio/game-images/REVIEW.md` (telaah gambar oleh pengembang) · Status: `draf pengembang`, `asal: pengembang` (disusun AI atas permintaan pengembang)
 
 Pengembang menelaah semua gambar game pada 15 November 2026 dan menandai gambar yang harus dibuat ulang. Dokumen ini memuat prompt siap tempel ke ChatGPT (bahasa Inggris) untuk sepuluh gambar bertanda `redo`, ditambah satu gambar pasangan yang menunggu persetujuan pengembang. Gambar `redo later` menjadi baris baru setelah pengembang mengirim foto acuannya; yang pertama `R-12` (16 November 2026). Polanya sama dengan [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md) dan [38](38_PROMPT_PETA_LIMA_TANTANGAN_DAN_SKENARIO.md). Daftar kerjanya ada di `ai-studio/chatgpt-images/TASKS.md` (baris berkode `R-`).
 
@@ -31,6 +31,9 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 | `R-17` | Benda Cari Objek `challenge.item.wnb-4-a01` (bundengan) | 270 | Tudung tergeletak telentang seperti kereta luncur, senar di atas; aslinya tegak, meruncing, senar di dalam, bertongkat bambu panjang. Foto dari peneliti |
 | `R-18` | Susun Gambar Wonosobo `challenge.item.wnb-1-g01` (bundengan) | 242 | Tanpa tongkat panjang, jumbai ijuk, dan kisi lapisan luar; senar di luar seperti harpa. Juga foto unggahan Periksa Unggahan Wonosobo babak 2 variasi a. Foto dari peneliti |
 | `R-19` | Avatar 10 `avatar.10` (bundengan) | 115 | Lambangnya tudung telentang seperti kereta luncur; hanya lambang yang diganti, cincin tetap. Foto dari peneliti |
+| `R-20` | Benda Cari Objek `challenge.item.tmg-4-03` (kuda kepang, target) | 263 | Sudah pipih dan tampak samping, tetapi berpelana kain berumbai dan berperut seperti kuda goyang; dibuat ulang bersama `R-21` supaya serupa. Foto dari peneliti |
+| `R-21` | Benda Cari Objek `challenge.item.mgl-4-a05` (kuda kepang, pengecoh) | 256 | Kepala kuda bulat bertongkat seperti mainan gaya Barat; kuda kepang berupa anyaman bambu pipih berbentuk kuda utuh, dicat, berbingkai rotan, tanpa tongkat. Foto dari peneliti |
+| `R-22` | Benda Cari Objek `challenge.item.mgl-4-a04` (kendil gerabah) | 255 | Teko tanah liat bercerat dan bergagang; bank soal dan cek fakta menyebut kendil, periuk bulat bermulut lebar bertutup, tanpa cerat dan tanpa gagang. Foto kendil dari pengembang |
 
 ## Aturan bersama
 
@@ -38,7 +41,7 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 
 Gambar di dokumen ini bukan bagian antarmuka. Gayanya mengikuti kelompoknya masing-masing:
 
-- **Gambar isi game** (`R-01` sampai `R-05`, `R-12` sampai `R-18`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
+- **Gambar isi game** (`R-01` sampai `R-05`, `R-12` sampai `R-18`, `R-20` sampai `R-22`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
 - **Avatar** (`R-19`): disunting, bukan digambar dari nol, seperti gambar tes: cincin medali dan cakramnya tetap, hanya lambang di tengah yang diganti, supaya kesepuluh avatar tetap satu keluarga sampai perombakan antarmuka mengganti cincin semuanya.
 - **Gambar tes** (`R-06` sampai `R-11`): gambar garis hitam-putih seperti 23 gambar tes lainnya. Gaya ini disengaja: instrumen tes tampil netral dan tidak memakai gaya game.
 
@@ -470,6 +473,115 @@ It must NOT read as a guitar, lute, harp, angklung, sasando, basket, hat, shield
 Delivery: 512 × 512 WebP; preserve the transparent margins; whole medallion visible with padding, exactly as in the original.
 ```
 
+### R-20 · Kuda kepang (benda Cari Objek Temanggung)
+
+Ditambahkan 16 November 2026. Telaah no. 263. Benda ini **target** Cari Objek Temanggung babak 1: "Temukan kuda-kudaan dari anyaman bambu yang dipakai untuk menari kuda lumping." Gambar lama sudah mendekati (pipih, tampak samping, dicat), tetapi berpelana kain dengan rumbai emas dan berperut seperti kuda goyang. Pengembang memutuskan membuatnya ulang bersama `R-21` supaya kedua kuda kepang serupa. Peneliti mengirim lima foto kuda lumping yang berizin (`ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-*`): kuda kepang adalah anyaman bambu **pipih** berbentuk kuda utuh dari samping, dicat, berbingkai rotan, dan dijepit di antara kaki penari tanpa tongkat.
+
+| | |
+|---|---|
+| Kode berkas | `challenge.item.tmg-4-03` → simpan sebagai `challenge.item.tmg-4-03.webp` |
+| Kanvas | 240 × 240, latar transparan (buat pada 1024 × 1024, lalu perkecil) |
+| Lampiran | foto `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-craftspeople-painting-01.jpg` (kuda kepang pipih di dinding dan di meja perajin), `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-kuda-kepang-close-watermarked-04.jpg` (anyaman, bingkai rotan, cat; tanda nama dan nomor teleponnya tidak boleh ikut), `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-two-dancers-pendopo-03.jpg` (cara dipakai menari, surai rambut), `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-women-white-horse-14.jpg` (kuda kepang putih bercat merah-kuning, paling dekat dengan cat `R-20`). Untuk hasil akhir yang sama: `ai-studio/game-images/assets/tantangan/challenge.item.tmg-4-09.webp` (angklung) dan `ai-studio/game-images/assets/tantangan/challenge.item.tmg-4-12.webp` (sasando), pengecoh adegan yang sama |
+| Butir | `tmg-4-x01`: "Temukan kuda-kudaan dari anyaman bambu yang dipakai untuk menari kuda lumping." Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: challenge.item.tmg-4-03  (R-20 · kuda kepang, hidden-object cut-out)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Match the render finish, lighting and outline quality of the attached angklung and sasando cut-outs exactly, so that the objects of this scene look like parts of one set.
+The attached photos are factual references for the prop only: follow its form, weave and painting, render them in the GELITA finish, and do not copy a photo. Leave out the people, the paint tins, the walls, any name, logo, watermark or phone number in the photos.
+
+SUBJECT AND COMPOSITION
+One isolated object on a transparent background: one kuda kepang (jaran kepang), the dance horse of kuda lumping, standing upright on its lower edge and seen exactly from the side, so its flat face is towards the viewer.
+THE KUDA KEPANG, exactly as in the attached photos:
+- A FLAT cut-out of tightly WOVEN BAMBOO, about as thick as a finger, shaped like the side view of a WHOLE horse: the head with a pricked ear and an open mouth at the front, a tall neck curving up and forward like the letter S, and behind it a long, low body that ends in a rounded rump. No legs stand out from the outline, and there is no stick, no wheel and no rocker.
+- The whole outline is edged with a rim of orange-brown rattan, bound at intervals with thin cord.
+- The woven surface is painted white, with a black and red mane pattern along the neck, a red mouth, a large round eye ringed in black, and red and gold scroll ornaments on the body. The bamboo weave still shows through the paint.
+- A short fringe of black horsehair hangs from the top of the neck as a mane, and a black horsehair tail hangs from the rump.
+
+Accuracy — It must NOT read as a hobby horse (a round head on a stick), a rocking horse, a carousel horse, a toy on wheels, a horse statue or a real horse. It is flat like a board, not round. No rider, no saddle cloth, no tassels hanging under the belly.
+Hidden-object rule — identical lighting and quality for targets and decoys: no glow, no sparkle, no outline, no label, no arrow, nothing that marks this object as an answer.
+
+DELIVERY
+Generate at 1024 × 1024 and scale down proportionally to exactly 240 × 240 pixels; aspect 1:1. The whole horse inside the canvas with a small even margin; it is wider than tall, so it fills the width. Genuine transparent background outside the subject; preserve alpha; no cast shadow on a ground. Deliver WebP, named challenge.item.tmg-4-03.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, numbers, logos, people, hands, extra objects, cropped parts, blurry edges, neon colours, or fake checkerboard transparency. No painterly 2D, gouache or paper grain.
+```
+
+### R-21 · Kuda kepang (benda Cari Objek Magelang, pengecoh)
+
+Ditambahkan 16 November 2026. Telaah no. 256: kepala kuda bulat bertongkat, seperti mainan kuda-kudaan gaya Barat, bukan kuda kepang. Di Cari Objek Magelang babak 1 benda ini **pengecoh**, bukan target, tetapi tetap harus benar bentuknya. Bentuknya sama dengan `R-20`; catnya berbeda (kuda hitam berhias emas, seperti foto `-04`) supaya dua gambar tidak kembar. Jangan sampai mirip dadak merak Reog, pengecoh lain di adegan yang sama.
+
+| | |
+|---|---|
+| Kode berkas | `challenge.item.mgl-4-a05` → simpan sebagai `challenge.item.mgl-4-a05.webp` |
+| Kanvas | 240 × 240, latar transparan (buat pada 1024 × 1024, lalu perkecil) |
+| Lampiran | foto `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-craftspeople-painting-01.jpg` (kuda kepang pipih di dinding dan di meja perajin), `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-kuda-kepang-close-watermarked-04.jpg` (anyaman, bingkai rotan, cat; tanda nama dan nomor teleponnya tidak boleh ikut), `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-two-dancers-pendopo-03.jpg` (cara dipakai menari, surai rambut), `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-women-black-gold-horses-watermarked-10.jpg` (deretan kuda kepang hitam-emas bersurai rambut, paling dekat dengan cat `R-21`; tanda air fotografernya tidak boleh ikut). Untuk hasil akhir yang sama: `ai-studio/game-images/assets/tantangan/challenge.item.mgl-4-a07.webp` (dadak merak Reog, harus jelas berbeda) dan `ai-studio/game-images/assets/tantangan/challenge.item.mgl-4-a08.webp` (angklung) |
+| Butir | Pengecoh di Cari Objek Magelang babak 1 (`mgl-4-x01` sampai `x04`; kuncinya stupa berlubang, kuluk Topeng Ireng, getuk, kendil gerabah) |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: challenge.item.mgl-4-a05  (R-21 · kuda kepang, hidden-object cut-out)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Match the render finish, lighting and outline quality of the attached dadak merak (Reog peacock mask) and angklung cut-outs exactly, so that the objects of this scene look like parts of one set.
+The attached photos are factual references for the prop only: follow its form, weave and painting, render them in the GELITA finish, and do not copy a photo. Leave out the people, the paint tins, the walls, any name, logo, watermark or phone number in the photos.
+
+SUBJECT AND COMPOSITION
+One isolated object on a transparent background: one kuda kepang (jaran kepang), the dance horse of kuda lumping, standing upright on its lower edge and seen exactly from the side, so its flat face is towards the viewer.
+THE KUDA KEPANG, exactly as in the attached photos:
+- A FLAT cut-out of tightly WOVEN BAMBOO, about as thick as a finger, shaped like the side view of a WHOLE horse: the head with a pricked ear and an open mouth at the front, a tall neck curving up and forward like the letter S, and behind it a long, low body that ends in a rounded rump. No legs stand out from the outline, and there is no stick, no wheel and no rocker.
+- The whole outline is edged with a rim of orange-brown rattan, bound at intervals with thin cord.
+- The woven surface is painted glossy black, with gold ornaments along the neck and on the body, a gold bridle with a small star-shaped rosette on the cheek, a red mouth, and a large eye ringed in gold. The bamboo weave still shows through the paint.
+- A short fringe of black horsehair hangs from the top of the neck as a mane, and a black horsehair tail hangs from the rump.
+
+Accuracy — It must NOT read as a hobby horse (a round head on a stick), a rocking horse, a carousel horse, a toy on wheels, a horse statue or a real horse. It is flat like a board, not round. No rider, no saddle cloth, no tassels hanging under the belly.
+Hidden-object rule — identical lighting and quality for targets and decoys: no glow, no sparkle, no outline, no label, no arrow, nothing that marks this object as an answer.
+
+DELIVERY
+Generate at 1024 × 1024 and scale down proportionally to exactly 240 × 240 pixels; aspect 1:1. The whole horse inside the canvas with a small even margin; it is wider than tall, so it fills the width. Genuine transparent background outside the subject; preserve alpha; no cast shadow on a ground. Deliver WebP, named challenge.item.mgl-4-a05.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, numbers, logos, people, hands, extra objects, cropped parts, blurry edges, neon colours, or fake checkerboard transparency. No painterly 2D, gouache or paper grain.
+```
+
+### R-22 · Kendil gerabah (benda Cari Objek Magelang)
+
+Ditambahkan 16 November 2026. Telaah no. 255: gambarnya teko tanah liat bercerat **dan** bergagang, bukan kendil dan bukan kendi. Benda ini **target** Cari Objek Magelang babak 1: "Temukan benda dari tanah liat yang dibentuk lalu dibakar, buatan warga Dusun Klipoh." Bank soal dan cek fakta (25, MGL-39 dan MGL-40) menyebutnya **kendil**, periuk tanah liat untuk menanak nasi; kata itu juga dipakai kartu informasi Klipoh dan butir `mgl-2-c06`. Pengembang memutuskan gambarnya mengikuti bank: kendil, bukan kendi (16 November 2026). Peneliti mengirim tiga foto kendi; dua dipakai hanya untuk warna dan hasil bakaran tanah liat, satu tampak buatan AI dan tidak dipakai. Pengembang lalu mengirim dua foto kendil (16 November 2026): periuk bulat cokelat kemerahan tua dengan **tutup tanah liat bertombol**, salah satunya dengan dua kuping kecil di sisi. Prompt mengikuti foto itu, dan keduanya dilampirkan.
+
+| | |
+|---|---|
+| Kode berkas | `challenge.item.mgl-4-a04` → simpan sebagai `challenge.item.mgl-4-a04.webp` |
+| Kanvas | 240 × 240, latar transparan (buat pada 1024 × 1024, lalu perkecil) |
+| Lampiran | Foto kendil `ai-studio/chatgpt-images/inbox/reference-kendil-researcher-two-lidded-with-lugs-01.jpg` (bentuk, tutup bertombol, warna) dan `ai-studio/chatgpt-images/inbox/reference-kendil-researcher-lidded-workshop-02.jpg` (perut bulat, bibir, tutup); foto kendi `ai-studio/chatgpt-images/inbox/reference-kendi-researcher-lidded-spout-01.jpg` dan `ai-studio/chatgpt-images/inbox/reference-kendi-researcher-incised-on-saucer-03.jpg` (hanya warna dan permukaan tanah liat bakar; bentuk keduanya kendi, bukan kendil); `ai-studio/game-images/assets/tantangan/challenge.item.mgl-1-h01.webp` (Susun Gambar gerabah Klipoh: periuk bulat di keranjang); untuk hasil akhir yang sama `ai-studio/game-images/assets/tantangan/challenge.item.mgl-4-a10.webp` (panci logam, pengecoh yang harus jelas berbeda) dan `ai-studio/game-images/assets/tantangan/challenge.item.mgl-4-a08.webp` (angklung) |
+| Butir | `mgl-4-x04`: "Temukan benda dari tanah liat yang dibentuk lalu dibakar, buatan warga Dusun Klipoh." Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia, panci logam |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: challenge.item.mgl-4-a04  (R-22 · kendil, clay cooking pot, hidden-object cut-out)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Match the render finish, lighting and outline quality of the attached metal pot and angklung cut-outs exactly, so that the objects of this scene look like parts of one set, and make sure the kendil can never be mistaken for the metal pot.
+The two attached kendil photos are the factual reference for the form, the lid and the colour: follow them, render them in the GELITA finish, and do not copy a photo or its background. The attached kendi photos show only the surface of the village's fired clay: use them for that and nothing else, because a kendi is a different vessel. The round pots in the basket of the attached puzzle picture are the same kind of kendil.
+
+SUBJECT AND COMPOSITION
+One isolated object on a transparent background: one kendil, the traditional Javanese earthenware cooking pot for steaming rice, made by the potters of Klipoh near Borobudur, seen from the front and a little above.
+THE KENDIL:
+- A ROUND, full belly, wider than it is tall, on a small round base.
+- A short neck rising from the shoulder to a WIDE round mouth with a thick, slightly flared rim.
+- Unglazed fired clay, deep reddish brown, softly burnished but never shiny like metal, with darker smoky patches from the open firing; a few fine wheel lines on the shoulder; nothing painted.
+- A matching domed clay LID sits on the mouth, with a small round knob on top, the same clay and colour as the pot.
+- NO spout, NO long handle, NO feet. No metal anywhere.
+
+Accuracy — It must NOT read as a kendi or teapot (no spout, no tall narrow neck, no long handle), a vase, or a metal pot: unlike the attached metal pot it is round-bellied, made of matte brown clay, with no shine, no metal handles and no straight sides.
+Hidden-object rule — identical lighting and quality for targets and decoys: no glow, no sparkle, no outline, no label, no arrow, nothing that marks this object as an answer.
+
+DELIVERY
+Generate at 1024 × 1024 and scale down proportionally to exactly 240 × 240 pixels; aspect 1:1. The whole pot inside the canvas with a small even margin. Genuine transparent background outside the subject; preserve alpha; no cast shadow on a ground. Deliver WebP, named challenge.item.mgl-4-a04.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, numbers, logos, people, hands, food, fire, extra objects, cropped parts, blurry edges, neon colours, or fake checkerboard transparency. No painterly 2D, gouache or paper grain.
+```
+
 ## Gambar tes
 
 Lampirkan gambar tes yang sekarang dari `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/` dan minta gambar yang sama dengan perubahan yang disebut saja. Setelah itu baca setiap kata di hasilnya dan cocokkan dengan daftar *All text* di prompt.
@@ -644,7 +756,7 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 
 ## Daftar periksa hasil
 
-**Gambar isi game (`R-01` sampai `R-05`, `R-12` sampai `R-19`)**
+**Gambar isi game (`R-01` sampai `R-05`, `R-12` sampai `R-22`)**
 
 - Tanpa tulisan, angka, atau logo, kecuali `R-14`.
 - `R-01`: tepat dua gunung, tanpa candi, telaga, atau laut; tanpa tembakau; sepertiga bawah tenang.
@@ -658,6 +770,8 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 - `R-17`: latar transparan; hasil akhir sama dengan angklung `a08` dan sasando `a09`, tetapi jelas berbeda bentuk; tanpa orang dan tanpa tanda jawaban.
 - `R-18`: 16 bidang berbeda; pemain duduk bersila di tikar; tanpa tulisan apa pun (tulisan unggahan diberi halaman).
 - `R-19`: di luar lambang tidak ada yang berubah (cincin, titik intan, cakram krem, ukuran); bandingkan dengan avatar lama.
+- `R-20` dan `R-21`: kuda kepang pipih seperti papan, bentuk kuda utuh dari samping (kepala, leher melengkung, badan), anyaman bambu yang tetap tampak di bawah cat, bingkai rotan; tanpa tongkat, roda, ayunan, pelana kain, atau rumbai di bawah perut; latar transparan; `R-20` putih berhias merah-hitam, `R-21` hitam berhias emas; `R-21` jelas berbeda dari dadak merak. Bandingkan dengan foto `-01` dan `-04`.
+- `R-22`: kendil, periuk tanah liat bulat bermulut lebar dengan tutup tanah liat bertombol; tanpa cerat, gagang panjang, dan kaki; tanah liat bakar cokelat kemerahan, tidak mengilap seperti logam; jelas berbeda dari panci logam `a10`; latar transparan. Bandingkan dengan foto kendil dari pengembang.
 - `R-03` sampai `R-05`: tokohnya Jaka (syal merah, kemeja krem, ransel, tanpa ikat kepala); ketiganya berlatar biru tua yang sama; medali simbol bergaya emas berukir.
 
 **Gambar tes (`R-06` sampai `R-11`)**
@@ -669,7 +783,7 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 
 ## Pemasangan
 
-- `R-01` sampai `R-05`, `R-12`, `R-14` sampai `R-19`: berkas dari `ai-studio/chatgpt-images/out/` **dipindahkan** (bukan disalin) ke tempat berkas lamanya di `ai-studio/game-images/assets/` dan menggantikannya; entri `data.json` tidak berubah. Lalu `php spark gelita:katalog:impor`. `R-13` adalah gambar baru: berkasnya dipindahkan ke `ai-studio/game-images/assets/tantangan/challenge.post.tmg-4-b.webp`, lalu entri baru `challenge.post.tmg-4-b` ditambahkan ke `data.json` (contoh: entri `challenge.item.tmg-1-h01`) dan satu baris ke `REVIEW.md`. `R-16`: entri `library.temanggung.p5.1` di `data.json` mendapat `caption` "Situs Liyangan di lereng Gunung Sindoro" / "The Liyangan Site on the slopes of Mount Sindoro". `R-14`: entri `library.wonosobo.p2.2` di `data.json` mendapat `caption` baru "Peta kawasan Dataran Tinggi Dieng" / "Map of the Dieng Plateau area".
+- `R-01` sampai `R-05`, `R-12`, `R-14` sampai `R-22`: berkas dari `ai-studio/chatgpt-images/out/` **dipindahkan** (bukan disalin) ke tempat berkas lamanya di `ai-studio/game-images/assets/` dan menggantikannya; entri `data.json` tidak berubah. Lalu `php spark gelita:katalog:impor`. `R-13` adalah gambar baru: berkasnya dipindahkan ke `ai-studio/game-images/assets/tantangan/challenge.post.tmg-4-b.webp`, lalu entri baru `challenge.post.tmg-4-b` ditambahkan ke `data.json` (contoh: entri `challenge.item.tmg-1-h01`) dan satu baris ke `REVIEW.md`. `R-16`: entri `library.temanggung.p5.1` di `data.json` mendapat `caption` "Situs Liyangan di lereng Gunung Sindoro" / "The Liyangan Site on the slopes of Mount Sindoro". `R-14`: entri `library.wonosobo.p2.2` di `data.json` mendapat `caption` baru "Peta kawasan Dataran Tinggi Dieng" / "Map of the Dieng Plateau area".
 - `R-06` sampai `R-11`: berkas dipindahkan ke `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/`. Berkas PNG induk di `docs/revisi-10-analitik/gambar/doc-34/` diganti dengan hasil yang sama, supaya induk dan gambar terpasang tidak berbeda.
 - Setelah dipasang, lembar telaah dibangun ulang (`node ai-studio/game-images/review/build-sheets.mjs`) dan baris `REVIEW.md` diberi tanda baru oleh pengembang.
 

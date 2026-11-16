@@ -5821,7 +5821,7 @@
  {
   "id": "233",
   "key": "library.temanggung.p5.2",
-  "title": "Candi_Pringapus_Temanggung_Jateng.jpg",
+  "title": "Candi Pringapus, candi Hindu abad ke-9",
   "cat": "Pustaka",
   "region": "Temanggung",
   "size": "960 × 640",
@@ -5829,14 +5829,19 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.temanggung.p5.2.webp",
-  "desc": "temanggung · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Candi_Pringapus_Temanggung_Jateng.jpg. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Foto asli Candi Pringapus dari peneliti (berizin): satu bilik persegi di atas kaki tinggi, satu pintu berkepala kala, atap bertingkat, di halaman berumput berpagar tanaman rendah. Dipasang apa adanya (diperkecil dari 1200 × 800 ke 960 × 640); bukan ilustrasi.",
+  "prompt": "Not generated. A real photograph of Candi Pringapus, Temanggung, from the researcher (licence and permission obtained, 16 November 2026), installed as it is. Never redraw or restyle it.",
+  "negative": "Never redraw, restyle or replace it with an invented temple.",
+  "caption": {
+   "id": "Candi Pringapus, candi Hindu abad ke-9",
+   "en": "Pringapus Temple, a 9th-century Hindu temple"
+  },
+  "credit": "Foto Candi Pringapus (berizin, dari peneliti)"
  },
  {
   "id": "234",
   "key": "library.temanggung.p5.3",
-  "title": "Arca_Nandi_dalam_bilik_Candi_Pringapus,_Mei_2022.jpg",
+  "title": "Arca Nandi di dalam bilik Candi Pringapus",
   "cat": "Pustaka",
   "region": "Temanggung",
   "size": "960 × 640",
@@ -5844,9 +5849,14 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.temanggung.p5.3.webp",
-  "desc": "temanggung · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Arca_Nandi_dalam_bilik_Candi_Pringapus,_Mei_2022.jpg. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Foto asli arca Nandi di bilik Candi Pringapus dari peneliti (berizin): lembu batu berpunuk yang berbaring di atas alas rendah, dinding batu andesit polos. Dipasang apa adanya (dipotong ke 3:2, 1230 × 820, tanpa label nama di kiri bawah, lalu diperkecil ke 960 × 640); bukan ilustrasi.",
+  "prompt": "Not generated. A real photograph of the Nandi inside Candi Pringapus, Temanggung, from the researcher (licence and permission obtained, 16 November 2026), installed as it is. Never redraw or restyle it.",
+  "negative": "Never redraw, restyle or replace it with an invented statue or hall.",
+  "caption": {
+   "id": "Arca Nandi di dalam bilik Candi Pringapus",
+   "en": "The Nandi statue inside the chamber of Pringapus Temple"
+  },
+  "credit": "Foto arca Nandi Candi Pringapus (berizin, dari peneliti)"
  },
  {
   "id": "235",
@@ -5870,7 +5880,7 @@
  {
   "id": "236",
   "key": "library.temanggung.p8.1",
-  "title": "Kuda Lumping dan Tradisi Temanggung",
+  "title": "Pertunjukan kuda lumping di Temanggung",
   "cat": "Pustaka",
   "region": "Temanggung",
   "size": "960 × 640",
@@ -5878,9 +5888,14 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.temanggung.p8.1.webp",
-  "desc": "temanggung · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Kuda_lumping_Temanggung.jpg. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Foto asli pertunjukan kuda lumping massal dari peneliti (berizin): ratusan penari berkemeja putih dan berompi merah, berkumis rias, menari dengan kuda kepang anyaman dan surai rambut kuda. Dipasang apa adanya (dipotong ke 3:2, 608 × 405, lalu diperbesar ke 960 × 640); bukan ilustrasi.",
+  "prompt": "Not generated. A real photograph of a mass kuda lumping performance, from the researcher (licence and permission obtained, 16 November 2026), installed as it is. Never redraw or restyle it.",
+  "negative": "Never redraw, restyle or replace it with invented dancers, costumes or temples.",
+  "caption": {
+   "id": "Pertunjukan kuda lumping di Temanggung",
+   "en": "A kuda lumping performance in Temanggung"
+  },
+  "credit": "Foto pertunjukan kuda lumping (berizin, dari peneliti)"
  },
  {
   "id": "237",
@@ -6119,7 +6134,7 @@
  {
   "id": "250",
   "key": "library.magelang.p6.1",
-  "title": "Topeng Ireng, Tarian Penuh Semangat",
+  "title": "Penari Topeng Ireng dengan kuluk bulu warna-warni",
   "cat": "Pustaka",
   "region": "Magelang",
   "size": "960 × 640",
@@ -6127,14 +6142,19 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.magelang.p6.1.webp",
-  "desc": "magelang · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Penari_Topeng_Ireng_03.jpg. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Foto asli penari Topeng Ireng dari peneliti (berizin): penari di tengah berkuluk bulu hitam dan putih, berwajah rias putih bergaris hitam, dengan barisan penari dan penonton di belakang, malam hari. Dipasang apa adanya (dipotong ke 3:2, 1004 × 669, tanpa pita hitam di tepi atas, lalu diperkecil ke 960 × 640); bukan ilustrasi.",
+  "prompt": "Not generated. A real photograph of Topeng Ireng dancers, from the researcher (licence and permission obtained, 16 November 2026), installed as it is. Never redraw or restyle it.",
+  "negative": "Never redraw, restyle or replace it with invented dancers or costumes.",
+  "caption": {
+   "id": "Penari Topeng Ireng dengan kuluk bulu warna-warni",
+   "en": "A Topeng Ireng dancer with a colourful feather headdress"
+  },
+  "credit": "Foto penari Topeng Ireng (berizin, dari peneliti)"
  },
  {
   "id": "251",
   "key": "library.magelang.p6.2",
-  "title": "Topeng_Ireng_(4).jpg",
+  "title": "Barisan penari Topeng Ireng",
   "cat": "Pustaka",
   "region": "Magelang",
   "size": "960 × 640",
@@ -6142,9 +6162,14 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.magelang.p6.2.webp",
-  "desc": "magelang · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Topeng_Ireng_(4).jpg. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Foto asli penari Topeng Ireng dari peneliti (berizin): barisan penari berkuluk bulu tinggi dan berwajah rias, dengan seorang penari putri di tengah. Dipasang apa adanya (dipotong ke 3:2 dan diperbesar dari 502 × 335 ke 960 × 640); bukan ilustrasi.",
+  "prompt": "Not generated. A real photograph of a row of Topeng Ireng dancers, from the researcher (licence and permission obtained, 16 November 2026), installed as it is. Never redraw or restyle it.",
+  "negative": "Never redraw, restyle or replace it with invented dancers or costumes.",
+  "caption": {
+   "id": "Barisan penari Topeng Ireng",
+   "en": "A row of Topeng Ireng dancers"
+  },
+  "credit": "Foto penari Topeng Ireng (berizin, dari peneliti)"
  },
  {
   "id": "252",
@@ -6465,7 +6490,7 @@
  {
   "id": "271",
   "key": "library.temanggung.p8.2.poster",
-  "title": "library.temanggung.p8.2.poster",
+  "title": "Perajin kuda-kudaan jaran kepang",
   "cat": "Pustaka",
   "region": "Temanggung",
   "size": "1280 × 720",
@@ -6473,9 +6498,9 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.temanggung.p8.2.poster.webp",
-  "desc": "library.temanggung.p8.2.poster",
-  "prompt": "GELITA ACTIVE VISUAL DIRECTION — 2026-10-11\nAsset: library.temanggung.p8.2.poster\nPremium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.\nJaka: match assets/referensi/reference.01.webp, approximately 11-year-old Javanese boy, tousled dark-brown hair with cowlick, brown eyes, cream short-sleeve shirt, red scarf, brown knee-length shorts, orange-brown batik waist cloth, sandals, leather backpack. Mbah Kedu: match reference.02, elderly Javanese man with white moustache and short beard, brown batik headwrap and cream/brown clothing; do not give him Jaka's scarf. Apply an identity only when that character is requested; never add characters to object-only or landscape assets.\n\nSUBJECT AND COMPOSITION\ncraftspeople in Temanggung painting woven-bamboo hobby horses for the jaran kepang dance\n\nDELIVERY\nTarget canvas 1280 × 720 pixels; aspect 16:9. Complete subject within canvas, proportional scaling only. Opaque background matching the scene brief. Deliver WebP for raster assets.\n\nCONSTRAINTS\nNo watermarks, signatures, unintended text, extra limbs, duplicate subjects, cropped key features, blurry edges, neon colours, clutter, or fake checkerboard transparency. No painterly 2D, gouache, paper grain, or conflicting Jaka costume.",
-  "negative": "No watermarks, signatures, unintended text, extra limbs, duplicate subjects, cropped key features, blurry edges, neon colours, clutter, or fake checkerboard transparency. No painterly 2D, gouache, paper grain, or conflicting Jaka costume."
+  "desc": "Sampul video \"perajin kuda-kudaan jaran kepang di Temanggung\": foto asli dari peneliti (berizin), dua perajin mengecat kuda kepang anyaman bambu di bengkel berdinding gedek. Dipasang apa adanya (dipotong ke 16:9, 800 × 450, lalu diperbesar ke 1280 × 720); bukan ilustrasi. Kaleng cat bermerek di depan dibiarkan (pengembang, 16 November 2026).",
+  "prompt": "Not generated. A real photograph of craftspeople painting kuda kepang in a workshop, from the researcher (licence and permission obtained, 16 November 2026), installed as it is as the video cover. Never redraw or restyle it.",
+  "negative": "Never redraw, restyle or replace it with invented craftspeople or horses."
  },
  {
   "id": "272",

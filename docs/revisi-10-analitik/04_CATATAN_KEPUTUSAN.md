@@ -6,6 +6,74 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Benda Cari Objek "Kendil gerabah" dipesan ulang sebagai kendil, sesuai bank soal (`R-22`)** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang` · mengubah 39
+
+- Peneliti mengirim tiga foto kendi (berizin); satu tampak buatan AI dan hanya disimpan sebagai acuan.
+- Gambar benda Cari Objek Magelang berupa teko tanah liat bercerat dan bergagang, bukan kendi dan bukan kendil. Bank soal, kartu informasi Klipoh, butir `mgl-2-c06`, dan cek fakta (25, MGL-40) menyebut kendil, periuk untuk menanak nasi. Pengembang memutuskan gambar mengikuti bank: kendil bulat bermulut lebar tanpa cerat dan tanpa gagang. Teks butir dan dokumen penelitian tidak berubah; foto kendi hanya acuan warna tanah liat.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
+**Gambar Pustaka "Pertunjukan kuda lumping di Temanggung" diganti foto asli** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
+
+- Peneliti mengirim empat foto kuda lumping lagi (berizin), disimpan sebagai acuan.
+- Foto pertunjukan massal dengan kuda kepang yang terlihat jelas dipasang apa adanya; sesuai juga dengan bagian *Nyadran Jaran Kepang* di halaman itu. Lukisan lama berlatar menara candi bergaya Bali.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
+**Gambar Pustaka "Penari Topeng Ireng dengan kuluk bulu warna-warni" diganti foto asli** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
+
+- Peneliti mengirim tiga foto Topeng Ireng berformat mendatar (berizin), disimpan sebagai acuan.
+- Foto malam hari dengan penari berkuluk bulu hitam-putih dan berwajah rias putih bergaris hitam, persis seperti uraian halaman, dipasang apa adanya. Kedua gambar halaman Topeng Ireng kini foto asli. Lukisan lama tanpa riasan wajah dan berlatar gapura bergaya Bali.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
+**Sampul video perajin kuda-kudaan diganti foto asli; dua kuda kepang Cari Objek dipesan ulang (`R-20`, `R-21`)** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang` · mengubah 39
+
+- Pengembang memutuskan foto perajin yang mengecat kuda kepang dipasang sebagai sampul video "perajin kuda-kudaan jaran kepang di Temanggung", meskipun ada kaleng cat bermerek di depan.
+- Kedua benda Cari Objek "Kuda kepang bambu" dibuat ulang dari foto peneliti: target Temanggung (`R-20`) dan pengecoh Magelang (`R-21`). Bentuknya sama, yaitu anyaman bambu pipih berbentuk kuda utuh dari samping, berbingkai rotan, dicat, tanpa tongkat; warnanya berbeda (putih berhias merah-hitam, hitam berhias emas) supaya tidak kembar. Teks butir tidak berubah.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
+**Foto kuda lumping dari peneliti dicocokkan** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
+
+- Lima foto kuda lumping (berizin, dari peneliti) disimpan sebagai acuan.
+- Gambar Pustaka "Pertunjukan kuda lumping di Temanggung" belum diganti: lukisan lama memuat menara candi bergaya Bali dan kostum yang bukan gaya Temanggung (foto menunjukkan rambut palsu keriting besar, mahkota, kumis, dan kostum bermanik), tetapi foto pertunjukan yang ada bertanda nama fotografer atau berformat tegak kecil.
+- Foto perajin yang mengecat kuda kepang cocok untuk sampul video perajin kuda-kudaan, tetapi ada kaleng cat bermerek yang terbaca di depan; pengembang yang memutuskan.
+- Benda Cari Objek "Kuda kepang bambu" Magelang berupa kepala kuda bulat bertongkat (mainan kuda-kudaan gaya Barat), padahal kuda kepang berupa anyaman bambu pipih berbentuk kuda utuh, dicat, berbingkai rotan, tanpa tongkat. Yang Temanggung sudah mendekati. Pengembang memutuskan perlu dibuat ulang atau tidak.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
+**Gambar Pustaka "Candi Pringapus, candi Hindu abad ke-9" diganti foto asli** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
+
+- Lima foto Candi Pringapus dari peneliti (berizin) akhirnya diterima sebagai berkas dan disimpan sebagai acuan lebih dulu.
+- Foto tampak depan di halaman berumput dipasang apa adanya: satu bilik di atas kaki tinggi, satu pintu berkepala kala, atap bertingkat. Lukisan lama menampilkan candi lebar berpuncak banyak dengan dua pintu. Satu foto bertanda nama fotografer hanya menjadi acuan.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
+**Gambar Pustaka "Arca Nandi di dalam bilik Candi Pringapus" diganti foto asli** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
+
+- Pengembang mengirim empat foto arca Nandi Candi Pringapus dari peneliti (berizin), kali ini sebagai berkas. Semuanya disimpan sebagai acuan lebih dulu.
+- Foto arca Nandi yang berbaring di bilik candi dipasang apa adanya, dipotong tanpa papan nama kecil di kiri bawah. Lukisan lama menempatkan Nandi di balairung bertiang dengan menara mirip Prambanan di luar.
+- Satu foto Nandi dari dekat berhias kalung ukir, berbeda dari Nandi Pringapus yang polos; mungkin Nandi candi lain, peneliti diminta memastikan.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
+**Foto Candi Pringapus dicocokkan; berkasnya belum diterima** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
+
+- Pengembang mengirim lima foto Candi Pringapus dari peneliti, tetapi hanya sebagai gambar di percakapan, bukan berkas; foto belum disimpan dan belum dipasang.
+- Gambar Pustaka "Candi Pringapus, candi Hindu abad ke-9" keliru bentuk: lukisan candi lebar berpuncak banyak dengan dua pintu, padahal Pringapus satu bilik ramping di atas kaki tinggi dengan satu pintu berkepala kala. Foto tampak depan di taman akan dipasang apa adanya setelah berkasnya diterima.
+- Gambar "Arca Nandi di dalam bilik Candi Pringapus" menampilkan balairung bertiang dan menara mirip Prambanan; arca Nandi aslinya ada di bilik kecil yang gelap. Belum ada foto Nandi yang cukup jelas.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
+**Foto Topeng Ireng dari peneliti; gambar Pustaka "Barisan penari Topeng Ireng" diganti foto asli** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
+
+- Pengembang mengirim lima foto Topeng Ireng (berizin, dari peneliti). Semuanya disimpan sebagai acuan di `ai-studio/chatgpt-images/inbox/` dan dicatat di `reference-sources-2026-11-15.json`.
+- Gambar Pustaka kedua halaman "Topeng Ireng, Tarian Penuh Semangat" diganti foto asli apa adanya: barisan penari berkuluk bulu dan berwajah rias. Gambar lama berupa lukisan dengan menara candi bergaya Bali di belakang penari.
+- Gambar pertama ("Penari Topeng Ireng dengan kuluk bulu warna-warni") belum diganti, karena belum ada foto satu penari yang cocok: satu foto bertanda air, satu tangkapan layar video ponsel beresolusi rendah, satu berformat tegak dan kostumnya belum tentu Topeng Ireng. Satu foto lagi (topeng setengah emas) bukan Topeng Ireng dan tidak dipakai untuk halaman ini.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Tujuh gambar baru diterima pengembang dan dipasang: `R-02`, `R-11` sampai `R-16`** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
 
 - Pengembang menerima ketujuh gambar. Gambar tes `R-11` diterima apa adanya, termasuk kata "raja" yang tebal (sudah begitu di gambar lama).
