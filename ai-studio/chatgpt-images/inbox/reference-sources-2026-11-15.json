@@ -1087,6 +1087,30 @@
       "received_on": "2026-11-16",
       "use": "Reference (a kendi in the dark burnished finish of village pottery) for review no. 255.",
       "sha256": "f77ca8f6ffe5d436538dc914873a967c4f7aec6151085b689a7d855ac2e65130"
+    },
+    {
+      "file": "reference-kendil-researcher-two-lidded-with-lugs-01.jpg",
+      "title": "Two dark reddish-brown clay kendil side by side, round-bellied, with domed clay lids and knobs, two small loop lugs on the sides",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference for R-22 (kendil, review no. 255): form, lid and colour.",
+      "sha256": "5ee572b8ff84e315912215d2c00ab5b970f0e3eb3b042b945e1dc49e0e651cee"
+    },
+    {
+      "file": "reference-kendil-researcher-lidded-workshop-02.jpg",
+      "title": "One large round reddish-brown clay kendil with a domed lid and knob on a white cloth, a pottery warehouse behind",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference for R-22 (kendil, review no. 255): the round belly, flared rim and lid.",
+      "sha256": "d3c9537438cf8bdb314bbf7d726c652cf048e6ddbccc09117d564dce0c2955e4"
     }
   ],
   "permission_updates": [
