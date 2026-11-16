@@ -733,3 +733,9 @@ A session looked at all 21 review sheets and wrote its questions into `ai-studio
 - **Task `R-14`** for `library.wonosobo.p2.2` (review no. 325, now `redo`): a relief map showing the three regencies that share the plateau, as the page text says, with seven places. It is the only game picture that carries text: a fixed list of place names, read word by word like the test pictures (document 39, `AGENTS.md`). The installing session sets the entry's caption back to the page's own "Peta kawasan Dataran Tinggi Dieng".
 - **`R-09` accepted.** The owner made the besurek cloth post in the ChatGPT app; the researcher accepted it, including the check of the cloth motif by someone who reads Arabic. `TASKS.md` row set to `accepted` so ChatGPT does not make it again; the file itself is still to come from the owner.
 
+## Picture review: carica photos, task `R-15` (16 November 2026, branch `nty/gracious-feynman-2yhoki`)
+
+- The owner sent five carica photos (whole, on the tree, cut, peeled for sweets), saved as `inbox/reference-carica-*`. No licence was stated when they were sent; the sources file says so, and the owner is asked to confirm.
+- `library.wonosobo.p9.2` (review no. 339, now `redo`): the whole fruits were close to carica, but the cut fruit had thick orange flesh and a few big black seeds, like papaya; carica has thin cream flesh and a white, juicy pulp with many small dark seeds. It was also painted, not 3D. Task `R-15`, prompt in document 39.
+- `R-02` (the carica of Cari Objek) now attaches two of the photos, and its prompt asks for five clear ribs with rounded edges instead of shallow ribs.
+

@@ -26,6 +26,7 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 | `R-12` | Pustaka Magelang, arca Buddha Mendut `library.magelang.p5.2` | 293 | Buddha duduk bersila (aslinya kedua kaki menjuntai); dua arca pengapit berdiri (aslinya duduk); ada singa dan anak yang menyembah. Foto acuan dari pengembang, lisensi didapat peneliti |
 | `R-13` | Foto unggahan Cari Objek Temanggung `challenge.post.tmg-4-b` (uceng goreng) | — | Belum ada fotonya, dan pemasang katalog belum mengenal gambar unggahan; slot `challenge.post.*` ditambahkan 16 November 2026 |
 | `R-14` | Pustaka Wonosobo, peta kawasan Dieng `library.wonosobo.p2.2` | 325 | Halaman butuh peta kawasan Dieng, bukan pemandangan. Lima peta acuan dari pengembang, lisensi didapat peneliti. Satu-satunya gambar isi game bertulisan (nama tempat) |
+| `R-15` | Pustaka Wonosobo, buah carica `library.wonosobo.p9.2` | 339 | Belahan buah berdaging jingga tebal dengan biji hitam besar seperti pepaya; carica berdaging tipis krem dengan isi putih berbiji kecil banyak. Bergaya lukisan. Foto acuan dari pengembang |
 
 ## Aturan bersama
 
@@ -33,7 +34,7 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 
 Gambar di dokumen ini bukan bagian antarmuka. Gayanya mengikuti kelompoknya masing-masing:
 
-- **Gambar isi game** (`R-01` sampai `R-05`, `R-12` sampai `R-14`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
+- **Gambar isi game** (`R-01` sampai `R-05`, `R-12` sampai `R-15`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
 - **Gambar tes** (`R-06` sampai `R-11`): gambar garis hitam-putih seperti 23 gambar tes lainnya. Gaya ini disengaja: instrumen tes tampil netral dan tidak memakai gaya game.
 
 **Tulisan di gambar.** Gambar isi game tidak memuat tulisan, kecuali peta `R-14` (nama tempat, daftar tetap). Gambar tes justru memuat tulisan, dan setiap kata harus sama persis dengan `app/Database/Seeds/data/instrumen/tes.php`. Tulisan di gambar dibuat oleh model gambar, jadi setiap hasil dibaca ulang kata per kata dengan daftar di promptnya.
@@ -79,7 +80,7 @@ No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, 
 |---|---|
 | Kode berkas | `challenge.item.wnb-4-a02` → simpan sebagai `challenge.item.wnb-4-a02.webp` |
 | Kanvas | 240 × 240, latar transparan (buat pada 1024 × 1024, lalu perkecil) |
-| Lampiran | `ai-studio/game-images/assets/tantangan/challenge.item.wnb-1-f01.webp` (pohon carica yang sudah benar: bentuk dan warna buah); `challenge.item.wnb-4-a05.webp` (pepaya biasa: untuk hasil akhir yang sama dan supaya kedua benda jelas berbeda). Foto asli carica dari pengembang di `inbox/` membantu, tetapi tidak wajib |
+| Lampiran | `ai-studio/game-images/assets/tantangan/challenge.item.wnb-1-f01.webp` (pohon carica yang sudah benar: bentuk dan warna buah); `challenge.item.wnb-4-a05.webp` (pepaya biasa: untuk hasil akhir yang sama dan supaya kedua benda jelas berbeda). Foto carica dari pengembang (16 November 2026): `inbox/reference-carica-whole-pile-13.webp` dan `inbox/reference-carica-on-tree-11.jpg` (bentuk dan warna buah utuh) |
 | Butir | `wnb-4-x02`: "Temukan buah pegunungan yang mirip pepaya, tetapi ukurannya kecil. Buah ini tumbuh baik di udara sejuk dan sering dibuat manisan." Pengecohnya `wnb-4-x05`, pepaya biasa |
 
 ```text
@@ -89,7 +90,7 @@ Premium stylized 3D animated adventure game for Indonesian children aged 8–14.
 Match the render finish, lighting and outline quality of the attached papaya cut-out exactly, so that the two objects look like parts of one set.
 
 SUBJECT AND COMPOSITION
-One isolated object on a transparent background: a small cluster of FOUR whole carica fruits (mountain papaya, Vasconcellea pubescens, the fruit of the Dieng highlands) with one green leaf behind them. Each fruit is small and plump, shaped like a short, rounded papaya about as long as a child's hand: an oval body with a blunt stem end and a gently pointed tip, smooth golden-yellow skin, and five SHALLOW, ROUNDED lengthwise ribs. The fruits lie together at slightly different angles, one resting on another. Use the fruits on the tree in the attached garden picture as the model for shape and colour.
+One isolated object on a transparent background: a small cluster of FOUR whole carica fruits (mountain papaya, Vasconcellea pubescens, the fruit of the Dieng highlands) with one green leaf behind them. Each fruit is small and plump, shaped like a short, rounded papaya about as long as a child's hand: an oval body with a blunt stem end and a gently pointed tip, smooth golden-yellow skin with a touch of green towards the tip on one fruit, and five clear lengthwise ribs whose edges are ROUNDED, never sharp. The fruits lie together at slightly different angles, one resting on another. Follow the attached carica photos for shape and colour, and the fruits on the tree in the attached garden picture for the finish.
 
 Accuracy — This must NOT read as star fruit (belimbing): no sharp wing-like ridges, no star-shaped cross-section, no waxy translucent look. It must NOT read as an ordinary papaya either: several small fruits, not one large long fruit. Do not show a cut fruit, seeds, a slice, a jar, a basket, a plate or a knife.
 Hidden-object rule — identical lighting and quality for targets and decoys: no glow, no sparkle, no outline, no label, no arrow, nothing that marks this object as an answer.
@@ -289,6 +290,37 @@ CONSTRAINTS
 No watermarks, signatures, logos, frames, misspelled or extra words, blurry edges or neon colours. No painterly 2D, gouache or paper grain.
 ```
 
+### R-15 · Buah carica di pohon dan dibelah (Pustaka Wonosobo)
+
+Ditambahkan 16 November 2026. Pengembang menandai gambar ini `redo later` (telaah no. 339): buah yang dibelah tampak seperti pepaya biasa. Pengembang mengirim lima foto carica (`ai-studio/chatgpt-images/inbox/reference-carica-*`; lisensinya belum disebut saat dikirim, lihat `reference-sources-2026-11-15.json`). Dicocokkan dengan foto: buah utuh di gambar lama sudah mirip carica, tetapi belahannya berdaging jingga tebal dengan biji hitam besar seperti pepaya. Carica yang dibelah berdaging tipis kuning krem, dan rongganya penuh isi putih berair dengan banyak biji kecil cokelat tua. Gambar lama juga bergaya lukisan, bukan 3D.
+
+| | |
+|---|---|
+| Kode berkas | `library.wonosobo.p9.2` → simpan sebagai `library.wonosobo.p9.2.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | Acuan gaya `reference.06` atau `reference.07`; foto `inbox/reference-carica-on-tree-11.jpg` (buah di pohon), `inbox/reference-carica-cut-halves-10.jpg` dan `inbox/reference-carica-whole-and-cut-12.jpg` (isi buah) |
+| Halaman Pustaka | "Rasa Wonosobo", bagian *Carica, pepaya gunung*: buah kecil dan harum, tumbuh di ketinggian 1.400–2.400 meter seperti Dieng, biasanya dibuat manisan dalam sirup. Keterangan gambar (tetap): "Buah carica atau pepaya gunung" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.wonosobo.p9.2  (R-15 · carica, the mountain papaya, library picture)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Characters: do NOT include Jaka or Mbah Kedu, and no people at all. The attached photos are factual references for the fruit and the tree only: follow their forms closely, render them in the GELITA finish, and do not copy the photos.
+
+SUBJECT AND COMPOSITION
+Left half: the upper part of a slim carica tree (mountain papaya, Vasconcellea pubescens) with a grey-brown trunk, a crown of large lobed leaves, and a dense cluster of fruit growing straight from the trunk just below the leaves: several ripe golden-yellow fruits and some green unripe ones. Each fruit is small, about the size of a fist, oval with a pointed tip and five clear lengthwise ribs with rounded edges.
+Right half, in the foreground on a flat grey stone: two whole ripe fruits and one fruit cut in half lengthwise, the two halves open towards the viewer. Inside the cut fruit: a THIN layer of pale cream-yellow flesh under the skin, and a large hollow filled with a white, juicy, slightly translucent pulp in which MANY SMALL dark-brown seeds sit packed together. The flesh is never thick and never orange; the seeds are small and many, never a few large black balls.
+Background: the cool Dieng highland on a clear morning: green terraced vegetable fields on steep slopes, a little mist in the valley, one volcano peak far away. Soft gold light from the left.
+
+Accuracy — This is carica, not an ordinary papaya: small ribbed fruits, cream flesh, white seed pulp. No orange flesh, no large black seeds, no papaya slices, no star fruit. No jars or syrup, no people.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. The tree crown and the cut fruit complete within the canvas, with even margins. Opaque, full-bleed picture. Deliver WebP, named library.wonosobo.p9.2.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, blurry edges or neon colours. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
 ## Gambar tes
 
 Lampirkan gambar tes yang sekarang dari `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/` dan minta gambar yang sama dengan perubahan yang disebut saja. Setelah itu baca setiap kata di hasilnya dan cocokkan dengan daftar *All text* di prompt.
@@ -461,7 +493,7 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 
 ## Daftar periksa hasil
 
-**Gambar isi game (`R-01` sampai `R-05`, `R-12` sampai `R-14`)**
+**Gambar isi game (`R-01` sampai `R-05`, `R-12` sampai `R-15`)**
 
 - Tanpa tulisan, angka, atau logo, kecuali `R-14`.
 - `R-01`: tepat dua gunung, tanpa candi, telaga, atau laut; tanpa tembakau; sepertiga bawah tenang.
@@ -469,6 +501,7 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 - `R-12`: tepat tiga arca dari batu abu-abu kecokelatan; Buddha duduk dengan kedua kaki di alas teratai, tangan di depan dada; kedua arca pengapit duduk; tanpa singa, sesaji, pagar, dan orang. Cocokkan dengan kedua foto acuan.
 - `R-13`: ikan kecil ramping sebesar jari, bukan ikan laut; seperempat bawah dari kiri hanya permukaan meja; tanpa tulisan, tombol putar, dan tampilan media sosial.
 - `R-14`: setiap tulisan sama persis dengan daftar *All text*, tanpa tulisan lain; utara di atas; Dieng Kulon, Candi Arjuna, dan Kawah Sikidang di Banjarnegara, Dieng Wetan, Telaga Warna, dan Sikunir di Wonosobo; cocokkan letaknya dengan peta jalur wisata `-08`.
+- `R-15`: belahan buah berdaging tipis krem, isi putih dengan banyak biji kecil cokelat tua; buah utuh kecil bergerigi lima dan berujung lancip; gaya 3D, bukan lukisan.
 - `R-03` sampai `R-05`: tokohnya Jaka (syal merah, kemeja krem, ransel, tanpa ikat kepala); ketiganya berlatar biru tua yang sama; medali simbol bergaya emas berukir.
 
 **Gambar tes (`R-06` sampai `R-11`)**
@@ -480,7 +513,7 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 
 ## Pemasangan
 
-- `R-01` sampai `R-05` dan `R-12`: berkas dari `ai-studio/chatgpt-images/out/` **dipindahkan** (bukan disalin) ke tempat berkas lamanya di `ai-studio/game-images/assets/` dan menggantikannya; entri `data.json` tidak berubah. Lalu `php spark gelita:katalog:impor`. `R-13` adalah gambar baru: berkasnya dipindahkan ke `ai-studio/game-images/assets/tantangan/challenge.post.tmg-4-b.webp`, lalu entri baru `challenge.post.tmg-4-b` ditambahkan ke `data.json` (contoh: entri `challenge.item.tmg-1-h01`) dan satu baris ke `REVIEW.md`. `R-14`: entri `library.wonosobo.p2.2` di `data.json` mendapat `caption` baru "Peta kawasan Dataran Tinggi Dieng" / "Map of the Dieng Plateau area".
+- `R-01` sampai `R-05`, `R-12`, `R-14`, dan `R-15`: berkas dari `ai-studio/chatgpt-images/out/` **dipindahkan** (bukan disalin) ke tempat berkas lamanya di `ai-studio/game-images/assets/` dan menggantikannya; entri `data.json` tidak berubah. Lalu `php spark gelita:katalog:impor`. `R-13` adalah gambar baru: berkasnya dipindahkan ke `ai-studio/game-images/assets/tantangan/challenge.post.tmg-4-b.webp`, lalu entri baru `challenge.post.tmg-4-b` ditambahkan ke `data.json` (contoh: entri `challenge.item.tmg-1-h01`) dan satu baris ke `REVIEW.md`. `R-14`: entri `library.wonosobo.p2.2` di `data.json` mendapat `caption` baru "Peta kawasan Dataran Tinggi Dieng" / "Map of the Dieng Plateau area".
 - `R-06` sampai `R-11`: berkas dipindahkan ke `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/`. Berkas PNG induk di `docs/revisi-10-analitik/gambar/doc-34/` diganti dengan hasil yang sama, supaya induk dan gambar terpasang tidak berbeda.
 - Setelah dipasang, lembar telaah dibangun ulang (`node ai-studio/game-images/review/build-sheets.mjs`) dan baris `REVIEW.md` diberi tanda baru oleh pengembang.
 
