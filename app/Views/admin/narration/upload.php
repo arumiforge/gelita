@@ -151,10 +151,6 @@ $codeList = static fn (array $codes): string => implode(', ', array_map(static f
       <li>Satu rekaman MP3 biasanya hanya 0,1–0,5 MB, jadi <?= esc($lines) ?> rekaman untuk satu bahasa biasanya perlu <?= $limits['max_files'] > 0 ? esc((int) ceil(max(1, $lines) / $limits['max_files'])) . ' kali unggah' : 'satu kali unggah' ?>. Supaya mudah dilacak, unggah per bagian cerita (mis. semua berkas <code>dialog-temanggung-…</code>).</li>
       <li>Bila ukuran total terlalu besar, server menolak seluruh kiriman. Kurangi jumlah berkas, lalu coba lagi.</li>
     </ul>
-    <details class="row-details">
-      <summary>Catatan untuk petugas teknis</summary>
-      <p class="field-help">Batas per berkas adalah yang terkecil dari batas GELITA (<code>Config\Gelita::$maxUploadBytes</code>, <?= esc($mb($limits['gelita_bytes'])) ?>) dan PHP (<code>upload_max_filesize</code>, <?= esc($mb($limits['php_file_bytes'])) ?>). Jumlah berkas per unggahan diatur <code>max_file_uploads</code>, ukuran total diatur <code>post_max_size</code>; bila total melebihi <code>post_max_size</code>, PHP membuang seluruh kiriman. Batas PHP diubah di <code>php.ini</code> server (lihat docs/08_DEPLOYMENT.md).</p>
-    </details>
   </section>
 </div>
 

@@ -64,7 +64,7 @@ foreach ($table['columns'] ?? [] as $column) {
 <?php if ($table === null): ?>
   <div class="empty-state">
     <?= icon('database') ?>
-    <p><b>Layanan data mentah belum terpasang.</b><br>Tabel ini diisi RawDataService (Dok 3 §8.4) setelah bagian data mentah digabung.</p>
+    <p><b>Data mentah belum tersedia.</b><br>Hubungi admin bila halaman ini tetap kosong.</p>
   </div>
 <?php else: ?>
   <?= component('data-table', [

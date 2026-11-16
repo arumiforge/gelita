@@ -298,9 +298,9 @@ final class NarrationPagesTest extends CIUnitTestCase
         $html = html_entity_decode((string) $result->getBody(), ENT_QUOTES | ENT_HTML5);
 
         $this->assertStringContainsString('name="files[]" multiple accept="audio/*"', $html);
-        $this->assertStringContainsString('upload_max_filesize', $html);
-        $this->assertStringContainsString('max_file_uploads', $html);
-        $this->assertStringContainsString('Config\Gelita::$maxUploadBytes', $html);
+        // No server notes on the page (owner, 16 Nov 2026): limits are shown in plain words only
+        $this->assertStringNotContainsString('upload_max_filesize', $html);
+        $this->assertStringNotContainsString('Config\Gelita::$maxUploadBytes', $html);
         $this->assertStringContainsString('data-max-files="' . (int) ini_get('max_file_uploads') . '"', $html);
         $this->assertStringContainsString('<code>intro-01.mp3</code>', $html, 'saran nama');
         $this->assertStringContainsString('1 baris naskah belum punya rekaman bahasa Indonesia', $html);
