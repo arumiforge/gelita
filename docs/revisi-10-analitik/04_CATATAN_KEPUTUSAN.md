@@ -6,6 +6,27 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Wawancara pengembang: suara di mode penelitian, salinan data anak, masa simpan, hitungan putar narasi, dan empat pesanan gambar (`R-23` sampai `R-26`)** (cabang `aru/dazzling-allen-p8hn5z`) · `asal: pengembang` · `disetujui pengembang` · mengubah 39; kode belum dibuat
+
+Pengembang menjawab pertanyaan yang tersisa dari pemeriksaan suara (15 November 2026, entri di atas *Suara lain: belum diputuskan*), dari cek manual gelombang E (14 November 2026), dan dari telaah gambar (`ai-studio/game-images/REVIEW.md`). Disusun dalam tiga putaran wawancara oleh AI; pilihan yang dianjurkan disebut lebih dulu. Semua keputusan berikut keputusan pengembang; dokumen lain belum diubah kecuali 39.
+
+1. **Musik dan efek suara tidak dicatat dan tidak masuk analitik penelitian.** Musik latar mendapat sakelar sendiri, terpisah dari narasi, dan **mati secara bawaan** di semua mode. Narasi tetap dicatat seperti di [11](11_KAMUS_DATA.md) (Analitik 7).
+2. **Efek benar/salah mati selama mode penelitian** (sakelar studi `field_mode`), supaya siswa di sebelahnya tidak mendengar hasil jawaban. Di luar mode penelitian efek tetap seperti sekarang.
+3. **Lewati dan Otomatis tetap ada selama studi.** Lewati dicatat sebagai baris narasi `skip`, supaya narasi cerita yang dilewati terlihat di data (usulan `kamus-1.2`).
+4. **Siswa tanpa *headset*: layar cek suara.** Di awal setiap sesi permainan mode penelitian, layar singkat memutar satu bunyi dan bertanya "Kamu mendengar suara ini?"; jawabannya dicatat (usulan `kamus-1.2`). Ini catatan apakah narasi bisa didengar, bukan catatan musik.
+5. **Hitungan putar narasi.** Narasi yang dijeda lalu dilanjutkan menulis aksi baru `resume`; jumlah putar = `play` + `replay` + `resume` (usulan `kamus-1.2`). Menutup temuan (b) cek manual 32 §15.3 (14 November 2026).
+6. **Salinan data satu anak** (`/admin/peserta/salinan`): lembar `risiko` diberi judul kolom bahasa Indonesia, dan kalimat PDF tentang tes dan angket mengikuti data yang sebenarnya. **Tanpa** kolom persetujuan ulang `risk_reconsent`. Menutup temuan (a) cek manual 30 §19.3 (14 November 2026), kecuali bagian persetujuan ulang.
+7. **Masa simpan 7305 hari.** Mencentang mode penelitian di formulir studi mana pun, termasuk studi yang sudah ada, mengisi 7305 hari bila nilainya lebih rendah, seperti tertulis di [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) §11. Menutup temuan (c) cek manual 30 §19.3.
+8. **Telaah gambar.**
+   - No. 62, tombol bahasa Inggris: bendera Inggris diganti **Union Jack**, bingkai tetap (`R-25`). No. 126 dan 127 dibuang (tidak pernah tampil).
+   - No. 84, lencana Wonosobo: gerbang terbelah diganti candi bergaya Candi Arjuna (seperti pin no. 103), digambar bersama lencana lain saat perombakan antarmuka.
+   - No. 276, mi ongklok: dibuat ulang sebagai potongan tanpa latar (`R-24`).
+   - Butir `tmg-3-b04` ("arca yang ada di dalam ruang Candi Pringapus", kunci benar) belum punya gambar: arca Nandi 3D dalam gaya game dari foto peneliti (`R-23`). No. 247 (`tmg-3-b03`, arca Buddha) dan 248 (`tmg-3-c03`, kopi sangrai) tidak dipakai butir mana pun dan dibuang.
+   - Pelat instruksi Isi Rumpang yang tenang dipesan **sekarang**, tidak menunggu perombakan (`R-26`, berkas baru `rumpang-instruction-plate.webp`, hiasan hanya di kedua ujung).
+   - Sekitar 350 baris telaah yang belum bertanda: AI mengusulkan tanda per lembar dari telaah pertama dan game, pengembang mengonfirmasi per lembar.
+
+**Akibat ke dokumen lain** (dibawa saat kodenya dibuat): [11](11_KAMUS_DATA.md) (aksi narasi `skip` dan `resume`, kejadian cek suara: usulan `kamus-1.2`); [33](33_IMPLEMENTASI_MODE_PENELITIAN.md) (efek dan cek suara di mode penelitian); [02](02_LEMBAR_LAPANGAN.md) L0 (*headset* tetap kondisi lapangan, hasil cek suara bisa dibaca di pemantauan). Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Benda Cari Objek "Kendil gerabah" dipesan ulang sebagai kendil, sesuai bank soal (`R-22`)** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang` · mengubah 39
 
 - Peneliti mengirim tiga foto kendi (berizin); satu tampak buatan AI dan hanya disimpan sebagai acuan.
