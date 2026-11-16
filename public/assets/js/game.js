@@ -120,6 +120,7 @@ initAudioPlayers(document, {
 
 const pages = {
   intro: () => import('./game/intro.js').then((m) => m.initStory('intro')),
+  'sound-check': () => import('./game/sound-check.js').then((m) => m.initSoundCheck()),
   ending: () => import('./game/intro.js').then((m) => m.initStory('ending')),
   dialogue: () => import('./game/dialogue.js').then((m) => m.initDialogue()),
   'region-done': () => import('./game/dialogue.js').then((m) => m.initDialogue()),

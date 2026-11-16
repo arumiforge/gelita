@@ -519,6 +519,28 @@ img.start-round { width: 4rem; height: 4rem; filter: drop-shadow(0 .1875rem .375
   .start-card:hover .start-go > img.start-round { transform: translateX(.1875rem); }
 }
 
+/* Cek suara `/cek-suara` (research mode, owner 15 November 2026): laid out like Mulai; Putar
+   suara is a start card as a button, the two answers wait until the sound has played once */
+.sound-check-play { width: 100%; color: inherit; font: inherit; cursor: pointer; }
+.sound-check-play .start-text { display: grid; }
+.sound-check-play-title { color: var(--gold-300); font-family: var(--font-display); font-size: var(--fs-h3); font-weight: 700; }
+.sound-check-play-text { margin-top: var(--gap-1); color: var(--ink-dim); font-size: var(--fs-caption); }
+.sound-check-answer { display: grid; justify-items: center; gap: var(--gap-3); margin: var(--gap-4) 0 0; }
+.sound-check-question { margin: 0; color: var(--gold-300); font-family: var(--font-display); font-size: var(--fs-h3); text-align: center; text-shadow: 0 .125rem .5rem rgba(0, 0, 0, .7); }
+.sound-check-choices { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--gap-4); }
+.sound-check-choices .btn:disabled { opacity: .45; cursor: default; }
+.sound-check-first { margin: 0; color: var(--ink-dim); font-size: var(--fs-caption); }
+.sound-check-first[hidden] { display: none; }
+.sound-check-help {
+  margin: 0 0 var(--gap-3);
+  padding: var(--gap-3) var(--gap-4);
+  border: .125rem solid var(--gold-500);
+  border-radius: var(--radius);
+  background: rgba(6, 12, 24, .7);
+  color: var(--ink);
+  line-height: 1.45;
+}
+
 /* Gerbang (owner redesign, 20 October 2026): the owner's arch picture, Jaka as one tall still
    picture, and the cards straight on the picture's plain dark right side: no panel fill and no
    corner ornaments, only the compass emblem above the title. Coordinates live in stage.css. */

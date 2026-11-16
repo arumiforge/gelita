@@ -134,7 +134,8 @@ Decisions in `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md` (16 November 2026
 - [x] Narrator controls 48 dp; short labels on hover, focus and long press (`core/tips.js`)
 - [x] Last slide: no ▶ and no Lewati; *Mulai petualangan* low at the right
 - [ ] Pictures `R-27` to `R-30` (slides 1, 6, 7, 8) and `R-31` to `R-33` (avatar expressions): `todo` in `ai-studio/chatgpt-images/TASKS.md`
-- [ ] Research-mode sound-check screen (04, 15 November 2026, decision 4)
+- [x] Research-mode sound-check screen `/cek-suara` (04, 15 November 2026, decision 4): event `sound_check_answered`; 33 §7.6, 11 (Analitik 7)
+- [ ] Sound-check result on the monitoring page (02 L0 follow-up of the same decision)
 
 ## Before the research starts
 
@@ -193,4 +194,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pw/sweet-wright-b98n4x` | Opening story review (owner, 16 November 2026): own tap screen, speaker avatars, no rays, research-mode dots and Otomatis, 48 dp controls, short labels, last slide; picture rows `R-27` to `R-33`; then the research-mode sound-check screen | Intro done and pushed; sound check in progress |
+| `pw/sweet-wright-b98n4x` | Opening story review (owner, 16 November 2026): own tap screen, speaker avatars, no rays, research-mode dots and Otomatis, 48 dp controls, short labels, last slide; picture rows `R-27` to `R-33`; then the research-mode sound-check screen | Intro and sound check done; PR [#393](https://github.com/arumiforge/gelita/pull/393) |
