@@ -55,7 +55,8 @@ use RuntimeException;
  *   The medium keeps the caption of the photo it had, unless the entry has
  *   its own `caption` (`{"id": …, "en": …}`): an illustration that shows
  *   something else than the photo did brings the caption that fits it
- *   (15 November 2026).
+ *   (15 November 2026). An entry's own `credit` replaces the AI-illustration
+ *   credit, for a real file such as a regency's coat of arms (16 November 2026).
  * - The catalogue's region maps have four clearings for the challenge
  *   buttons. When a map file is the one measured here (same sha256), the
  *   region's challenge buttons are moved onto those clearings.
@@ -275,7 +276,7 @@ final class CatalogImporter
     /**
      * Visual entries of the catalogue: asset key, absolute file path, group.
      *
-     * @return list<array{key: string, file: string, cat: string, caption?: array{id: string, en: string}}>
+     * @return list<array{key: string, file: string, cat: string, caption?: array{id: string, en: string}, credit?: string}>
      */
     public function entries(): array
     {
@@ -302,7 +303,7 @@ final class CatalogImporter
                 'key'  => (string) $entry['key'],
                 'file' => rtrim($this->root, '/\\') . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, (string) $entry['file']),
                 'cat'  => (string) ($entry['cat'] ?? ''),
-            ] + $this->captionOf($entry);
+            ] + $this->captionOf($entry) + $this->creditOf($entry);
         }
 
         return $entries;
@@ -321,6 +322,20 @@ final class CatalogImporter
         $en = trim((string) ($entry['caption']['en'] ?? ''));
 
         return $id === '' || $en === '' ? [] : ['caption' => ['id' => $id, 'en' => $en]];
+    }
+
+    /**
+     * The credit an entry brings for its Pustaka medium (a real file, not an AI illustration).
+     *
+     * @param array<string, mixed> $entry
+     *
+     * @return array{credit?: string}
+     */
+    private function creditOf(array $entry): array
+    {
+        $credit = trim((string) ($entry['credit'] ?? ''));
+
+        return $credit === '' ? [] : ['credit' => $credit];
     }
 
     /**
@@ -462,7 +477,7 @@ final class CatalogImporter
         }
 
         if (preg_match('/^library\.([a-z]+)\.p(\d+)\.(\d+)(\.poster)?$/', $key, $m) === 1) {
-            $this->installLibrary($key, $entry['file'], $m[1], (int) $m[2], (int) $m[3], ($m[4] ?? '') !== '', $dryRun, $overwrite, $entry['caption'] ?? null);
+            $this->installLibrary($key, $entry['file'], $m[1], (int) $m[2], (int) $m[3], ($m[4] ?? '') !== '', $dryRun, $overwrite, $entry['caption'] ?? null, $entry['credit'] ?? null);
 
             return;
         }
@@ -579,8 +594,9 @@ final class CatalogImporter
      * Library image or video cover, linked to media `sequence` of page `page`.
      *
      * @param array{id: string, en: string}|null $caption the entry's own caption; null keeps the medium's caption
+     * @param string|null                        $credit  the entry's own credit; null gives the AI-illustration credit
      */
-    private function installLibrary(string $source, string $file, string $region, int $page, int $sequence, bool $poster, bool $dryRun, bool $overwrite, ?array $caption = null): void
+    private function installLibrary(string $source, string $file, string $region, int $page, int $sequence, bool $poster, bool $dryRun, bool $overwrite, ?array $caption = null, ?string $credit = null): void
     {
         $pageId = $this->db->table('library_pages lp')->select('lp.id')
             ->join('levels l', 'l.id = lp.level_id')
@@ -627,10 +643,11 @@ final class CatalogImporter
 
         $current  = $media === null || $media['media_asset_id'] === null ? null : model(MediaAssetModel::class)->find((int) $media['media_asset_id']);
         $captions = $caption === null ? [] : ['caption_id' => $caption['id'], 'caption_en' => $caption['en']];
+        $credits  = $credit === null ? [] : ['credit' => $credit];
 
-        // When the entry's picture is already this medium's picture, its caption still follows the list
-        if (! $dryRun && $captions !== [] && $current !== null && (string) $current['asset_key'] === $source) {
-            $this->db->table('library_media')->where('id', $media['id'])->update($captions);
+        // When the entry's picture is already this medium's picture, its caption and credit still follow the list
+        if (! $dryRun && $captions + $credits !== [] && $current !== null && (string) $current['asset_key'] === $source) {
+            $this->db->table('library_media')->where('id', $media['id'])->update($captions + $credits);
         }
 
         if ($current !== null && ($reason = $this->blocked($current, $overwrite)) !== null) {
@@ -644,7 +661,7 @@ final class CatalogImporter
         }
 
         $mediaId = model(MediaAssetModel::class)->findByKey($source)['id'] ?? null;
-        $payload = ['media_kind' => 'image', 'media_asset_id' => $mediaId, 'external_url' => null, 'credit' => self::LIBRARY_CREDIT] + $captions;
+        $payload = ['media_kind' => 'image', 'media_asset_id' => $mediaId, 'external_url' => null, 'credit' => $credit ?? self::LIBRARY_CREDIT] + $captions;
 
         if ($media === null) {
             $now = date('Y-m-d H:i:s');

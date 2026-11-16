@@ -22,7 +22,7 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 | `R-08` | Gambar tes `instr.tes-bd-A-G2` | 383 | Emoji keliru; tulisan "Video: Sanggar Lima Purnama" terlalu kecil |
 | `R-09` | Gambar tes `instr.tes-bd-B-G1` | 384 | Tombol "Kirim pesan ke galeri" lebih tebal; motif kain tampak seperti tulisan Arab yang bisa dibaca |
 | `R-10` | Gambar tes `instr.tes-mb-A-M4` | 387 | Nama akun tertulis "@panitia.kaghaianak" |
-| `R-11` | Gambar tes `instr.tes-bd-B-G2` | 385 | Belum ditandai pengembang. Pasangan `R-08` di buklet B: tulisan "Video: Sanggar Tujuh Pelita" sama kecilnya. Dikerjakan hanya kalau pengembang setuju, supaya buklet A dan B tetap setara |
+| `R-11` | Gambar tes `instr.tes-bd-B-G2` | 385 | Disetujui pengembang 16 November 2026. Pasangan `R-08` di buklet B: tulisan "Video: Sanggar Tujuh Pelita" sama kecilnya. Dikerjakan hanya kalau pengembang setuju, supaya buklet A dan B tetap setara |
 | `R-12` | Pustaka Magelang, arca Buddha Mendut `library.magelang.p5.2` | 293 | Buddha duduk bersila (aslinya kedua kaki menjuntai); dua arca pengapit berdiri (aslinya duduk); ada singa dan anak yang menyembah. Foto acuan dari pengembang, lisensi didapat peneliti |
 | `R-13` | Foto unggahan Cari Objek Temanggung `challenge.post.tmg-4-b` (uceng goreng) | — | Belum ada fotonya, dan pemasang katalog belum mengenal gambar unggahan; slot `challenge.post.*` ditambahkan 16 November 2026 |
 | `R-14` | Pustaka Wonosobo, peta kawasan Dieng `library.wonosobo.p2.2` | 325 | Halaman butuh peta kawasan Dieng, bukan pemandangan. Lima peta acuan dari pengembang, lisensi didapat peneliti. Satu-satunya gambar isi game bertulisan (nama tempat) |
@@ -464,6 +464,8 @@ No other text, no colour, no new objects. Deliver at exactly 1024 × 1536 pixels
 ```
 
 ### R-11 · `instr.tes-bd-B-G2` (unggahan video Tari Maengket), menunggu persetujuan pengembang
+
+Pengembang menyetujui baris ini pada 16 November 2026 (judul bagian ini tetap, karena dirujuk dari `TASKS.md`). Hasil `R-08` sudah terpasang di `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/instr.tes-bd-A-G2.webp`; lampirkan berkas itu sebagai contoh ukuran dan letak tulisan sumber video.
 
 | | |
 |---|---|

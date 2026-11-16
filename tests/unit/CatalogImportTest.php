@@ -376,6 +376,31 @@ final class CatalogImportTest extends CIUnitTestCase
         $this->assertSame('Sindoro dan Sumbing', $this->sqlite->table('library_media')->where('id', $media['id'])->get()->getRow('caption_id'));
     }
 
+    /** A real file (a regency's coat of arms, 16 November 2026) brings its own credit instead of the AI-illustration credit. */
+    public function testLibraryEntryBringsItsOwnCredit(): void
+    {
+        $this->setCatalogField('library.temanggung.p7.1', 'credit', 'Lambang resmi Pemerintah Kabupaten Temanggung');
+        $this->importer()->run();
+        $media = $this->libraryMedia(7, 1);
+
+        $this->assertSame('Lambang resmi Pemerintah Kabupaten Temanggung', $media['credit']);
+        $this->assertSame(CatalogImporter::LIBRARY_CREDIT, $this->libraryMedia(1, 1)['credit'], 'entries without a credit keep the AI-illustration credit');
+
+        // Already installed: the credit still follows the list
+        $this->setCatalogField('library.temanggung.p7.1', 'credit', 'Pemerintah Kabupaten Temanggung');
+        $this->importer()->run();
+        $this->assertSame('Pemerintah Kabupaten Temanggung', $this->libraryMedia(7, 1)['credit']);
+    }
+
+    /** @return array<string, mixed> media `sequence` of Temanggung library page `page` */
+    private function libraryMedia(int $page, int $sequence): array
+    {
+        return $this->sqlite->table('library_media lm')->select('lm.*')
+            ->join('library_pages lp', 'lp.id = lm.library_page_id')->join('levels l', 'l.id = lp.level_id')
+            ->where('l.code', 'temanggung')->where('lp.sequence', $page)->where('lm.sequence', $sequence)
+            ->get()->getRowArray();
+    }
+
     /** The flag icons icon.language-id / -en are the HUD language icons (owner request 18 October 2026). */
     public function testLanguageIconsComeFromTheFlagIcons(): void
     {
@@ -693,12 +718,17 @@ final class CatalogImportTest extends CIUnitTestCase
     /** @param array<string, string> $caption */
     private function setCatalogCaption(string $key, array $caption): void
     {
+        $this->setCatalogField($key, 'caption', $caption);
+    }
+
+    private function setCatalogField(string $key, string $field, mixed $value): void
+    {
         $path = $this->catalog . '/data.json';
         $data = json_decode((string) file_get_contents($path), true);
 
         foreach ($data as &$entry) {
             if ($entry['key'] === $key) {
-                $entry['caption'] = $caption;
+                $entry[$field] = $value;
             }
         }
 
