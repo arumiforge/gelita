@@ -6129,7 +6129,7 @@
  {
   "id": "250",
   "key": "library.magelang.p6.1",
-  "title": "Topeng Ireng, Tarian Penuh Semangat",
+  "title": "Penari Topeng Ireng dengan kuluk bulu warna-warni",
   "cat": "Pustaka",
   "region": "Magelang",
   "size": "960 × 640",
@@ -6137,9 +6137,14 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.magelang.p6.1.webp",
-  "desc": "magelang · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Penari_Topeng_Ireng_03.jpg. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Foto asli penari Topeng Ireng dari peneliti (berizin): penari di tengah berkuluk bulu hitam dan putih, berwajah rias putih bergaris hitam, dengan barisan penari dan penonton di belakang, malam hari. Dipasang apa adanya (dipotong ke 3:2, 1004 × 669, tanpa pita hitam di tepi atas, lalu diperkecil ke 960 × 640); bukan ilustrasi.",
+  "prompt": "Not generated. A real photograph of Topeng Ireng dancers, from the researcher (licence and permission obtained, 16 November 2026), installed as it is. Never redraw or restyle it.",
+  "negative": "Never redraw, restyle or replace it with invented dancers or costumes.",
+  "caption": {
+   "id": "Penari Topeng Ireng dengan kuluk bulu warna-warni",
+   "en": "A Topeng Ireng dancer with a colourful feather headdress"
+  },
+  "credit": "Foto penari Topeng Ireng (berizin, dari peneliti)"
  },
  {
   "id": "251",

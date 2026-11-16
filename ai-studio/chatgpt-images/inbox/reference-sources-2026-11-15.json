@@ -967,6 +967,42 @@
       "received_on": "2026-11-16",
       "use": "Reference only: carries the photographer's mark '@YUU_MARK…'; never install it.",
       "sha256": "df56af4bfa5e30b19a0db618f6761cc508c50e8e69bbb4f2e982bbd4ecc031bd"
+    },
+    {
+      "file": "reference-Topeng-Ireng-researcher-festival-fisheye-06.jpg",
+      "title": "Topeng Ireng dancers at a village festival seen through a fisheye lens: tall black feather kuluk with crowns, yellow and green costumes with fringes, boots with bells, a crowd around",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only: strong fisheye distortion and low resolution (600 x 420).",
+      "sha256": "dbd9b611647bf26cc14fd094240ca13f1c64b2b2e8af11c91f144ed92518a547"
+    },
+    {
+      "file": "reference-Topeng-Ireng-researcher-low-angle-boots-07.jpg",
+      "title": "Topeng Ireng dancers from a low angle on grass: white feather kuluk, painted faces, green, red and orange fringed costumes, black boots covered with bells",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only: the costumes carry a readable group name; second choice for 295. Good reference for the boots and bells.",
+      "sha256": "4e15fe9cb659c098286c71c2eaacc05fe6ae649d7dce6c08eb9e3a8401835945"
+    },
+    {
+      "file": "reference-Topeng-Ireng-researcher-night-face-paint-08.webp",
+      "title": "Topeng Ireng dancers at night: the dancer in the middle with a black and white feather kuluk on a red carved band, white face make-up with black stripes, a black and yellow fringed costume; more dancers and a crowd behind",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Installed as it is as the Pustaka picture library.magelang.p6.1 (review no. 295), cropped to 3:2 (1004 x 669, centred on the middle dancer, leaving out a thin black band at the top) and scaled to 960 x 640.",
+      "sha256": "abe969c7356547c6f8bcbf47ee6c9e3c6e75581804b4a61df07e87e7ae21c9b6"
     }
   ],
   "permission_updates": [

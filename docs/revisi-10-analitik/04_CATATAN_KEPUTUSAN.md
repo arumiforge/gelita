@@ -6,6 +6,13 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Gambar Pustaka "Penari Topeng Ireng dengan kuluk bulu warna-warni" diganti foto asli** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
+
+- Peneliti mengirim tiga foto Topeng Ireng berformat mendatar (berizin), disimpan sebagai acuan.
+- Foto malam hari dengan penari berkuluk bulu hitam-putih dan berwajah rias putih bergaris hitam, persis seperti uraian halaman, dipasang apa adanya. Kedua gambar halaman Topeng Ireng kini foto asli. Lukisan lama tanpa riasan wajah dan berlatar gapura bergaya Bali.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Sampul video perajin kuda-kudaan diganti foto asli; dua kuda kepang Cari Objek dipesan ulang (`R-20`, `R-21`)** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang` · mengubah 39
 
 - Pengembang memutuskan foto perajin yang mengecat kuda kepang dipasang sebagai sampul video "perajin kuda-kudaan jaran kepang di Temanggung", meskipun ada kaleng cat bermerek di depan.
