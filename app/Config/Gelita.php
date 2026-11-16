@@ -225,6 +225,9 @@ class Gelita extends BaseConfig
         'ui.jaka-avatar'             => [512, 512],
         // Mbah Kedu's avatar in the Kenali overlay (owner, 19 October 2026)
         'ui.kedu-avatar'             => [512, 512],
+        // Their expressions per pose on the story slides (owner, 16 November 2026)
+        'ui.jaka-avatar.*'           => [512, 512],
+        'ui.kedu-avatar.*'           => [512, 512],
     ];
 
     /**

@@ -562,6 +562,31 @@ final class ImageSlots
             'priority'    => 'opsional',
             'tips'        => 'Tampil bulat 232 dp, tepat di atas ujung kiri kotak teks, jadi bingkainya sudah termasuk gambar. Bukan gambar gerak: layar Kenali sengaja tidak memakai gambar pose Mbah Kedu.',
         ],
+        // Expressions of the round avatars (owner, 16 November 2026): the cinematic
+        // story slides (opening story, ending) show the speaker's avatar in the pose of
+        // the line; without the expression the plain avatar shows
+        'ui.jaka-avatar.*' => [
+            'group'       => 'character',
+            'label'       => 'Avatar Jaka per ekspresi (cerita pembuka dan penutup)',
+            'content'     => 'Potret dada Jaka seperti avatar Jaka (bingkai emas bulat yang sama, ukuran dan posisi kepala sama), dengan ekspresi sesuai pose di akhir kunci: determined = bertekad, bow = berterima kasih sambil sedikit menunduk. Bagian luar bingkai transparan, tanpa tulisan.',
+            'screens'     => [['Cerita pembuka, slide yang diucapkan Jaka', '/intro'], ['Cerita penutup', '/penutup']],
+            'format'      => 'WebP atau PNG berlatar transparan, persegi, paling besar ± 120 KB',
+            'transparent' => true,
+            'fallback'    => 'Avatar Jaka biasa (ui.jaka-avatar)',
+            'priority'    => 'opsional',
+            'tips'        => 'Tampil bulat 196 dp di ujung kiri teks cerita, dengan papan nama di bagian bawah cincin. Bingkainya harus sama persis dengan avatar Jaka, supaya hanya wajahnya yang berganti.',
+        ],
+        'ui.kedu-avatar.*' => [
+            'group'       => 'character',
+            'label'       => 'Avatar Mbah Kedu per ekspresi (cerita pembuka dan penutup)',
+            'content'     => 'Potret dada Mbah Kedu seperti avatar Mbah Kedu (bingkai emas bulat yang sama, ukuran dan posisi kepala sama), dengan ekspresi sesuai pose di akhir kunci: weak = lelah dan lemah, worried = cemas. Bagian luar bingkai transparan, tanpa tulisan.',
+            'screens'     => [['Cerita pembuka, slide yang diucapkan Mbah Kedu', '/intro'], ['Cerita penutup', '/penutup']],
+            'format'      => 'WebP atau PNG berlatar transparan, persegi, paling besar ± 120 KB',
+            'transparent' => true,
+            'fallback'    => 'Avatar Mbah Kedu biasa (ui.kedu-avatar)',
+            'priority'    => 'opsional',
+            'tips'        => 'Tampil bulat 196 dp di ujung kiri teks cerita, dengan papan nama di bagian bawah cincin. Bingkainya harus sama persis dengan avatar Mbah Kedu, supaya hanya wajahnya yang berganti.',
+        ],
         'char.kedu.*' => [
             'group'       => 'character',
             'label'       => 'Mbah Kedu · pose {pose} · gambar {frame}',

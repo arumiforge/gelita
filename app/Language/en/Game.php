@@ -366,6 +366,8 @@ return [
     'char_narator'       => 'Narrator',
     'tapToStart'         => 'Tap to start',
     'tapToStartHint'     => 'Turn your sound on. The story will be read aloud.',
+    // Research mode: the lab plays the story through headsets (owner, 16 November 2026)
+    'tapToStartHintHeadset' => 'Put your headset on. The story will be read aloud.',
     'narratorControls'   => 'Narration controls',
     'narratorPrev'       => 'Previous part',
     'narratorNext'       => 'Next part',

@@ -567,7 +567,13 @@ final class StartGateTest extends CIUnitTestCase
             'intro_seen_at' => $introSeen ? '2026-09-01 08:00:00' : null,
         ]);
 
-        $context              = new GameContext();
+        // No study tables here: outside research mode (the intro asks since 16 November 2026)
+        $context = new class () extends GameContext {
+            public function researchMode(?GameSession $session = null): bool
+            {
+                return false;
+            }
+        };
         $context->session     = $session;
         $context->participant = $participant;
 

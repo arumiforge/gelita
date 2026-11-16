@@ -14,8 +14,14 @@
  *   their row with the narrator controls (right);
  * - `.cine-final`: the last slide's main button, centred on the page, in
  *   without an arrow (owner, 18 October 2026; proper case since 20 October);
- * - `.cine-stage`: on a slide with a character, the figure stands at the left
- *   of the caption text, drawn over the caption.
+ * - `.cine-avatar`: on a slide with a character, the speaker's round avatar
+ *   at the caption's left end with the name on the navy nameplate over the
+ *   ring's lower part, as on Kenali (owner, 16 November 2026; it replaced the
+ *   full-body figure and the gold speaker pill). The avatar follows the
+ *   slide's pose when that expression is installed (`ui.jaka-avatar.{pose}`,
+ *   `ui.kedu-avatar.{pose}`), else the character's own avatar, else the initial.
+ * - `$dotsStatic` (research mode): the page dots only show the place; they
+ *   are not links, so a student cannot jump to the last slide.
  * The caption's own Kembali/Lanjut links are the no-JavaScript fallback; once
  * narrator.js runs they are hidden (swipe still clicks them) and the ▶ button
  * in the narrator controls reads "Lanjut".
@@ -35,11 +41,19 @@
  * @var string                     $finalPlate optional: `enter`/`next` draws the final button on a
  *                                             carved plate (plate_attrs()), `reflection` as the
  *                                             Balai Refleksi picture (owner, 21 October 2026)
+ * @var bool|null                  $dotsStatic optional: dots without links (research mode)
  */
 $total      = count($slides);
 $finalPlate = $finalPlate ?? '';
+$dotsStatic = ! empty($dotsStatic);
+$avatarOf   = static function (string $character, string $pose): ?string {
+    $key = ['jaka' => 'ui.jaka-avatar', 'mbah_kedu' => 'ui.kedu-avatar'][$character] ?? null;
+
+    return $key === null ? null : (media_key_src($key . '.' . $pose) ?? media_key_src($key));
+};
+$plate = asset_url_versioned('ui/kenal-plate-navy.webp');
 ?>
-<ol class="slides cine-slides">
+<ol class="slides cine-slides" style="--kenal-plate-navy: url(&quot;<?= esc($plate, 'attr') ?>&quot;)">
   <?php foreach ($slides as $index => $slide): ?>
     <?php
     $n         = $index + 1;
@@ -59,28 +73,32 @@ $finalPlate = $finalPlate ?? '';
       <?php if (media_exists($bgId)): ?>
         <img class="cine-bg" src="<?= esc(media_src($bgId), 'attr') ?>" alt="" <?= $n === 1 ? 'fetchpriority="high"' : 'loading="lazy"' ?>>
       <?php endif ?>
-      <?php if ($character !== 'narator'): ?>
-        <div class="cine-stage">
-          <?= component('character', ['character' => $character, 'pose' => $pose, 'class' => 'pose-' . $pose]) ?>
-        </div>
-      <?php endif ?>
 
       <nav class="cine-top" aria-label="<?= esc($progress, 'attr') ?>">
         <ol class="slide-dots">
           <?php for ($i = 1; $i <= $total; $i++): ?>
             <li>
-              <a class="slide-dot<?= $i === $n ? ' is-current' : '' ?>" href="#<?= esc($prefix . $i, 'attr') ?>"
-                 <?= $i === $n ? 'aria-current="step"' : '' ?>><span class="visually-hidden"><?= esc(lang('Game.slideOf', [$i, $total])) ?></span></a>
+              <?php if ($dotsStatic): ?>
+                <span class="slide-dot is-static<?= $i === $n ? ' is-current' : '' ?>"
+                      <?= $i === $n ? 'aria-current="step"' : '' ?>><span class="visually-hidden"><?= esc(lang('Game.slideOf', [$i, $total])) ?></span></span>
+              <?php else: ?>
+                <a class="slide-dot<?= $i === $n ? ' is-current' : '' ?>" href="#<?= esc($prefix . $i, 'attr') ?>"
+                   <?= $i === $n ? 'aria-current="step"' : '' ?>><span class="visually-hidden"><?= esc(lang('Game.slideOf', [$i, $total])) ?></span></a>
+              <?php endif ?>
             </li>
           <?php endfor ?>
         </ol>
       </nav>
 
       <div class="cine-caption" data-narrator-advance>
+        <?php if ($character !== 'narator'): ?>
+          <?php $speaker = lang_or('Game.char_' . $character, $character) ?>
+          <div class="kenal-avatar cine-avatar">
+            <?= component('partials/kedu-portrait', ['src' => $avatarOf($character, $pose), 'name' => $speaker]) ?>
+            <span class="kenal-nameplate"><?= esc($speaker) ?></span>
+          </div>
+        <?php endif ?>
         <div class="cine-caption-head">
-          <?php if ($character !== 'narator'): ?>
-            <span class="cine-speaker"><?= esc(lang_or('Game.char_' . $character, $character)) ?></span>
-          <?php endif ?>
           <?php if ($title !== ''): ?>
             <h2 class="cine-title"><?= esc($title) ?></h2>
           <?php endif ?>

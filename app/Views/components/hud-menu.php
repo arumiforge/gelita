@@ -142,7 +142,7 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
     <?= $badge ?>
     <details class="hud-pop hud-lang" data-popover>
       <summary class="hud-ctl" aria-label="<?= esc(lang('Game.language') . ': ' . $langName($locale), 'attr') ?>"
-               title="<?= esc(lang('Game.language'), 'attr') ?>">
+               data-tip="<?= esc(lang('Game.language'), 'attr') ?>">
         <?php if ($roundFlag[$locale] ?? null): ?>
           <img class="hud-ctl-art" src="<?= esc($roundFlag[$locale], 'attr') ?>" alt="" draggable="false">
         <?php elseif ($flags[$locale] ?? null): ?>
@@ -174,12 +174,12 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
     </details>
 
     <button type="button" class="hud-ctl" id="btn-sound" aria-pressed="true"
-            aria-label="<?= esc(lang('Game.sound'), 'attr') ?>">
+            aria-label="<?= esc(lang('Game.sound'), 'attr') ?>" data-tip="<?= esc(lang('Game.sound'), 'attr') ?>">
       <?= round_icon('sound', 'hud-ctl-art icon-on', 'sound') ?><?= round_icon('mute', 'hud-ctl-art icon-off', 'sound-off') ?>
     </button>
 
     <details class="hud-pop hud-menu" data-popover>
-      <summary class="hud-ctl" aria-label="<?= esc(lang('Game.resultMenu'), 'attr') ?>" title="<?= esc(lang('Game.resultMenu'), 'attr') ?>">
+      <summary class="hud-ctl" aria-label="<?= esc(lang('Game.resultMenu'), 'attr') ?>" data-tip="<?= esc(lang('Game.resultMenu'), 'attr') ?>">
         <?= round_icon('menu', 'hud-ctl-art', 'menu') ?>
       </summary>
       <div class="hud-sheet hud-menu-sheet" role="group" aria-labelledby="hud-menu-title">
@@ -231,7 +231,7 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
     </details>
   </div>
   <?php if ($backEnd && $backArt !== null): ?>
-    <a class="hud-ctl hud-back" href="<?= esc($back, 'attr') ?>" aria-label="<?= esc(lang('Game.back'), 'attr') ?>" title="<?= esc(lang('Game.back'), 'attr') ?>">
+    <a class="hud-ctl hud-back" href="<?= esc($back, 'attr') ?>" aria-label="<?= esc(lang('Game.back'), 'attr') ?>" data-tip="<?= esc(lang('Game.back'), 'attr') ?>">
       <img class="hud-ctl-art" src="<?= esc($backArt, 'attr') ?>" alt="" draggable="false">
     </a>
   </div>

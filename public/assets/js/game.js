@@ -77,6 +77,8 @@ if (CONFIG.sessionTag) {
 import('./game/screen-check.js').then((m) => m.initScreenCheck()).catch(() => {});
 
 initHud();
+// Short labels on icon buttons: hover, keyboard focus, long press (owner, 16 November 2026)
+import('./core/tips.js').then((m) => m.initTips()).catch(() => {});
 initRotateGate();
 initInstall();
 initCurtains();

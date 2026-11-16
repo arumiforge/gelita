@@ -366,6 +366,8 @@ return [
     'char_narator'       => 'Narator',
     'tapToStart'         => 'Ketuk untuk mulai',
     'tapToStartHint'     => 'Nyalakan suaramu. Ceritanya akan dibacakan.',
+    // Research mode: the lab plays the story through headsets (owner, 16 November 2026)
+    'tapToStartHintHeadset' => 'Pakai headset-mu, ya. Ceritanya akan dibacakan.',
     'narratorControls'   => 'Kendali narasi',
     'narratorPrev'       => 'Bagian sebelumnya',
     'narratorNext'       => 'Bagian berikutnya',
