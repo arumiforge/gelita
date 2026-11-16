@@ -194,4 +194,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pw/sweet-wright-b98n4x` | Opening story review (owner, 16 November 2026): own tap screen, speaker avatars, no rays, research-mode dots and Otomatis, 48 dp controls, short labels, last slide; picture rows `R-27` to `R-33`; then the research-mode sound-check screen | Intro and sound check done; PR [#393](https://github.com/arumiforge/gelita/pull/393) |
