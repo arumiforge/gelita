@@ -6,6 +6,14 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Gambar Pustaka "Arca Nandi di dalam bilik Candi Pringapus" diganti foto asli** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
+
+- Pengembang mengirim empat foto arca Nandi Candi Pringapus dari peneliti (berizin), kali ini sebagai berkas. Semuanya disimpan sebagai acuan lebih dulu.
+- Foto arca Nandi yang berbaring di bilik candi dipasang apa adanya, dipotong tanpa papan nama kecil di kiri bawah. Lukisan lama menempatkan Nandi di balairung bertiang dengan menara mirip Prambanan di luar.
+- Satu foto Nandi dari dekat berhias kalung ukir, berbeda dari Nandi Pringapus yang polos; mungkin Nandi candi lain, peneliti diminta memastikan.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Foto Candi Pringapus dicocokkan; berkasnya belum diterima** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
 
 - Pengembang mengirim lima foto Candi Pringapus dari peneliti, tetapi hanya sebagai gambar di percakapan, bukan berkas; foto belum disimpan dan belum dipasang.

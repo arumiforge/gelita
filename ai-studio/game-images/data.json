@@ -5836,7 +5836,7 @@
  {
   "id": "234",
   "key": "library.temanggung.p5.3",
-  "title": "Arca_Nandi_dalam_bilik_Candi_Pringapus,_Mei_2022.jpg",
+  "title": "Arca Nandi di dalam bilik Candi Pringapus",
   "cat": "Pustaka",
   "region": "Temanggung",
   "size": "960 × 640",
@@ -5844,9 +5844,14 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.temanggung.p5.3.webp",
-  "desc": "temanggung · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Arca_Nandi_dalam_bilik_Candi_Pringapus,_Mei_2022.jpg. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Foto asli arca Nandi di bilik Candi Pringapus dari peneliti (berizin): lembu batu berpunuk yang berbaring di atas alas rendah, dinding batu andesit polos. Dipasang apa adanya (dipotong ke 3:2, 1230 × 820, tanpa label nama di kiri bawah, lalu diperkecil ke 960 × 640); bukan ilustrasi.",
+  "prompt": "Not generated. A real photograph of the Nandi inside Candi Pringapus, Temanggung, from the researcher (licence and permission obtained, 16 November 2026), installed as it is. Never redraw or restyle it.",
+  "negative": "Never redraw, restyle or replace it with an invented statue or hall.",
+  "caption": {
+   "id": "Arca Nandi di dalam bilik Candi Pringapus",
+   "en": "The Nandi statue inside the chamber of Pringapus Temple"
+  },
+  "credit": "Foto arca Nandi Candi Pringapus (berizin, dari peneliti)"
  },
  {
   "id": "235",
