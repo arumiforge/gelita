@@ -6,6 +6,20 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Cek kemutakhiran 32 setelah kode gelombang E** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang; untuk sesi ini pengembang mengizinkan beberapa dokumen per sesi) · status 32 tetap `disetujui pengembang` · mengubah 00 dan 32; tidak merevisi produk
+
+Diselaraskan tanpa keputusan baru ([32 §18](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#18-keputusan-pengembang) no. 11–15) dengan kode gelombang E dan entri 04 sesudah 3 November 2026:
+- kotak status: isi skenario dicek fakta peneliti, belum tercatat tervalidasi ahli;
+- §5.2: urutan pilihan dengan `seeded_shuffle()`;
+- §6.2–6.3: pita instruksi 60 dp, kartu *Percobaan dipakai*, muat ulang tanpa daftar lompat, bunyi umpan balik, dan efek benar/salah yang akan dimatikan di mode penelitian;
+- §7.1–7.2: node dari `ContentSeeder`, peta lima pos dan `MAP_STOPS`, kartu terpasang, gerbang cerita penghubung lewat `hasAttemptInStudy()`;
+- §7.5: kartu, latar cerita penghubung, dan letak gambar situasi di Katalog Aset;
+- §9.4: centang nada sebagai `tone_checked`;
+- §15.3: hasil cek manual 14 November 2026 dengan temuan terbuka (c) dan (d);
+- §19 no. 1: glosarium sudah.
+
+**Untuk pengembang:** penyimpangan implementasi bagian 6 (32 §18 no. 11) belum pernah disetujui terpisah dan tetap `draf pengembang`. Temuan cek manual (c) waktu `item_tries` setelah muat ulang dan (d) `challenge_abandoned` saat muat ulang masih terbuka. Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Penyimpangan implementasi bagian 5 disetujui** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` dan `asal: peneliti` (disampaikan pengembang) · `disetujui peneliti` · mengubah 00 dan 31; tidak merevisi produk
 
 Pengembang menyetujui penyimpangan implementasi gelombang D yang dicatat di [31 §22](31_IMPLEMENTASI_BANK_SOAL_BARU.md#22-keputusan-pengembang) no. 12 (`pirls_process` dan `skill` D1b diturunkan sebagai label pengembang, `verdict_D1a` menerima `INF-GEN`, penanda baris teks digital, `HUNT_SCENE_DP` = 864, tata letak benda dan unggahan 24 dp, blok `round2`, kolom `media_label`/`media_note`, `label_source` ahli sebagian, peringatan menjadi galat di `--siap-penelitian`, lembar `kode_pilihan` di bagian 3), dan menyampaikan bahwa peneliti juga menyetujuinya. Kode tidak berubah. Label `pirls_process` dan `skill` tetap label pengembang: persetujuan ini menyetujui cara menurunkannya, bukan validasi ahli atas labelnya.
