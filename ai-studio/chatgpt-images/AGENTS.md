@@ -65,7 +65,7 @@ Challenge card (`node-card-skenario`):
 
 The owner reviewed every picture of the game on 15 November 2026 (`ai-studio/game-images/REVIEW.md`). Pictures marked for a fix are the rows `R-01` and up; their prompts are in `docs/revisi-10-analitik/39_PROMPT_GAMBAR_PERBAIKAN_TELAAH.md`. For these rows the prompt and the lines below come before the general checks above:
 
-- **Attachments** are exactly the files in the row's **Attach** cell. "style" keeps its meaning.
+- **Attachments** are exactly the files in the row's **Attach** cell, at the paths written there, from the repository root. "style" keeps its meaning. Never search the repository for a similar file and never guess a location. If a path in the cell does not exist, do not make the picture: set the status to `blocked: missing file <path>`.
 - **`R-03` to `R-05` (Tips Jaka) show Jaka on purpose.** He must match the attached character sheet and sprite: red scarf, cream shirt, backpack, no headcloth. The check "No Jaka" does not apply to these three rows; "no letters" still does.
 - **`R-12` and later rows of a `redo later` picture use licensed reference photos** from `inbox/`, named in the row's **Attach** cell. Follow the photos for the forms the prompt names; never copy a photo, its colours or its modern details (railings, offerings, signs).
 - **`R-14` is a map and carries text on purpose:** exactly the place names of its *All text* list. The check "No readable text" does not apply to it; read every word against that list instead, as for the test pictures.

@@ -22,11 +22,12 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 | `R-08` | Gambar tes `instr.tes-bd-A-G2` | 383 | Emoji keliru; tulisan "Video: Sanggar Lima Purnama" terlalu kecil |
 | `R-09` | Gambar tes `instr.tes-bd-B-G1` | 384 | Tombol "Kirim pesan ke galeri" lebih tebal; motif kain tampak seperti tulisan Arab yang bisa dibaca |
 | `R-10` | Gambar tes `instr.tes-mb-A-M4` | 387 | Nama akun tertulis "@panitia.kaghaianak" |
-| `R-11` | Gambar tes `instr.tes-bd-B-G2` | 385 | Belum ditandai pengembang. Pasangan `R-08` di buklet B: tulisan "Video: Sanggar Tujuh Pelita" sama kecilnya. Dikerjakan hanya kalau pengembang setuju, supaya buklet A dan B tetap setara |
+| `R-11` | Gambar tes `instr.tes-bd-B-G2` | 385 | Disetujui pengembang 16 November 2026. Pasangan `R-08` di buklet B: tulisan "Video: Sanggar Tujuh Pelita" sama kecilnya. Dikerjakan hanya kalau pengembang setuju, supaya buklet A dan B tetap setara |
 | `R-12` | Pustaka Magelang, arca Buddha Mendut `library.magelang.p5.2` | 293 | Buddha duduk bersila (aslinya kedua kaki menjuntai); dua arca pengapit berdiri (aslinya duduk); ada singa dan anak yang menyembah. Foto acuan dari pengembang, lisensi didapat peneliti |
 | `R-13` | Foto unggahan Cari Objek Temanggung `challenge.post.tmg-4-b` (uceng goreng) | — | Belum ada fotonya, dan pemasang katalog belum mengenal gambar unggahan; slot `challenge.post.*` ditambahkan 16 November 2026 |
 | `R-14` | Pustaka Wonosobo, peta kawasan Dieng `library.wonosobo.p2.2` | 325 | Halaman butuh peta kawasan Dieng, bukan pemandangan. Lima peta acuan dari pengembang, lisensi didapat peneliti. Satu-satunya gambar isi game bertulisan (nama tempat) |
 | `R-15` | Pustaka Wonosobo, buah carica `library.wonosobo.p9.2` | 339 | Belahan buah berdaging jingga tebal dengan biji hitam besar seperti pepaya; carica berdaging tipis krem dengan isi putih berbiji kecil banyak. Bergaya lukisan. Foto acuan dari pengembang |
+| `R-16` | Pustaka Temanggung, Situs Liyangan `library.temanggung.p5.1` | 312 | Menara candi tinggi seperti Prambanan; Liyangan adalah kampung yang digali: teras bertalud batu, jalan batu, candi kecil, yoni, Gunung Sindoro. Foto dari peneliti |
 
 ## Aturan bersama
 
@@ -34,7 +35,7 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 
 Gambar di dokumen ini bukan bagian antarmuka. Gayanya mengikuti kelompoknya masing-masing:
 
-- **Gambar isi game** (`R-01` sampai `R-05`, `R-12` sampai `R-15`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
+- **Gambar isi game** (`R-01` sampai `R-05`, `R-12` sampai `R-16`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
 - **Gambar tes** (`R-06` sampai `R-11`): gambar garis hitam-putih seperti 23 gambar tes lainnya. Gaya ini disengaja: instrumen tes tampil netral dan tidak memakai gaya game.
 
 **Tulisan di gambar.** Gambar isi game tidak memuat tulisan, kecuali peta `R-14` (nama tempat, daftar tetap). Gambar tes justru memuat tulisan, dan setiap kata harus sama persis dengan `app/Database/Seeds/data/instrumen/tes.php`. Tulisan di gambar dibuat oleh model gambar, jadi setiap hasil dibaca ulang kata per kata dengan daftar di promptnya.
@@ -321,6 +322,40 @@ CONSTRAINTS
 No watermarks, signatures, text, letters, numbers, logos, frames, blurry edges or neon colours. No painterly 2D, gouache, oil-painting look or paper grain.
 ```
 
+### R-16 · Situs Liyangan (Pustaka Temanggung)
+
+Ditambahkan 16 November 2026. Pengembang menandai gambar ini `redo later` (telaah no. 312): gambarnya menampilkan menara candi tinggi seperti Prambanan, padahal halaman "Jejak Mataram Kuno" bercerita tentang **Situs Liyangan**, kampung Mataram Kuno yang terkubur material letusan Gunung Sindoro dan digali sejak 2008. Peneliti mengirim lima foto Liyangan yang berizin (`ai-studio/chatgpt-images/inbox/reference-Liyangan-*`, `-01` sampai `-05`). Isinya: talud batu panjang di teras berundak dengan jalan batu di depannya, alas candi kecil dengan yoni, satu bangunan candi kecil yang atapnya bertingkat di atas pelataran berpagar batu, dan Gunung Sindoro di belakang situs.
+
+| | |
+|---|---|
+| Kode berkas | `library.temanggung.p5.1` → simpan sebagai `library.temanggung.p5.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | Acuan gaya `ai-studio/game-images/assets/referensi/reference.06.webp`; foto `ai-studio/chatgpt-images/inbox/reference-Liyangan-terrace-wall-and-road-02.jpg` (talud dan jalan batu), `ai-studio/chatgpt-images/inbox/reference-Liyangan-small-shrine-04.jpg` (candi kecil), `ai-studio/chatgpt-images/inbox/reference-Liyangan-sign-and-Sindoro-05.jpg` (Gunung Sindoro; papan namanya tidak digambar) |
+| Halaman Pustaka | "Jejak Mataram Kuno", bagian *Situs Liyangan, kampung yang terkubur*: sisa rumah kayu yang hangus, candi dan talud, jalan batu, butir padi terbakar; semuanya terkubur material letusan Gunung Sindoro. Keterangan gambar setelah dipasang: "Situs Liyangan di lereng Gunung Sindoro" (keterangan asli halaman) |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.temanggung.p5.1  (R-16 · the Liyangan site, library picture)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Characters: do NOT include Jaka or Mbah Kedu, and no people at all. The attached photos are factual references for the site only: follow the forms of the walls, the stone road, the small shrine and the mountain, render them in the GELITA finish, and do not copy a photo. Leave out everything modern in them: visitors, the sign and its letters, roofs, fences and tools.
+
+SUBJECT AND COMPOSITION
+The excavated archaeological site of Liyangan on the lower slope of Mount Sindoro, Temanggung, Central Java, on a calm, slightly hazy morning, seen from a low rise at the edge of the dig. This is an ancient village buried by a volcanic eruption and dug out again, NOT a temple city.
+- Middle ground, filling most of the picture: several low TERRACES of grey-brown earth, each held up by a long, straight retaining wall (talud) of neatly cut grey andesite blocks, about as high as a grown-up's chest, the top row slightly rounded. One wall runs diagonally from the lower left towards the middle.
+- In front of that wall: an old road paved with rounded river stones, running along the wall.
+- On the upper terrace, right of centre: one SMALL stone shrine on a square walled platform with a few steps, its roof made of three or four small stepped tiers; it is not taller than two people. Next to it, the low square base of another shrine with a yoni (a square stone basin with a spout) on top.
+- Here and there: loose cut stones lying in rows on the ground, and the shallow straight-edged pits of the excavation.
+- Background: Mount Sindoro, ONE large, smooth, symmetrical volcanic cone, filling the upper middle, with green bamboo groves, a few tall trees and vegetable fields between the site and the mountain. Soft light from the left.
+
+Accuracy — No tall temple towers, no Prambanan, no Borobudur, no stupas, no guardian statues, no carved relief walls. All walls are plain cut stone. No wooden houses standing (they are gone), no tents, signs, fences, vehicles or tools. No people.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. The walls, the road and the small shrine complete within the canvas, the mountain top not cut off. Opaque, full-bleed picture. Deliver WebP, named library.temanggung.p5.1.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, blurry edges or neon colours. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
 ## Gambar tes
 
 Lampirkan gambar tes yang sekarang dari `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/` dan minta gambar yang sama dengan perubahan yang disebut saja. Setelah itu baca setiap kata di hasilnya dan cocokkan dengan daftar *All text* di prompt.
@@ -465,6 +500,8 @@ No other text, no colour, no new objects. Deliver at exactly 1024 × 1536 pixels
 
 ### R-11 · `instr.tes-bd-B-G2` (unggahan video Tari Maengket), menunggu persetujuan pengembang
 
+Pengembang menyetujui baris ini pada 16 November 2026 (judul bagian ini tetap, karena dirujuk dari `TASKS.md`). Hasil `R-08` sudah terpasang di `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/instr.tes-bd-A-G2.webp`; lampirkan berkas itu sebagai contoh ukuran dan letak tulisan sumber video.
+
 | | |
 |---|---|
 | Kode berkas | simpan sebagai `instr.tes-bd-B-G2.webp` |
@@ -493,7 +530,7 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 
 ## Daftar periksa hasil
 
-**Gambar isi game (`R-01` sampai `R-05`, `R-12` sampai `R-15`)**
+**Gambar isi game (`R-01` sampai `R-05`, `R-12` sampai `R-16`)**
 
 - Tanpa tulisan, angka, atau logo, kecuali `R-14`.
 - `R-01`: tepat dua gunung, tanpa candi, telaga, atau laut; tanpa tembakau; sepertiga bawah tenang.
@@ -502,6 +539,7 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 - `R-13`: ikan kecil ramping sebesar jari, bukan ikan laut; seperempat bawah dari kiri hanya permukaan meja; tanpa tulisan, tombol putar, dan tampilan media sosial.
 - `R-14`: setiap tulisan sama persis dengan daftar *All text*, tanpa tulisan lain; utara di atas; Dieng Kulon, Candi Arjuna, dan Kawah Sikidang di Banjarnegara, Dieng Wetan, Telaga Warna, dan Sikunir di Wonosobo; cocokkan letaknya dengan peta jalur wisata `-08`.
 - `R-15`: belahan buah berdaging tipis krem, isi putih dengan banyak biji kecil cokelat tua; buah utuh kecil bergerigi lima dan berujung lancip; gaya 3D, bukan lukisan.
+- `R-16`: tanpa menara candi tinggi; teras dengan talud batu polos, jalan batu, satu candi kecil beratap bertingkat, alas dengan yoni, Gunung Sindoro satu kerucut; tanpa orang.
 - `R-03` sampai `R-05`: tokohnya Jaka (syal merah, kemeja krem, ransel, tanpa ikat kepala); ketiganya berlatar biru tua yang sama; medali simbol bergaya emas berukir.
 
 **Gambar tes (`R-06` sampai `R-11`)**
@@ -513,7 +551,7 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 
 ## Pemasangan
 
-- `R-01` sampai `R-05`, `R-12`, `R-14`, dan `R-15`: berkas dari `ai-studio/chatgpt-images/out/` **dipindahkan** (bukan disalin) ke tempat berkas lamanya di `ai-studio/game-images/assets/` dan menggantikannya; entri `data.json` tidak berubah. Lalu `php spark gelita:katalog:impor`. `R-13` adalah gambar baru: berkasnya dipindahkan ke `ai-studio/game-images/assets/tantangan/challenge.post.tmg-4-b.webp`, lalu entri baru `challenge.post.tmg-4-b` ditambahkan ke `data.json` (contoh: entri `challenge.item.tmg-1-h01`) dan satu baris ke `REVIEW.md`. `R-14`: entri `library.wonosobo.p2.2` di `data.json` mendapat `caption` baru "Peta kawasan Dataran Tinggi Dieng" / "Map of the Dieng Plateau area".
+- `R-01` sampai `R-05`, `R-12`, `R-14` sampai `R-16`: berkas dari `ai-studio/chatgpt-images/out/` **dipindahkan** (bukan disalin) ke tempat berkas lamanya di `ai-studio/game-images/assets/` dan menggantikannya; entri `data.json` tidak berubah. Lalu `php spark gelita:katalog:impor`. `R-13` adalah gambar baru: berkasnya dipindahkan ke `ai-studio/game-images/assets/tantangan/challenge.post.tmg-4-b.webp`, lalu entri baru `challenge.post.tmg-4-b` ditambahkan ke `data.json` (contoh: entri `challenge.item.tmg-1-h01`) dan satu baris ke `REVIEW.md`. `R-16`: entri `library.temanggung.p5.1` di `data.json` mendapat `caption` "Situs Liyangan di lereng Gunung Sindoro" / "The Liyangan Site on the slopes of Mount Sindoro". `R-14`: entri `library.wonosobo.p2.2` di `data.json` mendapat `caption` baru "Peta kawasan Dataran Tinggi Dieng" / "Map of the Dieng Plateau area".
 - `R-06` sampai `R-11`: berkas dipindahkan ke `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/`. Berkas PNG induk di `docs/revisi-10-analitik/gambar/doc-34/` diganti dengan hasil yang sama, supaya induk dan gambar terpasang tidak berbeda.
 - Setelah dipasang, lembar telaah dibangun ulang (`node ai-studio/game-images/review/build-sheets.mjs`) dan baris `REVIEW.md` diberi tanda baru oleh pengembang.
 

@@ -5718,10 +5718,10 @@
  {
   "id": "228",
   "key": "library.temanggung.p3.1",
-  "title": "Asal-usul Nama dan Sejarah Temanggung",
+  "title": "Lambang Kabupaten Temanggung",
   "caption": {
-   "id": "Seorang kakek bercerita tentang masa lalu Temanggung",
-   "en": "An elder tells stories about Temanggung's past"
+   "id": "Lambang Kabupaten Temanggung",
+   "en": "Coat of arms of Temanggung Regency"
   },
   "cat": "Pustaka",
   "region": "Temanggung",
@@ -5730,9 +5730,10 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.temanggung.p3.1.webp",
-  "desc": "temanggung · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Lambang_Kabupaten_Temanggung.png. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Lambang resmi Kabupaten Temanggung, berkas asli dari peneliti (berizin), diletakkan utuh di tengah latar putih 960 × 640; bukan ilustrasi.",
+  "prompt": "Not generated. Official coat of arms of Kabupaten Temanggung, a real file from the researcher (licence and permission obtained, 16 November 2026), placed unchanged and whole on a plain white 960 x 640 canvas. Never redraw, recolour or crop it.",
+  "negative": "Never redraw, recolour, crop or restyle an official coat of arms.",
+  "credit": "Lambang resmi Pemerintah Kabupaten Temanggung"
  },
  {
   "id": "229",
@@ -5899,10 +5900,10 @@
  {
   "id": "239",
   "key": "library.magelang.p1.2",
-  "title": "Lambang_Kabupaten_Magelang.jpg",
+  "title": "Lambang Kabupaten Magelang",
   "caption": {
-   "id": "Stupa dan arca Buddha di teras Candi Borobudur",
-   "en": "Stupas and a Buddha statue on a terrace of Borobudur Temple"
+   "id": "Lambang Kabupaten Magelang",
+   "en": "Coat of arms of Magelang Regency"
   },
   "cat": "Pustaka",
   "region": "Magelang",
@@ -5911,9 +5912,10 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.magelang.p1.2.webp",
-  "desc": "magelang · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Lambang_Kabupaten_Magelang.jpg. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Lambang resmi Kabupaten Magelang, berkas asli dari peneliti (berizin), diletakkan utuh di tengah latar putih 960 × 640; bukan ilustrasi.",
+  "prompt": "Not generated. Official coat of arms of Kabupaten Magelang, a real file from the researcher (licence and permission obtained, 16 November 2026), placed unchanged and whole on a plain white 960 x 640 canvas. Never redraw, recolour or crop it.",
+  "negative": "Never redraw, recolour, crop or restyle an official coat of arms.",
+  "credit": "Lambang resmi Pemerintah Kabupaten Magelang"
  },
  {
   "id": "240",
@@ -5986,7 +5988,7 @@
  {
   "id": "244",
   "key": "library.magelang.p3.2",
-  "title": "Relief_Di_Candi_Borobudur.jpg",
+  "title": "Relief cerita di lorong Borobudur",
   "cat": "Pustaka",
   "region": "Magelang",
   "size": "960 × 640",
@@ -5994,9 +5996,14 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.magelang.p3.2.webp",
-  "desc": "magelang · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Relief_Di_Candi_Borobudur.jpg. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Foto asli relief di lorong Candi Borobudur dari peneliti (berizin), dipasang apa adanya (dipotong ke 3:2 dan diperbesar sedikit ke 960 × 640); bukan ilustrasi.",
+  "prompt": "Not generated. A real photograph of a narrative relief in a Borobudur gallery, from the researcher (licence and permission obtained, 16 November 2026), installed as it is. Never redraw or restyle it.",
+  "negative": "Never redraw, restyle or invent a relief.",
+  "caption": {
+   "id": "Relief cerita di lorong Borobudur",
+   "en": "A narrative relief in a Borobudur corridor"
+  },
+  "credit": "Foto relief Candi Borobudur (berizin, dari peneliti)"
  },
  {
   "id": "245",
@@ -6186,10 +6193,10 @@
  {
   "id": "256",
   "key": "library.wonosobo.p1.2",
-  "title": "Lambang_Kabupaten_Wonosobo.webp",
+  "title": "Lambang Kabupaten Wonosobo",
   "caption": {
-   "id": "Sekeranjang buah di tepi sebuah telaga di Wonosobo",
-   "en": "A basket of fruit beside a lake in Wonosobo"
+   "id": "Lambang Kabupaten Wonosobo",
+   "en": "Coat of arms of Wonosobo Regency"
   },
   "cat": "Pustaka",
   "region": "Wonosobo",
@@ -6198,9 +6205,10 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.wonosobo.p1.2.webp",
-  "desc": "wonosobo · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Lambang_Kabupaten_Wonosobo.webp. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Lambang resmi Kabupaten Wonosobo, berkas asli dari peneliti (berizin), diletakkan utuh di tengah latar putih 960 × 640; bukan ilustrasi.",
+  "prompt": "Not generated. Official coat of arms of Kabupaten Wonosobo, a real file from the researcher (licence and permission obtained, 16 November 2026), placed unchanged and whole on a plain white 960 x 640 canvas. Never redraw, recolour or crop it.",
+  "negative": "Never redraw, recolour, crop or restyle an official coat of arms.",
+  "credit": "Lambang resmi Pemerintah Kabupaten Wonosobo"
  },
  {
   "id": "257",
