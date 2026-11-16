@@ -6,6 +6,20 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Cek kemutakhiran 31 setelah kode gelombang D** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang) · status 31 tetap `disetujui pengembang` · mengubah 00 dan 31; tidak merevisi produk
+
+Pengembang meminta cek kemutakhiran dokumen lain dilanjutkan. Dokumen implementasi 28–32 terakhir diubah 3 November 2026, sebelum kode gelombang E dan keputusan 8–16 November 2026; 31 dicek lebih dulu karena bertentangan langsung dengan entri cek fakta peneliti hari ini. Diselaraskan tanpa keputusan baru ([31 §22](31_IMPLEMENTASI_BANK_SOAL_BARU.md#22-keputusan-pengembang) no. 12–14):
+- kotak status dan §7.3–7.4: butir `verified` dari cek fakta peneliti, 08 `disetujui peneliti`, belum tervalidasi ahli;
+- §6.4 dan §22 no. 11: terjemahan 36 sudah masuk berkas data;
+- §9 dan §19.1: `HUNT_SCENE_DP` = 864 dari `stage.css`, bukan `game.css`;
+- §12.1: muatan babak 2 berupa blok `round2` seperti dibangun;
+- §13.3: lembar `kode_pilihan` dibangun bagian 3;
+- §14: gambar Wayang Kedu dan Candi Pawon terpasang; uji susun dua orang belum;
+- §19.3: cek manual belum pernah dijalankan;
+- §23 no. 5: glosarium sudah.
+
+**Untuk pengembang:** penyimpangan implementasi bagian 5 (entri *Gelombang kode D selesai*, 3 November 2026, no. 3, dan catatan implementasi) kini tercatat di 31 §22 no. 12, tetapi belum pernah disetujui terpisah; statusnya tetap `draf pengembang` sampai pengembang memutuskan. Urutan cek berikutnya ada di `docs/PROGRESS.md`: 32, 30, 29, 28, lalu 13–15 dan 02 L0. Entri ini tidak diikuti pembuatan ulang PDF.
+
 **08 dinaikkan ke `disetujui peneliti`; dokumen lain tetap** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: peneliti` (cek fakta 16 November 2026, entri *Fakta seluruh butir bank soal sudah dicek peneliti* di bawah) dan `asal: pengembang` (keputusan menaikkan status) · `disetujui peneliti` · mengubah 00 dan 08; tidak mengubah isi butir atau produk
 
 AI memeriksa dokumen mana yang bisa naik ke `disetujui peneliti` tanpa wawancara pertanyaan terbuka. Hanya 08 yang punya keputusan peneliti tercatat di repo: peneliti sudah mengecek fakta semua 174 butir dan menyatakannya siap uji lapangan, berkas data sudah `verified`, tetapi kepala 08 dan barisnya di 00 masih `needs_verification`. Pengembang memutuskan:
