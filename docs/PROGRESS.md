@@ -166,4 +166,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `nty/gracious-feynman-2yhoki` | Picture review, round 2: coats of arms and a relief photo installed as real files (new `credit` field), `R-11` on, `R-16` (Liyangan), full paths for ChatGPT, list of pictures that need a real reference | In progress |
