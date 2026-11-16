@@ -860,3 +860,9 @@ The owner asked for the remaining revision 10 work (excluding the pictures ChatG
 
 **Not done (code, open in `docs/PROGRESS.md`):** decisions 1 to 7. Nothing in the application changed in this step, so no test was run.
 
+## ChatGPT attachments capped at five (16 November 2026, branch `aru/dazzling-allen-p8hn5z`)
+
+ChatGPT refuses more than five image files in one conversation (reported by the owner). Rule now in `ai-studio/chatgpt-images/AGENTS.md`, the `TASKS.md` header, document 39 (*Aturan bersama*) and `CLAUDE.md`: an **Attach** cell lists at most five files, "style" counting as one; when more references exist the session keeps, in order, the photos of the real thing, the pictures the result must differ from, and the pictures for the same finish. ChatGPT blocks a row with more than five instead of choosing.
+
+Rows over the limit were the three still `todo`: `R-20` and `R-21` (6 each) lose the photo of the two dancers (used for how it is danced, not for the object's form); `R-22` (7) loses the two kendi photos (a different vessel; the kendil photos show the clay already), and its prompt sentence about them is removed. Counted with a script over every `R-` row: none lists more than five now. Rows already generated or installed are unchanged. Docs only; no test reads these files.
+
