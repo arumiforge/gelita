@@ -25,7 +25,7 @@ final class BankSource
     /** Wilayah → awalan kode tantangan (sama dengan Config\Gelita::$levelPrefixes). */
     public const REGIONS = ['temanggung' => 'tmg', 'magelang' => 'mgl', 'wonosobo' => 'wnb'];
 
-    /** Default review of an item without its own `review` (31 §7.3: the new bank stays needs_verification). */
+    /** Default review of an item without its own `review` (31 §7.3): a new item waits for its facts to be checked. */
     public const REVIEW_STATUS = 'needs_verification';
 
     public const REVIEW_NOTE = 'Bank baru dari 08 (revisi 10): menunggu validasi ahli.';

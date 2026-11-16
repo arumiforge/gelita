@@ -230,7 +230,7 @@ final class SystemResetTest extends CIUnitTestCase
         $this->assertSame(18, $this->conn->table('challenge_items')->where('scorable', 0)->countAllResults());
         $this->assertSame(9, $this->conn->table('reading_passages')->countAllResults());
         $this->assertSame(36, $this->conn->table('hints')->countAllResults());
-        $this->assertEqualsCanonicalizing(['needs_verification', 'verified'], array_column($this->conn->table('challenge_items')->select('review_status')->distinct()->get()->getResultArray(), 'review_status'));
+        $this->assertEqualsCanonicalizing(['verified'], array_column($this->conn->table('challenge_items')->select('review_status')->distinct()->get()->getResultArray(), 'review_status'));
 
         $rumpang = json_decode((string) $this->node('temanggung', 2)['config_json'], true);
         $this->assertSame('Dua Gunung Temanggung', $rumpang['variants']['a']['title_id'] ?? null);

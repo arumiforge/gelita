@@ -136,7 +136,7 @@ All 21 sheets are looked at now: 03, 07 and 10 by the session that built the lis
 ### About sheet 11: Susun Gambar
 
 - **No letters in any of the 30** (the signs in 221 and 240 carry pictograms or nothing).
-- **The study uses variants a and b:** 234 and 448 (Temanggung), 218 and 220 → 447 (Magelang), 239 and 244 (Wonosobo). These six matter most.
+- **The study uses variants a and b:** 234 and 454 (Temanggung), 218 and 220 → 447 (Magelang), 239 and 244 (Wonosobo). These six matter most.
 - **No. 219 (Relief Borobudur):** the adult's hand reaches the relief. The caption ends "Pengunjung boleh melihat, tetapi tidak boleh menyentuhnya."
 - **No. 228 (Kuda Lumping):** the horse is painted flat; no weave can be seen. The caption says "anyaman bambu", and the same picture is the photo of the post in Cari Objek Temanggung, round 2, where the caption claims teak wood and the board says woven bamboo. Should the weave be visible (as in no. 235)?
 - **No. 217 (Topeng Ireng):** the caption names small bells on the legs; I could not make them out.
@@ -147,7 +147,7 @@ All 21 sheets are looked at now: 03, 07 and 10 by the session that built the lis
 ### About sheet 12: Benar atau Salah pictures and Cari Objek scenes
 
 - **No. 246** is used by item `tmg-3-a04` (true). Black grains on earth: read as burnt rice by a child?
-- **Nos. 247 and 248** have no item. Item `tmg-3-b04` needs "Arca lembu duduk" and has no picture. The cut-out no. 265 (Arca Nandi) would fit, but it is a target of Cari Objek in the same region.
+- **Nos. 247 and 248** have no item. Item `tmg-3-b04` needs "Arca lembu duduk" and had no picture (installed 16 November 2026 as no. 455, `TASKS.md` R-23). The cut-out no. 265 (Arca Nandi) would fit, but it is a target of Cari Objek in the same region.
 - **Missing as well:** `challenge.post.tmg-4-b` ("Uceng goreng di piring", the post of Cari Objek Temanggung, round 2, variant b). Not in the list. (Made as `R-13` and added as no. 453, 16 November 2026.)
 - The three scenes (249 to 251) are empty tables without letters.
 
@@ -469,6 +469,7 @@ Rows 129 to 178, the 50 vector icons `icon.*.svg`. Owner, 15 November 2026: `dro
 | 231 | [`challenge.item.tmg-1-f01`](assets/tantangan/challenge.item.tmg-1-f01.webp) | Umbul Jumprit | Gambar Susun Gambar Temanggung (Tantangan Susun Gambar Temanggung) |  |  |
 | 232 | [`challenge.item.tmg-1-g01`](assets/tantangan/challenge.item.tmg-1-g01.webp) | Panen Kopi di Lereng Sindoro–Sumbing | Gambar Susun Gambar Temanggung (Tantangan Susun Gambar Temanggung) |  |  |
 | 233 | [`challenge.item.tmg-1-h01`](assets/tantangan/challenge.item.tmg-1-h01.webp) | Ikan Uceng dan Sungai Jernih | Gambar Susun Gambar Temanggung (Tantangan Susun Gambar Temanggung) |  |  |
+| 454 | [`challenge.item.tmg-1-k01`](assets/tantangan/challenge.item.tmg-1-k01.webp) | Wayang Kedu | Gambar Susun Gambar Temanggung, variasi b (Tantangan Susun Gambar Temanggung) | `keep` | `TASKS.md` row TMG-P11 (was no. 448 while it waited in `chatgpt-images/out/`). Approved by the researcher; installed 16 November 2026. Tile check (`cek_keping.py`, 3 × 3): LULUS DENGAN CATATAN, pieces 8 and 9 similar in texture but different in content (snack tray, mother with child). The two-person assembly test is still to be done before data collection. |
 | 234 | [`challenge.item.tmg-1-i01`](assets/tantangan/challenge.item.tmg-1-i01.webp) | Pasar Papringan | Gambar Susun Gambar Temanggung (Tantangan Susun Gambar Temanggung) |  |  |
 | 235 | [`challenge.item.tmg-1-j01`](assets/tantangan/challenge.item.tmg-1-j01.webp) | Perajin Kuda Kepang | Gambar Susun Gambar Temanggung (Tantangan Susun Gambar Temanggung) |  |  |
 | 236 | [`challenge.item.wnb-1-05`](assets/tantangan/challenge.item.wnb-1-05.webp) | Telaga Warna | Gambar Susun Gambar Wonosobo (Tantangan Susun Gambar Wonosobo) |  |  |
@@ -491,6 +492,7 @@ Rows 129 to 178, the 50 vector icons `icon.*.svg`. Owner, 15 November 2026: `dro
 | 246 | [`challenge.item.tmg-3-a03`](assets/tantangan/challenge.item.tmg-3-a03.webp) | Butir padi hangus | Gambar pernyataan Benar atau Salah Temanggung (Tantangan Benar atau Salah Temanggung) |  |  |
 | 247 | [`challenge.item.tmg-3-b03`](assets/tantangan/challenge.item.tmg-3-b03.webp) | Arca Buddha duduk | Gambar pernyataan Benar atau Salah Temanggung (Tantangan Benar atau Salah Temanggung) | `drop: no item uses it` | Fact: no item of the current question bank uses this code Owner, 16 Nov 2026. Item `tmg-3-b04` gets its own picture, task `R-23`. |
 | 248 | [`challenge.item.tmg-3-c03`](assets/tantangan/challenge.item.tmg-3-c03.webp) | Biji kopi sangrai | Gambar pernyataan Benar atau Salah Temanggung (Tantangan Benar atau Salah Temanggung) | `drop: no item uses it` | Fact: no item of the current question bank uses this code Owner, 16 Nov 2026. |
+| 455 | [`challenge.item.tmg-3-b04`](assets/tantangan/challenge.item.tmg-3-b04.webp) | Arca Nandi di bilik Candi Pringapus | Gambar pernyataan Benar atau Salah Temanggung, butir `tmg-3-b04` (Tantangan Benar atau Salah Temanggung) | `keep` | `TASKS.md` row R-23: a 3D Nandi in the game look from the researcher's photos, inside the stone chamber (the item's key is true). Approved by the researcher; installed 16 November 2026. Replaces the sample picture this item had. |
 | 249 | [`challenge.mgl-4.scene`](assets/tantangan/challenge.mgl-4.scene.webp) | Galeri Budaya Magelang | Adegan Cari Objek Magelang (Tantangan Cari Objek Magelang) |  |  |
 | 250 | [`challenge.tmg-4.scene`](assets/tantangan/challenge.tmg-4.scene.webp) | Pasar Budaya Temanggung | Adegan Cari Objek Temanggung (Tantangan Cari Objek Temanggung) |  |  |
 | 251 | [`challenge.wnb-4.scene`](assets/tantangan/challenge.wnb-4.scene.webp) | Pasar Oleh-oleh Dieng | Adegan Cari Objek Wonosobo (Tantangan Cari Objek Wonosobo) |  |  |
@@ -751,7 +753,6 @@ Shown here only so they can be compared with the rest.
 | 445 | [`bg.cerita-tuntas-temanggung-01`](../chatgpt-images/out/bg.cerita-tuntas-temanggung-01.webp) | New picture made by ChatGPT | Not installed yet |  | Status is kept in `../chatgpt-images/TASKS.md`, not here |
 | 446 | [`bg.cerita-tuntas-wonosobo-01`](../chatgpt-images/out/bg.cerita-tuntas-wonosobo-01.webp) | New picture made by ChatGPT | Not installed yet |  | Status is kept in `../chatgpt-images/TASKS.md`, not here |
 | 447 | [`challenge.item.mgl-1-e01`](../chatgpt-images/out/challenge.item.mgl-1-e01.webp) | New picture made by ChatGPT | Not installed yet |  | Status is kept in `../chatgpt-images/TASKS.md`, not here |
-| 448 | [`challenge.item.tmg-1-k01`](../chatgpt-images/out/challenge.item.tmg-1-k01.webp) | New picture made by ChatGPT | Not installed yet |  | Status is kept in `../chatgpt-images/TASKS.md`, not here |
 
 ### Sheet 21: New pictures waiting in chatgpt-images/out (2 of 2)
 

@@ -284,9 +284,8 @@ final class CatalogImportTest extends CIUnitTestCase
         $files   = array_column(array_filter($catalog->entries(), static fn (array $e): bool => in_array($e['key'], $keys, true)), 'file', 'key');
         ksort($files);
 
-        // The new Wayang Kedu variant (31 §14, prompt TMG-P11) waits for the catalogue team
+        // Every puzzle slot has its picture, Wayang Kedu (TMG-P11) included since 16 November 2026
         $this->assertCount(31, $keys);
-        $keys = array_values(array_diff($keys, ['challenge.item.tmg-1-k01']));
         $this->assertSame($keys, array_keys($files), 'puzzle slots without a catalogue entry');
 
         foreach ($files as $key => $file) {

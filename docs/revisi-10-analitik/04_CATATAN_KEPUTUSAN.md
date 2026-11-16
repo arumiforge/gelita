@@ -6,6 +6,14 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Fakta seluruh butir bank soal sudah dicek peneliti; gambar Wayang Kedu dan arca Nandi dipasang** (cabang `nty/beautiful-clarke-scy25i`) · `asal: peneliti` (lewat pengembang) · `disetujui peneliti`
+
+- Peneliti sudah mengecek fakta di semua butir bank soal 08 yang masih bertanda `needs_verification` (174 butir) dan menyatakannya siap diuji di lapangan. Statusnya kini `verified`, dengan catatan "16 November 2026: fakta dicek peneliti, siap uji lapangan (asal: peneliti, lewat pengembang); keputusan validator menyusul." Ini mengubah aturan 31 §7.3 (butir tetap `needs_verification` sampai validasi ahli). Ini bukan validasi ahli: bila validator nanti memutuskan lain, butirnya diubah sesudahnya.
+- Di unduhan data mentah, kolom `review_status` = `verified` berarti fakta sudah dicek peneliti, belum tentu sudah divalidasi ahli.
+- Gambar Susun Gambar Wayang Kedu (`challenge.item.tmg-1-k01`, TMG-P11) dan gambar Benar atau Salah arca Nandi di bilik Candi Pringapus (`challenge.item.tmg-3-b04`, R-23) disetujui peneliti dan dipasang di Katalog Aset. Uji keping otomatis Wayang Kedu: LULUS DENGAN CATATAN (keping 8 dan 9 bertekstur mirip, isinya berbeda). Uji susun oleh dua orang belum dilakukan.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Avatar bundengan baru dipasang (`R-19`)** (cabang `nty/beautiful-clarke-scy25i`) · `asal: pengembang` · `draf pengembang`
 
 - Lambang baru digambar pengembang di luar ChatGPT (hanya lambang, latar transparan): bundengan berdiri tegak, ujung runcing di atas dengan jambul, satu tongkat bambu panjang mencuat melewati puncak, jaring tali di punggung, senar di dalam cekungan. Pengembang meminta langsung dipasang.

@@ -131,8 +131,8 @@ A server is always set up as a fresh install (`docs/08_DEPLOYMENT.md` → *Insta
 **Content and art**
 
 - [ ] Record the voice-over narration (103 lines per language today; about 187 after the research revision, see `docs/revisi-10-analitik/12_CERITA_PENGHUBUNG_DAN_NARASI.md`) from the script PDF in **Rekaman narasi**, upload it, listen, and approve it. On a server that still has old TTS takes, press **Batalkan semua rekaman** for each language first (decision log, 17 October 2026)
-- [ ] The researcher checks every `needs_verification` item of the question bank and the facts in `docs/bank-soal/telaah-draf-1-naskah-bank-soal.md` §6
-- [ ] The researcher checks the Susun Gambar pictures against the reference photos and has two people assemble each puzzle
+- [x] The researcher checks every `needs_verification` item of the question bank (done 16 November 2026: all 174 items `verified`, ready for the field trial; the validators' decisions come later, `04`). The facts in `docs/bank-soal/telaah-draf-1-naskah-bank-soal.md` §6 are not part of that check
+- [ ] The researcher checks the Susun Gambar pictures against the reference photos and has two people assemble each puzzle (Wayang Kedu `tmg-1-k01`, installed 16 November 2026, has passed the automatic tile check only)
 - [ ] Art for the region story slides `bg.cerita-{kenal,dialog,tuntas}-{wilayah}-NN` (catalogue team); until it exists every slide shows the region background. Prompts in `docs/revisi-10-analitik/37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md` (4 November 2026). The bridge-story backgrounds `bg.cerita-layar-*` have interim pictures and their prompts are also in `38` (8 November 2026)
 - [ ] Replace or approve the remaining interim art: the AI Pustaka illustrations (owner: fine for now, replaced in the panel later)
 
