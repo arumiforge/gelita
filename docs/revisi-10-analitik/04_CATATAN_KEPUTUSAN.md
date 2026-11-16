@@ -6,6 +6,15 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Tujuh gambar baru dari ChatGPT diperiksa: `R-02`, `R-11` sampai `R-16`** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
+
+- Ketujuh gambar dicocokkan dengan promptnya di 39 dan *Daftar periksa hasil*: nama berkas, format, ukuran kanvas, isi, dan setiap kata pada gambar bertulisan. Belum ada yang dipasang; pengembang menandai `accepted` lebih dulu.
+- **Lolos:** carica Cari Objek (`R-02`, empat buah kecil bergerigi membulat, jelas bukan belimbing dan bukan pepaya), arca Mendut (`R-12`, tiga arca duduk, kaki Buddha di alas teratai), uceng goreng (`R-13`), peta Dieng (`R-14`, sebelas kata sesuai daftar, letak tempat sesuai batas kabupaten), carica Pustaka (`R-15`, daging tipis krem, isi putih berbiji kecil), Situs Liyangan (`R-16`).
+- **Gambar tes `R-11`:** tulisan sumber video sudah sebesar di bentuk A dan semua kata benar, tetapi kata "raja" pada keterangan unggahan tercetak tebal. Gambar lama juga begitu, sedangkan di bentuk A tidak ada kata tebal di tempat itu, dan "raja" adalah klaim keliru yang ditanyakan butirnya. Pengembang memutuskan: diterima, atau dibuat ulang dengan "raja" tidak tebal.
+- Untuk sesi pemasang: entri `data.json` keempat gambar Pustaka masih bertuliskan media dokumenter ("source acquisition, not image generation"); saat gambar buatan dipasang, judul, deskripsi, dan promptnya ikut diganti.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Foto acuan arca Buddha Mendut diterima; gambar Pustaka `library.magelang.p5.2` dibuat ulang (`R-12`); foto unggahan uceng dibuat baru (`R-13`); peta Dieng (`R-14`); buah carica (`R-15`); kain besurek disetujui peneliti** (cabang `nty/gracious-feynman-2yhoki`) · `asal: pengembang` · `draf pengembang` · mengubah 39
 
 - **Foto acuan.** Pengembang mengirim empat foto Candi Mendut (ruang dalam dengan tiga arca, arca Buddha dari dekat, dua foto bangunan). Lisensinya sudah didapat peneliti; pembuat dan sumber foto tidak tercatat. Foto disimpan sebagai acuan di `ai-studio/chatgpt-images/inbox/` (dicatat di `reference-sources-2026-11-15.json`) dan tidak pernah dipasang di game.
