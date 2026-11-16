@@ -6,6 +6,13 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Sampul video perajin kuda-kudaan diganti foto asli; dua kuda kepang Cari Objek dipesan ulang (`R-20`, `R-21`)** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang` · mengubah 39
+
+- Pengembang memutuskan foto perajin yang mengecat kuda kepang dipasang sebagai sampul video "perajin kuda-kudaan jaran kepang di Temanggung", meskipun ada kaleng cat bermerek di depan.
+- Kedua benda Cari Objek "Kuda kepang bambu" dibuat ulang dari foto peneliti: target Temanggung (`R-20`) dan pengecoh Magelang (`R-21`). Bentuknya sama, yaitu anyaman bambu pipih berbentuk kuda utuh dari samping, berbingkai rotan, dicat, tanpa tongkat; warnanya berbeda (putih berhias merah-hitam, hitam berhias emas) supaya tidak kembar. Teks butir tidak berubah.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Foto kuda lumping dari peneliti dicocokkan** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
 
 - Lima foto kuda lumping (berizin, dari peneliti) disimpan sebagai acuan.
