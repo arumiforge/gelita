@@ -6134,7 +6134,7 @@
  {
   "id": "251",
   "key": "library.magelang.p6.2",
-  "title": "Topeng_Ireng_(4).jpg",
+  "title": "Barisan penari Topeng Ireng",
   "cat": "Pustaka",
   "region": "Magelang",
   "size": "960 × 640",
@@ -6142,9 +6142,14 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.magelang.p6.2.webp",
-  "desc": "magelang · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Topeng_Ireng_(4).jpg. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Foto asli penari Topeng Ireng dari peneliti (berizin): barisan penari berkuluk bulu tinggi dan berwajah rias, dengan seorang penari putri di tengah. Dipasang apa adanya (dipotong ke 3:2 dan diperbesar dari 502 × 335 ke 960 × 640); bukan ilustrasi.",
+  "prompt": "Not generated. A real photograph of a row of Topeng Ireng dancers, from the researcher (licence and permission obtained, 16 November 2026), installed as it is. Never redraw or restyle it.",
+  "negative": "Never redraw, restyle or replace it with invented dancers or costumes.",
+  "caption": {
+   "id": "Barisan penari Topeng Ireng",
+   "en": "A row of Topeng Ireng dancers"
+  },
+  "credit": "Foto penari Topeng Ireng (berizin, dari peneliti)"
  },
  {
   "id": "252",

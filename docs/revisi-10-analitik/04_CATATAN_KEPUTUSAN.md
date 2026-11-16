@@ -6,6 +6,14 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Foto Topeng Ireng dari peneliti; gambar Pustaka "Barisan penari Topeng Ireng" diganti foto asli** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
+
+- Pengembang mengirim lima foto Topeng Ireng (berizin, dari peneliti). Semuanya disimpan sebagai acuan di `ai-studio/chatgpt-images/inbox/` dan dicatat di `reference-sources-2026-11-15.json`.
+- Gambar Pustaka kedua halaman "Topeng Ireng, Tarian Penuh Semangat" diganti foto asli apa adanya: barisan penari berkuluk bulu dan berwajah rias. Gambar lama berupa lukisan dengan menara candi bergaya Bali di belakang penari.
+- Gambar pertama ("Penari Topeng Ireng dengan kuluk bulu warna-warni") belum diganti, karena belum ada foto satu penari yang cocok: satu foto bertanda air, satu tangkapan layar video ponsel beresolusi rendah, satu berformat tegak dan kostumnya belum tentu Topeng Ireng. Satu foto lagi (topeng setengah emas) bukan Topeng Ireng dan tidak dipakai untuk halaman ini.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Tujuh gambar baru diterima pengembang dan dipasang: `R-02`, `R-11` sampai `R-16`** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
 
 - Pengembang menerima ketujuh gambar. Gambar tes `R-11` diterima apa adanya, termasuk kata "raja" yang tebal (sudah begitu di gambar lama).

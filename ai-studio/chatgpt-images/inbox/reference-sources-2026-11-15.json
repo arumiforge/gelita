@@ -739,6 +739,66 @@
       "received_on": "2026-11-16",
       "use": "Reference (the kowangan as a dance property).",
       "sha256": "d84641c6ec4b41e1b8b6516024191eb54b197a14f086f3d82851a85fbd27c1e4"
+    },
+    {
+      "file": "reference-Topeng-Ireng-researcher-dancer-crown-portrait-01.jpg",
+      "title": "A young female dancer, portrait format: a sequinned red and green crown with dark purple and pink feathers, white lace with fringe on the shoulders, blue bodice; no face stripes",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only for now (review no. 295): portrait, so a 3:2 crop cuts the crown or the face, and the costume differs from the page's description (no feather kuluk of that kind, no black stripes over white powder). Whether it is a Topeng Ireng costume is for the researcher to confirm.",
+      "sha256": "281eb6aa2980bf684fb90314a4bf986aae0f2992356c44db4f13a0f251e3969c"
+    },
+    {
+      "file": "reference-Topeng-Ireng-researcher-dancer-phone-still-02.jpg",
+      "title": "A still from a vertical phone video: a woman in a black and white feather headdress with a peacock eye and a beaded bib with tassels, posing with fingers at her cheeks",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only: low resolution (415 x 739), a social-media pose, and the skin looks smoothed by a beauty filter; never install it.",
+      "sha256": "648ad523df303a5e87b75af5e35747b1454cf608dbdb218b07249640177d8291"
+    },
+    {
+      "file": "reference-Topeng-Ireng-researcher-face-paint-watermarked-03.webp",
+      "title": "Close-up of a dancer's face: black, white and red face paint, a beaded headband with white tusks, brown feathers",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only: carries a photographer's watermark (\"Wisa…\") at the bottom; never install it. Good reference for the face make-up of 295 and the video cover 298.",
+      "sha256": "5b712db6295a648fd3a4dba9531e91b3e1517842d102fad5ea3e13eb579be70c"
+    },
+    {
+      "file": "reference-Topeng-Ireng-researcher-dancers-row-04.png",
+      "title": "A row of Topeng Ireng dancers at a festival: tall feather kuluk with striped bands, painted faces, orange fringes, a female dancer in the middle with a white and black feather headdress",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Installed as it is as the Pustaka picture library.magelang.p6.2 (review no. 296), cropped to 3:2 (502 x 335, centred) and scaled to 960 x 640.",
+      "sha256": "c2b4d0780044dbef6a56c3ba86154ca117cf37385f5da11ccad86df31110cd9e"
+    },
+    {
+      "file": "reference-Topeng-Ireng-researcher-gold-half-mask-05.webp",
+      "title": "A female dancer with a gold half mask and a carved gold crown, black and gold costume, a red and white flag behind",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only, not for Topeng Ireng: no feather kuluk and no face paint; a masked dance of another kind. Never install it on the Topeng Ireng page.",
+      "sha256": "1ad6e0aca9b07e0a1536d7831f992f88eee6cfa14e15385690b019cc8588e7a1"
     }
   ],
   "permission_updates": [
