@@ -19,8 +19,17 @@ $alerts = ['not_entered', 'dropped', 'no_seat', 'small_screen'];
 <?= $this->include('partials/flash') ?>
 
 <div data-monitoring data-endpoint="<?= esc(base_url('api/admin/monitoring'), 'attr') ?>">
+  <div class="monitoring-bar">
+    <label class="check alert-sound">
+      <input type="checkbox" data-alert-sound disabled>
+      <span><?= esc(lang('Admin.alertSoundToggle')) ?></span>
+    </label>
+    <p class="field-help"><?= esc(lang('Admin.alertSoundHelp')) ?></p>
+    <p class="visually-hidden" role="status" aria-live="polite" data-alert-live data-text="<?= esc(lang('Admin.alertSoundNew'), 'attr') ?>"></p>
+  </div>
   <p class="muted" data-monitoring-status data-ok="<?= esc(lang('Admin.monitoringUpdated'), 'attr') ?>" data-stale="<?= esc(lang('Admin.monitoringStale'), 'attr') ?>" data-updated-at="<?= esc(lang('Admin.monitoringUpdatedAt', ['{time}']), 'attr') ?>"><?= esc(lang('Admin.monitoringUpdated')) ?></p>
 
+  <script type="application/json" data-monitoring-initial><?= json_encode($sessions, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?></script>
   <?php if ($sessions === []): ?>
     <p class="muted"><?= esc(lang('Admin.monitoringNone')) ?></p>
   <?php endif ?>

@@ -134,6 +134,8 @@ final class FieldDayPanelTest extends CIUnitTestCase
         $html = (string) $this->send(Method::GET, 'admin/pemantauan')->getBody();
 
         $this->assertStringContainsString(lang('Admin.attentionTitle'), $html);
+        $this->assertStringContainsString('data-alert-sound', $html, 'opt-in alert sound');
+        $this->assertMatchesRegularExpression('/data-monitoring-initial>\[\{.*"participant_code":"S03-A02"/s', $html, 'baseline for the first refresh');
         $this->assertMatchesRegularExpression('/data-m="list-not-entered">S03-A02</', $html);
         $this->assertMatchesRegularExpression('/data-m="list-dropped">S03-A01 \(4\)</', $html);
         $this->assertMatchesRegularExpression('/data-m="list-no-seat">S03-A02</', $html);
@@ -141,6 +143,8 @@ final class FieldDayPanelTest extends CIUnitTestCase
         $this->as('admin', 1);
         $admin = (string) $this->send(Method::GET, 'admin/pemantauan')->getBody();
         $this->assertStringNotContainsString(lang('Admin.attentionTitle'), $admin, 'admin: numbers only (K2)');
+        $this->assertStringNotContainsString('S03-A0', $admin, 'the baseline carries no codes for the admin');
+        $this->assertStringContainsString('data-alert-sound', $admin, 'the admin may hear rising counts too');
     }
 
     private function as(string $role, int $id): void

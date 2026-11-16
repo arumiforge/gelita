@@ -1278,3 +1278,16 @@ body.auth { display: grid; min-height: 100vh; place-items: center; padding: 24px
   .print-card-facts { grid-template-columns: repeat(2, auto); }
   .print-card-token { text-align: left; }
 }
+
+/* Pemantauan: opt-in alert sound and the pulse of a card with a new problem */
+.monitoring-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; margin: 0 0 12px; }
+.monitoring-bar .field-help { margin: 0; flex: 1 1 320px; }
+.alert-sound { font-weight: 600; }
+[data-field-session].is-new { animation: attention-pulse 1.4s ease-out 2; }
+@keyframes attention-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(181, 71, 8, .45); }
+  100% { box-shadow: 0 0 0 14px rgba(181, 71, 8, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-field-session].is-new { animation: none; outline: 2px solid var(--warn); outline-offset: 2px; }
+}
