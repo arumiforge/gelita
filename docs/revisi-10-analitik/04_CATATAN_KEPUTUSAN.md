@@ -6,6 +6,13 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Benda Cari Objek "Kendil gerabah" dipesan ulang sebagai kendil, sesuai bank soal (`R-22`)** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang` · mengubah 39
+
+- Peneliti mengirim tiga foto kendi (berizin); satu tampak buatan AI dan hanya disimpan sebagai acuan.
+- Gambar benda Cari Objek Magelang berupa teko tanah liat bercerat dan bergagang, bukan kendi dan bukan kendil. Bank soal, kartu informasi Klipoh, butir `mgl-2-c06`, dan cek fakta (25, MGL-40) menyebut kendil, periuk untuk menanak nasi. Pengembang memutuskan gambar mengikuti bank: kendil bulat bermulut lebar tanpa cerat dan tanpa gagang. Teks butir dan dokumen penelitian tidak berubah; foto kendi hanya acuan warna tanah liat.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Gambar Pustaka "Pertunjukan kuda lumping di Temanggung" diganti foto asli** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
 
 - Peneliti mengirim empat foto kuda lumping lagi (berizin), disimpan sebagai acuan.
