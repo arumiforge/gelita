@@ -904,4 +904,19 @@ return [
     'derivedOffForStudy'         => 'Data turunan hanya dihitung untuk studi dengan mode penelitian menyala.',
     'derivedDone'                => 'Data turunan sudah dihitung ulang.',
     'derivedNotFound'            => 'Penelitian tidak ditemukan.',
+
+    // ---- Staff panel guide pass (16 November 2026): menu groups, sub-menu, /admin/panduan-staf ----
+    'groupField'            => 'Kerja lapangan',
+    'groupHelp'             => 'Bantuan',
+    'menuGuide'             => 'Panduan staf',
+    'menuSessionOverview'   => 'Halaman sesi',
+    'menuSessionSheets'     => 'Unggah lembar',
+    'guideTitle'            => 'Panduan staf',
+    'guideLead'             => 'Cara memakai panel ini, langkah demi langkah, untuk setiap peran. Anda masuk sebagai {0}; bab untuk peran Anda ada di bagian atas dan sudah terbuka.',
+    'guideToc'              => 'Daftar isi',
+    'guideYourRole'         => 'Peran Anda',
+    'guideForRoles'         => 'Untuk {0}',
+    'guideOpenPage'         => 'Buka {0}',
+    'guideNoAccess'         => 'Halaman {0} (bukan untuk peran Anda)',
+    'guideBackToTop'        => 'Kembali ke daftar isi',
 ];

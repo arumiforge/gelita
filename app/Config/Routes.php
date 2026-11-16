@@ -151,6 +151,9 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
         $routes->get('/', 'DashboardController::index', ['filter' => 'staffCan:dashboard.view']);
         $routes->get('dashboard', 'DashboardController::index', ['filter' => 'staffCan:dashboard.view']);
 
+        // Staff guide (every staff role)
+        $routes->get('panduan-staf', 'StaffGuideController::index', ['filter' => 'staffCan:dashboard.view']);
+
         // Own account (every staff role)
         $routes->get('akun/sandi', 'AccountController::passwordForm');
         $routes->post('akun/sandi', 'AccountController::changePassword');
