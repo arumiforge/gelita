@@ -6,6 +6,15 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**08 dinaikkan ke `disetujui peneliti`; dokumen lain tetap** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: peneliti` (cek fakta 16 November 2026, entri *Fakta seluruh butir bank soal sudah dicek peneliti* di bawah) dan `asal: pengembang` (keputusan menaikkan status) · `disetujui peneliti` · mengubah 00 dan 08; tidak mengubah isi butir atau produk
+
+AI memeriksa dokumen mana yang bisa naik ke `disetujui peneliti` tanpa wawancara pertanyaan terbuka. Hanya 08 yang punya keputusan peneliti tercatat di repo: peneliti sudah mengecek fakta semua 174 butir dan menyatakannya siap uji lapangan, berkas data sudah `verified`, tetapi kepala 08 dan barisnya di 00 masih `needs_verification`. Pengembang memutuskan:
+
+1. **08 `disetujui peneliti`.** Kepala dokumen, keterangan Wayang Kedu, dan baris 08 di [00](00_INDEKS.md) diperbarui. Belum `tervalidasi ahli`: skor validator, κ B.5a, dan matriks revisi [20](20_PAKET_VALIDASI.md) belum ada di repo. Keputusan 4 November 2026 (status 08 tidak dinaikkan sampai hasil validasi masuk) diganti untuk tingkat ini saja. [36](36_TERJEMAHAN_BANK_SOAL.md) tidak ikut.
+2. **Dokumen lain tetap.** Kandidat yang secara alur mungkin sudah melewati peneliti tetapi tidak tercatat (13–16, 18, 21, tiga instrumen validasi; 23, 24, 26 sebagai lampiran izin etik) tidak dinaikkan sampai pengembang menyampaikan keputusan peneliti.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Telaah layar cerita pembuka: layar ketuk sendiri, avatar tokoh, tanpa sinar, dan empat latar slide dipesan ulang** (cabang `pw/sweet-wright-b98n4x`) · `asal: pengembang` · `disetujui pengembang` · mengubah 39; kode dibuat
 
 Pengembang menelaah layar sebelum dan di dalam cerita pembuka (`/intro`). AI menjawab dulu apakah layar ini masuk analitik: hanya sebagian. Yang tercatat `screen_viewed`, `intro_completed` (analitik 1), `dialogue_completed` konteks `intro`, baris narasi konteks `intro`, dan `page_hidden`/`page_visible` (waktu aktif); tidak ada kalkulator data turunan ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md)) yang memakainya. Jadi perubahan tampilan aman bagi analitik, asal selesai sebelum pengambilan data dan tercatat di sini. Keputusan pengembang:

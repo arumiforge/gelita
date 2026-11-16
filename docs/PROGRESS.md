@@ -24,7 +24,7 @@ Documents in `docs/revisi-10-analitik/` (Indonesian, at the owner's request); th
 
 Leftovers named inside finished rows (not checklist items; details in `04`):
 
-- The validation scores, κ, and the revision matrix in `20` are not in the repo yet. Until they arrive `08` keeps its status, the items the validation revises are not re-translated (`36`), and the knock-on changes listed in `17` → *Akibat ke dokumen lain* (`01` system change 21, `02`, `06`, `07`, `11`, `12`, `13`, `18`) wait for the validators' notes.
+- The validation scores, κ, and the revision matrix in `20` are not in the repo yet. Until they arrive `08` stays `disetujui peneliti` (raised 16 November 2026 after the researcher's fact check; not `tervalidasi ahli`), the other documents keep their status (owner, 16 November 2026), the items the validation revises are not re-translated (`36`), and the knock-on changes listed in `17` → *Akibat ke dokumen lain* (`01` system change 21, `02`, `06`, `07`, `11`, `12`, `13`, `18`) wait for the validators' notes.
 - After KG3a/KG3b the thresholds, the `game_time_group` bounds, the test rapid-guess threshold, and the reason order are re-set as `kamus-1.2` (`11`).
 - `25` → *Akibat ke dokumen lain* no. 6 (*Tentang GELITA* sentence, after the cultural observer answers LNT-24) and no. 7 (Papringan market days re-checked before the G4 lock). The optional `kenal-temanggung-02` wording from `25` is the owner's call. The Wayang Kedu caption in `08` leaves out the World Heritage line until the decree is found.
 - `22` is handled by the researcher directly since 3 November 2026 (fill-in groups A–F stay off-repo); the repo copy is frozen at the sent version and is no longer the master copy. `23`, `24`, and `26` still are; re-send `23` with its next change.
@@ -194,3 +194,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `pw/hopeful-knuth-twnk4t` | Research revision: `08` raised to `disetujui peneliti` (researcher's fact check of 16 November 2026); other documents unchanged (owner) | Docs only (`00`, `04`, `08`, this file); no PDF rebuild; PR open |
