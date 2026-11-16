@@ -1,10 +1,10 @@
 # Dokumen Implementasi Bagian 5 — Bank Soal Baru, Kode Kesalahan, Label, Jangkar, dan Area Ketuk
 
-Per 3 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 1, 3, 4, 8, 17, dan 20 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
+Per 16 November 2026 (cek kemutakhiran setelah kode gelombang D; disetujui 3 November 2026) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 1, 3, 4, 8, 17, dan 20 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
 
-> **Status: `disetujui pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 1–2 November 2026; ditinjau dan disetujui pengembang 3 November 2026, [§22](#22-keputusan-pengembang)). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 kodenya boleh dibangun sekarang ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026), di gelombang D bersama bagian 2 ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md)). Sistem baru tidak dipakai dengan anak sebelum persetujuan etik terbit.
+> **Status: `disetujui pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 1–2 November 2026; ditinjau dan disetujui pengembang 3 November 2026, [§22](#22-keputusan-pengembang); kode gelombang D 3 November 2026; cek kemutakhiran 16 November 2026, penyesuaian dari implementasi di §22 no. 12–14; penyimpangan gelombang D disetujui pengembang dan peneliti 16 November 2026). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 kodenya boleh dibangun sekarang ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026), di gelombang D bersama bagian 2 ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md)). Sistem baru tidak dipakai dengan anak sebelum persetujuan etik terbit.
 >
-> **Isi bank masih `needs_verification`.** Butir di [08](08_DRAF_BANK_SOAL.md) akan berubah setelah validasi ahli. Karena itu dokumen ini merancang **mekanisme**: format workbook, impor, aturan bank, pemilihan variasi, dan penurunan kode. Revisi isi dari validasi cukup diubah di berkas data, dibangun ulang, lalu diimpor, tanpa mengubah kode ([K2](#2-keputusan-yang-dikunci)).
+> **Isi bank sudah dicek fakta oleh peneliti, belum tercatat tervalidasi ahli.** Sejak 16 November 2026 semua butir `verified` dan 08 `disetujui peneliti` ([04](04_CATATAN_KEPUTUSAN.md)); skor validator dan matriks revisi [20](20_PAKET_VALIDASI.md) belum ada di repo, jadi butir di [08](08_DRAF_BANK_SOAL.md) masih bisa berubah setelah hasil validasi masuk. Karena itu dokumen ini merancang **mekanisme**: format workbook, impor, aturan bank, pemilihan variasi, dan penurunan kode. Revisi isi dari validasi cukup diubah di berkas data, dibangun ulang, lalu diimpor, tanpa mengubah kode ([K2](#2-keputusan-yang-dikunci)).
 >
 > **Bagian 5 dari 9.** Bagian ini memakai `participant_seats.booklet` dan sakelar `field_mode` dari bagian 2. Bagian 6 (`32`, Skenario Digital) memakai format data skenario dari sini. Bagian 9 (`35`, lapis data turunan) membaca kode, label, dan geometri adegan dari sini.
 
@@ -231,7 +231,7 @@ Kalimat tanya alasan ("Yang paling penting kupikirkan di sini adalah …") sama 
 - Skenario: `'scenarios' => ['a' => [[ 'topic' => 'PRI', 'situation' => [ID, EN], 'actions' => […], 'reasons' => […], 'explanation' => [ID, EN] ], …]]`.
 - Label per butir: `'dim'`, `'sub'`, `'akm'`, `'pirls'`, `'bloom'` (tetap), `'labels' => 'expert'` bila sudah dari ahli.
 
-Teks berbahasa Inggris wajib untuk setiap teks yang tampil di game, seperti sekarang. Selama 08 belum punya terjemahan (08 → *Langkah berikutnya* no. 5), berkas data memakai teks Indonesia di kedua kolom dan butirnya diberi `review.note` "terjemahan belum ada"; `gelita:content:verify --siap-penelitian` menjadikannya galat ([§8.2](#82-bankrules)).
+Teks berbahasa Inggris wajib untuk setiap teks yang tampil di game, seperti sekarang. Selama 08 belum punya terjemahan (08 → *Langkah berikutnya* no. 5), berkas data memakai teks Indonesia di kedua kolom dan butirnya diberi `review.note` "terjemahan belum ada"; `gelita:content:verify --siap-penelitian` menjadikannya galat ([§8.2](#82-bankrules)). *Sejak 3 November 2026 teks Inggris dari [36](36_TERJEMAHAN_BANK_SOAL.md) (`disetujui pengembang`) ada di berkas data, catatannya "Teks Inggris: dari 36, disetujui pengembang 3 November 2026"; aturan ini tinggal untuk butir yang direvisi dari validasi dan belum diterjemahkan ulang.*
 
 ---
 
@@ -262,7 +262,7 @@ Teks berbahasa Inggris wajib untuk setiap teks yang tampil di game, seperti seka
 
 ### 7.3 Berkas data ditulis ulang
 
-Ketiga berkas data ditulis ulang dari [08](08_DRAF_BANK_SOAL.md) (116 butir, 6 jangkar, 12 PBK), dengan semua butir `review.status` = `needs_verification`. Bersamaan:
+Ketiga berkas data ditulis ulang dari [08](08_DRAF_BANK_SOAL.md) (116 butir, 6 jangkar, 12 PBK), dengan semua butir `review.status` = `needs_verification`. *Diganti 16 November 2026: peneliti mengecek fakta semua 174 butir, dan statusnya kini `verified` dengan catatan "fakta dicek peneliti, siap uji lapangan; keputusan validator menyusul" ([04](04_CATATAN_KEPUTUSAN.md)). Di unduhan data mentah `review_status` = `verified` berarti dicek peneliti, belum tentu tervalidasi ahli. `BankSource::REVIEW_STATUS` tetap `needs_verification` sebagai bawaan butir baru tanpa catatan telaah.* Bersamaan:
 - **Perbaikan dari [25 → Akibat ke dokumen lain](25_CEK_FAKTA_BUDAYA.md#akibat-ke-dokumen-lain) no. 4** diterapkan ke keterangan Susun Gambar dan rujukan (`tmg-1-a`, `-c`, `-e`, `-h`; `mgl-1-g`, `-i`; `wnb-1-b`, `-d`, `-h`, `-j`; rujukan `$ref['geo']`). Teks bacaan dan petunjuk `mgl-2-b`, `mgl-3-a`, `mgl-4-x03`, `wnb-2-a`, `wnb-2-b`, `wnb-4-x04` langsung mengikuti 08, yang sudah memuat perbaikan itu.
 - **Huruf Susun Gambar** dipetakan ulang ([§14](#14-susun-gambar-selama-studi)).
 - **Bank lama** disalin ke `docs/arsip/bank-soal-lama/` (tiga berkas data dan workbook) dengan README satu paragraf.
@@ -273,7 +273,7 @@ Ketiga berkas data ditulis ulang dari [08](08_DRAF_BANK_SOAL.md) (116 butir, 6 j
 - **Instalasi pengembang dan tes:** `gelita:reset` (mengimpor workbook lewat `KontenKelas5Seeder`) lalu `gelita:mockups`.
 - **Instalasi uji validator:** tetap *commit* yang dibekukan di [20](20_PAKET_VALIDASI.md) prasyarat no. 4. Bila pembekuan memakai *commit* sesudah bagian ini digabung, validator memainkan bank baru; itu keputusan pembekuan, bukan bagian ini.
 - **Server produksi:** hanya atas keputusan pengembang ([K3](#2-keputusan-yang-dikunci)).
-- **Revisi dari validasi:** sunting berkas data → `php docs/bank-soal/build-workbook.php` → `gelita:bank:import --dry-run` → impor → `gelita:content:verify`. Butir yang lolos validasi diberi `review.status` = `verified` dengan catatan asalnya (`asal: peneliti + ahli`).
+- **Revisi dari validasi:** sunting berkas data → `php docs/bank-soal/build-workbook.php` → `gelita:bank:import --dry-run` → impor → `gelita:content:verify`. Butir yang lolos validasi diberi `review.status` = `verified` dengan catatan asalnya (`asal: peneliti + ahli`). *Sejak 16 November 2026 semua butir sudah `verified` dari cek fakta peneliti; hasil validasi ditambahkan ke catatan telaah butir, dan butir yang direvisi tetap mengikuti alur ini.*
 
 ---
 
@@ -349,7 +349,7 @@ Rentang Bloom per jenis soal (`bloomRange()`) diganti satu rentang per wilayah, 
 
 - Semua posisi dalam **persen adegan 16:9**, sama untuk babak 1 dan 2 dan sama dengan koordinat `empty_tap` ([29 §6.2](29_IMPLEMENTASI_DATA_PENELITIAN.md#62-ketukan-di-luar-bagian-ketuk-empty_tap)).
 - Babak 1 tetap memakai kotak benda yang sekarang (`x`, `y`, `w`, tinggi `w × 16/9`, `BankRules::box()` `:527`). Babak 2 memakai kotak `x`, `y`, `w`, `h` dari `post_parts`.
-- **24 dp dikonversi ke persen adegan** dengan lebar adegan pada panggung 1280 dp tanpa perbesaran: `HUNT_SCENE_DP` = lebar `.hunt-scene` di tata letak tantangan, diukur sekali saat implementasi dari `game.css` dan dikunci dengan tes. Jarak minimal = 24 / `HUNT_SCENE_DP` × 100 % lebar, dan 24 / (`HUNT_SCENE_DP` × 9/16) × 100 % tinggi. Perbesaran adegan hanya membesarkan jarak, jadi yang diperiksa ukuran terkecil.
+- **24 dp dikonversi ke persen adegan** dengan lebar adegan pada panggung 1280 dp tanpa perbesaran: `HUNT_SCENE_DP` = lebar `.hunt-scene` di tata letak tantangan, diukur sekali saat implementasi dan dikunci dengan tes. *Hasil gelombang D: 864 dp, dari `--w` aturan `.challenge-cari .hunt-scene` di `stage.css` (bukan `game.css`), di `HuntGeometry::HUNT_SCENE_DP`.* Jarak minimal = 24 / `HUNT_SCENE_DP` × 100 % lebar, dan 24 / (`HUNT_SCENE_DP` × 9/16) × 100 % tinggi. Perbesaran adegan hanya membesarkan jarak, jadi yang diperiksa ukuran terkecil.
 
 ### 9.2 Aturannya
 
@@ -447,7 +447,7 @@ Di `ChallengeService::openNode()` (`:55`), baris pemilihan (`:100–101`) digant
 
 ### 12.1 Cari Objek dua babak (`cari.js`, `huntPayload()`)
 
-**Server.** `huntPayload()` (`:1241`) mengirim `rounds`:
+**Server.** *Seperti dibangun di gelombang D: babak 1 tetap di `objects`/`clues` (adegan digambar server), babak 2 menjadi blok baru `round2` (`postPayload()`: judul, foto, bagian dengan ref samaran `partRef()` per pengerjaan, petunjuk); babak 2 menolak ketukan sampai babak 1 tertutup, dan bagian kunci yang sudah ditemukan tetap bisa diketuk karena menjadi pengecoh petunjuk lain.* Rancangan semula: `huntPayload()` (`:1241`) mengirim `rounds`:
 - `round 1`: gambar adegan, benda (ref samaran, posisi), petunjuk babak 1 (teks, `item_id`);
 - `round 2`: judul adegan, foto unggahan, bagian ketuk (ref samaran dengan `objectRef()`, kotak, `kind`, label, teks), petunjuk babak 2.
 
@@ -507,7 +507,7 @@ Disimpan di `challenge_items.surface_json` dan dibaca ekspor sebagai kolom.
 
 `RawDataService::COLUMNS['butir']` (`:231`) ditambah kolom 11 → *Variabel butir*: `round`, `variant` (nama di 11 untuk `variant_group`), `booklet_shared` (1 untuk `x`), `dimension`, `subaspect`, `akm_level`, `akm_level_source`, `pirls_process`, `bloom_level_source`, `text_genre`, `testlet_key`, `d2_topic`, `d3_clue_type`, kolom beban permukaan, `review_status`, `reference_source`. `answer_key` untuk `ketua` sudah dirancang bagian 3 (29 K1). Kolom lama tidak diganti namanya (29 §7.3).
 
-**Lembar baru `kode_pilihan`** (hanya `ketua`, seperti kunci): satu baris per `item_error_codes` dan per pilihan skenario, supaya analisis bisa memeriksa kode bank yang berlaku saat diunduh. Ditambahkan ke daftar lembar 29 §7.2 ([§23](#23-akibat-ke-dokumen-lain) no. 1).
+**Lembar baru `kode_pilihan`** (hanya `ketua`, seperti kunci): satu baris per `item_error_codes` dan per pilihan skenario, supaya analisis bisa memeriksa kode bank yang berlaku saat diunduh. Ditambahkan ke daftar lembar 29 §7.2 ([§23](#23-akibat-ke-dokumen-lain) no. 1). *Dibangun bagian 3 (gelombang E, `RawDataService`), bukan bagian 5.*
 
 ---
 
@@ -524,7 +524,7 @@ Mengikuti [08 → Keputusan pengembang (26 Oktober 2026)](08_DRAF_BANK_SOAL.md#k
 | Wonosobo (10) | `d` Kompleks Candi Arjuna | `i` Tari Topeng Lengger | `c`←`a`, `d`←`b`, `e`←`c`, `f`←`e`, `g`←`f`, `h`←`g`, `i`←`h`, `j` tetap |
 
 - `BankRules::VARIANTS['puzzle']` menjadi `[2, 11]`; `a` dan `b` wajib.
-- Gambar baru Wayang Kedu (usulan prompt TMG-P11) dan pengganti Candi Pawon masuk Katalog Aset dan dipasang dengan `gelita:katalog:impor`. Sampai gambarnya ada, slotnya memakai gambar contoh (`gelita:mockups`), dan `--siap-penelitian` menjadikannya galat seperti sekarang.
+- Gambar baru Wayang Kedu (usulan prompt TMG-P11) dan pengganti Candi Pawon masuk Katalog Aset dan dipasang dengan `gelita:katalog:impor`. Sampai gambarnya ada, slotnya memakai gambar contoh (`gelita:mockups`), dan `--siap-penelitian` menjadikannya galat seperti sekarang. *Keduanya ada di Katalog Aset sejak 16 November 2026 (prompt di [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md)): Wayang Kedu `challenge.item.tmg-1-k01` disetujui peneliti, uji keping otomatis LULUS DENGAN CATATAN (keping 8 dan 9 bertekstur mirip); Candi Pawon `challenge.item.mgl-1-e01` (MGL-P05R) diterima pengembang. Uji susun oleh dua orang untuk Wayang Kedu belum dilakukan ([`docs/PROGRESS.md`](../PROGRESS.md)).*
 - Keterangan Wayang Kedu dari 08 (tanpa status Warisan Budaya Takbenda); keterangan Candi Arjuna dari 25 (Desa Dieng Kulon, Banjarnegara).
 - Peringatan kebocoran keterangan `a`/`b` di [§8.2](#82-bankrules).
 
@@ -612,7 +612,7 @@ Instruksi tantangan dan petunjuk babak 2 dari 08 ada di workbook, bukan berkas b
 | --- | --- |
 | `BankRulesNewBankTest` | Setiap galat dan peringatan di §8.2 dengan bank kecil buatan (lolos satu, gagal satu per aturan) |
 | `HuntGeometryTest` | Konversi 24 dp dengan `HUNT_SCENE_DP`; jarak tepi; dua kotak bersentuhan, berjarak 23 dp, dan 24 dp |
-| `HuntSceneWidthTest` | `HUNT_SCENE_DP` sama dengan lebar `.hunt-scene` di `game.css` (tes membaca CSS), supaya perubahan tata letak memaksa angka diperbarui |
+| `HuntSceneWidthTest` | `HUNT_SCENE_DP` sama dengan lebar `.challenge-cari .hunt-scene` di `stage.css` (tes membaca CSS), supaya perubahan tata letak memaksa angka diperbarui |
 | `ErrorCodeResolverTest` | Satu kasus per jenis di §10.1, termasuk kata EN dan benda sasaran petunjuk lain |
 | `ErrorCodeOnTryTest` (trait `GradeFiveWorld`) | Percobaan salah di Isi Rumpang, Benar atau Salah, jangkar, babak 1, dan babak 2 menulis kode yang benar; percobaan benar `error_code` null |
 | `NoSecretsInPayloadTest` | Muatan `openNode()` setiap engine tidak memuat `answer_key`, `error_code`, `is_main`, `score`, `code`, `akm_level`, `dimension`, `bloom_level`, `d3_clue_type`, `d2_topic` |
@@ -635,7 +635,9 @@ Instruksi tantangan dan petunjuk babak 2 dari 08 ada di workbook, bukan berkas b
 
 - Mainkan ketiga wilayah di instalasi pengembang setelah `gelita:reset`: Cari Objek dua babak, kartu jangkar, Isi Rumpang 4/5/6; di layar 1280 × 720 dan layar terkecil yang diizinkan.
 - Ketuk tepi setiap bagian ketuk babak 2 dengan perbesaran mati dan menyala.
-- `gelita:content:verify --siap-penelitian` menyebut semua butir `needs_verification`, gambar contoh, dan terjemahan yang belum ada.
+- `gelita:content:verify --siap-penelitian` menyebut gambar contoh dan terjemahan yang belum ada (sejak 16 November 2026 tidak ada lagi butir `needs_verification`).
+
+*Cek manual ini belum dijalankan di gelombang D (tanpa server di wadah sesi, catatan implementasi 3 November 2026).*
 - Buka `/admin/konten/impor-bank` dengan workbook yang sengaja salah (kode `INF-LAIN`, dua kotak bersentuhan) dan baca pesannya.
 
 ### 19.4 Selesai bila
@@ -699,19 +701,25 @@ Putaran ketiga, 3 November 2026 (`asal: pengembang`, [04](04_CATATAN_KEPUTUSAN.m
 
 9. **Penanda baris bacaan digital ditetapkan saat implementasi**, bersama mock-up tampilan teks digital.
 10. **`HUNT_SCENE_DP` diukur dari tata letak tantangan sekarang dan dikunci tes** (`HuntSceneWidthTest`); bila tata letak tantangan berubah, angka dan adegan diperiksa ulang.
-11. **Terjemahan bahasa Inggris** dikonfirmasi lagi sama dengan no. 8: AI mendraf saat berkas data ditulis di gelombang D, pengembang memeriksa, dan butir tetap bercatatan "terjemahan belum ada" sampai diperiksa.
+11. **Terjemahan bahasa Inggris** dikonfirmasi lagi sama dengan no. 8: AI mendraf saat berkas data ditulis di gelombang D, pengembang memeriksa, dan butir tetap bercatatan "terjemahan belum ada" sampai diperiksa. *Sudah: [36](36_TERJEMAHAN_BANK_SOAL.md) disetujui pengembang 3 November 2026 dan catatannya diganti di berkas data.*
+
+**Kode gelombang D dan cek kemutakhiran, 16 November 2026** (`asal: pengembang`, [04](04_CATATAN_KEPUTUSAN.md)). Diselaraskan tanpa keputusan baru dengan kode dan entri 04 sesudah 3 November 2026:
+
+12. **Penyimpangan implementasi gelombang D** (rincian di catatan implementasi, 3 November 2026; **disetujui pengembang dan peneliti 16 November 2026**, `disetujui peneliti`, disampaikan pengembang, [04](04_CATATAN_KEPUTUSAN.md)): `pirls_process` diturunkan dari level AKM (L1 `retrieve`, L2 `infer` di Magelang dan `integrate` di Wonosobo, L3 `evaluate`) dan `skill` pernyataan D1b diturunkan dengan aturan sederhana, keduanya label pengembang; `verdict_D1a` juga menerima `INF-GEN` (dipakai 08 di `mgl-3-a02`); penanda baris teks digital `>> ` kepala, `~~ ` baris meta kecil, `:: ` entri (no. 9); `HUNT_SCENE_DP` = 864 dari `stage.css` (no. 10); benda babak 1 Magelang dan Wonosobo ditata ulang (jarak terkecil 24,2 dan 24,7 dp), unggahan babak 2 memakai satu tata letak tetap per jumlah bagian (24,3 dp), `tap_min_dp` disimpan dalam dp bulat ke bawah; muatan babak 2 berupa blok `round2` (§12.1); `post_scenes` mendapat `media_label`/`media_note`; `label_source` menerima `akm:expert`/`bloom:expert` untuk label ahli sebagian; peringatan §8.2 menjadi galat di `--siap-penelitian`; lembar `kode_pilihan` dibangun bagian 3.
+13. **Yang berubah sesudah gelombang D, sudah diputuskan di 04:** empat peringatan isi dibetulkan di 08 (3 November 2026); terjemahan 36 masuk berkas data (no. 11); baris Skenario Digital tidak lagi disisihkan sejak bagian 6 memasang tantangan kelima (8 November 2026, `BankRules::ENGINES[5]` = `skenario`); semua butir `verified` dari cek fakta peneliti dan 08 `disetujui peneliti` (16 November 2026, §7.3); gambar Wayang Kedu dan Candi Pawon terpasang (§14).
+14. **Foto unggahan babak 2 mendapat slot sendiri** (16 November 2026, telaah gambar `R-13`): `challenge.post.*` di `ImageSlots`, 1280 × 720 (16:9), sehingga `gelita:katalog:impor` memasangnya ke `post_scenes.media_asset_id`. Kebanyakan unggahan tetap menunjuk gambar Susun Gambar wilayahnya; `tmg-4-b` (video ikan uceng) mendapat foto baru. `AssetChecklist` belum mendaftar foto unggahan.
 
 ---
 
 ## 23. Akibat ke dokumen lain
 
-Dibawa sesi koordinator setelah digabung ke `main`. Per 3 November 2026 (cabang `r10-koordinator-31`): no. 1–3, 6, 8, dan 9 sudah dibawa; no. 4 sudah diselaraskan di 32 sebelumnya; no. 7 dibawa ke 11 bersama `kamus-1.1` (cabang `r10-kamus-11`, 3 November 2026); no. 5 menunggu implementasi (glosarium).
+Dibawa sesi koordinator setelah digabung ke `main`. Per 3 November 2026 (cabang `r10-koordinator-31`): no. 1–3, 6, 8, dan 9 sudah dibawa; no. 4 sudah diselaraskan di 32 sebelumnya; no. 7 dibawa ke 11 bersama `kamus-1.1` (cabang `r10-kamus-11`, 3 November 2026); no. 5 menunggu implementasi (glosarium). *16 November 2026: no. 5 juga sudah (`.claude/rules/glossary-research.md`).*
 
 1. **[29](29_IMPLEMENTASI_DATA_PENELITIAN.md) §7.2–7.3:** lembar `butir` mendapat kolom §13.3; lembar baru `kode_pilihan` (hanya `ketua`); lembar `percobaan` mendapat `error_code`, `manual_code`; lembar `pengerjaan` mendapat `variant_source`, `booklet_at_open`. §15 baris no. 1: kolomnya sekarang dirancang di 31. **Sudah** (29 §7.2, §7.3, §15).
 2. **[28](28_IMPLEMENTASI_SESI_LAPANGAN.md) §12 dan §18:** panel pemantauan menampilkan jumlah siswa sesi itu yang belum punya kursi (karena tanpa kursi tantangan dinilai tidak terbuka, K10); baris no. 20 di §18 menunjuk 31 §11. **Sudah** (28 §12, §18).
 3. **[20](20_PAKET_VALIDASI.md) prasyarat no. 4 dan [21](21_BERKAS_BUTIR_VALIDATOR.md):** workbook, berkas data, dan halaman panel konten memuat label pengembang, jadi tidak ikut paket validator; berkas validator tetap dibuat dari 08. Bila *commit* yang dibekukan sudah memuat bank baru, validator memainkan bank baru. **Sudah** (20 → Prasyarat no. 4, 21 → Cara menjaga kebutaan B.5a).
 4. **Bagian 6 (`32`):** membaca format data skenario dari §6.3 dan §15; menambah `BankRules::ENGINES[5]` dan `reason_code`/skor di `item_tries`. **Sudah** (32, entri 04 2 November 2026).
-5. **Glosarium** (saat implementasi): babak (`round`), *Periksa Unggahan* (`post check`, `find_part`, `post_scenes`, `post_parts`), bagian ketuk (`tap part`, `part_key`), kartu jangkar (`anchor card`, grup `x`), buklet (`booklet`, `participant_seats.booklet`, `variant_source`), kode kesalahan (`error_code`, `item_error_codes`, `ErrorCodeResolver`), beban permukaan (`surface load`, `surface_json`), label pengembang/ahli (`label source`). Menunggu implementasi.
+5. **Glosarium** (saat implementasi): babak (`round`), *Periksa Unggahan* (`post check`, `find_part`, `post_scenes`, `post_parts`), bagian ketuk (`tap part`, `part_key`), kartu jangkar (`anchor card`, grup `x`), buklet (`booklet`, `participant_seats.booklet`, `variant_source`), kode kesalahan (`error_code`, `item_error_codes`, `ErrorCodeResolver`), beban permukaan (`surface load`, `surface_json`), label pengembang/ahli (`label source`). **Sudah** (`.claude/rules/glossary-research.md`).
 6. **[03](03_KODE_DAN_ARTI.md):** kode `BOOKLET_MISSING`; nilai `variant_source` (`booklet`, `random`, `retake`); kode genre dan `layout` bacaan. **Sudah** (03 → Wilayah dan tantangan).
 7. **[11](11_KAMUS_DATA.md) → *Variabel butir*** (`kamus-1.1`): `tap_min_dp`, `akm_level_source` berpasangan dengan `bloom_level_source`, `variant_source`, `booklet_at_open`; `variant` untuk Susun Gambar kini `c`–`k`. **Sudah** (11, `kamus-1.1` draf, 3 November 2026).
 8. **[08](08_DRAF_BANK_SOAL.md):** pemetaan huruf Susun Gambar di §14 menjawab "Pemetaan huruf lama ke huruf baru ditulis di dokumen implementasi". **Sudah** (08 → Keputusan pengembang, *Huruf variasi*).
