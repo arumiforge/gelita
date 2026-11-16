@@ -619,6 +619,66 @@
       "received_on": "2026-11-16",
       "use": "Reference only: carries a third-party watermark at the lower right; never install it.",
       "sha256": "12638974c6e864526e6271f4b832679e50fcad72df78e157d6dd21a5b593e54c"
+    },
+    {
+      "file": "reference-Arjuna-researcher-row-sunrise-retouched-01.jpg",
+      "title": "Candi Arjuna group at sunrise: the same framing as no. 03 (stone pile, path, shrub) in warm colours",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only: appears to be a retouched or AI-recoloured copy of no. 03; never install it as a real photo unless the researcher confirms it is an original.",
+      "sha256": "fffb4697bcea2c084a0e8b84c61f89c38256c5abbc4b4bed11152a1671c87030"
+    },
+    {
+      "file": "reference-Arjuna-researcher-single-temple-portrait-02.jpg",
+      "title": "Portrait photograph of one temple of the Arjuna group from a corner, stepped roof, niche and water spout, terraced hills behind",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference (portrait; does not crop well to 3:2).",
+      "sha256": "3830f8ec7b79be7d800ada80596277dde984b4ed61608280e63f67d4c3877a5d"
+    },
+    {
+      "file": "reference-Arjuna-researcher-complex-row-03.jpg",
+      "title": "Colour photograph of the Arjuna group in a row on its gravel yard: Candi Arjuna, Candi Semar facing it, Srikandi, Puntadewa and Sembadra, Sindoro behind, paved path and lawn in front",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Installed as it is as the Pustaka picture library.wonosobo.p6.1 (review no. 332), cropped to 3:2 (part of the sky) and scaled from 1772 x 1181 to 960 x 640.",
+      "sha256": "7ca991d1e983f9c8c99d6ab6bcb26a6a5a4e719951f17cdcc7e79b4048280cb6"
+    },
+    {
+      "file": "reference-Arjuna-researcher-Arjuna-and-Semar-04.jpg",
+      "title": "Colour photograph of Candi Arjuna under a streaked sky, Candi Semar at the right, two small temples at the left, a hill behind",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Installed as it is as the Pustaka picture library.wonosobo.p6.2 (review no. 333), cropped to 3:2 and scaled from 546 x 364 to 960 x 640.",
+      "sha256": "2c27e53e9df51646da87f2a7909144859045bffd0da10f529ad5d6b80de3d90c"
+    },
+    {
+      "file": "reference-Arjuna-researcher-aerial-watermarked-05.jpg",
+      "title": "Aerial photograph of the Arjuna group on its yard among fields and cypresses, a hill behind",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only: carries a photographer's watermark at the upper right; never install it.",
+      "sha256": "48ebb9483cdfc309fdd7421799fb546977f994d90c2f825ab7e41eb935bb5c3c"
     }
   ],
   "permission_updates": [

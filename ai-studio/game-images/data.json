@@ -6327,7 +6327,7 @@
  {
   "id": "264",
   "key": "library.wonosobo.p6.1",
-  "title": "Candi-candi Dieng",
+  "title": "Kompleks Candi Arjuna di Dieng",
   "cat": "Pustaka",
   "region": "Wonosobo",
   "size": "960 × 640",
@@ -6335,14 +6335,19 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.wonosobo.p6.1.webp",
-  "desc": "wonosobo · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Kompleks_Candi_Arjuna_-_Dieng_Plateau.jpg. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Foto asli Kompleks Candi Arjuna dari peneliti (berizin): candi-candi kecil berjajar di halaman berkerikil, Candi Semar di depan Candi Arjuna, Gunung Sindoro di belakang. Dipasang apa adanya (dipotong ke 3:2 dan diperkecil ke 960 × 640); bukan ilustrasi.",
+  "prompt": "Not generated. A real photograph of the Arjuna temple group in Dieng, from the researcher (licence and permission obtained, 16 November 2026), installed as it is. Never redraw or restyle it.",
+  "negative": "Never redraw, restyle or replace it with invented temples.",
+  "caption": {
+   "id": "Kompleks Candi Arjuna di Dieng",
+   "en": "The Arjuna Temple Complex in Dieng"
+  },
+  "credit": "Foto Kompleks Candi Arjuna (berizin, dari peneliti)"
  },
  {
   "id": "265",
   "key": "library.wonosobo.p6.2",
-  "title": "Pagi_Candi_Arjuna_Dieng.jpg",
+  "title": "Candi Arjuna, bangunan utama kompleksnya",
   "cat": "Pustaka",
   "region": "Wonosobo",
   "size": "960 × 640",
@@ -6350,9 +6355,14 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.wonosobo.p6.2.webp",
-  "desc": "wonosobo · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Pagi_Candi_Arjuna_Dieng.jpg. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Foto asli Candi Arjuna dari peneliti (berizin), dengan Candi Semar di kanan dan bukit di belakang. Dipasang apa adanya (dipotong ke 3:2 dan diperbesar dari 546 × 364 ke 960 × 640); bukan ilustrasi.",
+  "prompt": "Not generated. A real photograph of Candi Arjuna in Dieng, from the researcher (licence and permission obtained, 16 November 2026), installed as it is. Never redraw or restyle it.",
+  "negative": "Never redraw, restyle or replace it with an invented temple.",
+  "caption": {
+   "id": "Candi Arjuna, bangunan utama kompleksnya",
+   "en": "Arjuna Temple, the main building of its complex"
+  },
+  "credit": "Foto Candi Arjuna (berizin, dari peneliti)"
  },
  {
   "id": "266",
