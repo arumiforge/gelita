@@ -5988,7 +5988,7 @@
  {
   "id": "244",
   "key": "library.magelang.p3.2",
-  "title": "Relief_Di_Candi_Borobudur.jpg",
+  "title": "Relief cerita di lorong Borobudur",
   "cat": "Pustaka",
   "region": "Magelang",
   "size": "960 × 640",
@@ -5996,9 +5996,14 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.magelang.p3.2.webp",
-  "desc": "magelang · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Relief_Di_Candi_Borobudur.jpg. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Foto asli relief di lorong Candi Borobudur dari peneliti (berizin), dipasang apa adanya (dipotong ke 3:2 dan diperbesar sedikit ke 960 × 640); bukan ilustrasi.",
+  "prompt": "Not generated. A real photograph of a narrative relief in a Borobudur gallery, from the researcher (licence and permission obtained, 16 November 2026), installed as it is. Never redraw or restyle it.",
+  "negative": "Never redraw, restyle or invent a relief.",
+  "caption": {
+   "id": "Relief cerita di lorong Borobudur",
+   "en": "A narrative relief in a Borobudur corridor"
+  },
+  "credit": "Foto relief Candi Borobudur (berizin, dari peneliti)"
  },
  {
   "id": "245",

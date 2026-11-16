@@ -453,14 +453,6 @@
       "sha256": "6e7bf4ba1b4f25fe2a9b284c44d78937f45bfa49db56241409c1152ba7b27de5"
     },
     {
-      "file": null,
-      "title": "Five photos of Borobudur relief panels",
-      "license": "Licence and permission obtained by the researcher (owner, 16 November 2026)",
-      "received_on": "2026-11-16",
-      "use": "Shown in the conversation only; no file reached the repository. The owner is asked to send them again as files. (The four Liyangan photos shown with them arrived as files later the same day: reference-Liyangan-*-02 to -05.)",
-      "removed": false
-    },
-    {
       "file": "reference-Liyangan-terrace-wall-and-road-02.jpg",
       "title": "A long retaining wall of cut stone on a terrace, a stone-paved road beside it, loose stones and excavated bases, school visitors, Sindoro in cloud behind",
       "creator": null,
@@ -507,6 +499,66 @@
       "received_on": "2026-11-16",
       "use": "Factual reference for R-16 (library.temanggung.p5.1, review no. 312). Reference only, never installed in the game.",
       "sha256": "cfd4e47e28d05f773dc2911c369881dc48093bcc664a88debb2fe1325d06a181"
+    },
+    {
+      "file": "reference-Borobudur-relief-ship-01.jpg",
+      "title": "Borobudur ship relief, grey, evenly lit",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only (Borobudur reliefs, e.g. for M-K2); never installed.",
+      "sha256": "b40b27bb387cc5245c3d857c4cb1c43b9fa14b5b8e644dff445e2a57828890e9"
+    },
+    {
+      "file": "reference-Borobudur-relief-Karmawibhangga-old-photo-02.jpg",
+      "title": "Old black-and-white photograph of a relief panel with a panel number, scenes of punishment and cooking (Karmawibhangga style)",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only (Borobudur reliefs, e.g. for M-K2); never installed.",
+      "sha256": "79727c65450b8047d0ae275acad016d8634ae0247211eb3ad56b02e5b77422bf"
+    },
+    {
+      "file": "reference-Borobudur-relief-panel-old-photo-03.jpg",
+      "title": "Old black-and-white photograph of a long relief panel with many figures and a tree",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only (Borobudur reliefs, e.g. for M-K2); never installed.",
+      "sha256": "bf91c9bf25506b081110d70311f1cad75ba6446b1a86eb53d45b18ae5b4d1a69"
+    },
+    {
+      "file": "reference-Borobudur-relief-gallery-04.webp",
+      "title": "Colour photograph of a gallery relief in warm sun: seated crowned figures, a standing figure, trees, a crescent ornament",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Installed as it is as the Pustaka picture library.magelang.p3.2 (review no. 289), cropped to 3:2 and scaled to 960 x 640.",
+      "sha256": "6669a134df2d2383beb18171601af35dc96fe6788f75bc38a52cf04c83716791"
+    },
+    {
+      "file": "reference-Borobudur-relief-ship-colour-05.jpg",
+      "title": "Colour photograph of the ship relief across several stone blocks",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only (Borobudur reliefs, e.g. for M-K2); never installed.",
+      "sha256": "c53ae03d2bfd5df306764d524f0cfe71131dd4daef2c5707433425e589ea8a21"
     }
   ],
   "permission_updates": [
