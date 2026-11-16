@@ -39,7 +39,7 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 Gambar di dokumen ini bukan bagian antarmuka. Gayanya mengikuti kelompoknya masing-masing:
 
 - **Gambar isi game** (`R-01` sampai `R-05`, `R-12` sampai `R-18`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
-- **Avatar** (`R-19`): disunting, bukan digambar dari nol, seperti gambar tes: cincin medali dan cakramnya tetap, hanya lambang di tengah yang diganti, supaya kedua belas avatar tetap satu keluarga sampai perombakan antarmuka mengganti cincin semuanya.
+- **Avatar** (`R-19`): disunting, bukan digambar dari nol, seperti gambar tes: cincin medali dan cakramnya tetap, hanya lambang di tengah yang diganti, supaya kesepuluh avatar tetap satu keluarga sampai perombakan antarmuka mengganti cincin semuanya.
 - **Gambar tes** (`R-06` sampai `R-11`): gambar garis hitam-putih seperti 23 gambar tes lainnya. Gaya ini disengaja: instrumen tes tampil netral dan tidak memakai gaya game.
 
 **Tulisan di gambar.** Gambar isi game tidak memuat tulisan, kecuali peta `R-14` (nama tempat, daftar tetap). Gambar tes justru memuat tulisan, dan setiap kata harus sama persis dengan `app/Database/Seeds/data/instrumen/tes.php`. Tulisan di gambar dibuat oleh model gambar, jadi setiap hasil dibaca ulang kata per kata dengan daftar di promptnya.
@@ -452,7 +452,7 @@ Puzzle safety — This image will be cut into a 4×4 jigsaw puzzle for children:
 
 ### R-19 · Avatar bundengan (avatar 10)
 
-Ditambahkan 16 November 2026. Telaah no. 115: lambang di tengah avatar adalah tudung yang tergeletak telentang seperti kereta luncur, sama dengan benda Cari Objek lama. Yang diganti **hanya lambangnya**; cincin medali biru tua tetap seperti sebelas avatar lain, supaya keduabelasnya tetap satu keluarga. Cincin semua avatar akan diganti bersama dalam perombakan antarmuka (pengembang, 16 November 2026: tepi bundar mengikuti `public/assets/ui/round-back.webp`), bukan di baris ini.
+Ditambahkan 16 November 2026. Telaah no. 115: lambang di tengah avatar adalah tudung yang tergeletak telentang seperti kereta luncur, sama dengan benda Cari Objek lama. Yang diganti **hanya lambangnya**; cincin medali biru tua tetap seperti sembilan avatar lain, supaya kesepuluhnya tetap satu keluarga. Cincin semua avatar akan diganti bersama dalam perombakan antarmuka (pengembang, 16 November 2026: tepi bundar mengikuti `public/assets/ui/round-back.webp`), bukan di baris ini.
 
 | | |
 |---|---|
