@@ -7,9 +7,14 @@
  * logo `ui.logo-hero`, else the emblem `ui.logo` above the word GELITA, else
  * the plain "G" mark. The logo is the only game artwork on this page.
  *
+ * Section `aside` (optional): a second card to the right of the login
+ * card (the staff guide card, owner 16 Nov 2026); stacked below it on
+ * narrow screens.
+ *
  * @var CodeIgniter\View\View $this
  */
 $title    = trim($this->renderSection('title'));
+$aside    = trim($this->renderSection('aside'));
 $logoHero = media_key_src('ui.logo-hero');
 $emblem   = $logoHero === null ? media_key_src('ui.logo') : null;
 ?>
@@ -26,7 +31,7 @@ $emblem   = $logoHero === null ? media_key_src('ui.logo') : null;
 <body class="auth">
   <a class="skip-link" href="#auth-main"><?= esc(lang('Admin.skipToContent')) ?></a>
 
-  <main class="auth-shell" id="auth-main" tabindex="-1">
+  <main class="auth-shell<?= $aside !== '' ? ' has-aside' : '' ?>" id="auth-main" tabindex="-1">
     <section class="auth-card">
       <div class="auth-brand">
         <?php if ($logoHero !== null): ?>
@@ -41,6 +46,9 @@ $emblem   = $logoHero === null ? media_key_src('ui.logo') : null;
       </div>
       <?= $this->renderSection('content') ?>
     </section>
+    <?php if ($aside !== ''): ?>
+      <?= $aside ?>
+    <?php endif ?>
   </main>
 </body>
 </html>

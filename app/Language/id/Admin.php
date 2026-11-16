@@ -919,4 +919,12 @@ return [
     'guideOpenPage'         => 'Buka {0}',
     'guideNoAccess'         => 'Halaman {0} (bukan untuk peran Anda)',
     'guideBackToTop'        => 'Kembali ke daftar isi',
+    'guideLeadGuest'        => 'Cara memakai panel GELITA, langkah demi langkah, untuk peneliti, ketua peneliti, dan admin. Pilih peran Anda agar babnya terbuka di bagian atas.',
+    'guideLeadPicked'       => 'Bab untuk {0} ada di bagian atas dan sudah terbuka. Masuk ke panel untuk membuka halaman yang disebut di setiap langkah.',
+    'guidePickRole'         => 'Baca untuk peran:',
+    'guideGuestPage'        => 'Di panel: {0}',
+    'guideSignIn'           => 'Masuk panel staf',
+    'guideCardTitle'        => 'Panduan staf',
+    'guideCardText'         => 'Belum pernah memakai panel ini? Panduan ini menjelaskan tugas setiap peran langkah demi langkah, dari menyiapkan kunjungan sekolah sampai mengunduh data. Bisa dibaca tanpa masuk.',
+    'guideCardOpen'         => 'Buka panduan staf',
 ];

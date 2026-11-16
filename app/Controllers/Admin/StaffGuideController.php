@@ -7,22 +7,42 @@ use App\Libraries\StaffGuideContent;
 
 /**
  * Staff guide (/admin/panduan-staf): one static page that explains the
- * panel per role, open to every staff role (dashboard.view).
+ * panel per role. Public (owner, 16 November 2026): it is offered beside the
+ * login card, so a new staff member can read it before signing in. It holds
+ * no data and no secrets (StaffGuideTest).
  *
- * The reader's own role comes first and open; chapters written only for
- * other roles follow, folded. Text lives in App\Libraries\StaffGuideContent.
+ * A signed-in staff member reads it in the panel layout with their own role
+ * first and open. A guest reads it in a plain layout and may pick a role
+ * (`?peran=`); without one, only the chapters for everyone start open. Text
+ * lives in App\Libraries\StaffGuideContent.
  */
 class StaffGuideController extends BaseAdminController
 {
     public function index(): string
     {
-        $role     = (string) session('staff_role');
-        $chapters = self::order(StaffGuideContent::chapters(), $role);
+        $staff   = service('staffContext');
+        $isStaff = $staff !== null && (int) $staff->is_active === 1 && StaffAccess::isRole((string) $staff->role)
+            && (int) $staff->must_change_password !== 1;
 
-        return $this->panel('admin/guide/index', lang('Admin.guideTitle'), [
-            'chapters' => $chapters,
+        if ($isStaff) {
+            $role = (string) $staff->role;
+
+            return $this->panel('admin/guide/index', lang('Admin.guideTitle'), [
+                'chapters' => self::order(StaffGuideContent::chapters(), $role),
+                'role'     => $role,
+                'roleName' => StaffAccess::label($role),
+                'isStaff'  => true,
+            ]);
+        }
+
+        $picked = (string) ($this->request->getGet('peran') ?? '');
+        $role   = StaffAccess::isRole($picked) ? $picked : '';
+
+        return view('admin/guide/index', [
+            'chapters' => self::order(StaffGuideContent::chapters(), $role),
             'role'     => $role,
-            'roleName' => StaffAccess::label($role),
+            'roleName' => $role === '' ? '' : StaffAccess::label($role),
+            'isStaff'  => false,
         ]);
     }
 
@@ -45,7 +65,7 @@ class StaffGuideController extends BaseAdminController
 
         foreach ($chapters as $index => $chapter) {
             $forAll          = array_diff($all, $chapter['roles']) === [];
-            $chapter['open'] = in_array($role, $chapter['roles'], true);
+            $chapter['open'] = $forAll || in_array($role, $chapter['roles'], true);
             $chapter['mine'] = $chapter['open'] && ! $forAll;
 
             if ($forAll) {

@@ -178,4 +178,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `panel-panduan-staf` | Staff panel readability pass, grouped sidebar with sub-menu, static staff guide `/admin/panduan-staf` (owner, 16 Nov 2026) | Done, PR open; field-day recommendations 1, 2, 4, 5, 6 are on `panel-lapangan-rekomendasi` |
+| `panel-panduan-staf` | Staff panel readability pass, grouped sidebar with sub-menu, public staff guide `/admin/panduan-staf`, offered beside the login card (owner, 16 Nov 2026) | Done, PR open; field-day recommendations 1, 2, 4, 5, 6 are on `panel-lapangan-rekomendasi` |

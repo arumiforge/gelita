@@ -54,7 +54,7 @@ final class StaffGuideTest extends CIUnitTestCase
         }
 
         $this->assertContains('panduan-staf', array_map(static fn (string $p): string => substr($p, 6), $known));
-        $this->assertSame(['staffAuth', 'staffCan:dashboard.view'], $routes->getFiltersForRoute('admin/panduan-staf'));
+        $this->assertSame([], $routes->getFiltersForRoute('admin/panduan-staf'), 'public (owner, 16 Nov 2026)');
     }
 
     public function testAnchorsAreUniqueAndResolve(): void
@@ -121,6 +121,44 @@ final class StaffGuideTest extends CIUnitTestCase
         $this->assertStringContainsString('<details class="guide-chapter" id="admin" open>', $admin);
         $this->assertStringContainsString('class="guide-page-link" href="' . base_url('admin/staf') . '"', $admin);
         $this->assertStringContainsString(base_url('admin/panduan-staf'), $admin, 'sidebar and account menu');
+    }
+
+    public function testGuestReadsItWithoutSigningIn(): void
+    {
+        $this->createRawDataWorld();
+        $_SESSION = [];
+        Services::resetSingle('renderer');
+        Services::resetSingle('staffContext');
+
+        $guest = $this->call(Method::GET, 'admin/panduan-staf');
+        $guest->assertOK();
+        $page = (string) $guest->getBody();
+        $this->assertStringNotContainsString('admin-sidebar', $page, 'no panel menu');
+        $this->assertStringContainsString(lang('Admin.guideLeadGuest'), $page);
+        $this->assertStringContainsString('<details class="guide-chapter" id="lapangan">', $page, 'no role picked: role chapters folded');
+        $this->assertStringContainsString('<details class="guide-chapter" id="mulai" open>', $page);
+        $this->assertStringNotContainsString('class="guide-page-link" href=', $page, 'no panel links for a guest');
+        $this->assertStringContainsString(base_url('admin/login'), $page);
+
+        Services::resetSingle('renderer');
+        $picked = (string) $this->call(Method::GET, 'admin/panduan-staf?peran=ketua')->getBody();
+        $this->assertStringContainsString('<details class="guide-chapter" id="ketua" open>', $picked);
+        $this->assertStringContainsString('aria-current="page">Ketua peneliti', $picked);
+
+        Services::resetSingle('renderer');
+        $odd = (string) $this->call(Method::GET, 'admin/panduan-staf?peran=root')->getBody();
+        $this->assertStringContainsString(lang('Admin.guideLeadGuest'), $odd, 'unknown role ignored');
+    }
+
+    public function testLoginPageOffersTheGuideOnTheRight(): void
+    {
+        $_SESSION = [];
+        Services::resetSingle('renderer');
+
+        $page = (string) $this->call(Method::GET, 'admin/login')->getBody();
+        $this->assertStringContainsString('auth-shell has-aside', $page);
+        $this->assertMatchesRegularExpression('/<\/form>.*class="auth-card auth-guide"/s', $page, 'login card first, guide card second');
+        $this->assertStringContainsString(base_url('admin/panduan-staf') . '?peran=peneliti', $page);
     }
 
     /** @return list<array{0: string, 1: string, 2: string}> */

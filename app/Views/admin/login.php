@@ -37,3 +37,19 @@
 <p class="auth-foot">Panel ini khusus staf GELITA.<br>
   <a href="<?= base_url() ?>">Kembali ke permainan</a></p>
 <?= $this->endSection() ?>
+
+<?php // Right of the login card: the public staff guide (owner, 16 Nov 2026) ?>
+<?= $this->section('aside') ?>
+<section class="auth-card auth-guide" aria-labelledby="auth-guide-title">
+  <span class="auth-guide-icon" aria-hidden="true"><?= icon('book') ?></span>
+  <h2 class="auth-title" id="auth-guide-title"><?= esc(lang('Admin.guideCardTitle')) ?></h2>
+  <p class="auth-lead"><?= esc(lang('Admin.guideCardText')) ?></p>
+  <p class="auth-guide-pick"><?= esc(lang('Admin.guidePickRole')) ?></p>
+  <ul class="auth-guide-roles">
+    <?php foreach (\App\Libraries\StaffAccess::ROLES as $guideRole): ?>
+      <li><a href="<?= esc(base_url('admin/panduan-staf') . '?peran=' . $guideRole, 'attr') ?>"><?= icon('arrow-right') ?> <?= esc(\App\Libraries\StaffAccess::label($guideRole)) ?></a></li>
+    <?php endforeach ?>
+  </ul>
+  <a class="btn btn-block" href="<?= base_url('admin/panduan-staf') ?>"><?= icon('book') ?> <?= esc(lang('Admin.guideCardOpen')) ?></a>
+</section>
+<?= $this->endSection() ?>

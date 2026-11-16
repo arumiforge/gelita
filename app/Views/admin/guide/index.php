@@ -7,17 +7,26 @@
  * the other roles' chapters start folded. A step's page link shows only
  * when the reader may open that page.
  *
+ * Signed-in staff read it in the panel layout; a guest reads it in
+ * layouts/guide and may pick a role (`?peran=`), and page names show as
+ * plain text there.
+ *
  * @var list<array<string, mixed>> $chapters StaffGuideController::order()
- * @var string                     $role
+ * @var string                     $role     '' for a guest who picked no role
  * @var string                     $roleName
+ * @var bool                       $isStaff
  */
 use App\Libraries\StaffAccess;
 use App\Libraries\StaffGuideContent as Guide;
 
 $roleNames = static fn (array $roles): string => implode(', ', array_map(static fn (string $r): string => StaffAccess::label($r), $roles));
 
-$pageLink = static function (array $link): string {
+$pageLink = static function (array $link) use ($isStaff): string {
     [$href, $label, $capability] = $link;
+
+    if (! $isStaff) {
+        return '<span class="guide-page-link is-off">' . esc(lang('Admin.guideGuestPage', [$label])) . '</span>';
+    }
 
     if (staff_can($capability)) {
         return '<a class="guide-page-link" href="' . esc(base_url($href), 'attr') . '">' . icon('arrow-right') . esc(lang('Admin.guideOpenPage', [$label])) . '</a>';
@@ -26,14 +35,27 @@ $pageLink = static function (array $link): string {
     return '<span class="guide-page-link is-off">' . esc(lang('Admin.guideNoAccess', [$label])) . '</span>';
 };
 ?>
-<?= $this->extend('layouts/admin') ?>
+<?= $this->extend($isStaff ? 'layouts/admin' : 'layouts/guide') ?>
 
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
     'title'   => lang('Admin.guideTitle'),
     'eyebrow' => lang('Admin.groupHelp'),
-    'lead'    => lang('Admin.guideLead', [$roleName]),
+    'lead'    => match (true) {
+        $isStaff     => lang('Admin.guideLead', [$roleName]),
+        $role !== '' => lang('Admin.guideLeadPicked', [$roleName]),
+        default      => lang('Admin.guideLeadGuest'),
+    },
 ]) ?>
+
+<?php if (! $isStaff): ?>
+  <nav class="guide-roles" aria-label="<?= esc(lang('Admin.guidePickRole'), 'attr') ?>">
+    <span><?= esc(lang('Admin.guidePickRole')) ?></span>
+    <?php foreach (StaffAccess::ROLES as $option): ?>
+      <a class="btn<?= $option === $role ? ' btn-primary' : '' ?>" href="<?= esc(base_url('admin/panduan-staf') . '?peran=' . $option, 'attr') ?>"<?= $option === $role ? ' aria-current="page"' : '' ?>><?= esc(StaffAccess::label($option)) ?></a>
+    <?php endforeach ?>
+  </nav>
+<?php endif ?>
 
 <div class="guide" id="isi">
   <nav class="guide-toc" aria-labelledby="guide-toc-title">
