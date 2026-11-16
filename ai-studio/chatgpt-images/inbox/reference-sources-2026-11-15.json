@@ -559,6 +559,66 @@
       "received_on": "2026-11-16",
       "use": "Reference only (Borobudur reliefs, e.g. for M-K2); never installed.",
       "sha256": "c53ae03d2bfd5df306764d524f0cfe71131dd4daef2c5707433425e589ea8a21"
+    },
+    {
+      "file": "reference-Pawon-researcher-side-with-visitors-01.jpg",
+      "title": "Colour photograph of Candi Pawon from the side and front, two visitors standing on the stairway",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only (people on the stairway).",
+      "sha256": "b21f740e442e6816fd5dd16ec1429c0073a36868719d7a522854024bd4c49c54"
+    },
+    {
+      "file": "reference-Pawon-researcher-front-02.png",
+      "title": "Colour photograph of Candi Pawon from the front: stairway, doorway with kala head, relief panels beside the door, fence and two blue bins",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference; second choice for the Pustaka picture.",
+      "sha256": "7f6741889e3d02d216ca5c6f8a43fa1828639bb6a6cb07ab5790e34a6091f954"
+    },
+    {
+      "file": "reference-Pawon-researcher-front-close-03.jpg",
+      "title": "Colour photograph of Candi Pawon from the front, close, with a heritage sign at the lower left",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only (small, sign in the picture).",
+      "sha256": "37cf0a525f478261e523fa8184bd39eb2e014290cf40d8579f91d4b3feeb26f6"
+    },
+    {
+      "file": "reference-Pawon-researcher-garden-three-quarter-04.jpg",
+      "title": "Colour photograph of Candi Pawon at a three-quarter angle in its garden, carved stair wing walls, village houses behind",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Installed as it is as the Pustaka picture library.magelang.p5.3 (review no. 294), cropped to 3:2 and scaled from 516 x 344 to 960 x 640.",
+      "sha256": "5dd8995148e18e133fc83fb3d4371c48e15c3298b55bdd94e65ce3c1852407b3"
+    },
+    {
+      "file": "reference-Pawon-researcher-sign-watermarked-05.jpg",
+      "title": "Colour photograph of Candi Pawon at a three-quarter angle with the 'Benda Cagar Budaya Candi Pawon' sign",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only: carries a third-party watermark at the lower right; never install it.",
+      "sha256": "12638974c6e864526e6271f4b832679e50fcad72df78e157d6dd21a5b593e54c"
     }
   ],
   "permission_updates": [

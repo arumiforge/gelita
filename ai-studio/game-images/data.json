@@ -6080,7 +6080,7 @@
  {
   "id": "249",
   "key": "library.magelang.p5.3",
-  "title": "Candi_Pawon_6.jpg",
+  "title": "Candi Pawon, candi kecil di antara Mendut dan Borobudur",
   "cat": "Pustaka",
   "region": "Magelang",
   "size": "960 × 640",
@@ -6088,9 +6088,14 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.magelang.p5.3.webp",
-  "desc": "magelang · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Candi_Pawon_6.jpg. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Foto asli Candi Pawon dari peneliti (berizin): candi kecil bertubuh tambun di tamannya, tangga berpipi berukir, rumah kampung di belakang. Dipasang apa adanya (dipotong ke 3:2 dan diperbesar dari 516 × 344 ke 960 × 640); bukan ilustrasi.",
+  "prompt": "Not generated. A real photograph of Candi Pawon, from the researcher (licence and permission obtained, 16 November 2026), installed as it is. Never redraw or restyle it.",
+  "negative": "Never redraw, restyle or replace it with an invented temple.",
+  "caption": {
+   "id": "Candi Pawon, candi kecil di antara Mendut dan Borobudur",
+   "en": "Pawon Temple, the small temple between Mendut and Borobudur"
+  },
+  "credit": "Foto Candi Pawon (berizin, dari peneliti)"
  },
  {
   "id": "250",
