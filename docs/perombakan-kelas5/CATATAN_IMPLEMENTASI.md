@@ -712,3 +712,11 @@ A session looked at all 21 review sheets and wrote its questions into `ai-studio
 
 **Not checked:** an import of the new captions on MariaDB (the SQLite test covers install, re-run and a one-language caption); the swapped backgrounds on a running game; any of the redo prompts in ChatGPT.
 
+## Picture review: Mendut reference photos, task `R-12` (16 November 2026, branch `nty/gracious-feynman-2yhoki`)
+
+- The owner sent four photos of Candi Mendut (the cella with its three statues, the Buddha close up, two views of the temple); the researcher obtained the licence. Creator and source are not recorded. Saved as references in `ai-studio/chatgpt-images/inbox/reference-Mendut-*` and listed in `reference-sources-2026-11-15.json` with their SHA-256; they are never installed in the game.
+- Compared with the photos, `library.magelang.p5.2` is wrong four ways: the Buddha sits cross-legged (the real one sits with both feet down on a lotus footstool, hands in dharmacakra mudra), the two flanking bodhisattvas stand (they sit), two lions stand in front of the pedestal, and a child worships the statue. Review row 293 changed from `redo later` to `redo`.
+- New row `R-12` in `ai-studio/chatgpt-images/TASKS.md`, prompt in document 39. The new picture shows no people: on a page about another religion's place of worship the child looks at the statue and is not drawn worshipping. The Pustaka text and caption stay; they already match the photos.
+- `ai-studio/chatgpt-images/AGENTS.md`: rows made from a `redo later` picture use the licensed photos named in **Attach** for the forms only, never copying the photo, its colours or modern details.
+- The owner sends the other reference files in later conversations, one at a time; each becomes a new `R-` row the same way.
+

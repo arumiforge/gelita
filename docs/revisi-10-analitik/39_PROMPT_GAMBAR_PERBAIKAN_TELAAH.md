@@ -2,9 +2,9 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 15 November 2026 · Lampiran `ai-studio/game-images/REVIEW.md` (telaah gambar oleh pengembang) · Status: `draf pengembang`, `asal: pengembang` (disusun AI atas permintaan pengembang)
+Per 15 November 2026, `R-12` ditambahkan 16 November 2026 · Lampiran `ai-studio/game-images/REVIEW.md` (telaah gambar oleh pengembang) · Status: `draf pengembang`, `asal: pengembang` (disusun AI atas permintaan pengembang)
 
-Pengembang menelaah semua gambar game pada 15 November 2026 dan menandai gambar yang harus dibuat ulang. Dokumen ini memuat prompt siap tempel ke ChatGPT (bahasa Inggris) untuk sepuluh gambar bertanda `redo`, ditambah satu gambar pasangan yang menunggu persetujuan pengembang. Polanya sama dengan [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md) dan [38](38_PROMPT_PETA_LIMA_TANTANGAN_DAN_SKENARIO.md). Daftar kerjanya ada di `ai-studio/chatgpt-images/TASKS.md` (baris berkode `R-`).
+Pengembang menelaah semua gambar game pada 15 November 2026 dan menandai gambar yang harus dibuat ulang. Dokumen ini memuat prompt siap tempel ke ChatGPT (bahasa Inggris) untuk sepuluh gambar bertanda `redo`, ditambah satu gambar pasangan yang menunggu persetujuan pengembang. Gambar `redo later` menjadi baris baru setelah pengembang mengirim foto acuannya; yang pertama `R-12` (16 November 2026). Polanya sama dengan [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md) dan [38](38_PROMPT_PETA_LIMA_TANTANGAN_DAN_SKENARIO.md). Daftar kerjanya ada di `ai-studio/chatgpt-images/TASKS.md` (baris berkode `R-`).
 
 Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pengembang, peneliti, dan ahli](01_REVISI_10_ANALITIK.md)).
 
@@ -23,14 +23,15 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 | `R-09` | Gambar tes `instr.tes-bd-B-G1` | 384 | Tombol "Kirim pesan ke galeri" lebih tebal; motif kain tampak seperti tulisan Arab yang bisa dibaca |
 | `R-10` | Gambar tes `instr.tes-mb-A-M4` | 387 | Nama akun tertulis "@panitia.kaghaianak" |
 | `R-11` | Gambar tes `instr.tes-bd-B-G2` | 385 | Belum ditandai pengembang. Pasangan `R-08` di buklet B: tulisan "Video: Sanggar Tujuh Pelita" sama kecilnya. Dikerjakan hanya kalau pengembang setuju, supaya buklet A dan B tetap setara |
+| `R-12` | Pustaka Magelang, arca Buddha Mendut `library.magelang.p5.2` | 293 | Buddha duduk bersila (aslinya kedua kaki menjuntai); dua arca pengapit berdiri (aslinya duduk); ada singa dan anak yang menyembah. Foto acuan dari pengembang, lisensi didapat peneliti |
 
 ## Aturan bersama
 
 **Gaya yang berlaku (pengembang, 15 November 2026).** Seluruh antarmuka game memakai satu gaya, yaitu *emas berukir* yang sudah disetujui peneliti: bingkai emas tebal berukir dalam dengan hiasan ukel, bidang batu gelap atau biru tua berpola awan samar, simbol timbul dari emas yang sama, satu arah cahaya dari kiri atas, dirender sebagai benda 3D. Contohnya tombol bundar `public/assets/ui/round-*.webp` dan pelat `plate-gold-*.webp`. Hijau dan merah hanya menjadi warna bidang untuk benar dan salah, selalu bersama tanda centang atau silang. Pengembang juga meminta hiasan tepi bagian-bagian itu diseragamkan lagi; pesanan gambar antarmuka menyusul setelah ukuran setiap bagian diukur di layar Chromebook (`docs/PROGRESS.md` → *Asset catalogue audit and picture review*).
 
-Sepuluh gambar di dokumen ini bukan bagian antarmuka. Gayanya mengikuti kelompoknya masing-masing:
+Gambar di dokumen ini bukan bagian antarmuka. Gayanya mengikuti kelompoknya masing-masing:
 
-- **Gambar isi game** (`R-01` sampai `R-05`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
+- **Gambar isi game** (`R-01` sampai `R-05`, dan `R-12`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
 - **Gambar tes** (`R-06` sampai `R-11`): gambar garis hitam-putih seperti 23 gambar tes lainnya. Gaya ini disengaja: instrumen tes tampil netral dan tidak memakai gaya game.
 
 **Tulisan di gambar.** Gambar isi game tidak memuat tulisan. Gambar tes justru memuat tulisan, dan setiap kata harus sama persis dengan `app/Database/Seeds/data/instrumen/tes.php`. Tulisan di gambar dibuat oleh model gambar, jadi setiap hasil dibaca ulang kata per kata dengan daftar di promptnya.
@@ -179,6 +180,38 @@ Target canvas 960 × 640 pixels; aspect 3:2. Jaka and the four medallions comple
 
 CONSTRAINTS
 No letters, numbers or words anywhere, also not on the phone, the building or the clock. No second person. No watermarks, signatures, extra limbs, cropped features, blurry edges or neon colours. No painterly 2D, gouache or paper grain.
+```
+
+### R-12 · Arca Buddha di dalam Candi Mendut (Pustaka Magelang)
+
+Ditambahkan 16 November 2026. Pengembang menandai gambar ini `redo later` (telaah no. 293): arcanya duduk bersila, padahal arca Buddha Mendut duduk dengan kedua kaki menjuntai. Pengembang lalu mengirim empat foto acuan yang lisensinya sudah didapat peneliti; foto itu ada di `ai-studio/chatgpt-images/inbox/reference-Mendut-*` dan tercatat di `reference-sources-2026-11-15.json`. Dicocokkan dengan foto, gambar lama keliru di empat hal: (1) Buddha duduk bersila; (2) dua arca pengapit berdiri, padahal keduanya duduk; (3) ada dua singa di depan singgasana yang tidak ada di ruang Mendut; (4) ada anak yang menyembah di depan arca. Gambar baru tidak menampilkan orang: di halaman Pustaka tentang tempat ibadah agama lain, anak cukup melihat arcanya, tidak ikut digambarkan beribadah.
+
+| | |
+|---|---|
+| Kode berkas | `library.magelang.p5.2` → simpan sebagai `library.magelang.p5.2.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | Acuan gaya `reference.06` atau `reference.07`; foto acuan `inbox/reference-Mendut-Buddha-04.jpg` (Buddha dari dekat: sikap, tangan, lingkaran kepala, sandaran) dan `inbox/reference-Mendut-interior-Buddha-and-bodhisattvas-01.jpg` (susunan tiga arca dan ruangnya). Foto hanya untuk kebenaran bentuk; jangan menyalin pagar kayu, sesaji modern, atau warna fotonya |
+| Halaman Pustaka | "Mendut, Pawon, dan Perjalanan Waisak", bagian *Candi Mendut*: "Di dalam ruang Candi Mendut duduk arca Buddha setinggi sekitar tiga meter dari batu andesit, diapit dua arca lain." Keterangan gambar (tetap): "Arca Buddha di dalam Candi Mendut" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.magelang.p5.2  (R-12 · the Buddha inside Candi Mendut, library picture)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Characters: do NOT include Jaka or Mbah Kedu, and no people at all. The attached photos are factual references for the statues and the room only: follow their forms closely, but render them in the GELITA finish, and do not copy the railing, offerings, colours or camera of the photos.
+
+SUBJECT AND COMPOSITION
+The inner chamber of Candi Mendut, Magelang, Central Java, seen from the doorway, eye level of a standing child, looking straight at the back wall. Dim, calm, respectful; soft daylight falls in from the doorway behind the viewer and lights the statues from the front and slightly left.
+Centre: the large Buddha statue of grey-brown andesite, about three times the height of a person, on a plain stepped stone pedestal. He sits UPRIGHT ON A THRONE WITH BOTH FEET DOWN, like a person sitting on a chair: knees apart and level, lower legs vertical and parallel, BOTH bare feet resting flat side by side on a small round lotus footstool on the pedestal. He does NOT sit cross-legged and no leg is folded. Both hands are raised together in front of the chest in the teaching gesture (dharmacakra mudra): the thumb and index finger of each hand form a small ring, the two hands touching. A plain monastic robe so smooth it looks like bare stone, covering the left shoulder and leaving the right shoulder bare; short tight curls on the head with a rounded top knot; calm face with lowered eyes; long earlobes. Behind his head and shoulders a large pointed, leaf-shaped halo carved in the wall, and on both sides of his backrest a carved upright mythical creature in relief.
+Left of the Buddha, on its own lower pedestal: a seated bodhisattva statue (Avalokitesvara), richly crowned and jewelled, seated with one leg folded and one leg hanging down. Right of the Buddha, the same: a seated bodhisattva (Vajrapani), crowned and jewelled, one leg folded and one leg hanging down. Both are smaller than the Buddha and turned slightly towards him. All three statues are the same dark grey-brown andesite, weathered, never gold, never painted.
+Walls: large grey andesite blocks, darker towards the corners, the corner of the chamber visible on both sides. The floor is worn stone in the foreground, empty.
+
+Accuracy — Exactly three statues. The Buddha sits with both feet down on the footstool: no lotus position, no crossed legs, no legs hidden under the robe. The two side statues are SEATED, not standing. No lions, elephants or guardian animals in front of the pedestal. No candles, flowers, incense, offerings, railing or signs. No people. No bright sunbeam rays.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. The Buddha centred; all three statues complete within the canvas, including the Buddha's feet and footstool, with even margins. Opaque background. Deliver WebP, named library.magelang.p5.2.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, cropped statues, extra limbs or hands, blurry edges, neon colours or gold-painted statues. No painterly 2D, gouache or paper grain.
 ```
 
 ## Gambar tes
@@ -353,11 +386,12 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 
 ## Daftar periksa hasil
 
-**Gambar isi game (`R-01` sampai `R-05`)**
+**Gambar isi game (`R-01` sampai `R-05`, `R-12`)**
 
 - Tanpa tulisan, angka, atau logo.
 - `R-01`: tepat dua gunung, tanpa candi, telaga, atau laut; tanpa tembakau; sepertiga bawah tenang.
 - `R-02`: terbaca sebagai beberapa pepaya kecil, bukan belimbing dan bukan satu pepaya besar; latar transparan; tanpa cahaya atau garis tepi yang menandai jawaban.
+- `R-12`: tepat tiga arca dari batu abu-abu kecokelatan; Buddha duduk dengan kedua kaki di alas teratai, tangan di depan dada; kedua arca pengapit duduk; tanpa singa, sesaji, pagar, dan orang. Cocokkan dengan kedua foto acuan.
 - `R-03` sampai `R-05`: tokohnya Jaka (syal merah, kemeja krem, ransel, tanpa ikat kepala); ketiganya berlatar biru tua yang sama; medali simbol bergaya emas berukir.
 
 **Gambar tes (`R-06` sampai `R-11`)**
@@ -369,7 +403,7 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 
 ## Pemasangan
 
-- `R-01` sampai `R-05`: berkas dari `ai-studio/chatgpt-images/out/` **dipindahkan** (bukan disalin) ke tempat berkas lamanya di `ai-studio/game-images/assets/` dan menggantikannya; entri `data.json` tidak berubah. Lalu `php spark gelita:katalog:impor`.
+- `R-01` sampai `R-05` dan `R-12`: berkas dari `ai-studio/chatgpt-images/out/` **dipindahkan** (bukan disalin) ke tempat berkas lamanya di `ai-studio/game-images/assets/` dan menggantikannya; entri `data.json` tidak berubah. Lalu `php spark gelita:katalog:impor`.
 - `R-06` sampai `R-11`: berkas dipindahkan ke `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/`. Berkas PNG induk di `docs/revisi-10-analitik/gambar/doc-34/` diganti dengan hasil yang sama, supaya induk dan gambar terpasang tidak berbeda.
 - Setelah dipasang, lembar telaah dibangun ulang (`node ai-studio/game-images/review/build-sheets.mjs`) dan baris `REVIEW.md` diberi tanda baru oleh pengembang.
 

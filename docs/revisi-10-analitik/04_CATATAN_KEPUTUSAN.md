@@ -4,6 +4,17 @@ Per 16 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.m
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
 
+## 16 November 2026
+
+**Foto acuan arca Buddha Mendut diterima; gambar Pustaka `library.magelang.p5.2` dibuat ulang (`R-12`)** (cabang `nty/gracious-feynman-2yhoki`) · `asal: pengembang` · `draf pengembang` · mengubah 39
+
+- **Foto acuan.** Pengembang mengirim empat foto Candi Mendut (ruang dalam dengan tiga arca, arca Buddha dari dekat, dua foto bangunan). Lisensinya sudah didapat peneliti; pembuat dan sumber foto tidak tercatat. Foto disimpan sebagai acuan di `ai-studio/chatgpt-images/inbox/` (dicatat di `reference-sources-2026-11-15.json`) dan tidak pernah dipasang di game.
+- **Hasil pencocokan.** Gambar Pustaka "Arca Buddha di dalam Candi Mendut" keliru di empat hal: Buddha duduk bersila, padahal aslinya duduk dengan kedua kaki menjuntai di alas teratai; kedua arca pengapit berdiri, padahal duduk; ada dua singa yang tidak ada di ruang itu; ada anak yang menyembah. Tanda telaah no. 293 berubah dari `redo later` menjadi `redo`.
+- **Gambar baru.** Prompt `R-12` di 39: tiga arca sesuai foto, tanpa orang (di halaman tentang tempat ibadah agama lain, anak cukup melihat arcanya). Teks Pustaka dan keterangan gambarnya tetap, karena sudah sesuai foto.
+- **Foto acuan berikutnya** dikirim pengembang dalam percakapan berikutnya (lambang tiga kabupaten, peta Dieng, Situs Liyangan, panel relief Borobudur, buah carica); setiap kiriman menjadi baris `R-` baru dengan cara yang sama.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
 ## 15 November 2026
 
 **Telaah gambar: gaya antarmuka emas berukir, gambar tes diperbaiki, waktu narasi tidak lagi terhitung jeda** (cabang `nty/laughing-ramanujan-l68r2v`, dikerjakan 15 dan 16 November 2026) · `asal: pengembang` · `disetujui pengembang` · menambah dokumen [39](39_PROMPT_GAMBAR_PERBAIKAN_TELAAH.md); tidak mengubah teks butir, stimulus, atau kamus data
