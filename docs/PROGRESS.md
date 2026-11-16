@@ -194,4 +194,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pw/hopeful-knuth-twnk4t` | Research revision: `08` raised to `disetujui peneliti` (researcher's fact check of 16 November 2026); other documents unchanged (owner) | Docs only (`00`, `04`, `08`, this file); no PDF rebuild; PR open |
