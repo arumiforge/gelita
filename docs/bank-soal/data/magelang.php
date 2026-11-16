@@ -86,8 +86,8 @@ return [
                             'media'  => [
                                 'key'    => 'challenge.item.mgl-1-e01',
                                 'label'  => 'Candi Pawon',
-                                'note'   => 'Candi Pawon di taman desa di antara sawah: tangga, panel berukir, stupa kecil di atap, rumah beratap merah, Perbukitan Menoreh di latar',
-                                'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt MGL-P05; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.',
+                                'note'   => 'Candi Pawon dari dekat di taman desa: tangga, pintu berbingkai ukir, panel relief (bodhisattwa, kalpataru, kinara); atap dan stupa puncaknya terpotong tepi atas; pohon kamboja, rumah beratap merah',
+                                'source' => 'Prompt MGL-P05R (37), dari foto Candi Pawon berlisensi. Di Katalog Aset sejak 16 November 2026, disetujui peneliti; uji keping otomatis lulus (4 × 4). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: uji susun oleh dua orang.',
                             ],
                             'review' => [
                                 'status' => 'verified',

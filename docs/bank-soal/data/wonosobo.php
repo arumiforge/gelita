@@ -224,8 +224,8 @@ return [
                             'media'  => [
                                 'key'    => 'challenge.item.wnb-1-g01',
                                 'label'  => 'Bundengan',
-                                'note'   => 'pemusik dewasa memetik bundengan di teras rumah, dua anak mendengarkan; di sawah, penggembala bebek memakai kowangan (tudung bambu) di punggung',
-                                'source' => 'Tersedia di Katalog Aset (14 Oktober 2026, prompt WNB-P07; uji keping otomatis lulus). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: cek fakta dengan foto rujukan dan uji susun oleh dua orang.',
+                                'note'   => 'pemusik dewasa duduk bersila di tikar memetik bundengan (cangkang anyaman tegak meruncing, satu tongkat bambu panjang, senar di dalam cekungan) di teras rumah, dua anak mendengarkan; di sawah, penggembala bebek memakai kowangan (tudung bambu) di punggung',
+                                'source' => 'Prompt R-18 (39), dari foto bundengan peneliti. Di Katalog Aset sejak 16 November 2026 (menggantikan gambar 14 Oktober 2026, prompt WNB-P07); uji keping otomatis lulus (4 × 4). Pasang dengan php spark gelita:katalog:impor. Sebelum pengambilan data: uji susun oleh dua orang.',
                             ],
                             'review' => [
                                 'status' => 'verified',
