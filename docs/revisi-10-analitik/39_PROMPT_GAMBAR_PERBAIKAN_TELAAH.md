@@ -324,20 +324,20 @@ No watermarks, signatures, text, letters, numbers, logos, frames, blurry edges o
 
 ### R-16 · Situs Liyangan (Pustaka Temanggung)
 
-Ditambahkan 16 November 2026. Pengembang menandai gambar ini `redo later` (telaah no. 312): gambarnya menampilkan menara candi tinggi seperti Prambanan, padahal halaman "Jejak Mataram Kuno" bercerita tentang **Situs Liyangan**, kampung Mataram Kuno yang terkubur material letusan Gunung Sindoro dan digali sejak 2008. Peneliti mengirim foto Liyangan yang berizin; satu berkas tersimpan (`ai-studio/chatgpt-images/inbox/reference-Liyangan-excavation-wall-01.jpg`), empat lainnya hanya terlihat di percakapan dan isinya dituliskan di prompt ini: talud batu panjang di teras berundak dengan jalan batu di depannya, alas candi kecil dengan yoni, satu bangunan candi kecil yang atapnya bertingkat di atas pelataran berpagar batu, dan Gunung Sindoro di belakang situs.
+Ditambahkan 16 November 2026. Pengembang menandai gambar ini `redo later` (telaah no. 312): gambarnya menampilkan menara candi tinggi seperti Prambanan, padahal halaman "Jejak Mataram Kuno" bercerita tentang **Situs Liyangan**, kampung Mataram Kuno yang terkubur material letusan Gunung Sindoro dan digali sejak 2008. Peneliti mengirim lima foto Liyangan yang berizin (`ai-studio/chatgpt-images/inbox/reference-Liyangan-*`, `-01` sampai `-05`). Isinya: talud batu panjang di teras berundak dengan jalan batu di depannya, alas candi kecil dengan yoni, satu bangunan candi kecil yang atapnya bertingkat di atas pelataran berpagar batu, dan Gunung Sindoro di belakang situs.
 
 | | |
 |---|---|
 | Kode berkas | `library.temanggung.p5.1` → simpan sebagai `library.temanggung.p5.1.webp` |
 | Kanvas | 960 × 640 |
-| Lampiran | Acuan gaya `ai-studio/game-images/assets/referensi/reference.06.webp`; foto `ai-studio/chatgpt-images/inbox/reference-Liyangan-excavation-wall-01.jpg` (dinding batu teras yang digali) |
+| Lampiran | Acuan gaya `ai-studio/game-images/assets/referensi/reference.06.webp`; foto `ai-studio/chatgpt-images/inbox/reference-Liyangan-terrace-wall-and-road-02.jpg` (talud dan jalan batu), `ai-studio/chatgpt-images/inbox/reference-Liyangan-small-shrine-04.jpg` (candi kecil), `ai-studio/chatgpt-images/inbox/reference-Liyangan-sign-and-Sindoro-05.jpg` (Gunung Sindoro; papan namanya tidak digambar) |
 | Halaman Pustaka | "Jejak Mataram Kuno", bagian *Situs Liyangan, kampung yang terkubur*: sisa rumah kayu yang hangus, candi dan talud, jalan batu, butir padi terbakar; semuanya terkubur material letusan Gunung Sindoro. Keterangan gambar setelah dipasang: "Situs Liyangan di lereng Gunung Sindoro" (keterangan asli halaman) |
 
 ```text
 GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
 Asset: library.temanggung.p5.1  (R-16 · the Liyangan site, library picture)
 Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
-Characters: do NOT include Jaka or Mbah Kedu, and no people at all. The attached photo is a factual reference for the stone walls only: follow its forms, render them in the GELITA finish, and do not copy the photo.
+Characters: do NOT include Jaka or Mbah Kedu, and no people at all. The attached photos are factual references for the site only: follow the forms of the walls, the stone road, the small shrine and the mountain, render them in the GELITA finish, and do not copy a photo. Leave out everything modern in them: visitors, the sign and its letters, roofs, fences and tools.
 
 SUBJECT AND COMPOSITION
 The excavated archaeological site of Liyangan on the lower slope of Mount Sindoro, Temanggung, Central Java, on a calm, slightly hazy morning, seen from a low rise at the edge of the dig. This is an ancient village buried by a volcanic eruption and dug out again, NOT a temple city.
