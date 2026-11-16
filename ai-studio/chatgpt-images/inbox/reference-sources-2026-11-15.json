@@ -438,6 +438,27 @@
       "received_on": "2026-11-16",
       "use": "Installed unchanged, whole, on a white 960 x 640 canvas as the Pustaka picture of the Wonosobo page that names it (ai-studio/game-images/assets/pustaka/). Never given to ChatGPT, never redrawn.",
       "sha256": "4d3ac9c7f7385bc514bc92396b9ffe10ee557e05853d282b9c8243999bcb90ec"
+    },
+    {
+      "file": "reference-Liyangan-excavation-wall-01.jpg",
+      "title": "Situs Liyangan: two researchers measure an excavated stone wall (talud) on a terrace; more walls and bamboo behind",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "changes": "Converted from AVIF (720 x 480) to JPEG; original SHA-256 578dae9795334ead2532849cb6170b85ac890e39cf2e9d8cb22cd7dbf1be8eba",
+      "use": "Factual reference for R-16 (library.temanggung.p5.1, review no. 312): the cut-stone walls of the excavated terraces. Reference only, never installed in the game.",
+      "sha256": "6e7bf4ba1b4f25fe2a9b284c44d78937f45bfa49db56241409c1152ba7b27de5"
+    },
+    {
+      "file": null,
+      "title": "Four more photos of Situs Liyangan (long walled terrace with a stone road and visitors; a small temple base with a yoni; a small restored shrine with a tiered roof on a walled platform; the site sign with Mount Sindoro behind) and five photos of Borobudur relief panels",
+      "license": "Licence and permission obtained by the researcher (owner, 16 November 2026)",
+      "received_on": "2026-11-16",
+      "use": "Shown in the conversation only; no file reached the repository. The Liyangan photos informed the words of the R-16 prompt. The owner is asked to send them again as files.",
+      "removed": false
     }
   ],
   "permission_updates": [

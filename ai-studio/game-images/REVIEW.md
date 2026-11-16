@@ -575,7 +575,7 @@ Rows 129 to 178, the 50 vector icons `icon.*.svg`. Owner, 15 November 2026: `dro
 
 | No | Picture | Shows | Used in the game | Status | Notes |
 |---|---|---|---|---|---|
-| 312 | [`library.temanggung.p5.1`](assets/pustaka/library.temanggung.p5.1.webp) | Ilustrasi bangunan batu peninggalan Mataram Kuno | Gambar Pustaka (Pustaka Kedu) | `redo later: tall temple towers; Situs Liyangan is an excavated settlement with terraces and a stone road (compare no. 229)` | Caption replaced on 15 November 2026 (`caption` in `data.json`): "Ilustrasi bangunan batu peninggalan Mataram Kuno" |
+| 312 | [`library.temanggung.p5.1`](assets/pustaka/library.temanggung.p5.1.webp) | Ilustrasi bangunan batu peninggalan Mataram Kuno | Gambar Pustaka (Pustaka Kedu) | `redo: tall temple towers; Situs Liyangan is an excavated settlement with terraces and a stone road (photos from the researcher, 16 November 2026)` | Caption replaced on 15 November 2026 (`caption` in `data.json`): "Ilustrasi bangunan batu peninggalan Mataram Kuno". Task `R-16` of `../chatgpt-images/TASKS.md` |
 | 313 | [`library.temanggung.p5.2`](assets/pustaka/library.temanggung.p5.2.webp) | Candi_Pringapus_Temanggung_Jateng.jpg | Gambar Pustaka (Pustaka Kedu) |  |  |
 | 314 | [`library.temanggung.p5.3`](assets/pustaka/library.temanggung.p5.3.webp) | Arca_Nandi_dalam_bilik_Candi_Pringapus,_Mei_2022.jpg | Gambar Pustaka (Pustaka Kedu) |  |  |
 | 315 | [`library.temanggung.p6.1`](assets/pustaka/library.temanggung.p6.1.webp) | Mata air Umbul Jumprit di lereng Gunung Sindoro | Gambar Pustaka (Pustaka Kedu) | `fixed: caption` | Caption replaced on 15 November 2026 (`caption` in `data.json`): "Mata air Umbul Jumprit di lereng Gunung Sindoro" |
