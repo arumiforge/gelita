@@ -33,7 +33,7 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 | `R-19` | Avatar 10 `avatar.10` (bundengan) | 115 | Lambangnya tudung telentang seperti kereta luncur; hanya lambang yang diganti, cincin tetap. Foto dari peneliti |
 | `R-20` | Benda Cari Objek `challenge.item.tmg-4-03` (kuda kepang, target) | 263 | Sudah pipih dan tampak samping, tetapi berpelana kain berumbai dan berperut seperti kuda goyang; dibuat ulang bersama `R-21` supaya serupa. Foto dari peneliti |
 | `R-21` | Benda Cari Objek `challenge.item.mgl-4-a05` (kuda kepang, pengecoh) | 256 | Kepala kuda bulat bertongkat seperti mainan gaya Barat; kuda kepang berupa anyaman bambu pipih berbentuk kuda utuh, dicat, berbingkai rotan, tanpa tongkat. Foto dari peneliti |
-| `R-22` | Benda Cari Objek `challenge.item.mgl-4-a04` (kendil gerabah) | 255 | Teko tanah liat bercerat dan bergagang; bank soal dan cek fakta menyebut kendil, periuk bulat bermulut lebar tanpa cerat dan tanpa gagang. Foto kendi dari peneliti hanya untuk warna tanah liat |
+| `R-22` | Benda Cari Objek `challenge.item.mgl-4-a04` (kendil gerabah) | 255 | Teko tanah liat bercerat dan bergagang; bank soal dan cek fakta menyebut kendil, periuk bulat bermulut lebar bertutup, tanpa cerat dan tanpa gagang. Menunggu berkas foto kendil dari pengembang |
 
 ## Aturan bersama
 
@@ -547,7 +547,7 @@ No watermarks, signatures, text, numbers, logos, people, hands, extra objects, c
 
 ### R-22 · Kendil gerabah (benda Cari Objek Magelang)
 
-Ditambahkan 16 November 2026. Telaah no. 255: gambarnya teko tanah liat bercerat **dan** bergagang, bukan kendil dan bukan kendi. Benda ini **target** Cari Objek Magelang babak 1: "Temukan benda dari tanah liat yang dibentuk lalu dibakar, buatan warga Dusun Klipoh." Bank soal dan cek fakta (25, MGL-39 dan MGL-40) menyebutnya **kendil**, periuk tanah liat untuk menanak nasi; kata itu juga dipakai kartu informasi Klipoh dan butir `mgl-2-c06`. Pengembang memutuskan gambarnya mengikuti bank: kendil, bukan kendi (16 November 2026). Peneliti mengirim tiga foto kendi; dua dipakai hanya untuk warna dan hasil bakaran tanah liat, satu tampak buatan AI dan tidak dipakai.
+Ditambahkan 16 November 2026. Telaah no. 255: gambarnya teko tanah liat bercerat **dan** bergagang, bukan kendil dan bukan kendi. Benda ini **target** Cari Objek Magelang babak 1: "Temukan benda dari tanah liat yang dibentuk lalu dibakar, buatan warga Dusun Klipoh." Bank soal dan cek fakta (25, MGL-39 dan MGL-40) menyebutnya **kendil**, periuk tanah liat untuk menanak nasi; kata itu juga dipakai kartu informasi Klipoh dan butir `mgl-2-c06`. Pengembang memutuskan gambarnya mengikuti bank: kendil, bukan kendi (16 November 2026). Peneliti mengirim tiga foto kendi; dua dipakai hanya untuk warna dan hasil bakaran tanah liat, satu tampak buatan AI dan tidak dipakai. Pengembang lalu mengirim dua foto kendil (16 November 2026, baru sebagai gambar di percakapan): periuk bulat cokelat kemerahan tua dengan **tutup tanah liat bertombol**, salah satunya dengan dua kuping kecil di sisi. Prompt mengikuti foto itu; foto kendil dilampirkan setelah berkasnya masuk `inbox/`.
 
 | | |
 |---|---|
@@ -567,11 +567,12 @@ SUBJECT AND COMPOSITION
 One isolated object on a transparent background: one kendil, the traditional Javanese earthenware cooking pot for steaming rice, made by the potters of Klipoh near Borobudur, seen from the front and a little above.
 THE KENDIL:
 - A ROUND, full belly, wider than it is tall, on a small round base.
-- A short neck rising from the shoulder to a WIDE round mouth with a thick, slightly flared rim; the open mouth is visible from above.
-- Unglazed fired clay, matte, reddish brown with darker smoky patches from the open firing; a few fine wheel lines on the shoulder; nothing painted, nothing shiny.
-- NO spout, NO handle, NO lid, NO feet.
+- A short neck rising from the shoulder to a WIDE round mouth with a thick, slightly flared rim.
+- Unglazed fired clay, deep reddish brown, softly burnished but never shiny like metal, with darker smoky patches from the open firing; a few fine wheel lines on the shoulder; nothing painted.
+- A matching domed clay LID sits on the mouth, with a small round knob on top, the same clay and colour as the pot.
+- NO spout, NO long handle, NO feet. No metal anywhere.
 
-Accuracy — It must NOT read as a kendi or teapot (no spout, no tall narrow neck, no handle), a vase, a jar with a lid, or a metal pot (no shine, no metal handles, no straight sides).
+Accuracy — It must NOT read as a kendi or teapot (no spout, no tall narrow neck, no long handle), a vase, or a metal pot: unlike the attached metal pot it is round-bellied, made of matte brown clay, with no shine, no metal handles and no straight sides.
 Hidden-object rule — identical lighting and quality for targets and decoys: no glow, no sparkle, no outline, no label, no arrow, nothing that marks this object as an answer.
 
 DELIVERY
@@ -770,7 +771,7 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 - `R-18`: 16 bidang berbeda; pemain duduk bersila di tikar; tanpa tulisan apa pun (tulisan unggahan diberi halaman).
 - `R-19`: di luar lambang tidak ada yang berubah (cincin, titik intan, cakram krem, ukuran); bandingkan dengan avatar lama.
 - `R-20` dan `R-21`: kuda kepang pipih seperti papan, bentuk kuda utuh dari samping (kepala, leher melengkung, badan), anyaman bambu yang tetap tampak di bawah cat, bingkai rotan; tanpa tongkat, roda, ayunan, pelana kain, atau rumbai di bawah perut; latar transparan; `R-20` putih berhias merah-hitam, `R-21` hitam berhias emas; `R-21` jelas berbeda dari dadak merak. Bandingkan dengan foto `-01` dan `-04`.
-- `R-22`: kendil, periuk tanah liat bulat bermulut lebar; tanpa cerat, gagang, tutup, dan kaki; tanah liat bakar yang kusam, bukan mengilap; jelas berbeda dari panci logam `a10`; latar transparan.
+- `R-22`: kendil, periuk tanah liat bulat bermulut lebar dengan tutup tanah liat bertombol; tanpa cerat, gagang panjang, dan kaki; tanah liat bakar cokelat kemerahan, tidak mengilap seperti logam; jelas berbeda dari panci logam `a10`; latar transparan. Bandingkan dengan foto kendil dari pengembang.
 - `R-03` sampai `R-05`: tokohnya Jaka (syal merah, kemeja krem, ransel, tanpa ikat kepala); ketiganya berlatar biru tua yang sama; medali simbol bergaya emas berukir.
 
 **Gambar tes (`R-06` sampai `R-11`)**
