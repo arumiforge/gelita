@@ -170,4 +170,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `nty/vibrant-keller-s5qgo8` | Picture review: researcher's photos of Candi Pawon (294) and the Candi Arjuna group (332, 333) and the bundengan video cover (335) installed as real photos; bundengan redo ordered as `R-17` to `R-19` | Ready for review |
