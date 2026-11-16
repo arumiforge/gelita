@@ -6,6 +6,14 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Avatar bundengan baru dipasang (`R-19`)** (cabang `nty/beautiful-clarke-scy25i`) · `asal: pengembang` · `draf pengembang`
+
+- Lambang baru digambar pengembang di luar ChatGPT (hanya lambang, latar transparan): bundengan berdiri tegak, ujung runcing di atas dengan jambul, satu tongkat bambu panjang mencuat melewati puncak, jaring tali di punggung, senar di dalam cekungan. Pengembang meminta langsung dipasang.
+- AI memasang lambang itu ke medali `avatar.10` yang lama: cincin biru tua, tepi kuningan, empat titik intan, dan bagian luar yang transparan tidak berubah; cakram krem di belakang lambang dibuat ulang dari warna cakram itu sendiri; ujung tongkat lambang lama yang menutupi cincin kanan bawah diganti cincin yang disambung dari kedua sisinya.
+- Pemeriksaan budaya oleh validator tetap berlaku seperti gambar lain di 39.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Lampiran pesanan gambar paling banyak lima berkas** (cabang `aru/dazzling-allen-p8hn5z`) · `asal: pengembang` · `disetujui pengembang` · mengubah 39
 
 ChatGPT menolak lebih dari lima berkas gambar dalam satu percakapan (dilaporkan pengembang). Kolom *Lampiran* di 39 dan kolom **Attach** di `ai-studio/chatgpt-images/TASKS.md` kini memuat paling banyak lima berkas; "style" dihitung satu. Urutan pilihan bila rujukan lebih banyak: foto benda yang sebenarnya, lalu gambar yang harus berbeda, lalu gambar untuk kesamaan hasil akhir. Tiga baris yang masih `todo` melebihi batas dan dipangkas: `R-20` dan `R-21` tanpa foto dua penari (dipakai untuk cara menari dan surai, bukan bentuk benda), `R-22` tanpa dua foto kendi (bentuknya kendi; warna tanah liat sudah terlihat di foto kendil), dan kalimat prompt `R-22` tentang foto kendi dihapus. Baris yang sudah dibuat tidak diubah. ChatGPT diminta menandai baris `blocked` bila menemukan lebih dari lima, bukan memilih sendiri.
