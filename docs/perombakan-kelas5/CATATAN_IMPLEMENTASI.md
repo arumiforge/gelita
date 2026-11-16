@@ -886,3 +886,9 @@ R-19 was blocked: ChatGPT's masked edits kept leaving patches on the cream disc.
 - The emblem is 193 x 300 px, centred, with a soft contact shadow to the lower right (light from the upper left as on the other avatars); saved as lossless WebP, 512 x 512.
 
 Installed in `ai-studio/game-images/assets/ikon/avatar.10.webp` (one copy; the owner's raw emblem is not kept in the repository), `data.json` entry 163 describes how it was made, `REVIEW.md` row 115 set to `keep`, `TASKS.md` R-19 `installed`, sheet 06 rebuilt. `CatalogImportTest` green. A server takes it with `php spark gelita:katalog:impor`.
+
+## Video credits no longer flagged as untranslated (16 November 2026, branch `nty/beautiful-clarke-scy25i`)
+
+`gelita:content:verify` warned "Teks bahasa Inggris sama dengan teks Indonesia (terjemahan belum ada)" for the Periksa Unggahan parts `tmg-4-b B2`, `mgl-4-a C2`, `wnb-4-a E2` and `wnb-4-b F2`. All four are video credits of the form `Video: <channel name>`, identical in English by design ("Video" is the same word; channel names are not translated). `BankRules::textRules()` now skips the same-text warning for a post part of kind `credit` whose Indonesian text starts with `Video:`; any other identical text over three words, including a credit such as `Foto: …`, still warns. Covered in `BankRulesNewBankTest::testWarningsForTheExperts`.
+
+The fresh install also showed that `db:seed` does not load the test module content: the README and `docs/08` install steps now run `gelita:instrumen:impor` after `db:seed` (see PR #386).

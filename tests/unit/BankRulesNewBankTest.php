@@ -244,6 +244,22 @@ final class BankRulesNewBankTest extends CIUnitTestCase
         $node['variants']['a']['items'][0]['prompt_en'] = $node['variants']['a']['items'][0]['prompt_id'];
         $this->assertProblem($node, 'warning', 'Teks bahasa Inggris sama dengan teks Indonesia');
 
+        // Video credits ("Video: <channel name>") read the same in English
+        foreach (['tmg-4', 'mgl-4', 'wnb-4'] as $ref) {
+            $this->assertNoProblem($this->node($ref), 'Teks bahasa Inggris sama dengan teks Indonesia');
+        }
+
+        // Any other credit still needs its English text
+        $node  = $this->node('tmg-4');
+        $group = array_key_first($node['posts']);
+        foreach ($node['posts'][$group]['parts'] as $i => $part) {
+            if ($part['kind'] === 'credit') {
+                $node['posts'][$group]['parts'][$i]['text_id'] = 'Foto: Warung Tepi Kali Bu Tini';
+                $node['posts'][$group]['parts'][$i]['text_en'] = 'Foto: Warung Tepi Kali Bu Tini';
+            }
+        }
+        $this->assertProblem($node, 'warning', 'Teks bahasa Inggris sama dengan teks Indonesia');
+
         // Variants a and b share one code spread in the data (evened out 3 November 2026)
         foreach (['mgl-2', 'mgl-3', 'wnb-3'] as $ref) {
             $this->assertNoProblem($this->node($ref), 'sebaran kode kesalahan berbeda');

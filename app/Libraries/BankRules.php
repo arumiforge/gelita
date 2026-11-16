@@ -1093,9 +1093,18 @@ final class BankRules
             }
         }
 
+        $same = [];
+
         foreach ((array) ($node['posts'] ?? []) as $group => $post) {
             foreach ((array) $post['parts'] as $part) {
-                $texts[$ref . '-' . $group . ' ' . $part['key']] = [(string) $part['text_id'], (string) $part['text_en']];
+                $where         = $ref . '-' . $group . ' ' . $part['key'];
+                $texts[$where] = [(string) $part['text_id'], (string) $part['text_en']];
+
+                // A video credit is "Video: <channel name>": "Video" is the same
+                // word in English and a channel name is not translated.
+                if (($part['kind'] ?? '') === 'credit' && preg_match('/^Video:\s/u', trim((string) $part['text_id']))) {
+                    $same[$where] = true;
+                }
             }
         }
 
@@ -1117,7 +1126,7 @@ final class BankRules
             }
 
             // Proper names (Jumprit, Sumbing) and short labels are the same in both languages
-            if (SurfaceLoad::words($id) > 3 && trim($id) === trim($en)) {
+            if (! isset($same[$where]) && SurfaceLoad::words($id) > 3 && trim($id) === trim($en)) {
                 $out[] = self::problem('warning', $ref, null, (string) $where, 'Teks bahasa Inggris sama dengan teks Indonesia (terjemahan belum ada).');
             }
         }
