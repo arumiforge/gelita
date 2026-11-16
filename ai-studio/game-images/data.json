@@ -6487,7 +6487,7 @@
  {
   "id": "274",
   "key": "library.wonosobo.p7.1.poster",
-  "title": "library.wonosobo.p7.1.poster",
+  "title": "Sampul video bundengan: dua pemain di panggung",
   "cat": "Pustaka",
   "region": "Wonosobo",
   "size": "1280 × 720",
@@ -6495,9 +6495,9 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.wonosobo.p7.1.poster.webp",
-  "desc": "library.wonosobo.p7.1.poster",
-  "prompt": "GELITA ACTIVE VISUAL DIRECTION — 2026-10-11\nAsset: library.wonosobo.p7.1.poster\nPremium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.\nJaka: match assets/referensi/reference.01.webp, approximately 11-year-old Javanese boy, tousled dark-brown hair with cowlick, brown eyes, cream short-sleeve shirt, red scarf, brown knee-length shorts, orange-brown batik waist cloth, sandals, leather backpack. Mbah Kedu: match reference.02, elderly Javanese man with white moustache and short beard, brown batik headwrap and cream/brown clothing; do not give him Jaka's scarf. Apply an identity only when that character is requested; never add characters to object-only or landscape assets.\n\nSUBJECT AND COMPOSITION\na bundengan, a woven bamboo duck-herder's hood turned into a plucked string instrument, resting on a mat\n\nDELIVERY\nTarget canvas 1280 × 720 pixels; aspect 16:9. Complete subject within canvas, proportional scaling only. Opaque background matching the scene brief. Deliver WebP for raster assets.\n\nCONSTRAINTS\nNo watermarks, signatures, unintended text, extra limbs, duplicate subjects, cropped key features, blurry edges, neon colours, clutter, or fake checkerboard transparency. No painterly 2D, gouache, paper grain, or conflicting Jaka costume.",
-  "negative": "No watermarks, signatures, unintended text, extra limbs, duplicate subjects, cropped key features, blurry edges, neon colours, clutter, or fake checkerboard transparency. No painterly 2D, gouache, paper grain, or conflicting Jaka costume."
+  "desc": "Foto asli dari peneliti (berizin): seorang pemain memetik bundengan tegak (kowangan berlapis slumpring bergaris ijuk, bertongkat bambu panjang), seorang lagi bernyanyi. Dipasang apa adanya sebagai sampul video \"Bundengan, alat musik unik dari Wonosobo\" (dipotong ke 16:9 dan diperkecil ke 1280 × 720); bukan ilustrasi.",
+  "prompt": "Not generated. A real photograph of a bundengan being played on a stage, from the researcher (licence and permission obtained, 16 November 2026), installed as it is as the video cover. Never redraw or restyle it.",
+  "negative": "Never redraw, restyle or replace it with an invented instrument (no lute, harp or xylophone)."
  },
  {
   "id": "275",

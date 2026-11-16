@@ -679,6 +679,66 @@
       "received_on": "2026-11-16",
       "use": "Reference only: carries a photographer's watermark at the upper right; never install it.",
       "sha256": "48ebb9483cdfc309fdd7421799fb546977f994d90c2f825ab7e41eb935bb5c3c"
+    },
+    {
+      "file": "reference-bundengan-researcher-player-indoors-01.webp",
+      "title": "A player seated beside an upright bundengan indoors: the woven bamboo kowangan, pointed at the top, the long bamboo pole along its edge, strings and clips inside",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference (shape, pole, strings inside); useful for a redo of 115, 242 or 270.",
+      "sha256": "9eed041ec5c279866a34184c14df224455852ade9a87479367cd3a207fadb24b"
+    },
+    {
+      "file": "reference-bundengan-researcher-parts-infographic-02.jpg",
+      "title": "Infographic 'Badan Bundengan' naming kowangan, slumpring and ijuk",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only: carries the Pemuda Inklusi logo and web address; never install it.",
+      "sha256": "94adb8a1d56a252f5b48a37c3613da39c100e39767e02dc943471b54c7e18d6d"
+    },
+    {
+      "file": "reference-bundengan-researcher-kowangan-against-wall-03.jpg",
+      "title": "A kowangan standing against a brick wall, seen from the open side, with its pole",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference (woven frame seen from inside).",
+      "sha256": "b2431bafa70fd0b3bc00c7da6afa16f3105f7353330df61e2c9b3c77cb104e2e"
+    },
+    {
+      "file": "reference-bundengan-researcher-players-on-stage-04.webp",
+      "title": "Two men in red batik seated on a stage: one plays an upright bundengan with ijuk-lined slumpring outer layer and long pole, the other sings into a microphone; more kowangan behind",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Installed as it is as the Pustaka video cover library.wonosobo.p7.1.poster (review no. 335), cropped to 16:9 (2000 x 1125) and scaled to 1280 x 720.",
+      "sha256": "839cc1869b01d3eb868fc132bd4b0a48bdaac0c9396fc807eb95cf9d7abc3c75"
+    },
+    {
+      "file": "reference-bundengan-researcher-dancers-with-kowangan-05.webp",
+      "title": "Dancers on a stage holding kowangan with ijuk tufts above their heads, gamelan behind",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference (the kowangan as a dance property).",
+      "sha256": "d84641c6ec4b41e1b8b6516024191eb54b197a14f086f3d82851a85fbd27c1e4"
     }
   ],
   "permission_updates": [
