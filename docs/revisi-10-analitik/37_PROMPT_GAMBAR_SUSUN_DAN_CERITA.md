@@ -4,7 +4,7 @@
 
 Per 4 November 2026 · Lampiran [08](08_DRAF_BANK_SOAL.md) (Susun Gambar selama studi) dan [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) (naskah cerita) · Status: `draf pengembang`, `asal: pengembang` (disusun AI atas permintaan pengembang)
 
-Dokumen ini berisi prompt siap tempel ke ChatGPT untuk dua gambar Susun Gambar baru yang masih ditunggu 08 (Wayang Kedu dan pengganti Candi Pawon) dan untuk semua latar slide cerita wilayah: Kenali (`region_intro`), dialog masuk wilayah (`level_open`), wilayah tuntas (`level_done`), dan cerita penghubung tantangan kelima (`scenario_open`). Isinya mengikuti naskah 12, bukan naskah yang terpasang sekarang, karena naskah 12 yang dipakai selama studi. Polanya sama dengan [32A](32A_PROMPT_GAMBAR_SITUASI.md) dan panduan gambar puzzle Katalog Aset (`gelita-katalog/update/gambar-puzzle/panduan-gambar-puzzle-gelita.md`).
+Dokumen ini berisi prompt siap tempel ke ChatGPT untuk dua gambar Susun Gambar baru yang masih ditunggu 08 (Wayang Kedu dan pengganti Candi Pawon) dan untuk semua latar slide cerita wilayah: Kenali (`region_intro`), dialog masuk wilayah (`level_open`), wilayah tuntas (`level_done`), dan cerita penghubung tantangan kelima (`scenario_open`). Isinya mengikuti naskah 12, bukan naskah yang terpasang sekarang, karena naskah 12 yang dipakai selama studi. Polanya sama dengan [32A](32A_PROMPT_GAMBAR_SITUASI.md) dan panduan gambar puzzle Katalog Aset (`docs/panduan-gambar-puzzle-gelita.md`).
 
 ## Ringkasan
 
@@ -14,11 +14,11 @@ Dokumen ini berisi prompt siap tempel ke ChatGPT untuk dua gambar Susun Gambar b
 
 ## Cara memakai
 
-1. Buka percakapan baru di ChatGPT untuk setiap gambar. Lampirkan gambar acuan gaya `reference.06` atau `reference.07` dari `gelita-katalog/assets/referensi/` (pemandangan dengan hasil akhir GELITA). Untuk Susun Gambar dan gambar bertanda *foto acuan*, lampirkan juga foto berlisensi objeknya.
+1. Buka percakapan baru di ChatGPT untuk setiap gambar. Lampirkan gambar acuan gaya `reference.06` atau `reference.07` dari `ai-studio/game-images/assets/referensi/` (pemandangan dengan hasil akhir GELITA). Untuk Susun Gambar dan gambar bertanda *foto acuan*, lampirkan juga foto berlisensi objeknya.
 2. Tempel prompt di kotak kode apa adanya. Jangan menambah tokoh, tulisan, atau benda yang tidak disebut prompt.
 3. Periksa hasilnya dengan [daftar periksa](#daftar-periksa-hasil). Kalau gagal, minta perbaikan di percakapan yang sama dengan menyebut butir yang gagal.
 4. Simpan sebagai WebP dengan nama kode aset. Gambar latar cerita yang dipakai beberapa slide disimpan sekali per kode slot di tabelnya (salinan berkas yang sama).
-5. Tim Katalog Aset menambahkan entri di `gelita-katalog/data.json` (kode, berkas di `assets/latar/` atau `assets/tantangan/`, ukuran) dan menjalankan `node build.mjs`, sesuai `gelita-katalog/AGENTS.md`. Pemasangan ke game memakai `php spark gelita:katalog:impor`, tidak pernah di server produksi tanpa izin pengembang.
+5. Tim Katalog Aset menambahkan entri di `ai-studio/game-images/data.json` (kode, berkas di `assets/latar/` atau `assets/tantangan/`, ukuran) sesuai `ai-studio/game-images/README.md` (sejak 15 November 2026 tanpa `node build.mjs`; halaman katalog lama sudah dihapus). Pemasangan ke game memakai `php spark gelita:katalog:impor`, tidak pernah di server produksi tanpa izin pengembang.
 
 Catatan pemasangan:
 

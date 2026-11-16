@@ -141,7 +141,7 @@ Semua command mengembalikan kode keluar 1 saat gagal, sehingga dapat dipakai di 
 |---|---|
 | `gelita:bank:import <file> [--dry-run] [--staff <username>]` | Mengimpor workbook XLSX (bank soal atau Pustaka) dalam satu transaction; `--dry-run` hanya memvalidasi. Sama dengan **Konten → Impor soal dari Excel**. |
 | `gelita:content:verify [--strict] [--siap-penelitian]` | Memeriksa tantangan setiap wilayah, variasi, aturan bank soal, kunci, dan media. `--strict`: peringatan juga gagal; `--siap-penelitian`: gambar contoh yang masih dipakai menjadi galat. |
-| `gelita:katalog:impor [--sumber=FOLDER] [--dry-run] [--timpa] [--kunci=POLA,POLA]` | Installs the images of the Katalog Aset (`gelita-katalog/`) into every image slot: logo, buttons, language icons, app icons, backgrounds, story slides, maps, badges, pins, lanterns, avatars, character frames, challenge images, and Pustaka illustrations (lossy WebP, `app.*` as PNG). Images an admin uploaded are kept unless `--timpa`; `--kunci` limits a run (and `--timpa`) to matching slots, e.g. `char.jaka.*`. Safe to run again. See `docs/08_DEPLOYMENT.md`. |
+| `gelita:katalog:impor [--sumber=FOLDER] [--dry-run] [--timpa] [--kunci=POLA,POLA]` | Installs the images of the Katalog Aset (`ai-studio/game-images/`) into every image slot: logo, buttons, language icons, app icons, backgrounds, story slides, maps, badges, pins, lanterns, avatars, character frames, challenge images, and Pustaka illustrations (lossy WebP, `app.*` as PNG). Images an admin uploaded are kept unless `--timpa`; `--kunci` limits a run (and `--timpa`) to matching slots, e.g. `char.jaka.*`. Safe to run again. See `docs/08_DEPLOYMENT.md`. |
 | `gelita:library:thumbnails [--force]` | Mengunduh thumbnail video luar Pustaka (YouTube, Vimeo, Google Drive) dan memasangnya sebagai poster; butuh HTTPS keluar. |
 | `gelita:media:scan [--check-only]` | Menyinkronkan `public/assets` dengan tabel `media_assets` dan melaporkan berkas yang hilang atau berubah. |
 | `gelita:mockups [--dry-run] [--paksa] [--node=tmg-4]` | Membuat gambar contoh untuk slot gambar tantangan yang belum berisi gambar asli; gambar asli tidak pernah ditimpa. |
@@ -196,7 +196,8 @@ Suite memakai SQLite in-memory (grup database `tests`) dengan skema tiruan di `t
 | `public/assets/` | CSS, JavaScript (`core/`, `game/`, `engines/`, `admin/`), audio, font, vendor; unggahan admin di `uploads/` (tidak dilacak Git) |
 | `deploy/` | skrip deploy, backup, retensi, dan konfigurasi Nginx untuk Linux dan Windows |
 | `docs/` | dokumentasi, sumber bank soal, Pustaka, dan daftar sekolah; rencana yang sudah selesai di `docs/arsip/` |
-| `gelita-katalog/` | Katalog Aset tim: gambar, gambar rujukan, prompt, dan arahan gaya (buka `index.html`); dipasang ke permainan dengan `gelita:katalog:impor`. Internal: memuat tanda benda pengecoh, jadi tidak pernah di bawah `public/` |
+| `ai-studio/game-images/` | Katalog Aset: satu-satunya sumber gambar permainan sejak 15 November 2026 (gambar, gambar rujukan, prompt di `data.json`, daftar tinjau `REVIEW.md`); dipasang ke permainan dengan `gelita:katalog:impor`. Internal: memuat tanda benda pengecoh, jadi tidak pernah di bawah `public/` |
+| `gelita-katalog/` | Dikosongkan 15 November 2026; halaman katalog dibangun ulang nanti dari `ai-studio/game-images/` |
 | `tests/` | suite PHPUnit |
 | `tools/dev/` | `serve.sh` (instalasi pengembangan di MariaDB dalam satu perintah: basis data, `.env`, migrasi, data awal, `php spark serve`) dan `cloud-setup.sh` (salinan induk skrip penyiapan lingkungan sesi awan) |
 | `tools/qa/` | skrip uji peramban Playwright: `stage-check.mjs` (panggung 16:9), `challenge-races.mjs` (aturan kesempatan dan cek bersamaan), `a11y-check.mjs` (keyboard dan pembaca layar di layar tantangan), dan `nav-timing.mjs` (waktu pindah layar dan ganti bahasa di jaringan acuan; `node tools/qa/nav-timing.mjs --serve`, rencana paket aset Tahap 0); juga `admin-check.mjs` (panel staf per peran), `event-integrity.mjs` dan `event-requests.mjs` (data penelitian dan log), `package-check.mjs`, `package-screens.mjs`, dan `transition-check.mjs` (paket aset), `music-check.mjs`, `minify-check.mjs`, serta `load-test.mjs` dengan `load-students.php` (uji beban) |
@@ -228,7 +229,7 @@ Daftar route lengkap: `php spark routes`.
 | [`docs/rencana-paket-aset.md`](docs/rencana-paket-aset.md) | rencana paket aset (unduh sekali), masih berjalan |
 | [`docs/rencana-log-asinkron.md`](docs/rencana-log-asinkron.md) | rencana pencatatan event asinkron dan uji bebannya |
 | [`docs/arsip/`](docs/arsip/README.md) | rencana yang sudah selesai (perbaikan tampilan, katalog aset), disimpan sebagai catatan |
-| [`gelita-katalog/README.md`](gelita-katalog/README.md) | Katalog Aset: gambar, rujukan, dan prompt |
+| [`ai-studio/game-images/README.md`](ai-studio/game-images/README.md) | Katalog Aset: gambar, rujukan, prompt, dan daftar tinjau |
 
 ## Ukuran aset wajib
 

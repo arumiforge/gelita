@@ -634,3 +634,81 @@ The owner accepted Narator's takes too ("narator juga oke", after Jaka's, PR #37
 3. **Clone samples.** `voices/jaka-id/voice.json` and `jaka-en/voice.json` list about 2.5 minutes of accepted story takes each (14 and 12 files; the English ones are slowed to 130 words per minute, noted there). `voices/narator/voice.json` lists the eight Indonesian story takes (about 2 minutes); its English takes are left out because they are slowed.
 4. **Researcher.** `04` has the entry *Rekaman suara sintetis Narator dan Jaka diterima; narasi ketiga tokoh siap dipasang*, the notice the 15 November entry asked for before students hear the takes. PDFs not rebuilt (only on request).
 5. **Open, for the owner to decide.** The `voice_profile` of Narator's and Jaka's English takes is built from the shared settings cell in `voices.md` and says `[warmly] [slowly]`; it does not say that English story lines were typed with `[clearly]` too and slowed to 130 words per minute. Adding that to the cells would push Narator's English profile past the 200-character limit unless the cell is shortened. Left as is.
+
+
+## Asset catalogue audit: dead material removed, the game leads (15 November 2026, branch `nty/laughing-ramanujan-l68r2v`)
+
+Owner request: `gelita-katalog/` is out of date, much of it should simply go, its agent rules need a full rewrite, and the catalogue has to follow the main repository instead of the other way round unless the owner asks otherwise in a session. The owner also asked whether pictures can be linked from another folder instead of being stored twice, now that `ai-studio/` exists.
+
+1. **Audit, measured on the repository.** Of 923 files (379 MB), `CatalogImporter` reads 582 pictures (291 MB): the 514 visual entries of `data.json` and the 68 pictures of `MOCKUP_FILES` and `MOCKUP_DIRS`. The other 332 files (105 MB) are read by nothing in the application. A dry run of `gelita:katalog:impor` on a fresh MariaDB install reported 507 pictures to install, 41 skipped for ordinary reasons, none failed; of the 66 sample pictures of the bank, the catalogue replaces 64.
+2. **Double storage, as found.** The game holds no second committed copy: `public/assets/uploads/` is not in git and the importer writes smaller re-encoded files there. Byte-identical copies in git: 7.7 MB inside the catalogue's own mock-up packages and 0.3 MB between the catalogue and `public/assets/` (Bootstrap, one font, the star). The copy that would grow is the install step of `ai-studio/README.md`: an accepted picture from `ai-studio/chatgpt-images/out/` (34 pictures, 16 MB today) is copied into the catalogue, a story background once per slide it fills.
+3. **Owner's answers.** Delete everything nothing reads: yes. Gallery page: keep as it is. Where the one copy of a picture lives: on hold, the owner has more questions. So nothing was moved between `ai-studio/` and the catalogue, and `data.json` and `index.html` are byte-for-byte unchanged.
+4. **Removed** (in git history): `archive/`, `reports/`, `provenance/`, `scripts/`, `templates/`, `build.mjs`, `docs/`, `update/`, `assets/audio/` (three music tracks, six effects and 37 MB of WAV masters that the game never used; its sound is `public/assets/audio/`, made in `ai-studio/elevenlabs-sound/`), `assets/README.md`, two unused SVG sources of the start button, `mockup/persiapan/`, `mockup/catalog.json` with its notes, and the mock-up packages of pages already built or replaced (result screen, Peta Kedu candidates 01 to 04 with their notes). 379 MB to 282 MB, 923 to 609 files.
+5. **Moved, not removed.** `update/telaah-draf-1-naskah-bank-soal.md` to `docs/bank-soal/` (its section 6 is an open item of `docs/PROGRESS.md`), and `update/gambar-puzzle/panduan-gambar-puzzle-gelita.md` to `docs/` (document `37` cites it; its section 9.2 holds the tile checker's code). Each got one note saying where it came from. References in `docs/PROGRESS.md`, `37`, `docs/05_VIEW_UI.md` and four code comments were repointed.
+6. **Deviation from "keep the page as it is".** The page file is unchanged, but it shows less: the removal list the owner approved included files the page displays. Opened in Chromium after the removal: 517 of 519 pictures load, no script error; the two page mock-up pictures, the nine sound players and the links to briefs and records are dead. The builder went too, because it reads removed records and writes into removed folders; `index.html` is therefore frozen. Recorded in `gelita-katalog/AGENTS.md`.
+7. **Rules.** `gelita-katalog/AGENTS.md` and `README.md` rewritten in English and short: what the folder is, what reads each part, that the game's slot list, question bank and story lead and the folder follows, who may write, and that no reports, backups or scripts are added there again. `CLAUDE.md` quick map updated.
+8. **Found, not fixed** (listed in `docs/PROGRESS.md` → *Asset catalogue audit*): `data.json` keeps 97 audio entries and page-only fields; two catalogue pictures (`challenge.item.tmg-3-b03`, `tmg-3-c03`) have no slot in the current bank and `challenge.item.tmg-3-b04` has no picture; the region maps carry four measured stops for five challenges.
+
+**Checked after the removal:** the same dry run on MariaDB gave the same result (507 to install, 41 skipped, none failed); `CatalogImportTest`, which reads the shipped catalogue, is green.
+
+**Not checked:** a real install (only the dry run). The gallery page was opened once at 1366 × 800 on its start view only. Whether `CatalogImporter` accepts a `file` outside the catalogue root was not tried.
+
+
+## Asset catalogue audit, step 2: one picture source in `ai-studio/game-images/` (15 November 2026, branch `nty/laughing-ramanujan-l68r2v`)
+
+After step 1 the owner decided the question left on hold, and replaced the "keep the gallery page" answer: the pictures the game uses move to a folder in the AI folder, that folder is the only source, everything else in `gelita-katalog/` goes, and the catalogue is rebuilt later in a better form. The owner wants to review every picture against the current game and story first, wants one consistent look measured against the newest UI art, and wants the review to prepare the expert validation (media, content, culture) of the research. ChatGPT makes what has to be redrawn.
+
+1. **Moved with `git mv`.** `gelita-katalog/data.json`, the ten picture folders under `assets/` and `mockup/` are now under `ai-studio/game-images/`, with the same paths inside, so the importer only needed a new default root: `CatalogImporter::DEFAULT_DIR`, used by the command and the tests. The command name `gelita:katalog:impor`, the class name and the stored credits are unchanged.
+2. **Removed.** The gallery page `index.html` with `assets/catalog/` and `assets/vendor/`, and `gelita-katalog/AGENTS.md`; `gelita-katalog/README.md` now only says where things went and that the folder will be rebuilt. This overrides item 6 of step 1.
+3. **`data.json` slimmed** from 611 to 514 entries and 2.7 MB to 1.1 MB: the 97 audio entries and the fields only the old page read (style and content status, previews, generation records, notes) are gone; `key`, `file`, `cat`, title, region, size, format, `prompt`, `negative`, `puzzle` and `vector_source` stay. The importer reads only `key`, `file`, `cat` and `size`.
+4. **Paths repointed** in the living files: root `AGENTS.md`, `ai-studio/README.md`, the ChatGPT instructions and task list, `CLAUDE.md`, `README.md`, the glossary, `docs/05`, `docs/08`, documents `18`, `32A`, `34`, `37`, `38` and the mock-up sources under `docs/revisi-10-analitik/gambar/mockup/src/`. Decision logs, `docs/arsip/` and the ChatGPT inbox file keep the old paths as history. Not rebuilt: the PDFs of the research documents (paths only changed).
+5. **One copy from now on.** `ai-studio/README.md` and `ai-studio/game-images/README.md` say that an accepted ChatGPT picture is moved, not copied, and that a picture filling several slots is one file with several `data.json` entries. `CatalogImporter` already works that way (an entry is a key and a file path); no test covers two entries sharing one file yet.
+6. **The panel's pointer** on the slot detail page (*Gambar & mockup*) now names `ai-studio/game-images/data.json` instead of the removed page.
+7. **Folder names inside.** `mockup/gambar-mockup/*/aset/` was kept to leave `MOCKUP_FILES`, `MOCKUP_DIRS` and their tests alone; flattening is listed in `docs/PROGRESS.md` for the rebuild.
+
+**Not checked:** the importer dry run on MariaDB after the move (`CatalogImportTest` and `InstrumentImportTest`, which read the shipped pictures from the new place, are green); rendering of the research mock-ups from their repointed sources (`render.mjs` was not run); a real install.
+
+
+## Picture review: the owner's marks, one look for the interface, sound checked against the research data (15 and 16 November 2026, branch `nty/laughing-ramanujan-l68r2v`)
+
+A session looked at all 21 review sheets and wrote its questions into `ai-studio/game-images/REVIEW.md`; the owner then marked rows and gave directions for the whole interface.
+
+**Owner's directions (they hold for all later work):**
+
+1. **One look for the whole interface: the carved gold the researcher approved** (`public/assets/ui/round-*.webp`, the gold plates, the framed dialog). The owner looked at the session's sample sheet of it and confirmed the pieces; the ornaments at the edges of those pieces still differ from piece to piece and have to be made alike.
+2. **A picture fits what it holds.** No stretching of a plate or frame to a size it was not drawn for; when a part needs its own size, ChatGPT draws it at that size.
+3. **Every button and small icon, from the first screen to the last, is one family** in size and finish.
+4. **Positions and sizes are redone for grade 5 students on a Chromebook**, the smallest device of the data collection.
+5. **Background music is decoration, not part of the research.** The rules for narration, hints and the other sounds follow what the research analyses and records, not "autoplay for its own sake". The same holds for the existing screens.
+6. **Moving frames are no longer needed**: a character pose is one still picture.
+7. **ChatGPT takes its orders for pictures, interface art and visuals from a Claude session** (`ai-studio/chatgpt-images/TASKS.md`). When a picture needs a photo of the real thing that the repository and a web search cannot give, the session says so and the owner sends it.
+
+**Done in this step:**
+
+1. **`drop`: the 50 vector icons** `icon.*.svg` (review sheets 07 and 08): files, list entries and sheets removed. `data.json` has 464 entries. The game never installed them.
+2. **`fixed`: `bg.temanggung.region` and `bg.wonosobo.region` held each other's pictures.** The Wonosobo entry describes Dieng (Arjuna temples, lake, sea of clouds) and that picture stood under the Temanggung key. The files are swapped. What now stands under the Temanggung key is a dusk view of the Kedu plain, kept until its redo (row `R-01`) arrives.
+3. **`fixed`: Pustaka captions.** The importer replaced a medium's picture and credit and kept the caption of the Wikimedia photo, so "Lambang Kabupaten Magelang" stood under a painting of stupas. A list entry may now carry `caption` (`id` and `en`), and `CatalogImporter::installLibrary()` writes it when it installs the picture and also when it finds the entry's picture installed already. Without `caption` the medium keeps its caption, as before. All 50 picture media were compared; 15 got a caption. `docs/pustaka/data/` is unchanged: it still describes the photos it links.
+4. **`redo later` (owner: not a priority now): ten Pustaka pictures** that are wrong as pictures (three stand where a regency's coat of arms was, one where a map was, an invented relief, a child touching a stupa, and others). No task rows yet.
+5. **`redo`: ten pictures, as rows `R-01` to `R-10` of `TASKS.md`**, prompts in the new document `docs/revisi-10-analitik/39_PROMPT_GAMBAR_PERBAIKAN_TELAAH.md`. Row `R-11` (the form B twin of `R-08`) is `blocked` until the owner says yes.
+6. **Deviation from the ChatGPT rule "a redo starts from nothing":** the five test pictures are edited from the current picture. Every other word in them was read against `tes.php` on 15 November, and forms A and B have to stay alike. The rule and its reason are in document 39 and in `ai-studio/chatgpt-images/AGENTS.md` → *Rows from the picture review*.
+7. **`review/build-sheets.mjs`** read the headings of the first-look section as sheets; they are renamed (*About sheet NN*).
+
+**Sound, checked against the research documents (a read-only sweep by a subagent; the claims marked *verified* were re-read in the code by the session):**
+
+| Today | What the research documents say | Gap |
+|---|---|---|
+| Story narration starts from a "Ketuk untuk mulai" card, then plays slide after slide (Otomatis on); the student can pause, replay, skip (`game/narrator.js`) | Story narration is automatic and is logged, not counted as help (11, Analitik 7; 32 §9.1) | Lewati leaves no event; time per slide is not logged |
+| Item narration (instruction, Cari Objek clue, scenario situation) plays only on ▶ and carries the attempt; reading passages and statements have no audio; hints are text only | 32 §8.2 and §9; 11, Analitik 7 | Matches. With sound off, ▶ only opens the transcript and logs nothing (`core/audio.js`) |
+| *Verified:* the derived layer read only the rows that open a playback (`play`, `autoplay`, `replay`), which carry 0 ms; the heard time is on the closing rows (`pause`, `complete`), which it filtered out (`ParticipantRun`, list `['play', 'replay', 'autoplay', 'progress', 'completed', 'ended']`) | "Selang saat narasi sedang diputar tidak pernah dihitung jeda" (11; 35 §6.7) | **Code disagreed with the dictionary: listening counted as an input pause.** Fixed in this step |
+| One sound button turns off music, effects and narration together; the state is in `localStorage`, per browser, and is never logged (`game/hud.js`, `core/audio.js`) | Headsets for every student are a field condition (02, L0); nothing on sound state | A student who silences the music loses the narration; on a shared Chromebook the next student inherits the setting; neither can be seen in the data |
+| Music loops on almost every screen, the five challenges included, and drops to 20% under narration; effects `correct`/`wrong` play on every check. Research mode changes nothing about sound | Music is a study variable nowhere | Uncontrolled, unrecorded sound during reading tasks; without headsets the effects tell neighbours the outcome |
+| Autoplay that the browser blocks fails silently; the slide waits for a tap | Not defined | A missing `audio_autoplay` row can mean blocked, muted, failed or not approved |
+
+**Fixed:** `ParticipantRun` now reads every stored action (`AUDIO_ACTIONS`, the same list as `AudioUsageEventModel::ACTIONS`), so a narration's interval has its real length and a pause spent listening is not idle time. `NarrationIdleTest` reproduces the case on the golden student (20 s of idle excess gone) and holds the two lists together. This makes the code do what `kamus-1.1` already says, so the dictionary version stays. Derived runs made before this commit hold the old values; only development data exists.
+
+**Left for the owner (nothing built):** whether music is silent in research mode or gets its own switch apart from narration; whether the `correct`/`wrong` effects stay; whether the sound state is logged per game session and reset to on at each login in research mode (a new research event, so `kamus-1.2`); whether Lewati and Otomatis stay available during the study; what a student without a headset does.
+
+**Checked:** `CatalogImportTest` with the new caption test, the tests that read the picture list, the derived-data tests; the full suite after the marks step (1277 tests green), and again before the last push of this step (see the branch row of `docs/PROGRESS.md`).
+
+**Not checked:** an import of the new captions on MariaDB (the SQLite test covers install, re-run and a one-language caption); the swapped backgrounds on a running game; any of the redo prompts in ChatGPT.
+

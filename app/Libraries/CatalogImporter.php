@@ -9,7 +9,8 @@ use CodeIgniter\Database\BaseConnection;
 use RuntimeException;
 
 /**
- * Installs the images of the team's Katalog Aset (`gelita-katalog/`) into
+ * Installs the images of the team's Katalog Aset (`ai-studio/game-images/`
+ * since 15 November 2026, before that `gelita-katalog/`) into
  * the game's image slots (`php spark gelita:katalog:impor`).
  *
  * The catalogue's `data.json` lists every entry with its asset key and file.
@@ -51,6 +52,10 @@ use RuntimeException;
  * - Library images `library.{wilayah}.p{n}.{i}` are linked to media `i` of
  *   page `n` (a new media row for pages without one); `….poster` becomes the
  *   cover of that page's video. The image of a video entry is not used.
+ *   The medium keeps the caption of the photo it had, unless the entry has
+ *   its own `caption` (`{"id": …, "en": …}`): an illustration that shows
+ *   something else than the photo did brings the caption that fits it
+ *   (15 November 2026).
  * - The catalogue's region maps have four clearings for the challenge
  *   buttons. When a map file is the one measured here (same sha256), the
  *   region's challenge buttons are moved onto those clearings.
@@ -73,6 +78,9 @@ use RuntimeException;
  */
 final class CatalogImporter
 {
+    /** Folder of the picture masters, relative to the application root (owner, 15 November 2026: one source, in the AI studio). */
+    public const DEFAULT_DIR = 'ai-studio/game-images';
+
     /** media_assets.credit of every image installed from the catalogue. */
     public const CREDIT = 'Katalog Aset GELITA (gambar sementara)';
 
@@ -267,7 +275,7 @@ final class CatalogImporter
     /**
      * Visual entries of the catalogue: asset key, absolute file path, group.
      *
-     * @return list<array{key: string, file: string, cat: string}>
+     * @return list<array{key: string, file: string, cat: string, caption?: array{id: string, en: string}}>
      */
     public function entries(): array
     {
@@ -294,10 +302,25 @@ final class CatalogImporter
                 'key'  => (string) $entry['key'],
                 'file' => rtrim($this->root, '/\\') . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, (string) $entry['file']),
                 'cat'  => (string) ($entry['cat'] ?? ''),
-            ];
+            ] + $this->captionOf($entry);
         }
 
         return $entries;
+    }
+
+    /**
+     * The caption an entry brings for its Pustaka medium, when it has both languages.
+     *
+     * @param array<string, mixed> $entry
+     *
+     * @return array{caption?: array{id: string, en: string}}
+     */
+    private function captionOf(array $entry): array
+    {
+        $id = trim((string) ($entry['caption']['id'] ?? ''));
+        $en = trim((string) ($entry['caption']['en'] ?? ''));
+
+        return $id === '' || $en === '' ? [] : ['caption' => ['id' => $id, 'en' => $en]];
     }
 
     /**
@@ -439,7 +462,7 @@ final class CatalogImporter
         }
 
         if (preg_match('/^library\.([a-z]+)\.p(\d+)\.(\d+)(\.poster)?$/', $key, $m) === 1) {
-            $this->installLibrary($key, $entry['file'], $m[1], (int) $m[2], (int) $m[3], ($m[4] ?? '') !== '', $dryRun, $overwrite);
+            $this->installLibrary($key, $entry['file'], $m[1], (int) $m[2], (int) $m[3], ($m[4] ?? '') !== '', $dryRun, $overwrite, $entry['caption'] ?? null);
 
             return;
         }
@@ -552,8 +575,12 @@ final class CatalogImporter
         }
     }
 
-    /** Library image or video cover, linked to media `sequence` of page `page`. */
-    private function installLibrary(string $source, string $file, string $region, int $page, int $sequence, bool $poster, bool $dryRun, bool $overwrite): void
+    /**
+     * Library image or video cover, linked to media `sequence` of page `page`.
+     *
+     * @param array{id: string, en: string}|null $caption the entry's own caption; null keeps the medium's caption
+     */
+    private function installLibrary(string $source, string $file, string $region, int $page, int $sequence, bool $poster, bool $dryRun, bool $overwrite, ?array $caption = null): void
     {
         $pageId = $this->db->table('library_pages lp')->select('lp.id')
             ->join('levels l', 'l.id = lp.level_id')
@@ -598,7 +625,13 @@ final class CatalogImporter
             return;
         }
 
-        $current = $media === null || $media['media_asset_id'] === null ? null : model(MediaAssetModel::class)->find((int) $media['media_asset_id']);
+        $current  = $media === null || $media['media_asset_id'] === null ? null : model(MediaAssetModel::class)->find((int) $media['media_asset_id']);
+        $captions = $caption === null ? [] : ['caption_id' => $caption['id'], 'caption_en' => $caption['en']];
+
+        // When the entry's picture is already this medium's picture, its caption still follows the list
+        if (! $dryRun && $captions !== [] && $current !== null && (string) $current['asset_key'] === $source) {
+            $this->db->table('library_media')->where('id', $media['id'])->update($captions);
+        }
 
         if ($current !== null && ($reason = $this->blocked($current, $overwrite)) !== null) {
             $this->add($source, $source, 'skipped', 'gambar Pustaka sudah ada: ' . $reason);
@@ -611,7 +644,7 @@ final class CatalogImporter
         }
 
         $mediaId = model(MediaAssetModel::class)->findByKey($source)['id'] ?? null;
-        $payload = ['media_kind' => 'image', 'media_asset_id' => $mediaId, 'external_url' => null, 'credit' => self::LIBRARY_CREDIT];
+        $payload = ['media_kind' => 'image', 'media_asset_id' => $mediaId, 'external_url' => null, 'credit' => self::LIBRARY_CREDIT] + $captions;
 
         if ($media === null) {
             $now = date('Y-m-d H:i:s');

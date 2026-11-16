@@ -10,11 +10,11 @@ Dua puluh empat prompt siap tempel ke ChatGPT (pembuat gambar), satu untuk tiap 
 2. Minta ukuran lanskap 3:2. Bila ChatGPT memberi ukuran lain, tulis: *"Regenerate at 3:2 landscape, 1536 x 1024."*
 3. Periksa hasilnya dengan **daftar periksa** di bawah. Bila gagal, minta perbaikan satu hal saja, misalnya: *"Same picture, but remove all readable text and replace it with grey bars."*
 4. Simpan sebagai WebP (rasio 3:2, sekitar 1536 × 1024) dengan nama slot katalog `item.skenario.{kode butir}` (misalnya `item.skenario.tmg-5-a01`). Nama berkas **tidak boleh** memuat kata seperti "aman", "tipuan", atau "hoaks" (32 §7.5).
-5. Serahkan ke tim Katalog Aset untuk dimasukkan ke `gelita-katalog/` (impor lewat `gelita:katalog:impor`); gambar lalu dipasang ke `challenge_items.media_asset_id`. Kredit dan asal ditulis sebagai gambar sementara sampai pengembang menyetujuinya.
+5. Serahkan ke tim Katalog Aset untuk dimasukkan ke `ai-studio/game-images/` (sebelum 15 November 2026 `gelita-katalog/`; impor lewat `gelita:katalog:impor`); gambar lalu dipasang ke `challenge_items.media_asset_id`. Kredit dan asal ditulis sebagai gambar sementara sampai pengembang menyetujuinya.
 
 ## Aturan yang berlaku untuk semua gambar
 
-Berasal dari 32 §7.5, 08 → *Cara membaca*, 18 → *Skenario Digital*, dan arah seni di `gelita-katalog/AGENTS.md`.
+Berasal dari 32 §7.5, 08 → *Cara membaca*, 18 → *Skenario Digital*, dan arah seni di `ai-studio/game-images/README.md` (dahulu `gelita-katalog/AGENTS.md`).
 
 - **Tidak ada petunjuk jawaban.** Tanpa segitiga peringatan, tanda seru, warna merah peringatan, tengkorak, gembok bersilang, lencana centang atau perisai, jempol, emoji, atau wajah sedih atau cemas. Cahaya dan suasana sama netralnya di ke-24 gambar, selaras dengan aturan nada datar untuk narasi situasi ([32 §9.4](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#94-arahan-suara)).
 - **Tanpa teks terbaca.** Pembuat gambar sering salah mengeja, dan teks di gambar bisa membocorkan jawaban (misalnya alamat situs palsu pada `wnb-5-b02`). Teks diganti batang abu-abu. Teks situasi sudah ada di layar dan di narasi.

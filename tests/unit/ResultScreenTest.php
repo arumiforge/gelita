@@ -8,8 +8,8 @@ use CodeIgniter\Test\CIUnitTestCase;
 use Config\Services;
 
 /**
- * Result screen redesign of 18 October 2026 (`/selesai/{id}`, mockup 01 in
- * gelita-katalog/mockup/gambar-mockup/tantangan-selesai-temanggung).
+ * Result screen redesign of 18 October 2026 (`/selesai/{id}`, catalogue mockup
+ * package tantangan-selesai-temanggung, removed 15 November 2026, in git history).
  *
  * Rules kept:
  * - the page uses the full-size HUD (logo, region, language popover, sound,

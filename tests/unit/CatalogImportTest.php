@@ -205,7 +205,7 @@ final class CatalogImportTest extends CIUnitTestCase
     public function testMeasuredStopsMatchTheCatalogueMaps(): void
     {
         foreach (CatalogImporter::MAP_STOPS as $sha => [$region, $stops]) {
-            $file = ROOTPATH . 'gelita-katalog/assets/peta/map.region.' . $region . '.webp';
+            $file = ROOTPATH . CatalogImporter::DEFAULT_DIR . '/assets/peta/map.region.' . $region . '.webp';
 
             $this->assertFileExists($file);
             $this->assertSame($sha, hash_file('sha256', $file), "map.region.{$region} changed: measure its clearings again");
@@ -245,7 +245,7 @@ final class CatalogImportTest extends CIUnitTestCase
     public function testMeasuredScenesMatchTheCatalogueAndTheBank(): void
     {
         foreach (CatalogImporter::SCENE_OBJECTS as $sha => [$scene, $objects]) {
-            $file = ROOTPATH . 'gelita-katalog/assets/tantangan/' . $scene . '.webp';
+            $file = ROOTPATH . CatalogImporter::DEFAULT_DIR . '/assets/tantangan/' . $scene . '.webp';
 
             $this->assertFileExists($file);
             $this->assertSame($sha, hash_file('sha256', $file), "{$scene} changed: measure its tables again");
@@ -269,7 +269,7 @@ final class CatalogImportTest extends CIUnitTestCase
         $keys  = array_column($slots, 'asset_key');
         sort($keys);
 
-        $catalog = new CatalogImporter(ROOTPATH . 'gelita-katalog');
+        $catalog = new CatalogImporter(ROOTPATH . CatalogImporter::DEFAULT_DIR);
         $files   = array_column(array_filter($catalog->entries(), static fn (array $e): bool => in_array($e['key'], $keys, true)), 'file', 'key');
         ksort($files);
 
@@ -340,6 +340,31 @@ final class CatalogImportTest extends CIUnitTestCase
         $this->assertSame('installed', $forced[0]['status']);
     }
 
+    /**
+     * An illustration that shows something else than the photo it replaces brings its own caption
+     * (owner, 15 November 2026). The caption follows the list also when the picture is already installed.
+     */
+    public function testLibraryEntryBringsItsOwnCaption(): void
+    {
+        $this->setCatalogCaption('library.temanggung.p1.1', ['id' => 'Dua gunung dari desa', 'en' => 'Two mountains from a village']);
+        $this->importer()->run();
+        $media = $this->sqlite->table('library_media')->where('caption_id', 'Dua gunung dari desa')->get()->getRowArray();
+
+        $this->assertNotNull($media, 'the entry\'s caption replaced the photo\'s caption');
+        $this->assertSame('Two mountains from a village', $media['caption_en']);
+
+        $this->setCatalogCaption('library.temanggung.p1.1', ['id' => 'Sindoro dan Sumbing', 'en' => 'Sindoro and Sumbing']);
+        $report = array_column($this->importer()->run(), null, 'source');
+
+        $this->assertSame('skipped', $report['library.temanggung.p1.1']['status'], 'the picture itself is not installed twice');
+        $this->assertSame('Sindoro dan Sumbing', $this->sqlite->table('library_media')->where('id', $media['id'])->get()->getRow('caption_id'));
+
+        // A caption in one language only is not a caption: the medium keeps what it has
+        $this->setCatalogCaption('library.temanggung.p1.1', ['id' => 'Hanya satu bahasa']);
+        $this->importer()->run();
+        $this->assertSame('Sindoro dan Sumbing', $this->sqlite->table('library_media')->where('id', $media['id'])->get()->getRow('caption_id'));
+    }
+
     /** The flag icons icon.language-id / -en are the HUD language icons (owner request 18 October 2026). */
     public function testLanguageIconsComeFromTheFlagIcons(): void
     {
@@ -373,7 +398,7 @@ final class CatalogImportTest extends CIUnitTestCase
 
         $path = array_search('ui.jaka-avatar', CatalogImporter::MOCKUP_FILES, true);
         $this->assertSame('mockup/gambar-mockup/kenali/aset/ui.jaka-avatar.webp', $path);
-        $this->assertFileExists(ROOTPATH . 'gelita-katalog/' . $path, 'the owner picture ships with the catalogue');
+        $this->assertFileExists(ROOTPATH . CatalogImporter::DEFAULT_DIR . '/' . $path, 'the owner picture ships with the catalogue');
 
         // Before the mockup file arrives nothing fills the slot: reference.03 is not a slot any more
         $report = $this->importer()->run();
@@ -463,7 +488,7 @@ final class CatalogImportTest extends CIUnitTestCase
 
         $row = model(MediaAssetModel::class)->findByKey('map.kedu-diorama');
         $this->assertSame([1600, 900], [(int) $row['width_px'], (int) $row['height_px']]);
-        $this->assertFileExists(dirname(APPPATH) . '/gelita-katalog/' . array_key_first(CatalogImporter::MOCKUP_FILES), 'the real picture ships in the catalogue');
+        $this->assertFileExists(ROOTPATH . CatalogImporter::DEFAULT_DIR . '/' . array_key_first(CatalogImporter::MOCKUP_FILES), 'the real picture ships in the catalogue');
 
         // --kunci reaches it by its slot key
         $only = array_column($this->importer()->run(true, true, null, ['map.kedu-*']), 'target');
@@ -501,7 +526,7 @@ final class CatalogImportTest extends CIUnitTestCase
         $this->assertSame((int) $bridge['id'], (int) $this->sqlite->table('dialogues')->where(['level_id' => $levelId, 'context_code' => 'scenario_open'])->get()->getRow('background_media_id'));
 
         // The 24 pictures ship in the catalogue, one per scenario item of the bank
-        $shipped = glob(dirname(APPPATH) . '/gelita-katalog/' . array_key_first(CatalogImporter::MOCKUP_DIRS) . '/item.skenario.*.webp') ?: [];
+        $shipped = glob(ROOTPATH . CatalogImporter::DEFAULT_DIR . '/' . array_key_first(CatalogImporter::MOCKUP_DIRS) . '/item.skenario.*.webp') ?: [];
         $items   = array_column($this->sqlite->table('challenge_items')->select('item_key')->where('interaction_type', 'scenario_choice')->get()->getResultArray(), 'item_key');
         $this->assertCount(24, $shipped);
         $this->assertEqualsCanonicalizing(array_map(static fn (string $k): string => 'item.skenario.' . $k . '.webp', $items), array_map('basename', $shipped));
@@ -532,7 +557,7 @@ final class CatalogImportTest extends CIUnitTestCase
         $this->assertSame(['bg.cerita-layar-magelang-01'], array_values(array_unique($sources)), 'data.json wins over the mockup folder');
 
         // The shipped interim set: six slides per region
-        $this->assertCount(18, glob(dirname(APPPATH) . '/gelita-katalog/' . array_keys(CatalogImporter::MOCKUP_DIRS)[1] . '/bg.cerita-layar-*.webp') ?: []);
+        $this->assertCount(18, glob(ROOTPATH . CatalogImporter::DEFAULT_DIR . '/' . array_keys(CatalogImporter::MOCKUP_DIRS)[1] . '/bg.cerita-layar-*.webp') ?: []);
     }
 
     /** --kunci limits the run, and so --timpa, to the named slots. */
@@ -652,6 +677,21 @@ final class CatalogImportTest extends CIUnitTestCase
 
         $data[] = ['id' => 'audio', 'key' => 'audio.music.map', 'file' => 'assets/audio/map.mp3', 'size' => 'Audio', 'cat' => 'Musik'];
         file_put_contents($this->catalog . '/data.json', json_encode($data));
+    }
+
+    /** @param array<string, string> $caption */
+    private function setCatalogCaption(string $key, array $caption): void
+    {
+        $path = $this->catalog . '/data.json';
+        $data = json_decode((string) file_get_contents($path), true);
+
+        foreach ($data as &$entry) {
+            if ($entry['key'] === $key) {
+                $entry['caption'] = $caption;
+            }
+        }
+
+        file_put_contents($path, json_encode($data));
     }
 
     private function removeDir(string $dir): void

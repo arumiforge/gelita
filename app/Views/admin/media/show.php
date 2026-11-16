@@ -8,7 +8,7 @@
  * (public paths to open and check after uploading), the editor that links
  * it, and an upload form that comes back here (for character frames also a
  * form for every frame of the pose at once). Prompts are not repeated: the
- * team's Katalog Aset (gelita-katalog/) is searched by asset key.
+ * team's Katalog Aset (ai-studio/game-images/data.json) is searched by asset key.
  *
  * @var array<string, mixed>                  $row      media_assets row
  * @var array<string, mixed>|null             $slot     ImageSlots::describe(), null for keys the game does not read by name
@@ -167,7 +167,7 @@ $src         = $isActive && $row['asset_type'] !== 'video'
       <div><dt>Berkas sekarang</dt><dd><?= $has === null ? '—' : esc($has[0] . ' × ' . $has[1] . ' px') . ($row['file_size'] === null ? '' : ' · ' . fmt_num(((int) $row['file_size']) / 1024, 0, 'id') . ' KB') ?></dd></div>
       <div><dt>Diperbarui</dt><dd><?= empty($row['updated_at']) ? '—' : esc(fmt_date((string) $row['updated_at'], true, 'id')) ?></dd></div>
     </dl>
-    <p class="muted">Prompt dan panduan gaya: buka Katalog Aset (folder <code>gelita-katalog</code>, berkas <code>index.html</code>), lalu cari <code><?= esc($key) ?></code>.</p>
+    <p class="muted">Prompt gambar ini ada di Katalog Aset (berkas <code>ai-studio/game-images/data.json</code>); cari <code><?= esc($key) ?></code>.</p>
   </section>
 </div>
 
