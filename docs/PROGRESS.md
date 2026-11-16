@@ -177,4 +177,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `aru/dazzling-allen-p8hn5z` | Owner interview of 16 November 2026: decisions recorded, prompts `R-23` to `R-26` | Docs only; PR open |
