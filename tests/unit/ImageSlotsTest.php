@@ -134,6 +134,15 @@ final class ImageSlotsTest extends CIUnitTestCase
         $this->assertSame('/tantangan/wonosobo/4', $hunt['screens'][0][1]);
 
         $this->assertSame('/tantangan/temanggung/4', ImageSlots::describe('challenge.tmg-4.scene')['screens'][0][1]);
+
+        // Round-2 post photo (owner, 16 November 2026: the Uceng post gets its own picture)
+        $post = ImageSlots::describe('challenge.post.tmg-4-b');
+        $this->assertSame('challenge', $post['group']);
+        $this->assertSame('temanggung', $post['region']);
+        $this->assertSame('Foto unggahan Cari Objek Temanggung', $post['label']);
+        $this->assertSame('/tantangan/temanggung/4', $post['screens'][0][1]);
+        $this->assertFalse($post['transparent']);
+        $this->assertSame([1280, 720], (new App\Libraries\MediaStore())->requiredSize('challenge.post.tmg-4-b'));
         $this->assertSame('Gambar Susun Gambar Magelang', ImageSlots::describe('challenge.item.mgl-1-02')['label']);
 
         $frame = ImageSlots::describe('char.kedu.smile.2');

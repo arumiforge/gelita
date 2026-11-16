@@ -24,6 +24,7 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 | `R-10` | Gambar tes `instr.tes-mb-A-M4` | 387 | Nama akun tertulis "@panitia.kaghaianak" |
 | `R-11` | Gambar tes `instr.tes-bd-B-G2` | 385 | Belum ditandai pengembang. Pasangan `R-08` di buklet B: tulisan "Video: Sanggar Tujuh Pelita" sama kecilnya. Dikerjakan hanya kalau pengembang setuju, supaya buklet A dan B tetap setara |
 | `R-12` | Pustaka Magelang, arca Buddha Mendut `library.magelang.p5.2` | 293 | Buddha duduk bersila (aslinya kedua kaki menjuntai); dua arca pengapit berdiri (aslinya duduk); ada singa dan anak yang menyembah. Foto acuan dari pengembang, lisensi didapat peneliti |
+| `R-13` | Foto unggahan Cari Objek Temanggung `challenge.post.tmg-4-b` (uceng goreng) | — | Belum ada fotonya, dan pemasang katalog belum mengenal gambar unggahan; slot `challenge.post.*` ditambahkan 16 November 2026 |
 
 ## Aturan bersama
 
@@ -31,7 +32,7 @@ Telaah ini pemeriksaan pengembang sendiri, bukan validasi ahli ([01 → Peran pe
 
 Gambar di dokumen ini bukan bagian antarmuka. Gayanya mengikuti kelompoknya masing-masing:
 
-- **Gambar isi game** (`R-01` sampai `R-05`, dan `R-12`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
+- **Gambar isi game** (`R-01` sampai `R-05`, `R-12`, dan `R-13`): blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` dari katalog, kata per kata, seperti di 37. Tanpa sapuan kuas dan tanpa tekstur kertas.
 - **Gambar tes** (`R-06` sampai `R-11`): gambar garis hitam-putih seperti 23 gambar tes lainnya. Gaya ini disengaja: instrumen tes tampil netral dan tidak memakai gaya game.
 
 **Tulisan di gambar.** Gambar isi game tidak memuat tulisan. Gambar tes justru memuat tulisan, dan setiap kata harus sama persis dengan `app/Database/Seeds/data/instrumen/tes.php`. Tulisan di gambar dibuat oleh model gambar, jadi setiap hasil dibaca ulang kata per kata dengan daftar di promptnya.
@@ -214,6 +215,36 @@ CONSTRAINTS
 No watermarks, signatures, text, letters, numbers, logos, frames, cropped statues, extra limbs or hands, blurry edges, neon colours or gold-painted statues. No painterly 2D, gouache or paper grain.
 ```
 
+### R-13 · Foto unggahan uceng goreng (Cari Objek Temanggung, babak 2, variasi b)
+
+Ditambahkan 16 November 2026. Unggahan `tmg-4-b` ("Unggahan video ikan uceng", 08 → *Variasi b*) belum punya foto, dan sampai hari ini pemasang katalog tidak bisa memasang gambar unggahan. Pengembang memilih foto baru, bukan potongan gambar Susun Gambar `tmg-1-h01`; slot `challenge.post.*` ditambahkan untuk itu (1280 × 720). Foto tampil di kotak 16:9 di kiri adegan. Tulisan "Video: Warung Tepi Kali Bu Tini" (bagian ketuk B2) ditempel permainan di atas seperempat bawah foto, dari tepi kiri sampai kira-kira tiga perempat lebarnya, jadi bagian itu harus tenang.
+
+| | |
+|---|---|
+| Kode berkas | `challenge.post.tmg-4-b` → simpan sebagai `challenge.post.tmg-4-b.webp` |
+| Kanvas | 1280 × 720 |
+| Lampiran | Acuan gaya `reference.06` atau `reference.07`; `ai-studio/game-images/assets/tantangan/challenge.item.tmg-1-h01.webp` (piring uceng goreng di pojok kiri bawah: bentuk ikan dan hasil akhir) |
+| Butir | `tmg-4-b02`: papan informasi "Ikan uceng adalah ikan sungai kecil, makanan khas Temanggung." melawan keterangan "Uceng goreng, ikan laut khas Temanggung." Foto tidak boleh membantu atau menyesatkan: uceng kecil biasa, tanpa laut dan tanpa sungai |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: challenge.post.tmg-4-b  (R-13 · fried uceng, photo inside a social-media post)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Characters: do NOT include Jaka or Mbah Kedu, and no people or hands at all. The attached puzzle picture shows the same food in the corner: match the fish and the finish, not its river scene.
+
+SUBJECT AND COMPOSITION
+A food picture of the kind people post from a small village food stall: seen from above at a slight angle, on a wooden table. In the centre-right: one round woven rattan plate lined with a banana leaf, heaped with crispy fried uceng — many SMALL, SLENDER fish, each about as long as a finger, fried whole until golden-brown and dry, with crisp little tails. Beside the plate: a small bowl of red sambal, a few leaves of fresh lalapan (cucumber slices, basil), and a glass of warm tea. Warm morning light from the left.
+The lower quarter of the picture, from the left edge to about three quarters across, is plain wooden table surface only: a caption strip will be laid over it. Keep the plate and the bowl out of that band.
+
+Accuracy — Uceng are tiny freshwater fish of Temanggung: small and slender like a finger, never big fish, never fish steaks or fillets. No sea food at all: no large sea fish, no prawns, squid, crab or shells. No sea, beach, river or boat in the picture. No brand, packaging or menu.
+
+DELIVERY
+Target canvas 1280 × 720 pixels; aspect 16:9. The plate complete within the canvas, its centre a little right of the middle. Opaque, full-bleed picture. Deliver WebP, named challenge.post.tmg-4-b.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, play buttons, frames, social-media interface, emoji, blurry edges or neon colours. No painterly 2D, gouache or paper grain.
+```
+
 ## Gambar tes
 
 Lampirkan gambar tes yang sekarang dari `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/` dan minta gambar yang sama dengan perubahan yang disebut saja. Setelah itu baca setiap kata di hasilnya dan cocokkan dengan daftar *All text* di prompt.
@@ -386,12 +417,13 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 
 ## Daftar periksa hasil
 
-**Gambar isi game (`R-01` sampai `R-05`, `R-12`)**
+**Gambar isi game (`R-01` sampai `R-05`, `R-12`, `R-13`)**
 
 - Tanpa tulisan, angka, atau logo.
 - `R-01`: tepat dua gunung, tanpa candi, telaga, atau laut; tanpa tembakau; sepertiga bawah tenang.
 - `R-02`: terbaca sebagai beberapa pepaya kecil, bukan belimbing dan bukan satu pepaya besar; latar transparan; tanpa cahaya atau garis tepi yang menandai jawaban.
 - `R-12`: tepat tiga arca dari batu abu-abu kecokelatan; Buddha duduk dengan kedua kaki di alas teratai, tangan di depan dada; kedua arca pengapit duduk; tanpa singa, sesaji, pagar, dan orang. Cocokkan dengan kedua foto acuan.
+- `R-13`: ikan kecil ramping sebesar jari, bukan ikan laut; seperempat bawah dari kiri hanya permukaan meja; tanpa tulisan, tombol putar, dan tampilan media sosial.
 - `R-03` sampai `R-05`: tokohnya Jaka (syal merah, kemeja krem, ransel, tanpa ikat kepala); ketiganya berlatar biru tua yang sama; medali simbol bergaya emas berukir.
 
 **Gambar tes (`R-06` sampai `R-11`)**
@@ -403,7 +435,7 @@ No other text, no colour, no new objects. Deliver at exactly 1536 × 1024 pixels
 
 ## Pemasangan
 
-- `R-01` sampai `R-05` dan `R-12`: berkas dari `ai-studio/chatgpt-images/out/` **dipindahkan** (bukan disalin) ke tempat berkas lamanya di `ai-studio/game-images/assets/` dan menggantikannya; entri `data.json` tidak berubah. Lalu `php spark gelita:katalog:impor`.
+- `R-01` sampai `R-05` dan `R-12`: berkas dari `ai-studio/chatgpt-images/out/` **dipindahkan** (bukan disalin) ke tempat berkas lamanya di `ai-studio/game-images/assets/` dan menggantikannya; entri `data.json` tidak berubah. Lalu `php spark gelita:katalog:impor`. `R-13` adalah gambar baru: berkasnya dipindahkan ke `ai-studio/game-images/assets/tantangan/challenge.post.tmg-4-b.webp`, lalu entri baru `challenge.post.tmg-4-b` ditambahkan ke `data.json` (contoh: entri `challenge.item.tmg-1-h01`) dan satu baris ke `REVIEW.md`.
 - `R-06` sampai `R-11`: berkas dipindahkan ke `ai-studio/game-images/mockup/gambar-mockup/instrumen/aset/`. Berkas PNG induk di `docs/revisi-10-analitik/gambar/doc-34/` diganti dengan hasil yang sama, supaya induk dan gambar terpasang tidak berbeda.
 - Setelah dipasang, lembar telaah dibangun ulang (`node ai-studio/game-images/review/build-sheets.mjs`) dan baris `REVIEW.md` diberi tanda baru oleh pengembang.
 

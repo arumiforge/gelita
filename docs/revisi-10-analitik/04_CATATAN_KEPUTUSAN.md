@@ -6,11 +6,12 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
-**Foto acuan arca Buddha Mendut diterima; gambar Pustaka `library.magelang.p5.2` dibuat ulang (`R-12`)** (cabang `nty/gracious-feynman-2yhoki`) · `asal: pengembang` · `draf pengembang` · mengubah 39
+**Foto acuan arca Buddha Mendut diterima; gambar Pustaka `library.magelang.p5.2` dibuat ulang (`R-12`); foto unggahan uceng dibuat baru (`R-13`)** (cabang `nty/gracious-feynman-2yhoki`) · `asal: pengembang` · `draf pengembang` · mengubah 39
 
 - **Foto acuan.** Pengembang mengirim empat foto Candi Mendut (ruang dalam dengan tiga arca, arca Buddha dari dekat, dua foto bangunan). Lisensinya sudah didapat peneliti; pembuat dan sumber foto tidak tercatat. Foto disimpan sebagai acuan di `ai-studio/chatgpt-images/inbox/` (dicatat di `reference-sources-2026-11-15.json`) dan tidak pernah dipasang di game.
 - **Hasil pencocokan.** Gambar Pustaka "Arca Buddha di dalam Candi Mendut" keliru di empat hal: Buddha duduk bersila, padahal aslinya duduk dengan kedua kaki menjuntai di alas teratai; kedua arca pengapit berdiri, padahal duduk; ada dua singa yang tidak ada di ruang itu; ada anak yang menyembah. Tanda telaah no. 293 berubah dari `redo later` menjadi `redo`.
 - **Gambar baru.** Prompt `R-12` di 39: tiga arca sesuai foto, tanpa orang (di halaman tentang tempat ibadah agama lain, anak cukup melihat arcanya). Teks Pustaka dan keterangan gambarnya tetap, karena sudah sesuai foto.
+- **Foto unggahan uceng (`R-13`).** Unggahan babak 2 Cari Objek Temanggung variasi b belum punya foto. Pengembang memilih foto baru (bukan potongan gambar Susun Gambar `tmg-1-h01`): uceng goreng di piring, tanpa laut dan tanpa sungai, supaya foto tidak membantu atau menyesatkan butir `tmg-4-b02`. Prompt di 39; pemasang katalog kini mengenal gambar unggahan. Teks butir tidak berubah.
 - **Foto acuan berikutnya** dikirim pengembang dalam percakapan berikutnya (lambang tiga kabupaten, peta Dieng, Situs Liyangan, panel relief Borobudur, buah carica); setiap kiriman menjadi baris `R-` baru dengan cara yang sama.
 
 Entri ini tidak diikuti pembuatan ulang PDF.

@@ -638,6 +638,21 @@ final class ImageSlots
             'tips'        => 'Semua benda satu adegan (yang dicari dan pengecoh) satu gaya dan sudut pandang, agar pengecoh tidak mudah dikenali.',
             'admin'       => ['Atur posisi benda di halaman tantangan', 'admin/konten/node/{node_id}'],
         ],
+        // Cari Objek round 2 (31 §12.1): the photo of one post, drawn in the 16:9 box
+        // left of the tap parts (game.css `.post-photo`); the credit part covers its
+        // lower left corner. Most posts reuse the region's Susun Gambar picture.
+        'challenge.post.*' => [
+            'group'       => 'challenge',
+            'label'       => 'Foto unggahan Cari Objek {Wilayah}',
+            'content'     => 'Foto di dalam unggahan babak 2 (Periksa Unggahan): pokok unggahan, tanpa tulisan; tulisan unggahan dipasang permainan di sampingnya.',
+            'screens'     => [['Tantangan Cari Objek {Wilayah}, babak 2', '/tantangan/{wilayah}/{n}']],
+            'format'      => 'WebP atau JPG kualitas ± 85, lanskap 16:9',
+            'transparent' => false,
+            'fallback'    => 'Gambar pengganti umum',
+            'priority'    => 'wajib',
+            'tips'        => 'Pojok kiri bawah tenang: tulisan sumber foto ditempel di sana. Pokok foto di tengah, karena tepi bisa terpotong.',
+            'admin'       => ['Buka soal tantangan', 'admin/konten/node/{node_id}'],
+        ],
         // Part 6 (32 §7.5): one situation picture per Skenario Digital item, from the Katalog Aset
         'item.skenario.*' => [
             'group'       => 'challenge',
@@ -801,7 +816,7 @@ final class ImageSlots
     {
         $prefixes = config('Gelita')->levelPrefixes;
 
-        if (preg_match('/^(?:challenge\.(?:item\.)?|item\.skenario\.)(' . implode('|', array_keys($prefixes)) . ')-/', $assetKey, $m)) {
+        if (preg_match('/^(?:challenge\.(?:item\.|post\.)?|item\.skenario\.)(' . implode('|', array_keys($prefixes)) . ')-/', $assetKey, $m)) {
             return $prefixes[$m[1]];
         }
 
@@ -840,7 +855,7 @@ final class ImageSlots
             '{frame}'   => '',
         ];
 
-        if (preg_match('/^challenge\.(?:item\.)?[a-z]+-(\d+)/', $assetKey, $m)) {
+        if (preg_match('/^challenge\.(?:item\.|post\.)?[a-z]+-(\d+)/', $assetKey, $m)) {
             $vars['{n}'] = $m[1];
         }
 

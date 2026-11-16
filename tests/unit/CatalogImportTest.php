@@ -60,6 +60,7 @@ final class CatalogImportTest extends CIUnitTestCase
             'char.jaka.idle.1'                => ['karakter/char.jaka.idle.1.webp', 700, 900, true],
             'char.jaka.idle.2'                => ['karakter/char.jaka.idle.2.webp', 700, 900, true],
             'challenge.item.tmg-1-01'         => ['tantangan/challenge.item.tmg-1-01.webp', 1200, 1200, false],
+            'challenge.post.tmg-4-b'          => ['tantangan/challenge.post.tmg-4-b.webp', 1280, 720, false],
             'library.temanggung.p1.1'         => ['pustaka/library.temanggung.p1.1.webp', 960, 640, false],
             'library.temanggung.p7.1'         => ['pustaka/library.temanggung.p7.1.webp', 960, 640, false],
             'library.temanggung.p8.2'         => ['pustaka/library.temanggung.p8.2.webp', 960, 640, false],
@@ -125,6 +126,16 @@ final class CatalogImportTest extends CIUnitTestCase
 
         // Challenge image fills the bank slot
         $this->assertSame(1, (int) $byKey('challenge.item.tmg-1-01')['is_active']);
+
+        // A round-2 post photo fills the slot its post scene points at (it was skipped before 16 November 2026)
+        $post = $byKey('challenge.post.tmg-4-b');
+        $this->assertSame(1, (int) $post['is_active']);
+        $this->assertFileExists(FCPATH . $post['storage_path']);
+        $scene = $this->sqlite->table('post_scenes ps')->select('ps.media_asset_id')
+            ->join('challenge_nodes n', 'n.id = ps.challenge_node_id')->join('levels l', 'l.id = n.level_id')
+            ->where('l.code', 'temanggung')->where('n.sequence', 4)->where('ps.variant_group', 'b')
+            ->get()->getRow();
+        $this->assertSame((int) $post['id'], (int) $scene->media_asset_id);
 
         // Story slide background, linked to its slide
         $story = $byKey('bg.story.intro.1');
