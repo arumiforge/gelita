@@ -866,3 +866,4 @@ ChatGPT refuses more than five image files in one conversation (reported by the 
 
 Rows over the limit were the three still `todo`: `R-20` and `R-21` (6 each) lose the photo of the two dancers (used for how it is danced, not for the object's form); `R-22` (7) loses the two kendi photos (a different vessel; the kendil photos show the clay already), and its prompt sentence about them is removed. Counted with a script over every `R-` row: none lists more than five now. Rows already generated or installed are unchanged. Docs only; no test reads these files.
 
+**Masked edits.** ChatGPT then advised the same cuts and, for `R-19`, an edit with a mask over the emblem only, the ring, diamond points and disc locked, because a plain regeneration keeps changing them. Added to the `R-19` prompt and to `AGENTS.md`, and to `R-25` (mask over the flag disc, the gold ring locked), the same kind of edit.

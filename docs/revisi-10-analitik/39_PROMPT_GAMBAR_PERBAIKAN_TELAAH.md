@@ -472,6 +472,7 @@ Ditambahkan 16 November 2026. Telaah no. 115: lambang di tengah avatar adalah tu
 
 ```text
 EDIT the attached avatar.10.webp. Keep EVERYTHING outside the central emblem exactly as it is: the dark-navy circular medallion rim, its thin brass edging, the four small gold diamond points, the cream parchment disc, the size, position, lighting and the transparent exterior. Compare with the attached avatar.1 and avatar.2 so the result stays in the same family.
+Use the image editor with a MASK over the central emblem only; the medallion rim, the diamond points and the cream disc stay outside the mask, locked. Do not regenerate the whole picture.
 
 Replace ONLY the gold emblem in the middle with a new one: a bundengan from Wonosobo, as one large sculptural GOLD emblem, in the same raised gold finish as the emblems of the other avatars, readable at 48 pixels.
 The bundengan, as in the attached photos: an UPRIGHT hollow shell shaped like a tall shield standing on its end, broad and rounded at the bottom, narrowing to a POINT at the top, curving forward so it is hollow; a loose square weave of flat bamboo strips; on its back a few cords forming a large square grid and a small tuft at the pointed top; ONE long straight pole along one edge, sticking out past the top; inside the hollow a few strings stretched from side to side. Seen in three-quarter view from the front-left so that both the back and the open hollow show. All of it in gold relief, no other colours added.
@@ -847,6 +848,7 @@ Ditambahkan 16 November 2026. Telaah no. 62: tombol bundar bahasa Inggris memuat
 
 ```text
 Edit the attached round button "round-lang-en.webp". Keep its carved gold ring exactly as it is: same size, same ornaments, same position, same light from the upper left. Replace ONLY the flag inside the ring.
+Use the image editor with a MASK over the flag disc only; the gold ring stays outside the mask, locked. Do not regenerate the whole button.
 New flag: the Union Jack of the United Kingdom, correct proportions and colours (navy blue field, white saltire, red saltire offset as on the real flag, white-bordered red cross), as softly waving fabric with the same cloth folds, sheen and inner shadow as the red-and-white flag in the attached "round-lang-id.webp".
 The two buttons must look like one pair: same ring, same fabric, same brightness.
 Output: 256 × 256 pixels, genuine transparent background outside the ring, preserve alpha. WebP, named round-lang-en.webp.
