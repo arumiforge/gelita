@@ -222,9 +222,5 @@ $dataDate  = isset($dataMeta['upstream_updated']) ? substr((string) $dataMeta['u
   <p class="muted">
     Sumber daftar sekolah resmi: <?= esc((string) ($dataMeta['source'] ?? '')) ?><?= $dataDate !== null ? ', data per ' . esc($dataDate) : '' ?>.
   </p>
-  <details class="row-details muted">
-    <summary>Catatan untuk petugas teknis</summary>
-    <p>Memperbarui daftar sekolah: jalankan <code>php docs/sekolah/build-sekolah-jateng.php</code> lalu <code>php spark gelita:schools:import</code> di server.</p>
-  </details>
 <?php endif ?>
 <?= $this->endSection() ?>

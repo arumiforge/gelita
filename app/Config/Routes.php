@@ -146,6 +146,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
     $routes->get('logout', 'AuthController::logout');
     // Staff guide: public (owner, 16 Nov 2026), offered beside the login card; holds no data and no secrets
     $routes->get('panduan-staf', 'StaffGuideController::index');
+    $routes->get('panduan-staf/(:segment)', 'StaffGuideController::page/$1');
 
     $routes->group('', ['filter' => 'staffAuth'], static function ($routes): void {
         // Rights per capability (revision 10, part 1: App\Libraries\StaffAccess, 27 §4, §7).

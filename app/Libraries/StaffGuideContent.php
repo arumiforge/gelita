@@ -3,44 +3,232 @@
 namespace App\Libraries;
 
 /**
- * Text of the staff guide (/admin/panduan-staf), the one page that explains
- * the panel to every staff role without the planning documents.
+ * Text of the staff guide (/admin/panduan-staf), the pages that explain the
+ * panel to every staff role without the planning documents.
  *
  * Why a data class and not Admin.php keys: the guide is long running text
  * (about 400 lines of steps and notes) that reads best kept together in
  * chapter order, and each step carries the panel page it uses. Admin.php is
  * Indonesian only, like this file, so no English counterpart is needed
  * (decision log, 16 November 2026). Short screen labels (page title,
- * buttons, TOC heading) stay in Admin.php.
+ * buttons, menu heading) stay in Admin.php.
  *
- * Sources: docs/revisi-10-analitik/02 and 27–35, docs/08_DEPLOYMENT.md,
- * checked against StaffAccess, Routes.php and the panel labels. When a panel
- * page, button label or right changes, change the matching step here
- * (StaffGuideTest checks every link is a real panel route).
+ * Audience (owner, 16 November 2026): what staff see and do in the panel.
+ * No server, deployment or code explanations, and no references to the
+ * repository's documents; StaffGuideTest refuses them.
  *
- * Markup inside strings: **bold** and `code`; everything else is escaped.
+ * Every section is one page, /admin/panduan-staf/{section id}; a chapter is
+ * a group in the guide's menu. When a panel page, button label or right
+ * changes, change the matching step here (StaffGuideTest checks every link
+ * is a real panel route).
+ *
+ * Markup inside strings (everything else is escaped):
+ *   **bold**, `code`, [label](#section-id) (a link to another guide page),
+ *   [[term key]] or [[shown text|term key]] (a glossary term, see terms()).
  *
  * Chapter shape:
  *   id, title, roles (who it is written for), lead, sections[]
  * Section shape (every key but id/title optional):
  *   id, title, lead, steps (list of string | [text, link]), list (bullets),
- *   table ([head[], rows[][]]), note (info), warn (warning)
+ *   table ([head[], rows[][]]), note (info), warn (warning), glossary (true:
+ *   the glossary entries go here)
  * A link is [href, label, capability]; it shows as a link only when the
  * reader holds the capability.
  */
 final class StaffGuideContent
 {
+    /** URL path of the guide; a section page is BASE/{id}. */
+    public const BASE = 'admin/panduan-staf';
+
+    /** Sections offered as cards on the guide's first page. */
+    public const POPULAR = ['ringkas', 'token', 'lupa-sandi', 'unggah-lembar', 'unduh', 'larangan-daftar'];
+
     /**
-     * Guide text to HTML: escapes everything, then turns **bold**, `code`
-     * and [label](#anchor) (anchors on this page only) into markup.
+     * Guide text to HTML: escapes everything, then turns **bold**, `code`,
+     * [label](#section) and [[term]] into markup. A term key that does not
+     * exist stays plain text. $query is appended to guide links (a guest's
+     * picked role).
      */
-    public static function inline(string $text): string
+    public static function inline(string $text, string $query = ''): string
     {
         $html = esc($text);
         $html = (string) preg_replace('/\*\*(.+?)\*\*/u', '<b>$1</b>', $html);
         $html = (string) preg_replace('/`(.+?)`/u', '<code>$1</code>', $html);
+        $html = (string) preg_replace_callback(
+            '/\[([^\]]+)\]\(#([a-z0-9-]+)\)/u',
+            static fn (array $m): string => '<a href="' . esc(self::url($m[2]) . $query) . '">' . $m[1] . '</a>',
+            $html,
+        );
 
-        return (string) preg_replace('/\[([^\]]+)\]\(#([a-z0-9-]+)\)/u', '<a href="#$2">$1</a>', $html);
+        return (string) preg_replace_callback(
+            '/\[\[(?:([^\]|]+)\|)?([a-z0-9-]+)\]\]/u',
+            static function (array $m): string {
+                $terms = self::terms();
+                $shown = $m[1] !== '' ? $m[1] : ($terms[$m[2]]['term'] ?? $m[2]);
+
+                if (! isset($terms[$m[2]])) {
+                    return $shown;
+                }
+
+                return '<button type="button" class="term" popovertarget="istilah-pop-' . $m[2] . '">' . $shown . '</button>';
+            },
+            $html,
+        );
+    }
+
+    /** Address of a guide page; '' is the first page. */
+    public static function url(string $section = ''): string
+    {
+        return base_url($section === '' ? self::BASE : self::BASE . '/' . $section);
+    }
+
+    /**
+     * Glossary: key => term, def (one or two sentences), example, more (the
+     * guide page that explains it in context; null = the glossary page).
+     * Popovers show def, example and a link to `more`; the glossary page
+     * lists every entry. Meanings follow the research data dictionary
+     * (kamus-1.1) in plain words.
+     *
+     * @return array<string, array{term: string, def: string, example: string, more: string|null}>
+     */
+    public static function terms(): array
+    {
+        return [
+            'kode-peserta' => [
+                'term'    => 'Kode peserta',
+                'def'     => 'Kode siswa dalam penelitian. Dipakai di semua lembar dan halaman panel, menggantikan nama.',
+                'example' => '`S03-A07`: sekolah S03, rombel A, siswa nomor 07.',
+                'more'    => null,
+            ],
+            'kode-sekolah' => [
+                'term'    => 'Kode sekolah penelitian',
+                'def'     => 'Kode sekolah: S untuk sampel utama, U untuk uji coba, V untuk instalasi uji validator, diikuti dua angka.',
+                'example' => '`S03` adalah sekolah sampel utama nomor 3.',
+                'more'    => 'sekolah',
+            ],
+            'rombel' => [
+                'term'    => 'Rombel',
+                'def'     => 'Kelas di sekolah itu, ditulis satu huruf kapital.',
+                'example' => 'Huruf `A` pada kode peserta `S03-A07`.',
+                'more'    => null,
+            ],
+            'pertemuan' => [
+                'term'    => 'Pertemuan P1–P5',
+                'def'     => 'Lima pertemuan dengan satu rombel. Setiap pertemuan membuka wilayahnya sendiri. Jangan tertukar dengan peran peneliti.',
+                'example' => 'P1 daftar dan tes awal; P2 Temanggung; P3 Magelang; P4 Wonosobo; P5 semua wilayah, tes akhir, dan penutup.',
+                'more'    => 'mode-penelitian',
+            ],
+            'sesi-lapangan' => [
+                'term'    => 'Sesi lapangan',
+                'def'     => 'Satu kunjungan ke satu rombel untuk satu pertemuan. Membawa token, wilayah yang dibuka, serta jam buka dan jam tutup.',
+                'example' => '`S03-A-P2` adalah pertemuan ke-2 rombel A di S03. Sesi susulannya `S03-A-P2-S`.',
+                'more'    => 'sebelum',
+            ],
+            'token' => [
+                'term'    => 'Token',
+                'def'     => 'Enam huruf atau angka yang diketik siswa untuk masuk ke sesi lapangan. Hanya token terbaru yang berlaku, dan hanya selama sesi buka.',
+                'example' => 'Token ditulis di papan tulis atau ditampilkan besar di proyektor.',
+                'more'    => 'token',
+            ],
+            'buklet' => [
+                'term'    => 'Buklet B1–B4',
+                'def'     => 'Variasi soal yang didapat siswa pada pengerjaan pertamanya. Dihitung otomatis dari kursi siswa (L2), bersama bentuk tes A atau B.',
+                'example' => 'Setelah baris dan kursi disimpan, kolom Buklet, Tes awal, dan Tes akhir terisi sendiri.',
+                'more'    => 'kursi',
+            ],
+            'mode-penelitian' => [
+                'term'    => 'Mode penelitian',
+                'def'     => 'Sakelar di halaman Penelitian. Selama menyala, permainan hanya terbuka di sesi lapangan, jam disembunyikan, dan aturan penelitian berlaku.',
+                'example' => 'Di luar sesi lapangan yang buka, siswa melihat layar "Sampai jumpa".',
+                'more'    => 'mode-penelitian',
+            ],
+            'lembar' => [
+                'term'    => 'Lembar L0–L8',
+                'def'     => 'Lembar lapangan kertas yang diisi tim selama kunjungan. L7 satu-satunya lembar yang memuat nama.',
+                'example' => 'L2 berisi peta kursi, perangkat, dan kode peserta.',
+                'more'    => 'lembar',
+            ],
+            'pengerjaan-pertama' => [
+                'term'    => 'Pengerjaan pertama',
+                'def'     => 'Pengerjaan sebuah tantangan dengan variasi buklet siswa, sampai tantangan itu tertutup untuk pertama kali. Satu-satunya pengerjaan yang dinilai.',
+                'example' => 'Siswa yang mengulang tantangan tetap dinilai dari pengerjaan pertamanya; ulangannya disimpan tanpa dinilai.',
+                'more'    => null,
+            ],
+            'kesempatan' => [
+                'term'    => 'Kesempatan',
+                'def'     => 'Batas tiga percobaan. Dihitung per tantangan (Isi Rumpang, Benar atau Salah), per petunjuk (Cari Objek), atau per skenario (Skenario Digital).',
+                'example' => 'Di Isi Rumpang, siswa boleh menekan Cek tiga kali.',
+                'more'    => null,
+            ],
+            'jeda' => [
+                'term'    => 'Batas jeda tanpa sentuhan',
+                'def'     => 'Jeda tanpa sentuhan yang lebih lama dari batas ini tidak dihitung sebagai waktu aktif; hanya bagian yang melebihi batas yang dibuang.',
+                'example' => 'Dengan batas 3 menit, jeda 5 menit menyumbang 3 menit waktu aktif.',
+                'more'    => 'pengaturan-data',
+            ],
+            'tebakan-cepat' => [
+                'term'    => 'Tebakan cepat',
+                'def'     => 'Jawaban yang diberikan lebih cepat dari batas detik di pengaturan, sehingga ditandai sebagai tebakan. Jawabannya tetap disimpan.',
+                'example' => 'Dengan batas 3 detik, jawaban 1 detik setelah soal tampil ditandai tebakan cepat.',
+                'more'    => 'pengaturan-data',
+            ],
+            'data-mentah' => [
+                'term'    => 'Data mentah',
+                'def'     => 'Data apa adanya dari permainan dan modul tes: jawaban, percobaan, pengerjaan, progres, navigasi, bantuan, dan event.',
+                'example' => 'Setiap ketukan Cek tercatat sebagai satu baris di riwayat percobaan.',
+                'more'    => 'data-mentah',
+            ],
+            'data-turunan' => [
+                'term'    => 'Data turunan',
+                'def'     => 'Nilai untuk analisis yang dihitung panel dari data mentah, misalnya waktu aktif, tebakan cepat, dan skor. Dihitung ulang bila data mentah berubah.',
+                'example' => 'Lembar berawalan `turunan_` di berkas unduhan.',
+                'more'    => 'turunan',
+            ],
+            'kunci-ambang' => [
+                'term'    => 'Kunci ambang',
+                'def'     => 'Mengunci batas jeda dan batas tebakan cepat sebuah penelitian supaya tidak berubah lagi selama analisis.',
+                'example' => 'Ditekan ketua saat versi kamus data dibekukan (gerbang G4).',
+                'more'    => 'turunan',
+            ],
+            'kamus-data' => [
+                'term'    => 'Kamus Data',
+                'def'     => 'Lembar yang menjelaskan setiap kolom unduhan: arti, satuan, dan versinya. Selalu ikut di setiap unduhan.',
+                'example' => 'Versi yang berlaku sekarang `kamus-1.1`.',
+                'more'    => 'unduh',
+            ],
+        ];
+    }
+
+    /**
+     * Term keys used in a section's text, in first-use order.
+     *
+     * @param array<string, mixed> $section
+     *
+     * @return list<string>
+     */
+    public static function termsIn(array $section): array
+    {
+        preg_match_all('/\[\[(?:[^\]|]+\|)?([a-z0-9-]+)\]\]/u', (string) json_encode($section, JSON_UNESCAPED_UNICODE), $m);
+
+        return array_values(array_intersect(array_unique($m[1]), array_keys(self::terms())));
+    }
+
+    /**
+     * Plain text of a section, for the guide's search box.
+     *
+     * @param array<string, mixed> $section
+     */
+    public static function plainText(array $section): string
+    {
+        $parts = [];
+        array_walk_recursive($section, static function ($value, $key) use (&$parts): void {
+            if (is_string($value) && ! in_array($key, ['id'], true) && ! str_starts_with($value, 'admin/')) {
+                $parts[] = $value;
+            }
+        });
+        $text = preg_replace(['/\[\[(?:([^\]|]+)\|)?([a-z0-9-]+)\]\]/u', '/\[([^\]]+)\]\(#[a-z0-9-]+\)/u', '/\*\*|`/u'], ['$1$2', '$1', ''], implode(' ', $parts));
+
+        return mb_strtolower(trim((string) preg_replace('/\s+/u', ' ', (string) $text)));
     }
 
     /** @return list<array<string, mixed>> */
@@ -68,10 +256,12 @@ final class StaffGuideContent
                     'id'    => 'cara-pakai',
                     'title' => 'Cara memakai panduan ini',
                     'list'  => [
-                        'Pakai **Daftar isi** untuk melompat ke langkah yang dibutuhkan.',
+                        'Menu di kiri memuat semua topik, dikelompokkan per bab. Bab untuk peran Anda ada paling atas.',
+                        'Kotak **Cari** di atas menu menyaring topik menurut kata yang diketik.',
                         'Setiap langkah menyebut halaman panel yang dipakai. Bila Anda boleh membukanya, namanya berupa tautan.',
                         'Kotak kuning berisi hal yang tidak boleh terlewat. Baca sebelum menekan tombol.',
                         'Nama tombol ditulis **tebal**, persis seperti di layar.',
+                        'Kata bergaris titik, misalnya [[token|token]], bisa diklik untuk melihat arti singkat dan contohnya.',
                     ],
                 ],
                 [
@@ -101,22 +291,10 @@ final class StaffGuideContent
                     'note' => 'Halaman yang tidak menjadi hak Anda tidak muncul di menu. Bila dibuka lewat alamat, panel menjawab "halaman tidak ditemukan". Itu bukan kerusakan.',
                 ],
                 [
-                    'id'    => 'istilah',
-                    'title' => 'Kata yang sering dipakai',
-                    'table' => [
-                        ['Kata', 'Artinya'],
-                        [
-                            ['**Kode peserta**', 'Kode siswa dalam penelitian, misalnya `S03-A07` (sekolah S03, rombel A, nomor 07). Dipakai di semua lembar dan halaman, menggantikan nama.'],
-                            ['**Kode sekolah penelitian**', 'Kode sekolah, misalnya `S03`. S = sampel utama, U = uji coba, V = instalasi uji validator.'],
-                            ['**Rombel**', 'Kelas di sekolah itu, satu huruf (A, B, …).'],
-                            ['**Pertemuan P1–P5**', 'P1 daftar, pengenalan, dan tes awal; P2 Temanggung; P3 Magelang; P4 Wonosobo; P5 semua wilayah, tantangan yang tertinggal, tes akhir, dan penutup.'],
-                            ['**Sesi lapangan**', 'Satu kunjungan ke satu rombel untuk satu pertemuan. Kodenya misalnya `S03-A-P2`; sesi susulan diberi akhiran `-S`, `-S2`.'],
-                            ['**Token**', 'Enam huruf atau angka yang diketik siswa untuk masuk ke sesi. Hanya berlaku selama sesi buka, dan hanya token terbaru.'],
-                            ['**Buklet B1–B4, bentuk tes A/B**', 'Dihitung otomatis dari kursi siswa (L2). Menentukan variasi soal dan bentuk tes.'],
-                            ['**Mode penelitian**', 'Sakelar di halaman Penelitian. Selama menyala, permainan hanya terbuka di sesi lapangan, jam disembunyikan, dan aturan penelitian berlaku.'],
-                            ['**L0–L8**', 'Lembar lapangan kertas. Lihat [Lembar L0–L8](#lembar).'],
-                        ],
-                    ],
+                    'id'       => 'istilah',
+                    'title'    => 'Kata yang sering dipakai',
+                    'lead'     => 'Arti kata yang sering muncul di panel, lembar lapangan, dan unduhan data. Di halaman lain panduan ini, kata bergaris titik bisa diklik untuk melihat artinya.',
+                    'glossary' => true,
                 ],
                 [
                     'id'    => 'akun',
@@ -145,11 +323,11 @@ final class StaffGuideContent
                     'title' => 'Hari kunjungan dalam 10 langkah',
                     'lead'  => 'Ringkasan untuk dibaca cepat di sekolah. Rincian tiap langkah ada di bawah.',
                     'steps' => [
-                        ['Sehari sebelumnya: buat sesi lapangan, unduh templat lembar, cetak lembar, isi L0.', ['admin/sesi-lapangan', 'Sesi lapangan', 'field_sessions.manage']],
+                        ['Sehari sebelumnya: buat [[sesi lapangan|sesi-lapangan]], unduh templat lembar, cetak lembar, isi L0.', ['admin/sesi-lapangan', 'Sesi lapangan', 'field_sessions.manage']],
                         'Sebelum siswa masuk: cocokkan izin dengan L7 dan isi **Izin per siswa**. Siswa tanpa izin tertulis tidak mendapat akun.',
-                        'Buka sesi, lalu tulis token di papan atau tekan **Tampilkan token besar**.',
+                        'Buka sesi, lalu tulis [[token|token]] di papan atau tekan **Tampilkan token besar**.',
                         'Siswa masuk: P1 lewat **Daftar**, P2–P5 lewat **Masuk**, lalu mengetik token.',
-                        'Isi **Kursi dan buklet (L2)**: baris dan kursi tiap kode peserta.',
+                        'Isi **Kursi dan buklet (L2)**: baris dan kursi tiap [[kode peserta|kode-peserta]].',
                         'P1 dan P5: tekan **Mulai tes awal** atau **Mulai tes akhir** pada waktunya.',
                         ['Selama sesi: buka Pemantauan. Tangani setiap angka merah.', ['admin/pemantauan', 'Pemantauan', 'monitoring.view']],
                         ['Siswa lupa kata sandi: atur ulang lewat kode peserta.', ['admin/peserta/reset-sandi', 'Atur ulang kata sandi siswa', 'participants.reset_by_code']],
@@ -160,13 +338,13 @@ final class StaffGuideContent
                 [
                     'id'    => 'sebelum',
                     'title' => 'Sebelum kunjungan',
-                    'lead'  => 'Syarat: ketua sudah menyalakan **Mode penelitian** di halaman Penelitian, dan admin sudah memberi sekolah kode penelitian. Tanpa itu, halaman Sesi lapangan memberi tahu apa yang kurang.',
+                    'lead'  => 'Syarat: ketua sudah menyalakan [[Mode penelitian|mode-penelitian]] di halaman Penelitian, dan admin sudah memberi sekolah [[kode penelitian|kode-sekolah]]. Tanpa itu, halaman Sesi lapangan memberi tahu apa yang kurang.',
                     'steps' => [
                         ['Buka Sesi lapangan dan tekan **Buat sesi lapangan**.', ['admin/sesi-lapangan', 'Sesi lapangan', 'field_sessions.manage']],
-                        'Isi **Kode sekolah**, **Rombel** (satu huruf), **Pertemuan** (P1–P5), **Tanggal**, **Jam buka**, dan **Jam tutup**. Satu sesi paling lama 4 jam. Pada rencana satu sesi, pilih juga **Wilayah**.',
+                        'Isi **Kode sekolah**, **Rombel** (satu huruf), **Pertemuan** ([[P1–P5|pertemuan]]), **Tanggal**, **Jam buka**, dan **Jam tutup**. Satu sesi paling lama 4 jam. Pada rencana satu sesi, pilih juga **Wilayah**.',
                         'Simpan. Panel menampilkan kode sesi dan tokennya. Tulis keduanya di L1.',
                         'Di halaman sesi, tekan **Unduh templat lembar**. Berkas Excel itu sudah berisi kode sesi, kode peserta rombel, dan bukletnya, tanpa nama.',
-                        'Cetak lembar yang dibutuhkan pertemuan itu (lihat [Lembar L0–L8](#lembar)) di kertas A4, tulis dengan tinta hitam.',
+                        'Cetak [[lembar|lembar]] yang dibutuhkan pertemuan itu (lihat [Lembar L0–L8](#lembar)) di kertas A4, tulis dengan tinta hitam.',
                         'Isi L0 (daftar periksa persiapan) sehari sebelumnya dan sekali lagi sebelum siswa masuk.',
                     ],
                     'list' => [
@@ -182,8 +360,8 @@ final class StaffGuideContent
                         'Sesi buka sendiri pada **Jam buka**. Untuk membuka lebih awal, centang **Buka sekarang** di bagian **Selama sesi** lalu tekan **Simpan jam**.',
                         'Tulis token di papan, atau tekan **Tampilkan token besar** untuk proyektor. Tekan **Kembali ke sesi** untuk kembali.',
                         'P1: siswa menekan **Daftar**, mengetik token, lalu mendaftar. P2–P5: siswa **Masuk** dengan akunnya, lalu mengetik token. Huruf kecil dan spasi tidak masalah.',
-                        'Kelas molor? Ubah **Jam tutup**, lalu **Simpan jam** (batas 4 jam tetap berlaku).',
-                        'Token tersebar ke luar kelas? Tekan **Buat token baru**. Token lama langsung tidak berlaku; siswa yang sudah di dalam tidak terganggu.',
+                        'Bila kelas berlangsung lebih lama, ubah **Jam tutup**, lalu **Simpan jam** (batas 4 jam tetap berlaku).',
+                        'Bila token tersebar ke luar kelas, tekan **Buat token baru**. Token lama langsung tidak berlaku; siswa yang sudah di dalam tidak terganggu.',
                     ],
                     'note' => 'Sepuluh token salah dalam 10 menit membuat perangkat itu menunggu 5 menit. Token juga ditolak bila siswa salah kelas, bukan anggota sesi susulan, sesi belum buka atau sudah tutup, atau siswa sudah mengundurkan diri.',
                 ],
@@ -211,7 +389,7 @@ final class StaffGuideContent
                     'steps' => [
                         'Di halaman sesi, tekan **Kursi dan buklet (L2)**.',
                         'Per kode peserta, isi **Baris** dan **Kursi**: baris dihitung dari depan, kursi dari kiri, dilihat dari papan tulis. Mulai dari 1.',
-                        'Simpan. **Buklet**, **Tes awal**, dan **Tes akhir** terisi otomatis.',
+                        'Simpan. **Buklet**, **Tes awal**, dan **Tes akhir** terisi otomatis (lihat [[buklet|buklet]]).',
                     ],
                     'list' => [
                         'Di P1, isi segera setelah semua siswa mendaftar (sekitar 5 menit). Salin kode dari layar siswa: di P1 dari bagian atas modul tes, di pertemuan lain dari Profil.',
@@ -315,7 +493,7 @@ final class StaffGuideContent
                         '**Jam disembunyikan.** Tidak ada penghitung waktu di tantangan, hasil, profil, maupun tes.',
                         '**Layar terlalu kecil ditolak** sebelum sesi atau akun dibuat. Memperbesar jendela membuka kembali.',
                         '**Tantangan yang terputus dilanjutkan**, bukan diulang, di pertemuan berikutnya.',
-                        '**Mengulang tantangan** baru boleh setelah kelima tantangan wilayah itu selesai. Layar Kenali wilayah juga terbuka setelah wilayahnya selesai.',
+                        '**Mengulang tantangan** baru boleh setelah kelima tantangan wilayah itu selesai; yang dinilai tetap [[pengerjaan pertama|pengerjaan-pertama]]. Layar Kenali wilayah juga terbuka setelah wilayahnya selesai.',
                     ],
                 ],
                 [
@@ -337,7 +515,7 @@ final class StaffGuideContent
                     ],
                     'list' => [
                         'Cetak per pertemuan: P1 = L0, L1, L2, L3, L6, L7; P2–P4 = L0 sampai L5; P5 = L0, L1, L2, L3, L4, L6, L7; susulan = L0, L1, L2, L3 (dan L6 bila menyusul tes).',
-                        'Templat dari halaman sesi memuat lembar yang diketik. L0, L7, dan L8 kosong disiapkan tim dari dokumen lembar lapangan.',
+                        'Templat dari halaman sesi memuat lembar yang diketik. Lembar L0, L7, dan L8 kosong disiapkan tim peneliti.',
                         'Salah tulis dicoret satu garis dan diparaf; jangan memakai cairan koreksi. Isian kosong ditulis "—".',
                         'L7 disimpan di lemari terkunci (kertas) atau terenkripsi (digital), hanya untuk peneliti utama dan ketua.',
                     ],
@@ -370,7 +548,7 @@ final class StaffGuideContent
                     'steps' => [
                         ['Buka Penelitian dan tekan **Buat penelitian baru**.', ['admin/studi', 'Penelitian', 'studies.view']],
                         'Isi kode singkat (tidak bisa diubah), nama, tahun ajaran, status, bahasa awal, cara wilayah terbuka, rencana pertemuan, lama penyimpanan data, dan keterangan.',
-                        'Centang **Mode penelitian** hanya setelah persetujuan etik terbit. Mode ini butuh lama penyimpanan data minimal 7.305 hari dan pengaturan privasi server yang sudah dinyalakan admin.',
+                        'Centang **Mode penelitian** hanya setelah persetujuan etik terbit. Mode ini butuh lama penyimpanan data minimal 7.305 hari. Bila panel menolak karena pengaturan privasi belum siap, hubungi admin.',
                         'Periksa kotak **Daftar siap penelitian** di halaman yang sama. Semua butir sebaiknya hijau sebelum status diubah ke **Berjalan**. Bila belum, panel meminta centang **Tetap jalankan**.',
                         'Status Berjalan mengunci paket aset yang aktif untuk penelitian itu.',
                     ],
@@ -383,8 +561,8 @@ final class StaffGuideContent
                     'table' => [
                         ['Pengaturan', 'Bawaan', 'Rentang'],
                         [
-                            ['Batas jeda tanpa sentuhan', '180 detik', '30–1.800 detik'],
-                            ['Batas tebakan cepat (tantangan)', '3 detik', '0,5–10 detik'],
+                            ['[[Batas jeda tanpa sentuhan|jeda]]', '180 detik', '30–1.800 detik'],
+                            ['Batas [[tebakan cepat|tebakan-cepat]] (tantangan)', '3 detik', '0,5–10 detik'],
                             ['Batas tebakan cepat (soal tes)', '3 detik', '0,5–10 detik'],
                             ['Lebar layar permainan terkecil', '960 piksel', '640–1.280 piksel'],
                             ['Batas waktu tes (tidak tampil ke siswa)', '40 dan 35 menit', '1–240 menit'],
@@ -396,7 +574,7 @@ final class StaffGuideContent
                     'id'    => 'data-mentah',
                     'title' => 'Data mentah, sesi bermain, kritik & saran',
                     'steps' => [
-                        ['Data mentah: pilih tab (jawaban, riwayat percobaan, pengerjaan, progres, navigasi, bantuan, event, turunan), saring, lalu unduh CSV per tabel bila perlu.', ['admin/data', 'Data mentah', 'research.browse']],
+                        ['[[Data mentah|data-mentah]]: pilih tab (jawaban, riwayat percobaan, pengerjaan, progres, navigasi, bantuan, event, turunan), saring, lalu unduh CSV per tabel bila perlu.', ['admin/data', 'Data mentah', 'research.browse']],
                         ['Sesi bermain: riwayat tiap sesi dan linimasa event-nya.', ['admin/sesi', 'Sesi bermain', 'research.browse']],
                         ['Kritik & saran dari siswa.', ['admin/masukan', 'Kritik & saran', 'research.browse']],
                     ],
@@ -407,8 +585,8 @@ final class StaffGuideContent
                     'title' => 'Mengunduh data',
                     'steps' => [
                         ['Buka Unduh data dan pilih satu penelitian.', ['admin/ekspor', 'Unduh data', 'research.export']],
-                        'Pilih **Isi nilai** (bawaan, berlabel, atau berkode) dan lembar yang dibutuhkan. Kamus Data selalu ikut.',
-                        'Tekan **Buat XLSX** atau **Buat CSV-ZIP**, tunggu, lalu unduh. Data turunan dihitung ulang otomatis bila data mentah sudah berubah.',
+                        'Pilih **Isi nilai** (bawaan, berlabel, atau berkode) dan lembar yang dibutuhkan. [[Kamus Data|kamus-data]] selalu ikut.',
+                        'Tekan **Buat XLSX** atau **Buat CSV-ZIP**, tunggu, lalu unduh. [[Data turunan|data-turunan]] dihitung ulang otomatis bila data mentah sudah berubah.',
                     ],
                     'list' => [
                         'Identitas siswa selalu berkode. Jawaban pertanyaan internet hanya tampil sebagai jumlah gabungan.',
@@ -421,9 +599,9 @@ final class StaffGuideContent
                     'title' => 'Data turunan dan kunci ambang',
                     'steps' => [
                         ['Di kartu penelitian, bagian **Data turunan**, tekan **Hitung ulang** setelah data berubah (lembar diunggah, ambang diubah, data dihapus).', ['admin/studi', 'Penelitian', 'studies.view']],
-                        'Saat versi kamus data dibekukan (gerbang G4), tekan **Kunci ambang** di bagian **Ambang data turunan**.',
+                        'Saat versi kamus data dibekukan (gerbang G4), tekan [[Kunci ambang|kunci-ambang]] di bagian **Ambang data turunan**.',
                     ],
-                    'warn' => 'Setelah dikunci, batas jeda dan tebakan cepat tidak bisa diubah dari panel. Membuka kunci hanya bisa lewat perintah server oleh pengembang, dengan alasan yang tercatat sebagai penyimpangan.',
+                    'warn' => 'Setelah dikunci, batas jeda dan tebakan cepat tidak bisa diubah dari panel. Membuka kunci hanya bisa dilakukan pengembang, dengan alasan yang tercatat sebagai penyimpangan.',
                 ],
                 [
                     'id'    => 'ketua-permintaan',
@@ -453,7 +631,7 @@ final class StaffGuideContent
                         'Cocokkan identitas pemohon dengan L7 lebih dulu.',
                         ['Buka Salinan data satu anak. Isi kode peserta dan keperluannya (melihat atau salinan).', ['admin/peserta/salinan', 'Salinan data satu anak', 'research.export']],
                         'Jawaban pertanyaan internet tidak disertakan kecuali anak setuju, atau orang tua tetap meminta setelah dijelaskan. Jangan sertakan bila bisa merugikan anak.',
-                        'Tekan **Buat dan unduh salinan**. Berkas ZIP langsung terunduh dan tidak disimpan di server.',
+                        'Tekan **Buat dan unduh salinan**. Berkas ZIP langsung terunduh dan tidak disimpan di panel.',
                         'Daftar izin berkode diunduh dari halaman penutupan studi (**Unduh daftar izin berkode**). Unduh lagi setiap kali izin berubah.',
                     ],
                 ],
@@ -526,7 +704,7 @@ final class StaffGuideContent
                     'steps' => [
                         ['Buka Rekaman narasi. **Kemajuan rekaman** menunjukkan per bahasa: disetujui, menunggu persetujuan, belum ada.', ['admin/konten/narasi', 'Rekaman narasi', 'content.view']],
                         'Unduh daftar rekaman dan naskah PDF untuk pengisi suara.',
-                        'Tekan **Unggah rekaman**. Nama berkas harus sama dengan kodenya (misalnya `intro-01.mp3`). Rekaman yang sudah disalin ke server diambil lewat **Ambil rekaman**.',
+                        'Tekan **Unggah rekaman**. Nama berkas harus sama dengan kodenya (misalnya `intro-01.mp3`). Rekaman yang sudah disiapkan sebelumnya dimasukkan lewat **Ambil rekaman**.',
                         'Dengarkan, lalu tekan **Setujui semua rekaman bahasa …**. Hanya rekaman yang disetujui terdengar oleh siswa.',
                     ],
                     'warn' => '**Batalkan semua rekaman** menghapus berkas dan tidak bisa dibatalkan. Siswa tidak mendengar narasi bahasa itu sampai rekaman baru diunggah dan disetujui.',
@@ -536,7 +714,7 @@ final class StaffGuideContent
                     'title' => 'Gambar dan kelengkapan aset',
                     'steps' => [
                         ['Gambar & mockup: per baris, buka **Detail** untuk melihat ukuran dan letaknya, lalu **Unggah gambar asli**.', ['admin/media', 'Gambar & mockup', 'content.view']],
-                        'Tekan **Cek berkas hilang/rusak** untuk memeriksa berkas di server (tidak mengubah apa pun).',
+                        'Tekan **Cek berkas hilang/rusak** untuk memeriksa apakah ada gambar yang hilang atau rusak (tidak mengubah apa pun).',
                         ['Kelengkapan aset: selesaikan ubin **Belum ada** dan **Perlu dicek** sampai semuanya **Lengkap**.', ['admin/media/kelengkapan', 'Kelengkapan aset', 'content.view']],
                     ],
                     'note' => 'Gambar contoh (mockup) harus diganti gambar asli sebelum pengambilan data.',
@@ -568,7 +746,7 @@ final class StaffGuideContent
                     'steps' => [
                         ['Permintaan orang tua yang sudah dikonfirmasi ketua muncul di Tata kelola sebagai **Permintaan orang tua**.', ['admin/tata-kelola', 'Tata kelola', 'deletion.execute']],
                         'Periksa jumlah catatan, ketik `HAPUS`, lalu tekan **Hapus sekarang**.',
-                        'Ganti cadangan (perintah cadangan dengan pilihan ganti), lalu centang **Cadangan diganti** di halaman permintaan. Lakukan sebelum orang tua diberi tahu.',
+                        'Setelah cadangan data diganti, centang **Cadangan diganti** di halaman permintaan. Lakukan sebelum orang tua diberi tahu.',
                         ['Riwayat aktivitas (audit): saring jenis dan tanggal, buka **Lihat rincian**.', ['admin/tata-kelola/audit', 'Riwayat aktivitas', 'audit.view']],
                         '**Jalankan perawatan data sekarang** sama dengan perawatan harian otomatis: menjeda sesi lama, membuang berkas unduhan lama, dan membuat permintaan hapus untuk data yang lewat batas simpan. Data penelitian tidak dihapus langsung.',
                     ],
@@ -581,17 +759,6 @@ final class StaffGuideContent
                         ['Log teknis: tab Perangkat, Event teknis, dan Sesi; cari dengan kode peserta, unduh CSV bila perlu. Isinya bukan data penelitian.', ['admin/log-teknis', 'Log teknis', 'tech_logs.view']],
                         ['Pemantauan: admin melihat angka saja untuk membantu peneliti saat ada gangguan.', ['admin/pemantauan', 'Pemantauan', 'monitoring.view']],
                     ],
-                ],
-                [
-                    'id'    => 'server',
-                    'title' => 'Server produksi',
-                    'list'  => [
-                        'Perbarui aplikasi hanya dengan skrip pembaruan di folder `deploy/`, dan **tidak pernah saat kelas berjalan**. Skrip membuat cadangan dan berhenti sendiri bila ada sesi aktif 10 menit terakhir.',
-                        'Buat cadangan sebelum setiap sesi kelas. Cadangan harus ada juga di tempat kedua, dan pernah dicoba dipulihkan.',
-                        'Migrasi dijalankan di luar jam kelas. Bila harus mundur: migrasi dulu, baru kode.',
-                        'Konten di server diurus lewat panel, bukan dengan mengimpor ulang dari baris perintah.',
-                    ],
-                    'warn' => 'Jangan pernah menjalankan `gelita:reset`, `db:seed`, atau `composer update` di server produksi setelah pengambilan data dimulai. `gelita:reset` menghapus semua data siswa.',
                 ],
             ],
         ];
@@ -619,7 +786,7 @@ final class StaffGuideContent
                         'Jangan meminta nama siswa kepada admin, dan admin tidak meminta data penelitian.',
                         'Jangan menghapus data di luar Tata kelola, dan jangan melewati konfirmasi ketua.',
                         'Jangan menyimpan unduhan data di perangkat tim lebih lama dari yang diperlukan.',
-                        'Jangan memperbarui server, menjalankan migrasi, atau mengaktifkan versi baru saat kelas berjalan.',
+                        'Jangan mengaktifkan versi baru atau mengubah paket aset saat kelas berjalan.',
                     ],
                 ],
             ],

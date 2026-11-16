@@ -368,7 +368,7 @@ final class AssetChecklist
 
         return [
             'title' => 'Musik & efek suara',
-            'help'  => 'Musik gamelan dan efek suara sudah tersedia dan diputar setelah siswa mengetuk layar. Bila sebuah berkas tidak ada, bagian itu hanya tanpa suara. Penggantinya dibuat dengan ElevenLabs di ai-studio/elevenlabs-sound/ dan dipasang petugas teknis (docs/audio.md).',
+            'help'  => 'Musik gamelan dan efek suara sudah tersedia dan diputar setelah siswa mengetuk layar. Bila sebuah berkas tidak ada, bagian itu hanya tanpa suara.',
             'items' => $items,
         ];
     }

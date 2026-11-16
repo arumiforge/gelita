@@ -37,7 +37,29 @@ final class ResearchDictionary
     /** True while the version is a proposal: the Kamus Data header says "usulan, belum disetujui". */
     public const DRAFT = false;
 
+    /**
+     * The research document this class mirrors. Used by DictionarySheetTest
+     * only: downloads cite the staff guide's glossary instead (owner,
+     * 16 November 2026: no repository documents in what staff see).
+     */
     public const DOC = '11_KAMUS_DATA.md';
+
+    /** Glossary page of the staff guide, cited by the Kamus Data sheet. */
+    public const GUIDE = 'admin/panduan-staf/istilah';
+
+    /**
+     * Download column => glossary term (StaffGuideContent::terms()) that
+     * explains it; `rujukan_kamus` links to that entry. Columns without a
+     * term have an empty `rujukan_kamus`.
+     */
+    public const GUIDE_TERMS = [
+        'participant_code' => 'kode-peserta', 'school_code' => 'kode-sekolah', 'rombel' => 'rombel',
+        'meeting_no' => 'pertemuan', 'field_session_code' => 'sesi-lapangan', 'main_session_code' => 'sesi-lapangan',
+        'makeup_no' => 'sesi-lapangan', 'booklet' => 'buklet', 'pre_form' => 'buklet', 'post_form' => 'buklet',
+        'is_scored_attempt' => 'pengerjaan-pertama', 'is_retake' => 'pengerjaan-pertama', 'max_tries' => 'kesempatan',
+        'try_no' => 'kesempatan', 'rapid_guess' => 'tebakan-cepat', 'idle_excess_ms' => 'jeda', 'active_ms' => 'jeda',
+        'dictionary_version' => 'kamus-data',
+    ];
 
     /** Anchors of 11 used below (checked against 11 by DictionarySheetTest). */
     private const PEOPLE  = 'variabel-peserta-dan-sesi';
@@ -205,6 +227,16 @@ final class ResearchDictionary
             'error_code' => 'baru', 'is_main' => 'baru', 'option_score' => 'baru',
         ]],
     ];
+
+    /** Address of the glossary page, with the column's entry when it has one; '' otherwise. */
+    public static function guideRef(string $column = ''): string
+    {
+        if ($column === '') {
+            return base_url(self::GUIDE);
+        }
+
+        return isset(self::GUIDE_TERMS[$column]) ? base_url(self::GUIDE) . '#istilah-' . self::GUIDE_TERMS[$column] : '';
+    }
 
     /** @return list<string> sheets with entries, field sheets included */
     public static function sheets(): array

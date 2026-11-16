@@ -435,7 +435,8 @@ class ExportService
             ['Diunduh', (string) RawDataService::isoTime(date('Y-m-d H:i:s'))],
             ['Kode penelitian', (string) ($study['code'] ?? '')],
             ['Filter', $shown === [] ? 'tanpa filter' : implode('; ', $shown)],
-            ['Definisi lengkap', ResearchDictionary::DOC . ', versi yang sama'],
+            // Owner, 16 Nov 2026: cite the staff guide's glossary, not a repository document
+            ['Arti istilah', 'Panduan staf GELITA, Kata yang sering dipakai: ' . ResearchDictionary::guideRef()],
         ];
 
         // Part 9 (35 §8.1, §10.2): draft status, and the derived run the file used
