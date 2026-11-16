@@ -55,6 +55,7 @@ final class ViewHelperTest extends CIUnitTestCase
         $this->assertSame('3 Agu 2026 07:05', fmt_date('2026-08-03 07:05:09', false, 'id'));
         $this->assertSame('3 Aug 2026 07:05:09', fmt_date('2026-08-03 07:05:09', true, 'en'));
         $this->assertSame('—', fmt_date(null));
+        $this->assertSame('16 Nov 2026', fmt_date('2026-11-16', false, 'id'), 'a DATE column has no time of day');
     }
 
     public function testClassLabelNamesGradeAndSchoolLevel(): void

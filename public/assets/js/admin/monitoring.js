@@ -35,7 +35,11 @@ function render(root, sessions) {
     if (!card) continue;
     for (const key of NUMBERS) {
       const el = $(`[data-m="${key}"]`, card);
-      if (el) el.textContent = fmt(s[key]);
+      if (!el) continue;
+      el.textContent = fmt(s[key]);
+      // Counts that need attention (not signed in, lost records, no seat, small screen) light up above zero
+      const tile = el.closest('[data-alert]');
+      if (tile) tile.classList.toggle('is-alert', Number(s[key]) > 0);
     }
     const token = $('[data-m="token"]', card);
     if (token && s.token) token.textContent = s.token;
@@ -75,7 +79,10 @@ export function initMonitoring(root = document.querySelector('[data-monitoring]'
       const json = await res.json();
       render(root, (json.data ?? json).sessions ?? []);
       delay = INTERVAL;
-      if (status) status.textContent = status.dataset.ok;
+      if (status) {
+        const time = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        status.textContent = `${status.dataset.ok} ${(status.dataset.updatedAt || '').replace('{time}', time)}`.trim();
+      }
     } catch {
       delay = Math.min(delay * 2, MAX_DELAY);
       if (status) status.textContent = status.dataset.stale;
