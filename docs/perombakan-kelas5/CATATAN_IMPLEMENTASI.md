@@ -875,3 +875,14 @@ The server's working `.env` and `env-example-production` had drifted apart: the 
 The server also had local edits in `app/Config/App.php` (`baseURL`, `forceGlobalSecureRequests = true`, `CSPEnabled = true`) and `app/Config/Cookie.php` (`secure = true`). All but `CSPEnabled` were already set by `.env`; `app.CSPEnabled = true` is now in `env-example-production` and in the docs/08 list, so the Content Security Policy stays on once the server's two config files are restored to the repository version (a locally edited tracked file can stop `git pull --ff-only` in `deploy.sh`).
 
 `GELITA_ADMIN_PASSWORD` was in the server's `.env`. It is only read by `StaffUserSeeder` at install, so the template carries it commented out with a placeholder, and the real password is not committed. Docs and config only; the file was parsed with CodeIgniter's `DotEnv` to check the values, no test was run.
+
+## Avatar 10: the owner's bundengan emblem installed, R-19 closed (16 November 2026, branch `nty/beautiful-clarke-scy25i`)
+
+R-19 was blocked: ChatGPT's masked edits kept leaving patches on the cream disc. The owner drew only the emblem in another tool (transparent background, from an emblem-only prompt written by this session) and asked for it to be installed. The emblem was fitted into the existing `avatar.10` medallion by a script, not by a regeneration:
+
+- Ring, brass edging, diamond points and exterior are unchanged pixel for pixel (premultiplied colour checked outside the disc), except one arc.
+- The cream disc behind the emblem is rebuilt from the disc's own radial colour profile, measured on the old disc's clean pixels from radius 100 outwards, flat in the middle, with a light directional term and faint mottling; clean original pixels near the rim are kept.
+- The old emblem's pole end lay on the lower-right ring (angles -44 to -25 degrees). That arc is rebuilt by blending the clean ring at -21 and -48 degrees, each mapped between the ring's own inner and outer edge, so both ends join without a step.
+- The emblem is 193 x 300 px, centred, with a soft contact shadow to the lower right (light from the upper left as on the other avatars); saved as lossless WebP, 512 x 512.
+
+Installed in `ai-studio/game-images/assets/ikon/avatar.10.webp` (one copy; the owner's raw emblem is not kept in the repository), `data.json` entry 163 describes how it was made, `REVIEW.md` row 115 set to `keep`, `TASKS.md` R-19 `installed`, sheet 06 rebuilt. `CatalogImportTest` green. A server takes it with `php spark gelita:katalog:impor`.
