@@ -6,6 +6,15 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Foto kuda lumping dari peneliti dicocokkan** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
+
+- Lima foto kuda lumping (berizin, dari peneliti) disimpan sebagai acuan.
+- Gambar Pustaka "Pertunjukan kuda lumping di Temanggung" belum diganti: lukisan lama memuat menara candi bergaya Bali dan kostum yang bukan gaya Temanggung (foto menunjukkan rambut palsu keriting besar, mahkota, kumis, dan kostum bermanik), tetapi foto pertunjukan yang ada bertanda nama fotografer atau berformat tegak kecil.
+- Foto perajin yang mengecat kuda kepang cocok untuk sampul video perajin kuda-kudaan, tetapi ada kaleng cat bermerek yang terbaca di depan; pengembang yang memutuskan.
+- Benda Cari Objek "Kuda kepang bambu" Magelang berupa kepala kuda bulat bertongkat (mainan kuda-kudaan gaya Barat), padahal kuda kepang berupa anyaman bambu pipih berbentuk kuda utuh, dicat, berbingkai rotan, tanpa tongkat. Yang Temanggung sudah mendekati. Pengembang memutuskan perlu dibuat ulang atau tidak.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Gambar Pustaka "Candi Pringapus, candi Hindu abad ke-9" diganti foto asli** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
 
 - Lima foto Candi Pringapus dari peneliti (berizin) akhirnya diterima sebagai berkas dan disimpan sebagai acuan lebih dulu.

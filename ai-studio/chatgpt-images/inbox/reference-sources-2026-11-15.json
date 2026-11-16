@@ -907,6 +907,66 @@
       "received_on": "2026-11-16",
       "use": "Reference (the wall reliefs).",
       "sha256": "bdc6553905cfc10fa57e548161e17fcad52b6b61ad3ff37f8d793d400e2b88cf"
+    },
+    {
+      "file": "reference-Kuda-Lumping-researcher-craftspeople-painting-01.jpg",
+      "title": "Two craftspeople painting woven-bamboo kuda kepang horses in a workshop with a woven bamboo wall full of finished horses; paint tins on the table",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Candidate for the cover of the video 'perajin kuda-kudaan jaran kepang di Temanggung' (library.temanggung.p8.2.poster, review no. 319), 16:9 crop; not installed yet because a paint tin in front carries a readable brand label (owner to decide). Also a reference for the kuda kepang of 256 and 263.",
+      "sha256": "0a70fa836626e5a286760ed61a3ab1a84291f683aca3f2d2495fe308c26f31ff"
+    },
+    {
+      "file": "reference-Kuda-Lumping-researcher-dancer-whip-watermarked-02.jpg",
+      "title": "A Temanggung kuda lumping dancer with a large curly wig, a crown, a moustache, a beaded costume and a red-tasselled whip",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only: carries the photographer's mark '@YUU_MARK…'; never install it. Shows the Temanggung costume for 317.",
+      "sha256": "810c334ac796058e0efccd643acccc2b0f4f9975d513b621d75289bfaf556d56"
+    },
+    {
+      "file": "reference-Kuda-Lumping-researcher-two-dancers-pendopo-03.jpg",
+      "title": "Two kuda lumping dancers with painted kuda kepang (long hair manes) under a pendopo roof",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only: portrait and low resolution (400 x 500); a 3:2 crop cuts the dancers' heads or the horses.",
+      "sha256": "9243ec6a9f3b676d97e71e2e097adcb1d1bd55c12cc6c3b0fafee91af6d2dc00"
+    },
+    {
+      "file": "reference-Kuda-Lumping-researcher-kuda-kepang-close-watermarked-04.jpg",
+      "title": "A painted woven-bamboo kuda kepang close up: grey horse head with gold ornaments, rattan rim, a star-shaped rosette",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only: carries the maker's name and a phone number ('Kencanawungu Art'); never install it. Good reference for the kuda kepang of 256 and 263.",
+      "sha256": "a195ceb88f2c9889a49cf123eef218642c6006d5239531170f40af905668ccf6"
+    },
+    {
+      "file": "reference-Kuda-Lumping-researcher-dancer-kneeling-watermarked-05.jpg",
+      "title": "A kneeling Temanggung kuda lumping dancer with a large curly wig and a beaded costume, holding a kuda kepang; more dancers behind",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only: carries the photographer's mark '@YUU_MARK…'; never install it.",
+      "sha256": "df56af4bfa5e30b19a0db618f6761cc508c50e8e69bbb4f2e982bbd4ecc031bd"
     }
   ],
   "permission_updates": [
