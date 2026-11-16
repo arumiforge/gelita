@@ -176,4 +176,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `aru/dreamy-hypatia-gqobyy` | Picture review: the owner's reference photos for 295, 296, 317, 313, 314, 255, 256, 263, one set at a time | open |
