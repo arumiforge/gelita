@@ -6,6 +6,14 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Tujuh gambar baru diterima pengembang dan dipasang: `R-02`, `R-11` sampai `R-16`** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
+
+- Pengembang menerima ketujuh gambar. Gambar tes `R-11` diterima apa adanya, termasuk kata "raja" yang tebal (sudah begitu di gambar lama).
+- Empat gambar Pustaka (arca Mendut, peta Dieng, buah carica, Situs Liyangan) memakai ilustrasi buatan AI, bukan foto acuan dari peneliti; foto itu tetap menjadi acuan saja. Kredit gambarnya kredit ilustrasi AI, dan keterangan gambarnya keterangan asli halaman Pustaka ("Arca Buddha di dalam Candi Mendut", "Peta kawasan Dataran Tinggi Dieng", "Buah carica atau pepaya gunung", "Situs Liyangan di lereng Gunung Sindoro").
+- Foto unggahan uceng goreng (`R-13`) menjadi gambar baru unggahan babak 2 Cari Objek Temanggung variasi b. Gambar induk `R-11` di `gambar/doc-34/` ikut diganti; PDF yang memuatnya belum dibuat ulang.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Tujuh gambar baru dari ChatGPT diperiksa: `R-02`, `R-11` sampai `R-16`** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
 
 - Ketujuh gambar dicocokkan dengan promptnya di 39 dan *Daftar periksa hasil*: nama berkas, format, ukuran kanvas, isi, dan setiap kata pada gambar bertulisan. Belum ada yang dipasang; pengembang menandai `accepted` lebih dulu.

@@ -639,6 +639,21 @@
   "negative": "No watermarks, signatures, unintended text, extra limbs, duplicate subjects, cropped key features, blurry edges, neon colours, clutter, or fake checkerboard transparency. No painterly 2D, gouache, paper grain, or conflicting Jaka costume."
  },
  {
+  "id": "612",
+  "key": "challenge.post.tmg-4-b",
+  "title": "Uceng goreng di piring",
+  "cat": "Tantangan",
+  "region": "Temanggung",
+  "size": "1280 × 720",
+  "ratio": "16:9",
+  "format": "WebP",
+  "alpha": false,
+  "file": "assets/tantangan/challenge.post.tmg-4-b.webp",
+  "desc": "Foto unggahan Cari Objek Temanggung babak 2, variasi b (\"Unggahan video ikan uceng\"): sepiring uceng goreng di meja warung, tanpa laut dan tanpa sungai. Seperempat bawah kiri tenang untuk kredit video. Ilustrasi 3D buatan AI (R-13, dokumen 39).",
+  "prompt": "GELITA ACTIVE VISUAL DIRECTION — 2026-10-11\nAsset: challenge.post.tmg-4-b  (R-13 · fried uceng, photo inside a social-media post)\nPremium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.\nCharacters: do NOT include Jaka or Mbah Kedu, and no people or hands at all. The attached puzzle picture shows the same food in the corner: match the fish and the finish, not its river scene.\n\nSUBJECT AND COMPOSITION\nA food picture of the kind people post from a small village food stall: seen from above at a slight angle, on a wooden table. In the centre-right: one round woven rattan plate lined with a banana leaf, heaped with crispy fried uceng — many SMALL, SLENDER fish, each about as long as a finger, fried whole until golden-brown and dry, with crisp little tails. Beside the plate: a small bowl of red sambal, a few leaves of fresh lalapan (cucumber slices, basil), and a glass of warm tea. Warm morning light from the left.\nThe lower quarter of the picture, from the left edge to about three quarters across, is plain wooden table surface only: a caption strip will be laid over it. Keep the plate and the bowl out of that band.\n\nAccuracy — Uceng are tiny freshwater fish of Temanggung: small and slender like a finger, never big fish, never fish steaks or fillets. No sea food at all: no large sea fish, no prawns, squid, crab or shells. No sea, beach, river or boat in the picture. No brand, packaging or menu.\n\nDELIVERY\nTarget canvas 1280 × 720 pixels; aspect 16:9. The plate complete within the canvas, its centre a little right of the middle. Opaque, full-bleed picture. Deliver WebP, named challenge.post.tmg-4-b.webp.\n\nCONSTRAINTS\nNo watermarks, signatures, text, letters, numbers, logos, play buttons, frames, social-media interface, emoji, blurry edges or neon colours. No painterly 2D, gouache or paper grain.",
+  "negative": "No watermarks, signatures, text, letters, numbers, logos, play buttons, frames, social-media interface, emoji, blurry edges or neon colours. No painterly 2D, gouache or paper grain."
+ },
+ {
   "id": "042",
   "key": "challenge.item.mgl-1-01",
   "title": "Stupa Borobudur",
@@ -5787,10 +5802,10 @@
  {
   "id": "232",
   "key": "library.temanggung.p5.1",
-  "title": "Jejak Mataram Kuno",
+  "title": "Situs Liyangan di lereng Gunung Sindoro",
   "caption": {
-   "id": "Ilustrasi bangunan batu peninggalan Mataram Kuno",
-   "en": "An illustration of stone buildings left by Old Mataram"
+   "id": "Situs Liyangan di lereng Gunung Sindoro",
+   "en": "The Liyangan Site on the slopes of Mount Sindoro"
   },
   "cat": "Pustaka",
   "region": "Temanggung",
@@ -5799,9 +5814,9 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.temanggung.p5.1.webp",
-  "desc": "temanggung · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Situs_liyangan.jpg. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Ilustrasi 3D buatan AI (R-16, dokumen 39), digambar dari foto acuan Situs Liyangan berizin dari peneliti: teras bertalud batu, jalan batu, satu candi kecil beratap bertingkat, alas dengan yoni, dan Gunung Sindoro; tanpa orang.",
+  "prompt": "GELITA ACTIVE VISUAL DIRECTION — 2026-10-11\nAsset: library.temanggung.p5.1  (R-16 · the Liyangan site, library picture)\nPremium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.\nCharacters: do NOT include Jaka or Mbah Kedu, and no people at all. The attached photos are factual references for the site only: follow the forms of the walls, the stone road, the small shrine and the mountain, render them in the GELITA finish, and do not copy a photo. Leave out everything modern in them: visitors, the sign and its letters, roofs, fences and tools.\n\nSUBJECT AND COMPOSITION\nThe excavated archaeological site of Liyangan on the lower slope of Mount Sindoro, Temanggung, Central Java, on a calm, slightly hazy morning, seen from a low rise at the edge of the dig. This is an ancient village buried by a volcanic eruption and dug out again, NOT a temple city.\n- Middle ground, filling most of the picture: several low TERRACES of grey-brown earth, each held up by a long, straight retaining wall (talud) of neatly cut grey andesite blocks, about as high as a grown-up's chest, the top row slightly rounded. One wall runs diagonally from the lower left towards the middle.\n- In front of that wall: an old road paved with rounded river stones, running along the wall.\n- On the upper terrace, right of centre: one SMALL stone shrine on a square walled platform with a few steps, its roof made of three or four small stepped tiers; it is not taller than two people. Next to it, the low square base of another shrine with a yoni (a square stone basin with a spout) on top.\n- Here and there: loose cut stones lying in rows on the ground, and the shallow straight-edged pits of the excavation.\n- Background: Mount Sindoro, ONE large, smooth, symmetrical volcanic cone, filling the upper middle, with green bamboo groves, a few tall trees and vegetable fields between the site and the mountain. Soft light from the left.\n\nAccuracy — No tall temple towers, no Prambanan, no Borobudur, no stupas, no guardian statues, no carved relief walls. All walls are plain cut stone. No wooden houses standing (they are gone), no tents, signs, fences, vehicles or tools. No people.\n\nDELIVERY\nTarget canvas 960 × 640 pixels; aspect 3:2. The walls, the road and the small shrine complete within the canvas, the mountain top not cut off. Opaque, full-bleed picture. Deliver WebP, named library.temanggung.p5.1.webp.\n\nCONSTRAINTS\nNo watermarks, signatures, text, letters, numbers, logos, frames, blurry edges or neon colours. No painterly 2D, gouache, oil-painting look or paper grain.",
+  "negative": "No watermarks, signatures, text, letters, numbers, logos, frames, blurry edges or neon colours. No painterly 2D, gouache, oil-painting look or paper grain."
  },
  {
   "id": "233",
@@ -6065,7 +6080,7 @@
  {
   "id": "248",
   "key": "library.magelang.p5.2",
-  "title": "Buddha's_statue_inside_candi_Mendut.JPG",
+  "title": "Arca Buddha di dalam Candi Mendut",
   "cat": "Pustaka",
   "region": "Magelang",
   "size": "960 × 640",
@@ -6073,9 +6088,13 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.magelang.p5.2.webp",
-  "desc": "magelang · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Buddha's_statue_inside_candi_Mendut.JPG. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Ilustrasi 3D buatan AI (R-12, dokumen 39), digambar dari foto acuan berizin dari peneliti: ruang dalam Candi Mendut dengan arca Buddha yang duduk dengan kedua kaki di alas teratai, diapit dua arca bodhisattwa yang duduk; tanpa orang. Menggantikan gambar lama yang keliru (Buddha bersila, arca pengapit berdiri, singa, anak menyembah).",
+  "prompt": "GELITA ACTIVE VISUAL DIRECTION — 2026-10-11\nAsset: library.magelang.p5.2  (R-12 · the Buddha inside Candi Mendut, library picture)\nPremium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.\nCharacters: do NOT include Jaka or Mbah Kedu, and no people at all. The attached photos are factual references for the statues and the room only: follow their forms closely, but render them in the GELITA finish, and do not copy the railing, offerings, colours or camera of the photos.\n\nSUBJECT AND COMPOSITION\nThe inner chamber of Candi Mendut, Magelang, Central Java, seen from the doorway, eye level of a standing child, looking straight at the back wall. Dim, calm, respectful; soft daylight falls in from the doorway behind the viewer and lights the statues from the front and slightly left.\nCentre: the large Buddha statue of grey-brown andesite, about three times the height of a person, on a plain stepped stone pedestal. He sits UPRIGHT ON A THRONE WITH BOTH FEET DOWN, like a person sitting on a chair: knees apart and level, lower legs vertical and parallel, BOTH bare feet resting flat side by side on a small round lotus footstool on the pedestal. He does NOT sit cross-legged and no leg is folded. Both hands are raised together in front of the chest in the teaching gesture (dharmacakra mudra): the thumb and index finger of each hand form a small ring, the two hands touching. A plain monastic robe so smooth it looks like bare stone, covering the left shoulder and leaving the right shoulder bare; short tight curls on the head with a rounded top knot; calm face with lowered eyes; long earlobes. Behind his head and shoulders a large pointed, leaf-shaped halo carved in the wall, and on both sides of his backrest a carved upright mythical creature in relief.\nLeft of the Buddha, on its own lower pedestal: a seated bodhisattva statue (Avalokitesvara), richly crowned and jewelled, seated with one leg folded and one leg hanging down. Right of the Buddha, the same: a seated bodhisattva (Vajrapani), crowned and jewelled, one leg folded and one leg hanging down. Both are smaller than the Buddha and turned slightly towards him. All three statues are the same dark grey-brown andesite, weathered, never gold, never painted.\nWalls: large grey andesite blocks, darker towards the corners, the corner of the chamber visible on both sides. The floor is worn stone in the foreground, empty.\n\nAccuracy — Exactly three statues. The Buddha sits with both feet down on the footstool: no lotus position, no crossed legs, no legs hidden under the robe. The two side statues are SEATED, not standing. No lions, elephants or guardian animals in front of the pedestal. No candles, flowers, incense, offerings, railing or signs. No people. No bright sunbeam rays.\n\nDELIVERY\nTarget canvas 960 × 640 pixels; aspect 3:2. The Buddha centred; all three statues complete within the canvas, including the Buddha's feet and footstool, with even margins. Opaque background. Deliver WebP, named library.magelang.p5.2.webp.\n\nCONSTRAINTS\nNo watermarks, signatures, text, letters, numbers, logos, frames, cropped statues, extra limbs or hands, blurry edges, neon colours or gold-painted statues. No painterly 2D, gouache or paper grain.",
+  "negative": "No watermarks, signatures, text, letters, numbers, logos, frames, cropped statues, extra limbs or hands, blurry edges, neon colours or gold-painted statues. No painterly 2D, gouache or paper grain.",
+  "caption": {
+   "id": "Arca Buddha di dalam Candi Mendut",
+   "en": "The Buddha statue inside Mendut Temple"
+  }
  },
  {
   "id": "249",
@@ -6233,10 +6252,10 @@
  {
   "id": "258",
   "key": "library.wonosobo.p2.2",
-  "title": "Peta_Kawasan_Dataran_Tinggi_Dieng.jpg",
+  "title": "Peta kawasan Dataran Tinggi Dieng",
   "caption": {
-   "id": "Dataran Tinggi Dieng dilihat dari ketinggian: kawah, telaga, dan ladang",
-   "en": "The Dieng Plateau seen from above: a crater, lakes and fields"
+   "id": "Peta kawasan Dataran Tinggi Dieng",
+   "en": "Map of the Dieng Plateau area"
   },
   "cat": "Pustaka",
   "region": "Wonosobo",
@@ -6245,9 +6264,9 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.wonosobo.p2.2.webp",
-  "desc": "wonosobo · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Peta_Kawasan_Dataran_Tinggi_Dieng.jpg. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Ilustrasi 3D buatan AI (R-14, dokumen 39): peta timbul Dataran Tinggi Dieng dengan tiga kabupaten (Banjarnegara, Wonosobo, Batang) dan tujuh nama tempat, letaknya dari peta jalur wisata Dinas Pariwisata dan Kebudayaan Wonosobo (acuan berizin dari peneliti). Satu-satunya gambar isi game yang bertulisan.",
+  "prompt": "GELITA ACTIVE VISUAL DIRECTION — 2026-10-11\nAsset: library.wonosobo.p2.2  (R-14 · map of the Dieng Plateau area, library picture)\nPremium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.\nCharacters: do NOT include Jaka or Mbah Kedu, and no people at all. The attached route map is the factual source for where each place lies; the attached relief map shows the kind of picture wanted. Do not copy their text, logos, colours or layout boxes.\n\nSUBJECT AND COMPOSITION\nA pictorial relief map of the Dieng Plateau, Central Java, seen from above at a gentle angle, like a small clay diorama lying on a dark navy table: green highland with hills and two volcano peaks, winding roads as thin cream lines, small dark-blue lakes, and steam rising from one crater. North is at the top.\nThree regencies share the plateau. Show them as three areas with soft, slightly different green tones, separated by thin dashed gold border lines: BANJARNEGARA on the left (west) part, WONOSOBO on the right and bottom (east and south) part, and BATANG as a narrow strip along the top (north) edge.\nPlaces, each a small 3D landmark with its label on a small cream tag, positions following the attached route map:\n- Dieng Kulon: a small village of red-roofed houses in the upper middle, inside Banjarnegara, just west of the border.\n- Dieng Wetan: a small village just east of the border, inside Wonosobo, next to Dieng Kulon.\n- Candi Arjuna: a small group of dark-grey stone temples next to Dieng Kulon.\n- Telaga Warna: a lake of green-turquoise water close to the border, a little south-east of Candi Arjuna.\n- Kawah Sikidang: a grey crater with a white steam plume, west of Telaga Warna, inside Banjarnegara.\n- Sikunir: a hill with a viewpoint, south-east of Telaga Warna, inside Wonosobo.\n- Gunung Prau: a long green ridge in the north-east, near the Batang strip.\nA small north arrow in the top right corner, marked with the letter U.\n\nAll text — exactly these words and nothing else, each spelled exactly so: \"BANJARNEGARA\", \"WONOSOBO\", \"BATANG\" (area names, large, gold capitals), \"Dieng Kulon\", \"Dieng Wetan\", \"Candi Arjuna\", \"Telaga Warna\", \"Kawah Sikidang\", \"Sikunir\", \"Gunung Prau\" (place tags, small dark letters on cream), \"U\" (north arrow). No title, no legend, no other words, numbers or road names.\n\nAccuracy — Dieng Kulon, Candi Arjuna and Kawah Sikidang are in Banjarnegara; Dieng Wetan, Telaga Warna and Sikunir are in Wonosobo. No sea, no city, no temple other than Candi Arjuna. No tobacco.\n\nDELIVERY\nTarget canvas 960 × 640 pixels; aspect 3:2. The whole map complete within the canvas, with an even margin of dark navy table around it. Opaque background. Deliver WebP, named library.wonosobo.p2.2.webp.\n\nCONSTRAINTS\nNo watermarks, signatures, logos, frames, misspelled or extra words, blurry edges or neon colours. No painterly 2D, gouache or paper grain.",
+  "negative": "No watermarks, signatures, logos, frames, misspelled or extra words, blurry edges or neon colours. No painterly 2D, gouache or paper grain."
  },
  {
   "id": "259",
@@ -6412,7 +6431,7 @@
  {
   "id": "269",
   "key": "library.wonosobo.p9.2",
-  "title": "Mountain_papaya_(Vasconcellea_pubescens).jpg",
+  "title": "Buah carica atau pepaya gunung",
   "cat": "Pustaka",
   "region": "Wonosobo",
   "size": "960 × 640",
@@ -6420,9 +6439,13 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.wonosobo.p9.2.webp",
-  "desc": "wonosobo · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Mountain_papaya_(Vasconcellea_pubescens).jpg. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Ilustrasi 3D buatan AI (R-15, dokumen 39), digambar dari foto acuan carica berizin dari peneliti: pohon carica berbuah dan buah yang dibelah, daging tipis krem dengan isi putih berbiji kecil banyak, berlatar ladang Dieng.",
+  "prompt": "GELITA ACTIVE VISUAL DIRECTION — 2026-10-11\nAsset: library.wonosobo.p9.2  (R-15 · carica, the mountain papaya, library picture)\nPremium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.\nCharacters: do NOT include Jaka or Mbah Kedu, and no people at all. The attached photos are factual references for the fruit and the tree only: follow their forms closely, render them in the GELITA finish, and do not copy the photos.\n\nSUBJECT AND COMPOSITION\nLeft half: the upper part of a slim carica tree (mountain papaya, Vasconcellea pubescens) with a grey-brown trunk, a crown of large lobed leaves, and a dense cluster of fruit growing straight from the trunk just below the leaves: several ripe golden-yellow fruits and some green unripe ones. Each fruit is small, about the size of a fist, oval with a pointed tip and five clear lengthwise ribs with rounded edges.\nRight half, in the foreground on a flat grey stone: two whole ripe fruits and one fruit cut in half lengthwise, the two halves open towards the viewer. Inside the cut fruit: a THIN layer of pale cream-yellow flesh under the skin, and a large hollow filled with a white, juicy, slightly translucent pulp in which MANY SMALL dark-brown seeds sit packed together. The flesh is never thick and never orange; the seeds are small and many, never a few large black balls.\nBackground: the cool Dieng highland on a clear morning: green terraced vegetable fields on steep slopes, a little mist in the valley, one volcano peak far away. Soft gold light from the left.\n\nAccuracy — This is carica, not an ordinary papaya: small ribbed fruits, cream flesh, white seed pulp. No orange flesh, no large black seeds, no papaya slices, no star fruit. No jars or syrup, no people.\n\nDELIVERY\nTarget canvas 960 × 640 pixels; aspect 3:2. The tree crown and the cut fruit complete within the canvas, with even margins. Opaque, full-bleed picture. Deliver WebP, named library.wonosobo.p9.2.webp.\n\nCONSTRAINTS\nNo watermarks, signatures, text, letters, numbers, logos, frames, blurry edges or neon colours. No painterly 2D, gouache, oil-painting look or paper grain.",
+  "negative": "No watermarks, signatures, text, letters, numbers, logos, frames, blurry edges or neon colours. No painterly 2D, gouache, oil-painting look or paper grain.",
+  "caption": {
+   "id": "Buah carica atau pepaya gunung",
+   "en": "Carica, the mountain papaya"
+  }
  },
  {
   "id": "270",
