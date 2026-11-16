@@ -58,8 +58,8 @@ use RuntimeException;
  *   something else than the photo did brings the caption that fits it
  *   (15 November 2026). An entry's own `credit` replaces the AI-illustration
  *   credit, for a real file such as a regency's coat of arms (16 November 2026).
- * - The catalogue's region maps have four clearings for the challenge
- *   buttons. When a map file is the one measured here (same sha256), the
+ * - The catalogue's region maps have five clearings for the challenge
+ *   buttons (four until 16 November 2026). When a map file is the one measured here (same sha256), the
  *   region's challenge buttons are moved onto those clearings.
  * - The Cari Objek scenes have tables and shelves. When a scene file is the
  *   one measured here, objects still at their old bank position are moved
@@ -92,13 +92,16 @@ final class CatalogImporter
     /**
      * Challenge button positions (percent of the map) measured on the
      * catalogue's region maps, keyed by the sha256 of the map file, in
-     * challenge order 1–4. Owner decision 11 October 2026: buttons sit on the
-     * map's clearings.
+     * challenge order 1–5. Owner decision 11 October 2026: buttons sit on the
+     * map's clearings. The five-stop maps of 38 (16 November 2026) follow the
+     * shared layout of 38 → *Tata letak lima pos*; each button stands on the
+     * open sand of its clearing, in front of the clearing's prop, so the prop
+     * stays visible.
      */
     public const MAP_STOPS = [
-        '44d29140bd864e6ab1244a5bf28a6f9354ff9d2448d005405f194b48fe256823' => ['temanggung', [1 => [29.0, 35.0], 2 => [82.0, 46.0], 3 => [35.0, 65.0], 4 => [80.0, 72.0]]],
-        '978611c74fc4e33b26c924ce2070c6c788f43fa9f6623ce3de24432f746c34f7' => ['magelang', [1 => [31.5, 39.0], 2 => [70.0, 45.0], 3 => [78.0, 75.5], 4 => [38.5, 68.0]]],
-        '2eac0b7b34e2a570ead3fd41fade25b830578b0b7363177a43380060c9beba07' => ['wonosobo', [1 => [21.5, 35.0], 2 => [61.0, 51.0], 3 => [18.0, 71.0], 4 => [77.0, 81.5]]],
+        'ffafcb723a749b6a66ec918ff9ed8c3519ceac9aad58327bdc5055e1df0f9bfb' => ['temanggung', [1 => [22.0, 42.0], 2 => [45.0, 35.0], 3 => [80.0, 43.0], 4 => [61.0, 62.0], 5 => [30.0, 74.0]]],
+        '232670f949efe1bf3200b10bad46974c1a8fc02fa6dec2ced0d6e094577d00e3' => ['magelang', [1 => [25.0, 43.0], 2 => [45.0, 36.0], 3 => [78.0, 43.0], 4 => [61.0, 62.0], 5 => [31.0, 72.0]]],
+        '9d68d52824a2f1db3cc578712cce452573372c4f8ca7fc0f162a7715216d0864' => ['wonosobo', [1 => [22.0, 43.0], 2 => [46.0, 35.0], 3 => [81.0, 44.0], 4 => [62.0, 62.0], 5 => [31.0, 75.0]]],
     ];
 
     /**

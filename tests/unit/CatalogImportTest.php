@@ -220,7 +220,7 @@ final class CatalogImportTest extends CIUnitTestCase
 
             $this->assertFileExists($file);
             $this->assertSame($sha, hash_file('sha256', $file), "map.region.{$region} changed: measure its clearings again");
-            $this->assertSame([1, 2, 3, 4], array_keys($stops));
+            $this->assertSame([1, 2, 3, 4, 5], array_keys($stops), 'one stop per challenge, Skenario Digital included');
         }
     }
 
