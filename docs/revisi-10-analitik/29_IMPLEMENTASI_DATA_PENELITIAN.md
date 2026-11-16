@@ -1,8 +1,8 @@
 # Dokumen Implementasi Bagian 3 — Pembersihan Log, Unduhan Data Penelitian, Kamus Data, dan Lembar Lapangan
 
-Per 3 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 7, 14, dan 15 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
+Per 16 November 2026 (cek kemutakhiran setelah kode gelombang E; disetujui 2 November 2026) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 7, 14, dan 15 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
 
-> **Status: `disetujui pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 30 Oktober 2026; dicek kemutakhirannya dan ditinjau pengembang 2 November 2026, [§19](#19-keputusan-pengembang) no. 5–12). Ini dokumen, bukan perubahan sistem.
+> **Status: `disetujui pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 30 Oktober 2026; dicek kemutakhirannya dan ditinjau pengembang 2 November 2026, [§19](#19-keputusan-pengembang) no. 5–12; kode gelombang E 4–8 November 2026; cek kemutakhiran setelah kode 16 November 2026, §19 no. 18–22). Ini dokumen, bukan perubahan sistem.
 >
 > **Kapan dibangun** (aturan baru, [04](04_CATATAN_KEPUTUSAN.md), 1 November 2026, menggantikan "diubah di tahap 3, setelah G2"): kode bagian ini dibangun sekarang di gelombang kode E, setelah bagian 1 dan 2, di cabang pendek dari `main`. Perilaku penelitian ada di balik sakelar studi yang mati secara bawaan (`field_mode`, [28 §5.1](28_IMPLEMENTASI_SESI_LAPANGAN.md#51-sakelar-field_mode)), jadi `main` tetap bisa dirilis. Sistem baru tidak dipakai dengan anak sebelum persetujuan etik terbit; G3 tetap dinilai setelah G2, dan versi dikunci di G4. Instalasi uji validator tetap memakai *commit* yang dibekukan di [20](20_PAKET_VALIDASI.md) prasyarat no. 4. Pengerjaan ulang setelah hasil validasi (matriks revisi induk di 20, keputusan komite etik) diterima. Bagian 4 ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md)) dibangun paralel dan digabung **sesudah** bagian ini; baris milik bagian ini di berkas bersama (`field_sheet_rows` di `RetentionService::HARD_ORDER`, `participant_count` dan daftar lembar di `ExportService`, `REQUIRED_MIGRATION` `003700`) ditulis di sini dan dibiarkan bagian 4 ([30 §0](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#0-cara-memakai-dokumen-ini), keputusan no. 7).
 >
@@ -157,6 +157,8 @@ Kelas baru `App\Libraries\EventCatalog` menggantikan daftar `Config\Gelita::$eve
 | `dialogue_advanced` | Dihapus, diganti `dialogue_completed` | — | — |
 | `answer_changed` | Dihapus, digabung ke `answer_submitted` | — | — |
 
+*Ditambahkan sesudah gelombang E:* `item_shown` (Peneliti, klien, saat petunjuk Cari Objek atau skenario tampil; keputusan pengembang 9 November 2026, [35 §19](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#19-keputusan-pengembang) no. 16) dan `sound_check_answered` (Peneliti, hanya server, layar cek suara mode penelitian; 16 November 2026, [33 §7.6](33_IMPLEMENTASI_MODE_PENELITIAN.md#76-cek-suara-di-awal-sesi-permainan)). `input_idle` dari bagian 7 ada di lembar `navigasi`.
+
 **Bentuk kelas:**
 
 ```php
@@ -164,6 +166,7 @@ Kelas baru `App\Libraries\EventCatalog` menggantikan daftar `Config\Gelita::$eve
 public const RESEARCH = [/* … */];
 public const ADMIN    = ['password_changed', 'viewport_changed', 'package_changed', 'events_dropped'];
 public const SERVER_ONLY = ['screen_viewed', 'challenge_tries_exhausted', 'clue_failed', 'scenario_failed', 'events_dropped'];
+// 16 November 2026: SERVER_ONLY also holds 'sound_check_answered' (33 §7.6).
 
 public static function accepted(): array;         // RESEARCH + ADMIN, read by EventService
 public static function isResearch(string $type): bool;
@@ -804,6 +807,8 @@ Di mesin pengembangan, dengan salinan database berisi data simulasi (`gelita:sim
 4. Masuk sebagai ketua: buat unduhan XLSX dan CSV-ZIP; periksa lembar *Kamus Data*, waktu terkoreksi, dan riwayat unduhan.
 5. Masuk sebagai peneliti: unduh templat sesi P2, isi beberapa baris (satu dengan kata nama siswa), unggah, lalu unggah ketikan kedua.
 
+*Hasil* (MariaDB di wadah sesi, rincian di [04](04_CATATAN_KEPUTUSAN.md)): no. 1 dan 3–5 lolos 9 November 2026. Angka `003600` sama persis dengan `gelita:log:hitung` dan lencana "Belum didengar" tidak berubah; satu galat dibetulkan: templat dari panel sendiri ditolak saat diunggah karena kepala halaman *L1 Kondisi sesi* terbaca sebagai baris judul, kini kepala halaman dilewati. No. 2 lolos 14 November 2026 tanpa galat (Playwright, sentuh, mode biasa dan mode penelitian). `passage_reopened` hanya dikirim Benar atau Salah (§6.3), jadi bagian "Cari Objek" kalimat no. 2 tidak berlaku.
+
 ### 16.4 Selesai bila
 
 - `vendor/bin/phpunit --no-coverage` hijau, termasuk tes di 16.1.
@@ -879,6 +884,14 @@ Dengan keputusan ini 29 `disetujui pengembang` (2 November 2026).
 15. **Pemeriksaan `manual_code`: kode butir itu ditambah `*-LAIN` dimensinya** (§10.4). D1 `INF-LAIN`, D2 `DIG-LAIN`, D3 `BUD-LAIN`. Kalau kode yang cocok bukan kode butir itu, pengode memakai `*-LAIN`. Tidak dipilih: semua kode dimensi itu di 03, juga yang tidak dipakai butir itu.
 16. **Kode alasan yang dikode tangan tetap di lembar L5** (§10.7). `R-LAIN` ditambahkan ke 03 sebagai kode khusus kolom pengode L5. `manual_code` hanya kode kesalahan INF, DIG, atau BUD, untuk percobaan yang salah; kolom pengode disimpan di `field_sheet_rows.values_json` dan dipakai untuk kesepakatan pengode dan revisi skema. Tidak ada kolom baru di `item_tries`. Tidak dipilih: `R-LAIN` ditambah kolom `item_tries.manual_reason_code` yang boleh diisi juga pada percobaan yang benar.
 17. **`manual_code` diisi hanya bila kedua pengode sepakat dan kodenya berbeda dari kode game** (aturan menulis di 02 → L5). Kosong pada baris lain. Tidak dipilih: diisi pada setiap baris yang sepakat, juga yang sama dengan kode game.
+
+**Kode gelombang E dan cek kemutakhiran, 16 November 2026** (`asal: pengembang`, [04](04_CATATAN_KEPUTUSAN.md)). Diselaraskan tanpa keputusan baru dengan kode dan entri 04 sesudah 3 November 2026:
+
+18. **Penyimpangan implementasi gelombang E** (entri 04 *Gelombang kode E selesai*, 8 November 2026, dan catatan implementasi; `draf pengembang`, belum disetujui terpisah): `migrationsReady()` juga meminta baris versi yang diwajibkan ada di tabel `migrations`; `pause` audio yang dikirim ulang dianggap ganda bila sesi, rekaman, dan jam klien sama (tanpa kolom baru); cakupan penuh (`event`, `kode_pilihan`, `answer_key`) hanya untuk `ketua` (`StaffScope::head()`), `peneliti` tanpa itu; akun uji dan simulasi (`uji.*`, sekolah `V01`, `sim_*`) dikeluarkan dari setiap kueri penelitian kecuali tampilan satu siswa; `peserta` tanpa `country`, `province`, `district`, dan `progres` satu baris per siswa dan studi; `bantuan` satu baris per putaran (baris pembuka dengan `listened_ms` terbesar); kolom skor pilihan di `kode_pilihan` bernama `option_score`; unduhan lembar lapangan mendapat `field_session_code` dan `sheet_row`; impor L1 juga membaca tata letak tegak 02 dan memecah isian gabungan; dua unggahan bersamaan: yang lebih baru berlaku, `manual_code` impor yang digantikan dikosongkan bersyarat; `ResearchLogCleanup` dan `gelita:log:hitung` juga menyebut jenis yang dihapus; `/responses` menerima `last_input_ms` (sejak tantangan dibuka), bukan `duration_ms` (§6.1).
+19. **Jawaban pengembang atas pertanyaan gelombang E (8 November 2026):** templat L5 berisi tiga lembar per berkas (`L5 Wawancara 1`–`3`), satu per siswa yang diwawancarai, seperti §10.3; impor membaca ketiganya sebagai satu lembar, baris lembar 2 dan 3 disimpan mulai 2000 dan 3000 dan tampil sebagai "baris 5 (lembar 2)". `gelita:lembar:templat --keluar` juga menulis `lembar-l0-kosong.xlsx`, daftar centang yang dibaca langsung dari bagian L0 di [02](02_LEMBAR_LAPANGAN.md); L0 tetap tidak diunggah.
+20. **Sambungan dari bagian lain:** lembar `izin` (bagian 4, hanya `ketua`) di daftar lembar; kolom skenario di `percobaan` (bagian 6); `clock_offset_ms` rekaman audio dan waktu terkoreksi lembar `bantuan` (bagian 7); lembar L6 *tes* di templat P1 dan P5 (bagian 8, gelombang F); lembar `turunan_*` (bagian 9).
+21. **Event baru sesudah gelombang E** (§4): `item_shown` (9 November 2026) dan `sound_check_answered` (16 November 2026, hanya server).
+22. **Cek manual 9 dan 14 November 2026** (§16.3): semua lolos, satu galat impor templat dibetulkan; `StaffUserSeeder` tidak lagi menulis `staff_users.school_id`.
 
 ---
 

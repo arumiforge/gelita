@@ -6,6 +6,12 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Cek kemutakhiran 29 setelah kode gelombang E** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang) · status 29 tetap `disetujui pengembang` · mengubah 00 dan 29; tidak merevisi produk
+
+Diselaraskan tanpa keputusan baru ([29 §19](29_IMPLEMENTASI_DATA_PENELITIAN.md#19-keputusan-pengembang) no. 18–22) dengan kode gelombang E dan entri 04 sesudah 3 November 2026: §4 mendapat `item_shown` dan `sound_check_answered`; §16.3 mendapat hasil cek manual 9 dan 14 November 2026; §19 mencatat penyimpangan gelombang E, jawaban pengembang 8 November 2026 (L5 tiga lembar, templat L0 kosong), dan sambungan dari bagian 4 dan 6–9.
+
+**Untuk pengembang:** penyimpangan implementasi bagian 3 (29 §19 no. 18) belum pernah disetujui terpisah dan tetap `draf pengembang`. Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Cek kemutakhiran 30 setelah kode gelombang E** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang) · status 30 tetap `disetujui pengembang` · mengubah 00 dan 30; tidak merevisi produk
 
 Diselaraskan tanpa keputusan baru ([30 §22](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#22-keputusan-pengembang) no. 13–17) dengan kode gelombang E dan entri 04 sesudah 2 November 2026:
