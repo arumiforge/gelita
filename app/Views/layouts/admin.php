@@ -82,6 +82,7 @@ $search  = lang(staff_can('participants.accounts') ? 'Admin.quickSearch' : 'Admi
             </summary>
             <div class="account-pop">
               <p class="account-who"><b><?= esc($name) ?></b><small><?= esc($role) ?></small></p>
+              <a href="<?= base_url('admin/panduan-staf') ?>"><?= icon('book') ?> <?= esc(lang('Admin.menuGuide')) ?></a>
               <a href="<?= base_url('admin/akun/sandi') ?>"><?= icon('key') ?> <?= esc(lang('Admin.changePassword')) ?></a>
               <a href="<?= base_url('admin/logout') ?>"><?= icon('logout') ?> <?= esc(lang('Admin.logout')) ?></a>
             </div>

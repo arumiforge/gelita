@@ -133,7 +133,7 @@ final class StaffAccessTest extends CIUnitTestCase
                     continue;
                 }
 
-                if (in_array($path, ['admin/login', 'admin/logout'], true)) {
+                if (in_array($path, ['admin/login', 'admin/logout', 'admin/panduan-staf'], true)) {
                     continue;
                 }
 

@@ -12,6 +12,7 @@ import { showModal } from './core/modal.js';
 import { initTables } from './admin/tables.js';
 import { initFilters } from './admin/filters.js';
 import { initTabs } from './admin/tabs.js';
+import { initSidebar, revealTarget } from './admin/sidebar.js';
 
 document.documentElement.classList.add('js');
 
@@ -95,6 +96,8 @@ function initPage(root) {
 }
 
 initPage(document);
+initSidebar(document);
+revealTarget();
 initFilters((stage, root) => {
   if (stage !== 'dispose') initPage(root);
 });
