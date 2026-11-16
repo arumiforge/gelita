@@ -9,6 +9,8 @@
  * @var bool                       $detail   codes and tokens (researchers, head researcher); admin: numbers (K2)
  */
 $codes = static fn (array $students, callable $keep): string => implode(', ', array_column(array_filter($students, $keep), 'participant_code')) ?: '—';
+// Counts that need the researcher's attention light up while above zero (admin/monitoring.js keeps it current)
+$alerts = ['not_entered', 'dropped', 'no_seat', 'small_screen'];
 ?>
 <?= $this->extend('layouts/admin') ?>
 
@@ -17,7 +19,7 @@ $codes = static fn (array $students, callable $keep): string => implode(', ', ar
 <?= $this->include('partials/flash') ?>
 
 <div data-monitoring data-endpoint="<?= esc(base_url('api/admin/monitoring'), 'attr') ?>">
-  <p class="muted" data-monitoring-status data-ok="<?= esc(lang('Admin.monitoringUpdated'), 'attr') ?>" data-stale="<?= esc(lang('Admin.monitoringStale'), 'attr') ?>"><?= esc(lang('Admin.monitoringUpdated')) ?></p>
+  <p class="muted" data-monitoring-status data-ok="<?= esc(lang('Admin.monitoringUpdated'), 'attr') ?>" data-stale="<?= esc(lang('Admin.monitoringStale'), 'attr') ?>" data-updated-at="<?= esc(lang('Admin.monitoringUpdatedAt', ['{time}']), 'attr') ?>"><?= esc(lang('Admin.monitoringUpdated')) ?></p>
 
   <?php if ($sessions === []): ?>
     <p class="muted"><?= esc(lang('Admin.monitoringNone')) ?></p>
@@ -25,14 +27,14 @@ $codes = static fn (array $students, callable $keep): string => implode(', ', ar
 
   <?php foreach ($sessions as $row): ?>
     <section class="form-section" data-field-session="<?= (int) $row['id'] ?>">
-      <h2><span class="mono"><?= esc($row['code']) ?></span>
+      <h2><a class="mono" href="<?= base_url('admin/sesi-lapangan/' . (int) $row['id']) ?>"><?= esc($row['code']) ?></a>
         · <?= esc(lang('Admin.fieldSessionState_' . $row['state'])) ?>
         · <?= esc(substr($row['opens_at'], 11, 5)) ?>–<?= esc(substr($row['closes_at'], 11, 5)) ?>
         <?php if ($detail && ! empty($row['token'])): ?> · <?= esc(lang('Admin.fieldSessionToken')) ?> <b class="mono" data-m="token"><?= esc($row['token']) ?></b><?php endif ?>
       </h2>
       <div class="kpi-grid">
         <?php foreach (['entered' => 'monitoringEntered', 'active' => 'monitoringActive', 'not_entered' => 'monitoringNotEntered', 'all_done' => 'monitoringDone', 'dropped' => 'monitoringDropped', 'no_seat' => 'monitoringNoSeat', 'small_screen' => 'monitoringSmallScreen'] as $key => $label): ?>
-          <div class="stat-tile"><span class="stat-label"><?= esc(lang('Admin.' . $label)) ?></span> <b class="stat-value" data-m="<?= $key ?>"><?= esc(fmt_num((int) $row[$key], 0, 'id')) ?></b></div>
+          <div class="stat-tile<?= in_array($key, $alerts, true) && (int) $row[$key] > 0 ? ' is-alert' : '' ?>"<?= in_array($key, $alerts, true) ? ' data-alert' : '' ?>><span class="stat-label"><?= esc(lang('Admin.' . $label)) ?></span> <b class="stat-value" data-m="<?= $key ?>"><?= esc(fmt_num((int) $row[$key], 0, 'id')) ?></b></div>
         <?php endforeach ?>
       </div>
 
@@ -51,14 +53,14 @@ $codes = static fn (array $students, callable $keep): string => implode(', ', ar
             <dd class="mono" data-m="list-test-status"><?= esc(implode(', ', array_map(static fn ($s) => $s['participant_code'] . ': ' . lang('Admin.testStatus' . ucfirst($s['test_status'])) . ($s['module_done'] ? ' · ' . lang('Admin.moduleDone') : ''), $row['students']))) ?></dd>
           <?php endif ?>
         </dl>
-        <table class="data-table">
-          <thead><tr><th>Kode peserta</th><th><?= esc(lang('Admin.monitoringProgress')) ?></th><th><?= esc(lang('Admin.monitoringLeftovers')) ?></th><th><?= esc(lang('Admin.monitoringDropped')) ?></th></tr></thead>
+        <div class="table-wrap is-short"><table class="data-table">
+          <thead><tr><th><?= esc(lang('Admin.monitoringCode')) ?></th><th><?= esc(lang('Admin.monitoringProgress')) ?></th><th><?= esc(lang('Admin.monitoringLeftovers')) ?></th><th><?= esc(lang('Admin.monitoringDropped')) ?></th></tr></thead>
           <tbody data-m="rows">
             <?php foreach ($row['students'] as $student): ?>
               <tr><td class="mono"><?= esc($student['participant_code']) ?></td><td><?= $student['done'] ?>/<?= $student['total'] ?></td><td><?= $student['leftovers'] ?></td><td><?= $student['dropped'] ?></td></tr>
             <?php endforeach ?>
           </tbody>
-        </table>
+        </table></div>
       <?php endif ?>
     </section>
   <?php endforeach ?>

@@ -374,7 +374,7 @@ button[aria-busy] { cursor: progress; }
 .field-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
 label, .label { color: var(--text-2); font-size: 13px; font-weight: 500; }
 input[type="text"], input[type="password"], input[type="email"], input[type="number"],
-input[type="search"], input[type="url"], input[type="date"], input[type="datetime-local"], select, textarea {
+input[type="search"], input[type="url"], input[type="date"], input[type="time"], input[type="datetime-local"], select, textarea {
   width: 100%;
   min-height: var(--control-h);
   padding: 8px 12px;
@@ -572,6 +572,9 @@ input[type="checkbox"], input[type="radio"] { width: 16px; height: 16px; margin:
 .stat-value { margin: 4px 0 0; color: var(--text); font-size: 28px; line-height: 36px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .stat-value.is-text { font-size: 16px; line-height: 24px; overflow-wrap: anywhere; }
 .stat-hint { color: var(--text-dim); font-size: 12px; }
+/* A count that needs the researcher's attention (monitoring: not signed in, lost records, no seat) */
+.stat-tile.is-alert { border-color: #FEDF89; background: var(--warn-soft); }
+.stat-tile.is-alert .stat-value { color: var(--warn); }
 a.stat-tile:hover { border-color: var(--line-strong); text-decoration: none; }
 
 /* ==========================================================================
@@ -1067,4 +1070,64 @@ body.auth { display: grid; min-height: 100vh; place-items: center; padding: 24px
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* ==========================================================================
+   Field-day pages (research revision 10): field session, monitoring, data
+   requests, closure. Classes these views used without a style of their own.
+   ========================================================================== */
+.detail-list {
+  display: grid; grid-template-columns: minmax(120px, max-content) minmax(0, 1fr); gap: 10px 24px;
+  margin: 0 0 16px; padding: 16px 20px;
+  border: 1px solid var(--line); border-radius: var(--radius-lg);
+  background: var(--surface); box-shadow: var(--shadow);
+}
+.panel .detail-list, .form-section .detail-list { padding: 0; border: 0; box-shadow: none; }
+.detail-list dt { color: var(--text-dim); font-size: 13px; font-weight: 500; }
+.detail-list dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.form-inline { display: inline-flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 12px; margin: 0; }
+.form-inline .field { min-width: 180px; }
+.alert-danger { border-color: #FECDCA; background: var(--bad-soft); }
+.alert-warning { border-color: #FEDF89; background: var(--warn-soft); }
+.deadline.is-ok { color: var(--ok); }
+.deadline.is-warn, .deadline.is-soon { color: var(--warn); font-weight: 600; }
+.deadline.is-late, .deadline.is-bad, .deadline.is-overdue { color: var(--bad); font-weight: 600; }
+.stat-list, .checklist { display: grid; gap: 6px; margin: 0 0 16px; padding-left: 18px; }
+.field-errors { display: grid; gap: 4px; margin: 8px 0 0; padding-left: 18px; color: var(--bad); font-size: 13px; }
+.small { font-size: 12px; }
+.table-note { margin: 8px 0 0; font-size: 12px; }
+
+/* Field session page: the token the class copies from the board, the three steps of a visit */
+.token-hero { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; margin-bottom: 16px; }
+.token-hero-label { margin: 0 0 4px; color: var(--text-dim); font-size: 13px; font-weight: 500; }
+.token-big { margin: 0; font-family: var(--mono); font-size: clamp(36px, 6vw, 56px); line-height: 1.1; font-weight: 600; letter-spacing: .12em; color: var(--text); }
+.token-big.is-none { color: var(--text-dim); letter-spacing: 0; font-size: 28px; }
+.token-hero-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin: 8px 0 0; color: var(--text-2); }
+.token-hero .btn-row { justify-content: flex-end; }
+.session-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 0 0 24px; }
+.session-step { display: grid; align-content: start; gap: 12px; }
+.session-step .panel-title { display: flex; align-items: center; gap: 10px; margin: 0; }
+.step-no {
+  display: inline-grid; place-items: center; flex: none; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--accent-soft); color: var(--accent); font-size: 13px; font-weight: 700;
+}
+.session-step p { margin: 0; color: var(--text-dim); font-size: 13px; }
+.session-step .btn { justify-content: flex-start; }
+.session-step .stack-actions { display: grid; gap: 8px; }
+.session-step .stack-actions .inline-form, .session-step .stack-actions .inline-form .btn { width: 100%; }
+
+/* Full-screen token for a projector or for copying onto the board (CSS :target, no JavaScript) */
+.token-screen { display: none; }
+.token-screen:target {
+  position: fixed; inset: 0; z-index: 200; margin: 0;
+  display: grid; place-items: center; align-content: center; gap: 24px;
+  padding: 24px; background: var(--side-bg); color: #fff; text-align: center;
+}
+.token-screen-label { margin: 0; color: var(--side-text); font-size: clamp(18px, 3vw, 28px); }
+.token-screen-token { margin: 0; font-family: var(--mono); font-size: clamp(64px, 16vw, 200px); line-height: 1; font-weight: 600; letter-spacing: .14em; }
+.token-screen-code { margin: 0; font-family: var(--mono); color: var(--side-text); font-size: clamp(16px, 2.4vw, 24px); }
+.token-screen .btn { color: var(--text); }
+@media (max-width: 767.98px) {
+  .detail-list { grid-template-columns: 1fr; gap: 2px 0; }
+  .detail-list dd { margin-bottom: 8px; }
 }

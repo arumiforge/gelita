@@ -265,8 +265,13 @@ if (! function_exists('fmt_date')) {
         $months = $locale === 'en'
             ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
             : ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        $day = date('j', $time) . ' ' . $months[(int) date('n', $time) - 1] . ' ' . date('Y', $time);
 
-        return date('j', $time) . ' ' . $months[(int) date('n', $time) - 1] . ' '
-            . date('Y H:i' . ($withSeconds ? ':s' : ''), $time);
+        // A plain DATE column ("2026-11-16") has no time of day: no "00:00"
+        if (is_string($value) && preg_match('/^\d{4}-\d{2}-\d{2}$/', trim($value)) === 1) {
+            return $day;
+        }
+
+        return $day . ' ' . date('H:i' . ($withSeconds ? ':s' : ''), $time);
     }
 }
