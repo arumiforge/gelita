@@ -6,6 +6,10 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Lampiran pesanan gambar paling banyak lima berkas** (cabang `aru/dazzling-allen-p8hn5z`) · `asal: pengembang` · `disetujui pengembang` · mengubah 39
+
+ChatGPT menolak lebih dari lima berkas gambar dalam satu percakapan (dilaporkan pengembang). Kolom *Lampiran* di 39 dan kolom **Attach** di `ai-studio/chatgpt-images/TASKS.md` kini memuat paling banyak lima berkas; "style" dihitung satu. Urutan pilihan bila rujukan lebih banyak: foto benda yang sebenarnya, lalu gambar yang harus berbeda, lalu gambar untuk kesamaan hasil akhir. Tiga baris yang masih `todo` melebihi batas dan dipangkas: `R-20` dan `R-21` tanpa foto dua penari (dipakai untuk cara menari dan surai, bukan bentuk benda), `R-22` tanpa dua foto kendi (bentuknya kendi; warna tanah liat sudah terlihat di foto kendil), dan kalimat prompt `R-22` tentang foto kendi dihapus. Baris yang sudah dibuat tidak diubah. ChatGPT diminta menandai baris `blocked` bila menemukan lebih dari lima, bukan memilih sendiri.
+
 **Wawancara pengembang: suara di mode penelitian, salinan data anak, masa simpan, hitungan putar narasi, dan empat pesanan gambar (`R-23` sampai `R-26`)** (cabang `aru/dazzling-allen-p8hn5z`) · `asal: pengembang` · `disetujui pengembang` · mengubah 39; kode belum dibuat
 
 Pengembang menjawab pertanyaan yang tersisa dari pemeriksaan suara (15 November 2026, entri di atas *Suara lain: belum diputuskan*), dari cek manual gelombang E (14 November 2026), dan dari telaah gambar (`ai-studio/game-images/REVIEW.md`). Disusun dalam tiga putaran wawancara oleh AI; pilihan yang dianjurkan disebut lebih dulu. Semua keputusan berikut keputusan pengembang; dokumen lain belum diubah kecuali 39.

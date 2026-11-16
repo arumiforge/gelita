@@ -54,6 +54,8 @@ Gambar di dokumen ini bukan bagian antarmuka. Gayanya mengikuti kelompoknya masi
 
 **Gambar tes diperbaiki, bukan digambar dari nol.** Berbeda dari aturan `redo` di `ai-studio/chatgpt-images/AGENTS.md`: gambar tes yang ada dilampirkan dan hanya bagian yang salah yang diubah. Alasannya, semua tulisan lainnya sudah dicocokkan dengan `tes.php` pada 15 November 2026, dan buklet A dan B harus tetap serupa. Kalau hasil suntingan mengubah bagian lain, ulangi dari gambar lama, jangan dari hasil yang gagal.
 
+**Paling banyak lima lampiran** (pengembang, 16 November 2026). ChatGPT menolak lebih dari lima berkas gambar dalam satu percakapan, jadi kolom *Lampiran* setiap baris memuat paling banyak lima berkas; "style" dihitung satu. Kalau rujukan lebih banyak, yang dipilih: foto benda yang sebenarnya lebih dulu, lalu gambar yang harus berbeda, lalu gambar untuk kesamaan hasil akhir.
+
 **Tidak membocorkan kunci.** Tidak ada bagian gambar yang lebih tebal, lebih terang, atau lebih besar daripada bagian sejenisnya, kecuali diminta prompt.
 
 ## Gambar isi game
@@ -470,6 +472,7 @@ Ditambahkan 16 November 2026. Telaah no. 115: lambang di tengah avatar adalah tu
 
 ```text
 EDIT the attached avatar.10.webp. Keep EVERYTHING outside the central emblem exactly as it is: the dark-navy circular medallion rim, its thin brass edging, the four small gold diamond points, the cream parchment disc, the size, position, lighting and the transparent exterior. Compare with the attached avatar.1 and avatar.2 so the result stays in the same family.
+Use the image editor with a MASK over the central emblem only; the medallion rim, the diamond points and the cream disc stay outside the mask, locked. Do not regenerate the whole picture.
 
 Replace ONLY the gold emblem in the middle with a new one: a bundengan from Wonosobo, as one large sculptural GOLD emblem, in the same raised gold finish as the emblems of the other avatars, readable at 48 pixels.
 The bundengan, as in the attached photos: an UPRIGHT hollow shell shaped like a tall shield standing on its end, broad and rounded at the bottom, narrowing to a POINT at the top, curving forward so it is hollow; a loose square weave of flat bamboo strips; on its back a few cords forming a large square grid and a small tuft at the pointed top; ONE long straight pole along one edge, sticking out past the top; inside the hollow a few strings stretched from side to side. Seen in three-quarter view from the front-left so that both the back and the open hollow show. All of it in gold relief, no other colours added.
@@ -486,7 +489,7 @@ Ditambahkan 16 November 2026. Telaah no. 263. Benda ini **target** Cari Objek Te
 |---|---|
 | Kode berkas | `challenge.item.tmg-4-03` → simpan sebagai `challenge.item.tmg-4-03.webp` |
 | Kanvas | 240 × 240, latar transparan (buat pada 1024 × 1024, lalu perkecil) |
-| Lampiran | foto `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-craftspeople-painting-01.jpg` (kuda kepang pipih di dinding dan di meja perajin), `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-kuda-kepang-close-watermarked-04.jpg` (anyaman, bingkai rotan, cat; tanda nama dan nomor teleponnya tidak boleh ikut), `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-two-dancers-pendopo-03.jpg` (cara dipakai menari, surai rambut), `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-women-white-horse-14.jpg` (kuda kepang putih bercat merah-kuning, paling dekat dengan cat `R-20`). Untuk hasil akhir yang sama: `ai-studio/game-images/assets/tantangan/challenge.item.tmg-4-09.webp` (angklung) dan `ai-studio/game-images/assets/tantangan/challenge.item.tmg-4-12.webp` (sasando), pengecoh adegan yang sama |
+| Lampiran | foto `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-craftspeople-painting-01.jpg` (kuda kepang pipih di dinding dan di meja perajin), `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-kuda-kepang-close-watermarked-04.jpg` (anyaman, bingkai rotan, cat; tanda nama dan nomor teleponnya tidak boleh ikut), `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-women-white-horse-14.jpg` (kuda kepang putih bercat merah-kuning, paling dekat dengan cat `R-20`). Untuk hasil akhir yang sama: `ai-studio/game-images/assets/tantangan/challenge.item.tmg-4-09.webp` (angklung) dan `ai-studio/game-images/assets/tantangan/challenge.item.tmg-4-12.webp` (sasando), pengecoh adegan yang sama |
 | Butir | `tmg-4-x01`: "Temukan kuda-kudaan dari anyaman bambu yang dipakai untuk menari kuda lumping." Pengecoh: angklung, ondel-ondel, perahu pinisi, sasando |
 
 ```text
@@ -522,7 +525,7 @@ Ditambahkan 16 November 2026. Telaah no. 256: kepala kuda bulat bertongkat, sepe
 |---|---|
 | Kode berkas | `challenge.item.mgl-4-a05` → simpan sebagai `challenge.item.mgl-4-a05.webp` |
 | Kanvas | 240 × 240, latar transparan (buat pada 1024 × 1024, lalu perkecil) |
-| Lampiran | foto `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-craftspeople-painting-01.jpg` (kuda kepang pipih di dinding dan di meja perajin), `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-kuda-kepang-close-watermarked-04.jpg` (anyaman, bingkai rotan, cat; tanda nama dan nomor teleponnya tidak boleh ikut), `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-two-dancers-pendopo-03.jpg` (cara dipakai menari, surai rambut), `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-women-black-gold-horses-watermarked-10.jpg` (deretan kuda kepang hitam-emas bersurai rambut, paling dekat dengan cat `R-21`; tanda air fotografernya tidak boleh ikut). Untuk hasil akhir yang sama: `ai-studio/game-images/assets/tantangan/challenge.item.mgl-4-a07.webp` (dadak merak Reog, harus jelas berbeda) dan `ai-studio/game-images/assets/tantangan/challenge.item.mgl-4-a08.webp` (angklung) |
+| Lampiran | foto `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-craftspeople-painting-01.jpg` (kuda kepang pipih di dinding dan di meja perajin), `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-kuda-kepang-close-watermarked-04.jpg` (anyaman, bingkai rotan, cat; tanda nama dan nomor teleponnya tidak boleh ikut), `ai-studio/chatgpt-images/inbox/reference-Kuda-Lumping-researcher-women-black-gold-horses-watermarked-10.jpg` (deretan kuda kepang hitam-emas bersurai rambut, paling dekat dengan cat `R-21`; tanda air fotografernya tidak boleh ikut). Untuk hasil akhir yang sama: `ai-studio/game-images/assets/tantangan/challenge.item.mgl-4-a07.webp` (dadak merak Reog, harus jelas berbeda) dan `ai-studio/game-images/assets/tantangan/challenge.item.mgl-4-a08.webp` (angklung) |
 | Butir | Pengecoh di Cari Objek Magelang babak 1 (`mgl-4-x01` sampai `x04`; kuncinya stupa berlubang, kuluk Topeng Ireng, getuk, kendil gerabah) |
 
 ```text
@@ -552,13 +555,13 @@ No watermarks, signatures, text, numbers, logos, people, hands, extra objects, c
 
 ### R-22 · Kendil gerabah (benda Cari Objek Magelang)
 
-Ditambahkan 16 November 2026. Telaah no. 255: gambarnya teko tanah liat bercerat **dan** bergagang, bukan kendil dan bukan kendi. Benda ini **target** Cari Objek Magelang babak 1: "Temukan benda dari tanah liat yang dibentuk lalu dibakar, buatan warga Dusun Klipoh." Bank soal dan cek fakta (25, MGL-39 dan MGL-40) menyebutnya **kendil**, periuk tanah liat untuk menanak nasi; kata itu juga dipakai kartu informasi Klipoh dan butir `mgl-2-c06`. Pengembang memutuskan gambarnya mengikuti bank: kendil, bukan kendi (16 November 2026). Peneliti mengirim tiga foto kendi; dua dipakai hanya untuk warna dan hasil bakaran tanah liat, satu tampak buatan AI dan tidak dipakai. Pengembang lalu mengirim dua foto kendil (16 November 2026): periuk bulat cokelat kemerahan tua dengan **tutup tanah liat bertombol**, salah satunya dengan dua kuping kecil di sisi. Prompt mengikuti foto itu, dan keduanya dilampirkan.
+Ditambahkan 16 November 2026. Telaah no. 255: gambarnya teko tanah liat bercerat **dan** bergagang, bukan kendil dan bukan kendi. Benda ini **target** Cari Objek Magelang babak 1: "Temukan benda dari tanah liat yang dibentuk lalu dibakar, buatan warga Dusun Klipoh." Bank soal dan cek fakta (25, MGL-39 dan MGL-40) menyebutnya **kendil**, periuk tanah liat untuk menanak nasi; kata itu juga dipakai kartu informasi Klipoh dan butir `mgl-2-c06`. Pengembang memutuskan gambarnya mengikuti bank: kendil, bukan kendi (16 November 2026). Peneliti mengirim tiga foto kendi; ketiganya tidak dilampirkan (bentuknya kendi, bukan kendil, dan satu tampak buatan AI), supaya lampiran tidak lebih dari lima berkas. Pengembang lalu mengirim dua foto kendil (16 November 2026): periuk bulat cokelat kemerahan tua dengan **tutup tanah liat bertombol**, salah satunya dengan dua kuping kecil di sisi. Prompt mengikuti foto itu, dan keduanya dilampirkan.
 
 | | |
 |---|---|
 | Kode berkas | `challenge.item.mgl-4-a04` → simpan sebagai `challenge.item.mgl-4-a04.webp` |
 | Kanvas | 240 × 240, latar transparan (buat pada 1024 × 1024, lalu perkecil) |
-| Lampiran | Foto kendil `ai-studio/chatgpt-images/inbox/reference-kendil-researcher-two-lidded-with-lugs-01.jpg` (bentuk, tutup bertombol, warna) dan `ai-studio/chatgpt-images/inbox/reference-kendil-researcher-lidded-workshop-02.jpg` (perut bulat, bibir, tutup); foto kendi `ai-studio/chatgpt-images/inbox/reference-kendi-researcher-lidded-spout-01.jpg` dan `ai-studio/chatgpt-images/inbox/reference-kendi-researcher-incised-on-saucer-03.jpg` (hanya warna dan permukaan tanah liat bakar; bentuk keduanya kendi, bukan kendil); `ai-studio/game-images/assets/tantangan/challenge.item.mgl-1-h01.webp` (Susun Gambar gerabah Klipoh: periuk bulat di keranjang); untuk hasil akhir yang sama `ai-studio/game-images/assets/tantangan/challenge.item.mgl-4-a10.webp` (panci logam, pengecoh yang harus jelas berbeda) dan `ai-studio/game-images/assets/tantangan/challenge.item.mgl-4-a08.webp` (angklung) |
+| Lampiran | Foto kendil `ai-studio/chatgpt-images/inbox/reference-kendil-researcher-two-lidded-with-lugs-01.jpg` (bentuk, tutup bertombol, warna) dan `ai-studio/chatgpt-images/inbox/reference-kendil-researcher-lidded-workshop-02.jpg` (perut bulat, bibir, tutup); `ai-studio/game-images/assets/tantangan/challenge.item.mgl-1-h01.webp` (Susun Gambar gerabah Klipoh: periuk bulat di keranjang); untuk hasil akhir yang sama `ai-studio/game-images/assets/tantangan/challenge.item.mgl-4-a10.webp` (panci logam, pengecoh yang harus jelas berbeda) dan `ai-studio/game-images/assets/tantangan/challenge.item.mgl-4-a08.webp` (angklung) |
 | Butir | `mgl-4-x04`: "Temukan benda dari tanah liat yang dibentuk lalu dibakar, buatan warga Dusun Klipoh." Pengecoh: kuda kepang bambu, manisan carica, dadak merak Reog, angklung, bakpia, panci logam |
 
 ```text
@@ -566,7 +569,7 @@ GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
 Asset: challenge.item.mgl-4-a04  (R-22 · kendil, clay cooking pot, hidden-object cut-out)
 Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
 Match the render finish, lighting and outline quality of the attached metal pot and angklung cut-outs exactly, so that the objects of this scene look like parts of one set, and make sure the kendil can never be mistaken for the metal pot.
-The two attached kendil photos are the factual reference for the form, the lid and the colour: follow them, render them in the GELITA finish, and do not copy a photo or its background. The attached kendi photos show only the surface of the village's fired clay: use them for that and nothing else, because a kendi is a different vessel. The round pots in the basket of the attached puzzle picture are the same kind of kendil.
+The two attached kendil photos are the factual reference for the form, the lid and the colour: follow them, render them in the GELITA finish, and do not copy a photo or its background. The round pots in the basket of the attached puzzle picture are the same kind of kendil.
 
 SUBJECT AND COMPOSITION
 One isolated object on a transparent background: one kendil, the traditional Javanese earthenware cooking pot for steaming rice, made by the potters of Klipoh near Borobudur, seen from the front and a little above.
@@ -845,6 +848,7 @@ Ditambahkan 16 November 2026. Telaah no. 62: tombol bundar bahasa Inggris memuat
 
 ```text
 Edit the attached round button "round-lang-en.webp". Keep its carved gold ring exactly as it is: same size, same ornaments, same position, same light from the upper left. Replace ONLY the flag inside the ring.
+Use the image editor with a MASK over the flag disc only; the gold ring stays outside the mask, locked. Do not regenerate the whole button.
 New flag: the Union Jack of the United Kingdom, correct proportions and colours (navy blue field, white saltire, red saltire offset as on the real flag, white-bordered red cross), as softly waving fabric with the same cloth folds, sheen and inner shadow as the red-and-white flag in the attached "round-lang-id.webp".
 The two buttons must look like one pair: same ring, same fabric, same brightness.
 Output: 256 × 256 pixels, genuine transparent background outside the ring, preserve alpha. WebP, named round-lang-en.webp.
