@@ -1,10 +1,17 @@
 <?php
 /**
- * Public layout of the staff guide (/admin/panduan-staf) for a reader who
- * has not signed in: the panel's look without the sidebar, a top bar with
- * the GELITA mark and the way to the login page. Loads admin.css only.
+ * Layout of the staff guide (/admin/panduan-staf), for every reader: a
+ * documentation site in the panel's colours. Top bar (GELITA mark, the way
+ * back to the panel or to the login page), the guide's menu on the left
+ * (admin/guide/_nav), the page in the middle. Loads admin.css only.
+ *
+ * Sections: `content` (the page), `popovers` (glossary popovers, outside
+ * the text so they never land inside a paragraph).
  *
  * @var CodeIgniter\View\View $this
+ * @var bool   $isStaff
+ * @var string $roleName
+ * @var string $pageTitle
  */
 ?>
 <!DOCTYPE html>
@@ -13,25 +20,40 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
-  <title><?= esc(lang('Admin.guideTitle')) ?> · GELITA</title>
+  <title><?= esc($pageTitle) ?> · GELITA</title>
   <link rel="icon" href="<?= esc(app_icon_src('app.favicon', 'favicon.ico'), 'attr') ?>">
   <link rel="stylesheet" href="<?= asset_url_versioned('css/admin.css') ?>">
 </head>
-<body class="admin guide-public" data-locale="id" data-base="<?= esc(base_url()) ?>">
+<body class="admin guide-site" data-locale="id" data-base="<?= esc(base_url()) ?>">
   <a class="skip-link" href="#admin-main"><?= esc(lang('Admin.skipToContent')) ?></a>
 
-  <header class="guide-public-bar">
-    <a class="guide-public-brand" href="<?= base_url('admin/panduan-staf') ?>">
+  <header class="gd-bar">
+    <button type="button" class="gd-menu-btn btn btn-ghost" aria-controls="gd-nav" aria-expanded="false">
+      <?= icon('menu') ?><span><?= esc(lang('Admin.guideMenu')) ?></span>
+    </button>
+    <a class="gd-brand" href="<?= esc(\App\Libraries\StaffGuideContent::url() . $query, 'attr') ?>">
       <span class="sidebar-mark" aria-hidden="true">G</span>
       <span>GELITA <small><?= esc(lang('Admin.guideTitle')) ?></small></span>
     </a>
-    <a class="btn btn-primary" href="<?= base_url('admin/login') ?>"><?= icon('key') ?> <?= esc(lang('Admin.guideSignIn')) ?></a>
+    <div class="gd-bar-end">
+      <?php if ($isStaff): ?>
+        <span class="gd-role"><?= esc(lang('Admin.guideReadingAs', [$roleName])) ?></span>
+        <a class="btn" href="<?= base_url('admin') ?>"><?= icon('left') ?> <?= esc(lang('Admin.guideBackToPanel')) ?></a>
+      <?php else: ?>
+        <a class="btn btn-primary" href="<?= base_url('admin/login') ?>"><?= icon('login') ?> <?= esc(lang('Admin.guideSignIn')) ?></a>
+      <?php endif ?>
+    </div>
   </header>
 
-  <main class="admin-main guide-public-main" id="admin-main" tabindex="-1">
-    <?= $this->renderSection('content') ?>
-  </main>
+  <div class="gd-shell">
+    <?= $this->include('admin/guide/_nav') ?>
+    <main class="gd-main" id="admin-main" tabindex="-1">
+      <?= $this->renderSection('content') ?>
+    </main>
+  </div>
 
-  <script type="module" src="<?= asset_url_versioned('js/admin/guide-public.js') ?>"></script>
+  <?= $this->renderSection('popovers') ?>
+
+  <script type="module" src="<?= asset_url_versioned('js/admin/guide.js') ?>"></script>
 </body>
 </html>
