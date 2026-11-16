@@ -1003,6 +1003,54 @@
       "received_on": "2026-11-16",
       "use": "Installed as it is as the Pustaka picture library.magelang.p6.1 (review no. 295), cropped to 3:2 (1004 x 669, centred on the middle dancer, leaving out a thin black band at the top) and scaled to 960 x 640.",
       "sha256": "abe969c7356547c6f8bcbf47ee6c9e3c6e75581804b4a61df07e87e7ae21c9b6"
+    },
+    {
+      "file": "reference-Kuda-Lumping-researcher-mass-dance-girls-06.jpg",
+      "title": "A mass kuda lumping performance on a field: hundreds of girls in red and gold costumes with headcloths dance with painted kuda kepang and horsehair",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only (second choice for 317; same event as 09). 720 x 405.",
+      "sha256": "5b9d4afad1979712e6f9479468afcd04878764bf3e1c9f608c32fc51a39383fd"
+    },
+    {
+      "file": "reference-Kuda-Lumping-researcher-dancers-under-trees-07.jpg",
+      "title": "Temanggung kuda lumping dancers under big trees: large curly wigs, moustaches, red and gold fringed costumes, ankle bells, one dancer with a whip",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only: the Temanggung costume, but no kuda kepang clearly visible; good reference for the costume of the region.",
+      "sha256": "7f2552f6e111c878221aa9ea9c8ebb1d5f713fe02aea3633d3214a9211f2c6e2"
+    },
+    {
+      "file": "reference-Kuda-Lumping-researcher-sunset-windmill-08.jpg",
+      "title": "Dancers with kuda kepang against the setting sun next to a decorative windmill on a hillside, smoke on the right",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Reference only: backlit silhouettes, a windmill photo spot and smoke; the place is not certain to be Temanggung.",
+      "sha256": "c9bd894ec0b96a5eff5c2c06fc4ea08760086df58ea83e7191dda0c91e544b83"
+    },
+    {
+      "file": "reference-Kuda-Lumping-researcher-mass-dance-men-09.jpg",
+      "title": "A mass kuda lumping performance: hundreds of dancers, men in white shirts and red vests with drawn moustaches in front, dancing with painted kuda kepang and horsehair",
+      "creator": null,
+      "source": null,
+      "license": "Licence and permission obtained by the researcher from the parties concerned (owner, 16 November 2026); creator and source not recorded",
+      "license_verified": false,
+      "permission_confirmed_by_owner": true,
+      "received_on": "2026-11-16",
+      "use": "Installed as it is as the Pustaka picture library.temanggung.p8.1 (review no. 317), cropped to 3:2 (608 x 405, centred) and scaled to 960 x 640.",
+      "sha256": "a4fbae6110dd7a0027349d70f16e3fb0276769261de265bb8a71efd199b04b49"
     }
   ],
   "permission_updates": [

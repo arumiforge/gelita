@@ -6,6 +6,13 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Gambar Pustaka "Pertunjukan kuda lumping di Temanggung" diganti foto asli** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
+
+- Peneliti mengirim empat foto kuda lumping lagi (berizin), disimpan sebagai acuan.
+- Foto pertunjukan massal dengan kuda kepang yang terlihat jelas dipasang apa adanya; sesuai juga dengan bagian *Nyadran Jaran Kepang* di halaman itu. Lukisan lama berlatar menara candi bergaya Bali.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Gambar Pustaka "Penari Topeng Ireng dengan kuluk bulu warna-warni" diganti foto asli** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
 
 - Peneliti mengirim tiga foto Topeng Ireng berformat mendatar (berizin), disimpan sebagai acuan.
