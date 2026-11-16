@@ -171,6 +171,7 @@ None open: the owner decided on 9 November 2026 (`04`) to build the Wave 2 lefto
 - **Research revision, code parts 27–35**: wave C part 1 roles (PR #332); wave D part 2 field sessions and part 5 new question bank (PR #339–#340); wave E parts 3, 4, 6: research data, consent and data rights, Skenario Digital with its 24 situation pictures (PR #349, 8 November 2026); wave F parts 7, 8, 9: research mode, test module, derived data layer (PR #350, 9 November 2026); migrations `003400`–`004300`, owner answers after each wave, re-check on MariaDB 10.11 and Playwright, suite green (1233 tests).
 - **Leftover-work interview** (9 November 2026, branch `r10-wawancara-sisa-kerja`, `04`): stale rows closed, `kamus-1.1` approved by the developer, server-side manual checks on MariaDB 10.11 in the cloud container (among them migration `2026-01-01-003300`, the study package lock, with every migration rolled back and re-run), `StaffUserSeeder` no longer writes the removed `school_id`.
 - **Asset package leftovers, Wave 2** (built 9 November 2026, branch `pw/intelligent-davinci-i6ysvq`, decision log *Asset package leftovers*): `gelita:paket:bangun --deploy` at the end of both deploy scripts, the study's package lock shown on Rilis and Paket aset and in the research-ready checklist, a preview pill for the admin, open sessions keep their package.
+- **Staff panel field-day recommendations** (16 November 2026, branch `panel-lapangan-rekomendasi`, PR #389, decision log *Staff panel field-day recommendations*): Ringkasan shows today's field sessions first, printable session card `/admin/sesi-lapangan/{id}/cetak`, seat plan on the L2 page, *Perlu perhatian* and an opt-in alert sound on Pemantauan, `tools/qa/admin-check.mjs` brought up to date (1536/0).
 
 ## Active branches
 
@@ -178,4 +179,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `panel-lapangan-rekomendasi` | Staff panel field-day recommendations 1, 2, 4, 5, 6 (after PR #388): Ringkasan on a visit day, printable session card `/admin/sesi-lapangan/{id}/cetak`, seat plan on the L2 page, "Perlu perhatian" on Pemantauan, `tools/qa/admin-check.mjs` brought up to date. Sibling `panel-panduan-staf` owns menu, layout, typography and `/admin/panduan-staf` | Done: tests green (full suite once, 1288), `admin-check.mjs` 1536/0 on MariaDB with a simulated visit day, cards printed to PDF (one A4 page up to 6 × 8); PR open, waiting for review |
