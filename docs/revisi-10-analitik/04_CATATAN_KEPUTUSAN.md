@@ -6,6 +6,10 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Penyimpangan implementasi bagian 5 disetujui** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` dan `asal: peneliti` (disampaikan pengembang) · `disetujui peneliti` · mengubah 00 dan 31; tidak merevisi produk
+
+Pengembang menyetujui penyimpangan implementasi gelombang D yang dicatat di [31 §22](31_IMPLEMENTASI_BANK_SOAL_BARU.md#22-keputusan-pengembang) no. 12 (`pirls_process` dan `skill` D1b diturunkan sebagai label pengembang, `verdict_D1a` menerima `INF-GEN`, penanda baris teks digital, `HUNT_SCENE_DP` = 864, tata letak benda dan unggahan 24 dp, blok `round2`, kolom `media_label`/`media_note`, `label_source` ahli sebagian, peringatan menjadi galat di `--siap-penelitian`, lembar `kode_pilihan` di bagian 3), dan menyampaikan bahwa peneliti juga menyetujuinya. Kode tidak berubah. Label `pirls_process` dan `skill` tetap label pengembang: persetujuan ini menyetujui cara menurunkannya, bukan validasi ahli atas labelnya.
+
 **Cek kemutakhiran 31 setelah kode gelombang D** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang) · status 31 tetap `disetujui pengembang` · mengubah 00 dan 31; tidak merevisi produk
 
 Pengembang meminta cek kemutakhiran dokumen lain dilanjutkan. Dokumen implementasi 28–32 terakhir diubah 3 November 2026, sebelum kode gelombang E dan keputusan 8–16 November 2026; 31 dicek lebih dulu karena bertentangan langsung dengan entri cek fakta peneliti hari ini. Diselaraskan tanpa keputusan baru ([31 §22](31_IMPLEMENTASI_BANK_SOAL_BARU.md#22-keputusan-pengembang) no. 12–14):
