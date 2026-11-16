@@ -6,6 +6,13 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Gambar Pustaka "Candi Pringapus, candi Hindu abad ke-9" diganti foto asli** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
+
+- Lima foto Candi Pringapus dari peneliti (berizin) akhirnya diterima sebagai berkas dan disimpan sebagai acuan lebih dulu.
+- Foto tampak depan di halaman berumput dipasang apa adanya: satu bilik di atas kaki tinggi, satu pintu berkepala kala, atap bertingkat. Lukisan lama menampilkan candi lebar berpuncak banyak dengan dua pintu. Satu foto bertanda nama fotografer hanya menjadi acuan.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Gambar Pustaka "Arca Nandi di dalam bilik Candi Pringapus" diganti foto asli** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
 
 - Pengembang mengirim empat foto arca Nandi Candi Pringapus dari peneliti (berizin), kali ini sebagai berkas. Semuanya disimpan sebagai acuan lebih dulu.

@@ -5821,7 +5821,7 @@
  {
   "id": "233",
   "key": "library.temanggung.p5.2",
-  "title": "Candi_Pringapus_Temanggung_Jateng.jpg",
+  "title": "Candi Pringapus, candi Hindu abad ke-9",
   "cat": "Pustaka",
   "region": "Temanggung",
   "size": "960 × 640",
@@ -5829,9 +5829,14 @@
   "format": "WebP",
   "alpha": false,
   "file": "assets/pustaka/library.temanggung.p5.2.webp",
-  "desc": "temanggung · gambar",
-  "prompt": "GELITA DOCUMENTARY MEDIA — source acquisition, not image generation. Preserve factual photographs and authorised video in their original documentary style. The GELITA interface surrounding this media uses navy and warm gold; do not convert documentary evidence to 3D.\n\nSOURCE ACQUISITION BRIEF: Locate the exact licensed reference named Candi_Pringapus_Temanggung_Jateng.jpg. Verify creator, licence, attribution and factual relevance before use. Preserve documentary content; do not synthesize a substitute and present it as a real photograph. For video use the official link or an authorised original recording; do not assume a downloadable source.",
-  "negative": "Do not fabricate documentary photographs, alter factual details, or invent source attribution."
+  "desc": "Foto asli Candi Pringapus dari peneliti (berizin): satu bilik persegi di atas kaki tinggi, satu pintu berkepala kala, atap bertingkat, di halaman berumput berpagar tanaman rendah. Dipasang apa adanya (diperkecil dari 1200 × 800 ke 960 × 640); bukan ilustrasi.",
+  "prompt": "Not generated. A real photograph of Candi Pringapus, Temanggung, from the researcher (licence and permission obtained, 16 November 2026), installed as it is. Never redraw or restyle it.",
+  "negative": "Never redraw, restyle or replace it with an invented temple.",
+  "caption": {
+   "id": "Candi Pringapus, candi Hindu abad ke-9",
+   "en": "Pringapus Temple, a 9th-century Hindu temple"
+  },
+  "credit": "Foto Candi Pringapus (berizin, dari peneliti)"
  },
  {
   "id": "234",
