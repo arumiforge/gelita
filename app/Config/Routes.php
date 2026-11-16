@@ -176,6 +176,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
             $routes->post('sesi-lapangan/(:num)/token-baru', 'FieldSessionController::regenerateToken/$1');
             $routes->post('sesi-lapangan/(:num)/tutup', 'FieldSessionController::close/$1');
             $routes->get('sesi-lapangan/(:num)/kursi', 'FieldSessionController::seats/$1');
+            $routes->get('sesi-lapangan/(:num)/cetak', 'FieldSessionController::printCard/$1');
             $routes->post('sesi-lapangan/(:num)/kursi', 'FieldSessionController::saveSeats/$1');
             $routes->get('sesi-lapangan/(:num)/susulan', 'FieldSessionController::makeupForm/$1');
             $routes->post('sesi-lapangan/(:num)/susulan', 'FieldSessionController::storeMakeup/$1');

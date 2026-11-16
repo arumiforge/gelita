@@ -76,6 +76,8 @@ if (! function_exists('icon')) {
             'sort'      => '<path d="M8 4v16M4 8l4-4 4 4"/><path d="M16 20V4M12 16l4 4 4-4"/>',
             'columns'   => '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M15 4v16"/>',
             'video'     => '<rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/>',
+            'printer'   => '<path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/>',
+            'plus'      => '<path d="M12 5v14M5 12h14"/>',
         ];
 
         $path = $paths[$name] ?? $paths['info'];
