@@ -867,3 +867,11 @@ ChatGPT refuses more than five image files in one conversation (reported by the 
 Rows over the limit were the three still `todo`: `R-20` and `R-21` (6 each) lose the photo of the two dancers (used for how it is danced, not for the object's form); `R-22` (7) loses the two kendi photos (a different vessel; the kendil photos show the clay already), and its prompt sentence about them is removed. Counted with a script over every `R-` row: none lists more than five now. Rows already generated or installed are unchanged. Docs only; no test reads these files.
 
 **Masked edits.** ChatGPT then advised the same cuts and, for `R-19`, an edit with a mask over the emblem only, the ring, diamond points and disc locked, because a plain regeneration keeps changing them. Added to the `R-19` prompt and to `AGENTS.md`, and to `R-25` (mask over the flag disc, the gold ring locked), the same kind of edit.
+
+## Production `.env` matched to the gelita.id server (16 November 2026, branch `nty/beautiful-clarke-scy25i`)
+
+The server's working `.env` and `env-example-production` had drifted apart: the server ran with `encryption.key` `a00f5f…` and a 32-character `gelita.ipSalt`, the repository file with another key and a 64-character salt. Owner decision: keep the server's key (its test data and offline `sessionTag`s stay valid) and give both a new 64-character salt (`bin2hex(random_bytes(32))`). Earlier `ip_hash` values no longer match new ones; that only affects test data.
+
+The server also had local edits in `app/Config/App.php` (`baseURL`, `forceGlobalSecureRequests = true`, `CSPEnabled = true`) and `app/Config/Cookie.php` (`secure = true`). All but `CSPEnabled` were already set by `.env`; `app.CSPEnabled = true` is now in `env-example-production` and in the docs/08 list, so the Content Security Policy stays on once the server's two config files are restored to the repository version (a locally edited tracked file can stop `git pull --ff-only` in `deploy.sh`).
+
+`GELITA_ADMIN_PASSWORD` was in the server's `.env`. It is only read by `StaffUserSeeder` at install, so the template carries it commented out with a placeholder, and the real password is not committed. Docs and config only; the file was parsed with CodeIgniter's `DotEnv` to check the values, no test was run.
