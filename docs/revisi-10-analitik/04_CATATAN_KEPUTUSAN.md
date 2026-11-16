@@ -6,6 +6,18 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 16 November 2026
 
+**Cek kemutakhiran 30 setelah kode gelombang E** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang) · status 30 tetap `disetujui pengembang` · mengubah 00 dan 30; tidak merevisi produk
+
+Diselaraskan tanpa keputusan baru ([30 §22](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#22-keputusan-pengembang) no. 13–17) dengan kode gelombang E dan entri 04 sesudah 2 November 2026:
+- §5.1 dan §5.3: `t4-1` untuk akun uji, `Game.tokenWithdrawn` untuk siswa yang mundur;
+- §7.5: `backup.sh` berhenti bila lokasi kedua lokal tidak ada; celah `backup.ps1` dicatat;
+- §7.6: `checklist_json` bertipe TEXT;
+- §8 dan §11: keputusan pengembang 16 November 2026 tentang salinan satu anak dan masa simpan 7305, kodenya belum dibuat;
+- §13: dua catatan dari uji jalan manual;
+- §19.3: hasil cek manual 9 dan 14 November 2026 dan temuan yang masih terbuka.
+
+**Untuk pengembang:** penyimpangan implementasi bagian 4 (30 §22 no. 13) belum pernah disetujui terpisah dan tetap `draf pengembang`. Temuan cek manual (b) penyamaran berlebih di kritik dan saran, (d) formulir yang masih tampil setelah *Ganti nama dengan kode*, dan (e) galat CSRF setelah siswa mundur masih terbuka. Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Cek kemutakhiran 32 setelah kode gelombang E** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang; untuk sesi ini pengembang mengizinkan beberapa dokumen per sesi) · status 32 tetap `disetujui pengembang` · mengubah 00 dan 32; tidak merevisi produk
 
 Diselaraskan tanpa keputusan baru ([32 §18](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#18-keputusan-pengembang) no. 11–15) dengan kode gelombang E dan entri 04 sesudah 3 November 2026:
