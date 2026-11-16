@@ -66,6 +66,22 @@ final class DictionarySheetTest extends CIUnitTestCase
         }
     }
 
+    public function testGuideTermsExist(): void
+    {
+        $columns = [];
+
+        foreach (ResearchDictionary::sheets() as $sheet) {
+            $columns = [...$columns, ...ResearchDictionary::columns($sheet)];
+        }
+
+        foreach (ResearchDictionary::GUIDE_TERMS as $column => $term) {
+            $this->assertContains($column, $columns, "{$column} is a download column");
+            $this->assertArrayHasKey($term, \App\Libraries\StaffGuideContent::terms(), "{$column} → {$term}");
+        }
+
+        $this->assertSame('', ResearchDictionary::guideRef('item_key'), 'no term, no reference');
+    }
+
     public function testVersionInTheSheetAndInDataExports(): void
     {
         $this->createRawDataWorld();
@@ -86,8 +102,9 @@ final class DictionarySheetTest extends CIUnitTestCase
 
         $this->assertStringContainsString('"Versi kamus",,' . ResearchDictionary::VERSION, $kamus);
         $this->assertStringContainsString('"Kode penelitian",,STUDI-UJI', $kamus);
-        $this->assertStringContainsString('"Definisi lengkap",,"11_KAMUS_DATA.md, versi yang sama"', $kamus);
+        $this->assertStringContainsString('"Arti istilah",,"Panduan staf GELITA, Kata yang sering dipakai: ' . base_url('admin/panduan-staf/istilah') . '"', $kamus);
         $this->assertStringContainsString('lembar,kolom,judul,arti,satuan,nilai,nama_kamus,analitik,rujukan_kamus', $kamus);
-        $this->assertStringContainsString('11_KAMUS_DATA.md#variabel-peserta-dan-sesi', $kamus);
+        $this->assertStringContainsString(base_url('admin/panduan-staf/istilah') . '#istilah-kode-peserta', $kamus);
+        $this->assertStringNotContainsString('.md', $kamus, 'no repository documents in downloads (owner, 16 Nov 2026)');
     }
 }

@@ -102,7 +102,7 @@ final class ExportLabels
             'nilai'  => ['Nilai', 'text', 'Daftar nilai berkode: kode = label.'],
             'nama_kamus'    => ['Nama di kamus', 'code', 'Nama variabel di kamus data penelitian (11), bila berbeda dari kode kolom.'],
             'analitik'      => ['Analitik', 'text', 'Nomor analitik (1–10) yang memakai kolom ini.'],
-            'rujukan_kamus' => ['Rujukan kamus', 'text', 'Bagian kamus data penelitian yang mendefinisikan kolom ini.'],
+            'rujukan_kamus' => ['Rujukan kamus', 'text', 'Arti istilah kolom ini di Panduan staf (Kata yang sering dipakai). Kosong bila kolom itu tidak punya istilah di sana.'],
         ],
         'peserta' => [
             'booklet'                  => ['Buklet', 'code', 'Buklet B1–B4 siswa di studi ini, dari baris dan kursi L2 (participant_seats).'],
@@ -485,7 +485,7 @@ final class ExportLabels
         }
 
         if (! isset(self::SHEET_TITLES[$sheet]) && FieldSheetSpec::has($sheet)) {
-            return 'Lembar lapangan yang diketik dan diunggah (impor utama yang berlaku); kolom seperti 02_LEMBAR_LAPANGAN.md.';
+            return 'Lembar lapangan yang diketik dan diunggah (impor utama yang berlaku); kolom seperti templat lembar dari halaman Sesi lapangan.';
         }
 
         return self::SHEET_TITLES[$sheet][1] ?? '';
@@ -713,7 +713,7 @@ final class ExportLabels
                     )),
                     'nama_kamus'    => $entry === null ? '' : (string) $entry['kamus'],
                     'analitik'      => $entry === null ? '' : implode(', ', $entry['analytics']),
-                    'rujukan_kamus' => $entry === null ? '' : ResearchDictionary::DOC . '#' . $entry['ref'],
+                    'rujukan_kamus' => ResearchDictionary::guideRef($column),
                 ];
             }
         }
