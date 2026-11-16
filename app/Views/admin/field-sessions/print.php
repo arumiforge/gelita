@@ -14,7 +14,8 @@
  * @var list<array<string, mixed>> $roster SeatService::roster()
  * @var int                        $rows   rows of the seating plan
  * @var int                        $seats  seats per row
- * @var int                        $max    largest rows/seats value
+ * @var int                        $maxRows  largest number of rows
+ * @var int                        $maxSeats largest number of seats per row
  */
 use App\Libraries\SeatRules;
 
@@ -48,11 +49,11 @@ $title    = lang('Admin.printCardTitle') . ' · ' . $fieldSession['code'];
     <form method="get" action="<?= base_url($base . '/cetak') ?>" class="form-inline">
       <div class="field">
         <label for="pc-rows"><?= esc(lang('Admin.printCardRows')) ?></label>
-        <input type="number" id="pc-rows" name="baris" min="1" max="<?= $max ?>" value="<?= $rows ?>">
+        <input type="number" id="pc-rows" name="baris" min="1" max="<?= $maxRows ?>" value="<?= $rows ?>">
       </div>
       <div class="field">
         <label for="pc-seats"><?= esc(lang('Admin.printCardSeats')) ?></label>
-        <input type="number" id="pc-seats" name="kursi" min="1" max="<?= $max ?>" value="<?= $seats ?>">
+        <input type="number" id="pc-seats" name="kursi" min="1" max="<?= $maxSeats ?>" value="<?= $seats ?>">
       </div>
       <button class="btn" type="submit"><?= esc(lang('Admin.printCardApply')) ?></button>
     </form>
@@ -92,9 +93,9 @@ $title    = lang('Admin.printCardTitle') . ' · ' . $fieldSession['code'];
           <?php for ($s = 1; $s <= $seats; $s++): ?>
             <div class="print-seat">
               <span class="print-seat-pos"><?= esc(lang('Admin.printCardSeatLabel', [$r, $s])) ?></span>
-              <?php if ($p1): ?><b class="print-seat-booklet"><?= esc(SeatRules::booklet($r, $s)) ?></b><?php endif ?>
+              <?php // P1 assigns booklets by seat; later the booklet follows the student, so the box leaves it blank ?>
+              <b class="print-seat-booklet<?= $p1 ? '' : ' is-blank' ?>"><?= esc($p1 ? SeatRules::booklet($r, $s) : 'B__') ?></b>
               <span class="print-seat-line"><?= esc(lang('Admin.printCardCode')) ?></span>
-              <?php if (! $p1): ?><span class="print-seat-line"><?= esc(lang('Admin.printCardBooklet')) ?></span><?php endif ?>
               <span class="print-seat-line"><?= esc(lang('Admin.printCardDevice')) ?></span>
             </div>
           <?php endfor ?>

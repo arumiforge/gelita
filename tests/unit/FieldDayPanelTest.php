@@ -96,13 +96,14 @@ final class FieldDayPanelTest extends CIUnitTestCase
         $this->assertStringContainsString('GHJKMN', $html);
         $this->assertStringContainsString('S03', $html);
         $this->assertSame(30, substr_count($html, 'class="print-seat"'), 'default 5 rows × 6 seats');
-        $this->assertMatchesRegularExpression('/Baris 2 (·|&middot;) Kursi 4<\/span> <b class="print-seat-booklet">B4</', $html);
+        $this->assertMatchesRegularExpression('/Baris 2 (·|&middot;) Kursi 4<\/span>\s*<b class="print-seat-booklet">B4</', $html);
         $this->assertStringContainsString(lang('Admin.printCardTest_pre'), $html, 'P1 holds the pre-test');
 
         $p2 = $this->fieldSession($this->conn, 2, 'PQRSTU');
         $later = (string) $this->send(Method::GET, 'admin/sesi-lapangan/' . $p2['id'] . '/cetak')->getBody();
         $this->assertStringContainsString('Temanggung', $later, 'region name');
-        $this->assertStringNotContainsString('print-seat-booklet', $later, 'after P1 the booklet follows the student, not the seat');
+        $this->assertStringContainsString('print-seat-booklet is-blank', $later, 'after P1 the booklet follows the student, not the seat');
+        $this->assertDoesNotMatchRegularExpression('/print-seat-booklet">B[1-4]</', $later);
         $this->assertStringContainsString('S03-A01</span> <b>B3</b>', $html, 'roster codes with their booklet');
         $this->assertStringNotContainsString('SD Lapangan', $html, 'codes only');
         $this->assertStringNotContainsString('DEWI', $html, 'never names');

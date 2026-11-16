@@ -83,7 +83,7 @@ foreach ($plan as $r => $row) {
 <?php else: ?>
   <form method="post" action="<?= base_url('admin/sesi-lapangan/' . $fieldSession['id'] . '/kursi') ?>" class="form">
     <?= csrf_field() ?>
-    <table class="data-table">
+    <div class="table-wrap"><table class="data-table">
       <thead><tr>
         <th>Kode peserta</th><th><?= esc(lang('Admin.seatRow')) ?></th><th><?= esc(lang('Admin.seatNo')) ?></th>
         <th><?= esc(lang('Admin.seatBooklet')) ?></th><th><?= esc(lang('Admin.seatPreForm')) ?></th><th><?= esc(lang('Admin.seatPostForm')) ?></th>
@@ -101,7 +101,7 @@ foreach ($plan as $r => $row) {
           </tr>
         <?php endforeach ?>
       </tbody>
-    </table>
+    </table></div>
     <div class="form-actions"><button class="btn btn-primary" type="submit"><?= icon('check') ?> <?= esc(lang('Admin.save')) ?></button></div>
   </form>
 <?php endif ?>
