@@ -4,7 +4,61 @@ Per 16 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.m
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
 
+## 17 November 2026
+
+**Cek kemutakhiran 13, 14, 15, dan 02 L0** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang; isinya ditampilkan ringkas dulu dan disetujui pengembang) · status dokumen tidak berubah · mengubah 00, 02, 13, 14, dan 15; tidak merevisi produk
+
+Diselaraskan tanpa keputusan baru:
+- **13:** baris status (G2 dilalui 4 November 2026, hasil validator belum di repo); bentuk jawaban mentah seperti dibangun; ambang tebakan cepat tes `test_rapid_guess_ms` 3000 ms dan butir pertama sesudah bacaan tanpa penanda (keputusan 4 November 2026); `kamus-1.1` disetujui; bagian baru *Sesudah modul tes dibangun* (`tes.php` sumber isi, gambar layar tiruan, label PGK, butir tidak sampai, pengingat butuh JavaScript, cek manual modul baru sebagian).
+- **14:** catatan di kepala dokumen (`tes.php` sumber isi; salah tulis nama akun di gambar M4 dibetulkan, `R-10`).
+- **15:** catatan di kepala dokumen; kolom *Tampilan* disamakan dengan gambar yang dibuat ulang (`R-06` sampai `R-09`): keempat tombol unggahan `tes-bd-A-G1`/`tes-bd-B-G1` sama, tulisan video `tes-bd-A-G2` lebih besar di pita gelap kiri bawah, motif besurek hanya hiasan. Teks butir, pilihan, kunci, dan kode tidak berubah.
+- **02 L0:** baris baru *Sebelum siswa masuk* tentang layar cek suara; baris headset tetap; hasil cek suara di Pemantauan belum disebut karena belum dibuat. Templat L0 kosong ikut berubah (`FieldSheetTemplateTest` hijau).
+
+Butir tes tetap `needs_verification`: cek fakta peneliti 16 November 2026 hanya untuk bank soal game. Entri ini tidak diikuti pembuatan ulang PDF.
+
+**Penyimpangan implementasi bagian 2, 3, 4, dan 6 disetujui peneliti** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: peneliti` (disampaikan pengembang) · `disetujui peneliti` · mengubah 00, 28, 29, 30, dan 32; tidak merevisi produk
+
+Pengembang menyampaikan bahwa peneliti menyetujui semua penyimpangan implementasi yang dicatat saat cek kemutakhiran 16 November 2026 dan ditampilkan ringkas kepada pengembang: bagian 2 di [28 §22](28_IMPLEMENTASI_SESI_LAPANGAN.md#22-keputusan-pengembang) no. 15 (token yang diganti sebagai `token_unknown`, `too_many`, rute kode sekolah penelitian, tiga langkah bernomor saat mendaftar), bagian 3 di [29 §19](29_IMPLEMENTASI_DATA_PENELITIAN.md#19-keputusan-pengembang) no. 18, bagian 4 di [30 §22](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#22-keputusan-pengembang) no. 13, dan bagian 6 di [32 §18](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#18-keputusan-pengembang) no. 11. Kode tidak berubah. Bersama penyimpangan bagian 5 (16 November 2026), semua penyimpangan gelombang kode D dan E kini disetujui. Entri ini tidak diikuti pembuatan ulang PDF.
+
 ## 16 November 2026
+
+**Cek kemutakhiran 28 setelah kode gelombang D dan panel hari lapangan** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang) · status 28 tetap `disetujui pengembang` · mengubah 00 dan 28; tidak merevisi produk
+
+Diselaraskan tanpa keputusan baru ([28 §22](28_IMPLEMENTASI_SESI_LAPANGAN.md#22-keputusan-pengembang) no. 15–19): alasan penolakan token `withdrawn` dan `too_many` (§6.3); layar cek suara sesudah token (§6.4); *Tambah waktu* hanya di halaman sesi lapangan, Ringkasan *Sesi lapangan hari ini*, dan pemantauan dengan *Perlu perhatian* dan bunyi peringatan (§12); kartu cetak dan menu *Kerja lapangan* (§15); simulator menolak berjalan di mode penelitian (§19.2); cek manual §19.3 belum pernah dijalankan sebagai satu daftar, bagian-bagiannya dicek 9, 14, dan 16 November 2026.
+
+**Untuk pengembang:** sebagian penyimpangan bagian 2 (28 §22 no. 15: token yang diganti sebagai `token_unknown`, `too_many`, rute kode sekolah penelitian, penanda tiga langkah pendaftaran) belum pernah disetujui terpisah dan tetap `draf pengembang`. Entri ini tidak diikuti pembuatan ulang PDF.
+
+**Cek kemutakhiran 29 setelah kode gelombang E** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang) · status 29 tetap `disetujui pengembang` · mengubah 00 dan 29; tidak merevisi produk
+
+Diselaraskan tanpa keputusan baru ([29 §19](29_IMPLEMENTASI_DATA_PENELITIAN.md#19-keputusan-pengembang) no. 18–22) dengan kode gelombang E dan entri 04 sesudah 3 November 2026: §4 mendapat `item_shown` dan `sound_check_answered`; §16.3 mendapat hasil cek manual 9 dan 14 November 2026; §19 mencatat penyimpangan gelombang E, jawaban pengembang 8 November 2026 (L5 tiga lembar, templat L0 kosong), dan sambungan dari bagian 4 dan 6–9.
+
+**Untuk pengembang:** penyimpangan implementasi bagian 3 (29 §19 no. 18) belum pernah disetujui terpisah dan tetap `draf pengembang`. Entri ini tidak diikuti pembuatan ulang PDF.
+
+**Cek kemutakhiran 30 setelah kode gelombang E** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang) · status 30 tetap `disetujui pengembang` · mengubah 00 dan 30; tidak merevisi produk
+
+Diselaraskan tanpa keputusan baru ([30 §22](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#22-keputusan-pengembang) no. 13–17) dengan kode gelombang E dan entri 04 sesudah 2 November 2026:
+- §5.1 dan §5.3: `t4-1` untuk akun uji, `Game.tokenWithdrawn` untuk siswa yang mundur;
+- §7.5: `backup.sh` berhenti bila lokasi kedua lokal tidak ada; celah `backup.ps1` dicatat;
+- §7.6: `checklist_json` bertipe TEXT;
+- §8 dan §11: keputusan pengembang 16 November 2026 tentang salinan satu anak dan masa simpan 7305, kodenya belum dibuat;
+- §13: dua catatan dari uji jalan manual;
+- §19.3: hasil cek manual 9 dan 14 November 2026 dan temuan yang masih terbuka.
+
+**Untuk pengembang:** penyimpangan implementasi bagian 4 (30 §22 no. 13) belum pernah disetujui terpisah dan tetap `draf pengembang`. Temuan cek manual (b) penyamaran berlebih di kritik dan saran, (d) formulir yang masih tampil setelah *Ganti nama dengan kode*, dan (e) galat CSRF setelah siswa mundur masih terbuka. Entri ini tidak diikuti pembuatan ulang PDF.
+
+**Cek kemutakhiran 32 setelah kode gelombang E** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang; untuk sesi ini pengembang mengizinkan beberapa dokumen per sesi) · status 32 tetap `disetujui pengembang` · mengubah 00 dan 32; tidak merevisi produk
+
+Diselaraskan tanpa keputusan baru ([32 §18](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#18-keputusan-pengembang) no. 11–15) dengan kode gelombang E dan entri 04 sesudah 3 November 2026:
+- kotak status: isi skenario dicek fakta peneliti, belum tercatat tervalidasi ahli;
+- §5.2: urutan pilihan dengan `seeded_shuffle()`;
+- §6.2–6.3: pita instruksi 60 dp, kartu *Percobaan dipakai*, muat ulang tanpa daftar lompat, bunyi umpan balik, dan efek benar/salah yang akan dimatikan di mode penelitian;
+- §7.1–7.2: node dari `ContentSeeder`, peta lima pos dan `MAP_STOPS`, kartu terpasang, gerbang cerita penghubung lewat `hasAttemptInStudy()`;
+- §7.5: kartu, latar cerita penghubung, dan letak gambar situasi di Katalog Aset;
+- §9.4: centang nada sebagai `tone_checked`;
+- §15.3: hasil cek manual 14 November 2026 dengan temuan terbuka (c) dan (d);
+- §19 no. 1: glosarium sudah.
+
+**Untuk pengembang:** penyimpangan implementasi bagian 6 (32 §18 no. 11) belum pernah disetujui terpisah dan tetap `draf pengembang`. Temuan cek manual (c) waktu `item_tries` setelah muat ulang dan (d) `challenge_abandoned` saat muat ulang masih terbuka. Entri ini tidak diikuti pembuatan ulang PDF.
 
 **Penyimpangan implementasi bagian 5 disetujui** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` dan `asal: peneliti` (disampaikan pengembang) · `disetujui peneliti` · mengubah 00 dan 31; tidak merevisi produk
 

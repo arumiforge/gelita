@@ -1,8 +1,8 @@
 # Dokumen Implementasi Bagian 4 — Persetujuan, Hak atas Data, Masa Simpan, dan IP Berhash
 
-Per 1 November 2026 (cek kemutakhiran; draf 30 Oktober 2026) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 23 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
+Per 16 November 2026 (cek kemutakhiran setelah kode gelombang E; cek kemutakhiran pertama 1 November 2026; draf 30 Oktober 2026) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 23 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
 
-> **Status: `disetujui pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 30 Oktober 2026; dicek kemutakhirannya dan disetujui pengembang 2 November 2026, [§22](#22-keputusan-pengembang) no. 7–11). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 kodenya **dibangun sekarang**, tidak lagi menunggu gerbang G2 ([04](04_CATATAN_KEPUTUSAN.md), entri *Pembagian kerja baru*, 1 November 2026; [00 → Tahap dokumen 3](00_INDEKS.md#tahap-dokumen-yang-tersisa-sebelum-implementasi)): gelombang kode E, setelah bagian 1 dan 2, paralel dengan bagian 3 dan 6. Perilaku penelitian ada di balik sakelar studi yang mati secara bawaan ([§0.1](#01-sakelar-studi-dan-yang-langsung-berlaku)), jadi `main` tetap bisa dirilis. Sistem baru tidak dipakai dengan anak sebelum persetujuan etik terbit, dan instalasi uji validator tetap memakai *commit* yang dibekukan di [20](20_PAKET_VALIDASI.md) prasyarat no. 4.
+> **Status: `disetujui pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 30 Oktober 2026; dicek kemutakhirannya dan disetujui pengembang 2 November 2026, [§22](#22-keputusan-pengembang) no. 7–11; kode gelombang E 4–8 November 2026; cek kemutakhiran setelah kode 16 November 2026, §22 no. 13–17; penyimpangan gelombang E disetujui peneliti 17 November 2026). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 kodenya **dibangun sekarang**, tidak lagi menunggu gerbang G2 ([04](04_CATATAN_KEPUTUSAN.md), entri *Pembagian kerja baru*, 1 November 2026; [00 → Tahap dokumen 3](00_INDEKS.md#tahap-dokumen-yang-tersisa-sebelum-implementasi)): gelombang kode E, setelah bagian 1 dan 2, paralel dengan bagian 3 dan 6. Perilaku penelitian ada di balik sakelar studi yang mati secara bawaan ([§0.1](#01-sakelar-studi-dan-yang-langsung-berlaku)), jadi `main` tetap bisa dirilis. Sistem baru tidak dipakai dengan anak sebelum persetujuan etik terbit, dan instalasi uji validator tetap memakai *commit* yang dibekukan di [20](20_PAKET_VALIDASI.md) prasyarat no. 4.
 >
 > Setelah hasil validasi dan keputusan komite etik kembali, isinya dicek ulang sekali terhadap matriks revisi induk ([20](20_PAKET_VALIDASI.md)) dan keputusan komite; teks T4, T11, dan T12 diubah di 23 lebih dulu, baru di berkas bahasa. Bagian ini paling mungkin berubah karena komite, jadi setiap perubahan dari komite ditandai `asal: komite etik`.
 >
@@ -183,7 +183,7 @@ Tiga kunci baru di `app/Language/id/Game.php` dan `en/Game.php`, berisi usulan [
 | `assentLabel`, `assentName`, `assentRequired` (tetap) | Di luar mode penelitian (instalasi pengembang, pemakaian sekolah setelah studi) |
 
 - `RegisterController` memilih kunci dari `field_mode` studi aktif, di tampilan (`game/register/step-3.php:81-86`) dan di pesan validasi (`RegisterController.php:294`, `357-359`).
-- Kolom baru `participants.assent_version` VARCHAR(20), diisi bersama `assented_at`: `t4-1` untuk teks penelitian, `umum-1` untuk teks lama. Bila teks T4 berubah (misalnya atas permintaan komite), versinya naik, sehingga daftar izin berkode menunjukkan teks mana yang dicentang anak.
+- Kolom baru `participants.assent_version` VARCHAR(20), diisi bersama `assented_at`: `t4-1` untuk teks penelitian, `umum-1` untuk teks lama. *Akun uji `uji.*` juga `t4-1`, karena punya baris izin di studi (keputusan pengembang 8 November 2026).* Bila teks T4 berubah (misalnya atas permintaan komite), versinya naik, sehingga daftar izin berkode menunjukkan teks mana yang dicentang anak.
 - Anak yang tidak mencentang tidak bisa mendaftar, sama dengan sekarang. Itu sesuai 22: anak yang tidak mau ikut tidak punya akun dan ikut kegiatan pengganti.
 
 ### 5.2 Izin berkode per siswa
@@ -223,7 +223,7 @@ Tiga kunci baru di `app/Language/id/Game.php` dan `en/Game.php`, berisi usulan [
 1. `participants.deactivated_at` diisi (bila masih kosong), di transaksi yang sama dengan perubahan status.
 2. Log audit `participant_deactivated` dengan `{participant_code, via: "consent_status"}`.
 3. `ParticipantCheck::checkParticipant()` (`app/Filters/ParticipantCheck.php`) menambah syarat `deactivated_at IS NULL`, sehingga sesi siswa berakhir pada permintaan berikutnya, termasuk di tengah tantangan. Pengerjaan yang terputus ditandai `abandoned` oleh retensi seperti biasa.
-4. `SessionService::login()` mengembalikan status `inactive` dengan pesan `Game.loginInactive`. Pemeriksaan token (28 §6.4) juga menolak siswa nonaktif.
+4. `SessionService::login()` mengembalikan status `inactive` dengan pesan `Game.loginInactive`, hanya setelah sandi benar (sandi salah tetap `invalid`). Pemeriksaan token (28 §6.4) juga menolak siswa nonaktif. *Keputusan pengembang 8 November 2026:* siswa yang nonaktif karena mundur (status `withdrawn_*`) melihat kalimatnya sendiri di layar token (`Game.tokenWithdrawn`); siswa nonaktif karena alasan lain tetap `loginInactive`.
 5. Event yang masih antre di perangkat ditolak `/api/events` karena sesinya sudah berakhir; data sesudah tanggal mundur memang tidak dianalisis (`consent_ok` di `kamus-1.1`).
 
 **Siapa memakai jalur ini:**
@@ -356,7 +356,7 @@ Cadangan dibuat skrip sendiri ([../08_DEPLOYMENT.md → Backup](../08_DEPLOYMENT
 1. Admin menjalankan `backup.sh --ganti` (Jalur L) atau `backup.ps1 -Ganti` (Jalur W).
 2. Skrip membuat cadangan baru seperti biasa dan mengujinya (`gzip -t` atau uji zip).
 3. Bila uji lolos, skrip menghapus semua berkas cadangan yang lebih lama di **kedua lokasi**, lalu mencetak jumlah yang dihapus dan stempel waktu yang tersisa.
-4. Bila lokasi kedua tidak bisa dijangkau, skrip berhenti dengan kode 2 tanpa menghapus apa pun di lokasi pertama. Admin mengulang setelah lokasi kedua tersambung.
+4. Bila lokasi kedua tidak bisa dijangkau, skrip berhenti dengan kode 2 tanpa menghapus apa pun di lokasi pertama. Admin mengulang setelah lokasi kedua tersambung. *Sejak cek manual 14 November 2026 `backup.sh` juga berhenti dengan kode 2 bila `KEDUA` lokal tidak ada (drive belum terpasang, titik pasang kosong), karena sebelumnya `rsync` membuat foldernya di disk server sendiri lalu melapor berhasil. Folder di drive dibuat sekali saat pemasangan (`docs/08_DEPLOYMENT.md`). Celah serupa di `backup.ps1` (stik lain di huruf drive yang sama) belum diubah karena tidak bisa diuji tanpa Windows.*
 5. Bila penyedia server juga membuat snapshot atau cadangan sendiri, admin menghapusnya lewat panel penyedia atau memastikan fitur itu tidak dipakai. Perjanjian prosesor (26 → P6) memuat kewajiban ini. IDCloudHost sudah mengonfirmasi kepada peneliti bahwa langkah ini bisa dijalankan ([§21](#21-pertanyaan-terbuka) no. 6, `asal: peneliti`): tidak ada cadangan otomatis kecuali pelanggan mengaturnya, cadangan bisa dihapus pelanggan, cadangan yang diatur habis sendiri setelah masa simpannya (bawaan 30 hari), dan penyedia memberi bukti penghapusan, termasuk di infrastruktur internalnya. Bukti itu disimpan `ketua` bersama berita acara.
 6. Admin mencentang `backups` dengan tanggal.
 
@@ -366,7 +366,7 @@ Cadangan dibuat skrip sendiri ([../08_DEPLOYMENT.md → Backup](../08_DEPLOYMENT
 
 ### 7.6 Daftar periksa dan berita acara
 
-**Daftar periksa** di `data_deletion_requests.checklist_json`; setiap butir menyimpan tanggal dan id staf yang mencentang.
+**Daftar periksa** di `data_deletion_requests.checklist_json`; setiap butir menyimpan tanggal dan id staf yang mencentang. *Dibangun sebagai TEXT, bukan JSON: centang disimpan bersyarat pada teks yang dibaca halaman, dan MySQL 8 membandingkan kolom JSON secara makna, bukan teks.*
 
 | Butir | `all` | `risk_items` | `recording` | Dicentang oleh |
 | --- | --- | --- | --- | --- |
@@ -418,7 +418,7 @@ Untuk 23 → T10 pilihan D (melihat atau meminta salinan). `ketua` membuka kode 
 **Tidak disertakan:**
 - data anak lain, id internal, data staf, rincian perangkat, `ip_hash`;
 - kunci jawaban (`answer_key`) dan teks soal, supaya bank dan tes tetap bisa dipakai (22: "bukan kunci jawaban soal"); kolom benar/salah tetap ada;
-- jawaban ang-21–ang-23 dan `risk_reconsent`, kecuali centang anak setuju diisi;
+- jawaban ang-21–ang-23 dan `risk_reconsent`, kecuali centang anak setuju diisi; *keputusan pengembang 16 November 2026: `risk_reconsent` tidak disertakan, juga bila centang diisi; lembar `risiko` mendapat judul kolom bahasa Indonesia (sekarang `unit`, `response`, `answered_at`), dan kalimat PDF tentang tes dan angket mengikuti data yang sebenarnya (sekarang PDF menyebut anak belum mengerjakan tes atau angket walau jawaban butir risiko ada). Kodenya belum dibuat.*
 - penanda tindak lanjut, karena tidak disimpan (K7).
 
 **Jawaban butir risiko daring** (K2, keputusan no. 6). Di T11, anak diberi tahu bahwa kalau orang tuanya meminta jawaban itu, kakak peneliti bicara dengannya dulu. Karena itu:
@@ -512,7 +512,7 @@ Anak yang ingin tetap bermain GELITA setelah studi memakai akun baru di luar mod
 
 | Bagian | Sekarang | Sesudah |
 | --- | --- | --- |
-| Bawaan `research_studies.retention_days` | 1825 (`2026-01-01-000300_CreateResearchStudies.php`, `ResearchStudySeeder`) | Tetap 1825; baris yang ada tidak diubah (keputusan no. 8). Formulir studi mengisi 7305 saat `field_mode` dicentang |
+| Bawaan `research_studies.retention_days` | 1825 (`2026-01-01-000300_CreateResearchStudies.php`, `ResearchStudySeeder`) | Tetap 1825; baris yang ada tidak diubah (keputusan no. 8). Formulir studi mengisi 7305 saat `field_mode` dicentang. *Dibangun: server mengisi 7305 bila kotak masa simpan kosong, tanpa isi otomatis di peramban (cukup bawaan server, keputusan pengembang 8 November 2026). Keputusan pengembang 16 November 2026: mencentang mode penelitian di formulir studi mana pun, termasuk studi yang sudah ada, mengisi 7305 bila nilainya lebih rendah; kodenya belum dibuat (sekarang penyimpanan dengan nilai lama ditolak dengan pesan `retentionMinStudy`).* |
 | Studi `field_mode = 1` | — | 7305 (K10); `StudyController` menolak `retention_days` < 7305 dengan pesan "Masa simpan studi penelitian paling singkat 7305 hari (20 tahun)." |
 | Awal hitungan, studi `field_mode = 1` | Mulai sesi (`date_to` dibentuk di `RetentionService.php:437-438`, lalu disaring pada `game_sessions.started_at` di baris 117–121) | `research_studies.closed_at`. Studi yang belum ditutup tidak pernah mendapat pratinjau retensi |
 | Awal hitungan, studi lain | Mulai sesi | Tetap |
@@ -553,6 +553,8 @@ Untuk [26 → P15](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md#langkah-perlindungan)
 | Cadangan | Cadangan baru, lalu berkas lama di kedua lokasi dihapus dengan tangan | Admin |
 
 Setiap jalan manual dicatat dalam berita acara di catatan `ketua`: tanggal, kode peserta, perintah yang dijalankan, jumlah baris, dan siapa yang menjalankan. Admin tidak menulis nama ke berita acara.
+
+*Diuji sekali 14 November 2026 (§19.3 no. 8), padahal §7–§9 sudah dibangun; dua catatan bila jalan ini pernah dipakai:* `UPDATE` pembetulan juga mengisi `corrected_at = NOW()` (tanpa itu `registration_corrected` tetap 0 di unduhan dan log audit kosong), dan sesi `mysql` di mesin yang bukan WIB menjalankan `SET time_zone = '+07:00';` lebih dulu.
 
 ---
 
@@ -796,6 +798,8 @@ Di instalasi uji pengembang dengan akun `uji.*` dan data simulasi, dengan `gelit
 7. Di MariaDB: masuk, lalu periksa bahwa `ci_sessions.ip_address` berisi hash 64 karakter; jalankan `gelita:retention:run` dan periksa baris kedaluwarsa terhapus.
 8. Bila §7–§9 belum selesai: uji jalan manual §13 sekali dan catat hasilnya di 04.
 
+*Hasil* (instalasi pengembangan MariaDB, rincian di [04](04_CATATAN_KEPUTUSAN.md)): no. 7 lolos 9 November 2026; no. 1–6 dan 8 lolos 14 November 2026, dengan satu galat `backup.sh --ganti` yang dibetulkan (§7.5). Peran `koordinator` dijalankan sebagai akun `peneliti` ([27 §11](27_IMPLEMENTASI_PERAN_PENELITI.md)). Jalur W hanya di PowerShell 7.4 di Linux; Windows sungguhan tetap tugas pengembang. Temuan: (a) salinan satu anak dan (c) masa simpan 7305 di studi yang sudah ada ditutup keputusan pengembang 16 November 2026 (§8, §11), kodenya belum dibuat; masih terbuka (b) pemeriksaan nama di kritik dan saran tidak bisa membatalkan penyamaran berlebih ("Tantangan dua" menjadi "Tantangan [nama]"), (d) setelah *Ganti nama dengan kode* halaman siswa admin masih menampilkan formulir sandi sementara dan pembetulan (hanya pengirimannya ditolak), (e) setelah siswa mundur, antrean event di halamannya gagal CSRF dan tercatat sebagai galat kritis, bukan 401 biasa.
+
 ### 19.4 Selesai bila
 
 - `vendor/bin/phpunit --no-coverage` hijau, termasuk tes di 19.1 (tes yang bergantung pada no. 22 dilewati dengan alasan sampai modul itu ada).
@@ -865,6 +869,14 @@ Yang diselaraskan tanpa keputusan baru di putaran ini: kalimat "diubah di tahap 
 - Akun langsung nonaktif saat P1 menyimpan status mundur, bukan menunggu admin (K5).
 - Pembersih sesi bawaan PHP bisa tidak pernah berjalan di Debian/Ubuntu ([§12](#12-ip-berhash-di-sesi-peramban)).
 - Nomor KG di 26 berbeda dari 03 dan 22 ([§4](#4-tenggat-sebelum-akun-gelita-anak-pertama-kali-dipakai)).
+
+**Kode gelombang E dan cek kemutakhiran, 16 November 2026** (`asal: pengembang`, [04](04_CATATAN_KEPUTUSAN.md)). Diselaraskan tanpa keputusan baru dengan kode dan entri 04 sesudah 2 November 2026:
+
+13. **Penyimpangan implementasi gelombang E** (entri 04 *Gelombang kode E selesai*, 8 November 2026, dan catatan implementasi; **disetujui peneliti 17 November 2026** (`disetujui peneliti`, disampaikan pengembang, [04](04_CATATAN_KEPUTUSAN.md))): `checklist_json` bertipe TEXT (§7.6); `SystemResetService::REQUIRED_MIGRATION` tidak diturunkan ke `003800` karena bagian 5 sudah menaikkannya; tanpa isi otomatis 7305 di peramban (§11); menu *Permintaan data* dan *Tindak lanjut* hanya tampil selama ada studi bermode penelitian, rutenya tetap terjangkau lewat kemampuan; teks T11/T12 di `Game.php` untuk dipakai bagian 8; PDF salinan satu anak berupa tampilan baru dengan kalimat biasa, bukan `ReportService::participantData()` (yang membawa data perangkat); unduhan berita acara, salinan, dan daftar izin memakai `no-store`; permintaan `risk_items` untuk anak tanpa jawaban hanya mengubah izin, tanpa permintaan.
+14. **Jawaban pengembang atas pertanyaan gelombang E (8 November 2026):** daftar izin berkode menampilkan Ya/Tidak untuk kedua izin (§10.1), sedangkan lembar `izin` di unduhan penelitian tetap 1/0; akun `uji.*` mendapat `t4-1` (§5.1); kalimat sendiri di layar token untuk siswa yang mundur (§5.3); bawaan server 7305 cukup (§11).
+15. **Cek manual 9 dan 14 November 2026** (§19.3): galat lokasi kedua `backup.sh` dibetulkan (§7.5); dua catatan untuk jalan manual (§13); temuan (b), (d), dan (e) masih terbuka.
+16. **Keputusan pengembang 16 November 2026** (wawancara pengembang, [04](04_CATATAN_KEPUTUSAN.md)): salinan satu anak tanpa `risk_reconsent`, judul kolom `risiko` berbahasa Indonesia, kalimat PDF mengikuti data (§8); masa simpan 7305 diisi saat mode penelitian dicentang di studi mana pun (§11). Kodenya belum dibuat.
+17. **Bagian 8 sudah ada** (gelombang F, 9 November 2026): tabel modul tes, layar T11/T12, dan `risk_reconsent` kini nyata, jadi pembacaan bersyarat "bila tabelnya ada" dari gelombang E (`RetentionService`, `RiskFollowUpService`, `DataRequestService`, lembar `risiko` salinan) kini selalu menemukan tabelnya.
 
 ---
 

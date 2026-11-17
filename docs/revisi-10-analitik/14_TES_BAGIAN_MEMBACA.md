@@ -2,7 +2,9 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Rancangan di [13](13_TES_AWAL_AKHIR.md) · Status: **draf**, semua butir `needs_verification`
+Per 17 November 2026 (cek kemutakhiran; isi 26 Oktober 2026) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Rancangan di [13](13_TES_AWAL_AKHIR.md) · Status: **draf**, semua butir `needs_verification`
+
+> **Cek kemutakhiran 17 November 2026** (`asal: pengembang`, tanpa keputusan baru, [04](04_CATATAN_KEPUTUSAN.md)). Isi dokumen ini dipindah ke berkas data modul tes `app/Database/Seeds/data/instrumen/tes.php` pada 9 November 2026 ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md)); berkas itu kini sumber yang dipakai sistem, dan perubahan isi ditulis di keduanya. Gerbang G2 dilalui 4 November 2026, tetapi hasil validator belum ada di repo, jadi status butir tetap `needs_verification` (cek fakta peneliti 16 November 2026 hanya untuk bank soal game). Gambar `instr.tes-mb-A-M4` dibuat ulang ([39](39_PROMPT_GAMBAR_PERBAIKAN_TELAAH.md) `R-10`) karena nama akun di gambar salah tulis ("@panitia.kaghaianak"); kini "@panitia.kaghatianak" seperti di dokumen ini. Teks butir tidak berubah.
 
 Dokumen ini memuat Bagian 1 Membaca tes awal–akhir, bentuk A dan B: empat pasang teks, 16 butir per bentuk, kunci, kode kesalahan, dan sumber adaptasinya. Kisi-kisi, aturan kesetaraan, pelaksanaan, penskoran, dan analisis ada di [13](13_TES_AWAL_AKHIR.md); dokumen ini mengikutinya dan tidak mengubahnya.
 

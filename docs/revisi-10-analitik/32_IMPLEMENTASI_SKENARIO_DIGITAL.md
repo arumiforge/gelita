@@ -1,10 +1,10 @@
 # Dokumen Implementasi Bagian 6 — Skenario Digital, Narasi Instruksi, dan Aturan Narasi
 
-Per 2 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 2, 6, dan 18 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
+Per 16 November 2026 (cek kemutakhiran setelah kode gelombang E; disetujui 3 November 2026) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 2, 6, dan 18 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
 
-> **Status: `disetujui pengembang`, `asal: pengembang`** (3 November 2026; disusun dengan bantuan AI, 1–2 November 2026; pertanyaan terbuka §17 dijawab semua). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 kode boleh dibangun sekarang, di cabang pendek dari `main`, tetapi tidak dipakai dengan anak sebelum persetujuan etik terbit ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026). Kode bagian ini dibangun di gelombang E, setelah format bank bagian 5 (`31`), bersamaan dengan bagian 3 (`29`) dan 4 (`30`).
+> **Status: `disetujui pengembang`, `asal: pengembang`** (3 November 2026; disusun dengan bantuan AI, 1–2 November 2026; pertanyaan terbuka §17 dijawab semua; kode gelombang E 4–8 November 2026; cek kemutakhiran 16 November 2026, penyesuaian dari implementasi di [§18](#18-keputusan-pengembang) no. 11–15; penyimpangan gelombang E disetujui peneliti 17 November 2026). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 kode boleh dibangun sekarang, di cabang pendek dari `main`, tetapi tidak dipakai dengan anak sebelum persetujuan etik terbit ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026). Kode bagian ini dibangun di gelombang E, setelah format bank bagian 5 (`31`), bersamaan dengan bagian 3 (`29`) dan 4 (`30`).
 >
-> Isi skenario (situasi, pilihan, umpan balik, kode) masih `needs_verification` dan menunggu validasi ahli. Dokumen ini hanya mengatur **mekanismenya**; revisi dari validasi cukup diubah di workbook lalu diimpor ulang.
+> Isi skenario (situasi, pilihan, umpan balik, kode) sudah dicek fakta oleh peneliti (16 November 2026, butir `verified`, [04](04_CATATAN_KEPUTUSAN.md)) dan belum tercatat tervalidasi ahli: hasil validasi belum ada di repo. Dokumen ini hanya mengatur **mekanismenya**; revisi dari validasi cukup diubah di workbook lalu diimpor ulang.
 >
 > **Bagian 6 dari 9.** Peran dan peta kemampuan dari bagian 1 ([27](27_IMPLEMENTASI_PERAN_PENELITI.md)), kemajuan per siswa dari bagian 2 ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md)), katalog event dan `ready_ms` dari bagian 3 ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md)), dan format workbook serta `error_code` dari bagian 5 (`31`, ditulis paralel).
 
@@ -175,7 +175,7 @@ if ($node->engine_type === 'skenario') {
 
 **Rujukan buram.** `optionRef(int $attemptId, int $itemId, string $kind, string $key)` = 20 karakter pertama `hash_hmac('sha256', 'skenario-option|…', encryption.key)`, mengikuti `objectRef()` (baris 1295–1304). `resolveScenarioAnswer()` (baru) menerjemahkan ref kiriman kembali ke `option_key` di server; ref yang tidak dikenal → `\InvalidArgumentException` (400), seperti `resolveObjectAnswer()` (baris 1315 dan seterusnya).
 
-**Acak sekali per pengerjaan (K7).** Urutan dihitung dari `crc32($attemptId . ':' . $itemId . ':' . $kind)` sebagai benih `mt_srand()` lokal di `scenarioOrder()`, lalu `shuffle()`; benih global dikembalikan sesudahnya. Hasilnya sama di setiap muat ulang dan di ketiga kesempatan, dan berbeda antarpengerjaan. Tidak perlu kolom baru. Bila tindakan tepat jatuh di urutan pertama, urutan **tidak** diubah: keseimbangan posisi diperiksa di data, bukan dipaksa (pemaksaan justru membuat posisi pertama tidak pernah tepat).
+**Acak sekali per pengerjaan (K7).** Urutan dihitung dari `crc32($attemptId . ':' . $itemId . ':' . $kind)` sebagai benih `mt_srand()` lokal di `scenarioOrder()`, lalu `shuffle()`; benih global dikembalikan sesudahnya. Hasilnya sama di setiap muat ulang dan di ketiga kesempatan, dan berbeda antarpengerjaan. Tidak perlu kolom baru. Bila tindakan tepat jatuh di urutan pertama, urutan **tidak** diubah: keseimbangan posisi diperiksa di data, bukan dipaksa (pemaksaan justru membuat posisi pertama tidak pernah tepat). *Dibangun dengan `seeded_shuffle()` (Mt19937 berbenih `crc32("{attempt}:{item}:{kind}")`), pembantu yang dipakai engine lain, bukan `mt_srand()`/`shuffle()`: hasilnya sama, tanpa keadaan acak global yang harus dikembalikan ([§18](#18-keputusan-pengembang) no. 11).*
 
 ### 5.3 Penilaian
 
@@ -258,9 +258,13 @@ Event server baru, ditulis di `submitScenario()` saat skenario tertutup tanpa ti
 
 Penanda "Cerita 2 dari 4" di kepala panel menunjukkan skenario aktif. Tidak ada jam selama studi (bagian 7). Pilihan yang dipilih ditandai bentuk (●) dan cahaya, tidak hanya warna. Umpan balik "kurang tepat" dan "berisiko" tidak memakai warna merah atau kata "salah"/"gagal" (18).
 
+*Sesudah cek manual 14 November 2026:* pita instruksi 60 dp (semula 56 dp, baris kedua terpotong di semua ukuran layar), panel langkah turun 4 dp, dan ▶ instruksi duduk di samping teks, bukan di baris sendiri yang terpotong. Kartu kedua layar hasil menampilkan *Percobaan dipakai* (jumlah `item_responses.try_count`), bukan "Percobaan 0 dari 3", karena Skenario Digital tidak memakai *Cek*.
+
 ### 6.3 Umpan balik
 
-Teks umpan balik dan penjelasan datang dari respons server (bank). Kalimat bingkainya berkas bahasa (§13). Saat muat ulang di keadaan `feedback`, layar kembali ke langkah 1 skenario yang sama dengan kesempatan yang tersisa (umpan balik terakhir tidak diulang); skenario yang sudah tertutup tampil dalam keadaan akhirnya dari `state`.
+Teks umpan balik dan penjelasan datang dari respons server (bank). Kalimat bingkainya berkas bahasa (§13). Saat muat ulang di keadaan `feedback`, layar kembali ke langkah 1 skenario yang sama dengan kesempatan yang tersisa (umpan balik terakhir tidak diulang); skenario yang sudah tertutup tampil dalam keadaan akhirnya dari `state`. *Seperti dibangun:* muat ulang menampilkan skenario terbuka pertama di langkah 1; skenario yang sudah tertutup tidak ditampilkan lagi (tanpa daftar lompat seperti Cari Objek), tetapi keadaannya ada di muatan dan ikut hitungan ✓/✗.
+
+**Bunyi.** Tindakan aman memutar bunyi `correct`; tindakan sebagian atau berisiko hanya bunyi klik, tanpa bunyi "salah". *Keputusan pengembang 16 November 2026 ([04](04_CATATAN_KEPUTUSAN.md)):* efek benar/salah mati selama mode penelitian, supaya siswa di sebelahnya tidak mendengar hasil jawaban; kodenya belum dibuat.
 
 ### 6.4 Waktu
 
@@ -283,8 +287,9 @@ Semua dalam milidetik sejak tantangan dibuka (`sinceOpen()` di `game/challenge.j
 
 ### 7.1 Node dan peta wilayah
 
-- Node kelima tiap wilayah berasal dari sheet `nodes` workbook (bagian 5): `sequence` 5, `engine_type` `skenario`, kartu misi, gambar kartu, dan tingkat.
-- Peta wilayah membaca node dari `ContentRepository::nodesForLevel()`; kartu tantangan `.node-card` mendapat gambar mesin `public/assets/ui/node-card-skenario.webp` (sepia, dalam bingkai `node-card-frame.webp`). Gambar ini dipesan ke tim Katalog Aset (§7.5); sampai ada, kartu memakai gambar umum yang sama dengan engine tanpa gambar.
+- Node kelima tiap wilayah berasal dari sheet `nodes` workbook (bagian 5): `sequence` 5, `engine_type` `skenario`, kartu misi, gambar kartu, dan tingkat. *Seperti dibangun:* node dibuat `ContentSeeder::NODES[5]` dan dinonaktifkan `gelita:reset` bila bank tidak memuat skenario, jadi bank tanpa skenario tetap 12 tantangan dan 12 serpihan; impor bank tidak membuat node.
+- **Letak di peta (16 November 2026).** Ketiga peta wilayah digambar ulang untuk lima pos (prompt di [38](38_PROMPT_PETA_LIMA_TANTANGAN_DAN_SKENARIO.md), keputusan pengembang 8 November 2026) dan dipasang; titik kelima pos diukur ke `CatalogImporter::MAP_STOPS`. Tantangan kelima ada di kiri bawah (± 30 %, 72–75 %), di tempat cerita penghubung wilayahnya.
+- Peta wilayah membaca node dari `ContentRepository::nodesForLevel()`; kartu tantangan `.node-card` mendapat gambar mesin `public/assets/ui/node-card-skenario.webp` (sepia, dalam bingkai `node-card-frame.webp`). Gambar ini dipesan ke tim Katalog Aset (§7.5); sampai ada, kartu memakai gambar umum yang sama dengan engine tanpa gambar. *Gambar dari 38 terpasang 16 November 2026.*
 - `engine_label()` (dipakai `mission-brief.php` baris 36) mendapat label "Skenario Digital" / *Digital Scenarios*.
 - **Nama jenis (M-07, [33 §8.4](33_IMPLEMENTASI_MODE_PENELITIAN.md#84-m-07-satu-nama-per-jenis-tantangan)).** "Skenario Digital" (`Game.engine_skenario`, §13) tampil sebagai nama jenis di pin peta, kartu tantangan, dan cincin nomor tantangan, seperti keempat jenis lain; judul variasi hanya subjudul kecil di kepala tantangan.
 - Tantangan dalam wilayah tetap terbuka berurutan (`GameProgress::nodeUnlocked()`); tantangan kelima terbuka setelah tantangan keempat tuntas.
@@ -294,9 +299,9 @@ Semua dalam milidetik sejak tantangan dibuka (`sinceOpen()` di `game/challenge.j
 - **Konteks.** `Config\Gelita::$dialogueContexts['level']` (`app/Config/Gelita.php:65-68`) mendapat `scenario_open`; `$dialogueBackgroundContexts` (baris 77) juga, supaya latar slide `bg.story.scenario_open.{wilayah}.{n}` dipakai. Editor dialog panel (`ContentController::dialogues()`) dan `ContentRepository::dialogues()` membaca daftar itu tanpa perubahan lain.
 - **Isi.** 18 baris `layar-{wilayah}-NN` dari [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md#cerita-penghubung-tantangan-kelima-scenario_open) masuk `app/Database/Seeds/data/story.php` (konteks `scenario_open`, satu bagian baru di antara dialog wilayah dan wilayah tuntas) dan naskah aktif bersama-sama (`StoryDataTest`).
 - **Halaman.** Rute baru `GET /penghubung/{wilayah}` → `DialogueController::bridge()`, memakai tampilan cerita yang sama dengan `/dialog/{wilayah}` (`game/dialogue`, `game/narrator.js`), musik adegan `dialog-{wilayah}`. Slide terakhir berakhir dengan tombol ke kartu misi tantangan kelima (`/misi/{wilayah}/5`).
-- **Gerbang (K9).** `ChallengeController::brief()` dan `play()` (baris 19–39, 41 dan seterusnya) memanggil `scenarioGate()` (baru, `BaseGameController`) setelah `dialogueGate()`: bila node berengine `skenario`, siswa belum punya pengerjaan di node itu (lintas sesi game, lewat `participant_progress` dan `ChallengeAttemptModel` bagian 2), dan penanda sesi PHP `gelita.scenario_shown` untuk wilayah itu belum ada, alihkan ke `/penghubung/{wilayah}`. `bridge()` memasang penandanya, seperti `markDialogueShown()` (baris 144–151).
+- **Gerbang (K9).** `ChallengeController::brief()` dan `play()` (baris 19–39, 41 dan seterusnya) memanggil `scenarioGate()` (baru, `BaseGameController`) setelah `dialogueGate()`: bila node berengine `skenario`, siswa belum punya pengerjaan di node itu (lintas sesi game; *dibangun dengan `ChallengeAttemptModel::hasAttemptInStudy()`, pengerjaan apa pun di studi itu, terbuka, tertutup, atau ditinggalkan, bukan `participant_progress`*), dan penanda sesi PHP `gelita.scenario_shown` untuk wilayah itu belum ada, alihkan ke `/penghubung/{wilayah}`. `bridge()` memasang penandanya, seperti `markDialogueShown()` (baris 144–151).
 - "Sekali per siswa per studi" dijamin oleh syarat "belum punya pengerjaan": begitu pengerjaan pertama dibuka, gerbang tidak pernah muncul lagi, juga di pertemuan lain. Penanda sesi hanya mencegah gerbang berulang bila siswa kembali ke peta sebelum membuka tantangan.
-- **Tonton ulang.** Kartu tantangan kelima di peta wilayah mendapat tautan kecil "Lihat cerita penghubung" bila cerita sudah pernah dibuka. Tidak memengaruhi data.
+- **Tonton ulang.** Kartu tantangan kelima di peta wilayah mendapat tautan kecil "Lihat cerita penghubung" bila cerita sudah pernah dibuka (*dibangun: bila cerita sudah tampil di login ini atau sudah ada pengerjaan*). Tidak memengaruhi data.
 - Slide terakhir mengirim `dialogue_completed` dengan `context = scenario_open` (bagian 3, [29 §5.3](29_IMPLEMENTASI_DATA_PENELITIAN.md#53-dialogue_advanced-diganti-dialogue_completed)).
 
 ### 7.3 Wilayah tuntas dan Serpihan Cahaya
@@ -320,6 +325,8 @@ Kartu misi 15 tantangan, termasuk tiga kartu baru dan tujuh yang berubah di [12 
 | Latar layar tantangan kelima | `challenge_nodes.background_media_id`, sama dengan latar wilayah bila kosong | Tidak |
 
 Gambar situasi tidak boleh memuat petunjuk jawaban (misalnya ikon bahaya). Nama berkas tidak memuat kata seperti "aman" atau "tipuan". Ke-24 prompt, aturannya, dan daftar periksa hasil ada di [32A](32A_PROMPT_GAMBAR_SITUASI.md).
+
+*Keadaan 16 November 2026:* kartu `node-card-skenario.webp` dan latar `bg.cerita-layar-*` dari [38](38_PROMPT_PETA_LIMA_TANTANGAN_DAN_SKENARIO.md) terpasang, menggantikan pengganti sementara 8 November 2026. Ke-24 gambar situasi berupa WebP mutu 82 pada 1536 × 1024 (tidak diperkecil), di `ai-studio/game-images/mockup/gambar-mockup/skenario/aset/` (Katalog Aset sejak 15 November 2026), dan dipasang `gelita:katalog:impor` lewat `CatalogImporter::MOCKUP_DIRS` dengan slot `item.skenario.*`, bukan lewat `data.json`.
 
 ---
 
@@ -383,7 +390,7 @@ Sekarang tidak ada narasi instruksi. Kartu misi memutar `challenge_nodes.audio_i
 
 ### 9.4 Arahan suara
 
-Saat menyetujui rekaman `skenario-*` dan `unggahan-*` di panel Narasi, pendengar mencentang "Nada datar dan sama untuk setiap situasi" sebelum *Setujui* aktif. Kotak centang ini hanya untuk konteks `scenario_situation` dan `post_clue`, disimpan sebagai bagian aksi audit `narration_approved` (tanpa kolom baru), dan isinya mengikuti [12 → Arahan suara](12_CERITA_PENGHUBUNG_DAN_NARASI.md#arahan-suara-untuk-situasi-dan-petunjuk-yang-dinilai).
+Saat menyetujui rekaman `skenario-*` dan `unggahan-*` di panel Narasi, pendengar mencentang "Nada datar dan sama untuk setiap situasi" sebelum *Setujui* aktif. Kotak centang ini hanya untuk konteks `scenario_situation` dan `post_clue`, disimpan sebagai bagian aksi audit `narration_approved` (tanpa kolom baru; *dibangun sebagai `tone_checked` di metadata aksi audit yang sudah ada, `audio_approve` dan `audio_approve_bulk`, karena aksi `narration_approved` tidak ada; wajib di persetujuan satu rekaman, pilihan di persetujuan banyak rekaman, dan tanpa centang rekaman `scenario_situation`/`post_clue` tetap draf*), dan isinya mengikuti [12 → Arahan suara](12_CERITA_PENGHUBUNG_DAN_NARASI.md#arahan-suara-untuk-situasi-dan-petunjuk-yang-dinilai).
 
 ---
 
@@ -516,6 +523,8 @@ Teks yang menyebut jumlah serpihan ("12 serpihan", "dua belas") dicari di `app/L
 5. Tablet dan Chromebook di panggung 16:9: teks situasi dan lima alasan Wonosobo terbaca tanpa gulir panjang.
 6. Cerita penghubung tampil sekali, lalu tidak lagi setelah keluar dan masuk di pertemuan lain.
 
+*Hasil 14 November 2026* (instalasi pengembangan MariaDB dengan Playwright, rincian di [04](04_CATATAN_KEPUTUSAN.md)): no. 1–6 lolos; no. 5 hanya di Playwright (1024 × 768, 1280 × 800, 1366 × 768) dan setelah pita instruksi diperbaiki (§6.2). Tablet dan Chromebook sungguhan, termasuk apakah narasi terdengar, tetap tugas pengembang (§15.4). Temuan yang masih terbuka: (c) setelah muat ulang `ready_ms` dan waktu lain di `item_tries` dihitung dari halaman dimuat, bukan dari tantangan pertama dibuka, perlu dicocokkan dengan §6.4; (d) satu dari dua muat ulang manual menulis event `challenge_abandoned`. Temuan (b), narasi yang dilanjutkan setelah jeda tidak tercatat, ditutup keputusan pengembang 16 November 2026: aksi baru `resume` (usulan `kamus-1.2`), kodenya belum dibuat.
+
 ### 15.4 Selesai bila
 
 - Semua tes §15.1 dan §15.2 hijau dengan `vendor/bin/phpunit --no-coverage`.
@@ -572,13 +581,21 @@ Diambil pengembang dalam wawancara 2 November 2026 (`asal: pengembang`, `disetuj
 9. **Blok migrasi tidak bertabrakan**: bagian 5 `003900`/`003910`, bagian 6 `004000`, bagian 7 `0041xx`, bagian 8 `004200`, bagian 9 `004300`. Tidak ada penomoran ulang.
 10. **Posisi tindakan tepat tidak dipaksa.** Pengacakan sekali per pengerjaan (K7) tidak diberi aturan penyeimbang. Bila uji coba menunjukkan tindakan tepat terlalu sering di satu posisi untuk sekelompok siswa, keputusan ditinjau ulang setelah KG3a.
 
+**Kode gelombang E dan cek kemutakhiran, 16 November 2026** (`asal: pengembang`, [04](04_CATATAN_KEPUTUSAN.md)). Diselaraskan tanpa keputusan baru dengan kode dan entri 04 sesudah 3 November 2026:
+
+11. **Penyimpangan implementasi gelombang E** (entri 04 *Gelombang kode E selesai*, 8 November 2026, no. 4, dan catatan implementasi; **disetujui peneliti 17 November 2026** (`disetujui peneliti`, disampaikan pengembang, [04](04_CATATAN_KEPUTUSAN.md))): tantangan kelima dibuat `ContentSeeder` dan dinonaktifkan saat reset bila bank tanpa skenario (§7.1); urutan pilihan memakai `seeded_shuffle()` (§5.2); `optionRef()` = HMAC 20 karakter; respons kiriman tetap membawa `correct` (sama dengan `score_band` = `safe`); `item_responses.final_answer_json` hanya ditulis saat skenario tertutup; muat ulang tanpa daftar lompat (§6.3); bunyi umpan balik (§6.3); gerbang cerita penghubung lewat `hasAttemptInStudy()` (§7.2); centang nada sebagai `tone_checked` (§9.4); 24 gambar situasi tidak diperkecil dan tidak masuk `data.json` (§7.5); formulir panel isian butir menolak rekaman untuk Isi Rumpang dan Benar atau Salah (`Admin.narration_d1_refused`).
+12. **Jawaban pengembang atas pertanyaan gelombang E (8 November 2026):** peta wilayah digambar ulang untuk lima pos, bukan ditebak (§7.1); panel mendapat formulir sunting tindakan dan alasan skenario di halaman butir, dengan pemeriksaan yang sama dengan impor bank; setelah skenario dijawab siswa, skor dan kode dikunci, teks tetap bisa diubah, dan impor ulang workbook menimpa perubahan panel.
+13. **Cek manual 14 November 2026** (§15.3): dua perbaikan tampilan (§6.2) dan temuan terbuka (c) dan (d).
+14. **Keputusan pengembang 15–16 November 2026 yang menyentuh bagian ini:** narasi memakai suara sintetis, disetujui peneliti; situasi tetap dibaca datar ([12](12_CERITA_PENGHUBUNG_DAN_NARASI.md)); bacaan bahasa Inggris tanda ✓ dan alamat situs di `wnb-5-a02` dan `wnb-5-b02` ditulis di 12; efek benar/salah mati di mode penelitian (§6.3) dan aksi narasi `resume` (§15.3), keduanya belum dibuat; layar cek suara di awal sesi permainan mode penelitian sudah dibuat ([33 §7.6](33_IMPLEMENTASI_MODE_PENELITIAN.md#76-cek-suara-di-awal-sesi-permainan)).
+15. **Gambar terpasang 16 November 2026:** peta lima pos, kartu `node-card-skenario.webp`, dan latar cerita penghubung (§7.5).
+
 ---
 
 ## 19. Akibat ke dokumen lain
 
 Untuk sesi koordinator berikutnya; dokumen lain tidak diubah di cabang ini. **Status per 3 November 2026:** dibawa sesi koordinator 31–35 (cabang `r10-cek-30`), kecuali no. 1, 3, dan 5; no. 11 ditambah 3 November 2026 setelah tinjauan pengembang.
 
-1. **Glosarium** (`.claude/rules/glossary.md`), saat implementasi: *Skenario Digital* → engine `skenario`, butir `scenario_choice`; *tindakan*, *alasan* → `action`, `reason` (`action_key`, `reason_code`); *cerita penghubung* → `scenario_open`, rute `/penghubung/{wilayah}`; *narasi instruksi* → `challenge_instruction`, `audio_instruction_*`; *situasi* → `scenario_situation`; *petunjuk Periksa Unggahan* (rekaman) → `post_clue`; event `scenario_failed`. — *Saat implementasi.*
+1. **Glosarium** (`.claude/rules/glossary.md`), saat implementasi: *Skenario Digital* → engine `skenario`, butir `scenario_choice`; *tindakan*, *alasan* → `action`, `reason` (`action_key`, `reason_code`); *cerita penghubung* → `scenario_open`, rute `/penghubung/{wilayah}`; *narasi instruksi* → `challenge_instruction`, `audio_instruction_*`; *situasi* → `scenario_situation`; *petunjuk Periksa Unggahan* (rekaman) → `post_clue`; event `scenario_failed`. — *Sudah* (`.claude/rules/glossary-research.md`).
 2. **[01](01_REVISI_10_ANALITIK.md) → Catatan perubahan sistem:** baris no. 2, 6, dan 18 merujuk dokumen ini; no. 6 ditambah "hanya lewat tombol ▶". — *Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`).*
 3. **[11](11_KAMUS_DATA.md), untuk `kamus-1.1`:** `instruction_replays` = semua putaran `challenge_instruction` (tidak ada putaran otomatis); event setara `clue_failed` bernama `scenario_failed`; kolom `reason_ready_ms`, `action_last_input_ms`, `reason_last_input_ms` (§18 no. 5); `first_action_key` memakai kunci tetap bank (`t1`…); urutan pilihan di `answer_json.order`. — *Sudah: `kamus-1.1` didraf di 11 (3 November 2026, PR #329).*
 4. **[12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) → Yang dibacakan:** baris instruksi menjadi "Ya, hanya lewat tombol ▶"; *Yang perlu disiapkan di tahap 3* no. 1–4 merujuk §7.2, §8.3, dan §9.3. — *Sudah (sesi koordinator 3 November 2026, cabang `r10-cek-30`).*
