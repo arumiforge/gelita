@@ -38,7 +38,7 @@ The first two questions are the owner's. The others come from the validators' in
 | Is it free of stereotypes or a belittling portrayal? | cultural observer instrument v2.1, C2 |
 | Does a picture made from someone else's photo have its source and permission recorded? | cultural observer instrument v2.1, H2 |
 
-This review is the developer's own check. It is not expert validation, its marks are never counted as such, and it is not shown to the validators before they rate (`docs/revisi-10-analitik/01_REVISI_10_ANALITIK.md` → *Peran pengembang, peneliti, dan ahli*).
+This review is the developer's own check. It is not expert validation and its marks are never counted as such (`docs/revisi-10-analitik/01_REVISI_10_ANALITIK.md` → *Peran pengembang, peneliti, dan ahli*). Its Status and Notes columns are public on the catalogue page katalog.gelita.id, so validators may see them before they rate: a deliberate exception the owner accepted on 17 November 2026 (`docs/revisi-10-analitik/04`). Write notes knowing they are public.
 
 ## First look by the developer (15 November 2026)
 

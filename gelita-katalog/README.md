@@ -34,6 +34,13 @@ Where a file lives on the server follows the game's own storage: installed slot 
 - **Review status** comes from the Status column of `REVIEW.md`: `keep` → *Dipertahankan*, `fixed` → *Sudah diperbaiki*, `redo` → *Akan dibuat ulang*, `redo later` → *Dibuat ulang nanti*, `drop` → *Akan dihapus*, empty → *Belum ditinjau*. The review is the developer's own check, not expert validation; the page says so.
 - **Audio:** music and sound effects of `public/assets/audio/{music,sfx}/` with the screen and mood of `ai-studio/elevenlabs-sound/sounds.csv`; every narration line of `ai-studio/elevenlabs-voice/lines.csv`, in both languages.
 
+## Limits
+
+- A slot an admin re-uploaded in the panel as PNG or JPG is stored as `assets/uploads/{slot}.png|.jpg`; the catalogue links the `.webp` the importer writes, so that picture shows *Belum ada di gelita.id*.
+- A narration take uploaded in the panel is stored under its own name; the catalogue links the installed take `assets/audio/narasi/{id,en}/{code}.mp3`, which may then be an older one.
+- Links to `assets/uploads/` and `assets/audio/` carry no `?v=`: after a picture or take is replaced on gelita.id, purge the Cloudflare cache so the catalogue shows the new one.
+- What makes `CatalogSiteTest` fail, and what to do when two branches regenerate `data.js`: `ai-studio/game-images/README.md` → *Rules*.
+
 ## On the server
 
 The web server serves this folder of a checkout that is updated with `git pull`. `docs/08_DEPLOYMENT.md` → *The public Katalog Aset site* has the steps (nginx `index index.html;`, Cloudflare cache purge).

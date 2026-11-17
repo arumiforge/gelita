@@ -811,6 +811,8 @@ On the server that serves it:
 
 On 17 November 2026: 400 pictures, 15 music tracks, 6 sound effects, 187 narration lines; 757 of the 762 linked files were on gelita.id (the 5 missing are Pustaka video covers not installed there).
 
+Limits: a slot re-uploaded in the panel as PNG or JPG, or a narration take uploaded in the panel, is not the file the catalogue links (it links the importer's `.webp` and the installed take), and links to `assets/uploads/` and `assets/audio/` carry no `?v=`, so purge the Cloudflare cache of gelita.id after replacing a picture or take there.
+
 ### Sebelum pengambilan data penelitian
 
 Urutan wajib sebelum siswa penelitian pertama mendaftar: narasi disetujui ([Langkah terakhir](#langkah-terakhir-kedua-jalur) butir 2) → gambar asli → daftar siap penelitian hijau → uji asap → `gelita:reset`.

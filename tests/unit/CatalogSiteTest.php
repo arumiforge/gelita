@@ -171,8 +171,9 @@ final class CatalogSiteTest extends CIUnitTestCase
         $this->assertStringContainsString('"base": "https://gelita.id/"', $data);
         $this->assertStringNotContainsString('SECRET', $data);
         $this->assertStringNotContainsString('"prompt"', $data);
+        // No master path is linked (review notes may still name files, shown as text)
         $this->assertStringNotContainsString('"_src"', $data);
-        $this->assertStringNotContainsString('ai-studio', $data);
+        $this->assertDoesNotMatchRegularExpression('/"(?:p|f|fi|fe)":"[^"]*ai-studio/', $data);
 
         // The page itself links only to its own files; pictures and sounds come from the base URL
         foreach (['index.html', 'katalog.css'] as $file) {
