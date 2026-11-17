@@ -115,6 +115,38 @@ final class StudyClosureTest extends CIUnitTestCase
         $this->assertSame(lang('Admin.closureReplaced'), $_SESSION['error'] ?? null);
     }
 
+    public function testAfterTheReplacementTheAccountFormsAreGoneAndRefused(): void
+    {
+        // 30 §19.3 (d): the page showed the temporary-password and correction forms; only the POST was refused
+        $this->asStaff('admin');
+        $page = (string) $this->send(Method::GET, 'admin/peserta/1')->getBody();
+        $this->assertStringContainsString('id="reset-sandi"', $page, 'before: the forms are there');
+        $this->assertStringContainsString('id="betulkan"', $page);
+
+        $this->conn->table('research_studies')->update(['identities_replaced_at' => date('Y-m-d H:i:s')]);
+        $before = (string) $this->conn->table('participants')->where('id', 1)->get()->getRow('password_hash');
+
+        $this->asStaff('admin');
+        $page = (string) $this->send(Method::GET, 'admin/peserta/1')->getBody();
+        $this->assertStringNotContainsString('id="reset-sandi"', $page);
+        $this->assertStringNotContainsString('id="betulkan"', $page);
+        $this->assertStringNotContainsString('/reset-sandi"', $page);
+        $this->assertStringContainsString(esc(lang('Admin.closureReplacedForms')), $page);
+
+        $this->asStaff('admin');
+        $this->send(Method::POST, 'admin/peserta/1/reset-sandi', ['confirm' => 'RESET']);
+        $this->assertSame(lang('Admin.closureReplaced'), $_SESSION['error'] ?? null);
+
+        $this->asStaff('peneliti');
+        $this->send(Method::POST, 'admin/peserta/reset-sandi', ['participant_code' => 'S03-A01', 'confirm' => 'RESET']);
+        $this->assertSame(lang('Admin.closureReplaced'), $_SESSION['error'] ?? null);
+        $this->assertSame($before, (string) $this->conn->table('participants')->where('id', 1)->get()->getRow('password_hash'), 'no password set');
+        $this->assertSame(0, $this->conn->table('audit_logs')->where('action', 'participant_password_reset')->countAllResults());
+
+        $this->asStaff('ketua');
+        $this->assertStringNotContainsString('admin/peserta/salinan?kode=', (string) $this->send(Method::GET, 'admin/peserta/1')->getBody(), 'no copy button');
+    }
+
     private function close(): void
     {
         $now = date('Y-m-d H:i:s', time() + 1);

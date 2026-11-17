@@ -43,13 +43,14 @@ if (staff_can('research.export')) {
         . '<button class="btn" type="submit" formaction="' . base_url('admin/ekspor/xlsx') . '">' . icon('download') . ' Unduh XLSX</button>'
         . '<button class="btn" type="submit" formaction="' . base_url('admin/ekspor/csv') . '">' . icon('download') . ' Unduh CSV-ZIP</button>'
         . '<button class="btn" type="submit">' . icon('text') . ' Cetak PDF</button></form>';
-    // Part 4 (30 §8, §14): one child's copy for the parents
-    $actions .= '<a class="btn" href="' . base_url('admin/peserta/salinan?kode=' . rawurlencode((string) $participant['participant_code'])) . '">' . icon('download') . ' ' . esc(lang('Admin.copyTitle')) . '</a>';
+    // Part 4 (30 §8, §14): one child's copy for the parents; none once the identities are replaced (§10.2)
+    $actions .= empty($replaced) ? '<a class="btn" href="' . base_url('admin/peserta/salinan?kode=' . rawurlencode((string) $participant['participant_code'])) . '">' . icon('download') . ' ' . esc(lang('Admin.copyTitle')) . '</a>' : '';
 }
 
-if (staff_can('participants.reset_by_id')) {
+// 30 §10.2, §19.3 (d): a coded account gets no temporary password
+if (empty($replaced) && staff_can('participants.reset_by_id')) {
     $actions .= '<a class="btn btn-danger-soft" href="' . base_url($base . '#reset-sandi') . '">' . icon('key') . ' Atur ulang kata sandi</a>';
-} elseif (staff_can('participants.reset_by_code')) {
+} elseif (empty($replaced) && staff_can('participants.reset_by_code')) {
     $actions .= '<a class="btn btn-danger-soft" href="' . base_url('admin/peserta/reset-sandi') . '">' . icon('key') . ' ' . esc(lang('Admin.menuResetByCode')) . '</a>';
 }
 
@@ -118,7 +119,12 @@ $rawTable = static function (?array $table, string $empty, array $extra = []) {
     </section>
   </div>
 
-  <?php if (staff_can('participants.reset_by_id')): ?>
+  <?php if (! empty($replaced) && (staff_can('participants.reset_by_id') || staff_can('participants.accounts'))): ?>
+  <?php // 30 §10.2, §19.3 (d): after *Ganti nama dengan kode* the account forms are gone; the server refuses them too ?>
+  <div class="alert alert-info" role="status"><?= icon('info') ?><p><?= esc(lang('Admin.closureReplacedForms')) ?></p></div>
+  <?php endif ?>
+
+  <?php if (empty($replaced) && staff_can('participants.reset_by_id')): ?>
   <section class="form-section danger-zone" id="reset-sandi">
     <h2><?= icon('key') ?> Siswa lupa kata sandi?</h2>
     <p class="muted">Buat sandi sementara untuk siswa ini. Sandi hanya ditampilkan sekali, dan siswa harus membuat sandi baru saat masuk berikutnya.</p>
@@ -143,7 +149,7 @@ $rawTable = static function (?array $table, string $empty, array $extra = []) {
   <?php endif ?>
 
   <?php // Part 4 (30 §5.3, §9): registration correction and reactivation, admin only ?>
-  <?php if (staff_can('participants.accounts')): ?>
+  <?php if (empty($replaced) && staff_can('participants.accounts')): ?>
   <section class="form-section" id="betulkan">
     <h2><?= icon('edit') ?> <?= esc(lang('Admin.correctTitle')) ?></h2>
     <p class="muted"><?= esc(lang('Admin.correctHelp')) ?></p>

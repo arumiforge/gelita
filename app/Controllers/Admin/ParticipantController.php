@@ -77,6 +77,8 @@ class ParticipantController extends BaseAdminController
             'identity'    => $this->seesIdentity(),
             'research'    => $this->can('participants.research'),
             'breadcrumb'  => [$participant->participant_code => null],
+            // 30 §10.2, §19.3 (d): after *Ganti nama dengan kode* the account forms are gone
+            'replaced'    => service('studyClosure')->identitiesReplacedFor($participantId),
         ];
 
         // The admin sees the account card only: no research tabs (27 §9)
@@ -114,6 +116,10 @@ class ParticipantController extends BaseAdminController
     public function resetPassword(int $participantId): string|RedirectResponse
     {
         $participant = $this->requireInScope($participantId);
+
+        if (service('studyClosure')->identitiesReplacedFor($participantId)) {
+            return $this->back('admin/peserta/' . $participantId, lang('Admin.closureReplaced'));
+        }
 
         if ((string) $this->request->getPost('confirm') !== 'RESET') {
             return $this->back(
@@ -163,6 +169,11 @@ class ParticipantController extends BaseAdminController
 
         if ($participant === null) {
             return $this->back('admin/peserta/reset-sandi', lang('Admin.resetCodeNotFound'));
+        }
+
+        // 30 §10.2, §19.3 (d): a coded account never gets a password again
+        if (service('studyClosure')->identitiesReplacedFor((int) $participant->id)) {
+            return $this->back('admin/peserta/reset-sandi', lang('Admin.closureReplaced'));
         }
 
         $temporary = service('sessionService')->resetPasswordByStaff((int) $participant->id, $this->staffId(), 'kode');

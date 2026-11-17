@@ -799,6 +799,7 @@ return [
     'closureTitle'      => 'Penutupan studi',
     'closureLead'       => 'Setelah syarat terpenuhi, nama, nama pengguna, kata sandi, dan sekolah siswa penelitian ini diganti kode. Langkah ini tidak bisa dibatalkan.',
     'closureReplaced'   => 'Studi sudah ditutup dan nama sudah diganti kode. Data tidak bisa lagi dihubungkan dengan anak.',
+    'closureReplacedForms' => 'Nama siswa ini sudah diganti kode saat penutupan studi. Sandi sementara, pembetulan data, pengaktifan kembali, dan salinan data tidak tersedia lagi.',
     'closureCondition_closed'           => 'Studi berstatus Selesai',
     'closureCondition_requests_done'    => 'Tidak ada permintaan hapus yang belum selesai',
     'closureCondition_register_current' => 'Daftar izin berkode diunduh setelah perubahan izin terakhir',
