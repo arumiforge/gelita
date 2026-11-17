@@ -4,6 +4,7 @@ namespace Config;
 
 use App\Filters\ApiSessionFilter;
 use App\Filters\ClientHintsFilter;
+use App\Filters\CsrfFilter;
 use App\Filters\DebugToolbar;
 use App\Filters\GameSessionFilter;
 use App\Filters\HtmlMinifyFilter;
@@ -16,7 +17,6 @@ use App\Filters\StaffAuthFilter;
 use App\Filters\StaffCanFilter;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\Cors;
-use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\ForceHTTPS;
 use CodeIgniter\Filters\Honeypot;
 use CodeIgniter\Filters\InvalidChars;
@@ -28,7 +28,8 @@ class Filters extends BaseFilters
 {
     /** @var array<string, class-string|list<class-string>> */
     public array $aliases = [
-        'csrf'            => CSRF::class,
+        // App\Filters\CsrfFilter: an API request whose login has ended gets a plain 401, not a logged exception
+        'csrf'            => CsrfFilter::class,
         // App\Filters\DebugToolbar: toolbar bawaan + penyamaran field kata sandi
         'toolbar'         => DebugToolbar::class,
         'honeypot'        => Honeypot::class,

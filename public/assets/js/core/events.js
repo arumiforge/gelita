@@ -41,6 +41,13 @@
  *    for events, `audio_dropped` for audio), never with a beacon, which gets
  *    no answer.
  *
+ * Ended login (30 §19.3 finding (e)): once the server answers a batch with
+ * 401 (INVALID_SESSION: logged out, session expired, or the account
+ * deactivated by a withdrawal), nothing this page holds can be accepted any
+ * more. The page stops: no new events, no timer, no retry, no beacon. What
+ * waits in the offline queue stays there under this session's tag and is
+ * pruned as stale like any other queue.
+ *
  * The "connection lost" toast (`savedOffline`) only shows for a failure that
  * holds: the browser reports offline, the server stays rate-limited after
  * apiRequest's own retries, or a quiet retry RETRY_MS later fails too. Moving
@@ -185,10 +192,26 @@ class Transport {
     this.retryTimer = null;
     this.legacyAudio = false;
     this.lastAccepted = -Infinity;
+    this.ended = false;      // the server answered 401: this page's login has ended
+  }
+
+  /** The login has ended (401): stop every send of this page and forget what waits in memory. */
+  end() {
+    this.ended = true;
+    clearTimeout(this.timer);
+    clearTimeout(this.retryTimer);
+    this.timer = null;
+    this.retryTimer = null;
+    for (const channel of channels) {
+      channel.queue = [];
+      channel.inflight = [];
+      channel.held.clear();
+    }
   }
 
   /** Starts the timer, or sends at once when a channel reached FLUSH_AT. */
   schedule() {
+    if (this.ended) return;
     if (channels.some((channel) => channel.queue.length >= FLUSH_AT)) {
       this.flush();
     } else if (!this.timer && channels.some((channel) => channel.queue.length)) {
@@ -199,6 +222,7 @@ class Transport {
   async flush(force = false) {
     clearTimeout(this.timer);
     this.timer = null;
+    if (this.ended) return;
 
     if (force) {
       // Offline no beacon is tried at all; the events wait in the offline queue
@@ -215,7 +239,7 @@ class Transport {
   }
 
   async drain() {
-    while (gameEvents.queue.length || audioEvents.queue.length) {
+    while (!this.ended && (gameEvents.queue.length || audioEvents.queue.length)) {
       const events = gameEvents.take();
       const audio = audioEvents.take();
       let audioDone = !audio.length;
@@ -283,6 +307,8 @@ class Transport {
     if (!recoverable) {
       // Refused for good (401, 403, 422): it would never be accepted
       for (const [channel, events] of batch) channel.settle(events);
+      // 401: the login has ended (e.g. a withdrawal); nothing else of this page will be accepted
+      if (error.status === 401) this.end();
       return;
     }
 
@@ -310,6 +336,7 @@ class Transport {
 
   /** Moves this session's offline queue into memory and sends it now. */
   async resend() {
+    if (this.ended) return;
     for (const channel of channels) channel.restore();
     await this.flush();
   }
@@ -348,8 +375,8 @@ function beacon(path, batch) {
  * Raw gameplay event. `type` must be one of Config\Gelita::$eventTypes.
  */
 export function emit(type, { levelId, nodeId, attemptId, itemId, payload } = {}) {
-  // Without a game session (screens before login) the server always refuses: do not queue
-  if (!CONFIG.sessionTag) return;
+  // Without a game session (screens before login) or after the login ended (401) the server always refuses: do not queue
+  if (!CONFIG.sessionTag || transport.ended) return;
   gameEvents.add({
     client_event_id: uuid(),
     event_type: type,
@@ -370,7 +397,7 @@ export function emit(type, { levelId, nodeId, attemptId, itemId, payload } = {})
  *   listened_ms, completed, attempt_id? }
  */
 export function emitAudio(event) {
-  if (!CONFIG.sessionTag) return;
+  if (!CONFIG.sessionTag || transport.ended) return;
   audioEvents.add({
     client_event_id: uuid(),
     occurred_at: now(),
@@ -399,7 +426,7 @@ export async function resendQueued() {
  * normal timer or at FLUSH_AT, instead of a request of its own.
  */
 export function restoreQueued() {
-  if (!CONFIG.sessionTag) return;
+  if (!CONFIG.sessionTag || transport.ended) return;
   for (const channel of channels) channel.restore();
   transport.schedule();
 }
