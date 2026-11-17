@@ -202,4 +202,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pw/hopeful-knuth-twnk4t` | Research revision: freshness checks after the code waves, several documents this session (owner, 16 November 2026); `32`, `30`, `29`, `28`, `13`–`15`, `02` L0 done | Docs only; no PDF rebuild |
