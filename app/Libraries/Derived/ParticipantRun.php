@@ -24,7 +24,14 @@ final class ParticipantRun
      * The actions of `audio_usage_events` (the same list as AudioUsageEventModel::ACTIONS, kept
      * here so the calculators stay free of the database layer; NarrationIdleTest compares them).
      */
-    public const AUDIO_ACTIONS = ['play', 'autoplay', 'pause', 'replay', 'complete'];
+    public const AUDIO_ACTIONS = ['play', 'autoplay', 'pause', 'replay', 'complete', 'skip', 'resume'];
+
+    /**
+     * Actions that count as a play chosen by the player: play count = `play` + `replay` +
+     * `resume` (owner, 16 November 2026, 04 decision 5; the same list as
+     * AudioUsageEventModel::PLAY_COUNT_ACTIONS, NarrationIdleTest compares them).
+     */
+    public const PLAY_COUNT_ACTIONS = ['play', 'replay', 'resume'];
 
     /** L4: one observation covers 20 seconds from its time (11 → Aturan gabung). */
     public const OBSERVATION_MS = 20_000;
@@ -328,7 +335,7 @@ final class ParticipantRun
 
             // Every stored action counts: a playback's opening row
             // (`play`, `autoplay`, `replay`) carries 0 ms, and the heard time arrives on the row
-            // that closes it (`pause`, `complete`). Reading only the opening rows made every
+            // that closes it (`pause`, `complete`, `skip`; `resume` carries the time heard so far). Reading only the opening rows made every
             // narration interval empty, so listening was counted as an input pause.
             foreach ($in->audio as $audio) {
                 if ((int) $audio['session_id'] !== $session || ! in_array($audio['action'], self::AUDIO_ACTIONS, true)) {
@@ -581,7 +588,7 @@ final class ParticipantRun
     private function itemNarrationBefore(array $try): int
     {
         foreach ($this->in->audio as $audio) {
-            if ((int) ($audio['attempt_id'] ?? 0) === (int) $try['attempt_id'] && in_array($audio['action'], ['play', 'replay'], true)
+            if ((int) ($audio['attempt_id'] ?? 0) === (int) $try['attempt_id'] && in_array($audio['action'], self::PLAY_COUNT_ACTIONS, true)
                 && (int) ($this->in->itemAudio[(int) ($audio['audio_asset_id'] ?? 0)] ?? 0) === (int) $try['item_id'] && $audio['at'] < $try['occurred_at']) {
                 return 1;
             }

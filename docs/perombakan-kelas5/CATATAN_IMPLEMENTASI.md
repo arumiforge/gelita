@@ -995,6 +995,17 @@ Owner decision 4 of 15 November 2026 (`04`), built on the owner's request of 16 
 - **Tests.** `SoundCheckTest` (gate, yes, no and go on, new game session, outside research mode, bad answer and foreign target, catalog). `FieldWorld::signIn()` marks the sound check answered for a game session, so the other research-mode tests are unaffected.
 - **Not yet.** The answer on the monitoring page (02 L0 follow-up).
 
+## Sound in research mode and narration skip/resume (17 November 2026, branch `r10-suara-narasi`)
+
+Owner interview of 16 November 2026, decisions 1, 2, 3 and 5 (`04`).
+- **Music switch.** HUD menu row "Musik latar" (Mati/Nyala), separate from the sound button, off by default in every mode, kept per device as preference `music`; the sound button still mutes music. Music and effects are never logged. The row reuses the round sound picture (no new art; belongs to the interface overhaul). `tools/qa/music-check.mjs` checks the default, then turns music on.
+- **Effects.** `correct` and `wrong` are silent while `field_mode` is on, done once in `Sfx.play()` (`core/audio.js`), so every engine is covered. Other effects (shard, region done, sound check) play as before (owner, 17 November 2026).
+- **`skip`.** Lewati on the opening story, region dialogue, bridge story and ending writes one `skip` narration row for the slide on screen with the time heard so far (links marked `data-narration-skip`); a slide without a narration file writes nothing; one `skip` per page, even if the narration never sounded.
+- **`resume`.** Going on after a pause writes `resume` (before: nothing). It continues the same playback; only `play`, `autoplay`, `replay` start one. If playback never started (autoplay blocked), the first ▶ is `play`.
+- **Storage.** `skip` and `resume` get no raw event type in `EventCatalog` (like `pause`), only their narration row in `audio_usage_events`; duplicates found by action, asset and client time.
+- **Play count** = `play` + `replay` + `resume` in `instruction_replays`, `item_narration_before`, and the plays figure of the panel and participant summaries (`AnalyticsService`). `autoplay` stays out. New derived runs use it while the dictionary still says `kamus-1.1`; old data has no `resume` rows, so its values do not change.
+- **Docs.** `11` Analitik 7: `skip`, `resume` and the play-count rule as proposed `kamus-1.2`; `33` §7.7.
+- **Tests.** New `NarrationSkipResumeTest`; `NarrationIdleTest`, `MusicUnlockTest`, `CinematicViewTest` updated.
 ## Opening-story pictures R-27 to R-33 installed (17 November 2026, branch `r10-gambar-cerita-pembuka`)
 
 - **Accepted.** `R-28`, `R-29`, `R-31`–`R-33` earlier through ChatGPT (exceptions in `TASKS.md` kept, pictures installed unedited); `R-27` and `R-30` by the owner in the coordinator session of 17 November 2026.

@@ -93,7 +93,8 @@ class AnalyticsService
         $action = $this->col('audio_usage_events.action');
         $audio  = $this->sessionBuilder($filters)
             ->join('audio_usage_events', 'audio_usage_events.session_id = game_sessions.id')
-            ->select("SUM(CASE WHEN {$action} = 'play' THEN 1 ELSE 0 END) AS plays", false)
+            // Play count = play + replay + resume (owner, 16 November 2026, 04 decision 5)
+            ->select("SUM(CASE WHEN {$action} IN ('" . implode("', '", \App\Models\AudioUsageEventModel::PLAY_COUNT_ACTIONS) . "') THEN 1 ELSE 0 END) AS plays", false)
             ->select("SUM(CASE WHEN {$action} = 'autoplay' THEN 1 ELSE 0 END) AS autoplays", false)
             ->get()
             ->getRowArray();
@@ -198,7 +199,8 @@ class AnalyticsService
         $action = $this->col('audio_usage_events.action');
         $audio  = $db->table('audio_usage_events')
             ->join('game_sessions', 'game_sessions.id = audio_usage_events.session_id')
-            ->select("SUM(CASE WHEN {$action} = 'play' THEN 1 ELSE 0 END) AS plays", false)
+            // Play count = play + replay + resume (owner, 16 November 2026, 04 decision 5)
+            ->select("SUM(CASE WHEN {$action} IN ('" . implode("', '", \App\Models\AudioUsageEventModel::PLAY_COUNT_ACTIONS) . "') THEN 1 ELSE 0 END) AS plays", false)
             ->select("SUM(CASE WHEN {$action} = 'autoplay' THEN 1 ELSE 0 END) AS autoplays", false)
             ->where('game_sessions.participant_id', $participantId)
             ->get()

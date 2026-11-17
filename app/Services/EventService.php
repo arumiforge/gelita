@@ -31,6 +31,8 @@ class EventService
     /**
      * Raw event type per audio action. `pause` has none since revision 10,
      * part 3 (29 K6): it only writes its audio_usage_events row (listened_ms).
+     * Neither have `skip` and `resume` (owner, 16 November 2026, 04 decisions
+     * 3 and 5): AudioUsageEventModel::ROW_ONLY_ACTIONS.
      */
     private const AUDIO_EVENT_TYPES = [
         'play'     => 'audio_play',
@@ -389,8 +391,8 @@ class EventService
         }
 
         // 2. Duplicates: already stored, or repeated within this batch. A
-        // `pause` has no raw event (29 K6), so a re-sent one is found by its
-        // audio row: same asset and the same client time.
+        // `pause`, `skip`, or `resume` has no raw event (29 K6), so a re-sent
+        // one is found by its audio row: same asset, action, and client time.
         $stored = $this->storedClientEventIds($session->id, array_filter(array_column($valid, 'client_event_id')));
         $seen   = [];
         $fresh  = [];
@@ -399,7 +401,7 @@ class EventService
             $valid[$i]['occurred_at'] = $this->clientTime($item['entry']['occurred_at'] ?? null);
         }
 
-        $storedPauses = $this->storedPauses($session->id, array_values(array_filter($valid, static fn (array $item): bool => $item['action'] === 'pause')));
+        $storedRowOnly = $this->storedRowOnly($session->id, array_values(array_filter($valid, static fn (array $item): bool => in_array($item['action'], AudioUsageEventModel::ROW_ONLY_ACTIONS, true))));
 
         foreach ($valid as $item) {
             $id = $item['client_event_id'];
@@ -410,7 +412,7 @@ class EventService
                 continue;
             }
 
-            if ($item['action'] === 'pause' && isset($storedPauses[$item['asset_id'] . '|' . $item['occurred_at']])) {
+            if (isset($storedRowOnly[$item['action'] . '|' . $item['asset_id'] . '|' . $item['occurred_at']])) {
                 $duplicate++;
 
                 continue;
@@ -427,7 +429,7 @@ class EventService
             return ['accepted' => 0, 'duplicate' => $duplicate, 'rejected' => $rejected];
         }
 
-        // 3. Raw events: server sequence numbers in batch order (none for `pause`)
+        // 3. Raw events: server sequence numbers in batch order (none for the row-only actions)
         $sequence = $this->nextServerSequence($session->id);
         $rows     = [];
 
@@ -561,25 +563,25 @@ class EventService
     }
 
     /**
-     * Stored `pause` rows of this session matching the given entries, keyed
-     * `{asset_id}|{occurred_at}`.
+     * Stored rows of the row-only actions (`pause`, `skip`, `resume`) of this
+     * session matching the given entries, keyed `{action}|{asset_id}|{occurred_at}`.
      *
-     * @param list<array<string, mixed>> $pauses
+     * @param list<array<string, mixed>> $entries
      *
      * @return array<string, true>
      */
-    private function storedPauses(int $sessionId, array $pauses): array
+    private function storedRowOnly(int $sessionId, array $entries): array
     {
-        if ($pauses === []) {
+        if ($entries === []) {
             return [];
         }
 
         $rows = $this->db()->table('audio_usage_events')
-            ->select('audio_asset_id, occurred_at')
+            ->select('action, audio_asset_id, occurred_at')
             ->where('session_id', $sessionId)
-            ->where('action', 'pause')
-            ->whereIn('audio_asset_id', array_values(array_unique(array_column($pauses, 'asset_id'))))
-            ->whereIn('occurred_at', array_values(array_unique(array_column($pauses, 'occurred_at'))))
+            ->whereIn('action', array_values(array_unique(array_column($entries, 'action'))))
+            ->whereIn('audio_asset_id', array_values(array_unique(array_column($entries, 'asset_id'))))
+            ->whereIn('occurred_at', array_values(array_unique(array_column($entries, 'occurred_at'))))
             ->get()
             ->getResultArray();
         $out = [];
@@ -587,7 +589,7 @@ class EventService
         foreach ($rows as $row) {
             // The database may return fewer fraction digits than clientTime() wrote
             $time = (new \DateTimeImmutable((string) $row['occurred_at']))->format('Y-m-d H:i:s.u');
-            $out[$row['audio_asset_id'] . '|' . $time] = true;
+            $out[$row['action'] . '|' . $row['audio_asset_id'] . '|' . $time] = true;
         }
 
         return $out;

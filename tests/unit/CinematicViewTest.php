@@ -445,7 +445,7 @@ final class CinematicViewTest extends CIUnitTestCase
         $this->assertContains('audio_autoplay', App\Libraries\EventCatalog::accepted());
 
         $model = (string) file_get_contents(APPPATH . 'Models/AudioUsageEventModel.php');
-        $this->assertStringContainsString('in_list[play,autoplay,pause,replay,complete]', $model);
+        $this->assertStringContainsString('in_list[play,autoplay,pause,replay,complete,skip,resume]', $model);
         $this->assertSame('diputar otomatis', App\Libraries\ExportLabels::label('bantuan', 'action', 'autoplay'), 'dicatat terpisah dari play');
 
         $service = (string) file_get_contents(APPPATH . 'Services/EventService.php');

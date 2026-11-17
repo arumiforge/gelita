@@ -6,6 +6,15 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 17 November 2026
 
+**Suara di mode penelitian dan hitungan putar narasi dibuat** (cabang `r10-suara-narasi`) · `asal: pengembang` · `disetujui pengembang` · mengubah 11 dan 33; kode dibuat
+
+Keputusan 1, 2, 3, dan 5 wawancara pengembang 16 November 2026 dibuat:
+- Musik latar punya baris sendiri di menu (Mati/Nyala), mati secara bawaan di semua mode; musik dan efek tidak dicatat.
+- Efek benar/salah diam selama mode penelitian. Pengembang memutuskan (17 November 2026) bunyi layar hasil (serpihan, wilayah tuntas) tetap berbunyi, karena tidak membuka jawaban kepada siswa di sebelahnya.
+- Lewati menulis satu baris narasi `skip` untuk slide yang tampil; melanjutkan narasi yang dijeda menulis `resume`. Keduanya tanpa jenis event mentah sendiri, seperti `pause`.
+- Jumlah putar = `play` + `replay` + `resume` (`autoplay` tidak dihitung), juga di `instruction_replays`. Di [11](11_KAMUS_DATA.md) Analitik 7 sebagai usulan `kamus-1.2`, termasuk perubahan arti `instruction_replays`; definisi `kamus-1.1` tidak diubah. Data lama tidak punya baris `resume`, jadi nilainya tetap.
+
+Rinciannya di [33 §7.7](33_IMPLEMENTASI_MODE_PENELITIAN.md) dan catatan implementasi. Entri ini tidak diikuti pembuatan ulang PDF.
 **Gambar cerita pembuka `R-27` sampai `R-33` dipasang** (cabang `r10-gambar-cerita-pembuka`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
 
 Pengembang menerima `R-27` (slide 1) dan `R-30` (slide 8) pada 17 November 2026; `R-28`, `R-29`, dan `R-31` sampai `R-33` sudah diterima sebelumnya. Ketujuhnya dipasang di Katalog Aset tanpa diubah. Ekspresi avatar mengikuti pose baris (keputusan 6 telaah cerita pembuka, 16 November 2026) kini terlihat di `intro-05`, `intro-06`, dan `penutup-04`; kodenya sudah ada. Entri ini tidak diikuti pembuatan ulang PDF.

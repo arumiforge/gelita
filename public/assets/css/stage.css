@@ -354,6 +354,9 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 .hud-sheet-close > img.hud-sheet-close-art { flex: none; width: 2.75rem; height: 2.75rem; max-width: none; aspect-ratio: 1; object-fit: contain; filter: drop-shadow(0 .125rem .25rem rgba(1, 7, 19, .5)); -webkit-user-drag: none; }
 .hud-sheet-row .hud-sheet-go { width: 1.5rem; height: 1.5rem; color: var(--ink-dim); }
 .hud-sheet-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Background music switch row (owner, 16 November 2026): Mati / Nyala on the right */
+.hud-music-state { color: var(--ink-dim); font-size: 1.25rem; font-weight: 800; }
+.hud-music[aria-pressed="true"] .hud-music-state { color: var(--ok); }
 .hud-lang-row { min-height: 6rem; font-size: 1.625rem; font-weight: 700; }
 .hud-sheet-flag { width: 4.25rem; height: 4.25rem; border-radius: 50%; }
 /* The round flag buttons carry their own carved ring, a little past the old flag's edge */
