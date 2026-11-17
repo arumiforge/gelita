@@ -11,6 +11,8 @@
 $codes = static fn (array $students, callable $keep): string => implode(', ', array_column(array_filter($students, $keep), 'participant_code')) ?: '—';
 // Counts that need the researcher's attention light up while above zero (admin/monitoring.js keeps it current)
 $alerts = ['not_entered', 'dropped', 'no_seat', 'small_screen'];
+// Owner, 16 November 2026 (02 L0): the latest sound check answer of the current game session; admin/monitoring.js uses the same words
+$sound = static fn (?array $check): string => $check === null ? '—' : lang($check['heard'] ? 'Admin.monitoringSoundHeard' : 'Admin.monitoringSoundNotHeard', [(int) $check['plays']]);
 ?>
 <?= $this->extend('layouts/admin') ?>
 
@@ -82,11 +84,11 @@ $alerts = ['not_entered', 'dropped', 'no_seat', 'small_screen'];
             <dd class="mono" data-m="list-test-status"><?= esc(implode(', ', array_map(static fn ($s) => $s['participant_code'] . ': ' . lang('Admin.testStatus' . ucfirst($s['test_status'])) . ($s['module_done'] ? ' · ' . lang('Admin.moduleDone') : ''), $row['students']))) ?></dd>
           <?php endif ?>
         </dl>
-        <div class="table-wrap is-short"><table class="data-table">
-          <thead><tr><th><?= esc(lang('Admin.monitoringCode')) ?></th><th><?= esc(lang('Admin.monitoringProgress')) ?></th><th><?= esc(lang('Admin.monitoringLeftovers')) ?></th><th><?= esc(lang('Admin.monitoringDropped')) ?></th></tr></thead>
+        <div class="table-wrap is-short"><table class="data-table" data-sound-heard="<?= esc(lang('Admin.monitoringSoundHeard', ['{plays}']), 'attr') ?>" data-sound-not-heard="<?= esc(lang('Admin.monitoringSoundNotHeard', ['{plays}']), 'attr') ?>">
+          <thead><tr><th><?= esc(lang('Admin.monitoringCode')) ?></th><th><?= esc(lang('Admin.monitoringProgress')) ?></th><th><?= esc(lang('Admin.monitoringLeftovers')) ?></th><th><?= esc(lang('Admin.monitoringDropped')) ?></th><th title="<?= esc(lang('Admin.monitoringSoundHelp'), 'attr') ?>"><?= esc(lang('Admin.monitoringSound')) ?></th></tr></thead>
           <tbody data-m="rows">
             <?php foreach ($row['students'] as $student): ?>
-              <tr><td class="mono"><?= esc($student['participant_code']) ?></td><td><?= $student['done'] ?>/<?= $student['total'] ?></td><td><?= $student['leftovers'] ?></td><td><?= $student['dropped'] ?></td></tr>
+              <tr><td class="mono"><?= esc($student['participant_code']) ?></td><td><?= $student['done'] ?>/<?= $student['total'] ?></td><td><?= $student['leftovers'] ?></td><td><?= $student['dropped'] ?></td><td><?= esc($sound($student['sound'] ?? null)) ?></td></tr>
             <?php endforeach ?>
           </tbody>
         </table></div>

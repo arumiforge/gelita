@@ -68,6 +68,48 @@ final class StudyClosureTest extends CIUnitTestCase
         $this->assertSame(['study_code' => $this->study()['code'], 'rows' => 1], $audit);
     }
 
+    public function testAnOrdinaryWordMaskedAsANameCanBeKept(): void
+    {
+        // 30 §19.3 (b): a student called "Dua" made "Tantangan dua" "Tantangan [nama]", and the check could not undo it
+        $this->conn->table('participants')->where('id', 1)->update(['display_name' => 'Jaka Dua']);
+        $this->conn->table('participant_feedback')->update(['hardest_part' => 'Tantangan dua susah, kata Jaka', 'suggestion' => null, 'liked_most' => null]);
+        $id = (int) $this->conn->table('participant_feedback')->get()->getRow('id');
+
+        $this->asStaff('ketua');
+        $page = (string) $this->send(Method::GET, 'admin/studi/1/penutupan/nama')->getBody();
+        $this->assertStringContainsString('Tantangan [nama] susah, kata [nama]', $page);
+        $this->assertStringNotContainsString('Tantangan dua', $page);
+        $this->assertStringNotContainsString('Jaka', $page, 'names are never shown');
+        $this->assertStringContainsString('name="keep[' . $id . '][hardest_part][]" value="0"', $page);
+
+        // The spot is kept; a name typed into the text is still masked
+        $this->send(Method::POST, 'admin/studi/1/penutupan/nama', [
+            'texts' => [$id => ['hardest_part' => 'Tantangan [nama] susah, kata [nama] dan Jaka']],
+            'keep'  => [$id => ['hardest_part' => ['0']]],
+        ]);
+        $this->assertSame('Tantangan dua susah, kata [nama] dan [nama]', $this->conn->table('participant_feedback')->get()->getRow('hardest_part'));
+
+        // A later check masks it again by default (never ticked in advance); ticking it again keeps it
+        $this->asStaff('ketua');
+        $page = (string) $this->send(Method::GET, 'admin/studi/1/penutupan/nama')->getBody();
+        $this->assertStringContainsString('Tantangan [nama] susah, kata [nama] dan [nama]', $page);
+        $this->assertStringContainsString('name="keep[' . $id . '][hardest_part][]" value="0">', $page);
+        $this->send(Method::POST, 'admin/studi/1/penutupan/nama', [
+            'texts' => [$id => ['hardest_part' => 'Tantangan [nama] susah, kata [nama] dan [nama]']],
+            'keep'  => [$id => ['hardest_part' => ['0']]],
+        ]);
+        $this->assertSame('Tantangan dua susah, kata [nama] dan [nama]', $this->conn->table('participant_feedback')->get()->getRow('hardest_part'));
+
+        // Marks changed together with a kept spot: refused, nothing saved
+        $this->asStaff('ketua');
+        $this->send(Method::POST, 'admin/studi/1/penutupan/nama', [
+            'texts' => [$id => ['hardest_part' => 'Tantangan [nama] susah']],
+            'keep'  => [$id => ['hardest_part' => ['0']]],
+        ]);
+        $this->assertSame(lang('Admin.closureFeedbackKeepMismatch', ['S03-A01']), $_SESSION['error'] ?? null);
+        $this->assertSame('Tantangan dua susah, kata [nama] dan [nama]', $this->conn->table('participant_feedback')->get()->getRow('hardest_part'));
+    }
+
     public function testGantiReplacesNamesUsernamesPasswordsAndSchools(): void
     {
         $this->close();
@@ -113,6 +155,38 @@ final class StudyClosureTest extends CIUnitTestCase
         $this->asStaff('admin');
         $this->send(Method::POST, 'admin/peserta/1/betulkan', ['age' => '11', 'gender' => 'laki-laki', 'class_level' => '5', 'reason' => 'x']);
         $this->assertSame(lang('Admin.closureReplaced'), $_SESSION['error'] ?? null);
+    }
+
+    public function testAfterTheReplacementTheAccountFormsAreGoneAndRefused(): void
+    {
+        // 30 §19.3 (d): the page showed the temporary-password and correction forms; only the POST was refused
+        $this->asStaff('admin');
+        $page = (string) $this->send(Method::GET, 'admin/peserta/1')->getBody();
+        $this->assertStringContainsString('id="reset-sandi"', $page, 'before: the forms are there');
+        $this->assertStringContainsString('id="betulkan"', $page);
+
+        $this->conn->table('research_studies')->update(['identities_replaced_at' => date('Y-m-d H:i:s')]);
+        $before = (string) $this->conn->table('participants')->where('id', 1)->get()->getRow('password_hash');
+
+        $this->asStaff('admin');
+        $page = (string) $this->send(Method::GET, 'admin/peserta/1')->getBody();
+        $this->assertStringNotContainsString('id="reset-sandi"', $page);
+        $this->assertStringNotContainsString('id="betulkan"', $page);
+        $this->assertStringNotContainsString('/reset-sandi"', $page);
+        $this->assertStringContainsString(esc(lang('Admin.closureReplacedForms')), $page);
+
+        $this->asStaff('admin');
+        $this->send(Method::POST, 'admin/peserta/1/reset-sandi', ['confirm' => 'RESET']);
+        $this->assertSame(lang('Admin.closureReplaced'), $_SESSION['error'] ?? null);
+
+        $this->asStaff('peneliti');
+        $this->send(Method::POST, 'admin/peserta/reset-sandi', ['participant_code' => 'S03-A01', 'confirm' => 'RESET']);
+        $this->assertSame(lang('Admin.closureReplaced'), $_SESSION['error'] ?? null);
+        $this->assertSame($before, (string) $this->conn->table('participants')->where('id', 1)->get()->getRow('password_hash'), 'no password set');
+        $this->assertSame(0, $this->conn->table('audit_logs')->where('action', 'participant_password_reset')->countAllResults());
+
+        $this->asStaff('ketua');
+        $this->assertStringNotContainsString('admin/peserta/salinan?kode=', (string) $this->send(Method::GET, 'admin/peserta/1')->getBody(), 'no copy button');
     }
 
     private function close(): void

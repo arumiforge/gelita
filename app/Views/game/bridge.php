@@ -58,6 +58,6 @@ $brief  = base_url('misi/' . $level->code . '/' . $node->sequence);
 
 <?= $this->section('nav') ?>
 <?= component('nav-bar', ['nav' => [
-    ['label' => lang('Game.skip'), 'href' => $brief, 'style' => 'quiet', 'arrow' => 'right'],
+    ['label' => lang('Game.skip'), 'href' => $brief, 'style' => 'quiet', 'arrow' => 'right', 'attrs' => ['data-narration-skip' => '1']],
 ]]) ?>
 <?= $this->endSection() ?>

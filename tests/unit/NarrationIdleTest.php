@@ -32,8 +32,9 @@ final class NarrationIdleTest extends CIUnitTestCase
         $this->assertSame($baseline, $this->activeMs($student), 'an opening row alone says nothing about how long the narration ran');
 
         $this->assertSame(AudioUsageEventModel::ACTIONS, ParticipantRun::AUDIO_ACTIONS, 'the derived layer reads every stored action');
+        $this->assertSame(AudioUsageEventModel::PLAY_COUNT_ACTIONS, ParticipantRun::PLAY_COUNT_ACTIONS, 'one play-count rule');
 
-        foreach (['complete', 'pause'] as $closing) {
+        foreach (['complete', 'pause', 'skip'] as $closing) {
             $heard          = $student;
             $heard['audio'] = [...$heard['audio'], $audio($closing, '08:09:50', 200000)];
             $this->assertSame($baseline + 20000, $this->activeMs($heard), "a narration closed by `{$closing}` covers the pause");

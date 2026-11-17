@@ -69,6 +69,35 @@ final class MonitoringTest extends CIUnitTestCase
         $this->assertStringContainsString('S03-A01', $api);
     }
 
+    public function testTheLatestSoundCheckOfTheCurrentGameSession(): void
+    {
+        // Owner, 16 November 2026 (02 L0): readable on the monitoring page
+        $fs    = (int) $this->conn->table('field_sessions')->get()->getRow('id');
+        $f1    = (int) $this->conn->table('game_sessions')->where('session_code', 'F1')->get()->getRow('id');
+        $dewi  = (int) $this->conn->table('participants')->where('participant_code', 'S03-A02')->get()->getRow('id');
+        $older = (int) $this->conn->table('game_sessions')->where('session_code', 'F2')->get()->getRow('id');
+        $this->conn->table('game_sessions')->insert(['session_code' => 'F3', 'participant_id' => $dewi, 'study_id' => 1, 'release_id' => 1, 'field_session_id' => $fs, 'meeting_no' => 2, 'status' => 'active', 'last_active_at' => date('Y-m-d H:i:s')]);
+        $now = date('Y-m-d H:i:s');
+        $this->conn->table('game_event_logs')->insertBatch([
+            ['event_uuid' => 's1', 'client_event_id' => 's1', 'session_id' => $f1, 'participant_id' => 1, 'event_type' => 'sound_check_answered', 'payload_json' => '{"heard":false,"plays":1}', 'occurred_at' => $now],
+            ['event_uuid' => 's2', 'client_event_id' => 's2', 'session_id' => $f1, 'participant_id' => 1, 'event_type' => 'sound_check_answered', 'payload_json' => '{"heard":true,"plays":3}', 'occurred_at' => $now],
+            // Dewi heard it in her earlier game session only: the current one is not answered yet
+            ['event_uuid' => 's3', 'client_event_id' => 's3', 'session_id' => $older, 'participant_id' => $dewi, 'event_type' => 'sound_check_answered', 'payload_json' => '{"heard":true,"plays":1}', 'occurred_at' => $now],
+        ]);
+
+        $students = array_column(service('analyticsService')->monitoring(1, true)[0]['students'], 'sound', 'participant_code');
+        $this->assertSame(['S03-A01' => ['heard' => true, 'plays' => 3], 'S03-A02' => null, 'S03-A03' => null], $students);
+
+        $_SESSION = ['staff_id' => 2, 'staff_role' => 'peneliti', 'staff_last_seen' => time()];
+        $page     = html_entity_decode((string) $this->send(Method::GET, 'admin/pemantauan')->getBody());
+        $this->assertStringContainsString(lang('Admin.monitoringSound'), $page);
+        $this->assertStringContainsString(lang('Admin.monitoringSoundHeard', [3]), $page);
+        // The test client wraps a second response in HTML; the JSON inside is what the browser reads
+        $raw = (string) $this->send(Method::GET, 'api/admin/monitoring')->getBody();
+        $api = json_decode(substr($raw, (int) strpos($raw, '{'), (int) strrpos($raw, '}') - (int) strpos($raw, '{') + 1), true);
+        $this->assertSame(['heard' => true, 'plays' => 3], $api['data']['sessions'][0]['students'][0]['sound']);
+    }
+
     public function testTheAdminSeesNumbersOnly(): void
     {
         $_SESSION = ['staff_id' => 1, 'staff_role' => 'admin', 'staff_last_seen' => time()];

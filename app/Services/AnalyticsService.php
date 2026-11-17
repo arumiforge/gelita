@@ -93,7 +93,8 @@ class AnalyticsService
         $action = $this->col('audio_usage_events.action');
         $audio  = $this->sessionBuilder($filters)
             ->join('audio_usage_events', 'audio_usage_events.session_id = game_sessions.id')
-            ->select("SUM(CASE WHEN {$action} = 'play' THEN 1 ELSE 0 END) AS plays", false)
+            // Play count = play + replay + resume (owner, 16 November 2026, 04 decision 5)
+            ->select("SUM(CASE WHEN {$action} IN ('" . implode("', '", \App\Models\AudioUsageEventModel::PLAY_COUNT_ACTIONS) . "') THEN 1 ELSE 0 END) AS plays", false)
             ->select("SUM(CASE WHEN {$action} = 'autoplay' THEN 1 ELSE 0 END) AS autoplays", false)
             ->get()
             ->getRowArray();
@@ -198,7 +199,8 @@ class AnalyticsService
         $action = $this->col('audio_usage_events.action');
         $audio  = $db->table('audio_usage_events')
             ->join('game_sessions', 'game_sessions.id = audio_usage_events.session_id')
-            ->select("SUM(CASE WHEN {$action} = 'play' THEN 1 ELSE 0 END) AS plays", false)
+            // Play count = play + replay + resume (owner, 16 November 2026, 04 decision 5)
+            ->select("SUM(CASE WHEN {$action} IN ('" . implode("', '", \App\Models\AudioUsageEventModel::PLAY_COUNT_ACTIONS) . "') THEN 1 ELSE 0 END) AS plays", false)
             ->select("SUM(CASE WHEN {$action} = 'autoplay' THEN 1 ELSE 0 END) AS autoplays", false)
             ->where('game_sessions.participant_id', $participantId)
             ->get()
@@ -357,7 +359,11 @@ class AnalyticsService
      *
      * @param array<string, mixed> $fieldSession
      *
-     * @return list<array{participant_code: string, entered: bool, active: bool, done: int, total: int, leftovers: int, dropped: int, has_seat: bool}>
+     * `sound`: the latest `sound_check_answered` of the student's current
+     * (latest) game session in this field session, `{heard, plays}`, or null
+     * while not answered (owner, 16 November 2026: 02 L0).
+     *
+     * @return list<array{participant_code: string, entered: bool, active: bool, done: int, total: int, leftovers: int, dropped: int, has_seat: bool, sound: array{heard: bool, plays: int}|null}>
      */
     public function fieldSessionRoster(array $fieldSession): array
     {
@@ -381,9 +387,11 @@ class AnalyticsService
         $cutoff  = date('Y-m-d H:i:s', time() - self::ACTIVE_MINUTES * 60);
         $entered = [];
         $active  = [];
+        $current = [];
 
         foreach ($sessions as $session) {
             $entered[(int) $session['participant_id']] = true;
+            $current[(int) $session['participant_id']] = max($current[(int) $session['participant_id']] ?? 0, (int) $session['id']);
 
             if ((string) $session['last_active_at'] >= $cutoff) {
                 $active[(int) $session['participant_id']] = true;
@@ -411,6 +419,7 @@ class AnalyticsService
 
         $dropped = $this->droppedEvents(array_map('intval', array_column($sessions, 'id')));
         $seats   = model(\App\Models\ParticipantSeatModel::class)->forParticipants($studyId, $ids);
+        $sounds  = $this->soundChecks(array_values($current));
         $out     = [];
 
         foreach ($students as $student) {
@@ -433,6 +442,7 @@ class AnalyticsService
                 'leftovers'        => $plan['leftovers'] ? count(array_diff($allNodes, $done)) : 0,
                 'dropped'          => $lost,
                 'has_seat'         => isset($seats[$pid]),
+                'sound'            => isset($current[$pid]) ? ($sounds[$current[$pid]] ?? null) : null,
             ];
 
             // Part 8 (34 §14, §8.2): test status and "modul selesai" only; never risk items, scores, or answers
@@ -443,6 +453,38 @@ class AnalyticsService
                     'module_done' => service('instruments')->moduleDone($pid, $studyId, $plan['test']),
                 ];
             }
+        }
+
+        return $out;
+    }
+
+    /**
+     * The latest sound check answer per game session (`sound_check_answered`,
+     * SoundCheckController): whether the student heard the sound, and how
+     * often it was played.
+     *
+     * @param list<int> $sessionIds
+     *
+     * @return array<int, array{heard: bool, plays: int}>
+     */
+    public function soundChecks(array $sessionIds): array
+    {
+        if ($sessionIds === []) {
+            return [];
+        }
+
+        $out  = [];
+        $rows = $this->db()->table('game_event_logs')
+            ->select('session_id, payload_json')
+            ->where('event_type', 'sound_check_answered')
+            ->whereIn('session_id', $sessionIds)
+            ->orderBy('id', 'ASC')
+            ->get()->getResultArray();
+
+        foreach ($rows as $row) {
+            $payload = json_decode((string) $row['payload_json'], true);
+            // Later rows win: the latest answer of the session
+            $out[(int) $row['session_id']] = ['heard' => (bool) ($payload['heard'] ?? false), 'plays' => max(0, (int) ($payload['plays'] ?? 0))];
         }
 
         return $out;

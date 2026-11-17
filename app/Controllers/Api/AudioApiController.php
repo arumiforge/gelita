@@ -10,7 +10,7 @@ use CodeIgniter\HTTP\ResponseInterface;
  *
  * Aksi yang diterima: AudioUsageEventModel::ACTIONS — `play` (pemain menekan
  * putar), `autoplay` (layar bernarasi memutar sendiri), `pause`, `replay`,
- * `complete`. Other actions are rejected per entry (`audio_event_invalid`)
+ * `complete`, `skip` (Lewati), `resume` (a paused narration goes on). Other actions are rejected per entry (`audio_event_invalid`)
  * by EventService::recordAudioBatch().
  *
  * Kept for tabs opened before the combined batch (rencana-log-asinkron

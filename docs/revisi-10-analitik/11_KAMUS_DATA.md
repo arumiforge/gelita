@@ -377,6 +377,15 @@ Bacaan dan pernyataan D1 tidak pernah dibacakan (keputusan media), jadi butir D1
 
 **Cek suara** (usulan `kamus-1.2`; keputusan pengembang 15 November 2026, dibangun 16 November 2026): di awal setiap sesi permainan mode penelitian siswa memutar satu bunyi dan menjawab "Kamu mendengar suara ini?". Setiap jawaban dicatat sebagai event `sound_check_answered` (hanya ditulis server) dengan `heard` (benar/salah) dan `plays` (berapa kali bunyi diputar sebelum menjawab). Jawaban terakhir di sesi itu adalah hasilnya. Ini kovariat per sesi permainan: apakah narasi bisa didengar, melengkapi `headset_share` dari L1. Rinciannya di [33 §7.6](33_IMPLEMENTASI_MODE_PENELITIAN.md#76-cek-suara-di-awal-sesi-permainan).
 
+**Aksi narasi `skip` dan `resume`** (usulan `kamus-1.2`; keputusan pengembang 16 November 2026, no. 3 dan 5 di [04](04_CATATAN_KEPUTUSAN.md); dibangun 17 November 2026). Definisi `kamus-1.1` di atas tidak berubah sampai versi baru disetujui.
+
+| Aksi (`audio_usage_events.action`) | Arti | Pemutaran (`play_index`) | Event mentah |
+| --- | --- | --- | --- |
+| `skip` | Siswa menekan **Lewati** di layar cerita bernarasi (cerita pembuka, dialog wilayah, cerita jembatan, penutup). Dicatat untuk narasi slide yang sedang tampil, dengan `listened_ms` sejauh itu, juga bila narasinya belum pernah berbunyi. Slide tanpa berkas narasi tidak menulis baris | Pemutaran yang sedang berjalan | Tidak ada (seperti `pause`) |
+| `resume` | Narasi yang dijeda dilanjutkan dari posisinya. Sebelumnya melanjutkan tidak dicatat | Pemutaran yang sama, bukan pemutaran baru | Tidak ada (seperti `pause`) |
+
+**Jumlah putar** narasi = `play` + `replay` + `resume`; `autoplay` tetap dihitung terpisah (bukan pilihan siswa). Aturan ini dipakai di `instruction_replays` dan `item_narration_before` (lapis turunan) serta hitungan putar di ringkasan panel. Musik latar dan efek suara tidak pernah dicatat dan bukan data penelitian (keputusan no. 1).
+
 ### Analitik 8 Navigasi permainan
 
 **Satuan:** sesi game dan pengerjaan.

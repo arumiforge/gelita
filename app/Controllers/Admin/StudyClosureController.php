@@ -79,7 +79,13 @@ class StudyClosureController extends BaseAdminController
         }
 
         $texts = $this->request->getPost('texts');
-        $rows  = service('studyClosure')->saveFeedbackNames($id, is_array($texts) ? $texts : [], $this->staffId());
+        $keep  = $this->request->getPost('keep');
+
+        try {
+            $rows = service('studyClosure')->saveFeedbackNames($id, is_array($texts) ? $texts : [], $this->staffId(), is_array($keep) ? $keep : []);
+        } catch (\DomainException $e) {
+            return $this->back('admin/studi/' . $id . '/penutupan/nama', $e->getMessage());
+        }
 
         return $this->done('admin/studi/' . $id . '/penutupan', lang('Admin.closureFeedbackSaved', [$rows]));
     }

@@ -176,9 +176,14 @@ function render(root, sessions) {
 
     const tbody = $('[data-m="rows"]', card);
     if (tbody) {
+      // Sound check (02 L0): the latest answer of the current game session, in the words the server rendered
+      const table = tbody.closest('table');
+      const sound = (check) => (check
+        ? (table?.dataset[check.heard ? 'soundHeard' : 'soundNotHeard'] || '').replace('{plays}', String(check.plays))
+        : '—');
       tbody.replaceChildren(...s.students.map((x) => {
         const tr = document.createElement('tr');
-        tr.append(cell(x.participant_code, 'mono'), cell(`${x.done}/${x.total}`), cell(String(x.leftovers)), cell(String(x.dropped)));
+        tr.append(cell(x.participant_code, 'mono'), cell(`${x.done}/${x.total}`), cell(String(x.leftovers)), cell(String(x.dropped)), cell(sound(x.sound)));
         return tr;
       }));
     }

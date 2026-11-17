@@ -5,18 +5,29 @@
  *    Berkas suara opsional: bila Howler/berkas tidak ada, aplikasi tetap
  *    berjalan tanpa bunyi — tidak ada nada sintetis pengganti.
  *
- * 2. Narasi — elemen <audio> bawaan per .audio-player + telemetry ke
- *    /api/audio-events (play, autoplay, pause, replay, complete). Melanjutkan
- *    dari jeda tidak dikirim sebagai `play` baru: masih pemutaran yang sama,
- *    dan waktu dengarnya ikut terhitung pada pause/complete berikutnya.
- *    `listened_ms` adalah akumulasi waktu putar sungguhan (jam dinding selama
- *    benar-benar berbunyi), bukan `duration`; server tetap memakai
- *    duration_ms aset dari database sebagai pembagi.
+ * 2. Narration: a native <audio> element per .audio-player, with telemetry
+ *    to /api/audio-events (play, autoplay, pause, replay, complete, skip,
+ *    resume). Going on after a pause sends `resume`, not a new `play`: it is
+ *    still the same playback, and its listening time keeps counting on the
+ *    next pause/complete (owner, 16 November 2026, 04 decision 5: play count
+ *    = play + replay + resume). Lewati on a narrated screen sends `skip` for
+ *    the narration on screen (decision 3; NarrationPlayer#skip()).
+ *    `listened_ms` is the accumulated real playing time (wall clock while it
+ *    actually sounds), not `duration`; the server still divides by the
+ *    asset's duration_ms from the database.
  *
  *    `play` = pemain menekan tombol putar. `autoplay` = layar bernarasi
  *    (game/narrator.js) memutar slide sendiri setelah kartu "Ketuk untuk
  *    mulai" atau saat maju otomatis. Server menghitung keduanya terpisah
  *    (audio_usage_events.action), agar peneliti dapat membedakannya.
+ *
+ * Music and sound effects are never logged and are not research data
+ * (owner, 16 November 2026, 04 decision 1). The music has its own switch,
+ * separate from the sound switch (narration and effects), and is off by
+ * default in every mode: device preference `music` (setMusicEnabled()).
+ * The correct/wrong effects stay silent in research mode (CONFIG.researchMode,
+ * the study switch `field_mode`; decision 2), so the student next to it does
+ * not hear the result; outside research mode they play as before.
  *
  * Background music (owner, 19 October 2026): each screen names its track
  * (`<body data-music>`, or the screen's own call); a new track crossfades in,
@@ -97,6 +108,11 @@ function primeShared() {
 }
 let enabled = Storage.getPref('sound', true);
 let volume = Storage.getPref('volume', 0.8);
+// Background music: its own switch, off by default in every mode (04 decision 1)
+let musicEnabled = Storage.getPref('music', false) === true;
+
+/** Effects kept silent in research mode, so the neighbour does not hear the result (04 decision 2). */
+export const RESEARCH_SILENT_EFFECTS = Object.freeze(['correct', 'wrong']);
 
 const hasHowler = () => typeof window.Howl === 'function';
 
@@ -118,7 +134,7 @@ function load(name, { loop = false, folder = 'sfx' } = {}) {
 const musicLevel = () => volume * (ducked ? DUCKED : 1);
 
 function startWantedMusic() {
-  if (!unlocked || !enabled || !wantedMusic) return;
+  if (!unlocked || !enabled || !musicEnabled || !wantedMusic) return;
   const next = load(wantedMusic, { loop: true, folder: 'music' });
   if (next === music) return;
 
@@ -171,9 +187,10 @@ export const Sfx = {
     return unlocked;
   },
 
-  /** correct, wrong, click, shard, region-done, lock */
+  /** correct, wrong, click, shard, region-done, lock; correct and wrong stay silent in research mode */
   play(name) {
     if (!unlocked || !enabled) return;
+    if (CONFIG.researchMode && RESEARCH_SILENT_EFFECTS.includes(name)) return;
     load(name)?.play();
   },
 
@@ -221,6 +238,22 @@ export const Sfx = {
   isEnabled() {
     return enabled;
   },
+
+  /** The background music switch (device preference `music`, off by default); the sound switch still mutes it. */
+  setMusicEnabled(on) {
+    musicEnabled = Boolean(on);
+    Storage.setPref('music', musicEnabled);
+    if (!musicEnabled) {
+      music?.stop();
+      music = null;
+    } else {
+      startWantedMusic();
+    }
+  },
+
+  isMusicEnabled() {
+    return musicEnabled;
+  },
 };
 
 // ------------------------------------------------------------- Narasi
@@ -259,6 +292,8 @@ class NarrationPlayer {
     this.attemptId = attemptId;
     this.audio = null;
     this.playIndex = 0;
+    // The opening row (play/autoplay/replay) of this playback was sent: only then can it be resumed
+    this.opened = false;
     this.listenedMs = 0;
     this.playingSince = null;
     this.completed = false;
@@ -371,8 +406,8 @@ class NarrationPlayer {
   }
 
   /**
-   * @param {'play'|'autoplay'|'replay'|null} action null = lanjut dari jeda (tidak dikirim: masih pemutaran yang sama)
-   * @returns {Promise<boolean>} true bila audio benar-benar mulai berbunyi
+   * @param {'play'|'autoplay'|'replay'|'resume'} action `resume` = going on after a pause (same playback)
+   * @returns {Promise<boolean>} true when the audio really started to sound
    */
   async start(action) {
     if (!Sfx.isEnabled()) {
@@ -387,7 +422,8 @@ class NarrationPlayer {
 
     try {
       await audio.play();
-      if (action) this.send(action);
+      this.send(action);
+      if (action !== 'resume') this.opened = true;
       return true;
     } catch (error) {
       // NotAllowedError: kebijakan autoplay — tombol tetap dapat ditekan lagi
@@ -414,9 +450,12 @@ class NarrationPlayer {
     const audio = this.element();
     const fresh = this.playIndex === 0 || audio.ended || this.completed;
 
-    if (!fresh) return this.start(null); // lanjut dari jeda
+    // Going on after a pause; a playback whose start was refused (autoplay policy) has no
+    // opening row yet, so its first sound is the `play` the player chose
+    if (!fresh) return this.start(this.opened ? 'resume' : 'play');
     if (this.playIndex > 0) return this.replay();
     this.playIndex = 1;
+    this.opened = false;
     this.listenedMs = 0;
     this.completed = false;
     return this.start('play');
@@ -432,6 +471,19 @@ class NarrationPlayer {
 
   replay() {
     return this.restart(this.playIndex === 0 ? 'play' : 'replay');
+  }
+
+  /**
+   * Lewati on a narrated screen (owner, 16 November 2026, 04 decision 3): the
+   * narration on screen is left, sent as `skip` with the time heard so far,
+   * whether or not it ever sounded. Sound stops at once; the page then moves on.
+   */
+  skip() {
+    if (this.owns()) {
+      this.accumulate();
+      if (this.audio && !this.audio.paused) this.audio.pause();
+    }
+    this.send('skip');
   }
 
   /**
@@ -457,6 +509,7 @@ class NarrationPlayer {
     audio.pause();
     audio.currentTime = 0;
     this.playIndex += 1;
+    this.opened = false;
     this.listenedMs = 0;
     this.completed = false;
     this.progress(0);
