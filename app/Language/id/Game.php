@@ -453,7 +453,7 @@ return [
     'aboutPlay2' => 'Selesaikan tantangan untuk mendapat serpihan dan bintang.',
     'aboutPlay3' => 'Setiap tantangan punya 3 kesempatan. Bingung? Ketuk Bantuan.',
     'aboutFeaturesTitle' => 'Yang ada di GELITA',
-    'aboutFeature1' => 'Empat jenis tantangan: Susun Gambar, Isi Rumpang, Benar atau Salah, dan Cari Objek.',
+    'aboutFeature1' => 'Lima jenis tantangan: Susun Gambar, Isi Rumpang, Benar atau Salah, Cari Objek, dan Skenario Digital.',
     'aboutFeature2' => 'Pustaka berisi bacaan seru tentang setiap wilayah.',
     'aboutFeature3' => 'Balai Refleksi untuk menceritakan pengalamanmu.',
     'aboutFeature4' => 'Cerita bersuara dalam bahasa Indonesia dan Inggris.',

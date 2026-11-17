@@ -203,4 +203,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `claude/validator-guide-pages-acv4cr` | Validator guide `/admin/panduan-validator` (per panel, live facts, source drift check `gelita:panduan:cek`) and `gelita:setelah-pull` (decision log, 17 November 2026) | Built and tested; PR #407 open. Owner: read the guide pages once as each panel; open: *Tentang GELITA* still says four challenge kinds |
+| `claude/validator-guide-pages-acv4cr` | Validator guide `/admin/panduan-validator` (per panel, live facts, source drift check `gelita:panduan:cek`) and `gelita:setelah-pull` (decision log, 17 November 2026) | Built and tested; PR #407 open. Owner: read the guide pages once as each panel. *Tentang GELITA* now names the five challenge kinds |
