@@ -100,6 +100,12 @@ final class ParticipantCopyTest extends CIUnitTestCase
         }
         $this->assertStringNotContainsString('answered_at', $with);
         $this->assertStringNotContainsString('reconsent', $with, 'never the re-consent column');
+
+        // The answer time reads like the panel (WIB, no seconds or microseconds; owner, 17 November 2026)
+        helper('ui');
+        $answered = (string) $this->conn->table('instrument_responses')->where('answered_at IS NOT NULL', null, false)->get()->getRow('answered_at');
+        $this->assertStringContainsString(fmt_date($answered, false, 'id'), $with);
+        $this->assertDoesNotMatchRegularExpression('/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/', $with, 'no raw database time');
     }
 
     public function testHeadResearcherOnly(): void

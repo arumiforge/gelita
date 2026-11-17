@@ -164,9 +164,11 @@ class ParticipantCopyService
 
             if ($withRisk) {
                 $writer->startSheet('risiko', self::RISK_HEADINGS);
+                helper('ui');
 
+                // Parents read this sheet: the answer time in WIB as in the panel, e.g. 17 Nov 2026 10:30 (owner, 17 November 2026)
                 foreach ($this->riskRows($participantId) as $row) {
-                    $writer->row([$row['unit'], $row['response'], $row['answered_at']]);
+                    $writer->row([$row['unit'], $row['response'], fmt_date($row['answered_at'], false, 'id')]);
                 }
 
                 $written[] = 'risiko';

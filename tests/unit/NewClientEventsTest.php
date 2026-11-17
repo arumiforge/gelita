@@ -64,7 +64,20 @@ final class NewClientEventsTest extends CIUnitTestCase
         $this->assertStringContainsString("ctx.passageReopened('label'", $boleh);
 
         $audio = (string) file_get_contents(FCPATH . 'assets/js/core/audio.js');
-        $this->assertStringContainsString("window.addEventListener('pagehide', reportAllListened, true);", $audio);
+        // The listening-time report runs inside the leave flush, before its beacon is taken (owner, 17 November 2026)
+        $this->assertStringContainsString('onBeforeLeave(reportAllListened);', $audio);
+        $events = (string) file_get_contents(FCPATH . 'assets/js/core/events.js');
+        $this->assertLessThan(strpos($events, 'channel.takeForBeacon(online)'), strpos($events, 'for (const hook of beforeLeave)'), 'hooks before the beacon batch');
         $this->assertStringContainsString("if (wasPlaying && this.playIndex > 0 && !this.completed) this.send('pause');", $audio);
+    }
+
+    public function testLeavingAPageReportsTheListeningTimeOnce(): void
+    {
+        // visibilitychange (hidden) and pagehide both fire on a leave: one pause row, not two (owner, 17 November 2026)
+        $audio = (string) file_get_contents(FCPATH . 'assets/js/core/audio.js');
+        $this->assertStringContainsString('const REPORT_GAP_MS = 250;', $audio);
+        $this->assertStringContainsString('if (this.reportedMs !== undefined && this.listenedMs - this.reportedMs < REPORT_GAP_MS) return;', $audio);
+        // A new playback starts its own count, so its first leave report is never skipped
+        $this->assertSame(substr_count($audio, 'this.listenedMs = 0;'), substr_count($audio, 'this.reportedMs = undefined;'));
     }
 }

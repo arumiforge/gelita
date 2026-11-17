@@ -78,11 +78,13 @@ final class EndedSessionCsrfTest extends CIUnitTestCase
         $this->postEvents([], 'api/audio-events')->assertStatus(401);
     }
 
-    public function testARefusedTokenWithALoginIsStillThrown(): void
+    public function testARefusedTokenWithALoginIsA403WithoutThrowing(): void
     {
-        // Still signed in with a stale page token: GelitaExceptionHandler answers 403 CSRF_EXPIRED
-        $this->expectException(SecurityException::class);
-        $this->postEvents(['participant_id' => 1, 'game_session_id' => 1, 'gelita_csrf' => 'ffffffffffffffffffffffffffffffff']);
+        // Still signed in with a stale page token: 403 CSRF_EXPIRED straight from the filter, nothing thrown
+        $response = $this->postEvents(['participant_id' => 1, 'game_session_id' => 1, 'gelita_csrf' => 'ffffffffffffffffffffffffffffffff']);
+        $response->assertStatus(403);
+        $this->assertSame('CSRF_EXPIRED', $this->body($response)['code'] ?? null);
+        $this->assertSame(0, $this->conn->table('game_event_logs')->countAllResults(), 'nothing stored with a refused token');
     }
 
     public function testAPageFormWithoutLoginIsStillThrown(): void
