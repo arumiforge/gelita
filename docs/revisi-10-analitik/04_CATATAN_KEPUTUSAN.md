@@ -14,6 +14,9 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 - Temuan (d): setelah *Ganti nama dengan kode*, formulir kata sandi sementara, pembetulan, dan aktivasi ulang disembunyikan dan ditolak di server.
 
 Entri ini tidak diikuti pembuatan ulang PDF.
+**Gambar cerita pembuka `R-27` sampai `R-33` dipasang** (cabang `r10-gambar-cerita-pembuka`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Pengembang menerima `R-27` (slide 1) dan `R-30` (slide 8) pada 17 November 2026; `R-28`, `R-29`, dan `R-31` sampai `R-33` sudah diterima sebelumnya. Ketujuhnya dipasang di Katalog Aset tanpa diubah. Ekspresi avatar mengikuti pose baris (keputusan 6 telaah cerita pembuka, 16 November 2026) kini terlihat di `intro-05`, `intro-06`, dan `penutup-04`; kodenya sudah ada. Entri ini tidak diikuti pembuatan ulang PDF.
 
 **Cek kemutakhiran 13, 14, 15, dan 02 L0** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang; isinya ditampilkan ringkas dulu dan disetujui pengembang) · status dokumen tidak berubah · mengubah 00, 02, 13, 14, dan 15; tidak merevisi produk
 

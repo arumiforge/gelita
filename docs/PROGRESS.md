@@ -141,7 +141,7 @@ Decisions in `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md` (16 November 2026
 - [x] Research mode: dots only show the place; Otomatis back on in every game session
 - [x] Narrator controls 48 dp; short labels on hover, focus and long press (`core/tips.js`)
 - [x] Last slide: no ▶ and no Lewati; *Mulai petualangan* low at the right
-- [ ] Pictures `R-27` to `R-30` (slides 1, 6, 7, 8) and `R-31` to `R-33` (avatar expressions): made by ChatGPT and merged into `ai-studio/chatgpt-images/out/` (PR #398, 16 November 2026; sizes checked, a quick look found nothing against the prompts). `R-28`, `R-29`, `R-31`–`R-33` accepted by the owner through ChatGPT (exceptions in `TASKS.md`); `R-27` and `R-30` still `generated`, waiting for the owner. None installed yet
+- [x] Pictures `R-27` to `R-30` (slides 1, 6, 7, 8) and `R-31` to `R-33` (avatar expressions) installed in `ai-studio/game-images/` (17 November 2026, branch `r10-gambar-cerita-pembuka`; `R-27` and `R-30` accepted by the owner that day). The expression-by-pose code was already built (`partials/cine-slides.php`). Open: `gelita:katalog:impor --dry-run` on a dev install or server, and a look on a Chromebook (the R-31/R-32 rings are about 2% smaller than the plain avatar)
 - [x] Research-mode sound-check screen `/cek-suara` (04, 15 November 2026, decision 4): event `sound_check_answered`; 33 §7.6, 11 (Analitik 7)
 - [x] Sound-check result on the monitoring page: column *Cek suara* for researchers and the head researcher, not in *Perlu perhatian* (owner, 17 November 2026; branch `r10-panel-hak-data`)
 
