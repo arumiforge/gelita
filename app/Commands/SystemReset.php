@@ -147,6 +147,15 @@ class SystemReset extends BaseCommand
 
         $this->printSummary($result);
 
+        // For gelita:setelah-pull: the reset imported the default bank and the instrument files
+        if (($result['bank']['status'] ?? '') === 'imported' && realpath((string) ($result['bank']['path'] ?? '')) === realpath(ROOTPATH . \App\Libraries\PostPullCheck::BANK)) {
+            \App\Libraries\DevStepLedger::recordStep('bank');
+        }
+
+        if (($result['instruments']['errors'] ?? ['?']) === []) {
+            \App\Libraries\DevStepLedger::recordStep('instrumen');
+        }
+
         if ($result['errors'] > 0) {
             CLI::error('Verifikasi konten menemukan ' . $result['errors'] . ' galat. Impor ulang bank soal (`php spark gelita:bank:import berkas.xlsx`) lalu jalankan `php spark gelita:content:verify`.');
 

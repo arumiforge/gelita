@@ -76,6 +76,8 @@ Continues `glossary.md` (same columns, same rules). Add research, panel, and dat
 | kemajuan siswa | `participant progress` | `participant_progress` per student and study (replaced `session_progress`, migration `003500`) |
 | Pemantauan | `monitoring panel` | route `/admin/pemantauan`, `GET /api/admin/monitoring`; capability `monitoring.view` (admin: numbers only) |
 | akun uji | `test account` | `uji.*` accounts, command `gelita:uji:akun`, school `V01` |
+| Panduan validator | `validator guide` | route `/admin/panduan-validator` (public; `?panel=` `materi`, `b5a`, `budaya`, `media`), `ValidatorGuideController`, text `ValidatorGuideContent`, live facts `ValidatorGuideFacts`, source drift `GuideSourceCheck` + `gelita:panduan:cek` (17 Nov 2026) |
+| langkah setelah pull | `post-pull step` | `gelita:setelah-pull`, `PostPullCheck` (states `perlu`, `sesuai`, `belum-tercatat`, `dilewati`, `periksa-sendiri`), ledger `DevStepLedger` in `writable/gelita-langkah.json` (17 Nov 2026) |
 | katalog event | `event catalog` | `App\Libraries\EventCatalog` (`RESEARCH`, `ADMIN`, `REMOVED`, `SERVER_ONLY`); `dialogue_completed` replaced `dialogue_advanced`, `answer_changed` merged into `answer_submitted` (revision 10, part 3: 29) |
 | Log teknis | `tech log` | route `/admin/log-teknis`, `TechLogService`, capability `tech_logs.view` (admin) |
 | Kamus Data (lembar unduhan) | `data dictionary` | `ResearchDictionary` (`kamus-1.1` since the developer approved it, 9 Nov 2026, `DRAFT` false; `kamus-1.1-usulan` while it was a draft after part 9; was `kamus-1.0`; thresholds re-set after KG3b come as `kamus-1.2`), `data_exports.dictionary_version` |

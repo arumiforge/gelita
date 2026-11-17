@@ -150,6 +150,9 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
     // Staff guide: public (owner, 16 Nov 2026), offered beside the login card; holds no data and no secrets
     $routes->get('panduan-staf', 'StaffGuideController::index');
     $routes->get('panduan-staf/(:segment)', 'StaffGuideController::page/$1');
+    // Validator guide: public too (owner, 17 Nov 2026); validators hold student test accounts, never staff accounts
+    $routes->get('panduan-validator', 'ValidatorGuideController::index');
+    $routes->get('panduan-validator/(:segment)', 'ValidatorGuideController::page/$1');
 
     $routes->group('', ['filter' => 'staffAuth'], static function ($routes): void {
         // Rights per capability (revision 10, part 1: App\Libraries\StaffAccess, 27 §4, §7).

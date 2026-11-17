@@ -85,6 +85,10 @@ class SchoolImport extends BaseCommand
             }
         }
 
+        if (! $dryRun && $this->option('file', $params) === null) {
+            \App\Libraries\DevStepLedger::recordStep('sekolah'); // for gelita:setelah-pull
+        }
+
         return EXIT_SUCCESS;
     }
 }

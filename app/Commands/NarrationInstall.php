@@ -90,6 +90,10 @@ class NarrationInstall extends BaseCommand
             CLI::write('  Langkah berikutnya: php spark gelita:narration:import, lalu dengarkan dan setujui di Rekaman narasi.');
         }
 
+        if (! $dryRun && $report['errors'] === [] && $report['unknown'] === [] && $this->option('dir', $params) === null) {
+            \App\Libraries\DevStepLedger::recordStep('narasi-pasang'); // for gelita:setelah-pull
+        }
+
         return $report['errors'] !== [] || $report['unknown'] !== [] ? EXIT_ERROR : EXIT_SUCCESS;
     }
 }

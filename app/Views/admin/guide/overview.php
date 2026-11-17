@@ -13,7 +13,6 @@
  * @var string                     $query
  * @var bool                       $isStaff
  */
-use App\Libraries\StaffGuideContent as Guide;
 
 $icons = ['mulai' => 'compass', 'lapangan' => 'map', 'ketua' => 'chart', 'admin' => 'grid', 'larangan' => 'warn'];
 ?>
@@ -33,10 +32,10 @@ $icons = ['mulai' => 'compass', 'lapangan' => 'map', 'ketua' => 'chart', 'admin'
   <ul class="gd-cards">
     <?php foreach ($chapters as $chapter): ?>
       <li>
-        <a class="gd-card<?= $chapter['mine'] ? ' is-mine' : '' ?>" href="<?= esc(Guide::url($chapter['sections'][0]['id']) . $query, 'attr') ?>">
+        <a class="gd-card<?= $chapter['mine'] ? ' is-mine' : '' ?>" href="<?= esc($guide::url($chapter['sections'][0]['id']) . $query, 'attr') ?>">
           <span class="gd-card-icon" aria-hidden="true"><?= icon($icons[$chapter['id']] ?? 'book') ?></span>
           <span class="gd-card-title"><?= esc($chapter['title']) ?></span>
-          <span class="gd-card-text"><?= Guide::inline($chapter['lead'], $query) ?></span>
+          <span class="gd-card-text"><?= $guide::inline($chapter['lead'], $query) ?></span>
           <span class="gd-card-meta">
             <?= esc(lang('Admin.guideTopics', [count($chapter['sections'])])) ?>
             <?php if ($chapter['mine']): ?><span class="badge is-ok"><?= esc(lang('Admin.guideYourRole')) ?></span><?php endif ?>
@@ -50,7 +49,7 @@ $icons = ['mulai' => 'compass', 'lapangan' => 'map', 'ketua' => 'chart', 'admin'
   <ul class="gd-cards is-compact">
     <?php foreach ($popular as $section): ?>
       <li>
-        <a class="gd-card" href="<?= esc(Guide::url($section['id']) . $query, 'attr') ?>">
+        <a class="gd-card" href="<?= esc($guide::url($section['id']) . $query, 'attr') ?>">
           <span class="gd-card-eyebrow"><?= esc($section['chapterTitle']) ?></span>
           <span class="gd-card-title"><?= esc($section['title']) ?></span>
         </a>

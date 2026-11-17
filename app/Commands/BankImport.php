@@ -70,6 +70,10 @@ class BankImport extends BaseCommand
 
         $this->report($result, $dryRun);
 
+        if (! $dryRun && $result['ok'] && realpath($file) === realpath(ROOTPATH . \App\Libraries\PostPullCheck::BANK)) {
+            \App\Libraries\DevStepLedger::recordStep('bank'); // for gelita:setelah-pull
+        }
+
         return $result['ok'] ? EXIT_SUCCESS : EXIT_ERROR;
     }
 

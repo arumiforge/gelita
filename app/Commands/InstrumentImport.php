@@ -54,6 +54,10 @@ class InstrumentImport extends BaseCommand
             CLI::error($error);
         }
 
+        if ($result['errors'] === [] && $only === null && ! $this->flag('dry-run', $params)) {
+            \App\Libraries\DevStepLedger::recordStep('instrumen'); // for gelita:setelah-pull
+        }
+
         return $result['errors'] === [] ? EXIT_SUCCESS : EXIT_ERROR;
     }
 }

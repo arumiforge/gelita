@@ -2,7 +2,7 @@
 
 The single checklist of what is done and what is open. Decisions and their reasons go in `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md` (and, for the research revision, `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`); this file only tracks state. Each session updates only its own rows, and ticks an item only once its PR is merged into `main`. Finished work is summed up in one line per area under *Done*; the details live in the PRs, the git history, and the decision log.
 
-Last updated: 16 November 2026.
+Last updated: 17 November 2026.
 
 ## Research revision: 10 analytics (owner, 23 October 2026)
 
@@ -203,3 +203,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `claude/validator-guide-pages-acv4cr` | Validator guide `/admin/panduan-validator` (per panel, live facts, source drift check `gelita:panduan:cek`) and `gelita:setelah-pull` (decision log, 17 November 2026) | Built and tested; PR open. Owner: read the guide pages once as each panel; open: *Tentang GELITA* still says four challenge kinds |
