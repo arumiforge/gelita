@@ -202,4 +202,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `r10-gambar-cerita-pembuka` | Coordinator session 17 Nov 2026 / install `R-27`–`R-33` | PR open |
