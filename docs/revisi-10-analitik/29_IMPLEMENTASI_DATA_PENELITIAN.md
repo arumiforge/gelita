@@ -317,6 +317,8 @@ Kamus menempatkan tiga syarat data di no. 14 ([11 → Yang harus disediakan sist
 
 Kolom baru **`item_tries.ready_ms`**: milidetik sejak tantangan dibuka (`performance.now()` di `game/challenge.js`), saat butir itu bisa dijawab untuk percobaan ini. Rujukan waktunya sama dengan `first_input_ms` dan `last_input_ms`, sehingga `decision_ms = last_input_ms − ready_ms`.
 
+"Dibuka" berarti pemuatan layar tantangan ini. Bila halaman dimuat ulang, jam layar mulai lagi dari 0, juga untuk `t_ms` di `item_shown` dan `passage_reopened`. Itu disengaja (keputusan pemilik 17 November 2026, [32 §15.3](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#153-cek-manual) temuan (c)): selisih di dalam satu pemuatan tetap benar, dan waktu per butir di lapis turunan memakai jam server event `item_shown` ([35 §19 no. 16](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#19-keputusan-pengembang)).
+
 | Jenis | `ready_ms` | Dikirim lewat |
 | --- | --- | --- |
 | Benar atau Salah, kartu jangkar | Masukan terakhir di pengerjaan itu **sebelum** pilihan terakhir di kartu ini; atau layar tampil (0); atau umpan balik Cek sebelumnya selesai, mana yang paling akhir (11 → Analitik 6, waktu putus perkiraan) | `/check`, per butir, di samping `first_input_ms` dan `last_input_ms` |

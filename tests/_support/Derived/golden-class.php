@@ -106,6 +106,9 @@ return [
             $event(3, 1, 'empty_tap', $t('08:11:30'), 4, 41, ['x_pct' => 21.0, 'y_pct' => 20.0, 'round' => 1]),
             $event(4, 1, 'page_hidden', $t('08:15:00')),
             $event(5, 1, 'page_visible', $t('08:16:00')),
+            // 32 §15.3 (d): a reload of the challenge page (pagehide abandon + reload resume) is no exit
+            $event(7, 1, 'challenge_abandoned', $t('08:17:00'), 4, null, ['via' => 'pagehide', 'attempt_open' => true]),
+            $event(8, 1, 'challenge_opened', $t('08:17:02'), 4, null, ['resumed' => true, 'attempt_no' => 1, 'reload' => true]),
             $event(6, 1, 'challenge_abandoned', $t('08:20:00'), 4),
         ],
         'fieldRows' => [...$shared, ['id' => 104, 'field_session_id' => 1, 'sheet' => 'l2_kursi', 'mine' => true, 'seat_no' => 1, 'started_at' => $t('07:55:00'), 'ended_at' => null, 'values' => ['shared_device' => 'Tidak']]],

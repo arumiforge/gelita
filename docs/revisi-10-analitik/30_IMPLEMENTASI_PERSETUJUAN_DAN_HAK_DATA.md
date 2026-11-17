@@ -804,7 +804,7 @@ Dibetulkan 17 November 2026 (cabang `r10-panel-hak-data`, belum dicek ulang di M
 - (a) dan (c): dibangun sesuai keputusan pengembang, lihat §8 dan §11.
 - (b): di bawah setiap isian, setiap `[nama]` mendapat centang "Bukan nama, kembalikan kata aslinya" dengan beberapa kata di sekitarnya (sudah disamarkan, jadi namanya tetap tidak tampil). Saat disimpan, `[nama]` yang dicentang kembali ke kata aslinya; nama yang diketik ulang di isian tetap disamarkan lagi. Centang tidak pernah terisi lebih dulu, juga untuk kata yang sudah dikembalikan di pemeriksaan sebelumnya, karena siswa yang baru masuk studi bisa bernama kata itu; jadi pemeriksaan ulang menyamarkannya lagi kecuali dicentang lagi. Bila tanda `[nama]` di isian diubah bersamaan dengan centang, penyimpanan ditolak dan tidak ada yang berubah. Kata nama dicocokkan dalam satu pola, nama terpanjang lebih dulu. Tes: `StudyClosureTest`.
 - (d): setelah *Ganti nama dengan kode*, halaman siswa admin tidak lagi menampilkan formulir sandi sementara, pembetulan, pengaktifan kembali, tombol *Atur ulang kata sandi*, dan tombol salinan data anak; sebagai gantinya tampil satu kalimat keterangan. Server menolak sandi sementara lewat halaman siswa dan lewat kode peserta (`/admin/peserta/reset-sandi`), yang sebelumnya masih bisa dikirim. Tes: `StudyClosureTest`.
-- (e): masih terbuka.
+- (e): dibetulkan (cabang `r10-muat-ulang-mundur`): filter `csrf` (`App\Filters\CsrfFilter`) menjawab permintaan API tanpa login dengan 401 `INVALID_SESSION` biasa tanpa catatan galat, dan `core/events.js` berhenti mengirim (tanpa event baru, pengiriman ulang, atau *beacon*) setelah jawaban 401 (`EndedSessionCsrfTest`, `EventQueueEndedSessionTest`).
 
 ### 19.4 Selesai bila
 
