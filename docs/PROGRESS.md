@@ -204,4 +204,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `katalog-aset-halaman` | Worker B of the 17 November 2026 coordinator session: public Katalog Aset site in `gelita-katalog/`, command `gelita:katalog:halaman` | Built and tested; PR to `main` |
+| `katalog-aset-halaman` | Worker B of the 17 November 2026 coordinator session: public Katalog Aset site in `gelita-katalog/`, command `gelita:katalog:halaman` | PR #408. Verified: CatalogSiteTest, full suite (1367), Chromium desktop and phone with the folder served alone. Not verified: real server, nginx, Cloudflare |
