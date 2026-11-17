@@ -95,7 +95,7 @@ final class AttemptCalculator
             }
         }
 
-        $replays = count(array_filter($context['audio'], static fn (array $a): bool => ($a['context'] ?? '') === 'challenge_instruction' && in_array($a['action'], ['play', 'replay'], true)));
+        $replays = count(array_filter($context['audio'], static fn (array $a): bool => ($a['context'] ?? '') === 'challenge_instruction' && in_array($a['action'], ParticipantRun::PLAY_COUNT_ACTIONS, true)));
 
         return [
             'attempt_id'           => (int) $attempt['id'],

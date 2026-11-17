@@ -38,6 +38,11 @@
  * pictures are the overlay's two `.kenal-bg`, or the stage's scene images when
  * the root has `data-backdrop="stage"`.
  *
+ * Lewati (`[data-narration-skip]`, the nav-bar link of the story screens)
+ * sends a `skip` narration row for the slide on screen before the page moves
+ * on (owner, 16 November 2026, 04 decision 3), via NarrationPlayer#skip(). A
+ * slide without a narration file writes nothing: a row needs an audio asset.
+ *
  * Swipe left/right on the player (touch and pen) does what the slide's
  * Lanjut/Kembali link does (game/slides.js), including `dialogue_completed`.
  *
@@ -454,6 +459,20 @@ export function initNarrator(root, { onFinish = null, onSlide = null } = {}) {
     typewrite(current());
     Promise.resolve(player.replay()).then(() => refresh());
   });
+
+  // Lewati: the narration on screen is logged as skipped (04 decision 3). Capture runs
+  // before the link navigates; pagehide then sends the queue (core/events.js).
+  let skipSent = false;
+  document.addEventListener('click', (event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    if (skipSent || !target?.closest('[data-narration-skip]') || root.getClientRects().length === 0) return;
+    const slide = current();
+    const player = slide ? playerOf(slide) : null;
+    if (!player) return;
+    skipSent = true;
+    clearAdvance();
+    player.skip();
+  }, true);
 
   btn('prev')?.addEventListener('click', prev);
   btn('next')?.addEventListener('click', next);

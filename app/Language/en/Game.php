@@ -12,6 +12,10 @@ return [
     'previous'        => 'Previous',
     'home'            => 'Home',
     'sound'           => 'Sound',
+    // Background music switch in the HUD menu (owner, 16 November 2026, 04 decision 1)
+    'music'           => 'Background music',
+    'musicOn'         => 'On',
+    'musicOff'        => 'Off',
     'language'        => 'Language',
     // Each language is named in itself, the same in both locales (switcher labels)
     'lang_id'         => 'Bahasa Indonesia',

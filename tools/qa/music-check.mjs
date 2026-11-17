@@ -5,6 +5,8 @@
  * Loads the real public/assets/js/core/audio.js in Chromium (Playwright) with
  * a stub `Howl`/`Howler`, and checks the music rules:
  *
+ *   - the music switch is off by default: an unlocked screen stays silent until
+ *     setMusicEnabled(true) (owner, 16 November 2026, 04 decision 1);
  *   - a screen asks for its track before the first tap: nothing plays yet;
  *   - the first unlock() starts the requested track;
  *   - a second unlock() does not restart it;
@@ -149,9 +151,19 @@ try {
   const plays = (track) => page.evaluate((t) => window.qaLog.filter((line) => line === `play music/${t}`).length, track);
   const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
+  // 0. The music switch is off by default (04 decision 1): unlocked, still silent
+  await page.evaluate(() => { window.Sfx.music('map'); window.Sfx.unlock(); });
+  let now = await playing();
+  const musicOff = await page.evaluate(() => window.Sfx.isMusicEnabled());
+  check(same(now, []) && musicOff === false, 'music is off by default', `playing: ${JSON.stringify(now)}, switch: ${musicOff}`);
+  // The remaining checks run with the music switch on, on a fresh page (audio locked again)
+  await page.evaluate(() => window.Sfx.setMusicEnabled(true));
+  await page.reload();
+  await page.waitForFunction(() => window.qaReady === true, null, { timeout: 10_000 });
+
   // 1. The screen asks for its track at load, before any tap
   await page.evaluate(() => window.Sfx.music('map'));
-  let now = await playing();
+  now = await playing();
   check(same(now, []), 'no music before the first unlock', `playing: ${JSON.stringify(now)}`);
 
   // 2. First tap

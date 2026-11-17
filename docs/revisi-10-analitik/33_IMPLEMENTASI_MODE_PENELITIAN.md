@@ -311,6 +311,19 @@ Ditambahkan 16 November 2026 (keputusan pengembang 15 November 2026, no. 4 di [0
 
 **Di luar mode penelitian** tidak ada cek suara; `/cek-suara` langsung melanjutkan ke halaman tujuan.
 
+### 7.7 Efek suara dan musik latar
+
+Ditambahkan 17 November 2026 (keputusan pengembang 16 November 2026, no. 1 dan 2 di [04](04_CATATAN_KEPUTUSAN.md)).
+
+**Mode penelitian:**
+- Efek suara **benar** dan **salah** (`correct`, `wrong`) tidak berbunyi selama sakelar studi `field_mode` menyala, supaya siswa di sebelahnya tidak mendengar hasil jawaban. Diatur di satu tempat, `Sfx.play()` di `public/assets/js/core/audio.js` (`RESEARCH_SILENT_EFFECTS`, membaca `CONFIG.researchMode`), jadi berlaku untuk semua jenis tantangan. Efek lain (klik, serpihan, wilayah tuntas, gembok) dan bunyi cek suara tetap.
+
+**Semua mode:**
+- Musik latar punya sakelar sendiri di menu HUD (*Musik latar*: *Mati*/*Nyala*), terpisah dari tombol suara (narasi dan efek), dan **mati secara bawaan**. Pilihannya preferensi perangkat (`music`), seperti tombol suara. Tombol suara yang dimatikan tetap mematikan musik.
+- Musik dan efek suara tidak pernah dicatat dan bukan data penelitian.
+
+**Di luar mode penelitian** efek benar/salah berbunyi seperti sebelumnya.
+
 ---
 
 ## 8. Perbaikan media M-04–M-11 (perubahan no. 19)

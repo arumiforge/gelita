@@ -12,6 +12,10 @@ return [
     'previous'        => 'Sebelumnya',
     'home'            => 'Beranda',
     'sound'           => 'Suara',
+    // Background music switch in the HUD menu (owner, 16 November 2026, 04 decision 1)
+    'music'           => 'Musik latar',
+    'musicOn'         => 'Nyala',
+    'musicOff'        => 'Mati',
     'language'        => 'Bahasa',
     // Each language is named in itself, the same in both locales (switcher labels)
     'lang_id'         => 'Bahasa Indonesia',

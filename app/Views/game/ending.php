@@ -60,6 +60,6 @@ $firstBg   = $slides === [] ? null : slide_bg_src($slides[0]);
 
 <?= $this->section('nav') ?>
 <?= component('nav-bar', ['nav' => [
-    ['label' => lang('Game.skip'), 'href' => base_url('refleksi'), 'style' => 'quiet', 'arrow' => 'right'],
+    ['label' => lang('Game.skip'), 'href' => base_url('refleksi'), 'style' => 'quiet', 'arrow' => 'right', 'attrs' => ['data-narration-skip' => '1']],
 ]]) ?>
 <?= $this->endSection() ?>
