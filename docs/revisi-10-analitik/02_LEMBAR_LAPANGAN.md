@@ -97,7 +97,7 @@ Kode sesi lapangan: __________ · Tanggal: __________ · Inisial P1: ______
 - [ ] Jam ponsel semua peneliti diatur otomatis dari jaringan (WIB) dan dicocokkan sampai detik
 - [ ] Internet diuji di tiga titik ruangan; hasilnya ditulis di L1
 - [ ] Halaman masuk GELITA terbuka di setiap perangkat; baterai minimal 70% atau tersambung listrik
-- [ ] Peneliti tahu: layar cek suara muncul di awal setiap sesi permainan; siswa yang menjawab *Tidak terdengar* mengangkat tangan
+- [ ] Peneliti tahu: layar cek suara muncul di awal setiap sesi permainan; siswa yang menjawab *Tidak terdengar* mengangkat tangan. Jawabannya terlihat per siswa di kolom *Cek suara* halaman Pemantauan
 - [ ] Perangkat yang dipakai bergantian: peramban ditutup di antara dua siswa
 - [ ] Peneliti berdiri di posisi yang tidak menghalangi layar siswa
 
