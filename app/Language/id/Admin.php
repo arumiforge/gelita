@@ -815,7 +815,7 @@ return [
     'feedbackField_new_learning' => 'Hal baru',
     'feedbackField_suggestion'   => 'Saran',
     'retentionMinStudy' => 'Masa simpan studi penelitian paling singkat 7305 hari (20 tahun).',
-    'retentionStudyHelp' => 'Penelitian dengan mode penelitian paling singkat 7305 hari (20 tahun), dihitung sejak penelitian selesai.',
+    'retentionStudyHelp' => 'Penelitian dengan mode penelitian paling singkat 7305 hari (20 tahun), dihitung sejak penelitian selesai. Bila mode penelitian dicentang dan angkanya lebih kecil, sistem mengisi 7305 hari saat disimpan.',
     'researchPrivacyRequired' => 'Nyalakan pengaman data penelitian (gelita.researchPrivacy) di server sebelum studi penelitian diaktifkan.',
     'backupSecondDaysMissing' => 'Ada penelitian dengan mode penelitian, tetapi skrip cadangan belum melaporkan batas 30 hari di lokasi kedua (KEDUA_HARI). Isi batas itu di server.',
 
