@@ -68,6 +68,48 @@ final class StudyClosureTest extends CIUnitTestCase
         $this->assertSame(['study_code' => $this->study()['code'], 'rows' => 1], $audit);
     }
 
+    public function testAnOrdinaryWordMaskedAsANameCanBeKept(): void
+    {
+        // 30 §19.3 (b): a student called "Dua" made "Tantangan dua" "Tantangan [nama]", and the check could not undo it
+        $this->conn->table('participants')->where('id', 1)->update(['display_name' => 'Jaka Dua']);
+        $this->conn->table('participant_feedback')->update(['hardest_part' => 'Tantangan dua susah, kata Jaka', 'suggestion' => null, 'liked_most' => null]);
+        $id = (int) $this->conn->table('participant_feedback')->get()->getRow('id');
+
+        $this->asStaff('ketua');
+        $page = (string) $this->send(Method::GET, 'admin/studi/1/penutupan/nama')->getBody();
+        $this->assertStringContainsString('Tantangan [nama] susah, kata [nama]', $page);
+        $this->assertStringNotContainsString('Tantangan dua', $page);
+        $this->assertStringNotContainsString('Jaka', $page, 'names are never shown');
+        $this->assertStringContainsString('name="keep[' . $id . '][hardest_part][]" value="0"', $page);
+
+        // The spot is kept; a name typed into the text is still masked
+        $this->send(Method::POST, 'admin/studi/1/penutupan/nama', [
+            'texts' => [$id => ['hardest_part' => 'Tantangan [nama] susah, kata [nama] dan Jaka']],
+            'keep'  => [$id => ['hardest_part' => ['0']]],
+        ]);
+        $this->assertSame('Tantangan dua susah, kata [nama] dan [nama]', $this->conn->table('participant_feedback')->get()->getRow('hardest_part'));
+
+        // A later check masks it again by default (never ticked in advance); ticking it again keeps it
+        $this->asStaff('ketua');
+        $page = (string) $this->send(Method::GET, 'admin/studi/1/penutupan/nama')->getBody();
+        $this->assertStringContainsString('Tantangan [nama] susah, kata [nama] dan [nama]', $page);
+        $this->assertStringContainsString('name="keep[' . $id . '][hardest_part][]" value="0">', $page);
+        $this->send(Method::POST, 'admin/studi/1/penutupan/nama', [
+            'texts' => [$id => ['hardest_part' => 'Tantangan [nama] susah, kata [nama] dan [nama]']],
+            'keep'  => [$id => ['hardest_part' => ['0']]],
+        ]);
+        $this->assertSame('Tantangan dua susah, kata [nama] dan [nama]', $this->conn->table('participant_feedback')->get()->getRow('hardest_part'));
+
+        // Marks changed together with a kept spot: refused, nothing saved
+        $this->asStaff('ketua');
+        $this->send(Method::POST, 'admin/studi/1/penutupan/nama', [
+            'texts' => [$id => ['hardest_part' => 'Tantangan [nama] susah']],
+            'keep'  => [$id => ['hardest_part' => ['0']]],
+        ]);
+        $this->assertSame(lang('Admin.closureFeedbackKeepMismatch', ['S03-A01']), $_SESSION['error'] ?? null);
+        $this->assertSame('Tantangan dua susah, kata [nama] dan [nama]', $this->conn->table('participant_feedback')->get()->getRow('hardest_part'));
+    }
+
     public function testGantiReplacesNamesUsernamesPasswordsAndSchools(): void
     {
         $this->close();

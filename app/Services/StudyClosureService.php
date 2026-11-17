@@ -152,24 +152,34 @@ class StudyClosureService
     /**
      * Feedback rows of the study with the words that match a student's
      * display name or username replaced by `[nama]` (30 §10.2). Names are
-     * never shown.
+     * never shown. Each masked spot can be kept as the ordinary word it is
+     * (30 §19.3 (b): "Tantangan dua" is not a name although a student is
+     * called Dua); `keep` lists the spots per field with the masked text
+     * around them. A tick is never set in advance, not even for a word an
+     * earlier check kept: a student added to the study since then may carry
+     * that word in their name, so masking stays the default.
      *
-     * @return list<array<string, mixed>> id, participant_code, and the masked fields
+     * @return list<array<string, mixed>> id, participant_code, the masked fields, and `keep` (field => list<string> the masked text around each spot)
      */
     public function maskedFeedback(int $studyId): array
     {
         $words = $this->nameWords($studyId);
-        $rows  = db_connect()->table('participant_feedback f')
-            ->select('f.id, p.participant_code, f.' . implode(', f.', self::FEEDBACK_FIELDS))
-            ->join('game_sessions gs', 'gs.id = f.session_id')
-            ->join('participants p', 'p.id = f.participant_id')
-            ->where('gs.study_id', $studyId)
-            ->orderBy('f.id', 'ASC')
-            ->get()->getResultArray();
+        $rows  = $this->feedbackRows($studyId);
 
         foreach ($rows as &$row) {
+            $row['keep'] = [];
+
             foreach (self::FEEDBACK_FIELDS as $field) {
-                $row[$field] = $row[$field] === null ? null : self::mask((string) $row[$field], $words);
+                if ($row[$field] === null) {
+                    continue;
+                }
+
+                $text        = (string) $row[$field];
+                $row[$field] = self::mask($text, $words);
+
+                foreach (self::spotTokens($text, $words)[1] as $token) {
+                    $row['keep'][$field][] = self::context($row[$field], $token);
+                }
             }
         }
 
@@ -178,37 +188,53 @@ class StudyClosureService
 
     /**
      * Saves the checked texts (the masked text plus the head researcher's own
-     * replacements) and records the check.
+     * replacements, and the spots kept as ordinary words) and records the
+     * check. A name typed into the text is masked again; only a ticked spot
+     * brings the original word back. Nothing is saved when a ticked spot
+     * cannot be matched because the `[nama]` marks of that text were changed.
      *
-     * @param array<int|string, array<string, string>> $texts feedback id => field => text
+     * @param array<int|string, array<string, string>>     $texts feedback id => field => text
+     * @param array<int|string, array<string, list<mixed>>> $keep  feedback id => field => spot numbers kept as ordinary words
      */
-    public function saveFeedbackNames(int $studyId, array $texts, int $staffId): int
+    public function saveFeedbackNames(int $studyId, array $texts, int $staffId, array $keep = []): int
     {
-        $study = model(ResearchStudyModel::class)->find($studyId);
-        $db    = db_connect();
-        $rows  = 0;
-        $words = $this->nameWords($studyId);
+        $study   = model(ResearchStudyModel::class)->find($studyId);
+        $db      = db_connect();
+        $words   = $this->nameWords($studyId);
+        $updates = [];
+
+        foreach ($this->feedbackRows($studyId) as $row) {
+            $typed = (array) ($texts[$row['id']] ?? $texts[(string) $row['id']] ?? []);
+            $kept  = (array) ($keep[$row['id']] ?? $keep[(string) $row['id']] ?? []);
+            $data  = [];
+
+            foreach (self::FEEDBACK_FIELDS as $field) {
+                if ($row[$field] === null) {
+                    continue;
+                }
+
+                $original = (string) $row[$field];
+                $spots    = array_values(array_unique(array_map('intval', (array) ($kept[$field] ?? []))));
+                $text     = array_key_exists($field, $typed) ? (string) $typed[$field] : self::mask($original, $words);
+                $restored = self::restore($text, $original, $words, $spots);
+
+                if ($restored === null) {
+                    throw new \DomainException(lang('Admin.closureFeedbackKeepMismatch', [$row['participant_code']]));
+                }
+
+                $data[$field] = $restored;
+            }
+
+            if ($data !== []) {
+                $updates[(int) $row['id']] = $data;
+            }
+        }
 
         $db->transBegin();
 
         try {
-            foreach ($this->maskedFeedback($studyId) as $row) {
-                $typed = (array) ($texts[$row['id']] ?? $texts[(string) $row['id']] ?? []);
-                $data  = [];
-
-                foreach (self::FEEDBACK_FIELDS as $field) {
-                    if ($row[$field] === null) {
-                        continue;
-                    }
-
-                    // A typed text is masked again, so a name can never be typed back in
-                    $data[$field] = self::mask(array_key_exists($field, $typed) ? (string) $typed[$field] : (string) $row[$field], $words);
-                }
-
-                if ($data !== []) {
-                    $db->table('participant_feedback')->where('id', (int) $row['id'])->update($data);
-                    $rows++;
-                }
+            foreach ($updates as $id => $data) {
+                $db->table('participant_feedback')->where('id', $id)->update($data);
             }
 
             $db->table('research_studies')->where('id', $studyId)->update(['feedback_names_checked_at' => date('Y-m-d H:i:s')]);
@@ -217,7 +243,7 @@ class StudyClosureService
                 'staff_user_id' => $staffId,
                 'target_type'   => 'research_study',
                 'target_id'     => (string) $studyId,
-                'metadata'      => ['study_code' => $study['code'] ?? null, 'rows' => $rows],
+                'metadata'      => ['study_code' => $study['code'] ?? null, 'rows' => count($updates)],
             ]);
 
             $db->transCommit();
@@ -227,7 +253,7 @@ class StudyClosureService
             throw $e;
         }
 
-        return $rows;
+        return count($updates);
     }
 
     /**
@@ -238,11 +264,105 @@ class StudyClosureService
      */
     public static function mask(string $text, array $words): string
     {
-        foreach ($words as $word) {
-            $text = (string) preg_replace('/(?<![\p{L}\p{N}])' . preg_quote($word, '/') . '(?![\p{L}\p{N}])/iu', self::MASK, $text);
+        $pattern = self::pattern($words);
+
+        if ($pattern === null) {
+            return $text;
         }
 
-        return $text;
+        // A `[nama]` already there stays as it is, even when "nama" is someone's name
+        return implode(self::MASK, array_map(static fn (string $part): string => (string) preg_replace($pattern, self::MASK, $part), explode(self::MASK, $text)));
+    }
+
+    /**
+     * The name-word matches of $text in reading order.
+     *
+     * @param list<string> $words
+     *
+     * @return list<string> the matched words as written
+     */
+    public static function occurrences(string $text, array $words): array
+    {
+        $pattern = self::pattern($words);
+        $found   = [];
+
+        foreach ($pattern === null ? [] : explode(self::MASK, $text) as $part) {
+            if (preg_match_all($pattern, $part, $m) > 0) {
+                array_push($found, ...$m[0]);
+            }
+        }
+
+        return $found;
+    }
+
+    /**
+     * The checked text to store: $typed with every name typed into it masked,
+     * and the `[nama]` marks of the spots in $keep given back their original
+     * word from $original. Null when a spot is kept but the typed text no
+     * longer has one mark per spot, so the marks cannot be matched.
+     *
+     * @param list<string> $words
+     * @param list<int>    $keep  spot numbers (0-based, reading order)
+     */
+    public static function restore(string $typed, string $original, array $words, array $keep): ?string
+    {
+        if ($keep === []) {
+            return self::mask($typed, $words);
+        }
+
+        $segments = explode(self::MASK, $typed);
+        $found    = self::occurrences($original, $words);
+        [$tokens, $spotAt] = self::spotTokens($original, $words);
+
+        if (count($segments) - 1 !== $tokens) {
+            return null;
+        }
+
+        $back = [];
+
+        foreach ($keep as $k) {
+            if (isset($spotAt[$k])) {
+                $back[$spotAt[$k]] = $found[$k];
+            }
+        }
+
+        $out = self::mask($segments[0], $words);
+
+        for ($t = 0; $t < $tokens; $t++) {
+            $out .= ($back[$t] ?? self::MASK) . self::mask($segments[$t + 1], $words);
+        }
+
+        return $out;
+    }
+
+    /**
+     * Where the name-word spots of $original sit among the `[nama]` marks of
+     * its masked text: marks already stored (an earlier check) come between.
+     *
+     * @param list<string> $words
+     *
+     * @return array{0: int, 1: list<int>} number of marks in the masked text, and the mark number of each spot
+     */
+    public static function spotTokens(string $original, array $words): array
+    {
+        $pattern = self::pattern($words);
+        $parts   = explode(self::MASK, $original);
+        $token   = 0;
+        $spotAt  = [];
+
+        foreach ($parts as $i => $part) {
+            $matches = $pattern === null ? 0 : (int) preg_match_all($pattern, $part);
+
+            for ($j = 0; $j < $matches; $j++) {
+                $spotAt[] = $token++;
+            }
+
+            if ($i < count($parts) - 1) {
+                $token++;   // a mark stored by an earlier check
+            }
+        }
+
+        return [$token, $spotAt];
     }
 
     // ------------------------------------------------------------ internal
@@ -254,6 +374,49 @@ class StudyClosureService
         usort($words, static fn (string $a, string $b): int => mb_strlen($b) <=> mb_strlen($a));
 
         return $words;
+    }
+
+    /** @return list<array<string, mixed>> the study's feedback rows: id, participant_code, and the free-text fields */
+    private function feedbackRows(int $studyId): array
+    {
+        return db_connect()->table('participant_feedback f')
+            ->select('f.id, p.participant_code, f.' . implode(', f.', self::FEEDBACK_FIELDS))
+            ->join('game_sessions gs', 'gs.id = f.session_id')
+            ->join('participants p', 'p.id = f.participant_id')
+            ->where('gs.study_id', $studyId)
+            ->orderBy('f.id', 'ASC')
+            ->get()->getResultArray();
+    }
+
+    /**
+     * One pattern for all name words, longest first, so a longer name wins
+     * over a shorter one inside it; null without words.
+     *
+     * @param list<string> $words
+     */
+    private static function pattern(array $words): ?string
+    {
+        $words = array_values(array_filter($words, static fn (string $w): bool => $w !== ''));
+
+        if ($words === []) {
+            return null;
+        }
+
+        usort($words, static fn (string $a, string $b): int => mb_strlen($b) <=> mb_strlen($a));
+
+        return '/(?<![\p{L}\p{N}])(?:' . implode('|', array_map(static fn (string $w): string => preg_quote($w, '/'), $words)) . ')(?![\p{L}\p{N}])/iu';
+    }
+
+    /** A few masked words around mark number $k (0-based) of $masked, for the keep tick. */
+    private static function context(string $masked, int $k): string
+    {
+        $parts  = explode(self::MASK, $masked);
+        $before = preg_split('/\s+/u', trim($parts[$k] ?? ''), -1, PREG_SPLIT_NO_EMPTY);
+        $after  = preg_split('/\s+/u', trim($parts[$k + 1] ?? ''), -1, PREG_SPLIT_NO_EMPTY);
+        $left   = array_slice($before, -4);
+        $right  = array_slice($after, 0, 4);
+
+        return trim((count($before) > 4 ? '… ' : '') . implode(' ', $left) . ' ' . self::MASK . ' ' . implode(' ', $right) . (count($after) > 4 ? ' …' : ''));
     }
 
     /** @return list<array<string, mixed>> students with a consent row in the study */
