@@ -6,6 +6,14 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 17 November 2026
 
+**Temuan cek manual 32 (c) dan (d) diputuskan, 30 (e) dibetulkan** (cabang `r10-muat-ulang-mundur`) · `asal: pengembang` · `disetujui pengembang` · mengubah 11, 29, 30, 32, dan 35; kode dibuat
+
+- **32 (c), waktu sesudah muat ulang.** Pengembang memilih jam layar tetap: `ready_ms`, waktu masukan, dan `t_ms` dihitung sejak layar tantangan dimuat kali ini, dan muat ulang memulainya lagi. Waktu butir turunan memakai waktu server `item_shown`, jadi tidak terpengaruh. Hanya teks [32 §6.4](32_IMPLEMENTASI_SKENARIO_DIGITAL.md) dan [29 §6.1](29_IMPLEMENTASI_DATA_PENELITIAN.md) yang diperjelas; catatan cadangan di [35 §19](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) no. 16.
+- **32 (d), `challenge_abandoned` saat muat ulang.** Peramban tidak bisa membedakan muat ulang dari menutup tab, jadi event mentah tetap. Pengembang memilih: halaman yang dimuat ulang menambahkan `reload: true` pada `challenge_opened` yang melanjutkan, dan `exit_count` tidak menghitung keluar yang langsung diikuti muat ulang pengerjaan yang sama dalam sesi permainan yang sama. Usulan `kamus-1.2` di [11](11_KAMUS_DATA.md); data mentah tidak berubah.
+- **30 (e), galat setelah siswa mundur.** Event yang masih antre kini dijawab 401 biasa tanpa catatan galat kritis, dan halaman berhenti mengirim. Tidak butuh keputusan.
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Cek kemutakhiran 13, 14, 15, dan 02 L0** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang; isinya ditampilkan ringkas dulu dan disetujui pengembang) · status dokumen tidak berubah · mengubah 00, 02, 13, 14, dan 15; tidak merevisi produk
 
 Diselaraskan tanpa keputusan baru:
