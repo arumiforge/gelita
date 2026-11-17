@@ -1347,6 +1347,17 @@ body.auth { display: grid; min-height: 100vh; place-items: center; padding: 24px
 .auth-guide-roles a:hover { border-color: #A5B4FC; background: var(--accent-soft); text-decoration: none; }
 .auth-guide-roles .icon { width: 16px; height: 16px; }
 .auth-guide .btn-block { margin-top: auto; }
+/* The GELITA guide (17 Nov 2026): one wide card under the others, its text beside the button */
+.auth-guide.is-wide { grid-column: 1 / -1; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; column-gap: 20px; }
+.auth-guide.is-wide .auth-guide-icon { margin: 0; }
+.auth-guide.is-wide .auth-title { margin-bottom: 4px; }
+.auth-guide.is-wide .auth-lead { margin: 0; }
+.auth-guide.is-wide .btn-block { width: auto; margin: 0; white-space: nowrap; }
+@media (max-width: 767.98px) {
+  .auth-guide.is-wide { grid-template-columns: 1fr; row-gap: 12px; text-align: left; }
+  .auth-guide.is-wide .auth-guide-icon { justify-self: center; }
+  .auth-guide.is-wide .btn-block { width: 100%; }
+}
 /* With the validator guide card too (17 Nov 2026): three cards side by side on wide screens */
 @media (min-width: 1180px) {
   .auth-shell.has-aside:has(> .auth-guide + .auth-guide) { grid-template-columns: repeat(3, minmax(0, 1fr)); width: min(1240px, 100%); }
@@ -1468,6 +1479,14 @@ body.auth { display: grid; min-height: 100vh; place-items: center; padding: 24px
 .gd-facts caption { padding: 12px 18px 0; color: var(--accent); font-size: 14px; font-weight: 700; text-align: left; }
 .gd-facts tbody th { width: 30%; }
 
+/* GELITA guide (/admin/panduan-gelita, 17 Nov 2026): the reasons, works cited and documents under each page */
+.gd-h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; color: var(--text); font-size: 19px; line-height: 1.35; font-weight: 700; }
+.gd-h3 .icon { width: 20px; height: 20px; color: var(--accent); }
+.gd-why { padding: 20px 24px; border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: var(--radius-lg); background: var(--accent-soft); }
+.gd-refs { padding-top: 4px; }
+.gd-ref-list { display: grid; gap: 8px; margin: 0; padding-left: 0; list-style: none; color: var(--text-2); font-size: 15px; line-height: 1.55; }
+.gd-ref-list li { padding-left: 28px; text-indent: -28px; overflow-wrap: anywhere; }
+.gd-ref-list code, .gd-table code { white-space: normal; overflow-wrap: anywhere; }
 .gd-glossary { display: grid; gap: 0; margin-bottom: 0; border: 1px solid var(--line); border-radius: var(--radius-lg); }
 .gd-term { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 24px; padding: 20px 24px; border-bottom: 1px solid var(--line); scroll-margin-top: 88px; }
 .gd-term:last-child { border-bottom: 0; }

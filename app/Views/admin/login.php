@@ -66,4 +66,14 @@
   </ul>
   <a class="btn btn-block" href="<?= base_url('admin/panduan-validator') ?>"><?= icon('book') ?> <?= esc(lang('Admin.vguideCardOpen')) ?></a>
 </section>
+
+<?php // Under both, across the row: the whole project and its reasons (owner, 17 Nov 2026) ?>
+<section class="auth-card auth-guide is-wide" aria-labelledby="auth-gguide-title">
+  <span class="auth-guide-icon" aria-hidden="true"><?= icon('compass') ?></span>
+  <div>
+    <h2 class="auth-title" id="auth-gguide-title"><?= esc(lang('Admin.gguideCardTitle')) ?></h2>
+    <p class="auth-lead"><?= esc(lang('Admin.gguideCardText')) ?></p>
+  </div>
+  <a class="btn btn-block" href="<?= base_url('admin/panduan-gelita') ?>"><?= icon('book') ?> <?= esc(lang('Admin.gguideCardOpen')) ?></a>
+</section>
 <?= $this->endSection() ?>

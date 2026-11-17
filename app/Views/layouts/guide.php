@@ -1,7 +1,7 @@
 <?php
 /**
  * Layout of the guides (staff guide /admin/panduan-staf, validator guide
- * /admin/panduan-validator), for every reader: a
+ * /admin/panduan-validator, GELITA guide /admin/panduan-gelita), for every reader: a
  * documentation site in the panel's colours. Top bar (GELITA mark, the way
  * back to the panel or to the login page), the guide's menu on the left
  * (admin/guide/_nav), the page in the middle. Loads admin.css only.

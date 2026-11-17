@@ -11,7 +11,10 @@ namespace App\Libraries;
  *
  * Markup inside strings (everything else is escaped):
  *   **bold**, `code`, [label](#section-id) (a link to another page of the
- *   same guide), [[term key]] or [[shown text|term key]] (a glossary term).
+ *   same guide), [label](/admin/panduan-staf) (another page of this site),
+ *   [label](https://…) (an outside page, https only; the GELITA guide
+ *   links the asset catalogue this way), [[term key]] or
+ *   [[shown text|term key]] (a glossary term).
  */
 abstract class GuideContent
 {
@@ -40,6 +43,12 @@ abstract class GuideContent
         $html = esc($text);
         $html = (string) preg_replace('/\*\*(.+?)\*\*/u', '<b>$1</b>', $html);
         $html = (string) preg_replace('/`(.+?)`/u', '<code>$1</code>', $html);
+        $html = (string) preg_replace('/\[([^\]]+)\]\((https:\/\/[^\s)"<>]+)\)/u', '<a href="$2" rel="noopener">$1</a>', $html);
+        $html = (string) preg_replace_callback(
+            '/\[([^\]]+)\]\(\/([a-z0-9\/-]+)\)/u',
+            static fn (array $m): string => '<a href="' . esc(base_url($m[2])) . '">' . $m[1] . '</a>',
+            $html,
+        );
         $html = (string) preg_replace_callback(
             '/\[([^\]]+)\]\(#([a-z0-9-]+)\)/u',
             static fn (array $m): string => '<a href="' . esc(static::url($m[2]) . $query) . '">' . $m[1] . '</a>',
@@ -60,6 +69,24 @@ abstract class GuideContent
             },
             $html,
         );
+    }
+
+    /**
+     * Every source reference used by the guide, for GuideSourceCheck.
+     *
+     * @return list<string>
+     */
+    public static function sources(): array
+    {
+        $refs = [];
+
+        foreach (static::chapters() as $chapter) {
+            foreach ($chapter['sections'] as $section) {
+                array_push($refs, ...($section['sources'] ?? []));
+            }
+        }
+
+        return array_values(array_unique($refs));
     }
 
     /** Address of a guide page; '' is the first page. */
@@ -91,11 +118,11 @@ abstract class GuideContent
     {
         $parts = [];
         array_walk_recursive($section, static function ($value, $key) use (&$parts): void {
-            if (is_string($value) && ! in_array($key, ['id', 'facts', 'sources'], true) && ! str_starts_with($value, 'admin/')) {
+            if (is_string($value) && ! in_array($key, ['id', 'facts', 'sources', 'docs'], true) && ! str_starts_with($value, 'admin/')) {
                 $parts[] = $value;
             }
         });
-        $text = preg_replace(['/\[\[(?:([^\]|]+)\|)?([a-z0-9-]+)\]\]/u', '/\[([^\]]+)\]\(#[a-z0-9-]+\)/u', '/\*\*|`/u'], ['$1$2', '$1', ''], implode(' ', $parts));
+        $text = preg_replace(['/\[\[(?:([^\]|]+)\|)?([a-z0-9-]+)\]\]/u', '/\[([^\]]+)\]\((?:#[a-z0-9-]+|https:\/\/[^\s)]+|\/[a-z0-9\/-]+)\)/u', '/\*\*|`/u'], ['$1$2', '$1', ''], implode(' ', $parts));
 
         return mb_strtolower(trim((string) preg_replace('/\s+/u', ' ', (string) $text)));
     }
