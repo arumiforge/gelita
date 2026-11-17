@@ -204,4 +204,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `panduan-gelita-lengkap` | Worker A of session `session_016C1gho5krrWQpFMZhJqH24`: public guide *Mengenal GELITA* `/admin/panduan-gelita` (whole project and research, the reasons and references per page), third card on the login page, source lock `GuideSources/gelita.json` in `gelita:panduan:cek` | Built and tested (`GelitaGuideTest` and related guide tests green). Open: [ ] screenshot check at Chromebook size on a dev install; [ ] full suite; [ ] PR to `main`; [ ] owner reads the guide once |
+| `panduan-gelita-lengkap` | Worker A of session `session_016C1gho5krrWQpFMZhJqH24`: public guide *Mengenal GELITA* `/admin/panduan-gelita` (whole project and research, the reasons and references per page), third card on the login page, source lock `GuideSources/gelita.json` in `gelita:panduan:cek` | Built and tested: full suite green (1368 tests); login page and guide pages checked on a MariaDB dev install at 1280 × 800 and 390 × 844 (no sideways scroll). Open: [ ] PR to `main` reviewed and merged; [ ] owner reads the guide once |
