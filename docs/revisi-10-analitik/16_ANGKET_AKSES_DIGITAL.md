@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 1 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 10 · Status: **draf**; keputusan pengembang diambil 26 Oktober 2026 ([bagian akhir](#keputusan-pengembang)); menunggu validasi ahli
+Per 9 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 10 · Status: **draf**; keputusan pengembang diambil 26 Oktober 2026 ([bagian akhir](#keputusan-pengembang)); menunggu validasi ahli
 
 Dokumen ini berisi angket akses digital yang diisi siswa kelas 5 di layar modul tes GELITA, langsung setelah tes awal, ditambah dua–tiga butir pengalaman risiko daring yang diisi di P5 setelah tes akhir: butir, kode jawaban, nama variabel, gunanya, sumber, pelaksanaan, pemasukan data, etika, dan validasinya. Rancangan tesnya ada di [13](13_TES_AWAL_AKHIR.md).
 

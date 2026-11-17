@@ -1,6 +1,6 @@
 # Paket Validasi Ahli
 
-Per 1 November 2026 · **Status: draf**; pertanyaan pengembang dijawab 27 Oktober 2026; diselaraskan dengan 21–24 pada hari yang sama; cara memenuhi prasyarat no. 4, 8, 9, dan 10 ditulis 27 Oktober 2026; putaran penilaian ulang tanpa batas sejak 1 November 2026 ([Keputusan pengembang](#keputusan-pengembang)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 17 November 2026 · **Status: `disetujui peneliti`** (17 November 2026, `asal: peneliti`, disampaikan pengembang: paket ini yang dipakai untuk validasi ahli yang selesai 4 November 2026; [04](04_CATATAN_KEPUTUSAN.md)); hasil penilaian, κ B.5a, dan matriks revisi belum ada di repo · semula draf; pertanyaan pengembang dijawab 27 Oktober 2026; diselaraskan dengan 21–24 pada hari yang sama; cara memenuhi prasyarat no. 4, 8, 9, dan 10 ditulis 27 Oktober 2026; putaran penilaian ulang tanpa batas sejak 1 November 2026 ([Keputusan pengembang](#keputusan-pengembang)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Dokumen ini mengubah tiga instrumen validasi ahli menjadi paket yang siap dikirim ke sebelas validator. Isinya: siapa menerima apa dan kapan, surat permohonan, akses ke instalasi uji, cara hasil dikembalikan dan dicatat, apa yang terjadi setelah hasil kembali, dan daftar periksa validasi untuk gerbang G2. Daftar kerja no. 3 dan no. 14 di [01](01_REVISI_10_ANALITIK.md#peta-jalan-dan-daftar-kerja). Pekerjaan ini bagian dari **Prototipe I**.
 

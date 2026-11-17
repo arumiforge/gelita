@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 1 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 7 · `asal: pengembang` · **`disetujui pengembang` (26 Oktober 2026)**
+Per 15 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 7 · `asal: pengembang` · **`disetujui pengembang` (26 Oktober 2026)**
 
 **Diselaraskan 1 November 2026** (tanpa keputusan baru, `asal: pengembang`): dua baris cerita dari cek fakta budaya [25 → Akibat ke dokumen lain](25_CEK_FAKTA_BUDAYA.md#akibat-ke-dokumen-lain) no. 5 masuk dokumen ini (`kenal-temanggung-03`, `peta-tuntas-01`), urutan P5 menyebut butir risiko daring, waktu bermain per pertemuan ± 90 menit ([06](06_KISI_KISI_BANK_SOAL.md#waktu-bermain)), uji coba mengikuti model ADDIE (KG3a dan KG3b), dan catatan tahap 3 mengikuti dokumen implementasi [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) dan [29](29_IMPLEMENTASI_DATA_PENELITIAN.md). Isi cerita lain tidak berubah.
 

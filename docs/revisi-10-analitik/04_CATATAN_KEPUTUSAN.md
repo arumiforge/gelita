@@ -1,10 +1,29 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 16 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 17 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
 
 ## 17 November 2026
+
+**Status dokumen dinaikkan: 23, 24, dan 26 `tervalidasi ahli`; 20 dan 39 `disetujui peneliti`; 32A `disetujui pengembang`** (cabang `r10-naik-status-dokumen`) · `asal: komite etik` (23, 24, 26; disampaikan peneliti lewat pengembang), `asal: peneliti` (20, 39; disampaikan pengembang), dan `asal: pengembang` (32A, penyelarasan teks status) · status masing-masing di bawah · mengubah 00, 12, 16, 17, 20, 23, 24, 26, 32A, dan 39, dan menambah [status-dokumen.html](status-dokumen.html); tidak merevisi produk
+
+AI menyapu kolom status 00 terhadap entri 04 dan kepala setiap dokumen. Tanpa keterangan baru, hanya 39 yang punya bukti untuk naik satu tingkat; 20, 23, 24, 26, dan 32A ditanyakan ke pengembang. Pengembang menjawab:
+
+1. **23, 24, dan 26 `tervalidasi ahli`** (`asal: komite etik`, informasi dari peneliti). Komite etik menyetujui ketiganya sebagai lampiran [22](22_PERMOHONAN_IZIN_ETIK.md#lampiran) bersama izin etik 4 November 2026. Entri *Gerbang G2 dilalui* di bawah hanya menaikkan 17 dan 22, jadi ketiganya belum tercatat sampai sekarang. Versi yang dipegang peneliti saat itu: 23 PDF 3 November 2026 (kaki halaman `071c0e2`), 24 kiriman *commit* `f45d274`, 26 PDF 3 November 2026 (kaki halaman `f90f7c1`). Perubahan sesudahnya, semuanya tanpa keputusan baru, menurut peneliti juga disetujui:
+   - 23, *commit* `2147331` (3 November 2026): siapa yang mengisi dua isian kelompok B (ketua peneliti, sejak 22 diambil alih peneliti); teks untuk orang tua, sekolah, guru, dan anak tidak berubah;
+   - 24, *commit* `e4d8e8d` (15 November 2026): baris 12 di tabel bahan menyebut narasi didengar dan memakai suara sintetis;
+   - 26, *commit* `f73b47c` (9 November 2026): kolom *Siap*, tabel hak, dan baris L3 menyebut sistem bagian 1–9 yang sudah dibangun.
+2. **Perubahan berikutnya di 23, 24, dan 26 boleh dibuat pengembang** tanpa menurunkan status (aturan tetap, informasi dari peneliti: komunikasi dengan komite ditangani peneliti). Setiap perubahan dicatat di 04 dengan asalnya, dan PDF-nya dibuat ulang lalu dikirim ke peneliti untuk diteruskan ke komite. 22 tetap dibekukan seperti aturan 3 November 2026.
+3. **20 `disetujui peneliti`** (`asal: peneliti`). Peneliti menyetujui paket validasi; paket ini yang dipakai untuk validasi ahli yang selesai 4 November 2026. Belum `tervalidasi ahli`: skor validator, κ B.5a, dan matriks revisi belum ada di repo.
+4. **39 `disetujui peneliti`** (`asal: peneliti`), seluruh dokumen, `R-01` sampai `R-33`, termasuk baris dari entri yang masih `draf pengembang` (`R-12` sampai `R-15`, `R-20` sampai `R-22`). Penerimaan setiap gambar hasilnya tetap per baris di `ai-studio/game-images/REVIEW.md`.
+5. **32A `disetujui pengembang`** (`asal: pengembang`): pengembang sudah memeriksa ke-24 prompt; gambarnya dibuat 4 November 2026.
+6. **Teks status yang basi dibetulkan, tanpa perubahan status:** 00 *Mulai sesi baru* no. 5 (tidak lagi "semua masih kerja pengembang"), paragraf status 00 ditambah 17 November 2026, baris 31 di 00 (isi bank `verified` sejak 16 November 2026, penyimpangan gelombang D disetujui peneliti), dan tanggal *Per* 12, 16, dan 17 disamakan dengan perubahan terakhirnya. Tanggal *Per* 33 dan 35 dibiarkan karena hari ini sedang diubah sesi lain.
+7. **Halaman ringkasan status** [status-dokumen.html](status-dokumen.html) (HTML statis, permintaan pengembang): status setiap dokumen dan yang ditunggu sebelum status berikutnya. Halaman ini diperbarui setiap kolom status 00 berubah; bila keduanya berbeda, 00 yang berlaku.
+
+**Yang masih ditunggu** (tanpa perubahan status): 13–16, 18, 21, 07, dan ketiga instrumen validasi menunggu skor validator, κ, dan matriks revisi 20, lalu keputusan peneliti; 17 dan 22 ke `final` menunggu keputusan peneliti, dan untuk 22 juga nomor dan tanggal surat persetujuan komite; 27–35 tetap `disetujui pengembang` karena peneliti baru menyetujui penyimpangannya; 25 menunggu hasil B.7 pengamat budaya; persetujuan peneliti 15 November 2026 di 12 hanya untuk suara sintetis; 36 menunggu terjemahan ulang setelah matriks revisi.
+
+**Catatan label:** tiga entri 15–16 November 2026 di bawah (*Narasi Mbah Kedu memakai suara sintetis…*, *Suara sintetis untuk Narator dan Jaka juga disetujui peneliti…*, dan *…kain besurek disetujui peneliti*) memuat persetujuan peneliti tetapi berlabel `asal: pengembang`. Entri lama tidak diubah; bagian yang disetujui peneliti dibaca sebagai `asal: peneliti`. Entri ini tidak diikuti pembuatan ulang PDF.
 
 **Perbaikan sesudah cek peramban: laporan dengar narasi saat meninggalkan halaman, `pause` ganda, catatan galat token, dan waktu di salinan anak** (cabang `perbaikan-log-narasi`) · `asal: pengembang` · `disetujui pengembang` · tidak mengubah dokumen lain; kode dibuat
 
