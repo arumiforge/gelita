@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Status Dokumen Revisi</title>
+<!-- Static summary of the status column of 00_INDEKS.md. 00 wins when the two differ;
+     update this page whenever a document changes status (04, 17 November 2026). -->
+<style>
+:root {
+  --bg: #f7f6f2; --surface: #ffffff; --text: #1f2328; --muted: #5b6370; --line: #dedbd2;
+  --s0: #8a8f98; --s1: #b7791f; --s2: #2b6cb0; --s3: #2f855a; --s4: #6b46c1;
+  --wait-bg: #fff8e6; --wait-line: #e8c97a;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15171b; --surface: #1d2026; --text: #e6e8eb; --muted: #a2a9b4; --line: #2e333b;
+    --s0: #9aa0a9; --s1: #e0a64a; --s2: #6aa5e8; --s3: #5cc28d; --s4: #a98bf0;
+    --wait-bg: #2a2416; --wait-line: #6b5726;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15171b; --surface: #1d2026; --text: #e6e8eb; --muted: #a2a9b4; --line: #2e333b;
+  --s0: #9aa0a9; --s1: #e0a64a; --s2: #6aa5e8; --s3: #5cc28d; --s4: #a98bf0;
+  --wait-bg: #2a2416; --wait-line: #6b5726;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
+h1 { font-size: 1.6rem; margin: 0 0 4px; }
+h2 { font-size: 1.2rem; margin: 36px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+p.lead { color: var(--muted); margin: 0 0 20px; }
+a { color: var(--s2); }
+code { font-size: .9em; background: var(--line); padding: 1px 5px; border-radius: 4px; }
+.ladder { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 8px 0 4px; padding: 0; list-style: none; }
+.ladder li { display: flex; align-items: center; gap: 6px; }
+.ladder li + li::before { content: "→"; color: var(--muted); }
+.badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: .85rem; font-weight: 600;
+  color: #fff; white-space: nowrap; }
+.b0 { background: var(--s0); } .b1 { background: var(--s1); } .b2 { background: var(--s2); }
+.b3 { background: var(--s3); } .b4 { background: var(--s4); } .bx { background: transparent; color: var(--muted); border: 1px solid var(--line); }
+.wait { background: var(--wait-bg); border: 1px solid var(--wait-line); border-radius: 10px; padding: 14px 18px; }
+.wait ul { margin: 6px 0 0; padding-left: 20px; }
+.wait li { margin: 6px 0; }
+.cards { display: grid; gap: 10px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; }
+.card h3 { margin: 0 0 6px; font-size: 1rem; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.card h3 .no { font-variant-numeric: tabular-nums; min-width: 2.2em; }
+.card dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; font-size: .93rem; }
+.card dt { color: var(--muted); }
+.card dd { margin: 0; }
+footer { margin-top: 40px; color: var(--muted); font-size: .9rem; }
+@media (max-width: 560px) { .card dl { grid-template-columns: 1fr; } .card dt { margin-top: 4px; } }
+</style>
+</head>
+<body>
+<main>
+<h1>Status dokumen revisi 10 analitik</h1>
+<p class="lead">Per 17 November 2026 · Ringkasan kolom status di <a href="00_INDEKS.md">00_INDEKS.md</a>. Bila berbeda, 00 yang berlaku. Keputusannya ada di <a href="04_CATATAN_KEPUTUSAN.md">04_CATATAN_KEPUTUSAN.md</a>.</p>
+
+<h2>Urutan status</h2>
+<ul class="ladder">
+  <li><span class="badge b0">draf pengembang</span></li>
+  <li><span class="badge b1">disetujui pengembang</span></li>
+  <li><span class="badge b2">disetujui peneliti</span></li>
+  <li><span class="badge b3">tervalidasi ahli</span></li>
+  <li><span class="badge b4">final</span></li>
+</ul>
+<p>Status naik hanya dengan keputusan yang tercatat di 04 beserta asalnya. Kerja pengembang tidak pernah dihitung sebagai validasi ahli. <em>Disetujui peneliti</em> butuh keputusan peneliti; <em>tervalidasi ahli</em> butuh hasil validator atau persetujuan komite etik.</p>
+
+<h2>Yang masih ditunggu</h2>
+<div class="wait">
+  <ul>
+    <li><strong>13–16, 18, 21, 07, dan ketiga instrumen validasi:</strong> skor validator, κ, dan matriks revisi <a href="20_PAKET_VALIDASI.md">20</a>, lalu keputusan peneliti.</li>
+    <li><strong>17 dan 22 ke <em>final</em>:</strong> keputusan <em>final</em> dari peneliti; untuk 22 juga nomor dan tanggal surat persetujuan komite.</li>
+    <li><strong>27–35:</strong> peneliti baru menyetujui penyimpangan implementasinya (16 dan 17 November 2026), bukan dokumennya, jadi tetap <em>disetujui pengembang</em> sampai peneliti menyetujui dokumennya.</li>
+    <li><strong>25:</strong> hasil B.7 dari pengamat budaya.</li>
+    <li><strong>12:</strong> persetujuan peneliti 15 November 2026 hanya untuk suara sintetis, bukan untuk dokumennya.</li>
+    <li><strong>36:</strong> terjemahan ulang setelah matriks revisi.</li>
+    <li><strong>20 ke <em>tervalidasi ahli</em>:</strong> skor validator, κ B.5a, dan matriks revisi masuk repo.</li>
+  </ul>
+</div>
+
+<h2>Tervalidasi ahli</h2>
+<div class="cards">
+  <div class="card"><h3><span class="no">17</span> <a href="17_SKALA_SIKAP.md">Skala sikap menjaga warisan</a> <span class="badge b3">tervalidasi ahli</span></h3>
+    <dl><dt>Sejak</dt><dd>4 November 2026, asal: peneliti (G2 dilalui)</dd><dt>Berikutnya</dt><dd>final, menunggu keputusan peneliti</dd></dl></div>
+  <div class="card"><h3><span class="no">22</span> <a href="22_PERMOHONAN_IZIN_ETIK.md">Permohonan izin etik</a> <span class="badge b3">tervalidasi ahli</span></h3>
+    <dl><dt>Sejak</dt><dd>4 November 2026, asal: komite etik</dd><dt>Berikutnya</dt><dd>final, menunggu keputusan peneliti dan nomor serta tanggal surat persetujuan</dd><dt>Catatan</dt><dd>Salinan di repo dibekukan sejak 3 November 2026; ditangani peneliti langsung</dd></dl></div>
+  <div class="card"><h3><span class="no">23</span> <a href="23_SURAT_INFORMASI_DAN_PERSETUJUAN.md">Surat informasi dan persetujuan</a> <span class="badge b3">tervalidasi ahli</span></h3>
+    <dl><dt>Sejak</dt><dd>17 November 2026, asal: komite etik lewat peneliti (lampiran 22, disetujui 4 November 2026)</dd><dt>Catatan</dt><dd>Perubahan berikutnya oleh pengembang diizinkan, dicatat di 04, PDF dikirim ke peneliti</dd></dl></div>
+  <div class="card"><h3><span class="no">24</span> <a href="24_UJI_KETERBACAAN.md">Uji keterbacaan dengan anak</a> <span class="badge b3">tervalidasi ahli</span></h3>
+    <dl><dt>Sejak</dt><dd>17 November 2026, asal: komite etik lewat peneliti (lampiran 22)</dd><dt>Catatan</dt><dd>Sama dengan 23</dd></dl></div>
+  <div class="card"><h3><span class="no">26</span> <a href="26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md">Penilaian dampak pelindungan data</a> <span class="badge b3">tervalidasi ahli</span></h3>
+    <dl><dt>Sejak</dt><dd>17 November 2026, asal: komite etik lewat peneliti (lampiran 18 di 22)</dd><dt>Catatan</dt><dd>Sama dengan 23; saran PPDP belum ada</dd></dl></div>
+</div>
+
+<h2>Disetujui peneliti</h2>
+<div class="cards">
+  <div class="card"><h3><span class="no">08</span> <a href="08_DRAF_BANK_SOAL.md">Bank soal baru</a> <span class="badge b2">disetujui peneliti</span></h3>
+    <dl><dt>Sejak</dt><dd>16 November 2026 (fakta 174 butir dicek peneliti, butir <code>verified</code>)</dd><dt>Ditunggu</dt><dd>skor validator, κ B.5a, matriks revisi 20</dd></dl></div>
+  <div class="card"><h3><span class="no">20</span> <a href="20_PAKET_VALIDASI.md">Paket validasi</a> <span class="badge b2">disetujui peneliti</span></h3>
+    <dl><dt>Sejak</dt><dd>17 November 2026 (paket yang dipakai untuk validasi ahli)</dd><dt>Ditunggu</dt><dd>skor validator, κ B.5a, matriks revisi</dd></dl></div>
+  <div class="card"><h3><span class="no">39</span> <a href="39_PROMPT_GAMBAR_PERBAIKAN_TELAAH.md">Prompt gambar perbaikan telaah</a> <span class="badge b2">disetujui peneliti</span></h3>
+    <dl><dt>Sejak</dt><dd>17 November 2026, seluruh dokumen (R-01 sampai R-33)</dd><dt>Catatan</dt><dd>Penerimaan tiap gambar tetap per baris di <code>ai-studio/game-images/REVIEW.md</code></dd></dl></div>
+</div>
+
+<h2>Disetujui pengembang</h2>
+<div class="cards">
+  <div class="card"><h3><span class="no">02</span> <a href="02_LEMBAR_LAPANGAN.md">Lembar lapangan L0–L8</a> <span class="badge b1">disetujui pengembang</span></h3>
+    <dl><dt>Catatan</dt><dd>Tertulis "L0–L7 final" (26 Oktober 2026), artinya disetujui pengembang; L8 masih draf</dd></dl></div>
+  <div class="card"><h3><span class="no">06</span> <a href="06_KISI_KISI_BANK_SOAL.md">Kisi-kisi bank soal</a> <span class="badge b1">disetujui pengembang</span></h3>
+    <dl><dt>Ditunggu</dt><dd>hasil validasi dan keputusan peneliti</dd></dl></div>
+  <div class="card"><h3><span class="no">07</span> <a href="07_TELAAH_INSTRUMEN_VALIDASI.md">Telaah dan tiga instrumen validasi</a> <span class="badge b1">disetujui pengembang</span></h3>
+    <dl><dt>Ditunggu</dt><dd>skor validator, κ, matriks revisi 20, lalu keputusan peneliti</dd></dl></div>
+  <div class="card"><h3><span class="no">11</span> <a href="11_KAMUS_DATA.md">Kamus data</a> <span class="badge b1">disetujui pengembang</span></h3>
+    <dl><dt>Catatan</dt><dd><code>kamus-1.1</code>; ambang ditetapkan ulang setelah KG3b sebagai <code>kamus-1.2</code>; dikunci di G4</dd></dl></div>
+  <div class="card"><h3><span class="no">12</span> <a href="12_CERITA_PENGHUBUNG_DAN_NARASI.md">Cerita penghubung dan narasi</a> <span class="badge b1">disetujui pengembang</span></h3>
+    <dl><dt>Ditunggu</dt><dd>keputusan peneliti atas dokumennya (persetujuan 15 November 2026 hanya untuk suara sintetis)</dd></dl></div>
+  <div class="card"><h3><span class="no">18</span> <a href="18_MOCKUP_LAYAR_BARU.md">Mock-up layar baru</a> <span class="badge b1">disetujui pengembang</span></h3>
+    <dl><dt>Ditunggu</dt><dd>hasil validasi ahli media dan keputusan peneliti</dd></dl></div>
+  <div class="card"><h3><span class="no">25</span> <a href="25_CEK_FAKTA_BUDAYA.md">Cek fakta budaya</a> <span class="badge b1">disetujui pengembang</span></h3>
+    <dl><dt>Ditunggu</dt><dd>hasil B.7 dari pengamat budaya</dd></dl></div>
+  <div class="card"><h3><span class="no">27–35</span> Dokumen implementasi bagian 1–9 <span class="badge b1">disetujui pengembang</span></h3>
+    <dl><dt>Catatan</dt><dd>Penyimpangan implementasi bagian 2–6 disetujui peneliti 16–17 November 2026; dokumennya belum</dd><dt>Ditunggu</dt><dd>keputusan peneliti atas dokumennya</dd></dl></div>
+  <div class="card"><h3><span class="no">32A</span> <a href="32A_PROMPT_GAMBAR_SITUASI.md">Prompt gambar situasi Skenario Digital</a> <span class="badge b1">disetujui pengembang</span></h3>
+    <dl><dt>Sejak</dt><dd>17 November 2026 (diperiksa pengembang)</dd></dl></div>
+  <div class="card"><h3><span class="no">36</span> <a href="36_TERJEMAHAN_BANK_SOAL.md">Terjemahan bank soal</a> <span class="badge b1">disetujui pengembang</span></h3>
+    <dl><dt>Ditunggu</dt><dd>terjemahan ulang setelah matriks revisi</dd></dl></div>
+</div>
+
+<h2>Draf pengembang</h2>
+<div class="cards">
+  <div class="card"><h3><span class="no">13–16</span> Tes awal–akhir dan angket akses digital <span class="badge b0">draf pengembang</span></h3>
+    <dl><dt>Catatan</dt><dd>Butir tes tetap <code>needs_verification</code></dd><dt>Ditunggu</dt><dd>skor validator, κ, matriks revisi 20, lalu keputusan peneliti</dd></dl></div>
+  <div class="card"><h3><span class="no">21</span> <a href="21_BERKAS_BUTIR_VALIDATOR.md">Berkas butir validator</a> <span class="badge b0">draf pengembang</span></h3>
+    <dl><dt>Ditunggu</dt><dd>hasil validasi dan keputusan peneliti</dd></dl></div>
+  <div class="card"><h3><span class="no">37, 38</span> Prompt gambar Susun Gambar, cerita, dan peta lima pos <span class="badge b0">draf pengembang</span></h3>
+    <dl><dt>Ditunggu</dt><dd>pemeriksaan pengembang</dd></dl></div>
+</div>
+
+<h2>Rujukan dan catatan kerja</h2>
+<div class="cards">
+  <div class="card"><h3><span class="no">01, 03, 04</span> Dokumen utama, arti kode, catatan keputusan <span class="badge bx">aktif / rujukan</span></h3></div>
+  <div class="card"><h3><span class="no">05, 09, 10, 19</span> Telaah yang sudah selesai <span class="badge bx">selesai</span></h3>
+    <dl><dt>Catatan</dt><dd>"Selesai" sebelum 27 Oktober 2026 setara disetujui pengembang; keputusannya sudah masuk dokumen lain</dd></dl></div>
+</div>
+
+<footer>Halaman statis; diperbarui setiap kolom status di 00 berubah (04, 17 November 2026). Salinan web: https://claude.ai/artifact/D97sgfTX8PucvQiHDgC1nw</footer>
+</main>
+</body>
+</html>

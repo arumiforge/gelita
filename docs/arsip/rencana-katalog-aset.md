@@ -63,7 +63,7 @@
 | Gambar opsional (latar slide cerita, latar node, gambar rumpang/`mgl-5`, media Pustaka, poster video) | 93 | sama, ditambah alasan mengapa opsional |
 | Gambar yang direncanakan `rencana-perbaikan-tampilan` (pin, lentera, latar pemuatan per kota, avatar) | 21 | sama, ditandai "menunggu fase X" |
 | Ikon vektor (`icon()`, jejak kaki, layar putar) | 50 | pratinjau SVG, makna, tempat pakai, deskripsi bentuk, spesifikasi garis |
-| Musik gamelan & efek suara | 9 | pemutar, durasi, loop, target kenyaringan, prompt musik AI, brief komposer |
+| Musik gamelan & efek suara | 9 | pemutar, durasi, loop, target kenyaringan, prompt musik, brief komposer |
 | Narasi (88 baris naskah + 12 petunjuk Cari Objek) × 2 bahasa | 200 | teks, tokoh–pose–efek, durasi acuan, arahan suara, pemutar rekaman bawaan, lafal khusus |
 
 **Untuk siapa.** Ilustrator, pengisi suara, komposer, dan tim konten. Guru dan peneliti juga dapat meninjau kecocokan budaya dan fakta. Pemakainya tidak perlu akun admin, database, atau server.
@@ -142,8 +142,8 @@ Temuan ini harus tercermin di katalog. Sebagian adalah ketidakcocokan kecil yang
 5. **Blok gaya dipakai ulang.** Prompt memakai penanda `{GAYA}`, `{NEGATIF}`, `{LATAR}`, `{TRANSPARAN}`, `{FRAME}`, `{JAKA}`, `{KEDU}`, `{LENTERA}`, `{KABUT}`, dan `{SERPIHAN}` (§9.2, §9.4).
    - Ada juga penanda lokal yang diisi dari kolom tabel butir itu sendiri, misalnya `{POSE}`, `{ISI}`, dan `{TOPIK}`.
    - Pembangun mengembangkan semuanya, jadi tombol **Salin prompt** selalu menyalin prompt utuh, dan perubahan gaya cukup dilakukan di satu tempat.
-6. **Foto asli diutamakan untuk isi faktual** (Pustaka, dan opsi foto untuk puzzle). Ilustrasi AI dipakai untuk seni permainan: tokoh, latar, peta, lencana, dan objek `cari`. Ilustrasi AI tidak boleh menampilkan situs bersejarah dengan bentuk karangan: selalu memakai foto rujukan.
-7. **Setiap aset hasil AI dicatat**: alat, model/versi, prompt final, seed, tanggal, suntingan manual, dan lisensi. Pencatatannya ada di lembar produksi `docs/katalog-aset/produksi.csv` (§15.4). Ini sejalan dengan pencatatan `production_method = tts` pada narasi, karena GELITA adalah instrumen penelitian.
+6. **Foto asli diutamakan untuk isi faktual** (Pustaka, dan opsi foto untuk puzzle). Ilustrasi buatan pengembang dipakai untuk seni permainan: tokoh, latar, peta, lencana, dan objek `cari`. Ilustrasi buatan pengembang tidak boleh menampilkan situs bersejarah dengan bentuk karangan: selalu memakai foto rujukan.
+7. **Setiap aset hasil pengembang dicatat**: alat, model/versi, prompt final, seed, tanggal, suntingan manual, dan lisensi. Pencatatannya ada di lembar produksi `docs/katalog-aset/produksi.csv` (§15.4). Ini sejalan dengan pencatatan `production_method = tts` pada narasi, karena GELITA adalah instrumen penelitian.
 8. **Halaman bersifat internal.** Halaman memuat tanda objek jebakan dan deskripsi gambar soal.
    - Ada banner peringatan dan `<meta name="robots" content="noindex, nofollow">`.
    - README menjelaskan bahwa halaman hanya dibagikan ke tim, tidak dipasang di server sekolah maupun situs publik.
@@ -219,7 +219,7 @@ Opsi:
   - pemutar rekaman bawaan ID/EN (`<audio controls preload="none">`);
   - arahan suara ID/EN dengan tombol **Salin**;
   - profil suara TTS dari `produksi.json`; tanda CER tinggi dari `qa-narasi.json`; lafal khusus untuk baris Inggris.
-- **Kartu musik/efek:** pemutar, durasi, loop, target kenyaringan, prompt musik AI, brief komposer, dan perintah pasca-produksi.
+- **Kartu musik/efek:** pemutar, durasi, loop, target kenyaringan, prompt musik, brief komposer, dan perintah pasca-produksi.
 - **Kartu ikon:**
   - pratinjau 24 px dan 48 px di latar gelap dan terang (hasil `icon()` yang sama dengan permainan);
   - nama, makna, contoh tempat pakai (dihitung dengan memindai `app/Views`);
@@ -544,7 +544,7 @@ Untuk Mbah Kedu: *gentle calm (idle), warm smile (smile), worried frown looking 
 - **SDXL:** IP-Adapter (Plus/FaceID) dari lembar putar, ControlNet OpenPose dari sketsa pose, dan opsional LoRA yang dilatih dari 15–30 gambar tokoh yang sudah disetujui.
 - **Flux:** Kontext/Redux untuk mengubah pose dengan identitas tetap.
 - **gpt-image:** sunting dengan gambar rujukan.
-- **Paling andal:** ilustrator melukis frame dari lembar tokoh. AI dipakai hanya untuk sketsa awal.
+- **Paling andal:** ilustrator melukis frame dari lembar tokoh. Pengembang dipakai hanya untuk sketsa awal.
 - **Culture check:** the earlier questions (blangkon style, jarik motif, iket motif) are closed by the reference images. A teacher or local culture expert still checks the batik headwrap, sash, and Jaka's waist cloth on the finished frames (§9.5).
 
 ### 9.5 Aturan budaya, fakta, dan keselamatan anak
@@ -558,7 +558,7 @@ Setiap kartu memuat daftar periksa dari aturan ini. Kolom `pemeriksa` di lembar 
    - Arca digambar sesuai foto rujukan.
 3. **Bentuk situs nyata tidak dikarang.** Candi Borobudur, Mendut, Pawon, Pringapus, dan kompleks Arjuna, juga Telaga Warna dan Gunung Sindoro–Sumbing:
    - ilustrasi memakai foto Commons di bank soal sebagai rujukan bentuk;
-   - AI tidak boleh "menambah" tingkat, stupa, atau ornamen.
+   - pengembang tidak boleh "menambah" tingkat, stupa, atau ornamen.
 4. **Pakaian dan kesenian.** Kuda lumping, Topeng Ireng (kuluk bulu, garis hitam di atas bedak putih, sepatu bot, lonceng kaki), dan Topeng Lengger digambar sesuai deskripsi di bank soal dan Pustaka, lalu ditinjau guru.
 5. **Anak rambut gimbal (Dieng) tidak digambar sebagai wajah yang dapat dikenali.** Pustaka sendiri meminta tidak memotret anak tanpa izin keluarganya.
 6. **Tokoh anak** digambar sopan dan aman, tidak dalam bahaya nyata, dan ketakutannya tidak berlebihan (pose `afraid` = kaget/cemas, bukan ngeri).
@@ -640,7 +640,7 @@ Periksa ulang dokumentasi alat sebelum produksi, karena ukuran dan fitur alat se
 
 ### 10.4 Ukuran generate → ukuran target
 
-Alat AI jarang menghasilkan ukuran target secara langsung. Buat pada rasio yang sama atau sedekat mungkin, lalu potong (atau tambah bidang transparan) dan ubah ukuran. In the "Langkah akhir" column, WebP is the default since 11 October 2026 (§10.1); JPG and PNG are still accepted.
+Alat pengembang jarang menghasilkan ukuran target secara langsung. Buat pada rasio yang sama atau sedekat mungkin, lalu potong (atau tambah bidang transparan) dan ubah ukuran. In the "Langkah akhir" column, WebP is the default since 11 October 2026 (§10.1); JPG and PNG are still accepted.
 
 | Target | Rasio | Midjourney | SDXL | Flux (kelipatan 16) | gpt-image | Langkah akhir |
 |---|---|---|---|---|---|---|
@@ -704,7 +704,7 @@ magick identify -format "%f  %wx%h  %[colorspace]  %[channels]  %b\n" out/*
 ### 10.6 Daftar periksa mutu gambar
 
 - [ ] Ukuran piksel tepat dan rasio tepat (wajib untuk `bg.*`, `char.*`, `ui.logo-hero`, `ui.btn-start*`).
-- [ ] Tidak ada huruf, angka, atau "tulisan palsu" buatan AI. Periksa papan, kain, relief, dan langit.
+- [ ] Tidak ada huruf, angka, atau "tulisan palsu" buatan pengembang. Periksa papan, kain, relief, dan langit.
 - [ ] Tidak ada tanda air atau tanda tangan.
 - [ ] Zona aman dipatuhi: tumpangkan templat §4.5 pada 50% opasitas.
 - [ ] Gaya cocok dengan aset yang sudah disetujui (bandingkan berdampingan).
@@ -1138,7 +1138,7 @@ Untuk Mbah Kedu, `{JAKA}` diganti `{KEDU}`.
 
 ### 11.8 Tantangan
 
-**Grade 5 (11 October 2026).** The 45 challenge image slots of the grade-5 bank are listed in [`bank-soal/README.md`](../bank-soal/README.md#gambar-tantangan-45-slot), and `gelita-katalog/assets/tantangan/` has an AI picture with a prompt for each one. They replace the old item list in §11.8.1–§11.8.3, which describes the earlier bank. The rules in this section still apply: no hints at the answer, decoys in exactly the same style as targets, and real sites drawn from reference photos.
+**Grade 5 (11 October 2026).** The 45 challenge image slots of the grade-5 bank are listed in [`bank-soal/README.md`](../bank-soal/README.md#gambar-tantangan-45-slot), and `gelita-katalog/assets/tantangan/` has a developer picture with a prompt for each one. They replace the old item list in §11.8.1–§11.8.3, which describes the earlier bank. The rules in this section still apply: no hints at the answer, decoys in exactly the same style as targets, and real sites drawn from reference photos.
 
 Kode berkas butir mengikuti editor (`ContentController`):
 
@@ -1276,7 +1276,7 @@ Prompt tiap objek:
 - Tampil sebagai gambar soal (tinggi maks. 200 px).
 - Setiap butir sudah memuat deskripsi gambar dalam teks sumbernya ("Gambar: …"), jadi gambar **wajib sesuai deskripsi itu** dan tidak boleh memuat label yang membocorkan jawaban.
 - Keputusan menambahkannya ada di tangan peneliti: butir ini menguji menghubungkan gambar dengan teks.
-- `-03` dan `-04` berupa diagram, jadi sebaiknya digambar vektor (AI sering salah menghitung).
+- `-03` dan `-04` berupa diagram, jadi sebaiknya digambar vektor (pengembang sering salah menghitung).
 
 | Kode | "Gambar:" di butir | Prompt (setelah `{GAYA}`) | Cek wajib |
 |---|---|---|---|
@@ -1386,7 +1386,7 @@ Di halaman, tabel ini dibangkitkan dari `docs/bank-soal/data/*.php`, jadi selalu
 **Ilustrasi untuk halaman tanpa media** (7) — `library.{wilayah}.p{n}.1`, 960 × 640 (3:2), JPG q80.
 
 - Isi Pustaka bersifat faktual, jadi ilustrasi hanya dipakai bila foto berlisensi bebas tidak ada.
-- Beri kredit "Ilustrasi GELITA (dibuat dengan bantuan AI)".
+- Beri kredit "Ilustrasi GELITA (dibuat pengembang)".
 
 | Kode | Halaman | Prompt (setelah `{GAYA}`) | Catatan |
 |---|---|---|---|
@@ -1470,7 +1470,7 @@ Ikon ada di `icon()` (`app/Helpers/ui_helper.php`). Semuanya SVG inline dengan s
 
 Bila ikon diganti gayanya, **ganti semua ikon `icon()` sekaligus** (59 per 11 October 2026), jangan dicampur. Cara paling andal: gambar ulang di Figma/Inkscape pada kisi 24 px, lalu salin atribut `d` ke `icon_paths()` (Fase A).
 
-Prompt AI (hanya untuk eksplorasi gaya, hasilnya tetap digambar ulang sebagai vektor):
+Prompt gambar (hanya untuk eksplorasi gaya, hasilnya tetap digambar ulang sebagai vektor):
 
 ```text
 a consistent set of simple line icons on a 24 by 24 pixel grid, 2 px rounded strokes, round line caps and joins, no fill, single colour, friendly and slightly rounded shapes suitable for a children's educational game inspired by Javanese heritage, pixel-perfect alignment, plain white background, no text
@@ -1570,11 +1570,11 @@ Berikut dibuat oleh CSS atau teks. Katalog mencantumkannya agar tidak dipesan se
 | Musik (diukur dua putaran) | `map` −20, `region` −20,5, `challenge` −21,5 LUFS |
 | Efek (diukur setelah diberi hening sampai 3 detik) | `click` −24, `lock` −20, `wrong` −19, `correct` −17, `shard` −16,5, `region-done` −15 LUFS |
 
-Alat AI musik (mis. generator lagu atau efek suara) sering meleset pada laras dan struktur gongan. Ada tiga jalur:
+Alat pengembang musik (mis. generator lagu atau efek suara) sering meleset pada laras dan struktur gongan. Ada tiga jalur:
 
 1. bangkitkan ulang dengan `tools/audio` (deterministik, byte demi byte);
 2. rekam pengrawit sungguhan;
-3. pakai AI, lalu sunting titik loop dan kenyaringannya.
+3. pakai pengembang, lalu sunting titik loop dan kenyaringannya.
 
 ### 13.2 Musik (3)
 

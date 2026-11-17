@@ -2,7 +2,7 @@
 
 Per 2 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 9 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), ditambah usulan `kamus-1.1`
 
-> **Status: `disetujui pengembang` (9 November 2026), `asal: pengembang`** (disusun dengan bantuan AI, 1–2 November 2026; kode gelombang F, 9 November 2026; penyesuaian dari implementasi di [§19](#19-keputusan-pengembang) no. 12–15). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 sistem dibangun sekarang ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026), tetapi tidak dipakai dengan anak sebelum persetujuan etik terbit. Perilaku penelitian ada di balik sakelar studi yang mati secara bawaan, jadi `main` tetap bisa dirilis.
+> **Status: `disetujui pengembang` (9 November 2026), `asal: pengembang`** (disusun pengembang, 1–2 November 2026; kode gelombang F, 9 November 2026; penyesuaian dari implementasi di [§19](#19-keputusan-pengembang) no. 12–15). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 sistem dibangun sekarang ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026), tetapi tidak dipakai dengan anak sebelum persetujuan etik terbit. Perilaku penelitian ada di balik sakelar studi yang mati secara bawaan, jadi `main` tetap bisa dirilis.
 >
 > **Bagian 9 dari 9, dikerjakan paling akhir** (gelombang kode F, setelah bagian 7 dan 8). Lapis turunan menghitung dari data mentah semua bagian lain: peran dan kemampuan dari [27](27_IMPLEMENTASI_PERAN_PENELITI.md), sesi lapangan dan kemajuan per siswa dari [28](28_IMPLEMENTASI_SESI_LAPANGAN.md), data mentah baru, lembar lapangan, dan `ResearchDictionary` dari [29](29_IMPLEMENTASI_DATA_PENELITIAN.md), izin dan status mundur dari [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md), serta kode kesalahan (bagian 5), Skenario Digital (bagian 6), waktu aktif mentah (bagian 7), dan modul tes, angket, dan skala sikap (bagian 8). Bagian 5–8 (`31`–`34`) ditulis paralel dengan dokumen ini; datanya disebut sebagai titik sambung dan anggapannya didaftar di [§20](#20-akibat-ke-dokumen-lain).
 >
@@ -648,7 +648,7 @@ Satu putaran tanya, empat pertanyaan (2 November 2026). Pengembang memilih usula
 Putaran kedua, 2 November 2026 (sesi koordinator, `asal: pengembang`, [04](04_CATATAN_KEPUTUSAN.md)):
 
 5. **Analisis memakai kode bank terbaru** (dari [31 → Pertanyaan terbuka](31_IMPLEMENTASI_BANK_SOAL_BARU.md#21-pertanyaan-terbuka) no. 3): `error_code` di lembar turunan diturunkan dari matriks kode bank yang berlaku saat putaran hitung; kode saat percobaan tetap di data mentah dan di kolom `error_code_at_try`. Tidak dipilih: kode saat percobaan.
-6. **`kamus-1.1` ditulis ke 11 sekarang sebagai `draf pengembang`**, lalu direvisi setelah uji coba (angka ambang, `asal: peneliti` bila peneliti yang menetapkannya), dan dikunci di G4. Tidak dipilih: satu sesi setelah KG3b bersama peneliti (usulan AI).
+6. **`kamus-1.1` ditulis ke 11 sekarang sebagai `draf pengembang`**, lalu direvisi setelah uji coba (angka ambang, `asal: peneliti` bila peneliti yang menetapkannya), dan dikunci di G4. Tidak dipilih: satu sesi setelah KG3b bersama peneliti (usulan awal).
 7. **"Pengambilan data selesai" = jam putaran hitung**, tanpa kolom tanggal akhir di studi. Tidak dipilih: tanggal akhir pengambilan data yang diisi `ketua`.
 
 **Sesi koordinator 31–35, 3 November 2026** (cabang `r10-cek-30`, `asal: pengembang`, `disetujui pengembang`):

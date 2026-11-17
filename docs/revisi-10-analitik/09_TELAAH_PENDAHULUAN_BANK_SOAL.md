@@ -4,7 +4,7 @@
 
 Per 25 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Menjalankan langkah T6 di [07_TELAAH_INSTRUMEN_VALIDASI.md](07_TELAAH_INSTRUMEN_VALIDASI.md) pada [08_DRAF_BANK_SOAL.md](08_DRAF_BANK_SOAL.md)
 
-Telaah ini adalah **penyaringan awal berbantuan AI oleh tim pengembang**, bukan validasi ahli. Skornya tidak ikut dihitung dalam V Aiken, I-CVI, κ, atau ICC. Pelabelan buta (B.5a) tidak dikerjakan, karena label pengembang disusun oleh penelaah yang sama. Tujuannya satu: cacat yang jelas sudah dibetulkan sebelum berkas sampai ke ahli, supaya waktu ahli dipakai untuk hal yang substansial.
+Telaah ini adalah **penyaringan awal oleh tim pengembang**, bukan validasi ahli. Skornya tidak ikut dihitung dalam V Aiken, I-CVI, κ, atau ICC. Pelabelan buta (B.5a) tidak dikerjakan, karena label pengembang disusun oleh penelaah yang sama. Tujuannya satu: cacat yang jelas sudah dibetulkan sebelum berkas sampai ke ahli, supaya waktu ahli dipakai untuk hal yang substansial.
 
 ## Ringkasan
 
@@ -231,7 +231,7 @@ Butir D1a diberi 3 karena menuntut proses membaca yang menjadi dasar D1, tapi be
 
 ## Untuk dicatat di catatan keputusan
 
-- Telaah pendahuluan T6 dijalankan pada draf bank soal (`09_TELAAH_PENDAHULUAN_BANK_SOAL.md`), sebagai penyaringan berbantuan AI oleh tim pengembang, bukan validasi ahli.
+- Telaah pendahuluan T6 dijalankan pada draf bank soal (`09_TELAAH_PENDAHULUAN_BANK_SOAL.md`), sebagai penyaringan oleh tim pengembang, bukan validasi ahli.
 - Cacat sistematis "pilihan tepat selalu paling panjang" di Skenario Digital dibetulkan (24 dari 24 → 3 dari 24), begitu juga panjang alasan (23 dari 24 → 11 dari 24).
 - 2 temuan sistematis dan 13 temuan per butir dibetulkan langsung di 08; daftarnya di bagian *Temuan yang sudah dibetulkan*.
 - Pilihan "kurang tepat" di skenario kata sandi Magelang diganti dari "memutus pertemanan" (DIG-ETK) menjadi "menolak tanpa menjelaskan" (DIG-PSF).

@@ -307,7 +307,7 @@ Keputusan berikutnya di hari yang sama, dari usulan dokumen model penelitian ([0
 
 ## Sesudah modul tes dibangun
 
-Cek kemutakhiran 17 November 2026 (`asal: pengembang`, penyelarasan berbantuan AI, tanpa keputusan baru; [04](04_CATATAN_KEPUTUSAN.md)). Modul tes dibangun di gelombang kode F (9 November 2026, [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md)); yang perlu diketahui dari dokumen ini:
+Cek kemutakhiran 17 November 2026 (`asal: pengembang`, penyelarasan oleh pengembang, tanpa keputusan baru; [04](04_CATATAN_KEPUTUSAN.md)). Modul tes dibangun di gelombang kode F (9 November 2026, [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md)); yang perlu diketahui dari dokumen ini:
 
 1. **Sumber isi tes kini berkas data.** `app/Database/Seeds/data/instrumen/tes.php` dibuat sekali dari 13, 14, dan 15 pada 9 November 2026 dan sejak itu menjadi sumber yang dipakai sistem; diimpor dengan `gelita:instrumen:impor`. Perubahan isi tes sesudahnya ditulis di berkas data dan di 14/15 bersamaan. Semua butir di berkas itu tetap `needs_verification`; cek fakta peneliti 16 November 2026 hanya mencakup bank soal game (08).
 2. **Gambar layar tiruan** (`instr.*`): butir yang gambarnya terpasang hanya menampilkan gambar (teks alternatif "Gambar untuk soal ini"); tanpa gambar, uraian layar tiruan tampil sebagai teks, dan adegan D3 sebagai daftar unsur. Lima gambar tes dibuat ulang dari telaah gambar ([39](39_PROMPT_GAMBAR_PERBAIKAN_TELAAH.md), `R-06` sampai `R-10`); uraiannya di 14 dan 15 sudah disamakan.

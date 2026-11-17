@@ -76,16 +76,16 @@ B.5a (sekitar 100 butir atau lebih) dan B.7 (kode pada setiap pengecoh, ratusan 
 - Izinkan pengisian dalam lembar kerja (spreadsheet) yang sudah berisi kode butir, bukan di kertas.
 - Pertimbangkan honorarium yang sepadan; ini lazim dicantumkan di proposal.
 
-### T6. Penelaah pendahuluan berbantuan AI
+### T6. Penelaah pendahuluan oleh pengembang
 
-Pengembang meminta AI ikut "menjadi ahli". Aturan yang kami usulkan:
-- **AI bukan validator.** Skornya tidak ikut dihitung dalam Aiken's V, CVI, κ, atau ICC, dan tidak dilaporkan sebagai validasi ahli.
-- **AI tidak bisa melakukan pelabelan buta**, karena AI sendiri ikut menyusun label pengembang (05, kisi-kisi). Labelnya pasti tidak buta.
-- Yang bisa dan berguna dikerjakan AI **sebelum** berkas dikirim ke ahli:
+Pengembang ingin ikut "menjadi ahli". Aturan yang kami usulkan:
+- **Pengembang bukan validator.** Skornya tidak ikut dihitung dalam Aiken's V, CVI, κ, atau ICC, dan tidak dilaporkan sebagai validasi ahli.
+- **Pengembang tidak bisa melakukan pelabelan buta**, karena pengembang sendiri ikut menyusun label pengembang (05, kisi-kisi). Labelnya pasti tidak buta.
+- Yang bisa dan berguna dikerjakan pengembang **sebelum** berkas dikirim ke ahli:
   - Menjalankan B.5b dan B.7 pada draf bank soal sebagai penyaringan awal, supaya cacat yang jelas (kunci ganda, jawaban bocor, butir tanpa teks) sudah dibetulkan dan waktu ahli dipakai untuk hal yang substansial.
   - Cek fakta untuk matriks C.5, dengan sumber.
-  - Evaluasi heuristik dan uji perangkat pada instalasi uji untuk instrumen media (B.5–B.7). AI bisa memainkan game di Chromium pada beberapa ukuran layar dan mencatat temuan dengan tangkapan layar.
-- Di naskah penelitian, ini ditulis terbuka sebagai *telaah pendahuluan berbantuan AI oleh tim pengembang*, bagian dari tahap pengembangan, bukan bagian dari validasi ahli.
+  - Evaluasi heuristik dan uji perangkat pada instalasi uji untuk instrumen media (B.5–B.7). Pengembang bisa memainkan game di Chromium pada beberapa ukuran layar dan mencatat temuan dengan tangkapan layar.
+- Di naskah penelitian, ini ditulis terbuka sebagai *telaah pendahuluan oleh tim pengembang*, bagian dari tahap pengembangan, bukan bagian dari validasi ahli.
 
 ## Instrumen ahli materi dan pengamat budaya (r10): perubahan yang sudah pasti
 
@@ -248,7 +248,7 @@ Semuanya cocok.
 
 1. ~~Pengembang memutuskan T1–T6 dan ahli media.~~ Diterima seluruhnya pada 25 Oktober 2026.
 2. ~~Setelah kisi-kisi 06 dan keputusan D3 selesai, instrumen r10 dan media ditulis ulang sekali sebagai versi 2.1 dan 1.1, dengan semua perubahan di dokumen ini.~~ **Selesai (26 Oktober 2026)**, sebagai tiga dokumen: r10 dipecah menjadi ahli materi v2.1 dan pengamat budaya v2.1, ditambah ahli media v1.1. Lihat [Instrumen versi 2.1 dan 1.1](#instrumen-versi-21-dan-11).
-3. Setelah draf bank soal baru ada, AI menjalankan telaah pendahuluan (T6) sebelum berkas dikirim ke ahli.
+3. Setelah draf bank soal baru ada, pengembang menjalankan telaah pendahuluan (T6) sebelum berkas dikirim ke ahli.
 4. Ahli media menilai dalam dua langkah (keputusan 25 Oktober 2026): di tahap 2, game sekarang ditambah mock-up layar baru; setelah tahap 3, telaah singkat layar jadi di instalasi uji sebelum uji coba. Instrumen media v1.1 perlu memuat bagian untuk mock-up. Mock-up dan layar jadi itu juga mencakup modul tes dan angket (perubahan sistem no. 22), yang sengaja bertampilan Bootstrap, bukan tampilan game, jadi aspek game di instrumen media tidak berlaku untuknya. **Selesai (26 Oktober 2026):** bagian mock-up ditulis di media v1.1 sebagai lembar B.8, satu baris per layar dari [18](18_MOCKUP_LAYAR_BARU.md#untuk-instrumen-media-v11).
 5. Angket akses digital ([16](16_ANGKET_AKSES_DIGITAL.md)) masuk paket validasi tahap 2: telaah isi oleh Ahli Literasi Digital 1 dan 2, dan telaah bahasa oleh Ahli Bahasa Anak 1 dan 2, termasuk kepekaan butir risiko daring di P5.
 6. Skala sikap ([17](17_SKALA_SIKAP.md)) masuk paket validasi tahap 2 sebagai lembar B.8 di instrumen ahli materi v2.1 dan pengamat budaya v2.1 (lihat [Lembar penilaian skala sikap](#lembar-penilaian-skala-sikap-b8)): relevansi oleh Ahli Budaya Kedu 1, Ahli Pengukuran, dan Ahli Bahasa Anak 1 dan 2; telaah bahasa oleh Ahli Bahasa Anak; catatan tumpang tindih D3 oleh Ahli Literasi Digital 1 dan 2.

@@ -2,7 +2,7 @@
 
 Per 16 November 2026 (cek kemutakhiran setelah kode gelombang E; disetujui 3 November 2026) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 2, 6, dan 18 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
 
-> **Status: `disetujui pengembang`, `asal: pengembang`** (3 November 2026; disusun dengan bantuan AI, 1–2 November 2026; pertanyaan terbuka §17 dijawab semua; kode gelombang E 4–8 November 2026; cek kemutakhiran 16 November 2026, penyesuaian dari implementasi di [§18](#18-keputusan-pengembang) no. 11–15; penyimpangan gelombang E disetujui peneliti 17 November 2026). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 kode boleh dibangun sekarang, di cabang pendek dari `main`, tetapi tidak dipakai dengan anak sebelum persetujuan etik terbit ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026). Kode bagian ini dibangun di gelombang E, setelah format bank bagian 5 (`31`), bersamaan dengan bagian 3 (`29`) dan 4 (`30`).
+> **Status: `disetujui pengembang`, `asal: pengembang`** (3 November 2026; disusun pengembang, 1–2 November 2026; pertanyaan terbuka §17 dijawab semua; kode gelombang E 4–8 November 2026; cek kemutakhiran 16 November 2026, penyesuaian dari implementasi di [§18](#18-keputusan-pengembang) no. 11–15; penyimpangan gelombang E disetujui peneliti 17 November 2026). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 kode boleh dibangun sekarang, di cabang pendek dari `main`, tetapi tidak dipakai dengan anak sebelum persetujuan etik terbit ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026). Kode bagian ini dibangun di gelombang E, setelah format bank bagian 5 (`31`), bersamaan dengan bagian 3 (`29`) dan 4 (`30`).
 >
 > Isi skenario (situasi, pilihan, umpan balik, kode) sudah dicek fakta oleh peneliti (16 November 2026, butir `verified`, [04](04_CATATAN_KEPUTUSAN.md)) dan belum tercatat tervalidasi ahli: hasil validasi belum ada di repo. Dokumen ini hanya mengatur **mekanismenya**; revisi dari validasi cukup diubah di workbook lalu diimpor ulang.
 >
@@ -552,7 +552,7 @@ Teks yang menyebut jumlah serpihan ("12 serpihan", "dua belas") dicari di `app/L
 
 Semua dijawab pengembang pada 3 November 2026 (jawaban lengkap di [§18](#18-keputusan-pengembang) no. 6–10). Tidak ada yang tersisa.
 
-1. ~~**Gambar situasi (24) dibuat atau tidak.**~~ **Dibuat sekarang**, tidak menunggu validasi ahli media (usulan AI sebelumnya dilepas). Prompt untuk pembuat gambar ada di [32A](32A_PROMPT_GAMBAR_SITUASI.md). → §18 no. 6.
+1. ~~**Gambar situasi (24) dibuat atau tidak.**~~ **Dibuat sekarang**, tidak menunggu validasi ahli media (usulan awal sebelumnya dilepas). Prompt untuk pembuat gambar ada di [32A](32A_PROMPT_GAMBAR_SITUASI.md). → §18 no. 6.
 2. ~~**Kalimat bingkai bertanda *draf*** di §13.~~ **Sudah ditinjau dan dipakai.** → §18 no. 7.
 3. ~~**Umpan balik skor 2.**~~ **Dipakai apa adanya**: bank 08 menulis umpan balik untuk setiap tindakan, juga yang tepat. Bila ahli media nanti meminta umpan balik tepat yang lebih pendek, cukup diubah di bank. → §18 no. 8.
 4. ~~**Nomor migrasi `004000`.**~~ **Selesai 2 November 2026** (sesi koordinator): blok tidak bertabrakan (bagian 5 `003900`/`003910`, bagian 6 `004000`, bagian 7 `0041xx`, bagian 8 `004200`, bagian 9 `004300`), jadi tidak ada penomoran ulang. Disetujui pengembang 3 November 2026. → §18 no. 9.
@@ -565,7 +565,7 @@ Semua dijawab pengembang pada 3 November 2026 (jawaban lengkap di [§18](#18-kep
 Diambil pengembang dalam wawancara 2 November 2026 (`asal: pengembang`, `disetujui pengembang` untuk keempat keputusan; dokumen disetujui seluruhnya 3 November 2026, lihat di bawah).
 
 1. **Kode engine tersimpan `skenario`** (K1), sejajar dengan `rumpang`, `boleh`, dan `cari`. Tidak dipilih: `scenario` (bahasa Inggris, berbeda dari kode engine lain) dan `pilih` (menamai tindakan, bukan isi).
-2. **Narasi instruksi hanya lewat tombol ▶** (K10), tidak pernah otomatis, di kelima belas tantangan. Tidak dipilih: sekali otomatis saat layar dibuka ditambah ▶ (usulan AI), dan diputar di kartu misi.
+2. **Narasi instruksi hanya lewat tombol ▶** (K10), tidak pernah otomatis, di kelima belas tantangan. Tidak dipilih: sekali otomatis saat layar dibuka ditambah ▶ (usulan awal), dan diputar di kartu misi.
 3. **Tanpa sakelar studi** (K8): engine selalu ada, tantangan kelima muncul bila bank memuatnya, dan aturan narasi berlaku di luar studi juga. Tidak dipilih: di balik `field_mode`.
 4. **Urutan pilihan diacak sekali per pengerjaan** (K7), tetap di ketiga kesempatan, dan urutannya disimpan. Tidak dipilih: diacak ulang setiap kesempatan.
 
@@ -575,7 +575,7 @@ Diambil pengembang dalam wawancara 2 November 2026 (`asal: pengembang`, `disetuj
 
 **Tinjauan pengembang atas pertanyaan terbuka, 3 November 2026** (`asal: pengembang`, `disetujui pengembang`; dokumen naik dari `draf pengembang` ke `disetujui pengembang`):
 
-6. **Gambar situasi (24) dibuat sekarang** (dulu §17 no. 1). Tidak menunggu validasi ahli media. Prompt untuk ChatGPT dibuat AI di [32A](32A_PROMPT_GAMBAR_SITUASI.md): satu prompt per butir, tanpa teks terbaca, tanpa merek, tanpa wajah, tanpa petunjuk jawaban. Isi situasi di 08 masih `needs_verification`; bila validasi mengubah situasi, hanya baris adegan pada prompt yang bersangkutan yang diganti. Butir tanpa gambar tetap tampil dengan teks saja.
+6. **Gambar situasi (24) dibuat sekarang** (dulu §17 no. 1). Tidak menunggu validasi ahli media. Prompt untuk ChatGPT dibuat pengembang di [32A](32A_PROMPT_GAMBAR_SITUASI.md): satu prompt per butir, tanpa teks terbaca, tanpa merek, tanpa wajah, tanpa petunjuk jawaban. Isi situasi di 08 masih `needs_verification`; bila validasi mengubah situasi, hanya baris adegan pada prompt yang bersangkutan yang diganti. Butir tanpa gambar tetap tampil dengan teks saja.
 7. **Tiga kalimat bingkai yang bertanda *draf*** (`Js.scenarioTriesLeft`, `Js.scenarioSafeAction`, `Js.scenarioClosed`) sudah ditinjau pengembang dan dipakai apa adanya. Penandanya dilepas dari §13. Ahli media tetap boleh menilainya bersama mock-up `mk-sd-04` dan `mk-sd-05`; perubahan dari penilaian itu cukup di berkas bahasa.
 8. **Umpan balik skor 2 dipakai apa adanya**: layar menampilkan umpan balik tindakan tepat dari bank 08 tanpa dipendekkan. Bila ahli media meminta yang lebih pendek, cukup diubah di bank.
 9. **Blok migrasi tidak bertabrakan**: bagian 5 `003900`/`003910`, bagian 6 `004000`, bagian 7 `0041xx`, bagian 8 `004200`, bagian 9 `004300`. Tidak ada penomoran ulang.

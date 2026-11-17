@@ -185,10 +185,10 @@
       "landscapeTables": 0
     },
     "23_SURAT_INFORMASI_DAN_PERSETUJUAN.md": {
-      "source": "3b11f2e50e37f04926ec24a25aa77e4c79dc312c2f6abadf33934f131bc03b6c",
-      "commit": "2147331",
+      "source": "13b0cd03ab0fd34e787689b9c6c4bec77e00e05cf6942a131b2ada7a874be67e",
+      "commit": "b5b40fe",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-03",
+      "date": "2026-11-17",
       "pages": 33,
       "landscapeTables": 0
     },
@@ -209,10 +209,10 @@
       "landscapeTables": 0
     },
     "26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md": {
-      "source": "d8f9fd9fc5a684ee151ee1169c6fbe27bed7c2651858b22d9421a8180c4cff1c",
-      "commit": "f73b47c",
+      "source": "f1e4fc5c3b0783b83aef8f695ca823b2262f85d4c3d7dcf6d1b7babf6eb07476",
+      "commit": "b5b40fe",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-09",
+      "date": "2026-11-17",
       "pages": 20,
       "landscapeTables": 0
     },

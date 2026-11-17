@@ -4,7 +4,7 @@
  * Bank soal kelas 5 — TEMANGGUNG (wilayah 1, tingkat mudah).
  *
  * Research bank of revision 10 (docs/revisi-10-analitik/08_DRAF_BANK_SOAL.md;
- * English: 36, AI draft), format of 31 §6.4, written by
+ * English: 36, developer draft), format of 31 §6.4, written by
  * docs/bank-soal/tools/import_08.py on 3 November 2026 and edited by hand
  * from then on. Every item of 08 was `needs_verification` until the
  * researcher checked its facts (16 November 2026: `verified`, ready for the

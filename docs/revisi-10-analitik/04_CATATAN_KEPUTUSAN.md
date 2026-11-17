@@ -1,14 +1,44 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 16 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 17 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
 
 ## 17 November 2026
 
+**Semua kerja yang dulu ditulis dengan nama alat bantunya kini ditulis sebagai kerja pengembang** (cabang `r10-naik-status-dokumen`) · `asal: pengembang` · `disetujui pengembang` · mengubah dokumen di folder ini (termasuk entri lama 04, 23, dan 26), dokumen pendukung HTML, sumber berkas serah terima dan instrumen, catatan implementasi, `docs/PROGRESS.md`, aturan sesi, daftar Katalog Aset, dan kredit Pustaka; tidak mengubah status dokumen
+
+Pengembang memutuskan:
+1. **Satu sebutan: pengembang.** Draf, usulan, telaah, cek fakta, terjemahan, gambar, dan skor yang dulu ditulis dikerjakan atau dibantu alat bantu kini ditulis sebagai kerja pengembang, di semua dokumen dan halaman, termasuk entri lama 04. Pilihan yang dulu ditulis "usulan" alat bantu dan tidak dipilih pengembang kini ditulis *usulan awal*.
+2. **Aturan pengamannya tetap:** kerja pengembang bukan validasi ahli, skornya tidak dihitung dalam V Aiken, I-CVI, κ, atau ICC, dan tidak ditunjukkan ke ahli sebelum mereka menilai ([07 → T6](07_TELAAH_INSTRUMEN_VALIDASI.md#t6-penelaah-pendahuluan-oleh-pengembang); judulnya ikut berubah).
+3. **Asal gambar:** keterangan gambar di Katalog Aset dan di petunjuk slot ditulis *ilustrasi buatan pengembang*; kredit bawaan gambar Pustaka di game menjadi "Ilustrasi GELITA (dibuat pengembang, Katalog Aset)". Server yang sudah terpasang menampilkan kredit baru setelah `gelita:katalog:impor` dijalankan lagi.
+4. **23 dan 26** (`tervalidasi ahli`) ikut diubah sebagai perubahan pengembang menurut aturan tetap entri di bawah: 26 *Identitas penilaian* dan baris tanda tangan kini menyebut pengembang saja, 23 satu catatan cek kemutakhiran. PDF keduanya dibuat ulang 17 November 2026 (kaki halaman `b5b40fe`, 33 dan 20 halaman, atas permintaan pengembang) untuk dikirim pengembang ke peneliti. 22 tidak diubah.
+5. **Yang tidak diubah:** nama folder dan alat untuk ruang kerja gambar dan suara (`ai-studio/`, *AI studio*, `AGENTS.md`), kode `AI` (*auto increment*) di 01_DATABASE, nama layanan pembuat gambar di prompt (ChatGPT), dan PDF lama di `dokumen-pdf/cetak/` (dibuat ulang saat dikirim).
+
+Satu kalimat dihapus karena tidak lagi bermakna: janji menulis bantuan alat secara terbuka di naskah penelitian (entri 27 Oktober 2026 dan berkas serah terima). Aturan 7 di [01 → Peran](01_REVISI_10_ANALITIK.md#peran-pengembang-peneliti-dan-ahli) kini berbunyi *kerja pengembang ditulis terbuka sebagai telaah pendahuluan oleh tim pengembang*. PDF yang dibuat ulang hanya 23 dan 26.
+
+**Status dokumen dinaikkan: 23, 24, dan 26 `tervalidasi ahli`; 20 dan 39 `disetujui peneliti`; 32A `disetujui pengembang`** (cabang `r10-naik-status-dokumen`) · `asal: komite etik` (23, 24, 26; disampaikan peneliti lewat pengembang), `asal: peneliti` (20, 39; disampaikan pengembang), dan `asal: pengembang` (32A, penyelarasan teks status) · status masing-masing di bawah · mengubah 00, 12, 16, 17, 20, 23, 24, 26, 32A, dan 39, dan menambah [status-dokumen.html](status-dokumen.html); tidak merevisi produk
+
+Pengembang menyapu kolom status 00 terhadap entri 04 dan kepala setiap dokumen. Tanpa keterangan baru, hanya 39 yang punya bukti untuk naik satu tingkat; 20, 23, 24, 26, dan 32A ditanyakan ke pengembang. Pengembang menjawab:
+
+1. **23, 24, dan 26 `tervalidasi ahli`** (`asal: komite etik`, informasi dari peneliti). Komite etik menyetujui ketiganya sebagai lampiran [22](22_PERMOHONAN_IZIN_ETIK.md#lampiran) bersama izin etik 4 November 2026. Entri *Gerbang G2 dilalui* di bawah hanya menaikkan 17 dan 22, jadi ketiganya belum tercatat sampai sekarang. Versi yang dipegang peneliti saat itu: 23 PDF 3 November 2026 (kaki halaman `071c0e2`), 24 kiriman *commit* `f45d274`, 26 PDF 3 November 2026 (kaki halaman `f90f7c1`). Perubahan sesudahnya, semuanya tanpa keputusan baru, menurut peneliti juga disetujui:
+   - 23, *commit* `2147331` (3 November 2026): siapa yang mengisi dua isian kelompok B (ketua peneliti, sejak 22 diambil alih peneliti); teks untuk orang tua, sekolah, guru, dan anak tidak berubah;
+   - 24, *commit* `e4d8e8d` (15 November 2026): baris 12 di tabel bahan menyebut narasi didengar dan memakai suara sintetis;
+   - 26, *commit* `f73b47c` (9 November 2026): kolom *Siap*, tabel hak, dan baris L3 menyebut sistem bagian 1–9 yang sudah dibangun.
+2. **Perubahan berikutnya di 23, 24, dan 26 boleh dibuat pengembang** tanpa menurunkan status (aturan tetap, informasi dari peneliti: komunikasi dengan komite ditangani peneliti). Setiap perubahan dicatat di 04 dengan asalnya, dan PDF-nya dibuat ulang lalu dikirim ke peneliti untuk diteruskan ke komite. 22 tetap dibekukan seperti aturan 3 November 2026.
+3. **20 `disetujui peneliti`** (`asal: peneliti`). Peneliti menyetujui paket validasi; paket ini yang dipakai untuk validasi ahli yang selesai 4 November 2026. Belum `tervalidasi ahli`: skor validator, κ B.5a, dan matriks revisi belum ada di repo.
+4. **39 `disetujui peneliti`** (`asal: peneliti`), seluruh dokumen, `R-01` sampai `R-33`, termasuk baris dari entri yang masih `draf pengembang` (`R-12` sampai `R-15`, `R-20` sampai `R-22`). Penerimaan setiap gambar hasilnya tetap per baris di `ai-studio/game-images/REVIEW.md`.
+5. **32A `disetujui pengembang`** (`asal: pengembang`): pengembang sudah memeriksa ke-24 prompt; gambarnya dibuat 4 November 2026.
+6. **Teks status yang basi dibetulkan, tanpa perubahan status:** 00 *Mulai sesi baru* no. 5 (tidak lagi "semua masih kerja pengembang"), paragraf status 00 ditambah 17 November 2026, baris 31 di 00 (isi bank `verified` sejak 16 November 2026, penyimpangan gelombang D disetujui peneliti), dan tanggal *Per* 12, 16, dan 17 disamakan dengan perubahan terakhirnya. Tanggal *Per* 33 dan 35 dibiarkan karena hari ini sedang diubah sesi lain.
+7. **Halaman ringkasan status** [status-dokumen.html](status-dokumen.html) (HTML statis, permintaan pengembang): status setiap dokumen dan yang ditunggu sebelum status berikutnya. Halaman ini diperbarui setiap kolom status 00 berubah; bila keduanya berbeda, 00 yang berlaku. Salinan webnya (tautan pribadi pengembang, dibagikan dari menu *Share* halaman itu): https://claude.ai/artifact/D97sgfTX8PucvQiHDgC1nw; sesi yang mengubah halaman repo juga menerbitkan ulang salinan web ke tautan yang sama.
+
+**Yang masih ditunggu** (tanpa perubahan status): 13–16, 18, 21, 07, dan ketiga instrumen validasi menunggu skor validator, κ, dan matriks revisi 20, lalu keputusan peneliti; 17 dan 22 ke `final` menunggu keputusan peneliti, dan untuk 22 juga nomor dan tanggal surat persetujuan komite; 27–35 tetap `disetujui pengembang` karena peneliti baru menyetujui penyimpangannya; 25 menunggu hasil B.7 pengamat budaya; persetujuan peneliti 15 November 2026 di 12 hanya untuk suara sintetis; 36 menunggu terjemahan ulang setelah matriks revisi.
+
+**Catatan label:** tiga entri 15–16 November 2026 di bawah (*Narasi Mbah Kedu memakai suara sintetis…*, *Suara sintetis untuk Narator dan Jaka juga disetujui peneliti…*, dan *…kain besurek disetujui peneliti*) memuat persetujuan peneliti tetapi berlabel `asal: pengembang`. Entri lama tidak diubah; bagian yang disetujui peneliti dibaca sebagai `asal: peneliti`. Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Perbaikan sesudah cek peramban: laporan dengar narasi saat meninggalkan halaman, `pause` ganda, catatan galat token, dan waktu di salinan anak** (cabang `perbaikan-log-narasi`) · `asal: pengembang` · `disetujui pengembang` · tidak mengubah dokumen lain; kode dibuat
 
-Cek peramban 17 November 2026 di instalasi pengembangan MariaDB menemukan empat hal. Pengembang memilih anjuran AI untuk keempatnya:
+Cek peramban 17 November 2026 di instalasi pengembangan MariaDB menemukan empat hal. Pengembang memilih anjuran pengembang untuk keempatnya:
 1. **Waktu dengar narasi saat halaman ditinggalkan** (baris `pause`, [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) K6) kini selalu ikut kiriman terakhir halaman. Sebelumnya baris itu sering baru sampai bersama kiriman halaman berikutnya (sekitar 30 detik kemudian), dan hilang bila perangkat tidak membuka GELITA lagi.
 2. **Satu baris `pause` per kali meninggalkan halaman.** Sebelumnya bisa tertulis dua baris yang sama. Nilai data turunan tidak berubah karena memakai `listened_ms` terbesar.
 3. Token keamanan kedaluwarsa pada halaman siswa yang masih masuk dijawab 403 seperti sebelumnya, tetapi dicatat sebagai peringatan, bukan galat kritis.
@@ -44,7 +74,7 @@ Rinciannya di [33 §7.7](33_IMPLEMENTASI_MODE_PENELITIAN.md) dan catatan impleme
 
 Pengembang menerima `R-27` (slide 1) dan `R-30` (slide 8) pada 17 November 2026; `R-28`, `R-29`, dan `R-31` sampai `R-33` sudah diterima sebelumnya. Ketujuhnya dipasang di Katalog Aset tanpa diubah. Ekspresi avatar mengikuti pose baris (keputusan 6 telaah cerita pembuka, 16 November 2026) kini terlihat di `intro-05`, `intro-06`, dan `penutup-04`; kodenya sudah ada. Entri ini tidak diikuti pembuatan ulang PDF.
 
-**Cek kemutakhiran 13, 14, 15, dan 02 L0** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang; isinya ditampilkan ringkas dulu dan disetujui pengembang) · status dokumen tidak berubah · mengubah 00, 02, 13, 14, dan 15; tidak merevisi produk
+**Cek kemutakhiran 13, 14, 15, dan 02 L0** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan oleh pengembang; isinya ditampilkan ringkas dulu dan disetujui pengembang) · status dokumen tidak berubah · mengubah 00, 02, 13, 14, dan 15; tidak merevisi produk
 
 Diselaraskan tanpa keputusan baru:
 - **13:** baris status (G2 dilalui 4 November 2026, hasil validator belum di repo); bentuk jawaban mentah seperti dibangun; ambang tebakan cepat tes `test_rapid_guess_ms` 3000 ms dan butir pertama sesudah bacaan tanpa penanda (keputusan 4 November 2026); `kamus-1.1` disetujui; bagian baru *Sesudah modul tes dibangun* (`tes.php` sumber isi, gambar layar tiruan, label PGK, butir tidak sampai, pengingat butuh JavaScript, cek manual modul baru sebagian).
@@ -60,19 +90,19 @@ Pengembang menyampaikan bahwa peneliti menyetujui semua penyimpangan implementas
 
 ## 16 November 2026
 
-**Cek kemutakhiran 28 setelah kode gelombang D dan panel hari lapangan** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang) · status 28 tetap `disetujui pengembang` · mengubah 00 dan 28; tidak merevisi produk
+**Cek kemutakhiran 28 setelah kode gelombang D dan panel hari lapangan** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan oleh pengembang) · status 28 tetap `disetujui pengembang` · mengubah 00 dan 28; tidak merevisi produk
 
 Diselaraskan tanpa keputusan baru ([28 §22](28_IMPLEMENTASI_SESI_LAPANGAN.md#22-keputusan-pengembang) no. 15–19): alasan penolakan token `withdrawn` dan `too_many` (§6.3); layar cek suara sesudah token (§6.4); *Tambah waktu* hanya di halaman sesi lapangan, Ringkasan *Sesi lapangan hari ini*, dan pemantauan dengan *Perlu perhatian* dan bunyi peringatan (§12); kartu cetak dan menu *Kerja lapangan* (§15); simulator menolak berjalan di mode penelitian (§19.2); cek manual §19.3 belum pernah dijalankan sebagai satu daftar, bagian-bagiannya dicek 9, 14, dan 16 November 2026.
 
 **Untuk pengembang:** sebagian penyimpangan bagian 2 (28 §22 no. 15: token yang diganti sebagai `token_unknown`, `too_many`, rute kode sekolah penelitian, penanda tiga langkah pendaftaran) belum pernah disetujui terpisah dan tetap `draf pengembang`. Entri ini tidak diikuti pembuatan ulang PDF.
 
-**Cek kemutakhiran 29 setelah kode gelombang E** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang) · status 29 tetap `disetujui pengembang` · mengubah 00 dan 29; tidak merevisi produk
+**Cek kemutakhiran 29 setelah kode gelombang E** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan oleh pengembang) · status 29 tetap `disetujui pengembang` · mengubah 00 dan 29; tidak merevisi produk
 
 Diselaraskan tanpa keputusan baru ([29 §19](29_IMPLEMENTASI_DATA_PENELITIAN.md#19-keputusan-pengembang) no. 18–22) dengan kode gelombang E dan entri 04 sesudah 3 November 2026: §4 mendapat `item_shown` dan `sound_check_answered`; §16.3 mendapat hasil cek manual 9 dan 14 November 2026; §19 mencatat penyimpangan gelombang E, jawaban pengembang 8 November 2026 (L5 tiga lembar, templat L0 kosong), dan sambungan dari bagian 4 dan 6–9.
 
 **Untuk pengembang:** penyimpangan implementasi bagian 3 (29 §19 no. 18) belum pernah disetujui terpisah dan tetap `draf pengembang`. Entri ini tidak diikuti pembuatan ulang PDF.
 
-**Cek kemutakhiran 30 setelah kode gelombang E** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang) · status 30 tetap `disetujui pengembang` · mengubah 00 dan 30; tidak merevisi produk
+**Cek kemutakhiran 30 setelah kode gelombang E** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan oleh pengembang) · status 30 tetap `disetujui pengembang` · mengubah 00 dan 30; tidak merevisi produk
 
 Diselaraskan tanpa keputusan baru ([30 §22](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#22-keputusan-pengembang) no. 13–17) dengan kode gelombang E dan entri 04 sesudah 2 November 2026:
 - §5.1 dan §5.3: `t4-1` untuk akun uji, `Game.tokenWithdrawn` untuk siswa yang mundur;
@@ -84,7 +114,7 @@ Diselaraskan tanpa keputusan baru ([30 §22](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK
 
 **Untuk pengembang:** penyimpangan implementasi bagian 4 (30 §22 no. 13) belum pernah disetujui terpisah dan tetap `draf pengembang`. Temuan cek manual (b) penyamaran berlebih di kritik dan saran, (d) formulir yang masih tampil setelah *Ganti nama dengan kode*, dan (e) galat CSRF setelah siswa mundur masih terbuka. Entri ini tidak diikuti pembuatan ulang PDF.
 
-**Cek kemutakhiran 32 setelah kode gelombang E** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang; untuk sesi ini pengembang mengizinkan beberapa dokumen per sesi) · status 32 tetap `disetujui pengembang` · mengubah 00 dan 32; tidak merevisi produk
+**Cek kemutakhiran 32 setelah kode gelombang E** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan oleh pengembang; untuk sesi ini pengembang mengizinkan beberapa dokumen per sesi) · status 32 tetap `disetujui pengembang` · mengubah 00 dan 32; tidak merevisi produk
 
 Diselaraskan tanpa keputusan baru ([32 §18](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#18-keputusan-pengembang) no. 11–15) dengan kode gelombang E dan entri 04 sesudah 3 November 2026:
 - kotak status: isi skenario dicek fakta peneliti, belum tercatat tervalidasi ahli;
@@ -102,7 +132,7 @@ Diselaraskan tanpa keputusan baru ([32 §18](32_IMPLEMENTASI_SKENARIO_DIGITAL.md
 
 Pengembang menyetujui penyimpangan implementasi gelombang D yang dicatat di [31 §22](31_IMPLEMENTASI_BANK_SOAL_BARU.md#22-keputusan-pengembang) no. 12 (`pirls_process` dan `skill` D1b diturunkan sebagai label pengembang, `verdict_D1a` menerima `INF-GEN`, penanda baris teks digital, `HUNT_SCENE_DP` = 864, tata letak benda dan unggahan 24 dp, blok `round2`, kolom `media_label`/`media_note`, `label_source` ahli sebagian, peringatan menjadi galat di `--siap-penelitian`, lembar `kode_pilihan` di bagian 3), dan menyampaikan bahwa peneliti juga menyetujuinya. Kode tidak berubah. Label `pirls_process` dan `skill` tetap label pengembang: persetujuan ini menyetujui cara menurunkannya, bukan validasi ahli atas labelnya.
 
-**Cek kemutakhiran 31 setelah kode gelombang D** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang) · status 31 tetap `disetujui pengembang` · mengubah 00 dan 31; tidak merevisi produk
+**Cek kemutakhiran 31 setelah kode gelombang D** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan oleh pengembang) · status 31 tetap `disetujui pengembang` · mengubah 00 dan 31; tidak merevisi produk
 
 Pengembang meminta cek kemutakhiran dokumen lain dilanjutkan. Dokumen implementasi 28–32 terakhir diubah 3 November 2026, sebelum kode gelombang E dan keputusan 8–16 November 2026; 31 dicek lebih dulu karena bertentangan langsung dengan entri cek fakta peneliti hari ini. Diselaraskan tanpa keputusan baru ([31 §22](31_IMPLEMENTASI_BANK_SOAL_BARU.md#22-keputusan-pengembang) no. 12–14):
 - kotak status dan §7.3–7.4: butir `verified` dari cek fakta peneliti, 08 `disetujui peneliti`, belum tervalidasi ahli;
@@ -118,7 +148,7 @@ Pengembang meminta cek kemutakhiran dokumen lain dilanjutkan. Dokumen implementa
 
 **08 dinaikkan ke `disetujui peneliti`; dokumen lain tetap** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: peneliti` (cek fakta 16 November 2026, entri *Fakta seluruh butir bank soal sudah dicek peneliti* di bawah) dan `asal: pengembang` (keputusan menaikkan status) · `disetujui peneliti` · mengubah 00 dan 08; tidak mengubah isi butir atau produk
 
-AI memeriksa dokumen mana yang bisa naik ke `disetujui peneliti` tanpa wawancara pertanyaan terbuka. Hanya 08 yang punya keputusan peneliti tercatat di repo: peneliti sudah mengecek fakta semua 174 butir dan menyatakannya siap uji lapangan, berkas data sudah `verified`, tetapi kepala 08 dan barisnya di 00 masih `needs_verification`. Pengembang memutuskan:
+Pengembang memeriksa dokumen mana yang bisa naik ke `disetujui peneliti` tanpa wawancara pertanyaan terbuka. Hanya 08 yang punya keputusan peneliti tercatat di repo: peneliti sudah mengecek fakta semua 174 butir dan menyatakannya siap uji lapangan, berkas data sudah `verified`, tetapi kepala 08 dan barisnya di 00 masih `needs_verification`. Pengembang memutuskan:
 
 1. **08 `disetujui peneliti`.** Kepala dokumen, keterangan Wayang Kedu, dan baris 08 di [00](00_INDEKS.md) diperbarui. Belum `tervalidasi ahli`: skor validator, κ B.5a, dan matriks revisi [20](20_PAKET_VALIDASI.md) belum ada di repo. Keputusan 4 November 2026 (status 08 tidak dinaikkan sampai hasil validasi masuk) diganti untuk tingkat ini saja. [36](36_TERJEMAHAN_BANK_SOAL.md) tidak ikut.
 2. **Dokumen lain tetap.** Kandidat yang secara alur mungkin sudah melewati peneliti tetapi tidak tercatat (13–16, 18, 21, tiga instrumen validasi; 23, 24, 26 sebagai lampiran izin etik) tidak dinaikkan sampai pengembang menyampaikan keputusan peneliti.
@@ -127,7 +157,7 @@ Entri ini tidak diikuti pembuatan ulang PDF.
 
 **Telaah layar cerita pembuka: layar ketuk sendiri, avatar tokoh, tanpa sinar, dan empat latar slide dipesan ulang** (cabang `pw/sweet-wright-b98n4x`) · `asal: pengembang` · `disetujui pengembang` · mengubah 39; kode dibuat
 
-Pengembang menelaah layar sebelum dan di dalam cerita pembuka (`/intro`). AI menjawab dulu apakah layar ini masuk analitik: hanya sebagian. Yang tercatat `screen_viewed`, `intro_completed` (analitik 1), `dialogue_completed` konteks `intro`, baris narasi konteks `intro`, dan `page_hidden`/`page_visible` (waktu aktif); tidak ada kalkulator data turunan ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md)) yang memakainya. Jadi perubahan tampilan aman bagi analitik, asal selesai sebelum pengambilan data dan tercatat di sini. Keputusan pengembang:
+Pengembang menelaah layar sebelum dan di dalam cerita pembuka (`/intro`). Pengembang menjawab dulu apakah layar ini masuk analitik: hanya sebagian. Yang tercatat `screen_viewed`, `intro_completed` (analitik 1), `dialogue_completed` konteks `intro`, baris narasi konteks `intro`, dan `page_hidden`/`page_visible` (waktu aktif); tidak ada kalkulator data turunan ([35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md)) yang memakainya. Jadi perubahan tampilan aman bagi analitik, asal selesai sebelum pengambilan data dan tercatat di sini. Keputusan pengembang:
 
 1. **Titik slide hanya penunjuk di mode penelitian.** Titik tidak lagi berupa tautan, sehingga siswa tidak bisa melompat ke slide terakhir dan memicu `dialogue_completed` tanpa menonton. Di luar mode penelitian titik tetap bisa diketuk.
 2. **Otomatis kembali menyala di setiap sesi permainan mode penelitian.** Pilihannya tersimpan di perangkat, jadi di Chromebook lab yang dipakai bergantian pilihan "mati" seorang siswa terbawa ke siswa berikutnya. Kini pilihan itu hanya berlaku dalam sesi permainan yang membuatnya. Lewati dan Otomatis tetap ada selama studi (keputusan 3, 15 November 2026).
@@ -139,7 +169,7 @@ Pengembang menelaah layar sebelum dan di dalam cerita pembuka (`/intro`). AI men
 8. **Latar slide 1, 6, 7, dan 8 dibuat ulang** dari lima foto Dataran Kedu yang berizin dari peneliti: `R-27` sampai `R-30` di [39](39_PROMPT_GAMBAR_PERBAIKAN_TELAAH.md#cerita-pembuka-pengembang-16-november-2026). Tanpa orang dan tanpa berkas sinar.
 9. **Layar cek suara dibangun** (keputusan 4, 15 November 2026), di cabang yang sama: `/cek-suara` di awal setiap sesi permainan mode penelitian, event `sound_check_answered` (`heard`, `plays`); *Tidak terdengar* meminta siswa mengangkat tangan dan menawarkan *Lanjut tanpa suara*; layar ini juga menyalakan suara game. Rinciannya di [33 §7.6](33_IMPLEMENTASI_MODE_PENELITIAN.md#76-cek-suara-di-awal-sesi-permainan), catatan kamus di [11](11_KAMUS_DATA.md#analitik-7-penggunaan-bantuan). Belum dibuat: hasil cek suara di halaman Pemantauan (akibat ke 02 L0).
 
-Usulan AI no. 6 (memperbaiki kutipan "Ketuk untuk mendengar kisahnya" di [10](10_TELAAH_PENDAHULUAN_MEDIA.md) no. 7) tidak diperlukan lagi: dengan keputusan 4, layar itu memang bertuliskan kalimat tersebut.
+Usulan awal no. 6 (memperbaiki kutipan "Ketuk untuk mendengar kisahnya" di [10](10_TELAAH_PENDAHULUAN_MEDIA.md) no. 7) tidak diperlukan lagi: dengan keputusan 4, layar itu memang bertuliskan kalimat tersebut.
 
 **Fakta seluruh butir bank soal sudah dicek peneliti; gambar Wayang Kedu dan arca Nandi dipasang** (cabang `nty/beautiful-clarke-scy25i`) · `asal: peneliti` (lewat pengembang) · `disetujui peneliti`
 
@@ -152,7 +182,7 @@ Entri ini tidak diikuti pembuatan ulang PDF.
 **Avatar bundengan baru dipasang (`R-19`)** (cabang `nty/beautiful-clarke-scy25i`) · `asal: pengembang` · `draf pengembang`
 
 - Lambang baru digambar pengembang di luar ChatGPT (hanya lambang, latar transparan): bundengan berdiri tegak, ujung runcing di atas dengan jambul, satu tongkat bambu panjang mencuat melewati puncak, jaring tali di punggung, senar di dalam cekungan. Pengembang meminta langsung dipasang.
-- AI memasang lambang itu ke medali `avatar.10` yang lama: cincin biru tua, tepi kuningan, empat titik intan, dan bagian luar yang transparan tidak berubah; cakram krem di belakang lambang dibuat ulang dari warna cakram itu sendiri; ujung tongkat lambang lama yang menutupi cincin kanan bawah diganti cincin yang disambung dari kedua sisinya.
+- pengembang memasang lambang itu ke medali `avatar.10` yang lama: cincin biru tua, tepi kuningan, empat titik intan, dan bagian luar yang transparan tidak berubah; cakram krem di belakang lambang dibuat ulang dari warna cakram itu sendiri; ujung tongkat lambang lama yang menutupi cincin kanan bawah diganti cincin yang disambung dari kedua sisinya.
 - Pemeriksaan budaya oleh validator tetap berlaku seperti gambar lain di 39.
 
 Entri ini tidak diikuti pembuatan ulang PDF.
@@ -163,7 +193,7 @@ ChatGPT menolak lebih dari lima berkas gambar dalam satu percakapan (dilaporkan 
 
 **Wawancara pengembang: suara di mode penelitian, salinan data anak, masa simpan, hitungan putar narasi, dan empat pesanan gambar (`R-23` sampai `R-26`)** (cabang `aru/dazzling-allen-p8hn5z`) · `asal: pengembang` · `disetujui pengembang` · mengubah 39; kode belum dibuat
 
-Pengembang menjawab pertanyaan yang tersisa dari pemeriksaan suara (15 November 2026, entri di atas *Suara lain: belum diputuskan*), dari cek manual gelombang E (14 November 2026), dan dari telaah gambar (`ai-studio/game-images/REVIEW.md`). Disusun dalam tiga putaran wawancara oleh AI; pilihan yang dianjurkan disebut lebih dulu. Semua keputusan berikut keputusan pengembang; dokumen lain belum diubah kecuali 39.
+Pengembang menjawab pertanyaan yang tersisa dari pemeriksaan suara (15 November 2026, entri di atas *Suara lain: belum diputuskan*), dari cek manual gelombang E (14 November 2026), dan dari telaah gambar (`ai-studio/game-images/REVIEW.md`). Disusun dalam tiga putaran wawancara oleh pengembang; pilihan yang dianjurkan disebut lebih dulu. Semua keputusan berikut keputusan pengembang; dokumen lain belum diubah kecuali 39.
 
 1. **Musik dan efek suara tidak dicatat dan tidak masuk analitik penelitian.** Musik latar mendapat sakelar sendiri, terpisah dari narasi, dan **mati secara bawaan** di semua mode. Narasi tetap dicatat seperti di [11](11_KAMUS_DATA.md) (Analitik 7).
 2. **Efek benar/salah mati selama mode penelitian** (sakelar studi `field_mode`), supaya siswa di sebelahnya tidak mendengar hasil jawaban. Di luar mode penelitian efek tetap seperti sekarang.
@@ -178,13 +208,13 @@ Pengembang menjawab pertanyaan yang tersisa dari pemeriksaan suara (15 November 
    - No. 276, mi ongklok: dibuat ulang sebagai potongan tanpa latar (`R-24`).
    - Butir `tmg-3-b04` ("arca yang ada di dalam ruang Candi Pringapus", kunci benar) belum punya gambar: arca Nandi 3D dalam gaya game dari foto peneliti (`R-23`). No. 247 (`tmg-3-b03`, arca Buddha) dan 248 (`tmg-3-c03`, kopi sangrai) tidak dipakai butir mana pun dan dibuang.
    - Pelat instruksi Isi Rumpang yang tenang dipesan **sekarang**, tidak menunggu perombakan (`R-26`, berkas baru `rumpang-instruction-plate.webp`, hiasan hanya di kedua ujung).
-   - Sekitar 350 baris telaah yang belum bertanda: AI mengusulkan tanda per lembar dari telaah pertama dan game, pengembang mengonfirmasi per lembar.
+   - Sekitar 350 baris telaah yang belum bertanda: Pengembang mengusulkan tanda per lembar dari telaah pertama dan game, pengembang mengonfirmasi per lembar.
 
 **Akibat ke dokumen lain** (dibawa saat kodenya dibuat): [11](11_KAMUS_DATA.md) (aksi narasi `skip` dan `resume`, kejadian cek suara: usulan `kamus-1.2`); [33](33_IMPLEMENTASI_MODE_PENELITIAN.md) (efek dan cek suara di mode penelitian); [02](02_LEMBAR_LAPANGAN.md) L0 (*headset* tetap kondisi lapangan, hasil cek suara bisa dibaca di pemantauan). Entri ini tidak diikuti pembuatan ulang PDF.
 
 **Benda Cari Objek "Kendil gerabah" dipesan ulang sebagai kendil, sesuai bank soal (`R-22`)** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang` · mengubah 39
 
-- Peneliti mengirim tiga foto kendi (berizin); satu tampak buatan AI dan hanya disimpan sebagai acuan.
+- Peneliti mengirim tiga foto kendi (berizin); satu tampak buatan pengembang dan hanya disimpan sebagai acuan.
 - Gambar benda Cari Objek Magelang berupa teko tanah liat bercerat dan bergagang, bukan kendi dan bukan kendil. Bank soal, kartu informasi Klipoh, butir `mgl-2-c06`, dan cek fakta (25, MGL-40) menyebut kendil, periuk untuk menanak nasi. Pengembang memutuskan gambar mengikuti bank: kendil bulat bermulut lebar tanpa cerat dan tanpa gagang. Teks butir dan dokumen penelitian tidak berubah; foto kendi hanya acuan warna tanah liat.
 
 Entri ini tidak diikuti pembuatan ulang PDF.
@@ -253,7 +283,7 @@ Entri ini tidak diikuti pembuatan ulang PDF.
 **Tujuh gambar baru diterima pengembang dan dipasang: `R-02`, `R-11` sampai `R-16`** (cabang `aru/dreamy-hypatia-gqobyy`) · `asal: pengembang` · `draf pengembang`
 
 - Pengembang menerima ketujuh gambar. Gambar tes `R-11` diterima apa adanya, termasuk kata "raja" yang tebal (sudah begitu di gambar lama).
-- Empat gambar Pustaka (arca Mendut, peta Dieng, buah carica, Situs Liyangan) memakai ilustrasi buatan AI, bukan foto acuan dari peneliti; foto itu tetap menjadi acuan saja. Kredit gambarnya kredit ilustrasi AI, dan keterangan gambarnya keterangan asli halaman Pustaka ("Arca Buddha di dalam Candi Mendut", "Peta kawasan Dataran Tinggi Dieng", "Buah carica atau pepaya gunung", "Situs Liyangan di lereng Gunung Sindoro").
+- Empat gambar Pustaka (arca Mendut, peta Dieng, buah carica, Situs Liyangan) memakai ilustrasi buatan pengembang, bukan foto acuan dari peneliti; foto itu tetap menjadi acuan saja. Kredit gambarnya kredit ilustrasi buatan pengembang, dan keterangan gambarnya keterangan asli halaman Pustaka ("Arca Buddha di dalam Candi Mendut", "Peta kawasan Dataran Tinggi Dieng", "Buah carica atau pepaya gunung", "Situs Liyangan di lereng Gunung Sindoro").
 - Foto unggahan uceng goreng (`R-13`) menjadi gambar baru unggahan babak 2 Cari Objek Temanggung variasi b. Gambar induk `R-11` di `gambar/doc-34/` ikut diganti; PDF yang memuatnya belum dibuat ulang.
 
 Entri ini tidak diikuti pembuatan ulang PDF.
@@ -274,11 +304,11 @@ Entri ini tidak diikuti pembuatan ulang PDF.
 - **Gambar baru.** Prompt `R-12` di 39: tiga arca sesuai foto, tanpa orang (di halaman tentang tempat ibadah agama lain, anak cukup melihat arcanya). Teks Pustaka dan keterangan gambarnya tetap, karena sudah sesuai foto.
 - **Foto unggahan uceng (`R-13`).** Unggahan babak 2 Cari Objek Temanggung variasi b belum punya foto. Pengembang memilih foto baru (bukan potongan gambar Susun Gambar `tmg-1-h01`): uceng goreng di piring, tanpa laut dan tanpa sungai, supaya foto tidak membantu atau menyesatkan butir `tmg-4-b02`. Prompt di 39; pemasang katalog kini mengenal gambar unggahan. Teks butir tidak berubah.
 - **Peta Dieng (`R-14`).** Pengembang mengirim lima peta kawasan Dieng dan Wonosobo (lisensi didapat peneliti). Gambar Pustaka "Dieng, Tempat Para Dewa" dibuat ulang sebagai peta timbul tiga kabupaten (Banjarnegara, Wonosobo, Batang) dengan tujuh nama tempat; satu-satunya gambar isi game yang memuat tulisan, dibaca ulang kata per kata. Keterangan gambar kembali menjadi "Peta kawasan Dataran Tinggi Dieng".
-- **Lambang tiga kabupaten.** Peneliti mengirim lambang resmi Kabupaten Magelang, Temanggung, dan Wonosobo (berizin). Ketiganya dipasang utuh, tanpa diubah, di tiga halaman Pustaka yang menyebutnya, menggantikan lukisan AI yang menampilkan hal lain; keterangannya "Lambang Kabupaten …" dan kreditnya "Lambang resmi Pemerintah Kabupaten …", bukan kredit ilustrasi AI.
+- **Lambang tiga kabupaten.** Peneliti mengirim lambang resmi Kabupaten Magelang, Temanggung, dan Wonosobo (berizin). Ketiganya dipasang utuh, tanpa diubah, di tiga halaman Pustaka yang menyebutnya, menggantikan lukisan buatan pengembang yang menampilkan hal lain; keterangannya "Lambang Kabupaten …" dan kreditnya "Lambang resmi Pemerintah Kabupaten …", bukan kredit ilustrasi buatan pengembang.
 - **Bundengan.** Peneliti mengirim lima foto bundengan (berizin). Sampul video Pustaka "Bundengan, alat musik unik dari Wonosobo" yang menampilkan alat mirip gitar diganti foto asli pemain bundengan di panggung. Pengembang memutuskan ketiga gambar 3D bundengan (avatar, Susun Gambar, benda Cari Objek) dibuat ulang dari foto itu (`R-17` sampai `R-19` di 39); pada avatar hanya lambangnya yang diganti.
 - **Kompleks Candi Arjuna.** Peneliti mengirim lima foto (berizin). Dua gambar Pustaka halaman "Candi-candi Dieng" yang menampilkan menara tinggi di padang rumput diganti foto asli apa adanya: kompleks yang berjajar di halaman berkerikil, dan Candi Arjuna dengan Candi Semar. Keterangan gambar kedua menjadi "Candi Arjuna, bangunan utama kompleksnya" karena tak ada foto yang berkabut. Satu foto tampak sudah diwarnai ulang dan tidak dipakai sebagai foto asli.
 - **Candi Pawon.** Peneliti mengirim lima foto Candi Pawon (berizin). Gambar Pustaka "Candi Pawon, candi kecil di antara Mendut dan Borobudur" yang menampilkan menara tinggi berpuncak stupa diganti satu foto asli apa adanya (tampak serong di tamannya), seperti relief Borobudur.
-- **Relief Borobudur.** Peneliti mengirim lima foto relief Borobudur (berizin). Pengembang memilih memasang satu foto asli apa adanya untuk gambar Pustaka "Relief cerita di lorong Borobudur", menggantikan relief rekaan; tidak digambar ulang, karena AI sudah tiga kali gagal menyalin relief asli.
+- **Relief Borobudur.** Peneliti mengirim lima foto relief Borobudur (berizin). Pengembang memilih memasang satu foto asli apa adanya untuk gambar Pustaka "Relief cerita di lorong Borobudur", menggantikan relief rekaan; tidak digambar ulang, karena pengembang sudah tiga kali gagal menyalin relief asli.
 - **Situs Liyangan (`R-16`).** Peneliti mengirim foto Situs Liyangan (berizin). Gambar Pustaka "Jejak Mataram Kuno" yang menampilkan menara candi tinggi dibuat ulang sebagai kampung yang digali: teras bertalud batu, jalan batu, candi kecil, yoni, dan Gunung Sindoro.
 - **`R-11` disetujui pengembang** (pasangan `R-08` di buklet B).
 - **Buah carica (`R-15`).** Pengembang mengirim lima foto carica. Belahan buah di gambar Pustaka "Rasa Wonosobo" berdaging jingga tebal dengan biji hitam besar seperti pepaya; carica berdaging tipis krem dengan isi putih berbiji kecil banyak. Gambar dibuat ulang; foto yang sama dilampirkan ke `R-02` (carica Cari Objek).
@@ -291,7 +321,7 @@ Entri ini tidak diikuti pembuatan ulang PDF.
 
 **Telaah gambar: gaya antarmuka emas berukir, gambar tes diperbaiki, waktu narasi tidak lagi terhitung jeda** (cabang `nty/laughing-ramanujan-l68r2v`, dikerjakan 15 dan 16 November 2026) · `asal: pengembang` · `disetujui pengembang` · menambah dokumen [39](39_PROMPT_GAMBAR_PERBAIKAN_TELAAH.md); tidak mengubah teks butir, stimulus, atau kamus data
 
-- **Telaah gambar oleh pengembang.** Pengembang menelaah semua gambar game (`ai-studio/game-images/REVIEW.md`, pertanyaan pembuka disusun AI). Ini pemeriksaan pengembang, bukan validasi ahli, dan tidak ditunjukkan ke validator sebelum mereka menilai.
+- **Telaah gambar oleh pengembang.** Pengembang menelaah semua gambar game (`ai-studio/game-images/REVIEW.md`, pertanyaan pembuka disusun pengembang). Ini pemeriksaan pengembang, bukan validasi ahli, dan tidak ditunjukkan ke validator sebelum mereka menilai.
 - **Satu gaya antarmuka.** Seluruh antarmuka game memakai gaya *emas berukir* yang sudah disetujui peneliti. Bagian yang belum bergaya itu, ukuran, dan letaknya dirombak untuk siswa kelas 5 di Chromebook; pesanan gambarnya menyusul setelah ukuran setiap bagian diukur. Gambar gerak tokoh tidak dipakai lagi: satu pose satu gambar diam.
 - **Lima gambar tes diperbaiki** (prompt di 39; belum dibuat): `instr.tes-ae-B01` (tombol tertulis "Piih foto"), `instr.tes-mb-A-M4` (nama akun salah satu huruf), `instr.tes-bd-A-G2` (emoji keliru, tulisan pembuat video terlalu kecil), `instr.tes-bd-A-G1` dan `instr.tes-bd-B-G1` (tombol "Kirim pesan ke galeri" digambar lebih tebal dan menunjuk kunci `tes-bd-A03` dan `tes-bd-B03`). Pada `instr.tes-bd-B-G1`, motif kain besurek tampak seperti tulisan Arab yang bisa dibaca; gambarnya dibuat ulang dengan motif hiasan dan diperiksa orang yang bisa membaca huruf Arab sebelum dikirim ke validator. Pasangan buklet B `instr.tes-bd-B-G2` menunggu persetujuan pengembang. Semua kata lain di 24 gambar tes sudah dicocokkan dengan berkas data tes dan tidak berbeda.
 - **Satu sasaran Cari Objek diperbaiki.** Gambar `wnb-4-x02` (buah carica) ternyata belimbing, padahal petunjuknya "mirip pepaya, tetapi ukurannya kecil" dan pengecohnya pepaya biasa. Gambar dibuat ulang (39, `R-02`); teks butir tidak berubah.
@@ -365,7 +395,7 @@ Keputusan pengembang 17 Oktober 2026 (narasi direkam pengisi suara, suara asli; 
 
 Entri ini tidak diikuti pembuatan ulang PDF.
 
-**PDF siap cetak dibuat ulang saat akan dikirim, bukan setiap dokumen berubah** (cabang `aru/zealous-hawking-higzmg`) · `asal: pengembang` (usulan dari audit alur kerja oleh AI) · `disetujui pengembang` · tidak mengubah isi dokumen atau produk
+**PDF siap cetak dibuat ulang saat akan dikirim, bukan setiap dokumen berubah** (cabang `aru/zealous-hawking-higzmg`) · `asal: pengembang` (usulan dari audit alur kerja oleh pengembang) · `disetujui pengembang` · tidak mengubah isi dokumen atau produk
 
 Aturan 31 Oktober 2026 (PDF di `dokumen-pdf/cetak/` dibuat ulang dan di-*commit* setiap dokumen bernomor berubah) diganti: `cetak.mjs` dijalankan hanya saat dokumen akan dikirim ke peneliti atau saat pengembang memintanya, lalu semua PDF yang berubah masuk dalam satu *commit*. Alasannya ukuran repositori: setiap PDF yang dibuat ulang menambah berkas biner ke riwayat git untuk selamanya. Akibatnya, di antara dua pengiriman sebuah PDF boleh lebih tua daripada Markdown-nya; kaki halamannya tetap menyebut *commit* asalnya, jadi versinya bisa dicocokkan. Aturan untuk 22 (tidak diubah dan tidak dibuat ulang) dan untuk 23, 24, 26 (PDF dikirim kembali ke peneliti setelah perubahan) tidak berubah. Entri ini tidak diikuti pembuatan ulang PDF 00 dan 04.
 
@@ -408,7 +438,7 @@ The checks `docs/PROGRESS.md` listed as open for wave E were run on 14 November 
 
 ## 9 November 2026
 
-**Wawancara sisa kerja pengembang: enam jawaban, pembersihan baris basi, dan cek MariaDB di wadah sesi** (cabang `r10-wawancara-sisa-kerja`) · `asal: pengembang` (pemilahan, rumusan, dan perbaikan dikerjakan AI) · `disetujui pengembang` · merevisi produk (modul tes, kamus data, lembar lapangan; Prototipe II, sebelum G3)
+**Wawancara sisa kerja pengembang: enam jawaban, pembersihan baris basi, dan cek MariaDB di wadah sesi** (cabang `r10-wawancara-sisa-kerja`) · `asal: pengembang` (pemilahan, rumusan, dan perbaikan dikerjakan pengembang) · `disetujui pengembang` · merevisi produk (modul tes, kamus data, lembar lapangan; Prototipe II, sebelum G3)
 
 Semua gelombang kode A–F sudah digabung ke `main`. Sisa kerja di `docs/PROGRESS.md`, pertanyaan terbuka 01, 33 §15, 34 §17, 35 §18, dan catatan "belum dicek" gelombang F dipilah menjadi empat kelompok: (a) sudah selesai tetapi belum dicentang, (b) bisa diputuskan pengembang sekarang, (c) milik peneliti, validator, atau komite etik, (d) butuh perangkat nyata, server produksi, atau gambar dari pengembang. Kelompok (b) ditanyakan dalam dua putaran:
 
@@ -452,7 +482,7 @@ Pengembang menjawab empat pertanyaan pertama di entri di bawah:
 
 Pertanyaan (e)–(g) di entri di bawah ditanyakan di putaran kedua. Diubah: 33, 35, 11, 16, 00, 04, glosarium, `GameProgress`, `map-level`, `content_helper`, `ParticipantRun`, `RunInput`, `DerivedSheets`, dan tesnya.
 
-**Gelombang kode F selesai: bagian 7 (33), bagian 8 (34), dan bagian 9 (35) dikerjakan lalu digabung koordinator** (cabang `r10-kode-33-mode-penelitian`, `r10-kode-34-modul-tes`, `r10-kode-35-lapis-turunan`, dan cabang koordinator `r10-koordinator-gelombang-f`) · `asal: pengembang` (penyimpangan dan pilihan bawaan dipilih AI saat implementasi) · `draf pengembang` · tidak merevisi produk
+**Gelombang kode F selesai: bagian 7 (33), bagian 8 (34), dan bagian 9 (35) dikerjakan lalu digabung koordinator** (cabang `r10-kode-33-mode-penelitian`, `r10-kode-34-modul-tes`, `r10-kode-35-lapis-turunan`, dan cabang koordinator `r10-koordinator-gelombang-f`) · `asal: pengembang` (penyimpangan dan pilihan bawaan dipilih pengembang saat implementasi) · `draf pengembang` · tidak merevisi produk
 
 Pengembang meminta gelombang F dijalankan seperti gelombang D dan E: satu cabang per bagian dan satu koordinator, dengan tes penuh hijau di setiap penggabungan. Bagian 7 dan 8 dikerjakan paralel dari `main`; bagian 9 dipotong dari cabang koordinator setelah keduanya digabung, karena menghitung dari keduanya. Urutan gabung 7 → 8 → 9; tes penuh hijau setelah setiap penggabungan (1128, 1167, lalu 1229 tes; dua tes yang dilewati sejak gelombang E kini berjalan). Kode belum dipakai dengan anak; mode penelitian tetap mati secara bawaan.
 
@@ -468,7 +498,7 @@ Diubah: 04, 00 (gelombang F dan baris bagian 7–9), 02 (satu baris L0), `docs/P
 
 ## 8 November 2026
 
-**Jawaban pengembang atas pertanyaan gelombang E; peta lima tantangan dibuat ulang; prompt 38 dan gambar pengganti** (cabang `pw/trusting-edison-ivf3mi`) · `asal: pengembang` (rumusan, prompt, dan mock-up didraf AI) · `disetujui pengembang` untuk jawaban, `draf pengembang` untuk 38 dan gambar · merevisi produk (panel, persetujuan, lembar lapangan, gambar sementara)
+**Jawaban pengembang atas pertanyaan gelombang E; peta lima tantangan dibuat ulang; prompt 38 dan gambar pengganti** (cabang `pw/trusting-edison-ivf3mi`) · `asal: pengembang` (rumusan, prompt, dan mock-up didraf pengembang) · `disetujui pengembang` untuk jawaban, `draf pengembang` untuk 38 dan gambar · merevisi produk (panel, persetujuan, lembar lapangan, gambar sementara)
 
 Pengembang menjawab kesembilan pertanyaan entri di bawah:
 
@@ -484,9 +514,9 @@ Pengembang menjawab kesembilan pertanyaan entri di bawah:
 
 Tes penuh hijau setelah perubahan (1088 tes, 2 dilewati dengan sengaja). Diubah: 38 (baru), 00, 04, `docs/PROGRESS.md`, catatan implementasi, `CatalogImporter`, `ContentController` dan halaman butir, `ConsentService`, `ExportController`, `TestAccountService`, `FieldSessionService`, `FieldTokenController`, `FieldSheetService`, `gelita:lembar:templat`, berkas bahasa `Game`, gambar di `public/assets/ui/`, `gelita-katalog/mockup/gambar-mockup/cerita-layar/`, `gambar/38/`, dan tesnya.
 
-**Gelombang kode E selesai: bagian 3 (29), bagian 4 (30), dan bagian 6 (32) dikerjakan paralel lalu digabung koordinator** (cabang `r10-kode-29-data-penelitian`, `r10-kode-30-hak-data`, `r10-kode-32-skenario-digital`, dan cabang koordinator `pw/trusting-edison-ivf3mi`) · `asal: pengembang` (penyimpangan dipilih AI saat implementasi) · `draf pengembang` · tidak merevisi produk
+**Gelombang kode E selesai: bagian 3 (29), bagian 4 (30), dan bagian 6 (32) dikerjakan paralel lalu digabung koordinator** (cabang `r10-kode-29-data-penelitian`, `r10-kode-30-hak-data`, `r10-kode-32-skenario-digital`, dan cabang koordinator `pw/trusting-edison-ivf3mi`) · `asal: pengembang` (penyimpangan dipilih pengembang saat implementasi) · `draf pengembang` · tidak merevisi produk
 
-Pengembang meminta gelombang E dijalankan seperti gelombang D: satu cabang per bagian dan satu koordinator, dengan tes penuh hijau di setiap penggabungan. Tiga sesi AI mengerjakan bagian 3, 4, dan 6 di cabang masing-masing (sempat berhenti tiga kali karena batas pemakaian, tanpa kehilangan kerja). Koordinator menggabungkan berurutan 3 → 4 → 6; tes penuh hijau setelah setiap penggabungan (994, 1058, lalu 1082 tes; 2 dilewati dengan sengaja karena menunggu tabel bagian 8). Kode belum dipakai dengan anak; mode penelitian tetap mati secara bawaan.
+Pengembang meminta gelombang E dijalankan seperti gelombang D: satu cabang per bagian dan satu koordinator, dengan tes penuh hijau di setiap penggabungan. Tiga sesi kerja pengembang mengerjakan bagian 3, 4, dan 6 di cabang masing-masing (sempat berhenti tiga kali karena batas pemakaian, tanpa kehilangan kerja). Koordinator menggabungkan berurutan 3 → 4 → 6; tes penuh hijau setelah setiap penggabungan (994, 1058, lalu 1082 tes; 2 dilewati dengan sengaja karena menunggu tabel bagian 8). Kode belum dipakai dengan anak; mode penelitian tetap mati secara bawaan.
 
 1. **Penggabungan dan sambungan antarbagian.**
    - `SystemResetService::REQUIRED_MIGRATION` = `2026-01-01-004000`. Barisnya juga harus ada di riwayat migrasi, karena `003900`/`003910` lebih dulu berjalan daripada `003600`–`003800` (pemeriksaan dari bagian 3).
@@ -510,7 +540,7 @@ Pengembang menyampaikan bahwa peneliti sudah mengonfirmasi validasi, bahwa dokum
 - **Yang belum ada di repo:** skor dan catatan validator, kesepakatan B.5a (κ), dan matriks revisi [20](20_PAKET_VALIDASI.md); juga nomor dan tanggal surat persetujuan komite. Karena itu status 08 dan 13–16 belum dinaikkan, dan butir `needs_verification` tetap bertanda sampai hasilnya masuk dan revisinya diterapkan.
 - **Akibat:** kegiatan dengan anak yang tercakup protokol 22 boleh dimulai sesuai jadwal peneliti. Urutan gerbang berikutnya tetap seperti di [00](00_INDEKS.md#tahap-dokumen-yang-tersisa-sebelum-implementasi): G3 dinilai setelah G2, pada Prototipe II yang memuat revisi dari validasi ahli. Sakelar mode penelitian tetap mati secara bawaan sampai dinyalakan untuk studi.
 
-**Ambang tebakan cepat tes dan cek fakta Susun Gambar** (wawancara satu putaran, empat pertanyaan) · `asal: pengembang` (rekomendasi AI) · `disetujui pengembang` · merevisi produk (dokumen implementasi bagian 8 dan 9, bank soal)
+**Ambang tebakan cepat tes dan cek fakta Susun Gambar** (wawancara satu putaran, empat pertanyaan) · `asal: pengembang` (rekomendasi awal) · `disetujui pengembang` · merevisi produk (dokumen implementasi bagian 8 dan 9, bank soal)
 
 Pengembang memilih rekomendasi di keempat pertanyaan.
 1. **Ambang tebakan cepat tes** ([34 §17](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#17-pertanyaan-terbuka) no. 1, [35 §18](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#18-pertanyaan-terbuka) no. 2): kolom studi tersendiri `test_rapid_guess_ms`, satu nilai untuk semua tes (awal/akhir, bentuk A/B) supaya `rapid_share` sebelum dan sesudah bisa dibandingkan, nilai awal 3000 ms. Butir pertama sesudah bacaan tidak diberi `rapid_guess` (kosong), karena waktunya memuat waktu membaca. Ditinjau setelah uji coba dan dikunci bersama ambang lain di G4. Tidak dipilih: memakai `rapid_guess_ms` tantangan, ambang normatif per butir (NT10), atau ambang per jenis butir. Dibawa ke migrasi bagian 7 ([33](33_IMPLEMENTASI_MODE_PENELITIAN.md)) dan perhitungan bagian 9 saat implementasi.
@@ -524,7 +554,7 @@ Diubah: 34 (§17 no. 1), 35 (§18 no. 2), 08 (dua catatan cek fakta).
 
 Pengembang sudah mencari setiap nama akun pengunggah dan akun resmi tiruan di [08](08_DRAF_BANK_SOAL.md) di Instagram dan TikTok: tidak ada akun dengan nama yang sama persis. Kedugram aman dipakai sebagai aplikasi media sosial fiktif. Tidak ada nama yang diganti; catatan di 08 (*Nama fiktif*) diperbarui.
 
-**Gambar situasi Skenario Digital sudah dibuat; prompt gambar Susun Gambar baru dan latar cerita wilayah** · `asal: pengembang` (prompt disusun AI atas permintaan pengembang) · `draf pengembang` · menambah dokumen [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md)
+**Gambar situasi Skenario Digital sudah dibuat; prompt gambar Susun Gambar baru dan latar cerita wilayah** · `asal: pengembang` (prompt disusun pengembang) · `draf pengembang` · menambah dokumen [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md)
 
 - Ke-24 gambar situasi dari [32A](32A_PROMPT_GAMBAR_SITUASI.md) sudah dibuat pengembang dan ada di `gambar/32a/` (PNG, `item.skenario.{kode butir}`). Yang tersisa: ubah ke WebP, masukkan ke Katalog Aset, dan pasang dengan `gelita:katalog:impor` saat bagian 6 diimplementasikan.
 - Pengembang meminta prompt untuk gambar yang masih ditunggu. [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md) memuat `TMG-P11` Wayang Kedu (`challenge.item.tmg-1-k01`, 3 × 3) dan `MGL-P05R` Candi Pawon pengganti (`challenge.item.mgl-1-e01`, tanpa stupa dan tanpa Borobudur), mengikuti arahan 08, serta 29 latar cerita wilayah untuk 92 slot `bg.cerita-{kenal,dialog,tuntas,layar}-{wilayah}-NN` dari naskah [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md). Satu gambar dipakai beberapa slide yang tempatnya sama; latar tanpa Jaka dan Mbah Kedu, tanpa tulisan atau isi layar yang terbaca, dan tidak memuat benda atau tanda bahaya yang diuji butir. Latar Wonosobo tidak menampilkan kawah atau bencana, karena kabar berantai di naskah 12 adalah ramalan gempa.
@@ -534,17 +564,17 @@ Diubah: 37 (baru), 32A (kepala dokumen), 08, 00, `docs/PROGRESS.md`.
 
 ## 3 November 2026
 
-**Tinjauan pengembang atas 32, 36, dan 34 §17; prompt gambar situasi** (cabang `sky/gallant-mccarthy-71jnn1`) · `asal: pengembang` (rumusan dan prompt didraf AI) · `disetujui pengembang` kecuali yang tertulis usulan · merevisi produk (dokumen implementasi bagian 6, terjemahan bank, bank data berkas)
+**Tinjauan pengembang atas 32, 36, dan 34 §17; prompt gambar situasi** (cabang `sky/gallant-mccarthy-71jnn1`) · `asal: pengembang` (rumusan dan prompt didraf pengembang) · `disetujui pengembang` kecuali yang tertulis usulan · merevisi produk (dokumen implementasi bagian 6, terjemahan bank, bank data berkas)
 
 Pengembang menjawab semua pertanyaan terbuka [32 §17](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#17-pertanyaan-terbuka), menyetujui [36](36_TERJEMAHAN_BANK_SOAL.md), dan menjawab [34 §17](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#17-pertanyaan-terbuka) no. 4.
 
-1. **32 naik ke `disetujui pengembang`.** Jawaban: gambar situasi (24) **dibuat sekarang**, tidak menunggu ahli media; kalimat bingkai bertanda *draf* di §13 **sudah ditinjau dan dipakai**; umpan balik skor 2 **dipakai apa adanya**; blok migrasi (`003900`/`003910`, `004000`, `0041xx`, `004200`, `004300`) **tidak bertabrakan**; posisi tindakan tepat **tidak dipaksa**, ditinjau ulang setelah KG3a bila ada kecondongan. Tercatat di 32 §17, §18 no. 6–10, dan §19 no. 11. Tidak dipilih: menunggu ahli media untuk gambar (usulan AI sebelumnya).
+1. **32 naik ke `disetujui pengembang`.** Jawaban: gambar situasi (24) **dibuat sekarang**, tidak menunggu ahli media; kalimat bingkai bertanda *draf* di §13 **sudah ditinjau dan dipakai**; umpan balik skor 2 **dipakai apa adanya**; blok migrasi (`003900`/`003910`, `004000`, `0041xx`, `004200`, `004300`) **tidak bertabrakan**; posisi tindakan tepat **tidak dipaksa**, ditinjau ulang setelah KG3a bila ada kecondongan. Tercatat di 32 §17, §18 no. 6–10, dan §19 no. 11. Tidak dipilih: menunggu ahli media untuk gambar (usulan awal sebelumnya).
 2. **Prompt gambar situasi.** [32A](32A_PROMPT_GAMBAR_SITUASI.md): 24 prompt siap tempel ke ChatGPT, satu per butir, dengan aturan bersama (tanpa teks terbaca, merek, wajah, atau petunjuk jawaban), daftar periksa hasil, dan kebijakan perubahan. Gambar dibuat pengembang atau tim Katalog Aset; hasilnya `draf pengembang` sampai diperiksa.
-3. **36 naik ke `disetujui pengembang`**, usulan AI (termasuk sembilan catatan) diterima apa adanya. Akibat: catatan `review.note` butir di berkas data diganti dari "terjemahan belum ada" menjadi "Teks Inggris: dari 36, disetujui pengembang 3 November 2026" (31 §22 no. 11), lewat `docs/bank-soal/tools/import_08.py`; berkas data dan workbook dibangun ulang, 13 peringatan terjemahan hilang dari `gelita:content:verify`. Empat peringatan "teks Inggris sama dengan Indonesia" pada bagian ketuk (`tmg-4-b B2`, `mgl-4-a C2`, `wnb-4-a E2`, `wnb-4-b F2`) tetap, karena itu nama diri yang memang sama. Butir tetap `needs_verification`.
+3. **36 naik ke `disetujui pengembang`**, usulan pengembang (termasuk sembilan catatan) diterima apa adanya. Akibat: catatan `review.note` butir di berkas data diganti dari "terjemahan belum ada" menjadi "Teks Inggris: dari 36, disetujui pengembang 3 November 2026" (31 §22 no. 11), lewat `docs/bank-soal/tools/import_08.py`; berkas data dan workbook dibangun ulang, 13 peringatan terjemahan hilang dari `gelita:content:verify`. Empat peringatan "teks Inggris sama dengan Indonesia" pada bagian ketuk (`tmg-4-b B2`, `mgl-4-a C2`, `wnb-4-a E2`, `wnb-4-b F2`) tetap, karena itu nama diri yang memang sama. Butir tetap `needs_verification`.
 4. **34 §17 no. 4 dikonfirmasi peneliti:** angket terlambat boleh diisi sampai sebelum P5 dimulai. 16 no. 9, 28 §21 no. 3, dan 34 §19 diselaraskan.
-5. **34 §17 no. 1 (ambang tebakan cepat tes): usulan AI, belum diputuskan.** Satu ambang untuk semua tes, tidak dibedakan per kesempatan atau bentuk, supaya `rapid_share` tes awal dan akhir bisa dibandingkan; boleh berbeda dari ambang tantangan (`test_rapid_guess_ms`). Bila perlu dibedakan, per jenis butir dan sebelum G4. Menunggu angka dari peneliti.
+5. **34 §17 no. 1 (ambang tebakan cepat tes): usulan pengembang, belum diputuskan.** Satu ambang untuk semua tes, tidak dibedakan per kesempatan atau bentuk, supaya `rapid_share` tes awal dan akhir bisa dibandingkan; boleh berbeda dari ambang tantangan (`test_rapid_guess_ms`). Bila perlu dibedakan, per jenis butir dan sebelum G4. Menunggu angka dari peneliti.
 
-**Level per butir *Periksa Unggahan* dan Skenario Digital; kolom L5 di 02** (cabang `sky/eloquent-maxwell-eiucbe`) · `asal: pengembang` (usulan dan rumusan didraf AI) · `disetujui pengembang` · merevisi produk (lembar L5, aturan impor L5, label pengembang bank)
+**Level per butir *Periksa Unggahan* dan Skenario Digital; kolom L5 di 02** (cabang `sky/eloquent-maxwell-eiucbe`) · `asal: pengembang` (usulan dan rumusan didraf pengembang) · `disetujui pengembang` · merevisi produk (lembar L5, aturan impor L5, label pengembang bank)
 
 Satu putaran tanya, empat pertanyaan, untuk dua sisa pekerjaan: temuan no. 3 di [21](21_BERKAS_BUTIR_VALIDATOR.md) dan kolom L5 yang sudah diputuskan di [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) §19 no. 14 tetapi belum ada di tabel [02](02_LEMBAR_LAPANGAN.md). Saat mencocokkan kolom L5 ditemukan tiga celah: pemeriksaan impor 29 §10.4 hanya menerima kode butir itu di bank, padahal kode `*-LAIN` tidak pernah ada di bank (31 §8.2) dan menjadi alasan utama `manual_code` ada; contoh L5 memakai `R-LAIN`, yang tidak ada di [03](03_KODE_DAN_ARTI.md), sedangkan `manual_code` hanya memuat satu kode; dan percobaan skenario dengan tindakan tepat dinilai benar walaupun alasannya dangkal ([32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md) K3), jadi alasan yang dikode tangan tidak punya tempat di aturan "percobaan harus salah". Pengembang memilih usulan di keempatnya:
 
@@ -566,7 +596,7 @@ Pengembang mengunggah 24 gambar ke [gambar/doc-34/](gambar/doc-34/): M3 dan M4 b
 
 Diubah: 34 (§6.1, pertanyaan no. 2), 04, katalog (`instrumen/`).
 
-**Empat peringatan isi bank bagian 5 dibetulkan di 08** (cabang `r10-bank-peringatan-isi`) · `asal: pengembang` (rumusan dan kode didraf AI) · `draf pengembang` · merevisi produk (isi bank, butir tetap `needs_verification`)
+**Empat peringatan isi bank bagian 5 dibetulkan di 08** (cabang `r10-bank-peringatan-isi`) · `asal: pengembang` (rumusan dan kode didraf pengembang) · `draf pengembang` · merevisi produk (isi bank, butir tetap `needs_verification`)
 
 Menjalankan keputusan no. 4 entri di bawah. Sebelum 08 diubah, `docs/bank-soal/tools/import_08.py` menghasilkan ulang ketiga berkas data persis sama, jadi sejak hari ini 08 dan [36](36_TERJEMAHAN_BANK_SOAL.md) kembali menjadi sumber: isi diubah di 08/36, lalu pengubah dijalankan dan workbook dibangun ulang.
 
@@ -575,7 +605,7 @@ Menjalankan keputusan no. 4 entri di bawah. Sebelum 08 diubah, `docs/bank-soal/t
 3. **`mgl-2` tanpa butir AKM L1.** Bacaan `mgl-2-a02` (stupa induk) dan `mgl-2-b01` (kuluk) ditulis ulang sehingga rumpang tidak lagi tepat sesudah definisinya; siswa memadukan dua kalimat. Level AKM L1 → L2, Bloom tetap C2.
 4. **Sebaran kode varian a dan b diseimbangkan** di tiga tantangan yang diperingatkan: `mgl-2-b04` *penjajah* INF-LIT → INF-KAT (setara *enam* di `mgl-2-a01`); `mgl-3-b03` ditulis ulang menjadi "Menurut unggahan, semua keterangan tentang Gunung Tidar adalah legenda." (INF-GEN, setara `mgl-3-a02`); `wnb-3-a03` ditulis ulang menjadi pernyataan sebab tentang warna air dan belerang (INF-HUB, setara `wnb-3-b02`). Kunci tetap.
 
-Teks Inggris butir yang berubah diperbarui di 36 (draf AI). Peringatan yang tersisa (17) hanya soal terjemahan yang belum diperiksa pengembang. Atas permintaan pengembang, telaah di [05](05_TELAAH_BUTIR_DAN_DIMENSI.md), [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md), [19](19_TELAAH_LABEL_BLOOM.md), dan [25](25_CEK_FAKTA_BUDAYA.md) diberi rumusan baru di baris butir yang berubah. Temuan lama tetap tertulis sebagai riwayat telaah; rumusan dan kode yang berlaku ditambahkan dengan tanggal 3 November 2026. Keterangan panjang bacaan `mgl-2` di 08 dihitung ulang: variasi a ± 125 kata (124), variasi b ± 135 kata (133), sedikit di atas kisi-kisi 100–120; selisih a dan b tetap di bawah 10%. Tes penuh hijau (949 tes).
+Teks Inggris butir yang berubah diperbarui di 36 (draf pengembang). Peringatan yang tersisa (17) hanya soal terjemahan yang belum diperiksa pengembang. Atas permintaan pengembang, telaah di [05](05_TELAAH_BUTIR_DAN_DIMENSI.md), [09](09_TELAAH_PENDAHULUAN_BANK_SOAL.md), [19](19_TELAAH_LABEL_BLOOM.md), dan [25](25_CEK_FAKTA_BUDAYA.md) diberi rumusan baru di baris butir yang berubah. Temuan lama tetap tertulis sebagai riwayat telaah; rumusan dan kode yang berlaku ditambahkan dengan tanggal 3 November 2026. Keterangan panjang bacaan `mgl-2` di 08 dihitung ulang: variasi a ± 125 kata (124), variasi b ± 135 kata (133), sedikit di atas kisi-kisi 100–120; selisih a dan b tetap di bawah 10%. Tes penuh hijau (949 tes).
 
 Diubah: 08, 36, 05, 09, 19, 25, 04, 00 (baris 08 dan 36), berkas data dan workbook bank soal, `BankRulesNewBankTest`, `docs/PROGRESS.md`, catatan implementasi.
 
@@ -590,9 +620,9 @@ Bagian 2 dan bagian 5 digabung ke `main` sebagai PR #339 dan #340 (3 November 20
 
 Diubah: 04, 00 (baris bagian 2 dan 5), 27 (§18), 28 (§6.7 no. 6), 29 (kotak peringatan, aturan kerja, §5.8), `docs/PROGRESS.md`.
 
-**Gelombang kode D selesai: bagian 2 (28) dan bagian 5 (31) dikerjakan paralel lalu digabung koordinator** (cabang `pw/laughing-pasteur-e6ajo7`, `r10-kode-31-bank-soal`, dan cabang koordinator `pw/youthful-faraday-tcbj5z`) · `asal: pengembang` (penyimpangan dipilih AI saat implementasi) · `draf pengembang` · tidak merevisi produk
+**Gelombang kode D selesai: bagian 2 (28) dan bagian 5 (31) dikerjakan paralel lalu digabung koordinator** (cabang `pw/laughing-pasteur-e6ajo7`, `r10-kode-31-bank-soal`, dan cabang koordinator `pw/youthful-faraday-tcbj5z`) · `asal: pengembang` (penyimpangan dipilih pengembang saat implementasi) · `draf pengembang` · tidak merevisi produk
 
-Dua sesi AI mengerjakan bagian 2 dan bagian 5 di cabang masing-masing. Sesi koordinator menjalankan ulang tes, membuka PR #339 (bagian 2), lalu menggabungkan kedua cabang di cabang koordinator. Isi bank tetap `needs_verification`; kode belum dipakai dengan anak sebelum izin etik (entri 1 November 2026).
+Dua sesi pengembang mengerjakan bagian 2 dan bagian 5 di cabang masing-masing. Sesi koordinator menjalankan ulang tes, membuka PR #339 (bagian 2), lalu menggabungkan kedua cabang di cabang koordinator. Isi bank tetap `needs_verification`; kode belum dipakai dengan anak sebelum izin etik (entri 1 November 2026).
 
 1. **Penggabungan.**
    - `SystemResetService::REQUIRED_MIGRATION` = `2026-01-01-003910` (migrasi terakhir), urutan pengosongan memuat tabel baru kedua bagian, `ResetTables` 40 tabel, `DataLayerWiringTest` 37 model.
@@ -626,9 +656,9 @@ Diubah: 04, 00 (baris bagian 2 dan 5 di *Tahap dokumen 3*), `docs/PROGRESS.md`, 
 **Akibat yang belum diputuskan.** 29 §19 no. 5 menyimpan penghapusan log di `003600` dengan alasan "`003400` sudah lebih dulu menahan server produksi". Alasan itu kini tidak berlaku. Baris 27 §18 tentang penjaga `003600`, yang ditutup sesi *Tindak lanjut dokumen kecil* (entri di bawah) dengan alasan yang sama, dibuka lagi. Tanpa penjaga sendiri, pembaruan otomatis akan menjalankan `003600` begitu kode bagian 3 masuk. Sebelum kode bagian 3 (gelombang E), pengembang memilih: `003600` diberi penjaga sendiri, atau penghapusan log juga selalu berjalan. Dicatat di [27 §18](27_IMPLEMENTASI_PERAN_PENELITI.md#18-akibat-ke-dokumen-lain) dan 29 §5.8.
 
 Diubah: 04, 00 (baris 22, 26, 27; *Pembagian kerja*; *Cara membangunnya*), 23 (dua baris tempat kosong kelompok B), 27 (status, §0, K16, §6.1, §14.1, §15, §17 no. 9 dan 11, §18), 29 (§5.8), `docs/08_DEPLOYMENT.md`, `docs/PROGRESS.md`, aturan sesi revisi, migrasi `003400`, `Config\Gelita`, `ReplaceTeacherMigrationTest`, catatan implementasi, PDF siap cetak. 22 tidak diubah.
-**Draf terjemahan bahasa Inggris bank soal baru ditulis di 36** (cabang `sky/wonderful-albattani-kpz0qx`) · `asal: pengembang` (draf AI) · `draf pengembang` · tidak merevisi produk
+**Draf terjemahan bahasa Inggris bank soal baru ditulis di 36** (cabang `sky/wonderful-albattani-kpz0qx`) · `asal: pengembang` (draf pengembang) · `draf pengembang` · tidak merevisi produk
 
-Melaksanakan keputusan 2 November 2026 ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) §22 no. 8 dan 11): AI mendraf terjemahan sekarang, pengembang memeriksanya. Dokumen baru [36](36_TERJEMAHAN_BANK_SOAL.md) memuat pasangan bahasa Inggris untuk semua teks bank baru di [08](08_DRAF_BANK_SOAL.md) yang tampil di game: instruksi, 6 bacaan Isi Rumpang dengan pasangan kata bank kata, 6 bacaan Benar atau Salah dan 3 kartu jangkar dengan 38 pernyataan, 12 butir Temukan Benda (dari bank lama), 6 unggahan *Periksa Unggahan* dengan 24 petunjuk, dan 24 Skenario Digital lengkap dengan tindakan, umpan balik, penjelasan setelah kesempatan habis, dan alasan.
+Melaksanakan keputusan 2 November 2026 ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) §22 no. 8 dan 11): Pengembang mendraf terjemahan sekarang lalu memeriksanya. Dokumen baru [36](36_TERJEMAHAN_BANK_SOAL.md) memuat pasangan bahasa Inggris untuk semua teks bank baru di [08](08_DRAF_BANK_SOAL.md) yang tampil di game: instruksi, 6 bacaan Isi Rumpang dengan pasangan kata bank kata, 6 bacaan Benar atau Salah dan 3 kartu jangkar dengan 38 pernyataan, 12 butir Temukan Benda (dari bank lama), 6 unggahan *Periksa Unggahan* dengan 24 petunjuk, dan 24 Skenario Digital lengkap dengan tindakan, umpan balik, penjelasan setelah kesempatan habis, dan alasan.
 
 - Kunci, skor, dan semua kode tidak berubah. Kunci Isi Rumpang mendapat kata bahasa Inggris, satu pasangan per kata, untuk `ErrorCodeResolver`.
 - Aturan penerjemahan dan istilah tetap ditulis di 36 (ejaan Britania seperti bank lama, nama diri dan istilah budaya tetap, kata ganti netral untuk tokoh, istilah antarmuka dari 31 §17 dan 32 §13).
@@ -639,7 +669,7 @@ Status 36 `draf pengembang` sampai diperiksa. Butir di berkas data tetap bercata
 
 Diubah: 36 (baru), 00 (baris 36), 08 (*Langkah berikutnya* no. 5 dan paragraf pembuka), 04, `docs/PROGRESS.md`, PDF siap cetak.
 
-**Tindak lanjut dokumen kecil sesudah gelombang A dan B** (cabang `sky/ecstatic-brown-wy18u5`) · `asal: pengembang` (penyelarasan berbantuan AI) · tidak ada keputusan baru · status dokumen tidak berubah · tidak merevisi produk
+**Tindak lanjut dokumen kecil sesudah gelombang A dan B** (cabang `sky/ecstatic-brown-wy18u5`) · `asal: pengembang` (penyelarasan oleh pengembang) · tidak ada keputusan baru · status dokumen tidak berubah · tidak merevisi produk
 
 Atas permintaan pengembang, tujuh tindak lanjut yang sudah diputuskan (baris *Small document follow-ups* di `docs/PROGRESS.md`) dibawa ke dokumen tujuannya:
 - **20, prasyarat no. 8:** "Usulan alat bantu untuk tahap 3" menjadi *Alat bantu `gelita:uji:akun`* dengan aturan 1 November 2026: kodenya dibangun di gelombang kode D bersama bagian 2, instalasi uji tahap 2 tetap memakai langkah 3 dan 6, dan `--reset` menghapus data permainan (28 K15), bukan menutup sesi. Judul "Di G3 (… setelah tahap 3)" menjadi "setelah G2" (28 §23).
@@ -675,7 +705,7 @@ Sisa pekerjaan dicatat di `docs/PROGRESS.md` (baris *Waves A and B closed*), dik
 
 Diubah: 04, 17, 22, 32, `docs/PROGRESS.md`, dan PDF siap cetak.
 
-**Sesi koordinator untuk 31–35: akibatnya dibawa ke dokumen lain, delapan keputusan pengembang** (cabang `r10-cek-30`, setelah PR #326) · `asal: pengembang` (penyelarasan berbantuan AI dan delapan keputusan) · status dokumen tidak berubah · tidak merevisi produk
+**Sesi koordinator untuk 31–35: akibatnya dibawa ke dokumen lain, delapan keputusan pengembang** (cabang `r10-cek-30`, setelah PR #326) · `asal: pengembang` (penyelarasan oleh pengembang dan delapan keputusan) · status dokumen tidak berubah · tidak merevisi produk
 
 Atas permintaan pengembang, *Akibat ke dokumen lain* di [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md)–[35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) dibawa ke dokumen tujuannya, dalam tiga sesi paralel yang dibagi per pemilik berkas:
 - **27–30:** lembar unduhan baru dan kolomnya di 29 §7.2–§7.3 (`kode_pilihan`, lembar `turunan_*`, lembar modul tes, `after_withdrawal`), `scenario_failed` dan `input_idle` di katalog event, `audio_usage_events.clock_offset_ms`; baris pemantauan dan layar token di 28; tabel `challenge_attempt_segments`, tabel modul `instrument_*`, dan `derived_*` di cakupan hapus 30 §7.3; rute ambang dan hitung ulang di 27 §7. Kalimat `consent_ok` di 29 §10.6 dan 30 §10.1 dibetulkan: dihitung lapis turunan di server (35 §7); lembar `izin` tetap di unduhan utama untuk dicocokkan dengan L7.
@@ -700,7 +730,7 @@ Atas permintaan pengembang, *Akibat ke dokumen lain* di [31](31_IMPLEMENTASI_BAN
 
 Diubah: 01, 03, 06, 08, 12, 13, 16, 17, 18, 20, 21, 27–35, 04, `docs/PROGRESS.md`, PDF siap cetak.
 
-**`kamus-1.1` ditulis ke 11 sebagai `draf pengembang`** (cabang `r10-kamus-11`, di atas cabang `r10-koordinator-31`) · `asal: pengembang` (disusun dengan bantuan AI) · `draf pengembang` · tidak merevisi produk
+**`kamus-1.1` ditulis ke 11 sebagai `draf pengembang`** (cabang `r10-kamus-11`, di atas cabang `r10-koordinator-31`) · `asal: pengembang` (disusun pengembang) · `draf pengembang` · tidak merevisi produk
 
 Atas permintaan pengembang ("tulis kamus 1.1 ke 11"), menjalankan keputusan 2 November 2026 (entri di bawah, no. 5; [35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) §19 no. 6). Tidak ada keputusan baru dan **tidak ada definisi `kamus-1.0` yang diubah**. Yang baru ditandai *(1.1)* di [11](11_KAMUS_DATA.md) dan didaftar di bagian baru *Yang baru di `kamus-1.1`* (22 butir):
 - **Sumber `consent_ok`** adalah daftar izin berkode di sistem, dicocokkan `ketua` dengan L7. Siswa `withdrawn_keep` dihitung sampai saat mundur (`withdrawn_on`, `cutoff_basis`; `after_withdrawal` di lembar mentah). Ada juga `registration_corrected`.
@@ -731,7 +761,7 @@ Diubah: 11, 28, 29, 30, 31, 33, 34, 35 (baris akibat), 00 (dua baris 11), 04, `d
 
 **31 disetujui pengembang; akibatnya dibawa ke dokumen lain** (cabang `r10-koordinator-31`, dari `main` setelah PR #324) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
 
-Pengembang meninjau [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) dan menyetujui keenam pertanyaan terbukanya. No. 1–4 sudah dijawab sesi koordinator 2 November 2026 (entri di bawah). Usulan no. 5 dan 6 disetujui apa adanya: penanda baris bacaan digital ditetapkan saat implementasi bersama mock-up, dan `HUNT_SCENE_DP` diukur dari tata letak sekarang lalu dikunci tes. Untuk no. 4 pengembang menegaskan pilihan yang sama: AI mendraf terjemahan bahasa Inggris saat berkas data ditulis di gelombang D, lalu pengembang memeriksanya. Status 31 naik ke `disetujui pengembang` (31 §22 no. 9–11).
+Pengembang meninjau [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) dan menyetujui keenam pertanyaan terbukanya. No. 1–4 sudah dijawab sesi koordinator 2 November 2026 (entri di bawah). Usulan no. 5 dan 6 disetujui apa adanya: penanda baris bacaan digital ditetapkan saat implementasi bersama mock-up, dan `HUNT_SCENE_DP` diukur dari tata letak sekarang lalu dikunci tes. Untuk no. 4 pengembang menegaskan pilihan yang sama: Pengembang mendraf terjemahan bahasa Inggris saat berkas data ditulis di gelombang D, lalu pengembang memeriksanya. Status 31 naik ke `disetujui pengembang` (31 §22 no. 9–11).
 
 *Akibat ke dokumen lain* di 31 §23 dibawa tanpa keputusan baru:
 - **29:** lembar `percobaan` mendapat `error_code` dan `manual_code`; lembar `pengerjaan` mendapat `variant_source` dan `booklet_at_open`; lembar `butir` mendapat label dan beban permukaan; ada lembar baru `kode_pilihan` (hanya `ketua`); baris titik sambung no. 1 diperluas ke bank baru.
@@ -759,7 +789,7 @@ Diubah: 04, 00 (dua baris 23), PDF siap cetak 00 dan 04.
 Pengembang meminta usulan di [23 → Akibat ke dokumen lain](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md#akibat-ke-dokumen-lain) diterapkan: di [30 §17](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#17-teks-layar-dan-panel), paragraf 1 T11 en "that may have made you feel uncomfortable" menjadi "that may make you feel uncomfortable", sama dengan "yang mungkin membuatmu tidak nyaman" di T11 id. Teks id T11 dan isi 23 yang diserahkan ke peneliti (*commit* `f45d274`) tidak berubah, karena 23 tidak memuat teks en. Status 30 tetap `disetujui pengembang`. Baris 30 di *Akibat ke dokumen lain* 23 ditandai sudah.
 
 Diubah: 30 (§17), 23 (*Akibat ke dokumen lain*, satu baris), 04, PDF siap cetak 04, 23, dan 30.
-**Sesi koordinator bagian 8: akibat 34 dibawa ke 01, 13, 17, 18, 27, 28, 29, dan 30** (cabang `r10-dok-34-modul-tes-sikap`, setelah PR #323) · `asal: pengembang` (penyelarasan berbantuan AI, diminta pengembang) · status dokumen tidak berubah · tidak merevisi produk
+**Sesi koordinator bagian 8: akibat 34 dibawa ke 01, 13, 17, 18, 27, 28, 29, dan 30** (cabang `r10-dok-34-modul-tes-sikap`, setelah PR #323) · `asal: pengembang` (penyelarasan oleh pengembang) · status dokumen tidak berubah · tidak merevisi produk
 
 Yang dibawa dari [34 → Akibat ke dokumen lain](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#19-akibat-ke-dokumen-lain), tanpa keputusan baru:
 - **28:** §21 no. 2 dan 3 dicoret (34 K1, §10.2); arah ke `/tes` setelah daftar (§6.5 langkah 8); status tes per kode, tombol *Tambah waktu*, dan tombol *Mulai tes awal/akhir* di pemantauan (§12); kolom `test_started_at`, `test_started_by` di `field_sessions` (§14); titik sambung no. 21 dan 22 (§18); baris 34 di §23 bertanda sudah.
@@ -802,9 +832,9 @@ Pertanyaan terbuka di 27–35 diperiksa. Sebagian besar menunggu pihak lain (pen
 2. **Kartu jangkar bertumpuk dengan satu Cek** (31 §21 no. 2, §22 no. 6); ahli media memeriksanya di langkah 2. Tidak dipilih: kartu kedua muncul setelah pernyataan pertama dijawab.
 3. **Analisis memakai kode kesalahan dari bank terbaru** (31 §21 no. 3, §22 no. 7; [35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) §19 no. 5). Kode saat percobaan tetap di `item_tries.error_code` dan masuk lembar turunan sebagai `error_code_at_try`. Baris *Kode kesalahan mentah* dan kolom `error_code` di 35 disesuaikan. Tidak dipilih: kode saat percobaan.
 4. **Pengerjaan ulang tetap terbuka di P2–P4** setelah kelima tantangan wilayah pertemuan itu tuntas ([33](33_IMPLEMENTASI_MODE_PENELITIAN.md) §15 no. 4, §17 no. 5). Tidak dipilih: hanya di P5.
-5. **`kamus-1.1` ditulis ke 11 sekarang sebagai `draf pengembang`** (35 §18 no. 1, §19 no. 6), lalu direvisi setelah uji coba, dan dikunci di G4. Tidak dipilih: satu sesi setelah KG3b bersama peneliti (usulan AI).
+5. **`kamus-1.1` ditulis ke 11 sekarang sebagai `draf pengembang`** (35 §18 no. 1, §19 no. 6), lalu direvisi setelah uji coba, dan dikunci di G4. Tidak dipilih: satu sesi setelah KG3b bersama peneliti (usulan awal).
 6. **"Pengambilan data selesai" = jam putaran hitung**, tanpa kolom tanggal akhir di studi (35 §18 no. 3, §19 no. 7). Tidak dipilih: tanggal akhir yang diisi `ketua`.
-7. **Terjemahan bahasa Inggris bank baru didraf AI sekarang** dan disetujui pengembang; butir yang direvisi dari validasi diterjemahkan ulang (31 §21 no. 4, §22 no. 8). Tidak dipilih: diterjemahkan sekali setelah matriks revisi, sebelum G3 (usulan AI), atau studi hanya berbahasa Indonesia.
+7. **Terjemahan bahasa Inggris bank baru didraf pengembang sekarang** dan disetujui pengembang; butir yang direvisi dari validasi diterjemahkan ulang (31 §21 no. 4, §22 no. 8). Tidak dipilih: diterjemahkan sekali setelah matriks revisi, sebelum G3 (usulan awal), atau studi hanya berbahasa Indonesia.
 
 **Ditutup tanpa keputusan baru**, karena sudah dijawab dokumen lain:
 - 28 §21 no. 2–3 (batas 20 menit di P5 dan angket yang terlambat) dijawab di 34;
@@ -819,7 +849,7 @@ Pertanyaan terbuka di 27–35 diperiksa. Sebagian besar menunggu pihak lain (pen
 
 Diubah: 28, 31, 32, 33, 35, 00 (tabel gelombang), 04, `docs/PROGRESS.md`, dan PDF siap cetak.
 
-**32 diselaraskan dengan format data skenario bagian 5** (cabang `r10-dok-32-skenario-digital`, setelah PR #317) · `asal: pengembang` (penyelarasan berbantuan AI) · status 32 tetap `draf pengembang` · tidak merevisi produk
+**32 diselaraskan dengan format data skenario bagian 5** (cabang `r10-dok-32-skenario-digital`, setelah PR #317) · `asal: pengembang` (penyelarasan oleh pengembang) · status 32 tetap `draf pengembang` · tidak merevisi produk
 
 PR #317 digabung sebelum penyelarasan ini masuk. [31](31_IMPLEMENTASI_BANK_SOAL_BARU.md) (PR #314) menetapkan bahwa data skenario milik bagian 5. 32 kini membacanya dari sana, tanpa keputusan baru:
 - pilihan, skor, kode, dan umpan balik dari tabel `scenario_options`, bukan `config_json`/`answer_key_json`;
@@ -856,11 +886,11 @@ Gelombang A untuk 22 dan 23 selesai: cek kemutakhiran 23 (PR #311) dan 22 (PR #3
 
 Diubah: 04, 00 (baris 22 dan 23 di daftar dokumen dan tahap 2, catatan *Peneliti menerima PDF saja*), `docs/PROGRESS.md`, PDF siap cetak 00 dan 04. *Commit* serah terima sendiri tidak berubah: perubahan ini hanya mencatatnya.
 
-**34 diselaraskan dengan rencana `satu_sesi` di 28** (cabang `r10-dok-34-modul-tes-sikap`, setelah PR #315) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 34 tetap `draf pengembang` · tidak merevisi produk
+**34 diselaraskan dengan rencana `satu_sesi` di 28** (cabang `r10-dok-34-modul-tes-sikap`, setelah PR #315) · `asal: pengembang` (pemeriksaan oleh pengembang) · status 34 tetap `draf pengembang` · tidak merevisi produk
 
 28 K19 (rencana pertemuan per studi, digabung saat 34 ditulis) meminta 34 menulis bahwa rencana `satu_sesi` (KG2) tidak membuka modul tes, angket, butir risiko daring, dan skala sikap. Ditulis di 34 §5.1 dan K12; baris 28 di 34 §19 kini juga mencoret 28 §21 no. 3 (angket terlambat, diatur di 34 §10.2). Tidak ada keputusan baru.
 
-**22 dicek kemutakhirannya dan siap diserahkan ke peneliti sebagai PDF** (gelombang A, cabang `r10-cek-22`, 1–2 November 2026) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 22 tetap draf · tidak merevisi produk
+**22 dicek kemutakhirannya dan siap diserahkan ke peneliti sebagai PDF** (gelombang A, cabang `r10-cek-22`, 1–2 November 2026) · `asal: pengembang` (pemeriksaan oleh pengembang) · status 22 tetap draf · tidak merevisi produk
 
 [22](22_PERMOHONAN_IZIN_ETIK.md) dicek terhadap entri 04 sesudah *commit* terakhirnya (cek pasal PP 33/2026), terutama *Pembagian kerja baru* di bawah, terhadap 23, 24, 26, 30, 03, dan 01, dan terhadap kode. Tidak ada keputusan baru; yang diubah hanya yang sudah diputuskan. Nomor pasal PP No. 33 Tahun 2026 dan pemetaan formulir BRIN tidak disentuh.
 
@@ -879,9 +909,9 @@ Diubah: 04, 00 (baris 22 dan 23 di daftar dokumen dan tahap 2, catatan *Peneliti
 
 Diubah: 22, 26, 01 (satu baris tabel ADDIE), berkas serah terima (sumber HTML dan PDF v1.5), `dokumen-pdf/README.md`, 00 (dua baris 22, dua baris 26, rujukan versi berkas serah terima; ukuran 22 dibetulkan menjadi 203 KB), `docs/PROGRESS.md`, PDF siap cetak 00, 01, 04, 22, dan 26. *Commit* serah terima dicatat koordinator setelah PR digabung.
 
-**Dokumen implementasi bagian 9 didraf: lapis data turunan dan `kamus-1.1` usulan** (cabang `r10-dok-35-lapis-turunan`, gelombang B; wawancara 2 November 2026) · `asal: pengembang` (draf berbantuan AI, empat keputusan pengembang) · [35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) `draf pengembang` · tidak merevisi produk
+**Dokumen implementasi bagian 9 didraf: lapis data turunan dan `kamus-1.1` usulan** (cabang `r10-dok-35-lapis-turunan`, gelombang B; wawancara 2 November 2026) · `asal: pengembang` (draf oleh pengembang, empat keputusan pengembang) · [35](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) `draf pengembang` · tidak merevisi produk
 
-35 menulis perubahan sistem no. 9: satu kalkulator berversi (`App\Libraries\Derived\*`, fungsi murni yang diuji dengan contoh data hitungan tangan) yang menghitung semua data turunan 11 per putaran hitung satu studi, ditambah usulan `kamus-1.1`. `kamus-1.0` tidak diubah; sampai 11 diubah setelah uji coba, sistem menandai hasilnya `kamus-1.1-usulan`. Empat keputusan pengembang, semuanya usulan AI:
+35 menulis perubahan sistem no. 9: satu kalkulator berversi (`App\Libraries\Derived\*`, fungsi murni yang diuji dengan contoh data hitungan tangan) yang menghitung semua data turunan 11 per putaran hitung satu studi, ditambah usulan `kamus-1.1`. `kamus-1.0` tidak diubah; sampai 11 diubah setelah uji coba, sistem menandai hasilnya `kamus-1.1-usulan`. Empat keputusan pengembang, semuanya usulan awal:
 
 1. **Lapis turunan disimpan di tabel** `derived_*` (migrasi sementara `2026-01-01-004300_CreateDerivedLayer`), setiap baris membawa `run_id` dan `dictionary_version`; hasil yang berlaku diganti sekaligus lewat `research_studies.derived_run_id`. Tidak dipilih: dihitung saat unduhan dibuat.
 2. **Ambang di kolom studi** (`idle_threshold_ms` 180000, `rapid_guess_ms` 3000, bawaan dari `Config\Gelita`), diubah `ketua` dengan log audit dan dikunci di G4. Tidak dipilih: hanya di `Config\Gelita`.
@@ -892,12 +922,12 @@ Keputusan turunan untuk ditinjau (K5–K14 di 35): variabel turunan angket dan s
 
 Diubah: 35 (baru), 00 (*Daftar dokumen*, baris bagian 9 di *Tahap dokumen 3*), 04, `docs/PROGRESS.md`, PDF siap cetak.
 
-**Dokumen implementasi bagian 6 (32, Skenario Digital) didraf** (cabang `r10-dok-32-skenario-digital`, gelombang B) · `asal: pengembang` (disusun dengan bantuan AI; empat keputusan pengembang) · `draf pengembang` · tidak merevisi produk
+**Dokumen implementasi bagian 6 (32, Skenario Digital) didraf** (cabang `r10-dok-32-skenario-digital`, gelombang B) · `asal: pengembang` (disusun pengembang; empat keputusan pengembang) · `draf pengembang` · tidak merevisi produk
 
 [32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md) mengatur perubahan sistem no. 2, 6, dan 18: engine dua langkah (tindakan, lalu alasan), tantangan kelima di tiga wilayah, cerita penghubung `scenario_open`, 15 Serpihan Cahaya, narasi instruksi, dan aturan narasi. Empat keputusan pengembang dalam wawancara 2 November 2026:
 
 1. **Kode engine tersimpan `skenario`**, jenis butir `scenario_choice`. Tidak dipilih: `scenario`, `pilih`.
-2. **Narasi instruksi hanya lewat tombol ▶**, di kelima belas tantangan, tidak pernah otomatis; kode konteks audio `challenge_instruction`. Tidak dipilih: sekali otomatis ditambah ▶ (usulan AI), atau di kartu misi.
+2. **Narasi instruksi hanya lewat tombol ▶**, di kelima belas tantangan, tidak pernah otomatis; kode konteks audio `challenge_instruction`. Tidak dipilih: sekali otomatis ditambah ▶ (usulan awal), atau di kartu misi.
 3. **Tanpa sakelar studi:** engine selalu ada, tantangan kelima muncul bila bank memuatnya, total serpihan dihitung dari node aktif (12 menjadi 15), aturan narasi berlaku juga di luar studi. Tidak dipilih: di balik `field_mode`.
 4. **Urutan pilihan diacak sekali per pengerjaan**, tetap di ketiga kesempatan, dan disimpan di `answer_json` setiap percobaan. Tidak dipilih: diacak ulang setiap kesempatan.
 
@@ -905,7 +935,7 @@ Rancangan yang menurunkan sumber (tidak ditanyakan): kesempatan per skenario sep
 
 Diubah: 32 (baru), 00 (baris 32 di *Daftar dokumen* dan *Tahap dokumen 3*), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 32.
 
-**Bagian 8 dokumen implementasi didraf: modul tes, angket, dan skala sikap** (cabang `r10-dok-34-modul-tes-sikap`) · `asal: pengembang` (disusun dengan bantuan AI; empat keputusan pengembang) · `draf pengembang` · Prototipe I, belum merevisi produk
+**Bagian 8 dokumen implementasi didraf: modul tes, angket, dan skala sikap** (cabang `r10-dok-34-modul-tes-sikap`) · `asal: pengembang` (disusun pengembang; empat keputusan pengembang) · `draf pengembang` · Prototipe I, belum merevisi produk
 
 [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md) merancang perubahan sistem no. 21 dan 22 dari [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), memakai 13–18, 28 §6 dan §11, 29 §7.6, dan 30 §5.4. Isi instrumen tetap `needs_verification` dan disimpan di berkas data, jadi revisi dari validasi cukup berupa suntingan data lalu impor ulang. Empat pilihan diputuskan pengembang dalam satu putaran, semuanya opsi yang disarankan:
 
@@ -922,11 +952,11 @@ Diubah: 32 (baru), 00 (baris 32 di *Daftar dokumen* dan *Tahap dokumen 3*), `doc
 
 Diubah: 34 (baru), 04, 00 (*Daftar dokumen*, *Tahap dokumen 3*), `docs/PROGRESS.md`, PDF siap cetak.
 
-**Dokumen implementasi bagian 7: mode penelitian, waktu aktif, dan perbaikan media** (cabang `r10-dok-33-mode-penelitian`, gelombang B) · `asal: pengembang` (draf berbantuan AI, empat keputusan pengembang) · [33](33_IMPLEMENTASI_MODE_PENELITIAN.md) `draf pengembang` · tidak merevisi produk
+**Dokumen implementasi bagian 7: mode penelitian, waktu aktif, dan perbaikan media** (cabang `r10-dok-33-mode-penelitian`, gelombang B) · `asal: pengembang` (draf oleh pengembang, empat keputusan pengembang) · [33](33_IMPLEMENTASI_MODE_PENELITIAN.md) `draf pengembang` · tidak merevisi produk
 
 [33](33_IMPLEMENTASI_MODE_PENELITIAN.md) ditulis untuk perubahan sistem no. 5, 16, dan 19 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), dari 10, 11, 12, 28 §5 dan §9, 29 §5.4 dan §15, dan kode per *commit* `97f82d5`. Bagian ini hanya menyimpan data mentah; angka turunan (waktu aktif, dilewati, tersensor, tebakan cepat) dihitung bagian 9 (35), dengan batas yang ditulis di 33 §4. Semua perilaku game ada di balik `field_mode`; data mentah direkam di semua mode. Migrasi memakai blok `0041xx` (sementara).
 
-Empat keputusan pengembang, semuanya usulan AI:
+Empat keputusan pengembang, semuanya usulan awal:
 1. **Pengerjaan pertama yang terputus pindah ke sesi game baru** lewat UPDATE bersyarat, dan setiap potongannya dicatat di tabel baru `challenge_attempt_segments`. Tidak dipilih: pindah tanpa tabel potongan; pengerjaan tetap di sesi lama dengan pemeriksaan kepemilikan per siswa.
 2. **Pengerjaan ulang tetap memberi bintang seperti sekarang**; analisis mengabaikannya lewat `is_retake`. Tidak dipilih: pengerjaan ulang tidak mengubah bintang selama studi.
 3. **Layar kecil ditolak bila lebar panggung di bawah 960 px**, sebagai pengaturan studi `min_stage_px`. Tidak dipilih: di bawah 1024 px; ponsel menurut jenis perangkat.
@@ -942,7 +972,7 @@ Pertanyaan terbuka di 33 §15, termasuk tempat T_idle dan T_teb yang dipilih ber
 
 Diubah: 33 (baru), 00 (dua baris 33), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 33.
 
-**Dokumen implementasi bagian 5: bank soal baru ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md))** (cabang `r10-dok-31-bank-soal`, gelombang B) · `asal: pengembang` (draf berbantuan AI dan empat keputusan pengembang) · `draf pengembang` · merancang sistem, tidak merevisi produk
+**Dokumen implementasi bagian 5: bank soal baru ([31](31_IMPLEMENTASI_BANK_SOAL_BARU.md))** (cabang `r10-dok-31-bank-soal`, gelombang B) · `asal: pengembang` (draf oleh pengembang dan empat keputusan pengembang) · `draf pengembang` · merancang sistem, tidak merevisi produk
 
 Dokumen implementasi untuk perubahan sistem no. 1, 3, 4, 8, 17, dan 20 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti), dari 06, 08, 11, 19, 25, dan kode per 2 November 2026 (`main` `97f82d5`). Isinya: bank 08 di berkas data dan workbook dengan kolom dan sheet baru; impor; `DifficultyRules` dan `BankRules` baru; area ketuk kedua babak Cari Objek berjarak paling sedikit 24 dp (menggantikan batas tumpuk 20%); kode kesalahan diturunkan server ke `item_tries.error_code` dari matriks kode eksplisit di bank; variasi pengerjaan pertama dari buklet dan butir jangkar `x`; Cari Objek dua babak; label AKM dan dimensi dengan asalnya (`developer`/`expert`); variabel beban permukaan dihitung saat impor; pemetaan huruf Susun Gambar selama studi. Migrasi sementara `003900` dan `003910`. Kemajuan di `ChallengeService` tetap milik bagian 2 ([28 §8](28_IMPLEMENTASI_SESI_LAPANGAN.md#8-kemajuan-mengikuti-siswa-bukan-sesi-game)); engine Skenario Digital milik bagian 6.
 
@@ -951,13 +981,13 @@ Empat keputusan pengembang (wawancara satu putaran):
 1. **Data skenario dirancang di bagian 5** (sheet `scenarios`/`scenario_options`, tabel, impor, aturan bank); bagian 6 merancang engine, layar, skor, dan narasi. Tidak dipilih: data skenario di bagian 6; sheet di bagian 5 dan tabel di bagian 6.
 2. **Bagian ketuk *Periksa Unggahan* berupa kotak di workbook** (x, y, w, h dalam persen adegan), unggahan digambar dari kotak sebagai teks; satu geometri untuk aturan jarak dan jarak ketukan di lapis turunan. Tidak dipilih: templat CSS dengan pemeriksaan Playwright; gambar unggahan dengan titik ketuk.
 3. **Bank baru menggantikan bank lama di `main`**; bank lama di riwayat git dan `docs/arsip/bank-soal-lama/`; server produksi mendapat bank baru hanya saat pengembang menjalankan impor. Tidak dipilih: dua bank di balik sakelar; bank baru di cabang sampai G2.
-4. **Di mode penelitian, siswa tanpa buklet tidak bisa membuka tantangan yang dinilai** (`BOOKLET_MISSING`, pesan ramah); Susun Gambar tetap terbuka. Usulan AI adalah variasi acak `a`/`b` dengan penanda; pengembang memilih menahan supaya pengerjaan pertama selalu mengikuti desain buklet. Tidak dipilih: acak dengan penanda (usulan AI); buklet B1 sebagai bawaan.
+4. **Di mode penelitian, siswa tanpa buklet tidak bisa membuka tantangan yang dinilai** (`BOOKLET_MISSING`, pesan ramah); Susun Gambar tetap terbuka. Usulan awal adalah variasi acak `a`/`b` dengan penanda; pengembang memilih menahan supaya pengerjaan pertama selalu mengikuti desain buklet. Tidak dipilih: acak dengan penanda (usulan awal); buklet B1 sebagai bawaan.
 
 Pertanyaan terbuka di [31 → Pertanyaan terbuka](31_IMPLEMENTASI_BANK_SOAL_BARU.md#21-pertanyaan-terbuka): jumlah kisi-kisi tetap di kode (usulan) atau di data, tata letak kartu jangkar, kode bank yang direvisi setelah ada percobaan, terjemahan bahasa Inggris bank baru, penanda baris bacaan digital, dan ukuran adegan `HUNT_SCENE_DP`. Akibat ke 01, 03, 08, 11, 20, 21, 28, 29, bagian 6, dan glosarium dicatat di [31 → Akibat ke dokumen lain](31_IMPLEMENTASI_BANK_SOAL_BARU.md#23-akibat-ke-dokumen-lain) untuk sesi koordinator.
 
 Diubah: 31 (baru), 00 (daftar dokumen dan *Tahap dokumen 3*), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 31.
 
-**29 dicek kemutakhirannya dan disetujui pengembang** (cabang `r10-cek-29`, gelombang A sesi 5) · `asal: pengembang` (pemeriksaan berbantuan AI, delapan keputusan pengembang) · `disetujui pengembang` · tidak merevisi produk
+**29 dicek kemutakhirannya dan disetujui pengembang** (cabang `r10-cek-29`, gelombang A sesi 5) · `asal: pengembang` (pemeriksaan oleh pengembang, delapan keputusan pengembang) · `disetujui pengembang` · tidak merevisi produk
 
 [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) (bagian 3: pembersihan log, halaman log teknis admin, data mentah baru untuk kamus, unduhan `ketua` dengan lembar *Kamus Data* berversi, templat dan impor L1–L6) dicek terhadap entri 04 sesudah 30 Oktober 2026, terhadap 11, 26, 27, 28, dan 30, dan terhadap kode (`app/` dan `public/assets/js/` tidak berubah sejak 26 Oktober 2026).
 
@@ -980,7 +1010,7 @@ Dua putaran tanya, delapan pertanyaan; pengembang memilih usulan di semuanya ([2
 
 Diubah: 29, 00 (dua baris 29), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 29.
 
-**27 dicek kemutakhirannya dan disetujui pengembang; empat keputusan baru** (gelombang A, cabang `r10-cek-27`) · `asal: pengembang` (pemeriksaan berbantuan AI dan wawancara singkat) · 27 naik ke `disetujui pengembang` · belum merevisi produk
+**27 dicek kemutakhirannya dan disetujui pengembang; empat keputusan baru** (gelombang A, cabang `r10-cek-27`) · `asal: pengembang` (pemeriksaan oleh pengembang dan wawancara singkat) · 27 naik ke `disetujui pengembang` · belum merevisi produk
 
 Dokumen implementasi bagian 1 ([27](27_IMPLEMENTASI_PERAN_PENELITI.md)) dicek terhadap entri 04 sesudah *commit* terakhirnya (putaran kedua 30–31 Oktober 2026 dan semua entri 1 November 2026), dokumen yang dirujuknya, dan kode. Satu putaran tanya, empat pertanyaan; pengembang memilih usulan di keempatnya, lalu menyetujui dokumennya.
 
@@ -1003,7 +1033,7 @@ Diubah: 27, 00 (dua baris 27), 04, `docs/PROGRESS.md`, PDF siap cetak.
 
 ## 1 November 2026
 
-**30 dicek kemutakhirannya dan disetujui pengembang** (gelombang A, sesi 6 dari 6, cabang `r10-cek-30`; pertanyaan dijawab 2 November 2026) · `asal: pengembang` (pemeriksaan berbantuan AI, enam keputusan pengembang) · `disetujui pengembang` · tidak merevisi produk
+**30 dicek kemutakhirannya dan disetujui pengembang** (gelombang A, sesi 6 dari 6, cabang `r10-cek-30`; pertanyaan dijawab 2 November 2026) · `asal: pengembang` (pemeriksaan oleh pengembang, enam keputusan pengembang) · `disetujui pengembang` · tidak merevisi produk
 
 [30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md) dicek terhadap entri 04 sesudah *commit* terakhirnya (putaran kedua 30–31 Oktober; entri 1 November: ADDIE dengan KG3a/KG3b, versi dikunci di G4, aturan bangun sekarang, cek pasal PP), terhadap 22, 23, 26, 03, 27, 29, dan kode.
 
@@ -1011,7 +1041,7 @@ Diubah: 27, 00 (dua baris 27), 04, `docs/PROGRESS.md`, PDF siap cetak.
 - **Yang dicek dan tetap benar:** kode `app/` tidak berubah sejak 26 Oktober 2026; nomor baris rujukan cocok (satu dipertajam: hitungan retensi disaring di `RetentionService.php` baris 117–121); `HashedIpSessionHandler` ada, `Config\Session` masih `DatabaseHandler` (baris 29); lokasi kedua `backup.sh` tetap tanpa batas (`rsync -a`); migrasi `003800` ada di urutan 27 §6.1; peta kemampuan 27 §5.1 sama dengan 30 §14; teks id dan en T4, T11, T12 di 30 §17 sama dengan 23.
 - **Keputusan pengembang** (30 §22 no. 7–12; usulan dipilih kecuali no. 8):
   7. bagian 3 dan 4 dibangun paralel, bagian 4 digabung sesudah bagian 3;
-  8. semua isi bagian 4 di balik mode penelitian, termasuk IP berhash (sakelar `gelita.researchPrivacy`) dan batas 30 hari lokasi kedua cadangan (`KEDUA_HARI`); bawaan `retention_days` tetap 1825, 7305 hanya untuk studi `field_mode = 1`, migrasi `003800` tidak mengosongkan `ci_sessions` (usulan AI: perbaikan privasi langsung berlaku di `main`);
+  8. semua isi bagian 4 di balik mode penelitian, termasuk IP berhash (sakelar `gelita.researchPrivacy`) dan batas 30 hari lokasi kedua cadangan (`KEDUA_HARI`); bawaan `retention_days` tetap 1825, 7305 hanya untuk studi `field_mode = 1`, migrasi `003800` tidak mengosongkan `ci_sessions` (usulan awal: perbaikan privasi langsung berlaku di `main`);
   9. lembar `izin` ditambahkan ke unduhan utama `ketua`, unduhan terpisah tetap (30 §21 no. 4);
   10. kritik dan saran diperiksa nama oleh `ketua` sebelum studi ditutup, sebagai syarat penutupan (no. 5);
   11. provinsi dan kabupaten tetap disimpan setelah studi ditutup; komite diminta menilainya (no. 3);
@@ -1020,11 +1050,11 @@ Diubah: 27, 00 (dua baris 27), 04, `docs/PROGRESS.md`, PDF siap cetak.
 
 Diubah: 30, 00 (baris 30 di *Daftar dokumen* dan *Tahap dokumen 3*), `docs/PROGRESS.md` (baris sendiri di gelombang A), PDF siap cetak 30.
 
-**28 dicek kemutakhirannya dan disetujui pengembang** (gelombang A, cabang `r10-cek-28`) · `asal: pengembang` (pemeriksaan berbantuan AI; enam keputusan pengembang) · `disetujui pengembang` · belum merevisi produk
+**28 dicek kemutakhirannya dan disetujui pengembang** (gelombang A, cabang `r10-cek-28`) · `asal: pengembang` (pemeriksaan oleh pengembang; enam keputusan pengembang) · `disetujui pengembang` · belum merevisi produk
 
 [28](28_IMPLEMENTASI_SESI_LAPANGAN.md) (terakhir diubah 31 Oktober 2026) dicek terhadap entri 04 sesudahnya (putaran kedua 30–31 Oktober 2026; model ADDIE, KG3a/KG3b, satu awalan `U` dengan satu baris `research_studies` per uji, satu anak satu uji, versi dikunci di G4, aturan dibangun sekarang), terhadap 03, 20, dan 27 §6.1, dan terhadap kode (terakhir berubah 26 Oktober 2026). Dua putaran tanya, enam pertanyaan ([28 → Keputusan pengembang](28_IMPLEMENTASI_SESI_LAPANGAN.md#22-keputusan-pengembang) no. 7–12):
 
-1. **`gelita:uji:akun` tetap di gelombang kode D.** Alat ini bisa dibangun sendiri lebih awal, tetapi pengembang memilih membangunnya bersama bagian 2; instalasi uji tahap 2 (*commit* yang dibekukan) tetap memakai cara manual di 20 → Prasyarat no. 8, dan alat ini pertama dipakai di G3. Tidak dipilih: cabang tersendiri sebelum pembekuan (usulan AI).
+1. **`gelita:uji:akun` tetap di gelombang kode D.** Alat ini bisa dibangun sendiri lebih awal, tetapi pengembang memilih membangunnya bersama bagian 2; instalasi uji tahap 2 (*commit* yang dibekukan) tetap memakai cara manual di 20 → Prasyarat no. 8, dan alat ini pertama dipakai di G3. Tidak dipilih: cabang tersendiri sebelum pembekuan (usulan awal).
 2. **Rencana pertemuan per studi** (`research_studies.meeting_plan`, 28 K19): `lima_pertemuan` untuk KG3a, KG3b, KG5; `satu_sesi` untuk KG2 (daftar lalu satu wilayah yang dipilih saat sesi lapangan dibuat). Tidak dipilih: KG2 dengan `field_mode` mati; KG2 di instalasi terpisah.
 3. **Token menolak akun yang sudah punya sesi game di studi lain** (`other_study`, 28 K20), pelengkap aturan satu anak satu uji. Tidak dipilih: hanya prosedur lapangan.
 4. **Satu siswa di dua perangkat** tetap melanjutkan sesi game yang sama (28 §21 no. 6). Tidak dipilih: perangkat terbaru menutup yang lama.
@@ -1035,7 +1065,7 @@ Diselaraskan tanpa keputusan baru: "tahap 3, setelah G2" diganti aturan dibangun
 
 Diubah: 28, 00 (dua baris 28), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 28.
 
-**23 dicek kemutakhirannya dan siap diserahkan ke peneliti sebagai PDF** (cabang `r10-cek-23`, gelombang A sesi 2) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 23 tetap draf · tidak merevisi produk
+**23 dicek kemutakhirannya dan siap diserahkan ke peneliti sebagai PDF** (cabang `r10-cek-23`, gelombang A sesi 2) · `asal: pengembang` (pemeriksaan oleh pengembang) · status 23 tetap draf · tidak merevisi produk
 
 Atas permintaan pengembang, [23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md) (terakhir diubah 1 November 2026 pukul 14.12, pembaruan ADDIE) dicek terhadap entri 04 sesudahnya, terhadap 22, 24, 26, 30, 02 → L7, dan 03, dan terhadap kode. Tidak ada keputusan baru dan tidak ada pertanyaan untuk pengembang. Teks untuk orang tua, sekolah, guru, dan anak (T1–T3, T5–T10, T13) tidak berubah; T9 dari 1 November 2026 tetap.
 
@@ -1052,10 +1082,10 @@ Diubah: 23, 00 (dua baris 23), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 23
 
 Peneliti meminta dokumen permohonan izin etik ([22](22_PERMOHONAN_IZIN_ETIK.md)) serta surat informasi dan persetujuan ([23](23_SURAT_INFORMASI_DAN_PERSETUJUAN.md)). Semua validasi (validasi ahli, izin etik, uji keterbacaan, uji dengan siswa) ditangani peneliti. Pengembang cukup menyerahkan berkas awal, lalu fokus mengimplementasikan perubahan terbaru ke sistem. Pengembang tetap menyediakan bahan teknis yang diminta peneliti, misalnya isian kelompok B di 22 atau instalasi uji dan akun `uji.*` di [20](20_PAKET_VALIDASI.md). Empat keputusan lanjutan diambil pengembang dalam wawancara singkat:
 
-1. **Semua perubahan sistem dibangun sekarang** (no. 1–24 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)), termasuk yang bergantung pada hasil validasi (no. 1–6, 8, 9, 16–22). Pengerjaan ulang setelah hasil validasi kembali diterima. Tidak dipilih: hanya perubahan yang tidak bergantung pada validasi (no. 7, 10–15, 23, 24; usulan AI), atau tetap menunggu G2.
+1. **Semua perubahan sistem dibangun sekarang** (no. 1–24 di [01](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)), termasuk yang bergantung pada hasil validasi (no. 1–6, 8, 9, 16–22). Pengerjaan ulang setelah hasil validasi kembali diterima. Tidak dipilih: hanya perubahan yang tidak bergantung pada validasi (no. 7, 10–15, 23, 24; usulan pengembang), atau tetap menunggu G2.
 2. **Cek kemutakhiran hanya untuk 22, 23, 27, 28, 29, dan 30.** 22 dan 23 diserahkan sekarang; 27–30 menjadi dasar implementasi. Lima belas dokumen lain yang belum dicek (01, 02, 03, 06, 07, 08, 11, 14–18, 20, 21, 24) adalah bahan validasi dan penelitian. Dokumen itu diperbarui dari hasil validasi, atau saat dokumen implementasi merujuknya. Tidak dipilih: ke-21 dokumen dalam gelombang enam sesi, atau hanya 27–30.
-3. **Repo tetap salinan induk** 22, 23, 24, dan 26. Peneliti mengirim perubahan lewat pengembang. Sesi pengembang menerapkannya dengan label `asal: peneliti` (atau `asal: komite etik`), membuat ulang PDF siap cetak, lalu mengirimkannya kembali. Tidak dipilih: repo dibekukan saat diserahkan dan peneliti menyunting di luar repo (usulan AI).
-4. **Peneliti menerima PDF saja:** PDF siap cetak 22, 23, 24, dan 26 di `dokumen-pdf/cetak/`, ditambah berkas serah terima v1.4. Tidak dipilih: PDF ditambah Word (usulan AI), atau Word saja.
+3. **Repo tetap salinan induk** 22, 23, 24, dan 26. Peneliti mengirim perubahan lewat pengembang. Sesi pengembang menerapkannya dengan label `asal: peneliti` (atau `asal: komite etik`), membuat ulang PDF siap cetak, lalu mengirimkannya kembali. Tidak dipilih: repo dibekukan saat diserahkan dan peneliti menyunting di luar repo (usulan awal).
+4. **Peneliti menerima PDF saja:** PDF siap cetak 22, 23, 24, dan 26 di `dokumen-pdf/cetak/`, ditambah berkas serah terima v1.4. Tidak dipilih: PDF ditambah Word (usulan awal), atau Word saja.
 
 **Aturan baru untuk pekerjaan sistem.** Aturan ini menggantikan "sistem baru diubah di tahap 3, setelah G2" (urutan tahap yang dikukuhkan 25 Oktober 2026, dan dipertahankan peneliti dalam entri model ADDIE di bawah). Urutan tahap lainnya tetap.
 - Kode boleh dibangun sekarang, di cabang pendek dari `main`. Perilaku penelitian ada di balik sakelar studi yang mati secara bawaan (misalnya `field_mode`), jadi `main` tetap bisa dirilis.
@@ -1078,7 +1108,7 @@ Peneliti meminta dokumen permohonan izin etik ([22](22_PERMOHONAN_IZIN_ETIK.md))
 
 Diubah: 04, 01 (*Peta jalan dan daftar kerja*, *Catatan perubahan sistem untuk tahap nanti*), 00 (*Tahap dokumen 2* langkah berikutnya, *Tahap dokumen 3*), `docs/PROGRESS.md`, `.claude/rules/revisi-10.md`, PDF siap cetak 00, 01, dan 04.
 
-**26 diselaraskan dengan keadaan terbaru** (cabang `sky/upbeat-heisenberg-gxyw3p`, setelah PR #304) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 26 tetap `disetujui pengembang` v1.0 · tidak merevisi produk
+**26 diselaraskan dengan keadaan terbaru** (cabang `sky/upbeat-heisenberg-gxyw3p`, setelah PR #304) · `asal: pengembang` (pemeriksaan oleh pengembang) · status 26 tetap `disetujui pengembang` v1.0 · tidak merevisi produk
 
 Atas permintaan pengembang, [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) dicek terhadap keputusan sesudah perubahan terakhirnya (cek pasal PP 33/2026, entri di bawah), terhadap 22, 23, 24, dan 30, dan terhadap kode. Tidak ada keputusan baru; risiko, langkah perlindungan, dan simpulan tidak berubah, jadi versi tetap 1.0.
 
@@ -1092,7 +1122,7 @@ Atas permintaan pengembang, [26](26_PENILAIAN_DAMPAK_PELINDUNGAN_DATA.md) dicek 
 
 Diubah: 26, 00 (dua baris 26), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 26.
 
-**13 diselaraskan dengan dokumen implementasi bagian 2–4** (cabang `sky/amazing-cerf-j3jjzk`, setelah PR #302) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 13 tetap draf · tidak merevisi produk
+**13 diselaraskan dengan dokumen implementasi bagian 2–4** (cabang `sky/amazing-cerf-j3jjzk`, setelah PR #302) · `asal: pengembang` (pemeriksaan oleh pengembang) · status 13 tetap draf · tidak merevisi produk
 
 Atas permintaan pengembang, [13](13_TES_AWAL_AKHIR.md) dicek terhadap keputusan sesudah 26 Oktober 2026. Model ADDIE dan KG3a/KG3b sudah masuk 1 November 2026 (PR #299); yang tertinggal datang dari 28–30 (30 Oktober 2026). Tidak ada keputusan baru.
 
@@ -1106,7 +1136,7 @@ Atas permintaan pengembang, [13](13_TES_AWAL_AKHIR.md) dicek terhadap keputusan 
 
 Diubah: 13, 00 (baris 13), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 13.
 
-**25 diselaraskan dengan keadaan terbaru** (cabang `sky/upbeat-heisenberg-gxyw3p`) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 25 tetap `disetujui pengembang` · tidak merevisi produk
+**25 diselaraskan dengan keadaan terbaru** (cabang `sky/upbeat-heisenberg-gxyw3p`) · `asal: pengembang` (pemeriksaan oleh pengembang) · status 25 tetap `disetujui pengembang` · tidak merevisi produk
 
 Atas permintaan pengembang, [25](25_CEK_FAKTA_BUDAYA.md) (terakhir diubah 31 Oktober 2026) dicek terhadap keputusan sesudahnya, terhadap dokumen yang dirujuknya, dan terhadap kode. Tidak ada keputusan baru; putusan, sumber, dan hitungan klaim (135; 103 dikonfirmasi, 20 varian, 2 keliru, 10 `needs_verification`) tidak berubah.
 
@@ -1118,7 +1148,7 @@ Atas permintaan pengembang, [25](25_CEK_FAKTA_BUDAYA.md) (terakhir diubah 31 Okt
 
 Diubah: 25, 00 (baris 25), `docs/PROGRESS.md`, PDF siap cetak 00, 04, dan 25.
 
-**12 diselaraskan dengan keadaan terbaru** (cabang `sky/amazing-cerf-j3jjzk`) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 12 tetap `disetujui pengembang` · tidak merevisi produk
+**12 diselaraskan dengan keadaan terbaru** (cabang `sky/amazing-cerf-j3jjzk`) · `asal: pengembang` (pemeriksaan oleh pengembang) · status 12 tetap `disetujui pengembang` · tidak merevisi produk
 
 Atas permintaan pengembang, [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md) (terakhir diubah 27 Oktober 2026) dicek terhadap keputusan sesudahnya dan terhadap kode. Tidak ada keputusan baru; yang diubah hanya hal yang sudah diputuskan di dokumen lain.
 
@@ -1132,11 +1162,11 @@ Diubah: 12, 00 (baris 12 di daftar dokumen dan tahap 1), `docs/PROGRESS.md`, PDF
 
 **Target persetujuan etik dipertahankan** (cabang `r10-cek-pasal-pp33`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
 
-Pengembang memilih tetap memakai target di 01 → *Peta jalan dan daftar kerja* no. 15: persetujuan etik **paling lambat akhir September sampai minggu pertama November 2027**. Patokan panduan BRIN (± 1–2 bulan sejak berkas lengkap, kira-kira Januari–Februari 2027) tetap ditulis di garis waktu 22 sebagai perkiraan, bukan target. Persetujuan yang lebih awal tidak mengubah urutan gerbang: kegiatan dengan anak dan tahap 3 tetap menunggu G2. Tidak dipilih: target Januari–Februari 2027 dengan atau tanpa cadangan sampai Maret 2027 (usulan AI). Berkas serah terima C.3 no. 2 sekarang menyebut keputusan ini dan meminta peneliti mengonfirmasi atau menetapkan target lain.
+Pengembang memilih tetap memakai target di 01 → *Peta jalan dan daftar kerja* no. 15: persetujuan etik **paling lambat akhir September sampai minggu pertama November 2027**. Patokan panduan BRIN (± 1–2 bulan sejak berkas lengkap, kira-kira Januari–Februari 2027) tetap ditulis di garis waktu 22 sebagai perkiraan, bukan target. Persetujuan yang lebih awal tidak mengubah urutan gerbang: kegiatan dengan anak dan tahap 3 tetap menunggu G2. Tidak dipilih: target Januari–Februari 2027 dengan atau tanpa cadangan sampai Maret 2027 (usulan awal). Berkas serah terima C.3 no. 2 sekarang menyebut keputusan ini dan meminta peneliti mengonfirmasi atau menetapkan target lain.
 
 Diubah: 01 (no. 15 dan pertanyaan terbuka komisi etik), 22 (*Akibat ke dokumen lain*, baris 01), 00, berkas serah terima.
 
-**Nomor pasal PP No. 33 Tahun 2026 dicocokkan dengan PDF salinan resmi** (cabang `r10-cek-pasal-pp33`) · `asal: pengembang` (pemeriksaan berbantuan AI) · status 22 dan 26 tidak berubah · tidak merevisi produk
+**Nomor pasal PP No. 33 Tahun 2026 dicocokkan dengan PDF salinan resmi** (cabang `r10-cek-pasal-pp33`) · `asal: pengembang` (pemeriksaan oleh pengembang) · status 22 dan 26 tidak berubah · tidak merevisi produk
 
 Butir "cocokkan nomor pasal sekali lagi dengan PDF resmi" di 00 → *Langkah berikutnya di tahap 2* no. 2 dikerjakan, dipilih pengembang dari empat calon langkah. Sumbernya PDF hasil pindai salinan PP No. 33 Tahun 2026 dengan blok "Salinan sesuai dengan aslinya" Kementerian Sekretariat Negara, diunggah laman resmi Pemerintah Kabupaten Banyumas (120 halaman, batang tubuh Pasal 1–225, tanpa Penjelasan; ditetapkan dan diundangkan 16 Juli 2026, LN 2026 No. 88, berlaku enam bulan kemudian menurut Pasal 225). Teksnya dibaca lewat lapisan teks hasil pengenalan karakter dan setiap pasal yang dirujuk dibaca utuh. Semua rujukan pasal PP di 22 dan 26 diperiksa (Pasal 1 angka 4, 18, 19, 21; 6; 7; 13–15; 23–25; 27; 30; 32–33; 35–36; 38; 62; 70–71; 73–78; 82–89; 92; 114–122; 142–149; 154; Bab V, 160–162; 223; 225); rujukan di 23, 30, 02, dan berkas serah terima memakai nomor yang sama. Ini pemeriksaan dokumen, bukan nasihat hukum.
 
@@ -1224,7 +1254,7 @@ Peneliti memutuskan model penelitian dan pengembangan **ADDIE** (*Analyze, Desig
    - **Uji besar = pengambilan data utama (KG5)**: target **300 siswa yang datanya bisa dianalisis**; jumlah akhirnya boleh lebih atau kurang, dan perkiraan rekrut ± 360 tetap. Sekolahnya **sekitar enam sekolah utama** di wilayah Kedu, boleh lebih. Nama sekolah tidak ditulis di repo; kode dan pemetaan NPSN dipegang ketua peneliti (keputusan 31 Oktober 2026). Ini menggantikan "jumlah sekolah mengikuti ketersediaan kelas" (25 Oktober 2026) sebagai perkiraan, bukan batas.
    - Uji kelompok kecil dan menengah ada di fase *Develop* dan boleh memicu revisi. Sekolahnya di wilayah Kedu, di luar sekolah utama; jumlah sekolahnya bebas.
 2. **Yang tetap:** ECD sebagai metode merancang asesmen; aturan I-CVI Lynn (1986), V Aiken, κ, dan model Rasch; tes awal–akhir sebagai bukti validitas kriteria; peta jalan enam tahap dan lima gerbang; aturan "sistem diubah setelah G2". Semuanya metode di dalam fase ADDIE dan tidak bergantung pada Plomp, dan menutup kekurangan ADDIE soal kriteria mutu alat ukur.
-3. **Pemetaan ke fase ADDIE** (usulan pengembang, dibakukan saat 01 diperbarui):
+3. **Pemetaan ke fase ADDIE** (usulan awal, dibakukan saat 01 diperbarui):
 
    | Fase ADDIE | Tahap GELITA | Isi dan uji |
    | --- | --- | --- |
@@ -1410,7 +1440,7 @@ Satu putaran tanya, empat pertanyaan; pengembang memilih usulan di tiga pertanya
 1. **`ketua` mendapat lembar `event` dan kolom `answer_key`.** Lembar `event` hanya berisi event bertanda Peneliti, dengan kode sebagai pengganti id internal. Ini menjawab [27 → Data yang terlihat per peran](27_IMPLEMENTASI_PERAN_PENELITI.md#9-data-yang-terlihat-per-peran). Tidak dipilih: lembar `event` saja; tidak keduanya.
 2. **`answer_changed` digabung ke `answer_submitted`**, dengan `changed` di payload. Di kode, `answer_changed` ditulis server untuk kiriman Cari Objek yang dinilai, bukan perubahan sebelum Cek seperti tertulis di 01. Tidak dipilih: dihapus seperti tertulis di 01.
 3. **Data lama dihapus di migrasi** setelah `gelita:log:hitung` mencetak jumlahnya, dengan satu baris audit. Tidak dipilih: hanya berhenti menulis.
-4. **Templat terisi per sesi lapangan, ditambah impor L1–L6 ke sistem sekarang.** Usulan AI adalah templat terisi tanpa impor; pengembang memilih impor. Akibatnya lembar yang diketik kini juga tersimpan di server, berkode dan tanpa nama, dan masuk unduhan `ketua`. Pengaman yang diturunkan dari 02 dan 26: kutipan ucapan siswa L5 dan token L1 tidak diimpor, L7 tidak pernah di server, dan isian teks yang memuat kata nama siswa rombel itu memberi peringatan yang harus dikonfirmasi. Tidak dipilih: satu templat kosong; templat terisi tanpa impor.
+4. **Templat terisi per sesi lapangan, ditambah impor L1–L6 ke sistem sekarang.** Usulan awal adalah templat terisi tanpa impor; pengembang memilih impor. Akibatnya lembar yang diketik kini juga tersimpan di server, berkode dan tanpa nama, dan masuk unduhan `ketua`. Pengaman yang diturunkan dari 02 dan 26: kutipan ucapan siswa L5 dan token L1 tidak diimpor, L7 tidak pernah di server, dan isian teks yang memuat kata nama siswa rombel itu memberi peringatan yang harus dikonfirmasi. Tidak dipilih: satu templat kosong; templat terisi tanpa impor.
 
 Lima pertanyaan terbuka di [29 → Pertanyaan terbuka](29_IMPLEMENTASI_DATA_PENELITIAN.md#18-pertanyaan-terbuka) tidak menahan draf, antara lain situs statis lembar lapangan dan `is_touch`. Pertanyaan terbuka [28](28_IMPLEMENTASI_SESI_LAPANGAN.md#21-pertanyaan-terbuka) no. 5 dijawab: `markStale()` menulis `session_paused {via: idle}`.
 
@@ -1616,7 +1646,7 @@ Akibatnya (dibawa sesi yang memegang 22, 23, dan 01; daftar lengkap di [26 → A
 - **23:** T6 menyebut ringkasan penilaian dampak satu halaman.
 - Tempat kosong baru khusus 26: `[tanggal tinjauan pertama]`, `[tanggal penandatanganan]`, `[nama pengembang]`, `[nama pembimbing]`, `[saran PPDP atau narahubung]`, `[tanggapan sekolah]`. Tempat kosong bersama 22 dan 23 dipakai dengan teks yang sama.
 
-Bergantung pada PR #275 (cabang `sky/dazzling-planck-6cl9vy`, penamaan "pengembang" dan "AI"); `main` digabung ke cabang ini setelah #275 masuk.
+Bergantung pada PR #275 (cabang `sky/dazzling-planck-6cl9vy`, penamaan "pengembang" dan "pengembang"); `main` digabung ke cabang ini setelah #275 masuk.
 
 **Cek fakta budaya tim: 135 klaim dicek, B.7 IB diperbarui, perbaikan 08 dan 12 diputuskan** (cabang `r10-cek-fakta-budaya`, bergantung pada PR #275) · `asal: pengembang` · `draf pengembang`, keputusan perbaikan `disetujui pengembang` · Prototipe I, belum merevisi produk
 
@@ -1626,7 +1656,7 @@ Prasyarat no. 6 di [20 → Ringkasan](20_PAKET_VALIDASI.md#ringkasan) dipenuhi d
 - keterangan Susun Gambar;
 - cerita 12.
 
-Setiap klaim dicek ke sumber dengan bantuan AI, dan hanya sumber yang benar-benar dibuka yang dikutip. Hasilnya: 103 dikonfirmasi, 20 varian, 2 keliru, 10 `needs_verification`. Ini kerja pengembang, bukan validasi ahli; pengamat budaya mengonfirmasinya di B.7.
+Setiap klaim dicek pengembang ke sumber, dan hanya sumber yang benar-benar dibuka yang dikutip. Hasilnya: 103 dikonfirmasi, 20 varian, 2 keliru, 10 `needs_verification`. Ini kerja pengembang, bukan validasi ahli; pengamat budaya mengonfirmasinya di B.7.
 
 Yang diputuskan pengembang (dua putaran, empat pertanyaan per putaran):
 1. **Topeng Ireng `mgl-2-b04`.** Bacaan lama keliru: menurut dua kajian, gerak tari ini menggambarkan prajurit, bukan petani. Bacaan ditulis ulang ke makna keprajuritan dengan kunci *prajurit* dan pengecoh *penjajah* (INF-LIT); AKM L2 dan Bloom C2 tetap. Pengembang memilih ini, bukan usulan yang direkomendasikan (kunci *petani* tetap dengan kalimat baru).
@@ -1654,16 +1684,16 @@ Yang diubah:
 
 Yang dibawa sesi lain: di 20, prasyarat no. 6 dan daftar periksa pengamat budaya; di 21, "19 fakta" menjadi "44 fakta" (daftar di 25).
 
-**Peran pengembang, peneliti, dan ahli; "pemilik proyek" menjadi "pengembang", nama asisten menjadi "AI"** (cabang `sky/dazzling-planck-6cl9vy`) · `asal: pengembang` · Prototipe I, belum merevisi produk
+**Peran pengembang, peneliti, dan ahli; "pemilik proyek" menjadi "pengembang", alat bantu tidak disebut namanya** (cabang `sky/dazzling-planck-6cl9vy`) · `asal: pengembang` · Prototipe I, belum merevisi produk
 
-Pengembang menetapkan cara kerja revisi ini. Pengembang, dibantu AI, boleh mengerjakan hal yang nantinya diserahkan ke ahli, komite, atau pihak lain: memberi label, skor, telaah, dan validasi latihan, misalnya memberi skor pada butir instrumen validasi. Kerja itu ditandai jelas sebagai kerja pengembang. Peneliti menerima semuanya, menindaklanjutinya, menetapkannya, dan menyerahkannya ke ahli, komite, dan pihak terkait. Judul penelitian dan 10 analitik tetap berasal dari peneliti. Sebelum diputuskan final, tidak ada yang beku penuh: perubahan mendadak atau nanti tetap boleh, asalkan jelas berasal dari pengembang atau dari peneliti bersama ahli.
+Pengembang menetapkan cara kerja revisi ini. Pengembang boleh mengerjakan hal yang nantinya diserahkan ke ahli, komite, atau pihak lain: memberi label, skor, telaah, dan validasi latihan, misalnya memberi skor pada butir instrumen validasi. Kerja itu ditandai jelas sebagai kerja pengembang. Peneliti menerima semuanya, menindaklanjutinya, menetapkannya, dan menyerahkannya ke ahli, komite, dan pihak terkait. Judul penelitian dan 10 analitik tetap berasal dari peneliti. Sebelum diputuskan final, tidak ada yang beku penuh: perubahan mendadak atau nanti tetap boleh, asalkan jelas berasal dari pengembang atau dari peneliti bersama ahli.
 
 Yang diputuskan:
-- **Prinsip baru di [01 → Peran pengembang, peneliti, dan ahli](01_REVISI_10_ANALITIK.md#peran-pengembang-peneliti-dan-ahli).** Ada dua jalur. Kerja pengembang bukan validasi ahli: skornya tidak masuk V Aiken, I-CVI, S-CVI, κ, atau ICC, mengikuti T6 di 07. Ahli menilai tanpa melihat skor atau label pengembang. "Dibekukan" berarti versinya dicatat, bukan tidak boleh diubah. Versi yang mengikat pihak lain ada empat: paket validasi, lampiran izin etik, skema kode kesalahan setelah uji coba, dan kamus data sebelum pengambilan data. Satu orang yang memegang dua peran menandai keputusannya per peran. Bantuan AI ditulis terbuka di naskah penelitian.
-- **Peran baru di [03](03_KODE_DAN_ARTI.md#peran):** *Pengembang (berbantuan AI)*. Baris *Peneliti* ditambah perannya di dokumen revisi.
+- **Prinsip baru di [01 → Peran pengembang, peneliti, dan ahli](01_REVISI_10_ANALITIK.md#peran-pengembang-peneliti-dan-ahli).** Ada dua jalur. Kerja pengembang bukan validasi ahli: skornya tidak masuk V Aiken, I-CVI, S-CVI, κ, atau ICC, mengikuti T6 di 07. Ahli menilai tanpa melihat skor atau label pengembang. "Dibekukan" berarti versinya dicatat, bukan tidak boleh diubah. Versi yang mengikat pihak lain ada empat: paket validasi, lampiran izin etik, skema kode kesalahan setelah uji coba, dan kamus data sebelum pengambilan data. Satu orang yang memegang dua peran menandai keputusannya per peran..
+- **Peran baru di [03](03_KODE_DAN_ARTI.md#peran):** *Pengembang*. Baris *Peneliti* ditambah perannya di dokumen revisi.
 - **Label asal dan status di [00](00_INDEKS.md#label-asal-dan-status).** Asal: `pengembang`, `peneliti`, `peneliti + ahli`, `komite etik`. Status: `draf pengembang` → `disetujui pengembang` → `disetujui peneliti` → `tervalidasi ahli` → `final`. Status `disetujui pengembang` ditambahkan di antara draf dan persetujuan peneliti, karena semua yang dicatat "disetujui" sejauh ini ada di tingkat itu. `needs_verification` tetap penanda terpisah.
 - **"Pemilik proyek" diganti "pengembang"** di semua berkas folder ini, kecuali draf asli di `dokumen-pdf/arsip/` yang tidak diubah. Penggantian mencakup Markdown, sumber HTML instrumen, dokumen pendukung peneliti, gambar SVG, skrip `berkas-validator.php`, dan `LAPORAN.md`. Jangkar ikut berubah, misalnya `#keputusan-pemilik-proyek` menjadi `#keputusan-pengembang`. Keputusan lama di catatan ini ikut ditulis ulang dengan kata "pengembang". Kedudukannya `disetujui pengembang`, dan peneliti mengukuhkannya saat menindaklanjuti.
-- **Nama asisten diganti "AI".** Contohnya: kolom penyusun "AI (draf), pengembang"; T6 di 07 "AI bukan validator"; "Disusun: AI" di dokumen pendukung peneliti. Yang tetap hanya jalur berkas aturan `.claude/rules/`, karena itu nama folder di repo.
+- **Nama asisten diganti "pengembang".** Contohnya: kolom penyusun "pengembang"; T6 di 07 "pengembang bukan validator"; "Disusun: Pengembang" di dokumen pendukung peneliti. Yang tetap hanya jalur berkas aturan `.claude/rules/`, karena itu nama folder di repo.
 - PDF ketiga instrumen dan dokumen model penelitian dibuat ulang dari sumbernya; jumlah halamannya sama (43, 31, 29, 12). Berkas validator dibuat ulang dari instrumen yang diperbarui.
 
 Pekerjaan sebelum validasi dan izin etik dilanjutkan di sesi paralel. Masing-masing memakai prinsip ini dan mencatat keputusannya sendiri di sini.
@@ -2380,7 +2410,7 @@ Tahap 4, operasional penelitian:
 
 Tahap 5, rencana dokumen:
 
-- **Cerita penghubung dan narasi tantangan kelima didraf AI** dari skenario di 08, disetujui pengembang, dan direkam pengisi suara yang sama dengan narasi lain di sesi rekaman yang sama.
+- **Cerita penghubung dan narasi tantangan kelima didraf pengembang** dari skenario di 08, disetujui pengembang, dan direkam pengisi suara yang sama dengan narasi lain di sesi rekaman yang sama.
 - **Skala sikap diisi sekali, di P5**, di Balai Refleksi setelah cerita penutup.
 - **Dokumen berikutnya: kamus data** (`11_KAMUS_DATA.md`, daftar kerja no. 2), yang membekukan definisi 10 analitik, "dilewati", waktu aktif, tersensor, dan kode. Dokumen tahap 1 lain merujuk ke sana.
 - **Aturan menjaga konteks** dicatat di `.claude/rules/revisi-10.md` (dimuat saat berkas di folder ini disentuh), dan [00_INDEKS.md](00_INDEKS.md) memuat status setiap dokumen, urutan baca, dan tahap dokumen yang tersisa.
@@ -2420,7 +2450,7 @@ Keempat usulan dari telaah pendahuluan media ([10](10_TELAAH_PENDAHULUAN_MEDIA.m
 - **Jam disembunyikan selama penelitian.** Waktu tetap direkam server. Hitungan benar/salah boleh tampil setelah Cek pertama sebagai umpan balik. Diatur lewat mode penelitian di konfigurasi studi.
 - **Aturan narasi.** Bacaan dan pernyataan D1 tidak pernah dibacakan. Situasi Skenario Digital (D2) dan petunjuk *Periksa Unggahan* (D3) boleh dibacakan lewat tombol ▶, tidak diputar otomatis, dan pemutarannya tercatat. Kalimat kisi-kisi "teks di layar game tetap dibacakan narasi seperti sekarang" dibaca dengan aturan ini.
 
-**Telaah pendahuluan media (AI, bukan validasi ahli)**
+**Telaah pendahuluan media (pengembang, bukan validasi ahli)**
 
 - Media game ditelaah di instalasi uji lokal: [10_TELAAH_PENDAHULUAN_MEDIA.md](10_TELAAH_PENDAHULUAN_MEDIA.md). Tiga temuan berkode V dan keparahan 3 perlu keputusan pengembang sebelum uji coba:
   - pengambilan data tidak memakai ponsel
@@ -2437,7 +2467,7 @@ Keempat usulan dari telaah pendahuluan media ([10](10_TELAAH_PENDAHULUAN_MEDIA.m
   - κ berbobot untuk level AKM.
   - Perkiraan beban kerja dicantumkan di surat permohonan.
 - Ahli media masuk daftar bidang validasi (daftar kerja no. 14).
-- AI berperan sebagai penelaah pendahuluan, bukan validator: skornya tidak dihitung dan AI tidak melakukan pelabelan buta. Telaah pendahuluan media dikerjakan di instalasi uji lokal.
+- pengembang berperan sebagai penelaah pendahuluan, bukan validator: skornya tidak dihitung dan pengembang tidak melakukan pelabelan buta. Telaah pendahuluan media dikerjakan di instalasi uji lokal.
 - Belum ada data siswa asli di server. Bank soal baru boleh memakai susunan kode butir yang baru.
 - Setiap tantangan yang dinilai cukup punya **dua variasi (a/b)**, bukan tiga.
 - Analisis memakai **model multidimensi *between-item***: setiap butir punya tepat satu dimensi utama.
@@ -2445,7 +2475,7 @@ Keempat usulan dari telaah pendahuluan media ([10](10_TELAAH_PENDAHULUAN_MEDIA.m
 - Beberapa bacaan diubah menjadi **teks bergenre digital**.
 - Kisi-kisi bank soal baru disusun di sesi terpisah, di [06_KISI_KISI_BANK_SOAL.md](06_KISI_KISI_BANK_SOAL.md) (branch `kisi-kisi-bank-soal`). Disetujui pada hari yang sama (lihat di atas).
 - Draf instrumen validasi ahli (r10 untuk ahli materi dan pengamat budaya, serta instrumen ahli media) ditelaah di [07_TELAAH_INSTRUMEN_VALIDASI.md](07_TELAAH_INSTRUMEN_VALIDASI.md). Versi 1.0 instrumen ahli materi sudah digantikan r10.
-- Seluruh isi bank soal yang ada terbuka untuk diubah, diperbaiki, dihapus, dan ditambah sesuai kebutuhan penelitian. Bank soal baru disusun bersama AI. Batas yang tetap berlaku hanya batas teknis penelitian: kunci jawaban tetap di server, butir baru atau yang diubah berstatus `needs_verification` sampai divalidasi, dan kode butir yang sudah punya data siswa tidak dipakai ulang untuk isi yang berbeda.
+- Seluruh isi bank soal yang ada terbuka untuk diubah, diperbaiki, dihapus, dan ditambah sesuai kebutuhan penelitian. Bank soal baru disusun bersama pengembang. Batas yang tetap berlaku hanya batas teknis penelitian: kunci jawaban tetap di server, butir baru atau yang diubah berstatus `needs_verification` sampai divalidasi, dan kode butir yang sudah punya data siswa tidak dipakai ulang untuk isi yang berbeda.
 
 **Telaah butir dan dimensi** (rumusan keputusannya berlaku sejak kisi-kisi 06 disetujui, lihat di atas)
 

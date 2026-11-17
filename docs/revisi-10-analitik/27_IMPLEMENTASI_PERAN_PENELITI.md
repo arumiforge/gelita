@@ -2,7 +2,7 @@
 
 Per 3 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 10 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
 
-> **Status: `disetujui pengembang`, `asal: pengembang`** (disusun dengan bantuan AI, 30 Oktober 2026; dicek kemutakhirannya dan disetujui pengembang 2 November 2026, [§17](#17-keputusan-pengembang) no. 6–9). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 kodenya dibangun sekarang, di cabang pendek dari `main`, sebagai gelombang C (bagian 1 sendirian, sebelum bagian lain), tanpa menunggu G2 ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026 *Pembagian kerja baru*). Sistem baru tidak dipakai dengan anak sebelum persetujuan etik terbit.
+> **Status: `disetujui pengembang`, `asal: pengembang`** (disusun pengembang, 30 Oktober 2026; dicek kemutakhirannya dan disetujui pengembang 2 November 2026, [§17](#17-keputusan-pengembang) no. 6–9). Ini dokumen, bukan perubahan sistem. Sejak 1 November 2026 kodenya dibangun sekarang, di cabang pendek dari `main`, sebagai gelombang C (bagian 1 sendirian, sebelum bagian lain), tanpa menunggu G2 ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026 *Pembagian kerja baru*). Sistem baru tidak dipakai dengan anak sebelum persetujuan etik terbit.
 >
 > Setelah hasil validasi kembali, isinya dicek ulang sekali terhadap matriks revisi induk ([20](20_PAKET_VALIDASI.md)) dan keputusan komite etik.
 >

@@ -720,7 +720,7 @@ final class ImageSlots
         'library.*' => [
             'group'       => 'library',
             'label'       => 'Gambar Pustaka',
-            'content'     => 'Foto atau ilustrasi halaman Pustaka. Bawaannya memakai tautan Wikimedia Commons; ilustrasi AI dari Katalog Aset dipasang sementara lewat gelita:katalog:impor dan dapat diganti foto asli kapan saja.',
+            'content'     => 'Foto atau ilustrasi halaman Pustaka. Bawaannya memakai tautan Wikimedia Commons; ilustrasi buatan pengembang dari Katalog Aset dipasang sementara lewat gelita:katalog:impor dan dapat diganti foto asli kapan saja.',
             'screens'     => [['Pustaka Kedu', '/pustaka']],
             'format'      => 'WebP, JPG, atau PNG',
             'transparent' => false,

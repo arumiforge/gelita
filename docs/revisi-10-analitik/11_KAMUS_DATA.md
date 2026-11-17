@@ -4,7 +4,7 @@
 
 Per 9 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · `kamus-1.1` (`disetujui pengembang` 9 November 2026; draf 3 November 2026) di atas `kamus-1.0` (disetujui pengembang 26 Oktober 2026, daftar kerja no. 2); ambang jeda dan tebakan cepat masih sementara
 
-> **`kamus-1.1`: `disetujui pengembang` (9 November 2026, [04](04_CATATAN_KEPUTUSAN.md)), `asal: pengembang`** (disusun dengan bantuan AI, 3 November 2026), ditulis sekarang atas keputusan pengembang 2 November 2026 ([04](04_CATATAN_KEPUTUSAN.md); [35 → Keputusan pengembang](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#19-keputusan-pengembang) no. 6). Isinya usulan [35 §8.2](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#82-isi-yang-diusulkan) dan variabel yang diserahkan 13, 16, 17, dan dokumen implementasi 28–34. **Tidak ada definisi `kamus-1.0` yang diubah**: yang baru menambah sumber data, variabel, dan penegasan, dan ditandai *(1.1)*. Daftarnya di [Yang baru di `kamus-1.1`](#yang-baru-di-kamus-11). Teks `kamus-1.0` tetap bisa dibaca di riwayat git (*commit* `751522a`).
+> **`kamus-1.1`: `disetujui pengembang` (9 November 2026, [04](04_CATATAN_KEPUTUSAN.md)), `asal: pengembang`** (disusun pengembang, 3 November 2026), ditulis sekarang atas keputusan pengembang 2 November 2026 ([04](04_CATATAN_KEPUTUSAN.md); [35 → Keputusan pengembang](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#19-keputusan-pengembang) no. 6). Isinya usulan [35 §8.2](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#82-isi-yang-diusulkan) dan variabel yang diserahkan 13, 16, 17, dan dokumen implementasi 28–34. **Tidak ada definisi `kamus-1.0` yang diubah**: yang baru menambah sumber data, variabel, dan penegasan, dan ditandai *(1.1)*. Daftarnya di [Yang baru di `kamus-1.1`](#yang-baru-di-kamus-11). Teks `kamus-1.0` tetap bisa dibaca di riwayat git (*commit* `751522a`).
 >
 > Angka ambang, batas `game_time_group`, dan urutan alasan ditetapkan ulang setelah uji kelompok kecil dan menengah (KG3a, KG3b) sebagai versi baru `kamus-1.2`, dengan `asal: peneliti` bila peneliti yang menetapkannya. Versi dikunci di G4 bersama versi game.
 
@@ -26,7 +26,7 @@ Kamus ini sendiri tidak mengubah sistem. Sejak 1 November 2026 sistem dibangun s
 
 | Versi | Kapan | Isi |
 | --- | --- | --- |
-| Draf | 25 Oktober 2026 | Disusun AI, dengan empat pertanyaan untuk pengembang |
+| Draf | 25 Oktober 2026 | Disusun pengembang, dengan empat pertanyaan untuk pengembang |
 | `kamus-1.0` | 26 Oktober 2026, disetujui pengembang | Semua definisi beku. Ambang jeda (3 menit) dan tebakan cepat (3 detik) masih sementara |
 | `kamus-1.1` draf | 3 November 2026, `draf pengembang` | Sumber data, variabel, dan penegasan dari 13, 16, 17, dan 28–35 ([Yang baru di `kamus-1.1`](#yang-baru-di-kamus-11)). Selama belum disetujui, sistem menulisnya `kamus-1.1-usulan` di lembar *Kamus Data*, dengan catatan "usulan, belum disetujui" ([35 §8.1](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#81-cara-versinya-berjalan)) |
 | `kamus-1.1` | 9 November 2026, `disetujui pengembang` | Isi draf 3 November 2026 tanpa perubahan; sistem menulis `kamus-1.1` tanpa catatan usulan. Ambang tetap sementara (jeda 3 menit, tebakan cepat 3 detik, tes 3 detik) |
