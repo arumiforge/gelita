@@ -257,7 +257,7 @@ Satu baris untuk **setiap butir yang dinilai** di variasi buklet siswa, juga yan
 | `hint_count` | Disalin `challenge_attempts.hint_count` | Analitik 7 |
 | `instruction_replays` | Banyak aksi `play`/`replay` dengan `context_code = challenge_instruction` di pengerjaan ini; semua putaran dihitung, karena narasi instruksi tidak pernah berbunyi sendiri (32 K10, §8.2) | Analitik 7 |
 | `material_returns` | (a) `library_opened` saat pengerjaan belum tertutup + (b) `passage_reopened` (29 §6.3) | Analitik 8 |
-| `exit_count` | Banyak `challenge_abandoned` pengerjaan ini sebelum tertutup | Analitik 8 |
+| `exit_count` | Banyak `challenge_abandoned` pengerjaan ini sebelum tertutup, tanpa yang pembukaan berikutnya di pengerjaan itu adalah pembukaan muat ulang (`challenge_opened` dengan `resumed` dan `reload` bernilai benar) di sesi bermain yang sama (keputusan pemilik 17 November 2026, [32 §15.3](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#153-cek-manual) temuan (d); usulan `kamus-1.2`, [11](11_KAMUS_DATA.md#usulan-kamus-12-muat-ulang-dan-exit_count)) | Analitik 8 |
 | `reading_max_pct` | `reading_progress` terbesar | Analitik 8 |
 | `meeting_no`, `field_session_code` | Dari sesi game potongan pertama | Kunci |
 
@@ -678,6 +678,7 @@ Diikuti dari keputusan dokumen lain di sesi yang sama:
     - Nilai versi yang ditulis: `kamus-1.1-usulan` (`ResearchDictionary::VERSION`), sampai 11 menyetujui `kamus-1.1`.
 15. **`after_withdrawal` di lembar mentah dihitung saat unduhan** dari `participant_consents` dan `deactivated_at` dengan aturan saat mundur yang sama (K4), bukan dibaca dari putaran, supaya ada juga sebelum putaran pertama.
 16. **Event `item_shown` untuk waktu per butir yang tepat** (putaran 2, 9 November 2026): game mengirim `item_shown` setiap kali petunjuk Cari Objek atau skenario tampil di layar (`round`, `via`: `start`, `next`, `jump`, `round2`, `t_ms`). Waktu butir hanya dihitung selama butir itu tampil (dari `item_shown` butir itu sampai `item_shown` berikutnya di pengerjaan yang sama, di dalam jendela pengerjaan). Pengerjaan tanpa `item_shown` (data lama) tetap memakai seluruh rentang. Tidak dipilih: perkiraan tanpa event.
+    - *Catatan 17 November 2026* ([32 §15.3](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#153-cek-manual) temuan (c)): `ready_ms` dihitung dari pemuatan layar tantangan, dan muat ulang memulai jam layar lagi dari 0 (jam layar tetap, keputusan pemilik). Muat ulang di sesi bermain yang sama tidak membuka potongan baru, jadi cadangan "awal potongan + `ready_ms`" untuk pengerjaan tanpa `item_shown` bisa mulai terlalu awal bila percobaan pertama butir itu terjadi setelah muat ulang. Data studi selalu punya `item_shown` (jam server), jadi cadangan itu hanya menyentuh data lama.
 
 ---
 

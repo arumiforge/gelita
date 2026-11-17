@@ -578,3 +578,11 @@ Empat pertanyaan di draf diputuskan pengembang pada 26 Oktober 2026:
 7. Jawaban butir risiko daring hanya sebagai angka gabungan (29 K9).
 8. Status tes berasal dari modul; L6 tidak diimpor (29 K12).
 9. `manual_code` dari L5: kode butir itu atau `*-LAIN` dimensinya, hanya bila disepakati dan berbeda dari kode game; kode alasan yang dikode tangan tetap di lembar (3 November 2026; 02 → L5, 29 §19 no. 15–17).
+
+### Usulan `kamus-1.2`: muat ulang dan `exit_count`
+
+Usulan untuk `kamus-1.2` (keputusan pemilik 17 November 2026, [32 §15.3](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#153-cek-manual) temuan (d)). Definisi `kamus-1.1` dan versi kamus tidak berubah sampai `kamus-1.2` ditetapkan.
+
+1. **Kunci kiriman `reload`.** Halaman tantangan yang dimuat ulang mengirim `challenge_opened` dari klien dengan `resumed: true` dan `reload: true` (dari `performance.getEntriesByType('navigation')`, jenis `reload`). Pembukaan lain tidak membawa kunci ini. Event `challenge_abandoned {via: pagehide}` yang ditulis sebelum muat ulang tetap disimpan apa adanya, karena peramban tidak bisa membedakan muat ulang dari menutup tab.
+2. **`exit_count` (pengerjaan, [Analitik 8](#analitik-8-navigasi-permainan)).** Banyak `challenge_abandoned` pengerjaan itu sebelum tertutup, **tanpa** event yang pembukaan berikutnya di pengerjaan itu adalah pembukaan muat ulang (`challenge_opened` dengan `resumed` dan `reload` benar) di sesi bermain yang sama. Keluar lalu kembali lewat peta, atau dilanjutkan di sesi bermain lain, tetap dihitung. Rinciannya di [35 §6.3](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md).
+3. **Jam layar.** `ready_ms`, `first_input_ms`, `last_input_ms`, waktu alasan Skenario Digital, dan `t_ms` di `item_shown` dan `passage_reopened` dihitung dari pemuatan layar tantangan ini; muat ulang memulai jam itu lagi dari 0 (temuan (c), tanpa perubahan kode; [29 §6.1](29_IMPLEMENTASI_DATA_PENELITIAN.md#61-saat-butir-bisa-dijawab-ready_ms), [32 §6.4](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#64-waktu)).

@@ -534,7 +534,11 @@ export async function bootChallenge() {
 
   if (data.resumed) {
     // Pembukaan pertama sudah dicatat server; yang dicatat di sini melanjutkan attempt
-    emit('challenge_opened', { ...refs, payload: { resumed: true, attempt_no: data.attempt_no ?? null } });
+    // 32 §15.3 (d): a reload of the page marks its opening, so the analysis
+    // can leave the reload's `challenge_abandoned {via: pagehide}` out of exit_count
+    let reload = false;
+    try { reload = performance.getEntriesByType('navigation')[0]?.type === 'reload'; } catch { /* old browser */ }
+    emit('challenge_opened', { ...refs, payload: { resumed: true, attempt_no: data.attempt_no ?? null, ...(reload ? { reload: true } : {}) } });
   }
 
   Sfx.music('challenge');

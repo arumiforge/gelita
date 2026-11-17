@@ -110,10 +110,51 @@ final class AttemptCalculator
             'hint_count'           => (int) ($attempt['hint_count'] ?? 0),
             'instruction_replays'  => $replays,
             'material_returns'     => $count('library_opened') + $count('passage_reopened'),
-            'exit_count'           => $count('challenge_abandoned'),
+            'exit_count'           => self::exitCount(array_values(array_filter($context['events'], $before))),
             'reading_max_pct'      => $reading,
             'meeting_no'           => $context['meeting_no'],
             'field_session_id'     => $context['field_session_id'],
         ];
+    }
+
+    /**
+     * `exit_count` (owner, 17 November 2026; 32 §15.3 (d), proposed
+     * kamus-1.2): the attempt's `challenge_abandoned` events, leaving out
+     * one whose next opening of the same attempt is a reload of the page
+     * (`challenge_opened` with `resumed` and `reload` true) in the same game
+     * session. The raw abandon stays in the event log.
+     *
+     * @param list<array<string, mixed>> $events the attempt's events (up to its closing)
+     */
+    public static function exitCount(array $events): int
+    {
+        usort($events, static fn (array $a, array $b): int => [(int) $a['at'], (int) ($a['id'] ?? 0)] <=> [(int) $b['at'], (int) ($b['id'] ?? 0)]);
+        $count = 0;
+
+        foreach ($events as $i => $event) {
+            if ($event['type'] !== 'challenge_abandoned') {
+                continue;
+            }
+
+            $reload = false;
+
+            foreach (array_slice($events, $i + 1) as $next) {
+                if ($next['type'] === 'challenge_abandoned') {
+                    break;
+                }
+
+                if ($next['type'] === 'challenge_opened') {
+                    $payload = (array) ($next['payload'] ?? []);
+                    $reload  = ! empty($payload['resumed']) && ! empty($payload['reload'])
+                        && (int) ($next['session_id'] ?? 0) === (int) ($event['session_id'] ?? 0);
+
+                    break;
+                }
+            }
+
+            $count += $reload ? 0 : 1;
+        }
+
+        return $count;
     }
 }
