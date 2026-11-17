@@ -23,7 +23,7 @@ Documents in `docs/revisi-10-analitik/` (Indonesian, at the owner's request); th
   - [x] `29` (research data, part 3), 16 November 2026, same branch: wave E deviations (§19 no. 18, approved by the researcher 17 November 2026), the owner's wave E answers (L5 three worksheets, blank L0), seams from parts 4, 6–9, new events `item_shown` and `sound_check_answered`, manual-check results of 9 and 14 November.
   - [x] `28` (field sessions, part 2), 16 November 2026, same branch: token refusals `withdrawn` and `too_many`, sound check after the token, the field-day panel (today's sessions, printable card, seat plan, attention codes and alert sound, *Kerja lapangan* menu), *Tambah waktu* only on the field session page, simulator refusal; wave D deviations listed in §22 no. 15, approved by the researcher 17 November 2026. §19.3 never run as one list.
   - [x] `13`–`15` and `02` L0, 17 November 2026, same branch: 13 status line, raw-answer shape, test rapid-guess threshold, new section on the built module (`tes.php` is the content source); 14/15 header notes and the *Tampilan* column of the redrawn test pictures (`R-06` to `R-10`); 02 L0 sound-check row. Test items stay `needs_verification`.
-  - [ ] Later: 02 L0 can name the sound-check result in Pemantauan once that is built.
+  - [x] 02 L0 names the sound-check result in Pemantauan (17 November 2026, branch `r10-panel-hak-data`)
 - [x] Implementation of the 24 system changes listed in `01`, parts `27`–`35`, in code waves C–F (PR #332–#351, merged by 9 November 2026); leftovers:
   - [x] Owner (wave E, part 6): the three five-stop region maps, the Skenario Digital card and the three bridge backgrounds accepted and installed 16 November 2026 (branch `nty/eloquent-tesla-2ogw1c`); five stops per map measured into `CatalogImporter::MAP_STOPS` (challenge 5 included); the interim bridge backgrounds and their mockup folder are gone
   - [x] Manual checks on a MariaDB dev install (wave E). Server-side parts on MariaDB 10.11 in the cloud container on 9 November 2026 (29 §16.3 no. 1 and 3–5, 30 §19.3 no. 7); the rest on 14 November 2026 with Playwright, branch `r10-cek-manual-gelombang-e` (`04`): 29 §16.3 no. 2, 30 §19.3 no. 1–6 and 8, 32 §15.3 no. 1–6 all passed. Three bugs fixed on that branch: Skenario Digital result card, instruction band and its narration button, `backup.sh --ganti` with an unplugged second-location drive
@@ -143,7 +143,7 @@ Decisions in `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md` (16 November 2026
 - [x] Last slide: no ▶ and no Lewati; *Mulai petualangan* low at the right
 - [ ] Pictures `R-27` to `R-30` (slides 1, 6, 7, 8) and `R-31` to `R-33` (avatar expressions): made by ChatGPT and merged into `ai-studio/chatgpt-images/out/` (PR #398, 16 November 2026; sizes checked, a quick look found nothing against the prompts). `R-28`, `R-29`, `R-31`–`R-33` accepted by the owner through ChatGPT (exceptions in `TASKS.md`); `R-27` and `R-30` still `generated`, waiting for the owner. None installed yet
 - [x] Research-mode sound-check screen `/cek-suara` (04, 15 November 2026, decision 4): event `sound_check_answered`; 33 §7.6, 11 (Analitik 7)
-- [ ] Sound-check result on the monitoring page (02 L0 follow-up of the same decision)
+- [x] Sound-check result on the monitoring page: column *Cek suara* for researchers and the head researcher, not in *Perlu perhatian* (owner, 17 November 2026; branch `r10-panel-hak-data`)
 
 ## Before the research starts
 
