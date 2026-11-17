@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 1 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 9 · `asal: pengembang` · Status: **`draf pengembang`**, diselaraskan dengan draf 14–16; keempat pertanyaan pengembang sudah diputuskan 26 Oktober 2026 ([bagian akhir](#keputusan-pengembang)); menunggu validasi ahli di tahap 2
+Per 17 November 2026 (cek kemutakhiran setelah modul tes dibangun) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Daftar kerja no. 9 · `asal: pengembang` · Status: **`draf pengembang`**, diselaraskan dengan draf 14–16; keempat pertanyaan pengembang sudah diputuskan 26 Oktober 2026 ([bagian akhir](#keputusan-pengembang)); gerbang G2 dilalui 4 November 2026 (validasi selesai menurut peneliti), tetapi skor validator dan matriks revisi belum ada di repo, jadi status belum dinaikkan; modul tes dibangun 9 November 2026 ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md), [Sesudah modul tes dibangun](#sesudah-modul-tes-dibangun))
 
 **Diselaraskan 1 November 2026** (tanpa keputusan baru, `asal: pengembang`) dengan dokumen implementasi bagian 2–4: buklet dan bentuk tes dihitung panel dari baris dan kursi ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md#11-isian-l2-kursi-buklet-dan-bentuk-tes)), layar T11 dan T12 di sekitar butir risiko daring ([30](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#54-layar-t11-dan-t12)), status tes dari modul, bukan dari L6 ([29](29_IMPLEMENTASI_DATA_PENELITIAN.md)), dan status dokumen lain di *Penyesuaian di dokumen lain*.
 
@@ -237,12 +237,12 @@ Teks untuk siswa (dijelaskan koordinator sesi):
 
 ## Penskoran dan pemasukan data
 
-- **Modul menyimpan jawaban mentah**, bukan hanya skor: huruf pilihan untuk PG, pola huruf per pernyataan untuk PGK (misalnya `BSB` atau `PFF`), dan pasangan untuk menjodohkan (misalnya `1C 2A 3D`). Butir yang tidak dijawab disimpan `-`. Skor dihitung server dari kunci. Tidak ada pengetikan, jadi ketik ulang 10% tidak diperlukan; sebagai gantinya, penskoran diuji otomatis di tahap 3 dengan jawaban contoh untuk setiap butir.
+- **Modul menyimpan jawaban mentah**, bukan hanya skor: huruf pilihan untuk PG, pola huruf per pernyataan untuk PGK (misalnya `BSB` atau `PFF`), dan pasangan untuk menjodohkan (misalnya `1C 2A 3D`). Butir yang tidak dijawab disimpan `-`. *Seperti dibangun:* `-` menandai pernyataan PGK atau pasangan yang dilewati (misalnya `B-S`, `1C 2- 3D`); butir yang sama sekali tidak dijawab disimpan kosong (NULL). Skor dihitung server dari kunci. Tidak ada pengetikan, jadi ketik ulang 10% tidak diperlukan; sebagai gantinya, penskoran diuji otomatis di tahap 3 dengan jawaban contoh untuk setiap butir.
 - **Aturan skor:** PG, PGK, menjodohkan, dan butir D3 bernilai 1 kalau tepat dan 0 kalau tidak; skenario D2 bernilai 2, 1, atau 0 sesuai pilihan. Butir yang dilewati bernilai 0 di skor mentah.
 - **Tidak sampai:** butir yang belum pernah tampil di layar siswa saat bagiannya ditutup batas waktu ditandai `not_reached`. Di analisis Rasch, butir yang tidak sampai dianggap data hilang, bukan salah. Butir yang sudah tampil tapi tidak dijawab dihitung dilewati.
-- **Tebakan cepat:** waktu tampil per butir di bawah ambang tebakan cepat di [11](11_KAMUS_DATA.md) ditandai `rapid_guess`. Jawabannya tetap dinilai apa adanya, sama seperti di game; penandanya dipakai di analisis kepekaan. Ambang untuk tes ditinjau setelah uji coba, karena beberapa butir tampil bersama satu teks dan waktu membaca teksnya jatuh ke butir pertama. Penanda ini dihitung lapis data turunan, bukan modul; sementara memakai ambang tebakan cepat studi ([35 → Pertanyaan terbuka](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#18-pertanyaan-terbuka) no. 2).
+- **Tebakan cepat:** waktu tampil per butir di bawah ambang tebakan cepat di [11](11_KAMUS_DATA.md) ditandai `rapid_guess`. *Keputusan pengembang 4 November 2026 ([04](04_CATATAN_KEPUTUSAN.md)):* ambang tes adalah kolom studi tersendiri `test_rapid_guess_ms`, satu nilai untuk semua tes (awal dan akhir, bentuk A dan B), nilai awal 3000 ms; butir pertama sesudah bacaan tidak diberi `rapid_guess` (kosong), karena waktunya memuat waktu membaca. Ambang ini ditinjau setelah uji coba dan dikunci bersama ambang lain di G4. Jawabannya tetap dinilai apa adanya, sama seperti di game; penandanya dipakai di analisis kepekaan. Ambang untuk tes ditinjau setelah uji coba, karena beberapa butir tampil bersama satu teks dan waktu membaca teksnya jatuh ke butir pertama. Penanda ini dihitung lapis data turunan, bukan modul; sementara memakai ambang tebakan cepat studi ([35 → Pertanyaan terbuka](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md#18-pertanyaan-terbuka) no. 2).
 - **Skor mentah per bagian:** D1 0–16, D2 0–16, D3 0–8. Skor total 0–40 hanya untuk gambaran; analisis memakai skor per bagian.
-- **Variabel baru**, yang masuk [11](11_KAMUS_DATA.md#variabel-peserta-dan-sesi) di `kamus-1.1` (draf 3 November 2026, [11 → Yang baru di `kamus-1.1`](11_KAMUS_DATA.md#yang-baru-di-kamus-11)); angkanya ditetapkan ulang setelah uji coba (keputusan 26 Oktober 2026); `kamus-1.0` tidak diubah:
+- **Variabel baru**, yang masuk [11](11_KAMUS_DATA.md#variabel-peserta-dan-sesi) di `kamus-1.1` (draf 3 November 2026, disetujui pengembang 9 November 2026; [11 → Yang baru di `kamus-1.1`](11_KAMUS_DATA.md#yang-baru-di-kamus-11)); angkanya ditetapkan ulang setelah uji coba (keputusan 26 Oktober 2026); `kamus-1.0` tidak diubah:
 
 | Satuan | Kolom | Isi |
 | --- | --- | --- |
@@ -304,6 +304,17 @@ Empat pertanyaan di draf dokumen ini diputuskan pengembang pada 26 Oktober 2026,
 Keputusan lanjutan di hari yang sama: variabel tes dan angket masuk kamus data di `kamus-1.1` setelah uji coba; pertemuan wilayah P2–P4 memberi waktu bermain ± 90 menit, tidak terikat JP, dengan sisa tantangan tetap di susulan P5; dan butir risiko daring memakai izin orang tua terpisah.
 
 Keputusan berikutnya di hari yang sama, dari usulan dokumen model penelitian ([04](04_CATATAN_KEPUTUSAN.md)): **tes awal–akhir terutama dipakai sebagai bukti validitas kriteria** (korelasi dengan kemampuan Rasch game per dimensi), dan **uji beda tes awal–akhir dilaporkan sebagai temuan eksploratif** dengan ukuran efeknya ([Analisis](#analisis)).
+
+## Sesudah modul tes dibangun
+
+Cek kemutakhiran 17 November 2026 (`asal: pengembang`, penyelarasan berbantuan AI, tanpa keputusan baru; [04](04_CATATAN_KEPUTUSAN.md)). Modul tes dibangun di gelombang kode F (9 November 2026, [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md)); yang perlu diketahui dari dokumen ini:
+
+1. **Sumber isi tes kini berkas data.** `app/Database/Seeds/data/instrumen/tes.php` dibuat sekali dari 13, 14, dan 15 pada 9 November 2026 dan sejak itu menjadi sumber yang dipakai sistem; diimpor dengan `gelita:instrumen:impor`. Perubahan isi tes sesudahnya ditulis di berkas data dan di 14/15 bersamaan. Semua butir di berkas itu tetap `needs_verification`; cek fakta peneliti 16 November 2026 hanya mencakup bank soal game (08).
+2. **Gambar layar tiruan** (`instr.*`): butir yang gambarnya terpasang hanya menampilkan gambar (teks alternatif "Gambar untuk soal ini"); tanpa gambar, uraian layar tiruan tampil sebagai teks, dan adegan D3 sebagai daftar unsur. Lima gambar tes dibuat ulang dari telaah gambar ([39](39_PROMPT_GAMBAR_PERBAIKAN_TELAAH.md), `R-06` sampai `R-10`); uraiannya di 14 dan 15 sudah disamakan.
+3. **Label PGK** (Benar/Salah, Fakta/Pendapat) adalah isi berkas data, bukan teks berkas bahasa.
+4. **Butir tidak sampai** disimpan dengan skor kosong (hilang di Rasch); butir yang tampil tetapi kosong bernilai 0.
+5. **Pengingat waktu butuh JavaScript;** batas waktunya tidak ([34 §17](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#17-pertanyaan-terbuka) no. 5, terbuka). Teks bingkai layar masih draf (34 §17 no. 6).
+6. **Cek manual modul** (34 §15.3) baru sebagian: alur tes awal sampai angket berjalan di MariaDB (9 November 2026); laptop, tablet sempit, dan pratinjau `uji.*` belum.
 
 ## Hal terbuka dari 14 dan 15
 

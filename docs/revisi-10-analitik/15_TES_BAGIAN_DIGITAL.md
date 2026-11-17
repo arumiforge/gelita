@@ -2,7 +2,9 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 26 Oktober 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Rancangan di [13](13_TES_AWAL_AKHIR.md) · Status: **draf**, semua butir `needs_verification`
+Per 17 November 2026 (cek kemutakhiran; isi 26 Oktober 2026) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Rancangan di [13](13_TES_AWAL_AKHIR.md) · Status: **draf**, semua butir `needs_verification`
+
+> **Cek kemutakhiran 17 November 2026** (`asal: pengembang`, tanpa keputusan baru, [04](04_CATATAN_KEPUTUSAN.md)). Isi dokumen ini dipindah ke berkas data modul tes `app/Database/Seeds/data/instrumen/tes.php` pada 9 November 2026 ([34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md)); berkas itu kini sumber yang dipakai sistem, dan perubahan isi ditulis di keduanya. Gerbang G2 dilalui 4 November 2026, tetapi hasil validator belum ada di repo, jadi status butir tetap `needs_verification` (cek fakta peneliti 16 November 2026 hanya untuk bank soal game). Empat gambar tes dibuat ulang dari telaah gambar ([39](39_PROMPT_GAMBAR_PERBAIKAN_TELAAH.md) `R-06` sampai `R-09`, disetujui pengembang 15–16 November 2026): `tes-ae-B01` (salah tulis "Piih foto" dibetulkan menjadi "Pilih foto"), `tes-bd-A-G1` dan `tes-bd-B-G1` (keempat tombol unggahan dibuat sama), `tes-bd-A-G2` (emoji pancing di keterangan dan tulisan video yang lebih besar), dan motif kain besurek. Kolom *Tampilan* di uraian layar tiruan di bawah disamakan dengan gambar itu. Teks butir, pilihan, kunci, dan kode tidak berubah.
 
 Dokumen ini berisi butir lengkap Bagian 2 *Aman dan etis* (D2) dan Bagian 3 *Budaya digital* (D3) untuk tes awal–akhir, bentuk A dan B, beserta kunci, skor, dan kode kesalahan. Kisi-kisi, aturan kesetaraan, kode butir, pelaksanaan, dan penskoran ada di [13](13_TES_AWAL_AKHIR.md); dokumen ini mengikutinya sel demi sel. Bagian 1 Membaca ada di [14](14_TES_BAGIAN_MEMBACA.md).
 
@@ -402,7 +404,7 @@ Dua adegan per bentuk, empat butir per adegan, satu dari setiap jenis D3 di [06]
 | Keterangan | "Kain karawo dari Gorontalo. Motifnya digambar pakai spidol, ya! 🖍️" | — |
 | Komentar 1 | **Citra**: "Cantik sekali! Terima kasih sudah berbagi 👏" | — |
 | Komentar 2 | **Danu**: "Motifnya kayak sarang laba-laba, wkwk 😝" | — |
-| Tombol | "Suka", "Komentar", "Bagikan", "Kirim pesan ke galeri" | "Kirim pesan ke galeri" berbingkai |
+| Tombol | "Suka", "Komentar", "Bagikan", "Kirim pesan ke galeri" | Keempat tombol sama: bingkai tipis, tinggi, isi, dan ketebalan huruf sama; tombol keempat boleh lebih lebar karena labelnya lebih panjang (sejak gambar dibuat ulang, 16 November 2026; semula "Kirim pesan ke galeri" berbingkai sendiri, sehingga kunci `tes-bd-A03`/`tes-bd-B03` terlalu menonjol) |
 | Kartu keterangan pameran (pembanding) | "**Kain Karawo** · Gorontalo. Kain ini disulam dengan tangan. Sebelum disulam, benang kainnya diiris dan dicabut mengikuti pola. *Karawo* berasal dari kata *mokarawo*, artinya mengiris." | Kartu putih berbingkai hitam tebal, judul tebal |
 
 **Jumlah kata:** 61 (rentang G1: 50–80).
@@ -457,13 +459,13 @@ Kamu ingin menulis komentar. Komentar mana yang menghargai kain karawo ini?
 | Unsur | Isi | Tampilan |
 | --- | --- | --- |
 | Nama akun pengunggah | `@lemari.ilham` | Tebal, di baris atas |
-| Gambar | Selembar kain terbentang dengan motif hiasan mirip huruf Arab dan bunga besar | Ilustrasi; motif terlihat dari garis, bukan warna |
+| Gambar | Selembar kain terbentang dengan motif hiasan mirip huruf Arab dan bunga besar | Ilustrasi; motif terlihat dari garis, bukan warna. Goresan hanya hiasan yang menyerupai kaligrafi dan tidak membentuk huruf, kata, atau kalimat Arab yang bisa dibaca; gambar yang dibuat ulang sudah diperiksa pembaca huruf Arab dan disetujui peneliti (16 November 2026) |
 | Tulisan di foto | "Foto: Galeri Kain Camar Putih" | Pita hitam di bawah foto, huruf putih sebesar huruf keterangan |
 | Jumlah suka | "♡ 131 suka" | — |
 | Keterangan | "Kain besurek dari Bengkulu. Motifnya disemprot pakai cat, ya! 🎨" | — |
 | Komentar 1 | **Lusi**: "Bagus sekali! Terima kasih sudah berbagi 👏" | — |
 | Komentar 2 | **Bimo**: "Motifnya kayak coretan anak TK, wkwk 😝" | — |
-| Tombol | "Suka", "Komentar", "Bagikan", "Kirim pesan ke galeri" | "Kirim pesan ke galeri" berbingkai |
+| Tombol | "Suka", "Komentar", "Bagikan", "Kirim pesan ke galeri" | Keempat tombol sama: bingkai tipis, tinggi, isi, dan ketebalan huruf sama; tombol keempat boleh lebih lebar karena labelnya lebih panjang (sejak gambar dibuat ulang, 16 November 2026; semula "Kirim pesan ke galeri" berbingkai sendiri, sehingga kunci `tes-bd-A03`/`tes-bd-B03` terlalu menonjol) |
 | Kartu keterangan pameran (pembanding) | "**Kain Besurek** · Bengkulu. Kain ini dibatik dengan tangan. Motifnya digambar dengan canting berisi lilin panas, lalu kain dicelup ke pewarna. *Besurek* artinya bertulisan." | Kartu putih berbingkai hitam tebal, judul tebal |
 
 **Jumlah kata:** 61 (rentang G1: 50–80).
@@ -519,7 +521,7 @@ Kamu ingin menulis komentar. Komentar mana yang menghargai kain besurek ini?
 | --- | --- | --- |
 | Nama akun pengunggah | `@kamera.ryan` | Tebal, di baris atas |
 | Cuplikan video | Lima penari berbaris di panggung terbuka. Setiap penari memegang tongkat panjang di satu tangan dan bambu pendek di tangan lain | Ilustrasi dengan ikon ▶ |
-| Tulisan di video | "Video: Sanggar Lima Purnama" | Huruf kecil abu-abu di pojok kanan bawah, lebih kecil dari nama akun |
+| Tulisan di video | "Video: Sanggar Lima Purnama" | Huruf putih di pita gelap di kiri bawah cuplikan video, setinggi huruf komentar, tidak tebal dan tidak lebih besar dari keterangan, supaya terbaca di layar kecil (jawaban `tes-bd-A05` dibaca dari tulisan ini; sejak gambar dibuat ulang, 16 November 2026; semula huruf kecil abu-abu di kanan bawah) |
 | Jumlah suka | "♡ 9.400 suka" | Tebal |
 | Keterangan | "Tari Gantar dari Kalimantan Timur, tarian nelayan menangkap ikan 🎣 Video rekamanku sendiri, lho!" | — |
 | Komentar 1 | **Kevin**: "Oh, tari nelayan, ya. Aku baru tahu! 😍" | — |

@@ -6,6 +6,16 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 17 November 2026
 
+**Cek kemutakhiran 13, 14, 15, dan 02 L0** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang; isinya ditampilkan ringkas dulu dan disetujui pengembang) · status dokumen tidak berubah · mengubah 00, 02, 13, 14, dan 15; tidak merevisi produk
+
+Diselaraskan tanpa keputusan baru:
+- **13:** baris status (G2 dilalui 4 November 2026, hasil validator belum di repo); bentuk jawaban mentah seperti dibangun; ambang tebakan cepat tes `test_rapid_guess_ms` 3000 ms dan butir pertama sesudah bacaan tanpa penanda (keputusan 4 November 2026); `kamus-1.1` disetujui; bagian baru *Sesudah modul tes dibangun* (`tes.php` sumber isi, gambar layar tiruan, label PGK, butir tidak sampai, pengingat butuh JavaScript, cek manual modul baru sebagian).
+- **14:** catatan di kepala dokumen (`tes.php` sumber isi; salah tulis nama akun di gambar M4 dibetulkan, `R-10`).
+- **15:** catatan di kepala dokumen; kolom *Tampilan* disamakan dengan gambar yang dibuat ulang (`R-06` sampai `R-09`): keempat tombol unggahan `tes-bd-A-G1`/`tes-bd-B-G1` sama, tulisan video `tes-bd-A-G2` lebih besar di pita gelap kiri bawah, motif besurek hanya hiasan. Teks butir, pilihan, kunci, dan kode tidak berubah.
+- **02 L0:** baris baru *Sebelum siswa masuk* tentang layar cek suara; baris headset tetap; hasil cek suara di Pemantauan belum disebut karena belum dibuat. Templat L0 kosong ikut berubah (`FieldSheetTemplateTest` hijau).
+
+Butir tes tetap `needs_verification`: cek fakta peneliti 16 November 2026 hanya untuk bank soal game. Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Penyimpangan implementasi bagian 2, 3, 4, dan 6 disetujui peneliti** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: peneliti` (disampaikan pengembang) · `disetujui peneliti` · mengubah 00, 28, 29, 30, dan 32; tidak merevisi produk
 
 Pengembang menyampaikan bahwa peneliti menyetujui semua penyimpangan implementasi yang dicatat saat cek kemutakhiran 16 November 2026 dan ditampilkan ringkas kepada pengembang: bagian 2 di [28 §22](28_IMPLEMENTASI_SESI_LAPANGAN.md#22-keputusan-pengembang) no. 15 (token yang diganti sebagai `token_unknown`, `too_many`, rute kode sekolah penelitian, tiga langkah bernomor saat mendaftar), bagian 3 di [29 §19](29_IMPLEMENTASI_DATA_PENELITIAN.md#19-keputusan-pengembang) no. 18, bagian 4 di [30 §22](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#22-keputusan-pengembang) no. 13, dan bagian 6 di [32 §18](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#18-keputusan-pengembang) no. 11. Kode tidak berubah. Bersama penyimpangan bagian 5 (16 November 2026), semua penyimpangan gelombang kode D dan E kini disetujui. Entri ini tidak diikuti pembuatan ulang PDF.

@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 3 November 2026 · **Status: L0–L7 final, disetujui pengembang 26 Oktober 2026** (daftar kerja no. 11; L5 dan L7 disesuaikan dengan dokumen tahap 2 pada 27 Oktober 2026, L1, L2, L7, dan cara mengisi dengan dokumen implementasi 28–30 pada 30 Oktober 2026, dan kolom L5 *Percobaan* dan *Kode manual* pada 3 November 2026, lihat *Perubahan setelah persetujuan*); **L8 Profil sekolah draf** (ditambahkan 26 Oktober 2026, keputusan pengembang tentang penelitian pendahuluan di [04](04_CATATAN_KEPUTUSAN.md)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 17 November 2026 · **Status: L0–L7 final, disetujui pengembang 26 Oktober 2026** (daftar kerja no. 11; L5 dan L7 disesuaikan dengan dokumen tahap 2 pada 27 Oktober 2026, L1, L2, L7, dan cara mengisi dengan dokumen implementasi 28–30 pada 30 Oktober 2026, dan kolom L5 *Percobaan* dan *Kode manual* pada 3 November 2026, lihat *Perubahan setelah persetujuan*); **L8 Profil sekolah draf** (ditambahkan 26 Oktober 2026, keputusan pengembang tentang penelitian pendahuluan di [04](04_CATATAN_KEPUTUSAN.md)) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Lembar lapangan mengisi yang tidak terlihat oleh log game dan modul tes: siapa yang dibantu, perangkat yang dipakai bareng, kondisi kelas, emosi siswa, dan alasan di balik jawaban. Semua lembar diisi **peneliti**, bukan guru. Setiap lembar memakai kunci yang sama dengan log, sesuai [aturan gabung di kamus data](11_KAMUS_DATA.md#aturan-gabung-lembar-lapangan) (`kamus-1.0`): **kode peserta** (misalnya S03-A07), **kode sesi lapangan** (misalnya S03-A-P2), dan **jam WIB** sampai detik. Cara kerja di lapangan dan peran P1–P3 ada di dokumen utama, bagian *Kerja lapangan*.
 
@@ -97,6 +97,7 @@ Kode sesi lapangan: __________ · Tanggal: __________ · Inisial P1: ______
 - [ ] Jam ponsel semua peneliti diatur otomatis dari jaringan (WIB) dan dicocokkan sampai detik
 - [ ] Internet diuji di tiga titik ruangan; hasilnya ditulis di L1
 - [ ] Halaman masuk GELITA terbuka di setiap perangkat; baterai minimal 70% atau tersambung listrik
+- [ ] Peneliti tahu: layar cek suara muncul di awal setiap sesi permainan; siswa yang menjawab *Tidak terdengar* mengangkat tangan
 - [ ] Perangkat yang dipakai bergantian: peramban ditutup di antara dua siswa
 - [ ] Peneliti berdiri di posisi yang tidak menghalangi layar siswa
 
@@ -439,3 +440,7 @@ Dibandingkan draf 23 Oktober 2026 (yang sebagian diselaraskan 26 Oktober 2026):
 3 November 2026, keputusan pengembang di [04](04_CATATAN_KEPUTUSAN.md) (cabang `sky/eloquent-maxwell-eiucbe`, `asal: pengembang`, `disetujui pengembang`). **Judul kolom tabel L5 berubah:**
 
 - **L5:** kolom *Percobaan* (`try_no`) dan *Kode manual* (`manual_code`) ditambahkan, sesuai [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) §19 no. 14; aturan mengisinya di bawah tabel L5. Contoh baris kedua memakai kode R-LAIN, yang kini ada di [03](03_KODE_DAN_ARTI.md) sebagai kode khusus lembar L5; baris ketiga contoh INF-LAIN. Kode alasan yang dikode tangan tetap di lembar, tidak masuk `manual_code`.
+
+17 November 2026, dari keputusan pengembang 15–16 November 2026 di [04](04_CATATAN_KEPUTUSAN.md) dan [33 §7.6](33_IMPLEMENTASI_MODE_PENELITIAN.md#76-cek-suara-di-awal-sesi-permainan) (cek kemutakhiran, `asal: pengembang`, tanpa keputusan baru). Judul kolom tabel tidak berubah:
+
+- **L0, *Sebelum siswa masuk*:** baris baru tentang layar cek suara di awal setiap sesi permainan mode penelitian. Baris *Headset cukup untuk semua siswa* tetap, karena headset tetap syarat di lapangan. Hasil cek suara belum tampil di halaman Pemantauan (belum dibuat), jadi L0 belum menyebutnya. Templat L0 kosong dari `gelita:lembar:templat` membaca bagian ini, jadi baris baru ikut tercetak di sana.
