@@ -605,6 +605,9 @@ return [
 
     // Part 3 (29 §14): tech log, download history, field sheets
     'menuTechLog'              => 'Log teknis',
+    'menuDocStatus'            => 'Status dokumen',
+    'docStatusLead'            => 'Status setiap dokumen revisi penelitian dan hal yang masih ditunggu sebelum statusnya bisa naik. Isinya ikut diperbarui setiap pembaruan sistem.',
+    'docStatusMissing'         => 'Halaman status dokumen belum ada di server ini. Minta admin memperbarui sistem, lalu buka lagi halaman ini.',
     'techLogIntro'             => 'Catatan teknis untuk memeriksa masalah perangkat dan aplikasi. Jawaban dan data penelitian tidak ada di sini.',
     'techLogTabDevices'        => 'Perangkat',
     'techLogTabEvents'         => 'Event teknis',

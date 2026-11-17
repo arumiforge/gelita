@@ -43,6 +43,8 @@ final class AdminMenu
         ['admin/media',               'Admin.menuMedia',        'image',     ['content.view'], 'Admin.groupContent'],
         ['admin/media/kelengkapan',   'Admin.menuChecklist',    'clipboard', ['content.view'], 'Admin.groupContent'],
         ['admin/studi',               'Admin.menuStudy',        'flask',     ['studies.view'], 'Admin.groupSettings'],
+        // Head researcher only (owner, 17 November 2026): status of the research-revision documents
+        ['admin/status-dokumen',      'Admin.menuDocStatus',    'book',      ['research_docs.view'], 'Admin.groupSettings'],
         ['admin/studi/rilis',         'Admin.menuReleases',     'tag',       ['releases.manage'], 'Admin.groupSettings'],
         ['admin/sekolah',             'Admin.menuSchools',      'building',  ['schools.manage'], 'Admin.groupSettings'],
         ['admin/staf',                'Admin.menuStaff',        'key',       ['staff.manage'], 'Admin.groupSettings'],
