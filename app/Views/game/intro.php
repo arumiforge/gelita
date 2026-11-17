@@ -126,7 +126,7 @@ $researchMode = ! empty($researchMode);
 <?php if ($canSkip): ?>
 <?= $this->section('nav') ?>
 <?= component('nav-bar', ['nav' => [
-    ['label' => lang('Game.skip'), 'href' => base_url('gerbang/peta'), 'style' => 'quiet', 'arrow' => 'right', 'attrs' => ['data-story-skip' => '1']],
+    ['label' => lang('Game.skip'), 'href' => base_url('gerbang/peta'), 'style' => 'quiet', 'arrow' => 'right', 'attrs' => ['data-story-skip' => '1', 'data-narration-skip' => '1']],
 ]]) ?>
 <?= $this->endSection() ?>
 <?php endif ?>
