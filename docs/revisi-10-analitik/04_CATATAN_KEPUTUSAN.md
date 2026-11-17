@@ -15,6 +15,9 @@ Keputusan 1, 2, 3, dan 5 wawancara pengembang 16 November 2026 dibuat:
 - Jumlah putar = `play` + `replay` + `resume` (`autoplay` tidak dihitung), juga di `instruction_replays`. Di [11](11_KAMUS_DATA.md) Analitik 7 sebagai usulan `kamus-1.2`, termasuk perubahan arti `instruction_replays`; definisi `kamus-1.1` tidak diubah. Data lama tidak punya baris `resume`, jadi nilainya tetap.
 
 Rinciannya di [33 §7.7](33_IMPLEMENTASI_MODE_PENELITIAN.md) dan catatan implementasi. Entri ini tidak diikuti pembuatan ulang PDF.
+**Gambar cerita pembuka `R-27` sampai `R-33` dipasang** (cabang `r10-gambar-cerita-pembuka`) · `asal: pengembang` · `disetujui pengembang` · tidak merevisi produk
+
+Pengembang menerima `R-27` (slide 1) dan `R-30` (slide 8) pada 17 November 2026; `R-28`, `R-29`, dan `R-31` sampai `R-33` sudah diterima sebelumnya. Ketujuhnya dipasang di Katalog Aset tanpa diubah. Ekspresi avatar mengikuti pose baris (keputusan 6 telaah cerita pembuka, 16 November 2026) kini terlihat di `intro-05`, `intro-06`, dan `penutup-04`; kodenya sudah ada. Entri ini tidak diikuti pembuatan ulang PDF.
 
 **Cek kemutakhiran 13, 14, 15, dan 02 L0** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang; isinya ditampilkan ringkas dulu dan disetujui pengembang) · status dokumen tidak berubah · mengubah 00, 02, 13, 14, dan 15; tidak merevisi produk
 

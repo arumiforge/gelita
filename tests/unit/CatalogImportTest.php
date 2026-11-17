@@ -478,6 +478,49 @@ final class CatalogImportTest extends CIUnitTestCase
         $this->assertNull(model(MediaAssetModel::class)->findByKey('reference.02'));
     }
 
+    /**
+     * Owner, 16 November 2026 (R-31 to R-33): the avatar expressions of the
+     * story slides are data.json entries that fill the `ui.jaka-avatar.*` and
+     * `ui.kedu-avatar.*` slots under their own key, shrunk to 512 px.
+     */
+    public function testAvatarExpressionsFillTheirOwnSlots(): void
+    {
+        $this->writeCatalog([
+            'ui.jaka-avatar.determined' => ['ikon/ui.jaka-avatar.determined.webp', 1200, 1200, true],
+            'ui.kedu-avatar.weak'       => ['ikon/ui.kedu-avatar.weak.webp', 1024, 1024, true],
+        ]);
+
+        $report = array_column($this->importer()->run(), 'status', 'target');
+
+        $this->assertSame(['ui.jaka-avatar.determined' => 'installed', 'ui.kedu-avatar.weak' => 'installed'], $report);
+
+        foreach (['ui.jaka-avatar.determined', 'ui.kedu-avatar.weak'] as $key) {
+            $row = model(MediaAssetModel::class)->findByKey($key);
+            $this->assertSame([512, 512], [(int) $row['width_px'], (int) $row['height_px']], $key);
+            $this->assertSame(CatalogImporter::CREDIT, $row['credit']);
+        }
+    }
+
+    /** The shipped catalogue has the three ordered expressions, each for a pose the opening or ending story uses. */
+    public function testShippedCatalogueHasTheAvatarExpressions(): void
+    {
+        $entries = array_column((new CatalogImporter(ROOTPATH . CatalogImporter::DEFAULT_DIR))->entries(), null, 'key');
+        $story   = require APPPATH . 'Database/Seeds/data/story.php';
+        $poses   = [];
+
+        foreach ($story as $line) {
+            if (in_array($line['context'] ?? null, ['intro', 'ending'], true) && ! empty($line['pose'])) {
+                $poses[] = $line['character'] . '.' . $line['pose'];
+            }
+        }
+
+        foreach (['ui.jaka-avatar.determined' => 'jaka.determined', 'ui.jaka-avatar.bow' => 'jaka.bow', 'ui.kedu-avatar.weak' => 'mbah_kedu.weak'] as $key => $pose) {
+            $this->assertArrayHasKey($key, $entries);
+            $this->assertFileExists($entries[$key]['file']);
+            $this->assertContains($pose, $poses, $key . ' belongs to a story line');
+        }
+    }
+
     /** Result screen redesign (18 October 2026): its skin slots, and avatar.2 copied to ui.result-medal. */
     public function testResultScreenSlotsAndTheMedalCopy(): void
     {

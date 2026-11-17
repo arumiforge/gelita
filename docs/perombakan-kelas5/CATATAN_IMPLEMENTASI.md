@@ -1006,3 +1006,9 @@ Owner interview of 16 November 2026, decisions 1, 2, 3 and 5 (`04`).
 - **Play count** = `play` + `replay` + `resume` in `instruction_replays`, `item_narration_before`, and the plays figure of the panel and participant summaries (`AnalyticsService`). `autoplay` stays out. New derived runs use it while the dictionary still says `kamus-1.1`; old data has no `resume` rows, so its values do not change.
 - **Docs.** `11` Analitik 7: `skip`, `resume` and the play-count rule as proposed `kamus-1.2`; `33` §7.7.
 - **Tests.** New `NarrationSkipResumeTest`; `NarrationIdleTest`, `MusicUnlockTest`, `CinematicViewTest` updated.
+## Opening-story pictures R-27 to R-33 installed (17 November 2026, branch `r10-gambar-cerita-pembuka`)
+
+- **Accepted.** `R-28`, `R-29`, `R-31`–`R-33` earlier through ChatGPT (exceptions in `TASKS.md` kept, pictures installed unedited); `R-27` and `R-30` by the owner in the coordinator session of 17 November 2026.
+- **Installed** as `ai-studio/README.md` describes: `bg.cerita-intro-{01,06,07,08}.webp` replaced (data.json ids 078, 083–085 get the doc 39 prompts); new `ui.jaka-avatar.determined`, `ui.jaka-avatar.bow`, `ui.kedu-avatar.weak` (ids 705–707, 512 × 512, alpha); `REVIEW.md` rows 190, 195–197 `keep`, new rows 457–459; sheets 06 and 10 rebuilt; `TASKS.md` status `installed`.
+- **No code change.** Decision 6 of the opening-story review (expression by line pose, else the plain avatar) was already built in `partials/cine-slides.php`; the new slots make it visible on `intro-05`, `intro-06` and `penutup-04`. New tests in `CatalogImportTest`.
+- **Not run.** `gelita:katalog:impor --dry-run` on MariaDB (the shared dev database was in use by other parts); run it on the server (`--kunci='ui.*-avatar.*'` and the intro backgrounds). The rings of R-31/R-32 are about 2% smaller than the plain Jaka avatar (accepted exception); check on a Chromebook.
