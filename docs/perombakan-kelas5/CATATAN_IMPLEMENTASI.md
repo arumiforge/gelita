@@ -994,3 +994,10 @@ Owner decision 4 of 15 November 2026 (`04`), built on the owner's request of 16 
 - **Data.** Each answer records `sound_check_answered` (`EventCatalog::RESEARCH` and `SERVER_ONLY`; panel label "Cek suara dijawab") with `heard` and `plays` (0–99, else 0). "Ya" marks the game session done and returns to the target (a same-site path only, else `/peta`). "Tidak" sets `sound_check_help`: the page then shows what to do and *Lanjut tanpa suara*, which marks the session done without another event.
 - **Tests.** `SoundCheckTest` (gate, yes, no and go on, new game session, outside research mode, bad answer and foreign target, catalog). `FieldWorld::signIn()` marks the sound check answered for a game session, so the other research-mode tests are unaffected.
 - **Not yet.** The answer on the monitoring page (02 L0 follow-up).
+
+## Opening-story pictures R-27 to R-33 installed (17 November 2026, branch `r10-gambar-cerita-pembuka`)
+
+- **Accepted.** `R-28`, `R-29`, `R-31`–`R-33` earlier through ChatGPT (exceptions in `TASKS.md` kept, pictures installed unedited); `R-27` and `R-30` by the owner in the coordinator session of 17 November 2026.
+- **Installed** as `ai-studio/README.md` describes: `bg.cerita-intro-{01,06,07,08}.webp` replaced (data.json ids 078, 083–085 get the doc 39 prompts); new `ui.jaka-avatar.determined`, `ui.jaka-avatar.bow`, `ui.kedu-avatar.weak` (ids 705–707, 512 × 512, alpha); `REVIEW.md` rows 190, 195–197 `keep`, new rows 457–459; sheets 06 and 10 rebuilt; `TASKS.md` status `installed`.
+- **No code change.** Decision 6 of the opening-story review (expression by line pose, else the plain avatar) was already built in `partials/cine-slides.php`; the new slots make it visible on `intro-05`, `intro-06` and `penutup-04`. New tests in `CatalogImportTest`.
+- **Not run.** `gelita:katalog:impor --dry-run` on MariaDB (the shared dev database was in use by other parts); run it on the server (`--kunci='ui.*-avatar.*'` and the intro backgrounds). The rings of R-31/R-32 are about 2% smaller than the plain Jaka avatar (accepted exception); check on a Chromebook.
