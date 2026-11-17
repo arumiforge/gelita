@@ -6,6 +6,14 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 17 November 2026
 
+**Status dokumen di panel admin** (cabang `admin-status-dokumen`) · `asal: pengembang` · `disetujui pengembang` · menambah halaman panel; tidak mengubah status dokumen
+
+Pengembang memutuskan:
+1. **Halaman [status-dokumen.html](status-dokumen.html) tampil di panel admin**, menu *Status dokumen* di kelompok *Pengaturan* (`/admin/status-dokumen`). Panel membaca berkas repo di server (salinan git), jadi isinya ikut setiap pembaruan sistem dan tidak ada salinan kedua.
+2. **Hanya ketua peneliti** yang bisa membukanya (hak `research_docs.view`); admin dan peneliti tidak melihat menunya.
+3. **Nama dokumen tanpa tautan**, karena berkas dokumen tidak dibuka lewat peramban di server.
+4. **Salinan web pribadi yang sempat diterbitkan dihapus**; panel menjadi satu-satunya tempat melihat halaman ini di luar repo.
+
 **Semua kerja yang dulu ditulis dengan nama alat bantunya kini ditulis sebagai kerja pengembang** (cabang `r10-naik-status-dokumen`) · `asal: pengembang` · `disetujui pengembang` · mengubah dokumen di folder ini (termasuk entri lama 04, 23, dan 26), dokumen pendukung HTML, sumber berkas serah terima dan instrumen, catatan implementasi, `docs/PROGRESS.md`, aturan sesi, daftar Katalog Aset, dan kredit Pustaka; tidak mengubah status dokumen
 
 Pengembang memutuskan:
@@ -30,7 +38,7 @@ Pengembang menyapu kolom status 00 terhadap entri 04 dan kepala setiap dokumen. 
 4. **39 `disetujui peneliti`** (`asal: peneliti`), seluruh dokumen, `R-01` sampai `R-33`, termasuk baris dari entri yang masih `draf pengembang` (`R-12` sampai `R-15`, `R-20` sampai `R-22`). Penerimaan setiap gambar hasilnya tetap per baris di `ai-studio/game-images/REVIEW.md`.
 5. **32A `disetujui pengembang`** (`asal: pengembang`): pengembang sudah memeriksa ke-24 prompt; gambarnya dibuat 4 November 2026.
 6. **Teks status yang basi dibetulkan, tanpa perubahan status:** 00 *Mulai sesi baru* no. 5 (tidak lagi "semua masih kerja pengembang"), paragraf status 00 ditambah 17 November 2026, baris 31 di 00 (isi bank `verified` sejak 16 November 2026, penyimpangan gelombang D disetujui peneliti), dan tanggal *Per* 12, 16, dan 17 disamakan dengan perubahan terakhirnya. Tanggal *Per* 33 dan 35 dibiarkan karena hari ini sedang diubah sesi lain.
-7. **Halaman ringkasan status** [status-dokumen.html](status-dokumen.html) (HTML statis, permintaan pengembang): status setiap dokumen dan yang ditunggu sebelum status berikutnya. Halaman ini diperbarui setiap kolom status 00 berubah; bila keduanya berbeda, 00 yang berlaku. Salinan webnya (tautan pribadi pengembang, dibagikan dari menu *Share* halaman itu): https://claude.ai/artifact/D97sgfTX8PucvQiHDgC1nw; sesi yang mengubah halaman repo juga menerbitkan ulang salinan web ke tautan yang sama.
+7. **Halaman ringkasan status** [status-dokumen.html](status-dokumen.html) (HTML statis, permintaan pengembang): status setiap dokumen dan yang ditunggu sebelum status berikutnya. Halaman ini diperbarui setiap kolom status 00 berubah; bila keduanya berbeda, 00 yang berlaku. Sejak entri *Status dokumen di panel admin* di atas, halaman ini tampil di panel admin; salinan web yang sempat diterbitkan sudah dihapus.
 
 **Yang masih ditunggu** (tanpa perubahan status): 13–16, 18, 21, 07, dan ketiga instrumen validasi menunggu skor validator, κ, dan matriks revisi 20, lalu keputusan peneliti; 17 dan 22 ke `final` menunggu keputusan peneliti, dan untuk 22 juga nomor dan tanggal surat persetujuan komite; 27–35 tetap `disetujui pengembang` karena peneliti baru menyetujui penyimpangannya; 25 menunggu hasil B.7 pengamat budaya; persetujuan peneliti 15 November 2026 di 12 hanya untuk suara sintetis; 36 menunggu terjemahan ulang setelah matriks revisi.
 

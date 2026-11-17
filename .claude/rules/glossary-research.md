@@ -79,6 +79,7 @@ Continues `glossary.md` (same columns, same rules). Add research, panel, and dat
 | katalog event | `event catalog` | `App\Libraries\EventCatalog` (`RESEARCH`, `ADMIN`, `REMOVED`, `SERVER_ONLY`); `dialogue_completed` replaced `dialogue_advanced`, `answer_changed` merged into `answer_submitted` (revision 10, part 3: 29) |
 | Log teknis | `tech log` | route `/admin/log-teknis`, `TechLogService`, capability `tech_logs.view` (admin) |
 | Kamus Data (lembar unduhan) | `data dictionary` | `ResearchDictionary` (`kamus-1.1` since the developer approved it, 9 Nov 2026, `DRAFT` false; `kamus-1.1-usulan` while it was a draft after part 9; was `kamus-1.0`; thresholds re-set after KG3b come as `kamus-1.2`), `data_exports.dictionary_version` |
+| Status dokumen (panel) | `document status page` | route `/admin/status-dokumen` → `DocumentStatusController`, capability `research_docs.view` (ketua only); shows `docs/revisi-10-analitik/status-dokumen.html` from the server's checkout through `DocumentStatusPage` (links dropped); owner, 17 Nov 2026 |
 | riwayat unduhan | `download history` | audit `export_download`, `data_exports.participant_count` |
 | lembar lapangan (diketik) | `field sheet` | `FieldSheetSpec` (`lembar-1.0`), `field_sheet_imports`, `field_sheet_rows`; route `/admin/sesi-lapangan/{id}/lembar`; command `gelita:lembar:templat` |
 | ketikan kedua | `check entry` | `field_sheet_imports.purpose` = `check` (first typing `main`) |
