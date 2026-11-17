@@ -204,3 +204,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `koordinasi-panduan-katalog` | Coordinator session for the GELITA guide (#409) and the Katalog Aset page (#408): `CLAUDE.md`, `README.md`, glossary rows | PR open; merge last, after #409 and #408 |

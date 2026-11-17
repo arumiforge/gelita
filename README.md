@@ -151,6 +151,8 @@ Semua command mengembalikan kode keluar 1 saat gagal, sehingga dapat dipakai di 
 | `gelita:bank:import <file> [--dry-run] [--staff <username>]` | Mengimpor workbook XLSX (bank soal atau Pustaka) dalam satu transaction; `--dry-run` hanya memvalidasi. Sama dengan **Konten → Impor soal dari Excel**. |
 | `gelita:content:verify [--strict] [--siap-penelitian]` | Memeriksa tantangan setiap wilayah, variasi, aturan bank soal, kunci, dan media. `--strict`: peringatan juga gagal; `--siap-penelitian`: gambar contoh yang masih dipakai menjadi galat. |
 | `gelita:katalog:impor [--sumber=FOLDER] [--dry-run] [--timpa] [--kunci=POLA,POLA]` | Installs the images of the Katalog Aset (`ai-studio/game-images/`) into every image slot: logo, buttons, language icons, app icons, backgrounds, story slides, maps, badges, pins, lanterns, avatars, character frames, challenge images, and Pustaka illustrations (lossy WebP, `app.*` as PNG). Images an admin uploaded are kept unless `--timpa`; `--kunci` limits a run (and `--timpa`) to matching slots, e.g. `char.jaka.*`. Safe to run again. See `docs/08_DEPLOYMENT.md`. |
+| `gelita:katalog:halaman [--dry-run] [--cek] [--cek-tautan] [--basis=URL]` | Builds the public Katalog Aset page in `gelita-katalog/` (katalog.gelita.id) from `ai-studio/game-images/`, `REVIEW.md` and the game's audio; every entry links to the file on gelita.id. A repository build step: commit the result; never run on a server. |
+| `gelita:panduan:cek [--panduan=validator\|gelita] [--tandai]` | Lists the validator-guide and GELITA-guide pages whose source sections in `docs/` changed; `--tandai` after checking them. |
 | `gelita:library:thumbnails [--force]` | Mengunduh thumbnail video luar Pustaka (YouTube, Vimeo, Google Drive) dan memasangnya sebagai poster; butuh HTTPS keluar. |
 | `gelita:media:scan [--check-only]` | Menyinkronkan `public/assets` dengan tabel `media_assets` dan melaporkan berkas yang hilang atau berubah. |
 | `gelita:mockups [--dry-run] [--paksa] [--node=tmg-4]` | Membuat gambar contoh untuk slot gambar tantangan yang belum berisi gambar asli; gambar asli tidak pernah ditimpa. |
@@ -206,7 +208,7 @@ Suite memakai SQLite in-memory (grup database `tests`) dengan skema tiruan di `t
 | `deploy/` | skrip deploy, backup, retensi, dan konfigurasi Nginx untuk Linux dan Windows |
 | `docs/` | dokumentasi, sumber bank soal, Pustaka, dan daftar sekolah; rencana yang sudah selesai di `docs/arsip/` |
 | `ai-studio/game-images/` | Katalog Aset: satu-satunya sumber gambar permainan sejak 15 November 2026 (gambar, gambar rujukan, prompt di `data.json`, daftar tinjau `REVIEW.md`); dipasang ke permainan dengan `gelita:katalog:impor`. Internal: memuat tanda benda pengecoh, jadi tidak pernah di bawah `public/` |
-| `gelita-katalog/` | Dikosongkan 15 November 2026; halaman katalog dibangun ulang nanti dari `ai-studio/game-images/` |
+| `gelita-katalog/` | Halaman publik Katalog Aset (katalog.gelita.id): halaman dan daftar saja, setiap gambar dan suara ditautkan ke berkasnya di gelita.id; dibangun dengan `gelita:katalog:halaman` dan di-commit |
 | `tests/` | suite PHPUnit |
 | `tools/dev/` | `serve.sh` (instalasi pengembangan di MariaDB dalam satu perintah: basis data, `.env`, migrasi, data awal, `php spark serve`) dan `cloud-setup.sh` (salinan induk skrip penyiapan lingkungan sesi awan) |
 | `tools/qa/` | skrip uji peramban Playwright: `stage-check.mjs` (panggung 16:9), `challenge-races.mjs` (aturan kesempatan dan cek bersamaan), `a11y-check.mjs` (keyboard dan pembaca layar di layar tantangan), dan `nav-timing.mjs` (waktu pindah layar dan ganti bahasa di jaringan acuan; `node tools/qa/nav-timing.mjs --serve`, rencana paket aset Tahap 0); juga `admin-check.mjs` (panel staf per peran), `event-integrity.mjs` dan `event-requests.mjs` (data penelitian dan log), `package-check.mjs`, `package-screens.mjs`, dan `transition-check.mjs` (paket aset), `music-check.mjs`, `minify-check.mjs`, serta `load-test.mjs` dengan `load-students.php` (uji beban) |
@@ -217,6 +219,7 @@ Daftar route lengkap: `php spark routes`.
 
 | Dokumen | Isi |
 |---|---|
+| [`/admin/panduan-gelita`](https://gelita.id/admin/panduan-gelita) | **Mengenal GELITA**: panduan publik seluruh GELITA dari awal sampai akhir, dengan alasan setiap keputusan dan rujukan; panduan staf (`/admin/panduan-staf`) dan panduan validator (`/admin/panduan-validator`) terpisah; gambar, musik, dan suara di [katalog.gelita.id](https://katalog.gelita.id/) |
 | [`docs/01_DATABASE.md`](docs/01_DATABASE.md) | skema database |
 | [`docs/02_PROJECT_FOUNDATION.md`](docs/02_PROJECT_FOUNDATION.md) | fondasi proyek, konfigurasi, `.env` |
 | [`docs/03_MODEL_ENTITY.md`](docs/03_MODEL_ENTITY.md) | model, entity, service |

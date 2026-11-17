@@ -77,6 +77,7 @@ Continues `glossary.md` (same columns, same rules). Add research, panel, and dat
 | Pemantauan | `monitoring panel` | route `/admin/pemantauan`, `GET /api/admin/monitoring`; capability `monitoring.view` (admin: numbers only) |
 | akun uji | `test account` | `uji.*` accounts, command `gelita:uji:akun`, school `V01` |
 | Panduan validator | `validator guide` | route `/admin/panduan-validator` (public; `?panel=` `materi`, `b5a`, `budaya`, `media`), `ValidatorGuideController`, text `ValidatorGuideContent`, live facts `ValidatorGuideFacts`, source drift `GuideSourceCheck` + `gelita:panduan:cek` (17 Nov 2026) |
+| Mengenal GELITA (panduan) | `GELITA guide` | route `/admin/panduan-gelita` (public, full detail; owner 17 Nov 2026), `GelitaGuideController`, text `GelitaGuideContent` (`why`/`refs`/`docs` per page), lock `GuideSources/gelita.json` checked by `gelita:panduan:cek --panduan=gelita` |
 | langkah setelah pull | `post-pull step` | `gelita:setelah-pull`, `PostPullCheck` (states `perlu`, `sesuai`, `belum-tercatat`, `dilewati`, `periksa-sendiri`), ledger `DevStepLedger` in `writable/gelita-langkah.json` (17 Nov 2026) |
 | katalog event | `event catalog` | `App\Libraries\EventCatalog` (`RESEARCH`, `ADMIN`, `REMOVED`, `SERVER_ONLY`); `dialogue_completed` replaced `dialogue_advanced`, `answer_changed` merged into `answer_submitted` (revision 10, part 3: 29) |
 | Log teknis | `tech log` | route `/admin/log-teknis`, `TechLogService`, capability `tech_logs.view` (admin) |
