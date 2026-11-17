@@ -56,7 +56,7 @@ use RuntimeException;
  *   The medium keeps the caption of the photo it had, unless the entry has
  *   its own `caption` (`{"id": …, "en": …}`): an illustration that shows
  *   something else than the photo did brings the caption that fits it
- *   (15 November 2026). An entry's own `credit` replaces the AI-illustration
+ *   (15 November 2026). An entry's own `credit` replaces the developer-illustration
  *   credit, for a real file such as a regency's coat of arms (16 November 2026).
  * - The catalogue's region maps have five clearings for the challenge
  *   buttons (four until 16 November 2026). When a map file is the one measured here (same sha256), the
@@ -87,7 +87,7 @@ final class CatalogImporter
     public const CREDIT = 'Katalog Aset GELITA (gambar sementara)';
 
     /** library_media.credit of library illustrations from the catalogue. */
-    public const LIBRARY_CREDIT = 'Ilustrasi GELITA (dibuat dengan bantuan AI, Katalog Aset)';
+    public const LIBRARY_CREDIT = 'Ilustrasi GELITA (dibuat pengembang, Katalog Aset)';
 
     /**
      * Challenge button positions (percent of the map) measured on the
@@ -327,7 +327,7 @@ final class CatalogImporter
     }
 
     /**
-     * The credit an entry brings for its Pustaka medium (a real file, not an AI illustration).
+     * The credit an entry brings for its Pustaka medium (a real file, not a developer illustration).
      *
      * @param array<string, mixed> $entry
      *
@@ -590,7 +590,7 @@ final class CatalogImporter
      * Library image or video cover, linked to media `sequence` of page `page`.
      *
      * @param array{id: string, en: string}|null $caption the entry's own caption; null keeps the medium's caption
-     * @param string|null                        $credit  the entry's own credit; null gives the AI-illustration credit
+     * @param string|null                        $credit  the entry's own credit; null gives the developer-illustration credit
      */
     private function installLibrary(string $source, string $file, string $region, int $page, int $sequence, bool $poster, bool $dryRun, bool $overwrite, ?array $caption = null, ?string $credit = null): void
     {

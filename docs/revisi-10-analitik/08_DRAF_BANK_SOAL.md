@@ -1268,7 +1268,7 @@ Teks digital (layar informasi, unggahan, grup, hasil pencarian) dibangun sebagai
 2. Gambar baru Susun Gambar Wayang Kedu dan Candi Pawon dari tim katalog, dicek ulang terhadap butir; cek fakta Papringan, Pawon, Arjuna, dan tahun penetapan Lengger ([keputusan 26 Oktober 2026](#keputusan-pengembang-26-oktober-2026)). Cek fakta selesai 4 November 2026 (dikonfirmasi pengembang, [04](04_CATATAN_KEPUTUSAN.md)); jadwal Pasar Papringan tetap dicek ulang sebelum versi dikunci di G4. Prompt kedua gambar ada di [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md).
 3. Cek fakta di bagian *Yang harus dicek* (nama fiktif sudah dicek; tinggal pencarian manual akun di Instagram dan TikTok), ditambah fakta keterangan Susun Gambar yang dipilih.
 4. Validasi ahli (I-CVI atau V Aiken) dengan instrumen yang sedang disiapkan sesi koordinator.
-5. Terjemahan bahasa Inggris untuk setiap teks yang tampil di game. **Didraf AI 3 November 2026 di [36](36_TERJEMAHAN_BANK_SOAL.md)** (`draf pengembang`, menunggu pemeriksaan pengembang); butir yang berubah di sini diterjemahkan ulang di sana.
+5. Terjemahan bahasa Inggris untuk setiap teks yang tampil di game. **Didraf pengembang 3 November 2026 di [36](36_TERJEMAHAN_BANK_SOAL.md)** (`draf pengembang`, menunggu pemeriksaan pengembang); butir yang berubah di sini diterjemahkan ulang di sana.
 6. Pindahkan isi ke berkas data `docs/bank-soal/` dengan kolom baru dari kisi-kisi. Ini pekerjaan tahap implementasi.
 
 # Untuk dicatat di catatan keputusan

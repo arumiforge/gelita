@@ -1368,7 +1368,7 @@ Branch `pbb/nifty-faraday-fcw9r6`. Owner request: use the references and images 
   - **Character frames.** The 30 catalogue frames still show the old lurik–iket design and must be redrawn.
   - **Missing button.** There is no START version of `reference.10` yet.
   - **Panel texts still describe the old art.** `ImageSlots` texts for `ui.btn-start` (gold button, dark letters) and the avatar brief (portraits; the catalogue avatars are faceless emblems) do not match.
-  - **Library images.** The catalogue's 60 Pustaka images are AI illustrations, while §9.5 asks for real photos for factual pages. They also include a recognisable child with gimbal hair (rule 5), an illustrated regency emblem, and the old Jaka costume. The owner has not decided yet, so the plan's rules are unchanged.
+  - **Library images.** The catalogue's 60 Pustaka images are developer illustrations, while §9.5 asks for real photos for factual pages. They also include a recognisable child with gimbal hair (rule 5), an illustrated regency emblem, and the old Jaka costume. The owner has not decided yet, so the plan's rules are unchanged.
   - **Icon code change.** Bringing the catalogue icon shapes into `icon()`, including drawing the 11 game icons the catalogue lacks.
 
 ## Catalogue images into the game, 24 looping frames, finished plans archived (11 October 2026)
@@ -1376,7 +1376,7 @@ Branch `pbb/nifty-faraday-fcw9r6`. Owner request: use the references and images 
 Branch `pbb/nifty-faraday-fcw9r6` (second PR on it; the first, PR #100, is merged). Owner request: use every usable catalogue image, write a migration script that puts them in the database, make the admin image pages and the live game follow the latest decisions, support up to 24 looping frames per character pose, update the old design descriptions, and say whether the finished plans should be renamed.
 
 - **Owner answers (11 October 2026).**
-  - AI Pustaka illustrations are fine for now; the owner replaces them in the panel later.
+  - developer Pustaka illustrations are fine for now; the owner replaces them in the panel later.
   - Each pose has up to 24 frames, always looping.
   - Old design texts are updated.
   - The 30 old-design catalogue frames are imported as interim art.
@@ -1429,7 +1429,7 @@ Branch `pbb/nifty-faraday-fcw9r6` (third PR on it; #100 and #101 are merged). Ow
 
 - **What the owner pushed** (`main`, commits `c132e4b`, `8b4d358`): `gelita-katalog/assets/karakter/` now holds 240 transparent WebP frames, 700 × 900, ten poses × 24.
   - The 30 old lurik–iket frames are replaced; the old ones are backed up in `gelita-katalog/archive/before-character-frames-20261012/`.
-  - `data.json` has 580 entries (483 visual). The catalogue's own docs, reports, and provenance were updated. Ten AI key poses were given deterministic secondary motion with the feet fixed (`gelita-katalog/reports/character-frame-report.json`).
+  - `data.json` has 580 entries (483 visual). The catalogue's own docs, reports, and provenance were updated. Ten developer key poses were given deterministic secondary motion with the feet fixed (`gelita-katalog/reports/character-frame-report.json`).
   - **Mbah Kedu follows `reference.02`** (cream shirt, batik vest, brown trousers, stick), not the `reference.14` jacket chosen on 11 October. The `ImageSlots` text follows the frames, since they are the owner's art.
 - **Merge leftovers fixed.** The push left unresolved conflict markers in four catalogue files. The owner fixed them on `main` as well (`96a68e9`); this branch merged `main` and keeps `main`'s version of the four files, plus one note in the catalogue's `docs/PROGRESS.md`. This branch's own fix was:
   - `docs/PROGRESS.md`: both entries kept.

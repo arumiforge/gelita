@@ -13,7 +13,7 @@ workbook, and import. The script overwrites the data files, so never edit
 them by hand; its output must match the committed data files byte for byte.
 
 What comes from where:
-- tantangan 2-5 (texts, keys, codes, labels): 08; English: 36 (AI draft);
+- tantangan 2-5 (texts, keys, codes, labels): 08; English: 36 (developer draft);
 - Susun Gambar: old data files, letters remapped (31 §14), caption fixes of
   25 -> Akibat ke dokumen lain no. 4, new Wayang Kedu variant (08);
 - Cari Objek round 1: old data files (positions, images, decoy feedback),
@@ -874,7 +874,7 @@ HEADER = """<?php
  * Bank soal kelas 5 — {name} (wilayah {seq}, tingkat {difficulty}).
  *
  * Research bank of revision 10 (docs/revisi-10-analitik/08_DRAF_BANK_SOAL.md;
- * English: 36, AI draft), format of 31 §6.4, written by
+ * English: 36, developer draft), format of 31 §6.4, written by
  * docs/bank-soal/tools/import_08.py on 3 November 2026 and edited by hand
  * from then on. Every item of 08 is `needs_verification` until expert
  * validation. The old bank is archived in docs/arsip/bank-soal-lama/.

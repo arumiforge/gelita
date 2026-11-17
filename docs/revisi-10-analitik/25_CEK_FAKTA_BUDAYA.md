@@ -4,7 +4,7 @@ Per 1 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md
 
 **Diselaraskan 1 November 2026** (tanpa keputusan baru, `asal: pengembang`): kedua baris cerita di *Akibat ke dokumen lain* no. 5 sudah masuk [12](12_CERITA_PENGHUBUNG_DAN_NARASI.md); nomor baris 12 dan B.7 IB yang tidak cocok lagi diganti nama bagian; cek jadwal Pasar Papringan dipindah ke sebelum versi dikunci di G4. Hasil cek, putusan, dan sumbernya tetap dari 27 Oktober 2026.
 
-Dokumen ini memenuhi prasyarat no. 6 di [20 → Ringkasan](20_PAKET_VALIDASI.md#ringkasan): tim mengecek fakta budaya sebelum bahan validasi dibekukan, lalu mencatat hasilnya di lembar B.7 instrumen pengamat budaya (IB). Ini **kerja pengembang dengan bantuan AI**, bukan validasi ahli ([01 → Peran pengembang, peneliti, dan ahli](01_REVISI_10_ANALITIK.md#peran-pengembang-peneliti-dan-ahli)). Pengamat budaya mengonfirmasi atau membantahnya di B.7, dan hasil itu yang menentukan.
+Dokumen ini memenuhi prasyarat no. 6 di [20 → Ringkasan](20_PAKET_VALIDASI.md#ringkasan): tim mengecek fakta budaya sebelum bahan validasi dibekukan, lalu mencatat hasilnya di lembar B.7 instrumen pengamat budaya (IB). Ini **kerja pengembang oleh pengembang**, bukan validasi ahli ([01 → Peran pengembang, peneliti, dan ahli](01_REVISI_10_ANALITIK.md#peran-pengembang-peneliti-dan-ahli)). Pengamat budaya mengonfirmasi atau membantahnya di B.7, dan hasil itu yang menentukan.
 
 ## Ringkasan
 

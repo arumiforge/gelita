@@ -437,13 +437,13 @@ Nama berkas yang diusulkan: `<samaran>_<lembar>_<putaran>_<tanggal terima>`, mis
 4. **Pemeriksaan ganda.** Lembar kertas diketik dua kali oleh dua orang berbeda dan dibandingkan; setiap beda dicek ke lembar asli. Untuk lembar kerja digital, ketua peneliti mencocokkan 10% baris acak dengan berkas asli validator.
 5. **Kunci data.** Setelah cocok, rekap dikunci (salinan baca saja bertanggal) dan baru dianalisis.
 
-AI boleh membantu menghitung indeks dari rekap yang sudah bersih, tetapi skor AI tidak pernah ikut dihitung sebagai skor validator (T6 di [07](07_TELAAH_INSTRUMEN_VALIDASI.md#t6-penelaah-pendahuluan-berbantuan-ai)).
+Pengembang boleh membantu menghitung indeks dari rekap yang sudah bersih, tetapi skor pengembang tidak pernah ikut dihitung sebagai skor validator (T6 di [07](07_TELAAH_INSTRUMEN_VALIDASI.md#t6-penelaah-pendahuluan-oleh-pengembang)).
 
 ### Daftar padanan di luar repo
 
 - Satu baris per validator: nama samaran, nama asli dan gelar, instansi, bidang, wilayah yang dikuasai (pengamat budaya), kontak, tanggal kesediaan, tanggal kirim dan terima per kiriman dan putaran, honorarium dibayar, izin disebut namanya di laporan (ya/tidak).
 - Dipegang ketua peneliti, sama seperti pemegang akun staf ([03 → Akun staf](03_KODE_DAN_ARTI.md#akun-staf)).
-- Tidak pernah disalin ke repo, ke tangkapan layar, ke percakapan dengan AI, atau ke pesan grup.
+- Tidak pernah disalin ke repo, ke tangkapan layar, ke percakapan dengan layanan daring, atau ke pesan grup.
 - Di repo, di 04, di PR, dan di matriks revisi hanya nama samaran yang dipakai.
 
 ## Setelah hasil kembali
@@ -578,7 +578,7 @@ Urutannya: no. 9 dan no. 10 boleh dikerjakan sekarang, bersamaan. No. 8 dikerjak
 
 1. Ketua peneliti menyalin templat daftar padanan di bawah ke berkas terenkripsi di luar repo (misalnya lembar kerja di folder penelitian yang hanya bisa dibuka ketua), lalu mengisi calon per baris.
 2. Ketua mengirim pesan kesediaan ke setiap calon, satu per satu (bukan di grup), lewat pesan atau surel. Besaran honorarium boleh disebut di percakapan pribadi ini bila ditanya ([Keputusan pengembang](#keputusan-pengembang) no. 2), setelah no. 10 diketahui.
-3. Jawaban "bersedia" dicatat di daftar padanan: tanggal, saluran (lisan, WhatsApp, surel), dan siapa yang menerima jawaban. Tangkapan layar jawaban, kalau disimpan, masuk folder validator itu di luar repo, bukan ke percakapan dengan AI.
+3. Jawaban "bersedia" dicatat di daftar padanan: tanggal, saluran (lisan, WhatsApp, surel), dan siapa yang menerima jawaban. Tangkapan layar jawaban, kalau disimpan, masuk folder validator itu di luar repo, bukan ke percakapan dengan layanan daring.
 4. Bila calon menolak atau tidak menjawab dalam satu minggu, ketua mencari pengganti untuk nama samaran yang sama. Nama samaran tidak berubah, jadi dokumen di repo tidak perlu diubah.
 5. Untuk pengamat budaya, catat wilayah yang paling dikuasai (Temanggung, Magelang, Wonosobo), supaya ketiganya tersebar (IB A.3). Untuk ahli media, catat perangkat yang dimiliki, supaya tim tahu siapa yang perlu dipinjami tablet atau perangkat seperti milik sekolah.
 6. Setelah kesebelas baris berisi "bersedia", ketua (atau pengembang atas kabar dari ketua) menulis di tabel *Ringkasan* no. 9: "Selesai (*tanggal*), tercatat di daftar padanan di luar repo", dan mencatatnya di 04 tanpa nama.
@@ -660,7 +660,7 @@ Sistem sekarang tidak punya panel atau perintah untuk membuat akun siswa: `/admi
 | 2 Sekolah | Negara Indonesia, provinsi Jawa Tengah, kabupaten mana saja di Kedu, centang **Sekolahku tidak ada di daftar**, nama sekolah `Sekolah Uji Validator` | Tanpa centang itu, provinsi Jawa Tengah meminta NPSN sekolah resmi (`known_npsn`), dan akun akan tertaut ke sekolah sungguhan. Nama sekolah 3–200 karakter |
 | 3 Akun | Nama pengguna dari [Usulan akun uji](#usulan-akun-uji), kata sandi, centang persetujuan | Nama pengguna `[a-z0-9._]{3,30}` (`valid_username`), bukan `admin`, `guru`, `gelita`, `root`, `system`, `test` (`reservedUsernames`), belum dipakai. Kata sandi 8–64 karakter dengan huruf besar, huruf kecil, angka, dan simbol, dan tidak memuat nama pengguna (`passwordPolicy`, harus "kuat") |
 
-Kata sandi dibuat acak per akun di pengelola sandi pengembang. Daftar akun dan sandinya diserahkan ke ketua peneliti lewat saluran pribadi, lalu ketua mengirim alamat dan sandi ke validator lewat dua saluran berbeda ([Usulan akun uji](#usulan-akun-uji)). Sandi tidak pernah ditulis di repo, di surat, atau di percakapan dengan AI.
+Kata sandi dibuat acak per akun di pengelola sandi pengembang. Daftar akun dan sandinya diserahkan ke ketua peneliti lewat saluran pribadi, lalu ketua mengirim alamat dan sandi ke validator lewat dua saluran berbeda ([Usulan akun uji](#usulan-akun-uji)). Sandi tidak pernah ditulis di repo, di surat, atau di percakapan dengan layanan daring.
 
 Ahli media yang mendaftar sendiri (IMd A.4) diberi tahu tiga hal di surat akses: pilih "Sekolahku tidak ada di daftar", tulis `Sekolah Uji Validator`, dan pakai nama pengguna yang diawali `uji.media`.
 

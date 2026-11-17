@@ -49,7 +49,7 @@ Hal yang perlu diingat dari sheet PETUNJUK, KAMUS_KOLOM, dan DAFTAR_MEDIA:
 - **Keterangan (`prompt_id`/`prompt_en`) tampil setelah gambar tersusun.** Gambar harus memperlihatkan apa yang disebut keterangan. Contohnya, bila keterangan menyebut "stupa berlubang berisi arca Buddha", arca itu harus terlihat.
 - Selama gambar asli belum diunggah, sistem memasang gambar contoh. Unggah di **Panel GELITA → Gambar & mockup** dengan kode berkas yang persis sama. Mengunggah ulang dengan kode yang sama berarti mengganti gambar lama.
 - Kolom `media_note` dari impor Excel hanya mengisi slot yang catatannya masih kosong. Untuk slot lama (variasi a–c), ubah catatannya lewat panel Gambar & mockup.
-- DAFTAR_MEDIA meminta pemilik atau sumber gambar dicatat. Untuk gambar AI, catat alat, tanggal, dan prompt yang dipakai (templat di bagian 10).
+- DAFTAR_MEDIA meminta pemilik atau sumber gambar dicatat. Untuk gambar buatan pengembang, catat alat, tanggal, dan prompt yang dipakai (templat di bagian 10).
 
 ---
 
@@ -146,14 +146,14 @@ Ciri ini sudah dimasukkan ke baris `Place` di setiap prompt.
 - **Tembakau tidak digambarkan.** Bank soal juga tidak memakainya. Kopi hanya tampil sebagai tanaman dan hasil panen; tidak ada anak yang meminum kopi.
 - **Keselamatan:** di kawah, semua orang berada di balik pagar. Di Sikunir, semua orang berada di jalur. Anak selalu bersama orang dewasa.
 - **Orang nyata:** jangan meminta wajah orang terkenal atau orang tertentu, dan jangan mengunggah foto orang yang bisa dikenali sebagai referensi.
-- **Label ilustrasi:** gambar AI adalah ilustrasi, bukan dokumentasi. Bila dipakai di Pustaka, beri keterangan "Ilustrasi".
+- **Label ilustrasi:** gambar buatan pengembang adalah ilustrasi, bukan dokumentasi. Bila dipakai di Pustaka, beri keterangan "Ilustrasi".
 
 ---
 
 
 ## 6. Gambar katalog yang perlu diganti
 
-Katalog aset (`gelita-katalog`) sudah memuat sembilan gambar Susun Gambar untuk variasi a–c. Semuanya berstatus **"Ilustrasi AI — perlu tinjau"**, dengan catatan isi **"Perlu pemeriksaan isi dan budaya sebelum produksi"**. Status gaya "Sesuai gaya" pada gambar itu ditetapkan atas keputusan pengguna dan, menurut catatan katalog sendiri, *tidak menyatakan gambar lama telah diperbaiki secara visual*.
+Katalog aset (`gelita-katalog`) sudah memuat sembilan gambar Susun Gambar untuk variasi a–c. Semuanya berstatus **"Ilustrasi buatan pengembang — perlu tinjau"**, dengan catatan isi **"Perlu pemeriksaan isi dan budaya sebelum produksi"**. Status gaya "Sesuai gaya" pada gambar itu ditetapkan atas keputusan pengguna dan, menurut catatan katalog sendiri, *tidak menyatakan gambar lama telah diperbaiki secara visual*.
 
 Kesembilan gambar itu diuji dengan `cek_keping.py` (kisi sesuai wilayah) lalu ditinjau isinya terhadap keterangan di bank soal:
 
@@ -197,7 +197,7 @@ python3 cek_keping.py ai-studio/game-images/assets/tantangan/challenge.item.mgl-
    - Apakah keempat sudut berisi dan tidak ada bagian yang hampir hitam?
    - Apakah ada teks, atau tokoh Jaka yang ikut tergambar?
 6. **Perbaiki** dengan prompt perbaikan di bagian 8.4. Satu perbaikan untuk satu masalah lebih berhasil daripada banyak perintah sekaligus.
-7. **Unduh** hasil dalam resolusi tertinggi (PNG). Ketika panduan ini ditulis, ChatGPT Images 2.0 (`gpt-image-2`, rilis April 2026) disebut mampu menghasilkan gambar hingga sekitar 2K. Bila berkas yang diunduh masih di bawah 1200 px, minta ulang: *"Give me the same image at the highest resolution available, square 1:1."* Bila masih kurang juga, perbesar dengan pembesar AI seperti Upscayl (gratis).
+7. **Unduh** hasil dalam resolusi tertinggi (PNG). Ketika panduan ini ditulis, ChatGPT Images 2.0 (`gpt-image-2`, rilis April 2026) disebut mampu menghasilkan gambar hingga sekitar 2K. Bila berkas yang diunduh masih di bawah 1200 px, minta ulang: *"Give me the same image at the highest resolution available, square 1:1."* Bila masih kurang juga, perbesar dengan pembesar gambar seperti Upscayl (gratis).
 8. **Potong dan ekspor tepat 1200 × 1200 px WebP** (ketentuan katalog). ChatGPT tidak menyimpan WebP, jadi ubah sendiri, misalnya dengan Python dan Pillow:
 
    ```bash

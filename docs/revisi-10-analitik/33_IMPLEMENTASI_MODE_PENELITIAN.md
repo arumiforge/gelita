@@ -2,7 +2,7 @@
 
 Per 2 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · perubahan sistem no. 5, 16, dan 19 di [01 → Catatan perubahan sistem](01_REVISI_10_ANALITIK.md#catatan-perubahan-sistem-untuk-tahap-nanti)
 
-> **Status: `disetujui pengembang` (9 November 2026), `asal: pengembang`** (disusun dengan bantuan AI, 1–2 November 2026; kode gelombang F, 9 November 2026). Pilihan rancangan diputuskan pengembang ([§17](#17-keputusan-pengembang)); penyesuaian dari implementasi di §17 no. 8–10.
+> **Status: `disetujui pengembang` (9 November 2026), `asal: pengembang`** (disusun pengembang, 1–2 November 2026; kode gelombang F, 9 November 2026). Pilihan rancangan diputuskan pengembang ([§17](#17-keputusan-pengembang)); penyesuaian dari implementasi di §17 no. 8–10.
 >
 > Sejak 1 November 2026 kode dibangun sekarang ([04](04_CATATAN_KEPUTUSAN.md), entri 1 November 2026), tetapi tidak dipakai dengan anak sebelum persetujuan etik. Semua perilaku penelitian di sini ada di balik sakelar studi `field_mode` ([28 → K1](28_IMPLEMENTASI_SESI_LAPANGAN.md#2-keputusan-yang-dikunci)), yang mati secara bawaan, jadi `main` tetap bisa dirilis. Setelah hasil validasi kembali, dokumen ini dicek ulang terhadap matriks revisi induk ([20](20_PAKET_VALIDASI.md)) dan keputusan komite etik.
 >

@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 8 November 2026 · Lampiran [32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md) (tantangan kelima) dan [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md) (latar cerita) · Status: `draf pengembang`, `asal: pengembang` (disusun AI atas permintaan pengembang)
+Per 8 November 2026 · Lampiran [32](32_IMPLEMENTASI_SKENARIO_DIGITAL.md) (tantangan kelima) dan [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md) (latar cerita) · Status: `draf pengembang`, `asal: pengembang` (disusun pengembang)
 
 Pengembang memutuskan (8 November 2026, [04](04_CATATAN_KEPUTUSAN.md)) bahwa letak tantangan kelima tidak ditebak di peta empat pos yang ada. Ketiga peta wilayah dibuat ulang untuk lima pos. Dokumen ini memuat mock-up tata letaknya dan prompt siap tempel ke ChatGPT (bahasa Inggris) untuk tujuh gambar yang masih ditunggu bagian 6:
 

@@ -375,7 +375,7 @@ final class CatalogImportTest extends CIUnitTestCase
         $this->assertSame('Sindoro dan Sumbing', $this->sqlite->table('library_media')->where('id', $media['id'])->get()->getRow('caption_id'));
     }
 
-    /** A real file (a regency's coat of arms, 16 November 2026) brings its own credit instead of the AI-illustration credit. */
+    /** A real file (a regency's coat of arms, 16 November 2026) brings its own credit instead of the developer-illustration credit. */
     public function testLibraryEntryBringsItsOwnCredit(): void
     {
         $this->setCatalogField('library.temanggung.p7.1', 'credit', 'Lambang resmi Pemerintah Kabupaten Temanggung');
@@ -383,7 +383,7 @@ final class CatalogImportTest extends CIUnitTestCase
         $media = $this->libraryMedia(7, 1);
 
         $this->assertSame('Lambang resmi Pemerintah Kabupaten Temanggung', $media['credit']);
-        $this->assertSame(CatalogImporter::LIBRARY_CREDIT, $this->libraryMedia(1, 1)['credit'], 'entries without a credit keep the AI-illustration credit');
+        $this->assertSame(CatalogImporter::LIBRARY_CREDIT, $this->libraryMedia(1, 1)['credit'], 'entries without a credit keep the developer-illustration credit');
 
         // Already installed: the credit still follows the list
         $this->setCatalogField('library.temanggung.p7.1', 'credit', 'Pemerintah Kabupaten Temanggung');
