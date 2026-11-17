@@ -35,6 +35,9 @@ class ParticipantCopyService
     ];
 
     /** Columns never in the copy: answer key, item text, device details, internal links. */
+    /** Indonesian headings of the `risiko` sheet (owner, 16 November 2026: 30 §8); `risk_reconsent` is never a column. */
+    public const RISK_HEADINGS = ['Variabel', 'Jawaban', 'Waktu menjawab'];
+
     private const DROPPED = [
         'answer_key', 'prompt', 'payload', 'device_type', 'os_name', 'browser_name', 'screen_size', 'is_touch',
         'app_client_version', 'package_code', 'package_mode', 'school_npsn', 'client_hints', 'user_agent',
@@ -128,7 +131,7 @@ class ParticipantCopyService
             'minutes'     => (int) round($ms / 60000),
             'riskLeftOut' => $riskLeftOut,
             // Part 8 (34 §11.4, 30 §8): the parts of the tests and the questionnaire done
-            'instruments' => $this->instrumentSummary($participantId),
+            'instruments' => $this->instrumentSummary($participantId, $riskLeftOut),
         ], ['saveData' => false]);
     }
 
@@ -160,7 +163,7 @@ class ParticipantCopyService
             }
 
             if ($withRisk) {
-                $writer->startSheet('risiko', ['unit', 'response', 'answered_at']);
+                $writer->startSheet('risiko', self::RISK_HEADINGS);
 
                 foreach ($this->riskRows($participantId) as $row) {
                     $writer->row([$row['unit'], $row['response'], $row['answered_at']]);
@@ -181,11 +184,13 @@ class ParticipantCopyService
 
     /**
      * Part 8 (30 §8): which parts of the tests, the questionnaire, and the
-     * attitude scale the child did, in plain words (never scores or risk items).
+     * attitude scale the child did, in plain words (never scores or answers).
+     * The ang-21–ang-23 sitting gets its own line from the real data (owner,
+     * 16 November 2026: 30 §8), saying whether its answers are in the copy.
      *
      * @return list<string>
      */
-    private function instrumentSummary(int $participantId): array
+    private function instrumentSummary(int $participantId, bool $riskLeftOut): array
     {
         $db    = db_connect();
         $names = ['mb' => 'Bagian 1 (membaca)', 'ae' => 'Bagian 2 (aman dan etis)', 'bd' => 'Bagian 3 (budaya digital)'];
@@ -202,6 +207,11 @@ class ParticipantCopyService
             } elseif ($sitting['kind'] === 'attitude') {
                 $out[] = 'Skala sikap di Balai Refleksi: ' . ($sitting['submitted_at'] === null ? 'belum dikirim' : 'dikirim') . '.';
             }
+        }
+
+        if (service('dataRequests')->hasRiskAnswers($participantId)) {
+            $out[] = 'Pertanyaan angket tentang pengalaman tidak nyaman di internet: dijawab; jawabannya '
+                . ($riskLeftOut ? 'belum disertakan (lihat di bawah).' : 'ada di lembar risiko berkas Excel.');
         }
 
         return $out;
