@@ -1037,3 +1037,13 @@ Found in the MariaDB and Chromium checks of the 16 November code (owner intervie
 - **CSRF with a login.** `CsrfFilter` answers an API request of a signed-in page with a refused token directly with 403 `CSRF_EXPIRED` (same body as before) and a warning line, instead of throwing (the framework logged it as critical first). HTML form posts are still thrown.
 - **Child's copy.** Sheet `risiko`, column *Waktu menjawab*: `fmt_date()` in WIB (`17 Nov 2026 10:30`) instead of the raw database time.
 - **Tests.** `NewClientEventsTest` (hook before the beacon batch, one report per leave), `EndedSessionCsrfTest` (403 without throwing), `ParticipantCopyTest` (readable time, no raw database time).
+
+## Document status page in the panel (17 November 2026, branch `admin-status-dokumen`)
+
+Owner request: show `docs/revisi-10-analitik/status-dokumen.html` in the admin panel instead of a separate web copy (the published copy was deleted).
+
+- **Route and right.** `GET /admin/status-dokumen` → `Admin\DocumentStatusController::index`, filter `staffCan:research_docs.view`; the new capability is held by `ketua` only (owner). Menu item *Status dokumen* in the *Pengaturan* group, after *Penelitian*.
+- **One source.** `App\Libraries\DocumentStatusPage` reads the file from `ROOTPATH` (the server is a git checkout, `deploy.sh` pulls the whole repository, and the app already reads `docs/` elsewhere). It keeps the inner HTML of `<main>`, drops the page's `<h1>`, footer, scripts, styles, forms, iframes and `on*` attributes, and unwraps every link to plain text (owner: names only; `docs/` is not served to browsers). A missing file shows `Admin.docStatusMissing`.
+- **Look.** The panel is light-only, so the page's own styles are not used; `admin.css` styles its classes under `.doc-status` with the panel tokens, leaving the panel's `.badge` and `.card` alone. Checked at 1280 and 390 px wide (no sideways scroll).
+- **Tests.** `DocumentStatusPageTest`: the head researcher sees the page without `.md` links and has the menu item; admin and peneliti do not, the route carries the filter, the filter answers 404; the cleaning drops links, scripts and handlers; a missing file gives the friendly message.
+

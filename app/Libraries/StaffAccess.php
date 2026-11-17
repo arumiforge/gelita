@@ -43,6 +43,7 @@ final class StaffAccess
         'tech_logs.view'             => ['admin'],
         'risk_flags.view'            => ['ketua'],
         'identities.replace'         => ['admin'],   // part 4 (30 §10.2)
+        'research_docs.view'         => ['ketua'],   // document status page (owner, 17 November 2026)
     ];
 
     /**

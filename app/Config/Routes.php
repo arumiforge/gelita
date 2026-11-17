@@ -197,6 +197,8 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
         });
 
         // Part 3 (29 §5.6, K15): the admin's tech log
+        // Document status of the research revision (owner, 17 November 2026): head researcher only
+        $routes->get('status-dokumen', 'DocumentStatusController::index', ['filter' => 'staffCan:research_docs.view']);
         $routes->group('', ['filter' => 'staffCan:tech_logs.view'], static function ($routes): void {
             $routes->get('log-teknis', 'TechLogController::index');
             $routes->get('log-teknis/(perangkat|event|sesi)', 'TechLogController::table/$1');
