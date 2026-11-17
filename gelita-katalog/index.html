@@ -16,6 +16,7 @@
     <h1>Katalog Aset</h1>
     <p class="lead">Semua gambar, musik, efek suara, dan narasi yang dipakai permainan GELITA, lengkap dengan tempat pemakaiannya.</p>
     <p class="summary" id="summary"></p>
+    <p class="guide">Penjelasan tentang permainannya ada di <a id="guide-link" href="https://gelita.id/admin/panduan-gelita">Mengenal GELITA</a>.</p>
   </div>
   <nav class="tabs wrap" aria-label="Jenis aset">
     <a href="#gambar" data-tab="gambar">Gambar</a>
@@ -38,7 +39,7 @@
     </div>
     <p class="count" id="img-count" aria-live="polite"></p>
     <div id="img-list"></div>
-    <p class="note">Gambar di sini salinan ukuran web dari gambar permainan. Status tinjauan adalah hasil pemeriksaan pengembang bersama pemilik proyek, bukan penilaian ahli.</p>
+    <p class="note">Gambar dan suara dimuat langsung dari gelita.id. Yang belum terpasang di sana ditandai “Belum ada di gelita.id”. Status tinjauan adalah hasil pemeriksaan pengembang bersama pemilik proyek, bukan penilaian ahli.</p>
   </section>
 
   <section id="tab-musik" class="tab" hidden>
@@ -67,7 +68,7 @@
 <dialog id="detail" aria-labelledby="detail-title">
   <div class="detail">
     <button type="button" class="close" id="detail-close" aria-label="Tutup">×</button>
-    <figure><a id="detail-open" href="#" target="_blank" rel="noopener"><img id="detail-img" alt=""></a></figure>
+    <figure id="detail-figure"></figure>
     <div class="info">
       <h2 id="detail-title"></h2>
       <p id="detail-badges" class="badges"></p>

@@ -10,9 +10,12 @@ use RuntimeException;
  * effect and narration the game uses, served at https://katalog.gelita.id/
  * from a repository checkout.
  *
- * The site is self-contained: index.html, its script and style, the data
- * file and every preview and audio file live inside the folder and are linked
- * relatively, so it works from any web server and from file://.
+ * The folder holds only the page (index.html, katalog.css, katalog.js) and
+ * the generated list data.js. Pictures and sounds are not copied (owner,
+ * 17 November 2026: the repository must not grow with asset files): every
+ * entry links to the file the live game serves under BASE_URL. A file that
+ * is not on that server yet shows a placeholder on the page, and the entry
+ * stays listed.
  *
  * Sources (the game leads; nothing here is kept by hand):
  * - pictures: `ai-studio/game-images/data.json` (frame 1 of each character
@@ -23,34 +26,26 @@ use RuntimeException;
  * - review status: the Status and Notes columns of `REVIEW.md`;
  * - music and sound effects: `public/assets/audio/{music,sfx}/` with the
  *   screen and mood columns of `ai-studio/elevenlabs-sound/sounds.csv`;
- * - narration: `ai-studio/elevenlabs-voice/lines.csv` and its takes in
- *   `out/{id,en}/`.
+ * - narration: the lines of `ai-studio/elevenlabs-voice/lines.csv`, each
+ *   linked to its take on the server in both languages.
  *
- * Prompt texts are never copied into the site. The masters are never served:
- * pictures are re-encoded as web-size lossy WebP (preview and thumbnail);
- * audio is copied byte for byte, so git stores no new blob for it.
+ * Served paths follow the game's own storage rules: slot pictures are
+ * stored by CatalogImporter/MediaStore as `assets/uploads/{slot key}.webp`
+ * (app icons `.png`, story backgrounds under their `bg.story.*` slide key),
+ * shipped UI art stays in `assets/ui/` and `assets/app/`, music and sound
+ * effects in `assets/audio/{music,sfx}/`, narration in
+ * `assets/audio/narasi/{id,en}/{code}.mp3` (NarrationImporter::FOLDER).
  *
- * Output is deterministic. Each picture records a fingerprint of its source
- * and the encoder settings in data.js; a rebuild re-encodes only pictures
- * whose fingerprint changed, and removes files no entry points at.
+ * Prompt texts are never copied into the site, and the masters in
+ * ai-studio/ are never linked. Output is deterministic.
  */
 final class CatalogSite
 {
     /** Output folder, relative to the repository root. */
     public const OUT_DIR = 'gelita-katalog';
 
-    /** Longest side and WebP quality of the preview in the detail view. */
-    public const PREVIEW_MAX = 1024;
-
-    public const PREVIEW_QUALITY = 72;
-
-    /** Longest side and WebP quality of the grid thumbnail. */
-    public const THUMB_MAX = 320;
-
-    public const THUMB_QUALITY = 60;
-
-    /** Part of each picture fingerprint: changing the encoder settings re-encodes everything. */
-    public const ENCODER = 'gd-webp/p1024q72/t320q60/v1';
+    /** The live game whose files the catalogue links to (`--basis` overrides it). */
+    public const BASE_URL = 'https://gelita.id';
 
     /** Static files of the page, copied from TEMPLATE_DIR. */
     public const STATIC_FILES = ['index.html', 'katalog.css', 'katalog.js'];
@@ -60,17 +55,8 @@ final class CatalogSite
     /** Hand-written files of the folder that the build keeps. */
     public const KEPT_FILES = ['README.md'];
 
-    /** Media folders the build owns completely (stale files are removed). */
-    public const MEDIA_DIRS = ['gambar', 'suara', 'huruf'];
-
-    /** The game's own fonts and their licences, copied byte for byte (target → source). */
-    public const FONT_FILES = [
-        'huruf/marcellus-400.woff2'          => 'public/assets/fonts/marcellus-latin-400-normal.woff2',
-        'huruf/plus-jakarta-sans-400.woff2'  => 'public/assets/fonts/plus-jakarta-sans-latin-400-normal.woff2',
-        'huruf/plus-jakarta-sans-700.woff2'  => 'public/assets/fonts/plus-jakarta-sans-latin-700-normal.woff2',
-        'huruf/OFL-Marcellus.txt'            => 'public/assets/fonts/OFL-Marcellus.txt',
-        'huruf/OFL-PlusJakartaSans.txt'      => 'public/assets/fonts/OFL-PlusJakartaSans.txt',
-    ];
+    /** Folders of the earlier self-contained edition; the build removes them. */
+    public const OLD_DIRS = ['gambar', 'suara', 'huruf'];
 
     private const TEMPLATE_DIR = __DIR__ . '/CatalogSite';
 
@@ -148,6 +134,23 @@ final class CatalogSite
         'ending'                => 'Cerita penutup',
     ];
 
+    /** Region story word of a background key → `dialogues.context_code` (as CatalogImporter::REGION_STORY_CONTEXTS). */
+    private const STORY_CONTEXTS = [
+        'kenal'  => 'region_intro',
+        'dialog' => 'level_open',
+        'tuntas' => 'level_done',
+        'layar'  => 'scenario_open',
+    ];
+
+    /** Catalogue app icon key → slot, stored as PNG (as CatalogImporter::APP_ICONS; the favicon is made from the 192 icon). */
+    private const APP_ICON_SLOTS = [
+        'app.icon-512.png'          => 'app.icon-512',
+        'app.icon-192.png'          => 'app.icon-192',
+        'app.icon-maskable-512.png' => 'app.icon-maskable',
+        'app.apple-touch-icon.png'  => 'app.apple-touch',
+        'app.favicon.ico'           => 'app.favicon',
+    ];
+
     /** Story background word (`bg.cerita-{word}-…`) → story part. */
     private const STORY_PARTS = [
         'intro'   => 'Cerita pembuka',
@@ -203,14 +206,26 @@ final class CatalogSite
     /** @var array<string, array{st: string, text: string, notes: string, no: int}>|null */
     private ?array $review = null;
 
+    private readonly string $base;
+
+    /** @var array<string, true>|null */
+    private ?array $videos = null;
+
     /**
      * @param string      $root repository root
      * @param string|null $out  output folder (OUT_DIR under $root unless a test passes its own)
+     * @param string|null $base server the entries link to (BASE_URL unless given)
      */
-    public function __construct(?string $root = null, ?string $out = null)
+    public function __construct(?string $root = null, ?string $out = null, ?string $base = null)
     {
         $this->root = rtrim($root ?? ROOTPATH, '/\\');
         $this->out  = rtrim($out ?? $this->root . '/' . self::OUT_DIR, '/\\');
+        $this->base = rtrim($base ?? self::BASE_URL, '/');
+    }
+
+    public function baseUrl(): string
+    {
+        return $this->base;
     }
 
     public function outDir(): string
@@ -402,7 +417,20 @@ final class CatalogSite
             $image['d'] = trim($image['d'] . ' Gambar 1 dari pose ini; permainan memakai satu gambar diam per pose.');
         }
 
-        return $this->withFile($image, $file, false);
+        $image['p'] = null;
+
+        foreach ($keys as $k) {
+            // A Pustaka video is never installed itself; the game shows only its cover (`….poster`)
+            if (! isset($this->videoKeys()[$k])) {
+                $image['p'] ??= $this->servedPath($k);
+            }
+        }
+
+        if ($image['p'] === null && isset($this->videoKeys()[$key])) {
+            $image['u'][] = 'Video Pustaka: permainan hanya memakai gambar sampulnya.';
+        }
+
+        return $this->withFile($image, $file);
     }
 
     /** @return array<string, mixed> */
@@ -441,46 +469,89 @@ final class CatalogSite
             'x'  => false,
         ];
 
-        return $this->withFile($image, $path, true);
+        // The game's own ?v= uses the server file's time; a content hash busts a cached copy the same way
+        $image['p'] = 'assets/' . substr($path, strlen('public/assets/')) . '?v=' . substr((string) hash_file('sha256', $this->root . '/' . $path), 0, 8);
+
+        return $this->withFile($image, $path);
     }
 
     /**
-     * Adds size, review status, output paths and the source fingerprint.
+     * Pustaka keys that have a `.poster` entry in data.json, i.e. videos.
+     *
+     * @return array<string, true>
+     */
+    private function videoKeys(): array
+    {
+        if ($this->videos === null) {
+            $this->videos = [];
+            $data         = json_decode((string) @file_get_contents($this->root . '/' . self::IMAGE_DIR . '/data.json'), true);
+
+            foreach (is_array($data) ? $data : [] as $entry) {
+                if (is_array($entry) && preg_match('/^(library\..+)\.poster$/', (string) ($entry['key'] ?? ''), $m) === 1) {
+                    $this->videos[$m[1]] = true;
+                }
+            }
+        }
+
+        return $this->videos;
+    }
+
+    /**
+     * Adds the original size and the review status.
      *
      * @param array<string, mixed> $image
      *
      * @return array<string, mixed>
      */
-    private function withFile(array $image, string $path, bool $webReady): array
+    private function withFile(array $image, string $path): array
     {
-        $abs    = $this->root . '/' . $path;
         $ext    = strtolower(pathinfo($path, PATHINFO_EXTENSION));
-        $size   = $ext === 'svg' ? false : @getimagesize($abs);
+        $size   = $ext === 'svg' ? false : @getimagesize($this->root . '/' . $path);
         $review = $this->review()[$path] ?? null;
-        $raster = in_array($ext, ['webp', 'png', 'jpg', 'jpeg'], true);
 
-        $image['wh'] = is_array($size) ? [(int) $size[0], (int) $size[1]] : null;
-        $image['s']  = $review['st'] ?? 'none';
-        $image['sn'] = $review === null ? '' : trim($review['text'] . ($review['text'] !== '' && $review['notes'] !== '' ? ' — ' : '') . $review['notes']);
-        $image['no'] = $review['no'] ?? null;
-
-        if ($raster) {
-            $image['img'] = 'gambar/' . $image['id'] . '.webp';
-            $image['th']  = 'gambar/kecil/' . $image['id'] . '.webp';
-        } else {
-            $image['img'] = 'gambar/' . $image['id'] . '.' . $ext;
-            $image['th']  = $image['img'];
-        }
-
-        $copyPreview = ! $raster || ($webReady && $ext === 'webp' && is_array($size) && max($size[0], $size[1]) <= self::PREVIEW_MAX);
-
-        $image['src'] = substr(hash('sha256', self::ENCODER . "\0" . ($copyPreview ? 'copy' : 'encode') . "\0" . (string) @hash_file('sha256', $abs)), 0, 16);
-
-        $image['_src']     = $path;
-        $image['_copy']    = $copyPreview;
-        $image['_raster']  = $raster;
+        $image['wh']   = is_array($size) ? [(int) $size[0], (int) $size[1]] : null;
+        $image['s']    = $review['st'] ?? 'none';
+        $image['sn']   = $review === null ? '' : trim($review['text'] . ($review['text'] !== '' && $review['notes'] !== '' ? ' — ' : '') . $review['notes']);
+        $image['no']   = $review['no'] ?? null;
+        $image['_src'] = $path;
 
         return $image;
+    }
+
+    /**
+     * Path (under the server root) where the game stores the picture of a
+     * catalogue key once `gelita:katalog:impor` installed it, or null for
+     * keys it does not install (CatalogImporter::importEntry()).
+     */
+    public function servedPath(string $key): ?string
+    {
+        $slot = CatalogImporter::ICON_SLOTS[$key] ?? CatalogImporter::REFERENCE_SLOTS[$key] ?? null;
+
+        if ($slot !== null) {
+            return 'assets/uploads/' . $slot . '.webp';
+        }
+
+        if (str_starts_with($key, 'reference.') || str_starts_with($key, 'icon.') || in_array($key, ['ui.placeholder', 'app.icon.svg'], true)) {
+            return null;
+        }
+
+        if (isset(self::APP_ICON_SLOTS[$key])) {
+            return 'assets/uploads/' . self::APP_ICON_SLOTS[$key] . '.png';
+        }
+
+        if (preg_match('/^bg\.cerita-(intro|penutup)-(\d+)$/', $key, $m) === 1) {
+            return 'assets/uploads/bg.story.' . ($m[1] === 'intro' ? 'intro' : 'ending') . '.' . (int) $m[2] . '.webp';
+        }
+
+        if (preg_match('/^bg\.cerita-([a-z]+)-([a-z]+)-(\d+)$/', $key, $m) === 1) {
+            return isset(self::STORY_CONTEXTS[$m[1]]) ? 'assets/uploads/bg.story.' . self::STORY_CONTEXTS[$m[1]] . '.' . $m[2] . '.' . (int) $m[3] . '.webp' : null;
+        }
+
+        if (str_starts_with($key, 'library.') || ImageSlots::patternFor($key) !== null) {
+            return 'assets/uploads/' . $key . '.webp';
+        }
+
+        return null;
     }
 
     /** "Cerita pembuka, slide 3" for a story background key, else null. */
@@ -531,7 +602,6 @@ final class CatalogSite
             }
         }
 
-        $folder = $kind === 'music' ? 'musik' : 'efek';
         $files  = [];
 
         foreach ($this->listFiles(self::AUDIO_DIR . '/' . $kind, ['mp3']) as $path) {
@@ -548,8 +618,7 @@ final class CatalogSite
                 'd'    => trim((string) ($row['suasana'] ?? '')),
                 'dur'  => isset($row['durasi_detik']) && is_numeric($row['durasi_detik']) ? (float) $row['durasi_detik'] : null,
                 'loop' => ($row['putar_ulang'] ?? '') === 'ya',
-                'f'    => 'suara/' . $folder . '/' . $name . '.mp3',
-                '_src' => $files[$name],
+                'f'    => 'assets/audio/' . $kind . '/' . $name . '.mp3',
             ];
         }
 
@@ -557,7 +626,7 @@ final class CatalogSite
     }
 
     /**
-     * Narration lines in story order, with the take per language where it exists.
+     * Narration lines in story order, with the served path of the take per language.
      *
      * @return list<array<string, mixed>>
      */
@@ -588,14 +657,9 @@ final class CatalogSite
                 '_i'  => $index,
             ];
 
-            foreach (['id' => 'fi', 'en' => 'fe'] as $locale => $field) {
-                $take = self::VOICE_DIR . '/out/' . $locale . '/' . $code . '.mp3';
-
-                if (is_file($this->root . '/' . $take)) {
-                    $line[$field]          = 'suara/narasi/' . $locale . '/' . $code . '.mp3';
-                    $line['_' . $field]    = $take;
-                }
-            }
+            // Every line links to where the game serves its take (NarrationImporter::FOLDER); a missing one shows a placeholder
+            $line['fi'] = 'assets/audio/narasi/id/' . $code . '.mp3';
+            $line['fe'] = 'assets/audio/narasi/en/' . $code . '.mp3';
 
             $lines[] = $line;
         }
@@ -675,7 +739,7 @@ final class CatalogSite
     // ------------------------------------------------------------- rendering
 
     /** The data.js text for a model: one entry per line, so a rebuild diff stays small. */
-    public static function dataScript(array $model): string
+    public function dataScript(array $model): string
     {
         $json  = static fn ($value): string => json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
         $clean = static fn (array $rows): array => array_map(
@@ -685,6 +749,7 @@ final class CatalogSite
 
         $out = "/* Dibuat oleh php spark gelita:katalog:halaman. Jangan diubah dengan tangan. */\n";
         $out .= "window.KATALOG = {\n";
+        $out .= '"base": ' . $json($this->base . '/') . ",\n";
         $out .= '"groups": ' . $json(self::GROUPS) . ",\n";
         $out .= '"regions": ' . $json(self::REGIONS) . ",\n";
         $out .= '"kinds": ' . $json(self::KINDS) . ",\n";
@@ -702,117 +767,41 @@ final class CatalogSite
     }
 
     /**
-     * Picture fingerprints of the data.js now in the folder: id → src.
+     * Every file the build writes → its text.
      *
      * @return array<string, string>
      */
-    public function builtFingerprints(): array
+    private function files(array $model): array
     {
-        $text = (string) @file_get_contents($this->out . '/' . self::DATA_FILE);
-        $map  = [];
-
-        if (preg_match('/"images": \[\n(.*?)\n\]/s', $text, $m)) {
-            foreach (explode("\n", $m[1]) as $line) {
-                $row = json_decode(rtrim($line, ','), true);
-
-                if (is_array($row) && isset($row['id'], $row['src'])) {
-                    $map[(string) $row['id']] = (string) $row['src'];
-                }
-            }
-        }
-
-        return $map;
-    }
-
-    // ----------------------------------------------------------------- build
-
-    /**
-     * Writes the site. Returns what was (or, in a dry run, would be) done.
-     *
-     * @return array{encoded: list<string>, copied: list<string>, written: list<string>, removed: list<string>, unchanged: int, failed: list<string>, model: array}
-     */
-    public function build(bool $dryRun = false): array
-    {
-        $model  = $this->model();
-        $built  = $this->builtFingerprints();
-        $report = ['encoded' => [], 'copied' => [], 'written' => [], 'removed' => [], 'unchanged' => 0, 'failed' => [], 'model' => $model];
-        $keep   = [];
-
-        if (! $dryRun && ! is_dir($this->out) && ! mkdir($this->out, 0775, true) && ! is_dir($this->out)) {
-            throw new RuntimeException('Folder ' . $this->out . ' tidak dapat dibuat.');
-        }
-
-        foreach ($model['images'] as $image) {
-            $keep[$image['img']] = true;
-            $keep[$image['th']]  = true;
-            $current = ($built[$image['id']] ?? null) === $image['src']
-                && is_file($this->out . '/' . $image['img']) && is_file($this->out . '/' . $image['th']);
-
-            if ($current) {
-                $report['unchanged']++;
-
-                continue;
-            }
-
-            if ($dryRun) {
-                $report[$image['_copy'] ? 'copied' : 'encoded'][] = $image['img'];
-
-                continue;
-            }
-
-            $source = $this->root . '/' . $image['_src'];
-            $ok     = $image['_copy']
-                ? $this->copyIfChanged($source, $image['img'])
-                : $this->encode($source, $this->out . '/' . $image['img'], self::PREVIEW_MAX, self::PREVIEW_QUALITY);
-
-            if ($ok && $image['_raster']) {
-                $ok = $this->encode($source, $this->out . '/' . $image['th'], self::THUMB_MAX, self::THUMB_QUALITY);
-            }
-
-            if ($ok) {
-                $report[$image['_copy'] ? 'copied' : 'encoded'][] = $image['img'];
-            } else {
-                $report['failed'][] = $image['_src'];
-            }
-        }
-
-        $audio = self::FONT_FILES;
-
-        foreach (['music', 'sfx'] as $name) {
-            foreach ($model[$name] as $sound) {
-                $audio[$sound['f']] = $sound['_src'];
-            }
-        }
-
-        foreach ($model['narration'] as $line) {
-            foreach (['fi', 'fe'] as $field) {
-                if (isset($line[$field])) {
-                    $audio[$line[$field]] = $line['_' . $field];
-                }
-            }
-        }
-
-        // Audio and fonts: byte-for-byte copies
-        foreach ($audio as $target => $source) {
-            $keep[$target] = true;
-
-            if ($this->sameFile($this->root . '/' . $source, $this->out . '/' . $target)) {
-                $report['unchanged']++;
-            } elseif ($dryRun || $this->copyIfChanged($this->root . '/' . $source, $target)) {
-                $report['copied'][] = $target;
-            } else {
-                $report['failed'][] = $source;
-            }
-        }
-
-        $texts = [self::DATA_FILE => self::dataScript($model)];
+        $texts = [self::DATA_FILE => $this->dataScript($model)];
 
         foreach (self::STATIC_FILES as $file) {
             $texts[$file] = (string) file_get_contents(self::TEMPLATE_DIR . '/' . $file);
         }
 
-        foreach ($texts as $file => $text) {
+        return $texts;
+    }
+
+    // ----------------------------------------------------------------- build
+
+    /**
+     * Writes the page. Returns what was (or, in a dry run, would be) done.
+     *
+     * @return array{written: list<string>, removed: list<string>, unchanged: int, model: array}
+     */
+    public function build(bool $dryRun = false): array
+    {
+        $model  = $this->model();
+        $report = ['written' => [], 'removed' => [], 'unchanged' => 0, 'model' => $model];
+
+        if (! $dryRun && ! is_dir($this->out) && ! mkdir($this->out, 0775, true) && ! is_dir($this->out)) {
+            throw new RuntimeException('Folder ' . $this->out . ' tidak dapat dibuat.');
+        }
+
+        foreach ($this->files($model) as $file => $text) {
             if (@file_get_contents($this->out . '/' . $file) === $text) {
+                $report['unchanged']++;
+
                 continue;
             }
 
@@ -823,16 +812,12 @@ final class CatalogSite
             $report['written'][] = $file;
         }
 
-        foreach ($this->staleFiles($keep) as $stale) {
+        foreach ($this->staleEntries() as $stale) {
             if (! $dryRun) {
-                @unlink($this->out . '/' . $stale);
+                $this->delete($this->out . '/' . $stale);
             }
 
             $report['removed'][] = $stale;
-        }
-
-        if (! $dryRun) {
-            $this->removeEmptyDirs();
         }
 
         return $report;
@@ -840,72 +825,56 @@ final class CatalogSite
 
     /**
      * Why the folder does not match the sources (empty when it is current).
-     * Reads and hashes, never encodes or writes.
      *
      * @return list<string>
      */
     public function check(): array
     {
         $problems = [];
-        $model    = $this->model();
 
-        if (@file_get_contents($this->out . '/' . self::DATA_FILE) !== self::dataScript($model)) {
-            $problems[] = self::DATA_FILE . ' tidak sesuai dengan sumbernya (gambar, daftar tinjauan, suara, atau narasi berubah).';
-        }
-
-        foreach (self::STATIC_FILES as $file) {
-            if (@file_get_contents($this->out . '/' . $file) !== @file_get_contents(self::TEMPLATE_DIR . '/' . $file)) {
-                $problems[] = $file . ' tidak sama dengan templatnya di app/Libraries/CatalogSite/.';
+        foreach ($this->files($this->model()) as $file => $text) {
+            if (@file_get_contents($this->out . '/' . $file) !== $text) {
+                $problems[] = $file === self::DATA_FILE
+                    ? self::DATA_FILE . ' tidak sesuai dengan sumbernya (gambar, daftar tinjauan, suara, atau narasi berubah).'
+                    : $file . ' tidak sama dengan templatnya di app/Libraries/CatalogSite/.';
             }
         }
 
-        $keep = [];
+        foreach ($this->staleEntries() as $stale) {
+            $problems[] = 'Berkas atau folder yang tidak dipakai lagi: ' . $stale;
+        }
+
+        return $problems;
+    }
+
+    /**
+     * Every picture and sound URL of the model, for `--cek-tautan`.
+     *
+     * @return list<string>
+     */
+    public function urls(): array
+    {
+        $model = $this->model();
+        $paths = [];
 
         foreach ($model['images'] as $image) {
-            foreach (['img', 'th'] as $field) {
-                $keep[$image[$field]] = true;
-
-                if (! is_file($this->out . '/' . $image[$field])) {
-                    $problems[] = 'Berkas belum ada: ' . $image[$field];
-                }
-            }
-        }
-
-        foreach (self::FONT_FILES as $target => $source) {
-            $keep[$target] = true;
-
-            if (! $this->sameFile($this->root . '/' . $source, $this->out . '/' . $target)) {
-                $problems[] = 'Berkas huruf belum ada atau berbeda: ' . $target;
+            if ($image['p'] !== null) {
+                $paths[] = $image['p'];
             }
         }
 
         foreach (['music', 'sfx'] as $name) {
             foreach ($model[$name] as $sound) {
-                $keep[$sound['f']] = true;
-
-                if (! $this->sameFile($this->root . '/' . $sound['_src'], $this->out . '/' . $sound['f'])) {
-                    $problems[] = 'Berkas suara belum ada atau berbeda: ' . $sound['f'];
-                }
+                $paths[] = $sound['f'];
             }
         }
 
         foreach ($model['narration'] as $line) {
-            foreach (['fi', 'fe'] as $field) {
-                if (isset($line[$field])) {
-                    $keep[$line[$field]] = true;
-
-                    if (! $this->sameFile($this->root . '/' . $line['_' . $field], $this->out . '/' . $line[$field])) {
-                        $problems[] = 'Rekaman belum ada atau berbeda: ' . $line[$field];
-                    }
-                }
-            }
+            $paths[] = $line['fi'];
+            $paths[] = $line['fe'];
         }
 
-        foreach ($this->staleFiles($keep) as $stale) {
-            $problems[] = 'Berkas lama yang tidak dipakai lagi: ' . $stale;
-        }
-
-        return array_values(array_unique($problems));
+        return array_map(fn (string $path): string => $this->base . '/' . $path, array_values(array_unique($paths)));
     }
 
     /** Folder size in bytes and file count. @return array{0: int, 1: int} */
@@ -924,43 +893,26 @@ final class CatalogSite
     }
 
     /**
-     * Files under the media folders that no entry points at, plus top-level
-     * files the build does not write or keep.
-     *
-     * @param array<string, true> $keep
+     * Top-level files the build neither writes nor keeps, and the media
+     * folders of the earlier self-contained edition. Other folders are left alone.
      *
      * @return list<string>
      */
-    private function staleFiles(array $keep): array
+    private function staleEntries(): array
     {
-        $stale = [];
-
         if (! is_dir($this->out)) {
             return [];
         }
 
-        $top = array_flip(array_merge(self::STATIC_FILES, [self::DATA_FILE], self::KEPT_FILES));
+        $known = array_flip(array_merge(self::STATIC_FILES, [self::DATA_FILE], self::KEPT_FILES));
+        $stale = [];
 
         foreach (scandir($this->out) ?: [] as $name) {
-            if ($name === '.' || $name === '..') {
+            if ($name === '.' || $name === '..' || isset($known[$name])) {
                 continue;
             }
 
-            if (is_dir($this->out . '/' . $name)) {
-                if (! in_array($name, self::MEDIA_DIRS, true)) {
-                    continue;
-                }
-
-                $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($this->out . '/' . $name, \FilesystemIterator::SKIP_DOTS));
-
-                foreach ($iterator as $file) {
-                    $relative = substr(str_replace('\\', '/', $file->getPathname()), strlen($this->out) + 1);
-
-                    if (! isset($keep[$relative])) {
-                        $stale[] = $relative;
-                    }
-                }
-            } elseif (! isset($top[$name])) {
+            if (is_file($this->out . '/' . $name) || in_array($name, self::OLD_DIRS, true)) {
                 $stale[] = $name;
             }
         }
@@ -970,84 +922,24 @@ final class CatalogSite
         return $stale;
     }
 
-    private function removeEmptyDirs(): void
+    private function delete(string $path): void
     {
-        foreach (self::MEDIA_DIRS as $dir) {
-            if (! is_dir($this->out . '/' . $dir)) {
-                continue;
-            }
+        if (is_file($path)) {
+            @unlink($path);
 
-            $iterator = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($this->out . '/' . $dir, \FilesystemIterator::SKIP_DOTS),
-                \RecursiveIteratorIterator::CHILD_FIRST,
-            );
-
-            foreach ($iterator as $file) {
-                if ($file->isDir()) {
-                    @rmdir($file->getPathname());
-                }
-            }
-        }
-    }
-
-    private function sameFile(string $a, string $b): bool
-    {
-        return is_file($a) && is_file($b) && filesize($a) === filesize($b) && hash_file('sha256', $a) === hash_file('sha256', $b);
-    }
-
-    private function copyIfChanged(string $source, string $target): bool
-    {
-        $path = $this->out . '/' . $target;
-
-        if ($this->sameFile($source, $path)) {
-            return true;
+            return;
         }
 
-        if (! is_dir(dirname($path))) {
-            mkdir(dirname($path), 0775, true);
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($path, \FilesystemIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::CHILD_FIRST,
+        );
+
+        foreach ($iterator as $file) {
+            $file->isDir() ? @rmdir($file->getPathname()) : @unlink($file->getPathname());
         }
 
-        return @copy($source, $path);
-    }
-
-    /**
-     * Lossy WebP no larger than $max on its longest side; transparency kept.
-     */
-    private function encode(string $source, string $target, int $max, int $quality): bool
-    {
-        $data  = @file_get_contents($source);
-        $image = $data === false ? false : @imagecreatefromstring($data);
-
-        if ($image === false) {
-            return false;
-        }
-
-        imagepalettetotruecolor($image);
-        [$width, $height] = [imagesx($image), imagesy($image)];
-        $scale            = min(1, $max / max($width, $height));
-        [$outW, $outH]    = [max(1, (int) round($width * $scale)), max(1, (int) round($height * $scale))];
-
-        if ($scale < 1) {
-            $canvas = imagecreatetruecolor($outW, $outH);
-            imagealphablending($canvas, false);
-            imagesavealpha($canvas, true);
-            imagefill($canvas, 0, 0, imagecolorallocatealpha($canvas, 0, 0, 0, 127));
-            imagecopyresampled($canvas, $image, 0, 0, 0, 0, $outW, $outH, $width, $height);
-            imagedestroy($image);
-            $image = $canvas;
-        } else {
-            imagealphablending($image, false);
-            imagesavealpha($image, true);
-        }
-
-        if (! is_dir(dirname($target))) {
-            mkdir(dirname($target), 0775, true);
-        }
-
-        $ok = imagewebp($image, $target, $quality);
-        imagedestroy($image);
-
-        return $ok;
+        @rmdir($path);
     }
 
     /**

@@ -38,6 +38,19 @@
     return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0') + ' menit';
   }
 
+  function url(path) { return path ? K.base + path : null; }
+
+  // A file the live game does not serve yet: a calm note instead of a broken picture
+  function missing(text) { return el('span', { class: 'missing-file', text: text || 'Belum ada di gelita.id' }); }
+
+  function picture(item, lazy) {
+    if (!item.p) { return missing('Belum dipasang di permainan'); }
+    var img = el('img', { src: url(item.p), alt: '', decoding: 'async' });
+    if (lazy) { img.setAttribute('loading', 'lazy'); }
+    img.addEventListener('error', function () { img.replaceWith(missing()); });
+    return img;
+  }
+
   function badge(code) { return el('span', { class: 'badge st-' + code, text: K.statuses[code] }); }
 
   function tags(item) {
@@ -48,6 +61,7 @@
     return el('p', { class: 'badges' }, list);
   }
 
+  $('guide-link').href = K.base + 'admin/panduan-gelita';
   $('summary').textContent = fmtNum(K.images.length) + ' gambar · ' + K.music.length + ' musik · ' + K.sfx.length
     + ' efek suara · ' + fmtNum(K.narration.length) + ' baris narasi';
 
@@ -98,9 +112,8 @@
       list.appendChild(el('div', { class: 'group' }, [el('h2', { text: K.groups[code] }), el('span', { text: items.length + ' gambar' })]));
       var grid = el('div', { class: 'grid' });
       items.forEach(function (i) {
-        var img = el('img', { src: i.th, alt: '', loading: 'lazy', decoding: 'async' });
         var card = el('button', { type: 'button', class: 'card', 'data-id': i.id }, [
-          el('span', { class: 'thumb' }, [img]),
+          el('span', { class: 'thumb' }, [picture(i, true)]),
           el('span', { class: 'body' }, [el('span', { class: 'name', text: i.t }), tags(i)])
         ]);
         card.addEventListener('click', function () { openDetail(i.id); });
@@ -143,9 +156,15 @@
     if (!item) { return; }
     current = item;
 
-    $('detail-img').src = item.img;
-    $('detail-img').alt = item.t;
-    $('detail-open').href = item.img;
+    var figure = $('detail-figure');
+    figure.textContent = '';
+    if (item.p) {
+      var img = picture(item, false);
+      img.alt = item.t;
+      figure.appendChild(el('a', { href: url(item.p), target: '_blank', rel: 'noopener' }, [img]));
+    } else {
+      figure.appendChild(picture(item, false));
+    }
     $('detail-title').textContent = item.t;
     var badges = $('detail-badges');
     badges.textContent = '';
@@ -158,6 +177,7 @@
       .concat(fact('Kategori', K.groups[item.g]))
       .concat(fact('Dipakai di', item.u))
       .concat(fact('Kunci', codes(item.k)))
+      .concat(fact('Alamat di gelita.id', item.p ? el('a', { href: url(item.p), target: '_blank', rel: 'noopener', text: item.p.replace(/\?.*$/, '') }) : 'Belum dipasang di permainan'))
       .concat(fact('Ukuran asli', item.wh ? fmtNum(item.wh[0]) + ' × ' + fmtNum(item.wh[1]) + ' piksel' : 'Gambar vektor (SVG)'))
       .concat(fact('Status tinjauan', K.statuses[item.s] + (item.no ? ' (baris ' + item.no + ' daftar tinjauan)' : '')))
       .concat(fact('Catatan tinjauan', item.sn ? item.sn + ' (catatan pengembang, berbahasa Inggris)' : ''))
@@ -191,7 +211,11 @@
   });
 
   // ------------------------------------------------------- music and sounds
-  function player(src) { return el('audio', { controls: '', preload: 'none', src: src }); }
+  function player(path) {
+    var audio = el('audio', { controls: '', preload: 'none', src: url(path) });
+    audio.addEventListener('error', function () { audio.replaceWith(missing()); });
+    return audio;
+  }
 
   function renderSounds(listId, sounds) {
     var list = $(listId);
@@ -220,7 +244,7 @@
     return el('div', { class: 'lang' }, [
       el('span', { class: 'label', text: label }),
       el('p', { text: text }),
-      file ? player(file) : el('span', { class: 'missing', text: 'Rekaman belum ada.' })
+      file ? player(file) : missing()
     ]);
   }
 

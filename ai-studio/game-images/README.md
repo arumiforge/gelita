@@ -2,7 +2,7 @@
 
 Since 15 November 2026 (owner) every picture master of the game lives here and nowhere else. Until that day this was `gelita-katalog/`; since 17 November 2026 that folder is the public catalogue site (<https://katalog.gelita.id/>), generated from this folder by `php spark gelita:katalog:halaman`. This is not a tool's work folder: ChatGPT and ElevenLabs never write here (root `AGENTS.md`), only a Claude Code session does.
 
-Nothing here is loaded by the game at run time, and the folder is never served. Its pictures, answer-revealing ones included, are public through their web-size copies in `gelita-katalog/` (owner, 17 November 2026, who accepted that risk); the masters themselves and the prompts in `data.json` are not.
+Nothing here is loaded by the game at run time, and the folder is never served. The public catalogue `gelita-katalog/` lists every picture, answer-revealing ones included (owner, 17 November 2026, who accepted that risk), but shows them from where the live game serves them; the masters themselves and the prompts in `data.json` are never published.
 
 ## What is here
 

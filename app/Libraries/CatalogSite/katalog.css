@@ -1,7 +1,4 @@
 /* Katalog Aset GELITA: the page of gelita-katalog/ (built by php spark gelita:katalog:halaman). */
-@font-face { font-family: 'Marcellus'; src: url('huruf/marcellus-400.woff2') format('woff2'); font-display: swap; }
-@font-face { font-family: 'Plus Jakarta Sans'; src: url('huruf/plus-jakarta-sans-400.woff2') format('woff2'); font-weight: 400; font-display: swap; }
-@font-face { font-family: 'Plus Jakarta Sans'; src: url('huruf/plus-jakarta-sans-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
 
 :root {
   --navy-900: #0B1320; --navy-800: #121C2E; --navy-700: #1B2740; --navy-600: #26355A;
@@ -16,7 +13,7 @@
 html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0; background: var(--navy-900); color: var(--text);
-  font: 400 16px/1.5 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font: 400 16px/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 a { color: var(--gold-500); }
 a:hover { color: var(--gold-300); }
@@ -30,7 +27,7 @@ a:hover { color: var(--gold-300); }
 }
 .top .wrap:first-child { padding-top: 18px; }
 .eyebrow { margin: 0; color: var(--gold-600); font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; }
-h1, h2, h3 { font-family: 'Marcellus', Georgia, serif; font-weight: 400; color: var(--gold-300); }
+h1, h2, h3 { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; color: var(--gold-300); }
 h1 { margin: 2px 0 4px; font-size: clamp(1.7rem, 4vw, 2.4rem); }
 .lead { margin: 0; color: var(--text-dim); max-width: 48rem; }
 .summary { margin: 6px 0 0; font-size: .9rem; color: var(--gold-500); }
@@ -98,7 +95,13 @@ audio { width: 100%; height: 40px; }
 .line .lang { display: flex; flex-direction: column; gap: 6px; }
 .line .lang p { margin: 0; font-size: .95rem; }
 .line .lang .label { font-size: .75rem; color: var(--gold-600); text-transform: uppercase; letter-spacing: .06em; }
-.line .missing { color: var(--text-dim); font-size: .85rem; font-style: italic; }
+.missing-file {
+  display: grid; place-items: center; text-align: center; min-height: 40px; width: 100%; padding: 8px;
+  color: var(--text-dim); font-size: .85rem; font-style: italic; border: 1px dashed var(--navy-600); border-radius: 8px;
+}
+.thumb .missing-file { height: 100%; border: none; }
+.detail figure .missing-file { min-height: 200px; }
+.guide { margin: 4px 0 0; font-size: .85rem; color: var(--text-dim); }
 
 dialog {
   width: min(1100px, calc(100vw - 24px)); max-height: calc(100vh - 24px); padding: 0; border: 2px solid var(--gold-600);

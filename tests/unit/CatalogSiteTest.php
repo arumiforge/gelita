@@ -4,10 +4,11 @@ use App\Libraries\CatalogSite;
 use CodeIgniter\Test\CIUnitTestCase;
 
 /**
- * `gelita:katalog:halaman` (CatalogSite): the public Katalog Aset site is
+ * `gelita:katalog:halaman` (CatalogSite): the public Katalog Aset page is
  * built from a small fake repository (pictures, review list, sounds,
- * narration), rebuilds only what changed, removes stale files, never carries
- * prompt texts, and the committed gelita-katalog/ matches the real sources.
+ * narration), links every file to where the live game serves it instead of
+ * copying it, removes stale files, never carries prompt texts, and the
+ * committed gelita-katalog/ matches the real sources.
  *
  * @internal
  */
@@ -76,9 +77,6 @@ final class CatalogSiteTest extends CIUnitTestCase
         file_put_contents($this->root . '/ai-studio/elevenlabs-voice/out/id/penutup-01.mp3', 'ID3 end id');
         file_put_contents($this->root . '/ai-studio/elevenlabs-voice/out/en/penutup-01.mp3', 'ID3 end en');
 
-        foreach (CatalogSite::FONT_FILES as $source) {
-            file_put_contents($this->root . '/' . $source, 'font ' . $source);
-        }
     }
 
     protected function tearDown(): void
@@ -112,84 +110,112 @@ final class CatalogSiteTest extends CIUnitTestCase
         $this->assertSame(['ui', 'keep'], [$images['ui-round-back']['g'], $images['ui-round-back']['s']]);
         $this->assertSame('cari', $images['ui-node-card-cari']['c']);
         $this->assertSame('app', $images['app-icon-192']['g']);
-        $this->assertSame(['gambar/ui-placeholder.svg', 'gambar/ui-placeholder.svg'], [$images['ui-placeholder']['img'], $images['ui-placeholder']['th']]);
     }
 
-    public function testNarrationFollowsTheStoryOrderWithTheTakesThatExist(): void
+    public function testEveryPictureLinksToWhereTheGameServesIt(): void
+    {
+        $images = array_column((new CatalogSite($this->root))->images(), null, 'id');
+
+        $this->assertSame('assets/uploads/char.jaka.idle.1.webp', $images['char.jaka.idle.1']['p']);
+        $this->assertSame('assets/uploads/challenge.item.tmg-1-01.webp', $images['challenge.item.tmg-1-01']['p']);
+        // A story background is linked under its first slide's key
+        $this->assertSame('assets/uploads/bg.story.intro.1.webp', $images['bg.cerita-intro-01']['p']);
+        $this->assertSame('assets/uploads/item.skenario.mgl-5-a01.webp', $images['item.skenario.mgl-5-a01']['p']);
+        $this->assertMatchesRegularExpression('#^assets/ui/round-back\.webp\?v=[0-9a-f]{8}$#', $images['ui-round-back']['p']);
+        $this->assertMatchesRegularExpression('#^assets/app/icon-192\.png\?v=[0-9a-f]{8}$#', $images['app-icon-192']['p']);
+
+        $site = new CatalogSite($this->root);
+        $this->assertSame('assets/uploads/bg.story.level_open.magelang.5.webp', $site->servedPath('bg.cerita-dialog-magelang-05'));
+        $this->assertSame('assets/uploads/bg.story.scenario_open.wonosobo.1.webp', $site->servedPath('bg.cerita-layar-wonosobo-01'));
+        $this->assertSame('assets/uploads/bg.story.ending.2.webp', $site->servedPath('bg.cerita-penutup-02'));
+        $this->assertSame('assets/uploads/app.icon-maskable.png', $site->servedPath('app.icon-maskable-512.png'));
+        $this->assertSame('assets/uploads/ui.kedu-avatar.webp', $site->servedPath('reference.02'));
+        $this->assertSame('assets/uploads/ui.lang.id.webp', $site->servedPath('icon.language-id'));
+        $this->assertSame('assets/uploads/library.wonosobo.p2.1.webp', $site->servedPath('library.wonosobo.p2.1'));
+        $this->assertNull($site->servedPath('reference.05'));
+        $this->assertNull($site->servedPath('app.icon.svg'));
+    }
+
+    public function testSoundsLinkToTheGameAudioFolders(): void
+    {
+        $site = new CatalogSite($this->root, null, 'https://uji.example/');
+
+        $this->assertSame('assets/audio/music/map.mp3', $site->sounds('music')[0]['f']);
+        $this->assertSame('Peta Kedu', $site->sounds('music')[0]['t']);
+        $this->assertSame('assets/audio/sfx/click.mp3', $site->sounds('sfx')[0]['f']);
+        $this->assertContains('https://uji.example/assets/audio/narasi/en/intro-01.mp3', $site->urls());
+        $this->assertContains('https://uji.example/assets/uploads/bg.story.intro.1.webp', $site->urls());
+    }
+
+    public function testNarrationFollowsTheStoryOrder(): void
     {
         $lines = (new CatalogSite($this->root))->narration();
 
         $this->assertSame(['intro-01', 'petunjuk-tmg-4-01', 'penutup-01'], array_column($lines, 'id'));
-        $this->assertSame('suara/narasi/id/intro-01.mp3', $lines[0]['fi']);
-        $this->assertArrayNotHasKey('fe', $lines[0]);
+        // Linked whether or not the take is installed; the page shows a placeholder for a missing one
+        $this->assertSame(['assets/audio/narasi/id/intro-01.mp3', 'assets/audio/narasi/en/intro-01.mp3'], [$lines[0]['fi'], $lines[0]['fe']]);
         $this->assertSame(['temanggung', 'cari'], [$lines[1]['r'], $lines[1]['c']]);
-        $this->assertArrayNotHasKey('fi', $lines[1]);
     }
 
-    public function testBuildWritesASelfContainedSiteWithoutPrompts(): void
+    public function testBuildWritesOnlyThePageWithoutCopiesOrPrompts(): void
     {
         $out    = $this->root . '/gelita-katalog';
         $site   = new CatalogSite($this->root, $out);
         $report = $site->build();
 
-        $this->assertSame([], $report['failed']);
+        $this->assertSame(['data.js', 'index.html', 'katalog.css', 'katalog.js'], $this->sorted($report['written']));
         $this->assertSame([], $site->check());
-
-        foreach (['index.html', 'katalog.css', 'katalog.js', 'data.js', 'gambar/challenge.item.tmg-1-01.webp', 'gambar/kecil/challenge.item.tmg-1-01.webp',
-            'suara/musik/map.mp3', 'suara/efek/click.mp3', 'suara/narasi/en/penutup-01.mp3', 'huruf/marcellus-400.woff2'] as $file) {
-            $this->assertFileExists($out . '/' . $file);
-        }
-
-        // Web size: the 1920 px story master is at most PREVIEW_MAX wide, the thumbnail THUMB_MAX
-        $this->assertSame(CatalogSite::PREVIEW_MAX, getimagesize($out . '/gambar/bg.cerita-intro-01.webp')[0]);
-        $this->assertSame(CatalogSite::THUMB_MAX, getimagesize($out . '/gambar/kecil/bg.cerita-intro-01.webp')[0]);
-        // Small shipped UI art is copied as it is
-        $this->assertFileEquals($this->root . '/public/assets/ui/round-back.webp', $out . '/gambar/ui-round-back.webp');
-        // Audio is copied byte for byte
-        $this->assertFileEquals($this->root . '/public/assets/audio/music/map.mp3', $out . '/suara/musik/map.mp3');
+        $this->assertSame(['data.js', 'index.html', 'katalog.css', 'katalog.js'], $this->sorted(array_values(array_diff(scandir($out), ['.', '..']))));
 
         $data = (string) file_get_contents($out . '/data.js');
+        $this->assertStringContainsString('"base": "https://gelita.id/"', $data);
         $this->assertStringNotContainsString('SECRET', $data);
         $this->assertStringNotContainsString('"prompt"', $data);
         $this->assertStringNotContainsString('"_src"', $data);
+        $this->assertStringNotContainsString('ai-studio', $data);
 
-        // Every link of the page stays inside the folder
+        // The page itself links only to its own files; pictures and sounds come from the base URL
         foreach (['index.html', 'katalog.css'] as $file) {
             preg_match_all('/(?:src|href)="([^"#]+)"|url\(\'([^\']+)\'\)/', (string) file_get_contents($out . '/' . $file), $m);
 
             foreach (array_filter(array_merge($m[1], $m[2])) as $link) {
-                $this->assertFileExists($out . '/' . $link, $file . ' links to ' . $link);
+                if (! str_starts_with($link, 'https://gelita.id/')) {
+                    $this->assertFileExists($out . '/' . $link, $file . ' links to ' . $link);
+                }
             }
         }
     }
 
-    public function testRebuildChangesOnlyWhatChangedAndRemovesStaleFiles(): void
+    public function testRebuildRemovesTheOldCopiesAndFollowsTheSources(): void
     {
         $out  = $this->root . '/gelita-katalog';
         $site = new CatalogSite($this->root, $out);
         $site->build();
-        $data = (string) file_get_contents($out . '/data.js');
 
         $again = $site->build();
-        $this->assertSame([[], [], [], []], [$again['encoded'], $again['copied'], $again['written'], $again['removed']]);
-        $this->assertSame($data, file_get_contents($out . '/data.js'));
+        $this->assertSame([[], []], [$again['written'], $again['removed']]);
 
-        // A replaced master, a stale preview and a new review mark
-        $this->picture('ai-studio/game-images/assets/tantangan/challenge.item.tmg-1-01.webp', 1200, 1200, 'webp', [10, 200, 30]);
-        file_put_contents($out . '/gambar/old-picture.webp', 'stale');
+        // Media folders of the earlier self-contained edition, a stray file, a README to keep, and a new review mark
+        mkdir($out . '/gambar/kecil', 0777, true);
+        file_put_contents($out . '/gambar/kecil/old.webp', 'old');
+        mkdir($out . '/suara/musik', 0777, true);
+        file_put_contents($out . '/suara/musik/map.mp3', 'old');
+        file_put_contents($out . '/old.txt', 'stale');
+        file_put_contents($out . '/README.md', 'kept');
         $review = $this->root . '/ai-studio/game-images/REVIEW.md';
-        file_put_contents($review, str_replace('| 4 | [`bg.cerita-intro-01`](assets/latar/bg.cerita-intro-01.webp) | Story | Story |  |', '| 4 | [`bg.cerita-intro-01`](assets/latar/bg.cerita-intro-01.webp) | Story | Story | `keep` |', (string) file_get_contents($review)));
+        file_put_contents($review, str_replace('| Story | Story |  |  |', '| Story | Story | `keep` |  |', (string) file_get_contents($review)));
 
         $problems = (new CatalogSite($this->root, $out))->check();
         $this->assertContains('data.js tidak sesuai dengan sumbernya (gambar, daftar tinjauan, suara, atau narasi berubah).', $problems);
-        $this->assertContains('Berkas lama yang tidak dipakai lagi: gambar/old-picture.webp', $problems);
+        $this->assertContains('Berkas atau folder yang tidak dipakai lagi: gambar', $problems);
 
         $report = (new CatalogSite($this->root, $out))->build();
-        $this->assertSame(['gambar/challenge.item.tmg-1-01.webp'], $report['encoded']);
-        $this->assertSame(['gambar/old-picture.webp'], $report['removed']);
         $this->assertSame(['data.js'], $report['written']);
-        $this->assertFileDoesNotExist($out . '/gambar/old-picture.webp');
-        $this->assertStringContainsString('"id":"bg.cerita-intro-01"', (string) file_get_contents($out . '/data.js'));
+        $this->assertSame(['gambar', 'old.txt', 'suara'], $report['removed']);
+        $this->assertDirectoryDoesNotExist($out . '/gambar');
+        $this->assertDirectoryDoesNotExist($out . '/suara');
+        $this->assertFileExists($out . '/README.md');
+        $this->assertMatchesRegularExpression('/\{"id":"bg\.cerita-intro-01",[^\n]*"s":"keep"/', (string) file_get_contents($out . '/data.js'));
         $this->assertSame([], (new CatalogSite($this->root, $out))->check());
     }
 
@@ -198,8 +224,16 @@ final class CatalogSiteTest extends CIUnitTestCase
         $out    = $this->root . '/gelita-katalog';
         $report = (new CatalogSite($this->root, $out))->build(true);
 
-        $this->assertNotSame([], $report['encoded']);
+        $this->assertCount(4, $report['written']);
         $this->assertDirectoryDoesNotExist($out);
+    }
+
+    /** @param list<string> $list @return list<string> */
+    private function sorted(array $list): array
+    {
+        sort($list);
+
+        return $list;
     }
 
     /**
