@@ -4,6 +4,12 @@ Per 16 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.m
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
 
+## 17 November 2026
+
+**Penyimpangan implementasi bagian 2, 3, 4, dan 6 disetujui peneliti** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: peneliti` (disampaikan pengembang) · `disetujui peneliti` · mengubah 00, 28, 29, 30, dan 32; tidak merevisi produk
+
+Pengembang menyampaikan bahwa peneliti menyetujui semua penyimpangan implementasi yang dicatat saat cek kemutakhiran 16 November 2026 dan ditampilkan ringkas kepada pengembang: bagian 2 di [28 §22](28_IMPLEMENTASI_SESI_LAPANGAN.md#22-keputusan-pengembang) no. 15 (token yang diganti sebagai `token_unknown`, `too_many`, rute kode sekolah penelitian, tiga langkah bernomor saat mendaftar), bagian 3 di [29 §19](29_IMPLEMENTASI_DATA_PENELITIAN.md#19-keputusan-pengembang) no. 18, bagian 4 di [30 §22](30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md#22-keputusan-pengembang) no. 13, dan bagian 6 di [32 §18](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#18-keputusan-pengembang) no. 11. Kode tidak berubah. Bersama penyimpangan bagian 5 (16 November 2026), semua penyimpangan gelombang kode D dan E kini disetujui. Entri ini tidak diikuti pembuatan ulang PDF.
+
 ## 16 November 2026
 
 **Cek kemutakhiran 28 setelah kode gelombang D dan panel hari lapangan** (cabang `pw/hopeful-knuth-twnk4t`) · `asal: pengembang` (penyelarasan berbantuan AI atas permintaan pengembang) · status 28 tetap `disetujui pengembang` · mengubah 00 dan 28; tidak merevisi produk
