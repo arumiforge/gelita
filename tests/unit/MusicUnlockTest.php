@@ -33,7 +33,7 @@ final class MusicUnlockTest extends CIUnitTestCase
         $this->assertStringNotContainsString('return', $music, 'music() must not drop the track while locked');
 
         $start = $this->body('function startWantedMusic()');
-        $this->assertMatchesRegularExpression('~if \(!unlocked \|\| !enabled \|\| !wantedMusic\) return;~', $start);
+        $this->assertMatchesRegularExpression('~if \(!unlocked \|\| !enabled \|\| !musicEnabled \|\| !wantedMusic\) return;~', $start);
         $this->assertStringContainsString('if (next === music) return;', $start, 'a second unlock does not restart the track');
     }
 

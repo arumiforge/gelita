@@ -3,6 +3,9 @@
  *
  * - Tombol suara → Sfx.setEnabled(); status tersimpan di localStorage
  *   (preferensi tampilan, bukan data penelitian).
+ * - Background music row in the menu (#btn-music) → Sfx.setMusicEnabled():
+ *   its own switch, off by default, kept per device; never logged (owner,
+ *   16 November 2026, 04 decision 1).
  * - Lentera (<details>) dapat dibuka tanpa JavaScript; di sini ditambah
  *   penutupan dengan Escape / klik di luar, dan updateLantern() untuk angka
  *   baru dari respons server (`shards` di /check, /responses, /complete) —
@@ -48,6 +51,25 @@ function initSound() {
     if (Sfx.isEnabled()) Sfx.play('click');
   });
   document.addEventListener('gelita:locale', render);
+  render();
+}
+
+function initMusic() {
+  const button = $('#btn-music');
+  if (!button) return;
+  const state = $('[data-music-state]', button);
+
+  const render = () => {
+    const on = Sfx.isMusicEnabled();
+    button.setAttribute('aria-pressed', on ? 'true' : 'false');
+    if (state) state.textContent = on ? button.dataset.labelOn : button.dataset.labelOff;
+  };
+
+  button.addEventListener('click', () => {
+    Sfx.setMusicEnabled(!Sfx.isMusicEnabled());
+    render();
+  });
+  button.hidden = false;
   render();
 }
 
@@ -181,6 +203,7 @@ function initLogout() {
 export function initHud() {
   initLanguageSwitch();
   initSound();
+  initMusic();
   initLantern();
   initPopovers();
   initHeartbeat();

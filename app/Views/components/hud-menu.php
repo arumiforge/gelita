@@ -40,7 +40,8 @@
  *          with class `lang-switch` (game/hud.js, the challenge frame);
  *          hidden during a challenge;
  *        - sound (#btn-sound, game/hud.js): `round-sound` / `round-mute`;
- *        - menu (`round-menu`): profile, Peta Kedu, Tentang GELITA
+ *        - menu (`round-menu`): the background music switch (#btn-music, off by
+ *          default, owner 16 November 2026), profile, Peta Kedu, Tentang GELITA
  *          (`/tentang`), and logout; each row on its round picture (map,
  *          info, logout). Signed in without progress data (the opening
  *          story): Kembali ke awal (`/`) instead of Peta Kedu; on the start
@@ -188,6 +189,13 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
           <button type="button" class="hud-sheet-close" data-popover-close hidden
                   aria-label="<?= esc(lang('Game.close'), 'attr') ?>"><?= round_icon('close', 'hud-sheet-close-art', 'cross') ?></button>
         </div>
+        <?php // Background music: its own switch, off by default (owner, 16 November 2026, 04 decision 1);
+              // game/hud.js shows it and keeps the device preference ?>
+        <button type="button" class="hud-sheet-row hud-music" id="btn-music" aria-pressed="false" hidden
+                data-label-on="<?= esc(lang('Game.musicOn'), 'attr') ?>" data-label-off="<?= esc(lang('Game.musicOff'), 'attr') ?>">
+          <?= round_icon('sound', 'hud-sheet-art', 'sound') ?><span class="hud-sheet-label"><?= esc(lang('Game.music')) ?></span>
+          <span class="hud-music-state" data-music-state><?= esc(lang('Game.musicOff')) ?></span>
+        </button>
         <?php if ($signedIn): ?>
           <a class="hud-sheet-row hud-leave hud-profile" href="<?= base_url('profil') ?>"
              aria-label="<?= esc(lang('Game.profile') . ': ' . $userName, 'attr') ?>">
