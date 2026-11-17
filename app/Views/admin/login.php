@@ -52,4 +52,18 @@
   </ul>
   <a class="btn btn-block" href="<?= base_url('admin/panduan-staf') ?>"><?= icon('book') ?> <?= esc(lang('Admin.guideCardOpen')) ?></a>
 </section>
+
+<?php // Below it: the public validator guide, per panel (owner, 17 Nov 2026) ?>
+<section class="auth-card auth-guide" aria-labelledby="auth-vguide-title">
+  <span class="auth-guide-icon" aria-hidden="true"><?= icon('book') ?></span>
+  <h2 class="auth-title" id="auth-vguide-title"><?= esc(lang('Admin.vguideCardTitle')) ?></h2>
+  <p class="auth-lead"><?= esc(lang('Admin.vguideCardText')) ?></p>
+  <p class="auth-guide-pick"><?= esc(lang('Admin.vguidePickPanel')) ?></p>
+  <ul class="auth-guide-roles">
+    <?php foreach (\App\Libraries\ValidatorGuideContent::PANELS as $vguidePanel => $vguideName): ?>
+      <li><a href="<?= esc(base_url('admin/panduan-validator') . '?panel=' . $vguidePanel, 'attr') ?>"><?= icon('arrow-right') ?> <?= esc($vguideName) ?></a></li>
+    <?php endforeach ?>
+  </ul>
+  <a class="btn btn-block" href="<?= base_url('admin/panduan-validator') ?>"><?= icon('book') ?> <?= esc(lang('Admin.vguideCardOpen')) ?></a>
+</section>
 <?= $this->endSection() ?>

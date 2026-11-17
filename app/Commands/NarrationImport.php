@@ -83,6 +83,10 @@ class NarrationImport extends BaseCommand
             }
         }
 
+        if (! $failed && ! $dryRun && $locale === null) {
+            \App\Libraries\DevStepLedger::recordStep('narasi-impor'); // for gelita:setelah-pull
+        }
+
         return $failed ? EXIT_ERROR : EXIT_SUCCESS;
     }
 

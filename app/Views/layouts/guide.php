@@ -1,6 +1,7 @@
 <?php
 /**
- * Layout of the staff guide (/admin/panduan-staf), for every reader: a
+ * Layout of the guides (staff guide /admin/panduan-staf, validator guide
+ * /admin/panduan-validator), for every reader: a
  * documentation site in the panel's colours. Top bar (GELITA mark, the way
  * back to the panel or to the login page), the guide's menu on the left
  * (admin/guide/_nav), the page in the middle. Loads admin.css only.
@@ -12,6 +13,8 @@
  * @var bool   $isStaff
  * @var string $roleName
  * @var string $pageTitle
+ * @var class-string<\App\Libraries\GuideContent> $guide
+ * @var array<string, mixed> $site
  */
 ?>
 <!DOCTYPE html>
@@ -31,15 +34,15 @@
     <button type="button" class="gd-menu-btn btn btn-ghost" aria-controls="gd-nav" aria-expanded="false">
       <?= icon('menu') ?><span><?= esc(lang('Admin.guideMenu')) ?></span>
     </button>
-    <a class="gd-brand" href="<?= esc(\App\Libraries\StaffGuideContent::url() . $query, 'attr') ?>">
+    <a class="gd-brand" href="<?= esc($guide::url() . $query, 'attr') ?>">
       <span class="sidebar-mark" aria-hidden="true">G</span>
-      <span>GELITA <small><?= esc(lang('Admin.guideTitle')) ?></small></span>
+      <span>GELITA <small><?= esc($site['title']) ?></small></span>
     </a>
     <div class="gd-bar-end">
       <?php if ($isStaff): ?>
-        <span class="gd-role"><?= esc(lang('Admin.guideReadingAs', [$roleName])) ?></span>
+        <?php if ($site['signIn']): ?><span class="gd-role"><?= esc(lang('Admin.guideReadingAs', [$roleName])) ?></span><?php endif ?>
         <a class="btn" href="<?= base_url('admin') ?>"><?= icon('left') ?> <?= esc(lang('Admin.guideBackToPanel')) ?></a>
-      <?php else: ?>
+      <?php elseif ($site['signIn']): ?>
         <a class="btn btn-primary" href="<?= base_url('admin/login') ?>"><?= icon('login') ?> <?= esc(lang('Admin.guideSignIn')) ?></a>
       <?php endif ?>
     </div>

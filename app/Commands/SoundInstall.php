@@ -78,6 +78,10 @@ class SoundInstall extends BaseCommand
             CLI::write('  Bila mode paket dipakai, bangun paket baru (php spark gelita:paket:bangun) supaya perangkat memuat berkas baru.');
         }
 
+        if (! $dryRun && $report['errors'] === [] && $report['unknown'] === [] && $this->option('dir', $params) === null) {
+            \App\Libraries\DevStepLedger::recordStep('suara'); // for gelita:setelah-pull
+        }
+
         return $report['errors'] !== [] || $report['unknown'] !== [] ? EXIT_ERROR : EXIT_SUCCESS;
     }
 }

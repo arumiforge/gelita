@@ -1005,4 +1005,19 @@ return [
     'guideCardTitle'        => 'Panduan staf',
     'guideCardText'         => 'Langkah kerja setiap peran di panel, dari persiapan kunjungan sekolah sampai pengunduhan data. Dapat dibaca tanpa masuk.',
     'guideCardOpen'         => 'Buka panduan staf',
+
+    // ---- Validator guide (17 November 2026): /admin/panduan-validator ----
+    'vguideTitle'        => 'Panduan validator',
+    'vguideHomeTitle'    => 'Panduan validator GELITA',
+    'vguideLead'         => 'Hal praktis untuk validator ahli: bahan yang diterima, cara masuk ke instalasi uji, dan cara mengembalikan hasil. Pilih panel Anda agar babnya ada paling atas.',
+    'vguideLeadPicked'   => 'Bab untuk {0} ada paling atas di menu. Bab untuk semua panel ada di awal dan akhir.',
+    'vguideBlindFirst'   => 'Kerjakan lembar B.5a lebih dulu. Sampai lembar itu dikirim, baca bab Mulai di sini dan Penilai B.5a saja, dan jangan membuka game.',
+    'vguidePickPanel'    => 'Baca untuk panel:',
+    'vguideYourPanel'    => 'Panel Anda',
+    'vguideFactsCaption' => 'Keadaan instalasi ini (dibaca saat halaman dibuka)',
+    'vguideStale'        => 'Untuk tim: sumber bagian ini berubah sejak panduan terakhir diperiksa ({0}). Periksa teksnya, lalu tandai dengan php spark gelita:panduan:cek --tandai.',
+    'vguideCardTitle'    => 'Panduan validator',
+    'vguideCardText'     => 'Untuk validator ahli materi, pengamat budaya, dan ahli media: bahan, akun uji, dan pengembalian hasil. Dapat dibaca tanpa masuk.',
+    'vguideCardOpen'     => 'Buka panduan validator',
+    'menuValidatorGuide' => 'Panduan validator',
 ];

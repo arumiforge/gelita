@@ -35,52 +35,13 @@ namespace App\Libraries;
  * A link is [href, label, capability]; it shows as a link only when the
  * reader holds the capability.
  */
-final class StaffGuideContent
+final class StaffGuideContent extends GuideContent
 {
     /** URL path of the guide; a section page is BASE/{id}. */
     public const BASE = 'admin/panduan-staf';
 
     /** Sections offered as cards on the guide's first page. */
     public const POPULAR = ['ringkas', 'token', 'lupa-sandi', 'unggah-lembar', 'unduh', 'larangan-daftar'];
-
-    /**
-     * Guide text to HTML: escapes everything, then turns **bold**, `code`,
-     * [label](#section) and [[term]] into markup. A term key that does not
-     * exist stays plain text. $query is appended to guide links (a guest's
-     * picked role).
-     */
-    public static function inline(string $text, string $query = ''): string
-    {
-        $html = esc($text);
-        $html = (string) preg_replace('/\*\*(.+?)\*\*/u', '<b>$1</b>', $html);
-        $html = (string) preg_replace('/`(.+?)`/u', '<code>$1</code>', $html);
-        $html = (string) preg_replace_callback(
-            '/\[([^\]]+)\]\(#([a-z0-9-]+)\)/u',
-            static fn (array $m): string => '<a href="' . esc(self::url($m[2]) . $query) . '">' . $m[1] . '</a>',
-            $html,
-        );
-
-        return (string) preg_replace_callback(
-            '/\[\[(?:([^\]|]+)\|)?([a-z0-9-]+)\]\]/u',
-            static function (array $m): string {
-                $terms = self::terms();
-                $shown = $m[1] !== '' ? $m[1] : ($terms[$m[2]]['term'] ?? $m[2]);
-
-                if (! isset($terms[$m[2]])) {
-                    return $shown;
-                }
-
-                return '<button type="button" class="term" popovertarget="istilah-pop-' . $m[2] . '">' . $shown . '</button>';
-            },
-            $html,
-        );
-    }
-
-    /** Address of a guide page; '' is the first page. */
-    public static function url(string $section = ''): string
-    {
-        return base_url($section === '' ? self::BASE : self::BASE . '/' . $section);
-    }
 
     /**
      * Glossary: key => term, def (one or two sentences), example, more (the
@@ -197,38 +158,6 @@ final class StaffGuideContent
                 'more'    => 'unduh',
             ],
         ];
-    }
-
-    /**
-     * Term keys used in a section's text, in first-use order.
-     *
-     * @param array<string, mixed> $section
-     *
-     * @return list<string>
-     */
-    public static function termsIn(array $section): array
-    {
-        preg_match_all('/\[\[(?:[^\]|]+\|)?([a-z0-9-]+)\]\]/u', (string) json_encode($section, JSON_UNESCAPED_UNICODE), $m);
-
-        return array_values(array_intersect(array_unique($m[1]), array_keys(self::terms())));
-    }
-
-    /**
-     * Plain text of a section, for the guide's search box.
-     *
-     * @param array<string, mixed> $section
-     */
-    public static function plainText(array $section): string
-    {
-        $parts = [];
-        array_walk_recursive($section, static function ($value, $key) use (&$parts): void {
-            if (is_string($value) && ! in_array($key, ['id'], true) && ! str_starts_with($value, 'admin/')) {
-                $parts[] = $value;
-            }
-        });
-        $text = preg_replace(['/\[\[(?:([^\]|]+)\|)?([a-z0-9-]+)\]\]/u', '/\[([^\]]+)\]\(#[a-z0-9-]+\)/u', '/\*\*|`/u'], ['$1$2', '$1', ''], implode(' ', $parts));
-
-        return mb_strtolower(trim((string) preg_replace('/\s+/u', ' ', (string) $text)));
     }
 
     /** @return list<array<string, mixed>> */

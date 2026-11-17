@@ -26,9 +26,9 @@ class StaffGuideController extends BaseAdminController
     {
         $reader   = $this->reader();
         $chapters = self::order(StaffGuideContent::chapters(), $reader['role']);
-        $sections = self::sectionsById($chapters);
+        $sections = StaffGuideContent::sectionsById($chapters);
 
-        return view('admin/guide/overview', $reader + [
+        return view('admin/guide/overview', $reader + $this->site() + [
             'chapters' => $chapters,
             'popular'  => array_values(array_filter(array_map(static fn (string $id): ?array => $sections[$id] ?? null, StaffGuideContent::POPULAR))),
             'current'   => '',
@@ -40,7 +40,7 @@ class StaffGuideController extends BaseAdminController
     {
         $reader   = $this->reader();
         $chapters = self::order(StaffGuideContent::chapters(), $reader['role']);
-        $sections = self::sectionsById($chapters);
+        $sections = StaffGuideContent::sectionsById($chapters);
 
         if (! isset($sections[$slug])) {
             throw PageNotFoundException::forPageNotFound();
@@ -49,7 +49,7 @@ class StaffGuideController extends BaseAdminController
         $ids   = array_keys($sections);
         $index = array_search($slug, $ids, true);
 
-        return view('admin/guide/page', $reader + [
+        return view('admin/guide/page', $reader + $this->site() + [
             'chapters' => $chapters,
             'section'  => $sections[$slug],
             'current'  => $slug,
@@ -57,6 +57,8 @@ class StaffGuideController extends BaseAdminController
             'previous' => $index > 0 ? $sections[$ids[$index - 1]] : null,
             'next'     => $sections[$ids[$index + 1] ?? ''] ?? null,
             'terms'    => ! empty($sections[$slug]['glossary']) ? [] : StaffGuideContent::termsIn($sections[$slug]),
+            'facts'    => [],
+            'stale'    => [],
         ]);
     }
 
@@ -84,26 +86,6 @@ class StaffGuideController extends BaseAdminController
     }
 
     /**
-     * Sections in reading order, each with its chapter's id and title.
-     *
-     * @param list<array<string, mixed>> $chapters
-     *
-     * @return array<string, array<string, mixed>>
-     */
-    private static function sectionsById(array $chapters): array
-    {
-        $out = [];
-
-        foreach ($chapters as $chapter) {
-            foreach ($chapter['sections'] as $section) {
-                $out[$section['id']] = $section + ['chapter' => $chapter['id'], 'chapterTitle' => $chapter['title']];
-            }
-        }
-
-        return $out;
-    }
-
-    /**
      * Chapters for everyone keep their place at the start and end; the
      * chapters written for the reader's role come right after the first one,
      * then the other roles' chapters, folded in the menu.
@@ -114,29 +96,33 @@ class StaffGuideController extends BaseAdminController
      */
     public static function order(array $chapters, string $role): array
     {
-        $all   = StaffAccess::ROLES;
-        $first = [];
-        $own   = [];
-        $other = [];
-        $last  = [];
+        $out = StaffGuideContent::orderFor($chapters, $role, StaffAccess::ROLES, 'roles');
 
-        foreach ($chapters as $index => $chapter) {
-            $forAll          = array_diff($all, $chapter['roles']) === [];
-            $chapter['open'] = $forAll || in_array($role, $chapter['roles'], true);
-            $chapter['mine'] = $chapter['open'] && ! $forAll;
-
-            if ($forAll) {
-                $index === 0 ? $first[] = $chapter : $last[] = $chapter;
-            } elseif ($chapter['open']) {
-                $own[] = $chapter;
-            } else {
-                $other[] = $chapter;
-            }
+        foreach ($out as &$chapter) {
+            $chapter['for'] = implode(', ', array_map(static fn (string $r): string => StaffAccess::label($r), $chapter['roles']));
         }
 
-        // The ketua's own chapter before the shared field-work chapter
-        usort($own, static fn (array $a, array $b): int => count($a['roles']) <=> count($b['roles']));
+        return $out;
+    }
 
-        return [...$first, ...$own, ...$other, ...$last];
+    /**
+     * What the shared guide views need to know about this guide.
+     *
+     * @return array<string, mixed>
+     */
+    private function site(): array
+    {
+        return [
+            'guide' => StaffGuideContent::class,
+            'site'  => [
+                'title'      => lang('Admin.guideTitle'),
+                'param'      => 'peran',
+                'pickLabel'  => lang('Admin.guidePickRole'),
+                'options'    => array_combine(StaffAccess::ROLES, array_map(static fn (string $r): string => StaffAccess::label($r), StaffAccess::ROLES)),
+                'pickAlways' => false,
+                'signIn'     => true,
+                'mineBadge'  => lang('Admin.guideYourRole'),
+            ],
+        ];
     }
 }

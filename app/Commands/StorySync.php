@@ -118,6 +118,8 @@ class StorySync extends BaseCommand
             ]);
         }
 
+        \App\Libraries\DevStepLedger::recordStep('cerita'); // for gelita:setelah-pull
+
         return EXIT_SUCCESS;
     }
 

@@ -75,6 +75,10 @@ class CatalogImport extends BaseCommand
             CLI::write('Rilis aktif memakai paket aset: bangun paket baru (php spark gelita:paket:bangun) dan pasang di rilis agar siswa melihat gambar baru.', 'yellow');
         }
 
+        if (! $dryRun && $count['failed'] === 0 && $only === [] && $this->option('sumber', $params) === null) {
+            \App\Libraries\DevStepLedger::recordStep('katalog'); // for gelita:setelah-pull
+        }
+
         return $count['failed'] > 0 ? EXIT_ERROR : EXIT_SUCCESS;
     }
 }

@@ -12,12 +12,13 @@
  * @var array<string, mixed>|null $previous
  * @var array<string, mixed>|null $next
  * @var list<string>              $terms    term keys used on this page
+ * @var list<array{0: string, 1: string}> $facts live facts of this install (validator guide; guide markup allowed in the value)
+ * @var list<string>              $stale    changed sources, shown to signed-in staff only (validator guide)
  * @var string                    $query
  * @var bool                      $isStaff
  */
-use App\Libraries\StaffGuideContent as Guide;
 
-$inline   = static fn (string $text): string => Guide::inline($text, $query);
+$inline   = static fn (string $text): string => $guide::inline($text, $query);
 $pageLink = static function (array $link) use ($isStaff): string {
     [$href, $label, $capability] = $link;
 
@@ -48,6 +49,23 @@ foreach ($chapters as $chapter) {
 
   <?php if (! empty($section['lead'])): ?>
     <p class="gd-lead"><?= $inline($section['lead']) ?></p>
+  <?php endif ?>
+
+  <?php if ($stale !== []): ?>
+    <div class="gd-callout is-warn" role="note"><?= icon('warn') ?><p><?= esc(lang('Admin.vguideStale', [implode(', ', $stale)])) ?></p></div>
+  <?php endif ?>
+
+  <?php if ($facts !== []): ?>
+    <div class="gd-table gd-facts">
+      <table>
+        <caption><?= esc(lang('Admin.vguideFactsCaption')) ?></caption>
+        <tbody>
+          <?php foreach ($facts as [$label, $value]): ?>
+            <tr><th scope="row"><?= esc($label) ?></th><td><?= $inline($value) ?></td></tr>
+          <?php endforeach ?>
+        </tbody>
+      </table>
+    </div>
   <?php endif ?>
 
   <?php if (! empty($section['steps'])): ?>
@@ -91,14 +109,14 @@ foreach ($chapters as $chapter) {
 
   <?php if (! empty($section['glossary'])): ?>
     <dl class="gd-glossary">
-      <?php foreach (Guide::terms() as $key => $term): ?>
+      <?php foreach ($guide::terms() as $key => $term): ?>
         <div class="gd-term" id="istilah-<?= esc($key, 'attr') ?>">
           <dt><?= esc($term['term']) ?></dt>
           <dd>
             <p><?= $inline($term['def']) ?></p>
             <p class="gd-example"><span><?= esc(lang('Admin.guideExample')) ?></span> <?= $inline($term['example']) ?></p>
             <?php if ($term['more'] !== null): ?>
-              <a class="gd-term-more" href="<?= esc(Guide::url($term['more']) . $query, 'attr') ?>"><?= esc(lang('Admin.guideTermMore', [$titles[$term['more']] ?? ''])) ?> <?= icon('arrow-right') ?></a>
+              <a class="gd-term-more" href="<?= esc($guide::url($term['more']) . $query, 'attr') ?>"><?= esc(lang('Admin.guideTermMore', [$titles[$term['more']] ?? ''])) ?> <?= icon('arrow-right') ?></a>
             <?php endif ?>
           </dd>
         </div>
@@ -109,13 +127,13 @@ foreach ($chapters as $chapter) {
   <?php if ($previous !== null || $next !== null): ?>
     <nav class="gd-pager" aria-label="<?= esc(lang('Admin.guidePrevious') . ' / ' . lang('Admin.guideNext'), 'attr') ?>">
       <?php if ($previous !== null): ?>
-        <a class="gd-pager-link is-prev" href="<?= esc(Guide::url($previous['id']) . $query, 'attr') ?>" rel="prev">
+        <a class="gd-pager-link is-prev" href="<?= esc($guide::url($previous['id']) . $query, 'attr') ?>" rel="prev">
           <span class="gd-pager-dir"><?= icon('left') ?> <?= esc(lang('Admin.guidePrevious')) ?></span>
           <span class="gd-pager-title"><?= esc($previous['title']) ?></span>
         </a>
       <?php endif ?>
       <?php if ($next !== null): ?>
-        <a class="gd-pager-link is-next" href="<?= esc(Guide::url($next['id']) . $query, 'attr') ?>" rel="next">
+        <a class="gd-pager-link is-next" href="<?= esc($guide::url($next['id']) . $query, 'attr') ?>" rel="next">
           <span class="gd-pager-dir"><?= esc(lang('Admin.guideNext')) ?> <?= icon('right') ?></span>
           <span class="gd-pager-title"><?= esc($next['title']) ?></span>
         </a>

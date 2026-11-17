@@ -914,6 +914,29 @@ sudo -u www-data php spark gelita:story:sync
 - The command lists the replaced lines that still have a recording: that audio speaks the old text. Approve narration line by line, skipping those codes, until they are re-recorded; do not use **Setujui semua rekaman**.
 - A run that writes something is recorded in the audit log as `story_sync`. Running it again changes nothing.
 
+### After `git pull`: which commands are due (`gelita:setelah-pull`)
+
+New 17 November 2026 (owner). After pulling, a developer or test install asks one command which spark commands the new code needs, instead of remembering them:
+
+```bash
+php spark gelita:setelah-pull              # report only; changes nothing
+php spark gelita:setelah-pull --jalankan   # run the due steps in order after one confirmation (--ya skips it)
+php spark gelita:setelah-pull --tandai     # this install is current: record the import sources as done
+```
+
+| Step | Due when | Command |
+|---|---|---|
+| Composer packages | `vendor/composer/installed.json` differs from `composer.lock` | `composer install` (never run by `--jalankan`: the command itself runs on `vendor/`) |
+| Migrations | a migration file of `App` is missing from the `migrations` table | `php spark migrate` |
+| School list, instrument content, question bank, story, Katalog Aset, narration install and import, music and sound effects | the input files changed since the step last ran on this install | `gelita:schools:import`, `gelita:instrumen:impor`, `gelita:bank:import docs/bank-soal/gelita-bank-soal-kelas5.xlsx`, `gelita:story:sync`, `gelita:katalog:impor`, `gelita:narration:install` then `gelita:narration:import`, `gelita:sound:install` |
+| Minified JS/CSS | the mirror is older than its sources | `gelita:aset:minify` |
+| Cache and content check | any of the above is due | `cache:clear`, `gelita:content:verify` |
+| Validator guide | a research-document section behind `/admin/panduan-validator` changed | `gelita:panduan:cek` (a person reads the page, then `--tandai`) |
+
+- **How an import step knows.** `App\Libraries\DevStepLedger` keeps, per install, the fingerprint of each step's input files in `writable/gelita-langkah.json` (ignored in `.gitignore`). The import commands record themselves when they finish without errors on their default source (not with `--dry-run`, `--sumber`, `--dir`, `--file`, `--kunci`, `--berkas` or `--locale`); `gelita:reset` records the bank and the instrument content. A step never recorded on this install shows `belum-tercatat` and is not run: on an install known to be current, run `--tandai` once.
+- **Servers.** A production server is still updated with the deploy script above; `--jalankan` refuses under `CI_ENVIRONMENT = production`. The report alone is safe there and lists the content commands the deploy script does not run (catalogue, narration, sound, story).
+- **Validator guide.** `/admin/panduan-validator` (public, linked from the login page) is written from `docs/revisi-10-analitik/20` and `21`. Each page names its source sections; `app/Libraries/GuideSources/validator.json` holds their fingerprints. When a source section changes, `ValidatorGuideTest` fails, the page shows signed-in staff a note, and `gelita:panduan:cek` lists the pages to check. After checking (and editing `app/Libraries/ValidatorGuideContent.php` where needed), `php spark gelita:panduan:cek --tandai` records the new fingerprints; commit the lock file with the change. Facts that follow the game (regions, challenges, tries, unlock mode, research mode, version, sign-up rules) are read from the install when the page opens (`ValidatorGuideFacts`), so they need no edit.
+
 ### Rollback
 
 Urutannya penting: **rollback migration dulu, baru kembalikan kode.** `migrate:rollback` menjalankan `down()` dari berkas migration rilis baru. Setelah `git reset`, berkas itu sudah tidak ada; CodeIgniter lalu berhenti dengan `There is a gap in the migration sequence near version number …` tanpa mengubah apa pun, tetapi kode keluarnya tetap **0**.

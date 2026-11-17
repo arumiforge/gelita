@@ -453,7 +453,7 @@ return [
     'aboutPlay2' => 'Finish the challenges to win shards and stars.',
     'aboutPlay3' => 'Every challenge gives you 3 chances. Stuck? Tap Hint.',
     'aboutFeaturesTitle' => 'What is inside GELITA',
-    'aboutFeature1' => 'Four kinds of challenges: Picture Puzzle, Fill the Gaps, True or False, and Find the Object.',
+    'aboutFeature1' => 'Five kinds of challenges: Picture Puzzle, Fill the Gaps, True or False, Find the Object, and Digital Scenarios.',
     'aboutFeature2' => 'The Kedu Library has fun readings about every region.',
     'aboutFeature3' => 'The Reflection Hall, where you tell how your journey went.',
     'aboutFeature4' => 'Stories with a voice, in Indonesian and English.',
