@@ -389,8 +389,7 @@ class StudyController extends BaseAdminController
             'description'         => $this->request->getPost('description') ?: null,
             'year_label'          => $this->request->getPost('year_label') ?: null,
             'status'              => (string) $this->request->getPost('status'),
-            // Part 4 (30 §11): a field-mode study keeps its data 7305 days unless more is typed
-            'retention_days'      => (int) ($this->request->getPost('retention_days') ?: ((string) $this->request->getPost('field_mode') === '1' ? config('Gelita')->researchRetentionDays : 365)),
+            'retention_days'      => $this->retentionDays(),
             'default_locale'      => (string) $this->request->getPost('default_locale'),
             'unlock_mode'         => (string) $this->request->getPost('unlock_mode'),
             // Off unless ticked (28 K1)
@@ -403,6 +402,22 @@ class StudyController extends BaseAdminController
         }
 
         return $payload;
+    }
+
+    /**
+     * Part 4 (30 §11; owner, 16 November 2026): ticking research mode on any
+     * study form, new or existing, raises the retention to 7305 days when the
+     * typed value is lower or empty; more days stay as typed.
+     */
+    private function retentionDays(): int
+    {
+        $typed = (int) $this->request->getPost('retention_days');
+
+        if ((string) $this->request->getPost('field_mode') !== '1') {
+            return $typed > 0 ? $typed : 365;
+        }
+
+        return max($typed, config('Gelita')->researchRetentionDays);
     }
 
     /**

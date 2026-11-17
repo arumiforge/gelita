@@ -46,8 +46,14 @@ final class StudyRetentionTest extends CIUnitTestCase
         $this->save(['field_mode' => '1', 'retention_days' => '']);
         $this->assertSame(7305, (int) $this->conn->table('research_studies')->get()->getRow('retention_days'));
 
+        // Owner, 16 November 2026 (30 §11): an existing study with a lower value is raised, not refused
+        $this->conn->table('research_studies')->update(['retention_days' => 1825, 'field_mode' => 0]);
         $this->save(['field_mode' => '1', 'retention_days' => '1825']);
-        $this->assertSame(lang('Admin.retentionMinStudy'), $_SESSION['error'] ?? null);
+        $this->assertNull($_SESSION['error'] ?? null);
+        $this->assertSame(7305, (int) $this->conn->table('research_studies')->get()->getRow('retention_days'), 'raised to 7305');
+
+        $this->save(['field_mode' => '1', 'retention_days' => '9000']);
+        $this->assertSame(9000, (int) $this->conn->table('research_studies')->get()->getRow('retention_days'), 'more days stay as typed');
 
         config('Gelita')->researchPrivacy = false;
         $this->save(['field_mode' => '1', 'retention_days' => '7305']);
@@ -55,6 +61,17 @@ final class StudyRetentionTest extends CIUnitTestCase
 
         $this->save(['retention_days' => '365']);
         $this->assertSame(365, (int) $this->conn->table('research_studies')->get()->getRow('retention_days'), 'no field mode: as before');
+    }
+
+    public function testANewFieldModeStudyGets7305DaysFromTheFormDefault(): void
+    {
+        unset($_SESSION['error'], $_SESSION['message']);
+        $this->asStaff('ketua');
+        // The create form's box holds 1825 by default (study/index.php)
+        $this->send(Method::POST, 'admin/studi', ['code' => 'BARU', 'name' => 'Baru', 'status' => 'draft', 'field_mode' => '1', 'retention_days' => '1825'] + $this->form);
+
+        $this->assertNull($_SESSION['error'] ?? null);
+        $this->assertSame(7305, (int) $this->conn->table('research_studies')->where('code', 'BARU')->get()->getRow('retention_days'));
     }
 
     public function testClosingFillsClosedAtAndOpeningEmptiesIt(): void

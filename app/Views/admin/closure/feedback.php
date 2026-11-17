@@ -2,7 +2,8 @@
 /**
  * Pemeriksaan nama di kritik dan saran (30 §10.2). The words that match a
  * student's name are already `[nama]`; the head researcher may replace other
- * words, then saves. Names are never shown.
+ * words, tick a `[nama]` that is an ordinary word to get it back (30 §19.3
+ * (b)), then saves. Names are never shown.
  *
  * @var array<string, mixed>       $study
  * @var list<array<string, mixed>> $rows
@@ -23,7 +24,11 @@
       <?php foreach ($fields as $field): ?>
         <?php if ($row[$field] === null) continue; ?>
         <div class="field"><label for="fb-<?= (int) $row['id'] ?>-<?= $field ?>"><?= esc(lang('Admin.feedbackField_' . $field)) ?></label>
-          <textarea id="fb-<?= (int) $row['id'] ?>-<?= $field ?>" name="texts[<?= (int) $row['id'] ?>][<?= $field ?>]" rows="2"><?= esc($row[$field]) ?></textarea></div>
+          <textarea id="fb-<?= (int) $row['id'] ?>-<?= $field ?>" name="texts[<?= (int) $row['id'] ?>][<?= $field ?>]" rows="2"><?= esc($row[$field]) ?></textarea>
+          <?php foreach ($row['keep'][$field] ?? [] as $k => $spot): ?>
+            <label class="check"><input type="checkbox" name="keep[<?= (int) $row['id'] ?>][<?= $field ?>][]" value="<?= (int) $k ?>">
+              <span><?= esc(lang('Admin.closureFeedbackKeep', [$spot])) ?></span></label>
+          <?php endforeach ?></div>
       <?php endforeach ?>
     </fieldset>
   <?php endforeach ?>

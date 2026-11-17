@@ -82,6 +82,26 @@ final class ParticipantCopyTest extends CIUnitTestCase
         $this->assertSame(['none', 'child_agreed'], $choices);
     }
 
+    public function testRiskSheetHeadingsAndThePdfFollowTheRealData(): void
+    {
+        // Owner, 16 November 2026 (30 §8, finding (a) of §19.3)
+        $this->assertStringContainsString('Anak belum mengerjakan tes atau angket.', service('participantCopy')->summaryHtml(1, false));
+
+        $this->riskAnswers($this->conn, 1, '1');
+
+        $left = service('participantCopy')->summaryHtml(1, true);
+        $this->assertStringNotContainsString('Anak belum mengerjakan tes atau angket.', $left, 'the risk answers exist');
+        $this->assertStringContainsString('tidak nyaman di internet: dijawab; jawabannya belum disertakan', $left);
+        $this->assertStringContainsString('jawabannya ada di lembar risiko berkas Excel', service('participantCopy')->summaryHtml(1, false));
+
+        $with = $this->xlsxText($this->download(['participant_code' => 'S03-A01', 'purpose' => 'copy', 'risk_answers' => 'child_agreed'])['data-S03-A01.xlsx']);
+        foreach (ParticipantCopyService::RISK_HEADINGS as $heading) {
+            $this->assertStringContainsString($heading, $with);
+        }
+        $this->assertStringNotContainsString('answered_at', $with);
+        $this->assertStringNotContainsString('reconsent', $with, 'never the re-consent column');
+    }
+
     public function testHeadResearcherOnly(): void
     {
         $this->asStaff('admin');
