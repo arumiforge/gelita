@@ -21,8 +21,11 @@ use Throwable;
  * 401 INVALID_SESSION instead, and nothing is logged: it is an ended
  * session, not an attack.
  *
- * With a login (student or staff) a refused token is still thrown, so
- * GelitaExceptionHandler answers 403 CSRF_EXPIRED as before.
+ * With a login (student or staff) an API request with a refused token is
+ * a page left open too long: it is answered here with the same 403
+ * CSRF_EXPIRED that GelitaExceptionHandler gave, and written as a warning,
+ * not a critical error (owner, 17 November 2026). HTML form posts are still
+ * thrown and handled as before.
  */
 class CsrfFilter extends CSRF
 {
@@ -31,8 +34,14 @@ class CsrfFilter extends CSRF
         try {
             return parent::before($request, $arguments);
         } catch (SecurityException $e) {
-            if (! $request instanceof IncomingRequest || ! is_api_path($request->getPath()) || $this->hasLogin()) {
+            if (! $request instanceof IncomingRequest || ! is_api_path($request->getPath())) {
                 throw $e;
+            }
+
+            if ($this->hasLogin()) {
+                log_message('warning', 'CSRF token refused on {path} for a signed-in page: answered 403 CSRF_EXPIRED.', ['path' => $request->getPath()]);
+
+                return api_error('CSRF_EXPIRED', lang('Game.errPageExpired'), 403);
             }
 
             return api_error('INVALID_SESSION', lang('Game.sessionExpired'), 401);

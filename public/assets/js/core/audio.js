@@ -44,7 +44,7 @@
  * memutar hening sesaat, jadi harus dipanggil di dalam handler ketukan.
  */
 import { Storage } from './storage.js';
-import { emitAudio } from './events.js';
+import { emitAudio, onBeforeLeave } from './events.js';
 import { CONFIG, t } from './config.js';
 import { $, el } from './dom.js';
 
@@ -260,13 +260,14 @@ export const Sfx = {
 
 const players = new Set();
 
+/** Listening time a second leave report must add before it is sent again (ms). */
+const REPORT_GAP_MS = 250;
+
 // Page hidden or left: playbacks still running report their listening time
-// (29 K6). Capture runs before core/events.js flushes its queue on pagehide.
+// (29 K6). core/events.js runs this right before it takes the leave beacon,
+// so the report always leaves with it (owner, 17 November 2026).
 const reportAllListened = () => { for (const player of players) player.reportListened?.(); };
-window.addEventListener('pagehide', reportAllListened, true);
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'hidden') reportAllListened();
-}, true);
+onBeforeLeave(reportAllListened);
 const playersByNode = new WeakMap();
 
 function stopAllNarration(except = null) {
@@ -295,6 +296,7 @@ class NarrationPlayer {
     // The opening row (play/autoplay/replay) of this playback was sent: only then can it be resumed
     this.opened = false;
     this.listenedMs = 0;
+    this.reportedMs = undefined;
     this.playingSince = null;
     this.completed = false;
     this.shared = shared;
@@ -457,6 +459,7 @@ class NarrationPlayer {
     this.playIndex = 1;
     this.opened = false;
     this.listenedMs = 0;
+    this.reportedMs = undefined;
     this.completed = false;
     return this.start('play');
   }
@@ -495,6 +498,10 @@ class NarrationPlayer {
     if (this.playingSince === null) return;
     this.accumulate();
     this.playingSince = performance.now();
+    // Leaving a page fires both visibilitychange (hidden) and pagehide: report
+    // once, unless more was heard since (owner, 17 November 2026)
+    if (this.reportedMs !== undefined && this.listenedMs - this.reportedMs < REPORT_GAP_MS) return;
+    this.reportedMs = this.listenedMs;
     this.send('pause');
   }
 
@@ -511,6 +518,7 @@ class NarrationPlayer {
     this.playIndex += 1;
     this.opened = false;
     this.listenedMs = 0;
+    this.reportedMs = undefined;
     this.completed = false;
     this.progress(0);
     return this.start(action);

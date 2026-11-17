@@ -225,6 +225,16 @@ class Transport {
     if (this.ended) return;
 
     if (force) {
+      // Last reports of the page (narration listening time) join this beacon:
+      // run here, not from their own listeners, whose order against ours the
+      // browser does not keep (owner, 17 November 2026)
+      for (const hook of beforeLeave) {
+        try {
+          hook();
+        } catch {
+          /* a failing report must not stop the beacon */
+        }
+      }
       // Offline no beacon is tried at all; the events wait in the offline queue
       const online = navigator.onLine !== false;
       for (const channel of channels) {
@@ -340,6 +350,18 @@ class Transport {
     for (const channel of channels) channel.restore();
     await this.flush();
   }
+}
+
+/** Called right before a forced flush (tab hidden, page left) takes its beacon batches. */
+const beforeLeave = new Set();
+
+/**
+ * Registers a report that must leave with the page's last beacon, e.g. the
+ * listening time of a narration still playing (core/audio.js, 29 K6).
+ * @param {() => void} hook
+ */
+export function onBeforeLeave(hook) {
+  beforeLeave.add(hook);
 }
 
 const transport = new Transport('/events');

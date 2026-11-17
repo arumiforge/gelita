@@ -6,6 +6,16 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 17 November 2026
 
+**Perbaikan sesudah cek peramban: laporan dengar narasi saat meninggalkan halaman, `pause` ganda, catatan galat token, dan waktu di salinan anak** (cabang `perbaikan-log-narasi`) · `asal: pengembang` · `disetujui pengembang` · tidak mengubah dokumen lain; kode dibuat
+
+Cek peramban 17 November 2026 di instalasi pengembangan MariaDB menemukan empat hal. Pengembang memilih anjuran AI untuk keempatnya:
+1. **Waktu dengar narasi saat halaman ditinggalkan** (baris `pause`, [29](29_IMPLEMENTASI_DATA_PENELITIAN.md) K6) kini selalu ikut kiriman terakhir halaman. Sebelumnya baris itu sering baru sampai bersama kiriman halaman berikutnya (sekitar 30 detik kemudian), dan hilang bila perangkat tidak membuka GELITA lagi.
+2. **Satu baris `pause` per kali meninggalkan halaman.** Sebelumnya bisa tertulis dua baris yang sama. Nilai data turunan tidak berubah karena memakai `listened_ms` terbesar.
+3. Token keamanan kedaluwarsa pada halaman siswa yang masih masuk dijawab 403 seperti sebelumnya, tetapi dicatat sebagai peringatan, bukan galat kritis.
+4. **Salinan data satu anak:** kolom *Waktu menjawab* di lembar `risiko` ditulis seperti di panel (WIB, mis. 17 Nov 2026 10:30).
+
+Entri ini tidak diikuti pembuatan ulang PDF.
+
 **Temuan cek manual 32 (c) dan (d) diputuskan, 30 (e) dibetulkan** (cabang `r10-muat-ulang-mundur`) · `asal: pengembang` · `disetujui pengembang` · mengubah 11, 29, 30, 32, dan 35; kode dibuat
 
 - **32 (c), waktu sesudah muat ulang.** Pengembang memilih jam layar tetap: `ready_ms`, waktu masukan, dan `t_ms` dihitung sejak layar tantangan dimuat kali ini, dan muat ulang memulainya lagi. Waktu butir turunan memakai waktu server `item_shown`, jadi tidak terpengaruh. Hanya teks [32 §6.4](32_IMPLEMENTASI_SKENARIO_DIGITAL.md) dan [29 §6.1](29_IMPLEMENTASI_DATA_PENELITIAN.md) yang diperjelas; catatan cadangan di [35 §19](35_IMPLEMENTASI_LAPIS_DATA_TURUNAN.md) no. 16.
