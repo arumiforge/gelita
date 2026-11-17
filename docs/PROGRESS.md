@@ -196,6 +196,7 @@ None open: the owner decided on 9 November 2026 (`04`) to build the Wave 2 lefto
 - **Staff panel field-day recommendations** (16 November 2026, branch `panel-lapangan-rekomendasi`, PR #389, decision log *Staff panel field-day recommendations*): Ringkasan shows today's field sessions first, printable session card `/admin/sesi-lapangan/{id}/cetak`, seat plan on the L2 page, *Perlu perhatian* and an opt-in alert sound on Pemantauan, `tools/qa/admin-check.mjs` brought up to date (1536/0).
 - **Staff panel readability, grouped menu, public staff guide** (16 November 2026, branch `panel-panduan-staf`, PR #390, decision log *Staff panel: readability, grouped menu, staff guide*): AA contrast and larger page heads in `admin.css`; sidebar groups as `<details>` with *Konten* folded for researchers and a field-session sub-menu; public `/admin/panduan-staf` per role, offered beside the login card.
 - **Staff guide as a docs site, glossary popovers** (16 November 2026, branch `nty/beautiful-sagan-vs2tan`, PR #392, decision log *Staff guide as a docs site, glossary popovers*): `/admin/panduan-staf` with one page per topic, a menu with search and a first page with cards, 17 glossary terms as popovers, no server or repository talk in the guide and panel, and the Kamus Data sheet of the downloads citing the guide's glossary page instead of `11_KAMUS_DATA.md`.
+- **Validator guide and after-pull command** (17 November 2026, branch `claude/validator-guide-pages-acv4cr`, PR #407, decision log *Validator guide pages and the after-pull command*): public `/admin/panduan-validator` per panel (ahli materi, penilai B.5a, pengamat budaya, ahli media) linked from the login page, live facts from the install, source drift check against `20`/`21` (`gelita:panduan:cek`); `gelita:setelah-pull` lists and runs the commands an install needs after `git pull`; *Tentang GELITA* names the five challenge kinds. Owner still to read the guide once as each panel
 
 ## Active branches
 
@@ -203,4 +204,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `claude/validator-guide-pages-acv4cr` | Validator guide `/admin/panduan-validator` (per panel, live facts, source drift check `gelita:panduan:cek`) and `gelita:setelah-pull` (decision log, 17 November 2026) | Built and tested; PR #407 open. Owner: read the guide pages once as each panel. *Tentang GELITA* now names the five challenge kinds |
