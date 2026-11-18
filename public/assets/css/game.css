@@ -1452,6 +1452,29 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 }
 .map-point.is-open .pin-icon.has-badge { animation: pin-art-pulse 2s ease-in-out infinite; }
 .map-point.is-locked .pin-badge { filter: saturate(.75) brightness(.85) var(--badge-halo); }
+/* Region map stops (owner, 18 November 2026): every clearing of the map picture carries its
+   own drawn prop (puzzle, signboard, true/false signs, magnifier, bench), so the marker no
+   longer sits on the stop. map_x / map_y stay the clearing's centre; the 40 dp medallion
+   hangs on the clearing's front edge just below it, with a small name plate under it, and an
+   invisible tap area keeps the drawn prop itself tappable. */
+.map-level .node-point { transform: translate(-50%, .75rem); }
+.map-level .node-point .map-pin { position: relative; gap: .25rem; }
+.map-level .node-point .map-pin::before {
+  content: "";
+  position: absolute;
+  top: -4.25rem;
+  left: 50%;
+  width: 7.5rem;
+  height: 4.75rem;
+  transform: translateX(-50%);
+}
+.map-level .node-point .pin-icon { width: 2.25rem; height: 2.25rem; }
+.map-level .node-point .pin-icon.has-badge { width: 2rem; height: 2rem; }
+.map-level .node-point .pin-badge { inset: -.25rem; width: calc(100% + .5rem); height: calc(100% + .5rem); }
+.map-level .node-point .pin-icon.has-badge b { font-size: 1rem; }
+.map-level .node-point .pin-label { gap: 0; padding: .125rem .625rem; font-size: var(--fs-caption); }
+.map-level .node-point .pin-label small { font-size: .875rem; }
+.map-level .node-point .pin-label .stars { font-size: .875rem; }
 .pin-mark { position: absolute; right: -.25rem; bottom: -.25rem; display: grid; place-items: center; width: 1.5rem; height: 1.5rem; border: .125rem solid var(--navy-900); border-radius: 50%; background: var(--navy-700); color: var(--ink-dim); }
 .map-point.is-completed .pin-mark { background: var(--gold-300); color: var(--navy-900); }
 .pin-mark .icon { width: .875rem; height: .875rem; }
