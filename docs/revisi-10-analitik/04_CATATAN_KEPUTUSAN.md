@@ -1,8 +1,25 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 17 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 18 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
+
+## 18 November 2026
+
+**Gambar baru untuk antarmuka, penanda status, ikon, lentera, cerita penutup, dan Pustaka 3D** (cabang `pw/optimistic-cannon-h8p8o9`, dokumen [40](40_PROMPT_GAMBAR_ANTARMUKA.md)) · `asal: pengembang` · `disetujui pengembang` · wawancara tiga putaran; menambah dokumen 40, baris `U-`, `S-`, `PK-` di `ai-studio/chatgpt-images/TASKS.md`, dan tanda di `ai-studio/game-images/REVIEW.md`; tidak mengubah naskah cerita, bank soal, atau dokumen lain
+
+Pengembang memutuskan:
+1. **Penanda status di peta wilayah tidak lagi menutupi gambar lapangan.** Medali turun menjadi 40 dp di tepi depan setiap lapangan, di bawah properti yang digambar (kepingan, papan, tanda benar-salah, kaca pembesar, bangku), dengan papan nama kecil; seluruh lapangan tetap bisa diketuk. Sudah dibangun hari ini (CSS); koordinat pos tidak berubah.
+2. **Penanda status memakai cincin tombol bundar** dan simbolnya sendiri per keadaan (tuntas centang di hijau, terbuka serpihan cahaya di biru tua, terkunci gembok timbul di batu gelap), supaya warna bukan satu-satunya penanda (instrumen media A8).
+3. **Satu papan acuan gaya antarmuka** (`U-00`, `reference.27`) dibuat lebih dulu dan menjadi lampiran semua bagian antarmuka; acuan gaya lama yang bergaya halus (no. 409 sampai 416) dibuang.
+4. **Satu pelat per warna** (emas, biru tua, hijau), satu bingkai jendela, dan satu bilah perunggu, masing-masing dengan hiasan hanya di ujung atau sudut, sehingga satu gambar muat di setiap lebar tanpa hiasan teregang. Alas tombol HUD `ui.result-hud-control` dibuang karena tertutup gambar tombol bundar.
+5. **Tombol Kenali memakai lentera wilayah** (Temanggung dua gunung dan daun kopi, Magelang stupa, Wonosobo Candi Arjuna), dari satu Lentera Kedu induk (`U-14`); `icon-kenali` dibuang.
+6. **Ikon aplikasi:** Lentera Kedu emas berukir di bidang biru tua, satu induk untuk semua ukuran, ditambah favicon sederhana.
+7. **Lencana wilayah dan sepuluh avatar** ikut mendapat cincin emas berukir; lambangnya tetap, kecuali lencana Wonosobo (candi gaya Arjuna, keputusan 16 November 2026) dan avatar carica (lambangnya digambar ulang sebagai carica, bukan pepaya).
+8. **Latar halaman awal** (`bg.welcome`) digambar ulang: garis gunung Kedu yang sebenarnya, tengah dan setengah bawah tenang, suasana biru tua dan emas.
+9. **Cerita penutup:** gambar slide 3 (Jaka mengangkat lentera di puncak bukit) pindah ke slide 1 karena cocok dengan naskahnya; beranda tepi laut di slide 1 dibuang (Kedu tidak berpantai). Slide 2 sampai 5 digambar baru tanpa orang; slide 4 *Janji Jaka* menjadi halaman SD di dataran tinggi Kedu dengan pojok baca dan lentera di gerbang.
+10. **Pustaka:** 32 gambar bergaya lukisan dibuat ulang dalam gaya 3D, termasuk 284 dan 290 (`redo later`) dan tiga sampul video. Tidak ada anak berlurik yang berulang; orang hanya bila topiknya membutuhkan. Tembakau hanya sebagai daun hijau; 311 menjadi kebun kopi dengan keterangan baru. Empat gambar menunggu foto acuan dari pengembang (Gunung Andong, Gunung Tidar, Umbul Jumprit, Parakan).
+11. **Urutan kerja:** antarmuka dan cerita lebih dulu, Pustaka sesudahnya. Ukuran setiap bagian diukur di Chromebook 1366 × 768 dan 1366 × 657 (dokumen 40 → *Ukuran yang diukur*).
 
 ## 17 November 2026
 

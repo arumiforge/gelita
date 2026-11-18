@@ -75,7 +75,19 @@ The owner reviewed every picture of the game on 15 November 2026 (`ai-studio/gam
 - **`R-06` and up are test pictures: an edit, not a new picture.** Attach the current picture and ask for the same picture with only the changes the prompt names. These pictures carry text on purpose, so the check "No readable text" does not apply. Instead, read every word of the result against the list *All text* in the prompt, the unchanged parts too, and compare the result with the old picture: nothing else may have changed. If an edit damages another part, start again from the old picture, never from the failed result. They stay black-and-white line art.
 - A row that is `blocked: waiting for the owner's yes` is not made until the owner changes its status.
 
-The interface art of the game (buttons, plates, frames, small icons) will come as further rows after its sizes are measured on a Chromebook screen. Its one look is the carved gold of `public/assets/ui/round-*.webp`: a thick gold frame carved in deep relief, a dark stone or navy face, the symbol embossed in the same gold, light from the upper left.
+## Rows from document 40 (codes `U-…`, `S-…`, `PK-…`)
+
+The owner's interview of 18 November 2026; prompts in `docs/revisi-10-analitik/40_PROMPT_GAMBAR_ANTARMUKA.md`, sizes measured on a Chromebook screen. For these rows the prompt and the lines below come before the general checks above:
+
+- **`U-00` first.** It is the style board of the carved-gold interface. Every other `U-` row attaches its result (`out/reference.27.webp`) and stays `blocked: waiting for U-00` until the owner accepts it; a Claude session then sets those rows to `todo`. Inside the `U-` rows, make them in order: a row may attach the result of an earlier row (for example `U-02` attaches `out/ui-plate-gold.webp`).
+- **Every `U-` prompt starts with the block `GELITA CARVED GOLD UI — 2026-11-18`.** Use it word for word, as the story pictures use their direction block.
+- **Plates, frame and track (`U-01` to `U-05`) stretch in the game.** Their ornaments must stay inside the ends or corners the prompt names, and the middle must be plain. Check: stretch the middle to twice its length in an image editor; nothing may look stretched.
+- **Edits, not new pictures:** `U-07`, `U-15` to `U-17` and `U-24` to `U-33`. Mask only the part the prompt names (the frame carving, the front glass panel, the avatar ring); everything else stays locked, as for `R-19`. Start again from the original picture, never from a failed result.
+- **Status markers (`U-09` to `U-11`)** are one set: same ring, same size. Shrink each to 19 px and look: check mark, light shard and padlock must be told apart without colour.
+- **`S-` rows are story backgrounds** with the rules of `R-27` to `R-30`: no people, no light rays, calm lower third (`S-W`: calm centre and lower half).
+- **`PK-` rows are Pustaka pictures in 3D**, never an oil painting. No recurring boy in lurik; people only where the prompt names them. Tobacco only as green leaves, never cigarettes or smoke. The old picture is attached for its content only. A row `blocked: needs reference photo` waits for the owner's photo in `inbox/`.
+
+The rest of the interface art (round buttons and the other plates) keeps its current pictures for now. Its one look is the carved gold of `public/assets/ui/round-*.webp`: a thick gold frame carved in deep relief, a dark stone or navy face, the symbol embossed in the same gold, light from the upper left.
 
 ## Files in `inbox/`
 
