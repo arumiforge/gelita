@@ -1099,3 +1099,21 @@ Owner request: <https://katalog.gelita.id/> answered 403 because `gelita-katalog
 - **Staleness is a test.** `CatalogSiteTest::testCommittedSiteIsCurrent` runs `--cek` against the real repository; a changed picture list, review mark, sound list or narration line fails it until the folder is rebuilt and committed. Not a `gelita:setelah-pull` step: the server only pulls.
 - **Server.** nginx serves the folder of a checkout; `docs/08_DEPLOYMENT.md` → *The public Katalog Aset site* (pull, `index index.html;`, Cloudflare purge).
 - **Checked.** `CatalogSiteTest` (8 tests); full suite; the folder served alone by `python3 -m http.server` in Chromium at 1366 × 768 and 390 × 844 with images and audio loaded from gelita.id: no script error, no horizontal scroll, both placeholders shown where expected, music plays from gelita.id. **Not checked:** the real katalog.gelita.id server, nginx and Cloudflare; Firefox and Safari; the page with `REVIEW.md` removed after the review (every picture would then read *Belum ditinjau*; the status source has to move first, open item in `docs/PROGRESS.md`).
+
+## New interface pictures ordered; region-map status medallion moved (18 November 2026, branch `pw/optimistic-cannon-h8p8o9`)
+
+The owner asked for new pictures for a long list of catalogue entries (the result screen, the gold labels, the shard counter, the Kenali icon, the Kenali plates, the bars, the title plate, the dialog frames, the green plate, the select arrow, the star, the three status markers, the app icon, the start-page background, four ending slides, the Kenali lanterns, the pins, the missing and painted Pustaka pictures and the style references), and for the status markers on the region map to stop covering the clearings' own pictures. Three interview rounds settled the open choices; they are recorded in `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md` (18 November 2026).
+
+**Built:** `public/assets/css/game.css`, block *Region map stops*. `map_x` / `map_y` still mark the clearing's centre; on `.map-level` the point now hangs 0.75 rem below it (`translate(-50%, .75rem)`), the medallion is 2 rem (34 px at 1366 × 768, 29 px at 1366 × 657) and the label a small plate (`--fs-caption`, status line 0.875 rem). An invisible `::before` of 7.5 × 4.75 rem over the drawn prop keeps it tappable, so the hit area grows instead of shrinking (147 × 82 px measured). Pictures, positions and the side list are unchanged. Checked with Playwright screenshots on the MariaDB dev install at both sizes; no PHP changed, so no test reads it.
+
+**Measured:** a Playwright script registered a student, walked every screen at 1366 × 768 and 1366 × 657 and listed each `public/assets/ui/` and catalogue picture with its drawn size (document 40 → *Ukuran yang diukur*). Two findings: `ui.result-hud-control` sits 45 px under 51 px round art and is never seen (dropped), and `avatar.2` is also the result-screen medal.
+
+**Ordered:** document 40 (`docs/revisi-10-analitik/40_PROMPT_GAMBAR_ANTARMUKA.md`, `draf pengembang`) and 73 rows in `ai-studio/chatgpt-images/TASKS.md` with a new section *Rows from document 40* in its `AGENTS.md`. Deviations from the earlier plan of the interface overhaul (PROGRESS step 2):
+1. Not one picture per old file but **one per colour** (owner): the plates, the frame and the track are drawn with ornaments only in the ends or corners and a plain middle, so one picture serves every width as a `border-image`. Fifteen old files collapse into five.
+2. A **style board** (`U-00`, `reference.27`) is drawn first and attached to every interface row, because the owner found the edge ornaments of the benchmark pieces unlike each other.
+3. The Pustaka rows were not part of the overhaul; the owner added all painted Pustaka pictures (32) to this batch, after the interface.
+
+**Wikimedia** answered 429 to the session's proxy, so the four Pustaka places without a photo in the repository are `blocked: needs reference photo`; their rows name the original Wikimedia file where the page had one.
+
+**Not done:** no picture is made yet; nothing is installed; the PDFs of `00`, `04` and `40` are not rebuilt (no handover to the researcher).
+

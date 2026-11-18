@@ -53,7 +53,7 @@ Telaah dan pesanan ini pekerjaan pengembang sendiri, bukan validasi ahli ([01 �
 | `S-05` | Cerita penutup slide 5 *Penjaga Lentera* | 203 | Dataran Kedu saat fajar dengan lentera kecil di setiap desa |
 | `PK-01` – `PK-32` | Gambar Pustaka bergaya lukisan | 282–340 | Dibuat ulang dalam gaya 3D (bagian *Pustaka*) |
 
-Slide 1 cerita penutup tidak dipesan: berkas slide 3 sekarang dipindahkan ke slide 1 (*Pemasangan*).
+Slide 1 cerita penutup tidak dipesan: berkas slide 3 sekarang dipindahkan ke slide 1 (*Pemasangan*). Dari enam gambar layar *Tantangan selesai*, lima diganti oleh `U-01`, `U-02`, `U-04`, dan `U-12`; yang keenam, alas tombol HUD `ui.result-hud-control` (no. 93), dibuang karena seluruhnya tertutup gambar tombol bundar di atasnya (45 px di bawah 51 px, diukur 18 November 2026). Medali serpihan di kiri panel hasil adalah `avatar.2`, jadi ikut berganti cincin lewat `U-25`.
 
 ## Ukuran yang diukur (Chromebook 1366 × 768 dan 1366 × 657, 18 November 2026)
 
@@ -270,12 +270,12 @@ It must read clearly at 19 pixels wide: no fine detail on the face, the check ma
 |---|---|
 | Berkas | pengganti `public/assets/ui/status-progress.webp` |
 | Kanvas | 512 × 512, latar transparan |
-| Lampiran | `ai-studio/chatgpt-images/out/reference.27.webp`, `ai-studio/chatgpt-images/out/status-done.webp` (`U-09`: cincin yang sama), `ai-studio/game-images/assets/antarmuka/ui.result-medal.webp` (bentuk serpihan cahaya) |
+| Lampiran | `ai-studio/chatgpt-images/out/reference.27.webp`, `ai-studio/chatgpt-images/out/status-done.webp` (`U-09`: cincin yang sama), `public/assets/ui/hud-shards-frame.webp` (kristal di ujung kirinya: bentuk serpihan cahaya) |
 
 ```text
 GELITA CARVED GOLD UI — 2026-11-18
 Asset: status-progress (U-10 · challenge status: open, ready to play)
-Exactly the same ring, size and light as the attached completed medallion (U-09). The face is deep navy stone. On the face, one large embossed LIGHT SHARD: a tall pointed gold crystal shard, like the one on the attached result medal, glowing softly warm from inside, filling about half of the face.
+Exactly the same ring, size and light as the attached completed medallion (U-09). The face is deep navy stone. On the face, one large embossed LIGHT SHARD: a tall pointed gold crystal shard, like the crystal at the left end of the attached shard counter, glowing softly warm from inside, filling about half of the face.
 It must read clearly at 19 pixels wide and must not look like a check mark or a lock. Canvas exactly 512 × 512, even 12-pixel margin, transparent outside. WebP, named status-progress.webp.
 ```
 
@@ -578,7 +578,7 @@ Slide 1 *Lentera Menyala Kembali* memakai gambar slide 3 sekarang (Jaka di punca
 |---|---|
 | Kode berkas | `bg.cerita-penutup-02` → simpan sebagai `bg.cerita-penutup-02.webp` |
 | Kanvas | 1920 × 1080 |
-| Lampiran | Acuan gaya `ai-studio/game-images/assets/referensi/reference.06.webp`; foto `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-over-highland-village-04.jpg` (Temanggung), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Borobudur-aerial-plain-volcano-01.jpg` (Magelang), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Telaga-Warna-Dieng-05.jpg` (Wonosobo), `ai-studio/chatgpt-images/out/bg.cerita-intro-07.webp` atau berkas terpasangnya `ai-studio/game-images/assets/latar/bg.cerita-intro-07.webp` (tiga wilayah yang sama) |
+| Lampiran | Acuan gaya `ai-studio/game-images/assets/referensi/reference.06.webp`; foto `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-over-highland-village-04.jpg` (Temanggung), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Borobudur-aerial-plain-volcano-01.jpg` (Magelang), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Telaga-Warna-Dieng-05.jpg` (Wonosobo), `ai-studio/game-images/assets/latar/bg.cerita-intro-07.webp` (tiga wilayah yang sama) |
 | Naskah | "Kabut Lupa tersibak dari Temanggung, Magelang, sampai Wonosobo. Papan petunjuk terbaca jelas, relief bercerita dengan urutan yang benar, dan layar-layar di rumah warga tidak lagi berkabut. Pesan berantai tidak lagi langsung dipercaya dan dibagikan begitu saja." |
 
 ```text
@@ -606,7 +606,7 @@ No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, 
 |---|---|
 | Kode berkas | `bg.cerita-penutup-03` → simpan sebagai `bg.cerita-penutup-03.webp` |
 | Kanvas | 1920 × 1080 |
-| Lampiran | Acuan gaya `ai-studio/game-images/assets/referensi/reference.06.webp`; `ai-studio/game-images/assets/latar/bg.intro.webp` (joglo rumah penjaga), `ai-studio/chatgpt-images/out/ui.lantern.webp` atau `ai-studio/game-images/assets/ikon/ui.lantern.webp` (Lentera Kedu), foto `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-Sumbing-sunrise-02.jpg` |
+| Lampiran | Acuan gaya `ai-studio/game-images/assets/referensi/reference.06.webp`; `ai-studio/game-images/assets/latar/bg.intro.webp` (joglo rumah penjaga), `ai-studio/game-images/assets/ikon/ui.lantern.webp` (Lentera Kedu; setelah `U-14` dipasang, berkas barunya), foto `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-Sumbing-sunrise-02.jpg` |
 | Naskah | "Badan Mbah terasa segar lagi, Le! Tapi ingat, cahaya ini bukan hanya milik lentera. Cahaya ini hidup setiap kali seseorang membaca dengan teliti dan berbagi dengan bijak." |
 
 ```text
@@ -1634,7 +1634,8 @@ Semua hasil dipindahkan (bukan disalin) dari `ai-studio/chatgpt-images/out/`. Ba
 | `U-05` | `public/assets/ui/ui-track.webp` | `--loading-track` dan `--progress-track` memakai berkas ini dengan ujung 96 |
 | `U-06`, `U-07`, `U-08`, `U-09` – `U-11`, `U-12` (`star.webp`), `U-13` | berkas yang sama di `public/assets/ui/` | `U-11`: hapus `icon('lock', 'badge-lock')` di `map-level.php` dan `lantern.php`, karena gemboknya kini di gambar. `U-12`: salin juga ke `ai-studio/game-images/assets/antarmuka/ui.result-star.webp` |
 | `U-14` – `U-23` | `ai-studio/game-images/assets/ikon/` dan `…/lencana/` di tempat berkas lama | `php spark gelita:katalog:impor`. Tombol Kenali di Peta Kedu memakai `map.lantern.{wilayah}` (slot `map.lantern.*` di `ImageSlots` menjadi dipakai); `public/assets/ui/icon-kenali.webp` dihapus |
-| `U-24` – `U-33` | `ai-studio/game-images/assets/ikon/avatar.{N}.webp` | `php spark gelita:katalog:impor` |
+| `U-24` – `U-33` | `ai-studio/game-images/assets/ikon/avatar.{N}.webp` | `php spark gelita:katalog:impor` (`avatar.2` juga medali layar hasil) |
+| — | `ui.result-hud-control` | Slot dan entri `data.json` dibuang; HUD hanya memakai gambar `round-*` |
 | `U-34`, `U-35` | `ai-studio/game-images/assets/ikon/` | Buat `app.icon-512`, `app.icon-192`, `app.apple-touch-icon` (180), `app.icon-maskable-512`, `app.favicon` dengan perkecilan proporsional; `public/assets/app/*.png` diganti, `icon.svg` diganti PNG di manifest dan `<link>` |
 | `S-W`, `S-02` – `S-05` | `ai-studio/game-images/assets/latar/` di tempat berkas lama | `bg.cerita-penutup-03.webp` lama dipindahkan lebih dulu menjadi `bg.cerita-penutup-01.webp` (menggantikan beranda tepi laut). Entri `data.json` mendapat prompt baru dari bagian ini; `php spark gelita:katalog:impor` |
 | `PK-` | `ai-studio/game-images/assets/pustaka/` di tempat berkas lama | Entri yang keterangannya berubah mendapat `caption` (`id`, `en`) di `data.json`; `php spark gelita:katalog:impor` |
