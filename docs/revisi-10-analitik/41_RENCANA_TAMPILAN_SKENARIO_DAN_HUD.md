@@ -93,7 +93,7 @@ Tombol yang belum aktif memakai gambar yang sama dengan tampilan diredupkan (CSS
 
 | Langkah | Isi | Selesai bila |
 | --- | --- | --- |
-| A | Mockup HTML keempat keadaan (keputusan 12); dibuat 18 November 2026 dengan cerita `tmg-5-b01` dan cerita terpanjang `wnb-5-a04` (4 tindakan, 5 alasan): semua keadaan muat di 1366 × 768 tanpa panel bergulir | Pengembang menyetujui atau memberi catatan |
+| A | Mockup HTML keempat keadaan (keputusan 12); dibuat 18 November 2026 dengan cerita `tmg-5-b01` dan cerita terpanjang `wnb-5-a04` (4 tindakan, 5 alasan): semua keadaan muat di 1366 × 768 tanpa panel bergulir. Sumbernya `tools/mockup/skenario-41/` (`python3 tools/mockup/skenario-41/build.py hasil.html`); berkas HTML-nya tidak disimpan di repo | Pengembang menyetujui atau memberi catatan |
 | B | Prompt `SD-` (bagian 8) dan baris `TASKS.md` | Baris berstatus `todo` |
 | C | HUD seragam (bagian 4), satu cabang, bersama pemasangan pelat emas, biru tua, dan hijau, bingkai jendela, dan bilah perunggu dari [40](40_PROMPT_GAMBAR_ANTARMUKA.md) (`U-01` sampai `U-05`, keputusan pengembang 18 November 2026), karena keduanya menata ulang semua layar | Inventaris sebelum/sesudah, uji per jenis layar, cek `tools/qa/stage-check.mjs` |
 | D | Tampilan baru Skenario Digital di `skenario.php`, `engines/skenario.js`, `stage.css`; teks baru di berkas bahasa (id dan en) | Uji Skenario Digital hijau; keempat keadaan dicek di Chromebook dua ukuran; aturan bagian 2 utuh |
@@ -105,3 +105,4 @@ Langkah D boleh mulai dengan pelat sementara sebelum gambar `SD-` datang, asal u
 
 - Apakah ✓ di Skenario Digital tetap berbentuk angka saja (tanpa "/"), atau digabung dengan bilah kemajuan cerita? Diputuskan di mockup.
 - Teks instruksi tantangan Skenario Digital di bank ("Bacalah ceritanya. Pilih apa yang akan kamu lakukan, lalu pilih alasanmu.") panjangnya dua baris di lebar panel kanan; mungkin perlu dipendekkan di bank (`nodes`) agar menjadi satu baris.
+- **`U-07` (bingkai Serpihan Cahaya) ditahan** sampai kristalnya dipesan dan dipasang bersama (40 → `U-07`, catatan 18 November 2026). Bila HUD seragam (langkah C) mengubah ukuran penghitung Serpihan Cahaya, ukuran kristal ikut diukur ulang.

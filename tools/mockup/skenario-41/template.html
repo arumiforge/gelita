@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup Skenario Digital</title>
+<style>
+@font-face { font-family: 'Marcellus'; src: url({{font_marcellus}}) format('woff2'); }
+@font-face { font-family: 'Jakarta'; font-weight: 400; src: url({{font_jakarta}}) format('woff2'); }
+@font-face { font-family: 'Jakarta'; font-weight: 600; src: url({{font_jakarta6}}) format('woff2'); }
+@font-face { font-family: 'Jakarta'; font-weight: 700; src: url({{font_jakarta7}}) format('woff2'); }
+:root {
+  --gold: #DFC087; --gold-hi: #F0DFB8; --gold-deep: #B8893F; --cream: #FFF4D6; --ink: #2A1A08;
+  --navy: #0B1320; --navy-2: #1B2740; --muted: #C9C2B0;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: #05080F; color: var(--cream); font-family: 'Jakarta', system-ui, sans-serif; }
+body { display: flex; flex-direction: column; }
+
+/* Review toolbar: outside the game stage */
+.tools { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; padding: 10px 16px; background: #10151F; border-bottom: 1px solid #2A3245; font-size: 14px; }
+.tools b { color: var(--gold); font-weight: 600; }
+.tools .grp { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.tools button { font: inherit; font-size: 13px; padding: 5px 10px; border-radius: 6px; border: 1px solid #3A4560; background: #182035; color: var(--cream); cursor: pointer; }
+.tools button[aria-pressed="true"] { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+.tools label { display: flex; gap: 6px; align-items: center; cursor: pointer; }
+.viewport { flex: 1; display: grid; place-items: center; overflow: hidden; min-height: 0; }
+
+/* Stage 1280 x 720 dp, scaled to fit */
+.stage { width: 1280px; height: 720px; position: relative; overflow: hidden; transform-origin: center; flex: none;
+  background: var(--bg) center / cover no-repeat; }
+.stage::before { content: ''; position: absolute; inset: 0; background: linear-gradient(rgba(5, 9, 18, .55), rgba(5, 9, 18, .78)); }
+.abs { position: absolute; }
+
+/* Header, one row (decision 13) */
+.head { left: 32px; top: 16px; width: 1216px; height: 72px; display: flex; align-items: center; gap: 18px; }
+.head .logo { height: 52px; width: auto; }
+.head .sep { width: 1px; height: 44px; background: linear-gradient(transparent, var(--gold-deep), transparent); }
+.badge { position: relative; width: 60px; height: 60px; flex: none; }
+.badge img { width: 100%; height: 100%; }
+.badge span { position: absolute; inset: 0; display: grid; place-items: center; font: 700 26px 'Jakarta'; color: var(--ink); }
+.titles h1 { margin: 0; font: 400 30px/1.05 'Marcellus', serif; color: var(--gold-hi); }
+.titles p { margin: 4px 0 0; font-size: 15px; color: var(--muted); }
+.head .end { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.capsule { display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 16px 0 6px; border-radius: 24px; background: rgba(11, 19, 32, .82); border: 1px solid rgba(223, 192, 135, .55); font: 700 20px 'Jakarta'; }
+.capsule img { width: 36px; height: 36px; }
+.capsule .div { width: 1px; height: 26px; background: rgba(223, 192, 135, .5); margin: 0 4px; }
+.round { width: 48px; height: 48px; padding: 0; border: 0; background: none; cursor: pointer; }
+.round img { width: 100%; height: 100%; }
+.exit { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 22px 0 8px; color: var(--cream); font: 600 17px 'Jakarta';
+  border-style: solid; border-width: 0 48px; border-image: url({{navy}}) 0 200 fill / 0 48px / 0 stretch; }
+.exit img { width: 34px; height: 34px; margin-left: -30px; }
+
+/* Panels: no frame, no extra background (decision 1) */
+.left { left: 32px; top: 104px; width: 600px; height: 584px; display: flex; flex-direction: column; }
+.right { left: 664px; top: 104px; width: 584px; height: 584px; display: flex; flex-direction: column; }
+.divline { left: 648px; top: 120px; width: 1px; height: 552px; background: linear-gradient(transparent, rgba(223, 192, 135, .35), transparent); }
+
+.story-head { display: flex; align-items: center; gap: 14px; height: 36px; font: 600 18px 'Jakarta'; }
+.bars { display: flex; gap: 6px; }
+.bars i { width: 34px; height: 8px; border-radius: 4px; background: rgba(223, 192, 135, .22); border: 1px solid rgba(223, 192, 135, .45); }
+.bars i.is-closed { background: var(--gold-deep); }
+.bars i.is-current { background: var(--gold); box-shadow: 0 0 8px rgba(240, 223, 184, .6); }
+.tries { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--muted); font-weight: 400; }
+.tries i { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--gold-deep); }
+.tries i.is-left { background: radial-gradient(circle at 35% 35%, var(--gold-hi), var(--gold-deep)); border-color: var(--gold); box-shadow: 0 0 6px rgba(240, 223, 184, .5); }
+.picture { margin: 12px auto 0; display: block; border-radius: 10px; box-shadow: 0 6px 20px rgba(0, 0, 0, .55); width: var(--pic-w, 456px); height: auto; }
+.player { margin: 14px 0 0; display: flex; align-items: center; gap: 14px; height: 52px; padding: 0 18px 0 6px; border-radius: 26px; background: rgba(11, 19, 32, .78); border: 1px solid rgba(223, 192, 135, .45); }
+.player .round { width: 42px; height: 42px; }
+.player .lbl { font: 600 17px 'Jakarta'; white-space: nowrap; }
+.wave { flex: 1; display: flex; align-items: center; justify-content: center; gap: 3px; height: 30px; }
+.wave i { width: 3px; border-radius: 2px; background: var(--gold); height: var(--h); opacity: .75; }
+.player.is-playing .wave i { animation: wave 1s ease-in-out infinite; animation-delay: var(--d); opacity: 1; }
+@keyframes wave { 0%, 100% { transform: scaleY(.35); } 50% { transform: scaleY(1); } }
+.player .dur { font: 600 15px 'Jakarta'; color: var(--muted); font-variant-numeric: tabular-nums; }
+.situation { margin: 14px 0 0; font-size: var(--sit-fs, 20px); line-height: 1.45; }
+
+/* Right panel */
+.toggle { align-self: center; display: flex; padding: 3px; border-radius: 24px; background: rgba(11, 19, 32, .85); border: 1px solid rgba(223, 192, 135, .55); }
+.toggle span { padding: 7px 22px; border-radius: 20px; font: 600 17px 'Jakarta'; color: var(--muted); }
+.toggle span b { margin-right: 6px; font-weight: 700; }
+.toggle span.is-on { background: linear-gradient(var(--gold-hi), var(--gold)); color: var(--ink); }
+.question { margin: 14px 0 0; text-align: center; font: 400 31px/1.15 'Marcellus', serif; color: var(--gold-hi); }
+.question.is-small { font-size: 25px; }
+.instr { margin: 8px auto 0; display: flex; align-items: center; gap: 10px; max-width: 540px; font-size: 16px; color: var(--muted); text-align: center; }
+.instr .round { width: 32px; height: 32px; flex: none; }
+.chosen { margin: 12px 0 0; padding: 9px 16px; border-radius: 10px; background: rgba(27, 39, 64, .75); border-left: 4px solid var(--gold); font-size: 16px; }
+.chosen b { color: var(--gold); font-weight: 600; }
+.options { margin: 14px 0 0; display: flex; flex-direction: column; gap: var(--gap, 10px); }
+.opt { display: flex; align-items: center; gap: 14px; min-height: 54px; padding: 8px 18px; border-radius: 12px; cursor: pointer;
+  background: rgba(11, 19, 32, .86); border: 1.5px solid rgba(223, 192, 135, .5); font-size: 19px; line-height: 1.3; }
+.opt input { position: absolute; opacity: 0; }
+.opt .mark { flex: none; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--gold); display: grid; place-items: center; }
+.opt.is-on { border-color: var(--gold-hi); background: rgba(20, 46, 58, .92); box-shadow: 0 0 0 1px var(--gold), 0 0 14px rgba(240, 223, 184, .45); }
+.opt.is-on .mark::after { content: ''; width: 12px; height: 12px; border-radius: 50%; background: var(--gold-hi); box-shadow: 0 0 6px var(--gold-hi); }
+.feedback { margin: 18px 0 0; padding: 16px 20px; border-radius: 12px; background: rgba(11, 19, 32, .86); border: 1.5px solid rgba(223, 192, 135, .5); font-size: 19px; line-height: 1.45; }
+.feedback.is-safe { border-color: var(--gold-hi); box-shadow: 0 0 14px rgba(240, 223, 184, .3); }
+.note { margin: 12px 0 0; font-size: 17px; color: var(--muted); text-align: center; }
+.safe { margin: 10px 0 0; padding: 12px 18px; border-radius: 12px; background: rgba(20, 46, 58, .92); border: 1.5px solid var(--gold-hi); font: 600 19px/1.35 'Jakarta'; }
+.expl { margin: 12px 0 0; font-size: 18px; line-height: 1.45; }
+.actions { margin-top: auto; display: flex; justify-content: center; gap: 16px; padding-top: 12px; }
+.btn { height: 58px; min-width: 240px; padding: 0 12px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer;
+  font: 700 21px 'Jakarta'; border-style: solid; border-width: 0 58px; background: none; }
+.btn.gold { color: var(--ink); border-image: url({{gold}}) 0 200 fill / 0 58px / 0 stretch; }
+.btn.navy { color: var(--cream); min-width: 200px; border-image: url({{navy}}) 0 200 fill / 0 58px / 0 stretch; }
+.btn:disabled { filter: grayscale(.6) brightness(.7); cursor: default; }
+.over { outline: 2px dashed #FF5C8A; outline-offset: -2px; }
+.overflow-flag { position: absolute; right: 8px; bottom: 6px; font-size: 12px; color: #FF8FB0; }
+</style>
+</head>
+<body>
+<div class="tools">
+  <span class="grp"><b>Cerita</b>
+    <button type="button" data-scen="tmg-5-b01" aria-pressed="true">Biasa (Temanggung, 3 pilihan)</button>
+    <button type="button" data-scen="wnb-5-a04" aria-pressed="false">Terpanjang (Wonosobo, 4 tindakan, 5 alasan)</button>
+  </span>
+  <span class="grp"><b>Keadaan</b>
+    <button type="button" data-go="action">1 Tindakan</button>
+    <button type="button" data-go="reason">2 Alasan</button>
+    <button type="button" data-go="feedback">Umpan balik</button>
+    <button type="button" data-go="explained">Tindakan aman</button>
+  </span>
+  <label><input type="checkbox" id="opt-research"> Mode penelitian (tanpa jam)</label>
+  <label><input type="checkbox" id="opt-novoice"> Tanpa narasi</label>
+</div>
+<div class="viewport" id="viewport"><div class="stage" id="stage"></div></div>
+<script>
+const IMG = /*IMG*/{};
+const SCEN = /*SCEN*/{};
+const REGION = { temanggung: 'Temanggung', wonosobo: 'Wonosobo' };
+const state = { key: 'tmg-5-b01', step: 'action', action: null, reason: null, tries: 3, closed: 0, result: null, playing: false };
+const stage = document.getElementById('stage');
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const wave = Array.from({ length: 34 }, (_, i) => `<i style="--h:${8 + Math.round(20 * Math.abs(Math.sin(i * 1.7)))}px;--d:${(i % 7) * -.13}s"></i>`).join('');
+
+function fit() {
+  const v = document.getElementById('viewport');
+  const s = Math.min(v.clientWidth / 1280, v.clientHeight / 720);
+  stage.style.transform = `scale(${s})`;
+}
+
+function render() {
+  const sc = SCEN[state.key];
+  const research = document.getElementById('opt-research').checked;
+  const voiced = !document.getElementById('opt-novoice').checked;
+  const long = sc.situation.length > 200;
+  stage.style.setProperty('--bg', `url(${IMG['bg_' + sc.region]})`);
+  const opts = state.step === 'reason' ? sc.reasons : sc.actions.map((a) => a.text);
+  const chosen = state.step === 'reason' ? state.reason : state.action;
+  const optionsHtml = opts.map((t, i) => `<label class="opt${chosen === i ? ' is-on' : ''}"><input type="radio" name="o" value="${i}"${chosen === i ? ' checked' : ''}><span class="mark"></span><span>${esc(t)}</span></label>`).join('');
+  const bars = Array.from({ length: 4 }, (_, i) => `<i class="${i < state.closed ? 'is-closed' : i === state.closed ? 'is-current' : ''}"></i>`).join('');
+  const dots = Array.from({ length: 3 }, (_, i) => `<i class="${i < state.tries ? 'is-left' : ''}"></i>`).join('');
+
+  let right = '';
+  if (state.step === 'action' || state.step === 'reason') {
+    const isAction = state.step === 'action';
+    right = `
+      <div class="toggle" aria-hidden="true"><span class="${isAction ? 'is-on' : ''}"><b>1</b>Tindakan</span><span class="${isAction ? '' : 'is-on'}"><b>2</b>Alasan</span></div>
+      ${isAction ? `<h2 class="question">Apa yang akan kamu lakukan?</h2>
+        <p class="instr"><button class="round" type="button" title="Dengarkan petunjuk"><img src="${IMG.play}" alt=""></button><span>Bacalah ceritanya. Pilih apa yang akan kamu lakukan, lalu pilih alasanmu.</span></p>`
+      : `<p class="chosen"><b>Pilihanmu:</b> ${esc(sc.actions[state.action ?? 0].text)}</p>
+        <h2 class="question is-small">Yang paling penting kupikirkan di sini adalah …</h2>`}
+      <div class="options" role="radiogroup">${optionsHtml}</div>
+      <div class="actions">
+        ${isAction ? '' : '<button class="btn navy" type="button" data-act="back">‹ Kembali</button>'}
+        <button class="btn gold" type="button" data-act="${isAction ? 'toReason' : 'send'}"${chosen === null ? ' disabled' : ''}>${isAction ? 'Lanjut ke alasan ›' : 'Kirim jawaban ›'}</button>
+      </div>`;
+  } else if (state.step === 'feedback') {
+    const a = sc.actions[state.action ?? 0];
+    const safe = a.score === 2;
+    right = `
+      <h2 class="question">${safe ? 'Pilihan yang aman!' : 'Ayo pikirkan lagi'}</h2><!-- heading: new text, proposal -->
+      <p class="feedback${safe ? ' is-safe' : ''}">${esc(a.feedback)}</p>
+      ${safe ? '' : `<p class="note">Kamu masih punya ${state.tries} kesempatan. Pilih lagi tindakan dan alasanmu.</p>`}
+      <div class="actions"><button class="btn gold" type="button" data-act="${safe ? 'next' : 'retry'}">${safe ? 'Lanjut ke cerita berikutnya ›' : 'Coba lagi ›'}</button></div>`;
+  } else {
+    const safe = sc.actions.find((a) => a.score === 2);
+    right = `
+      <p class="note" style="margin-top:4px">Kesempatanmu untuk cerita ini sudah habis. Ayo lanjut ke cerita berikutnya.</p>
+      <h2 class="question">Ini tindakan yang aman</h2>
+      <p class="safe">${esc(safe.text)}</p>
+      <p class="expl">${esc(sc.explanation)}</p>
+      <div class="actions"><button class="btn gold" type="button" data-act="next">Lanjut ke cerita berikutnya ›</button></div>`;
+  }
+
+  stage.innerHTML = `
+    <header class="abs head">
+      <img class="logo" src="${IMG.logo}" alt="GELITA">
+      <span class="sep"></span>
+      <span class="badge"><img src="${IMG.badge}" alt=""><span>5</span></span>
+      <div class="titles"><h1>Skenario Digital</h1><p>Skenario Digital ${REGION[sc.region]}</p></div>
+      <div class="end">
+        <span class="capsule">${research ? '' : `<img src="${IMG.clock}" alt=""> 4:47 <span class="div"></span>`}<img src="${IMG.right}" alt=""> ${state.closed}</span>
+        <button class="round" type="button" title="Suara"><img src="${IMG.sound}" alt=""></button>
+        <span class="exit"><img src="${IMG.logout}" alt="">Keluar</span>
+      </div>
+    </header>
+    <section class="abs left" style="--pic-w:${long ? 420 : 456}px;--sit-fs:${long ? 19 : 20}px">
+      <div class="story-head">Cerita ${state.closed + 1} dari 4 <span class="bars">${bars}</span><span class="tries">Kesempatan ${dots}</span></div>
+      <img class="picture" src="${IMG['pic_' + state.key]}" alt="">
+      ${voiced ? `<div class="player${state.playing ? ' is-playing' : ''}"><button class="round" type="button" data-act="play"><img src="${state.playing ? IMG.pause : IMG.play}" alt=""></button><span class="lbl">${state.playing ? 'Sedang dibacakan…' : 'Dengarkan cerita'}</span><span class="wave">${wave}</span><span class="dur">0:18</span></div>` : ''}
+      <p class="situation">${esc(sc.situation)}</p>
+    </section>
+    <span class="abs divline"></span>
+    <section class="abs right" style="--gap:${opts.length > 3 ? 8 : 10}px">${right}</section>`;
+  // Mark a panel whose content does not fit (a design check, not part of the game)
+  for (const panel of stage.querySelectorAll('.left, .right')) {
+    const over = panel.scrollHeight > panel.clientHeight + 1;
+    panel.classList.toggle('over', over);
+    if (over) panel.insertAdjacentHTML('beforeend', '<span class="overflow-flag">tidak muat</span>');
+  }
+}
+
+stage.addEventListener('change', (e) => {
+  if (!e.target.matches('input[type=radio]')) return;
+  state[state.step] = Number(e.target.value);
+  state.playing = false;
+  render();
+});
+stage.addEventListener('click', (e) => {
+  const act = e.target.closest('[data-act]')?.dataset.act;
+  if (!act) return;
+  const sc = SCEN[state.key];
+  if (act === 'play') state.playing = !state.playing;
+  if (act === 'toReason') { state.step = 'reason'; state.playing = false; }
+  if (act === 'back') state.step = 'action';
+  if (act === 'send') {
+    state.tries -= 1;
+    const safe = sc.actions[state.action].score === 2;
+    if (safe) { state.step = 'feedback'; } else if (state.tries === 0) { state.step = 'explained'; } else { state.step = 'feedback'; }
+  }
+  if (act === 'retry') { state.step = 'action'; state.action = null; state.reason = null; }
+  if (act === 'next') { state.closed = Math.min(3, state.closed + 1); state.step = 'action'; state.action = null; state.reason = null; state.tries = 3; }
+  render();
+});
+document.querySelectorAll('[data-scen]').forEach((b) => b.addEventListener('click', () => {
+  document.querySelectorAll('[data-scen]').forEach((o) => o.setAttribute('aria-pressed', String(o === b)));
+  Object.assign(state, { key: b.dataset.scen, step: 'action', action: null, reason: null, tries: 3, playing: false });
+  render();
+}));
+document.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => {
+  const sc = SCEN[state.key];
+  const go = b.dataset.go;
+  state.step = go;
+  if (go === 'reason') { state.action ??= 0; state.reason = null; }
+  if (go === 'feedback') { state.action = sc.actions.findIndex((a) => a.score === 0); state.tries = 2; }
+  if (go === 'explained') { state.tries = 0; }
+  render();
+}));
+document.getElementById('opt-research').addEventListener('change', render);
+document.getElementById('opt-novoice').addEventListener('change', render);
+addEventListener('resize', fit);
+render();
+fit();
+</script>
+</body>
+</html>
