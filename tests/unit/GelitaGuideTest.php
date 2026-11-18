@@ -92,10 +92,12 @@ final class GelitaGuideTest extends CIUnitTestCase
                     continue;
                 }
 
-                // Every page explains why and says where to read on (owner, 17 Nov 2026)
+                // Every page explains why and cites its works (owner, 17 Nov 2026);
+                // repository documents are no longer shown (owner, 18 Nov 2026)
                 $this->assertNotEmpty($section['why'] ?? [], $section['id'] . ' gives its reasons');
                 $this->assertNotEmpty($section['sources'] ?? [], $section['id'] . ' names its sources');
-                $this->assertTrue(! empty($section['refs']) || ! empty($section['docs']), $section['id'] . ' gives references or documents');
+                $this->assertNotEmpty($section['refs'] ?? [], $section['id'] . ' gives references');
+                $this->assertArrayNotHasKey('docs', $section, $section['id'] . ' shows no repository documents');
             }
         }
 
@@ -124,6 +126,14 @@ final class GelitaGuideTest extends CIUnitTestCase
         }
 
         $this->assertSame([], array_diff(Guide::POPULAR, $ids));
+
+        foreach ($terms as $key => $term) {
+            // A popover holds no other popover term (it would open nothing)
+            $this->assertStringNotContainsString('[[', $term['def'] . $term['example'], $key);
+            if (isset($term['catalogue'])) {
+                $this->assertMatchesRegularExpression('~^(gambar(/[a-z0-9._-]+)?|musik|efek|narasi|tantangan/(puzzle|rumpang|boleh|cari|skenario)|kelompok/[a-z]+)$~', $term['catalogue'], $key);
+            }
+        }
         $this->assertDoesNotMatchRegularExpression('/(?<!\*)\*[^*\s][^*]*\*(?!\*)/u', $text, 'single-star italics do not render');
     }
 
@@ -158,6 +168,67 @@ final class GelitaGuideTest extends CIUnitTestCase
             $this->assertStringContainsString($author[1], $corpus, $ref);
             $this->assertStringContainsString($year[1], $corpus, $ref);
         }
+    }
+
+    public function testWrittenForReadersNotDevelopers(): void
+    {
+        // Owner, 18 Nov 2026: no repository documents or file names, no
+        // developer terms, no dates on the journey page, and every code the
+        // text keeps opens a popover
+        $text  = json_encode(array_map(static fn (array $s): array => array_diff_key($s, ['sources' => 0]), Guide::sectionsById(Guide::chapters())), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+            . json_encode(Guide::terms(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $plain = (string) preg_replace('/\[\[(?:[^\]|]+\|)?[a-z0-9-]+\]\]/u', '', $text);
+
+        $this->assertDoesNotMatchRegularExpression('~docs/|\.md\b|\.php\b|README|PROGRESS|repositori~iu', $text, 'no repository documents');
+        $this->assertDoesNotMatchRegularExpression('~CodeIgniter|bundler|\bcommit|\bmigrasi|\bbranch\b|cabang pendek|gelita:|PHPUnit|ES module|\bCDN\b|Bootstrap|user agent|\bdp\b|\brem\b|`~u', $text, 'no developer terms or code marks');
+
+        $journey = Guide::sectionsById(Guide::chapters())['perjalanan'];
+        $this->assertDoesNotMatchRegularExpression('/\b(19|20)\d\d\b|Oktober|November/u', json_encode($journey['table'], JSON_UNESCAPED_UNICODE), 'the journey shows no dates');
+
+        foreach (['teknologi', 'server-kebenaran', 'tanpa-bundler', 'peta-dokumen', 'dokumen-revisi'] as $gone) {
+            $this->assertArrayNotHasKey($gone, Guide::sectionsById(Guide::chapters()) + array_column(Guide::chapters(), null, 'id'), $gone);
+        }
+
+        // Every code in the text opens a popover where it first appears: a code
+        // may stand plain only on a page that already uses its term
+        $codes = '/(?<![\\p{L}\\d-])(D[123][ab]?|L[0-8]|P[1-5]|C[1-6]|SK[1-4]|KG\\d[ab]?|G[1-5]|B[1-4]|(?:INF|DIG|BUD|R|NON)-[A-Z]+)(?![\\p{L}\\d])/u';
+        $mark  = '/\\[\\[(?:[^\\]|]+\\|)?([a-z0-9-]+)\\]\\]/u';
+        $loose = [];
+        foreach (Guide::sectionsById(Guide::chapters()) as $id => $section) {
+            $body = (string) json_encode(array_diff_key($section, ['sources' => 0, 'refs' => 0, 'id' => 0, 'chapter' => 0]), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            preg_match_all($mark, $body, $used);
+            preg_match_all($codes, (string) preg_replace($mark, '', $body), $m);
+            foreach (array_unique($m[1]) as $code) {
+                if (! in_array(self::termForCode($code), $used[1], true)) {
+                    $loose[] = "{$id}: {$code}";
+                }
+            }
+        }
+        $this->assertNotSame('', $plain);
+        $this->assertSame([], $loose, 'codes without a popover on their page');
+
+        foreach (['d1', 'd2', 'd3', 'l3', 'pertemuan', 'gerbang', 'buklet', 'kegiatan-anak', 'aspek-sikap', 'bloom', 'inf-sum', 'kode-r'] as $key) {
+            $this->assertArrayHasKey($key, Guide::terms(), $key);
+        }
+    }
+
+    /** The glossary term that explains a code. */
+    private static function termForCode(string $code): string
+    {
+        $key = strtolower($code);
+
+        return match (true) {
+            str_starts_with($code, 'D')  => substr($key, 0, 2),
+            str_starts_with($code, 'L')  => $key,
+            str_starts_with($code, 'P')  => 'pertemuan',
+            str_starts_with($code, 'C')  => 'bloom',
+            str_starts_with($code, 'SK') => 'aspek-sikap',
+            str_starts_with($code, 'KG') => 'kegiatan-anak',
+            str_starts_with($code, 'G')  => 'gerbang',
+            str_starts_with($code, 'B')  => 'buklet',
+            isset(Guide::terms()[$key])  => $key,
+            default                      => 'kode-' . strtolower(strtok($code, '-')),
+        };
     }
 
     public function testNothingSecretOrPersonal(): void
@@ -196,7 +267,22 @@ final class GelitaGuideTest extends CIUnitTestCase
         $addie = $this->guest('admin/panduan-gelita/addie');
         $this->assertStringContainsString(lang('Admin.gguideWhy'), $addie);
         $this->assertStringContainsString(lang('Admin.gguideRefs'), $addie);
-        $this->assertStringContainsString(lang('Admin.gguideDocs'), $addie);
+        $this->assertStringNotContainsString('Dokumen di repositori', $addie);
+        // Breadcrumb: guide home › chapter (its card on the home page) › topic
+        $this->assertMatchesRegularExpression('~<nav class="gd-crumbs"[^>]*>.*href="' . preg_quote(base_url('admin/panduan-gelita'), '~') . '".*href="[^"]*#bab-model".*<span aria-current="page">ADDIE dan alasannya</span>~s', $addie);
+        $this->assertStringContainsString('id="bab-model"', $home);
+        // The title is a menu to the other guides and pages, with the lantern, no "GELITA" word mark
+        $this->assertMatchesRegularExpression('~<details class="gd-switch">.*class="gd-emblem.*<span class="gd-brand-title">Mengenal GELITA</span>~s', $addie);
+        $this->assertStringNotContainsString('class="sidebar-mark"', $addie);
+        foreach (['admin/panduan-staf', 'admin/panduan-validator', 'admin/login'] as $path) {
+            $this->assertStringContainsString('href="' . base_url($path) . '"', $addie, $path);
+        }
+        $this->assertStringContainsString('href="' . base_url('admin/panduan-gelita') . '" aria-current="page"', $addie);
+
+        // Rich popover: kind, picture when installed, and the catalogue
+        $five = $this->guest('admin/panduan-gelita/lima-tantangan');
+        $this->assertMatchesRegularExpression('~id="istilah-pop-isi-rumpang".*?class="term-pop-kind">Tantangan 2 &middot; D1<.*?<img class="term-pop-picture" src="[^"]*node-card-rumpang\.webp\?v=.*?href="' . preg_quote(Guide::CATALOGUE, '~') . '#tantangan/rumpang" target="_blank" rel="noopener"~s', $five);
+        $this->assertStringContainsString('<th scope="col">', $five);
         $this->assertStringContainsString('Branch, R. M. (2009)', $addie);
         $this->assertStringContainsString('id="istilah-pop-addie"', $addie);
         $this->assertStringNotContainsString(lang('Admin.gguideStale', ['']), $addie);

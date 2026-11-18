@@ -21,13 +21,36 @@ abstract class GuideContent
     /** URL path of the guide; a section page is BASE/{id}. */
     public const BASE = '';
 
+    /** The public asset catalogue: pictures, sound and music live there. */
+    public const CATALOGUE = 'https://katalog.gelita.id/';
+
     /**
      * Glossary: key => term, def, example, more (section id, or null for
-     * the glossary page `istilah`).
+     * the glossary page `istilah`). Optional, for a richer popover (owner,
+     * 18 November 2026): `kind` (a short label above the term, e.g. "Kode
+     * kesalahan"), `picture` (a committed picture under public/assets/ui/
+     * as `ui/name.webp`, or a media slot key such as `bg.reflection`; shown
+     * only when the file is there) and `catalogue` (a fragment of the asset
+     * catalogue, e.g. `tantangan/rumpang` or `gambar/bg.reflection`, linked
+     * as "Lihat di Katalog Aset").
      *
-     * @return array<string, array{term: string, def: string, example: string, more: string|null}>
+     * @return array<string, array{term: string, def: string, example: string, more: string|null, kind?: string, picture?: string, catalogue?: string}>
      */
     abstract public static function terms(): array;
+
+    /**
+     * Address of a term's picture, or null when it is not installed here:
+     * `ui/…` is a committed picture (versioned URL), anything else a media
+     * slot key.
+     */
+    public static function pictureSrc(string $picture): ?string
+    {
+        if (str_starts_with($picture, 'ui/')) {
+            return is_file(FCPATH . 'assets/' . $picture) ? asset_url_versioned($picture) : null;
+        }
+
+        return media_key_src($picture);
+    }
 
     /** @return list<array<string, mixed>> */
     abstract public static function chapters(): array;
@@ -55,7 +78,7 @@ abstract class GuideContent
             $html,
         );
 
-        return (string) preg_replace_callback(
+        $html = (string) preg_replace_callback(
             '/\[\[(?:([^\]|]+)\|)?([a-z0-9-]+)\]\]/u',
             static function (array $m): string {
                 $terms = static::terms();
@@ -67,6 +90,17 @@ abstract class GuideContent
 
                 return '<button type="button" class="term" popovertarget="istilah-pop-' . $m[2] . '">' . $shown . '</button>';
             },
+            $html,
+        );
+
+        // Keep a bracket or a punctuation mark on the term's line (a lone "("
+        // at a line end): both go in a span that does not wrap, while the
+        // term's own words still may (.term-glue in admin.css)
+        return (string) preg_replace_callback(
+            '/(\()?(<button type="button" class="term"[^>]*>.*?<\/button>)([).,;:])?/u',
+            static fn (array $m): string => ($m[1] ?? '') === '' && ($m[3] ?? '') === ''
+                ? $m[2]
+                : '<span class="term-glue">' . $m[1] . $m[2] . ($m[3] ?? '') . '</span>',
             $html,
         );
     }
