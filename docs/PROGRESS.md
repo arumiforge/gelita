@@ -212,4 +212,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pw/laughing-clarke-6js8r6` | Admin page *Cek server* (`/admin/cek-server`): hardware, PHP (64-bit), extensions, php.ini, application settings, database, folders and disk, post-pull steps | Built and tested (`ServerCheckTest`, related test files, full suite, MariaDB dev install as admin at 1366 px and 390 px). Not checked: a Windows server (the WMI/PowerShell memory read, `extension_dir` on real paths). PR pending |
+| `pw/laughing-clarke-6js8r6` | Admin page *Cek server* (`/admin/cek-server`): hardware, PHP (64-bit), extensions, php.ini, application settings, database, folders and disk, post-pull steps | Built and tested (`ServerCheckTest`, related test files, full suite, MariaDB dev install as admin at 1366 px and 390 px). Not checked: a Windows server (the WMI/PowerShell memory read, `extension_dir` on real paths). PR #419 |
