@@ -6,6 +6,22 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 18 November 2026
 
+**Gambar PR 420 dipasang; pelat umum menunggu HUD seragam** (cabang `pw/vigilant-cray-j6l324`, dokumen [40](40_PROMPT_GAMBAR_ANTARMUKA.md) dan [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md)) · `asal: pengembang` · `disetujui pengembang` · gambar dan dua penanda gembok; naskah, bank soal, dan status dokumen 40 tidak berubah
+
+Pengembang meminta gambar baru PR 420 diperiksa dan dipasang. Diperiksa terhadap prompt dokumen 40 dan 37, lalu:
+1. **Dipasang:** sepuluh cincin avatar (`U-24` sampai `U-33`, avatar 7 kini carica), Lentera Kedu dan tiga lentera Kenali (`U-14` sampai `U-17`), pin peta dan lencana wilayah (`U-18` sampai `U-23`), penanda status, bintang, panah kotak pilihan, pelat judul peta wilayah, dan isi bilah Serpihan Cahaya (`U-06`, `U-08` sampai `U-13`), ikon aplikasi dan favicon dari induknya (`U-34`, `U-35`), latar halaman awal (`S-W`), dan latar cerita `W-K4` (bundengan tegak bertongkat, penari bertopeng). Penanda terkunci kini menggambar gemboknya sendiri, jadi ikon gembok di atasnya dihapus.
+2. **`M-K2` dipasang sebagai gambar sementara** atas keputusan pengembang, walaupun pemeriksaan menemukan hanya dua panel relief dari foto acuan yang masing-masing diulang dua kali (A-B-A-B), padahal setiap panel Borobudur berbeda. Validator budaya menilainya nanti.
+3. **Pelat `U-01` sampai `U-03`, bingkai `U-04`, dan bilah `U-05` belum dipasang:** pemasangannya menata ulang tombol, papan, jendela, dan bilah di sekitar 25 tampilan, jadi dikerjakan bersama HUD seragam (41 §6 langkah C). `U-07` masih `blocked`.
+
+**Tampilan baru Skenario Digital dan HUD seragam** (cabang `pw/vigilant-cray-j6l324`, dokumen [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md)) · `asal: pengembang` · `disetujui pengembang` · diskusi mockup dan wawancara dua putaran; rencana saja, belum ada kode; aturan penelitian Skenario Digital (32 §5.2, §6) tidak berubah
+
+Pengembang memutuskan (rincian di 41 §1):
+1. **Layar Skenario Digital:** dua panel tanpa bingkai, latar tambahan, dan garis tepi (latar utama wilayah tetap, tanpa hiasan batik); gambar situasi utuh 3 : 2; pita instruksi dihapus dan teks instruksi menjadi baris di bawah pertanyaan dengan ▶ (narasi instruksi tetap hanya lewat ▶, K10); baris ⓘ dan judul kecil "TENTUKAN PILIHANMU" tidak dipakai; tombol utama di dalam panel kanan; pemutar *Dengarkan cerita* dengan gelombang yang bergerak hanya selama dibacakan.
+2. **Kepala layar:** satu baris di kelima tantangan; subjudul tetap judul varian (sudah memuat nama wilayah), nama wilayah di tengah atas dihapus; tombol menu disembunyikan di kelima tantangan; ✗ disembunyikan hanya di Skenario Digital; kapsul rapi tanpa jam di mode penelitian.
+3. **HUD seragam di semua layar:** tombol bundar satu ukuran, di baris kanan atas dengan urutan yang sama, logo berukuran dan berletak sama; tinggi pita boleh berbeda. Suara di semua layar, menu kecuali di tantangan, bahasa seperti sekarang, Kembali/Keluar selalu paling kanan.
+4. **Gambar:** pelat khusus Skenario Digital (`SD-01` sampai `SD-09`) dipesan pada ukuran tampilnya, bukan pelat umum `U-01`/`U-02`; dipesan sesudah mockup disetujui.
+5. **Urutan:** mockup HTML empat keadaan diperiksa pengembang lebih dulu, lalu pesanan gambar, HUD seragam, dan tampilan baru (41 §6).
+
 **Gambar dokumen 40 yang sudah diperiksa peneliti dipasang** (cabang `pw/laughing-clarke-6js8r6`, dokumen [40](40_PROMPT_GAMBAR_ANTARMUKA.md)) · `asal: peneliti` · `disetujui peneliti` · gambar saja; naskah cerita, keterangan lain, dan status dokumen 40 tidak berubah
 
 Pengembang meneruskan: peneliti sudah memeriksa gambar baru dokumen 40 (PR #418), dan semuanya diterima.

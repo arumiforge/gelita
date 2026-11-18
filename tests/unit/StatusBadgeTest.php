@@ -75,7 +75,7 @@ final class StatusBadgeTest extends CIUnitTestCase
         $this->assertNull(status_badge_src(['status' => 'unknown']));
     }
 
-    public function testLanternShowsThreeStatesWithALockOnTheLockedMedallion(): void
+    public function testLanternShowsThreeStatesWithTheirMedallions(): void
     {
         $html = $this->lantern();
         $dots = substr($html, (int) strpos($html, '<ol class="shard-dots">'));
@@ -85,7 +85,7 @@ final class StatusBadgeTest extends CIUnitTestCase
         $this->assertStringContainsString('<span class="shard is-completed has-badge" aria-hidden="true"><img src="' . esc(asset_url_versioned('ui/status-done.webp'), 'attr'), $dots);
         $this->assertStringContainsString('<span class="shard is-open has-badge" aria-hidden="true"><img src="' . esc(asset_url_versioned('ui/status-progress.webp'), 'attr'), $dots);
         $this->assertStringContainsString('<span class="shard is-locked has-badge" aria-hidden="true"><img src="' . esc(asset_url_versioned('ui/status-open.webp'), 'attr'), $dots);
-        $this->assertSame(2, substr_count($dots, 'shard-lock'), 'only the locked medallions carry a lock');
+        $this->assertStringNotContainsString('shard-lock', $dots, 'the locked medallion draws its own padlock (U-11, document 40)');
         $this->assertStringContainsString('2. Isi Rumpang: ' . lang('Game.shardOpen'), $dots);
 
         $legend = substr($html, (int) strpos($html, 'lantern-legend'));
@@ -114,7 +114,8 @@ final class StatusBadgeTest extends CIUnitTestCase
         $this->assertStringContainsString("<?= \$medal(\$node, 'pin-badge') ?>", $level, 'the pin');
         $this->assertStringContainsString("<?= \$medal(\$node, 'node-badge') ?>", $level, 'the challenge list number');
         // Owner, 21 October 2026: no number on the open medallion
-        $this->assertStringContainsString(". (\$n['status'] === 'locked' ? icon('lock', 'badge-lock') : '');", $level);
+        // Document 40, U-11: the locked medallion draws its padlock, so no lock icon on top
+        $this->assertStringNotContainsString("icon('lock', 'badge-lock')", $level);
         $this->assertStringNotContainsString("'open'   => '<b class=\"num\">'", $level);
         $this->assertStringNotContainsString('started', $level);
 

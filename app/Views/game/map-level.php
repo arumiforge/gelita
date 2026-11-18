@@ -52,8 +52,8 @@ $medal = static function (array $n, string $class) use ($icons): string {
         return $n['status'] === 'open' ? '<b class="num">' . esc($n['sequence']) . '</b>' : icon($icons[$n['status']]);
     }
 
-    return '<img class="' . $class . '" src="' . esc($badge, 'attr') . '" alt="" decoding="async" draggable="false">'
-        . ($n['status'] === 'locked' ? icon('lock', 'badge-lock') : '');
+    // The locked medallion draws its own padlock (U-11, document 40): no icon on top
+    return '<img class="' . $class . '" src="' . esc($badge, 'attr') . '" alt="" decoding="async" draggable="false">';
 };
 $href   = static fn (array $n): string => base_url((node_done($n) ? 'hasil/' : 'misi/') . $level->code . '/' . $n['sequence']);
 $done   = (int) $levelSummary['completed_nodes'];

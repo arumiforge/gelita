@@ -334,7 +334,7 @@ final class LibraryLockTest extends CIUnitTestCase
         // Owner, 21 October 2026: no number on the open medallion, here or on the pins
         $this->assertStringContainsString('<span class="node-no has-badge" aria-hidden="true"><img class="node-badge" src="' . $progress . '" alt="" decoding="async" draggable="false"></span>', $list);
         $this->assertStringNotContainsString('class="num"', $page);
-        $this->assertSame(2, substr_count($list, icon('lock', 'badge-lock')), 'locked cards carry a lock on the navy medallion');
+        $this->assertSame(2, substr_count($list, 'src="' . esc(asset_url_versioned('ui/status-open.webp'), 'attr') . '"'), 'locked cards wear the medallion with its own padlock (U-11, document 40)');
         $this->assertSame(4, substr_count($page, 'class="pin-badge"'), 'every pin wears its medallion');
 
         foreach (['puzzle', 'rumpang', 'boleh', 'cari'] as $engine) {
