@@ -212,4 +212,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pw/laughing-clarke-6js8r6` | Fix: raw-data CSV (*Unduh CSV* on `/admin/data/*` and student research tabs) answered 500 | Fixed and tested (regression test, related test files, full suite, dev install as `ketua`); production not checked. PR pending |
+| `pw/laughing-clarke-6js8r6` | Fix: raw-data CSV (*Unduh CSV* on `/admin/data/*` and student research tabs) answered 500 | Fixed and tested (regression test, related test files, full suite, dev install as `ketua`); production not checked. PR #416 |
