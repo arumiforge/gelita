@@ -1,0 +1,63 @@
+{
+    "tmg-5-b01": {
+        "region": "temanggung",
+        "situation": "Kamu ingin ikut lomba menggambar daring. Formulirnya meminta nama, kelas, nomor HP orang tua, dan alamat rumah lengkap. Di halaman itu tidak ada nama penyelenggara.",
+        "actions": [
+            {
+                "text": "Isi semua data supaya bisa langsung ikut lomba",
+                "score": 0,
+                "feedback": "Nomor HP orang tua dan alamat rumah adalah data pribadi. Jangan diberikan ke penyelenggara yang tidak jelas."
+            },
+            {
+                "text": "Berhenti mengisi dan tanya orang tua dulu",
+                "score": 2,
+                "feedback": "Pilihan yang aman. Orang tua bisa mencari tahu siapa penyelenggaranya."
+            },
+            {
+                "text": "Berhenti mengisi, lalu cari lomba yang lain",
+                "score": 1,
+                "feedback": "Datamu aman. Akan lebih baik kalau orang tua juga tahu."
+            }
+        ],
+        "reasons": [
+            "Data pribadi bisa dipakai orang asing",
+            "Pokoknya tidak boleh mengisi formulir apa pun",
+            "Aku memang tidak terlalu suka menggambar"
+        ],
+        "explanation": "Penyelenggara lomba ini tidak jelas, padahal ia meminta nomor HP orang tua dan alamat rumah. Dengan berhenti dan bertanya ke orang tua, datamu aman dan orang tua bisa mencari tahu siapa penyelenggaranya."
+    },
+    "wnb-5-a04": {
+        "region": "wonosobo",
+        "situation": "Di grup kelas beredar pesan dengan foto jalan rusak: \"Jalan ke Telaga Warna putus karena longsor hari ini! Sebarkan!\" Temanmu, Fikri, membalas: \"Sudah kusebar ke grup keluarga.\" Lalu kamu melihat foto yang sama di sebuah berita lama dari daerah lain.",
+        "actions": [
+            {
+                "text": "Ikut menyebarkan ke grup lain supaya orang berhati-hati",
+                "score": 0,
+                "feedback": "Fotonya ternyata foto lama dari tempat lain. Menyebarkannya membuat lebih banyak orang salah paham."
+            },
+            {
+                "text": "Balas di grup: \"Fikri bodoh, itu hoaks!\"",
+                "score": 0,
+                "feedback": "Kamu benar soal fotonya, tapi kata-kata kasar membuat Fikri malu dan teman lain enggan mendengar."
+            },
+            {
+                "text": "Beri tahu Fikri dengan sopan bahwa itu foto lama",
+                "score": 2,
+                "feedback": "Tepat. Kabar bohong bisa berhenti, dan Fikri tetap dihargai. Ajak juga mengecek akun resmi pengelola."
+            },
+            {
+                "text": "Tidak menyebarkan dan tidak menanggapi apa pun",
+                "score": 1,
+                "feedback": "Kamu tidak ikut menyebarkan, bagus. Memberi tahu dengan sopan bisa menghentikan kabar bohong itu."
+            }
+        ],
+        "reasons": [
+            "Foto lama bisa membuat orang salah paham",
+            "Kalau ditegur dengan sopan, Fikri tidak malu",
+            "Guru bilang tidak boleh menyebarkan berita",
+            "Semua orang di grup sudah percaya kabar itu",
+            "Aku belum pernah pergi ke Telaga Warna"
+        ],
+        "explanation": "Foto yang sama ada di berita lama dari daerah lain, jadi kabar itu belum tentu benar. Dengan memberi tahu Fikri dengan sopan, kabar itu bisa berhenti tanpa membuat Fikri malu."
+    }
+}

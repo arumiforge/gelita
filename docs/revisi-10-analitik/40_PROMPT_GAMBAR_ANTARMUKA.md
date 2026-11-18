@@ -230,6 +230,8 @@ Edit the attached shard counter frame; do not draw a new one. Keep EXACTLY the s
 The groove stays empty and dark; the crystal socket stays empty (the game draws the glowing crystal). No text. Transparent outside the frame. WebP, named hud-shards-frame.webp.
 ```
 
+*Catatan pengembang 18 November 2026:* kalimat "the game draws the glowing crystal" di prompt ini keliru. Kristal selama ini digambar di dalam bingkai lama; permainan hanya menaruh cahaya di atasnya (`.lantern-gem` di `stage.css`, makin terang per wilayah tuntas). Hasil `U-07` (PR #420, ukiran baru, lubang kristal kosong) karena itu **ditahan**: dipasang sendirian, penghitung Serpihan Cahaya menampilkan lubang biru tua kosong. Pengembang memutuskan memesan **kristal tersendiri** di sesi lain: satu gambar transparan, kristal serpihan cahaya emas yang sama dengan `U-10`, mengisi lubang bingkai (di bingkai 1400 × 288: kira-kira x 98, y 45, 101 × 164 piksel, yaitu `left: 7%`, `top: 15.8%`, `width: 7.2%`, `height: 57%` dari `.lantern-gem`), kanvas sekitar 300 × 480, tanpa cahaya yang dilukis (cahayanya tetap dari permainan). Sesudah itu `U-07` dan kristal dipasang bersama: bingkai baru menggantikan `public/assets/ui/hud-shards-frame.webp`, kristal menjadi lapisan di bawah `.lantern-gem`.
+
 ### U-08 · Isi bilah Serpihan Cahaya
 
 | | |

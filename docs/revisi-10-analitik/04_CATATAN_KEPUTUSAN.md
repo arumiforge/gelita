@@ -6,6 +6,12 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 18 November 2026
 
+**`U-07` ditahan; kristal Serpihan Cahaya dipesan di sesi lain** (cabang `pw/vigilant-cray-j6l324`, dokumen [40](40_PROMPT_GAMBAR_ANTARMUKA.md) → `U-07`) · `asal: pengembang` · `disetujui pengembang` · catatan saja; belum ada gambar atau kode yang berubah
+
+1. Bingkai baru `U-07` (PR #420) sesuai prompt, tetapi prompt itu keliru menyebut permainan menggambar kristal; kristal ada di dalam gambar bingkai lama dan permainan hanya menambah cahaya. Bingkai baru tidak dipasang sendirian.
+2. Kristal tersendiri dipesan di sesi berikutnya (ukuran dan letaknya di catatan 40 → `U-07`), lalu bingkai dan kristal dipasang bersama.
+3. Pekerjaan sesudah sesi ini dilanjutkan sesi baru di akun lain: urutannya di `docs/PROGRESS.md` (butir Skenario Digital dan HUD seragam).
+
 **Gambar PR 420 dipasang; pelat umum menunggu HUD seragam** (cabang `pw/vigilant-cray-j6l324`, dokumen [40](40_PROMPT_GAMBAR_ANTARMUKA.md) dan [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md)) · `asal: pengembang` · `disetujui pengembang` · gambar dan dua penanda gembok; naskah, bank soal, dan status dokumen 40 tidak berubah
 
 Pengembang meminta gambar baru PR 420 diperiksa dan dipasang. Diperiksa terhadap prompt dokumen 40 dan 37, lalu:
