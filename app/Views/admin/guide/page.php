@@ -13,7 +13,10 @@
  * @var array<string, mixed>|null $next
  * @var list<string>              $terms    term keys used on this page
  * @var list<array{0: string, 1: string}> $facts live facts of this install (validator guide; guide markup allowed in the value)
- * @var list<string>              $stale    changed sources, shown to signed-in staff only (validator guide)
+ * @var list<string>              $stale    changed sources, shown to signed-in staff only (validator and GELITA guides)
+ *
+ * GELITA guide parts (after the note): `why` (the reasons, "Mengapa begini"),
+ * `refs` (works cited) and `docs` (repository documents to open).
  * @var string                    $query
  * @var bool                      $isStaff
  */
@@ -52,7 +55,7 @@ foreach ($chapters as $chapter) {
   <?php endif ?>
 
   <?php if ($stale !== []): ?>
-    <div class="gd-callout is-warn" role="note"><?= icon('warn') ?><p><?= esc(lang('Admin.vguideStale', [implode(', ', $stale)])) ?></p></div>
+    <div class="gd-callout is-warn" role="note"><?= icon('warn') ?><p><?= esc(lang($site['staleKey'] ?? 'Admin.vguideStale', [implode(', ', $stale)])) ?></p></div>
   <?php endif ?>
 
   <?php if ($facts !== []): ?>
@@ -105,6 +108,39 @@ foreach ($chapters as $chapter) {
 
   <?php if (! empty($section['note'])): ?>
     <div class="gd-callout is-info" role="note"><?= icon('info') ?><p><?= $inline($section['note']) ?></p></div>
+  <?php endif ?>
+
+  <?php if (! empty($section['why'])): ?>
+    <section class="gd-why" aria-labelledby="gd-why-title">
+      <h2 class="gd-h3" id="gd-why-title"><?= icon('info') ?> <?= esc(lang('Admin.gguideWhy')) ?></h2>
+      <ul class="gd-list">
+        <?php foreach ($section['why'] as $item): ?>
+          <li><?= $inline($item) ?></li>
+        <?php endforeach ?>
+      </ul>
+    </section>
+  <?php endif ?>
+
+  <?php if (! empty($section['refs'])): ?>
+    <section class="gd-refs" aria-labelledby="gd-refs-title">
+      <h2 class="gd-h3" id="gd-refs-title"><?= esc(lang('Admin.gguideRefs')) ?></h2>
+      <ul class="gd-ref-list">
+        <?php foreach ($section['refs'] as $item): ?>
+          <li><?= $inline($item) ?></li>
+        <?php endforeach ?>
+      </ul>
+    </section>
+  <?php endif ?>
+
+  <?php if (! empty($section['docs'])): ?>
+    <section class="gd-refs" aria-labelledby="gd-docs-title">
+      <h2 class="gd-h3" id="gd-docs-title"><?= esc(lang('Admin.gguideDocs')) ?></h2>
+      <ul class="gd-ref-list">
+        <?php foreach ($section['docs'] as $item): ?>
+          <li><?= $inline($item) ?></li>
+        <?php endforeach ?>
+      </ul>
+    </section>
   <?php endif ?>
 
   <?php if (! empty($section['glossary'])): ?>

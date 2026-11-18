@@ -1015,9 +1015,22 @@ return [
     'vguidePickPanel'    => 'Baca untuk panel:',
     'vguideYourPanel'    => 'Panel Anda',
     'vguideFactsCaption' => 'Keadaan instalasi ini (dibaca saat halaman dibuka)',
-    'vguideStale'        => 'Untuk tim: sumber bagian ini berubah sejak panduan terakhir diperiksa ({0}). Periksa teksnya, lalu tandai dengan php spark gelita:panduan:cek --tandai.',
+    'vguideStale'        => 'Untuk tim: sumber bagian ini berubah sejak panduan terakhir diperiksa ({0}). Periksa teksnya, lalu tandai dengan php spark gelita:panduan:cek --panduan=validator --tandai.',
     'vguideCardTitle'    => 'Panduan validator',
     'vguideCardText'     => 'Untuk validator ahli materi, pengamat budaya, dan ahli media: bahan, akun uji, dan pengembalian hasil. Dapat dibaca tanpa masuk.',
     'vguideCardOpen'     => 'Buka panduan validator',
+
+    // ---- GELITA guide (17 November 2026): /admin/panduan-gelita, public and in full detail ----
+    'gguideTitle'     => 'Mengenal GELITA',
+    'gguideHomeTitle' => 'Mengenal GELITA dari awal sampai akhir',
+    'gguideLead'      => 'Seluruh proyek dan penelitian GELITA dalam satu panduan: masalah yang dijawab, model penelitian, apa yang diukur, desain permainan, revisi penelitian, lapangan dan data, serta teknologinya. Setiap halaman menjelaskan mengapa keputusannya diambil, dengan rujukan dan dokumen yang dapat dibuka.',
+    'gguideElsewhere' => 'Gambar, suara, dan musik ada di [Katalog Aset GELITA]({0}). Langkah kerja di panel ada di [Panduan staf](/admin/panduan-staf), dan bahan validator di [Panduan validator](/admin/panduan-validator).',
+    'gguideStale'     => 'Untuk tim: sumber bagian ini berubah sejak panduan terakhir diperiksa ({0}). Periksa teksnya, lalu tandai dengan php spark gelita:panduan:cek --panduan=gelita --tandai.',
+    'gguideWhy'       => 'Mengapa begini',
+    'gguideRefs'      => 'Rujukan',
+    'gguideDocs'      => 'Dokumen di repositori',
+    'gguideCardTitle' => 'Mengenal GELITA lebih dalam',
+    'gguideCardText'  => 'Cerita lengkap GELITA dari awal sampai akhir: penelitian, desain permainan, dan teknologinya, dengan alasan setiap keputusan dan rujukannya. Dapat dibaca tanpa masuk.',
+    'gguideCardOpen'  => 'Buka panduan',
     'menuValidatorGuide' => 'Panduan validator',
 ];

@@ -43,8 +43,8 @@ final class ValidatorGuideTest extends CIUnitTestCase
 
         $this->assertSame([], $problems, "The research documents behind these validator-guide pages changed:\n"
             . implode("\n", array_map(static fn (string $ref, string $state): string => "  {$state}: {$ref}", array_keys($problems), $problems))
-            . "\nCheck the pages listed by `php spark gelita:panduan:cek` against the changed sections, update "
-            . "app/Libraries/ValidatorGuideContent.php where needed, then run `php spark gelita:panduan:cek --tandai` and commit the lock file.");
+            . "\nCheck the pages listed by `php spark gelita:panduan:cek --panduan=validator` against the changed sections, update "
+            . "app/Libraries/ValidatorGuideContent.php where needed, then run `php spark gelita:panduan:cek --panduan=validator --tandai` and commit the lock file.");
 
         $this->assertSame([], array_diff(array_keys($check->locked()), Guide::sources()), 'no stale lock entries');
     }

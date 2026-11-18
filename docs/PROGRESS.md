@@ -205,4 +205,5 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `panduan-gelita-lengkap` | Worker A of session `session_016C1gho5krrWQpFMZhJqH24`: public guide *Mengenal GELITA* `/admin/panduan-gelita` (whole project and research, the reasons and references per page), third card on the login page, source lock `GuideSources/gelita.json` in `gelita:panduan:cek` | Built and tested: full suite green (1368 tests); login page and guide pages checked on a MariaDB dev install at 1280 × 800 and 390 × 844 (no sideways scroll). PR #409. Open: [ ] PR reviewed and merged; [ ] owner reads the guide once |
 | `katalog-aset-halaman` | Worker B of the 17 November 2026 coordinator session: public Katalog Aset page in `gelita-katalog/` linking to gelita.id, command `gelita:katalog:halaman` | PR #408 (merge with *Squash and merge*, after or with `panduan-gelita-lengkap`). Verified: CatalogSiteTest, full suite, Chromium desktop and phone with files loaded from gelita.id, `--cek-tautan` 757 of 762. Not verified: the katalog.gelita.id server, nginx, Cloudflare |
