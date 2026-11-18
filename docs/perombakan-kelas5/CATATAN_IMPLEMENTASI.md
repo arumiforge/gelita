@@ -1130,3 +1130,13 @@ The owner asked for new pictures for a long list of catalogue entries (the resul
 
 **Not done:** no picture is made yet; nothing is installed; the PDFs of `00`, `04` and `40` are not rebuilt (no handover to the researcher).
 
+
+## Raw-data CSV answered 500 (18 November 2026, branch `pw/laughing-clarke-6js8r6`)
+
+Owner report: *Data mentah* in the panel gives a 500 error while research mode is off. Reproduced on the MariaDB dev install as `ketua`, with and without 12 `gelita:simulasi` students: every tab of `/admin/data/*` (including the `turunan_*` tabs) opens, but the **Unduh CSV** button (`?format=csv`) answers 500 on every tab, and so does the CSV of a student page's research tabs (`/admin/peserta/{id}?tab=jawaban&format=csv`). Research mode makes no difference; it fails with `field_mode` on as well. The log line: `LogicException: RawDataService belum diikat ke cakupan staf (withScope())`.
+
+- **Cause.** `BaseAdminController::rawService()` and `rawCsv()` treated `Services::has('rawdataservice')` as "a test injected a mock". But `has()` is true for any shared instance, and `StaffScope::rawData()` creates one (unscoped) the first time it calls `service('rawDataService', $scope)`. In the CSV request, `show()` calls `rawService()` first, so `rawCsv()` then took the unscoped shared instance and `streamCsv()` refused it. The tests hid it: each feature call reset the singleton first (`Services::resetSingle('rawDataService')`, with the comment "a shared instance would skip the staff scope"), and no test downloaded a raw-data CSV through the controller.
+- **Fix.** `rawService()` always returns `rawData()` (the scoped copy; an injected mock still comes through the service factory), and `rawCsv()` always uses `rawCsvDownload()`, which also writes the `export_csv` audit row the other branch skipped. The unused "service not on this branch yet" fallback is gone.
+- **Test.** `ResearcherPanelTest::testRawDataCsvWorksAfterThePageCreatedTheSharedService` creates the shared instance, then downloads the CSV of two raw-data tabs and of a student tab: status 200, `text/csv`, the participant code present and no identity. It fails with the production exception on the old code.
+- **Checked.** The test files that touch raw data (`ResearcherPanelTest`, `ParticipantPanelTest`, `AdminTableViewTest`, `EventOrderingTest`, `StudyThresholdsTest`, `RawExportTest`); the full suite before push; on the dev install all 16 tabs and four CSV downloads as `ketua`, `admin` gets 404 as intended.
+- **Not checked.** The production server itself (its log was not read, so it is assumed the owner's 500 is this CSV); CSV downloads with very large data.
