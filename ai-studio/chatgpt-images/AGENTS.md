@@ -10,7 +10,7 @@ You are generating pictures for GELITA, an educational game for grade 5 students
 
 ## Start of every session
 
-The owner starts most sessions with a ready-made prompt from `prompts/` (see `prompts/README.md`); it names the rows and the order.
+The owner starts most sessions with a ready-made prompt from `prompts/` (see `prompts/README.md`); it names the rows and the order. As Codex with access to this repository you load each row's Attach files from the repository yourself, so the five-file limit of the ChatGPT app does not bind you (`prompts/codex-all.md`), but you still use only the files the row names.
 
 1. Read `TASKS.md`. It is the single list of what exists to do and what is done.
 2. Work on the rows the owner names. If the owner names none, take rows with status `redo: …` first, then `todo`, from the top.
