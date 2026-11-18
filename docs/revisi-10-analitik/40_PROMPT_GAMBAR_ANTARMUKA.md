@@ -687,7 +687,910 @@ No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, 
 
 ## Pustaka
 
-PUSTAKA_PLACEHOLDER
+Tiga puluh dua gambar Pustaka yang masih bergaya lukisan (lembar telaah 14 dan 15) dibuat ulang dalam gaya 3D game, termasuk dua gambar bertanda `redo later` (284: Borobudur tergambar dua kali; 290: anak menyentuh stupa) dan tiga sampul video. Gambar yang sudah berupa foto asli dari peneliti, lambang kabupaten, Tips Jaka, dan gambar yang sudah dibetulkan dengan foto (`R-12` sampai `R-16`) tidak termasuk; 300 (Prasasti Canggal) sudah 3D.
+
+- **Orang:** tidak ada anak berlurik yang muncul berulang; tempat atau bendanya yang menjadi pokok. Orang hanya ada bila topiknya membutuhkan (pemugaran, Waisak, Topeng Ireng, petani, festival), dilihat dari samping atau belakang.
+- **Tembakau:** hanya daun hijau di ladang atau di nampan (309, 310); 311 diganti kebun kopi dengan keterangan baru. Tanpa rokok, asap, atau orang merokok.
+- **Keterangan:** gambar mengikuti keterangan yang tampil di bawahnya. Empat gambar mendapat keterangan baru (`PK-18`, `PK-20`, `PK-21`, `PK-29`); tiga yang terakhir sebelumnya tidak punya keterangan.
+- **Foto acuan:** empat tempat belum punya foto di repositori (`PK-01` Gunung Andong, `PK-09` Gunung Tidar, `PK-19` Umbul Jumprit, `PK-20` Parakan); barisnya `blocked: needs reference photo` sampai pengembang menaruh fotonya di `ai-studio/chatgpt-images/inbox/`. Gambar lama dilampirkan hanya untuk isinya, bukan gayanya.
+- **Kanvas:** 960 × 640 (3 : 2) seperti gambar Pustaka sekarang; sampul video 1280 × 720.
+
+### PK-01 · Pemandangan dari Gunung Andong, Magelang (no. 282)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.magelang.p1.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/game-images/assets/pustaka/library.magelang.p1.1.webp` (gambar lama: hanya isi, bukan gayanya); **foto acuan belum ada** |
+| Keterangan | "Pemandangan dari Gunung Andong, Magelang" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.magelang.p1.1  (PK-01 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Pemandangan dari Gunung Andong, Magelang".
+
+SUBJECT AND COMPOSITION
+The view from the grassy summit ridge of Mount Andong, a small mountain in Magelang: a narrow green ridge path in the foreground, and beyond it a sea of morning mist over the valley with the big volcanoes Merbabu and Merapi rising behind. One small wooden shelter on the ridge.
+People — No people.
+Accuracy — Follow the attached photo of Mount Andong for the ridge and the view. No temple.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.magelang.p1.1.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-02 · Teras atas Candi Borobudur dengan stupa-stupanya (no. 284)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.magelang.p2.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Borobudur-aerial-plain-volcano-01.jpg` (Borobudur from the air: layout of the terraces), `ai-studio/chatgpt-images/inbox/reference-Borobudur-Kemenag-15.jpg` (gallery stupas and stone), `ai-studio/game-images/assets/pustaka/library.magelang.p2.1.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Teras atas Candi Borobudur dengan stupa-stupanya" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.magelang.p2.1  (PK-02 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Teras atas Candi Borobudur dengan stupa-stupanya".
+
+SUBJECT AND COMPOSITION
+The upper part of Borobudur seen from the top of the square galleries: the three round terraces rise ahead in rings, each ring lined with bell-shaped perforated stupas, and the big closed main stupa crowns the top. Grey volcanic stone, early morning light, green hills and a far volcano behind.
+People — No people.
+Accuracy — Borobudur appears ONCE: only this upper part, never a second whole temple in the background. Lower two round terraces: stupas with diamond-shaped openings; top round terrace: stupas with square openings; the main stupa is closed with no openings.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.magelang.p2.1.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-03 · Stupa-stupa berlubang dan stupa induk di teras atas (no. 285)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.magelang.p2.2.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Borobudur-aerial-plain-volcano-01.jpg` (layout of the round terraces), `ai-studio/chatgpt-images/inbox/reference-Borobudur-Kemenag-15.jpg` (stone and carving), `ai-studio/game-images/assets/pustaka/library.magelang.p2.2.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Stupa-stupa berlubang dan stupa induk di teras atas" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.magelang.p2.2  (PK-03 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Stupa-stupa berlubang dan stupa induk di teras atas".
+
+SUBJECT AND COMPOSITION
+A close, low view along one round terrace of Borobudur: a curving row of perforated bell-shaped stupas leads the eye up to the big closed main stupa at the summit. Through the diamond-shaped openings of the nearest stupa a seated stone Buddha statue can just be seen. Soft late-morning light, clear sky.
+People — No people.
+Accuracy — Openings: diamond-shaped on the lower round terraces, square on the top one; the main stupa is closed. One Borobudur only.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.magelang.p2.2.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-04 · Video UNESCO/NHK: Kompleks Candi Borobudur (no. 287)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.magelang.p2.3.poster.webp` |
+| Kanvas | 1280 × 720 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Borobudur-aerial-plain-volcano-01.jpg` (Borobudur, the plain and a volcano), `ai-studio/chatgpt-images/inbox/reference-Borobudur-Kemenag-16.jpg` (relief stone), `ai-studio/game-images/assets/pustaka/library.magelang.p2.3.poster.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Video UNESCO/NHK: Kompleks Candi Borobudur" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.magelang.p2.3.poster  (PK-04 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Video UNESCO/NHK: Kompleks Candi Borobudur".
+
+SUBJECT AND COMPOSITION
+Cover picture for a documentary video: the whole of Borobudur on its low hill above green trees at sunrise, seen from a little above, with the volcanoes Merapi and Merbabu soft in the mist behind. Wide, calm, majestic.
+People — No people.
+Accuracy — One Borobudur: square galleries below, three round terraces and the main stupa on top. No play button, no title.
+
+DELIVERY
+Target canvas 1280 × 720 pixels; aspect 16:9. Opaque, full-bleed. Deliver WebP, named library.magelang.p2.3.poster.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-05 · Stupa berlubang di teras bundar Borobudur (no. 290)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.magelang.p3.3.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Borobudur-Kemenag-15.jpg` (stone and carving), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Borobudur-aerial-plain-volcano-01.jpg` (the round terraces), `ai-studio/game-images/assets/pustaka/library.magelang.p3.3.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Stupa berlubang di teras bundar Borobudur" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.magelang.p3.3  (PK-05 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Stupa berlubang di teras bundar Borobudur".
+
+SUBJECT AND COMPOSITION
+One perforated bell-shaped stupa on a round terrace of Borobudur, close and slightly from below: its diamond-shaped lattice openings, its square-based spire, and inside, through the openings, a seated stone Buddha statue in meditation. Behind it more stupas of the same ring and a pale morning sky.
+People — No people.
+Accuracy — Nobody touches the stupa. Lattice openings diamond-shaped (a lower round terrace).
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.magelang.p3.3.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-06 · Petugas membersihkan batu candi saat pemugaran Borobudur (no. 291)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.magelang.p4.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Borobudur-Kemenag-05.jpg` (relief and stone), `ai-studio/chatgpt-images/inbox/reference-Borobudur-Kemenag-15.jpg` (gallery wall), `ai-studio/game-images/assets/pustaka/library.magelang.p4.1.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Petugas membersihkan batu candi saat pemugaran Borobudur" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.magelang.p4.1  (PK-06 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Petugas membersihkan batu candi saat pemugaran Borobudur".
+
+SUBJECT AND COMPOSITION
+The great restoration of Borobudur in the 1970s: on the ground beside the temple wall, rows of numbered-looking but blank grey stone blocks are laid out on wooden pallets; two adult conservation workers in work clothes and helmets clean a carved relief stone with soft brushes and water; simple wooden scaffolding stands against the temple wall behind them.
+People — Exactly two adult workers, seen from the side, looking at their work. Javanese Indonesians in modest local clothing, calm, never looking at the camera; no real or famous person; children only with adults.
+Accuracy — No readable numbers or letters on the stones. Workers are adults, careful, with safe tools.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.magelang.p4.1.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-07 · Iring-iringan Waisak di dekat Candi Mendut (no. 292)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.magelang.p5.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Mendut-front-02.png` (Candi Mendut), `ai-studio/chatgpt-images/inbox/reference-Mendut-corner-03.jpg` (Mendut stone), `ai-studio/game-images/assets/pustaka/library.magelang.p5.1.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Iring-iringan Waisak di dekat Candi Mendut" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.magelang.p5.1  (PK-07 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Iring-iringan Waisak di dekat Candi Mendut".
+
+SUBJECT AND COMPOSITION
+The Waisak procession setting out from Candi Mendut: a line of Buddhist monks in saffron and maroon robes walks slowly along a path past the temple, followed by lay people in white carrying flowers and small offering trays; a few tall decorative paper umbrellas in yellow and white. Candi Mendut, with its tall stepped body and stupas on the roof, stands behind them. Late afternoon light.
+People — About ten people, all adults, seen from the side or behind. Javanese Indonesians in modest local clothing, calm, never looking at the camera; no real or famous person; children only with adults.
+Accuracy — Candi Mendut as in the attached photos (one temple, stairs on the front). Respectful, calm, no crowd pushing.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.magelang.p5.1.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-08 · Video: Kesenian khas Magelang, Tari Topeng Ireng (no. 298)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.magelang.p6.3.poster.webp` |
+| Kanvas | 1280 × 720 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Topeng-Ireng-researcher-dancers-row-04.png` (row of dancers), `ai-studio/chatgpt-images/inbox/reference-Topeng-Ireng-researcher-dancer-crown-portrait-01.jpg` (feather crown (kuluk)), `ai-studio/chatgpt-images/inbox/reference-Topeng-Ireng-researcher-low-angle-boots-07.jpg` (boots and bells), `ai-studio/game-images/assets/pustaka/library.magelang.p6.3.poster.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Video: Kesenian khas Magelang, Tari Topeng Ireng" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.magelang.p6.3.poster  (PK-08 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Video: Kesenian khas Magelang, Tari Topeng Ireng".
+
+SUBJECT AND COMPOSITION
+Cover picture for a dance video: a row of Topeng Ireng dancers in daylight on a village field, mid-step, with tall colourful feather crowns (kuluk), fringed costumes, ankle bells and boots, as in the attached photos; a village of red-tile roofs and green hills behind.
+People — Five adult dancers, seen from the side, faces turned away from the viewer. Javanese Indonesians in modest local clothing, calm, never looking at the camera; no real or famous person; children only with adults.
+Accuracy — Costume exactly as the photos (feather crown, fringes, boots with bells); face paint only as in the photos. No play button, no title.
+
+DELIVERY
+Target canvas 1280 × 720 pixels; aspect 16:9. Opaque, full-bleed. Deliver WebP, named library.magelang.p6.3.poster.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-09 · Gunung Tidar, bukit hijau di tengah Kota Magelang (no. 299)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.magelang.p7.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/game-images/assets/pustaka/library.magelang.p7.1.webp` (gambar lama: hanya isi, bukan gayanya); **foto acuan belum ada** |
+| Keterangan | "Gunung Tidar, bukit hijau di tengah Kota Magelang" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.magelang.p7.1  (PK-09 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Gunung Tidar, bukit hijau di tengah Kota Magelang".
+
+SUBJECT AND COMPOSITION
+Mount Tidar, a rounded hill about 500 metres high covered in tall green forest, rising directly behind the red-tile roofs and tree-lined streets of Magelang city on a clear morning.
+People — No people.
+Accuracy — Follow the attached photo for the hill's shape. No military buildings, no grave.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.magelang.p7.1.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-10 · Getuk Magelang yang berwarna-warni (no. 301)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.magelang.p9.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/game-images/assets/pustaka/library.magelang.p9.1.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Getuk Magelang yang berwarna-warni" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.magelang.p9.1  (PK-10 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Getuk Magelang yang berwarna-warni".
+
+SUBJECT AND COMPOSITION
+A still life on a wooden table: pieces of getuk, the cassava sweet of Magelang, in three colours (brown palm sugar, white and pale pandan green), cut into soft blocks and topped with grated coconut, on a banana leaf on a woven bamboo tray; beside it two round unglazed reddish-brown earthenware pots from the Klipoh potters near Borobudur. Warm daylight.
+People — No people.
+Accuracy — Getuk is soft, matte and dense, not shiny jelly. Pottery is plain, unglazed.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.magelang.p9.1.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-11 · Gunung Sindoro dan Gunung Sumbing dilihat dari sebuah desa di Temanggung (no. 303)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.temanggung.p1.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-over-highland-village-04.jpg` (a highland village under Sindoro), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-Sumbing-sunrise-02.jpg` (the twin volcanoes), `ai-studio/game-images/assets/pustaka/library.temanggung.p1.1.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Gunung Sindoro dan Gunung Sumbing dilihat dari sebuah desa di Temanggung" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.temanggung.p1.1  (PK-11 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Gunung Sindoro dan Gunung Sumbing dilihat dari sebuah desa di Temanggung".
+
+SUBJECT AND COMPOSITION
+A Temanggung village of red clay-tile roofs among vegetable terraces and bamboo, seen from its edge; behind it the twin volcanoes Sindoro (a clean cone) and Sumbing (broader) stand side by side under a clear morning sky.
+People — No people.
+Accuracy — Two volcanoes, smooth slopes, no smoke. No tobacco plants.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.temanggung.p1.1.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-12 · Kabut tipis pagi hari di Temanggung (no. 304)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.temanggung.p1.2.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-over-highland-village-04.jpg` (highland village and slopes), `ai-studio/game-images/assets/pustaka/library.temanggung.p1.2.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Kabut tipis pagi hari di Temanggung" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.temanggung.p1.2  (PK-12 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Kabut tipis pagi hari di Temanggung".
+
+SUBJECT AND COMPOSITION
+Early morning in the Temanggung highlands: thin white natural morning mist lies in the valleys between rounded green hills and terraced fields; tree tops and a few red roofs rise out of it; soft pale-gold first light.
+People — No people.
+Accuracy — This is ordinary white morning mist, not the blue-grey Mist of Forgetting. No tobacco plants.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.temanggung.p1.2.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-13 · Gunung Sindoro dan Gunung Sumbing, si gunung kembar (no. 305)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.temanggung.p2.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-Sumbing-sunrise-02.jpg` (the twin volcanoes), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-twin-volcanoes-from-ridge-03.jpg` (their shapes from a ridge), `ai-studio/game-images/assets/pustaka/library.temanggung.p2.1.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Gunung Sindoro dan Gunung Sumbing, si gunung kembar" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.temanggung.p2.1  (PK-13 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Gunung Sindoro dan Gunung Sumbing, si gunung kembar".
+
+SUBJECT AND COMPOSITION
+The twin volcanoes Sindoro and Sumbing seen together from far across green lowland at dawn: two big cones side by side with a saddle between them, pink-gold sky, a band of cloud at their feet.
+People — No people.
+Accuracy — Sindoro is the cleaner cone, Sumbing broader with a rougher top. No smoke.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.temanggung.p2.1.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-14 · Gunung Sindoro dilihat dari puncak Gunung Sumbing (no. 306)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.temanggung.p2.2.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-twin-volcanoes-from-ridge-03.jpg` (view from a high ridge), `ai-studio/game-images/assets/pustaka/library.temanggung.p2.2.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Gunung Sindoro dilihat dari puncak Gunung Sumbing" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.temanggung.p2.2  (PK-14 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Gunung Sindoro dilihat dari puncak Gunung Sumbing".
+
+SUBJECT AND COMPOSITION
+The view from the high grassy slopes near the summit of Mount Sumbing: in the foreground golden-brown alpine grass and rocks; across a sea of clouds, the clean cone of Mount Sindoro stands close and clear in the blue morning.
+People — No people.
+Accuracy — One cone (Sindoro) across the clouds; the viewer stands on Sumbing. No smoke.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.temanggung.p2.2.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-15 · Gunung Sumbing dari arah Temanggung (no. 307)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.temanggung.p2.3.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-Sumbing-sunrise-02.jpg` (Sumbing's shape), `ai-studio/game-images/assets/pustaka/library.temanggung.p2.3.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Gunung Sumbing dari arah Temanggung" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.temanggung.p2.3  (PK-15 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Gunung Sumbing dari arah Temanggung".
+
+SUBJECT AND COMPOSITION
+Mount Sumbing alone, broad and massive, seen from the Temanggung side: its long slopes covered from the bottom with terraced vegetable and coffee fields, scattered villages, and forest higher up; a clear morning sky.
+People — No people.
+Accuracy — Only Sumbing (broad, rough top) fills the view. No tobacco plants, no smoke.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.temanggung.p2.3.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-16 · Daun tembakau dan buah kopi dari lereng gunung Temanggung (no. 309)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.temanggung.p4.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/game-images/assets/pustaka/library.temanggung.p4.1.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Daun tembakau dan buah kopi dari lereng gunung Temanggung" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.temanggung.p4.1  (PK-16 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Daun tembakau dan buah kopi dari lereng gunung Temanggung".
+
+SUBJECT AND COMPOSITION
+A still life on a wooden table by a field: a few large fresh green tobacco leaves laid flat on a bamboo tray, and beside them a woven basket of ripe red coffee cherries and a small heap of brown roasted coffee beans; the green slope of a mountain behind, soft daylight.
+People — No people.
+Accuracy — Tobacco only as fresh green leaves; no cigarettes, no dried rolled tobacco, no smoke, no pipe.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.temanggung.p4.1.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-17 · Petani memeriksa daun tembakau sebelum panen (no. 310)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.temanggung.p4.2.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/game-images/assets/pustaka/library.temanggung.p4.2.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Petani memeriksa daun tembakau sebelum panen" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.temanggung.p4.2  (PK-17 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Petani memeriksa daun tembakau sebelum panen".
+
+SUBJECT AND COMPOSITION
+An adult farmer in a wide straw hat and work clothes stands among tall tobacco plants on a terraced slope and gently checks one large green leaf with his hand; the mountain slope and terraces behind; morning light.
+People — Exactly one adult farmer, seen from the side, looking at the leaf. Javanese Indonesians in modest local clothing, calm, never looking at the camera; no real or famous person; children only with adults.
+Accuracy — Tobacco only as growing green plants; no cigarettes, no smoke, nobody smoking.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.temanggung.p4.2.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-18 · Kebun kopi di lereng Gunung Sumbing (no. 311)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.temanggung.p4.3.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-Sumbing-sunrise-02.jpg` (Sumbing's shape), `ai-studio/game-images/assets/pustaka/library.temanggung.p4.3.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Kebun kopi di lereng Gunung Sumbing" (baru; EN "A coffee garden on the slopes of Mount Sumbing") |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.temanggung.p4.3  (PK-18 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Kebun kopi di lereng Gunung Sumbing".
+
+SUBJECT AND COMPOSITION
+A coffee garden on the lower slopes of Mount Sumbing: rows of coffee shrubs with glossy dark-green leaves and clusters of red and green cherries, shade trees between them, a narrow earth path; the broad mountain behind under a clear sky.
+People — No people.
+Accuracy — Coffee only: no tobacco plants in this picture.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.temanggung.p4.3.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-19 · Mata air Umbul Jumprit di lereng Gunung Sindoro (no. 315)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.temanggung.p6.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/game-images/assets/pustaka/library.temanggung.p6.1.webp` (gambar lama: hanya isi, bukan gayanya); **foto acuan belum ada** |
+| Keterangan | "Mata air Umbul Jumprit di lereng Gunung Sindoro" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.temanggung.p6.1  (PK-19 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Mata air Umbul Jumprit di lereng Gunung Sindoro".
+
+SUBJECT AND COMPOSITION
+The Umbul Jumprit spring on the slopes of Mount Sindoro: clear water rising in a stone-edged pool under big old trees, flowing away as the first stream of the Progo river.
+People — No people.
+Accuracy — Follow the attached photo for the pool and its stone edging. No offerings, no signs.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.temanggung.p6.1.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-20 · Parakan, kota tua di Temanggung (no. 316)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.temanggung.p7.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/game-images/assets/pustaka/library.temanggung.p7.1.webp` (gambar lama: hanya isi, bukan gayanya); **foto acuan belum ada** |
+| Keterangan | "Parakan, kota tua di Temanggung" (baru; EN "Parakan, an old town in Temanggung") |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.temanggung.p7.1  (PK-20 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Parakan, kota tua di Temanggung".
+
+SUBJECT AND COMPOSITION
+The quiet old main street of Parakan in the morning: a row of old two-storey shophouses with wooden shutters and tiled roofs, trees along the road, Mount Sindoro behind.
+People — No people.
+Accuracy — Follow the attached photo for the buildings. No weapons pointed at anyone; no signs with letters.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.temanggung.p7.1.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-21 · Kupat tahu dan uceng goreng khas Temanggung (no. 320)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.temanggung.p9.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/game-images/assets/tantangan/challenge.post.tmg-4-b.webp` (fried uceng fish), `ai-studio/game-images/assets/pustaka/library.temanggung.p9.1.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Kupat tahu dan uceng goreng khas Temanggung" (baru; EN "Kupat tahu and fried uceng fish from Temanggung") |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.temanggung.p9.1  (PK-21 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Kupat tahu dan uceng goreng khas Temanggung".
+
+SUBJECT AND COMPOSITION
+A still life on a wooden table: a plate of kupat tahu (cut rice cake, fried tofu and vegetables under a sweet brown peanut sauce) and a small plate of crisp fried uceng, slim finger-sized river fish, as in the attached picture; a small bowl of sambal; daylight, a green garden behind.
+People — No people.
+Accuracy — Uceng are small slim river fish, not sea fish. No steam.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.temanggung.p9.1.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-22 · Kota Wonosobo di antara bukit-bukit berkabut (no. 322)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.wonosobo.p1.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-over-highland-village-04.jpg` (highland houses and slopes), `ai-studio/game-images/assets/pustaka/library.wonosobo.p1.1.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Kota Wonosobo di antara bukit-bukit berkabut" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.wonosobo.p1.1  (PK-22 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Kota Wonosobo di antara bukit-bukit berkabut".
+
+SUBJECT AND COMPOSITION
+Wonosobo town in a green highland valley in the morning: many red and grey roofs and a few low buildings among trees, ringed by rounded hills with thin white morning mist in their folds.
+People — No people.
+Accuracy — No landmark buildings, no towers, no text. No crater, no steam.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.wonosobo.p1.1.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-23 · Pemandangan Dataran Tinggi Dieng (no. 324)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.wonosobo.p2.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Arjuna-researcher-complex-row-03.jpg` (the Arjuna temples on the plateau), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Telaga-Warna-Dieng-05.jpg` (Telaga Warna), `ai-studio/game-images/assets/pustaka/library.wonosobo.p2.1.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Pemandangan Dataran Tinggi Dieng" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.wonosobo.p2.1  (PK-23 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Pemandangan Dataran Tinggi Dieng".
+
+SUBJECT AND COMPOSITION
+The Dieng plateau seen from a hillside: a wide high green basin with neat terraces of potato fields, the small dark-stone temples of the Arjuna group in a row on the flat grass, a village of tin and tile roofs, and green hills all round under a clear cool sky.
+People — No people.
+Accuracy — Arjuna temples small, as in the photo. No crater, no steam or smoke.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.wonosobo.p2.1.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-24 · Telaga Warna di Dataran Tinggi Dieng (no. 326)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.wonosobo.p3.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Telaga-Warna-Dieng-05.jpg` (Telaga Warna and Telaga Pengilon), `ai-studio/game-images/assets/pustaka/library.wonosobo.p3.1.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Telaga Warna di Dataran Tinggi Dieng" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.wonosobo.p3.1  (PK-24 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Telaga Warna di Dataran Tinggi Dieng".
+
+SUBJECT AND COMPOSITION
+Telaga Warna and Telaga Pengilon seen from a wooded viewpoint above: the two lakes side by side, Telaga Warna turquoise-green and Telaga Pengilon a darker clear green, separated by a narrow wooded strip, forest all round, hills behind.
+People — No people.
+Accuracy — As the attached photo. No steam, no crater.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.wonosobo.p3.1.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-25 · Warna air Telaga Warna yang tampak berubah-ubah (no. 327)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.wonosobo.p3.2.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Telaga-Warna-Dieng-05.jpg` (the lake), `ai-studio/game-images/assets/pustaka/library.wonosobo.p3.2.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Warna air Telaga Warna yang tampak berubah-ubah" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.wonosobo.p3.2  (PK-25 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Warna air Telaga Warna yang tampak berubah-ubah".
+
+SUBJECT AND COMPOSITION
+A closer view across the surface of Telaga Warna: the water shows bands of turquoise, green and pale blue that shift as a light breeze and cloud shadows move over it; reeds and trees at the near shore.
+People — No people.
+Accuracy — No steam, no smoke, no crater.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.wonosobo.p3.2.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-26 · Telaga Warna dan pepohonan di sekelilingnya (no. 328)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.wonosobo.p3.3.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Telaga-Warna-Dieng-05.jpg` (the lake and its forest), `ai-studio/game-images/assets/pustaka/library.wonosobo.p3.3.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Telaga Warna dan pepohonan di sekelilingnya" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.wonosobo.p3.3  (PK-26 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Telaga Warna dan pepohonan di sekelilingnya".
+
+SUBJECT AND COMPOSITION
+The shore of Telaga Warna framed by tall trees and ferns: through the trunks, the turquoise lake glints, with the forested slopes reflected in it; soft morning light through the leaves.
+People — No people.
+Accuracy — No steam, no crater.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.wonosobo.p3.3.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-27 · Matahari terbit dari Bukit Sikunir (no. 329)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.wonosobo.p4.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-Sumbing-sunrise-02.jpg` (Sindoro at sunrise), `ai-studio/game-images/assets/pustaka/library.wonosobo.p4.1.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Matahari terbit dari Bukit Sikunir" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.wonosobo.p4.1  (PK-27 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Matahari terbit dari Bukit Sikunir".
+
+SUBJECT AND COMPOSITION
+Sunrise seen from the top of Sikunir hill above the village of Sembungan: the sun rises over a wide sea of clouds; across it the cone of Mount Sindoro stands dark against the pink-gold sky; dark silhouettes of hilltop trees and grass in the foreground.
+People — No people.
+Accuracy — No crater, no steam.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.wonosobo.p4.1.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-28 · Golden sunrise di Sikunir (no. 330)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.wonosobo.p4.2.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-Sumbing-sunrise-02.jpg` (Sindoro and Sumbing), `ai-studio/game-images/assets/pustaka/library.wonosobo.p4.2.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Golden sunrise di Sikunir" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.wonosobo.p4.2  (PK-28 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Golden sunrise di Sikunir".
+
+SUBJECT AND COMPOSITION
+A few minutes later than sunrise at Sikunir: golden light floods a sea of clouds; Mount Sindoro close on the left, the tops of Sumbing, Merbabu and Merapi far away rise above the clouds; warm gold everywhere.
+People — No people.
+Accuracy — Different from the plain sunrise picture: brighter, gold, several far peaks. No crater, no steam.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.wonosobo.p4.2.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-29 · Embun upas di daun kentang Dieng (no. 331)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.wonosobo.p5.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Arjuna-researcher-complex-row-03.jpg` (the plateau setting), `ai-studio/game-images/assets/pustaka/library.wonosobo.p5.1.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Embun upas di daun kentang Dieng" (baru; EN "Frost (embun upas) on potato leaves in Dieng") |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.wonosobo.p5.1  (PK-29 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Embun upas di daun kentang Dieng".
+
+SUBJECT AND COMPOSITION
+Dawn in the dry season on the Dieng plateau: low potato plants and grass covered in thin white frost crystals (embun upas), sparkling in the first pale sun; the flat plateau and hills behind in cold blue morning air.
+People — No people.
+Accuracy — Thin frost, not snow. No crater, no steam, no smoke.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.wonosobo.p5.1.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-30 · Video: Dieng Culture Festival 2025 "Back to the Culture" (no. 337)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.wonosobo.p8.1.poster.webp` |
+| Kanvas | 1280 × 720 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Arjuna-researcher-complex-row-03.jpg` (the Arjuna temples), `ai-studio/chatgpt-images/inbox/reference-Arjuna-researcher-row-sunrise-retouched-01.jpg` (the row at dusk), `ai-studio/game-images/assets/pustaka/library.wonosobo.p8.1.poster.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Video: Dieng Culture Festival 2025 "Back to the Culture"" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.wonosobo.p8.1.poster  (PK-30 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Video: Dieng Culture Festival 2025 "Back to the Culture"".
+
+SUBJECT AND COMPOSITION
+Cover picture for a culture-festival video: the Arjuna temple group of Dieng at dusk during the festival, softly lit, with many small paper lanterns hung on lines and held in hands by visitors in warm jackets; the temples stand calm in the middle.
+People — About twelve people, adults and children together, all seen from behind. Javanese Indonesians in modest local clothing, calm, never looking at the camera; no real or famous person; children only with adults.
+Accuracy — Temples as in the photos. No lanterns flying into the sky, no fire, no smoke. No play button, no title.
+
+DELIVERY
+Target canvas 1280 × 720 pixels; aspect 16:9. Opaque, full-bleed. Deliver WebP, named library.wonosobo.p8.1.poster.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-31 · Mi ongklok dengan sate sapi (no. 338)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.wonosobo.p9.1.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/game-images/assets/tantangan/challenge.item.wnb-4-a07.webp` (mi ongklok in its bowl), `ai-studio/game-images/assets/pustaka/library.wonosobo.p9.1.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Mi ongklok dengan sate sapi" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.wonosobo.p9.1  (PK-31 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Mi ongklok dengan sate sapi".
+
+SUBJECT AND COMPOSITION
+A still life on a wooden table: a bowl of mi ongklok (yellow noodles, cabbage and chives under a thick glossy brown sauce), as in the attached picture, with a plate of beef satay under peanut sauce and a few pieces of tempe kemul (crisp battered tempeh); a small ongklok, the woven bamboo dipping basket, lies beside them.
+People — No people.
+Accuracy — No steam. Same bowl and food as the attached picture.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.wonosobo.p9.1.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+### PK-32 · Es carica khas Dieng (no. 340)
+
+| | |
+|---|---|
+| Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.wonosobo.p9.3.webp` |
+| Kanvas | 960 × 640 |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-carica-peeled-for-sweets-14.jpg` (carica flesh for sweets), `ai-studio/chatgpt-images/inbox/reference-carica-whole-and-cut-12.jpg` (the fruit), `ai-studio/game-images/assets/pustaka/library.wonosobo.p9.3.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Es carica khas Dieng" |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: library.wonosobo.p9.3  (PK-32 · Pustaka)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
+The picture sits above this caption: "Es carica khas Dieng".
+
+SUBJECT AND COMPOSITION
+A clear glass of es carica: pale yellow-orange pieces of carica flesh in light syrup with ice cubes, on a wooden table; beside it two small whole carica fruits and one cut open, as in the attached photos; a highland lake far behind.
+People — No people.
+Accuracy — Carica: small ridged fruit with thin pale flesh and many small seeds, not a big papaya. No steam.
+
+DELIVERY
+Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.wonosobo.p9.3.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
 
 ## Daftar periksa hasil
 
