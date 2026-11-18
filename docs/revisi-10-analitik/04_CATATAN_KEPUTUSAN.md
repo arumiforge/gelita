@@ -6,6 +6,13 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 18 November 2026
 
+**Gambar dokumen 40 yang sudah diperiksa peneliti dipasang** (cabang `pw/laughing-clarke-6js8r6`, dokumen [40](40_PROMPT_GAMBAR_ANTARMUKA.md)) · `asal: peneliti` · `disetujui peneliti` · gambar saja; naskah cerita, keterangan lain, dan status dokumen 40 tidak berubah
+
+Pengembang meneruskan: peneliti sudah memeriksa gambar baru dokumen 40 (PR #418), dan semuanya diterima.
+1. **Dipasang di Katalog Aset** (`ai-studio/game-images/`, dipindahkan dari `ai-studio/chatgpt-images/out/`, bukan disalin): empat latar cerita penutup baru (`S-02` sampai `S-05`), 32 gambar Pustaka 3D (`PK-01` sampai `PK-32`, menggantikan berkas lama di tempatnya), dan papan acuan gaya `reference.27` (`U-00`, bukan slot permainan). Lima gambar Pustaka mendapat keterangan baru (`PK-01`, `PK-18`, `PK-20`, `PK-21`, `PK-29`). Status baris `TASKS.md` menjadi `installed`, baris `REVIEW.md` menjadi `keep`.
+2. **Slide 1 cerita penutup memakai gambar slide 4 lama**, bukan slide 3 seperti tertulis di keputusan 9 di bawah dan di dokumen 40. Gambar yang dimaksud keputusan itu (Jaka mengangkat lentera di puncak bukit, sesuai naskah slide 1 "Di puncak bukit, Jaka mengangkat lenteranya tinggi-tinggi") adalah berkas `bg.cerita-penutup-04` lama; berkas slide 3 lama berisi sekolah di bawah pohon beringin. Dokumen 40 dibetulkan di empat tempat. Jaka di gambar itu masih berupa siluet gelap, jadi syal merahnya tidak terlihat: belum diputuskan.
+3. **Belum dipasang:** `S-W` (latar halaman awal, `blocked` setelah tiga percobaan), `U-01` sampai `U-35` (belum dibuat), dan `W-K4` (`redo`, bentuk bundengan masih salah).
+
 **Gambar baru untuk antarmuka, penanda status, ikon, lentera, cerita penutup, dan Pustaka 3D** (cabang `pw/optimistic-cannon-h8p8o9`, dokumen [40](40_PROMPT_GAMBAR_ANTARMUKA.md)) · `asal: pengembang` · `disetujui pengembang` · wawancara tiga putaran; menambah dokumen 40, baris `U-`, `S-`, `PK-` di `ai-studio/chatgpt-images/TASKS.md`, dan tanda di `ai-studio/game-images/REVIEW.md`; tidak mengubah naskah cerita, bank soal, atau dokumen lain
 
 Pengembang memutuskan:

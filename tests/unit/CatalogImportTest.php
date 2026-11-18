@@ -3,6 +3,7 @@
 use App\Libraries\CatalogImporter;
 use App\Libraries\MediaStore;
 use App\Libraries\MockupGenerator;
+use App\Libraries\VideoThumbnail;
 use App\Models\MediaAssetModel;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Test\CIUnitTestCase;
@@ -348,6 +349,48 @@ final class CatalogImportTest extends CIUnitTestCase
 
         $forced = array_values(array_filter($this->importer()->run(false, true), static fn (array $r): bool => $r['target'] === 'ui.logo-hero'));
         $this->assertSame('installed', $forced[0]['status']);
+    }
+
+    /**
+     * The cover the server downloads by itself for a library video (VideoThumbnail, `library.thumb.*`)
+     * is no admin upload: the catalogue's cover replaces it. Until 18 November 2026 it counted as one,
+     * so the 3D video covers of document 40 never reached a server. A cover an admin uploads stays.
+     */
+    public function testCatalogueCoverReplacesTheDownloadedVideoThumbnail(): void
+    {
+        $video = $this->sqlite->table('library_media')->where('media_kind', 'video')->get()->getRowArray();
+        $thumb = $this->poster(VideoThumbnail::assetKey('youtube', 'IXDk03NgHqQ'), $video['id']);
+
+        $report = array_column($this->importer()->run(), null, 'source');
+
+        $this->assertSame('installed', $report['library.temanggung.p8.2.poster']['status'], json_encode($report['library.temanggung.p8.2.poster']));
+        $installed = model(MediaAssetModel::class)->findByKey('library.temanggung.p8.2.poster');
+        $this->assertSame((int) $installed['id'], (int) $this->sqlite->table('library_media')->where('id', $video['id'])->get()->getRow('poster_media_id'));
+        $this->assertNotSame($thumb, (int) $installed['id']);
+
+        // A cover the admin uploaded under another key is kept
+        $upload = $this->poster('library.poster-admin-kuda-lumping', $video['id']);
+        $report = array_column($this->importer()->run(), null, 'source');
+
+        $this->assertSame('skipped', $report['library.temanggung.p8.2.poster']['status']);
+        $this->assertStringContainsString('unggahan admin', $report['library.temanggung.p8.2.poster']['note']);
+        $this->assertSame($upload, (int) $this->sqlite->table('library_media')->where('id', $video['id'])->get()->getRow('poster_media_id'));
+    }
+
+    /** A cover image under the upload folder, without the catalogue credit, set on library medium $mediaId. */
+    private function poster(string $key, int|string $mediaId): int
+    {
+        $path = MediaStore::uploadDir() . $key . '.jpg';
+        is_dir(FCPATH . MediaStore::uploadDir()) || mkdir(FCPATH . MediaStore::uploadDir(), 0777, true);
+        file_put_contents(FCPATH . $path, 'jpg');
+
+        $id = (int) model(MediaAssetModel::class)->insert([
+            'asset_key' => $key, 'asset_type' => 'image', 'storage_path' => $path, 'mime_type' => 'image/jpeg',
+            'file_size' => 3, 'is_active' => 1, 'is_placeholder' => 0, 'credit' => null,
+        ], true);
+        $this->sqlite->table('library_media')->where('id', $mediaId)->update(['poster_media_id' => $id]);
+
+        return $id;
     }
 
     /**

@@ -17,7 +17,7 @@ Telaah dan pesanan ini pekerjaan pengembang sendiri, bukan validasi ahli ([01 �
 5. **Tombol Kenali** memakai lentera wilayah masing-masing (Temanggung: dua gunung dan daun kopi; Magelang: stupa; Wonosobo: candi gaya Arjuna). `icon-kenali` dibuang.
 6. **Ikon aplikasi:** Lentera Kedu emas berukir di bidang biru tua, satu induk 1024 × 1024 untuk semua ukuran, ditambah versi sederhana untuk favicon.
 7. **Latar halaman awal:** garis gunung Kedu yang sebenarnya dari foto peneliti, bagian tengah dan setengah bawah tenang dan gelap, suasana biru tua dan emas.
-8. **Cerita penutup:** gambar slide 3 sekarang (Jaka mengangkat lentera di puncak bukit) pindah ke slide 1 karena cocok dengan naskahnya; slide 2, 3, 4, dan 5 digambar baru, tanpa orang.
+8. **Cerita penutup:** gambar slide 4 lama (Jaka mengangkat lentera di puncak bukit) pindah ke slide 1 karena cocok dengan naskahnya; slide 2, 3, 4, dan 5 digambar baru, tanpa orang.
 9. **Pustaka:** semua gambar bergaya lukisan dibuat ulang dalam gaya 3D; tidak ada anak berlurik yang muncul berulang; orang hanya muncul bila topiknya membutuhkan; tembakau hanya sebagai daun di ladang, tanpa rokok atau asap.
 10. **Lencana wilayah dan sepuluh avatar** ikut dalam keluarga ini (cincin emas berukir; lambang tetap, kecuali lencana Wonosobo dan avatar carica).
 
@@ -53,7 +53,7 @@ Telaah dan pesanan ini pekerjaan pengembang sendiri, bukan validasi ahli ([01 �
 | `S-05` | Cerita penutup slide 5 *Penjaga Lentera* | 203 | Dataran Kedu saat fajar dengan lentera kecil di setiap desa |
 | `PK-01` – `PK-32` | Gambar Pustaka bergaya lukisan | 282–340 | Dibuat ulang dalam gaya 3D (bagian *Pustaka*) |
 
-Slide 1 cerita penutup tidak dipesan: berkas slide 3 sekarang dipindahkan ke slide 1 (*Pemasangan*). Dari enam gambar layar *Tantangan selesai*, lima diganti oleh `U-01`, `U-02`, `U-04`, dan `U-12`; yang keenam, alas tombol HUD `ui.result-hud-control` (no. 93), dibuang karena seluruhnya tertutup gambar tombol bundar di atasnya (45 px di bawah 51 px, diukur 18 November 2026). Medali serpihan di kiri panel hasil adalah `avatar.2`, jadi ikut berganti cincin lewat `U-25`.
+Slide 1 cerita penutup tidak dipesan: berkas slide 4 lama dipindahkan ke slide 1 (*Pemasangan*). Dari enam gambar layar *Tantangan selesai*, lima diganti oleh `U-01`, `U-02`, `U-04`, dan `U-12`; yang keenam, alas tombol HUD `ui.result-hud-control` (no. 93), dibuang karena seluruhnya tertutup gambar tombol bundar di atasnya (45 px di bawah 51 px, diukur 18 November 2026). Medali serpihan di kiri panel hasil adalah `avatar.2`, jadi ikut berganti cincin lewat `U-25`.
 
 ## Ukuran yang diukur (Chromebook 1366 × 768 dan 1366 × 657, 18 November 2026)
 
@@ -570,7 +570,7 @@ No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, 
 
 ### Cerita penutup (pengembang, 18 November 2026)
 
-Slide 1 *Lentera Menyala Kembali* memakai gambar slide 3 sekarang (Jaka di puncak bukit mengangkat lentera di atas Kedu yang bercahaya), karena itulah isi naskah slide 1. Gambar slide 1 sekarang (beranda di tepi laut) dibuang: Kedu tidak berpantai. Slide 2 sampai 5 digambar baru dengan aturan `R-27` sampai `R-30`: tanpa orang (tokoh tampil sebagai avatar bundar), tanpa berkas sinar, sepertiga bawah tenang. Keempatnya satu urutan: dari kabut yang tersibak ke pagi yang cerah, dan berakhir saat fajar.
+Slide 1 *Lentera Menyala Kembali* memakai gambar slide 4 lama (Jaka di puncak bukit mengangkat lentera di atas Kedu yang bercahaya), karena itulah isi naskah slide 1. Gambar slide 1 sekarang (beranda di tepi laut) dibuang: Kedu tidak berpantai. Slide 2 sampai 5 digambar baru dengan aturan `R-27` sampai `R-30`: tanpa orang (tokoh tampil sebagai avatar bundar), tanpa berkas sinar, sepertiga bawah tenang. Keempatnya satu urutan: dari kabut yang tersibak ke pagi yang cerah, dan berakhir saat fajar.
 
 ### S-02 · Kabut Tersibak (slide 2 cerita penutup)
 
@@ -1636,7 +1636,7 @@ Semua hasil dipindahkan (bukan disalin) dari `ai-studio/chatgpt-images/out/`. Ba
 | `U-24` – `U-33` | `ai-studio/game-images/assets/ikon/avatar.{N}.webp` | `php spark gelita:katalog:impor` (`avatar.2` juga medali layar hasil) |
 | — | `ui.result-hud-control` | Slot dan entri `data.json` dibuang; HUD hanya memakai gambar `round-*` |
 | `U-34`, `U-35` | `ai-studio/game-images/assets/ikon/` | Buat `app.icon-512`, `app.icon-192`, `app.apple-touch-icon` (180), `app.icon-maskable-512`, `app.favicon` dengan perkecilan proporsional; `public/assets/app/*.png` diganti, `icon.svg` diganti PNG di manifest dan `<link>` |
-| `S-W`, `S-02` – `S-05` | `ai-studio/game-images/assets/latar/` di tempat berkas lama | `bg.cerita-penutup-03.webp` lama dipindahkan lebih dulu menjadi `bg.cerita-penutup-01.webp` (menggantikan beranda tepi laut). Entri `data.json` mendapat prompt baru dari bagian ini; `php spark gelita:katalog:impor` |
+| `S-W`, `S-02` – `S-05` | `ai-studio/game-images/assets/latar/` di tempat berkas lama | `bg.cerita-penutup-04.webp` lama dipindahkan lebih dulu menjadi `bg.cerita-penutup-01.webp` (menggantikan beranda tepi laut). Entri `data.json` mendapat prompt baru dari bagian ini; `php spark gelita:katalog:impor` |
 | `PK-` | `ai-studio/game-images/assets/pustaka/` di tempat berkas lama | Entri yang keterangannya berubah mendapat `caption` (`id`, `en`) di `data.json`; `php spark gelita:katalog:impor` |
 
 Setelah dipasang: lembar telaah dibangun ulang (`node ai-studio/game-images/review/build-sheets.mjs`), halaman katalog dibangun ulang (`php spark gelita:katalog:halaman`), dan tata letak per layar diperiksa lagi di Chromebook 1366 × 768 (langkah 3 perombakan antarmuka).
