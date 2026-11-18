@@ -212,3 +212,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `pw/vigilant-cray-j6l324` | Skenario Digital redesign and uniform HUD plan (`docs/revisi-10-analitik/41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md`); install of the PR 420 pictures | Plan written (18 Nov 2026); next: clickable mockup of the four states for the owner, then the install of PR 420 |
