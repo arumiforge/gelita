@@ -10,6 +10,8 @@ You are generating pictures for GELITA, an educational game for grade 5 students
 
 ## Start of every session
 
+The owner starts most sessions with a ready-made prompt from `prompts/` (see `prompts/README.md`); it names the rows and the order.
+
 1. Read `TASKS.md`. It is the single list of what exists to do and what is done.
 2. Work on the rows the owner names. If the owner names none, take rows with status `redo: …` first, then `todo`, from the top.
 3. Look in `inbox/`. If it holds files, handle them first (see *Files in `inbox/`*).
@@ -79,7 +81,7 @@ The owner reviewed every picture of the game on 15 November 2026 (`ai-studio/gam
 
 The owner's interview of 18 November 2026; prompts in `docs/revisi-10-analitik/40_PROMPT_GAMBAR_ANTARMUKA.md`, sizes measured on a Chromebook screen. For these rows the prompt and the lines below come before the general checks above:
 
-- **`U-00` first.** It is the style board of the carved-gold interface. Every other `U-` row attaches its result (`out/reference.27.webp`) and stays `blocked: waiting for U-00` until the owner accepts it; a Claude session then sets those rows to `todo`. Inside the `U-` rows, make them in order: a row may attach the result of an earlier row (for example `U-02` attaches `out/ui-plate-gold.webp`).
+- **`U-00` first.** It is the style board of the carved-gold interface. Every other `U-` row attaches its result (`out/reference.27.webp`) and stays `blocked: waiting for U-00` until the owner accepts it. When the owner's prompt says they accept `U-00` (`prompts/3-accept-style-board.md`), you set `U-00` to `accepted` and every `blocked: waiting for U-00` row to `todo`, as that prompt says; that is the one exception to "`accepted` is set by the owner" (you write it on the owner's word). Inside the `U-` rows, make them in order: a row may attach the result of an earlier row (for example `U-02` attaches `out/ui-plate-gold.webp`).
 - **Every `U-` prompt starts with the block `GELITA CARVED GOLD UI — 2026-11-18`.** Use it word for word, as the story pictures use their direction block.
 - **Plates, frame and track (`U-01` to `U-05`) stretch in the game.** Their ornaments must stay inside the ends or corners the prompt names, and the middle must be plain. Check: stretch the middle to twice its length in an image editor; nothing may look stretched.
 - **Edits, not new pictures:** `U-07`, `U-15` to `U-17` and `U-24` to `U-33`. Mask only the part the prompt names (the frame carving, the front glass panel, the avatar ring); everything else stays locked, as for `R-19`. Start again from the original picture, never from a failed result.
