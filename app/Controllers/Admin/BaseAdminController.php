@@ -163,43 +163,30 @@ abstract class BaseAdminController extends BaseController
     }
 
     /**
-     * RawDataService (sesi data mentah, Dok 3 §8.4) untuk pemanggil ini, atau
-     * null selama layanan itu belum ada di branch ini. Layanan sungguhan
-     * diambil lewat StaffScope::rawData() (the caller's scope is bound
-     * there); uji dapat menyuntikkan tiruan lewat
-     * `Services::injectMock('rawDataService', …)`.
+     * RawDataService (Dok 3 §8.4) bound to the caller's staff scope, always
+     * through StaffScope::rawData(). A mock injected with
+     * `Services::injectMock('rawDataService', …)` still arrives here, since
+     * the service factory returns the mock.
+     *
+     * Never return the shared instance as it is: it has no scope, and
+     * page()/streamCsv() refuse it. The page itself creates that shared
+     * instance, so checking `Services::has('rawdataservice')` to detect a
+     * mock made every raw-data CSV after it fail (500).
      */
     protected function rawService(): ?object
     {
-        if (\Config\Services::has('rawdataservice')) {
-            return \Config\Services::get('rawdataservice');
-        }
-
-        if (! class_exists(\App\Services\RawDataService::class) || ! method_exists($this, 'rawData')) {
-            return null;
-        }
-
         return $this->rawData();
     }
 
     /**
-     * CSV mentah satu dimensi dengan filter yang sama dengan tabelnya:
-     * `rawCsvDownload()` milik sesi data mentah bila sudah ada (mencatat
-     * audit), selain itu RawDataService::streamCsv() lewat csvResponse().
+     * Raw CSV of one dimension with the same filters as its table, written
+     * by rawCsvDownload() (scoped service, audit row `export_csv`).
      *
      * @param array<string, mixed> $filters
      */
     protected function rawCsv(string $dimension, array $filters): ResponseInterface
     {
-        if (method_exists($this, 'rawCsvDownload') && ! \Config\Services::has('rawdataservice')) {
-            return $this->rawCsvDownload($dimension, $filters);
-        }
-
-        $service = $this->rawService();
-
-        $readable = $this->readableAnswers();
-
-        return $this->csvResponse('gelita-' . $dimension, static fn ($handle) => $service->streamCsv($dimension, $filters, $handle, $readable));
+        return $this->rawCsvDownload($dimension, $filters);
     }
 
     /**

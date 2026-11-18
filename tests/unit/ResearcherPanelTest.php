@@ -71,6 +71,32 @@ final class ResearcherPanelTest extends CIUnitTestCase
         $this->assertStringContainsString('admin/peserta/reset-sandi', $show);
     }
 
+    /**
+     * The raw-data page creates the shared, unscoped rawDataService; the CSV
+     * button of that page and of the student page must still use the
+     * caller's scope (it used to answer 500 once that instance existed).
+     */
+    public function testRawDataCsvWorksAfterThePageCreatedTheSharedService(): void
+    {
+        $this->page('ketua', 'admin/data/jawaban');
+        service('rawDataService');   // the unscoped shared instance, as in a real request
+
+        foreach (['admin/data/jawaban', 'admin/data/event', 'admin/peserta/1?tab=jawaban'] as $path) {
+            [$path, $string] = explode('?', $path . '?', 2);
+            parse_str(rtrim($string, '?'), $query);
+
+            $response = $this->asStaff('ketua')->call(Method::GET, $path, $query + ['format' => 'csv']);
+            $response->assertStatus(200);
+            $this->assertStringStartsWith('text/csv', $response->response()->getHeaderLine('Content-Type'), $path);
+
+            ob_start();
+            $response->response()->sendBody();
+            $csv = (string) ob_get_clean();
+            $this->assertStringContainsString('GLT-000001', $csv, $path);
+            $this->assertNoIdentity($csv, "ketua {$path} CSV");
+        }
+    }
+
     public function testAdminSeesAccountsButNoResearchData(): void
     {
         foreach (['admin/sesi', 'admin/sesi/1', 'admin/data/jawaban', 'admin/masukan', 'admin/ekspor', 'admin/peserta/reset-sandi'] as $path) {
