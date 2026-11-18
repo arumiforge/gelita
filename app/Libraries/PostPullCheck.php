@@ -286,20 +286,34 @@ final class PostPullCheck
         }
     }
 
-    /** @return array{id: string, title: string, state: string, reason: string, command: string|null, runnable: bool} */
+    /**
+     * The validator guide and the GELITA guide against their source documents.
+     *
+     * @return array{id: string, title: string, state: string, reason: string, command: string|null, runnable: bool}
+     */
     private function guide(): array
     {
-        $row   = ['id' => 'panduan', 'title' => 'Panduan validator', 'command' => 'gelita:panduan:cek', 'runnable' => false];
-        $check = GuideSourceCheck::forValidatorGuide();
+        $row    = ['id' => 'panduan', 'title' => 'Panduan validator dan Mengenal GELITA', 'command' => 'gelita:panduan:cek', 'runnable' => false];
+        $checks = [
+            'validator' => [GuideSourceCheck::forValidatorGuide(), ValidatorGuideContent::sources()],
+            'gelita'    => [GuideSourceCheck::forGelitaGuide(), GelitaGuideContent::sources()],
+        ];
+        $behind = [];
 
-        if (! $check->docsPresent()) {
-            return $row + ['state' => self::SKIPPED, 'reason' => 'Dokumen penelitian tidak ada di instalasi ini.'];
+        foreach ($checks as $key => [$check, $sources]) {
+            if (! $check->docsPresent()) {
+                return $row + ['state' => self::SKIPPED, 'reason' => 'Dokumen penelitian tidak ada di instalasi ini.'];
+            }
+
+            $count = count($check->problems($sources));
+
+            if ($count > 0) {
+                $behind[] = $count . ' bagian sumber panduan ' . $key . ' berubah';
+            }
         }
 
-        $problems = $check->problems(ValidatorGuideContent::sources());
-
-        return $row + ($problems === []
+        return $row + ($behind === []
             ? ['state' => self::OK, 'reason' => 'Sesuai dengan dokumen sumbernya.']
-            : ['state' => self::MANUAL, 'reason' => count($problems) . ' bagian sumber berubah; periksa teks panduan, lalu --tandai.']);
+            : ['state' => self::MANUAL, 'reason' => implode('; ', $behind) . '; periksa teks panduan itu, lalu --panduan=… --tandai.']);
     }
 }

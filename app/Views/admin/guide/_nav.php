@@ -1,6 +1,6 @@
 <?php
 /**
- * Guide menu (layouts/guide; staff and validator guides): search box, a guest's role picker, the
+ * Guide menu (layouts/guide; staff, validator and GELITA guides): search box, a guest's role picker (none in the GELITA guide), the
  * first page, then one group per chapter with its topics. The reader's own
  * and shared chapters start open, other roles' chapters folded, and the
  * chapter of the current page always open. Each topic carries its plain
@@ -22,7 +22,7 @@
     <input type="search" id="gd-search" placeholder="<?= esc(lang('Admin.guideSearchPlaceholder'), 'attr') ?>" autocomplete="off">
   </div>
 
-  <?php if ($site['pickAlways'] || ! $isStaff): ?>
+  <?php if ($site['options'] !== [] && ($site['pickAlways'] || ! $isStaff)): ?>
     <div class="gd-roles" role="group" aria-label="<?= esc($site['pickLabel'], 'attr') ?>">
       <span><?= esc($site['pickLabel']) ?></span>
       <?php foreach ($site['options'] as $option => $optionLabel): ?>
