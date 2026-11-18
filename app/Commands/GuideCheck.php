@@ -16,9 +16,12 @@ use CodeIgniter\CLI\CLI;
  * guide (/admin/panduan-validator, sources in docs/revisi-10-analitik/) and
  * the GELITA guide (/admin/panduan-gelita, sources anywhere under docs/).
  *
- *   php spark gelita:panduan:cek                       # which guide pages may be behind
- *   php spark gelita:panduan:cek --tandai              # after checking them: record the sources as current
- *   php spark gelita:panduan:cek --panduan=gelita      # one guide only (validator, gelita)
+ *   php spark gelita:panduan:cek                                  # which pages of both guides may be behind
+ *   php spark gelita:panduan:cek --panduan=gelita                 # one guide only (validator, gelita)
+ *   php spark gelita:panduan:cek --panduan=validator --tandai     # after checking that guide: record its sources
+ *
+ * --tandai needs --panduan, so checking one guide never marks the other's
+ * unread pages as checked (coordinator review, 17 November 2026).
  *
  * Changes no database. --tandai only rewrites the lock files in
  * app/Libraries/GuideSources/, which are committed.
@@ -30,10 +33,10 @@ class GuideCheck extends BaseCommand
     protected $group       = 'GELITA';
     protected $name        = 'gelita:panduan:cek';
     protected $description = 'Memeriksa apakah halaman panduan validator dan panduan Mengenal GELITA perlu disesuaikan dengan dokumen sumbernya.';
-    protected $usage       = 'gelita:panduan:cek [--tandai] [--panduan=validator|gelita]';
+    protected $usage       = 'gelita:panduan:cek [--panduan=validator|gelita] [--tandai]';
     protected $options     = [
-        '--tandai'  => 'Setelah teks panduan diperiksa: catat sumber yang sekarang sebagai sudah sesuai.',
-        '--panduan' => 'Hanya satu panduan: validator atau gelita (bawaan: keduanya).',
+        '--panduan' => 'Hanya satu panduan: validator atau gelita (bawaan: keduanya; wajib bersama --tandai).',
+        '--tandai'  => 'Setelah teks panduan itu diperiksa: catat sumber yang sekarang sebagai sudah sesuai.',
     ];
 
     /** Guide key => [content class, its source check, its lock file]. */
@@ -52,6 +55,14 @@ class GuideCheck extends BaseCommand
             return EXIT_ERROR;
         }
 
+        $mark = $this->flag('tandai', $params);
+
+        if ($mark && $only === '') {
+            CLI::error('--tandai hanya untuk satu panduan yang sudah diperiksa: tambahkan --panduan=validator atau --panduan=gelita.');
+
+            return EXIT_ERROR;
+        }
+
         $exit = EXIT_SUCCESS;
 
         foreach (self::GUIDES as $key => [$guide, $factory, $lock]) {
@@ -59,7 +70,7 @@ class GuideCheck extends BaseCommand
                 continue;
             }
 
-            if ($this->checkGuide($key, $guide, GuideSourceCheck::$factory(), $lock, $this->flag('tandai', $params)) !== EXIT_SUCCESS) {
+            if ($this->checkGuide($key, $guide, GuideSourceCheck::$factory(), $lock, $mark) !== EXIT_SUCCESS) {
                 $exit = EXIT_ERROR;
             }
         }
@@ -119,7 +130,7 @@ class GuideCheck extends BaseCommand
         }
 
         CLI::newLine();
-        CLI::write('Sesuaikan teksnya di app/Libraries/' . $class . '.php (atau pastikan memang tidak perlu berubah), lalu jalankan php spark gelita:panduan:cek --tandai --panduan=' . $key . '.');
+        CLI::write('Sesuaikan teksnya di app/Libraries/' . $class . '.php (atau pastikan memang tidak perlu berubah), lalu jalankan php spark gelita:panduan:cek --panduan=' . $key . ' --tandai.');
 
         return EXIT_ERROR;
     }

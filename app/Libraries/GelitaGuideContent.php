@@ -227,7 +227,7 @@ final class GelitaGuideContent extends GuideContent
                         'Rincian yang sensitif bagi validator sengaja dibuka (keputusan pengembang, 17 November 2026): pembaca panduan ini sudah menyelesaikan validasi atau tidak sedang menilai.',
                     ],
                     'docs'    => ['`docs/revisi-10-analitik/00_INDEKS.md` (urutan baca dan status dokumen)', self::D04, '`docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md`'],
-                    'sources' => ['revisi-10-analitik/00_INDEKS.md#mulai-sesi-baru-di-sini'],
+                    'sources' => [self::R01 . 'judul-penelitian-dan-konstruk'],
                 ],
                 [
                     'id'    => 'gelita-sekilas',
@@ -665,13 +665,12 @@ final class GelitaGuideContent extends GuideContent
                     'list'  => [
                         'Isi Pustaka tidak diubah oleh perombakan kelas 5 maupun reset, atas permintaan peneliti.',
                         'Ganti bahasa dicatat sebagai kovariat (`locale_changed`).',
-                        'Narasi: pengisi suara tetap pilihan pertama; suara sintetis dipakai sebagai cadangan sejak 15 November 2026 karena pengisi suara belum tersedia, disetujui peneliti, dan tercatat sebagai suara sintetis di data.',
-                        'Gambar, suara, dan musik dijelaskan di [Katalog Aset GELITA](' . self::CATALOGUE . ').',
+                        'Narasi: suara sintetis menjadi cadangan pengisi suara sejak 15 November 2026 (disetujui peneliti) dan tercatat di data sebagai `tts`.',
+                        'Gambar, musik, dan narasi tidak dijelaskan di panduan ini: lihat [Katalog Aset GELITA](' . self::CATALOGUE . '), bagian [musik](' . self::CATALOGUE . '#musik) dan [narasi](' . self::CATALOGUE . '#narasi).',
                     ],
                     'why' => [
                         'Pustaka dibuka **setelah** wilayah tuntas supaya bacaan tambahan tidak menjadi sumber jawaban saat tantangan berlangsung.',
-                        'Rekaman dicatat menurut cara pembuatannya, karena suara asli dan sintetis bisa memengaruhi cara anak mendengar; kekeliruan pencatatan akan menjadi kekeliruan di data penelitian.',
-                        'Musik latar hanya hiasan dan bukan bagian penelitian.',
+                        'Cara pembuatan rekaman dicatat karena data penelitian harus menyebut dengan benar apakah anak mendengar suara asli atau sintetis.',
                     ],
                     'docs'    => ['`docs/pustaka/README.md`', self::D04 . ' → 15 November 2026', '`docs/revisi-10-analitik/36_TERJEMAHAN_BANK_SOAL.md`'],
                     'sources' => [self::R04 . '15-november-2026', self::K1 . '2-yang-tidak-boleh-berubah'],
@@ -825,7 +824,7 @@ final class GelitaGuideContent extends GuideContent
                         'Setiap dokumen punya versi PDF siap cetak untuk diserahkan ke peneliti dan komite.',
                     ],
                     'docs'    => ['`docs/revisi-10-analitik/00_INDEKS.md` → Daftar dokumen', '`docs/revisi-10-analitik/status-dokumen.html`'],
-                    'sources' => ['revisi-10-analitik/00_INDEKS.md#mulai-sesi-baru-di-sini'],
+                    'sources' => [self::R01 . 'peran-pengembang-peneliti-dan-ahli'],
                 ],
                 [
                     'id'    => 'bank-soal',
@@ -1130,7 +1129,7 @@ final class GelitaGuideContent extends GuideContent
                         'Bisa dipasang di layar utama, dengan paket aset yang diunduh sekali untuk lab berinternet lemah.',
                     ],
                     'why' => [
-                        'Tanpa langkah build, kode yang berjalan di sekolah sama dengan kode di repositori, dan pemasangan di server sekolah cukup dengan PHP.',
+                        'Tanpa langkah build (tanpa Node.js atau bundler), kode JavaScript dan CSS yang berjalan di sekolah sama dengan kode di repositori; pemasangan server tetap butuh PHP, Composer, basis data, server web, dan HTTPS seperti diuraikan di dokumen pemasangan.',
                         'Tanpa CDN, game tetap berjalan di jaringan sekolah yang membatasi situs luar, dan tidak ada data yang bocor ke pihak ketiga.',
                         'Progressive enhancement membuat perangkat lama tetap bisa dipakai.',
                     ],
@@ -1237,7 +1236,7 @@ final class GelitaGuideContent extends GuideContent
                     'why' => [
                         'Dokumen penelitian berbahasa Indonesia dan memakai label asal dan status, sehingga pembaca tahu mana yang masih usulan dan mana yang sudah ditetapkan.',
                     ],
-                    'sources' => ['revisi-10-analitik/00_INDEKS.md#mulai-sesi-baru-di-sini'],
+                    'sources' => [self::K1 . '0-cara-memakai-ketiga-dokumen'],
                 ],
                 [
                     'id'    => 'rujukan',

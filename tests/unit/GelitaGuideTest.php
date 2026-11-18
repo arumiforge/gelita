@@ -7,6 +7,7 @@ use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\Method;
 use CodeIgniter\Test\CIUnitTestCase;
 use CodeIgniter\Test\FeatureTestTrait;
+use CodeIgniter\Test\StreamFilterTrait;
 use Config\Services;
 use Tests\Support\Database\RawDataWorld;
 
@@ -24,6 +25,7 @@ final class GelitaGuideTest extends CIUnitTestCase
 {
     use FeatureTestTrait;
     use RawDataWorld;
+    use StreamFilterTrait;
 
     protected function tearDown(): void
     {
@@ -44,13 +46,31 @@ final class GelitaGuideTest extends CIUnitTestCase
         $this->assertSame([], $problems, "The documents behind these GELITA-guide pages changed:\n"
             . implode("\n", array_map(static fn (string $ref, string $state): string => "  {$state}: docs/{$ref}", array_keys($problems), $problems))
             . "\nCheck the pages listed by `php spark gelita:panduan:cek --panduan=gelita` against the changed sections, update "
-            . "app/Libraries/GelitaGuideContent.php where needed, then run `php spark gelita:panduan:cek --tandai --panduan=gelita` and commit the lock file.");
+            . "app/Libraries/GelitaGuideContent.php where needed, then run `php spark gelita:panduan:cek --panduan=gelita --tandai` and commit the lock file.");
 
         $this->assertSame([], array_diff(array_keys($check->locked()), Guide::sources()), 'no stale lock entries');
 
         // The command names the page behind a changed source
         $ref = 'revisi-10-analitik/22_PERMOHONAN_IZIN_ETIK.md#tujuan';
         $this->assertSame(['tujuan' => [$ref => GuideSourceCheck::CHANGED]], GuideCheck::pagesFor([$ref => GuideSourceCheck::CHANGED], Guide::class));
+    }
+
+    public function testMarkingNeedsOneGuide(): void
+    {
+        // Coordinator review, 17 Nov 2026: --tandai without --panduan would mark
+        // the other guide's unread pages as checked; it is refused, nothing written
+        $locks  = [ROOTPATH . GuideSourceCheck::VALIDATOR_LOCK, ROOTPATH . GuideSourceCheck::GELITA_LOCK];
+        $before = array_map('sha1_file', $locks);
+
+        command('gelita:panduan:cek --tandai');
+        $this->assertStringContainsString('--panduan=validator atau --panduan=gelita', $this->getStreamFilterBuffer());
+        $this->assertSame($before, array_map('sha1_file', $locks));
+
+        $this->resetStreamFilterBuffer();
+        command('gelita:panduan:cek --panduan=gelita');
+        $output = $this->getStreamFilterBuffer();
+        $this->assertStringContainsString('Panduan Mengenal GELITA sesuai', $output);
+        $this->assertStringNotContainsString('Panduan validator', $output);
     }
 
     public function testStructureLinksTermsAndReasons(): void
@@ -86,7 +106,10 @@ final class GelitaGuideTest extends CIUnitTestCase
 
         // Outside links: the asset catalogue only; site links: the other two guides only
         preg_match_all('/\]\((https:[^)]+)\)/', $text, $outside);
-        $this->assertSame([Guide::CATALOGUE], array_values(array_unique($outside[1])));
+        foreach ($outside[1] as $url) {
+            $this->assertStringStartsWith(Guide::CATALOGUE, $url, 'outside links go to the asset catalogue only');
+        }
+        $this->assertContains(Guide::CATALOGUE . '#musik', $outside[1], 'music is explained in the catalogue, not here');
         preg_match_all('/\]\((\/[^)]*)\)/', $text, $site);
         $this->assertSame([], array_diff(array_unique($site[1]), ['/admin/panduan-staf', '/admin/panduan-validator']));
 
@@ -176,7 +199,7 @@ final class GelitaGuideTest extends CIUnitTestCase
         $this->assertStringContainsString(lang('Admin.gguideDocs'), $addie);
         $this->assertStringContainsString('Branch, R. M. (2009)', $addie);
         $this->assertStringContainsString('id="istilah-pop-addie"', $addie);
-        $this->assertStringNotContainsString(lang('Admin.vguideStale', ['']), $addie);
+        $this->assertStringNotContainsString(lang('Admin.gguideStale', ['']), $addie);
 
         $glossary = $this->guest('admin/panduan-gelita/istilah');
         $this->assertSame(count(Guide::terms()), substr_count($glossary, 'class="gd-term"'));

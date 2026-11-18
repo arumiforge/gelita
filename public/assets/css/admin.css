@@ -1347,16 +1347,16 @@ body.auth { display: grid; min-height: 100vh; place-items: center; padding: 24px
 .auth-guide-roles a:hover { border-color: #A5B4FC; background: var(--accent-soft); text-decoration: none; }
 .auth-guide-roles .icon { width: 16px; height: 16px; }
 .auth-guide .btn-block { margin-top: auto; }
-/* The GELITA guide (17 Nov 2026): one wide card under the others, its text beside the button */
-.auth-guide.is-wide { grid-column: 1 / -1; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; column-gap: 20px; }
-.auth-guide.is-wide .auth-guide-icon { margin: 0; }
-.auth-guide.is-wide .auth-title { margin-bottom: 4px; }
-.auth-guide.is-wide .auth-lead { margin: 0; }
-.auth-guide.is-wide .btn-block { width: auto; margin: 0; white-space: nowrap; }
-@media (max-width: 767.98px) {
-  .auth-guide.is-wide { grid-template-columns: 1fr; row-gap: 12px; text-align: left; }
-  .auth-guide.is-wide .auth-guide-icon { justify-self: center; }
-  .auth-guide.is-wide .btn-block { width: 100%; }
+/* The GELITA guide (17 Nov 2026): the fourth card. With two columns
+   (768–1179 px) it fills the cell beside the validator card (2 × 2); with
+   three columns it spans the row under the others, text beside the button;
+   on phones it stacks like the others. */
+@media (min-width: 1180px) {
+  .auth-guide.is-wide { grid-column: 1 / -1; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; column-gap: 20px; }
+  .auth-guide.is-wide .auth-guide-icon { margin: 0; }
+  .auth-guide.is-wide .auth-title { margin-bottom: 4px; }
+  .auth-guide.is-wide .auth-lead { margin: 0; }
+  .auth-guide.is-wide .btn-block { width: auto; margin: 0; white-space: nowrap; }
 }
 /* With the validator guide card too (17 Nov 2026): three cards side by side on wide screens */
 @media (min-width: 1180px) {

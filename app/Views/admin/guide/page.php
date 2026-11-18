@@ -55,7 +55,7 @@ foreach ($chapters as $chapter) {
   <?php endif ?>
 
   <?php if ($stale !== []): ?>
-    <div class="gd-callout is-warn" role="note"><?= icon('warn') ?><p><?= esc(lang('Admin.vguideStale', [implode(', ', $stale)])) ?></p></div>
+    <div class="gd-callout is-warn" role="note"><?= icon('warn') ?><p><?= esc(lang($site['staleKey'] ?? 'Admin.vguideStale', [implode(', ', $stale)])) ?></p></div>
   <?php endif ?>
 
   <?php if ($facts !== []): ?>

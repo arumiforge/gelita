@@ -89,6 +89,7 @@ class GelitaGuideController extends BaseAdminController
                 'pickAlways' => false,
                 'signIn'     => false,
                 'mineBadge'  => '',
+                'staleKey'   => 'Admin.gguideStale',
             ],
         ];
     }
