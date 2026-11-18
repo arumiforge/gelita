@@ -49,6 +49,8 @@ final class AdminMenu
         ['admin/sekolah',             'Admin.menuSchools',      'building',  ['schools.manage'], 'Admin.groupSettings'],
         ['admin/staf',                'Admin.menuStaff',        'key',       ['staff.manage'], 'Admin.groupSettings'],
         ['admin/tata-kelola',         'Admin.menuGovernance',   'shield',    ['deletion.execute', 'audit.view', 'retention.run'], 'Admin.groupSettings'],
+        // Admin only (owner, 18 November 2026): PHP, extensions, php.ini, database, folders
+        ['admin/cek-server',          'Admin.menuServerCheck',  'check',     ['server.check'], 'Admin.groupSettings'],
         // Every role: the staff guide (/admin/panduan-staf)
         ['admin/panduan-staf',        'Admin.menuGuide',        'book',      ['dashboard.view'], 'Admin.groupHelp'],
     ];

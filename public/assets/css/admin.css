@@ -1003,6 +1003,14 @@ a.media-thumb:hover, a.media-thumb:focus-visible { border-color: var(--accent); 
 .checklist-status.is-missing { color: var(--bad); }
 .checklist-status.is-wrong { color: var(--warn); }
 .checklist-status.is-ok { color: var(--ok); }
+/* Cek server (/admin/cek-server): the same states plus info and fail */
+.checklist-status.is-fail { color: var(--bad); }
+.checklist-status.is-warn { color: var(--warn); }
+.checklist-status.is-info { color: var(--text-dim); }
+.server-check-value { font-family: var(--mono); font-size: 13px; overflow-wrap: anywhere; }
+/* A checklist, not a data table: every row visible, long values and notes wrap */
+.server-check .table-wrap { max-height: none; }
+.server-check .data-table td:nth-child(n+3) { min-width: 10rem; max-width: 28rem; white-space: normal; }
 
 /* Perilaku JavaScript tambahan (admin/*.js); tanpa JS tidak ada yang bergantung */
 .js .no-js-only { display: none; }
