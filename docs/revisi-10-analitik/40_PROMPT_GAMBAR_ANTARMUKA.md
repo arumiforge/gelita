@@ -691,30 +691,30 @@ Tiga puluh dua gambar Pustaka yang masih bergaya lukisan (lembar telaah 14 dan 1
 
 - **Orang:** tidak ada anak berlurik yang muncul berulang; tempat atau bendanya yang menjadi pokok. Orang hanya ada bila topiknya membutuhkan (pemugaran, Waisak, Topeng Ireng, petani, festival), dilihat dari samping atau belakang.
 - **Tembakau:** hanya daun hijau di ladang atau di nampan (309, 310); 311 diganti kebun kopi dengan keterangan baru. Tanpa rokok, asap, atau orang merokok.
-- **Keterangan:** gambar mengikuti keterangan yang tampil di bawahnya. Empat gambar mendapat keterangan baru (`PK-18`, `PK-20`, `PK-21`, `PK-29`); tiga yang terakhir sebelumnya tidak punya keterangan.
-- **Foto acuan:** empat tempat belum punya foto di repositori (`PK-01` Gunung Andong, `PK-09` Gunung Tidar, `PK-19` Umbul Jumprit, `PK-20` Parakan); barisnya `blocked: needs reference photo` sampai pengembang menaruh fotonya di `ai-studio/chatgpt-images/inbox/`. Gambar lama dilampirkan hanya untuk isinya, bukan gayanya.
+- **Keterangan:** gambar mengikuti keterangan yang tampil di bawahnya. Lima gambar mendapat keterangan baru (`PK-01`, `PK-18`, `PK-20`, `PK-21`, `PK-29`); `PK-01` karena foto acuannya memperlihatkan Gunung Andong sendiri, bukan pemandangan dari puncaknya; tiga yang terakhir sebelumnya tidak punya keterangan.
+- **Foto acuan:** foto Gunung Andong (`PK-01`) dan Gunung Tidar (`PK-09`) dikirim pengembang 18 November 2026 dan ada di `ai-studio/chatgpt-images/inbox/` (sumber di `reference-sources-2026-11-18.json`). Foto Umbul Jumprit (`PK-19`) dan Parakan (`PK-20`) dikirim hari itu juga, tetapi baru sebagai gambar di percakapan, belum sebagai berkas; promptnya sudah ditulis dari foto itu, barisnya `blocked: needs reference photo` sampai berkasnya ada di `inbox/`. Gambar lama dilampirkan hanya untuk isinya, bukan gayanya.
 - **Kanvas:** 960 × 640 (3 : 2) seperti gambar Pustaka sekarang; sampul video 1280 × 720.
 
-### PK-01 · Pemandangan dari Gunung Andong, Magelang (no. 282)
+### PK-01 · Gunung Andong di atas lautan awan, Magelang (no. 282)
 
 | | |
 |---|---|
 | Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.magelang.p1.1.webp` |
 | Kanvas | 960 × 640 |
-| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/game-images/assets/pustaka/library.magelang.p1.1.webp` (gambar lama: hanya isi, bukan gayanya); **foto acuan belum ada** |
-| Keterangan | "Pemandangan dari Gunung Andong, Magelang" |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Andong-owner-sea-of-clouds-01.jpg` (the shape of Gunung Andong), `ai-studio/chatgpt-images/inbox/reference-Andong-owner-slopes-and-villages-02.webp` (its slopes and villages), `ai-studio/game-images/assets/pustaka/library.magelang.p1.1.webp` (gambar lama: hanya isi, bukan gayanya) |
+| Keterangan | "Gunung Andong di atas lautan awan, Magelang" (baru; EN "Mount Andong above a sea of clouds, Magelang") |
 
 ```text
 GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
 Asset: library.magelang.p1.1  (PK-01 · Pustaka)
 Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
 Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
-The picture sits above this caption: "Pemandangan dari Gunung Andong, Magelang".
+The picture sits above this caption: "Gunung Andong di atas lautan awan, Magelang".
 
 SUBJECT AND COMPOSITION
-The view from the grassy summit ridge of Mount Andong, a small mountain in Magelang: a narrow green ridge path in the foreground, and beyond it a sea of morning mist over the valley with the big volcanoes Merbabu and Merapi rising behind. One small wooden shelter on the ridge.
+Mount Andong, a small steep pyramid-shaped mountain in Magelang, seen from a neighbouring ridge at sunrise: its sharp green summit ridge rises out of a sea of white morning cloud; terraced fields and small villages cover its lower slopes; far behind on the right, the broad shape of Mount Merbabu. A grassy ridge with low shrubs in the foreground.
 People — No people.
-Accuracy — Follow the attached photo of Mount Andong for the ridge and the view. No temple.
+Accuracy — Follow the attached photos for the shape of Andong (one sharp, slightly asymmetric pyramid peak). No temple, no hikers, no tents.
 
 DELIVERY
 Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.magelang.p1.1.webp.
@@ -925,7 +925,7 @@ No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, 
 |---|---|
 | Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.magelang.p7.1.webp` |
 | Kanvas | 960 × 640 |
-| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/game-images/assets/pustaka/library.magelang.p7.1.webp` (gambar lama: hanya isi, bukan gayanya); **foto acuan belum ada** |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Tidar-owner-aerial-forest-town-02.jpg` (Gunung Tidar above the town), `ai-studio/chatgpt-images/inbox/reference-Tidar-owner-aerial-golf-course-01.jpg` (the hill from another side), `ai-studio/game-images/assets/pustaka/library.magelang.p7.1.webp` (gambar lama: hanya isi, bukan gayanya) |
 | Keterangan | "Gunung Tidar, bukit hijau di tengah Kota Magelang" |
 
 ```text
@@ -936,9 +936,9 @@ Library adaptation: an informative picture for a children's reading page. Daylig
 The picture sits above this caption: "Gunung Tidar, bukit hijau di tengah Kota Magelang".
 
 SUBJECT AND COMPOSITION
-Mount Tidar, a rounded hill about 500 metres high covered in tall green forest, rising directly behind the red-tile roofs and tree-lined streets of Magelang city on a clear morning.
+Mount Tidar, a rounded hill about 500 metres high covered in dense green forest, rising directly behind the red-tile roofs and tree-lined streets of Magelang city on a clear morning, seen from a little above.
 People — No people.
-Accuracy — Follow the attached photo for the hill's shape. No military buildings, no grave.
+Accuracy — Follow the attached photos for the hill's rounded shape and dense forest. Do not draw the golf course, military buildings or a grave.
 
 DELIVERY
 Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.magelang.p7.1.webp.
@@ -1216,9 +1216,9 @@ Library adaptation: an informative picture for a children's reading page. Daylig
 The picture sits above this caption: "Mata air Umbul Jumprit di lereng Gunung Sindoro".
 
 SUBJECT AND COMPOSITION
-The Umbul Jumprit spring on the slopes of Mount Sindoro: clear water rising in a stone-edged pool under big old trees, flowing away as the first stream of the Progo river.
+The Umbul Jumprit spring on the slopes of Mount Sindoro: a clear, still pool of spring water in a shaded hollow under a mossy rock wall hung with ferns; a narrow flat stone footbridge runs along one side of the pool to a small terrace at the back, where a dark grey stone split gateway (candi bentar) with stepped sides stands; huge old trees above. Soft daylight through the leaves.
 People — No people.
-Accuracy — Follow the attached photo for the pool and its stone edging. No offerings, no signs.
+Accuracy — Follow the attached photos for the pool, the footbridge and the stone gateway. No offerings, flowers, incense, candles, cloth, statues, signs or people.
 
 DELIVERY
 Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.temanggung.p6.1.webp.
@@ -1227,26 +1227,26 @@ CONSTRAINTS
 No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
 ```
 
-### PK-20 · Parakan, kota tua di Temanggung (no. 316)
+### PK-20 · Parakan di kaki Gunung Sindoro (no. 316)
 
 | | |
 |---|---|
 | Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.temanggung.p7.1.webp` |
 | Kanvas | 960 × 640 |
 | Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/game-images/assets/pustaka/library.temanggung.p7.1.webp` (gambar lama: hanya isi, bukan gayanya); **foto acuan belum ada** |
-| Keterangan | "Parakan, kota tua di Temanggung" (baru; EN "Parakan, an old town in Temanggung") |
+| Keterangan | "Parakan di kaki Gunung Sindoro" (baru; EN "Parakan at the foot of Mount Sindoro") |
 
 ```text
 GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
 Asset: library.temanggung.p7.1  (PK-20 · Pustaka)
 Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
 Library adaptation: an informative picture for a children's reading page. Daylight or the time named below; clear and calm, one main subject, real places, buildings, costumes and food keep their true shapes; only the rendering is stylized 3D (never an oil painting). Do NOT include Jaka, Mbah Kedu, or any recurring boy character. Use attached photos only as factual references; compose a new picture, do not copy a photo.
-The picture sits above this caption: "Parakan, kota tua di Temanggung".
+The picture sits above this caption: "Parakan di kaki Gunung Sindoro".
 
 SUBJECT AND COMPOSITION
-The quiet old main street of Parakan in the morning: a row of old two-storey shophouses with wooden shutters and tiled roofs, trees along the road, Mount Sindoro behind.
+The small town of Parakan in Temanggung seen from a little above in the morning: a dense spread of red and grey tile roofs and low houses on a gently rising slope, a few trees between them, terraced fields at the edge of the town; the big cone of Mount Sindoro rises directly behind the town under a clear blue sky.
 People — No people.
-Accuracy — Follow the attached photo for the buildings. No weapons pointed at anyone; no signs with letters.
+Accuracy — Follow the attached photos for the town and the mountain. No tobacco plants (although they grow near Parakan), no weapons, no signs with letters, no landmark buildings.
 
 DELIVERY
 Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, named library.temanggung.p7.1.webp.
@@ -1590,7 +1590,6 @@ Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, n
 CONSTRAINTS
 No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
 ```
-
 
 ## Daftar periksa hasil
 

@@ -19,4 +19,4 @@ ChatGPT refuses more than five attached files in one conversation, and every row
 
 After a batch, ChatGPT commits only inside `ai-studio/chatgpt-images/` on its own branch and opens a pull request (`../AGENTS.md` → *Saving your work*). The owner then marks each row `accepted` or `redo: reason`, and asks a Claude Code session to install the accepted ones ("Install the accepted pictures from `ai-studio/chatgpt-images/`").
 
-Four Pustaka rows (`PK-01`, `PK-09`, `PK-19`, `PK-20`) need a reference photo from the owner in `../inbox/` first; ChatGPT skips them while they are `blocked`.
+Two Pustaka rows (`PK-19` Umbul Jumprit, `PK-20` Parakan) need the owner's reference photo files in `../inbox/` first; ChatGPT skips them while they are `blocked`.
