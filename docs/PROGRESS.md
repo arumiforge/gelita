@@ -212,4 +212,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pw/vigilant-cray-j6l324` | Skenario Digital redesign and uniform HUD plan (`docs/revisi-10-analitik/41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md`); install of the PR 420 pictures | Plan written (18 Nov 2026); next: clickable mockup of the four states for the owner, then the install of PR 420 |
+| `pw/vigilant-cray-j6l324` | Skenario Digital redesign and uniform HUD plan (`docs/revisi-10-analitik/41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md`); install of the PR 420 pictures | Plan written and clickable mockup sent to the owner (18 Nov 2026, not in the repo: built from the bank texts); PR 420 pictures installed except U-01 to U-05 (moved to step C of 41, with the uniform HUD) and U-07 (blocked); PR 420 merged into this branch, so it can be closed or merged first. Next: the owner reviews the mockup, then the `SD-` orders (41 §5) |

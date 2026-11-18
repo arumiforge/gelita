@@ -93,9 +93,9 @@ Tombol yang belum aktif memakai gambar yang sama dengan tampilan diredupkan (CSS
 
 | Langkah | Isi | Selesai bila |
 | --- | --- | --- |
-| A | Mockup HTML keempat keadaan (keputusan 12) | Pengembang menyetujui atau memberi catatan |
+| A | Mockup HTML keempat keadaan (keputusan 12); dibuat 18 November 2026 dengan cerita `tmg-5-b01` dan cerita terpanjang `wnb-5-a04` (4 tindakan, 5 alasan): semua keadaan muat di 1366 × 768 tanpa panel bergulir | Pengembang menyetujui atau memberi catatan |
 | B | Prompt `SD-` (bagian 8) dan baris `TASKS.md` | Baris berstatus `todo` |
-| C | HUD seragam (bagian 4), satu cabang | Inventaris sebelum/sesudah, uji per jenis layar, cek `tools/qa/stage-check.mjs` |
+| C | HUD seragam (bagian 4), satu cabang, bersama pemasangan pelat emas, biru tua, dan hijau, bingkai jendela, dan bilah perunggu dari [40](40_PROMPT_GAMBAR_ANTARMUKA.md) (`U-01` sampai `U-05`, keputusan pengembang 18 November 2026), karena keduanya menata ulang semua layar | Inventaris sebelum/sesudah, uji per jenis layar, cek `tools/qa/stage-check.mjs` |
 | D | Tampilan baru Skenario Digital di `skenario.php`, `engines/skenario.js`, `stage.css`; teks baru di berkas bahasa (id dan en) | Uji Skenario Digital hijau; keempat keadaan dicek di Chromebook dua ukuran; aturan bagian 2 utuh |
 | E | Pasang gambar `SD-` yang diterima pengembang | Pelat sementara diganti tanpa mengubah tata letak |
 
