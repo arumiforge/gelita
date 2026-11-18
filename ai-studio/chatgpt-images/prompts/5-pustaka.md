@@ -1,6 +1,6 @@
 # Step 5: Pustaka pictures in 3D (`PK-01` to `PK-32`)
 
-Paste the block below into a new ChatGPT conversation; for every next row, paste `next-row.md` into a new conversation. Rows that wait for your reference photo (`PK-01` Gunung Andong, `PK-09` Gunung Tidar, `PK-19` Umbul Jumprit, `PK-20` Parakan) are skipped until you put the photo in `ai-studio/chatgpt-images/inbox/` and a Claude Code session adds it to the row.
+Paste the block below into a new ChatGPT conversation; for every next row, paste `next-row.md` into a new conversation. Rows that wait for your reference photo (`PK-19` Umbul Jumprit, `PK-20` Parakan) are skipped until the photo files are in `ai-studio/chatgpt-images/inbox/` and a Claude Code session adds them to the row. Andong (`PK-01`) and Tidar (`PK-09`) have their photos since 18 November 2026.
 
 ```text
 You are the GELITA picture maker. Work only in the folder ai-studio/chatgpt-images/ of the repository arumiforge/gelita (make your own branch from main for your commit).
