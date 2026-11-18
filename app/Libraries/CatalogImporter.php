@@ -40,7 +40,8 @@ use RuntimeException;
  * - Some entries also fill a second slot (COPY_SLOTS): `avatar.2` stays an
  *   avatar and is copied to the result screen medal `ui.result-medal`.
  * - App icons are converted to PNG, because the `app.*` slots take PNG only;
- *   the favicon is made from the 192 icon, since the catalogue one is
+ *   the favicon is made from the simplified favicon master
+ *   `reference.app-favicon-master` (else the 192 icon), since the catalogue one is
  *   smaller than the slot.
  * - Story slide backgrounds `bg.cerita-intro-NN` / `bg.cerita-penutup-NN`
  *   become `bg.story.{intro|ending}.{n}` and are linked to their slide.
@@ -454,8 +455,9 @@ final class CatalogImporter
         }
 
         if ($key === 'app.favicon.ico') {
-            // The catalogue favicon is 32 px; the slot needs 48 px, so it is made from the 192 icon
-            $source = $byKey['app.icon-192.png']['file'] ?? $entry['file'];
+            // The catalogue favicon is 32 px and the slot needs 48 px: made from the simplified favicon
+            // master (U-35, document 40), else from the 192 icon
+            $source = $byKey['reference.app-favicon-master']['file'] ?? $byKey['app.icon-192.png']['file'] ?? $entry['file'];
             $this->installSlot($key, 'app.favicon', fn (): ?string => $this->png($source, [48, 48], true), $dryRun, $overwrite);
 
             return;

@@ -26,14 +26,13 @@ $status = ['completed' => 'Game.shardDone', 'open' => 'Game.shardOpen', 'locked'
 // Three states only: done, open, locked (owner, 20 October 2026)
 $label = static fn (array $node): string => lang($status[$node['status'] ?? ''] ?? 'Game.shardLocked');
 // One shard: the owner's status medallion when installed (status_badge_src()), else the CSS dot;
-// a locked medallion carries a small lock
+// the locked medallion draws its own padlock (U-11, document 40)
 $shard = static function (array $node, string $inner = ''): string {
     $badge = status_badge_src($node);
     $class = 'shard is-' . ($node['status'] ?? 'locked') . ($badge !== null ? ' has-badge' : '');
 
     return '<span class="' . esc($class) . '" aria-hidden="true">'
         . ($badge !== null ? '<img src="' . esc($badge, 'attr') . '" alt="" decoding="async" draggable="false">' : '')
-        . ($badge !== null && ($node['status'] ?? '') === 'locked' ? icon('lock', 'shard-lock') : '')
         . '</span>' . $inner;
 };
 ?>
