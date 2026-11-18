@@ -6,6 +6,13 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 17 November 2026
 
+**Status dan catatan tinjauan gambar tampil di Katalog Aset publik** (cabang `katalog-aset-halaman`, PR #408) · `asal: pengembang` · `disetujui pengembang` · pengecualian sengaja atas aturan [01 → Peran pengembang, peneliti, dan ahli](01_REVISI_10_ANALITIK.md#peran-pengembang-peneliti-dan-ahli) untuk satu halaman; tidak mengubah dokumen lain
+
+Pengembang memutuskan:
+1. **Halaman publik <https://katalog.gelita.id/> menampilkan semua gambar, musik, efek suara, dan narasi permainan**, termasuk gambar yang memuat jawaban dan gambar tes. Gambar dan suaranya dimuat dari gelita.id, tidak disalin ke repo.
+2. **Setiap gambar membawa lencana status tinjauan dan catatan tinjauan** dari daftar tinjauan pengembang (`ai-studio/game-images/REVIEW.md`), apa adanya: *Dipertahankan*, *Sudah diperbaiki*, *Akan dibuat ulang*, *Dibuat ulang nanti*, *Akan dihapus*, *Belum ditinjau*.
+3. **Risikonya diterima:** pengamat budaya dan ahli media dapat melihat penilaian dan catatan pengembang sebelum mereka menilai. Ini pengecualian sengaja dari aturan bahwa kerja pengembang tidak ditunjukkan ke ahli sebelum menilai, hanya untuk halaman ini. Halaman itu menyebut bahwa tinjauan tersebut pemeriksaan pengembang, bukan penilaian ahli; skor dan tanda pengembang tetap tidak dihitung sebagai validasi ahli.
+
 **Status dokumen di panel admin** (cabang `admin-status-dokumen`) · `asal: pengembang` · `disetujui pengembang` · menambah halaman panel; tidak mengubah status dokumen
 
 Pengembang memutuskan:

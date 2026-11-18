@@ -7,7 +7,10 @@ namespace App\Libraries;
  * written from (owner, 17 November 2026).
  *
  * Each guide section names its sources as `doc.md#anchor` (a heading of a
- * document in docs/revisi-10-analitik/, anchor as GitHub makes it). A lock
+ * document under the guide's documents folder, anchor as GitHub makes it):
+ * docs/revisi-10-analitik/ for the validator guide, docs/ for the GELITA
+ * guide (/admin/panduan-gelita, whose references read
+ * `revisi-10-analitik/01_REVISI_10_ANALITIK.md#…`). A lock
  * file holds the fingerprint each source section had when a developer last
  * checked the guide against it. When a source section's text changes, its
  * fingerprint no longer matches: the guide page shows signed-in staff a
@@ -23,11 +26,19 @@ namespace App\Libraries;
  */
 final class GuideSourceCheck
 {
-    /** Folder the source references are relative to. */
+    /** Folder the validator guide's source references are relative to. */
     public const DOCS = 'docs/revisi-10-analitik/';
+
+    /** Folder the GELITA guide's source references are relative to. */
+    public const GELITA_DOCS = 'docs/';
 
     /** Lock file of the validator guide, relative to ROOTPATH. */
     public const VALIDATOR_LOCK = 'app/Libraries/GuideSources/validator.json';
+
+    /** Lock file of the GELITA guide (/admin/panduan-gelita), relative to ROOTPATH. */
+    public const GELITA_LOCK = 'app/Libraries/GuideSources/gelita.json';
+
+    private const ABOUT = 'Fingerprints of the research-document sections the %s was last checked against. Update with: php spark gelita:panduan:cek --tandai (after checking the guide text).';
 
     public const OK      = 'ok';
     public const CHANGED = 'berubah';
@@ -41,6 +52,8 @@ final class GuideSourceCheck
     public function __construct(
         private readonly string $lockFile,
         private readonly string $root = ROOTPATH,
+        private readonly string $docs = self::DOCS,
+        private readonly string $guideName = 'validator guide',
     ) {
     }
 
@@ -49,10 +62,21 @@ final class GuideSourceCheck
         return new self(ROOTPATH . self::VALIDATOR_LOCK);
     }
 
+    public static function forGelitaGuide(): self
+    {
+        return new self(ROOTPATH . self::GELITA_LOCK, ROOTPATH, self::GELITA_DOCS, 'GELITA guide (/admin/panduan-gelita)');
+    }
+
+    /** Folder the references are relative to, relative to the root (for messages). */
+    public function docsDir(): string
+    {
+        return $this->docs;
+    }
+
     /** Whether the research documents are on this install at all (a server may ship without them). */
     public function docsPresent(): bool
     {
-        return is_dir($this->root . self::DOCS);
+        return is_dir($this->root . $this->docs);
     }
 
     /**
@@ -75,7 +99,7 @@ final class GuideSourceCheck
     public function sectionText(string $ref): ?string
     {
         [$doc, $anchor] = array_pad(explode('#', $ref, 2), 2, '');
-        $path           = $this->root . self::DOCS . $doc;
+        $path           = $this->root . $this->docs . $doc;
 
         if ($doc === '' || ! is_file($path)) {
             return null;
@@ -224,7 +248,7 @@ final class GuideSourceCheck
         }
 
         $json = [
-            'about'   => 'Fingerprints of the research-document sections the validator guide was last checked against. Update with: php spark gelita:panduan:cek --tandai (after checking the guide text).',
+            'about'   => sprintf(self::ABOUT, $this->guideName),
             'sources' => $sources,
         ];
         file_put_contents($this->lockFile, json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n");
