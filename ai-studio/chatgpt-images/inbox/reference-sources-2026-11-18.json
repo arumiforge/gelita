@@ -1,10 +1,87 @@
 {
   "checked_on": "2026-11-18",
-  "purpose": "Owner-supplied photo references for Pustaka rows PK-01 and PK-09 (document 40); references are not finished game artwork.",
+  "purpose": "Owner-supplied photo references for Pustaka rows PK-01, PK-09, PK-19 and PK-20 (document 40); references are not finished game artwork.",
   "sources": [
-    {"file": "reference-Andong-owner-sea-of-clouds-01.jpg", "subject": "Gunung Andong, Magelang, above a sea of morning cloud", "source": "sent by the owner in the Claude Code chat, 18 November 2026", "creator": "not recorded", "license": "not recorded", "license_verified": false, "use": "Factual reference for the shape of Gunung Andong in PK-01 only; never copied"},
-    {"file": "reference-Andong-owner-slopes-and-villages-02.webp", "subject": "Gunung Andong with terraced slopes and villages, Merbabu at the right edge", "source": "sent by the owner in the Claude Code chat, 18 November 2026", "creator": "not recorded", "license": "not recorded", "license_verified": false, "use": "Factual reference for PK-01 only; never copied"},
-    {"file": "reference-Tidar-owner-aerial-golf-course-01.jpg", "subject": "Gunung Tidar seen from the air with the town of Magelang and a golf course", "source": "sent by the owner in the Claude Code chat, 18 November 2026", "creator": "not recorded", "license": "not recorded", "license_verified": false, "use": "Factual reference for the hill's shape in PK-09 only (the golf course is not drawn)"},
-    {"file": "reference-Tidar-owner-aerial-forest-town-02.jpg", "subject": "Gunung Tidar, a forested hill rising directly behind the roofs of Magelang", "source": "sent by the owner in the Claude Code chat, 18 November 2026", "creator": "not recorded", "license": "not recorded", "license_verified": false, "use": "Main factual reference for PK-09; never copied"}
+    {
+      "file": "reference-Andong-owner-sea-of-clouds-01.jpg",
+      "subject": "Gunung Andong, Magelang, above a sea of morning cloud",
+      "source": "sent by the owner in the Claude Code chat, 18 November 2026",
+      "creator": "not recorded",
+      "license": "not recorded",
+      "license_verified": false,
+      "use": "Factual reference for the shape of Gunung Andong in PK-01 only; never copied"
+    },
+    {
+      "file": "reference-Andong-owner-slopes-and-villages-02.webp",
+      "subject": "Gunung Andong with terraced slopes and villages, Merbabu at the right edge",
+      "source": "sent by the owner in the Claude Code chat, 18 November 2026",
+      "creator": "not recorded",
+      "license": "not recorded",
+      "license_verified": false,
+      "use": "Factual reference for PK-01 only; never copied"
+    },
+    {
+      "file": "reference-Tidar-owner-aerial-golf-course-01.jpg",
+      "subject": "Gunung Tidar seen from the air with the town of Magelang and a golf course",
+      "source": "sent by the owner in the Claude Code chat, 18 November 2026",
+      "creator": "not recorded",
+      "license": "not recorded",
+      "license_verified": false,
+      "use": "Factual reference for the hill's shape in PK-09 only (the golf course is not drawn)"
+    },
+    {
+      "file": "reference-Tidar-owner-aerial-forest-town-02.jpg",
+      "subject": "Gunung Tidar, a forested hill rising directly behind the roofs of Magelang",
+      "source": "sent by the owner in the Claude Code chat, 18 November 2026",
+      "creator": "not recorded",
+      "license": "not recorded",
+      "license_verified": false,
+      "use": "Main factual reference for PK-09; never copied"
+    },
+    {
+      "file": "reference-Parakan-owner-Sindoro-above-fields-01.jpg",
+      "subject": "Mount Sindoro above fields near Parakan",
+      "source": "sent by the owner in the Claude Code chat, 18 November 2026",
+      "creator": "not recorded",
+      "license": "not recorded",
+      "license_verified": false,
+      "use": "Shape of Mount Sindoro behind Parakan in PK-20 only; the tobacco in the photo is not drawn"
+    },
+    {
+      "file": "reference-Parakan-owner-town-under-Sindoro-02.webp",
+      "subject": "A hill town of tile roofs under Mount Sindoro",
+      "source": "sent by the owner in the Claude Code chat, 18 November 2026",
+      "creator": "not recorded",
+      "license": "not recorded",
+      "license_verified": false,
+      "use": "Main factual reference for the town in PK-20; never copied"
+    },
+    {
+      "file": "reference-Jumprit-owner-split-gate-01.webp",
+      "subject": "Stone split gate (candi bentar) and shrine gate under big trees at Umbul Jumprit",
+      "source": "sent by the owner in the Claude Code chat, 18 November 2026",
+      "creator": "not recorded",
+      "license": "not recorded",
+      "license_verified": false,
+      "use": "The gate and the trees in PK-19; never copied"
+    },
+    {
+      "file": "reference-Jumprit-owner-spring-pool-night-02.jpg",
+      "subject": "The Umbul Jumprit spring pool with its stone footbridge and split gate, at night",
+      "source": "sent by the owner in the Claude Code chat, 18 November 2026",
+      "creator": "not recorded",
+      "license": "not recorded",
+      "license_verified": false,
+      "use": "The pool, footbridge and gate in PK-19; the offerings are not drawn"
+    },
+    {
+      "file": "reference-Jumprit-owner-spring-pool-day-03.webp",
+      "subject": "The Umbul Jumprit spring pool by day",
+      "source": "sent by the owner in the Claude Code chat, 18 November 2026",
+      "creator": "not recorded",
+      "license": "not recorded",
+      "license_verified": false,
+      "use": "The pool by daylight in PK-19; the statue, cloth and offerings are not drawn"
+    }
   ]
 }

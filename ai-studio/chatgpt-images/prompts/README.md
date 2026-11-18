@@ -1,5 +1,7 @@
 # Ready-to-paste prompts for ChatGPT
 
+**With Codex (repository access): use only `codex-all.md`.** One task makes every open row in order (style board, start page and ending story, Pustaka, and, once you have accepted the style board, the interface), committing after each picture. When it stops, run the same prompt again; it continues from `TASKS.md`. The step files below are for the ChatGPT app, where each conversation takes at most five attached files.
+
 Start prompts for the rows of `../TASKS.md`. The owner copies the text block of one file into a **new** ChatGPT conversation (Codex or the ChatGPT app with this repository connected) and sends it. ChatGPT then reads `../AGENTS.md` and `../TASKS.md` itself; the prompts only say which rows to do and in which order. The picture prompts themselves stay in the documents the rows point at (`docs/revisi-10-analitik/40_PROMPT_GAMBAR_ANTARMUKA.md` for the rows of 18 November 2026).
 
 ChatGPT refuses more than five attached files in one conversation, and every row attaches up to five. So each prompt makes ChatGPT work **one row per conversation**: it finishes one row, then tells the owner which row comes next, and the owner pastes `next-row.md` into a new conversation.
@@ -19,4 +21,4 @@ ChatGPT refuses more than five attached files in one conversation, and every row
 
 After a batch, ChatGPT commits only inside `ai-studio/chatgpt-images/` on its own branch and opens a pull request (`../AGENTS.md` → *Saving your work*). The owner then marks each row `accepted` or `redo: reason`, and asks a Claude Code session to install the accepted ones ("Install the accepted pictures from `ai-studio/chatgpt-images/`").
 
-Two Pustaka rows (`PK-19` Umbul Jumprit, `PK-20` Parakan) need the owner's reference photo files in `../inbox/` first; ChatGPT skips them while they are `blocked`.
+Every Pustaka row has its reference photos since 18 November 2026 (the owner's photos of Andong, Tidar, Umbul Jumprit and Parakan are in `../inbox/`, sources in `reference-sources-2026-11-18.json`).

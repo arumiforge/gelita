@@ -692,7 +692,7 @@ Tiga puluh dua gambar Pustaka yang masih bergaya lukisan (lembar telaah 14 dan 1
 - **Orang:** tidak ada anak berlurik yang muncul berulang; tempat atau bendanya yang menjadi pokok. Orang hanya ada bila topiknya membutuhkan (pemugaran, Waisak, Topeng Ireng, petani, festival), dilihat dari samping atau belakang.
 - **Tembakau:** hanya daun hijau di ladang atau di nampan (309, 310); 311 diganti kebun kopi dengan keterangan baru. Tanpa rokok, asap, atau orang merokok.
 - **Keterangan:** gambar mengikuti keterangan yang tampil di bawahnya. Lima gambar mendapat keterangan baru (`PK-01`, `PK-18`, `PK-20`, `PK-21`, `PK-29`); `PK-01` karena foto acuannya memperlihatkan Gunung Andong sendiri, bukan pemandangan dari puncaknya; tiga yang terakhir sebelumnya tidak punya keterangan.
-- **Foto acuan:** foto Gunung Andong (`PK-01`) dan Gunung Tidar (`PK-09`) dikirim pengembang 18 November 2026 dan ada di `ai-studio/chatgpt-images/inbox/` (sumber di `reference-sources-2026-11-18.json`). Foto Umbul Jumprit (`PK-19`) dan Parakan (`PK-20`) dikirim hari itu juga, tetapi baru sebagai gambar di percakapan, belum sebagai berkas; promptnya sudah ditulis dari foto itu, barisnya `blocked: needs reference photo` sampai berkasnya ada di `inbox/`. Gambar lama dilampirkan hanya untuk isinya, bukan gayanya.
+- **Foto acuan:** foto Gunung Andong (`PK-01`), Gunung Tidar (`PK-09`), Umbul Jumprit (`PK-19`), dan Parakan (`PK-20`) dikirim pengembang 18 November 2026 dan ada di `ai-studio/chatgpt-images/inbox/` (sumber di `reference-sources-2026-11-18.json`). Foto Umbul Jumprit (`PK-19`) dan Parakan (`PK-20`) menyusul hari itu juga sebagai berkas; keempat baris kini bisa dikerjakan. Gambar lama dilampirkan hanya untuk isinya, bukan gayanya.
 - **Kanvas:** 960 × 640 (3 : 2) seperti gambar Pustaka sekarang; sampul video 1280 × 720.
 
 ### PK-01 · Gunung Andong di atas lautan awan, Magelang (no. 282)
@@ -1205,7 +1205,7 @@ No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, 
 |---|---|
 | Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.temanggung.p6.1.webp` |
 | Kanvas | 960 × 640 |
-| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/game-images/assets/pustaka/library.temanggung.p6.1.webp` (gambar lama: hanya isi, bukan gayanya); **foto acuan belum ada** |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Jumprit-owner-spring-pool-day-03.webp` (the pool by day), `ai-studio/chatgpt-images/inbox/reference-Jumprit-owner-spring-pool-night-02.jpg` (pool, footbridge and split gate), `ai-studio/chatgpt-images/inbox/reference-Jumprit-owner-split-gate-01.webp` (the stone gate under big trees), `ai-studio/game-images/assets/pustaka/library.temanggung.p6.1.webp` (gambar lama: hanya isi, bukan gayanya) |
 | Keterangan | "Mata air Umbul Jumprit di lereng Gunung Sindoro" |
 
 ```text
@@ -1233,7 +1233,7 @@ No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, 
 |---|---|
 | Berkas | pengganti `ai-studio/game-images/assets/pustaka/library.temanggung.p7.1.webp` |
 | Kanvas | 960 × 640 |
-| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/game-images/assets/pustaka/library.temanggung.p7.1.webp` (gambar lama: hanya isi, bukan gayanya); **foto acuan belum ada** |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `ai-studio/chatgpt-images/inbox/reference-Parakan-owner-town-under-Sindoro-02.webp` (the town under Sindoro), `ai-studio/chatgpt-images/inbox/reference-Parakan-owner-Sindoro-above-fields-01.jpg` (the shape of Mount Sindoro only; its tobacco is not drawn), `ai-studio/game-images/assets/pustaka/library.temanggung.p7.1.webp` (gambar lama: hanya isi, bukan gayanya) |
 | Keterangan | "Parakan di kaki Gunung Sindoro" (baru; EN "Parakan at the foot of Mount Sindoro") |
 
 ```text
