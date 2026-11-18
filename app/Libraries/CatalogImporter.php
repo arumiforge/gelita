@@ -66,8 +66,9 @@ use RuntimeException;
  *   onto them; an object an admin placed elsewhere stays unless overwriting.
  *
  * Nothing an admin uploaded is replaced unless `$overwrite` is set: a slot is
- * filled when it is empty, a sample (mockup), a bundled default file, or a
- * Commons link. Rows installed by this class carry CREDIT, so an admin can
+ * filled when it is empty, a sample (mockup), a bundled default file, a
+ * Commons link, or a video cover the server downloaded by itself
+ * (VideoThumbnail, 18 November 2026). Rows installed by this class carry CREDIT, so an admin can
  * find what is still interim art; a later run reinstalls such a row only
  * when its catalogue file changed (same re-encoded sha256 → skipped), so a
  * new catalogue edition (e.g. the 24-frame poses of 12 October 2026) reaches
@@ -897,6 +898,10 @@ final class CatalogImporter
             return null; // installSlot() compares it with the catalogue file
         }
 
+        if ($this->isDownloadedThumbnail($row)) {
+            return null; // a video cover the server fetched by itself, not chosen by an admin
+        }
+
         if (! str_starts_with((string) $row['storage_path'], MediaStore::uploadDir())) {
             return null; // bundled default file under public/assets/{ui,bg,…}
         }
@@ -914,6 +919,18 @@ final class CatalogImporter
             ! str_starts_with((string) $row['storage_path'], MediaStore::uploadDir()) => 'mengganti berkas bawaan',
             default                                     => 'mengganti gambar unggahan admin',
         };
+    }
+
+    /**
+     * A video cover VideoThumbnail downloaded by itself (key `library.thumb.*`,
+     * when the library workbook is imported). Until 18 November 2026 such a
+     * cover counted as an admin upload, so no catalogue cover ever replaced it.
+     *
+     * @param array<string, mixed> $row
+     */
+    private function isDownloadedThumbnail(array $row): bool
+    {
+        return str_starts_with((string) ($row['asset_key'] ?? ''), VideoThumbnail::KEY_PREFIX);
     }
 
     /** @param array<string, mixed> $row */

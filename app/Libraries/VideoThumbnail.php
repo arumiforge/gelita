@@ -30,6 +30,12 @@ use CodeIgniter\HTTP\CURLRequest;
  */
 class VideoThumbnail
 {
+    /**
+     * Key prefix of the covers this class downloads by itself. They are no
+     * admin upload: CatalogImporter replaces them with the catalogue's cover.
+     */
+    public const KEY_PREFIX = 'library.thumb.';
+
     /** Penyedia yang dilayani; video unggahan & berkas langsung tidak butuh ini. */
     public const PROVIDERS = ['youtube', 'vimeo', 'drive'];
 
@@ -190,7 +196,7 @@ class VideoThumbnail
      */
     public static function assetKey(string $provider, string $videoId): string
     {
-        return 'library.thumb.' . MediaStore::slug($provider) . '.'
+        return self::KEY_PREFIX . MediaStore::slug($provider) . '.'
             . MediaStore::slug($videoId) . '-' . substr(sha1($videoId), 0, 8);
     }
 
