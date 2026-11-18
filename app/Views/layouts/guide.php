@@ -16,6 +16,29 @@
  * @var class-string<\App\Libraries\GuideContent> $guide
  * @var array<string, mixed> $site
  */
+
+$emblem = media_key_src('ui.logo') ?? media_key_src('ui.lantern');
+
+// The title opens a menu to the other guides and pages (owner, 18 Nov 2026):
+// [href, label, note, current, outside]; an empty href is a separator.
+$base     = $guide::BASE;
+$switchTo = [
+    [base_url('admin/panduan-staf'), lang('Admin.guideTitle'), lang('Admin.guideSwitchStaffNote'), $base === 'admin/panduan-staf', false],
+    [base_url('admin/panduan-validator'), lang('Admin.vguideTitle'), lang('Admin.guideSwitchValidatorNote'), $base === 'admin/panduan-validator', false],
+    [base_url('admin/panduan-gelita'), lang('Admin.gguideTitle'), lang('Admin.guideSwitchGelitaNote'), $base === 'admin/panduan-gelita', false],
+    ['', '', '', false, false],
+    [$guide::CATALOGUE, lang('Admin.guideSwitchCatalogue'), lang('Admin.guideSwitchCatalogueNote'), false, true],
+    $isStaff
+        ? [base_url('admin'), lang('Admin.guideBackToPanel'), lang('Admin.guideSwitchPanelNote'), false, false]
+        : [base_url('admin/login'), lang('Admin.guideSwitchLogin'), lang('Admin.guideSwitchLoginNote'), false, false],
+    [base_url('/'), lang('Admin.guideSwitchGame'), lang('Admin.guideSwitchGameNote'), false, false],
+];
+
+// Validators have no staff account (they use test accounts on the test
+// install), so their guide never offers the staff sign-in page
+if (! $isStaff && $base === 'admin/panduan-validator') {
+    $switchTo = array_values(array_filter($switchTo, static fn (array $row): bool => $row[0] !== base_url('admin/login')));
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -34,10 +57,29 @@
     <button type="button" class="gd-menu-btn btn btn-ghost" aria-controls="gd-nav" aria-expanded="false">
       <?= icon('menu') ?><span><?= esc(lang('Admin.guideMenu')) ?></span>
     </button>
-    <a class="gd-brand" href="<?= esc($guide::url() . $query, 'attr') ?>">
-      <span class="sidebar-mark" aria-hidden="true">G</span>
-      <span>GELITA <small><?= esc($site['title']) ?></small></span>
-    </a>
+    <details class="gd-switch">
+      <summary class="gd-brand" aria-label="<?= esc(lang('Admin.guideSwitch', [$site['title']]), 'attr') ?>">
+        <img class="gd-emblem<?= $emblem === null ? ' is-icon' : '' ?>" src="<?= esc($emblem ?? base_url('assets/app/icon.svg'), 'attr') ?>" alt="" width="40" height="40" decoding="async">
+        <span class="gd-brand-title"><?= esc($site['title']) ?></span>
+        <?= icon('down', 'gd-switch-chevron') ?>
+      </summary>
+      <div class="gd-switch-menu">
+        <ul>
+          <?php foreach ($switchTo as [$href, $label, $note, $here, $outside]): ?>
+            <?php if ($href === ''): ?>
+              <li class="gd-switch-sep" role="separator"></li>
+            <?php else: ?>
+              <li>
+                <a href="<?= esc($href, 'attr') ?>"<?= $here ? ' aria-current="page"' : '' ?><?= $outside ? ' target="_blank" rel="noopener"' : '' ?>>
+                  <span class="gd-switch-label"><?= esc($label) ?></span>
+                  <span class="gd-switch-note"><?= esc($note) ?></span>
+                </a>
+              </li>
+            <?php endif ?>
+          <?php endforeach ?>
+        </ul>
+      </div>
+    </details>
     <div class="gd-bar-end">
       <?php if ($isStaff): ?>
         <?php if ($site['signIn']): ?><span class="gd-role"><?= esc(lang('Admin.guideReadingAs', [$roleName])) ?></span><?php endif ?>

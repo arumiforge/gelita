@@ -1,9 +1,6 @@
 {
     "about": "Fingerprints of the research-document sections the GELITA guide (/admin/panduan-gelita) was last checked against. Update with: php spark gelita:panduan:cek --tandai (after checking the guide text).",
     "sources": {
-        "02_PROJECT_FOUNDATION.md#2-tumpukan-teknologi": "8f07ecbffc0e",
-        "06_JAVASCRIPT.md#prinsip": "f4ba2281180b",
-        "arsip/CATATAN_IMPLEMENTASI-2026-10.md#perbaikan-sebelum-dok-3--temuan-tinjauan-dok-2": "631c470764e4",
         "perombakan-kelas5/01_FONDASI_DATA_DAN_RESET.md#0-cara-memakai-ketiga-dokumen": "c78683bdd86b",
         "perombakan-kelas5/01_FONDASI_DATA_DAN_RESET.md#1-permintaan--keputusan--tempat-pengerjaan": "402b24ae491f",
         "perombakan-kelas5/01_FONDASI_DATA_DAN_RESET.md#2-yang-tidak-boleh-berubah": "56b9ce940494",
@@ -25,7 +22,6 @@
         "revisi-10-analitik/01_REVISI_10_ANALITIK.md#skema-kategori-kesalahan": "f20d3731e277",
         "revisi-10-analitik/01_REVISI_10_ANALITIK.md#skenario-digital-tantangan-kelima": "7ef90eb97727",
         "revisi-10-analitik/01_REVISI_10_ANALITIK.md#token-sesi-perlu-atau-tidak": "1f9fbf71998d",
-        "revisi-10-analitik/04_CATATAN_KEPUTUSAN.md#1-november-2026": "f86d7d543b75",
         "revisi-10-analitik/04_CATATAN_KEPUTUSAN.md#15-november-2026": "38d8322dabdf",
         "revisi-10-analitik/04_CATATAN_KEPUTUSAN.md#23-oktober-2026": "06749e8cce3b",
         "revisi-10-analitik/04_CATATAN_KEPUTUSAN.md#25-oktober-2026": "fb48ac90c909",

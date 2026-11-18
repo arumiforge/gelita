@@ -1380,9 +1380,34 @@ body.auth { display: grid; min-height: 100vh; place-items: center; padding: 24px
   border-bottom: 1px solid var(--line); background: rgba(255, 255, 255, .94);
   backdrop-filter: saturate(1.4) blur(8px);
 }
-.gd-brand { display: flex; align-items: center; gap: 12px; color: var(--text); font-size: 17px; font-weight: 700; }
+.gd-brand { display: flex; align-items: center; gap: 12px; min-width: 0; color: var(--text); font-size: 17px; font-weight: 700; }
 .gd-brand:hover { color: var(--text); text-decoration: none; }
 .gd-brand small { margin-left: 6px; color: var(--text-dim); font-size: 15px; font-weight: 500; white-space: nowrap; }
+/* The lantern emblem and the guide's title, no "GELITA" word mark (owner, 18 Nov 2026) */
+.gd-emblem { flex: none; width: 40px; height: 40px; object-fit: contain; }
+.gd-emblem.is-icon { width: 34px; height: 34px; border-radius: 9px; }
+.gd-brand-title { font-size: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* The title as a menu to the other guides and pages (owner, 18 Nov 2026) */
+.gd-switch { position: relative; min-width: 0; }
+.gd-switch > summary { list-style: none; cursor: pointer; padding: 6px 10px 6px 6px; margin-left: -6px; border-radius: var(--radius); }
+.gd-switch > summary::-webkit-details-marker { display: none; }
+.gd-switch > summary:hover, .gd-switch[open] > summary { background: var(--surface-2); }
+.gd-switch > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.gd-switch-chevron { flex: none; width: 18px; height: 18px; color: var(--text-dim); transition: transform .15s; }
+.gd-switch[open] .gd-switch-chevron { transform: rotate(180deg); }
+.gd-switch-menu {
+  position: absolute; top: calc(100% + 8px); left: -6px; z-index: 60;
+  width: min(360px, calc(100vw - 32px)); padding: 8px;
+  border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--shadow-pop);
+}
+.gd-switch-menu ul { display: grid; gap: 2px; margin: 0; padding: 0; list-style: none; }
+.gd-switch-menu a { display: grid; gap: 2px; padding: 10px 12px; border-radius: var(--radius); color: var(--text); }
+.gd-switch-menu a:hover { background: var(--accent-soft); text-decoration: none; }
+.gd-switch-menu a[aria-current] { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+.gd-switch-label { font-size: 16px; font-weight: 700; }
+.gd-switch-menu a[aria-current] .gd-switch-label { color: var(--accent); }
+.gd-switch-note { color: var(--text-dim); font-size: 14px; line-height: 1.4; }
+.gd-switch-sep { height: 1px; margin: 6px 4px; background: var(--line); }
 .gd-bar-end { display: flex; align-items: center; gap: 12px; margin-left: auto; }
 .gd-role { color: var(--text-2); font-size: 14px; font-weight: 600; white-space: nowrap; }
 .gd-menu-btn { display: none; }
@@ -1435,13 +1460,25 @@ body.auth { display: grid; min-height: 100vh; place-items: center; padding: 24px
 .gd-search-empty { margin: 12px 10px; color: var(--text-dim); font-size: 14px; }
 
 /* Page */
-.gd-main { min-width: 0; padding: 48px clamp(24px, 5vw, 80px) 80px; outline: none; }
-.gd-article { max-width: 1040px; margin: 0 auto; color: var(--text-2); line-height: 1.7; }
+/* The page takes 90% of the space beside the menu: 5% on each side (owner, 18 Nov 2026) */
+.gd-main { min-width: 0; padding: 40px max(16px, 5%) 80px; outline: none; }
+.gd-article { max-width: none; margin: 0; color: var(--text-2); line-height: 1.7; }
 .gd-eyebrow { margin: 0 0 8px; color: var(--accent); font-size: 15px; font-weight: 600; }
 .gd-title { margin: 0; color: var(--text); font-size: clamp(30px, 3vw, 38px); line-height: 1.2; font-weight: 700; letter-spacing: -.01em; }
 .gd-lead { margin: 14px 0 0; color: var(--text-dim); font-size: 20px; line-height: 1.6; }
 .gd-article > * + * { margin-top: 28px; }
-.gd-article > .gd-eyebrow + * { margin-top: 0; }
+.gd-article > .gd-eyebrow + *, .gd-article > .gd-crumbs + * { margin-top: 0; }
+
+/* Breadcrumb on a topic page: guide home › chapter › topic */
+.gd-crumbs { margin-bottom: 14px; font-size: 15px; }
+.gd-crumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 0; margin: 0; padding: 0; list-style: none; }
+.gd-crumbs li { display: inline-flex; align-items: center; min-width: 0; }
+.gd-crumbs li + li::before { content: "›"; margin: 0 10px; color: var(--text-dim); }
+.gd-crumbs a { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-weight: 600; }
+.gd-crumbs a .icon { width: 16px; height: 16px; }
+.gd-crumbs [aria-current] { color: var(--text-2); }
+.gd-cards > li[id] { scroll-margin-top: 88px; }
+.gd-cards > li:target .gd-card { border-color: var(--accent); box-shadow: var(--shadow-pop); }
 .gd-article > .gd-title + .gd-lead { margin-top: 14px; }
 .gd-h2 { margin: 48px 0 0; color: var(--text); font-size: 24px; line-height: 1.3; font-weight: 700; }
 .gd-article code { padding: 1px 6px; border-radius: 6px; background: var(--surface-2); border: 1px solid var(--line); color: var(--text); font-family: var(--mono); font-size: .88em; white-space: nowrap; }
@@ -1492,6 +1529,8 @@ body.auth { display: grid; min-height: 100vh; place-items: center; padding: 24px
 .gd-term:last-child { border-bottom: 0; }
 .gd-term:target { background: var(--accent-soft); }
 .gd-term dt { color: var(--text); font-weight: 700; }
+.gd-term-kind, .term-pop-kind { display: block; color: var(--accent); font-size: 13px; font-weight: 600; letter-spacing: .02em; text-transform: uppercase; }
+.gd-term-links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
 .gd-term dd { margin: 0; }
 .gd-term dd > * + * { margin-top: 8px; }
 .gd-term dd p { margin: 0; }
@@ -1536,9 +1575,11 @@ body.auth { display: grid; min-height: 100vh; place-items: center; padding: 24px
   text-decoration: underline dotted var(--accent); text-decoration-thickness: 2px; text-underline-offset: 4px;
 }
 .term:hover, .term:focus-visible { color: var(--accent); }
+.term-glue { white-space: nowrap; }
+.term-glue > .term { white-space: normal; }
 .term:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
 .term-pop {
-  width: min(400px, calc(100vw - 32px)); margin: auto; padding: 18px 20px;
+  width: min(420px, calc(100vw - 32px)); max-height: calc(100vh - 32px); overflow-y: auto; margin: auto; padding: 18px 20px;
   border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface);
   box-shadow: var(--shadow-pop); color: var(--text-2); font-size: 16px; line-height: 1.6;
 }
@@ -1547,7 +1588,11 @@ body.auth { display: grid; min-height: 100vh; place-items: center; padding: 24px
 .term-pop p { margin: 0; }
 .term-pop code { padding: 1px 5px; border-radius: 5px; background: var(--surface-2); border: 1px solid var(--line); font-family: var(--mono); font-size: .88em; }
 .term-pop-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-.term-pop-title { color: var(--text); font-size: 17px; font-weight: 700; }
+.term-pop-title { color: var(--text); font-size: 18px; font-weight: 700; line-height: 1.35; }
+.term-pop-kind { margin-bottom: 2px !important; }
+.term-pop-picture { display: block; width: 100%; max-height: 180px; object-fit: contain; border-radius: var(--radius); background: #0B1320; }
+.term-pop-links { display: grid; gap: 6px; padding-top: 10px; border-top: 1px solid var(--line); }
+.term-pop-links .term-pop-more { padding-top: 0; border-top: 0; }
 .term-pop-close { display: grid; place-items: center; flex: none; width: 32px; height: 32px; margin: -6px -8px 0 0; border: 0; border-radius: var(--radius); background: none; color: var(--text-dim); cursor: pointer; }
 .term-pop-close:hover { background: var(--surface-2); color: var(--text); }
 .term-pop-close .icon { width: 18px; height: 18px; }

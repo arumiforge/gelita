@@ -208,3 +208,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `pw/quirky-hopper-2twfsw` | Mengenal GELITA for readers: rich term popovers for every code, plain words instead of developer terms, no repository documents, no technology chapter, journey without dates; all guides: lantern and title menu, breadcrumb, 90% width; catalogue `#tantangan/…` links (decision log *Mengenal GELITA for readers*) | Done, PR open. Open: [ ] owner reads the guide once; [ ] rebuild of katalog.gelita.id deployed so `#tantangan/{engine}` filters (until then the link opens the full picture list) |

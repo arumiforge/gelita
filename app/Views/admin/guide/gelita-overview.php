@@ -13,7 +13,7 @@
  * @var class-string<\App\Libraries\GuideContent> $guide
  * @var array<string, mixed>       $site
  */
-$icons = ['mulai' => 'compass', 'asal' => 'flask', 'model' => 'target', 'konstruk' => 'chart', 'permainan' => 'puzzle', 'kelas5' => 'grid', 'revisi10' => 'shield', 'lapangan' => 'map', 'teknologi' => 'database', 'menyatu' => 'link'];
+$icons = ['mulai' => 'compass', 'asal' => 'flask', 'model' => 'target', 'konstruk' => 'chart', 'permainan' => 'puzzle', 'kelas5' => 'grid', 'revisi10' => 'shield', 'lapangan' => 'map', 'menyatu' => 'link'];
 ?>
 <?= $this->extend('layouts/guide') ?>
 
@@ -28,7 +28,7 @@ $icons = ['mulai' => 'compass', 'asal' => 'flask', 'model' => 'target', 'konstru
   <h2 class="gd-h2"><?= esc(lang('Admin.guideChapters')) ?></h2>
   <ul class="gd-cards">
     <?php foreach ($chapters as $chapter): ?>
-      <li>
+      <li id="bab-<?= esc($chapter['id'], 'attr') ?>">
         <a class="gd-card" href="<?= esc($guide::url($chapter['sections'][0]['id']) . $query, 'attr') ?>">
           <span class="gd-card-icon" aria-hidden="true"><?= icon($icons[$chapter['id']] ?? 'book') ?></span>
           <span class="gd-card-title"><?= esc($chapter['title']) ?></span>

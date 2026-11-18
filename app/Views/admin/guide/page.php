@@ -2,8 +2,9 @@
 /**
  * One staff guide topic — /admin/panduan-staf/{id} → StaffGuideController::page.
  *
- * The chapter as eyebrow, the topic as title, its lead, then its parts in a
- * fixed order (steps, warning, table, list, note; the glossary entries on
+ * A breadcrumb (guide home › chapter, which links to the chapter's card on
+ * the home page › this topic; owner, 18 November 2026), the topic as title,
+ * its lead, then its parts in a fixed order (steps, warning, table, list, note; the glossary entries on
  * the glossary page), and previous/next cards. A step's page link shows
  * only when the reader may open that page; a guest sees the page name.
  * Glossary terms in the text open a popover (admin/guide/_terms).
@@ -15,8 +16,9 @@
  * @var list<array{0: string, 1: string}> $facts live facts of this install (validator guide; guide markup allowed in the value)
  * @var list<string>              $stale    changed sources, shown to signed-in staff only (validator and GELITA guides)
  *
- * GELITA guide parts (after the note): `why` (the reasons, "Mengapa begini"),
- * `refs` (works cited) and `docs` (repository documents to open).
+ * GELITA guide parts (after the note): `why` (the reasons, "Mengapa begini")
+ * and `refs` (works cited). Repository documents are not shown to readers
+ * (owner, 18 November 2026).
  * @var string                    $query
  * @var bool                      $isStaff
  */
@@ -47,7 +49,13 @@ foreach ($chapters as $chapter) {
 
 <?= $this->section('content') ?>
 <article class="gd-article" id="<?= esc($section['id'], 'attr') ?>" aria-labelledby="gd-title">
-  <p class="gd-eyebrow"><?= esc($section['chapterTitle']) ?></p>
+  <nav class="gd-crumbs" aria-label="<?= esc(lang('Admin.guideBreadcrumb'), 'attr') ?>">
+    <ol>
+      <li><a href="<?= esc($guide::url() . $query, 'attr') ?>"><?= icon('home') ?><span><?= esc($site['title']) ?></span></a></li>
+      <li><a href="<?= esc($guide::url() . $query . '#bab-' . $section['chapter'], 'attr') ?>"><?= esc($section['chapterTitle']) ?></a></li>
+      <li><span aria-current="page"><?= esc($section['title']) ?></span></li>
+    </ol>
+  </nav>
   <h1 class="gd-title" id="gd-title"><?= esc($section['title']) ?></h1>
 
   <?php if (! empty($section['lead'])): ?>
@@ -88,7 +96,7 @@ foreach ($chapters as $chapter) {
     <?php [$head, $rows] = $section['table'] ?>
     <div class="gd-table">
       <table>
-        <thead><tr><?php foreach ($head as $cell): ?><th scope="col"><?= esc($cell) ?></th><?php endforeach ?></tr></thead>
+        <thead><tr><?php foreach ($head as $cell): ?><th scope="col"><?= $inline($cell) ?></th><?php endforeach ?></tr></thead>
         <tbody>
           <?php foreach ($rows as $row): ?>
             <tr><?php foreach ($row as $i => $cell): ?><<?= $i === 0 ? 'th scope="row"' : 'td' ?>><?= $inline($cell) ?></<?= $i === 0 ? 'th' : 'td' ?>><?php endforeach ?></tr>
@@ -132,27 +140,26 @@ foreach ($chapters as $chapter) {
     </section>
   <?php endif ?>
 
-  <?php if (! empty($section['docs'])): ?>
-    <section class="gd-refs" aria-labelledby="gd-docs-title">
-      <h2 class="gd-h3" id="gd-docs-title"><?= esc(lang('Admin.gguideDocs')) ?></h2>
-      <ul class="gd-ref-list">
-        <?php foreach ($section['docs'] as $item): ?>
-          <li><?= $inline($item) ?></li>
-        <?php endforeach ?>
-      </ul>
-    </section>
-  <?php endif ?>
-
   <?php if (! empty($section['glossary'])): ?>
     <dl class="gd-glossary">
       <?php foreach ($guide::terms() as $key => $term): ?>
         <div class="gd-term" id="istilah-<?= esc($key, 'attr') ?>">
-          <dt><?= esc($term['term']) ?></dt>
+          <dt>
+            <?php if (! empty($term['kind'])): ?><span class="gd-term-kind"><?= esc($term['kind']) ?></span><?php endif ?>
+            <?= esc($term['term']) ?>
+          </dt>
           <dd>
             <p><?= $inline($term['def']) ?></p>
             <p class="gd-example"><span><?= esc(lang('Admin.guideExample')) ?></span> <?= $inline($term['example']) ?></p>
-            <?php if ($term['more'] !== null): ?>
-              <a class="gd-term-more" href="<?= esc($guide::url($term['more']) . $query, 'attr') ?>"><?= esc(lang('Admin.guideTermMore', [$titles[$term['more']] ?? ''])) ?> <?= icon('arrow-right') ?></a>
+            <?php if ($term['more'] !== null || ! empty($term['catalogue'])): ?>
+              <p class="gd-term-links">
+                <?php if ($term['more'] !== null): ?>
+                  <a class="gd-term-more" href="<?= esc($guide::url($term['more']) . $query, 'attr') ?>"><?= esc(lang('Admin.guideTermMore', [$titles[$term['more']] ?? ''])) ?> <?= icon('arrow-right') ?></a>
+                <?php endif ?>
+                <?php if (! empty($term['catalogue'])): ?>
+                  <a class="gd-term-more" href="<?= esc($guide::CATALOGUE . '#' . $term['catalogue'], 'attr') ?>" target="_blank" rel="noopener"><?= icon('image') ?> <?= esc(lang('Admin.guideTermCatalogue')) ?></a>
+                <?php endif ?>
+              </p>
             <?php endif ?>
           </dd>
         </div>

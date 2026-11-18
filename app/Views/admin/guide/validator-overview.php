@@ -32,7 +32,7 @@ $icons = ['mulai' => 'compass', 'b5a' => 'eye', 'materi' => 'book', 'budaya' => 
   <h2 class="gd-h2"><?= esc(lang('Admin.guideChapters')) ?></h2>
   <ul class="gd-cards">
     <?php foreach ($chapters as $chapter): ?>
-      <li>
+      <li id="bab-<?= esc($chapter['id'], 'attr') ?>">
         <a class="gd-card<?= $chapter['mine'] ? ' is-mine' : '' ?>" href="<?= esc($guide::url($chapter['sections'][0]['id']) . $query, 'attr') ?>">
           <span class="gd-card-icon" aria-hidden="true"><?= icon($icons[$chapter['id']] ?? 'book') ?></span>
           <span class="gd-card-title"><?= esc($chapter['title']) ?></span>
