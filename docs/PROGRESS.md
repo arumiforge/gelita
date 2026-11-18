@@ -212,4 +212,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `pw/laughing-clarke-6js8r6` | Install the researcher-checked pictures of document 40 (`S-02`–`S-05`, `PK-01`–`PK-32`, `U-00`); the importer now replaces downloaded video thumbnails with the catalogue's covers | Installed and tested (`CatalogImportTest`, `CatalogSiteTest`, related test files, full suite, `gelita:katalog:impor` on a MariaDB dev install). PR #421 |
