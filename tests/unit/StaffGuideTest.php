@@ -109,7 +109,8 @@ final class StaffGuideTest extends CIUnitTestCase
             StaffGuideContent::inline('**Simpan** lalu `RESET`, lihat [L0](#lembar) <script>', '?peran=ketua'),
         );
         $this->assertSame(
-            'buka <button type="button" class="term" popovertarget="istilah-pop-token">token baru</button> dan <button type="button" class="term" popovertarget="istilah-pop-rombel">Rombel</button>, tidak-ada',
+            // A term with a mark right after it stays on one line with the mark (owner, 18 Nov 2026)
+            'buka <button type="button" class="term" popovertarget="istilah-pop-token">token baru</button> dan <span class="term-glue"><button type="button" class="term" popovertarget="istilah-pop-rombel">Rombel</button>,</span> tidak-ada',
             StaffGuideContent::inline('buka [[token baru|token]] dan [[rombel]], [[tidak-ada]]'),
         );
         $this->assertStringNotContainsString('<b>x', StaffGuideContent::inline('[[<b>x</b>|token]]'), 'term text escaped');

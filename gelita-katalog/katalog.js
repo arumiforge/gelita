@@ -302,6 +302,18 @@
   function showTab() {
     var hash = decodeURIComponent(location.hash.replace(/^#/, ''));
     var tab = hash.split('/')[0];
+
+    // Filtered picture list, linked from the Mengenal GELITA guide's popovers:
+    // #tantangan/rumpang (one challenge), #kelompok/library (one category)
+    var filters = { tantangan: 'img-c', kelompok: 'img-g' };
+    if (filters[tab]) {
+      var select = $(filters[tab]);
+      var value = hash.split('/')[1] || '';
+      ['img-q', 'img-g', 'img-r', 'img-c', 'img-s'].forEach(function (id) { $(id).value = ''; });
+      if ([].some.call(select.options, function (o) { return o.value === value; })) { select.value = value; }
+      tab = 'gambar';
+      rendered.gambar = false;
+    }
     if (['gambar', 'musik', 'efek', 'narasi'].indexOf(tab) === -1) { tab = 'gambar'; }
 
     document.querySelectorAll('.tab').forEach(function (section) { section.hidden = section.id !== 'tab-' + tab; });
