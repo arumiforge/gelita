@@ -490,12 +490,25 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
   100% { background-position: 300% 0, 0 0, left center, 0 0; }
 }
 /* The crystal (frame px 155–270 × 65–300): a glow over it, brighter per completed region */
+/* The crystal (U-36, 19 November 2026) is its own picture in the frame's empty socket (U-07):
+   the socket box of document 40 (5.29 %, 17.7 %, 10.57 × 65.3 % of the frame); the glow lies
+   over it in the same box */
+.hud-shards .lantern-toggle::before {
+  content: "";
+  position: absolute;
+  top: 17.7%;
+  left: 5.29%;
+  width: 10.57%;
+  height: 65.3%;
+  background: var(--shards-crystal) center / 100% 100% no-repeat;
+  pointer-events: none;
+}
 .hud-shards .lantern-gem {
   position: absolute;
-  top: 15.8%;
-  left: 7%;
-  width: 7.2%;
-  height: 57%;
+  top: 17.7%;
+  left: 5.29%;
+  width: 10.57%;
+  height: 65.3%;
   border-radius: 50%;
   background: radial-gradient(closest-side, rgba(255, 236, 190, .55), rgba(255, 170, 60, .25) 55%, rgba(255, 150, 40, 0));
   mix-blend-mode: screen;
