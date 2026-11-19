@@ -54,8 +54,8 @@ body { display: flex; flex-direction: column; }
 .exit img { width: 48px; height: 48px; }
 
 /* Panels: no frame, no extra background (decision 1) */
-.left { left: 32px; top: 104px; width: 600px; height: 584px; display: flex; flex-direction: column; padding: 8px 16px 14px; border-radius: 16px; background: rgba(11, 19, 32, .78); border: 1.5px solid rgba(223, 192, 135, .6); box-shadow: 0 8px 24px rgba(0, 0, 0, .4); }
-.right { left: 664px; top: 104px; width: 584px; height: 584px; display: flex; flex-direction: column; }
+.left { left: 32px; top: 104px; width: 600px; height: 584px; display: flex; flex-direction: column; padding: 8px 16px 14px; border-radius: 16px; background: linear-gradient(160deg, rgba(24, 58, 60, .94), rgba(8, 21, 26, .94)); border: 1.5px solid rgba(223, 192, 135, .6); box-shadow: 0 8px 24px rgba(0, 0, 0, .4); }
+.right { left: 664px; top: 104px; width: 584px; height: 584px; display: flex; flex-direction: column; padding: 14px 18px 14px; border-radius: 16px; background: linear-gradient(160deg, rgba(24, 58, 60, .94), rgba(8, 21, 26, .94)); border: 1.5px solid rgba(223, 192, 135, .6); box-shadow: 0 8px 24px rgba(0, 0, 0, .4); }
 .divline { left: 648px; top: 120px; width: 1px; height: 552px; background: linear-gradient(transparent, rgba(223, 192, 135, .35), transparent); }
 
 .story-head { display: flex; align-items: center; gap: 14px; height: 40px; flex: none; font: 600 18px 'Jakarta'; }
@@ -77,22 +77,20 @@ body { display: flex; flex-direction: column; }
 .player.is-playing .wave i { animation: wave 1s ease-in-out infinite; animation-delay: var(--d); opacity: 1; }
 @keyframes wave { 0%, 100% { transform: scaleY(.35); } 50% { transform: scaleY(1); } }
 .player .dur { font: 600 15px 'Jakarta'; color: var(--muted); font-variant-numeric: tabular-nums; }
-.situation { margin: 12px 0 0; font-size: var(--sit-fs, 20px); line-height: 1.45; }
+.situation { margin: 12px 0 0; padding: 0 14px; font-size: var(--sit-fs, 20px); line-height: 1.45; }
 
 /* Right panel */
 .toggle { align-self: center; display: flex; padding: 3px; border-radius: 24px; background: rgba(11, 19, 32, .85); border: 1px solid rgba(223, 192, 135, .55); }
 .toggle span { padding: 7px 22px; border-radius: 20px; font: 600 17px 'Jakarta'; color: var(--muted); }
 .toggle span b { margin-right: 6px; font-weight: 700; }
 .toggle span.is-on { background: linear-gradient(var(--gold-hi), var(--gold)); color: var(--ink); }
-.question { margin: 14px 0 0; text-align: center; font: 400 31px/1.15 'Marcellus', serif; color: var(--gold-hi); }
-.question.is-small { font-size: 25px; }
-.hintbox { margin: 12px 0 0; border-radius: 14px; background: rgba(11, 19, 32, .86); border: 1px solid rgba(223, 192, 135, .45); }
-.hintbox .player { height: 42px; gap: 10px; padding: 0 14px 0 6px; border: 0; background: none; border-radius: 0; }
-.hintbox .player .round { width: 32px; height: 32px; }
-.hintbox .player .lbl { font-size: 15px; }
-.instr { margin: 0; padding: 8px 18px 10px; font-size: 16px; line-height: 1.4; color: var(--muted); text-align: left; }
-.hintbox .player + .instr { border-top: 1px solid rgba(223, 192, 135, .3); }
-.chosen { margin: 12px 0 0; padding: 9px 16px; border-radius: 10px; background: rgba(27, 39, 64, .75); border-left: 4px solid var(--gold); font-size: 16px; }
+.question { margin: 12px 0 0; text-align: left; font: 400 29px/1.15 'Marcellus', serif; color: var(--gold-hi); }
+.question.is-small { font-size: 26px; }
+.hintbox { margin: 10px 0 0; display: flex; align-items: flex-start; gap: 10px; padding: 8px 16px 8px 8px; border-radius: 12px; background: rgba(5, 14, 18, .55); border: 1px solid rgba(223, 192, 135, .4); }
+.hintbox .round { width: 32px; height: 32px; flex: none; }
+.instr { margin: 0; padding-top: 5px; font-size: 16px; line-height: 1.4; color: var(--cream); text-align: left; }
+.chosen { margin: 12px 0 0; display: flex; align-items: flex-start; gap: 10px; padding: 0 4px 12px; border-bottom: 1px solid rgba(223, 192, 135, .3); font-size: 16px; line-height: 1.4; }
+.chosen .mk { flex: none; color: var(--gold); font-size: 18px; line-height: 22px; }
 .chosen b { color: var(--gold); font-weight: 600; }
 .options { margin: 14px 0 0; display: flex; flex-direction: column; gap: var(--gap, 10px); }
 .opt { display: flex; align-items: center; gap: 14px; min-height: 54px; padding: 8px 18px; border-radius: 12px; cursor: pointer;
@@ -171,8 +169,8 @@ function render() {
     right = `
       <div class="toggle" aria-hidden="true"><span class="${isAction ? 'is-on' : ''}"><b>1</b>Tindakan</span><span class="${isAction ? '' : 'is-on'}"><b>2</b>Alasan</span></div>
       ${isAction ? `<h2 class="question">Apa yang akan kamu lakukan?</h2>
-        <div class="hintbox">${voiced ? player('instr', 'Dengarkan petunjuk', '') : ''}<p class="instr">Bacalah ceritanya. Pilih apa yang akan kamu lakukan, lalu pilih alasanmu.</p></div>`
-      : `<p class="chosen"><b>Pilihanmu:</b> ${esc(sc.actions[state.action ?? 0].text)}</p>
+        <div class="hintbox">${voiced ? `<button class="round" type="button" data-act="play" data-which="instr" title="Dengarkan petunjuk"><img src="${state.playing === 'instr' ? IMG.pause : IMG.play}" alt="Dengarkan petunjuk"></button>` : ''}<p class="instr">Bacalah ceritanya. Pilih apa yang akan kamu lakukan, lalu pilih alasanmu.</p></div>`
+      : `<p class="chosen"><span class="mk" aria-hidden="true">↳</span><span><b>Pilihanmu</b> · ${esc(sc.actions[state.action ?? 0].text)}</span></p>
         <h2 class="question is-small">Yang paling penting kupikirkan di sini adalah …</h2>`}
       <div class="options" role="radiogroup">${optionsHtml}</div>
       <div class="actions">
