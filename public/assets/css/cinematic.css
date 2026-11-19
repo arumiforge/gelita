@@ -765,7 +765,7 @@ body.is-cinematic .scene-img:is(.is-visible, .is-leaving),
 
 /* The HUD band lets taps through to the page dots; its own controls still take them */
 body.is-cinematic .hud { pointer-events: none; }
-body.is-cinematic :is(.hud-identity, .hud-controls, .hud-shards, .hud-back-plate) { pointer-events: auto; }
+body.is-cinematic :is(.hud-identity, .hud-controls, .hud-end, .hud-shards) { pointer-events: auto; }
 
 /* The dots alone, level with the centre of the HUD controls (y 55) */
 .cine-top {
@@ -1107,6 +1107,10 @@ body.is-cinematic .nav-bar .btn {
   animation: diff-shine 5s ease-in-out 1.6s infinite;
   pointer-events: none;
 }
+/* In the HUD row (56 dp tall on every band since the uniform HUD, 19 November 2026) the badge is a
+   little flatter, so it stays inside the row and the stage: about 50 dp instead of 60 */
+.hud-controls .region-difficulty { padding-block: .25rem; }
+.hud-controls .region-difficulty-level { font-size: 1.375rem; }
 .region-difficulty-meter { display: flex; align-items: flex-end; gap: .25rem; height: 1.875rem; }
 .region-difficulty-meter i {
   width: .625rem;

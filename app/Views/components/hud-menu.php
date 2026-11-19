@@ -4,7 +4,9 @@
  * mockup package tantangan-selesai-temanggung, removed 15 November 2026 and
  * in git history). Every
  * page uses it (owner, 18 October 2026: the same logo, language, sound, and
- * menu everywhere). Three sizes:
+ * menu everywhere). Uniform HUD (41 decision 15, owner 19 November 2026):
+ * the logo and the round buttons have one size and one place on every page
+ * (stage.css § HUD); only the band height differs:
  * - full (120 dp): pages laid out for it set section `hudStyle` = `menu`
  *   (Peta Kedu, the result screen);
  * - compact (56 dp, `.is-compact`): every other page, laid out for the old
@@ -18,10 +20,11 @@
  *        region name (section `hudRegion` = `off` leaves the region name out:
  *        the region map shows it on its own head plate, owner 21 October 2026).
  *        Section `hudLayout` = `title-centre` drops the logo and
- *        centres the title (Peta Kedu, 20 October 2026); `logo-centre` puts
- *        the logo alone in the middle and leaves out the shard plate
- *        (Mulai, Masuk, Daftar, Gerbang, the mission brief, the region-done
- *        scene; owner, 20 and 21 October 2026); `challenge` (the five
+ *        centres the title (Peta Kedu, 20 October 2026); `logo-centre` leaves
+ *        out the shard plate and shades the top strip (Mulai, Masuk, Daftar,
+ *        Gerbang, the mission brief, the region-done scene; owner, 20 and 21
+ *        October 2026; the logo itself stays top-left since 19 November
+ *        2026); `challenge` (the five
  *        challenge screens since 19 November 2026, 41 §4) draws no HUD: the
  *        challenge header is the top row (it replaced `region-centre`, the
  *        region name in the middle of the HUD, of 21 October 2026).
@@ -31,7 +34,9 @@
  *        sets section `hudShards` = `off` to leave it out (the result screen
  *        shows shards in its panel).
  * Right: section `hudBadge` first (e.g. the region dialogue's difficulty
- *        badge, partials/region-difficulty), then three round controls, each
+ *        badge, partials/region-difficulty), then the round controls in the
+ *        fixed order language · sound · menu · Back (41 decision 16: these
+ *        display rules live here, not per page), each
  *        drawn as the owner's round gold button (`assets/ui/round-*.webp`,
  *        round_icon(); 21 October 2026), else a line icon on the
  *        `ui.result-hud-control` skin:
@@ -52,11 +57,11 @@
  *        corner, after the controls (owner, 20 October 2026; the round
  *        `round-back` button since 21 October 2026); the controls
  *        and Back then share the `.hud-end` row, so the popover sheets stay
- *        anchored to the controls. With `logo-centre` Back sits alone in the
- *        top-left corner on the owner's navy plate instead
- *        (`assets/ui/kenal-plate-navy.webp`, as Kembali on Kenali; owner,
- *        20 October 2026). Section `hudBackLabel` replaces its "Kembali"
- *        (the region-done scene: "Peta wilayah").
+ *        anchored to the controls. The same on every layout since
+ *        19 November 2026 (the `logo-centre` pages had Back on a navy plate
+ *        in the top-left corner). Section `hudBackLabel` replaces its
+ *        "Kembali" as the button's name and tip (the region-done scene:
+ *        "Peta wilayah").
  *
  * Both popovers are <details data-popover>: they open without JavaScript;
  * game/hud.js adds Escape, outside click, one-open-at-a-time, the close
@@ -79,8 +84,8 @@ $tall     = $hudStyle === 'tall';
 // plate on the left, the title in the middle
 $hudLayout   = trim($this->renderSection('hudLayout'));
 $titleCentre = $hudLayout === 'title-centre';
-// Section `hudLayout` = `logo-centre` (account pages and the gate, owner 20 October 2026): the logo
-// alone in the middle, no shard plate
+// Section `hudLayout` = `logo-centre` (account pages and the gate, owner 20 October 2026): no shard
+// plate, a shade under the top strip; logo and Back where they are on every page
 $logoCentre = $hudLayout === 'logo-centre';
 // Section `hudLayout` = `challenge` (the five challenge screens, 41 §4, 19 November 2026): no HUD band at
 // all. The challenge header is the one top row and carries the sound button and Keluar itself; menu and
@@ -96,12 +101,11 @@ if (trim($this->renderSection('hudRegion')) === 'off') {
     $region = null;
 }
 $back     = trim($this->renderSection('hudBack'));
-// Section `hudBackLabel`: the plate's text, escaped by the page like every section
+// Section `hudBackLabel`: Back's name and tip, escaped by the page like every section
 $backText = trim($this->renderSection('hudBackLabel'));
 $backText = $backText !== '' ? $backText : esc(lang('Game.back'));
-// logo-centre: Back on the navy plate in the free top-left corner, not beside the controls
-$backPlate = $back !== '' && $logoCentre;
-$backEnd   = $back !== '' && ! $logoCentre;
+// Back is always the last button of the top-right row (41 decision 16)
+$backEnd = $back !== '';
 $badge    = trim($this->renderSection('hudBadge'));
 $shards   = $inGame && ! $logoCentre && trim($this->renderSection('hudShards')) !== 'off';
 $logo     = empty($hideBrand) && ! $titleCentre ? (media_key_src('ui.logo-hero') ?? media_key_src('ui.logo')) : null;
@@ -131,10 +135,6 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
   <?php if ($shards): ?>
     <?php // The owner's shard plate (20 October 2026); absolute URLs, as for Kenali's plates ?>
     <div class="hud-shards" style="--shards-frame: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-frame.webp'), 'attr') ?>&quot;); --shards-fill: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-fill.webp'), 'attr') ?>&quot;)"><?= $this->include('components/lantern') ?></div>
-  <?php endif ?>
-
-  <?php if ($backPlate): ?>
-    <a class="hud-back-plate" href="<?= esc($back, 'attr') ?>" style="--plate-navy: url(&quot;<?= esc(asset_url_versioned('ui/kenal-plate-navy.webp'), 'attr') ?>&quot;)"><?= icon('left') ?><span><?= $backText ?></span></a>
   <?php endif ?>
 
   <?php if ($backEnd): ?><div class="hud-end"><?php endif ?>
@@ -238,12 +238,13 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
     </details>
   </div>
   <?php if ($backEnd && $backArt !== null): ?>
-    <a class="hud-ctl hud-back" href="<?= esc($back, 'attr') ?>" aria-label="<?= esc(lang('Game.back'), 'attr') ?>" data-tip="<?= esc(lang('Game.back'), 'attr') ?>">
+    <?php // $backText is HTML-escaped (quotes included), so it is safe in an attribute as it is ?>
+    <a class="hud-ctl hud-back" href="<?= esc($back, 'attr') ?>" aria-label="<?= $backText ?>" data-tip="<?= $backText ?>">
       <img class="hud-ctl-art" src="<?= esc($backArt, 'attr') ?>" alt="" draggable="false">
     </a>
   </div>
   <?php elseif ($backEnd): ?>
-    <a class="btn btn-quiet hud-back" href="<?= esc($back, 'attr') ?>"><?= icon('left') ?> <span><?= esc(lang('Game.back')) ?></span></a>
+    <a class="btn btn-quiet hud-back" href="<?= esc($back, 'attr') ?>"><?= icon('left') ?> <span><?= $backText ?></span></a>
   </div>
   <?php endif ?>
 </header>

@@ -163,8 +163,12 @@ final class RegisterWizardTest extends CIUnitTestCase
         }
     }
 
-    /** One HUD everywhere (owner, 18 October 2026); the logo in its middle and Back on the navy plate in the top-left corner (20 October 2026). */
-    public function testBackSitsInTheHudCornerWithTheLogoInTheMiddle(): void
+    /**
+     * One HUD everywhere (owner, 18 October 2026). Uniform HUD (41 decision 15/16, 19 November 2026):
+     * the logo top-left as on every page, Back the last round button of the top-right row (it was on
+     * the navy plate in the top-left corner since 20 October 2026).
+     */
+    public function testBackIsTheLastButtonOfTheHudRow(): void
     {
         $back = ['1' => 'mulai', '2' => 'daftar/1', '3' => 'daftar/2'];
         $_SESSION[RegisterController::WIZARD] = ['1' => self::ABOUT, '2' => self::SCHOOL];
@@ -174,11 +178,12 @@ final class RegisterWizardTest extends CIUnitTestCase
             $at   = (int) strpos($html, '<header class="hud hud-menu-style is-compact is-logo-centre"');
             $hud  = substr($html, $at, (int) strpos($html, '</header>') - $at);
 
-            $this->assertNotSame(0, $at, "step {$step}: logo in the middle");
-            $this->assertStringContainsString('class="hud-back-plate" href="' . base_url($target) . '"', html_entity_decode($hud), "step {$step}");
-            $this->assertLessThan(strpos($hud, 'hud-controls'), strpos($hud, 'hud-back-plate'), "step {$step}: Back, then the controls");
-            $this->assertLessThan(strpos($hud, 'hud-back-plate'), strpos($hud, 'hud-brand'), "step {$step}: the brand stays on its own");
-            $this->assertStringNotContainsString('hud-end', $hud, "step {$step}: Back is not beside the controls");
+            $this->assertNotSame(0, $at, "step {$step}: logo-centre layout");
+            $this->assertStringContainsString('class="hud-ctl hud-back" href="' . base_url($target) . '"', html_entity_decode($hud), "step {$step}");
+            $this->assertStringNotContainsString('hud-back-plate', $hud, "step {$step}: no navy plate");
+            $this->assertLessThan(strpos($hud, 'hud-end'), strpos($hud, 'hud-brand'), "step {$step}: the brand on the left");
+            $this->assertLessThan(strpos($hud, 'hud-ctl hud-back'), strpos($hud, 'btn-sound'), "step {$step}: the controls, then Back");
+            $this->assertLessThan(strpos($hud, 'hud-ctl hud-back'), strpos($hud, 'hud-pop hud-menu'), "step {$step}: menu before Back");
             $this->assertStringNotContainsString('hud-shards', $hud, "step {$step}: no shards before login");
 
             $actions = substr($html, (int) strpos($html, 'register-actions'));

@@ -6,6 +6,16 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 19 November 2026
 
+**HUD seragam, bagian kedua: satu ukuran tombol bundar, satu logo, satu sudut** (cabang `hud-seragam-tombol`, dokumen [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) §4 no. 1–3, keputusan 15 dan 16) · `asal: pengembang` · `disetujui pengembang` · kode tampilan; aturan penelitian dan data tidak berubah
+
+Usulan diajukan sesudah inventaris HUD (`tools/qa/hud-inventory.mjs`, 1366 × 768); pengembang memilih keempat opsi yang dianjurkan:
+1. **Satu ukuran tombol bundar:** gambar 48 dp dalam bidang ketuk 56 dp di semua pita HUD, sama dengan kepala tantangan. Sebelumnya tiga ukuran: 74 dp di pita 120 dp (cerita pembuka, Peta Kedu, Pustaka, dialog wilayah), 66 dp di peta wilayah (pita 84 dp), 48 dp di pita 56 dp.
+2. **Satu sudut:** baris tombol selalu berpusat di y 28 dan tombol terakhir berakhir 8 dp dari tepi kanan, berapa pun tinggi pitanya (56, 84, atau 120 dp; tinggi pita tetap boleh berbeda). Lencana tingkat kesulitan di dialog wilayah dibuat sedikit lebih pipih (sekitar 50 dp) supaya muat di baris itu.
+3. **Satu logo:** tinggi 42 dp di kiri atas (12, 7) di setiap layar yang menampilkan logo. Sebelumnya 100, 68, atau 42 dp, dan 48 dp di tengah pada Mulai, Masuk, Daftar, Gerbang, Tentang, kartu misi, dan layar wilayah tuntas. Di halaman-halaman itu *Kembali* tidak lagi berupa pelat biru tua di kiri atas, tetapi tombol bundar *Kembali* di ujung kanan baris (nama tombolnya tetap, misalnya "Peta wilayah" di layar wilayah tuntas). Peta Kedu, halaman awal, dan tantangan tetap tanpa logo.
+4. **Urutan:** bahasa · suara · menu · Kembali, lencana tingkat kesulitan di kiri baris. Aturan tampilnya (keputusan 16) tetap di satu tempat, `components/hud-menu.php`.
+
+Inventaris sesudahnya: semua layar di luar tantangan memakai ukuran dan letak yang sama. `tools/qa/stage-check.mjs` hanya menyisakan temuan lama yang bukan bagian HUD (bagian ketuk Periksa Unggahan di bawah 48 dp, peringatan transisi layar). Bagian ketiga (pemasangan `U-01` sampai `U-05`) dikerjakan sesi berikutnya.
+
 **HUD seragam, bagian pertama: kepala tantangan satu baris** (cabang `igi/relaxed-hawking-3ec774`, dokumen [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) §4 langkah C) · `asal: pengembang` · `disetujui pengembang` · kode tampilan; aturan penelitian dan data tidak berubah
 
 Pengembang meminta langkah C dilanjutkan. Bagian pertamanya:

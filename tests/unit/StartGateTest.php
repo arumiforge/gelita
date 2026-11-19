@@ -94,9 +94,9 @@ final class StartGateTest extends CIUnitTestCase
     {
         $page = (new HomeController())->start();
 
-        $this->assertStringContainsString('class="hud-back-plate" href="' . base_url() . '"', html_entity_decode($page));
+        $this->assertStringContainsString('class="hud-ctl hud-back" href="' . base_url() . '"', html_entity_decode($page));
         $this->assertStringContainsString('<header class="hud hud-menu-style is-compact is-logo-centre">', $page);
-        $this->assertStringNotContainsString('hud-end', $page, 'Back in the top-left corner, not beside the controls');
+        $this->assertStringContainsString('<div class="hud-end">', $page, 'Back beside the controls (uniform HUD, 19 November 2026)');
         $this->assertStringNotContainsString('btn-quiet hud-back', $page);
         $this->assertStringNotContainsString('class="nav-bar"', $page);
         $this->assertSame(1, substr_count($page, 'start-card is-primary'));
@@ -108,7 +108,7 @@ final class StartGateTest extends CIUnitTestCase
         $page = (new LoginController())->form();
 
         $this->assertIsString($page);
-        $this->assertStringContainsString('class="hud-back-plate" href="' . base_url('mulai') . '"', html_entity_decode($page));
+        $this->assertStringContainsString('class="hud-ctl hud-back" href="' . base_url('mulai') . '"', html_entity_decode($page));
         $this->assertStringNotContainsString('class="nav-bar"', $page);
         $this->assertStringNotContainsString('start-jaka', $page, 'no animated figure (owner redesign, 18 October 2026)');
         $this->assertStringContainsString('class="auth-jaka stage-box" src="' . esc(asset_url_versioned('ui/jaka-wave.webp'), 'attr') . '"', $page, 'one still picture of Jaka');
@@ -121,22 +121,34 @@ final class StartGateTest extends CIUnitTestCase
     }
 
     /**
-     * Owner, 20 October 2026: on the logo-centre pages Back is the navy plate (the picture of
-     * Kenali's Kembali) in the top-left corner; elsewhere it stays beside the controls.
+     * Uniform HUD (41 decision 15/16, owner 19 November 2026): Back is the same round button at the
+     * end of the top-right row on every layout. The logo-centre pages had it on the navy plate in the
+     * top-left corner (20 October 2026).
      */
-    public function testBackPlateUsesTheNavyPlatePicture(): void
+    public function testBackIsTheSameRoundButtonOnEveryLayout(): void
     {
-        $page = (new HomeController())->start();
+        foreach (['logo-centre' => (new HomeController())->start(), 'plain' => view('game/package-inspect')] as $layout => $page) {
+            $hud = substr($page, (int) strpos($page, '<header class="hud'), (int) strpos($page, '</header>') - (int) strpos($page, '<header class="hud'));
 
-        $this->assertStringContainsString('class="hud-back-plate" href="' . esc(base_url(), 'attr') . '" style="--plate-navy: url(&quot;' . esc(asset_url_versioned('ui/kenal-plate-navy.webp'), 'attr') . '&quot;)"', $page);
-        $this->assertLessThan(strpos($page, 'hud-controls'), strpos($page, 'hud-back-plate'), 'Back before the controls, on the left');
-        $this->assertFileExists(FCPATH . 'assets/ui/kenal-plate-navy.webp');
+            $this->assertStringContainsString('<div class="hud-end">', $hud, $layout);
+            $this->assertStringContainsString('<a class="hud-ctl hud-back" href=', $hud, $layout);
+            $this->assertStringNotContainsString('hud-back-plate', $hud, $layout);
+            $this->assertLessThan(strpos($hud, 'hud-ctl hud-back'), strpos($hud, 'hud-lang'), "{$layout}: language before Back");
+            $this->assertLessThan(strpos($hud, 'hud-pop hud-menu'), strpos($hud, 'btn-sound'), "{$layout}: sound before menu");
+            $this->assertLessThan(strpos($hud, 'hud-ctl hud-back'), strpos($hud, 'hud-pop hud-menu'), "{$layout}: menu before Back");
+        }
+    }
 
-        $other = view('game/package-inspect');
+    /** Uniform HUD (19 November 2026): one button size and one logo size, set once in stage.css, not per band. */
+    public function testHudButtonsAndLogoHaveOneSize(): void
+    {
+        $css = (string) file_get_contents(FCPATH . 'assets/css/stage.css');
 
-        $this->assertStringContainsString('<a class="hud-ctl hud-back" href=', $other, 'pages without logo-centre keep Back beside the controls, as the round back button');
-        $this->assertStringContainsString('<div class="hud-end">', $other);
-        $this->assertStringNotContainsString('hud-back-plate', $other);
+        $this->assertDoesNotMatchRegularExpression('~\.is-(compact|tall|logo-centre)\s+\.hud-(ctl|identity|identity-logo|controls)\b~', $css, 'no per-band size or place for the logo or the buttons');
+        $this->assertStringNotContainsString('.hud-back-plate', $css);
+        $this->assertMatchesRegularExpression('~\.hud-ctl \{[^}]*width: 3\.5rem;\s*height: 3\.5rem;~', $css, '56 dp hit area');
+        $this->assertMatchesRegularExpression('~\.hud-ctl > img\.hud-ctl-art \{\s*width: 3rem;\s*height: 3rem;~', $css, '48 dp picture');
+        $this->assertStringContainsString('.hud-identity-logo { display: block; width: auto; height: 2.625rem;', $css, '42 dp logo');
     }
 
     /** Owner redesign (18 October 2026): the shipped lantern-tree picture, whatever bg.auth or bg.welcome hold. */
@@ -207,7 +219,7 @@ final class StartGateTest extends CIUnitTestCase
 
         $this->assertStringContainsString('<header class="hud hud-menu-style is-compact is-logo-centre" data-in-game>', $page);
         $this->assertStringNotContainsString('hud-shards', $page, 'the logo replaces the shard plate');
-        $this->assertStringContainsString('class="hud-back-plate" href="' . base_url() . '"', html_entity_decode($page));
+        $this->assertStringContainsString('class="hud-ctl hud-back" href="' . base_url() . '"', html_entity_decode($page));
         $this->assertStringNotContainsString('class="nav-bar"', $page);
 
         foreach (['bg-gate', 'jaka-gate', 'gate-icon-intro', 'gate-icon-map', 'ornate-crest'] as $file) {

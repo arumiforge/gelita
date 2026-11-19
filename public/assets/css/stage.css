@@ -176,21 +176,25 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 
 /* ---------- HUD (components/hud-menu) on every page ----------
    Result screen redesign of 18 October 2026: logo and region on the left,
-   three 88 × 96 dp controls on the right (68 dp round skin
-   `ui.result-hud-control`, else a navy disc with a gold ring), no band.
-   Full size (section hudStyle `menu`) here; the compact size `.is-compact`
-   for every other page follows below the popover sheets. */
+   round controls on the right, no band. Uniform HUD (41 decision 15, owner
+   19 November 2026): one size and one place on every band, whatever its
+   height (56, 84 or 120 dp): the logo 42 dp tall at 12, 7; the round
+   buttons 48 dp pictures in 56 dp hit areas, in one row whose centre is at
+   y 28 and whose last button ends 8 dp from the right edge, in the order
+   language · sound · menu · Back. The challenge header uses the same
+   buttons (game.css). Only the band height and the shard plate still
+   differ per hudStyle (below the popover sheets). */
 .hud.hud-menu-style { display: block; height: 7.5rem; padding: 0; }
-.hud-identity { position: absolute; top: .5625rem; left: .9375rem; gap: 0; }
-.hud-identity-logo { display: block; width: auto; height: 6.25rem; filter: drop-shadow(0 .125rem .375rem rgba(11, 19, 32, .6)); }
-.hud-identity .hud-brand { font-size: var(--fs-h2); }
+.hud-identity { position: absolute; top: .4375rem; left: .75rem; gap: .5rem; height: 2.625rem; }
+.hud-identity-logo { display: block; width: auto; height: 2.625rem; filter: drop-shadow(0 .125rem .375rem rgba(11, 19, 32, .6)); }
+.hud-identity .hud-brand { font-size: var(--fs-h3); }
 .hud-identity-region {
   position: relative;
-  margin-left: .875rem;
-  padding-left: 1.375rem;
+  margin-left: .125rem;
+  padding-left: .875rem;
   color: var(--gold-300);
   font-family: var(--font-display);
-  font-size: 1.8125rem;
+  font-size: 1.1875rem;
   font-weight: 700;
   line-height: 1.3;
   white-space: nowrap;
@@ -202,11 +206,11 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
   top: 50%;
   left: 0;
   width: .125rem;
-  height: 2.25rem;
+  height: 1.375rem;
   background: rgba(223, 192, 135, .6);
   transform: translateY(-50%);
 }
-.hud-controls { position: absolute; top: .4375rem; right: .6875rem; gap: .25rem; }
+.hud-controls { position: absolute; top: 0; right: .5rem; gap: 0; height: 3.5rem; }
 .hud-pop { position: static; }
 .hud-pop > summary { list-style: none; }
 .hud-pop > summary::-webkit-details-marker { display: none; }
@@ -214,8 +218,8 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
   position: relative;
   display: grid;
   place-items: center;
-  width: 5.5rem;
-  height: 6rem;
+  width: 3.5rem;
+  height: 3.5rem;
   padding: 0;
   border: 0;
   background: none;
@@ -227,8 +231,8 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 4.25rem;
-  height: 4.25rem;
+  width: 2.625rem;
+  height: 2.625rem;
   border: .125rem solid var(--gold-500);
   border-radius: 50%;
   background: radial-gradient(circle at 50% 35%, var(--navy-600), var(--navy-900));
@@ -242,8 +246,8 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
   filter: brightness(.83) saturate(.8);
 }
 .hud-ctl > .icon, .hud-ctl > img, .hud-ctl > span { position: relative; }
-.hud-ctl .icon { width: 2.375rem; height: 2.375rem; filter: drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9)); }
-.hud-ctl-flag { width: 4.3125rem; height: 4.3125rem; border-radius: 50%; }
+.hud-ctl .icon { width: 1.375rem; height: 1.375rem; filter: drop-shadow(0 1px .1875rem rgba(11, 19, 32, .9)); }
+.hud-ctl-flag { width: 2.625rem; height: 2.625rem; border-radius: 50%; }
 .hud-lang > .hud-ctl:has(.hud-ctl-flag)::before { display: none; }
 .hud-ctl-code { font-weight: 800; font-size: var(--fs-body); }
 #btn-sound.hud-ctl .icon-off, #btn-sound.hud-ctl.is-muted .icon-on { display: none; }
@@ -257,12 +261,11 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 .hud-pop[open] > .hud-ctl::before { box-shadow: 0 0 0 .1875rem var(--gold-500), 0 0 1rem var(--glow); }
 /* The owner's round gold buttons (21 October 2026; round_icon(), assets/ui/round-*.webp): each
    picture is the whole button (carved ring, dark face, symbol), so the drawn disc steps aside
-   and hover, press, focus, and open act on the picture. The carved ornaments reach a little
-   past the old disc, hence the slightly larger size. */
+   and hover, press, focus, and open act on the picture: 48 dp in the 56 dp hit area. */
 .hud-ctl:has(> img.hud-ctl-art)::before { display: none; }
 .hud-ctl > img.hud-ctl-art {
-  width: 4.625rem;
-  height: 4.625rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
   filter: drop-shadow(0 .25rem .5rem rgba(1, 7, 19, .55));
   transition: transform .15s, filter .15s;
@@ -296,7 +299,7 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
    content-visibility: hidden slot that becomes the sheet's containing block, so the
    hidden menu sheet would sit below its button and past the stage bottom. */
 .hud-pop:not([open]) > .hud-sheet { display: none; }
-.hud-lang-sheet { top: 7.25rem; right: 9.4375rem; width: 30rem; }
+.hud-lang-sheet { top: 3.75rem; right: 7.5rem; width: 30rem; }
 .hud-sheet .hud-lang-list { display: grid; gap: .5rem; padding: 0; border-radius: 0; background: none; }
 .hud-menu[open]::before {
   content: "";
@@ -306,7 +309,7 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
   background: rgba(5, 8, 15, .6);
 }
 .hud-menu > summary { position: relative; z-index: 2; }
-.hud-menu-sheet { top: 8rem; right: 2.1875rem; width: 27.0625rem; gap: .5rem; }
+.hud-menu-sheet { top: 4rem; right: .5rem; width: 27.0625rem; gap: .5rem; }
 .hud-sheet-head { display: flex; align-items: center; justify-content: space-between; min-height: 3.5rem; padding: 0 .25rem 0 .5rem; }
 .hud-sheet-head h2 { margin: 0; color: var(--gold-300); font-family: var(--font-body); font-size: 1.75rem; font-weight: 800; }
 .hud-sheet-close {
@@ -381,7 +384,7 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
   background: linear-gradient(to bottom, rgba(6, 12, 24, .82), rgba(6, 12, 24, .55) 38%, rgba(6, 12, 24, .2) 70%, transparent);
   pointer-events: none;
 }
-.is-title-centre .hud-identity { top: 1.875rem; left: 50%; transform: translateX(-50%); }
+.is-title-centre .hud-identity { top: 1.875rem; left: 50%; height: auto; transform: translateX(-50%); }
 .is-title-centre .hud-identity-region { margin: 0; padding: 0; font-size: 2.375rem; letter-spacing: .02em; }
 .is-title-centre .hud-identity-region::before { display: none; }
 .is-title-centre .hud-shards { top: 1.25rem; left: 1.25rem; --plate-w: 27rem; }
@@ -502,33 +505,20 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
   .hud-shards .lantern-bar i, .hud-shards .lantern[data-stage="3"] .lantern-gem { animation: none; }
 }
 
-/* Compact HUD (every page without hudStyle `menu`): the same parts in the old 56 dp strip,
-   so those pages keep their layout. Controls keep a 56 dp hit area; since 20 October 2026
-   (owner: the HUD parts sat tight against the strip's top and bottom) their disc, the logo,
-   and the shard plate are a little smaller, with even room above and below. */
+/* Compact HUD (every page without hudStyle `menu`): the old 56 dp strip, so those pages keep
+   their layout; logo and buttons as above, only the shard plate is smaller. */
 .hud.hud-menu-style.is-compact { height: var(--hud-h); }
-.is-compact .hud-identity { top: .4375rem; left: .75rem; gap: .5rem; height: 2.625rem; }
-.is-compact .hud-identity-logo { height: 2.625rem; }
-.is-compact .hud-identity .hud-brand { font-size: var(--fs-h3); }
-.is-compact .hud-identity-region { margin-left: .125rem; padding-left: .875rem; font-size: 1.1875rem; }
-.is-compact .hud-identity-region::before { height: 1.375rem; }
-.is-compact .hud-controls { top: 0; right: .5rem; gap: 0; }
-.is-compact .hud-ctl { width: 3.5rem; height: 3.5rem; }
-.is-compact .hud-ctl::before { width: 2.625rem; height: 2.625rem; }
-.is-compact .hud-ctl .icon { width: 1.375rem; height: 1.375rem; }
-.is-compact .hud-ctl-flag { width: 2.625rem; height: 2.625rem; }
-.is-compact .hud-ctl > img.hud-ctl-art { width: 3rem; height: 3rem; }
-.is-compact .hud-lang-sheet { top: 3.75rem; right: 7.5rem; }
-.is-compact .hud-menu-sheet { top: 4rem; right: .5rem; }
 /* The shard plate fits the strip: 256 × 53 dp, centred, 2 dp clear of top and bottom */
 .is-compact .hud-shards { --plate-w: 16rem; top: .125rem; left: 32rem; }
 /* Section hudBack: the controls and Back share one row in the top-right corner (.hud-end).
    The controls keep their own box, so the popover sheets above stay under their buttons. */
-.hud-end { position: absolute; top: 0; right: .75rem; display: flex; align-items: center; gap: .25rem; height: var(--hud-h); }
+.hud-end { position: absolute; top: 0; right: .5rem; display: flex; align-items: center; gap: 0; height: var(--hud-h); }
 .hud-end > .hud-controls { position: relative; top: auto; right: auto; }
-/* Section hudLayout `logo-centre` (Mulai, Masuk, Daftar, Gerbang; owner 20 October 2026): the
-   logo alone in the middle of the strip, a little larger, over a soft shade that keeps it clear
-   of bright art */
+/* Section hudLayout `logo-centre` (Mulai, Masuk, Daftar, Gerbang, the mission brief; owner
+   20 October 2026): no shard plate, and a soft shade under the top strip that keeps the logo
+   and buttons clear of bright art. Since the uniform HUD (19 November 2026) the logo sits
+   top-left as everywhere and Back is the round button at the end of the row (it was the
+   centred logo with Back on the navy plate in the top-left corner). */
 .hud.is-logo-centre::before {
   content: "";
   position: absolute;
@@ -538,61 +528,9 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
   background: linear-gradient(to bottom, rgba(6, 12, 24, .55), rgba(6, 12, 24, .2) 60%, transparent);
   pointer-events: none;
 }
-.is-logo-centre .hud-identity { top: .25rem; left: 50%; height: 3rem; transform: translateX(-50%); }
-.is-logo-centre .hud-identity-logo { height: 3rem; }
-/* logo-centre: Back alone in the top-left corner on the owner's navy plate (as Kembali on
-   Kenali; owner, 20 October 2026). border-image keeps both ornamented ends (115 of the
-   picture's 131 px height) at their shape and stretches only the plain middle; 48 dp tall,
-   centred in the 56 dp strip. */
-.hud-back-plate {
-  position: absolute;
-  top: .25rem;
-  left: .75rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: .25rem;
-  height: 3rem;
-  padding: 0 .25rem;
-  border-style: solid;
-  border-width: 0 2.625rem;
-  border-image: var(--plate-navy) 0 115 fill / 0 2.625rem stretch;
-  color: #F3D58A;
-  font-family: var(--font-display);
-  font-size: 1.125rem;
-  font-weight: 700;
-  letter-spacing: .02em;
-  line-height: 1;
-  text-decoration: none;
-  text-shadow: 0 1px .1875rem rgba(0, 0, 0, .8);
-  white-space: nowrap;
-  filter: drop-shadow(0 .125rem .375rem rgba(6, 12, 24, .55));
-  -webkit-touch-callout: none;
-  user-select: none;
-  transition: filter .15s, transform .15s;
-}
-.hud-back-plate .icon { width: 1.125rem; height: 1.125rem; margin-left: -1rem; }
-@media (hover: hover) {
-  .hud-back-plate:hover { color: #FFE7A8; filter: drop-shadow(0 .125rem .375rem rgba(6, 12, 24, .55)) brightness(1.12); }
-}
-.hud-back-plate:active { transform: scale(.96); filter: drop-shadow(0 .125rem .375rem rgba(6, 12, 24, .55)) brightness(1.18); }
-.hud-back-plate:focus-visible { outline: .1875rem solid var(--gold-300); outline-offset: .125rem; }
-/* Tall HUD (hudStyle `tall`, the region map; owner 20 October 2026): an 84 dp band with
-   touch-friendly 72 dp controls on a 60 dp disc, a larger logo and region name, and the shard
-   plate centred with room above and below */
+/* Tall HUD (hudStyle `tall`, the region map; owner 20 October 2026): an 84 dp band, logo and
+   buttons as everywhere (uniform HUD, 19 November 2026), the shard plate centred in the band */
 .hud.hud-menu-style.is-compact.is-tall { height: 5.25rem; }
-.is-tall .hud-identity { top: .5rem; left: 1rem; gap: .625rem; height: 4.25rem; }
-.is-tall .hud-identity-logo { height: 4.25rem; }
-.is-tall .hud-identity-region { padding-left: 1.125rem; font-size: 1.75rem; }
-.is-tall .hud-identity-region::before { height: 2rem; }
-.is-tall .hud-controls { top: .375rem; right: .75rem; gap: .25rem; }
-.is-tall .hud-ctl { width: 4.5rem; height: 4.5rem; }
-.is-tall .hud-ctl::before { width: 3.75rem; height: 3.75rem; }
-.is-tall .hud-ctl .icon { width: 1.875rem; height: 1.875rem; }
-.is-tall .hud-ctl-flag { width: 3.75rem; height: 3.75rem; }
-.is-tall .hud-ctl > img.hud-ctl-art { width: 4.125rem; height: 4.125rem; }
-.is-tall .hud-lang-sheet { top: 5.25rem; right: 10rem; }
-.is-tall .hud-menu-sheet { top: 5.5rem; right: .75rem; }
 .is-tall .hud-shards { --plate-w: 22.5rem; top: .875rem; left: 28.75rem; }
 
 /* ---------- Content area: the whole stage, 0, 0, 1280 × 720 ----------

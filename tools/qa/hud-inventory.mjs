@@ -15,9 +15,20 @@
  * The student must have seen the opening story; the study's region mode
  * should be "free" so all three regions open.
  */
-import { chromium } from 'playwright';
+import { createRequire } from 'node:module';
+import { execSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
+
+// Playwright is installed globally in the cloud container; an ESM import cannot see it, so load
+// it the way stage-check.mjs does: the local package first, else the global one.
+const require = createRequire(import.meta.url);
+function loadPlaywright() {
+  try { return require('playwright'); } catch { /* fall back to the global install */ }
+  const globalRoot = execSync('npm root -g').toString().trim();
+  return require(path.join(globalRoot, 'playwright'));
+}
+const { chromium } = loadPlaywright();
 
 const args = Object.fromEntries(process.argv.slice(2).map((a) => a.replace(/^--/, '').split('=')));
 const BASE = (args.base || 'http://localhost:8080/').replace(/\/?$/, '/');

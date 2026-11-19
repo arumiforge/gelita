@@ -7,9 +7,10 @@
  * story, the instruction in a hint box, and the gold main button between two
  * flourishes; the best result (replays) sits under the hint box.
  *
- * HUD (owner, 21 October 2026): the logo alone in the middle (`logo-centre`,
- * no region name, no shard plate) and Back to the region map on the navy
- * plate in the top-left corner, in place of the old Back button at the foot.
+ * HUD (owner, 21 October 2026): `logo-centre` (no region name, no shard
+ * plate) and Back to the region map in the HUD, in place of the old Back
+ * button at the foot; since the uniform HUD (19 November 2026) the logo is
+ * top-left and Back the round button at the end of the row.
  *
  * Tahap 3: "Mulai tantangan" memutar tirai tantangan (≤1,5 detik, ketukan
  * melewatinya) SEBELUM berpindah ke /tantangan. Attempt baru dibuka server
