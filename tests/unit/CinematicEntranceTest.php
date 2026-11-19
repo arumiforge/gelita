@@ -87,7 +87,9 @@ final class CinematicEntranceTest extends CIUnitTestCase
 
         $this->assertStringContainsString('export function findLight(img)', $script);
         $this->assertMatchesRegularExpression("/welcome: \{[^}]*fx: 'sun',\s*light: true,/s", $script);
-        $this->assertStringContainsString('createScreenFx(root, { threeUrl, light, quality: 1 })', $script);
+        // Owner, 19 November 2026: no light rays from above on the home page (sparks and mist stay)
+        $this->assertMatchesRegularExpression("/welcome: \{[^}]*rays: false,/s", $script);
+        $this->assertStringContainsString('createScreenFx(root, { threeUrl, light, quality: 1, rays: sheet.rays !== false })', $script);
         // The story scenes keep their source above the top edge and the downward cone
         $this->assertStringContainsString('new THREE.Vector2(0.5, 1.18)', $fx);
         $this->assertStringContainsString("uCone: { value: light ? 0 : 1 }", $fx);
