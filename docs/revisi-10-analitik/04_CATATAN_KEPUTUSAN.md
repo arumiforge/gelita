@@ -6,7 +6,7 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 19 November 2026
 
-**Mockup Skenario Digital disetujui; prompt `SD-01` sampai `SD-12` dan kristal `U-36`** (cabang `igi/relaxed-hawking-3ec774`, dokumen [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) dan [40](40_PROMPT_GAMBAR_ANTARMUKA.md)) · `asal: pengembang` · `disetujui pengembang` · dokumen 41 naik ke `disetujui pengembang`; prompt dan baris `TASKS.md` baru; belum ada kode, bank soal, naskah, atau rekaman yang berubah
+**Mockup Skenario Digital disetujui; prompt `SD-01` sampai `SD-14` dan kristal `U-36`** (cabang `igi/relaxed-hawking-3ec774`, dokumen [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) dan [40](40_PROMPT_GAMBAR_ANTARMUKA.md)) · `asal: pengembang` · `disetujui pengembang` · dokumen 41 naik ke `disetujui pengembang`; prompt dan baris `TASKS.md` baru; belum ada kode, bank soal, naskah, atau rekaman yang berubah
 
 Mockup dibangun ulang dari `main` dan dikirim lagi; pengembang menjawab empat pertanyaan:
 1. **Mockup disetujui tanpa catatan** (41 §6 langkah A). Tangkapan keempat keadaan disimpan di `gambar/41/` sebagai catatan tata letak yang disetujui dan sebagai lampiran pesanan gambar.
@@ -42,6 +42,15 @@ Sesudah melihat mockup, pengembang meminta lima perbaikan; semuanya dimasukkan k
 2. **Logo GELITA dicoba tanpa** di kepala layar tantangan; nomor, judul, dan nama kota duduk di satu kapsul gelap (gambarnya ditentukan di langkah C karena dipakai kelima tantangan).
 3. **Panel kiri menjadi satu kotak berbingkai** seperti gambar contoh: baris penanda cerita dan *Kesempatan* di atas gambar, gambar 540 × 360 dengan kapsul *Dengarkan cerita* (516 × 52) di bagian bawah gambar, lalu situasi. Gambar baru `SD-12` (600 × 584).
 4. **Baris *Dengarkan petunjuk* tanpa gelombang dan durasi**, tombol dan tulisan lebih kecil; kotak petunjuk 584 × 100.
+
+**Catatan pengembang putaran keempat sampai kedelapan; mockup disetujui; pesanan gambar ditulis ulang** (cabang yang sama, dokumen [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) §1 keputusan 30–43 dan §8) · `asal: pengembang` · `disetujui pengembang` · mockup, tangkapan `gambar/41/`, prompt dan baris `TASKS.md` `SD-01` sampai `SD-14`; belum ada kode permainan; aturan penelitian 32 §5.2 dan §6 tetap
+
+1. **Tanpa kotak dan tanpa garis pemisah** di kedua sisi; **latar layar baru khusus Skenario Digital**, satu per wilayah (langit terang di atas, tenang dan agak gelap di bawah supaya teks terbaca tanpa kotak).
+2. **▶ *Dengarkan petunjuk* di atas teks instruksi, di atas pertanyaan, tanpa latar**; gelombang dan durasi hanya tampil selama dibacakan. Pengembang menegaskan ▶ itu untuk petunjuk; ***Pilihanmu* tanpa ▶**, jadi aturan "pilihan tidak dibacakan" tetap. *Pilihanmu* tanpa garis warna di kiri.
+3. **Pil *Dengarkan cerita* kecil di tengah bawah gambar**, melebar dengan gelombang dan durasi hanya selama dibacakan; gambar situasi 504 × 336.
+4. **Tombol berpelat dengan bulatan panah:** maju dengan panah kanan di ujung kanan, *Kembali* dengan panah kiri di ujung kiri, tulisan tanpa panah, tepat di tengah bidang polos pelat. Sakelar langkah menjadi dua tab dengan medali nomor 1 dan 2. Pilihan jawaban tanpa latar dan tepi; hanya yang dipilih berlatar.
+5. **Semua teks di sisi kanan 20 px**, sama dengan teks situasi; kedua pertanyaan rata kiri; judul tebal dengan nama kota sejajar tengah dan kapsul judul menyatu dengan medali nomor.
+6. **Pengembang menyetujui mockup putaran kedelapan** dan meminta dokumen dan pesanan gambar diperbarui. Daftar `SD-` pagi itu batal (belum ada yang dibuat) dan diganti 14 pesanan: tombol maju pendek dan panjang, tombol *Kembali*, empat tab langkah, jawaban dipilih satu dan dua baris, pil *Dengarkan cerita* diam dan melebar (semuanya berukuran tetap, diukur dari mockup), dan tiga latar layar `bg.{wilayah}.skenario` (slot baru, dipasang di langkah E). Kapsul judul tetap di langkah C.
 
 ## 18 November 2026
 

@@ -2,7 +2,7 @@
 
 Per 19 November 2026 · `disetujui pengembang` (mockup disetujui 19 November 2026) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Keputusan di [04](04_CATATAN_KEPUTUSAN.md) (18 November 2026)
 
-Pengembang membuat mockup baru layar tantangan Skenario Digital (langkah 1 *Tindakan*) dan menyertakan tangkapan layar yang sekarang (langkah 2 *Alasan*). Dokumen ini adalah rencana dari diskusi dan wawancara dua putaran hari itu: apa yang berubah di layar Skenario Digital, apa yang berubah di HUD semua layar, gambar yang dipesan, urutan kerja, dan aturan penelitian yang tidak boleh ikut berubah. Belum ada kode yang diubah. Pada 19 November 2026 pengembang menyetujui mockup tanpa catatan (langkah A), lalu di hari yang sama memberi tiga putaran catatan perbaikan (bagian 1, keputusan 17–29) yang sudah masuk ke mockup dan ke prompt gambar `SD-` di bagian 8.
+Pengembang membuat mockup baru layar tantangan Skenario Digital (langkah 1 *Tindakan*) dan menyertakan tangkapan layar yang sekarang (langkah 2 *Alasan*). Dokumen ini adalah rencana dari diskusi dan wawancara dua putaran hari itu: apa yang berubah di layar Skenario Digital, apa yang berubah di HUD semua layar, gambar yang dipesan, urutan kerja, dan aturan penelitian yang tidak boleh ikut berubah. Belum ada kode yang diubah. Pada 19 November 2026 pengembang menyetujui mockup tanpa catatan (langkah A), lalu di hari yang sama memberi delapan putaran catatan perbaikan (bagian 1, keputusan 17–43). Pengembang menyetujui hasil putaran kedelapan pada hari yang sama; mockup itu menjadi acuan, dan pesanan gambar di bagian 8 memakai ukurannya.
 
 Rujukan yang tetap berlaku: [32 §6](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#6-engine-skenario-di-peramban) (keadaan layar, umpan balik, waktu), [32 §8.2](32_IMPLEMENTASI_SKENARIO_DIGITAL.md) (narasi instruksi hanya lewat ▶, K10), [33 §7.1](33_IMPLEMENTASI_MODE_PENELITIAN.md) (tanpa jam di mode penelitian), [18](18_MOCKUP_LAYAR_BARU.md) (tanpa merah, tanpa kata "salah"/"gagal"), dan arah tampilan pengembang (11 Oktober dan 15 November 2026: satu tampilan emas berukir, tidak ada bagian yang ditarik ke ukuran yang bukan ukuran gambarnya, ukuran untuk siswa kelas 5 di Chromebook).
 
@@ -59,6 +59,23 @@ Rujukan yang tetap berlaku: [32 §6](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#6-engin
 28. **Panel kiri menjadi satu kotak berbingkai**, seperti gambar contoh pengembang: bidang biru tua dengan tepi emas tipis dan sudut membulat. Di dalamnya dari atas: baris *Cerita 1 dari 4*, bilah kemajuan, dan *Kesempatan* (di atas gambar, tidak lagi menimpa gambar); gambar situasi **540 × 360** dengan kapsul *Dengarkan cerita* (516 × 52) di bagian bawah gambar; lalu situasi. Situasi terpanjang berakhir 5 dp di atas tepi dalam kotak. Menggantikan keputusan 1 untuk panel kiri dan keputusan 24 (letak penanda cerita dan ukuran gambar). Gambar baru `SD-12` (bingkai panel 600 × 584).
 29. **Baris *Dengarkan petunjuk* tanpa gelombang dan tanpa durasi**, dengan tombol ▶ (32 dp) dan tulisan (15 px) lebih kecil; kotak petunjuk kini 584 × 100.
 
+**Catatan pengembang putaran keempat sampai kedelapan (19 November 2026; mockup terakhir disetujui hari itu)**
+
+30. **Tanpa kotak di kedua sisi dan tanpa garis pemisah.** Panel kiri tidak lagi berbingkai (menggantikan keputusan 28 untuk bingkainya; bingkai panel lama batal), sisi kanan juga tanpa kotak, dan garis tipis di antara keduanya dihapus. Penanda cerita, gambar, dan situasi berdiri langsung di atas latar.
+31. **Latar layar baru khusus Skenario Digital**, satu per wilayah (`SD-12` sampai `SD-14`): langit terang di bagian atas untuk kepala layar, bagian tengah dan bawah tenang, agak gelap, dan sedikit detail supaya teks di kedua sisi terbaca. Menggantikan "latar utama tidak diganti" di keputusan 1.
+32. **Situasi menjorok** sejajar tepi gambar (jarak 14 dp kiri dan kanan).
+33. **Petunjuk di atas pertanyaan, seperti *Pilihanmu*, tanpa latar:** baris atas ▶ dan tulisan *Dengarkan petunjuk*; selama dibacakan tulisan menjadi *Sedang dibacakan…* dan gelombang serta durasi tampil, lalu hilang lagi saat berhenti. Di bawahnya teks instruksi rata kiri, lalu garis tipis. ▶ dekat dengan teks yang dibacakannya; bila teks dua baris, ▶ sejajar baris pertama. Menggantikan keputusan 25 dan 29 (kotak petunjuk; kotak petunjuk lama batal).
+34. ***↳ Pilihanmu · …* tanpa ▶ dan tanpa garis warna di kiri**, dengan garis tipis di bawahnya. Pilihan jawaban tidak pernah dibacakan (bagian 2).
+35. **Kedua pertanyaan rata kiri** dan **semua teks di sisi kanan berukuran sama dengan teks situasi (20 px)**: *Dengarkan petunjuk*, instruksi, *Pilihanmu*, pertanyaan (tebal, emas muda), dan pilihan jawaban.
+36. **Judul tebal, nama kota di tengah tinggi judul, kapsul judul menyatu dengan medali nomor tantangan** (kapsul mulai dari tengah medali). Gambarnya tetap di langkah C (keputusan 27).
+37. **Pemutar *Dengarkan cerita* berupa pil kecil di tengah bawah gambar** (252 × 52) tanpa gelombang dan durasi; selama dibacakan pil melebar (480 × 52) dan menampilkan gelombang serta durasi. Gambar situasi **504 × 336** supaya situasi punya ruang lebih (menggantikan 540 × 360).
+38. **Tombol maju memakai pelat dengan bulatan panah ke kanan di ujung kanan** (seperti `public/assets/ui/plate-next.webp`), tulisan tanpa panah, ujung kiri polos: *Lanjut ke alasan*, *Kirim jawaban*, *Coba lagi* (284 × 58) dan *Lanjut ke cerita berikutnya* (392 × 58). Menggantikan tombol emas `SD-01`/`SD-02` lama dan catatan tulisan putih/hitam di putaran sebelumnya.
+39. **Tombol *Kembali* baru: bulatan panah ke kiri di ujung kiri** (seperti `plate-back.webp`), tulisan *Kembali* tanpa panah, ujung kanan polos, 248 × 58.
+40. **Tulisan tombol tepat di tengah bidang polos pelat**, mendatar dan tegak, tanpa menghitung bulatan panah dan ujung hiasan (diukur di mockup: selisih di bawah 1 dp).
+41. **Sakelar langkah baru: dua tab dengan medali nomor 1 dan 2 di dalam gambarnya**, 144 × 40 masing-masing, tab aktif emas terang dengan tulisan gelap, tab lain gelap. Menggantikan rel dan bagian aktif (`SD-08`, `SD-10` lama).
+42. **Pilihan jawaban tanpa latar dan tanpa garis tepi; hanya jawaban yang dipilih** mendapat bidang dan tepi emas (584 × 54, dua baris 584 × 70). Menggantikan kartu biasa lama.
+43. **Kartu dan pesanan lama batal:** `SD-01` sampai `SD-12` versi sebelumnya diganti daftar baru di bagian 8 (19 November 2026); belum ada yang dibuat.
+
 ## 2. Yang tidak berubah (aturan penelitian)
 
 - Kunci jawaban, skor, kode kesalahan, dan tindakan aman tidak pernah ada di halaman sebelum server menjawab (32 §5.2).
@@ -78,13 +95,15 @@ Panggung 1280 × 720 dp. Angka di bawah adalah titik awal mockup; ukuran akhir d
 | Panel kiri (situasi) | x 32, y 104, lebar 600, tinggi 584 |
 | Panel kanan (langkah) | x 664, y 104, lebar 584, tinggi 584 |
 
-**Ukuran teks dari bank (18 November 2026).** 24 skenario: situasi sampai 250 karakter (rata-rata 173); 3 atau 4 tindakan, sampai 59 karakter (rata-rata 45, bisa dua baris); 3, 4, atau 5 alasan, sampai 48 karakter (rata-rata 41). Panel kanan harus memuat lima kartu alasan ditambah baris *Pilihanmu*, dan empat kartu tindakan dua baris. Gambar 3 : 2 utuh 540 × 360 di dalam kotak panel kiri, di bawah baris penanda cerita, dengan pemutar di bagian bawah gambar (keputusan 28; semula 456 × 304, lalu 540 × 360 dan 600 × 400); situasi panjang (lebih dari 200 karakter) memakai satu ukuran huruf lebih kecil (19 px, biasa 20 px). Di mockup 19 November 2026 situasi terpanjang berakhir 5 dp di atas tepi dalam kotak, jadi gambar tidak boleh dibesarkan lagi. Panel bergulir hanya sebagai cadangan terakhir.
+**Ukuran teks dari bank (18 November 2026).** 24 skenario: situasi sampai 250 karakter (rata-rata 173); 3 atau 4 tindakan, sampai 59 karakter (rata-rata 45, bisa dua baris); 3, 4, atau 5 alasan, sampai 48 karakter (rata-rata 41).
 
-| Keadaan | Panel kiri | Panel kanan |
+**Tata letak yang disetujui (mockup 19 November 2026, putaran kedelapan).** Gambar situasi 3 : 2 utuh **504 × 336** di x 80, y 150, dengan pil *Dengarkan cerita* di tengah bawahnya; baris *Cerita 1 dari 4* dan *Kesempatan* di atas gambar (y 110); situasi di bawah gambar, menjorok 14 dp, 20 px (19 px untuk situasi lebih dari 200 karakter). Sisi kanan mulai x 664, lebar 584: sakelar dua tab di tengah atas, petunjuk atau *Pilihanmu*, pertanyaan, pilihan jawaban, tombol di bawah (y 626). Situasi terpanjang (`wnb-5-a04`) dan lima alasan muat di keempat keadaan tanpa panel bergulir; tangkapan di `gambar/41/`.
+
+| Keadaan | Sisi kiri | Sisi kanan |
 | --- | --- | --- |
-| `action` | Kotak berbingkai: baris penanda cerita dan *Kesempatan*; gambar dengan pemutar *Dengarkan cerita* di bagian bawahnya; situasi | Sakelar **1 Tindakan** · 2 Alasan; "Apa yang akan kamu lakukan?"; kotak *Dengarkan petunjuk* + teks instruksi rata kiri; kartu tindakan; tombol *Lanjut ke alasan* (belum aktif sampai siswa memilih) |
-| `reason` | sama | Sakelar 1 Tindakan · **2 Alasan**; kartu kecil *Pilihanmu: …*; "Yang paling penting kupikirkan di sini adalah …"; kartu alasan; *Kembali* dan *Kirim jawaban* berdampingan |
-| `feedback` | sama | Teks umpan balik dari bank; "Kamu masih punya {n} kesempatan …" bila belum tertutup; *Coba lagi* atau *Lanjut ke cerita berikutnya* |
+| `action` | Baris penanda cerita dan *Kesempatan*; gambar dengan pil *Dengarkan cerita*; situasi | Tab **1 Tindakan** · 2 Alasan; ▶ *Dengarkan petunjuk* dan teks instruksi; "Apa yang akan kamu lakukan?"; pilihan tindakan; *Lanjut ke alasan* (belum aktif sampai siswa memilih) |
+| `reason` | sama | Tab 1 Tindakan · **2 Alasan**; *↳ Pilihanmu · …*; "Yang paling penting kupikirkan di sini adalah …"; pilihan alasan; *Kembali* dan *Kirim jawaban* berdampingan |
+| `feedback` | sama | Judul umpan balik (usulan teks baru di mockup: "Pilihan yang aman!" / "Ayo pikirkan lagi", diputuskan di langkah D); teks umpan balik dari bank; "Kamu masih punya {n} kesempatan …" bila belum tertutup; *Coba lagi* atau *Lanjut ke cerita berikutnya* |
 | `explained` | sama | "Kesempatanmu untuk cerita ini sudah habis …"; "Ini tindakan yang aman"; tindakan aman; penjelasan; *Lanjut ke cerita berikutnya* |
 | selesai | Modal hasil dari kerangka, lalu *Lanjut* | |
 
@@ -97,7 +116,7 @@ Panggung 1280 × 720 dp. Angka di bawah adalah titik awal mockup; ukuran akhir d
 
 ## 5. Gambar yang dipesan (baris `SD-` di `ai-studio/chatgpt-images/TASKS.md`)
 
-Dipesan **sesudah mockup disetujui**, dengan ukuran tampil yang diukur di sana; kanvas dua sampai tiga kali ukuran tampil terbesar, gaya `GELITA CARVED GOLD UI — 2026-11-18` dan papan acuan `reference.27` ([40 → Aturan bersama](40_PROMPT_GAMBAR_ANTARMUKA.md#aturan-bersama)). Prompt siap tempel ada di [bagian 8](#8-prompt-gambar-sd-) (19 November 2026), dengan ukuran akhir dan dua gambar tambahan: `SD-10` (bagian aktif sakelar langkah, dipisah dari relnya supaya bisa bergeser) `SD-11` (kotak petunjuk, keputusan 17, 25, dan 29), dan `SD-12` (bingkai panel kiri, keputusan 28). Daftar semula:
+Dipesan **sesudah mockup disetujui**, dengan ukuran tampil yang diukur di sana; kanvas dua sampai tiga kali ukuran tampil terbesar, gaya `GELITA CARVED GOLD UI — 2026-11-18` dan papan acuan `reference.27` ([40 → Aturan bersama](40_PROMPT_GAMBAR_ANTARMUKA.md#aturan-bersama)). Daftar akhir dan prompt siap tempelnya ada di [bagian 8](#8-prompt-gambar-sd-) (19 November 2026, dari mockup yang disetujui); daftar di bawah ini hanya perkiraan awal 18 November 2026:
 
 | Kode | Bagian | Catatan |
 | --- | --- | --- |
@@ -115,225 +134,296 @@ Tombol yang belum aktif memakai gambar yang sama dengan tampilan diredupkan (CSS
 
 | Langkah | Isi | Selesai bila |
 | --- | --- | --- |
-| A | Mockup HTML keempat keadaan (keputusan 12); dibuat 18 November 2026 dengan cerita `tmg-5-b01` dan cerita terpanjang `wnb-5-a04` (4 tindakan, 5 alasan): semua keadaan muat di 1366 × 768 tanpa panel bergulir. Sumbernya `tools/mockup/skenario-41/` (`python3 tools/mockup/skenario-41/build.py hasil.html`); berkas HTML-nya tidak disimpan di repo, tangkapan keempat keadaan di `gambar/41/` | **Selesai 19 November 2026:** disetujui pengembang, lalu diperbaiki dengan tiga putaran catatannya (keputusan 17–29) |
-| B | Prompt `SD-` (bagian 8) dan baris `TASKS.md` | **Selesai 19 November 2026:** baris `SD-01` sampai `SD-12` berstatus `todo` |
+| A | Mockup HTML keempat keadaan (keputusan 12); dibuat 18 November 2026 dengan cerita `tmg-5-b01` dan cerita terpanjang `wnb-5-a04` (4 tindakan, 5 alasan): semua keadaan muat di 1366 × 768 tanpa panel bergulir. Sumbernya `tools/mockup/skenario-41/` (`python3 tools/mockup/skenario-41/build.py hasil.html`); berkas HTML-nya tidak disimpan di repo, tangkapan keempat keadaan di `gambar/41/` | **Selesai 19 November 2026:** disetujui pengembang, lalu diperbaiki dengan delapan putaran catatannya (keputusan 17–43) dan disetujui lagi |
+| B | Prompt `SD-` (bagian 8) dan baris `TASKS.md` | **Selesai 19 November 2026:** ditulis ulang dari mockup yang disetujui; baris `SD-01` sampai `SD-14` (11 bagian antarmuka dan 3 latar layar) berstatus `todo` |
 | C | HUD seragam (bagian 4), satu cabang, bersama pemasangan pelat emas, biru tua, dan hijau, bingkai jendela, dan bilah perunggu dari [40](40_PROMPT_GAMBAR_ANTARMUKA.md) (`U-01` sampai `U-05`, keputusan pengembang 18 November 2026), karena keduanya menata ulang semua layar | Inventaris sebelum/sesudah, uji per jenis layar, cek `tools/qa/stage-check.mjs` |
 | D | Tampilan baru Skenario Digital di `skenario.php`, `engines/skenario.js`, `stage.css`; teks baru di berkas bahasa (id dan en) | Uji Skenario Digital hijau; keempat keadaan dicek di Chromebook dua ukuran; aturan bagian 2 utuh |
-| E | Pasang gambar `SD-` yang diterima pengembang | Pelat sementara diganti tanpa mengubah tata letak |
+| E | Pasang gambar `SD-` yang diterima pengembang (bagian 8 → *Pemasangan*), termasuk tiga latar layar sebagai slot baru `bg.{wilayah}.skenario` | Pelat sementara diganti tanpa mengubah tata letak |
 
 Langkah D boleh mulai dengan pelat sementara sebelum gambar `SD-` datang, asal ukurannya sudah ukuran akhir.
 
 ## 7. Pertanyaan yang masih terbuka
 
 - ~~Apakah ✓ di Skenario Digital tetap berbentuk angka saja (tanpa "/"), atau digabung dengan bilah kemajuan cerita?~~ **Angka saja**, seperti mockup; bilah *Cerita 1 dari 4* tetap terpisah dan hanya menandai posisi (pengembang, 19 November 2026).
-- ~~Teks instruksi tantangan Skenario Digital di bank perlu dipendekkan agar satu baris?~~ **Tidak**: teks dan rekamannya tetap (pengembang, 19 November 2026). Sejak keputusan 17 dan 25 teksnya rata kiri di dalam kotak petunjuk dan muat satu baris.
+- ~~Teks instruksi tantangan Skenario Digital di bank perlu dipendekkan agar satu baris?~~ **Tidak**: teks dan rekamannya tetap (pengembang, 19 November 2026). Sejak keputusan 33 teksnya ada di bawah ▶ *Dengarkan petunjuk*, rata kiri, 20 px, dan boleh dua baris.
 - **`U-07` (bingkai Serpihan Cahaya) ditahan** sampai kristalnya (`U-36`, prompt di [40](40_PROMPT_GAMBAR_ANTARMUKA.md) sejak 19 November 2026) dibuat dan keduanya dipasang bersama. Bingkainya sudah di `ai-studio/chatgpt-images/out/hud-shards-frame.webp` (dari PR #420, yang ditutup). Bila HUD seragam (langkah C) mengubah ukuran penghitung Serpihan Cahaya, ukuran kristal tidak berubah: kanvasnya sama persis dengan lubang bingkai, jadi ikut skala bingkai.
 
 ## 8. Prompt gambar `SD-`
 
-Ditambahkan 19 November 2026, sesudah mockup disetujui, dan disesuaikan hari itu juga dengan tiga putaran catatan pengembang (keputusan 17–29: `SD-09` menjadi kapsul di bagian bawah gambar, `SD-11` baru untuk kotak petunjuk, `SD-12` baru untuk bingkai panel kiri). Ukuran tampil diukur di mockup (panggung 1280 × 720 dp) dengan semua teks tindakan dan alasan dari bank soal, dalam bahasa Indonesia dan Inggris: kartu satu baris 54 dp (87 dari 88 tindakan, semua alasan), kartu dua baris 67 dp (dibulatkan 68), dan setiap label tombol berbahasa Inggris lebih pendek dari label Indonesianya, jadi setiap tombol punya **satu ukuran tetap**. Kanvas tiga kali ukuran tampil. Tangkapan mockup yang disetujui ada di `gambar/41/` (`mockup-skenario-1-tindakan.webp` sampai `-4-tindakan-aman.webp`) dan dilampirkan supaya letak dan besar bagian terlihat.
+Ditulis ulang 19 November 2026 dari mockup yang disetujui pengembang (putaran kedelapan, keputusan 30–43); daftar `SD-01` sampai `SD-12` yang ditulis pagi itu batal dan belum ada yang dibuat. Ukuran tampil diukur di mockup (panggung 1280 × 720 dp) dengan semua teks dari bank dan berkas bahasa, Indonesia dan Inggris; setiap label Inggris lebih pendek dari label Indonesianya, jadi setiap bagian punya **satu ukuran tetap**. Kanvas tiga kali ukuran tampil. Tangkapan mockup yang disetujui ada di `gambar/41/` dan dilampirkan supaya letak dan besar bagian terlihat; bagian di mockup itu gambar sementara, bukan tampilan yang ditiru.
 
-Semua gambar `SD-` berukuran tetap: dipasang **tanpa ditarik** (`background-size: 100% 100%` pada ukuran tampilnya, bukan `border-image`), jadi hiasan boleh ada di mana pun yang disebut prompt, asal bagian tempat teks tetap tenang. Setiap prompt dimulai dengan blok `GELITA CARVED GOLD UI — 2026-11-18` dari [40 → Aturan bersama](40_PROMPT_GAMBAR_ANTARMUKA.md#aturan-bersama), kata per kata. Urutan: `SD-01` lebih dulu; `SD-02`, `SD-03` dari `SD-01`; `SD-04` sendiri; `SD-05` sampai `SD-07` dan `SD-09` dari `SD-04`; `SD-08` dari `SD-04`; `SD-10` dari `SD-01` dan `SD-08`; `SD-11` dari `SD-04`; `SD-12` dari `SD-04`.
+Bagian antarmuka (`SD-01` sampai `SD-11`) dimulai dengan blok `GELITA CARVED GOLD UI — 2026-11-18` dari [40 → Aturan bersama](40_PROMPT_GAMBAR_ANTARMUKA.md#aturan-bersama), kata per kata, dan dipasang **tanpa ditarik** pada ukuran tampilnya. Latar layar (`SD-12` sampai `SD-14`) dimulai dengan blok `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11`, seperti `S-W` di 40. Yang tetap digambar permainan, bukan gambar: tulisan semua tombol dan tab, ○/●, gelombang suara dan durasi, ▶ (`round-play`), baris penanda cerita dan *Kesempatan*, garis tipis di bawah petunjuk dan *Pilihanmu*, dan cahaya lembut di sekitar jawaban yang dipilih. Pilihan jawaban yang belum dipilih tidak punya gambar (keputusan 42), begitu juga kapsul judul (langkah C, keputusan 27).
 
-| Kode | Berkas di `public/assets/ui/` | Tampil (dp) | Kanvas | Dipakai untuk |
+| Kode | Berkas | Tampil (dp) | Kanvas | Dipakai untuk |
 | --- | --- | --- | --- | --- |
-| `SD-01` | `sd-button-gold.webp` | 312 × 58 | 936 × 174 | *Lanjut ke alasan*, *Kirim jawaban*, *Coba lagi* |
-| `SD-02` | `sd-button-gold-long.webp` | 420 × 58 | 1260 × 174 | *Lanjut ke cerita berikutnya* |
-| `SD-03` | `sd-button-navy.webp` | 236 × 58 | 708 × 174 | *Kembali* di langkah 2 |
-| `SD-04` | `sd-card.webp` | 584 × 54 | 1752 × 162 | Kartu tindakan/alasan, satu baris |
-| `SD-05` | `sd-card-2.webp` | 584 × 68 | 1752 × 204 | Kartu dua baris |
-| `SD-06` | `sd-card-on.webp` | 584 × 54 | 1752 × 162 | Kartu satu baris yang dipilih |
-| `SD-07` | `sd-card-on-2.webp` | 584 × 68 | 1752 × 204 | Kartu dua baris yang dipilih |
-| `SD-08` | `sd-step-rail.webp` | 256 × 44 | 768 × 132 | Rel sakelar *1 Tindakan · 2 Alasan* |
-| `SD-09` | `sd-player.webp` | 516 × 52 | 1548 × 156 | Kapsul pemutar *Dengarkan cerita* di bagian bawah gambar situasi (540 × 360) |
-| `SD-10` | `sd-step-on.webp` | 125 × 38 | 375 × 114 | Bagian aktif sakelar, di atas rel (kiri atau kanan) |
-| `SD-11` | `sd-hint-box.webp` | 584 × 100 | 1752 × 300 | Kotak petunjuk: baris ▶ *Dengarkan petunjuk* dan teks instruksi |
-| `SD-12` | `sd-panel.webp` | 600 × 584 | 1800 × 1752 | Bingkai panel kiri: penanda cerita, gambar, pemutar, situasi |
+| `SD-01` | `public/assets/ui/sd-next.webp` | 284 × 58 | 852 × 174 | *Lanjut ke alasan*, *Kirim jawaban*, *Coba lagi* |
+| `SD-02` | `public/assets/ui/sd-next-long.webp` | 392 × 58 | 1176 × 174 | *Lanjut ke cerita berikutnya* |
+| `SD-03` | `public/assets/ui/sd-back.webp` | 248 × 58 | 744 × 174 | *Kembali* di langkah 2 |
+| `SD-04` | `public/assets/ui/sd-step-1.webp` | 148 × 44 | 444 × 132 | Tab langkah 1, tidak aktif |
+| `SD-05` | `public/assets/ui/sd-step-1-on.webp` | 148 × 44 | 444 × 132 | Tab langkah 1, aktif |
+| `SD-06` | `public/assets/ui/sd-step-2.webp` | 148 × 44 | 444 × 132 | Tab langkah 2, tidak aktif |
+| `SD-07` | `public/assets/ui/sd-step-2-on.webp` | 148 × 44 | 444 × 132 | Tab langkah 2, aktif |
+| `SD-08` | `public/assets/ui/sd-chosen.webp` | 584 × 54 | 1752 × 162 | Jawaban yang dipilih, satu baris |
+| `SD-09` | `public/assets/ui/sd-chosen-2.webp` | 584 × 70 | 1752 × 210 | Jawaban yang dipilih, dua baris |
+| `SD-10` | `public/assets/ui/sd-listen.webp` | 252 × 52 | 756 × 156 | Pil *Dengarkan cerita* (diam) |
+| `SD-11` | `public/assets/ui/sd-listen-wide.webp` | 480 × 52 | 1440 × 156 | Pil *Dengarkan cerita* selama dibacakan |
+| `SD-12` | `ai-studio/game-images/assets/latar/bg.temanggung.skenario.webp` | layar penuh | 1920 × 1080 | Latar Skenario Digital Temanggung |
+| `SD-13` | `ai-studio/game-images/assets/latar/bg.magelang.skenario.webp` | layar penuh | 1920 × 1080 | Latar Skenario Digital Magelang |
+| `SD-14` | `ai-studio/game-images/assets/latar/bg.wonosobo.skenario.webp` | layar penuh | 1920 × 1080 | Latar Skenario Digital Wonosobo |
 
-Pemasangan (langkah E): berkas dipindahkan dari `ai-studio/chatgpt-images/out/` ke `public/assets/ui/` dan dipanggil lewat `asset_url_versioned('ui/…')`; tombol yang belum aktif memakai gambar yang sama dengan `filter` CSS, dan cahaya lembut di sekitar kartu yang dipilih tetap dari CSS (`box-shadow`), seperti di mockup. Teks, ○/●, gelombang suara, ▶ (`round-play`), dan durasi tetap digambar permainan.
+Tab 148 × 44: badan pil 144 × 40 dengan medali bundar 44 dp di ujung kiri yang sedikit keluar dari badan pil, seperti mockup. Urutan: `SD-01` lebih dulu; `SD-02` dan `SD-03` dari `SD-01`; `SD-04` sendiri; `SD-05` sampai `SD-07` dari `SD-04`; `SD-08` sendiri, `SD-09` dari `SD-08`; `SD-10` sendiri, `SD-11` dari `SD-10`; `SD-12` sampai `SD-14` sendiri-sendiri.
 
-### SD-01 · Tombol emas Skenario Digital
+**Pemasangan (langkah E).** Bagian antarmuka dipindahkan dari `ai-studio/chatgpt-images/out/` ke `public/assets/ui/` dan dipanggil lewat `asset_url_versioned('ui/…')`. Untuk `SD-01` sampai `SD-03`, tepi bidang polos tiap gambar diukur dulu (seperti mockup mengukur `plate-next` dan `plate-back`), lalu tulisan diletakkan tepat di tengah bidang itu (keputusan 40). Tombol yang belum aktif memakai gambar yang sama dengan `filter` CSS. Latar `SD-12` sampai `SD-14` masuk Katalog Aset (`ai-studio/game-images/`, entri `data.json` dan baris `REVIEW.md`) sebagai slot baru `bg.{wilayah}.skenario` di `ImageSlots`, lalu `php spark gelita:katalog:impor`; halaman katalog dibangun ulang (`gelita:katalog:halaman`).
+
+### SD-01 · Tombol maju
 
 | | |
 |---|---|
-| Berkas | baru: `sd-button-gold.webp` |
-| Kanvas | 936 × 174, latar transparan |
-| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/ui-plate-gold.webp` (`U-01`: emas dan ujung yang sama), `docs/revisi-10-analitik/gambar/41/mockup-skenario-2-alasan.webp` (letak dan besar tombol, kanan bawah) |
+| Berkas | baru: `sd-next.webp` |
+| Kanvas | 852 × 174, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `public/assets/ui/plate-next.webp` (bentuk yang diminta), `public/assets/ui/round-next.webp` (bulatan panah), `docs/revisi-10-analitik/gambar/41/mockup-skenario-1-tindakan.webp` (tombol kanan bawah) |
 
 ```text
 GELITA CARVED GOLD UI — 2026-11-18
-Asset: sd-button-gold (SD-01 · main gold button, fixed size)
-A short horizontal button plate with a warm polished GOLD face and a thin raised carved gold border, in the same gold, bevel and end caps as the attached gold plate (U-01). Dark brown text such as "Kirim jawaban ›" is written on it later by the game, centred.
-Canvas exactly 936 × 174 pixels, transparent outside the plate; the plate fills the canvas with an even 6-pixel margin. It is shown at exactly 312 × 58, never stretched, so draw it at exactly this shape.
-Each end carries one compact carved end cap (a rounded pointed cap with one scroll curl and one small diamond stud), each no wider than 120 pixels. Between the end caps the face is calm and even, with no ornament, gem or strong reflection, so that text stays readable. WebP, named sd-button-gold.webp.
+Asset: sd-next (SD-01 · "go on" button with an arrow disc, fixed size)
+A horizontal button plate with the same layout as the attached plate with the arrow disc on its right end, redrawn in the carved-gold family of the attached style board: a dark NAVY stone face with a very faint even cloud grain inside a carved gold rim; at the RIGHT end a round carved gold disc that overlaps the end of the plate, with one embossed gold arrow pointing RIGHT on a dark face, like the attached round arrow button; at the LEFT end only a small carved gold end cap with one scroll curl. Light cream text (for example "Lanjut ke alasan") is written later by the game, centred on the plain face, so the face between the left cap and the disc is calm and even: no ornament, gem, cloud motif or highlight spot in it.
+Canvas exactly 852 × 174 pixels, transparent outside the plate and the disc; the disc is about 174 pixels across and touches the right edge; the plate body is about 150 pixels high, centred on the same middle line. It is shown at exactly 284 × 58, never stretched, so draw it at exactly this shape. WebP, named sd-next.webp.
 ```
 
-### SD-02 · Tombol emas panjang
+### SD-02 · Tombol maju panjang
 
 | | |
 |---|---|
-| Berkas | baru: `sd-button-gold-long.webp` |
-| Kanvas | 1260 × 174, latar transparan |
-| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-button-gold.webp` (`SD-01`), `docs/revisi-10-analitik/gambar/41/mockup-skenario-4-tindakan-aman.webp` (letak dan besar tombol) |
+| Berkas | baru: `sd-next-long.webp` |
+| Kanvas | 1176 × 174, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-next.webp` (`SD-01`), `docs/revisi-10-analitik/gambar/41/mockup-skenario-4-tindakan-aman.webp` (tombol bawah) |
 
 ```text
 GELITA CARVED GOLD UI — 2026-11-18
-Asset: sd-button-gold-long (SD-02 · long gold button, fixed size)
-Exactly the same button as the attached gold button (SD-01): the same gold face, border, bevel and end caps at the same size. Only the calm face between the end caps is longer, for a longer label ("Lanjut ke cerita berikutnya ›") written later by the game.
-Canvas exactly 1260 × 174 pixels, transparent outside the plate; even 6-pixel margin. It is shown at exactly 420 × 58, never stretched, so draw it at exactly this shape. Each end cap no wider than 120 pixels; the face between them calm and even, no ornament, gem or strong reflection. WebP, named sd-button-gold-long.webp.
+Asset: sd-next-long (SD-02 · long "go on" button, fixed size)
+Exactly the same button as the attached one (SD-01): the same navy face, carved gold rim, left end cap and right arrow disc at the same size. Only the calm face between the left cap and the disc is longer, for the label "Lanjut ke cerita berikutnya" written later by the game.
+Canvas exactly 1176 × 174 pixels, transparent outside; the disc touches the right edge, the plate body about 150 pixels high on the same middle line. It is shown at exactly 392 × 58, never stretched. The face stays plain: no ornament, gem, cloud motif or highlight spot. WebP, named sd-next-long.webp.
 ```
 
-### SD-03 · Tombol biru tua *Kembali*
+### SD-03 · Tombol *Kembali*
 
 | | |
 |---|---|
-| Berkas | baru: `sd-button-navy.webp` |
-| Kanvas | 708 × 174, latar transparan |
-| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-button-gold.webp` (`SD-01`), `ai-studio/chatgpt-images/out/ui-plate-navy.webp` (`U-02`: bidang biru tua), `docs/revisi-10-analitik/gambar/41/mockup-skenario-2-alasan.webp` (tombol kiri bawah) |
+| Berkas | baru: `sd-back.webp` |
+| Kanvas | 744 × 174, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-next.webp` (`SD-01`: rim dan bidang yang sama), `public/assets/ui/plate-back.webp` (bentuk yang diminta), `docs/revisi-10-analitik/gambar/41/mockup-skenario-2-alasan.webp` (tombol kiri bawah) |
 
 ```text
 GELITA CARVED GOLD UI — 2026-11-18
-Asset: sd-button-navy (SD-03 · navy back button, fixed size)
-The same plate shape, carved gold border and end caps as the attached gold button (SD-01), but with a dark NAVY stone face with a very faint even cloud grain, like the attached navy plate (U-02). Light cream text ("‹ Kembali") is written on it later by the game, centred. It stands next to the gold button and must look like its quieter partner.
-Canvas exactly 708 × 174 pixels, transparent outside the plate; even 6-pixel margin. It is shown at exactly 236 × 58, never stretched, so draw it at exactly this shape. Each end cap no wider than 120 pixels; the face between them calm and even. WebP, named sd-button-navy.webp.
+Asset: sd-back (SD-03 · back button with an arrow disc, fixed size)
+The mirror partner of the attached "go on" button (SD-01), with the layout of the attached back plate: the same navy face and carved gold rim, but the round carved gold disc is at the LEFT end with one embossed gold arrow pointing LEFT, and the RIGHT end has only the small carved end cap. Light from the upper left as on every part (do not mirror the lighting). Light cream text "Kembali" is written later by the game, centred on the plain face, so the face between the disc and the right cap is calm and even.
+Canvas exactly 744 × 174 pixels, transparent outside; the disc about 174 pixels across touches the left edge, the plate body about 150 pixels high on the same middle line. It is shown at exactly 248 × 58, never stretched. WebP, named sd-back.webp.
 ```
 
-### SD-04 · Kartu pilihan, satu baris
+### SD-04 · Tab langkah 1, tidak aktif
 
 | | |
 |---|---|
-| Berkas | baru: `sd-card.webp` |
+| Berkas | baru: `sd-step-1.webp` |
+| Kanvas | 444 × 132, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `public/assets/ui/challenge-badge.webp` (medali nomor), `docs/revisi-10-analitik/gambar/41/mockup-skenario-2-alasan.webp` (dua tab di atas sisi kanan; tab 1 di sini tidak aktif) |
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Asset: sd-step-1 (SD-04 · step tab "1", not active, fixed size)
+A small pill-shaped tab with fully rounded ends and a dark NAVY stone face inside a thin carved gold rim. Its LEFT end is a round medallion, slightly taller than the pill, in the style of the attached number medallion: a carved gold ring around a face with the numeral "1" embossed in it. In this NOT ACTIVE state the medallion is dimmed antique bronze and the numeral muted, so the tab reads as "not here now". A short word ("Tindakan") is written later by the game in muted cream on the plain face to the right of the medallion, so that face is calm and even.
+The numeral "1" is the only character in the picture. Canvas exactly 444 × 132 pixels, transparent outside: the medallion is a circle 132 pixels across at the left edge; the pill body is 120 pixels high on the same middle line and runs to the right edge. It is shown at exactly 148 × 44, never stretched. WebP, named sd-step-1.webp.
+```
+
+### SD-05 · Tab langkah 1, aktif
+
+| | |
+|---|---|
+| Berkas | baru: `sd-step-1-on.webp` |
+| Kanvas | 444 × 132, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-step-1.webp` (`SD-04`), `docs/revisi-10-analitik/gambar/41/mockup-skenario-1-tindakan.webp` (tab 1 aktif) |
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Asset: sd-step-1-on (SD-05 · step tab "1", active, fixed size)
+Exactly the shape, size and medallion of the attached not-active tab (SD-04), in the ACTIVE state: the pill face is warm, bright polished gold (light #FBEBC0 to #E3C07C) with one soft even bevel, and the medallion is full bright gold with the numeral "1" crisply embossed. Dark brown text ("Tindakan") is written later by the game on the plain gold face, so it stays calm and even. Active and not active must differ clearly in black and white.
+Canvas exactly 444 × 132 pixels, transparent outside, the same outline as SD-04 so the two line up when swapped. Shown at exactly 148 × 44. WebP, named sd-step-1-on.webp.
+```
+
+### SD-06 · Tab langkah 2, tidak aktif
+
+| | |
+|---|---|
+| Berkas | baru: `sd-step-2.webp` |
+| Kanvas | 444 × 132, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-step-1.webp` (`SD-04`) |
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Asset: sd-step-2 (SD-06 · step tab "2", not active, fixed size)
+Exactly the attached not-active tab (SD-04), with the numeral "2" embossed in the medallion instead of "1". Everything else is identical: shape, size, dimmed bronze medallion, navy face, rim. The numeral "2" is the only character. Canvas exactly 444 × 132 pixels, transparent outside, the same outline as SD-04. Shown at exactly 148 × 44. WebP, named sd-step-2.webp.
+```
+
+### SD-07 · Tab langkah 2, aktif
+
+| | |
+|---|---|
+| Berkas | baru: `sd-step-2-on.webp` |
+| Kanvas | 444 × 132, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-step-1-on.webp` (`SD-05`), `ai-studio/chatgpt-images/out/sd-step-2.webp` (`SD-06`) |
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Asset: sd-step-2-on (SD-07 · step tab "2", active, fixed size)
+Exactly the attached active tab (SD-05), with the numeral "2" embossed in the medallion instead of "1", the same as the attached not-active tab "2" (SD-06). Bright gold face and medallion, calm face for the game's dark text ("Alasan"). The numeral "2" is the only character. Canvas exactly 444 × 132 pixels, transparent outside, the same outline as SD-04. Shown at exactly 148 × 44. WebP, named sd-step-2-on.webp.
+```
+
+### SD-08 · Jawaban yang dipilih, satu baris
+
+| | |
+|---|---|
+| Berkas | baru: `sd-chosen.webp` |
 | Kanvas | 1752 × 162, latar transparan |
-| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/ui-plate-navy.webp` (`U-02`: bidang biru tua), `docs/revisi-10-analitik/gambar/41/mockup-skenario-1-tindakan.webp` (tiga kartu di kanan) |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/ui-plate-navy.webp` (`U-02`: bidang biru tua), `docs/revisi-10-analitik/gambar/41/mockup-skenario-2-alasan.webp` (jawaban ketiga: yang dipilih) |
 
 ```text
 GELITA CARVED GOLD UI — 2026-11-18
-Asset: sd-card (SD-04 · answer card, one line, fixed size)
-A wide, low answer card: a dark NAVY stone face with a very faint even cloud grain (like the attached navy plate) inside a THIN raised gold border with softly rounded corners. Up to five of these cards stand stacked in a column, so the card is quiet: the border is a slim gold bead line, not a heavy frame, and the only ornaments are four tiny carved gold corner accents, each inside the 60 × 60 pixels of its corner.
-The game later draws a small round gold choice mark near the left end (centred about 90 pixels from the left edge) and one line of cream text to its right, so the whole face stays plain and evenly dark: no ornament, gem, highlight spot or gradient along the length.
-Canvas exactly 1752 × 162 pixels, transparent outside the card; the card fills the canvas with an even 4-pixel margin. It is shown at exactly 584 × 54, never stretched, so draw it at exactly this shape. WebP, named sd-card.webp.
+Asset: sd-chosen (SD-08 · chosen answer, one line, fixed size)
+A wide, low answer bar shown only behind the answer a child has chosen; the other answers have no bar at all. A deep blue-teal stone face (about #142E3A, a little lighter than navy) with a very faint even grain inside a bright, slightly thick gold bead border (#F0DFB8 highlights) with softly rounded corners and four tiny carved gold corner accents, each inside the 60 × 60 pixels of its corner. The game draws a filled round gold choice mark near the left end (centred about 90 pixels from the left edge) and one line of cream text to its right, and adds its own soft light around the bar, so the face stays plain: no symbol, check mark, highlight spot or glow outside the border. No red and no green.
+Canvas exactly 1752 × 162 pixels, transparent outside the bar; even 4-pixel margin. It is shown at exactly 584 × 54, never stretched. WebP, named sd-chosen.webp.
 ```
 
-### SD-05 · Kartu pilihan, dua baris
+### SD-09 · Jawaban yang dipilih, dua baris
 
 | | |
 |---|---|
-| Berkas | baru: `sd-card-2.webp` |
-| Kanvas | 1752 × 204, latar transparan |
-| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-card.webp` (`SD-04`) |
+| Berkas | baru: `sd-chosen-2.webp` |
+| Kanvas | 1752 × 210, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-chosen.webp` (`SD-08`) |
 
 ```text
 GELITA CARVED GOLD UI — 2026-11-18
-Asset: sd-card-2 (SD-05 · answer card, two lines, fixed size)
-Exactly the same card as the attached one-line answer card (SD-04): the same navy face, the same thin gold bead border, the same rounded corners and the same four tiny corner accents at the same size. Only the card is taller, for two lines of text.
-Canvas exactly 1752 × 204 pixels, transparent outside the card; even 4-pixel margin. It is shown at exactly 584 × 68, never stretched, so draw it at exactly this shape. The face stays plain and evenly dark. WebP, named sd-card-2.webp.
+Asset: sd-chosen-2 (SD-09 · chosen answer, two lines, fixed size)
+Exactly the attached chosen-answer bar (SD-08): the same face, border, corners and corner accents at the same size. Only the bar is taller, for two lines of text. Plain face, no symbol, no glow outside the border, no red, no green.
+Canvas exactly 1752 × 210 pixels, transparent outside; even 4-pixel margin. It is shown at exactly 584 × 70, never stretched. WebP, named sd-chosen-2.webp.
 ```
 
-### SD-06 · Kartu pilihan yang dipilih, satu baris
+### SD-10 · Pil *Dengarkan cerita*
 
 | | |
 |---|---|
-| Berkas | baru: `sd-card-on.webp` |
-| Kanvas | 1752 × 162, latar transparan |
-| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-card.webp` (`SD-04`), `docs/revisi-10-analitik/gambar/41/mockup-skenario-2-alasan.webp` (kartu ketiga: yang dipilih) |
+| Berkas | baru: `sd-listen.webp` |
+| Kanvas | 756 × 156, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `public/assets/ui/round-play.webp` (tombol yang duduk di ujung kirinya), `docs/revisi-10-analitik/gambar/41/mockup-skenario-1-tindakan.webp` (pil di tengah bawah gambar) |
 
 ```text
 GELITA CARVED GOLD UI — 2026-11-18
-Asset: sd-card-on (SD-06 · answer card, selected, one line, fixed size)
-The attached one-line answer card (SD-04) in its SELECTED state: exactly the same shape, size, corners and corner accents, but the gold border is a little thicker and brighter (#F0DFB8 highlights), and the face is a slightly lighter deep blue-teal (about #142E3A) so the chosen card stands out from the others even in black and white.
-The game draws the filled choice mark and the text, so the face stays plain: no ornament, symbol, check mark or highlight spot. No red and no green, and no glow outside the border (the game adds its own soft light). Canvas exactly 1752 × 162 pixels, transparent outside the card, with the same even 4-pixel margin as SD-04 so both line up exactly when swapped. Shown at exactly 584 × 54. WebP, named sd-card-on.webp.
+Asset: sd-listen (SD-10 · "listen to the story" pill, fixed size)
+A short capsule with fully rounded ends that floats over the lower middle of a colourful story picture: a dark NAVY stone face with a very faint even cloud grain inside a thin gold bead border, with a soft contact shadow under it. It must stand out clearly from any bright picture behind it, so the face is deep and even and the border crisp.
+The game places the attached round gold play button over the left end (a circle about 126 pixels across, its centre about 81 pixels from the left edge and on the middle line) and writes a short label to its right, so the face is completely plain: no ornament, no wave, no button and no highlight spot.
+Canvas exactly 756 × 156 pixels, transparent outside the capsule and its soft shadow; even 4-pixel margin. It is shown at exactly 252 × 52, never stretched. WebP, named sd-listen.webp.
 ```
 
-### SD-07 · Kartu pilihan yang dipilih, dua baris
+### SD-11 · Pil *Dengarkan cerita* selama dibacakan
 
 | | |
 |---|---|
-| Berkas | baru: `sd-card-on-2.webp` |
-| Kanvas | 1752 × 204, latar transparan |
-| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-card-on.webp` (`SD-06`), `ai-studio/chatgpt-images/out/sd-card-2.webp` (`SD-05`) |
+| Berkas | baru: `sd-listen-wide.webp` |
+| Kanvas | 1440 × 156, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-listen.webp` (`SD-10`) |
 
 ```text
 GELITA CARVED GOLD UI — 2026-11-18
-Asset: sd-card-on-2 (SD-07 · answer card, selected, two lines, fixed size)
-The attached two-line answer card (SD-05) in the same SELECTED state as the attached selected one-line card (SD-06): the same brighter, slightly thicker gold border and the same lighter deep blue-teal face. Exactly the shape and size of SD-05.
-Canvas exactly 1752 × 204 pixels, transparent outside the card, no glow outside the border; even 4-pixel margin as SD-05. Shown at exactly 584 × 68. Plain face, no symbol, no red, no green. WebP, named sd-card-on-2.webp.
+Asset: sd-listen-wide (SD-11 · "listen to the story" pill while reading, fixed size)
+Exactly the attached pill (SD-10): the same face, border, rounded ends and shadow, only longer. While the story is read aloud the game shows this wider pill with its play button at the left end, a label, a moving gold sound wave in the middle and the duration at the right end, so the face is completely plain from end to end: no wave, no divider, no ornament and no highlight spot.
+Canvas exactly 1440 × 156 pixels, transparent outside the capsule and its soft shadow; even 4-pixel margin. It is shown at exactly 480 × 52, never stretched. WebP, named sd-listen-wide.webp.
 ```
 
-### SD-08 · Rel sakelar langkah
+### SD-12 · Latar Skenario Digital Temanggung
 
 | | |
 |---|---|
-| Berkas | baru: `sd-step-rail.webp` |
-| Kanvas | 768 × 132, latar transparan |
-| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-card.webp` (`SD-04`: bidang dan tepi yang sama), `docs/revisi-10-analitik/gambar/41/mockup-skenario-1-tindakan.webp` (sakelar di atas panel kanan) |
+| Kode berkas | `bg.temanggung.skenario` → simpan sebagai `bg.temanggung.skenario.webp` (slot baru) |
+| Kanvas | 1920 × 1080 |
+| Lampiran | Acuan gaya `ai-studio/game-images/assets/referensi/reference.06.webp`; `ai-studio/game-images/assets/latar/bg.temanggung.region.webp` (tempat dan suasana wilayah); foto `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-Sumbing-sunrise-02.jpg`; `docs/revisi-10-analitik/gambar/41/mockup-skenario-1-tindakan.webp` (letak kepala layar, gambar, teks, dan pilihan di atas latar) |
+| Dipakai | Tantangan kelima Temanggung: kepala layar di atas, gambar situasi dan teks di kiri, pertanyaan dan pilihan di kanan, semuanya tanpa kotak |
 
 ```text
-GELITA CARVED GOLD UI — 2026-11-18
-Asset: sd-step-rail (SD-08 · two-step switch rail, fixed size)
-A small pill-shaped rail for a two-step switch: a dark NAVY stone face with fully rounded ends inside the same thin gold bead border as the attached answer card. The game lays a separate gold part over one half of the rail and writes "1 Tindakan" on the left half and "2 Alasan" on the right half, so the whole face is plain and evenly dark, with no divider, ornament or highlight spot.
-Canvas exactly 768 × 132 pixels, transparent outside the rail; the rail fills the canvas with an even 4-pixel margin. It is shown at exactly 256 × 44, never stretched. WebP, named sd-step-rail.webp.
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: bg.temanggung.skenario  (SD-12 · Skenario Digital screen, Temanggung)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Characters: no people at all. The attached photo is a factual reference for the mountains only; do not copy it.
+
+SUBJECT AND COMPOSITION
+Wide 16:9 background behind a quiz screen that has NO boxes: a title bar and round buttons in the top 12%, a story picture and story text on the left half, a question and answer rows on the right half, with cream and gold text standing directly on this background.
+Top 12%: bright, clear morning sky, soft and even, so the title bar reads as bright and fresh.
+Horizon band between 12% and 30% of the height: Mount Sumbing (broader, left) and Mount Sindoro (a clean cone, right) side by side, smooth slopes, no smoke.
+Everything below 30% of the height: calm terraced tobacco and coffee fields and a few far tiled roofs in gentle shade, as if under a soft passing cloud, low in contrast and low in detail, getting gently darker towards the bottom, so that cream text and gold lines on top read clearly without a box. No bright spots, no strong edges, no small busy detail below 30%. The left and right thirds below 30% are the calmest.
+Accuracy — No people, animals, signs, screens, phones, paths with signposts, temples, mist, light rays or water reflections.
+
+DELIVERY
+Target canvas 1920 × 1080 pixels; aspect 16:9. Opaque, full-bleed. Deliver WebP, named bg.temanggung.skenario.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache or paper grain.
 ```
 
-### SD-09 · Kapsul pemutar *Dengarkan cerita*
+### SD-13 · Latar Skenario Digital Magelang
 
 | | |
 |---|---|
-| Berkas | baru: `sd-player.webp` |
-| Kanvas | 1548 × 156, latar transparan |
-| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-card.webp` (`SD-04`), `public/assets/ui/round-play.webp` (tombol yang duduk di ujung kirinya), `docs/revisi-10-analitik/gambar/41/mockup-skenario-1-tindakan.webp` (kapsul di bagian bawah gambar, kiri) |
+| Kode berkas | `bg.magelang.skenario` → simpan sebagai `bg.magelang.skenario.webp` (slot baru) |
+| Kanvas | 1920 × 1080 |
+| Lampiran | Acuan gaya `ai-studio/game-images/assets/referensi/reference.06.webp`; `ai-studio/game-images/assets/latar/bg.magelang.region.webp`; foto `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Borobudur-aerial-plain-volcano-01.jpg` (dataran dan gunung; candinya tidak digambar); `docs/revisi-10-analitik/gambar/41/mockup-skenario-1-tindakan.webp` |
+| Dipakai | Tantangan kelima Magelang, seperti `SD-12` |
 
 ```text
-GELITA CARVED GOLD UI — 2026-11-18
-Asset: sd-player (SD-09 · "listen to the story" player capsule, fixed size)
-A long capsule with fully rounded ends that floats over the lower edge of a colourful story picture: a dark NAVY stone face with a very faint even cloud grain inside the same thin gold bead border as the attached answer card (SD-04). It must stand out clearly from any bright picture behind it, so the face is deep and even and the border crisp, with a soft contact shadow under the capsule.
-The game places the attached round gold play button over the left end (a circle about 126 pixels across, its centre about 81 pixels from the left edge and on the middle line), then writes a short label, draws a moving gold sound wave in the middle, and writes the duration at the right end. So the face is completely plain and evenly dark from end to end: no ornament, no wave, no button, no divider and no highlight spot.
-Canvas exactly 1548 × 156 pixels, transparent outside the capsule and its soft shadow; even 4-pixel margin. It is shown at exactly 516 × 52, never stretched. WebP, named sd-player.webp.
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: bg.magelang.skenario  (SD-13 · Skenario Digital screen, Magelang)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Characters: no people at all. The attached photo is a factual reference for the plain and the mountains only; do not copy it and do not draw its temple.
+
+SUBJECT AND COMPOSITION
+Wide 16:9 background behind a quiz screen that has NO boxes: a title bar and round buttons in the top 12%, a story picture and story text on the left half, a question and answer rows on the right half, with cream and gold text standing directly on this background.
+Top 12%: bright, clear morning sky, soft and even.
+Horizon band between 12% and 30% of the height: the Kedu plain seen from the west, with Mount Merbabu (broad, several low summits) and Mount Merapi (a steeper cone) far away on the horizon and the soft line of the Menoreh hills; smooth slopes, no smoke, no eruption.
+Everything below 30% of the height: calm rice fields and palm groves of the plain in gentle shade, as if under a soft passing cloud, low in contrast and low in detail, getting gently darker towards the bottom, so that cream text and gold lines on top read clearly without a box. No bright spots, no strong edges, no small busy detail below 30%. The left and right thirds below 30% are the calmest.
+Accuracy — No temples, stupas or reliefs, no people, animals, signs, screens, phones, mist, light rays or water reflections.
+
+DELIVERY
+Target canvas 1920 × 1080 pixels; aspect 16:9. Opaque, full-bleed. Deliver WebP, named bg.magelang.skenario.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache or paper grain.
 ```
 
-### SD-10 · Bagian aktif sakelar langkah
+### SD-14 · Latar Skenario Digital Wonosobo
 
 | | |
 |---|---|
-| Berkas | baru: `sd-step-on.webp` |
-| Kanvas | 375 × 114, latar transparan |
-| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-button-gold.webp` (`SD-01`: emasnya), `ai-studio/chatgpt-images/out/sd-step-rail.webp` (`SD-08`: rel tempat bagian ini duduk) |
+| Kode berkas | `bg.wonosobo.skenario` → simpan sebagai `bg.wonosobo.skenario.webp` (slot baru) |
+| Kanvas | 1920 × 1080 |
+| Lampiran | Acuan gaya `ai-studio/game-images/assets/referensi/reference.06.webp`; `ai-studio/game-images/assets/latar/bg.wonosobo.region.webp`; foto `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Telaga-Warna-Dieng-05.jpg` (dataran tinggi Dieng); `docs/revisi-10-analitik/gambar/41/mockup-skenario-1-tindakan.webp` |
+| Dipakai | Tantangan kelima Wonosobo, seperti `SD-12` |
 
 ```text
-GELITA CARVED GOLD UI — 2026-11-18
-Asset: sd-step-on (SD-10 · active half of the two-step switch, fixed size)
-A small pill with fully rounded ends and a warm polished GOLD face with one soft even bevel, the same gold as the attached gold button (SD-01), with a slim raised gold rim. It sits inside one half of the attached navy rail (SD-08) to show which step is active; dark brown text ("1 Tindakan" or "2 Alasan") is written on it later by the game, so the face is calm: no end caps, no ornament, no gem, no strong reflection. It slides between the left and the right half, so it must look right on either side: light from the upper left, but no lighting that only fits one side.
-Canvas exactly 375 × 114 pixels, transparent outside the pill; even 4-pixel margin. It is shown at exactly 125 × 38, never stretched. WebP, named sd-step-on.webp.
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: bg.wonosobo.skenario  (SD-14 · Skenario Digital screen, Wonosobo)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Characters: no people at all. The attached photo is a factual reference for the plateau only; do not copy it.
+
+SUBJECT AND COMPOSITION
+Wide 16:9 background behind a quiz screen that has NO boxes: a title bar and round buttons in the top 12%, a story picture and story text on the left half, a question and answer rows on the right half, with cream and gold text standing directly on this background.
+Top 12%: bright, clear morning sky, soft and even.
+Horizon band between 12% and 30% of the height: the green ridges of the Dieng plateau around a small lake far away, smooth rounded hills.
+Everything below 30% of the height: calm, steep terraced vegetable fields of the plateau in gentle shade, as if under a soft passing cloud, low in contrast and low in detail, getting gently darker towards the bottom, so that cream text and gold lines on top read clearly without a box. No bright spots, no strong edges, no small busy detail below 30%. The left and right thirds below 30% are the calmest.
+Accuracy — No steam, smoke or craters, no temples, no people, animals, signs, screens, phones, mist, light rays or water reflections in the lower part.
+
+DELIVERY
+Target canvas 1920 × 1080 pixels; aspect 16:9. Opaque, full-bleed. Deliver WebP, named bg.wonosobo.skenario.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache or paper grain.
 ```
 
-### SD-11 · Kotak petunjuk
-
-| | |
-|---|---|
-| Berkas | baru: `sd-hint-box.webp` |
-| Kanvas | 1752 × 300, latar transparan |
-| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-card.webp` (`SD-04`: bidang dan tepi yang sama), `public/assets/ui/round-play.webp`, `docs/revisi-10-analitik/gambar/41/mockup-skenario-1-tindakan.webp` (kotak di bawah pertanyaan, kanan) |
-
-```text
-GELITA CARVED GOLD UI — 2026-11-18
-Asset: sd-hint-box (SD-11 · instruction box with a listen row, fixed size)
-A wide box with softly rounded corners: a dark NAVY stone face with a very faint even cloud grain inside the same thin gold bead border as the attached answer card (SD-04), with the same four tiny carved gold corner accents. It holds two rows that the game fills: the upper row (the top 126 pixels) gets a small copy of the attached round gold play button near the left end and a short label; the lower row gets one line of small cream text. The game also draws the thin line between the two rows.
-So the face is completely plain and evenly dark: no divider, no ornament in the middle, no button and no highlight spot.
-Canvas exactly 1752 × 300 pixels, transparent outside the box; even 4-pixel margin. It is shown at exactly 584 × 100, never stretched. WebP, named sd-hint-box.webp.
-```
-
-### SD-12 · Bingkai panel kiri
-
-| | |
-|---|---|
-| Berkas | baru: `sd-panel.webp` |
-| Kanvas | 1800 × 1752, latar transparan |
-| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-card.webp` (`SD-04`: bidang dan tepi yang sama), `docs/revisi-10-analitik/gambar/41/mockup-skenario-1-tindakan.webp` (kotak kiri) |
-
-```text
-GELITA CARVED GOLD UI — 2026-11-18
-Asset: sd-panel (SD-12 · story panel frame, fixed size)
-A tall panel with softly rounded corners (radius about 48 pixels): a dark NAVY stone face with a very faint even cloud grain inside a thin raised gold bead border, the same border family as the attached answer card (SD-04), with four small carved gold corner accents, each inside the 120 × 120 pixels of its corner, and a soft contact shadow. The game fills the panel from top to bottom with a row of small text, a story picture, a play bar and a paragraph of cream text, so the whole face is plain and evenly dark: no ornament, divider, inner frame, highlight spot or gradient.
-Canvas exactly 1800 × 1752 pixels, transparent outside the panel and its soft shadow; even 6-pixel margin. It is shown at exactly 600 × 584, never stretched. WebP, named sd-panel.webp.
-```
-
-**Daftar periksa hasil `SD-`.** Satu keluarga dengan `reference.27` dan `U-01`/`U-02`; ukuran kanvas tepat; tanpa tulisan, angka, centang, atau simbol; bidang tempat teks tenang (perkecil ke ukuran tampil dan taruh teks terpanjang di atasnya: *Lanjut ke cerita berikutnya ›*, tindakan 59 karakter); kartu dan kartu dipilih tetap bisa dibedakan dalam hitam-putih; tanpa merah dan hijau; `SD-04`/`SD-06` dan `SD-05`/`SD-07` berimpit tepat bila ditukar.
+**Daftar periksa hasil `SD-`.** Bagian antarmuka: satu keluarga dengan `reference.27`; kanvas tepat; tanpa tulisan, angka, centang, atau simbol selain angka 1 dan 2 di tab; bidang tempat tulisan tenang (perkecil ke ukuran tampil dan taruh label terpanjang di atasnya); tab aktif dan tidak aktif, dan jawaban dipilih, terbedakan dalam hitam-putih; tanpa merah dan hijau; pasangan tab (`SD-04`/`SD-05`, `SD-06`/`SD-07`) berimpit tepat bila ditukar. Latar: langit atas terang; di bawah 30% tinggi tenang, agak gelap, tanpa titik terang; uji dengan menaruh tangkapan mockup di atasnya (teks krem 20 px terbaca tanpa kotak); tanpa orang, layar, papan, atau kabut.
