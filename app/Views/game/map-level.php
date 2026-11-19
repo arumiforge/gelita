@@ -167,8 +167,18 @@ $nodeName = static fn (array $n): string => lang_or('Game.engine_' . $n['engine_
             <?php endif ?>
           </div>
           <h2 class="node-card-title" id="node-<?= $seq ?>-title"><?= esc($nodeName($node)) ?></h2>
-          <?php if (node_done($node)): ?>
-            <p class="node-card-stars" role="img" aria-label="<?= esc(lang('Game.resultStarsOf', [(int) $node['stars'], 3]), 'attr') ?>"><?= stars_html((int) $node['stars']) ?></p>
+          <?php $bridge = $node['engine_type'] === 'skenario' && ! empty($bridgeSeen) && $node['status'] !== 'locked'; ?>
+          <?php if (node_done($node) || $bridge): ?>
+            <?php // Stars and, for Skenario Digital, the bridge story on one row under the name (owner, 19 November 2026: it overlapped the Pustaka row below the button) ?>
+            <div class="node-card-meta">
+              <?php if (node_done($node)): ?>
+                <p class="node-card-stars" role="img" aria-label="<?= esc(lang('Game.resultStarsOf', [(int) $node['stars'], 3]), 'attr') ?>"><?= stars_html((int) $node['stars']) ?></p>
+              <?php endif ?>
+              <?php if ($bridge): ?>
+                <?php // Part 6 (32 §7.2): watch the bridge story again; no data depends on it ?>
+                <a class="node-bridge" href="<?= esc(base_url('penghubung/' . $level->code), 'attr') ?>"><?= icon('play') ?> <span><?= esc(lang('Game.watchBridgeStory')) ?></span></a>
+              <?php endif ?>
+            </div>
           <?php endif ?>
           <?php if ($node['status'] === 'locked'): ?>
             <p class="node-card-note"><?= esc(lang('Game.nodeLocked')) ?></p>
@@ -183,10 +193,6 @@ $nodeName = static fn (array $n): string => lang_or('Game.engine_' . $n['engine_
               <a class="btn btn-primary btn-lg node-action" href="<?= esc($href($node), 'attr') ?>"><span><?= esc(lang('Game.start')) ?></span> <?= icon('right') ?></a>
             <?php endif ?>
             <?php // A locked challenge has no button: its status and note say why ?>
-            <?php if ($node['engine_type'] === 'skenario' && ! empty($bridgeSeen) && $node['status'] !== 'locked'): ?>
-              <?php // Part 6 (32 §7.2): watch the bridge story again; no data depends on it ?>
-              <a class="node-bridge" href="<?= esc(base_url('penghubung/' . $level->code), 'attr') ?>"><?= icon('play') ?> <?= esc(lang('Game.watchBridgeStory')) ?></a>
-            <?php endif ?>
           </div>
         </li>
       <?php endforeach ?>

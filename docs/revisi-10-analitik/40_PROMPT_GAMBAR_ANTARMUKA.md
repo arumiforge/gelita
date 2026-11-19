@@ -1624,6 +1624,7 @@ Wawancara pengembang 19 November 2026 ([04](04_CATATAN_KEPUTUSAN.md)): halaman a
 | `PL-04` | Kristal Serpihan Cahaya tahap 2 (Magelang) | baru: `public/assets/ui/hud-shards-crystal-2.webp` | 444 × 564, latar transparan |
 | `PL-05` | Kristal Serpihan Cahaya tahap 3 (Wonosobo) | baru: `public/assets/ui/hud-shards-crystal-3.webp` | 444 × 564, latar transparan |
 | `PL-06` | Kristal Serpihan Cahaya tahap 4 (semua tuntas) | baru: `public/assets/ui/hud-shards-crystal-4.webp` | 444 × 564, latar transparan |
+| `PL-07` sampai `PL-09` | Tombol tenang emas, biru tua, hijau (putaran kedua, lihat di bawah) | baru: `public/assets/ui/ui-button-{gold,navy,green}.webp` | 960 × 160, latar transparan |
 
 **Tahap kristal.** Tahap 1 tampil selama belum ada wilayah yang tuntas (hanya Temanggung yang terbuka), tahap 2 setelah Temanggung tuntas (Magelang terbuka), tahap 3 setelah Magelang tuntas (Wonosobo terbuka), tahap 4 setelah ketiga wilayah tuntas. Keempatnya bentuk dan ukuran yang sama dengan `U-36`; yang berubah hanya cahaya di dalamnya, makin lama makin terang. Game memilih gambar menurut tahap; selama gambar suatu tahap belum terpasang, `U-36` yang tampil.
 
@@ -1708,6 +1709,39 @@ EXACTLY the same crystal as the attached hud-shards-crystal.webp (U-36): same ou
 | `PL-04` | `Stage 2 of 4 (one region restored): warm amber-gold light fills the lower half of the crystal and rises toward the middle; the lower facets glow; a faint warm glow hugs the lower outline. Attach and match out/hud-shards-crystal-1.webp.` | `hud-shards-crystal-2.webp` |
 | `PL-05` | `Stage 3 of 4 (two regions restored): bright gold light fills almost the whole crystal, a hint of soft turquoise in the inner facets; a clear warm glow hugs the whole outline. Attach and match out/hud-shards-crystal-2.webp.` | `hud-shards-crystal-3.webp` |
 | `PL-06` | `Stage 4 of 4 (all of Kedu restored): the whole crystal shines radiant pale gold to white-gold from within, every facet lit, a delicate turquoise sparkle in the core, the strongest soft glow hugging the outline (still within 24 pixels). Attach and match out/hud-shards-crystal-3.webp.` | `hud-shards-crystal-4.webp` |
+
+### PL-07 sampai PL-09 · Tombol tenang (emas, biru tua, hijau)
+
+Wawancara pengembang 19 November 2026, putaran kedua ([04](04_CATATAN_KEPUTUSAN.md)): tombol yang berisi tulisan dan panah tidak lagi memakai pelat dengan ujung ukel yang ramai (`U-01` sampai `U-03`). Semua tombol bertulisan di game memakai satu keluarga *tombol tenang*: kapsul bersudut bulat yang halus dengan tepi manik tipis, tulisan di tengah, dan panah di kotak kecil di kanan (tulisan dan panah dibuat halaman). Gaya ini sudah dibangun dengan CSS; gambar di bawah ini memberi permukaan 3D yang segaya dengan keluarga emas berukir, tanpa hiasan di ujung, sehingga bisa diregang ke lebar berapa pun.
+
+| Kode | Gambar | Berkas | Kanvas |
+|---|---|---|---|
+| `PL-07` | Tombol tenang emas (aksi utama: Mulai, Lanjut, Cek jawabanku) | baru: `public/assets/ui/ui-button-gold.webp` | 960 × 160, latar transparan |
+| `PL-08` | Tombol tenang biru tua (Kembali, Batal, Kenali) | baru: `public/assets/ui/ui-button-navy.webp` | 960 × 160, latar transparan |
+| `PL-09` | Tombol tenang hijau (Lihat hasil) | baru: `public/assets/ui/ui-button-green.webp` | 960 × 160, latar transparan |
+
+| | |
+|---|---|
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp` (acuan gaya), `public/assets/ui/ui-plate-gold.webp` (`U-01`: warna emas dan cahaya, tetapi TANPA ujung ukelnya), `docs/revisi-10-analitik/gambar/40/polesan/10-tombol-tenang.webp` (tombol CSS di game: bentuk dan proporsi); untuk `PL-08` dan `PL-09` juga `out/ui-button-gold.webp` |
+| Urutan | `PL-07` dulu; `PL-08` dan `PL-09` melampirkan hasilnya supaya bentuk, tepi, dan sudutnya sama persis |
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Interface part for GELITA, an educational game for Indonesian children aged 10–11, shown on a school Chromebook. One family with the attached GELITA style board: thick antique-gold frames carved in deep relief with Javanese ukel scroll ornaments, faces of dark navy stone (#0B1320 to #1B2740) with a very faint cloud pattern, symbols embossed in the same gold, one light from the upper left, soft contact shadow, rendered as a solid 3D object. Gold #DFC087 with highlights #F0DFB8 and warm brown shadows; no chrome, no neon, no glow line, no rainbow sheen. Ornaments are the same carving family on every part: the same scroll, the same small diamond studs, the same bead edge.
+It is a user-interface element, not a scene: no background scenery, no text, letters, numbers or logos, no people. Genuine transparent background outside the object unless the brief says otherwise; no fake checkerboard.
+Asset: ui-button-gold (PL-07 · quiet button face, gold)
+EXCEPTION to the family's carving: this button has NO scroll ornaments, NO carved ends, NO studs and NO medallion. It is the calm member of the family, for buttons that carry their own label and arrow. A smooth, slightly domed rounded rectangle (corner radius about 28 pixels on a 160 pixel tall canvas), its face polished warm gold that runs from pale cream gold (#FFF4D2) at the top through #F2D58F to deeper gold (#CB9C48) at the bottom, lit from the upper left. A thin bright bead edge (2 to 3 pixels) runs all round just inside the outline, and a fine dark-brown outer line (#7E5A1E, 2 pixels) separates it from any background. A soft inner highlight along the top edge. The face is completely EVEN from end to end: no texture, pattern, mark or change of light along its length, so the game can stretch the middle to any width and nothing looks stretched.
+Canvas exactly 960 × 160 pixels, transparent around the button; the button fills the canvas with about 10 pixels of soft contact shadow below. No text, no arrow, no icon. WebP with alpha, named ui-button-gold.webp.
+```
+
+Untuk `PL-08` dan `PL-09`, pakai prompt yang sama dengan baris *Asset* dan warna permukaan berikut:
+
+| Kode | Baris yang diganti | Simpan sebagai |
+|---|---|---|
+| `PL-08` | `Asset: ui-button-navy (PL-08 · quiet button face, navy)` · permukaan biru tua halus dari #253A60 di atas ke #0F1B33 di bawah; tepi manik emas tipis (#DFC087, 2 piksel), garis luar gelap; *Attach and match out/ui-button-gold.webp: same shape, corners, bead edge and shadow.* | `ui-button-navy.webp` |
+| `PL-09` | `Asset: ui-button-green (PL-09 · quiet button face, green)` · permukaan hijau daun tua halus dari #3F7D50 di atas ke #1D462C di bawah; tepi manik emas tipis (#DFC087, 2 piksel), garis luar gelap; *Attach and match out/ui-button-gold.webp.* | `ui-button-green.webp` |
+
+**Pemasangan.** Gambar dipasang sebagai `border-image` dengan potongan sudut saja (seperti `ui-frame`), di bawah blok *QUIET BUTTONS* di `public/assets/css/cinematic.css`; tulisan dan kotak panah tetap dari halaman. Sebelum gambar diterima, permukaan CSS yang tampil.
 
 ## Daftar periksa hasil
 

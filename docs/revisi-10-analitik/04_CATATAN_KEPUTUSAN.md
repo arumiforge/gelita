@@ -6,6 +6,14 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 19 November 2026
 
+**Tombol tenang dan peta wilayah dari mockup pengembang** (cabang `igi/laughing-fermi-ifbg3l`, dokumen [40](40_PROMPT_GAMBAR_ANTARMUKA.md) → *PL-07 sampai PL-09*) · `asal: pengembang` · `disetujui pengembang` (wawancara putaran kedua) · kode tampilan; aturan penelitian dan data tidak berubah
+
+1. **Tombol bertulisan tanpa ujung ukel.** Semua tombol bertulisan di game memakai satu keluarga tombol tenang (emas untuk aksi utama, biru tua untuk aksi tenang, hijau untuk Lihat hasil): kapsul halus dengan tepi manik tipis dan panah di kotak kecil. Dibuat dengan CSS sekarang; permukaannya dipesan sebagai gambar `PL-07` sampai `PL-09`. Tombol Skenario Digital, pilihan jawaban, dan tombol bulat HUD tetap.
+2. **Peta wilayah mengikuti mockup pengembang:** peta di kartu tipis dengan kemajuan di bawahnya, penanda bernomor, dan satu kartu kanan yang tenang (nama wilayah, fokus, tantangan terpilih dengan gambar berwarna penuh, satu tombol lebar, baris Pustaka). Bingkai selendang, papan judul, bilah perunggu, dan medali status tidak dipakai lagi di layar ini.
+3. **Halaman awal tanpa sinar dari atas.**
+4. **Tautan cerita penghubung** di kartu Skenario Digital dipindah ke baris bintang supaya tidak menimpa baris Pustaka.
+5. **HUD berukir tetap** seperti yang disetujui (keputusan 15 dokumen 41).
+
 **Polesan halaman awal, menu, peta, dan Pustaka; enam gambar dipesan** (cabang `igi/laughing-fermi-ifbg3l`, dokumen [40](40_PROMPT_GAMBAR_ANTARMUKA.md) → *Polesan halaman awal dan peta*) · `asal: pengembang` · `disetujui pengembang` (wawancara) · kode tampilan; aturan penelitian dan data tidak berubah
 
 1. **Halaman awal dibagi dua:** logo, judul, ajakan singkat, tiga wilayah, dan tombol MULAI (tulisannya dibuat halaman, bukan gambar) di kiri; Jaka di kanan. Sampai gambar baru diterima, latar `S-W` dan Jaka melambai yang tampil.
