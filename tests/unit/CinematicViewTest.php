@@ -184,7 +184,8 @@ final class CinematicViewTest extends CIUnitTestCase
         $this->assertMatchesRegularExpression('#id="slide-2".*?<div class="kenal-avatar cine-avatar">.*?src="[^"]*ui\.kedu-avatar\.webp".*?<span class="kenal-nameplate">' . lang('Game.char_mbah_kedu') . '</span>.*?id="slide-3"#s', $page);
         $this->assertMatchesRegularExpression('#id="slide-3".*?<div class="kenal-avatar cine-avatar">.*?src="[^"]*ui\.jaka-avatar\.determined\.webp"#s', $page);
         $this->assertDoesNotMatchRegularExpression('#id="slide-1".*?cine-avatar.*?id="slide-2"#s', $page, 'the narrator has no avatar');
-        $this->assertMatchesRegularExpression('#<ol class="slides cine-slides" style="--kenal-plate-navy: url\("[^"]*kenal-plate-navy\.webp#', $page);
+        // The nameplate's navy plate comes from #stage (U-02, 19 November 2026)
+        $this->assertStringContainsString('<ol class="slides cine-slides">', $page);
     }
 
     /** Owner, 16 November 2026: in research mode the dots only show the place, so no slide can be skipped by them. */
@@ -285,7 +286,7 @@ final class CinematicViewTest extends CIUnitTestCase
         $this->assertStringContainsString('background: none;', $controls[1]);
         $this->assertStringContainsString('box-shadow: none;', $controls[1]);
         $this->assertStringContainsString('.stage[style*="--skin-hud"] .cine .narrator-controls .icon-btn::after {', $css);
-        $this->assertStringContainsString('.stage[style*="--gold-pill-3"] .cine .narrator-next.has-label:not(:disabled) {', $css);
+        $this->assertStringContainsString('.stage[style*="--plate-gold"] .cine .narrator-next.has-label:not(:disabled) {', $css);
         // 48 dp since 16 November 2026 (owner), was 40 dp
         $this->assertMatchesRegularExpression('/\n\.cine \.narrator-controls \.icon-btn \{[^}]*width: 3rem;[^}]*height: 3rem;/', $css);
         $this->assertStringNotContainsString('.cine-top .eyebrow', $css);
@@ -359,7 +360,7 @@ final class CinematicViewTest extends CIUnitTestCase
         // The tap prompt is small plain text: no button picture, no lantern icon (owner, 21 October 2026)
         $this->assertStringContainsString('<button type="button" class="curtain-tap" data-curtain-tap hidden>' . esc(lang('Game.curtainMapTap')) . '</button>', $html);
         $this->assertStringContainsString('class="curtain-beam has-track"', $html);
-        $this->assertStringContainsString('--loading-track: url(&quot;' . esc(asset_url_versioned('ui/loading-track.webp'), 'attr') . '&quot;)', $html);
+        $this->assertStringContainsString('--ui-track: url(&quot;' . esc(asset_url_versioned('ui/ui-track.webp'), 'attr') . '&quot;)', $html);
         $this->assertStringContainsString('role="progressbar"', $html);
 
         // Tiga baris status bergilir ada di data-statuses

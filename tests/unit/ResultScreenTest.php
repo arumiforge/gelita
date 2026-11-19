@@ -255,7 +255,9 @@ final class ResultScreenTest extends CIUnitTestCase
         Services::resetSingle('renderer');
         $page = $this->finished();
 
-        $this->assertMatchesRegularExpression('/<article class="result-card stage-box" aria-labelledby="result-title" style="--skin-panel: url\(&quot;[^"]*ui\.result-panel\.webp&quot;\)">/', $page, 'the main button is on the shipped gold pill, not the old skin');
+        // Since 19 November 2026 the panel is the shipped frame (U-04), whatever the ui.result-panel slot holds
+        $this->assertStringContainsString('<article class="result-card stage-box" aria-labelledby="result-title">', $page);
+        $this->assertStringNotContainsString('--skin-panel', $page);
         $this->assertStringContainsString('style="--skin-hud: url(&quot;', $page);
         $this->assertStringContainsString('<img class="result-star is-on" src="' . esc(base_url('assets/uploads/ui.result-star.webp'), 'attr'), $page);
         $this->assertStringContainsString('<div class="result-medal has-art" aria-hidden="true">', $page);

@@ -102,7 +102,6 @@ $curtainOf = static fn (array $l): string => $l['status'] !== 'locked' && isset(
 // Speaker of the story bar: the round avatar with the name on the navy plate over its lower ring (as on Kenali)
 $speaker = static fn (string $portrait, string $name): string => '<div class="kedu-speaker">' . $portrait
     . '<span class="kenal-nameplate">' . esc($name) . '</span></div>';
-$plateStyle = ' style="--kenal-plate-navy: url(&quot;' . esc(asset_url_versioned('ui/kenal-plate-navy.webp'), 'attr') . '&quot;)"';
 ?>
 <?= $this->extend('layouts/game') ?>
 
@@ -142,11 +141,8 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
 <section class="map-screen map-kedu" data-screen="map-kedu" data-unlock-mode="<?= esc($unlockMode, 'attr') ?>"<?= next_assets_attr($nextLevel['curtain']['preload'] ?? []) ?>>
   <h1 class="visually-hidden"><?= esc(lang('Game.mapKedu')) ?></h1>
 
-  <?php // Skins of the result screen redesign, shared here (ui.result-*); empty slots keep the plain look ?>
+  <?php // The round HUD skin of the result screen redesign; the frame and plates come from #stage (19 November 2026) ?>
   <div class="kedu-skins"<?= skin_style_attr([
-      'skin-panel'     => 'ui.result-panel',
-      'skin-secondary' => 'ui.result-button-secondary',
-      'skin-detail'    => 'ui.result-button-detail',
       'skin-hud'       => 'ui.result-hud-control',
   ]) ?>>
   <div class="kedu-map stage-box">
@@ -270,7 +266,7 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
   </div>
 
   <?php if (($story ?? []) === []): ?>
-    <aside class="kedu-story kedu-story-plain stage-box"<?= $plateStyle ?>>
+    <aside class="kedu-story kedu-story-plain stage-box">
       <?= $speaker(component('partials/kedu-portrait', ['src' => $jakaSrc, 'name' => lang('Game.char_jaka')]), lang('Game.char_jaka')) ?>
       <?= component('narration', ['text' => lang('Game.mapLead'), 'tail' => 'down', 'class' => 'stage-scroll']) ?>
     </aside>
@@ -278,7 +274,7 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
     <?php $storyTotal = count($story); ?>
     <aside class="map-story kedu-story narrator stage-box" aria-labelledby="map-story-title"
            data-narrator data-context="<?= esc($storyContext ?? 'map_intro', 'attr') ?>" data-prefix="peta-" data-keyboard="0"
-           data-mode="<?= ! empty($curtain) ? 'external' : 'manual' ?>"<?= $plateStyle ?>>
+           data-mode="<?= ! empty($curtain) ? 'external' : 'manual' ?>">
       <h2 class="visually-hidden" id="map-story-title"><?= esc(lang('Game.mapStoryTitle')) ?></h2>
       <div class="narrator-fx" data-narrator-fx aria-hidden="true"></div>
       <ol class="slides map-story-slides">

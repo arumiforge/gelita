@@ -84,7 +84,7 @@ $screenCode = method_exists($request, 'getPath') ? (App\Filters\ScreenViewFilter
 
   <div class="stage-frame">
     <?php // The round HUD skin for the story narrator controls, the owner's neutral round button behind a letter avatar (21 October 2026),
-          // and the gold pills, dialog frames, dropdown arrow of 22 October 2026 (stage_picture_urls()) ?>
+          // and the plates, track, dialog frame (19 November 2026) and dropdown arrow (stage_picture_urls()) ?>
     <div class="stage" id="stage"<?= skin_style_attr(['skin-hud' => 'ui.result-hud-control'], ['round-neutral' => round_icon_src('neutral')] + stage_picture_urls()) ?>>
       <a class="skip-link" href="#app"><?= esc(lang('Game.skipToContent')) ?></a>
 

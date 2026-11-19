@@ -260,7 +260,7 @@ final class LibraryLockTest extends CIUnitTestCase
         $this->assertSame(3, substr_count($page, '<span class="shelf-emblem"><img class="library-icon"'));
         $this->assertSame(2, substr_count($page, '<span class="shelf-emblem-lock">'));
         $this->assertSame(2, substr_count($page, '<a class="btn shelf-btn"'));
-        $this->assertStringContainsString('--loading-track: url(&quot;' . esc(asset_url_versioned('ui/loading-track.webp'), 'attr') . '&quot;)', $page);
+        $this->assertStringContainsString('<section class="library library-index" data-screen="library-index">', $page, 'the track and plates come from #stage');
         $this->assertStringContainsString('<a class="shelf-back" href="' . base_url('peta') . '">', $page);
         $this->assertStringNotContainsString('library-close', $page, 'no second way back');
         $this->assertStringNotContainsString('class="nav-bar"', $page);
@@ -296,7 +296,7 @@ final class LibraryLockTest extends CIUnitTestCase
         // Owner, 20 October 2026: the button sits on the wide gold plate with the owner's book picture
         $this->assertStringContainsString('class="btn btn-ghost btn-block map-library is-gold-plate"', $open);
         $this->assertStringContainsString('<img class="library-icon" src="' . esc(asset_url_versioned('ui/icon-pustaka.webp'), 'attr') . '"', $foot);
-        $this->assertStringContainsString('--plate-gold: url(&quot;' . esc(asset_url_versioned('ui/kenal-plate-gold.webp'), 'attr') . '&quot;)', $open);
+        $this->assertStringContainsString('.stage[style*="--plate-gold"] .library-index .shelf-card .shelf-btn {', (string) file_get_contents(FCPATH . 'assets/css/game.css'));
         $this->assertStringNotContainsString('library-icon', substr($locked, (int) strpos($locked, '<div class="map-side-foot">')), 'a locked Pustaka keeps the lock');
     }
 
@@ -345,7 +345,7 @@ final class LibraryLockTest extends CIUnitTestCase
 
         // Owner, 20 October 2026: each card on the green scarf frame (its picture in sepia in the
         // window, css), Lihat hasil on the green plate, Terkunci on the navy plate; a taller HUD
-        foreach (['node-card-frame', 'plate-green', 'kenal-plate-navy'] as $file) {
+        foreach (['node-card-frame', 'ui-plate-green', 'ui-plate-navy'] as $file) {
             $this->assertFileExists(FCPATH . 'assets/ui/' . $file . '.webp');
         }
         $this->assertStringContainsString('--card-frame: url(&quot;' . esc(asset_url_versioned('ui/node-card-frame.webp'), 'attr') . '&quot;)', $page);
@@ -380,10 +380,11 @@ final class LibraryLockTest extends CIUnitTestCase
             'library'      => ['status' => 'locked'],
         ]);
 
-        foreach (['head-plate' => 'map-head-plate', 'progress-track' => 'map-progress-track'] as $var => $file) {
-            $this->assertFileExists(FCPATH . 'assets/ui/' . $file . '.webp');
-            $this->assertStringContainsString('--' . $var . ': url(&quot;' . esc(asset_url_versioned('ui/' . $file . '.webp'), 'attr') . '&quot;)', $page);
-        }
+        $this->assertFileExists(FCPATH . 'assets/ui/map-head-plate.webp');
+        $this->assertStringContainsString('--head-plate: url(&quot;' . esc(asset_url_versioned('ui/map-head-plate.webp'), 'attr') . '&quot;)', $page);
+        // The bronze track comes from #stage (U-05, 19 November 2026)
+        $this->assertFileExists(FCPATH . 'assets/ui/ui-track.webp');
+        $this->assertStringNotContainsString('--progress-track', $page);
         $this->assertStringContainsString('<header class="map-head has-plate">', $page);
         $this->assertStringContainsString('<div class="map-progress has-track">', $page);
         $this->assertStringContainsString('<div class="progress" aria-hidden="true" style="--steps: 4"><i style="width: 25%"></i></div>', $page);

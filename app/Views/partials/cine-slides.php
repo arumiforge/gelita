@@ -51,9 +51,9 @@ $avatarOf   = static function (string $character, string $pose): ?string {
 
     return $key === null ? null : (media_key_src($key . '.' . $pose) ?? media_key_src($key));
 };
-$plate = asset_url_versioned('ui/kenal-plate-navy.webp');
 ?>
-<ol class="slides cine-slides" style="--kenal-plate-navy: url(&quot;<?= esc($plate, 'attr') ?>&quot;)">
+<?php // The navy nameplate comes from #stage (--plate-navy, stage_picture_urls()) ?>
+<ol class="slides cine-slides">
   <?php foreach ($slides as $index => $slide): ?>
     <?php
     $n         = $index + 1;

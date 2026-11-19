@@ -16,9 +16,6 @@
  * @var string|null              $value
  * @var int                      $answered
  */
-$track = is_file(FCPATH . 'assets/ui/loading-track.webp')
-    ? ' style="--loading-track: url(&quot;' . esc(asset_url_versioned('ui/loading-track.webp'), 'attr') . '&quot;)"'
-    : '';
 ?>
 <?= $this->extend('layouts/game') ?>
 
@@ -26,7 +23,7 @@ $track = is_file(FCPATH . 'assets/ui/loading-track.webp')
 <?= $this->section('background') ?><?= media_key_src('bg.reflection') ?? media_key_src('bg.map') ?? '' ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="attitude" data-screen="attitude"<?= $track ?>>
+<section class="attitude" data-screen="attitude">
   <div class="attitude-card stage-box">
     <?php if ($mode === 'intro'): ?>
       <h1 class="attitude-title"><?= esc((string) ($meta['intro']['title'] ?? '')) ?></h1>

@@ -52,7 +52,7 @@ final class AssetFileVersionTest extends CIUnitTestCase
      */
     public function testUiPicturesCarryTheFileVersion(): void
     {
-        foreach (['ui/hud-shards-frame.webp', 'ui/kenal-plate-navy.webp', 'ui/status-done.webp', 'ui/star.webp'] as $path) {
+        foreach (['ui/hud-shards-frame.webp', 'ui/ui-plate-navy.webp', 'ui/status-done.webp', 'ui/star.webp'] as $path) {
             $this->assertSame(base_url('assets/' . $path) . '?v=' . rawurlencode(asset_file_version($path)), asset_url_versioned($path), $path);
             $this->assertNotSame(config('Gelita')->assetVersion, asset_file_version($path), $path . ' has a file hash');
         }

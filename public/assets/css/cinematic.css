@@ -179,21 +179,23 @@
   animation: beam-shimmer 1.6s ease-in-out infinite;
 }
 .curtain.is-ready .curtain-beam { opacity: .5; transition: opacity .4s ease; }
-/* The owner's bronze loading track (21 October 2026, every curtain): the gold fill runs
-   in its dark channel, which sits 5.84 % in from either end and 24.6 %–72.9 % down */
+/* The bronze track (21 October 2026, every curtain; U-05 since 19 November 2026), 35 dp
+   tall: each end 1.32 × that; the gold fill runs in its dark channel (19 %–78 % down,
+   from 0.84 × the end width) */
 .curtain-beam.has-track {
   width: 32rem;
-  height: auto;
-  aspect-ratio: 1200 / 82;
+  height: 2.1875rem;
   overflow: visible;
+  border: 0 solid transparent;
   border-radius: 0;
-  background: var(--loading-track) center / 100% 100% no-repeat;
+  border-image: var(--ui-track) var(--track-cut) / 0 2.875rem stretch;
+  background: none;
   box-shadow: none;
   filter: drop-shadow(0 .25rem .375rem rgba(0, 0, 0, .6));
 }
 .curtain-beam.has-track i {
-  inset: 24.6% auto 27.1% 5.84%;
-  width: calc(var(--p, 0) * 88.32%);
+  inset: 19% auto 22% 2.4375rem;
+  width: calc(var(--p, 0) * (100% - 4.875rem));
   overflow: hidden;
   border-radius: .125rem;
   background:
@@ -854,7 +856,8 @@ body:has(.cine-slides > .slide:last-child.is-current) [data-story-skip] { visibi
 /* Narrator controls on the caption's first row, at the right (owner, 20 October
    2026): no band behind them; round buttons on the HUD's skin
    (`ui.result-hud-control`, else a navy disc with a gold ring) and "Lanjut" on
-   the slim gold pill (`gold-pill-3`, since 22 October 2026). 48 dp tall since
+   the gold plate (`gold-pill-3` from 22 October 2026, `ui-plate-gold` U-01 since
+   19 November 2026). 48 dp tall since
    16 November 2026 (owner: big enough for a grade 5 finger), was 40 dp. */
 .cine { --cine-controls-w: 13rem; }
 /* With narration audio the controls also hold ⏸/▶, ↻, and Otomatis (narrator.js sets .has-audio) */
@@ -909,11 +912,12 @@ body:has(.cine-slides > .slide:last-child.is-current) [data-story-skip] { visibi
   font-size: var(--fs-caption);
   font-weight: 800;
 }
-/* On the slim gold pill since 22 October 2026 (game.css MAIN BUTTONS), 40 dp tall */
-.stage[style*="--gold-pill-3"] .cine .narrator-next.has-label:not(:disabled) {
-  padding: 0 1.75rem 0 2rem;
+/* On the gold plate (U-01 since 19 November 2026; game.css MAIN BUTTONS), 48 dp tall: each
+   end 1.165 × that, the label on the plate's face */
+.stage[style*="--plate-gold"] .cine .narrator-next.has-label:not(:disabled) {
+  padding: 0 3.125rem;
   border: 0 solid transparent;
-  border-image: var(--gold-pill-3) 0 165 fill / 0 3rem stretch;
+  border-image: var(--plate-gold) var(--plate-cut) / 0 3.5rem stretch;
   background: none;
   color: #13223D;
 }
@@ -1327,13 +1331,13 @@ body.has-kenal { overflow: hidden; }
 .curtain-bg, .cine-bg, .kenal-bg { -webkit-user-drag: none; user-select: none; }
 .kenal-back { justify-self: start; }
 
-/* The owner's plates (Kenali only): Back and Kembali on the navy plate, Lanjut and
-   the final button on the gold one. border-image keeps both ornamented ends at
-   their shape and stretches only the plain middle; each end is as wide as the
-   plate's end is in the picture at this height (gold 250 of 249 px tall, navy
-   115 of 131). Without the custom properties the buttons keep their old look. */
-.kenal[style*="--kenal-plate-navy"] :is(.kenal-back, .slide-nav .btn-quiet),
-.kenal[style*="--kenal-plate-gold"] .slide-nav .btn-primary {
+/* The plates (Kenali only; U-01 and U-02 since 19 November 2026, from #stage): Back and
+   Kembali on the navy plate, Lanjut and the final button on the gold one. border-image
+   keeps both carved ends at their shape and stretches only the plain middle; 64 dp tall,
+   each end 1.165 × that, the side border (0.9 × the end) puts the label on the face.
+   Without the pictures the buttons keep their old look. */
+.stage[style*="--plate-navy"] .kenal :is(.kenal-back, .slide-nav .btn-quiet),
+.stage[style*="--plate-gold"] .kenal .slide-nav .btn-primary {
   min-height: 0;
   height: 4rem;
   padding: 0 .25rem;
@@ -1347,27 +1351,28 @@ body.has-kenal { overflow: hidden; }
   letter-spacing: .02em;
   white-space: nowrap;
 }
-.kenal[style*="--kenal-plate-navy"] :is(.kenal-back, .slide-nav .btn-quiet) {
-  border-width: 0 3.5rem;
-  border-image: var(--kenal-plate-navy) 0 115 fill / 0 3.5rem stretch;
+.stage[style*="--plate-navy"] .kenal :is(.kenal-back, .slide-nav .btn-quiet) {
+  border-width: 0 4.1875rem;
+  border-image: var(--plate-navy) var(--plate-cut) / 0 4.6875rem stretch;
   color: #F3D58A;
   text-shadow: 0 1px .1875rem rgba(0, 0, 0, .8);
 }
-.kenal[style*="--kenal-plate-gold"] .slide-nav .btn-primary {
-  border-width: 0 4rem;
-  border-image: var(--kenal-plate-gold) 0 250 fill / 0 4rem stretch;
+.stage[style*="--plate-gold"] .kenal .slide-nav .btn-primary {
+  border-width: 0 4.1875rem;
+  border-image: var(--plate-gold) var(--plate-cut) / 0 4.6875rem stretch;
   color: #0B1B2E;
 }
-.kenal[style*="--kenal-plate-navy"] :is(.kenal-back, .slide-nav .btn-quiet) .icon { margin-left: -1.25rem; }
-.kenal[style*="--kenal-plate-gold"] .slide-nav .btn-primary .icon { margin-right: -1.5rem; }
+/* The icons stay on the face too (they reached into the old pills' short ends) */
+.stage[style*="--plate-navy"] .kenal :is(.kenal-back, .slide-nav .btn-quiet) .icon { margin-left: 0; }
+.stage[style*="--plate-gold"] .kenal .slide-nav .btn-primary .icon { margin-right: 0; }
 @media (hover: hover) {
-  .kenal[style*="--kenal-plate-navy"] :is(.kenal-back, .slide-nav .btn-quiet):hover,
-  .kenal[style*="--kenal-plate-gold"] .slide-nav .btn-primary:hover { background: none; filter: brightness(1.12); }
-  .kenal[style*="--kenal-plate-navy"] :is(.kenal-back, .slide-nav .btn-quiet):hover { color: #FFE7A8; }
+  .stage[style*="--plate-navy"] .kenal :is(.kenal-back, .slide-nav .btn-quiet):hover,
+  .stage[style*="--plate-gold"] .kenal .slide-nav .btn-primary:hover { background: none; filter: brightness(1.12); }
+  .stage[style*="--plate-navy"] .kenal :is(.kenal-back, .slide-nav .btn-quiet):hover { color: #FFE7A8; }
 }
-.kenal[style*="--kenal-plate-navy"] :is(.kenal-back, .slide-nav .btn-quiet):active,
-.kenal[style*="--kenal-plate-gold"] .slide-nav .btn-primary:active { background: none; filter: brightness(1.18); }
-.kenal:not([style*="--kenal-plate-navy"]) .kenal-back {
+.stage[style*="--plate-navy"] .kenal :is(.kenal-back, .slide-nav .btn-quiet):active,
+.stage[style*="--plate-gold"] .kenal .slide-nav .btn-primary:active { background: none; filter: brightness(1.18); }
+.stage:not([style*="--plate-navy"]) .kenal .kenal-back {
   min-height: var(--tap);
   padding: var(--gap-1) var(--gap-4) var(--gap-1) var(--gap-3);
   background: var(--hud-backing);
@@ -1530,7 +1535,17 @@ body.has-kenal { overflow: hidden; }
   white-space: nowrap;
   text-shadow: 0 1px .1875rem rgba(0, 0, 0, .8);
 }
-:is(.kenal, .kedu-story, .result-kedu, .cine-slides)[style*="--kenal-plate-navy"] .kenal-nameplate { border: 0; border-radius: 0; background: var(--kenal-plate-navy) center / 100% 100% no-repeat; }
+/* On the navy plate (U-02 since 19 November 2026): as tall as before, each end 1.165 × that,
+   at least as wide as before and wider for a long name, so the name stays on the face */
+.stage[style*="--plate-navy"] .kenal-nameplate {
+  width: max-content;
+  min-width: 86%;
+  padding: 0 calc(var(--kenal-avatar) * .86 * 131 / 459 * 1.05);
+  border: 0 solid transparent;
+  border-radius: 0;
+  border-image: var(--plate-navy) var(--plate-cut) / 0 calc(var(--kenal-avatar) * .86 * 131 / 459 * 1.165) stretch;
+  background: none;
+}
 /* The title and the dots and Lanjut on one row at the top of the bar */
 .kenal-caption .cine-caption-head { flex-wrap: nowrap; gap: var(--gap-3); min-height: 4rem; }
 .kenal-caption .cine-title { flex: 1 1 auto; min-width: 0; margin: 0; font-size: 1.75rem; }
@@ -1538,7 +1553,7 @@ body.has-kenal { overflow: hidden; }
 .kenal .slide-nav { flex: none; flex-wrap: nowrap; justify-content: flex-end; gap: var(--gap-4); margin: 0 0 0 auto; }
 .kenal .slide-nav-spacer { display: none; }
 .kenal .slide-nav .btn { min-height: var(--tap); white-space: nowrap; }
-.kenal:not([style*="--kenal-plate-navy"]) .slide-nav .btn-quiet { background: rgba(255, 255, 255, .08); color: var(--gold-300); }
+.stage:not([style*="--plate-navy"]) .kenal .slide-nav .btn-quiet { background: rgba(255, 255, 255, .08); color: var(--gold-300); }
 .kenal .slide-dot { border-color: var(--gold-500); background: rgba(11, 19, 32, .55); }
 .kenal .slide-dot.is-current { background: var(--gold-500); border-color: var(--gold-500); }
 .kenal .slide-dot:active { background: var(--gold-300); }
@@ -1614,7 +1629,7 @@ body.has-kenal { overflow: hidden; }
 .curtain-region .curtain-difficulty { animation-delay: .3s; }
 .curtain-region .curtain-beam { width: 16.25rem; height: .25rem; }
 /* The track sits low on the screen, clear of the picture's centre */
-.curtain-region .curtain-beam.has-track { position: absolute; bottom: 3rem; left: 50%; width: 30rem; height: auto; translate: -50% 0; }
+.curtain-region .curtain-beam.has-track { position: absolute; bottom: 3rem; left: 50%; width: 30rem; height: 2.1875rem; translate: -50% 0; }
 
 /* ==================== TAHAP 3 · TIRAI TANTANGAN ==================== */
 /* Cinematic plate (owner, 21 October 2026), the region curtain's sibling: the region picture

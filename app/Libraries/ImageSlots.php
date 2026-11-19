@@ -171,7 +171,7 @@ final class ImageSlots
             'transparent' => true,
             'fallback'    => 'Panel biru tua polos berbingkai emas',
             'priority'    => 'opsional',
-            'tips'        => 'Tampil 1017 × 495 dp. Bagian dalam harus tenang, karena judul, bintang, kartu, dan tombol tampil di atasnya.',
+            'tips'        => 'Sejak 19 November 2026 panel hasil memakai bingkai jendela bawaan GELITA (assets/ui/ui-frame.webp), jadi gambar di slot ini tidak tampil lagi.',
         ],
         'ui.result-button-primary' => [
             'group'       => 'result',
@@ -182,7 +182,7 @@ final class ImageSlots
             'transparent' => true,
             'fallback'    => 'Tombol emas biasa',
             'priority'    => 'opsional',
-            'tips'        => 'Sejak 22 Oktober 2026 tombol utama di seluruh permainan memakai papan emas bawaan GELITA (assets/ui/gold-pill-1 sampai 4), jadi gambar di slot ini tidak tampil lagi.',
+            'tips'        => 'Sejak 22 Oktober 2026 tombol utama di seluruh permainan memakai pelat emas bawaan GELITA (sejak 19 November 2026 assets/ui/ui-plate-gold.webp), jadi gambar di slot ini tidak tampil lagi.',
         ],
         'ui.result-button-secondary' => [
             'group'       => 'result',
@@ -193,6 +193,7 @@ final class ImageSlots
             'transparent' => true,
             'fallback'    => 'Tombol biru tua berbingkai emas',
             'priority'    => 'opsional',
+            'tips'        => 'Sejak 19 November 2026 tombol ini memakai pelat biru tua bawaan GELITA (assets/ui/ui-plate-navy.webp), jadi gambar di slot ini tidak tampil lagi.',
         ],
         'ui.result-button-detail' => [
             'group'       => 'result',
@@ -203,6 +204,7 @@ final class ImageSlots
             'transparent' => true,
             'fallback'    => 'Tombol biru tua berbingkai emas',
             'priority'    => 'opsional',
+            'tips'        => 'Sejak 19 November 2026 tombol ini memakai pelat biru tua bawaan GELITA (assets/ui/ui-plate-navy.webp), jadi gambar di slot ini tidak tampil lagi.',
         ],
         'ui.result-hud-control' => [
             'group'       => 'result',
