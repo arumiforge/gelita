@@ -30,6 +30,17 @@
  *
  * Membuka pustaka tidak memengaruhi bintang atau status node.
  *
+ * Redesign (owner, 19 November 2026; decision log *Home page, menus and maps
+ * polish*): a reading room instead of a two-page book. Left, the table of
+ * contents (`.library-toc`, every page title, the open one marked; library.js
+ * keeps the mark in step); right, one page card: the media column (the first
+ * picture large with its caption, the others as small tiles that open in the
+ * picture viewer) and the text column (page n of N, title, body, and a foot
+ * row with Kembali, the count, and Lanjut, on the last page Selesai membaca
+ * back to the region map). No page dots, no book spine, no bottom nav bar:
+ * Back in the HUD returns to the region map (its name as the label), Pustaka
+ * Kedu is in the menu, and the shard plate stays off.
+ *
  * @var App\Entities\Level             $level
  * @var list<App\Entities\LibraryPage> $pages
  * @var string                         $locale
@@ -42,6 +53,9 @@ $total  = count($pages);
 
 <?= $this->section('title') ?><?= esc($title) ?><?= $this->endSection() ?>
 <?= $this->section('hudTitle') ?><?= esc($title) ?><?= $this->endSection() ?>
+<?= $this->section('hudShards') ?>off<?= $this->endSection() ?>
+<?= $this->section('hudBack') ?><?= base_url('wilayah/' . $level->code) ?><?= $this->endSection() ?>
+<?= $this->section('hudBackLabel') ?><?= esc($region) ?><?= $this->endSection() ?>
 <?= $this->section('background') ?><?= media_first($level->background_media_id) ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -59,6 +73,20 @@ $total  = count($pages);
   <?php if ($pages === []): ?>
     <div class="empty-state library-empty stage-box"><?= icon('book') ?><p><?= esc(lang('Game.libraryEmpty')) ?></p></div>
   <?php else: ?>
+    <nav class="library-toc stage-box" aria-labelledby="library-toc-title" data-library-toc>
+      <h2 class="library-toc-title" id="library-toc-title"><?= library_icon('library-toc-icon') ?> <span><?= esc(lang('Game.libraryContents')) ?></span></h2>
+      <ol class="library-toc-list stage-scroll">
+        <?php foreach ($pages as $index => $page): ?>
+          <li>
+            <a class="library-toc-link" href="#page-<?= $index + 1 ?>"<?= $index === 0 ? ' aria-current="page"' : '' ?>>
+              <span class="library-toc-no"><?= $index + 1 ?></span>
+              <span class="library-toc-text"><?= esc($page->text('title', $locale)) ?></span>
+            </a>
+          </li>
+        <?php endforeach ?>
+      </ol>
+    </nav>
+
     <ol class="slides book stage-box">
       <?php foreach ($pages as $index => $page): ?>
         <?php
@@ -130,24 +158,23 @@ $total  = count($pages);
             <span class="eyebrow"><?= esc(lang('Game.pageOf', [$n, $total])) ?></span>
             <h2><?= esc($page->text('title', $locale)) ?></h2>
             <div class="book-body stage-scroll"><?= rich_text($page->text('body', $locale)) ?></div>
-            <?= component('partials/slide-nav', [
-                'n'        => $n,
-                'total'    => $total,
-                'prefix'   => 'page-',
-                'finalUrl' => base_url('wilayah/' . $level->code),
-                'final'    => lang('Game.close'),
-            ]) ?>
+            <nav class="book-foot slide-nav" aria-label="<?= esc(lang('Game.slideOf', [$n, $total]), 'attr') ?>">
+              <?php if ($n > 1): ?>
+                <a class="btn btn-quiet book-prev" href="#page-<?= $n - 1 ?>"><?= icon('left') ?> <span><?= esc(lang('Game.back')) ?></span></a>
+              <?php else: ?>
+                <span class="slide-nav-spacer"></span>
+              <?php endif ?>
+              <span class="book-count num" aria-hidden="true"><?= $n ?> / <?= $total ?></span>
+              <?php if ($n < $total): ?>
+                <a class="btn btn-primary book-next" href="#page-<?= $n + 1 ?>"><?= esc(lang('Game.continue')) ?> <?= icon('right') ?></a>
+              <?php else: ?>
+                <a class="btn btn-primary book-next" href="<?= esc(base_url('wilayah/' . $level->code), 'attr') ?>" data-slide-final><?= esc(lang('Game.libraryFinish')) ?> <?= icon('check') ?></a>
+              <?php endif ?>
+            </nav>
           </div>
         </li>
       <?php endforeach ?>
     </ol>
   <?php endif ?>
 </section>
-<?= $this->endSection() ?>
-
-<?= $this->section('nav') ?>
-<?= component('nav-bar', ['nav' => [
-    ['label' => $region, 'href' => base_url('wilayah/' . $level->code), 'style' => 'quiet', 'arrow' => 'left'],
-    ['label' => lang('Game.library'), 'href' => base_url('pustaka'), 'style' => 'quiet', 'icon' => 'library'],
-]]) ?>
 <?= $this->endSection() ?>

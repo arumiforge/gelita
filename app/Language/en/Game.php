@@ -283,6 +283,8 @@ return [
     // Library
     'pageOf'        => 'Page {0} of {1}',
     'libraryEmpty'  => 'There are no library pages for this region yet.',
+    'libraryContents' => 'Contents',
+    'libraryFinish'   => 'Done reading',
     'libraryPlayVideo' => 'Play video',
     'libraryOpenLink' => 'Open {0}',
     'libraryZoom' => 'Enlarge picture',

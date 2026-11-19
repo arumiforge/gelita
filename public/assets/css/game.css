@@ -3867,51 +3867,95 @@ html:not(.js) .result-kedu.result-sheet { border-radius: 1.25rem; background: rg
 .library-head h1 { margin: 0; }
 .library-head .eyebrow { display: inline-flex; align-items: center; gap: var(--gap-2); }
 
+/* Reading room (owner, 19 November 2026). The contents: a quiet dark column of page titles,
+   the open one lit in gold; no frames round the rows. */
+.library-toc {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: .5rem;
+  padding: 1rem .75rem 1rem 1rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(to bottom, rgba(11, 22, 40, .9), rgba(7, 14, 28, .84));
+  box-shadow: 0 1rem 2rem rgba(1, 5, 14, .45);
+  color: #F1E7CF;
+}
+.library-toc-title { display: flex; align-items: center; gap: .625rem; margin: 0 0 .25rem; color: var(--gold-300); font-family: var(--font-display); font-size: 1.375rem; }
+.library-toc-icon { width: 2.25rem; height: auto; filter: drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .6)); }
+.library-toc-list { display: grid; align-content: start; gap: .125rem; margin: 0; padding: 0 .25rem 0 0; list-style: none; }
+.library-toc-link {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  align-items: center;
+  gap: .625rem;
+  min-height: 3rem;
+  padding: .3125rem .625rem .3125rem .375rem;
+  border-radius: .75rem;
+  color: #E3DAC4;
+  font-size: .9375rem;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background-color .15s, color .15s;
+}
+.library-toc-no {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: rgba(223, 192, 135, .14);
+  color: var(--gold-300);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+}
+.library-toc-text { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+@media (hover: hover) {
+  .library-toc-link:hover { background: rgba(223, 192, 135, .1); color: #FFF4D6; }
+}
+.library-toc-link[aria-current="page"] { background: linear-gradient(90deg, rgba(223, 192, 135, .3), rgba(223, 192, 135, .08)); color: #FFF1CF; font-weight: 700; }
+.library-toc-link[aria-current="page"] .library-toc-no { background: linear-gradient(to bottom, #FFE7A8, var(--gold-500)); color: #1E1405; box-shadow: 0 0 .625rem var(--glow); }
+.library-toc-link:focus-visible { outline: .1875rem solid var(--gold-300); outline-offset: -.1875rem; }
+
+/* One page card: media on the left, text on the right, on warm parchment with a soft shadow
+   instead of a thick frame and the old book spine */
+.book { margin: 0; padding: 0; list-style: none; }
 .book-spread {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 27rem) minmax(0, 1fr);
   gap: 0;
-  border: .125rem solid var(--brown-500);
   border-radius: var(--radius-lg);
-  background: var(--parchment);
-  box-shadow: var(--shadow-2);
+  background:
+    radial-gradient(ellipse at 30% 0%, rgba(255, 250, 236, .55), transparent 60%),
+    var(--parchment);
+  box-shadow: 0 1.25rem 2.5rem rgba(1, 5, 14, .5), inset 0 0 0 .0625rem rgba(74, 50, 24, .18);
   color: var(--brown-700);
 }
-/* Buku 64, 80, 1152 × 568 (stage.css): galeri kiri 576, teks kanan 576 bergulir.
-   Isi, gambar, teks, dan video tidak berubah; hanya bingkainya yang tetap. */
-.book { margin: 0; padding: 0; list-style: none; }
 .book > .book-spread { height: 100%; grid-template-rows: minmax(0, 1fr); }
-.book-text { grid-template-rows: auto auto minmax(0, 1fr) auto; height: 100%; min-height: 0; }
-.book-text h2 { margin: 0; }
-.book-text .book-body { padding-right: var(--gap-2); }
-.book-text .slide-nav { margin: 0; }
-.book-media { height: 100%; min-height: 0; }
-.book-spread::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 1.75rem;
-  background: linear-gradient(to right, transparent, rgba(74, 50, 24, .22) 45%, rgba(74, 50, 24, .22) 55%, transparent);
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-.book-spread.is-text-only { grid-template-columns: minmax(0, 45rem); justify-content: center; }
-.book-spread.is-text-only::after { display: none; }
-.book-page { display: grid; align-content: start; gap: var(--gap-3); padding: var(--gap-6); }
-.book-media { gap: var(--gap-3); }
-/* Galeri tetap terlihat saat teks panjang digulir */
-.book-figure { position: relative; margin: 0; overflow: hidden; border: 1px solid rgba(74, 50, 24, .35); border-radius: var(--radius); background: rgba(74, 50, 24, .08); }
+.book-spread.is-text-only { grid-template-columns: minmax(0, 1fr); }
+.book-page { display: grid; align-content: start; gap: .75rem; min-height: 0; }
+.book-media { height: 100%; gap: .75rem; padding: 1.25rem 0 1.25rem 1.25rem; }
+.book-text { grid-template-rows: auto auto minmax(0, 1fr) auto; height: 100%; padding: 1.5rem 1.75rem 1rem; }
+.book-spread.is-text-only .book-text { padding-inline: 4rem; }
+.book-text h2 { margin: 0; color: var(--brown-700); font-size: 1.875rem; line-height: 1.15; }
+.book-text .book-body { padding-right: .75rem; }
+.book-spread .eyebrow { color: var(--brown-500); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+/* The foot row: Kembali · n / N · Lanjut (Selesai membaca on the last page) */
+.book-foot { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: .75rem; margin: 0; padding-top: .75rem; border-top: .0625rem solid rgba(74, 50, 24, .18); }
+.book-foot .book-prev { justify-self: start; color: var(--brown-700); }
+.book-foot .book-next { justify-self: end; }
+.book-count { color: var(--brown-500); font-family: var(--font-body); font-weight: 700; }
+.book-figure { position: relative; margin: 0; overflow: hidden; border-radius: var(--radius); background: rgba(74, 50, 24, .08); box-shadow: 0 .375rem .875rem rgba(54, 34, 12, .25); }
 .book-figure img, .book-figure video { width: 100%; }
 
-/* Galeri: media pertama lebar penuh, sisanya dua kolom */
-.book-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-3); }
+/* Gallery: the first medium large with its caption, the others as small tiles (caption in the
+   picture viewer), so a page shows all its pictures without a long scroll */
+.book-gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .625rem; }
 .book-gallery > .book-figure:first-child,
 .book-gallery > .book-figure.is-video,
 .book-gallery.is-single > .book-figure { grid-column: 1 / -1; }
-.book-figure figcaption { padding: var(--gap-2) var(--gap-3); font-size: var(--fs-caption); line-height: 1.45; }
+.book-figure figcaption { padding: .5rem .75rem; background: rgba(255, 250, 236, .6); font-size: .875rem; line-height: 1.4; }
+.book-gallery > .book-figure:not(:first-child):not(.is-video) figcaption { display: none; }
 .book-credit { margin: 0; padding: 0 var(--gap-4) var(--gap-3); color: rgba(74, 50, 24, .7); font-size: .78rem; }
 
 /* Bingkai berasio tetap + skeleton perkamen selama gambar dimuat.
@@ -3926,7 +3970,7 @@ html:not(.js) .result-kedu.result-sheet { border-radius: 1.25rem; background: rg
   background-repeat: no-repeat;
 }
 .book-figure.is-image .book-frame { aspect-ratio: 4 / 3; }
-.book-gallery > .book-figure.is-image:first-child .book-frame { aspect-ratio: 3 / 2; }
+.book-gallery > .book-figure.is-image:first-child .book-frame { aspect-ratio: 16 / 10; }
 .book-frame.is-video, .book-frame.is-embed { background: var(--navy-800); }
 .book-frame.is-loaded { background-image: none; }
 html.js .book-frame:not(.is-loaded) { animation: book-shimmer 1.4s ease-in-out infinite; }
@@ -4041,8 +4085,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .embed-text small { display: block; color: var(--ink-dim); font-size: .75rem; }
 .book-link { display: flex; align-items: center; gap: var(--gap-2); padding: var(--gap-4); color: var(--brown-700); font-weight: 700; }
 
-.book-text h2 { color: var(--brown-700); }
-.book-spread .eyebrow, .passage .eyebrow { color: var(--brown-500); }
+.passage .eyebrow { color: var(--brown-500); }
 .book-body { font-size: var(--fs-body); line-height: 1.75; }
 .book-body p { margin: 0 0 var(--gap-3); }
 .book-body h3 { margin: var(--gap-5) 0 var(--gap-2); color: var(--brown-700); font-size: var(--fs-h3); }

@@ -283,6 +283,8 @@ return [
     // Pustaka
     'pageOf'        => 'Halaman {0} dari {1}',
     'libraryEmpty'  => 'Belum ada halaman pustaka untuk wilayah ini.',
+    'libraryContents' => 'Daftar isi',
+    'libraryFinish'   => 'Selesai membaca',
     'libraryPlayVideo' => 'Putar video',
     'libraryOpenLink' => 'Buka {0}',
     'libraryZoom' => 'Perbesar gambar',

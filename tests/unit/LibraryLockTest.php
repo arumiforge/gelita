@@ -211,7 +211,10 @@ final class LibraryLockTest extends CIUnitTestCase
         $this->assertStringContainsString('data-screen="library"', $page);
         $this->assertStringContainsString('Isi halaman pustaka.', $page);
         $this->assertStringContainsString('<title>Pustaka Magelang · GELITA</title>', $page);
-        $this->assertStringContainsString('href="' . esc(base_url('pustaka'), 'attr') . '"', $page, 'tautan ke Pustaka Kedu');
+        // Reading room (owner, 19 November 2026): the contents, and Back in the HUD to the region map
+        $this->assertStringContainsString('<nav class="library-toc stage-box" aria-labelledby="library-toc-title" data-library-toc>', $page);
+        $this->assertMatchesRegularExpression('~<a class="hud-ctl hud-back" href="' . preg_quote(esc(base_url('wilayah/magelang'), 'attr'), '~') . '" aria-label="Magelang"~', $page);
+        $this->assertStringNotContainsString('class="nav-bar"', $page, 'no bottom nav bar');
         $this->assertSame([['library_opened', ['level_id' => 2]]], $this->events);
     }
 
