@@ -187,7 +187,8 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
               </span>
               <span class="kedu-city-caption">
                 <b><?= esc($level['name']) ?></b>
-                <small><?= esc(lang('Game.levelStatus_' . $level['status'])) ?> · <span class="num"><?= esc($level['completed_nodes']) ?>/<?= esc($level['total_nodes']) ?></span></small>
+                <?php // The status only (owner, 19 November 2026): the count is in the panel's bar ?>
+                <small><?= esc(lang('Game.levelStatus_' . $level['status'])) ?></small>
               </span>
             </a>
           </li>
@@ -223,7 +224,7 @@ $unheard  = static fn (array $l): bool => ($intros[$l['code']] ?? []) !== [] && 
           <p class="kedu-panel-hint"><?= icon('lock') ?> <?= esc(lang('Game.levelLocked')) ?></p>
         <?php else: ?>
           <div class="kedu-panel-progress">
-            <span class="kedu-bar" aria-hidden="true"><span class="kedu-bar-cap"></span><i style="width: <?= $level['total_nodes'] > 0 ? (int) round($level['completed_nodes'] / $level['total_nodes'] * 100) : 0 ?>%"></i><span class="kedu-bar-cap"></span></span>
+            <span class="kedu-bar" aria-hidden="true" style="--steps: <?= max(1, (int) $level['total_nodes']) ?>"><span class="kedu-bar-cap"></span><i style="width: <?= $level['total_nodes'] > 0 ? (int) round($level['completed_nodes'] / $level['total_nodes'] * 100) : 0 ?>%"></i><span class="kedu-bar-cap"></span></span>
             <span class="num"><?= esc(lang('Game.nodesProgress', [$level['completed_nodes'], $level['total_nodes']])) ?></span>
           </div>
           <?php $stars = max(0, min(3, (int) $level['stars'])); ?>

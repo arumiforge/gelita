@@ -164,9 +164,22 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .lantern-legend .shard.has-badge { width: 1.125rem; height: 1.125rem; }
 
 /* =========================== WELCOME =========================== */
-/* Hanya logo dan satu tombol Mulai, di tengah layar (tanpa navigasi bawah) */
-/* Koordinat: stage.css §Halaman awal. Logo & tombol mengisi kotaknya. */
-.welcome-hero { display: grid; place-items: center; align-content: center; gap: var(--gap-2); text-align: center; }
+/* Home redesign (owner, 19 November 2026): a two-sided stage. The left column holds the logo,
+   the tagline, the invitation, the region chips and Mulai, left-aligned; Jaka stands on the
+   right. A soft dark wash from the left edge keeps the text readable over any picture.
+   Coordinates: stage.css §Halaman awal. */
+.welcome::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    linear-gradient(90deg, rgba(5, 12, 26, .78) 0%, rgba(5, 12, 26, .55) 38%, rgba(5, 12, 26, 0) 62%),
+    linear-gradient(0deg, rgba(5, 12, 26, .55) 0%, rgba(5, 12, 26, 0) 30%);
+  pointer-events: none;
+}
+.welcome > * { z-index: 1; }
+.welcome-hero { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: calc(12 * var(--dp)); text-align: left; }
 .welcome-title {
   margin: 0;
   font-size: var(--fs-display);
@@ -174,27 +187,73 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   color: var(--gold-500);
   text-shadow: 0 0 2rem rgba(223, 192, 135, .35), 0 .25rem 0 rgba(0, 0, 0, .35);
 }
-.welcome-logo { margin: 0; line-height: 0; }
-.welcome-logo img { width: auto; max-width: 100%; max-height: 18.75rem; height: auto; }
-/* Logo landscape 1600×600 = 800 × 300 dp */
+.welcome-logo { margin: 0 0 0 calc(-16 * var(--dp)); line-height: 0; }
+.welcome-logo img { width: auto; max-width: 100%; max-height: calc(200 * var(--dp)); height: auto; }
+/* Logo landscape 1600×600: 560 × 210 dp at most, its left ornament on the column's edge */
 .welcome-logo.is-hero img {
-  width: auto;
-  max-width: 100%;
-  max-height: 17.5rem; /* 280 dp, leaves room for the tagline */
+  width: calc(544 * var(--dp));
+  max-height: none;
   filter: drop-shadow(0 .375rem 1.5rem rgba(0, 0, 0, .45));
 }
 /* Tagline under the logo, in the page language (owner, 18 October 2026) */
 .welcome-tagline {
-  max-width: 40ch;
   margin: 0;
   color: var(--gold-300);
-  font-size: var(--fs-h3);
+  font-family: var(--font-display);
+  font-size: calc(22 * var(--dp));
   font-weight: 700;
+  letter-spacing: .02em;
   line-height: 1.3;
   text-shadow: 0 .125rem .5rem rgba(0, 0, 0, .75), 0 0 1.25rem rgba(0, 0, 0, .5);
 }
+/* A thin gold rule with a diamond, like the ornate dividers */
+.welcome-rule {
+  position: relative;
+  width: calc(240 * var(--dp));
+  height: .125rem;
+  background: linear-gradient(90deg, var(--gold-500), rgba(223, 192, 135, 0));
+}
+.welcome-rule::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: .625rem;
+  height: .625rem;
+  background: var(--gold-300);
+  transform: translate(-10%, -50%) rotate(45deg);
+  box-shadow: 0 0 .5rem var(--glow);
+}
+.welcome-lead {
+  max-width: 34ch;
+  margin: 0;
+  color: #F4EBD6;
+  font-size: calc(21 * var(--dp));
+  line-height: 1.45;
+  text-shadow: 0 .0625rem .375rem rgba(0, 0, 0, .9);
+}
+/* The three regions: each region's map medallion and its name on a quiet glass chip */
+.welcome-regions { display: flex; flex-wrap: wrap; gap: calc(10 * var(--dp)); margin: calc(4 * var(--dp)) 0 0; padding: 0; list-style: none; }
+.welcome-region {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(8 * var(--dp));
+  height: calc(44 * var(--dp));
+  padding: 0 calc(16 * var(--dp)) 0 calc(4 * var(--dp));
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, rgba(14, 30, 54, .82), rgba(14, 30, 54, .5));
+  box-shadow: inset 0 0 0 .0625rem rgba(223, 192, 135, .28);
+  color: var(--gold-300);
+  font-family: var(--font-display);
+  font-size: calc(18 * var(--dp));
+  font-weight: 700;
+  text-shadow: 0 .0625rem .25rem rgba(0, 0, 0, .8);
+}
+.welcome-region img { width: calc(36 * var(--dp)); height: calc(36 * var(--dp)); object-fit: contain; filter: drop-shadow(0 .125rem .25rem rgba(0, 0, 0, .6)); }
+.welcome-region:not(:has(img)) { padding-left: calc(16 * var(--dp)); }
 
-.welcome-actions { display: grid; place-items: center; }
+.welcome-actions { display: flex; align-items: center; justify-content: flex-start; }
+.welcome-jaka { object-fit: contain; object-position: bottom center; filter: drop-shadow(0 0 1.5rem rgba(1, 10, 24, .5)); pointer-events: none; user-select: none; }
 
 /* Tombol Mulai: gambar ui.btn-start, atau btn-primary btn-xl bila gambarnya belum ada */
 .btn-start {
@@ -207,7 +266,11 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   animation: start-glow 2.8s ease-in-out infinite;
   transition: transform .15s, filter .2s, box-shadow .2s;
 }
-.btn-start.btn { min-width: 15rem; }
+/* Mulai on the gold plate, lettered by the page (owner, 19 November 2026): 80 dp tall, a
+   large display word and an arrow; the plate's own glow pulses (filter, not a box shadow) */
+.btn-start.btn { min-width: calc(320 * var(--dp)); gap: calc(14 * var(--dp)); font-family: var(--font-display); font-size: calc(34 * var(--dp)); letter-spacing: .06em; text-transform: uppercase; animation-name: start-glow-image; }
+.stage[style*="--plate-gold"] .btn-start.btn-xl.btn-primary { --pill-h: 5rem; height: 5rem; }
+.btn-start.btn .icon { width: calc(30 * var(--dp)); height: calc(30 * var(--dp)); }
 .btn-start.is-image { padding: 0; line-height: 0; border-radius: var(--radius-lg); }
 .btn-start.is-image img {
   width: 30rem;
@@ -367,7 +430,7 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
   font-weight: 600;
 }
 /* Tawaran memasang di layar utama (game/install.js) */
-.welcome-install { display: grid; align-content: center; justify-items: end; gap: var(--gap-2); height: auto; min-height: calc(40 * var(--dp)); }
+.welcome-install { display: grid; align-content: center; justify-items: start; gap: var(--gap-2); height: auto; min-height: calc(40 * var(--dp)); }
 .welcome-install-hint { display: flex; align-items: flex-start; gap: var(--gap-2); margin: 0; color: var(--ink-dim); font-size: var(--fs-caption); }
 .welcome-install-hint .icon { margin-top: .125rem; color: var(--gold-500); }
 /* Pasang GELITA on the owner's plate with the download medallion at its right end (866 × 200,
@@ -2862,16 +2925,9 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .kedu-city-caption b { font-size: 1.5rem; line-height: 1.12; }
 .kedu-city-caption small { margin-top: .125rem; color: #DEDACB; font-size: 1.0625rem; }
 /* The selected city stands out (owner, 21 October 2026): it comes to the front, its medallion
-   lifts and breathes a gold halo, and a spark of light runs round and round the caption's
-   frame (a conic gradient in a ring mask, turned through the registered --orbit angle), with a
-   blurred copy as its glowing trail. Reduced motion: a still gold ring and halo. */
-@property --orbit {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
+   lifts and breathes a gold halo. Reduced motion: a still halo. */
 .kedu-pin:has(.kedu-city[aria-current="true"]) { z-index: 3; }
-.kedu-city[aria-current="true"] { filter: drop-shadow(0 0 .625rem rgba(255, 211, 119, .55)); }
+.kedu-city[aria-current="true"] .kedu-medal { filter: drop-shadow(0 0 .625rem rgba(255, 211, 119, .55)); }
 .kedu-city[aria-current="true"] .kedu-medal { transform: scale(1.08); }
 .kedu-city[aria-current="true"] .kedu-medal::before {
   content: "";
@@ -2882,34 +2938,16 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
   background: radial-gradient(closest-side, rgba(255, 236, 170, .95) 0, rgba(255, 206, 102, .6) 55%, rgba(255, 196, 92, .2) 78%, transparent);
   animation: city-halo 2.2s ease-in-out infinite;
 }
+/* No ring of light round the selected caption (owner, 19 November 2026: one border is
+   enough); it is lifted by brightness and the medallion's halo */
 .kedu-city-caption { position: relative; }
-.kedu-city[aria-current="true"] .kedu-city-caption::before,
-.kedu-city[aria-current="true"] .kedu-city-caption::after {
-  content: "";
-  position: absolute;
-  inset: -.75rem;
-  z-index: 1;
-  padding: .3125rem;
-  border-radius: 1.125rem;
-  background: conic-gradient(from var(--orbit), transparent 0 50%, rgba(255, 196, 92, .2) 62%, rgba(255, 221, 140, .95) 84%, #FFFFFF 93%, transparent 95% 100%);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  pointer-events: none;
-  animation: city-orbit 2.6s linear infinite;
-}
-.kedu-city[aria-current="true"] .kedu-city-caption::after { inset: -1rem; padding: .75rem; border-radius: 1.375rem; filter: blur(.5rem); }
 .kedu-city[aria-current="true"] .kedu-city-caption { filter: brightness(1.12); }
-@keyframes city-orbit { to { --orbit: 360deg; } }
 @keyframes city-halo {
   0%, 100% { opacity: .55; transform: scale(.94); }
   50% { opacity: 1; transform: scale(1.06); }
 }
 @media (prefers-reduced-motion: reduce) {
   .kedu-city[aria-current="true"] .kedu-medal::before { animation: none; opacity: .8; }
-  .kedu-city[aria-current="true"] .kedu-city-caption::before,
-  .kedu-city[aria-current="true"] .kedu-city-caption::after { animation: none; background: linear-gradient(rgba(255, 211, 119, .85), rgba(255, 211, 119, .85)); }
 }
 /* No outline around the caption (owner, 18 October 2026): the selected city glows (above);
    keyboard focus glows gold */
@@ -3051,7 +3089,7 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .kedu-bar {
   position: relative;
   display: block;
-  width: 9rem;
+  width: 11.25rem;
   height: 1.5rem;
   padding: .25rem;
   border-radius: var(--radius-pill);
@@ -3090,17 +3128,21 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
   border-radius: 50%;
   background: radial-gradient(closest-side, rgba(255, 253, 240, .95), rgba(255, 214, 125, .6) 45%, rgba(255, 160, 50, 0));
 }
-/* Notches at each quarter (one per challenge) over the fill, and a small gem cap at each end */
+/* One segment per challenge (owner, 19 November 2026: five since the Skenario Digital; was
+   four quarters): --steps comes from the region's challenge count, a notch between segments.
+   A small gem cap at each end */
 .kedu-bar::after {
   content: "";
   position: absolute;
   inset: .25rem;
   z-index: 1;
   border-radius: var(--radius-pill);
-  background:
-    linear-gradient(to right, transparent calc(25% - .0625rem), rgba(30, 14, 0, .55) calc(25% - .0625rem), rgba(30, 14, 0, .55) 25%, rgba(255, 240, 200, .35) 25%, rgba(255, 240, 200, .35) calc(25% + .0625rem), transparent calc(25% + .0625rem)),
-    linear-gradient(to right, transparent calc(50% - .0625rem), rgba(30, 14, 0, .55) calc(50% - .0625rem), rgba(30, 14, 0, .55) 50%, rgba(255, 240, 200, .35) 50%, rgba(255, 240, 200, .35) calc(50% + .0625rem), transparent calc(50% + .0625rem)),
-    linear-gradient(to right, transparent calc(75% - .0625rem), rgba(30, 14, 0, .55) calc(75% - .0625rem), rgba(30, 14, 0, .55) 75%, rgba(255, 240, 200, .35) 75%, rgba(255, 240, 200, .35) calc(75% + .0625rem), transparent calc(75% + .0625rem));
+  background: repeating-linear-gradient(to right,
+    transparent 0 calc(100% / var(--steps, 5) - .125rem),
+    rgba(30, 14, 0, .6) calc(100% / var(--steps, 5) - .125rem) calc(100% / var(--steps, 5) - .0625rem),
+    rgba(255, 240, 200, .35) calc(100% / var(--steps, 5) - .0625rem) calc(100% / var(--steps, 5)));
+  -webkit-mask: linear-gradient(to right, #000 calc(100% - .25rem), transparent calc(100% - .25rem));
+  mask: linear-gradient(to right, #000 calc(100% - .25rem), transparent calc(100% - .25rem));
   pointer-events: none;
 }
 .kedu-bar-cap {

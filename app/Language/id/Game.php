@@ -5,6 +5,8 @@ return [
     'appName'         => 'GELITA',
     'tagline'         => 'Game Edukasi Literasi dan Etnopedagogi Kedu',
     'start'           => 'Mulai',
+    'welcomeLead'     => 'Kabut Lupa menyelimuti Kedu. Bantu Jaka mengumpulkan Serpihan Cahaya dan menyalakan lagi Lentera Kedu!',
+    'welcomeRegions'  => 'Tiga wilayah yang akan kamu jelajahi',
     'login'           => 'Masuk',
     'continue'        => 'Lanjut',
     'back'            => 'Kembali',

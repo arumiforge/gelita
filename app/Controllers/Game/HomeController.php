@@ -15,17 +15,43 @@ use CodeIgniter\HTTP\RedirectResponse;
 class HomeController extends BaseController
 {
     /**
-     * Halaman awal: logo dan satu tombol Mulai; HUD tanpa merek (logo sudah besar).
+     * Start page: logo, invitation, region chips and one Mulai button on the left, Jaka on
+     * the right; HUD without the brand (the logo is already large).
      * A signed-in student gets Profil and Keluar in the HUD menu (owner, 20 October 2026).
      */
     public function index(): string
     {
         return view('game/welcome', [
             'locale'      => $this->locale,
+            'regions'     => $this->regionChips(),
             'hideBrand'   => true,
             'homePage'    => true,
             'participant' => $this->signedInParticipant(),
         ]);
+    }
+
+    /**
+     * The three region chips under the invitation (home redesign, owner 19 November 2026).
+     * The start page never fails over them: without content (a fresh install, a broken
+     * database) it simply shows none.
+     *
+     * @return list<array{code: string, name: string}>
+     */
+    private function regionChips(): array
+    {
+        $regions = [];
+
+        try {
+            foreach (service('contentRepository')->levels() as $level) {
+                $regions[] = ['code' => (string) $level->code, 'name' => $level->text('name', $this->locale)];
+            }
+        } catch (\Throwable $e) {
+            log_message('warning', 'Start page without region chips: {message}', ['message' => $e->getMessage()]);
+
+            return [];
+        }
+
+        return $regions;
     }
 
     /** The signed-in student in its safe shape (toSafeArray), or null before login. */

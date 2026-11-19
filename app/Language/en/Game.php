@@ -5,6 +5,8 @@ return [
     'appName'         => 'GELITA',
     'tagline'         => 'Kedu Literacy and Ethnopedagogy Educational Game',
     'start'           => 'Start',
+    'welcomeLead'     => 'The Mist of Forgetting covers Kedu. Help Jaka gather the Shards of Light and light the Lantern of Kedu again!',
+    'welcomeRegions'  => 'The three regions you will explore',
     'login'           => 'Log in',
     'continue'        => 'Continue',
     'back'            => 'Back',

@@ -496,7 +496,7 @@
    the module adds .is-cine-live and plays its cues; should it never run, they
    fade in after 4 s. Under prefers-reduced-motion nothing is held. */
 .cine-ok .stage:has([data-cine]:not(.is-cine-live)) > :is(.scene, .hud),
-.cine-ok [data-cine]:not(.is-cine-live) > :is(.welcome-hero, .welcome-actions, .gate-jaka, .gate-panel, .auth-jaka, .ornate-panel, .login-panel) {
+.cine-ok [data-cine]:not(.is-cine-live) > :is(.welcome-hero, .welcome-actions, .welcome-jaka, .gate-jaka, .gate-panel, .auth-jaka, .ornate-panel, .login-panel) {
   animation: cine-hold .6s ease 4s both;
 }
 @keyframes cine-hold { from { opacity: 0; } to { opacity: 1; } }
@@ -524,7 +524,7 @@
 /* The background eases into its parallax scale instead of jumping to it */
 :is(body.is-welcome, body.is-gate-art) .scene-img { transition: opacity .6s ease, scale 1.6s ease; }
 .has-parallax .welcome-hero { translate: calc(var(--plx, 0) * 8 * var(--dp)) calc(var(--ply, 0) * 5 * var(--dp)); }
-.has-parallax .gate-jaka { translate: calc(var(--plx, 0) * -18 * var(--dp)) calc(var(--ply, 0) * -6 * var(--dp)); }
+.has-parallax :is(.gate-jaka, .welcome-jaka) { translate: calc(var(--plx, 0) * -18 * var(--dp)) calc(var(--ply, 0) * -6 * var(--dp)); }
 /* Layers moved every frame by the parallax get their own GPU layer, so a move is not a
    repaint (the logo carries a drop shadow, a mask, and a blend); the card text stays still */
 .has-parallax :is(.scene-img, .welcome-hero, .gate-jaka) { will-change: translate; }

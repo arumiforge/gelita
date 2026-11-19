@@ -63,7 +63,11 @@ const SHEETS = {
       ['.cine-bar', { scale: ['1 1', '1 0'] }, 1600, 1400, 'cubic-bezier(.45, 0, .25, 1)'],
       ['.cine-flare', { opacity: [0, 0.85, 0], scale: [0.4, 1.15, 1.45] }, 900, 2200, 'ease-in-out'],
       ['.welcome-logo, .welcome-title', { opacity: [0, 1], scale: [1.08, 1] }, 900, 2200],
+      ['.welcome-jaka', { opacity: [0, 1], translate: ['3rem .75rem', '0 0'] }, 1200, 1800],
       ['.welcome-tagline', { opacity: [0, 1], translate: ['0 .5rem', '0 0'] }, 2100, 1100],
+      ['.welcome-rule', { opacity: [0, 1], scale: ['0 1', '1 1'] }, 2250, 900],
+      ['.welcome-lead', { opacity: [0, 1], translate: ['0 .5rem', '0 0'] }, 2350, 1000],
+      ['.welcome-region', { opacity: [0, 1], translate: ['-1rem 0', '0 0'] }, 2450, 800, OUT, 140],
       ['.welcome-actions', { opacity: [0, 1], translate: ['0 1rem', '0 0'], scale: [0.95, 1] }, 2600, 1100, BACK],
       ['.hud', { opacity: [0, 1] }, 3000, 900],
       ['.btn-install-plate', { opacity: [0, 1], translate: ['1rem 0', '0 0'] }, 3200, 900],
@@ -93,7 +97,7 @@ const SHEETS = {
 };
 
 /** Parts the CSS holds hidden until `.is-cine-live` (cinematic.css): the quick fade brings them in. */
-const HELD = '.scene, .hud, [data-cine] > :is(.welcome-hero, .welcome-actions, .gate-jaka, .gate-panel, .auth-jaka, .ornate-panel, .login-panel)';
+const HELD = '.scene, .hud, [data-cine] > :is(.welcome-hero, .welcome-actions, .welcome-jaka, .gate-jaka, .gate-panel, .auth-jaka, .ornate-panel, .login-panel)';
 
 function seenBefore(key) {
   try {

@@ -17,8 +17,9 @@
  *
  * Redesign (owner, 21 October 2026): the Peta Kedu HUD (shard plate left,
  * title centred, no logo), dark navy-and-gold cards with the book emblem on
- * the cover, the bronze track for x/4, buttons on the gold plate, and one way
- * back: Peta Kedu on the navy plate at the bottom left (no close button).
+ * the cover, the bronze track for x/5, buttons on the gold plate, and one way
+ * back: Peta Kedu on the navy plate (no close button). Since 19 November 2026
+ * (owner) that button sits at the top left instead of the shard plate.
  *
  * @var list<array<string, mixed>> $regions baris levelOverview + library, pages, cover
  * @var string                     $locale
@@ -30,9 +31,11 @@ $badges = ['open' => 'book', 'locked' => 'lock', 'unavailable' => 'lock'];
 
 <?= $this->section('title') ?><?= esc(lang('Game.library')) ?><?= $this->endSection() ?>
 <?= $this->section('hudTitle') ?><?= esc(lang('Game.library')) ?><?= $this->endSection() ?>
-<?php // The Peta Kedu HUD: no logo, shard plate on the left, the title in the middle ?>
+<?php // The Peta Kedu HUD: no logo, the title in the middle ?>
 <?= $this->section('hudStyle') ?>menu<?= $this->endSection() ?>
 <?= $this->section('hudLayout') ?>title-centre<?= $this->endSection() ?>
+<?php // No shard plate here (owner, 19 November 2026): Peta Kedu takes its place at the top left ?>
+<?= $this->section('hudShards') ?>off<?= $this->endSection() ?>
 <?= $this->section('background') ?><?= media_key_src('bg.map') ?? '' ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -82,7 +85,8 @@ $badges = ['open' => 'book', 'locked' => 'lock', 'unavailable' => 'lock'];
     <?php endforeach ?>
   </ol>
 
-  <?php // One way back (owner, 21 October 2026): Peta Kedu on the navy plate, bottom left ?>
+  <?php // One way back (owner, 21 October 2026): Peta Kedu on the navy plate, at the top left in the
+        // shard plate's place since 19 November 2026 ?>
   <nav class="shelf-nav stage-box" aria-label="<?= esc(lang('Game.continue'), 'attr') ?>">
     <a class="shelf-back" href="<?= base_url('peta') ?>"><?= icon('left') ?> <span><?= esc(lang('Game.mapKedu')) ?></span></a>
   </nav>
