@@ -383,8 +383,6 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 /* Flat flag, 3 : 2, with a soft edge so the white half shows on the dark sheet */
 .hud-flag { display: block; width: 2.75rem; height: auto; aspect-ratio: 3 / 2; border-radius: .3125rem; box-shadow: 0 0 0 .0625rem rgba(255, 255, 255, .35), 0 .125rem .375rem rgba(0, 0, 0, .45); }
 .hud-sheet-flag { width: 4.25rem; height: 4.25rem; border-radius: 50%; }
-/* The round flag buttons carry their own carved ring, a little past the old flag's edge */
-.hud-sheet-flag.is-round { width: 4.625rem; height: 4.625rem; margin: -.1875rem; filter: drop-shadow(0 .125rem .25rem rgba(1, 7, 19, .5)); }
 .hud-sheet-code { display: grid; place-items: center; width: 4.25rem; height: 4.25rem; border: .125rem solid var(--gold-500); border-radius: 50%; font-weight: 800; }
 .hud-lang-row .hud-sheet-mark { width: 2rem; height: 2rem; color: var(--ok); visibility: hidden; }
 .hud-lang-row.is-active { background: rgba(223, 192, 135, .16); color: var(--gold-300); }

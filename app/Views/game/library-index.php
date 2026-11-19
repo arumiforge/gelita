@@ -40,6 +40,11 @@ $badges = ['open' => 'book', 'locked' => 'lock', 'unavailable' => 'lock'];
 
 <?= $this->section('content') ?>
 <section class="library library-index" data-screen="library-index">
+  <?php // One way back (owner, 21 October 2026): Peta Kedu on the navy plate, at the top left in the
+        // shard plate's place since 19 November 2026 ?>
+  <nav class="shelf-nav stage-box" aria-label="<?= esc(lang('Game.continue'), 'attr') ?>">
+    <a class="shelf-back" href="<?= base_url('peta') ?>"><?= icon('left') ?> <span><?= esc(lang('Game.mapKedu')) ?></span></a>
+  </nav>
   <header class="library-head shelf-head stage-box">
     <h1 class="visually-hidden"><?= esc(lang('Game.library')) ?></h1>
     <p class="library-lead"><?= esc(lang('Game.libraryIndexLead')) ?></p>
@@ -85,10 +90,5 @@ $badges = ['open' => 'book', 'locked' => 'lock', 'unavailable' => 'lock'];
     <?php endforeach ?>
   </ol>
 
-  <?php // One way back (owner, 21 October 2026): Peta Kedu on the navy plate, at the top left in the
-        // shard plate's place since 19 November 2026 ?>
-  <nav class="shelf-nav stage-box" aria-label="<?= esc(lang('Game.continue'), 'attr') ?>">
-    <a class="shelf-back" href="<?= base_url('peta') ?>"><?= icon('left') ?> <span><?= esc(lang('Game.mapKedu')) ?></span></a>
-  </nav>
 </section>
 <?= $this->endSection() ?>

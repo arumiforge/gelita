@@ -271,33 +271,17 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 .btn-start.btn { min-width: calc(320 * var(--dp)); gap: calc(14 * var(--dp)); font-family: var(--font-display); font-size: calc(34 * var(--dp)); letter-spacing: .03em; animation-name: start-glow-image; }
 .stage[style*="--plate-gold"] .btn-start.btn-xl.btn-primary { --pill-h: 5rem; height: 5rem; }
 .btn-start.btn .icon { width: calc(30 * var(--dp)); height: calc(30 * var(--dp)); }
-.btn-start.is-image { padding: 0; line-height: 0; border-radius: var(--radius-lg); }
-.btn-start.is-image img {
-  width: 30rem;
-  height: auto;
-  filter: drop-shadow(0 .375rem .875rem rgba(0, 0, 0, .45));
-  transition: filter .2s;
-}
 .btn-start:focus-visible { transform: translateY(-.125rem); }
-.btn-start.is-image:focus-visible img,
-.btn-start.is-image:active img {
-  filter: drop-shadow(0 .375rem .875rem rgba(0, 0, 0, .45)) drop-shadow(0 0 1.25rem var(--glow)) brightness(1.08);
-}
 @media (hover: hover) {
   .btn-start:hover { transform: translateY(-.125rem); }
-  .btn-start.is-image:hover img {
-    filter: drop-shadow(0 .375rem .875rem rgba(0, 0, 0, .45)) drop-shadow(0 0 1.25rem var(--glow)) brightness(1.08);
-  }
 }
 .btn-start:active { transform: scale(.96); }
-.btn-start.is-image img { -webkit-user-drag: none; }
 .btn-start:focus-visible { outline: .1875rem solid var(--gold-500); outline-offset: .25rem; }
 @keyframes start-glow {
   0%, 100% { box-shadow: 0 0 0 rgba(223, 192, 135, 0); }
   50%      { box-shadow: 0 0 1.75rem var(--glow); }
 }
-/* Gambar tombol sudah berbentuk sendiri: kilaunya lewat filter, bukan kotak bayangan */
-.btn-start.is-image { animation-name: start-glow-image; }
+/* The plate glows through a filter, not a box shadow */
 @keyframes start-glow-image {
   0%, 100% { filter: none; }
   50%      { filter: drop-shadow(0 0 .875rem var(--glow)); }
@@ -1701,7 +1685,7 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .map-level .node-panels .node-card { display: none; }
 .map-level .node-panels .node-card.is-selected { display: grid; }
 .map-level .node-panels:has(.node-card:target) .node-card { display: none; }
-.map-level .node-panels .node-card:target { display: grid; }
+.map-level .node-panels:has(.node-card:target) .node-card:target { display: grid; }
 .map-level .node-panels.is-live .node-card { display: none; }
 .map-level .node-panels.is-live .node-card.is-selected { display: grid; }
 .map-level .node-panels .node-card {
@@ -1794,10 +1778,8 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .node-card.has-frame.is-open .node-card-art { filter: sepia(.95) saturate(.65) contrast(.95) brightness(.85); }
 .node-card.has-frame.is-locked { opacity: 1; }
 .node-card.has-frame.is-locked .node-card-art { filter: grayscale(1) contrast(.9) brightness(.42); }
-/* Lihat hasil on the owner's green plate; Terkunci on the navy plate; both 40 dp tall, with
-   a 48 dp hit area */
-.map-level .node-action.is-green,
-.map-level .node-action.is-navy {
+/* Lihat hasil on the owner's green plate, 48 dp tall */
+.map-level .node-action.is-green {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1817,8 +1799,6 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
   text-shadow: 0 .0625rem .1875rem rgba(0, 0, 0, .85);
   filter: drop-shadow(0 .1875rem .3125rem rgba(0, 0, 0, .5));
 }
-.map-level .node-action.is-navy { min-width: 9rem; border-image-source: var(--plate-navy); color: #E7D7B0; }
-.map-level .node-action.is-navy .icon { width: 1rem; height: 1rem; }
 @media (hover: hover) {
   .map-level .node-action.is-green:hover { background-color: transparent; color: #FFF4D6; filter: drop-shadow(0 .1875rem .3125rem rgba(0, 0, 0, .5)) brightness(1.15); }
 }
@@ -3037,7 +3017,7 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 }
 .kedu-panel.is-locked .kedu-panel-art { filter: grayscale(.85) brightness(.55); }
 .kedu-panels:has(.kedu-panel:target) .kedu-panel { display: none; }
-.kedu-panels .kedu-panel:target { display: grid; }
+.kedu-panels:has(.kedu-panel:target) .kedu-panel:target { display: grid; }
 .kedu-panels.is-live .kedu-panel { display: none; }
 .kedu-panels.is-live .kedu-panel.is-selected { display: grid; }
 .kedu-panel { text-shadow: 0 .125rem .375rem rgba(4, 10, 20, .9), 0 0 .75rem rgba(4, 10, 20, .7); }
@@ -3955,7 +3935,7 @@ html:not(.js) .result-kedu.result-sheet { border-radius: 1.25rem; background: rg
 .book-gallery > .book-figure.is-video,
 .book-gallery.is-single > .book-figure { grid-column: 1 / -1; }
 .book-figure figcaption { padding: .5rem .75rem; background: rgba(255, 250, 236, .6); font-size: .875rem; line-height: 1.4; }
-.book-gallery > .book-figure:not(:first-child):not(.is-video) figcaption { display: none; }
+.book-gallery > .book-figure.is-image:not(:first-child):has(.book-zoom) figcaption { display: none; }
 .book-credit { margin: 0; padding: 0 var(--gap-4) var(--gap-3); color: rgba(74, 50, 24, .7); font-size: .78rem; }
 
 /* Bingkai berasio tetap + skeleton perkamen selama gambar dimuat.
@@ -4651,7 +4631,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   .object.is-shaking, .lantern.is-updated .lantern-count b { animation: none; }
   /* Phase F1.5: the start button stops pulsing; hover, selection, and press
      keep their colour cues but do not move or scale */
-  .btn-start, .btn-start.is-image { animation: none; }
+  .btn-start { animation: none; }
   :is(.login-form, .register-form)[style*="--round-loading"] .btn-gold-plate[aria-busy="true"]::after { animation: none; }
   .btn-start:hover, .btn-start:focus-visible, .btn-start:active,
   .btn-art:hover, .btn-art:active,

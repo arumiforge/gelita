@@ -1,8 +1,8 @@
 /**
  * Peta Kedu & peta wilayah.
  *
- * - Titik terkunci → toast, bukan navigasi (server tetap menolak bila tautan
- *   dibuka langsung).
+ * - Peta Kedu: a locked Lanjut → toast, not navigation (the server still
+ *   refuses the link opened directly). Region-map pins select their challenge.
  * - Pra-muat gambar latar wilayah/pos yang terbuka ([data-preload]) agar
  *   perpindahan halaman mulus.
  * - Peta wilayah: event `level_opened` { levelId }.
@@ -236,18 +236,12 @@ export function initMap() {
   const screen = $('[data-screen="map-kedu"], [data-screen="map-level"]');
   if (!screen) return;
 
-  // A locked Pustaka link has its own modal below; no toast on top of it. On the region map
-  // a locked pin explains itself in a modal too (owner, 21 October 2026), not a corner toast
+  // A locked Pustaka link has its own modal below; no toast on top of it. (Region-map pins
+  // select their challenge since 19 November 2026: a locked one explains itself in its card.)
   on(screen, 'click', 'a[aria-disabled="true"]:not([data-library-locked])', (event, link) => {
     event.preventDefault();
     Sfx.play('lock');
-    const message = link.dataset.lockedMessage || link.textContent.trim();
-    if (screen.dataset.screen === 'map-level') {
-      const { lockedTitle, lockedOk } = link.dataset;
-      showModal({ type: 'info', icon: 'lock', title: lockedTitle || '', text: message, buttons: [{ label: lockedOk || 'OK', style: 'primary', value: 'ok' }] });
-      return;
-    }
-    toast(message, 'warn');
+    toast(link.dataset.lockedMessage || link.textContent.trim(), 'warn');
   });
 
   // Pustaka {wilayah} sits at the bottom of the side column (it used to be in the nav bar)

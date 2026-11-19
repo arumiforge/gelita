@@ -65,7 +65,9 @@ final class PostPullCheck
         ],
         'katalog' => [
             'title'   => 'Gambar Katalog Aset',
-            'inputs'  => ['paths' => ['ai-studio/game-images'], 'ext' => ['webp', 'png', 'jpg', 'jpeg', 'svg', 'json'], 'skip' => ['review']],
+            // The importer itself too: it carries the measured map stops and Cari Objek positions
+            // (MAP_STOPS, SCENE_OBJECTS), which only reach the database through this command
+            'inputs'  => ['paths' => ['ai-studio/game-images', 'app/Libraries/CatalogImporter.php'], 'ext' => ['webp', 'png', 'jpg', 'jpeg', 'svg', 'json'], 'skip' => ['review']],
             'command' => 'gelita:katalog:impor',
         ],
         'narasi-pasang' => [

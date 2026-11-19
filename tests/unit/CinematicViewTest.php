@@ -300,6 +300,9 @@ final class CinematicViewTest extends CIUnitTestCase
     /** Owner, 18 October 2026: the intro menu has Profil, Kembali ke awal, and Keluar, but no Peta Kedu yet; Layar penuh left the menu and Tentang GELITA joined it (21 October 2026). */
     public function testIntroMenuHasTheAccountRows(): void
     {
+        // The menu leaves out the row of the page it is on (19 November 2026): an address left
+        // by an earlier test in the same process must not decide that
+        service('request')->getUri()->setPath('intro');
         $page = $this->intro(introSeen: false);
         $menu = substr($page, (int) strpos($page, '<details class="hud-pop hud-menu"'));
         $menu = substr($menu, 0, (int) strpos($menu, '</details>'));

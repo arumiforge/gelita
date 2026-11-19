@@ -354,6 +354,8 @@ final class StartGateTest extends CIUnitTestCase
         $page = (new HomeController())->index();
 
         $this->assertStringContainsString('<p class="welcome-lead">' . esc(lang('Game.welcomeLead')) . '</p>', $page);
+        // Without content (no levels table here) the page shows no region chips instead of failing
+        $this->assertStringNotContainsString('welcome-regions', $page);
         $this->assertStringContainsString('<img class="welcome-jaka stage-box" src="' . esc(asset_url_versioned('ui/jaka-gate.webp'), 'attr') . '"', $page, 'the waving Jaka until the lantern pose is installed');
     }
 

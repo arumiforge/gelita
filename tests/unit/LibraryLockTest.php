@@ -455,6 +455,53 @@ final class LibraryLockTest extends CIUnitTestCase
         }
     }
 
+    /**
+     * One fixed menu list (owner, 19 November 2026): Peta Kedu and Pustaka Kedu on every in-game
+     * page, without the row of the page the student is on.
+     */
+    public function testMenuIsOneFixedListWithoutTheCurrentPage(): void
+    {
+        $nodes = [['id' => 1, 'sequence' => 1, 'engine_type' => 'puzzle', 'variant' => '', 'title' => 'Susun Gambar',
+            'description' => '', 'status' => 'open', 'stars' => null, 'map_x' => 20, 'map_y' => 50]];
+        $region = static fn (): string => view('game/map-level', self::hud() + [
+            'level'        => self::level(2, 'magelang'),
+            'levelSummary' => ['stars' => 0, 'completed_nodes' => 0, 'total_nodes' => 1],
+            'nodes'        => $nodes,
+            'hasLibrary'   => false,
+            'library'      => ['status' => 'locked'],
+        ]);
+
+        // The menu reads the page from the request's address (uri_string())
+        $uri = service('request')->getUri();
+        $uri->setPath('wilayah/magelang');
+        $page = $region();
+        $map  = (int) strpos($page, 'class="hud-sheet-row hud-leave hud-map"');
+        $lib  = (int) strpos($page, 'class="hud-sheet-row hud-leave hud-library"');
+        $this->assertGreaterThan(0, $map);
+        $this->assertGreaterThan($map, $lib, 'Peta Kedu, then Pustaka Kedu');
+        $this->assertGreaterThan($lib, (int) strpos($page, 'class="hud-sheet-row hud-leave hud-about"'), 'then Tentang GELITA');
+        $this->assertStringContainsString('class="hud-sheet-row hud-leave hud-profile"', $page);
+
+        foreach (['peta' => 'hud-map', 'pustaka' => 'hud-library', 'tentang' => 'hud-about', 'profil' => 'hud-profile'] as $path => $row) {
+            Services::resetSingle('renderer');
+            $uri->setPath($path);
+            $this->assertStringNotContainsString('hud-leave ' . $row . '"', $region(), $path);
+        }
+        $uri->setPath('/');
+    }
+
+    /** Owner, 19 November 2026: the reading room's last page goes back to the region map; no shard plate. */
+    public function testReadingRoomEndsAtTheRegionMap(): void
+    {
+        $this->scores = [2 => [4, 4]];
+
+        $page = $this->probe('free')->show('magelang');
+
+        $this->assertStringContainsString('href="' . esc(base_url('wilayah/magelang'), 'attr') . '" data-slide-final>' . esc(lang('Game.libraryFinish')), $page);
+        $this->assertStringContainsString('<a class="library-toc-link" href="#page-1" aria-current="page">', $page);
+        $this->assertStringNotContainsString('class="hud-shards', $page);
+    }
+
     // ------------------------------------------------------------ momen terbuka
 
     public function testOnlyTheAttemptThatFinishesTheRegionOpensTheLibrary(): void

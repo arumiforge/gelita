@@ -168,7 +168,7 @@ $hasTrack     = is_file(FCPATH . 'assets/ui/ui-track.webp');
     </div>
 
     <?php // One challenge at a time, the one selected on the map (owner, 19 November 2026); no scrolling ?>
-    <ol class="node-list node-panels">
+    <ol class="node-list node-panels" aria-live="polite">
       <?php foreach ($nodes as $node): ?>
         <?php
         $art = is_file(FCPATH . 'assets/ui/node-card-' . $node['engine_type'] . '.webp') ? asset_url_versioned('ui/node-card-' . $node['engine_type'] . '.webp') : null;
