@@ -30,6 +30,8 @@ body { display: flex; flex-direction: column; }
 .stage { width: 1280px; height: 720px; position: relative; overflow: hidden; transform-origin: center; flex: none;
   background: var(--bg) center / cover no-repeat; }
 .stage::before { content: ''; position: absolute; inset: 0; background: linear-gradient(rgba(5, 9, 18, .55), rgba(5, 9, 18, .78)); }
+/* Darker band behind the header so the HUD reads on any background (owner, 19 Nov 2026) */
+.hudband { left: 0; top: 0; width: 1280px; height: 128px; background: linear-gradient(rgba(3, 6, 12, .92), rgba(3, 6, 12, .72) 62%, rgba(3, 6, 12, 0)); }
 .abs { position: absolute; }
 
 /* Header, one row (decision 13) */
@@ -47,9 +49,8 @@ body { display: flex; flex-direction: column; }
 .capsule .div { width: 1px; height: 26px; background: rgba(223, 192, 135, .5); margin: 0 4px; }
 .round { width: 48px; height: 48px; padding: 0; border: 0; background: none; cursor: pointer; }
 .round img { width: 100%; height: 100%; }
-.exit { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 22px 0 8px; color: var(--cream); font: 600 17px 'Jakarta';
-  border-style: solid; border-width: 0 48px; border-image: url({{navy}}) 0 200 fill / 0 48px / 0 stretch; }
-.exit img { width: 34px; height: 34px; margin-left: -30px; }
+.exit { display: flex; align-items: center; gap: 8px; height: 48px; padding: 0; color: var(--cream); font: 600 17px 'Jakarta'; }
+.exit img { width: 48px; height: 48px; }
 
 /* Panels: no frame, no extra background (decision 1) */
 .left { left: 32px; top: 104px; width: 600px; height: 584px; display: flex; flex-direction: column; }
@@ -64,7 +65,10 @@ body { display: flex; flex-direction: column; }
 .tries { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--muted); font-weight: 400; }
 .tries i { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--gold-deep); }
 .tries i.is-left { background: radial-gradient(circle at 35% 35%, var(--gold-hi), var(--gold-deep)); border-color: var(--gold); box-shadow: 0 0 6px rgba(240, 223, 184, .5); }
-.picture { margin: 12px auto 0; display: block; border-radius: 10px; box-shadow: 0 6px 20px rgba(0, 0, 0, .55); width: var(--pic-w, 456px); height: auto; }
+.media { margin: 12px auto 0; width: var(--pic-w, 540px); border-radius: 10px; box-shadow: 0 6px 20px rgba(0, 0, 0, .55); }
+.picture { display: block; width: 100%; height: auto; border-radius: 10px; }
+.media.has-player .picture { border-radius: 10px 10px 0 0; }
+.media .player { margin: 0; border-radius: 0 0 10px 10px; border-top: 0; background: rgba(11, 19, 32, .92); }
 .player { margin: 14px 0 0; display: flex; align-items: center; gap: 14px; height: 52px; padding: 0 18px 0 6px; border-radius: 26px; background: rgba(11, 19, 32, .78); border: 1px solid rgba(223, 192, 135, .45); }
 .player .round { width: 42px; height: 42px; }
 .player .lbl { font: 600 17px 'Jakarta'; white-space: nowrap; }
@@ -82,8 +86,8 @@ body { display: flex; flex-direction: column; }
 .toggle span.is-on { background: linear-gradient(var(--gold-hi), var(--gold)); color: var(--ink); }
 .question { margin: 14px 0 0; text-align: center; font: 400 31px/1.15 'Marcellus', serif; color: var(--gold-hi); }
 .question.is-small { font-size: 25px; }
-.instr { margin: 8px auto 0; display: flex; align-items: center; gap: 10px; max-width: 540px; font-size: 16px; color: var(--muted); text-align: center; }
-.instr .round { width: 32px; height: 32px; flex: none; }
+.right > .player { margin: 12px 0 0; }
+.instr { margin: 8px 0 0; font-size: 16px; line-height: 1.4; color: var(--muted); text-align: left; }
 .chosen { margin: 12px 0 0; padding: 9px 16px; border-radius: 10px; background: rgba(27, 39, 64, .75); border-left: 4px solid var(--gold); font-size: 16px; }
 .chosen b { color: var(--gold); font-weight: 600; }
 .options { margin: 14px 0 0; display: flex; flex-direction: column; gap: var(--gap, 10px); }
@@ -128,7 +132,7 @@ body { display: flex; flex-direction: column; }
 const IMG = /*IMG*/{};
 const SCEN = /*SCEN*/{};
 const REGION = { temanggung: 'Temanggung', wonosobo: 'Wonosobo' };
-const state = { key: 'tmg-5-b01', step: 'action', action: null, reason: null, tries: 3, closed: 0, result: null, playing: false };
+const state = { key: 'tmg-5-b01', step: 'action', action: null, reason: null, tries: 3, closed: 0, result: null, playing: null };
 const stage = document.getElementById('stage');
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const wave = Array.from({ length: 34 }, (_, i) => `<i style="--h:${8 + Math.round(20 * Math.abs(Math.sin(i * 1.7)))}px;--d:${(i % 7) * -.13}s"></i>`).join('');
@@ -139,6 +143,10 @@ function fit() {
   stage.style.transform = `scale(${s})`;
 }
 
+function player(which, label, dur) {
+  const on = state.playing === which;
+  return `<div class="player${on ? ' is-playing' : ''}"><button class="round" type="button" data-act="play" data-which="${which}"><img src="${on ? IMG.pause : IMG.play}" alt=""></button><span class="lbl">${on ? 'Sedang dibacakan…' : label}</span><span class="wave">${wave}</span><span class="dur">${dur}</span></div>`;
+}
 function render() {
   const sc = SCEN[state.key];
   const research = document.getElementById('opt-research').checked;
@@ -157,7 +165,8 @@ function render() {
     right = `
       <div class="toggle" aria-hidden="true"><span class="${isAction ? 'is-on' : ''}"><b>1</b>Tindakan</span><span class="${isAction ? '' : 'is-on'}"><b>2</b>Alasan</span></div>
       ${isAction ? `<h2 class="question">Apa yang akan kamu lakukan?</h2>
-        <p class="instr"><button class="round" type="button" title="Dengarkan petunjuk"><img src="${IMG.play}" alt=""></button><span>Bacalah ceritanya. Pilih apa yang akan kamu lakukan, lalu pilih alasanmu.</span></p>`
+        ${voiced ? player('instr', 'Dengarkan petunjuk', '0:06') : ''}
+        <p class="instr">Bacalah ceritanya. Pilih apa yang akan kamu lakukan, lalu pilih alasanmu.</p>`
       : `<p class="chosen"><b>Pilihanmu:</b> ${esc(sc.actions[state.action ?? 0].text)}</p>
         <h2 class="question is-small">Yang paling penting kupikirkan di sini adalah …</h2>`}
       <div class="options" role="radiogroup">${optionsHtml}</div>
@@ -184,21 +193,21 @@ function render() {
   }
 
   stage.innerHTML = `
+    <span class="abs hudband"></span>
     <header class="abs head">
       <img class="logo" src="${IMG.logo}" alt="GELITA">
       <span class="sep"></span>
       <span class="badge"><img src="${IMG.badge}" alt=""><span>5</span></span>
-      <div class="titles"><h1>Skenario Digital</h1><p>Skenario Digital ${REGION[sc.region]}</p></div>
+      <div class="titles"><h1>Skenario Digital</h1><p>${REGION[sc.region]}</p></div>
       <div class="end">
         <span class="capsule">${research ? '' : `<img src="${IMG.clock}" alt=""> 4:47 <span class="div"></span>`}<img src="${IMG.right}" alt=""> ${state.closed}</span>
         <button class="round" type="button" title="Suara"><img src="${IMG.sound}" alt=""></button>
         <span class="exit"><img src="${IMG.logout}" alt="">Keluar</span>
       </div>
     </header>
-    <section class="abs left" style="--pic-w:${long ? 420 : 456}px;--sit-fs:${long ? 19 : 20}px">
+    <section class="abs left" style="--sit-fs:${long ? 19 : 20}px">
       <div class="story-head">Cerita ${state.closed + 1} dari 4 <span class="bars">${bars}</span><span class="tries">Kesempatan ${dots}</span></div>
-      <img class="picture" src="${IMG['pic_' + state.key]}" alt="">
-      ${voiced ? `<div class="player${state.playing ? ' is-playing' : ''}"><button class="round" type="button" data-act="play"><img src="${state.playing ? IMG.pause : IMG.play}" alt=""></button><span class="lbl">${state.playing ? 'Sedang dibacakan…' : 'Dengarkan cerita'}</span><span class="wave">${wave}</span><span class="dur">0:18</span></div>` : ''}
+      <div class="media${voiced ? ' has-player' : ''}"><img class="picture" src="${IMG['pic_' + state.key]}" alt="">${voiced ? player('story', 'Dengarkan cerita', '0:18') : ''}</div>
       <p class="situation">${esc(sc.situation)}</p>
     </section>
     <span class="abs divline"></span>
@@ -214,15 +223,15 @@ function render() {
 stage.addEventListener('change', (e) => {
   if (!e.target.matches('input[type=radio]')) return;
   state[state.step] = Number(e.target.value);
-  state.playing = false;
+  state.playing = null;
   render();
 });
 stage.addEventListener('click', (e) => {
   const act = e.target.closest('[data-act]')?.dataset.act;
   if (!act) return;
   const sc = SCEN[state.key];
-  if (act === 'play') state.playing = !state.playing;
-  if (act === 'toReason') { state.step = 'reason'; state.playing = false; }
+  if (act === 'play') { const w = e.target.closest('[data-which]').dataset.which; state.playing = state.playing === w ? null : w; }
+  if (act === 'toReason') { state.step = 'reason'; state.playing = null; }
   if (act === 'back') state.step = 'action';
   if (act === 'send') {
     state.tries -= 1;
@@ -235,7 +244,7 @@ stage.addEventListener('click', (e) => {
 });
 document.querySelectorAll('[data-scen]').forEach((b) => b.addEventListener('click', () => {
   document.querySelectorAll('[data-scen]').forEach((o) => o.setAttribute('aria-pressed', String(o === b)));
-  Object.assign(state, { key: b.dataset.scen, step: 'action', action: null, reason: null, tries: 3, playing: false });
+  Object.assign(state, { key: b.dataset.scen, step: 'action', action: null, reason: null, tries: 3, playing: null });
   render();
 }));
 document.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => {

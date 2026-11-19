@@ -6,7 +6,7 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 19 November 2026
 
-**Mockup Skenario Digital disetujui; prompt `SD-01` sampai `SD-10` dan kristal `U-36`** (cabang `igi/relaxed-hawking-3ec774`, dokumen [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) dan [40](40_PROMPT_GAMBAR_ANTARMUKA.md)) · `asal: pengembang` · `disetujui pengembang` · dokumen 41 naik ke `disetujui pengembang`; prompt dan baris `TASKS.md` baru; belum ada kode, bank soal, naskah, atau rekaman yang berubah
+**Mockup Skenario Digital disetujui; prompt `SD-01` sampai `SD-11` dan kristal `U-36`** (cabang `igi/relaxed-hawking-3ec774`, dokumen [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) dan [40](40_PROMPT_GAMBAR_ANTARMUKA.md)) · `asal: pengembang` · `disetujui pengembang` · dokumen 41 naik ke `disetujui pengembang`; prompt dan baris `TASKS.md` baru; belum ada kode, bank soal, naskah, atau rekaman yang berubah
 
 Mockup dibangun ulang dari `main` dan dikirim lagi; pengembang menjawab empat pertanyaan:
 1. **Mockup disetujui tanpa catatan** (41 §6 langkah A). Tangkapan keempat keadaan disimpan di `gambar/41/` sebagai catatan tata letak yang disetujui dan sebagai lampiran pesanan gambar.
@@ -19,6 +19,15 @@ Sesudah jawaban itu (langkah B, keputusan pengembang dari pengukuran):
 6. **`SD-10` ditambahkan:** bagian aktif sakelar langkah (125 × 38) dipisah dari relnya (`SD-08`) supaya bisa berpindah kiri–kanan tanpa dua gambar rel.
 7. **Kartu dipilih tanpa cahaya yang dilukis:** blok gaya melarang garis cahaya, jadi cahaya lembut di sekitar kartu dipilih tetap dari CSS seperti di mockup; gambarnya hanya tepi emas yang lebih terang dan bidang biru kehijauan yang lebih terang.
 8. **Kristal `U-36`:** lubang bingkai baru diukur ulang (148 × 188 piksel di bingkai 1400 × 288, bukan letak `.lantern-gem` lama), kanvas tepat tiga kali lubang itu, tanpa cahaya yang dilukis; dipasang bersama `U-07` (40 → *Pemasangan*).
+
+**Catatan pengembang atas mockup yang sudah disetujui** (cabang yang sama, dokumen [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) §1 keputusan 17–21) · `asal: pengembang` · `disetujui pengembang` · mockup, prompt `SD-09`, dan baris `TASKS.md` disesuaikan; belum ada kode; aturan penelitian 32 §5.2 dan §6 tetap
+
+Sesudah melihat mockup, pengembang meminta lima perbaikan; semuanya dimasukkan ke mockup dan diukur ulang:
+1. **Petunjuk mendapat baris pemutar sendiri** *Dengarkan petunjuk* (bentuk sama dengan *Dengarkan cerita*) tepat di bawah "Apa yang akan kamu lakukan?", dan teks instruksi di bawahnya rata kiri; kini muat satu baris. Narasi instruksi tetap hanya lewat ▶ (K10), dan hanya satu suara yang diputar pada satu waktu. Gambar baru `SD-11` (kapsul 584 × 52).
+2. **Tombol Keluar sementara tanpa pelat gambar** (tombol bundar dan tulisan saja); pelatnya ditentukan saat HUD seragam.
+3. **Subjudul Skenario Digital = nama kota/kabupaten saja**, menggantikan judul varian (keputusan 8 lama).
+4. **Pita kepala layar digelapkan** dengan gradasi gelap supaya HUD terbaca dan bagian atas latar lebih gelap; ikut kepala satu baris di kelima tantangan.
+5. **Pemutar *Dengarkan cerita* menempel di bawah gambar** sebagai satu blok, dan gambar dilebarkan dari 456 × 304 menjadi 540 × 360. Situasi terpanjang tetap muat, tepat sampai tepi bawah panel kiri; `SD-09` menjadi bilah 540 × 52 bertepi atas lurus.
 
 ## 18 November 2026
 
