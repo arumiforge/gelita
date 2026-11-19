@@ -6,7 +6,7 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 19 November 2026
 
-**Mockup Skenario Digital disetujui; prompt `SD-01` sampai `SD-11` dan kristal `U-36`** (cabang `igi/relaxed-hawking-3ec774`, dokumen [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) dan [40](40_PROMPT_GAMBAR_ANTARMUKA.md)) · `asal: pengembang` · `disetujui pengembang` · dokumen 41 naik ke `disetujui pengembang`; prompt dan baris `TASKS.md` baru; belum ada kode, bank soal, naskah, atau rekaman yang berubah
+**Mockup Skenario Digital disetujui; prompt `SD-01` sampai `SD-12` dan kristal `U-36`** (cabang `igi/relaxed-hawking-3ec774`, dokumen [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) dan [40](40_PROMPT_GAMBAR_ANTARMUKA.md)) · `asal: pengembang` · `disetujui pengembang` · dokumen 41 naik ke `disetujui pengembang`; prompt dan baris `TASKS.md` baru; belum ada kode, bank soal, naskah, atau rekaman yang berubah
 
 Mockup dibangun ulang dari `main` dan dikirim lagi; pengembang menjawab empat pertanyaan:
 1. **Mockup disetujui tanpa catatan** (41 §6 langkah A). Tangkapan keempat keadaan disimpan di `gambar/41/` sebagai catatan tata letak yang disetujui dan sebagai lampiran pesanan gambar.
@@ -35,6 +35,13 @@ Sesudah melihat mockup, pengembang meminta lima perbaikan; semuanya dimasukkan k
 2. **Keluar tanpa tulisan:** hanya tombol bundar; "Keluar" menjadi keterangan saat disorot atau ditekan lama.
 3. **Penanda cerita, bilah kemajuan, dan *Kesempatan* masuk ke bagian atas gambar; pemutar *Dengarkan cerita* masuk ke bagian bawah gambar** sebagai kapsul. Gambar kini selebar panel, 600 × 400, dan situasi terpanjang menyisakan sekitar 60 dp. `SD-09` menjadi kapsul 576 × 52.
 4. **Pemutar dan teks petunjuk dalam satu kotak**, satu baris masing-masing dengan garis tipis di antaranya; `SD-11` menjadi kotak 584 × 110. Tanpa rekaman instruksi, kotak tidak tampil dan teksnya berdiri sendiri.
+
+**Catatan pengembang putaran ketiga atas mockup, dengan gambar contoh** (cabang yang sama, dokumen [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) §1 keputusan 26–29) · `asal: pengembang` · `disetujui pengembang` · mockup, prompt `SD-09`, `SD-11`, `SD-12`, dan baris `TASKS.md` disesuaikan; belum ada kode
+
+1. **Bagian atas layar cerah:** pita gelap kepala layar dibuang; lapisan gelap latar mulai di bawah kepala layar.
+2. **Logo GELITA dicoba tanpa** di kepala layar tantangan; nomor, judul, dan nama kota duduk di satu kapsul gelap (gambarnya ditentukan di langkah C karena dipakai kelima tantangan).
+3. **Panel kiri menjadi satu kotak berbingkai** seperti gambar contoh: baris penanda cerita dan *Kesempatan* di atas gambar, gambar 540 × 360 dengan kapsul *Dengarkan cerita* (516 × 52) di bagian bawah gambar, lalu situasi. Gambar baru `SD-12` (600 × 584).
+4. **Baris *Dengarkan petunjuk* tanpa gelombang dan durasi**, tombol dan tulisan lebih kecil; kotak petunjuk 584 × 100.
 
 ## 18 November 2026
 
