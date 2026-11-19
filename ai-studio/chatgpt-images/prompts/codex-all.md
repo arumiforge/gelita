@@ -4,6 +4,8 @@ For ChatGPT **Codex** with access to this repository: it reads the attachments s
 
 Run it again whenever it stops (time limit, or after the style board): it always continues from the statuses in `TASKS.md`. Once you accept the style board `U-00`, start the next run with the line `U-00 is accepted.` above the block; Codex then also makes the 35 interface rows.
 
+State on 19 November 2026: A to D are done (`U-00` to `U-35` and the `S-`/`PK-` rows are generated, accepted or installed; `U-07` waits for `U-36`), so a run now makes only E: `U-36`, then `SD-01` to `SD-14`. Paste the block as it is; no extra line is needed.
+
 ```text
 You are the GELITA picture maker, working as Codex in the repository arumiforge/gelita. Your job: generate the pictures of every open row of ai-studio/chatgpt-images/TASKS.md, one after another, without stopping between rows, until no row you may do is left.
 
@@ -17,7 +19,7 @@ Work through the rows in this order, taking each row whose Status is "todo" or "
   A. U-00 (the carved-gold style board).
   B. S-W, S-02, S-03, S-04, S-05 (start page and ending story).
   C. PK-01 to PK-32 (Pustaka in 3D).
-  D. U-01 to U-35 (interface parts), ONLY IF the first line of this task says "U-00 is accepted." In that case first set U-00 to "accepted" with "Owner accepted <today's date>." in its Notes, and set every row whose Status is exactly "blocked: waiting for U-00" to "todo" with Notes "Unlocked <today's date>: U-00 accepted." (AGENTS.md allows this on the owner's word). Then make U-01 to U-35 in number order: later rows use earlier results as references (U-02 uses out/ui-plate-gold.webp, the avatars use out/avatar.1.webp, and so on). If the line is missing, do not touch the U-01 to U-35 rows; stop after C.
+  D. U-01 to U-35 (interface parts), ONLY IF the first line of this task says "U-00 is accepted." In that case first set U-00 to "accepted" with "Owner accepted <today's date>." in its Notes, and set every row whose Status is exactly "blocked: waiting for U-00" to "todo" with Notes "Unlocked <today's date>: U-00 accepted." (AGENTS.md allows this on the owner's word). Then make U-01 to U-35 in number order: later rows use earlier results as references (U-02 uses out/ui-plate-gold.webp, the avatars use out/avatar.1.webp, and so on). If the line is missing, do not touch the U-01 to U-35 rows; go on with E.
   E. U-36 (the shard counter crystal; prompt in document 40), then SD-01 to SD-14 in number order (prompts in docs/revisi-10-analitik/41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md, section 8; AGENTS.md → "Rows from document 41"). These do not wait for the line above. SD rows are fixed-size: check them shrunk to the display size in their prompt with the longest label on them.
 
 FOR EACH ROW

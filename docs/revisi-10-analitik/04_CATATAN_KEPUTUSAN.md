@@ -6,6 +6,11 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 19 November 2026
 
+**Judul umpan balik Skenario Digital; langkah D tetap untuk sesi Claude** (cabang `skenario-judul-umpan-balik`, dokumen [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) §3) · `asal: pengembang` · `disetujui pengembang` · teks tampilan; aturan penelitian dan data tidak berubah
+
+1. **Judul umpan balik memakai teks mockup:** "Pilihan yang aman!" setelah tindakan aman, selain itu "Ayo pikirkan lagi"; bahasa Inggris "A safe choice!" dan "Let's think again". Dipasang di langkah D lewat berkas bahasa.
+2. **Langkah D (tampilan baru Skenario Digital) dikerjakan sesi Claude Code**, bukan Codex: `AGENTS.md` di akar repo tetap melarang alat lain mengubah kode aplikasi.
+
 **HUD seragam, bagian ketiga: pelat emas, biru tua, hijau, bilah perunggu, dan bingkai jendela dipasang** (cabang `hud-seragam-pelat`, dokumen [40](40_PROMPT_GAMBAR_ANTARMUKA.md) → *Pemasangan* `U-01` sampai `U-05`, [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) langkah C) · `asal: pengembang` · `disetujui pengembang` · gambar dan kode tampilan; aturan penelitian dan data tidak berubah
 
 1. **Kelima gambar diterima pengembang** (sebelumnya berstatus `generated`) dan dipasang bersama dalam satu cabang, seperti dianjurkan dokumen 40. Sebelas berkas lama dihapus: `gold-pill-1` sampai `-4`, `kenal-plate-gold`, `kenal-plate-navy`, `plate-green`, `loading-track`, `map-progress-track`, `modal-frame-4x3`, `modal-frame-16x9`. Slot `ui.result-panel`, `ui.result-button-secondary`, dan `ui.result-button-detail` tetap ada tetapi tidak tampil lagi.

@@ -103,7 +103,7 @@ Panggung 1280 × 720 dp. Angka di bawah adalah titik awal mockup; ukuran akhir d
 | --- | --- | --- |
 | `action` | Baris penanda cerita dan *Kesempatan*; gambar dengan pil *Dengarkan cerita*; situasi | Tab **1 Tindakan** · 2 Alasan; ▶ *Dengarkan petunjuk* dan teks instruksi; "Apa yang akan kamu lakukan?"; pilihan tindakan; *Lanjut ke alasan* (belum aktif sampai siswa memilih) |
 | `reason` | sama | Tab 1 Tindakan · **2 Alasan**; *↳ Pilihanmu · …*; "Yang paling penting kupikirkan di sini adalah …"; pilihan alasan; *Kembali* dan *Kirim jawaban* berdampingan |
-| `feedback` | sama | Judul umpan balik (usulan teks baru di mockup: "Pilihan yang aman!" / "Ayo pikirkan lagi", diputuskan di langkah D); teks umpan balik dari bank; "Kamu masih punya {n} kesempatan …" bila belum tertutup; *Coba lagi* atau *Lanjut ke cerita berikutnya* |
+| `feedback` | sama | Judul umpan balik "Pilihan yang aman!" setelah tindakan aman, selain itu "Ayo pikirkan lagi" (teks mockup, diputuskan pengembang 19 November 2026; bahasa Inggris "A safe choice!" / "Let's think again"); teks umpan balik dari bank; "Kamu masih punya {n} kesempatan …" bila belum tertutup; *Coba lagi* atau *Lanjut ke cerita berikutnya* |
 | `explained` | sama | "Kesempatanmu untuk cerita ini sudah habis …"; "Ini tindakan yang aman"; tindakan aman; penjelasan; *Lanjut ke cerita berikutnya* |
 | selesai | Modal hasil dari kerangka, lalu *Lanjut* | |
 
@@ -284,7 +284,7 @@ Exactly the attached active tab (SD-05), with the numeral "2" embossed in the me
 |---|---|
 | Berkas | baru: `sd-chosen.webp` |
 | Kanvas | 1752 × 162, latar transparan |
-| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/ui-plate-navy.webp` (`U-02`: bidang biru tua), `docs/revisi-10-analitik/gambar/41/mockup-skenario-2-alasan.webp` (jawaban ketiga: yang dipilih) |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `public/assets/ui/ui-plate-navy.webp` (`U-02`: bidang biru tua), `docs/revisi-10-analitik/gambar/41/mockup-skenario-2-alasan.webp` (jawaban ketiga: yang dipilih) |
 
 ```text
 GELITA CARVED GOLD UI — 2026-11-18

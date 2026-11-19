@@ -14,5 +14,5 @@ Rules that hold everywhere:
 
 - Write only inside your folder. Read other files when your instructions point at them.
 - Never change application code, tests, documents, `ai-studio/game-images/` (the game's picture masters; no tool's work folder), or `public/`. Never run the game's commands or anything against a server.
-- Commits use the repository owner's identity and carry no tool or co-author lines. Work on your own branch and open a pull request into `main`.
+- Commits use the repository owner's identity and carry no tool or co-author lines. Work on your own branch and open a pull request into `main`. Never merge a pull request, yours or anyone's: a Claude Code session merges (owner, 19 November 2026).
 - If the task you were given is not in the table above, stop and tell the owner.
