@@ -130,7 +130,7 @@ Never change a row that is `accepted` or `installed`, and never overwrite its fi
 
 - Commit only files in this folder. Message: `ChatGPT images: <codes>`, for example `ChatGPT images: T-K1, T-K2`.
 - Commits carry the repository owner's identity (`CLAUDE.md` → *Identity and attribution*) and no tool or co-author lines.
-- Work on your own branch and open a pull request into `main`. Never push to `main`.
+- Work on your own branch and open a pull request into `main`. Never push to `main`, and never merge a pull request: a Claude Code session merges it (owner, 19 November 2026).
 
 ## Not your job
 
