@@ -91,6 +91,16 @@ The owner's interview of 18 November 2026; prompts in `docs/revisi-10-analitik/4
 
 The rest of the interface art (round buttons and the other plates) keeps its current pictures for now. Its one look is the carved gold of `public/assets/ui/round-*.webp`: a thick gold frame carved in deep relief, a dark stone or navy face, the symbol embossed in the same gold, light from the upper left.
 
+## Rows from document 41 (codes `SD-…`) and `U-36`
+
+The owner approved the Skenario Digital mockup on 19 November 2026; prompts in `docs/revisi-10-analitik/41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md` → section 8, and for `U-36` in document 40. The rules of document 40 above apply (the `GELITA CARVED GOLD UI — 2026-11-18` block word for word, light from the upper left), plus:
+
+- **Fixed size, never stretched.** Unlike `U-01` to `U-05`, every `SD-` picture is shown at exactly one size (named in its prompt). Check: shrink the result to that size and lay the longest text on it (*Lanjut ke cerita berikutnya ›* on `SD-02`, a 59-character line on `SD-04`); the text must stay readable on a calm face.
+- **Make them in row order.** `SD-01` first; later rows attach earlier results from `out/` (for example `SD-05` attaches `out/sd-card.webp`).
+- **Pairs must line up.** `SD-04`/`SD-06` and `SD-05`/`SD-07` are the same card unselected and selected: same canvas, same margin, same outline, so swapping them shows no jump. Selected and unselected must still differ in black and white. No red, no green, no check marks.
+- **`docs/revisi-10-analitik/gambar/41/`** holds screenshots of the approved mockup. Use them only for where a part sits and how large it is; the mockup's parts are stand-ins, not the look to copy.
+- **`U-36` is a separate crystal layer**, not an edit: only the crystal, no socket and no glow outside its outline. Its canvas covers exactly the empty socket of `out/hud-shards-frame.webp` (`U-07`), which waits for it.
+
 ## Files in `inbox/`
 
 The owner sometimes generates pictures in the ChatGPT app and drops the downloads here with their original names. For each file:

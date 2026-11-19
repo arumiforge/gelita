@@ -1,8 +1,24 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 18 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 19 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
+
+## 19 November 2026
+
+**Mockup Skenario Digital disetujui; prompt `SD-01` sampai `SD-10` dan kristal `U-36`** (cabang `igi/relaxed-hawking-3ec774`, dokumen [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) dan [40](40_PROMPT_GAMBAR_ANTARMUKA.md)) · `asal: pengembang` · `disetujui pengembang` · dokumen 41 naik ke `disetujui pengembang`; prompt dan baris `TASKS.md` baru; belum ada kode, bank soal, naskah, atau rekaman yang berubah
+
+Mockup dibangun ulang dari `main` dan dikirim lagi; pengembang menjawab empat pertanyaan:
+1. **Mockup disetujui tanpa catatan** (41 §6 langkah A). Tangkapan keempat keadaan disimpan di `gambar/41/` sebagai catatan tata letak yang disetujui dan sebagai lampiran pesanan gambar.
+2. **✓ tetap angka saja** di kepala layar Skenario Digital; bilah *Cerita 1 dari 4* tetap terpisah dan hanya menandai posisi (41 §7).
+3. **Teks instruksi Skenario Digital tidak dipendekkan:** dua baris muat tanpa panel bergulir, jadi bank soal dan rekaman instruksi tidak berubah (41 §7).
+4. **PR #420 ditutup, tidak digabung:** isinya sudah di `main` kecuali bingkai `U-07` yang lulus; bingkai itu disalin ke `ai-studio/chatgpt-images/out/hud-shards-frame.webp` dan menunggu kristalnya (`TASKS.md`: `blocked: waiting for the crystal U-36`). Kandidat gagal di `inbox/` tidak diambil.
+
+Sesudah jawaban itu (langkah B, keputusan pengembang dari pengukuran):
+5. **Ukuran tetap per gambar `SD-`** dari pengukuran mockup dengan semua teks tindakan dan alasan bank (id dan en): kartu 584 × 54 dan 584 × 68 dp, tombol emas 312 × 58 dan 420 × 58, tombol *Kembali* 236 × 58, rel sakelar 256 × 44, pemutar 600 × 52 (41 §8). Gambar `SD-` dipasang tanpa ditarik; label bahasa Inggris semuanya lebih pendek, jadi satu ukuran cukup untuk kedua bahasa.
+6. **`SD-10` ditambahkan:** bagian aktif sakelar langkah (125 × 38) dipisah dari relnya (`SD-08`) supaya bisa berpindah kiri–kanan tanpa dua gambar rel.
+7. **Kartu dipilih tanpa cahaya yang dilukis:** blok gaya melarang garis cahaya, jadi cahaya lembut di sekitar kartu dipilih tetap dari CSS seperti di mockup; gambarnya hanya tepi emas yang lebih terang dan bidang biru kehijauan yang lebih terang.
+8. **Kristal `U-36`:** lubang bingkai baru diukur ulang (148 × 188 piksel di bingkai 1400 × 288, bukan letak `.lantern-gem` lama), kanvas tepat tiga kali lubang itu, tanpa cahaya yang dilukis; dipasang bersama `U-07` (40 → *Pemasangan*).
 
 ## 18 November 2026
 

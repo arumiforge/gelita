@@ -2,7 +2,7 @@
 
 The single checklist of what is done and what is open. Decisions and their reasons go in `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md` (and, for the research revision, `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`); this file only tracks state. Each session updates only its own rows, and ticks an item only once its PR is merged into `main`. Finished work is summed up in one line per area under *Done*; the details live in the PRs, the git history, and the decision log.
 
-Last updated: 17 November 2026.
+Last updated: 19 November 2026.
 
 ## Research revision: 10 analytics (owner, 23 October 2026)
 
@@ -24,12 +24,10 @@ Documents in `docs/revisi-10-analitik/` (Indonesian, at the owner's request); th
   - [x] `28` (field sessions, part 2), 16 November 2026, same branch: token refusals `withdrawn` and `too_many`, sound check after the token, the field-day panel (today's sessions, printable card, seat plan, attention codes and alert sound, *Kerja lapangan* menu), *Tambah waktu* only on the field session page, simulator refusal; wave D deviations listed in §22 no. 15, approved by the researcher 17 November 2026. §19.3 never run as one list.
   - [x] `13`–`15` and `02` L0, 17 November 2026, same branch: 13 status line, raw-answer shape, test rapid-guess threshold, new section on the built module (`tes.php` is the content source); 14/15 header notes and the *Tampilan* column of the redrawn test pictures (`R-06` to `R-10`); 02 L0 sound-check row. Test items stay `needs_verification`.
   - [x] 02 L0 names the sound-check result in Pemantauan (17 November 2026, branch `r10-panel-hak-data`)
-- [ ] Skenario Digital redesign and uniform HUD (`docs/revisi-10-analitik/41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md`, owner 18 November 2026; PR #422 merged). Next session, in this order:
-  1. Step A: the clickable mockup was sent to the owner on 18 November 2026 and waits for their review. Rebuild it with `python3 tools/mockup/skenario-41/build.py OUT.html` and send it again; fold their notes into 41.
-  2. Step B: write the `SD-01` to `SD-09` prompts (41 §5, sizes from the approved mockup) as 41 §8 and add the rows to `ai-studio/chatgpt-images/TASKS.md`.
-  3. Crystal for the shard counter: write its prompt (spec in `40` → `U-07`, note of 18 November 2026) and its `TASKS.md` row; once made, install it together with the held `U-07` frame.
-  4. Step C: uniform HUD (41 §4) together with the plates, frame and track of document 40 (`U-01` to `U-05`, generated, still in `ai-studio/chatgpt-images/out/`); then steps D and E.
-  5. PR #420 (`chatgpt-images-accept-sw`): everything in it is on `main` except its last two commits (`U-07` frame in `out/` and a failed candidate in `inbox/`); merge it or close it, as the owner says. Its `TASKS.md` row `U-07` says `generated`; set it to `blocked: waiting for the crystal` after that merge.
+- [ ] Skenario Digital redesign and uniform HUD (`docs/revisi-10-analitik/41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md`, owner 18 November 2026; PR #422 merged). Steps A and B and the crystal prompt done 19 November 2026 (branch `igi/relaxed-hawking-3ec774`): the owner approved the mockup without notes (screenshots in `docs/revisi-10-analitik/gambar/41/`), kept ✓ as a plain number and the two-line instruction; `SD-01` to `SD-10` prompts at measured fixed sizes in 41 §8 and `U-36` (shard counter crystal) in 40, all rows `todo` in `ai-studio/chatgpt-images/TASKS.md`; the passing `U-07` frame copied from PR #420 into `ai-studio/chatgpt-images/out/` (`blocked: waiting for the crystal U-36`). Next, in this order:
+  1. Owner: close PR #420 (`chatgpt-images-accept-sw`) without merging and delete its branch (owner's decision of 19 November 2026; nothing in it is missing from `main` once this branch merges).
+  2. ChatGPT: `U-36` and `SD-01` to `SD-10`, in row order; the owner accepts or asks for a redo.
+  3. Step C: uniform HUD (41 §4) together with the plates, frame and track of document 40 (`U-01` to `U-05`, generated, still in `ai-studio/chatgpt-images/out/`), on its own branch; install `U-07` with `U-36` once the crystal is accepted (40 → *Pemasangan*). Then step D (new Skenario Digital screen, may start with stand-in plates at the final sizes of 41 §8) and step E (install the accepted `SD-` pictures).
 - [x] Implementation of the 24 system changes listed in `01`, parts `27`–`35`, in code waves C–F (PR #332–#351, merged by 9 November 2026); leftovers:
   - [x] Owner (wave E, part 6): the three five-stop region maps, the Skenario Digital card and the three bridge backgrounds accepted and installed 16 November 2026 (branch `nty/eloquent-tesla-2ogw1c`); five stops per map measured into `CatalogImporter::MAP_STOPS` (challenge 5 included); the interim bridge backgrounds and their mockup folder are gone
   - [x] Manual checks on a MariaDB dev install (wave E). Server-side parts on MariaDB 10.11 in the cloud container on 9 November 2026 (29 §16.3 no. 1 and 3–5, 30 §19.3 no. 7); the rest on 14 November 2026 with Playwright, branch `r10-cek-manual-gelombang-e` (`04`): 29 §16.3 no. 2, 30 §19.3 no. 1–6 and 8, 32 §15.3 no. 1–6 all passed. Three bugs fixed on that branch: Skenario Digital result card, instruction band and its narration button, `backup.sh --ganti` with an unplugged second-location drive
@@ -218,3 +216,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `igi/relaxed-hawking-3ec774` | Plan 41 steps A–B: mockup approved, `SD-01`–`SD-10` and `U-36` prompts and `TASKS.md` rows, held `U-07` frame from PR #420 into `out/` | Documents and pictures only, no code; `DocumentStatusPageTest`, `GelitaGuideTest`, `ValidatorGuideTest` green; full suite not run (no code changed) |

@@ -1,8 +1,8 @@
 # Rencana Tampilan Skenario Digital dan HUD Seragam
 
-Per 18 November 2026 · `draf pengembang` · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Keputusan di [04](04_CATATAN_KEPUTUSAN.md) (18 November 2026)
+Per 19 November 2026 · `disetujui pengembang` (mockup disetujui 19 November 2026) · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md) · Keputusan di [04](04_CATATAN_KEPUTUSAN.md) (18 November 2026)
 
-Pengembang membuat mockup baru layar tantangan Skenario Digital (langkah 1 *Tindakan*) dan menyertakan tangkapan layar yang sekarang (langkah 2 *Alasan*). Dokumen ini adalah rencana dari diskusi dan wawancara dua putaran hari itu: apa yang berubah di layar Skenario Digital, apa yang berubah di HUD semua layar, gambar yang dipesan, urutan kerja, dan aturan penelitian yang tidak boleh ikut berubah. Belum ada kode yang diubah.
+Pengembang membuat mockup baru layar tantangan Skenario Digital (langkah 1 *Tindakan*) dan menyertakan tangkapan layar yang sekarang (langkah 2 *Alasan*). Dokumen ini adalah rencana dari diskusi dan wawancara dua putaran hari itu: apa yang berubah di layar Skenario Digital, apa yang berubah di HUD semua layar, gambar yang dipesan, urutan kerja, dan aturan penelitian yang tidak boleh ikut berubah. Belum ada kode yang diubah. Pada 19 November 2026 pengembang menyetujui mockup tanpa catatan (langkah A); prompt gambar `SD-` ada di bagian 8.
 
 Rujukan yang tetap berlaku: [32 §6](32_IMPLEMENTASI_SKENARIO_DIGITAL.md#6-engine-skenario-di-peramban) (keadaan layar, umpan balik, waktu), [32 §8.2](32_IMPLEMENTASI_SKENARIO_DIGITAL.md) (narasi instruksi hanya lewat ▶, K10), [33 §7.1](33_IMPLEMENTASI_MODE_PENELITIAN.md) (tanpa jam di mode penelitian), [18](18_MOCKUP_LAYAR_BARU.md) (tanpa merah, tanpa kata "salah"/"gagal"), dan arah tampilan pengembang (11 Oktober dan 15 November 2026: satu tampilan emas berukir, tidak ada bagian yang ditarik ke ukuran yang bukan ukuran gambarnya, ukuran untuk siswa kelas 5 di Chromebook).
 
@@ -75,7 +75,7 @@ Panggung 1280 × 720 dp. Angka di bawah adalah titik awal mockup; ukuran akhir d
 
 ## 5. Gambar yang dipesan (baris `SD-` di `ai-studio/chatgpt-images/TASKS.md`)
 
-Dipesan **sesudah mockup disetujui**, dengan ukuran tampil yang diukur di sana; kanvas dua sampai tiga kali ukuran tampil terbesar, gaya `GELITA CARVED GOLD UI — 2026-11-18` dan papan acuan `reference.27` ([40 → Aturan bersama](40_PROMPT_GAMBAR_ANTARMUKA.md#aturan-bersama)). Prompt siap tempel ditambahkan ke dokumen ini sebagai bagian 8 pada saat itu. Perkiraan daftar:
+Dipesan **sesudah mockup disetujui**, dengan ukuran tampil yang diukur di sana; kanvas dua sampai tiga kali ukuran tampil terbesar, gaya `GELITA CARVED GOLD UI — 2026-11-18` dan papan acuan `reference.27` ([40 → Aturan bersama](40_PROMPT_GAMBAR_ANTARMUKA.md#aturan-bersama)). Prompt siap tempel ada di [bagian 8](#8-prompt-gambar-sd-) (19 November 2026), dengan ukuran akhir dan satu gambar tambahan `SD-10` (bagian aktif sakelar langkah, dipisah dari relnya supaya bisa bergeser). Daftar semula:
 
 | Kode | Bagian | Catatan |
 | --- | --- | --- |
@@ -93,8 +93,8 @@ Tombol yang belum aktif memakai gambar yang sama dengan tampilan diredupkan (CSS
 
 | Langkah | Isi | Selesai bila |
 | --- | --- | --- |
-| A | Mockup HTML keempat keadaan (keputusan 12); dibuat 18 November 2026 dengan cerita `tmg-5-b01` dan cerita terpanjang `wnb-5-a04` (4 tindakan, 5 alasan): semua keadaan muat di 1366 × 768 tanpa panel bergulir. Sumbernya `tools/mockup/skenario-41/` (`python3 tools/mockup/skenario-41/build.py hasil.html`); berkas HTML-nya tidak disimpan di repo | Pengembang menyetujui atau memberi catatan |
-| B | Prompt `SD-` (bagian 8) dan baris `TASKS.md` | Baris berstatus `todo` |
+| A | Mockup HTML keempat keadaan (keputusan 12); dibuat 18 November 2026 dengan cerita `tmg-5-b01` dan cerita terpanjang `wnb-5-a04` (4 tindakan, 5 alasan): semua keadaan muat di 1366 × 768 tanpa panel bergulir. Sumbernya `tools/mockup/skenario-41/` (`python3 tools/mockup/skenario-41/build.py hasil.html`); berkas HTML-nya tidak disimpan di repo, tangkapan keempat keadaan di `gambar/41/` | **Selesai 19 November 2026:** disetujui pengembang tanpa catatan |
+| B | Prompt `SD-` (bagian 8) dan baris `TASKS.md` | **Selesai 19 November 2026:** baris `SD-01` sampai `SD-10` berstatus `todo` |
 | C | HUD seragam (bagian 4), satu cabang, bersama pemasangan pelat emas, biru tua, dan hijau, bingkai jendela, dan bilah perunggu dari [40](40_PROMPT_GAMBAR_ANTARMUKA.md) (`U-01` sampai `U-05`, keputusan pengembang 18 November 2026), karena keduanya menata ulang semua layar | Inventaris sebelum/sesudah, uji per jenis layar, cek `tools/qa/stage-check.mjs` |
 | D | Tampilan baru Skenario Digital di `skenario.php`, `engines/skenario.js`, `stage.css`; teks baru di berkas bahasa (id dan en) | Uji Skenario Digital hijau; keempat keadaan dicek di Chromebook dua ukuran; aturan bagian 2 utuh |
 | E | Pasang gambar `SD-` yang diterima pengembang | Pelat sementara diganti tanpa mengubah tata letak |
@@ -103,6 +103,181 @@ Langkah D boleh mulai dengan pelat sementara sebelum gambar `SD-` datang, asal u
 
 ## 7. Pertanyaan yang masih terbuka
 
-- Apakah ✓ di Skenario Digital tetap berbentuk angka saja (tanpa "/"), atau digabung dengan bilah kemajuan cerita? Diputuskan di mockup.
-- Teks instruksi tantangan Skenario Digital di bank ("Bacalah ceritanya. Pilih apa yang akan kamu lakukan, lalu pilih alasanmu.") panjangnya dua baris di lebar panel kanan; mungkin perlu dipendekkan di bank (`nodes`) agar menjadi satu baris.
-- **`U-07` (bingkai Serpihan Cahaya) ditahan** sampai kristalnya dipesan dan dipasang bersama (40 → `U-07`, catatan 18 November 2026). Bila HUD seragam (langkah C) mengubah ukuran penghitung Serpihan Cahaya, ukuran kristal ikut diukur ulang.
+- ~~Apakah ✓ di Skenario Digital tetap berbentuk angka saja (tanpa "/"), atau digabung dengan bilah kemajuan cerita?~~ **Angka saja**, seperti mockup; bilah *Cerita 1 dari 4* tetap terpisah dan hanya menandai posisi (pengembang, 19 November 2026).
+- ~~Teks instruksi tantangan Skenario Digital di bank perlu dipendekkan agar satu baris?~~ **Tidak**: tetap dua baris, muat tanpa panel bergulir, dan rekaman instruksinya tidak perlu dibuat ulang (pengembang, 19 November 2026).
+- **`U-07` (bingkai Serpihan Cahaya) ditahan** sampai kristalnya (`U-36`, prompt di [40](40_PROMPT_GAMBAR_ANTARMUKA.md) sejak 19 November 2026) dibuat dan keduanya dipasang bersama. Bingkainya sudah di `ai-studio/chatgpt-images/out/hud-shards-frame.webp` (dari PR #420, yang ditutup). Bila HUD seragam (langkah C) mengubah ukuran penghitung Serpihan Cahaya, ukuran kristal tidak berubah: kanvasnya sama persis dengan lubang bingkai, jadi ikut skala bingkai.
+
+## 8. Prompt gambar `SD-`
+
+Ditambahkan 19 November 2026, sesudah mockup disetujui. Ukuran tampil diukur di mockup (panggung 1280 × 720 dp) dengan semua teks tindakan dan alasan dari bank soal, dalam bahasa Indonesia dan Inggris: kartu satu baris 54 dp (87 dari 88 tindakan, semua alasan), kartu dua baris 67 dp (dibulatkan 68), dan setiap label tombol berbahasa Inggris lebih pendek dari label Indonesianya, jadi setiap tombol punya **satu ukuran tetap**. Kanvas tiga kali ukuran tampil. Tangkapan mockup yang disetujui ada di `gambar/41/` (`mockup-skenario-1-tindakan.webp` sampai `-4-tindakan-aman.webp`) dan dilampirkan supaya letak dan besar bagian terlihat.
+
+Semua gambar `SD-` berukuran tetap: dipasang **tanpa ditarik** (`background-size: 100% 100%` pada ukuran tampilnya, bukan `border-image`), jadi hiasan boleh ada di mana pun yang disebut prompt, asal bagian tempat teks tetap tenang. Setiap prompt dimulai dengan blok `GELITA CARVED GOLD UI — 2026-11-18` dari [40 → Aturan bersama](40_PROMPT_GAMBAR_ANTARMUKA.md#aturan-bersama), kata per kata. Urutan: `SD-01` lebih dulu; `SD-02`, `SD-03` dari `SD-01`; `SD-04` sendiri; `SD-05` sampai `SD-07` dan `SD-09` dari `SD-04`; `SD-08` dari `SD-04`; `SD-10` dari `SD-01` dan `SD-08`.
+
+| Kode | Berkas di `public/assets/ui/` | Tampil (dp) | Kanvas | Dipakai untuk |
+| --- | --- | --- | --- | --- |
+| `SD-01` | `sd-button-gold.webp` | 312 × 58 | 936 × 174 | *Lanjut ke alasan*, *Kirim jawaban*, *Coba lagi* |
+| `SD-02` | `sd-button-gold-long.webp` | 420 × 58 | 1260 × 174 | *Lanjut ke cerita berikutnya* |
+| `SD-03` | `sd-button-navy.webp` | 236 × 58 | 708 × 174 | *Kembali* di langkah 2 |
+| `SD-04` | `sd-card.webp` | 584 × 54 | 1752 × 162 | Kartu tindakan/alasan, satu baris |
+| `SD-05` | `sd-card-2.webp` | 584 × 68 | 1752 × 204 | Kartu dua baris |
+| `SD-06` | `sd-card-on.webp` | 584 × 54 | 1752 × 162 | Kartu satu baris yang dipilih |
+| `SD-07` | `sd-card-on-2.webp` | 584 × 68 | 1752 × 204 | Kartu dua baris yang dipilih |
+| `SD-08` | `sd-step-rail.webp` | 256 × 44 | 768 × 132 | Rel sakelar *1 Tindakan · 2 Alasan* |
+| `SD-09` | `sd-player.webp` | 600 × 52 | 1800 × 156 | Kapsul pemutar *Dengarkan cerita* |
+| `SD-10` | `sd-step-on.webp` | 125 × 38 | 375 × 114 | Bagian aktif sakelar, di atas rel (kiri atau kanan) |
+
+Pemasangan (langkah E): berkas dipindahkan dari `ai-studio/chatgpt-images/out/` ke `public/assets/ui/` dan dipanggil lewat `asset_url_versioned('ui/…')`; tombol yang belum aktif memakai gambar yang sama dengan `filter` CSS, dan cahaya lembut di sekitar kartu yang dipilih tetap dari CSS (`box-shadow`), seperti di mockup. Teks, ○/●, gelombang suara, ▶ (`round-play`), dan durasi tetap digambar permainan.
+
+### SD-01 · Tombol emas Skenario Digital
+
+| | |
+|---|---|
+| Berkas | baru: `sd-button-gold.webp` |
+| Kanvas | 936 × 174, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/ui-plate-gold.webp` (`U-01`: emas dan ujung yang sama), `docs/revisi-10-analitik/gambar/41/mockup-skenario-2-alasan.webp` (letak dan besar tombol, kanan bawah) |
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Asset: sd-button-gold (SD-01 · main gold button, fixed size)
+A short horizontal button plate with a warm polished GOLD face and a thin raised carved gold border, in the same gold, bevel and end caps as the attached gold plate (U-01). Dark brown text such as "Kirim jawaban ›" is written on it later by the game, centred.
+Canvas exactly 936 × 174 pixels, transparent outside the plate; the plate fills the canvas with an even 6-pixel margin. It is shown at exactly 312 × 58, never stretched, so draw it at exactly this shape.
+Each end carries one compact carved end cap (a rounded pointed cap with one scroll curl and one small diamond stud), each no wider than 120 pixels. Between the end caps the face is calm and even, with no ornament, gem or strong reflection, so that text stays readable. WebP, named sd-button-gold.webp.
+```
+
+### SD-02 · Tombol emas panjang
+
+| | |
+|---|---|
+| Berkas | baru: `sd-button-gold-long.webp` |
+| Kanvas | 1260 × 174, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-button-gold.webp` (`SD-01`), `docs/revisi-10-analitik/gambar/41/mockup-skenario-4-tindakan-aman.webp` (letak dan besar tombol) |
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Asset: sd-button-gold-long (SD-02 · long gold button, fixed size)
+Exactly the same button as the attached gold button (SD-01): the same gold face, border, bevel and end caps at the same size. Only the calm face between the end caps is longer, for a longer label ("Lanjut ke cerita berikutnya ›") written later by the game.
+Canvas exactly 1260 × 174 pixels, transparent outside the plate; even 6-pixel margin. It is shown at exactly 420 × 58, never stretched, so draw it at exactly this shape. Each end cap no wider than 120 pixels; the face between them calm and even, no ornament, gem or strong reflection. WebP, named sd-button-gold-long.webp.
+```
+
+### SD-03 · Tombol biru tua *Kembali*
+
+| | |
+|---|---|
+| Berkas | baru: `sd-button-navy.webp` |
+| Kanvas | 708 × 174, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-button-gold.webp` (`SD-01`), `ai-studio/chatgpt-images/out/ui-plate-navy.webp` (`U-02`: bidang biru tua), `docs/revisi-10-analitik/gambar/41/mockup-skenario-2-alasan.webp` (tombol kiri bawah) |
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Asset: sd-button-navy (SD-03 · navy back button, fixed size)
+The same plate shape, carved gold border and end caps as the attached gold button (SD-01), but with a dark NAVY stone face with a very faint even cloud grain, like the attached navy plate (U-02). Light cream text ("‹ Kembali") is written on it later by the game, centred. It stands next to the gold button and must look like its quieter partner.
+Canvas exactly 708 × 174 pixels, transparent outside the plate; even 6-pixel margin. It is shown at exactly 236 × 58, never stretched, so draw it at exactly this shape. Each end cap no wider than 120 pixels; the face between them calm and even. WebP, named sd-button-navy.webp.
+```
+
+### SD-04 · Kartu pilihan, satu baris
+
+| | |
+|---|---|
+| Berkas | baru: `sd-card.webp` |
+| Kanvas | 1752 × 162, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/ui-plate-navy.webp` (`U-02`: bidang biru tua), `docs/revisi-10-analitik/gambar/41/mockup-skenario-1-tindakan.webp` (tiga kartu di kanan) |
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Asset: sd-card (SD-04 · answer card, one line, fixed size)
+A wide, low answer card: a dark NAVY stone face with a very faint even cloud grain (like the attached navy plate) inside a THIN raised gold border with softly rounded corners. Up to five of these cards stand stacked in a column, so the card is quiet: the border is a slim gold bead line, not a heavy frame, and the only ornaments are four tiny carved gold corner accents, each inside the 60 × 60 pixels of its corner.
+The game later draws a small round gold choice mark near the left end (centred about 90 pixels from the left edge) and one line of cream text to its right, so the whole face stays plain and evenly dark: no ornament, gem, highlight spot or gradient along the length.
+Canvas exactly 1752 × 162 pixels, transparent outside the card; the card fills the canvas with an even 4-pixel margin. It is shown at exactly 584 × 54, never stretched, so draw it at exactly this shape. WebP, named sd-card.webp.
+```
+
+### SD-05 · Kartu pilihan, dua baris
+
+| | |
+|---|---|
+| Berkas | baru: `sd-card-2.webp` |
+| Kanvas | 1752 × 204, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-card.webp` (`SD-04`) |
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Asset: sd-card-2 (SD-05 · answer card, two lines, fixed size)
+Exactly the same card as the attached one-line answer card (SD-04): the same navy face, the same thin gold bead border, the same rounded corners and the same four tiny corner accents at the same size. Only the card is taller, for two lines of text.
+Canvas exactly 1752 × 204 pixels, transparent outside the card; even 4-pixel margin. It is shown at exactly 584 × 68, never stretched, so draw it at exactly this shape. The face stays plain and evenly dark. WebP, named sd-card-2.webp.
+```
+
+### SD-06 · Kartu pilihan yang dipilih, satu baris
+
+| | |
+|---|---|
+| Berkas | baru: `sd-card-on.webp` |
+| Kanvas | 1752 × 162, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-card.webp` (`SD-04`), `docs/revisi-10-analitik/gambar/41/mockup-skenario-2-alasan.webp` (kartu ketiga: yang dipilih) |
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Asset: sd-card-on (SD-06 · answer card, selected, one line, fixed size)
+The attached one-line answer card (SD-04) in its SELECTED state: exactly the same shape, size, corners and corner accents, but the gold border is a little thicker and brighter (#F0DFB8 highlights), and the face is a slightly lighter deep blue-teal (about #142E3A) so the chosen card stands out from the others even in black and white.
+The game draws the filled choice mark and the text, so the face stays plain: no ornament, symbol, check mark or highlight spot. No red and no green, and no glow outside the border (the game adds its own soft light). Canvas exactly 1752 × 162 pixels, transparent outside the card, with the same even 4-pixel margin as SD-04 so both line up exactly when swapped. Shown at exactly 584 × 54. WebP, named sd-card-on.webp.
+```
+
+### SD-07 · Kartu pilihan yang dipilih, dua baris
+
+| | |
+|---|---|
+| Berkas | baru: `sd-card-on-2.webp` |
+| Kanvas | 1752 × 204, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-card-on.webp` (`SD-06`), `ai-studio/chatgpt-images/out/sd-card-2.webp` (`SD-05`) |
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Asset: sd-card-on-2 (SD-07 · answer card, selected, two lines, fixed size)
+The attached two-line answer card (SD-05) in the same SELECTED state as the attached selected one-line card (SD-06): the same brighter, slightly thicker gold border and the same lighter deep blue-teal face. Exactly the shape and size of SD-05.
+Canvas exactly 1752 × 204 pixels, transparent outside the card, no glow outside the border; even 4-pixel margin as SD-05. Shown at exactly 584 × 68. Plain face, no symbol, no red, no green. WebP, named sd-card-on-2.webp.
+```
+
+### SD-08 · Rel sakelar langkah
+
+| | |
+|---|---|
+| Berkas | baru: `sd-step-rail.webp` |
+| Kanvas | 768 × 132, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-card.webp` (`SD-04`: bidang dan tepi yang sama), `docs/revisi-10-analitik/gambar/41/mockup-skenario-1-tindakan.webp` (sakelar di atas panel kanan) |
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Asset: sd-step-rail (SD-08 · two-step switch rail, fixed size)
+A small pill-shaped rail for a two-step switch: a dark NAVY stone face with fully rounded ends inside the same thin gold bead border as the attached answer card. The game lays a separate gold part over one half of the rail and writes "1 Tindakan" on the left half and "2 Alasan" on the right half, so the whole face is plain and evenly dark, with no divider, ornament or highlight spot.
+Canvas exactly 768 × 132 pixels, transparent outside the rail; the rail fills the canvas with an even 4-pixel margin. It is shown at exactly 256 × 44, never stretched. WebP, named sd-step-rail.webp.
+```
+
+### SD-09 · Kapsul pemutar *Dengarkan cerita*
+
+| | |
+|---|---|
+| Berkas | baru: `sd-player.webp` |
+| Kanvas | 1800 × 156, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-card.webp` (`SD-04`), `public/assets/ui/round-play.webp` (tombol yang duduk di ujung kirinya), `docs/revisi-10-analitik/gambar/41/mockup-skenario-1-tindakan.webp` (pemutar di bawah gambar) |
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Asset: sd-player (SD-09 · "listen to the story" player capsule, fixed size)
+A long capsule with fully rounded ends: a dark NAVY stone face inside the same thin gold bead border as the attached answer card (SD-04). The game places the attached round gold play button over the left end (a circle about 126 pixels across, its centre about 81 pixels from the left edge and on the middle line), then writes a short label, draws a moving gold sound wave in the middle, and writes the duration at the right end.
+So the face is completely plain and evenly dark from end to end: no ornament, no wave, no button, no divider and no highlight spot; the left end is a simple rounded end the button covers. Canvas exactly 1800 × 156 pixels, transparent outside the capsule; even 4-pixel margin. It is shown at exactly 600 × 52, never stretched. WebP, named sd-player.webp.
+```
+
+### SD-10 · Bagian aktif sakelar langkah
+
+| | |
+|---|---|
+| Berkas | baru: `sd-step-on.webp` |
+| Kanvas | 375 × 114, latar transparan |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/sd-button-gold.webp` (`SD-01`: emasnya), `ai-studio/chatgpt-images/out/sd-step-rail.webp` (`SD-08`: rel tempat bagian ini duduk) |
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Asset: sd-step-on (SD-10 · active half of the two-step switch, fixed size)
+A small pill with fully rounded ends and a warm polished GOLD face with one soft even bevel, the same gold as the attached gold button (SD-01), with a slim raised gold rim. It sits inside one half of the attached navy rail (SD-08) to show which step is active; dark brown text ("1 Tindakan" or "2 Alasan") is written on it later by the game, so the face is calm: no end caps, no ornament, no gem, no strong reflection. It slides between the left and the right half, so it must look right on either side: light from the upper left, but no lighting that only fits one side.
+Canvas exactly 375 × 114 pixels, transparent outside the pill; even 4-pixel margin. It is shown at exactly 125 × 38, never stretched. WebP, named sd-step-on.webp.
+```
+
+**Daftar periksa hasil `SD-`.** Satu keluarga dengan `reference.27` dan `U-01`/`U-02`; ukuran kanvas tepat; tanpa tulisan, angka, centang, atau simbol; bidang tempat teks tenang (perkecil ke ukuran tampil dan taruh teks terpanjang di atasnya: *Lanjut ke cerita berikutnya ›*, tindakan 59 karakter); kartu dan kartu dipilih tetap bisa dibedakan dalam hitam-putih; tanpa merah dan hijau; `SD-04`/`SD-06` dan `SD-05`/`SD-07` berimpit tepat bila ditukar.
