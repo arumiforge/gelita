@@ -23,6 +23,8 @@ $role    = StaffAccess::label(session('staff_role'));
 $name    = (string) (session('staff_name') ?? '');
 $initial = mb_strtoupper(mb_substr($name !== '' ? $name : 'A', 0, 1));
 $search  = lang(staff_can('participants.accounts') ? 'Admin.quickSearch' : 'Admin.quickSearchCode');
+// Research mode on or off, on every panel page (owner, 19 November 2026)
+$researchMode = $isStaff ? \App\Libraries\ResearchModeNotice::build($activeStudy ?? model(\App\Models\ResearchStudyModel::class)->activeStudy()) : null;
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -73,6 +75,7 @@ $search  = lang(staff_can('participants.accounts') ? 'Admin.quickSearch' : 'Admi
               <i class="dot is-ok" aria-hidden="true"></i><?= esc($activeStudy['code']) ?>
             </span>
           <?php endif ?>
+          <span class="topbar-mode <?= $researchMode['on'] ? 'is-on' : 'is-off' ?>"><i class="dot <?= $researchMode['on'] ? 'is-warn' : '' ?>" aria-hidden="true"></i><?= esc(lang($researchMode['on'] ? 'Admin.researchModePillOn' : 'Admin.researchModePillOff')) ?></span>
 
           <details class="account-menu">
             <summary aria-label="<?= esc(lang('Admin.accountMenu'), 'attr') ?>">
@@ -92,6 +95,9 @@ $search  = lang(staff_can('participants.accounts') ? 'Admin.quickSearch' : 'Admi
       </header>
 
       <main class="admin-main" id="admin-main" tabindex="-1">
+        <?php if ($isStaff): ?>
+          <?= view('admin/partials/research-mode', ['researchMode' => $researchMode]) ?>
+        <?php endif ?>
         <?= $this->renderSection('content') ?>
       </main>
     </div>
