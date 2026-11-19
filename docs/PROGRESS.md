@@ -219,4 +219,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `hud-seragam-tombol` | Uniform HUD, step C part 2 (one round-button and logo size, one corner and order) | Done, PR open; remove this row when it merges |
