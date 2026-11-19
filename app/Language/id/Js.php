@@ -168,12 +168,9 @@ return [
     'inspectPersistNo'     => 'Peramban belum mengizinkan penyimpanan permanen. Paket tetap tersimpan, tetapi bisa terhapus bila ruang penyimpanan penuh.',
 
     // Part 6 (32 §13): Skenario Digital
-    'scenarioListen'         => 'Dengarkan',
+    'scenarioListen'         => 'Dengarkan cerita',
     'scenarioListening'      => 'Sedang dibacakan…',
-    'scenarioStepAction'     => '1 Tindakan',
-    'scenarioStepReason'     => '2 Alasan',
     'scenarioToReason'       => 'Lanjut ke alasan',
-    'scenarioYourChoice'     => 'Pilihanmu: {0}',
     'scenarioReasonQuestion' => 'Yang paling penting kupikirkan di sini adalah …',
     'scenarioSend'           => 'Kirim jawaban',
     'scenarioTriesLeft'      => 'Kamu masih punya {0} kesempatan. Pilih lagi tindakan dan alasanmu.',
@@ -185,5 +182,12 @@ return [
     'scenarioBack'           => 'Kembali',
     'scenarioDoneTitle'      => 'Semua cerita selesai!',
     'scenarioDoneText'       => 'Kamu sudah memikirkan keempat cerita dengan baik.',
+    // Skenario Digital screen of 41 (step D, 19 November 2026): tab words (the number is in the picture),
+    // feedback headings (owner, 19 November 2026), the label before the chosen action
+    'scenarioTabAction'       => 'Tindakan',
+    'scenarioTabReason'       => 'Alasan',
+    'scenarioSafeTitle'       => 'Pilihan yang aman!',
+    'scenarioThinkTitle'      => 'Ayo pikirkan lagi',
+    'scenarioYourChoiceLabel' => 'Pilihanmu',
     'instructionListen'      => 'Dengarkan instruksi',
 ];

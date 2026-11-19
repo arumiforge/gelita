@@ -167,12 +167,9 @@ return [
     'inspectPersistNo'     => 'The browser has not allowed permanent storage yet. The package stays saved, but it may be removed when storage runs full.',
 
     // Part 6 (32 §13): Skenario Digital
-    'scenarioListen'         => 'Listen',
+    'scenarioListen'         => 'Listen to the story',
     'scenarioListening'      => 'Reading aloud…',
-    'scenarioStepAction'     => '1 Action',
-    'scenarioStepReason'     => '2 Reason',
     'scenarioToReason'       => 'Go to reason',
-    'scenarioYourChoice'     => 'Your choice: {0}',
     'scenarioReasonQuestion' => 'The most important thing I\'m thinking about here is …',
     'scenarioSend'           => 'Send answer',
     'scenarioTriesLeft'      => 'You still have {0} tries. Choose your action and reason again.',
@@ -184,5 +181,12 @@ return [
     'scenarioBack'           => 'Back',
     'scenarioDoneTitle'      => 'All the stories are done!',
     'scenarioDoneText'       => 'You thought through all four stories well.',
+    // Skenario Digital screen of 41 (step D, 19 November 2026): tab words (the number is in the picture),
+    // feedback headings (owner, 19 November 2026), the label before the chosen action
+    'scenarioTabAction'       => 'Action',
+    'scenarioTabReason'       => 'Reason',
+    'scenarioSafeTitle'       => 'A safe choice!',
+    'scenarioThinkTitle'      => "Let's think again",
+    'scenarioYourChoiceLabel' => 'Your choice',
     'instructionListen'      => 'Listen to the instructions',
 ];

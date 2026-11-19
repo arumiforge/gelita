@@ -8758,5 +8758,50 @@
   "desc": "Induk favicon (U-35, dokumen 40): sumber app.favicon dan public/favicon.ico",
   "prompt": "GELITA CARVED GOLD UI — 2026-11-18\nAsset: app-favicon-master (U-35 · browser tab icon)\nA very simplified version of the attached app icon for a browser tab, where it is shown at 16 and 32 pixels: the same lantern silhouette as a bold flat-shaded gold shape (domed top, hanging ring, body, warm flame window) on the same deep-navy square, no ring, no fine carving, no sparkles. Thick shapes only; the lantern fills about 78% of the height.\nCanvas exactly 256 × 256, navy to every edge. WebP, named app-favicon-master.webp.",
   "negative": ""
+ },
+ {
+  "id": "712",
+  "key": "bg.temanggung.skenario",
+  "title": "Latar Skenario Digital Temanggung",
+  "cat": "Background",
+  "region": "Temanggung",
+  "size": "1920 × 1080",
+  "ratio": "16:9",
+  "format": "WebP",
+  "alpha": false,
+  "file": "assets/latar/bg.temanggung.skenario.webp",
+  "desc": "Latar layar tantangan kelima Temanggung (SD-12, dokumen 41 bagian 8): langit terang di atas untuk kepala layar, bagian tengah dan bawah tenang dan agak gelap untuk teks tanpa kotak.",
+  "prompt": "GELITA ACTIVE VISUAL DIRECTION — 2026-10-11\nAsset: bg.temanggung.skenario  (SD-12 · Skenario Digital screen, Temanggung)\nPremium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.\nCharacters: no people at all. The attached photo is a factual reference for the mountains only; do not copy it.\n\nSUBJECT AND COMPOSITION\nWide 16:9 background behind a quiz screen that has NO boxes: a title bar and round buttons in the top 12%, a story picture and story text on the left half, a question and answer rows on the right half, with cream and gold text standing directly on this background.\nTop 12%: bright, clear morning sky, soft and even, so the title bar reads as bright and fresh.\nHorizon band between 12% and 30% of the height: Mount Sumbing (broader, left) and Mount Sindoro (a clean cone, right) side by side, smooth slopes, no smoke.\nEverything below 30% of the height: calm terraced tobacco and coffee fields and a few far tiled roofs in gentle shade, as if under a soft passing cloud, low in contrast and low in detail, getting gently darker towards the bottom, so that cream text and gold lines on top read clearly without a box. No bright spots, no strong edges, no small busy detail below 30%. The left and right thirds below 30% are the calmest.\nAccuracy — No people, animals, signs, screens, phones, paths with signposts, temples, mist, light rays or water reflections.\n\nDELIVERY\nTarget canvas 1920 × 1080 pixels; aspect 16:9. Opaque, full-bleed. Deliver WebP, named bg.temanggung.skenario.webp.\n\nCONSTRAINTS\nNo watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache or paper grain.",
+  "negative": ""
+ },
+ {
+  "id": "713",
+  "key": "bg.magelang.skenario",
+  "title": "Latar Skenario Digital Magelang",
+  "cat": "Background",
+  "region": "Magelang",
+  "size": "1920 × 1080",
+  "ratio": "16:9",
+  "format": "WebP",
+  "alpha": false,
+  "file": "assets/latar/bg.magelang.skenario.webp",
+  "desc": "Latar layar tantangan kelima Magelang (SD-13, dokumen 41 bagian 8): langit terang di atas untuk kepala layar, bagian tengah dan bawah tenang dan agak gelap untuk teks tanpa kotak.",
+  "prompt": "GELITA ACTIVE VISUAL DIRECTION — 2026-10-11\nAsset: bg.magelang.skenario  (SD-13 · Skenario Digital screen, Magelang)\nPremium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.\nCharacters: no people at all. The attached photo is a factual reference for the plain and the mountains only; do not copy it and do not draw its temple.\n\nSUBJECT AND COMPOSITION\nWide 16:9 background behind a quiz screen that has NO boxes: a title bar and round buttons in the top 12%, a story picture and story text on the left half, a question and answer rows on the right half, with cream and gold text standing directly on this background.\nTop 12%: bright, clear morning sky, soft and even.\nHorizon band between 12% and 30% of the height: the Kedu plain seen from the west, with Mount Merbabu (broad, several low summits) and Mount Merapi (a steeper cone) far away on the horizon and the soft line of the Menoreh hills; smooth slopes, no smoke, no eruption.\nEverything below 30% of the height: calm rice fields and palm groves of the plain in gentle shade, as if under a soft passing cloud, low in contrast and low in detail, getting gently darker towards the bottom, so that cream text and gold lines on top read clearly without a box. No bright spots, no strong edges, no small busy detail below 30%. The left and right thirds below 30% are the calmest.\nAccuracy — No temples, stupas or reliefs, no people, animals, signs, screens, phones, mist, light rays or water reflections.\n\nDELIVERY\nTarget canvas 1920 × 1080 pixels; aspect 16:9. Opaque, full-bleed. Deliver WebP, named bg.magelang.skenario.webp.\n\nCONSTRAINTS\nNo watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache or paper grain.",
+  "negative": ""
+ },
+ {
+  "id": "714",
+  "key": "bg.wonosobo.skenario",
+  "title": "Latar Skenario Digital Wonosobo",
+  "cat": "Background",
+  "region": "Wonosobo",
+  "size": "1920 × 1080",
+  "ratio": "16:9",
+  "format": "WebP",
+  "alpha": false,
+  "file": "assets/latar/bg.wonosobo.skenario.webp",
+  "desc": "Latar layar tantangan kelima Wonosobo (SD-14, dokumen 41 bagian 8): langit terang di atas untuk kepala layar, bagian tengah dan bawah tenang dan agak gelap untuk teks tanpa kotak.",
+  "prompt": "GELITA ACTIVE VISUAL DIRECTION — 2026-10-11\nAsset: bg.wonosobo.skenario  (SD-14 · Skenario Digital screen, Wonosobo)\nPremium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.\nCharacters: no people at all. The attached photo is a factual reference for the plateau only; do not copy it.\n\nSUBJECT AND COMPOSITION\nWide 16:9 background behind a quiz screen that has NO boxes: a title bar and round buttons in the top 12%, a story picture and story text on the left half, a question and answer rows on the right half, with cream and gold text standing directly on this background.\nTop 12%: bright, clear morning sky, soft and even.\nHorizon band between 12% and 30% of the height: the green ridges of the Dieng plateau around a small lake far away, smooth rounded hills.\nEverything below 30% of the height: calm, steep terraced vegetable fields of the plateau in gentle shade, as if under a soft passing cloud, low in contrast and low in detail, getting gently darker towards the bottom, so that cream text and gold lines on top read clearly without a box. No bright spots, no strong edges, no small busy detail below 30%. The left and right thirds below 30% are the calmest.\nAccuracy — No steam, smoke or craters, no temples, no people, animals, signs, screens, phones, mist, light rays or water reflections in the lower part.\n\nDELIVERY\nTarget canvas 1920 × 1080 pixels; aspect 16:9. Opaque, full-bleed. Deliver WebP, named bg.wonosobo.skenario.webp.\n\nCONSTRAINTS\nNo watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache or paper grain.",
+  "negative": ""
  }
 ]

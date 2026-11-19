@@ -223,6 +223,19 @@ async function operate(page, screen, engine) {
     const after = await page.locator('.piece[aria-pressed=true]').count();
     if (pressed === 'true' && second && second.stop !== first.stop && after === 0) pass('puzzle: Enter selects, arrow moves, Enter swaps');
     else fail(screen, `puzzle: keyboard swap failed (pressed=${pressed}, moved=${second?.stop !== first?.stop}, still selected=${after})`);
+  } else if (engine === 'skenario') {
+    // One radio group per step; Space picks, arrows move the pick, and the step's button wakes up
+    await focus('.scenario-option input[type=radio]');
+    await page.keyboard.press('Space');
+    await page.keyboard.press('ArrowDown');
+    await page.waitForTimeout(200);
+    const state = await page.evaluate(() => ({
+      checked: document.querySelectorAll('.scenario-option input:checked').length,
+      second: document.querySelectorAll('.scenario-option input')[1]?.checked ?? false,
+      go: !document.getElementById('btn-scenario-go')?.disabled,
+    }));
+    if (state.checked === 1 && state.second && state.go) pass('skenario: Space picks an action, ArrowDown moves the pick, Lanjut ke alasan is enabled');
+    else fail(screen, `skenario: keyboard pick failed (${JSON.stringify(state)})`);
   } else if (engine === 'cari') {
     const live = await page.evaluate(() => {
       const clue = document.getElementById('clue-text');
@@ -242,8 +255,8 @@ async function operate(page, screen, engine) {
 
 /** Taps through a narrated screen (intro, region dialog) until the server moves on. */
 async function playThrough(page, route) {
-  await page.goto(BASE + route);
-  for (let i = 0; i < 40 && /\/(intro|dialog)/.test(page.url()); i++) {
+  await page.goto(BASE + route).catch(() => {}); // a redirect can abort the first load
+  for (let i = 0; i < 40 && /\/(intro|dialog|penghubung)/.test(page.url()); i++) {
     await page.click('.narrator-tap-btn', { timeout: 2000 }).catch(() => {});
     await page.waitForTimeout(400);
   }
@@ -258,8 +271,10 @@ await playThrough(page, 'intro');
 for (const region of REGIONS) {
   // The first visit to a region opens its story dialog; play it through so the challenges open.
   await playThrough(page, `dialog/${region}`);
-  for (let n = 1; n <= 4; n++) {
+  for (let n = 1; n <= 5; n++) {
     const screen = `tantangan-${region}-${n}`;
+    // Challenge 5 (Skenario Digital) opens after its bridge story, once per student (part 6)
+    if (n === 5) await playThrough(page, `penghubung/${region}`);
     await page.goto(`${BASE}tantangan/${region}/${n}`);
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1200);
@@ -283,6 +298,7 @@ for (const region of REGIONS) {
       puzzle: [['piece', '.piece']],
       cari: [['object', '.object']],
       boleh: [],
+      skenario: [],
     }[engine] || [];
     for (const [cls, selector] of expect) {
       const total = await visibleCount(page, selector);
@@ -291,6 +307,14 @@ for (const region of REGIONS) {
       const ok = engine === 'puzzle' ? got >= 1 : got === total;
       if (ok) pass(`Tab reaches ${selector}: ${got}/${total}`);
       else fail(screen, `Tab reaches only ${got} of ${total} ${selector}`);
+    }
+    if (engine === 'skenario') {
+      if (inStage.some((s) => s.type === 'radio')) pass('Tab reaches the action radio group');
+      else fail(screen, 'Tab does not reach the action radios');
+      const players = await visibleCount(page, '.sd-player [data-action="play"]');
+      const playStops = inStage.filter((s) => s.classes.includes('audio-btn')).length;
+      if (playStops >= players) pass(`Tab reaches ${players} ▶ (story, instruction)`);
+      else fail(screen, `Tab reaches ${playStops} of ${players} ▶ buttons`);
     }
     if (engine === 'boleh') {
       const groups = await page.locator('.verdict-card:visible').count();

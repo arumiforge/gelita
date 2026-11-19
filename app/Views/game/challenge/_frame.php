@@ -135,7 +135,8 @@ $showWrong = $engine !== 'skenario';
 
     <div class="arena">
       <aside class="challenge-aside stage-box stage-scroll">
-        <?php if ($node->text('instruction', $locale) !== ''): ?>
+        <?php // Skenario Digital draws its instruction in the right side (skenario.php, 41 decision 33) ?>
+        <?php if ($engine !== 'skenario' && $node->text('instruction', $locale) !== ''): ?>
           <?php // The round "i" button of the owner's sheet beside the text (owner, 22 October 2026) ?>
           <?php // Part 7 (33 §8.3, M-06): Isi Rumpang and Benar atau Salah show it as a card above the passage ?>
           <p class="instruction<?= in_array($engine, ['rumpang', 'boleh'], true) ? ' is-card' : '' ?>"><?= round_icon('info', 'instruction-art') ?: '<span class="instruction-mark" aria-hidden="true">i</span>' ?> <span class="instruction-text"><?= esc($node->text('instruction', $locale)) ?></span></p>
