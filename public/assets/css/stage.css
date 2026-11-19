@@ -522,26 +522,6 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 .is-compact .hud-menu-sheet { top: 4rem; right: .5rem; }
 /* The shard plate fits the strip: 256 × 53 dp, centred, 2 dp clear of top and bottom */
 .is-compact .hud-shards { --plate-w: 16rem; top: .125rem; left: 32rem; }
-/* Section hudLayout `region-centre` (the challenge screens; owner 21 October 2026): the logo
-   stays on the left, the region name sits alone in the middle of the strip where the shard
-   plate was, without the divider rule */
-.hud-region-centre {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  display: grid;
-  place-items: center;
-  max-width: 34rem;
-  height: var(--hud-h);
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 1.5rem;
-  letter-spacing: .02em;
-  translate: -50% 0;
-}
-.hud-region-centre::before { display: none; }
 /* Section hudBack: the controls and Back share one row in the top-right corner (.hud-end).
    The controls keep their own box, so the popover sheets above stay under their buttons. */
 .hud-end { position: absolute; top: 0; right: .75rem; display: flex; align-items: center; gap: .25rem; height: var(--hud-h); }
@@ -938,56 +918,62 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 .mission-card { --x: 260; --y: 112; --w: 760; --h: 536; }
 
 /* ---------- Tantangan `/tantangan/{code}/{n}` (Dok 3 §5) ----------
-   Kepala 32, 64, 1216 × 56; arena 32, 140, 1216 × 564 (sampai y 704). Since
-   21 October 2026 the arena starts 12 dp lower (was 128), under the carved
-   frame that moved away from the header (owner: too close). */
-.challenge-head  { --x: 32; --y: 64;  --w: 1216; --h: 56; }
+   Uniform HUD (41 §4, 19 November 2026): no HUD band on challenge pages; the
+   header is the one top row, 32, 16, 1216 × 72, and the arena starts at y 104
+   (was a 56 dp HUD, the header at y 64 and the arena at y 140). Each engine's
+   panels that started at the arena top move up 36 dp and grow by 36 dp; the
+   action bar stays at y 648. */
+.challenge-head  { --x: 32; --y: 16;  --w: 1216; --h: 72; }
 .arena-alert,
-.arena-empty     { --x: 32; --y: 140; --w: 1216; --h: 120; }
+.arena-empty     { --x: 32; --y: 104; --w: 1216; --h: 120; }
 
 /* Susun Gambar: panel kiri (instruksi + tips), papan 504², bilah aksi, keterangan kanan.
    The action bar of the three batch engines is one centred bar across the arena
    (owner, 20 October 2026): 32, 648, 1216 × 56. */
-.challenge-puzzle .challenge-aside  { --x: 32;  --y: 140; --w: 332; --h: 500; }
-.challenge-puzzle .puzzle-board     { --x: 394; --y: 148; --w: 492; --h: 492; }
+/* The board grows to 528² and stays centred (x 376–904), clear of both side panels */
+.challenge-puzzle .challenge-aside  { --x: 32;  --y: 104; --w: 332; --h: 536; }
+.challenge-puzzle .puzzle-board     { --x: 376; --y: 108; --w: 528; --h: 528; }
 .challenge-puzzle .arena-actions    { --x: 32;  --y: 648; --w: 1216; --h: 56; }
-.challenge-puzzle .puzzle-caption   { --x: 916; --y: 140; --w: 332; --h: 500; }
+.challenge-puzzle .puzzle-caption   { --x: 916; --y: 104; --w: 332; --h: 536; }
 
 /* Isi Rumpang: instruksi (baris pertama arena), bacaan gulir, bank kata, bilah aksi */
 /* The instruction band is 66 dp since 15 November 2026: the instruction card at the reading size
    (33 M-06) takes two lines, which the 52 dp band of 22 October 2026 cut (found in the manual
    check of 32 §15.3). The band starts 4 dp higher and the reading gives up 10 dp. */
-.challenge-rumpang .challenge-aside { --x: 96;  --y: 128; --w: 1088; --h: 66; }
+/* Since 19 November 2026 (41 §4) the band starts at the arena top (y 104) and the reading gains 24 dp */
+.challenge-rumpang .challenge-aside { --x: 96;  --y: 104; --w: 1088; --h: 66; }
 .challenge-rumpang .rumpang-reading,
-.challenge-rumpang .sentences       { --x: 96;  --y: 198; --w: 1088; --h: 314; }
+.challenge-rumpang .sentences       { --x: 96;  --y: 174; --w: 1088; --h: 338; }
 .challenge-rumpang .rumpang.has-media .rumpang-reading,
 .challenge-rumpang .rumpang.has-media .sentences { --x: 416; --w: 768; }
-.challenge-rumpang .rumpang-media   { --x: 96;  --y: 198; --w: 304; --h: 314; }
+.challenge-rumpang .rumpang-media   { --x: 96;  --y: 174; --w: 304; --h: 338; }
 /* Two rows of words on the navy plate (Wonosobo has 9) fit without scrolling */
 .challenge-rumpang .word-bank       { --x: 96;  --y: 520; --w: 1088; --h: 120; }
 .challenge-rumpang .arena-actions   { --x: 32;  --y: 648; --w: 1216; --h: 56; }
 
 /* Benar atau Salah: bacaan kiri, instruksi + pernyataan kanan, bilah aksi */
-.challenge-boleh .boleh-passages    { --x: 32;  --y: 140; --w: 596; --h: 500; }
-.challenge-boleh .challenge-aside   { --x: 652; --y: 140; --w: 596; --h: 64; }
-.challenge-boleh .boleh-cards       { --x: 652; --y: 212; --w: 596; --h: 428; }
+.challenge-boleh .boleh-passages    { --x: 32;  --y: 104; --w: 596; --h: 536; }
+.challenge-boleh .challenge-aside   { --x: 652; --y: 104; --w: 596; --h: 64; }
+.challenge-boleh .boleh-cards       { --x: 652; --y: 176; --w: 596; --h: 464; }
 .challenge-boleh .arena-actions     { --x: 32;  --y: 648; --w: 1216; --h: 56; }
 
 /* Skenario Digital (part 6, 32 §6.2): situation left, instruction + the two steps right, action bar */
-.challenge-skenario .scenario-situation { --x: 32;  --y: 140; --w: 616; --h: 500; }
+.challenge-skenario .scenario-situation { --x: 32;  --y: 104; --w: 616; --h: 536; }
 /* The instruction band holds its two lines (and the ▶ beside them, game.css): 60 dp, was 56,
    which cut the second line on every screen (manual check 32 §15.3 no. 5, 14 November 2026) */
-.challenge-skenario .challenge-aside    { --x: 664; --y: 140; --w: 584; --h: 60; }
-.challenge-skenario .scenario-steps     { --x: 664; --y: 208; --w: 584; --h: 432; }
+.challenge-skenario .challenge-aside    { --x: 664; --y: 104; --w: 584; --h: 60; }
+.challenge-skenario .scenario-steps     { --x: 664; --y: 172; --w: 584; --h: 468; }
 .challenge-skenario .arena-actions      { --x: 32;  --y: 648; --w: 1216; --h: 56; }
 
 /* Cari Objek: bilah petunjuk, daftar benda, adegan 16:9, panel kanan (instruksi) */
-.challenge-cari .hunt-clue          { --x: 32;   --y: 140; --w: 1216; --h: 60; }
-.challenge-cari .hunt-side          { --x: 32;   --y: 208; --w: 164;  --h: 486; }
-.challenge-cari .hunt-scene         { --x: 208;  --y: 208; --w: 864;  --h: 486; }
-.challenge-cari .challenge-aside    { --x: 1084; --y: 208; --w: 164;  --h: 486; }
+/* Since 19 November 2026 (41 §4) the clue starts at the arena top (y 104) and the scene row at y 172;
+   the 16:9 scene keeps its size (its object spots are in % of it) and gains room below */
+.challenge-cari .hunt-clue          { --x: 32;   --y: 104; --w: 1216; --h: 60; }
+.challenge-cari .hunt-side          { --x: 32;   --y: 172; --w: 164;  --h: 486; }
+.challenge-cari .hunt-scene         { --x: 208;  --y: 172; --w: 864;  --h: 486; }
+.challenge-cari .challenge-aside    { --x: 1084; --y: 172; --w: 164;  --h: 486; }
 /* "Perbesar adegan" button (Phase F3.2): 48 dp, 8 dp inside the scene's top-right corner */
-.challenge-cari .hunt-zoom          { --x: 1016; --y: 216; --w: 48;   --h: 48; }
+.challenge-cari .hunt-zoom          { --x: 1016; --y: 180; --w: 48;   --h: 48; }
 
 /* Zoomed scene: the whole stage, above the HUD (z 20) and the challenge
    chrome, below the modal (z 50) and toast (z 60) layers. The scene's

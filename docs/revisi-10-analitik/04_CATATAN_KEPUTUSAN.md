@@ -6,6 +6,16 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 19 November 2026
 
+**HUD seragam, bagian pertama: kepala tantangan satu baris** (cabang `igi/relaxed-hawking-3ec774`, dokumen [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) §4 langkah C) · `asal: pengembang` · `disetujui pengembang` · kode tampilan; aturan penelitian dan data tidak berubah
+
+Pengembang meminta langkah C dilanjutkan. Bagian pertamanya:
+1. **Di kelima tantangan tidak ada pita HUD.** Kepala tantangan menjadi satu-satunya baris atas (32, 16, 1216 × 72): medali nomor menyatu dengan kapsul judul gelap, kapsul jam · ✓/✗ · Kesempatan, *Bantuan*, tombol suara (dipindah dari HUD), dan *Keluar*. Tanpa logo, menu, dan pilihan bahasa (keputusan 13, 14, 16, 27, 36).
+2. **Subjudul:** Skenario Digital menampilkan nama kota di kanan judul (keputusan 22); empat tantangan lain tetap menampilkan judul varian sebagai subjudul, karena pengembang belum memutuskan perubahannya untuk tantangan lain. ✗ hanya disembunyikan di Skenario Digital (keputusan 9).
+3. ***Keluar* hanya tombol bundar** di kelima tantangan, dengan tulisan "Keluar tantangan" sebagai keterangan dan konfirmasi yang sama (keputusan 23 diterapkan ke kepala bersama).
+4. **Bagian atas latar tetap terang** di belakang kepala tantangan; penggelapan mulai di bawahnya (keputusan 26).
+5. **Ruang isi:** arena mulai y 104 (sebelumnya 140). Panel yang mulai di atas arena naik 36 dp dan bertambah tinggi 36 dp; papan Susun Gambar menjadi 528² tetap di tengah; bacaan Isi Rumpang bertambah 24 dp; adegan Cari Objek tetap 864 × 486 (titik bendanya dalam persen) dan naik 36 dp. Bilah tombol tetap di y 648. Tata letak Skenario Digital yang baru menyusul di langkah D.
+6. Tata letak `region-centre` (nama wilayah di tengah HUD, 21 Oktober 2026) dihapus karena tidak dipakai lagi.
+
 **Mockup Skenario Digital disetujui; prompt `SD-01` sampai `SD-14` dan kristal `U-36`** (cabang `igi/relaxed-hawking-3ec774`, dokumen [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) dan [40](40_PROMPT_GAMBAR_ANTARMUKA.md)) · `asal: pengembang` · `disetujui pengembang` · dokumen 41 naik ke `disetujui pengembang`; prompt dan baris `TASKS.md` baru; belum ada kode, bank soal, naskah, atau rekaman yang berubah
 
 Mockup dibangun ulang dari `main` dan dikirim lagi; pengembang menjawab empat pertanyaan:

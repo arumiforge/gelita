@@ -43,23 +43,36 @@ final class ChallengeFrameTest extends CIUnitTestCase
         $this->assertStringContainsString('challenge-aside', $frame);
 
         $stage = (string) file_get_contents(FCPATH . 'assets/css/stage.css');
-        $this->assertMatchesRegularExpression('~\.challenge-head\s*\{\s*--x:\s*32;\s*--y:\s*64;\s*--w:\s*1216;\s*--h:\s*56;~', $stage);
+        // One top row since the uniform HUD (41 §4, 19 November 2026)
+        $this->assertMatchesRegularExpression('~\.challenge-head\s*\{\s*--x:\s*32;\s*--y:\s*16;\s*--w:\s*1216;\s*--h:\s*72;~', $stage);
         foreach (['puzzle-board', 'rumpang-reading', 'boleh-passages', 'hunt-scene'] as $panel) {
             $this->assertStringContainsString('.' . $panel, $stage);
         }
     }
 
-    /** Owner, 21 October 2026: no shard plate on the challenge screens; the region name in its place, the logo left. */
-    public function testChallengeHudShowsTheRegionInTheMiddle(): void
+    /**
+     * Uniform HUD (41 §4, decisions 13, 14, 16, 27; 19 November 2026): no HUD band on the five
+     * challenge screens; the challenge header is the one top row with the sound button and Keluar,
+     * and no logo, menu, or language switch.
+     */
+    public function testChallengeHeaderIsTheOnlyTopRow(): void
     {
-        foreach (['puzzle', 'rumpang', 'boleh', 'cari'] as $engine) {
-            $this->assertStringContainsString("<?= \$this->section('hudLayout') ?>region-centre<?= \$this->endSection() ?>", $this->view('game/challenge/' . $engine), $engine);
+        foreach (['puzzle', 'rumpang', 'boleh', 'cari', 'skenario'] as $engine) {
+            $this->assertStringContainsString("<?= \$this->section('hudLayout') ?>challenge<?= \$this->endSection() ?>", $this->view('game/challenge/' . $engine), $engine);
         }
 
         $hud = $this->view('components/hud-menu');
-        $this->assertStringContainsString("\$shards   = \$inGame && ! \$logoCentre && ! \$regionCentre", $hud);
-        $this->assertStringContainsString('<span class="hud-identity-region hud-region-centre">', $hud);
-        $this->assertStringContainsString('.hud-region-centre {', (string) file_get_contents(FCPATH . 'assets/css/stage.css'));
+        $this->assertMatchesRegularExpression('~if \(\$hudLayout === \'challenge\'\) \{\s*return;\s*\}~', $hud, 'the HUD draws nothing on challenge pages');
+        $this->assertStringNotContainsString('hud-region-centre', $hud);
+
+        $frame = $this->view('game/challenge/_frame');
+        $this->assertStringContainsString('id="btn-sound"', $frame, 'the sound button moved into the header');
+        $this->assertStringContainsString('challenge-title-plate', $frame, 'medallion fused with the title capsule');
+        $this->assertStringNotContainsString('hud-menu', $frame);
+        $this->assertStringNotContainsString("lang('Game.resultMenu')", $frame, 'no menu during a challenge');
+        $this->assertStringContainsString('<summary class="hud-ctl challenge-ctl"', $frame, 'Keluar is the round button');
+        $this->assertStringContainsString("data-tip=\"<?= esc(lang('Game.exitChallenge'), 'attr') ?>\"><?= round_icon('logout', 'hud-ctl-art'", $frame, 'with its word as the tip');
+        $this->assertStringContainsString("\$showWrong = \$engine !== 'skenario';", $frame, '✗ hidden in Skenario Digital only');
     }
 
     /** Owner, 21 October 2026: the header plate starts under the number ring, and the frame keeps clear of it. */
@@ -79,7 +92,7 @@ final class ChallengeFrameTest extends CIUnitTestCase
     public function testHeaderAndInstructionUseTheRoundPictures(): void
     {
         $frame = (string) file_get_contents(APPPATH . 'Views/game/challenge/_frame.php');
-        foreach (["round_icon('clock', 'stat-art'", "round_icon('right', 'stat-art'", "round_icon('wrong', 'stat-art'", "round_icon('help', 'chip-art'", "round_icon('logout', 'chip-art'", "round_icon('info', 'instruction-art')"] as $call) {
+        foreach (["round_icon('clock', 'stat-art'", "round_icon('right', 'stat-art'", "round_icon('wrong', 'stat-art'", "round_icon('help', 'chip-art'", "round_icon('logout', 'hud-ctl-art'", "round_icon('info', 'instruction-art')"] as $call) {
             $this->assertStringContainsString($call, $frame, $call);
         }
         $this->assertStringContainsString("round_icon('info', 'puzzle-caption-art')", (string) file_get_contents(APPPATH . 'Views/game/challenge/puzzle.php'));
