@@ -444,6 +444,15 @@ final class LibraryLockTest extends CIUnitTestCase
         $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
         $this->assertStringContainsString('.map-level .node-panels.is-live .node-card.is-selected { display: grid; }', $css);
         $this->assertStringContainsString('.map-level .node-point { transform: translate(-50%, -50%); }', $css);
+
+        // The shard crystal in four stages (owner, 19 November 2026): until the pictures are
+        // installed, every stage shows the one U-36 crystal
+        $this->assertStringContainsString('<div class="hud-shards" style="', $page);
+        $this->assertStringNotContainsString('--shards-crystal-1', $page);
+        $stage = (string) file_get_contents(FCPATH . 'assets/css/stage.css');
+        for ($n = 0; $n <= 3; $n++) {
+            $this->assertStringContainsString('.hud-shards .lantern[data-stage="' . $n . '"] .lantern-toggle::before { background-image: var(--shards-crystal-' . ($n + 1) . ', var(--shards-crystal)); }', $stage);
+        }
     }
 
     // ------------------------------------------------------------ momen terbuka

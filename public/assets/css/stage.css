@@ -528,6 +528,15 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 @keyframes gem-pulse {
   50% { opacity: .6; transform: scale(1.12); }
 }
+/* The crystal in four stages of light (owner, 19 November 2026; PL-03 to PL-06): stage n after
+   n - 1 regions are done; a stage without its picture keeps the U-36 crystal. With the stage
+   pictures the light is drawn in them, so the CSS veil and glow step back (only the last stage
+   keeps its slow pulse). */
+.hud-shards .lantern[data-stage="0"] .lantern-toggle::before { background-image: var(--shards-crystal-1, var(--shards-crystal)); }
+.hud-shards .lantern[data-stage="1"] .lantern-toggle::before { background-image: var(--shards-crystal-2, var(--shards-crystal)); }
+.hud-shards .lantern[data-stage="2"] .lantern-toggle::before { background-image: var(--shards-crystal-3, var(--shards-crystal)); }
+.hud-shards .lantern[data-stage="3"] .lantern-toggle::before { background-image: var(--shards-crystal-4, var(--shards-crystal)); }
+.hud-shards.has-crystal-stages .lantern:not([data-stage="3"]) .lantern-gem { display: none; }
 /* Stage 0: the crystal still sleeps, a soft dark veil over it */
 .hud-shards .lantern[data-stage="0"] .lantern-gem {
   opacity: 1;

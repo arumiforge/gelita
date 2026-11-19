@@ -146,7 +146,18 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
 
   <?php if ($shards): ?>
     <?php // The owner's shard plate (20 October 2026); absolute URLs, as for Kenali's plates ?>
-    <div class="hud-shards" style="--shards-frame: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-frame.webp'), 'attr') ?>&quot;); --shards-fill: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-fill.webp'), 'attr') ?>&quot;); --shards-crystal: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-crystal.webp'), 'attr') ?>&quot;)"><?= $this->include('components/lantern') ?></div>
+    <?php
+    // The crystal in four stages of light (owner, 19 November 2026; document 40, PL-03 to PL-06):
+    // stage n is shown after n - 1 regions are done (lantern data-stage n - 1, stage.css); a stage
+    // whose picture is not installed yet shows the one crystal of U-36
+    $crystals = '';
+    for ($n = 1; $n <= 4; $n++) {
+        if (is_file(FCPATH . "assets/ui/hud-shards-crystal-{$n}.webp")) {
+            $crystals .= "; --shards-crystal-{$n}: url(&quot;" . esc(asset_url_versioned("ui/hud-shards-crystal-{$n}.webp"), 'attr') . '&quot;)';
+        }
+    }
+    ?>
+    <div class="hud-shards<?= $crystals !== '' ? ' has-crystal-stages' : '' ?>" style="--shards-frame: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-frame.webp'), 'attr') ?>&quot;); --shards-fill: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-fill.webp'), 'attr') ?>&quot;); --shards-crystal: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-crystal.webp'), 'attr') ?>&quot;)<?= $crystals ?>"><?= $this->include('components/lantern') ?></div>
   <?php endif ?>
 
   <?php if ($backEnd): ?><div class="hud-end"><?php endif ?>

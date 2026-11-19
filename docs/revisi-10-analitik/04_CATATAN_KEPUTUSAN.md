@@ -6,6 +6,17 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 19 November 2026
 
+**Polesan halaman awal, menu, peta, dan Pustaka; enam gambar dipesan** (cabang `igi/laughing-fermi-ifbg3l`, dokumen [40](40_PROMPT_GAMBAR_ANTARMUKA.md) → *Polesan halaman awal dan peta*) · `asal: pengembang` · `disetujui pengembang` (wawancara) · kode tampilan; aturan penelitian dan data tidak berubah
+
+1. **Halaman awal dibagi dua:** logo, judul, ajakan singkat, tiga wilayah, dan tombol MULAI (tulisannya dibuat halaman, bukan gambar) di kiri; Jaka di kanan. Sampai gambar baru diterima, latar `S-W` dan Jaka melambai yang tampil.
+2. **Menu:** satu daftar tetap (Musik latar, Profil, Peta Kedu, Pustaka Kedu, Tentang GELITA, Keluar); baris halaman yang sedang dibuka tidak ditampilkan. Pilihan bahasa memakai bendera datar yang tidak teregang dan bingkai yang lebih sedikit.
+3. **Peta wilayah:** setiap penanda satu baris (medali di kiri nama dan status atau bintang), di lapangan pos di depan propertinya; mengetuk penanda memilih tantangan, dan kolom kanan hanya menampilkan tantangan yang dipilih seperti panel Peta Kedu. Ini mengganti keputusan 4 di bagian *Keputusan pengembang yang dipakai* dokumen 40 (medali di bawah lapangan).
+4. **Tingkat kesulitan wilayah tidak ditampilkan lagi kepada siswa** (tirai *Menuju …*, dialog wilayah, cerita penghubung). Kolom `levels.difficulty` tetap ada di data dan panel; tidak ada data penelitian yang berubah.
+5. **Tirai wilayah:** *Menuju {wilayah}…* sebagai tulisan biasa, bilah pemuatan tepat di bawahnya, dan tagline wilayah di bawah layar.
+6. **Peta Kedu dan Pustaka Kedu:** bilah lima segmen, keterangan pin tanpa angka *n/5* dan tanpa garis cahaya tambahan; Pustaka Kedu tanpa papan Serpihan Cahaya, tombol Peta Kedu di kiri atas.
+7. **Halaman isi Pustaka dirancang ulang:** daftar isi di kiri, satu kartu halaman (gambar utama besar, gambar lain sebagai ubin kecil, teks dengan tombol Kembali dan Lanjut). Peristiwa `library_page_viewed` tidak berubah.
+8. **Kristal Serpihan Cahaya empat tahap menurut kemajuan:** tahap 1 sebelum ada wilayah tuntas, tahap 2 setelah Temanggung, tahap 3 setelah Magelang, tahap 4 setelah semua tuntas. Dipesan bersama latar halaman awal yang baru dan Jaka memegang Lentera Kedu (`PL-01` sampai `PL-06`).
+
 **Tampilan baru Skenario Digital dan latar Skenario Digital per wilayah dipasang** (cabang `skenario-tampilan-baru`, dokumen [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) langkah D dan E) · `asal: pengembang` · `disetujui pengembang` (mockup); hasil menunggu pemeriksaan pengembang · kode tampilan dan gambar; aturan penelitian dan data tidak berubah
 
 1. **Layar dibangun ulang mengikuti mockup yang disetujui** (keputusan 17–43): sisi kiri dan kanan tanpa kotak di atas latar, masing-masing 584 dp di bawah kepala layar (kiri x 32, lebar 600; kanan x 664, lebar 584). Kiri: *Cerita 1 dari 4*, satu bilah per cerita (posisi dan cerita yang sudah ditutup saja, tanpa hasil), bulatan *Kesempatan*; gambar situasi 504 × 336 utuh dengan pil *Dengarkan cerita* di tengah bawahnya; situasi menjorok 14 dp, 20 px (19 px di atas 200 karakter). Kanan: dua tab, baris ▶ *Dengarkan petunjuk* dan teks instruksi (hanya langkah 1), pertanyaan, pilihan, dan tombol langkah di bawah (y 626). Bilah tombol di bawah layar dan pita instruksi kerangka tidak dipakai lagi di Skenario Digital; keempat tantangan lain tidak berubah.
