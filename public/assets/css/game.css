@@ -1534,13 +1534,15 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .map-progress.has-track .progress {
   position: relative;
   width: 100%;
-  height: auto;
-  aspect-ratio: 1200 / 69;
+  /* The bronze track (U-05), 18 dp tall: ends 1.32 × 18 dp; the padding puts the content
+     box on the channel (19 % / 22 % of the height, 0.84 × the end width) */
+  height: 1.125rem;
   overflow: visible;
-  /* Padding in % of the width puts the content box on the channel */
-  padding: 1.15% 4.5% 1.3%;
+  padding: .21875rem 1.25rem .25rem;
+  border: 0 solid transparent;
   border-radius: 0;
-  background: var(--progress-track) center / 100% 100% no-repeat;
+  border-image: var(--ui-track) var(--track-cut) / 0 1.5rem stretch;
+  background: none;
   filter: drop-shadow(0 .1875rem .3125rem rgba(0, 0, 0, .6));
 }
 .map-progress.has-track .progress > i {
@@ -1556,7 +1558,7 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .map-progress.has-track .progress::after {
   content: '';
   position: absolute;
-  inset: 20% 4.5% 23%;
+  inset: .21875rem 1.25rem .25rem;
   background: repeating-linear-gradient(to right, transparent 0 calc(100% / var(--steps, 4) - .125rem), rgba(10, 8, 6, .85) calc(100% / var(--steps, 4) - .125rem) calc(100% / var(--steps, 4)));
   -webkit-mask-image: linear-gradient(to right, #000 calc(100% - .25rem), transparent calc(100% - .25rem));
   mask-image: linear-gradient(to right, #000 calc(100% - .25rem), transparent calc(100% - .25rem));
@@ -1709,11 +1711,13 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
   justify-content: center;
   gap: .375rem;
   min-width: 7rem;
-  min-height: 2.5rem;
-  padding: .25rem 1rem;
-  border: 0;
+  height: 2.5rem;
+  /* The green plate (U-03): ends 1.165 × 40 dp, the label on its face */
+  padding: 0 2.75rem;
+  border: 0 solid transparent;
   border-radius: 0;
-  background: var(--plate-green) center / 100% 100% no-repeat;
+  border-image: var(--plate-green) var(--plate-cut) / 0 2.9rem stretch;
+  background: none;
   box-shadow: none;
   color: #F6E4B4;
   font-size: 1rem;
@@ -1721,20 +1725,23 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
   text-shadow: 0 .0625rem .1875rem rgba(0, 0, 0, .85);
   filter: drop-shadow(0 .1875rem .3125rem rgba(0, 0, 0, .5));
 }
-.map-level .node-action.is-navy { min-width: 7rem; background-image: var(--plate-navy); color: #E7D7B0; }
+.map-level .node-action.is-navy { min-width: 7rem; border-image-source: var(--plate-navy); color: #E7D7B0; }
 .map-level .node-action.is-navy .icon { width: 1rem; height: 1rem; }
 @media (hover: hover) {
   .map-level .node-action.is-green:hover { background-color: transparent; color: #FFF4D6; filter: drop-shadow(0 .1875rem .3125rem rgba(0, 0, 0, .5)) brightness(1.15); }
 }
 .map-level .node-card.has-frame .btn-primary.node-action { min-height: 2.5rem; padding: .25rem 1.125rem; font-size: 1rem; }
-/* On the slim gold pill (22 October 2026): its carved ends need room beside the label */
-.stage[style*="--gold-pill-3"] .map-level .node-card.has-frame .btn-primary.node-action { --pill: var(--gold-pill-3); --pill-cut: 165; --pill-end: 2.125rem; padding-inline: 1.875rem 1.625rem; }
+/* On the gold plate (MAIN BUTTONS), 40 dp tall here */
+.stage[style*="--plate-gold"] .map-level .node-card.has-frame .btn-primary.node-action { --pill-h: 2.5rem; height: 2.5rem; min-height: 0; }
 /* Pustaka {wilayah} on the wide gold plate */
 .map-side .map-library.is-gold-plate {
-  min-height: 3.5rem;
-  border: 0;
+  height: 3.5rem;
+  min-height: 0;
+  padding-inline: 3.875rem;
+  border: 0 solid transparent;
   border-radius: 0;
-  background: var(--plate-gold) center / 100% 100% no-repeat;
+  border-image: var(--plate-gold) var(--plate-cut) / 0 4.0625rem stretch;
+  background: none;
   color: #2E1B08;
   font-size: 1.1875rem;
   text-shadow: 0 .0625rem 0 rgba(255, 244, 210, .6);
@@ -2369,31 +2376,31 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 }
 .word.is-used { opacity: .35; text-decoration: line-through; }
 
-/* Answer choices on the navy plate (owner, 20 October 2026): the Isi Rumpang words
-   and the Benar/Salah choices. border-image keeps the plate's ornamented ends at
-   their shape and stretches only the plain middle; each end is as wide as the
-   plate's end at this height (115 of 131 px tall, see Kenali). A picked choice
+/* Answer choices on the navy plate (owner, 20 October 2026; U-02 since 19 November 2026):
+   the Isi Rumpang words and the Benar/Salah choices. border-image keeps the plate's carved
+   ends at their shape and stretches only the plain middle; each end is 1.165 × the height,
+   and the side border (0.9 × the end) puts the label on the plate's face. A picked choice
    glows gold and keeps its ● mark, so the pick never rests on colour alone. */
-.challenge[style*="--plate-navy"] :is(.word, .choice) {
+.stage[style*="--plate-navy"] .challenge :is(.word, .choice) {
   min-height: 0;
   height: 2.75rem;
   padding: 0 .25rem;
   border-style: solid;
-  border-width: 0 2.375rem;
+  border-width: 0 2.875rem;
   border-radius: 0;
-  border-image: var(--plate-navy) 0 115 fill / 0 2.375rem stretch;
+  border-image: var(--plate-navy) var(--plate-cut) / 0 3.2rem stretch;
   background: none;
   color: #F3D58A;
   text-shadow: 0 1px .1875rem rgba(0, 0, 0, .8);
   transition: transform .15s, filter .15s, opacity .15s;
 }
-.challenge[style*="--plate-navy"] .choice { display: inline-flex; align-items: center; justify-content: center; gap: .375rem; height: 3rem; border-width: 0 2.625rem; border-image-width: 0 2.625rem; }
+.stage[style*="--plate-navy"] .challenge .choice { display: inline-flex; align-items: center; justify-content: center; gap: .375rem; height: 3rem; border-width: 0 3.125rem; border-image-width: 0 3.5rem; }
 @media (hover: hover) {
-  .challenge[style*="--plate-navy"] :is(.word:not(:disabled), .choice):hover { background: none; color: #FFE7A8; filter: brightness(1.15); }
+  .stage[style*="--plate-navy"] .challenge :is(.word:not(:disabled), .choice):hover { background: none; color: #FFE7A8; filter: brightness(1.15); }
 }
-.challenge[style*="--plate-navy"] .word:not(:disabled):active,
-.challenge[style*="--plate-navy"] .choice:active { background: none; filter: brightness(1.2); }
-.challenge[style*="--plate-navy"] .choice:has(input:checked) {
+.stage[style*="--plate-navy"] .challenge .word:not(:disabled):active,
+.stage[style*="--plate-navy"] .challenge .choice:active { background: none; filter: brightness(1.2); }
+.stage[style*="--plate-navy"] .challenge .choice:has(input:checked) {
   background: none;
   color: #FFF3C4;
   filter: brightness(1.18) drop-shadow(0 0 .375rem rgba(255, 210, 110, .85));
@@ -2841,12 +2848,12 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
   text-shadow: 0 .125rem .25rem #000;
   white-space: nowrap;
 }
-/* The result panel skin as a small 9-slice frame (owner, 18 October 2026: panel, not the detail button) */
-.kedu-skins[style*="--skin-panel"] .kedu-city-caption {
+/* In the dialog frame (U-04, nine-slice; owner, 18 October 2026: a panel, not a button) */
+.stage[style*="--ui-frame"] .kedu-city-caption {
   padding: .1875rem 1.125rem .125rem;
   border: .5rem solid transparent;
   border-radius: 0;
-  border-image: var(--skin-panel) 100 fill stretch;
+  border-image: var(--ui-frame) var(--frame-cut) / 1.75rem / .25rem stretch;
   background: none;
   box-shadow: none;
 }
@@ -3157,12 +3164,11 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 /* Dark text straight on the gold: no shadow inherited from the region panel (owner, 21 October 2026) */
 .kedu-btn.is-primary { color: #0B1B2E; text-shadow: none; }
 .kedu-btn.is-primary::before { border-color: #FFF2BD; background: linear-gradient(to bottom, #FFF0C2, var(--gold-500) 50%, var(--gold-600)); }
-.kedu-skins[style*="--skin-secondary"] .kedu-btn.is-secondary::before { border: 0; border-radius: 0; background: var(--skin-secondary) center / 100% 100% no-repeat; box-shadow: none; }
-/* On the gold pill since 22 October 2026 (see MAIN BUTTONS): 64 dp tall here, the tallest plate */
-.stage[style*="--gold-pill-1"] .kedu-btn.is-primary::before { border: 0 solid transparent; border-image: var(--gold-pill-1) 0 185 fill / 0 3.125rem stretch; background: none; box-shadow: none; }
-/* In the region panel Lanjut is as tall as Kenali beside it (owner, 18 October 2026): the
-   primary picture fills more of its box than the secondary one, so its box is lower */
-.stage[style*="--gold-pill-2"] .kedu-panel-actions .kedu-btn.is-primary::before { inset: 1.1875rem 0; border-image: var(--gold-pill-2) 0 175 fill / 0 2.75rem stretch; }
+/* On the navy and gold plates (U-02, U-01, 19 November 2026; see MAIN BUTTONS): 64 dp tall,
+   each end 1.165 × that. Lanjut and Kenali are as tall as each other (owner, 18 October 2026) */
+.stage[style*="--plate-navy"] .kedu-btn.is-secondary::before,
+.stage[style*="--plate-gold"] .kedu-btn.is-primary::before { border: 0 solid transparent; border-radius: 0; border-image: var(--plate-navy) var(--plate-cut) / 0 4.6875rem stretch; background: none; box-shadow: none; }
+.stage[style*="--plate-gold"] .kedu-btn.is-primary::before { border-image-source: var(--plate-gold); }
 .kedu-btn[aria-disabled="true"] { filter: grayscale(.8); opacity: .55; }
 .kedu-btn .icon { width: 1.75rem; height: 1.75rem; flex: none; }
 .kedu-btn.is-secondary .icon { width: 2.125rem; height: 2.125rem; color: var(--gold-300); }
@@ -3322,10 +3328,12 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
   text-align: center;
 }
 .result-card h2, .result-card .num { font-family: var(--font-body); font-variant: normal; letter-spacing: normal; text-transform: none; }
-.result-card[style*="--skin-panel"] {
-  border: 0;
+/* In the dialog frame (U-04, nine-slice, 19 November 2026; was the ui.result-panel skin) */
+.stage[style*="--ui-frame"] .result-card {
+  border: 0 solid transparent;
   border-radius: 0;
-  background: var(--skin-panel) 50% 48.97% / 101.19% 114.99% no-repeat;
+  border-image: var(--ui-frame) var(--frame-cut) / 4.5rem / .5rem stretch;
+  background: none;
   box-shadow: none;
   filter: drop-shadow(0 .3333rem .625rem rgba(1, 7, 19, .44));
 }
@@ -3565,11 +3573,11 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .result-btn.is-primary { color: #081426; font-size: 1.9167rem; font-weight: 800; }
 .result-btn.is-primary::before { inset: .5417rem 0; border-color: #FFF2BD; background: linear-gradient(to bottom, #FFF0C2, var(--gold-500) 50%, var(--gold-600)); }
 .result-btn.is-primary .icon { width: 2.25rem; height: 2.25rem; stroke-width: 2.6; }
-.result-card[style*="--skin-secondary"] .result-btn.is-secondary::before { border: 0; border-radius: 0; background: var(--skin-secondary) 50% 50% / 102.13% 127.27% no-repeat; box-shadow: none; }
-.result-card[style*="--skin-detail"] .result-btn.is-detail::before { border: 0; border-radius: 0; background: var(--skin-detail) 50% 50% / 101.27% 143.59% no-repeat; box-shadow: none; }
-/* On the tallest gold pill since 22 October 2026 (see MAIN BUTTONS) */
-.stage[style*="--gold-pill-1"] .result-btn.is-primary::before { border: 0 solid transparent; border-image: var(--gold-pill-1) 0 185 fill / 0 3.5rem stretch; background: none; box-shadow: none; }
-.stage[style*="--gold-pill-1"] .result-btn.is-primary { padding-inline: 2.75rem; color: #13223D; text-shadow: 0 .0625rem 0 rgba(255, 244, 214, .6); }
+/* On the navy and gold plates (U-02, U-01, 19 November 2026; were the ui.result-button-*
+   skins and the tallest gold pill): each end 1.165 × the plate's height (61 dp, Lanjut 71 dp) */
+.stage[style*="--plate-navy"] .result-btn:is(.is-secondary, .is-detail)::before { border: 0 solid transparent; border-radius: 0; border-image: var(--plate-navy) var(--plate-cut) / 0 4.4688rem stretch; background: none; box-shadow: none; }
+.stage[style*="--plate-gold"] .result-btn.is-primary::before { border: 0 solid transparent; border-radius: 0; border-image: var(--plate-gold) var(--plate-cut) / 0 5.1563rem stretch; background: none; box-shadow: none; }
+.stage[style*="--plate-gold"] .result-btn.is-primary { padding-inline: 4.75rem; color: #13223D; text-shadow: 0 .0625rem 0 rgba(255, 244, 214, .6); }
 @media (hover: hover) {
   .result-btn:hover::before { filter: brightness(1.15); }
 }
@@ -3982,11 +3990,11 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 @keyframes book-spin { to { transform: rotate(360deg); } }
 .lightbox-caption { margin: var(--gap-2) 0 0; font-size: var(--fs-caption); text-align: center; }
 .lightbox-close { float: right; margin: 0 0 var(--gap-2) var(--gap-2); font-size: 1.6rem; line-height: 1; }
-/* In the owner's dialog frame (22 October 2026; see the framed dialog in stage.css): the
-   picture is fitted inside the frame's navy face, the compact frame for most pictures and
-   the wide one for a wide picture (core/lightbox.js sets data-frame); the close button is
-   the round one from the owner's sheet. No border, background, or shadow of its own. */
-.stage[style*="--modal-frame-compact"] .lightbox {
+/* In the dialog frame (22 October 2026; the nine-slice U-04 since 19 November 2026, see the
+   framed dialog in stage.css): the picture is fitted inside the frame's navy face, the
+   compact ratio for most pictures and the wide one for a wide picture (core/lightbox.js sets
+   data-frame); the close button is the round one from the owner's sheet. */
+.stage[style*="--ui-frame"] .lightbox {
   --lb-w: 70rem;
   --frame-x: .07;
   width: var(--lb-w);
@@ -3995,17 +4003,18 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   aspect-ratio: 1428 / 822;
   padding: calc(var(--lb-w) * .045) calc(var(--lb-w) * var(--frame-x)) calc(var(--lb-w) * .05);
   overflow: visible;
-  border: 0;
+  border: 0 solid transparent;
   border-radius: 0;
-  background: var(--modal-frame-compact) center / 100% 100% no-repeat;
+  border-image: var(--ui-frame) var(--frame-cut) / 5rem stretch;
+  background: none;
   filter: drop-shadow(0 1rem 1.5rem rgba(0, 0, 0, .55));
 }
-.stage[style*="--modal-frame-wide"] .lightbox[data-frame="wide"] { --lb-w: 76rem; --frame-x: .06; aspect-ratio: 1672 / 698; background-image: var(--modal-frame-wide); }
-.stage[style*="--modal-frame-compact"] .lightbox[open] { display: flex; flex-direction: column; }
-.stage[style*="--modal-frame-compact"] .lightbox .lightbox-stage { flex: 1; min-height: 0; }
-.stage[style*="--modal-frame-compact"] .lightbox img,
-.stage[style*="--modal-frame-compact"] .lightbox.is-card img { position: absolute; inset: 0; width: 100%; height: 100%; max-height: none; object-fit: contain; }
-.stage[style*="--modal-frame-compact"] .lightbox-caption { flex: none; }
+.stage[style*="--ui-frame"] .lightbox[data-frame="wide"] { --lb-w: 76rem; --frame-x: .06; aspect-ratio: 1672 / 698; }
+.stage[style*="--ui-frame"] .lightbox[open] { display: flex; flex-direction: column; }
+.stage[style*="--ui-frame"] .lightbox .lightbox-stage { flex: 1; min-height: 0; }
+.stage[style*="--ui-frame"] .lightbox img,
+.stage[style*="--ui-frame"] .lightbox.is-card img { position: absolute; inset: 0; width: 100%; height: 100%; max-height: none; object-fit: contain; }
+.stage[style*="--ui-frame"] .lightbox-caption { flex: none; }
 .stage[style*="--round-close"] .lightbox-close {
   position: absolute;
   top: 0;
@@ -4092,19 +4101,21 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .shelf-card .library-lock p { color: #CFD8E2; font-size: .875rem; line-height: 1.4; }
 .shelf-card .library-lock-progress { gap: .625rem; color: #E7C982; font-size: .9375rem; }
 /* x/4 on the owner's bronze track: the fill runs in its dark channel */
-.library-index[style*="--loading-track"] .shelf-card .progress {
+.stage[style*="--ui-track"] .library-index .shelf-card .progress {
   position: relative;
-  height: auto;
-  aspect-ratio: 1200 / 82;
+  /* The bronze track (U-05), 12 dp tall: ends 1.32 × 12 dp, the fill on its channel */
+  height: .75rem;
   overflow: visible;
+  border: 0 solid transparent;
   border-radius: 0;
-  background: var(--loading-track) center / 100% 100% no-repeat;
+  border-image: var(--ui-track) var(--track-cut) / 0 1rem stretch;
+  background: none;
   filter: drop-shadow(0 .1875rem .25rem rgba(0, 0, 0, .55));
 }
-.library-index[style*="--loading-track"] .shelf-card .progress > i {
+.stage[style*="--ui-track"] .library-index .shelf-card .progress > i {
   position: absolute;
-  inset: 24.6% auto 27.1% 5.84%;
-  max-width: 88.32%;
+  inset: 19% auto 22% .84rem;
+  max-width: calc(100% - 1.68rem);
   height: auto;
   border-radius: .125rem;
   background:
@@ -4112,7 +4123,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
     linear-gradient(to right, #B4600F, #F0A43A 55%, #FFD27A);
   box-shadow: 0 0 .375rem rgba(255, 176, 64, .85);
 }
-.library-index[style*="--loading-track"] .shelf-card .progress > i[style*="width: 0%"] { box-shadow: none; }
+.stage[style*="--ui-track"] .library-index .shelf-card .progress > i[style*="width: 0%"] { box-shadow: none; }
 .shelf-card .shelf-btn {
   flex: none;
   max-width: 100%;
@@ -4128,11 +4139,12 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   white-space: nowrap;
 }
 .shelf-card .shelf-btn > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-.library-index[style*="--plate-gold"] .shelf-card .shelf-btn {
+.stage[style*="--plate-gold"] .library-index .shelf-card .shelf-btn {
+  /* The gold plate (U-01), 52 dp tall: each end 1.165 × that, the label on its face */
   border-style: solid;
-  border-width: 0 2.5rem;
+  border-width: 0 3.4375rem;
   border-radius: 0;
-  border-image: var(--plate-gold) 0 120 fill / 0 2.5rem stretch;
+  border-image: var(--plate-gold) var(--plate-cut) / 0 3.8125rem stretch;
   background: none;
   box-shadow: none;
   filter: drop-shadow(0 .25rem .375rem rgba(0, 0, 0, .5));
@@ -4140,7 +4152,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .shelf-card .shelf-btn .icon { width: 1.125rem; height: 1.125rem; }
 @media (hover: hover) {
   .shelf-card .shelf-btn:hover { background: linear-gradient(to bottom, #FFF0C2, var(--gold-500) 50%, var(--gold-600)); color: #1B0F02; filter: brightness(1.08); }
-  .library-index[style*="--plate-gold"] .shelf-card .shelf-btn:hover { background: none; filter: drop-shadow(0 .25rem .375rem rgba(0, 0, 0, .5)) brightness(1.08); }
+  .stage[style*="--plate-gold"] .library-index .shelf-card .shelf-btn:hover { background: none; filter: drop-shadow(0 .25rem .375rem rgba(0, 0, 0, .5)) brightness(1.08); }
 }
 .shelf-card .shelf-btn:active { transform: scale(.97); }
 /* Peta Kedu, bottom left, on the navy plate (as Kembali in the HUD) */
@@ -4167,11 +4179,12 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   user-select: none;
   transition: filter .15s, transform .15s;
 }
-.library-index[style*="--plate-navy"] .shelf-back {
+.stage[style*="--plate-navy"] .library-index .shelf-back {
+  /* The navy plate (U-02), 56 dp tall: each end 1.165 × that */
   border-style: solid;
-  border-width: 0 3rem;
+  border-width: 0 3.6875rem;
   border-radius: 0;
-  border-image: var(--plate-navy) 0 115 fill / 0 3rem stretch;
+  border-image: var(--plate-navy) var(--plate-cut) / 0 4.0625rem stretch;
   background: none;
   box-shadow: none;
 }
@@ -4326,19 +4339,21 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .reflection-form textarea { border-color: rgba(223, 192, 135, .55); background: #FFF9EC; color: #2B1D0E; }
 .reflection-form textarea:focus { border-color: var(--gold-300); }
 /* The bars on the owner's bronze track: the fill runs in its dark channel (as on the Pustaka Kedu cards) */
-.reflection[style*="--loading-track"] .reflection-side .progress {
+.stage[style*="--ui-track"] .reflection .reflection-side .progress {
   position: relative;
-  height: auto;
-  aspect-ratio: 1200 / 82;
+  /* The bronze track (U-05), 16 dp tall: ends 1.32 × 16 dp, the fill on its channel */
+  height: 1rem;
   overflow: visible;
+  border: 0 solid transparent;
   border-radius: 0;
-  background: var(--loading-track) center / 100% 100% no-repeat;
+  border-image: var(--ui-track) var(--track-cut) / 0 1.3125rem stretch;
+  background: none;
   filter: drop-shadow(0 .1875rem .25rem rgba(0, 0, 0, .55));
 }
-.reflection[style*="--loading-track"] .reflection-side .progress > i {
+.stage[style*="--ui-track"] .reflection .reflection-side .progress > i {
   position: absolute;
-  inset: 24.6% auto 27.1% 5.84%;
-  max-width: 88.32%;
+  inset: 19% auto 22% 1.1rem;
+  max-width: calc(100% - 2.2rem);
   height: auto;
   border-radius: .125rem;
   background:
@@ -4346,7 +4361,7 @@ html.js .book-frame img.is-loaded { opacity: 1; }
     linear-gradient(to right, #B4600F, #F0A43A 55%, #FFD27A);
   box-shadow: 0 0 .375rem rgba(255, 176, 64, .85);
 }
-.reflection[style*="--loading-track"] .reflection-side .progress > i[style*="width: 0%"] { box-shadow: none; }
+.stage[style*="--ui-track"] .reflection .reflection-side .progress > i[style*="width: 0%"] { box-shadow: none; }
 .reflection-form { display: grid; grid-template-rows: auto auto auto minmax(0, 1fr); gap: var(--gap-3); padding: var(--gap-4) var(--gap-5); }
 .reflection-form > .alert { margin: 0; }
 .reflection-form h2 { display: flex; align-items: center; gap: var(--gap-2); margin: 0; font-size: var(--fs-h3); }
@@ -4527,14 +4542,12 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 /* =========================== MAIN BUTTONS =========================== */
 /* (.btn-danger shares the pill since 22 October 2026, tinted red: see below) */
 /* Every main button on a game page (Mulai tantangan, Cek jawabanku, Ulangi, Lanjut, the
-   dialog buttons, …) stands on one of the owner's gold pill plates (22 October 2026; they
-   replace the `ui.result-button-primary` skin): assets/ui/gold-pill-{1..4}.webp, passed on
-   #stage by the layout (stage_picture_urls()). Drawn as a border image, so the carved ends
-   keep their shape and only the plain middle stretches with the label: each end is as wide
-   as the plate's end is at the button's height (--pill-cut px of the picture, --pill-end on
-   screen). Tallest plate for the large buttons, the slim ones for small and full-width
-   buttons. Without the pictures: the light-gold gradient. Scoped to .stage, so the admin
-   panel keeps its buttons. */
+   dialog buttons, …) stands on the gold plate (document 40, U-01, 19 November 2026; it
+   replaces the owner's four gold pills of 22 October 2026), passed on #stage by the layout
+   (stage_picture_urls()). Drawn as a border image (--plate-cut), so the carved ends keep
+   their shape and only the plain middle stretches with the label: each end is 1.165 × the
+   button's height (--pill-h per size), the label starts on the plate's face. Without the
+   picture: the light-gold gradient. Scoped to .stage, so the admin panel keeps its buttons. */
 .stage .btn-primary {
   border-color: #FFF2BD;
   background: linear-gradient(to bottom, #FFF0C2, var(--gold-500) 50%, var(--gold-600));
@@ -4542,13 +4555,12 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   font-weight: 800;
   box-shadow: 0 .25rem .5rem rgba(1, 7, 19, .45);
 }
-.stage[style*="--gold-pill-2"] :is(.btn-primary, .btn-danger) {
-  --pill: var(--gold-pill-2);
-  --pill-cut: 175;
-  --pill-end: 2.625rem;
-  padding-inline: max(var(--gap-5), calc(var(--pill-end) * .92));
+.stage[style*="--plate-gold"] :is(.btn-primary, .btn-danger) {
+  --pill-h: 3rem;
+  --pill-end: calc(var(--pill-h) * 1.165);
+  padding-inline: max(var(--gap-5), calc(var(--pill-end) * .95));
   border: 0 solid transparent;
-  border-image: var(--pill) 0 var(--pill-cut) fill / 0 var(--pill-end) stretch;
+  border-image: var(--plate-gold) var(--plate-cut) / 0 var(--pill-end) stretch;
   background: none;
   box-shadow: none;
   color: #13223D;
@@ -4556,14 +4568,13 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   filter: drop-shadow(0 .25rem .375rem rgba(1, 7, 19, .5));
   transition: transform .15s, filter .2s;
 }
-.stage[style*="--gold-pill-1"] :is(.btn-lg, .btn-xl):is(.btn-primary, .btn-danger) { --pill: var(--gold-pill-1); --pill-cut: 185; --pill-end: 2.75rem; }
-.stage[style*="--gold-pill-1"] .btn-xl:is(.btn-primary, .btn-danger) { --pill-end: 3.125rem; }
-.stage[style*="--gold-pill-3"] .btn-block:is(.btn-primary, .btn-danger) { --pill: var(--gold-pill-3); --pill-cut: 165; --pill-end: 3.25rem; }
-.stage[style*="--gold-pill-4"] .btn-sm:is(.btn-primary, .btn-danger) { --pill: var(--gold-pill-4); --pill-cut: 150; --pill-end: 3rem; }
+.stage[style*="--plate-gold"] .btn-lg:is(.btn-primary, .btn-danger) { --pill-h: 3.25rem; }
+.stage[style*="--plate-gold"] .btn-xl:is(.btn-primary, .btn-danger) { --pill-h: 4rem; }
+.stage[style*="--plate-gold"] .btn-sm:is(.btn-primary, .btn-danger) { --pill-h: 2.25rem; }
 /* Danger buttons (Ya, keluar; Hapus, …) on the same gold pill turned red (owner, 22 October
    2026): a hue shift of the gold, light lettering, and on hover or press a deeper red with a red
    glow, so the plate visibly reddens under the finger. */
-.stage[style*="--gold-pill-2"] .btn-danger {
+.stage[style*="--plate-gold"] .btn-danger {
   color: #FFF4EA;
   text-shadow: 0 .0625rem .1875rem rgba(70, 4, 0, .9);
   filter: hue-rotate(-38deg) saturate(2.1) brightness(.84) drop-shadow(0 .25rem .375rem rgba(1, 7, 19, .5));
@@ -4571,13 +4582,13 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .stage .btn-primary .icon { stroke-width: 2.6; }
 @media (hover: hover) {
   .stage .btn-primary:hover { color: #0B1B2E; filter: brightness(1.12); }
-  .stage:not([style*="--gold-pill-2"]) .btn-primary:hover { background: linear-gradient(to bottom, #FFF0C2, var(--gold-500) 50%, var(--gold-600)); }
-  .stage[style*="--gold-pill-2"] .btn-primary:hover { background: none; filter: drop-shadow(0 .25rem .375rem rgba(1, 7, 19, .5)) drop-shadow(0 0 .625rem var(--glow)) brightness(1.1); }
-  .stage[style*="--gold-pill-2"] .btn-danger:hover { background: none; color: #FFFFFF; filter: hue-rotate(-42deg) saturate(2.8) brightness(.9) drop-shadow(0 .25rem .375rem rgba(1, 7, 19, .5)) drop-shadow(0 0 .75rem rgba(255, 70, 50, .65)); }
+  .stage:not([style*="--plate-gold"]) .btn-primary:hover { background: linear-gradient(to bottom, #FFF0C2, var(--gold-500) 50%, var(--gold-600)); }
+  .stage[style*="--plate-gold"] .btn-primary:hover { background: none; filter: drop-shadow(0 .25rem .375rem rgba(1, 7, 19, .5)) drop-shadow(0 0 .625rem var(--glow)) brightness(1.1); }
+  .stage[style*="--plate-gold"] .btn-danger:hover { background: none; color: #FFFFFF; filter: hue-rotate(-42deg) saturate(2.8) brightness(.9) drop-shadow(0 .25rem .375rem rgba(1, 7, 19, .5)) drop-shadow(0 0 .75rem rgba(255, 70, 50, .65)); }
 }
-.stage[style*="--gold-pill-2"] .btn-danger:active { background: none; filter: hue-rotate(-42deg) saturate(3) brightness(.95) drop-shadow(0 0 .875rem rgba(255, 70, 50, .75)); }
+.stage[style*="--plate-gold"] .btn-danger:active { background: none; filter: hue-rotate(-42deg) saturate(3) brightness(.95) drop-shadow(0 0 .875rem rgba(255, 70, 50, .75)); }
 .stage .btn-primary:active { filter: brightness(1.18); }
-.stage[style*="--gold-pill-2"] .btn-primary:active { background: none; filter: drop-shadow(0 .125rem .25rem rgba(1, 7, 19, .5)) brightness(1.18); }
+.stage[style*="--plate-gold"] .btn-primary:active { background: none; filter: drop-shadow(0 .125rem .25rem rgba(1, 7, 19, .5)) brightness(1.18); }
 
 /* ---------- Skenario Digital (part 6, 32 §6) ----------
    One scenario at a time: the situation on parchment-dark glass on the left,
@@ -4654,7 +4665,9 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 
 /* ===================== Part 7 (33 §7, §8): research mode and media fixes ===================== */
 /* M-06: the challenge instruction is never smaller than the reading text; a card above the
-   passage on Isi Rumpang and Benar atau Salah, on the navy plate (--plate-navy) */
+   passage on Isi Rumpang and Benar atau Salah, in the dialog frame (--ui-frame, U-04, since
+   19 November 2026: a nine-slice picture fits any number of lines; it was the navy plate
+   stretched to the card) */
 .instruction { font-size: max(var(--fs-reading), 1.0625rem); }
 .challenge-puzzle .instruction,
 .challenge-rumpang .instruction { font-size: max(var(--fs-reading), 1.0625rem); }
@@ -4662,8 +4675,17 @@ html.js .book-frame img.is-loaded { opacity: 1; }
   padding: .5rem 1rem;
   border: .0625rem solid rgba(243, 213, 138, .45);
   border-radius: var(--radius);
-  background: var(--plate-navy, none) center / 100% 100% no-repeat, rgba(6, 18, 34, .82);
+  background: rgba(6, 18, 34, .82);
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .45);
+}
+:where(.stage[style*="--ui-frame"]) .instruction.is-card {
+  padding: .75rem 1.25rem;
+  border: 0 solid transparent;
+  border-radius: 0;
+  border-image: var(--ui-frame) var(--frame-cut) / 1.5rem stretch;
+  background: none;
+  box-shadow: none;
+  filter: drop-shadow(0 .25rem .5rem rgba(0, 0, 0, .45));
 }
 /* M-07: the variant title is a small subtitle under the kind's name */
 .challenge-subtitle { margin: 0; color: var(--ink-dim); font-size: var(--fs-caption); line-height: 1.2; }

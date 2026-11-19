@@ -26,20 +26,18 @@ function layer() {
 const FRAME_STEPS = [['compact', 30], ['compact', 35], ['wide', 45], ['wide', 52], ['wide', 60], ['wide', 68], ['wide', 76]];
 
 /**
- * The game stage draws the dialog as the owner's frame picture at its own
- * ratio (stage.css, `--modal-frame-compact`/`--modal-frame-wide` on #stage).
+ * The game stage draws the dialog in the nine-slice frame (stage.css, `--ui-frame`
+ * on #stage, 19 November 2026) at one of two ratios, compact or wide.
  * Picks the smallest step whose card shows everything without scrolling;
  * past the last one the card scrolls. The panel has no frame: nothing to do.
  */
 function fitFrame(modal) {
   const stage = modal.closest('.stage');
-  if (!stage || !getComputedStyle(stage).getPropertyValue('--modal-frame-compact').trim()) return;
+  if (!stage || !getComputedStyle(stage).getPropertyValue('--ui-frame').trim()) return;
 
   const card = modal.querySelector('.modal-card');
-  const wide = getComputedStyle(stage).getPropertyValue('--modal-frame-wide').trim() !== '';
-  const steps = FRAME_STEPS.filter(([frame]) => wide || frame === 'compact');
 
-  for (const [frame, width] of steps) {
+  for (const [frame, width] of FRAME_STEPS) {
     modal.dataset.frame = frame;
     modal.style.setProperty('--modal-w', `${width}rem`);
     if (card.scrollHeight <= card.clientHeight + 1 && card.scrollWidth <= card.clientWidth + 1) return;

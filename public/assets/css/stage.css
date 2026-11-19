@@ -43,6 +43,17 @@ body.game {
    memotong apa pun yang keluar dari panggung. */
 .stage {
   --dp: .0625rem;
+  /* The plates, track and frame of document 40 (U-01 to U-05, 19 November 2026; pictures on
+     #stage from stage_picture_urls()). Each slice crops the picture's empty top and bottom
+     margin and keeps the carved ends at their drawn shape: a plate end is 1.165 × the
+     element's height, a track end 1.32 × its height (end width = height × 184 / 158 and
+     90 / 68); the plain middle stretches. The frame is a nine-slice picture with 180 px
+     corners. Plate face from 18 % to 83 % of the height and from 0.91 × the end width;
+     track channel from 19 % to 78 % of the height and from 0.84 × the end width; frame
+     border about 0.37 × the corner size. */
+  --plate-cut: 23 184 19 fill;
+  --track-cut: 15 90 13 fill;
+  --frame-cut: 180 fill;
   position: relative;
   width: 80rem;
   height: 45rem;
@@ -589,15 +600,16 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 .modal-layer.is-blur { background: var(--veil); -webkit-backdrop-filter: blur(.5rem); backdrop-filter: blur(.5rem); }
 
 /* ---------- Framed dialog (owner, 22 October 2026) ----------
-   The dialog is the owner's navy-and-gold frame picture instead of a box with
-   a background, border, and shadow: `--modal-frame-compact` (cut from the 4:3
-   sheet, 1428 × 822) or `--modal-frame-wide` (from the 16:9 sheet, 1672 × 698),
-   always at the picture's own ratio. core/modal.js picks the frame and width
-   (`data-frame`, `--modal-w`): the compact frame while everything fits, else
-   the wide one, growing up to 76 × 31.7 rem; past that the text scrolls.
-   The card lies on the frame's navy face, inside its gold border; the round
-   icon sits on the top edge, half above it. */
-.stage[style*="--modal-frame-compact"] .modal-layer > .modal {
+   The dialog is a navy-and-gold frame instead of a box with a background,
+   border, and shadow: since 19 November 2026 the nine-slice frame of document
+   40 (`--ui-frame`, U-04; corners 4 rem, never stretched), which replaced the
+   owner's 4:3 and 16:9 sheets. The two ratios stay as sizes: compact
+   (1428 : 822) or wide (1672 : 698). core/modal.js picks the ratio and width
+   (`data-frame`, `--modal-w`): compact while everything fits, else wide,
+   growing up to 76 × 31.7 rem; past that the text scrolls. The card lies on
+   the frame's navy face, inside its gold border; the round icon sits on the
+   top edge, half above it. */
+.stage[style*="--ui-frame"] .modal-layer > .modal {
   --modal-w: 30rem;
   --frame-x: .07;
   --frame-bottom: .05;
@@ -605,16 +617,17 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
   width: var(--modal-w);
   max-width: none;
   aspect-ratio: 1428 / 822;
-  background: var(--modal-frame-compact) center / 100% 100% no-repeat;
+  border: 0 solid transparent;
+  border-image: var(--ui-frame) var(--frame-cut) / 4rem stretch;
+  background: none;
   filter: drop-shadow(0 1rem 1.5rem rgba(0, 0, 0, .55));
 }
-.stage[style*="--modal-frame-wide"] .modal-layer > .modal[data-frame="wide"] {
+.stage[style*="--ui-frame"] .modal-layer > .modal[data-frame="wide"] {
   --frame-x: .06;
   --frame-bottom: .035;
   aspect-ratio: 1672 / 698;
-  background-image: var(--modal-frame-wide);
 }
-.stage[style*="--modal-frame-compact"] .modal-layer > .modal > .modal-card {
+.stage[style*="--ui-frame"] .modal-layer > .modal > .modal-card {
   position: absolute;
   inset: max(2.75rem, calc(var(--modal-w) * .05)) calc(var(--modal-w) * var(--frame-x)) calc(var(--modal-w) * var(--frame-bottom));
   width: auto;
@@ -631,7 +644,7 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
   scrollbar-color: var(--gold-600) transparent;
 }
 .stage .modal > .modal-icon:empty { display: none; }
-.stage[style*="--modal-frame-compact"] .modal-layer > .modal > .modal-icon:empty + .modal-card { inset-block-start: calc(var(--modal-w) * .05); }
+.stage[style*="--ui-frame"] .modal-layer > .modal > .modal-icon:empty + .modal-card { inset-block-start: calc(var(--modal-w) * .05); }
 .stage .modal-layer .modal-title { color: var(--gold-300); font-size: 1.75rem; line-height: 1.2; text-shadow: 0 .125rem .375rem rgba(0, 0, 0, .6); }
 .stage .modal-layer .modal-text { color: var(--ink); font-size: var(--fs-body); line-height: 1.45; }
 .stage .modal-layer .modal-actions { margin-top: var(--gap-3); }
@@ -683,13 +696,14 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 .modal-icon-stack { position: relative; display: block; width: 100%; height: 100%; }
 .modal-icon-stack > .icon { position: absolute; top: 50%; left: 50%; width: 42%; height: 42%; transform: translate(-50%, -50%); }
 /* Without the frame pictures the icon keeps the card's top edge as before */
-.stage:not([style*="--modal-frame-compact"]) .modal > .modal-icon.is-round { position: relative; transform: none; margin-bottom: -2rem; }
-/* Quiet dialog buttons (Batal, Tidak) on the navy plate beside the gold pill */
-.stage[style*="--modal-plate-navy"] .modal-actions .btn-quiet {
-  padding-inline: 2.25rem;
+.stage:not([style*="--ui-frame"]) .modal > .modal-icon.is-round { position: relative; transform: none; margin-bottom: -2rem; }
+/* Quiet dialog buttons (Batal, Tidak) on the navy plate (U-02) beside the gold one; 48 dp
+   tall, each end 1.165 × that */
+.stage[style*="--plate-navy"] .modal-actions .btn-quiet {
+  padding-inline: 3.25rem;
   border: 0 solid transparent;
   border-radius: var(--radius-pill);
-  border-image: var(--modal-plate-navy) 0 115 fill / 0 2.625rem stretch;
+  border-image: var(--plate-navy) var(--plate-cut) / 0 3.5rem stretch;
   background: none;
   color: #F3D58A;
   font-weight: 700;
@@ -697,9 +711,9 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
   filter: drop-shadow(0 .25rem .375rem rgba(1, 7, 19, .5));
 }
 @media (hover: hover) {
-  .stage[style*="--modal-plate-navy"] .modal-actions .btn-quiet:hover { background: none; color: #FFE7A8; filter: drop-shadow(0 .25rem .375rem rgba(1, 7, 19, .5)) brightness(1.15); }
+  .stage[style*="--plate-navy"] .modal-actions .btn-quiet:hover { background: none; color: #FFE7A8; filter: drop-shadow(0 .25rem .375rem rgba(1, 7, 19, .5)) brightness(1.15); }
 }
-.stage[style*="--modal-plate-navy"] .modal-actions .btn-quiet:active { background: none; filter: brightness(1.2); }
+.stage[style*="--plate-navy"] .modal-actions .btn-quiet:active { background: none; filter: brightness(1.2); }
 
 /* ---------- Toast: x 856, y 72, w 400 ----------
    Above the modal veil (z 60 over 50): errors must be seen. Only the card

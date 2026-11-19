@@ -12,7 +12,7 @@
  * lettered Balai Refleksi plate; Mbah Kedu speaks from his round avatar
  * (`ui.kedu-avatar`, never a pose frame) with plain words and no name line,
  * since it is clearly him; the per-region and per-challenge bars run on the
- * bronze track (`loading-track.webp`).
+ * bronze track (`ui-track.webp` from #stage, U-05, since 19 November 2026).
  *
  * @var array<string, mixed>       $journey
  * @var array<string, mixed>|null  $existing
@@ -25,9 +25,6 @@ $rating    = (int) old('rating');
 $studyFeedback = ! empty($studyFeedback);
 $plate     = 'ui/btn-reflection' . ($locale === 'en' ? '-en' : '') . '.webp';
 $plateSize = is_file(FCPATH . 'assets/' . $plate) ? @getimagesize(FCPATH . 'assets/' . $plate) : false;
-$track     = is_file(FCPATH . 'assets/ui/loading-track.webp')
-    ? ' style="--loading-track: url(&quot;' . esc(asset_url_versioned('ui/loading-track.webp'), 'attr') . '&quot;)"'
-    : '';
 ?>
 <?= $this->extend('layouts/game') ?>
 
@@ -35,7 +32,7 @@ $track     = is_file(FCPATH . 'assets/ui/loading-track.webp')
 <?= $this->section('background') ?><?= media_key_src('bg.reflection') ?? media_key_src('bg.map') ?? '' ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="reflection" data-screen="reflection"<?= $track ?>>
+<section class="reflection" data-screen="reflection">
   <?php // Kiri 32, 72, 520 × 576: ringkasan + Mbah Kedu; kanan 576, 72, 672 × 576: formulir, Kirim tetap di bawah (Dok 3 §4) ?>
   <aside class="reflection-side stage-box stage-scroll">
   <header class="reflection-hero">

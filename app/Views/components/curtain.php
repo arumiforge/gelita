@@ -21,7 +21,7 @@
  *               teksnya diisi dari tautan (`data-curtain-text`).
  *
  * Every kind shows its progress on the owner's bronze loading track
- * (`assets/ui/loading-track.webp`, `.has-track`) when the picture is
+ * (`assets/ui/ui-track.webp`, U-05, `.has-track`) when the picture is
  * installed; the `map` tap prompt is small plain text (21 October 2026).
  * - `challenge` sebelum /tantangan (Tahap 3): judul node, label engine,
  *               ajakan singkat, dan visual per engine (`data-engine`);
@@ -84,9 +84,9 @@ $timing   = $preset['timing'];
 $preload  = array_values(array_unique(array_filter($preload ?? [], static fn ($url): bool => is_string($url) && $url !== '')));
 $bgSrc    = $kind === 'map' ? media_key_src('bg.loading') : null;
 $engine   = in_array($engine ?? '', config('Gelita')->engineTypes, true) ? $engine : 'puzzle';
-// The owner's pictures: the bronze loading track (every kind) and the navy head plate (`region`)
+// The pictures: the bronze track (every kind; U-05 since 19 November 2026) and the navy head plate (`region`)
 $skins = [];
-foreach (['loading-track' => 'loading-track', 'head-plate' => 'map-head-plate'] as $var => $file) {
+foreach (['ui-track' => 'ui-track', 'head-plate' => 'map-head-plate'] as $var => $file) {
     if (is_file(FCPATH . 'assets/ui/' . $file . '.webp')) {
         $skins[$var] = '--' . $var . ': url(&quot;' . esc(asset_url_versioned('ui/' . $file . '.webp'), 'attr') . '&quot;)';
     }
@@ -166,7 +166,7 @@ $card = $kind === 'challenge' && is_file(FCPATH . 'assets/ui/node-card-' . $engi
     <?php if ($statuses !== []): ?>
       <p class="curtain-status" role="status" aria-live="polite" data-curtain-status><?= esc($statuses[0]) ?></p>
     <?php endif ?>
-    <div class="curtain-beam<?= isset($skins['loading-track']) ? ' has-track' : '' ?>" role="progressbar" aria-label="<?= esc(lang('Game.curtainProgress'), 'attr') ?>"
+    <div class="curtain-beam<?= isset($skins['ui-track']) ? ' has-track' : '' ?>" role="progressbar" aria-label="<?= esc(lang('Game.curtainProgress'), 'attr') ?>"
          aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-curtain-beam><i></i></div>
     <?php if ($tap): ?>
       <?php // Small plain text, no button picture (owner, 21 October 2026); the whole curtain takes the tap too ?>

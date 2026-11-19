@@ -23,7 +23,7 @@
  * Owner request (21 October 2026): no number on the open medallion (pins and
  * cards) and no lock icon on Terkunci; the region name on the owner's ornate
  * navy plate (`assets/ui/map-head-plate.webp`) and the progress on the
- * owner's bronze track (`assets/ui/map-progress-track.webp`); the map picture
+ * bronze track (`assets/ui/ui-track.webp`, U-05, since 19 November 2026); the map picture
  * has no frame and its edges fade into the page background; the card pictures
  * are bright sepia when done, darker when open, grey when locked. Later the
  * same day: no region name in the HUD (section `hudRegion` = `off`), a locked
@@ -80,14 +80,16 @@ $points = implode(' ', array_map(static fn (array $n): string => (float) $n['map
 // card, the green plate (Lihat hasil), the navy plate (Terkunci), the wide gold plate (Pustaka);
 // since 21 October 2026 the ornate navy plate behind the region name and the bronze progress track
 $plates = [];
-foreach (['card-frame' => 'node-card-frame', 'plate-green' => 'plate-green', 'plate-navy' => 'kenal-plate-navy', 'plate-gold' => 'kenal-plate-gold', 'head-plate' => 'map-head-plate', 'progress-track' => 'map-progress-track'] as $var => $file) {
+// The green, navy and gold plates and the bronze track come from #stage since 19 November 2026
+// (stage_picture_urls(), document 40 U-01 to U-05)
+foreach (['card-frame' => 'node-card-frame', 'head-plate' => 'map-head-plate'] as $var => $file) {
     if (is_file(FCPATH . 'assets/ui/' . $file . '.webp')) {
         $plates[] = '--' . $var . ': url(&quot;' . esc(asset_url_versioned('ui/' . $file . '.webp'), 'attr') . '&quot;)';
     }
 }
 $hasFrame     = is_file(FCPATH . 'assets/ui/node-card-frame.webp');
 $hasHeadPlate = is_file(FCPATH . 'assets/ui/map-head-plate.webp');
-$hasTrack     = is_file(FCPATH . 'assets/ui/map-progress-track.webp');
+$hasTrack     = is_file(FCPATH . 'assets/ui/ui-track.webp');
 ?>
 <?= $this->extend('layouts/game') ?>
 

@@ -8,7 +8,8 @@
  * (section hudStyle `menu`). Temanggung and "Susun Gambar" in the mockup are
  * only sample data.
  *
- * Panel (skin `ui.result-panel`, plain navy and gold while empty):
+ * Panel (the dialog frame `ui-frame.webp`, U-04, since 19 November 2026; was the
+ * `ui.result-panel` skin):
  * - challenge kind, title, stars 0–3 (`star_src()`: `ui.result-star` or the shipped star, grey and faded when empty);
  * - shard medal (`ui.result-medal`) with the shard count and a segment bar;
  * - two cards: Waktu and Percobaan (Ketukan salah for Cari Objek, Percobaan dipakai for Skenario Digital);
@@ -104,11 +105,8 @@ $nextAssets = ! empty($levelCompleted) && isset($nextRegion['curtain'])
     : [$level !== null && media_exists($level->map_media_id) ? media_src($level->map_media_id) : null];
 ?>
 <section class="finished" data-screen="finished" data-attempt="<?= esc($attempt->id, 'attr') ?>"<?= $levelCompleted ? ' data-region-done' : '' ?><?= next_assets_attr($nextAssets) ?>>
-  <article class="result-card stage-box" aria-labelledby="result-title"<?= skin_style_attr([
-      'skin-panel'     => 'ui.result-panel',
-      'skin-secondary' => 'ui.result-button-secondary',
-      'skin-detail'    => 'ui.result-button-detail',
-  ]) ?>>
+  <?php // The frame and the plates come from #stage (U-01, U-02, U-04; 19 November 2026) ?>
+  <article class="result-card stage-box" aria-labelledby="result-title">
     <header class="result-heading">
       <?php if ($node !== null): ?>
         <p class="result-kind"><?= esc(lang_or('Game.engine_' . $node->engine_type, $node->text('title', $locale))) ?></p>
@@ -224,8 +222,7 @@ $nextAssets = ! empty($levelCompleted) && isset($nextRegion['curtain'])
   <?php if ($levelCompleted && $level !== null): ?>
     <?php // Blurred, dimmed layer under the card (owner, 18 October 2026); shown only with JavaScript, which can close it ?>
     <div class="result-scrim" aria-hidden="true"></div>
-    <aside class="result-sheet result-kedu stage-box" role="dialog" aria-labelledby="result-kedu-title"
-           style="--kenal-plate-navy: url(&quot;<?= esc(asset_url_versioned('ui/kenal-plate-navy.webp'), 'attr') ?>&quot;)">
+    <aside class="result-sheet result-kedu stage-box" role="dialog" aria-labelledby="result-kedu-title">
       <h2 id="result-kedu-title" class="visually-hidden"><?= esc(lang('Game.regionDone', [$region])) ?></h2>
       <div class="finished-kedu">
         <?php // Mbah Kedu's round avatar with his name on the navy plate, as in the Peta Kedu story bar (owner, 21 October 2026) ?>

@@ -37,9 +37,8 @@
  *   the caption's left end, with the speaker's name on a navy nameplate over
  *   the ring's lower part. Never an animation frame;
  * - Back and the previous-slide Kembali sit on the owner's navy plate, Lanjut
- *   and the final button on the gold plate (`assets/ui/kenal-plate-*.webp`,
- *   Kenali only; other pages put their main buttons on the gold pills,
- *   `assets/ui/gold-pill-*.webp`, since 22 October 2026).
+ *   and the final button on the gold plate (`assets/ui/ui-plate-*.webp` from #stage,
+ *   U-01 and U-02 since 19 November 2026, the same plates as every main button).
  *
  * @var array<string, mixed>       $level  baris levelOverview() + `curtain`
  * @var list<array<string, mixed>> $slides dialogues region_intro wilayah itu
@@ -52,10 +51,9 @@ $total   = count($slides);
 $open    = $level['status'] !== 'locked';
 $close   = '#region-' . $code;
 $avatars = ['mbah_kedu' => media_key_src('ui.kedu-avatar'), 'jaka' => media_key_src('ui.jaka-avatar')];
-// Skins as custom properties (absolute URLs, so the minified mirror and the asset package keep them)
+// Skins as custom properties (absolute URLs, so the minified mirror and the asset package keep them);
+// the gold and navy plates come from #stage since 19 November 2026 (--plate-gold, --plate-navy)
 $skins = [
-    'kenal-plate-gold' => asset_url_versioned('ui/kenal-plate-gold.webp'),
-    'kenal-plate-navy' => asset_url_versioned('ui/kenal-plate-navy.webp'),
     'skin-hud'         => media_key_src('ui.result-hud-control'),
 ];
 $style = [];

@@ -13,8 +13,8 @@
  * from the HUD, which draws nothing on challenge pages: hudLayout `challenge`)
  * and the round Keluar. No logo, no menu, no language switch. The arena
  * starts at y 104.
- * `--plate-navy` carries the navy plate of Kenali for the answer choices
- * (Isi Rumpang words, Benar/Salah), owner's call of the same day.
+ * The answer choices (Isi Rumpang words, Benar/Salah) stand on the navy plate
+ * (`--plate-navy` from #stage; U-02 since 19 November 2026).
  * `--rumpang-plate` (Isi Rumpang only) is the calm instruction plate of
  * 39 R-26 (16 November 2026): ornaments at both ends, a plain stretchable middle. .arena-panel dan .arena hanya pembungkus
  * (display: contents), jadi panel engine memakai koordinat panggung langsung
@@ -69,7 +69,7 @@ $showWrong = $engine !== 'skenario';
          data-region-name="<?= esc($region, 'attr') ?>"
          data-sequence="<?= esc($sequence, 'attr') ?>"
          data-exit-url="<?= esc(base_url('wilayah/' . $level->code), 'attr') ?>"
-         style="--plate-navy: url(&quot;<?= esc(asset_url_versioned('ui/kenal-plate-navy.webp'), 'attr') ?>&quot;)<?php if ($engine === 'rumpang' && is_file(FCPATH . 'assets/ui/rumpang-instruction-plate.webp')): ?>; --rumpang-plate: url(&quot;<?= esc(asset_url_versioned('ui/rumpang-instruction-plate.webp'), 'attr') ?>&quot;)<?php endif ?>">
+         <?php if ($engine === 'rumpang' && is_file(FCPATH . 'assets/ui/rumpang-instruction-plate.webp')): ?>style="--rumpang-plate: url(&quot;<?= esc(asset_url_versioned('ui/rumpang-instruction-plate.webp'), 'attr') ?>&quot;)"<?php endif ?>>
 
   <div class="arena-panel">
     <?php // One top row (41 §4): medallion fused with the title capsule, stats, Bantuan, sound, Keluar ?>

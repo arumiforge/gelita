@@ -24,13 +24,7 @@
  * @var string                     $locale
  */
 $badges = ['open' => 'book', 'locked' => 'lock', 'unavailable' => 'lock'];
-// The owner's pictures, passed to the page as CSS variables (absent files keep the plain look)
-$skins = [];
-foreach (['plate-gold' => 'kenal-plate-gold', 'plate-navy' => 'kenal-plate-navy', 'loading-track' => 'loading-track'] as $var => $file) {
-    if (is_file(FCPATH . 'assets/ui/' . $file . '.webp')) {
-        $skins[] = '--' . $var . ': url(&quot;' . esc(asset_url_versioned('ui/' . $file . '.webp'), 'attr') . '&quot;)';
-    }
-}
+// The gold and navy plates and the bronze track come from #stage (stage_picture_urls(), 19 November 2026)
 ?>
 <?= $this->extend('layouts/game') ?>
 
@@ -42,7 +36,7 @@ foreach (['plate-gold' => 'kenal-plate-gold', 'plate-navy' => 'kenal-plate-navy'
 <?= $this->section('background') ?><?= media_key_src('bg.map') ?? '' ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<section class="library library-index" data-screen="library-index"<?= $skins !== [] ? ' style="' . implode('; ', $skins) . '"' : '' ?>>
+<section class="library library-index" data-screen="library-index">
   <header class="library-head shelf-head stage-box">
     <h1 class="visually-hidden"><?= esc(lang('Game.library')) ?></h1>
     <p class="library-lead"><?= esc(lang('Game.libraryIndexLead')) ?></p>

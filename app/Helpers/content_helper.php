@@ -650,13 +650,16 @@ if (! function_exists('stage_picture_urls')) {
     /**
      * The interface pictures every game page draws from CSS, passed on #stage
      * as custom properties (skin_style_attr()):
-     * - `--gold-pill-1` … `--gold-pill-4`: the owner's gold pill plates (22 October 2026),
-     *   the face of every main button (.btn-primary and the other gold buttons), tallest
-     *   first; they replace the `ui.result-button-primary` skin;
-     * - `--modal-frame-compact`, `--modal-frame-wide`: the navy-and-gold dialog frames cut
-     *   from the owner's 4:3 and 16:9 sheets (core/modal.js picks one by its content);
+     * - `--plate-gold`, `--plate-navy`, `--plate-green`: the one plate per colour
+     *   (document 40, `U-01` to `U-03`, installed 19 November 2026; they replace the gold
+     *   pills `gold-pill-1` to `-4`, `kenal-plate-gold`/`-navy`, `plate-green` and the
+     *   `ui.result-button-*` skins). 1600 × 200, carved ends only, drawn as a border image
+     *   with `--plate-cut` (stage.css), each end 1.165 × the element's height;
+     * - `--ui-track`: the bronze track (`U-05`; was `loading-track` and
+     *   `map-progress-track`), `--track-cut`, each end 1.32 × the height;
+     * - `--ui-frame`: the dialog frame (`U-04`; was `modal-frame-4x3`/`-16x9` and the
+     *   `ui.result-panel` skin), a nine-slice border image with `--frame-cut`;
      * - `--select-arrow`: the gold triangle of the dropdowns (core/select.js);
-     * - `--modal-plate-navy`: the navy plate behind a dialog's quiet button;
      * - `--round-close`: the round close button of the picture viewer (core/lightbox.js);
      * - `--round-blank`: the plain gold face, a try left or a shard earned (with the dark
      *   `--round-neutral` face for a used try or a missing shard, 22 October 2026).
@@ -665,19 +668,15 @@ if (! function_exists('stage_picture_urls')) {
      */
     function stage_picture_urls(): array
     {
-        $urls = [];
-
-        foreach (range(1, 4) as $n) {
-            $urls['gold-pill-' . $n] = ui_picture_src('gold-pill-' . $n . '.webp');
-        }
-
-        return $urls + [
-            'modal-frame-compact' => ui_picture_src('modal-frame-4x3.webp'),
-            'modal-frame-wide'    => ui_picture_src('modal-frame-16x9.webp'),
-            'select-arrow'        => ui_picture_src('select-arrow.webp'),
-            'modal-plate-navy'    => ui_picture_src('kenal-plate-navy.webp'),
-            'round-close'         => round_icon_src('close'),
-            'round-blank'         => round_icon_src('blank'),
+        return [
+            'plate-gold'   => ui_picture_src('ui-plate-gold.webp'),
+            'plate-navy'   => ui_picture_src('ui-plate-navy.webp'),
+            'plate-green'  => ui_picture_src('ui-plate-green.webp'),
+            'ui-track'     => ui_picture_src('ui-track.webp'),
+            'ui-frame'     => ui_picture_src('ui-frame.webp'),
+            'select-arrow' => ui_picture_src('select-arrow.webp'),
+            'round-close'  => round_icon_src('close'),
+            'round-blank'  => round_icon_src('blank'),
         ];
     }
 }
