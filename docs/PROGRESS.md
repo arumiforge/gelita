@@ -219,4 +219,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `hud-kristal-serpihan` | Install U-07 (shard frame) and U-36 (crystal); mark the 15 pictures of PR #428 accepted | Done, PR open; remove this row when it merges |
