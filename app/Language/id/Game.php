@@ -519,6 +519,7 @@ return [
     'scenarioSituationAlt' => 'Gambar situasi cerita ini',
     'scenarioActions'     => 'Apa yang akan kamu lakukan?',
     'instructionListen'   => 'Dengarkan instruksi',
+    'scenarioHintListen'  => 'Dengarkan petunjuk',
 
     // Part 7 (33 §11): research mode in the game, media fixes M-07, M-08, M-10
     'smallScreenTitle'   => 'Layarnya terlalu kecil',

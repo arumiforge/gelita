@@ -302,7 +302,9 @@ const screens = [
 for (const region of REGIONS) {
   screens.push([`dialog-${region}`, `dialog/${region}`, { tap: '.narrator-tap-btn' }]);
   screens.push([`wilayah-${region}`, `wilayah/${region}`]);
-  for (let n = 1; n <= 4; n++) {
+  // Challenge 5 (Skenario Digital) opens after its bridge story, once per student (part 6)
+  for (let n = 1; n <= 5; n++) {
+    if (n === 5) screens.push([`penghubung-${region}`, `penghubung/${region}`]);
     screens.push([`misi-${region}-${n}`, `misi/${region}/${n}`]);
     screens.push([`tantangan-${region}-${n}`, `tantangan/${region}/${n}`]);
     // Modal hasil percobaan pertama (tantangan batch) — hanya di wilayah pertama

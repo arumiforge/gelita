@@ -519,6 +519,7 @@ return [
     'scenarioSituationAlt' => 'Picture of this story\'s situation',
     'scenarioActions'     => 'What would you do?',
     'instructionListen'   => 'Listen to the instructions',
+    'scenarioHintListen'  => 'Listen to the instructions',
 
     // Part 7 (33 §11): research mode in the game, media fixes M-07, M-08, M-10
     'smallScreenTitle'   => 'This screen is too small',

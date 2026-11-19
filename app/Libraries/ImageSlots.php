@@ -503,6 +503,17 @@ final class ImageSlots
             'priority'    => 'wajib',
             'admin'       => ['Atur di halaman wilayah', 'admin/konten/level/{level_id}'],
         ],
+        // Skenario Digital screen of 41 (SD-12 to SD-14, accepted by the owner 19 November 2026)
+        'bg.*.skenario' => [
+            'group'       => 'region',
+            'label'       => 'Latar Skenario Digital {Wilayah}',
+            'content'     => 'Lanskap khas {Wilayah} di belakang layar Skenario Digital yang tanpa kotak: langit terang di 12% atas untuk kepala layar, gunung di pita cakrawala, lalu bagian tengah dan bawah tenang, agak gelap, dan sedikit detail supaya teks krem dan garis emas terbaca di kedua sisi. Tanpa tokoh dan tulisan.',
+            'screens'     => [['Tantangan kelima (Skenario Digital)', '/tantangan/{wilayah}/5']],
+            'format'      => 'WebP atau JPG kualitas ± 80, paling besar ± 450 KB',
+            'transparent' => false,
+            'fallback'    => 'Latar tantangan, lalu latar wilayah (bg.{wilayah}.region)',
+            'priority'    => 'opsional',
+        ],
         'map.region.*' => [
             'group'       => 'region',
             'label'       => 'Peta wilayah {Wilayah}',
@@ -848,7 +859,7 @@ final class ImageSlots
         }
 
         foreach ($prefixes as $code) {
-            if (in_array($assetKey, ["bg.{$code}.region", "map.region.{$code}", "reward.badge.{$code}", "map.pin.{$code}", "map.lantern.{$code}", "bg.loading.{$code}", "bg.result.{$code}"], true)
+            if (in_array($assetKey, ["bg.{$code}.region", "map.region.{$code}", "reward.badge.{$code}", "map.pin.{$code}", "map.lantern.{$code}", "bg.loading.{$code}", "bg.result.{$code}", "bg.{$code}.skenario"], true)
                 || str_starts_with($assetKey, "library.{$code}.")) {
                 return $code;
             }

@@ -4606,59 +4606,129 @@ html.js .book-frame img.is-loaded { opacity: 1; }
 .stage .btn-primary:active { filter: brightness(1.18); }
 .stage[style*="--plate-gold"] .btn-primary:active { background: none; filter: drop-shadow(0 .125rem .25rem rgba(1, 7, 19, .5)) brightness(1.18); }
 
-/* ---------- Skenario Digital (part 6, 32 §6) ----------
-   One scenario at a time: the situation on parchment-dark glass on the left,
-   the two steps on the right. A picked choice gets the ● mark and a gold
-   glow (never colour alone); feedback is never red (18). */
-.scenario-situation, .scenario-steps { display: flex; flex-direction: column; gap: var(--gap-3); padding: var(--gap-3) var(--gap-4); border-radius: var(--radius); background: rgba(11, 19, 32, .62); }
-.scenario-head { display: flex; align-items: center; justify-content: space-between; gap: var(--gap-3); }
-.scenario-head .eyebrow { color: var(--gold-300); font-weight: 700; }
-.scenario-figure { margin: 0; }
-.scenario-figure img { display: block; width: 100%; height: auto; max-height: 15rem; object-fit: contain; border-radius: var(--radius); }
-.scenario-prompt { margin: 0; color: var(--parchment, #F4E9D2); font-size: var(--fs-body-lg, 1.125rem); line-height: 1.55; }
+/* ---------- Skenario Digital (part 6, 32 §6; screen of 41, step D, 19 November 2026) ----------
+   The owner-approved mockup of 41 (decisions 17–43): two sides straight on the region's background,
+   no panel frames. Every interface part is a picture of 41 §8 (SD-01 to SD-11), passed by
+   skenario.php as --sd-* on #scenario and drawn at its display size (the box has the picture's
+   own size, so 100% 100% never stretches it). Sizes in dp ÷ 16. A picked choice gets the ●
+   mark and the chosen plate with a glow (never colour alone); feedback is never red (18). */
+.challenge-skenario .challenge-aside { display: none; }
+.scenario-situation, .scenario-steps { display: flex; flex-direction: column; color: #FFF4D6; }
+.scenario-steps { padding-top: .375rem; }
+
+/* Left: "Cerita 1 dari 4", one bar per story, Kesempatan; a soft shadow keeps the small labels
+   readable over the light sky of the Magelang and Wonosobo backgrounds (Codex's note, PR #428) */
+.scenario-head { display: flex; align-items: center; gap: .875rem; flex: none; height: 2.5rem; font-size: 1.125rem; font-weight: 600; text-shadow: 0 .0625rem .1875rem rgba(0, 0, 0, .9), 0 0 .5rem rgba(0, 0, 0, .7); }
+.scenario-bars { display: flex; gap: .375rem; }
+.scenario-bars i { width: 2.125rem; height: .5rem; border: .0625rem solid rgba(223, 192, 135, .55); border-radius: .25rem; background: rgba(11, 19, 32, .55); box-shadow: 0 0 .25rem rgba(0, 0, 0, .6); }
+.scenario-bars i.is-closed { background: #B8893F; }
+.scenario-bars i.is-current { background: #DFC087; box-shadow: 0 0 .5rem rgba(240, 223, 184, .6); }
+.scenario-tries { display: inline-flex; align-items: center; gap: .5rem; margin-left: auto; font-size: .9375rem; font-weight: 400; }
+.scenario-tries .tries-dots { gap: .375rem; }
+.scenario-tries .tries-dot { width: 1.125rem; height: 1.125rem; border: .125rem solid #B8893F; background: rgba(11, 19, 32, .4); }
+.scenario-tries .tries-dot.is-left { border-color: #DFC087; background: radial-gradient(circle at 35% 35%, #F0DFB8, #B8893F); box-shadow: 0 0 .375rem rgba(240, 223, 184, .5); }
+
+/* The 3 : 2 picture, whole (1536 × 1024 at 504 × 336), with the listen pill at its bottom centre */
+.scenario-figure { position: relative; flex: none; width: 31.5rem; margin: .375rem auto 0; border-radius: .625rem; box-shadow: 0 .25rem .875rem rgba(0, 0, 0, .5); }
+.scenario-figure[hidden] { display: none; }
+.scenario-figure > img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; border-radius: .625rem; }
+.scenario-prompt { margin: .75rem 0 0; padding: 0 .875rem; font-size: 1.25rem; line-height: 1.45; text-shadow: 0 .0625rem .1875rem rgba(0, 0, 0, .6); }
+.scenario-prompt.is-long { font-size: 1.1875rem; }
+
+/* The players: ▶ and the label; while a recording plays, "Sedang dibacakan…", the moving wave and
+   the file's duration (41 decisions 6, 33, 37). The wave stands still and hides when it stops. */
+.sd-player { display: flex; flex-wrap: nowrap; align-items: center; padding: 0; border: 0; border-radius: 0; background: none; color: #FFF4D6; }
+.sd-player .audio-controls { display: flex; flex: none; align-items: center; }
+.sd-player .audio-btn { display: inline-flex; align-items: center; gap: .875rem; width: auto; min-width: 0; height: auto; min-height: 3rem; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; color: inherit; font-family: var(--font-body); font-size: 1.25rem; font-weight: 600; white-space: nowrap; cursor: pointer; }
+.sd-player .audio-btn[hidden] { display: none; }
+.sd-player .audio-btn:focus-visible { outline: .1875rem solid var(--gold-300); outline-offset: .125rem; border-radius: 1.5rem; }
+.sd-player-art { flex: none; width: 2.625rem; height: 2.625rem; }
+.sd-wave { display: none; flex: 1; align-items: center; justify-content: center; gap: .1875rem; height: 1.875rem; min-width: 0; overflow: hidden; }
+.sd-wave i { flex: none; width: .1875rem; height: calc(var(--h) * var(--dp)); border-radius: .125rem; background: #DFC087; animation: sd-wave 1s ease-in-out infinite; animation-delay: var(--d); }
+.sd-dur { display: none; color: #C9C2B0; font-size: .9375rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.sd-player.is-playing .sd-wave { display: flex; }
+.sd-player.is-playing .sd-dur:not(:empty) { display: inline; }
+@keyframes sd-wave { 0%, 100% { transform: scaleY(.35); } 50% { transform: scaleY(1); } }
+@media (prefers-reduced-motion: reduce) { .sd-wave i { animation: none; } }
+.sd-player .clue-voice-off, .sd-player .audio-error { display: none; }
+.sd-player.is-error .clue-voice-off { display: inline-flex; color: #C9C2B0; }
+
+/* Dengarkan cerita: the pill SD-10 (252 × 52), SD-11 (480 × 52) while it plays */
+.scenario-voice { position: absolute; left: 50%; bottom: .75rem; transform: translateX(-50%); }
 .scenario-voice:empty { display: none; }
-.scenario-audio .audio-btn { display: inline-flex; align-items: center; gap: .375rem; width: auto; padding: 0 var(--gap-3); }
-.scenario-stepper { display: flex; gap: var(--gap-2); margin: 0; padding: 0; list-style: none; }
-.scenario-stepper li { padding: .25rem var(--gap-3); border: 1px solid var(--line-strong); border-radius: var(--radius-pill); color: var(--gold-300); opacity: .6; }
-.scenario-stepper li.is-current { opacity: 1; border-color: var(--gold-500); background: rgba(199, 162, 101, .18); }
+.sd-player.is-story { gap: .875rem; width: 15.75rem; height: 3.25rem; padding: 0 1.375rem 0 .375rem; background: var(--sd-listen) center / 100% 100% no-repeat; }
+.sd-player.is-story[hidden] { display: none; }
+.sd-player.is-story.is-playing { width: 30rem; padding-right: 1.125rem; background-image: var(--sd-listen-wide); }
+.sd-player.is-story .audio-btn { min-height: 3.25rem; }
+
+/* Right: the two tabs SD-04 to SD-07 (148 × 44); the number medallion is in the picture, the word is
+   centred on the plain body (x 42–143, y 9–40 dp) */
+.scenario-stepper { display: flex; align-self: center; gap: .625rem; margin: 0; padding: 0; list-style: none; }
 .scenario-stepper[hidden] { display: none; }
-.scenario-question { margin: 0; color: var(--gold-300); font-size: var(--fs-h4, 1.125rem); }
-.scenario-chosen { margin: 0; color: var(--parchment, #F4E9D2); font-style: italic; }
-.scenario-options { display: grid; gap: var(--gap-2); }
-.scenario-option {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--gap-2);
-  min-height: var(--tap);
-  padding: var(--gap-2) var(--gap-3);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius);
-  background: rgba(20, 32, 54, .85);
-  color: #F3D58A;
-  cursor: pointer;
-  transition: transform .15s, border-color .15s, box-shadow .15s;
-}
+.scenario-stepper li { display: flex; align-items: center; justify-content: center; width: 9.25rem; height: 2.75rem; padding: .25rem .3125rem 0 2.625rem; color: #C9C2B0; font-size: 1.0625rem; font-weight: 600; background: var(--sd-step-1) center / 100% 100% no-repeat; }
+.scenario-stepper li[data-step="reason"] { background-image: var(--sd-step-2); }
+.scenario-stepper li.is-current { color: #2A1A08; background-image: var(--sd-step-1-on); }
+.scenario-stepper li[data-step="reason"].is-current { background-image: var(--sd-step-2-on); }
+
+/* ▶ Dengarkan petunjuk above the instruction, no box, a thin line below (41 decision 33) */
+.scenario-hint { flex: none; margin: .75rem 0 0; padding: 0 .25rem .75rem; border-bottom: .0625rem solid rgba(223, 192, 135, .3); }
+.scenario-hint[hidden] { display: none; }
+.sd-player.is-hint { gap: .625rem; height: 2.25rem; }
+.sd-player.is-hint .audio-btn { gap: .625rem; margin-block: -.375rem; color: #DFC087; }
+.sd-player.is-hint .sd-player-art { width: 2rem; height: 2rem; }
+.sd-player.is-hint .sd-wave { flex: 0 1 13.75rem; height: 1.5rem; }
+.scenario-instruction { margin: .375rem 0 0; font-size: 1.25rem; line-height: 1.4; text-align: left; }
+
+/* Every text on the right at the situation's size, 20 dp (41 decision 35) */
+.scenario-body { display: flex; flex-direction: column; min-height: 0; }
+.scenario-question { margin: .75rem 0 0; color: #F0DFB8; font-family: var(--font-body); font-size: 1.25rem; font-weight: 600; line-height: 1.35; text-align: left; }
+.scenario-chosen { display: flex; align-items: flex-start; gap: .625rem; margin: .75rem 0 0; padding: 0 .25rem .75rem; border-bottom: .0625rem solid rgba(223, 192, 135, .3); font-size: 1.25rem; line-height: 1.4; }
+.scenario-chosen-mark { flex: none; color: #DFC087; }
+.scenario-chosen b { color: #DFC087; font-weight: 600; }
+
+/* Choices: no plate until picked; the picked one wears SD-08 (584 × 54) or, when its text wraps, SD-09
+   (584 × 70), with ● and a soft glow that follows the plate's outline (41 decision 42) */
+.scenario-options { display: flex; flex-direction: column; gap: .625rem; margin: .875rem 0 0; }
+.scenario-options:has(> :nth-child(4)) { gap: .5rem; }
+.scenario-option { position: relative; display: flex; align-items: center; gap: .875rem; flex: none; height: 3.375rem; padding: 0 1.125rem; border-radius: .75rem; background: none center / 100% 100% no-repeat; font-size: 1.25rem; line-height: 1.3; text-shadow: 0 .0625rem .1875rem rgba(0, 0, 0, .7); cursor: pointer; }
+.scenario-option.is-two { height: 4.375rem; }
 .scenario-option input { position: absolute; opacity: 0; pointer-events: none; }
-.scenario-option::before { content: "○"; flex: none; width: 1.25rem; color: var(--gold-500); }
-.scenario-option:has(input:checked) { border-color: var(--gold-300); color: #FFF3C4; box-shadow: 0 0 .5rem rgba(255, 210, 110, .7); }
-.scenario-option:has(input:checked)::before { content: "●"; }
-.scenario-option:has(input:focus-visible) { outline: .1875rem solid var(--gold-500); outline-offset: .125rem; }
-.scenario-option:active { transform: scale(.98); }
-@media (hover: hover) { .scenario-option:hover { border-color: var(--gold-500); } }
-.scenario-feedback, .scenario-safe, .scenario-explanation, .scenario-tries-left { margin: 0; color: var(--parchment, #F4E9D2); line-height: 1.5; }
-.scenario-feedback { padding: var(--gap-3); border-left: .25rem solid var(--gold-500); background: rgba(199, 162, 101, .12); }
-.scenario-feedback.is-safe { border-left-color: #6FBF73; }
-.scenario-safe { font-weight: 700; color: #FFF3C4; }
+.scenario-option-mark { display: grid; flex: none; place-items: center; width: 1.5rem; height: 1.5rem; border: .125rem solid #DFC087; border-radius: 50%; }
+.scenario-option:has(input:checked) { background-image: var(--sd-chosen); filter: drop-shadow(0 0 .5rem rgba(240, 223, 184, .45)); }
+.scenario-option.is-two:has(input:checked) { background-image: var(--sd-chosen-2); }
+.scenario-option:has(input:checked) .scenario-option-mark::after { content: ""; width: .75rem; height: .75rem; border-radius: 50%; background: #F0DFB8; box-shadow: 0 0 .375rem #F0DFB8; }
+.scenario-option:has(input:focus-visible) { outline: .1875rem solid var(--gold-300); outline-offset: .125rem; }
+.scenario-option:active { transform: scale(.99); }
+@media (hover: hover) { .scenario-option:not(:has(input:checked)):hover { background-color: rgba(11, 19, 32, .45); } }
+
+/* Feedback and the safe action after the third try (32 §6.2) */
+.scenario-feedback { margin: 1.125rem 0 0; padding: 1rem 1.25rem; border: .09375rem solid rgba(223, 192, 135, .5); border-radius: .75rem; background: rgba(11, 19, 32, .86); font-size: 1.1875rem; line-height: 1.45; }
+.scenario-feedback.is-safe { border-color: #F0DFB8; box-shadow: 0 0 .875rem rgba(240, 223, 184, .3); }
+.scenario-tries-left { margin: .75rem 0 0; color: #C9C2B0; font-size: 1.0625rem; line-height: 1.4; text-align: center; }
+.scenario-tries-left.is-closed { margin-top: .25rem; }
+.scenario-safe { margin: .625rem 0 0; padding: .75rem 1.125rem; border: .09375rem solid #F0DFB8; border-radius: .75rem; background: rgba(20, 46, 58, .92); font-size: 1.1875rem; font-weight: 600; line-height: 1.35; }
+.scenario-explanation { margin: .75rem 0 0; font-size: 1.125rem; line-height: 1.45; }
+
+/* Buttons of the step at the bottom of the right side (y 626). Forward SD-01 (284 × 58) or SD-02
+   (392 × 58), Kembali SD-03 (248 × 58); each label sits in the middle of its plate's plain body,
+   measured on the pictures: SD-01 x 27–222, y 11–52; SD-02 x 25–333, y 10–52; SD-03 x 58–228,
+   y 11–49 (41 decision 40). A button not yet active is the same picture, dimmed. */
+.scenario-actions { display: flex; flex: none; justify-content: center; gap: 1rem; margin-top: auto; padding: .75rem 0 .25rem; }
+.sd-btn { display: inline-flex; align-items: center; justify-content: center; flex: none; width: 17.75rem; height: 3.625rem; padding: .6875rem 3.875rem .375rem 1.6875rem; border: 0; background: var(--sd-next) center / 100% 100% no-repeat; color: #FFF4D6; font-family: var(--font-body); font-size: 1.3125rem; font-weight: 700; line-height: 1; white-space: nowrap; cursor: pointer; }
+.sd-btn[hidden] { display: none; }
+.sd-btn.is-long { width: 24.5rem; padding: .625rem 3.6875rem .375rem 1.5625rem; background-image: var(--sd-next-long); }
+.sd-btn.is-back { width: 15.5rem; padding: .6875rem 1.25rem .5625rem 3.625rem; background-image: var(--sd-back); }
+.sd-btn:disabled { filter: grayscale(.6) brightness(.7); cursor: default; }
+.sd-btn:focus-visible { outline: .1875rem solid var(--gold-300); outline-offset: .125rem; border-radius: 1.8125rem; }
+.sd-btn:not(:disabled):active { filter: brightness(1.15); }
+@media (hover: hover) { .sd-btn:not(:disabled):hover { filter: brightness(1.1) drop-shadow(0 0 .5rem var(--glow)); } }
 .instruction-audio { display: inline-flex; margin-left: var(--gap-2); vertical-align: middle; }
-/* In the one-band asides (Isi Rumpang, Benar atau Salah, Skenario Digital) the instruction ▶ sits
+/* In the one-band asides (Isi Rumpang, Benar atau Salah) the instruction ▶ sits
    beside the text: as a grid row of its own it fell below the band, cut off and out of reach
    (manual check 32 §15.3 no. 4–5, 14 November 2026) */
-:is(.challenge-rumpang, .challenge-boleh, .challenge-skenario) .challenge-aside:has(> .instruction-audio) { grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: var(--gap-2); }
-:is(.challenge-rumpang, .challenge-boleh, .challenge-skenario) .challenge-aside:has(> .instruction-audio) > :not(.instruction, .instruction-audio) { grid-column: 1 / -1; }
-:is(.challenge-rumpang, .challenge-boleh, .challenge-skenario) .challenge-aside > .instruction-audio { margin-left: 0; padding: .125rem; }
-/* Two lines of the Skenario Digital instruction in its 60 dp band, at the reading size (33 M-06) */
-.challenge-skenario .instruction { line-height: 1.3; }
+:is(.challenge-rumpang, .challenge-boleh) .challenge-aside:has(> .instruction-audio) { grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: var(--gap-2); }
+:is(.challenge-rumpang, .challenge-boleh) .challenge-aside:has(> .instruction-audio) > :not(.instruction, .instruction-audio) { grid-column: 1 / -1; }
+:is(.challenge-rumpang, .challenge-boleh) .challenge-aside > .instruction-audio { margin-left: 0; padding: .125rem; }
 /* Two lines of the Isi Rumpang instruction card in its 66 dp band: 2 × 22 dp × 1.25 + padding and border */
 .challenge-rumpang .instruction.is-card { padding-block: .25rem; line-height: 1.25; }
 /* R-26 (39, 16 November 2026): the calm carved-gold plate behind the Isi Rumpang instruction. The

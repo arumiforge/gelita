@@ -29,18 +29,22 @@ final class InstructionBandCssTest extends CIUnitTestCase
         return ['x' => (int) $m[1], 'y' => (int) $m[2], 'w' => (int) $m[3], 'h' => (int) $m[4]];
     }
 
-    public function testScenarioInstructionBandHoldsTwoLinesAboveTheSteps(): void
+    /**
+     * Skenario Digital since 41 step D (19 November 2026): no instruction band; the two sides
+     * of the approved mockup, 584 dp high below the header, with the instruction and the
+     * buttons inside the right side (41 §3, decisions 5, 33).
+     */
+    public function testScenarioSidesFillTheArenaBelowTheHeader(): void
     {
-        $aside = $this->box('.challenge-skenario .challenge-aside');
-        $steps = $this->box('.challenge-skenario .scenario-steps');
-        $bar   = $this->box('.challenge-skenario .arena-actions');
+        $head  = $this->box('.challenge-head');
+        $left  = $this->box('.challenge-skenario .scenario-situation');
+        $right = $this->box('.challenge-skenario .scenario-steps');
 
-        // Two lines at the reading size (22 dp on the 1280 dp stage) × line-height 1.3 = 57.2 dp
-        $this->assertGreaterThanOrEqual(58, $aside['h']);
-        $this->assertMatchesRegularExpression('~\.challenge-skenario \.instruction\s*\{\s*line-height:\s*1\.3;~', $this->css('game'));
-        // The steps panel starts below the band and ends above the action bar
-        $this->assertGreaterThanOrEqual($aside['y'] + $aside['h'], $steps['y']);
-        $this->assertLessThanOrEqual($bar['y'], $steps['y'] + $steps['h']);
+        $this->assertSame(['x' => 32, 'y' => 104, 'w' => 600, 'h' => 584], $left);
+        $this->assertSame(['x' => 664, 'y' => 104, 'w' => 584, 'h' => 584], $right);
+        $this->assertGreaterThanOrEqual($head['y'] + $head['h'], $left['y']);
+        $this->assertMatchesRegularExpression('~\.challenge-skenario \.challenge-aside\s*\{\s*display:\s*none;~', $this->css('game'));
+        $this->assertStringNotContainsString('.challenge-skenario .arena-actions', $this->css('stage'));
     }
 
     public function testInstructionPlayButtonSitsBesideTheTextOnBandAsides(): void
@@ -48,7 +52,7 @@ final class InstructionBandCssTest extends CIUnitTestCase
         $css = $this->css('game');
 
         $this->assertMatchesRegularExpression(
-            '~:is\(\.challenge-rumpang, \.challenge-boleh, \.challenge-skenario\) \.challenge-aside:has\(> \.instruction-audio\)\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\) auto;~',
+            '~:is\(\.challenge-rumpang, \.challenge-boleh\) \.challenge-aside:has\(> \.instruction-audio\)\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\) auto;~',
             $css,
         );
         // The button box (48 dp + padding) fits the 60 dp band
