@@ -6,6 +6,12 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 ## 19 November 2026
 
+**Gambar Codex untuk Skenario Digital diterima; kristal dan bingkai Serpihan Cahaya dipasang** (PR #428 dan cabang `hud-kristal-serpihan`, dokumen [40](40_PROMPT_GAMBAR_ANTARMUKA.md) `U-07`, `U-36` dan [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) §8) · `asal: pengembang` · `disetujui pengembang` · gambar dan tampilan HUD; aturan penelitian dan data tidak berubah
+
+1. **Kelima belas gambar PR #428 diterima** (dibuat Codex, diperiksa sesi Claude: ukuran kanvas, transparansi, label terpanjang pada ukuran tampil, tab dalam hitam putih, latar tanpa orang dan kabut). Catatan kecil dari Codex dibiarkan: badan tab sedikit lebih pendek dari pesanan, dan label kecil di bagian atas latar Magelang dan Wonosobo kurang kontras di atas awan (diberi bayangan di langkah D).
+2. **`U-07` dan `U-36` dipasang bersama:** bingkai baru menggantikan `hud-shards-frame.webp` (ukuran dan tata letak sama), kristal menjadi gambar tersendiri `hud-shards-crystal.webp` di lubang bingkai (kotak dokumen 40), di bawah cahaya `.lantern-gem` yang dipindah ke kotak yang sama. Diperiksa di ketiga ukuran papan (Peta Kedu, peta wilayah, halaman ringkas) dan keempat tahap cahaya.
+3. **Bagian `SD-` dan ketiga latar** berstatus `accepted` dan dipasang bersama langkah D (latar sebagai slot baru `bg.{wilayah}.skenario`, langkah E).
+
 **Judul umpan balik Skenario Digital; langkah D tetap untuk sesi Claude** (cabang `skenario-judul-umpan-balik`, dokumen [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) §3) · `asal: pengembang` · `disetujui pengembang` · teks tampilan; aturan penelitian dan data tidak berubah
 
 1. **Judul umpan balik memakai teks mockup:** "Pilihan yang aman!" setelah tindakan aman, selain itu "Ayo pikirkan lagi"; bahasa Inggris "A safe choice!" dan "Let's think again". Dipasang di langkah D lewat berkas bahasa.

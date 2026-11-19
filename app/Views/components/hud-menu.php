@@ -29,7 +29,8 @@
  *        challenge header is the top row (it replaced `region-centre`, the
  *        region name in the middle of the HUD, of 21 October 2026).
  * Middle: the shard plate on in-game pages (the owner's carved frame
- *        `assets/ui/hud-shards-frame.webp`, the bar filled by the page with
+ *        `assets/ui/hud-shards-frame.webp`, with the crystal `hud-shards-crystal.webp`
+ *        in its socket since 19 November 2026 (U-07, U-36), the bar filled by the page with
  *        `hud-shards-fill.webp`; on the left with `title-centre`); a page
  *        sets section `hudShards` = `off` to leave it out (the result screen
  *        shows shards in its panel).
@@ -134,7 +135,7 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
 
   <?php if ($shards): ?>
     <?php // The owner's shard plate (20 October 2026); absolute URLs, as for Kenali's plates ?>
-    <div class="hud-shards" style="--shards-frame: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-frame.webp'), 'attr') ?>&quot;); --shards-fill: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-fill.webp'), 'attr') ?>&quot;)"><?= $this->include('components/lantern') ?></div>
+    <div class="hud-shards" style="--shards-frame: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-frame.webp'), 'attr') ?>&quot;); --shards-fill: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-fill.webp'), 'attr') ?>&quot;); --shards-crystal: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-crystal.webp'), 'attr') ?>&quot;)"><?= $this->include('components/lantern') ?></div>
   <?php endif ?>
 
   <?php if ($backEnd): ?><div class="hud-end"><?php endif ?>

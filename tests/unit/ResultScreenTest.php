@@ -110,6 +110,8 @@ final class ResultScreenTest extends CIUnitTestCase
         // The owner's shard plate (20 October 2026): frame and fill texture as absolute URLs, the crystal's glow layer
         $this->assertStringContainsString('--shards-frame: url(&quot;' . esc(asset_url_versioned('ui/hud-shards-frame.webp'), 'attr') . '&quot;)', $other);
         $this->assertStringContainsString('--shards-fill: url(&quot;' . esc(asset_url_versioned('ui/hud-shards-fill.webp'), 'attr') . '&quot;)', $other);
+        // U-36 (19 November 2026): the crystal is its own picture in the frame's socket
+        $this->assertStringContainsString('--shards-crystal: url(&quot;' . esc(asset_url_versioned('ui/hud-shards-crystal.webp'), 'attr') . '&quot;)', $other);
         $this->assertStringContainsString('<span class="lantern-gem" aria-hidden="true"></span>', $other);
         $this->assertMatchesRegularExpression('/<span class="lantern-row">\s*<span class="lantern-count num"><b>5<\/b>\/12<\/span>\s*<span class="lantern-bar"/', $other, 'the bar beside the count');
         foreach (['class="hud-pop hud-lang"', 'id="btn-sound"', 'class="hud-pop hud-menu"', '<span class="hud-identity-region">Temanggung</span>'] as $needle) {
@@ -157,6 +159,9 @@ final class ResultScreenTest extends CIUnitTestCase
         $this->assertStringContainsString('var(--shards-fill) left center', $css, 'the fill uses the owner\'s texture, not one flat colour');
         $this->assertStringContainsString('.hud-shards .lantern-toggle > .flame { display: none; }', $css, 'the crystal replaces the lantern icon');
         $this->assertMatchesRegularExpression('/\.hud-shards \.lantern\[data-stage="3"\] \.lantern-gem \{[^}]*animation: gem-pulse/', $css);
+        $this->assertFileExists(FCPATH . 'assets/ui/hud-shards-crystal.webp');
+        $this->assertMatchesRegularExpression('/\.hud-shards \.lantern-toggle::before \{[^}]*top: 17\.7%;[^}]*left: 5\.29%;[^}]*width: 10\.57%;[^}]*height: 65\.3%;[^}]*background: var\(--shards-crystal\)/', $css, 'the crystal in the socket box of document 40');
+        $this->assertMatchesRegularExpression('/\.hud-shards \.lantern-gem \{[^}]*top: 17\.7%;[^}]*left: 5\.29%;/', $css, 'the glow over the crystal');
         // Owner, 20 October 2026: the compact plate fits the 56 dp strip with room above and below
         $this->assertStringContainsString('.is-compact .hud-shards { --plate-w: 16rem;', $css);
     }
