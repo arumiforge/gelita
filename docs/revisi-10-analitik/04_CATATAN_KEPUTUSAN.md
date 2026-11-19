@@ -9,7 +9,7 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 **Papan Serpihan Cahaya di layar cerita dan gambar halaman galat** (cabang `igi/laughing-fermi-ifbg3l`, dokumen [40](40_PROMPT_GAMBAR_ANTARMUKA.md) → *PL-10 sampai PL-12*) · `asal: pengembang` · `disetujui pengembang` · kode tampilan
 
 1. Di dialog wilayah dan cerita penghubung, papan Serpihan Cahaya pindah ke tengah atas dan sedikit lebih kecil.
-2. Halaman galat (404, 500, dan galat lain) memakai satu kartu bergaya GELITA dalam bahasa Indonesia yang ramah; sebelumnya galat selain 404 dan 500 masih memakai halaman bawaan berbahasa Inggris. Gambar untuk ketiganya dipesan (`PL-10` sampai `PL-12`).
+2. Halaman galat (404, 500, dan galat lain) memakai satu kartu bergaya GELITA dalam bahasa Indonesia yang ramah; sebelumnya galat selain 404 dan 500 masih memakai halaman bawaan berbahasa Inggris. Gambar untuk ketiganya dipesan (`PL-10` sampai `PL-12`) sebagai latar layar penuh; tulisan berdiri langsung di atas gambar di sisi kiri, tanpa kotak atau bingkai.
 
 **Tombol tenang dan peta wilayah dari mockup pengembang** (cabang `igi/laughing-fermi-ifbg3l`, dokumen [40](40_PROMPT_GAMBAR_ANTARMUKA.md) → *PL-07 sampai PL-09*) · `asal: pengembang` · `disetujui pengembang` (wawancara putaran kedua) · kode tampilan; aturan penelitian dan data tidak berubah
 

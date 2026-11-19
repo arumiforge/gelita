@@ -1625,7 +1625,7 @@ Wawancara pengembang 19 November 2026 ([04](04_CATATAN_KEPUTUSAN.md)): halaman a
 | `PL-05` | Kristal Serpihan Cahaya tahap 3 (Wonosobo) | baru: `public/assets/ui/hud-shards-crystal-3.webp` | 444 × 564, latar transparan |
 | `PL-06` | Kristal Serpihan Cahaya tahap 4 (semua tuntas) | baru: `public/assets/ui/hud-shards-crystal-4.webp` | 444 × 564, latar transparan |
 | `PL-07` sampai `PL-09` | Tombol tenang emas, biru tua, hijau (putaran kedua, lihat di bawah) | baru: `public/assets/ui/ui-button-{gold,navy,green}.webp` | 960 × 160, latar transparan |
-| `PL-10` sampai `PL-12` | Gambar halaman galat 404, 500, dan lainnya (putaran ketiga, lihat di bawah) | baru: `public/assets/ui/error-{404,500,400}.webp` | 960 × 720 |
+| `PL-10` sampai `PL-12` | Latar halaman galat 404, 500, dan lainnya (putaran ketiga, lihat di bawah) | baru: `public/assets/ui/error-{404,500,400}.webp` | 1920 × 1080 |
 
 **Tahap kristal.** Tahap 1 tampil selama belum ada wilayah yang tuntas (hanya Temanggung yang terbuka), tahap 2 setelah Temanggung tuntas (Magelang terbuka), tahap 3 setelah Magelang tuntas (Wonosobo terbuka), tahap 4 setelah ketiga wilayah tuntas. Keempatnya bentuk dan ukuran yang sama dengan `U-36`; yang berubah hanya cahaya di dalamnya, makin lama makin terang. Game memilih gambar menurut tahap; selama gambar suatu tahap belum terpasang, `U-36` yang tampil.
 
@@ -1746,18 +1746,18 @@ Untuk `PL-08` dan `PL-09`, pakai prompt yang sama dengan baris *Asset* dan warna
 
 ### PL-10 sampai PL-12 · Gambar halaman galat (404, 500, lainnya)
 
-Wawancara pengembang 19 November 2026, putaran ketiga ([04](04_CATATAN_KEPUTUSAN.md)): halaman galat ikut bergaya GELITA dan diberi gambar. Ketiga halaman memakai satu kartu bersama (`app/Views/errors/html/_gelita.php`): gambar di atas, lalu kode kecil, judul, kalimat, dan tombol *Kembali ke awal*. Gambar tampil begitu berkasnya terpasang; sebelum itu kartu tetap tanpa gambar.
+Wawancara pengembang 19 November 2026, putaran ketiga ([04](04_CATATAN_KEPUTUSAN.md)): halaman galat ikut bergaya GELITA dan diberi gambar. Ketiga halaman memakai satu halaman bersama (`app/Views/errors/html/_gelita.php`). Atas permintaan pengembang di hari yang sama, gambar menjadi **latar layar penuh** dan tulisan (kode kecil, judul, kalimat, tombol *Kembali ke awal*) berdiri langsung di atasnya di sisi kiri, tanpa kotak atau bingkai; jadi sepertiga kiri gambar harus tenang dan gelap. Gambar tampil begitu berkasnya terpasang; sebelum itu latar biru tua polos.
 
 | Kode | Halaman | Teks halaman (sudah ada) | Berkas | Kanvas |
 |---|---|---|---|---|
-| `PL-10` | 404 | *Jalan ini tidak ada* | baru: `public/assets/ui/error-404.webp` | 960 × 720 |
-| `PL-11` | 500 (galat server) | *Lentera sedang padam* | baru: `public/assets/ui/error-500.webp` | 960 × 720 |
-| `PL-12` | 400 dan galat lain (403, 405, 429, …) | *Jalan ini sedang tertutup* | baru: `public/assets/ui/error-400.webp` | 960 × 720 |
+| `PL-10` | 404 | *Jalan ini tidak ada* | baru: `public/assets/ui/error-404.webp` | 1920 × 1080 |
+| `PL-11` | 500 (galat server) | *Lentera sedang padam* | baru: `public/assets/ui/error-500.webp` | 1920 × 1080 |
+| `PL-12` | 400 dan galat lain (403, 405, 429, …) | *Jalan ini sedang tertutup* | baru: `public/assets/ui/error-400.webp` | 1920 × 1080 |
 
 | | |
 |---|---|
 | Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `public/assets/ui/jaka-gate.webp` (Jaka, untuk `PL-10`), `ai-studio/game-images/assets/ikon/ui.lantern.webp` (`U-14`: Lentera Kedu, untuk `PL-11` dan `PL-12`) |
-| Aturan bersama | Gambar suasana, bukan antarmuka: tanpa tulisan, angka, atau tanda; tepi kiri, kanan, dan bawah memudar lembut ke biru tua #0B1320 supaya menyatu dengan kartu; tenang dan ramah, tidak menakutkan untuk anak. |
+| Aturan bersama | Latar layar penuh 16:9, bukan antarmuka: tanpa tulisan, angka, atau tanda; subjek di sisi KANAN (55 % sampai 95 % lebar); sepertiga KIRI tenang, gelap, dan sedikit detail karena tulisan halaman berdiri di sana tanpa kotak; tenang dan ramah, tidak menakutkan untuk anak. |
 
 ```text
 GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
@@ -1766,11 +1766,11 @@ Asset: error-404  (PL-10 · "this path does not exist")
 Characters: Jaka, the same boy as in the attached picture (white T-shirt, red scarf, batik sash, dark shorts, sandals, brown backpack), small in the scene, seen from behind three-quarter.
 
 SUBJECT AND COMPOSITION
-A misty fork in a footpath at dusk in the Kedu hills. Jaka stands at the fork holding an unrolled paper map, scratching his head, puzzled but not scared. A wooden signpost with two BLANK arrow boards (no writing) points both ways; both paths fade into soft blue mist. Gentle warm light from a few distant village windows, fireflies. Calm and a little funny, never gloomy.
-The lower third and the edges are calm and dark; the left, right and bottom edges fade softly into navy #0B1320.
+A misty fork in a footpath at dusk in the Kedu hills. Jaka, small, stands at the fork holding an unrolled paper map, scratching his head, puzzled but not scared. A wooden signpost with two BLANK arrow boards (no writing) points both ways; both paths fade into soft blue mist. Gentle warm light from a few distant village windows, fireflies. Calm and a little funny, never gloomy.
+Composition: wide 16:9 background. The subject sits in the RIGHT part of the picture (from 55% to 95% of the width). The LEFT third (0% to 40% of the width) is calm, dark navy (#0B1320 to #1B2740) with very little detail and no bright spots, because the page's title, sentence and button stand there directly on the picture without a box.
 
 DELIVERY
-Canvas exactly 960 × 720 pixels (4:3). Opaque. WebP, named error-404.webp.
+Canvas exactly 1920 × 1080 pixels (16:9). Opaque, full-bleed. WebP, named error-404.webp.
 
 CONSTRAINTS
 No text, letters, numbers, logos, watermarks or frames on the signpost or anywhere. No painterly 2D, gouache or paper grain.
@@ -1784,10 +1784,10 @@ Characters: no people.
 
 SUBJECT AND COMPOSITION
 The attached Lantern of Kedu (same carved gold design) standing on a mossy stone at night, its flame just gone out: a single thin, soft curl of pale smoke rises from the wick, and a tiny glowing ember still shows inside, hopeful. A few small golden sparks of light drift near it, as if waiting to light it again. Soft moonlight, deep navy surroundings, a hint of bamboo leaves. Calm, gentle, a little sad but hopeful; not broken, not burning.
-The edges fade softly into navy #0B1320.
+Composition: wide 16:9 background. The subject sits in the RIGHT part of the picture (from 55% to 95% of the width). The LEFT third (0% to 40% of the width) is calm, dark navy (#0B1320 to #1B2740) with very little detail and no bright spots, because the page's title, sentence and button stand there directly on the picture without a box.
 
 DELIVERY
-Canvas exactly 960 × 720 pixels (4:3). Opaque. WebP, named error-500.webp.
+Canvas exactly 1920 × 1080 pixels (16:9). Opaque, full-bleed. WebP, named error-500.webp.
 
 CONSTRAINTS
 No text, letters, numbers, logos, watermarks or frames. No fire, no damage. No painterly 2D, gouache or paper grain.
@@ -1801,10 +1801,10 @@ Characters: no people.
 
 SUBJECT AND COMPOSITION
 A small carved wooden village gate (Javanese style, simple) across a stone footpath in the Kedu hills at dusk, its two doors gently closed, the attached Lantern of Kedu hanging from the gate's beam and glowing softly, welcoming. Behind the gate the path continues into misty terraced hills and the far silhouette of twin volcanoes. The feeling: closed for a moment, open again soon. Friendly and calm.
-The edges fade softly into navy #0B1320.
+Composition: wide 16:9 background. The subject sits in the RIGHT part of the picture (from 55% to 95% of the width). The LEFT third (0% to 40% of the width) is calm, dark navy (#0B1320 to #1B2740) with very little detail and no bright spots, because the page's title, sentence and button stand there directly on the picture without a box.
 
 DELIVERY
-Canvas exactly 960 × 720 pixels (4:3). Opaque. WebP, named error-400.webp.
+Canvas exactly 1920 × 1080 pixels (16:9). Opaque, full-bleed. WebP, named error-400.webp.
 
 CONSTRAINTS
 No text, letters, numbers, signs, logos, watermarks or frames. No painterly 2D, gouache or paper grain.

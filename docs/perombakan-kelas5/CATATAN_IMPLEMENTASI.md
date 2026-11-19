@@ -1216,5 +1216,6 @@ Owner, third request the same day: move the Serpihan Cahaya plate to the top cen
 
 - **Shard plate:** on the region dialogue and the bridge story (`.is-region-dialogue`) it sits at the top centre, 320 dp wide (was under the logo at 24, 116, 360 dp).
 - **Error pages:** one shared card `app/Views/errors/html/_gelita.php` (inline CSS, no layout, the quiet gold button) for `error_404`, `error_500`, `error_400` and `production.php` (every other client error, which showed CodeIgniter's English "Whoops!" and "Bad Request" pages until now). New keys `Game.requestErrorTitle/Text`. A picture per kind shows once `public/assets/ui/error-{404,500,400}.webp` is installed (ordered as `PL-10` to `PL-12`, document 40). The 500 card still shows only the request_id.
+- **Text on the picture (owner, same day):** the error picture is the page's full-screen background (1920 × 1080, subject on the right), and the text stands straight on it in the calm left part with no box or border; a soft dark wash from the left keeps it readable. The orders `PL-10` to `PL-12` were changed to match.
 - **Checked.** `ErrorPagesTest` (new), screenshots of a story screen and the 404 page on the dev install.
 

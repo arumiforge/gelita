@@ -32,7 +32,9 @@ final class ErrorPagesTest extends CIUnitTestCase
         $this->assertStringContainsString(esc(lang('Game.notFoundTitle')), $page);
         $this->assertStringContainsString('href="' . esc(base_url()) . '"', $page);
         // The picture shows only once ui/error-404.webp is installed (PL-10)
-        $this->assertSame(is_file(FCPATH . 'assets/ui/error-404.webp'), str_contains($page, 'class="card has-art"'));
+        $this->assertSame(is_file(FCPATH . 'assets/ui/error-404.webp'), str_contains($page, '<body class="has-art"'));
+        // Owner, 19 November 2026: the text stands on the picture, no bordered box
+        $this->assertStringNotContainsString('class="card', $page);
     }
 
     public function testOtherClientErrorsAreFriendlyIndonesian(): void
