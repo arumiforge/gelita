@@ -878,8 +878,9 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 .map-frame   { --x: 32;  --y: 72;  --w: 880; --h: 566; }
 .map-side    { --x: 936; --y: 72;  --w: 312; --h: 576; }
 /* Region map under the 84 dp tall HUD (owner, 20 October 2026): both boxes 28 dp lower */
-.map-level .map-frame { --y: 100; }
-.map-level .map-side  { --y: 100; --h: 584; }
+/* The owner's mockup (19 November 2026): map card and side card, both 600 dp tall under the 84 dp HUD */
+.map-level .map-frame { --x: 32;  --y: 96; --w: 840; --h: 600; }
+.map-level .map-side  { --x: 888; --y: 96; --w: 360; --h: 600; }
 /* Narration strip over the bottom of the map, as wide as the map (owner, 12 October 2026):
    Jaka stands at its left end and rises into the map's empty lower-left corner; the strip
    stays below the lowest pin label (Magelang, about y 530) */

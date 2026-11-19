@@ -593,7 +593,8 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertDoesNotMatchRegularExpression('/\n\.kedu-(?:panel|story) \{[^}]*(?:border|background):/', $css);
         $this->assertStringNotContainsString('--skin-panel"] .kedu-panel', $css);
         // Owner, 20 October 2026: every badge picture wears the dark halo that follows its outline
-        foreach (['.shard.has-badge img', '.pin-badge', '.node-badge', '.badge-pos img', '.kedu-done.has-badge img'] as $badge) {
+        // (the region map's pin and card medallions left with the owner's mockup, 19 November 2026)
+        foreach (['.shard.has-badge img', '.badge-pos img', '.kedu-done.has-badge img'] as $badge) {
             $this->assertMatchesRegularExpression('/' . preg_quote($badge, '/') . ' \{[^}]*filter: var\(--badge-halo\);/', $css, $badge);
         }
         $this->assertMatchesRegularExpression('/<a class="kedu-btn is-primary" href="[^"]*"[^>]*>\s*<span>' . lang('Game.start') . '<\/span>\s*<\/a>/', $page);

@@ -48,7 +48,7 @@ const DECODE_MS = 1500;   // longest wait for the pictures before the entrance s
 /**
  * Cue: [selector (inside #stage), keyframes, start ms, duration ms, easing?, stagger ms?].
  * Lengths are rem: the stage is 80 × 45 rem, so 1 rem = 16 dp at every size.
- * @type {Record<string, { cues: Array<[string, Keyframe[] | PropertyIndexedKeyframes, number, number, string?, number?]>, fx?: string | null, light?: boolean, flare?: string, bars?: boolean }>}
+ * @type {Record<string, { cues: Array<[string, Keyframe[] | PropertyIndexedKeyframes, number, number, string?, number?]>, fx?: string | null, light?: boolean, rays?: boolean, flare?: string, bars?: boolean }>}
  */
 const SHEETS = {
   welcome: {
@@ -56,6 +56,8 @@ const SHEETS = {
     flare: '.welcome-hero',
     fx: 'sun',
     light: true,
+    // No light rays from above (owner, 19 November 2026): sparks and mist only
+    rays: false,
     // The picture rises out of the dark stage (opacity over the stage's own dark
     // background does what a brightness filter did, without re-rendering it)
     cues: [
@@ -226,7 +228,7 @@ async function startScreenFx(root, stage, sheet, prefetch) {
   try {
     const light = sheet.light ? findLight(stage.querySelector('.scene-img.is-visible')) : null;
     const [{ createScreenFx }] = (await prefetch) ?? [await import('./screen-fx.js')];
-    const fx = await createScreenFx(root, { threeUrl, light, quality: 1 });
+    const fx = await createScreenFx(root, { threeUrl, light, quality: 1, rays: sheet.rays !== false });
     if (!fx) return;
     fx.setEffect(sheet.fx);
     fx.resume();

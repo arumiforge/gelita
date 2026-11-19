@@ -1819,3 +1819,131 @@ body.has-kenal { overflow: hidden; }
   .cc-mist { display: none; }
 }
 
+
+/* ===================== QUIET BUTTONS (owner, 19 November 2026) =====================
+   Every text button of the game (Mulai, Lanjut, Kembali, Lihat hasil, Mulai tantangan, Cek
+   jawabanku, the dialog buttons, Masuk, Daftar, …) is one quiet family instead of the carved
+   plates with long scroll ends: a smooth capsule with a thin bright bead edge, the label in the
+   middle and its arrow in a small inset box (the owner's mockup of the region map). Gold = the
+   main action, navy = the quiet one, green = Lihat hasil, red = a danger action. The carved
+   gold stays on frames, the HUD's round buttons and the medallions. The rules sit here, last,
+   under #stage, so they win over every plate rule of game.css and the sections above without
+   !important; each button keeps the height its own rule gives it. The stretchable pictures
+   ordered as PL-07 to PL-09 (document 40) may later replace the CSS faces. The Skenario
+   Digital buttons (SD pictures of 41) and the answer choices keep their own look. */
+#stage {
+  --qb-radius: .875rem;
+  --qb-shadow: 0 .3125rem .875rem rgba(2, 8, 20, .45);
+  --qb-gold-face: linear-gradient(180deg, #FFF4D2 0%, #F4D891 34%, #E2BA68 68%, #CB9C48 100%);
+  --qb-gold-edge: 0 0 0 .0625rem #7E5A1E, inset 0 0 0 .0625rem rgba(255, 249, 228, .9), inset 0 .125rem 0 rgba(255, 255, 255, .55), inset 0 -.1875rem 0 rgba(120, 80, 20, .32);
+  --qb-gold-ink: #24170A;
+  --qb-navy-face: linear-gradient(180deg, #253A60 0%, #172846 55%, #0F1B33 100%);
+  --qb-navy-edge: 0 0 0 .0625rem rgba(223, 192, 135, .8), inset 0 .0625rem 0 rgba(255, 255, 255, .14), inset 0 -.125rem 0 rgba(0, 0, 0, .35);
+  --qb-navy-ink: #F3DFA8;
+  --qb-green-face: linear-gradient(180deg, #3F7D50 0%, #2A5D3B 55%, #1D462C 100%);
+  --qb-green-edge: 0 0 0 .0625rem rgba(223, 192, 135, .85), inset 0 .0625rem 0 rgba(255, 255, 255, .2), inset 0 -.125rem 0 rgba(0, 0, 0, .3);
+  --qb-green-ink: #FBEFCB;
+  --qb-red-face: linear-gradient(180deg, #E8846B 0%, #C9533D 50%, #A63A28 100%);
+  --qb-red-edge: 0 0 0 .0625rem #6E1E12, inset 0 0 0 .0625rem rgba(255, 226, 214, .6), inset 0 .125rem 0 rgba(255, 255, 255, .3), inset 0 -.1875rem 0 rgba(80, 10, 0, .35);
+}
+
+/* The faces. Gold */
+#stage :is(.btn-primary, .btn-plate.is-next, .btn-plate.is-enter, .btn-gold-plate, .shelf-btn, .cine .narrator-next.has-label:not(:disabled), .kenal .slide-nav .btn-primary),
+#stage :is(.kedu-btn.is-primary, .result-btn.is-primary)::before {
+  border: 0;
+  border-image: none;
+  border-radius: var(--qb-radius);
+  background: var(--qb-gold-face);
+  box-shadow: var(--qb-gold-edge), var(--qb-shadow);
+  filter: none;
+}
+#stage :is(.btn-primary, .btn-plate.is-next, .btn-plate.is-enter, .btn-gold-plate, .shelf-btn, .cine .narrator-next.has-label:not(:disabled), .kenal .slide-nav .btn-primary, .kedu-btn.is-primary, .result-btn.is-primary) {
+  color: var(--qb-gold-ink);
+  text-shadow: 0 .0625rem 0 rgba(255, 248, 226, .55);
+}
+/* Navy */
+#stage :is(.btn-plate.is-back, .kenal .kenal-back, .kenal .slide-nav .btn-quiet, .modal-actions .btn-quiet, .shelf-back, .book-foot .book-prev, .btn-install-plate),
+#stage :is(.kedu-btn.is-secondary, .result-btn.is-secondary, .result-btn.is-detail)::before {
+  border: 0;
+  border-image: none;
+  border-radius: var(--qb-radius);
+  background: var(--qb-navy-face);
+  box-shadow: var(--qb-navy-edge), var(--qb-shadow);
+  filter: none;
+}
+#stage :is(.btn-plate.is-back, .kenal .kenal-back, .kenal .slide-nav .btn-quiet, .modal-actions .btn-quiet, .shelf-back, .book-foot .book-prev, .btn-install-plate, .kedu-btn.is-secondary, .result-btn.is-secondary, .result-btn.is-detail) {
+  color: var(--qb-navy-ink);
+  text-shadow: 0 .0625rem .1875rem rgba(0, 0, 0, .7);
+}
+/* Green */
+#stage .map-level .node-action.is-green {
+  border: 0;
+  border-image: none;
+  border-radius: var(--qb-radius);
+  background: var(--qb-green-face);
+  box-shadow: var(--qb-green-edge), var(--qb-shadow);
+  color: var(--qb-green-ink);
+  filter: none;
+}
+/* Red (Ya, keluar; Hapus): no hue filter on gold any more */
+#stage .btn-danger {
+  border: 0;
+  border-image: none;
+  border-radius: var(--qb-radius);
+  background: var(--qb-red-face);
+  box-shadow: var(--qb-red-edge), var(--qb-shadow);
+  color: #FFF6EE;
+  text-shadow: 0 .0625rem .1875rem rgba(70, 4, 0, .8);
+  filter: none;
+}
+
+/* Room inside: the old plates needed wide sides for their carved ends */
+#stage :is(.btn-primary, .btn-danger, .btn-gold-plate, .shelf-btn, .modal-actions .btn-quiet, .book-foot .book-prev, .map-level .node-action.is-green) { padding-inline: 1.5rem; }
+#stage :is(.btn-plate, .kenal .kenal-back, .kenal .slide-nav :is(.btn-primary, .btn-quiet), .shelf-back) { min-width: 0; padding-inline: 1.5rem; }
+#stage .cine .narrator-next.has-label:not(:disabled) { padding-inline: 1.25rem; }
+#stage :is(.result-btn.is-primary, .result-btn.is-secondary, .result-btn.is-detail) { padding-inline: 1.5rem; }
+#stage .btn-gold-plate { aspect-ratio: auto; min-width: 12rem; }
+#stage .btn-install-plate { aspect-ratio: auto; padding: 0 1.25rem; height: 3.25rem; background: var(--qb-navy-face); font-size: 1.0625rem; }
+#stage .btn-plate { gap: .625rem; }
+#stage .btn-plate .icon { display: inline-block; }
+#stage .btn-plate.is-back .icon { order: -1; }
+
+/* The arrow (or check) in a small inset box on the right, as in the owner's mockup; on the
+   back buttons the box sits on the left */
+#stage :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .kedu-btn, .result-btn, .map-level .node-action.is-green, .modal-actions .btn-quiet) > .icon {
+  box-sizing: content-box;
+  width: .9em;
+  height: .9em;
+  padding: .2em;
+  border-radius: .375rem;
+  background: rgba(255, 255, 255, .28);
+  box-shadow: inset 0 0 0 .0625rem rgba(110, 72, 18, .45);
+  stroke-width: 2.4;
+}
+#stage :is(.btn-plate.is-back, .shelf-back, .book-foot .book-prev, .kedu-btn.is-secondary, .result-btn.is-secondary, .result-btn.is-detail, .modal-actions .btn-quiet) > .icon,
+#stage .map-level .node-action.is-green > .icon {
+  background: rgba(223, 192, 135, .14);
+  box-shadow: inset 0 0 0 .0625rem rgba(223, 192, 135, .5);
+}
+
+/* Hover, press, focus: a little lift and light, the same for every colour */
+#stage :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .btn-install-plate, .map-level .node-action.is-green, .modal-actions .btn-quiet, .kenal .kenal-back, .kenal .slide-nav :is(.btn-primary, .btn-quiet), .cine .narrator-next.has-label:not(:disabled)) {
+  transition: transform .15s, filter .15s, box-shadow .15s;
+}
+@media (hover: hover) {
+  #stage :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .btn-install-plate, .map-level .node-action.is-green, .modal-actions .btn-quiet, .kenal .kenal-back, .kenal .slide-nav :is(.btn-primary, .btn-quiet), .cine .narrator-next.has-label:not(:disabled)):hover {
+    filter: brightness(1.08);
+    transform: translateY(-.0625rem);
+  }
+  #stage :is(.kedu-btn, .result-btn):hover::before { filter: brightness(1.1); }
+}
+#stage :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .btn-install-plate, .map-level .node-action.is-green, .modal-actions .btn-quiet, .kenal .kenal-back, .kenal .slide-nav :is(.btn-primary, .btn-quiet), .cine .narrator-next.has-label:not(:disabled)):active {
+  filter: brightness(1.12);
+  transform: scale(.98);
+}
+#stage :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .btn-install-plate, .map-level .node-action.is-green, .modal-actions .btn-quiet):focus-visible {
+  outline: .1875rem solid var(--gold-300);
+  outline-offset: .1875rem;
+}
+#stage :is(.btn-primary, .btn-plate, .btn-gold-plate)[aria-disabled="true"],
+#stage :is(.btn-primary, .btn-plate, .btn-gold-plate):disabled { filter: grayscale(.6); opacity: .55; transform: none; }
