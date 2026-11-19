@@ -57,7 +57,7 @@ body { display: flex; flex-direction: column; }
 .exit img { width: 48px; height: 48px; }
 
 /* Panels: no frame, no extra background (decision 1) */
-.left { left: 32px; top: 104px; width: 600px; height: 584px; display: flex; flex-direction: column; padding: 8px 16px 14px; border-radius: 16px; background: linear-gradient(160deg, rgba(24, 58, 60, .94), rgba(8, 21, 26, .94)); border: 1.5px solid rgba(223, 192, 135, .6); box-shadow: 0 8px 24px rgba(0, 0, 0, .4); }
+.left { left: 32px; top: 104px; width: 600px; height: 584px; display: flex; flex-direction: column; padding: 0; }
 .right { left: 664px; top: 104px; width: 584px; height: 584px; display: flex; flex-direction: column; padding: 6px 0 0; }
 .divline { left: 648px; top: 120px; width: 1px; height: 552px; background: linear-gradient(transparent, rgba(223, 192, 135, .35), transparent); }
 
@@ -71,7 +71,8 @@ body { display: flex; flex-direction: column; }
 .tries i.is-left { background: radial-gradient(circle at 35% 35%, var(--gold-hi), var(--gold-deep)); border-color: var(--gold); box-shadow: 0 0 6px rgba(240, 223, 184, .5); }
 .media { position: relative; margin: 6px auto 0; width: var(--pic-w); flex: none; border-radius: 10px; box-shadow: 0 4px 14px rgba(0, 0, 0, .5); }
 .picture { display: block; width: 100%; height: auto; border-radius: 10px; }
-.media .player { position: absolute; left: 12px; right: 12px; bottom: 12px; margin: 0; background: rgba(11, 19, 32, .9); }
+.media .player { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); width: max-content; margin: 0; padding-right: 22px; background: rgba(11, 19, 32, .9); }
+.media .player.is-playing { left: 12px; right: 12px; transform: none; width: auto; }
 .player { margin: 14px 0 0; display: flex; align-items: center; gap: 14px; height: 52px; padding: 0 18px 0 6px; border-radius: 26px; background: rgba(11, 19, 32, .78); border: 1px solid rgba(223, 192, 135, .45); }
 .player .round { width: 42px; height: 42px; }
 .player .lbl { font: 600 17px 'Jakarta'; white-space: nowrap; }
@@ -83,10 +84,11 @@ body { display: flex; flex-direction: column; }
 .situation { margin: 12px 0 0; padding: 0 14px; font-size: var(--sit-fs, 20px); line-height: 1.45; }
 
 /* Right panel */
-.toggle { align-self: center; display: flex; padding: 3px; border-radius: 24px; background: rgba(11, 19, 32, .85); border: 1px solid rgba(223, 192, 135, .55); }
-.toggle span { padding: 7px 22px; border-radius: 20px; font: 600 17px 'Jakarta'; color: var(--muted); }
-.toggle span b { margin-right: 6px; font-weight: 700; }
-.toggle span.is-on { background: linear-gradient(var(--gold-hi), var(--gold)); color: var(--ink); }
+.toggle { align-self: center; display: flex; gap: 10px; }
+.toggle span { position: relative; display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 18px 0 0; border-radius: 20px; font: 600 17px 'Jakarta'; color: var(--muted); background: rgba(11, 19, 32, .7); border: 1px solid rgba(223, 192, 135, .4); }
+.toggle span i { position: relative; width: 44px; height: 44px; margin: -2px 0 -2px -4px; display: grid; place-items: center; font: 700 19px 'Jakarta'; font-style: normal; color: var(--ink); background: url({{badge}}) center / 100% 100% no-repeat; filter: grayscale(.5) brightness(.75); }
+.toggle span.is-on { color: var(--ink); background: linear-gradient(#FBEBC0, #E3C07C); border-color: #B8893F; }
+.toggle span.is-on i { filter: none; }
 .question { margin: 12px 0 0; text-align: left; font: 400 23px/1.2 'Marcellus', serif; color: var(--gold-hi); }
 .question.is-small { font-size: 23px; }
 .hint { margin: 12px 0 0; padding: 0 4px 12px; border-bottom: 1px solid rgba(223, 192, 135, .3); }
@@ -100,7 +102,7 @@ body { display: flex; flex-direction: column; }
 .chosen b { color: var(--gold); font-weight: 600; }
 .options { margin: 14px 0 0; display: flex; flex-direction: column; gap: var(--gap, 10px); }
 .opt { display: flex; align-items: center; gap: 14px; min-height: 54px; padding: 8px 18px; border-radius: 12px; cursor: pointer;
-  background: rgba(11, 19, 32, .86); border: 1.5px solid rgba(223, 192, 135, .5); font-size: 19px; line-height: 1.3; }
+  background: none; border: 1.5px solid rgba(223, 192, 135, .5); font-size: 19px; line-height: 1.3; text-shadow: 0 1px 3px rgba(0, 0, 0, .7); }
 .opt input { position: absolute; opacity: 0; }
 .opt .mark { flex: none; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--gold); display: grid; place-items: center; }
 .opt.is-on { border-color: var(--gold-hi); background: rgba(20, 46, 58, .92); box-shadow: 0 0 0 1px var(--gold), 0 0 14px rgba(240, 223, 184, .45); }
@@ -110,12 +112,14 @@ body { display: flex; flex-direction: column; }
 .note { margin: 12px 0 0; font-size: 17px; color: var(--muted); text-align: center; }
 .safe { margin: 10px 0 0; padding: 12px 18px; border-radius: 12px; background: rgba(20, 46, 58, .92); border: 1.5px solid var(--gold-hi); font: 600 19px/1.35 'Jakarta'; }
 .expl { margin: 12px 0 0; font-size: 18px; line-height: 1.45; }
-.actions { margin-top: auto; display: flex; justify-content: center; gap: 16px; padding-top: 12px; }
-.btn { height: 58px; min-width: 240px; padding: 0 12px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer;
-  font: 700 21px 'Jakarta'; border-style: solid; border-width: 0 58px; background: none; }
-.btn.gold { position: relative; z-index: 0; color: #FFFFFF; text-shadow: 0 1px 2px rgba(40, 20, 0, .85), 0 0 6px rgba(40, 20, 0, .5); border-color: transparent; }
-.btn.gold::before { content: ''; position: absolute; z-index: -1; inset: 0 -58px; border-style: solid; border-width: 0 58px; border-image: url({{gold}}) 0 200 fill / 0 58px / 0 stretch; filter: brightness(.68) saturate(1.2) contrast(1.05); }
-.btn.navy { color: var(--cream); min-width: 200px; border-image: url({{navy}}) 0 200 fill / 0 58px / 0 stretch; }
+.actions { margin-top: auto; display: flex; justify-content: center; gap: 16px; padding: 12px 0 4px; }
+.btn { position: relative; height: 58px; display: inline-flex; align-items: center; cursor: pointer; border: 0; font: 700 21px 'Jakarta'; white-space: nowrap; }
+.btn img { position: absolute; top: -3px; width: 64px; height: 64px; }
+/* Gold: brighter face, dark text, the round "next" disc at the right end */
+.btn.gold { padding: 0 72px 0 30px; border-radius: 29px; color: var(--ink); background: linear-gradient(#FBEBC0, #EBCB86 55%, #D4AC62); box-shadow: inset 0 0 0 2px #B8893F, inset 0 2px 0 3px rgba(255, 255, 255, .35), 0 4px 10px rgba(0, 0, 0, .4); }
+.btn.gold img { right: -6px; }
+/* Back: the existing plate-back picture (disc at the left end), text without an arrow */
+.btn.back { width: 248px; padding-left: 92px; color: var(--cream); background: url({{plate_back}}) center / 100% 100% no-repeat; }
 .btn:disabled { filter: grayscale(.6) brightness(.7); cursor: default; }
 .over { outline: 2px dashed #FF5C8A; outline-offset: -2px; }
 .overflow-flag { position: absolute; right: 8px; bottom: 6px; font-size: 12px; color: #FF8FB0; }
@@ -174,15 +178,15 @@ function render() {
   if (state.step === 'action' || state.step === 'reason') {
     const isAction = state.step === 'action';
     right = `
-      <div class="toggle" aria-hidden="true"><span class="${isAction ? 'is-on' : ''}"><b>1</b>Tindakan</span><span class="${isAction ? '' : 'is-on'}"><b>2</b>Alasan</span></div>
+      <div class="toggle" aria-hidden="true"><span class="${isAction ? 'is-on' : ''}"><i>1</i>Tindakan</span><span class="${isAction ? '' : 'is-on'}"><i>2</i>Alasan</span></div>
       ${isAction ? `<div class="hint">${voiced ? player('instr', 'Dengarkan petunjuk', '0:06', true) : ''}<p class="instr">Bacalah ceritanya. Pilih apa yang akan kamu lakukan, lalu pilih alasanmu.</p></div>
         <h2 class="question">Apa yang akan kamu lakukan?</h2>`
       : `<p class="chosen"><span class="mk" aria-hidden="true">↳</span><span><b>Pilihanmu</b> · ${esc(sc.actions[state.action ?? 0].text)}</span></p>
         <h2 class="question is-small">Yang paling penting kupikirkan di sini adalah …</h2>`}
       <div class="options" role="radiogroup">${optionsHtml}</div>
       <div class="actions">
-        ${isAction ? '' : '<button class="btn navy" type="button" data-act="back">‹ Kembali</button>'}
-        <button class="btn gold" type="button" data-act="${isAction ? 'toReason' : 'send'}"${chosen === null ? ' disabled' : ''}>${isAction ? 'Lanjut ke alasan ›' : 'Kirim jawaban ›'}</button>
+        ${isAction ? '' : '<button class="btn back" type="button" data-act="back">Kembali</button>'}
+        <button class="btn gold" type="button" data-act="${isAction ? 'toReason' : 'send'}"${chosen === null ? ' disabled' : ''}>${isAction ? 'Lanjut ke alasan' : 'Kirim jawaban'}<img src="${IMG.next}" alt=""></button>
       </div>`;
   } else if (state.step === 'feedback') {
     const a = sc.actions[state.action ?? 0];
@@ -191,7 +195,7 @@ function render() {
       <h2 class="question">${safe ? 'Pilihan yang aman!' : 'Ayo pikirkan lagi'}</h2><!-- heading: new text, proposal -->
       <p class="feedback${safe ? ' is-safe' : ''}">${esc(a.feedback)}</p>
       ${safe ? '' : `<p class="note">Kamu masih punya ${state.tries} kesempatan. Pilih lagi tindakan dan alasanmu.</p>`}
-      <div class="actions"><button class="btn gold" type="button" data-act="${safe ? 'next' : 'retry'}">${safe ? 'Lanjut ke cerita berikutnya ›' : 'Coba lagi ›'}</button></div>`;
+      <div class="actions"><button class="btn gold" type="button" data-act="${safe ? 'next' : 'retry'}">${safe ? 'Lanjut ke cerita berikutnya' : 'Coba lagi'}<img src="${IMG.next}" alt=""></button></div>`;
   } else {
     const safe = sc.actions.find((a) => a.score === 2);
     right = `
@@ -199,7 +203,7 @@ function render() {
       <h2 class="question">Ini tindakan yang aman</h2>
       <p class="safe">${esc(safe.text)}</p>
       <p class="expl">${esc(sc.explanation)}</p>
-      <div class="actions"><button class="btn gold" type="button" data-act="next">Lanjut ke cerita berikutnya ›</button></div>`;
+      <div class="actions"><button class="btn gold" type="button" data-act="next">Lanjut ke cerita berikutnya<img src="${IMG.next}" alt=""></button></div>`;
   }
 
   stage.innerHTML = `
@@ -214,10 +218,9 @@ function render() {
     </header>
     <section class="abs left" style="--sit-fs:${long ? 19 : 20}px;--pic-w:${PIC_W}px">
       <div class="story-head">Cerita ${state.closed + 1} dari 4 <span class="bars">${bars}</span><span class="tries">Kesempatan ${dots}</span></div>
-      <div class="media"><img class="picture" src="${IMG['pic_' + state.key]}" alt="">${voiced ? player('story', 'Dengarkan cerita', '0:18') : ''}</div>
+      <div class="media"><img class="picture" src="${IMG['pic_' + state.key]}" alt="">${voiced ? player('story', 'Dengarkan cerita', '0:18', true) : ''}</div>
       <p class="situation">${esc(sc.situation)}</p>
     </section>
-    <span class="abs divline"></span>
     <section class="abs right" style="--gap:${opts.length > 3 ? 8 : 10}px">${right}</section>`;
   // Mark a panel whose content does not fit (a design check, not part of the game)
   for (const panel of stage.querySelectorAll('.left, .right')) {
