@@ -284,7 +284,7 @@ Exactly the attached active tab (SD-05), with the numeral "2" embossed in the me
 |---|---|
 | Berkas | baru: `sd-chosen.webp` |
 | Kanvas | 1752 × 162, latar transparan |
-| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/ui-plate-navy.webp` (`U-02`: bidang biru tua), `docs/revisi-10-analitik/gambar/41/mockup-skenario-2-alasan.webp` (jawaban ketiga: yang dipilih) |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `public/assets/ui/ui-plate-navy.webp` (`U-02`: bidang biru tua), `docs/revisi-10-analitik/gambar/41/mockup-skenario-2-alasan.webp` (jawaban ketiga: yang dipilih) |
 
 ```text
 GELITA CARVED GOLD UI — 2026-11-18
