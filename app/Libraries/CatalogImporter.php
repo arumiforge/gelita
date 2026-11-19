@@ -98,12 +98,14 @@ final class CatalogImporter
      * map's clearings. The five-stop maps of 38 (16 November 2026) follow the
      * shared layout of 38 → *Tata letak lima pos*; each button stands on the
      * open sand of its clearing, in front of the clearing's prop, so the prop
-     * stays visible.
+     * stays visible. Since 19 November 2026 (owner) a stop is the centre of the
+     * one-row pin (medallion and name plate) on the clearing's front, just
+     * under the prop, re-measured on each map.
      */
     public const MAP_STOPS = [
-        'ffafcb723a749b6a66ec918ff9ed8c3519ceac9aad58327bdc5055e1df0f9bfb' => ['temanggung', [1 => [22.0, 42.0], 2 => [45.0, 35.0], 3 => [80.0, 43.0], 4 => [61.0, 62.0], 5 => [30.0, 74.0]]],
-        '232670f949efe1bf3200b10bad46974c1a8fc02fa6dec2ced0d6e094577d00e3' => ['magelang', [1 => [25.0, 43.0], 2 => [45.0, 36.0], 3 => [78.0, 43.0], 4 => [61.0, 62.0], 5 => [31.0, 72.0]]],
-        '9d68d52824a2f1db3cc578712cce452573372c4f8ca7fc0f162a7715216d0864' => ['wonosobo', [1 => [22.0, 43.0], 2 => [46.0, 35.0], 3 => [81.0, 44.0], 4 => [62.0, 62.0], 5 => [31.0, 75.0]]],
+        'ffafcb723a749b6a66ec918ff9ed8c3519ceac9aad58327bdc5055e1df0f9bfb' => ['temanggung', [1 => [21.0, 43.0], 2 => [48.0, 37.0], 3 => [80.0, 44.0], 4 => [66.0, 65.0], 5 => [31.0, 76.0]]],
+        '232670f949efe1bf3200b10bad46974c1a8fc02fa6dec2ced0d6e094577d00e3' => ['magelang', [1 => [24.0, 45.0], 2 => [49.0, 38.0], 3 => [78.0, 43.0], 4 => [65.0, 65.0], 5 => [34.0, 73.0]]],
+        '9d68d52824a2f1db3cc578712cce452573372c4f8ca7fc0f162a7715216d0864' => ['wonosobo', [1 => [21.0, 44.0], 2 => [48.0, 36.0], 3 => [81.0, 44.0], 4 => [68.0, 64.0], 5 => [34.0, 78.0]]],
     ];
 
     /**

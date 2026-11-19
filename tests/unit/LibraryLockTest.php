@@ -322,13 +322,15 @@ final class LibraryLockTest extends CIUnitTestCase
         ]);
         $side = substr($page, (int) strpos($page, '<aside class="map-side stage-box"'));
         $head = substr($side, 0, (int) strpos($side, '</header>'));
-        $list = substr($side, (int) strpos($side, '<ol class="node-list stage-scroll">'));
+        $list = substr($side, (int) strpos($side, '<ol class="node-list node-panels">'));
         $list = substr($list, 0, (int) strpos($list, '</ol>'));
 
         $this->assertStringNotContainsString('eyebrow', $head);
-        $this->assertStringNotContainsString('<h2>', $list, 'the title shows once');
-        $this->assertStringContainsString('<span class="visually-hidden">' . esc(lang('Game.challengeOf', [2, 4])) . ':</span>', $list);
-        $this->assertStringContainsString('<span class="eyebrow">' . esc(lang('Game.engine_rumpang')) . '</span>', $list);
+        // Owner, 19 November 2026: one card per challenge, only the selected one shown (css, map.js)
+        $this->assertStringContainsString('<p class="node-card-eyebrow"><span>' . esc(lang('Game.challengeOf', [2, 4])) . '</span></p>', $list);
+        $this->assertStringContainsString('<h2 class="node-card-title" id="node-2-title">' . esc(lang('Game.engine_rumpang')) . '</h2>', $list);
+        $this->assertSame(1, substr_count($list, ' is-selected"'), 'one challenge selected');
+        $this->assertStringContainsString('has-art has-frame is-selected"' . "\n" . '            id="node-2"', $list, 'the challenge to play');
 
         $progress = esc(asset_url_versioned('ui/status-progress.webp'), 'attr');
         // Owner, 21 October 2026: no number on the open medallion, here or on the pins
@@ -349,10 +351,11 @@ final class LibraryLockTest extends CIUnitTestCase
             $this->assertFileExists(FCPATH . 'assets/ui/' . $file . '.webp');
         }
         $this->assertStringContainsString('--card-frame: url(&quot;' . esc(asset_url_versioned('ui/node-card-frame.webp'), 'attr') . '&quot;)', $page);
-        $this->assertSame(4, substr_count($list, ' has-art has-frame"'));
+        $this->assertSame(4, substr_count($list, ' has-art has-frame'));
         $this->assertSame(1, substr_count($list, 'class="btn btn-ghost btn-sm node-action is-green"'));
-        // Owner, 21 October 2026: Terkunci is text only on the navy plate
-        $this->assertSame(2, substr_count($list, '<span class="badge is-locked node-action is-navy">' . esc(lang('Game.shardLocked')) . '</span>'));
+        // Owner, 19 November 2026: a locked challenge has no button, its status and note say why
+        $this->assertStringNotContainsString('node-action is-navy', $list);
+        $this->assertSame(2, substr_count($list, '<p class="node-card-note">' . esc(lang('Game.nodeLocked')) . '</p>'));
         $this->assertStringContainsString('class="hud hud-menu-style is-compact is-tall"', $page);
         $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
         $this->assertMatchesRegularExpression('/\.node-card\.has-frame \.node-card-art \{[^}]*filter: sepia\(/', $css);
@@ -408,11 +411,10 @@ final class LibraryLockTest extends CIUnitTestCase
     }
 
     /**
-     * Owner, 21 October 2026 (later): on the region map a locked pin opens a modal (its title,
-     * message, and button on the link), the HUD leaves the region name to the head plate, and
-     * a done card's title sits on a parchment veil.
+     * Owner, 19 November 2026: a region-map pin selects its challenge (one row, medallion left
+     * of the name) instead of leaving the page; the HUD leaves the region name to the head plate.
      */
-    public function testRegionMapLockedPinOpensAModalAndTheHudHasNoRegionName(): void
+    public function testRegionMapPinsSelectTheirChallengeAndTheHudHasNoRegionName(): void
     {
         $nodes = [];
         foreach ([[1, 'puzzle', 'completed'], [2, 'rumpang', 'open'], [3, 'boleh', 'locked'], [4, 'cari', 'locked']] as [$n, $engine, $status]) {
@@ -429,14 +431,16 @@ final class LibraryLockTest extends CIUnitTestCase
         ]);
 
         $this->assertStringNotContainsString('hud-identity-region', $page);
-        $this->assertSame(2, substr_count($page, 'aria-disabled="true" data-locked-title="' . esc(lang('Game.nodeLockedTitle'), 'attr') . '" data-locked-message="' . esc(lang('Game.nodeLocked'), 'attr') . '" data-locked-ok="' . esc(lang('Game.libraryUnderstood'), 'attr') . '"'));
+        $this->assertSame(4, substr_count($page, 'class="map-pin" href="#node-'));
+        $this->assertStringContainsString('<a class="map-pin" href="#node-2" data-node-select="2"' . "\n" . '               aria-controls="node-2" aria-current="true">', $page);
+        $this->assertStringNotContainsString(base_url('misi/magelang/3'), $page, 'a locked challenge has no link at all');
 
         $js = (string) file_get_contents(FCPATH . 'assets/js/game/map.js');
-        $this->assertStringContainsString("if (screen.dataset.screen === 'map-level') {", $js);
-        $this->assertMatchesRegularExpression("/showModal\\(\\{ type: 'info', icon: 'lock', title: lockedTitle/", $js);
+        $this->assertStringContainsString('initNodeSelect(screen);', $js);
 
         $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
-        $this->assertMatchesRegularExpression('/\\.node-card\\.has-frame\\.is-completed::before \\{[^}]*rgba\\(252, 243, 220, \\.9\\)/', $css);
+        $this->assertStringContainsString('.map-level .node-panels.is-live .node-card.is-selected { display: grid; }', $css);
+        $this->assertStringContainsString('.map-level .node-point { transform: translate(-50%, -50%); }', $css);
     }
 
     // ------------------------------------------------------------ momen terbuka

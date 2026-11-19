@@ -33,6 +33,8 @@
  *   JavaScript the pin's #region-{code} link shows the panel through :target.
  *   Lanjut in the panel enters the region (curtain); a locked region's Lanjut
  *   only shows the toast.
+ * - Region map (19 November 2026): a pin ([data-node-select]) selects its
+ *   challenge; the side column shows that one card (initNodeSelect).
  */
 import { $, $$, on } from '../core/dom.js';
 import { toast } from '../core/toast.js';
@@ -188,6 +190,41 @@ function initRegionSelect(screen) {
   }
 }
 
+/**
+ * Region map (owner, 19 November 2026): a pin ([data-node-select]) selects its challenge
+ * instead of leaving the page; the side column shows that challenge's card (#node-{n}) and
+ * the pin is marked aria-current. Without JavaScript the pin's #node-{n} link shows the
+ * card through :target.
+ */
+function initNodeSelect(screen) {
+  const pins = $$('[data-node-select]', screen);
+  const cards = $('.node-panels', screen);
+  if (!pins.length || !cards) return;
+
+  const select = (seq, { sound = true } = {}) => {
+    const card = document.getElementById(`node-${seq}`);
+    if (!card || !cards.contains(card)) return;
+    for (const node of $$('.node-card', cards)) node.classList.toggle('is-selected', node === card);
+    for (const pin of pins) {
+      if (pin.dataset.nodeSelect === String(seq)) pin.setAttribute('aria-current', 'true');
+      else pin.removeAttribute('aria-current');
+    }
+    if (sound) Sfx.play(card.classList.contains('is-locked') ? 'lock' : 'click');
+  };
+
+  cards.classList.add('is-live');
+  on(screen, 'click', '[data-node-select]', (event, pin) => {
+    event.preventDefault();
+    select(pin.dataset.nodeSelect);
+  });
+
+  const hashed = /^#node-(\d+)$/.exec(location.hash || '');
+  if (hashed) {
+    select(hashed[1], { sound: false });
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+}
+
 function preload(root) {
   const urls = new Set($$('[data-preload]', root).map((node) => node.dataset.preload).filter(Boolean));
   const run = () => urls.forEach((src) => { const img = new Image(); img.decoding = 'async'; img.src = src; });
@@ -225,6 +262,7 @@ export function initMap() {
 
   preload(screen);
   initRegionSelect(screen);
+  initNodeSelect(screen);
 
   if (screen.dataset.screen === 'map-level') {
     emit('level_opened', { levelId: Number(screen.dataset.levelId) || null, payload: { code: screen.dataset.level || null } });
