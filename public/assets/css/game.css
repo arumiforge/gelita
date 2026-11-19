@@ -268,7 +268,7 @@ body.is-challenge .hud-lang { display: none; } /* the HUD language control: no s
 }
 /* Mulai on the gold plate, lettered by the page (owner, 19 November 2026): 80 dp tall, a
    large display word and an arrow; the plate's own glow pulses (filter, not a box shadow) */
-.btn-start.btn { min-width: calc(320 * var(--dp)); gap: calc(14 * var(--dp)); font-family: var(--font-display); font-size: calc(34 * var(--dp)); letter-spacing: .06em; text-transform: uppercase; animation-name: start-glow-image; }
+.btn-start.btn { min-width: calc(320 * var(--dp)); gap: calc(14 * var(--dp)); font-family: var(--font-display); font-size: calc(34 * var(--dp)); letter-spacing: .03em; animation-name: start-glow-image; }
 .stage[style*="--plate-gold"] .btn-start.btn-xl.btn-primary { --pill-h: 5rem; height: 5rem; }
 .btn-start.btn .icon { width: calc(30 * var(--dp)); height: calc(30 * var(--dp)); }
 .btn-start.is-image { padding: 0; line-height: 0; border-radius: var(--radius-lg); }
@@ -3939,7 +3939,7 @@ html:not(.js) .result-kedu.result-sheet { border-radius: 1.25rem; background: rg
 .book-spread.is-text-only .book-text { padding-inline: 4rem; }
 .book-text h2 { margin: 0; color: var(--brown-700); font-size: 1.875rem; line-height: 1.15; }
 .book-text .book-body { padding-right: .75rem; }
-.book-spread .eyebrow { color: var(--brown-500); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.book-spread .eyebrow { color: var(--brown-500); font-weight: 700; letter-spacing: .02em; }
 /* The foot row: Kembali · n / N · Lanjut (Selesai membaca on the last page) */
 .book-foot { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: .75rem; margin: 0; padding-top: .75rem; border-top: .0625rem solid rgba(74, 50, 24, .18); }
 .book-foot .book-prev { justify-self: start; color: var(--brown-700); }

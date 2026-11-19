@@ -315,7 +315,7 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
    hidden menu sheet would sit below its button and past the stage bottom. */
 .hud-pop:not([open]) > .hud-sheet { display: none; }
 .hud-lang-sheet { top: 3.75rem; right: 7.5rem; width: 22.5rem; }
-.hud-lang-title { margin: .25rem .5rem .5rem; color: var(--gold-300); font-size: 1.125rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.hud-lang-title { margin: .25rem .5rem .5rem; color: var(--gold-300); font-size: 1.125rem; font-weight: 800; letter-spacing: .02em; }
 .hud-sheet .hud-lang-list { display: grid; gap: .25rem; padding: 0; border-radius: 0; background: none; }
 .hud-menu[open]::before {
   content: "";
