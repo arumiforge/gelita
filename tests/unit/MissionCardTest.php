@@ -108,13 +108,14 @@ final class MissionCardTest extends CIUnitTestCase
         $this->assertStringContainsString('border-image: var(--pill) 0 var(--pill-cut) fill / 0 var(--pill-end) stretch;', $css);
     }
 
-    /** Owner, 21 October 2026: the logo alone in the HUD centre and Back to the region map on the plate top left. */
-    public function testHudPutsTheLogoInTheMiddleAndBackInTheCorner(): void
+    /** Owner, 21 October 2026; uniform HUD, 19 November 2026: Back to the region map as the last round button of the HUD row. */
+    public function testHudEndsWithBackToTheRegionMap(): void
     {
         $page = $this->brief();
 
         $this->assertStringContainsString('<header class="hud hud-menu-style is-compact is-logo-centre"', $page);
-        $this->assertMatchesRegularExpression('~<a class="hud-back-plate" href="' . preg_quote(esc(base_url('wilayah/wonosobo'), 'attr'), '~') . '"[^>]*>.*?<span>' . preg_quote(esc(lang('Game.back')), '~') . '</span></a>~s', $page);
+        $this->assertStringContainsString('<a class="hud-ctl hud-back" href="' . esc(base_url('wilayah/wonosobo'), 'attr') . '" aria-label="' . esc(lang('Game.back')) . '"', $page);
+        $this->assertStringNotContainsString('hud-back-plate', $page);
         $this->assertStringNotContainsString('hud-identity-region', $page);
         $this->assertStringNotContainsString('<nav class="nav-bar"', $page, 'no Back button at the foot');
     }

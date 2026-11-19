@@ -12,9 +12,9 @@
  * dengan tirai wilayah). Wilayah terakhir: "Lanjut" ke `/penutup` bila semua
  * tantangan tuntas, selain itu (mode unlock `free`) kembali ke Peta Kedu.
  *
- * Owner request (21 October 2026): the GELITA logo alone in the middle of the
- * HUD (no shard plate, no region name), "Peta wilayah" on the navy plate in
- * the top-left corner, no nav bar (Peta Kedu is in the HUD menu), no names
+ * Owner request (21 October 2026): a `logo-centre` HUD (no shard plate, no
+ * region name) with "Peta wilayah" as its Back (since the uniform HUD of
+ * 19 November 2026 the round button at the end of the row), no nav bar (Peta Kedu is in the HUD menu), no names
  * under the two figures. Same day, later (owner: consistent with the region
  * dialogue): the dialogue's cinematic layout (`cinematic`), so the parchment
  * box holds the speaker, the page dots, and the narrator controls with

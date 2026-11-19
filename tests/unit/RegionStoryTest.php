@@ -345,10 +345,12 @@ final class RegionStoryTest extends CIUnitTestCase
         // The difficulty badge only on the region curtain (its template), never in the HUD
         $this->assertStringNotContainsString('region-difficulty', (string) preg_replace('~<template id="tpl-curtain-region">.*?</template>~s', '', $page));
 
-        // Owner request 21 October 2026: logo alone in the HUD centre, "Peta wilayah" on the plate top left,
-        // no nav bar (Peta Kedu is in the menu), no shard plate or region name, no names under the figures
+        // Owner request 21 October 2026: no nav bar (Peta Kedu is in the menu), no shard plate or region
+        // name, no names under the figures. Uniform HUD (19 November 2026): "Peta wilayah" is the name of
+        // the round Back button at the end of the top-right row (it was a plate top left)
         $this->assertStringContainsString(' is-logo-centre', $page);
-        $this->assertMatchesRegularExpression('~<a class="hud-back-plate" href="' . preg_quote(esc(base_url('wilayah/temanggung'), 'attr'), '~') . '"[^>]*>.*?<span>' . preg_quote(esc(lang('Game.backToRegion')), '~') . '</span></a>~s', $page);
+        $this->assertStringContainsString('<a class="hud-ctl hud-back" href="' . esc(base_url('wilayah/temanggung'), 'attr') . '" aria-label="' . esc(lang('Game.backToRegion')) . '" data-tip="' . esc(lang('Game.backToRegion')) . '">', $page);
+        $this->assertStringNotContainsString('hud-back-plate', $page);
         $this->assertStringNotContainsString('<nav class="nav-bar"', $page);
         $this->assertStringNotContainsString('class="hud-shards"', $page);
         $this->assertStringNotContainsString('hud-identity-region', $page);
