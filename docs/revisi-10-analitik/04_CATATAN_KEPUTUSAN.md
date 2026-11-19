@@ -29,6 +29,13 @@ Sesudah melihat mockup, pengembang meminta lima perbaikan; semuanya dimasukkan k
 4. **Pita kepala layar digelapkan** dengan gradasi gelap supaya HUD terbaca dan bagian atas latar lebih gelap; ikut kepala satu baris di kelima tantangan.
 5. **Pemutar *Dengarkan cerita* menempel di bawah gambar** sebagai satu blok, dan gambar dilebarkan dari 456 × 304 menjadi 540 × 360. Situasi terpanjang tetap muat, tepat sampai tepi bawah panel kiri; `SD-09` menjadi bilah 540 × 52 bertepi atas lurus.
 
+**Catatan pengembang putaran kedua atas mockup** (cabang yang sama, dokumen [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md) §1 keputusan 22–25) · `asal: pengembang` · `disetujui pengembang` · mockup, prompt `SD-09` dan `SD-11`, dan baris `TASKS.md` disesuaikan; belum ada kode
+
+1. **Nama kota di kanan judul, satu baris** (*Skenario Digital │ Temanggung*); baris subjudul hilang dan kepala layar lebih ramping.
+2. **Keluar tanpa tulisan:** hanya tombol bundar; "Keluar" menjadi keterangan saat disorot atau ditekan lama.
+3. **Penanda cerita, bilah kemajuan, dan *Kesempatan* masuk ke bagian atas gambar; pemutar *Dengarkan cerita* masuk ke bagian bawah gambar** sebagai kapsul. Gambar kini selebar panel, 600 × 400, dan situasi terpanjang menyisakan sekitar 60 dp. `SD-09` menjadi kapsul 576 × 52.
+4. **Pemutar dan teks petunjuk dalam satu kotak**, satu baris masing-masing dengan garis tipis di antaranya; `SD-11` menjadi kotak 584 × 110. Tanpa rekaman instruksi, kotak tidak tampil dan teksnya berdiri sendiri.
+
 ## 18 November 2026
 
 **`U-07` ditahan; kristal Serpihan Cahaya dipesan di sesi lain** (cabang `pw/vigilant-cray-j6l324`, dokumen [40](40_PROMPT_GAMBAR_ANTARMUKA.md) → `U-07`) · `asal: pengembang` · `disetujui pengembang` · catatan saja; belum ada gambar atau kode yang berubah

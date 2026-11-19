@@ -42,7 +42,8 @@ body { display: flex; flex-direction: column; }
 .badge img { width: 100%; height: 100%; }
 .badge span { position: absolute; inset: 0; display: grid; place-items: center; font: 700 26px 'Jakarta'; color: var(--ink); }
 .titles h1 { margin: 0; font: 400 30px/1.05 'Marcellus', serif; color: var(--gold-hi); }
-.titles p { margin: 4px 0 0; font-size: 15px; color: var(--muted); }
+.titles { display: flex; align-items: baseline; gap: 12px; }
+.titles .city { font: 600 17px 'Jakarta'; color: var(--muted); padding-left: 12px; border-left: 1px solid rgba(223, 192, 135, .5); }
 .head .end { margin-left: auto; display: flex; align-items: center; gap: 12px; }
 .capsule { display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 16px 0 6px; border-radius: 24px; background: rgba(11, 19, 32, .82); border: 1px solid rgba(223, 192, 135, .55); font: 700 20px 'Jakarta'; }
 .capsule img { width: 36px; height: 36px; }
@@ -57,18 +58,18 @@ body { display: flex; flex-direction: column; }
 .right { left: 664px; top: 104px; width: 584px; height: 584px; display: flex; flex-direction: column; }
 .divline { left: 648px; top: 120px; width: 1px; height: 552px; background: linear-gradient(transparent, rgba(223, 192, 135, .35), transparent); }
 
-.story-head { display: flex; align-items: center; gap: 14px; height: 36px; font: 600 18px 'Jakarta'; }
+.story-head { position: absolute; left: 0; top: 0; right: 0; display: flex; align-items: center; gap: 14px; height: 56px; padding: 0 16px 8px; font: 600 18px 'Jakarta'; border-radius: 10px 10px 0 0;
+  background: linear-gradient(rgba(3, 6, 12, .82), rgba(3, 6, 12, .55) 70%, rgba(3, 6, 12, 0)); text-shadow: 0 1px 3px rgba(0, 0, 0, .8); }
 .bars { display: flex; gap: 6px; }
 .bars i { width: 34px; height: 8px; border-radius: 4px; background: rgba(223, 192, 135, .22); border: 1px solid rgba(223, 192, 135, .45); }
 .bars i.is-closed { background: var(--gold-deep); }
 .bars i.is-current { background: var(--gold); box-shadow: 0 0 8px rgba(240, 223, 184, .6); }
-.tries { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--muted); font-weight: 400; }
+.tries { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--cream); font-weight: 400; }
 .tries i { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--gold-deep); }
 .tries i.is-left { background: radial-gradient(circle at 35% 35%, var(--gold-hi), var(--gold-deep)); border-color: var(--gold); box-shadow: 0 0 6px rgba(240, 223, 184, .5); }
-.media { margin: 12px auto 0; width: var(--pic-w, 540px); border-radius: 10px; box-shadow: 0 6px 20px rgba(0, 0, 0, .55); }
+.media { position: relative; margin: 0; width: 600px; border-radius: 10px; box-shadow: 0 6px 20px rgba(0, 0, 0, .55); }
 .picture { display: block; width: 100%; height: auto; border-radius: 10px; }
-.media.has-player .picture { border-radius: 10px 10px 0 0; }
-.media .player { margin: 0; border-radius: 0 0 10px 10px; border-top: 0; background: rgba(11, 19, 32, .92); }
+.media .player { position: absolute; left: 12px; right: 12px; bottom: 12px; margin: 0; background: rgba(11, 19, 32, .9); }
 .player { margin: 14px 0 0; display: flex; align-items: center; gap: 14px; height: 52px; padding: 0 18px 0 6px; border-radius: 26px; background: rgba(11, 19, 32, .78); border: 1px solid rgba(223, 192, 135, .45); }
 .player .round { width: 42px; height: 42px; }
 .player .lbl { font: 600 17px 'Jakarta'; white-space: nowrap; }
@@ -86,8 +87,10 @@ body { display: flex; flex-direction: column; }
 .toggle span.is-on { background: linear-gradient(var(--gold-hi), var(--gold)); color: var(--ink); }
 .question { margin: 14px 0 0; text-align: center; font: 400 31px/1.15 'Marcellus', serif; color: var(--gold-hi); }
 .question.is-small { font-size: 25px; }
-.right > .player { margin: 12px 0 0; }
-.instr { margin: 8px 0 0; font-size: 16px; line-height: 1.4; color: var(--muted); text-align: left; }
+.hintbox { margin: 12px 0 0; border-radius: 14px; background: rgba(11, 19, 32, .86); border: 1px solid rgba(223, 192, 135, .45); }
+.hintbox .player { border: 0; background: none; border-radius: 0; }
+.instr { margin: 0; padding: 8px 18px 10px; font-size: 16px; line-height: 1.4; color: var(--muted); text-align: left; }
+.hintbox .player + .instr { border-top: 1px solid rgba(223, 192, 135, .3); }
 .chosen { margin: 12px 0 0; padding: 9px 16px; border-radius: 10px; background: rgba(27, 39, 64, .75); border-left: 4px solid var(--gold); font-size: 16px; }
 .chosen b { color: var(--gold); font-weight: 600; }
 .options { margin: 14px 0 0; display: flex; flex-direction: column; gap: var(--gap, 10px); }
@@ -165,8 +168,7 @@ function render() {
     right = `
       <div class="toggle" aria-hidden="true"><span class="${isAction ? 'is-on' : ''}"><b>1</b>Tindakan</span><span class="${isAction ? '' : 'is-on'}"><b>2</b>Alasan</span></div>
       ${isAction ? `<h2 class="question">Apa yang akan kamu lakukan?</h2>
-        ${voiced ? player('instr', 'Dengarkan petunjuk', '0:06') : ''}
-        <p class="instr">Bacalah ceritanya. Pilih apa yang akan kamu lakukan, lalu pilih alasanmu.</p>`
+        <div class="hintbox">${voiced ? player('instr', 'Dengarkan petunjuk', '0:06') : ''}<p class="instr">Bacalah ceritanya. Pilih apa yang akan kamu lakukan, lalu pilih alasanmu.</p></div>`
       : `<p class="chosen"><b>Pilihanmu:</b> ${esc(sc.actions[state.action ?? 0].text)}</p>
         <h2 class="question is-small">Yang paling penting kupikirkan di sini adalah …</h2>`}
       <div class="options" role="radiogroup">${optionsHtml}</div>
@@ -198,16 +200,15 @@ function render() {
       <img class="logo" src="${IMG.logo}" alt="GELITA">
       <span class="sep"></span>
       <span class="badge"><img src="${IMG.badge}" alt=""><span>5</span></span>
-      <div class="titles"><h1>Skenario Digital</h1><p>${REGION[sc.region]}</p></div>
+      <div class="titles"><h1>Skenario Digital</h1><span class="city">${REGION[sc.region]}</span></div>
       <div class="end">
         <span class="capsule">${research ? '' : `<img src="${IMG.clock}" alt=""> 4:47 <span class="div"></span>`}<img src="${IMG.right}" alt=""> ${state.closed}</span>
         <button class="round" type="button" title="Suara"><img src="${IMG.sound}" alt=""></button>
-        <span class="exit"><img src="${IMG.logout}" alt="">Keluar</span>
+        <button class="round" type="button" title="Keluar"><img src="${IMG.logout}" alt="Keluar"></button>
       </div>
     </header>
     <section class="abs left" style="--sit-fs:${long ? 19 : 20}px">
-      <div class="story-head">Cerita ${state.closed + 1} dari 4 <span class="bars">${bars}</span><span class="tries">Kesempatan ${dots}</span></div>
-      <div class="media${voiced ? ' has-player' : ''}"><img class="picture" src="${IMG['pic_' + state.key]}" alt="">${voiced ? player('story', 'Dengarkan cerita', '0:18') : ''}</div>
+      <div class="media"><img class="picture" src="${IMG['pic_' + state.key]}" alt=""><div class="story-head">Cerita ${state.closed + 1} dari 4 <span class="bars">${bars}</span><span class="tries">Kesempatan ${dots}</span></div>${voiced ? player('story', 'Dengarkan cerita', '0:18') : ''}</div>
       <p class="situation">${esc(sc.situation)}</p>
     </section>
     <span class="abs divline"></span>
