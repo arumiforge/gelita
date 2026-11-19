@@ -40,10 +40,13 @@ body { display: flex; flex-direction: column; }
 .badge { position: relative; width: 60px; height: 60px; flex: none; }
 .badge img { width: 100%; height: 100%; }
 .badge span { position: absolute; inset: 0; display: grid; place-items: center; font: 700 26px 'Jakarta'; color: var(--ink); }
-.titles h1 { margin: 0; font: 400 30px/1.05 'Marcellus', serif; color: var(--gold-hi); }
-.titleplate { display: flex; align-items: center; gap: 16px; height: 64px; padding: 0 26px 0 4px; border-radius: 32px; background: rgba(11, 19, 32, .82); border: 1px solid rgba(223, 192, 135, .55); box-shadow: 0 4px 14px rgba(0, 0, 0, .35); }
-.titles { display: flex; align-items: baseline; gap: 12px; }
-.titles .city { font: 600 17px 'Jakarta'; color: var(--muted); padding-left: 12px; border-left: 1px solid rgba(223, 192, 135, .5); }
+.titles h1 { margin: 0; font: 700 27px/1 'Jakarta'; color: #FFFFFF; letter-spacing: .01em; text-shadow: 0 1px 3px rgba(0, 0, 0, .6); }
+.titleplate { position: relative; display: flex; align-items: center; height: 60px; }
+.titleplate::before { content: ''; position: absolute; left: 30px; right: 0; top: 7px; bottom: 7px; border-radius: 0 23px 23px 0; background: rgba(11, 19, 32, .85); border: 1px solid rgba(223, 192, 135, .55); border-left: 0; box-shadow: 0 4px 14px rgba(0, 0, 0, .35); }
+.titleplate .badge { z-index: 1; }
+.titleplate .titles { position: relative; padding: 0 24px 0 14px; }
+.titles { display: flex; align-items: center; gap: 12px; }
+.titles .city { font: 600 17px/22px 'Jakarta'; color: var(--muted); padding-left: 12px; border-left: 1px solid rgba(223, 192, 135, .5); }
 .head .end { margin-left: auto; display: flex; align-items: center; gap: 12px; }
 .capsule { display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 16px 0 6px; border-radius: 24px; background: rgba(11, 19, 32, .82); border: 1px solid rgba(223, 192, 135, .55); font: 700 20px 'Jakarta'; }
 .capsule img { width: 36px; height: 36px; }
@@ -55,7 +58,7 @@ body { display: flex; flex-direction: column; }
 
 /* Panels: no frame, no extra background (decision 1) */
 .left { left: 32px; top: 104px; width: 600px; height: 584px; display: flex; flex-direction: column; padding: 8px 16px 14px; border-radius: 16px; background: linear-gradient(160deg, rgba(24, 58, 60, .94), rgba(8, 21, 26, .94)); border: 1.5px solid rgba(223, 192, 135, .6); box-shadow: 0 8px 24px rgba(0, 0, 0, .4); }
-.right { left: 664px; top: 104px; width: 584px; height: 584px; display: flex; flex-direction: column; padding: 14px 18px 14px; border-radius: 16px; background: linear-gradient(160deg, rgba(24, 58, 60, .94), rgba(8, 21, 26, .94)); border: 1.5px solid rgba(223, 192, 135, .6); box-shadow: 0 8px 24px rgba(0, 0, 0, .4); }
+.right { left: 664px; top: 104px; width: 584px; height: 584px; display: flex; flex-direction: column; padding: 6px 0 0; }
 .divline { left: 648px; top: 120px; width: 1px; height: 552px; background: linear-gradient(transparent, rgba(223, 192, 135, .35), transparent); }
 
 .story-head { display: flex; align-items: center; gap: 14px; height: 40px; flex: none; font: 600 18px 'Jakarta'; }
@@ -84,11 +87,14 @@ body { display: flex; flex-direction: column; }
 .toggle span { padding: 7px 22px; border-radius: 20px; font: 600 17px 'Jakarta'; color: var(--muted); }
 .toggle span b { margin-right: 6px; font-weight: 700; }
 .toggle span.is-on { background: linear-gradient(var(--gold-hi), var(--gold)); color: var(--ink); }
-.question { margin: 12px 0 0; text-align: left; font: 400 29px/1.15 'Marcellus', serif; color: var(--gold-hi); }
-.question.is-small { font-size: 26px; }
-.hintbox { margin: 10px 0 0; display: flex; align-items: flex-start; gap: 10px; padding: 8px 16px 8px 8px; border-radius: 12px; background: rgba(5, 14, 18, .55); border: 1px solid rgba(223, 192, 135, .4); }
-.hintbox .round { width: 32px; height: 32px; flex: none; }
-.instr { margin: 0; padding-top: 5px; font-size: 16px; line-height: 1.4; color: var(--cream); text-align: left; }
+.question { margin: 12px 0 0; text-align: left; font: 400 23px/1.2 'Marcellus', serif; color: var(--gold-hi); }
+.question.is-small { font-size: 23px; }
+.hint { margin: 12px 0 0; padding: 0 4px 12px; border-bottom: 1px solid rgba(223, 192, 135, .3); }
+.hint .player { height: 36px; gap: 10px; padding: 0; border: 0; background: none; border-radius: 0; }
+.hint .player .round { width: 32px; height: 32px; }
+.hint .player .lbl { font: 600 15px 'Jakarta'; color: var(--gold); }
+.hint .player .wave { flex: 0 1 220px; height: 24px; }
+.instr { margin: 6px 0 0; font-size: 16px; line-height: 1.4; color: var(--cream); text-align: left; }
 .chosen { margin: 12px 0 0; display: flex; align-items: flex-start; gap: 10px; padding: 0 4px 12px; border-bottom: 1px solid rgba(223, 192, 135, .3); font-size: 16px; line-height: 1.4; }
 .chosen .mk { flex: none; color: var(--gold); font-size: 18px; line-height: 22px; }
 .chosen b { color: var(--gold); font-weight: 600; }
@@ -107,7 +113,8 @@ body { display: flex; flex-direction: column; }
 .actions { margin-top: auto; display: flex; justify-content: center; gap: 16px; padding-top: 12px; }
 .btn { height: 58px; min-width: 240px; padding: 0 12px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer;
   font: 700 21px 'Jakarta'; border-style: solid; border-width: 0 58px; background: none; }
-.btn.gold { color: var(--ink); border-image: url({{gold}}) 0 200 fill / 0 58px / 0 stretch; }
+.btn.gold { position: relative; z-index: 0; color: #FFFFFF; text-shadow: 0 1px 2px rgba(40, 20, 0, .85), 0 0 6px rgba(40, 20, 0, .5); border-color: transparent; }
+.btn.gold::before { content: ''; position: absolute; z-index: -1; inset: 0 -58px; border-style: solid; border-width: 0 58px; border-image: url({{gold}}) 0 200 fill / 0 58px / 0 stretch; filter: brightness(.68) saturate(1.2) contrast(1.05); }
 .btn.navy { color: var(--cream); min-width: 200px; border-image: url({{navy}}) 0 200 fill / 0 58px / 0 stretch; }
 .btn:disabled { filter: grayscale(.6) brightness(.7); cursor: default; }
 .over { outline: 2px dashed #FF5C8A; outline-offset: -2px; }
@@ -146,9 +153,9 @@ function fit() {
   stage.style.transform = `scale(${s})`;
 }
 
-function player(which, label, dur) {
+function player(which, label, dur, onlyWhilePlaying = false) {
   const on = state.playing === which;
-  const extra = dur ? `<span class="wave">${wave}</span><span class="dur">${dur}</span>` : '';
+  const extra = dur && (on || !onlyWhilePlaying) ? `<span class="wave">${wave}</span><span class="dur">${dur}</span>` : '';
   return `<div class="player${on ? ' is-playing' : ''}"><button class="round" type="button" data-act="play" data-which="${which}"><img src="${on ? IMG.pause : IMG.play}" alt=""></button><span class="lbl">${on ? 'Sedang dibacakan…' : label}</span>${extra}</div>`;
 }
 function render() {
@@ -168,8 +175,8 @@ function render() {
     const isAction = state.step === 'action';
     right = `
       <div class="toggle" aria-hidden="true"><span class="${isAction ? 'is-on' : ''}"><b>1</b>Tindakan</span><span class="${isAction ? '' : 'is-on'}"><b>2</b>Alasan</span></div>
-      ${isAction ? `<h2 class="question">Apa yang akan kamu lakukan?</h2>
-        <div class="hintbox">${voiced ? `<button class="round" type="button" data-act="play" data-which="instr" title="Dengarkan petunjuk"><img src="${state.playing === 'instr' ? IMG.pause : IMG.play}" alt="Dengarkan petunjuk"></button>` : ''}<p class="instr">Bacalah ceritanya. Pilih apa yang akan kamu lakukan, lalu pilih alasanmu.</p></div>`
+      ${isAction ? `<div class="hint">${voiced ? player('instr', 'Dengarkan petunjuk', '0:06', true) : ''}<p class="instr">Bacalah ceritanya. Pilih apa yang akan kamu lakukan, lalu pilih alasanmu.</p></div>
+        <h2 class="question">Apa yang akan kamu lakukan?</h2>`
       : `<p class="chosen"><span class="mk" aria-hidden="true">↳</span><span><b>Pilihanmu</b> · ${esc(sc.actions[state.action ?? 0].text)}</span></p>
         <h2 class="question is-small">Yang paling penting kupikirkan di sini adalah …</h2>`}
       <div class="options" role="radiogroup">${optionsHtml}</div>
