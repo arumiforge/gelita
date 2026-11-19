@@ -198,12 +198,6 @@ return [
     'levelOrder'         => 'Wilayah {0}',
     'nodesProgress'      => '{0}/{1} tantangan',
     'nodesDoneOf'        => '{0} dari {1} tantangan selesai',
-    'difficulty_mudah'   => 'Mudah',
-    'difficulty_sedang'  => 'Sedang',
-    'difficulty_sulit'   => 'Sulit',
-    // Region dialogue difficulty badge in the HUD (owner, 19 October 2026)
-    'difficultyLabel'    => 'Tingkat kesulitan',
-    'difficultyLevel'    => 'Tingkat kesulitan: {0}',
     'viewResult'         => 'Lihat hasil',
     'mapImageAlt'        => 'Peta {0}',
 

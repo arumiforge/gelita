@@ -34,8 +34,8 @@
  *        `hud-shards-fill.webp`; on the left with `title-centre`); a page
  *        sets section `hudShards` = `off` to leave it out (the result screen
  *        shows shards in its panel).
- * Right: section `hudBadge` first (e.g. the region dialogue's difficulty
- *        badge, partials/region-difficulty), then the round controls in the
+ * Right: section `hudBadge` first (no page sets it since the region
+ *        dialogue's difficulty badge went, 19 November 2026), then the round controls in the
  *        fixed order language · sound · menu · Back (41 decision 16: these
  *        display rules live here, not per page), each
  *        drawn as the owner's round gold button (`assets/ui/round-*.webp`,

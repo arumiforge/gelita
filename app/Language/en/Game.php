@@ -198,12 +198,6 @@ return [
     'levelOrder'              => 'Region {0}',
     'nodesProgress'           => '{0}/{1} challenges',
     'nodesDoneOf'             => '{0} of {1} challenges done',
-    'difficulty_mudah'        => 'Easy',
-    'difficulty_sedang'       => 'Medium',
-    'difficulty_sulit'        => 'Hard',
-    // Region dialogue difficulty badge in the HUD (owner, 19 October 2026)
-    'difficultyLabel'         => 'Difficulty',
-    'difficultyLevel'         => 'Difficulty: {0}',
     'viewResult'              => 'See result',
     'mapImageAlt'             => 'Map of {0}',
 

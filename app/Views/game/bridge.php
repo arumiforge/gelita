@@ -29,7 +29,6 @@ $brief  = base_url('misi/' . $level->code . '/' . $node->sequence);
 <?= $this->section('background') ?><?= $bg ?><?= $this->endSection() ?>
 <?= $this->section('bodyClass') ?>is-cinematic is-region-dialogue<?= $this->endSection() ?>
 <?= $this->section('hudStyle') ?>menu<?= $this->endSection() ?>
-<?= $this->section('hudBadge') ?><?= component('partials/region-difficulty', ['level' => $level]) ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <?= component('partials/dialogue-scene', [

@@ -34,7 +34,6 @@ $region = $level->text('name', $locale);
 <?= $this->section('bodyClass') ?>is-cinematic is-region-dialogue<?= $this->endSection() ?>
 <?php /* Full-size HUD; the shard pill sits under the logo (cinematic.css) */ ?>
 <?= $this->section('hudStyle') ?>menu<?= $this->endSection() ?>
-<?= $this->section('hudBadge') ?><?= component('partials/region-difficulty', ['level' => $level]) ?><?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 <?= component('partials/dialogue-scene', [

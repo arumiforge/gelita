@@ -166,7 +166,7 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString($this->href('dialog/magelang') . ' data-slide-final data-curtain="region"', $page);
         $this->assertStringContainsString(esc(lang('Game.goToRegion', ['Magelang'])), $page);
         $this->assertStringContainsString('<template id="tpl-curtain-region">', $page);
-        $this->assertStringContainsString(esc(json_encode(['title' => 'Menuju Magelang…', 'tagline' => 'Tanah Candi Agung', 'chip' => 'Sedang', 'difficulty' => 'sedang'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 'attr'), $page);
+        $this->assertStringContainsString(esc(json_encode(['title' => 'Menuju Magelang…', 'tagline' => 'Tanah Candi Agung'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 'attr'), $page);
     }
 
     public function testLastRegionContinuesToTheEnding(): void
@@ -288,8 +288,8 @@ final class RegionStoryTest extends CIUnitTestCase
         }
     }
 
-    /** Owner, 19 October 2026 (with the same day's follow-ups): the region dialogue in the intro layout, parchment box, difficulty in the HUD. */
-    public function testDialogueUsesTheIntroLayoutWithTheDifficultyBadge(): void
+    /** Owner, 19 October 2026 (with the same day's follow-ups): the region dialogue in the intro layout, parchment box; no difficulty since 19 November 2026. */
+    public function testDialogueUsesTheIntroLayoutWithoutTheDifficultyBadge(): void
     {
         $page  = $this->dialogue(['magelang' => 'open'])->show('magelang');
         $total = count(self::lines(2, 'level_open'));
@@ -302,15 +302,8 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringNotContainsString('dialogue-head', $page);
         $this->assertStringNotContainsString('class="cine-top"', $page, 'no progress in the HUD centre');
 
-        // The difficulty badge sits in the HUD, right before the language control, without a cheer line
-        $controls = (int) strpos($page, '<div class="hud-right hud-controls">');
-        $badge    = (int) strpos($page, '<div class="region-difficulty is-sedang">');
-        $this->assertGreaterThan($controls, $badge);
-        $this->assertGreaterThan($badge, (int) strpos($page, '<details class="hud-pop hud-lang"'));
-        $this->assertSame(2, substr_count($page, '<i class="is-on"'), 'two of three bars lit');
-        $this->assertStringContainsString(esc(lang('Game.difficultyLabel')), $page);
-        $this->assertStringContainsString(esc(lang('Game.difficultyLevel', [lang('Game.difficulty_sedang')])), $page);
-        $this->assertStringNotContainsString('region-difficulty-hint', $page);
+        // Owner, 19 November 2026: no difficulty level when a student enters a region
+        $this->assertStringNotContainsString('region-difficulty', $page);
 
         // The parchment box: the speaker's name, then the dots only (no "Bagian n dari N" text); ▶ reads "Lanjut"
         $this->assertMatchesRegularExpression('/id="line-1".*?<div class="dialogue-box panel-parchment dialogue-caption" data-narrator-advance>\s*<div class="dialogue-caption-head">\s*<cite class="dialogue-speaker">[^<]+<\/cite>\s*<nav class="dialogue-progress" aria-label="' . preg_quote(esc(lang('Game.slideOf', [1, $total]), 'attr'), '/') . '">\s*<ol class="slide-dots">/s', $page);
@@ -342,8 +335,8 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString('<div class="cine-final">', $page);
         $this->assertStringNotContainsString('screen-head dialogue-head', $page);
         $this->assertMatchesRegularExpression('~<body[^>]*class="[^"]*\bis-cinematic\b~', $page);
-        // The difficulty badge only on the region curtain (its template), never in the HUD
-        $this->assertStringNotContainsString('region-difficulty', (string) preg_replace('~<template id="tpl-curtain-region">.*?</template>~s', '', $page));
+        // No difficulty badge anywhere (owner, 19 November 2026)
+        $this->assertStringNotContainsString('region-difficulty', $page);
 
         // Owner request 21 October 2026: no nav bar (Peta Kedu is in the menu), no shard plate or region
         // name, no names under the figures. Uniform HUD (19 November 2026): "Peta wilayah" is the name of
@@ -489,13 +482,11 @@ final class RegionStoryTest extends CIUnitTestCase
 
         $this->assertStringContainsString('<template id="tpl-curtain-region">', $page);
         $this->assertMatchesRegularExpression('/<template id="tpl-curtain-region">.*?data-curtain-layer="region"\s+data-tap="0"\s+data-min-ms="1800" data-max-ms="2400" data-skip="0"/s', $page);
-        // Cinematic plate (owner, 21 October 2026): the name on the navy head plate, the bronze track, no footprints
-        $this->assertMatchesRegularExpression('/<template id="tpl-curtain-region">.*?class="curtain-title has-plate" data-curtain-text="title"/s', $page);
-        $this->assertMatchesRegularExpression('/<template id="tpl-curtain-region">.*?class="curtain-beam has-track"/s', $page);
-        $this->assertDoesNotMatchRegularExpression('/<template id="tpl-curtain-region">(?:(?!<\/template>).)*curtain-trail/s', $page);
-        // The region dialogue's difficulty badge instead of the plain chip (owner, 21 October 2026); curtain.js lights its bars
-        $this->assertMatchesRegularExpression('/<template id="tpl-curtain-region">.*?<div class="region-difficulty curtain-difficulty" data-curtain-difficulty hidden>.*?<span class="region-difficulty-level" data-curtain-text="chip">/s', $page);
-        $this->assertStringContainsString('fillDifficulty(layer, opts.text)', (string) file_get_contents(FCPATH . 'assets/js/core/curtain.js'));
+        // Owner, 19 November 2026: the title as plain text (no plate), the bronze track right under
+        // it, the tagline at the foot; no difficulty badge, no footprints
+        $this->assertMatchesRegularExpression('/<template id="tpl-curtain-region">.*?<h2 class="curtain-title" data-curtain-text="title">.*?class="curtain-beam has-track".*?<p class="curtain-tagline" data-curtain-text="tagline"/s', $page);
+        $this->assertDoesNotMatchRegularExpression('/<template id="tpl-curtain-region">(?:(?!<\/template>).)*(curtain-trail|curtain-difficulty|has-plate)/s', $page);
+        $this->assertStringNotContainsString('fillDifficulty', (string) file_get_contents(FCPATH . 'assets/js/core/curtain.js'));
         // Peta Kedu redesign: pins select a region; Lanjut in its panel enters with the curtain; locked does not
         $this->assertSame(1, substr_count($page, $this->href('dialog/magelang') . ' data-curtain="region"'));
         $this->assertSame(1, substr_count($page, $this->href('wilayah/temanggung') . ' data-curtain="region"'));
@@ -503,7 +494,7 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString($this->href('wilayah/wonosobo') . ' aria-disabled="true" data-locked-message="', $page, 'locked Lanjut only shows the toast');
         $this->assertMatchesRegularExpression('/<a class="kedu-city" href="#region-magelang" data-region-select="magelang"\s+aria-controls="region-magelang" aria-current="true"/', $page, 'the region to play is selected');
         // Tagline & chip dari naskah; aset tujuan dialog: frame tokoh
-        $this->assertStringContainsString(esc(json_encode(['title' => 'Menuju Temanggung…', 'tagline' => 'Di Antara Dua Gunung', 'chip' => 'Mudah', 'difficulty' => 'mudah'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 'attr'), $page);
+        $this->assertStringContainsString(esc(json_encode(['title' => 'Menuju Temanggung…', 'tagline' => 'Di Antara Dua Gunung'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), 'attr'), $page);
         $this->assertStringContainsString(esc(json_encode([base_url('assets/char/jaka-idle-1.png')], JSON_UNESCAPED_SLASHES), 'attr'), $page);
     }
 
@@ -1002,7 +993,7 @@ final class RegionStoryTest extends CIUnitTestCase
         $node->injectRawData(['id' => 15, 'level_id' => 1, 'sequence' => 4, 'engine_type' => 'cari', 'title_id' => 'Cari Objek Temanggung']);
 
         $next = self::overview(['temanggung' => 'completed', 'magelang' => 'in_progress'])[1];
-        $next['curtain'] = ['text' => ['title' => 'Menuju Magelang…', 'tagline' => 'Tanah Candi Agung', 'chip' => 'Sedang', 'difficulty' => 'sedang'], 'preload' => []];
+        $next['curtain'] = ['text' => ['title' => 'Menuju Magelang…', 'tagline' => 'Tanah Candi Agung'], 'preload' => []];
 
         return view('game/challenge-finished', self::hud($allDone) + [
             'attempt'         => $attempt,
