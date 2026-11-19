@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 18 November 2026 · Lampiran telaah gambar (`ai-studio/game-images/REVIEW.md`) dan perombakan antarmuka (`docs/PROGRESS.md` → *Interface overhaul*) · Status: **`draf pengembang`**, `asal: pengembang` (disusun pengembang dari wawancara 18 November 2026; [04](04_CATATAN_KEPUTUSAN.md))
+Per 19 November 2026 · Lampiran telaah gambar (`ai-studio/game-images/REVIEW.md`) dan perombakan antarmuka (`docs/PROGRESS.md` → *Interface overhaul*) · Status: **`draf pengembang`**, `asal: pengembang` (disusun pengembang dari wawancara 18 November 2026; [04](04_CATATAN_KEPUTUSAN.md))
 
 Pengembang meminta gambar baru untuk bagian antarmuka yang belum segaya dengan *emas berukir*, penanda status tantangan, ikon aplikasi, lentera dan pin wilayah, lencana, avatar, latar halaman awal, empat slide cerita penutup, dan gambar Pustaka yang masih bergaya lukisan. Dokumen ini memuat prompt siap tempel ke alat pembuat gambar (bahasa Inggris) dengan pola yang sama seperti [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md), [38](38_PROMPT_PETA_LIMA_TANTANGAN_DAN_SKENARIO.md), dan [39](39_PROMPT_GAMBAR_PERBAIKAN_TELAAH.md). Daftar kerjanya di `ai-studio/chatgpt-images/TASKS.md`: baris `U-` (antarmuka), `S-` (latar dan cerita), dan `PK-` (Pustaka).
 
@@ -32,7 +32,8 @@ Telaah dan pesanan ini pekerjaan pengembang sendiri, bukan validasi ahli ([01 �
 | `U-04` | Bingkai jendela dan panel hasil | 38, 39, 94 | Pengganti `modal-frame-16x9`, `modal-frame-4x3`, `ui.result-panel` |
 | `U-05` | Bilah perunggu | 35, 37 | Pengganti `loading-track`, `map-progress-track` |
 | `U-06` | Pelat judul peta wilayah | 36 | Pengganti `map-head-plate` |
-| `U-07` | Bingkai Serpihan Cahaya (HUD) | 32 | Suntingan `hud-shards-frame`: hiasan diseragamkan, tata letak tetap |
+| `U-07` | Bingkai Serpihan Cahaya (HUD) | 32 | Suntingan `hud-shards-frame`: hiasan diseragamkan, tata letak tetap; lubang kristal kosong, diisi `U-36` |
+| `U-36` | Kristal Serpihan Cahaya (HUD) | 32 | Baru (19 November 2026): kristal tersendiri untuk lubang `U-07` |
 | `U-08` | Isi bilah Serpihan Cahaya | 31 | Pengganti `hud-shards-fill` |
 | `U-09` | Penanda status: tuntas | 52 | Pengganti `status-done` |
 | `U-10` | Penanda status: terbuka | 54 | Pengganti `status-progress` |
@@ -78,7 +79,7 @@ Diukur pengembang di instalasi pengembangan dengan peramban otomatis, per bagian
 
 ## Aturan bersama
 
-**Gaya antarmuka (`U-00` sampai `U-35`).** Gaya *emas berukir* yang disetujui peneliti ([39 → Aturan bersama](39_PROMPT_GAMBAR_PERBAIKAN_TELAAH.md)): bingkai emas tebal berukir dalam dengan hiasan ukel, bidang batu gelap atau biru tua berpola awan samar, simbol timbul dari emas yang sama, satu arah cahaya dari kiri atas, dirender sebagai benda 3D. Hijau dan merah hanya warna bidang, selalu bersama simbolnya. Setiap prompt `U-` dimulai dengan blok `GELITA CARVED GOLD UI — 2026-11-18` di bawah ini, kata per kata.
+**Gaya antarmuka (`U-00` sampai `U-36`, dan `SD-` di [41](41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md#8-prompt-gambar-sd-)).** Gaya *emas berukir* yang disetujui peneliti ([39 → Aturan bersama](39_PROMPT_GAMBAR_PERBAIKAN_TELAAH.md)): bingkai emas tebal berukir dalam dengan hiasan ukel, bidang batu gelap atau biru tua berpola awan samar, simbol timbul dari emas yang sama, satu arah cahaya dari kiri atas, dirender sebagai benda 3D. Hijau dan merah hanya warna bidang, selalu bersama simbolnya. Setiap prompt `U-` dimulai dengan blok `GELITA CARVED GOLD UI — 2026-11-18` di bawah ini, kata per kata.
 
 ```text
 GELITA CARVED GOLD UI — 2026-11-18
@@ -231,6 +232,24 @@ The groove stays empty and dark; the crystal socket stays empty (the game draws 
 ```
 
 *Catatan pengembang 18 November 2026:* kalimat "the game draws the glowing crystal" di prompt ini keliru. Kristal selama ini digambar di dalam bingkai lama; permainan hanya menaruh cahaya di atasnya (`.lantern-gem` di `stage.css`, makin terang per wilayah tuntas). Hasil `U-07` (PR #420, ukiran baru, lubang kristal kosong) karena itu **ditahan**: dipasang sendirian, penghitung Serpihan Cahaya menampilkan lubang biru tua kosong. Pengembang memutuskan memesan **kristal tersendiri** di sesi lain: satu gambar transparan, kristal serpihan cahaya emas yang sama dengan `U-10`, mengisi lubang bingkai (di bingkai 1400 × 288: kira-kira x 98, y 45, 101 × 164 piksel, yaitu `left: 7%`, `top: 15.8%`, `width: 7.2%`, `height: 57%` dari `.lantern-gem`), kanvas sekitar 300 × 480, tanpa cahaya yang dilukis (cahayanya tetap dari permainan). Sesudah itu `U-07` dan kristal dipasang bersama: bingkai baru menggantikan `public/assets/ui/hud-shards-frame.webp`, kristal menjadi lapisan di bawah `.lantern-gem`.
+
+*Catatan pengembang 19 November 2026:* prompt kristalnya `U-36` di bawah. Letak di atas diukur di bingkai lama; lubang bingkai baru (`ai-studio/chatgpt-images/out/hud-shards-frame.webp`, dari PR #420) diukur ulang: bidang biru tua lonjong x 74–221, y 51–238, yaitu 148 × 188 piksel di bingkai 1400 × 288. Kanvas `U-36` dibuat tepat tiga kali kotak itu, jadi kristal dipasang pada kotak lubang tanpa diukur lagi.
+
+### U-36 · Kristal Serpihan Cahaya
+
+| | |
+|---|---|
+| Berkas | baru: `public/assets/ui/hud-shards-crystal.webp` (lapisan di lubang `U-07`) |
+| Kanvas | 444 × 564, latar transparan (tiga kali lubang bingkai, 148 × 188) |
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp`, `ai-studio/chatgpt-images/out/hud-shards-frame.webp` (`U-07`: bingkai baru dengan lubang kosong), `public/assets/ui/hud-shards-frame.webp` (bingkai lama: kristal di ujung kirinya), `public/assets/ui/status-progress.webp` (`U-10`: bentuk serpihan) |
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Asset: hud-shards-crystal (U-36 · light shard crystal for the shard counter, separate layer)
+ONE tall pointed crystal of golden light, the same shard shape as the crystal at the left end of the attached OLD shard counter and the embossed shard on the attached open-status medallion (U-10): faceted warm amber-gold crystal, softly lit from inside, its facets catching the one light from the upper left, rendered as a solid 3D object.
+It is a separate layer that the game places inside the empty oval socket at the left end of the attached NEW shard counter frame (U-07); the canvas covers exactly that socket. Draw ONLY the crystal: no socket, no ring, no frame, no leaves, no background. The game lays its own glow over the crystal, so paint NO halo, rays, sparkles or light outside the crystal's own outline.
+Canvas exactly 444 × 564 pixels, transparent around the crystal. The crystal stands upright in the centre with its tip pointing straight up, about 270 pixels wide and 470 pixels tall, so it sits inside the oval with a dark rim of socket visible all round. It must still read as a crystal when shown at 32 × 56 pixels. No text. WebP, named hud-shards-crystal.webp.
+```
 
 ### U-08 · Isi bilah Serpihan Cahaya
 
@@ -1633,7 +1652,8 @@ Semua hasil dipindahkan (bukan disalin) dari `ai-studio/chatgpt-images/out/`. Ba
 | `U-03` | `public/assets/ui/ui-plate-green.webp` | Sama, untuk `plate-green` |
 | `U-04` | `public/assets/ui/ui-frame.webp` | Satu `border-image` sembilan bagian (sudut 260 dari 1600 × 1200) untuk jendela 4:3 dan 16:9 dan panel hasil; `fitFrame()` di `core/modal.js` tidak perlu memilih berkas lagi |
 | `U-05` | `public/assets/ui/ui-track.webp` | `--loading-track` dan `--progress-track` memakai berkas ini dengan ujung 96 |
-| `U-06`, `U-07`, `U-08`, `U-09` – `U-11`, `U-12` (`star.webp`), `U-13` | berkas yang sama di `public/assets/ui/` | `U-11`: hapus `icon('lock', 'badge-lock')` di `map-level.php` dan `lantern.php`, karena gemboknya kini di gambar. `U-12`: salin juga ke `ai-studio/game-images/assets/antarmuka/ui.result-star.webp` |
+| `U-07` dan `U-36` (bersama) | `U-07`: `public/assets/ui/hud-shards-frame.webp`; `U-36`: `public/assets/ui/hud-shards-crystal.webp` | Kristal menjadi lapisan di `.hud-shards .lantern-toggle` pada kotak lubang (`left: 5.29%`, `top: 17.7%`, `width: 10.57%`, `height: 65.3%` dari bingkai), di bawah `.lantern-gem`; `.lantern-gem` dipindah ke kotak yang sama. Diperiksa di semua ukuran `--plate-w` dan keempat `data-stage` |
+| `U-06`, `U-08`, `U-09` – `U-11`, `U-12` (`star.webp`), `U-13` | berkas yang sama di `public/assets/ui/` | `U-11`: hapus `icon('lock', 'badge-lock')` di `map-level.php` dan `lantern.php`, karena gemboknya kini di gambar. `U-12`: salin juga ke `ai-studio/game-images/assets/antarmuka/ui.result-star.webp` |
 | `U-14` – `U-23` | `ai-studio/game-images/assets/ikon/` dan `…/lencana/` di tempat berkas lama | `php spark gelita:katalog:impor`. Tombol Kenali di Peta Kedu memakai `map.lantern.{wilayah}` (slot `map.lantern.*` di `ImageSlots` menjadi dipakai); `public/assets/ui/icon-kenali.webp` dihapus |
 | `U-24` – `U-33` | `ai-studio/game-images/assets/ikon/avatar.{N}.webp` | `php spark gelita:katalog:impor` (`avatar.2` juga medali layar hasil) |
 | — | `ui.result-hud-control` | Slot dan entri `data.json` dibuang; HUD hanya memakai gambar `round-*` |

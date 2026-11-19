@@ -21,10 +21,10 @@
  *        centres the title (Peta Kedu, 20 October 2026); `logo-centre` puts
  *        the logo alone in the middle and leaves out the shard plate
  *        (Mulai, Masuk, Daftar, Gerbang, the mission brief, the region-done
- *        scene; owner, 20 and 21 October 2026); `region-centre` keeps the
- *        logo on the left and puts the region name alone in the middle, in
- *        the shard plate's place (the challenge screens; owner, 21 October
- *        2026).
+ *        scene; owner, 20 and 21 October 2026); `challenge` (the five
+ *        challenge screens since 19 November 2026, 41 §4) draws no HUD: the
+ *        challenge header is the top row (it replaced `region-centre`, the
+ *        region name in the middle of the HUD, of 21 October 2026).
  * Middle: the shard plate on in-game pages (the owner's carved frame
  *        `assets/ui/hud-shards-frame.webp`, the bar filled by the page with
  *        `hud-shards-fill.webp`; on the left with `title-centre`); a page
@@ -82,9 +82,12 @@ $titleCentre = $hudLayout === 'title-centre';
 // Section `hudLayout` = `logo-centre` (account pages and the gate, owner 20 October 2026): the logo
 // alone in the middle, no shard plate
 $logoCentre = $hudLayout === 'logo-centre';
-// Section `hudLayout` = `region-centre` (challenge screens, owner 21 October 2026): logo left, the
-// region name in the middle where the shard plate was, no shard plate
-$regionCentre = $hudLayout === 'region-centre';
+// Section `hudLayout` = `challenge` (the five challenge screens, 41 §4, 19 November 2026): no HUD band at
+// all. The challenge header is the one top row and carries the sound button and Keluar itself; menu and
+// language are not shown during a challenge (41 decision 16).
+if ($hudLayout === 'challenge') {
+    return;
+}
 $locale   = service('request')->getLocale();
 $locales  = config('Gelita')->locales;
 $hudTitle = trim($this->renderSection('hudTitle'));
@@ -100,7 +103,7 @@ $backText = $backText !== '' ? $backText : esc(lang('Game.back'));
 $backPlate = $back !== '' && $logoCentre;
 $backEnd   = $back !== '' && ! $logoCentre;
 $badge    = trim($this->renderSection('hudBadge'));
-$shards   = $inGame && ! $logoCentre && ! $regionCentre && trim($this->renderSection('hudShards')) !== 'off';
+$shards   = $inGame && ! $logoCentre && trim($this->renderSection('hudShards')) !== 'off';
 $logo     = empty($hideBrand) && ! $titleCentre ? (media_key_src('ui.logo-hero') ?? media_key_src('ui.logo')) : null;
 // The owner's round flag buttons (21 October 2026) first, else the uploaded slot icons
 $roundFlag = ['id' => round_icon_src('lang-id'), 'en' => round_icon_src('lang-en')];
@@ -113,21 +116,17 @@ $backArt  = round_icon_src('back');
 $langName = static fn (string $code): string => lang_or('Game.lang_' . $code, strtoupper($code));
 $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['username']) : '';
 ?>
-<header class="hud hud-menu-style<?= $compact ? ' is-compact' : '' ?><?= $tall ? ' is-tall' : '' ?><?= $titleCentre ? ' is-title-centre' : '' ?><?= $logoCentre ? ' is-logo-centre' : '' ?><?= $regionCentre ? ' is-region-centre' : '' ?>"<?= $inGame ? ' data-in-game' : '' ?><?= skin_style_attr(['skin-hud' => 'ui.result-hud-control']) ?>>
+<header class="hud hud-menu-style<?= $compact ? ' is-compact' : '' ?><?= $tall ? ' is-tall' : '' ?><?= $titleCentre ? ' is-title-centre' : '' ?><?= $logoCentre ? ' is-logo-centre' : '' ?>"<?= $inGame ? ' data-in-game' : '' ?><?= skin_style_attr(['skin-hud' => 'ui.result-hud-control']) ?>>
   <div class="hud-left hud-identity">
     <?php if ($logo !== null): ?>
       <img class="hud-identity-logo" src="<?= esc($logo, 'attr') ?>" alt="<?= esc(lang('Game.appName'), 'attr') ?>" decoding="async" draggable="false">
     <?php elseif (empty($hideBrand) && ! $titleCentre): ?>
       <span class="hud-brand"><?= esc(lang('Game.appName')) ?></span>
     <?php endif ?>
-    <?php if ($region !== null && ! $logoCentre && ! $regionCentre): ?>
+    <?php if ($region !== null && ! $logoCentre): ?>
       <span class="hud-identity-region"><?= esc($region) ?></span>
     <?php endif ?>
   </div>
-
-  <?php if ($region !== null && $regionCentre): ?>
-    <span class="hud-identity-region hud-region-centre"><?= esc($region) ?></span>
-  <?php endif ?>
 
   <?php if ($shards): ?>
     <?php // The owner's shard plate (20 October 2026); absolute URLs, as for Kenali's plates ?>

@@ -91,6 +91,18 @@ The owner's interview of 18 November 2026; prompts in `docs/revisi-10-analitik/4
 
 The rest of the interface art (round buttons and the other plates) keeps its current pictures for now. Its one look is the carved gold of `public/assets/ui/round-*.webp`: a thick gold frame carved in deep relief, a dark stone or navy face, the symbol embossed in the same gold, light from the upper left.
 
+## Rows from document 41 (codes `SD-…`) and `U-36`
+
+The owner approved the Skenario Digital mockup on 19 November 2026 (round eight); prompts in `docs/revisi-10-analitik/41_RENCANA_TAMPILAN_SKENARIO_DAN_HUD.md` → section 8, and for `U-36` in document 40. `SD-01` to `SD-11` are interface parts with the `GELITA CARVED GOLD UI — 2026-11-18` block word for word; `SD-12` to `SD-14` are screen backgrounds with the `GELITA ACTIVE VISUAL DIRECTION — 2026-10-11` block, like `S-W`. The rules of document 40 above apply, plus:
+
+- **Fixed size, never stretched.** Unlike `U-01` to `U-05`, every interface `SD-` picture is shown at exactly one size (named in its prompt). Check: shrink the result to that size and lay the longest label on it (*Lanjut ke cerita berikutnya* on `SD-02`, *Lanjut ke alasan* on `SD-01`, a 59-character line on `SD-08`); the text must stay readable on a calm face.
+- **Make them in row order.** `SD-01` first; later rows attach earlier results from `out/` (for example `SD-02` attaches `out/sd-next.webp`).
+- **The step tabs carry their numeral.** `SD-04` to `SD-07` show the numeral 1 or 2 in the medallion; it is the only character allowed in any `SD-` picture. Pairs `SD-04`/`SD-05` and `SD-06`/`SD-07` must line up exactly when swapped, and active and not active must differ in black and white.
+- **No red, no green, no check marks** on any part.
+- **Screen backgrounds (`SD-12` to `SD-14`):** bright sky in the top 12%, the region's mountains low on the horizon, and below 30% of the height a calm, slightly dark, low-detail landscape with no bright spots, because text stands on it without a box. Check by laying a mockup screenshot over the result. No people, screens, signs or mist; Wonosobo without steam or smoke.
+- **`docs/revisi-10-analitik/gambar/41/`** holds screenshots of the approved mockup. Use them only for where a part sits and how large it is; the mockup's parts are stand-ins, not the look to copy.
+- **`U-36` is a separate crystal layer**, not an edit: only the crystal, no socket and no glow outside its outline. Its canvas covers exactly the empty socket of `out/hud-shards-frame.webp` (`U-07`), which waits for it.
+
 ## Files in `inbox/`
 
 The owner sometimes generates pictures in the ChatGPT app and drops the downloads here with their original names. For each file:

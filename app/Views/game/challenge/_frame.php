@@ -4,11 +4,15 @@
  * game/challenge/{engine}.php; isi arena datang dari section `arena`, isi
  * tambahan panel instruksi dari section `aside` (opsional).
  *
- * Panggung 16:9 (Dok 3 §5): tanpa tokoh Jaka, isi selebar panggung. Kepala
- * 32, 64, 1216 × 56; arena 32, 128, 1216 × 576; tanpa nav bar. Bingkai ukiran
- * digambar .challenge::before, below the header plate (owner's header,
- * 20 October 2026: number ring `assets/ui/challenge-badge.webp`, title, and
- * one capsule for timer | ✓/✗ | Kesempatan, then Petunjuk and Keluar).
+ * Panggung 16:9 (Dok 3 §5): tanpa tokoh Jaka, isi selebar panggung. Since the
+ * uniform HUD (41 §4, decisions 13, 14, 27, 36; 19 November 2026) the header is
+ * the screen's only top row, 32, 16, 1216 × 72: the number medallion
+ * (`assets/ui/challenge-badge.webp`) fused with the title capsule (title, and
+ * the variant title or, in Skenario Digital, the city beside it), then one
+ * capsule for timer | ✓/✗ | Kesempatan, Bantuan, the sound button (moved here
+ * from the HUD, which draws nothing on challenge pages: hudLayout `challenge`)
+ * and the round Keluar. No logo, no menu, no language switch. The arena
+ * starts at y 104.
  * `--plate-navy` carries the navy plate of Kenali for the answer choices
  * (Isi Rumpang words, Benar/Salah), owner's call of the same day.
  * `--rumpang-plate` (Isi Rumpang only) is the calm instruction plate of
@@ -49,6 +53,10 @@ $instructionAudioSrc = audio_src($instructionAudioId);
 // Part 7 (33 §8.4, M-07): one name per challenge kind in the header; the variant title is a small subtitle
 $kindName     = lang_or('Game.engine_' . $engine, $node->text('title', $locale));
 $variantTitle = trim((string) ($payload['variant']['title'] ?? ''));
+// Skenario Digital: the city beside the title instead of the variant title (41 decisions 19, 22)
+$subtitle = $engine === 'skenario' ? $region : ($variantTitle !== $kindName ? $variantTitle : '');
+// ✗ is hidden in Skenario Digital only (41 decision 9)
+$showWrong = $engine !== 'skenario';
 ?>
 <section class="challenge challenge-<?= esc($engine, 'attr') ?>"
          data-screen="challenge"
@@ -64,19 +72,21 @@ $variantTitle = trim((string) ($payload['variant']['title'] ?? ''));
          style="--plate-navy: url(&quot;<?= esc(asset_url_versioned('ui/kenal-plate-navy.webp'), 'attr') ?>&quot;)<?php if ($engine === 'rumpang' && is_file(FCPATH . 'assets/ui/rumpang-instruction-plate.webp')): ?>; --rumpang-plate: url(&quot;<?= esc(asset_url_versioned('ui/rumpang-instruction-plate.webp'), 'attr') ?>&quot;)<?php endif ?>">
 
   <div class="arena-panel">
-    <?php // Owner's header, 20 October 2026: number on the gold-and-navy ring, title, one stats capsule ?>
+    <?php // One top row (41 §4): medallion fused with the title capsule, stats, Bantuan, sound, Keluar ?>
     <header class="challenge-head stage-box">
-      <div class="badge-pos" aria-hidden="true">
-        <img src="<?= esc(asset_url_versioned('ui/challenge-badge.webp'), 'attr') ?>" alt="" width="192" height="192" decoding="async" draggable="false">
-        <span class="badge-pos-no"><?= esc($sequence) ?></span>
-      </div>
-      <div class="challenge-info">
-        <?php // The region · position · kind line left the screen (owner); screen readers still hear it ?>
-        <span class="visually-hidden"><?= esc($region) ?> · <?= esc(lang('Game.challengeOf', [$sequence, $totalNodes])) ?> · <?= esc(engine_label($engine, $node->variant_code)) ?></span>
-        <h1 class="title"><?= esc($kindName) ?></h1>
-        <?php if ($variantTitle !== '' && $variantTitle !== $kindName): ?>
-          <p class="challenge-subtitle"><?= esc($variantTitle) ?></p>
-        <?php endif ?>
+      <div class="challenge-title-plate<?= $engine === 'skenario' ? ' is-inline' : '' ?>">
+        <div class="badge-pos" aria-hidden="true">
+          <img src="<?= esc(asset_url_versioned('ui/challenge-badge.webp'), 'attr') ?>" alt="" width="192" height="192" decoding="async" draggable="false">
+          <span class="badge-pos-no"><?= esc($sequence) ?></span>
+        </div>
+        <div class="challenge-info">
+          <?php // The region · position · kind line left the screen (owner); screen readers still hear it ?>
+          <span class="visually-hidden"><?= esc($region) ?> · <?= esc(lang('Game.challengeOf', [$sequence, $totalNodes])) ?> · <?= esc(engine_label($engine, $node->variant_code)) ?></span>
+          <h1 class="title"><?= esc($kindName) ?></h1>
+          <?php if ($subtitle !== ''): ?>
+            <p class="challenge-subtitle"><?= esc($subtitle) ?></p>
+          <?php endif ?>
+        </div>
       </div>
       <div class="challenge-chips">
         <div class="challenge-stats">
@@ -88,8 +98,10 @@ $variantTitle = trim((string) ($payload['variant']['title'] ?? ''));
           <?php endif ?>
           <span class="chip-tally">
             <span class="tally-ok"><?= round_icon('right', 'stat-art', 'check') ?><span class="visually-hidden"><?= esc(lang('Game.countCorrect')) ?></span> <b id="count-correct" class="num">0</b></span>
-            <span class="tally-sep" aria-hidden="true">/</span>
-            <span class="tally-bad"><?= round_icon('wrong', 'stat-art', 'cross') ?><span class="visually-hidden"><?= esc(lang('Game.countWrong')) ?></span> <b id="count-wrong" class="num">0</b></span>
+            <?php if ($showWrong): ?>
+              <span class="tally-sep" aria-hidden="true">/</span>
+              <span class="tally-bad"><?= round_icon('wrong', 'stat-art', 'cross') ?><span class="visually-hidden"><?= esc(lang('Game.countWrong')) ?></span> <b id="count-wrong" class="num">0</b></span>
+            <?php endif ?>
           </span>
           <?php if (! $node->triesPerItem()): ?>
             <?php // Penanda 3 kesempatan engine batch (Dok 2 §5.3): bulatan terisi = sisa; per-item engines draw their own ?>
@@ -104,8 +116,14 @@ $variantTitle = trim((string) ($payload['variant']['title'] ?? ''));
         <button type="button" class="chip chip-btn" id="btn-hint" data-hints="<?= $hints ?>" hidden>
           <?= round_icon('help', 'chip-art', 'hint') ?> <?= esc(lang('Game.hint')) ?>
         </button>
+        <?php // The HUD's sound button (game/hud.js finds #btn-sound anywhere), the one HUD control in a challenge (41 decision 16) ?>
+        <button type="button" class="hud-ctl challenge-ctl" id="btn-sound" aria-pressed="true"
+                aria-label="<?= esc(lang('Game.sound'), 'attr') ?>" data-tip="<?= esc(lang('Game.sound'), 'attr') ?>">
+          <?= round_icon('sound', 'hud-ctl-art icon-on', 'sound') ?><?= round_icon('mute', 'hud-ctl-art icon-off', 'sound-off') ?>
+        </button>
+        <?php // Keluar: the round button only, its word as the tip (41 decision 23); still confirmed ?>
         <details class="confirm confirm-down challenge-exit">
-          <summary class="btn btn-quiet btn-sm"><?= round_icon('logout', 'chip-art', 'logout') ?> <?= esc(lang('Game.exitChallenge')) ?></summary>
+          <summary class="hud-ctl challenge-ctl" aria-label="<?= esc(lang('Game.exitChallenge'), 'attr') ?>" data-tip="<?= esc(lang('Game.exitChallenge'), 'attr') ?>"><?= round_icon('logout', 'hud-ctl-art', 'logout') ?></summary>
           <div class="confirm-box" role="group" aria-labelledby="exit-title">
             <h2 id="exit-title"><?= esc(lang('Game.exitConfirmTitle')) ?></h2>
             <p><?= esc(lang('Game.exitConfirmText')) ?></p>

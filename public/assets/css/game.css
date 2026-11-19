@@ -1877,24 +1877,52 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(to bottom, rgba(3, 8, 18, .55), transparent 22%),
-    radial-gradient(130% 100% at 50% 50%, rgba(3, 8, 18, .62), rgba(3, 8, 18, .86) 80%);
+  background: radial-gradient(130% 100% at 50% 50%, rgba(3, 8, 18, .62), rgba(3, 8, 18, .86) 80%);
+  /* The top of the picture stays bright behind the header row (41 decision 26, 19 November 2026):
+     the darkening starts under it */
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, .12), rgba(0, 0, 0, .45) 9%, #000 18%);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, .12), rgba(0, 0, 0, .45) 9%, #000 18%);
   pointer-events: none;
 }
 .arena-panel, .arena, .arena-body { display: contents; }
 
-/* Header (owner, 22 October 2026): no plate and no glow line under it, only the number ring,
-   the title, and the controls on the darkened stage */
+/* Header, the one top row of a challenge (41 §4, 19 November 2026): the number medallion
+   fused with a dark title capsule (decisions 27, 36), then the stats capsule, Bantuan, sound
+   and Keluar. The capsules carry their own dark face, since the picture behind stays bright. */
 .challenge-head {
-  --badge: 4rem;
+  --badge: 3.75rem;
   z-index: 5;
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, auto) auto;
+  justify-content: space-between;
   align-items: center;
   gap: 1.25rem;
   padding: 0;
 }
+.challenge-title-plate { position: relative; display: flex; align-items: center; min-width: 0; height: var(--badge); }
+.challenge-title-plate::before {
+  content: "";
+  position: absolute;
+  top: .25rem;
+  bottom: .25rem;
+  left: calc(var(--badge) / 2);
+  right: 0;
+  border: 1px solid rgba(223, 192, 135, .55);
+  border-left: 0;
+  border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
+  background: rgba(11, 19, 32, .85);
+  box-shadow: 0 .25rem .875rem rgba(0, 0, 0, .35);
+}
+.challenge-title-plate .badge-pos { z-index: 1; margin: 0; }
+.challenge-title-plate .challenge-info { position: relative; padding: 0 1.5rem 0 .875rem; }
+/* Skenario Digital: the city beside the title, centred on its height, after a thin gold line */
+.challenge-title-plate.is-inline .challenge-info { display: flex; align-items: center; gap: .75rem; }
+.challenge-title-plate.is-inline .challenge-subtitle { margin: 0; padding-left: .75rem; border-left: 1px solid rgba(223, 192, 135, .5); line-height: 1.375rem; }
+/* The sound button and Keluar as round 48 dp pictures in 56 dp hit areas, like the compact HUD */
+.challenge-head .challenge-ctl { width: 3.5rem; height: 3.5rem; }
+.challenge-head .challenge-ctl > img.hud-ctl-art { width: 3rem; height: 3rem; }
+.challenge-exit > summary.challenge-ctl { min-height: 0; padding: 0; list-style: none; }
+.challenge-exit > summary.challenge-ctl::-webkit-details-marker { display: none; }
 .badge-pos {
   position: relative;
   display: grid;

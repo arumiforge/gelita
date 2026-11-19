@@ -39,6 +39,9 @@ img = {
     'sound': uri('public/assets/ui/round-sound.webp'),
     'logout': uri('public/assets/ui/round-logout.webp'),
     'play': uri('public/assets/ui/round-play.webp'),
+    'next': uri('public/assets/ui/round-next.webp'),
+    'plate_back': uri('public/assets/ui/plate-back.webp'),
+    'plate_next': uri('public/assets/ui/plate-next.webp'),
     'pause': uri('public/assets/ui/round-pause.webp'),
     'gold': uri(plate('gold')),
     'navy': uri(plate('navy')),
@@ -56,6 +59,6 @@ html = (HERE / 'template.html').read_text()
 html = html.replace('/*IMG*/{}', json.dumps(img)).replace('/*SCEN*/{}', json.dumps(scen, ensure_ascii=False))
 for k, v in fonts.items():
     html = html.replace('{{font_' + k + '}}', v)
-html = html.replace('{{gold}}', img['gold']).replace('{{navy}}', img['navy'])
+html = html.replace('{{gold}}', img['gold']).replace('{{navy}}', img['navy']).replace('{{plate_back}}', img['plate_back']).replace('{{plate_next}}', img['plate_next']).replace('{{badge}}', img['badge'])
 OUT.write_text(html)
 print(OUT, round(OUT.stat().st_size / 1024), 'KB')

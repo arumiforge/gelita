@@ -225,6 +225,25 @@ dl, dd { margin: 0; }
   border: 1px solid var(--line); border-radius: 999px;
   color: var(--text-2); font-family: var(--mono); font-size: 12px; white-space: nowrap;
 }
+/* Research mode on or off (owner, 19 November 2026): pill in the topbar, notice above every page */
+.topbar-mode {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 28px; padding: 0 10px;
+  border: 1px solid var(--line); border-radius: 999px;
+  color: var(--text-2); font-size: 12px; font-weight: 600; white-space: nowrap;
+}
+.topbar-mode.is-on { border-color: #FEDF89; background: var(--warn-soft); color: var(--text); }
+.research-mode-notice { margin-bottom: 16px; }
+.research-mode-diff summary { cursor: pointer; color: var(--text); font-weight: 600; }
+.research-mode-diff[open] summary { margin-bottom: 8px; }
+.research-mode-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface-2); }
+.research-mode-table { font-size: 13px; line-height: 18px; }
+.research-mode-table th, .research-mode-table td { padding: 7px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.research-mode-table tbody tr:last-child > * { border-bottom: 0; }
+.research-mode-table thead th { color: var(--text-dim); font-weight: 600; white-space: nowrap; }
+.research-mode-table th[scope="row"] { width: 26%; color: var(--text); font-weight: 600; }
+.research-mode-table .is-current { background: var(--surface); color: var(--text); font-weight: 600; }
+.research-mode-diff .muted { margin-top: 8px; }
 .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--text-dim); }
 .dot.is-ok { background: #12B76A; }
 .dot.is-warn { background: #F79009; }
