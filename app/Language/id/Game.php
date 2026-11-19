@@ -362,6 +362,8 @@ return [
     'notFoundText'      => 'Halaman yang kamu cari tidak ditemukan. Mari kembali ke awal perjalanan.',
     'serverErrorTitle'  => 'Lentera sedang padam',
     'serverErrorText'   => 'Ada yang salah di server. Coba lagi sebentar lagi, atau sampaikan kode ini kepada gurumu.',
+    'requestErrorTitle' => 'Jalan ini sedang tertutup',
+    'requestErrorText'  => 'Halaman ini belum bisa dibuka sekarang. Coba muat ulang, atau kembali ke awal perjalanan, ya.',
     'backHome'          => 'Kembali ke awal',
 
     // Tahap 2 — layar bernarasi (ketuk untuk mulai), tirai, narasi peta

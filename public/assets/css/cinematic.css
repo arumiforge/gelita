@@ -1072,10 +1072,11 @@ body.is-cinematic .nav-bar .btn {
 /* Last line: "Masuk ke {wilayah}" in the middle between the HUD and the box */
 .dialogue-cine .cine-final { inset: calc(120 * var(--dp)) 0 calc(200 * var(--dp)); grid-auto-flow: column; place-content: center; gap: var(--gap-4); }
 
-/* HUD on this page: the region name larger; the shard pill
-   (only with progress data) under the logo instead of the centre */
+/* HUD on this page: the region name larger; the shard pill (only with progress data) */
 .is-region-dialogue .hud-identity-region { font-family: var(--font-display); font-size: 2.25rem; letter-spacing: .02em; }
-.is-region-dialogue .hud-shards { top: calc(116 * var(--dp)); left: calc(24 * var(--dp)); width: calc(360 * var(--dp)); }
+/* Top centre and a little smaller (owner, 19 November 2026; was under the logo at 24, 116):
+   320 dp wide, centred on the stage */
+.is-region-dialogue .hud-shards { --plate-w: 20rem; top: .75rem; left: 30rem; width: var(--plate-w); }
 
 
 /* ======================= NARASI PETA ======================= */

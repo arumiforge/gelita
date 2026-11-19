@@ -362,6 +362,8 @@ return [
     'notFoundText'      => 'The page you are looking for was not found. Let\'s go back to the start of the journey.',
     'serverErrorTitle'  => 'The lantern went out',
     'serverErrorText'   => 'Something went wrong on the server. Try again soon, or tell your teacher this code.',
+    'requestErrorTitle' => 'This path is closed for now',
+    'requestErrorText'  => 'This page cannot be opened right now. Try reloading it, or go back to the start of the journey.',
     'backHome'          => 'Back to the start',
 
     // Tahap 2 — narrated screens (tap to start), curtain, map narration

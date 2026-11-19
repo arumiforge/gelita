@@ -1209,3 +1209,12 @@ Owner, second round the same day, with a mockup of the region map: no light rays
 - **Picture orders:** `PL-07` to `PL-09` (document 40, `TASKS.md`): the quiet button faces in gold, navy and green, 960 × 160, plain ends, to be installed as a corner-sliced border image under the quiet block; reference `docs/revisi-10-analitik/gambar/40/polesan/10-tombol-tenang.webp`.
 - **Checked.** Screenshots on the dev install (home, login, Peta Kedu, Kenali, Pustaka Kedu, mission card, region maps open, done and locked, reading room, bridge story); `LibraryLockTest` (region-map tests rewritten to the mockup), `RetakeRuleTest`, `RegionStoryTest`, `StartGateTest`, `TouchPlayTest`, `CinematicViewTest`.
 - **Not checked.** The result screen and every dialog in the browser after the button change (covered by CSS only); a real Chromebook.
+
+## Shard plate on the story screens; GELITA error pages with pictures (19 November 2026, branch `igi/laughing-fermi-ifbg3l`)
+
+Owner, third request the same day: move the Serpihan Cahaya plate to the top centre, smaller if needed; order pictures for the 404 page and the other error pages.
+
+- **Shard plate:** on the region dialogue and the bridge story (`.is-region-dialogue`) it sits at the top centre, 320 dp wide (was under the logo at 24, 116, 360 dp).
+- **Error pages:** one shared card `app/Views/errors/html/_gelita.php` (inline CSS, no layout, the quiet gold button) for `error_404`, `error_500`, `error_400` and `production.php` (every other client error, which showed CodeIgniter's English "Whoops!" and "Bad Request" pages until now). New keys `Game.requestErrorTitle/Text`. A picture per kind shows once `public/assets/ui/error-{404,500,400}.webp` is installed (ordered as `PL-10` to `PL-12`, document 40). The 500 card still shows only the request_id.
+- **Checked.** `ErrorPagesTest` (new), screenshots of a story screen and the 404 page on the dev install.
+
