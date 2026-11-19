@@ -432,9 +432,9 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringNotContainsString('icon-btn kenal-close', $overlay);
         $this->assertMatchesRegularExpression('/data-kenal-close>.*?<\/a>\s*<div class="kenal-heading">\s*<h2 class="kenal-title" id="kenal-temanggung-title">' . preg_quote(esc(lang('Game.kenalTitle', ['Temanggung'])), '/') . '<\/h2>\s*<span class="kenal-rule" aria-hidden="true">\s*<svg class="kenal-ornament"/s', $head);
 
-        // The plates (shipped pictures) and the HUD skin reach the CSS as custom properties
-        foreach (['kenal-plate-gold', 'kenal-plate-navy'] as $plate) {
-            $this->assertStringContainsString(esc('--' . $plate . ': url("' . asset_url_versioned('ui/' . $plate . '.webp') . '")', 'attr'), $open);
+        // The HUD skin reaches the CSS as a custom property; the plates come from #stage (U-01, U-02, 19 November 2026)
+        $this->assertStringNotContainsString('kenal-plate-', $open);
+        foreach (['ui-plate-gold', 'ui-plate-navy'] as $plate) {
             $this->assertFileExists(FCPATH . 'assets/ui/' . $plate . '.webp');
         }
         $this->assertStringContainsString(esc('--skin-hud: url("' . base_url('assets/uploads/ui.result-hud-control.webp?v=h1') . '")', 'attr'), $open);
@@ -464,8 +464,9 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString('.kenal-avatar {', $css);
         $this->assertStringContainsString('margin-left: calc(var(--kenal-avatar) / 2);', $css, 'the bar starts under the avatar centre');
         $this->assertMatchesRegularExpression('/\.kenal-avatar \{[^}]*bottom: 0;/', $css, 'the avatar stands on the bar\'s bottom');
-        $this->assertStringContainsString('border-image: var(--kenal-plate-gold) 0 250 fill / 0 4rem stretch;', $css);
-        $this->assertStringContainsString('border-image: var(--kenal-plate-navy) 0 115 fill / 0 3.5rem stretch;', $css);
+        // U-01 and U-02 (19 November 2026): 64 dp plates, each end 1.165 × that
+        $this->assertStringContainsString('border-image: var(--plate-gold) var(--plate-cut) / 0 4.6875rem stretch;', $css);
+        $this->assertStringContainsString('border-image: var(--plate-navy) var(--plate-cut) / 0 4.6875rem stretch;', $css);
         $this->assertStringContainsString('.kenal[style*="--skin-hud"] .narrator-controls .icon-btn::after {', $css);
         $this->assertStringContainsString('.kenal.is-live .slide-nav > .btn-quiet { display: none; }', $css);
     }
@@ -595,7 +596,7 @@ final class RegionStoryTest extends CIUnitTestCase
         // Owner, 20 October 2026: Jaka's name sits on the navy nameplate over his avatar, as on Kenali,
         // not in the story line; the story bar and the region panel have no backdrop or gold frame
         $this->assertMatchesRegularExpression('/<div class="kedu-speaker">(?:<!--[^>]*-->\s*)*<span class="kedu-portrait has-art" aria-hidden="true">.*?<\/span>\s*(?:<!--[^>]*-->\s*)*<span class="kenal-nameplate">' . preg_quote(esc(lang('Game.char_jaka')), '/') . '<\/span><\/div>/s', $story);
-        $this->assertStringContainsString('--kenal-plate-navy: url(&quot;' . esc(asset_url_versioned('ui/kenal-plate-navy.webp'), 'attr') . '&quot;)', $story);
+        $this->assertStringNotContainsString('kenal-plate-navy', $story, 'the navy plate comes from #stage');
         $this->assertDoesNotMatchRegularExpression('/<cite>' . preg_quote(esc(lang('Game.char_jaka')), '/') . '/', $story);
         $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
         $this->assertDoesNotMatchRegularExpression('/\n\.kedu-(?:panel|story) \{[^}]*(?:border|background):/', $css);

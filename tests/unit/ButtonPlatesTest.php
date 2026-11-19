@@ -143,8 +143,9 @@ final class ButtonPlatesTest extends CIUnitTestCase
         $this->assertStringNotContainsString('character-img', $hero);
         $this->assertStringNotContainsString('<cite', $hero);
         $this->assertStringNotContainsString(lang('Game.char_mbah_kedu') . '</', $hero);
-        // The bars run on the bronze track; Peta Kedu goes back on the back plate
-        $this->assertStringContainsString('data-screen="reflection" style="--loading-track: url(&quot;', $page);
+        // The bars run on the bronze track from #stage (U-05, 19 November 2026); Peta Kedu goes back on the back plate
+        $this->assertStringContainsString('<section class="reflection" data-screen="reflection">', $page);
+        $this->assertStringContainsString('.stage[style*="--ui-track"] .reflection .reflection-side .progress {', (string) file_get_contents(FCPATH . 'assets/css/game.css'));
         $this->assertStringContainsString('<a ' . plate_attrs('back') . ' href="' . esc(base_url('peta'), 'attr') . '"><span>' . esc(lang('Game.mapKedu')) . '</span></a>', $page);
     }
 }

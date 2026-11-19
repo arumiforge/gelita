@@ -105,7 +105,7 @@ final class ChallengeFrameTest extends CIUnitTestCase
         $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
         $this->assertStringContainsString('.stage[style*="--round-blank"][style*="--round-neutral"] .tries-dots > .tries-dot.is-left { background-image: var(--round-blank);', $css);
         $this->assertStringContainsString('.stage[style*="--round-blank"][style*="--round-neutral"] .result-shards-bar i.is-on { background-image: var(--round-blank);', $css);
-        $this->assertMatchesRegularExpression('~\.stage\[style\*="--gold-pill-2"\] \.btn-danger \{[^}]*filter: hue-rotate\(-38deg\)~', $css, 'danger buttons on the gold pill turned red');
+        $this->assertMatchesRegularExpression('~\.stage\[style\*="--plate-gold"\] \.btn-danger \{[^}]*filter: hue-rotate\(-38deg\)~', $css, 'danger buttons on the gold plate turned red');
         $this->assertStringContainsString('.stage .modal-layer .modal-text.modal-extra {', (string) file_get_contents(FCPATH . 'assets/css/stage.css'));
     }
 
@@ -218,14 +218,14 @@ final class ChallengeFrameTest extends CIUnitTestCase
         $this->assertMatchesRegularExpression('~\.blank \{[^}]*border: 0;[^}]*radial-gradient\(circle, var\(--dots\)~', $css);
     }
 
-    /** Owner, 20 October 2026: Isi Rumpang words and Benar/Salah choices on the navy plate. */
+    /** Owner, 20 October 2026: Isi Rumpang words and Benar/Salah choices on the navy plate (U-02 from #stage since 19 November 2026). */
     public function testAnswerChoicesUseTheNavyPlate(): void
     {
-        $this->assertStringContainsString("--plate-navy: url(&quot;<?= esc(asset_url_versioned('ui/kenal-plate-navy.webp'), 'attr') ?>&quot;)", $this->view('game/challenge/_frame'));
+        $this->assertStringNotContainsString('kenal-plate-navy', $this->view('game/challenge/_frame'));
 
         $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
-        $this->assertStringContainsString('.challenge[style*="--plate-navy"] :is(.word, .choice) {', $css);
-        $this->assertStringContainsString('border-image: var(--plate-navy) 0 115 fill / 0 2.375rem stretch;', $css);
+        $this->assertStringContainsString('.stage[style*="--plate-navy"] .challenge :is(.word, .choice) {', $css);
+        $this->assertStringContainsString('border-image: var(--plate-navy) var(--plate-cut) / 0 3.2rem stretch;', $css);
     }
 
     /** Owner's "Tentang gambar ini" panel, 20 October 2026; puzzle.js still reads the one <p>. */

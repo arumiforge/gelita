@@ -25,13 +25,17 @@ final class DialogFrameTest extends CIUnitTestCase
 
     public function testShippedPicturesArePassedOnTheStage(): void
     {
-        foreach (['modal-frame-4x3', 'modal-frame-16x9', 'gold-pill-1', 'gold-pill-2', 'gold-pill-3', 'gold-pill-4', 'select-arrow'] as $file) {
+        // Document 40, U-01 to U-05 (19 November 2026): one plate per colour, the track, the frame
+        foreach (['ui-plate-gold', 'ui-plate-navy', 'ui-plate-green', 'ui-track', 'ui-frame', 'select-arrow'] as $file) {
             $this->assertFileExists(FCPATH . 'assets/ui/' . $file . '.webp');
+        }
+        foreach (['gold-pill-1', 'gold-pill-2', 'gold-pill-3', 'gold-pill-4', 'kenal-plate-gold', 'kenal-plate-navy', 'plate-green', 'loading-track', 'map-progress-track', 'modal-frame-4x3', 'modal-frame-16x9'] as $old) {
+            $this->assertFileDoesNotExist(FCPATH . 'assets/ui/' . $old . '.webp', $old . ' replaced by U-01 to U-05');
         }
 
         $urls = stage_picture_urls();
         $this->assertSame(
-            ['gold-pill-1', 'gold-pill-2', 'gold-pill-3', 'gold-pill-4', 'modal-frame-compact', 'modal-frame-wide', 'select-arrow', 'modal-plate-navy', 'round-close', 'round-blank'],
+            ['plate-gold', 'plate-navy', 'plate-green', 'ui-track', 'ui-frame', 'select-arrow', 'round-close', 'round-blank'],
             array_keys($urls),
         );
         $this->assertNotContains(null, $urls);
@@ -54,10 +58,11 @@ final class DialogFrameTest extends CIUnitTestCase
         $this->assertStringContainsString("<template id=\"tpl-modal\"><?= view('components/modal', ['roundArt' => true]) ?></template>", (string) file_get_contents(APPPATH . 'Views/layouts/game.php'));
     }
 
-    public function testDialogIsTheFramePictureAtItsOwnRatio(): void
+    public function testDialogIsTheNineSliceFrameAtTwoRatios(): void
     {
         $stage = $this->css('stage');
-        $this->assertMatchesRegularExpression('~\.stage\[style\*="--modal-frame-compact"\] \.modal-layer > \.modal \{[^}]*aspect-ratio: 1428 / 822;[^}]*background: var\(--modal-frame-compact\) center / 100% 100% no-repeat;~', $stage);
+        $this->assertMatchesRegularExpression('~\.stage\[style\*="--ui-frame"\] \.modal-layer > \.modal \{[^}]*aspect-ratio: 1428 / 822;[^}]*border-image: var\(--ui-frame\) var\(--frame-cut\) / 4rem stretch;~', $stage);
+        $this->assertStringContainsString('--frame-cut: 180 fill;', $stage);
         $this->assertMatchesRegularExpression('~\.modal\[data-frame="wide"\] \{[^}]*aspect-ratio: 1672 / 698;~', $stage);
         // The card loses its own box: no background, border, or shadow on the frame
         $this->assertMatchesRegularExpression('~\.modal-layer > \.modal > \.modal-card \{[^}]*border: 0;[^}]*background: none;[^}]*box-shadow: none;~', $stage);
@@ -66,15 +71,23 @@ final class DialogFrameTest extends CIUnitTestCase
         $this->assertStringContainsString("const FRAME_STEPS = [['compact', 30], ['compact', 35], ['wide', 45]", $js);
         $this->assertStringContainsString('fitFrame(modal);', $js);
 
-        $this->assertStringContainsString('.stage[style*="--modal-frame-compact"] .lightbox {', $this->css('game'));
+        $this->assertStringContainsString("getPropertyValue('--ui-frame')", $js);
+        $this->assertStringContainsString('.stage[style*="--ui-frame"] .lightbox {', $this->css('game'));
     }
 
-    public function testMainButtonsStandOnTheGoldPills(): void
+    /** U-01 (19 November 2026): every main button on the one gold plate, its ends never squashed. */
+    public function testMainButtonsStandOnTheGoldPlate(): void
     {
         $game = $this->css('game');
-        $this->assertStringContainsString('.stage[style*="--gold-pill-1"] .kedu-btn.is-primary::before {', $game);
-        $this->assertStringContainsString('.stage[style*="--gold-pill-1"] .result-btn.is-primary::before {', $game);
-        $this->assertStringContainsString('.stage[style*="--gold-pill-3"] .cine .narrator-next.has-label:not(:disabled) {', $this->css('cinematic'));
+        $this->assertStringContainsString('.stage[style*="--plate-gold"] .kedu-btn.is-primary::before {', $game);
+        $this->assertStringContainsString('.stage[style*="--plate-gold"] .result-btn.is-primary::before {', $game);
+        $this->assertMatchesRegularExpression('~\.stage\[style\*="--plate-gold"\] :is\(\.btn-primary, \.btn-danger\) \{[^}]*--pill-end: calc\(var\(--pill-h\) \* 1\.165\);[^}]*border-image: var\(--plate-gold\) var\(--plate-cut\) / 0 var\(--pill-end\) stretch;~', $game);
+        $this->assertStringContainsString('.stage[style*="--plate-gold"] .cine .narrator-next.has-label:not(:disabled) {', $this->css('cinematic'));
+        $this->assertStringContainsString('--plate-cut: 23 184 19 fill;', $this->css('stage'));
+        // No picture of the family is stretched to its box any more
+        foreach (['game', 'cinematic', 'stage'] as $name) {
+            $this->assertDoesNotMatchRegularExpression('~var\(--(plate-(gold|navy|green)|ui-track|ui-frame)\)\s+center\s*/\s*100% 100%~', $this->css($name), $name);
+        }
 
         foreach (['game', 'cinematic', 'stage', 'components'] as $name) {
             $this->assertStringNotContainsString('--skin-primary', $this->css($name), $name);

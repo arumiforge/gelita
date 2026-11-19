@@ -91,21 +91,22 @@ final class MissionCardTest extends CIUnitTestCase
         $this->assertStringNotContainsString('class="mission-best"', $page, 'no best result before a first try');
     }
 
-    public function testMainButtonsShareTheGoldPill(): void
+    public function testMainButtonsShareTheGoldPlate(): void
     {
-        // Owner, 22 October 2026: the shipped gold pills replace the ui.result-button-primary skin, even when that slot is filled
+        // Owner, 22 October 2026: the shipped gold plate replaces the ui.result-button-primary skin, even when that slot is filled
+        // (the four gold pills until 19 November 2026, then the one plate U-01)
         $this->media = ['ui.result-button-primary' => 'assets/uploads/ui.result-button-primary.webp'];
         Services::resetSingle('renderer');
         $page = $this->brief();
-        $this->assertMatchesRegularExpression('/<div class="stage" id="stage" style="--round-neutral: url\(&quot;[^"]*round-neutral\.webp[^"]*&quot;\); --gold-pill-1: url\(&quot;[^"]*gold-pill-1\.webp/', $page);
+        $this->assertMatchesRegularExpression('/<div class="stage" id="stage" style="--round-neutral: url\(&quot;[^"]*round-neutral\.webp[^"]*&quot;\); --plate-gold: url\(&quot;[^"]*ui-plate-gold\.webp/', $page);
         $this->assertStringNotContainsString('--skin-primary', $page);
-        foreach (['gold-pill-2', 'gold-pill-3', 'gold-pill-4', 'modal-frame-compact', 'modal-frame-wide', 'select-arrow'] as $var) {
+        foreach (['plate-navy', 'plate-green', 'ui-track', 'ui-frame', 'select-arrow'] as $var) {
             $this->assertStringContainsString('--' . $var . ': url(&quot;', $page, $var);
         }
 
         $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
-        $this->assertStringContainsString('.stage[style*="--gold-pill-2"] :is(.btn-primary, .btn-danger) {', $css, 'scoped to the stage: the admin panel keeps its buttons');
-        $this->assertStringContainsString('border-image: var(--pill) 0 var(--pill-cut) fill / 0 var(--pill-end) stretch;', $css);
+        $this->assertStringContainsString('.stage[style*="--plate-gold"] :is(.btn-primary, .btn-danger) {', $css, 'scoped to the stage: the admin panel keeps its buttons');
+        $this->assertStringContainsString('border-image: var(--plate-gold) var(--plate-cut) / 0 var(--pill-end) stretch;', $css);
     }
 
     /** Owner, 21 October 2026; uniform HUD, 19 November 2026: Back to the region map as the last round button of the HUD row. */
