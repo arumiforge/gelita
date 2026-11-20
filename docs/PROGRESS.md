@@ -224,3 +224,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `igi/affectionate-archimedes-cw013v` | Owner request of 20 November 2026: (1) research documents as print-ready PDFs downloadable from the validator and staff guides (public, 14/15 included by owner decision; never the B.5a key); (2) `gelita:simulasi` in research mode (FieldSimulator, schools one after another through P1–P5); (3) 80 students in 5 schools run on a MariaDB dev install; (4) 300-student sample download for ketua | (2) committed; (1) in progress; (3), (4) next; docs, decision log and PR still open |
