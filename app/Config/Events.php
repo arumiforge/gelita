@@ -50,7 +50,7 @@ Events::on('pre_system', static function (): void {
  * (DatabaseHandler::gc(), rows older than Config\Session::$expiration).
  * Debian and Ubuntu ship `session.gc_probability = 0`, because their cron job
  * cleans session files; nothing cleans a session table. Without this no row
- * was ever removed on Jalur L, and since 21 November 2026 the row of a
+ * was ever removed on such a machine, and since 21 November 2026 the row of a
  * replaced session ID is kept until this collector takes it
  * (Config\Session::$regenerateDestroy). One request in a hundred runs it.
  */

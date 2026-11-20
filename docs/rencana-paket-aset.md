@@ -159,7 +159,7 @@ Batas ukuran di katalog adalah batas atas. Gambar sungguhan biasanya lebih kecil
 | Mekanisme | Isi sekarang | Dipakai untuk |
 |---|---|---|
 | `Config\Gelita::$assetVersion` (`gelita.assetVersion` di `.env`, bawaan `'1'`) | satu angka manual | `asset_url_versioned()` menambah `?v=` pada 6 CSS, `howler.min.js`, dan `game.js` |
-| Nginx (`deploy/*/nginx/gelita-https.conf`) | URL ber-`?v=` → `max-age=31536000, immutable`; aset lain → `no-cache` | modul JS yang diimpor, huruf, gambar, audio, dan unggahan **divalidasi ulang setiap kali dipakai** (304 bila tidak berubah) |
+| Nginx (`deploy/windows/nginx/gelita.id.conf`) | URL ber-`?v=` → `max-age=31536000, immutable`; aset lain → `no-cache` | modul JS yang diimpor, huruf, gambar, audio, dan unggahan **divalidasi ulang setiap kali dipakai** (304 bila tidak berubah) |
 | `game_releases` | `release_code`, `app_version`, `content_version`, `asset_version`, `scoring_version`, `is_active` | `content_version` rilis aktif menjadi kunci cache konten `ContentRepository`. `asset_version` hanya teks bebas di halaman Rilis ("Versi gambar & suara") yang **tidak terhubung** ke `assetVersion` maupun berkas apa pun |
 | `game_sessions.release_id` | rilis aktif saat sesi dibuat | menandai sesi dengan rilis; diekspor sebagai `release_code` |
 | `game_sessions.app_client_version` | kolom ada, **tidak pernah diisi** (tidak ada JS yang mengirimnya) | — |
@@ -328,7 +328,7 @@ Tidak masuk paket: HTML, API, panel admin, ikon aplikasi (sudah ditangani manife
 
 | Konsep | Isi | Diubah oleh |
 |---|---|---|
-| `game_releases.app_version` | versi kode (commit) = folder `assets/k/{app_version}` | deploy (`deploy.sh`/`deploy.ps1`) |
+| `game_releases.app_version` | versi kode (commit) = folder `assets/k/{app_version}` | deploy (`deploy.ps1`) |
 | `game_releases.asset_version` | **`package_code`** paket aset (sekarang teks bebas; diberi arti ini) | admin menerbitkan paket (§6) |
 | `game_releases.content_version` | versi isi database (teks, soal, kunci) — tetap seperti sekarang, kunci cache `ContentRepository` | impor bank soal, penyuntingan konten |
 | Tabel baru `asset_packages` | `id`, `package_code`, `app_version`, `manifest_sha256`, `total_bytes`, `file_count`, `status` (`dibangun`/`terbit`/`ditarik`), `built_by`, `built_at`, `published_at`, `notes` | `gelita:paket:bangun`, panel Rilis |

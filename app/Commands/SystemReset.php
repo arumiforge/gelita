@@ -106,7 +106,7 @@ class SystemReset extends BaseCommand
 
         // 2. Konfirmasi
         CLI::newLine();
-        CLI::write('Data ini tidak dapat dikembalikan. Pastikan backup sudah dibuat (deploy/linux/backup.sh atau deploy/windows/backup.ps1).', 'red');
+        CLI::write('Data ini tidak dapat dikembalikan. Pastikan backup sudah dibuat (deploy/windows/backup.ps1).', 'red');
 
         if (! $yes) {
             $answer = CLI::prompt('Ketik ' . SystemResetService::CONFIRM_WORD . ' untuk melanjutkan');

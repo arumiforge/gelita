@@ -29,10 +29,11 @@ app.indexPage = ''
 
 #--------------------------------------------------------------------
 # DATABASE
-# Windows (Jalur W, Laragon): hostname must be 127.0.0.1, not localhost.
-# Windows tries IPv6 (::1) first for "localhost"; MySQL listens on 127.0.0.1
-# only, and every request then waits about 2.6 s before it connects
-# (docs/08 -> Pengaturan MySQL). Linux keeps localhost (socket).
+# On the server (Windows, Laragon) the hostname must be 127.0.0.1, not
+# localhost: Windows tries IPv6 (::1) first for "localhost", MySQL listens on
+# 127.0.0.1 only, and every request then waits about 2.6 s before it connects
+# (docs/08 -> Pengaturan MySQL). A development install on Linux keeps
+# localhost (socket).
 #--------------------------------------------------------------------
 database.default.hostname = localhost
 database.default.database = gelita

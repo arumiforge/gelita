@@ -162,7 +162,7 @@ gelita/
 ├── tests/                   unit/, database/, session/, _support/
 ├── tools/audio/             generator audio bawaan (tidak dipakai server)
 ├── tools/qa/                skrip uji peramban Playwright (tidak dipakai server)
-├── deploy/                  skrip dan konfigurasi Nginx untuk Linux dan Windows
+├── deploy/                  skrip dan konfigurasi Nginx server (Windows)
 ├── docs/                    dokumentasi, bank-soal/, pustaka/, sekolah/, perombakan-kelas5/
 ├── env                      templat konfigurasi, dilacak Git
 ├── .env                     salinan lokal hasil `cp env .env`, tidak pernah di-commit
@@ -686,7 +686,7 @@ Bahan berikut ada di repositori tetapi tidak dijalankan server saat permainan be
 | [`docs/naskah-cerita.md`](naskah-cerita.md) | naskah cerita; salinan datanya `app/Database/Seeds/data/story.php` (91 baris `dialogues`) | disemai `ContentSeeder` |
 | [`tools/audio/`](../tools/audio/README.md) | generator musik gamelan, efek suara, dan narasi TTS Indonesia–Inggris (Python 3.11+, Node 20+, ffmpeg; model diunduh `setup-models.sh`, tidak di-commit) | menghasilkan `public/assets/audio/music/`, `sfx/`, dan `narasi/{id,en}/` (103 rekaman per bahasa: 91 baris cerita + 12 petunjuk Cari Objek) beserta `narasi/produksi.json`; lalu `gelita:narration:import`. Penjelasan desain di [audio.md](audio.md) |
 | `tools/qa/` | uji peramban Playwright (Chromium terpasang di `/opt/pw-browsers`): `stage-check.mjs` memeriksa panggung 16:9 di beberapa ukuran jendela dan menyimpan tangkapan layar ke `writable/qa/stage/`; `challenge-races.mjs` memeriksa isian beku selama cek, waktu isian, Cari Objek, muat ulang tanpa `challenge_abandoned` palsu, dan cek bersamaan dari dua tab/perangkat; `a11y-check.mjs` memeriksa layar tantangan dengan keyboard saja (urutan Tab, nama aksesibel, cincin fokus, dialog petunjuk/hasil, `aria-live` petunjuk Cari Objek, dan axe-core bila tersedia) | terhadap `php spark serve` (untuk balapan: `PHP_CLI_SERVER_WORKERS=4`) dengan database MariaDB/MySQL; pemakaian di kepala tiap skrip |
-| `deploy/linux/`, `deploy/windows/` | `deploy.sh` / `deploy.ps1`, `backup.sh` / `backup.ps1`, `retensi.ps1`, contoh konfigurasi Nginx HTTP/HTTPS | lihat [08_DEPLOYMENT.md](08_DEPLOYMENT.md) |
+| `deploy/windows/` | `deploy.ps1`, `backup.ps1`, `retensi.ps1`, `config.example.psd1`, and the one Nginx site file `nginx/gelita.id.conf` (one server: Windows + Laragon behind a Cloudflare Tunnel; the Linux path was removed on 21 November 2026) | lihat [08_DEPLOYMENT.md](08_DEPLOYMENT.md) |
 
 Ketiga skrip penyusun berjalan tanpa framework CodeIgniter. Kedua `build-workbook.php` memakai autoload Composer (PhpSpreadsheet) dan kelas murni di `app/Libraries/`; `build-sekolah-jateng.php` berdiri sendiri. Skrip bank soal memeriksa seluruh aturan `BankRules` dan tidak menulis workbook bila ada galat.
 
