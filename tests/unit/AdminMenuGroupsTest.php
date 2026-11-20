@@ -79,6 +79,34 @@ final class AdminMenuGroupsTest extends CIUnitTestCase
     }
 
     /** @return array<string, array<string, mixed>> */
+    public function testRawDataHasItsGroupsAsASubMenu(): void
+    {
+        $tabs = [];
+
+        foreach (App\Controllers\Admin\RawDataController::GROUPS as [$label, $lead, $groupTabs]) {
+            $this->assertNotSame($label, lang($label), "{$label} has a text");
+            $this->assertNotSame($lead, lang($lead), "{$lead} has a text");
+            $tabs = [...$tabs, ...$groupTabs];
+        }
+
+        $this->assertEqualsCanonicalizing(array_keys(App\Controllers\Admin\RawDataController::TABS), $tabs, 'every tab in exactly one group');
+        $this->assertSame(count($tabs), count(array_unique($tabs)));
+
+        foreach (array_keys(App\Controllers\Admin\RawDataController::TABS) as $tab) {
+            $this->assertNotSame('Admin.rawTabHelp_' . $tab, lang('Admin.rawTabHelp_' . $tab), "{$tab} has a note");
+        }
+
+        $ketua = static fn (string $capability): bool => StaffAccess::allows('ketua', $capability);
+
+        foreach (['admin', 'admin/data/percobaan'] as $path) {
+            $items = array_column($this->byKey(AdminMenu::groups($ketua, $path))['Admin.groupData']['items'], null, 'href');
+            $this->assertSame(['admin/data/jawaban', 'admin/data/progres', 'admin/data/turunan_peserta'], array_column($items['admin/data']['children'], 'href'), "{$path}: always shown");
+        }
+
+        $children = array_column($items['admin/data']['children'], 'active', 'href');
+        $this->assertSame(['admin/data/jawaban' => true, 'admin/data/progres' => false, 'admin/data/turunan_peserta' => false], $children, 'Riwayat percobaan belongs to Jawaban & pengerjaan');
+    }
+
     private function byKey(array $groups): array
     {
         return array_column($groups, null, 'key');

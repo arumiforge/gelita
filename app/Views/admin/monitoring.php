@@ -33,7 +33,7 @@ $sound = static fn (?array $check): string => $check === null ? '—' : lang($ch
 
   <script type="application/json" data-monitoring-initial><?= json_encode($sessions, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?></script>
   <?php if ($sessions === []): ?>
-    <p class="muted"><?= esc(lang('Admin.monitoringNone')) ?></p>
+    <div class="empty-state"><?= icon('eye') ?><p><b><?= esc(lang('Admin.monitoringNone')) ?></b><br><?= esc(lang('Admin.monitoringNoneNext')) ?></p></div>
   <?php endif ?>
 
   <?php foreach ($sessions as $row): ?>

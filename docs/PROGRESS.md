@@ -220,3 +220,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `panel-polesan` | Cloud session, 20 Nov 2026: panel polish for the head researcher: Data mentah sub-menu by group with notes per sheet, explanatory text at full width, top bar and filter bar that no longer cut words, empty states with a next step, study form layout | PR open |
