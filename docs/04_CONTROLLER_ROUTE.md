@@ -267,7 +267,6 @@ Menu kelompok Konten dan Pengaturan tidak dirender untuk guru (`App\Libraries\Ad
 | GET | `/admin/media/kelengkapan` | `MediaController::checklist` | Kelengkapan gambar & suara |
 | GET | `/admin/media/{id}` | `MediaController::show/$1` | Detail slot gambar: isi, ukuran, halaman tampil, titik pin, unggah |
 | POST | `/admin/media/unggah` | `MediaController::upload` | Unggah gambar/video ke `asset_key` |
-| POST | `/admin/media/{id}/unggah-gerak` | `MediaController::uploadFrames/$1` | Upload many frames of the character pose of slot `{id}` at once (`frames[]`, natural name order, from frame `start`, up to 24) |
 | POST | `/admin/media/{id}/nonaktif` | `MediaController::deactivate/$1` | Nonaktifkan berkas |
 | GET | `/admin/media/audio` | `MediaController::audioIndex` | Rekaman suara |
 | POST | `/admin/media/audio/unggah` | `MediaController::uploadAudio` | Unggah rekaman (status `draft`) |
@@ -416,7 +415,7 @@ Sekolah: NPSN hanya dipakai di provinsi berdirektori; nama sekolah dipakai bila 
 
 | Method | Aturan | Respons |
 |---|---|---|
-| `kedu()` | `introGate()`; `levelOverview()` + tirai per wilayah (`regionCurtain()`); narasi `map_intro`; flash `curtain=map` → `curtain = true` dan `curtainAssets` (peta, latar, frame tokoh, latar wilayah, audio narasi peta yang disetujui); `regionIntros` (narasi "Kenali wilayah" `region_intro` per wilayah, termasuk yang terkunci); `heard` (`GameEventLogModel::heardRegionIntros()`) | view `game/map-kedu` |
+| `kedu()` | `introGate()`; `levelOverview()` + tirai per wilayah (`regionCurtain()`); narasi `map_intro`; flash `curtain=map` → `curtain = true` dan `curtainAssets` (peta, latar, gambar pose tokoh, latar wilayah, audio narasi peta yang disetujui); `regionIntros` (narasi "Kenali wilayah" `region_intro` per wilayah, termasuk yang terkunci); `heard` (`GameEventLogModel::heardRegionIntros()`) | view `game/map-kedu` |
 | `level($code)` | `introGate()`; wilayah terkunci → `/peta` + `Game.levelLocked`; `dialogueGate()`; `nodeOverview()`, `levelSummary`, `hasLibrary`, `library` (`libraryAccess()`) | view `game/map-level` |
 
 ### `Game\DialogueController`
@@ -721,7 +720,7 @@ Aturan impor di `App\Libraries\NarrationImporter` (dipakai juga `gelita:narratio
 |---|---|
 | `index()` | Tabel slot gambar & video: pratinjau, kode, label, isi yang diharapkan (`description`), ukuran tampil & berkas, status Asli / Gambar contoh / Kosong, pemakaian; filter `?status=asli\|mockup\|kosong`, `?jenis=image\|video`, `?kelompok=` (`ImageSlots::GROUPS`), `?wilayah=`, `?tantangan=tmg-4`, `?cari=`; label and description fall back to `App\Libraries\ImageSlots` for official slots; unggah per slot; hasil pindai; view `admin/media/index` |
 | `show($id)` | Slot detail (added October 2026): what the picture should show, enforced or recommended file size, display size, format, transparency, fallback, every game screen with its public path (`MediaUsage::forMedia()`, character poses from the story lines), map pins from `levels`/`challenge_nodes`, upload form with `back` = this page, previous/next slot in the same group; view `admin/media/show` |
-| `checklist()` | `App\Libraries\AssetChecklist::groups()` + ringkasan: slot yang belum berberkas, frame pose tokoh, latar/peta/lencana wilayah, gambar tantangan per tantangan (gambar contoh dihitung belum ada), poster video Pustaka, rekaman narasi; view `admin/media/checklist` |
+| `checklist()` | `App\Libraries\AssetChecklist::groups()` + ringkasan: slot yang belum berberkas, gambar pose tokoh (satu gambar diam per pose), latar/peta/lencana wilayah, gambar tantangan per tantangan (gambar contoh dihitung belum ada), poster video Pustaka, rekaman narasi; view `admin/media/checklist` |
 | `upload()` | `asset_key` wajib; `file: uploaded[file]\|max_size[file,65536]`; `App\Libraries\MediaStore::store()` (nama resmi dari `asset_key`, dimensi dibaca server, ukuran slot lewat `ImageFitter` (lebih besar diperkecil), `is_placeholder = 0`, audit `media_upload`) |
 | `deactivate($id)` | `is_active = 0`, audit `media_deactivate` |
 | `audioIndex()` | Semua `audio_assets` + jumlah narasi draft per bahasa; view `admin/media/audio` |

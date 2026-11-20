@@ -59,7 +59,6 @@ final class CatalogImportTest extends CIUnitTestCase
             'map.region.temanggung'           => ['peta/map.region.temanggung.webp', 1400, 900, false],
             'ui.btn-start'                    => ['antarmuka/ui.btn-start.webp', 1200, 220, true],
             'char.jaka.idle.1'                => ['karakter/char.jaka.idle.1.webp', 700, 900, true],
-            'char.jaka.idle.2'                => ['karakter/char.jaka.idle.2.webp', 700, 900, true],
             'challenge.item.tmg-1-01'         => ['tantangan/challenge.item.tmg-1-01.webp', 1200, 1200, false],
             'challenge.post.tmg-4-b'          => ['tantangan/challenge.post.tmg-4-b.webp', 1280, 720, false],
             'library.temanggung.p1.1'         => ['pustaka/library.temanggung.p1.1.webp', 960, 640, false],
@@ -122,8 +121,9 @@ final class CatalogImportTest extends CIUnitTestCase
         $maskable = imagecreatefrompng(FCPATH . $byKey('app.icon-maskable')['storage_path']);
         $this->assertSame(0, (imagecolorat($maskable, 0, 0) >> 24) & 0x7F, 'maskable icon has no transparency');
 
-        // Character frame 2 gets its own sprite_frame row
-        $this->assertSame('sprite_frame', $byKey('char.jaka.idle.2')['asset_type']);
+        // A character pose is one still picture; its row keeps the stored type sprite_frame
+        $this->assertSame('sprite_frame', $byKey('char.jaka.idle.1')['asset_type']);
+        $this->assertSame(CatalogImporter::CREDIT, $byKey('char.jaka.idle.1')['credit']);
 
         // Challenge image fills the bank slot
         $this->assertSame(1, (int) $byKey('challenge.item.tmg-1-01')['is_active']);
@@ -303,14 +303,14 @@ final class CatalogImportTest extends CIUnitTestCase
         $this->assertSame(['planned'], array_values(array_unique(array_column($report, 'status'))));
     }
 
-    /** A new catalogue edition (e.g. the 24-frame poses) replaces earlier catalogue images, not admin uploads. */
+    /** A new catalogue edition (e.g. redrawn poses) replaces earlier catalogue images, not admin uploads. */
     public function testChangedCatalogueFileIsReinstalled(): void
     {
         $this->importer()->run();
-        $before = model(MediaAssetModel::class)->findByKey('char.jaka.idle.2');
+        $before = model(MediaAssetModel::class)->findByKey('char.jaka.idle.1');
 
-        // Redraw the frame in the catalogue
-        $file  = $this->catalog . '/assets/karakter/char.jaka.idle.2.webp';
+        // Redraw the pose in the catalogue
+        $file  = $this->catalog . '/assets/karakter/char.jaka.idle.1.webp';
         $image = imagecreatetruecolor(700, 900);
         imagesavealpha($image, true);
         imagealphablending($image, false);
@@ -318,17 +318,17 @@ final class CatalogImportTest extends CIUnitTestCase
         imagefilledrectangle($image, 300, 100, 400, 876, imagecolorallocate($image, 200, 40, 40));
         imagewebp($image, $file, 90);
 
-        $dry = array_values(array_filter($this->importer()->run(true), static fn (array $r): bool => $r['target'] === 'char.jaka.idle.2'));
+        $dry = array_values(array_filter($this->importer()->run(true), static fn (array $r): bool => $r['target'] === 'char.jaka.idle.1'));
         $this->assertSame('planned', $dry[0]['status']);
         $this->assertStringContainsString('berubah', $dry[0]['note']);
 
         $rows = $this->importer()->run();
         $byTarget = array_column($rows, null, 'target');
-        $this->assertSame('installed', $byTarget['char.jaka.idle.2']['status']);
+        $this->assertSame('installed', $byTarget['char.jaka.idle.1']['status']);
         $this->assertSame('skipped', $byTarget['ui.logo-hero']['status'], 'unchanged catalogue images stay');
         $this->assertStringContainsString('gambarnya sama', $byTarget['ui.logo-hero']['note']);
 
-        $after = model(MediaAssetModel::class)->findByKey('char.jaka.idle.2');
+        $after = model(MediaAssetModel::class)->findByKey('char.jaka.idle.1');
         $this->assertSame((int) $before['id'], (int) $after['id'], 'same slot row, new file');
         $this->assertNotSame($before['sha256'], $after['sha256']);
         $this->assertSame(CatalogImporter::CREDIT, $after['credit']);
@@ -671,7 +671,7 @@ final class CatalogImportTest extends CIUnitTestCase
     public function testOnlyLimitsTheOverwriteToMatchingSlots(): void
     {
         $this->importer()->run();
-        // Both slots now hold an admin upload (e.g. the old lurik frame, an old button)
+        // Both slots now hold an admin upload (e.g. the old lurik pose, an old button)
         model(MediaAssetModel::class)->whereIn('asset_key', ['char.jaka.idle.1', 'ui.logo-hero'])->set(['credit' => null])->update();
 
         $report = $this->importer()->run(false, true, null, ['char.jaka.*', 'ui.lang.*']);
@@ -685,22 +685,44 @@ final class CatalogImportTest extends CIUnitTestCase
         $this->assertNull(model(MediaAssetModel::class)->findByKey('ui.logo-hero')['credit'], 'other admin uploads stay');
     }
 
-    /** A kept upload among catalogue frames would make the loop switch drawings. */
-    public function testPoseWithFramesFromTwoSourcesIsReported(): void
+    /**
+     * Owner: a character pose is one still picture. Every run removes the
+     * old frames 2 to 24 (rows and uploaded files), catalogue rows and admin
+     * uploads alike; frame 1, the pose picture, stays.
+     */
+    public function testOldPoseFramesAreRemoved(): void
     {
         $this->importer()->run();
-        model(MediaAssetModel::class)->where('asset_key', 'char.jaka.idle.1')->set(['credit' => null])->update();
 
-        $warnings = array_values(array_filter($this->importer()->run(), static fn (array $r): bool => $r['status'] === 'warning'));
+        $dir = FCPATH . MediaStore::uploadDir();
+        is_dir($dir) || mkdir($dir, 0777, true);
+        file_put_contents($dir . 'char.jaka.idle.2.webp', 'x');
+        file_put_contents($dir . 'char.kedu.weak.24.png', 'x');
+        $this->sqlite->table('media_assets')->insertBatch([
+            ['asset_key' => 'char.jaka.idle.2', 'asset_type' => 'sprite_frame', 'storage_path' => MediaStore::uploadDir() . 'char.jaka.idle.2.webp', 'mime_type' => 'image/webp', 'credit' => CatalogImporter::CREDIT, 'is_active' => 1],
+            ['asset_key' => 'char.kedu.weak.24', 'asset_type' => 'sprite_frame', 'storage_path' => MediaStore::uploadDir() . 'char.kedu.weak.24.png', 'mime_type' => 'image/png', 'credit' => null, 'is_active' => 1],
+        ]);
 
-        $this->assertCount(1, $warnings);
-        $this->assertSame('char.jaka.idle', $warnings[0]['target']);
-        $this->assertStringContainsString('gambar gerak 1 bukan dari katalog', $warnings[0]['note']);
-        $this->assertStringContainsString('--timpa --kunci=char.jaka.idle.*', $warnings[0]['note']);
+        $dry = array_values(array_filter($this->importer()->run(true), static fn (array $r): bool => $r['status'] === 'to-remove'));
+        $this->assertSame(['char.jaka.idle.2', 'char.kedu.weak.24'], array_column($dry, 'target'));
+        $this->assertNotNull(model(MediaAssetModel::class)->findByKey('char.jaka.idle.2'), 'a dry run removes nothing');
 
-        $this->assertNotContains('warning', array_column($this->importer()->run(true, true), 'status'), 'overwriting fixes it');
-        $this->importer()->run(false, true, null, ['char.jaka.idle.*']);
-        $this->assertNotContains('warning', array_column($this->importer()->run(), 'status'));
+        // --kunci limits the removal like the installing
+        $this->importer()->run(false, false, null, ['char.kedu.*']);
+        $this->assertNull(model(MediaAssetModel::class)->findByKey('char.kedu.weak.24'));
+        $this->assertNotNull(model(MediaAssetModel::class)->findByKey('char.jaka.idle.2'));
+
+        $removed = array_values(array_filter($this->importer()->run(), static fn (array $r): bool => $r['status'] === 'removed'));
+        $this->assertSame(['char.jaka.idle.2'], array_column($removed, 'target'));
+        $this->assertSame('dihapus', CatalogImporter::STATUSES['removed']);
+        $this->assertNull(model(MediaAssetModel::class)->findByKey('char.jaka.idle.2'));
+        $this->assertFileDoesNotExist($dir . 'char.jaka.idle.2.webp');
+        $this->assertFileDoesNotExist($dir . 'char.kedu.weak.24.png');
+
+        $pose = model(MediaAssetModel::class)->findByKey('char.jaka.idle.1');
+        $this->assertSame(1, (int) $pose['is_active'], 'the pose picture stays');
+        $this->assertFileExists(FCPATH . $pose['storage_path']);
+        $this->assertNotContains('removed', array_column($this->importer()->run(), 'status'), 'nothing left to remove');
     }
 
     public function testAdminUploadClearsTheCatalogueCredit(): void

@@ -312,9 +312,10 @@ if (! function_exists('media_key_src')) {
 
 if (! function_exists('character_frame_src')) {
     /**
-     * Frame pertama tokoh dalam pose tertentu (`char.{jaka|kedu}.{pose}.1`),
-     * cadangan pose `idle`. NULL bila keduanya belum diunggah (view memakai
-     * monogram) atau untuk narator, yang tidak tampil sebagai gambar.
+     * The still picture of a character pose (`char.{jaka|kedu}.{pose}.1`; a
+     * pose is one picture, no frame loop), falling back to `idle`. NULL when
+     * neither is uploaded (the view shows a monogram) or for the narrator,
+     * who is never shown as a picture.
      */
     function character_frame_src(string $character, ?string $pose = null): ?string
     {
@@ -326,89 +327,6 @@ if (! function_exists('character_frame_src')) {
         $pose = $pose === null || $pose === '' ? 'idle' : $pose;
 
         return media_key_src("char.{$slug}.{$pose}.1") ?? media_key_src("char.{$slug}.idle.1");
-    }
-}
-
-if (! function_exists('character_fps')) {
-    /**
-     * Frames per second for a pose with `$count` uploaded frames: one loop
-     * lasts `seconds` from Config\Gelita::$characterAnimations, so 24 frames
-     * play smoothly and a few interim frames do not flicker. Kept between
-     * 0.5 and 24 per second.
-     *
-     * @param array{seconds?: float|int} $animation
-     */
-    function character_fps(int $count, array $animation): float
-    {
-        $seconds = max(0.5, (float) ($animation['seconds'] ?? 2.0));
-
-        return round(min(24.0, max(0.5, max(1, $count) / $seconds)), 2);
-    }
-}
-
-if (! function_exists('character_frames')) {
-    /**
-     * Animation of a character pose: the uploaded frames `char.{jaka|kedu}.{pose}.{n}`
-     * in order, with the speed from character_fps() and loop from
-     * Config\Gelita::$characterAnimations (every pose loops).
-     * Falls back to `idle` when frame 1 of the pose is missing, so `frames[0]`
-     * always equals character_frame_src(); a missing later frame is skipped.
-     * NULL for the narrator or when neither pose has frame 1.
-     *
-     * @return array{frames: list<string>, fps: float, loop: bool}|null
-     */
-    function character_frames(string $character, ?string $pose = null): ?array
-    {
-        if ($character === '' || $character === 'narator') {
-            return null;
-        }
-
-        $slug       = $character === 'mbah_kedu' ? 'kedu' : $character;
-        $pose       = $pose === null || $pose === '' ? 'idle' : $pose;
-        $animations = config('Gelita')->characterAnimations;
-
-        foreach (array_unique([$pose, 'idle']) as $candidate) {
-            if (media_key_src("char.{$slug}.{$candidate}.1") === null) {
-                continue;
-            }
-
-            $animation = $animations["{$slug}.{$candidate}"] ?? [];
-            $frames    = [];
-
-            for ($i = 1; $i <= max(1, (int) ($animation['frames'] ?? 1)); $i++) {
-                if (($src = media_key_src("char.{$slug}.{$candidate}.{$i}")) !== null) {
-                    $frames[] = $src;
-                }
-            }
-
-            return [
-                'frames' => $frames,
-                'fps'    => character_fps(count($frames), $animation),
-                'loop'   => (bool) ($animation['loop'] ?? true),
-            ];
-        }
-
-        return null;
-    }
-}
-
-if (! function_exists('character_frames_attr')) {
-    /**
-     * Data attributes for core/sprite.js (`{prefix}frames` as a JSON list,
-     * `{prefix}fps`, `{prefix}loop`), with a leading space. Empty when the
-     * animation has fewer than 2 frames: the figure then stays on frame 1.
-     *
-     * @param array{frames: list<string>, fps: float, loop: bool}|null $animation from character_frames()
-     */
-    function character_frames_attr(?array $animation, string $prefix = 'data-'): string
-    {
-        if ($animation === null || count($animation['frames']) < 2) {
-            return '';
-        }
-
-        return ' ' . $prefix . 'frames="' . esc(json_encode($animation['frames'], JSON_UNESCAPED_SLASHES), 'attr') . '"'
-            . ' ' . $prefix . 'fps="' . $animation['fps'] . '"'
-            . ' ' . $prefix . 'loop="' . ($animation['loop'] ? '1' : '0') . '"';
     }
 }
 

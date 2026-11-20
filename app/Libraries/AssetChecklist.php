@@ -164,46 +164,28 @@ final class AssetChecklist
     {
         $items = [];
 
-        foreach (config('Gelita')->characterAnimations as $name => $animation) {
-            $frames   = (int) $animation['frames'];
-            $uploaded = 0;
-            $wrong    = [];
-
-            for ($i = 1; $i <= $frames; $i++) {
-                $state = $this->state('char.' . $name . '.' . $i);
-
-                if ($state !== 'missing') {
-                    $uploaded++;
-                }
-
-                if ($state === 'wrong') {
-                    $wrong[] = $i;
-                }
-            }
-
-            // Frame 1 is what every screen shows; frames 2+ only add movement
-            $first        = $this->state('char.' . $name . '.1');
+        foreach (ImageSlots::poseSlots() as $name => $key) {
+            $state        = $this->state($key);
             [$who, $pose] = explode('.', $name, 2);
-            $status       = $first === 'missing' ? 'missing' : ($wrong !== [] ? 'wrong' : 'ok');
-            $note         = sprintf('%d/%d gambar', $uploaded, $frames)
-                . ($first === 'missing' ? ' · gambar 1 belum ada' : '')
-                . ($first !== 'missing' && $uploaded < 2 ? ' · belum bergerak (perlu paling sedikit 2 gambar)' : '')
-                . ($wrong !== [] ? ' · ukuran salah: ' . implode(', ', $wrong) : '');
 
             $items[] = [
                 'label'      => ($who === 'kedu' ? 'Mbah Kedu' : 'Jaka') . ' · pose ' . ImageSlots::poseLabel($pose) . ' (' . $pose . ')',
-                'key'        => 'char.' . $name . '.1…' . $frames,
-                'size'       => $this->sizeText('char.' . $name . '.1'),
-                'status'     => $status,
-                'note'       => $note . ($pose !== 'idle' && $first === 'missing' ? ' (sementara tampil dengan pose diam)' : ''),
-                'link'       => $this->detailLink('char.' . $name . '.' . ($wrong[0] ?? 1)),
+                'key'        => $key,
+                'size'       => $this->sizeText($key),
+                'status'     => $state,
+                'note'       => match ($state) {
+                    'missing' => 'belum ada' . ($pose !== 'idle' ? ' (sementara tampil dengan pose diam)' : ''),
+                    'wrong'   => 'ukuran salah',
+                    default   => '',
+                },
+                'link'       => $this->detailLink($key),
                 'link_label' => 'Lihat & unggah',
             ];
         }
 
         return [
-            'title' => 'Gambar gerak tokoh (per pose)',
-            'help'  => 'Setiap pose punya sampai ' . max(array_column(config('Gelita')->characterAnimations, 'frames')) . ' gambar gerak (WebP atau PNG berlatar transparan) yang diputar berulang terus. Gambar 1 wajib; gambar berikutnya menambah gerakan, dan yang belum ada dilewati. Bila gambar 1 sebuah pose belum ada, tokoh tampil dengan pose diam; bila itu pun belum ada, tampil inisial nama tokoh. Semua gambar satu pose dapat diunggah sekaligus di halaman detail gambar 1.',
+            'title' => 'Gambar pose tokoh',
+            'help'  => 'Setiap pose satu gambar diam (WebP atau PNG berlatar transparan), tanpa gerakan. Bila gambar sebuah pose belum ada, tokoh tampil dengan pose diam; bila itu pun belum ada, tampil inisial nama tokoh.',
             'items' => $items,
         ];
     }

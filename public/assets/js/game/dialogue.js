@@ -11,17 +11,15 @@
  * - tokoh yang berbicara diberi .is-speaking (maju dan terang), yang
  *   mendengar .is-listening. Tanpa JavaScript CSS :target sudah menentukan
  *   hal yang sama;
- * - gambar tokoh yang berbicara ditukar ke frame pose baris itu
- *   (`data-pose-src` dari server, sudah jatuh ke `idle`). Baris tanpa frame
- *   sama sekali membiarkan tokoh apa adanya (monogram). A pose with several
- *   frames (`data-pose-frames`/`-fps`/`-loop`) is played by core/sprite.js,
- *   restarting from frame 1 on every line.
+ * - the speaking character's picture is swapped to the still picture of
+ *   that line's pose (`data-pose-src` from the server, already falling back
+ *   to `idle`). A line without any picture leaves the character as it is
+ *   (monogram).
  */
 import { $, $$ } from '../core/dom.js';
-import { parseFrames, setFrames } from '../core/sprite.js';
 import { initNarrator } from './narrator.js';
 
-/** Frame pose dipramuat sekali agar pergantian gambar tidak berkedip. */
+/** Pose pictures are preloaded once so the swap does not flicker. */
 function preloadPoses(lines) {
   const urls = new Set(lines.map((line) => line.dataset.poseSrc).filter(Boolean));
   const run = () => urls.forEach((src) => { const img = new Image(); img.decoding = 'async'; img.src = src; });
@@ -39,7 +37,7 @@ function setPose(figure, line) {
 
   let img = $('.character-img', figure);
   if (!img) {
-    // Monogram diganti gambar begitu ada frame pose yang diunggah
+    // The monogram gives way to a picture once the pose has one
     img = document.createElement('img');
     img.className = 'character-img';
     img.alt = '';
@@ -49,10 +47,6 @@ function setPose(figure, line) {
     if (!img.isConnected) figure.prepend(img);
   }
   if (img.getAttribute('src') !== src) img.src = src;
-  setFrames(figure, parseFrames(line.dataset.poseFrames), {
-    fps: line.dataset.poseFps,
-    loop: line.dataset.poseLoop === '1',
-  });
 }
 
 export function initDialogue() {

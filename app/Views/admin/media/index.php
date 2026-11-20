@@ -220,7 +220,7 @@ $labels = ['asli' => 'Asli', 'mockup' => 'Gambar contoh', 'kosong' => 'Kosong'];
         'label'     => static fn (array $row): string => '<a href="' . esc(base_url('admin/media/' . (int) $row['id']), 'attr') . '">' . esc((string) ($row['label'] ?? '')) . '</a>',
         'thumb' => static function (array $row): string {
             // Slot kosong: jangan minta berkas ke server
-            // Character frames are stored as sprite_frame, still images to preview
+            // Character pose pictures are stored as sprite_frame, still images to preview
             if (! in_array($row['asset_type'], ['image', 'sprite_frame'], true) || ! $row['is_active']) {
                 return '<span class="media-thumb is-empty">' . icon($row['asset_type'] === 'video' ? 'video' : 'image') . '</span>';
             }

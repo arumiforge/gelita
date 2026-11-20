@@ -71,7 +71,6 @@ final class RouteWiringTest extends CIUnitTestCase
             'admin/ekspor/xlsx'               => 'Admin\ExportController::xlsx',
             'admin/ekspor/csv'                => 'Admin\ExportController::csv',
             'admin/ekspor/pdf'                => 'Admin\ExportController::pdf',
-            'admin/media/([0-9]+)/unggah-gerak' => 'Admin\MediaController::uploadFrames/$1',
             'admin/studi/rilis/paket/bangun'                => 'Admin\PackageController::startBuild',
             'admin/studi/rilis/paket/bangun/([^/]+)/lanjut' => 'Admin\PackageController::stepBuild/$1',
             'admin/studi/rilis/paket/([^/]+)/terbitkan'     => 'Admin\PackageController::publish/$1',
@@ -142,6 +141,12 @@ final class RouteWiringTest extends CIUnitTestCase
                 $this->assertStringContainsString($handler, (string) $defined[$from]);
             }
         }
+    }
+
+    /** Owner: a character pose is one still picture; the upload of all frames of a pose is gone. */
+    public function testFrameUploadRouteIsGone(): void
+    {
+        $this->assertArrayNotHasKey('admin/media/([0-9]+)/unggah-gerak', $this->routes()->getRoutes('POST'));
     }
 
     /**

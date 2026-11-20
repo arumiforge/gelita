@@ -151,11 +151,6 @@ if (document.querySelector('#stage form input:not([type="hidden"]), #stage form 
   import('./core/keyboard.js').then((m) => m.initKeyboardShift());
 }
 
-// Character pose frames (core/sprite.js), only on pages that have them
-if (document.querySelector('.character[data-frames]')) {
-  import('./core/sprite.js').then((m) => m.initSprites());
-}
-
 document.body.dataset.ready = CONFIG.locale;
 // Penanda perilaku halaman sudah terpasang (dipakai uji ujung ke ujung)
 page.then(() => { document.body.dataset.pageReady = '1'; });
