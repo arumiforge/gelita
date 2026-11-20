@@ -476,6 +476,12 @@ return [
     'tokenEnter'         => 'Masukkan token',
     'sessionClosedTitle' => 'Sampai jumpa di sesi berikutnya!',
     'sessionClosedBody'  => 'Permainan dibuka waktu sesi bersama kakak peneliti, ya.',
+    // No study is running (owner, 20 November 2026): /masuk, /daftar, and a student logged out mid-game
+    'gameNotOpenTitle'   => 'Permainan belum dibuka',
+    'gameNotOpen'        => 'Permainan belum dibuka. Tanyakan kepada guru atau kakak peneliti, ya.',
+    'studyEndedTitle'    => 'Sampai jumpa!',
+    'studyEnded'         => 'Penelitian sudah selesai. Terima kasih sudah bermain GELITA!',
+    'backToStart'        => 'Kembali ke awal',
     'researchCodeLabel'  => 'Kode penelitian',
     'researchCodeHelp'   => 'Tunjukkan kode ini ke kakak peneliti, ya.',
     'codeFull'           => 'Kode untuk kelasmu sudah penuh. Panggil kakak peneliti, ya.',

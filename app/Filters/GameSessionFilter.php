@@ -22,6 +22,11 @@ class GameSessionFilter implements FilterInterface
             case 'OK':
                 return null;
 
+            case 'NO_STUDY': // no running study: logged out, /masuk shows why (owner, 20 November 2026)
+                $this->logoutWithoutStudy();
+
+                return redirect()->to(site_url('masuk'));
+
             case 'CLOSED':   // field mode: type a token, or the session is over (28 §7)
                 return redirect()->to(site_url($check['target'] ?? 'token'));
 

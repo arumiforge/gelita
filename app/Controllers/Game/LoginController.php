@@ -5,6 +5,7 @@ namespace App\Controllers\Game;
 use App\Controllers\BaseController;
 use App\Libraries\PasswordPolicy;
 use App\Models\ParticipantModel;
+use App\Models\ResearchStudyModel;
 use CodeIgniter\HTTP\RedirectResponse;
 use CodeIgniter\HTTP\ResponseInterface;
 
@@ -18,6 +19,13 @@ class LoginController extends BaseController
 {
     public function form(): string|RedirectResponse
     {
+        // No running study (owner, 20 November 2026): a notice instead of the form
+        $closed = model(ResearchStudyModel::class)->gameClosedReason();
+
+        if ($closed !== null) {
+            return self::notOpenPage($closed);
+        }
+
         if ((int) session('participant_id') > 0 && (int) session('game_session_id') > 0) {
             return redirect()->to(site_url('mulai'));
         }
@@ -39,6 +47,13 @@ class LoginController extends BaseController
      */
     public function login(): ResponseInterface
     {
+        // Before the password check, so no failed-login count is raised (owner, 20 November 2026)
+        $closedMessage = model(ResearchStudyModel::class)->gameClosedMessage();
+
+        if ($closedMessage !== null) {
+            return $this->failLogin('username', ['username' => $closedMessage]);
+        }
+
         if (! $this->validate(['username' => 'required', 'password' => 'required'])) {
             $errors = $this->validator->getErrors();
 
@@ -60,6 +75,8 @@ class LoginController extends BaseController
             'must_change' => $this->goTo(site_url('ganti-sandi')),
             // Part 4 (30 §5.3)
             'inactive'    => $this->failLogin('password', ['password' => lang('Game.loginInactive')]),
+            // The study was switched off between the check above and the login
+            'not_open'    => $this->failLogin('username', ['username' => (string) ($result['message'] ?? lang('Game.gameNotOpen'))]),
             'locked'      => $this->failLogin('password', ['password' => lang('Auth.locked', [$result['lock_minutes'] ?? 5])]),
             default       => $this->failLogin('password', ['password' => lang('Auth.loginFailed')]),
         };
@@ -155,6 +172,22 @@ class LoginController extends BaseController
         $target = (int) session('game_session_id') > 0 ? 'gerbang' : (($login['status'] ?? '') === 'token' ? 'token' : 'mulai');
 
         return redirect()->to(site_url($target))->with('message', lang('Auth.passwordChanged'));
+    }
+
+    /**
+     * The "game is not open" page of `/masuk` and `/daftar` while no study is
+     * `active` (owner, 20 November 2026).
+     *
+     * @param string $reason ResearchStudyModel::gameClosedReason(): `ended` or `not_open`
+     */
+    public static function notOpenPage(string $reason): string
+    {
+        return view('game/not-open', [
+            // No HUD account rows (the shared renderer may still hold earlier view data)
+            'participant' => null,
+            'progress'    => null,
+            'reason'      => $reason,
+        ]);
     }
 
     public function logout(): RedirectResponse

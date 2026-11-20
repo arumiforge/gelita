@@ -167,10 +167,20 @@ class SessionService
      *
      * $device = hasil DeviceProfile::capture().
      *
-     * @return array{status: string, session: ?GameSession, participant: ?Participant, lock_minutes?: int}
+     * Status `not_open` (with `message`) while no study is `active`.
+     *
+     * @return array{status: string, session: ?GameSession, participant: ?Participant, lock_minutes?: int, message?: string}
      */
     public function login(string $username, string $password, string $locale, array $device): array
     {
+        // No running study (owner, 20 November 2026): refused before the password
+        // check, so no failed-login count is raised and no game session is made
+        $closedMessage = model(ResearchStudyModel::class)->gameClosedMessage();
+
+        if ($closedMessage !== null) {
+            return ['status' => 'not_open', 'session' => null, 'participant' => null, 'message' => $closedMessage];
+        }
+
         $participants = model(ParticipantModel::class);
         $participant  = $participants->findByUsername($username);
 
