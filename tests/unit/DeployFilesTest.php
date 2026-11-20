@@ -53,6 +53,31 @@ final class DeployFilesTest extends CIUnitTestCase
         }
     }
 
+    /**
+     * The Cloudflare Tunnel variant (Jalur W, production load test of 21 November
+     * 2026) is the HTTPS file without TLS: same cache rules, headers, locations.
+     * The tunnel server ran without the cache map, so Cloudflare served the asset
+     * package files with its own short default instead of `immutable`.
+     */
+    public function testTunnelConfigIsTheHttpsConfigWithoutTls(): void
+    {
+        $tunnel = self::DEPLOY . 'windows/nginx/gelita-tunnel.conf';
+        $own    = ['set_real_ip_from 127.0.0.1;', 'real_ip_header CF-Connecting-IP;', 'fastcgi_param HTTPS on;'];
+        $source = (string) file_get_contents($tunnel);
+
+        foreach ($own as $line) {
+            $this->assertStringContainsString($line, $source);
+        }
+
+        $this->assertSame(
+            array_values(array_diff($this->portableNginx(self::DEPLOY . 'windows/nginx/gelita-https.conf'), ['ssl_protocols TLSv1.2 TLSv1.3;'])),
+            array_values(array_diff($this->portableNginx($tunnel), $own)),
+        );
+        // Only cloudflared on the same machine may reach it: HTTPS and the visitor's address are taken on trust
+        $this->assertMatchesRegularExpression('/^\s*listen 127\.0\.0\.1:80;/m', $source);
+        $this->assertDoesNotMatchRegularExpression('/^\s*(ssl_|listen 443)/m', $source);
+    }
+
     public function testScriptsAvoidCommandsThatBreakProduction(): void
     {
         foreach ([...glob(self::DEPLOY . 'linux/*.sh'), ...glob(self::DEPLOY . 'windows/*.ps1')] as $file) {

@@ -71,6 +71,8 @@ Ubuntu 22.04 hanya membawa PHP 8.1. Tambahkan PPA `ondrej/php` atau pakai Ubuntu
 
 **Kapasitas** ditentukan jumlah proses PHP, bukan CPU. Setiap request memakai satu proses sampai selesai, dan pembuatan unduhan data dapat memegangnya sampai 300 detik. Karena itu `pm.max_children` (Jalur L) dan `PHP_FCGI_CHILDREN` (Jalur W) wajib dinaikkan dari bawaannya (lihat di bawah). Nginx di Windows memakai satu worker dengan `worker_connections 1024` (bawaan templat Laragon). Batas ini cukup untuk beberapa kelas bersamaan. Untuk banyak sekolah sekaligus, gunakan Jalur L.
 
+**Measured capacity, Jalur W (new, English; load test of 20–21 November 2026).** A Windows server with 4 logical CPUs and 12 GB RAM (Laragon, MySQL 8.4, behind a Cloudflare Tunnel) was loaded with `tools/qa/load-test.mjs` from another machine, 30 to 200 simulated students at once. With the settings of [Pengaturan PHP](#pengaturan-php) and [Pengaturan MySQL](#pengaturan-mysql) for that machine (64 PHP processes, 3 GB buffer pool), about **100 students at once** is comfortable (answer check p95 under 1 s, pages under 2 s, both including about 1 s of network between the test machine and the server). At 150 and 200 students the four cores were 90–99 % busy and pages took 8 to 14 s at p95. The simulated students are heavier than real ones (an event every 2 s). Before the settings were changed (Laragon's defaults) the same server already stumbled at 30. More students at once need more cores, not more PHP processes.
+
 ### Perangkat lunak
 
 | Komponen | Jalur L | Jalur W |
@@ -175,6 +177,19 @@ opcache.revalidate_freq = 2
 PHP_FCGI_CHILDREN=16
 ```
 
+*(New, English; production load test of 20–21 November 2026.)* `16` is the least for a class. Size it from the machine:
+
+| Server | `PHP_FCGI_CHILDREN` | `max_connections` (MySQL) |
+|---|---|---|
+| 2 cores, 4 GB RAM | 16 | 100 |
+| 4 cores, 8 GB RAM | 32 | 150 |
+| 4 cores, 12 GB RAM (the measured server) | 64 | 200 |
+
+- Laragon starts one php-cgi parent that keeps this many children on one port (10987), so the setting works as on Linux. Each child holds one database connection and about 50 MB under load: keep `max_connections` well above the number (staff downloads, scheduled tasks and backups connect too) and the total inside the RAM that MySQL's buffer pool and Windows leave.
+- More processes than the cores can serve only makes every request slower: with 4 cores, 64 was enough and 200 was not tried on purpose.
+- Do not build a second php-cgi pool by hand (other ports, a scheduled task): it was tried on the measured server, the processes never listened, and the site answered 502 until it was removed.
+- After changing it: *Stop*, then *Start All*, and check in Task Manager that the php-cgi processes are there.
+
 Mengganti versi PHP di Laragon berarti memakai `php.ini` lain. Ulangi pengaturan ekstensi dan `php.ini`, lalu perbarui `Php` di `config.psd1` dan tugas terjadwal.
 
 ### Pengaturan MySQL
@@ -197,6 +212,36 @@ max_connections = 100
 - `sql_mode` tidak perlu disetel. `Config\Database::$default['strictOn'] = false` membuat CodeIgniter membuang `STRICT_*` dari `sql_mode` setiap koneksinya, jadi nilai global server tidak berpengaruh pada aplikasi. Mengaktifkan mode strict adalah keputusan kode (`strictOn`), bukan konfigurasi server.
 
 Skema GELITA memakai InnoDB dan `utf8mb4_unicode_ci` di setiap tabel (`app/Database/GelitaMigration.php`), sama di MySQL dan MariaDB.
+
+**Jalur W: replace Laragon's defaults** *(new, English; production load test of 20–21 November 2026)*. Laragon's `my.ini` is written for small MyISAM development databases: a 128 MB InnoDB buffer pool and the binary log switched on. With it the measured server (4 cores, 12 GB RAM) was slow at 30 students; with the block below it served 100. Put it under `[mysqld]` in place of the lines above, then *Stop* and *Start All*:
+
+```ini
+[mysqld]
+character-set-server = utf8mb4
+collation-server     = utf8mb4_unicode_ci
+default-time-zone    = '+07:00'
+bind-address         = 127.0.0.1         # the database is never opened to the network
+
+innodb_buffer_pool_size = 3G             # about a quarter of the RAM: 12 GB: 3G · 8 GB: 2G · 4 GB: 1G
+innodb_log_buffer_size  = 32M
+innodb_redo_log_capacity = 1G            # MySQL 8.0.30+; replaces innodb_log_file_size
+innodb_flush_log_at_trx_commit = 1       # never loosen this; it is research data
+skip-log-bin                             # no replica: the binary log only costs a second disk write per commit
+
+max_connections   = 200                  # above PHP_FCGI_CHILDREN, see "Pengaturan PHP"
+thread_cache_size = 64
+table_open_cache  = 2000
+
+sort_buffer_size     = 2M                # per connection: keep these small
+read_buffer_size     = 1M
+read_rnd_buffer_size = 2M
+key_buffer_size      = 32M               # MyISAM only (system tables); GELITA's tables are InnoDB
+```
+
+- Remove or comment out Laragon's own lines for the same settings further down in `my.ini`: the last one read wins.
+- `skip-log-bin` switches off point-in-time recovery from the binary log. GELITA's recovery is the daily dump of [Backup](#backup), which does not use it.
+- **`bind-address = 127.0.0.1` needs `database.default.hostname = 127.0.0.1` in `.env`.** With `localhost`, PHP on Windows tries the IPv6 address `::1` first, nobody listens there, and every request waited about 2.6 s before it fell back to `127.0.0.1` (measured on the server; the site looked slow with an idle CPU). The same goes for `backup.cnf`, `migrate.dsn` and the three database accounts (`@'127.0.0.1'`, below).
+- Check after the restart: `mysql -u root -p -e "SHOW VARIABLES WHERE Variable_name IN ('innodb_buffer_pool_size','max_connections','log_bin','bind_address')"`.
 
 **Jalur W:** MySQL Laragon terpasang dengan `root` **tanpa sandi**. Setel sandinya sebelum langkah lain:
 
@@ -294,7 +339,7 @@ app.baseURL = 'https://gelita.sekolah.sch.id/'
 app.forceGlobalSecureRequests = true
 app.CSPEnabled = true                          # Content Security Policy (Config\ContentSecurityPolicy)
 
-database.default.hostname = localhost          # Jalur W: 127.0.0.1
+database.default.hostname = localhost          # Jalur W: 127.0.0.1 (wajib; `localhost` = ±2,6 detik per request)
 database.default.database = gelita
 database.default.username = gelita_app
 database.default.password = 'SANDI_APP'
@@ -314,6 +359,8 @@ Catatan:
 3. `gelita.ipSalt` wajib acak. Bila bocor, `ip_hash` dapat dibalik dengan pencarian menyeluruh karena ruang alamat IPv4 kecil. Perintah `php -r` di atas bekerja di kedua jalur.
 4. `gelita.assetVersion` dibiarkan ada di `.env` (templat: `'1'`). Skrip deploy menaikkan nilainya setiap pembaruan; baris yang hilang tidak akan ditambahkan skrip.
 5. **Jangan menambahkan `database.default.DSN` ke `.env`.** Kunci itu disisihkan untuk akun migrasi (bagian berikut).
+5b. *(New, English; 21 November 2026.)* **Jalur W: `database.default.hostname = 127.0.0.1`, never `localhost`.** On Windows `localhost` is tried as IPv6 `::1` first; MySQL listens on `127.0.0.1` only (`bind-address`), so every request waits about 2.6 s for the fallback. The template's `localhost` is right for Jalur L (socket).
+5c. *(New, English; 21 November 2026.)* `session.regenerateDestroy` is no longer a setting. A `.env` made from an older template still has `session.regenerateDestroy = true`; the line is ignored (`Config\Session` keeps it false) and may be deleted. With `true`, a student was sent to `/masuk` or a batch of events got 401 whenever the session ID was replaced (every 5 minutes) while a second request was on its way (`docs/02` §7.2).
 5a. *(New, English.)* Every production difference from the repository (`app.forceGlobalSecureRequests`, `app.CSPEnabled`, `cookie.secure`) is set in `.env`. Do not edit `app/Config/App.php` or `app/Config/Cookie.php` on the server: `deploy.sh` runs `git pull --ff-only`, which stops on a locally edited tracked file that the update also changes. `env-example-production` is the gelita.id copy of these values.
 6. *(New, English.)* Optional: `gelita.eventFlush.intervalMs` (default `30000`) and `gelita.eventFlush.maxEvents` (default `40`, at most `maxEventsPerBatch` = 50) set how often the game sends its event batches (`Config\Gelita::$eventFlush`, rencana-log-asinkron §5.1). Lowering the interval makes Ringkasan's "Aktivitas terbaru" fresher at the cost of more requests; the note under that list follows the value. Leave both out to keep the defaults.
 7. *(New, English.)* Optional: `gelita.screenFx = false` turns off the WebGL screen effects of the narrated scenes (three.js fog, sparks, light rays, bloom, and parallax; on by default). The scenes then play the CSS effects only. Use it if a class's devices stutter on the story screens; the browser already falls back by itself without WebGL 2, under reduced motion, and when frames stay slow. With package mode on, rebuild the package after changing it (**Bangun ulang paket**) only if the three.js files changed; the switch itself needs no rebuild.
@@ -402,6 +449,7 @@ Konfigurasi dibagi dua berkas: port 80 dan aplikasi (443). Port 80 diaktifkan le
 | `deploy/linux/nginx/gelita-https.conf` | `/etc/nginx/sites-available/gelita-https` |
 | `deploy/windows/nginx/gelita-http.conf` | `C:\laragon\etc\nginx\sites-enabled\gelita-http.conf` |
 | `deploy/windows/nginx/gelita-https.conf` | `C:\laragon\etc\nginx\sites-enabled\gelita-https.conf` |
+| `deploy/windows/nginx/gelita-tunnel.conf` | `C:\laragon\etc\nginx\sites-enabled\gelita-tunnel.conf`: instead of the two files above when the server sits behind a Cloudflare Tunnel (see [Jalur W behind a Cloudflare Tunnel](#jalur-w-behind-a-cloudflare-tunnel-cloudflared)) |
 
 Ganti `gelita.sekolah.sch.id` dengan domain server di setiap berkas.
 
@@ -476,6 +524,35 @@ Kedua berkas Windows sama dengan Jalur L kecuali baris khusus platform (`tests/u
 ```
 
 `php_upstream` menunjuk proses php-cgi yang dijalankan Laragon (port FastCGI bawaan Laragon 8.6+: 10987). Direktif `http2 on;` dan path Windows belum diuji di mesin Windows sungguhan; jalankan [Verifikasi Setelah Deploy](#verifikasi-setelah-deploy) sesudah pemasangan.
+
+#### Jalur W behind a Cloudflare Tunnel (cloudflared)
+
+*(New, English; production load test of 20–21 November 2026.)* A server without a public address (a VPS or school machine reached through `cloudflared`) needs no certificate and no open port: Cloudflare ends HTTPS, and `cloudflared` on the same machine passes each request to Nginx on port 80 without TLS. Use **one** file, `gelita-tunnel.conf`, instead of `gelita-http.conf` and `gelita-https.conf`, and skip [HTTPS](#https) (simple-acme) altogether.
+
+1. Copy `deploy\windows\nginx\gelita-tunnel.conf` to `C:\laragon\etc\nginx\sites-enabled\`, replace the domain, remove any other GELITA site file there, then Menu → *Nginx* → *Reload*.
+2. In the tunnel's settings (Cloudflare Zero Trust → *Networks* → *Tunnels* → *Public hostname*, or `config.yml`) the service is `http://127.0.0.1:80`. Not `localhost`: Windows tries `::1` first, as with the database host.
+3. Cloudflare → *SSL/TLS*: mode **Full (strict)** works with a tunnel. `.env` stays as for any HTTPS server (`app.baseURL = 'https://…'`, `app.forceGlobalSecureRequests = true`, `cookie.secure = true`).
+4. The Windows firewall rule for ports 80 and 443 of [Instalasi — Jalur W](#instalasi--jalur-w) is not needed: nothing connects from outside.
+
+What the file does beyond the HTTPS one:
+
+```nginx
+    listen 127.0.0.1:80;                        # only cloudflared on this machine connects
+
+    set_real_ip_from 127.0.0.1;                 # the visitor's address, from cloudflared's header
+    real_ip_header CF-Connecting-IP;
+
+    location = /index.php {
+        …
+        fastcgi_param HTTPS on;                 # the visitor is on HTTPS (secure cookies, https:// links)
+    }
+```
+
+- **Cache rules matter more behind Cloudflare.** The `map … $gelita_cache` block and `add_header Cache-Control $gelita_cache;` are the same as in `gelita-https.conf`. A hand-written tunnel site without them (the measured server had none) lets Cloudflare give `/assets/p/`, `/assets/k/` and `/paket/pkt-*.json` its own default (4 hours in the browser) instead of `public, max-age=31536000, immutable`, so devices fetch the asset package again and again. A server that already has its own tunnel site file only needs those two parts added: the two `map` blocks above `server {`, and the `add_header Cache-Control $gelita_cache;` line next to the other `add_header` lines.
+- Without `real_ip_header` every student seems to come from `127.0.0.1`: login throttling and the hashed address in the logs would treat a whole class as one visitor.
+- `listen 127.0.0.1:80` keeps other machines from reaching Nginx directly, where they could claim any address in `CF-Connecting-IP`.
+- Check from another machine after the reload: ask for one asset package file twice with `curl -sI` (a URL under `/assets/p/` from the package manifest). It must answer `cache-control: public, max-age=31536000, immutable`, and `cf-cache-status: HIT` the second time. Step 5 of [Verifikasi Setelah Deploy](#verifikasi-setelah-deploy) checks the other asset kinds.
+- Not yet run on a Windows machine in this form (the measured server used the owner's own site file with the same three lines); run `nginx -t` (Menu → *Nginx* → *Reload* reports errors) and the verification list after copying it.
 
 ### HTTPS
 
@@ -564,6 +641,7 @@ Selama berkas ada, semua halaman dan API menjawab **503** dengan pesan dwibahasa
 | `deploy/windows/deploy.ps1`, `backup.ps1`, `retensi.ps1` | padanan PowerShell (kompatibel Windows PowerShell 5.1; **hanya ASCII**) |
 | `deploy/windows/config.example.psd1` | contoh `config.psd1` |
 | `deploy/windows/nginx/gelita-http.conf`, `gelita-https.conf` | konfigurasi Nginx Jalur W |
+| `deploy/windows/nginx/gelita-tunnel.conf` | Nginx for Jalur W behind a Cloudflare Tunnel (one file, port 80 on `127.0.0.1`, no certificate) |
 | `.gitignore` | `/public/assets/uploads/*`, `!/public/assets/uploads/.gitkeep`, `/writable/pemeliharaan.flag` |
 | `tests/unit/DeployFilesTest.php` | mengunci cacat yang ditemukan saat skrip dijalankan (lihat [Catatan Implementasi Tahap 8](#catatan-implementasi-tahap-8)) |
 
@@ -1431,6 +1509,11 @@ Bulanan: periksa tanggal kedaluwarsa sertifikat (pemeriksaan 8) dan jalankan sat
 | Kartu video Pustaka tanpa gambar | server tidak dapat menghubungi penyedia thumbnail | buka akses keluar, lalu `gelita:library:thumbnails` |
 | Gambar Pustaka tidak tampil di perangkat siswa | jaringan kelas memblokir `commons.wikimedia.org` | buka akses, atau unggah salinan gambarnya lewat panel |
 | Halaman lambat saat kelas penuh | proses PHP habis | naikkan `pm.max_children` (L) / `PHP_FCGI_CHILDREN` (W) sesuai RAM |
+| W: every page takes 2–3 s although the CPU is idle | `.env` says `database.default.hostname = localhost`: Windows tries IPv6 `::1` first | set `127.0.0.1` ([`.env` production](#env-production), note 5b) |
+| W: slow from about 30 students on, disk busy | Laragon's default `my.ini` (128 MB buffer pool, binary log on) | the Jalur W block of [Pengaturan MySQL](#pengaturan-mysql) |
+| `Deadlock found when trying to get lock` in `writable/logs` | two event batches met on MySQL 8; since 21 November 2026 the write is run again by itself (`DeadlockRetry`) and re-sent events no longer cause it | nothing while requests still answer 200; a `CRITICAL` line with it means four runs in a row failed: look at the load, and keep the log for the developer |
+| Students sent to `/masuk` now and then, events answered 401 | code from before 21 November 2026 with `session.regenerateDestroy = true` | update the code ([Pembaruan kode](#pembaruan-kode)); the `.env` line is ignored afterwards |
+| Behind Cloudflare: the asset package downloads again every few hours | the tunnel's site file has no cache rules | [Jalur W behind a Cloudflare Tunnel](#jalur-w-behind-a-cloudflare-tunnel-cloudflared) |
 | Unduhan data gagal di tengah | `memory_limit` atau batas 300 detik (W: dihitung jam dinding) | persempit rentang tanggal; periksa batas PHP |
 | W: Nginx tidak mau start | port 80/443 dipakai Apache Laragon, IIS, atau aplikasi lain | matikan Apache di Laragon; `Get-NetTCPConnection -LocalPort 80` untuk mencari pemakainya |
 | W: sertifikat kedaluwarsa padahal sudah diperpanjang | Nginx belum di-reload | jalankan `reload-nginx.cmd`; periksa langkah instalasi simple-acme |
