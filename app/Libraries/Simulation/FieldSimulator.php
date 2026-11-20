@@ -108,7 +108,7 @@ final class FieldSimulator extends Simulator
         $study = model(ResearchStudyModel::class)->fieldModeStudy();
 
         if ($study === null || (string) ($study['meeting_plan'] ?? '') !== 'lima_pertemuan') {
-            throw new \RuntimeException('mode penelitian dengan rencana lima pertemuan dibutuhkan.');
+            throw new \RuntimeException('Research mode with the lima_pertemuan plan is needed.');
         }
 
         $this->phpSession();
@@ -442,15 +442,20 @@ final class FieldSimulator extends Simulator
 
     /**
      * Date and hours that keep a field session open on the real clock while
-     * the run plays it (moved to the simulated hours later). Waits for the
-     * next day when fewer than 30 minutes are left before midnight.
+     * the run plays it (moved to the simulated hours later). A meeting's
+     * window must stay on one calendar day, so close to midnight the run
+     * waits for the next day: with less than 30 minutes left (a meeting of a
+     * big class takes a few real minutes), or 3 minutes under the test suite
+     * (a test meeting takes seconds; a CI shard must not sleep half an hour).
      *
      * @return array{session_date: string, opens: string, closes: string}
      */
     private function realWindow(): array
     {
-        if ((int) date('G') === 23 && (int) date('i') >= 30) {
-            sleep(max(1, 86_400 - (time() - strtotime('today')) + 5));
+        $left = strtotime('tomorrow') - time();
+
+        if ($left < (ENVIRONMENT === 'testing' ? 3 : 30) * 60) {
+            sleep($left + 5);
         }
 
         $opens  = max(strtotime('today'), time() - 120);
@@ -482,7 +487,7 @@ final class FieldSimulator extends Simulator
             }
 
             if (service('fieldSessions')->checkToken($token, null, true)['status'] !== 'ok') {
-                throw new \RuntimeException('token pendaftaran ditolak untuk ' . $student['username']);
+                throw new \RuntimeException('Registration token refused for ' . $student['username']);
             }
 
             $student['pid'] = $this->registerInField($number, $fieldSession);
@@ -497,14 +502,14 @@ final class FieldSimulator extends Simulator
             $login   = $this->clock->act(fn () => service('sessionService')->login($student['username'], self::PASSWORD, $this->locale, $this->deviceProfile()));
 
             if ($login['status'] !== 'token') {
-                throw new \RuntimeException('masuk ' . $student['username'] . ': ' . $login['status']);
+                throw new \RuntimeException('Login of ' . $student['username'] . ' gave ' . $login['status'] . ' instead of token');
             }
 
             $participant = model(ParticipantModel::class)->find((int) $student['pid']);
             $check       = service('fieldSessions')->checkToken($token, $participant);
 
             if ($check['status'] !== 'ok') {
-                throw new \RuntimeException('token ' . $student['username'] . ': ' . $check['status']);
+                throw new \RuntimeException('Token refused for ' . $student['username'] . ': ' . $check['status']);
             }
 
             $this->clock->advance($this->rng->getInt(10_000, 40_000));
@@ -639,7 +644,7 @@ final class FieldSimulator extends Simulator
             $result = $this->clock->staffAct($at, array_keys($input), fn () => service('consentService')->save($fieldSession, $input, $this->staffId));
 
             if ($result['errors'] !== []) {
-                throw new \RuntimeException('status izin: ' . implode('; ', $result['errors']));
+                throw new \RuntimeException('Consent status refused: ' . implode('; ', $result['errors']));
             }
         }
     }

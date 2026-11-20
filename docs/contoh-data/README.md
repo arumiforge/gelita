@@ -28,5 +28,6 @@ On a MariaDB development install (`tools/dev/serve.sh`, never a server with real
 2. `.env`: `gelita.simulatedInResearch = true`. Without it, research data leaves out every `sim_*` student (29 §7.1, 35 K13) and ketua's dashboard and downloads stay empty. The switch is ignored in production.
 3. `php spark gelita:simulasi --sekolah=6 --siswa=300 --seed=300` (930 s).
 4. Signed in as `sim.ketua` with Playwright: screenshots of the panel, then **Buat XLSX** with the default choices and **Buat CSV-ZIP** with *Event Mentah* ticked, both downloaded from the download history.
+5. The two committed files are those same two requests built again through `ExportService::build()` with `app.baseURL = 'https://gelita.id/'`, so the Kamus Data's links to the staff guide's glossary point to gelita.id instead of the dev install (review of 21 November 2026). The data sheets are identical to the panel downloads.
 
 The same seed on the same starting database gives the same students, answers and times; ids, tokens and the download time differ. How the simulator plays research mode is in `docs/07_FEATURE_INTEGRATION.md` → FITUR 19 → *Research mode*.

@@ -74,6 +74,12 @@ class Simulation extends BaseCommand
         $field          = (int) (model(ResearchStudyModel::class)->activeStudy()['field_mode'] ?? 0) === 1;
         $sizes          = null;
 
+        if (! $field && $this->option('sekolah', $params) !== null) {
+            CLI::error('--sekolah hanya berlaku dalam mode penelitian (studi aktif dengan field_mode = 1).');
+
+            return EXIT_ERROR;
+        }
+
         if ($field) {
             $sizes = self::schoolSizes($this->option('sekolah', $params), $this->option('siswa', $params) === null ? null : $count, $seed);
 

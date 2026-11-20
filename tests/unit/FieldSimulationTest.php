@@ -56,7 +56,8 @@ final class FieldSimulationTest extends CIUnitTestCase
 
     public function testSchoolsPlayOneAfterAnotherThroughFieldSessions(): void
     {
-        $stats = $this->simulate([3, 2], 11);
+        $auditBefore = (int) ($this->conn->table('audit_logs')->selectMax('id')->get()->getRow('id') ?? 0);
+        $stats       = $this->simulate([3, 2], 11);
 
         $this->assertSame(2, $stats['sekolah']);
         $this->assertSame($this->conn->table('participants')->countAllResults(), $stats['siswa']);
@@ -97,10 +98,14 @@ final class FieldSimulationTest extends CIUnitTestCase
             $this->assertLessThan(date('Y-m-d'), substr((string) $sitting['started_at'], 0, 10));
         }
 
-        // Nothing from the run is left on the wall clock
-        foreach (['game_sessions' => 'started_at', 'challenge_attempts' => 'started_at', 'game_event_logs' => 'occurred_at', 'audit_logs' => 'occurred_at'] as $table => $column) {
+        // Nothing from the run is left on the wall clock (audit rows: only those the run wrote; the world's setup keeps its own)
+        foreach (['game_sessions' => 'started_at', 'challenge_attempts' => 'started_at', 'game_event_logs' => 'occurred_at'] as $table => $column) {
             $this->assertSame(0, $this->conn->table($table)->where($column . ' >=', date('Y-m-d'))->countAllResults(), $table);
         }
+
+        $this->assertGreaterThan(0, $this->conn->table('audit_logs')->where('id >', $auditBefore)->countAllResults());
+        $this->assertSame(0, $this->conn->table('audit_logs')->where('id >', $auditBefore)->where('occurred_at >=', date('Y-m-d'))->countAllResults(), 'audit rows of the run');
+        $this->assertSame(0, $this->conn->table('audit_logs')->where('id <=', $auditBefore)->where('occurred_at <', date('Y-m-d', strtotime('-1 day')))->countAllResults(), 'earlier audit rows untouched');
     }
 
     /**

@@ -108,9 +108,9 @@ class Simulator
      * True on a demo install that shows simulated students as research data
      * (`Config\Gelita::$simulatedInResearch`); never in production.
      */
-    public static function inResearchData(): bool
+    public static function inResearchData(string $environment = ENVIRONMENT): bool
     {
-        return ENVIRONMENT !== 'production' && config('Gelita')->simulatedInResearch;
+        return $environment !== 'production' && config('Gelita')->simulatedInResearch;
     }
 
     /** Free play: a student may press Keluar in a challenge and open it again (a new attempt). Research mode: no. */

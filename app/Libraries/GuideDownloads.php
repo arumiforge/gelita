@@ -27,6 +27,11 @@ use CodeIgniter\HTTP\ResponseInterface;
  * print version not listed here. Documents 14 and 15 hold the whole pre/post
  * test with its answer keys; the owner chose to publish them anyway.
  *
+ * Held back until the owner confirms (review of 21 November 2026): the B.5a
+ * blind booklet (berkas-validator/materi-b5a-buklet-buta.pdf). It lists every
+ * game item with its answer key and is marked secret until the labelling
+ * ends; the research team sends it to the two raters directly.
+ *
  * Adding a file: one more entry below with
  *   guide   self::VALIDATOR or self::STAFF
  *   panels  validator guide only: ValidatorGuideContent::PANELS keys it is for
@@ -69,15 +74,6 @@ final class GuideDownloads
             'type'   => self::PDF,
             'label'  => 'Instrumen Validasi Ahli Materi (versi 2.1)',
             'text'   => 'Petunjuk penilaian dan semua lembar untuk ahli materi, siap dicetak bila Anda lebih nyaman mengisi di kertas.',
-        ],
-        'buklet-b5a' => [
-            'guide'  => self::VALIDATOR,
-            'panels' => ['b5a'],
-            'path'   => self::PDF_DIR . 'berkas-validator/materi-b5a-buklet-buta.pdf',
-            'name'   => 'GELITA-buklet-pelabelan-buta-B5a.pdf',
-            'type'   => self::PDF,
-            'label'  => 'Buklet pelabelan buta B.5a',
-            'text'   => 'Daftar butir yang sama dengan lembar kerja B.5a, untuk diisi di kertas. Kerjakan sebelum membuka bahan lain.',
         ],
         'instrumen-pengamat-budaya' => [
             'guide'  => self::VALIDATOR,

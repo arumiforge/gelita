@@ -212,7 +212,6 @@ final class ValidatorGuideContent extends GuideContent
                 [
                     'id'      => 'b5a-urutan',
                     'title'   => 'Urutan kerja Anda',
-                    'downloads' => true,
                     'lead'    => 'Lembar B.5a menguji apakah dua ahli memberi label yang sama tanpa melihat label dari tim. Karena itu B.5a dikerjakan lebih dulu, sebelum Anda membaca instrumen lengkap atau bahan lain.',
                     'steps'   => [
                         '**Minggu 1–2: B.5a saja (sekitar 6–8 jam).** Kiriman pertama Anda hanya berisi paket B.5a: lembar kerja daftar butir buta, buklet yang sama untuk diisi di kertas bila lebih nyaman, dan halaman petunjuk B.5a.',

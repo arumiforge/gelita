@@ -109,9 +109,11 @@ final class SimClock
     {
         $mark  = min(date('Y-m-d H:i:s', time() - 1), gmdate('Y-m-d H:i:s', time() - 1));
         $saved = [$this->now, $this->participantId, $this->sessionId];
+        // Audit rows of this step only, by id: a time mark would also catch staff rows written outside the run
+        $audit = (int) ($this->db->table('audit_logs')->selectMax('id')->get()->getRow('id') ?? 0);
 
         if ($at->format('Y-m-d H:i:s') >= $mark) {
-            throw new \RuntimeException('Jam simulasi harus di masa lalu: ' . $at->format('Y-m-d H:i:s'));
+            throw new \RuntimeException('The simulated time must lie in the past: ' . $at->format('Y-m-d H:i:s'));
         }
 
         try {
@@ -125,10 +127,7 @@ final class SimClock
             }
 
             $time = $at->format('Y-m-d H:i:s.u');
-            $this->db->query(
-                'UPDATE ' . $this->db->prefixTable('audit_logs') . ' SET occurred_at = ? WHERE occurred_at >= ?',
-                [$time, $mark],
-            );
+            $this->db->table('audit_logs')->where('id >', $audit)->update(['occurred_at' => $time]);
 
             [$this->now, $this->participantId, $this->sessionId] = $saved;
         }

@@ -104,6 +104,7 @@ final class ResearchExportColumnsTest extends CIUnitTestCase
 
         try {
             $this->assertTrue(\App\Libraries\Simulation\Simulator::inResearchData());
+            $this->assertFalse(\App\Libraries\Simulation\Simulator::inResearchData('production'), 'never in production');
             $codes = array_column(iterator_to_array($raw->rows('peserta', ['study_id' => 1], StaffScope::head()), false), 'participant_code');
             $this->assertEqualsCanonicalizing(['GLT-000001', 'GLT-000002', 'X-0'], $codes);
             $this->assertSame('PERHATIAN', (new ExportService())->dictionaryHead(['filters' => ['study_id' => 1]])[0][0]);
