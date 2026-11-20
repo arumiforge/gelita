@@ -1508,3 +1508,5 @@ P2–P4 last 70 minutes (two lessons), a third of the students are slower, and a
 - `realWindow()` waits for midnight only with less than 30 minutes left, 3 under the test suite (a CI shard has 30 minutes).
 - `SimClock::staffAct()` moves only the audit rows its step wrote (by id), not every row of the last hours.
 - `Simulator::inResearchData('production')` is tested false; `--sekolah` without research mode is an error; new developer-facing exceptions are English.
+
+**B.5a booklet published (owner, 21 November 2026: "B.5a publikasikan").** Asked once more after the review, the owner chose to publish the blind B.5a booklet too, although it lists all 180 game items with their answer keys. It is back on the validator guide (B.5a panel and its first chapter page), and the guide's lead asks validators not to spread it.

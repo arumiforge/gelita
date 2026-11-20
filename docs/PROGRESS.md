@@ -236,6 +236,7 @@ Then build:
 - [ ] `docs/08`: a section for the test install (checkout of the frozen commit, database and accounts, `.env`, site file, tunnel public hostname `uji.gelita.id` → `http://127.0.0.1:80`, scheduled retention task, what `deploy.ps1` and `backup.ps1` do or do not do for it).
 - [ ] `20` → *Prasyarat no. 8*, step 1 no. 3 ("Belum ditetapkan") filled in, with a new entry in `04`; the validator guide lock re-marked if a locked section changes (`php spark gelita:panduan:cek --panduan=validator --tandai`).
 - [ ] Decision log section and this list updated; `CLAUDE.md` gets a line when a second install becomes a fact sessions must know.
+- **Guide PDF downloads, research-mode simulation, 300-student sample** (20–21 November 2026, branch `igi/affectionate-archimedes-cw013v`, PR #452, decision log *Guide PDF downloads, research-mode simulation, 300-student sample*): public research PDFs on the validator and staff guides (`GuideDownloads`; 14/15 and the B.5a booklet published by owner decision), blank L0–L8 sheets, `gelita:simulasi` in research mode (`FieldSimulator`, schools one after another; 80 students in 5 schools checked clean), the 300-student sample download in `docs/contoh-data/` with the demo switch `gelita.simulatedInResearch` (never in production).
 
 ## Active branches
 
@@ -243,4 +244,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `igi/affectionate-archimedes-cw013v` | Owner request of 20 November 2026 (decision log *Guide PDF downloads, research-mode simulation, 300-student sample*): (1) research documents as print-ready PDFs downloadable from the validator and staff guides (public, 14/15 included by owner decision; never the B.5a key); (2) `gelita:simulasi` in research mode (`FieldSimulator`, schools one after another through P1–P5); (3) 80 students in 5 schools run on a MariaDB dev install: works, all checks clean; (4) 300-student sample download for ketua in `docs/contoh-data/`, offered on the staff guide; demo switch `gelita.simulatedInResearch` | Built, full suite run, PR #452 open; owner: review the PR and the sample, and decide whether the B.5a booklet (every game item with its key) may be public too (held back for now). After deploying, nothing to run on the server (the PDFs and sample are files in the checkout; never set `gelita.simulatedInResearch` on gelita.id) |

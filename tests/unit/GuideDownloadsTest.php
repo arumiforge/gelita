@@ -54,7 +54,6 @@ final class GuideDownloadsTest extends CIUnitTestCase
 
             // Never offered, whatever happens (owner, 20 Nov 2026)
             $this->assertStringNotContainsString('khusus-peneliti/', $file['path'], "{$key}: the B.5a key for researchers");
-            $this->assertStringNotContainsString('materi-b5a-buklet-buta', $file['path'], "{$key}: the B.5a booklet lists every game item with its key (held back, 21 Nov 2026)");
             $this->assertStringNotContainsString('/arsip/', $file['path'], "{$key}: archived drafts");
             $this->assertStringEndsNotWith('serah-terima-peneliti.pdf', $file['path'], "{$key}: the developer's handover file");
             $this->assertDoesNotMatchRegularExpression('#^docs/revisi-10-analitik/dokumen-pdf/.*\.xlsx$#', $file['path'], "{$key}: no validator worksheet");
@@ -76,7 +75,7 @@ final class GuideDownloadsTest extends CIUnitTestCase
         }
         $this->assertSame([
             'materi' => ['instrumen-validasi-ahli-materi-v2.1.pdf'],
-            'b5a'    => [],
+            'b5a'    => ['materi-b5a-buklet-buta.pdf'],
             'budaya' => ['instrumen-validasi-pengamat-budaya-v2.1.pdf'],
             'media'  => ['instrumen-validasi-ahli-media-v1.1.pdf'],
         ], array_merge(array_fill_keys(array_keys(ValidatorGuideContent::PANELS), []), $byPanel));
@@ -109,22 +108,20 @@ final class GuideDownloadsTest extends CIUnitTestCase
         $this->assertNull(GuideDownloads::find(GuideDownloads::VALIDATOR, 'kamus-data'), 'a key of the other guide');
         $this->assertNull(GuideDownloads::find(GuideDownloads::STAFF, 'instrumen-ahli-materi'), 'a key of the other guide');
         $this->assertNull(GuideDownloads::find(GuideDownloads::STAFF, '../../.env'));
-        // The B.5a booklet holds every game item with its key: held back until the owner confirms (21 November 2026)
-        $this->assertSame([], GuideDownloads::forPanels(['b5a']));
-        $this->assertNull(GuideDownloads::find(GuideDownloads::VALIDATOR, 'buklet-b5a'));
-        $this->assertCount(3, GuideDownloads::forPanels([]), 'no panel: the three instruments');
+        $this->assertSame(['buklet-b5a'], array_keys(GuideDownloads::forPanels(['b5a'])));
+        $this->assertCount(4, GuideDownloads::forPanels([]), 'no panel: all four');
 
         $this->assertSame('PDF · 687 KB', GuideDownloads::meta(['name' => 'a.pdf'], 703033));
         $this->assertSame('XLSX · 1,5 MB', GuideDownloads::meta(['name' => 'a.xlsx'], 1_572_864));
         $this->assertSame('ZIP', GuideDownloads::meta(['name' => 'a.zip'], null));
-        $this->assertSame(base_url('admin/panduan-validator/unduh/instrumen-ahli-media'), GuideDownloads::url(GuideDownloads::VALIDATOR, 'instrumen-ahli-media'));
+        $this->assertSame(base_url('admin/panduan-validator/unduh/buklet-b5a'), GuideDownloads::url(GuideDownloads::VALIDATOR, 'buklet-b5a'));
     }
 
     public function testRoutesArePublic(): void
     {
         $routes = service('routes');
         $routes->loadRoutes();
-        $this->assertSame([], $routes->getFiltersForRoute('admin/panduan-validator/unduh/instrumen-ahli-media'));
+        $this->assertSame([], $routes->getFiltersForRoute('admin/panduan-validator/unduh/buklet-b5a'));
         $this->assertSame([], $routes->getFiltersForRoute('admin/panduan-staf/unduh/kamus-data'));
     }
 
@@ -199,8 +196,8 @@ final class GuideDownloadsTest extends CIUnitTestCase
             $this->assertStringContainsString($url($key), $home);
             $this->assertStringContainsString($file['label'], $home);
         }
-        foreach (GuideDownloads::forGuide(GuideDownloads::VALIDATOR) as $file) {
-            $this->assertStringContainsString('<span class="gd-dl-eyebrow">' . ValidatorGuideContent::PANELS[$file['panels'][0]] . '</span>', $home);
+        foreach (ValidatorGuideContent::PANELS as $name) {
+            $this->assertStringContainsString('<span class="gd-dl-eyebrow">' . $name . '</span>', $home);
         }
         $this->assertMatchesRegularExpression('/PDF · \d+(,\d)? (KB|MB)/', $home, 'kind and size');
         foreach (GuideDownloads::forGuide(GuideDownloads::STAFF) as $key => $file) {
@@ -218,15 +215,13 @@ final class GuideDownloadsTest extends CIUnitTestCase
         }
 
         // The panel chapter's page marked `downloads` lists the chapter's file
-        $pages = ['materi-kiriman' => 'instrumen-ahli-materi', 'budaya-tugas' => 'instrumen-pengamat-budaya', 'media-kiriman' => 'instrumen-ahli-media'];
+        $pages = ['materi-kiriman' => 'instrumen-ahli-materi', 'b5a-urutan' => 'buklet-b5a', 'budaya-tugas' => 'instrumen-pengamat-budaya', 'media-kiriman' => 'instrumen-ahli-media'];
         foreach ($pages as $section => $key) {
             $page = $this->page('admin/panduan-validator/' . $section);
             $this->assertSame(1, substr_count($page, 'class="gd-dl"'), $section);
             $this->assertStringContainsString($url($key), $page, $section);
         }
         $this->assertStringNotContainsString('class="gd-dl"', $this->page('admin/panduan-validator/masuk'), 'only marked pages');
-        $this->assertStringNotContainsString('class="gd-dl"', $this->page('admin/panduan-validator/b5a-urutan'), 'no B.5a booklet');
-        $this->assertStringNotContainsString('class="gd-dl"', $this->page('admin/panduan-validator?panel=b5a'), 'no B.5a booklet');
     }
 
     public function testStaffGuideHasADownloadPage(): void
