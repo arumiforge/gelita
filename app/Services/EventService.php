@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Entities\GameSession;
+use App\Libraries\DeadlockRetry;
 use App\Libraries\EventCatalog;
 use App\Models\AudioUsageEventModel;
 use App\Models\GameEventLogModel;
@@ -201,7 +202,7 @@ class EventService
                 $now,
                 0,
             ),
-        ]);
+        ], false);   // a fresh `srv-` id: nothing to look up
     }
 
     /**
@@ -461,11 +462,13 @@ class EventService
             $rows[] = $fresh[$i]['row'];
         }
 
+        // One transaction, run again as a whole when MySQL gives up on a lock (1213, 1205)
         $db = $this->db();
-        $db->transBegin();
 
-        try {
-            $written = $rows === [] ? ['accepted' => 0] : model(GameEventLogModel::class)->appendBatch($rows);
+        [$fresh, $lostRace] = DeadlockRetry::transaction($db, function () use ($db, $session, $rows, $fresh, $receivedAt, $offset): array {
+            $lostRace = 0;
+            // The rows were checked against the stored ids above: no second lookup
+            $written = $rows === [] ? ['accepted' => 0] : model(GameEventLogModel::class)->appendBatch($rows, false);
 
             // Lost a race with another tab for some entries: keep only ours
             if ($written['accepted'] < count($rows)) {
@@ -476,9 +479,9 @@ class EventService
                         ->get()->getResultArray(),
                     'event_uuid',
                 ));
-                $won        = array_values(array_filter($fresh, static fn (array $item): bool => $item['row'] === null || isset($ours[$item['row']['event_uuid']])));
-                $duplicate += count($fresh) - count($won);
-                $fresh      = $won;
+                $won      = array_values(array_filter($fresh, static fn (array $item): bool => $item['row'] === null || isset($ours[$item['row']['event_uuid']])));
+                $lostRace = count($fresh) - count($won);
+                $fresh    = $won;
             }
 
             $this->insertAudioUsage($session->id, $fresh, $receivedAt, $offset);
@@ -493,14 +496,10 @@ class EventService
                     ->update();
             }
 
-            $db->transCommit();
-        } catch (\Throwable $e) {
-            $db->transRollback();
+            return [$fresh, $lostRace];
+        }, 'audio batch');
 
-            throw $e;
-        }
-
-        return ['accepted' => count($fresh), 'duplicate' => $duplicate, 'rejected' => $rejected];
+        return ['accepted' => count($fresh), 'duplicate' => $duplicate + $lostRace, 'rejected' => $rejected];
     }
 
     /**
@@ -628,20 +627,7 @@ class EventService
      */
     private function storedClientEventIds(int $sessionId, array $clientEventIds): array
     {
-        $clientEventIds = array_values(array_unique($clientEventIds));
-
-        if ($clientEventIds === []) {
-            return [];
-        }
-
-        $rows = $this->db()->table('game_event_logs')
-            ->select('client_event_id')
-            ->where('session_id', $sessionId)
-            ->whereIn('client_event_id', $clientEventIds)
-            ->get()
-            ->getResultArray();
-
-        return array_fill_keys(array_map('strval', array_column($rows, 'client_event_id')), true);
+        return model(GameEventLogModel::class)->storedClientEventIds($sessionId, $clientEventIds);
     }
 
     /**
