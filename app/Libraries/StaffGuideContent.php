@@ -549,7 +549,7 @@ final class StaffGuideContent extends GuideContent
                         'Enam sekolah berkode S01–S06 berjalan bergantian: satu sekolah menyelesaikan P1–P5 dulu, baru sekolah berikutnya. Setiap sekolah punya dua atau tiga rombel.',
                         'Ada siswa yang tidak hadir lalu ikut sesi susulan, siswa yang mundur atau pindah sekolah, tantangan yang belum selesai lalu dilanjutkan di pertemuan berikutnya, tes awal–akhir, angket, butir risiko, skala sikap, dan [[data turunan|data-turunan]].',
                         'Berkas Excel berisi semua lembar bawaan unduhan, tanpa Event Mentah. Berkas ZIP berisi lembar yang sama sebagai CSV ditambah Event Mentah, siap untuk SPSS, R, atau Python.',
-                        'Kode peserta dan kode sesi mengikuti aturan biasa, misalnya `S01-A07` dan `S01-A-P2`. Tanggalnya Juli sampai November 2026.',
+                        'Kode peserta dan kode sesi mengikuti aturan biasa, misalnya `S01-A07` dan `S01-A-P2`. Tanggalnya Juli sampai Oktober 2026.',
                     ],
                 ],
                 [
