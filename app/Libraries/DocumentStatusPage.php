@@ -11,7 +11,7 @@ use DOMXPath;
  * (/admin/status-dokumen, head researcher only; owner, 17 November 2026).
  *
  * The one source is docs/revisi-10-analitik/status-dokumen.html in the
- * server's checkout (deploy.sh pulls the whole repository), so the panel
+ * server's checkout (deploy.ps1 pulls the whole repository), so the panel
  * shows whatever the last deploy brought and there is no second copy. Only
  * the page's <main> is taken: its own <h1> and footer are dropped (the
  * panel has its own heading), links become plain text because docs/ is not

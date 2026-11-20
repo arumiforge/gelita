@@ -61,7 +61,7 @@ final class ValidatorGuideContent extends GuideContent
         return [
             'instalasi-uji' => [
                 'term'    => 'Instalasi uji',
-                'def'     => 'Salinan GELITA yang dipasang khusus untuk validasi, terpisah dari server yang dipakai sekolah. Tidak berisi data siswa.',
+                'def'     => 'Salinan GELITA yang dipasang khusus untuk validasi, dengan alamat, isi, dan database sendiri, terpisah dari GELITA yang dipakai sekolah. Tidak berisi data siswa.',
                 'example' => 'Alamatnya dikirim tim peneliti lewat surel, terpisah dari kata sandi.',
                 'more'    => 'masuk',
             ],
@@ -377,7 +377,7 @@ final class ValidatorGuideContent extends GuideContent
                         'Ambil tangkapan layar untuk setiap temuan B.6, dan catat perangkat yang dipakai di surat pernyataan (D.1).',
                     ],
                     'facts'   => ['layar', 'versi'],
-                    'warn'    => 'Pakai instalasi uji saja. Jangan masuk ke server yang dipakai sekolah, dan jangan menjalankan uji beban, uji penetrasi, atau percobaan masuk ke akun lain.',
+                    'warn'    => 'Pakai instalasi uji saja. Jangan masuk ke alamat yang dipakai sekolah, dan jangan menjalankan uji beban, uji penetrasi, atau percobaan masuk ke akun lain.',
                     'sources' => [self::P20 . 'panel-ahli-media-imd', self::P20 . 'akses-untuk-validator', self::P20 . 'surat-3-ahli-media'],
                 ],
                 [
@@ -526,7 +526,7 @@ final class ValidatorGuideContent extends GuideContent
                     'list'    => [
                         '**Mandiri.** Jangan berdiskusi dengan validator lain sampai lembar Anda selesai. Pertanyaan tentang bahan diajukan ke ketua peneliti, yang menjawab dengan informasi faktual.',
                         '**Rahasia.** Bank soal, kunci jawaban, butir tes, skema kode, isi game, gambar rancangan, dan tangkapan layar jangan disebarkan. Kunci yang bocor ke calon peserta merusak data.',
-                        '**Hanya instalasi uji.** Pakai alamat dan akun dari tim. Jangan masuk ke server yang dipakai sekolah.',
+                        '**Hanya instalasi uji.** Pakai alamat dan akun dari tim. Jangan masuk ke alamat yang dipakai sekolah.',
                         '**Tanpa data siswa.** Validator tidak pernah menerima atau melihat data siswa. Akun uji adalah akun siswa tanpa akses panel.',
                         '**Nama samaran.** Nama asli Anda hanya ada di surat pernyataan dan arsip ketua peneliti, dan disebut di laporan hanya dengan izin Anda.',
                         '**Honorarium** sesuai ketentuan yang berlaku, dibayarkan setelah lembar dan surat pernyataan diterima. Rinciannya ada di surat Anda.',

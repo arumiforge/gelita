@@ -17,7 +17,7 @@ use CodeIgniter\CLI\CLI;
  *   php spark gelita:setelah-pull --tandai     # this install is current: record the import sources as done
  *
  * For developer and test installs. A production server is updated with
- * deploy/linux/deploy.sh or deploy/windows/deploy.ps1, so --jalankan refuses
+ * deploy/windows/deploy.ps1, so --jalankan refuses
  * there. Composer is never run from here (vendor/ is in use by this
  * process), and the validator guide needs a person to read it.
  */
@@ -109,7 +109,7 @@ class PostPull extends BaseCommand
     private function runSteps(array $due, bool $yes): int
     {
         if (ENVIRONMENT === 'production') {
-            CLI::error('Server produksi diperbarui dengan skrip deploy (deploy/linux/deploy.sh atau deploy/windows/deploy.ps1), bukan dengan --jalankan.');
+            CLI::error('Server produksi diperbarui dengan skrip deploy (deploy/windows/deploy.ps1), bukan dengan --jalankan.');
 
             return EXIT_ERROR;
         }

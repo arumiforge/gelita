@@ -39,9 +39,10 @@
  *   node tools/qa/nav-timing.mjs --serve [--runs=5] [--only=peta,misi] [--region=temanggung]
  *   node tools/qa/nav-timing.mjs --base=http://localhost:8080/ …
  *
- * --serve starts a private nginx + php-fpm built from
- * deploy/linux/nginx/gelita-https.conf (HTTPS + HTTP/2, the production
- * cache headers, CI_ENVIRONMENT=production, self-signed certificate) on
+ * --serve starts a private nginx + php-fpm built from the server's site file
+ * deploy/windows/nginx/gelita.id.conf (the production cache headers and
+ * rules, CI_ENVIRONMENT=production), with HTTPS + HTTP/2 and a self-signed
+ * certificate added here because in production Cloudflare ends HTTPS, on
  * https://localhost:8443/ and stops it at the end. This is the reference
  * setup: `php spark serve` is single-threaded HTTP/1.1 without cache
  * validators, so its numbers are not comparable.
@@ -139,13 +140,13 @@ async function serve() {
   const env = { 'app.baseURL': BASE, CI_ENVIRONMENT: 'production' };
   fs.writeFileSync(path.join(dir, 'env.php'), `<?php\nforeach (json_decode('${JSON.stringify(env)}', true) as $k => $v) { putenv("$k=$v"); $_ENV[$k] = $_SERVER[$k] = $v; }\n`);
 
-  // The production site config, pointed at this checkout, the private socket and certificate
-  const site = fs.readFileSync(path.join(root, 'deploy/linux/nginx/gelita-https.conf'), 'utf8')
-    .replaceAll('/var/www/gelita', root)
-    .replace(/listen 443 ssl http2;/, `listen ${SERVE_PORT} ssl http2;`)
+  // The production site file, pointed at this checkout and the private socket. In production
+  // Cloudflare ends HTTPS and a tunnel reaches nginx on 127.0.0.1:80; here nginx does TLS itself.
+  const site = fs.readFileSync(path.join(root, 'deploy/windows/nginx/gelita.id.conf'), 'utf8')
+    .replaceAll('C:/laragon/www/gelita', root)
+    .replace(/listen 127\.0\.0\.1:80;/, `listen ${SERVE_PORT} ssl http2;\n    ssl_certificate ${dir}/cert.pem;\n    ssl_certificate_key ${dir}/key.pem;`)
     .replace(/server_name [^;]+;/, 'server_name localhost;')
-    .replace(/ssl_certificate +[^;]+;/, `ssl_certificate ${dir}/cert.pem;`)
-    .replace(/ssl_certificate_key +[^;]+;/, `ssl_certificate_key ${dir}/key.pem;`)
+    .replace(/^\s*(?:set_real_ip_from|real_ip_header) [^;]+;.*\n/gm, '')
     .replace(/include snippets\/fastcgi-php\.conf;/, 'include /etc/nginx/fastcgi_params; fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;')
     .replace(/fastcgi_pass [^;]+;/, `fastcgi_pass unix:${sock};`);
   fs.writeFileSync(path.join(dir, 'nginx.conf'), [

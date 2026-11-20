@@ -1,8 +1,21 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 20 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 21 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
+
+## 21 November 2026
+
+**Instalasi uji validator di `uji.gelita.id`, terpisah dari produksi** (cabang `igi/busy-fermat-czue8s`, dokumen [20](20_PAKET_VALIDASI.md) → *Prasyarat no. 8* dan *Keputusan pengembang* no. 5 dan 6; `docs/08_DEPLOYMENT.md`) · `asal: pengembang` · `disetujui pengembang` · belum dilihat peneliti; dokumen 20 tetap `disetujui peneliti` untuk paketnya
+
+Keputusan pengembang hari ini tentang server:
+
+1. **Produksi adalah satu server dengan satu domain, `gelita.id`** (Windows dengan Laragon di belakang Cloudflare Tunnel). Repositori bukan templat untuk pemasangan lain: jalur Linux dan berkas Nginx bersertifikat dihapus, dan `docs/08_DEPLOYMENT.md` ditulis ulang untuk satu jalur.
+2. **Instalasi uji untuk validator dan uji coba sistem dipasang di subdomain `uji.gelita.id`**, dengan isi (salinan kode dan berkas) dan database sendiri yang terpisah dari produksi. Ini menggantikan keputusan no. 5 dan 6 dokumen 20 (27 Oktober 2026: komputer lab kampus dengan subdomain kampus, tidak dijalankan). Pada hari yang sama pengembang sempat memutuskan instalasi uji memakai `gelita.id` sendiri; keputusan itu diganti dengan yang ini sebelum dipakai, jadi yang berlaku hanya `uji.gelita.id`.
+3. **Yang tidak berubah:** instalasi uji tetap terpisah dari data sekolah, memakai *commit* yang dibekukan (20 prasyarat no. 4), akun `uji.*`, dan `gelita:reset` hanya di instalasi uji. Dokumen lain yang menyebut instalasi uji (03, 21, 22, 26, 27, 28, 30, 34) tetap benar dan tidak diubah.
+4. **Panduan validator** (`/admin/panduan-validator`): "server yang dipakai sekolah" menjadi "alamat yang dipakai sekolah", dan istilah *instalasi uji* menyebut alamat, isi, dan database sendiri.
+
+**Belum ditetapkan:** di mesin mana `uji.gelita.id` dipasang, dan berkas Nginx serta pengaturan terowongannya (pengembang: dipisahkan "nanti"). Repositori sekarang hanya memuat berkas untuk `gelita.id`. "Uji coba" di sini dibaca sebagai uji coba sistem oleh tim dan validator; kegiatan dengan anak (KG, sekolah berkode `U`) tidak dipindah ke instalasi uji oleh keputusan ini.
 
 ## 20 November 2026
 
