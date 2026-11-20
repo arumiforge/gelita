@@ -1,8 +1,20 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 19 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 20 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
+
+## 20 November 2026
+
+**Tombol ukir ringan menggantikan tombol tenang; sepuluh gambar dipesan** (cabang `igi/bold-noether-xd7v0w`, dokumen [40](40_PROMPT_GAMBAR_ANTARMUKA.md) → *PL-13 sampai PL-22*) · `asal: pengembang` · `disetujui pengembang` (wawancara) · gambar; kode tampilan menyusul saat pemasangan; aturan penelitian dan data tidak berubah
+
+Telaah pengembang di instalasi pengembangan (1366 × 768): tombol tenang (`PL-07` sampai `PL-09`, terpasang hari ini) tidak lagi memakan tempat, tetapi permukaan krem mengilap dan kotak ikon tembus pandang membuatnya tampak seperti tombol web biasa. Di satu layar bertemu tiga keluarga dan tiga warna emas (Kenali: tombol tenang, panah bulat berukir, papan nama berujung ukel; jendela tantangan: tombol krem di bingkai berukir tebal). Ciri GELITA datang dari emas antik berukir dalam, batu biru tua bermotif awan samar, dan simbol emas timbul di medali; hanya ujung ukel yang membuat ramai.
+
+1. **Arah: tombol ukir ringan.** Bentuk kapsul sama dengan tombol tenang, jadi tata letak tidak berubah; bingkai emas antik tipis berukir (satu lis setengah bulat yang utuh dengan garis terang di dalamnya), tanpa ukel, butir intan, ujung runcing, atau deret manik; permukaan polos sehingga bagian tengah bisa diregang. Empat warna: emas (aksi utama), biru tua (aksi tenang), hijau (*Lihat hasil*), dan merah (aksi bahaya, yang kini ikut bergambar).
+2. **Ikon di dalam tombol menjadi medali emas timbul** (gambar tersendiri: cincin tipis tanpa intan, cakram biru tua bermotif awan samar) menggantikan kotak ikon CSS. Rekomendasi awal menyebut empat medali dengan *ulangi*; setelah kode diperiksa, ikon *ulangi* tidak dipakai di tombol bertulisan game, sedangkan *bawah* (Detail hasil), *peta* (Peta Kedu), dan *kilau* (Balai Refleksi) dipakai di layar hasil. Jadi enam medali (kanan, kiri, centang, bawah, peta, kilau) dan pesanan menjadi sepuluh gambar, bukan delapan. Gambar ikon lain (buku Pustaka, lentera Kenali) tetap.
+3. **Emas antik** seperti tombol bulat HUD, bingkai, dan medali, bukan emas krem terang; tulisan pada tombol emas cokelat tua.
+4. **Cakupan: semua tombol bertulisan game** yang kini memakai tombol tenang, ditambah Masuk, Daftar, Berikutnya, tombol merah, dan *Kembali ke awal* di halaman galat. Tidak termasuk: tombol Skenario Digital (`SD-`), tombol bulat HUD, pilihan jawaban, dan modul tes `/tes` (tetap Bootstrap tanpa unsur game, [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md)).
+5. **Sampai gambar diterima, tombol tenang tetap tampil.** Keadaan arahkan, tekan, dan nonaktif tetap dari CSS, tanpa gambar tambahan. Baris `PL-13` sampai `PL-22` ditambahkan ke `ai-studio/chatgpt-images/TASKS.md`, dengan aturannya di `AGENTS.md` folder itu dan langkah F di `prompts/codex-all.md`.
 
 ## 19 November 2026
 
