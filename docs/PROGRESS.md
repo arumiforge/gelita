@@ -2,7 +2,7 @@
 
 The single checklist of what is done and what is open. Decisions and their reasons go in `docs/perombakan-kelas5/CATATAN_IMPLEMENTASI.md` (and, for the research revision, `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`); this file only tracks state. Each session updates only its own rows, and ticks an item only once its PR is merged into `main`. Finished work is summed up in one line per area under *Done*; the details live in the PRs, the git history, and the decision log.
 
-Last updated: 19 November 2026.
+Last updated: 21 November 2026.
 
 ## Research revision: 10 analytics (owner, 23 October 2026)
 
@@ -224,3 +224,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `igi/elegant-lovelace-s2693m` | Cloud session: order-dependent `ServerCheckTest` (stale `staffContext` between test classes) | Fix in `ResetTables` and `StaffContextLeakTest`, decision log *Staff row left in `staffContext` between test classes* (21 November 2026). Full suite green once before the push; PR open, waiting for the owner's merge. Nothing open after the merge. |
