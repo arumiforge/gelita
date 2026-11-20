@@ -42,7 +42,7 @@ class SystemResetService
     /** Kata yang wajib diketik bila tanpa --ya. */
     public const CONFIRM_WORD = 'RESET-KELAS5';
 
-    /** Kelas aktif dalam rentang ini menahan reset (pola deploy.sh). */
+    /** Kelas aktif dalam rentang ini menahan reset (pola deploy.ps1). */
     public const ACTIVE_GUARD_MINUTES = 10;
 
     public const GROUP_A = [

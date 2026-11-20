@@ -97,7 +97,7 @@ Continues `glossary.md` (same columns, same rules). Add research, panel, and dat
 | salinan data satu anak | `participant copy` | `ParticipantCopyService`, route `/admin/peserta/salinan` (ketua) |
 | pembetulan data pendaftaran | `registration correction` | `participants.corrected_at` |
 | ganti nama dengan kode (penutupan studi) | `identity replacement` | `StudyClosureService`, confirm word `GANTI` |
-| cadangan diganti | `backup replacement` | `deploy/linux/backup.sh --ganti`, `deploy/windows/backup.ps1 -Ganti` |
+| cadangan diganti | `backup replacement` | `deploy/windows/backup.ps1 -Ganti` (the Linux `backup.sh --ganti` went with the Linux path on 21 November 2026) |
 | IP berhash di sesi peramban | `hashed IP session` | `HashedIpSessionHandler`, switch `gelita.researchPrivacy` (off by default) |
 | pengaturan pengambilan data (studi) | `study settings` | `POST /admin/studi/{id}/pengaturan` → `StudyController::updateSettings`; `research_studies.idle_threshold_ms` (180000), `rapid_guess_ms` (3000), `test_rapid_guess_ms` (3000), `min_stage_px` (960); audit `study_settings_changed`; refused once `thresholds_locked_at` is set (part 9) |
 | batas waktu modul tes (studi) | `instrument settings` | `research_studies.instrument_settings` JSON (null = `Config\Gelita::$instrumentDefaults`), `POST /admin/studi/{id}/instrumen` |

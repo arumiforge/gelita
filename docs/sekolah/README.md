@@ -65,5 +65,5 @@ php spark gelita:schools:import                # terapkan ke database
   `php docs/sekolah/build-sekolah-jateng.php --source=/folder/unduhan`.
 - Impor hanya menulis baris yang berubah dan **tidak pernah menghapus** sekolah (siswa
   mungkin sudah tertaut). NPSN yang hilang dari berkas baru dilaporkan saja.
-- Deploy (`deploy/linux/deploy.sh`, `deploy/windows/deploy.ps1`) menjalankan impor
+- Deploy (`deploy/windows/deploy.ps1`) menjalankan impor
   setelah migrasi, jadi pembaruan berkas ikut terpasang pada deploy berikutnya.

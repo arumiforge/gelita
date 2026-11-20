@@ -10,7 +10,7 @@ Berkas operasional ada di folder [`deploy/`](../deploy/). Bila isi dokumen ini b
 
 Menjalankan GELITA sebagai sistem production untuk penelitian siswa kelas 5 SD/MI. Dokumen ini mencakup:
 
-- menyiapkan server Linux atau Windows;
+- menyiapkan server Windows;
 - mengonfigurasi environment, database, web server, dan HTTPS;
 - instalasi baru sampai aplikasi siap dipakai kelas, termasuk persiapan sebelum pengambilan data penelitian;
 - pembaruan kode dan rollback;
@@ -21,28 +21,24 @@ Menjalankan GELITA sebagai sistem production untuk penelitian siswa kelas 5 SD/M
 
 ## Konteks
 
-GELITA adalah satu instansi server. Siswa, guru, dan peneliti mengaksesnya lewat internet dengan HTTPS di satu nama domain, misalnya `gelita.sekolah.sch.id`. Satu instansi dapat dipakai banyak kelas dan sekolah. Guru membuka panel dari mana saja.
+GELITA adalah satu instansi server. Siswa, guru, dan peneliti mengaksesnya lewat internet dengan HTTPS di satu nama domain, `gelita.id` (the repository's files are written for this server, not as a template for other installs; owner, 21 November 2026). The validators' test install is planned on the subdomain `uji.gelita.id`, with its own content and database, separate from this production install (owner, same day); its site file and install steps are not written yet. Satu instansi dapat dipakai banyak kelas dan sekolah. Guru membuka panel dari mana saja.
 
-| | **Jalur L — Linux** | **Jalur W — Windows + Laragon** |
-|---|---|---|
-| Cocok untuk | VPS atau server sekolah Linux; **disarankan** untuk server publik | server/PC sekolah Windows yang sudah ada |
-| Web server | Nginx | Nginx bawaan Laragon |
-| PHP | PHP-FPM 8.3 | php-cgi 8.3, dijalankan Laragon di belakang `upstream php_upstream` |
-| Database | MySQL 8.0+ / MariaDB 10.6+ | MySQL bawaan Laragon |
-| HTTPS | Certbot (Let's Encrypt), validasi webroot | simple-acme / win-acme (Let's Encrypt), berkas PEM |
-| Tugas terjadwal | cron | Task Scheduler |
-| Skrip operasional | `deploy/linux/*.sh` | `deploy/windows/*.ps1` |
-| Akun sistem | `deploy` (kode) + `www-data` (runtime) | satu akun Windows yang menjalankan Laragon |
+The server is a Windows machine that runs Laragon behind a Cloudflare Tunnel (`cloudflared`). This is the only install path (owner, 21 November 2026).
 
-Yang **sama** di kedua jalur: kode dan `.env`, skema tiga akun database, konfigurasi Nginx (hanya path dan `fastcgi_pass` yang berbeda), mode pemeliharaan, urutan instalasi dan pembaruan, serta daftar verifikasi.
+| Bagian | Di server ini |
+|---|---|
+| Web server | Nginx bawaan Laragon |
+| PHP | php-cgi 8.3, dijalankan Laragon di belakang `upstream php_upstream` |
+| Database | MySQL bawaan Laragon |
+| HTTPS | Cloudflare ends HTTPS, and `cloudflared` passes each request to Nginx on `127.0.0.1:80`. No certificate on the server and no port open to the network (see [HTTPS](#https)) |
+| Tugas terjadwal | Task Scheduler |
+| Skrip operasional | `deploy/windows/*.ps1` |
+| Akun sistem | satu akun Windows yang menjalankan Laragon |
 
-Syarat bersama:
+Syarat:
 
-1. **Nama domain** yang menunjuk ke IP publik server.
-2. **Port 80 dan 443 terbuka dari internet.** Untuk server di jaringan sekolah, ini berarti *port forwarding* di router sekolah. Port 80 tetap diperlukan untuk validasi dan perpanjangan sertifikat.
-3. Server menyala selama jam sekolah, dengan jam sistem di WIB.
-
-Bila server Windows sekolah tidak dapat diberi IP publik atau *port forwarding*, gunakan Jalur L di VPS.
+1. The domain `gelita.id` is managed in Cloudflare, and a Cloudflare Tunnel (`cloudflared`) runs on the server. The server needs no public IP address and no port forwarding.
+2. Server menyala selama jam sekolah, dengan jam sistem di WIB.
 
 Yang **tidak** didukung:
 
@@ -50,7 +46,7 @@ Yang **tidak** didukung:
 - Apache. `public/.htaccess` dibiarkan untuk pengembangan lokal, tetapi aturan cache, header, dan mode pemeliharaan ditulis untuk Nginx.
 - `php spark serve` di production.
 
-Catatan Laragon: Laragon adalah lingkungan pengembangan. Jalur W menutup kekurangannya untuk production: vhost otomatis yang ditulis ulang saat start, TLS lemah, `autoindex`, dan autostart. Periksa ketentuan lisensi di laragon.org sebelum memasangnya di institusi. Laragon 7 ke atas berlisensi berbayar, meski pemakaian non-komersial tanpa lisensi diizinkan dengan pengingat. Laragon 6 gratis, tetapi membawa PHP 8.1, jadi PHP 8.3 x64 harus ditambahkan manual ke `C:\laragon\bin\php\`.
+Catatan Laragon: Laragon adalah lingkungan pengembangan. Panduan ini menutup kekurangannya untuk production: vhost otomatis yang ditulis ulang saat start, TLS lemah, `autoindex`, dan autostart. Periksa ketentuan lisensi di laragon.org sebelum memasangnya di institusi. Laragon 7 ke atas berlisensi berbayar, meski pemakaian non-komersial tanpa lisensi diizinkan dengan pengingat. Laragon 6 gratis, tetapi membawa PHP 8.1, jadi PHP 8.3 x64 harus ditambahkan manual ke `C:\laragon\bin\php\`.
 
 ---
 
@@ -61,29 +57,25 @@ Catatan Laragon: Laragon adalah lingkungan pengembangan. Jalur W menutup kekuran
 | Komponen | Minimum | Disarankan |
 |---|---|---|
 | CPU | 2 core | 4 core |
-| RAM — Jalur L | 2 GB | 4 GB (unduhan XLSX besar butuh ruang) |
-| RAM — Jalur W | 4 GB | 8 GB (Windows sendiri memakai 2–3 GB) |
+| RAM | 4 GB | 8 GB (Windows sendiri memakai 2–3 GB) |
 | Disk | 20 GB | 50 GB (gambar/video + raw event + backup lokal) |
-| OS — Jalur L | Ubuntu 22.04 LTS / Debian 12 | Ubuntu 24.04 LTS |
-| OS — Jalur W | Windows 10/11 Pro 64-bit | Windows Server 2019+ atau Windows 11 Pro |
+| OS | Windows 10/11 Pro 64-bit | Windows Server 2019+ atau Windows 11 Pro |
 
-Ubuntu 22.04 hanya membawa PHP 8.1. Tambahkan PPA `ondrej/php` atau pakai Ubuntu 24.04, yang membawa PHP 8.3. Debian 12 membawa PHP 8.2 (didukung; `composer.json` meminta `php ^8.2`); ganti `8.3` menjadi `8.2` di seluruh nama paket, path, dan socket.
+**Kapasitas** ditentukan jumlah proses PHP, bukan CPU. Setiap request memakai satu proses sampai selesai, dan pembuatan unduhan data dapat memegangnya sampai 300 detik. Karena itu `PHP_FCGI_CHILDREN` wajib dinaikkan dari bawaannya (lihat di bawah). Nginx di Windows memakai satu worker dengan `worker_connections 1024` (bawaan templat Laragon). Batas ini cukup untuk beberapa kelas bersamaan.
 
-**Kapasitas** ditentukan jumlah proses PHP, bukan CPU. Setiap request memakai satu proses sampai selesai, dan pembuatan unduhan data dapat memegangnya sampai 300 detik. Karena itu `pm.max_children` (Jalur L) dan `PHP_FCGI_CHILDREN` (Jalur W) wajib dinaikkan dari bawaannya (lihat di bawah). Nginx di Windows memakai satu worker dengan `worker_connections 1024` (bawaan templat Laragon). Batas ini cukup untuk beberapa kelas bersamaan. Untuk banyak sekolah sekaligus, gunakan Jalur L.
-
-**Measured capacity, Jalur W (new, English; load test of 20–21 November 2026).** A Windows server with 4 logical CPUs and 12 GB RAM (Laragon, MySQL 8.4, behind a Cloudflare Tunnel) was loaded with `tools/qa/load-test.mjs` from another machine, 30 to 200 simulated students at once. With the settings of [Pengaturan PHP](#pengaturan-php) and [Pengaturan MySQL](#pengaturan-mysql) for that machine (64 PHP processes, 3 GB buffer pool), about **100 students at once** is comfortable (answer check p95 0.65 s, pages 1.1 s, both including about 1 s of network between the test machine and the server), and **150 at once works** (checks 1.2 s, pages 2.7 s at p95 and 6.3 s at p99). These are the rounds run after the event-write and session fixes of 21 November 2026; before them the same server took 8 s per page at 150 students, with the four cores 90–99 % busy, and answered some requests with HTTP 500 or 401. 200 students were only run before the fixes (pages 14 s at p95). The simulated students are heavier than real ones (an event every 2 s). Before the settings were changed (Laragon's defaults) the same server already stumbled at 30. More students at once need more cores, not more PHP processes.
+**Measured capacity (load test of 20–21 November 2026).** A Windows server with 4 logical CPUs and 12 GB RAM (Laragon, MySQL 8.4, behind a Cloudflare Tunnel) was loaded with `tools/qa/load-test.mjs` from another machine, 30 to 200 simulated students at once. With the settings of [Pengaturan PHP](#pengaturan-php) and [Pengaturan MySQL](#pengaturan-mysql) for that machine (64 PHP processes, 3 GB buffer pool), about **100 students at once** is comfortable (answer check p95 0.65 s, pages 1.1 s, both including about 1 s of network between the test machine and the server), and **150 at once works** (checks 1.2 s, pages 2.7 s at p95 and 6.3 s at p99). These are the rounds run after the event-write and session fixes of 21 November 2026; before them the same server took 8 s per page at 150 students, with the four cores 90–99 % busy, and answered some requests with HTTP 500 or 401. 200 students were only run before the fixes (pages 14 s at p95). The simulated students are heavier than real ones (an event every 2 s). Before the settings were changed (Laragon's defaults) the same server already stumbled at 30. More students at once need more cores, not more PHP processes.
 
 ### Perangkat lunak
 
-| Komponen | Jalur L | Jalur W |
-|---|---|---|
-| PHP | 8.2 atau 8.3, **FPM** | 8.3 x64 (bawaan Laragon 8.x), **php-cgi** |
-| CodeIgniter | 4.7.x — terkunci di `composer.lock` (4.7.4) | sama |
-| Database | MySQL 8.0+ **atau** MariaDB 10.6+ | MySQL bawaan Laragon (8.x) |
-| Web server | Nginx 1.22+ (Ubuntu 24.04: 1.24) | Nginx bawaan Laragon (8.6+: 1.28 ke atas) |
-| Composer | 2.6+ (`apt install composer` di 24.04) | bawaan Laragon |
-| Git | paket distro | bawaan Laragon Full, atau Git for Windows |
-| HTTPS | `certbot` | simple-acme (penerus win-acme) |
+| Komponen | Versi |
+|---|---|
+| PHP | 8.3 x64 (bawaan Laragon 8.x), **php-cgi** |
+| CodeIgniter | 4.7.x — terkunci di `composer.lock` (4.7.4) |
+| Database | MySQL bawaan Laragon (8.x) |
+| Web server | Nginx bawaan Laragon (8.6+: 1.28 ke atas) |
+| Composer | bawaan Laragon |
+| Git | bawaan Laragon Full, atau Git for Windows |
+| HTTPS | Cloudflare Tunnel (`cloudflared`); no certificate software on the server |
 
 ### Ekstensi PHP wajib
 
@@ -92,25 +84,9 @@ intl mbstring json mysqlnd curl gd zip fileinfo openssl iconv
 dom xml xmlwriter simplexml
 ```
 
-**Jalur L** — pemasangan di Ubuntu 24.04:
-
-```bash
-sudo apt update
-sudo apt install -y nginx mysql-server composer certbot rsync unzip git \
-  php8.3-fpm php8.3-cli php8.3-mysql php8.3-intl php8.3-mbstring php8.3-curl \
-  php8.3-gd php8.3-zip php8.3-xml php8.3-bcmath
-```
-
-Untuk MariaDB, ganti `mysql-server` dengan `mariadb-server`.
-
-**Jalur W** — Menu Laragon → *PHP* → *Extensions*, centang `intl`, `mbstring`, `gd`, `zip`, `fileinfo`, `openssl`, `curl`, `mysqli`. `json`, `dom`, `xml`, `xmlwriter`, `simplexml`, dan `iconv` sudah terpasang di build PHP Windows. Laragon memakai satu `php.ini` per versi PHP untuk CLI maupun php-cgi.
+Menu Laragon → *PHP* → *Extensions*, centang `intl`, `mbstring`, `gd`, `zip`, `fileinfo`, `openssl`, `curl`, `mysqli`. `json`, `dom`, `xml`, `xmlwriter`, `simplexml`, dan `iconv` sudah terpasang di build PHP Windows. Laragon memakai satu `php.ini` per versi PHP untuk CLI maupun php-cgi.
 
 Verifikasi:
-
-```bash
-php -v
-php -m | grep -E '^(intl|mbstring|gd|zip|xmlwriter|mysqlnd|fileinfo)$'
-```
 
 ```powershell
 php -v
@@ -121,7 +97,7 @@ Bila salah satu tidak ada, hentikan di sini. PhpSpreadsheet (impor workbook Pust
 
 ### Pengaturan PHP
 
-**Jalur L** — `/etc/php/8.3/fpm/conf.d/99-gelita.ini`:
+Menu Laragon → *PHP* → *php.ini*:
 
 ```ini
 memory_limit = 512M
@@ -136,40 +112,17 @@ log_errors = On
 expose_php = Off
 session.cookie_httponly = 1
 session.use_strict_mode = 1
+zend_extension = opcache
 opcache.enable = 1
 opcache.memory_consumption = 192
 opcache.max_accelerated_files = 20000
-opcache.validate_timestamps = 0
-```
-
-- `opcache.validate_timestamps = 0` mempercepat production, tetapi PHP-FPM **harus di-reload setiap pembaruan kode**. `deploy.sh` sudah melakukannya.
-- `max_file_uploads = 100` (bawaan PHP 20) agar satu unggahan rekaman narasi di panel dapat memuat banyak berkas. Halaman **Rekaman narasi → Unggah** menampilkan batas yang berlaku.
-
-Ubah juga pool `/etc/php/8.3/fpm/pool.d/www.conf`. Bawaan Ubuntu `pm.max_children = 5` berarti request keenam mengantre, dan satu unduhan data sudah memegang satu proses:
-
-```ini
-pm = dynamic
-pm.max_children = 20              ; ±50 MB per proses: 20 untuk RAM 4 GB, 10 untuk 2 GB
-pm.start_servers = 4
-pm.min_spare_servers = 2
-pm.max_spare_servers = 6
-request_terminate_timeout = 330s  ; jaring pengaman di atas batas 300 detik
-```
-
-```bash
-sudo php-fpm8.3 -t && sudo systemctl restart php8.3-fpm
-```
-
-**Jalur W** — Menu Laragon → *PHP* → *php.ini*. Isi nilainya sama dengan di atas, dengan tiga perbedaan:
-
-```ini
-zend_extension = opcache
-opcache.validate_timestamps = 1   ; php-cgi Laragon tidak punya "reload" seperti FPM
+opcache.validate_timestamps = 1   ; php-cgi Laragon tidak punya "reload"
 opcache.revalidate_freq = 2
 ```
 
 - **Opcache.** Tanpa perintah reload, `validate_timestamps = 0` akan membuat php-cgi terus menjalankan kode lama setelah pembaruan. Biaya pemeriksaan stempel waktu tiap 2 detik tidak berarti pada skala sekolah.
-- **Batas waktu.** Di Windows, `max_execution_time` dihitung dengan jam dinding (termasuk menunggu database), bukan waktu CPU seperti di Linux. Karena itu unduhan besar lebih cepat menyentuh batas 300 detik; persempit rentang tanggal bila terjadi.
+- `max_file_uploads = 100` (bawaan PHP 20) agar satu unggahan rekaman narasi di panel dapat memuat banyak berkas. Halaman **Rekaman narasi → Unggah** menampilkan batas yang berlaku.
+- **Batas waktu.** Di Windows, `max_execution_time` dihitung dengan jam dinding (termasuk menunggu database). Karena itu unduhan besar lebih cepat menyentuh batas 300 detik; persempit rentang tanggal bila terjadi.
 - **Jumlah proses PHP.** Atur di Menu Laragon → *Laragon* → *laragon.ini*, bagian `[nginx]`, lalu *Stop* dan *Start All*:
 
 ```ini
@@ -185,7 +138,7 @@ PHP_FCGI_CHILDREN=16
 | 4 cores, 8 GB RAM | 32 | 150 |
 | 4 cores, 12 GB RAM (the measured server) | 64 | 200 |
 
-- Laragon starts one php-cgi parent that keeps this many children on one port (10987), so the setting works as on Linux. Each child holds one database connection and about 50 MB under load: keep `max_connections` well above the number (staff downloads, scheduled tasks and backups connect too) and the total inside the RAM that MySQL's buffer pool and Windows leave.
+- Laragon starts one php-cgi parent that keeps this many children on one port (10987). Each child holds one database connection and about 50 MB under load: keep `max_connections` well above the number (staff downloads, scheduled tasks and backups connect too) and the total inside the RAM that MySQL's buffer pool and Windows leave.
 - More processes than the cores can serve only makes every request slower: with 4 cores, 64 was enough and 200 was not tried on purpose.
 - Do not build a second php-cgi pool by hand (other ports, a scheduled task): it was tried on the measured server, the processes never listened, and the site answered 502 until it was removed.
 - After changing it: *Stop*, then *Start All*, and check in Task Manager that the php-cgi processes are there.
@@ -194,26 +147,9 @@ Mengganti versi PHP di Laragon berarti memakai `php.ini` lain. Ulangi pengaturan
 
 ### Pengaturan MySQL
 
-**Jalur L:** MySQL memakai `/etc/mysql/mysql.conf.d/99-gelita.cnf`, MariaDB memakai `/etc/mysql/mariadb.conf.d/99-gelita.cnf`. **Jalur W:** Menu Laragon → *MySQL* → *my.ini*, di bawah `[mysqld]`.
+Menu Laragon → *MySQL* → *my.ini*, di bawah `[mysqld]`.
 
-```ini
-[mysqld]
-character-set-server = utf8mb4
-collation-server     = utf8mb4_unicode_ci
-default-time-zone    = '+07:00'
-bind-address         = 127.0.0.1         # database tidak pernah dibuka ke jaringan
-innodb_buffer_pool_size = 1G             # RAM 4 GB: 1G · RAM 2 GB: 512M
-innodb_flush_log_at_trx_commit = 1       # jangan dikendurkan; ini data penelitian
-max_connections = 100
-```
-
-- `innodb_flush_log_at_trx_commit = 1` memang lebih lambat, tetapi data penelitian yang hilang karena listrik padam tidak dapat diulang.
-- `default-time-zone` memakai offset, bukan `Asia/Jakarta`, supaya jalan tanpa tabel zona waktu (tidak ada di MySQL Windows). Aplikasi sendiri menyetel `time_zone` tiap koneksi lewat `db_sync_timezone()`. Nilai server ini dipakai klien `mysql` dan kueri pemeriksaan di skrip deploy.
-- `sql_mode` tidak perlu disetel. `Config\Database::$default['strictOn'] = false` membuat CodeIgniter membuang `STRICT_*` dari `sql_mode` setiap koneksinya, jadi nilai global server tidak berpengaruh pada aplikasi. Mengaktifkan mode strict adalah keputusan kode (`strictOn`), bukan konfigurasi server.
-
-Skema GELITA memakai InnoDB dan `utf8mb4_unicode_ci` di setiap tabel (`app/Database/GelitaMigration.php`), sama di MySQL dan MariaDB.
-
-**Jalur W: replace Laragon's defaults** *(new, English; production load test of 20–21 November 2026)*. Laragon's `my.ini` is written for small MyISAM development databases: a 128 MB InnoDB buffer pool and the binary log switched on. With it the measured server (4 cores, 12 GB RAM) was slow at 30 students; with the block below it served 100. Put it under `[mysqld]` in place of the lines above, then *Stop* and *Start All*:
+**Replace Laragon's defaults** (production load test of 20–21 November 2026). Laragon's `my.ini` is written for small MyISAM development databases: a 128 MB InnoDB buffer pool and the binary log switched on. With it the measured server (4 cores, 12 GB RAM) was slow at 30 students; with the block below it served 100. After changing it, *Stop* and *Start All*:
 
 ```ini
 [mysqld]
@@ -239,11 +175,16 @@ key_buffer_size      = 32M               # MyISAM only (system tables); GELITA's
 ```
 
 - Remove or comment out Laragon's own lines for the same settings further down in `my.ini`: the last one read wins.
+- `innodb_flush_log_at_trx_commit = 1` memang lebih lambat, tetapi data penelitian yang hilang karena listrik padam tidak dapat diulang.
 - `skip-log-bin` switches off point-in-time recovery from the binary log. GELITA's recovery is the daily dump of [Backup](#backup), which does not use it.
 - **`bind-address = 127.0.0.1` needs `database.default.hostname = 127.0.0.1` in `.env`.** With `localhost`, PHP on Windows tries the IPv6 address `::1` first, nobody listens there, and every request waited about 2.6 s before it fell back to `127.0.0.1` (measured on the server; the site looked slow with an idle CPU). The same goes for `backup.cnf`, `migrate.dsn` and the three database accounts (`@'127.0.0.1'`, below).
+- `default-time-zone` memakai offset, bukan `Asia/Jakarta`, supaya jalan tanpa tabel zona waktu (tidak ada di MySQL Windows). Aplikasi sendiri menyetel `time_zone` tiap koneksi lewat `db_sync_timezone()`. Nilai server ini dipakai klien `mysql` dan kueri pemeriksaan di skrip deploy.
+- `sql_mode` tidak perlu disetel. `Config\Database::$default['strictOn'] = false` membuat CodeIgniter membuang `STRICT_*` dari `sql_mode` setiap koneksinya, jadi nilai global server tidak berpengaruh pada aplikasi. Mengaktifkan mode strict adalah keputusan kode (`strictOn`), bukan konfigurasi server.
 - Check after the restart: `mysql -u root -p -e "SHOW VARIABLES WHERE Variable_name IN ('innodb_buffer_pool_size','max_connections','log_bin','bind_address')"`.
 
-**Jalur W:** MySQL Laragon terpasang dengan `root` **tanpa sandi**. Setel sandinya sebelum langkah lain:
+Skema GELITA memakai InnoDB dan `utf8mb4_unicode_ci` di setiap tabel (`app/Database/GelitaMigration.php`).
+
+MySQL Laragon terpasang dengan `root` **tanpa sandi**. Setel sandinya sebelum langkah lain:
 
 ```powershell
 mysql -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'SANDI_ROOT_KUAT';"
@@ -262,60 +203,25 @@ Tiga akun, masing-masing dengan hak seperlunya:
 ```sql
 CREATE DATABASE gelita CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-CREATE USER 'gelita_app'@'localhost' IDENTIFIED BY 'SANDI_APP';
-GRANT SELECT, INSERT, UPDATE, DELETE ON gelita.* TO 'gelita_app'@'localhost';
+CREATE USER 'gelita_app'@'127.0.0.1' IDENTIFIED BY 'SANDI_APP';
+GRANT SELECT, INSERT, UPDATE, DELETE ON gelita.* TO 'gelita_app'@'127.0.0.1';
 
-CREATE USER 'gelita_migrate'@'localhost' IDENTIFIED BY 'SANDI_MIGRATE';
-GRANT ALL PRIVILEGES ON gelita.* TO 'gelita_migrate'@'localhost';
+CREATE USER 'gelita_migrate'@'127.0.0.1' IDENTIFIED BY 'SANDI_MIGRATE';
+GRANT ALL PRIVILEGES ON gelita.* TO 'gelita_migrate'@'127.0.0.1';
 
-CREATE USER 'gelita_backup'@'localhost' IDENTIFIED BY 'SANDI_BACKUP';
-GRANT SELECT, SHOW VIEW, TRIGGER, LOCK TABLES ON gelita.* TO 'gelita_backup'@'localhost';
+CREATE USER 'gelita_backup'@'127.0.0.1' IDENTIFIED BY 'SANDI_BACKUP';
+GRANT SELECT, SHOW VIEW, TRIGGER, LOCK TABLES ON gelita.* TO 'gelita_backup'@'127.0.0.1';
 
 FLUSH PRIVILEGES;
 ```
 
-**Jalur W:** ganti `'localhost'` menjadi `'127.0.0.1'` di keenam baris. Di Windows, PHP dan klien `mysql` tersambung lewat TCP, dan `localhost` dapat diterjemahkan ke `::1` lebih dulu. Akun `@'127.0.0.1'` selalu cocok, apa pun setelan `skip-name-resolve`. Di `.env`, `backup.cnf`, dan `migrate.dsn`, tulis host `127.0.0.1` pula.
+The accounts use the host `'127.0.0.1'`, not `'localhost'`. Di Windows, PHP dan klien `mysql` tersambung lewat TCP, dan `localhost` dapat diterjemahkan ke `::1` lebih dulu. Akun `@'127.0.0.1'` selalu cocok, apa pun setelan `skip-name-resolve`. Di `.env`, `backup.cnf`, dan `migrate.dsn`, tulis host `127.0.0.1` pula.
 
 Pemisahan hak ini berarti bila aplikasi diretas lewat SQL injection, skema database tidak ikut menjadi korban. Seeder cukup memakai `gelita_app` karena hanya menulis data. `gelita:reset` butuh akun migrasi karena mengosongkan tabel dengan `TRUNCATE` (hak `DROP`); dengan akun aplikasi, reset ditolak sebelum ada tabel yang dikosongkan.
 
 ### Model pengguna dan izin
 
-**Jalur L.** Dua pengguna sistem dengan peran terpisah:
-
-| Pengguna | Memiliki | Menjalankan |
-|---|---|---|
-| `deploy` | kode (`git pull`, `composer`), `.env`, `/home/deploy/.gelita/`, `/var/backups/gelita/` | `deploy.sh`, `backup.sh` (cron) |
-| `www-data` | `writable/`, `public/assets/uploads/`, `public/assets/min/` | PHP-FPM, Nginx, **semua `php spark`**, cron retensi |
-
-```bash
-sudo adduser --disabled-password --gecos '' deploy
-sudo usermod -aG www-data deploy          # wajib — lihat butir 2 di bawah
-
-cd /var/www/gelita
-sudo mkdir -p public/assets/min           # salinan ringkas JS/CSS (gelita:aset:minify), tidak ada di git
-sudo chown -R deploy:www-data .
-sudo chown -R www-data:www-data writable public/assets/uploads public/assets/min
-sudo find writable public/assets/uploads public/assets/min -type d -exec chmod 2775 {} +
-sudo chown deploy:www-data .env && sudo chmod 640 .env
-```
-
-`/etc/sudoers.d/gelita-deploy` (buat dengan `sudo visudo -f /etc/sudoers.d/gelita-deploy`):
-
-```
-deploy ALL=(www-data) NOPASSWD: ALL
-deploy ALL=(root) NOPASSWD: /usr/bin/systemctl reload php8.3-fpm, /usr/bin/systemctl reload nginx
-```
-
-`deploy` sudah menguasai kode yang dijalankan `www-data`, jadi hak menjalankan perintah sebagai `www-data` tidak menambah kuasa.
-
-Alasan tiap aturan (semuanya terbukti saat skrip diuji, lihat [Catatan Implementasi Tahap 8](#catatan-implementasi-tahap-8)):
-
-1. **`.env` = `640 deploy:www-data`, bukan `600 deploy:deploy`.** PHP-FPM berjalan sebagai `www-data`. Dengan mode 600, CodeIgniter 4.7 melempar galat "`.env` not readable" dan **setiap halaman menjadi HTTP 500**.
-2. **`deploy` masuk grup `www-data`.** `sed -i` di `deploy.sh` menulis `.env` sebagai berkas baru. Bila pemanggilnya bukan anggota grup `www-data`, grup berkas berubah menjadi `deploy`, dan situs menjadi HTTP 500 setelah **setiap** pembaruan.
-3. **Semua `php spark` dijalankan sebagai `www-data`** (`sudo -u www-data php spark …`). Cache ditulis mode `0640` dan log mode `0644`. Berkas yang dibuat `deploy` lewat CLI tidak dapat ditimpa PHP-FPM, sehingga cache gagal diam-diam dan log harian hilang. Ini berlaku juga untuk `db:seed`, `gelita:narration:import`, `gelita:mockups`, dan `gelita:reset`: semuanya menulis ke `public/assets/uploads/` (gambar contoh, poster video Pustaka, salinan rekaman), yang harus tetap dapat ditimpa panel.
-4. **Jangan `chmod -R 775 writable`.** Perintah itu memberi bit eksekusi ke berkas yang dilacak git (`writable/index.html` dan lainnya). Working tree menjadi "kotor" dan `git pull` bisa menolak. Cukup direktori `2775` (setgid menjaga grup `www-data` untuk berkas baru).
-
-**Jalur W.** Satu akun Windows standar (misalnya `gelita`) menjalankan Laragon, `php spark`, deploy, dan Task Scheduler, jadi tidak ada konflik izin antarpengguna. Batasi siapa yang dapat membaca folder rahasia dan backup. `*S-1-5-32-544` adalah grup Administrators, ditulis sebagai SID agar tidak bergantung pada bahasa Windows:
+Satu akun Windows standar (misalnya `gelita`) menjalankan Laragon, `php spark`, deploy, dan Task Scheduler, jadi tidak ada konflik izin antarpengguna. Batasi siapa yang dapat membaca folder rahasia dan backup. `*S-1-5-32-544` adalah grup Administrators, ditulis sebagai SID agar tidak bergantung pada bahasa Windows:
 
 ```powershell
 New-Item -ItemType Directory -Force C:\gelita-ops, D:\gelita-backup | Out-Null
@@ -330,16 +236,16 @@ foreach ($d in 'C:\gelita-ops', 'D:\gelita-backup') {
 
 ### `.env` production
 
-Mulai dari templat (`cp env .env` / `Copy-Item env .env`). Templat sudah memuat nilai sesi, CSRF, dan cookie yang benar. Yang **wajib** diubah:
+Mulai dari templat (`Copy-Item env .env`). Templat sudah memuat nilai sesi, CSRF, dan cookie yang benar. Yang **wajib** diubah:
 
 ```ini
 CI_ENVIRONMENT = production
 
-app.baseURL = 'https://gelita.sekolah.sch.id/'
+app.baseURL = 'https://gelita.id/'
 app.forceGlobalSecureRequests = true
 app.CSPEnabled = true                          # Content Security Policy (Config\ContentSecurityPolicy)
 
-database.default.hostname = localhost          # Jalur W: 127.0.0.1 (wajib; `localhost` = ±2,6 detik per request)
+database.default.hostname = 127.0.0.1          # wajib; `localhost` = ±2,6 detik per request
 database.default.database = gelita
 database.default.username = gelita_app
 database.default.password = 'SANDI_APP'
@@ -356,12 +262,12 @@ Catatan:
 
 1. `app.baseURL` harus sama persis dengan domain HTTPS. Redirect login memakai nilai ini.
 2. `encryption.key` **tidak pernah dibangkitkan ulang** setelah production berjalan. Token objek Cari Objek dan penanda antrean offline (`sessionTag`) diturunkan darinya. Kuncinya ikut backup lewat salinan `.env`.
-3. `gelita.ipSalt` wajib acak. Bila bocor, `ip_hash` dapat dibalik dengan pencarian menyeluruh karena ruang alamat IPv4 kecil. Perintah `php -r` di atas bekerja di kedua jalur.
+3. `gelita.ipSalt` wajib acak. Bila bocor, `ip_hash` dapat dibalik dengan pencarian menyeluruh karena ruang alamat IPv4 kecil.
 4. `gelita.assetVersion` dibiarkan ada di `.env` (templat: `'1'`). Skrip deploy menaikkan nilainya setiap pembaruan; baris yang hilang tidak akan ditambahkan skrip.
 5. **Jangan menambahkan `database.default.DSN` ke `.env`.** Kunci itu disisihkan untuk akun migrasi (bagian berikut).
-5b. *(New, English; 21 November 2026.)* **Jalur W: `database.default.hostname = 127.0.0.1`, never `localhost`.** On Windows `localhost` is tried as IPv6 `::1` first; MySQL listens on `127.0.0.1` only (`bind-address`), so every request waits about 2.6 s for the fallback. The template's `localhost` is right for Jalur L (socket).
+5b. **`database.default.hostname = 127.0.0.1`, never `localhost`** (21 November 2026). On Windows `localhost` is tried as IPv6 `::1` first; MySQL listens on `127.0.0.1` only (`bind-address`), so every request waits about 2.6 s for the fallback. Change the value if the template says `localhost`.
 5c. *(New, English; 21 November 2026.)* `session.regenerateDestroy` is no longer a setting. A `.env` made from an older template still has `session.regenerateDestroy = true`; the line is ignored (`Config\Session` keeps it false) and may be deleted. With `true`, a student was sent to `/masuk` or a batch of events got 401 whenever the session ID was replaced (every 5 minutes) while a second request was on its way (`docs/02` §7.2).
-5a. *(New, English.)* Every production difference from the repository (`app.forceGlobalSecureRequests`, `app.CSPEnabled`, `cookie.secure`) is set in `.env`. Do not edit `app/Config/App.php` or `app/Config/Cookie.php` on the server: `deploy.sh` runs `git pull --ff-only`, which stops on a locally edited tracked file that the update also changes. `env-example-production` is the gelita.id copy of these values.
+5a. *(New, English.)* Every production difference from the repository (`app.forceGlobalSecureRequests`, `app.CSPEnabled`, `cookie.secure`) is set in `.env`. Do not edit `app/Config/App.php` or `app/Config/Cookie.php` on the server: `deploy.ps1` runs `git pull --ff-only`, which stops on a locally edited tracked file that the update also changes. `env-example-production` is the gelita.id copy of these values.
 6. *(New, English.)* Optional: `gelita.eventFlush.intervalMs` (default `30000`) and `gelita.eventFlush.maxEvents` (default `40`, at most `maxEventsPerBatch` = 50) set how often the game sends its event batches (`Config\Gelita::$eventFlush`, rencana-log-asinkron §5.1). Lowering the interval makes Ringkasan's "Aktivitas terbaru" fresher at the cost of more requests; the note under that list follows the value. Leave both out to keep the defaults.
 7. *(New, English.)* Optional: `gelita.screenFx = false` turns off the WebGL screen effects of the narrated scenes (three.js fog, sparks, light rays, bloom, and parallax; on by default). The scenes then play the CSS effects only. Use it if a class's devices stutter on the story screens; the browser already falls back by itself without WebGL 2, under reduced motion, and when frames stay slow. With package mode on, rebuild the package after changing it (**Bangun ulang paket**) only if the three.js files changed; the switch itself needs no rebuild.
 8. Perubahan `.env` langsung berlaku di request berikutnya. Jangan menjalankan `php spark optimize`: perintah itu mengubah `app/Config/Optimize.php` (berkas yang dilacak git) dan mengaktifkan cache konfigurasi yang membekukan nilai `.env`, termasuk `gelita.assetVersion`.
@@ -373,27 +279,19 @@ Akun di `.env` (`gelita_app`) tidak punya hak DDL. Untuk `migrate`, `migrate:rol
 - Variabel environment **tidak dapat** menimpa kunci yang sudah ada di `.env`. `DotEnv` mengisi `$_ENV` dari `.env`, dan `BaseConfig::getEnvValue()` memeriksa `$_ENV` lebih dulu. Karena itu `database_default_username=…` maupun `env "database.default.username=…"` tetap menghasilkan `gelita_app`, dan `DB_USER` tidak pernah dibaca CodeIgniter. Tanpa DSN, migration gagal dengan `CREATE command denied to user 'gelita_app'@'localhost'`.
 - Yang bekerja adalah kunci yang **tidak** ada di `.env`: `database_default_DSN`. CodeIgniter mengurai DSN dan menimpa host, pengguna, sandi, serta nama database.
 
-Isi `migrate.dsn` (satu baris, mode 600, di luar repositori):
+Isi `migrate.dsn` (satu baris, di luar repositori):
 
 ```
-MySQLi://gelita_migrate:SANDI_URL_ENCODED@localhost/gelita
+MySQLi://gelita_migrate:SANDI_URL_ENCODED@127.0.0.1/gelita
 ```
 
 - **Sandi di-URL-encode** lebih dulu: `php -r "echo rawurlencode('Migr@te/2026'), PHP_EOL;"` menghasilkan `Migr%40te%2F2026`.
 - **Tanpa port.** CodeIgniter 4.7.4 meneruskan port dari DSN sebagai string, dan `mysqli::real_connect()` menolaknya dengan `TypeError`. Tanpa port, 3306 dipakai.
-- **Jalur W:** host `127.0.0.1`.
+- **Host `127.0.0.1`.** Never `localhost` (see [Akun database](#akun-database)).
 
 Pemakaian (skrip deploy melakukannya otomatis):
 
-```bash
-# Jalur L — sebagai user deploy
-export database_default_DSN="$(cat /home/deploy/.gelita/migrate.dsn)"
-sudo --preserve-env=database_default_DSN -u www-data php spark migrate
-unset database_default_DSN
-```
-
 ```powershell
-# Jalur W
 $env:database_default_DSN = (Get-Content C:\gelita-ops\migrate.dsn -Raw).Trim()
 php spark migrate
 Remove-Item Env:\database_default_DSN
@@ -405,13 +303,13 @@ Cara yang sama berlaku untuk `migrate:rollback`, `gelita:reset`, dan database sc
 
 Rahasia dan nilai khusus server tidak pernah masuk repositori. Skrip di `deploy/` juga tidak diedit di server, karena editan lokal membuat `git pull` bentrok.
 
-| Berkas | Jalur L | Jalur W | Isi |
-|---|---|---|---|
-| folder | `/home/deploy/.gelita/` (700) | `C:\gelita-ops\` (ACL di atas) | |
-| `backup.cnf` | ✓ (600) | ✓ | opsi klien MySQL untuk `gelita_backup` |
-| `migrate.dsn` | ✓ (600) | ✓ | DSN `gelita_migrate` |
-| `ops.conf` | opsional | — | menimpa bawaan skrip, mis. `KEDUA=/mnt/usb/gelita` |
-| `config.psd1` | — | ✓ | path aplikasi, PHP, MySQL, folder backup, branch |
+The files live in `C:\gelita-ops\` (ACL in [Model pengguna dan izin](#model-pengguna-dan-izin)):
+
+| Berkas | Isi |
+|---|---|
+| `backup.cnf` | opsi klien MySQL untuk `gelita_backup` |
+| `migrate.dsn` | DSN `gelita_migrate` |
+| `config.psd1` | path aplikasi, PHP, MySQL, folder backup, branch |
 
 `backup.cnf`:
 
@@ -419,12 +317,10 @@ Rahasia dan nilai khusus server tidak pernah masuk repositori. Skrip di `deploy/
 [client]
 user=gelita_backup
 password="SANDI_BACKUP"
-host=localhost
+host=127.0.0.1
 ```
 
-Untuk Jalur W, tulis `host=127.0.0.1`. `--defaults-extra-file` harus menjadi opsi **pertama** `mysql`/`mysqldump`; skrip sudah mematuhinya. Opsi ini juga menghindari sandi di baris perintah, yang terlihat di daftar proses.
-
-`ops.conf` (Jalur L) di-*source* oleh `deploy.sh` dan `backup.sh`, sehingga dapat menimpa variabel bawaan skrip: `APP`, `BRANCH`, `FPM` (deploy), `DIR`, `KEDUA` (backup).
+`--defaults-extra-file` harus menjadi opsi **pertama** `mysql`/`mysqldump`; skrip sudah mematuhinya. Opsi ini juga menghindari sandi di baris perintah, yang terlihat di daftar proses.
 
 `config.psd1` (salin dari [`deploy/windows/config.example.psd1`](../deploy/windows/config.example.psd1)), dibaca `deploy.ps1`, `backup.ps1`, dan `retensi.ps1`:
 
@@ -439,58 +335,11 @@ Untuk Jalur W, tulis `host=127.0.0.1`. `--defaults-extra-file` harus menjadi ops
 }
 ```
 
+Optional: `KeduaHari = 30` makes each backup run delete the files older than 30 days at the second location (`Kedua`). Without it they are kept forever (see [Research install checklist](#research-install-checklist-before-children-first-use-their-accounts)).
+
 ### Nginx
 
-Konfigurasi dibagi dua berkas: port 80 dan aplikasi (443). Port 80 diaktifkan lebih dulu. Blok 443 menunjuk berkas sertifikat, dan `nginx -t` gagal ("cannot load certificate") selama berkas itu belum ada. Urutannya selalu: port 80 → terbitkan sertifikat → 443.
-
-| Berkas di repositori | Tujuan |
-|---|---|
-| `deploy/linux/nginx/gelita-http.conf` | `/etc/nginx/sites-available/gelita-http` |
-| `deploy/linux/nginx/gelita-https.conf` | `/etc/nginx/sites-available/gelita-https` |
-| `deploy/windows/nginx/gelita-http.conf` | `C:\laragon\etc\nginx\sites-enabled\gelita-http.conf` |
-| `deploy/windows/nginx/gelita-https.conf` | `C:\laragon\etc\nginx\sites-enabled\gelita-https.conf` |
-| `deploy/windows/nginx/gelita-tunnel.conf` | `C:\laragon\etc\nginx\sites-enabled\gelita-tunnel.conf`: instead of the two files above when the server sits behind a Cloudflare Tunnel (see [Jalur W behind a Cloudflare Tunnel](#jalur-w-behind-a-cloudflare-tunnel-cloudflared)) |
-
-Ganti `gelita.sekolah.sch.id` dengan domain server di setiap berkas.
-
-#### Jalur L
-
-`gelita-http.conf` hanya melayani validasi Let's Encrypt dan mengalihkan sisanya ke HTTPS:
-
-```nginx
-server {
-    listen 80;
-    server_name gelita.sekolah.sch.id;
-
-    location ^~ /.well-known/acme-challenge/ {
-        root /var/www/gelita/public;
-        default_type text/plain;
-    }
-
-    location / {
-        return 301 https://$host$request_uri;
-    }
-}
-```
-
-Aturan di `gelita-https.conf`:
-
-| Aturan | Isi di berkas | Alasan |
-|---|---|---|
-| TLS | `listen 443 ssl http2`, `ssl_protocols TLSv1.2 TLSv1.3`, sertifikat dari `/etc/letsencrypt/live/{domain}/` | Nginx ≥ 1.25.1: tulis `listen 443 ssl;` + `http2 on;` |
-| Header keamanan | `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Strict-Transport-Security`, semuanya `always`, **hanya** di blok `server` | `add_header` di dalam `location` menghapus semua header warisan `server` |
-| Header ganda | `fastcgi_hide_header` untuk `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy` | filter `secureheaders` CodeIgniter mengirim header yang sama; setiap header muncul tepat sekali |
-| Cache aset | `map` `$gelita_is_asset` + `$arg_v` → `$gelita_cache`: URL aset ber-`?v=` mendapat `public, max-age=31536000, immutable`, aset lain `no-cache`; asset package URLs (`/assets/p/`, `/assets/k/`, `/paket/pkt-*.json`) are immutable without `?v=` | lihat [Cache-busting](#cache-busting) dan [Asset package](#asset-package-download-once-mode) |
-| PHP | hanya `location = /index.php` yang diteruskan ke `unix:/run/php/php8.3-fpm.sock` (`fastcgi_read_timeout 300`); `.php` lain → 404 | tidak ada skrip lain yang dapat dieksekusi |
-| Routes without a file | `location /` uses `try_files $uri $uri/ /index.php$is_args$args`; only `/assets/` answers 404 for a missing file | `/manifest.json` has no file in `public/` (it is made by `AppController`), so it reaches `index.php`. Never put a static `public/manifest.json` back: it would shadow the route. Apache does the same through `public/.htaccess` (`!-f`, `!-d` → `index.php`) |
-| Berkas tersembunyi | `location ~ /\.` → 404, juga di dalam `/assets/` | `.env`, `.git`, `.htaccess`, `.gitkeep` tidak pernah dilayani |
-| Mode pemeliharaan | `if (-f /var/www/gelita/writable/pemeliharaan.flag) { return 503; }` + halaman 503 dwibahasa | lihat [Mode pemeliharaan](#mode-pemeliharaan) |
-| Unggahan | `client_max_body_size 72M` | sejalan dengan `post_max_size` |
-| Kompresi | `gzip` untuk CSS, JavaScript, JSON, SVG ≥ 1024 byte | |
-
-Bila server punya IPv6, tambahkan `listen [::]:80;` dan `listen [::]:443 ssl http2;`. Pada mesin tanpa IPv6, baris itu membuat `nginx -t` gagal.
-
-#### Jalur W — Laragon
+The site has one Nginx file, [`deploy/windows/nginx/gelita.id.conf`](../deploy/windows/nginx/gelita.id.conf). It goes to `C:\laragon\etc\nginx\sites-enabled\gelita.id.conf` and already names the domain, `gelita.id`; nothing to replace (owner, 21 November 2026). Nginx listens on port 80 of `127.0.0.1` only and serves no TLS: Cloudflare ends HTTPS, and `cloudflared` on the same machine passes each request on (see [HTTPS](#https)).
 
 Laragon membuat vhost `auto.<folder>.test.conf` untuk setiap folder di `C:\laragon\www`. Vhost itu **tidak** layak untuk production: `autoindex on`, `TLSv1 TLSv1.1` dengan cipher `RC4`/`EXP`, tanpa header keamanan, setiap `.php` dieksekusi, dan ditulis ulang setiap Laragon start.
 
@@ -498,19 +347,37 @@ Langkahnya:
 
 1. Preferences → *General*: matikan **Auto virtual hosts**. Hapus `C:\laragon\etc\nginx\sites-enabled\auto.gelita.test.conf` bila sudah terbentuk.
 2. Preferences → *Services & Ports*: aktifkan **Nginx** dan **MySQL**, matikan **Apache** (keduanya berebut port 80).
-3. Salin `deploy\windows\nginx\gelita-http.conf` ke `C:\laragon\etc\nginx\sites-enabled\`. Nama berkas **tidak boleh** berawalan `auto.`.
-4. Menu → *Nginx* → *Reload*. Setelah sertifikat terbit, salin juga `gelita-https.conf`, lalu reload lagi.
+3. Salin `deploy\windows\nginx\gelita.id.conf` ke `C:\laragon\etc\nginx\sites-enabled\`. Nama berkas **tidak boleh** berawalan `auto.`. Copy it as it is, and remove any other GELITA site file there.
+4. Menu → *Nginx* → *Reload*. The reload reports configuration errors (`nginx -t`).
 
-Kedua berkas Windows sama dengan Jalur L kecuali baris khusus platform (`tests/unit/DeployFilesTest.php` menguncinya). Path Windows ditulis dengan garis miring biasa:
+Aturan di `gelita.id.conf`:
+
+| Aturan | Isi di berkas | Alasan |
+|---|---|---|
+| Listen | `listen 127.0.0.1:80`, `server_name gelita.id` | only `cloudflared` on this machine connects. Other machines cannot reach Nginx directly, where they could claim any address in `CF-Connecting-IP` |
+| Visitor address | `set_real_ip_from 127.0.0.1`, `real_ip_header CF-Connecting-IP` | without it every student seems to come from `127.0.0.1`: login throttling and the hashed address in the logs would treat a whole class as one visitor |
+| Header keamanan | `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Strict-Transport-Security`, semuanya `always`, **hanya** di blok `server` | `add_header` di dalam `location` menghapus semua header warisan `server` |
+| Header ganda | `fastcgi_hide_header` untuk `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy` | filter `secureheaders` CodeIgniter mengirim header yang sama; setiap header muncul tepat sekali |
+| Cache aset | `map` `$gelita_is_asset` + `$arg_v` → `$gelita_cache`: URL aset ber-`?v=` mendapat `public, max-age=31536000, immutable`, aset lain `no-cache`; asset package URLs (`/assets/p/`, `/assets/k/`, `/paket/pkt-*.json`) are immutable without `?v=` | lihat [Cache-busting](#cache-busting) dan [Asset package](#asset-package-download-once-mode) |
+| PHP | hanya `location = /index.php` yang diteruskan ke `php_upstream` (`fastcgi_read_timeout 300`); `.php` lain → 404 | tidak ada skrip lain yang dapat dieksekusi |
+| HTTPS for PHP | `fastcgi_param HTTPS on` | Nginx receives plain HTTP, but the visitor is on HTTPS: secure cookies and `https://` links depend on it |
+| Routes without a file | `location /` uses `try_files $uri $uri/ /index.php$is_args$args`; only `/assets/` answers 404 for a missing file | `/manifest.json` has no file in `public/` (it is made by `AppController`), so it reaches `index.php`. Never put a static `public/manifest.json` back: it would shadow the route. Apache does the same through `public/.htaccess` (`!-f`, `!-d` → `index.php`) |
+| Berkas tersembunyi | `location ~ /\.` → 404, juga di dalam `/assets/` | `.env`, `.git`, `.htaccess`, `.gitkeep` tidak pernah dilayani |
+| Mode pemeliharaan | `if (-f "C:/laragon/www/gelita/writable/pemeliharaan.flag") { return 503; }` + halaman 503 dwibahasa | lihat [Mode pemeliharaan](#mode-pemeliharaan) |
+| Unggahan | `client_max_body_size 72M` | sejalan dengan `post_max_size` |
+| Kompresi | `gzip` untuk CSS, JavaScript, JSON, SVG ≥ 1024 byte | |
+
+Path Windows ditulis dengan garis miring biasa. The lines that belong to the tunnel setup and to Laragon:
 
 ```nginx
-    listen 443 ssl;
-    http2 on;                                   # Nginx Laragon >= 1.25.1
+server {
+    listen 127.0.0.1:80;                        # only cloudflared on this machine connects
+    server_name gelita.id;
+
+    set_real_ip_from 127.0.0.1;                 # the visitor's address, from cloudflared's header
+    real_ip_header CF-Connecting-IP;
 
     root "C:/laragon/www/gelita/public";
-
-    ssl_certificate     "C:/laragon/etc/ssl/gelita/gelita.sekolah.sch.id-chain.pem";
-    ssl_certificate_key "C:/laragon/etc/ssl/gelita/gelita.sekolah.sch.id-key.pem";
 
     if (-f "C:/laragon/www/gelita/writable/pemeliharaan.flag") {
         return 503;
@@ -519,78 +386,27 @@ Kedua berkas Windows sama dengan Jalur L kecuali baris khusus platform (`tests/u
     location = /index.php {
         include snippets/fastcgi-php.conf;      # tersedia di Nginx Laragon
         fastcgi_pass php_upstream;              # didefinisikan Laragon (etc/nginx/php_upstream.conf)
-        …
-    }
-```
-
-`php_upstream` menunjuk proses php-cgi yang dijalankan Laragon (port FastCGI bawaan Laragon 8.6+: 10987). Direktif `http2 on;` dan path Windows belum diuji di mesin Windows sungguhan; jalankan [Verifikasi Setelah Deploy](#verifikasi-setelah-deploy) sesudah pemasangan.
-
-#### Jalur W behind a Cloudflare Tunnel (cloudflared)
-
-*(New, English; production load test of 20–21 November 2026.)* A server without a public address (a VPS or school machine reached through `cloudflared`) needs no certificate and no open port: Cloudflare ends HTTPS, and `cloudflared` on the same machine passes each request to Nginx on port 80 without TLS. Use **one** file, `gelita-tunnel.conf`, instead of `gelita-http.conf` and `gelita-https.conf`, and skip [HTTPS](#https) (simple-acme) altogether.
-
-1. Copy `deploy\windows\nginx\gelita-tunnel.conf` to `C:\laragon\etc\nginx\sites-enabled\`, replace the domain, remove any other GELITA site file there, then Menu → *Nginx* → *Reload*.
-2. In the tunnel's settings (Cloudflare Zero Trust → *Networks* → *Tunnels* → *Public hostname*, or `config.yml`) the service is `http://127.0.0.1:80`. Not `localhost`: Windows tries `::1` first, as with the database host.
-3. Cloudflare → *SSL/TLS*: mode **Full (strict)** works with a tunnel. `.env` stays as for any HTTPS server (`app.baseURL = 'https://…'`, `app.forceGlobalSecureRequests = true`, `cookie.secure = true`).
-4. The Windows firewall rule for ports 80 and 443 of [Instalasi — Jalur W](#instalasi--jalur-w) is not needed: nothing connects from outside.
-
-What the file does beyond the HTTPS one:
-
-```nginx
-    listen 127.0.0.1:80;                        # only cloudflared on this machine connects
-
-    set_real_ip_from 127.0.0.1;                 # the visitor's address, from cloudflared's header
-    real_ip_header CF-Connecting-IP;
-
-    location = /index.php {
-        …
+        fastcgi_read_timeout 300;
         fastcgi_param HTTPS on;                 # the visitor is on HTTPS (secure cookies, https:// links)
+        …
     }
+}
 ```
 
-- **Cache rules matter more behind Cloudflare.** The `map … $gelita_cache` block and `add_header Cache-Control $gelita_cache;` are the same as in `gelita-https.conf`. A hand-written tunnel site without them (the measured server had none) lets Cloudflare give `/assets/p/`, `/assets/k/` and `/paket/pkt-*.json` its own default (4 hours in the browser) instead of `public, max-age=31536000, immutable`, so devices fetch the asset package again and again. A server that already has its own tunnel site file only needs those two parts added: the two `map` blocks above `server {`, and the `add_header Cache-Control $gelita_cache;` line next to the other `add_header` lines.
-- Without `real_ip_header` every student seems to come from `127.0.0.1`: login throttling and the hashed address in the logs would treat a whole class as one visitor.
-- `listen 127.0.0.1:80` keeps other machines from reaching Nginx directly, where they could claim any address in `CF-Connecting-IP`.
-- Check from another machine after the reload: ask for one asset package file twice with `curl -sI` (a URL under `/assets/p/` from the package manifest). It must answer `cache-control: public, max-age=31536000, immutable`, and `cf-cache-status: HIT` the second time. Step 5 of [Verifikasi Setelah Deploy](#verifikasi-setelah-deploy) checks the other asset kinds.
-- Not yet run on a Windows machine in this form (the measured server used the owner's own site file with the same three lines); run `nginx -t` (Menu → *Nginx* → *Reload* reports errors) and the verification list after copying it.
+`php_upstream` menunjuk proses php-cgi yang dijalankan Laragon (port FastCGI bawaan Laragon 8.6+: 10987).
+
+- **Cache rules matter behind Cloudflare.** The two `map` blocks above `server {` and the line `add_header Cache-Control $gelita_cache;` set the cache header of every asset. A hand-written tunnel site file without them (the measured server had none) lets Cloudflare give `/assets/p/`, `/assets/k/` and `/paket/pkt-*.json` its own default (4 hours in the browser) instead of `public, max-age=31536000, immutable`, so devices fetch the asset package again and again. A server that still runs such a file only needs those two parts added: the two `map` blocks above `server {`, and the `add_header Cache-Control $gelita_cache;` line next to the other `add_header` lines.
+- Check from another machine after the reload: ask for one asset package file twice with `curl -sI` (a URL under `/assets/p/` from the package manifest). It must answer `cache-control: public, max-age=31536000, immutable`, and `cf-cache-status: HIT` the second time. Step 4 of [Verifikasi Setelah Deploy](#verifikasi-setelah-deploy) checks the other asset kinds.
+- Loaded once into nginx 1.24 on Linux, with only the root path and the port changed (21 November 2026): the syntax is accepted, versioned assets answer `immutable`, unversioned ones `no-cache`, asset package paths `immutable`, the four security headers are sent, hidden files and stray `.php` files answer 404, and the maintenance flag gives the 503 page. Not yet run on Laragon's Nginx on Windows in this form (the measured server used the owner's own site file with the same three tunnel lines): the drive-letter paths, `snippets/fastcgi-php.conf` and `php_upstream` are checked only there. After copying it, reload (Menu → *Nginx* → *Reload* reports errors) and run the verification list.
 
 ### HTTPS
 
-**Jalur L** — Certbot dengan validasi webroot. Webroot dilayani blok port 80, jadi perpanjangan otomatis tidak perlu menghentikan Nginx:
+Cloudflare ends HTTPS. `cloudflared` on the server passes each request to Nginx on port 80 without TLS. The server holds no certificate and opens no port to the network, so there is nothing to issue or renew on it.
 
-```bash
-sudo cp /var/www/gelita/deploy/linux/nginx/gelita-http.conf  /etc/nginx/sites-available/gelita-http
-sudo cp /var/www/gelita/deploy/linux/nginx/gelita-https.conf /etc/nginx/sites-available/gelita-https
-sudo nano /etc/nginx/sites-available/gelita-http /etc/nginx/sites-available/gelita-https   # domain
-
-sudo rm -f /etc/nginx/sites-enabled/default
-sudo ln -s /etc/nginx/sites-available/gelita-http /etc/nginx/sites-enabled/
-sudo nginx -t && sudo systemctl reload nginx
-
-sudo certbot certonly --webroot -w /var/www/gelita/public -d gelita.sekolah.sch.id \
-     --deploy-hook "systemctl reload nginx"
-
-sudo ln -s /etc/nginx/sites-available/gelita-https /etc/nginx/sites-enabled/
-sudo nginx -t && sudo systemctl reload nginx
-sudo certbot renew --dry-run                # pastikan perpanjangan otomatis berjalan
-```
-
-**Jalur W** — Certbot menghentikan dukungan Windows sejak Februari 2024. Pakai **simple-acme** (penerus win-acme; win-acme masih dapat dipakai). Nama menu dapat sedikit berbeda antarversi, tetapi pilihannya:
-
-1. Ekstrak rilis x64 ke `C:\gelita-ops\acme\`, jalankan `wacs.exe` sebagai Administrator.
-2. *Create certificate (full options)* → sumber *Manual input* → `gelita.sekolah.sch.id`.
-3. Validasi HTTP-01 *save verification files on (network) path* → `C:\laragon\www\gelita\public`.
-4. Penyimpanan *PEM encoded files* → `C:\laragon\etc\ssl\gelita`. Terbentuk `{domain}-chain.pem` (sertifikat + rantai) dan `{domain}-key.pem`.
-5. Instalasi *Start external script or program* → `C:\gelita-ops\reload-nginx.cmd`:
-
-   ```bat
-   @echo off
-   cd /d C:\laragon\bin\nginx\nginx-1.30.4
-   nginx.exe -s reload
-   ```
-
-   Sesuaikan folder versi Nginx. Uji skrip ini sekali secara manual. Tanpa reload, Nginx terus memakai sertifikat lama sampai kedaluwarsa.
-6. Klien mendaftarkan tugas perpanjangan di Task Scheduler. Pastikan tugas itu ada.
+1. In the tunnel's settings (Cloudflare Zero Trust → *Networks* → *Tunnels* → *Public hostname*, or `config.yml`) the service is `http://127.0.0.1:80`. Not `localhost`: Windows tries `::1` first, as with the database host.
+2. Cloudflare → *SSL/TLS*: mode **Full (strict)** works with a tunnel.
+3. `.env` keeps `app.baseURL = 'https://gelita.id/'`, `app.forceGlobalSecureRequests = true` and `cookie.secure = true` (see [`.env` production](#env-production)).
+4. Nginx tells PHP that the visitor is on HTTPS (`fastcgi_param HTTPS on`) and sends the `Strict-Transport-Security` header itself (see [Nginx](#nginx)).
 
 ### Akses keluar server (thumbnail video Pustaka)
 
@@ -606,9 +422,8 @@ Pustaka Kedu bawaan memuat 48 media: 43 gambar Wikimedia Commons dan 5 video You
 
 Proxy/firewall yang menolak host itu tidak merusak apa pun: impor tetap berhasil dengan peringatan "Gambar sampul video belum berhasil diambil", dan kartu video tampil dengan latar gradien. Setelah akses dibuka, isi poster yang masih kosong:
 
-```bash
-sudo -u www-data php spark gelita:library:thumbnails          # Jalur L
-php spark gelita:library:thumbnails                           # Jalur W (PowerShell)
+```powershell
+php spark gelita:library:thumbnails
 php spark gelita:library:thumbnails --force                   # unduh ulang semua, mis. setelah video diganti
 ```
 
@@ -618,14 +433,14 @@ Ringkasannya "n terisi, n dilewati, n gagal"; kode keluar 1 bila ada yang gagal.
 
 ### Mode pemeliharaan
 
-CodeIgniter 4.7 tidak punya `php spark down`/`up` (keduanya "Command not found", kode keluar 1). Mode pemeliharaan GELITA bekerja di tingkat Nginx, sama di kedua jalur, tanpa kode aplikasi:
+CodeIgniter 4.7 tidak punya `php spark down`/`up` (keduanya "Command not found", kode keluar 1). Mode pemeliharaan GELITA bekerja di tingkat Nginx, tanpa kode aplikasi:
 
-| | Jalur L | Jalur W |
-|---|---|---|
-| aktifkan | `touch /var/www/gelita/writable/pemeliharaan.flag` | `New-Item -ItemType File -Force C:\laragon\www\gelita\writable\pemeliharaan.flag` |
-| matikan | `rm /var/www/gelita/writable/pemeliharaan.flag` | `Remove-Item C:\laragon\www\gelita\writable\pemeliharaan.flag` |
+| | PowerShell |
+|---|---|
+| aktifkan | `New-Item -ItemType File -Force C:\laragon\www\gelita\writable\pemeliharaan.flag` |
+| matikan | `Remove-Item C:\laragon\www\gelita\writable\pemeliharaan.flag` |
 
-Selama berkas ada, semua halaman dan API menjawab **503** dengan pesan dwibahasa, sedangkan `php spark` tetap berjalan. Berkas penanda dipasang oleh `deploy.sh`/`deploy.ps1` dan oleh `gelita:reset --pemeliharaan`, dan diabaikan git (`.gitignore`). `api.js` memperlakukan 503 non-JSON sebagai galat jaringan, sehingga `events.js` menyimpan event ke antrean lokal dan mengirimnya lagi setelah situs kembali. Event dari tab yang ditutup selama pemeliharaan tetap dapat hilang (`sendBeacon` tidak tahu hasilnya), sehingga aturan "jangan memperbarui saat kelas berjalan" tetap berlaku.
+Selama berkas ada, semua halaman dan API menjawab **503** dengan pesan dwibahasa, sedangkan `php spark` tetap berjalan. Berkas penanda dipasang oleh `deploy.ps1` dan oleh `gelita:reset --pemeliharaan`, dan diabaikan git (`.gitignore`). `api.js` memperlakukan 503 non-JSON sebagai galat jaringan, sehingga `events.js` menyimpan event ke antrean lokal dan mengirimnya lagi setelah situs kembali. Event dari tab yang ditutup selama pemeliharaan tetap dapat hilang (`sendBeacon` tidak tahu hasilnya), sehingga aturan "jangan memperbarui saat kelas berjalan" tetap berlaku.
 
 ---
 
@@ -635,15 +450,15 @@ Selama berkas ada, semua halaman dan API menjawab **503** dengan pesan dwibahasa
 
 | Berkas | Isi |
 |---|---|
-| `deploy/linux/deploy.sh` | pembaruan kode: cek kelas aktif → backup → pemeliharaan → pull → composer → migrate (DSN) → daftar sekolah → cache → salinan ringkas JS/CSS → `assetVersion` → reload FPM → verifikasi → buka |
-| `deploy/linux/backup.sh` | backup database (tanpa isi `ci_sessions`), unggahan, `.env`; simpan 30 hari; salinan kedua |
-| `deploy/linux/nginx/gelita-http.conf`, `gelita-https.conf` | konfigurasi Nginx Jalur L |
-| `deploy/windows/deploy.ps1`, `backup.ps1`, `retensi.ps1` | padanan PowerShell (kompatibel Windows PowerShell 5.1; **hanya ASCII**) |
+| `deploy/windows/deploy.ps1` | pembaruan kode: cek kelas aktif → backup → pemeliharaan → pull → composer → migrate (DSN) → daftar sekolah → cache → salinan ringkas JS/CSS → `assetVersion` → verifikasi → buka → paket aset |
+| `deploy/windows/backup.ps1` | backup database (tanpa isi `ci_sessions`), unggahan, paket aset, `.env`; simpan 30 hari; salinan kedua |
+| `deploy/windows/retensi.ps1` | daily retention run (`gelita:retention:run`) and log rotation |
 | `deploy/windows/config.example.psd1` | contoh `config.psd1` |
-| `deploy/windows/nginx/gelita-http.conf`, `gelita-https.conf` | konfigurasi Nginx Jalur W |
-| `deploy/windows/nginx/gelita-tunnel.conf` | Nginx for Jalur W behind a Cloudflare Tunnel (one file, port 80 on `127.0.0.1`, no certificate) |
+| `deploy/windows/nginx/gelita.id.conf` | the one Nginx site file (port 80 on `127.0.0.1`, no certificate) |
 | `.gitignore` | `/public/assets/uploads/*`, `!/public/assets/uploads/.gitkeep`, `/writable/pemeliharaan.flag` |
 | `tests/unit/DeployFilesTest.php` | mengunci cacat yang ditemukan saat skrip dijalankan (lihat [Catatan Implementasi Tahap 8](#catatan-implementasi-tahap-8)) |
+
+The `.ps1` scripts run on Windows PowerShell 5.1 and hold **ASCII only**.
 
 Instalasi juga membaca isi bawaan dari repositori, jadi folder `docs/` dan `app/Database/Seeds/data/` **tidak boleh** dibuang dari server:
 
@@ -657,20 +472,20 @@ Instalasi juga membaca isi bawaan dari repositori, jadi folder `docs/` dan `app/
 
 ### Ringkasan alur
 
-Instalasi baru adalah satu-satunya cara memasang GELITA. Urutannya sama di kedua jalur:
+Instalasi baru adalah satu-satunya cara memasang GELITA. Urutannya:
 
-| # | Langkah | Perintah | Akun database | Akun sistem (Jalur L) |
-|---:|---|---|---|---|
-| 1 | Kode dan `.env` | `composer install --no-dev --optimize-autoloader`, `cp env .env`, `php spark key:generate` | — | `deploy` |
-| 2 | Skema | `php spark migrate` | `gelita_migrate` (DSN) | `www-data` |
-| 3 | Isi awal | `GELITA_ADMIN_PASSWORD='…' php spark db:seed DatabaseSeeder` | `gelita_app` | `www-data` |
-| 3a | Test module content *(new, English)* | `php spark gelita:instrumen:impor` (tests, questionnaire, attitude scale; `db:seed` does not load them, and `/tes` stays unusable without them) | `gelita_app` | `www-data` |
-| 4 | Narasi | `php spark gelita:narration:install` (narasi cadangan ElevenLabs dari `ai-studio/elevenlabs-voice/out/`), `php spark gelita:narration:import`, lalu setujui di panel | `gelita_app` | `www-data` |
-| 4a | Team pictures *(new, English)* | `php spark gelita:katalog:impor` (see [Installing the Katalog Aset images](#installing-the-katalog-aset-images)) | `gelita_app` | `www-data` |
-| 5 | Verifikasi konten | `php spark gelita:content:verify` | `gelita_app` | `www-data` |
-| 6 | Gambar asli | ganti 66 gambar contoh lewat panel, sampai daftar siap penelitian hijau | — | — |
-| 7 | Uji asap | [Verifikasi Setelah Deploy](#verifikasi-setelah-deploy) | — | — |
-| 8 | Sebelum pengambilan data | `php spark gelita:reset`, lalu `php spark gelita:content:verify --siap-penelitian` | `gelita_migrate` (DSN) | `www-data` |
+| # | Langkah | Perintah | Akun database |
+|---:|---|---|---|
+| 1 | Kode dan `.env` | `composer install --no-dev --optimize-autoloader`, `Copy-Item env .env`, `php spark key:generate` | — |
+| 2 | Skema | `php spark migrate` | `gelita_migrate` (DSN) |
+| 3 | Isi awal | `php spark db:seed DatabaseSeeder`, with `$env:GELITA_ADMIN_PASSWORD` set | `gelita_app` |
+| 3a | Test module content *(new, English)* | `php spark gelita:instrumen:impor` (tests, questionnaire, attitude scale; `db:seed` does not load them, and `/tes` stays unusable without them) | `gelita_app` |
+| 4 | Narasi | `php spark gelita:narration:install` (narasi cadangan ElevenLabs dari `ai-studio/elevenlabs-voice/out/`), `php spark gelita:narration:import`, lalu setujui di panel | `gelita_app` |
+| 4a | Team pictures *(new, English)* | `php spark gelita:katalog:impor` (see [Installing the Katalog Aset images](#installing-the-katalog-aset-images)) | `gelita_app` |
+| 5 | Verifikasi konten | `php spark gelita:content:verify` | `gelita_app` |
+| 6 | Gambar asli | ganti 66 gambar contoh lewat panel, sampai daftar siap penelitian hijau | — |
+| 7 | Uji asap | [Verifikasi Setelah Deploy](#verifikasi-setelah-deploy) | — |
+| 8 | Sebelum pengambilan data | `php spark gelita:reset`, lalu `php spark gelita:content:verify --siap-penelitian` | `gelita_migrate` (DSN) |
 
 `php spark migrate` membuat **29 tabel** dari 29 migration (`app/Database/Migrations/2026-01-01-000100_CreateSchools.php` … `2026-01-01-002900_CreateCiSessions.php`, satu tabel per berkas), ditambah tabel `migrations` milik CodeIgniter: 30 tabel. Tabel sesi `ci_sessions` termasuk di dalamnya; **jangan** menjalankan `php spark session:migration` (tidak ada di CodeIgniter 4.7.4).
 
@@ -688,74 +503,9 @@ Instalasi baru adalah satu-satunya cara memasang GELITA. Urutannya sama di kedua
 | `ContentSeeder` | 12 tantangan (4 per wilayah: Susun Gambar, Isi Rumpang, Benar atau Salah, Cari Objek) dan 91 baris cerita |
 | `KontenKelas5Seeder` | impor Pustaka Kedu (30 halaman, 48 media), impor bank soal kelas 5 (126 soal: 108 dinilai + 18 pengecoh, 30 variasi, 9 bacaan Benar atau Salah, 36 petunjuk), lalu 66 gambar contoh (mockup) |
 
-Semua seeder aman dijalankan ulang: baris yang sudah ada tidak ditimpa, dan sandi `admin` yang sudah ada tidak diubah ("Akun admin sudah ada — kata sandi tidak diubah"). Kedua impor dicatat di audit log atas nama akun admin pertama. Gambar contoh ditulis ke `public/assets/uploads/mockup/` dan poster video Pustaka ke `public/assets/uploads/` (lihat [Akses keluar server](#akses-keluar-server-thumbnail-video-pustaka)); karena itu seeder dijalankan sebagai `www-data` di Jalur L.
+Semua seeder aman dijalankan ulang: baris yang sudah ada tidak ditimpa, dan sandi `admin` yang sudah ada tidak diubah ("Akun admin sudah ada — kata sandi tidak diubah"). Kedua impor dicatat di audit log atas nama akun admin pertama. Gambar contoh ditulis ke `public/assets/uploads/mockup/` dan poster video Pustaka ke `public/assets/uploads/` (lihat [Akses keluar server](#akses-keluar-server-thumbnail-video-pustaka)).
 
-### Instalasi — Jalur L
-
-Sebelum perintah di bawah: pasang paket ([Ekstensi PHP wajib](#ekstensi-php-wajib)), atur MySQL/MariaDB dan buat database serta tiga akun ([Pengaturan MySQL](#pengaturan-mysql), [Akun database](#akun-database)).
-
-```bash
-# 0. Sistem — cron dan nama log harian mengikuti zona waktu ini (bawaan VPS: UTC)
-sudo timedatectl set-timezone Asia/Jakarta
-sudo adduser --disabled-password --gecos '' deploy
-sudo usermod -aG www-data deploy
-
-# 1. Kode dan .env (sebagai deploy)
-sudo mkdir -p /var/www/gelita && sudo chown deploy:deploy /var/www/gelita
-sudo -iu deploy
-git clone <repo-url> /var/www/gelita
-cd /var/www/gelita
-composer install --no-dev --optimize-autoloader
-cp env .env && nano .env                     # nilai wajib: lihat ".env production"
-php spark key:generate
-exit
-
-# 2. Izin + sudoers: lihat "Model pengguna dan izin"
-
-# 3. Berkas operasional
-sudo install -d -m 700 -o deploy -g deploy /home/deploy/.gelita /var/backups/gelita
-sudo -iu deploy
-nano ~/.gelita/backup.cnf && nano ~/.gelita/migrate.dsn && chmod 600 ~/.gelita/*
-cd /var/www/gelita
-
-# 4. Skema — akun migrasi lewat DSN
-export database_default_DSN="$(cat ~/.gelita/migrate.dsn)"
-sudo --preserve-env=database_default_DSN -u www-data php spark migrate
-unset database_default_DSN
-
-# 5. Isi awal — akun aplikasi, sebagai www-data
-read -rsp 'Sandi admin pertama: ' GELITA_ADMIN_PASSWORD && echo && export GELITA_ADMIN_PASSWORD
-sudo --preserve-env=GELITA_ADMIN_PASSWORD -u www-data php spark db:seed DatabaseSeeder
-unset GELITA_ADMIN_PASSWORD
-
-# 5a. Test module content (tests, questionnaire, attitude scale); not part of db:seed
-sudo -u www-data php spark gelita:instrumen:impor
-
-# 6a. Narasi cadangan ElevenLabs (ai-studio/elevenlabs-voice/out/) → folder narasi + produksi.json (tercatat sintetis; rekaman pengisi suara yang sudah ada tidak ditimpa)
-sudo -u www-data php spark gelita:narration:install --dry-run
-sudo -u www-data php spark gelita:narration:install
-
-# 6b. Rekaman narasi di public/assets/audio/narasi/{id,en}/ → audio draft (folder kosong: dilewati; rekaman juga dapat diunggah di panel)
-sudo -u www-data php spark gelita:narration:import --dry-run
-sudo -u www-data php spark gelita:narration:import
-
-# 6c. Team pictures from ai-studio/game-images/ (see "Installing the Katalog Aset images")
-sudo -u www-data php spark gelita:katalog:impor
-
-# 7. Verifikasi konten — harus 0 galat (peringatan gambar contoh boleh)
-sudo -u www-data php spark gelita:content:verify
-exit
-
-# 8. PHP-FPM, Nginx + HTTPS: lihat "Pengaturan PHP", "Nginx", "HTTPS"
-# 9. Cron: lihat "Tugas Terjadwal"; lalu uji pulih: lihat "Backup"
-# 10. Panel: lihat "Langkah terakhir"
-```
-
-- `read -rs` membuat sandi admin tidak tercatat di riwayat shell. Bentuk singkat `GELITA_ADMIN_PASSWORD='…' php spark db:seed DatabaseSeeder` hanya untuk mesin pengembangan.
-- Keluaran langkah 5 menyebut jumlah sekolah resmi, "Akun admin dibuat (username: admin)", hasil impor Pustaka Kedu dan bank soal kelas 5, lalu "Gambar contoh: 66 dibuat, …". Peringatan berwarna kuning (berkas workbook tidak ditemukan, impor gagal, gambar contoh gagal) harus diselesaikan sebelum lanjut; seeder aman diulang.
-- Langkah 6 memetakan 103 rekaman per bahasa (91 baris cerita + 12 petunjuk Cari Objek) ke baris yang dibuat langkah 5, jadi urutannya wajib. Rekaman masuk sebagai **draft** dan belum terdengar pemain sampai disetujui di panel (Langkah terakhir).
-
-### Instalasi — Jalur W
+### Langkah instalasi
 
 **0. Windows** (PowerShell sebagai Administrator):
 
@@ -763,8 +513,6 @@ exit
 Set-TimeZone -Id 'SE Asia Standard Time'          # (UTC+07:00) Bangkok, Hanoi, Jakarta
 powercfg /change standby-timeout-ac 0
 powercfg /change hibernate-timeout-ac 0
-New-NetFirewallRule -DisplayName 'GELITA HTTP/HTTPS' -Direction Inbound `
-    -Protocol TCP -LocalPort 80,443 -Action Allow
 ```
 
 - **Windows Update.** Setel jam aktif (*Settings → Windows Update → Advanced options → Active hours*) mencakup jam sekolah, supaya restart otomatis tidak memutus kelas.
@@ -797,33 +545,49 @@ php spark key:generate
 **4–7. Skema, isi awal, narasi, verifikasi:**
 
 ```powershell
+# 4. Skema — akun migrasi lewat DSN
 $env:database_default_DSN = (Get-Content C:\gelita-ops\migrate.dsn -Raw).Trim()
 php spark migrate
 Remove-Item Env:\database_default_DSN
 
+# 5. Isi awal — akun aplikasi
 $s = Read-Host 'Sandi admin pertama' -AsSecureString
 $env:GELITA_ADMIN_PASSWORD = [Runtime.InteropServices.Marshal]::PtrToStringBSTR(
     [Runtime.InteropServices.Marshal]::SecureStringToBSTR($s))
 php spark db:seed DatabaseSeeder
 Remove-Item Env:\GELITA_ADMIN_PASSWORD
 
+# 5a. Test module content (tests, questionnaire, attitude scale); not part of db:seed
 php spark gelita:instrumen:impor
 
+# 6a. Narasi cadangan ElevenLabs (ai-studio/elevenlabs-voice/out/) → folder narasi + produksi.json (tercatat sintetis; rekaman pengisi suara yang sudah ada tidak ditimpa)
 php spark gelita:narration:install --dry-run
 php spark gelita:narration:install
+
+# 6b. Rekaman narasi di public/assets/audio/narasi/{id,en}/ → audio draft (folder kosong: dilewati; rekaman juga dapat diunggah di panel)
 php spark gelita:narration:import --dry-run
 php spark gelita:narration:import
+
+# 6c. Team pictures from ai-studio/game-images/ (see "Installing the Katalog Aset images")
 php spark gelita:katalog:impor
+
+# 7. Verifikasi konten — harus 0 galat (peringatan gambar contoh boleh)
 php spark gelita:content:verify
 ```
 
 Sintaks `GELITA_ADMIN_PASSWORD='…' php spark …` adalah sintaks Bash; di PowerShell maupun cmd sintaks itu galat. Jalankan perintah di atas di **PowerShell**, bukan di terminal Cmder bawaan Laragon.
 
-**8. Nginx dan HTTPS:** lihat [Nginx → Jalur W](#jalur-w--laragon) dan [HTTPS](#https).
+- `Read-Host -AsSecureString` membuat sandi admin tidak tercatat di riwayat shell.
+- Keluaran langkah 5 menyebut jumlah sekolah resmi, "Akun admin dibuat (username: admin)", hasil impor Pustaka Kedu dan bank soal kelas 5, lalu "Gambar contoh: 66 dibuat, …". Peringatan berwarna kuning (berkas workbook tidak ditemukan, impor gagal, gambar contoh gagal) harus diselesaikan sebelum lanjut; seeder aman diulang.
+- Langkah 6 memetakan 103 rekaman per bahasa (91 baris cerita + 12 petunjuk Cari Objek) ke baris yang dibuat langkah 5, jadi urutannya wajib. Rekaman masuk sebagai **draft** dan belum terdengar pemain sampai disetujui di panel (Langkah terakhir).
+
+**8. Nginx dan HTTPS:** lihat [Nginx](#nginx) dan [HTTPS](#https).
 
 **9. Tugas terjadwal dan uji pulih:** lihat [Tugas Terjadwal](#tugas-terjadwal) dan [Backup](#backup).
 
-### Langkah terakhir (kedua jalur)
+**10. Panel:** lihat [Langkah terakhir](#langkah-terakhir).
+
+### Langkah terakhir
 
 Setelah situs terbuka lewat HTTPS:
 
@@ -838,9 +602,9 @@ Sesudah itu aplikasi siap untuk **uji coba**. Ke-66 gambar tantangan masih gamba
 
 *(New section, English.)* The team catalogue (`ai-studio/game-images/` since 15 November 2026, before that `gelita-katalog/`; in the repo, not under `public/`) holds the current art: logo, MULAI/START buttons, app icons, backgrounds, story slide backgrounds, maps, badges, pins, lanterns, avatars, character poses, the 66 challenge images, and Pustaka illustrations. One command installs all of it into the game's image slots:
 
-```bash
-sudo -u www-data php spark gelita:katalog:impor --dry-run   # Jalur L (Jalur W: without sudo -u www-data); lists what would be installed
-sudo -u www-data php spark gelita:katalog:impor             # install
+```powershell
+php spark gelita:katalog:impor --dry-run   # lists what would be installed
+php spark gelita:katalog:impor             # install
 ```
 
 - Run it after the installation above (the story slides, Pustaka pages, and challenge slots it links to must exist). It is safe to run again: images already installed from the catalogue and images an admin uploaded are skipped. `--timpa` replaces them too; `--sumber=FOLDER` reads another copy of the catalogue.
@@ -851,18 +615,18 @@ sudo -u www-data php spark gelita:katalog:impor             # install
 - The two round language icons of the HUD switch come from the catalogue references `reference.20` (ID) and `reference.19` (EN) and are stored as `ui.lang.id`/`ui.lang.en`. Until both exist the switch shows the text ID / EN.
 - **Old art kept as an admin upload** (e.g. an old lurik Jaka pose or an older language icon uploaded in the panel before the catalogue existed) is never replaced by a plain run. The report says "sudah ada gambar unggahan admin" for such a slot. Replace only those slots with `--kunci` (comma-separated, `*` allowed), dry run first:
 
-  ```bash
-  sudo -u www-data php spark gelita:katalog:impor --timpa --kunci="ui.lang.*,char.jaka.*" --dry-run
-  sudo -u www-data php spark gelita:katalog:impor --timpa --kunci="ui.lang.*,char.jaka.*"
+  ```powershell
+  php spark gelita:katalog:impor --timpa --kunci="ui.lang.*,char.jaka.*" --dry-run
+  php spark gelita:katalog:impor --timpa --kunci="ui.lang.*,char.jaka.*"
   ```
 
 - **Retired slots** (`CatalogImporter::RETIRED_SLOTS`, since 20 November 2026 the lettered start-button pictures `ui.btn-start` / `ui.btn-start.en`): every run removes their `media_assets` rows and their files in the upload folder, admin uploads included, so the Media page no longer lists them and the next asset package no longer carries them. A dry run lists them as *akan dihapus*. When the active release uses an asset package, build and publish a new one afterwards.
 
 - **Susun Gambar edition of 14 October 2026.** The catalogue has all 30 puzzle images (variants a–j, 1200 × 1200, full-bleed daylight scenes): 21 new d–j images and four redrawn ones (`challenge.item.tmg-1-01`, `tmg-1-03`, `mgl-1-01`, `wnb-1-07`; the old night or white-background versions failed or nearly failed the tile check). A plain run fills the d–j slots and replaces the four when the old version came from the catalogue. If an admin uploaded one of the four by hand, the report says "sudah ada gambar unggahan admin"; replace just those four:
 
-  ```bash
-  sudo -u www-data php spark gelita:katalog:impor --timpa --kunci="challenge.item.tmg-1-01,challenge.item.tmg-1-03,challenge.item.mgl-1-01,challenge.item.wnb-1-07" --dry-run
-  sudo -u www-data php spark gelita:katalog:impor --timpa --kunci="challenge.item.tmg-1-01,challenge.item.tmg-1-03,challenge.item.mgl-1-01,challenge.item.wnb-1-07"
+  ```powershell
+  php spark gelita:katalog:impor --timpa --kunci="challenge.item.tmg-1-01,challenge.item.tmg-1-03,challenge.item.mgl-1-01,challenge.item.wnb-1-07" --dry-run
+  php spark gelita:katalog:impor --timpa --kunci="challenge.item.tmg-1-01,challenge.item.tmg-1-03,challenge.item.mgl-1-01,challenge.item.wnb-1-07"
   ```
 
   The slot notes (`media_note`) of the four redrawn slots are not changed by either command; edit them in **Gambar & mockup** if the bank's note differs.
@@ -886,7 +650,7 @@ On the server that serves it:
    }
    ```
 
-   Then `sudo nginx -t && sudo systemctl reload nginx`.
+   Then reload Nginx (Menu → *Nginx* → *Reload*).
 3. Cloudflare: purge the cache of `katalog.gelita.id` (or *Purge Everything* for the zone) after each pull that changed the folder, so visitors do not keep the old `data.js`. Nothing on gelita.id blocks the page: images and audio need no CORS, and the page sets no Content Security Policy.
 
 On 17 November 2026: 400 pictures, 15 music tracks, 6 sound effects, 187 narration lines; 757 of the 762 linked files were on gelita.id (the 5 missing are Pustaka video covers not installed there).
@@ -895,13 +659,13 @@ Limits: a slot re-uploaded in the panel as PNG or JPG, or a narration take uploa
 
 ### Sebelum pengambilan data penelitian
 
-Urutan wajib sebelum siswa penelitian pertama mendaftar: narasi disetujui ([Langkah terakhir](#langkah-terakhir-kedua-jalur) butir 2) → gambar asli → daftar siap penelitian hijau → uji asap → `gelita:reset`.
+Urutan wajib sebelum siswa penelitian pertama mendaftar: narasi disetujui ([Langkah terakhir](#langkah-terakhir) butir 2) → gambar asli → daftar siap penelitian hijau → uji asap → `gelita:reset`.
 
 **1. Ganti gambar contoh dengan gambar asli.** Ada 66 slot gambar tantangan: 30 gambar Susun Gambar (variasi a–j), 3 gambar pernyataan Benar atau Salah, 3 adegan Cari Objek, dan 30 benda Cari Objek. Unggah gambar asli lewat **Gambar & mockup** (`/admin/media`; saring status "Gambar contoh", lalu **Unggah gambar asli** per slot) atau editor tantangan (`/admin/konten/node/{id}`, bagian "Gambar & suara tantangan"); daftar yang belum beres ada di **Kelengkapan aset** (`/admin/media/kelengkapan`). Ukuran wajib tiap slot ada di `Config\Gelita::$assetSizes` dan ditegakkan saat unggah. Gambar yang diunggah otomatis tercatat sebagai gambar asli (`media_assets.is_placeholder = 0`) dan tidak pernah ditimpa `gelita:mockups` maupun `gelita:reset`. Status per slot:
 
-```bash
-sudo -u www-data php spark gelita:mockups --dry-run            # Jalur L (Jalur W: tanpa sudo -u www-data)
-sudo -u www-data php spark gelita:mockups --dry-run --node=tmg-4
+```powershell
+php spark gelita:mockups --dry-run
+php spark gelita:mockups --dry-run --node=tmg-4
 ```
 
 **2. Daftar siap penelitian hijau.** Buka **Penelitian** (`/admin/studi`). Kotak **Daftar siap penelitian** (`App\Libraries\ResearchReadiness`) harus berlabel "siap": tidak ada gambar contoh aktif, semua rekaman narasi disetujui, dan verifikasi konten siap penelitian tanpa galat. Selama belum hijau, **Ringkasan** (`/admin`) menampilkan peringatan yang sama. Studi bawaan `STUDI-KEDU-KELAS5-2026` sudah berstatus Berjalan sejak instalasi (dan sesudah `gelita:reset`), jadi daftar ini **tidak** memblokir pendaftaran siswa; panel hanya menolak *mengubah* status studi menjadi Berjalan selama daftar belum hijau, kecuali "Tetap jalankan" dicentang. Periksa daftarnya sendiri.
@@ -910,20 +674,10 @@ sudo -u www-data php spark gelita:mockups --dry-run --node=tmg-4
 
 **4. Reset data uji coba.** Setelah uji coba dan uji asap selesai, kosongkan semua data uji coba dengan `gelita:reset`, yang dijalankan dengan akun migrasi:
 
-```bash
-# Jalur L — sebagai deploy
-cd /var/www/gelita
-bash deploy/linux/backup.sh                                     # data yang dikosongkan tidak dapat kembali
-export database_default_DSN="$(cat ~/.gelita/migrate.dsn)"
-sudo --preserve-env=database_default_DSN -u www-data php spark gelita:reset --dry-run
-sudo --preserve-env=database_default_DSN -u www-data php spark gelita:reset --pemeliharaan
-unset database_default_DSN
-sudo -u www-data php spark gelita:content:verify --siap-penelitian
-```
-
 ```powershell
-# Jalur W — sebagai akun gelita
+# sebagai akun gelita
 Set-Location C:\laragon\www\gelita
+# data yang dikosongkan tidak dapat kembali
 Start-ScheduledTask -TaskPath '\GELITA\' -TaskName 'Backup'     # tunggu selesai, periksa folder backup
 $env:database_default_DSN = (Get-Content C:\gelita-ops\migrate.dsn -Raw).Trim()
 php spark gelita:reset --dry-run
@@ -958,11 +712,7 @@ Yang dilakukan `gelita:reset`:
 
 ### Pembaruan kode
 
-Kode baru dibawa ke server hanya lewat `deploy/linux/deploy.sh` (Jalur L) atau `deploy\windows\deploy.ps1` (Jalur W). Jangan pernah memperbarui saat ada kelas berjalan. Kedua skrip memeriksa sesi `active` dalam 10 menit terakhir dan **membatalkan diri** bila ada; `--paksa` / `-Paksa` hanya untuk keadaan darurat.
-
-```bash
-bash /var/www/gelita/deploy/linux/deploy.sh                    # Jalur L, sebagai deploy
-```
+Kode baru dibawa ke server hanya lewat `deploy\windows\deploy.ps1`. Jangan pernah memperbarui saat ada kelas berjalan. Skrip memeriksa sesi `active` dalam 10 menit terakhir dan **membatalkan diri** bila ada; `-Paksa` hanya untuk keadaan darurat.
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File C:\laragon\www\gelita\deploy\windows\deploy.ps1
@@ -970,29 +720,29 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\laragon\www\gelita\deploy
 
 Langkah skrip:
 
-| # | Langkah | Jalur L (`deploy.sh`) | Jalur W (`deploy.ps1`) |
-|---:|---|---|---|
-| 1 | Periksa kelas aktif | `mysql --defaults-extra-file=backup.cnf`: `game_sessions` `status = 'active'` dengan `last_active_at` ≤ 10 menit → BATAL, kode 1 | sama, lewat `mysql.exe` dari `config.psd1` |
-| 2 | Backup | `backup.sh`; kode 2 (hanya salinan kedua gagal) tidak menghentikan deploy | `backup.ps1`; kode 2 → peringatan |
-| 3 | Mode pemeliharaan | `touch writable/pemeliharaan.flag`; `trap ERR` mencetak pesan pemulihan | `New-Item`; blok `try/catch` |
-| 4 | Ambil kode | `git pull --ff-only origin $BRANCH` | `git pull --ff-only origin $c.Branch` |
-| 5 | Dependency | `composer install --no-dev --optimize-autoloader --no-interaction` | sama |
-| 6 | Migration | `php spark migrate` sebagai `www-data` dengan `database_default_DSN` dari `migrate.dsn` | `php spark migrate` dengan `$env:database_default_DSN`, dihapus di `finally` |
-| 7 | Daftar sekolah resmi | `php spark gelita:schools:import` (hanya baris yang berubah) | sama |
-| 8 | Cache | `php spark cache:clear` | sama |
-| 9 | Salinan ringkas JS/CSS | `php spark gelita:aset:minify` (see [Minified JS/CSS](#minified-jscss)); a failure only prints a warning, the site keeps the original files | same, inside `try/catch` with `Write-Warning` |
-| 10 | Versi aset | `sed -i` menaikkan `gelita.assetVersion` di `.env`, lalu `chgrp www-data .env && chmod 640 .env` | `[IO.File]::WriteAllText` (UTF-8 tanpa BOM) |
-| 11 | Reload PHP | `sudo systemctl reload php8.3-fpm` (`FPM` dapat diganti di `ops.conf`) | — (opcache memeriksa stempel waktu) |
-| 12 | Verifikasi konten | `php spark gelita:content:verify` | sama |
-| 13 | Buka kembali | hapus `pemeliharaan.flag` | sama |
-| 14 | Asset package (new, 9 November 2026) | `php spark gelita:paket:bangun --deploy`: nothing while package mode is off; otherwise build and publish, or only build while a study runs (see [Admin switch](#admin-switch-rilis--paket-aset)); a failure only prints a warning, the site is already open | same, inside `try/catch` with `Write-Warning` |
+| # | Langkah | `deploy.ps1` |
+|---:|---|---|
+| 1 | Periksa kelas aktif | `mysql.exe` dari `config.psd1` dengan `--defaults-extra-file=backup.cnf`: `game_sessions` `status = 'active'` dengan `last_active_at` ≤ 10 menit → BATAL, kode 1 |
+| 2 | Backup | `backup.ps1`; kode 2 (hanya salinan kedua gagal) → peringatan, deploy dilanjutkan |
+| 3 | Mode pemeliharaan | `New-Item` memasang `writable\pemeliharaan.flag`; blok `try/catch` mencetak pesan pemulihan |
+| 4 | Ambil kode | `git pull --ff-only origin $c.Branch` |
+| 5 | Dependency | `composer install --no-dev --optimize-autoloader --no-interaction` |
+| 6 | Migration | `php spark migrate` dengan `$env:database_default_DSN` dari `migrate.dsn`, dihapus di `finally` |
+| 7 | Daftar sekolah resmi | `php spark gelita:schools:import` (hanya baris yang berubah) |
+| 8 | Cache | `php spark cache:clear` |
+| 9 | Salinan ringkas JS/CSS | `php spark gelita:aset:minify` (see [Minified JS/CSS](#minified-jscss)), inside `try/catch`; a failure only prints a warning, the site keeps the original files |
+| 10 | Versi aset | `[IO.File]::WriteAllText` menaikkan `gelita.assetVersion` di `.env` (UTF-8 tanpa BOM) |
+| 11 | Verifikasi konten | `php spark gelita:content:verify` |
+| 12 | Buka kembali | hapus `pemeliharaan.flag` |
+| 13 | Asset package (new, 9 November 2026) | `php spark gelita:paket:bangun --deploy`, inside `try/catch`: nothing while package mode is off; otherwise build and publish, or only build while a study runs (see [Admin switch](#admin-switch-rilis--paket-aset)); a failure only prints a warning, the site is already open |
 
-Semua `php spark` di `deploy.sh` berjalan sebagai `www-data` (fungsi `spark`). Bila langkah apa pun gagal, termasuk verifikasi konten, situs **tetap** dalam mode pemeliharaan dan skrip mencetak "DEPLOY GAGAL — situs tetap dalam mode pemeliharaan": lebih baik 503 yang jelas daripada kelas yang membuka konten rusak. Perbaiki penyebabnya, lalu hapus berkas penanda. Verifikasi di sini tanpa `--siap-penelitian`, jadi gambar contoh tidak menghalangi pembaruan.
+The script has no PHP reload step: opcache checks the file timestamps (`opcache.validate_timestamps = 1`, see [Pengaturan PHP](#pengaturan-php)).
+
+Bila langkah apa pun gagal, termasuk verifikasi konten, situs **tetap** dalam mode pemeliharaan dan skrip mencetak "DEPLOY GAGAL - situs tetap dalam mode pemeliharaan": lebih baik 503 yang jelas daripada kelas yang membuka konten rusak. Perbaiki penyebabnya, lalu hapus berkas penanda. Verifikasi di sini tanpa `--siap-penelitian`, jadi gambar contoh tidak menghalangi pembaruan.
 
 Catatan skrip:
 
-- `set -Eeuo pipefail` di `deploy.sh`: `-E` diperlukan agar `trap ERR` juga terpicu oleh galat di dalam fungsi `spark`.
-- `.env` di Jalur W ditulis `[IO.File]::WriteAllText` (UTF-8 tanpa BOM, CRLF dipertahankan), bukan `Set-Content`, yang di PowerShell 5.1 menulis ANSI atau ber-BOM.
+- `.env` ditulis `[IO.File]::WriteAllText` (UTF-8 tanpa BOM, CRLF dipertahankan), bukan `Set-Content`, yang di PowerShell 5.1 menulis ANSI atau ber-BOM.
 - **Skrip `.ps1` dan `.psd1` hanya berisi ASCII** (`->` dan `-`, bukan `→` dan `—`). Windows PowerShell 5.1 membaca skrip tanpa BOM sebagai ANSI (cp1252); byte UTF-8 tanda panah dan tanda pisah menjadi tanda kutip tipografis yang memutus string, dan skrip gagal di-parse. `DeployFilesTest` menolak karakter non-ASCII.
 - Daftar sekolah resmi diperbarui di mesin pengembang (`php docs/sekolah/build-sekolah-jateng.php`, commit CSV yang berubah), lalu masuk server lewat langkah 7. Impor hanya menulis sekolah yang berubah dan tidak pernah menghapus sekolah yang sudah dipakai siswa.
 
@@ -1006,11 +756,11 @@ Before the first update past part 1, ask every `guru` account holder whether the
 
 ### Story script changed (`gelita:story:sync`)
 
-`ContentSeeder` only inserts missing story lines, and `gelita:reset` keeps `dialogues`, so a revised script (`app/Database/Seeds/data/story.php`, e.g. the 32 lines of draft 2, October 2026) does not reach a server that already has content. After the code update, run as `www-data`:
+`ContentSeeder` only inserts missing story lines, and `gelita:reset` keeps `dialogues`, so a revised script (`app/Database/Seeds/data/story.php`, e.g. the 32 lines of draft 2, October 2026) does not reach a server that already has content. After the code update, run:
 
-```bash
-sudo -u www-data php spark gelita:story:sync --dry-run   # what would change
-sudo -u www-data php spark gelita:story:sync
+```powershell
+php spark gelita:story:sync --dry-run   # what would change
+php spark gelita:story:sync
 ```
 
 - A line is replaced only when it still holds the current script or an earlier version listed in `app/Database/Seeds/data/story-previous.php`. A line whose text was edited in the panel is listed as "Disunting di panel" and kept; `--timpa` replaces it too.
@@ -1049,38 +799,18 @@ Urutannya penting: **rollback migration dulu, baru kembalikan kode.** `migrate:r
 
 Nomor batch terlihat di kolom `Batch` pada `php spark migrate:status`. `<batch-sebelumnya>` adalah batch terakhir **sebelum** pembaruan yang dibatalkan. Di `CI_ENVIRONMENT = production`, `migrate:rollback` meminta konfirmasi `[y, n]`; jawab `y`.
 
-```bash
-# Jalur L — sebagai deploy
-cd /var/www/gelita
-touch writable/pemeliharaan.flag
-
-# 1. Bila pembaruan menyertakan migration — selagi kode rilis baru masih terpasang:
-sudo -u www-data php spark migrate:status                # catat batch sebelum pembaruan
-export database_default_DSN="$(cat ~/.gelita/migrate.dsn)"
-sudo --preserve-env=database_default_DSN -u www-data php spark migrate:rollback -b <batch-sebelumnya>
-unset database_default_DSN
-sudo -u www-data php spark migrate:status                # batch rilis baru harus sudah hilang
-# atau pulihkan dari backup bila migration tidak reversible (lihat "Backup")
-
-# 2. Baru kembalikan kode
-git reset --hard <commit-sebelumnya>
-composer install --no-dev --optimize-autoloader
-sudo -u www-data php spark cache:clear
-sudo systemctl reload php8.3-fpm
-rm writable/pemeliharaan.flag
-```
-
 ```powershell
-# Jalur W — sebagai akun gelita
+# sebagai akun gelita
 Set-Location C:\laragon\www\gelita
 New-Item -ItemType File -Force writable\pemeliharaan.flag | Out-Null
 
 # 1. Bila pembaruan menyertakan migration — selagi kode rilis baru masih terpasang:
-php spark migrate:status
+php spark migrate:status                                 # catat batch sebelum pembaruan
 $env:database_default_DSN = (Get-Content C:\gelita-ops\migrate.dsn -Raw).Trim()
 php spark migrate:rollback -b <batch-sebelumnya>
 Remove-Item Env:\database_default_DSN
-php spark migrate:status
+php spark migrate:status                                 # batch rilis baru harus sudah hilang
+# atau pulihkan dari backup bila migration tidak reversible (lihat "Backup")
 
 # 2. Baru kembalikan kode
 git reset --hard <commit-sebelumnya>
@@ -1122,7 +852,7 @@ Aset hanya punya tiga jalan masuk ke server: **commit ke repositori** (folder as
 
 `asset_url_versioned()` menambahkan `?v={gelita.assetVersion}` pada CSS, JavaScript entry, dan vendor. Setiap pembaruan menaikkan nilai itu, jadi browser mengambil versi baru tanpa hard-refresh. Ini penting karena komputer sekolah jarang dibersihkan cache-nya.
 
-**Automatic file version (18 October 2026).** While package mode is off, `?v=` is `{gelita.assetVersion}.{fingerprint}`, where the fingerprint comes from the file's modification time and size (`asset_file_version()`). A changed CSS/JS file therefore gets a new URL even when the server was updated without `deploy.sh`/`deploy.ps1` (git pull, copied files) and `assetVersion` stayed the same, so there is no need to build a package and turn it off again just to push new code to browsers. Modules imported from the entry keep relying on revalidation (`no-cache` in the nginx config above). With package mode on, code still comes from the package snapshot and needs **Bangun ulang paket**.
+**Automatic file version (18 October 2026).** While package mode is off, `?v=` is `{gelita.assetVersion}.{fingerprint}`, where the fingerprint comes from the file's modification time and size (`asset_file_version()`). A changed CSS/JS file therefore gets a new URL even when the server was updated without `deploy.ps1` (git pull, copied files) and `assetVersion` stayed the same, so there is no need to build a package and turn it off again just to push new code to browsers. Modules imported from the entry keep relying on revalidation (`no-cache` in the nginx config above). With package mode on, code still comes from the package snapshot and needs **Bangun ulang paket**.
 
 #### Minified JS/CSS
 
@@ -1132,7 +862,6 @@ Aset hanya punya tiga jalan masuk ke server: **commit ke repositori** (folder as
 - **When it is used.** `asset_url_versioned()` and `game_asset_url()` point to `assets/min/{version}/…` only while the mirror is **fresh**: every source still has the modification time and size recorded at build time, and no source was added or removed. One changed file without a new run (a `git pull` by hand, a copied file) makes the whole site fall back to the original files until the command runs again. A missed run is slower, never broken. Switch: `Config\Gelita::$minifyAssets` (on; off in tests).
 - **Package mode.** **Bangun ulang paket** / `gelita:paket:bangun` refreshes the mirror first and puts the minified bytes in `assets/k/{code_version}/` under the usual keys, so the manifest hashes and the device-side sha256 check describe the minified files. The first package built with minification gets a new `code_version`, so devices download the code group (about 0.5 MB) once more. If minifying fails, the package carries the original files and the build reports the warning `minify_failed`.
 - **Not minified:** `public/sw.js`, `sw-kosong.js`, `offline.html`, `public/assets/vendor/` (Howler is already minified), images, and audio.
-- **Permissions (Path L).** `public/assets/min/` must belong to `www-data` (see the `chown` lines in the server setup above). On a server installed before this change: `sudo mkdir -p public/assets/min && sudo chown www-data:www-data public/assets/min && sudo chmod 2775 public/assets/min`, then `sudo -u www-data php spark gelita:aset:minify`.
 - **Checks.** `php spark gelita:aset:minify --periksa` reports whether the mirror is fresh (exit code 1 when it is not). On a developer machine, `node tools/qa/minify-check.mjs` compares the syntax trees of every source file and its minified copy. `AssetMinifierTest` runs the same comparison whenever Node and acorn are available.
 
 Tidak semua URL ber-`?v=`:
@@ -1146,7 +875,7 @@ Karena itu Nginx memberi `immutable` **hanya** pada URL ber-`?v=`, dan `no-cache
 
 *(New section, English; plan: `docs/rencana-paket-aset.md`.)* Package mode is off until a release names a package. Stage 1 adds the server side:
 
-```bash
+```powershell
 php spark gelita:paket:bangun                  # build pkt-YYYY-MM-DD-NN from all active media, approved narration, and game code
 php spark gelita:paket:bangun --tanpa-pustaka  # same, without copying the library's Wikimedia Commons images
 php spark gelita:paket:periksa [kode]          # re-hash every package file against its manifest (exit 1 on any problem)
@@ -1156,7 +885,7 @@ php spark gelita:paket:bersihkan [--coba]      # delete package files no package
 - Building changes nothing for students. Package mode switches on when the active release's **Versi gambar & suara** (`game_releases.asset_version`) is the package code. Admins switch it on **Rilis → Paket aset** (see *Admin switch* below); a release with that value, created and activated by hand, works too. Any other value, such as the default `1`, means package mode is off.
 - Emergency kill switch: `gelita.paket.aktif = false` in `.env` forces normal URLs on every device, whatever the release says. `GET /api/paket/aktif` then answers `package_code: null` with `disabled_by_server: true`.
 - The build copies the library's Commons images to `public/assets/uploads/library.commons.*` (owner decision P4a). The server needs outbound HTTPS to `commons.wikimedia.org` and `upload.wikimedia.org`; without it the build only warns and those images stay external links.
-- `backup.sh`/`backup.ps1` archive `public/assets/p/`, `public/assets/k/`, `public/paket/`, and `writable/paket/` next to the uploads (see [Backup](#backup)). A package referenced by a release must stay on the server even after newer packages exist (devices may still request its files).
+- `backup.ps1` archives `public/assets/p/`, `public/assets/k/`, `public/paket/`, and `writable/paket/` next to the uploads (see [Backup](#backup)). A package referenced by a release must stay on the server even after newer packages exist (devices may still request its files).
 - Nginx: the `$gelita_is_asset` map gives `/assets/p/`, `/assets/k/`, and `/paket/pkt-*.json` the value `2`, which `$gelita_cache` turns into `public, max-age=31536000, immutable` without `?v=`. These URLs never change content: media are named by their sha256, code lives in a per-version folder (`{app_version}-{hash of the code files}`), and a package code is never reused (deleted codes leave a marker in `writable/paket/`).
 
 ```nginx
@@ -1175,9 +904,11 @@ map "$gelita_is_asset:$arg_v" $gelita_cache {
 
 Check after deploying (with a built package):
 
-```bash
-curl -sI "$U/assets/p/$(ls /var/www/gelita/public/assets/p | head -1)" | grep -i cache-control   # public, max-age=31536000, immutable
-curl -s "$U/api/paket/aktif"                                                                     # {"success":true,"data":{"package_code":…}}
+```powershell
+$U = 'https://gelita.id'
+$f = (Get-ChildItem C:\laragon\www\gelita\public\assets\p | Select-Object -First 1).Name
+curl.exe -sI "$U/assets/p/$f" | Select-String -Pattern 'cache-control'   # public, max-age=31536000, immutable
+curl.exe -s "$U/api/paket/aktif"                                         # {"success":true,"data":{"package_code":…}}
 ```
 
 #### Service worker and package on devices (Stage 2)
@@ -1186,7 +917,7 @@ curl -s "$U/api/paket/aktif"                                                    
 
 - **HTTPS is required** for the service worker and for the sha256 check (`crypto.subtle`); `http://localhost` works for development only.
 - **`sw.js` and `sw-kosong.js` must never be cached long.** The Nginx config already gives `.js` without `?v=` the value `no-cache`; browsers also re-check the worker script on navigations. Do not put either file behind `immutable` or a CDN.
-- **Code updates while package mode is on.** Pages then load CSS and JavaScript from the package copy `assets/k/{code_version}/`, a snapshot taken when the package was built (minified, see [Minified JS/CSS](#minified-jscss)). After a deploy that changes game code, press **Bangun ulang paket** on Rilis → Paket aset and publish it (or `php spark gelita:paket:bangun` plus a release that names the package), or students keep running the old code. Media files are content-addressed, so devices download only the changed code files. Since 9 November 2026 the deploy scripts do this themselves (see *Admin switch* below); by hand only after a deploy without them (git pull, copied files) or while a study runs.
+- **Code updates while package mode is on.** Pages then load CSS and JavaScript from the package copy `assets/k/{code_version}/`, a snapshot taken when the package was built (minified, see [Minified JS/CSS](#minified-jscss)). After a deploy that changes game code, press **Bangun ulang paket** on Rilis → Paket aset and publish it (or `php spark gelita:paket:bangun` plus a release that names the package), or students keep running the old code. Media files are content-addressed, so devices download only the changed code files. Since 9 November 2026 `deploy.ps1` does this itself (see *Admin switch* below); by hand only after a deploy without them (git pull, copied files) or while a study runs.
 - **Package copy missing on disk** (for example a restore without `public/assets/k/`): pages fall back to the normal `assets/…?v=` URLs for code files that are not on disk, so the game still loads; run `php spark gelita:paket:periksa` and rebuild.
 - `X-Gelita-Paket: {package_code}` is sent on API responses while package mode is on (no student data).
 - **A running game session keeps its package (S8, since 9 November 2026).** Pages inside a game session that is still open (`active` or `paused`) name the package the session started with (`game_sessions.package_code`), or no package when it started with package mode off, until the session ends. A publish, a rebuild, or the switch therefore reaches a student at the start of their next session. `/api/paket/aktif` and `X-Gelita-Paket` keep reporting the active package so devices can fetch it in the background; the `.env` kill switch still overrides every session at once. Keep a package that a session still uses on the server (`gelita:paket:bersihkan` only removes packages no release names); if its files are gone, the session falls back to the active package.
@@ -1197,7 +928,7 @@ curl -s "$U/api/paket/aktif"                                                    
 2. **When pages do not load at all** (a worker bug that breaks navigations, so no page can register anything): serve the empty worker at the worker's own URL. Browsers fetch the worker script themselves on navigation, so this reaches every device. Remove the rule once `sw.js` is fixed:
 
 ```nginx
-# Both paths (Nginx), inside the HTTPS server block — temporary
+# Inside the server block of gelita.id.conf, temporary
 location = /sw.js {
     default_type application/javascript;
     add_header Cache-Control "no-cache" always;
@@ -1209,9 +940,9 @@ Reload Nginx after adding and after removing it. Copying `public/sw-kosong.js` o
 
 Check after deploying:
 
-```bash
-curl -sI "$U/sw.js" | grep -i cache-control                     # no-cache
-curl -sI "$U/api/paket/aktif" | grep -i x-gelita-paket           # the package code while package mode is on
+```powershell
+curl.exe -sI "$U/sw.js" | Select-String -Pattern 'cache-control'              # no-cache
+curl.exe -sI "$U/api/paket/aktif" | Select-String -Pattern 'x-gelita-paket'   # the package code while package mode is on
 ```
 
 #### Admin switch: Rilis → Paket aset
@@ -1221,8 +952,8 @@ curl -sI "$U/api/paket/aktif" | grep -i x-gelita-paket           # the package c
 - **Nyalakan** builds a package in batches driven by the open page (one POST every few seconds, each at most ~4 s of work; 20 s without JavaScript), so the default PHP `max_execution_time` (30 s) and Nginx `fastcgi_read_timeout` (60 s) are enough. The summary is then confirmed with **Terbitkan dan nyalakan**, which creates and activates a release with the same versions and the new package code. **Matikan** activates a release without a package.
 - During a running study every package change asks for a tick and a reason (audit `release_activate` with `package_from`, `package_to`, `reason`), except going back to the package the study locked when it started (`research_studies.package_code`; owner, 9 November 2026). Rilis and Paket aset show the locked package and warn while students get another one; the research-ready checklist and `gelita:content:verify --siap-penelitian` fail until the locked package is active again.
 - When `.env` sets `gelita.paket.aktif = false`, the page shows "Mode paket dimatikan dari server" and students get normal URLs whatever the switch says.
-- The setting **Izinkan mode daring untuk perangkat lab** lives in `writable/paket/pengaturan.json`, which the backup scripts already archive with `writable/paket/`.
-- **Deploys while package mode is on (9 November 2026).** `deploy.sh` and `deploy.ps1` end with `php spark gelita:paket:bangun --deploy`, after maintenance mode is lifted. With package mode off it does nothing. With it on, it builds a package from the new code and the active media, then creates and activates a release with it (audit `release_activate`, `via: deploy`), so devices get the new `kode` group (only changed files are downloaded). **While a study is running** it only builds the package and prints a warning: an admin publishes it on Paket aset with a tick and a reason, or leaves students on the locked package. A failed build is a warning, not a failed deploy; students keep the old package until **Bangun ulang paket**. The build takes a few minutes (hashing and copying up to ~50 MB).
+- The setting **Izinkan mode daring untuk perangkat lab** lives in `writable/paket/pengaturan.json`, which `backup.ps1` already archives with `writable/paket/`.
+- **Deploys while package mode is on (9 November 2026).** `deploy.ps1` ends with `php spark gelita:paket:bangun --deploy`, after maintenance mode is lifted. With package mode off it does nothing. With it on, it builds a package from the new code and the active media, then creates and activates a release with it (audit `release_activate`, `via: deploy`), so devices get the new `kode` group (only changed files are downloaded). **While a study is running** it only builds the package and prints a warning: an admin publishes it on Paket aset with a tick and a reason, or leaves students on the locked package. A failed build is a warning, not a failed deploy; students keep the old package until **Bangun ulang paket**. The build takes a few minutes (hashing and copying up to ~50 MB).
 - **Staff preview.** `?paket={package_code}` on any game page (the **Pratinjau** links on Paket aset) shows that package to the signed-in admin only, with a pill in the bottom-left corner, "Pratinjau paket … Hanya terlihat oleh Anda.", and **Akhiri pratinjau** (`?paket=mati`).
 - Before data collection, `php spark gelita:content:verify --siap-penelitian` also re-hashes the active package and fails while package mode is off.
 
@@ -1253,37 +984,21 @@ Ukuran piksel resmi tiap slot ada di `Config\Gelita::$assetSizes` dan ditegakkan
 
 ## Tugas Terjadwal
 
-Jam sistem wajib WIB (langkah 0 kedua jalur). Di VPS berzona UTC, jadwal "02.00" akan berjalan pukul 09.00 WIB.
+Jam sistem wajib WIB (langkah 0 di [Langkah instalasi](#langkah-instalasi)). Di VPS berzona UTC, jadwal "02.00" akan berjalan pukul 09.00 WIB.
 
-| Tugas | Waktu | Jalur L | Jalur W |
-|---|---|---|---|
-| Backup | 01.00 setiap hari; 08.00, 12.00, 16.00 hari sekolah | cron `deploy` | Task Scheduler `\GELITA\Backup` |
-| Retensi (`gelita:retention:run`) | 02.00 setiap hari | cron `www-data` | Task Scheduler `\GELITA\Retensi` |
-| Rotasi log > 30 hari | Minggu 03.00 (L) / bersama retensi (W) | cron `www-data` | di dalam `retensi.ps1` |
+| Tugas | Waktu | Task Scheduler |
+|---|---|---|
+| Backup | 01.00 setiap hari; 08.00, 12.00, 16.00 hari sekolah | `\GELITA\Backup` (`backup.ps1`) |
+| Retensi (`gelita:retention:run`) | 02.00 setiap hari | `\GELITA\Retensi` (`retensi.ps1`) |
+| Rotasi log > 30 hari | bersama retensi | di dalam `retensi.ps1` |
 
-Backup lebih sering pada jam sekolah disengaja: sesi kelas berlangsung pada jam itu, dan kehilangan satu sesi berarti mengulang satu kelas. Banyak SD masuk hari Sabtu. Bila demikian, ganti `1-5` menjadi `1-6` dan tambahkan `Saturday`.
+Backup lebih sering pada jam sekolah disengaja: sesi kelas berlangsung pada jam itu, dan kehilangan satu sesi berarti mengulang satu kelas. Banyak SD masuk hari Sabtu. Bila demikian, tambahkan `Saturday`.
 
 `gelita:retention:run` menandai sesi dan pengerjaan yang menganggur (`paused`/`abandoned`), menghapus berkas unduhan data yang kedaluwarsa (`gelita.exportRetentionDays`, bawaan 7 hari), dan membuat **pratinjau** penghapusan untuk data yang melewati `research_studies.retention_days`. Data penelitian tidak pernah dihapus tanpa persetujuan manusia di **Tata kelola** (`/admin/tata-kelola`); pratinjau yang menunggu tampil sebagai peringatan di **Ringkasan**.
 
 Open attempts in a game session of a field session are not abandoned by the nightly run while their study is *Berjalan* (owner, 20 November 2026): field sessions leave them open so the student continues them at the next meeting or make-up session, often days later. They are closed (`challenge_abandoned {via: retention, reason: study_closed}`) when the head researcher sets the study to *Ditutup*. Keep the daily schedule; postponing the run is not needed and leaves expired data downloads on the server.
 
-**Jalur L** — `crontab -e` sebagai `deploy`:
-
-```cron
-0 1 * * *          bash /var/www/gelita/deploy/linux/backup.sh >> /var/backups/gelita/backup.log 2>&1
-0 8,12,16 * * 1-5  bash /var/www/gelita/deploy/linux/backup.sh >> /var/backups/gelita/backup.log 2>&1
-```
-
-Log backup ditulis di folder backup milik `deploy`. Berkas log di tempat yang tidak dapat ditulis `deploy` (mis. `/var/log/…`) membuat shell gagal membukanya, dan perintah backup tidak pernah dijalankan.
-
-`sudo crontab -u www-data -e`:
-
-```cron
-0 2 * * * cd /var/www/gelita && php spark gelita:retention:run >> writable/logs/cron.log 2>&1
-0 3 * * 0 find /var/www/gelita/writable/logs -name 'log-*.log' -mtime +30 -delete
-```
-
-**Jalur W** — PowerShell sebagai Administrator. Tugas berjalan dengan akun `gelita`, "baik login maupun tidak", tetapi tetap butuh Laragon (MySQL) menyala:
+PowerShell sebagai Administrator. Tugas berjalan dengan akun `gelita`, "baik login maupun tidak", tetapi tetap butuh Laragon (MySQL) menyala:
 
 ```powershell
 $akun  = "$env:COMPUTERNAME\gelita"
@@ -1327,40 +1042,32 @@ Isi setiap backup:
 3. **Asset packages** (`public/assets/p/`, `public/assets/k/`, `public/paket/`, `writable/paket/`), built on the server by `gelita:paket:bangun`; skipped while no package has been built.
 4. **Salinan `.env`**, yang memuat `encryption.key`.
 
-Backup disimpan 30 hari di lokasi pertama lalu disalin ke lokasi kedua. **Backup yang hanya ada di mesin yang sama dengan datanya bukan backup.** Bila salinan kedua gagal, skrip keluar dengan kode **2** dan mencetak peringatan, sehingga kegagalan terlihat oleh cron dan Task Scheduler.
+Backup disimpan 30 hari di lokasi pertama lalu disalin ke lokasi kedua. **Backup yang hanya ada di mesin yang sama dengan datanya bukan backup.** Bila salinan kedua gagal, skrip keluar dengan kode **2** dan mencetak peringatan, sehingga kegagalan terlihat di Task Scheduler.
 
-Backup memuat data pribadi anak dan kredensial. Folder backup hanya dapat dibaca pemiliknya (`umask 077` / ACL). Drive eksternal sebaiknya dienkripsi (LUKS / BitLocker To Go).
+Backup memuat data pribadi anak dan kredensial. Folder backup hanya dapat dibaca pemiliknya (ACL). Drive eksternal sebaiknya dienkripsi (BitLocker To Go).
 
-| Langkah | Jalur L (`deploy/linux/backup.sh`) | Jalur W (`deploy\windows\backup.ps1`) |
-|---|---|---|
-| Database | `mysqldump --defaults-extra-file=backup.cnf --single-transaction --quick --no-tablespaces --default-character-set=utf8mb4 --ignore-table=gelita.ci_sessions`, ditambah struktur `ci_sessions` (`--no-data`), di-gzip ke `gelita-db-{stamp}.sql.gz.part`, diuji `gzip -t`, baru diganti nama | dua `mysqldump` dengan `--result-file` (pengalihan `>` di PowerShell 5.1 menulis UTF-16), dikemas ke `gelita-db-{stamp}.zip`; berkas `.sql` sementara selalu dihapus |
-| Unggahan | `tar czf gelita-uploads-{stamp}.tar.gz` | `Compress-Archive` → `gelita-uploads-{stamp}.zip` |
-| Asset packages | `tar czf gelita-paket-{stamp}.tar.gz -C $APP` with the four folders as relative paths (missing ones skipped) | `gelita-paket-{stamp}.zip` (`p`, `k`, `paket` from `public/`) and `gelita-paket-peta-{stamp}.zip` (`writable/paket`); two archives because both `paket` folders would collide in one zip |
-| `.env` | `cp` → `gelita-env-{stamp}` | `Copy-Item` → `gelita-env-{stamp}.txt`, lalu `LastWriteTime` disetel ke waktu backup |
-| Simpan 30 hari | `find … -mtime +30 -delete` | `Get-ChildItem` + `Remove-Item` |
-| Salinan kedua | `rsync -a "$DIR/" "$KEDUA/"`; gagal → kode 2 | salin berkas yang belum ada ke `Kedua`; gagal → kode 2 |
-| Lokasi bawaan | `DIR=/var/backups/gelita`, `KEDUA=/mnt/backup-eksternal/gelita` (timpa di `ops.conf`) | `Dir`, `Kedua` di `config.psd1` |
+| Langkah | `deploy\windows\backup.ps1` |
+|---|---|
+| Database | dua `mysqldump` dengan `--defaults-extra-file=backup.cnf` dan `--result-file` (pengalihan `>` di PowerShell 5.1 menulis UTF-16): data dengan `--single-transaction --quick --no-tablespaces --default-character-set=utf8mb4 --ignore-table=gelita.ci_sessions`, lalu struktur `ci_sessions` (`--no-data`); dikemas ke `gelita-db-{stamp}.zip`; berkas `.sql` sementara selalu dihapus |
+| Unggahan | `Compress-Archive` → `gelita-uploads-{stamp}.zip` |
+| Asset packages | `gelita-paket-{stamp}.zip` (`p`, `k`, `paket` from `public/`) and `gelita-paket-peta-{stamp}.zip` (`writable/paket`); two archives because both `paket` folders would collide in one zip; missing folders are skipped |
+| `.env` | `Copy-Item` → `gelita-env-{stamp}.txt`, lalu `LastWriteTime` disetel ke waktu backup |
+| Simpan 30 hari | `Get-ChildItem` + `Remove-Item` |
+| Salinan kedua | salin berkas yang belum ada ke `Kedua`; gagal → kode 2 |
+| Lokasi | `Dir`, `Kedua` di `config.psd1` |
+| Second location limit | with `KeduaHari` in `config.psd1`, files older than that many days are deleted at the second location |
+| Status | `writable/backup-status.json` (`ran_at`, `kedua_hari`, `ganti`), read by the backup warning on Tata kelola |
 
-- `--no-tablespaces` menghindari tuntutan hak global `PROCESS` di MySQL 8.0.21+ (juga didukung MariaDB). Skema GELITA tidak punya routine atau trigger, jadi `--routines --triggers` tidak diperlukan.
-- `Copy-Item` mewarisi stempel waktu `.env`. Tanpa penyegaran `LastWriteTime`, salinan `.env` yang tidak berubah lebih dari 30 hari langsung terhapus langkah simpan 30 hari dan tidak pernah sampai ke lokasi kedua. Jalur L tidak terdampak: `cp` tanpa `-p` memberi stempel waktu baru.
-- Salinan kedua di kedua jalur hanya **menambah** berkas (tanpa `--delete` / `/MIR`). Dengan begitu, lokasi pertama yang rusak atau kosong tidak ikut menghapus salinan kedua.
+- `--no-tablespaces` menghindari tuntutan hak global `PROCESS` di MySQL 8.0.21+. Skema GELITA tidak punya routine atau trigger, jadi `--routines --triggers` tidak diperlukan.
+- `Copy-Item` mewarisi stempel waktu `.env`. Tanpa penyegaran `LastWriteTime`, salinan `.env` yang tidak berubah lebih dari 30 hari langsung terhapus langkah simpan 30 hari dan tidak pernah sampai ke lokasi kedua.
+- Salinan kedua hanya **menambah** berkas (tanpa `/MIR`). Dengan begitu, lokasi pertama yang rusak atau kosong tidak ikut menghapus salinan kedua.
+- `-Ganti` makes a fresh backup, tests the zip, then deletes every older `gelita-*` file at both locations. Use it only for [Backup replacement after a deletion or the study closure](#backup-replacement-after-a-deletion-or-the-study-closure).
 
 ### Uji pemulihan
 
 Lakukan minimal sekali sebelum penelitian dimulai, dan setelah setiap perubahan skrip backup. Backup yang belum pernah dipulihkan statusnya belum diketahui.
 
-```bash
-# Jalur L
-mysql -u root -p -e "CREATE DATABASE gelita_uji;"
-gunzip -c /var/backups/gelita/gelita-db-YYYYmmdd-HHMM.sql.gz | mysql -u root -p gelita_uji
-mysql -u root -p gelita_uji -e "
-  SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'gelita_uji';  -- 30
-  SELECT COUNT(*) FROM participants; SELECT COUNT(*) FROM game_event_logs;"
-mysql -u root -p -e "DROP DATABASE gelita_uji;"
-```
-
 ```powershell
-# Jalur W
 $d = "$env:TEMP\gelita-pulih"
 Expand-Archive D:\gelita-backup\gelita-db-YYYYmmdd-HHMM.zip -DestinationPath $d -Force
 mysql -u root -p -e "CREATE DATABASE gelita_uji;"
@@ -1372,20 +1079,22 @@ mysql -u root -p -e "DROP DATABASE gelita_uji;"
 Remove-Item $d -Recurse
 ```
 
-Di PowerShell, operator `<` tidak ada, jadi pemulihan memakai `source`. Kedua berkas `.sql` tidak saling bergantung, jadi urutannya bebas. Pemulihan ke database production (`gelita`) mengikuti langkah yang sama dengan mode pemeliharaan aktif; pulihkan juga `public/assets/uploads/` dari arsip unggahan dengan stempel waktu yang sama. Restore the asset packages from the package archive of the same stamp as well: Jalur L `tar xzf gelita-paket-{stamp}.tar.gz -C /var/www/gelita`; Jalur W unpack `gelita-paket-{stamp}.zip` into `public\assets\` (`p`, `k`) and `public\` (`paket`), and `gelita-paket-peta-{stamp}.zip` into `writable\`. Then run `php spark gelita:paket:periksa`. Without them the game falls back to normal asset URLs on its own (the release's package has no URL map). Setelah itu, semua pengguna perlu login ulang karena `ci_sessions` kosong.
+Di PowerShell, operator `<` tidak ada, jadi pemulihan memakai `source`. Kedua berkas `.sql` tidak saling bergantung, jadi urutannya bebas. Pemulihan ke database production (`gelita`) mengikuti langkah yang sama dengan mode pemeliharaan aktif; pulihkan juga `public/assets/uploads/` dari arsip unggahan dengan stempel waktu yang sama. Restore the asset packages from the package archive of the same stamp as well: unpack `gelita-paket-{stamp}.zip` into `public\assets\` (`p`, `k`) and `public\` (`paket`), and `gelita-paket-peta-{stamp}.zip` into `writable\`. Then run `php spark gelita:paket:periksa`. Without them the game falls back to normal asset URLs on its own (the release's package has no URL map). Setelah itu, semua pengguna perlu login ulang karena `ci_sessions` kosong.
 
 ---
 
 ## Verifikasi Setelah Deploy
 
-Jalankan seluruh daftar ini setelah instalasi baru dan setiap pembaruan kode. Contoh memakai Jalur L. Padanan Jalur W: jalankan tanpa `sudo -u www-data`, pakai `C:\gelita-ops\backup.cnf`, dan tulis `curl.exe` (di Windows PowerShell 5.1, `curl` adalah alias `Invoke-WebRequest`) dengan `-o NUL` pengganti `-o /dev/null`.
+Jalankan seluruh daftar ini setelah instalasi baru dan setiap pembaruan kode. Run it in PowerShell on the server, and write `curl.exe`: in Windows PowerShell 5.1 `curl` is an alias of `Invoke-WebRequest`.
 
-```bash
+```powershell
+Set-Location C:\laragon\www\gelita
+
 # 1. Struktur konten — harus 0 galat (peringatan gambar contoh boleh sampai gambar asli diunggah)
-sudo -u www-data php spark gelita:content:verify
+php spark gelita:content:verify
 
 # 2. Database — angka yang diharapkan di komentar
-mysql --defaults-extra-file=/home/deploy/.gelita/backup.cnf gelita -e "
+mysql --defaults-extra-file=C:\gelita-ops\backup.cnf gelita -e "
   SELECT COUNT(*) AS wilayah FROM levels WHERE is_active = 1;                               -- 3
   SELECT l.code, COUNT(*) AS tantangan FROM challenge_nodes n JOIN levels l ON l.id = n.level_id
    WHERE n.is_active = 1 GROUP BY l.code;                                                   -- 4 per wilayah
@@ -1396,33 +1105,26 @@ mysql --defaults-extra-file=/home/deploy/.gelita/backup.cnf gelita -e "
   SELECT locale, approval_status, COUNT(*) FROM audio_assets GROUP BY locale, approval_status; -- 100 approved per bahasa
   SELECT release_code FROM game_releases WHERE is_active = 1;                               -- GELITA-KELAS5-2026"
 
-# 3. writable dapat ditulis runtime (Jalur L)
-sudo -u www-data touch /var/www/gelita/writable/uji && \
-  rm /var/www/gelita/writable/uji && echo "writable OK"
+# 3. HTTPS & header keamanan — pada halaman DAN aset, masing-masing tepat satu kali
+$U = 'https://gelita.id'
+curl.exe -s -D - -o NUL "$U/" | Select-String -Pattern 'HTTP/|strict-transport|x-frame|x-content-type'
+curl.exe -s -D - -o NUL "$U/assets/css/game.css?v=1" | Select-String -Pattern 'strict-transport|x-content-type|cache-control'
 
-# 4. HTTPS & header keamanan — pada halaman DAN aset, masing-masing tepat satu kali
-U=https://gelita.sekolah.sch.id
-curl -s -D - -o /dev/null $U/ | grep -iE 'HTTP/|strict-transport|x-frame|x-content-type'
-curl -s -D - -o /dev/null "$U/assets/css/game.css?v=1" | grep -iE 'strict-transport|x-content-type|cache-control'
+# 4. Cache aset — harus: entry ber-?v immutable, modul tanpa ?v no-cache
+curl.exe -sI "$U/assets/js/game.js?v=1" | Select-String -Pattern 'cache-control'     # public, max-age=31536000, immutable
+curl.exe -sI "$U/assets/js/core/dom.js" | Select-String -Pattern 'cache-control'     # no-cache
 
-# 5. Cache aset — harus: entry ber-?v immutable, modul tanpa ?v no-cache
-curl -sI "$U/assets/js/game.js?v=1" | grep -i cache-control     # public, max-age=31536000, immutable
-curl -sI "$U/assets/js/core/dom.js"  | grep -i cache-control     # no-cache
+# 5. Berkas sensitif tidak terlayani — semuanya harus 404
+foreach ($p in '.env', '.htaccess', '.git/config', 'app/Config/App.php', 'writable/logs/', 'vendor/autoload.php', 'info.php') {
+    $kode = curl.exe -s -o NUL -w '%{http_code}' "$U/$p"
+    "$p -> $kode"
+}
 
-# 6. Berkas sensitif tidak terlayani — semuanya harus 404
-for p in .env .htaccess .git/config app/Config/App.php writable/logs/ vendor/autoload.php info.php; do
-  echo "$p → $(curl -s -o /dev/null -w '%{http_code}' "$U/$p")"
-done
-
-# 7. Mode pemeliharaan — harus 503, lalu 200
-touch /var/www/gelita/writable/pemeliharaan.flag
-curl -s -o /dev/null -w '%{http_code}\n' $U/
-rm /var/www/gelita/writable/pemeliharaan.flag
-curl -s -o /dev/null -w '%{http_code}\n' $U/
-
-# 8. Sertifikat — tanggal kedaluwarsa dan perpanjangan
-echo | openssl s_client -connect gelita.sekolah.sch.id:443 -servername gelita.sekolah.sch.id 2>/dev/null \
-  | openssl x509 -noout -enddate
+# 6. Mode pemeliharaan — harus 503, lalu 200
+New-Item -ItemType File -Force writable\pemeliharaan.flag | Out-Null
+curl.exe -s -o NUL -w '%{http_code}\n' "$U/"
+Remove-Item writable\pemeliharaan.flag
+curl.exe -s -o NUL -w '%{http_code}\n' "$U/"
 ```
 
 Jumlah rekaman narasi (pemeriksaan 2) baru 100 `approved` per bahasa setelah persetujuan di panel; sebelum itu `draft`. `HEAD` dilayani rute GET dengan header yang sama tanpa isi (`App\Libraries\HeadAsGetRouteCollection`), jadi `curl -I` dan pemantau uptime berbasis HEAD bekerja.
@@ -1440,7 +1142,7 @@ Uji manual:
 9. Hapus peserta uji lewat **Tata kelola** (`/admin/tata-kelola`) dengan pratinjau dan konfirmasi.
 10. Buka **Tantangan** (`/admin/konten`) — 12 tantangan, 4 per wilayah; **Rekaman narasi** (`/admin/konten/narasi`) — tidak ada rekaman yang belum disetujui.
 
-Baru setelah **delapan pemeriksaan otomatis dan sepuluh uji manual** ini lolos, aplikasi dinyatakan siap dipakai kelas. Data siswa uji yang tersisa ikut dikosongkan `gelita:reset` sebelum pengambilan data penelitian.
+Baru setelah **enam pemeriksaan otomatis dan sepuluh uji manual** ini lolos, aplikasi dinyatakan siap dipakai kelas. Data siswa uji yang tersisa ikut dikosongkan `gelita:reset` sebelum pengambilan data penelitian.
 
 ---
 
@@ -1450,10 +1152,10 @@ Baru setelah **delapan pemeriksaan otomatis dan sepuluh uji manual** ini lolos, 
 
 1. **Sebelum pengambilan data pertama:** gambar contoh sudah diganti, daftar siap penelitian di **Penelitian** (`/admin/studi`) hijau, dan `gelita:reset` sudah dijalankan (lihat [Sebelum pengambilan data penelitian](#sebelum-pengambilan-data-penelitian)); `gelita:content:verify --siap-penelitian` lolos.
 2. Buka **Kelengkapan aset** (`/admin/media/kelengkapan`): aset yang belum ada tidak menghentikan permainan (dipakai pengganti), tetapi rekaman narasi yang masih draft tidak terdengar siswa.
-3. Pastikan ruang disk cukup: `df -h` (L) / `Get-PSDrive C, D` (W).
+3. Pastikan ruang disk cukup: `Get-PSDrive C, D`.
 4. **Siapkan NPSN sekolah.** Siswa Jawa Tengah wajib mengisi NPSN saat mendaftar, dan pendaftaran hanya menerima kelas 5 SD/MI. Siswa SD jarang hafal NPSN: cari di **Sekolah** (`/admin/sekolah`, ketik nama atau desa), lalu tuliskan di papan bersama nama sekolahnya. Saat 8 angka diketik, nama resmi sekolah muncul untuk dicocokkan anak.
-5. Jalankan backup manual: `bash /var/www/gelita/deploy/linux/backup.sh` (L) / `Start-ScheduledTask -TaskPath '\GELITA\' -TaskName 'Backup'` (W).
-6. Jalur W: pastikan Laragon menyala (Nginx + MySQL hijau) dan tidak ada restart Windows Update yang tertunda.
+5. Jalankan backup manual: `Start-ScheduledTask -TaskPath '\GELITA\' -TaskName 'Backup'`.
+6. Pastikan Laragon menyala (Nginx + MySQL hijau) dan tidak ada restart Windows Update yang tertunda.
 7. Sediakan **10–15 menit** di awal pertemuan pertama untuk pendaftaran tiga langkah. Membuat kata sandi kuat adalah bagian pembelajaran literasi keamanan digital, bukan hambatan teknis: biarkan anak membaca syaratnya dan memperbaiki sendiri sandi yang ditolak.
 8. Pastikan guru tahu cara mereset sandi di `/admin/peserta/{id}`. Jangan meminta anak menuliskan sandinya di daftar kelas — bila lupa, reset.
 9. Untuk anak yang kesulitan mengetik simbol, tunjukkan letak tombol simbol di papan ketik atau papan ketik layar tablet sebelum mulai.
@@ -1468,62 +1170,48 @@ Baru setelah **delapan pemeriksaan otomatis dan sepuluh uji manual** ini lolos, 
 
 ### Pemantauan harian
 
-```bash
-# Jalur L
-grep -c 'ERROR' /var/www/gelita/writable/logs/log-$(date +%Y-%m-%d).log     # galat hari ini
-tail -3 /var/backups/gelita/backup.log                                      # backup terakhir + peringatan
-M="mysql --defaults-extra-file=/home/deploy/.gelita/backup.cnf gelita"
-$M -e "SELECT DATE(server_received_at) d, COUNT(*) n FROM game_event_logs
-       WHERE server_received_at > NOW() - INTERVAL 7 DAY GROUP BY d ORDER BY d DESC;"
-$M -e "SELECT table_name, ROUND(data_length/1048576) data_mb, ROUND(index_length/1048576) idx_mb
-       FROM information_schema.tables WHERE table_schema='gelita' ORDER BY data_length DESC LIMIT 5;"
-df -h /var/www /var/backups
-```
-
 ```powershell
-# Jalur W
 Set-Location C:\laragon\www\gelita
-(Select-String -Path "writable\logs\log-$(Get-Date -Format yyyy-MM-dd).log" -Pattern 'ERROR').Count
-Get-ScheduledTaskInfo -TaskPath '\GELITA\' -TaskName 'Backup' | Select-Object LastRunTime, LastTaskResult
+(Select-String -Path "writable\logs\log-$(Get-Date -Format yyyy-MM-dd).log" -Pattern 'ERROR').Count     # galat hari ini
+Get-ScheduledTaskInfo -TaskPath '\GELITA\' -TaskName 'Backup' | Select-Object LastRunTime, LastTaskResult   # backup terakhir
 mysql --defaults-extra-file=C:\gelita-ops\backup.cnf gelita -e "SELECT DATE(server_received_at) d, COUNT(*) n FROM game_event_logs WHERE server_received_at > NOW() - INTERVAL 7 DAY GROUP BY d ORDER BY d DESC;"
+mysql --defaults-extra-file=C:\gelita-ops\backup.cnf gelita -e "SELECT table_name, ROUND(data_length/1048576) data_mb, ROUND(index_length/1048576) idx_mb FROM information_schema.tables WHERE table_schema='gelita' ORDER BY data_length DESC LIMIT 5;"
 Get-PSDrive C, D
 ```
 
 `game_event_logs` akan menjadi tabel terbesar dan itu normal — ia memang catatan proses penelitian. Perkiraan kasar: satu peserta yang menyelesaikan 12 tantangan menghasilkan beberapa ratus event, kurang dari 1 MB termasuk index; seratus peserta sekitar 100 MB. `item_tries` (satu baris per percobaan) dan `device_logs` tumbuh jauh lebih lambat. Jangan menghapus raw event hanya karena ringkasannya sudah tampil di panel.
 
-Bulanan: periksa tanggal kedaluwarsa sertifikat (pemeriksaan 8) dan jalankan satu uji pemulihan.
+Bulanan: jalankan satu uji pemulihan.
 
 ### Masalah umum
 
 | Gejala | Penyebab biasa | Tindakan |
 |---|---|---|
-| Halaman putih / HTTP 500 di semua halaman | L: `.env` tidak terbaca `www-data` (mode 600, atau grup berubah setelah `sed -i`) | `sudo chown deploy:www-data .env && sudo chmod 640 .env`; pastikan `deploy` anggota grup `www-data` |
 | Halaman putih pada halaman tertentu | galat PHP, `display_errors` mati | baca `writable/logs/log-*.log` |
 | Situs terus menjawab 503 | pembaruan gagal dan mode pemeliharaan sengaja dibiarkan, atau `gelita:reset --pemeliharaan` terhenti paksa | baca keluaran skrip, perbaiki, hapus `writable/pemeliharaan.flag` |
-| "Unable to connect to database" | kredensial `.env` salah atau MySQL mati; W: Laragon belum menyala setelah restart | L: `systemctl status mysql` (MariaDB: `mariadb`); W: buka Laragon → *Start All* |
+| "Unable to connect to database" | kredensial `.env` salah atau MySQL mati; Laragon belum menyala setelah restart | buka Laragon → *Start All* |
 | `CREATE command denied … gelita_app` saat migrate | migration berjalan tanpa DSN | jalankan lewat `database_default_DSN` (lihat [Kredensial migration lewat DSN](#kredensial-migration-lewat-dsn)) |
 | `gelita:reset`: "Akun database tidak punya hak TRUNCATE (DROP)" | reset dijalankan dengan akun aplikasi | ulangi dengan `database_default_DSN` akun `gelita_migrate`; belum ada tabel yang dikosongkan |
-| `db:seed`: "GELITA_ADMIN_PASSWORD kosong" | variabel tidak diteruskan ke `www-data` | `export` lalu `sudo --preserve-env=GELITA_ADMIN_PASSWORD -u www-data …` |
+| `db:seed`: "GELITA_ADMIN_PASSWORD kosong" | the variable is not set in that PowerShell session | set `$env:GELITA_ADMIN_PASSWORD` in the same session, then run the seeder again (see [Langkah instalasi](#langkah-instalasi)) |
 | `db:seed`: "berkas … tidak ditemukan" untuk Pustaka atau bank soal | folder `docs/` dibuang dari server | pulihkan dari git (`git checkout -- docs`), jalankan ulang seeder |
 | `content:verify --siap-penelitian` gagal | masih ada gambar contoh yang dipakai tantangan | unggah gambar asli; `gelita:mockups --dry-run` menampilkan slot yang tersisa |
 | Kartu video Pustaka tanpa gambar | server tidak dapat menghubungi penyedia thumbnail | buka akses keluar, lalu `gelita:library:thumbnails` |
 | Gambar Pustaka tidak tampil di perangkat siswa | jaringan kelas memblokir `commons.wikimedia.org` | buka akses, atau unggah salinan gambarnya lewat panel |
-| Halaman lambat saat kelas penuh | proses PHP habis | naikkan `pm.max_children` (L) / `PHP_FCGI_CHILDREN` (W) sesuai RAM |
-| W: every page takes 2–3 s although the CPU is idle | `.env` says `database.default.hostname = localhost`: Windows tries IPv6 `::1` first | set `127.0.0.1` ([`.env` production](#env-production), note 5b) |
-| W: slow from about 30 students on, disk busy | Laragon's default `my.ini` (128 MB buffer pool, binary log on) | the Jalur W block of [Pengaturan MySQL](#pengaturan-mysql) |
+| Halaman lambat saat kelas penuh | proses PHP habis | naikkan `PHP_FCGI_CHILDREN` sesuai RAM |
+| Every page takes 2–3 s although the CPU is idle | `.env` says `database.default.hostname = localhost`: Windows tries IPv6 `::1` first | set `127.0.0.1` ([`.env` production](#env-production), note 5b) |
+| Slow from about 30 students on, disk busy | Laragon's default `my.ini` (128 MB buffer pool, binary log on) | the block of [Pengaturan MySQL](#pengaturan-mysql) |
 | `Deadlock found when trying to get lock` in `writable/logs` | two event batches met on MySQL 8; since 21 November 2026 the write is run again by itself (`DeadlockRetry`) and re-sent events no longer cause it | nothing while requests still answer 200: the `ERROR` line is the database driver's, written before the write is run again. A `CRITICAL` line right after it means every run failed: look at the load, and keep the log for the developer |
 | Students sent to `/masuk` now and then, events answered 401 | code from before 21 November 2026 with `session.regenerateDestroy = true` | update the code ([Pembaruan kode](#pembaruan-kode)); the `.env` line is ignored afterwards |
-| Behind Cloudflare: the asset package downloads again every few hours | the tunnel's site file has no cache rules | [Jalur W behind a Cloudflare Tunnel](#jalur-w-behind-a-cloudflare-tunnel-cloudflared) |
-| Unduhan data gagal di tengah | `memory_limit` atau batas 300 detik (W: dihitung jam dinding) | persempit rentang tanggal; periksa batas PHP |
-| W: Nginx tidak mau start | port 80/443 dipakai Apache Laragon, IIS, atau aplikasi lain | matikan Apache di Laragon; `Get-NetTCPConnection -LocalPort 80` untuk mencari pemakainya |
-| W: sertifikat kedaluwarsa padahal sudah diperpanjang | Nginx belum di-reload | jalankan `reload-nginx.cmd`; periksa langkah instalasi simple-acme |
-| Tugas terjadwal W `0x1` | Laragon/MySQL mati saat tugas berjalan, atau path PHP berubah setelah ganti versi | nyalakan Laragon; perbarui `Php`/`MySql` di `config.psd1` |
+| The asset package downloads again every few hours | the Nginx site file on the server has no cache rules (a hand-written file instead of `gelita.id.conf`) | [Nginx](#nginx) |
+| Unduhan data gagal di tengah | `memory_limit` atau batas 300 detik (dihitung jam dinding) | persempit rentang tanggal; periksa batas PHP |
+| Nginx tidak mau start | port 80 dipakai Apache Laragon, IIS, atau aplikasi lain | matikan Apache di Laragon; `Get-NetTCPConnection -LocalPort 80` untuk mencari pemakainya |
+| Tugas terjadwal `0x1` | Laragon/MySQL mati saat tugas berjalan, atau path PHP berubah setelah ganti versi | nyalakan Laragon; perbarui `Php`/`MySql` di `config.psd1` |
 | Gambar tidak muncul | aset belum diunggah atau `is_active = 0` | **Gambar & mockup** (`/admin/media`); `gelita:media:scan` |
 | Audio tidak berbunyi | rekaman masih `draft` | **Rekaman narasi** → setujui |
 | CSRF "action not allowed" | tab dibiarkan terbuka semalam | muat ulang halaman; `security.expires` 2 jam |
 | Anak keluar / pindah komputer | sesi berakhir, tab tertutup | masuk lagi di `/masuk`; progres tetap |
 | Staf selalu dikembalikan ke Ganti kata sandi | sandi sementara dari admin (reset / akun baru) belum diganti | ganti sandi di halaman itu; kewajiban hilang otomatis |
-| Admin lupa kata sandi | tidak ada admin lain yang dapat mereset di `/admin/staf` | L: `sudo -u www-data php spark gelita:staff:password admin`; W: `php spark gelita:staff:password admin` di PowerShell. Masuk dengan sandi sementara yang dicetak, lalu buat sandi baru (reset juga membuka kunci) |
+| Admin lupa kata sandi | tidak ada admin lain yang dapat mereset di `/admin/staf` | `php spark gelita:staff:password admin` di PowerShell. Masuk dengan sandi sementara yang dicetak, lalu buat sandi baru (reset juga membuka kunci) |
 | Anak lupa kata sandi | — | guru mereset di `/admin/peserta/{id}`; anak membuat sandi baru saat masuk |
 | Anak lupa nama pengguna | — | admin mencarinya di `/admin/peserta` berdasarkan nama & sekolah (guru tidak melihat nama maupun nama pengguna) |
 | "Terlalu banyak percobaan" | siswa 8 kali salah sandi (staf 5 kali) | tunggu 5 menit (staf 15 menit), atau reset sandi (reset juga membuka kunci) |
@@ -1534,16 +1222,14 @@ Bulanan: periksa tanggal kedaluwarsa sertifikat (pemeriksaan 8) dan jalankan sat
 
 ### Keamanan operasional
 
-1. Ganti sandi admin awal **sebelum** aplikasi dipakai di sekolah (lihat [Langkah terakhir](#langkah-terakhir-kedua-jalur)). Staf yang menerima sandi sementara (reset atau akun baru) dipaksa menggantinya lewat **Ganti kata sandi** saat masuk (`staff_users.must_change_password`).
+1. Ganti sandi admin awal **sebelum** aplikasi dipakai di sekolah (lihat [Langkah terakhir](#langkah-terakhir)). Staf yang menerima sandi sementara (reset atau akun baru) dipaksa menggantinya lewat **Ganti kata sandi** saat masuk (`staff_users.must_change_password`).
 2. Buat akun `guru` terpisah untuk tiap guru, dengan sekolah terisi. Jangan membagikan akun admin.
 3. Nonaktifkan akun guru yang tidak lagi terlibat lewat `/admin/staf` (tombol *Nonaktifkan*, `is_active = 0`); jangan hapus — audit log-nya masih diperlukan.
 4. Tinjau riwayat di `/admin/tata-kelola/audit` secara berkala, terutama aksi `export` dan `delete_execute`.
-5. **Pembaruan sistem.**
-   - L: `sudo apt update && sudo apt upgrade`.
-   - W: Windows Update di luar jam sekolah, dan rilis patch PHP 8.3 lewat pembaruan Laragon. Ganti versi PHP berarti mengulang pengaturan `php.ini` (lihat [Pengaturan PHP](#pengaturan-php)).
+5. **Pembaruan sistem.** Windows Update di luar jam sekolah, dan rilis patch PHP 8.3 lewat pembaruan Laragon. Ganti versi PHP berarti mengulang pengaturan `php.ini` (lihat [Pengaturan PHP](#pengaturan-php)).
 6. **Dependency Composer** diperbarui di lingkungan pengembangan (`composer update`, uji, commit `composer.lock`), lalu dibawa ke server lewat pembaruan biasa. Di server hanya `composer install` dan `composer audit`. `composer update` di server membuat `composer.lock` berbeda dari repositori dan membuat `git pull` berikutnya bentrok.
 7. `.env`, `migrate.dsn`, dan `backup.cnf` tidak pernah masuk repositori. `.gitignore` memuat `.env`, isi `writable/*` per subfolder, `public/assets/uploads/*`, dan `writable/pemeliharaan.flag`.
-8. Port database (3306) tidak pernah dibuka ke jaringan (`bind-address = 127.0.0.1`; firewall Windows hanya membuka 80 dan 443).
+8. Port database (3306) tidak pernah dibuka ke jaringan (`bind-address = 127.0.0.1`). Nginx listens on `127.0.0.1` only, and the Windows firewall opens no port for GELITA.
 
 ### Tata kelola data anak
 
@@ -1564,16 +1250,16 @@ Persetujuan etik dan penafsiran hukumnya tetap urusan institusi. Aplikasi menyed
 
 ## Aturan Sistem
 
-1. GELITA production selalu satu instansi server ber-HTTPS di domain sendiri, di Jalur L (Linux) atau Jalur W (Windows + Laragon). Tidak ada instalasi tanpa HTTPS di jaringan lokal.
+1. GELITA production selalu satu instansi server ber-HTTPS di domain sendiri (`gelita.id`), di Windows + Laragon. HTTPS ends at Cloudflare, and the server sits behind a Cloudflare Tunnel. Tidak ada instalasi tanpa HTTPS di jaringan lokal.
 2. Server baru selalu dipasang lewat [Instalasi baru](#instalasi-baru): `migrate` → `db:seed DatabaseSeeder` → `gelita:narration:import` dan persetujuan narasi → `gelita:content:verify`.
-3. Web server production adalah Nginx di kedua jalur. Hanya `index.php` yang dieksekusi PHP, dan berkas tersembunyi tidak pernah dilayani.
-4. `.env` tidak pernah masuk repositori. Jalur L: `640 deploy:www-data`, dan `deploy` anggota grup `www-data`.
+3. Web server production adalah Nginx. Hanya `index.php` yang dieksekusi PHP, dan berkas tersembunyi tidak pernah dilayani.
+4. `.env` tidak pernah masuk repositori.
 5. Akun MySQL aplikasi tidak punya hak DDL. Migration dan `gelita:reset` memakai `gelita_migrate` lewat `database_default_DSN` (tanpa port), backup memakai `gelita_backup` yang hanya membaca. Rahasia keduanya di luar repositori.
 6. `database.default.DSN` tidak pernah ditulis di `.env`.
-7. Jalur L: semua `php spark` dijalankan sebagai `www-data`.
+7. One Windows account (`gelita`) runs Laragon, every `php spark` command, the deploys and the scheduled tasks.
 8. `writable/exports/` tidak pernah dapat diakses langsung lewat URL.
-9. Pembaruan kode selalu lewat `deploy.sh`/`deploy.ps1`: didahului backup, dibatalkan otomatis bila ada sesi kelas aktif, berjalan di balik mode pemeliharaan, dan hanya membuka situs kembali bila `gelita:content:verify` lolos.
-10. Setiap pembaruan menaikkan `gelita.assetVersion`. Jalur L juga me-reload PHP-FPM; Jalur W mengandalkan `opcache.validate_timestamps = 1`.
+9. Pembaruan kode selalu lewat `deploy.ps1`: didahului backup, dibatalkan otomatis bila ada sesi kelas aktif, berjalan di balik mode pemeliharaan, dan hanya membuka situs kembali bila `gelita:content:verify` lolos.
+10. Setiap pembaruan menaikkan `gelita.assetVersion`. PHP is not reloaded: `opcache.validate_timestamps = 1` stays on.
 11. Hanya URL ber-`?v=` yang boleh di-cache `immutable`; aset lain wajib revalidasi.
 12. Aset masuk server hanya lewat git (folder aset resmi) atau panel (`uploads/`). Tidak ada salinan manual ke folder aset.
 13. Pengambilan data penelitian baru dimulai setelah narasi disetujui, gambar contoh diganti, daftar siap penelitian di **Penelitian** hijau, uji asap lolos, `gelita:reset` dijalankan, dan `gelita:content:verify --siap-penelitian` lolos. `gelita:reset` tidak dijalankan lagi setelah pengambilan data dimulai.
@@ -1584,7 +1270,7 @@ Persetujuan etik dan penafsiran hukumnya tetap urusan institusi. Aplikasi menyed
 18. Raw event tidak dihapus hanya karena ringkasannya sudah ada di panel.
 19. Bank soal dan Pustaka dimuat lewat impor workbook dengan pratinjau; tidak ada penyuntingan langsung ke database.
 20. Lupa sandi siswa diselesaikan dengan reset oleh guru, tidak pernah dengan mencatat sandi anak.
-21. Skrip di `deploy/` tidak diedit di server; nilai khusus server ditulis di `ops.conf` / `config.psd1`. `composer update` dan `php spark optimize` tidak dijalankan di server.
+21. Skrip di `deploy/` tidak diedit di server; nilai khusus server ditulis di `config.psd1`. `composer update` dan `php spark optimize` tidak dijalankan di server.
 22. Rollback selalu dimulai dari migration (selagi kode rilis baru terpasang), baru kemudian kode.
 23. Skrip `.ps1` dan `.psd1` hanya berisi ASCII, agar Windows PowerShell 5.1 membacanya sama dengan PowerShell 7.
 24. `gelita:simulasi` (siswa simulasi) hanya untuk mesin pengembangan dan tidak dijalankan di server; command itu menolak berjalan bila `CI_ENVIRONMENT = production`.
@@ -1593,14 +1279,16 @@ Persetujuan etik dan penafsiran hukumnya tetap urusan institusi. Aplikasi menyed
 
 ## Keputusan yang tercatat
 
-- **Unduhan data tetap sinkron**, dibangun di request yang sama. Batas `gelita.exportMaxRawEvents` (`Config\Gelita::$exportMaxRawEvents`, 200.000 baris) dan 300 detik sudah menjaga satu request tetap terkendali, sedangkan antrean kerja butuh proses latar yang harus dijaga di dua platform. Ditinjau ulang bila unduhan nyata di data penelitian mendekati 120 detik.
-- **Mode pemeliharaan di Nginx, bukan filter CodeIgniter**: tanpa kode tambahan, `php spark` tetap bisa dipakai selama pemeliharaan, dan perilakunya sama di kedua jalur.
-- **Tiga akun database**: cron hanya memegang kredensial baca, dan kredensial DDL hanya dibaca saat migration atau reset.
+- **Unduhan data tetap sinkron**, dibangun di request yang sama. Batas `gelita.exportMaxRawEvents` (`Config\Gelita::$exportMaxRawEvents`, 200.000 baris) dan 300 detik sudah menjaga satu request tetap terkendali, sedangkan antrean kerja butuh proses latar yang harus dijaga. Ditinjau ulang bila unduhan nyata di data penelitian mendekati 120 detik.
+- **Mode pemeliharaan di Nginx, bukan filter CodeIgniter**: tanpa kode tambahan, `php spark` tetap bisa dipakai selama pemeliharaan.
+- **Tiga akun database**: tugas terjadwal hanya memegang kredensial baca, dan kredensial DDL hanya dibaca saat migration atau reset.
 - **Isi awal lewat seeder dengan akun aplikasi**: `DatabaseSeeder` hanya menulis data, jadi tidak memerlukan akun migrasi. Hanya `gelita:reset` yang butuh hak `TRUNCATE`.
 
 ---
 
 ## Catatan Implementasi Tahap 8
+
+The Linux path (Jalur L) and its scripts (`deploy/linux/`), together with the Nginx files for a certificate on the server, were removed from the repository on 21 November 2026. GELITA has one server: Windows + Laragon behind a Cloudflare Tunnel. This section and its three parts (*Yang diuji*, *Cacat yang ditemukan dan diperbaiki*, *Masih belum teruji*) are kept as they were written, as history of the tests run in 2026. Where they name Jalur L, a Linux command, cron or a certificate, only the Windows form in the sections above applies. The sections after them describe the server as it is now.
 
 Berkas di `deploy/` dijalankan di server uji, bukan hanya dibaca: dari server kosong, lewat pembaruan, sampai rollback, untuk jalur sukses, jalur gagal, dan penolakan saat ada kelas aktif. Aturan di dokumen ini yang diberi alasan "terbukti" berasal dari uji itu. `tests/unit/DeployFilesTest.php` mengunci cacat yang ditemukan agar tidak kembali.
 
@@ -1685,20 +1373,20 @@ Hal berikut butuh mesin Windows atau domain sungguhan, dan tetap masuk daftar ve
 
 Setelah panduan ini dijalankan:
 
-* GELITA berjalan sebagai satu instansi server lewat HTTPS, di Linux (Nginx + PHP-FPM) atau Windows + Laragon (Nginx + php-cgi), dengan header keamanan di setiap respons dan berkas sensitif tidak terlayani.
+* GELITA berjalan sebagai satu instansi server lewat HTTPS, di Windows + Laragon (Nginx + php-cgi) di belakang Cloudflare Tunnel, dengan header keamanan di setiap respons dan berkas sensitif tidak terlayani.
 * Instalasi baru mengisi 28.487 sekolah resmi, akun admin, tiga wilayah dengan 12 tantangan, 126 soal kelas 5, 91 baris cerita, 30 halaman Pustaka, 66 gambar contoh, dan 103 rekaman narasi per bahasa yang disetujui, lalu lolos verifikasi konten.
 * Sebelum pengambilan data, gambar contoh diganti gambar asli, daftar siap penelitian hijau, uji asap lolos, data uji coba dikosongkan dengan `gelita:reset`, dan `gelita:content:verify --siap-penelitian` lolos.
-* Pembaruan kode berjalan dengan satu skrip (`deploy.sh` / `deploy.ps1`) yang menolak berjalan saat kelas aktif, membuat backup, memakai mode pemeliharaan, dan hanya membuka situs bila konten lolos verifikasi. Rollback terdokumentasi untuk kedua jalur.
+* Pembaruan kode berjalan dengan satu skrip (`deploy.ps1`) yang menolak berjalan saat kelas aktif, membuat backup, memakai mode pemeliharaan, dan hanya membuka situs bila konten lolos verifikasi. Rollback terdokumentasi.
 * Migration dan reset memakai akun DDL terpisah lewat DSN; aplikasi dan backup memakai akun tanpa hak DDL.
 * Browser selalu mendapat aset terbaru setelah pembaruan, sementara aset ber-versi tetap di-cache lama.
 * Backup berjalan otomatis ke dua lokasi tanpa IP mentah siswa, kegagalannya terlihat, dan prosedur pemulihannya sudah pernah diuji.
 * Retensi harian berjalan pada jam WIB yang benar; data penelitian tidak pernah terhapus tanpa persetujuan manusia.
-* Delapan pemeriksaan otomatis dan sepuluh uji manual lolos, dan aplikasi dinyatakan siap dipakai kelas.
+* Enam pemeriksaan otomatis dan sepuluh uji manual lolos, dan aplikasi dinyatakan siap dipakai kelas.
 
 ## Research revision 10, part 2: migration `003500` and the validators' test install
 
 - **Migration `2026-01-01-003500_CreateFieldSessions`** adds the field session tables and columns and moves progress to `participant_progress`: it fills that table from the completed attempts already stored (one row per student and study) before it drops `session_progress`, so no progress is lost. `SystemResetService::REQUIRED_MIGRATION` is `2026-01-01-003500`. Field mode stays off on existing installs, so the game behaves as before. Never run migrations or `gelita:reset` against the production server from a development session.
-- **Validators' test install (G3).** After `php spark migrate` and `gelita:reset` on the test install: `php spark gelita:uji:akun --buat` (passwords are shown once), then turn on Mode penelitian for the study, and create one field session `V01-A-P2` (or the meeting under review) of at most 4 hours per day. `php spark gelita:uji:akun --reset=uji.bahasa1` gives one validator a fresh start. The tool refuses in production and when any non-`uji.*` student exists.
+- **Validators' test install (G3).** After `php spark migrate` and `gelita:reset` on the test install: `php spark gelita:uji:akun --buat` (passwords are shown once), then turn on Mode penelitian for the study, and create one field session `V01-A-P2` (or the meeting under review) of at most 4 hours per day. `php spark gelita:uji:akun --reset=uji.bahasa1` gives one validator a fresh start. The tool refuses in production and when any non-`uji.*` student exists. Since 21 November 2026 the test install is planned on `uji.gelita.id`, with its own content and database, separate from production (owner; `docs/revisi-10-analitik/20_PAKET_VALIDASI.md` → *Prasyarat no. 8*). The tool refuses when `CI_ENVIRONMENT = production`, so the test install's `.env` must not be a copy of `env-example-production` as it is.
 
 ## Research revision 10, part 3: migrations `003600` and `003700`
 
@@ -1713,21 +1401,20 @@ Part 4 (`docs/revisi-10-analitik/30_IMPLEMENTASI_PERSETUJUAN_DAN_HAK_DATA.md`) a
 
 ### Research install checklist (before children first use their accounts)
 
-1. **`gelita.researchPrivacy = true`** in `.env`. The study form refuses to save or start a field-mode study while it is off. Turn it on outside class hours (students with an old raw-IP session sign in again), then run `php spark gelita:retention:run` once: it removes expired `ci_sessions` rows and every row whose `ip_address` is not a 64-character hash. Check once that `php -i | grep gc_probability` shows 0 on Debian/Ubuntu; the retention run then is the only session cleaner, so keep its daily cron.
-2. **Second backup location 30 days.** Set `KEDUA_HARI=30` in `ops.conf` (Jalur L) or `KeduaHari = 30` in `config.psd1` (Jalur W). Each run then deletes files older than that at the second location, and writes `writable/backup-status.json` (`ran_at`, `kedua_hari`). Tata kelola warns while a field-mode study exists and the status file reports no limit.
+1. **`gelita.researchPrivacy = true`** in `.env`. The study form refuses to save or start a field-mode study while it is off. Turn it on outside class hours (students with an old raw-IP session sign in again), then run `php spark gelita:retention:run` once: it removes expired `ci_sessions` rows and every row whose `ip_address` is not a 64-character hash. Since 21 November 2026 `Config\Events` switches PHP's session garbage collector on for every web request; the daily retention task stays as the second cleaner.
+2. **Second backup location 30 days.** Set `KeduaHari = 30` in `config.psd1`. Each run then deletes files older than that at the second location, and writes `writable/backup-status.json` (`ran_at`, `kedua_hari`). Tata kelola warns while a field-mode study exists and the status file reports no limit.
 3. **Retention.** A field-mode study keeps at least 7305 days, counted from `closed_at` (filled when the study status becomes *Selesai*, emptied when it is opened again before the identities are replaced). Until it is closed it never gets a retention preview; afterwards the preview covers the whole cohort, students included.
-4. On MariaDB, sign in once and check that `ci_sessions.ip_address` holds a 64-character hash.
+4. Sign in once and check that `ci_sessions.ip_address` holds a 64-character hash.
 
 ### Backup replacement after a deletion or the study closure
 
 After the admin has run a parent's request (or replaced the identities at study closure), and before the parents are told:
 
-```text
-bash deploy/linux/backup.sh --ganti
+```powershell
 powershell -File deploy\windows\backup.ps1 -Config C:\gelita-ops\config.psd1 -Ganti
 ```
 
-The script makes a fresh backup as usual and tests it (`gzip -t` / opening the zip). It copies it to the second location; if that location cannot be reached it stops with code 2 and deletes nothing. On Jalur L a local `KEDUA` folder must already exist (create it once on the mounted drive, e.g. `install -d -m 700 /mnt/backup-eksternal/gelita`): an unplugged drive leaves an empty mount point, and the script stops with code 2 there instead of letting rsync create the folder on the server's own disk (manual check 30 §19.3 no. 3, 14 November 2026). Then it deletes every older `gelita-*` file at both locations and prints how many went. Snapshots the hosting provider makes are removed in the provider's panel. Tick *Cadangan diganti* on the request afterwards.
+The script makes a fresh backup as usual and tests it (opening the zip). It copies it to the second location; if that location cannot be reached it stops with code 2 and deletes nothing. `backup.ps1` creates the second-location folder when it is missing, so another drive that sits on the same drive letter is taken for it without a warning (noted in 30 §7.5, not changed): check that the right drive is connected before running it. Then it deletes every older `gelita-*` file at both locations and prints how many went. Snapshots the hosting provider makes are removed in the provider's panel. Tick *Cadangan diganti* on the request afterwards.
 
 ### Scheduled tasks
 

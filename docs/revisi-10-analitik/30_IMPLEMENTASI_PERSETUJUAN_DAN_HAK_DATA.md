@@ -58,7 +58,7 @@ Sejak 1 November 2026 kode dibangun sekarang, dan perilaku penelitian ada di bal
 | Teks T4 (§5.1), izin berkode (§5.2), status mundur dan akun nonaktif (§5.3), T11/T12 (§5.4), penanda (§6), permintaan hapus orang tua (§7), salinan (§8), pembetulan (§9), penutupan (§10) | Studi aktif `field_mode = 1` (28 §5.1); halaman per studi memeriksa `field_mode` studinya | Teks dan pendaftaran lama; halaman panel bagian ini tidak tampil di menu; Tata kelola tetap seperti sekarang |
 | Masa simpan 7305 hari dari `closed_at` (§11) | `field_mode = 1` di studi itu | Studi lain tetap dari mulai sesi dengan `retention_days`-nya sendiri; bawaan kolom tetap 1825 |
 | IP berhash dan pembersihan `ci_sessions` (§12) | `Config\Gelita::$researchPrivacy` (`.env` `gelita.researchPrivacy`), bawaan `false` | `DatabaseHandler` seperti sekarang |
-| Lokasi kedua cadangan 30 hari (§7.5) | Variabel skrip `KEDUA_HARI` (Jalur L) dan `KeduaHari` (Jalur W), kosong bawaan | Lokasi kedua menyimpan tanpa batas seperti sekarang; pilihan `--ganti`/`-Ganti` tetap ada tetapi hanya dijalankan untuk permintaan |
+| Lokasi kedua cadangan 30 hari (§7.5) | `KeduaHari` di `config.psd1` (`backup.ps1`), kosong bawaan | Lokasi kedua menyimpan tanpa batas seperti sekarang; pilihan `--ganti`/`-Ganti` tetap ada tetapi hanya dijalankan untuk permintaan |
 
 **Pengaman supaya sakelar tidak tertinggal:** `StudyController` menolak menyimpan atau mengaktifkan studi `field_mode = 1` bila `researchPrivacy` mati, dengan pesan "Nyalakan pengaman data penelitian (`gelita.researchPrivacy`) di server sebelum studi penelitian diaktifkan." Halaman tata kelola menampilkan peringatan bila studi `field_mode = 1` ada tetapi `KEDUA_HARI` tidak diisi (dibaca dari berkas status yang ditulis skrip cadangan, `writable/backup-status.json`). Keduanya dinyalakan sebelum akun anak pertama kali dipakai ([§4](#4-tenggat-sebelum-akun-gelita-anak-pertama-kali-dipakai)), dan dicek di daftar periksa instalasi penelitian di `docs/08_DEPLOYMENT.md`.
 
@@ -353,7 +353,7 @@ ketua mengajukan ─────────────────────
 Cadangan dibuat skrip sendiri ([../08_DEPLOYMENT.md → Backup](../08_DEPLOYMENT.md#backup)): 30 hari di lokasi pertama, lalu disalin ke lokasi kedua yang **hanya menambah berkas**, sehingga lokasi kedua menyimpan setiap cadangan tanpa batas. Data anak yang sudah dihapus tetap ada di sana, dan nama tetap ada setelah studi ditutup.
 
 **Penggantian cadangan** (K3), setelah permintaan dijalankan dan sebelum orang tua diberi tahu:
-1. Admin menjalankan `backup.sh --ganti` (Jalur L) atau `backup.ps1 -Ganti` (Jalur W).
+1. Admin menjalankan `backup.ps1 -Ganti`. *(The Linux path and `backup.sh` were removed on 21 November 2026; one server, Windows.)*
 2. Skrip membuat cadangan baru seperti biasa dan mengujinya (`gzip -t` atau uji zip).
 3. Bila uji lolos, skrip menghapus semua berkas cadangan yang lebih lama di **kedua lokasi**, lalu mencetak jumlah yang dihapus dan stempel waktu yang tersisa.
 4. Bila lokasi kedua tidak bisa dijangkau, skrip berhenti dengan kode 2 tanpa menghapus apa pun di lokasi pertama. Admin mengulang setelah lokasi kedua tersambung. *Sejak cek manual 14 November 2026 `backup.sh` juga berhenti dengan kode 2 bila `KEDUA` lokal tidak ada (drive belum terpasang, titik pasang kosong), karena sebelumnya `rsync` membuat foldernya di disk server sendiri lalu melapor berhasil. Folder di drive dibuat sekali saat pemasangan (`docs/08_DEPLOYMENT.md`). Celah serupa di `backup.ps1` (stik lain di huruf drive yang sama) belum diubah karena tidak bisa diuji tanpa Windows.*
@@ -534,7 +534,7 @@ Anak yang ingin tetap bermain GELITA setelah studi memakai akun baru di luar mod
 3. Migrasi tidak mengosongkan `ci_sessions`. Saat sakelar menyala, langkah 4 juga menghapus baris yang `ip_address`-nya bukan hash 64 karakter heksadesimal (IP mentah dari `DatabaseHandler`), sehingga IP mentah hilang pada retensi pertama sesudahnya. Pengguna dengan baris itu masuk ulang, jadi sakelar dinyalakan di luar jam sesi, lalu `gelita:retention:run` dijalankan sekali.
 4. Bila sakelar menyala, `RetentionService::run()` menjalankan langkah `purgeExpiredBrowserSessions()`: hapus baris `ci_sessions` yang `timestamp`-nya lebih tua dari `Config\Session::$expiration` (14400 detik). Batasnya dihitung di PHP, supaya kueri yang sama berjalan di SQLite (tes). Jumlahnya masuk ringkasan `retention_run` sebagai `expired_browser_sessions`.
 
-**Mengapa langkah 4 perlu.** CodeIgniter hanya menyetel `session.gc_maxlifetime` (`system/Session/Session.php:172`); kapan pembersih sesi berjalan diatur `session.gc_probability` di php.ini. PHP paket Debian/Ubuntu menyetelnya 0 (terlihat juga di mesin pengembangan cloud, 30 Oktober 2026), jadi di Jalur L baris sesi lama bisa tidak pernah terhapus. Periksa sekali di server: `php -i | grep gc_probability`.
+**Mengapa langkah 4 perlu.** CodeIgniter hanya menyetel `session.gc_maxlifetime` (`system/Session/Session.php:172`); kapan pembersih sesi berjalan diatur `session.gc_probability` di php.ini. PHP paket Debian/Ubuntu menyetelnya 0 (terlihat juga di mesin pengembangan cloud, 30 Oktober 2026), jadi di mesin seperti itu baris sesi lama bisa tidak pernah terhapus (since 21 November 2026 `Config\Events` switches the collector on for every web request). Periksa sekali di server: `php -i | grep gc_probability`.
 
 **Yang tidak berubah:** cadangan tetap tanpa isi `ci_sessions`; `ip_hash` di tabel lain tetap.
 
@@ -652,8 +652,7 @@ Semua kunci asing ke `staff_users` memakai `ON DELETE SET NULL`. Kunci asing ke 
 **Skrip cadangan** ([§7.5](#75-salinan-cadangan)):
 
 ```text
-bash deploy/linux/backup.sh --ganti        # fresh backup, verify, then delete older backups at both locations
-powershell -File deploy\windows\backup.ps1 -Config … -Ganti
+powershell -File deploy\windows\backup.ps1 -Config … -Ganti   # fresh backup, verify, then delete older backups at both locations
 ```
 
 Bila `KEDUA_HARI`/`KeduaHari` diisi, kedua skrip juga menghapus berkas yang lebih tua dari batas itu di lokasi kedua pada setiap jalan biasa.
@@ -821,7 +820,7 @@ Dibetulkan 17 November 2026 (cabang `r10-panel-hak-data`, belum dicek ulang di M
 - `docs/08_DEPLOYMENT.md`: *Backup* (lokasi kedua 30 hari, pilihan `--ganti` dan `-Ganti`); *Tata kelola data anak* no. 1, 2, 5, dan 7 (persetujuan di panel, masa simpan dari izin etik, permintaan orang tua, IP berhash); *Tugas Terjadwal* (pembersihan sesi di retensi); langkah migrasi di luar jam sesi.
 - `docs/02_PROJECT_FOUNDATION.md`: status `HashedIpSessionHandler`.
 - `docs/04_CONTROLLER_ROUTE.md`, `docs/05_VIEW_UI.md`, `docs/07_FEATURE_INTEGRATION.md` (FITUR 16 dan 17), `README.md`.
-- `deploy/linux/backup.sh`, `deploy/windows/backup.ps1`.
+- `deploy/windows/backup.ps1` (`deploy/linux/backup.sh` until the Linux path was removed on 21 November 2026).
 - `.claude/rules/glossary.md`: izin berkode (`consent register`, `participant_consents`), permintaan data (`data request`), penanda tindak lanjut (`risk follow-up flag`), berita acara (`deletion minutes`), ganti nama dengan kode (`identity replacement`), cadangan diganti (`backup replacement`), akun nonaktif (`deactivated`).
 - Aturan kerja repo: bagian *Testing and known pitfalls* bila ada jebakan baru (misalnya tes penangan sesi di SQLite).
 - `docs/PROGRESS.md` dan catatan keputusan implementasi.

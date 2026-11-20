@@ -139,7 +139,7 @@ class GovernanceController extends BaseAdminController
     /**
      * Part 4 (30 §0.1): warns when a field-mode study exists but the backup
      * script never reported `KEDUA_HARI` (`writable/backup-status.json`,
-     * written by deploy/linux/backup.sh and deploy/windows/backup.ps1).
+     * written by deploy/windows/backup.ps1).
      */
     public static function backupWarning(?string $statusFile = null): ?string
     {
