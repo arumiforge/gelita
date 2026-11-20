@@ -31,7 +31,8 @@ namespace App\Libraries;
  * Section shape (every key but id/title optional):
  *   id, title, lead, steps (list of string | [text, link]), list (bullets),
  *   table ([head[], rows[][]]), note (info), warn (warning), glossary (true:
- *   the glossary entries go here)
+ *   the glossary entries go here), downloads (true: the files this guide
+ *   offers, GuideDownloads; owner, 20 November 2026)
  * A link is [href, label, capability]; it shows as a link only when the
  * reader holds the capability.
  */
@@ -41,7 +42,7 @@ final class StaffGuideContent extends GuideContent
     public const BASE = 'admin/panduan-staf';
 
     /** Sections offered as cards on the guide's first page. */
-    public const POPULAR = ['ringkas', 'token', 'lupa-sandi', 'unggah-lembar', 'unduh', 'larangan-daftar'];
+    public const POPULAR = ['ringkas', 'token', 'lupa-sandi', 'unggah-lembar', 'dokumen-cetak', 'unduh', 'larangan-daftar'];
 
     /**
      * Glossary: key => term, def (one or two sentences), example, more (the
@@ -444,9 +445,21 @@ final class StaffGuideContent extends GuideContent
                     ],
                     'list' => [
                         'Cetak per pertemuan: P1 = L0, L1, L2, L3, L6, L7; P2–P4 = L0 sampai L5; P5 = L0, L1, L2, L3, L4, L6, L7; susulan = L0, L1, L2, L3 (dan L6 bila menyusul tes).',
-                        'Templat dari halaman sesi memuat lembar yang diketik. Lembar L0, L7, dan L8 kosong disiapkan tim peneliti.',
+                        'Templat dari halaman sesi memuat lembar yang diketik. Lembar kosong L0–L8 untuk dicetak ada di [Lembar dan dokumen untuk dicetak](#dokumen-cetak).',
                         'Salah tulis dicoret satu garis dan diparaf; jangan memakai cairan koreksi. Isian kosong ditulis "—".',
                         'L7 disimpan di lemari terkunci (kertas) atau terenkripsi (digital), hanya untuk peneliti utama dan ketua.',
+                    ],
+                ],
+                [
+                    'id'        => 'dokumen-cetak',
+                    'title'     => 'Lembar dan dokumen untuk dicetak',
+                    'lead'      => 'Lembar lapangan kosong dan dokumen penelitian yang dipakai di lapangan, dalam bentuk PDF siap cetak di kertas A4. Semuanya bisa diunduh tanpa masuk panel.',
+                    'downloads' => true,
+                    'warn'      => 'Kedua bagian tes awal–akhir memuat semua soal beserta kunci jawabannya. Simpan hasil cetaknya, jangan dibawa ke kelas, dan jangan diperlihatkan kepada siswa atau guru.',
+                    'list'      => [
+                        'Lembar kosong: cetak halaman lembar yang dipakai pertemuan itu (lihat [Lembar L0–L8](#lembar)). Halaman pertama berkasnya memuat daftar lembar per pertemuan.',
+                        'Lembar kosong boleh difotokopi. Kolomnya sama dengan templat dari halaman sesi, jadi isiannya bisa langsung diketik ke templat itu.',
+                        'Setiap dokumen menyebut versinya di kaki halaman. Bila ragu versi mana yang berlaku, tanyakan ke ketua peneliti.',
                     ],
                 ],
                 [

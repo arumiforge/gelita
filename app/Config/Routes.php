@@ -149,9 +149,12 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
     $routes->get('logout', 'AuthController::logout');
     // Staff guide: public (owner, 16 Nov 2026), offered beside the login card; holds no data and no secrets
     $routes->get('panduan-staf', 'StaffGuideController::index');
+    // Research PDFs offered by the guides, by whitelist key (App\Libraries\GuideDownloads; owner, 20 Nov 2026)
+    $routes->get('panduan-staf/unduh/(:segment)', 'StaffGuideController::download/$1');
     $routes->get('panduan-staf/(:segment)', 'StaffGuideController::page/$1');
     // Validator guide: public too (owner, 17 Nov 2026); validators hold student test accounts, never staff accounts
     $routes->get('panduan-validator', 'ValidatorGuideController::index');
+    $routes->get('panduan-validator/unduh/(:segment)', 'ValidatorGuideController::download/$1');
     $routes->get('panduan-validator/(:segment)', 'ValidatorGuideController::page/$1');
     // GELITA guide ("Mengenal GELITA"): public and in full detail (owner, 17 Nov 2026)
     $routes->get('panduan-gelita', 'GelitaGuideController::index');

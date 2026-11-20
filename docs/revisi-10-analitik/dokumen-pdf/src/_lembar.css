@@ -1,0 +1,95 @@
+/*
+ * Print style of the blank field sheets L0–L8 (lembar-kosong.mjs), layered on
+ * _instrumen.css for its colours and fonts. One section.sheet is one page:
+ * A4 portrait (.tegak) or landscape (.datar), as 02 → Cara mencetak dan
+ * mengisi says per sheet. The page script in lembar-kosong.mjs stretches the
+ * empty rows to fill each page and splits a long checklist over pages.
+ */
+@page tegak { size: A4 portrait; margin: 10mm 11mm 9mm; }
+@page datar { size: A4 landscape; margin: 7mm 10mm 6mm; }
+
+:root {
+  --rule: #7d8798;
+  --rule-soft: #b9c0cc;
+  --zebra: #f4f6f9;
+}
+
+body.lembar {
+  font-family: Inter, "Liberation Sans", sans-serif;
+  font-size: 10pt;
+  line-height: 1.3;
+  text-align: left;
+  hyphens: manual;
+}
+
+/* Page boxes: content height of A4 minus the @page margins above, less 1 mm of slack */
+section.sheet { display: flex; flex-direction: column; overflow: hidden; break-inside: avoid; }
+section.sheet + section.sheet { break-before: page; }
+section.sheet.tegak { page: tegak; width: 188mm; height: 277mm; }
+section.sheet.datar { page: datar; width: 277mm; height: 196mm; }
+
+/* Head: sheet badge, title, who fills it in, then the fields written by hand */
+.sheet-head { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2mm 6mm; padding-bottom: 2.5mm; border-bottom: 2px solid var(--navy); }
+.sheet-title { display: flex; align-items: flex-start; gap: 3mm; flex: 1 1 95mm; min-width: 0; }
+.sheet-badge { flex: none; background: var(--navy); color: #fff; font-weight: 700; font-size: 15pt; line-height: 1; padding: 2.2mm 2.6mm; border-radius: 1.5mm; letter-spacing: .02em; }
+.sheet-title h1 { font-size: 13pt; line-height: 1.2; color: var(--navy); margin: 0; border: 0; padding: 0; }
+.sheet-title h1 .sheet-part { color: var(--gold); font-weight: 600; }
+.sheet-sub { margin: 1mm 0 0; font-size: 8.5pt; color: var(--muted); }
+
+.sheet-fields { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 2mm 5mm; flex: 0 1 auto; }
+.sheet.tegak .sheet-fields { flex-basis: 100%; }
+.sheet.datar .sheet-title { flex: 1 1 100mm; }
+.sheet.datar .sheet-fields { flex: 0 1 150mm; justify-content: flex-end; }
+.f { display: inline-flex; align-items: flex-end; gap: 1.5mm; white-space: nowrap; font-size: 9.5pt; }
+.f-label { color: var(--ink); font-weight: 600; }
+.f-line { display: inline-block; height: 6mm; border-bottom: 1px solid var(--ink); }
+.f-choice .opt + .opt::before { content: "/"; margin: 0 1.6mm; color: var(--muted); }
+.f-choice em { font-style: normal; font-size: 7.5pt; color: var(--muted); margin-left: 1mm; }
+.f-seg { display: inline-flex; align-items: flex-end; gap: 1mm; }
+.f-seg > i { font-style: normal; color: var(--muted); padding-bottom: .6mm; }
+.f-box { display: inline-flex; flex-direction: column; align-items: center; }
+.f-box b { display: block; height: 6mm; border: 1px solid var(--ink); border-radius: .8mm; }
+.f-box small { font-size: 6.5pt; color: var(--muted); line-height: 1.1; margin-top: .4mm; }
+
+/* Code lists and short rules printed above a table */
+.legend { margin: 2mm 0 0; padding: 1.6mm 2.4mm; background: var(--note); border-left: 3px solid var(--navy-2); font-size: 8.5pt; line-height: 1.35; }
+.legend p { margin: 0; }
+.legend p + p { margin-top: .8mm; }
+.legend ol { margin: 0; padding-left: 5mm; }
+.legend li { margin: 0; }
+.mono { font-family: "JetBrains Mono", "Liberation Mono", monospace; font-size: .92em; }
+
+/* The writing grid: the page script sets the row height so the rows fill the page */
+.grid-wrap { flex: 1 1 auto; min-height: 0; margin-top: 2.5mm; }
+table.grid { width: 100%; table-layout: fixed; border-collapse: collapse; margin: 0; font-size: 10pt; }
+table.grid th, table.grid td { border: 1px solid var(--rule); padding: 1mm 1.4mm; }
+table.grid th { background: #e3e8f0; color: var(--ink); font-size: 8.8pt; font-weight: 600; line-height: 1.2; vertical-align: bottom; hyphens: auto; overflow-wrap: break-word; }
+table.grid tbody tr:nth-child(even) td { background: var(--zebra); }
+table.grid.fields th[scope="row"] { background: #fff; font-size: 9.5pt; font-weight: 600; vertical-align: top; }
+table.grid.fields td.howto { font-size: 8.3pt; color: var(--muted); vertical-align: top; line-height: 1.3; }
+table.grid.fields tbody tr:nth-child(even) th, table.grid.fields tbody tr:nth-child(even) td { background: #fff; }
+table.grid.fields td.write { background: #fff; }
+
+/* L0 checklist */
+.flow-body { flex: 1 0 auto; margin-top: 2mm; }
+.flow-lead { font-size: 9pt; color: var(--muted); margin: 0 0 1.5mm; }
+.group h2 { font-size: 10.5pt; margin: 3mm 0 1.2mm; padding-bottom: 1mm; border-bottom: 1.2px solid var(--gold); }
+.group h3 { font-size: 9.5pt; color: var(--navy-2); margin: 2mm 0 .8mm; }
+ul.checks-l0 { list-style: none; margin: 0; padding: 0; }
+ul.checks-l0 li { position: relative; padding: .9mm 0 .9mm 7mm; margin: 0; border-bottom: .5px dotted var(--rule-soft); font-size: 9.6pt; line-height: 1.32; }
+ul.checks-l0 li::before { content: ""; position: absolute; left: 1mm; top: 1.3mm; width: 3.4mm; height: 3.4mm; border: 1.2px solid var(--navy-2); border-radius: .6mm; }
+ul.checks-l0 li.sub { margin-left: 5mm; }
+
+/* Foot of every page */
+.sheet-foot { display: flex; justify-content: space-between; gap: 6mm; margin-top: 1.6mm; font-size: 6.8pt; color: var(--muted); letter-spacing: .02em; }
+
+/* First page */
+.isi h1 { font-size: 19pt; color: var(--navy); margin: 3mm 0 2mm; padding: 0; border: 0; }
+.isi .kicker { margin: 0; }
+.isi .lead { font-size: 10pt; color: #3a4558; margin: 0 0 3mm; }
+.isi h2 { font-size: 10.5pt; margin: 4mm 0 1.6mm; }
+.isi table { font-size: 8.8pt; margin: 0 0 1mm; }
+.isi th, .isi td { padding: 1mm 1.8mm; }
+.isi td.n, .isi th.n { text-align: right; width: 18mm; }
+.isi ul { margin: 0; padding-left: 5mm; font-size: 9pt; }
+.isi ul li { margin-bottom: 1mm; }

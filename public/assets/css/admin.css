@@ -1538,6 +1538,29 @@ body.auth { display: grid; min-height: 100vh; place-items: center; padding: 24px
 .gd-facts caption { padding: 12px 18px 0; color: var(--accent); font-size: 14px; font-weight: 700; text-align: left; }
 .gd-facts tbody th { width: 30%; }
 
+/* Files a guide offers (validator and staff guides, 20 Nov 2026): one row per research PDF, the whole row is the link */
+.gd-downloads { padding: 20px 24px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface-2); }
+.gd-downloads .gd-h3 { margin-bottom: 6px; }
+.gd-dl-lead { margin: 0 0 14px; color: var(--text-2); }
+.gd-dl-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.gd-dl {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px;
+  padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); color: var(--text-2);
+}
+.gd-dl:hover { border-color: var(--accent); text-decoration: none; box-shadow: var(--shadow-pop); }
+.gd-dl-icon { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; background: var(--accent-soft); color: var(--accent); }
+.gd-dl-icon .icon { width: 20px; height: 20px; }
+.gd-dl-body { display: grid; gap: 2px; }
+.gd-dl-eyebrow { color: var(--accent); font-size: 13px; font-weight: 600; letter-spacing: .02em; text-transform: uppercase; }
+.gd-dl-title { color: var(--text); font-weight: 700; line-height: 1.4; }
+.gd-dl-text { font-size: 15px; line-height: 1.5; }
+.gd-dl-meta { color: var(--text-dim); font-size: 14px; white-space: nowrap; }
+@media (max-width: 640px) {
+  .gd-downloads { padding: 16px; }
+  .gd-dl { grid-template-columns: auto minmax(0, 1fr); }
+  .gd-dl-meta { grid-column: 2; }
+}
+
 /* GELITA guide (/admin/panduan-gelita, 17 Nov 2026): the reasons, works cited and documents under each page */
 .gd-h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; color: var(--text); font-size: 19px; line-height: 1.35; font-weight: 700; }
 .gd-h3 .icon { width: 20px; height: 20px; color: var(--accent); }

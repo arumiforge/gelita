@@ -17,18 +17,18 @@
       "landscapeTables": 0
     },
     "02_LEMBAR_LAPANGAN.md": {
-      "source": "5748c2f2def438559f5466ddf85baac0e0a95f84899af9ee8f2789e347306379",
-      "commit": "0cb8a8a",
+      "source": "c349be4450c826c617e55393d3b9019adb9d61e5b88425690d57134ad5c40241",
+      "commit": "f8fa1a7",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-09",
+      "date": "2026-11-17",
       "pages": 15,
       "landscapeTables": 0
     },
     "03_KODE_DAN_ARTI.md": {
-      "source": "16552823687c15afaae217bd3b3f0ac9ff9c81974ed74924c6df6767b1828c94",
-      "commit": "76d8a47",
+      "source": "adaa2a9293e3b3c54529eaaac777968a6e556d7e15cf624d920ba17eda8b0485",
+      "commit": "b5b40fe",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-03",
+      "date": "2026-11-17",
       "pages": 12,
       "landscapeTables": 0
     },
@@ -89,11 +89,11 @@
       "landscapeTables": 0
     },
     "11_KAMUS_DATA.md": {
-      "source": "83d0a97e7b02dfd45f2d3fe390496511045142cd9e4a12e95e0855f3e6b3d7c0",
-      "commit": "f73b47c",
+      "source": "bda01db867a2eceb4266171a7d5813573725bdce0892bf85c8bb9b0227160542",
+      "commit": "b5b40fe",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-09",
-      "pages": 20,
+      "date": "2026-11-17",
+      "pages": 21,
       "landscapeTables": 0
     },
     "12_CERITA_PENGHUBUNG_DAN_NARASI.md": {
@@ -105,42 +105,42 @@
       "landscapeTables": 0
     },
     "13_TES_AWAL_AKHIR.md": {
-      "source": "b6817528740f3423f37e6f5880058984e3380f371b985a4f34df34e7fb52be03",
-      "commit": "a832240",
+      "source": "3f440ccdf730d86dfc5ad41ff79bc4cdf13366b46d27e416a724b293ad18cca9",
+      "commit": "b5b40fe",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-03",
-      "pages": 12,
+      "date": "2026-11-17",
+      "pages": 13,
       "landscapeTables": 0
     },
     "14_TES_BAGIAN_MEMBACA.md": {
-      "source": "55ecc0f33e43bc4302182a0e9867e5e7c99cb74078b0f030c893b036ab56a2f1",
-      "commit": "2556dda",
+      "source": "164849ca2d4d872eb1b43f733a9db2c19c993bb504e9afba8ac1d2de2cfb1bbf",
+      "commit": "c110304",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-31",
+      "date": "2026-11-17",
       "pages": 20,
       "landscapeTables": 1
     },
     "15_TES_BAGIAN_DIGITAL.md": {
-      "source": "fa236e4443314df9b75912b9eba20c0fbdc3eee67251c5ced3d7ac9c1fa628b6",
-      "commit": "2556dda",
+      "source": "a8fb1e0b6e3b06219d458714713df44f340323b92b1bf65c312934b0cd8b41cb",
+      "commit": "c110304",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-10-31",
+      "date": "2026-11-17",
       "pages": 23,
       "landscapeTables": 0
     },
     "16_ANGKET_AKSES_DIGITAL.md": {
-      "source": "963dc241d6cbc3173ef9f4fe6c1a706527701829cf338eaeb05ede468ccf5cd2",
-      "commit": "2b17f12",
+      "source": "f1329cdb73468b6548d9b32ab709a84d9f4fa3abd3fbce09e8d2a7dd1ffb66a7",
+      "commit": "1f10b50",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-09",
+      "date": "2026-11-17",
       "pages": 17,
       "landscapeTables": 0
     },
     "17_SKALA_SIKAP.md": {
-      "source": "dc735c83ffa1686eb4d23873d2abf79c9802610494e537a839bb1da7728992cb",
-      "commit": "a7e07ef",
+      "source": "2f5b3cf84cb16ffcb718ca5ebc330fc9dd078c8cab43860daae7cfa9fcfa6dfd",
+      "commit": "1f10b50",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-04",
+      "date": "2026-11-17",
       "pages": 10,
       "landscapeTables": 0
     },
@@ -193,10 +193,10 @@
       "landscapeTables": 0
     },
     "24_UJI_KETERBACAAN.md": {
-      "source": "0ea94c90b07bb8f6c031da9b971854c75eac7f2c26bc114a300395ba20a3e059",
-      "commit": "e4d8e8d",
+      "source": "4f599de96b47a52d739de3108d53dfebbcbe09abb9817eb34c87f68e6d20a998",
+      "commit": "1f10b50",
       "build": "964d87dc43b2f86aa42ee7ddb5bf592dba694fe43fb8351d949d8e03be27d023",
-      "date": "2026-11-15",
+      "date": "2026-11-17",
       "pages": 20,
       "landscapeTables": 0
     },
