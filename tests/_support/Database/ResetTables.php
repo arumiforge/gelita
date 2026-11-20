@@ -5,6 +5,7 @@ namespace Tests\Support\Database;
 use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Database\RawSql;
 use Config\Database;
+use Config\Services;
 
 /**
  * Skema lengkap GELITA (app/Database/Migrations) untuk SQLite
@@ -1000,6 +1001,10 @@ trait ResetTables
             $forge->createTable($table);
         }
 
+        if ($only === null || in_array('staff_users', $only, true)) {
+            self::forgetStaffContext();
+        }
+
         return Database::connect('tests');
     }
 
@@ -1010,6 +1015,20 @@ trait ResetTables
         foreach (array_keys(self::$resetSchema) as $table) {
             $forge->dropTable($table, true);
         }
+
+        self::forgetStaffContext();
+    }
+
+    /**
+     * `Config\Services::staffContext()` keeps the signed-in staff row for the
+     * rest of a request; in one PHPUnit process that is until someone resets
+     * it. A row read from a `staff_users` table that is gone must not sign in
+     * the next test's staff: StaffAuthFilter would give the session that
+     * row's role, whatever the test put in `withSession()`.
+     */
+    private static function forgetStaffContext(): void
+    {
+        Services::resetSingle('staffContext');
     }
 
     /** @return array<string, mixed> definisi kolom Forge */
