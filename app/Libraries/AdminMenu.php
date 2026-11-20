@@ -150,7 +150,9 @@ final class AdminMenu
                 ];
             }
 
-            $item['children'] = $item['href'] === $active ? self::children($item['href'], $path, $can) : [];
+            $item['children'] = $item['href'] === 'admin/data'
+                ? self::rawDataChildren($path)
+                : ($item['href'] === $active ? self::children($item['href'], $path, $can) : []);
             unset($item['group']);
 
             $last                     = array_key_last($groups);
@@ -211,6 +213,33 @@ final class AdminMenu
         }
 
         return [];
+    }
+
+    /**
+     * Data mentah sub-menu (owner, 20 November 2026): one entry per tab group
+     * of RawDataController::GROUPS, always shown, linking to the group's
+     * first tab; current while any tab of the group is open. Only built for
+     * staff who see Data mentah (`research.browse`).
+     *
+     * @return list<array{href: string, label: string, icon: string, active: bool}>
+     */
+    public static function rawDataChildren(string $path): array
+    {
+        $path    = trim($path, '/');
+        $current = str_starts_with($path, 'admin/data/') ? \App\Controllers\Admin\RawDataController::groupOf(substr($path, 11)) : null;
+        $icons   = ['jawaban' => 'check', 'jejak' => 'clock', 'turunan' => 'chart'];
+        $out     = [];
+
+        foreach (\App\Controllers\Admin\RawDataController::GROUPS as $key => [$label, , $tabs]) {
+            $out[] = [
+                'href'   => 'admin/data/' . $tabs[0],
+                'label'  => lang($label),
+                'icon'   => $icons[$key] ?? 'database',
+                'active' => $current === $key,
+            ];
+        }
+
+        return $out;
     }
 
     /**

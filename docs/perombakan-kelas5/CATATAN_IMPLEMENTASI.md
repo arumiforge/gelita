@@ -1275,6 +1275,17 @@ Owner, 20 November 2026: the head researcher could not build or publish an asset
 - **Tests:** `StaffAccessTest` route matrix (ketua true for `admin/studi/rilis` and `/paket`), `PackageSwitchTest` (the no-preview role is now peneliti).
 - **Not changed:** document `27` (§4 table and K13) still says admin only; this entry supersedes it.
 
+## Panel polish for the head researcher (20 November 2026, branch `panel-polesan`)
+
+Owner, 20 November 2026 (interview): a friendlier *Data mentah*, explanatory text at full width, and a general tidy-up of the panel.
+
+- **Data mentah by group.** `RawDataController::GROUPS` sorts the sixteen tabs into *Jawaban & pengerjaan* (jawaban, percobaan, pengerjaan, bantuan), *Kemajuan & jejak* (progres, selesai, navigasi, event) and *Data turunan* (the eight `turunan_*` sheets). The sidebar always shows the three groups under *Data mentah* (`AdminMenu::rawDataChildren()`, the first sub-menu that is not tied to an id in the path); the page shows the group's title and lead, only that group's tabs (derived tabs without the "Turunan:" prefix), and one sentence on what the open sheet holds (`Admin.rawTabHelp_{dimensi}`). URLs, tabs, filters and CSV are unchanged. The breadcrumb names the group.
+- **Full-width text.** The character caps on the page lead, the page-head text, panel paragraphs and lists, alert bodies, empty states, the field-day head and the document-status page are gone; table cells keep theirs (long JSON stays clipped).
+- **Top bar.** The breadcrumb keeps its words and the search box shrinks first; the staff name no longer wraps.
+- **Filter bar.** Fields start narrower so *Terapkan* stays on the same row at Chromebook width.
+- **Empty states.** *Sesi lapangan* and *Pemantauan* use the empty-state card with what to do next (`fieldSessionNoneNext`, `fieldSessionNoneOff`, `monitoringNoneNext`); the table note under *Aktivitas terbaru* sits inside its card.
+- **Study form.** `span-2` fields (research mode, retention, description) so the long help texts do not form narrow columns; the research-mode help says to save with the button under the form and that the server's research privacy switch must be on (the cause of "nothing happens" reported by the owner); the test-limit button reads *Simpan batas waktu tes* instead of repeating the section title.
+- **Tests.** `AdminMenuGroupsTest::testRawDataHasItsGroupsAsASubMenu` (every tab in exactly one group, every group and tab has a text, the sub-menu always shown, the right group current). Checked by screenshots on the MariaDB dev install at 1366 and 1440 px.
 ## Retention keeps open field-session attempts while the study runs (20 November 2026, branch `retensi-mode-penelitian`)
 
 Owner, 20 November 2026. Field sessions leave open attempts open (`28` K14) so a student continues them at the next meeting or make-up session (`33` K3), but `gelita:retention:run` abandoned every attempt untouched for 24 hours (`attemptAbandonHours`). With meetings a week apart, and five schools on different days, an unfinished first attempt was closed with 0 stars the first night and could not be continued. Postponing the nightly run until data collection ends was considered and rejected: the deployment guide schedules it daily, a single manual run would close everything at once, and expired data downloads would stay on the server.

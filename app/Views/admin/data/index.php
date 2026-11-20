@@ -14,6 +14,7 @@
  * @var array<string, mixed>|null $table   RawDataService::page(); null = layanan belum terpasang
  * @var array<string, mixed>      $filters
  * @var bool                      $readable  answer columns as sentences
+ * @var string                    $group     tab group (RawDataController::GROUPS)
  */
 $labeler = class_exists(App\Libraries\ExportLabels::class) && method_exists(App\Libraries\ExportLabels::class, 'label')
     ? static fn (string $key, $value): string => (string) App\Libraries\ExportLabels::label($dimension, $key, $value)
@@ -34,8 +35,7 @@ foreach ($table['columns'] ?? [] as $column) {
 <?= $this->section('content') ?>
 <?= component('partials/admin-head', [
     'title' => 'Data mentah',
-    'lead'  => 'Satu baris = satu rekaman apa adanya, tanpa skor atau olahan. Waktu dalam milidetik ada di tab Pengerjaan, Jawaban & ketepatan, dan Riwayat percobaan.'
-        . ' Siswa dan sekolah tampil sebagai kode, tanpa nama.',
+    'lead'  => 'Setiap baris adalah satu catatan apa adanya dari permainan. Siswa dan sekolah tampil sebagai kode, tanpa nama. Pilih kelompok data di menu kiri, lalu lembarnya di bawah; filter dan Unduh CSV berlaku untuk lembar yang sedang dibuka.',
     'actions' => '<a class="btn" href="' . base_url('admin/ekspor') . '">' . icon('download') . ' Unduh semua lembar</a>',
 ]) ?>
 <?php // Part 9 (35 §10.4): run time, dictionary version, stale, Hitung ulang ?>
@@ -48,13 +48,19 @@ foreach ($table['columns'] ?? [] as $column) {
 <?php endif ?>
 <?= $this->include('partials/flash') ?>
 
-<nav aria-label="Dimensi data mentah">
-  <ul class="tabs">
-    <?php foreach ($tabs as $key => $label): ?>
-      <li><a href="<?= base_url('admin/data/' . $key) ?>"<?= $key === $dimension ? ' aria-current="page"' : '' ?>><?= esc($label) ?></a></li>
-    <?php endforeach ?>
-  </ul>
-</nav>
+<?php [$groupLabel, $groupLead, $groupTabs] = App\Controllers\Admin\RawDataController::GROUPS[$group]; ?>
+<section class="raw-group" aria-labelledby="raw-group-title">
+  <h2 id="raw-group-title" class="raw-group-title"><?= esc(lang($groupLabel)) ?></h2>
+  <p class="raw-group-lead"><?= esc(lang($groupLead)) ?></p>
+  <nav aria-label="<?= esc(lang($groupLabel), 'attr') ?>">
+    <ul class="tabs">
+      <?php foreach ($groupTabs as $key): ?>
+        <li><a href="<?= base_url('admin/data/' . $key) ?>"<?= $key === $dimension ? ' aria-current="page"' : '' ?>><?= esc(ucfirst(preg_replace('/^Turunan: /', '', $tabs[$key]))) ?></a></li>
+      <?php endforeach ?>
+    </ul>
+  </nav>
+  <p class="raw-tab-help"><?= icon('info') ?> <span><?= esc(lang('Admin.rawTabHelp_' . $dimension)) ?></span></p>
+</section>
 
 <?= component('admin-filter-bar', [
     'filters' => $filters,

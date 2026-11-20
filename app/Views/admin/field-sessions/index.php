@@ -25,7 +25,7 @@
 <?php endif ?>
 
 <?php if ($sessions === []): ?>
-  <p class="muted"><?= esc(lang('Admin.fieldSessionNone')) ?></p>
+  <div class="empty-state"><?= icon('clock') ?><p><b><?= esc(lang('Admin.fieldSessionNone')) ?></b><br><?= esc(lang($fieldMode ? 'Admin.fieldSessionNoneNext' : 'Admin.fieldSessionNoneOff')) ?></p></div>
 <?php else: ?>
   <table class="data-table">
     <thead><tr>
