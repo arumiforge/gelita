@@ -26,6 +26,14 @@ class ApiSessionFilter implements FilterInterface
             return null;
         }
 
+        // No running study (owner, 20 November 2026): logged out; INVALID_SESSION so the
+        // game (core/api.js) sends the student to /masuk, which shows why
+        if ($status === 'NO_STUDY') {
+            $this->logoutWithoutStudy();
+
+            return api_error('INVALID_SESSION', (string) $check['message'], 401, ['reason' => 'GAME_NOT_OPEN']);
+        }
+
         if ($status === 'CLOSED') {
             // Queued events, recordings, and heartbeats still come in (28 K13)
             if ($check['game_session_id'] > 0 && in_array(trim($request->getPath(), '/'), self::OPEN_WHEN_CLOSED, true)) {

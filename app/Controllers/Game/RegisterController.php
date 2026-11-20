@@ -49,14 +49,27 @@ class RegisterController extends BaseController
     ];
 
     /** GET /daftar → langkah pertama yang belum lengkap */
-    public function index(): RedirectResponse
+    public function index(): string|RedirectResponse
     {
+        // No running study (owner, 20 November 2026): a notice instead of the form
+        $closed = $this->gameClosedReason();
+
+        if ($closed !== null) {
+            return LoginController::notOpenPage($closed);
+        }
+
         return redirect()->to(site_url('daftar/' . $this->firstIncomplete()));
     }
 
     /** GET /daftar/{1|2|3} */
     public function step(int $n): string|RedirectResponse
     {
+        $closed = $this->gameClosedReason();
+
+        if ($closed !== null) {
+            return LoginController::notOpenPage($closed);
+        }
+
         if (! in_array($n, $this->steps(), true)) {
             return $this->index();
         }
@@ -108,6 +121,13 @@ class RegisterController extends BaseController
     /** POST /daftar/{1|2|3} */
     public function saveStep(int $n): RedirectResponse
     {
+        // The form cannot be continued without a running study: back to the notice
+        $closedMessage = model(ResearchStudyModel::class)->gameClosedMessage();
+
+        if ($closedMessage !== null) {
+            return redirect()->to(site_url('daftar'))->with('errors', ['study' => $closedMessage]);
+        }
+
         if (! in_array($n, $this->steps(), true)) {
             return $this->index();
         }
@@ -205,6 +225,12 @@ class RegisterController extends BaseController
         return redirect()->to(site_url('daftar/' . self::TOKEN_STEP))->with('errors', ['token' => lang($key)]);
     }
 
+    /** ResearchStudyModel::gameClosedReason(): null while a study is `active`. */
+    private function gameClosedReason(): ?string
+    {
+        return model(ResearchStudyModel::class)->gameClosedReason();
+    }
+
     /** Steps of this install: step 0 (token) in field mode, which skips step 2 (school). */
     private function steps(): array
     {
@@ -243,8 +269,6 @@ class RegisterController extends BaseController
      */
     private function register(array $input): RedirectResponse
     {
-        model(ResearchStudyModel::class)->requireActiveStudy();
-
         $username = model(ParticipantModel::class)->normalizeUsername((string) ($input['username'] ?? ''));
         $password = (string) ($input['password'] ?? '');
 

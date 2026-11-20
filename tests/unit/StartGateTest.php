@@ -61,6 +61,14 @@ final class StartGateTest extends CIUnitTestCase
             }
         });
 
+        // A running study, so /masuk shows its form (no database in these tests; owner, 20 November 2026)
+        Factories::injectMock('models', \App\Models\ResearchStudyModel::class, new class () extends \App\Models\ResearchStudyModel {
+            public function gameClosedReason(): ?string
+            {
+                return null;
+            }
+        });
+
         session()->remove(['participant_id', 'game_session_id', 'curtain']);
 
         // Renderer menyimpan data view antar-render; satu uji = satu halaman
