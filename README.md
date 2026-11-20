@@ -130,7 +130,7 @@ Periksa isinya dengan `php spark gelita:content:verify`. Konten dialog dan soal 
 
 ## Instalasi di server
 
-Langkah lengkap untuk kedua jalur (Linux: Nginx + PHP-FPM + cron; Windows: Laragon + Task Scheduler) ada di [`docs/08_DEPLOYMENT.md`](docs/08_DEPLOYMENT.md), dengan skrip di [`deploy/`](deploy/). Ringkasnya:
+Langkah lengkap ada di [`docs/08_DEPLOYMENT.md`](docs/08_DEPLOYMENT.md), dengan skrip di [`deploy/`](deploy/). Ringkasnya:
 
 1. `composer install --no-dev --optimize-autoloader`, salin `env` → `.env` dengan `CI_ENVIRONMENT = production`, isi database, `encryption.key`, `gelita.ipSalt`, dan `app.baseURL`. Web server mengarah ke folder `public/`.
 2. `php spark migrate` dengan akun migrasi `gelita_migrate` lewat `database_default_DSN` (DSN ditulis tanpa port); aplikasi sendiri memakai akun berhak DML saja.
@@ -142,7 +142,7 @@ Langkah lengkap untuk kedua jalur (Linux: Nginx + PHP-FPM + cron; Windows: Larag
 8. Ganti gambar contoh dengan gambar asli di panel (**Gambar & mockup**), sampai **daftar siap penelitian** di **Penelitian** (`/admin/studi`) hijau: tanpa gambar contoh, narasi disetujui, dan `gelita:content:verify --siap-penelitian` lolos.
 9. Uji asap (daftar "Uji manual" di `08_DEPLOYMENT.md`), lalu sebelum pengambilan data penelitian: buat backup, lalu `php spark gelita:reset` dengan akun migrasi.
 
-Tidak ada prosedur pembaruan dari instalasi lama: setiap rilis dipasang sebagai instalasi baru. Pembaruan kode berikutnya pada server yang sudah terpasang memakai `deploy/linux/deploy.sh` atau `deploy/windows/deploy.ps1` (menolak berjalan bila ada kelas aktif, backup, mode pemeliharaan, pull, composer, migrate, impor sekolah, bersihkan cache, naikkan versi aset, lalu membuka situs hanya bila `gelita:content:verify` lolos). Backup dan `gelita:retention:run` dijadwalkan harian.
+Tidak ada prosedur pembaruan dari instalasi lama: setiap rilis dipasang sebagai instalasi baru. Pembaruan kode berikutnya pada server yang sudah terpasang memakai `deploy/windows/deploy.ps1` (menolak berjalan bila ada kelas aktif, backup, mode pemeliharaan, pull, composer, migrate, impor sekolah, bersihkan cache, naikkan versi aset, lalu membuka situs hanya bila `gelita:content:verify` lolos). Backup dan `gelita:retention:run` dijadwalkan harian.
 
 ## Command `gelita:*`
 
@@ -207,7 +207,7 @@ Suite memakai SQLite in-memory (grup database `tests`) dengan skema tiruan di `t
 | `ai-studio/` | ruang kerja alat AI lain, satu folder per alat: `chatgpt-images/` (gambar), `elevenlabs-voice/` (narasi cadangan), dan `elevenlabs-sound/` (musik dan efek suara). Tiap alat hanya menulis di foldernya; hasil yang diterima dipasang ke permainan oleh sesi Claude Code. Tidak dimuat permainan. Lihat `ai-studio/README.md` dan `AGENTS.md` |
 | `app/Views/`, `app/Language/{id,en}/` | tampilan dan teks dwibahasa |
 | `public/assets/` | CSS, JavaScript (`core/`, `game/`, `engines/`, `admin/`), audio, font, vendor; unggahan admin di `uploads/` (tidak dilacak Git) |
-| `deploy/` | skrip deploy, backup, retensi, dan konfigurasi Nginx untuk Linux dan Windows |
+| `deploy/` | skrip deploy, backup, retensi, dan konfigurasi Nginx server (Windows + Laragon di belakang Cloudflare Tunnel) |
 | `docs/` | dokumentasi, sumber bank soal, Pustaka, dan daftar sekolah; rencana yang sudah selesai di `docs/arsip/` |
 | `ai-studio/game-images/` | Katalog Aset: satu-satunya sumber gambar permainan sejak 15 November 2026 (gambar, gambar rujukan, prompt di `data.json`, daftar tinjau `REVIEW.md`); dipasang ke permainan dengan `gelita:katalog:impor`. Internal: memuat tanda benda pengecoh, jadi tidak pernah di bawah `public/` |
 | `gelita-katalog/` | Halaman publik Katalog Aset (katalog.gelita.id): halaman dan daftar saja, setiap gambar dan suara ditautkan ke berkasnya di gelita.id; dibangun dengan `gelita:katalog:halaman` dan di-commit |

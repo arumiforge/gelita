@@ -29,77 +29,76 @@ final class DeployFilesTest extends CIUnitTestCase
         }
     }
 
-    public function testShellScriptsUseLfAndStrictMode(): void
-    {
-        foreach (['deploy.sh' => 'set -Eeuo pipefail', 'backup.sh' => 'set -euo pipefail'] as $name => $strict) {
-            $source = (string) file_get_contents(self::DEPLOY . 'linux/' . $name);
-
-            $this->assertStringStartsWith("#!/usr/bin/env bash\n", $source, $name);
-            $this->assertStringNotContainsString("\r", $source, "{$name} tanpa CRLF");
-            // set -E: trap ERR juga terpicu oleh galat di dalam fungsi spark()
-            $this->assertStringContainsString("\n{$strict}\n", $source, $name);
-        }
-    }
-
-    /** Konfigurasi Nginx kedua jalur hanya boleh berbeda di baris khusus platform. */
-    public function testNginxConfigsMatchAcrossPlatforms(): void
-    {
-        foreach (['gelita-http.conf', 'gelita-https.conf'] as $name) {
-            $this->assertSame(
-                $this->portableNginx(self::DEPLOY . 'linux/nginx/' . $name),
-                $this->portableNginx(self::DEPLOY . 'windows/nginx/' . $name),
-                $name,
-            );
-        }
-    }
-
     /**
-     * The Cloudflare Tunnel variant (Jalur W, production load test of 21 November
-     * 2026) is the HTTPS file without TLS: same cache rules, headers, locations.
-     * The tunnel server ran without the cache map, so Cloudflare served the asset
-     * package files with its own short default instead of `immutable`.
+     * The one Nginx site file of the server (Windows behind a Cloudflare Tunnel).
+     * Each rule here was once lost or wrong on a real server: the tunnel site
+     * written by hand had no cache rules and no HSTS header (production check
+     * of 21 November 2026), and a file that listens on every address lets other
+     * machines claim HTTPS and any visitor address.
      */
-    public function testTunnelConfigIsTheHttpsConfigWithoutTls(): void
+    public function testSiteFileKeepsItsRules(): void
     {
-        $tunnel = self::DEPLOY . 'windows/nginx/gelita.id.conf';
-        $own    = ['set_real_ip_from 127.0.0.1;', 'real_ip_header CF-Connecting-IP;', 'fastcgi_param HTTPS on;'];
-        $source = (string) file_get_contents($tunnel);
+        $lines = $this->nginxLines(self::DEPLOY . 'windows/nginx/gelita.id.conf');
 
-        foreach ($own as $line) {
-            $this->assertStringContainsString($line, $source);
+        foreach ([
+            'listen 127.0.0.1:80;',
+            'server_name gelita.id;',
+            'set_real_ip_from 127.0.0.1;',
+            'real_ip_header CF-Connecting-IP;',
+            'fastcgi_param HTTPS on;',
+            'root "C:/laragon/www/gelita/public";',
+            'add_header X-Content-Type-Options "nosniff" always;',
+            'add_header X-Frame-Options "SAMEORIGIN" always;',
+            'add_header Referrer-Policy "same-origin" always;',
+            'add_header Strict-Transport-Security "max-age=31536000" always;',
+            'add_header Cache-Control $gelita_cache;',
+            'map $uri $gelita_is_asset {',
+            'map "$gelita_is_asset:$arg_v" $gelita_cache {',
+            '~^1:.   "public, max-age=31536000, immutable";',
+            '~^2:    "public, max-age=31536000, immutable";',
+            '"1:"    "no-cache";',
+            'if (-f "C:/laragon/www/gelita/writable/pemeliharaan.flag") {',
+            'location = /index.php {',
+            'fastcgi_pass php_upstream;',
+            'fastcgi_read_timeout 300;',
+            'client_max_body_size 72M;',
+        ] as $line) {
+            $this->assertContains($line, $lines, $line);
         }
 
-        $this->assertSame(
-            array_values(array_diff($this->portableNginx(self::DEPLOY . 'windows/nginx/gelita-https.conf'), ['ssl_protocols TLSv1.2 TLSv1.3;'])),
-            array_values(array_diff($this->portableNginx($tunnel), $own)),
-        );
-        // Only cloudflared on the same machine may reach it: HTTPS and the visitor's address are taken on trust
-        $this->assertMatchesRegularExpression('/^\s*listen 127\.0\.0\.1:80;/m', $source);
-        $this->assertDoesNotMatchRegularExpression('/^\s*(ssl_|listen 443)/m', $source);
+        // add_header inside a location drops every header of the server block
+        $this->assertCount(5, array_filter($lines, static fn (string $line): bool => str_starts_with($line, 'add_header ')));
+        // Only the front controller runs as PHP; hidden files are never served
+        $source = implode("\n", $lines);
+        $this->assertStringContainsString("location ~ \\.php\$ {\nreturn 404;\n}", $source);
+        $this->assertStringContainsString("location ~ /\\. {\nreturn 404;\n}", $source);
+        // Cloudflare ends HTTPS: no certificate and no public port on this machine
+        $this->assertSame([], array_values(array_filter($lines, static fn (string $line): bool => preg_match('/^(ssl_|http2|listen (?!127\.0\.0\.1:80;))/', $line) === 1)));
     }
 
     /**
      * One domain only (owner, 21 November 2026): the files are written for the
      * GELITA server itself, not as a template with a placeholder to replace.
      */
-    public function testNginxConfigsNameTheOneDomain(): void
+    public function testOneServerOneSiteFile(): void
     {
-        $files = [...glob(self::DEPLOY . 'linux/nginx/*.conf'), ...glob(self::DEPLOY . 'windows/nginx/*.conf')];
+        // The Linux path and the two certificate files were removed on 21 November 2026
+        $this->assertDirectoryDoesNotExist(self::DEPLOY . 'linux');
+        $this->assertSame(['gelita.id.conf'], array_map('basename', glob(self::DEPLOY . 'windows/nginx/*')));
 
-        $this->assertCount(5, $files);
+        $source = (string) file_get_contents(self::DEPLOY . 'windows/nginx/gelita.id.conf');
 
-        foreach ($files as $file) {
-            $source = (string) file_get_contents($file);
-
-            $this->assertSame(1, preg_match_all('/^\s*server_name\s+(\S+);/m', $source, $names), basename($file));
-            $this->assertSame('gelita.id', $names[1][0], basename($file));
-            $this->assertStringNotContainsString('sekolah.sch.id', $source, basename($file));
-        }
+        $this->assertSame(1, preg_match_all('/^\s*server_name\s+(\S+);/m', $source, $names));
+        $this->assertSame('gelita.id', $names[1][0]);
     }
 
     public function testScriptsAvoidCommandsThatBreakProduction(): void
     {
-        foreach ([...glob(self::DEPLOY . 'linux/*.sh'), ...glob(self::DEPLOY . 'windows/*.ps1')] as $file) {
+        $scripts = glob(self::DEPLOY . 'windows/*.ps1');
+
+        $this->assertCount(3, $scripts);
+
+        foreach ($scripts as $file) {
             $source = (string) file_get_contents($file);
             $name   = basename($file);
 
@@ -110,9 +109,7 @@ final class DeployFilesTest extends CIUnitTestCase
             $this->assertStringNotContainsString('DB_USER', $source, $name);
         }
 
-        foreach (['linux/deploy.sh', 'windows/deploy.ps1'] as $script) {
-            $this->assertStringContainsString('database_default_DSN', (string) file_get_contents(self::DEPLOY . $script), $script);
-        }
+        $this->assertStringContainsString('database_default_DSN', (string) file_get_contents(self::DEPLOY . 'windows/deploy.ps1'));
     }
 
     /**
@@ -135,16 +132,19 @@ final class DeployFilesTest extends CIUnitTestCase
         }
     }
 
-    /** Baris konfigurasi tanpa komentar, dengan baris khusus platform dibuang. */
-    private function portableNginx(string $file): array
+    /**
+     * The file's lines without comments and indentation.
+     *
+     * @return list<string>
+     */
+    private function nginxLines(string $file): array
     {
-        $platform = '/^(listen|http2|root|ssl_certificate|ssl_certificate_key|fastcgi_pass|if \(-f)\b/';
-        $lines    = [];
+        $lines = [];
 
         foreach (file($file, FILE_IGNORE_NEW_LINES) as $line) {
-            $line = trim(preg_replace('/\s+#.*$|^\s*#.*$/', '', $line));
+            $line = trim((string) preg_replace('/\s+#.*$|^\s*#.*$/', '', $line));
 
-            if ($line !== '' && ! preg_match($platform, $line)) {
+            if ($line !== '') {
                 $lines[] = $line;
             }
         }

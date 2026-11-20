@@ -17,7 +17,7 @@ use CodeIgniter\CLI\CLI;
  * current package, and warnings. Building changes nothing for students; a
  * release whose asset_version is the new package code does.
  *
- * `--deploy` (deploy.sh / deploy.ps1; plan §6.3, owner 9 November 2026):
+ * `--deploy` (deploy.ps1; plan §6.3, owner 9 November 2026):
  * does nothing while package mode is off (the active release names no
  * package). While it is on, builds a package and activates it through
  * ReleaseActivation (audit `release_activate`, `via: deploy`), unless a

@@ -105,7 +105,7 @@ toolbar.collectVarData = false
 
 #--------------------------------------------------------------------
 # GELITA
-# gelita.assetVersion must stay in .env: deploy.sh bumps it on every
+# gelita.assetVersion must stay in .env: deploy.ps1 bumps it on every
 # update and does not add the line when it is missing.
 #--------------------------------------------------------------------
 gelita.ipSalt = 'e75c3b1e069182514a6ad2fe0543a46003cd0f414feb71dd9d7e3b4ccc34e83f'
