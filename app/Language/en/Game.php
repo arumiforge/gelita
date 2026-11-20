@@ -476,6 +476,12 @@ return [
     'tokenEnter'         => 'Enter a token',
     'sessionClosedTitle' => 'See you in the next session!',
     'sessionClosedBody'  => 'The game opens during sessions with the research team.',
+    // No study is running (owner, 20 November 2026): /masuk, /daftar, and a student logged out mid-game
+    'gameNotOpenTitle'   => 'The game is not open yet',
+    'gameNotOpen'        => 'The game is not open yet. Please ask your teacher or the research team.',
+    'studyEndedTitle'    => 'See you!',
+    'studyEnded'         => 'The study has finished. Thank you for playing GELITA!',
+    'backToStart'        => 'Back to the start',
     'researchCodeLabel'  => 'Research code',
     'researchCodeHelp'   => 'Show this code to the research team.',
     'codeFull'           => 'Your class has no codes left. Please call the research team.',

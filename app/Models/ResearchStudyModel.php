@@ -52,6 +52,40 @@ class ResearchStudyModel extends Model
         return $this->where('status', 'active')->orderBy('id', 'DESC')->first();
     }
 
+    /**
+     * The newest study (highest id), whatever its status; null when there is none.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function latestStudy(): ?array
+    {
+        return $this->orderBy('id', 'DESC')->first();
+    }
+
+    /**
+     * Why students cannot play right now, or null while a study is `active`:
+     * `ended` when the newest study is closed, else `not_open` (no study yet,
+     * or the newest one is still a draft). Owner, 20 November 2026.
+     */
+    public function gameClosedReason(): ?string
+    {
+        if ($this->activeStudy() !== null) {
+            return null;
+        }
+
+        return ($this->latestStudy()['status'] ?? null) === 'closed' ? 'ended' : 'not_open';
+    }
+
+    /** The student-facing message for gameClosedReason(), or null while the game is open. */
+    public function gameClosedMessage(): ?string
+    {
+        return match ($this->gameClosedReason()) {
+            null    => null,
+            'ended' => lang('Game.studyEnded'),
+            default => lang('Game.gameNotOpen'),
+        };
+    }
+
     /** Studi aktif atau pengecualian — dipakai service yang tidak dapat berjalan tanpanya. */
     public function requireActiveStudy(): array
     {

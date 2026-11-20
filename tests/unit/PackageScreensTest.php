@@ -26,6 +26,8 @@ final class PackageScreensTest extends CIUnitTestCase
         parent::setUp();
         helper(['gelita', 'content']);
         $this->createPackageWorld();
+        // /masuk shows its form only while a study is running (owner, 20 November 2026)
+        $this->conn->table('research_studies')->insert(['code' => 'STUDI-UJI', 'name' => 'Studi uji', 'status' => 'active']);
         $this->code = (new AssetPackageBuilder($this->packages))->build(['copy_library' => false])['package_code'];
     }
 

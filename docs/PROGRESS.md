@@ -220,3 +220,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `masuk-tanpa-studi` | Claude Code (owner, 20 November 2026): students get a friendly message instead of a server error when no study is `active` (`/masuk`, `/daftar`, game pages and API) | PR open, waiting for review |

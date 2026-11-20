@@ -1057,7 +1057,7 @@ return [
     'researchModeOnLead'          => 'Siswa hanya bisa bermain di sesi lapangan yang sedang buka, dengan token. Semua yang dikerjakan siswa sekarang adalah data penelitian, jadi jangan dipakai untuk mencoba-coba.',
     'researchModeOffTitle'        => 'Mode penelitian mati.',
     'researchModeOffLead'         => 'Permainan terbuka untuk dicoba tanpa token. Rekaman permainan tetap tersimpan dalam bentuk yang sama, tetapi tanpa sesi lapangan, jadi barisnya di Data mentah tidak punya kode sesi lapangan.',
-    'researchModeOffLeadNoStudy'  => 'Belum ada penelitian yang berjalan. Permainan terbuka untuk dicoba tanpa token.',
+    'researchModeOffLeadNoStudy'  => 'Belum ada penelitian yang berjalan. Siswa belum dapat masuk atau mendaftar sampai satu penelitian berstatus Berjalan.',
     'researchModeDiffSummary'     => 'Beda yang dicatat dan berlaku di kedua mode',
     'researchModeColAspect'       => 'Bagian',
     'researchModeColOff'          => 'Mode penelitian mati (mencoba)',
