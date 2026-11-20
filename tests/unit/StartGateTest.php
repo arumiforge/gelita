@@ -479,26 +479,48 @@ final class StartGateTest extends CIUnitTestCase
         $this->assertStringContainsString('welcome-logo is-hero', $page);
     }
 
-    /** Admin dapat mengunggah kedua slot baru, termasuk varian bahasa tombol. */
-    public function testNewSlotsAreRegisteredSizedAndLabelled(): void
+    /** The hero logo slot is registered, sized and labelled; the language variant comes from the key suffix. */
+    public function testHeroLogoSlotIsRegisteredSizedAndLabelled(): void
     {
         $store = new MediaStore();
 
         $this->assertSame([1600, 600], $store->requiredSize('ui.logo-hero'));
-        $this->assertSame([1200, 220], $store->requiredSize('ui.btn-start'));
-        $this->assertSame([1200, 220], $store->requiredSize('ui.btn-start.en'));
+        $this->assertNotNull(MediaUsage::slotLabel('ui.logo-hero'));
 
-        $this->assertNull(MediaStore::localeFromKey('ui.btn-start'));
-        $this->assertSame('en', MediaStore::localeFromKey('ui.btn-start.en'));
-
-        foreach (['ui.logo-hero', 'ui.btn-start', 'ui.btn-start.en'] as $key) {
-            $this->assertNotNull(MediaUsage::slotLabel($key), $key);
-        }
+        $this->assertNull(MediaStore::localeFromKey('ui.logo-hero'));
+        $this->assertSame('en', MediaStore::localeFromKey('ui.lang.en'));
+        $this->assertSame('id', MediaStore::localeFromKey('ui.lang.id'));
 
         $slots = array_column((new ReflectionClassConstant(MediaAssetSeeder::class, 'SLOTS'))->getValue(), 1, 0);
         $this->assertSame('assets/ui/logo-hero', $slots['ui.logo-hero']);
-        $this->assertSame('assets/ui/btn-start', $slots['ui.btn-start']);
-        $this->assertSame('assets/ui/btn-start-en', $slots['ui.btn-start.en']);
+    }
+
+    /**
+     * The lettered MULAI/START picture slots are retired (owner, 20 November
+     * 2026): no label, no size, not required, not seeded, and the catalogue
+     * import removes rows a server still has.
+     */
+    public function testLetteredStartButtonSlotsAreRetired(): void
+    {
+        $store   = new MediaStore();
+        $gelita  = config('Gelita');
+        $seeded  = array_column((new ReflectionClassConstant(MediaAssetSeeder::class, 'SLOTS'))->getValue(), 1, 0);
+        $retired = ['ui.btn-start', 'ui.btn-start.en'];
+
+        $this->assertSame($retired, \App\Libraries\CatalogImporter::RETIRED_SLOTS);
+
+        foreach ($retired as $key) {
+            $this->assertNull(MediaUsage::slotLabel($key), $key);
+            $this->assertNull(\App\Libraries\ImageSlots::describe($key), $key);
+            $this->assertNull($store->requiredSize($key), $key);
+            $this->assertNotContains($key, \App\Libraries\AssetChecklist::UI_SLOTS);
+            $this->assertArrayNotHasKey($key, $seeded);
+            $this->assertArrayNotHasKey($key, $gelita->assetSizes);
+            $this->assertArrayNotHasKey($key, $gelita->assetDisplaySizes);
+        }
+
+        $this->assertArrayNotHasKey('ui.btn-start.*', $gelita->assetSizes);
+        $this->assertArrayNotHasKey('ui.btn-start.*', $gelita->assetDisplaySizes);
     }
 
     /**

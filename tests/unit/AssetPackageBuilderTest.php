@@ -59,7 +59,7 @@ final class AssetPackageBuilderTest extends CIUnitTestCase
 
         $keys = $this->keys($manifest);
 
-        foreach (['bg.welcome', 'ui.btn-start', 'ui.btn-start.en', 'char.jaka.idle.1', 'audio.sfx.click', 'audio.narasi.id.intro-01', 'audio.narasi.en.intro-01', 'challenge.item.mgl-4-a01'] as $key) {
+        foreach (['bg.welcome', 'ui.logo-hero', 'ui.logo-hero.en', 'char.jaka.idle.1', 'audio.sfx.click', 'audio.narasi.id.intro-01', 'audio.narasi.en.intro-01', 'challenge.item.mgl-4-a01'] as $key) {
             $this->assertArrayHasKey($key, $keys, $key);
         }
 
@@ -157,7 +157,7 @@ final class AssetPackageBuilderTest extends CIUnitTestCase
 
     public function testMockupsDraftNarrationMissingFilesAndOversizedFilesWarn(): void
     {
-        config('Gelita')->paket['budgets'] = ['ui.btn-start' => 3] + config('Gelita')->paket['budgets'];
+        config('Gelita')->paket['budgets'] = ['ui.logo-hero' => 3] + config('Gelita')->paket['budgets'];
         unlink($this->public . 'assets/uploads/library.candi.jpg');
 
         $warnings = $this->build()['warnings'];
@@ -170,7 +170,7 @@ final class AssetPackageBuilderTest extends CIUnitTestCase
         $this->assertSame(['challenge.item.mgl-4-a01'], $byCode['placeholder']);
         $this->assertSame(['audio.narasi.id.kenal-magelang-01'], $byCode['narration_not_approved']);
         $this->assertSame(['library.candi'], $byCode['file_missing']);
-        $this->assertSame(['ui.btn-start'], $byCode['over_budget']);
+        $this->assertSame(['ui.logo-hero'], $byCode['over_budget']);
     }
 
     public function testGroupsFollowThePlan(): void
@@ -179,7 +179,7 @@ final class AssetPackageBuilderTest extends CIUnitTestCase
 
         $expected = [
             'bg.welcome'                         => 'inti',
-            'ui.btn-start.en'                    => 'inti',
+            'ui.logo-hero.en'                    => 'inti',
             'char.jaka.idle.1'                   => 'inti',
             'audio.sfx.click'                    => 'inti',
             'audio.narasi.id.intro-01'           => 'inti',
@@ -344,11 +344,11 @@ final class AssetPackageBuilderTest extends CIUnitTestCase
         $this->assertSame([], $maintenance->verify($second['package_code']));
 
         // Tampering is detected
-        $url = $this->urls($this->packages->manifest($second['package_code']))['ui.btn-start'];
-        file_put_contents($this->public . $url, 'xtart-id');
+        $url = $this->urls($this->packages->manifest($second['package_code']))['ui.logo-hero'];
+        file_put_contents($this->public . $url, 'xogo-id');
         $issues = $maintenance->verify($second['package_code']);
         $this->assertCount(1, $issues);
-        $this->assertSame('ui.btn-start', $issues[0]['key']);
+        $this->assertSame('ui.logo-hero', $issues[0]['key']);
         $this->assertStringContainsString('sha256', $issues[0]['issue']);
     }
 

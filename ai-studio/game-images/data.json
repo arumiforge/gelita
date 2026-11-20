@@ -1527,36 +1527,6 @@
   "negative": "No watermarks, signatures, unintended text, extra limbs, duplicate subjects, cropped key features, blurry edges, neon colours, clutter, or fake checkerboard transparency. No painterly 2D, gouache, paper grain, or conflicting Jaka costume."
  },
  {
-  "id": "097",
-  "key": "ui.btn-start",
-  "title": "Tombol MULAI",
-  "cat": "Antarmuka",
-  "region": "Umum",
-  "size": "1200 × 220",
-  "ratio": "60:11",
-  "format": "WebP",
-  "alpha": true,
-  "file": "assets/antarmuka/ui.btn-start.webp",
-  "desc": "Tombol MULAI dari pemilik (20 Oktober 2026, versi kedua): papan panjang enamel hijau toska berbingkai emas dengan ukiran sulur dan permata di kedua ujung yang meruncing; latar kotak-kotak palsu dipotong menjadi transparan, papan diletakkan di tengah kanvas 1200 × 220.",
-  "prompt": "GELITA ACTIVE VISUAL DIRECTION — 2026-10-11\nAsset: ui.btn-start\nPremium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.\nJaka: match assets/referensi/reference.01.webp, approximately 11-year-old Javanese boy, tousled dark-brown hair with cowlick, brown eyes, cream short-sleeve shirt, red scarf, brown knee-length shorts, orange-brown batik waist cloth, sandals, leather backpack. Mbah Kedu: match reference.02, elderly Javanese man with white moustache and short beard, brown batik headwrap and cream/brown clothing; do not give him Jaka's scarf. Apply an identity only when that character is requested; never add characters to object-only or landscape assets.\n\nSUBJECT AND COMPOSITION\na single wide pill-shaped game button seen straight on, polished antique-gold surface with a soft bevel and a subtle kawung batik pattern engraved near both ends, warm inner glow, a thin darker gold rim, generous empty area in the middle for a label, perfectly symmetrical, single isolated subject, centred, whole subject visible with even margins, transparent alpha background, no cast shadow, no ground, no scenery Add the exact label MULAI manually after image generation using Plus Jakarta Sans ExtraBold; never ask image generation to spell the label.\n\nDELIVERY\nTarget canvas 720 × 240 pixels; aspect 3:1. Complete subject within canvas, proportional scaling only. Genuine transparent background outside the subject; preserve alpha. Deliver WebP for raster assets.\n\nCONSTRAINTS\nNo watermarks, signatures, unintended text, extra limbs, duplicate subjects, cropped key features, blurry edges, neon colours, clutter, or fake checkerboard transparency. No painterly 2D, gouache, paper grain, or conflicting Jaka costume.",
-  "negative": "No watermarks, signatures, unintended text, extra limbs, duplicate subjects, cropped key features, blurry edges, neon colours, clutter, or fake checkerboard transparency. No painterly 2D, gouache, paper grain, or conflicting Jaka costume."
- },
- {
-  "id": "098",
-  "key": "ui.btn-start.en",
-  "title": "Tombol START",
-  "cat": "Antarmuka",
-  "region": "Umum",
-  "size": "1200 × 220",
-  "ratio": "60:11",
-  "format": "WebP",
-  "alpha": true,
-  "file": "assets/antarmuka/ui.btn-start.en.webp",
-  "desc": "Tombol START dari pemilik (20 Oktober 2026, versi kedua): papan panjang enamel hijau toska berbingkai emas dengan ukiran sulur dan permata di kedua ujung yang meruncing; latar kotak-kotak palsu dipotong menjadi transparan, papan diletakkan di tengah kanvas 1200 × 220.",
-  "prompt": "GELITA ACTIVE VISUAL DIRECTION — 2026-10-11\nAsset: ui.btn-start.en\nPremium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.\nJaka: match assets/referensi/reference.01.webp, approximately 11-year-old Javanese boy, tousled dark-brown hair with cowlick, brown eyes, cream short-sleeve shirt, red scarf, brown knee-length shorts, orange-brown batik waist cloth, sandals, leather backpack. Mbah Kedu: match reference.02, elderly Javanese man with white moustache and short beard, brown batik headwrap and cream/brown clothing; do not give him Jaka's scarf. Apply an identity only when that character is requested; never add characters to object-only or landscape assets.\n\nSUBJECT AND COMPOSITION\na single wide pill-shaped game button seen straight on, polished antique-gold surface with a soft bevel and a subtle kawung batik pattern engraved near both ends, warm inner glow, a thin darker gold rim, generous empty area in the middle for a label, perfectly symmetrical, single isolated subject, centred, whole subject visible with even margins, transparent alpha background, no cast shadow, no ground, no scenery Add the exact label START manually after image generation using Plus Jakarta Sans ExtraBold; never ask image generation to spell the label.\n\nDELIVERY\nTarget canvas 720 × 240 pixels; aspect 3:1. Complete subject within canvas, proportional scaling only. Genuine transparent background outside the subject; preserve alpha. Deliver WebP for raster assets.\n\nCONSTRAINTS\nNo watermarks, signatures, unintended text, extra limbs, duplicate subjects, cropped key features, blurry edges, neon colours, clutter, or fake checkerboard transparency. No painterly 2D, gouache, paper grain, or conflicting Jaka costume.",
-  "negative": "No watermarks, signatures, unintended text, extra limbs, duplicate subjects, cropped key features, blurry edges, neon colours, clutter, or fake checkerboard transparency. No painterly 2D, gouache, paper grain, or conflicting Jaka costume."
- },
- {
   "id": "099",
   "key": "ui.placeholder",
   "title": "Gambar pengganti",

@@ -381,7 +381,30 @@ final class LibraryLockTest extends CIUnitTestCase
         $this->assertSame(2, substr_count($steps, 'class="is-locked"'));
 
         $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
-        $this->assertStringContainsString('.map-level .node-panels:has(.node-card:target) .node-card:target { display: grid; }', $css, 'the :target fallback shows the card');
+        $this->assertStringContainsString('.map-level .node-panels:not(.is-live):has(.node-card:target) .node-card:target { display: grid; }', $css, 'the :target fallback shows the card');
+    }
+
+    /**
+     * The :target fallbacks of the region map and Peta Kedu stop once map.js runs: replaceState
+     * drops the hash but not :target, and an unscoped fallback outranks is-selected, so two
+     * cards would show (review of PR #431, 20 November 2026).
+     */
+    public function testTargetFallbackStopsWhenMapScriptRuns(): void
+    {
+        $css = (string) file_get_contents(FCPATH . 'assets/css/game.css');
+        preg_match_all('/^[^\n{]*:target\)[^\n{]*\{/m', $css, $rules);
+        $panelRules = array_filter($rules[0], static fn (string $rule): bool => str_contains($rule, 'node-panels') || str_contains($rule, 'kedu-panels'));
+        $this->assertCount(4, $panelRules);
+        foreach ($panelRules as $rule) {
+            $this->assertStringContainsString(':not(.is-live):has(', $rule);
+        }
+    }
+
+    /** Tapping the open page in the contents sends no second library_page_viewed (review of PR #431). */
+    public function testContentsLinkToTheOpenPageDoesNothing(): void
+    {
+        $js = (string) file_get_contents(FCPATH . 'assets/js/game/library.js');
+        $this->assertMatchesRegularExpression('/if \(n === slides\.current\) return;\s+slides\.show\(n\);/', $js);
     }
 
     /** A locked Pustaka link opens its modal only, without the corner toast (owner, 21 October 2026). */

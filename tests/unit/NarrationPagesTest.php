@@ -359,7 +359,7 @@ final class NarrationPagesTest extends CIUnitTestCase
         $result->assertOK();
         $html = html_entity_decode((string) $result->getBody(), ENT_QUOTES | ENT_HTML5);
 
-        foreach (['ui.logo-hero', 'ui.btn-start.en', 'bg.loading', 'map.kedu', 'char.kedu.worried.1', 'Peta wilayah Magelang', 'map.region.magelang', 'Rekaman narasi EN', 'public/assets/audio/music/map.mp3', 'Efek jawaban benar'] as $text) {
+        foreach (['ui.logo-hero', 'ui.lang.en', 'bg.loading', 'map.kedu', 'char.kedu.worried.1', 'Peta wilayah Magelang', 'map.region.magelang', 'Rekaman narasi EN', 'public/assets/audio/music/map.mp3', 'Efek jawaban benar'] as $text) {
             $this->assertStringContainsString($text, $html);
         }
 

@@ -667,9 +667,9 @@ class MediaStore
     }
 
     /**
-     * Varian bahasa gambar bertulisan ditandai akhiran kunci `.en` / `-en`
-     * (mis. `ui.btn-start.en`), sama dengan aturan MediaAssetSeeder untuk
-     * nama berkas. Kunci tanpa akhiran berlaku untuk semua bahasa (NULL).
+     * The language of a lettered picture is the key suffix `.en` / `-en`
+     * (e.g. `ui.lang.en`), the same rule MediaAssetSeeder uses for file
+     * names. A key without a suffix serves every language (NULL).
      */
     public static function localeFromKey(string $assetKey): ?string
     {

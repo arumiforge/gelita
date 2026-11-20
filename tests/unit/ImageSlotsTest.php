@@ -165,13 +165,14 @@ final class ImageSlotsTest extends CIUnitTestCase
         $this->assertStringContainsString('tongkat', $kedu['content']);
         $this->assertStringContainsString('Satu gambar diam per pose', $jaka['tips']);
 
-        foreach (['char.jaka.idle.1', 'char.kedu.idle.1', 'ui.btn-start', 'ui.btn-start.en', 'avatar.1', 'map.kedu', 'map.region.temanggung'] as $key) {
+        foreach (['char.jaka.idle.1', 'char.kedu.idle.1', 'ui.lang.id', 'ui.lang.en', 'avatar.1', 'map.kedu', 'map.region.temanggung'] as $key) {
             $text = implode(' ', array_filter([ImageSlots::describe($key)['content'], ImageSlots::describe($key)['tips']]));
             $this->assertDoesNotMatchRegularExpression('/\b(lurik|iket|blangkon|surjan|perkamen)\b/i', $text, $key);
         }
 
-        $this->assertStringContainsString('MULAI', ImageSlots::describe('ui.btn-start')['content']);
-        $this->assertStringContainsString('START', ImageSlots::describe('ui.btn-start.en')['content']);
+        // The lettered MULAI/START picture buttons are retired (owner, 20 November 2026)
+        $this->assertNull(ImageSlots::describe('ui.btn-start'));
+        $this->assertNull(ImageSlots::describe('ui.btn-start.en'));
         $this->assertStringContainsString('tanpa wajah', ImageSlots::describe('avatar.3')['content']);
         $this->assertStringContainsString('WebP', ImageSlots::describe('bg.welcome')['format']);
         $this->assertSame(['png'], ImageSlots::types('app.icon-512'), 'app icons stay PNG');

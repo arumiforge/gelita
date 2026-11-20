@@ -230,7 +230,7 @@ Dimuat global lewat `Config\Autoload::$helpers`.
 | `tr($row, $field, $locale)` | `content_helper.php` | Teks dwibahasa dari baris array (`{field}_id`/`{field}_en`) dengan cadangan Indonesia. |
 | `rich_text($text)` | `content_helper.php` | Format ringan teks Pustaka: paragraf, `## ` → `h3`, `- ` → daftar, `> ` → `aside.book-fact`, `Sumber:` → `p.book-source`, `**tebal**`, `*miring*`. Teks di-escape lebih dulu. |
 | `media_src($id)`, `media_exists($id)`, `media_first(...$ids)` | `content_helper.php` | URL media aktif; `media_src()` jatuh ke `assets/ui/placeholder.svg`, `media_first()` ke string kosong (layout lalu memakai gradien). |
-| `media_key_src($key)`, `media_key_src_locale($key, $locale)` | `content_helper.php` | URL menurut `asset_key` resmi, `null` bila belum diunggah. Varian bahasa: `{kunci}.{locale}` dicoba lebih dulu (mis. `ui.btn-start.en`). |
+| `media_key_src($key)`, `media_key_src_locale($key, $locale)` | `content_helper.php` | URL menurut `asset_key` resmi, `null` bila belum diunggah. Varian bahasa: `{kunci}.{locale}` dicoba lebih dulu (mis. `{kunci}.en`). |
 | `character_frame_src($character, $pose)` | `content_helper.php` | Still picture of the pose `char.{jaka|kedu}.{pose}.1`, cadangan `idle`; `null` untuk narator atau bila belum ada gambar. |
 | `audio_src($id)` | `content_helper.php` | URL audio hanya bila `approval_status = approved` dan berkasnya aktif. |
 | `media_catalog()`, `audio_catalog()` | `content_helper.php` | Daftar aset untuk pemilih di panel admin. |
@@ -275,7 +275,7 @@ Semua layar sesudah login menerima data HUD (`hudData()`), kecuali cerita pembuk
 
 * Latar `bg.welcome`, `body.is-welcome`, HUD tanpa merek (`hideBrand`).
 * Logo: slot `ui.logo-hero` (1600 × 600), cadangan `ui.logo`, lalu judul teks `Game.appName` + `Game.tagline`. The tagline `Game.tagline` is always shown under the logo image as `.welcome-tagline`, in the page language (owner, 18 October 2026).
-* **Satu** tombol Mulai `.btn-start` → `/mulai`, sama untuk siswa yang sudah maupun belum login. Gambarnya slot `ui.btn-start` (1200 × 220, the owner's long carved plate since 20 October 2026, shown 480 × 88 dp; bertulisan, jadi memakai `media_key_src_locale()`: `ui.btn-start.en` untuk bahasa Inggris); tanpa gambar menjadi `btn btn-primary btn-xl` bertuliskan `Game.start`.
+* **Satu** tombol Mulai `.btn-start` → `/mulai`, sama untuk siswa yang sudah maupun belum login. It is always the CSS button `btn btn-primary btn-xl` with the text `Game.start` (since PR #431); the lettered picture slots `ui.btn-start` / `ui.btn-start.en` were retired on 20 November 2026 (owner), and `gelita:katalog:impor` removes their rows on a server that still has them.
 * Tawaran memasang aplikasi `.welcome-install` (`data-install="modal"`, tersembunyi sampai `game/install.js` memutuskan): tombol `Game.installApp`. *Since 18 October 2026 (English):* on phones and tablets a dialog over the blurred stage offers the install first, once per browser session, and the button reopens it; its text rides on the box's `data-install-*` attributes (details in docs/06 §`game/install.js`).
 * Staf masuk lewat `/admin/login`; halaman awal tidak menautkannya.
 
@@ -532,7 +532,7 @@ Aplikasi tetap utuh selama gambar belum diunggah:
 * Logo dan tombol Mulai: judul teks dan tombol CSS emas-navy.
 * Peta tanpa gambar: kanvas `.is-drawn`; adegan Cari Objek tanpa gambar: `.hunt-scene.is-drawn`.
 * `media_src()` untuk gambar soal jatuh ke `assets/ui/placeholder.svg`.
-* Gambar bertulisan punya varian bahasa lewat akhiran kunci (`ui.btn-start` dan `ui.btn-start.en`), dibaca `media_key_src_locale()`.
+* Gambar bertulisan punya varian bahasa lewat akhiran kunci (`{kunci}` dan `{kunci}.en`), dibaca `media_key_src_locale()`. No slot has such a pair since the lettered start button was retired (20 November 2026).
 * Gambar contoh (mockup) yang dibuat `php spark gelita:mockups` untuk 45 slot gambar tantangan adalah berkas SVG biasa (`media_assets.is_placeholder = 1`) dan tampil seperti gambar lain sampai diganti gambar asli di panel.
 
 ## Panel admin
