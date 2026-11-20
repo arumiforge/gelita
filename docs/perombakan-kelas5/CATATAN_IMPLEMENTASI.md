@@ -1220,6 +1220,25 @@ Owner, third request the same day: move the Serpihan Cahaya plate to the top cen
 - **Checked.** `ErrorPagesTest` (new), screenshots of a story screen and the 404 page on the dev install.
 
 
+## README: audio licence, asset sizes and panel bullets checked (20 November 2026, branch `readme-audio-panel`)
+
+- **Audio licence.** No Mimic 3 or Piper output is shipped any more (narration removed 17 October 2026; `public/assets/audio/narasi/` holds only `.gitkeep`). The 15 music and 6 sound-effect MP3s are still the original syntheses of the removed `tools/audio/` generator: `public/assets/audio/produksi.json` does not exist, so `gelita:sound:install` has never replaced one, and `ai-studio/elevenlabs-sound/out/` is empty. The narration in use is the 374 ElevenLabs takes (187 per language, all made on `akun-1`, Starter plan) in `ai-studio/elevenlabs-voice/out/`, installed on a server, never committed. `README.md` now says this; whether ElevenLabs asks for a credit on that plan is left to the owner. Not changed (outside this branch's files): `docs/audio.md` → *Lisensi dan kredit* still describes Mimic 3, Piper and the generator as current.
+- **Asset sizes.** The README table lists required pixel sizes per image slot, not folder sizes, so it was checked against `Config\Gelita::$assetSizes` and `ImageFitter`, not measured with `du`. Corrections: every listed pattern is enforced (the old "tidak" rows for region maps and badges were wrong); the rule is "not smaller, ratio within 1 %, larger is shrunk", not "exactly equal"; the start button is 1200 × 220 (was 720 × 360); slots added since (language icons, pins and lanterns, avatars, app icons, `challenge.post.*`).
+- **Panel bullets.** Rewritten after `AdminMenu` (groups Kerja lapangan, Data penelitian, Konten, Pengaturan, Bantuan), `StaffAccess` and the views: content and *Penelitian* are no longer "admin only" (content is visible to every role, editing is admin's), and field sessions, monitoring, data requests, risk follow-up, technical log, document status and server check were missing. The roles bullet was left as it was.
+- **Seen in passing (code, not changed):** the participant detail tab still titles its table "Progres 12 tantangan" (`app/Views/admin/participants/show.php`), and several docblocks still say 12 challenges.
+
+## Asset checklist lists the round-2 post photos (20 November 2026, branch `ceklis-foto-pos`)
+
+Open item of `docs/PROGRESS.md` (found 16 November 2026, `31` §14 no. 14): `AssetChecklist` did not list the photo inside each Cari Objek round-2 post (Periksa Unggahan), so a post without one only showed the general placeholder in the game.
+
+- **New group** *Foto unggahan Cari Objek babak 2* (`AssetChecklist::postPhotoGroup()`, after *Gambar tantangan*): one row per `post_scenes` row of an active challenge, ordered by region, challenge and variant, labelled `Cari Objek {ref} variasi {a|b} · {title} ({region})`.
+- **Status:** `missing` when `post_scenes.media_asset_id` is empty (key shown as the slot it would have, `challenge.post.{ref}-{variant}`), when the attached picture has no file, or when it is still a sample (`is_placeholder`); `wrong` when its size differs from the required one (1280 × 720 for `challenge.post.*`); else `ok`. A post that reuses another picture (most use their region's Susun Gambar picture) keeps that key and the note "memakai gambar tantangan lain"; its size rule is that picture's own.
+- **Link:** the attached picture's detail page; without one, the slot's detail page or the upload box with the key filled in (`detailLink()`). Attaching a picture to a post stays the job of the workbook and `gelita:katalog:impor`; the group's help text says so.
+- **No view change:** the checklist view renders any group. No catalogue slot changed, so `gelita-katalog/` was not rebuilt.
+- **Checked.** `AssetChecklistPostPhotoTest` (new: every post has a row; no photo, photo without file, uploaded, wrong size, reused picture), `ImageSlotsTest`, `MediaSlotPagesTest`, `NarrationPagesTest`, `BackgroundMusicTest`, `LanguageFilesTest`. Not checked in a browser.
+
+Owner, 20 November 2026: a missing picture is counted once. A post row that shows another challenge's Susun Gambar picture carries `counted: false` and is left out of `summary()`; its note says *(dihitung di Gambar tantangan)*. Test `testReusedPictureIsCountedOnce`.
+
 ## Still pictures only: frame loop removed (20 November 2026, branch `pose-gambar-diam`)
 
 Owner's direction 6 of the picture review (15 November 2026, *Picture review* above): a character pose is one still picture. Open item *Still pictures only* of `docs/PROGRESS.md`.
