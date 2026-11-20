@@ -61,8 +61,9 @@ trait PackageWorld
         $this->writeFile('offline.html', "<!doctype html><title>Offline</title>\n");
 
         $this->addMedia('bg.welcome', 'assets/uploads/bg.welcome.jpg', 'image', 'image/jpeg', 'welcome-image');
-        $this->addMedia('ui.btn-start', 'assets/uploads/ui.btn-start.png', 'image', 'image/png', 'start-id');
-        $this->addMedia('ui.btn-start.en', 'assets/uploads/ui.btn-start.en.png', 'image', 'image/png', 'start-en', ['locale' => 'en']);
+        // A lettered picture with an English variant (key suffix `.en`)
+        $this->addMedia('ui.logo-hero', 'assets/uploads/ui.logo-hero.png', 'image', 'image/png', 'logo-id');
+        $this->addMedia('ui.logo-hero.en', 'assets/uploads/ui.logo-hero.en.png', 'image', 'image/png', 'logo-en', ['locale' => 'en']);
         $this->addMedia('char.jaka.idle.1', 'assets/uploads/char.jaka.idle.1.png', 'sprite_frame', 'image/png', 'jaka');
         $this->addMedia('bg.temanggung.region', 'assets/uploads/bg.temanggung.region.jpg', 'image', 'image/jpeg', 'tmg-bg');
         $this->addMedia('challenge.item.mgl-4-a01', 'assets/uploads/mockup/challenge.item.mgl-4-a01.svg', 'image', 'image/svg+xml', '<svg/>', ['is_placeholder' => 1]);
@@ -93,6 +94,8 @@ trait PackageWorld
     {
         $this->dropResetTables();
         $this->removeDir(dirname($this->public));
+        // The injected service keeps the built package's URL map; a later test class must not see it
+        Services::resetSingle('assetPackages');
     }
 
     /** @param array<string, mixed> $extra */

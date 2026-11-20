@@ -44,11 +44,10 @@ class MediaAssetSeeder extends GelitaSeeder
     /** [asset_key, path tanpa ekstensi, ekstensi default] */
     private const SLOTS = [
         ['ui.logo', 'assets/ui/logo-gelita', 'png'],
-        // Halaman awal: logo landscape dan tombol Mulai bergambar. Tombol
-        // memuat tulisan, jadi punya varian bahasa (akhiran -en → locale en).
+        // Home page: the landscape logo, the same for both languages. The
+        // lettered start-button pictures were retired on 20 November 2026
+        // (the home page draws a CSS button; CatalogImporter::RETIRED_SLOTS).
         ['ui.logo-hero', 'assets/ui/logo-hero', 'png'],
-        ['ui.btn-start', 'assets/ui/btn-start', 'png'],
-        ['ui.btn-start.en', 'assets/ui/btn-start-en', 'png'],
         // Language switch icons in the HUD; without both the switch stays text
         ['ui.lang.id', 'assets/ui/lang-id', 'png'],
         ['ui.lang.en', 'assets/ui/lang-en', 'png'],

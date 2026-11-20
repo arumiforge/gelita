@@ -57,7 +57,7 @@ final class CatalogImportTest extends CIUnitTestCase
             'app.favicon.ico'                 => ['ikon/app.favicon.webp', 32, 32, true],
             'bg.cerita-intro-01'              => ['latar/bg.cerita-intro-01.webp', 1920, 1080, false],
             'map.region.temanggung'           => ['peta/map.region.temanggung.webp', 1400, 900, false],
-            'ui.btn-start'                    => ['antarmuka/ui.btn-start.webp', 1200, 220, true],
+            'ui.result-button-primary'        => ['antarmuka/ui.result-button-primary.webp', 600, 132, true],
             'char.jaka.idle.1'                => ['karakter/char.jaka.idle.1.webp', 700, 900, true],
             'char.jaka.idle.2'                => ['karakter/char.jaka.idle.2.webp', 700, 900, true],
             'challenge.item.tmg-1-01'         => ['tantangan/challenge.item.tmg-1-01.webp', 1200, 1200, false],
@@ -701,6 +701,52 @@ final class CatalogImportTest extends CIUnitTestCase
         $this->assertNotContains('warning', array_column($this->importer()->run(true, true), 'status'), 'overwriting fixes it');
         $this->importer()->run(false, true, null, ['char.jaka.idle.*']);
         $this->assertNotContains('warning', array_column($this->importer()->run(), 'status'));
+    }
+
+    /**
+     * Retired slots (owner, 20 November 2026: the lettered MULAI/START
+     * buttons): a server's rows and uploaded files go on the next run, an old
+     * catalogue entry is not installed again, and `$only` limits the removal.
+     */
+    public function testRetiredSlotsAreRemoved(): void
+    {
+        $upload = MediaStore::uploadDir() . 'ui.btn-start.webp';
+        $bundled = 'assets/ui/btn-start-en.png';
+
+        if (! is_dir(FCPATH . MediaStore::uploadDir())) {
+            mkdir(FCPATH . MediaStore::uploadDir(), 0777, true);
+        }
+
+        file_put_contents(FCPATH . $upload, 'old-button');
+        $this->sqlite->table('media_assets')->insertBatch([
+            ['asset_key' => 'ui.btn-start', 'asset_type' => 'image', 'storage_path' => $upload, 'mime_type' => 'image/webp', 'is_active' => 1, 'credit' => CatalogImporter::CREDIT, 'locale' => null],
+            ['asset_key' => 'ui.btn-start.en', 'asset_type' => 'image', 'storage_path' => $bundled, 'mime_type' => 'image/png', 'is_active' => 0, 'credit' => null, 'locale' => 'en'],
+        ]);
+        $this->writeCatalog(['ui.btn-start' => ['antarmuka/ui.btn-start.webp', 1200, 220, true], 'ui.logo-hero' => ['logo/ui.logo-hero.webp', 1600, 600, true]]);
+        $byKey = static fn (string $key): ?array => model(MediaAssetModel::class)->findByKey($key);
+
+        $limited = $this->importer()->run(false, false, null, ['ui.logo-hero']);
+        $this->assertNotContains('ui.btn-start', array_column($limited, 'target'));
+        $this->assertNotNull($byKey('ui.btn-start'), '$only leaves other slots alone');
+
+        $dry = array_column($this->importer()->run(true), 'status', 'target');
+        $this->assertSame('to-remove', $dry['ui.btn-start']);
+        $this->assertSame('to-remove', $dry['ui.btn-start.en']);
+        $this->assertNotNull($byKey('ui.btn-start.en'), 'a dry run changes nothing');
+        $this->assertFileExists(FCPATH . $upload);
+
+        $report = $this->importer()->run();
+        $rows   = array_values(array_filter($report, static fn (array $r): bool => in_array($r['target'], CatalogImporter::RETIRED_SLOTS, true)));
+
+        $this->assertSame(['removed', 'removed'], array_column($rows, 'status'), 'removed, never installed again');
+        $this->assertNull($byKey('ui.btn-start'));
+        $this->assertNull($byKey('ui.btn-start.en'));
+        $this->assertFileDoesNotExist(FCPATH . $upload);
+
+        $audit = $this->sqlite->table('audit_logs')->where('action', 'catalog_import')->orderBy('id', 'DESC')->get()->getRowArray();
+        $this->assertSame(2, json_decode((string) $audit['metadata_json'], true)['removed_slots']);
+
+        $this->assertSame([], array_values(array_filter($this->importer()->run(), static fn (array $r): bool => in_array($r['target'], CatalogImporter::RETIRED_SLOTS, true))), 'nothing left to remove');
     }
 
     public function testAdminUploadClearsTheCatalogueCredit(): void

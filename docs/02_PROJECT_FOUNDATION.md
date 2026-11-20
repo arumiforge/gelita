@@ -436,7 +436,7 @@ Helper `gelita`, `content`, dan `ui` dimuat global lewat `Config\Autoload::$help
 | `node_ref(string $levelCode, int $sequence)` | `('magelang', 4)` → `mgl-4` |
 | `rich_text(string $text)` | format ringan teks Pustaka (`## subjudul`, `- butir`, `> Tahukah kamu?`, `Sumber:`, `**tebal**`, `*miring*`); seluruh teks di-escape lebih dulu |
 | `media_src()`, `media_exists()`, `media_first()` | URL media aktif menurut id, dengan pengganti `assets/ui/placeholder.svg` |
-| `media_key_src()`, `media_key_src_locale()` | URL media menurut `asset_key`, termasuk varian bahasa (`ui.btn-start.en`); `null` bila belum diunggah |
+| `media_key_src()`, `media_key_src_locale()` | URL media menurut `asset_key`, termasuk varian bahasa (`{kunci}.en`); `null` bila belum diunggah |
 | `character_frame_src()` | frame pertama tokoh dalam pose tertentu, cadangan pose `idle` |
 | `character_frames()`, `character_frames_attr()`, `character_fps()` | all uploaded frames of a pose with `fps`/`loop` (same `idle` fallback), the `data-frames`/`-fps`/`-loop` attributes for `core/sprite.js` (only with 2 or more frames), and the speed for a number of frames (one loop lasts the pose's `seconds`) |
 | `media_catalog()`, `audio_catalog()` | daftar media dan audio untuk pemilih di panel |
