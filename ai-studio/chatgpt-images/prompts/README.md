@@ -16,6 +16,7 @@ ChatGPT refuses more than five attached files in one conversation, and every row
 | 4 | `4-interface.md` | `U-01` to `U-35` | After step 3 |
 | 5 | `5-pustaka.md` | `PK-01` to `PK-32` | After step 4 (or earlier if the owner wants) |
 | 6 | `6-skenario-digital.md` | `U-36`, `SD-01` to `SD-14` | Now (owner approved the Skenario Digital mockup, 19 November 2026) |
+| 7 | `codex-all.md` (step F) or `next-row.md` | `PL-13` to `PL-22`, the light carved buttons | Now (owner's interview of 20 November 2026). In the ChatGPT app, paste `next-row.md` into a new conversation with `<CODE>` replaced by `PL-13` |
 | any | `next-row.md` | the next open row of a step | Every time ChatGPT says "next: …" |
 | any | `redo.md` | one row the owner wants made again | When a picture is not right |
 | any | `inbox.md` | files the owner dropped in `../inbox/` | After generating pictures in the ChatGPT app by hand |

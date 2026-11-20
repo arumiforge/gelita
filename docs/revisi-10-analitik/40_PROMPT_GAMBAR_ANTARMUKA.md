@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 19 November 2026 · Lampiran telaah gambar (`ai-studio/game-images/REVIEW.md`) dan perombakan antarmuka (`docs/PROGRESS.md` → *Interface overhaul*) · Status: **`draf pengembang`**, `asal: pengembang` (disusun pengembang dari wawancara 18 November 2026; [04](04_CATATAN_KEPUTUSAN.md))
+Per 20 November 2026 · Lampiran telaah gambar (`ai-studio/game-images/REVIEW.md`) dan perombakan antarmuka (`docs/PROGRESS.md` → *Interface overhaul*) · Status: **`draf pengembang`**, `asal: pengembang` (disusun pengembang dari wawancara 18 November 2026; [04](04_CATATAN_KEPUTUSAN.md))
 
 Pengembang meminta gambar baru untuk bagian antarmuka yang belum segaya dengan *emas berukir*, penanda status tantangan, ikon aplikasi, lentera dan pin wilayah, lencana, avatar, latar halaman awal, empat slide cerita penutup, dan gambar Pustaka yang masih bergaya lukisan. Dokumen ini memuat prompt siap tempel ke alat pembuat gambar (bahasa Inggris) dengan pola yang sama seperti [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md), [38](38_PROMPT_PETA_LIMA_TANTANGAN_DAN_SKENARIO.md), dan [39](39_PROMPT_GAMBAR_PERBAIKAN_TELAAH.md). Daftar kerjanya di `ai-studio/chatgpt-images/TASKS.md`: baris `U-` (antarmuka), `S-` (latar dan cerita), dan `PK-` (Pustaka).
 
@@ -1626,6 +1626,8 @@ Wawancara pengembang 19 November 2026 ([04](04_CATATAN_KEPUTUSAN.md)): halaman a
 | `PL-06` | Kristal Serpihan Cahaya tahap 4 (semua tuntas) | baru: `public/assets/ui/hud-shards-crystal-4.webp` | 444 × 564, latar transparan |
 | `PL-07` sampai `PL-09` | Tombol tenang emas, biru tua, hijau (putaran kedua, lihat di bawah) | baru: `public/assets/ui/ui-button-{gold,navy,green}.webp` | 960 × 160, latar transparan |
 | `PL-10` sampai `PL-12` | Latar halaman galat 404, 500, dan lainnya (putaran ketiga, lihat di bawah) | baru: `public/assets/ui/error-{404,500,400}.webp` | 1920 × 1080 |
+| `PL-13` sampai `PL-16` | Badan tombol ukir ringan emas, biru tua, hijau, merah (putaran keempat, 20 November 2026, lihat di bawah; pengganti `PL-07` sampai `PL-09`) | baru: `public/assets/ui/ui-button-carved-{gold,navy,green,red}.webp` | 1200 × 200, latar transparan |
+| `PL-17` sampai `PL-22` | Medali ikon di dalam tombol: kanan, kiri, centang, bawah, peta, kilau (putaran keempat) | baru: `public/assets/ui/ui-medal-{right,left,check,down,map,sparkle}.webp` | 256 × 256, latar transparan |
 
 **Tahap kristal.** Tahap 1 tampil selama belum ada wilayah yang tuntas (hanya Temanggung yang terbuka), tahap 2 setelah Temanggung tuntas (Magelang terbuka), tahap 3 setelah Magelang tuntas (Wonosobo terbuka), tahap 4 setelah ketiga wilayah tuntas. Keempatnya bentuk dan ukuran yang sama dengan `U-36`; yang berubah hanya cahaya di dalamnya, makin lama makin terang. Game memilih gambar menurut tahap; selama gambar suatu tahap belum terpasang, `U-36` yang tampil.
 
@@ -1712,6 +1714,8 @@ EXACTLY the same crystal as the attached hud-shards-crystal.webp (U-36): same ou
 | `PL-06` | `Stage 4 of 4 (all of Kedu restored): the whole crystal shines radiant pale gold to white-gold from within, every facet lit, a delicate turquoise sparkle in the core, the strongest soft glow hugging the outline (still within 24 pixels). Attach and match out/hud-shards-crystal-3.webp.` | `hud-shards-crystal-4.webp` |
 
 ### PL-07 sampai PL-09 · Tombol tenang (emas, biru tua, hijau)
+
+**Diganti 20 November 2026** oleh tombol ukir ringan `PL-13` sampai `PL-22` (di bawah); tombol tenang tetap tampil sampai gambar baru diterima dan dipasang.
 
 Wawancara pengembang 19 November 2026, putaran kedua ([04](04_CATATAN_KEPUTUSAN.md)): tombol yang berisi tulisan dan panah tidak lagi memakai pelat dengan ujung ukel yang ramai (`U-01` sampai `U-03`). Semua tombol bertulisan di game memakai satu keluarga *tombol tenang*: kapsul bersudut bulat yang halus dengan tepi manik tipis, tulisan di tengah, dan panah di kotak kecil di kanan (tulisan dan panah dibuat halaman). Gaya ini sudah dibangun dengan CSS; gambar di bawah ini memberi permukaan 3D yang segaya dengan keluarga emas berukir, tanpa hiasan di ujung, sehingga bisa diregang ke lebar berapa pun.
 
@@ -1809,6 +1813,89 @@ Canvas exactly 1920 × 1080 pixels (16:9). Opaque, full-bleed. WebP, named error
 CONSTRAINTS
 No text, letters, numbers, signs, logos, watermarks or frames. No painterly 2D, gouache or paper grain.
 ```
+
+### PL-13 sampai PL-22 · Tombol ukir ringan dan medali ikon (putaran keempat, 20 November 2026)
+
+Wawancara pengembang 20 November 2026 ([04](04_CATATAN_KEPUTUSAN.md)). Tombol tenang (`PL-07` sampai `PL-09`) tidak lagi memakan tempat, tetapi permukaan krem mengilap dan kotak ikon tembus pandang membuatnya tampak seperti tombol web biasa, dan emasnya berbeda dengan emas tombol bulat, bingkai, dan medali di layar yang sama. Pengembang memilih *tombol ukir ringan*: bentuk kapsul yang sama (jadi tata letak tidak berubah), bingkai emas antik tipis berukir seperti cincin tombol bulat, **tanpa** ukel, butir intan, ujung runcing, atau deret manik, dan bagian tengah polos sehingga bisa diregang ke lebar berapa pun. Ciri GELITA pada ikon pindah ke **medali emas timbul** kecil yang menjadi gambar tersendiri dan diletakkan halaman di dalam tombol, menggantikan kotak ikon CSS. Tulisan tetap dibuat halaman.
+
+| Kode | Gambar | Berkas | Kanvas |
+|---|---|---|---|
+| `PL-13` | Badan tombol emas (aksi utama: Mulai, Lanjut, Cek jawabanku, Masuk, Daftar, Berikutnya) | baru: `public/assets/ui/ui-button-carved-gold.webp` | 1200 × 200, latar transparan |
+| `PL-14` | Badan tombol biru tua (Kembali, Batal, Kenali, Detail hasil) | baru: `public/assets/ui/ui-button-carved-navy.webp` | 1200 × 200, latar transparan |
+| `PL-15` | Badan tombol hijau (Lihat hasil) | baru: `public/assets/ui/ui-button-carved-green.webp` | 1200 × 200, latar transparan |
+| `PL-16` | Badan tombol merah (aksi bahaya: Ya, keluar; Hapus) | baru: `public/assets/ui/ui-button-carved-red.webp` | 1200 × 200, latar transparan |
+| `PL-17` | Medali panah kanan (Lanjut, Mulai) | baru: `public/assets/ui/ui-medal-right.webp` | 256 × 256, latar transparan |
+| `PL-18` | Medali panah kiri (Kembali, Peta wilayah) | baru: `public/assets/ui/ui-medal-left.webp` | 256 × 256, latar transparan |
+| `PL-19` | Medali centang (Simpan sandi baru) | baru: `public/assets/ui/ui-medal-check.webp` | 256 × 256, latar transparan |
+| `PL-20` | Medali panah bawah (Detail hasil) | baru: `public/assets/ui/ui-medal-down.webp` | 256 × 256, latar transparan |
+| `PL-21` | Medali peta (Peta Kedu di layar hasil) | baru: `public/assets/ui/ui-medal-map.webp` | 256 × 256, latar transparan |
+| `PL-22` | Medali kilau (Balai Refleksi di layar hasil) | baru: `public/assets/ui/ui-medal-sparkle.webp` | 256 × 256, latar transparan |
+
+**Ukuran yang diukur** (instalasi pengembangan, 1366 × 768, panggung 1280 × 720 dp, 20 November 2026): tinggi tombol bertulisan 44 sampai 88 dp, kebanyakan 48 sampai 64 dp (Mulai di halaman awal 76, Pustaka Kedu 88); kotak ikon sekarang 22 sampai 42 dp. Medali tampil sekitar 0,6 × tinggi tombol, jadi 26 sampai 46 dp. Badan tombol 168 piksel di kanvas tampil sekitar sepertiganya; bingkai 14 piksel menjadi sekitar 4 dp.
+
+| | |
+|---|---|
+| Lampiran | Lihat kolom *Attach* tiap baris di `TASKS.md` (paling banyak lima berkas). `PL-13`: papan acuan gaya, `round-next` (logam, ukiran, dan cahaya cincin), tombol tenang emas sekarang (bentuk dan proporsi), pelat emas `U-01` (emas bingkai, TANPA ujung ukelnya) |
+| Urutan | `PL-13` dulu. `PL-14` sampai `PL-16` adalah suntingan `PL-13` dengan masker hanya pada permukaan (bingkai, garis luar, dan bayangan terkunci), seperti `U-02`. `PL-17` sesudah `PL-13`; `PL-18` sampai `PL-22` adalah suntingan `PL-17` dengan masker hanya pada simbol (cincin dan cakram terkunci). Mulai lagi dari gambar asal, bukan dari hasil yang gagal |
+| Keadaan | Arahkan, tekan, dan nonaktif tetap dari CSS (terang, sedikit mengecil, abu-abu); tidak ada gambar tambahan |
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Interface part for GELITA, an educational game for Indonesian children aged 10–11, shown on a school Chromebook. One family with the attached GELITA style board: thick antique-gold frames carved in deep relief with Javanese ukel scroll ornaments, faces of dark navy stone (#0B1320 to #1B2740) with a very faint cloud pattern, symbols embossed in the same gold, one light from the upper left, soft contact shadow, rendered as a solid 3D object. Gold #DFC087 with highlights #F0DFB8 and warm brown shadows; no chrome, no neon, no glow line, no rainbow sheen. Ornaments are the same carving family on every part: the same scroll, the same small diamond studs, the same bead edge.
+It is a user-interface element, not a scene: no background scenery, no text, letters, numbers or logos, no people. Genuine transparent background outside the object unless the brief says otherwise; no fake checkerboard.
+Asset: ui-button-carved-gold (PL-13 · light carved button body, gold)
+EXCEPTION to the family's carving: this button has NO scroll ornaments, NO carved or pointed ends, NO diamond studs, NO medallion and NO row of beads. It keeps the family's metal, relief and light and drops every ornament. It is the body of every text button in the game: the game writes the label on it and places a separate small round icon medallion inside one end.
+SHAPE: a long rounded rectangle with a corner radius of about 40 pixels, 1184 pixels wide and 168 pixels tall, centred on the canvas (x 8 to 1192, y 12 to 180). The same calm silhouette as the attached current quiet button, only a little taller.
+RIM: a solid antique-gold rim about 14 pixels wide runs all round, the same metal, colour, relief and light as the ring of the attached round button and the frame of the attached gold plate: highlights #FFE287 on the upper edges, body gold #E4A84F to #D48213, warm brown shadows #7A3A08 on the lower edges. It is carved as one continuous half-round moulding in deep relief, with one thin bright line (2 to 3 pixels, #F0DFB8) just inside it. The rim is exactly the same along its whole length: no pattern, no beads, no notches, no repeated marks. A fine dark-brown outer line (#5A2A06, 2 pixels) separates it from any background.
+FACE: sunk slightly inside the rim, with a soft inner shadow under the top rim. Satin antique gold, one step lighter and smoother than the rim so the rim still reads: #F0C46E at the top to #C98A35 at the bottom. No gloss streak, no shine spot, no texture or grain. The light changes only from top to bottom, never along the length: from x 60 to x 1140 every column of pixels is the same, so the game can stretch the middle to any width and nothing looks stretched. Dark-brown text (#24170A) must read clearly on every part of the face.
+SHADOW: a soft contact shadow below, at most 10 pixels, inside the canvas.
+Canvas exactly 1200 × 200 pixels, transparent around the button. No text, no arrow, no icon, no medallion. WebP with alpha, named ui-button-carved-gold.webp.
+```
+
+Untuk `PL-14` sampai `PL-16`, pakai prompt yang sama sebagai **suntingan** `out/ui-button-carved-gold.webp` (masker hanya pada permukaan, di dalam garis terang bingkai), dengan baris *Asset* dan *FACE* berikut. Baris lain tetap.
+
+| Kode | Baris yang diganti | Simpan sebagai |
+|---|---|---|
+| `PL-14` | `Asset: ui-button-carved-navy (PL-14 · light carved button body, navy)` · `FACE: sunk slightly inside the rim, with a soft inner shadow under the top rim. Smooth deep navy, #253A60 at the top to #0F1B33 at the bottom, like the attached current navy button. No stone grain, no cloud pattern, no texture. The light changes only from top to bottom: from x 60 to x 1140 every column of pixels is the same. Cream-gold text (#F3DFA8) must read clearly on every part of the face. Edit the attached ui-button-carved-gold.webp: change the face only; rim, outer line, shape and shadow stay exactly as they are.` | `ui-button-carved-navy.webp` |
+| `PL-15` | `Asset: ui-button-carved-green (PL-15 · light carved button body, green)` · `FACE: … Smooth deep leaf green, #3F7D50 at the top to #1D462C at the bottom, like the attached current green button. … Cream text (#FBEFCB) must read clearly on every part of the face. Edit the attached ui-button-carved-gold.webp: change the face only; …` (kalimat lain sama dengan `PL-14`) | `ui-button-carved-green.webp` |
+| `PL-16` | `Asset: ui-button-carved-red (PL-16 · light carved button body, red)` · `FACE: … Smooth deep terracotta red, #B5452F at the top to #7A2216 at the bottom: earthy, not a bright alarm red. … Cream text (#FFF6EE) must read clearly on every part of the face. Edit the attached ui-button-carved-gold.webp: change the face only; …` (kalimat lain sama dengan `PL-14`) | `ui-button-carved-red.webp` |
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Interface part for GELITA, an educational game for Indonesian children aged 10–11, shown on a school Chromebook. One family with the attached GELITA style board: thick antique-gold frames carved in deep relief with Javanese ukel scroll ornaments, faces of dark navy stone (#0B1320 to #1B2740) with a very faint cloud pattern, symbols embossed in the same gold, one light from the upper left, soft contact shadow, rendered as a solid 3D object. Gold #DFC087 with highlights #F0DFB8 and warm brown shadows; no chrome, no neon, no glow line, no rainbow sheen. Ornaments are the same carving family on every part: the same scroll, the same small diamond studs, the same bead edge.
+It is a user-interface element, not a scene: no background scenery, no text, letters, numbers or logos, no people. Genuine transparent background outside the object unless the brief says otherwise; no fake checkerboard.
+Asset: ui-medal-right (PL-17 · icon medallion inside text buttons, arrow right)
+EXCEPTION to the family's carving: a small medallion that sits inside a text button, so it is calmer than the round HUD buttons: NO scroll ornaments, NO diamond studs, NO points or bumps on the ring.
+A round medallion 232 pixels across, centred on the canvas.
+RING: a slim solid antique-gold ring about 20 pixels wide, the same metal, moulding and light as the rim of the attached ui-button-carved-gold (PL-13): one continuous half-round moulding, highlights #FFE287, body #E4A84F to #D48213, shadows #7A3A08, a thin bright inner line (#F0DFB8), and a fine dark-brown outer line (#5A2A06, 2 pixels) so the medallion stands out on a gold button face as well as on a navy one.
+DISC: dark navy stone (#0B1320 to #1B2740) with a very faint cloud pattern, as on the attached round button.
+SYMBOL: one bold arrow pointing right, embossed in the same antique gold, simple and chunky, with no engraving or pattern on its surface, filling about 60 percent of the disc width, centred, lit from the upper left. It must still read clearly when the whole medallion is shown only 28 pixels across.
+A soft contact shadow of at most 6 pixels, inside the canvas. Canvas exactly 256 × 256 pixels, transparent outside the medallion. No text, letters or numbers. WebP with alpha, named ui-medal-right.webp.
+```
+
+Untuk `PL-18` sampai `PL-22`, pakai prompt yang sama sebagai **suntingan** `out/ui-medal-right.webp` (masker hanya pada simbol; cincin, cakram, ukuran, dan bayangan terkunci), dengan baris *Asset* dan *SYMBOL* berikut. Simbolnya sama tebal dan sama besar dengan panah `PL-17`.
+
+| Kode | Baris yang diganti | Simpan sebagai |
+|---|---|---|
+| `PL-18` | `Asset: ui-medal-left (PL-18 · icon medallion, arrow left)` · `SYMBOL: the same bold arrow, pointing left: the mirror of the arrow of the attached ui-medal-right.webp in shape and size, but still lit from the upper left. It must still read clearly at 28 pixels.` | `ui-medal-left.webp` |
+| `PL-19` | `Asset: ui-medal-check (PL-19 · icon medallion, check mark)` · `SYMBOL: one bold check mark, embossed in the same antique gold, chunky, no engraving, filling about 60 percent of the disc width, lit from the upper left. The disc stays navy, not green. It must still read clearly at 28 pixels.` | `ui-medal-check.webp` |
+| `PL-20` | `Asset: ui-medal-down (PL-20 · icon medallion, chevron down)` · `SYMBOL: one bold chevron pointing down (an open V with rounded ends, no shaft), embossed in the same antique gold, about 55 percent of the disc width, lit from the upper left. It must still read clearly at 28 pixels.` | `ui-medal-down.webp` |
+| `PL-21` | `Asset: ui-medal-map (PL-21 · icon medallion, map)` · `SYMBOL: a simple folded map of three panels, slightly zigzagged, with a small location pin above it, embossed in the same antique gold, about 60 percent of the disc width, lit from the upper left. No lines, mountains, roads or writing on the map. It must still read clearly at 28 pixels.` | `ui-medal-map.webp` |
+| `PL-22` | `Asset: ui-medal-sparkle (PL-22 · icon medallion, sparkle)` · `SYMBOL: one bold four-pointed sparkle star with one small four-pointed sparkle beside it at the upper right, embossed in the same antique gold, about 60 percent of the disc width, lit from the upper left. Not a crystal, not a sun. It must still read clearly at 28 pixels.` | `ui-medal-sparkle.webp` |
+
+**Pemeriksaan.**
+
+- Badan tombol (`PL-13` sampai `PL-16`): tidak ada ukel, intan, ujung runcing, atau deret manik di mana pun. Regangkan bagian tengah tiga kali panjangnya: tidak ada yang tampak teregang. Perkecil ke tinggi 44 px: bingkai tetap terbaca sebagai emas berukir dan permukaan rata. Tumpuk keempatnya: garis luar sama persis.
+- Medali (`PL-17` sampai `PL-22`): perkecil ke 28 px dan 48 px, juga dalam hitam-putih; simbol tetap dikenali. Tumpuk keenamnya: cincin dan cakram sama persis. Letakkan satu medali di atas `PL-13` dan di atas `PL-14`: cincinnya terpisah jelas dari kedua permukaan.
+- Emas sama dengan tombol bulat `round-*` dan pelat `U-01`; bandingkan berdampingan.
+- Tanpa tulisan, angka, atau logo.
+
+**Pemasangan** (sesi Claude Code, setelah pengembang menerima):
+
+- Badan tombol menggantikan `ui-button-{gold,navy,green}` di `stage_picture_urls()` (`--button-gold`, `--button-navy`, `--button-green`, dan baru `--button-red`) dan di blok *QUIET BUTTONS* `public/assets/css/cinematic.css`: satu `border-image` per warna, potongan `--qb-cut` dan lebar ujung diukur ulang pada gambar yang diterima (sudut dan bingkai, kira-kira 56 dari 200 piksel); `.btn-danger` ikut memakai gambar. Semua tombol yang kini memakai tombol tenang langsung ikut, termasuk `.btn-gold-plate` (Masuk, Daftar, Berikutnya), `.kedu-btn`, dan `.result-btn`. Tombol *Kembali ke awal* di halaman galat (`app/Views/errors/html/_gelita.php`, di luar `#stage`) memakai badan emas. Berkas `ui-button-{gold,navy,green}.webp` dihapus setelah CSS tidak memakainya.
+- Medali menggantikan kotak ikon CSS (`> .icon` di blok *QUIET BUTTONS*) untuk ikon `right`, `left`, `check`, `down`, `map`, `sparkle`, sekitar 0,6 × tinggi tombol, di sisi yang sama seperti sekarang; ikon lain di tombol bertulisan memakai garis emas antik tanpa kotak. Ikon tetap hiasan (`aria-hidden`), tulisan tombol tidak berubah.
+- Tidak berubah: tombol Skenario Digital (`SD-`), tombol bulat HUD, pilihan jawaban, dan modul tes `/tes` (Bootstrap tanpa unsur game, [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md)).
+- Diperiksa dengan `tools/qa/stage-check.mjs` di 1366 × 768: setiap tulisan dan medali berada di permukaan tombol, dalam bahasa Indonesia dan Inggris.
 
 ## Daftar periksa hasil
 
