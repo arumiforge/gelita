@@ -80,6 +80,60 @@ final class SimClock
         return $this->diffMs($since->format('Y-m-d H:i:s.u'), $this->now->format('Y-m-d H:i:s.u'));
     }
 
+    /**
+     * Research mode: students take turns inside one meeting, so the clock
+     * goes back to where this student was (their own timeline) and binds
+     * their rows again.
+     */
+    public function resume(\DateTimeImmutable $now, int $participantId, ?int $sessionId): void
+    {
+        $this->now = $now;
+        $this->bindParticipant($participantId);
+        $this->bindSession($sessionId);
+    }
+
+    /**
+     * A staff step at $at (research mode: a field session made, seats or
+     * consent typed, the test started, a session closed). Rows of the given
+     * students written by the step, and audit rows written by it, move to
+     * $at; the clock itself is not moved.
+     *
+     * @template T
+     *
+     * @param callable(): T $step
+     * @param list<int>     $participantIds
+     *
+     * @return T
+     */
+    public function staffAct(\DateTimeImmutable $at, array $participantIds, callable $step): mixed
+    {
+        $mark  = min(date('Y-m-d H:i:s', time() - 1), gmdate('Y-m-d H:i:s', time() - 1));
+        $saved = [$this->now, $this->participantId, $this->sessionId];
+
+        if ($at->format('Y-m-d H:i:s') >= $mark) {
+            throw new \RuntimeException('Jam simulasi harus di masa lalu: ' . $at->format('Y-m-d H:i:s'));
+        }
+
+        try {
+            return $step();
+        } finally {
+            $this->now = $at;
+
+            foreach ($participantIds as $pid) {
+                $this->participantId = $pid;
+                $this->retime($mark);
+            }
+
+            $time = $at->format('Y-m-d H:i:s.u');
+            $this->db->query(
+                'UPDATE ' . $this->db->prefixTable('audit_logs') . ' SET occurred_at = ? WHERE occurred_at >= ?',
+                [$time, $mark],
+            );
+
+            [$this->now, $this->participantId, $this->sessionId] = $saved;
+        }
+    }
+
     /** Siswa yang barisnya digeser oleh act() berikutnya. */
     public function bindParticipant(int $participantId): void
     {
@@ -213,7 +267,7 @@ final class SimClock
         $specs = [
             // Entri sekolah "belum terverifikasi" yang dibuat pendaftaran siswa ini
             ['schools', 'id', $schoolId > 0 ? [$schoolId] : [], ['created_at', 'updated_at']],
-            ['participants', 'id', [$pid], ['created_at', 'updated_at', 'last_login_at', 'password_changed_at', 'intro_seen_at', 'assented_at', 'locked_until']],
+            ['participants', 'id', [$pid], ['created_at', 'updated_at', 'last_login_at', 'password_changed_at', 'intro_seen_at', 'assented_at', 'locked_until', 'deactivated_at', 'corrected_at']],
             ['game_sessions', 'participant_id', [$pid], ['started_at', 'last_active_at', 'ended_at', 'created_at']],
             ['device_logs', 'participant_id', [$pid], ['created_at']],
             ['participant_feedback', 'participant_id', [$pid], ['submitted_at']],
@@ -222,6 +276,10 @@ final class SimClock
             ['audio_usage_events', 'session_id', $sessionIds, ['occurred_at', 'server_received_at']],
             ['item_responses', 'challenge_attempt_id', $attemptIds, ['started_at', 'answered_at', 'created_at', 'updated_at']],
             ['item_tries', 'challenge_attempt_id', $attemptIds, ['occurred_at']],
+            // Research mode (revision 10, parts 2, 4, 7): consent row, seat, attempt segments
+            ['participant_consents', 'participant_id', [$pid], ['created_at', 'updated_at']],
+            ['participant_seats', 'participant_id', [$pid], ['entered_at', 'updated_at', 'locked_at']],
+            ['challenge_attempt_segments', 'challenge_attempt_id', $attemptIds, ['opened_at', 'left_at']],
         ];
 
         foreach ($specs as [$table, $scope, $ids, $columns]) {
