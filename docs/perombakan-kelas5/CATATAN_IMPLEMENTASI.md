@@ -1415,3 +1415,7 @@ Requests after the fix: 100 students: 461 checks, 1,058 pages, 2,415 event batch
 
 **Open (owner):** reset production (`gelita:reset`) and restore the study settings (field mode, unlock order); the tunnel's cache rules and the `\GELITA\PhpPool` task as listed before.
 
+## `DeadlockRetry` named in `CLAUDE.md` (21 November 2026, branch `igi/busy-fermat-czue8s`)
+
+Closes *Open* 3 of *Event deadlocks and lost logins under load*. The owner asked for the sentence ("tambahkan kalimat DeadlockRetry ke CLAUDE.md"). `CLAUDE.md` → *Concurrency* now says, after the conditional-UPDATE rule: what `DeadlockRetry` is for (a write MySQL gives up on, 1213 or 1205), `transaction()` for writes of several statements and `run()` for one, that `run()` does nothing inside a caller's `transBegin()`, that the game's own transactions are not wrapped, and that the deadlock only shows on MySQL 8 (not MariaDB or SQLite). No code changed.
+
