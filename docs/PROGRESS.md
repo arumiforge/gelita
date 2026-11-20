@@ -220,3 +220,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `retensi-mode-penelitian` | Cloud session, 20 Nov 2026: nightly retention keeps open field-session attempts while the study runs, closes them when the study is closed; note for ketua on `/admin/studi` with the last retention run | PR open |

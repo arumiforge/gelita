@@ -30,6 +30,8 @@ class StudyController extends BaseAdminController
             'readiness'   => (new ResearchReadiness())->check(),
             // Study package lock (§7.2): compared with what students get now
             'packageCode' => service('assetPackages')->releasePackageCode(),
+            // Owner, 20 November 2026: the head researcher sees that the nightly clean-up runs
+            'lastRetention' => model(AuditLogModel::class)->where('action', 'retention_run')->orderBy('id', 'DESC')->first()['occurred_at'] ?? null,
         ]);
     }
 
@@ -101,6 +103,13 @@ class StudyController extends BaseAdminController
         }
 
         $this->audit('study_update', 'research_study', $studyId, $lock);
+
+        // Owner, 20 November 2026: open attempts of a field-mode study wait for
+        // the next meeting; once the study is closed nobody can continue them
+        if ($payload['status'] === 'closed' && $previous !== 'closed' && (int) ($row['field_mode'] ?? 0) === 1) {
+            $closed = service('retentionService')->abandonOpenStudyAttempts($studyId);
+            $this->audit('study_open_attempts_closed', 'research_study', $studyId, ['attempts' => $closed]);
+        }
 
         if ($fieldChanged) {
             $this->audit('study_field_mode_changed', 'research_study', $studyId, [
