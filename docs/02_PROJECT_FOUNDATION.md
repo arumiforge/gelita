@@ -225,7 +225,7 @@ Templat seluruh kunci ada di berkas `env` di root proyek dan dilacak Git. Salin 
 | App | `app.baseURL`, `app.forceGlobalSecureRequests`, `app.appTimezone`, `app.defaultLocale`, `app.indexPage` | `app.supportedLocales` bernilai array sehingga tidak dapat diisi lewat `.env`; nilainya `['id', 'en']` di `app/Config/App.php` |
 | Database | `database.default.*` | driver `MySQLi`, `utf8mb4` / `utf8mb4_unicode_ci`. Server dapat memakai akun migrasi terpisah lewat `database.default.DSN` (lihat 08_DEPLOYMENT.md) |
 | Encryption | `encryption.key` | dibangkitkan `php spark key:generate` |
-| Session | `session.driver`, `session.savePath`, `session.cookieName`, `session.expiration`, `session.regenerateDestroy`, `session.matchIP` | lihat [§ 7.2](#72-sesi) |
+| Session | `session.driver`, `session.savePath`, `session.cookieName`, `session.expiration`, `session.matchIP` | lihat [§ 7.2](#72-sesi) |
 | Security | `security.csrfProtection`, `security.tokenRandomize`, `security.tokenName`, `security.headerName`, `security.cookieName`, `security.expires`, `security.regenerate`, `security.redirect` | lihat [§ 7.1](#71-csrf) |
 | Cookie | `cookie.samesite`, `cookie.secure`, `cookie.httponly` | `cookie.secure = true` bila situs dilayani lewat HTTPS |
 | Logger | `logger.threshold` | production 4, development 9 |
@@ -530,7 +530,7 @@ Stack trace hanya masuk `writable/logs/`.
 
 * Satu mekanisme sesi untuk siswa dan staf: session CodeIgniter berbasis database (`DatabaseHandler`, tabel `ci_sessions` dari migration `2026-01-01-002900_CreateCiSessions`). Jangan menjalankan `php spark session:migration`; perintah itu membuat migration `ci_sessions` kedua.
 * Siswa: `session('participant_id')` + `session('game_session_id')`. Staf: `session('staff_id')` + `session('staff_role')` + `session('staff_school_id')`.
-* Cookie `gelita_session`: `HttpOnly`, `SameSite=Lax`, `Secure` bila `cookie.secure = true` (HTTPS). Masa berlaku 4 jam (`expiration = 14400`), ID diganti dan sesi lama dihapus saat regenerasi (`regenerateDestroy = true`).
+* Cookie `gelita_session`: `HttpOnly`, `SameSite=Lax`, `Secure` bila `cookie.secure = true` (HTTPS). Masa berlaku 4 jam (`expiration = 14400`). The ID is replaced every 5 minutes (`timeToUpdate = 300`) and the old row is kept until garbage collection (`regenerateDestroy = false`, fixed in `Config\Session`, not a `.env` setting since 21 November 2026): a pagehide beacon and the next page leave the browser together with the old ID, and with the old row deleted one of them lost its login (`/masuk`, or 401 INVALID_SESSION). Login and logout still destroy the session.
 * Tidak ada cookie "ingat saya", karena komputer kelas dipakai bergantian.
 * `matchIP = false`: jaringan sekolah sering ber-NAT/DHCP, dan PK `ci_sessions` hanya `id` (CodeIgniter mensyaratkan `ip_address` ikut PK bila `matchIP` aktif).
 
