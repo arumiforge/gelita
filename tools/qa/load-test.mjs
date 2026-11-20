@@ -274,7 +274,12 @@ class Student {
     if (data?.attempt_id) {
       this.refs = { nodeId: data.node?.id, attemptId: data.attempt_id };
       const options = data.verdict_options?.length ? data.verdict_options : ['benar', 'salah'];
-      for (const [checkNo, at] of CHECK_AT_MS.entries()) {
+      // An attempt an earlier run left open is resumed with its checks counted: go on from
+      // there, or every check of a second run on the same accounts is refused (ATTEMPT_CHANGED)
+      const used = Number(data.tries_used || 0);
+      for (const [n, at] of CHECK_AT_MS.entries()) {
+        const checkNo = used + n;
+        if (checkNo >= Number(data.max_tries || CHECK_AT_MS.length)) break;
         await sleep(Math.max(0, started + at - Date.now()));
         if (this.stopped) break;
         const answers = (data.items || []).map((item) => ({ item_id: item.id, answer: { verdict: options[Math.floor(Math.random() * options.length)] } }));

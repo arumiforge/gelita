@@ -102,10 +102,22 @@ class Session extends BaseConfig
      * when auto-regenerating the session ID. When set to FALSE, the data
      * will be later deleted by the garbage collector.
      *
-     * true: baris sesi lama langsung dihapus saat ID diregenerasi, sehingga
-     * komputer kelas yang dipakai bergantian tidak meninggalkan sesi yatim.
+     * Always false, whatever `.env` says (see the constructor). The ID is
+     * replaced every `$timeToUpdate` seconds by the first request that is
+     * not marked `X-Requested-With: XMLHttpRequest`: a page, or a pagehide
+     * beacon. A request that left the browser with the old ID at the same
+     * moment (the beacon and the next page always leave together) then
+     * found no session: the page went to `/masuk`, or the batch got
+     * 401 INVALID_SESSION. With false the old row keeps the login until the
+     * garbage collector removes it (`$expiration` after its last use at the
+     * earliest; Config\Events makes sure the collector runs), so both
+     * requests are answered. Login and logout destroy the row of the ID the
+     * browser holds at that moment (`SessionService::bindPhpSession()`,
+     * `logout()`); rows of IDs replaced earlier wait for the collector.
+     * Found by the production load test, 21 November 2026 (decision log,
+     * *Event deadlocks and lost logins under load*).
      */
-    public bool $regenerateDestroy = true;
+    public bool $regenerateDestroy = false;
 
     /**
      * --------------------------------------------------------------------------
@@ -153,5 +165,10 @@ class Session extends BaseConfig
         if (config(Gelita::class)->researchPrivacy) {
             $this->driver = HashedIpSessionHandler::class;
         }
+
+        // Not a setting: installs made before 21 November 2026 still carry
+        // `session.regenerateDestroy = true` in `.env`, which logs students out
+        // at random (see the property)
+        $this->regenerateDestroy = false;
     }
 }

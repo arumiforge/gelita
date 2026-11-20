@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Libraries\DeadlockRetry;
 use App\Models\Traits\EncodesJson;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Model;
 
 class GameEventLogModel extends Model
@@ -42,13 +44,25 @@ class GameEventLogModel extends Model
     protected array $jsonFields = ['payload_json'];
 
     /**
-     * Menulis batch event; duplikat (session_id, client_event_id) diabaikan.
+     * Writes a batch of events; a `(session_id, client_event_id)` that is
+     * already stored is skipped and counted as a duplicate.
      *
-     * @param list<array<string, mixed>> $events baris siap tulis
+     * Stored rows are looked up first and left out of the INSERT. The client
+     * re-sends on purpose (the pagehide copy rides the next page's first
+     * batch), and on MySQL 8 a multi-row INSERT IGNORE that meets a duplicate
+     * keeps a gap lock at the end of the table until it finishes: two such
+     * batches of any two students deadlock (1213; production load test,
+     * 21 November 2026). INSERT IGNORE stays for the copy that is still on
+     * its way when its twin arrives; a deadlock there is run again by
+     * DeadlockRetry, with a fresh lookup.
+     *
+     * @param list<array<string, mixed>> $events    rows ready to write
+     * @param bool                       $mayRepeat false when no row can be stored yet (ids made
+     *                                              by the server, or already checked): no lookup
      *
      * @return array{accepted: int, duplicate: int}
      */
-    public function appendBatch(array $events): array
+    public function appendBatch(array $events, bool $mayRepeat = true): array
     {
         if ($events === []) {
             return ['accepted' => 0, 'duplicate' => 0];
@@ -60,13 +74,109 @@ class GameEventLogModel extends Model
             }
         }
 
-        $this->db->table($this->table)->ignore(true)->insertBatch($events);
-        $accepted = $this->db->affectedRows();
+        $accepted = DeadlockRetry::run($this->db, function () use ($events, $mayRepeat): int {
+            $rows = $mayRepeat ? $this->withoutStored($events) : $events;
+
+            return $rows === [] ? 0 : $this->insertIgnore($rows);
+        }, 'game_event_logs');
 
         return [
             'accepted'  => $accepted,
             'duplicate' => max(0, count($events) - $accepted),
         ];
+    }
+
+    /**
+     * One INSERT IGNORE for the rows; the number of rows it wrote.
+     *
+     * Inside a caller's transaction the framework answers a failed statement
+     * with `false` instead of an exception. It is thrown here: reported as
+     * "nothing written, all duplicates" the events would be dropped by the
+     * client, and after a deadlock the caller would go on writing although
+     * its transaction is gone. The caller's `catch` rolls back.
+     *
+     * @param list<array<string, mixed>> $rows
+     *
+     * @throws DatabaseException when the statement failed
+     */
+    protected function insertIgnore(array $rows): int
+    {
+        // insertBatch() runs the statement itself and drops its result, so a failure cannot
+        // be told from "nothing new". The builder only writes the SQL here (test mode).
+        $statements = $this->db->table($this->table)->testMode()->ignore(true)->insertBatch($rows, null, max(100, count($rows)));
+        $written    = 0;
+
+        foreach ((array) $statements as $sql) {
+            if ($this->db->query($sql, null, false) === false) {
+                $error = $this->db->error();
+                $code  = (int) ($error['code'] ?? 0);
+
+                throw new DatabaseException($code === 0 ? 'INSERT into ' . $this->table . ' failed.' : (string) $error['message'], $code);
+            }
+
+            $written += max(0, $this->db->affectedRows());
+        }
+
+        return $written;
+    }
+
+    /**
+     * The rows whose `(session_id, client_event_id)` is not stored yet.
+     *
+     * @param list<array<string, mixed>> $events
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function withoutStored(array $events): array
+    {
+        $idsBySession = [];
+
+        foreach ($events as $row) {
+            $idsBySession[(int) $row['session_id']][] = (string) $row['client_event_id'];
+        }
+
+        $stored = [];
+
+        foreach ($idsBySession as $sessionId => $ids) {
+            foreach (array_keys($this->storedClientEventIds($sessionId, $ids)) as $id) {
+                // The unique key compares without case (utf8mb4_unicode_ci)
+                $stored[$sessionId . '|' . mb_strtolower((string) $id)] = true;
+            }
+        }
+
+        if ($stored === []) {
+            return $events;
+        }
+
+        return array_values(array_filter(
+            $events,
+            static fn (array $row): bool => ! isset($stored[(int) $row['session_id'] . '|' . mb_strtolower((string) $row['client_event_id'])]),
+        ));
+    }
+
+    /**
+     * The given client event ids already stored for the session.
+     *
+     * @param array<string> $clientEventIds
+     *
+     * @return array<string, true>
+     */
+    public function storedClientEventIds(int $sessionId, array $clientEventIds): array
+    {
+        $clientEventIds = array_values(array_unique($clientEventIds));
+
+        if ($clientEventIds === []) {
+            return [];
+        }
+
+        $rows = $this->db->table($this->table)
+            ->select('client_event_id')
+            ->where('session_id', $sessionId)
+            ->whereIn('client_event_id', $clientEventIds)
+            ->get()
+            ->getResultArray();
+
+        return array_fill_keys(array_map('strval', array_column($rows, 'client_event_id')), true);
     }
 
     public function nextSequenceNo(int $sessionId): int

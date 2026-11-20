@@ -29,6 +29,10 @@ app.indexPage = ''
 
 #--------------------------------------------------------------------
 # DATABASE
+# Windows (Jalur W, Laragon): hostname must be 127.0.0.1, not localhost.
+# Windows tries IPv6 (::1) first for "localhost"; MySQL listens on 127.0.0.1
+# only, and every request then waits about 2.6 s before it connects
+# (docs/08 -> Pengaturan MySQL). Linux keeps localhost (socket).
 #--------------------------------------------------------------------
 database.default.hostname = localhost
 database.default.database = gelita
@@ -60,8 +64,10 @@ session.driver = 'CodeIgniter\Session\Handlers\DatabaseHandler'
 session.savePath = 'ci_sessions'
 session.cookieName = 'gelita_session'
 session.expiration = 14400
-session.regenerateDestroy = true
 session.matchIP = false
+# session.regenerateDestroy is not a setting any more: Config\Session keeps it
+# false, so a request still on its way when the session ID is replaced is not
+# logged out. An old line `session.regenerateDestroy = true` here is ignored.
 
 #--------------------------------------------------------------------
 # SECURITY (CSRF)

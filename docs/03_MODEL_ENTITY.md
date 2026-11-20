@@ -767,7 +767,8 @@ aplikasi), `server_received_at` dari server.
 
 | Method | Perilaku |
 |---|---|
-| `appendBatch($events)` | `INSERT IGNORE` batch; duplikat `(session_id, client_event_id)` diabaikan. Mengembalikan `{accepted, duplicate}` |
+| `appendBatch($events, $mayRepeat = true)` | Reads which `(session_id, client_event_id)` are stored and leaves them out, then `INSERT IGNORE` for the rest; run again by `DeadlockRetry` on MySQL 1213/1205 (21 November 2026). `$mayRepeat = false` skips the lookup (ids made by the server, or already checked). A failed statement throws, also inside a caller's transaction. Mengembalikan `{accepted, duplicate}` |
+| `storedClientEventIds($sessionId, $ids)` | the given client event ids already stored for the session |
 | `nextSequenceNo($sessionId)` | `MAX(sequence_no) + 1` |
 | `timeline($sessionId, $limit = 500)` | event yang belum dihapus, urut `occurred_at`, `sequence_no`, `id` (`sequence_no` klien dimulai ulang setiap halaman dimuat) |
 | `heardRegionIntros($participantId)` | `level_id` wilayah yang narasi "Kenali wilayah"-nya didengar sampai slide terakhir (event `dialogue_advanced`, `context = region_intro`, `index >= total`) |

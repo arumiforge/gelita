@@ -44,3 +44,19 @@ Events::on('pre_system', static function (): void {
         db_sync_timezone();
     }
 });
+
+/*
+ * Expired `ci_sessions` rows are removed by PHP's session garbage collector
+ * (DatabaseHandler::gc(), rows older than Config\Session::$expiration).
+ * Debian and Ubuntu ship `session.gc_probability = 0`, because their cron job
+ * cleans session files; nothing cleans a session table. Without this no row
+ * was ever removed on Jalur L, and since 21 November 2026 the row of a
+ * replaced session ID is kept until this collector takes it
+ * (Config\Session::$regenerateDestroy). One request in a hundred runs it.
+ */
+Events::on('pre_system', static function (): void {
+    if (ENVIRONMENT !== 'testing' && session_status() !== PHP_SESSION_ACTIVE && ! headers_sent()) {
+        ini_set('session.gc_probability', '1');
+        ini_set('session.gc_divisor', '100');
+    }
+});
