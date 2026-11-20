@@ -242,6 +242,8 @@ export function initLibrary() {
       const n = Number(link.getAttribute('href').replace('#page-', ''));
       if (!slides || !Number.isFinite(n)) return;
       event.preventDefault();
+      // The open page: no second library_page_viewed and no paused video
+      if (n === slides.current) return;
       slides.show(n);
     });
   }

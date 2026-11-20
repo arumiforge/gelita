@@ -26,6 +26,7 @@ Review `git diff origin/main...HEAD` unless you were given another range or a li
 - Event types come from `App\Libraries\EventCatalog`; `SERVER_ONLY` types are never accepted from the client.
 - Derived values are computed in `app/Libraries/Derived/`, never in game code.
 - Stored codes, event names, route slugs and command names are not renamed.
+- A client event fires once per real action: a tap that changes nothing (the open page, the selected item, a repeated button) sends no second event (`library_page_viewed` from the contents list, 20 November 2026).
 
 **Database**
 - A migration extends `GelitaMigration`, has a `down()`, is mirrored in `tests/_support/Database/ResetTables.php`, and has a migration test.
@@ -36,11 +37,19 @@ Review `git diff origin/main...HEAD` unless you were given another range or a li
 - Text users read comes from `app/Language/id/*` with its `en` counterpart, in friendly Indonesian (`.claude/rules/ui-copy.md`).
 - Public URLs are Indonesian slugs; controllers, methods, identifiers and comments are English.
 - Code that changes content calls `ContentRepository::flush()`.
+- A no-JS fallback (`:target`, `:has()`) never outranks the JS state class it stands in for (`is-live`, `is-selected`): compare specificity, and remember `history.replaceState` drops the hash but not `:target` (region map and Peta Kedu, 20 November 2026).
+- A media slot a screen stops showing is also retired from `AssetChecklist`, `ImageSlots`, `Config\Gelita` sizes, `MediaAssetSeeder` and the asset package, or the PR says why it stays.
+- An error view reads only what the exception handler passes to it (`GelitaExceptionHandler`, `BaseExceptionHandler::render`) and shows no message or trace in production.
+- A change that only reaches an install through a command (`gelita:katalog:impor`, an import, a migration) is listed by `gelita:setelah-pull` (`PostPullCheck`) and named in the PR.
 
 **Tests and records**
 - The change has a test that would fail without it. No test was skipped or weakened to pass.
 - A test that changes `challenge_items` flushes the content repository and the cache.
 - `docs/PROGRESS.md` has the branch's row; a decision or deviation is in the decision log.
+
+## Weighing a redesign
+
+When the owner redesigned a screen, tests that assert markup or CSS lines are rewritten on purpose. Check the rewrite against the decision log entry of that day before calling it weakened, and look for the behaviour the old assertion protected (a fallback, an event, a focus move) rather than the string.
 
 ## Report
 

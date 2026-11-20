@@ -1219,3 +1219,13 @@ Owner, third request the same day: move the Serpihan Cahaya plate to the top cen
 - **Text on the picture (owner, same day):** the error picture is the page's full-screen background (1920 × 1080, subject on the right), and the text stands straight on it in the calm left part with no box or border; a soft dark wash from the left keeps it readable. The orders `PL-10` to `PL-12` were changed to match.
 - **Checked.** `ErrorPagesTest` (new), screenshots of a story screen and the 404 page on the dev install.
 
+## Reviewer run on PR #431 (20 November 2026, branch `ulasan-polesan`)
+
+The open PROGRESS item asked for one `gelita-reviewer` run on a real diff. It ran on PR #431 (home page, menus and maps polish) and found three things; the branch is cut from `igi/laughing-fermi-ifbg3l` because PR #431 was closed for new work and not merged yet.
+
+- **Two cards at once on the region map and Peta Kedu.** The no-JS `:target` fallbacks became stronger than the `is-live` rules of `map.js` when they gained `:has()`. A page reached with `#region-X` or `#node-N` (Kenali's no-JS Tutup link, a pin tapped before `map.js` ran) kept that card visible after the student chose another, because `history.replaceState` drops the hash but not `:target`. Both fallbacks are now scoped to `:not(.is-live)`; `LibraryLockTest::testTargetFallbackStopsWhenMapScriptRuns` checks all four rules.
+- **Duplicate `library_page_viewed`.** Tapping the contents entry of the page already open called `slides.show()` again, which logs a page view and pauses videos. The contents handler now returns on the open page (`testContentsLinkToTheOpenPageDoesNothing`). `slides.js` itself is unchanged: its `onChange` on an unchanged page is used by other callers.
+- **Not changed, for the owner:** the lettered Mulai slots `ui.btn-start` / `ui.btn-start.en` are no longer shown (the home page draws the CSS button) but are still in `AssetChecklist`, `ImageSlots`, `Config\Gelita` sizes, `MediaAssetSeeder` and the core asset package.
+
+The reviewer's own feedback: half its checklist did not apply to a visual redesign, and it had no item for CSS cascade fallbacks, events fired by no-op taps, slots left behind when a screen stops using them, error views, or changes that only reach an install through a command. Those five are now in `.claude/agents/gelita-reviewer.md`, with a short note on telling an intended test rewrite from a weakened test.
+
