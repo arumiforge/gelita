@@ -106,7 +106,11 @@ final class ResultScreenTest extends CIUnitTestCase
             'level' => $this->level(), 'node' => self::node(1, 'puzzle'), 'sequence' => 1, 'attempts' => [], 'best' => null,
         ]);
         $this->assertStringContainsString('<header class="hud hud-menu-style is-compact" data-in-game', $other);
-        $this->assertMatchesRegularExpression('/<div class="hud-shards" style="[^"]*">(?:<!--[^>]*-->\s*)?<details class="lantern"/', $other);
+        $this->assertMatchesRegularExpression('/<div class="hud-shards has-crystal-stages" style="[^"]*">(?:<!--[^>]*-->\s*)?<details class="lantern"/', $other);
+        // PL-03 to PL-06 (installed 20 November 2026): one crystal picture per stage of light
+        for ($n = 1; $n <= 4; $n++) {
+            $this->assertStringContainsString('--shards-crystal-' . $n . ': url(&quot;' . esc(asset_url_versioned('ui/hud-shards-crystal-' . $n . '.webp'), 'attr') . '&quot;)', $other);
+        }
         // The owner's shard plate (20 October 2026): frame and fill texture as absolute URLs, the crystal's glow layer
         $this->assertStringContainsString('--shards-frame: url(&quot;' . esc(asset_url_versioned('ui/hud-shards-frame.webp'), 'attr') . '&quot;)', $other);
         $this->assertStringContainsString('--shards-fill: url(&quot;' . esc(asset_url_versioned('ui/hud-shards-fill.webp'), 'attr') . '&quot;)', $other);
