@@ -828,6 +828,13 @@ return [
     'feedbackField_hardest_part' => 'Paling sulit',
     'feedbackField_new_learning' => 'Hal baru',
     'feedbackField_suggestion'   => 'Saran',
+    // Readiness: test module content (owner, 20 November 2026)
+    'readyInstrumentsLabel'   => 'Isi tes, angket, dan skala sikap terpasang',
+    'readyInstrumentsOk'      => 'Tes awal dan akhir, angket, dan skala sikap siap dipakai siswa.',
+    'readyInstrumentsMissing' => 'Belum terpasang: {0}. Siswa akan melihat "Tesnya belum siap". Minta admin mengimpornya di server (php spark gelita:instrumen:impor).',
+    'readyInstrument_tes'     => 'tes awal dan akhir',
+    'readyInstrument_angket'  => 'angket',
+    'readyInstrument_sikap'   => 'skala sikap',
     'retentionMinStudy' => 'Masa simpan studi penelitian paling singkat 7305 hari (20 tahun).',
     'retentionStudyHelp' => 'Penelitian dengan mode penelitian paling singkat 7305 hari (20 tahun), dihitung sejak penelitian selesai. Bila mode penelitian dicentang dan angkanya lebih kecil, sistem mengisi 7305 hari saat disimpan.',
     'researchPrivacyRequired' => 'Nyalakan pengaman data penelitian (gelita.researchPrivacy) di server sebelum studi penelitian diaktifkan.',

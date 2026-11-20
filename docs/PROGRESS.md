@@ -220,3 +220,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `siap-tes-dan-smoke` | Cloud session, 20 Nov 2026: readiness item for test-module content; `tools/qa/field-smoke.mjs` (research data collection smoke test, local and live) | PR open |

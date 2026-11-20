@@ -24,6 +24,7 @@ Each script's header comment lists its options and environment variables (`QA_BA
 | Challenge client and server under racing requests | `challenge-races.mjs` |
 | Staff panel pages and what each role may open | `admin-check.mjs` |
 | Research events, offline logging | `event-integrity.mjs`, `event-requests.mjs` |
+| Research data collection end to end: field sessions, tokens, seats, tests, retention, make-up session, export, closing the study | `field-smoke.mjs` (local mode needs `gelita.researchPrivacy = true` and a fresh database; `QA_MODE=live` checks a server read-only, with a `uji.*` account from `GELITA_UJI_USER`/`GELITA_UJI_PASS`) |
 | Asset package, service worker, download screen | `package-check.mjs`, `package-screens.mjs` |
 | Screen transitions, language switch, timing | `transition-check.mjs`, `nav-timing.mjs` |
 | Background music (`core/audio.js`) | `music-check.mjs` |
@@ -35,6 +36,6 @@ Chromium and Playwright are installed (`/opt/pw-browsers`); never run `playwrigh
 
 ## Stop
 
-1. `pkill -f '0.0.0.0:8080'` (the server runs as a child process that `spark serve` leaves behind), then `service mariadb stop`.
+1. `pkill -f '0.0.0.0:8080'` and `pkill -f 'localhost:8080'` (the server runs as a child process that `spark serve` leaves behind), then `service mariadb stop`.
 2. `rm .env` before running the test suite, so results match CI.
 3. In the report: which script ran, against which screens, what passed, and what was not looked at.
