@@ -224,4 +224,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `igi/elegant-lovelace-s2693m` | Cloud session: order-dependent `ServerCheckTest` (stale `staffContext` between test classes) | Fix in `ResetTables` and `StaffContextLeakTest`, decision log *Staff row left in `staffContext` between test classes* (21 November 2026). Full suite green once before the push (1466 tests); PR #451 open, waiting for the owner's merge. Nothing open after the merge. |
