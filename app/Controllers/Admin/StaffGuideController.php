@@ -2,9 +2,11 @@
 
 namespace App\Controllers\Admin;
 
+use App\Libraries\GuideDownloads;
 use App\Libraries\StaffAccess;
 use App\Libraries\StaffGuideContent;
 use CodeIgniter\Exceptions\PageNotFoundException;
+use CodeIgniter\HTTP\ResponseInterface;
 
 /**
  * Staff guide (/admin/panduan-staf): a small documentation site that
@@ -19,6 +21,10 @@ use CodeIgniter\Exceptions\PageNotFoundException;
  * staff member has their role's chapter first and a way back to the panel.
  * A guest may pick a role (`?peran=`), which the guide's links carry along.
  * Text lives in App\Libraries\StaffGuideContent.
+ *
+ * Downloads (owner, 20 November 2026): the print versions of the research
+ * documents for field work and the blank field sheets, listed on the topic
+ * page marked `downloads` and served by download() from GuideDownloads.
  */
 class StaffGuideController extends BaseAdminController
 {
@@ -59,7 +65,19 @@ class StaffGuideController extends BaseAdminController
             'terms'    => ! empty($sections[$slug]['glossary']) ? [] : StaffGuideContent::termsIn($sections[$slug]),
             'facts'    => [],
             'stale'    => [],
+            // `downloads`: true lists the print page's group, a string names another group (GuideDownloads)
+            'downloads'  => empty($sections[$slug]['downloads']) ? [] : GuideDownloads::rows(GuideDownloads::forGroup(
+                GuideDownloads::STAFF,
+                $sections[$slug]['downloads'] === true ? GuideDownloads::DEFAULT_GROUP : (string) $sections[$slug]['downloads'],
+            )),
+            'showPanels' => false,
         ]);
+    }
+
+    /** A file the staff guide offers (GuideDownloads); anything else is not found. */
+    public function download(string $key): ResponseInterface
+    {
+        return GuideDownloads::respond(GuideDownloads::STAFF, $key, $this->request, $this->response);
     }
 
     /**

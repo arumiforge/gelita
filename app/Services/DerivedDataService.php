@@ -364,12 +364,18 @@ class DerivedDataService
 
         $test = array_map('intval', array_column($db->table('schools')->select('id')->where('research_code', TestAccountService::SCHOOL_CODE)->get()->getResultArray(), 'id')) ?: [0];
 
-        $rows = $db->table('participants')
+        $builder = $db->table('participants')
             ->select('participants.id')
             ->join('participant_consents', 'participant_consents.participant_id = participants.id', 'left')
             ->whereIn('participants.id', array_keys($ids))
-            ->where('participants.deleted_at', null)
-            ->notLike('participants.username', Simulator::USERNAME_PREFIX, 'after')
+            ->where('participants.deleted_at', null);
+
+        // A demo install may count simulated students (Simulator::inResearchData(), never in production)
+        if (! Simulator::inResearchData()) {
+            $builder->notLike('participants.username', Simulator::USERNAME_PREFIX, 'after');
+        }
+
+        $rows = $builder
             ->notLike('participants.username', TestAccountService::PREFIX, 'after')
             ->groupStart()->where('participants.school_id', null)->orWhereNotIn('participants.school_id', $test)->groupEnd()
             ->groupStart()->where('participant_consents.status', null)->orWhere('participant_consents.status !=', 'withdrawn_delete')->groupEnd()

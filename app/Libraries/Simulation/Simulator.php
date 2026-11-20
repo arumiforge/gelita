@@ -47,7 +47,7 @@ use Random\Randomizer;
  * yang sama (kecuali id acak seperti uuid dan kode sesi). Jam simulasi:
  * SimClock.
  */
-final class Simulator
+class Simulator
 {
     public const USERNAME_PREFIX = 'sim_';
     public const SCHOOL_PREFIX   = 'Sekolah Simulasi';
@@ -56,19 +56,19 @@ final class Simulator
     public const PASSWORD = 'Gelita#Sim2026';
 
     /** Sekolah simulasi: NPSN tidak ada di daftar (centang "Sekolahku tidak ada di daftar") atau provinsi tanpa direktori. */
-    private const SCHOOLS = [
+    protected const SCHOOLS = [
         ['name' => 'Sekolah Simulasi Temanggung', 'province' => '33', 'district' => '33.23', 'start' => '07:30'],
         ['name' => 'Sekolah Simulasi Magelang', 'province' => '33', 'district' => '33.08', 'start' => '08:15'],
         ['name' => 'Sekolah Simulasi Wonosobo', 'province' => '33', 'district' => '33.07', 'start' => '09:00'],
         ['name' => 'Sekolah Simulasi Yogyakarta', 'province' => '34', 'district' => '34.71', 'start' => '10:00'],
     ];
 
-    private const FIRST_NAMES = [
+    protected const FIRST_NAMES = [
         'Adi', 'Bayu', 'Citra', 'Dewi', 'Eka', 'Fajar', 'Gita', 'Hana', 'Indra', 'Joko', 'Kirana', 'Laras',
         'Maya', 'Nanda', 'Oki', 'Putri', 'Rafi', 'Sari', 'Tegar', 'Umi', 'Wulan', 'Yoga', 'Zahra', 'Bima',
     ];
 
-    private const DEVICES = [
+    protected const DEVICES = [
         'tablet' => [
             'ua'     => 'Mozilla/5.0 (Linux; Android 13; SM-X200) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
             'client' => ['screen_w' => 1340, 'screen_h' => 800, 'viewport_w' => 1340, 'viewport_h' => 708, 'touch_points' => 5, 'orientation' => 'landscape-primary'],
@@ -81,49 +81,66 @@ final class Simulator
             'ua'     => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
             'client' => ['screen_w' => 1366, 'screen_h' => 768, 'viewport_w' => 1366, 'viewport_h' => 657, 'touch_points' => 0, 'orientation' => 'landscape-primary'],
         ],
+        // School Chromebook (research mode only; the free-play simulation never picks it)
+        'chromebook' => [
+            'ua'     => 'Mozilla/5.0 (X11; CrOS x86_64 15917.71.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+            'client' => ['screen_w' => 1366, 'screen_h' => 768, 'viewport_w' => 1366, 'viewport_h' => 657, 'touch_points' => 10, 'orientation' => 'landscape-primary'],
+        ],
     ];
 
     /** Hasil pengerjaan batch yang dipaksa untuk siswa pertama, agar setiap jenis hasil pasti ada. */
-    private const SHOWCASE = [
+    protected const SHOWCASE = [
         'first', 'fix', 'exhausted', 'first', 'fix',          // Temanggung: puzzle, rumpang, boleh, cari, skenario
         'fix', 'first', 'first', 'exhausted', 'first',        // Magelang
         'exhausted', 'fix', 'fix', 'fix', 'exhausted',        // Wonosobo
     ];
 
-    private readonly Randomizer $rng;
-    private readonly SimClock $clock;
-    private readonly ChallengeService $challenges;
-    private readonly \ReflectionMethod $objectRef;
-    private readonly \ReflectionMethod $partRef;
+    protected readonly Randomizer $rng;
+    protected readonly SimClock $clock;
+    protected readonly ChallengeService $challenges;
+    protected readonly \ReflectionMethod $objectRef;
+    protected readonly \ReflectionMethod $partRef;
 
     /** Part 6 (32 §5.7): opaque scenario option refs, as the server derives them */
-    private readonly \ReflectionMethod $optionRef;
+    protected readonly \ReflectionMethod $optionRef;
+
+    /**
+     * True on a demo install that shows simulated students as research data
+     * (`Config\Gelita::$simulatedInResearch`); never in production.
+     */
+    public static function inResearchData(string $environment = ENVIRONMENT): bool
+    {
+        return $environment !== 'production' && config('Gelita')->simulatedInResearch;
+    }
+
+    /** Free play: a student may press Keluar in a challenge and open it again (a new attempt). Research mode: no. */
+    protected bool $reopenAfterExit = true;
 
     /** Kode layar terakhir per sesi (session PHP `last_screen` di ScreenViewFilter). */
-    private ?string $lastScreen = null;
+    protected ?string $lastScreen = null;
 
     /** Nomor urut event klien per halaman (core/events.js memulai dari 1 tiap halaman). */
-    private int $pageSequence = 0;
+    protected int $pageSequence = 0;
 
-    private ?GameSession $session = null;
+    protected ?GameSession $session = null;
 
     /** Belum ada siswa yang lupa sandi (reset guru) pada jalannya perintah ini. */
-    private bool $resetDue = true;
-    private string $locale        = 'id';
-    private string $device        = 'tablet';
+    protected bool $resetDue = true;
+    protected string $locale        = 'id';
+    protected string $device        = 'tablet';
 
     /** @var array<string, int> */
-    private array $stats = [
+    protected array $stats = [
         'siswa' => 0, 'tuntas' => 0, 'belum_selesai' => 0, 'sesi' => 0, 'pengerjaan' => 0,
         'ditinggalkan' => 0, 'kesempatan_habis' => 0, 'petunjuk' => 0, 'ketukan_salah' => 0,
         'petunjuk_dilewati' => 0, 'kritik_saran' => 0, 'event_audio' => 0,
     ];
 
     public function __construct(
-        private readonly BaseConnection $db,
-        private readonly int $seed,
+        protected readonly BaseConnection $db,
+        protected readonly int $seed,
         \DateTimeImmutable $start,
-        private readonly ?\Closure $log = null,
+        protected readonly ?\Closure $log = null,
     ) {
         $this->rng        = new Randomizer(new Mt19937($seed));
         $this->clock      = new SimClock($db, $start);
@@ -180,7 +197,7 @@ final class Simulator
      * tidak memulai session di CLI, jadi dipakai session PHP bawaan tanpa
      * cookie di folder sementara, dimulai lagi sesudah logout().
      */
-    private function phpSession(): void
+    protected function phpSession(): void
     {
         if (session_status() === PHP_SESSION_ACTIVE) {
             return;
@@ -198,7 +215,7 @@ final class Simulator
      * - `berhenti`: berhenti di tengah (pengerjaan terakhir dibiarkan terbuka);
      * - `baru`: daftar dan cerita pembuka, paling banyak satu tantangan lalu Keluar.
      */
-    private function profile(int $index): string
+    protected function profile(int $index): string
     {
         return match ($index) {
             0       => 'tuntas',
@@ -209,7 +226,7 @@ final class Simulator
     }
 
     /** @param array{name: string, province: string, district: string, start: string} $school */
-    private function student(int $number, array $school, string $profile, bool $showcase): void
+    protected function student(int $number, array $school, string $profile, bool $showcase): void
     {
         $username     = $this->username($number);
         $this->session    = null;
@@ -288,7 +305,7 @@ final class Simulator
     }
 
     /** @param array{name: string, province: string, district: string, start: string} $school */
-    private function register(int $number, string $username, array $school): int
+    protected function register(int $number, string $username, array $school): int
     {
         $policy = new PasswordPolicy();
         $name   = self::FIRST_NAMES[($number - 1) % count(self::FIRST_NAMES)] . ' ' . sprintf('Simulasi %03d', $number);
@@ -333,7 +350,7 @@ final class Simulator
     }
 
     /** Cerita pembuka: layar gerbang, slide intro, `/intro/selesai`. */
-    private function intro(): void
+    protected function intro(): void
     {
         $this->screen('gate', '/gerbang');
         $this->screen('intro', '/intro');
@@ -352,7 +369,7 @@ final class Simulator
     }
 
     /** Masuk wilayah: peta, Kenali (kadang), layar wilayah, dialog pembuka. */
-    private function openRegion(Level $level, bool $again = false): void
+    protected function openRegion(Level $level, bool $again = false): void
     {
         if (! $again) {
             $this->clientEvents([['level_opened', ['level_id' => $level->id], ['code' => $level->code]]]);
@@ -375,7 +392,7 @@ final class Simulator
      * Satu tantangan: misi → tantangan → hasil. Kadang Keluar di tengah lalu
      * dibuka lagi (pengerjaan baru), atau dibiarkan terbuka (siswa berhenti).
      */
-    private function challenge(Level $level, ChallengeNode $node, float $skill, ?string $mode, bool $leaveOpen, bool $quitEarly): void
+    protected function challenge(Level $level, ChallengeNode $node, float $skill, ?string $mode, bool $leaveOpen, bool $quitEarly): void
     {
         $refs = ['level_id' => $level->id];
 
@@ -398,7 +415,7 @@ final class Simulator
         }
 
         // Keluar di tengah tantangan (tombol Keluar dikonfirmasi), lalu dibuka lagi
-        $exitFirst = $quitEarly || ($mode === null && $this->rng->getInt(1, 100) <= 8);
+        $exitFirst = ($quitEarly || ($mode === null && $this->rng->getInt(1, 100) <= 8)) && $this->reopenAfterExit;
 
         if ($exitFirst) {
             $this->clock->advance($this->rng->getInt(20_000, 90_000));
@@ -448,12 +465,19 @@ final class Simulator
      *
      * @param array<string, mixed> $payload
      */
-    private function playBatch(Level $level, ChallengeNode $node, ChallengeAttempt $attempt, array $payload, float $skill, ?string $mode, bool $leaveOpen): void
+    protected function playBatch(Level $level, ChallengeNode $node, ChallengeAttempt $attempt, array $payload, float $skill, ?string $mode, bool $leaveOpen): void
     {
         $refs   = $this->attemptRefs($attempt, $level);
         $items  = $this->items($payload);
         $bank   = array_values(array_map('strval', (array) ($payload['word_bank'] ?? [])));
         $locked = [];
+
+        // A resumed attempt (research mode, 33 K3): items already right stay locked
+        foreach ((array) ($payload['items'] ?? []) as $row) {
+            if (! empty($row['state']['locked'])) {
+                $locked[(int) $row['id']] = true;
+            }
+        }
         $opened = $this->clock->now();
         $t      = 0; // ms sejak tantangan dibuka (first_input_ms / last_input_ms)
         $ease   = ['temanggung' => 0.15, 'magelang' => 0.0, 'wonosobo' => -0.15][$level->code] ?? 0.0;
@@ -536,7 +560,7 @@ final class Simulator
      *
      * @param array<string, mixed> $payload
      */
-    private function playHunt(Level $level, ChallengeAttempt $attempt, array $payload, float $skill, ?string $mode, bool $leaveOpen): void
+    protected function playHunt(Level $level, ChallengeAttempt $attempt, array $payload, float $skill, ?string $mode, bool $leaveOpen): void
     {
         $ease   = ['temanggung' => 0.1, 'magelang' => 0.0, 'wonosobo' => -0.1][$level->code] ?? 0.0;
         $opened = $this->clock->now();
@@ -577,6 +601,11 @@ final class Simulator
         }
 
         foreach ($rounds as $index => [$clue, $pool, $keyOf]) {
+            // A resumed attempt (research mode, 33 K3): clues found or closed before are skipped
+            if (! empty($clue['state']['closed'])) {
+                continue;
+            }
+
             $itemId  = (int) $clue['item_id'];
             $correct = $keyOf === null ? (string) $this->objectRef->invoke($this->challenges, $attempt->id, $itemId) : $keyOf($itemId);
             $others  = array_values(array_filter($pool, static fn (string $ref): bool => $ref !== $correct));
@@ -652,7 +681,7 @@ final class Simulator
      *
      * @param array<string, mixed> $payload
      */
-    private function playScenarios(Level $level, ChallengeAttempt $attempt, array $payload, float $skill, ?string $mode, bool $leaveOpen): void
+    protected function playScenarios(Level $level, ChallengeAttempt $attempt, array $payload, float $skill, ?string $mode, bool $leaveOpen): void
     {
         $ease      = ['temanggung' => 0.1, 'magelang' => 0.0, 'wonosobo' => -0.1][$level->code] ?? 0.0;
         $scenarios = array_values((array) ($payload['scenarios'] ?? []));
@@ -660,6 +689,11 @@ final class Simulator
         $elapsed   = 0;
 
         foreach ($scenarios as $index => $scenario) {
+            // A resumed attempt (research mode, 33 K3): scenarios closed before are skipped
+            if (! empty($scenario['state']['closed'])) {
+                continue;
+            }
+
             $itemId = (int) $scenario['id'];
             $safe   = null;
 
@@ -744,7 +778,7 @@ final class Simulator
      *
      * @return array<int, true>
      */
-    private function wrongPlan(?string $mode, int $check, array $open, float $skill): array
+    protected function wrongPlan(?string $mode, int $check, array $open, float $skill): array
     {
         if ($open === []) {
             return [];
@@ -781,7 +815,7 @@ final class Simulator
      *
      * @return array<string, mixed>
      */
-    private function batchAnswer(ChallengeNode $node, ChallengeItem $item, bool $right, array $bank, int $check): array
+    protected function batchAnswer(ChallengeNode $node, ChallengeItem $item, bool $right, array $bank, int $check): array
     {
         if ($item->interaction_type === 'puzzle_arrange') {
             $order = array_values(array_map('intval', (array) $item->answerKey('order')));
@@ -827,7 +861,7 @@ final class Simulator
         return ['verdict' => $options[0] ?? ($verdict === 'benar' ? 'salah' : 'benar')];
     }
 
-    private function misses(float $skill): int
+    protected function misses(float $skill): int
     {
         $roll = $this->rng->getFloat(0, 1);
 
@@ -842,7 +876,7 @@ final class Simulator
     // ------------------------------------------------------------- petunjuk
 
     /** @param array<string, mixed> $payload */
-    private function maybeHint(Level $level, ChallengeAttempt $attempt, array $payload, float $skill): void
+    protected function maybeHint(Level $level, ChallengeAttempt $attempt, array $payload, float $skill): void
     {
         $hints = (array) ($payload['hints'] ?? []);
 
@@ -878,14 +912,14 @@ final class Simulator
 
     // ---------------------------------------------------------- navigasi
 
-    private function regionDone(Level $level): void
+    protected function regionDone(Level $level): void
     {
         $this->screen('region_done', '/tuntas/' . $level->code, ['level' => $level->code], ['level_id' => $level->id]);
         $this->slides(service('contentRepository')->dialogues($level->id, 'level_done'), 'level_done', $level->id, 4_000);
     }
 
     /** Pustaka wilayah yang sudah tuntas: halaman demi halaman, sebagian siswa berhenti di tengah. */
-    private function library(Level $level): void
+    protected function library(Level $level): void
     {
         if ($this->rng->getInt(1, 100) > 70) {
             return;
@@ -918,14 +952,14 @@ final class Simulator
         }
     }
 
-    private function ending(): void
+    protected function ending(): void
     {
         $this->screen('ending', '/penutup');
         $this->slides(service('contentRepository')->dialogues(null, 'ending'), 'ending', null, 4_500);
     }
 
     /** Balai Refleksi: seperti ReflectionController::store(), minimal dua jawaban terbuka. */
-    private function feedback(bool $always): void
+    protected function feedback(bool $always): void
     {
         if (! $always && $this->rng->getInt(1, 100) > 80) {
             return;
@@ -977,7 +1011,7 @@ final class Simulator
      *
      * @param array{name: string, province: string, district: string, start: string} $school
      */
-    private function nextSitting(int $participantId, string $username, array $school, int $sitting, bool $showcase): void
+    protected function nextSitting(int $participantId, string $username, array $school, int $sitting, bool $showcase): void
     {
         $roll = $this->rng->getInt(1, 100);
 
@@ -1019,7 +1053,7 @@ final class Simulator
      *
      * @param array{name: string, province: string, district: string, start: string} $school
      */
-    private function returnLater(string $username, array $school): void
+    protected function returnLater(string $username, array $school): void
     {
         $this->clock->advance(7 * 86_400_000);
         $this->clock->act(fn () => service('sessionService')->abandon($this->session->id, 'idle'));
@@ -1034,7 +1068,7 @@ final class Simulator
         $this->screen('map', '/peta');
     }
 
-    private function forgotPassword(int $participantId, string $username): void
+    protected function forgotPassword(int $participantId, string $username): void
     {
         // Dua kali salah ketik, lalu guru mereset sandi di panel
         foreach ([1, 2] as $miss) {
@@ -1063,13 +1097,13 @@ final class Simulator
     }
 
     /** Tombol Keluar: SessionService::logout() menghapus session PHP; dimulai lagi untuk siswa berikutnya. */
-    private function logout(): void
+    protected function logout(): void
     {
         service('sessionService')->logout();
         $this->phpSession();
     }
 
-    private function useSession(GameSession $session): void
+    protected function useSession(GameSession $session): void
     {
         if ($this->session === null || $this->session->id !== $session->id) {
             $this->stats['sesi']++;
@@ -1079,7 +1113,7 @@ final class Simulator
         $this->clock->bindSession($session->id);
     }
 
-    private function levelCompleted(Level $level): bool
+    protected function levelCompleted(Level $level): bool
     {
         $summary = service('scoringService')->levelSummary($this->session->id, $level->id);
 
@@ -1094,7 +1128,7 @@ final class Simulator
      * @param array<string, int|string> $params
      * @param array<string, int>        $refs
      */
-    private function screen(string $screen, string $path, array $params = [], array $refs = [], ?\Closure $controller = null): void
+    protected function screen(string $screen, string $path, array $params = [], array $refs = [], ?\Closure $controller = null): void
     {
         $this->clock->advance($this->rng->getInt(1_200, 4_000));
         $this->pageSequence = 0;
@@ -1118,7 +1152,7 @@ final class Simulator
      *
      * @param list<object> $slides
      */
-    private function slides(array $slides, string $context, ?int $levelId, int $perSlide): void
+    protected function slides(array $slides, string $context, ?int $levelId, int $perSlide): void
     {
         $rows  = [];
         $plays = [];
@@ -1153,7 +1187,7 @@ final class Simulator
     }
 
     /** @param array<string, mixed> $clue */
-    private function clueAudio(ChallengeAttempt $attempt, array $clue, string $action): void
+    protected function clueAudio(ChallengeAttempt $attempt, array $clue, string $action): void
     {
         $audioId = (int) ($clue['audio_id'] ?? 0);
 
@@ -1170,7 +1204,7 @@ final class Simulator
         }
     }
 
-    private function audio(int $audioId, string $action, ?int $attemptId, string $occurredAt, ?int $listened = null): void
+    protected function audio(int $audioId, string $action, ?int $attemptId, string $occurredAt, ?int $listened = null): void
     {
         $this->clock->act(fn () => service('eventService')->recordAudio($this->session, [
             'audio_asset_id'  => $audioId,
@@ -1185,7 +1219,7 @@ final class Simulator
     }
 
     /** Batas gulir panel bacaan 25/50/75/100 % (core/device.js trackReading). */
-    private function reading(array $refs, array $payload): void
+    protected function reading(array $refs, array $payload): void
     {
         $passage = (array) (array_values((array) ($payload['passages'] ?? []))[0] ?? []);
         $marks   = [25, 50, 75, 100];
@@ -1202,7 +1236,7 @@ final class Simulator
     }
 
     /** Siswa menutup tab di tengah tantangan: hanya event `challenge_abandoned` lewat beacon; pengerjaan tetap terbuka. */
-    private function pageHide(ChallengeAttempt $attempt, Level $level): void
+    protected function pageHide(ChallengeAttempt $attempt, Level $level): void
     {
         $this->clientEvents([
             ['page_hidden', [], ['screen' => 'challenge'], 1_000],
@@ -1218,7 +1252,7 @@ final class Simulator
      *
      * @param list<array{0: string, 1: array<string, ?int>, 2: array<string, mixed>, 3?: int}> $rows
      */
-    private function clientEvents(array $rows): void
+    protected function clientEvents(array $rows): void
     {
         if ($rows === []) {
             return;
@@ -1249,7 +1283,7 @@ final class Simulator
         $this->clock->act(fn () => service('eventService')->ingest($this->session, $events));
     }
 
-    private function isoAt(\DateTimeImmutable $base, int $ms): string
+    protected function isoAt(\DateTimeImmutable $base, int $ms): string
     {
         return $base->modify(sprintf('+%d seconds +%d microseconds', intdiv($ms, 1000), ($ms % 1000) * 1000))
             ->setTimezone(new \DateTimeZone('UTC'))
@@ -1259,7 +1293,7 @@ final class Simulator
     // ------------------------------------------------------------- bantuan
 
     /** @return array<string, int> */
-    private function attemptRefs(ChallengeAttempt $attempt, Level $level): array
+    protected function attemptRefs(ChallengeAttempt $attempt, Level $level): array
     {
         return ['level_id' => $level->id, 'node_id' => (int) $attempt->challenge_node_id, 'attempt_id' => (int) $attempt->id];
     }
@@ -1271,7 +1305,7 @@ final class Simulator
      *
      * @return array<int, ChallengeItem>
      */
-    private function items(array $payload): array
+    protected function items(array $payload): array
     {
         $out = [];
 
@@ -1288,13 +1322,13 @@ final class Simulator
         return $out;
     }
 
-    private function reload(ChallengeAttempt $attempt): ChallengeAttempt
+    protected function reload(ChallengeAttempt $attempt): ChallengeAttempt
     {
         return model(ChallengeAttemptModel::class)->find($attempt->id);
     }
 
     /** @return array<string, mixed> */
-    private function deviceProfile(): array
+    protected function deviceProfile(): array
     {
         $device = self::DEVICES[$this->device];
 
@@ -1308,7 +1342,7 @@ final class Simulator
      *
      * @return array<string, ?string>
      */
-    private function region(array $school): array
+    protected function region(array $school): array
     {
         $directory = RegionDirectory::all();
         $province  = RegionDirectory::province($school['province']);
@@ -1323,13 +1357,13 @@ final class Simulator
         ];
     }
 
-    private function username(int $number): string
+    protected function username(int $number): string
     {
         return self::USERNAME_PREFIX . sprintf('%03d', $number);
     }
 
     /** Nomor siswa simulasi berikutnya (perintah dapat dijalankan berulang). */
-    private function nextNumber(): int
+    protected function nextNumber(): int
     {
         $rows = $this->db->table('participants')->select('username')
             ->like('username', self::USERNAME_PREFIX, 'after')
@@ -1346,7 +1380,7 @@ final class Simulator
     }
 
     /** Hari sekolah (Senin–Sabtu) ke-$n sesudah $from (hari $from sendiri dihitung bila hari sekolah). */
-    private function schoolDay(\DateTimeImmutable $from, int $n): \DateTimeImmutable
+    protected function schoolDay(\DateTimeImmutable $from, int $n): \DateTimeImmutable
     {
         $day = $from->setTime(0, 0);
 
@@ -1365,7 +1399,7 @@ final class Simulator
         return $day;
     }
 
-    private function at(\DateTimeImmutable $day, string $hhmm, int $plusSeconds): \DateTimeImmutable
+    protected function at(\DateTimeImmutable $day, string $hhmm, int $plusSeconds): \DateTimeImmutable
     {
         [$h, $m] = array_map('intval', explode(':', $hhmm));
 
@@ -1377,7 +1411,7 @@ final class Simulator
      *
      * @param array<string, int> $weights
      */
-    private function pick(array $weights): string
+    protected function pick(array $weights): string
     {
         $roll = $this->rng->getInt(1, array_sum($weights));
 
@@ -1392,7 +1426,7 @@ final class Simulator
         return (string) array_key_last($weights);
     }
 
-    private function say(string $line): void
+    protected function say(string $line): void
     {
         $this->log?->__invoke($line);
     }

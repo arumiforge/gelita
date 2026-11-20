@@ -1061,6 +1061,8 @@ return [
     'guideCardTitle'        => 'Panduan staf',
     'guideCardText'         => 'Langkah kerja setiap peran di panel, dari persiapan kunjungan sekolah sampai pengunduhan data. Dapat dibaca tanpa masuk.',
     'guideCardOpen'         => 'Buka panduan staf',
+    // Downloads of the validator and staff guides (20 November 2026): research PDFs only
+    'guideDownloadsTitle'   => 'Dokumen untuk diunduh',
 
     // ---- Validator guide (17 November 2026): /admin/panduan-validator ----
     'vguideTitle'        => 'Panduan validator',
@@ -1075,6 +1077,8 @@ return [
     'vguideCardTitle'    => 'Panduan validator',
     'vguideCardText'     => 'Untuk validator ahli materi, pengamat budaya, dan ahli media: bahan, akun uji, dan pengembalian hasil. Dapat dibaca tanpa masuk.',
     'vguideCardOpen'     => 'Buka panduan validator',
+    'vguideDownloadsLead'       => 'Instrumen setiap panel dalam bentuk PDF, siap dicetak. Penilai B.5a cukup mengunduh buklet B.5a sampai lembar B.5a dikirim. Buklet B.5a memuat kunci jawaban: jangan disebarkan.',
+    'vguideDownloadsLeadPicked' => 'Berkas untuk panel Anda, siap dicetak. Bila berbeda dari berkas yang dikirim tim peneliti, ikuti kiriman tim peneliti.',
 
     // ---- GELITA guide (17 November 2026): /admin/panduan-gelita, public and in full detail ----
     'gguideTitle'     => 'Mengenal GELITA',

@@ -15,6 +15,7 @@
  * @var list<string>              $terms    term keys used on this page
  * @var list<array{0: string, 1: string}> $facts live facts of this install (validator guide; guide markup allowed in the value)
  * @var list<string>              $stale    changed sources, shown to signed-in staff only (validator and GELITA guides)
+ * @var list<array<string, string>> $downloads files of a topic marked `downloads` (validator and staff guides; GuideDownloads::rows())
  *
  * GELITA guide parts (after the note): `why` (the reasons, "Mengapa begini")
  * and `refs` (works cited). Repository documents are not shown to readers
@@ -77,6 +78,10 @@ foreach ($chapters as $chapter) {
         </tbody>
       </table>
     </div>
+  <?php endif ?>
+
+  <?php if (! empty($downloads)): ?>
+    <?= $this->setVar('downloadsLead', '')->include('admin/guide/_downloads') ?>
   <?php endif ?>
 
   <?php if (! empty($section['steps'])): ?>

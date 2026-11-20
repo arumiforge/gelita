@@ -428,6 +428,17 @@ class Gelita extends BaseConfig
     /** Username prefixes students cannot register with; tools and the simulator still may (28 K18). */
     public array $reservedUsernamePrefixes = ['uji.', 'sim_'];
 
+    /**
+     * Demo install only (owner, 20 November 2026; `gelita.simulatedInResearch`
+     * in `.env`): simulated `sim_*` students count as research data, so the
+     * head researcher's Ringkasan, raw data, derived data and downloads show
+     * a `gelita:simulasi` run. Off by default and ignored in production
+     * (Simulator::inResearchData()); every download made with it says so in
+     * the Kamus Data sheet. Research data never holds simulated students
+     * otherwise (29 §7.1, 35 K13).
+     */
+    public bool $simulatedInResearch = false;
+
     // Part 8 (34): test module, questionnaire, risk items, attitude scale
 
     /**

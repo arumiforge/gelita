@@ -3,10 +3,13 @@
  * First page of the validator guide — /admin/panduan-validator →
  * ValidatorGuideController::index.
  *
- * Lead per picked panel, one card per chapter (the picked panel's marked),
- * then cards for the topics validators need most
+ * Lead per picked panel, the files to download (the picked panel's, or all
+ * four with their panel names; GuideDownloads), one card per chapter (the
+ * picked panel's marked), then cards for the topics validators need most
  * (ValidatorGuideContent::POPULAR).
  *
+ * @var list<array<string, string>> $downloads GuideDownloads::rows()
+ * @var bool                       $showPanels
  * @var list<array<string, mixed>> $chapters ValidatorGuideController::order()
  * @var list<array<string, mixed>> $popular  sections with chapterTitle
  * @var string                     $role     the picked panel, '' for none
@@ -27,6 +30,10 @@ $icons = ['mulai' => 'compass', 'b5a' => 'eye', 'materi' => 'book', 'budaya' => 
 
   <?php if ($role === 'b5a'): ?>
     <div class="gd-callout is-warn" role="note"><?= icon('warn') ?><p><?= esc(lang('Admin.vguideBlindFirst')) ?></p></div>
+  <?php endif ?>
+
+  <?php if ($downloads !== []): ?>
+    <?= $this->setVar('downloadsLead', lang($role === '' ? 'Admin.vguideDownloadsLead' : 'Admin.vguideDownloadsLeadPicked'))->include('admin/guide/_downloads') ?>
   <?php endif ?>
 
   <h2 class="gd-h2"><?= esc(lang('Admin.guideChapters')) ?></h2>

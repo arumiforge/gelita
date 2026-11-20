@@ -30,7 +30,9 @@ namespace App\Libraries;
  *
  * Shape and markup: see GuideContent and StaffGuideContent. Sections here
  * carry no panel links (validators have no staff account); steps are plain
- * strings.
+ * strings. `downloads` (true) lists the files of the chapter's panels on that
+ * page (GuideDownloads; owner, 20 November 2026); the first page lists them
+ * too.
  */
 final class ValidatorGuideContent extends GuideContent
 {
@@ -210,6 +212,7 @@ final class ValidatorGuideContent extends GuideContent
                 [
                     'id'      => 'b5a-urutan',
                     'title'   => 'Urutan kerja Anda',
+                    'downloads' => true,
                     'lead'    => 'Lembar B.5a menguji apakah dua ahli memberi label yang sama tanpa melihat label dari tim. Karena itu B.5a dikerjakan lebih dulu, sebelum Anda membaca instrumen lengkap atau bahan lain.',
                     'steps'   => [
                         '**Minggu 1–2: B.5a saja (sekitar 6–8 jam).** Kiriman pertama Anda hanya berisi paket B.5a: lembar kerja daftar butir buta, buklet yang sama untuk diisi di kertas bila lebih nyaman, dan halaman petunjuk B.5a.',
@@ -254,6 +257,7 @@ final class ValidatorGuideContent extends GuideContent
                 [
                     'id'      => 'materi-kiriman',
                     'title'   => 'Yang Anda terima, dan kapan',
+                    'downloads' => true,
                     'lead'    => 'Bahan ahli materi datang dalam dua [[kiriman]], karena label dari tim baru boleh dibuka setelah pelabelan buta selesai.',
                     'table'   => [['Kiriman', 'Ahli Bahasa Anak 2, Ahli Literasi Digital 2, Ahli Pengukuran', 'Dua penilai B.5a'], [
                         ['Awal (minggu 1)', 'Surat, instrumen lengkap, bahan bank soal **tanpa** label, lembar kerja B.6–B.9, bahan lain menurut tabel D.3 instrumen', 'Paket B.5a saja'],
@@ -299,6 +303,7 @@ final class ValidatorGuideContent extends GuideContent
                 [
                     'id'      => 'budaya-tugas',
                     'title'   => 'Tugas dan bahan Anda',
+                    'downloads' => true,
                     'lead'    => 'Semua bahan dikirim di kiriman awal (minggu 1). Ketiga pengamat budaya menilai semua butir; yang berbeda hanya lembar B.8.',
                     'table'   => [['Lembar', 'Isi'], [
                         ['B.3', 'Semua butir'],
@@ -344,6 +349,7 @@ final class ValidatorGuideContent extends GuideContent
                 [
                     'id'      => 'media-kiriman',
                     'title'   => 'Tugas dan bahan Anda',
+                    'downloads' => true,
                     'lead'    => 'Penilaian sekarang adalah **langkah 1**: game di [[instalasi uji|instalasi-uji]] dan [[gambar rancangan layar|mockup]]. Langkah 2, telaah singkat pada layar jadi, diminta dengan surat tersendiri sebelum uji coba.',
                     'table'   => [['Lembar', 'Isi', 'Cara mengisi'], [
                         ['B.3', 'Mutu media. Butir teknis H3 hanya diisi Ahli Media Pembelajaran 3, sebagai daftar periksa lulus/tidak; yang lain mengisi [[TD|td]]', 'Berkas instrumen atau kertas'],
