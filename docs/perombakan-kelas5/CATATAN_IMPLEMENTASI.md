@@ -1238,3 +1238,11 @@ Open item of `docs/PROGRESS.md` (found 16 November 2026, `31` §14 no. 14): `Ass
 - **Checked.** `AssetChecklistPostPhotoTest` (new: every post has a row; no photo, photo without file, uploaded, wrong size, reused picture), `ImageSlotsTest`, `MediaSlotPagesTest`, `NarrationPagesTest`, `BackgroundMusicTest`, `LanguageFilesTest`. Not checked in a browser.
 
 Owner, 20 November 2026: a missing picture is counted once. A post row that shows another challenge's Susun Gambar picture carries `counted: false` and is left out of `summary()`; its note says *(dihitung di Gambar tantangan)*. Test `testReusedPictureIsCountedOnce`.
+
+## Ketua may manage releases and asset packages (20 November 2026, branch `igi/sharp-wozniak-coh1f6`)
+
+Owner, 20 November 2026: the head researcher could not build or publish an asset package, so a study could not be prepared without an admin. `StaffAccess` now gives `releases.manage` to `admin` and `ketua` (was admin only, `27` K13). This opens for ketua everything behind that capability: *Rilis* (save and activate a release, including the running-study confirmation), *Paket aset* (switch, build, publish, switch off, online-lab permission, verify), the *Rilis* menu item, and the package preview `?paket=`. Peneliti still has none of it.
+
+- **Changed:** `StaffAccess`, the docblock of `AssetPackageService::canPreview()`, the role tables of the staff guide and Mengenal GELITA, and a new step in the staff guide's *Menyiapkan penelitian dan mode penelitian* (build, publish and verify the package before the status goes to *Berjalan*).
+- **Tests:** `StaffAccessTest` route matrix (ketua true for `admin/studi/rilis` and `/paket`), `PackageSwitchTest` (the no-preview role is now peneliti).
+- **Not changed:** document `27` (§4 table and K13) still says admin only; this entry supersedes it.

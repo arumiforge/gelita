@@ -207,7 +207,7 @@ final class StaffGuideContent extends GuideContent
                             ],
                             [
                                 '**Ketua peneliti**',
-                                'Semua hak peneliti, ditambah: data semua siswa (Data mentah, Sesi bermain, Kritik & saran), Unduh data, membuat dan mengubah Penelitian, mengunci ambang, mengonfirmasi atau menolak permintaan data, Tindak lanjut, salinan data satu anak, daftar izin berkode.',
+                                'Semua hak peneliti, ditambah: data semua siswa (Data mentah, Sesi bermain, Kritik & saran), Unduh data, membuat dan mengubah Penelitian, rilis dan paket aset, mengunci ambang, mengonfirmasi atau menolak permintaan data, Tindak lanjut, salinan data satu anak, daftar izin berkode.',
                                 'Melihat nama siswa, menjalankan penghapusan, mengurus sekolah atau akun staf.',
                             ],
                             [
@@ -478,6 +478,7 @@ final class StaffGuideContent extends GuideContent
                         ['Buka Penelitian dan tekan **Buat penelitian baru**.', ['admin/studi', 'Penelitian', 'studies.view']],
                         'Isi kode singkat (tidak bisa diubah), nama, tahun ajaran, status, bahasa awal, cara wilayah terbuka, rencana pertemuan, lama penyimpanan data, dan keterangan.',
                         'Centang **Mode penelitian** hanya setelah persetujuan etik terbit. Mode ini butuh lama penyimpanan data minimal 7.305 hari. Bila panel menolak karena pengaturan privasi belum siap, hubungi admin.',
+                        ['Siapkan paket aset: di Rilis → Paket aset tekan **Nyalakan** atau **Bangun ulang paket**, biarkan halaman terbuka sampai selesai, lalu **Terbitkan** dan **Periksa sekarang**.', ['admin/studi/rilis/paket', 'Paket aset', 'releases.manage']],
                         'Periksa kotak **Daftar siap penelitian** di halaman yang sama. Semua butir sebaiknya hijau sebelum status diubah ke **Berjalan**. Bila belum, panel meminta centang **Tetap jalankan**.',
                         'Status Berjalan mengunci paket aset yang aktif untuk penelitian itu.',
                     ],

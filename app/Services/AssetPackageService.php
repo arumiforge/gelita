@@ -250,7 +250,8 @@ class AssetPackageService
 
     /**
      * A logged-in, active staff account allowed to preview packages
-     * (`releases.manage`, admin only since revision 10 part 1, 27 K13).
+     * (`releases.manage`: admin, and ketua since the owner's decision of
+     * 20 November 2026; was admin only by revision 10 part 1, 27 K13).
      */
     private function canPreview(): bool
     {

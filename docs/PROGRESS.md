@@ -220,3 +220,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `igi/sharp-wozniak-coh1f6` | Ketua may build, publish and activate asset packages and releases (`releases.manage`) | Done, PR open |

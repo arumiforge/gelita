@@ -285,9 +285,9 @@ final class PackageSwitchTest extends CIUnitTestCase
         $this->assertNull($this->packages->urlForKey('bg.welcome'));
         $this->assertStringNotContainsString('package-preview"', view('components/package-preview', [], ['saveData' => false]), 'no preview pill for students');
 
-        // Staff without releases.manage (ketua) gets no preview (27 K13)
-        $this->injectStaff('ketua');
-        $this->previewRequest($code, ['staff_id' => 1, 'staff_role' => 'ketua']);
+        // Staff without releases.manage (peneliti) gets no preview (27 K13; ketua holds it since 20 November 2026)
+        $this->injectStaff('peneliti');
+        $this->previewRequest($code, ['staff_id' => 1, 'staff_role' => 'peneliti']);
         $this->assertNull($this->packages->previewCode());
         $this->injectStaff('admin');
 

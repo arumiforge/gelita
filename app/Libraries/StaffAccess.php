@@ -29,7 +29,7 @@ final class StaffAccess
         'content.edit'               => ['admin'],
         'studies.view'               => ['admin', 'ketua'],
         'studies.manage'             => ['ketua'],
-        'releases.manage'            => ['admin'],
+        'releases.manage'            => ['admin', 'ketua'], // ketua too (owner, 20 November 2026)
         'schools.manage'             => ['admin'],
         'staff.manage'               => ['admin'],
         'audit.view'                 => ['admin'],
