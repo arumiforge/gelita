@@ -130,6 +130,10 @@ final class AssetChecklist
 
         foreach ($groups as $group) {
             foreach ($group['items'] as $item) {
+                // A row that shows a picture another row already counts (owner, 20 November 2026)
+                if (($item['counted'] ?? true) === false) {
+                    continue;
+                }
                 $out[$item['status']]++;
             }
         }
@@ -365,8 +369,10 @@ final class AssetChecklist
                 $note = '';
             }
 
-            if ($row !== null && $key !== $own) {
-                $note .= ($note === '' ? '' : ' · ') . 'memakai gambar tantangan lain';
+            // A reused Susun Gambar picture is already counted in "Gambar tantangan"
+            $reused = $row !== null && $key !== $own;
+            if ($reused) {
+                $note .= ($note === '' ? '' : ' · ') . 'memakai gambar tantangan lain (dihitung di Gambar tantangan)';
             }
 
             $title   = trim((string) $post['title_id']);
@@ -378,6 +384,7 @@ final class AssetChecklist
                 'note'       => $note,
                 'link'       => $row === null ? $this->detailLink($own) : site_url('admin/media/' . (int) $row['id']),
                 'link_label' => 'Lihat & unggah',
+                'counted'    => ! $reused,
             ];
         }
 

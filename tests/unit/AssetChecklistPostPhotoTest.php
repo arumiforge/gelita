@@ -110,6 +110,23 @@ final class AssetChecklistPostPhotoTest extends CIUnitTestCase
         $this->assertStringContainsString('memakai gambar tantangan lain', $item['note']);
     }
 
+    /** A missing picture that a post reuses raises "Belum ada" once, not twice (owner, 20 November 2026). */
+    public function testReusedPictureIsCountedOnce(): void
+    {
+        $id = $this->photo('challenge.item.tmg-1-04', 1280, 720, true);
+        $checklist = new AssetChecklist($this->sqlite);
+        $before    = $checklist->summary($checklist->groups());
+
+        $this->sqlite->table('post_scenes')->where('id', $this->scene('tmg-4', 'a')['id'])->update(['media_asset_id' => $id]);
+        $checklist = new AssetChecklist($this->sqlite);
+        $after     = $checklist->summary($checklist->groups());
+
+        // The post's own row (missing before) leaves the count; the shared picture is counted where it belongs
+        $this->assertSame($before['missing'] - 1, $after['missing']);
+        $this->assertFalse($this->row('tmg-4', 'a')['counted']);
+        $this->assertTrue($this->row('tmg-4', 'b')['counted']);
+    }
+
     // ------------------------------------------------------------------ helpers
 
     /** @return array<string, mixed> */

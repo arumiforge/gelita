@@ -1229,3 +1229,5 @@ Open item of `docs/PROGRESS.md` (found 16 November 2026, `31` §14 no. 14): `Ass
 - **Link:** the attached picture's detail page; without one, the slot's detail page or the upload box with the key filled in (`detailLink()`). Attaching a picture to a post stays the job of the workbook and `gelita:katalog:impor`; the group's help text says so.
 - **No view change:** the checklist view renders any group. No catalogue slot changed, so `gelita-katalog/` was not rebuilt.
 - **Checked.** `AssetChecklistPostPhotoTest` (new: every post has a row; no photo, photo without file, uploaded, wrong size, reused picture), `ImageSlotsTest`, `MediaSlotPagesTest`, `NarrationPagesTest`, `BackgroundMusicTest`, `LanguageFilesTest`. Not checked in a browser.
+
+Owner, 20 November 2026: a missing picture is counted once. A post row that shows another challenge's Susun Gambar picture carries `counted: false` and is left out of `summary()`; its note says *(dihitung di Gambar tantangan)*. Test `testReusedPictureIsCountedOnce`.
