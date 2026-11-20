@@ -402,29 +402,86 @@ class RetentionService
     }
 
     /**
-     * Attempt `in_progress` yang tidak tersentuh lebih dari $hours jam →
-     * `abandoned` (bintang 0) + event `challenge_abandoned {via: retention}`.
-     * Sentuhan terakhir = waktu mulai, jawaban terakhir, atau event terakhir attempt itu.
+     * `in_progress` attempts untouched for more than $hours hours become
+     * `abandoned` (0 stars) with `challenge_abandoned {via: retention}`. Last
+     * touch = start, last answer, or last event of the attempt.
+     *
+     * Attempts in a game session of a field session are skipped while their
+     * study is still running (owner, 20 November 2026): field sessions leave
+     * open attempts open (28 K14) so the student continues them at the next
+     * meeting or make-up session (33 K3), which is often days later. They
+     * are closed when the study is closed (abandonOpenStudyAttempts) or by
+     * the first run after that.
      */
     public function abandonStaleAttempts(int $hours): int
     {
         $cutoff = date('Y-m-d H:i:s', time() - ($hours * 3600));
 
-        $rows = $this->db()->table('challenge_attempts ca')
+        $db = $this->db();
+        // SQLite (tests) has the scalar MAX(a, b, c) instead of GREATEST
+        $greatest = $db->DBDriver === 'SQLite3' ? 'MAX' : 'GREATEST';
+
+        $rows = $db->table('challenge_attempts ca')
             ->select('ca.id')
             ->select(
-                'GREATEST(ca.started_at,'
-                . ' COALESCE((SELECT MAX(ir.answered_at) FROM item_responses ir WHERE ir.challenge_attempt_id = ca.id), ca.started_at),'
-                . ' COALESCE((SELECT MAX(e.server_received_at) FROM game_event_logs e WHERE e.challenge_attempt_id = ca.id), ca.started_at)'
+                $greatest . '(ca.started_at,'
+                . ' COALESCE((SELECT MAX(ir.answered_at) FROM ' . $db->prefixTable('item_responses') . ' ir WHERE ir.challenge_attempt_id = ca.id), ca.started_at),'
+                . ' COALESCE((SELECT MAX(e.server_received_at) FROM ' . $db->prefixTable('game_event_logs') . ' e WHERE e.challenge_attempt_id = ca.id), ca.started_at)'
                 . ') AS last_touch',
                 false,
             )
+            ->join('game_sessions gs', 'gs.id = ca.session_id')
+            ->join('research_studies rs', 'rs.id = gs.study_id', 'left')
             ->where('ca.status', 'in_progress')
             ->where('ca.started_at <', $cutoff)
-            ->having('last_touch <', $cutoff)
+            ->groupStart()
+            ->where('gs.field_session_id', null)
+            ->orWhere('rs.id', null)
+            ->orWhere('rs.status !=', 'active')
+            ->groupEnd()
             ->get()
             ->getResultArray();
 
+        // Filtered here rather than with HAVING, which SQLite refuses without GROUP BY
+        $rows = array_values(array_filter($rows, static fn (array $row): bool => substr((string) $row['last_touch'], 0, 19) < $cutoff));
+
+        return $this->abandonRows($rows, [
+            'via'        => self::ORIGIN_RETENTION,
+            'idle_hours' => $hours,
+        ]);
+    }
+
+    /**
+     * Closes every attempt still open in the field sessions of one study,
+     * called when the head researcher sets the study to *Ditutup*: an
+     * attempt nobody can continue any more is written as abandoned now,
+     * not at the next nightly run. Event `challenge_abandoned {via:
+     * retention, reason: study_closed}`, so the data dictionary sees the
+     * same `via` as before.
+     */
+    public function abandonOpenStudyAttempts(int $studyId): int
+    {
+        $rows = $this->db()->table('challenge_attempts ca')
+            ->select('ca.id')
+            ->join('game_sessions gs', 'gs.id = ca.session_id')
+            ->where('ca.status', 'in_progress')
+            ->where('gs.study_id', $studyId)
+            ->where('gs.field_session_id IS NOT NULL', null, false)
+            ->get()
+            ->getResultArray();
+
+        return $this->abandonRows($rows, ['via' => self::ORIGIN_RETENTION, 'reason' => 'study_closed']);
+    }
+
+    /**
+     * Abandons the attempts of $rows (`id`, optional `last_touch`), one
+     * transaction each; an attempt another request closed meanwhile is left.
+     *
+     * @param list<array<string, mixed>> $rows
+     * @param array<string, mixed>       $payload
+     */
+    private function abandonRows(array $rows, array $payload): int
+    {
         $attempts  = model(ChallengeAttemptModel::class);
         $abandoned = 0;
 
@@ -439,11 +496,7 @@ class RetentionService
             $db->transBegin();
 
             try {
-                service('challengeService')->abandonAttempt($attempt, [
-                    'via'        => self::ORIGIN_RETENTION,
-                    'idle_hours' => $hours,
-                    'last_touch' => (string) $row['last_touch'],
-                ]);
+                service('challengeService')->abandonAttempt($attempt, $payload + (isset($row['last_touch']) ? ['last_touch' => (string) $row['last_touch']] : []));
                 $db->transCommit();
                 $abandoned++;
             } catch (\Throwable $e) {

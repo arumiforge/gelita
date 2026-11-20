@@ -9,8 +9,9 @@ namespace App\Filters;
 trait ParticipantCheck
 {
     /**
-     * @return array{status: string, participant_id: int, game_session_id: int, target?: string}
-     *               status: OK | NO_LOGIN | MUST_CHANGE | NO_SESSION | CLOSED. CLOSED (field
+     * @return array{status: string, participant_id: int, game_session_id: int, target?: string, message?: string}
+     *               status: OK | NO_LOGIN | NO_STUDY | MUST_CHANGE | NO_SESSION | CLOSED. NO_STUDY
+     *               (no study is `active`) carries the student `message`. CLOSED (field
      *               mode, 28 §7) carries `target`: `token` (no game session of a field session
      *               yet) or `sampai-jumpa` (its field session closed); the game context is loaded
      *               whenever the student has a game session.
@@ -38,6 +39,14 @@ trait ParticipantCheck
             session()->destroy();
 
             return $result;
+        }
+
+        // 2b. no running study (owner, 20 November 2026): the student cannot play;
+        //     the filters log out and answer with `message` instead of a server error
+        $closedMessage = model(\App\Models\ResearchStudyModel::class)->gameClosedMessage();
+
+        if ($closedMessage !== null) {
+            return ['status' => 'NO_STUDY', 'message' => $closedMessage] + $result;
         }
 
         if (! $requireGameSession) {
@@ -91,5 +100,14 @@ trait ParticipantCheck
         }
 
         return ['status' => 'OK', 'participant_id' => $participantId, 'game_session_id' => $gameSessionId];
+    }
+
+    /**
+     * NO_STUDY: the student is logged out cleanly (an active game session is
+     * paused, as with /keluar) so the next page is `/masuk` with its notice.
+     */
+    protected function logoutWithoutStudy(): void
+    {
+        service('sessionService')->logout();
     }
 }

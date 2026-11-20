@@ -221,3 +221,6 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 | Branch | Owner / scope | Status |
 |---|---|---|
 | `panel-polesan` | Cloud session, 20 Nov 2026: panel polish for the head researcher: Data mentah sub-menu by group with notes per sheet, explanatory text at full width, top bar and filter bar that no longer cut words, empty states with a next step, study form layout | PR open |
+| `retensi-mode-penelitian` | Cloud session, 20 Nov 2026: nightly retention keeps open field-session attempts while the study runs, closes them when the study is closed; note for ketua on `/admin/studi` with the last retention run | PR open |
+| `masuk-tanpa-studi` | Claude Code (owner, 20 November 2026): students get a friendly message instead of a server error when no study is `active` (`/masuk`, `/daftar`, game pages and API) | PR open, waiting for review |
+| `gambar-pl-01-12` | Claude Code session: install the twelve accepted pictures PL-01 to PL-12 of document 40 (merged in PR #438): start-page background, Jaka with the lantern, four crystal stages, three quiet button faces (newly wired as border images), three error pictures | PR open, waiting for review; after merge: `gelita:katalog:impor` on the servers for the new `bg.welcome` |

@@ -123,6 +123,24 @@ final class StudyRetentionTest extends CIUnitTestCase
         unlink($file);
     }
 
+    public function testClosingAFieldModeStudyClosesItsOpenAttemptsAndTheNoteExplainsIt(): void
+    {
+        $this->save(['field_mode' => '1', 'retention_days' => '7305', 'status' => 'closed']);
+        $this->assertSame(1, $this->conn->table('audit_logs')->where('action', 'study_open_attempts_closed')->countAllResults());
+
+        // Closing again writes nothing more
+        $this->save(['field_mode' => '1', 'retention_days' => '7305', 'status' => 'closed']);
+        $this->assertSame(1, $this->conn->table('audit_logs')->where('action', 'study_open_attempts_closed')->countAllResults());
+
+        $this->asStaff('ketua');
+        $body = (string) $this->get('admin/studi')->response()->getBody();
+        $this->assertStringContainsString('data-open-attempts-note', $body);
+        $this->assertStringContainsString(esc(lang('Admin.studyRetentionNever')), $body);
+
+        service('retentionService')->run(null);
+        $this->assertStringNotContainsString(esc(lang('Admin.studyRetentionNever')), (string) $this->get('admin/studi')->response()->getBody());
+    }
+
     private function save(array $values): void
     {
         unset($_SESSION['error'], $_SESSION['message']);
