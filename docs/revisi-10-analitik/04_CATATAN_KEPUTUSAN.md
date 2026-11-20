@@ -8,7 +8,7 @@ Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk 
 
 **Tombol ukir ringan dan medali ikon dipasang** (cabang `igi/brave-franklin-8f1hia`, dokumen [40](40_PROMPT_GAMBAR_ANTARMUKA.md) → *PL-13 sampai PL-22*) · `asal: pengembang` · `disetujui pengembang` · gambar dan kode tampilan; aturan penelitian dan data tidak berubah
 
-1. **Kesepuluh gambar diterima** (pengembang: "pasang codex terbaru") dan dipasang sesuai *Pemasangan* di dokumen 40. Badan tombol ukir menggantikan tombol tenang `PL-07` sampai `PL-09` (berkasnya dihapus) dan permukaan CSS tombol merah; medali menggantikan kotak ikon. Ukuran tombol dan tata letak tidak berubah.
+1. **Kesepuluh gambar diterima** pengembang dan dipasang sesuai *Pemasangan* di dokumen 40. Badan tombol ukir menggantikan tombol tenang `PL-07` sampai `PL-09` (berkasnya dihapus) dan permukaan CSS tombol merah; medali menggantikan kotak ikon. Ukuran tombol dan tata letak tidak berubah.
 2. **Panah berbatang ikut bermedali.** Tombol *Mulai tantangan* memakai panah berbatang (`arrow-right`), bukan panah biasa; panah itu dan pasangannya (`arrow-left`) memakai medali panah kanan dan kiri, supaya semua tombol lanjut tampak sama.
 3. **Ikon lain tanpa kotak.** Ikon yang tidak punya medali (misalnya unduh atau kunci) menjadi garis emas antik tanpa kotak: emas tua di atas tombol emas, emas muda di atas tombol biru tua, hijau, dan merah.
 

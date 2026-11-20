@@ -1972,12 +1972,16 @@ body.has-kenal { overflow: hidden; }
 #stage :is(.kenal .kenal-back, .kenal .slide-nav .btn) { --pill-h: 4rem; }
 #stage .shelf-back { --pill-h: 3.5rem; }
 #stage .shelf-btn { --pill-h: 2.75rem; }
-#stage .btn-gold-plate.is-medium { --pill-h: 4rem; }
+#stage .btn-gold-plate { --pill-h: 4rem; }
 #stage .login-form .btn-gold-plate { --pill-h: 4.25rem; }
 #stage .btn-install-plate { --pill-h: 3.25rem; }
-#stage .kedu-btn { --pill-h: 5.5rem; }
-#stage .kedu-panel-actions .kedu-btn { --pill-h: 3.5rem; }
-#stage .kedu-nav.is-all-done .kedu-btn { --pill-h: 3.875rem; }
+/* Peta Kedu's buttons and the result screen's draw their body on an inset ::before, so the
+   hint is the body's height: the button's height less the inset above and below (game.css) */
+#stage .kedu-btn { --pill-h: 4rem; }                                    /* 5.5rem − 2 × .75rem */
+#stage .kedu-panel-actions .kedu-btn { --pill-h: 3rem; }                /* 3.5rem − 2 × .25rem */
+#stage .kedu-nav.is-all-done .kedu-btn { --pill-h: 3.5rem; }            /* 3.875rem − 2 × .1875rem */
+#stage .result-btn.is-primary { --pill-h: 3.8333rem; }                  /* 5.5rem − 2 × .8333rem */
+#stage .result-btn:is(.is-secondary, .is-detail) { --pill-h: 3.25rem; } /* 5.5rem − 2 × 1.125rem */
 
 #stage[style*="--button-gold"] :is(.btn-primary, .btn-plate.is-next, .btn-plate.is-enter, .btn-gold-plate, .shelf-btn, .cine .narrator-next.has-label:not(:disabled), .kenal .slide-nav .btn-primary),
 #stage[style*="--button-gold"] :is(.kedu-btn.is-primary, .result-btn.is-primary)::before {

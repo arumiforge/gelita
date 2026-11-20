@@ -34,6 +34,26 @@ final class ViewHelperTest extends CIUnitTestCase
     public function testUnknownIconFallsBackToInfo(): void
     {
         $this->assertSame(icon('info'), icon('tidak-ada'));
+        $this->assertStringContainsString(' data-icon="info" ', icon('tidak-ada'));
+    }
+
+    /**
+     * The CSS swaps these icons for the carved medallions of the text buttons by their
+     * data-icon (document 40, PL-17 to PL-22, 21 November 2026): without the attribute every
+     * medallion would silently fall back to the line icon.
+     */
+    public function testIconNamesItsDrawingForTheMedallions(): void
+    {
+        foreach (['right', 'arrow-right', 'left', 'arrow-left', 'check', 'down', 'map', 'sparkle'] as $name) {
+            $svg = icon($name);
+            $this->assertStringContainsString(' data-icon="' . $name . '" ', $svg, $name);
+            $this->assertNotSame(icon('info'), $svg, $name . ' has its own drawing');
+        }
+
+        $css = (string) file_get_contents(FCPATH . 'assets/css/cinematic.css');
+        foreach (['right', 'arrow-right', 'left', 'arrow-left', 'check', 'down', 'map', 'sparkle'] as $name) {
+            $this->assertStringContainsString('[data-icon="' . $name . '"]', $css, $name);
+        }
     }
 
     public function testNumberFormatsFollowLocale(): void

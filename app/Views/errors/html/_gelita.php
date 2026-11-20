@@ -56,8 +56,11 @@ $body    = is_file(FCPATH . 'assets/ui/ui-button-carved-gold.webp') && function_
         border-radius: 14px; color: #24170A; font-weight: 700; text-decoration: none; text-shadow: none;
         background: linear-gradient(180deg, #FFF4D2 0%, #F4D891 34%, #E2BA68 68%, #CB9C48 100%);
         box-shadow: 0 0 0 1px #7E5A1E, inset 0 0 0 1px rgba(255, 249, 228, .9), 0 5px 14px rgba(2, 8, 20, .45); }
-    /* The carved body (1200 × 200): the button from y 12 to 187, ends 60 px = 0.341 × height */
-    a.has-body { height: 56px; border: 0 solid transparent; border-radius: 0; background: none; box-shadow: none;
+    /* The carved body (1200 × 200): the button from y 12 to 187, ends 60 px = 0.341 × height.
+       The gold gradient stays under it, clipped inside the carved rim (transparent border,
+       padding-box), so the link still reads when the picture cannot be loaded. */
+    a.has-body { height: 56px; border: solid transparent; border-width: 3px 3px 4px; border-radius: 28px;
+                 background-clip: padding-box; box-shadow: none;
                  border-image: var(--body) 12 60 12 fill / 0 19px stretch; filter: drop-shadow(0 4px 10px rgba(2, 8, 20, .4)); }
     a:focus-visible { outline: 3px solid #F0DFB8; outline-offset: 3px; }
     @media (max-width: 640px) { body { align-items: flex-end; } body::before { background: linear-gradient(0deg, rgba(8, 14, 26, .9), rgba(8, 14, 26, .2) 70%); } }

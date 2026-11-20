@@ -17,6 +17,7 @@ if (! function_exists('icon')) {
             'left'      => '<path d="M15 18l-6-6 6-6"/>',
             'right'     => '<path d="M9 18l6-6-6-6"/>',
             'arrow-right' => '<path d="M4.5 12h15"/><path d="M13.5 6l6 6-6 6"/>',
+            'arrow-left'  => '<path d="M19.5 12h-15"/><path d="M10.5 6l-6 6 6 6"/>',
             'pin'       => '<path d="M12 21.5s-6.5-6-6.5-11.5a6.5 6.5 0 0 1 13 0c0 5.5-6.5 11.5-6.5 11.5z"/><circle cx="12" cy="10" r="2.25"/>',
             'up'        => '<path d="M18 15l-6-6-6 6"/>',
             'down'      => '<path d="M6 9l6 6 6-6"/>',
