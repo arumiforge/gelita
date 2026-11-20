@@ -298,7 +298,7 @@ Sama dengan surat 1, dengan perubahan ini:
 - Ganti butir 2 dengan: "**Dua langkah.** Penilaian sekarang adalah langkah 1: game yang ada di instalasi uji dan gambar rancangan layar baru. Setelah layar baru selesai dibuat, kami akan memohon telaah singkat langkah 2 pada layar jadi, sebelum uji coba. Permohonan itu kami kirim terpisah."
 - Ganti butir 3 dengan: "**Cara mengisi.** Lembar B.8 (gambar rancangan layar) tersedia sebagai lembar kerja (*spreadsheet*). Lembar lain diisi di berkas instrumen atau di kertas."
 - Tambahkan butir: "**Perangkat.** Mohon menguji minimal tiga perangkat: laptop atau Chromebook, tablet mendatar 10 inci atau lebih, dan satu perangkat seperti milik sekolah. Bila Bapak/Ibu tidak memiliki salah satunya, kami dapat meminjamkannya."
-- Ganti butir 4 dengan: "**Akses.** Alamat instalasi uji dan akun uji kami kirim terpisah. Mohon hanya memakai instalasi uji, tidak masuk ke server produksi, dan tidak menjalankan uji beban, uji penetrasi, atau percobaan masuk ke akun lain (IMd A.3)."
+- Ganti butir 4 dengan: "**Akses.** Alamat instalasi uji dan akun uji kami kirim terpisah. Mohon hanya memakai alamat dan akun uji dari kami, dan tidak menjalankan uji beban, uji penetrasi, atau percobaan masuk ke akun lain (IMd A.3)."
 - **Kerahasiaan:** "Isi game, akses, rancangan, mock-up, dan tangkapan layar mohon tidak disebarkan."
 - **Waktu:** sekitar 4–5,5 jam; pengarahan 30 menit.
 - [Hanya untuk Ahli Media Pembelajaran 3:] "Butir teknis H3 hanya diisi Bapak/Ibu, sebagai daftar periksa lulus/tidak."
@@ -373,7 +373,7 @@ Ahli materi dan pengamat budaya memainkan game yang ada dengan akun uji, minimal
 
 | Kebutuhan | IM | IB | IMd |
 | --- | --- | --- | --- |
-| Alamat instalasi uji (bukan server produksi) | D.3 no. 12 | D.3 no. 8 | D.3 no. 2, dengan versi/tanggal yang dinilai dan cara memasang sebagai aplikasi |
+| Alamat instalasi uji (sejak 21 November 2026: `https://gelita.id`, dengan akun uji) | D.3 no. 12 | D.3 no. 8 | D.3 no. 2, dengan versi/tanggal yang dinilai dan cara memasang sebagai aplikasi |
 | Akun uji | D.3 no. 12 | D.3 no. 8 | D.3 no. 3: akun uji, atau izin mendaftar akun baru |
 | Wilayah yang terbuka | Empat tantangan yang ada sekarang | Satu wilayah atau lebih | Wilayah terbuka bebas |
 | Isi Pustaka Kedu | D.3 no. 12 | D.3 no. 8, beserta sumbernya | Dibuka saat berperan sebagai siswa |
@@ -400,7 +400,7 @@ Aturan akun:
 - **Kemajuan bermain** tidak bisa direset per akun dengan sistem sekarang. Akun cadangan tidak dipakai ulang; bila perlu akun bersih, dipakai akun cadangan berikutnya atau dibuat akun `uji.cadangan3` dan seterusnya ([Prasyarat no. 8](#prasyarat-no-8-instalasi-uji-dan-akun-uji), langkah 6).
 - Akun dinonaktifkan atau dihapus setelah validasi langkah 1 selesai. Untuk media langkah 2, akun dibuat ulang di instalasi uji versi tahap 3.
 
-Cara teknis memasang instalasi uji dan membuat akunnya ada di [Prasyarat no. 8](#prasyarat-no-8-instalasi-uji-dan-akun-uji). Dokumen ini tidak mengubah sistem.
+Sejak 21 November 2026 instalasi uji adalah `gelita.id` sendiri, bukan mesin kedua. Cara menyiapkannya dan membuat akunnya ada di [Prasyarat no. 8](#prasyarat-no-8-instalasi-uji-dan-akun-uji). Dokumen ini tidak mengubah sistem.
 
 ## Pengembalian dan pencatatan
 
@@ -566,7 +566,7 @@ Gerbang G2 butuh dua separuh: **validasi** (di sini) dan **izin etik** (di 22). 
 
 Ditulis 27 Oktober 2026 (cabang `r10-prasyarat-validasi`) untuk prasyarat no. 9, 8, 10, dan 4 di [Ringkasan](#ringkasan). Prasyarat no. 6 (cek fakta budaya) dipegang sesi lain. Semua yang di bawah ini `asal: pengembang`, berstatus `draf pengembang` sampai ketua peneliti menjalankannya; keputusan pengembang hari itu ada di [Keputusan pengembang](#keputusan-pengembang) no. 5–11.
 
-Urutannya: no. 9 dan no. 10 boleh dikerjakan sekarang, bersamaan. No. 8 dikerjakan setelah alamat kampus didapat. No. 4 paling akhir, setelah no. 6, 8, 9, dan 10 selesai, karena *commit* yang dibekukan harus sama dengan yang terpasang di instalasi uji dan yang tertulis di surat.
+Urutannya: no. 9 dan no. 10 boleh dikerjakan sekarang, bersamaan. No. 8 dikerjakan di `gelita.id` (sejak 21 November 2026 tidak ada lagi alamat kampus yang ditunggu). No. 4 paling akhir, setelah no. 6, 8, 9, dan 10 selesai, karena *commit* yang dibekukan harus sama dengan yang terpasang di instalasi uji dan yang tertulis di surat.
 
 ### Prasyarat no. 9: nama asli dan kesediaan validator
 
@@ -620,33 +620,41 @@ Untuk dua penilai B.5a, tambahkan satu kalimat setelah perkiraan waktu: "Bagian 
 
 ### Prasyarat no. 8: instalasi uji dan akun uji
 
-**Keputusan pengembang** (no. 5, 6, 8, 11): instalasi uji dipasang di **komputer lab kampus** (Jalur W di `docs/08_DEPLOYMENT.md`), dibuka dari luar lewat **subdomain kampus dengan HTTPS**; **pengembang** memasangnya, memegang akun `admin`-nya, dan membuat ketiga belas akun `uji.*`; semua wilayah dibuka sejak awal (`unlock_mode` = `free`).
+**Keputusan pengembang** (no. 5, 6, 8, 11; no. 5 dan 6 diganti 21 November 2026): instalasi uji adalah **server GELITA itu sendiri, `gelita.id`** (satu server dan satu domain, `docs/08_DEPLOYMENT.md`), bukan mesin kedua, dan validator membukanya di **`https://gelita.id`**; **pengembang** memegang akun `admin`-nya dan membuat ketiga belas akun `uji.*`; semua wilayah dibuka sejak awal (`unlock_mode` = `free`). Sampai 21 November 2026 rencananya komputer lab kampus dengan subdomain kampus; rencana itu tidak dijalankan.
 
-**Batas yang tidak boleh dilanggar.** Instalasi uji adalah mesin dan database sendiri, terpisah dari server produksi. Tidak ada perintah yang dijalankan di server produksi, dan `gelita:reset` hanya dijalankan di komputer lab ini. Tidak ada perubahan kode: yang dipasang adalah *commit* `main` yang dibekukan (no. 4), dan tahap 2 tidak mengubah sistem.
+**Batas yang tidak boleh dilanggar.** Tidak ada mesin atau database kedua: akun `uji.*` dan jejak bermainnya tersimpan di database `gelita.id`, yang nanti juga dipakai sekolah. Karena itu validator memakai server ini **selama belum ada data anak di dalamnya**, dan `gelita:reset` hanya dijalankan selama itu juga. Sebelum pengambilan data dimulai, `gelita:reset` dijalankan sekali lagi, supaya akun `uji.*` dan jejaknya tidak ikut ke data penelitian (`docs/08_DEPLOYMENT.md`). Yang dinilai adalah *commit* `main` yang dibekukan (no. 4), dan tahap 2 tidak mengubah sistem.
 
-**Langkah 1. Menyiapkan komputer dan alamat**
+**Belum diputuskan sesudah keputusan 21 November 2026** (`asal: pengembang`, `draf pengembang`; dicatat di [04](04_CATATAN_KEPUTUSAN.md)):
 
-1. Pilih satu PC lab yang bisa menyala terus dari minggu 1 sampai putaran penilaian ulang terakhir selesai (usulan tanggal: 9 November 2026 sampai akhir Januari 2027, lebih lama bila ada putaran 3 dan seterusnya, termasuk jeda libur). Matikan tidur otomatis dan pembaruan Windows yang memulai ulang sendiri; bila ada, pasang UPS.
-2. Minta bagian TI kampus: satu subdomain (misalnya `[gelita-uji.kampus.ac.id]`), penerusan port 443 (dan 80 untuk sertifikat) ke PC itu atau *reverse proxy* kampus ke PC itu, dan sertifikat HTTPS. HTTPS wajib, karena pemasangan sebagai aplikasi dan paket aset hanya jalan di HTTPS (IMd D.3 no. 2).
-3. Server, database, dan data akun tetap di kampus, jadi tetap di Indonesia (sama dengan keputusan di 22).
+1. **Versi beku dan pembaruan server.** Rencana lama memasang *commit* beku di mesin tersendiri, sehingga `main` dan server produksi boleh terus berubah. Di `gelita.id` setiap pembaruan kode mengubah apa yang dilihat validator. Aturannya belum ada: server ditahan di *commit* beku selama satu putaran, atau pembaruan dicatat per putaran.
+2. **Putaran yang berjalan setelah ada data anak** (putaran penilaian ulang, ahli media langkah 2 di G3). Sesudah data anak masuk, `gelita:reset` tidak boleh lagi dijalankan. Cara validator bekerja pada masa itu belum ada.
+3. **Alat bantu `gelita:uji:akun` menolak berjalan di `gelita.id`**: ia berhenti bila `CI_ENVIRONMENT = production`, dan bila ada siswa selain `uji.*` (`TestAccountService::refusal()`). Penjaga itu dibuat supaya alat ini tidak pernah terpakai di server penelitian. Selama penjaga itu tidak diubah, akun `uji.*` di `gelita.id` dibuat lewat pendaftaran biasa (langkah 3 di bawah), juga di G3.
+4. **Dokumen lain yang masih menyebut instalasi uji sebagai mesin terpisah dari server produksi:** 03, 21, 22, 26, 27, 28, 30, 34, dan Panduan validator (`/admin/panduan-validator`). 22 dipegang peneliti dan tidak diubah dari sini; yang lain belum disesuaikan.
 
-**Langkah 2. Memasang GELITA**
+**Langkah 1. Alamat**
 
-Ikuti `docs/08_DEPLOYMENT.md` → *Instalasi — Jalur W*, lalu *Langkah terakhir*, dengan perbedaan ini:
+1. Tidak ada komputer atau alamat baru yang disiapkan. Servernya sudah terpasang (`docs/08_DEPLOYMENT.md`) dan alamatnya `https://gelita.id`. HTTPS wajib, karena pemasangan sebagai aplikasi dan paket aset hanya jalan di HTTPS (IMd D.3 no. 2); di server ini HTTPS disediakan Cloudflare.
+2. Server menyala terus dari minggu 1 sampai putaran penilaian ulang terakhir selesai (usulan tanggal: 9 November 2026 sampai akhir Januari 2027, lebih lama bila ada putaran 3 dan seterusnya, termasuk jeda libur).
+3. Server, database, dan data akun adalah milik server produksi; letaknya mengikuti keputusan di 22.
 
-| Bagian 08 | Di instalasi uji |
+**Langkah 2. Menyiapkan GELITA di `gelita.id`**
+
+GELITA sudah terpasang di `gelita.id` menurut `docs/08_DEPLOYMENT.md`; tidak ada pemasangan kedua. Yang diperiksa sebelum validator masuk:
+
+| Bagian | Di `gelita.id` untuk validasi |
 | --- | --- |
-| Kode | `git checkout <commit beku>` dari no. 4, bukan ujung `main` terbaru. Commit yang sama dicatat di 04 |
-| `.env` | `app.baseURL` = alamat subdomain uji; sandi database dan sandi `admin` **baru**, tidak pernah sama dengan produksi |
-| `db:seed DatabaseSeeder` | Seperti 08. Hasilnya: 28.487 sekolah resmi Jawa Tengah, akun `admin`, studi aktif `STUDI-KEDU-KELAS5-2026`, tiga wilayah, 12 tantangan, Pustaka Kedu, bank soal kelas 5 |
-| Gambar dan narasi | Sama dengan yang akan dinilai: gambar tim lewat `php spark gelita:katalog:impor`, narasi lewat `php spark gelita:narration:import` lalu disetujui di panel. Bila produksi masih memakai gambar contoh, instalasi uji juga, dan itu disebut ke validator |
-| Akun guru | Tidak dibuat. Validator tidak memerlukan panel |
-| Cron (Task Scheduler) | `php spark gelita:retention:run` sekali sehari, seperti 08 → *Tugas Terjadwal*. Sesi yang tidak disentuh 30 hari ditandai ditinggalkan (`sessionAbandonDays`), jadi validator yang lama tidak masuk mulai dari awal lagi; ini disebut di surat akses |
-| Cadangan | Tidak wajib, karena tidak ada data penelitian. Lembar validator kembali lewat folder bersama, bukan lewat instalasi uji |
+| Kode | *Commit* beku dari no. 4, dan commit yang sama dicatat di 04. Cara menahan pembaruan selama putaran berjalan belum diputuskan (*Belum diputuskan* no. 1) |
+| Data | Belum ada data anak. Bila server berisi akun dari uji lain (uji beban, akun percobaan), jalankan `php spark gelita:reset` dulu, dengan akun migrasi seperti di 08 |
+| `.env` | Tidak diubah: `app.baseURL` sudah `https://gelita.id/` |
+| Isi sesudah `db:seed DatabaseSeeder` atau `gelita:reset` | Seperti 08: sekolah resmi Jawa Tengah, akun `admin`, studi aktif `STUDI-KEDU-KELAS5-2026`, tiga wilayah dengan tantangannya, Pustaka Kedu, bank soal kelas 5 |
+| Gambar dan narasi | Sama dengan yang akan dinilai: gambar tim lewat `php spark gelita:katalog:impor`, narasi lewat `php spark gelita:narration:import` lalu disetujui di panel. Bila masih ada gambar contoh, itu disebut ke validator |
+| Akun staf | Validator tidak memerlukan panel dan tidak pernah mendapat akun staf |
+| Tugas terjadwal | `php spark gelita:retention:run` sekali sehari, seperti 08 → *Tugas Terjadwal*. Sesi yang tidak disentuh 30 hari ditandai ditinggalkan (`sessionAbandonDays`), jadi validator yang lama tidak masuk mulai dari awal lagi; ini disebut di surat akses |
+| Cadangan | Berjalan seperti 08. Lembar validator kembali lewat folder bersama, bukan lewat server |
 
 Lalu:
 
-1. Jalankan `php spark gelita:content:verify` (harus 0 galat) dan 08 → *Verifikasi Setelah Deploy*. Baris `http2` Jalur W belum pernah diuji di Windows sungguhan, jadi uji ini wajib.
+1. Jalankan `php spark gelita:content:verify` (harus 0 galat) dan 08 → *Verifikasi Setelah Deploy*.
 2. Masuk `/admin/login` sebagai `admin`, ganti sandi (`/admin/akun/sandi`).
 3. **Buka semua wilayah.** Di **Studi** (`/admin/studi`), ubah *Cara wilayah terbuka* studi aktif menjadi **Bebas — semua langsung terbuka (untuk uji coba)**. Pustaka satu wilayah tetap baru terbuka setelah keempat tantangannya diselesaikan, juga di mode bebas (`GameProgress::libraryStatus()`); validator yang perlu membaca Pustaka (IM D.3 no. 12, IB D.3 no. 8) menyelesaikan satu wilayah dulu, dan ini ditulis di surat akses.
 
@@ -689,16 +697,16 @@ Sistem sekarang tidak punya reset kemajuan per akun. Yang ada:
 | --- | --- |
 | Satu validator butuh mulai dari awal | Beri akun cadangan yang belum dipakai, atau buat akun baru `uji.cadangan3` dan seterusnya lewat langkah 3. Akun lama dibiarkan |
 | Validator menuntaskan ketiga wilayah | Sesinya selesai, dan masuk berikutnya otomatis membuka sesi baru dari awal (`SessionService::login()`, `GameSessionModel::resumable()`). Ini disebut di surat akses supaya tidak dikira galat |
-| Semua akun perlu bersih, misalnya sebelum putaran penilaian ulang atau sebelum media langkah 2 | Di **komputer lab ini saja**: `php spark gelita:reset --dry-run`, periksa rencananya, lalu `php spark gelita:reset`. Semua akun siswa terhapus dan studi kembali ke bawaan (`sequential`), jadi langkah 2 butir 3 dan langkah 3–4 diulang. Akun `admin` tetap |
+| Semua akun perlu bersih, misalnya sebelum putaran penilaian ulang atau sebelum media langkah 2 | **Hanya selama `gelita.id` belum memuat data anak**: `php spark gelita:reset --dry-run`, periksa rencananya, lalu `php spark gelita:reset`. Semua akun siswa terhapus dan studi kembali ke bawaan (`sequential`), jadi langkah 2 butir 3 dan langkah 3–4 diulang. Akun `admin` tetap |
 
-**Alat bantu `gelita:uji:akun`** (awalnya usulan "untuk tahap 3"; `asal: pengembang`, `draf pengembang`): satu perintah spark yang (a) membuat akun `uji.*` dari daftar nama samaran dengan sandi acak yang ditampilkan sekali dan sekolah `Sekolah Uji Validator`, dan (b) dengan `--reset=<nama pengguna>` menghapus data permainan akun itu ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md) K15), sehingga masuk berikutnya mulai dari awal. Perintah ini menolak berjalan bila instalasi berisi siswa yang bukan `uji.*`, supaya tidak pernah terpakai di produksi. Sejak 30 Oktober 2026 menjadi perubahan sistem no. 24 di 01 dan didraf di [28 §13](28_IMPLEMENTASI_SESI_LAPANGAN.md#13-alat-bantu-gelitaujiakun-perubahan-no-24) ([04](04_CATATAN_KEPUTUSAN.md)). **Kapan dibangun** (aturan 1 November 2026, menggantikan "tahap 3, setelah G2"): kodenya dibangun sekarang, di gelombang kode D bersama bagian 2 ([00 → Tahap dokumen 3](00_INDEKS.md)). Instalasi uji tahap 2 (*commit* yang dibekukan, prasyarat no. 4) tetap memakai langkah 3 dan 6 di atas; alat ini pertama dipakai di instalasi uji G3.
+**Alat bantu `gelita:uji:akun`** (awalnya usulan "untuk tahap 3"; `asal: pengembang`, `draf pengembang`): satu perintah spark yang (a) membuat akun `uji.*` dari daftar nama samaran dengan sandi acak yang ditampilkan sekali dan sekolah `Sekolah Uji Validator`, dan (b) dengan `--reset=<nama pengguna>` menghapus data permainan akun itu ([28](28_IMPLEMENTASI_SESI_LAPANGAN.md) K15), sehingga masuk berikutnya mulai dari awal. Perintah ini menolak berjalan bila instalasi berisi siswa yang bukan `uji.*`, dan bila `CI_ENVIRONMENT = production`, supaya tidak pernah terpakai di server penelitian. *Sejak 21 November 2026 instalasi uji adalah `gelita.id`, yang berjalan sebagai `production`: di sana perintah ini menolak berjalan (*Belum diputuskan* no. 3).* Sejak 30 Oktober 2026 menjadi perubahan sistem no. 24 di 01 dan didraf di [28 §13](28_IMPLEMENTASI_SESI_LAPANGAN.md#13-alat-bantu-gelitaujiakun-perubahan-no-24) ([04](04_CATATAN_KEPUTUSAN.md)). **Kapan dibangun** (aturan 1 November 2026, menggantikan "tahap 3, setelah G2"): kodenya dibangun sekarang, di gelombang kode D bersama bagian 2 ([00 → Tahap dokumen 3](00_INDEKS.md)). Instalasi uji tahap 2 (*commit* yang dibekukan, prasyarat no. 4) tetap memakai langkah 3 dan 6 di atas; alat ini pertama dipakai di instalasi uji G3.
 
 **Di G3 (ahli media langkah 2, setelah G2)** (sesi koordinator, 30 Oktober 2026, dari keputusan pengembang di [27 → Akun staf dan perintah spark](27_IMPLEMENTASI_PERAN_PENELITI.md#11-akun-staf-dan-perintah-spark) dan [28 → Alat bantu `gelita:uji:akun`](28_IMPLEMENTASI_SESI_LAPANGAN.md#13-alat-bantu-gelitaujiakun-perubahan-no-24); `asal: pengembang`, `draf pengembang`). Langkah 3 dan 6 di atas berlaku untuk instalasi uji tahap 2. Di instalasi uji G3, yang memasang versi dengan kode gelombang D dan sesudahnya:
 - **Akun staf.** Pengembang memegang dua akun, `admin` dan `ketua`, bukan satu. Validator tetap tidak pernah mendapat akun staf.
 - **Akun `uji.*`** dibuat dengan `php spark gelita:uji:akun --buat`, bukan lewat `/daftar`: sekolah `Sekolah Uji Validator` dengan kode sekolah `V01`, rombel `A`, dan kode `UJI-01`, `UJI-02`, …. Sandi acak ditampilkan sekali. Kemajuan satu akun direset dengan `--reset=<nama pengguna>`, jadi akun cadangan tidak lagi dipakai untuk mulai dari awal.
 - **Mode penelitian menyala** di studi aktif (oleh akun `ketua`), dan pengembang membuat satu sesi lapangan untuk validator, misalnya `V01-A-P2`, yang buka selama masa telaah (paling lama 4 jam per sesi; bila perlu satu sesi baru per hari). Validator mengetik tokennya, sehingga layar token ikut dinilai. Di tahap 2 mode penelitian tetap mati dan `unlock_mode` = `free`.
 
-**Selesai bila:** alamat uji terbuka lewat HTTPS dari luar kampus, ketiga belas akun lolos cek langkah 4, dan 04 mencatat tanggal, *commit* yang terpasang, dan hasil cek (tanpa sandi dan tanpa alamat IP).
+**Selesai bila:** `https://gelita.id` terbuka, ketiga belas akun lolos cek langkah 4, dan 04 mencatat tanggal, *commit* yang terpasang, dan hasil cek (tanpa sandi dan tanpa alamat IP).
 
 ### Prasyarat no. 10: honorarium
 
@@ -727,7 +735,7 @@ Yang harus diketahui ketua peneliti sebelum paket dikirim:
 3. **Buat ulang berkas validator** sesuai [21 → Cara membuat ulang](21_BERKAS_BUTIR_VALIDATOR.md#cara-membuat-ulang): `php docs/revisi-10-analitik/dokumen-pdf/src/berkas-validator.php` (dengan buklet PDF). Semua pemeriksaan di `dokumen-pdf/berkas-validator/LAPORAN.md` harus lolos. Catat *Versi berkas* di kepala lembar (misalnya `berkas-1.0 · sumber 3a48dbfe`).
 4. **Bila `git status` menunjukkan berkas berubah** (selain tanggal di buklet PDF), commit di cabang `r10-beku-validasi`, buka PR ke `main`, dan gabungkan. Bila tidak ada perubahan isi, cabang dibuang.
 5. **Tetapkan *commit* beku:** *commit* `main` sesudah langkah 4 (`git rev-parse origin/main`). Hash lengkap ini yang dipakai di semua tempat.
-6. **Pasang *commit* yang sama di instalasi uji** (`git checkout <hash>` di komputer lab, lalu ulangi langkah 4 cek akun di no. 8 untuk satu akun).
+6. **Pastikan *commit* yang sama terpasang di `gelita.id`** (pembaruan kode seperti di 08, lalu ulangi langkah 4 cek akun di no. 8 untuk satu akun). Sejak 21 November 2026 tidak ada mesin uji tersendiri; cara menahan `gelita.id` di *commit* ini selama putaran berjalan belum diputuskan ([Prasyarat no. 8](#prasyarat-no-8-instalasi-uji-dan-akun-uji), *Belum diputuskan* no. 1).
 7. **Ketua peneliti menyetujui** bahan versi ini untuk dikirim. Dengan itu, bahan yang dibekukan naik dari `disetujui pengembang` ke `disetujui peneliti` ([00 → Label asal dan status](00_INDEKS.md#label-asal-dan-status)), karena hanya bahan `disetujui peneliti` yang dikirim ke ahli.
 8. **Catat di 04**, entri baru di atas, dengan isi:
    - judul "Versi bahan dibekukan untuk validasi putaran 1", tanggal, `asal: peneliti` (pembekuan dan persetujuan oleh ketua; disiapkan pengembang), status `disetujui peneliti`;
@@ -766,8 +774,8 @@ Putaran kedua, untuk prasyarat no. 4, 8, 9, dan 10 (27 Oktober 2026, cabang `r10
 
 | No | Pertanyaan | Keputusan |
 | --- | --- | --- |
-| 5 | Di mana instalasi uji dipasang? | **Komputer lab kampus** (Jalur W di `docs/08_DEPLOYMENT.md`). Tidak dipilih: VPS kecil terpisah (usulan), laptop pengembang dengan terowongan |
-| 6 | Bagaimana validator membukanya dari rumah? | **Subdomain kampus dengan HTTPS**, lewat penerusan port atau *reverse proxy* dari bagian TI kampus (usulan). Tidak dipilih: layanan terowongan, hanya di jaringan kampus |
+| 5 | Di mana instalasi uji dipasang? | **Di `gelita.id`, server GELITA itu sendiri** (pengembang, 21 November 2026: satu server, satu domain). Menggantikan keputusan 27 Oktober 2026, komputer lab kampus, yang tidak dijalankan. Tidak dipilih waktu itu: VPS kecil terpisah (usulan), laptop pengembang dengan terowongan |
+| 6 | Bagaimana validator membukanya dari rumah? | **`https://gelita.id`** (pengembang, 21 November 2026). Menggantikan keputusan 27 Oktober 2026, subdomain kampus dengan HTTPS lewat bagian TI kampus, yang tidak dijalankan |
 | 7 | Siapa menanyakan kesediaan validator? | **Ketua peneliti**, dengan teks pesan dari pengembang (usulan). Tidak dipilih: pengembang |
 | 8 | Siapa membuat akun `uji.*` dan memegang sandinya? | **Pengembang**, sebagai pemegang `admin` instalasi uji, lewat pendaftaran biasa sebelum minggu 1; daftar sandi diserahkan ke ketua peneliti (usulan). Tidak dipilih: ketua peneliti, validator mendaftar sendiri |
 | 9 | Apakah besaran honorarium pernah ditulis di repo? | **Tidak pernah;** dicatat ketua peneliti di luar repo (usulan). Tidak dipilih: besaran per panel di 20 |

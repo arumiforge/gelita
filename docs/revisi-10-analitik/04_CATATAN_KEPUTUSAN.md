@@ -1,8 +1,25 @@
 # Catatan Keputusan Revisi 10 Analitik
 
-Per 20 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
+Per 21 November 2026 · Bagian dari [revisi 10 analitik](01_REVISI_10_ANALITIK.md)
 
 Catatan ini merekam keputusan selama revisi, dari yang terbaru. Keputusan untuk implementasi nanti dicatat di dokumen implementasi dan di catatan keputusan perombakan kelas 5 saat pekerjaannya dimulai.
+
+## 21 November 2026
+
+**Satu server, satu domain: instalasi uji validator adalah `gelita.id`** (cabang `igi/busy-fermat-czue8s`, dokumen [20](20_PAKET_VALIDASI.md) → *Prasyarat no. 8* dan *Keputusan pengembang* no. 5 dan 6; `docs/08_DEPLOYMENT.md`) · `asal: pengembang` · `disetujui pengembang` · belum dilihat peneliti; dokumen 20 tetap `disetujui peneliti` untuk paketnya
+
+Keputusan pengembang hari ini: GELITA punya satu server dan satu domain, `gelita.id` (Windows dengan Laragon di belakang Cloudflare Tunnel). Repositori bukan templat untuk pemasangan lain: jalur Linux dan berkas Nginx bersertifikat dihapus, dan `docs/08_DEPLOYMENT.md` ditulis ulang untuk satu jalur. Pengembang juga memutuskan bahwa instalasi uji validator memakai `gelita.id`, bukan mesin kedua.
+
+1. **Keputusan no. 5 dan 6 dokumen 20 diganti.** Instalasi uji tidak lagi komputer lab kampus dengan subdomain kampus (27 Oktober 2026, tidak dijalankan), tetapi server GELITA itu sendiri di `https://gelita.id`, dengan akun `uji.*`.
+2. **Batas baru.** Akun `uji.*` dan jejaknya tersimpan di database yang nanti juga dipakai sekolah. Validator memakai server ini selama belum ada data anak di dalamnya, `gelita:reset` hanya dijalankan selama itu, dan dijalankan sekali lagi sebelum pengambilan data dimulai.
+3. **Panduan validator** (`/admin/panduan-validator`) disesuaikan: tiga kalimat yang menyebut instalasi uji "terpisah dari server yang dipakai sekolah" diganti dengan "pakai alamat dan akun uji dari tim".
+
+**Belum diputuskan** (dicatat juga di 20 → *Prasyarat no. 8*):
+
+1. **Versi beku dan pembaruan server.** Di `gelita.id` setiap pembaruan kode mengubah apa yang dilihat validator. Aturannya belum ada: server ditahan di *commit* beku selama satu putaran, atau pembaruan dicatat per putaran.
+2. **Putaran yang berjalan setelah ada data anak** (penilaian ulang, ahli media langkah 2 di G3): `gelita:reset` tidak boleh lagi, dan cara validator bekerja pada masa itu belum ada.
+3. **`gelita:uji:akun` menolak berjalan di `gelita.id`**, karena server itu berjalan sebagai `production` (`TestAccountService::refusal()`). Penjaga itu tidak diubah. Selama begitu, akun `uji.*` dibuat lewat `/daftar`. Sakelar pratinjau modul tes untuk akun `uji.*` ([34 §5.5](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md#55-pratinjau-untuk-instalasi-uji-validator)) juga ditulis untuk instalasi uji yang terpisah.
+4. **Dokumen yang masih menyebut instalasi uji sebagai mesin terpisah dari server produksi dan belum disesuaikan:** 03, 21, 26, 27, 28, 30, 34. Dokumen 22 (permohonan izin etik) juga menyebutnya, dipegang peneliti, dan tidak diubah; peneliti perlu tahu bahwa "instalasi uji" sekarang adalah server produksi sebelum ada data anak.
 
 ## 20 November 2026
 

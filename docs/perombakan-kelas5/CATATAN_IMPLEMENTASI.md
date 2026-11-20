@@ -1426,3 +1426,22 @@ Owner: "jadikan gelita.id dan ini bukan untuk any install. 1 domain saja". The f
 The tunnel file is renamed after the domain as well (owner: "ganti gelita.id.conf saja"): `deploy/windows/nginx/gelita-tunnel.conf` is now `deploy/windows/nginx/gelita.id.conf`, copied to `C:\laragon\etc\nginx\sites-enabled\gelita.id.conf`. Earlier sections of this log still say `gelita-tunnel.conf`; it is the same file. `gelita-http.conf` and `gelita-https.conf` keep their names (a server reached directly, with its own certificate).
 
 For later sessions: do not write deploy files or documents as a template for other installs.
+
+**One path as well** (owner, same day: "hapus gelita-http.conf dan gelita-https.conf", "hapus jalur linux, hanya 1 jalur windows"). The server is Windows with Laragon behind a Cloudflare Tunnel, so:
+
+- Removed: `deploy/linux/` (`deploy.sh`, `backup.sh`, both Nginx files) and `deploy/windows/nginx/gelita-http.conf` and `gelita-https.conf` (a server with its own certificate). `deploy/windows/nginx/gelita.id.conf` is the one site file.
+- `docs/08_DEPLOYMENT.md` is rewritten for one path (1,748 to about 1,440 lines): no Jalur L and Jalur W, no certificate, no open ports or firewall rule, HTTPS through the tunnel, six automatic checks where there were eight (the certificate check and the Linux `writable` check are gone). The section *Catatan Implementasi Tahap 8* keeps its 2026 test records as history. Nothing in the converted PowerShell blocks was invented: only commands the document or `deploy/windows/` already had.
+- Tests: `DeployFilesTest` checks the rules of the one site file and that neither a second site file nor `deploy/linux/` comes back. `BackupSecondLocationTest` ran `backup.sh` and went with it.
+- `tools/qa/nav-timing.mjs --serve` builds its private server from `gelita.id.conf` (it read the Linux HTTPS file).
+- `env-example-production` (the gelita.id copy of `.env`): database host `127.0.0.1`, the old `session.regenerateDestroy` line removed, the Linux `chown` step removed.
+- `ServerCheck` still knows Linux: development installs and cloud sessions run on it.
+
+**The site file was loaded into a real Nginx for the first time** (nginx 1.24 on Linux in the session, only the root path and the port changed): syntax accepted; versioned assets `public, max-age=31536000, immutable`, unversioned `no-cache`, asset package paths `immutable`; the four security headers sent; `.env`, `.git/config`, `.htaccess`, `assets/.gitkeep`, `vendor/autoload.php` and stray `.php` files 404; the maintenance flag gives the 503 page. Not checked: Laragon's Nginx on Windows (drive-letter paths, `snippets/fastcgi-php.conf`, `php_upstream`).
+
+**Validators' test install** (owner: "instalasi uji validator juga pakai gelita.id, perbaiki dokumen 20"). Recorded in `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md`, 21 November 2026: `20` → *Prasyarat no. 8* and decisions no. 5 and 6 now say `gelita.id`, the validator guide no longer tells validators to stay off "the server schools use", and four points are left undecided there (frozen commit against server updates; validators once children's data exists; `gelita:uji:akun` refuses on a `production` server; the other research documents, `22` among them, that still describe a separate machine).
+
+**Found on the way, not changed:**
+- Production check from outside after the owner's reset (21 November): research mode off, asset package off, no cache rules and no HSTS header on the server's own tunnel site file. Copying `gelita.id.conf` fixes the last two.
+- `docs/08` does not say how `cloudflared` is installed, started after a restart, or checked; the Nginx block for katalog.gelita.id still has a placeholder path and no `listen` line.
+- `backup.ps1` creates the second-location folder when it is missing, so another drive on the same letter is taken for it (`30` §7.5).
+- `ServerCheckTest::testTheAdminSeesEverySectionOfThisMachine` fails with Page Not Found when a `DocumentStatus*` or `Governance*` test runs before it in the same process (the full suite and CI do not show it).

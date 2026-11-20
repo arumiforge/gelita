@@ -3,8 +3,7 @@
 #
 # Ready-to-use production configuration. On the server:
 #
-#     cp env-example-production .env
-#     sudo chown deploy:www-data .env && sudo chmod 640 .env   # Linux
+#     Copy-Item env-example-production .env
 #
 # This file holds real secrets (encryption.key, gelita.ipSalt). It is
 # committed on purpose because the repository is private; the owner
@@ -45,9 +44,11 @@ app.indexPage = ''
 # root without a password, as requested by the owner. Do not add
 # database.default.DSN here; that key is reserved for the migration
 # account (docs/08_DEPLOYMENT.md → "Kredensial migration lewat DSN").
-# Windows path (Laragon): use 127.0.0.1 instead of localhost.
+# 127.0.0.1, never localhost: Windows tries IPv6 (::1) first, MySQL listens
+# on 127.0.0.1 only, and every request then waits about 2.6 s (measured on
+# this server, 21 November 2026).
 #--------------------------------------------------------------------
-database.default.hostname = localhost
+database.default.hostname = 127.0.0.1
 database.default.database = gelita
 database.default.username = root
 database.default.password = ''
@@ -69,7 +70,6 @@ session.driver = 'CodeIgniter\Session\Handlers\DatabaseHandler'
 session.savePath = 'ci_sessions'
 session.cookieName = 'gelita_session'
 session.expiration = 14400
-session.regenerateDestroy = true
 session.matchIP = false
 
 #--------------------------------------------------------------------

@@ -1,7 +1,7 @@
 {
     "about": "Fingerprints of the research-document sections the validator guide was last checked against. Update with: php spark gelita:panduan:cek --tandai (after checking the guide text).",
     "sources": {
-        "20_PAKET_VALIDASI.md#akses-untuk-validator": "d4fd5a161a81",
+        "20_PAKET_VALIDASI.md#akses-untuk-validator": "429bbca26ac9",
         "20_PAKET_VALIDASI.md#apa-yang-kembali": "cc522d731764",
         "20_PAKET_VALIDASI.md#beban-dua-penilai-b5a-di-minggu-35": "5efe1ea421bf",
         "20_PAKET_VALIDASI.md#berkas-dari-21-per-penerima": "ee22afa03498",
@@ -12,12 +12,12 @@
         "20_PAKET_VALIDASI.md#panel-ahli-materi-im": "7bc5e7f0ab37",
         "20_PAKET_VALIDASI.md#panel-ahli-media-imd": "e4236e255975",
         "20_PAKET_VALIDASI.md#panel-pengamat-budaya-ib": "f951613f7f7a",
-        "20_PAKET_VALIDASI.md#prasyarat-no-8-instalasi-uji-dan-akun-uji": "6fdddadbea97",
+        "20_PAKET_VALIDASI.md#prasyarat-no-8-instalasi-uji-dan-akun-uji": "65096d6016a3",
         "20_PAKET_VALIDASI.md#ringkasan": "1b29b933d834",
         "20_PAKET_VALIDASI.md#siapa-menerima-apa": "eec9660fdca8",
         "20_PAKET_VALIDASI.md#surat-1-ahli-materi": "996ee6def760",
-        "20_PAKET_VALIDASI.md#surat-3-ahli-media": "fb63e21911f3",
-        "20_PAKET_VALIDASI.md#usulan-akun-uji": "31e3247a1873",
+        "20_PAKET_VALIDASI.md#surat-3-ahli-media": "bc7270be099a",
+        "20_PAKET_VALIDASI.md#usulan-akun-uji": "5e65e7f2875b",
         "21_BERKAS_BUTIR_VALIDATOR.md#cara-menjaga-kebutaan-b5a": "1c57dbc35465"
     }
 }
