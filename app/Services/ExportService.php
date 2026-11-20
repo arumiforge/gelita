@@ -439,6 +439,11 @@ class ExportService
             ['Arti istilah', 'Panduan staf GELITA, Kata yang sering dipakai: ' . ResearchDictionary::guideRef()],
         ];
 
+        // Demo install (owner, 20 November 2026): a file with simulated students says so first
+        if (\App\Libraries\Simulation\Simulator::inResearchData()) {
+            array_unshift($head, ['PERHATIAN', 'Data simulasi untuk contoh, bukan data penelitian: semua siswa, sekolah, dan jawaban dibuat program.']);
+        }
+
         // Part 9 (35 §8.1, §10.2): draft status, and the derived run the file used
         if (ResearchDictionary::DRAFT) {
             $head[] = ['Status kamus', 'usulan, belum disetujui (' . ResearchDictionary::BASE . ')'];

@@ -104,6 +104,15 @@ class Simulator
     /** Part 6 (32 §5.7): opaque scenario option refs, as the server derives them */
     protected readonly \ReflectionMethod $optionRef;
 
+    /**
+     * True on a demo install that shows simulated students as research data
+     * (`Config\Gelita::$simulatedInResearch`); never in production.
+     */
+    public static function inResearchData(): bool
+    {
+        return ENVIRONMENT !== 'production' && config('Gelita')->simulatedInResearch;
+    }
+
     /** Free play: a student may press Keluar in a challenge and open it again (a new attempt). Research mode: no. */
     protected bool $reopenAfterExit = true;
 
@@ -462,6 +471,13 @@ class Simulator
         $items  = $this->items($payload);
         $bank   = array_values(array_map('strval', (array) ($payload['word_bank'] ?? [])));
         $locked = [];
+
+        // A resumed attempt (research mode, 33 K3): items already right stay locked
+        foreach ((array) ($payload['items'] ?? []) as $row) {
+            if (! empty($row['state']['locked'])) {
+                $locked[(int) $row['id']] = true;
+            }
+        }
         $opened = $this->clock->now();
         $t      = 0; // ms sejak tantangan dibuka (first_input_ms / last_input_ms)
         $ease   = ['temanggung' => 0.15, 'magelang' => 0.0, 'wonosobo' => -0.15][$level->code] ?? 0.0;
@@ -585,6 +601,11 @@ class Simulator
         }
 
         foreach ($rounds as $index => [$clue, $pool, $keyOf]) {
+            // A resumed attempt (research mode, 33 K3): clues found or closed before are skipped
+            if (! empty($clue['state']['closed'])) {
+                continue;
+            }
+
             $itemId  = (int) $clue['item_id'];
             $correct = $keyOf === null ? (string) $this->objectRef->invoke($this->challenges, $attempt->id, $itemId) : $keyOf($itemId);
             $others  = array_values(array_filter($pool, static fn (string $ref): bool => $ref !== $correct));
@@ -668,6 +689,11 @@ class Simulator
         $elapsed   = 0;
 
         foreach ($scenarios as $index => $scenario) {
+            // A resumed attempt (research mode, 33 K3): scenarios closed before are skipped
+            if (! empty($scenario['state']['closed'])) {
+                continue;
+            }
+
             $itemId = (int) $scenario['id'];
             $safe   = null;
 

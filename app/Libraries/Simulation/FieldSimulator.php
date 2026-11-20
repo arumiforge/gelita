@@ -3,6 +3,7 @@
 namespace App\Libraries\Simulation;
 
 use App\Entities\Level;
+use App\Exceptions\ChallengeRuleException;
 use App\Libraries\InstrumentImporter;
 use App\Models\FieldSessionModel;
 use App\Models\ParticipantModel;
@@ -55,8 +56,8 @@ final class FieldSimulator extends Simulator
     /** School day of each meeting, counted from the school's first day (P1 to P5 in about two weeks, 13). */
     private const MEETING_DAYS = [1 => 0, 2 => 2, 3 => 4, 4 => 7, 5 => 9];
 
-    /** Length of each meeting in minutes. */
-    private const MEETING_MINUTES = [1 => 110, 2 => 80, 3 => 80, 4 => 80, 5 => 140];
+    /** Length of each meeting in minutes (P2–P4: two school lessons of 35 minutes). */
+    private const MEETING_MINUTES = [1 => 110, 2 => 70, 3 => 70, 4 => 70, 5 => 140];
 
     /** Opening time of class groups A, B, C, D on a meeting day. */
     private const ROMBEL_START = ['07:30', '10:00', '12:45', '07:15'];
@@ -251,6 +252,8 @@ final class FieldSimulator extends Simulator
             'device'   => $this->pick(['chromebook' => 55, 'tablet' => 30, 'laptop' => 15]),
             'skill'    => $this->rng->getInt(30, 92) / 100,
             'rapid'    => $this->rng->getInt(1, 100) <= 6,
+            // About a third read slowly or need the researcher now and then: extra minutes per challenge
+            'pace'     => $this->rng->getInt(1, 100) <= 35 ? $this->rng->getInt(3, 12) : 0,
             'absent'   => $absent,
             'makeup'   => $makeup,
             // 2% withdraw (data kept) after P2–P4, 1.5% move school after P2–P4, 2% without a parent consent date
@@ -375,6 +378,12 @@ final class FieldSimulator extends Simulator
         if ($entry['register']) {
             // P1: L2 seats, the L7 consent register, Mulai tes awal, then the module and the opening story
             $testAt = $opens->modify('+' . $this->rng->getInt(22, 28) . ' minutes');
+
+            // A P1 make-up: students absent at P1 register here first, then the researcher ticks them as members
+            if ($main !== null) {
+                $pids = array_values(array_filter(array_map(fn (int $n): ?int => $this->roll[$n]['pid'], $present)));
+                $this->clock->staffAct($testAt->modify('-8 minutes'), $pids, fn () => $fields->saveMembers((int) $fieldSession['id'], $pids, $this->staffId));
+            }
             $this->seats($fieldSession, $present, $testAt->modify('-6 minutes'));
             $this->consents($fieldSession, $present, $testAt->modify('-4 minutes'));
             $this->startTest($fieldSession, $testAt);
@@ -738,17 +747,34 @@ final class FieldSimulator extends Simulator
             $this->roll[$number]['visited'][$code] = true;
 
             foreach ($pending as $node) {
+                $pace = (int) $this->roll[$number]['pace'];
+
+                if ($pace > 0) {
+                    $this->clock->advance($this->rng->getInt(30_000, $pace * 60_000));
+                }
+
                 $left = $deadline->getTimestamp() - $this->clock->now()->getTimestamp();
 
-                if ($left < 4 * 60) {
+                if ($left < 5 * 60) {
                     return;
                 }
 
-                $leaveOpen = $left < 12 * 60 && $this->rng->getInt(1, 100) <= 50;
-                $this->challenge($level, $node, $this->roll[$number]['skill'], null, $leaveOpen, false);
+                // Too little time to finish: started, then left open when the researcher calls time (resumed later, 33 K3)
+                $leaveOpen = $left < 14 * 60;
+
+                try {
+                    $this->challenge($level, $node, $this->roll[$number]['skill'], null, $leaveOpen, false);
+                } catch (ChallengeRuleException) {
+                    // Locked behind an earlier challenge that is still open: the next meeting goes on from there
+                    break;
+                }
 
                 if ($leaveOpen) {
                     return;
+                }
+
+                if (! $this->nodeDone($pid, (int) $node->id)) {
+                    break;
                 }
             }
 

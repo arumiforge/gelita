@@ -65,7 +65,11 @@ class StaffGuideController extends BaseAdminController
             'terms'    => ! empty($sections[$slug]['glossary']) ? [] : StaffGuideContent::termsIn($sections[$slug]),
             'facts'    => [],
             'stale'    => [],
-            'downloads'  => ! empty($sections[$slug]['downloads']) ? GuideDownloads::rows(GuideDownloads::forGuide(GuideDownloads::STAFF)) : [],
+            // `downloads`: true lists the print page's group, a string names another group (GuideDownloads)
+            'downloads'  => empty($sections[$slug]['downloads']) ? [] : GuideDownloads::rows(GuideDownloads::forGroup(
+                GuideDownloads::STAFF,
+                $sections[$slug]['downloads'] === true ? GuideDownloads::DEFAULT_GROUP : (string) $sections[$slug]['downloads'],
+            )),
             'showPanels' => false,
         ]);
     }

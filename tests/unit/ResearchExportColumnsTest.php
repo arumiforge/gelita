@@ -97,6 +97,19 @@ final class ResearchExportColumnsTest extends CIUnitTestCase
         }
 
         $this->assertSame(2, (new ExportService())->participantCount(['format' => 'csv', 'filters' => ['study_id' => 1], 'scope' => StaffScope::head(), 'participant_id' => null]));
+
+        // A demo install (owner, 20 November 2026) shows simulated students, never test accounts, and says so in the Kamus Data
+        $this->assertSame([], array_filter((new ExportService())->dictionaryHead(['filters' => ['study_id' => 1]]), static fn (array $r): bool => $r[0] === 'PERHATIAN'));
+        config('Gelita')->simulatedInResearch = true;
+
+        try {
+            $this->assertTrue(\App\Libraries\Simulation\Simulator::inResearchData());
+            $codes = array_column(iterator_to_array($raw->rows('peserta', ['study_id' => 1], StaffScope::head()), false), 'participant_code');
+            $this->assertEqualsCanonicalizing(['GLT-000001', 'GLT-000002', 'X-0'], $codes);
+            $this->assertSame('PERHATIAN', (new ExportService())->dictionaryHead(['filters' => ['study_id' => 1]])[0][0]);
+        } finally {
+            config('Gelita')->simulatedInResearch = false;
+        }
     }
 
     public function testEveryDownloadNeedsAStudyAlsoWithFieldModeOff(): void

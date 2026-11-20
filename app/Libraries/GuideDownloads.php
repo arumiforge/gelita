@@ -35,6 +35,9 @@ use CodeIgniter\HTTP\ResponseInterface;
  *   type    content type (self::PDF, self::XLSX, self::ZIP, or another)
  *   label   short name in the reader's words (no document numbers or paths)
  *   text    one sentence on what is in it
+ *   group   staff guide only, optional: the topic page that lists it, by the
+ *           section's `downloads` value (default `cetak`, the print page;
+ *           `contoh` is the simulated sample download for the head researcher)
  * The label and text follow the guide's own rules (ValidatorGuideTest,
  * StaffGuideTest): no item or label codes, keys, names, paths, or server talk.
  */
@@ -194,6 +197,19 @@ final class GuideDownloads
     public static function forGuide(string $guide): array
     {
         return array_filter(self::FILES, static fn (array $file): bool => $file['guide'] === $guide);
+    }
+
+    /** Group of an entry without one: the staff guide's print page. */
+    public const DEFAULT_GROUP = 'cetak';
+
+    /**
+     * Entries of one guide in one group (a staff-guide topic page lists one group).
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    public static function forGroup(string $guide, string $group): array
+    {
+        return array_filter(self::forGuide($guide), static fn (array $file): bool => ($file['group'] ?? self::DEFAULT_GROUP) === $group);
     }
 
     /**

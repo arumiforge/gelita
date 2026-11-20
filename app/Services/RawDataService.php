@@ -1163,9 +1163,13 @@ class RawDataService
 
         // Research data never holds the validators' test accounts or simulated
         // students (29 §7.1); a one-student view still shows them.
+        // (A demo install may show simulated students: Simulator::inResearchData(), never in production.)
         if ($scope->anonymous && ! isset($filters['participant_id'])) {
-            $builder->notLike('participants.username', \App\Libraries\Simulation\Simulator::USERNAME_PREFIX, 'after')
-                ->notLike('participants.username', \App\Services\TestAccountService::PREFIX, 'after')
+            if (! \App\Libraries\Simulation\Simulator::inResearchData()) {
+                $builder->notLike('participants.username', \App\Libraries\Simulation\Simulator::USERNAME_PREFIX, 'after');
+            }
+
+            $builder->notLike('participants.username', \App\Services\TestAccountService::PREFIX, 'after')
                 ->groupStart()
                 ->where('participants.school_id', null)
                 ->orWhereNotIn('participants.school_id', $this->testSchoolIds())
