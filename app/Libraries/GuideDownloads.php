@@ -187,6 +187,26 @@ final class GuideDownloads
             'label' => 'Uji keterbacaan dengan anak',
             'text'  => 'Langkah per anak, bahan, peran, lembar catatan, dan aturan keputusan uji keterbacaan.',
         ],
+
+        // ---------------------------------------------------------- staff guide, page contoh-data (owner, 20 November 2026)
+        'contoh-data-excel' => [
+            'guide' => self::STAFF,
+            'group' => 'contoh',
+            'path'  => 'docs/contoh-data/GELITA-contoh-data-simulasi-300-siswa.xlsx',
+            'name'  => 'GELITA-contoh-data-simulasi-300-siswa.xlsx',
+            'type'  => self::XLSX,
+            'label' => 'Contoh unduhan Excel, 300 siswa simulasi',
+            'text'  => 'Semua lembar bawaan Unduh data dengan nilai berlabel, tanpa Event Mentah. Bukan data penelitian.',
+        ],
+        'contoh-data-csv' => [
+            'guide' => self::STAFF,
+            'group' => 'contoh',
+            'path'  => 'docs/contoh-data/GELITA-contoh-data-simulasi-300-siswa-csv.zip',
+            'name'  => 'GELITA-contoh-data-simulasi-300-siswa-csv.zip',
+            'type'  => self::ZIP,
+            'label' => 'Contoh unduhan CSV, 300 siswa simulasi',
+            'text'  => 'Satu CSV per lembar dengan nilai berkode, termasuk Event Mentah. Bukan data penelitian.',
+        ],
     ];
 
     /**

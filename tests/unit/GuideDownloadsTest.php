@@ -230,7 +230,7 @@ final class GuideDownloadsTest extends CIUnitTestCase
 
         $page = $this->page('admin/panduan-staf/dokumen-cetak');
         $this->assertStringContainsString('<h1 class="gd-title" id="gd-title">Lembar dan dokumen untuk dicetak</h1>', $page);
-        $staff = GuideDownloads::forGuide(GuideDownloads::STAFF);
+        $staff = GuideDownloads::forGroup(GuideDownloads::STAFF, GuideDownloads::DEFAULT_GROUP);
         $this->assertSame(count($staff), substr_count($page, 'class="gd-dl"'));
         foreach ($staff as $key => $file) {
             $this->assertStringContainsString('href="' . GuideDownloads::url(GuideDownloads::STAFF, $key) . '"', $page);
@@ -243,6 +243,27 @@ final class GuideDownloadsTest extends CIUnitTestCase
         $this->assertContains('dokumen-cetak', array_column($chapters['lapangan'], 'id'));
         $this->assertStringContainsString('href="' . base_url('admin/panduan-staf/dokumen-cetak') . '"', $this->page('admin/panduan-staf'));
         $this->assertStringNotContainsString('class="gd-dl"', $this->page('admin/panduan-staf/token'), 'only the marked page');
+    }
+
+    public function testStaffGuideOffersTheSimulatedSampleOnItsOwnPage(): void
+    {
+        $this->createRawDataWorld();
+
+        // Owner, 20 November 2026: the 300-student sample download, in the head researcher's chapter, never on the print page
+        $sample = GuideDownloads::forGroup(GuideDownloads::STAFF, 'contoh');
+        $this->assertSame(['contoh-data-excel', 'contoh-data-csv'], array_keys($sample));
+
+        $page = $this->page('admin/panduan-staf/contoh-data');
+        $this->assertSame(2, substr_count($page, 'class="gd-dl"'));
+        $this->assertStringContainsString('bukan data penelitian', strtolower($page));
+
+        foreach (array_keys($sample) as $key) {
+            $this->assertStringContainsString('href="' . GuideDownloads::url(GuideDownloads::STAFF, $key) . '"', $page);
+            $this->assertStringNotContainsString(GuideDownloads::url(GuideDownloads::STAFF, $key), $this->page('admin/panduan-staf/dokumen-cetak'));
+        }
+
+        $chapters = array_column(StaffGuideContent::chapters(), 'sections', 'id');
+        $this->assertContains('contoh-data', array_column($chapters['ketua'], 'id'));
     }
 
     private function fetch(string $path): \CodeIgniter\HTTP\ResponseInterface

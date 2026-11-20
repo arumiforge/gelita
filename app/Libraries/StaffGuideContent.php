@@ -535,6 +535,21 @@ final class StaffGuideContent extends GuideContent
                         'Identitas siswa selalu berkode. Jawaban pertanyaan internet hanya tampil sebagai jumlah gabungan.',
                         'Berkas tersimpan 7 hari dan hanya bisa diunduh oleh pembuatnya. Setiap unduhan tercatat.',
                         'Simpan salinan di perangkat tim seperlunya saja; salinan harus dihapus saat ada permintaan hapus.',
+                        'Ingin melihat bentuk unduhannya sebelum ada data asli? Pakai [Contoh data simulasi 300 siswa](#contoh-data).',
+                    ],
+                ],
+                [
+                    // Owner, 20 November 2026: a sample download for the head researcher (GuideDownloads group `contoh`)
+                    'id'        => 'contoh-data',
+                    'title'     => 'Contoh data simulasi 300 siswa',
+                    'lead'      => 'Contoh hasil Unduh data dengan 300 siswa simulasi di enam sekolah, lima pertemuan per rombel. Bentuknya sama dengan unduhan ketua peneliti saat pengambilan data, jadi tim bisa menyiapkan dan mencoba analisis sebelum data asli ada.',
+                    'downloads' => 'contoh',
+                    'warn'      => 'Ini bukan data penelitian. Semua siswa, sekolah, jawaban, dan waktunya dibuat program. Lembar Kamus Data diawali baris **PERHATIAN** yang menyebutnya. Jangan digabung dengan data asli.',
+                    'list'      => [
+                        'Enam sekolah berkode S01–S06 berjalan bergantian: satu sekolah menyelesaikan P1–P5 dulu, baru sekolah berikutnya. Setiap sekolah punya dua atau tiga rombel.',
+                        'Ada siswa yang tidak hadir lalu ikut sesi susulan, siswa yang mundur atau pindah sekolah, tantangan yang belum selesai lalu dilanjutkan di pertemuan berikutnya, tes awal–akhir, angket, butir risiko, skala sikap, dan [[data turunan|data-turunan]].',
+                        'Berkas Excel berisi semua lembar bawaan unduhan, tanpa Event Mentah. Berkas ZIP berisi lembar yang sama sebagai CSV ditambah Event Mentah, siap untuk SPSS, R, atau Python.',
+                        'Kode peserta dan kode sesi mengikuti aturan biasa, misalnya `S01-A07` dan `S01-A-P2`. Tanggalnya Juli sampai November 2026.',
                     ],
                 ],
                 [
