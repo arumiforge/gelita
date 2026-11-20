@@ -348,7 +348,7 @@ Langkahnya:
 1. Preferences → *General*: matikan **Auto virtual hosts**. Hapus `C:\laragon\etc\nginx\sites-enabled\auto.gelita.test.conf` bila sudah terbentuk.
 2. Preferences → *Services & Ports*: aktifkan **Nginx** dan **MySQL**, matikan **Apache** (keduanya berebut port 80).
 3. Salin `deploy\windows\nginx\gelita.id.conf` ke `C:\laragon\etc\nginx\sites-enabled\`. Nama berkas **tidak boleh** berawalan `auto.`. Copy it as it is, and remove any other GELITA site file there.
-4. Menu → *Nginx* → *Reload*. The reload reports configuration errors (`nginx -t`).
+4. Test the configuration first, in PowerShell: `cd (Get-ChildItem C:\laragon\bin\nginx -Directory | Select-Object -Last 1).FullName; .\nginx.exe -t`. It must end with `test is successful`; otherwise it names the file and line that fail. While the test fails, Nginx does not start and Cloudflare answers every page with 502. Then Menu → *Nginx* → *Reload*, and check on the server that Nginx answers: `curl.exe -sI -H "Host: gelita.id" http://127.0.0.1/` shows a status line and `Strict-Transport-Security`.
 
 Aturan di `gelita.id.conf`:
 
@@ -360,6 +360,7 @@ Aturan di `gelita.id.conf`:
 | Header ganda | `fastcgi_hide_header` untuk `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy` | filter `secureheaders` CodeIgniter mengirim header yang sama; setiap header muncul tepat sekali |
 | Cache aset | `map` `$gelita_is_asset` + `$arg_v` → `$gelita_cache`: URL aset ber-`?v=` mendapat `public, max-age=31536000, immutable`, aset lain `no-cache`; asset package URLs (`/assets/p/`, `/assets/k/`, `/paket/pkt-*.json`) are immutable without `?v=` | lihat [Cache-busting](#cache-busting) dan [Asset package](#asset-package-download-once-mode) |
 | PHP | hanya `location = /index.php` yang diteruskan ke `php_upstream` (`fastcgi_read_timeout 300`); `.php` lain → 404 | tidak ada skrip lain yang dapat dieksekusi |
+| FastCGI parameters | `include fastcgi.conf` (Nginx's own, in `conf\` of every Nginx build), not Laragon's `snippets/fastcgi-php.conf` | that snippet sets `fastcgi_read_timeout` itself, and a second one stops Nginx from starting (`"fastcgi_read_timeout" directive is duplicate`, Laragon Nginx 1.30.4, 21 November 2026). Dropping our line instead would leave data downloads to Laragon's value, below the 300 s they may need |
 | HTTPS for PHP | `fastcgi_param HTTPS on` | Nginx receives plain HTTP, but the visitor is on HTTPS: secure cookies and `https://` links depend on it |
 | Routes without a file | `location /` uses `try_files $uri $uri/ /index.php$is_args$args`; only `/assets/` answers 404 for a missing file | `/manifest.json` has no file in `public/` (it is made by `AppController`), so it reaches `index.php`. Never put a static `public/manifest.json` back: it would shadow the route. Apache does the same through `public/.htaccess` (`!-f`, `!-d` → `index.php`) |
 | Berkas tersembunyi | `location ~ /\.` → 404, juga di dalam `/assets/` | `.env`, `.git`, `.htaccess`, `.gitkeep` tidak pernah dilayani |
@@ -384,9 +385,9 @@ server {
     }
 
     location = /index.php {
-        include snippets/fastcgi-php.conf;      # tersedia di Nginx Laragon
+        include fastcgi.conf;                   # Nginx's own, not Laragon's snippets/fastcgi-php.conf
         fastcgi_pass php_upstream;              # didefinisikan Laragon (etc/nginx/php_upstream.conf)
-        fastcgi_read_timeout 300;
+        fastcgi_read_timeout 300;               # data downloads run up to 300 s
         fastcgi_param HTTPS on;                 # the visitor is on HTTPS (secure cookies, https:// links)
         …
     }
@@ -397,7 +398,7 @@ server {
 
 - **Cache rules matter behind Cloudflare.** The two `map` blocks above `server {` and the line `add_header Cache-Control $gelita_cache;` set the cache header of every asset. A hand-written tunnel site file without them (the measured server had none) lets Cloudflare give `/assets/p/`, `/assets/k/` and `/paket/pkt-*.json` its own default (4 hours in the browser) instead of `public, max-age=31536000, immutable`, so devices fetch the asset package again and again. A server that still runs such a file only needs those two parts added: the two `map` blocks above `server {`, and the `add_header Cache-Control $gelita_cache;` line next to the other `add_header` lines.
 - Check from another machine after the reload: ask for one asset package file twice with `curl -sI` (a URL under `/assets/p/` from the package manifest). It must answer `cache-control: public, max-age=31536000, immutable`, and `cf-cache-status: HIT` the second time. Step 4 of [Verifikasi Setelah Deploy](#verifikasi-setelah-deploy) checks the other asset kinds.
-- Loaded once into nginx 1.24 on Linux, with only the root path and the port changed (21 November 2026): the syntax is accepted, versioned assets answer `immutable`, unversioned ones `no-cache`, asset package paths `immutable`, the four security headers are sent, hidden files and stray `.php` files answer 404, and the maintenance flag gives the 503 page. Not yet run on Laragon's Nginx on Windows in this form (the measured server used the owner's own site file with the same three tunnel lines): the drive-letter paths, `snippets/fastcgi-php.conf` and `php_upstream` are checked only there. After copying it, reload (Menu → *Nginx* → *Reload* reports errors) and run the verification list.
+- Loaded once into nginx 1.24 on Linux, with only the root path and the port changed (21 November 2026): the syntax is accepted, versioned assets answer `immutable`, unversioned ones `no-cache`, asset package paths `immutable`, the four security headers are sent, hidden files and stray `.php` files answer 404, and the maintenance flag gives the 503 page. On Laragon's Nginx 1.30.4 on Windows the first version of this file failed `nginx -t` because it included Laragon's `snippets/fastcgi-php.conf` (see the *FastCGI parameters* row above); Nginx did not start and Cloudflare answered every page with 502 (21 November 2026). The fixed `location = /index.php` block (`include fastcgi.conf`) was run on nginx 1.24 on Linux with `php-cgi` behind `php_upstream`: `index.php` gets `HTTPS=on`, the right `SCRIPT_FILENAME`, the query string and the visitor's address from `CF-Connecting-IP`, and `nginx -t` passes with a snippet that sets its own timeout. Still checked only on the server: the drive-letter paths and `php_upstream`. After copying it, run `.\nginx.exe -t` in Laragon's Nginx folder (step 4 above) before you reload, then run the verification list.
 
 ### HTTPS
 
@@ -1205,6 +1206,8 @@ Bulanan: jalankan satu uji pemulihan.
 | The asset package downloads again every few hours | the Nginx site file on the server has no cache rules (a hand-written file instead of `gelita.id.conf`) | [Nginx](#nginx) |
 | Unduhan data gagal di tengah | `memory_limit` atau batas 300 detik (dihitung jam dinding) | persempit rentang tanggal; periksa batas PHP |
 | Nginx tidak mau start | port 80 dipakai Apache Laragon, IIS, atau aplikasi lain | matikan Apache di Laragon; `Get-NetTCPConnection -LocalPort 80` untuk mencari pemakainya |
+| Every page of gelita.id, katalog.gelita.id and pictures too answer `error code: 502` from Cloudflare, within a second | `cloudflared` runs but nothing answers on `127.0.0.1:80`: Nginx is not running, usually because its configuration fails. (A stopped `cloudflared` gives error 1033 instead.) | `Get-NetTCPConnection -LocalPort 80 -State Listen` finds nothing; `.\nginx.exe -t` in Laragon's Nginx folder names the failing line ([Nginx](#nginx), step 4); fix it and start Nginx in Laragon. If Nginx does answer `curl.exe -sI http://127.0.0.1/`, the tunnel's service is not `http://127.0.0.1:80` ([HTTPS](#https)) |
+| `nginx -t`: `"fastcgi_read_timeout" directive is duplicate in …gelita.id.conf` | the first `gelita.id.conf` (21 November 2026) included Laragon's `snippets/fastcgi-php.conf`, which sets that directive too | copy the current `deploy\windows\nginx\gelita.id.conf` (`include fastcgi.conf;`) |
 | Tugas terjadwal `0x1` | Laragon/MySQL mati saat tugas berjalan, atau path PHP berubah setelah ganti versi | nyalakan Laragon; perbarui `Php`/`MySql` di `config.psd1` |
 | Gambar tidak muncul | aset belum diunggah atau `is_active = 0` | **Gambar & mockup** (`/admin/media`); `gelita:media:scan` |
 | Audio tidak berbunyi | rekaman masih `draft` | **Rekaman narasi** → setujui |

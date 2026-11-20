@@ -231,7 +231,7 @@ Ask the owner first (one round, the hand-over section gives a recommended answer
 
 Then build:
 - [ ] `env-example-uji` (owner: "untuk uji buatkan env-example-uji"): the test install's `.env`, from `env-example-production` with `app.baseURL = 'https://uji.gelita.id/'`, its own database, its own `encryption.key` and `gelita.ipSalt` (never production's), `gelita.instrumentPreview = true` (34 §5.5), and the answer to the fourth question.
-- [ ] `deploy/windows/nginx/uji.gelita.id.conf`: the second site file (`server_name uji.gelita.id`, its own `root` and maintenance flag). Keep its two `map` blocks identical to those of `gelita.id.conf` (or leave them out); load both files into a real nginx before pushing (how: hand-over section).
+- [ ] `deploy/windows/nginx/uji.gelita.id.conf`: the second site file (`server_name uji.gelita.id`, its own `root` and maintenance flag). Copy the `location = /index.php` block of `gelita.id.conf` as it is (`include fastcgi.conf;`, never Laragon's `snippets/fastcgi-php.conf`: decision log *Nginx would not start with `gelita.id.conf`*). Keep its two `map` blocks identical to those of `gelita.id.conf` (or leave them out); load both files into a real nginx before pushing (how: hand-over section).
 - [ ] `DeployFilesTest::testOneServerOneSiteFile` allows exactly these two site files, and the rules test covers both.
 - [ ] `docs/08`: a section for the test install (checkout of the frozen commit, database and accounts, `.env`, site file, tunnel public hostname `uji.gelita.id` → `http://127.0.0.1:80`, scheduled retention task, what `deploy.ps1` and `backup.ps1` do or do not do for it).
 - [ ] `20` → *Prasyarat no. 8*, step 1 no. 3 ("Belum ditetapkan") filled in, with a new entry in `04`; the validator guide lock re-marked if a locked section changes (`php spark gelita:panduan:cek --panduan=validator --tandai`).
@@ -243,3 +243,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `igi/brave-franklin-8f1hia` | Fix `gelita.id.conf`: Nginx refused to start on the server (duplicate `fastcgi_read_timeout` from Laragon's snippet), so gelita.id answered 502; decision log *Nginx would not start with `gelita.id.conf`* | Fix pushed, full suite green (1,463 tests); the owner made the same change by hand on the server and gelita.id is back up (21 November 2026); open: [ ] merge the PR so the next copy of the file from `main` keeps it |
