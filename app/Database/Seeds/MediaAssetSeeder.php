@@ -9,9 +9,8 @@ use RecursiveIteratorIterator;
 /**
  * Mendaftarkan aset bawaan di public/assets/{ui,char,bg,map,challenge,library,reward,audio}.
  *
- * 1. Slot wajib (SLOTS + level + frame 1 tiap pose tokoh) selalu didaftarkan dengan asset_key resmi.
- *    Frames 2–24 of a pose get their row when uploaded (panel, gelita:katalog:impor)
- *    or when their file is found here; 240 empty rows would only clutter the panel.
+ * 1. Slot wajib (SLOTS + level + the one still picture of each character pose,
+ *    `char.{jaka|kedu}.{pose}.1`) selalu didaftarkan dengan asset_key resmi.
  *    Bila berkasnya belum ada → is_active = 0 sehingga media_src() memakai placeholder.
  *    Ekstensi slot bebas (png/jpg/webp/…): berkas dicocokkan berdasarkan path tanpa ekstensi.
  * 2. Berkas lain hasil pindai didaftarkan dengan asset_key dari path:

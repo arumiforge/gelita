@@ -48,7 +48,6 @@ public/
     │   ├── device.js        sinyal perangkat, overlay_opened, reading_progress
     │   ├── lightbox.js      perbesar gambar dalam <dialog>: createLightbox()
     │   ├── backdrop.js      per-slide background, crossfade or dip to black: createBackdrop([imgA, imgB], { fallback, veil }) → show(src, { always }), preload(src)
-    │   ├── sprite.js        character pose frames: initSprites(), setFrames(), parseFrames()
     │   ├── modal.js         showModal(), confirmDialog(), closeModal(), isModalOpen()
     │   ├── toast.js         toast()
     │   ├── timer.js         jam tantangan: startTimer(), formatClock()
@@ -436,16 +435,6 @@ overlayOpened(overlay, { level, levelId })  // overlay_opened
 - `viewport_changed` dikirim `core/stage.js`; `page_hidden`/`page_visible` `{ screen }` di `core/events.js` `initVisibilityTracking()`, dengan kode layar dari `body[data-screen-code]` (resolver yang sama dengan `screen_viewed` di server; Pustaka terkunci → `library_locked`).
 - `trackReading()` memantau panel bacaan bergulir di panggung: `.rumpang-reading`, daftar kalimat rumpang, dan kolom bacaan Benar atau Salah `.boleh-passages`; posisi gulir panel itulah yang dihitung (panggung tidak pernah bergulir). Tiap batas dikirim sekali per pengerjaan, dengan `passage_id` bila panel berisi satu bacaan. Panel yang tidak perlu digulir langsung bernilai 100 %.
 
-### `core/sprite.js` — character pose frames
-
-Plays the frames of a character pose. `components/character.php` renders frame 1 in `.character-img`; when the pose has 2 or more uploaded frames the figure also carries `data-frames` (JSON list of URLs), `data-fps`, and `data-loop` from `character_frames()` (`Config\Gelita::$characterAnimations`).
-
-- `initSprites(root)` binds every `.character[data-frames]` once. `setFrames(figure, frames, { fps, loop })` replaces the frames and restarts from frame 1; fewer than 2 frames stops the player. `parseFrames(json)` reads the attribute safely.
-- Only the `src` of the existing image changes, never the node, so entrance animations (`cine-rise`) do not replay and the mirrored right-hand figure stays mirrored.
-- Frames are decoded while idle before the cycle starts; a frame that fails to load is skipped. The curtain still preloads frame 1 only.
-- `loop` cycles; otherwise the pose plays once and holds its last frame. Since 11 October 2026 every pose loops (up to 24 frames, `Config\Gelita::$characterAnimations`), and `data-fps` may be below 1 when only a few interim frames are uploaded. It restarts from frame 1 each time the figure comes back into view.
-- Paused while the tab is hidden (`visibilitychange`) and while the figure is not rendered (IntersectionObserver; hidden slides are `display: none`). With `reducedMotion()` only frame 1 shows.
-
 ### `core/lightbox.js`
 
 `createLightbox({ closeLabel, loadingLabel, variant })` → `open(src, alt, caption)`. `<dialog>` bawaan (`showModal()`: Esc menutup, fokus terkunci) ditambahkan ke `#stage`; karena dialog modal berada di top layer, ukurannya ditulis dalam rem agar tetap di dalam panggung. Dipakai `game/library.js` (selebar panggung) dan `engines/boleh.js` (`variant: 'card'`, gambar pernyataan 640 × 480 dp).
@@ -510,8 +499,6 @@ Selalu aktif di setiap halaman layout game:
 | `reflection` | `game/reflection.js` → `initReflection()` |
 | `challenge` | `game/challenge.js` → `bootChallenge()` |
 | `finished` | `game/finished.js` → `initFinished()` |
-
-Character pose frames: when the page has a `.character[data-frames]`, `game.js` also loads `core/sprite.js` and calls `initSprites()` (see `core/sprite.js`).
 
 Tanpa `data-screen` yang cocok: `form.register-form` → `register.js`, `[data-login-form]` → `login.js`, `.password-field` (ganti sandi) → `password-meter.js`. Layar lain (`mission-brief`, `result`, `profile`, `library-locked`, halaman awal) cukup memakai lapisan inti. Setelah modul halaman terpasang, `body[data-page-ready="1"]` dipasang sebagai penanda untuk uji ujung ke ujung.
 
@@ -629,7 +616,7 @@ initNarrator(root, { onFinish, onSlide })
 - Welcome after sign-up (owner, 19 October 2026): when the screen holds the server's `.welcome-card` (flash `welcome`), `initStory()` removes it and opens `showModal({ icon: 'key', blur: true })` with its title, message, and tip and one **Lanjut** button (`t('next')`), plus `confetti(40)`. The modal sits above the "Ketuk untuk mulai" card; closing it (Lanjut, Escape, or a tap outside) returns focus to that card, so the intro starts with the next tap as before. `components/modal` gained the `key` icon.
 - **Slide backgrounds (owner, 19 October 2026).** A slide of `region_intro`, `level_open`, or `level_done` with `data-bg` (`slide_bg_attr()`, from `dialogues.background_media_id`) shows that picture; a slide without it shows the region background again. `narrator.js` takes the picture pair (the Kenali overlay's two `.kenal-bg`, or the layout's `#scene-a`/`#scene-b` when the root has `data-backdrop="stage"`) and hands it to `core/backdrop.js`, which crossfades (0.6 s), marks a slide's own picture `.is-own` (slow Ken Burns zoom on every screen; `.is-leaving` keeps the zoom while fading out), and preloads the next slide's picture. A `MutationObserver` on the root follows `.is-current` and the overlay's `.is-open`, so `show(n, { notify: false })` from `map.js` is covered and a closed overlay loads nothing. Without JavaScript the slides keep the region background.
 - **Dip to black on the story screens (owner, 19 October 2026).** `/intro` and `/penutup` carry `data-backdrop="stage" data-backdrop-mode="dip" data-bg-default="…"` (the story background, `bg.intro` then `bg.welcome`), and the layout starts on slide 1's own picture. `narrator.js` passes `#stage > .scene` as the `veil`: on every slide change (`show(src, { always: true })`, only when the current slide really changed) the veil goes black in 0.35 s (`.scene.is-dark::before`), the pictures swap under it with no transition, it holds 0.1 s, and it lifts in 0.5 s. The next picture loads during the fade-out; one still loading after 2.5 s is skipped and the current picture comes back. A newer slide takes over at any step and compares with the picture actually on screen. With JavaScript the slides' own `.cine-bg` are hidden and the slides do not fade (`.cine.is-live`), so the caption and characters stay put and no other picture shows between two slides; under reduced motion the picture changes without black.
-- `initDialogue()` memasang narrator pada `[data-screen="dialogue"]` (`/dialog/{code}`, context `level_open`) atau `[data-screen="region-done"]` (`/tuntas/{code}`, context `level_done`), markup `partials/dialogue-scene`. `onSlide` memberi tokoh yang berbicara `.is-speaking` dan yang mendengar `.is-listening`, lalu menukar gambarnya ke frame pose baris itu (`data-pose`, `data-pose-src`; monogram diganti `<img class="character-img">` begitu ada frame, baris tanpa frame membiarkan tokoh apa adanya). Frame pose dipramuat saat idle. A line whose pose has several frames carries `data-pose-frames`/`-fps`/`-loop`; `setPose()` hands them to `core/sprite.js` `setFrames()`, so the pose plays from frame 1 on every line.
+- `initDialogue()` memasang narrator pada `[data-screen="dialogue"]` (`/dialog/{code}`, context `level_open`) atau `[data-screen="region-done"]` (`/tuntas/{code}`, context `level_done`), markup `partials/dialogue-scene`. `onSlide` memberi tokoh yang berbicara `.is-speaking` dan yang mendengar `.is-listening`, lalu menukar gambarnya ke gambar diam pose baris itu (`data-pose`, `data-pose-src`; monogram diganti `<img class="character-img">` begitu ada gambar, baris tanpa gambar membiarkan tokoh apa adanya). Gambar pose dipramuat saat idle. A pose is one still picture: the frame player `core/sprite.js` was removed on 20 November 2026 (owner: still pictures only).
 
 ### `game/map.js`
 
@@ -892,7 +879,6 @@ Panel admin satu bahasa (Indonesia) dan semua halamannya tetap berfungsi tanpa J
 | `form[action$="impor-bank/pratinjau"]` | `admin/bank-import.js` → `initBankImport()` |
 | `form.upload-box[action$="media/unggah"]` | `admin/media-upload.js` → `initMediaUpload()` |
 | `form[data-narration-upload]` | `admin/narration-upload.js` → `initNarrationUpload()` |
-| `.media-sprite .character[data-frames]` | `core/sprite.js` → `initSprites()`; tombol `[data-sprite-replay]` memutar ulang pose sekali-putar |
 | `[data-export-id]` | `admin/export.js` → `initExport()` |
 
 ### `admin/filters.js`
