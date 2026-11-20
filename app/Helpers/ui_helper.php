@@ -82,7 +82,10 @@ if (! function_exists('icon')) {
 
         $path = $paths[$name] ?? $paths['info'];
 
-        return '<svg class="icon' . ($class === '' ? '' : ' ' . esc($class, 'attr')) . '" viewBox="0 0 24 24"'
+        // data-icon names the drawing, so CSS can swap it for a picture (the carved icon
+        // medallions of the text buttons, document 40 PL-17 to PL-22)
+        return '<svg class="icon' . ($class === '' ? '' : ' ' . esc($class, 'attr')) . '"'
+            . ' data-icon="' . (isset($paths[$name]) ? esc($name, 'attr') : 'info') . '" viewBox="0 0 24 24"'
             . ' width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"'
             . ' stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'
             . $path . '</svg>';

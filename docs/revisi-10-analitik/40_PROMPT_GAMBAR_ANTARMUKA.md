@@ -2,7 +2,7 @@
 
 **Judul penelitian:** *Pengembangan Game Edukasi Etnopedagogi Kedu Berbasis Analitik sebagai Model Asesmen Literasi Digital Peserta Didik Sekolah Dasar*
 
-Per 20 November 2026 · Lampiran telaah gambar (`ai-studio/game-images/REVIEW.md`) dan perombakan antarmuka (`docs/PROGRESS.md` → *Interface overhaul*) · Status: **`draf pengembang`**, `asal: pengembang` (disusun pengembang dari wawancara 18 November 2026; [04](04_CATATAN_KEPUTUSAN.md))
+Per 21 November 2026 · Lampiran telaah gambar (`ai-studio/game-images/REVIEW.md`) dan perombakan antarmuka (`docs/PROGRESS.md` → *Interface overhaul*) · Status: **`draf pengembang`**, `asal: pengembang` (disusun pengembang dari wawancara 18 November 2026; [04](04_CATATAN_KEPUTUSAN.md))
 
 Pengembang meminta gambar baru untuk bagian antarmuka yang belum segaya dengan *emas berukir*, penanda status tantangan, ikon aplikasi, lentera dan pin wilayah, lencana, avatar, latar halaman awal, empat slide cerita penutup, dan gambar Pustaka yang masih bergaya lukisan. Dokumen ini memuat prompt siap tempel ke alat pembuat gambar (bahasa Inggris) dengan pola yang sama seperti [37](37_PROMPT_GAMBAR_SUSUN_DAN_CERITA.md), [38](38_PROMPT_PETA_LIMA_TANTANGAN_DAN_SKENARIO.md), dan [39](39_PROMPT_GAMBAR_PERBAIKAN_TELAAH.md). Daftar kerjanya di `ai-studio/chatgpt-images/TASKS.md`: baris `U-` (antarmuka), `S-` (latar dan cerita), dan `PK-` (Pustaka).
 
@@ -1624,7 +1624,7 @@ Wawancara pengembang 19 November 2026 ([04](04_CATATAN_KEPUTUSAN.md)): halaman a
 | `PL-04` | Kristal Serpihan Cahaya tahap 2 (Magelang) | baru: `public/assets/ui/hud-shards-crystal-2.webp` | 444 × 564, latar transparan |
 | `PL-05` | Kristal Serpihan Cahaya tahap 3 (Wonosobo) | baru: `public/assets/ui/hud-shards-crystal-3.webp` | 444 × 564, latar transparan |
 | `PL-06` | Kristal Serpihan Cahaya tahap 4 (semua tuntas) | baru: `public/assets/ui/hud-shards-crystal-4.webp` | 444 × 564, latar transparan |
-| `PL-07` sampai `PL-09` | Tombol tenang emas, biru tua, hijau (putaran kedua, lihat di bawah) | baru: `public/assets/ui/ui-button-{gold,navy,green}.webp` | 960 × 160, latar transparan |
+| `PL-07` sampai `PL-09` | Tombol tenang emas, biru tua, hijau (putaran kedua, lihat di bawah; diganti `PL-13` sampai `PL-15` dan berkasnya dihapus pada 21 November 2026) | baru: `public/assets/ui/ui-button-{gold,navy,green}.webp` | 960 × 160, latar transparan |
 | `PL-10` sampai `PL-12` | Latar halaman galat 404, 500, dan lainnya (putaran ketiga, lihat di bawah) | baru: `public/assets/ui/error-{404,500,400}.webp` | 1920 × 1080 |
 | `PL-13` sampai `PL-16` | Badan tombol ukir ringan emas, biru tua, hijau, merah (putaran keempat, 20 November 2026, lihat di bawah; pengganti `PL-07` sampai `PL-09`) | baru: `public/assets/ui/ui-button-carved-{gold,navy,green,red}.webp` | 1200 × 200, latar transparan |
 | `PL-17` sampai `PL-22` | Medali ikon di dalam tombol: kanan, kiri, centang, bawah, peta, kilau (putaran keempat) | baru: `public/assets/ui/ui-medal-{right,left,check,down,map,sparkle}.webp` | 256 × 256, latar transparan |
@@ -1896,6 +1896,8 @@ Untuk `PL-18` sampai `PL-22`, pakai prompt yang sama sebagai **suntingan** `out/
 - Medali menggantikan kotak ikon CSS (`> .icon` di blok *QUIET BUTTONS*) untuk ikon `right`, `left`, `check`, `down`, `map`, `sparkle`, sekitar 0,6 × tinggi tombol, di sisi yang sama seperti sekarang; ikon lain di tombol bertulisan memakai garis emas antik tanpa kotak. Ikon tetap hiasan (`aria-hidden`), tulisan tombol tidak berubah.
 - Tidak berubah: tombol Skenario Digital (`SD-`), tombol bulat HUD, pilihan jawaban, dan modul tes `/tes` (Bootstrap tanpa unsur game, [34](34_IMPLEMENTASI_MODUL_TES_DAN_SKALA_SIKAP.md)).
 - Diperiksa dengan `tools/qa/stage-check.mjs` di 1366 × 768: setiap tulisan dan medali berada di permukaan tombol, dalam bahasa Indonesia dan Inggris.
+
+**Terpasang 21 November 2026** (pengembang menerima kesepuluh gambar hari itu). Potongan badan tombol diukur pada gambar yang diterima: tombol tergambar dari y 12 sampai 187 (permukaan sampai y 176, bayangan di bawahnya) dan setiap kolom dari x 60 sampai x 1140 sama, jadi potongannya `12 60 12` dan setiap ujung 0,341 × tinggi tombol (60 dari 176). Medali berukuran sekitar 0,6 × tinggi tombol (diukur 0,59 sampai 0,64 di 1366 × 768). Panah berbatang `arrow-right` (Mulai tantangan) dan `arrow-left` ikut memakai medali panah kanan dan kiri. Ikon lain di tombol bertulisan menjadi garis emas antik tanpa kotak.
 
 ## Daftar periksa hasil
 
