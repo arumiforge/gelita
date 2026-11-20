@@ -1219,3 +1219,13 @@ Owner, third request the same day: move the Serpihan Cahaya plate to the top cen
 - **Text on the picture (owner, same day):** the error picture is the page's full-screen background (1920 × 1080, subject on the right), and the text stands straight on it in the calm left part with no box or border; a soft dark wash from the left keeps it readable. The orders `PL-10` to `PL-12` were changed to match.
 - **Checked.** `ErrorPagesTest` (new), screenshots of a story screen and the 404 page on the dev install.
 
+
+## Asset checklist lists the round-2 post photos (20 November 2026, branch `ceklis-foto-pos`)
+
+Open item of `docs/PROGRESS.md` (found 16 November 2026, `31` §14 no. 14): `AssetChecklist` did not list the photo inside each Cari Objek round-2 post (Periksa Unggahan), so a post without one only showed the general placeholder in the game.
+
+- **New group** *Foto unggahan Cari Objek babak 2* (`AssetChecklist::postPhotoGroup()`, after *Gambar tantangan*): one row per `post_scenes` row of an active challenge, ordered by region, challenge and variant, labelled `Cari Objek {ref} variasi {a|b} · {title} ({region})`.
+- **Status:** `missing` when `post_scenes.media_asset_id` is empty (key shown as the slot it would have, `challenge.post.{ref}-{variant}`), when the attached picture has no file, or when it is still a sample (`is_placeholder`); `wrong` when its size differs from the required one (1280 × 720 for `challenge.post.*`); else `ok`. A post that reuses another picture (most use their region's Susun Gambar picture) keeps that key and the note "memakai gambar tantangan lain"; its size rule is that picture's own.
+- **Link:** the attached picture's detail page; without one, the slot's detail page or the upload box with the key filled in (`detailLink()`). Attaching a picture to a post stays the job of the workbook and `gelita:katalog:impor`; the group's help text says so.
+- **No view change:** the checklist view renders any group. No catalogue slot changed, so `gelita-katalog/` was not rebuilt.
+- **Checked.** `AssetChecklistPostPhotoTest` (new: every post has a row; no photo, photo without file, uploaded, wrong size, reused picture), `ImageSlotsTest`, `MediaSlotPagesTest`, `NarrationPagesTest`, `BackgroundMusicTest`, `LanguageFilesTest`. Not checked in a browser.
