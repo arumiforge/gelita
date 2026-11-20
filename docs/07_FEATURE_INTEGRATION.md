@@ -1611,6 +1611,27 @@ php spark gelita:simulasi --mulai=2026-09-07       # hari sekolah pertama (palin
 
 Jalankan di database pengembangan, misalnya sesudah `gelita:reset`. Untuk membuang data simulasi, jalankan ulang `gelita:reset` di database pengembangan.
 
+### Research mode (`FieldSimulator`, owner 20 November 2026)
+
+When the active study has research mode on (`field_mode = 1`) with the `lima_pertemuan` plan, the same command plays research schools one after another through field sessions, with the real services of parts 2, 4, 7 and 8 (`App\Libraries\Simulation\FieldSimulator`, a subclass of `Simulator` that reuses its challenge primitives). The `satu_sesi` plan is refused.
+
+```bash
+php spark gelita:simulasi --sekolah=22,18,16,13,11 --seed=80   # five schools, students per school, one school after another
+php spark gelita:simulasi --sekolah=6 --siswa=300               # 300 students spread over six schools (seeded ±30%)
+```
+
+- **Schools:** `Sekolah Simulasi Kedu N` with the next free research codes `S01`, `S02`, …, in Temanggung, Magelang and Wonosobo in turn; class groups `A`, `B`, … of at most 28 students (`ROMBEL_MAX`), meeting on the same days at different hours.
+- **One school at a time:** P1 to P5 on school days 0, 2, 4, 7 and 9 of the school, make-ups the next school day at 13:00, then a free week before the next school.
+- **Per meeting:** the researcher (the first active `peneliti`, else `ketua`, else `admin`) opens the field session (`FieldSessionService::create`/`createMakeup`); students enter with the token (registration at P1 and its make-up, login plus token afterwards) and answer the sound check; the meeting's regions are played; some press Keluar, the rest are paused when the researcher closes the session.
+- **P1:** L2 seats (`SeatService`, rows of six, so booklets B1–B4 and forms A/B follow `SeatRules`), the L7 consent register (`ConsentService`: parent date, recording and risk-item consents; 2% without a parent date), *Mulai tes awal* (`FieldTestService`), the pre-test part by part and the questionnaire (`InstrumentService`), then the opening story.
+- **P2–P4:** 70 minutes (two school lessons); the meeting's region until eight minutes before closing; about a third of the students are slower (extra minutes per challenge), and a challenge begun with less than 14 minutes left stays open and goes on in a new segment at a later meeting (33 K3).
+- **P5:** leftovers of every region, *Mulai tes akhir*, the post-test, the risk items when consented (T11 asked again, 88% yes), the ending, the attitude scale in Balai Refleksi and feedback.
+- **Students:** absences (4% at P1, 7% later; 80% of the absent come to the make-up), 2% withdraw with data kept (`withdrawn_keep`, typed from L7 before the next meeting, account deactivated) and 1.5% move school (`left`); 6% rapid guessers on some test items; answers are right with a probability from the student's skill, lower on the pre-test and higher on the post-test; devices are school Chromebooks, tablets and laptops (never a phone, the small-screen gate would refuse it).
+- **Time:** field sessions are opened on the real clock (the token check needs them open) and moved to their simulated date and hours once the school is finished; student rows move with `SimClock` as above (now also consent rows, seats and attempt segments); staff steps move with `SimClock::staffAct()`; the test module runs on the simulation clock itself (`SimInstrumentService` overrides `InstrumentService::now()`), so view times and hidden limits are real. A meeting needs its real-clock window on one calendar day: after 23:30 the run waits for midnight.
+- **Duration:** about 4 minutes per 20 students on the cloud session's MariaDB.
+
+Run it on a development database only (`gelita:reset`, `gelita:instrumen:impor`, research mode ticked on `/admin/studi`). Refusals are the same as above (production, no active study, real students in the study).
+
 ---
 
 ## Ringkasan Transaction Boundary
@@ -1674,7 +1695,7 @@ Semua opsi bernilai menerima `--opsi nilai` maupun `--opsi=nilai` (trait `App\Co
 | `gelita:staff:password USERNAME` | sandi sementara staf (FITUR 10a) | nama pengguna kosong/tidak ditemukan |
 | `gelita:retention:run` | `RetentionService::run()` (FITUR 17) | retensi melempar galat |
 | `gelita:reset […]` | reset sebelum penelitian (FITUR 18) | pra-pemeriksaan/konfirmasi gagal atau verifikasi menemukan galat |
-| `gelita:simulasi [--siswa=N] [--seed=N] [--mulai=YYYY-MM-DD]` | siswa simulasi lewat layanan sungguhan (FITUR 19) | production, tanpa studi aktif, studi sudah berisi siswa sungguhan, opsi tidak sah, atau simulasi gagal |
+| `gelita:simulasi [--siswa=N] [--sekolah=N\|N,N,…] [--seed=N] [--mulai=YYYY-MM-DD]` | siswa simulasi lewat layanan sungguhan (FITUR 19); research mode: schools one after another through P1–P5 (`FieldSimulator`) | production, tanpa studi aktif, studi sudah berisi siswa sungguhan, rencana `satu_sesi`, opsi tidak sah, atau simulasi gagal |
 
 Command yang menulis waktu memanggil `db_sync_timezone()` sendiri, karena event `pre_system` hanya terpicu pada request web.
 

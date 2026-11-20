@@ -2,11 +2,13 @@
 
 namespace App\Controllers\Admin;
 
+use App\Libraries\GuideDownloads;
 use App\Libraries\GuideSourceCheck;
 use App\Libraries\StaffAccess;
 use App\Libraries\ValidatorGuideContent as Guide;
 use App\Libraries\ValidatorGuideFacts;
 use CodeIgniter\Exceptions\PageNotFoundException;
+use CodeIgniter\HTTP\ResponseInterface;
 
 /**
  * Validator guide (/admin/panduan-validator): what the expert validators
@@ -20,6 +22,10 @@ use CodeIgniter\Exceptions\PageNotFoundException;
  * current: live facts of this install (ValidatorGuideFacts) and, for
  * signed-in staff only, a note on a section whose research-document
  * sources changed since the guide was last checked (GuideSourceCheck).
+ *
+ * Downloads (owner, 20 November 2026): each panel's instrument (the B.5a
+ * raters their booklet) on the first page and on the panel chapter's page
+ * marked `downloads`, served by download() from GuideDownloads.
  */
 class ValidatorGuideController extends BaseAdminController
 {
@@ -30,10 +36,12 @@ class ValidatorGuideController extends BaseAdminController
         $sections = Guide::sectionsById($chapters);
 
         return view('admin/guide/validator-overview', $reader + self::site() + [
-            'chapters'  => $chapters,
-            'popular'   => array_values(array_filter(array_map(static fn (string $id): ?array => $sections[$id] ?? null, Guide::POPULAR))),
-            'current'   => '',
-            'pageTitle' => lang('Admin.vguideTitle'),
+            'chapters'   => $chapters,
+            'popular'    => array_values(array_filter(array_map(static fn (string $id): ?array => $sections[$id] ?? null, Guide::POPULAR))),
+            'current'    => '',
+            'pageTitle'  => lang('Admin.vguideTitle'),
+            'downloads'  => GuideDownloads::rows(GuideDownloads::forPanels($reader['role'] === '' ? [] : [$reader['role']])),
+            'showPanels' => $reader['role'] === '',
         ]);
     }
 
@@ -50,6 +58,7 @@ class ValidatorGuideController extends BaseAdminController
         $ids     = array_keys($sections);
         $index   = array_search($slug, $ids, true);
         $section = $sections[$slug];
+        $panels  = array_column($chapters, 'panels', 'id')[$section['chapter']] ?? [];
 
         return view('admin/guide/page', $reader + self::site() + [
             'chapters'  => $chapters,
@@ -61,7 +70,16 @@ class ValidatorGuideController extends BaseAdminController
             'terms'     => ! empty($section['glossary']) ? [] : Guide::termsIn($section),
             'facts'     => (new ValidatorGuideFacts())->rows($section['facts'] ?? []),
             'stale'     => $reader['isStaff'] ? array_keys(GuideSourceCheck::forValidatorGuide()->problems($section['sources'] ?? [])) : [],
+            // The files of the chapter's own panels, on a page marked `downloads`
+            'downloads'  => ! empty($section['downloads']) ? GuideDownloads::rows(GuideDownloads::forPanels($panels)) : [],
+            'showPanels' => false,
         ]);
+    }
+
+    /** A file the validator guide offers (GuideDownloads); anything else is not found. */
+    public function download(string $key): ResponseInterface
+    {
+        return GuideDownloads::respond(GuideDownloads::VALIDATOR, $key, $this->request, $this->response);
     }
 
     /**

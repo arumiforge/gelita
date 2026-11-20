@@ -63,10 +63,12 @@ final class SimulationTest extends CIUnitTestCase
         $this->assertNull(Simulation::refusal('development'));
         $this->assertStringContainsString('production', (string) Simulation::refusal('production'));
 
-        // Field mode on: the simulator does not know meeting plans yet (28 §19.2)
-        $this->conn->table('research_studies')->update(['field_mode' => 1]);
+        // Field mode on: the five-meeting plan is simulated (FieldSimulator), the one-session plan is not
+        $this->conn->table('research_studies')->update(['field_mode' => 1, 'meeting_plan' => 'lima_pertemuan']);
+        $this->assertNull(Simulation::refusal('development'));
+        $this->conn->table('research_studies')->update(['meeting_plan' => 'satu_sesi']);
         $this->assertStringContainsString('mode penelitian', (string) Simulation::refusal('development'));
-        $this->conn->table('research_studies')->update(['field_mode' => 0]);
+        $this->conn->table('research_studies')->update(['field_mode' => 0, 'meeting_plan' => 'lima_pertemuan']);
 
         // Siswa sungguhan di studi aktif = pengambilan data berjalan
         $this->conn->table('participants')->insert(['participant_code' => 'GLT-000009', 'username' => 'jaka5', 'password_hash' => 'x']);

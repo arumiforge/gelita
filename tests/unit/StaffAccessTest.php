@@ -133,8 +133,8 @@ final class StaffAccessTest extends CIUnitTestCase
                     continue;
                 }
 
-                // The guides and their topic pages are public (owner, 16 and 17 Nov 2026)
-                if (in_array($path, ['admin/login', 'admin/logout', 'admin/panduan-staf', 'admin/panduan-staf/([^/]+)', 'admin/panduan-validator', 'admin/panduan-validator/([^/]+)', 'admin/panduan-gelita', 'admin/panduan-gelita/([^/]+)'], true)) {
+                // The guides, their topic pages and their document downloads are public (owner, 16, 17 and 20 Nov 2026)
+                if (in_array($path, ['admin/login', 'admin/logout', 'admin/panduan-staf', 'admin/panduan-staf/([^/]+)', 'admin/panduan-staf/unduh/([^/]+)', 'admin/panduan-validator', 'admin/panduan-validator/([^/]+)', 'admin/panduan-validator/unduh/([^/]+)', 'admin/panduan-gelita', 'admin/panduan-gelita/([^/]+)'], true)) {
                     continue;
                 }
 

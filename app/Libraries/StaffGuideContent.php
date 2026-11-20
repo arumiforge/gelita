@@ -31,7 +31,8 @@ namespace App\Libraries;
  * Section shape (every key but id/title optional):
  *   id, title, lead, steps (list of string | [text, link]), list (bullets),
  *   table ([head[], rows[][]]), note (info), warn (warning), glossary (true:
- *   the glossary entries go here)
+ *   the glossary entries go here), downloads (true: the files this guide
+ *   offers, GuideDownloads; owner, 20 November 2026)
  * A link is [href, label, capability]; it shows as a link only when the
  * reader holds the capability.
  */
@@ -41,7 +42,7 @@ final class StaffGuideContent extends GuideContent
     public const BASE = 'admin/panduan-staf';
 
     /** Sections offered as cards on the guide's first page. */
-    public const POPULAR = ['ringkas', 'token', 'lupa-sandi', 'unggah-lembar', 'unduh', 'larangan-daftar'];
+    public const POPULAR = ['ringkas', 'token', 'lupa-sandi', 'unggah-lembar', 'dokumen-cetak', 'unduh', 'larangan-daftar'];
 
     /**
      * Glossary: key => term, def (one or two sentences), example, more (the
@@ -444,9 +445,21 @@ final class StaffGuideContent extends GuideContent
                     ],
                     'list' => [
                         'Cetak per pertemuan: P1 = L0, L1, L2, L3, L6, L7; P2–P4 = L0 sampai L5; P5 = L0, L1, L2, L3, L4, L6, L7; susulan = L0, L1, L2, L3 (dan L6 bila menyusul tes).',
-                        'Templat dari halaman sesi memuat lembar yang diketik. Lembar L0, L7, dan L8 kosong disiapkan tim peneliti.',
+                        'Templat dari halaman sesi memuat lembar yang diketik. Lembar kosong L0–L8 untuk dicetak ada di [Lembar dan dokumen untuk dicetak](#dokumen-cetak).',
                         'Salah tulis dicoret satu garis dan diparaf; jangan memakai cairan koreksi. Isian kosong ditulis "—".',
                         'L7 disimpan di lemari terkunci (kertas) atau terenkripsi (digital), hanya untuk peneliti utama dan ketua.',
+                    ],
+                ],
+                [
+                    'id'        => 'dokumen-cetak',
+                    'title'     => 'Lembar dan dokumen untuk dicetak',
+                    'lead'      => 'Lembar lapangan kosong dan dokumen penelitian yang dipakai di lapangan, dalam bentuk PDF siap cetak di kertas A4. Semuanya bisa diunduh tanpa masuk panel.',
+                    'downloads' => true,
+                    'warn'      => 'Kedua bagian tes awal–akhir memuat semua soal beserta kunci jawabannya. Simpan hasil cetaknya, jangan dibawa ke kelas, dan jangan diperlihatkan kepada siswa atau guru.',
+                    'list'      => [
+                        'Lembar kosong: cetak halaman lembar yang dipakai pertemuan itu (lihat [Lembar L0–L8](#lembar)). Halaman pertama berkasnya memuat daftar lembar per pertemuan.',
+                        'Lembar kosong boleh difotokopi. Kolomnya sama dengan templat dari halaman sesi, jadi isiannya bisa langsung diketik ke templat itu.',
+                        'Setiap dokumen menyebut versinya di kaki halaman. Bila ragu versi mana yang berlaku, tanyakan ke ketua peneliti.',
                     ],
                 ],
                 [
@@ -522,6 +535,21 @@ final class StaffGuideContent extends GuideContent
                         'Identitas siswa selalu berkode. Jawaban pertanyaan internet hanya tampil sebagai jumlah gabungan.',
                         'Berkas tersimpan 7 hari dan hanya bisa diunduh oleh pembuatnya. Setiap unduhan tercatat.',
                         'Simpan salinan di perangkat tim seperlunya saja; salinan harus dihapus saat ada permintaan hapus.',
+                        'Ingin melihat bentuk unduhannya sebelum ada data asli? Pakai [Contoh data simulasi 300 siswa](#contoh-data).',
+                    ],
+                ],
+                [
+                    // Owner, 20 November 2026: a sample download for the head researcher (GuideDownloads group `contoh`)
+                    'id'        => 'contoh-data',
+                    'title'     => 'Contoh data simulasi 300 siswa',
+                    'lead'      => 'Contoh hasil Unduh data dengan 300 siswa simulasi di enam sekolah, lima pertemuan per rombel. Bentuknya sama dengan unduhan ketua peneliti saat pengambilan data, jadi tim bisa menyiapkan dan mencoba analisis sebelum data asli ada.',
+                    'downloads' => 'contoh',
+                    'warn'      => 'Ini bukan data penelitian. Semua siswa, sekolah, jawaban, dan waktunya dibuat program. Lembar Kamus Data diawali baris **PERHATIAN** yang menyebutnya. Jangan digabung dengan data asli.',
+                    'list'      => [
+                        'Enam sekolah berkode S01–S06 berjalan bergantian: satu sekolah menyelesaikan P1–P5 dulu, baru sekolah berikutnya. Setiap sekolah punya dua atau tiga rombel.',
+                        'Ada siswa yang tidak hadir lalu ikut sesi susulan, siswa yang mundur atau pindah sekolah, tantangan yang belum selesai lalu dilanjutkan di pertemuan berikutnya, tes awal–akhir, angket, butir risiko, skala sikap, dan [[data turunan|data-turunan]].',
+                        'Berkas Excel berisi semua lembar bawaan unduhan, tanpa Event Mentah. Berkas ZIP berisi lembar yang sama sebagai CSV ditambah Event Mentah, siap untuk SPSS, R, atau Python.',
+                        'Kode peserta dan kode sesi mengikuti aturan biasa, misalnya `S01-A07` dan `S01-A-P2`. Tanggalnya Juli sampai Oktober 2026.',
                     ],
                 ],
                 [
