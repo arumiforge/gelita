@@ -521,7 +521,7 @@ Dengan aturan ini bank soal kelas 5 (revisi Oktober 2026) berisi 147 soal aktif 
 
 ### `MediaAssetModel`
 
-Satu baris = satu slot berkas (gambar, audio, video, frame karakter). Slot dibuat `MediaAssetSeeder`
+Satu baris = satu slot berkas (gambar, audio, video, gambar pose tokoh). Slot dibuat `MediaAssetSeeder`
 dan impor; berkasnya diunggah lewat panel (menu Gambar & mockup, `/admin/media`) atau dipasang command.
 
 - allowedFields: `asset_key`, `asset_type`, `storage_path`, `mime_type`, `file_size`, `sha256`,

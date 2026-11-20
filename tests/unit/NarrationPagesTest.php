@@ -359,12 +359,15 @@ final class NarrationPagesTest extends CIUnitTestCase
         $result->assertOK();
         $html = html_entity_decode((string) $result->getBody(), ENT_QUOTES | ENT_HTML5);
 
-        foreach (['ui.logo-hero', 'ui.lang.en', 'bg.loading', 'map.kedu', 'char.kedu.worried.1…24', 'Peta wilayah Magelang', 'map.region.magelang', 'Rekaman narasi EN', 'public/assets/audio/music/map.mp3', 'Efek jawaban benar'] as $text) {
+        foreach (['ui.logo-hero', 'ui.lang.en', 'bg.loading', 'map.kedu', 'char.kedu.worried.1', 'Peta wilayah Magelang', 'map.region.magelang', 'Rekaman narasi EN', 'public/assets/audio/music/map.mp3', 'Efek jawaban benar'] as $text) {
             $this->assertStringContainsString($text, $html);
         }
 
         $this->assertStringContainsString('1600 × 600 px', $html);
         $this->assertStringContainsString('700 × 900 px', $html);
+        // One still picture per pose: no frame count, no "not moving yet"
+        $this->assertStringContainsString('Gambar pose tokoh', $html);
+        $this->assertStringNotContainsString('gambar gerak', mb_strtolower($html));
         $this->assertStringContainsString('1400 × 900 px', $html, 'peta wilayah');
         $this->assertStringContainsString('0/112 disetujui, 0 menunggu persetujuan, 112 belum ada', $html);
         $this->assertStringContainsString('admin/media?asset_key=ui.logo-hero', $html);

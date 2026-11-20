@@ -103,7 +103,7 @@ class MapController extends BaseGameController
     }
 
     /**
-     * Aset yang dimuat tirai peta: gambar peta dan latarnya, frame tokoh
+     * Aset yang dimuat tirai peta: gambar peta dan latarnya, gambar pose tokoh
      * narasi peta (pose, cadangan idle), latar wilayah, dan audio narasi
      * peta bahasa aktif. Yang belum diunggah/disetujui tidak ikut.
      *

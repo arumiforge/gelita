@@ -145,8 +145,9 @@ final class ImageSlotsTest extends CIUnitTestCase
         $this->assertSame([1280, 720], (new App\Libraries\MediaStore())->requiredSize('challenge.post.tmg-4-b'));
         $this->assertSame('Gambar Susun Gambar Magelang', ImageSlots::describe('challenge.item.mgl-1-02')['label']);
 
-        $frame = ImageSlots::describe('char.kedu.smile.2');
-        $this->assertSame('Mbah Kedu · pose tersenyum · gambar 2', $frame['label']);
+        // One still picture per pose: slot `.1` only, no frames 2–24
+        $this->assertSame('Mbah Kedu · pose tersenyum', ImageSlots::describe('char.kedu.smile.1')['label']);
+        $this->assertNull(ImageSlots::describe('char.kedu.smile.2'));
         $this->assertSame('character', ImageSlots::groupOf('char.jaka.idle.1'));
 
         $this->assertSame('other', ImageSlots::groupOf('challenge-lama.topi'));
@@ -162,7 +163,7 @@ final class ImageSlotsTest extends CIUnitTestCase
         $this->assertStringContainsString('syal merah', $jaka['content']);
         $this->assertStringContainsString('tanpa syal merah', $kedu['content']);
         $this->assertStringContainsString('tongkat', $kedu['content']);
-        $this->assertStringContainsString('24 gambar', $jaka['tips']);
+        $this->assertStringContainsString('Satu gambar diam per pose', $jaka['tips']);
 
         foreach (['char.jaka.idle.1', 'char.kedu.idle.1', 'ui.lang.id', 'ui.lang.en', 'avatar.1', 'map.kedu', 'map.region.temanggung'] as $key) {
             $text = implode(' ', array_filter([ImageSlots::describe($key)['content'], ImageSlots::describe($key)['tips']]));

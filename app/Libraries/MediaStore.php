@@ -630,10 +630,10 @@ class MediaStore
         $media    = model(MediaAssetModel::class);
         $absolute = FCPATH . $storagePath;
 
-        // Character frames stay sprite_frame when replaced, and frames 2+ (no
-        // row until their first upload) start as one
+        // Character pose pictures keep the stored type `sprite_frame` (one
+        // still picture per pose since the frame loop was removed)
         if ($type === 'image' && (($existing !== null && $existing['asset_type'] === 'sprite_frame')
-            || ($existing === null && preg_match('/^char\.(jaka|kedu)\.[a-z]+\.\d+$/', $assetKey) === 1))) {
+            || ($existing === null && preg_match('/^char\.(jaka|kedu)\.[a-z]+\.1$/', $assetKey) === 1))) {
             $type = 'sprite_frame';
         }
 

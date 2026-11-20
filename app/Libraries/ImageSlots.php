@@ -519,10 +519,11 @@ final class ImageSlots
         ],
 
         // -------------------------------------------------------- character
-        'char.jaka.*' => [
+        // A pose is one still picture, slot `.1` (owner: still pictures only, no frame loop)
+        'char.jaka.*.1' => [
             'group'       => 'character',
-            'label'       => 'Jaka · pose {pose} · gambar {frame}',
-            'content'     => 'Jaka sesuai lembar tokoh Katalog Aset (reference.01): anak laki-laki ± 11 tahun bergaya 3D, rambut cokelat berjambul, kemeja krem, syal merah, celana cokelat, kain batik di pinggang, sandal, ransel kulit, membawa lentera. Seluruh badan, pose {pose}, menghadap ke kanan layar. Latar transparan, kaki di garis bawah yang sama untuk semua gambar.',
+            'label'       => 'Jaka · pose {pose}',
+            'content'     => 'Jaka sesuai lembar tokoh Katalog Aset (reference.01): anak laki-laki ± 11 tahun bergaya 3D, rambut cokelat berjambul, kemeja krem, syal merah, celana cokelat, kain batik di pinggang, sandal, ransel kulit, membawa lentera. Seluruh badan, pose {pose}, menghadap ke kanan layar. Latar transparan, kaki di garis bawah yang sama untuk semua pose.',
             'screens'     => [
                 ['Baris cerita yang memakai pose ini: cerita pembuka, dialog dan wilayah tuntas, penutup (rinciannya di halaman detail)', '/intro'],
             ],
@@ -530,7 +531,7 @@ final class ImageSlots
             'transparent' => true,
             'fallback'    => 'Pose diam (idle), lalu inisial nama tokoh',
             'priority'    => 'wajib',
-            'tips'        => 'Sampai 24 gambar per pose, diputar berurutan dan berulang terus. Gambar 1 wajib dan harus terbaca sendiri, karena hanya gambar itu yang tampil bila gerak dikurangi. Semua gambar pose dapat diunggah sekaligus di halaman ini.',
+            'tips'        => 'Satu gambar diam per pose, tanpa gerakan. Ukuran tokoh dan garis kaki sama di semua pose, supaya tokoh tidak melompat saat posenya berganti.',
         ],
         'ui.jaka-avatar' => [
             'group'       => 'character',
@@ -541,7 +542,7 @@ final class ImageSlots
             'transparent' => true,
             'fallback'    => 'Huruf pertama nama Jaka dalam lingkaran emas',
             'priority'    => 'opsional',
-            'tips'        => 'Tampil bulat 120 dp di pita cerita dan 232 dp di layar Kenali, jadi bingkainya sudah termasuk gambar dan wajah harus terbaca kecil. Bukan gambar gerak: kedua layar sengaja tidak memakai gambar pose Jaka.',
+            'tips'        => 'Tampil bulat 120 dp di pita cerita dan 232 dp di layar Kenali, jadi bingkainya sudah termasuk gambar dan wajah harus terbaca kecil. Bukan gambar pose: kedua layar sengaja tidak memakai gambar pose Jaka.',
         ],
         'ui.kedu-avatar' => [
             'group'       => 'character',
@@ -552,7 +553,7 @@ final class ImageSlots
             'transparent' => true,
             'fallback'    => 'Huruf pertama nama Mbah Kedu dalam lingkaran emas',
             'priority'    => 'opsional',
-            'tips'        => 'Tampil bulat 232 dp, tepat di atas ujung kiri kotak teks, jadi bingkainya sudah termasuk gambar. Bukan gambar gerak: layar Kenali sengaja tidak memakai gambar pose Mbah Kedu.',
+            'tips'        => 'Tampil bulat 232 dp, tepat di atas ujung kiri kotak teks, jadi bingkainya sudah termasuk gambar. Bukan gambar pose: layar Kenali sengaja tidak memakai gambar pose Mbah Kedu.',
         ],
         // Expressions of the round avatars (owner, 16 November 2026): the cinematic
         // story slides (opening story, ending) show the speaker's avatar in the pose of
@@ -579,10 +580,10 @@ final class ImageSlots
             'priority'    => 'opsional',
             'tips'        => 'Tampil bulat 196 dp di ujung kiri teks cerita, dengan papan nama di bagian bawah cincin. Bingkainya harus sama persis dengan avatar Mbah Kedu, supaya hanya wajahnya yang berganti.',
         ],
-        'char.kedu.*' => [
+        'char.kedu.*.1' => [
             'group'       => 'character',
-            'label'       => 'Mbah Kedu · pose {pose} · gambar {frame}',
-            'content'     => 'Mbah Kedu sesuai Katalog Aset (reference.02, gambar gerak 12 Oktober 2026): kakek penjaga lentera bergaya 3D, ikat kepala batik cokelat, kemeja krem berkerah tegak dengan rompi batik cokelat, celana cokelat longgar, sandal, tongkat kayu, tanpa syal merah. Seluruh badan, pose {pose}, menghadap ke kanan layar (permainan mencerminkannya saat berdiri di kanan). Latar transparan, kaki di garis bawah yang sama untuk semua gambar.',
+            'label'       => 'Mbah Kedu · pose {pose}',
+            'content'     => 'Mbah Kedu sesuai Katalog Aset (reference.02, gambar pose 12 Oktober 2026): kakek penjaga lentera bergaya 3D, ikat kepala batik cokelat, kemeja krem berkerah tegak dengan rompi batik cokelat, celana cokelat longgar, sandal, tongkat kayu, tanpa syal merah. Seluruh badan, pose {pose}, menghadap ke kanan layar (permainan mencerminkannya saat berdiri di kanan). Latar transparan, kaki di garis bawah yang sama untuk semua pose.',
             'screens'     => [
                 ['Baris cerita yang memakai pose ini: cerita pembuka, dialog dan wilayah tuntas, penutup (rinciannya di halaman detail)', '/intro'],
             ],
@@ -590,7 +591,7 @@ final class ImageSlots
             'transparent' => true,
             'fallback'    => 'Pose diam (idle), lalu inisial nama tokoh',
             'priority'    => 'wajib',
-            'tips'        => 'Sampai 24 gambar per pose, diputar berurutan dan berulang terus. Jangan ada tulisan atau lambang asimetris di pakaian, karena gambar dicerminkan. Semua gambar pose dapat diunggah sekaligus di halaman ini.',
+            'tips'        => 'Satu gambar diam per pose, tanpa gerakan. Jangan ada tulisan atau lambang asimetris di pakaian, karena gambar dicerminkan.',
         ],
 
         // -------------------------------------------------------- challenge
@@ -869,7 +870,6 @@ final class ImageSlots
             '{Wilayah}' => $region === null ? '' : ucfirst($region),
             '{n}'       => '1',
             '{pose}'    => '',
-            '{frame}'   => '',
         ];
 
         if (preg_match('/^challenge\.(?:item\.|post\.)?[a-z]+-(\d+)/', $assetKey, $m)) {
@@ -880,9 +880,8 @@ final class ImageSlots
             $vars['{n}'] = $m[1];
         }
 
-        if (preg_match('/^char\.(?:jaka|kedu)\.([a-z]+)\.(\d+)$/', $assetKey, $m)) {
-            $vars['{pose}']  = self::POSES[$m[1]] ?? $m[1];
-            $vars['{frame}'] = $m[2];
+        if (preg_match('/^char\.(?:jaka|kedu)\.([a-z]+)\.1$/', $assetKey, $m)) {
+            $vars['{pose}'] = self::POSES[$m[1]] ?? $m[1];
         }
 
         foreach ($ids as $name => $id) {
@@ -936,5 +935,27 @@ final class ImageSlots
     public static function poseLabel(string $pose): string
     {
         return self::POSES[$pose] ?? $pose;
+    }
+
+    /**
+     * Slot key of every character pose picture, keyed by `{jaka|kedu}.{pose}`
+     * (Config\Gelita::$characterPoses). A pose is one still picture,
+     * `char.{jaka|kedu}.{pose}.1` (owner: still pictures only, no frame loop).
+     *
+     * @return array<string, string> e.g. `kedu.smile` => `char.kedu.smile.1`
+     */
+    public static function poseSlots(): array
+    {
+        $slots = [];
+
+        foreach (config('Gelita')->characterPoses as $character => $poses) {
+            $slug = $character === 'mbah_kedu' ? 'kedu' : $character;
+
+            foreach ($poses as $pose) {
+                $slots["{$slug}.{$pose}"] = "char.{$slug}.{$pose}.1";
+            }
+        }
+
+        return $slots;
     }
 }

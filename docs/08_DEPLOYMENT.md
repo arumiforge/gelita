@@ -758,7 +758,7 @@ Sesudah itu aplikasi siap untuk **uji coba**. Ke-66 gambar tantangan masih gamba
 
 ### Installing the Katalog Aset images
 
-*(New section, English.)* The team catalogue (`ai-studio/game-images/` since 15 November 2026, before that `gelita-katalog/`; in the repo, not under `public/`) holds the current art: logo, MULAI/START buttons, app icons, backgrounds, story slide backgrounds, maps, badges, pins, lanterns, avatars, character frames, the 66 challenge images, and Pustaka illustrations. One command installs all of it into the game's image slots:
+*(New section, English.)* The team catalogue (`ai-studio/game-images/` since 15 November 2026, before that `gelita-katalog/`; in the repo, not under `public/`) holds the current art: logo, MULAI/START buttons, app icons, backgrounds, story slide backgrounds, maps, badges, pins, lanterns, avatars, character poses, the 66 challenge images, and Pustaka illustrations. One command installs all of it into the game's image slots:
 
 ```bash
 sudo -u www-data php spark gelita:katalog:impor --dry-run   # Jalur L (Jalur W: without sudo -u www-data); lists what would be installed
@@ -768,10 +768,10 @@ sudo -u www-data php spark gelita:katalog:impor             # install
 - Run it after the installation above (the story slides, Pustaka pages, and challenge slots it links to must exist). It is safe to run again: images already installed from the catalogue and images an admin uploaded are skipped. `--timpa` replaces them too; `--sumber=FOLDER` reads another copy of the catalogue.
 - Every image is re-encoded as lossy WebP (about 250 KB per background instead of the catalogue's 2 MB lossless files) and stored in `public/assets/uploads/` under its official name, so it is in the backup and can be replaced in **Gambar & mockup** at any time. App icons are stored as PNG. Installed rows carry the credit "Katalog Aset GELITA (gambar sementara)", which disappears once an admin uploads a new file.
 - Story slide backgrounds are linked to their slide, Pustaka illustrations replace the Commons links (re-importing `docs/pustaka/gelita-pustaka.xlsx` restores the links), video covers already downloaded by `gelita:library:thumbnails` are kept, and each region's four challenge buttons are moved onto the clearings of the catalogue's region map.
-- The catalogue has 24 frames per pose for all ten poses (240, red-scarf Jaka and Mbah Kedu, added 12 October 2026). The Cari Objek objects sit on the tables and shelves of the catalogue scenes (question bank layout of 12 October 2026). On a server whose bank still has the old positions, the command moves every object that is still at its old position, as long as the installed scene is the catalogue one; an object an admin placed elsewhere stays (`--timpa` moves it too). Re-importing the bank (`gelita:bank:import`) gives the same positions, but resets every admin placement to the bank.
-- **After a new catalogue edition** (pull the repo first), run the command again. An image installed from an earlier edition is reinstalled when its catalogue file changed and skipped when it is the same; admin uploads stay. The 12 October 2026 edition replaces the 30 old frames and adds 210 (about 15 MB in the game).
+- The catalogue has one still picture for each of the ten character poses (red-scarf Jaka and Mbah Kedu; the 24 frames per pose of 12 October 2026 were cut to frame 1 on 20 November 2026, owner: still pictures only). Every run removes the old frames 2 to 24 of a pose from the server (rows and uploaded files; *dihapus* in the report, *akan dihapus* in a dry run), whoever installed them. The Cari Objek objects sit on the tables and shelves of the catalogue scenes (question bank layout of 12 October 2026). On a server whose bank still has the old positions, the command moves every object that is still at its old position, as long as the installed scene is the catalogue one; an object an admin placed elsewhere stays (`--timpa` moves it too). Re-importing the bank (`gelita:bank:import`) gives the same positions, but resets every admin placement to the bank.
+- **After a new catalogue edition** (pull the repo first), run the command again. An image installed from an earlier edition is reinstalled when its catalogue file changed and skipped when it is the same; admin uploads stay.
 - The two round language icons of the HUD switch come from the catalogue references `reference.20` (ID) and `reference.19` (EN) and are stored as `ui.lang.id`/`ui.lang.en`. Until both exist the switch shows the text ID / EN.
-- **Old art kept as an admin upload** (e.g. the lurik Jaka frames or older language icons uploaded in the panel before the catalogue existed) is never replaced by a plain run. The report says "sudah ada gambar unggahan admin" for such a slot, and a pose whose frames now come from both sources is listed as **perlu dicek**, because its loop would switch between two drawings. Replace only those slots with `--kunci` (comma-separated, `*` allowed), dry run first:
+- **Old art kept as an admin upload** (e.g. an old lurik Jaka pose or an older language icon uploaded in the panel before the catalogue existed) is never replaced by a plain run. The report says "sudah ada gambar unggahan admin" for such a slot. Replace only those slots with `--kunci` (comma-separated, `*` allowed), dry run first:
 
   ```bash
   sudo -u www-data php spark gelita:katalog:impor --timpa --kunci="ui.lang.*,char.jaka.*" --dry-run
@@ -1165,7 +1165,7 @@ Aset gambar dan video mendominasi ukuran instalasi. Anjuran:
 
 * Latar dan adegan: WebP (atau JPEG) kualitas 80, maksimum 1920×1080. Since 11 October 2026 WebP is the default raster format (owner decision); `app.*` icons stay PNG.
 * Objek dan benda: WebP atau PNG dengan transparansi, maksimum 400×400.
-* Frame tokoh: sampai 24 gambar per pose (diputar berulang), WebP ± 60 KB per gambar.
+* Pose tokoh: satu gambar diam per pose (no frame loop since 20 November 2026), WebP ± 60 KB.
 * Video Pustaka: MP4 H.264, 720p, bitrate ≤ 1.5 Mbps, durasi ≤ 60 detik.
 * Audio narasi: MP3 96–128 kbps mono.
 

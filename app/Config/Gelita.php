@@ -40,14 +40,15 @@ class Gelita extends BaseConfig
     /** Locale yang didukung konten permainan */
     public array $locales = ['id', 'en'];
 
-    /** Karakter yang punya suara & sprite */
+    /** Characters with a voice and pose pictures */
     public array $characters = ['jaka', 'mbah_kedu'];
 
     /**
      * Pose sah per tokoh untuk `dialogues.pose` (docs/naskah-cerita.md,
      * "Kamus pose dan efek"). Narator tidak tampil sebagai gambar, jadi tanpa
-     * pose. Gambar tiap pose ada di slot `char.{jaka|kedu}.{pose}.{n}`
-     * ($characterAnimations); bila belum diunggah, tokoh tampil dengan `idle`.
+     * pose. Each pose is one still picture in slot `char.{jaka|kedu}.{pose}.1`
+     * (owner: still pictures only, no frame loop); when it is not uploaded the
+     * character shows its `idle` picture.
      */
     public array $characterPoses = [
         'narator'   => [],
@@ -151,30 +152,6 @@ class Gelita extends BaseConfig
      * (revision 10, part 1, 27 §11.1). Student sessions are not affected.
      */
     public int $staffIdleSeconds = 7200;
-
-    /**
-     * Character animation per pose: up to `frames` images
-     * `char.{jaka|kedu}.{pose}.{1..frames}` in media_assets, always looping
-     * (owner decision 11 October 2026: 24 frames per pose, repeated).
-     * `seconds` is the length of one loop. The speed follows the number of
-     * frames actually uploaded (character_fps()): 24 frames in 2 s play at
-     * 12 per second, 3 interim frames in 3 s at 1 per second. Frames that are
-     * not uploaded are skipped.
-     *
-     * @var array<string, array{frames: int, seconds: float, loop: bool}>
-     */
-    public array $characterAnimations = [
-        'jaka.idle'       => ['frames' => 24, 'seconds' => 3.0, 'loop' => true],
-        'jaka.bow'        => ['frames' => 24, 'seconds' => 2.5, 'loop' => true],
-        'jaka.happy'      => ['frames' => 24, 'seconds' => 2.0, 'loop' => true],
-        'jaka.sad'        => ['frames' => 24, 'seconds' => 3.0, 'loop' => true],
-        'jaka.afraid'     => ['frames' => 24, 'seconds' => 2.0, 'loop' => true],
-        'jaka.determined' => ['frames' => 24, 'seconds' => 2.0, 'loop' => true],
-        'kedu.idle'       => ['frames' => 24, 'seconds' => 3.5, 'loop' => true],
-        'kedu.smile'      => ['frames' => 24, 'seconds' => 3.0, 'loop' => true],
-        'kedu.worried'    => ['frames' => 24, 'seconds' => 3.0, 'loop' => true],
-        'kedu.weak'       => ['frames' => 24, 'seconds' => 3.5, 'loop' => true],
-    ];
 
     /**
      * Required file size per asset_key pattern, enforced on upload

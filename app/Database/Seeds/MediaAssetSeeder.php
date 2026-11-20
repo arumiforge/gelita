@@ -9,9 +9,8 @@ use RecursiveIteratorIterator;
 /**
  * Mendaftarkan aset bawaan di public/assets/{ui,char,bg,map,challenge,library,reward,audio}.
  *
- * 1. Slot wajib (SLOTS + level + frame 1 tiap pose tokoh) selalu didaftarkan dengan asset_key resmi.
- *    Frames 2–24 of a pose get their row when uploaded (panel, gelita:katalog:impor)
- *    or when their file is found here; 240 empty rows would only clutter the panel.
+ * 1. Slot wajib (SLOTS + level + the one still picture of each character pose,
+ *    `char.{jaka|kedu}.{pose}.1`) selalu didaftarkan dengan asset_key resmi.
  *    Bila berkasnya belum ada → is_active = 0 sehingga media_src() memakai placeholder.
  *    Ekstensi slot bebas (png/jpg/webp/…): berkas dicocokkan berdasarkan path tanpa ekstensi.
  * 2. Berkas lain hasil pindai didaftarkan dengan asset_key dari path:
@@ -73,18 +72,10 @@ class MediaAssetSeeder extends GelitaSeeder
         ['app.icon-maskable', 'assets/ui/app-icon-maskable', 'png'],
     ];
 
-    /** Used when Config\Gelita is missing; same keys as $characterAnimations */
-    private const DEFAULT_ANIMATIONS = [
-        'jaka.idle'       => ['frames' => 24],
-        'jaka.bow'        => ['frames' => 24],
-        'jaka.happy'      => ['frames' => 24],
-        'jaka.sad'        => ['frames' => 24],
-        'jaka.afraid'     => ['frames' => 24],
-        'jaka.determined' => ['frames' => 24],
-        'kedu.idle'       => ['frames' => 24],
-        'kedu.smile'      => ['frames' => 24],
-        'kedu.worried'    => ['frames' => 24],
-        'kedu.weak'       => ['frames' => 24],
+    /** Used when Config\Gelita is missing; same poses as Config\Gelita::$characterPoses */
+    private const DEFAULT_POSES = [
+        'jaka'      => ['idle', 'happy', 'bow', 'sad', 'afraid', 'determined'],
+        'mbah_kedu' => ['idle', 'smile', 'worried', 'weak'],
     ];
 
     /** @var array<string,string> asset_key => storage_path yang sudah dipakai run ini */
@@ -113,14 +104,6 @@ class MediaAssetSeeder extends GelitaSeeder
             }
         }
 
-        // Later character frames keep their official key when the file exists
-        foreach ($this->laterFrames() as [$key, $basePath]) {
-            if (($found = $files[strtolower($basePath)] ?? null) !== null) {
-                unset($files[strtolower($basePath)]);
-                $this->register($key, $found, true);
-            }
-        }
-
         foreach ($files as $path) {
             $this->register($this->keyFromPath($path), $path, true);
         }
@@ -129,27 +112,6 @@ class MediaAssetSeeder extends GelitaSeeder
         $this->linkLevels();
 
         $this->info(sprintf('media_assets: %d terdaftar, %d slot belum ada berkasnya (is_active = 0).', $this->registered, $this->missing));
-    }
-
-    /**
-     * Frames 2..N of every pose as [asset_key, path without extension].
-     *
-     * @return list<array{0:string,1:string}>
-     */
-    private function laterFrames(): array
-    {
-        $animations = class_exists(\Config\Gelita::class) ? config('Gelita')->characterAnimations : self::DEFAULT_ANIMATIONS;
-        $frames     = [];
-
-        foreach ($animations as $name => $animation) {
-            $slug = str_replace('.', '-', $name);
-
-            for ($i = 2; $i <= (int) $animation['frames']; $i++) {
-                $frames[] = ["char.{$name}.{$i}", "assets/char/{$slug}-{$i}"];
-            }
-        }
-
-        return $frames;
     }
 
     /** @return list<array{0:string,1:string,2:string}> */
@@ -176,13 +138,15 @@ class MediaAssetSeeder extends GelitaSeeder
             $slots[] = ["avatar.{$i}", "assets/ui/avatar-{$i}", 'png'];
         }
 
-        $animations = class_exists(\Config\Gelita::class) ? config('Gelita')->characterAnimations : self::DEFAULT_ANIMATIONS;
+        $poses = class_exists(\Config\Gelita::class) ? config('Gelita')->characterPoses : self::DEFAULT_POSES;
 
-        // Frame 1 of every pose is the slot; later frames are registered with
-        // their key when a file assets/char/{pose}-{n}.* exists (see run()).
-        foreach (array_keys($animations) as $name) {
-            $slug    = str_replace('.', '-', $name);
-            $slots[] = ["char.{$name}.1", "assets/char/{$slug}-1", 'png'];
+        // One still picture per pose (no frame loop): slot `char.{jaka|kedu}.{pose}.1`
+        foreach ($poses as $character => $list) {
+            $who = $character === 'mbah_kedu' ? 'kedu' : $character;
+
+            foreach ($list as $pose) {
+                $slots[] = ["char.{$who}.{$pose}.1", "assets/char/{$who}-{$pose}-1", 'png'];
+            }
         }
 
         return $slots;

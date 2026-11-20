@@ -23,7 +23,7 @@ use RuntimeException;
  *   transparent slots) before storing, so it fits the size budget of the
  *   loading curtain (a background about 250 KB instead of 2 MB).
  * - Slot keys the game reads by name (logo, buttons, backgrounds, maps,
- *   badges, pins, lanterns, avatars, character frames, challenge images)
+ *   badges, pins, lanterns, avatars, character poses, challenge images)
  *   are stored under the same key.
  * - The two flag icons `icon.language-id` / `icon.language-en` become the
  *   language switch icons `ui.lang.id`/`.en` (ICON_SLOTS), and the Mbah Kedu
@@ -72,16 +72,19 @@ use RuntimeException;
  * (VideoThumbnail, 18 November 2026). Rows installed by this class carry CREDIT, so an admin can
  * find what is still interim art; a later run reinstalls such a row only
  * when its catalogue file changed (same re-encoded sha256 → skipped), so a
- * new catalogue edition (e.g. the 24-frame poses of 12 October 2026) reaches
+ * new catalogue edition (e.g. the red-scarf poses of 12 October 2026) reaches
  * a server that imported an older one.
  *
  * `$only` limits a run to some slots, so `$overwrite` can replace e.g. the
- * old lurik frames of one character without touching other admin uploads.
- * A pose left with frames from two sources (a kept upload among catalogue
- * frames) is reported as a warning, since its loop would switch drawings.
+ * old lurik poses of one character without touching other admin uploads.
+ *
+ * A character pose is one still picture, `char.{jaka|kedu}.{pose}.1` (owner,
+ * 15 November 2026: no frame loop). Every run removes the rows and uploaded
+ * files of the old frames 2 to 24 of a pose (dropFrames()), whoever
+ * installed them, since the game no longer reads them.
  *
  * Slots no page reads any more (RETIRED_SLOTS) lose their rows and uploaded
- * files on every run (dropRetired()), whoever installed them.
+ * files on every run too (dropRetired()), whoever installed them.
  */
 final class CatalogImporter
 {
@@ -414,14 +417,13 @@ final class CatalogImporter
             $this->temp = [];
         }
 
+        $this->dropFrames($dryRun);
         $this->dropRetired($dryRun);
-
-        if (! $overwrite) {
-            $this->checkPoses($byKey, $only);
-        }
 
         $installed = count(array_filter($this->report, static fn (array $r): bool => $r['status'] === 'installed'));
         $removed   = count(array_filter($this->report, static fn (array $r): bool => $r['status'] === 'removed'));
+        $removedSlots  = count(array_filter($this->report, static fn (array $r): bool => $r['status'] === 'removed' && in_array($r['target'], self::RETIRED_SLOTS, true)));
+        $removedFrames = $removed - $removedSlots;
 
         if (! $dryRun && $installed + $removed > 0) {
             service('contentRepository')->flush();
@@ -429,7 +431,8 @@ final class CatalogImporter
             model(AuditLogModel::class)->record('catalog_import', [
                 'staff_user_id' => $staffId,
                 'metadata'      => ['installed' => $installed, 'overwrite' => $overwrite, 'source' => basename(rtrim($this->root, '/\\'))]
-                    + ($removed > 0 ? ['removed_slots' => $removed] : []),
+                    + ($removedFrames > 0 ? ['removed_frames' => $removedFrames] : [])
+                    + ($removedSlots > 0 ? ['removed_slots' => $removedSlots] : []),
             ]);
         }
 
@@ -826,57 +829,39 @@ final class CatalogImporter
     }
 
     /**
-     * Warn about character poses whose frames now come from two sources: the
-     * catalogue and an upload that was kept (an admin upload without
-     * `--timpa`). The loop would switch between two drawings, e.g. old
-     * lurik frames among the red-scarf ones.
-     *
-     * @param array<string, array{key: string, file: string, cat: string}> $byKey
-     * @param list<string>                                                 $only
+     * Remove the old frames 2 to 24 of every character pose
+     * (`char.{jaka|kedu}.{pose}.{n}`, n ≥ 2): a pose is one still picture
+     * (owner, 15 November 2026), so the game and the panel no longer read
+     * them. Catalogue rows and admin uploads alike; the file is deleted when
+     * it lies in the upload folder. Frame 1, the pose picture, stays. A dry
+     * run only lists them; `$only` limits the run as for installing.
      */
-    private function checkPoses(array $byKey, array $only): void
+    private function dropFrames(bool $dryRun): void
     {
-        $poses   = [];
-        $planned = array_column(array_filter($this->report, static fn (array $r): bool => $r['status'] === 'planned'), 'target', 'target');
+        $media = model(MediaAssetModel::class);
 
-        foreach (array_keys($byKey) as $key) {
-            if (preg_match('/^char\.([a-z]+\.[a-z]+)\.(\d+)$/', $key, $m) === 1 && ($only === [] || $this->matches($key, $only))) {
-                $poses[$m[1]][] = $key;
-            }
-        }
+        foreach ($media->like('asset_key', 'char.', 'after')->findAll() as $row) {
+            $key = (string) $row['asset_key'];
 
-        foreach ($poses as $pose => $keys) {
-            $kept = [];
-            $ours = 0;
-
-            foreach ($keys as $key) {
-                $row = model(MediaAssetModel::class)->findByKey($key);
-
-                if (isset($planned[$key])) {
-                    $ours++; // dry run: the catalogue frame would be installed
-
-                    continue;
-                }
-
-                if ($row === null || (int) $row['is_active'] !== 1 || (int) ($row['is_placeholder'] ?? 0) === 1) {
-                    continue;
-                }
-
-                if ($this->isCatalogRow($row)) {
-                    $ours++;
-                } else {
-                    $kept[] = (int) substr($key, strrpos($key, '.') + 1);
-                }
+            if (preg_match('/^char\.(?:jaka|kedu)\.[a-z]+\.(\d+)$/', $key, $m) !== 1 || (int) $m[1] < 2
+                || ($this->only !== [] && ! $this->matches($key, $this->only))) {
+                continue;
             }
 
-            if ($kept !== [] && $ours > 0) {
-                sort($kept);
-                $this->add('char.' . $pose . '.*', 'char.' . $pose, 'warning', sprintf(
-                    'gambar gerak %s bukan dari katalog, sisanya dari katalog: gerakannya bisa berganti gambar lain. Ganti dengan --timpa --kunci=char.%s.*',
-                    implode(', ', $kept),
-                    $pose,
-                ));
+            if ($dryRun) {
+                $this->add($key, $key, 'to-remove', 'satu pose satu gambar diam: gambar gerak ini tidak dipakai lagi');
+
+                continue;
             }
+
+            $path = (string) $row['storage_path'];
+
+            if (str_starts_with($path, MediaStore::uploadDir()) && is_file(FCPATH . $path)) {
+                @unlink(FCPATH . $path);
+            }
+
+            $media->delete((int) $row['id']);
+            $this->add($key, $key, 'removed', 'satu pose satu gambar diam: gambar gerak ini tidak dipakai lagi');
         }
     }
 
