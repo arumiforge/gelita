@@ -220,3 +220,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `gambar-pl-01-12` | Claude Code session: install the twelve accepted pictures PL-01 to PL-12 of document 40 (merged in PR #438): start-page background, Jaka with the lantern, four crystal stages, three quiet button faces (newly wired as border images), three error pictures | PR open, waiting for review; after merge: `gelita:katalog:impor` on the servers for the new `bg.welcome` |
