@@ -1229,7 +1229,7 @@ GAMBAR / VIDEO (/admin/media, admin, MediaController)
    App\Libraries\MediaIntegrity membandingkan aset aktif dengan berkas (hilang,
    ukuran, SHA-256) dan berkas unggahan tanpa baris; audit 'media_scan'
 6. Kelengkapan aset → /admin/media/kelengkapan (App\Libraries\AssetChecklist):
-   slot tanpa berkas, frame pose tokoh, latar & peta wilayah, poster video
+   slot tanpa berkas, gambar pose tokoh, latar & peta wilayah, poster video
    Pustaka, rekaman narasi
 
 AUDIO (/admin/media/audio)

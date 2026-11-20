@@ -127,20 +127,21 @@ final class StoryDataTest extends CIUnitTestCase
         }
     }
 
-    /** Setiap pose tokoh punya slot frame media, agar dapat diunggah dari /admin/media. */
-    public function testEveryPoseHasAnimationSlots(): void
+    /** Every character pose has one picture slot (a still picture), so it can be uploaded from /admin/media. */
+    public function testEveryPoseHasAPictureSlot(): void
     {
         $config = config('Gelita');
+        $slots  = App\Libraries\ImageSlots::poseSlots();
         $slugs  = ['jaka' => 'jaka', 'mbah_kedu' => 'kedu'];
 
         foreach ($slugs as $character => $slug) {
             foreach ($config->characterPoses[$character] as $pose) {
-                $this->assertArrayHasKey("{$slug}.{$pose}", $config->characterAnimations);
+                $this->assertSame("char.{$slug}.{$pose}.1", $slots["{$slug}.{$pose}"] ?? null);
             }
         }
 
-        $defaults = (new ReflectionClassConstant(App\Database\Seeds\MediaAssetSeeder::class, 'DEFAULT_ANIMATIONS'))->getValue();
-        $this->assertSame(array_keys($config->characterAnimations), array_keys($defaults), 'cadangan seeder sama dengan Config');
+        $defaults = (new ReflectionClassConstant(App\Database\Seeds\MediaAssetSeeder::class, 'DEFAULT_POSES'))->getValue();
+        $this->assertSame(array_diff_key($config->characterPoses, ['narator' => true]), $defaults, 'seeder fallback matches Config');
     }
 
     public function testSeederReadsTheStoryFile(): void

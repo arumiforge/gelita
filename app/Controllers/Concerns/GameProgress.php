@@ -352,7 +352,7 @@ trait GameProgress
      * "Menuju {wilayah}…", tagline (judul slide pertama `region_intro`
      * wilayah itu, mis. "Tanah Candi Agung"), chip tingkat kesulitan, dan aset
      * yang dipramuat untuk halaman tujuannya (`entry`): latar wilayah, lalu
-     * frame tokoh sesuai pose dialog pembuka (wilayah baru terbuka) atau
+     * gambar pose tokoh sesuai pose dialog pembuka (wilayah baru terbuka) atau
      * gambar peta wilayah (selain itu). Aset yang belum diunggah tidak ikut.
      *
      * @param array<string, mixed> $row baris levelOverview()

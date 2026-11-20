@@ -31,7 +31,6 @@ final class CatalogSiteTest extends CIUnitTestCase
 
         $img = 'ai-studio/game-images/assets/';
         $this->picture($img . 'karakter/char.jaka.idle.1.webp', 600, 900);
-        $this->picture($img . 'karakter/char.jaka.idle.2.webp', 600, 900);
         $this->picture($img . 'latar/bg.cerita-intro-01.webp', 1920, 1080);
         $this->picture($img . 'tantangan/challenge.item.tmg-1-01.webp', 1200, 1200);
         $this->picture('ai-studio/game-images/mockup/gambar-mockup/skenario/aset/item.skenario.mgl-5-a01.webp', 1536, 1024);
@@ -46,7 +45,6 @@ final class CatalogSiteTest extends CIUnitTestCase
         ];
         file_put_contents($this->root . '/ai-studio/game-images/data.json', json_encode([
             $entry('char.jaka.idle.1', 'assets/karakter/char.jaka.idle.1.webp', 'Karakter', 'Jaka diam'),
-            $entry('char.jaka.idle.2', 'assets/karakter/char.jaka.idle.2.webp', 'Karakter', 'Jaka diam 2'),
             $entry('bg.cerita-intro-01', 'assets/latar/bg.cerita-intro-01.webp', 'Background', 'Dataran yang Bercahaya'),
             $entry('bg.cerita-intro-02', 'assets/latar/bg.cerita-intro-01.webp', 'Background', 'Dataran yang Bercahaya'),
             ['region' => 'Temanggung'] + $entry('challenge.item.tmg-1-01', 'assets/tantangan/challenge.item.tmg-1-01.webp', 'Tantangan', 'Gunung Sindoro dan Sumbing'),
@@ -89,8 +87,7 @@ final class CatalogSiteTest extends CIUnitTestCase
     {
         $images = array_column((new CatalogSite($this->root))->images(), null, 'id');
 
-        // Frame 2 of a pose is left out; one story file filling two slides is one entry
-        $this->assertArrayNotHasKey('char.jaka.idle.2', $images);
+        // One story file filling two slides is one entry
         $this->assertSame(['bg.cerita-intro-01', 'bg.cerita-intro-02'], $images['bg.cerita-intro-01']['k']);
         $this->assertSame('story', $images['bg.cerita-intro-01']['g']);
         $this->assertSame(['Cerita pembuka, slide 1', 'Cerita pembuka, slide 2'], $images['bg.cerita-intro-01']['u']);

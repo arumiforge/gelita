@@ -152,7 +152,7 @@ Semua command mengembalikan kode keluar 1 saat gagal, sehingga dapat dipakai di 
 |---|---|
 | `gelita:bank:import <file> [--dry-run] [--staff <username>]` | Mengimpor workbook XLSX (bank soal atau Pustaka) dalam satu transaction; `--dry-run` hanya memvalidasi. Sama dengan **Konten → Impor soal dari Excel**. |
 | `gelita:content:verify [--strict] [--siap-penelitian]` | Memeriksa tantangan setiap wilayah, variasi, aturan bank soal, kunci, dan media. `--strict`: peringatan juga gagal; `--siap-penelitian`: gambar contoh yang masih dipakai menjadi galat. |
-| `gelita:katalog:impor [--sumber=FOLDER] [--dry-run] [--timpa] [--kunci=POLA,POLA]` | Installs the images of the Katalog Aset (`ai-studio/game-images/`) into every image slot: logo, buttons, language icons, app icons, backgrounds, story slides, maps, badges, pins, lanterns, avatars, character frames, challenge images, and Pustaka illustrations (lossy WebP, `app.*` as PNG). Images an admin uploaded are kept unless `--timpa`; `--kunci` limits a run (and `--timpa`) to matching slots, e.g. `char.jaka.*`. Safe to run again. See `docs/08_DEPLOYMENT.md`. |
+| `gelita:katalog:impor [--sumber=FOLDER] [--dry-run] [--timpa] [--kunci=POLA,POLA]` | Installs the images of the Katalog Aset (`ai-studio/game-images/`) into every image slot: logo, buttons, language icons, app icons, backgrounds, story slides, maps, badges, pins, lanterns, avatars, character poses, challenge images, and Pustaka illustrations (lossy WebP, `app.*` as PNG). Images an admin uploaded are kept unless `--timpa`; `--kunci` limits a run (and `--timpa`) to matching slots, e.g. `char.jaka.*`. Safe to run again. See `docs/08_DEPLOYMENT.md`. |
 | `gelita:katalog:halaman [--dry-run] [--cek] [--cek-tautan] [--basis=URL]` | Builds the public Katalog Aset page in `gelita-katalog/` (katalog.gelita.id) from `ai-studio/game-images/`, `REVIEW.md` and the game's audio; every entry links to the file on gelita.id. A repository build step: commit the result; never run on a server. |
 | `gelita:panduan:cek [--panduan=validator\|gelita] [--tandai]` | Lists the validator-guide and GELITA-guide pages whose source sections in `docs/` changed; `--tandai` after checking them. |
 | `gelita:library:thumbnails [--force]` | Mengunduh thumbnail video luar Pustaka (YouTube, Vimeo, Google Drive) dan memasangnya sebagai poster; butuh HTTPS keluar. |
@@ -252,7 +252,7 @@ Ukuran berkas gambar per slot ditetapkan di `Config\Gelita::$assetSizes` dan ber
 | Slot | Ukuran berkas (px) |
 |---|---|
 | Latar layar `bg.*` (termasuk `bg.loading`, `bg.welcome`, `bg.auth`, `bg.intro`, `bg.map`, `bg.reflection`, `bg.story.*`, `bg.{wilayah}.region`, `bg.{wilayah}.skenario`, `bg.result.*`, `bg.loading.*`) | 1920 × 1080 |
-| Gambar pose tokoh `char.jaka.{pose}.{1–24}`, `char.kedu.{pose}.{1–24}` (WebP/PNG transparan). Panel dan permainan masih menerima sampai 24 gambar per pose yang diputar berulang; pemilik menginginkan satu gambar diam per pose, dan penghapusan putaran itu masih terbuka di [`docs/PROGRESS.md`](docs/PROGRESS.md) | 700 × 900 |
+| Gambar pose tokoh `char.jaka.{pose}.1`, `char.kedu.{pose}.1` (WebP/PNG transparan): satu gambar diam per pose (sejak 20 November 2026; putaran gambar sudah dihapus) | 700 × 900 |
 | Logo halaman awal `ui.logo-hero` | 1600 × 600 |
 | Tombol Mulai `ui.btn-start`, `ui.btn-start.en` (papan panjang) | 1200 × 220 |
 | Ikon bahasa `ui.lang.id`, `ui.lang.en` | 256 × 256 |

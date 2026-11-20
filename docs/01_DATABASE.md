@@ -89,7 +89,7 @@ Master wilayah administratif Indonesia tidak disimpan di database. Daftarnya ber
 | | [`dialogues`](#dialogues) | `001400` | Narasi dan dialog cerita |
 | | [`library_pages`](#library_pages) | `001500` | Halaman Pustaka Kedu |
 | | [`library_media`](#library_media) | `001600` | Gambar/video halaman Pustaka |
-| C. Media dan audio | [`media_assets`](#media_assets) | `000700` | Semua berkas gambar, video, suara, frame tokoh |
+| C. Media dan audio | [`media_assets`](#media_assets) | `000700` | Semua berkas gambar, video, suara, gambar pose tokoh |
 | | [`audio_assets`](#audio_assets) | `000800` | Rekaman suara bertranskrip dan berstatus persetujuan |
 | | [`asset_packages`](#asset_packages) | `003000` | Asset packages built from active media and code (download-once package, `docs/rencana-paket-aset.md`) |
 | D. Data penelitian mentah | [`challenge_attempts`](#challenge_attempts) | `001900` | Satu pengerjaan tantangan |
@@ -586,13 +586,13 @@ INDEX `library_page_id_sequence (library_page_id, sequence)`, tidak UNIQUE: edit
 
 #### `media_assets`
 
-Semua berkas yang dipakai permainan: gambar, video, suara, dan frame tokoh. Aset tetap (latar, tokoh, peta, logo) dirujuk lewat `asset_key`; konten dirujuk lewat `id` (kolom `*_media_id`). `MediaAssetSeeder` mendaftarkan slot bawaan dari `public/assets/`; slot yang berkasnya belum ada tersimpan `is_active = 0` dan tampil sebagai placeholder.
+Semua berkas yang dipakai permainan: gambar, video, suara, dan gambar pose tokoh. Aset tetap (latar, tokoh, peta, logo) dirujuk lewat `asset_key`; konten dirujuk lewat `id` (kolom `*_media_id`). `MediaAssetSeeder` mendaftarkan slot bawaan dari `public/assets/`; slot yang berkasnya belum ada tersimpan `is_active = 0` dan tampil sebagai placeholder.
 
 | Kolom | Tipe | Null | Bawaan | Arti |
 |---|---|---|---|---|
 | id | BIGINT UNSIGNED | tidak | AUTO | PK |
 | asset_key | VARCHAR(160) | tidak | — | UNIQUE. Kunci slot, mis. `bg.temanggung`, `char.jaka.idle.1`, `map.region.magelang`, `challenge.tmg-4.scene`, `challenge.item.wnb-4-a01`, `audio.narasi.id.intro-01`, `library.thumb.youtube.…` |
-| asset_type | VARCHAR(20) | tidak | — | `image` \| `audio` \| `video` \| `sprite_frame` (frame animasi tokoh). INDEX |
+| asset_type | VARCHAR(20) | tidak | — | `image` \| `audio` \| `video` \| `sprite_frame` (stored code for a character pose picture, `char.{jaka\|kedu}.{pose}.1`: one still picture per pose since the frame loop was removed, 20 November 2026). INDEX |
 | storage_path | VARCHAR(500) | tidak | — | Relatif terhadap `public/`, mis. `assets/audio/narasi/en/dialog-magelang-01.mp3`; unggahan di `assets/uploads/`, gambar contoh di `assets/uploads/mockup/` |
 | mime_type | VARCHAR(100) | tidak | — | |
 | file_size | BIGINT UNSIGNED | ya | NULL | Byte |

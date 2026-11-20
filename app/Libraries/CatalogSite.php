@@ -18,8 +18,8 @@ use RuntimeException;
  * stays listed.
  *
  * Sources (the game leads; nothing here is kept by hand):
- * - pictures: `ai-studio/game-images/data.json` (frame 1 of each character
- *   pose only: the game moves to still poses, docs/PROGRESS.md), the mock-up
+ * - pictures: `ai-studio/game-images/data.json` (one still picture per
+ *   character pose), the mock-up
  *   pictures of CatalogImporter::MOCKUP_FILES and MOCKUP_DIRS, and the UI art
  *   that ships with the game (`public/assets/ui/`, `public/assets/app/`);
  *   where each picture is used comes from ImageSlots;
@@ -274,11 +274,6 @@ final class CatalogSite
 
             $key = (string) $entry['key'];
 
-            // Still poses only: frame 1 stands for its pose
-            if (preg_match('/^char\.(?:jaka|kedu)\.[a-z]+\.(\d+)$/', $key, $m) && $m[1] !== '1') {
-                continue;
-            }
-
             $file = self::IMAGE_DIR . '/' . ltrim((string) $entry['file'], '/');
             $byFile[$file] ??= ['keys' => [], 'entries' => []];
             $byFile[$file]['keys'][]    = $key;
@@ -414,7 +409,7 @@ final class CatalogSite
         ];
 
         if (str_starts_with($key, 'char.')) {
-            $image['d'] = trim($image['d'] . ' Gambar 1 dari pose ini; permainan memakai satu gambar diam per pose.');
+            $image['d'] = trim($image['d'] . ' Permainan memakai satu gambar diam per pose.');
         }
 
         $image['p'] = null;

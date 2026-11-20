@@ -7,12 +7,11 @@
  * - Dua tokoh berhadapan: Jaka di kiri, Mbah Kedu di kanan; yang berbicara
  *   maju dan terang, yang mendengar mundur dan meredup (CSS :target + :has
  *   tanpa JavaScript; game/dialogue.js menambah .is-speaking/.is-listening).
- * - Setiap baris membawa URL frame pose tokohnya (`data-pose-src`,
- *   character_frame_src(): `char.{jaka|kedu}.{pose}.1`, cadangan `idle`,
- *   kosong bila belum ada gambar). dialogue.js menukar gambar tokoh yang
- *   berbicara; tanpa gambar tokoh tetap monogram. A pose with 2 or more
- *   frames also carries `data-pose-frames`/`-fps`/`-loop`, which dialogue.js
- *   hands to core/sprite.js to play the pose.
+ * - Every line carries the still picture of its speaker's pose
+ *   (`data-pose-src`, character_frame_src(): `char.{jaka|kedu}.{pose}.1`,
+ *   falling back to `idle`, empty when there is no picture yet).
+ *   dialogue.js swaps the speaking character's picture; without a picture
+ *   the character stays a monogram.
  * - A line with a background of its own (`data-bg`, slide_bg_attr()) shows
  *   it over the stage: `data-backdrop="stage"` tells game/narrator.js to
  *   crossfade the layout's scene images (core/backdrop.js). A line without
@@ -100,7 +99,7 @@ $cinematic = ! empty($cinematic);
         $audioId   = (int) ($locale === 'en' ? ($slide['audio_en_asset_id'] ?? 0) : ($slide['audio_id_asset_id'] ?? 0));
         ?>
         <li class="slide dialogue-line" id="line-<?= $n ?>" data-index="<?= $n ?>" data-character="<?= esc($character, 'attr') ?>"
-            data-pose="<?= esc($pose, 'attr') ?>" data-pose-src="<?= esc(character_frame_src($character, $pose) ?? '', 'attr') ?>"<?= character_frames_attr(character_frames($character, $pose), 'data-pose-') ?><?= slide_bg_attr($slide) ?>
+            data-pose="<?= esc($pose, 'attr') ?>" data-pose-src="<?= esc(character_frame_src($character, $pose) ?? '', 'attr') ?>"<?= slide_bg_attr($slide) ?>
             <?= $effect !== '' ? 'data-effect="' . esc($effect, 'attr') . '"' : '' ?>
             aria-label="<?= esc(lang('Game.slideOf', [$n, $total]), 'attr') ?>">
           <?php if ($cinematic): ?>
