@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Libraries\DeadlockRetry;
 use App\Models\Traits\EncodesJson;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 use CodeIgniter\Model;
 
 class GameEventLogModel extends Model
@@ -88,13 +89,35 @@ class GameEventLogModel extends Model
     /**
      * One INSERT IGNORE for the rows; the number of rows it wrote.
      *
+     * Inside a caller's transaction the framework answers a failed statement
+     * with `false` instead of an exception. It is thrown here: reported as
+     * "nothing written, all duplicates" the events would be dropped by the
+     * client, and after a deadlock the caller would go on writing although
+     * its transaction is gone. The caller's `catch` rolls back.
+     *
      * @param list<array<string, mixed>> $rows
+     *
+     * @throws DatabaseException when the statement failed
      */
     protected function insertIgnore(array $rows): int
     {
-        $this->db->table($this->table)->ignore(true)->insertBatch($rows);
+        // insertBatch() runs the statement itself and drops its result, so a failure cannot
+        // be told from "nothing new". The builder only writes the SQL here (test mode).
+        $statements = $this->db->table($this->table)->testMode()->ignore(true)->insertBatch($rows, null, max(100, count($rows)));
+        $written    = 0;
 
-        return max(0, $this->db->affectedRows());
+        foreach ((array) $statements as $sql) {
+            if ($this->db->query($sql, null, false) === false) {
+                $error = $this->db->error();
+                $code  = (int) ($error['code'] ?? 0);
+
+                throw new DatabaseException($code === 0 ? 'INSERT into ' . $this->table . ' failed.' : (string) $error['message'], $code);
+            }
+
+            $written += max(0, $this->db->affectedRows());
+        }
+
+        return $written;
     }
 
     /**

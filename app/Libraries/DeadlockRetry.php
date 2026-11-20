@@ -39,6 +39,17 @@ final class DeadlockRetry
     /** Runs in total: the first one and up to three more. */
     public const MAX_RUNS = 4;
 
+    /**
+     * No further run once this many seconds have passed since the first one
+     * began. A deadlock is answered at once, but a lock wait timeout (1205)
+     * comes after `innodb_lock_wait_timeout` (50 s by default): repeating
+     * that four times would hold one PHP process for minutes.
+     */
+    public const MAX_SECONDS = 10.0;
+
+    /** MAX_SECONDS, replaceable in tests. */
+    public static float $maxSeconds = self::MAX_SECONDS;
+
     /** Replaces the wait between runs (tests): receives microseconds. */
     public static ?Closure $sleeper = null;
 
@@ -55,11 +66,13 @@ final class DeadlockRetry
             return $work();
         }
 
+        $started = microtime(true);
+
         for ($run = 1; ; $run++) {
             try {
                 return $work();
             } catch (Throwable $e) {
-                if ($run >= self::MAX_RUNS || ! self::isRetryable($e)) {
+                if (! self::mayRunAgain($e, $run, $started)) {
                     throw $e;
                 }
 
@@ -80,7 +93,10 @@ final class DeadlockRetry
      */
     public static function transaction(BaseConnection $db, callable $work, string $what = 'transaction')
     {
-        $outermost = $db->transDepth === 0;
+        $depth     = $db->transDepth;
+        $outermost = $depth === 0;
+        $throwing  = (bool) $db->transException;
+        $started   = microtime(true);
 
         for ($run = 1; ; $run++) {
             // Inside a transaction the framework returns false for a failed statement
@@ -91,26 +107,42 @@ final class DeadlockRetry
 
             try {
                 $result = $work();
-                $db->transCommit();
+
+                if (! $db->transCommit() && $db->transDepth > $depth) {
+                    throw new DatabaseException('The transaction could not be committed.');
+                }
 
                 return $result;
             } catch (Throwable $e) {
-                // A statement that threw has rolled back already (BaseConnection::query())
-                if ($db->transDepth > 0) {
-                    $db->transRollback();
+                // A statement that threw has rolled back already (BaseConnection::query());
+                // anything else, and a transaction $work left open, is undone here
+                while ($db->transDepth > $depth && $db->transRollback()) {
+                    // one level per call
                 }
 
-                if (! $outermost || $run >= self::MAX_RUNS || ! self::isRetryable($e)) {
+                if ($outermost) {
+                    // Strict mode keeps the failure flag for the whole connection; nothing of
+                    // this transaction is left, so later transactions start clean
+                    $db->resetTransStatus();
+                }
+
+                if (! $outermost || ! self::mayRunAgain($e, $run, $started)) {
                     throw $e;
                 }
 
-                // Strict mode keeps the failure flag; the next run starts clean
-                $db->resetTransStatus();
                 self::wait($run, $what, $e);
             } finally {
-                $db->transException(false);
+                $db->transException($throwing);
             }
         }
+    }
+
+    /** A lock error, runs left, and still inside the time allowed. */
+    private static function mayRunAgain(Throwable $e, int $run, float $started): bool
+    {
+        return $run < self::MAX_RUNS
+            && microtime(true) - $started < self::$maxSeconds
+            && self::isRetryable($e);
     }
 
     /** True for a database error 1213 or 1205 anywhere in the exception chain. */

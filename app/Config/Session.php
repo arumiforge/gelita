@@ -109,10 +109,13 @@ class Session extends BaseConfig
      * moment (the beacon and the next page always leave together) then
      * found no session: the page went to `/masuk`, or the batch got
      * 401 INVALID_SESSION. With false the old row keeps the login until the
-     * garbage collector removes it, so both requests are answered. Login
-     * still destroys the old session (`SessionService::bindPhpSession()`),
-     * and so does logout. Found by the production load test, 21 November
-     * 2026 (decision log, *Remote load test, play rounds and deadlocks*).
+     * garbage collector removes it (`$expiration` after its last use at the
+     * earliest; Config\Events makes sure the collector runs), so both
+     * requests are answered. Login and logout destroy the row of the ID the
+     * browser holds at that moment (`SessionService::bindPhpSession()`,
+     * `logout()`); rows of IDs replaced earlier wait for the collector.
+     * Found by the production load test, 21 November 2026 (decision log,
+     * *Event deadlocks and lost logins under load*).
      */
     public bool $regenerateDestroy = false;
 

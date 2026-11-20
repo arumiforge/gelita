@@ -45,6 +45,15 @@ final class SessionRegenerationTest extends CIUnitTestCase
         $this->assertDoesNotMatchRegularExpression('/^\s*session\.regenerateDestroy\s*=/m', $template);
     }
 
+    public function testTheGarbageCollectorIsSwitchedOn(): void
+    {
+        // Debian and Ubuntu ship session.gc_probability = 0: kept rows would never be removed
+        $events = (string) file_get_contents(APPPATH . 'Config/Events.php');
+
+        $this->assertMatchesRegularExpression("/ini_set\\('session\\.gc_probability', '1'\\);/", $events);
+        $this->assertMatchesRegularExpression("/ini_set\\('session\\.gc_divisor', '\\d+'\\);/", $events);
+    }
+
     public function testLoginStillDestroysTheSessionItReplaces(): void
     {
         // Session fixation: the ID a visitor had before logging in must not become a logged-in one
