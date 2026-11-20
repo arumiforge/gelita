@@ -18,6 +18,10 @@ use CodeIgniter\Database\BaseConnection;
  *    cached for an hour (AssetPackageService::verification()). While a study
  *    runs, students must also get the package it locked when it started
  *    (`research_studies.package_code`; owner, 9 November 2026).
+ * 5. Test, questionnaire and attitude-scale content imported (one active
+ *    `instrument_versions` row per InstrumentImporter::INSTRUMENTS; owner,
+ *    20 November 2026, after a smoke test showed students "Tesnya belum
+ *    siap" while the list stayed silent).
  */
 final class ResearchReadiness
 {
@@ -78,16 +82,41 @@ final class ResearchReadiness
                 'link'   => 'admin/konten',
             ],
             $package = $this->packageItem(),
+            $instruments = $this->instrumentItem(),
         ];
 
         return [
-            'ready'             => $mockups === 0 && $pending === 0 && $errors === 0 && $package['ok'],
+            'ready'             => $mockups === 0 && $pending === 0 && $errors === 0 && $package['ok'] && $instruments['ok'],
             'items'             => $items,
             'mockups'           => $mockups,
             'narration_pending' => $pending,
             'errors'            => $errors,
             'warnings'          => $warnings,
             'package_ok'        => $package['ok'],
+            'instruments_ok'    => $instruments['ok'],
+        ];
+    }
+
+    /** @return array{key: string, label: string, ok: bool, detail: string, link: string} */
+    private function instrumentItem(): array
+    {
+        $missing = [];
+
+        foreach (InstrumentImporter::INSTRUMENTS as $instrument) {
+            $active = $this->db->tableExists('instrument_versions')
+                && $this->db->table('instrument_versions')->where('instrument', $instrument)->where('is_active', 1)->countAllResults() > 0;
+
+            if (! $active) {
+                $missing[] = lang('Admin.readyInstrument_' . $instrument);
+            }
+        }
+
+        return [
+            'key'    => 'instruments',
+            'label'  => lang('Admin.readyInstrumentsLabel'),
+            'ok'     => $missing === [],
+            'detail' => $missing === [] ? lang('Admin.readyInstrumentsOk') : lang('Admin.readyInstrumentsMissing', [implode(', ', $missing)]),
+            'link'   => 'admin/konten',
         ];
     }
 

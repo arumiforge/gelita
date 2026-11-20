@@ -832,6 +832,13 @@ return [
     'feedbackField_hardest_part' => 'Paling sulit',
     'feedbackField_new_learning' => 'Hal baru',
     'feedbackField_suggestion'   => 'Saran',
+    // Readiness: test module content (owner, 20 November 2026)
+    'readyInstrumentsLabel'   => 'Isi tes, angket, dan skala sikap terpasang',
+    'readyInstrumentsOk'      => 'Tes awal dan akhir, angket, dan skala sikap siap dipakai siswa.',
+    'readyInstrumentsMissing' => 'Belum terpasang: {0}. Siswa akan melihat "Tesnya belum siap". Minta admin mengimpornya di server (php spark gelita:instrumen:impor).',
+    'readyInstrument_tes'     => 'tes awal dan akhir',
+    'readyInstrument_angket'  => 'angket',
+    'readyInstrument_sikap'   => 'skala sikap',
     // Data mentah groups and tab notes (owner, 20 November 2026)
     'rawGroupAnswers'          => 'Jawaban & pengerjaan',
     'rawGroupAnswersLead'      => 'Apa yang dijawab siswa, berapa kali mencoba, berapa lama, dan kapan membuka Bantuan.',

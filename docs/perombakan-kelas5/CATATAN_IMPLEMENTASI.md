@@ -1275,6 +1275,13 @@ Owner, 20 November 2026: the head researcher could not build or publish an asset
 - **Tests:** `StaffAccessTest` route matrix (ketua true for `admin/studi/rilis` and `/paket`), `PackageSwitchTest` (the no-preview role is now peneliti).
 - **Not changed:** document `27` (§4 table and K13) still says admin only; this entry supersedes it.
 
+## Readiness checks test content; field smoke test (20 November 2026, branch `siap-tes-dan-smoke`)
+
+Owner, 20 November 2026, after the smoke test of this session.
+
+- **Readiness.** On a fresh install the test module had no content, so students only saw "Tesnya belum siap" while the readiness list on `/admin/studi` was silent (the content check counted it among "2 galat" without naming it). `ResearchReadiness` now has its own item *Isi tes, angket, dan skala sikap terpasang*: one active `instrument_versions` row per `InstrumentImporter::INSTRUMENTS`, naming what is missing and the import command; `ready` needs it. Test `ResearchReadinessInstrumentsTest`.
+- **Smoke test.** `tools/qa/field-smoke.mjs` runs research data collection end to end in real Chromium (local mode: research mode from the panel, P1 for two schools, registration with tokens, seats and the pre-test, P2 with an unfinished attempt, two days moved back and the nightly retention, a make-up session that continues the same attempt, XLSX export, closing the study). `QA_MODE=live` checks an installed server read-only, with a `uji.*` account from `GELITA_UJI_USER`/`GELITA_UJI_PASS` (environment variables of the cloud environment, never typed in chat). On `main` (before PRs #440 and #441) steps 5–7 fail as expected; on `main` with PRs #439–#442 all 22 checks pass.
+- **Accepted (owner):** events a page has not sent yet are dropped when a student is logged out because the study is no longer running (PR #440), as they are after a withdrawal.
 ## Panel polish for the head researcher (20 November 2026, branch `panel-polesan`)
 
 Owner, 20 November 2026 (interview): a friendlier *Data mentah*, explanatory text at full width, and a general tidy-up of the panel.
