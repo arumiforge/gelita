@@ -1395,3 +1395,23 @@ Continues *Remote load test, play rounds and deadlocks*: open points 1 to 3 are 
 1. After the merge: on production `git pull` and `php spark gelita:setelah-pull --jalankan` (no migration in this change), then 100 and 150 students with `NODE_USE_ENV_PROXY=1 QA_REMOTE=1 QA_BASE_URL=https://gelita.id QA_STUDENTS=… node tools/qa/load-test.mjs`. Expected: no HTTP 500, no 401 (connection errors through Cloudflare are a separate matter), `check` no longer refused. Then the owner resets production and restores the study settings (field mode, unlock order).
 2. Owner, on the server: add the cache rules to the tunnel's site file (or replace it with `gelita-tunnel.conf`), and unregister the scheduled task `\GELITA\PhpPool` if it still exists.
 3. From the review of this change (`gelita-reviewer`, all points above marked "never silent", "limits" and "collector" came from it): `CLAUDE.md` → *Concurrency* does not name `DeadlockRetry` yet. Left for the owner to decide, as it is the shared working rule: new writes of several statements that may meet a lock on MySQL use `DeadlockRetry::transaction()`; `run()` does nothing inside a caller's `transBegin()`.
+
+## Production re-run after the deadlock and session fixes (21 November 2026, branch `igi/busy-fermat-czue8s`)
+
+Closes *Open* 1 of *Event deadlocks and lost logins under load*. The owner pulled `main` (PR #445) on the production server; the two rounds ran from the cloud session with `NODE_USE_ENV_PROXY=1 QA_REMOTE=1 QA_BASE_URL=https://gelita.id QA_STUDENTS=… node tools/qa/load-test.mjs` (60 s ramp, 5 minutes measured, `beban` accounts, field mode off, unlock free), 100 students at 01:43 WIB and 150 at 01:51 WIB. Latency still includes about 1 s of network between the session and the server.
+
+| Students | | check p95 / p99 | page p95 / p99 | event batch p95 / p99 | HTTP 500 | 401 | conn. errors |
+|---|---|---|---|---|---|---|---|
+| 100 | before | 0.9 / 1.3 s | 1.9 / 3.0 s | — | 8 | 6 | 20 |
+| 100 | after | 0.65 / 1.24 s | 1.08 / 1.61 s | 0.77 / 1.25 s | 0 | 0 | 2 |
+| 150 | before | 2.0 / 5.5 s | 8.1 / 13.7 s | — | 24 | 19 | 25 |
+| 150 | after | 1.17 / 1.79 s | 2.71 / 6.29 s | 1.45 / 2.16 s | 0 | 0 | 0 |
+
+Requests after the fix: 100 students: 461 checks, 1,058 pages, 2,415 event batches; 150 students: 769 checks, 1,550 pages, 3,529 event batches. Every check was graded (none refused: `load-test.mjs` now goes on from the resumed attempt's check count), so the rounds after the fix carried more grading work than the ones before, where re-used accounts had most checks refused.
+
+- **Deadlocks and 401s:** none in either round. No sign of a second source of 401s.
+- **Speed:** pages at 150 students went from 8.1 s to 2.7 s at p95. Not measured why; the likely parts are no more students thrown back to the login page, and event batches that no longer write and undo their duplicates. CPU on the server during these two rounds was not recorded here (the owner's Task Manager).
+- **Capacity** (`docs/08` updated): 100 at once is comfortable, 150 works (pages p99 6.3 s). 200 was not re-run.
+
+**Open (owner):** reset production (`gelita:reset`) and restore the study settings (field mode, unlock order); the tunnel's cache rules and the `\GELITA\PhpPool` task as listed before.
+
