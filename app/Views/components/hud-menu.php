@@ -34,22 +34,24 @@
  *        `hud-shards-fill.webp`; on the left with `title-centre`); a page
  *        sets section `hudShards` = `off` to leave it out (the result screen
  *        shows shards in its panel).
- * Right: section `hudBadge` first (e.g. the region dialogue's difficulty
- *        badge, partials/region-difficulty), then the round controls in the
+ * Right: section `hudBadge` first (no page sets it since the region
+ *        dialogue's difficulty badge went, 19 November 2026), then the round controls in the
  *        fixed order language · sound · menu · Back (41 decision 16: these
  *        display rules live here, not per page), each
  *        drawn as the owner's round gold button (`assets/ui/round-*.webp`,
  *        round_icon(); 21 October 2026), else a line icon on the
  *        `ui.result-hud-control` skin:
- *        - language: popover with the round flags (`round-lang-{code}`, else
- *          the `ui.lang.*` slot icons), a POST form
+ *        - language: popover with flat SVG flags (3 : 2, since 19 November 2026;
+ *          the round flag stays the HUD button), a POST form
  *          with class `lang-switch` (game/hud.js, the challenge frame);
  *          hidden during a challenge;
  *        - sound (#btn-sound, game/hud.js): `round-sound` / `round-mute`;
- *        - menu (`round-menu`): the background music switch (#btn-music, off by
- *          default, owner 16 November 2026), profile, Peta Kedu, Tentang GELITA
- *          (`/tentang`), and logout; each row on its round picture (map,
- *          info, logout). Signed in without progress data (the opening
+ *        - menu (`round-menu`): one fixed list (owner, 19 November 2026): the
+ *          background music switch (#btn-music, off by default, owner 16
+ *          November 2026), profile, Peta Kedu, Pustaka Kedu, Tentang GELITA
+ *          (`/tentang`), and logout; the row of the page the student is on is
+ *          left out (`$here`); each row on its round picture (map, library
+ *          book, info, logout). Signed in without progress data (the opening
  *          story): Kembali ke awal (`/`) instead of Peta Kedu; on the start
  *          page itself (`$homePage`) neither. Before login: Tentang GELITA
  *          and Masuk staf (`/admin/login`, the old welcome-page corner link).
@@ -119,6 +121,15 @@ $flags     = [
 $backArt  = round_icon_src('back');
 
 $langName = static fn (string $code): string => lang_or('Game.lang_' . $code, strtoupper($code));
+// Flat flags for the language sheet (owner, 19 November 2026: the round flag pictures read as
+// stretched there): drawn as SVG at 3 : 2, so they stay sharp and never change shape
+$flatFlags = [
+    'id' => '<svg class="hud-flag" viewBox="0 0 30 20" aria-hidden="true" focusable="false"><rect width="30" height="10" fill="#D52B1E"/><rect y="10" width="30" height="10" fill="#FFFFFF"/></svg>',
+    'en' => '<svg class="hud-flag" viewBox="0 0 60 40" aria-hidden="true" focusable="false"><clipPath id="hud-flag-uk"><rect width="60" height="40"/></clipPath><g clip-path="url(#hud-flag-uk)"><rect width="60" height="40" fill="#012169"/><path d="M0 0 60 40M60 0 0 40" stroke="#FFF" stroke-width="8"/><path d="M0 0 60 40M60 0 0 40" stroke="#C8102E" stroke-width="3"/><path d="M30 0v40M0 20h60" stroke="#FFF" stroke-width="12"/><path d="M30 0v40M0 20h60" stroke="#C8102E" stroke-width="7"/></g></svg>',
+];
+// One fixed menu list (owner, 19 November 2026): Musik latar · Profil · Peta Kedu · Pustaka Kedu ·
+// Tentang GELITA · Keluar; the row of the page the student is on is left out
+$here     = trim(uri_string(), '/');
 $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['username']) : '';
 ?>
 <header class="hud hud-menu-style<?= $compact ? ' is-compact' : '' ?><?= $tall ? ' is-tall' : '' ?><?= $titleCentre ? ' is-title-centre' : '' ?><?= $logoCentre ? ' is-logo-centre' : '' ?>"<?= $inGame ? ' data-in-game' : '' ?><?= skin_style_attr(['skin-hud' => 'ui.result-hud-control']) ?>>
@@ -135,7 +146,18 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
 
   <?php if ($shards): ?>
     <?php // The owner's shard plate (20 October 2026); absolute URLs, as for Kenali's plates ?>
-    <div class="hud-shards" style="--shards-frame: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-frame.webp'), 'attr') ?>&quot;); --shards-fill: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-fill.webp'), 'attr') ?>&quot;); --shards-crystal: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-crystal.webp'), 'attr') ?>&quot;)"><?= $this->include('components/lantern') ?></div>
+    <?php
+    // The crystal in four stages of light (owner, 19 November 2026; document 40, PL-03 to PL-06):
+    // stage n is shown after n - 1 regions are done (lantern data-stage n - 1, stage.css); a stage
+    // whose picture is not installed yet shows the one crystal of U-36
+    $crystals = '';
+    for ($n = 1; $n <= 4; $n++) {
+        if (is_file(FCPATH . "assets/ui/hud-shards-crystal-{$n}.webp")) {
+            $crystals .= "; --shards-crystal-{$n}: url(&quot;" . esc(asset_url_versioned("ui/hud-shards-crystal-{$n}.webp"), 'attr') . '&quot;)';
+        }
+    }
+    ?>
+    <div class="hud-shards<?= $crystals !== '' ? ' has-crystal-stages' : '' ?>" style="--shards-frame: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-frame.webp'), 'attr') ?>&quot;); --shards-fill: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-fill.webp'), 'attr') ?>&quot;); --shards-crystal: url(&quot;<?= esc(asset_url_versioned('ui/hud-shards-crystal.webp'), 'attr') ?>&quot;)<?= $crystals ?>"><?= $this->include('components/lantern') ?></div>
   <?php endif ?>
 
   <?php if ($backEnd): ?><div class="hud-end"><?php endif ?>
@@ -153,6 +175,7 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
         <?php endif ?>
       </summary>
       <div class="hud-sheet hud-lang-sheet">
+        <p class="hud-lang-title"><?= esc(lang('Game.language')) ?></p>
         <form class="lang-switch hud-lang-list" method="post" action="<?= base_url('bahasa') ?>"
               aria-label="<?= esc(lang('Game.resultLanguage'), 'attr') ?>">
           <?= csrf_field() ?>
@@ -161,8 +184,10 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
             <?php $active = $code === $locale; ?>
             <button type="submit" name="locale" value="<?= esc($code, 'attr') ?>" lang="<?= esc($code, 'attr') ?>"
                     class="hud-sheet-row hud-lang-row<?= $active ? ' is-active' : '' ?>" aria-pressed="<?= $active ? 'true' : 'false' ?>">
-              <?php if ($flags[$code] ?? null): ?>
-                <img class="hud-sheet-flag<?= ($roundFlag[$code] ?? null) ? ' is-round' : '' ?>" src="<?= esc($flags[$code], 'attr') ?>" alt="" draggable="false">
+              <?php if (isset($flatFlags[$code])): ?>
+                <?= $flatFlags[$code] ?>
+              <?php elseif ($flags[$code] ?? null): ?>
+                <img class="hud-sheet-flag" src="<?= esc($flags[$code], 'attr') ?>" alt="" draggable="false">
               <?php else: ?>
                 <span class="hud-sheet-code" aria-hidden="true"><?= esc(strtoupper($code)) ?></span>
               <?php endif ?>
@@ -196,7 +221,7 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
           <?= round_icon('sound', 'hud-sheet-art', 'sound') ?><span class="hud-sheet-label"><?= esc(lang('Game.music')) ?></span>
           <span class="hud-music-state" data-music-state><?= esc(lang('Game.musicOff')) ?></span>
         </button>
-        <?php if ($signedIn): ?>
+        <?php if ($signedIn && $here !== 'profil'): ?>
           <a class="hud-sheet-row hud-leave hud-profile" href="<?= base_url('profil') ?>"
              aria-label="<?= esc(lang('Game.profile') . ': ' . $userName, 'attr') ?>">
             <?= component('components/avatar', ['participant' => $participant, 'class' => 'user-avatar']) ?>
@@ -206,10 +231,19 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
             </span>
             <?= icon('right', 'hud-sheet-go') ?>
           </a>
+        <?php endif ?>
+        <?php if ($signedIn): ?>
           <?php if ($inGame): ?>
-            <a class="hud-sheet-row hud-leave" href="<?= base_url('peta') ?>">
-              <?= round_icon('map', 'hud-sheet-art', 'home') ?><span class="hud-sheet-label"><?= esc(lang('Game.mapKedu')) ?></span><?= icon('right', 'hud-sheet-go') ?>
-            </a>
+            <?php if ($here !== 'peta'): ?>
+              <a class="hud-sheet-row hud-leave hud-map" href="<?= base_url('peta') ?>">
+                <?= round_icon('map', 'hud-sheet-art', 'home') ?><span class="hud-sheet-label"><?= esc(lang('Game.mapKedu')) ?></span><?= icon('right', 'hud-sheet-go') ?>
+              </a>
+            <?php endif ?>
+            <?php if ($here !== 'pustaka'): ?>
+              <a class="hud-sheet-row hud-leave hud-library" href="<?= base_url('pustaka') ?>">
+                <?= library_icon('hud-sheet-art is-library') ?><span class="hud-sheet-label"><?= esc(lang('Game.library')) ?></span><?= icon('right', 'hud-sheet-go') ?>
+              </a>
+            <?php endif ?>
           <?php elseif (empty($homePage)): ?>
             <a class="hud-sheet-row hud-leave" href="<?= base_url() ?>">
               <?= round_icon('back', 'hud-sheet-art', 'home') ?><span class="hud-sheet-label"><?= esc(lang('Game.backHome')) ?></span><?= icon('right', 'hud-sheet-go') ?>
@@ -222,9 +256,11 @@ $userName = $signedIn ? (string) ($participant['display_name'] ?: $participant['
             <?= round_icon('play', 'hud-sheet-art', 'play') ?><span class="hud-sheet-label"><?= esc(lang('Game.instrumentPreviewLink')) ?></span><?= icon('right', 'hud-sheet-go') ?>
           </a>
         <?php endif ?>
-        <a class="hud-sheet-row hud-leave hud-about" href="<?= base_url('tentang') ?>">
-          <?= round_icon('info', 'hud-sheet-art', 'info') ?><span class="hud-sheet-label"><?= esc(lang('Game.about')) ?></span><?= icon('right', 'hud-sheet-go') ?>
-        </a>
+        <?php if ($here !== 'tentang'): ?>
+          <a class="hud-sheet-row hud-leave hud-about" href="<?= base_url('tentang') ?>">
+            <?= round_icon('info', 'hud-sheet-art', 'info') ?><span class="hud-sheet-label"><?= esc(lang('Game.about')) ?></span><?= icon('right', 'hud-sheet-go') ?>
+          </a>
+        <?php endif ?>
         <?php if (! $signedIn): ?>
           <a class="hud-sheet-row hud-leave hud-staff" href="<?= base_url('admin/login') ?>">
             <?= round_icon('profile', 'hud-sheet-art', 'key') ?><span class="hud-sheet-label"><?= esc(lang('Game.staffLogin')) ?></span><?= icon('right', 'hud-sheet-go') ?>

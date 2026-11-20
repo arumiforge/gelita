@@ -110,9 +110,11 @@ final class StatusBadgeTest extends CIUnitTestCase
 
     public function testMapsUseTheBadgeWithNumberOrLock(): void
     {
+        // The region map's pins and card carry the challenge's number and a status chip since the
+        // owner's mockup (19 November 2026); the medallions stay on the shard dots and Peta Kedu
         $level = (string) file_get_contents(APPPATH . 'Views/game/map-level.php');
-        $this->assertStringContainsString("<?= \$medal(\$node, 'pin-badge') ?>", $level, 'the pin');
-        $this->assertStringContainsString("<?= \$medal(\$node, 'node-badge') ?>", $level, 'the challenge list number');
+        $this->assertStringNotContainsString('$medal(', $level);
+        $this->assertStringContainsString('<span class="pin-no" aria-hidden="true">', $level, 'the pin shows the number');
         // Owner, 21 October 2026: no number on the open medallion
         // Document 40, U-11: the locked medallion draws its padlock, so no lock icon on top
         $this->assertStringNotContainsString("icon('lock', 'badge-lock')", $level);

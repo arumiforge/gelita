@@ -329,35 +329,40 @@ final class StartGateTest extends CIUnitTestCase
         $this->assertStringNotContainsString(base_url('masuk'), $page);
     }
 
-    public function testStartButtonFallsBackToCssButton(): void
+    /** Owner, 19 November 2026: Mulai is lettered by the page on the gold plate, in the page language. */
+    public function testStartButtonIsLetteredByThePage(): void
     {
         $page = (new HomeController())->index();
 
-        $this->assertMatchesRegularExpression('/class="btn-start btn btn-primary btn-xl"[^>]*>' . preg_quote(lang('Game.start'), '/') . '/', $page);
+        $this->assertMatchesRegularExpression('/class="btn-start btn btn-primary btn-xl"[^>]*><span>' . preg_quote(lang('Game.start'), '/') . '<\/span>/', $page);
     }
 
-    public function testStartButtonImageHonoursLocaleVariant(): void
+    /** The lettered picture slot is no longer shown, even when a picture is uploaded. */
+    public function testStartButtonIgnoresTheLetteredPicture(): void
     {
         $this->media = ['ui.btn-start' => 'assets/ui/btn-start.png', 'ui.btn-start.en' => 'assets/ui/btn-start-en.png'];
 
-        $id = (new HomeController())->index();
-        $this->assertStringContainsString('src="' . $this->attr('assets/ui/btn-start.png') . '" alt="Mulai"', $id);
+        $page = (new HomeController())->index();
 
-        Services::resetSingle('renderer');
-        service('language')->setLocale('en');
-        $en = $this->homeIn('en');
-        $this->assertStringContainsString('src="' . $this->attr('assets/ui/btn-start-en.png') . '" alt="Start"', $en);
+        $this->assertStringNotContainsString('btn-start.png', $page);
+        $this->assertSame(1, substr_count($page, 'class="btn-start'));
+    }
 
-        // Varian en belum diunggah → varian Indonesia
-        unset($this->media['ui.btn-start.en']);
-        Services::resetSingle('renderer');
-        $this->assertStringContainsString($this->attr('assets/ui/btn-start.png'), $this->homeIn('en'));
+    /** Home redesign (owner, 19 November 2026): invitation in the left column, Jaka on the right. */
+    public function testHomeHasInvitationAndJaka(): void
+    {
+        $page = (new HomeController())->index();
+
+        $this->assertStringContainsString('<p class="welcome-lead">' . esc(lang('Game.welcomeLead')) . '</p>', $page);
+        // Without content (no levels table here) the page shows no region chips instead of failing
+        $this->assertStringNotContainsString('welcome-regions', $page);
+        $this->assertStringContainsString('<img class="welcome-jaka stage-box" src="' . esc(asset_url_versioned('ui/jaka-gate.webp'), 'attr') . '"', $page, 'the waving Jaka until the lantern pose is installed');
     }
 
     /**
      * The HUD language popover (every page since 18 October 2026): the owner's round flag
-     * buttons (21 October 2026), whatever the `ui.lang.*` slots hold; the slots stay the
-     * fallback while a round picture is not installed.
+     * button (21 October 2026) on the HUD control, whatever the `ui.lang.*` slots hold; in the
+     * sheet flat SVG flags since 19 November 2026 (owner: the round ones read as stretched).
      */
     public function testLanguageSwitchUsesTheRoundFlags(): void
     {
@@ -366,7 +371,8 @@ final class StartGateTest extends CIUnitTestCase
 
         $this->assertStringContainsString('<form class="lang-switch hud-lang-list" method="post"', $page);
         $this->assertMatchesRegularExpression('/<summary class="hud-ctl" aria-label="' . preg_quote(esc(lang('Game.language') . ': Bahasa Indonesia', 'attr'), '/') . '"[^>]*>\s*<img class="hud-ctl-art" src="' . preg_quote(esc(asset_url_versioned('ui/round-lang-id.webp'), 'attr'), '/') . '" alt=""/', $page, 'the current language on the control');
-        $this->assertStringContainsString('<img class="hud-sheet-flag is-round" src="' . esc(asset_url_versioned('ui/round-lang-en.webp'), 'attr') . '" alt=""', $page);
+        $this->assertMatchesRegularExpression('/value="en" lang="en"\s+class="hud-sheet-row hud-lang-row" aria-pressed="false">\s*<svg class="hud-flag" viewBox="0 0 60 40"/', $page);
+        $this->assertStringNotContainsString('hud-sheet-flag', $page, 'no round flag pictures in the sheet');
         $this->assertStringNotContainsString($this->attr('assets/ui/lang-id.webp'), $page, 'the round flags win over the slot icons');
         $this->assertMatchesRegularExpression('/value="en" lang="en"\s+class="hud-sheet-row hud-lang-row" aria-pressed="false">/', $page);
         $this->assertStringContainsString('<span class="hud-sheet-label">English</span>', $page);

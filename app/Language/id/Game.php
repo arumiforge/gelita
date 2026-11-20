@@ -5,6 +5,8 @@ return [
     'appName'         => 'GELITA',
     'tagline'         => 'Game Edukasi Literasi dan Etnopedagogi Kedu',
     'start'           => 'Mulai',
+    'welcomeLead'     => 'Kabut Lupa menyelimuti Kedu. Bantu Jaka mengumpulkan Serpihan Cahaya dan menyalakan lagi Lentera Kedu!',
+    'welcomeRegions'  => 'Tiga wilayah yang akan kamu jelajahi',
     'login'           => 'Masuk',
     'continue'        => 'Lanjut',
     'back'            => 'Kembali',
@@ -196,12 +198,6 @@ return [
     'levelOrder'         => 'Wilayah {0}',
     'nodesProgress'      => '{0}/{1} tantangan',
     'nodesDoneOf'        => '{0} dari {1} tantangan selesai',
-    'difficulty_mudah'   => 'Mudah',
-    'difficulty_sedang'  => 'Sedang',
-    'difficulty_sulit'   => 'Sulit',
-    // Region dialogue difficulty badge in the HUD (owner, 19 October 2026)
-    'difficultyLabel'    => 'Tingkat kesulitan',
-    'difficultyLevel'    => 'Tingkat kesulitan: {0}',
     'viewResult'         => 'Lihat hasil',
     'mapImageAlt'        => 'Peta {0}',
 
@@ -287,6 +283,8 @@ return [
     // Pustaka
     'pageOf'        => 'Halaman {0} dari {1}',
     'libraryEmpty'  => 'Belum ada halaman pustaka untuk wilayah ini.',
+    'libraryContents' => 'Daftar isi',
+    'libraryFinish'   => 'Selesai membaca',
     'libraryPlayVideo' => 'Putar video',
     'libraryOpenLink' => 'Buka {0}',
     'libraryZoom' => 'Perbesar gambar',
@@ -364,6 +362,8 @@ return [
     'notFoundText'      => 'Halaman yang kamu cari tidak ditemukan. Mari kembali ke awal perjalanan.',
     'serverErrorTitle'  => 'Lentera sedang padam',
     'serverErrorText'   => 'Ada yang salah di server. Coba lagi sebentar lagi, atau sampaikan kode ini kepada gurumu.',
+    'requestErrorTitle' => 'Jalan ini sedang tertutup',
+    'requestErrorText'  => 'Halaman ini belum bisa dibuka sekarang. Coba muat ulang, atau kembali ke awal perjalanan, ya.',
     'backHome'          => 'Kembali ke awal',
 
     // Tahap 2 — layar bernarasi (ketuk untuk mulai), tirai, narasi peta

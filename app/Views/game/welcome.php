@@ -2,40 +2,42 @@
 /**
  * 1. Welcome — `/` → HomeController::index
  *
- * Panggung 16:9 (Dok 3 §4): logo + tagline 240, 104, 800 × 336; tombol Mulai 400, 472,
- * 480 × 112 (the owner's long carved plate, 480 × 88 dp, 20 October 2026); Pasang GELITA
- * in the bottom-right corner, 960, 640, 296 × 64, on the owner's plate with the download
- * medallion (`assets/ui/btn-install.webp`, 21 October 2026), which reopens the install
- * dialog (game/install.js). Masuk staf moved into the HUD menu (owner, 21 October 2026).
+ * Home redesign (owner, 19 November 2026; decision log *Home page, menus and maps polish*):
+ * a two-sided 16:9 stage. Left column (x 72–648): the GELITA logo, the tagline, a short
+ * invitation (`Game.welcomeLead`), the three region chips (each region's map medallion
+ * `map.pin.{code}` and its name) and one Mulai button; right: Jaka (`assets/ui/jaka-home.webp`
+ * once the lantern pose is accepted, else the waving gate picture `jaka-gate.webp`). The
+ * picture `bg.welcome` stays the background; a soft dark wash on the left keeps the text
+ * readable (`.welcome::before`). Pasang GELITA sits under Mulai in the left column.
  *
- * Logo dan SATU tombol Mulai → `/mulai`, sama untuk siswa yang sudah maupun
- * belum login (`/mulai` yang memilah). HUD dirender tanpa merek
- * (`hideBrand`): logonya sudah besar di sini. Staff sign in through the HUD
- * menu's Masuk staf row (`/admin/login`, before a student signs in). A
- * signed-in student finds Profil and Keluar in the HUD menu (HomeController::index).
+ * Mulai is lettered by the page, not by a picture (owner, 19 November 2026): the gold plate
+ * (U-01, `.btn-primary` on `#stage`) at 80 dp with the word and an arrow, so it reads in both
+ * languages; the old lettered slot `ui.btn-start` is no longer shown.
  *
- * Cinematic entrance (game/cine.js, `data-cine="welcome"`, owner 20 October
- * 2026): letterbox bars, the background pushing in from dark, the logo coming
- * into focus behind a flare, then tagline and Mulai; afterwards a light sweep
- * across the logo (`.logo-sheen`), a slow drift of the background, and the
- * WebGL sparks and light rays of the story scenes (`screen_fx_attr()`), the
- * rays coming from the light of the background picture (its sun).
+ * Logo and ONE Mulai button → `/mulai`, the same for students signed in or not (`/mulai`
+ * sorts them). The HUD is drawn without the brand (`hideBrand`). Staff sign in through the
+ * HUD menu's Masuk staf row.
  *
- * Asset package (Stage 3): `data-package-gate="link"` + `data-package-start`
- * let game/package-gate.js point Mulai at `/siapkan` while package mode is on
- * and this device does not hold the package yet (P11).
+ * Cinematic entrance (game/cine.js, `data-cine="welcome"`): letterbox bars, the background
+ * pushing in from dark, the logo coming into focus behind a flare, then the text, the chips
+ * and Mulai; Jaka walks in from the right. Afterwards a light sweep across the logo
+ * (`.logo-sheen`), a slow drift of the background, and the WebGL sparks and light rays
+ * (`screen_fx_attr()`).
  *
- * Logo : `ui.logo-hero` (landscape 1600×600) → `ui.logo` → judul teks.
- *        The tagline `Game.tagline` is always shown under the logo, in the
- *        page language (owner, 18 October 2026).
- * Mulai: gambar `ui.btn-start` (bertulisan, jadi berlaku varian bahasa
- *        `ui.btn-start.en`) → tombol CSS emas-navy (05_VIEW_UI.md §Kondisi aset hilang).
+ * Asset package (Stage 3): `data-package-gate="link"` + `data-package-start` let
+ * game/package-gate.js point Mulai at `/siapkan` while package mode is on and this device
+ * does not hold the package yet (P11).
  *
- * @var string $locale
+ * Logo : `ui.logo-hero` (landscape 1600×600) → `ui.logo` → text title.
+ *
+ * @var string                                   $locale
+ * @var list<array{code: string, name: string}>|null $regions
  */
 $logoHero = media_key_src('ui.logo-hero');
 $logo     = $logoHero ?? media_key_src('ui.logo');
-$btnStart = media_key_src_locale('ui.btn-start', $locale);
+$regions  = $regions ?? [];
+$jakaFile = is_file(FCPATH . 'assets/ui/jaka-home.webp') ? 'jaka-home.webp' : 'jaka-gate.webp';
+[$jakaW, $jakaH] = $jakaFile === 'jaka-home.webp' ? [900, 1400] : [605, 1400];
 ?>
 <?= $this->extend('layouts/game') ?>
 
@@ -45,6 +47,8 @@ $btnStart = media_key_src_locale('ui.btn-start', $locale);
 
 <?= $this->section('content') ?>
 <section class="welcome" data-package-gate="link" data-cine="welcome"<?= screen_fx_attr() ?>>
+  <img class="welcome-jaka stage-box" src="<?= esc(asset_url_versioned('ui/' . $jakaFile), 'attr') ?>" alt="" width="<?= $jakaW ?>" height="<?= $jakaH ?>" decoding="async" draggable="false">
+
   <header class="welcome-hero stage-box">
     <?php if ($logo !== null): ?>
       <?php // --logo-src: the light sweep across the logo is masked by the logo itself (cinematic.css) ?>
@@ -53,21 +57,27 @@ $btnStart = media_key_src_locale('ui.btn-start', $locale);
              <?= $logoHero !== null ? 'width="1600" height="600"' : 'width="560"' ?> fetchpriority="high">
         <?php if ($logoHero !== null): ?><span class="logo-sheen" aria-hidden="true"></span><?php endif ?>
       </h1>
-      <p class="welcome-tagline"><?= esc(lang('Game.tagline')) ?></p>
     <?php else: ?>
       <h1 class="welcome-title"><?= esc(lang('Game.appName')) ?></h1>
-      <p class="welcome-tagline"><?= esc(lang('Game.tagline')) ?></p>
+    <?php endif ?>
+    <p class="welcome-tagline"><?= esc(lang('Game.tagline')) ?></p>
+    <span class="welcome-rule" aria-hidden="true"></span>
+    <p class="welcome-lead"><?= esc(lang('Game.welcomeLead')) ?></p>
+    <?php if ($regions !== []): ?>
+      <ul class="welcome-regions" aria-label="<?= esc(lang('Game.welcomeRegions'), 'attr') ?>">
+        <?php foreach ($regions as $region): ?>
+          <?php $pin = region_art_src('pin', $region['code']) ?>
+          <li class="welcome-region">
+            <?php if ($pin !== null): ?><img src="<?= esc($pin, 'attr') ?>" alt="" decoding="async" draggable="false"><?php endif ?>
+            <span><?= esc($region['name']) ?></span>
+          </li>
+        <?php endforeach ?>
+      </ul>
     <?php endif ?>
   </header>
 
   <div class="welcome-actions stage-box">
-    <?php if ($btnStart !== null): ?>
-      <a class="btn-start is-image" href="<?= base_url('mulai') ?>" data-package-start>
-        <img src="<?= esc($btnStart, 'attr') ?>" alt="<?= esc(lang('Game.start'), 'attr') ?>" width="1200" height="220">
-      </a>
-    <?php else: ?>
-      <a class="btn-start btn btn-primary btn-xl" href="<?= base_url('mulai') ?>" data-package-start><?= esc(lang('Game.start')) ?> <?= icon('right') ?></a>
-    <?php endif ?>
+    <a class="btn-start btn btn-primary btn-xl" href="<?= base_url('mulai') ?>" data-package-start><span><?= esc(lang('Game.start')) ?></span> <?= icon('right') ?></a>
   </div>
 
   <?php /* Install offer (game/install.js): on phones and tablets a dialog over the blurred stage

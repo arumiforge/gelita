@@ -300,11 +300,12 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
   z-index: 2;
   display: grid;
   align-content: start;
-  padding: .875rem;
-  border: .1875rem solid var(--gold-500);
+  padding: .75rem;
+  /* One thin gold edge, no inner rings (owner, 19 November 2026: fewer borders) */
+  border: .125rem solid rgba(223, 192, 135, .75);
   border-radius: 1.25rem;
-  background: linear-gradient(to bottom, var(--navy-700), var(--navy-900));
-  box-shadow: inset 0 0 0 .25rem rgba(11, 19, 32, .9), inset 0 0 0 .3125rem rgba(223, 192, 135, .35), var(--shadow-2);
+  background: linear-gradient(to bottom, rgba(24, 38, 66, .97), rgba(9, 16, 30, .97));
+  box-shadow: 0 1rem 2.5rem rgba(1, 5, 14, .6);
   color: var(--ink);
   font-family: var(--font-body);
   text-shadow: none;
@@ -313,8 +314,9 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
    content-visibility: hidden slot that becomes the sheet's containing block, so the
    hidden menu sheet would sit below its button and past the stage bottom. */
 .hud-pop:not([open]) > .hud-sheet { display: none; }
-.hud-lang-sheet { top: 3.75rem; right: 7.5rem; width: 30rem; }
-.hud-sheet .hud-lang-list { display: grid; gap: .5rem; padding: 0; border-radius: 0; background: none; }
+.hud-lang-sheet { top: 3.75rem; right: 7.5rem; width: 22.5rem; }
+.hud-lang-title { margin: .25rem .5rem .5rem; color: var(--gold-300); font-size: 1.125rem; font-weight: 800; letter-spacing: .02em; }
+.hud-sheet .hud-lang-list { display: grid; gap: .25rem; padding: 0; border-radius: 0; background: none; }
 .hud-menu[open]::before {
   content: "";
   position: fixed;
@@ -323,7 +325,7 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
   background: rgba(5, 8, 15, .6);
 }
 .hud-menu > summary { position: relative; z-index: 2; }
-.hud-menu-sheet { top: 4rem; right: .5rem; width: 27.0625rem; gap: .5rem; }
+.hud-menu-sheet { top: 4rem; right: .5rem; width: 25rem; gap: .25rem; }
 .hud-sheet-head { display: flex; align-items: center; justify-content: space-between; min-height: 3.5rem; padding: 0 .25rem 0 .5rem; }
 .hud-sheet-head h2 { margin: 0; color: var(--gold-300); font-family: var(--font-body); font-size: 1.75rem; font-weight: 800; }
 .hud-sheet-close {
@@ -347,11 +349,11 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 1rem;
-  min-height: 6rem;
-  padding: 0 1.25rem;
-  border: 1px solid rgba(223, 192, 135, .18);
-  border-radius: .75rem;
-  background: rgba(27, 39, 64, .6);
+  min-height: 4.5rem;
+  padding: 0 1rem;
+  border: 0;
+  border-radius: .875rem;
+  background: none;
   color: var(--ink);
   font: inherit;
   font-size: 1.5rem;
@@ -360,11 +362,14 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
   cursor: pointer;
 }
 .hud-sheet-row[hidden] { display: none; }
-.hud-sheet-row:hover { border-color: var(--gold-500); background: rgba(38, 53, 90, .8); }
+.hud-sheet-row:hover { background: rgba(223, 192, 135, .1); }
+/* A hairline between rows instead of a frame round each one */
+.hud-sheet-row + .hud-sheet-row { box-shadow: 0 -1px 0 rgba(223, 192, 135, .12); }
+.hud-sheet-row:hover, .hud-sheet-row:hover + .hud-sheet-row, .hud-lang-row.is-active, .hud-lang-row.is-active + .hud-lang-row { box-shadow: none; }
 .hud-sheet-row:focus-visible { outline: .1875rem solid var(--gold-300); outline-offset: .125rem; }
 .hud-sheet-row > .icon { width: 2rem; height: 2rem; color: var(--gold-500); }
 /* Row symbols on the owner's round gold buttons (21 October 2026; round_icon()) */
-.hud-sheet-row > img.hud-sheet-art { width: 3rem; height: 3rem; margin: -.375rem 0; filter: drop-shadow(0 .125rem .25rem rgba(1, 7, 19, .5)); -webkit-user-drag: none; }
+.hud-sheet-row > img.hud-sheet-art { width: 3rem; height: 3rem; margin: -.375rem 0; object-fit: contain; filter: drop-shadow(0 .125rem .25rem rgba(1, 7, 19, .5)); -webkit-user-drag: none; }
 /* Always square (owner, 22 October 2026): on a phone 1rem is about 10 px, and the browser's own
    button padding (iOS: 6 px a side) left less room than the picture's height, so the base
    `max-width: 100%` squeezed it into an oval. No padding, no max-width, a fixed 1 : 1 box. */
@@ -374,13 +379,13 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 /* Background music switch row (owner, 16 November 2026): Mati / Nyala on the right */
 .hud-music-state { color: var(--ink-dim); font-size: 1.25rem; font-weight: 800; }
 .hud-music[aria-pressed="true"] .hud-music-state { color: var(--ok); }
-.hud-lang-row { min-height: 6rem; font-size: 1.625rem; font-weight: 700; }
+.hud-lang-row { min-height: 4rem; font-size: 1.375rem; font-weight: 700; }
+/* Flat flag, 3 : 2, with a soft edge so the white half shows on the dark sheet */
+.hud-flag { display: block; width: 2.75rem; height: auto; aspect-ratio: 3 / 2; border-radius: .3125rem; box-shadow: 0 0 0 .0625rem rgba(255, 255, 255, .35), 0 .125rem .375rem rgba(0, 0, 0, .45); }
 .hud-sheet-flag { width: 4.25rem; height: 4.25rem; border-radius: 50%; }
-/* The round flag buttons carry their own carved ring, a little past the old flag's edge */
-.hud-sheet-flag.is-round { width: 4.625rem; height: 4.625rem; margin: -.1875rem; filter: drop-shadow(0 .125rem .25rem rgba(1, 7, 19, .5)); }
 .hud-sheet-code { display: grid; place-items: center; width: 4.25rem; height: 4.25rem; border: .125rem solid var(--gold-500); border-radius: 50%; font-weight: 800; }
 .hud-lang-row .hud-sheet-mark { width: 2rem; height: 2rem; color: var(--ok); visibility: hidden; }
-.hud-lang-row.is-active { border-color: var(--gold-500); background: rgba(223, 192, 135, .14); }
+.hud-lang-row.is-active { background: rgba(223, 192, 135, .16); color: var(--gold-300); }
 .hud-lang-row.is-active .hud-sheet-mark { visibility: visible; }
 .hud-profile .user-avatar { width: 3.75rem; height: 3.75rem; font-size: 1.75rem; }
 .hud-profile .hud-sheet-label { display: grid; }
@@ -521,6 +526,15 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 @keyframes gem-pulse {
   50% { opacity: .6; transform: scale(1.12); }
 }
+/* The crystal in four stages of light (owner, 19 November 2026; PL-03 to PL-06): stage n after
+   n - 1 regions are done; a stage without its picture keeps the U-36 crystal. With the stage
+   pictures the light is drawn in them, so the CSS veil and glow step back (only the last stage
+   keeps its slow pulse). */
+.hud-shards .lantern[data-stage="0"] .lantern-toggle::before { background-image: var(--shards-crystal-1, var(--shards-crystal)); }
+.hud-shards .lantern[data-stage="1"] .lantern-toggle::before { background-image: var(--shards-crystal-2, var(--shards-crystal)); }
+.hud-shards .lantern[data-stage="2"] .lantern-toggle::before { background-image: var(--shards-crystal-3, var(--shards-crystal)); }
+.hud-shards .lantern[data-stage="3"] .lantern-toggle::before { background-image: var(--shards-crystal-4, var(--shards-crystal)); }
+.hud-shards.has-crystal-stages .lantern:not([data-stage="3"]) .lantern-gem { display: none; }
 /* Stage 0: the crystal still sleeps, a soft dark veil over it */
 .hud-shards .lantern[data-stage="0"] .lantern-gem {
   opacity: 1;
@@ -806,9 +820,10 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 
 /* =========================== KOORDINAT LAYAR (§4) =========================== */
 /* ---------- Halaman awal `/` ---------- */
-.welcome-hero    { --x: 240; --y: 104; --w: 800; --h: 336; } /* logo 280 dp + tagline (owner, 18 Oct 2026) */
-.welcome-actions { --x: 400; --y: 472; --w: 480; --h: 112; } /* long Mulai plate, 480 × 88 dp (owner, 20 Oct 2026) */
-.welcome-install { --x: 960; --y: 640; --w: 296; --h: 64; } /* bottom-right corner: Pasang GELITA plate (owner, 21 Oct 2026) */
+.welcome-hero    { --x: 72;  --y: 72;  --w: 600; --h: 432; } /* left column: logo, tagline, invitation, region chips (owner, 19 Nov 2026) */
+.welcome-actions { --x: 72;  --y: 512; --w: 600; --h: 96; }  /* Mulai on the gold plate, 80 dp, lettered by the page */
+.welcome-install { --x: 72;  --y: 624; --w: 296; --h: 64; }  /* Pasang GELITA under Mulai */
+.welcome-jaka    { --x: 760; --y: 72;  --w: 440; --h: 648; } /* Jaka on the right, feet on the bottom edge */
 
 /* ---------- Mulai `/mulai`, Gerbang `/gerbang` ---------- */
 /* Mulai (owner, 21 October 2026): no Jaka, the bare panel in the middle of the stage */
@@ -863,8 +878,9 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 .map-frame   { --x: 32;  --y: 72;  --w: 880; --h: 566; }
 .map-side    { --x: 936; --y: 72;  --w: 312; --h: 576; }
 /* Region map under the 84 dp tall HUD (owner, 20 October 2026): both boxes 28 dp lower */
-.map-level .map-frame { --y: 100; }
-.map-level .map-side  { --y: 100; --h: 584; }
+/* The owner's mockup (19 November 2026): map card and side card, both 600 dp tall under the 84 dp HUD */
+.map-level .map-frame { --x: 32;  --y: 96; --w: 840; --h: 600; }
+.map-level .map-side  { --x: 888; --y: 96; --w: 360; --h: 600; }
 /* Narration strip over the bottom of the map, as wide as the map (owner, 12 October 2026):
    Jaka stands at its left end and rises into the map's empty lower-left corner; the strip
    stays below the lowest pin label (Magelang, about y 530) */
@@ -963,14 +979,17 @@ body.is-dim-art .scene::after { background: radial-gradient(ellipse at 50% 45%, 
 
 /* ---------- Rak Pustaka `/pustaka` (Peta Kedu HUD, 120 dp, since 21 Oct 2026) ---------- */
 .shelf-head { --x: 88; --y: 112; --w: 1104; --h: 28; }
-.shelf-card { --y: 148; --w: 352; --h: 480; }
-.shelf-nav  { --x: 24; --y: 640; --w: 320; --h: 64; }
+.shelf-card { --y: 156; --w: 352; --h: 520; }
+/* Peta Kedu at the top left, in the shard plate's place (owner, 19 November 2026) */
+.shelf-nav  { --x: 24; --y: 28; --w: 320; --h: 64; z-index: 30; }
 .shelf-card:nth-child(1) { --x: 88; }
 .shelf-card:nth-child(2) { --x: 464; }
 .shelf-card:nth-child(3) { --x: 840; }
 
 /* ---------- Pustaka `/pustaka/{code}` ---------- */
-.book          { --x: 64;  --y: 80;  --w: 1152; --h: 568; }
+/* Reading room (owner, 19 November 2026): contents on the left, one page card on the right */
+.library-toc   { --x: 32;  --y: 72;  --w: 264;  --h: 624; }
+.book          { --x: 312; --y: 72;  --w: 936;  --h: 624; }
 .library-empty { --x: 320; --y: 200; --w: 640;  --h: 200; }
 
 /* ---------- Pustaka terkunci, Profil, Balai Refleksi ---------- */

@@ -14,9 +14,9 @@
  * - `map`       "Membuka Peta Kedu" (Tahap 2): lentera, serpihan mengorbit,
  *               status bergilir, ketukan penutup.
  * - `region`    "Menuju {wilayah}…" (Tahap 3): the region's picture full
- *               bleed, the name on the ornate navy head plate, tagline and
- *               the difficulty badge of the region dialogue under it (meter
- *               bars, "Tingkat kesulitan"; owner, 21 October 2026; no footprints);
+ *               bleed; since 19 November 2026 (owner) the title is plain
+ *               text (no plate), the bronze track right under it, and the
+ *               tagline at the foot; no difficulty badge;
  *               ±1,8 detik tanpa ketukan. Dirender sekali di <template id="tpl-curtain-region">;
  *               teksnya diisi dari tautan (`data-curtain-text`).
  *
@@ -45,8 +45,6 @@
  * @var string|null         $tapLabel  label tombol ketuk
  * @var string|null         $eyebrow   baris kecil di atas judul (`challenge`: label engine)
  * @var string|null         $tagline   `region`: tagline wilayah
- * @var string|null         $chip      `region`: difficulty name (Mudah, Sedang, Sulit)
- * @var string|null         $difficulty `region`: stored difficulty code (mudah, sedang, sulit)
  * @var string|null         $lead      `challenge`: ajakan singkat per engine
  * @var string|null         $engine    `challenge`: puzzle | rumpang | boleh | cari
  * @var int|null            $number    `challenge`: the challenge's number in its region (ring on the card)
@@ -91,7 +89,8 @@ foreach (['ui-track' => 'ui-track', 'head-plate' => 'map-head-plate'] as $var =>
         $skins[$var] = '--' . $var . ': url(&quot;' . esc(asset_url_versioned('ui/' . $file . '.webp'), 'attr') . '&quot;)';
     }
 }
-$plated = in_array($kind, ['region', 'challenge'], true) && isset($skins['head-plate']);
+// The region title is plain text since 19 November 2026 (owner: "no button"); the challenge keeps its plate
+$plated = $kind === 'challenge' && isset($skins['head-plate']);
 // `challenge`: the engine's card picture in the scarf frame of the region map (owner, 21 October 2026)
 $card = $kind === 'challenge' && is_file(FCPATH . 'assets/ui/node-card-' . $engine . '.webp') && is_file(FCPATH . 'assets/ui/node-card-frame.webp')
     ? [
@@ -144,22 +143,7 @@ $card = $kind === 'challenge' && is_file(FCPATH . 'assets/ui/node-card-' . $engi
 
     <h2 class="curtain-title<?= $plated ? ' has-plate' : '' ?>" <?= $kind === 'region' ? 'data-curtain-text="title"' : '' ?>><?= esc($title) ?></h2>
 
-    <?php if ($kind === 'region'): ?>
-      <p class="curtain-tagline" data-curtain-text="tagline"<?= ($tagline ?? '') === '' ? ' hidden' : '' ?>><?= esc($tagline ?? '') ?></p>
-      <?php // The region dialogue's difficulty badge (meter + "Tingkat kesulitan", owner 21 October 2026); core/curtain.js lights the bars from `difficulty` ?>
-      <?php $steps = ['mudah' => 1, 'sedang' => 2, 'sulit' => 3][$difficulty ?? ''] ?? 0; ?>
-      <div class="region-difficulty curtain-difficulty<?= $steps > 0 ? ' is-' . esc($difficulty, 'attr') : '' ?>" data-curtain-difficulty<?= ($chip ?? '') === '' ? ' hidden' : '' ?>>
-        <span class="region-difficulty-meter" aria-hidden="true">
-          <?php for ($i = 1; $i <= 3; $i++): ?>
-            <i<?= $i <= $steps ? ' class="is-on"' : '' ?> style="--i: <?= $i ?>"></i>
-          <?php endfor ?>
-        </span>
-        <span class="region-difficulty-text">
-          <span class="region-difficulty-label"><?= esc(lang('Game.difficultyLabel')) ?></span>
-          <span class="region-difficulty-level" data-curtain-text="chip"><?= esc($chip ?? '') ?></span>
-        </span>
-      </div>
-    <?php elseif ($kind === 'challenge'): ?>
+    <?php if ($kind === 'challenge'): ?>
       <p class="curtain-lead"><?= esc($lead ?? '') ?></p>
     <?php endif ?>
 
@@ -168,6 +152,10 @@ $card = $kind === 'challenge' && is_file(FCPATH . 'assets/ui/node-card-' . $engi
     <?php endif ?>
     <div class="curtain-beam<?= isset($skins['ui-track']) ? ' has-track' : '' ?>" role="progressbar" aria-label="<?= esc(lang('Game.curtainProgress'), 'attr') ?>"
          aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-curtain-beam><i></i></div>
+    <?php if ($kind === 'region'): ?>
+      <?php // The tagline at the foot, where the track sat before (owner, 19 November 2026) ?>
+      <p class="curtain-tagline" data-curtain-text="tagline"<?= ($tagline ?? '') === '' ? ' hidden' : '' ?>><?= esc($tagline ?? '') ?></p>
+    <?php endif ?>
     <?php if ($tap): ?>
       <?php // Small plain text, no button picture (owner, 21 October 2026); the whole curtain takes the tap too ?>
       <button type="button" class="curtain-tap" data-curtain-tap hidden><?= esc($tapLabel) ?></button>

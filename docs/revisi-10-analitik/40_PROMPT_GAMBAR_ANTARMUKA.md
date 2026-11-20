@@ -13,7 +13,7 @@ Telaah dan pesanan ini pekerjaan pengembang sendiri, bukan validasi ahli ([01 �
 1. **Satu keluarga emas berukir.** Semua bagian antarmuka di dokumen ini dibuat dari satu papan acuan gaya baru (`U-00`), yang digambar lebih dulu dan dilampirkan ke setiap baris `U-` lain. Acuan gaya lama (lembar telaah 19) tidak dipakai lagi untuk antarmuka; yang bergaya halus (17 sampai 24) ditandai `drop`.
 2. **Satu pelat per warna.** Pelat emas, biru tua, dan hijau masing-masing satu gambar dengan hiasan hanya di kedua ujung dan bagian tengah polos, sehingga satu gambar muat di setiap lebar tanpa hiasan yang teregang. Satu bingkai jendela (hiasan hanya di keempat sudut) dan satu bilah perunggu. Setiap gambar mengisi semua slot lamanya (tabel *Pemasangan*).
 3. **Penanda status tantangan** memakai cincin yang sama dengan tombol bundar `round-*`, dan setiap keadaan punya simbolnya sendiri, supaya warna tidak menjadi satu-satunya penanda: tuntas = centang emas di bidang hijau, terbuka = serpihan cahaya emas di bidang biru tua, terkunci = gembok emas timbul di bidang batu gelap.
-4. **Penanda di peta wilayah** (sudah dibangun 18 November 2026): medali 40 dp di tepi depan setiap lapangan, di bawah gambar properti lapangan itu, dengan papan nama kecil; seluruh lapangan tetap bisa diketuk.
+4. **Penanda di peta wilayah** (sudah dibangun 18 November 2026): medali 40 dp di tepi depan setiap lapangan, di bawah gambar properti lapangan itu, dengan papan nama kecil; seluruh lapangan tetap bisa diketuk. Diganti 19 November 2026: medali di kiri papan nama dalam satu baris, di lapangan tepat di depan propertinya, dan mengetuknya memilih tantangan ([04](04_CATATAN_KEPUTUSAN.md)).
 5. **Tombol Kenali** memakai lentera wilayah masing-masing (Temanggung: dua gunung dan daun kopi; Magelang: stupa; Wonosobo: candi gaya Arjuna). `icon-kenali` dibuang.
 6. **Ikon aplikasi:** Lentera Kedu emas berukir di bidang biru tua, satu induk 1024 × 1024 untuk semua ukuran, ditambah versi sederhana untuk favicon.
 7. **Latar halaman awal:** garis gunung Kedu yang sebenarnya dari foto peneliti, bagian tengah dan setengah bawah tenang dan gelap, suasana biru tua dan emas.
@@ -1610,6 +1610,204 @@ Target canvas 960 × 640 pixels; aspect 3:2. Opaque, full-bleed. Deliver WebP, n
 
 CONSTRAINTS
 No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache, oil-painting look or paper grain.
+```
+
+## Polesan halaman awal dan peta (pengembang, 19 November 2026)
+
+Wawancara pengembang 19 November 2026 ([04](04_CATATAN_KEPUTUSAN.md)): halaman awal dibagi dua (logo, judul, ajakan, tiga wilayah, dan tombol MULAI di kiri; Jaka memegang lentera di kanan), dengan latar baru bernuansa *akan memulai perjalanan ke Kedu*, dan kristal Serpihan Cahaya yang sinarnya bertambah mengikuti kemajuan siswa. Tata letaknya sudah dibangun dengan gambar sementara (latar `S-W` dan Jaka melambai `jaka-gate.webp`); gambar di bawah ini menggantikannya setelah diterima pengembang. Tombol MULAI tidak dipesan: tulisannya dibuat halaman di atas pelat emas `U-01`.
+
+| Kode | Gambar | Berkas | Kanvas |
+|---|---|---|---|
+| `PL-01` | Latar halaman awal: awal perjalanan ke Kedu | pengganti `ai-studio/game-images/assets/latar/bg.welcome.webp` (slot `bg.welcome`) | 1920 × 1080 |
+| `PL-02` | Jaka memegang Lentera Kedu | baru: `public/assets/ui/jaka-home.webp` | 900 × 1400, latar transparan |
+| `PL-03` | Kristal Serpihan Cahaya tahap 1 (Temanggung) | baru: `public/assets/ui/hud-shards-crystal-1.webp` | 444 × 564, latar transparan |
+| `PL-04` | Kristal Serpihan Cahaya tahap 2 (Magelang) | baru: `public/assets/ui/hud-shards-crystal-2.webp` | 444 × 564, latar transparan |
+| `PL-05` | Kristal Serpihan Cahaya tahap 3 (Wonosobo) | baru: `public/assets/ui/hud-shards-crystal-3.webp` | 444 × 564, latar transparan |
+| `PL-06` | Kristal Serpihan Cahaya tahap 4 (semua tuntas) | baru: `public/assets/ui/hud-shards-crystal-4.webp` | 444 × 564, latar transparan |
+| `PL-07` sampai `PL-09` | Tombol tenang emas, biru tua, hijau (putaran kedua, lihat di bawah) | baru: `public/assets/ui/ui-button-{gold,navy,green}.webp` | 960 × 160, latar transparan |
+| `PL-10` sampai `PL-12` | Latar halaman galat 404, 500, dan lainnya (putaran ketiga, lihat di bawah) | baru: `public/assets/ui/error-{404,500,400}.webp` | 1920 × 1080 |
+
+**Tahap kristal.** Tahap 1 tampil selama belum ada wilayah yang tuntas (hanya Temanggung yang terbuka), tahap 2 setelah Temanggung tuntas (Magelang terbuka), tahap 3 setelah Magelang tuntas (Wonosobo terbuka), tahap 4 setelah ketiga wilayah tuntas. Keempatnya bentuk dan ukuran yang sama dengan `U-36`; yang berubah hanya cahaya di dalamnya, makin lama makin terang. Game memilih gambar menurut tahap; selama gambar suatu tahap belum terpasang, `U-36` yang tampil.
+
+### PL-01 · Latar halaman awal: awal perjalanan ke Kedu
+
+| | |
+|---|---|
+| Kode berkas | `bg.welcome` → simpan sebagai `bg.welcome.webp` (pengganti `ai-studio/game-images/assets/latar/bg.welcome.webp`, `S-W`) |
+| Kanvas | 1920 × 1080 |
+| Lampiran | Acuan gaya `ai-studio/game-images/assets/referensi/reference.06.webp`; latar sekarang `ai-studio/game-images/assets/latar/bg.welcome.webp` (`S-W`: suasana dan garis gunung); foto `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-twin-volcanoes-from-ridge-03.jpg`, `ai-studio/chatgpt-images/inbox/reference-Kedu-researcher-Sindoro-Sumbing-sunrise-02.jpg`; tata letak halaman `docs/revisi-10-analitik/gambar/40/halaman-awal-tata-letak.webp` |
+| Dipakai | Halaman awal (logo, ajakan, tiga wilayah, dan MULAI di sepertiga kiri; Jaka berdiri di kanan, kakinya di tepi bawah), juga cadangan latar layar siapkan dan cerita pembuka |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: bg.welcome  (PL-01 · start page: the start of a journey to Kedu)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Characters: no people at all (the game places Jaka on top). The attached photos are factual references for the mountains only; do not copy a photo.
+
+SUBJECT AND COMPOSITION
+Wide 16:9 background for a start screen that says "your journey to Kedu begins here". The feeling: standing at the start of a path at first light, about to set out.
+RIGHT HALF: a winding earth footpath begins in the lower right foreground (its near end wide, at the bottom edge between 60% and 90% of the width) and winds away into the distance toward the Kedu plain. A boy will stand on this near end of the path, so keep the area from 58% to 92% of the width and from 15% to 100% of the height free of tall objects (no tree trunk, post or rock in front of it); low grass at the path's edges is fine. Far along the path, small and distant, a carved wooden gate post or a tiny stone milestone marks where the journey starts.
+BACKGROUND: the real skyline of the Kedu plain at dawn, as in the attached current background and photos: the twin volcanoes Mount Sumbing (broader) and Mount Sindoro (a clean cone) in the centre-right, a warm gold sunrise glow low behind them, mist lying in the valleys, terraced hills and a few small warm village lights far below. The mountains sit low, their peaks below 45% of the height from the top.
+LEFT THIRD (0% to 40% of the width): calm and dark for the logo, text and START button: deep navy sky above, soft dark hillside shade and rounded tree silhouettes below, very low detail, no bright spots, no lights. A leafy branch may frame the top-left corner.
+Mood: navy and gold, hopeful, the first warm light of the day; not a green daylight scene and not an orange sunset blaze.
+Accuracy — No sea, coast, islands, cliffs, waterfalls, temples, stupas or castles. No light rays. No signs with writing.
+
+DELIVERY
+Target canvas 1920 × 1080 pixels; aspect 16:9. Opaque, full-bleed. Deliver WebP, named bg.welcome.webp.
+
+CONSTRAINTS
+No watermarks, signatures, text, letters, numbers, logos, frames, neon colours, clutter, blurry edges. No painterly 2D, gouache or paper grain.
+```
+
+### PL-02 · Jaka memegang Lentera Kedu
+
+| | |
+|---|---|
+| Berkas | baru: `public/assets/ui/jaka-home.webp` (halaman awal memakainya begitu berkasnya ada; sebelum itu `jaka-gate.webp`) |
+| Kanvas | 900 × 1400, latar transparan |
+| Lampiran | `public/assets/ui/jaka-gate.webp` (Jaka: wajah, rambut, pakaian, syal merah, ransel), `ai-studio/game-images/assets/ikon/ui.lantern.webp` (`U-14`: Lentera Kedu), acuan gaya `ai-studio/game-images/assets/referensi/reference.01.webp` |
+| Dipakai | Halaman awal, kanan, tinggi tampil sekitar 640 dp dengan kaki di tepi bawah layar |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Asset: jaka-home  (PL-02 · Jaka holding the Lantern of Kedu, start page)
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 in finish; keep the exact subject specified. No painted brush or paper texture.
+
+SUBJECT
+Jaka, the same boy as in the attached picture (same face, hair, age about 11, white T-shirt, red scarf round his neck, batik sash at the waist, dark shorts, sandals, brown leather backpack): keep him exactly recognisable. Full body, standing, three-quarter view turned slightly toward the LEFT of the picture (where the game's title and START button are), ready to set out on a journey.
+He holds the attached Lantern of Kedu (the carved gold lantern with glass panels, same design) raised in his right hand at about shoulder height, a little in front of him, its small flame glowing warm gold; his left hand holds the strap of his backpack. Confident, friendly, eager smile, looking toward the left and slightly up, as if saying "let's go".
+The lantern's light falls warmly on his face, scarf and shirt from the front; his back stays in soft navy shade. A soft warm glow round the lantern only (no rays, no sparkles across the picture).
+
+DELIVERY
+Canvas exactly 900 × 1400 pixels, genuine transparent background (no fake checkerboard, no ground, no shadow plate). He fills the height: head about 40 pixels from the top, soles of his sandals on the bottom edge. The raised lantern stays inside the canvas with at least 30 pixels to spare. WebP with alpha, named jaka-home.webp.
+
+CONSTRAINTS
+No text, letters, numbers, logos, watermarks or frames. No extra characters, no background scenery. One still picture (no animation frames).
+```
+
+### PL-03 sampai PL-06 · Kristal Serpihan Cahaya, empat tahap
+
+| | |
+|---|---|
+| Berkas | baru: `public/assets/ui/hud-shards-crystal-1.webp` sampai `-4.webp` (satu per tahap; `U-36` tetap sebagai cadangan) |
+| Kanvas | 444 × 564, latar transparan, sama persis dengan `U-36` |
+| Lampiran | `public/assets/ui/hud-shards-crystal.webp` (`U-36`: bentuk kristal), `public/assets/ui/hud-shards-frame.webp` (`U-07`: bingkai dengan lubang), `ai-studio/game-images/assets/referensi/reference.27.webp`; untuk `PL-04` sampai `PL-06` juga hasil tahap sebelumnya (`out/hud-shards-crystal-1.webp`, …) |
+| Urutan | `PL-03` dulu; `PL-04`, `PL-05`, `PL-06` masing-masing melampirkan hasil tahap sebelumnya supaya bentuk dan ukurannya sama persis |
+
+Blok bersama untuk keempat prompt (tempel di awal setiap prompt, lalu satu baris *Stage* dari tabel di bawahnya):
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Interface part for GELITA, an educational game for Indonesian children aged 10–11, shown on a school Chromebook. One family with the attached GELITA style board: thick antique-gold frames carved in deep relief with Javanese ukel scroll ornaments, faces of dark navy stone (#0B1320 to #1B2740) with a very faint cloud pattern, symbols embossed in the same gold, one light from the upper left, soft contact shadow, rendered as a solid 3D object. Gold #DFC087 with highlights #F0DFB8 and warm brown shadows; no chrome, no neon, no glow line, no rainbow sheen. Ornaments are the same carving family on every part: the same scroll, the same small diamond studs, the same bead edge.
+It is a user-interface element, not a scene: no background scenery, no text, letters, numbers or logos, no people. Genuine transparent background outside the object unless the brief says otherwise; no fake checkerboard.
+Asset: hud-shards-crystal-N (light shard crystal, one of four stages of the same crystal)
+EXACTLY the same crystal as the attached hud-shards-crystal.webp (U-36): same outline, same facets, same size and position on the 444 × 564 canvas, tip straight up. Only the light inside it changes from stage to stage, so the four pictures can replace each other in the same socket without the crystal jumping. Draw ONLY the crystal: no socket, no ring, no frame, no background. A soft glow may hug the crystal's outline (at most 24 pixels beyond it) but no rays, sparkles or halo across the canvas. It must still read at 32 × 56 pixels. No text. WebP with alpha.
+```
+
+| Kode | Baris *Stage* yang ditambahkan | Simpan sebagai |
+|---|---|---|
+| `PL-03` | `Stage 1 of 4 (the journey has just begun): the crystal is mostly asleep: deep amber-brown glass with only a small warm ember of gold light low in its core; facets dim; barely any glow at the outline.` | `hud-shards-crystal-1.webp` |
+| `PL-04` | `Stage 2 of 4 (one region restored): warm amber-gold light fills the lower half of the crystal and rises toward the middle; the lower facets glow; a faint warm glow hugs the lower outline. Attach and match out/hud-shards-crystal-1.webp.` | `hud-shards-crystal-2.webp` |
+| `PL-05` | `Stage 3 of 4 (two regions restored): bright gold light fills almost the whole crystal, a hint of soft turquoise in the inner facets; a clear warm glow hugs the whole outline. Attach and match out/hud-shards-crystal-2.webp.` | `hud-shards-crystal-3.webp` |
+| `PL-06` | `Stage 4 of 4 (all of Kedu restored): the whole crystal shines radiant pale gold to white-gold from within, every facet lit, a delicate turquoise sparkle in the core, the strongest soft glow hugging the outline (still within 24 pixels). Attach and match out/hud-shards-crystal-3.webp.` | `hud-shards-crystal-4.webp` |
+
+### PL-07 sampai PL-09 · Tombol tenang (emas, biru tua, hijau)
+
+Wawancara pengembang 19 November 2026, putaran kedua ([04](04_CATATAN_KEPUTUSAN.md)): tombol yang berisi tulisan dan panah tidak lagi memakai pelat dengan ujung ukel yang ramai (`U-01` sampai `U-03`). Semua tombol bertulisan di game memakai satu keluarga *tombol tenang*: kapsul bersudut bulat yang halus dengan tepi manik tipis, tulisan di tengah, dan panah di kotak kecil di kanan (tulisan dan panah dibuat halaman). Gaya ini sudah dibangun dengan CSS; gambar di bawah ini memberi permukaan 3D yang segaya dengan keluarga emas berukir, tanpa hiasan di ujung, sehingga bisa diregang ke lebar berapa pun.
+
+| Kode | Gambar | Berkas | Kanvas |
+|---|---|---|---|
+| `PL-07` | Tombol tenang emas (aksi utama: Mulai, Lanjut, Cek jawabanku) | baru: `public/assets/ui/ui-button-gold.webp` | 960 × 160, latar transparan |
+| `PL-08` | Tombol tenang biru tua (Kembali, Batal, Kenali) | baru: `public/assets/ui/ui-button-navy.webp` | 960 × 160, latar transparan |
+| `PL-09` | Tombol tenang hijau (Lihat hasil) | baru: `public/assets/ui/ui-button-green.webp` | 960 × 160, latar transparan |
+
+| | |
+|---|---|
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.27.webp` (acuan gaya), `public/assets/ui/ui-plate-gold.webp` (`U-01`: warna emas dan cahaya, tetapi TANPA ujung ukelnya), `docs/revisi-10-analitik/gambar/40/polesan/10-tombol-tenang.webp` (tombol CSS di game: bentuk dan proporsi); untuk `PL-08` dan `PL-09` juga `out/ui-button-gold.webp` |
+| Urutan | `PL-07` dulu; `PL-08` dan `PL-09` melampirkan hasilnya supaya bentuk, tepi, dan sudutnya sama persis |
+
+```text
+GELITA CARVED GOLD UI — 2026-11-18
+Interface part for GELITA, an educational game for Indonesian children aged 10–11, shown on a school Chromebook. One family with the attached GELITA style board: thick antique-gold frames carved in deep relief with Javanese ukel scroll ornaments, faces of dark navy stone (#0B1320 to #1B2740) with a very faint cloud pattern, symbols embossed in the same gold, one light from the upper left, soft contact shadow, rendered as a solid 3D object. Gold #DFC087 with highlights #F0DFB8 and warm brown shadows; no chrome, no neon, no glow line, no rainbow sheen. Ornaments are the same carving family on every part: the same scroll, the same small diamond studs, the same bead edge.
+It is a user-interface element, not a scene: no background scenery, no text, letters, numbers or logos, no people. Genuine transparent background outside the object unless the brief says otherwise; no fake checkerboard.
+Asset: ui-button-gold (PL-07 · quiet button face, gold)
+EXCEPTION to the family's carving: this button has NO scroll ornaments, NO carved ends, NO studs and NO medallion. It is the calm member of the family, for buttons that carry their own label and arrow. A smooth, slightly domed rounded rectangle (corner radius about 28 pixels on a 160 pixel tall canvas), its face polished warm gold that runs from pale cream gold (#FFF4D2) at the top through #F2D58F to deeper gold (#CB9C48) at the bottom, lit from the upper left. A thin bright bead edge (2 to 3 pixels) runs all round just inside the outline, and a fine dark-brown outer line (#7E5A1E, 2 pixels) separates it from any background. A soft inner highlight along the top edge. The face is completely EVEN from end to end: no texture, pattern, mark or change of light along its length, so the game can stretch the middle to any width and nothing looks stretched.
+Canvas exactly 960 × 160 pixels, transparent around the button; the button fills the canvas with about 10 pixels of soft contact shadow below. No text, no arrow, no icon. WebP with alpha, named ui-button-gold.webp.
+```
+
+Untuk `PL-08` dan `PL-09`, pakai prompt yang sama dengan baris *Asset* dan warna permukaan berikut:
+
+| Kode | Baris yang diganti | Simpan sebagai |
+|---|---|---|
+| `PL-08` | `Asset: ui-button-navy (PL-08 · quiet button face, navy)` · permukaan biru tua halus dari #253A60 di atas ke #0F1B33 di bawah; tepi manik emas tipis (#DFC087, 2 piksel), garis luar gelap; *Attach and match out/ui-button-gold.webp: same shape, corners, bead edge and shadow.* | `ui-button-navy.webp` |
+| `PL-09` | `Asset: ui-button-green (PL-09 · quiet button face, green)` · permukaan hijau daun tua halus dari #3F7D50 di atas ke #1D462C di bawah; tepi manik emas tipis (#DFC087, 2 piksel), garis luar gelap; *Attach and match out/ui-button-gold.webp.* | `ui-button-green.webp` |
+
+**Pemasangan.** Gambar dipasang sebagai `border-image` dengan potongan sudut saja (seperti `ui-frame`), di bawah blok *QUIET BUTTONS* di `public/assets/css/cinematic.css`; tulisan dan kotak panah tetap dari halaman. Sebelum gambar diterima, permukaan CSS yang tampil.
+
+### PL-10 sampai PL-12 · Gambar halaman galat (404, 500, lainnya)
+
+Wawancara pengembang 19 November 2026, putaran ketiga ([04](04_CATATAN_KEPUTUSAN.md)): halaman galat ikut bergaya GELITA dan diberi gambar. Ketiga halaman memakai satu halaman bersama (`app/Views/errors/html/_gelita.php`). Atas permintaan pengembang di hari yang sama, gambar menjadi **latar layar penuh** dan tulisan (kode kecil, judul, kalimat, tombol *Kembali ke awal*) berdiri langsung di atasnya di sisi kiri, tanpa kotak atau bingkai; jadi sepertiga kiri gambar harus tenang dan gelap. Gambar tampil begitu berkasnya terpasang; sebelum itu latar biru tua polos.
+
+| Kode | Halaman | Teks halaman (sudah ada) | Berkas | Kanvas |
+|---|---|---|---|---|
+| `PL-10` | 404 | *Jalan ini tidak ada* | baru: `public/assets/ui/error-404.webp` | 1920 × 1080 |
+| `PL-11` | 500 (galat server) | *Lentera sedang padam* | baru: `public/assets/ui/error-500.webp` | 1920 × 1080 |
+| `PL-12` | 400 dan galat lain (403, 405, 429, …) | *Jalan ini sedang tertutup* | baru: `public/assets/ui/error-400.webp` | 1920 × 1080 |
+
+| | |
+|---|---|
+| Lampiran | `ai-studio/game-images/assets/referensi/reference.06.webp` (acuan gaya), `public/assets/ui/jaka-gate.webp` (Jaka, untuk `PL-10`), `ai-studio/game-images/assets/ikon/ui.lantern.webp` (`U-14`: Lentera Kedu, untuk `PL-11` dan `PL-12`) |
+| Aturan bersama | Latar layar penuh 16:9, bukan antarmuka: tanpa tulisan, angka, atau tanda; subjek di sisi KANAN (55 % sampai 95 % lebar); sepertiga KIRI tenang, gelap, dan sedikit detail karena tulisan halaman berdiri di sana tanpa kotak; tenang dan ramah, tidak menakutkan untuk anak. |
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Asset: error-404  (PL-10 · "this path does not exist")
+Characters: Jaka, the same boy as in the attached picture (white T-shirt, red scarf, batik sash, dark shorts, sandals, brown backpack), small in the scene, seen from behind three-quarter.
+
+SUBJECT AND COMPOSITION
+A misty fork in a footpath at dusk in the Kedu hills. Jaka, small, stands at the fork holding an unrolled paper map, scratching his head, puzzled but not scared. A wooden signpost with two BLANK arrow boards (no writing) points both ways; both paths fade into soft blue mist. Gentle warm light from a few distant village windows, fireflies. Calm and a little funny, never gloomy.
+Composition: wide 16:9 background. The subject sits in the RIGHT part of the picture (from 55% to 95% of the width). The LEFT third (0% to 40% of the width) is calm, dark navy (#0B1320 to #1B2740) with very little detail and no bright spots, because the page's title, sentence and button stand there directly on the picture without a box.
+
+DELIVERY
+Canvas exactly 1920 × 1080 pixels (16:9). Opaque, full-bleed. WebP, named error-404.webp.
+
+CONSTRAINTS
+No text, letters, numbers, logos, watermarks or frames on the signpost or anywhere. No painterly 2D, gouache or paper grain.
+```
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Asset: error-500  (PL-11 · "the lantern has gone out")
+Characters: no people.
+
+SUBJECT AND COMPOSITION
+The attached Lantern of Kedu (same carved gold design) standing on a mossy stone at night, its flame just gone out: a single thin, soft curl of pale smoke rises from the wick, and a tiny glowing ember still shows inside, hopeful. A few small golden sparks of light drift near it, as if waiting to light it again. Soft moonlight, deep navy surroundings, a hint of bamboo leaves. Calm, gentle, a little sad but hopeful; not broken, not burning.
+Composition: wide 16:9 background. The subject sits in the RIGHT part of the picture (from 55% to 95% of the width). The LEFT third (0% to 40% of the width) is calm, dark navy (#0B1320 to #1B2740) with very little detail and no bright spots, because the page's title, sentence and button stand there directly on the picture without a box.
+
+DELIVERY
+Canvas exactly 1920 × 1080 pixels (16:9). Opaque, full-bleed. WebP, named error-500.webp.
+
+CONSTRAINTS
+No text, letters, numbers, logos, watermarks or frames. No fire, no damage. No painterly 2D, gouache or paper grain.
+```
+
+```text
+GELITA ACTIVE VISUAL DIRECTION — 2026-10-11
+Premium stylized 3D animated adventure game for Indonesian children aged 8–14. Softly rounded dimensional forms, warm cinematic light, brass gold (#DFC087, #F0DFB8), deep navy (#0B1320, #1B2740), restrained turquoise, earthy browns and cream. Match GELITA reference.01 and reference.09 in finish and mood; keep the exact subject specified. No painted brush or paper texture.
+Asset: error-400  (PL-12 · "this path is closed for now")
+Characters: no people.
+
+SUBJECT AND COMPOSITION
+A small carved wooden village gate (Javanese style, simple) across a stone footpath in the Kedu hills at dusk, its two doors gently closed, the attached Lantern of Kedu hanging from the gate's beam and glowing softly, welcoming. Behind the gate the path continues into misty terraced hills and the far silhouette of twin volcanoes. The feeling: closed for a moment, open again soon. Friendly and calm.
+Composition: wide 16:9 background. The subject sits in the RIGHT part of the picture (from 55% to 95% of the width). The LEFT third (0% to 40% of the width) is calm, dark navy (#0B1320 to #1B2740) with very little detail and no bright spots, because the page's title, sentence and button stand there directly on the picture without a box.
+
+DELIVERY
+Canvas exactly 1920 × 1080 pixels (16:9). Opaque, full-bleed. WebP, named error-400.webp.
+
+CONSTRAINTS
+No text, letters, numbers, signs, logos, watermarks or frames. No painterly 2D, gouache or paper grain.
 ```
 
 ## Daftar periksa hasil

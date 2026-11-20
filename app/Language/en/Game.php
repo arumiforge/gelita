@@ -5,6 +5,8 @@ return [
     'appName'         => 'GELITA',
     'tagline'         => 'Kedu Literacy and Ethnopedagogy Educational Game',
     'start'           => 'Start',
+    'welcomeLead'     => 'The Mist of Forgetting covers Kedu. Help Jaka gather the Shards of Light and light the Lantern of Kedu again!',
+    'welcomeRegions'  => 'The three regions you will explore',
     'login'           => 'Log in',
     'continue'        => 'Continue',
     'back'            => 'Back',
@@ -196,12 +198,6 @@ return [
     'levelOrder'              => 'Region {0}',
     'nodesProgress'           => '{0}/{1} challenges',
     'nodesDoneOf'             => '{0} of {1} challenges done',
-    'difficulty_mudah'        => 'Easy',
-    'difficulty_sedang'       => 'Medium',
-    'difficulty_sulit'        => 'Hard',
-    // Region dialogue difficulty badge in the HUD (owner, 19 October 2026)
-    'difficultyLabel'         => 'Difficulty',
-    'difficultyLevel'         => 'Difficulty: {0}',
     'viewResult'              => 'See result',
     'mapImageAlt'             => 'Map of {0}',
 
@@ -287,6 +283,8 @@ return [
     // Library
     'pageOf'        => 'Page {0} of {1}',
     'libraryEmpty'  => 'There are no library pages for this region yet.',
+    'libraryContents' => 'Contents',
+    'libraryFinish'   => 'Done reading',
     'libraryPlayVideo' => 'Play video',
     'libraryOpenLink' => 'Open {0}',
     'libraryZoom' => 'Enlarge picture',
@@ -364,6 +362,8 @@ return [
     'notFoundText'      => 'The page you are looking for was not found. Let\'s go back to the start of the journey.',
     'serverErrorTitle'  => 'The lantern went out',
     'serverErrorText'   => 'Something went wrong on the server. Try again soon, or tell your teacher this code.',
+    'requestErrorTitle' => 'This path is closed for now',
+    'requestErrorText'  => 'This page cannot be opened right now. Try reloading it, or go back to the start of the journey.',
     'backHome'          => 'Back to the start',
 
     // Tahap 2 — narrated screens (tap to start), curtain, map narration

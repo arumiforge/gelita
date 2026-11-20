@@ -110,14 +110,17 @@ final class AvatarTest extends CIUnitTestCase
         $profile = $this->page('profil', true);
         $this->assertStringContainsString(lang('Game.avatarChange'), $profile);
         $this->assertStringContainsString('name="avatar_no" value="2" aria-pressed="false"', $profile);
-        $this->assertMatchesRegularExpression('/<span class="user-avatar" aria-hidden="true">J<\/span>/', $profile, 'HUD shows the initial');
+        // One fixed menu list (owner, 19 November 2026): the menu leaves out the row of the page
+        // the student is on, so the HUD shows the avatar on every other page, e.g. Tentang GELITA
+        $this->assertStringNotContainsString('hud-profile', $profile, 'no profile row on the profile page');
+        $this->assertMatchesRegularExpression('/<span class="user-avatar" aria-hidden="true">J<\/span>/', $this->page('tentang', true), 'HUD shows the initial');
 
         $this->send(Method::POST, 'profil/avatar', ['avatar_no' => '2'], true)->assertRedirectTo(site_url('profil'));
         $this->assertSame(2, (int) $this->participantRow()['avatar_no']);
         $this->assertSame(lang('Game.avatarSaved'), $_SESSION['message'] ?? null);
 
         $profile = $this->page('profil', true);
-        $this->assertStringContainsString('<span class="user-avatar has-art" aria-hidden="true"><img src="', $profile);
+        $this->assertStringContainsString('<span class="user-avatar has-art" aria-hidden="true"><img src="', $this->page('tentang', true));
         $this->assertStringContainsString('<span class="profile-avatar has-art" aria-hidden="true"><img src="', $profile);
         $this->assertStringContainsString('name="avatar_no" value="2" aria-pressed="true"', $profile);
 

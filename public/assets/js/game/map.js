@@ -1,8 +1,8 @@
 /**
  * Peta Kedu & peta wilayah.
  *
- * - Titik terkunci → toast, bukan navigasi (server tetap menolak bila tautan
- *   dibuka langsung).
+ * - Peta Kedu: a locked Lanjut → toast, not navigation (the server still
+ *   refuses the link opened directly). Region-map pins select their challenge.
  * - Pra-muat gambar latar wilayah/pos yang terbuka ([data-preload]) agar
  *   perpindahan halaman mulus.
  * - Peta wilayah: event `level_opened` { levelId }.
@@ -33,6 +33,8 @@
  *   JavaScript the pin's #region-{code} link shows the panel through :target.
  *   Lanjut in the panel enters the region (curtain); a locked region's Lanjut
  *   only shows the toast.
+ * - Region map (19 November 2026): a pin ([data-node-select]) selects its
+ *   challenge; the side column shows that one card (initNodeSelect).
  */
 import { $, $$, on } from '../core/dom.js';
 import { toast } from '../core/toast.js';
@@ -188,6 +190,41 @@ function initRegionSelect(screen) {
   }
 }
 
+/**
+ * Region map (owner, 19 November 2026): a pin ([data-node-select]) selects its challenge
+ * instead of leaving the page; the side column shows that challenge's card (#node-{n}) and
+ * the pin is marked aria-current. Without JavaScript the pin's #node-{n} link shows the
+ * card through :target.
+ */
+function initNodeSelect(screen) {
+  const pins = $$('[data-node-select]', screen);
+  const cards = $('.node-panels', screen);
+  if (!pins.length || !cards) return;
+
+  const select = (seq, { sound = true } = {}) => {
+    const card = document.getElementById(`node-${seq}`);
+    if (!card || !cards.contains(card)) return;
+    for (const node of $$('.node-card', cards)) node.classList.toggle('is-selected', node === card);
+    for (const pin of pins) {
+      if (pin.dataset.nodeSelect === String(seq)) pin.setAttribute('aria-current', 'true');
+      else pin.removeAttribute('aria-current');
+    }
+    if (sound) Sfx.play(card.classList.contains('is-locked') ? 'lock' : 'click');
+  };
+
+  cards.classList.add('is-live');
+  on(screen, 'click', '[data-node-select]', (event, pin) => {
+    event.preventDefault();
+    select(pin.dataset.nodeSelect);
+  });
+
+  const hashed = /^#node-(\d+)$/.exec(location.hash || '');
+  if (hashed) {
+    select(hashed[1], { sound: false });
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+}
+
 function preload(root) {
   const urls = new Set($$('[data-preload]', root).map((node) => node.dataset.preload).filter(Boolean));
   const run = () => urls.forEach((src) => { const img = new Image(); img.decoding = 'async'; img.src = src; });
@@ -199,18 +236,12 @@ export function initMap() {
   const screen = $('[data-screen="map-kedu"], [data-screen="map-level"]');
   if (!screen) return;
 
-  // A locked Pustaka link has its own modal below; no toast on top of it. On the region map
-  // a locked pin explains itself in a modal too (owner, 21 October 2026), not a corner toast
+  // A locked Pustaka link has its own modal below; no toast on top of it. (Region-map pins
+  // select their challenge since 19 November 2026: a locked one explains itself in its card.)
   on(screen, 'click', 'a[aria-disabled="true"]:not([data-library-locked])', (event, link) => {
     event.preventDefault();
     Sfx.play('lock');
-    const message = link.dataset.lockedMessage || link.textContent.trim();
-    if (screen.dataset.screen === 'map-level') {
-      const { lockedTitle, lockedOk } = link.dataset;
-      showModal({ type: 'info', icon: 'lock', title: lockedTitle || '', text: message, buttons: [{ label: lockedOk || 'OK', style: 'primary', value: 'ok' }] });
-      return;
-    }
-    toast(message, 'warn');
+    toast(link.dataset.lockedMessage || link.textContent.trim(), 'warn');
   });
 
   // Pustaka {wilayah} sits at the bottom of the side column (it used to be in the nav bar)
@@ -225,6 +256,7 @@ export function initMap() {
 
   preload(screen);
   initRegionSelect(screen);
+  initNodeSelect(screen);
 
   if (screen.dataset.screen === 'map-level') {
     emit('level_opened', { levelId: Number(screen.dataset.levelId) || null, payload: { code: screen.dataset.level || null } });

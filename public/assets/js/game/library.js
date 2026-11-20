@@ -12,6 +12,10 @@
  * pustaka tidak memengaruhi skor sama sekali — `library_opened` sudah
  * dicatat server, hanya bila isi buku benar-benar tampil.
  *
+ * Reading room (owner, 19 November 2026): the table of contents
+ * ([data-library-toc]) turns to a page without a new history entry and marks
+ * the open page (aria-current), kept in step with Lanjut/Kembali and swipes.
+ *
  * Rak: sampul yang gagal dimuat disembunyikan sehingga gradiennya tampil.
  */
 import { $, $$, el } from '../core/dom.js';
@@ -199,6 +203,16 @@ export function initLibrary() {
   initZoom(screen);
 
   const pages = $$('ol.book > .slide', screen);
+  const tocLinks = $$('[data-library-toc] .library-toc-link', screen);
+
+  /** Marks the open page in the table of contents and keeps it in view. */
+  const markContents = (index) => {
+    tocLinks.forEach((link, i) => {
+      if (i + 1 === index) link.setAttribute('aria-current', 'page');
+      else link.removeAttribute('aria-current');
+    });
+    tocLinks[index - 1]?.scrollIntoView({ block: 'nearest' });
+  };
 
   const report = (index, slide, total) => {
     emit('library_page_viewed', {
@@ -217,12 +231,24 @@ export function initLibrary() {
       $$('.book-embed', screen).forEach((box) => box.resetEmbed?.());
       $$('details.media-credit[open]', screen).forEach((details) => { details.open = false; });
       preloadPage(pages[index]);
+      markContents(index);
       report(index, slide, total);
     },
   });
 
+  // The contents turn the page like Lanjut/Kembali (same events), without a history entry
+  for (const link of tocLinks) {
+    link.addEventListener('click', (event) => {
+      const n = Number(link.getAttribute('href').replace('#page-', ''));
+      if (!slides || !Number.isFinite(n)) return;
+      event.preventDefault();
+      slides.show(n);
+    });
+  }
+
   // Halaman pertama juga dihitung "dilihat"; halaman keduanya mulai dimuat
   if (slides) {
+    markContents(slides.current);
     preloadPage(pages[slides.current]);
     report(slides.current, pages[slides.current - 1], slides.total);
   }

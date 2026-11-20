@@ -668,7 +668,8 @@ try {
     const client = student;
     const steps = [
       ['tap peta→wilayah', 'peta', `.map-pin[href$="wilayah/${REGION}"], a.btn[href$="wilayah/${REGION}"]`],
-      ['tap wilayah→misi', `wilayah/${REGION}`, `.map-pin[href*="misi/${REGION}/1"], .map-pin[href*="hasil/${REGION}/1"]`],
+      // Region-map pins select a challenge since 19 November 2026; the selected card's button leaves the map
+      ['tap wilayah→misi', `wilayah/${REGION}`, `.node-card.is-selected .node-action[href*="misi/${REGION}/"], .node-card.is-selected .node-action[href*="hasil/${REGION}/"]`],
       ['tap misi→tantangan', `misi/${REGION}/1`, `a[href$="tantangan/${REGION}/1"]`],
     ];
     console.log('- tap path');

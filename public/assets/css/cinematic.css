@@ -496,7 +496,7 @@
    the module adds .is-cine-live and plays its cues; should it never run, they
    fade in after 4 s. Under prefers-reduced-motion nothing is held. */
 .cine-ok .stage:has([data-cine]:not(.is-cine-live)) > :is(.scene, .hud),
-.cine-ok [data-cine]:not(.is-cine-live) > :is(.welcome-hero, .welcome-actions, .gate-jaka, .gate-panel, .auth-jaka, .ornate-panel, .login-panel) {
+.cine-ok [data-cine]:not(.is-cine-live) > :is(.welcome-hero, .welcome-actions, .welcome-jaka, .gate-jaka, .gate-panel, .auth-jaka, .ornate-panel, .login-panel) {
   animation: cine-hold .6s ease 4s both;
 }
 @keyframes cine-hold { from { opacity: 0; } to { opacity: 1; } }
@@ -524,7 +524,7 @@
 /* The background eases into its parallax scale instead of jumping to it */
 :is(body.is-welcome, body.is-gate-art) .scene-img { transition: opacity .6s ease, scale 1.6s ease; }
 .has-parallax .welcome-hero { translate: calc(var(--plx, 0) * 8 * var(--dp)) calc(var(--ply, 0) * 5 * var(--dp)); }
-.has-parallax .gate-jaka { translate: calc(var(--plx, 0) * -18 * var(--dp)) calc(var(--ply, 0) * -6 * var(--dp)); }
+.has-parallax :is(.gate-jaka, .welcome-jaka) { translate: calc(var(--plx, 0) * -18 * var(--dp)) calc(var(--ply, 0) * -6 * var(--dp)); }
 /* Layers moved every frame by the parallax get their own GPU layer, so a move is not a
    repaint (the logo carries a drop shadow, a mask, and a blend); the card text stays still */
 .has-parallax :is(.scene-img, .welcome-hero, .gate-jaka) { will-change: translate; }
@@ -1072,97 +1072,12 @@ body.is-cinematic .nav-bar .btn {
 /* Last line: "Masuk ke {wilayah}" in the middle between the HUD and the box */
 .dialogue-cine .cine-final { inset: calc(120 * var(--dp)) 0 calc(200 * var(--dp)); grid-auto-flow: column; place-content: center; gap: var(--gap-4); }
 
-/* HUD on this page: the region name larger; the shard pill
-   (only with progress data) under the logo instead of the centre */
+/* HUD on this page: the region name larger; the shard pill (only with progress data) */
 .is-region-dialogue .hud-identity-region { font-family: var(--font-display); font-size: 2.25rem; letter-spacing: .02em; }
-.is-region-dialogue .hud-shards { top: calc(116 * var(--dp)); left: calc(24 * var(--dp)); width: calc(360 * var(--dp)); }
+/* Top centre and a little smaller (owner, 19 November 2026; was under the logo at 24, 116):
+   320 dp wide, centred on the stage */
+.is-region-dialogue .hud-shards { --plate-w: 20rem; top: .75rem; left: 30rem; width: var(--plate-w); }
 
-/* Difficulty badge in the HUD, left of the language control (partials/region-difficulty);
-   its colour follows the level: mudah green, sedang gold, sulit ember */
-.region-difficulty { --diff: var(--gold-500); --diff-soft: rgba(223, 192, 135, .28); }
-.region-difficulty.is-mudah { --diff: var(--ok); --diff-soft: rgba(143, 209, 79, .28); }
-.region-difficulty.is-sulit { --diff: #F07A4A; --diff-soft: rgba(240, 122, 74, .3); }
-.region-difficulty {
-  position: relative;
-  display: flex;
-  align-self: center;
-  align-items: center;
-  gap: var(--gap-3);
-  margin-right: var(--gap-3);
-  overflow: hidden;
-  padding: var(--gap-2) var(--gap-5) var(--gap-2) var(--gap-4);
-  border: .125rem solid var(--diff);
-  border-radius: var(--radius-pill);
-  background: linear-gradient(to right, var(--diff-soft), rgba(11, 19, 32, .88) 60%), rgba(11, 19, 32, .6);
-  box-shadow: 0 .5rem 1.25rem rgba(11, 19, 32, .5), 0 0 1.25rem var(--diff-soft);
-  -webkit-touch-callout: none;
-  user-select: none;
-}
-/* A light sweep across the badge every few seconds. Exactly as tall as the badge
-   (a skew keeps the height): a taller sweep would leave hidden overflow inside the
-   badge that a scroll could shift, and stage-check flags it as cut-off content. */
-.region-difficulty::after {
-  content: "";
-  position: absolute;
-  inset: 0 auto 0 -40%;
-  width: 30%;
-  background: linear-gradient(100deg, transparent, rgba(255, 246, 221, .38), transparent);
-  transform: translateX(-100%) skewX(-18deg);
-  animation: diff-shine 5s ease-in-out 1.6s infinite;
-  pointer-events: none;
-}
-/* In the HUD row (56 dp tall on every band since the uniform HUD, 19 November 2026) the badge is a
-   little flatter, so it stays inside the row and the stage: about 50 dp instead of 60 */
-.hud-controls .region-difficulty { padding-block: .25rem; }
-.hud-controls .region-difficulty-level { font-size: 1.375rem; }
-.region-difficulty-meter { display: flex; align-items: flex-end; gap: .25rem; height: 1.875rem; }
-.region-difficulty-meter i {
-  width: .625rem;
-  height: calc(var(--i) * .625rem);
-  border-radius: .1875rem;
-  background: rgba(234, 240, 250, .16);
-  box-shadow: inset 0 0 0 1px rgba(234, 240, 250, .18);
-  transform-origin: 50% 100%;
-}
-.region-difficulty-meter i.is-on {
-  background: linear-gradient(to top, var(--diff), #FFF6DD 140%);
-  box-shadow: 0 0 .625rem var(--diff);
-  animation: bar-rise .5s cubic-bezier(.3, 1.6, .5, 1) calc(.5s + var(--i) * .15s) both, bar-glow 2.4s ease-in-out calc(1.4s + var(--i) * .25s) infinite;
-}
-.region-difficulty-text { display: grid; justify-items: start; line-height: 1.1; }
-.region-difficulty-label { color: var(--ink-dim); font-size: .75rem; font-weight: 700; letter-spacing: .02em; white-space: nowrap; }
-.region-difficulty-level {
-  background: linear-gradient(to bottom, #FFF6DD, var(--diff));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: .04em;
-  filter: drop-shadow(0 .125rem .375rem rgba(11, 19, 32, .8));
-  /* The clipped gradient only paints the box: room for descenders (the g of "Sedang") */
-  padding-bottom: .15em;
-  margin-bottom: -.15em;
-}
-/* Pops in once the chapter card is tapped away (without JavaScript it just stands there) */
-body:has(.dialogue-cine.is-started) .region-difficulty { animation: diff-drop .8s cubic-bezier(.25, 1.5, .45, 1) .15s both; }
-@keyframes diff-drop {
-  from { opacity: 0; transform: translateY(-1.5rem) scale(.7); }
-  60% { opacity: 1; }
-  to { opacity: 1; transform: none; }
-}
-@keyframes diff-shine {
-  0%, 55% { transform: translateX(-100%) skewX(-18deg); }
-  100% { transform: translateX(560%) skewX(-18deg); }
-}
-@keyframes bar-rise {
-  from { transform: scaleY(0); opacity: 0; }
-  to { transform: none; opacity: 1; }
-}
-@keyframes bar-glow {
-  50% { filter: brightness(1.35); box-shadow: 0 0 1rem var(--diff); }
-}
 
 /* ======================= NARASI PETA ======================= */
 /* Strip 40, 536, 864 × 98 (stage.css): slide (Jaka | balloon | n/N) + controls in a row */
@@ -1589,9 +1504,10 @@ body.has-kenal { overflow: hidden; }
 }
 
 /* ===================== TAHAP 3 · TIRAI WILAYAH ===================== */
-/* Cinematic plate (owner, 21 October 2026): the region's picture full bleed under a
-   slow zoom and a dark vignette, the name on the ornate navy head plate, the tagline
-   and difficulty chip under it, and the bronze track low on the screen */
+/* Region curtain (owner, 21 October 2026; re-laid 19 November 2026): the region's picture full
+   bleed under a slow zoom and a dark vignette; "Menuju {wilayah}…" as plain display text (no
+   plate), the bronze track right under it, and the region's tagline at the foot of the
+   screen, where the track sat before. No difficulty badge. */
 .curtain-region {
   background:
     radial-gradient(circle at 50% 40%, rgba(240, 223, 184, calc(.06 + var(--p, 0) * .08)), transparent 45%),
@@ -1603,33 +1519,23 @@ body.has-kenal { overflow: hidden; }
     linear-gradient(to bottom, rgba(5, 10, 20, .55), transparent 22%, transparent 58%, rgba(5, 10, 20, .85)),
     radial-gradient(ellipse at 50% 42%, transparent 30%, rgba(5, 10, 20, .7) 85%);
 }
-/* The core fills the curtain, so the track can sit at its foot */
-.curtain-region .curtain-core { align-content: center; align-self: stretch; gap: var(--gap-3); width: min(46rem, 100%); }
-.curtain-region .curtain-title.has-plate {
-  display: grid;
-  place-items: center;
-  width: 36rem;
-  aspect-ratio: 1200 / 271;
-  padding: 1.4% 9% 0;
-  background: var(--head-plate) center / 100% 100% no-repeat;
-  -webkit-background-clip: border-box;
-  background-clip: border-box;
-  color: #F3D58C;
-  font-size: 2.25rem;
-  line-height: 1;
-  text-shadow: 0 .125rem .25rem rgba(0, 0, 0, .9), 0 0 .75rem rgba(243, 213, 140, .35);
-  filter: drop-shadow(0 .375rem .625rem rgba(0, 0, 0, .6));
+/* The core fills the curtain, so the tagline can sit at its foot */
+.curtain-region .curtain-core { align-content: center; align-self: stretch; justify-items: center; gap: 1.25rem; width: min(46rem, 100%); }
+.curtain-region .curtain-title {
+  margin: 0;
+  color: #F7DE9C;
+  font-size: 3rem;
+  line-height: 1.1;
+  letter-spacing: .02em;
+  text-shadow: 0 .1875rem .375rem rgba(0, 0, 0, .9), 0 0 1.5rem rgba(4, 10, 20, .8), 0 0 1rem rgba(243, 213, 140, .35);
 }
 .curtain-tagline { margin: 0; color: #F1E3BF; font-family: var(--font-display); font-size: var(--fs-h3); font-style: italic; text-shadow: 0 .125rem .5rem rgba(0, 0, 0, .9); }
-/* The region dialogue's difficulty badge, centred under the tagline (owner, 21 October 2026) */
-.curtain-difficulty { justify-self: center; margin: var(--gap-2) 0 0; }
-.curtain-difficulty[hidden] { display: none; }
-.curtain-region .curtain-title, .curtain-region .curtain-tagline, .curtain-region .curtain-difficulty { animation: cine-rise .6s ease both; }
-.curtain-region .curtain-tagline { animation-delay: .15s; }
-.curtain-region .curtain-difficulty { animation-delay: .3s; }
-.curtain-region .curtain-beam { width: 16.25rem; height: .25rem; }
-/* The track sits low on the screen, clear of the picture's centre */
-.curtain-region .curtain-beam.has-track { position: absolute; bottom: 3rem; left: 50%; width: 30rem; height: 2.1875rem; translate: -50% 0; }
+.curtain-region .curtain-tagline { position: absolute; bottom: 3rem; left: 0; right: 0; text-align: center; }
+.curtain-region .curtain-tagline[hidden] { display: none; }
+.curtain-region .curtain-title, .curtain-region .curtain-beam, .curtain-region .curtain-tagline { animation: cine-rise .6s ease both; }
+.curtain-region .curtain-beam { width: 16.25rem; height: .25rem; animation-delay: .1s; }
+.curtain-region .curtain-tagline { animation-delay: .2s; }
+.curtain-region .curtain-beam.has-track { width: 26rem; height: 1.75rem; }
 
 /* ==================== TAHAP 3 · TIRAI TANTANGAN ==================== */
 /* Cinematic plate (owner, 21 October 2026), the region curtain's sibling: the region picture
@@ -1882,12 +1788,12 @@ body.has-kenal { overflow: hidden; }
 
   /* Tahap 3: tanpa gerak, hanya pudar — tiap visual tampil dalam keadaan akhirnya */
   .kenal-dot, .kenal-badge, .kenal-slide, .footstep,
-  .curtain-region .curtain-title, .curtain-region .curtain-tagline, .curtain-region .curtain-difficulty,
+  .curtain-region .curtain-title, .curtain-region .curtain-tagline, .curtain-region .curtain-beam,
   .curtain-card, .curtain-card::before, .curtain-challenge :is(.curtain-eyebrow, .curtain-title, .curtain-lead),
   .cc-puzzle i, .cc-gap b, .cc-card, .cc-light,
   .dialogue-ambience::after, .dialogue-cine .dialogue-stage > .character.is-speaking::before,
-  .dialogue-cine .dialogue-stage .character.is-speaking .character-img, .region-difficulty::after,
-  .region-difficulty-meter i.is-on, body:has(.dialogue-cine.is-started) .region-difficulty, .dialogue-cine .slide.is-current .dialogue-speaker,
+  .dialogue-cine .dialogue-stage .character.is-speaking .character-img,
+  .dialogue-cine .slide.is-current .dialogue-speaker,
   .dialogue-stage .character.is-speaking:is(.pose-happy, .pose-afraid):has(> .character-fallback),
   .narrator:has(> .narrator-fx.fx-shake) .slide.is-current :is(.kenal-caption, .dialogue-box) { animation: none; }
   .kenal-btn-face { transition: none; }
@@ -1914,3 +1820,131 @@ body.has-kenal { overflow: hidden; }
   .cc-mist { display: none; }
 }
 
+
+/* ===================== QUIET BUTTONS (owner, 19 November 2026) =====================
+   Every text button of the game (Mulai, Lanjut, Kembali, Lihat hasil, Mulai tantangan, Cek
+   jawabanku, the dialog buttons, Masuk, Daftar, …) is one quiet family instead of the carved
+   plates with long scroll ends: a smooth capsule with a thin bright bead edge, the label in the
+   middle and its arrow in a small inset box (the owner's mockup of the region map). Gold = the
+   main action, navy = the quiet one, green = Lihat hasil, red = a danger action. The carved
+   gold stays on frames, the HUD's round buttons and the medallions. The rules sit here, last,
+   under #stage, so they win over every plate rule of game.css and the sections above without
+   !important; each button keeps the height its own rule gives it. The stretchable pictures
+   ordered as PL-07 to PL-09 (document 40) may later replace the CSS faces. The Skenario
+   Digital buttons (SD pictures of 41) and the answer choices keep their own look. */
+#stage {
+  --qb-radius: .875rem;
+  --qb-shadow: 0 .3125rem .875rem rgba(2, 8, 20, .45);
+  --qb-gold-face: linear-gradient(180deg, #FFF4D2 0%, #F4D891 34%, #E2BA68 68%, #CB9C48 100%);
+  --qb-gold-edge: 0 0 0 .0625rem #7E5A1E, inset 0 0 0 .0625rem rgba(255, 249, 228, .9), inset 0 .125rem 0 rgba(255, 255, 255, .55), inset 0 -.1875rem 0 rgba(120, 80, 20, .32);
+  --qb-gold-ink: #24170A;
+  --qb-navy-face: linear-gradient(180deg, #253A60 0%, #172846 55%, #0F1B33 100%);
+  --qb-navy-edge: 0 0 0 .0625rem rgba(223, 192, 135, .8), inset 0 .0625rem 0 rgba(255, 255, 255, .14), inset 0 -.125rem 0 rgba(0, 0, 0, .35);
+  --qb-navy-ink: #F3DFA8;
+  --qb-green-face: linear-gradient(180deg, #3F7D50 0%, #2A5D3B 55%, #1D462C 100%);
+  --qb-green-edge: 0 0 0 .0625rem rgba(223, 192, 135, .85), inset 0 .0625rem 0 rgba(255, 255, 255, .2), inset 0 -.125rem 0 rgba(0, 0, 0, .3);
+  --qb-green-ink: #FBEFCB;
+  --qb-red-face: linear-gradient(180deg, #E8846B 0%, #C9533D 50%, #A63A28 100%);
+  --qb-red-edge: 0 0 0 .0625rem #6E1E12, inset 0 0 0 .0625rem rgba(255, 226, 214, .6), inset 0 .125rem 0 rgba(255, 255, 255, .3), inset 0 -.1875rem 0 rgba(80, 10, 0, .35);
+}
+
+/* The faces. Gold */
+#stage :is(.btn-primary, .btn-plate.is-next, .btn-plate.is-enter, .btn-gold-plate, .shelf-btn, .cine .narrator-next.has-label:not(:disabled), .kenal .slide-nav .btn-primary),
+#stage :is(.kedu-btn.is-primary, .result-btn.is-primary)::before {
+  border: 0;
+  border-image: none;
+  border-radius: var(--qb-radius);
+  background: var(--qb-gold-face);
+  box-shadow: var(--qb-gold-edge), var(--qb-shadow);
+  filter: none;
+}
+#stage :is(.btn-primary, .btn-plate.is-next, .btn-plate.is-enter, .btn-gold-plate, .shelf-btn, .cine .narrator-next.has-label:not(:disabled), .kenal .slide-nav .btn-primary, .kedu-btn.is-primary, .result-btn.is-primary) {
+  color: var(--qb-gold-ink);
+  text-shadow: 0 .0625rem 0 rgba(255, 248, 226, .55);
+}
+/* Navy */
+#stage :is(.btn-plate.is-back, .kenal .kenal-back, .kenal .slide-nav .btn-quiet, .modal-actions .btn-quiet, .shelf-back, .book-foot .book-prev, .btn-install-plate),
+#stage :is(.kedu-btn.is-secondary, .result-btn.is-secondary, .result-btn.is-detail)::before {
+  border: 0;
+  border-image: none;
+  border-radius: var(--qb-radius);
+  background: var(--qb-navy-face);
+  box-shadow: var(--qb-navy-edge), var(--qb-shadow);
+  filter: none;
+}
+#stage :is(.btn-plate.is-back, .kenal .kenal-back, .kenal .slide-nav .btn-quiet, .modal-actions .btn-quiet, .shelf-back, .book-foot .book-prev, .btn-install-plate, .kedu-btn.is-secondary, .result-btn.is-secondary, .result-btn.is-detail) {
+  color: var(--qb-navy-ink);
+  text-shadow: 0 .0625rem .1875rem rgba(0, 0, 0, .7);
+}
+/* Green */
+#stage .map-level .node-action.is-green {
+  border: 0;
+  border-image: none;
+  border-radius: var(--qb-radius);
+  background: var(--qb-green-face);
+  box-shadow: var(--qb-green-edge), var(--qb-shadow);
+  color: var(--qb-green-ink);
+  filter: none;
+}
+/* Red (Ya, keluar; Hapus): no hue filter on gold any more */
+#stage .btn-danger {
+  border: 0;
+  border-image: none;
+  border-radius: var(--qb-radius);
+  background: var(--qb-red-face);
+  box-shadow: var(--qb-red-edge), var(--qb-shadow);
+  color: #FFF6EE;
+  text-shadow: 0 .0625rem .1875rem rgba(70, 4, 0, .8);
+  filter: none;
+}
+
+/* Room inside: the old plates needed wide sides for their carved ends */
+#stage :is(.btn-primary, .btn-danger, .btn-gold-plate, .shelf-btn, .modal-actions .btn-quiet, .book-foot .book-prev, .map-level .node-action.is-green) { padding-inline: 1.5rem; }
+#stage :is(.btn-plate, .kenal .kenal-back, .kenal .slide-nav :is(.btn-primary, .btn-quiet), .shelf-back) { min-width: 0; padding-inline: 1.5rem; }
+#stage .cine .narrator-next.has-label:not(:disabled) { padding-inline: 1.25rem; }
+#stage :is(.result-btn.is-primary, .result-btn.is-secondary, .result-btn.is-detail) { padding-inline: 1.5rem; }
+#stage .btn-gold-plate { aspect-ratio: auto; min-width: 12rem; }
+#stage .btn-install-plate { aspect-ratio: auto; padding: 0 1.25rem; height: 3.25rem; background: var(--qb-navy-face); font-size: 1.0625rem; }
+#stage .btn-plate { gap: .625rem; }
+#stage .btn-plate .icon { display: inline-block; }
+#stage .btn-plate.is-back .icon { order: -1; }
+
+/* The arrow (or check) in a small inset box on the right, as in the owner's mockup; on the
+   back buttons the box sits on the left */
+#stage :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .kedu-btn, .result-btn, .map-level .node-action.is-green, .modal-actions .btn-quiet) > .icon {
+  box-sizing: content-box;
+  width: .9em;
+  height: .9em;
+  padding: .2em;
+  border-radius: .375rem;
+  background: rgba(255, 255, 255, .28);
+  box-shadow: inset 0 0 0 .0625rem rgba(110, 72, 18, .45);
+  stroke-width: 2.4;
+}
+#stage :is(.btn-plate.is-back, .shelf-back, .book-foot .book-prev, .kedu-btn.is-secondary, .result-btn.is-secondary, .result-btn.is-detail, .modal-actions .btn-quiet) > .icon,
+#stage .map-level .node-action.is-green > .icon {
+  background: rgba(223, 192, 135, .14);
+  box-shadow: inset 0 0 0 .0625rem rgba(223, 192, 135, .5);
+}
+
+/* Hover, press, focus: a little lift and light, the same for every colour */
+#stage :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .btn-install-plate, .map-level .node-action.is-green, .modal-actions .btn-quiet, .kenal .kenal-back, .kenal .slide-nav :is(.btn-primary, .btn-quiet), .cine .narrator-next.has-label:not(:disabled)) {
+  transition: transform .15s, filter .15s, box-shadow .15s;
+}
+@media (hover: hover) {
+  #stage :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .btn-install-plate, .map-level .node-action.is-green, .modal-actions .btn-quiet, .kenal .kenal-back, .kenal .slide-nav :is(.btn-primary, .btn-quiet), .cine .narrator-next.has-label:not(:disabled)):hover {
+    filter: brightness(1.08);
+    transform: translateY(-.0625rem);
+  }
+  #stage :is(.kedu-btn, .result-btn):hover::before { filter: brightness(1.1); }
+}
+#stage :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .btn-install-plate, .map-level .node-action.is-green, .modal-actions .btn-quiet, .kenal .kenal-back, .kenal .slide-nav :is(.btn-primary, .btn-quiet), .cine .narrator-next.has-label:not(:disabled)):active {
+  filter: brightness(1.12);
+  transform: scale(.98);
+}
+#stage :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .btn-install-plate, .map-level .node-action.is-green, .modal-actions .btn-quiet):focus-visible {
+  outline: .1875rem solid var(--gold-300);
+  outline-offset: .1875rem;
+}
+#stage :is(.btn-primary, .btn-plate, .btn-gold-plate)[aria-disabled="true"],
+#stage :is(.btn-primary, .btn-plate, .btn-gold-plate):disabled { filter: grayscale(.6); opacity: .55; transform: none; }
