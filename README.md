@@ -47,11 +47,13 @@ Sekilas (keadaan 15 November 2026, sesudah perombakan kelas 5 dan revisi penelit
 
 **Panel admin** (`/admin`)
 
-- Dasbor SaaS netral (tidak bertema permainan, tanpa chart): sidebar 248 px yang menyempit jadi ikon di bawah 1280 px, topbar dengan breadcrumb, cari siswa, dan menu akun.
+- Dasbor SaaS netral (tidak bertema permainan, tanpa chart): sidebar 248 px yang menyempit jadi ikon di bawah 1280 px dan menjadi laci di balik tombol menu di bawah 768 px; topbar dengan breadcrumb, cari siswa (kode, nama pengguna, atau nama bagi admin; kode saja bagi peneliti dan ketua), dan menu akun (panduan staf, panduan validator, ganti kata sandi, keluar). Menu sidebar berkelompok: Kerja lapangan, Data penelitian, Konten (terlipat bagi peran yang tidak menyunting konten), Pengaturan, dan Bantuan; setiap peran hanya melihat menu yang menjadi haknya.
 - Tabel formal server-side: header dan kolom pertama lengket, urut per kolom, 25/50/100 baris + total, filter dengan chip, dan **Unduh CSV** per tabel (nilai mentah, filter yang sama).
-- Ringkasan (KPI hitungan + aktivitas dan progres terbaru), Siswa + detail bertab (profil, sesi & perangkat, progres 15 tantangan, pengerjaan, jawaban dengan riwayat percobaan, navigasi, bantuan, kritik & saran), Sesi bermain + linimasa event, **Data mentah** `/admin/data/{dimensi}`, dan Kritik & saran.
-- **Unduh data** (`/admin/ekspor`, ketua peneliti): selalu milik satu studi, dengan lembar Kamus Data dan lembar `turunan_*`.
-- Khusus admin: Tantangan (tabel 15 tantangan + editor bertab Info/Variasi/Posisi benda), impor bank soal, narasi, **Gambar & mockup** (status Asli/Gambar contoh/Kosong, unggah per slot dengan jenis berkas yang diizinkan, pratinjau diperbesar dan gerakan tokoh; ikon aplikasi, latar halaman akun, dan latar slide cerita juga diganti dari panel), Kelengkapan aset, Penelitian dengan **daftar siap penelitian**, Rilis, Sekolah, Staf, dan Tata kelola (penghapusan berpratinjau, audit, retensi).
+- **Ringkasan**: sesi lapangan hari ini lebih dulu (token, kartu cetak, peringatan; peneliti dan ketua, dalam mode penelitian), KPI hitungan, ringkasan **Log teknis** (admin), peringatan kesiapan konten dan retensi, lalu Aktivitas terbaru dan Progres siswa (peneliti dan ketua).
+- **Kerja lapangan**: Sesi lapangan (token, izin, kursi, kartu cetak, sesi susulan, lembar lapangan, mulai tes), Pemantauan, Siswa + detail bertab (profil; peneliti dan ketua juga sesi & perangkat, progres, pengerjaan, jawaban dengan riwayat percobaan, navigasi, bantuan, kritik & saran), dan Atur ulang kata sandi siswa.
+- **Data penelitian**: Sesi bermain + linimasa event, **Data mentah** `/admin/data/{dimensi}`, Kritik & saran, **Unduh data** (`/admin/ekspor`: selalu milik satu studi, dengan lembar Kamus Data dan lembar `turunan_*`), Permintaan data dan Tindak lanjut (hanya selama ada studi bermode penelitian), dan Log teknis.
+- **Konten** (dilihat semua peran, disunting admin): Tantangan (tabel 15 tantangan + editor bertab Info/Variasi/Posisi benda; editor wilayah, bacaan, Pustaka, dan cerita), Impor bank soal, Rekaman narasi, **Gambar & mockup** (status Asli/Gambar contoh/Kosong, unggah per slot dengan jenis berkas yang diizinkan, pratinjau diperbesar dan gerakan tokoh; ikon aplikasi, latar halaman akun, dan latar slide cerita juga diganti dari panel; rekaman suara di `/admin/media/audio`), dan Kelengkapan aset.
+- **Pengaturan**: Penelitian (`/admin/studi`) dengan **daftar siap penelitian**, pengaturan dan ambang per studi, hitung ulang data turunan, dan penutupan studi; Status dokumen; Rilis dengan paket aset; Sekolah; Staf; Tata kelola (penghapusan berpratinjau, audit, retensi); dan Cek server.
 - Tiga peran staf (`App\Libraries\StaffAccess`): **admin** (akun siswa, konten, rilis, sekolah, staf, audit, retensi, log teknis), **peneliti** (data penelitian siswa, sesi lapangan, pemantauan, atur ulang kata sandi lewat kode), dan **ketua peneliti** (semua hak peneliti, ditambah Data mentah, unduhan, pengaturan studi, dan konfirmasi permintaan data). Peran guru dihapus pada revisi 10.
 - Otorisasi berlapis tiga (route → controller → service); halaman yang tidak menjadi hak suatu peran membalas `404`.
 
@@ -245,34 +247,38 @@ Daftar route lengkap: `php spark routes`.
 
 ## Ukuran aset wajib
 
-Ukuran gambar per slot ditetapkan di `Config\Gelita::$assetSizes`. Slot bertanda "ya" ditolak saat diunggah bila ukurannya tidak **tepat** sama; slot lain hanya ditandai "ukuran lain" di **Konten → Kelengkapan aset** (`/admin/media/kelengkapan`), yang juga mendaftar slot yang masih kosong. Permainan tetap berjalan tanpa gambar-gambar ini (gradien, monogram, gambar contoh).
+Ukuran berkas gambar per slot ditetapkan di `Config\Gelita::$assetSizes` dan berlaku untuk setiap slot yang tercantum di sana (keadaan 20 November 2026). Server membaca sendiri ukuran berkas yang diunggah (`App\Libraries\ImageFitter`): gambar yang lebih kecil dari ukuran slot pada salah satu sisi, atau yang perbandingan lebar dan tingginya meleset lebih dari 1 %, ditolak; gambar yang lebih besar dengan perbandingan yang sama diterima lalu diperkecil ke ukuran slot. SVG tidak diperiksa. **Konten → Kelengkapan aset** (`/admin/media/kelengkapan`) mendaftar slot yang masih kosong dan gambar terpasang yang ukurannya lain (**Perlu dicek**). Permainan tetap berjalan tanpa gambar-gambar ini (gradien, monogram, gambar contoh).
 
-| Slot | Ukuran (px) | Ditolak bila lain |
-|---|---|---|
-| Latar layar `bg.*` (`bg.loading`, `bg.welcome`, `bg.auth`, `bg.intro`, `bg.map`, `bg.reflection`, `bg.{wilayah}.region`) | 1920 × 1080 | ya |
-| Frame pose tokoh `char.jaka.{pose}.{1–24}`, `char.kedu.{pose}.{1–24}` (WebP/PNG transparan; sampai 24 gambar per pose, diputar berulang) | 700 × 900 | ya |
-| Logo halaman awal `ui.logo-hero` | 1600 × 600 | ya |
-| Tombol Mulai `ui.btn-start`, `ui.btn-start.en` | 720 × 360 | ya |
-| Adegan Cari Objek `challenge.{tmg,mgl,wnb}-4.scene` | 1280 × 720 | ya |
-| Gambar Susun Gambar `challenge.item.{tmg,mgl,wnb}-1-…` | 1200 × 1200 | ya |
-| Gambar pernyataan Benar atau Salah `challenge.item.{tmg,mgl,wnb}-3-…` | 480 × 360 | ya |
-| Benda Cari Objek `challenge.item.{tmg,mgl,wnb}-4-…` (latar transparan) | 240 × 240 | ya |
-| Peta wilayah `map.region.{wilayah}` | 1400 × 900 | tidak |
-| Lencana wilayah `reward.badge.{wilayah}` | 320 × 320 | tidak |
-| Gambar sampul video Pustaka | 960 × 640 (anjuran) | tidak |
+| Slot | Ukuran berkas (px) |
+|---|---|
+| Latar layar `bg.*` (termasuk `bg.loading`, `bg.welcome`, `bg.auth`, `bg.intro`, `bg.map`, `bg.reflection`, `bg.story.*`, `bg.{wilayah}.region`, `bg.{wilayah}.skenario`, `bg.result.*`, `bg.loading.*`) | 1920 × 1080 |
+| Gambar pose tokoh `char.jaka.{pose}.{1–24}`, `char.kedu.{pose}.{1–24}` (WebP/PNG transparan). Panel dan permainan masih menerima sampai 24 gambar per pose yang diputar berulang; pemilik menginginkan satu gambar diam per pose, dan penghapusan putaran itu masih terbuka di [`docs/PROGRESS.md`](docs/PROGRESS.md) | 700 × 900 |
+| Logo halaman awal `ui.logo-hero` | 1600 × 600 |
+| Tombol Mulai `ui.btn-start`, `ui.btn-start.en` (papan panjang) | 1200 × 220 |
+| Ikon bahasa `ui.lang.id`, `ui.lang.en` | 256 × 256 |
+| Pin dan lentera peta `ui.pin`, `ui.lantern`, `map.pin.*`, `map.lantern.*` | 256 × 256 |
+| Peta wilayah `map.region.{wilayah}` | 1400 × 900 |
+| Lencana wilayah `reward.badge.{wilayah}` | 320 × 320 |
+| Avatar siswa `avatar.*` | 512 × 512 |
+| Ikon aplikasi `app.favicon` / `app.apple-touch` / `app.icon-192` / `app.icon-512`, `app.icon-maskable` | 48 × 48 / 180 × 180 / 192 × 192 / 512 × 512 |
+| Adegan Cari Objek `challenge.{tmg,mgl,wnb}-4.scene` dan foto unggahan babak 2 `challenge.post.*` | 1280 × 720 |
+| Gambar Susun Gambar `challenge.item.{tmg,mgl,wnb}-1-…` | 1200 × 1200 |
+| Gambar pernyataan Benar atau Salah `challenge.item.{tmg,mgl,wnb}-3-…` | 480 × 360 |
+| Benda Cari Objek `challenge.item.{tmg,mgl,wnb}-4-…` (latar transparan) | 240 × 240 |
+| Gambar Pustaka dan sampul video Pustaka `library.*` | tanpa ukuran wajib; 960 × 640 dianjurkan |
 
-`ui.logo` dan `map.kedu` berukuran bebas. Ukuran **tampil** tiap slot di panggung 16:9 (dalam dp pada kanvas 1280 × 720) ada di `Config\Gelita::$assetDisplaySizes` dan ikut ditampilkan di **Gambar & mockup** (`/admin/media`); angka itu keterangan untuk ilustrator, bukan aturan unggah. Gambar bank penelitian tercantum di sheet DAFTAR_MEDIA workbook bank soal; daftar gambar bank lama ada di [`docs/bank-soal/README.md`](docs/bank-soal/README.md#gambar-tantangan-daftar-bank-lama).
+Pola lain di `$assetSizes` (kulit layar hasil `ui.result-*`, Peta Kedu `map.kedu-diorama`, avatar tokoh `ui.jaka-avatar*` dan `ui.kedu-avatar*`) memakai aturan yang sama. `ui.logo` dan `map.kedu` berukuran bebas. Ukuran **tampil** tiap slot di panggung 16:9 (dalam dp pada kanvas 1280 × 720) ada di `Config\Gelita::$assetDisplaySizes` dan ikut ditampilkan di **Gambar & mockup** (`/admin/media`); angka itu keterangan untuk ilustrator, bukan aturan unggah. Gambar bank penelitian tercantum di sheet DAFTAR_MEDIA workbook bank soal; daftar gambar bank lama ada di [`docs/bank-soal/README.md`](docs/bank-soal/README.md#gambar-tantangan-daftar-bank-lama).
 
 ## Audio bawaan
 
 Musik dan efek suara ikut di repositori sebagai berkas jadi. Generatornya (`tools/audio/`) dihapus 14 November 2026: audio kini dibuat di luar repositori.
 
-- **Musik gamelan** (`public/assets/audio/music/`): `map`, `region`, `challenge`, komposisi dan sintesis orisinal.
+- **Musik gamelan** (`public/assets/audio/music/`, 15 berkas): `map`, `region`, `challenge`, `welcome`, `opening`, `ending`, dan `kenal-`, `dialog-`, `tuntas-` per wilayah; komposisi dan sintesis orisinal.
 - **Efek suara** (`public/assets/audio/sfx/`): `click`, `correct`, `wrong`, `lock`, `shard`, `region-done`.
 - **Pengganti musik dan efek suara** (sejak 15 November 2026): dibuat dengan ElevenLabs seperti narasi cadangan, di `ai-studio/elevenlabs-sound/` (daftar `sounds.csv`), lalu dipasang dengan `php spark gelita:sound:install`, yang menulis `public/assets/audio/produksi.json`. Berkas lama tetap dipakai sampai penggantinya dipasang.
-- **Narasi**: daftar rekamannya dibuat `php spark gelita:narration:list` (187 rekaman per bahasa di `ai-studio/elevenlabs-voice/lines.csv`, 15 November 2026); pengisi suara tetap pilihan pertama. Tidak ikut di repositori (rekaman TTS lama dihapus 17 Oktober 2026). Naskahnya diunduh sebagai PDF di **Rekaman narasi**, rekamannya diunggah di sana (atau diletakkan di `public/assets/audio/narasi/{id,en}/` lalu `php spark gelita:narration:import`) dan disetujui. Cadangannya suara sintetis ElevenLabs (keputusan 14 November 2026; tidak ada suara sintetis lain), dikerjakan di `ai-studio/elevenlabs-voice/` dan dipasang dengan `php spark gelita:narration:install`, yang menulis `produksi.json` supaya rekamannya tercatat sebagai suara sintetis. Sejak 15 November 2026 narasi cadangan itu dipakai karena pengisi suara tidak tersedia (Mbah Kedu sudah diterima; Narator dan Jaka menyusul).
+- **Narasi**: daftar rekamannya dibuat `php spark gelita:narration:list` (187 rekaman per bahasa di `ai-studio/elevenlabs-voice/lines.csv`, 15 November 2026); pengisi suara tetap pilihan pertama. Tidak ikut di repositori (rekaman TTS lama dihapus 17 Oktober 2026). Naskahnya diunduh sebagai PDF di **Rekaman narasi**, rekamannya diunggah di sana (atau diletakkan di `public/assets/audio/narasi/{id,en}/` lalu `php spark gelita:narration:import`) dan disetujui. Cadangannya suara sintetis ElevenLabs (keputusan 14 November 2026; tidak ada suara sintetis lain), dikerjakan di `ai-studio/elevenlabs-voice/` dan dipasang dengan `php spark gelita:narration:install`, yang menulis `produksi.json` supaya rekamannya tercatat sebagai suara sintetis. Sejak 15 November 2026 narasi cadangan itu dipakai karena pengisi suara tidak tersedia (rekaman ketiga tokoh diterima pemilik 15 November 2026).
 
-Rincian, spesifikasi berkas, dan lisensi model suara ada di [`docs/audio.md`](docs/audio.md).
+Rincian dan spesifikasi berkas ada di [`docs/audio.md`](docs/audio.md).
 
 ## Catatan keamanan
 
@@ -286,7 +292,8 @@ Rincian, spesifikasi berkas, dan lisensi model suara ada di [`docs/audio.md`](do
 
 - Daftar sekolah resmi berasal dari Data Induk Pendidikan lewat cermin [`bahrye/api-sekolah`](https://github.com/bahrye/api-sekolah) (MIT); lihat [`docs/sekolah/README.md`](docs/sekolah/README.md).
 - Howler.js 2.2.4 (MIT) dan font Marcellus, Plus Jakarta Sans, IBM Plex Mono (SIL OFL 1.1) di-host sendiri; versi dan lisensinya di [`public/assets/vendor/README.md`](public/assets/vendor/README.md).
-- Model suara narasi (Mimic 3 `jv_ID`, CC BY-SA 4.0; suara Piper) beserta syarat atribusinya tercantum di [`docs/audio.md`](docs/audio.md#lisensi-dan-kredit).
+- Musik (15 berkas) dan efek suara (6 berkas) di `public/assets/audio/` adalah komposisi dan sintesis orisinal untuk GELITA dari generator yang dihapus 14 November 2026, tanpa sampel atau rekaman pihak ketiga ([`docs/audio.md`](docs/audio.md#lisensi-dan-kredit)). Pengganti ElevenLabs belum terpasang (`public/assets/audio/produksi.json` belum ada); kreditnya ditulis di sini bersama berkas pertama yang dipasang.
+- Narasi tidak ikut di repositori. Rekaman sintetis lama (Mimic 3 dan Piper) dihapus 17 Oktober 2026 dan tidak dipakai lagi. Narasi cadangan yang dipakai sekarang dibuat dengan ElevenLabs (paket berbayar Starter; 187 rekaman per bahasa di `ai-studio/elevenlabs-voice/out/`) dan dipasang di server dengan `gelita:narration:install`. Perlu dicek pemilik: apakah syarat ElevenLabs untuk paket itu meminta kredit di permainan atau di dokumen.
 - Kredit gambar dan video Pustaka Kedu tercantum per media di [`docs/pustaka/data/`](docs/pustaka/data/).
 
 ## Field sessions (research revision 10, part 2)
