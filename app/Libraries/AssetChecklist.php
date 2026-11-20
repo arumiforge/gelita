@@ -111,6 +111,7 @@ final class AssetChecklist
             $this->characterGroup(),
             $this->regionGroup(),
             $this->challengeGroup(),
+            $this->postPhotoGroup(),    // Cari Objek round 2 (31 §14 no. 14)
             $this->instrumentGroup(),   // part 8 (34 §6.1)
             $this->soundGroup(),
             $this->posterGroup(),
@@ -315,6 +316,74 @@ final class AssetChecklist
         return $items === [] ? null : [
             'title' => 'Gambar tantangan',
             'help'  => 'Gambar contoh (bertulisan GAMBAR CONTOH) harus diganti gambar asli sebelum pengambilan data, terutama Cari Objek dan pernyataan bergambar. Ukuran setiap gambar ada di halaman detailnya.',
+            'items' => $items,
+        ];
+    }
+
+    /**
+     * Cari Objek round 2 (Periksa Unggahan, 31 §12.1 and §14 no. 14): one row
+     * per post with the photo the game draws inside it. A post without a
+     * photo, or whose picture has no file yet, is drawn with the general
+     * placeholder, so it counts as missing here. Most posts reuse their
+     * region's Susun Gambar picture; the key column shows which one.
+     *
+     * @return array<string, mixed>|null
+     */
+    private function postPhotoGroup(): ?array
+    {
+        if (! $this->db->tableExists('post_scenes')) {
+            return null;
+        }
+
+        $posts = $this->db->table('post_scenes ps')
+            ->select('ps.variant_group, ps.title_id, ps.media_asset_id, cn.sequence, l.code, l.name_id')
+            ->join('challenge_nodes cn', 'cn.id = ps.challenge_node_id')
+            ->join('levels l', 'l.id = cn.level_id')
+            ->where('cn.is_active', 1)
+            ->orderBy('l.sequence', 'ASC')->orderBy('cn.sequence', 'ASC')->orderBy('ps.variant_group', 'ASC')
+            ->get()->getResultArray();
+
+        $items = [];
+
+        foreach ($posts as $post) {
+            $ref   = node_ref((string) $post['code'], (int) $post['sequence']);
+            $own   = 'challenge.post.' . $ref . '-' . $post['variant_group'];
+            $row   = $post['media_asset_id'] === null ? null : ($this->mediaById[(int) $post['media_asset_id']] ?? null);
+            $key   = $row === null ? $own : (string) $row['asset_key'];
+            $state = $row === null ? 'missing' : $this->state($key);
+
+            if ($row === null) {
+                $note = 'foto belum dipasang di unggahan; di permainan tampil gambar pengganti umum';
+            } elseif ($state === 'missing') {
+                $note = 'sudah dipasang, tetapi berkasnya belum diunggah; di permainan tampil gambar pengganti umum';
+            } elseif ((int) ($row['is_placeholder'] ?? 0) === 1) {
+                $state = 'missing';
+                $note  = 'masih gambar contoh';
+            } elseif ($state === 'wrong') {
+                $note = 'ukurannya sekarang ' . $row['width_px'] . '×' . $row['height_px'];
+            } else {
+                $note = '';
+            }
+
+            if ($row !== null && $key !== $own) {
+                $note .= ($note === '' ? '' : ' · ') . 'memakai gambar tantangan lain';
+            }
+
+            $title   = trim((string) $post['title_id']);
+            $items[] = [
+                'label'      => 'Cari Objek ' . $ref . ' variasi ' . $post['variant_group'] . ($title === '' ? '' : ' · ' . $title) . ' (' . $post['name_id'] . ')',
+                'key'        => $key,
+                'size'       => $this->sizeText($key),
+                'status'     => $state,
+                'note'       => $note,
+                'link'       => $row === null ? $this->detailLink($own) : site_url('admin/media/' . (int) $row['id']),
+                'link_label' => 'Lihat & unggah',
+            ];
+        }
+
+        return $items === [] ? null : [
+            'title' => 'Foto unggahan Cari Objek babak 2',
+            'help'  => 'Foto di dalam setiap unggahan Periksa Unggahan (satu per variasi). Bila belum ada, unggahan tampil dengan gambar pengganti umum. Foto baru dipasang petugas teknis dengan php spark gelita:katalog:impor.',
             'items' => $items,
         ];
     }
