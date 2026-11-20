@@ -115,17 +115,6 @@ if (document.querySelector('form.upload-box[action$="media/unggah"]')) {
 if (document.querySelector('form[data-narration-upload]')) {
   import('./admin/narration-upload.js').then((m) => m.initNarrationUpload());
 }
-// Character pose animation on the slot page (same player as the game)
-if (document.querySelector('.media-sprite .character[data-frames]')) {
-  import('./core/sprite.js').then((m) => {
-    m.initSprites();
-    const figure = document.querySelector('.media-sprite .character[data-frames]');
-    const replay = document.querySelector('[data-sprite-replay]');
-    if (!replay || figure.dataset.loop === '1') return;
-    replay.hidden = false;
-    replay.addEventListener('click', () => m.setFrames(figure, m.parseFrames(figure.dataset.frames), { fps: figure.dataset.fps, loop: false }));
-  });
-}
 if (document.querySelector('[data-export-id]')) {
   import('./admin/export.js').then((m) => m.initExport());
 }

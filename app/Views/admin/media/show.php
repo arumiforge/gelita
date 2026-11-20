@@ -6,8 +6,8 @@
  * (with map pins drawn on top), what the picture should show, file and
  * display sizes, format and transparency, the game screens it appears on
  * (public paths to open and check after uploading), the editor that links
- * it, and an upload form that comes back here (for character frames also a
- * form for every frame of the pose at once). Prompts are not repeated: the
+ * it, and an upload form that comes back here (a character pose is one
+ * still picture like any other slot). Prompts are not repeated: the
  * team's Katalog Aset (ai-studio/game-images/data.json) is searched by asset key.
  *
  * @var array<string, mixed>                  $row      media_assets row
@@ -19,7 +19,6 @@
  * @var array<string, mixed>|null             $prev
  * @var array<string, mixed>|null             $next
  * @var array{0: int, 1: int}|null            $counter
- * @var array{frames: list<array{n: int, src: string|null, id: int|null}>, fps: float, loop: bool, max: int}|null $pose every frame of a character pose
  */
 use App\Libraries\ImageSlots;
 use App\Libraries\MediaStore;
@@ -94,41 +93,6 @@ $src         = $isActive && $row['asset_type'] !== 'video'
       <?php endif ?>
     </div>
     <?php if ($src !== null): ?><p class="muted">Klik gambar untuk melihat ukuran penuh.</p><?php endif ?>
-
-    <?php if ($pose !== null): ?>
-      <?php $uploaded = array_values(array_filter(array_column($pose['frames'], 'src'))); ?>
-      <h3 class="panel-subtitle">Semua gambar pose ini (<?= count($uploaded) ?> dari <?= $pose['max'] ?>)</h3>
-      <ol class="media-frames">
-        <?php foreach ($pose['frames'] as $frame): ?>
-          <li<?= str_ends_with($key, '.' . $frame['n']) ? ' aria-current="true"' : '' ?>>
-            <?php if ($frame['src'] !== null): ?>
-              <a class="media-thumb" href="<?= esc($frame['src'], 'attr') ?>" target="_blank" rel="noopener" data-zoom="<?= esc($frame['src'], 'attr') ?>" data-zoom-caption="Gambar <?= $frame['n'] ?>"><img src="<?= esc($frame['src'], 'attr') ?>" alt="" loading="lazy" decoding="async"></a>
-            <?php else: ?>
-              <span class="media-thumb is-empty"><?= icon('image') ?></span>
-            <?php endif ?>
-            <?php if ($frame['id'] !== null && ! str_ends_with($key, '.' . $frame['n'])): ?>
-              <a href="<?= base_url('admin/media/' . $frame['id']) ?>">Gambar <?= $frame['n'] ?></a>
-            <?php else: ?>
-              <span>Gambar <?= $frame['n'] ?><?= $frame['src'] === null ? ' (belum ada)' : '' ?></span>
-            <?php endif ?>
-          </li>
-        <?php endforeach ?>
-      </ol>
-      <?php if (count($uploaded) >= 2): ?>
-        <h3 class="panel-subtitle">Gerakan di permainan</h3>
-        <div class="media-sprite">
-          <div class="character" data-frames="<?= esc(json_encode($uploaded, JSON_UNESCAPED_SLASHES), 'attr') ?>" data-fps="<?= $pose['fps'] ?>" data-loop="<?= $pose['loop'] ? '1' : '0' ?>">
-            <img class="character-img" src="<?= esc($uploaded[0], 'attr') ?>" alt="Gerakan pose ini">
-          </div>
-          <div>
-            <p class="muted"><?= fmt_num($pose['fps'], $pose['fps'] == (int) $pose['fps'] ? 0 : 1, 'id') ?> gambar per detik, <?= $pose['loop'] ? 'berulang terus' : 'diputar sekali lalu berhenti di gambar terakhir' ?>. Kecepatan menyesuaikan jumlah gambar yang sudah diunggah; gambar yang belum diunggah dilewati.</p>
-            <button type="button" class="btn btn-quiet btn-sm" data-sprite-replay hidden><?= icon('replay') ?> Putar ulang</button>
-          </div>
-        </div>
-      <?php else: ?>
-        <p class="muted">Gerakan baru terlihat di permainan sesudah paling sedikit dua gambar pose ini diunggah.</p>
-      <?php endif ?>
-    <?php endif ?>
 
     <?php if ($pins !== []): ?>
       <h3 class="panel-subtitle">Titik pin di atas gambar</h3>
@@ -209,26 +173,6 @@ $src         = $isActive && $row['asset_type'] !== 'video'
         <button class="btn btn-primary" type="submit"><?= icon('upload') ?> Unggah</button>
       </div>
     </form>
-
-    <?php if ($pose !== null): ?>
-      <form method="post" action="<?= base_url('admin/media/' . (int) $row['id'] . '/unggah-gerak') ?>" class="upload-box" enctype="multipart/form-data" id="unggah-gerak">
-        <?= csrf_field() ?>
-        <h2 class="panel-title"><?= icon('upload') ?> Unggah semua gambar gerak pose ini</h2>
-        <div class="field">
-          <label for="frames">Gambar gerak (boleh pilih banyak) <span class="req">*</span></label>
-          <input type="file" id="frames" name="frames[]" multiple required accept="<?= esc($accept, 'attr') ?>">
-          <p class="field-help">Diurutkan menurut nama berkas (mis. <code>jaka-idle-01.webp</code> … <code>jaka-idle-24.webp</code>) lalu disimpan sebagai gambar berurutan. Gambar <?= esc($typesText) ?> berlatar transparan, <?= $required !== null ? $required[0] . ' × ' . $required[1] . ' piksel atau lebih besar dengan bentuk sama' : 'ukuran sama' ?>. Gambar lama dengan nomor yang sama diganti.</p>
-        </div>
-        <div class="field">
-          <label for="frames-start">Mulai dari gambar ke-</label>
-          <input type="number" id="frames-start" name="start" min="1" max="<?= $pose['max'] ?>" value="1" inputmode="numeric">
-          <p class="field-help">Server menerima paling banyak <?= (int) ini_get('max_file_uploads') ?: 20 ?> berkas sekali unggah. Bila lebih, unggah sisanya lagi dengan nomor awal berikutnya.</p>
-        </div>
-        <div class="form-actions">
-          <button class="btn btn-primary" type="submit"><?= icon('upload') ?> Unggah gambar gerak</button>
-        </div>
-      </form>
-    <?php endif ?>
 
     <?php if ($isActive): ?>
       <section class="panel">

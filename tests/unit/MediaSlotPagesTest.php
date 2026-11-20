@@ -82,7 +82,7 @@ final class MediaSlotPagesTest extends CIUnitTestCase
         // Only the slot table: the upload box lists every key for its datalist
         $characters = $this->listed($this->page('admin/media?kelompok=character'));
         $this->assertStringContainsString('char.kedu.weak.1', $characters);
-        $this->assertStringNotContainsString('char.kedu.weak.2', $characters, 'frames 2–24 get a row only when uploaded');
+        $this->assertStringNotContainsString('char.kedu.weak.2', $characters, 'one still picture per pose, no frames 2–24');
         $this->assertStringNotContainsString('bg.welcome', $characters);
         $this->assertStringContainsString('Kelompok: <b>Tokoh</b>', $characters);
 
@@ -150,51 +150,34 @@ final class MediaSlotPagesTest extends CIUnitTestCase
     {
         $uses = (new MediaUsage())->characterUses();
         $this->assertContains('/daftar/3', array_column($uses['char.jaka.bow.1'], 'path'));
-        // Balai Refleksi shows Mbah Kedu's avatar since 21 October 2026, not his pose frame
+        // Balai Refleksi shows Mbah Kedu's avatar since 21 October 2026, not his pose picture
         $this->assertNotContains('/refleksi', array_column($uses['char.kedu.smile.1'] ?? [], 'path'));
         $this->assertContains('/selesai/1', array_column($uses['char.kedu.smile.1'], 'path'));
 
         $html = $this->page('admin/media/' . $this->mediaId('char.kedu.weak.1'));
-        $this->assertStringContainsString('Mbah Kedu · pose lemah · gambar 1', $html);
+        $this->assertStringContainsString('Mbah Kedu · pose lemah', $html);
+        $this->assertStringNotContainsString('gambar 1', $html);
         $this->assertStringContainsString('baris cerita', $html);
         $this->assertStringContainsString('Sebelumnya', $html);
         $this->assertStringContainsString('Berikutnya', $html);
     }
 
     /**
-     * Display plan Phase A4: the pose's frames side by side, then the
-     * animation once 2+ frames exist; up to 24 frames per pose, always
-     * looping, and a form that uploads all frames of the pose at once.
+     * Owner: a character pose is one still picture. Its detail page has the
+     * single upload form of every slot: no frame strip, no animation, no
+     * upload of all frames at once (the route `unggah-gerak` is gone).
      */
-    public function testCharacterDetailShowsThePoseFramesAndAnimation(): void
+    public function testCharacterDetailIsOneStillPicture(): void
     {
-        $page = 'admin/media/' . $this->mediaId('char.kedu.weak.1');
+        $html = $this->page('admin/media/' . $this->mediaId('char.kedu.weak.1'));
 
-        $html = $this->page($page);
-        $this->assertStringContainsString('Semua gambar pose ini (0 dari 24)', $html);
-        $this->assertSame(24, substr_count($html, '(belum ada)'), 'twenty-four empty frames');
-        $this->assertStringContainsString('paling sedikit dua gambar', $html);
+        $this->assertStringContainsString('action="' . site_url('admin/media/unggah') . '"', $html);
+        $this->assertStringContainsString('Satu gambar diam per pose', $html);
+        $this->assertStringNotContainsString('unggah-gerak', $html);
+        $this->assertStringNotContainsString('name="frames[]"', $html);
         $this->assertStringNotContainsString('data-frames=', $html);
-        $this->assertStringContainsString('action="' . site_url('admin/media/' . $this->mediaId('char.kedu.weak.1') . '/unggah-gerak') . '"', $html);
-        $this->assertStringContainsString('name="frames[]" multiple', $html);
-
-        $this->sqlite->table('media_assets')->where('asset_key', 'char.kedu.weak.1')
-            ->update(['is_active' => 1, 'storage_path' => 'assets/uploads/char.kedu.weak.1.png', 'sha256' => str_repeat('1', 64)]);
-        $this->sqlite->table('media_assets')->insert([
-            'asset_key' => 'char.kedu.weak.2', 'asset_type' => 'sprite_frame', 'storage_path' => 'assets/uploads/char.kedu.weak.2.png',
-            'mime_type' => 'image/png', 'sha256' => str_repeat('2', 64), 'is_active' => 1,
-        ]);
-        service('contentRepository')->flush();
-        service('cache')->clean();
-
-        $html = $this->page($page);
-        $this->assertSame(22, substr_count($html, '(belum ada)'));
-        $this->assertMatchesRegularExpression('/class="character" data-frames=.\["[^\]]*char\.kedu\.weak\.1\.png[^\]]*char\.kedu\.weak\.2\.png[^\]]*\]/', html_entity_decode($html));
-        $this->assertStringContainsString('data-fps="0.57" data-loop="1"', $html, '2 frames in the 3.5 s loop of kedu.weak, repeating');
-        $this->assertStringContainsString('berulang terus', $html);
-        $this->assertStringContainsString('href="' . site_url('admin/media/' . $this->mediaId('char.kedu.weak.2')) . '">Gambar 2</a>', $html, 'other frames open their own page');
-        $this->assertStringContainsString('data-sprite-replay', $html);
-        $this->assertStringContainsString('data-zoom="', $html, 'frames open in the lightbox');
+        $this->assertStringNotContainsString('Semua gambar pose ini', $html);
+        $this->assertStringNotContainsString('gambar gerak', mb_strtolower($html));
     }
 
     public function testListThumbnailsOpenTheLightbox(): void
@@ -204,7 +187,7 @@ final class MediaSlotPagesTest extends CIUnitTestCase
 
         $html = $this->page('admin/media?kelompok=character');
 
-        $this->assertMatchesRegularExpression('/<a class="media-thumb" href="[^"]*char\.jaka\.idle\.1\.png\?v=aaaa[^"]*" target="_blank" rel="noopener" data-zoom=/', $html, 'sprite frames get a thumbnail too');
+        $this->assertMatchesRegularExpression('/<a class="media-thumb" href="[^"]*char\.jaka\.idle\.1\.png\?v=aaaa[^"]*" target="_blank" rel="noopener" data-zoom=/', $html, 'pose pictures (stored as sprite_frame) get a thumbnail too');
     }
 
     /** Display plan A6, widened by the owner on 19 October 2026: story slides and the three region contexts get a background field. */

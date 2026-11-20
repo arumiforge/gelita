@@ -211,7 +211,7 @@ final class RegionStoryTest extends CIUnitTestCase
 
     // ------------------------------------------------------------ /dialog/{code}
 
-    public function testDialogueIsNarratedWithChapterCardAndPoseFrames(): void
+    public function testDialogueIsNarratedWithChapterCardAndPosePictures(): void
     {
         $this->media = ['char.jaka.afraid.1' => 'assets/char/jaka-afraid-1.png', 'char.jaka.afraid.2' => 'assets/char/jaka-afraid-2.png', 'char.kedu.idle.1' => 'assets/char/kedu-idle-1.png'];
 
@@ -227,13 +227,13 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString(esc(lang('Game.chapterTap')), $page);
         $this->assertStringContainsString('class="footsteps tap-trail"', $page);
 
-        // Frame pose per baris dari server: pose ada → pose; pose belum ada → idle; tanpa gambar → kosong
+        // The pose picture of each line from the server: pose present → pose; missing → idle; no picture → empty
         $this->assertMatchesRegularExpression('/id="line-1"[^>]*data-pose="afraid" data-pose-src="[^"]*jaka-afraid-1\.png"/', $page);
         $this->assertMatchesRegularExpression('/id="line-2"[^>]*data-pose="worried" data-pose-src="[^"]*kedu-idle-1\.png"[^>]*data-effect="fog"/', $page);
         $this->assertMatchesRegularExpression('/id="line-3"[^>]*data-pose="happy" data-pose-src=""/', $page);
-        // Several frames: the line also carries them for core/sprite.js; one frame: none
-        $this->assertMatchesRegularExpression('/id="line-1"[^>]*data-pose-frames="[^"]*jaka-afraid-2\.png[^"]*" data-pose-fps="1" data-pose-loop="1"/', $page);
-        $this->assertDoesNotMatchRegularExpression('/id="line-2"[^>]*data-pose-frames/', $page);
+        // One still picture per pose: an old frame 2 is never sent
+        $this->assertStringNotContainsString('jaka-afraid-2.png', $page);
+        $this->assertStringNotContainsString('data-pose-frames', $page);
 
         // Panggung dua tokoh, akhir ke peta wilayah, nav Lewati tetap
         $this->assertStringContainsString('character-jaka stage-left', $page);
