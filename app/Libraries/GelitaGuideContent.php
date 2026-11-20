@@ -1250,7 +1250,7 @@ final class GelitaGuideContent extends GuideContent
                     'table' => [['Peran', 'Memegang', 'Tidak boleh'], [
                         ['Admin', 'Sistem, akun, identitas, isi game, rilis, catatan teknis', 'Melihat atau mengunduh data penelitian'],
                         ['Peneliti ([[P1–P3|peneliti-lapangan]])', 'Sesi lapangan, [[token|token-sesi]], pemantauan, data satu siswa lewat kodenya, atur ulang kata sandi lewat kode', 'Melihat nama siswa; mengunduh data'],
-                        ['Ketua peneliti', 'Semua hak peneliti, unduhan data, [[data turunan|data-turunan]], pengaturan studi, konfirmasi permintaan data', 'Melihat nama siswa di sistem'],
+                        ['Ketua peneliti', 'Semua hak peneliti, unduhan data, [[data turunan|data-turunan]], pengaturan studi, rilis dan paket aset, konfirmasi permintaan data', 'Melihat nama siswa di sistem'],
                     ]],
                     'why' => [
                         'Admin menjaga sistem dan identitas, peneliti memegang data yang sudah disamarkan. Pemisahan ini membuat tidak ada satu akun pun yang melihat nama bersama jawaban.',
