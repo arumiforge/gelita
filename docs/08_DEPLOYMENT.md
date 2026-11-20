@@ -771,12 +771,14 @@ sudo -u www-data php spark gelita:katalog:impor             # install
 - The catalogue has one still picture for each of the ten character poses (red-scarf Jaka and Mbah Kedu; the 24 frames per pose of 12 October 2026 were cut to frame 1 on 20 November 2026, owner: still pictures only). Every run removes the old frames 2 to 24 of a pose from the server (rows and uploaded files; *dihapus* in the report, *akan dihapus* in a dry run), whoever installed them. The Cari Objek objects sit on the tables and shelves of the catalogue scenes (question bank layout of 12 October 2026). On a server whose bank still has the old positions, the command moves every object that is still at its old position, as long as the installed scene is the catalogue one; an object an admin placed elsewhere stays (`--timpa` moves it too). Re-importing the bank (`gelita:bank:import`) gives the same positions, but resets every admin placement to the bank.
 - **After a new catalogue edition** (pull the repo first), run the command again. An image installed from an earlier edition is reinstalled when its catalogue file changed and skipped when it is the same; admin uploads stay.
 - The two round language icons of the HUD switch come from the catalogue references `reference.20` (ID) and `reference.19` (EN) and are stored as `ui.lang.id`/`ui.lang.en`. Until both exist the switch shows the text ID / EN.
-- **Old art kept as an admin upload** (e.g. an old lurik Jaka pose or an older start button uploaded in the panel before the catalogue existed) is never replaced by a plain run. The report says "sudah ada gambar unggahan admin" for such a slot. Replace only those slots with `--kunci` (comma-separated, `*` allowed), dry run first:
+- **Old art kept as an admin upload** (e.g. an old lurik Jaka pose or an older language icon uploaded in the panel before the catalogue existed) is never replaced by a plain run. The report says "sudah ada gambar unggahan admin" for such a slot. Replace only those slots with `--kunci` (comma-separated, `*` allowed), dry run first:
 
   ```bash
-  sudo -u www-data php spark gelita:katalog:impor --timpa --kunci="ui.btn-start*,ui.lang.*,char.jaka.*" --dry-run
-  sudo -u www-data php spark gelita:katalog:impor --timpa --kunci="ui.btn-start*,ui.lang.*,char.jaka.*"
+  sudo -u www-data php spark gelita:katalog:impor --timpa --kunci="ui.lang.*,char.jaka.*" --dry-run
+  sudo -u www-data php spark gelita:katalog:impor --timpa --kunci="ui.lang.*,char.jaka.*"
   ```
+
+- **Retired slots** (`CatalogImporter::RETIRED_SLOTS`, since 20 November 2026 the lettered start-button pictures `ui.btn-start` / `ui.btn-start.en`): every run removes their `media_assets` rows and their files in the upload folder, admin uploads included, so the Media page no longer lists them and the next asset package no longer carries them. A dry run lists them as *akan dihapus*. When the active release uses an asset package, build and publish a new one afterwards.
 
 - **Susun Gambar edition of 14 October 2026.** The catalogue has all 30 puzzle images (variants a–j, 1200 × 1200, full-bleed daylight scenes): 21 new d–j images and four redrawn ones (`challenge.item.tmg-1-01`, `tmg-1-03`, `mgl-1-01`, `wnb-1-07`; the old night or white-background versions failed or nearly failed the tile check). A plain run fills the d–j slots and replaces the four when the old version came from the catalogue. If an admin uploaded one of the four by hand, the report says "sudah ada gambar unggahan admin"; replace just those four:
 

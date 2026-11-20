@@ -82,6 +82,9 @@ use RuntimeException;
  * 15 November 2026: no frame loop). Every run removes the rows and uploaded
  * files of the old frames 2 to 24 of a pose (dropFrames()), whoever
  * installed them, since the game no longer reads them.
+ *
+ * Slots no page reads any more (RETIRED_SLOTS) lose their rows and uploaded
+ * files on every run too (dropRetired()), whoever installed them.
  */
 final class CatalogImporter
 {
@@ -251,6 +254,16 @@ final class CatalogImporter
         'to-remove' => 'akan dihapus',
     ];
 
+    /**
+     * Slots no page reads any more. Every run removes their rows and uploaded
+     * files (dropRetired()), whoever installed them, so a server that had them
+     * stops listing them on the Media page and packing them into the asset
+     * package. The lettered MULAI/START picture buttons: the home page draws
+     * the CSS `.btn-start` button in every language since PR #431 (owner,
+     * 20 November 2026).
+     */
+    public const RETIRED_SLOTS = ['ui.btn-start', 'ui.btn-start.en'];
+
     private BaseConnection $db;
 
     private MediaStore $store;
@@ -354,7 +367,7 @@ final class CatalogImporter
      *
      * @param bool         $dryRun    report what would happen, change nothing
      * @param bool         $overwrite also replace images uploaded by an admin or installed before
-     * @param list<string> $only      fnmatch patterns (e.g. `char.jaka.*`, `ui.btn-start*`); when given,
+     * @param list<string> $only      fnmatch patterns (e.g. `char.jaka.*`, `ui.lang.*`); when given,
      *                                only entries whose catalogue key (or, for a reference, the slot it
      *                                fills) matches are handled, so `$overwrite` can be limited to them
      *
@@ -405,9 +418,12 @@ final class CatalogImporter
         }
 
         $this->dropFrames($dryRun);
+        $this->dropRetired($dryRun);
 
         $installed = count(array_filter($this->report, static fn (array $r): bool => $r['status'] === 'installed'));
         $removed   = count(array_filter($this->report, static fn (array $r): bool => $r['status'] === 'removed'));
+        $removedSlots  = count(array_filter($this->report, static fn (array $r): bool => $r['status'] === 'removed' && in_array($r['target'], self::RETIRED_SLOTS, true)));
+        $removedFrames = $removed - $removedSlots;
 
         if (! $dryRun && $installed + $removed > 0) {
             service('contentRepository')->flush();
@@ -415,7 +431,8 @@ final class CatalogImporter
             model(AuditLogModel::class)->record('catalog_import', [
                 'staff_user_id' => $staffId,
                 'metadata'      => ['installed' => $installed, 'overwrite' => $overwrite, 'source' => basename(rtrim($this->root, '/\\'))]
-                    + ($removed > 0 ? ['removed_frames' => $removed] : []),
+                    + ($removedFrames > 0 ? ['removed_frames' => $removedFrames] : [])
+                    + ($removedSlots > 0 ? ['removed_slots' => $removedSlots] : []),
             ]);
         }
 
@@ -428,8 +445,8 @@ final class CatalogImporter
         $key = $entry['key'];
         $ref = self::ICON_SLOTS[$key] ?? self::REFERENCE_SLOTS[$key] ?? null;
 
-        if (($ref === null && (str_starts_with($key, 'reference.') || str_starts_with($key, 'icon.'))) || in_array($key, ['ui.placeholder', 'app.icon.svg'], true)) {
-            return; // references, other icons, and the placeholder are not game slots
+        if (($ref === null && (str_starts_with($key, 'reference.') || str_starts_with($key, 'icon.'))) || in_array($key, ['ui.placeholder', 'app.icon.svg', ...self::RETIRED_SLOTS], true)) {
+            return; // references, other icons, the placeholder, and retired slots are not game slots
         }
 
         if (! is_file($entry['file'])) {
@@ -845,6 +862,43 @@ final class CatalogImporter
 
             $media->delete((int) $row['id']);
             $this->add($key, $key, 'removed', 'satu pose satu gambar diam: gambar gerak ini tidak dipakai lagi');
+        }
+    }
+
+    /**
+     * Remove the rows of RETIRED_SLOTS, catalogue rows and admin uploads
+     * alike; the file is deleted when it lies in the upload folder. A dry run
+     * only lists them; `$only` limits the run as for installing.
+     */
+    private function dropRetired(bool $dryRun): void
+    {
+        $media = model(MediaAssetModel::class);
+
+        foreach (self::RETIRED_SLOTS as $key) {
+            if ($this->only !== [] && ! $this->matches($key, $this->only)) {
+                continue;
+            }
+
+            $row = $media->findByKey($key);
+
+            if ($row === null) {
+                continue;
+            }
+
+            if ($dryRun) {
+                $this->add($key, $key, 'to-remove', 'slot ini tidak dipakai lagi oleh halaman mana pun');
+
+                continue;
+            }
+
+            $path = (string) $row['storage_path'];
+
+            if ($path !== '' && str_starts_with($path, MediaStore::uploadDir()) && is_file(FCPATH . $path)) {
+                @unlink(FCPATH . $path);
+            }
+
+            $media->delete((int) $row['id']);
+            $this->add($key, $key, 'removed', 'slot ini tidak dipakai lagi oleh halaman mana pun');
         }
     }
 

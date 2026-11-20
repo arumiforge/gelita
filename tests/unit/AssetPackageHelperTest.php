@@ -51,7 +51,7 @@ final class AssetPackageHelperTest extends CIUnitTestCase
         $this->assertNull($this->packages->activeCode());
         $this->assertSame($this->normal('bg.welcome'), media_src($this->media['bg.welcome']));
         $this->assertSame($this->normal('bg.welcome'), media_key_src('bg.welcome'));
-        $this->assertSame($this->normal('ui.btn-start.en'), media_key_src_locale('ui.btn-start', 'en'));
+        $this->assertSame($this->normal('ui.logo-hero.en'), media_key_src_locale('ui.logo-hero', 'en'));
         $this->assertSame($this->normal('audio.narasi.id.intro-01'), audio_src($this->audioId('audio.narasi.id.intro-01')));
     }
 
@@ -63,8 +63,8 @@ final class AssetPackageHelperTest extends CIUnitTestCase
         $this->assertSame(base_url($this->urls['bg.welcome']), media_src($this->media['bg.welcome']));
         $this->assertStringStartsWith(base_url('assets/p/'), media_src($this->media['bg.welcome']));
         $this->assertSame(base_url($this->urls['bg.auth']), media_key_src('bg.auth'));
-        $this->assertSame(base_url($this->urls['ui.btn-start.en']), media_key_src_locale('ui.btn-start', 'en'));
-        $this->assertSame(base_url($this->urls['ui.btn-start']), media_key_src_locale('ui.btn-start', 'id'));
+        $this->assertSame(base_url($this->urls['ui.logo-hero.en']), media_key_src_locale('ui.logo-hero', 'en'));
+        $this->assertSame(base_url($this->urls['ui.logo-hero']), media_key_src_locale('ui.logo-hero', 'id'));
         $this->assertSame(base_url($this->urls['char.jaka.idle.1']), character_frame_src('jaka', 'happy'));
         $this->assertSame(base_url($this->urls['audio.narasi.en.intro-01']), audio_src($this->audioId('audio.narasi.en.intro-01')));
 

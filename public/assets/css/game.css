@@ -1546,8 +1546,10 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
 .map-level .node-panels { position: relative; display: block; margin: 0; padding: 1rem 0 0; list-style: none; }
 .map-level .node-panels .node-card { display: none; }
 .map-level .node-panels .node-card.is-selected { display: grid; }
-.map-level .node-panels:has(.node-card:target) .node-card { display: none; }
-.map-level .node-panels:has(.node-card:target) .node-card:target { display: grid; }
+/* The :target fallback only applies before map.js takes over: replaceState drops the hash
+   but not :target, so without :not(.is-live) an old target card would outrank is-selected */
+.map-level .node-panels:not(.is-live):has(.node-card:target) .node-card { display: none; }
+.map-level .node-panels:not(.is-live):has(.node-card:target) .node-card:target { display: grid; }
 .map-level .node-panels.is-live .node-card { display: none; }
 .map-level .node-panels.is-live .node-card.is-selected { display: grid; }
 .map-level .node-panels .node-card { grid-template-columns: minmax(0, 1fr); align-content: start; gap: .5rem; animation: node-card-in .25s ease-out; }
@@ -2777,8 +2779,9 @@ body.is-gate-art .scene::after { background: linear-gradient(to left, rgba(1, 30
   pointer-events: none;
 }
 .kedu-panel.is-locked .kedu-panel-art { filter: grayscale(.85) brightness(.55); }
-.kedu-panels:has(.kedu-panel:target) .kedu-panel { display: none; }
-.kedu-panels:has(.kedu-panel:target) .kedu-panel:target { display: grid; }
+/* :target fallback only without JS (see .node-panels: replaceState keeps :target) */
+.kedu-panels:not(.is-live):has(.kedu-panel:target) .kedu-panel { display: none; }
+.kedu-panels:not(.is-live):has(.kedu-panel:target) .kedu-panel:target { display: grid; }
 .kedu-panels.is-live .kedu-panel { display: none; }
 .kedu-panels.is-live .kedu-panel.is-selected { display: grid; }
 .kedu-panel { text-shadow: 0 .125rem .375rem rgba(4, 10, 20, .9), 0 0 .75rem rgba(4, 10, 20, .7); }

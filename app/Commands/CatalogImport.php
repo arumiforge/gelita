@@ -30,7 +30,7 @@ class CatalogImport extends BaseCommand
         '--sumber'  => 'Folder Katalog Aset (bawaan: ai-studio/game-images di folder aplikasi)',
         '--dry-run' => 'Tampilkan yang akan dipasang tanpa mengubah apa pun',
         '--timpa'   => 'Ganti juga gambar yang sudah diunggah admin atau dipasang sebelumnya',
-        '--kunci'   => 'Hanya slot ini, dipisah koma, boleh pakai * (mis. "ui.btn-start*,ui.lang.*,char.jaka.*")',
+        '--kunci'   => 'Hanya slot ini, dipisah koma, boleh pakai * (mis. "ui.lang.*,char.jaka.*")',
     ];
 
     public function run(array $params)
@@ -60,18 +60,20 @@ class CatalogImport extends BaseCommand
             CLI::table($rows, ['Katalog', 'Slot', 'Hasil', 'Keterangan']);
         }
 
-        $count = array_count_values(array_column($report, 'status')) + ['installed' => 0, 'planned' => 0, 'skipped' => 0, 'warning' => 0, 'failed' => 0];
+        $count = array_count_values(array_column($report, 'status')) + ['installed' => 0, 'planned' => 0, 'skipped' => 0, 'warning' => 0, 'failed' => 0, 'removed' => 0, 'to-remove' => 0];
 
         CLI::write(sprintf(
-            '%d dipasang, %d akan dipasang, %d dilewati, %d perlu dicek, %d gagal.',
+            '%d dipasang, %d akan dipasang, %d dilewati, %d perlu dicek, %d gagal, %d dihapus, %d akan dihapus.',
             $count['installed'],
             $count['planned'],
             $count['skipped'],
             $count['warning'],
             $count['failed'],
+            $count['removed'],
+            $count['to-remove'],
         ), $count['failed'] > 0 || $count['warning'] > 0 ? 'yellow' : 'green');
 
-        if (! $dryRun && $count['installed'] > 0 && service('assetPackages')->releasePackageCode() !== null) {
+        if (! $dryRun && $count['installed'] + $count['removed'] > 0 && service('assetPackages')->releasePackageCode() !== null) {
             CLI::write('Rilis aktif memakai paket aset: bangun paket baru (php spark gelita:paket:bangun) dan pasang di rilis agar siswa melihat gambar baru.', 'yellow');
         }
 

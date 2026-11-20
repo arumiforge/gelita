@@ -435,7 +435,7 @@ Helper `gelita`, `content`, dan `ui` dimuat global lewat `Config\Autoload::$help
 | `node_ref(string $levelCode, int $sequence)` | `('magelang', 4)` → `mgl-4` |
 | `rich_text(string $text)` | format ringan teks Pustaka (`## subjudul`, `- butir`, `> Tahukah kamu?`, `Sumber:`, `**tebal**`, `*miring*`); seluruh teks di-escape lebih dulu |
 | `media_src()`, `media_exists()`, `media_first()` | URL media aktif menurut id, dengan pengganti `assets/ui/placeholder.svg` |
-| `media_key_src()`, `media_key_src_locale()` | URL media menurut `asset_key`, termasuk varian bahasa (`ui.btn-start.en`); `null` bila belum diunggah |
+| `media_key_src()`, `media_key_src_locale()` | URL media menurut `asset_key`, termasuk varian bahasa (`{kunci}.en`); `null` bila belum diunggah |
 | `character_frame_src()` | the still picture of a character pose (`char.{jaka\|kedu}.{pose}.1`; one picture per pose, no frame loop), cadangan pose `idle` |
 | `media_catalog()`, `audio_catalog()` | daftar media dan audio untuk pemilih di panel |
 | `audio_src(?int $audioAssetId)` | URL audio; `null` bila belum `approved` atau medianya nonaktif |

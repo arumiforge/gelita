@@ -364,10 +364,12 @@ if (! function_exists('skin_style_attr')) {
 
 if (! function_exists('media_key_src_locale')) {
     /**
-     * media_key_src() untuk gambar bertulisan yang punya varian bahasa
-     * (05_VIEW_UI.md §Kondisi aset hilang): `{kunci}.{locale}` dicoba lebih
-     * dulu, lalu kunci dasar (varian Indonesia). `ui.btn-start` + en →
-     * `ui.btn-start.en`, bila tidak ada → `ui.btn-start`.
+     * media_key_src() for a lettered picture with a language variant
+     * (05_VIEW_UI.md §Kondisi aset hilang): `{key}.{locale}` is tried first,
+     * then the base key (the Indonesian variant): `{key}` + en reads
+     * `{key}.en`, else `{key}`. No game slot has such a pair at present (the
+     * lettered start button was retired on 20 November 2026); the helper
+     * stays for the next lettered picture.
      */
     function media_key_src_locale(string $assetKey, ?string $locale = null): ?string
     {
