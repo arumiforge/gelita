@@ -83,7 +83,7 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $r
           <?php endforeach ?>
         </select>
       </div>
-      <div class="field">
+      <div class="field span-2">
         <label class="check"><input type="checkbox" id="<?= $p ?>-field" name="field_mode" value="1" <?= (int) $value('field_mode', 0) === 1 ? 'checked' : '' ?>>
           <span><?= esc(lang('Admin.fieldModeLabel')) ?></span></label>
         <p class="field-help"><?= esc(lang('Admin.fieldModeHelp')) ?></p>
@@ -96,14 +96,14 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $r
           <?php endforeach ?>
         </select>
       </div>
-      <div class="field">
+      <div class="field span-2">
         <label for="<?= $p ?>-retention">Lama penyimpanan data (hari)</label>
         <input type="number" id="<?= $p ?>-retention" name="retention_days" min="1" max="36525" value="<?= esc($value('retention_days', 1825), 'attr') ?>">
         <p class="field-help">Setelah lewat, sistem mengingatkan admin untuk menghapus data siswa penelitian ini (tidak dihapus otomatis). 1825 hari = 5 tahun. <?= esc(lang('Admin.retentionStudyHelp')) ?></p>
       </div>
-      <div class="field span-all">
+      <div class="field span-2">
         <label for="<?= $p ?>-desc">Keterangan</label>
-        <textarea id="<?= $p ?>-desc" name="description" rows="2"><?= esc($value('description')) ?></textarea>
+        <textarea id="<?= $p ?>-desc" name="description" rows="3"><?= esc($value('description')) ?></textarea>
       </div>
       <?php if (! $readiness['ready'] && $value('status') !== 'active'): ?>
         <div class="alert alert-warn span-all confirm-not-ready">
@@ -182,6 +182,16 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $r
       <fieldset class="form-readonly" disabled><?= $fields($study, 's' . $sid) ?></fieldset>
       <p class="filter-locked"><?= icon('lock') ?> Hanya ketua peneliti yang dapat mengubah penelitian.</p>
     <?php endif ?>
+    <?php // Owner, 20 November 2026: what happens to unfinished challenges between meetings ?>
+    <?php if ((int) ($study['field_mode'] ?? 0) === 1): ?>
+      <div class="alert alert-info" data-open-attempts-note>
+        <?= icon('info') ?>
+        <div>
+          <p><?= esc(lang('Admin.studyOpenAttemptsNote')) ?></p>
+          <p class="muted"><?= esc($lastRetention === null ? lang('Admin.studyRetentionNever') : lang('Admin.studyRetentionLast', [fmt_date($lastRetention)])) ?></p>
+        </div>
+      </div>
+    <?php endif ?>
     <?php // Part 4 (30 §10.2): the closure page of a field-mode study ?>
     <?php if ((int) ($study['field_mode'] ?? 0) === 1): ?>
       <p><a class="btn btn-sm btn-quiet" href="<?= base_url('admin/studi/' . $sid . '/penutupan') ?>"><?= esc(lang('Admin.closureTitle')) ?></a></p>
@@ -204,7 +214,7 @@ $fields = static function (?array $study, string $p) use ($choices, $locales, $r
       <?php endforeach ?>
     </fieldset>
     <?php if (staff_can('studies.manage')): ?>
-      <div class="form-actions"><button class="btn btn-sm" type="submit"><?= icon('check') ?> <?= esc(lang('Admin.instrumentSettings')) ?></button></div>
+      <div class="form-actions"><button class="btn btn-sm" type="submit"><?= icon('check') ?> <?= esc(lang('Admin.instrumentSettingsSave')) ?></button></div>
     <?php endif ?>
   </form>
 <?php endforeach ?>

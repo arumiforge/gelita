@@ -39,6 +39,32 @@ class RawDataController extends BaseAdminController
         'turunan_tes'        => 'Turunan: tes',
     ];
 
+    /**
+     * Sidebar sub-menu and page sections (owner, 20 November 2026): the tabs
+     * grouped by what a head researcher looks for. Group key => [label key,
+     * lead key, tabs]. Every tab of TABS is in exactly one group.
+     */
+    public const GROUPS = [
+        'jawaban' => ['Admin.rawGroupAnswers', 'Admin.rawGroupAnswersLead', ['jawaban', 'percobaan', 'pengerjaan', 'bantuan']],
+        'jejak'   => ['Admin.rawGroupTrail', 'Admin.rawGroupTrailLead', ['progres', 'selesai', 'navigasi', 'event']],
+        'turunan' => ['Admin.rawGroupDerived', 'Admin.rawGroupDerivedLead', [
+            'turunan_peserta', 'turunan_sesi', 'turunan_tantangan', 'turunan_pengerjaan',
+            'turunan_butir', 'turunan_percobaan', 'turunan_pengamatan', 'turunan_tes',
+        ]],
+    ];
+
+    /** Group key of a tab. */
+    public static function groupOf(string $dimension): string
+    {
+        foreach (self::GROUPS as $key => [, , $tabs]) {
+            if (in_array($dimension, $tabs, true)) {
+                return $key;
+            }
+        }
+
+        return array_key_first(self::GROUPS);
+    }
+
     /** Filter tabel data mentah (§8.3). */
     public const FILTERS = ['participant_code', 'school_id', 'level_id', 'node_id', 'variant_group', 'date_from'];
 
@@ -78,7 +104,8 @@ class RawDataController extends BaseAdminController
             'table'      => $table,
             'filters'    => $filters,
             'readable'   => $this->readableAnswers(),
-            'breadcrumb' => [self::TABS[$dimension] => null],
+            'group'      => self::groupOf($dimension),
+            'breadcrumb' => [lang(self::GROUPS[self::groupOf($dimension)][0]) => 'admin/data/' . self::GROUPS[self::groupOf($dimension)][2][0], self::TABS[$dimension] => null],
             // Part 9 (35 §10.4): the run status above a derived tab, for the running field-mode study
             'derivedStudy' => \App\Libraries\DerivedSheets::has($dimension) ? model(\App\Models\ResearchStudyModel::class)->fieldModeStudy() : null,
         ]);

@@ -16,8 +16,20 @@ class ParticipantAuthFilter implements FilterInterface
 
     public function before(RequestInterface $request, $arguments = null)
     {
-        if ($this->checkParticipant(false)['status'] === 'OK') {
+        $status = $this->checkParticipant(false)['status'];
+
+        if ($status === 'OK') {
             return null;
+        }
+
+        // No running study (owner, 20 November 2026): /keluar still works; the
+        // token and password pages log out and send the student to /masuk
+        if ($status === 'NO_STUDY') {
+            if (trim($request->getPath(), '/') === 'keluar') {
+                return null;
+            }
+
+            $this->logoutWithoutStudy();
         }
 
         return redirect()->to(site_url('masuk'));

@@ -98,10 +98,12 @@ export async function handleApiError(error, { mapUrl = url('peta'), onNetwork = 
       if (sessionModalOpen) break;
       sessionModalOpen = true;
       const { showModal } = await import('./modal.js');
+      // No running study (reason GAME_NOT_OPEN): the server's own friendly sentence
+      const notOpen = error.payload?.reason === 'GAME_NOT_OPEN' && error.message;
       await showModal({
         type: 'info',
         title: t('sessionTitle'),
-        text: t('sessionExpired'),
+        text: notOpen || t('sessionExpired'),
         dismissible: false,
         buttons: [{ label: t('loginAgain'), style: 'primary', value: 'login' }],
       });

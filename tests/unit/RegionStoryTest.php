@@ -297,7 +297,7 @@ final class RegionStoryTest extends CIUnitTestCase
         // Full-size HUD with the shard pill (placed under the logo); Lewati under the menu button (is-cinematic)
         $this->assertStringContainsString('is-cinematic is-region-dialogue', $page);
         $this->assertStringContainsString('class="hud hud-menu-style"', $page);
-        $this->assertStringContainsString('class="hud-shards"', $page);
+        $this->assertStringContainsString('<div class="hud-shards has-crystal-stages"', $page);
         $this->assertStringContainsString('class="story dialogue narrator cine dialogue-cine"', $page);
         $this->assertStringNotContainsString('dialogue-head', $page);
         $this->assertStringNotContainsString('class="cine-top"', $page, 'no progress in the HUD centre');
@@ -345,7 +345,7 @@ final class RegionStoryTest extends CIUnitTestCase
         $this->assertStringContainsString('<a class="hud-ctl hud-back" href="' . esc(base_url('wilayah/temanggung'), 'attr') . '" aria-label="' . esc(lang('Game.backToRegion')) . '" data-tip="' . esc(lang('Game.backToRegion')) . '">', $page);
         $this->assertStringNotContainsString('hud-back-plate', $page);
         $this->assertStringNotContainsString('<nav class="nav-bar"', $page);
-        $this->assertStringNotContainsString('class="hud-shards"', $page);
+        $this->assertStringNotContainsString('<div class="hud-shards', $page);
         $this->assertStringNotContainsString('hud-identity-region', $page);
         $this->assertStringNotContainsString('character-name', $page);
     }
@@ -601,7 +601,7 @@ final class RegionStoryTest extends CIUnitTestCase
 
         // Menu HUD with the title and the shard lantern; Profil is in the menu, not in the page buttons
         $this->assertStringContainsString('<span class="hud-identity-region">' . lang('Game.mapKedu') . '</span>', $page);
-        $this->assertMatchesRegularExpression('/<div class="hud-shards" style="[^"]*">(?:<!--[^>]*-->\s*)?<details class="lantern"/', $page);
+        $this->assertMatchesRegularExpression('/<div class="hud-shards has-crystal-stages" style="[^"]*">(?:<!--[^>]*-->\s*)?<details class="lantern"/', $page);
         // Page buttons right of the story, under the region panel; no bottom nav bar
         $this->assertStringNotContainsString('class="nav-bar"', $page);
         $nav = substr($page, (int) strpos($page, '<nav class="kedu-nav stage-box"'));
