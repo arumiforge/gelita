@@ -1275,6 +1275,16 @@ Owner, 20 November 2026: the head researcher could not build or publish an asset
 - **Tests:** `StaffAccessTest` route matrix (ketua true for `admin/studi/rilis` and `/paket`), `PackageSwitchTest` (the no-preview role is now peneliti).
 - **Not changed:** document `27` (§4 table and K13) still says admin only; this entry supersedes it.
 
+## Retention keeps open field-session attempts while the study runs (20 November 2026, branch `retensi-mode-penelitian`)
+
+Owner, 20 November 2026. Field sessions leave open attempts open (`28` K14) so a student continues them at the next meeting or make-up session (`33` K3), but `gelita:retention:run` abandoned every attempt untouched for 24 hours (`attemptAbandonHours`). With meetings a week apart, and five schools on different days, an unfinished first attempt was closed with 0 stars the first night and could not be continued. Postponing the nightly run until data collection ends was considered and rejected: the deployment guide schedules it daily, a single manual run would close everything at once, and expired data downloads would stay on the server.
+
+- **`RetentionService::abandonStaleAttempts()`** skips attempts whose game session has a `field_session_id` while the session's study is `active`. Other attempts are unchanged. The first run after the study stops being active closes them as before.
+- **`RetentionService::abandonOpenStudyAttempts()`**, called by `StudyController::update()` when a field-mode study goes to *Ditutup*: every open attempt of that study's field sessions becomes `abandoned` now, event `challenge_abandoned {via: retention, reason: study_closed}`, segment `left_via = retention`; audit `study_open_attempts_closed {attempts}`. `via` stays `retention` so the data dictionary (`35`, `skipped_left_count`) needs no new value.
+- **Portability.** The candidate query used `GREATEST` and `HAVING` without `GROUP BY` and unprefixed sub-query tables, so it never ran on SQLite and had no test. It now uses `MAX` on SQLite, `prefixTable()` for the sub-queries, and filters `last_touch` in PHP.
+- **Panel.** `/admin/studi` shows, under a field-mode study, a plain note for the head researcher (`Admin.studyOpenAttemptsNote`) and the time of the last nightly run from audit `retention_run` (or that it never ran on this server).
+- **Docs.** `docs/08_DEPLOYMENT.md` → *Tugas Terjadwal*: the exception and "keep the daily schedule".
+- **Tests.** `FieldAttemptRetentionTest` (kept while running, abandoned outside a field session, abandoned once the study is closed, closed at once by the study close with its event and segment), `StudyRetentionTest::testClosingAFieldModeStudyClosesItsOpenAttemptsAndTheNoteExplainsIt`. Not checked on MariaDB yet (the smoke test of this session does).
 ## Students without a running study (20 November 2026, branch `masuk-tanpa-studi`)
 
 Owner, 20 November 2026: with no study at status `active` (Berjalan), login, registration and every game request ended in an uncaught `RuntimeException` from `ResearchStudyModel::requireActiveStudy()` (HTTP 500). The approved design:

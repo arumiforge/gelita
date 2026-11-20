@@ -472,6 +472,7 @@ return [
         'seat_saved'                     => 'Mengisi kursi siswa',
         'seat_changed'                   => 'Mengubah kursi siswa',
         'study_field_mode_changed'       => 'Mengubah mode penelitian',
+        'study_open_attempts_closed'     => 'Menutup tantangan yang belum selesai saat penelitian ditutup',
         'school_research_code_set'       => 'Mengisi kode sekolah penelitian',
         'test_account_created'           => 'Membuat akun uji',
         'test_account_reset'             => 'Mengatur ulang akun uji',
@@ -828,6 +829,10 @@ return [
     'feedbackField_hardest_part' => 'Paling sulit',
     'feedbackField_new_learning' => 'Hal baru',
     'feedbackField_suggestion'   => 'Saran',
+    // Owner, 20 November 2026: open attempts between meetings, nightly clean-up
+    'studyOpenAttemptsNote' => 'Tantangan yang belum selesai saat sesi lapangan ditutup tetap disimpan, dan siswa dapat melanjutkannya di pertemuan atau sesi susulan berikutnya, berapa hari pun jaraknya. Tantangan yang tetap belum selesai ditutup otomatis (tanpa bintang) saat status penelitian diubah ke Ditutup. Pembersihan harian di server tidak menutupnya selama penelitian masih Berjalan.',
+    'studyRetentionLast'    => 'Pembersihan harian terakhir berjalan: {0}.',
+    'studyRetentionNever'   => 'Pembersihan harian belum pernah berjalan di server ini. Minta admin memasang jadwalnya (panduan pemasangan server, bagian Tugas Terjadwal).',
     'retentionMinStudy' => 'Masa simpan studi penelitian paling singkat 7305 hari (20 tahun).',
     'retentionStudyHelp' => 'Penelitian dengan mode penelitian paling singkat 7305 hari (20 tahun), dihitung sejak penelitian selesai. Bila mode penelitian dicentang dan angkanya lebih kecil, sistem mengisi 7305 hari saat disimpan.',
     'researchPrivacyRequired' => 'Nyalakan pengaman data penelitian (gelita.researchPrivacy) di server sebelum studi penelitian diaktifkan.',

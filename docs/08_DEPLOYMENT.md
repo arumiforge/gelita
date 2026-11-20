@@ -1187,6 +1187,8 @@ Backup lebih sering pada jam sekolah disengaja: sesi kelas berlangsung pada jam 
 
 `gelita:retention:run` menandai sesi dan pengerjaan yang menganggur (`paused`/`abandoned`), menghapus berkas unduhan data yang kedaluwarsa (`gelita.exportRetentionDays`, bawaan 7 hari), dan membuat **pratinjau** penghapusan untuk data yang melewati `research_studies.retention_days`. Data penelitian tidak pernah dihapus tanpa persetujuan manusia di **Tata kelola** (`/admin/tata-kelola`); pratinjau yang menunggu tampil sebagai peringatan di **Ringkasan**.
 
+Open attempts in a game session of a field session are not abandoned by the nightly run while their study is *Berjalan* (owner, 20 November 2026): field sessions leave them open so the student continues them at the next meeting or make-up session, often days later. They are closed (`challenge_abandoned {via: retention, reason: study_closed}`) when the head researcher sets the study to *Ditutup*. Keep the daily schedule; postponing the run is not needed and leaves expired data downloads on the server.
+
 **Jalur L** — `crontab -e` sebagai `deploy`:
 
 ```cron
