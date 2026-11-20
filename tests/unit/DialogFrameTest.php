@@ -26,7 +26,8 @@ final class DialogFrameTest extends CIUnitTestCase
     public function testShippedPicturesArePassedOnTheStage(): void
     {
         // Document 40, U-01 to U-05 (19 November 2026): one plate per colour, the track, the frame
-        foreach (['ui-plate-gold', 'ui-plate-navy', 'ui-plate-green', 'ui-track', 'ui-frame', 'select-arrow'] as $file) {
+        // Document 40, PL-07 to PL-09 (20 November 2026): the quiet button faces
+        foreach (['ui-plate-gold', 'ui-plate-navy', 'ui-plate-green', 'ui-track', 'ui-frame', 'ui-button-gold', 'ui-button-navy', 'ui-button-green', 'select-arrow'] as $file) {
             $this->assertFileExists(FCPATH . 'assets/ui/' . $file . '.webp');
         }
         foreach (['gold-pill-1', 'gold-pill-2', 'gold-pill-3', 'gold-pill-4', 'kenal-plate-gold', 'kenal-plate-navy', 'plate-green', 'loading-track', 'map-progress-track', 'modal-frame-4x3', 'modal-frame-16x9'] as $old) {
@@ -35,7 +36,7 @@ final class DialogFrameTest extends CIUnitTestCase
 
         $urls = stage_picture_urls();
         $this->assertSame(
-            ['plate-gold', 'plate-navy', 'plate-green', 'ui-track', 'ui-frame', 'select-arrow', 'round-close', 'round-blank'],
+            ['plate-gold', 'plate-navy', 'plate-green', 'ui-track', 'ui-frame', 'button-gold', 'button-navy', 'button-green', 'select-arrow', 'round-close', 'round-blank'],
             array_keys($urls),
         );
         $this->assertNotContains(null, $urls);

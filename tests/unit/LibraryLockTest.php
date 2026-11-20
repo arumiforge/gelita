@@ -448,10 +448,12 @@ final class LibraryLockTest extends CIUnitTestCase
         $this->assertStringContainsString('.map-level .node-panels.is-live .node-card.is-selected { display: grid; }', $css);
         $this->assertStringContainsString('.map-level .node-point { transform: translate(-50%, -50%); }', $css);
 
-        // The shard crystal in four stages (owner, 19 November 2026): until the pictures are
-        // installed, every stage shows the one U-36 crystal
-        $this->assertStringContainsString('<div class="hud-shards" style="', $page);
-        $this->assertStringNotContainsString('--shards-crystal-1', $page);
+        // The shard crystal in four stages (owner, 19 November 2026; pictures PL-03 to PL-06
+        // installed 20 November 2026): one picture per stage, U-36 stays the fallback
+        $this->assertStringContainsString('<div class="hud-shards has-crystal-stages" style="', $page);
+        for ($n = 1; $n <= 4; $n++) {
+            $this->assertStringContainsString('--shards-crystal-' . $n . ': url(', $page);
+        }
         $stage = (string) file_get_contents(FCPATH . 'assets/css/stage.css');
         for ($n = 0; $n <= 3; $n++) {
             $this->assertStringContainsString('.hud-shards .lantern[data-stage="' . $n . '"] .lantern-toggle::before { background-image: var(--shards-crystal-' . ($n + 1) . ', var(--shards-crystal)); }', $stage);

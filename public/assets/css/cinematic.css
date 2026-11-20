@@ -1948,3 +1948,32 @@ body.has-kenal { overflow: hidden; }
 }
 #stage :is(.btn-primary, .btn-plate, .btn-gold-plate)[aria-disabled="true"],
 #stage :is(.btn-primary, .btn-plate, .btn-gold-plate):disabled { filter: grayscale(.6); opacity: .55; transform: none; }
+
+/* The quiet button pictures (document 40, PL-07 to PL-09, installed 20 November 2026), passed on
+   #stage as --button-{gold,navy,green} by stage_picture_urls(). Each is 960 × 160 with an even
+   face from y 12 to 138 and its contact shadow to y 147; --qb-cut crops the empty top and
+   bottom margin and keeps the rounded ends (40 px) at their drawn shape: an end is
+   0.296 × the button's height (40 / 135; --pill-h where a size sets it, else 3rem). Only the
+   plain middle stretches. The picture carries its own bead edge and shadow, so the CSS edge
+   and shadow go; without a picture the CSS faces above stay. Red keeps its CSS face. */
+#stage { --qb-cut: 12 40 13 fill; }
+#stage[style*="--button-gold"] :is(.btn-primary, .btn-plate.is-next, .btn-plate.is-enter, .btn-gold-plate, .shelf-btn, .cine .narrator-next.has-label:not(:disabled), .kenal .slide-nav .btn-primary),
+#stage[style*="--button-gold"] :is(.kedu-btn.is-primary, .result-btn.is-primary)::before {
+  border: 0 solid transparent;
+  border-image: var(--button-gold) var(--qb-cut) / 0 calc(var(--pill-h, 3rem) * .296) stretch;
+  background: none;
+  box-shadow: none;
+}
+#stage[style*="--button-navy"] :is(.btn-plate.is-back, .kenal .kenal-back, .kenal .slide-nav .btn-quiet, .modal-actions .btn-quiet, .shelf-back, .book-foot .book-prev, .btn-install-plate),
+#stage[style*="--button-navy"] :is(.kedu-btn.is-secondary, .result-btn.is-secondary, .result-btn.is-detail)::before {
+  border: 0 solid transparent;
+  border-image: var(--button-navy) var(--qb-cut) / 0 calc(var(--pill-h, 3rem) * .296) stretch;
+  background: none;
+  box-shadow: none;
+}
+#stage[style*="--button-green"] .map-level .node-action.is-green {
+  border: 0 solid transparent;
+  border-image: var(--button-green) var(--qb-cut) / 0 calc(var(--pill-h, 3rem) * .296) stretch;
+  background: none;
+  box-shadow: none;
+}

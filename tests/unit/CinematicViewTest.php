@@ -254,7 +254,7 @@ final class CinematicViewTest extends CIUnitTestCase
         $page = $this->intro(introSeen: false);
 
         $this->assertStringContainsString('class="hud hud-menu-style"', $page, 'full-size HUD');
-        $this->assertStringNotContainsString('class="hud-shards"', $page, 'the HUD centre holds the slide progress');
+        $this->assertStringNotContainsString('<div class="hud-shards', $page, 'the HUD centre holds the slide progress');
         // Only the dots (owner, 20 October 2026): "Bagian n dari N" is their label for screen readers
         $this->assertMatchesRegularExpression('/id="slide-1".*?<nav class="cine-top" aria-label="' . preg_quote(esc(lang('Game.slideOf', [1, 3]), 'attr'), '/') . '">\s*<ol class="slide-dots">/s', $page);
         $this->assertStringNotContainsString('<span class="eyebrow">', $page);
@@ -315,7 +315,7 @@ final class CinematicViewTest extends CIUnitTestCase
         $this->assertStringNotContainsString('admin/login', $menu, 'Masuk staf only before a student signs in');
         $this->assertStringContainsString('href="' . base_url('keluar') . '"', $menu);
         $this->assertStringNotContainsString('href="' . base_url('peta') . '"', $menu);
-        $this->assertStringNotContainsString('class="hud-shards"', $page);
+        $this->assertStringNotContainsString('<div class="hud-shards', $page);
     }
 
     public function testFirstTimePlayerHasNoSkipAndEndsAtFinish(): void
