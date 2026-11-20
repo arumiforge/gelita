@@ -1327,3 +1327,36 @@ Owner, 20 November 2026: the production server (Windows, behind Cloudflare) hold
 - **`tools/qa/load-test.mjs` `QA_REMOTE=1`:** no `/proc/stat`, MySQL or PHP-FPM probes (they need a Linux server and local access; the owner watches the Windows task manager), audio events optional (`QA_AUDIO_ASSET` 0). From the cloud session it runs with `NODE_USE_ENV_PROXY=1`; latency then includes the network to the server.
 - **`tools/qa/package-download-load.mjs`:** N devices download the whole asset package at once as `core/package.js` does (status, manifest, every file, 4 at a time), bodies counted and discarded.
 - **First results (package `pkt-2026-11-20-04`, 917 files, 112.7 MB):** 1 device with a cold cache 257 s; 10 devices 60 s each (18 MB/s together); 50 devices 28 s median, 34 s max, 5.65 GB at 149 MB/s, 2 of 45,950 files reset (the client retries per file). Package files come from Cloudflare's cache (`cf-cache-status: HIT`), not the VPS; pages and API are `DYNAMIC` and reach the VPS. The live `Cache-Control` of package files is `max-age=14400` (Cloudflare's 4 h default), not the `max-age=31536000, immutable` of `deploy/windows/nginx/gelita-https.conf`, so the edge cache empties every 4 hours: the owner is advised to use the repository's nginx config or a Cloudflare cache rule for `/assets/p/*`, `/assets/k/*`, `/paket/*`, and to warm the cache from Indonesia the day before P1.
+
+## Remote load test, play rounds and deadlocks (20–21 November 2026, branch `perbaikan-deadlock-event`)
+
+Hand-over for the next session (owner: "lanjutkan di sesi baru"). Follows *Remote load test of the production server* (PR #444).
+
+**Production server (owner's VPS).** Windows, 4 logical CPUs, 12 GB RAM, Laragon nginx + php-cgi 8.3.36 (port 10987), MySQL 8.4, behind a **cloudflared tunnel** (site config `listen 80`, `real_ip_header CF-Connecting-IP`, `fastcgi_param HTTPS on`), Cloudflare SSL Full (strict). It holds no research data yet; the owner resets it with `gelita:reset` after testing. It still ran code from before PR #440 on 20 November (log showed `requireActiveStudy()` from `SessionService::login()`), so it needs `git pull` + `php spark gelita:setelah-pull --jalankan`.
+
+**Server changes made with the owner during the test (keep them; put them into `docs/08` → Jalur W):**
+- `laragon.ini` `[nginx]` `PHP_FCGI_CHILDREN=64` (was 16; php-cgi on Windows does spawn children, one parent + N on one port, so `docs/08`'s setting works; 200 was refused: MySQL connections, RAM under load, 4 cores).
+- `my.ini` `[mysqld]` was Laragon's MyISAM default (InnoDB buffer pool 128 MB, binlog on). Now: `innodb_buffer_pool_size=3G`, `innodb_log_buffer_size=32M`, `innodb_redo_log_capacity=1G`, `innodb_flush_log_at_trx_commit=1`, `skip-log-bin`, `max_connections=200`, `thread_cache_size=64`, `table_open_cache=2000`, `sort_buffer_size=2M`, `read_buffer_size=1M`, `read_rnd_buffer_size=2M`, `key_buffer_size=32M`, utf8mb4 / `+07:00`, `bind-address=127.0.0.1`.
+- **Pitfall:** with `bind-address=127.0.0.1`, `.env` `database.default.hostname = localhost` tries IPv6 `::1` first on Windows and every PHP request waited about 2.6 s. Fixed with `database.default.hostname = 127.0.0.1`. `docs/08` and the `env` template should say `127.0.0.1` for Jalur W.
+- A hand-made php-cgi pool on ports 9101–9112 (scheduled task `\GELITA\PhpPool` as SYSTEM) was tried and took the site down (502: the processes never listened); reverted. The owner was asked to unregister the task.
+
+**Package files:** the tunnel's nginx site config has no cache rules, so Cloudflare serves `/assets/p/`, `/assets/k/`, `/paket/` with its 4-hour default instead of `max-age=31536000, immutable` (`deploy/windows/nginx/gelita-https.conf`). Add the `map $uri $gelita_cache` + `add_header Cache-Control` part of that file to the tunnel config (or a Cloudflare cache rule); `deploy/windows/nginx/` has no variant for a tunnel (port 80, no TLS) yet.
+
+**Play rounds** (`tools/qa/load-test.mjs` `QA_REMOTE=1` from the cloud session, 200 `beban` accounts, study active, field mode off, unlock free; latency includes about 1 s US–Indonesia through Cloudflare):
+
+| Students | check p95 / p99 | page p95 / p99 | login p50 | HTTP 500 | 401 | conn. errors |
+|---|---|---|---|---|---|---|
+| 30 (before the MySQL fix, 16 php-cgi) | 1.9 / 16.6 s | 1.6 / 28 s | — | 0 (+ Cloudflare 520/522/525: 13) | 4 | 3 |
+| 30 | 1.2 / 1.4 s | 1.6 / 1.8 s | — | 0 | 5 | 4 |
+| 60 | 1.0 / 1.3 s | 1.1 / 1.7 s | 0.9 s | 0 | 13 | 21 |
+| 100 | 0.9 / 1.3 s | 1.9 / 3.0 s | 2.2 s | 8 | 6 | 20 |
+| 150 | 2.0 / 5.5 s | 8.1 / 13.7 s | 4.0 s | 24 | 19 | 25 |
+| 200 | 4.2 / 5.0 s | 14.0 / 21.3 s | 6.0 s | 27 | 14 | 1 |
+
+CPU 90–99 % at 150 and 200 (owner's task manager): the 4-core VPS is comfortable up to about 100 simulated students at once (the script is heavier than real students: an event every 2 s).
+
+**Open, for the next session:**
+1. **Deadlocks (the HTTP 500s).** Production log `writable/logs/log-2026-11-21.log` around 00:31–00:33 WIB: `DatabaseException: Deadlock found when trying to get lock; try restarting transaction` (1213), on event batches (`POST /api/events`; the test sent no audio, so `recordAudioBatch()` is not involved). Nothing in `app/` retries on 1213. Asked the owner for `SHOW ENGINE INNODB STATUS` (LATEST DETECTED DEADLOCK) and one full stack trace (log lines 3747–3808) to name the two statements. Likely candidates: the INSERT (IGNORE) into `game_event_logs` on the unique `(session_id, client_event_id)` and the `game_sessions` / `challenge_attempts` updates in `EventService::ingest()` and `SessionService::heartbeatIfDue()`. Fix: retry the transaction on 1213 (and 1205) a few times with a short jitter, keep the conditional-UPDATE pattern, add a test with a mocked deadlock.
+2. **401 INVALID_SESSION** on events and checks (5–19 per round) while the account is fine: find why the game session is not found or not active (session row locked or not yet written under load, PHP session lost, `ApiSessionFilter`).
+3. `docs/08` Jalur W: the settings above, the IPv6 pitfall, the tunnel cache config; the `env` template.
+4. After merge and a pull on production: re-run 100 and 150 students (`NODE_USE_ENV_PROXY=1 QA_REMOTE=1 QA_BASE_URL=https://gelita.id QA_STUDENTS=… node tools/qa/load-test.mjs`), expect no 500s. Then the owner resets production and restores the study settings (field mode, unlock order).

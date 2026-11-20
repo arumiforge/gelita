@@ -222,3 +222,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `perbaikan-deadlock-event` | Cloud session, 21 Nov 2026: hand-over only so far. Fix the event-ingest deadlocks and the 401s found by the remote load test of production, put the Windows server settings into `docs/08`, then re-run the 100/150-student rounds. Start with decision log *Remote load test, play rounds and deadlocks* | In progress (next session) |
