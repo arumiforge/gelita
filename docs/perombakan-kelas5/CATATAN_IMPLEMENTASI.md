@@ -1445,3 +1445,30 @@ For later sessions: do not write deploy files or documents as a template for oth
 - `docs/08` does not say how `cloudflared` is installed, started after a restart, or checked; the Nginx block for katalog.gelita.id still has a placeholder path and no `listen` line.
 - `backup.ps1` creates the second-location folder when it is missing, so another drive on the same letter is taken for it (`30` §7.5).
 - `ServerCheckTest::testTheAdminSeesEverySectionOfThisMachine` fails with Page Not Found when a `DocumentStatus*` or `Governance*` test runs before it in the same process (the full suite and CI do not show it).
+
+## Hand-over: files for the test install `uji.gelita.id` (21 November 2026, branch `igi/busy-fermat-czue8s`)
+
+Owner, end of the session: "lanjutkan di sesi baru" for the two open points of PR #450 (no site file and no install steps for `uji.gelita.id`; `gelita:uji:akun` refuses in production), and "untuk uji buatkan env-example-uji". Nothing of it is built here. The checklist is in `docs/PROGRESS.md` → *Next: test install `uji.gelita.id`*. What the next session needs to know:
+
+**Decided.** The validators' test install (and trials of the system) is the subdomain `uji.gelita.id`, with its own content (its own checkout, at the frozen commit of `20` → *Prasyarat no. 4*) and its own database, separate from production on `gelita.id`. The owner said the separation comes "nanti": the machine is not named.
+
+**Questions for the owner, with a recommendation each.**
+1. Same Windows machine as production or another one? Recommended: the same machine, second folder and second database. Laragon, MySQL and the tunnel are already there, and one more public hostname in the tunnel is enough. Cost: validators share CPU with a class in session (production measured about 100 students at once on 4 cores).
+2. Folder and database names. Recommended: `C:\laragon\www\gelita-uji` and database `gelita_uji`, with its own three database accounts.
+3. May `env-example-uji` hold real secrets? `env-example-production` does, by the owner's choice (private repository; its header says so). Recommended: the same for the test install, with keys made new for it.
+4. How `gelita:uji:akun` runs there. Recommended: a switch in `.env` that marks the install as the test install (next to `gelita.instrumentPreview`), which the guard accepts in place of "not production". The public site should stay `CI_ENVIRONMENT = production`: `development` shows the debug toolbar and error details to visitors.
+
+**Facts and traps.**
+- The guard is `TestAccountService::refusal()`: it refuses when `ENVIRONMENT === 'production'`, when any student is not `uji.*`, and without an active study (28 §13). `Simulation::refusal()` has the same shape.
+- A custom environment name is not a quick way out: CodeIgniter needs `app/Config/Boot/{name}.php` for every `CI_ENVIRONMENT` value.
+- An environment variable cannot override a key that is already in `.env` (`docs/08` → *Kredensial migration lewat DSN*), so "run that one command with another `CI_ENVIRONMENT`" does not work while the key is in the file.
+- `encryption.key` and `gelita.ipSalt` must be new for the test install: Cari Objek tokens and the offline-queue tag derive from the key, and the salt protects hashed addresses.
+- `gelita.instrumentPreview = true` belongs to the test install only (34 §5.5): `uji.*` accounts then see the test module without research mode.
+- Cookies do not clash: `gelita_session` is set without a domain, so `gelita.id` and `uji.gelita.id` each keep their own.
+- Nginx: both site files listen on `127.0.0.1:80` and are told apart by `server_name`. `gelita.id.conf` defines the variables `$gelita_is_asset` and `$gelita_cache` with two `map` blocks at `http` level. Checked here on nginx 1.24: a second site file that repeats the same two blocks passes `nginx -t`, and so does one that leaves them out and relies on the first file. Not checked: which definition wins when the two differ, so keep them identical or give the second file its own variable names. Check it for real: `apt-get update`, `apt-get download nginx nginx-common`, `dpkg -x` both into a scratch folder, write an `nginx.conf` with `include mime.types`, an `upstream php_upstream`, a stub `snippets/fastcgi-php.conf` and the site files (root path and port replaced), then `nginx -p <prefix> -c conf/nginx.conf -t` and a few `curl -H "Host: …"` requests. This is how `gelita.id.conf` was checked today.
+- `deploy.ps1`, `backup.ps1` and `retensi.ps1` read one `config.psd1` (`-Config`). A second install needs its own config file, or a decision that it has no deploy script and no backup (`20` → *Prasyarat no. 8*: backup is not required for the test install).
+- `DeployFilesTest::testOneServerOneSiteFile` asserts that `deploy/windows/nginx/` holds `gelita.id.conf` only; it must change with the second file.
+- `20` is `disetujui peneliti`; today's change to it is recorded as a developer change the researcher has not seen (`04`, `00`, status page). A further change follows the same pattern.
+
+**Not checked in this session:** anything on a Windows machine; whether the owner's tunnel can carry a second public hostname on the current plan; how much disk and memory a second install needs next to production.
+
