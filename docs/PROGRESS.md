@@ -221,3 +221,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `uji-beban-jarak-jauh` | Cloud session, 20 Nov 2026: remote load testing of the production server before data collection (`load-test.mjs` `QA_REMOTE=1`, new `package-download-load.mjs`); package download round done (50 devices), play rounds wait for the owner's server preparation | PR open |

@@ -14,7 +14,12 @@
  *   QA_MINUTES      measured play time after the ramp (default 5)
  *   QA_RAMP_SECONDS students log in spread over this many seconds (default 60)
  *   QA_CLIENT       old | new (default new)
- *   QA_AUDIO_ASSET  audio_assets.id used for audio telemetry (required)
+ *   QA_AUDIO_ASSET  audio_assets.id used for audio telemetry (required, except remote: 0 = no audio events)
+ *   QA_REMOTE       1 = load from another machine (owner, 20 November 2026): no
+ *                   /proc/stat, MySQL or PHP-FPM probes (the server is watched in
+ *                   its own task manager), audio events optional. Through the
+ *                   cloud session's proxy run it with NODE_USE_ENV_PROXY=1.
+ *                   The latency then includes the network to the server.
  *   QA_FPM_STATUS   PHP-FPM status URL (default http://127.0.0.1:8090/fpm-status)
  *   QA_MYSQL        database client command for SHOW GLOBAL STATUS (default "mysql -uroot")
  *   QA_OUT          write the result as JSON to this file
@@ -55,8 +60,9 @@ const CLIENT = process.env.QA_CLIENT === 'old' ? 'old' : 'new';
 const AUDIO_ASSET = Number(process.env.QA_AUDIO_ASSET || 0);
 const FPM_STATUS = process.env.QA_FPM_STATUS || 'http://127.0.0.1:8090/fpm-status';
 const MYSQL = (process.env.QA_MYSQL || 'mysql -uroot').split(/\s+/);
+const REMOTE = process.env.QA_REMOTE === '1';
 
-if (!AUDIO_ASSET) throw new Error('QA_AUDIO_ASSET is required (an audio_assets.id of the test database)');
+if (!AUDIO_ASSET && !REMOTE) throw new Error('QA_AUDIO_ASSET is required (an audio_assets.id of the test database)');
 
 const RULES = CLIENT === 'old'
   ? { flushMs: 3_000, flushAt: 20, combined: false, heartbeatMs: 60_000, heartbeatWhenIdleOnly: false, resendOwnRequest: true }
@@ -235,6 +241,7 @@ class Student {
   activityLoops() {
     this.eventTimer = setInterval(() => this.emit('answer_selected', { t_ms: 1000 }), EVENT_MS);
     let n = 0;
+    if (!AUDIO_ASSET) return;
     this.audioTimer = setInterval(() => this.emitAudio(['play', 'pause', 'complete'][n++ % 3]), AUDIO_MS);
   }
 
@@ -351,14 +358,14 @@ const runs = students.map((s) => sleep(Math.random() * RAMP_MS).then(() => s.run
 
 await sleep(Math.max(0, measureFrom - Date.now()));
 measuring = true;
-const db0 = dbStatus();
-const cpu0 = cpuTimes();
-const fpmTimer = setInterval(sampleFpm, 1000);
+const db0 = REMOTE ? {} : dbStatus();
+const cpu0 = REMOTE ? null : cpuTimes();
+const fpmTimer = REMOTE ? null : setInterval(sampleFpm, 1000);
 await sleep(Math.max(0, until - Date.now()));
 measuring = false;
 clearInterval(fpmTimer);
-const db1 = dbStatus();
-const cpu1 = cpuTimes();
+const db1 = REMOTE ? {} : dbStatus();
+const cpu1 = REMOTE ? null : cpuTimes();
 students.forEach((s) => s.stop());
 await Promise.race([Promise.allSettled(runs), sleep(100_000)]);
 
@@ -372,9 +379,11 @@ const summary = {
       p50: +pct(sorted, 50)?.toFixed(1), p95: +pct(sorted, 95)?.toFixed(1), p99: +pct(sorted, 99)?.toFixed(1), max: +sorted.at(-1)?.toFixed(1),
     }];
   })),
+  ...(REMOTE ? { remote: true } : {
   db: Object.fromEntries(STATUS_KEYS.map((k) => [k, +((db1[k] - db0[k]) / seconds).toFixed(1)])),
   cpuBusyPercent: +((100 * (cpu1.busy - cpu0.busy)) / (cpu1.total - cpu0.total)).toFixed(1),
   fpm: { activeAvg: +(fpm.activeSum / Math.max(1, fpm.samples)).toFixed(1), activeMax: fpm.activeMax, secondsAtMaxChildren: fpm.atMax, listenQueueMax: fpm.queueMax, maxChildrenReached: fpm.maxChildren },
+  }),
 };
 console.log(JSON.stringify(summary, null, 2));
 if (process.env.QA_OUT) writeFileSync(process.env.QA_OUT, JSON.stringify(summary, null, 2));
