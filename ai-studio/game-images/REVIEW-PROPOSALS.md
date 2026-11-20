@@ -19,7 +19,7 @@ A Claude session proposes a mark for every picture row of [`REVIEW.md`](REVIEW.m
 
 | Sheet | Rows | keep | redo | redo later | drop |
 |---|---|---|---|---|---|
-| 01 | 18 | 13 | 0 | 1 | 4 |
+| 01 | 18 | 14 | 0 | 1 | 3 |
 | 02 | 10 | 3 | 0 | 0 | 7 |
 | 03 | 26 | 26 | 0 | 0 | 0 |
 | 04 | 6 | 1 | 0 | 0 | 5 |
@@ -34,14 +34,14 @@ A Claude session proposes a mark for every picture row of [`REVIEW.md`](REVIEW.m
 | 15 | 3 | 0 | 0 | 0 | 3 |
 | 16 | 24 | 24 | 0 | 0 | 0 |
 | 17 | 18 | 16 | 1 | 1 | 0 |
-| 19 | 18 | 5 | 0 | 0 | 13 |
-| **All** | **211** | **159** | **5** | **10** | **36** |
+| 19 | 18 | 4 | 0 | 0 | 14 |
+| **All** | **211** | **159** | **5** | **11** | **36** |
 
 ## Part 1: the benchmark
 
 ### Sheet 01: cards, screen backgrounds, Jaka, app icons
 
-13 keep, 4 drop, 1 redo later.
+14 keep, 3 drop, 1 redo later.
 
 | No | Picture | Proposed mark | Reason |
 |---|---|---|---|
@@ -53,7 +53,7 @@ A Claude session proposes a mark for every picture row of [`REVIEW.md`](REVIEW.m
 | 6 | `btn-reflection` | `drop: every labelled button is a quiet button with page text since 19 November 2026 (PL-07)` | As no. 5 (Balai Refleksi link at the end of the story, `reflection.php`) |
 | 7 | `gate-icon-intro` | `keep` | Start-choice screen, "story" choice; carved-gold ring |
 | 8 | `gate-icon-map` | `keep` | Start-choice screen, "map" choice |
-| 10 | `icon-pustaka` | `keep` | Pustaka icon (`content_helper`). Almost the same book as no. 7, but the two never stand on one screen |
+| 10 | `icon-pustaka` | `keep` | Pustaka icon (`content_helper`). Almost the same book as no. 7 for another meaning (developer's first look); owner to say whether that is acceptable |
 | 11 | `jaka-gate` | `redo later: closed grey shoes and fading legs; Jaka wears sandals everywhere else` | Still on the start-choice screen; the home page gets `PL-02` (Jaka with the lantern) instead |
 | 12 | `jaka-wave` | `keep` | Login and change-password screens; sandals, red scarf, matches sheet 09 |
 | 13 | `kedu-region-magelang` | `keep` | Mask that darkens a locked region on Peta Kedu (`Config\Gelita`); never seen as a picture |
@@ -276,3 +276,122 @@ All are cut-outs without letters; shared objects are the same file in every regi
 | 279 | `challenge.item.wnb-4-a10` | `keep` | Same file as 262 |
 | 280 | `challenge.item.wnb-4-a11` | `keep` | Same file as 253 |
 | 281 | `challenge.item.wnb-4-a12` | `keep` | Same file as 254 |
+
+### Sheet 14: Pustaka (1 of 2)
+
+1 redo later, 2 drop.
+
+| No | Picture | Proposed mark | Reason |
+|---|---|---|---|
+| 286 | `library.magelang.p2.3` | `drop: the medium is a video; the importer installs only its cover (287)` | Not installed by the game |
+| 297 | `library.magelang.p6.3` | `drop: the medium is a video; the importer installs only its cover (298)` | Not installed by the game |
+| 300 | `library.magelang.p8.1` | `redo later: needs real reference; a generated stone with invented script, drawn like a museum photo, presented as Prasasti Canggal` | The only Pustaka picture of sheet 14 left in the old order: not the 3D look of `PK-01` to `PK-32`, and the pseudo-letters could be taken for the real inscription. A licensed photo of the real stone (as for 289, 294, 332) or a 3D picture made from one |
+
+### Sheet 15: Pustaka (2 of 2)
+
+3 drop.
+
+| No | Picture | Proposed mark | Reason |
+|---|---|---|---|
+| 318 | `library.temanggung.p8.2` | `drop: the medium is a video; the importer installs only its cover (319)` | Not installed by the game |
+| 334 | `library.wonosobo.p7.1` | `drop: the medium is a video; the importer installs only its cover (335)` | Not installed by the game |
+| 336 | `library.wonosobo.p8.1` | `drop: the medium is a video; the importer installs only its cover (337)` | Not installed by the game |
+
+### Sheet 16: Skenario Digital situation pictures
+
+24 keep.
+
+All 24 show their scenario in one smooth cartoon 3D family; the screens inside carry icons and grey bars only, no letters, and none marks a choice as the safe one. Three notes for the researcher, none a reason to redraw:
+
+- **344 and 348:** a finger is on the send or upload button. The situation itself says "you want to send it" (`mgl-5-a03`) or "you want to upload it" (`mgl-5-b03`), so the picture shows the situation, not an answer; it does point at the risky action. Researcher to confirm this is acceptable for H3/H5.
+- **The Reason column of this sheet** describes each picture as seen on the contact sheet; it is a description, not a check of every detail.
+- **351** (`tmg-5-a02`): the game on the tablet shows a stepped temple like Borobudur in a Temanggung scenario. It is inside a fictional game screen.
+
+| No | Picture | Proposed mark | Reason |
+|---|---|---|---|
+| 342 | `item.skenario.mgl-5-a01` | `keep` | Login form on a tablet, Borobudur outside |
+| 343 | `item.skenario.mgl-5-a02` | `keep` | A friend's hand reaching for the tablet's login screen; fits "Pinjam akun game-mu" |
+| 344 | `item.skenario.mgl-5-a03` | `keep` | Photo from the school dance contest about to be sent; see the note above |
+| 345 | `item.skenario.mgl-5-a04` | `keep` | Chat on a phone at a school desk |
+| 346 | `item.skenario.mgl-5-b01` | `keep` | Phone on a tripod filming getuk at a stall |
+| 347 | `item.skenario.mgl-5-b02` | `keep` | Laptop and phone with folders and an account icon |
+| 348 | `item.skenario.mgl-5-b03` | `keep` | Topeng Ireng practice photo about to be uploaded; see the note above |
+| 349 | `item.skenario.mgl-5-b04` | `keep` | Chat beside a plate of getuk |
+| 350 | `item.skenario.tmg-5-a01` | `keep` | Prize offer with a bicycle on a tablet |
+| 351 | `item.skenario.tmg-5-a02` | `keep` | A child playing a game on a tablet; see the note above |
+| 352 | `item.skenario.tmg-5-a03` | `keep` | Upload screen with a dancer's photo, vegetables and batik in the kitchen |
+| 353 | `item.skenario.tmg-5-a04` | `keep` | Group chat with a calendar and a building icon |
+| 354 | `item.skenario.tmg-5-b01` | `keep` | Drawing contest on a tablet beside a sketchbook |
+| 355 | `item.skenario.tmg-5-b02` | `keep` | Video call or game lobby with children at a gate |
+| 356 | `item.skenario.tmg-5-b03` | `keep` | Video upload among coffee plants |
+| 357 | `item.skenario.tmg-5-b04` | `keep` | Chat on a phone over a notebook |
+| 358 | `item.skenario.wnb-5-a01` | `keep` | Phone with a gift and a card icon, a Dieng temple outside |
+| 359 | `item.skenario.wnb-5-a02` | `keep` | Star rating on a tablet beside a phone |
+| 360 | `item.skenario.wnb-5-a03` | `keep` | Two chat panes and a trophy |
+| 361 | `item.skenario.wnb-5-a04` | `keep` | A post with a landslide-like road photo |
+| 362 | `item.skenario.wnb-5-b01` | `keep` | Gift offer beside carica slices and a bicycle |
+| 363 | `item.skenario.wnb-5-b02` | `keep` | School website on a tablet and a phone |
+| 364 | `item.skenario.wnb-5-b03` | `keep` | A phone left on a bus seat |
+| 365 | `item.skenario.wnb-5-b04` | `keep` | Video post of a landscape |
+
+### Sheet 17: test stimulus pictures
+
+16 keep, 1 redo, 1 redo later.
+
+The grey line art is taken as a deliberate neutral look for the test (developer's first look, question 8). The words in 367 and 377 were read at full size; for the others this session relied on the first look of 15 November, which found no other difference from `tes.php`. The label "Bukan temanmu" (368, 372, 376, 380) gives nothing away: each item text already says "akun yang tidak kamu kenal".
+
+| No | Picture | Proposed mark | Reason |
+|---|---|---|---|
+| 366 | `instr.tes-ae-A01` | `keep` | Birthday-card form; "Pilih foto" spelt right (the twin of 374) |
+| 367 | `instr.tes-ae-A02` | `redo later: the cooking channel has a laboratory flask on its counter, which belongs to its twin B02 (science channel)` | Small; the words match the item. Only worth an edit if the two forms are redrawn anyway |
+| 368 | `instr.tes-ae-A03` | `keep` | Reading-app message from an unknown account |
+| 369 | `instr.tes-ae-A04` | `keep` | Chat with a light header. Researcher to confirm the different header of its twin 377 (dark) does not matter for form equivalence |
+| 370 | `instr.tes-ae-A05` | `keep` | Upload screen with a speech bubble |
+| 371 | `instr.tes-ae-A06` | `keep` | Share sheet to a group |
+| 372 | `instr.tes-ae-A07` | `keep` | Kedugram message request, accept and delete buttons drawn alike |
+| 373 | `instr.tes-ae-A08` | `keep` | Group chat with likes |
+| 375 | `instr.tes-ae-B02` | `keep` | Science live stream; words match the item |
+| 376 | `instr.tes-ae-B03` | `keep` | Drawing-app message from an unknown account |
+| 377 | `instr.tes-ae-B04` | `redo: edit only: remove the stray stroke under "untuk" and the mark under "kodenya"; nothing else changes` | Seen at full size; stray marks in a reading test can look like letters. A small edit like `R-06` |
+| 378 | `instr.tes-ae-B05` | `keep` | Upload screen, twin of 370 |
+| 379 | `instr.tes-ae-B06` | `keep` | Share sheet, twin of 371 |
+| 380 | `instr.tes-ae-B07` | `keep` | Message request, twin of 372 |
+| 381 | `instr.tes-ae-B08` | `keep` | Group chat, twin of 373 |
+| 386 | `instr.tes-mb-A-M3` | `keep` | Long post with comments; text too small to compare here, the first look found it matching |
+| 388 | `instr.tes-mb-B-M3` | `keep` | As 386 |
+| 389 | `instr.tes-mb-B-M4` | `keep` | Group chat with a forwarded notice; twin of 387 |
+
+### Sheet 19: style references
+
+4 keep, 14 drop.
+
+Not installed by the game except 394. Keep what an order or a prompt still attaches (checked in `TASKS.md` and documents 37 to 41), drop the rest; the carved-gold style board `U-00` (460) is the reference for interface parts.
+
+| No | Picture | Proposed mark | Reason |
+|---|---|---|---|
+| 393 | `reference.01` | `keep` | Jaka's character sheet; attached to `PL-02` and named in the prompts of 37 to 41 |
+| 394 | `reference.02` | `keep` | Installed as Mbah Kedu's avatar `ui.kedu-avatar` (`CatalogImporter::REFERENCE_SLOTS`); source of 459 |
+| 395 | `reference.03` | `drop: replaced by the framed Jaka avatar no. 128 and its expressions 457, 458` | No order attaches it (only a code comment names its history) |
+| 396 | `reference.04` | `drop: no order attaches it; the new story backgrounds follow reference.06 and the researcher's photos` | |
+| 397 | `reference.05` | `drop: no order attaches it; Jaka holds a plain lamp, not the Lantern of Kedu` | |
+| 398 | `reference.06` | `keep` | Attached to the open orders `PL-01`, `PL-10` to `PL-12` and most story backgrounds |
+| 399 | `reference.07` | `drop: no open order attaches it; its stone gate is the split-gate motif questioned at no. 3 and badge 84` | Named only by the finished orders of 37 to 39. Least sure of this sheet: the developer's first look proposed to keep it |
+| 400 | `reference.08` | `drop: no order attaches it; the island diorama 107 is the installed map` | |
+| 401 | `reference.09` | `keep` | The GELITA logo; named in the prompts of 37 to 41 as the finish to match |
+| 402 | `reference.10` | `drop: the navy MULAI plate is neither the game's button nor the carved-gold look` | |
+| 403 | `reference.11` | `drop: no order attaches it; badge 83 is the installed Temanggung badge (U-21)` | |
+| 404 | `reference.12` | `drop: lettered title plate; the region title is plain text since 19 November 2026` | |
+| 405 | `reference.13` | `drop: a copy of the shipped jaka-wave (no. 12)` | |
+| 406 | `reference.14` | `drop: Mbah Kedu in another outfit than his avatar and poses` | |
+| 407 | `reference.15` | `drop: a village guard who is not in the story` | |
+| 408 | `reference.16` | `drop: its only order, U-14 (the Lantern of Kedu), is installed` | It is also the lantern of `ui.logo` (87); keep it only if 87 is kept |
+| 417 | `reference.25` | `drop: a copy of the shipped bg-auth-login (no. 1)` | |
+| 418 | `reference.26` | `drop: a copy of the shipped bg-gate (no. 2)` | |
+
+## Questions for the owner
+
+1. **Lantern designs.** Drop `ui.logo` (87) and `reference.16` (408) so the carved-gold `U-14` is the one Lantern of Kedu outside the story? And Jaka's plain lamp in the poses of sheet 09: leave it, or redraw it later?
+2. **Old plates (sheet 02, 4 to 6 of sheet 01).** The drops need a small code change first (`plate_attrs()`, `gold_plate_button()`, the install button, two tests). Do it in the session that copies the marks, or wait until `PL-07` to `PL-09` are installed?
+3. **Borobudur backgrounds (198, 206, 209).** Redo the two students see longest (198, 209) now, and 206 later, as proposed?
+4. **Island map (107)** and **result backgrounds (212):** the owner's call; the proposals only name the conflict.
+5. **Researcher checks before data collection** on the study variants: 218 (Candi Mendut), 239 (Arjuna) and 244 (Topeng Lengger), and the cultural rows marked *researcher to confirm* on sheets 01, 11 and 13.
