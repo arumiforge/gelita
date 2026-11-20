@@ -78,6 +78,25 @@ final class DeployFilesTest extends CIUnitTestCase
         $this->assertDoesNotMatchRegularExpression('/^\s*(ssl_|listen 443)/m', $source);
     }
 
+    /**
+     * One domain only (owner, 21 November 2026): the files are written for the
+     * GELITA server itself, not as a template with a placeholder to replace.
+     */
+    public function testNginxConfigsNameTheOneDomain(): void
+    {
+        $files = [...glob(self::DEPLOY . 'linux/nginx/*.conf'), ...glob(self::DEPLOY . 'windows/nginx/*.conf')];
+
+        $this->assertCount(5, $files);
+
+        foreach ($files as $file) {
+            $source = (string) file_get_contents($file);
+
+            $this->assertSame(1, preg_match_all('/^\s*server_name\s+(\S+);/m', $source, $names), basename($file));
+            $this->assertSame('gelita.id', $names[1][0], basename($file));
+            $this->assertStringNotContainsString('sekolah.sch.id', $source, basename($file));
+        }
+    }
+
     public function testScriptsAvoidCommandsThatBreakProduction(): void
     {
         foreach ([...glob(self::DEPLOY . 'linux/*.sh'), ...glob(self::DEPLOY . 'windows/*.ps1')] as $file) {

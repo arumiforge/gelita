@@ -1419,3 +1419,9 @@ Requests after the fix: 100 students: 461 checks, 1,058 pages, 2,415 event batch
 
 Closes *Open* 3 of *Event deadlocks and lost logins under load*. The owner asked for the sentence ("tambahkan kalimat DeadlockRetry ke CLAUDE.md"). `CLAUDE.md` → *Concurrency* now says, after the conditional-UPDATE rule: what `DeadlockRetry` is for (a write MySQL gives up on, 1213 or 1205), `transaction()` for writes of several statements and `run()` for one, that `run()` does nothing inside a caller's `transBegin()`, that the game's own transactions are not wrapped, and that the deadlock only shows on MySQL 8 (not MariaDB or SQLite). No code changed.
 
+## One domain: `gelita.id` in the deploy files (21 November 2026, branch `igi/busy-fermat-czue8s`)
+
+Owner: "jadikan gelita.id dan ini bukan untuk any install. 1 domain saja". The five Nginx files in `deploy/` and `docs/08` used the placeholder `gelita.sekolah.sch.id`, to be replaced by hand on each server. GELITA has one server and one domain, so the files now name `gelita.id` (`server_name`, the certificate paths of the two HTTPS files, the certbot and simple-acme steps, the verification commands) and are copied as they are. `DeployFilesTest::testNginxConfigsNameTheOneDomain` keeps it so. The public catalogue page stays on `katalog.gelita.id` (its own site, not served by these files).
+
+For later sessions: do not write deploy files or documents as a template for other installs.
+

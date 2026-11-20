@@ -21,7 +21,7 @@ Menjalankan GELITA sebagai sistem production untuk penelitian siswa kelas 5 SD/M
 
 ## Konteks
 
-GELITA adalah satu instansi server. Siswa, guru, dan peneliti mengaksesnya lewat internet dengan HTTPS di satu nama domain, misalnya `gelita.sekolah.sch.id`. Satu instansi dapat dipakai banyak kelas dan sekolah. Guru membuka panel dari mana saja.
+GELITA adalah satu instansi server. Siswa, guru, dan peneliti mengaksesnya lewat internet dengan HTTPS di satu nama domain, `gelita.id` (one domain only: the repository's files are written for this server, not as a template for other installs; owner, 21 November 2026). Satu instansi dapat dipakai banyak kelas dan sekolah. Guru membuka panel dari mana saja.
 
 | | **Jalur L — Linux** | **Jalur W — Windows + Laragon** |
 |---|---|---|
@@ -335,7 +335,7 @@ Mulai dari templat (`cp env .env` / `Copy-Item env .env`). Templat sudah memuat 
 ```ini
 CI_ENVIRONMENT = production
 
-app.baseURL = 'https://gelita.sekolah.sch.id/'
+app.baseURL = 'https://gelita.id/'
 app.forceGlobalSecureRequests = true
 app.CSPEnabled = true                          # Content Security Policy (Config\ContentSecurityPolicy)
 
@@ -451,7 +451,7 @@ Konfigurasi dibagi dua berkas: port 80 dan aplikasi (443). Port 80 diaktifkan le
 | `deploy/windows/nginx/gelita-https.conf` | `C:\laragon\etc\nginx\sites-enabled\gelita-https.conf` |
 | `deploy/windows/nginx/gelita-tunnel.conf` | `C:\laragon\etc\nginx\sites-enabled\gelita-tunnel.conf`: instead of the two files above when the server sits behind a Cloudflare Tunnel (see [Jalur W behind a Cloudflare Tunnel](#jalur-w-behind-a-cloudflare-tunnel-cloudflared)) |
 
-Ganti `gelita.sekolah.sch.id` dengan domain server di setiap berkas.
+The files already name the domain, `gelita.id`; nothing to replace (owner, 21 November 2026).
 
 #### Jalur L
 
@@ -460,7 +460,7 @@ Ganti `gelita.sekolah.sch.id` dengan domain server di setiap berkas.
 ```nginx
 server {
     listen 80;
-    server_name gelita.sekolah.sch.id;
+    server_name gelita.id;
 
     location ^~ /.well-known/acme-challenge/ {
         root /var/www/gelita/public;
@@ -509,8 +509,8 @@ Kedua berkas Windows sama dengan Jalur L kecuali baris khusus platform (`tests/u
 
     root "C:/laragon/www/gelita/public";
 
-    ssl_certificate     "C:/laragon/etc/ssl/gelita/gelita.sekolah.sch.id-chain.pem";
-    ssl_certificate_key "C:/laragon/etc/ssl/gelita/gelita.sekolah.sch.id-key.pem";
+    ssl_certificate     "C:/laragon/etc/ssl/gelita/gelita.id-chain.pem";
+    ssl_certificate_key "C:/laragon/etc/ssl/gelita/gelita.id-key.pem";
 
     if (-f "C:/laragon/www/gelita/writable/pemeliharaan.flag") {
         return 503;
@@ -529,7 +529,7 @@ Kedua berkas Windows sama dengan Jalur L kecuali baris khusus platform (`tests/u
 
 *(New, English; production load test of 20–21 November 2026.)* A server without a public address (a VPS or school machine reached through `cloudflared`) needs no certificate and no open port: Cloudflare ends HTTPS, and `cloudflared` on the same machine passes each request to Nginx on port 80 without TLS. Use **one** file, `gelita-tunnel.conf`, instead of `gelita-http.conf` and `gelita-https.conf`, and skip [HTTPS](#https) (simple-acme) altogether.
 
-1. Copy `deploy\windows\nginx\gelita-tunnel.conf` to `C:\laragon\etc\nginx\sites-enabled\`, replace the domain, remove any other GELITA site file there, then Menu → *Nginx* → *Reload*.
+1. Copy `deploy\windows\nginx\gelita-tunnel.conf` to `C:\laragon\etc\nginx\sites-enabled\` as it is (it names `gelita.id`), remove any other GELITA site file there, then Menu → *Nginx* → *Reload*.
 2. In the tunnel's settings (Cloudflare Zero Trust → *Networks* → *Tunnels* → *Public hostname*, or `config.yml`) the service is `http://127.0.0.1:80`. Not `localhost`: Windows tries `::1` first, as with the database host.
 3. Cloudflare → *SSL/TLS*: mode **Full (strict)** works with a tunnel. `.env` stays as for any HTTPS server (`app.baseURL = 'https://…'`, `app.forceGlobalSecureRequests = true`, `cookie.secure = true`).
 4. The Windows firewall rule for ports 80 and 443 of [Instalasi — Jalur W](#instalasi--jalur-w) is not needed: nothing connects from outside.
@@ -561,13 +561,12 @@ What the file does beyond the HTTPS one:
 ```bash
 sudo cp /var/www/gelita/deploy/linux/nginx/gelita-http.conf  /etc/nginx/sites-available/gelita-http
 sudo cp /var/www/gelita/deploy/linux/nginx/gelita-https.conf /etc/nginx/sites-available/gelita-https
-sudo nano /etc/nginx/sites-available/gelita-http /etc/nginx/sites-available/gelita-https   # domain
 
 sudo rm -f /etc/nginx/sites-enabled/default
 sudo ln -s /etc/nginx/sites-available/gelita-http /etc/nginx/sites-enabled/
 sudo nginx -t && sudo systemctl reload nginx
 
-sudo certbot certonly --webroot -w /var/www/gelita/public -d gelita.sekolah.sch.id \
+sudo certbot certonly --webroot -w /var/www/gelita/public -d gelita.id \
      --deploy-hook "systemctl reload nginx"
 
 sudo ln -s /etc/nginx/sites-available/gelita-https /etc/nginx/sites-enabled/
@@ -578,7 +577,7 @@ sudo certbot renew --dry-run                # pastikan perpanjangan otomatis ber
 **Jalur W** — Certbot menghentikan dukungan Windows sejak Februari 2024. Pakai **simple-acme** (penerus win-acme; win-acme masih dapat dipakai). Nama menu dapat sedikit berbeda antarversi, tetapi pilihannya:
 
 1. Ekstrak rilis x64 ke `C:\gelita-ops\acme\`, jalankan `wacs.exe` sebagai Administrator.
-2. *Create certificate (full options)* → sumber *Manual input* → `gelita.sekolah.sch.id`.
+2. *Create certificate (full options)* → sumber *Manual input* → `gelita.id`.
 3. Validasi HTTP-01 *save verification files on (network) path* → `C:\laragon\www\gelita\public`.
 4. Penyimpanan *PEM encoded files* → `C:\laragon\etc\ssl\gelita`. Terbentuk `{domain}-chain.pem` (sertifikat + rantai) dan `{domain}-key.pem`.
 5. Instalasi *Start external script or program* → `C:\gelita-ops\reload-nginx.cmd`:
@@ -1401,7 +1400,7 @@ sudo -u www-data touch /var/www/gelita/writable/uji && \
   rm /var/www/gelita/writable/uji && echo "writable OK"
 
 # 4. HTTPS & header keamanan — pada halaman DAN aset, masing-masing tepat satu kali
-U=https://gelita.sekolah.sch.id
+U=https://gelita.id
 curl -s -D - -o /dev/null $U/ | grep -iE 'HTTP/|strict-transport|x-frame|x-content-type'
 curl -s -D - -o /dev/null "$U/assets/css/game.css?v=1" | grep -iE 'strict-transport|x-content-type|cache-control'
 
@@ -1421,7 +1420,7 @@ rm /var/www/gelita/writable/pemeliharaan.flag
 curl -s -o /dev/null -w '%{http_code}\n' $U/
 
 # 8. Sertifikat — tanggal kedaluwarsa dan perpanjangan
-echo | openssl s_client -connect gelita.sekolah.sch.id:443 -servername gelita.sekolah.sch.id 2>/dev/null \
+echo | openssl s_client -connect gelita.id:443 -servername gelita.id 2>/dev/null \
   | openssl x509 -noout -enddate
 ```
 
