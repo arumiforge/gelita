@@ -493,7 +493,7 @@ return [
     'fieldModeLockedOpen'        => 'Masih ada sesi lapangan yang buka. Tutup dulu sesinya.',
     'codesFullWarn'              => 'Kode peserta untuk rombel ini sudah 99. Pakai rombel lain atau hubungi ketua peneliti.',
     'fieldModeLabel'             => 'Mode penelitian',
-    'fieldModeHelp'              => 'Bila menyala dan penelitian berjalan, permainan hanya terbuka di dalam sesi lapangan dengan token. Centang, lalu tekan Simpan penelitian. Server harus sudah menyalakan pengaman data penelitian; bila belum, pesan merah muncul di atas halaman dan perubahan tidak disimpan (minta admin menyalakannya). Jangan dinyalakan dengan anak sebelum persetujuan etik terbit.',
+    'fieldModeHelp'              => 'Bila menyala dan penelitian berjalan, permainan hanya terbuka di dalam sesi lapangan dengan token. Centang, lalu simpan dengan tombol di bawah formulir. Server harus sudah menyalakan pengaman data penelitian; bila belum, pesan merah muncul di atas halaman dan perubahan tidak disimpan (minta admin menyalakannya). Jangan dinyalakan dengan anak sebelum persetujuan etik terbit.',
     'meetingPlanLabel'           => 'Rencana pertemuan',
     'meetingPlan_lima_pertemuan' => 'Lima pertemuan (uji kelompok dan pengambilan data utama)',
     'meetingPlan_satu_sesi'      => 'Satu sesi (berpikir lantang)',
