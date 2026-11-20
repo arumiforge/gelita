@@ -61,7 +61,7 @@ final class DeployFilesTest extends CIUnitTestCase
      */
     public function testTunnelConfigIsTheHttpsConfigWithoutTls(): void
     {
-        $tunnel = self::DEPLOY . 'windows/nginx/gelita-tunnel.conf';
+        $tunnel = self::DEPLOY . 'windows/nginx/gelita.id.conf';
         $own    = ['set_real_ip_from 127.0.0.1;', 'real_ip_header CF-Connecting-IP;', 'fastcgi_param HTTPS on;'];
         $source = (string) file_get_contents($tunnel);
 

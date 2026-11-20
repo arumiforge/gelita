@@ -449,7 +449,7 @@ Konfigurasi dibagi dua berkas: port 80 dan aplikasi (443). Port 80 diaktifkan le
 | `deploy/linux/nginx/gelita-https.conf` | `/etc/nginx/sites-available/gelita-https` |
 | `deploy/windows/nginx/gelita-http.conf` | `C:\laragon\etc\nginx\sites-enabled\gelita-http.conf` |
 | `deploy/windows/nginx/gelita-https.conf` | `C:\laragon\etc\nginx\sites-enabled\gelita-https.conf` |
-| `deploy/windows/nginx/gelita-tunnel.conf` | `C:\laragon\etc\nginx\sites-enabled\gelita-tunnel.conf`: instead of the two files above when the server sits behind a Cloudflare Tunnel (see [Jalur W behind a Cloudflare Tunnel](#jalur-w-behind-a-cloudflare-tunnel-cloudflared)) |
+| `deploy/windows/nginx/gelita.id.conf` | `C:\laragon\etc\nginx\sites-enabled\gelita.id.conf`: instead of the two files above when the server sits behind a Cloudflare Tunnel (see [Jalur W behind a Cloudflare Tunnel](#jalur-w-behind-a-cloudflare-tunnel-cloudflared)) |
 
 The files already name the domain, `gelita.id`; nothing to replace (owner, 21 November 2026).
 
@@ -527,9 +527,9 @@ Kedua berkas Windows sama dengan Jalur L kecuali baris khusus platform (`tests/u
 
 #### Jalur W behind a Cloudflare Tunnel (cloudflared)
 
-*(New, English; production load test of 20–21 November 2026.)* A server without a public address (a VPS or school machine reached through `cloudflared`) needs no certificate and no open port: Cloudflare ends HTTPS, and `cloudflared` on the same machine passes each request to Nginx on port 80 without TLS. Use **one** file, `gelita-tunnel.conf`, instead of `gelita-http.conf` and `gelita-https.conf`, and skip [HTTPS](#https) (simple-acme) altogether.
+*(New, English; production load test of 20–21 November 2026.)* A server without a public address (a VPS or school machine reached through `cloudflared`) needs no certificate and no open port: Cloudflare ends HTTPS, and `cloudflared` on the same machine passes each request to Nginx on port 80 without TLS. Use **one** file, `gelita.id.conf`, instead of `gelita-http.conf` and `gelita-https.conf`, and skip [HTTPS](#https) (simple-acme) altogether.
 
-1. Copy `deploy\windows\nginx\gelita-tunnel.conf` to `C:\laragon\etc\nginx\sites-enabled\` as it is (it names `gelita.id`), remove any other GELITA site file there, then Menu → *Nginx* → *Reload*.
+1. Copy `deploy\windows\nginx\gelita.id.conf` to `C:\laragon\etc\nginx\sites-enabled\` as it is (it names `gelita.id`), remove any other GELITA site file there, then Menu → *Nginx* → *Reload*.
 2. In the tunnel's settings (Cloudflare Zero Trust → *Networks* → *Tunnels* → *Public hostname*, or `config.yml`) the service is `http://127.0.0.1:80`. Not `localhost`: Windows tries `::1` first, as with the database host.
 3. Cloudflare → *SSL/TLS*: mode **Full (strict)** works with a tunnel. `.env` stays as for any HTTPS server (`app.baseURL = 'https://…'`, `app.forceGlobalSecureRequests = true`, `cookie.secure = true`).
 4. The Windows firewall rule for ports 80 and 443 of [Instalasi — Jalur W](#instalasi--jalur-w) is not needed: nothing connects from outside.
@@ -640,7 +640,7 @@ Selama berkas ada, semua halaman dan API menjawab **503** dengan pesan dwibahasa
 | `deploy/windows/deploy.ps1`, `backup.ps1`, `retensi.ps1` | padanan PowerShell (kompatibel Windows PowerShell 5.1; **hanya ASCII**) |
 | `deploy/windows/config.example.psd1` | contoh `config.psd1` |
 | `deploy/windows/nginx/gelita-http.conf`, `gelita-https.conf` | konfigurasi Nginx Jalur W |
-| `deploy/windows/nginx/gelita-tunnel.conf` | Nginx for Jalur W behind a Cloudflare Tunnel (one file, port 80 on `127.0.0.1`, no certificate) |
+| `deploy/windows/nginx/gelita.id.conf` | Nginx for Jalur W behind a Cloudflare Tunnel (one file, port 80 on `127.0.0.1`, no certificate) |
 | `.gitignore` | `/public/assets/uploads/*`, `!/public/assets/uploads/.gitkeep`, `/writable/pemeliharaan.flag` |
 | `tests/unit/DeployFilesTest.php` | mengunci cacat yang ditemukan saat skrip dijalankan (lihat [Catatan Implementasi Tahap 8](#catatan-implementasi-tahap-8)) |
 

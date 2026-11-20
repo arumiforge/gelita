@@ -1423,5 +1423,6 @@ Closes *Open* 3 of *Event deadlocks and lost logins under load*. The owner asked
 
 Owner: "jadikan gelita.id dan ini bukan untuk any install. 1 domain saja". The five Nginx files in `deploy/` and `docs/08` used the placeholder `gelita.sekolah.sch.id`, to be replaced by hand on each server. GELITA has one server and one domain, so the files now name `gelita.id` (`server_name`, the certificate paths of the two HTTPS files, the certbot and simple-acme steps, the verification commands) and are copied as they are. `DeployFilesTest::testNginxConfigsNameTheOneDomain` keeps it so. The public catalogue page stays on `katalog.gelita.id` (its own site, not served by these files).
 
-For later sessions: do not write deploy files or documents as a template for other installs.
+The tunnel file is renamed after the domain as well (owner: "ganti gelita.id.conf saja"): `deploy/windows/nginx/gelita-tunnel.conf` is now `deploy/windows/nginx/gelita.id.conf`, copied to `C:\laragon\etc\nginx\sites-enabled\gelita.id.conf`. Earlier sections of this log still say `gelita-tunnel.conf`; it is the same file. `gelita-http.conf` and `gelita-https.conf` keep their names (a server reached directly, with its own certificate).
 
+For later sessions: do not write deploy files or documents as a template for other installs.
