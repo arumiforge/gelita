@@ -33,15 +33,17 @@ final class DeployFilesTest extends CIUnitTestCase
      * The one Nginx site file of the server (Windows behind a Cloudflare Tunnel).
      * Each rule here was once lost or wrong on a real server: the tunnel site
      * written by hand had no cache rules and no HSTS header (production check
-     * of 21 November 2026), and a file that listens on every address lets other
-     * machines claim HTTPS and any visitor address.
+     * of 21 November 2026), and a file on "listen 127.0.0.1:80" took every
+     * other site of the server (all of them reach Nginx on 127.0.0.1 through
+     * the tunnel), so it listens on plain port 80 like the other Laragon sites
+     * and server_name picks the site (21 November 2026).
      */
     public function testSiteFileKeepsItsRules(): void
     {
         $lines = $this->nginxLines(self::DEPLOY . 'windows/nginx/gelita.id.conf');
 
         foreach ([
-            'listen 127.0.0.1:80;',
+            'listen 80;',
             'server_name gelita.id;',
             'set_real_ip_from 127.0.0.1;',
             'real_ip_header CF-Connecting-IP;',
@@ -79,8 +81,10 @@ final class DeployFilesTest extends CIUnitTestCase
         $source = implode("\n", $lines);
         $this->assertStringContainsString("location ~ \\.php\$ {\nreturn 404;\n}", $source);
         $this->assertStringContainsString("location ~ /\\. {\nreturn 404;\n}", $source);
-        // Cloudflare ends HTTPS: no certificate and no public port on this machine
-        $this->assertSame([], array_values(array_filter($lines, static fn (string $line): bool => preg_match('/^(ssl_|http2|listen (?!127\.0\.0\.1:80;))/', $line) === 1)));
+        // Cloudflare ends HTTPS: no certificate on this machine, and no
+        // address-specific listen (it would take the other sites' requests)
+        $this->assertSame([], array_values(array_filter($lines, static fn (string $line): bool => preg_match('/^(ssl_|http2|listen (?!80;))/', $line) === 1)));
+        $this->assertStringNotContainsString('default_server', implode("\n", $lines));
     }
 
     /**

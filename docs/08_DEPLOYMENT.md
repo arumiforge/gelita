@@ -30,7 +30,7 @@ The server is a Windows machine that runs Laragon behind a Cloudflare Tunnel (`c
 | Web server | Nginx bawaan Laragon |
 | PHP | php-cgi 8.3, dijalankan Laragon di belakang `upstream php_upstream` |
 | Database | MySQL bawaan Laragon |
-| HTTPS | Cloudflare ends HTTPS, and `cloudflared` passes each request to Nginx on `127.0.0.1:80`. No certificate on the server and no port open to the network (see [HTTPS](#https)) |
+| HTTPS | Cloudflare ends HTTPS, and `cloudflared` passes each request to Nginx on `127.0.0.1:80`. No certificate on the server; the Windows firewall keeps port 80 closed to the network (see [HTTPS](#https)) |
 | Tugas terjadwal | Task Scheduler |
 | Skrip operasional | `deploy/windows/*.ps1` |
 | Akun sistem | satu akun Windows yang menjalankan Laragon |
@@ -339,7 +339,7 @@ Optional: `KeduaHari = 30` makes each backup run delete the files older than 30 
 
 ### Nginx
 
-The site has one Nginx file, [`deploy/windows/nginx/gelita.id.conf`](../deploy/windows/nginx/gelita.id.conf). It goes to `C:\laragon\etc\nginx\sites-enabled\gelita.id.conf` and already names the domain, `gelita.id`; nothing to replace (owner, 21 November 2026). Nginx listens on port 80 of `127.0.0.1` only and serves no TLS: Cloudflare ends HTTPS, and `cloudflared` on the same machine passes each request on (see [HTTPS](#https)).
+The site has one Nginx file, [`deploy/windows/nginx/gelita.id.conf`](../deploy/windows/nginx/gelita.id.conf). It goes to `C:\laragon\etc\nginx\sites-enabled\gelita.id.conf` and already names the domain, `gelita.id`; nothing to replace (owner, 21 November 2026). Nginx listens on port 80 like every other Laragon site (`listen 80`, the site picked by `server_name`) and serves no TLS: Cloudflare ends HTTPS, and `cloudflared` on the same machine passes each request on (see [HTTPS](#https)). The Windows firewall keeps port 80 closed to the network.
 
 Laragon membuat vhost `auto.<folder>.test.conf` untuk setiap folder di `C:\laragon\www`. Vhost itu **tidak** layak untuk production: `autoindex on`, `TLSv1 TLSv1.1` dengan cipher `RC4`/`EXP`, tanpa header keamanan, setiap `.php` dieksekusi, dan ditulis ulang setiap Laragon start.
 
@@ -354,7 +354,7 @@ Aturan di `gelita.id.conf`:
 
 | Aturan | Isi di berkas | Alasan |
 |---|---|---|
-| Listen | `listen 127.0.0.1:80`, `server_name gelita.id` | only `cloudflared` on this machine connects. Other machines cannot reach Nginx directly, where they could claim any address in `CF-Connecting-IP` |
+| Listen | `listen 80`, `server_name gelita.id`, no `default_server` | the same `listen` as the other Laragon sites, so `server_name` decides which site answers. Never `listen 127.0.0.1:80`: Nginx then gives every request that arrives on `127.0.0.1` to this file whatever its host name, and `cloudflared` sends all the server's sites to `127.0.0.1`, so every site on the server showed GELITA (21 November 2026). The visitor address stays safe without it: `CF-Connecting-IP` is trusted only from `127.0.0.1` (next row) |
 | Visitor address | `set_real_ip_from 127.0.0.1`, `real_ip_header CF-Connecting-IP` | without it every student seems to come from `127.0.0.1`: login throttling and the hashed address in the logs would treat a whole class as one visitor |
 | Header keamanan | `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Strict-Transport-Security`, semuanya `always`, **hanya** di blok `server` | `add_header` di dalam `location` menghapus semua header warisan `server` |
 | Header ganda | `fastcgi_hide_header` untuk `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy` | filter `secureheaders` CodeIgniter mengirim header yang sama; setiap header muncul tepat sekali |
@@ -372,7 +372,7 @@ Path Windows ditulis dengan garis miring biasa. The lines that belong to the tun
 
 ```nginx
 server {
-    listen 127.0.0.1:80;                        # only cloudflared on this machine connects
+    listen 80;                                  # like every Laragon site; server_name picks the site
     server_name gelita.id;
 
     set_real_ip_from 127.0.0.1;                 # the visitor's address, from cloudflared's header
@@ -402,12 +402,13 @@ server {
 
 ### HTTPS
 
-Cloudflare ends HTTPS. `cloudflared` on the server passes each request to Nginx on port 80 without TLS. The server holds no certificate and opens no port to the network, so there is nothing to issue or renew on it.
+Cloudflare ends HTTPS. `cloudflared` on the server passes each request to Nginx on port 80 without TLS. The server holds no certificate, so there is nothing to issue or renew on it.
 
 1. In the tunnel's settings (Cloudflare Zero Trust → *Networks* → *Tunnels* → *Public hostname*, or `config.yml`) the service is `http://127.0.0.1:80`. Not `localhost`: Windows tries `::1` first, as with the database host.
 2. Cloudflare → *SSL/TLS*: mode **Full (strict)** works with a tunnel.
 3. `.env` keeps `app.baseURL = 'https://gelita.id/'`, `app.forceGlobalSecureRequests = true` and `cookie.secure = true` (see [`.env` production](#env-production)).
 4. Nginx tells PHP that the visitor is on HTTPS (`fastcgi_param HTTPS on`) and sends the `Strict-Transport-Security` header itself (see [Nginx](#nginx)).
+5. Nginx listens on port 80 of every address (`listen 80`, like the other Laragon sites), so the Windows firewall must keep port 80 closed to the network: allow no inbound rule for port 80 or `nginx.exe` (Windows asks once when Nginx first starts). A machine that reached Nginx directly would be treated as an HTTPS visitor. Check from another machine on the same network: `curl -I http://<server address>/` must not connect.
 
 ### Akses keluar server (thumbnail video Pustaka)
 
@@ -1207,6 +1208,7 @@ Bulanan: jalankan satu uji pemulihan.
 | Unduhan data gagal di tengah | `memory_limit` atau batas 300 detik (dihitung jam dinding) | persempit rentang tanggal; periksa batas PHP |
 | Nginx tidak mau start | port 80 dipakai Apache Laragon, IIS, atau aplikasi lain | matikan Apache di Laragon; `Get-NetTCPConnection -LocalPort 80` untuk mencari pemakainya |
 | Every page of gelita.id, katalog.gelita.id and pictures too answer `error code: 502` from Cloudflare, within a second | `cloudflared` runs but nothing answers on `127.0.0.1:80`: Nginx is not running, usually because its configuration fails. (A stopped `cloudflared` gives error 1033 instead.) | `Get-NetTCPConnection -LocalPort 80 -State Listen` finds nothing; `.\nginx.exe -t` in Laragon's Nginx folder names the failing line ([Nginx](#nginx), step 4); fix it and start Nginx in Laragon. If Nginx does answer `curl.exe -sI http://127.0.0.1/`, the tunnel's service is not `http://127.0.0.1:80` ([HTTPS](#https)) |
+| Every site on the server shows GELITA (other host names too) | the site file says `listen 127.0.0.1:80` (the `gelita.id.conf` of 21 November 2026). Nginx gives every request on `127.0.0.1` to the file that names that address, and `cloudflared` sends every site there | copy the current `deploy\windows\nginx\gelita.id.conf` (`listen 80;`), `.\nginx.exe -t`, reload Nginx. Other site files on the server must use `listen 80` too, never an address |
 | `nginx -t`: `"fastcgi_read_timeout" directive is duplicate in …gelita.id.conf` | the first `gelita.id.conf` (21 November 2026) included Laragon's `snippets/fastcgi-php.conf`, which sets that directive too | copy the current `deploy\windows\nginx\gelita.id.conf` (`include fastcgi.conf;`) |
 | Tugas terjadwal `0x1` | Laragon/MySQL mati saat tugas berjalan, atau path PHP berubah setelah ganti versi | nyalakan Laragon; perbarui `Php`/`MySql` di `config.psd1` |
 | Gambar tidak muncul | aset belum diunggah atau `is_active = 0` | **Gambar & mockup** (`/admin/media`); `gelita:media:scan` |

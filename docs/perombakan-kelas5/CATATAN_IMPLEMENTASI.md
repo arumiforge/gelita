@@ -1545,3 +1545,17 @@ P2–P4 last 70 minutes (two lessons), a third of the students are slower, and a
 `tools/qa/stage-check.mjs --sizes=1366x768`: no layout, overflow or hit-area failure; the two failures are the browser's *Transition was aborted* message on the result screens, which `tools/qa/skenario-states.mjs` already ignores as a page-transition artifact. In English the measured screens give the same ratios (0.59 to 0.64).
 
 **Not checked.** A Chromebook; English beyond the measured screens; the *Balai Refleksi* and *Peta Kedu* buttons of the result screen (only shown at the end of a region or of the game).
+
+## Every site on the server showed GELITA: `listen 127.0.0.1:80` back to `listen 80` (21 November 2026, branch `igi/laughing-mendel-d0rjcl`)
+
+**What failed.** With `deploy/windows/nginx/gelita.id.conf` installed, every site on the production server answered with GELITA, whatever its host name (owner, 21 November 2026). The owner asked to go back to the normal setup.
+
+**Cause.** The file said `listen 127.0.0.1:80;`, while Laragon's other site files say `listen 80;`. Nginx picks the server blocks for a connection by the address it arrived on first and only then by `server_name`: for a connection to `127.0.0.1:80`, only blocks that name `127.0.0.1:80` take part, and a block on the wildcard `*:80` never does. `cloudflared` sends every public hostname of the tunnel to `http://127.0.0.1:80`, so GELITA's block, the only one naming that address and therefore its default, answered them all. The owner's hand-written tunnel site, measured on 20 November, had `listen 80` (section *Production server* above); `127.0.0.1` came with the repository file of PR #450, to keep other machines from reaching Nginx directly. The hand-over for `uji.gelita.id` above ("both site files listen on `127.0.0.1:80`") was right for two GELITA files but missed the server's other sites.
+
+**Decision.** `listen 80;` like every Laragon site, no `default_server`, so `server_name gelita.id` decides. The visitor address stays safe: `set_real_ip_from 127.0.0.1` trusts `CF-Connecting-IP` only from `cloudflared`. What `127.0.0.1` also gave, that no other machine reaches Nginx and is treated as an HTTPS visitor (`fastcgi_param HTTPS on`), is now the Windows firewall's job: `docs/08` → *HTTPS* step 5 and the overview row. `DeployFilesTest` requires `listen 80;`, refuses any other `listen` and `default_server`; `docs/08` → *Nginx* (Listen row, sample block) and a troubleshooting row are updated. The `uji.gelita.id` site file uses `listen 80;` too (`docs/PROGRESS.md` → *Next*).
+
+**Checked.** nginx 1.24 on Linux with a second site written the Laragon way (`listen 80; server_name other.test`, port changed for the check): with the old file, `other.test`, `gelita.id` and an unknown host all got GELITA; with the new file, `other.test` gets its own site, `gelita.id` gets GELITA, an unknown host goes to the default server (here the other site, on Laragon its own default), and `nginx -t` passes. `DeployFilesTest` green.
+
+**On the server.** The owner installed the new file on Laragon's Nginx 1.30.4: every site is back to normal (21 November 2026).
+
+**Not checked.** Whether the server's Windows firewall has an inbound rule for port 80 or `nginx.exe`; which site Laragon's Nginx gives an unknown host name.
