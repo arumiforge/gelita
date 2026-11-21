@@ -1556,4 +1556,6 @@ P2–P4 last 70 minutes (two lessons), a third of the students are slower, and a
 
 **Checked.** nginx 1.24 on Linux with a second site written the Laragon way (`listen 80; server_name other.test`, port changed for the check): with the old file, `other.test`, `gelita.id` and an unknown host all got GELITA; with the new file, `other.test` gets its own site, `gelita.id` gets GELITA, an unknown host goes to the default server (here the other site, on Laragon its own default), and `nginx -t` passes. `DeployFilesTest` green.
 
-**Not checked.** Laragon's Nginx 1.30.4 on the server (the owner copies the file, runs `.\nginx.exe -t` and reloads); whether the server's Windows firewall has an inbound rule for port 80 or `nginx.exe`; which site Laragon's Nginx gives an unknown host name.
+**On the server.** The owner installed the new file on Laragon's Nginx 1.30.4: every site is back to normal (21 November 2026).
+
+**Not checked.** Whether the server's Windows firewall has an inbound rule for port 80 or `nginx.exe`; which site Laragon's Nginx gives an unknown host name.

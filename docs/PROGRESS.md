@@ -245,4 +245,3 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `igi/laughing-mendel-d0rjcl` | Nginx site file back to `listen 80` (every site of the server showed GELITA), PR #454 | `gelita.id.conf`, `DeployFilesTest`, `docs/08`; checked on nginx 1.24 on Linux with a second site; not yet on the server (owner: copy, `nginx -t`, reload, check another site and the firewall) |
