@@ -579,9 +579,14 @@ if (! function_exists('stage_picture_urls')) {
      *   `map-progress-track`), `--track-cut`, each end 1.32 × the height;
      * - `--ui-frame`: the dialog frame (`U-04`; was `modal-frame-4x3`/`-16x9` and the
      *   `ui.result-panel` skin), a nine-slice border image with `--frame-cut`;
-     * - `--button-gold`, `--button-navy`, `--button-green`: the quiet button faces (document 40,
-     *   `PL-07` to `PL-09`, installed 20 November 2026), 960 × 160 with even faces, drawn as a
-     *   border image over the CSS faces of the *QUIET BUTTONS* block (cinematic.css, `--qb-cut`);
+     * - `--button-gold`, `--button-navy`, `--button-green`, `--button-red`: the light carved
+     *   button bodies (document 40, `PL-13` to `PL-16`, installed 21 November 2026; they replace
+     *   the quiet faces `PL-07` to `PL-09` and the CSS red face), 1200 × 200 with even faces,
+     *   drawn as a border image over the CSS faces of the *QUIET BUTTONS* block
+     *   (cinematic.css, `--qb-cut`);
+     * - `--medal-right`, `--medal-left`, `--medal-check`, `--medal-down`, `--medal-map`,
+     *   `--medal-sparkle`: the carved icon medallions inside the text buttons (`PL-17` to
+     *   `PL-22`, same day), 256 × 256, in place of the CSS icon box;
      * - `--select-arrow`: the gold triangle of the dropdowns (core/select.js);
      * - `--round-close`: the round close button of the picture viewer (core/lightbox.js);
      * - `--round-blank`: the plain gold face, a try left or a shard earned (with the dark
@@ -597,9 +602,16 @@ if (! function_exists('stage_picture_urls')) {
             'plate-green'  => ui_picture_src('ui-plate-green.webp'),
             'ui-track'     => ui_picture_src('ui-track.webp'),
             'ui-frame'     => ui_picture_src('ui-frame.webp'),
-            'button-gold'  => ui_picture_src('ui-button-gold.webp'),
-            'button-navy'  => ui_picture_src('ui-button-navy.webp'),
-            'button-green' => ui_picture_src('ui-button-green.webp'),
+            'button-gold'  => ui_picture_src('ui-button-carved-gold.webp'),
+            'button-navy'  => ui_picture_src('ui-button-carved-navy.webp'),
+            'button-green' => ui_picture_src('ui-button-carved-green.webp'),
+            'button-red'   => ui_picture_src('ui-button-carved-red.webp'),
+            'medal-right'   => ui_picture_src('ui-medal-right.webp'),
+            'medal-left'    => ui_picture_src('ui-medal-left.webp'),
+            'medal-check'   => ui_picture_src('ui-medal-check.webp'),
+            'medal-down'    => ui_picture_src('ui-medal-down.webp'),
+            'medal-map'     => ui_picture_src('ui-medal-map.webp'),
+            'medal-sparkle' => ui_picture_src('ui-medal-sparkle.webp'),
             'select-arrow' => ui_picture_src('select-arrow.webp'),
             'round-close'  => round_icon_src('close'),
             'round-blank'  => round_icon_src('blank'),

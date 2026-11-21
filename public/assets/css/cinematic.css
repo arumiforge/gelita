@@ -1829,9 +1829,11 @@ body.has-kenal { overflow: hidden; }
    main action, navy = the quiet one, green = Lihat hasil, red = a danger action. The carved
    gold stays on frames, the HUD's round buttons and the medallions. The rules sit here, last,
    under #stage, so they win over every plate rule of game.css and the sections above without
-   !important; each button keeps the height its own rule gives it. The stretchable pictures
-   ordered as PL-07 to PL-09 (document 40) may later replace the CSS faces. The Skenario
-   Digital buttons (SD pictures of 41) and the answer choices keep their own look. */
+   !important; each button keeps the height its own rule gives it. Since 21 November 2026 the
+   light carved bodies (document 40, PL-13 to PL-16) are drawn over these CSS faces, and the
+   icons are carved medallions (PL-17 to PL-22); see the end of this block. The CSS faces stay
+   as the look without the pictures. The Skenario Digital buttons (SD pictures of 41), the
+   answer choices, the round HUD buttons and the test module (/tes) keep their own look. */
 #stage {
   --qb-radius: .875rem;
   --qb-shadow: 0 .3125rem .875rem rgba(2, 8, 20, .45);
@@ -1909,22 +1911,24 @@ body.has-kenal { overflow: hidden; }
 #stage .btn-plate .icon { display: inline-block; }
 #stage .btn-plate.is-back .icon { order: -1; }
 
-/* The arrow (or check) in a small inset box on the right, as in the owner's mockup; on the
-   back buttons the box sits on the left */
+/* The icon of a text button. The arrows, the check, the chevron, the map and the sparkle are
+   carved medallions (PL-17 to PL-22, below); every other icon is a plain antique-gold line
+   with no box (document 40, 21 November 2026): dark gold on the gold face, light gold on the
+   navy, green and red faces. On the back buttons the icon sits on the left. */
 #stage :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .kedu-btn, .result-btn, .map-level .node-action.is-green, .modal-actions .btn-quiet) > .icon {
   box-sizing: content-box;
-  width: .9em;
-  height: .9em;
-  padding: .2em;
-  border-radius: .375rem;
-  background: rgba(255, 255, 255, .28);
-  box-shadow: inset 0 0 0 .0625rem rgba(110, 72, 18, .45);
+  width: 1.1em;
+  height: 1.1em;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: #7A4E12;
   stroke-width: 2.4;
 }
-#stage :is(.btn-plate.is-back, .shelf-back, .book-foot .book-prev, .kedu-btn.is-secondary, .result-btn.is-secondary, .result-btn.is-detail, .modal-actions .btn-quiet) > .icon,
+#stage :is(.btn-danger, .btn-plate.is-back, .shelf-back, .book-foot .book-prev, .kedu-btn.is-secondary, .result-btn.is-secondary, .result-btn.is-detail, .modal-actions .btn-quiet) > .icon,
 #stage .map-level .node-action.is-green > .icon {
-  background: rgba(223, 192, 135, .14);
-  box-shadow: inset 0 0 0 .0625rem rgba(223, 192, 135, .5);
+  color: #E9C77A;
 }
 
 /* Hover, press, focus: a little lift and light, the same for every colour */
@@ -1949,31 +1953,90 @@ body.has-kenal { overflow: hidden; }
 #stage :is(.btn-primary, .btn-plate, .btn-gold-plate)[aria-disabled="true"],
 #stage :is(.btn-primary, .btn-plate, .btn-gold-plate):disabled { filter: grayscale(.6); opacity: .55; transform: none; }
 
-/* The quiet button pictures (document 40, PL-07 to PL-09, installed 20 November 2026), passed on
-   #stage as --button-{gold,navy,green} by stage_picture_urls(). Each is 960 × 160 with an even
-   face from y 12 to 138 and its contact shadow to y 147; --qb-cut crops the empty top and
-   bottom margin and keeps the rounded ends (40 px) at their drawn shape: an end is
-   0.296 × the button's height (40 / 135; --pill-h where a size sets it, else 3rem). Only the
-   plain middle stretches. The picture carries its own bead edge and shadow, so the CSS edge
-   and shadow go; without a picture the CSS faces above stay. Red keeps its CSS face. */
-#stage { --qb-cut: 12 40 13 fill; }
+/* The light carved button bodies (document 40, PL-13 to PL-16, installed 21 November 2026;
+   they replace the quiet faces PL-07 to PL-09 and the CSS red face), passed on #stage as
+   --button-{gold,navy,green,red} by stage_picture_urls(). Each is 1200 × 200: the button is
+   drawn from y 12 to 187 (face to y 176, its contact shadow below) and every column from
+   x 60 to x 1140 is the same, so --qb-cut crops the empty top and bottom and keeps the rounded
+   ends (60 px) at their drawn shape: an end is --qb-end = 0.341 × the button's height
+   (60 / 176). Only the plain middle stretches. The picture carries its own rim and shadow, so
+   the CSS edge and shadow go; without a picture the CSS faces above stay. */
+#stage { --qb-cut: 12 60 12 fill; --qb-end: .341; }
+
+/* The button's height, which the ends and the medallion are sized from (--pill-h; the
+   heights these rules give the buttons, checked at 1366 × 768 on 21 November 2026). It sets
+   no height itself: a family not listed here keeps its own --pill-h, else 3rem. */
+#stage .btn-plate { --pill-h: var(--plate-h, 4rem); }
+#stage .btn-lg:is(.btn-primary, .btn-danger):not(.btn-action) { --pill-h: 3.5rem; }
+#stage .map-level .node-action { --pill-h: 3.5rem; }
+#stage :is(.kenal .kenal-back, .kenal .slide-nav .btn) { --pill-h: 4rem; }
+#stage .shelf-back { --pill-h: 3.5rem; }
+#stage .shelf-btn { --pill-h: 2.75rem; }
+#stage .btn-gold-plate { --pill-h: 4rem; }
+#stage .login-form .btn-gold-plate { --pill-h: 4.25rem; }
+#stage .btn-install-plate { --pill-h: 3.25rem; }
+/* Peta Kedu's buttons and the result screen's draw their body on an inset ::before, so the
+   hint is the body's height: the button's height less the inset above and below (game.css) */
+#stage .kedu-btn { --pill-h: 4rem; }                                    /* 5.5rem − 2 × .75rem */
+#stage .kedu-panel-actions .kedu-btn { --pill-h: 3rem; }                /* 3.5rem − 2 × .25rem */
+#stage .kedu-nav.is-all-done .kedu-btn { --pill-h: 3.5rem; }            /* 3.875rem − 2 × .1875rem */
+#stage .result-btn.is-primary { --pill-h: 3.8333rem; }                  /* 5.5rem − 2 × .8333rem */
+#stage .result-btn:is(.is-secondary, .is-detail) { --pill-h: 3.25rem; } /* 5.5rem − 2 × 1.125rem */
+
 #stage[style*="--button-gold"] :is(.btn-primary, .btn-plate.is-next, .btn-plate.is-enter, .btn-gold-plate, .shelf-btn, .cine .narrator-next.has-label:not(:disabled), .kenal .slide-nav .btn-primary),
 #stage[style*="--button-gold"] :is(.kedu-btn.is-primary, .result-btn.is-primary)::before {
   border: 0 solid transparent;
-  border-image: var(--button-gold) var(--qb-cut) / 0 calc(var(--pill-h, 3rem) * .296) stretch;
+  border-image: var(--button-gold) var(--qb-cut) / 0 calc(var(--pill-h, 3rem) * var(--qb-end)) stretch;
   background: none;
   box-shadow: none;
 }
 #stage[style*="--button-navy"] :is(.btn-plate.is-back, .kenal .kenal-back, .kenal .slide-nav .btn-quiet, .modal-actions .btn-quiet, .shelf-back, .book-foot .book-prev, .btn-install-plate),
 #stage[style*="--button-navy"] :is(.kedu-btn.is-secondary, .result-btn.is-secondary, .result-btn.is-detail)::before {
   border: 0 solid transparent;
-  border-image: var(--button-navy) var(--qb-cut) / 0 calc(var(--pill-h, 3rem) * .296) stretch;
+  border-image: var(--button-navy) var(--qb-cut) / 0 calc(var(--pill-h, 3rem) * var(--qb-end)) stretch;
   background: none;
   box-shadow: none;
 }
 #stage[style*="--button-green"] .map-level .node-action.is-green {
   border: 0 solid transparent;
-  border-image: var(--button-green) var(--qb-cut) / 0 calc(var(--pill-h, 3rem) * .296) stretch;
+  border-image: var(--button-green) var(--qb-cut) / 0 calc(var(--pill-h, 3rem) * var(--qb-end)) stretch;
   background: none;
   box-shadow: none;
 }
+#stage[style*="--button-red"] .btn-danger {
+  border: 0 solid transparent;
+  border-image: var(--button-red) var(--qb-cut) / 0 calc(var(--pill-h, 3rem) * var(--qb-end)) stretch;
+  background: none;
+  box-shadow: none;
+}
+
+/* The icon medallions (document 40, PL-17 to PL-22, same day), passed on #stage as
+   --medal-{right,left,check,down,map,sparkle}: a carved gold ring round a navy disc with the
+   symbol, drawn by the picture instead of the line icon and its inset box. The icon element
+   keeps its place (the same side as before) and stays decorative (aria-hidden); its drawing
+   is hidden. Size: about 0.6 × the button's height (the ring is 232 of the 256 px), never
+   more than 1.9 × the label's size. arrow-right and arrow-left use the same arrows. */
+#stage[style*="--medal-right"] :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .kedu-btn, .result-btn, .map-level .node-action, .modal-actions .btn-quiet, .kenal .kenal-back, .cine .narrator-next.has-label) > .icon:is([data-icon="right"], [data-icon="arrow-right"]),
+#stage[style*="--medal-left"] :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .kedu-btn, .result-btn, .map-level .node-action, .modal-actions .btn-quiet, .kenal .kenal-back, .cine .narrator-next.has-label) > .icon:is([data-icon="left"], [data-icon="arrow-left"]),
+#stage[style*="--medal-check"] :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .kedu-btn, .result-btn, .map-level .node-action, .modal-actions .btn-quiet, .kenal .kenal-back, .cine .narrator-next.has-label) > .icon[data-icon="check"],
+#stage[style*="--medal-down"] :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .kedu-btn, .result-btn, .map-level .node-action, .modal-actions .btn-quiet, .kenal .kenal-back, .cine .narrator-next.has-label) > .icon[data-icon="down"],
+#stage[style*="--medal-map"] :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .kedu-btn, .result-btn, .map-level .node-action, .modal-actions .btn-quiet, .kenal .kenal-back, .cine .narrator-next.has-label) > .icon[data-icon="map"],
+#stage[style*="--medal-sparkle"] :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .kedu-btn, .result-btn, .map-level .node-action, .modal-actions .btn-quiet, .kenal .kenal-back, .cine .narrator-next.has-label) > .icon[data-icon="sparkle"] {
+  --qb-medal: min(1.9em, calc(var(--pill-h, 3rem) * .64));
+  box-sizing: border-box;
+  flex: none;
+  width: var(--qb-medal);
+  height: var(--qb-medal);
+  margin-block: -1rem;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--qb-medal-src) center / contain no-repeat;
+  box-shadow: none;
+  stroke: none;
+}
+#stage :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .kedu-btn, .result-btn, .map-level .node-action, .modal-actions .btn-quiet, .kenal .kenal-back, .cine .narrator-next.has-label) > .icon:is([data-icon="right"], [data-icon="arrow-right"]) { --qb-medal-src: var(--medal-right); }
+#stage :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .kedu-btn, .result-btn, .map-level .node-action, .modal-actions .btn-quiet, .kenal .kenal-back, .cine .narrator-next.has-label) > .icon:is([data-icon="left"], [data-icon="arrow-left"]) { --qb-medal-src: var(--medal-left); }
+#stage :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .kedu-btn, .result-btn, .map-level .node-action, .modal-actions .btn-quiet, .kenal .kenal-back, .cine .narrator-next.has-label) > .icon[data-icon="check"] { --qb-medal-src: var(--medal-check); }
+#stage :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .kedu-btn, .result-btn, .map-level .node-action, .modal-actions .btn-quiet, .kenal .kenal-back, .cine .narrator-next.has-label) > .icon[data-icon="down"] { --qb-medal-src: var(--medal-down); }
+#stage :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .kedu-btn, .result-btn, .map-level .node-action, .modal-actions .btn-quiet, .kenal .kenal-back, .cine .narrator-next.has-label) > .icon[data-icon="map"] { --qb-medal-src: var(--medal-map); }
+#stage :is(.btn-primary, .btn-danger, .btn-plate, .btn-gold-plate, .shelf-btn, .shelf-back, .book-foot .book-prev, .kedu-btn, .result-btn, .map-level .node-action, .modal-actions .btn-quiet, .kenal .kenal-back, .cine .narrator-next.has-label) > .icon[data-icon="sparkle"] { --qb-medal-src: var(--medal-sparkle); }

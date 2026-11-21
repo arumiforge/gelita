@@ -60,11 +60,18 @@ final class DeployFilesTest extends CIUnitTestCase
             'if (-f "C:/laragon/www/gelita/writable/pemeliharaan.flag") {',
             'location = /index.php {',
             'fastcgi_pass php_upstream;',
+            'include fastcgi.conf;',
             'fastcgi_read_timeout 300;',
             'client_max_body_size 72M;',
         ] as $line) {
             $this->assertContains($line, $lines, $line);
         }
+
+        // Laragon's snippets/fastcgi-php.conf sets fastcgi_read_timeout itself:
+        // including it next to ours stopped Nginx from starting on the server
+        // ("directive is duplicate", 21 November 2026)
+        $this->assertSame([], array_values(array_filter($lines, static fn (string $line): bool => str_starts_with($line, 'include snippets/'))));
+        $this->assertCount(1, array_filter($lines, static fn (string $line): bool => str_starts_with($line, 'fastcgi_read_timeout ')));
 
         // add_header inside a location drops every header of the server block
         $this->assertCount(5, array_filter($lines, static fn (string $line): bool => str_starts_with($line, 'add_header ')));

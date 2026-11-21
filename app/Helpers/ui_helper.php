@@ -17,6 +17,7 @@ if (! function_exists('icon')) {
             'left'      => '<path d="M15 18l-6-6 6-6"/>',
             'right'     => '<path d="M9 18l6-6-6-6"/>',
             'arrow-right' => '<path d="M4.5 12h15"/><path d="M13.5 6l6 6-6 6"/>',
+            'arrow-left'  => '<path d="M19.5 12h-15"/><path d="M10.5 6l-6 6 6 6"/>',
             'pin'       => '<path d="M12 21.5s-6.5-6-6.5-11.5a6.5 6.5 0 0 1 13 0c0 5.5-6.5 11.5-6.5 11.5z"/><circle cx="12" cy="10" r="2.25"/>',
             'up'        => '<path d="M18 15l-6-6-6 6"/>',
             'down'      => '<path d="M6 9l6 6 6-6"/>',
@@ -82,7 +83,10 @@ if (! function_exists('icon')) {
 
         $path = $paths[$name] ?? $paths['info'];
 
-        return '<svg class="icon' . ($class === '' ? '' : ' ' . esc($class, 'attr')) . '" viewBox="0 0 24 24"'
+        // data-icon names the drawing, so CSS can swap it for a picture (the carved icon
+        // medallions of the text buttons, document 40 PL-17 to PL-22)
+        return '<svg class="icon' . ($class === '' ? '' : ' ' . esc($class, 'attr')) . '"'
+            . ' data-icon="' . (isset($paths[$name]) ? esc($name, 'attr') : 'info') . '" viewBox="0 0 24 24"'
             . ' width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"'
             . ' stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'
             . $path . '</svg>';

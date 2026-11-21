@@ -35,6 +35,9 @@ final class ErrorPagesTest extends CIUnitTestCase
         $this->assertSame(is_file(FCPATH . 'assets/ui/error-404.webp'), str_contains($page, '<body class="has-art"'));
         // Owner, 19 November 2026: the text stands on the picture, no bordered box
         $this->assertStringNotContainsString('class="card', $page);
+        // Kembali ke awal wears the carved gold body of the game's buttons (PL-13, 21 November 2026)
+        $this->assertFileExists(FCPATH . 'assets/ui/ui-button-carved-gold.webp');
+        $this->assertMatchesRegularExpression('~<a href="[^"]+" class="has-body" style="--body: url\(&quot;[^"]*ui-button-carved-gold\.webp[^"]*&quot;\)">~', $page);
     }
 
     public function testOtherClientErrorsAreFriendlyIndonesian(): void

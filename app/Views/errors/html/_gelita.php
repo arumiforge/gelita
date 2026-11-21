@@ -9,6 +9,10 @@
  * the text stands straight on it in the calm left part, with no box or border; a soft dark
  * wash from the left keeps it readable. Without the picture the navy gradient shows.
  *
+ * Kembali ke awal wears the light carved gold body of the game's text buttons (document 40,
+ * `PL-13`, 21 November 2026; `public/assets/ui/ui-button-carved-gold.webp`, drawn as a border
+ * image like cinematic.css → *QUIET BUTTONS*); without it the CSS gold face shows.
+ *
  * Never shows the exception, its message or a trace (ui-copy.md); the 500 page shows the
  * request_id, the same as the log line, for the teacher to pass on.
  *
@@ -22,6 +26,7 @@ $locale  = service('request') instanceof CodeIgniter\HTTP\IncomingRequest ? serv
 $file    = 'ui/error-' . $kind . '.webp';
 $picture = is_file(FCPATH . 'assets/' . $file) && function_exists('asset_url_versioned') ? asset_url_versioned($file) : null;
 $accent  = $kind === '500' ? '#E08A64' : '#DFC087';
+$body    = is_file(FCPATH . 'assets/ui/ui-button-carved-gold.webp') && function_exists('asset_url_versioned') ? asset_url_versioned('ui/ui-button-carved-gold.webp') : null;
 ?>
 <!DOCTYPE html>
 <html lang="<?= esc($locale) ?>">
@@ -51,6 +56,12 @@ $accent  = $kind === '500' ? '#E08A64' : '#DFC087';
         border-radius: 14px; color: #24170A; font-weight: 700; text-decoration: none; text-shadow: none;
         background: linear-gradient(180deg, #FFF4D2 0%, #F4D891 34%, #E2BA68 68%, #CB9C48 100%);
         box-shadow: 0 0 0 1px #7E5A1E, inset 0 0 0 1px rgba(255, 249, 228, .9), 0 5px 14px rgba(2, 8, 20, .45); }
+    /* The carved body (1200 × 200): the button from y 12 to 187, ends 60 px = 0.341 × height.
+       The gold gradient stays under it, clipped inside the carved rim (transparent border,
+       padding-box), so the link still reads when the picture cannot be loaded. */
+    a.has-body { height: 56px; border: solid transparent; border-width: 3px 3px 4px; border-radius: 28px;
+                 background-clip: padding-box; box-shadow: none;
+                 border-image: var(--body) 12 60 12 fill / 0 19px stretch; filter: drop-shadow(0 4px 10px rgba(2, 8, 20, .4)); }
     a:focus-visible { outline: 3px solid #F0DFB8; outline-offset: 3px; }
     @media (max-width: 640px) { body { align-items: flex-end; } body::before { background: linear-gradient(0deg, rgba(8, 14, 26, .9), rgba(8, 14, 26, .2) 70%); } }
   </style>
@@ -63,7 +74,7 @@ $accent  = $kind === '500' ? '#E08A64' : '#DFC087';
     <?php if (! empty($requestId)): ?>
       <div class="rid">request_id: <?= esc($requestId) ?></div><br>
     <?php endif ?>
-    <a href="<?= esc(base_url()) ?>"><?= esc(lang('Game.backHome')) ?></a>
+    <a href="<?= esc(base_url()) ?>"<?= $body !== null ? ' class="has-body" style="--body: url(&quot;' . esc($body, 'attr') . '&quot;)"' : '' ?>><?= esc(lang('Game.backHome')) ?></a>
   </main>
 </body>
 </html>

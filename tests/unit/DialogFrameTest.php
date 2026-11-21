@@ -26,20 +26,32 @@ final class DialogFrameTest extends CIUnitTestCase
     public function testShippedPicturesArePassedOnTheStage(): void
     {
         // Document 40, U-01 to U-05 (19 November 2026): one plate per colour, the track, the frame
-        // Document 40, PL-07 to PL-09 (20 November 2026): the quiet button faces
-        foreach (['ui-plate-gold', 'ui-plate-navy', 'ui-plate-green', 'ui-track', 'ui-frame', 'ui-button-gold', 'ui-button-navy', 'ui-button-green', 'select-arrow'] as $file) {
+        // Document 40, PL-13 to PL-22 (21 November 2026): the light carved button bodies and the
+        // icon medallions; they replace the quiet button faces PL-07 to PL-09
+        foreach (['ui-plate-gold', 'ui-plate-navy', 'ui-plate-green', 'ui-track', 'ui-frame', 'select-arrow'] as $file) {
             $this->assertFileExists(FCPATH . 'assets/ui/' . $file . '.webp');
+        }
+        foreach (['gold', 'navy', 'green', 'red'] as $colour) {
+            $this->assertFileExists(FCPATH . 'assets/ui/ui-button-carved-' . $colour . '.webp');
+        }
+        foreach (['right', 'left', 'check', 'down', 'map', 'sparkle'] as $medal) {
+            $this->assertFileExists(FCPATH . 'assets/ui/ui-medal-' . $medal . '.webp');
         }
         foreach (['gold-pill-1', 'gold-pill-2', 'gold-pill-3', 'gold-pill-4', 'kenal-plate-gold', 'kenal-plate-navy', 'plate-green', 'loading-track', 'map-progress-track', 'modal-frame-4x3', 'modal-frame-16x9'] as $old) {
             $this->assertFileDoesNotExist(FCPATH . 'assets/ui/' . $old . '.webp', $old . ' replaced by U-01 to U-05');
         }
+        foreach (['ui-button-gold', 'ui-button-navy', 'ui-button-green'] as $old) {
+            $this->assertFileDoesNotExist(FCPATH . 'assets/ui/' . $old . '.webp', $old . ' replaced by PL-13 to PL-15');
+        }
 
         $urls = stage_picture_urls();
         $this->assertSame(
-            ['plate-gold', 'plate-navy', 'plate-green', 'ui-track', 'ui-frame', 'button-gold', 'button-navy', 'button-green', 'select-arrow', 'round-close', 'round-blank'],
+            ['plate-gold', 'plate-navy', 'plate-green', 'ui-track', 'ui-frame', 'button-gold', 'button-navy', 'button-green', 'button-red',
+                'medal-right', 'medal-left', 'medal-check', 'medal-down', 'medal-map', 'medal-sparkle', 'select-arrow', 'round-close', 'round-blank'],
             array_keys($urls),
         );
         $this->assertNotContains(null, $urls);
+        $this->assertStringContainsString('ui-button-carved-gold.webp', (string) $urls['button-gold']);
         $this->assertStringContainsString('stage_picture_urls()', (string) file_get_contents(APPPATH . 'Views/layouts/game.php'));
         $this->assertNull(ui_picture_src('does-not-exist.webp'));
     }
