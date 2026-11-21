@@ -233,7 +233,7 @@ Ask the owner first (one round, the hand-over section gives a recommended answer
 
 Then build:
 - [ ] `env-example-uji` (owner: "untuk uji buatkan env-example-uji"): the test install's `.env`, from `env-example-production` with `app.baseURL = 'https://uji.gelita.id/'`, its own database, its own `encryption.key` and `gelita.ipSalt` (never production's), `gelita.instrumentPreview = true` (34 §5.5), and the answer to the fourth question.
-- [ ] `deploy/windows/nginx/uji.gelita.id.conf`: the second site file (`server_name uji.gelita.id`, its own `root` and maintenance flag). Copy the `location = /index.php` block of `gelita.id.conf` as it is (`include fastcgi.conf;`, never Laragon's `snippets/fastcgi-php.conf`: decision log *Nginx would not start with `gelita.id.conf`*). Keep its two `map` blocks identical to those of `gelita.id.conf` (or leave them out); load both files into a real nginx before pushing (how: hand-over section).
+- [ ] `deploy/windows/nginx/uji.gelita.id.conf`: the second site file (`server_name uji.gelita.id`, its own `root` and maintenance flag, `listen 80;` like `gelita.id.conf`: never `listen 127.0.0.1:80`, which took every site of the server, decision log *Every site on the server showed GELITA*). Copy the `location = /index.php` block of `gelita.id.conf` as it is (`include fastcgi.conf;`, never Laragon's `snippets/fastcgi-php.conf`: decision log *Nginx would not start with `gelita.id.conf`*). Keep its two `map` blocks identical to those of `gelita.id.conf` (or leave them out); load both files into a real nginx before pushing (how: hand-over section).
 - [ ] `DeployFilesTest::testOneServerOneSiteFile` allows exactly these two site files, and the rules test covers both.
 - [ ] `docs/08`: a section for the test install (checkout of the frozen commit, database and accounts, `.env`, site file, tunnel public hostname `uji.gelita.id` → `http://127.0.0.1:80`, scheduled retention task, what `deploy.ps1` and `backup.ps1` do or do not do for it).
 - [ ] `20` → *Prasyarat no. 8*, step 1 no. 3 ("Belum ditetapkan") filled in, with a new entry in `04`; the validator guide lock re-marked if a locked section changes (`php spark gelita:panduan:cek --panduan=validator --tandai`).
@@ -245,3 +245,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `igi/laughing-mendel-d0rjcl` | Nginx site file back to `listen 80` (every site of the server showed GELITA) | `gelita.id.conf`, `DeployFilesTest`, `docs/08`; checked on nginx 1.24 on Linux with a second site; not yet on the server (owner: copy, `nginx -t`, reload, check another site and the firewall) |
