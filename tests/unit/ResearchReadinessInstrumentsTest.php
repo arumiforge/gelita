@@ -1,6 +1,7 @@
 <?php
 
 use App\Libraries\ResearchReadiness;
+use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\Test\CIUnitTestCase;
 use Tests\Support\Database\GradeFiveWorld;
 
@@ -13,6 +14,8 @@ use Tests\Support\Database\GradeFiveWorld;
 final class ResearchReadinessInstrumentsTest extends CIUnitTestCase
 {
     use GradeFiveWorld;
+
+    private BaseConnection $conn;
 
     protected function setUp(): void
     {

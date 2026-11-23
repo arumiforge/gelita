@@ -171,7 +171,7 @@ final class SoundInstallerTest extends CIUnitTestCase
     public function testTheWorkspaceListsEverySoundOfTheGame(): void
     {
         $dir  = ROOTPATH . SoundInstall::DEFAULT_DIR . '/';
-        $rows = array_map('str_getcsv', file($dir . 'sounds.csv', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: []);
+        $rows = array_map(static fn (string $line): array => str_getcsv($line, ',', '"', ''), file($dir . 'sounds.csv', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: []);
         $head = array_shift($rows);
 
         $this->assertSame(['kode', 'jenis', 'putar_ulang', 'durasi_detik', 'kbps', 'lufs', 'puncak_db', 'layar', 'suasana', 'prompt'], $head);

@@ -70,7 +70,7 @@ Overview in `README.md`, details in `docs/01`–`08`.
 
 ### Cloud sessions (claude.ai/code)
 
-- The "Gelita" environment's setup script (master copy: `tools/dev/cloud-setup.sh`) leaves `vendor/` installed and MariaDB installed but stopped. If `vendor/` is missing, run that script's Composer part; a plain `composer install` works but takes about 10 minutes and 12 GB, because the session's GitHub proxy refuses dependency zip downloads and Composer falls back to full clones.
+- The "Gelita" environment's setup script (master copy: `tools/dev/cloud-setup.sh`) leaves `vendor/` installed and MariaDB installed but stopped, and since 23 November 2026 makes PHP 8.5 and Node 24 the defaults (the server's stack; CI runs PHP 8.5). A session that reports PHP 8.3 or Node 22 runs on an environment with an older copy of the script: say so to the owner. If `vendor/` is missing, run that script's Composer part; a plain `composer install` works but takes about 10 minutes and 12 GB, because the session's GitHub proxy refuses dependency zip downloads and Composer falls back to full clones.
 - `tools/dev/serve.sh` gives a development install on MariaDB in one command (database, `.env`, migrations, seed on an empty database, `php spark serve` on port 8080) for the checks SQLite cannot do and for `tools/qa/*.mjs`. Remove `.env` again before running the test suite if a test result looks different from CI.
 - Audio is produced outside the repository since 14 November 2026 (the generator `tools/audio/` was removed); the MP3 files under `public/assets/audio/` stay.
 

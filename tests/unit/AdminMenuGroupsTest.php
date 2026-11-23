@@ -109,7 +109,14 @@ final class AdminMenuGroupsTest extends CIUnitTestCase
 
     private function byKey(array $groups): array
     {
-        return array_column($groups, null, 'key');
+        // Not array_column(): the ungrouped first group has key null, and null as an array key is deprecated in PHP 8.5.
+        $byKey = [];
+
+        foreach ($groups as $group) {
+            $byKey[(string) $group['key']] = $group;
+        }
+
+        return $byKey;
     }
 
     /** @return array<string, mixed> */

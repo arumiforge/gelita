@@ -43,7 +43,10 @@ async function loadPlaywright() {
   try {
     return await import('playwright');
   } catch {
+    // require() also searches NODE_PATH, where cloud images keep the global Playwright;
+    // `npm root -g` alone misses it when node is a different version than that npm prefix.
     const require = createRequire(import.meta.url);
+    try { return require('playwright'); } catch { /* fall back to npm's global folder */ }
     const root = execFileSync('npm', ['root', '-g']).toString().trim();
     return require(`${root}/playwright`);
   }

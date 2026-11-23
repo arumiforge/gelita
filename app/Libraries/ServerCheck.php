@@ -30,9 +30,9 @@ final class ServerCheck
     public const FAIL = 'fail';
     public const INFO = 'info';
 
-    /** Lowest PHP version composer.json accepts, and the one the guide recommends. */
+    /** Lowest PHP version composer.json accepts, and the one the guide recommends (8.5 since 23 November 2026). */
     public const PHP_MIN         = '8.2.0';
-    public const PHP_RECOMMENDED = '8.3.0';
+    public const PHP_RECOMMENDED = '8.5.0';
 
     /**
      * Extensions GELITA needs (docs/08 → Ekstensi PHP wajib, and the ext-*
@@ -319,7 +319,7 @@ final class ServerCheck
         $rows[] = self::row(
             'Versi PHP',
             $version,
-            '8.3 (paling rendah 8.2)',
+            '8.5 (paling rendah 8.2)',
             version_compare($version, self::PHP_MIN, '<') ? self::FAIL : (version_compare($version, self::PHP_RECOMMENDED, '<') ? self::WARN : self::OK),
             version_compare($version, self::PHP_MIN, '<') ? 'GELITA tidak bisa dipasang di versi ini.' : '',
         );
@@ -393,7 +393,7 @@ final class ServerCheck
             $opcache === null ? 'tidak ada' : ($opcache ? 'aktif' : 'mati'),
             'aktif',
             $opcache === true ? self::OK : self::WARN,
-            $opcache === true ? '' : 'GELITA tetap berjalan, tetapi setiap halaman lebih lambat. Nyalakan zend_extension=opcache dan opcache.enable=1.',
+            $opcache === true ? '' : 'GELITA tetap berjalan, tetapi setiap halaman lebih lambat. Nyalakan opcache.enable=1 (di PHP 8.5 opcache sudah bawaan, tanpa baris zend_extension).',
         );
 
         return $rows;

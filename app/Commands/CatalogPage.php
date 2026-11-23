@@ -141,8 +141,8 @@ class CatalogPage extends BaseCommand
                     $missing[] = $code . ' ' . $url;
                 }
 
+                // No curl_close(): a no-op since PHP 8.0 and deprecated in 8.5; the handle is freed with $handles.
                 curl_multi_remove_handle($multi, $handle);
-                curl_close($handle);
             }
 
             $handles = [];

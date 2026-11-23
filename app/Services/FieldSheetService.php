@@ -1117,7 +1117,7 @@ class FieldSheetService
                     continue;
                 }
 
-                $codes = ($code = FieldSheetSpec::codeFor($sheet, $heading)) !== null ? [$code] : (FieldSheetSpec::paper($sheet)[$this->paperHeading($sheet, $heading)] ?? []);
+                $codes = ($code = FieldSheetSpec::codeFor($sheet, $heading)) !== null ? [$code] : (FieldSheetSpec::paper($sheet)[$this->paperHeading($sheet, $heading) ?? ''] ?? []);
 
                 if ($codes !== []) {
                     $map[$c] = $codes;
@@ -1150,7 +1150,7 @@ class FieldSheetService
 
         foreach ($grid as $cells) {
             $heading = trim($cells[0] ?? '');
-            $codes   = ($code = FieldSheetSpec::codeFor($sheet, $heading)) !== null ? [$code] : (FieldSheetSpec::paper($sheet)[$this->paperHeading($sheet, $heading)] ?? []);
+            $codes   = ($code = FieldSheetSpec::codeFor($sheet, $heading)) !== null ? [$code] : (FieldSheetSpec::paper($sheet)[$this->paperHeading($sheet, $heading) ?? ''] ?? []);
 
             if ($codes !== [] && ! FieldSheetSpec::isDropped($sheet, $heading)) {
                 $value = trim((string) (count($cells) >= 4 ? $cells[3] : ($cells[1] ?? '')));

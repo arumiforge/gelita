@@ -78,7 +78,6 @@ final class MediaReplaceTest extends CIUnitTestCase
         imagefill($image, 0, 0, imagecolorallocate($image, ...$rgb));
         $file = tempnam(sys_get_temp_dir(), 'ganti') . '.png';
         imagepng($image, $file);
-        imagedestroy($image);
 
         $result = (new MediaStore())->storeCopy($file, $this->key, ['image']);
         unlink($file);

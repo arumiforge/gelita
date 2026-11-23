@@ -56,7 +56,7 @@ class NarrationList extends BaseCommand
         $found   = array_fill_keys($locales, 0);
         $rows    = (new NarrationCatalog())->recordingList()['rows'];
 
-        fputcsv($handle, $dir === null ? $headers : array_merge($headers, array_map(static fn (string $locale): string => 'berkas_' . $locale, $locales)));
+        fputcsv($handle, $dir === null ? $headers : array_merge($headers, array_map(static fn (string $locale): string => 'berkas_' . $locale, $locales)), ',', '"', '');
 
         foreach ($rows as $row) {
             // recordingList(): 0 code, 1 context, 2 region, 3 sequence, 4 speaker, 9 text_id, 10 text_en
@@ -73,7 +73,7 @@ class NarrationList extends BaseCommand
                 $line[] = $exists ? 'ada' : 'belum';
             }
 
-            fputcsv($handle, $line);
+            fputcsv($handle, $line, ',', '"', '');
         }
 
         fclose($handle);

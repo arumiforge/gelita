@@ -54,7 +54,7 @@ Folders where other AI tools work for GELITA (`ai-studio/README.md`); Claude Cod
 - [x] The owner's narration decision (voice actors first, ElevenLabs the only synthetic backup) recorded in `04`, the decision log, `docs/audio.md`, and `README.md` → *Audio bawaan*
 - [x] `CLAUDE.md` (quick map, spark command, hand-over rule), `README.md` (folder, command, document rows), glossary rows
 - [x] Multi-account guide `docs/cloud-sessions.md` and repo skill `.claude/skills/continue-work/`
-- [ ] Owner: on each Claude account, check the environment against `docs/cloud-sessions.md` §2 (setup script = current `tools/dev/cloud-setup.sh`, the two variables, GitHub connected)
+- [ ] Owner: on each Claude account, check the environment against `docs/cloud-sessions.md` §2 (setup script = current `tools/dev/cloud-setup.sh`, the two variables, GitHub connected). **Since 23 November 2026 the script installs PHP 8.5 and Node 24: paste the new version into every account's environment** (decision log *PHP 8.5.13 and Node 24 as the project's stack*)
 - [x] Mbah Kedu's 93 Indonesian ElevenLabs takes in `ai-studio/elevenlabs-voice/out/id/` (made 15 November 2026, PR #359: model v4, settings in `voices.md`, mastered with `master.sh`, no effect; decision log *Mbah Kedu's Indonesian ElevenLabs takes*), accepted by the owner on 15 November 2026: the voice fits and the takes may go into the system
 - [x] Mbah Kedu's 93 English ElevenLabs takes in `ai-studio/elevenlabs-voice/out/en/` (made 15 November 2026, branch `nty/gifted-cray-tyh5xu`: voice `fWH0Fha1DCawTa59sMfX`, model v4, the same settings and tags as the Indonesian ones, `language_code` `en`, mastered with `master.sh`; decision log *Mbah Kedu's English ElevenLabs takes*), accepted by the owner on 15 November 2026
 - [x] `ai-studio/elevenlabs-voice/voices.md` complete (15 November 2026, branch `pw/confident-gauss-m36qew`): the owner designed Narator (one voice for both languages) and Jaka (one per language) in ElevenLabs; the voice cells and settings cells are filled in (settings follow the table there, not piloted yet), `NarrationVoicesTest` checks every speaker, language and `voice_profile` length. Credits: 6,825 of 40,000 left on 15 November until 14 December 2026; the owner decided to spend none now (Narator and Jaka need about 12,600 per language)
@@ -163,6 +163,8 @@ Decisions in `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md` (16 November 2026
 
 A server is always set up as a fresh install (`docs/08_DEPLOYMENT.md` → *Instalasi baru*), which runs the bank import, the story data, the catalogue import, and the package build. On a server updated in place instead, `docs/08` lists the commands (`gelita:katalog:impor`, `gelita:story:sync`, **Bangun ulang paket**).
 
+- [ ] Developer: move the server to PHP 8.5.13 x64 (owner, 23 November 2026): Laragon PHP 8.5, extensions ticked again, `php.ini` settings carried over **without** the `zend_extension` opcache line (`docs/08` → *Pengaturan PHP*), `Php` in `C:\gelita-ops\config.psd1` and the scheduled tasks pointed at the new `php.exe`, then `deploy.ps1` and **Cek server** (PHP group all OK). Code, CI and the cloud sessions are on 8.5 since branch `igi/inspiring-archimedes-19rank`
+
 **Content and art**
 
 - [ ] Record the voice-over narration (103 lines per language today; about 187 after the research revision, see `docs/revisi-10-analitik/12_CERITA_PENGHUBUNG_DAN_NARASI.md`) from the script PDF in **Rekaman narasi**, upload it, listen, and approve it. On a server that still has old TTS takes, press **Batalkan semua rekaman** for each language first (decision log, 17 October 2026)
@@ -245,3 +247,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `igi/inspiring-archimedes-19rank` | PHP 8.5.13 and Node 24 as the stack (deprecation fixes, CI, cloud setup script, docs), then the full test round of 23 November 2026 (browser checks, field smoke test, load test, bug review) | Stack change done and tested on 8.5; test round in progress in the same session |

@@ -1559,3 +1559,32 @@ P2–P4 last 70 minutes (two lessons), a third of the students are slower, and a
 **On the server.** The owner installed the new file on Laragon's Nginx 1.30.4: every site is back to normal. The owner also checked the Windows firewall: port 80 is closed to the network (21 November 2026).
 
 **Not checked.** Which site Laragon's Nginx gives an unknown host name.
+
+## PHP 8.5.13 and Node 24 as the project's stack (23 November 2026, branch `igi/inspiring-archimedes-19rank`)
+
+**Decision (owner, 23 November 2026).** The developer moves the server to PHP 8.5.13 and Node.js 24 ("pastikan semua kode tidak break", then "mulai gunakan stack baru tersebut"). CI, the cloud sessions and the documents follow now; the server follows when the developer upgrades it. `composer.json` keeps `"php": "^8.2"`: no code uses 8.5-only syntax, so the 8.3 server keeps running until then.
+
+**Checked before the change.** PHP 8.5.13 (the ondrej/php build) with every extension of README → *Kebutuhan sistem*:
+- Every locked package's PHP range includes 8.5. `php -l` is clean on every file in `app`, `tests`, `tools` and `public`, so there are no compile-time deprecations (backtick operator, non-canonical casts, implicit nullable types).
+- Full suite green on 8.5 (1,477 tests). CodeIgniter logs PHP deprecations as WARNING lines instead of failing the tests (`Config\Exceptions::$logDeprecations`), so the log was read too.
+- Vendor calls that 8.5 deprecates (Kint's `setAccessible()`, mPDF's `curl_close()`/`imagedestroy()`) only run on old PHP versions.
+- A MariaDB development install served by PHP 8.5 with the QA scripts on Node 24.22.3: `challenge-races` 54/54, `event-integrity` all, `admin-check` 565/567 (the two failures were the stale ketua-releases expectation, fixed by PR #456).
+
+**Fixed (each one logged a deprecation on 8.5).**
+- `FieldSheetService` (2×): `null` as an array key when a paper heading is unknown; now `?? ''`, the same lookup PHP did before.
+- `gelita:narration:list`: `fputcsv()` without `$escape` (8.4); now `',', '"', ''` like every other CSV call.
+- `gelita:katalog:halaman --cek-tautan`: `curl_close()` removed (a no-op since 8.0, deprecated in 8.5; no test reaches it).
+- `Simulator::phpSession()`: `use_only_cookies => 0` removed (turning it off is deprecated in 8.5; the CLI session uses no cookies, so it had no effect).
+- Tests: `imagedestroy()` in four tests; `str_getcsv()` without `$escape` in two; `AdminMenuGroupsTest::byKey()` built an array keyed by the ungrouped group's `null` key; `ResearchReadinessInstrumentsTest` set an undeclared `$conn` (a dynamic property, deprecated since 8.2).
+- After the fixes the suite logs no deprecation on 8.5.
+
+**Stack switch.**
+- `.github/workflows/tests.yml`: `php-version: '8.5'`.
+- `tools/dev/cloud-setup.sh` installs PHP 8.5 (CLI, FPM and the extensions) from the ondrej/php PPA, makes it the CLI default, and puts Node 24.22.3 from nodejs.org (checked against SHASUMS256) in place of the image's `node` binary, so PATH, npm's global folder and the global Playwright stay where they were. Run in this session: 23 seconds, PHP 8.5.13 CLI and FPM, Node v24.22.3, `npm root -g` unchanged. Every account must paste the new script into its environment (`docs/cloud-sessions.md` §2).
+- `ServerCheck`: PHP 8.5 is the recommended version, so an 8.3 server shows a reminder (`testPhp83WarnsAndPhp85Passes`); its opcache hint no longer says `zend_extension=opcache`.
+- `docs/08` → *Pengaturan PHP*: the `zend_extension = opcache` line is gone. OPcache is built into PHP 8.5; a leftover line makes PHP warn *Failed loading Zend extension 'opcache'* on every start (tried on 8.5.13). The text names PHP 8.5 where it said 8.3, and so do the README and `deploy/windows/config.example.psd1` (`php-8.5.13-Win32-vs17-x64`).
+- `tools/qa/nav-timing.mjs` looks for `php-fpm8.5` first. `tools/qa/challenge-races.mjs` tries `require('playwright')` (which reads `NODE_PATH`) before `npm root -g`, like the other QA scripts. Under a Node that is not the one npm's global folder belongs to, `npm root -g` points elsewhere and the script stopped with *Cannot find module*.
+
+**On the server when it is upgraded.** Install PHP 8.5.13 x64 in Laragon, tick the extensions again, carry the `php.ini` settings over without the `zend_extension` opcache line, point `Php` in `C:\gelita-ops\config.psd1` and the scheduled tasks at the new `php.exe`, run `deploy.ps1`, then open **Cek server**: every row of the PHP group should read OK.
+
+**Not checked.** PHP 8.5 on Windows (Laragon's php-cgi), and MySQL 8 under PHP 8.5; the cloud sessions use MariaDB.

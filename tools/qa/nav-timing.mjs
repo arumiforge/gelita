@@ -33,7 +33,7 @@
  *   composer install; cp env .env; php spark key:generate
  *   database + php spark migrate + db:seed DatabaseSeeder (README §Instalasi)
  *   php spark gelita:narration:import, then approve the narration
- *   apt install nginx php8.3-fpm   (only for --serve)
+ *   apt install nginx php8.5-fpm   (only for --serve)
  *
  * Usage:
  *   node tools/qa/nav-timing.mjs --serve [--runs=5] [--only=peta,misi] [--region=temanggung]
@@ -110,8 +110,8 @@ async function serve() {
   const dir = path.join(OUT, 'server');
   fs.mkdirSync(dir, { recursive: true });
   const nginx = which('nginx') || (fs.existsSync('/usr/sbin/nginx') ? '/usr/sbin/nginx' : null);
-  const fpm = ['php-fpm8.3', 'php-fpm', '/usr/sbin/php-fpm8.3'].map((c) => (c.startsWith('/') ? (fs.existsSync(c) ? c : null) : which(c))).find(Boolean);
-  if (!nginx || !fpm) throw new Error('--serve needs nginx and php-fpm (apt install nginx php8.3-fpm)');
+  const fpm = ['php-fpm8.5', 'php-fpm8.3', 'php-fpm', '/usr/sbin/php-fpm8.5', '/usr/sbin/php-fpm8.3'].map((c) => (c.startsWith('/') ? (fs.existsSync(c) ? c : null) : which(c))).find(Boolean);
+  if (!nginx || !fpm) throw new Error('--serve needs nginx and php-fpm (apt install nginx php8.5-fpm)');
 
   const asRoot = process.getuid?.() === 0;
   const sock = path.join(dir, 'php-fpm.sock');
