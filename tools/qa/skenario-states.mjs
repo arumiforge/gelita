@@ -82,7 +82,13 @@ async function signUp(page) {
   await page.click('main form button[type=submit]');
   await page.waitForURL(/intro|gerbang|peta/);
   await page.goto(`${BASE}intro/selesai`).catch(() => {});
-  if (LANG === 'en') await page.goto(`${BASE}bahasa/en`).catch(() => {});
+  if (LANG === 'en') {
+    // Only POST /bahasa exists (the HUD's language popover); a GET left the page in Indonesian.
+    await page.goto(`${BASE}peta`);
+    await page.locator('details.hud-lang summary').click();
+    await Promise.all([page.waitForNavigation(), page.locator('form.lang-switch button[value="en"]').click()]);
+    if ((await page.evaluate(() => document.documentElement.lang)) !== 'en') throw new Error('could not switch the game to English');
+  }
   return user;
 }
 

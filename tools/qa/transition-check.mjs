@@ -142,18 +142,25 @@ try {
   check(decoded.count === 5 && decoded.flag === '5', 'next-screen images are decoded; a missing one is skipped', `${decoded.count} decoded`);
 
   // ------------------------------------------------------------ language button
-  await page.locator('form.lang-switch button[value="en"]').click();
+  // Since the uniform HUD (19 November 2026) the languages sit in the HUD's language popover:
+  // open it first, as a student does.
+  const chooseLanguage = async (code) => {
+    const pop = page.locator('details.hud-lang');
+    if (!(await pop.evaluate((d) => d.open))) await pop.locator('summary').click();
+    await page.locator(`form.lang-switch button[value="${code}"]`).click();
+  };
+  await chooseLanguage('en');
   await page.waitForLoadState('networkidle');
   const lang = await page.evaluate(() => [document.documentElement.lang, document.body.dataset.ready, sessionStorage.getItem('qa.vt')]);
   check(lang[0] === 'en' && lang[1] === 'en', 'language button reloads the screen in English', lang.slice(0, 2).join(','));
   check(lang[2] === '1', 'the language reload runs a view transition');
-  await page.locator('form.lang-switch button[value="id"]').click();
+  await chooseLanguage('id');
   await page.waitForLoadState('networkidle');
 
   // Active language: no request at all
   let posted = 0;
   page.on('request', (request) => { if (request.method() === 'POST') posted += 1; });
-  await page.locator('form.lang-switch button[value="id"]').click();
+  await chooseLanguage('id');
   await page.waitForTimeout(400);
   check(posted === 0, 'tapping the active language sends nothing');
   await context.close();
