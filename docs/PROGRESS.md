@@ -163,6 +163,7 @@ Decisions in `docs/revisi-10-analitik/04_CATATAN_KEPUTUSAN.md` (16 November 2026
 
 A server is always set up as a fresh install (`docs/08_DEPLOYMENT.md` → *Instalasi baru*), which runs the bank import, the story data, the catalogue import, and the package build. On a server updated in place instead, `docs/08` lists the commands (`gelita:katalog:impor`, `gelita:story:sync`, **Bangun ulang paket**).
 
+- [ ] Findings of the test round of 23 November 2026 (decision log *Full test round on PHP 8.5 and Node 24*), each its own short branch: (1) session heartbeat on the challenge screens; (2) *Cek server* and `deploy.ps1` for the post-pull content steps on production; (3) `PostPullCheck` composer row on a `--no-dev` install; (7) Skenario voice without a picture; (8) silent instruction-player failure; plus the low items of (9). **Owner decides:** (4) whether event batches still queued when a study closes are kept, and whether a study may close while a field session is open; (5) Periksa Unggahan tap parts under 48 dp: exemption or new layout; (6) Magelang post credit
 - [ ] Developer: move the server to PHP 8.5.13 x64 (owner, 23 November 2026): Laragon PHP 8.5, extensions ticked again, `php.ini` settings carried over **without** the `zend_extension` opcache line (`docs/08` → *Pengaturan PHP*), `Php` in `C:\gelita-ops\config.psd1` and the scheduled tasks pointed at the new `php.exe`, then `deploy.ps1` and **Cek server** (PHP group all OK). Code, CI and the cloud sessions are on 8.5 since branch `igi/inspiring-archimedes-19rank`
 
 **Content and art**
@@ -247,4 +248,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
-| `igi/inspiring-archimedes-19rank` | PHP 8.5.13 and Node 24 as the stack (deprecation fixes, CI, cloud setup script, docs), then the full test round of 23 November 2026 (browser checks, field smoke test, load test, bug review) | Stack change done and tested on 8.5; test round in progress in the same session |
+| `igi/inspiring-archimedes-19rank` | PHP 8.5.13 and Node 24 as the stack (deprecation fixes, CI, cloud setup script, docs), then the full test round of 23 November 2026 (browser checks, field smoke test, load test, bug review) | Done, PR #457: stack switched, suite and CI green on 8.5, six stale QA scripts fixed, smoke test 22/22, load test 0 errors at 60 students. Nine findings for follow-up branches or owner decisions: decision log *Full test round on PHP 8.5 and Node 24* |
