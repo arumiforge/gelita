@@ -489,7 +489,7 @@ final class NarrationImporterTest extends CIUnitTestCase
         command('gelita:narration:list --csv=' . $dir . '/lines.csv --dir=' . $dir);
         $this->assertStringContainsString('ID: 1 ada, 111 belum.', $this->getStreamFilterBuffer());
 
-        $lines = array_map('str_getcsv', file($dir . '/lines.csv', FILE_IGNORE_NEW_LINES));
+        $lines = array_map(static fn (string $line): array => str_getcsv($line, ',', '"', ''), file($dir . '/lines.csv', FILE_IGNORE_NEW_LINES));
         $this->assertSame(['kode_berkas', 'konteks', 'wilayah', 'urutan', 'tokoh', 'teks_id', 'teks_en', 'berkas_id', 'berkas_en'], $lines[0]);
         $this->assertCount(113, $lines, 'the header and one row per script line');
         $this->assertSame(['intro-03', 'intro', '', '3', 'Narator'], array_slice($lines[3], 0, 5));

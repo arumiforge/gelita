@@ -63,6 +63,13 @@ final class ServerCheckTest extends CIUnitTestCase
         $this->assertSame(ServerCheck::WARN, $this->row(new ServerCheck($this->facts(['php_version' => '8.2.28'])), 'php', 'Versi PHP')['state']);
     }
 
+    /** PHP 8.5 is the server's version since 23 November 2026; an 8.3 server is reminded to move up. */
+    public function testPhp83WarnsAndPhp85Passes(): void
+    {
+        $this->assertSame(ServerCheck::WARN, $this->row(new ServerCheck($this->facts(['php_version' => '8.3.14'])), 'php', 'Versi PHP')['state']);
+        $this->assertSame(ServerCheck::OK, $this->row(new ServerCheck($this->facts(['php_version' => '8.5.13'])), 'php', 'Versi PHP')['state']);
+    }
+
     public function testAMissingExtensionFailsAndSaysWhatBreaks(): void
     {
         $facts = $this->facts();
@@ -237,16 +244,16 @@ final class ServerCheckTest extends CIUnitTestCase
         $gb = 1024 ** 3;
 
         return $override + [
-            'php_version'  => '8.3.14',
+            'php_version'  => '8.5.13',
             'int_size'     => 8,
             'os_family'    => 'Linux',
             'machine'      => ['os' => 'Linux 6.8.0', 'arch' => 'x86_64', 'cpus' => 4, 'memory_total' => 8.0 * $gb, 'memory_free' => 5.0 * $gb, 'disk_total' => 80.0 * $gb],
             'sapi'         => 'fpm-fcgi',
-            'binary'       => '/usr/sbin/php-fpm8.3',
-            'ini_file'     => '/etc/php/8.3/fpm/php.ini',
+            'binary'       => '/usr/sbin/php-fpm8.5',
+            'ini_file'     => '/etc/php/8.5/fpm/php.ini',
             'ini'          => [
                 'memory_limit' => '512M', 'max_execution_time' => '300', 'upload_max_filesize' => '64M', 'post_max_size' => '72M',
-                'max_file_uploads' => '100', 'date.timezone' => 'Asia/Jakarta', 'extension_dir' => '/usr/lib/php/20230831',
+                'max_file_uploads' => '100', 'date.timezone' => 'Asia/Jakarta', 'extension_dir' => '/usr/lib/php/20250925',
             ],
             'extensions'   => array_keys(ServerCheck::EXTENSIONS),
             'opcache'      => true,

@@ -28,7 +28,7 @@ Never put a password, token or key in the script or the variables.
 
 ## 3. Check
 
-In a session on the right environment: `vendor/autoload.php` exists, `mariadbd` is installed, both variables are set, and `vendor/bin/phpunit --no-coverage tests/unit/TryLimitTest.php` is green.
+In a session on the right environment: `vendor/autoload.php` exists, `mariadbd` is installed, `php -v` says 8.5 and `node -v` says v24 (PHP 8.3 or Node 22 means the environment holds an older copy of the script), both variables are set, and `vendor/bin/phpunit --no-coverage tests/unit/TryLimitTest.php` is green.
 
 ## 4. What only the owner can do
 

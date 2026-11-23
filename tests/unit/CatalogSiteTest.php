@@ -250,7 +250,6 @@ final class CatalogSiteTest extends CIUnitTestCase
         imagefill($image, 0, 0, imagecolorallocate($image, ...$rgb));
         imagefilledrectangle($image, 0, 0, intdiv($width, 3), intdiv($height, 3), imagecolorallocate($image, 20, 30, 60));
         $type === 'png' ? imagepng($image, $this->root . '/' . $path) : imagewebp($image, $this->root . '/' . $path, 80);
-        imagedestroy($image);
     }
 
     private function remove(string $dir): void

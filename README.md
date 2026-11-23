@@ -59,12 +59,12 @@ Sekilas (keadaan 15 November 2026, sesudah perombakan kelas 5 dan revisi penelit
 
 ## Kebutuhan sistem
 
-- PHP 8.2 atau lebih baru (PHP 8.3 disarankan) dengan ekstensi `intl`, `mbstring`, `json`, `mysqli`/`mysqlnd`, `curl`, `gd`, `zip`, `fileinfo`, `openssl`, `iconv`, `dom`, `xml`, `xmlwriter`, dan `simplexml`
+- PHP 8.5 (8.5.13: versi sasaran server dan versi CI sejak 23 November 2026; kode masih berjalan di PHP 8.2 ke atas) dengan ekstensi `intl`, `mbstring`, `json`, `mysqli`/`mysqlnd`, `curl`, `gd`, `zip`, `fileinfo`, `openssl`, `iconv`, `dom`, `xml`, `xmlwriter`, dan `simplexml`
 - Composer 2.6 atau lebih baru
 - MariaDB 10.6+ atau MySQL 8.0+
 - Web server (Nginx + PHP-FPM di server; `php spark serve` untuk pengembangan)
 
-Di Windows, Laragon (PHP 8.3 + MySQL) memenuhi semua kebutuhan ini. Library frontend (Howler.js) dan font di-host sendiri di `public/assets/`, tanpa CDN. Pengecualiannya hanya media **tautan** Pustaka (YouTube, Vimeo, Google Drive, Wikimedia Commons), yang dimuat dari domain asalnya.
+Alat pemeriksaan peramban `tools/qa/` memakai Node.js 24 dengan Playwright. Di Windows, Laragon (PHP 8.5 + MySQL) memenuhi semua kebutuhan ini. Library frontend (Howler.js) dan font di-host sendiri di `public/assets/`, tanpa CDN. Pengecualiannya hanya media **tautan** Pustaka (YouTube, Vimeo, Google Drive, Wikimedia Commons), yang dimuat dari domain asalnya.
 
 ## Mulai cepat (pengembangan)
 

@@ -101,7 +101,10 @@ for (let tick = 0; Date.now() - started < MINUTES * 60_000; tick++) {
     nextPage += PAGE_MS;
   }
   await page.evaluate(async ({ tick, audio, assetId }) => {
-    const events = await import(new URL('assets/js/core/events.js', document.baseURI || location.href).href.replace(/\?.*$/, ''));
+    // The page's own module, at the URL it loaded (the minified mirror under assets/min/ when
+    // it exists): another URL would be a second copy of events.js with its own queue.
+    const loaded = performance.getEntriesByType('resource').map((e) => e.name).find((n) => /\/js\/core\/events\.js(\?|$)/.test(n));
+    const events = await import(loaded || new URL('assets/js/core/events.js', document.baseURI || location.href).href.replace(/\?.*$/, ''));
     events.emit('page_visible', { payload: { screen: document.body.dataset.screenCode || null, qa_tick: tick } });
     if (audio) events.emitAudio({ audio_asset_id: assetId, action: 'play', play_index: 1, listened_ms: tick, completed: false });
   }, { tick, audio: tick % AUDIO_EVERY === 0, assetId: AUDIO_ASSET });

@@ -76,7 +76,6 @@ final class UploadFolderIsolationTest extends CIUnitTestCase
         $base  = tempnam(sys_get_temp_dir(), 'isolation');
         $file  = $base . '.' . $extension;
         $extension === 'png' ? imagepng($image, $file) : imagejpeg($image, $file);
-        imagedestroy($image);
 
         $result = (new MediaStore())->storeCopy($file, self::KEY, ['image'], null, true);
         unlink($file);

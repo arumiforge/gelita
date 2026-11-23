@@ -46,7 +46,7 @@ Yang **tidak** didukung:
 - Apache. `public/.htaccess` dibiarkan untuk pengembangan lokal, tetapi aturan cache, header, dan mode pemeliharaan ditulis untuk Nginx.
 - `php spark serve` di production.
 
-Catatan Laragon: Laragon adalah lingkungan pengembangan. Panduan ini menutup kekurangannya untuk production: vhost otomatis yang ditulis ulang saat start, TLS lemah, `autoindex`, dan autostart. Periksa ketentuan lisensi di laragon.org sebelum memasangnya di institusi. Laragon 7 ke atas berlisensi berbayar, meski pemakaian non-komersial tanpa lisensi diizinkan dengan pengingat. Laragon 6 gratis, tetapi membawa PHP 8.1, jadi PHP 8.3 x64 harus ditambahkan manual ke `C:\laragon\bin\php\`.
+Catatan Laragon: Laragon adalah lingkungan pengembangan. Panduan ini menutup kekurangannya untuk production: vhost otomatis yang ditulis ulang saat start, TLS lemah, `autoindex`, dan autostart. Periksa ketentuan lisensi di laragon.org sebelum memasangnya di institusi. Laragon 7 ke atas berlisensi berbayar, meski pemakaian non-komersial tanpa lisensi diizinkan dengan pengingat. Laragon 6 gratis, tetapi membawa PHP 8.1, jadi PHP 8.5 x64 (8.5.13, versi sasaran sejak 23 November 2026) harus ditambahkan manual ke `C:\laragon\bin\php\`.
 
 ---
 
@@ -112,7 +112,6 @@ log_errors = On
 expose_php = Off
 session.cookie_httponly = 1
 session.use_strict_mode = 1
-zend_extension = opcache
 opcache.enable = 1
 opcache.memory_consumption = 192
 opcache.max_accelerated_files = 20000
@@ -121,6 +120,7 @@ opcache.revalidate_freq = 2
 ```
 
 - **Opcache.** Tanpa perintah reload, `validate_timestamps = 0` akan membuat php-cgi terus menjalankan kode lama setelah pembaruan. Biaya pemeriksaan stempel waktu tiap 2 detik tidak berarti pada skala sekolah.
+- **PHP 8.5: opcache sudah bawaan.** Hapus baris `zend_extension = opcache` atau `zend_extension=php_opcache.dll` dari `php.ini` lama. PHP 8.5 tidak punya berkas opcache terpisah, jadi baris itu memunculkan peringatan *Failed loading Zend extension 'opcache'* setiap kali PHP mulai. Cukup `opcache.enable = 1`.
 - `max_file_uploads = 100` (bawaan PHP 20) agar satu unggahan rekaman narasi di panel dapat memuat banyak berkas. Halaman **Rekaman narasi → Unggah** menampilkan batas yang berlaku.
 - **Batas waktu.** Di Windows, `max_execution_time` dihitung dengan jam dinding (termasuk menunggu database). Karena itu unduhan besar lebih cepat menyentuh batas 300 detik; persempit rentang tanggal bila terjadi.
 - **Jumlah proses PHP.** Atur di Menu Laragon → *Laragon* → *laragon.ini*, bagian `[nginx]`, lalu *Stop* dan *Start All*:
@@ -327,7 +327,7 @@ host=127.0.0.1
 ```powershell
 @{
     App    = 'C:\laragon\www\gelita'
-    Php    = 'C:\laragon\bin\php\php-8.3.33-Win32-vs16-x64\php.exe'   # sesuaikan versi
+    Php    = 'C:\laragon\bin\php\php-8.5.13-Win32-vs17-x64\php.exe'   # sesuaikan versi
     MySql  = 'C:\laragon\bin\mysql\mysql-8.4.3-winx64\bin'            # sesuaikan versi
     Dir    = 'D:\gelita-backup'                                        # backup lokal
     Kedua  = 'E:\gelita-backup'                                        # drive eksternal / \\nas\backup\gelita
@@ -1231,7 +1231,7 @@ Bulanan: jalankan satu uji pemulihan.
 2. Buat akun `guru` terpisah untuk tiap guru, dengan sekolah terisi. Jangan membagikan akun admin.
 3. Nonaktifkan akun guru yang tidak lagi terlibat lewat `/admin/staf` (tombol *Nonaktifkan*, `is_active = 0`); jangan hapus — audit log-nya masih diperlukan.
 4. Tinjau riwayat di `/admin/tata-kelola/audit` secara berkala, terutama aksi `export` dan `delete_execute`.
-5. **Pembaruan sistem.** Windows Update di luar jam sekolah, dan rilis patch PHP 8.3 lewat pembaruan Laragon. Ganti versi PHP berarti mengulang pengaturan `php.ini` (lihat [Pengaturan PHP](#pengaturan-php)).
+5. **Pembaruan sistem.** Windows Update di luar jam sekolah, dan rilis patch PHP 8.5 lewat pembaruan Laragon. Ganti versi PHP berarti mengulang pengaturan `php.ini` (lihat [Pengaturan PHP](#pengaturan-php)).
 6. **Dependency Composer** diperbarui di lingkungan pengembangan (`composer update`, uji, commit `composer.lock`), lalu dibawa ke server lewat pembaruan biasa. Di server hanya `composer install` dan `composer audit`. `composer update` di server membuat `composer.lock` berbeda dari repositori dan membuat `git pull` berikutnya bentrok.
 7. `.env`, `migrate.dsn`, dan `backup.cnf` tidak pernah masuk repositori. `.gitignore` memuat `.env`, isi `writable/*` per subfolder, `public/assets/uploads/*`, dan `writable/pemeliharaan.flag`.
 8. Port database (3306) tidak pernah dibuka ke jaringan (`bind-address = 127.0.0.1`). Nginx listens on `127.0.0.1` only, and the Windows firewall opens no port for GELITA.

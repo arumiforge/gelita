@@ -92,7 +92,10 @@ async function emitMarked(page, from, count, { everyMs = 0, audioEvery = 0, burs
   for (const mark of marks) if (mark.audio) audioMarkers.push(mark.n);
   for (const group of burst ? [marks] : marks.map((mark) => [mark])) {
     await page.evaluate(async ({ group, assetId }) => {
-      const events = await import(new URL('assets/js/core/events.js', document.baseURI || location.href).href.replace(/\?.*$/, ''));
+      // The page's own module, at the URL it loaded (the minified mirror under assets/min/ when
+      // it exists): another URL would be a second copy of events.js with its own queue.
+      const loaded = performance.getEntriesByType('resource').map((e) => e.name).find((n) => /\/js\/core\/events\.js(\?|$)/.test(n));
+      const events = await import(loaded || new URL('assets/js/core/events.js', document.baseURI || location.href).href.replace(/\?.*$/, ''));
       for (const { n, audio } of group) {
         events.emit('page_visible', { payload: { screen: document.body.dataset.screenCode || null, qa: n } });
         if (audio) events.emitAudio({ audio_asset_id: assetId, action: 'play', play_index: 1, listened_ms: n, completed: false });

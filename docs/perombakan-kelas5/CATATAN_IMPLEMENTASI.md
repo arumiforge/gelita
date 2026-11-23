@@ -1559,3 +1559,76 @@ P2–P4 last 70 minutes (two lessons), a third of the students are slower, and a
 **On the server.** The owner installed the new file on Laragon's Nginx 1.30.4: every site is back to normal. The owner also checked the Windows firewall: port 80 is closed to the network (21 November 2026).
 
 **Not checked.** Which site Laragon's Nginx gives an unknown host name.
+
+## PHP 8.5.13 and Node 24 as the project's stack (23 November 2026, branch `igi/inspiring-archimedes-19rank`)
+
+**Decision (owner, 23 November 2026).** The developer moves the server to PHP 8.5.13 and Node.js 24 ("pastikan semua kode tidak break", then "mulai gunakan stack baru tersebut"). CI, the cloud sessions and the documents follow now; the server follows when the developer upgrades it. `composer.json` keeps `"php": "^8.2"`: no code uses 8.5-only syntax, so the 8.3 server keeps running until then.
+
+**Checked before the change.** PHP 8.5.13 (the ondrej/php build) with every extension of README → *Kebutuhan sistem*:
+- Every locked package's PHP range includes 8.5. `php -l` is clean on every file in `app`, `tests`, `tools` and `public`, so there are no compile-time deprecations (backtick operator, non-canonical casts, implicit nullable types).
+- Full suite green on 8.5 (1,477 tests). CodeIgniter logs PHP deprecations as WARNING lines instead of failing the tests (`Config\Exceptions::$logDeprecations`), so the log was read too.
+- Vendor calls that 8.5 deprecates (Kint's `setAccessible()`, mPDF's `curl_close()`/`imagedestroy()`) only run on old PHP versions.
+- A MariaDB development install served by PHP 8.5 with the QA scripts on Node 24.22.3: `challenge-races` 54/54, `event-integrity` all, `admin-check` 565/567 (the two failures were the stale ketua-releases expectation, fixed by PR #456).
+
+**Fixed (each one logged a deprecation on 8.5).**
+- `FieldSheetService` (2×): `null` as an array key when a paper heading is unknown; now `?? ''`, the same lookup PHP did before.
+- `gelita:narration:list`: `fputcsv()` without `$escape` (8.4); now `',', '"', ''` like every other CSV call.
+- `gelita:katalog:halaman --cek-tautan`: `curl_close()` removed (a no-op since 8.0, deprecated in 8.5; no test reaches it).
+- `Simulator::phpSession()`: `use_only_cookies => 0` removed (turning it off is deprecated in 8.5; the CLI session uses no cookies, so it had no effect).
+- Tests: `imagedestroy()` in four tests; `str_getcsv()` without `$escape` in two; `AdminMenuGroupsTest::byKey()` built an array keyed by the ungrouped group's `null` key; `ResearchReadinessInstrumentsTest` set an undeclared `$conn` (a dynamic property, deprecated since 8.2).
+- After the fixes the suite logs no deprecation on 8.5.
+
+**Stack switch.**
+- `.github/workflows/tests.yml`: `php-version: '8.5'`.
+- `tools/dev/cloud-setup.sh` installs PHP 8.5 (CLI, FPM and the extensions) from the ondrej/php PPA, makes it the CLI default, and puts Node 24.22.3 from nodejs.org (checked against SHASUMS256) in place of the image's `node` binary, so PATH, npm's global folder and the global Playwright stay where they were. Run in this session: 23 seconds, PHP 8.5.13 CLI and FPM, Node v24.22.3, `npm root -g` unchanged. Every account must paste the new script into its environment (`docs/cloud-sessions.md` §2).
+- `ServerCheck`: PHP 8.5 is the recommended version, so an 8.3 server shows a reminder (`testPhp83WarnsAndPhp85Passes`); its opcache hint no longer says `zend_extension=opcache`.
+- `docs/08` → *Pengaturan PHP*: the `zend_extension = opcache` line is gone. OPcache is built into PHP 8.5; a leftover line makes PHP warn *Failed loading Zend extension 'opcache'* on every start (tried on 8.5.13). The text names PHP 8.5 where it said 8.3, and so do the README and `deploy/windows/config.example.psd1` (`php-8.5.13-Win32-vs17-x64`).
+- `tools/qa/nav-timing.mjs` looks for `php-fpm8.5` first. `tools/qa/challenge-races.mjs` tries `require('playwright')` (which reads `NODE_PATH`) before `npm root -g`, like the other QA scripts. Under a Node that is not the one npm's global folder belongs to, `npm root -g` points elsewhere and the script stopped with *Cannot find module*.
+
+**On the server when it is upgraded.** Install PHP 8.5.13 x64 in Laragon, tick the extensions again, carry the `php.ini` settings over without the `zend_extension` opcache line, point `Php` in `C:\gelita-ops\config.psd1` and the scheduled tasks at the new `php.exe`, run `deploy.ps1`, then open **Cek server**: every row of the PHP group should read OK.
+
+**Not checked.** PHP 8.5 on Windows (Laragon's php-cgi), and MySQL 8 under PHP 8.5; the cloud sessions use MariaDB.
+
+## Full test round on PHP 8.5 and Node 24 (23 November 2026, branch `igi/inspiring-archimedes-19rank`)
+
+**Asked (owner, 23 November 2026).** Check the remaining work and pull requests, then a thorough test: browser checks, smoke test, load test, potential bugs. Everything ran on the new stack in this session: PHP 8.5.13 (CLI and FPM) and Node 24.22.3, MariaDB 10.11.
+
+**Open work and PRs.** One open PR besides this one: #456 (`admin-check.mjs` follows `StaffAccess`; CI green). `docs/PROGRESS.md` listed no active branch.
+
+**Tests.** Full suite: PHP 8.3 on `main` 1,477 OK; PHP 8.5 on this branch 1,478 OK, no deprecation logged. CI green on PHP 8.5.
+
+**Browser checks** (MariaDB dev install, PHP 8.5 built-in server, every script in `tools/qa/` that runs against a dev install):
+- Pass: `admin-check` (#456's version, 1,502 checks), `challenge-races` (54), `hud-inventory`, `music-check`, `minify-check` (75 files), `event-integrity`, `event-requests`, `transition-check`, `skenario-states` (Indonesian; English on `wnb-5-a04`, `b01`, `b04`: "All states fit" at 1366 × 768 and 1366 × 657), `a11y-check`.
+- Six scripts had gone stale and were fixed in this branch:
+  - `transition-check` and `skenario-states --lang=en`: the language buttons moved into the HUD popover, and there is no GET `/bahasa/{code}`.
+  - `a11y-check`: it missed focus rings drawn on `::after`.
+  - `event-integrity` and `event-requests`: with the minified mirror they emitted into a second copy of `events.js`.
+  - `field-smoke`: it asked for a field session longer than 4 hours.
+  - `challenge-races`: Playwright loading under Node 24.
+- `stage-check` fails on two things the owner has to decide (findings 5 and 6). Its *Transition was aborted* message is the known page-transition artifact.
+
+**Smoke test.** `field-smoke.mjs` in local mode on a freshly reset database with `gelita.researchPrivacy` on: all 22 checks pass, from research mode through tokens, seats, pre-test, retention, make-up session and export to closing the study.
+
+**Load test.** `load-test.mjs` (new client) against Nginx 1.24 + PHP-FPM 8.5 (24 static workers, production mode, a copy of `gelita.id.conf` with Linux paths), on the same 4-CPU container as the load generator.
+
+| Students | Requests (pages / checks / telemetry) | Errors | p95 page | p95 check | p95 telemetry | CPU | busiest FPM workers | row-lock waits |
+|---|---|---|---|---|---|---|---|---|
+| 30 | 279 / 87 / 518 | 0 | 45 ms | 38 ms | 39 ms | 3 % | 4 | 0 |
+| 60 | 538 / 168 / 1,033 | 0 | 43 ms | 39 ms | 40 ms | 6 % | 4 | 0 |
+
+The app log holds no error from the browser checks, the smoke test or the load test; every logged error came from the PHPUnit run, whose tests provoke them. This says the code holds up on PHP 8.5; it is no capacity figure for the Windows server (`docs/08` → *Measured capacity* stays the reference).
+
+**Findings** (reviewed by three `gelita-reviewer` agents over `61c3162..7fef8ea`, then checked here; none fixed in this branch, each needs its own change or an owner decision):
+1. **No session heartbeat on the five challenge screens** (medium, measured). Since the uniform HUD (`d46a5cf`, 19 November 2026) `components/hud-menu.php` returns before the header with `data-in-game` when `hudLayout` is `challenge`, and `initHeartbeat()` (`game/hud.js`) starts only with that marker. In 130 s the map sent 1 heartbeat, a challenge 0; only event batches refresh `last_active_at`. A student reading a passage for 10 minutes without events shows as inactive on Pemantauan, and a moved first attempt takes its `left_at` from the stale value.
+2. **Server check sends the admin to a command that refuses production** (medium, code). `ServerCheck`'s *Langkah setelah pembaruan* says `php spark gelita:setelah-pull --jalankan`, which stops when `ENVIRONMENT === 'production'`, and `deploy.ps1` runs neither `gelita:katalog:impor`, `gelita:story:sync`, `gelita:instrumen:impor` nor the narration imports. The `docs/PROGRESS.md` server rows that say "`git pull`, then `gelita:setelah-pull --jalankan`" meet the same refusal.
+3. **"Paket Composer" always differs on production** (medium, code). `PostPullCheck` compares `packages` and `packages-dev` of `composer.lock` with `installed.json`, while `deploy.ps1` installs `--no-dev`, so the row always reports 29 packages different and *Cek server* never reads all OK.
+4. **Closing a study refuses the events still queued** (medium, code; owner decision). `ParticipantCheck` answers `NO_STUDY` before the `OPEN_WHEN_CLOSED` paths that a closed field session keeps open (28 K13), so late event batches from devices on `/sampai-jumpa` are refused with 401 and lost. It also logs everyone out when a study is closed or set back to draft while a field session is open.
+5. **Periksa Unggahan tap parts are under 48 dp** (owner decision). `stage-check` reports the parts of every round-2 post (account, credit, meta, comment, buttons; 34 to 44 dp tall) in all three regions at every size; the parts sit about 24 dp apart, so the hit areas cannot simply grow. Either a documented exemption in `stage-check` (they imitate a real post on purpose, and `tap_min_dp` records the size as surface load) or a new layout.
+6. **Magelang's post credit is cut** (low): `button.post-part.is-credit` overflows its box (51 > 45) at 1920 × 1080 and 2560 × 1080.
+7. **Skenario Digital without a picture loses "Dengarkan cerita"** (low, code): `#scenario-voice` sits inside `#scenario-figure`, which `engines/skenario.js` hides when `media` is null.
+8. **The instruction player can vanish without a word** (low, code): `.sd-player .audio-error` is hidden in `game.css`, so a failed "Dengarkan petunjuk" file disappears with no message.
+9. Low, code: the migration row of *Cek server* can show the raw database error with the account name; the study-closed logout can write `session_paused` twice when a beacon and a page race (`SessionService::logout()` is not conditional); `ui.result-panel`, `ui.result-button-secondary` and `ui.result-button-detail` are no longer shown but stay registered slots.
+
+Checked and not a problem: the reviewer's possible overflow of long English Skenario answers (finding refuted by `skenario-states` on `wnb-5-b01` and `b04`); no answer key, XSS or access-control hole found in the reviewed range; simulated students cannot reach research data in production.
+
+**Not checked.** A Chromebook or tablet; Windows (Laragon php-cgi) and MySQL 8; `nav-timing` and the asset-package scripts (`package-check`, `package-screens`), which need a built package.

@@ -356,7 +356,6 @@ final class MockupGeneratorTest extends CIUnitTestCase
         imagefill($image, 0, 0, imagecolorallocate($image, 200, 120, 40));
         $file = tempnam(sys_get_temp_dir(), 'asli') . '.png';
         imagepng($image, $file);
-        imagedestroy($image);
 
         return $file;
     }

@@ -204,7 +204,8 @@ class Simulator
         }
 
         session_save_path(sys_get_temp_dir());
-        session_start(['use_cookies' => 0, 'use_only_cookies' => 0, 'cache_limiter' => '']);
+        // No use_only_cookies option: turning it off is deprecated in PHP 8.5, and without cookies it has no effect here.
+        session_start(['use_cookies' => 0, 'cache_limiter' => '']);
     }
 
     // ---------------------------------------------------------------- siswa

@@ -102,10 +102,18 @@ async function flash(page) {
   return (await page.locator('.alert-ok, .alert-error').allInnerTexts()).map((s) => s.replace(/\s+/g, ' ').slice(0, 160));
 }
 
-/** Today in WIB, and an opening time a few minutes ago; closes at 23:59 (the script must not run around midnight). */
+/**
+ * Today in WIB, and an opening time a few minutes ago. It closes 3 h 50 min later, at 23:59
+ * at the latest: the panel refuses a field session longer than 4 hours ("Satu sesi lapangan
+ * paling lama 4 jam"), so a fixed 23:59 only worked late in the evening. Do not run it
+ * around midnight.
+ */
 function sessionTimes() {
   const now = new Date(Date.now() + 7 * 3600e3);
-  return { date: now.toISOString().slice(0, 10), opens: new Date(+now - 10 * 60e3).toISOString().slice(11, 16), closes: '23:59' };
+  const opens = new Date(+now - 10 * 60e3);
+  const closes = new Date(+opens + (3 * 60 + 50) * 60e3);
+  const sameDay = closes.toISOString().slice(0, 10) === now.toISOString().slice(0, 10);
+  return { date: now.toISOString().slice(0, 10), opens: opens.toISOString().slice(11, 16), closes: sameDay ? closes.toISOString().slice(11, 16) : '23:59' };
 }
 
 async function createFieldSession(peneliti, schoolId, rombel, meeting) {

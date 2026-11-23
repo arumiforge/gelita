@@ -90,9 +90,12 @@ function describeFocus() {
     || el.getAttribute('title')
     || '').replace(/\s+/g, ' ').trim();
   const st = getComputedStyle(el);
-  // A ring is an outline or box-shadow, or (puzzle pieces) a glow on the piece's own artwork.
+  // A ring is an outline or box-shadow, on the element or on its ::before/::after overlay
+  // (the Cari Objek clue-jump buttons draw theirs on ::after), or (puzzle pieces) a glow on
+  // the piece's own artwork.
   const glow = [el, ...el.querySelectorAll('*')].some((node) => /drop-shadow/.test(getComputedStyle(node).filter));
-  const ring = (st.outlineStyle !== 'none' && parseFloat(st.outlineWidth) > 0) || st.boxShadow !== 'none' || glow;
+  const drawn = (s) => (s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) > 0) || s.boxShadow !== 'none';
+  const ring = drawn(st) || drawn(getComputedStyle(el, '::after')) || drawn(getComputedStyle(el, '::before')) || glow;
   const tag = el.tagName.toLowerCase();
   // Repeated controls (e.g. one passage chip per card) look alike, so each stop gets a unique number.
   if (!el.dataset.qaStop) el.dataset.qaStop = String((window.qaStops = (window.qaStops || 0) + 1));
