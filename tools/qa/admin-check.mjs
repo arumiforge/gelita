@@ -9,11 +9,12 @@
  *
  *   - admin: accounts (student list and student page without research tabs),
  *     content, settings (study read-only, releases, governance, schools, staff),
- *     the tech log (part 3: 29 §5.6), and Pemantauan (numbers only);
+ *     the tech log (part 3: 29 §5.6), Cek server, and Pemantauan (numbers only);
  *   - peneliti: Ringkasan, student list and student page with the research
  *     tabs, reset password by code, content read-only;
  *   - ketua: everything peneliti opens, plus play sessions, raw data,
- *     feedback, export, and the study page;
+ *     feedback, export, the study page, releases and asset packages (owner,
+ *     20 November 2026), and Status dokumen;
  *   - peneliti and ketua, when the active study has a field session: the field
  *     session list, the newest field session, its seats page (seat plan), its
  *     printable card, and Pemantauan (28 §12, §15).
@@ -29,10 +30,13 @@
  *
  * Pages a role may not open must answer 404 (27 §4):
  *
- *   - admin: sessions, raw data, feedback, export, reset by code, field sessions;
+ *   - admin: sessions, raw data, feedback, export, reset by code, field
+ *     sessions, Status dokumen;
  *   - peneliti: sessions, raw data, feedback, export, study, bank import,
- *     releases, governance, schools, staff, tech log;
- *   - ketua: bank import, releases, governance, schools, staff, tech log.
+ *     releases, governance, schools, staff, tech log, Cek server, Status dokumen;
+ *   - ketua: bank import, governance, schools, staff, tech log, Cek server.
+ *
+ * The lists follow the capability map in app/Libraries/StaffAccess.php.
  *
  * The device table is no raw-data dimension since part 3: it lives in the
  * admin's tech log (`/admin/log-teknis/perangkat`, 29 §5.6).
@@ -160,10 +164,13 @@ const contentViewPages = [
 const contentEditPages = [
   ['konten-impor', 'admin/konten/impor-bank'],
 ];
-/** releases, governance, schools, staff: admin only. */
-const settingsPages = [
+/** releases.manage: admin, ketua (owner, 20 November 2026). */
+const releasePages = [
   ['rilis', 'admin/studi/rilis'],
   ['rilis-paket', 'admin/studi/rilis/paket'],
+];
+/** governance, audit, schools, staff: admin only. */
+const settingsPages = [
   ['tata-kelola', 'admin/tata-kelola'],
   ['audit', 'admin/tata-kelola/audit'],
   ['sekolah', 'admin/sekolah'],
@@ -190,6 +197,10 @@ const techLogPages = [
   ['log-teknis', 'admin/log-teknis'],
   ['log-teknis-perangkat', 'admin/log-teknis/perangkat'],
 ];
+/** server.check: admin only (owner, 18 November 2026). */
+const serverCheckPages = [['cek-server', 'admin/cek-server']];
+/** research_docs.view: ketua only (owner, 17 November 2026). */
+const documentStatusPages = [['status-dokumen', 'admin/status-dokumen']];
 /** monitoring.view: every staff role (admin: numbers only, 28 §12 K2). */
 const monitoringPages = [['pemantauan', 'admin/pemantauan']];
 /** field_sessions.manage: peneliti, ketua; only when a field session exists. */
@@ -209,21 +220,28 @@ const ROLES = {
       ['siswa-akun', `admin/peserta/${studentId}`],
       ...contentViewPages, ...contentEditPages,
       ['narasi-unggah', 'admin/konten/narasi/unggah'],
-      ...studyPages, ...settingsPages, ...techLogPages, ...monitoringPages,
+      ...studyPages, ...releasePages, ...settingsPages, ...techLogPages, ...serverCheckPages, ...monitoringPages,
     ],
     denied: [
       ...researchDataPages,
       ['reset-sandi', 'admin/peserta/reset-sandi'],
       ...fieldSessionPages,
+      ...documentStatusPages,
     ],
   },
   peneliti: {
     open: [...commonPages, ...researchStudentPages, ...contentViewPages, ...monitoringPages, ...fieldSessionPages],
-    denied: [...researchDataPages, ...studyPages, ...contentEditPages, ...settingsPages, ...techLogPages],
+    denied: [
+      ...researchDataPages, ...studyPages, ...contentEditPages, ...releasePages, ...settingsPages,
+      ...techLogPages, ...serverCheckPages, ...documentStatusPages,
+    ],
   },
   ketua: {
-    open: [...commonPages, ...researchStudentPages, ...contentViewPages, ...researchDataPages, ...studyPages, ...monitoringPages, ...fieldSessionPages],
-    denied: [...contentEditPages, ...settingsPages, ...techLogPages],
+    open: [
+      ...commonPages, ...researchStudentPages, ...contentViewPages, ...researchDataPages, ...studyPages,
+      ...releasePages, ...documentStatusPages, ...monitoringPages, ...fieldSessionPages,
+    ],
+    denied: [...contentEditPages, ...settingsPages, ...techLogPages, ...serverCheckPages],
   },
 };
 const RESEARCH_ROLES = ['peneliti', 'ketua'];
