@@ -1559,3 +1559,13 @@ P2–P4 last 70 minutes (two lessons), a third of the students are slower, and a
 **On the server.** The owner installed the new file on Laragon's Nginx 1.30.4: every site is back to normal. The owner also checked the Windows firewall: port 80 is closed to the network (21 November 2026).
 
 **Not checked.** Which site Laragon's Nginx gives an unknown host name.
+
+## `admin-check.mjs` follows the staff rights again (23 November 2026, branch `igi/beautiful-bohr-iq8zah`)
+
+**What failed.** On a fresh development install `tools/qa/admin-check.mjs` reported `ketua rilis` and `ketua rilis-paket`: expected 404, got 200. The script dates from 17 November 2026; `releases.manage` went to `admin` and `ketua` on 20 November 2026 (owner).
+
+**Decision.** The script's page lists are checked against every capability in `App\Libraries\StaffAccess`. The release pages are their own list, opened by admin and ketua and refused for peneliti. Two capabilities added after the script was written are now checked too: `server.check` (`/admin/cek-server`, admin opens it, peneliti and ketua get 404) and `research_docs.view` (`/admin/status-dokumen`, ketua opens it, admin and peneliti get 404). The stale comment above the release routes in `app/Config/Routes.php` now names both roles. The staff guide and the GELITA guide already list releases for ketua; `.claude/skills/dev-install/SKILL.md` does not describe role rights.
+
+**Checked.** `tools/dev/serve.sh`, `php spark gelita:simulasi --siswa=30`, one `peneliti` and one `ketua` account: 1,502 checks pass, 0 fail, exit 0 (all three roles, three sizes).
+
+**Not checked.** Pages the script never covered (data requests, risk follow-up, one child's copy, consent register) stay outside it.

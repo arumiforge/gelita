@@ -295,7 +295,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers\Admin'], static functio
         $routes->post('studi/(:num)/hitung-ulang', 'DerivedDataController::recompute/$1', ['filter' => 'staffCan:research.export']);
         $routes->get('studi/(:num)/hitung-ulang/status', 'DerivedDataController::status/$1', ['filter' => 'staffCan:research.export']);
 
-        // Releases and asset packages stay with the admin, under /admin/studi/rilis
+        // Releases and asset packages under /admin/studi/rilis: admin and ketua (owner, 20 November 2026)
         $routes->group('', ['filter' => 'staffCan:releases.manage'], static function ($routes): void {
             $routes->get('studi/rilis', 'StudyController::releases');
             $routes->post('studi/rilis', 'StudyController::storeRelease');

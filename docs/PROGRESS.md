@@ -245,3 +245,4 @@ Add a row (branch, owner / scope, status) when a session starts a branch; remove
 
 | Branch | Owner / scope | Status |
 |---|---|---|
+| `igi/beautiful-bohr-iq8zah` | `tools/qa/admin-check.mjs` follows `StaffAccess` again (ketua opens releases; Cek server and Status dokumen checked) | Done 23 November 2026; script passes on a fresh dev install (1,502 checks, 0 failures); PR open |
